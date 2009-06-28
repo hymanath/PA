@@ -224,6 +224,14 @@
 			<artifactId>jsonplugin</artifactId>
 			<version>0.33</version>
 		</dependency>
+
+		<!-- JFree Chart -->
+		<dependency>
+		    <groupId>jfreechart</groupId>
+		    <artifactId>jfreechart</artifactId>
+		    <version>1.0.0</version>
+		</dependency> 		
+		
 	</dependencies>
 
 </project>
