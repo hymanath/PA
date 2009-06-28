@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC 
+	"-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+	
+<beans>
+	<!-- Example of SAF2 action instantiated by Spring -->
+	<bean id="helloWorldAction" class="com.itgrids.partyanalyst.HelloWorldAction"
+		singleton="false" >
+		<property name="blogService" ref="blogService" />
+	</bean>
+</beans>
+
+
+
+
