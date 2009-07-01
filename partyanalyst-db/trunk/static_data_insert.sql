@@ -1,211 +1,107 @@
 insert into country values(1,'India','Delhi','IN')
 GO
-insert into state (state_id,state_name,admin_capital) values (1,'Andhra Pradesh',' Hyderabad')
+insert into state (state_id,state_name,admin_capital,country_id) values (1,'Andhra Pradesh',' Hyderabad',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (2,'Arunachal Pradesh',' Itanagar')
+insert into state (state_id,state_name,admin_capital,country_id) values (2,'Arunachal Pradesh',' Itanagar',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (3,'Assam',' Dispur')
+insert into state (state_id,state_name,admin_capital,country_id) values (3,'Assam',' Dispur',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (4,'Bihar',' Patna')
+insert into state (state_id,state_name,admin_capital,country_id) values (4,'Bihar',' Patna',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (5,'Chattisgarh',' Raipur')
+insert into state (state_id,state_name,admin_capital,country_id) values (5,'Chattisgarh',' Raipur',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (6,'Goa',' Panaji')
+insert into state (state_id,state_name,admin_capital,country_id) values (6,'Goa',' Panaji',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (7,'Gujarat',' Gandhinagar')
+insert into state (state_id,state_name,admin_capital,country_id) values (7,'Gujarat',' Gandhinagar',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (8,'Haryana',' Chandigarh')
+insert into state (state_id,state_name,admin_capital,country_id) values (8,'Haryana',' Chandigarh',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (9,'Himachal Pradesh',' Shimla')
+insert into state (state_id,state_name,admin_capital,country_id) values (9,'Himachal Pradesh',' Shimla',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (10,'Jammu & Kashmir',' Jammu/Srinagar')
+insert into state (state_id,state_name,admin_capital,country_id) values (10,'Jammu & Kashmir',' Jammu/Srinagar',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (11,'Jharkhand',' Ranchi')
+insert into state (state_id,state_name,admin_capital,country_id) values (11,'Jharkhand',' Ranchi',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (12,'Karnataka',' Bangalore')
+insert into state (state_id,state_name,admin_capital,country_id) values (12,'Karnataka',' Bangalore',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (13,'Kerala',' Trivandrum')
+insert into state (state_id,state_name,admin_capital,country_id) values (13,'Kerala',' Trivandrum',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (14,'Madhya Pradesh',' Bhopal')
+insert into state (state_id,state_name,admin_capital,country_id) values (14,'Madhya Pradesh',' Bhopal',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (15,'Maharashtra',' Mumbai')
+insert into state (state_id,state_name,admin_capital,country_id) values (15,'Maharashtra',' Mumbai',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (16,'Manipur',' Imphal')
+insert into state (state_id,state_name,admin_capital,country_id) values (16,'Manipur',' Imphal',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (17,'Meghalaya',' Shillong')
+insert into state (state_id,state_name,admin_capital,country_id) values (17,'Meghalaya',' Shillong',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (18,'Mizoram',' Aizawl')
+insert into state (state_id,state_name,admin_capital,country_id) values (18,'Mizoram',' Aizawl',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (19,'Nagaland',' Kohima')
+insert into state (state_id,state_name,admin_capital,country_id) values (19,'Nagaland',' Kohima',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (20,'Orissa',' Bhubaneswar')
+insert into state (state_id,state_name,admin_capital,country_id) values (20,'Orissa',' Bhubaneswar',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (21,'Punjab',' Chandigarh')
+insert into state (state_id,state_name,admin_capital,country_id) values (21,'Punjab',' Chandigarh',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (22,'Rajasthan',' Jaipur')
+insert into state (state_id,state_name,admin_capital,country_id) values (22,'Rajasthan',' Jaipur',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (23,'Sikkim',' Gangtok')
+insert into state (state_id,state_name,admin_capital,country_id) values (23,'Sikkim',' Gangtok',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (24,'Tamil Nadu',' Chennai')
+insert into state (state_id,state_name,admin_capital,country_id) values (24,'Tamil Nadu',' Chennai',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (25,'Tripura',' Agartala')
+insert into state (state_id,state_name,admin_capital,country_id) values (25,'Tripura',' Agartala',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (26,'Uttaranchal',' Dehradun')
+insert into state (state_id,state_name,admin_capital,country_id) values (26,'Uttaranchal',' Dehradun',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (27,'Uttar Pradesh',' Lucknow')
+insert into state (state_id,state_name,admin_capital,country_id) values (27,'Uttar Pradesh',' Lucknow',1)
 GO
-insert into state (state_id,state_name,admin_capital) values (28,'West Bengal',' Kolkata')
+insert into state (state_id,state_name,admin_capital,country_id) values (28,'West Bengal',' Kolkata',1)
 GO
-insert into country_state values (1,1)
+insert into district values(1,'Adilabad','Adilabad',16.1,2082479,1)
 GO
-insert into country_state values (1,2)
+insert into district values(2,'Ananthapur','Ananthapur',19.1,3183814,1)
 GO
-insert into country_state values (1,3)
+insert into district values(3,'Chittoor','Chittoor',15.2,3261118,1)
 GO
-insert into country_state values (1,4)
+insert into district values(4,'Cuddapah','Cuddapah',15.4,2267769,1)
 GO
-insert into country_state values (1,5)
+insert into district values(5,'East Godavari','Kakinada',10.8,4541222,1)
 GO
-insert into country_state values (1,6)
+insert into district values(6,'Guntur','Guntur',11.4,4106999,1)
 GO
-insert into country_state values (1,7)
+insert into district values(7,'Hyderabad','Hyderabad',0.2,3145939,1)
 GO
-insert into country_state values (1,8)
+insert into district values(8,'Karimnagar','Karimnagar',11.8,3037486,1)
 GO
-insert into country_state values (1,9)
+insert into district values(9,'Khammam','Khammam',16,2215809,1)
 GO
-insert into country_state values (1,10)
+insert into district values(10,'Krishna','Machiapatnam',18.7,3698933,1)
 GO
-insert into country_state values (1,11)
+insert into district values(11,'Kurnool','Kurnool',17.7,2973024,1)
 GO
-insert into country_state values (1,12)
+insert into district values(12,'Mahaboobnagar','Mahaboobnagar',18.4,3077050,1)
 GO
-insert into country_state values (1,13)
+insert into district values(13,'Medak','Sangareddy',9.7,2269800,1)
 GO
-insert into country_state values (1,14)
+insert into district values(14,'Nalgonda','Nalgonda',14.2,2852092,1)
 GO
-insert into country_state values (1,15)
+insert into district values(15,'Nellore','Nellore',13.1,2392260,1)
 GO
-insert into country_state values (1,16)
+insert into district values(16,'Prakasam','Ongole',17.6,2759166,1)
 GO
-insert into country_state values (1,17)
+insert into district values(17,'Nizamabad','Nizamabad',8,2037621,1)
 GO
-insert into country_state values (1,18)
+insert into district values(18,'Rangareddy','Hyderabad',7.5,2551966,1)
 GO
-insert into country_state values (1,19)
+insert into district values(19,'Srikakulam','Srikakakulam',5.8,2321126,1)
 GO
-insert into country_state values (1,20)
+insert into district values(20,'Vishakapatnam','Vishakapatnam',11.2,3285092,1)
 GO
-insert into country_state values (1,21)
+insert into district values(21,'Vizingaram','Viziangaram',6.5,2110943,1)
 GO
-insert into country_state values (1,22)
+insert into district values(22,'Warangal','Warangal',12.9,2818832,1)
 GO
-insert into country_state values (1,23)
+insert into district values(23,'West Godavari','Eluru',7.7,3517568,1)
 GO
-insert into country_state values (1,24)
-GO
-insert into country_state values (1,25)
-GO
-insert into country_state values (1,26)
-GO
-insert into country_state values (1,27)
-GO
-insert into country_state values (1,28)
-GO
-insert into district values(1,'Adilabad','Adilabad',16.1,2082479)
-GO
-insert into district values(2,'Ananthapur','Ananthapur',19.1,3183814)
-GO
-insert into district values(3,'Chittoor','Chittoor',15.2,3261118)
-GO
-insert into district values(4,'Cuddapah','Cuddapah',15.4,2267769)
-GO
-insert into district values(5,'East Godavari','Kakinada',10.8,4541222)
-GO
-insert into district values(6,'Guntur','Guntur',11.4,4106999)
-GO
-insert into district values(7,'Hyderabad','Hyderabad',0.2,3145939)
-GO
-insert into district values(8,'Karimnagar','Karimnagar',11.8,3037486)
-GO
-insert into district values(9,'Khammam','Khammam',16,2215809)
-GO
-insert into district values(10,'Krishna','Machiapatnam',18.7,3698933)
-GO
-insert into district values(11,'Kurnool','Kurnool',17.7,2973024)
-GO
-insert into district values(12,'Mahaboobnagar','Mahaboobnagar',18.4,3077050)
-GO
-insert into district values(13,'Medak','Sangareddy',9.7,2269800)
-GO
-insert into district values(14,'Nalgonda','Nalgonda',14.2,2852092)
-GO
-insert into district values(15,'Nellore','Nellore',13.1,2392260)
-GO
-insert into district values(16,'Prakasam','Ongole',17.6,2759166)
-GO
-insert into district values(17,'Nizamabad','Nizamabad',8,2037621)
-GO
-insert into district values(18,'Rangareddy','Hyderabad',7.5,2551966)
-GO
-insert into district values(19,'Srikakulam','Srikakakulam',5.8,2321126)
-GO
-insert into district values(20,'Vishakapatnam','Vishakapatnam',11.2,3285092)
-GO
-insert into district values(21,'Vizingaram','Viziangaram',6.5,2110943)
-GO
-insert into district values(22,'Warangal','Warangal',12.9,2818832)
-GO
-insert into district values(23,'West Godavari','Eluru',7.7,3517568)
-GO
-
-insert into state_district values (1,1)
-GO
-insert into state_district values (1,2)
-GO
-insert into state_district values (1,3)
-GO
-insert into state_district values (1,4)
-GO
-insert into state_district values (1,5)
-GO
-insert into state_district values (1,6)
-GO
-insert into state_district values (1,7)
-GO
-insert into state_district values (1,8)
-GO
-insert into state_district values (1,9)
-GO
-insert into state_district values (1,10)
-GO
-insert into state_district values (1,11)
-GO
-insert into state_district values (1,12)
-GO
-insert into state_district values (1,13)
-GO
-insert into state_district values (1,14)
-GO
-insert into state_district values (1,15)
-GO
-insert into state_district values (1,16)
-GO
-insert into state_district values (1,17)
-GO
-insert into state_district values (1,18)
-GO
-insert into state_district values (1,19)
-GO
-insert into state_district values (1,20)
-GO
-insert into state_district values (1,21)
-GO
-insert into state_district values (1,22)
-GO
-insert into state_district values (1,23)
-GO
-
 insert into election_type values(1,'Parliament','Country')
 GO
 insert into election_type values(2,'Assembly','State')
