@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram version="1.0" type="MySQL" versionMajor="5" versionMinor="0">
+<Table id="0" name="election_type" schema="" database="party_analyst_schema">
+<Column id="1" name="election_type_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="2" name="election_type" type="varchar" length="25" nulls="true"/>
+<Column id="3" name="scope" type="varchar" length="25" nulls="true"/>
+</Table>
+<Table id="4" name="election_scope" schema="" database="party_analyst_schema">
+<Column id="5" name="election_socpe_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="6" name="election_type_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="7" name="election_scope" type="varchar" length="25" nulls="true"/>
+</Table>
+<Table id="8" name="party" schema="" database="party_analyst_schema">
+<Column id="9" name="party_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="10" name="long_name" type="varchar" length="100" nulls="true"/>
+<Column id="11" name="short_name" type="varchar" length="25" nulls="true"/>
+<Column id="12" name="symbol" type="varchar" length="25" nulls="true"/>
+<Column id="13" name="address" type="varchar" length="300" nulls="true"/>
+<Column id="14" name="comments" type="varchar" length="300" nulls="true"/>
+<Column id="15" name="party_recognization" type="varchar" length="25" nulls="true"/>
+</Table>
+<Table id="16" name="candidate" schema="" database="party_analyst_schema">
+<Column id="17" name="candidate_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="18" name="firstname" type="varchar" length="40" nulls="true"/>
+<Column id="19" name="middlename" type="varchar" length="40" nulls="true"/>
+<Column id="20" name="lastname" type="varchar" length="40" nulls="true"/>
+<Column id="21" name="dateofbirth" type="date" length="25" nulls="true"/>
+<Column id="22" name="email_address" type="varchar" length="60" nulls="true"/>
+<Column id="23" name="phone" type="varchar" length="25" nulls="true"/>
+<Column id="24" name="mobile" type="varchar" length="25" nulls="true"/>
+<Column id="25" name="address" type="varchar" length="25" nulls="true"/>
+<Column id="26" name="education" type="varchar" length="25" nulls="true"/>
+<Column id="27" name="gender" type="varchar" length="25" nulls="true"/>
+</Table>
+<Table id="28" name="constituency" schema="" database="party_analyst_schema">
+<Column id="29" name="constituency_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="30" name="name" type="varchar" length="50" nulls="true"/>
+<Column id="31" name="election_scope_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="32" name="start_date" type="date" length="25" nulls="true"/>
+<Column id="33" name="deform_date" type="date" length="25" nulls="true"/>
+<Column id="34" name="state_id" type="bigint" length="100" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="35" name="district_id" type="bigint" length="100" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="36" name="country_id" type="bigint" length="100" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+</Table>
+<Table id="37" name="election" schema="" database="party_analyst_schema">
+<Column id="38" name="election_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="39" name="election_scope_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="40" name="notification_date" type="date" length="25" nulls="true"/>
+<Column id="41" name="start_date" type="date" length="25" nulls="true"/>
+<Column id="42" name="end_date" type="varchar" length="25" nulls="true"/>
+<Column id="43" name="election_year" type="varchar" length="25" nulls="true"/>
+</Table>
+<Table id="44" name="constituency_election" schema="" database="party_analyst_schema">
+<Column id="45" name="consti_elec_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="46" name="constituency_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="47" name="election_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="48" name="election_date" type="date" length="25" nulls="true"/>
+</Table>
+<Table id="49" name="nomination" schema="" database="party_analyst_schema">
+<Column id="50" name="nomination_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="51" name="candidate_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="52" name="consti_elec_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="53" name="nomination_status" type="varchar" length="25" nulls="true"/>
+<Column id="54" name="party_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="55" name="assets" type="double" length="25" nulls="true"/>
+<Column id="56" name="liabilities" type="double" length="25" nulls="true"/>
+<Column id="57" name="criminal_charges" type="varchar" length="300" nulls="true"/>
+</Table>
+<Table id="58" name="constituency_election_result" schema="" database="party_analyst_schema">
+<Column id="59" name="consti_elec_result_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="60" name="total_votes" type="double" length="25" nulls="true"/>
+<Column id="61" name="valid_votes" type="double" length="25" nulls="true"/>
+<Column id="62" name="rejected_votes" type="double" length="25" nulls="true"/>
+<Column id="63" name="missing_votes" type="double" length="25" nulls="true"/>
+<Column id="64" name="total_votes_polled" type="double" length="25" nulls="true"/>
+<Column id="65" name="tendered_votes" type="double" length="25" nulls="true"/>
+<Column id="66" name="consti_elec_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+</Table>
+<Table id="67" name="candidate_result" schema="" database="party_analyst_schema">
+<Column id="68" name="consti_elec_candidate_result_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="69" name="consti_elec_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="70" name="nomination_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="71" name="votes_earned" type="double" length="25" nulls="true"/>
+</Table>
+<Table id="72" name="state" schema="" database="party_analyst_schema">
+<Column id="73" name="state_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="74" name="state_name" type="varchar" length="100" nulls="false"/>
+<Column id="75" name="admin_capital" type="varchar" length="100" nulls="true"/>
+<Column id="76" name="legis_capital" type="varchar" length="100" nulls="true"/>
+<Column id="77" name="judiciary_capital" type="varchar" length="100" nulls="true"/>
+<Column id="78" name="year_established" type="date" length="25" nulls="true"/>
+<Column id="79" name="state_language" type="varchar" length="50" nulls="true"/>
+<Column id="80" name="state_symbol" type="varchar" length="50" nulls="true"/>
+<Column id="81" name="state_song" type="varchar" length="50" nulls="true"/>
+<Column id="82" name="state_animal" type="varchar" length="50" nulls="true"/>
+<Column id="83" name="state_bird" type="varchar" length="50" nulls="true"/>
+<Column id="84" name="state_tree" type="varchar" length="50" nulls="true"/>
+<Column id="85" name="state_sport" type="varchar" length="50" nulls="true"/>
+<Column id="86" name="state_dance" type="varchar" length="50" nulls="true"/>
+<Column id="87" name="state_flower" type="varchar" length="50" nulls="true"/>
+<Column id="88" name="iso_code" type="varchar" length="25" nulls="true"/>
+<Column id="89" name="country_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+</Table>
+<Table id="90" name="district" schema="" database="party_analyst_schema">
+<Column id="91" name="district_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="92" name="district_name" type="varchar" length="100" nulls="true"/>
+<Column id="93" name="district_capital" type="varchar" length="100" nulls="true"/>
+<Column id="94" name="area" type="decimal" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+<CP name="SCALE">5</CP>
+</Column>
+<Column id="95" name="population" type="double" length="25" nulls="true"/>
+<Column id="96" name="state_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+</Table>
+<Table id="97" name="mandal" schema="" database="party_analyst_schema">
+<Column id="98" name="mandal_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="99" name="mandal_name" type="varchar" length="100" nulls="true"/>
+<Column id="100" name="district_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+</Table>
+<Table id="101" name="country" schema="" database="party_analyst_schema">
+<Column id="102" name="country_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="103" name="country_name" type="varchar" length="100" nulls="false"/>
+<Column id="104" name="capital" type="varchar" length="100" nulls="true"/>
+<Column id="105" name="iso_code" type="varchar" length="25" nulls="true"/>
+</Table>
+<Relation id="106" name="fk_election_type_election_scope" cardinality="-1" identifying="false" nulls="false">
+<FK>1</FK>
+<PK>6</PK>
+</Relation>
+<Relation id="107" name="fk_election_scope_election" cardinality="-1" identifying="false" nulls="false">
+<FK>5</FK>
+<PK>39</PK>
+</Relation>
+<Relation id="108" name="fk_election_scope_constituency" cardinality="-1" identifying="false" nulls="false">
+<FK>5</FK>
+<PK>31</PK>
+</Relation>
+<Relation id="109" name="fk_election_constituency_election" cardinality="-1" identifying="false" nulls="false">
+<FK>38</FK>
+<PK>47</PK>
+</Relation>
+<Relation id="110" name="fk_constituency_constituency_election" cardinality="-1" identifying="false" nulls="false">
+<FK>29</FK>
+<PK>46</PK>
+</Relation>
+<Relation id="111" name="fk_candidate_nomination" cardinality="-1" identifying="false" nulls="false">
+<FK>17</FK>
+<PK>51</PK>
+</Relation>
+<Relation id="112" name="fk_party_nomination" cardinality="-1" identifying="false" nulls="false">
+<FK>9</FK>
+<PK>54</PK>
+</Relation>
+<Relation id="113" name="fk_constituency_election_nomination" cardinality="-1" identifying="false" nulls="false">
+<FK>45</FK>
+<PK>52</PK>
+</Relation>
+<Relation id="114" name="fk_constituency_election_constituency_election_result" cardinality="-1" identifying="false" nulls="false">
+<FK>45</FK>
+<PK>66</PK>
+</Relation>
+<Relation id="115" name="fk_constituency_election_constituency_election_candidate_result" cardinality="-1" identifying="false" nulls="false">
+<FK>45</FK>
+<PK>69</PK>
+</Relation>
+<Relation id="116" name="fk_nomination_candidate_result" cardinality="1" identifying="false" nulls="false">
+<FK>50</FK>
+<PK>70</PK>
+</Relation>
+<Relation id="117" name="fk_state_constituency" cardinality="1" identifying="false" nulls="false">
+<FK>73</FK>
+<PK>34</PK>
+</Relation>
+<Relation id="118" name="fk_district_constituency" cardinality="1" identifying="false" nulls="false">
+<FK>91</FK>
+<PK>35</PK>
+</Relation>
+<Relation id="119" name="fk_country_state" cardinality="-1" identifying="false" nulls="false">
+<FK>102</FK>
+<PK>89</PK>
+<Text/>
+</Relation>
+<Relation id="120" name="fk_state_district" cardinality="-1" identifying="false" nulls="false">
+<FK>73</FK>
+<PK>96</PK>
+<Text/>
+</Relation>
+<Relation id="121" name="fk_district_mandal" cardinality="-1" identifying="false" nulls="false">
+<FK>91</FK>
+<PK>100</PK>
+<Text/>
+</Relation>
+<Constraint table="0" name="pk_election_type" type="PrimKey">
+<ConstraintColumn id="1"/>
+</Constraint>
+<Constraint table="4" name="pk_election_scope" type="PrimKey">
+<ConstraintColumn id="5"/>
+</Constraint>
+<Constraint table="8" name="pk_party_id" type="PrimKey">
+<ConstraintColumn id="9"/>
+</Constraint>
+<Constraint table="16" name="pk_candidate" type="PrimKey">
+<ConstraintColumn id="17"/>
+</Constraint>
+<Constraint table="28" name="pk_constituency_id" type="PrimKey">
+<ConstraintColumn id="29"/>
+</Constraint>
+<Constraint table="37" name="pk_election_id" type="PrimKey">
+<ConstraintColumn id="38"/>
+</Constraint>
+<Constraint table="44" name="pk_consti_elec_id" type="PrimKey">
+<ConstraintColumn id="45"/>
+</Constraint>
+<Constraint table="49" name="pk_nomination_id" type="PrimKey">
+<ConstraintColumn id="50"/>
+</Constraint>
+<Constraint table="58" name="pk_constituency_election_result" type="PrimKey">
+<ConstraintColumn id="59"/>
+</Constraint>
+<Constraint table="72" name="pk_state_1" type="PrimKey">
+<ConstraintColumn id="73"/>
+</Constraint>
+<Constraint table="90" name="pk_district_1" type="PrimKey">
+<ConstraintColumn id="91"/>
+</Constraint>
+<Constraint table="97" name="pk_mandal" type="PrimKey">
+<ConstraintColumn id="98"/>
+</Constraint>
+<Constraint table="101" name="pk_country" type="PrimKey">
+<ConstraintColumn id="102"/>
+</Constraint>
+<Sheet name="Election" id="122" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
+<Place id="37" visible="true">760,170,200,151</Place>
+<Place id="114" visible="true" options="550.0,370.0,190.0,90.0,870.0,460.0,210.0,160.0,3,600.0,460.0,600.0,480.0,870.0,480.0">500,0,0,0</Place>
+<Place id="107" visible="true" options="700.0,20.0,200.0,70.0,760.0,170.0,200.0,151.0,4,850.0,90.0,855.0,90.0,855.0,170.0,860.0,170.0">500,0,0,0</Place>
+<Place id="117" visible="true">500,0,0,0</Place>
+<Place id="8" visible="true">0,170,160,130</Place>
+<Place id="4" visible="true">700,20,200,70</Place>
+<Place id="0" visible="true">430,30,210,70</Place>
+<Place id="113" visible="true">500,0,0,0</Place>
+<Place id="115" visible="true" options="550.0,370.0,190.0,90.0,490.0,540.0,260.0,90.0,2,550.0,460.0,550.0,540.0">500,0,0,0</Place>
+<Place id="67" visible="true">490,540,260,90</Place>
+<Place id="116" visible="true">500,0,0,0</Place>
+<Place id="58" visible="true">870,460,210,160</Place>
+<Place id="106" visible="true" options="430.0,30.0,210.0,70.0,700.0,20.0,200.0,70.0,2,640.0,70.0,700.0,70.0">227,-31,0,-20</Place>
+<Place id="16" visible="true">190,150,171,211</Place>
+<Place id="112" visible="true" options="0.0,170.0,160.0,130.0,60.0,420.0,191.0,121.0,4,110.0,300.0,110.0,390.0,130.0,390.0,130.0,420.0">500,0,0,0</Place>
+<Place id="49" visible="true">60,420,191,121</Place>
+<Place id="118" visible="true">500,0,0,0</Place>
+<Place id="111" visible="true" options="190.0,150.0,171.0,211.0,60.0,420.0,191.0,121.0,3,250.0,361.0,250.0,420.0,210.0,420.0">500,0,0,0</Place>
+<Place id="109" visible="true" options="760.0,170.0,200.0,151.0,550.0,370.0,190.0,90.0,4,790.0,321.0,790.0,340.0,730.0,340.0,730.0,370.0">500,0,0,0</Place>
+<Place id="108" visible="true" options="700.0,20.0,200.0,70.0,530.0,160.0,200.0,141.0,4,730.0,90.0,730.0,150.0,650.0,150.0,650.0,160.0">500,0,0,0</Place>
+<Place id="28" visible="true">530,160,200,141</Place>
+<Place id="110" visible="true">500,0,0,0</Place>
+<Place id="44" visible="true">550,370,190,90</Place>
+</Sheet>
+<Sheet name="Country_State_District_Mandal_Relations" id="123" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
+<Place id="72" visible="true">70,290,190,280</Place>
+<Place id="90" visible="true">420,20,181,121</Place>
+<Place id="119" visible="true" options="70.0,40.0,200.0,90.0,70.0,290.0,190.0,280.0,2,190.0,130.0,190.0,290.0">500,0,0,0</Place>
+<Place id="97" visible="true">410,460,190,80</Place>
+<Place id="121" visible="true" options="420.0,20.0,181.0,121.0,410.0,460.0,190.0,80.0,4,530.0,141.0,530.0,318.0,530.0,318.0,530.0,460.0">500,0,0,0</Place>
+<Place id="120" visible="true" options="70.0,290.0,190.0,280.0,420.0,20.0,181.0,121.0,5,260.0,360.0,460.0,360.0,460.0,214.0,460.0,214.0,460.0,141.0">500,0,0,0</Place>
+<Place id="101" visible="true">70,40,200,90</Place>
+</Sheet>
+<Settings sheet="123" zoom="1.0"/>
+</Diagram>
