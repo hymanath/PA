@@ -154,9 +154,6 @@ CREATE TABLE candidate_result (
 	)
 GO
 
-CREATE TABLE census_master 
-	
-GO
 
 CREATE TABLE constituency ( 
 	constituency_id  	bigint(15) NOT NULL,
