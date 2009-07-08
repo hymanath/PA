@@ -106,8 +106,8 @@ insert into election_type values(1,'Parliament','Country')
 GO
 insert into election_type values(2,'Assembly','State')
 GO
-insert into election_scope values(1,'1','India')
+insert into election_scope values(1,'1',1)
 GO
-insert into election_scope values(2,'2','Andhra Pradesh')
+insert into election_scope values(2,'2',1)
 GO
-insert into election_scope values(3,'2','Karnataka')
+insert into election_scope values(3,'2',2)
