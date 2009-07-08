@@ -14,7 +14,10 @@
 <Column id="6" name="election_type_id" type="bigint" length="25" nulls="true">
 <CP name="PRECISION">15</CP>
 </Column>
-<Column id="7" name="election_scope" type="varchar" length="25" nulls="true"/>
+<Column id="7" name="country_state_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+<CP name="COMMENTS">If the election_type_id = 1 then country_state_id = country_id else country_state_id = state_id</CP>
+</Column>
 </Table>
 <Table id="8" name="party" schema="" database="party_analyst_schema">
 <Column id="9" name="party_id" type="bigint" length="25" nulls="false">
@@ -152,104 +155,156 @@
 <Column id="89" name="country_id" type="bigint" length="25" nulls="true">
 <CP name="PRECISION">15</CP>
 </Column>
-</Table>
-<Table id="90" name="district" schema="" database="party_analyst_schema">
-<Column id="91" name="district_id" type="bigint" length="25" nulls="false">
+<Column id="90" name="state_code" type="bigint" length="25" nulls="true">
 <CP name="PRECISION">15</CP>
 </Column>
-<Column id="92" name="district_name" type="varchar" length="100" nulls="true"/>
-<Column id="93" name="district_capital" type="varchar" length="100" nulls="true"/>
-<Column id="94" name="area" type="decimal" length="25" nulls="true">
+<Column id="91" name="start_date" type="date" length="25" nulls="true"/>
+<Column id="92" name="deform_date" type="date" length="25" nulls="true"/>
+</Table>
+<Table id="93" name="district" schema="" database="party_analyst_schema">
+<Column id="94" name="district_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="95" name="district_name" type="varchar" length="100" nulls="true"/>
+<Column id="96" name="district_capital" type="varchar" length="100" nulls="true"/>
+<Column id="97" name="area" type="decimal" length="25" nulls="true">
 <CP name="PRECISION">15</CP>
 <CP name="SCALE">5</CP>
 </Column>
-<Column id="95" name="population" type="double" length="25" nulls="true"/>
-<Column id="96" name="state_id" type="bigint" length="25" nulls="true">
+<Column id="98" name="population" type="double" length="25" nulls="true"/>
+<Column id="99" name="state_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="100" name="district_code" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="101" name="start_date" type="date" length="25" nulls="true"/>
+<Column id="102" name="deform_date" type="date" length="25" nulls="true"/>
+</Table>
+<Table id="103" name="tehsil" schema="" database="party_analyst_schema">
+<Column id="104" name="tehsil_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="105" name="tehsil_name" type="varchar" length="100" nulls="true"/>
+<Column id="106" name="district_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="107" name="tehsil_code" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="108" name="start_date" type="date" length="25" nulls="true"/>
+<Column id="109" name="deform_date" type="varchar" length="25" nulls="true"/>
+</Table>
+<Table id="110" name="country" schema="" database="party_analyst_schema">
+<Column id="111" name="country_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="112" name="country_name" type="varchar" length="100" nulls="false"/>
+<Column id="113" name="capital" type="varchar" length="100" nulls="true"/>
+<Column id="114" name="iso_code" type="varchar" length="25" nulls="true"/>
+</Table>
+<Table id="115" name="township" schema="" database="party_analyst_schema">
+<Column id="116" name="township_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="117" name="township_name" type="varchar" length="100" nulls="true"/>
+<Column id="118" name="township_code" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+<CP name="COMMENTS">township_code is census code for village or town</CP>
+</Column>
+<Column id="119" name="tehsil_id" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="120" name="township_type" type="varchar" length="25" nulls="true">
+<CP name="COMMENTS">It indicates either it is TOWN or VILLAGE</CP>
+</Column>
+</Table>
+<Table id="121" name="temp_census_master" schema="" database=""/>
+<Table id="122" name="ward" schema="" database="party_analyst_schema">
+<Column id="123" name="ward_id" type="bigint" length="25" nulls="false">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="124" name="ward_name" type="varchar" length="100" nulls="true"/>
+<Column id="125" name="ward_code" type="bigint" length="25" nulls="true">
+<CP name="PRECISION">15</CP>
+</Column>
+<Column id="126" name="township_id" type="bigint" length="25" nulls="true">
 <CP name="PRECISION">15</CP>
 </Column>
 </Table>
-<Table id="97" name="mandal" schema="" database="party_analyst_schema">
-<Column id="98" name="mandal_id" type="bigint" length="25" nulls="false">
-<CP name="PRECISION">15</CP>
-</Column>
-<Column id="99" name="mandal_name" type="varchar" length="100" nulls="true"/>
-<Column id="100" name="district_id" type="bigint" length="25" nulls="true">
-<CP name="PRECISION">15</CP>
-</Column>
-</Table>
-<Table id="101" name="country" schema="" database="party_analyst_schema">
-<Column id="102" name="country_id" type="bigint" length="25" nulls="false">
-<CP name="PRECISION">15</CP>
-</Column>
-<Column id="103" name="country_name" type="varchar" length="100" nulls="false"/>
-<Column id="104" name="capital" type="varchar" length="100" nulls="true"/>
-<Column id="105" name="iso_code" type="varchar" length="25" nulls="true"/>
-</Table>
-<Relation id="106" name="fk_election_type_election_scope" cardinality="-1" identifying="false" nulls="false">
+<Table id="127" name="census_master" schema="" database=""/>
+<Relation id="128" name="fk_election_type_election_scope" cardinality="-1" identifying="false" nulls="false">
 <FK>1</FK>
 <PK>6</PK>
 </Relation>
-<Relation id="107" name="fk_election_scope_election" cardinality="-1" identifying="false" nulls="false">
+<Relation id="129" name="fk_election_scope_election" cardinality="-1" identifying="false" nulls="false">
 <FK>5</FK>
 <PK>39</PK>
 </Relation>
-<Relation id="108" name="fk_election_scope_constituency" cardinality="-1" identifying="false" nulls="false">
+<Relation id="130" name="fk_election_scope_constituency" cardinality="-1" identifying="false" nulls="false">
 <FK>5</FK>
 <PK>31</PK>
 </Relation>
-<Relation id="109" name="fk_election_constituency_election" cardinality="-1" identifying="false" nulls="false">
+<Relation id="131" name="fk_election_constituency_election" cardinality="-1" identifying="false" nulls="false">
 <FK>38</FK>
 <PK>47</PK>
 </Relation>
-<Relation id="110" name="fk_constituency_constituency_election" cardinality="-1" identifying="false" nulls="false">
+<Relation id="132" name="fk_constituency_constituency_election" cardinality="-1" identifying="false" nulls="false">
 <FK>29</FK>
 <PK>46</PK>
 </Relation>
-<Relation id="111" name="fk_candidate_nomination" cardinality="-1" identifying="false" nulls="false">
+<Relation id="133" name="fk_candidate_nomination" cardinality="-1" identifying="false" nulls="false">
 <FK>17</FK>
 <PK>51</PK>
 </Relation>
-<Relation id="112" name="fk_party_nomination" cardinality="-1" identifying="false" nulls="false">
+<Relation id="134" name="fk_party_nomination" cardinality="-1" identifying="false" nulls="false">
 <FK>9</FK>
 <PK>54</PK>
 </Relation>
-<Relation id="113" name="fk_constituency_election_nomination" cardinality="-1" identifying="false" nulls="false">
+<Relation id="135" name="fk_constituency_election_nomination" cardinality="-1" identifying="false" nulls="false">
 <FK>45</FK>
 <PK>52</PK>
 </Relation>
-<Relation id="114" name="fk_constituency_election_constituency_election_result" cardinality="-1" identifying="false" nulls="false">
+<Relation id="136" name="fk_constituency_election_constituency_election_result" cardinality="-1" identifying="false" nulls="false">
 <FK>45</FK>
 <PK>66</PK>
 </Relation>
-<Relation id="115" name="fk_constituency_election_constituency_election_candidate_result" cardinality="-1" identifying="false" nulls="false">
+<Relation id="137" name="fk_constituency_election_constituency_election_candidate_result" cardinality="-1" identifying="false" nulls="false">
 <FK>45</FK>
 <PK>69</PK>
 </Relation>
-<Relation id="116" name="fk_nomination_candidate_result" cardinality="1" identifying="false" nulls="false">
+<Relation id="138" name="fk_nomination_candidate_result" cardinality="1" identifying="false" nulls="false">
 <FK>50</FK>
 <PK>70</PK>
 </Relation>
-<Relation id="117" name="fk_state_constituency" cardinality="1" identifying="false" nulls="false">
+<Relation id="139" name="fk_state_constituency" cardinality="1" identifying="false" nulls="false">
 <FK>73</FK>
 <PK>34</PK>
 </Relation>
-<Relation id="118" name="fk_district_constituency" cardinality="1" identifying="false" nulls="false">
-<FK>91</FK>
+<Relation id="140" name="fk_district_constituency" cardinality="1" identifying="false" nulls="false">
+<FK>94</FK>
 <PK>35</PK>
 </Relation>
-<Relation id="119" name="fk_country_state" cardinality="-1" identifying="false" nulls="false">
-<FK>102</FK>
+<Relation id="141" name="fk_country_state" cardinality="-1" identifying="false" nulls="false">
+<FK>111</FK>
 <PK>89</PK>
-<Text/>
 </Relation>
-<Relation id="120" name="fk_state_district" cardinality="-1" identifying="false" nulls="false">
+<Relation id="142" name="fk_state_district" cardinality="-1" identifying="false" nulls="false">
 <FK>73</FK>
-<PK>96</PK>
+<PK>99</PK>
+</Relation>
+<Relation id="143" name="fk_district_mandal" cardinality="-1" identifying="false" nulls="false">
+<FK>94</FK>
+<PK>106</PK>
+</Relation>
+<Relation id="144" name="fk_tehsil_township" cardinality="-1" identifying="false" nulls="false">
+<FK>104</FK>
+<PK>119</PK>
 <Text/>
 </Relation>
-<Relation id="121" name="fk_district_mandal" cardinality="-1" identifying="false" nulls="false">
-<FK>91</FK>
-<PK>100</PK>
+<Relation id="145" name="fk_township_ward" cardinality="-1" identifying="false" nulls="false">
+<FK>116</FK>
+<PK>126</PK>
 <Text/>
 </Relation>
 <Constraint table="0" name="pk_election_type" type="PrimKey">
@@ -282,48 +337,62 @@
 <Constraint table="72" name="pk_state_1" type="PrimKey">
 <ConstraintColumn id="73"/>
 </Constraint>
-<Constraint table="90" name="pk_district_1" type="PrimKey">
-<ConstraintColumn id="91"/>
+<Constraint table="93" name="pk_district_1" type="PrimKey">
+<ConstraintColumn id="94"/>
 </Constraint>
-<Constraint table="97" name="pk_mandal" type="PrimKey">
-<ConstraintColumn id="98"/>
+<Constraint table="103" name="pk_mandal" type="PrimKey">
+<ConstraintColumn id="104"/>
 </Constraint>
-<Constraint table="101" name="pk_country" type="PrimKey">
-<ConstraintColumn id="102"/>
+<Constraint table="110" name="pk_country" type="PrimKey">
+<ConstraintColumn id="111"/>
 </Constraint>
-<Sheet name="Election" id="122" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
+<Constraint table="115" name="pk_township" type="PrimKey">
+<ConstraintColumn id="116"/>
+</Constraint>
+<Constraint table="122" name="pk_ward" type="PrimKey">
+<ConstraintColumn id="123"/>
+</Constraint>
+<Sheet name="Election" id="146" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
+<Place id="4" visible="true">700,20,200,81</Place>
+<Place id="132" visible="true">500,0,0,0</Place>
+<Place id="134" visible="true" options="0.0,170.0,160.0,130.0,60.0,420.0,191.0,121.0,4,110.0,300.0,110.0,390.0,130.0,390.0,130.0,420.0">500,0,0,0</Place>
+<Place id="133" visible="true" options="190.0,150.0,171.0,211.0,60.0,420.0,191.0,121.0,3,250.0,361.0,250.0,420.0,210.0,420.0">500,0,0,0</Place>
 <Place id="37" visible="true">760,170,200,151</Place>
-<Place id="114" visible="true" options="550.0,370.0,190.0,90.0,870.0,460.0,210.0,160.0,3,600.0,460.0,600.0,480.0,870.0,480.0">500,0,0,0</Place>
-<Place id="107" visible="true" options="700.0,20.0,200.0,70.0,760.0,170.0,200.0,151.0,4,850.0,90.0,855.0,90.0,855.0,170.0,860.0,170.0">500,0,0,0</Place>
-<Place id="117" visible="true">500,0,0,0</Place>
-<Place id="8" visible="true">0,170,160,130</Place>
-<Place id="4" visible="true">700,20,200,70</Place>
-<Place id="0" visible="true">430,30,210,70</Place>
-<Place id="113" visible="true">500,0,0,0</Place>
-<Place id="115" visible="true" options="550.0,370.0,190.0,90.0,490.0,540.0,260.0,90.0,2,550.0,460.0,550.0,540.0">500,0,0,0</Place>
-<Place id="67" visible="true">490,540,260,90</Place>
-<Place id="116" visible="true">500,0,0,0</Place>
-<Place id="58" visible="true">870,460,210,160</Place>
-<Place id="106" visible="true" options="430.0,30.0,210.0,70.0,700.0,20.0,200.0,70.0,2,640.0,70.0,700.0,70.0">227,-31,0,-20</Place>
-<Place id="16" visible="true">190,150,171,211</Place>
-<Place id="112" visible="true" options="0.0,170.0,160.0,130.0,60.0,420.0,191.0,121.0,4,110.0,300.0,110.0,390.0,130.0,390.0,130.0,420.0">500,0,0,0</Place>
-<Place id="49" visible="true">60,420,191,121</Place>
-<Place id="118" visible="true">500,0,0,0</Place>
-<Place id="111" visible="true" options="190.0,150.0,171.0,211.0,60.0,420.0,191.0,121.0,3,250.0,361.0,250.0,420.0,210.0,420.0">500,0,0,0</Place>
-<Place id="109" visible="true" options="760.0,170.0,200.0,151.0,550.0,370.0,190.0,90.0,4,790.0,321.0,790.0,340.0,730.0,340.0,730.0,370.0">500,0,0,0</Place>
-<Place id="108" visible="true" options="700.0,20.0,200.0,70.0,530.0,160.0,200.0,141.0,4,730.0,90.0,730.0,150.0,650.0,150.0,650.0,160.0">500,0,0,0</Place>
-<Place id="28" visible="true">530,160,200,141</Place>
-<Place id="110" visible="true">500,0,0,0</Place>
+<Place id="138" visible="true">500,0,0,0</Place>
+<Place id="129" visible="true" options="700.0,20.0,200.0,81.0,760.0,170.0,200.0,151.0,5,880.0,101.0,880.0,95.5,855.0,95.5,855.0,170.0,860.0,170.0">500,0,0,0</Place>
+<Place id="135" visible="true">500,0,0,0</Place>
 <Place id="44" visible="true">550,370,190,90</Place>
+<Place id="128" visible="true" options="430.0,30.0,210.0,70.0,700.0,20.0,200.0,81.0,2,640.0,70.0,700.0,70.0">227,-31,0,-20</Place>
+<Place id="131" visible="true" options="760.0,170.0,200.0,151.0,550.0,370.0,190.0,90.0,4,790.0,321.0,790.0,340.0,730.0,340.0,730.0,370.0">500,0,0,0</Place>
+<Place id="0" visible="true">430,30,210,70</Place>
+<Place id="137" visible="true" options="550.0,370.0,190.0,90.0,490.0,540.0,260.0,90.0,2,550.0,460.0,550.0,540.0">500,0,0,0</Place>
+<Place id="28" visible="true">530,160,200,141</Place>
+<Place id="16" visible="true">190,150,171,211</Place>
+<Place id="8" visible="true">0,170,160,130</Place>
+<Place id="67" visible="true">490,540,260,90</Place>
+<Place id="140" visible="true">500,0,0,0</Place>
+<Place id="58" visible="true">870,460,210,160</Place>
+<Place id="130" visible="true" options="700.0,20.0,200.0,81.0,530.0,160.0,200.0,141.0,4,770.0,101.0,770.0,150.0,650.0,150.0,650.0,160.0">500,0,0,0</Place>
+<Place id="139" visible="true">500,0,0,0</Place>
+<Place id="49" visible="true">60,420,191,121</Place>
+<Place id="136" visible="true" options="550.0,370.0,190.0,90.0,870.0,460.0,210.0,160.0,3,600.0,460.0,600.0,480.0,870.0,480.0">500,0,0,0</Place>
 </Sheet>
-<Sheet name="Country_State_District_Mandal_Relations" id="123" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
-<Place id="72" visible="true">70,290,190,280</Place>
-<Place id="90" visible="true">420,20,181,121</Place>
-<Place id="119" visible="true" options="70.0,40.0,200.0,90.0,70.0,290.0,190.0,280.0,2,190.0,130.0,190.0,290.0">500,0,0,0</Place>
-<Place id="97" visible="true">410,460,190,80</Place>
-<Place id="121" visible="true" options="420.0,20.0,181.0,121.0,410.0,460.0,190.0,80.0,4,530.0,141.0,530.0,318.0,530.0,318.0,530.0,460.0">500,0,0,0</Place>
-<Place id="120" visible="true" options="70.0,290.0,190.0,280.0,420.0,20.0,181.0,121.0,5,260.0,360.0,460.0,360.0,460.0,214.0,460.0,214.0,460.0,141.0">500,0,0,0</Place>
-<Place id="101" visible="true">70,40,200,90</Place>
+<Sheet name="Country_State_District_Mandal_Relations" id="147" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
+<Place id="72" visible="true">70,220,190,350</Place>
+<Place id="115" visible="true">650,20,181,111</Place>
+<Place id="103" visible="true">410,440,190,121</Place>
+<Place id="143" visible="true" options="420.0,20.0,181.0,181.0,410.0,440.0,190.0,121.0,4,580.0,201.0,580.0,361.0,510.0,361.0,510.0,440.0">500,0,0,0</Place>
+<Place id="145" visible="true" options="650.0,20.0,181.0,111.0,710.0,320.0,180.0,101.0,4,800.0,131.0,800.0,230.0,780.0,230.0,780.0,320.0">500,0,0,0</Place>
+<Place id="142" visible="true" options="70.0,220.0,190.0,350.0,420.0,20.0,181.0,181.0,3,260.0,400.0,500.0,400.0,500.0,201.0">500,0,0,0</Place>
+<Place id="93" visible="true">420,20,181,181</Place>
+<Place id="110" visible="true">90,20,200,90</Place>
+<Place id="122" visible="true">710,320,180,101</Place>
+<Place id="141" visible="true" options="90.0,20.0,200.0,90.0,70.0,220.0,190.0,350.0,6,190.0,110.0,190.0,120.0,185.0,120.0,185.0,245.0,190.0,245.0,190.0,220.0">500,0,0,0</Place>
+<Place id="144" visible="true" options="410.0,440.0,190.0,121.0,650.0,20.0,181.0,111.0,4,470.0,440.0,470.0,290.0,700.0,290.0,700.0,131.0">500,0,0,0</Place>
 </Sheet>
-<Settings sheet="123" zoom="1.0"/>
+<Sheet name="census_tables" id="148" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
+<Place id="121" visible="true">30,50,120,60</Place>
+<Place id="127" visible="true">210,140,120,60</Place>
+</Sheet>
+<Settings sheet="148" zoom="1.0"/>
 </Diagram>
