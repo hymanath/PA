@@ -658,217 +658,217 @@ insert into constituency_election_result values(9,159924,159851,73,0,208287,5,9)
 GO
 insert into constituency_election_result values(10,147807,147807,0,0,197654,0,10)
 GO
-insert into candidate_result values(1,1,1,69219)
+insert into candidate_result values(1,1,69219)
 GO
-insert into candidate_result values(2,1,2,50192)
+insert into candidate_result values(2,2,50192)
 GO
-insert into candidate_result values(3,1,3,27352)
+insert into candidate_result values(3,3,27352)
 GO
-insert into candidate_result values(4,1,4,3314)
+insert into candidate_result values(4,4,3314)
 GO
-insert into candidate_result values(5,1,5,1133)
+insert into candidate_result values(5,5,1133)
 GO
-insert into candidate_result values(6,1,6,1108)
+insert into candidate_result values(6,6,1108)
 GO
-insert into candidate_result values(7,1,7,866)
+insert into candidate_result values(7,7,866)
 GO
-insert into candidate_result values(8,1,8,716)
+insert into candidate_result values(8,8,716)
 GO
-insert into candidate_result values(9,1,9,415)
+insert into candidate_result values(9,9,415)
 GO
-insert into candidate_result values(10,1,10,375)
+insert into candidate_result values(10,10,375)
 GO
-insert into candidate_result values(11,2,11,76907)
+insert into candidate_result values(11,11,76907)
 GO
-insert into candidate_result values(12,2,12,58263)
+insert into candidate_result values(12,12,58263)
 GO
-insert into candidate_result values(13,2,13,8772)
+insert into candidate_result values(13,13,8772)
 GO
-insert into candidate_result values(14,2,14,1604)
+insert into candidate_result values(14,14,1604)
 GO
-insert into candidate_result values(15,2,15,713)
+insert into candidate_result values(15,15,713)
 GO
-insert into candidate_result values(16,2,16,618)
+insert into candidate_result values(16,16,618)
 GO
-insert into candidate_result values(17,2,17,352)
+insert into candidate_result values(17,17,352)
 GO
-insert into candidate_result values(18,2,18,299)
+insert into candidate_result values(18,18,299)
 GO
-insert into candidate_result values(19,2,19,221)
+insert into candidate_result values(19,19,221)
 GO
-insert into candidate_result values(20,2,20,202)
+insert into candidate_result values(20,20,202)
 GO
-insert into candidate_result values(21,2,21,186)
+insert into candidate_result values(21,21,186)
 GO
-insert into candidate_result values(22,3,22,73212)
+insert into candidate_result values(22,22,73212)
 GO
-insert into candidate_result values(23,3,23,65768)
+insert into candidate_result values(23,23,65768)
 GO
-insert into candidate_result values(24,3,24,22624)
+insert into candidate_result values(24,24,22624)
 GO
-insert into candidate_result values(25,3,25,1614)
+insert into candidate_result values(25,25,1614)
 GO
-insert into candidate_result values(26,3,26,1379)
+insert into candidate_result values(26,26,1379)
 GO
-insert into candidate_result values(27,3,27,1207)
+insert into candidate_result values(27,27,1207)
 GO
-insert into candidate_result values(28,3,28,893)
+insert into candidate_result values(28,28,893)
 GO
-insert into candidate_result values(29,3,29,869)
+insert into candidate_result values(29,29,869)
 GO
-insert into candidate_result values(30,3,30,671)
+insert into candidate_result values(30,30,671)
 GO
-insert into candidate_result values(31,3,31,390)
+insert into candidate_result values(31,31,390)
 GO
-insert into candidate_result values(32,3,32,382)
+insert into candidate_result values(32,32,382)
 GO
-insert into candidate_result values(33,4,33,36103)
+insert into candidate_result values(33,33,36103)
 GO
-insert into candidate_result values(34,4,34,36013)
+insert into candidate_result values(34,34,36013)
 GO
-insert into candidate_result values(35,4,35,26173)
+insert into candidate_result values(35,35,26173)
 GO
-insert into candidate_result values(36,4,36,3670)
+insert into candidate_result values(36,36,3670)
 GO
-insert into candidate_result values(37,4,37,1950)
+insert into candidate_result values(37,37,1950)
 GO
-insert into candidate_result values(38,4,38,853)
+insert into candidate_result values(38,38,853)
 GO
-insert into candidate_result values(39,4,39,427)
+insert into candidate_result values(39,39,427)
 GO
-insert into candidate_result values(40,4,40,372)
+insert into candidate_result values(40,40,372)
 GO
-insert into candidate_result values(41,4,41,320)
+insert into candidate_result values(41,41,320)
 GO
-insert into candidate_result values(42,4,42,264)
+insert into candidate_result values(42,42,264)
 GO
-insert into candidate_result values(43,4,43,148)
+insert into candidate_result values(43,43,148)
 GO
-insert into candidate_result values(44,4,44,96)
+insert into candidate_result values(44,44,96)
 GO
-insert into candidate_result values(45,5,45,46941)
+insert into candidate_result values(45,45,46941)
 GO
-insert into candidate_result values(46,5,46,43810)
+insert into candidate_result values(46,46,43810)
 GO
-insert into candidate_result values(47,5,47,23143)
+insert into candidate_result values(47,47,23143)
 GO
-insert into candidate_result values(48,5,48,3460)
+insert into candidate_result values(48,48,3460)
 GO
-insert into candidate_result values(49,5,49,2969)
+insert into candidate_result values(49,49,2969)
 GO
-insert into candidate_result values(50,5,50,1400)
+insert into candidate_result values(50,50,1400)
 GO
-insert into candidate_result values(51,5,51,925)
+insert into candidate_result values(51,51,925)
 GO
-insert into candidate_result values(52,5,52,568)
+insert into candidate_result values(52,52,568)
 GO
-insert into candidate_result values(53,5,53,403)
+insert into candidate_result values(53,53,403)
 GO
-insert into candidate_result values(54,5,54,247)
+insert into candidate_result values(54,54,247)
 GO
-insert into candidate_result values(55,5,55,244)
+insert into candidate_result values(55,55,244)
 GO
-insert into candidate_result values(56,6,56,73760)
+insert into candidate_result values(56,56,73760)
 GO
-insert into candidate_result values(57,6,57,63476)
+insert into candidate_result values(57,57,63476)
 GO
-insert into candidate_result values(58,6,58,11553)
+insert into candidate_result values(58,58,11553)
 GO
-insert into candidate_result values(59,6,59,1895)
+insert into candidate_result values(59,59,1895)
 GO
-insert into candidate_result values(60,6,60,1854)
+insert into candidate_result values(60,60,1854)
 GO
-insert into candidate_result values(61,6,61,818)
+insert into candidate_result values(61,61,818)
 GO
-insert into candidate_result values(62,6,62,781)
+insert into candidate_result values(62,62,781)
 GO
-insert into candidate_result values(63,6,63,712)
+insert into candidate_result values(63,63,712)
 GO
-insert into candidate_result values(64,6,64,335)
+insert into candidate_result values(64,64,335)
 GO
-insert into candidate_result values(65,6,65,312)
+insert into candidate_result values(65,65,312)
 GO
-insert into candidate_result values(66,6,66,277)
+insert into candidate_result values(66,66,277)
 GO
-insert into candidate_result values(67,6,67,157)
+insert into candidate_result values(67,67,157)
 GO
-insert into candidate_result values(68,7,68,64330)
+insert into candidate_result values(68,68,64330)
 GO
-insert into candidate_result values(69,7,69,53092)
+insert into candidate_result values(69,69,53092)
 GO
-insert into candidate_result values(70,7,70,27318)
+insert into candidate_result values(70,70,27318)
 GO
-insert into candidate_result values(71,7,71,2878)
+insert into candidate_result values(71,71,2878)
 GO
-insert into candidate_result values(72,7,72,2710)
+insert into candidate_result values(72,72,2710)
 GO
-insert into candidate_result values(73,7,73,1090)
+insert into candidate_result values(73,73,1090)
 GO
-insert into candidate_result values(74,7,74,829)
+insert into candidate_result values(74,74,829)
 GO
-insert into candidate_result values(75,7,75,589)
+insert into candidate_result values(75,75,589)
 GO
-insert into candidate_result values(76,8,76,66089)
+insert into candidate_result values(76,76,66089)
 GO
-insert into candidate_result values(77,8,77,60722)
+insert into candidate_result values(77,77,60722)
 GO
-insert into candidate_result values(78,8,78,24832)
+insert into candidate_result values(78,78,24832)
 GO
-insert into candidate_result values(79,8,79,3559)
+insert into candidate_result values(79,79,3559)
 GO
-insert into candidate_result values(80,8,80,1746)
+insert into candidate_result values(80,80,1746)
 GO
-insert into candidate_result values(81,8,81,1002)
+insert into candidate_result values(81,81,1002)
 GO
-insert into candidate_result values(82,8,82,876)
+insert into candidate_result values(82,82,876)
 GO
-insert into candidate_result values(83,8,83,671)
+insert into candidate_result values(83,83,671)
 GO
-insert into candidate_result values(84,8,84,375)
+insert into candidate_result values(84,84,375)
 GO
-insert into candidate_result values(85,9,85,69731)
+insert into candidate_result values(85,85,69731)
 GO
-insert into candidate_result values(86,9,86,62965)
+insert into candidate_result values(86,86,62965)
 GO
-insert into candidate_result values(87,9,87,19970)
+insert into candidate_result values(87,87,19970)
 GO
-insert into candidate_result values(88,9,88,1898)
+insert into candidate_result values(88,88,1898)
 GO
-insert into candidate_result values(89,9,89,1520)
+insert into candidate_result values(89,89,1520)
 GO
-insert into candidate_result values(90,9,90,1361)
+insert into candidate_result values(90,90,1361)
 GO
-insert into candidate_result values(91,9,91,1240)
+insert into candidate_result values(91,91,1240)
 GO
-insert into candidate_result values(92,9,92,697)
+insert into candidate_result values(92,92,697)
 GO
-insert into candidate_result values(93,9,93,469)
+insert into candidate_result values(93,93,469)
 GO
-insert into candidate_result values(94,10,94,55870)
+insert into candidate_result values(94,94,55870)
 GO
-insert into candidate_result values(95,10,95,1308)
+insert into candidate_result values(95,95,1308)
 GO
-insert into candidate_result values(96,10,96,69352)
+insert into candidate_result values(96,96,69352)
 GO
-insert into candidate_result values(97,10,97,1747)
+insert into candidate_result values(97,97,1747)
 GO
-insert into candidate_result values(98,10,98,326)
+insert into candidate_result values(98,98,326)
 GO
-insert into candidate_result values(99,10,99,540)
+insert into candidate_result values(99,99,540)
 GO
-insert into candidate_result values(100,10,100,14512)
+insert into candidate_result values(100,100,14512)
 GO
-insert into candidate_result values(101,10,101,286)
+insert into candidate_result values(101,101,286)
 GO
-insert into candidate_result values(102,10,102,1827)
+insert into candidate_result values(102,102,1827)
 GO
-insert into candidate_result values(103,10,103,309)
+insert into candidate_result values(103,103,309)
 GO
-insert into candidate_result values(104,10,104,240)
+insert into candidate_result values(104,104,240)
 GO
-insert into candidate_result values(105,10,105,388)
+insert into candidate_result values(105,105,388)
 GO
-insert into candidate_result values(106,10,106,516)
+insert into candidate_result values(106,106,516)
 GO
-insert into candidate_result values(107,10,107,586)
+insert into candidate_result values(107,107,586)
 GO
