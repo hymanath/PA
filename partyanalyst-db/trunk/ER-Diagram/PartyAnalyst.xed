@@ -122,16 +122,16 @@
 </Column>
 </Table>
 <Table id="67" name="candidate_result" schema="" database="party_analyst_schema">
-<Column id="68" name="consti_elec_candidate_result_id" type="bigint" length="25" nulls="false">
+<Column id="68" name="candidate_result_id" type="bigint" length="25" nulls="false">
 <CP name="PRECISION">15</CP>
 </Column>
-<Column id="69" name="consti_elec_id" type="bigint" length="25" nulls="true">
+<Column id="69" name="nomination_id" type="bigint" length="25" nulls="true">
 <CP name="PRECISION">15</CP>
 </Column>
-<Column id="70" name="nomination_id" type="bigint" length="25" nulls="true">
+<Column id="70" name="votes_earned" type="double" length="25" nulls="true"/>
+<Column id="71" name="rank" type="bigint" length="25" nulls="true">
 <CP name="PRECISION">15</CP>
 </Column>
-<Column id="71" name="votes_earned" type="double" length="25" nulls="true"/>
 </Table>
 <Table id="72" name="state" schema="" database="party_analyst_schema">
 <Column id="73" name="state_id" type="bigint" length="25" nulls="false">
@@ -269,43 +269,38 @@
 <FK>45</FK>
 <PK>66</PK>
 </Relation>
-<Relation id="137" name="fk_constituency_election_constituency_election_candidate_result" cardinality="-1" identifying="false" nulls="false">
-<FK>45</FK>
-<PK>69</PK>
-</Relation>
-<Relation id="138" name="fk_nomination_candidate_result" cardinality="1" identifying="false" nulls="false">
+<Relation id="137" name="fk_nomination_candidate_result" cardinality="1" identifying="false" nulls="false">
 <FK>50</FK>
-<PK>70</PK>
+<PK>69</PK>
+<Text/>
 </Relation>
-<Relation id="139" name="fk_state_constituency" cardinality="1" identifying="false" nulls="false">
+<Relation id="138" name="fk_state_constituency" cardinality="1" identifying="false" nulls="false">
 <FK>73</FK>
 <PK>34</PK>
 </Relation>
-<Relation id="140" name="fk_district_constituency" cardinality="1" identifying="false" nulls="false">
+<Relation id="139" name="fk_district_constituency" cardinality="1" identifying="false" nulls="false">
 <FK>94</FK>
 <PK>35</PK>
 </Relation>
-<Relation id="141" name="fk_country_state" cardinality="-1" identifying="false" nulls="false">
+<Relation id="140" name="fk_country_state" cardinality="-1" identifying="false" nulls="false">
 <FK>111</FK>
 <PK>89</PK>
 </Relation>
-<Relation id="142" name="fk_state_district" cardinality="-1" identifying="false" nulls="false">
+<Relation id="141" name="fk_state_district" cardinality="-1" identifying="false" nulls="false">
 <FK>73</FK>
 <PK>99</PK>
 </Relation>
-<Relation id="143" name="fk_district_mandal" cardinality="-1" identifying="false" nulls="false">
+<Relation id="142" name="fk_district_mandal" cardinality="-1" identifying="false" nulls="false">
 <FK>94</FK>
 <PK>106</PK>
 </Relation>
-<Relation id="144" name="fk_tehsil_township" cardinality="-1" identifying="false" nulls="false">
+<Relation id="143" name="fk_tehsil_township" cardinality="-1" identifying="false" nulls="false">
 <FK>104</FK>
 <PK>119</PK>
-<Text/>
 </Relation>
-<Relation id="145" name="fk_township_ward" cardinality="-1" identifying="false" nulls="false">
+<Relation id="144" name="fk_township_ward" cardinality="-1" identifying="false" nulls="false">
 <FK>116</FK>
 <PK>126</PK>
-<Text/>
 </Relation>
 <Constraint table="0" name="pk_election_type" type="PrimKey">
 <ConstraintColumn id="1"/>
@@ -334,6 +329,9 @@
 <Constraint table="58" name="pk_constituency_election_result" type="PrimKey">
 <ConstraintColumn id="59"/>
 </Constraint>
+<Constraint table="67" name="pk_candidate_result" type="PrimKey">
+<ConstraintColumn id="68"/>
+</Constraint>
 <Constraint table="72" name="pk_state_1" type="PrimKey">
 <ConstraintColumn id="73"/>
 </Constraint>
@@ -352,47 +350,46 @@
 <Constraint table="122" name="pk_ward" type="PrimKey">
 <ConstraintColumn id="123"/>
 </Constraint>
-<Sheet name="Election" id="146" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
-<Place id="4" visible="true">700,20,200,81</Place>
-<Place id="132" visible="true">500,0,0,0</Place>
-<Place id="134" visible="true" options="0.0,170.0,160.0,130.0,60.0,420.0,191.0,121.0,4,110.0,300.0,110.0,390.0,130.0,390.0,130.0,420.0">500,0,0,0</Place>
-<Place id="133" visible="true" options="190.0,150.0,171.0,211.0,60.0,420.0,191.0,121.0,3,250.0,361.0,250.0,420.0,210.0,420.0">500,0,0,0</Place>
-<Place id="37" visible="true">760,170,200,151</Place>
-<Place id="138" visible="true">500,0,0,0</Place>
-<Place id="129" visible="true" options="700.0,20.0,200.0,81.0,760.0,170.0,200.0,151.0,5,880.0,101.0,880.0,95.5,855.0,95.5,855.0,170.0,860.0,170.0">500,0,0,0</Place>
+<Sheet name="Election" id="145" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
 <Place id="135" visible="true">500,0,0,0</Place>
-<Place id="44" visible="true">550,370,190,90</Place>
-<Place id="128" visible="true" options="430.0,30.0,210.0,70.0,700.0,20.0,200.0,81.0,2,640.0,70.0,700.0,70.0">227,-31,0,-20</Place>
-<Place id="131" visible="true" options="760.0,170.0,200.0,151.0,550.0,370.0,190.0,90.0,4,790.0,321.0,790.0,340.0,730.0,340.0,730.0,370.0">500,0,0,0</Place>
-<Place id="0" visible="true">430,30,210,70</Place>
-<Place id="137" visible="true" options="550.0,370.0,190.0,90.0,490.0,540.0,260.0,90.0,2,550.0,460.0,550.0,540.0">500,0,0,0</Place>
-<Place id="28" visible="true">530,160,200,141</Place>
-<Place id="16" visible="true">190,150,171,211</Place>
-<Place id="8" visible="true">0,170,160,130</Place>
-<Place id="67" visible="true">490,540,260,90</Place>
-<Place id="140" visible="true">500,0,0,0</Place>
-<Place id="58" visible="true">870,460,210,160</Place>
-<Place id="130" visible="true" options="700.0,20.0,200.0,81.0,530.0,160.0,200.0,141.0,4,770.0,101.0,770.0,150.0,650.0,150.0,650.0,160.0">500,0,0,0</Place>
-<Place id="139" visible="true">500,0,0,0</Place>
 <Place id="49" visible="true">60,420,191,121</Place>
+<Place id="28" visible="true">530,160,200,141</Place>
+<Place id="67" visible="true">490,540,260,90</Place>
+<Place id="8" visible="true">0,170,160,130</Place>
+<Place id="139" visible="true">500,0,0,0</Place>
+<Place id="58" visible="true">870,460,210,160</Place>
+<Place id="4" visible="true">700,20,200,81</Place>
+<Place id="138" visible="true">500,0,0,0</Place>
+<Place id="16" visible="true">190,150,171,211</Place>
+<Place id="132" visible="true">500,0,0,0</Place>
+<Place id="130" visible="true" options="700.0,20.0,200.0,81.0,530.0,160.0,200.0,141.0,4,770.0,101.0,770.0,150.0,650.0,150.0,650.0,160.0">500,0,0,0</Place>
+<Place id="128" visible="true" options="430.0,30.0,210.0,70.0,700.0,20.0,200.0,81.0,2,640.0,70.0,700.0,70.0">227,-31,0,-20</Place>
 <Place id="136" visible="true" options="550.0,370.0,190.0,90.0,870.0,460.0,210.0,160.0,3,600.0,460.0,600.0,480.0,870.0,480.0">500,0,0,0</Place>
+<Place id="37" visible="true">760,170,200,151</Place>
+<Place id="0" visible="true">430,30,210,70</Place>
+<Place id="134" visible="true" options="0.0,170.0,160.0,130.0,60.0,420.0,191.0,121.0,4,110.0,300.0,110.0,390.0,130.0,390.0,130.0,420.0">500,0,0,0</Place>
+<Place id="131" visible="true" options="760.0,170.0,200.0,151.0,550.0,370.0,190.0,90.0,4,790.0,321.0,790.0,340.0,730.0,340.0,730.0,370.0">500,0,0,0</Place>
+<Place id="44" visible="true">550,370,190,90</Place>
+<Place id="133" visible="true" options="190.0,150.0,171.0,211.0,60.0,420.0,191.0,121.0,3,250.0,361.0,250.0,420.0,210.0,420.0">500,0,0,0</Place>
+<Place id="129" visible="true" options="700.0,20.0,200.0,81.0,760.0,170.0,200.0,151.0,5,880.0,101.0,880.0,95.5,855.0,95.5,855.0,170.0,860.0,170.0">500,0,0,0</Place>
+<Place id="137" visible="true">500,0,0,0</Place>
 </Sheet>
-<Sheet name="Country_State_District_Mandal_Relations" id="147" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
+<Sheet name="Country_State_District_Mandal_Relations" id="146" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
 <Place id="72" visible="true">70,220,190,350</Place>
-<Place id="115" visible="true">650,20,181,111</Place>
-<Place id="103" visible="true">410,440,190,121</Place>
-<Place id="143" visible="true" options="420.0,20.0,181.0,181.0,410.0,440.0,190.0,121.0,4,580.0,201.0,580.0,361.0,510.0,361.0,510.0,440.0">500,0,0,0</Place>
-<Place id="145" visible="true" options="650.0,20.0,181.0,111.0,710.0,320.0,180.0,101.0,4,800.0,131.0,800.0,230.0,780.0,230.0,780.0,320.0">500,0,0,0</Place>
-<Place id="142" visible="true" options="70.0,220.0,190.0,350.0,420.0,20.0,181.0,181.0,3,260.0,400.0,500.0,400.0,500.0,201.0">500,0,0,0</Place>
-<Place id="93" visible="true">420,20,181,181</Place>
+<Place id="140" visible="true" options="90.0,20.0,200.0,90.0,70.0,220.0,190.0,350.0,6,190.0,110.0,190.0,120.0,185.0,120.0,185.0,245.0,190.0,245.0,190.0,220.0">500,0,0,0</Place>
+<Place id="142" visible="true" options="420.0,20.0,181.0,181.0,410.0,440.0,190.0,121.0,4,580.0,201.0,580.0,361.0,510.0,361.0,510.0,440.0">500,0,0,0</Place>
+<Place id="143" visible="true" options="410.0,440.0,190.0,121.0,650.0,20.0,181.0,111.0,4,470.0,440.0,470.0,290.0,700.0,290.0,700.0,131.0">500,0,0,0</Place>
 <Place id="110" visible="true">90,20,200,90</Place>
+<Place id="93" visible="true">420,20,181,181</Place>
+<Place id="103" visible="true">410,440,190,121</Place>
+<Place id="141" visible="true" options="70.0,220.0,190.0,350.0,420.0,20.0,181.0,181.0,3,260.0,400.0,500.0,400.0,500.0,201.0">500,0,0,0</Place>
+<Place id="144" visible="true" options="650.0,20.0,181.0,111.0,710.0,320.0,180.0,101.0,4,800.0,131.0,800.0,230.0,780.0,230.0,780.0,320.0">500,0,0,0</Place>
 <Place id="122" visible="true">710,320,180,101</Place>
-<Place id="141" visible="true" options="90.0,20.0,200.0,90.0,70.0,220.0,190.0,350.0,6,190.0,110.0,190.0,120.0,185.0,120.0,185.0,245.0,190.0,245.0,190.0,220.0">500,0,0,0</Place>
-<Place id="144" visible="true" options="410.0,440.0,190.0,121.0,650.0,20.0,181.0,111.0,4,470.0,440.0,470.0,290.0,700.0,290.0,700.0,131.0">500,0,0,0</Place>
+<Place id="115" visible="true">650,20,181,111</Place>
 </Sheet>
-<Sheet name="census_tables" id="148" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
+<Sheet name="census_tables" id="147" disp_at="true" disp_ph="true" disp_co="true" disp_rn="true">
 <Place id="121" visible="true">30,50,120,60</Place>
 <Place id="127" visible="true">210,140,120,60</Place>
 </Sheet>
-<Settings sheet="148" zoom="1.0"/>
+<Settings sheet="145" zoom="1.0"/>
 </Diagram>
