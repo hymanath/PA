@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.BaseObject;
 @Table(name="country")
 public class Country extends BaseObject {
 
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
