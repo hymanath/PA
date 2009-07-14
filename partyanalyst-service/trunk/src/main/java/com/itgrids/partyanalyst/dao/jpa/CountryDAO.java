@@ -20,7 +20,7 @@ import com.itgrids.partyanalyst.model.Country;
  * Implementation for <code>ICountryDAO</code> interface.
  * 
  * @author <a href="mailto:shan.javaee@gmail.com">Shan Nagarajan</a>
- *
+ * 
  */
 public class CountryDAO extends GenericDaoJpa<Country, Long> implements
 		ICountryDAO {
@@ -42,12 +42,13 @@ public class CountryDAO extends GenericDaoJpa<Country, Long> implements
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Country> findByProperty(CountryColumnNames propertyName, Object value) {
+	public List<Country> findByProperty(CountryColumnNames propertyName,
+			Object value) {
 		final String queryString = "select model from Country model where model."
-			+ propertyName.getValue() + "= :propertyValue";
-        Query q = super.entityManager.createQuery(queryString);
-        q.setParameter(1, value);
-        return q.getResultList();
+				+ propertyName.getValue() + "= :propertyValue";
+		Query q = super.entityManager.createQuery(queryString);
+		q.setParameter(1, value);
+		return q.getResultList();
 	}
 
 }
