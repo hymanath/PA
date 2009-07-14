@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<table name='country'>
+		<column>country_id</column>
+		<column>country_name</column>
+		<column>capital</column>
+		<column>iso_code</column>
+		<row>
+			<value>1</value>
+			<value>India</value>
+			<value>Delhi</value>
+			<value>IN</value>
+		</row>
+	</table>
+	<table name='state'>
+		<column>state_id</column>
+		<column>state_name</column>
+		<column>admin_capital</column>
+		<column>country_id</column>
+		<row>
+			<value>1</value>
+			<value>Andhra Pradesh</value>
+			<value>Hyderabad</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>12</value>
+			<value>Karnataka</value>
+			<value>Bangalore</value>
+			<value>1</value>
+		</row>
+	</table>
+</dataset>
