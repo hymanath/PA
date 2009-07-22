@@ -9,6 +9,13 @@
 		singleton="false" >
 		<property name="blogService" ref="blogService" />
 	</bean>
+	<bean id="partyPerformanceReportAction" class="com.itgrids.partyanalyst.PartyPerformanceReportAction"
+		singleton="false" >
+		<property name="partyService" ref="partyService" />
+	</bean>
+	<bean id="partyPerformanceJasperAction" class="com.itgrids.partyanalyst.PartyPerformanceJasperAction"
+		singleton="false" >
+	</bean>
 </beans>
 
 
