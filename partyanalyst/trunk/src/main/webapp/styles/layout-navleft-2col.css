@@ -14,7 +14,7 @@
     }
     div#main {
         float: right;
-        width: 340px;
+        width: 10px;
         display: inline;
         
         margin-right: 220px;
@@ -25,7 +25,7 @@
     }
     div#sub {
         float: right;
-        width: 200px;
+        width: 10px;
         display: inline;
         
         margin-right: -340px;

@@ -27,7 +27,7 @@
     }
     div#local {
         float: left; 
-        width: 180px;
+        width: 100px;
         display: inline;
         
         margin-left: -300px;
