@@ -48,7 +48,7 @@
             <div id="local">
                 <h3>Local Nav. Bar</h3>
                 <ul>
-                    <li><a href="#">Content page 1</a></li>
+                    <li><a href="partyPerformanceReport.action">Party Performance Report</a></li>
                     <li><a href="#">Content page 2</a></li>
                     <li><a href="#">Content page 3</a></li>
                     <li><a href="#">Content page 4</a></li>
