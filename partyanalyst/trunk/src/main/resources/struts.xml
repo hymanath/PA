@@ -11,6 +11,8 @@
 		<result-types>
 			<result-type name="tiles"
 				class="org.apache.struts2.views.tiles.TilesResult" />
+			<result-type name="jasper" 
+    			class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
 		</result-types>
 		<!--
 			For each result that should go to a Tiles page, add a type attribute
@@ -23,6 +25,16 @@
 		<action name="helloWorld" class="helloWorldAction">
 			<result name="input">/jsp/index.jsp</result>
 			<result>/jsp/helloWorld.jsp</result>
+		</action>
+		<action name="partyPerformanceJasper" class="partyPerformanceJasperAction">
+			<result name="success" type="stream">
+			<param name="contentType">application/pdf</param>
+ 				<param name="contentDisposition">filename="new_report.pdf"</param>
+  				<param name="inputName">reportStream</param> 
+			</result>
+		</action>
+		<action name="partyPerformanceReport" class="partyPerformanceReportAction">
+			<result name="success">/jsp/partyPerformanceReport.jsp</result>
 		</action>
 	</package>
 </struts>
