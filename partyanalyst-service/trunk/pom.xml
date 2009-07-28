@@ -17,46 +17,6 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>dbunit-maven-plugin</artifactId>
-				<version>1.0-beta-1</version>
-				<configuration>
-					<dataTypeFactoryName>${dbunit.dataTypeFactoryName}</dataTypeFactoryName>
-					<driver>${jdbc.driverClassName}</driver>
-					<username>${jdbc.username}</username>
-					<password>${jdbc.password}</password>
-					<url>${jdbc.url}</url>
-					<src>src/test/resources/sample-data.xml</src>
-					<type>${dbunit.operation.type}</type>
-					<schema>${dbunit.schema}</schema>
-					<skip>${maven.test.skip}</skip>
-				</configuration>
-				<executions>
-					<execution>
-						<id>test-compile</id>
-						<phase>test-compile</phase>
-						<goals>
-							<goal>operation</goal>
-						</goals>
-					</execution>
-					<execution>
-						<!-- Runs before integration tests and jetty:run-war -->
-						<id>test</id>
-						<phase>test</phase>
-						<goals>
-							<goal>operation</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>${jdbc.groupId}</groupId>
-						<artifactId>${jdbc.artifactId}</artifactId>
-						<version>${jdbc.version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
 		</plugins>
 	</build>
 
