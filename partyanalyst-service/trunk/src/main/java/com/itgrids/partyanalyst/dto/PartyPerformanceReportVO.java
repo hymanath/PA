@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import com.itgrids.partyanalyst.model.BaseObject;
+import com.itgrids.partyanalyst.BaseObject;
 
 public class PartyPerformanceReportVO extends BaseObject {
 
