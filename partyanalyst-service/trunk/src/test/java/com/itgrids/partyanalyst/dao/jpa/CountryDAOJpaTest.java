@@ -5,7 +5,6 @@ import java.util.Set;
 import junit.framework.Assert;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.model.State;
 

@@ -1,11 +1,3 @@
-/* 
- * Copyright (c) 2009 IT Grids.
- * All Rights Reserved.
- *
- * IT Grids Confidential Information.
- * Created on July 09, 2009
- */
-
 package com.itgrids.partyanalyst.dto;
 
 import java.math.BigDecimal;
@@ -29,29 +21,32 @@ public class PartyPerformanceReportVO extends BaseObject {
 	/** Total percentage of votes got by the party */
 	private BigDecimal totalPercentageOfVotesWon;
 	/** Total percentage of votes got by the party in previous Election*/
-    private BigDecimal totalPercentageOfVotesWonPreviousElection;
+	private BigDecimal totalPercentageOfVotesWonPreviousElection;
+	/** Positions lost by the party by doping voting percentage */
+	private int positionsLostByDroppingVotes;
 	/** Different positions party achieved */
 	private Map<Integer, Integer> positionDistribution;
-	/** Election Year **/
-	private String year;
-	/** State **/
-	private String state;
-	/** Party Name **/
-	private String party;
+	/** Position won by the party by a major percentage */
+	private int positionsWonMajorBand;
+	/** Position won by the party by a minor percentage */
+	private int positionsWonMinorBand;
+	/** Position lost by the party by a major percentage */
+	private int positionsLostMajorBand;
+	/** Position lost by the party by a minor percentage */
+	private int positionsLostMinorBand;
+
+	private int positionsWonWithPositiveSwing;
+	private int positionsWonWithNegativeSwing;
+	private int positionsLostWithPositiveSwing;
+	private int positionsLostWithNegativeSwing;
+
 	/** Percentage of votes that might have gone to other parties */
 	private Map<String, BigDecimal> toPartySwing;
 	/** Percentage Margins **/
-	private List<ConstituencyPositionsVO> constituencyPositions;
+	private Map<PositionType, List<ConstituencyPositionDetailVO>> constituencyPositionDetails;
 
-	public List<ConstituencyPositionsVO> getConstituencyPositions() {
-		return constituencyPositions;
-	}
-
-	public void setConstituencyPositions(
-			List<ConstituencyPositionsVO> constituencyPositions) {
-		this.constituencyPositions = constituencyPositions;
-	}
-
+	
+	
 	public BigDecimal getTotalPercentageOfVotesWonPreviousElection() {
 		return totalPercentageOfVotesWonPreviousElection;
 	}
@@ -61,12 +56,65 @@ public class PartyPerformanceReportVO extends BaseObject {
 		this.totalPercentageOfVotesWonPreviousElection = totalPercentageOfVotesWonPreviousElection;
 	}
 
+	public Map<PositionType, List<ConstituencyPositionDetailVO>> getConstituencyPositionDetails() {
+		return constituencyPositionDetails;
+	}
+
+	public void setConstituencyPositionDetails(
+			Map<PositionType, List<ConstituencyPositionDetailVO>> constituencyPositionDetails) {
+		this.constituencyPositionDetails = constituencyPositionDetails;
+	}
+
+	public int getPositionsWonWithPositiveSwing() {
+		return positionsWonWithPositiveSwing;
+	}
+
+	public void setPositionsWonWithPositiveSwing(
+			int positionsWonWithPositiveSwing) {
+		this.positionsWonWithPositiveSwing = positionsWonWithPositiveSwing;
+	}
+
+	public int getPositionsWonWithNegativeSwing() {
+		return positionsWonWithNegativeSwing;
+	}
+
+	public void setPositionsWonWithNegativeSwing(
+			int positionsWonWithNegativeSwing) {
+		this.positionsWonWithNegativeSwing = positionsWonWithNegativeSwing;
+	}
+
+	public int getPositionsLostWithPositiveSwing() {
+		return positionsLostWithPositiveSwing;
+	}
+
+	public void setPositionsLostWithPositiveSwing(
+			int positionsLostWithPositiveSwing) {
+		this.positionsLostWithPositiveSwing = positionsLostWithPositiveSwing;
+	}
+
+	public int getPositionsLostWithNegativeSwing() {
+		return positionsLostWithNegativeSwing;
+	}
+
+	public void setPositionsLostWithNegativeSwing(
+			int positionsLostWithNegativeSwing) {
+		this.positionsLostWithNegativeSwing = positionsLostWithNegativeSwing;
+	}
+
 	public int getDiffSeatsWon() {
 		return diffSeatsWon;
 	}
 
 	public void setDiffSeatsWon(int diffSeatsWon) {
 		this.diffSeatsWon = diffSeatsWon;
+	}
+
+	public int getPositionsLostByDroppingVotes() {
+		return positionsLostByDroppingVotes;
+	}
+
+	public void setPositionsLostByDroppingVotes(int positionsLostByDroppingVotes) {
+		this.positionsLostByDroppingVotes = positionsLostByDroppingVotes;
 	}
 
 	public String getYear() {
@@ -92,6 +140,13 @@ public class PartyPerformanceReportVO extends BaseObject {
 	public void setParty(String party) {
 		this.party = party;
 	}
+
+	/** Election Year **/
+	private String year;
+	/** State **/
+	private String state;
+	/** Party Name **/
+	private String party;
 
 	public int getTotalSeatsContested() {
 		return totalSeatsContested;
@@ -133,6 +188,38 @@ public class PartyPerformanceReportVO extends BaseObject {
 	public void setPositionDistribution(
 			Map<Integer, Integer> positionDistribution) {
 		this.positionDistribution = positionDistribution;
+	}
+
+	public int getPositionsWonMajorBand() {
+		return positionsWonMajorBand;
+	}
+
+	public void setPositionsWonMajorBand(int positionsWonMajorBand) {
+		this.positionsWonMajorBand = positionsWonMajorBand;
+	}
+
+	public int getPositionsWonMinorBand() {
+		return positionsWonMinorBand;
+	}
+
+	public void setPositionsWonMinorBand(int positionsWonMinorBand) {
+		this.positionsWonMinorBand = positionsWonMinorBand;
+	}
+
+	public int getPositionsLostMajorBand() {
+		return positionsLostMajorBand;
+	}
+
+	public void setPositionsLostMajorBand(int positionsLostMajorBand) {
+		this.positionsLostMajorBand = positionsLostMajorBand;
+	}
+
+	public int getPositionsLostMinorBand() {
+		return positionsLostMinorBand;
+	}
+
+	public void setPositionsLostMinorBand(int positionsLostMinorBand) {
+		this.positionsLostMinorBand = positionsLostMinorBand;
 	}
 
 	public Map<String, BigDecimal> getToPartySwing() {

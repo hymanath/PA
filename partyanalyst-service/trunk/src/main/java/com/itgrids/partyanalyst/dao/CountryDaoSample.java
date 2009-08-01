@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Criteria;
@@ -8,10 +9,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.criterion.Expression;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
-import com.itgrids.partyanalyst.entity.Country;
+import com.itgrids.partyanalyst.model.Country;
 
 public class CountryDaoSample extends GenericDaoHibernate<Country, Long>
-		implements ICountryDao {
+		implements ICountryDAO {
 
 	public CountryDaoSample() {
 		super(Country.class);
@@ -33,6 +34,36 @@ public class CountryDaoSample extends GenericDaoHibernate<Country, Long>
 					}
 				});
 	
+	}
+
+	public List<com.itgrids.partyanalyst.model.Country> findByCapital(
+			Object capital) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<com.itgrids.partyanalyst.model.Country> findByCountryName(
+			Object countryName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<com.itgrids.partyanalyst.model.Country> findByIsoCode(
+			Object isoCode) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<com.itgrids.partyanalyst.model.Country> findByProperty(
+			String propertyName, Object value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public com.itgrids.partyanalyst.model.Country save(
+			com.itgrids.partyanalyst.model.Country arg0) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

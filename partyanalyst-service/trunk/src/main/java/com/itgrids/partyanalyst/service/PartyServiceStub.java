@@ -54,7 +54,7 @@ public class PartyServiceStub implements IPartyService {
 		constituencyPositionsList.add(new ConstituencyPositionsVO(
 				PositionType.POSITIONS_LOST_BY_DROPPING_VOTES, 16, getPositionsLostByDroppingVotes(), "Losing Positions with doping voting percentage"));
 
-		vo.setConstituencyPositions(constituencyPositionsList);
+		//vo.setConstituencyPositions(constituencyPositionsList);
 		return vo;
 	}
 
@@ -295,5 +295,26 @@ public class PartyServiceStub implements IPartyService {
 		constiuencyList.add(marginForConstiuency2);
 		
 		return constiuencyList;
+	}
+
+	public PartyPerformanceReportVO getPartyPerformanceReport(String state,
+			String party, String year, String electionType,
+			int noOfPositionDistribution, BigDecimal majorBand,
+			BigDecimal minorBand) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public PartyPerformanceReportVO getPartyPerformanceReport(String state,
+			String party, String year, String electionType,
+			int noOfPositionDistribution) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public PartyPerformanceReportVO getPartyPerformanceReport(String state,
+			String party, String year, String electionType) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

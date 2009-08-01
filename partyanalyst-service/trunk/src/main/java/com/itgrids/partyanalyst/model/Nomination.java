@@ -16,7 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -45,8 +45,7 @@ public class Nomination implements java.io.Serializable {
 	private Double assets;
 	private Double liabilities;
 	private String criminalCharges;
-	private Set<CandidateResult> candidateResults = new HashSet<CandidateResult>(
-			0);
+	private CandidateResult candidateResult;
 
 	// Constructors
 
@@ -64,7 +63,7 @@ public class Nomination implements java.io.Serializable {
 			ConstituencyElection constituencyElection, Party party,
 			Candidate candidate, String nominationStatus, Double assets,
 			Double liabilities, String criminalCharges,
-			Set<CandidateResult> candidateResults) {
+			CandidateResult candidateResult) {
 		this.nominationId = nominationId;
 		this.constituencyElection = constituencyElection;
 		this.party = party;
@@ -73,7 +72,7 @@ public class Nomination implements java.io.Serializable {
 		this.assets = assets;
 		this.liabilities = liabilities;
 		this.criminalCharges = criminalCharges;
-		this.candidateResults = candidateResults;
+		this.candidateResult = candidateResult;
 	}
 
 	// Property accessors
@@ -154,58 +153,13 @@ public class Nomination implements java.io.Serializable {
 		this.criminalCharges = criminalCharges;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "nomination")
-	public Set<CandidateResult> getCandidateResults() {
-		return this.candidateResults;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "nomination")
+	public CandidateResult getCandidateResult() {
+		return this.candidateResult;
 	}
 
-	public void setCandidateResults(Set<CandidateResult> candidateResults) {
-		this.candidateResults = candidateResults;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString()).append(
-				"nominationId", nominationId).append("constituencyElection",
-				constituencyElection).append("party", party).append(
-				"candidate", candidate).append("nominationStatus",
-				nominationStatus).append("assets", assets).append(
-				"liabilities", liabilities).append("criminalCharges",
-				criminalCharges).append("candidateResults", candidateResults)
-				.toString();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(final Object other) {
-		if (!(other instanceof Nomination))
-			return false;
-		Nomination castOther = (Nomination) other;
-		return new EqualsBuilder().append(nominationId, castOther.nominationId)
-				.append(constituencyElection, castOther.constituencyElection)
-				.append(party, castOther.party).append(candidate,
-						castOther.candidate).append(nominationStatus,
-						castOther.nominationStatus).append(assets,
-						castOther.assets).append(liabilities,
-						castOther.liabilities).append(criminalCharges,
-						castOther.criminalCharges).append(candidateResults,
-						castOther.candidateResults).isEquals();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(nominationId).append(
-				constituencyElection).append(party).append(candidate).append(
-				nominationStatus).append(assets).append(liabilities).append(
-				criminalCharges).append(candidateResults).toHashCode();
+	public void setCandidateResult(CandidateResult candidateResult) {
+		this.candidateResult = candidateResult;
 	}
 
 }
