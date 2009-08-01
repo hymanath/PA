@@ -5,7 +5,7 @@
  * IT Grids Confidential Information.
  * Created on July 09, 2009
  */
-package com.itgrids.partyanalyst;
+package com.itgrids.partyanalyst.web.action;
 
 import java.io.IOException;
 import java.io.OutputStream;

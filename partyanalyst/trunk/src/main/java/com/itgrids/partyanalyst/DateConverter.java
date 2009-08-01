@@ -15,13 +15,12 @@
  */
 package com.itgrids.partyanalyst;
 
-import org.apache.struts2.util.StrutsTypeConverter;
-
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
-import java.util.Map;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import com.opensymphony.xwork2.util.TypeConversionException;
+import java.util.Map;
+
+import org.apache.struts2.util.StrutsTypeConverter;
 
 /**
  * 
@@ -34,7 +33,7 @@ public class DateConverter extends StrutsTypeConverter {
                 return sdf.parse(values[0]);
             }
             catch(ParseException e) {
-                throw new TypeConversionException(e);
+                ;//TODO: do somehting here later
             }
         }
         return null;

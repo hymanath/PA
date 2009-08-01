@@ -5,7 +5,7 @@
  * IT Grids Confidential Information.
  * Created on July 09, 2009
  */
-package com.itgrids.partyanalyst;
+package com.itgrids.partyanalyst.web.action;
 
 import java.util.Map;
 
@@ -61,7 +61,8 @@ public class PartyPerformanceReportAction extends ActionSupport implements Servl
 		log.debug("action started...");
 		
         
-		reportVO = gePartyrService().getStateLevelPartyReport("A.P", "CONGRESS", "2009");
+		//reportVO = gePartyrService().getStateLevelPartyReport("A.P", "CONGRESS", "2009");
+		reportVO = new PartyPerformanceReportVO();
 		
 		Map<Integer, Integer> positions = reportVO.getPositionDistribution();
 		
