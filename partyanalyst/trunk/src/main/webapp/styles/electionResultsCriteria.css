@@ -1,0 +1,33 @@
+@CHARSET "ISO-8859-1";
+.tdDataDiv
+{
+	padding: 5px;
+	color:#000000;
+	font-size:14px;
+}
+.tdLabelDiv
+{
+	padding: 5px;
+	color:#808080;
+}
+#resultsPageErrorDiv
+{
+	 color: red;
+	 font-size: 12px;
+	 margin-left:235px;
+	 height:20px;
+}
+#resultsPageButtonDiv
+{
+	margin-left: 250px;
+}
+th
+{
+	color:#606060;
+}
+.nameSelect
+{
+	font-size:12px;
+	margin-left:2px;
+	padding:2px;
+}

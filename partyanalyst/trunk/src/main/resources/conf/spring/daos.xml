@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC 
+	"-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  
+	<bean id="electionScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionScopeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+
+	<bean id="electionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+
+	<bean id="stateDAO" class="com.itgrids.partyanalyst.dao.hibernate.StateDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="constituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="electionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="constituencyElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyElectionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="constituencyElectionResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyElectionResultDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="candidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="candidateResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateResultDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="wardDAO" class="com.itgrids.partyanalyst.dao.hibernate.WardDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="townshipDAO" class="com.itgrids.partyanalyst.dao.hibernate.TownshipDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="tehsilDAO" class="com.itgrids.partyanalyst.dao.hibernate.TehsilDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="districtDAO" class="com.itgrids.partyanalyst.dao.hibernate.DistrictDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="countryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CountryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="nominationDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean name="registrationDAO" class="com.itgrids.partyanalyst.dao.hibernate.RegistrationDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	<bean name="partyDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean name="electionObjectsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionObjectsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean name="candidateResultObjectsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateResultObjectsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean name="censusDAO" class="com.itgrids.partyanalyst.dao.hibernate.CensusDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean name="constituencyElectionResultObjectsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyElectionResultObjectsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+</beans>
+
+
+
+

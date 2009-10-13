@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC 
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="myPackage" extends="struts-default,json-default">
+
+		<!-- TilesIntegration -->
+		<result-types>
+			<result-type name="tiles"
+				class="org.apache.struts2.views.tiles.TilesResult" />
+			<result-type name="jasper" 
+    			class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<!--
+			For each result that should go to a Tiles page, add a type attribute
+		-->
+		<!--result type="tiles" name="input">admin.login</result-->
+
+		<action name="index" class="com.itgrids.partyanalyst.IndexAction">
+			<result>/jsp/index.jsp</result>
+		</action>
+		<action name="helloWorld" class="helloWorldAction">
+			<result name="input">/jsp/index.jsp</result>
+			<result>/jsp/helloWorld.jsp</result>
+		</action>
+		
+		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
+			<result name="error">/jsp/loginForm.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result>/jsp/loginsuccess.jsp</result>
+		</action>
+		
+		<action name="RegistrationAction" class="com.itgrids.partyanalyst.web.action.RegistrationAction">
+			<result name="input">/jsp/registration.jsp</result>
+			<result name="error">/jsp/registration.jsp</result>
+			<result name="success" type="chain">loginAction</result>
+		</action>
+		
+
+		<!-- PARTY PERFORMANCE ACTIONS -->
+		<action name="partyPerformanceAjax" class="partyPerformanceAction" method="getJSON" >
+			<result type="json" name="success"/> 
+		</action>
+		<action name="partyPerformanceMain" class="partyPerformanceAction" method="execute" >
+			<result name="success" >/jsp/partyPerformance.jsp</result> 
+		</action>
+		<action name="partyPerformanceReport" class="partyPerformanceAction" method="getReport">
+			<result name="success">/jsp/partyPerformanceReport.jsp</result>
+		</action>
+		<action name="partyPerformanceJasper" class="partyPerformanceAction" method="getJasper">
+			<result name="success" type="stream">
+			<param name="contentType">application/pdf</param>
+ 				<param name="contentDisposition">filename="new_report.pdf"</param>
+  				<param name="inputName">reportStream</param> 
+			</result>
+		</action>
+		
+		
+        <action name="uploadCSV" class="uploadCSVAction">
+           <result name="success">/jsp/csvUpload.jsp</result>
+        </action>
+        
+        <action name="ajaxSearchAction" class="com.itgrids.partyanalyst.web.action.AjaxSearchAction" method="getJSON">
+			<result name="success" type="json">Names</result>						
+		</action> 
+		<action name="cncSearchResultsAction" class="com.itgrids.partyanalyst.web.action.CnCSearchResultsAction">
+			<result name="success">/jsp/searchResultsPage.jsp</result>
+		</action>
+		<action name="constituencySearchAction" class="com.itgrids.partyanalyst.web.action.ConstituencySearchAction">
+			<result name="success">/jsp/constituencyDetailsPage.jsp</result>
+		</action>
+		<action name="candidateSearchAction" class="com.itgrids.partyanalyst.web.action.CandidateSearchAction">
+			<result name="success">/jsp/candidateDetailsPage.jsp</result>			                            
+		</action>
+		
+		<action name="partyResultScopeAction" class="com.itgrids.partyanalyst.web.action.PartyResultScopeAction" method="getJSON">
+			<result name="success" type="json">Names</result>						
+		</action>
+		<action name="partyResultsCriteriaAction" class="partyResultsCriteriaAction">
+			<result name="success">/jsp/partyResultsCriteriaPage.jsp</result>							
+		</action>
+		<action name="partyResultsAction" class="partyResultsAction">
+			<result name="success">/jsp/partyResultsPage.jsp</result>							
+		</action>
+
+		<action name="statePageAction" class="com.itgrids.partyanalyst.web.action.StatePageAction">
+			<result name="input">/jsp/statePage.jsp</result>
+			<result name="error">/jsp/statePageError.jsp</result>
+			<result name="success">/jsp/statePageSuccess.jsp</result>
+		</action>
+		<action name="constituencyPageAction" class="com.itgrids.partyanalyst.web.action.ConstituencyPageAction">
+			<result name="input">/jsp/constituencyPage.jsp</result>
+			<result name="success">/jsp/constituencyPageSuccess.jsp</result>
+		</action>
+        <action name="candidateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.CandidateElectionResultsAction">
+			<result name="input">/jsp/candidatePage.jsp</result>
+			<result name="success">/jsp/candidatePageSuccess.jsp</result>
+		</action>
+        
+		<action name="uploadExcel" class="uploadExcelAction">
+           <result name="success">/jsp/csvUpload.jsp</result>
+        </action>
+
+	</package>
+</struts>
