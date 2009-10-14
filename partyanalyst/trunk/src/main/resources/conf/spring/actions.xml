@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC 
+	"-//SPRING//DTD BEAN//EN" 
+	"http://www.springframework.org/dtd/spring-beans.dtd">
+	
+<beans>
+	<!-- Example of SAF2 action instantiated by Spring -->
+
+	<bean id="partyPerformanceReportAction" class="com.itgrids.partyanalyst.web.action.PartyPerformanceReportAction"
+		singleton="false" >
+		<property name="partyService" ref="partyService" />
+	</bean>
+	<bean id="partyPerformanceJasperAction" class="com.itgrids.partyanalyst.web.action.PartyPerformanceJasperAction"
+		singleton="false" >
+	</bean>
+	
+	<bean id="partyPerformanceAction" class="com.itgrids.partyanalyst.web.action.PartyPerformanceAction" singleton="false">
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="partyService" ref="partyService" />
+	</bean>
+	
+	<bean id="uploadCSVAction" class="com.itgrids.partyanalyst.web.action.UploadCSVAction" singleton="false">
+	</bean>
+	
+	<bean id="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction" singleton="false">
+		<property name="loginService" ref="loginService" />
+	</bean>
+	<bean id="RegistrationAction" class="com.itgrids.partyanalyst.web.action.RegistrationAction" singleton="false">
+		<property name="registrationService" ref="registrationService" />
+	</bean>
+	<bean id="ajaxSearchAction" class="com.itgrids.partyanalyst.web.action.AjaxSearchAction" singleton="false">
+		<property name="constituencySearchService" ref="constituencySearchService" />
+		<property name="candidateSearchService" ref="candidateSearchService" />
+	</bean>
+	<bean id="getSearchResultsAction" class="com.itgrids.partyanalyst.web.action.GetSearchResultsAction" singleton="false">
+		<property name="constituencySearchService" ref="constituencySearchService" />
+	</bean>
+	<bean id="partyResultsAction" class="com.itgrids.partyanalyst.web.action.PartyResultsAction" singleton="false">
+		<property name="partyResultService" ref="partyResultService" />
+	</bean>
+	<bean id="partyResultsCriteriaAction" class ="com.itgrids.partyanalyst.web.action.PartyResultsCriteriaAction" singleton="false"/>
+	<bean id="uploadExcelAction" class="com.itgrids.partyanalyst.web.action.UploadExcelAction"
+		singleton="false">
+		<property name="excelToDBService" ref="excelToDBService" />
+	</bean> 
+	<bean id="statePageAction" class="com.itgrids.partyanalyst.web.action.StatePageAction" singleton="false">
+		<property name="statePageService" ref="statePageService" />
+	</bean>
+	
+	<bean id="constituencyPageAction" class="com.itgrids.partyanalyst.web.action.ConstituencyPageAction" singleton="false">
+		<property name="constituencyPageService" ref="constituencyPageService" />
+	</bean>
+	
+
+	<bean id="stateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.StateElectionResultsAction" singleton="false">
+		<property name="stateElectionResultsService" ref="stateElectionResultsService" />
+	</bean>
+	
+
+	<bean id="candidateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.CandidateElectionResultsAction" singleton="false">
+		<property name="candidateDetailsService" ref="candidateDetailsService" />
+	</bean>
+
+
+	<bean id="userAction" class="com.itgrids.partyanalyst.web.action.UserAction">
+		<property name="userService" ref="userService" />
+	</bean>
+	
+	<bean id="cadreReportAction" class ="com.itgrids.partyanalyst.web.action.CadreReportAction" singleton="false">
+		<property name="cadreManagementService" ref="cadreManagementService" />
+	</bean>
+
+	<bean id="boothUploadAction" class="com.itgrids.partyanalyst.web.action.BoothUploadAction" singleton="false">
+		<property name="boothPopulationService" ref="boothPopulationService" />
+	</bean>
+	
+	<bean id="boothResultUploadAction" class="com.itgrids.partyanalyst.web.action.BoothResultUploadAction" singleton="false">
+		<property name="boothResultPopulationService" ref="boothResultPopulationService" />
+	</bean>
+	
+	<bean id="cadresInfoAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadresInfoAjaxAction" singleton="false"/>
+</beans>
