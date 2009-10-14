@@ -178,8 +178,8 @@ public class PartyService implements IPartyService {
 										, marginDifferenceLossConstituencyPositions.get("MAJOR_DIFF")
 										, "Losing Positions with higher percentage margin"));
 		
-		int positiveSwing = 35;
-		int negativeSwing = 5;
+		int positiveSwing = 10;
+		int negativeSwing = 10;
 		List<ConstituencyPositionDetailVO> previousElectionWinners_Loosers = new ArrayList<ConstituencyPositionDetailVO>();
 		previousElectionWinners_Loosers.addAll(previousPartyWinners);
 		previousElectionWinners_Loosers.addAll(previousPartyLoosers);
