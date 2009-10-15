@@ -80,6 +80,20 @@
 	</bean>
 	
 	<bean name="userService" class="com.itgrids.partyanalyst.service.UserService" />
+	<bean name="Pattern3" class="com.itgrids.partyanalyst.excel.CsvReaderNew" />
+	<bean name="Pattern2" class="com.itgrids.partyanalyst.excel.CsvReader2004" />
+	<bean name="Pattern1" class="com.itgrids.partyanalyst.excel.CsvReader" />
+	
+	<bean name="excelReader" class="com.itgrids.partyanalyst.excel.ExcelReaderFactory">
+		<property name="excelReaders">
+			<map>
+				<entry key="Pattern1" value-ref="Pattern1"/>
+				<entry key="Pattern2" value-ref="Pattern2"/>
+				<entry key="Pattern3" value-ref="Pattern3"/>
+			</map>
+			
+		</property>
+	</bean>
 	
 	<bean name="cadreManagementService" class="com.itgrids.partyanalyst.service.CadreManagementService" >
 		<property name="cadreDAO" ref="cadreDAO" />
