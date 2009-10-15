@@ -27,29 +27,14 @@
 				
 				var tree;
 				var myobj;
-				//instantiate the TreeView control: 
-				 tree = new YAHOO.widget.TreeView("cadreInfoDivBody"); 
-				// tree.setDynamicLoad(loadNodeData);
-				//get a reference to the root node; all 
-				//top level nodes are children of the root node: 
-				var rootNode = tree.getRoot(); 
-				 
-				//begin adding children 
+				
+				tree = new YAHOO.widget.TreeView("cadreInfoDivBody");				 
+				tree.setDynamicLoad(loadNodeData);				
+				var rootNode = tree.getRoot(); 				
 
-				myobj = { label: myLabel, myNodeId:"State1" } ; 
-				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode); 
-
-				myobj = { label: "State 1", myNodeId:"State_1" } ; 
-				var StateNode1 = new YAHOO.widget.TextNode(myobj, stateNode); 
-		 
-				myobj = { label: "State 2", myNodeId:"State_2" } ; 
-				var StatetNode2 = new YAHOO.widget.TextNode(myobj, stateNode); 
-
-				myobj = { label: "District 1", myNodeId:"District 1" } ; 
-				var districtNode1 = new YAHOO.widget.TextNode(myobj, StateNode1); 
-		 
-				myobj = { label: "District 2", myNodeId:"District2" } ; 
-				var districtNode2 = new YAHOO.widget.TextNode(myobj, StateNode1); 
+				myobj = { label: myLabel, id:'${userCadresInfoVO.userAccessValue}' } ; 
+				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);
+				
 
 				tree.render(); 
 			}
@@ -58,27 +43,84 @@
 			{
 				var nodeLabel = node.label;
 				var index=nodeLabel.indexOf("-");
-				var subString = nodeLabel.substring(0,index);
+				var subString = nodeLabel.substring(0,index);				
 				
-				var cadreUrl = "<%=request.getContextPath()%>/cadresInfoAjaxAction.action?cadreRegion="+subString; 
+				var cadreUrl = "<%=request.getContextPath()%>/cadresInfoAjaxAction.action?cadreRegion="+subString+"&cadreId="+node.data.id; 
 				var callback = {			
- 		               success : function( o ) {
-							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText);
-								console.log("request completed"); 
-								//processResponse(param, myResults);
-							}catch (e) {   
-							   	alert("Invalid JSON result" + e);   
-							}  
- 		               },
- 		               scope : this,
+ 		               success : function( o )
+									{
+										try 
+										{
+											myResults = YAHOO.lang.JSON.parse(o.responseText);								
+											
+											if(myResults.cadreInfo[0])
+												buildHtmlNode(myResults.cadreInfo,node);										
+											else
+												buildTextNode(myResults.cadreRegionInfo,node);										
+												
+											fnLoadComplete(); 
+										}
+										catch (e)
+										{   
+											alert("Invalid JSON result" + e);   
+										}  
+											
+ 									},
  		               failure : function( o ) {
  		                			alert( "Failed to load result" + o.status + " " + o.statusText);
- 		                         }
+ 		                         },
+
+						 argument: { 
+								"node": node, 
+								"fnLoadComplete": fnLoadComplete 
+						} 
  		               };
 
  			YAHOO.util.Connect.asyncRequest('GET', cadreUrl, callback);
 			}
+
+			function buildHtmlNode(cadreData,node)
+			{
+				
+				var str='';
+				str+='<table class="partyPerformanceCriteriaTable">';
+				str+='<tr>';
+				str+='<th>Name</th>';				
+				str+='<th>MobileNo</th>';
+				str+='<th>LandLineNo</th>';				
+				str+='<th>CadreLevel</th>';
+				str+='<th>Email</th>';				
+				str+='</tr>';				
+				for(var i in cadreData)
+				{
+					str+='<tr>';
+					str+='<td>'+cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName+'</td>';				
+					str+='<td>'+cadreData[i].mobileNo+'</td>';
+					str+='<td>'+cadreData[i].landLineNo+'</td>';
+					str+='<td>'+cadreData[i].cadreLevel+'</td>';
+					str+='<td>'+cadreData[i].email+'</td>';					
+					str+='</tr>';
+				}
+				str+='</table>';
+
+				//str+='<div>HI</div>';
+				var tempNode = new YAHOO.widget.TextNode(str, node, false); 
+				tempNode.isLeaf = true;
+			}
+
+			function buildTextNode(cadreData,node)
+			{
+				for (var i in cadreData)
+				{ 
+					var myobj = { 
+									label	: cadreData[i].region+"-"+cadreData[i].cadreCount,
+									id		: cadreData[i].regionId 
+								} ;
+					
+					var tempNode = new YAHOO.widget.TextNode(myobj, node, false); 
+				}				
+			}
+
 	</script>
 </head>
 <body>
@@ -97,12 +139,12 @@
 			</div>
 		</div>
 		<div id="zeroCadreInfoDiv" style="margin-bottom: 20px;">
-			<c:if test="${userCadresInfoVO.regionLevelZeroCadres}>0">
+			
 				<div id="zeroCadreInfoDivHead">
 					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
 					Non Available Region Cadres <b>:</b>
 				</div>
-			</c:if>
+			
 			<div id="zeroCadreInfoDivBody" style="padding-left: 50px;padding-top: 10px"">
 				<table>
 					<c:forEach var="pd" items="${userCadresInfoVO.regionLevelZeroCadres}" >
