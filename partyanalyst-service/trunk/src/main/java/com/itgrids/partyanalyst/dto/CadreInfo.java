@@ -3,7 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 
 public class CadreInfo implements Serializable{
-
+	private Long cadreID;
 	private String firstName;
 	private String middleName;
 	private String lastName;
@@ -12,8 +12,6 @@ public class CadreInfo implements Serializable{
 
 	private String email;
 	private String gender;
-	private String cadreGroupName;
-	private Boolean defaultGroup;
 	private String cadreLevel;
 	private String state;
 	private String district;
@@ -22,6 +20,12 @@ public class CadreInfo implements Serializable{
 	private String booth;
 	
 	
+	public Long getCadreID() {
+		return cadreID;
+	}
+	public void setCadreID(Long cadreID) {
+		this.cadreID = cadreID;
+	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -63,18 +67,6 @@ public class CadreInfo implements Serializable{
 	}
 	public void setGender(String gender) {
 		this.gender = gender;
-	}
-	public String getCadreGroupName() {
-		return cadreGroupName;
-	}
-	public void setCadreGroupName(String cadreGroupName) {
-		this.cadreGroupName = cadreGroupName;
-	}
-	public Boolean getDefaultGroup() {
-		return defaultGroup;
-	}
-	public void setDefaultGroup(Boolean defaultGroup) {
-		this.defaultGroup = defaultGroup;
 	}
 	public String getCadreLevel() {
 		return cadreLevel;
