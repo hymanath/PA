@@ -76,7 +76,7 @@ public class ElectionScope extends BaseModel implements java.io.Serializable {
 	// Property accessors
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "election_socpe_id", unique = true, nullable = false)
+	@Column(name = "election_scope_id", unique = true, nullable = false)
 	public Long getElectionScopeId() {
 		return this.electionScopeId;
 	}
