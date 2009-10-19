@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.excel.ConstituencyBlock;
 import com.itgrids.partyanalyst.excel.CsvException;
 import com.itgrids.partyanalyst.excel.ExcelReaderFactory;
 import com.itgrids.partyanalyst.excel.IExcelReader;
+import com.itgrids.partyanalyst.excel.upload.vo.UploadFormVo;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -48,7 +49,7 @@ import com.itgrids.partyanalyst.utils.CandidateVotesComparator;
 
 public class ExcelToDBService implements IExcelToDBService {
 
-	 private static Logger logger = Logger.getLogger(ExcelToDBService.class);
+	private static Logger logger = Logger.getLogger(ExcelToDBService.class);
 	private IElectionTypeDAO electionTypeDAO;
 	private ICountryDAO countryDAO;
 	private IStateDAO stateDAO;
@@ -63,75 +64,76 @@ public class ExcelToDBService implements IExcelToDBService {
 	private ICandidateResultDAO candidateResultDAO;
 	private IConstituencyElectionResultDAO constituencyElectionResultDAO; 
 	private TransactionTemplate transactionTemplate;
-	public void readCSVFileAndStoreIntoDB(String excelFilePath,String countryName,String stateName,String districtName, String typeOfElection, String electionYear) throws Exception{
+	//public void readCSVFileAndStoreIntoDB(String excelFilePath,String countryName,String stateName,String districtName, String typeOfElection, String electionYear) throws Exception{
+	public void readCSVFileAndStoreIntoDB(UploadFormVo uploadFormVo) throws Exception{
 
 		try{
 			logger.debug("Congrats logger has been initialized");			
 			System.out.println("Congrats Successes fully entered in the service layer.. ");
-			System.out.println("Fila path == "+excelFilePath);
-			System.out.println("Country Name == "+countryName);
-			System.out.println("State =="+stateName);
-			System.out.println("District =="+districtName);
-			System.out.println("Type of Election == "+typeOfElection);
-			System.out.println("Election Year == "+electionYear);
-			logger.debug("Congrats Successes fully entered in the service layer.. ");
-			List<ConstituencyBlock> constituencyBlocks=selectReaderAndFetchConstituencyBlocks(excelFilePath);
-			System.out.println(" No of constituencies == "+constituencyBlocks.size());
-			insertIntoDatabase(countryName,stateName,districtName,typeOfElection,electionYear,constituencyBlocks);
-			constituencyBlocks.clear();
-			System.out.println("No of constituencies =="+constituencyBlocks.size());
+			System.out.println("Fila path == "+uploadFormVo.getInputFile());
+			System.out.println("Country Name == "+uploadFormVo.getCountry());
+			System.out.println("State =="+uploadFormVo.getElectionScope());
+			System.out.println("District =="+uploadFormVo.getDistrict());
+			System.out.println("Type of Election == "+uploadFormVo.getElectionType());
+			System.out.println("Election Year == "+uploadFormVo.getElectionYear());
+			insertIntoDatabase(selectReaderAndFetchConstituencyBlocks(uploadFormVo));
 		}catch(Exception excep){
 			throw new Exception(excep.getMessage());
 		}
-	}
+}
 
 
-	private void insertIntoDatabase(String countryNam,String stateName,String distName,String typeOfElection, String electionYear,List<ConstituencyBlock> constituenciesBlocks) throws CsvException{
-		Country countryObj=null;
-		State stateObj=null;
-		District districtObj=null;
-		//Check whether electlion type has been defined or not
-		List<ElectionType> electionTypes=electionTypeDAO.findByElectionType(typeOfElection);
-		//Election Type has been defined in the system so we can proceed ahead
-		if(electionTypes.size()>0){
-			System.out.println("1");
-			ElectionType electionTypeObj= electionTypes.get(0);
-			Long electionTypeId=electionTypeObj.getElectionTypeId();
-			//Checking for the existance of state if insert state and get the stateID
-			List<Country> countries= countryDAO.findByCountryName(countryNam);
-			System.out.println("2");
-			List<State> states=stateDAO.findByStateName(stateName);
-			List<District> districts=districtDAO.findByDistrictName(distName);
-			System.out.println("3");
-			if(states!=null && countries!=null && districts!=null){
-				countryObj=countries.get(0);
-				stateObj= states.get(0);
-				districtObj=districts.get(0);
-				System.out.println("4");
-				ElectionScope electionScopeObj=checkAndInsertElectionScope(electionTypeObj, countryObj, stateObj,electionYear);
-				Election electionObj=checkAndInsertElection(electionScopeObj,electionYear);
-				try {
-					int constituencyNo=0;
-					System.out.println("4.1");
-					List<Party> parties=partyDAO.getAll();
-					List<Candidate> candidates= candidateDAO.getAll();
-					List<Constituency> constituencies= constituencyDAO.getAll();
-					//ProcessBatchCallback pbc= new ProcessBatchCallback(parties, candidates, constituencies, constituenciesBlocks, stateObj, districtObj, electionObj, constituencyNo, countryObj, electionScopeObj);
-					processBatch(parties, candidates, constituencies, constituenciesBlocks, stateObj, districtObj, electionObj, constituencyNo, countryObj, electionScopeObj);
-					//this.transactionTemplate.execute(pbc);
-										
-				} catch (Exception e) {
-					//throw new CsvException(e.getMessage());
-					//System.out.println("Exception e="+e.getMessage());
+//private void insertIntoDatabase(String countryNam,String stateName,String distName,String typeOfElection, String electionYear,List<ConstituencyBlock> constituenciesBlocks) throws CsvException{
+private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
+	List<ConstituencyBlock>  constituencyBlocks=uploadFormVo.getConstituencies();
+	Country countryObj=null;
+	State stateObj=null;
+	District districtObj=null;
+	//Check whether electlion type has been defined or not
+	List<ElectionType> electionTypes=electionTypeDAO.findByElectionType(uploadFormVo.getElectionType());
+	//Election Type has been defined in the system so we can proceed ahead
+	if(electionTypes.size()>0){
+		System.out.println("1");
+		ElectionType electionTypeObj= electionTypes.get(0);
+		Long electionTypeId=electionTypeObj.getElectionTypeId();
+		//Checking for the existance of state if insert state and get the stateID
+		List<Country> countries= countryDAO.findByCountryName(uploadFormVo.getCountry());
+		System.out.println("2");
+		List<State> states=stateDAO.findByStateName(uploadFormVo.getElectionScope());
+		List<District> districts=districtDAO.findByDistrictName(uploadFormVo.getDistrict());
+		System.out.println("3");
+		if(states!=null && countries!=null && districts!=null){
+			countryObj=countries.get(0);
+			stateObj= states.get(0);
+			districtObj=districts.get(0);
+			System.out.println("4");
+			ElectionScope electionScopeObj=checkAndInsertElectionScope(electionTypeObj, countryObj, stateObj,uploadFormVo.getElectionYear());
+			Election electionObj=checkAndInsertElection(electionScopeObj,uploadFormVo.getElectionYear());
+			try {
+				int constituencyNo=0;
+				System.out.println("4.1");
+				List<Party> parties=partyDAO.getAll();
+				List<Candidate> candidates= candidateDAO.getAll();
+				List<Constituency> constituencies= constituencyDAO.getAll();
+				//ProcessBatchCallback pbc= new ProcessBatchCallback(parties, candidates, constituencies, constituenciesBlocks, stateObj, districtObj, electionObj, constituencyNo, countryObj, electionScopeObj);
+				
+				for (ConstituencyBlock constituencyBlock: constituencyBlocks) {
+				processBatch(parties, candidates, constituencies, constituencyBlock, stateObj, districtObj, electionObj, constituencyNo, countryObj, electionScopeObj);
 				}
+				//this.transactionTemplate.execute(pbc);
+
+			} catch (Exception e) {
+				//throw new CsvException(e.getMessage());
+				//System.out.println("Exception e="+e.getMessage());
 			}
-
-
-		}else{
-			throw new CsvException("Election type has not been defined in the system.");
 		}
+
+
+	}else{
+		throw new CsvException("Election type has not been defined in the system.");
 	}
-	
+}
+
 /*	private class ProcessBatchCallback implements TransactionCallback{
 		List<Party> parties;
 		List<Candidate> candidates;
@@ -143,7 +145,7 @@ public class ExcelToDBService implements IExcelToDBService {
 		int constituencyNo;
 		Country countryObj;
 		ElectionScope electionScopeObj;
-		
+
 		public ProcessBatchCallback(List<Party> parties,List<Candidate> candidates,List<Constituency> constituencies,List<ConstituencyBlock> constituenciesBlocks, State stateObj,District districtObj,Election electionObj,int constituencyNo,Country countryObj,ElectionScope electionScopeObj){
 			 this.parties= parties;
 			 this.candidates=candidates;
@@ -162,319 +164,322 @@ public class ExcelToDBService implements IExcelToDBService {
 			processBatch(parties, candidates, constituencies, constituenciesBlocks, stateObj, districtObj, electionObj, constituencyNo, countryObj, electionScopeObj);
 			return null;
 		}
-		
+
 	}*/
 
+
+public int processBatch(List<Party> parties,List<Candidate> candidates,List<Constituency> constituencies,ConstituencyBlock constituecBlock, State stateObj,District districtObj,Election electionObj,int constituencyNo,Country countryObj,ElectionScope electionScopeObj){
 	
-	public int processBatch(List<Party> parties,List<Candidate> candidates,List<Constituency> constituencies,List<ConstituencyBlock> constituenciesBlocks, State stateObj,District districtObj,Election electionObj,int constituencyNo,Country countryObj,ElectionScope electionScopeObj){
-		for (ConstituencyBlock constituencyBlock: constituenciesBlocks) {
-			try {
-				long currentTime=System.currentTimeMillis();
-				System.out.println("4.2");
-				System.out.println("Constituency No =="+(++constituencyNo));
-				Constituency constituencyObj=checkAndInsertConstituency(constituencies,constituencyBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj);
+		try {
+			long currentTime=System.currentTimeMillis();
+			System.out.println("4.2");
+			System.out.println("Constituency No =="+(++constituencyNo));
+			Constituency constituencyObj=checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj);
 
-				ConstituencyElection constituencyElectionObj = new ConstituencyElection();
-				constituencyElectionObj.setConstituency(constituencyObj);
-				constituencyElectionObj.setElection(electionObj);
-				constituencyElectionObj = constituencyElectionDAO.save(constituencyElectionObj);
-				
-				List<CandidateElectionResult> candidateElectionResults= constituencyBlock.getCandidateElectionlst();
-				Collections.sort(candidateElectionResults,new CandidateVotesComparator());
-				int rankByVotes=1;
-				System.out.println("4.3");
-				for (CandidateElectionResult candidateElectionResult : candidateElectionResults) {
-					Candidate candidateObj=checkAndInsertCandidate(candidates,candidateElectionResult.getCandidateName());
-					Party partyObj= checkAndInsertParty(parties,candidateElectionResult.getCandidatePrty());
-					System.out.println("4.6");
-					Nomination nominationObj = new Nomination();
-					nominationObj.setCandidate(candidateObj);
-					nominationObj.setParty(partyObj);
-					nominationObj.setConstituencyElection(constituencyElectionObj);
-					nominationObj =nominationDAO.save(nominationObj);
-					
-					
-					CandidateResult candidateResultObj = new CandidateResult();
-					candidateResultObj.setRank(new Long(rankByVotes++));
-					candidateResultObj.setVotesEarned(candidateElectionResult.getVotesEarned());
-					candidateResultObj.setVotesPercengate(calculateVotesPercengate(constituencyBlock.getValidVotes(),candidateElectionResult.getVotesEarned()));
-					candidateResultObj.setNomination(nominationObj);
-					candidateResultDAO.save(candidateResultObj);
-					System.out.println("4.7");
-				}
-				ConstituencyElectionResult constituencyElectionResultObj = new ConstituencyElectionResult();
-				constituencyElectionResultObj.setMissingVotes(constituencyBlock.getMissingVotes());
-				constituencyElectionResultObj.setRejectedVotes(constituencyBlock.getRejectedVotes());
-				constituencyElectionResultObj.setTenderedVotes(constituencyBlock.getTenderedVotes());
-				constituencyElectionResultObj.setTotalVotes(constituencyBlock.getTotalElectors());
-				constituencyElectionResultObj.setTotalVotesPolled(constituencyBlock.getTotalVotesPolled());
-				constituencyElectionResultObj.setValidVotes(constituencyBlock.getValidVotes());
-				constituencyElectionResultObj.setConstituencyElection(constituencyElectionObj);
-				constituencyElectionResultDAO.save(constituencyElectionResultObj);
-				
-				System.out.println("4.5");
-				long lastTime=System.currentTimeMillis();
-				System.out.println("Time difference == "+(lastTime-currentTime)/1000);
-			} catch (Exception e) {
-				System.out.println("Exception == "+e.getMessage());
+			ConstituencyElection constituencyElectionObj = new ConstituencyElection();
+			constituencyElectionObj.setConstituency(constituencyObj);
+			constituencyElectionObj.setElection(electionObj);
+			constituencyElectionObj = constituencyElectionDAO.save(constituencyElectionObj);
+
+			List<CandidateElectionResult> candidateElectionResults= constituecBlock.getCandidateElectionlst();
+			Collections.sort(candidateElectionResults,new CandidateVotesComparator());
+			int rankByVotes=1;
+			System.out.println("4.3");
+			for (CandidateElectionResult candidateElectionResult : candidateElectionResults) {
+				Candidate candidateObj=checkAndInsertCandidate(candidates,candidateElectionResult.getCandidateName());
+				Party partyObj= checkAndInsertParty(parties,candidateElectionResult.getCandidatePrty());
+				System.out.println("4.6");
+				Nomination nominationObj = new Nomination();
+				nominationObj.setCandidate(candidateObj);
+				nominationObj.setParty(partyObj);
+				nominationObj.setConstituencyElection(constituencyElectionObj);
+				nominationObj =nominationDAO.save(nominationObj);
+
+
+				CandidateResult candidateResultObj = new CandidateResult();
+				candidateResultObj.setRank(new Long(rankByVotes++));
+				candidateResultObj.setVotesEarned(candidateElectionResult.getVotesEarned());
+				candidateResultObj.setVotesPercengate(calculateVotesPercengate(constituecBlock.getValidVotes(),candidateElectionResult.getVotesEarned()));
+				candidateResultObj.setNomination(nominationObj);
+				candidateResultDAO.save(candidateResultObj);
+				System.out.println("4.7");
 			}
+			ConstituencyElectionResult constituencyElectionResultObj = new ConstituencyElectionResult();
+			constituencyElectionResultObj.setMissingVotes(constituecBlock.getMissingVotes());
+			constituencyElectionResultObj.setRejectedVotes(constituecBlock.getRejectedVotes());
+			constituencyElectionResultObj.setTenderedVotes(constituecBlock.getTenderedVotes());
+			constituencyElectionResultObj.setTotalVotes(constituecBlock.getTotalElectors());
+			constituencyElectionResultObj.setTotalVotesPolled(constituecBlock.getTotalVotesPolled());
+			constituencyElectionResultObj.setValidVotes(constituecBlock.getValidVotes());
+			constituencyElectionResultObj.setConstituencyElection(constituencyElectionObj);
+			constituencyElectionResultDAO.save(constituencyElectionResultObj);
+
+			System.out.println("4.5");
+			long lastTime=System.currentTimeMillis();
+			System.out.println("Time difference == "+(lastTime-currentTime)/1000);
+		} catch (Exception e) {
+			System.out.println("Exception == "+e.getMessage());
 		}
-		return constituencyNo;
-	}
-	private Constituency checkAndInsertConstituency(List<Constituency> constituencis,String constituencyName, Long countryId, State state,District district,ElectionScope electionScope){
-		boolean constituencyFlag = true;
-		Constituency lconstituencyObj= null;
-		if(constituencis!=null && constituencis.size()>0){
-			for(Constituency con: constituencis){
-				if(constituencyName.equalsIgnoreCase(con.getName().trim())){
-					lconstituencyObj = con;
-					constituencyFlag = false;
-					break;
-				}
-			}
-		}
-		if(constituencyFlag){
-			lconstituencyObj= new Constituency();
-			lconstituencyObj.setName(constituencyName);
-			lconstituencyObj.setCountryId(countryId);
-			lconstituencyObj.setState(state);
-			lconstituencyObj.setDistrict(district);
-			lconstituencyObj.setElectionScope(electionScope);
-			lconstituencyObj=constituencyDAO.save(lconstituencyObj);
-			constituencis.add(lconstituencyObj);
-			System.out.println("New party has been created");
-		}
-		return lconstituencyObj;
-	}
-	private Candidate checkAndInsertCandidate(List<Candidate> candidats,String candidateName){
-		boolean candidateFlag = true;
-		Candidate lcandidateObj = null;
-		if(candidats!=null && candidats.size()>0){
-			for(Candidate can: candidats){
-				if(candidateName.equalsIgnoreCase(can.getLastname().trim())){
-					lcandidateObj = can;
-					candidateFlag = false;
-					break;
-				}
-			}
-		}
-		if(candidateFlag){
-			lcandidateObj = new Candidate();
-			lcandidateObj.setLastname(candidateName);
-			lcandidateObj=candidateDAO.save(lcandidateObj);
-			candidats.add(lcandidateObj);
-		}
-		return lcandidateObj;
-	}
-
-	private Party checkAndInsertParty(List<Party> partis,String partyName){
-		boolean partyFlag = true;
-		Party lpartyObj = null;
-		if(partis!=null && partis.size()>0){
-			for(Party par: partis){
-				if(partyName.equalsIgnoreCase(par.getLongName().trim()) || partyName.equalsIgnoreCase(par.getShortName().trim())){
-					lpartyObj = par;
-					partyFlag = false;
-					break;
-				}
-			}
-		}
-		if(partyFlag){
-			System.out.println("New party has been identified.");
-			lpartyObj= new Party();
-			lpartyObj.setLongName(partyName);
-			String shortName=(partyName.length()>10)?"":partyName;
-			lpartyObj.setShortName(shortName);
-			lpartyObj=partyDAO.save(lpartyObj);
-			partis.add(lpartyObj);
-		}
-
-		return lpartyObj;
-	}
-
-	private ElectionScope checkAndInsertElectionScope(ElectionType electionType,Country country,State state,String eleYear) throws CsvException{
-		ElectionScope electionScope=null;
-		if(electionType.getElectionTypeId().longValue()==1){
-			electionScope= electionScopeDAO.findByElectionTypeCountry(electionType, country);
-			if(electionScope==null){
-				electionScope= new ElectionScope();
-				electionScope.setElectionType(electionType);
-				electionScope.setCountry(country);
-				electionScope=electionScopeDAO.save(electionScope);
-			}
-		}else{
-			electionScope= electionScopeDAO.findByElectionTypeCountryState(electionType, country, state);
-			if(electionScope==null){
-				electionScope= new ElectionScope();
-				electionScope.setElectionType(electionType);
-				electionScope.setCountry(country);
-				electionScope.setState(state);
-				electionScope=electionScopeDAO.save(electionScope);
-			}
-		}
-		return electionScope;
-	}
-
-	private Election checkAndInsertElection(ElectionScope electionScope,String eleYear) throws CsvException{
-		Election lelectionObj;
-		lelectionObj= electionDAO.findByESIdEleYear(electionScope,eleYear);
-		if(lelectionObj!=null){
-			throw new CsvException("These Election Results have already been uploaded.");
-		}else{
-			lelectionObj= new Election();
-			lelectionObj.setElectionScope(electionScope);
-			lelectionObj.setElectionYear(eleYear);
-			lelectionObj = electionDAO.save(lelectionObj);
-		}
-		return lelectionObj;
-	}
-
-
-
-	private String calculateVotesPercengate(Double validVotes, Double votesEarned){
-		BigDecimal percengate= new BigDecimal(0.0);
-		if((validVotes!=null && validVotes.doubleValue()>0) && (votesEarned!=null && votesEarned.doubleValue()>0)){
-			percengate= new BigDecimal((votesEarned/validVotes)*100).setScale (2,BigDecimal.ROUND_HALF_UP);
-		}
-		return percengate.toString();
-	}
-	//public 
-	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
-		this.electionTypeDAO = electionTypeDAO;
-	}
-
-	public void setStateDAO(IStateDAO stateDAO) {
-		this.stateDAO = stateDAO;
-	}
-
-	public void setElectionScopeDAO(IElectionScopeDAO electionScopeDAO) {
-		this.electionScopeDAO = electionScopeDAO;
-	}
-
-	public void setElectionDAO(IElectionDAO electionDAO) {
-		this.electionDAO = electionDAO;
-	}
-
-	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
-		this.constituencyDAO = constituencyDAO;
-	}
-
-	public void setConstituencyElectionDAO(
-			IConstituencyElectionDAO constituencyElectionDAO) {
-		this.constituencyElectionDAO = constituencyElectionDAO;
-	}
-
-	public void setCandidateDAO(ICandidateDAO candidateDAO) {
-		this.candidateDAO = candidateDAO;
-	}
-
-	public void setPartyDAO(IPartyDAO partyDAO) {
-		this.partyDAO = partyDAO;
-	}
-
-	public void setNominationDAO(INominationDAO nominationDAO) {
-		this.nominationDAO = nominationDAO;
-	}
-
-	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
-		this.candidateResultDAO = candidateResultDAO;
-	}
-
-	public void setConstituencyElectionResultDAO(
-			IConstituencyElectionResultDAO constituencyElectionResultDAO) {
-		this.constituencyElectionResultDAO = constituencyElectionResultDAO;
-	}
-
-
-	public IElectionTypeDAO getElectionTypeDAO() {
-		return electionTypeDAO;
-	}
-
-	public IStateDAO getStateDAO() {
-		return stateDAO;
-	}
-
-	public IElectionScopeDAO getElectionScopeDAO() {
-		return electionScopeDAO;
-	}
-
-	public IElectionDAO getElectionDAO() {
-		return electionDAO;
-	}
-
-	public IConstituencyDAO getConstituencyDAO() {
-		return constituencyDAO;
-	}
-
-	public IConstituencyElectionDAO getConstituencyElectionDAO() {
-		return constituencyElectionDAO;
-	}
-
-	public ICandidateDAO getCandidateDAO() {
-		return candidateDAO;
-	}
-
-	public IPartyDAO getPartyDAO() {
-		return partyDAO;
-	}
-
-	public INominationDAO getNominationDAO() {
-		return nominationDAO;
-	}
-
-	public ICandidateResultDAO getCandidateResultDAO() {
-		return candidateResultDAO;
-	}
-
-	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
-		return constituencyElectionResultDAO;
-	}
-
-	public ICountryDAO getCountryDAO() {
-		return countryDAO;
-	}
-
-	public void setCountryDAO(ICountryDAO countryDAO) {
-		this.countryDAO = countryDAO;
-	}
-	public IDistrictDAO getDistrictDAO() {
-		return districtDAO;
-	}
-	public void setDistrictDAO(IDistrictDAO districtDAO) {
-		this.districtDAO = districtDAO;
-	}
-
-
-	public TransactionTemplate getTransactionTemplate() {
-		return transactionTemplate;
-	}
-
-
-	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
-		this.transactionTemplate = transactionTemplate;
-	}
-
-	private List<ConstituencyBlock> selectReaderAndFetchConstituencyBlocks(String excelFileName) throws CsvException{
-		List<ConstituencyBlock> constituencyBlocks=null;
-		if(excelFileName!=null && excelFileName.length()>0){
-			IExcelReader excelReader=ExcelReaderFactory.selectReader(fetchPattern(excelFileName));
-			excelReader.readCSV(excelFileName);
-			constituencyBlocks=excelReader.getConstituencyBlocks();
-		}
-		return constituencyBlocks;
-	}
-
-	private String fetchPattern(String excelFileName){
-		StringTokenizer stringTokenizer= new StringTokenizer(excelFileName,"_.");
-		String pattern="";
-		while(stringTokenizer.hasMoreElements()){
-			pattern=stringTokenizer.nextToken();
-			if(pattern.startsWith("Pattern")){
+	return constituencyNo;
+}
+private Constituency checkAndInsertConstituency(List<Constituency> constituencis,String constituencyName, Long countryId, State state,District district,ElectionScope electionScope){
+	boolean constituencyFlag = true;
+	Constituency lconstituencyObj= null;
+	if(constituencis!=null && constituencis.size()>0){
+		for(Constituency con: constituencis){
+			if(constituencyName.equalsIgnoreCase(con.getName().trim())){
+				lconstituencyObj = con;
+				constituencyFlag = false;
 				break;
 			}
 		}
-		return pattern;
 	}
-	
-	
+	if(constituencyFlag){
+		lconstituencyObj= new Constituency();
+		lconstituencyObj.setName(constituencyName);
+		lconstituencyObj.setCountryId(countryId);
+		lconstituencyObj.setState(state);
+		lconstituencyObj.setDistrict(district);
+		lconstituencyObj.setElectionScope(electionScope);
+		lconstituencyObj=constituencyDAO.save(lconstituencyObj);
+		constituencis.add(lconstituencyObj);
+		System.out.println("New party has been created");
+	}
+	return lconstituencyObj;
+}
+private Candidate checkAndInsertCandidate(List<Candidate> candidats,String candidateName){
+	boolean candidateFlag = true;
+	Candidate lcandidateObj = null;
+	if(candidats!=null && candidats.size()>0){
+		for(Candidate can: candidats){
+			if(candidateName.equalsIgnoreCase(can.getLastname().trim())){
+				lcandidateObj = can;
+				candidateFlag = false;
+				break;
+			}
+		}
+	}
+	if(candidateFlag){
+		lcandidateObj = new Candidate();
+		lcandidateObj.setLastname(candidateName);
+		lcandidateObj=candidateDAO.save(lcandidateObj);
+		candidats.add(lcandidateObj);
+	}
+	return lcandidateObj;
+}
+
+private Party checkAndInsertParty(List<Party> partis,String partyName){
+	boolean partyFlag = true;
+	Party lpartyObj = null;
+	if(partis!=null && partis.size()>0){
+		for(Party par: partis){
+			if(partyName.equalsIgnoreCase(par.getLongName().trim()) || partyName.equalsIgnoreCase(par.getShortName().trim())){
+				lpartyObj = par;
+				partyFlag = false;
+				break;
+			}
+		}
+	}
+	if(partyFlag){
+		System.out.println("New party has been identified.");
+		lpartyObj= new Party();
+		lpartyObj.setLongName(partyName);
+		String shortName=(partyName.length()>10)?"":partyName;
+		lpartyObj.setShortName(shortName);
+		lpartyObj=partyDAO.save(lpartyObj);
+		partis.add(lpartyObj);
+	}
+
+	return lpartyObj;
+}
+
+private ElectionScope checkAndInsertElectionScope(ElectionType electionType,Country country,State state,String eleYear) throws CsvException{
+	ElectionScope electionScope=null;
+	if(electionType.getElectionTypeId().longValue()==1){
+		electionScope= electionScopeDAO.findByElectionTypeCountry(electionType, country);
+		if(electionScope==null){
+			electionScope= new ElectionScope();
+			electionScope.setElectionType(electionType);
+			electionScope.setCountry(country);
+			electionScope=electionScopeDAO.save(electionScope);
+		}
+	}else{
+		electionScope= electionScopeDAO.findByElectionTypeCountryState(electionType, country, state);
+		if(electionScope==null){
+			electionScope= new ElectionScope();
+			electionScope.setElectionType(electionType);
+			electionScope.setCountry(country);
+			electionScope.setState(state);
+			electionScope=electionScopeDAO.save(electionScope);
+		}
+	}
+	return electionScope;
+}
+
+private Election checkAndInsertElection(ElectionScope electionScope,String eleYear) throws CsvException{
+	Election lelectionObj;
+	lelectionObj= electionDAO.findByESIdEleYear(electionScope,eleYear);
+	if(lelectionObj!=null){
+		throw new CsvException("These Election Results have already been uploaded.");
+	}else{
+		lelectionObj= new Election();
+		lelectionObj.setElectionScope(electionScope);
+		lelectionObj.setElectionYear(eleYear);
+		lelectionObj = electionDAO.save(lelectionObj);
+	}
+	return lelectionObj;
+}
+
+
+
+private String calculateVotesPercengate(Double validVotes, Double votesEarned){
+	BigDecimal percengate= new BigDecimal(0.0);
+	if((validVotes!=null && validVotes.doubleValue()>0) && (votesEarned!=null && votesEarned.doubleValue()>0)){
+		percengate= new BigDecimal((votesEarned/validVotes)*100).setScale (2,BigDecimal.ROUND_HALF_UP);
+	}
+	return percengate.toString();
+}
+//public 
+public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
+	this.electionTypeDAO = electionTypeDAO;
+}
+
+public void setStateDAO(IStateDAO stateDAO) {
+	this.stateDAO = stateDAO;
+}
+
+public void setElectionScopeDAO(IElectionScopeDAO electionScopeDAO) {
+	this.electionScopeDAO = electionScopeDAO;
+}
+
+public void setElectionDAO(IElectionDAO electionDAO) {
+	this.electionDAO = electionDAO;
+}
+
+public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+	this.constituencyDAO = constituencyDAO;
+}
+
+public void setConstituencyElectionDAO(
+		IConstituencyElectionDAO constituencyElectionDAO) {
+	this.constituencyElectionDAO = constituencyElectionDAO;
+}
+
+public void setCandidateDAO(ICandidateDAO candidateDAO) {
+	this.candidateDAO = candidateDAO;
+}
+
+public void setPartyDAO(IPartyDAO partyDAO) {
+	this.partyDAO = partyDAO;
+}
+
+public void setNominationDAO(INominationDAO nominationDAO) {
+	this.nominationDAO = nominationDAO;
+}
+
+public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
+	this.candidateResultDAO = candidateResultDAO;
+}
+
+public void setConstituencyElectionResultDAO(
+		IConstituencyElectionResultDAO constituencyElectionResultDAO) {
+	this.constituencyElectionResultDAO = constituencyElectionResultDAO;
+}
+
+
+public IElectionTypeDAO getElectionTypeDAO() {
+	return electionTypeDAO;
+}
+
+public IStateDAO getStateDAO() {
+	return stateDAO;
+}
+
+public IElectionScopeDAO getElectionScopeDAO() {
+	return electionScopeDAO;
+}
+
+public IElectionDAO getElectionDAO() {
+	return electionDAO;
+}
+
+public IConstituencyDAO getConstituencyDAO() {
+	return constituencyDAO;
+}
+
+public IConstituencyElectionDAO getConstituencyElectionDAO() {
+	return constituencyElectionDAO;
+}
+
+public ICandidateDAO getCandidateDAO() {
+	return candidateDAO;
+}
+
+public IPartyDAO getPartyDAO() {
+	return partyDAO;
+}
+
+public INominationDAO getNominationDAO() {
+	return nominationDAO;
+}
+
+public ICandidateResultDAO getCandidateResultDAO() {
+	return candidateResultDAO;
+}
+
+public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
+	return constituencyElectionResultDAO;
+}
+
+public ICountryDAO getCountryDAO() {
+	return countryDAO;
+}
+
+public void setCountryDAO(ICountryDAO countryDAO) {
+	this.countryDAO = countryDAO;
+}
+public IDistrictDAO getDistrictDAO() {
+	return districtDAO;
+}
+public void setDistrictDAO(IDistrictDAO districtDAO) {
+	this.districtDAO = districtDAO;
+}
+
+
+public TransactionTemplate getTransactionTemplate() {
+	return transactionTemplate;
+}
+
+
+public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+	this.transactionTemplate = transactionTemplate;
+}
+
+private UploadFormVo selectReaderAndFetchConstituencyBlocks(UploadFormVo uploadFormVo) throws CsvException{
+	List<ConstituencyBlock> constituencyBlocks=null;
+	if(uploadFormVo.getInputFile().length()>0){
+		IExcelReader excelReader=ExcelReaderFactory.selectReader(fetchPattern(uploadFormVo.getInputFile()));
+		excelReader.readCSV(uploadFormVo.getInputFile());
+		constituencyBlocks=excelReader.getConstituencyBlocks();
+		if(constituencyBlocks!=null && constituencyBlocks.size()>0){
+			uploadFormVo.setConstituencies(constituencyBlocks);
+			System.out.println(" No of constituencies == "+uploadFormVo.getConstituencies().size());
+		}
+	}
+	return uploadFormVo;
+}
+
+private String fetchPattern(String excelFileName){
+	StringTokenizer stringTokenizer= new StringTokenizer(excelFileName,"_.");
+	String pattern="";
+	while(stringTokenizer.hasMoreElements()){
+		pattern=stringTokenizer.nextToken();
+		if(pattern.startsWith("Pattern")){
+			break;
+		}
+	}
+	return pattern;
+}
+
+
 }
