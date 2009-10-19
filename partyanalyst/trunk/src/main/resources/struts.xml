@@ -110,6 +110,7 @@
         
 
 		<action name="uploadExcel" class="uploadExcelAction">
+			<result name="input">/jsp/csvUpload.jsp</result>
            <result name="success">/jsp/csvUpload.jsp</result>
         </action>
 
