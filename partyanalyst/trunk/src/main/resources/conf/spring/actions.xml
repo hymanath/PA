@@ -79,5 +79,7 @@
 		<property name="boothResultPopulationService" ref="boothResultPopulationService" />
 	</bean>
 	
-	<bean id="cadresInfoAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadresInfoAjaxAction" singleton="false"/>
+	<bean id="cadresInfoAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadresInfoAjaxAction" singleton="false">
+		<property name="cadreManagementService" ref="cadreManagementService" />
+	</bean>
 </beans>
