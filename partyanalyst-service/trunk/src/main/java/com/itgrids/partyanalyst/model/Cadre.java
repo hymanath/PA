@@ -35,7 +35,8 @@ public class Cadre extends BaseModel{
 	 private State state;
 	 private District district;
 	 private Tehsil tehsil;
-	 private Long villageId;
+	 //private Long villageId;
+	 private Township village;
 	 private Long boothId;
 	 
 	 @Id
@@ -148,12 +149,13 @@ public class Cadre extends BaseModel{
 	 	this.tehsil = tehsil;
 	 }
 	 
-	 @Column(name = "village_id", length = 15)
-	 public Long getVillageId() {
-		return villageId;
+	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	 @JoinColumn(name = "village_id")
+	 public Township getVillage() {
+		return village;
 	 }
-	 public void setVillageId(Long villageId) {
-		this.villageId = villageId;
+	 public void setVillage(Township village) {
+		this.village = village;
 	 }
 	 @Column(name = "booth_id", length = 15)
 	 public Long getBoothId() {

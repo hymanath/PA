@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -67,29 +68,87 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	}
 	@SuppressWarnings("unchecked")
 	public List findVillagesByTehsilID(String tehsilIDs){
-		/*List totalVillages = getHibernateTemplate().find("model.stateId, model.stateName from State model " +
-				"where model.country.countryId in(" + tehsilIDs + ")"); */
-		return null;
+		List totalVillages = getHibernateTemplate().find("Select model.townshipId, model.townshipName from Township model " +
+					"where model.tehsil.tehsilId in(" + tehsilIDs + ")");
+		return totalVillages;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List findTotalStateZeroSizeCadres(String stateIDs, Long userID){
+	public List findCadreSizeStateWise(Long userID){
 		List  results = getHibernateTemplate().find("Select model.state.stateId, count(model.state)from Cadre model " +
-				"where model.registration.registrationId = ? and model.state.stateId in("+ stateIDs + ")", userID); 
+				"where model.registration.registrationId = ? group by model.state", userID); 
 		return results;
 	}
 	@SuppressWarnings("unchecked")
-	public List findTotalDistrictZeroSizeCadres(String districtIDs, Long userID){
-		System.out.println("District:::::::::::Narender::::::::::::::::"+districtIDs);
+	public List findCadreSizeDistrictWise(Long userID){
 		List  results = getHibernateTemplate().find("Select model.district.districtId, count(model.district)from Cadre model " +
-				"where model.registration.registrationId = ? and model.district.districtId in("+ districtIDs + ")", userID); 
+				"where model.registration.registrationId = ? group by model.district", userID); 
 		return results;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List findTotalMandalZeroSizeCadres(String mandalIDs, Long userID){
-		List  results = getHibernateTemplate().find("Select model.tehsil.tehsilId, count(model.tehsil)from Cadre model " +
-				"where model.registration.registrationId = ? and model.tehsil.tehsilId in("+ mandalIDs + ")", userID); 
+	public List findCadreSizeMandalWise(Long userID){
+		List  results = getHibernateTemplate().find("Select model.tehsil.tehsilId, count(model.tehsil.tehsilId)from Cadre model " +
+				"where model.registration.registrationId = ? group by model.tehsil.tehsilId", userID); 
+		return results;
+	}
+
+	/*@SuppressWarnings("unchecked")
+	public List findCadreSizeVillageWise1(String villageIDs, Long userID){
+		try{
+			List  results = getHibernateTemplate().find("Select model.village.townshipId, count(model.village.townshipId)from Cadre model " +
+					"where model.registration.registrationId = ? and model.village.townshipId in("+ villageIDs + ") group by model.village.townshipId", userID); 
+			return results;
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			return new ArrayList();
+		}
+		
+	}*/
+	@SuppressWarnings("unchecked")
+	public List findCadreSizeVillageWise(Long userID){
+		List  results = getHibernateTemplate().find("Select model.village.townshipId, count(model.village.townshipId)from Cadre model " +
+					"where model.registration.registrationId = ? group by model.village.townshipId", userID); 
+		return results;
+		
+	}
+	
+
+	public List findStateCadresByCountry(Long countryID, Long userID){
+		//Object[] params = {userID,stateID};
+		List  results = getHibernateTemplate().find("Select model.state.stateId, model.state.stateName, count(model.state.stateId)from Cadre model " +
+				"where model.registration.registrationId = ? group by model.state.stateId", userID); 
+		return results;
+	}
+	@SuppressWarnings("unchecked")
+	public List findDistCadresByState(Long stateID, Long userID){
+		Object[] params = {userID,stateID};
+		List  results = getHibernateTemplate().find("Select model.district.districtId, model.district.districtName, count(model.district.districtId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.state.stateId=? group by model.district.districtId", params); 
+		return results;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findMandalCadresByDist(Long districtID, Long userID){
+		Object[] params = {userID,districtID};
+		List  results = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName, count(model.tehsil.tehsilId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.district.districtId=? group by model.tehsil.tehsilId", params); 
+		return results;
+	}
+	@SuppressWarnings("unchecked")
+	public List findVillageCadresByMandal(Long mandalID, Long userID){
+		Object[] params = {userID,mandalID};
+		List  results = getHibernateTemplate().find("Select model.village.townshipId, model.village.townshipName, count(model.village.townshipId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.tehsil.tehsilId=? group by model.village.townshipId", params); 
+		return results;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadresByVillage(Long villageID, Long userID){
+		Object[] params = {userID,villageID};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.village.townshipId=?", params); 
 		return results;
 	}
 }
