@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service;
 
+import com.itgrids.partyanalyst.excel.upload.vo.UploadFormVo;
+
 public interface IExcelToDBService {
 
-	public void readCSVFileAndStoreIntoDB(String excelFilePath,String countryName,String stateName,String districtName, String typeOfElection, String electionYear) throws Exception;
+	public void readCSVFileAndStoreIntoDB(UploadFormVo uploadFormValueObject) throws Exception;
 }
