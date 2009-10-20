@@ -81,6 +81,8 @@ public class CadreManagementService {
 		level.setLevel(values[cadreInfo.getCadreLevel().intValue()]);
 		cadre.setCadreLevel(level);
 		cadre.setCadreLevelValue(cadreInfo.getCadreLevelValue());
+		cadre.setMobile(cadreInfo.getMobile());
+		cadre.setEmail(cadreInfo.getEmail());
 		cadre.setRegistration(registrationDAO.get(cadreInfo.getUserID()));
 		cadre = cadreDAO.save(cadre);
 		return cadre.getCadreId();
