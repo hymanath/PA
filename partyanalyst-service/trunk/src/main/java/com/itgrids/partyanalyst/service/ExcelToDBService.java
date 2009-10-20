@@ -76,7 +76,7 @@ public class ExcelToDBService implements IExcelToDBService {
 			System.out.println("District =="+uploadFormVo.getDistrict());
 			System.out.println("Type of Election == "+uploadFormVo.getElectionType());
 			System.out.println("Election Year == "+uploadFormVo.getElectionYear());
-			insertIntoDatabase(selectReaderAndFetchConstituencyBlocks(uploadFormVo));
+			insertIntoDatabase(uploadFormVo);
 		}catch(Exception excep){
 			throw new Exception(excep.getMessage());
 		}
@@ -85,7 +85,10 @@ public class ExcelToDBService implements IExcelToDBService {
 
 //private void insertIntoDatabase(String countryNam,String stateName,String distName,String typeOfElection, String electionYear,List<ConstituencyBlock> constituenciesBlocks) throws CsvException{
 private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
-	List<ConstituencyBlock>  constituencyBlocks=uploadFormVo.getConstituencies();
+	IExcelReader excelReader=selectReaderAndFetchConstituencyBlocks(uploadFormVo);
+	excelReader.readCSV(uploadFormVo.getInputFile());
+	List<ConstituencyBlock>  constituencyBlocks=excelReader.getConstituencyBlocks();
+	System.out.println("Total no of constituency blocks =="+constituencyBlocks.size());
 	Country countryObj=null;
 	State stateObj=null;
 	District districtObj=null;
@@ -284,7 +287,7 @@ private Party checkAndInsertParty(List<Party> partis,String partyName){
 		System.out.println("New party has been identified.");
 		lpartyObj= new Party();
 		lpartyObj.setLongName(partyName);
-		String shortName=(partyName.length()>10)?"":partyName;
+		String shortName=(partyName.length()>25)?"":partyName;
 		lpartyObj.setShortName(shortName);
 		lpartyObj=partyDAO.save(lpartyObj);
 		partis.add(lpartyObj);
@@ -455,18 +458,13 @@ public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 	this.transactionTemplate = transactionTemplate;
 }
 
-private UploadFormVo selectReaderAndFetchConstituencyBlocks(UploadFormVo uploadFormVo) throws CsvException{
+private IExcelReader selectReaderAndFetchConstituencyBlocks(UploadFormVo uploadFormVo) throws CsvException{
+	IExcelReader excelReader=null;
 	List<ConstituencyBlock> constituencyBlocks=null;
 	if(uploadFormVo.getInputFile().length()>0){
-		IExcelReader excelReader=ExcelReaderFactory.selectReader(fetchPattern(uploadFormVo.getInputFile()));
-		excelReader.readCSV(uploadFormVo.getInputFile());
-		constituencyBlocks=excelReader.getConstituencyBlocks();
-		if(constituencyBlocks!=null && constituencyBlocks.size()>0){
-			uploadFormVo.setConstituencies(constituencyBlocks);
-			System.out.println(" No of constituencies == "+uploadFormVo.getConstituencies().size());
-		}
+		excelReader=ExcelReaderFactory.selectReader(fetchPattern(uploadFormVo.getInputFile()));
 	}
-	return uploadFormVo;
+	return excelReader;
 }
 
 private String fetchPattern(String excelFileName){
