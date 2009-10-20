@@ -42,7 +42,7 @@
 	<bean id="uploadExcelAction" class="com.itgrids.partyanalyst.web.action.UploadExcelAction"
 		singleton="false">
 		<property name="excelToDBService" ref="excelToDBService" />
-		<property name="uploadFormVo" ref="uploadFormVo" />
+		<!-- <property name="uploadFormVo" ref="uploadFormVo" />  -->
 	</bean> 
 	<bean id="statePageAction" class="com.itgrids.partyanalyst.web.action.StatePageAction" singleton="false">
 		<property name="statePageService" ref="statePageService" />
