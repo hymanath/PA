@@ -20,7 +20,7 @@
 		</tr>
 		<tr>
 			<td>Election Scope</td>
-			<td><select name="elecScope">
+			<td><select name="electionScope">
 				<option value="0">Select option..</option>
 				<option value="Andhra Pradesh">Andhra Pradesh</option>
 				<option value="Tamilnadu">Tamilnadu</option>
@@ -35,7 +35,7 @@
 		</tr>
 		<tr>
 			<td>Election Type</td>
-			<td><select name="elecType">
+			<td><select name="electionType">
 				<option value="0">Select option..</option>
 				<option value="Census">Census</option>
 				<option value="Assembly">Assembly</option>
@@ -44,10 +44,10 @@
 		</tr>
 
 		<tr>
-			<td colspan="2">Select File <s:file name="uploadFile" accept="text/*" /></td>
+			<td colspan="2">Select File <s:file name="inputFile" accept="text/*" /></td>
 		</tr>
 		<tr>
-			<td colspan="2"><s:textfield label="Election Year" name="elecYear" /><s:submit name="upload" value="Upload" /></td>
+			<td colspan="2"><s:textfield label="Election Year" name="electionYear" /><s:submit name="upload" value="Upload" /></td>
 			<td></td>
 		</tr>
 	</table>
