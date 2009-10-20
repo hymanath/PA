@@ -610,7 +610,7 @@ public class CadreManagementServiceTest {
 		service.setCadreDAO(cadreDAO);
 		List<CadreInfo> result = service.getCadresByVillage(1L, 1L);
 		Assert.assertEquals(2, result.size());
-		Assert.assertEquals("COUNTRY", result.get(0).getCadreLevel());
-		Assert.assertEquals("MANDAL", result.get(1).getCadreLevel());
+		Assert.assertEquals(new Long(1), result.get(0).getCadreLevel());
+		Assert.assertEquals(new Long(2), result.get(1).getCadreLevel());
 	}
 }

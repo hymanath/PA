@@ -6,10 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.CadreLevel;
 /**
  * 
  * @author Narender Akula
@@ -22,11 +29,61 @@ public class CadreManagementService {
 	public void setCadreDAO(ICadreDAO cadreDAO) {
 		this.cadreDAO = cadreDAO;
 	}
-	public void saveCader(String cadreInfo){
+
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
+	private ITehsilDAO tehsilDAO;
+	private ITownshipDAO townshipDAO;
+	private IRegistrationDAO registrationDAO;
+	
+	
+	
+	
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+
+	public void setTownshipDAO(ITownshipDAO townshipDAO) {
+		this.townshipDAO = townshipDAO;
+	}
+
+	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
+		this.registrationDAO = registrationDAO;
+	}
+	
+
+
+	public Long saveCader(CadreInfo cadreInfo){
 		
 		Cadre cadre = new Cadre();
-		cadreDAO.save(cadre);
-		//return null;
+		cadre.setFirstName(cadreInfo.getFirstName());
+		cadre.setMiddleName(cadreInfo.getMiddleName());
+		cadre.setLastName(cadreInfo.getLastName());
+		cadre.setGender(cadreInfo.getGender());
+		cadre.setState(stateDAO.get(new Long(cadreInfo.getState())));
+		cadre.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
+		cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
+		cadre.setVillage(townshipDAO.get(new Long(cadreInfo.getVillage())));
+		CadreLevel level = new CadreLevel();
+		level.setCadreLevelID(cadreInfo.getCadreLevel());
+		String[] values = {"","COUNTRY","STATE","DISTRICT","CONSTITUENCY","MANDAL","VILLAGE"};
+		level.setLevel(values[cadreInfo.getCadreLevel().intValue()]);
+		cadre.setCadreLevel(level);
+		cadre.setCadreLevelValue(cadreInfo.getCadreLevelValue());
+		cadre.setRegistration(registrationDAO.get(cadreInfo.getUserID()));
+		cadre = cadreDAO.save(cadre);
+		return cadre.getCadreId();
 	}
 	
 
@@ -216,12 +273,85 @@ public class CadreManagementService {
 			cadreInfo.setMiddleName(cadre.getMiddleName());
 			cadreInfo.setLastName(cadre.getLastName());
 			cadreInfo.setGender(cadre.getGender());
-			cadreInfo.setMobileNo(cadre.getMobile());
+			cadreInfo.setMobile(cadre.getMobile());
 			cadreInfo.setLandLineNo("-");
 			cadreInfo.setEmail(cadre.getEmail());
-			cadreInfo.setCadreLevel(cadre.getCadreLevel().getLevel());
+			cadreInfo.setCadreLevel(cadre.getCadreLevel().getCadreLevelID());
+			cadreInfo.setCadreLevelValue(cadre.getCadreLevelValue());
 			formattedData.add(cadreInfo);
 		}
 		return formattedData;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> findStatesByCountryID(String countryID){
+		List states = cadreDAO.findStatesByCountryID(countryID);
+		List<SelectOptionVO> stateNames=new ArrayList<SelectOptionVO>();
+		
+		int size = states.size();
+		for(int i=0; i<size;i++){
+			Object[] voObject=(Object[]) states.get(i);
+			SelectOptionVO objVO = new SelectOptionVO();
+			objVO.setId(new Long(voObject[0].toString()));
+			objVO.setName(voObject[1].toString());
+			stateNames.add(objVO);
+		}
+		
+		return stateNames;
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> findDistrictsByState(String stateID){
+		List districts = cadreDAO.findDistrictsByStateID(stateID);
+		List<SelectOptionVO> districtNames=new ArrayList<SelectOptionVO>();
+		
+		int size = districts.size();
+		for(int i=0; i<size;i++){
+			Object[] voObject=(Object[]) districts.get(i);
+			SelectOptionVO objVO = new SelectOptionVO();
+			objVO.setId(new Long(voObject[0].toString()));
+			objVO.setName(voObject[1].toString());
+			districtNames.add(objVO);
+		}
+		
+		return districtNames;
+	}
+	
+
+
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> findMandalsByDistrict(String districtID){
+		List mandals = cadreDAO.findMandalsByDistrictID(districtID);
+		List<SelectOptionVO> mandalNames=new ArrayList<SelectOptionVO>();
+		
+		int size = mandals.size();
+		for(int i=0; i<size;i++){
+			Object[] voObject=(Object[]) mandals.get(i);
+			SelectOptionVO objVO = new SelectOptionVO();
+			objVO.setId(new Long(voObject[0].toString()));
+			objVO.setName(voObject[1].toString());
+			mandalNames.add(objVO);
+		}
+		
+		return mandalNames;
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> findVillagesByTehsilID(String mandalID){
+		List villages = cadreDAO.findVillagesByTehsilID(mandalID);
+		List<SelectOptionVO> villageNames=new ArrayList<SelectOptionVO>();
+		
+		int size = villages.size();
+		for(int i=0; i<size;i++){
+			Object[] voObject=(Object[]) villages.get(i);
+			SelectOptionVO objVO = new SelectOptionVO();
+			objVO.setId(new Long(voObject[0].toString()));
+			objVO.setName(voObject[1].toString());
+			villageNames.add(objVO);
+		}
+		
+		return villageNames;
 	}
 }

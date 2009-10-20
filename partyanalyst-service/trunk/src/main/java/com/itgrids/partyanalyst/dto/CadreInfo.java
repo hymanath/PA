@@ -7,18 +7,19 @@ public class CadreInfo implements Serializable{
 	private String firstName;
 	private String middleName;
 	private String lastName;
-	private String mobileNo;
+	private String mobile;
 	private String landLineNo;
 
 	private String email;
 	private String gender;
-	private String cadreLevel;
+	private Long cadreLevel;
+	private Long cadreLevelValue;
 	private String state;
 	private String district;
 	private String mandal;
 	private String village;
 	private String booth;
-	
+	private Long userID;
 	
 	public Long getCadreID() {
 		return cadreID;
@@ -44,11 +45,11 @@ public class CadreInfo implements Serializable{
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public String getMobileNo() {
-		return mobileNo;
+	public String getMobile() {
+		return mobile;
 	}
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 	public String getLandLineNo() {
 		return landLineNo;
@@ -68,11 +69,17 @@ public class CadreInfo implements Serializable{
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public String getCadreLevel() {
+	public Long getCadreLevel() {
 		return cadreLevel;
 	}
-	public void setCadreLevel(String cadreLevel) {
+	public void setCadreLevel(Long cadreLevel) {
 		this.cadreLevel = cadreLevel;
+	}
+	public Long getCadreLevelValue() {
+		return cadreLevelValue;
+	}
+	public void setCadreLevelValue(Long cadreLevelValue) {
+		this.cadreLevelValue = cadreLevelValue;
 	}
 	public String getState() {
 		return state;
@@ -104,4 +111,12 @@ public class CadreInfo implements Serializable{
 	public void setBooth(String booth) {
 		this.booth = booth;
 	}
+	
+	public Long getUserID() {
+		return userID;
+	}
+	public void setuserID(Long userID) {
+		this.userID = userID;
+	}
+	
 }
