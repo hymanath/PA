@@ -133,6 +133,17 @@
 		<action name="cadresInfoAjaxAction" class="cadresInfoAjaxAction">
 			<result type="json" name="success"/>
 		</action>
-		
+		<action name="cadreRegisterPageAction" class="cadreRegisterPageAction">
+			<result name="success">/jsp/newCadrePage.jsp</result>
+		</action>
+		 
+        <action name="cadreRegisterAjaxAction" class="cadreRegisterAjaxAction">
+           <result type="json" name="success"/>
+        </action>
+        
+        <action name="cadreRegisterAction" class="cadreRegisterAction">
+           <result name="success"> /jsp/CadreRegisterSuccess.jsp</result>
+           <result name="fail"> /jsp/CadreRegisterFail.jsp</result>
+        </action> 
 	</package>
 </struts>

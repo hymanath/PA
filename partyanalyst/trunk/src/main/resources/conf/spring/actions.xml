@@ -82,4 +82,15 @@
 	<bean id="cadresInfoAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadresInfoAjaxAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
 	</bean>
+	<bean id="cadreRegisterPageAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterPageAction" singleton="false">
+		<property name="cadreManagementService" ref="cadreManagementService" />
+	</bean>
+	
+	<bean id="cadreRegisterAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAjaxAction" singleton="false">
+		<property name="cadreManagementService" ref="cadreManagementService" />
+	</bean> 
+	
+	<bean id="cadreRegisterAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAction" singleton="false">
+		<property name="cadreManagementService" ref="cadreManagementService" />
+	</bean> 
 </beans>

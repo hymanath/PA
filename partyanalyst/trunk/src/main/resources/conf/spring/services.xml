@@ -97,6 +97,11 @@
 	
 	<bean name="cadreManagementService" class="com.itgrids.partyanalyst.service.CadreManagementService" >
 		<property name="cadreDAO" ref="cadreDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="townshipDAO" ref="townshipDAO" />
+		<property name="registrationDAO" ref="registrationDAO" />
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.BoothPopulationService" >		
