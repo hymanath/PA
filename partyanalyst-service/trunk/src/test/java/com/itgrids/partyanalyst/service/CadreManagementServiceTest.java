@@ -16,6 +16,7 @@ import org.junit.Test;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.util.DummyCadreData;
@@ -602,7 +603,7 @@ public class CadreManagementServiceTest {
 	
 	//service.getCadresByVillage()   dao.findCadresByVillage
 	@Test
-	public void testgetCadresByVillage(){
+	public void testGetCadresByVillage(){
 		CadreManagementService service = new CadreManagementService();
 		List<Cadre> cadres = DummyCadreData.getCadres();
 		EasyMock.expect(cadreDAO.findCadresByVillage(1L,1L)).andReturn(cadres);
@@ -612,5 +613,71 @@ public class CadreManagementServiceTest {
 		Assert.assertEquals(2, result.size());
 		Assert.assertEquals(new Long(1), result.get(0).getCadreLevel());
 		Assert.assertEquals(new Long(2), result.get(1).getCadreLevel());
+	}
+	
+	@Test
+	public void testfindStatesByCountryID(){
+		CadreManagementService service = new CadreManagementService();
+		List dummyData = new ArrayList();
+		Object[] row1 ={new Long(1L),"AP"};
+		Object[] row2 ={new Long(2L),"MP"};
+		Object[] row3 ={new Long(3L),"UP"};
+		dummyData.add(row1);	dummyData.add(row2);	dummyData.add(row3);
+		EasyMock.expect(cadreDAO.findStatesByCountryID("1")).andReturn(dummyData);
+		EasyMock.replay(cadreDAO);
+		service.setCadreDAO(cadreDAO);
+		List<SelectOptionVO> result=service.findStatesByCountryID("1");
+		Assert.assertTrue(result.get(0) instanceof SelectOptionVO);
+		Assert.assertEquals(new Long(1L), result.get(0).getId());
+		Assert.assertEquals(3, result.size());
+	} 
+	@Test
+	public void testFindDistrictsByState(){
+		CadreManagementService service = new CadreManagementService();
+		List dummyData = new ArrayList();
+		Object[] row1 ={new Long(1L),"Nellore"};
+		Object[] row2 ={new Long(2L),"Hyderabad"};
+		Object[] row3 ={new Long(3L),"Medak"};
+		dummyData.add(row1);	dummyData.add(row2);	dummyData.add(row3);
+		EasyMock.expect(cadreDAO.findDistrictsByStateID("1")).andReturn(dummyData);
+		EasyMock.replay(cadreDAO);
+		service.setCadreDAO(cadreDAO);
+		List<SelectOptionVO> result=service.findDistrictsByState("1");
+		Assert.assertTrue(result.get(0) instanceof SelectOptionVO);
+		Assert.assertEquals(new Long(1L), result.get(0).getId());
+		Assert.assertEquals(3, result.size());
+	} 
+	@Test
+	public void testFindMandalsByDistrict(){
+		CadreManagementService service = new CadreManagementService();
+		List dummyData = new ArrayList();
+		Object[] row1 ={new Long(1L),"Mandal1"};
+		Object[] row2 ={new Long(2L),"Mandal2"};
+		Object[] row3 ={new Long(3L),"Mandal3"};
+		dummyData.add(row1);	dummyData.add(row2);	dummyData.add(row3);
+		EasyMock.expect(cadreDAO.findMandalsByDistrictID("1")).andReturn(dummyData);
+		EasyMock.replay(cadreDAO);
+		service.setCadreDAO(cadreDAO);
+		List<SelectOptionVO> result=service.findMandalsByDistrict("1");
+		Assert.assertTrue(result.get(0) instanceof SelectOptionVO);
+		Assert.assertEquals(new Long(1L), result.get(0).getId());
+		Assert.assertEquals(3, result.size());
+	}
+	//	public List<SelectOptionVO> findVillagesByTehsilID(String mandalID){
+	@Test
+	public void testFindVillagesByTehsilID(){
+		CadreManagementService service = new CadreManagementService();
+		List dummyData = new ArrayList();
+		Object[] row1 ={new Long(1L),"Village1"};
+		Object[] row2 ={new Long(2L),"Village2"};
+		Object[] row3 ={new Long(3L),"Village3"};
+		dummyData.add(row1);	dummyData.add(row2);	dummyData.add(row3);
+		EasyMock.expect(cadreDAO.findVillagesByTehsilID("1")).andReturn(dummyData);
+		EasyMock.replay(cadreDAO);
+		service.setCadreDAO(cadreDAO);
+		List<SelectOptionVO> result=service.findVillagesByTehsilID("1");
+		Assert.assertTrue(result.get(0) instanceof SelectOptionVO);
+		Assert.assertEquals(new Long(1L), result.get(0).getId());
+		Assert.assertEquals(3, result.size());
 	}
 }
