@@ -36,9 +36,9 @@ public class CsvReaderNew implements IExcelReader{
 			for (int row = 0; row < sheet.getRows(); row++) {
 				columnMapper = new ExclRowExtracter(sheet,row,sheet.getColumns());
 				identifyRowAndBindObject(columnMapper);
-/*				if(row==22)
-					break;
-*/
+				/*if(row==15)
+					break;*/
+
 			}
 			if(constituencyBlocks!=null && constituencyBlocks.size()>0){
 				setConstituencyBlocks(constituencyBlocks);
@@ -63,10 +63,11 @@ public class CsvReaderNew implements IExcelReader{
 			//Assembly-ElectionResults-AP-1999
 			//D:/documents/elections data converted to excel from pdf/excel - assembly/forTest/Assembly-ElectionResults-AP-1999
 			//D:/documents/elections data converted to excel from pdf/excel  -parliament/forTest/parlia2004
-			csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel  -parliament/forTest/Election-Parliament-2004.xls");
+			//D:/documents/elections data converted to excel from pdf/excel  -parliament/forTst/Election-Parliament-2004_Pattern3
+			csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel  -parliament/forTst/Election-Parliament-2004_Pattern3.xls");
 			System.out.println("\nConstitution Blocak details =="+csvReader.getConstituencyBlocks().size());
 			List<ConstituencyBlock> constituencies= csvReader.getConstituencyBlocks();
-			ConstituencyBlock constituencyBlock=constituencies.get(542);
+			ConstituencyBlock constituencyBlock=constituencies.get(1);
 
 			System.out.println("Constituency Name == "+constituencyBlock.getConstituencyName());
 			System.out.println("Constituency Margin =="+constituencyBlock.getMargin());
@@ -78,7 +79,7 @@ public class CsvReaderNew implements IExcelReader{
 			System.out.println("Total Electors == "+constituencyBlock.getTotalElectors());
 			System.out.println("Valid Votes == "+constituencyBlock.getValidVotes());
 			System.out.println("total Number of candidated == "+constituencyBlock.getCandidateElectionlst().size());
-			CandidateElectionResult candidateObj=constituencyBlock.getCandidateElectionlst().get(20);
+			CandidateElectionResult candidateObj=constituencyBlock.getCandidateElectionlst().get(2);
 			System.out.println("Candidate name"+candidateObj.getCandidateName());
 			System.out.println("Candidate party"+candidateObj.getCandidatePrty());
 			System.out.println("Candidate sex"+candidateObj.getSex());
@@ -129,7 +130,8 @@ public class CsvReaderNew implements IExcelReader{
 						break;
 					} else if(candidateElectionResults!=null && csvColumnMapperObj.isCandidateDetails){
 						if(methods[i].getName().equals("getExcelColumn1")){
-							candidateElectionResult.setCandidateName(StringUtils.replace(str, ".", ""));
+							String cName=StringUtils.replace(str, ".", "");
+							candidateElectionResult.setCandidateName(StringUtils.trim(cName));
 						}else if(methods[i].getName().equals("getExcelColumn4")){
 							candidateElectionResult.setSex(str);
 						}else if(methods[i].getName().equals("getExcelColumn7")){
