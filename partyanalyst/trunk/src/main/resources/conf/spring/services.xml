@@ -118,5 +118,5 @@
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		<property name="boothResultDAO" ref="boothResultDAO" />
 	</bean>
-	<bean name="uploadFormVo" class="com.itgrids.partyanalyst.excel.upload.vo.UploadFormVo" singleton="false"/>
+	<!-- <bean name="uploadFormVo" class="com.itgrids.partyanalyst.excel.upload.vo.UploadFormVo"/> -->
 </beans>
