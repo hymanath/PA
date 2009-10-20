@@ -31,7 +31,7 @@ public class CsvReader2004 implements IExcelReader{
 			for (int row = 0; row < sheet.getRows(); row++) {
 				columnMapper = new ExcelRowExtracter(sheet,row,sheet.getColumns());
 				identifyRowAndBindObject(columnMapper);
-				/*if(row==22)
+				/*if(row==15)
 					break;*/
 
 			}
@@ -39,7 +39,7 @@ public class CsvReader2004 implements IExcelReader{
 				setConstituencyBlocks(constituencyBlocks);
 			}else
 				System.out.println("!!!!!!!!!!!!!!!!!!!!!!No constituency Blocks are created....");
-			//		System.out.println("Completed in readCSVFileAndStoreIntoDB");
+					//System.out.println("Completed in readCSVFileAndStoreIntoDB");
 		}catch(IOException ioe){
 			throw new CsvException(ioe.getMessage());
 		}catch(BiffException ioe){
@@ -55,10 +55,11 @@ public class CsvReader2004 implements IExcelReader{
 			//Assembly-ElectionResults-AP-1983
 			//Assembly-ElectionResults-AP-1994
 			//Assembly-ElectionResults-AP-1999
-			csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel - assembly/forTest/Assembly-ElectionResults-AP-1983.xls");
+			//D:/documents/elections data converted to excel from pdf/excel - assembly/forTst/Assembly-ElectionResults-AP-1989_Pattern2.xls
+			csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel - assembly/forTst/Assembly-ElectionResults-AP-1989_Pattern2.xls");
 			System.out.println("\nConstitution Blocak details =="+csvReader.getConstituencyBlocks().size());
 			List<ConstituencyBlock> constituencies= csvReader.getConstituencyBlocks();
-			ConstituencyBlock constituencyBlock=constituencies.get(8);
+			ConstituencyBlock constituencyBlock=constituencies.get(1);
 			
 			System.out.println("Constituency Name == "+constituencyBlock.getConstituencyName());
 			System.out.println("Constituency Margin =="+constituencyBlock.getMargin());
@@ -117,7 +118,8 @@ public class CsvReader2004 implements IExcelReader{
 						break;
 					} else if(candidateElectionResults!=null && csvColumnMapperObj.isCandidateDetails){
 						if(methods[i].getName().equals("getExcelColumn2")){
-							candidateElectionResult.setCandidateName(StringUtils.replace(str, ".", ""));
+							String cName=StringUtils.replace(str, ".", "");
+							candidateElectionResult.setCandidateName(StringUtils.trim(cName));
 						}else if(methods[i].getName().equals("getExcelColumn6")){
 							candidateElectionResult.setSex(str);
 						}else if(methods[i].getName().equals("getExcelColumn7")){
