@@ -52,4 +52,10 @@ public class UploadFormVo {
 	public void setElectionYear(String electionYear) {
 		this.electionYear = electionYear;
 	}
+	public List<ConstituencyBlock> getConstituencyBlocks() {
+		return constituencyBlocks;
+	}
+	public void setConstituencyBlocks(List<ConstituencyBlock> constituencyBlocks) {
+		this.constituencyBlocks = constituencyBlocks;
+	}
 }
