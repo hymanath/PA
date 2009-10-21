@@ -19,7 +19,6 @@ public class ExclRowExtracter {
 	String excelColumn7;
 	String excelColumn8;
 	String excelColumn9;
-
 	boolean isCandidateDetails=false;
 	public ExclRowExtracter(){
 		excelColumn1="";
@@ -28,6 +27,9 @@ public class ExclRowExtracter {
 		excelColumn4="";
 		excelColumn5="";
 		excelColumn6="";
+		excelColumn7="";
+		excelColumn8="";
+		excelColumn9="";
 	}
 	public ExclRowExtracter(Sheet sheet,int rowNo,int noOfColumns){
 		for(int columnPos=0;columnPos<noOfColumns;columnPos++){
