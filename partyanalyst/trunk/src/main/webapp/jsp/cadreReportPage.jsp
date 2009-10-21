@@ -147,17 +147,19 @@
 <body>
 	<s:form name="cadrereport" action="cadreRegisterPageAction" method="post">	
 	<h3>Cadre Details Page.</h3>
-	
-	<div id="cReportMain" style="text-align: left; margin-left: 50px; font-size: 12px; font-family: Verdana;">
+	<table>
+		<tr>
+			<td>
+	<div id="cReportMain" style="text-align: left; font-size: 12px; font-family: Verdana;">
 		<div id="cadreInfoDiv" style="margin-bottom: 20px;">
 			<div id="cadreInfoDivHead">
 				<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
 				Cadres Availabilty <b>:</b>
 			</div>
-			<div id="cadreInfoDivBody" style="padding-left: 50px;padding-top: 10px">
+			<div id="cadreInfoDivBody" style="padding-left: 50px;padding-top: 10px"><table>
 				<script type="text/javascript">
 						showTree();
-				</script>				
+				</script>	</table>			
 			</div>
 		</div>
 		<div id="zeroCadreInfoDiv" style="margin-bottom: 20px;">
@@ -196,7 +198,7 @@
 			</div>
 		</div>	
 		<div id="cadreRegistration" style="margin-left: 50px;">
-			<table>
+			<table align="middle">
 				<tr>
 					<td>
 						<input type="submit" name="registersubmit" value="Register Cadre"/>
@@ -205,6 +207,9 @@
 			</table>
 		</div>
 	</div>
+			</td>
+		</tr>
+	</table>
 	</s:form>
 </body>
 </html>
