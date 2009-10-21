@@ -14,13 +14,10 @@
 	<script type="text/javascript" src="js/json/json-min.js"></script> 
   	<!-- Dependencies --> 
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-	<script type="text/javascript" src="js/partyPerformance.js" ></script>
-
-	<link href="styles/partyPerformance.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
-		function callAjax(param){
+ 	function callAjax(param, url){
  		var myResults;
- 		var url = "<%=request.getContextPath()%>/partyPerformanceAjax.action?"+param;		
+ 		url = url + param;
  		var callback = {			
  		               success : function( o ) {
 							try {
@@ -44,7 +41,14 @@
 	    	fillDropDown(document.getElementById("stateList"), response.states);
 		 	fillDropDown(document.getElementById("yearList"), response.years);
 		 	fillDropDown(document.getElementById("partyList"), response.parties);
-		} else {
+		} if(param.substring(0, 8) == "alliance"){
+			if(response == true) {
+				document.getElementById("allianceRow").style.display="table-row";
+			} else {
+				document.getElementById("allianceRow").checked = false;
+				document.getElementById("allianceRow").style.display="none";
+			}
+		}else {
 	 		fillDropDown(document.getElementById("districtList"), response.districts);			
 	 		document.getElementById("districtList").disabled= false;  	 			 		
 		}
@@ -69,14 +73,16 @@
  	}
 
  	function doAjax(param){
- 		callAjax("type="+param);
+ 		var url = "<%=request.getContextPath()%>/partyPerformanceAjax.action?";
+ 		callAjax("type="+param, url);
  	}
 
  	function getDistricts(level){
  	 	if(level == 2){
 	 	 	var index = document.getElementById("stateList").selectedIndex;
 	 	 	var stateId = document.getElementById("stateList").options[index].value;
-			callAjax("stateId="+stateId);
+	 	 	var url = "<%=request.getContextPath()%>/partyPerformanceAjax.action?";
+			callAjax("stateId="+stateId, url);
  	 	} else {
  	 		document.getElementById("districtList").disabled= true;  
  	 	}
@@ -90,8 +96,18 @@
  	 	 	}
  	 	}
  	}
+
+ 	function hasAllianceParties(){
+ 		var index = document.getElementById("partyList").selectedIndex;
+ 	 	var partyId = document.getElementById("partyList").options[index].value;
+ 	 	index = document.getElementById("yearList").selectedIndex;
+ 	 	var year = document.getElementById("yearList").options[index].value;
+ 	 	var url = "<%=request.getContextPath()%>/partyPerformanceAllianceAjax.action?";
+ 	 	callAjax("allianceWith="+partyId+"&year="+year, url);
+ 	}
 	</script>
-	
+	<link href="styles/partyPerformance.css" rel="stylesheet" type="text/css" /> 
+
 </head> 
 <body>
 <s:form name="performanceReport" action="partyPerformanceReport" onsubmit="javascript:{}" method="post">
@@ -105,7 +121,7 @@
 	<tr>
 		<th>Election Type</th>
 		<td>
-			<input type="radio" name="electionType" value="2" onclick="doAjax(this.value);"/>Assembly
+			<input type="radio" name="electionType" value="2" checked="checked" onclick="doAjax(this.value);"/>Assembly
 			<input type="radio" name="electionType" value="1" onclick="doAjax(this.value);"/>Parliament
 		</td>
 	</tr>
@@ -117,11 +133,22 @@
 	</tr>
 	<tr>
 		<th> Year</th>
-		<td><s:select theme="simple" label="Year" name="year" id="yearList" list="years"  /></td>
+		<td><s:select theme="simple" label="Year" name="year" id="yearList" list="years"  onchange="hasAllianceParties();"/></td>
 	</tr>
 	<tr>
 		<th>Party</th>
-		<td><s:select theme="simple" label="Party" name="party" id="partyList" list="parties" listKey="id" listValue="name"/></td>
+		<td><s:select theme="simple" label="Party" name="party" id="partyList" list="parties" listKey="id" listValue="name" onchange="hasAllianceParties();"/></td>
+	</tr>
+	<tr id="allianceRow"
+	<% java.lang.Boolean alliances = (java.lang.Boolean) request.getAttribute("hasAllianceParties");
+		if(alliances == false) { %> 
+			style="display:none"
+		<% } %>
+	 >
+		<th>Alliance Parties</th>
+		<td>
+			<s:checkbox theme="simple" id="alliances" name="alliances" value="hasAllianceParties"></s:checkbox> Include in the Report
+		</td>
 	</tr>
 	<tr>
 		<th>Report Level</th>

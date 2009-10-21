@@ -5,17 +5,19 @@
 
 <beans>
 	
-	<bean name="partyService" class="com.itgrids.partyanalyst.service.PartyService" >
-		<property name="stateDAO" ref="stateDAO" />
-		<property name="constituencyDAO" ref="constituencyDAO" />
-		<property name="electionDAO" ref="electionDAO" />
-		<property name="partyDAO" ref="partyDAO" />
-	</bean>
-	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.StaticDataService" >
+	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService" >
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
 		<property name="districtDAO" ref="districtDAO" />
+		<property name="electionAllianceDAO" ref="electionAllianceDAO" />
+	</bean>
+	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="partyDAO" ref="partyDAO" />
+		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.LoginService" >

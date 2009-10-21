@@ -42,7 +42,12 @@
 
 		<!-- PARTY PERFORMANCE ACTIONS -->
 		<action name="partyPerformanceAjax" class="partyPerformanceAction" method="getJSON" >
-			<result type="json" name="success"/> 
+			<result type="json" name="success"/>
+		</action>
+		<action name="partyPerformanceAllianceAjax" class="partyPerformanceAction" method="getAlliances" >
+			<result type="json" name="success">
+				<param name="root">hasAllianceParties</param>
+			</result> 
 		</action>
 		<action name="partyPerformanceMain" class="partyPerformanceAction" method="execute" >
 			<result name="success" >/jsp/partyPerformance.jsp</result> 
@@ -57,6 +62,7 @@
   				<param name="inputName">reportStream</param> 
 			</result>
 		</action>
+		
 		
 		
         <action name="uploadCSV" class="uploadCSVAction">

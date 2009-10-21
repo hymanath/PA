@@ -209,6 +209,7 @@ function setOpacity(obj, opacity)
 							<display:column title="Candidate Name" property="candidateName" />
 							<display:column title="% of Votes" property="percentageOfVotes" />
 							<display:column title="Previous Election %" property="prevElectionPercentage" />
+							<display:column title="Oppositin Party % of Votes" property = "oppositePartyPercentageOfVotes" />
 							<display:column title="Opposition Party" property="oppositeParty" />
 							<display:column title="Opposition Party Candidate" property="oppositePartyCandidate" />
 				</display:table>	
@@ -230,6 +231,15 @@ function setOpacity(obj, opacity)
 	</c:forEach>
 </table>
 </center>
+<br>
+<s:label labelposition="left"><b><U>Rebel Candidates::</U></b></s:label>
+<display:table class="partyPerformanceReportTable" name="${stateData.rebelPartyCandidates}" id="row" style="margin-top:0px;"> 
+							<display:column title="Constiuency Name" property="constiuencyName" />
+							<display:column title="Candidate Name" property="candidateName" />
+							<display:column title="% of Votes" property="percentageOfVotes" />
+							<display:column title="Position" property="rank" />
+							<display:column title="Party" property="oppositeParty" />
+				</display:table>	
 <br>
 <div>
 <s:form action="partyPerformanceJasper.action?jasperFile=jasper\partyPerformance\partyPerformanceReport.jrxml&type=normal" style="float: left;margin-right:20px;">
