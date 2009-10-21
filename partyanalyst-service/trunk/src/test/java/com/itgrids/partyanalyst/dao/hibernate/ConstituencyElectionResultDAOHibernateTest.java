@@ -37,6 +37,12 @@ public class ConstituencyElectionResultDAOHibernateTest extends BaseDaoTestCase 
 		Assert.assertEquals(1, 1);
 	}
 	
+	@Test
+	public void testFindByElectionTypeAndYear(){
+		List<ConstituencyElectionResult> results = constituencyElectionResultDAO.findByElectionTypeIdAndYear(new Long(2), "2009");
+		Assert.assertEquals(279, results.size());
+	}
+
 	//@Test
 	/*public void testFindByMissingVotes(){
 		List<ConstituencyElectionResult> constElecResult = constituencyElectionResultDAO.findByMissingVotes(200);

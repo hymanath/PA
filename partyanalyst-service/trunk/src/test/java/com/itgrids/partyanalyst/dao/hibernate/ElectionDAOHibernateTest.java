@@ -75,6 +75,19 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 		Assert.assertEquals(2, list.size()); //here data is available for 2004 and 2009
 	}
+	@Test
+	public void testFindByElectionScope_OrderByAsc(){
+		List<Election> list = electionDAO.findByElectionScope_OrderByAsc(new Long(2));
+		for(Election e: list){
+			System.out.println("NEW>>>>>>>>>>>"+e.getElectionYear());
+		}
+		Assert.assertEquals(8, list.size()); //here data is available for 2004 and 2009
+	}
 	
+	@Test
+	public void testFindPreviousYear(){
+		String prevYear = electionDAO.findPreviousElectionYear("2009", new Long(2), new Long(1), new Long(1));
+		System.out.println(prevYear);
+	}
 }
 
