@@ -57,6 +57,7 @@
 				<value>com.itgrids.partyanalyst.model.BoothConstituencyElection</value>
 				<value>com.itgrids.partyanalyst.model.BoothResult</value>
 				<value>com.itgrids.partyanalyst.model.BoothVillageCensus</value>
+				<value>com.itgrids.partyanalyst.model.ElectionAlliance</value>
 			</list>
 		</property>
 	</bean>
@@ -189,7 +190,7 @@
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 	</bean>
-    <bean id="excelToDBServiice" class="com.itgrids.partyanalyst.service.ExcelToDBService">
+    <bean id="excelToDBServiice" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService">
     	<property name="excelDAO" ref="excelDAO" />
     </bean>
     <bean id="boothDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothDAO" >
@@ -202,6 +203,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="boothResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothResultDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="electionAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionAllianceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
