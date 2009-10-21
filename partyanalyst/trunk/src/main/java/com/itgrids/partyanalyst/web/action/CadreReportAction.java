@@ -11,7 +11,7 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.service.CadreManagementService;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 
 public class CadreReportAction extends ActionSupport implements ServletContextAware,ServletRequestAware{
 

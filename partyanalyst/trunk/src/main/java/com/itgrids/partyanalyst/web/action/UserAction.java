@@ -9,7 +9,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.service.UserService;
+import com.itgrids.partyanalyst.service.impl.UserService;
 public class UserAction extends ActionSupport implements ServletRequestAware {
 	
 	private HttpServletRequest request;

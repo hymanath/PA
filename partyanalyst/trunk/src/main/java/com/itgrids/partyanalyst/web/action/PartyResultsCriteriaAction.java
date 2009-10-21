@@ -13,7 +13,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.PartyResultService;
+import com.itgrids.partyanalyst.service.impl.PartyResultService;
 import com.opensymphony.xwork2.ActionSupport;
 /**
  * 

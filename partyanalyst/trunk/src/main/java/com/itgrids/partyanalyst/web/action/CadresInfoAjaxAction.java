@@ -14,7 +14,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.service.CadreManagementService;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 
 @SuppressWarnings("serial")
 public class CadresInfoAjaxAction extends ActionSupport implements ServletRequestAware,ServletContextAware{

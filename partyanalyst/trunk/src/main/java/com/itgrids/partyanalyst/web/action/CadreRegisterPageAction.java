@@ -8,7 +8,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
-import com.itgrids.partyanalyst.service.CadreManagementService;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 

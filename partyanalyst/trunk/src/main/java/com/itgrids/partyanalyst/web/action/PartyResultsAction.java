@@ -21,7 +21,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
-import com.itgrids.partyanalyst.service.PartyResultService;
+import com.itgrids.partyanalyst.service.impl.PartyResultService;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
 import com.opensymphony.xwork2.ActionSupport;
 /**
