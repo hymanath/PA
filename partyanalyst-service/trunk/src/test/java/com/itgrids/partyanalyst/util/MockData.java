@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.util;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,8 +16,8 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Party;
 
 
 public class MockData {
@@ -45,7 +46,8 @@ public class MockData {
 														new ArrayList<ConstituencyElectionResult>();
 	
 	private static final List<CandidateResult> candidateResults = new ArrayList<CandidateResult>();	
-			
+	private static final List<Party> allianceParties = new ArrayList<Party>();
+	
 	static{	
 		Election election1 = new Election(new Long(3), electionScope, null, null, null, "2004", null);
 		Election election2 = new Election(new Long(4), electionScope, null, null, null, "2009", null);
@@ -101,7 +103,7 @@ public class MockData {
 		Party dummy12 = new Party(new Long(12), "Lok Satta Party", null,null, null, null,null, null);
 		Party dummy13 = new Party(new Long(13), "Independent", "IND",null, null, null,null, null);
 		
-
+		Party dummy4 = new Party(new Long(4), "Communist Party of India", "CPI",null, null, null,null, null);
 		Party dummy14 = new Party(new Long(14), "Pyramid Party of India", "PPOI",null, null, null,null, null);
 		Party dummy17 = new Party(new Long(17), "Trilinga Praja Pragati Party", null,null, null, null,null, null);
 		Party dummy23 = new Party(new Long(23), "Republican Party of India (A)", null,null, null, null,null, null);
@@ -110,11 +112,13 @@ public class MockData {
 		Party dummy51 = new Party(new Long(51), "Bharatiya Jan Shakti", null,null, null, null,null, null);
 		Party dummy54 = new Party(new Long(54), "Bharatiya Rashtravadi Paksha", "BRP",null, null, null,null, null);
 		Party dummy62 = new Party(new Long(62), "NTR Telugu Desam Party (Lakshmi Parvathi)", "NTRTDP(LP)",null, null, null,null, null);
-		parties.add(dummy1);	parties.add(dummy2);	parties.add(dummy3);		parties.add(dummy5);
-		parties.add(dummy6);	parties.add(dummy9);	parties.add(dummy10);		parties.add(dummy11);
+		
+		parties.add(dummy1);	parties.add(dummy2);	parties.add(dummy3);	parties.add(dummy5);	
+		parties.add(dummy6);	parties.add(dummy9);	parties.add(dummy10);	parties.add(dummy11);
 		parties.add(dummy12);	parties.add(dummy13);	parties.add(dummy14);		parties.add(dummy17);
 		parties.add(dummy23);	parties.add(dummy44);	parties.add(dummy45);		parties.add(dummy51);
-		parties.add(dummy54);	parties.add(dummy62);		
+		parties.add(dummy54);	parties.add(dummy62);   parties.add(dummy4);
+		
 		return parties;
 	}
 	
@@ -211,27 +215,27 @@ public class MockData {
 	}*/
 	public static List<ConstituencyElection> getConstituencyElections() {
 		getElections();
-		ConstituencyElection constiElection1 = new ConstituencyElection(new Long(1),getElection(new Long(4)),getConstituency(new Long(1)),null,getNominationsList(new Long(1)),getConstituencyElectionResult(new Long(1)),null);
-		ConstituencyElection constiElection2 = new ConstituencyElection(new Long(2),getElection(new Long(4)),getConstituency(new Long(2)),null,getNominationsList(new Long(2)),getConstituencyElectionResult(new Long(2)),null);
-		ConstituencyElection constiElection3 = new ConstituencyElection(new Long(3),getElection(new Long(4)),getConstituency(new Long(3)),null,getNominationsList(new Long(3)),getConstituencyElectionResult(new Long(3)),null);
-		ConstituencyElection constiElection4 = new ConstituencyElection(new Long(4),getElection(new Long(4)),getConstituency(new Long(4)),null,getNominationsList(new Long(4)),getConstituencyElectionResult(new Long(4)),null);
-		ConstituencyElection constiElection5 = new ConstituencyElection(new Long(5),getElection(new Long(4)),getConstituency(new Long(5)),null,getNominationsList(new Long(5)),getConstituencyElectionResult(new Long(5)),null);
-		ConstituencyElection constiElection6 = new ConstituencyElection(new Long(6),getElection(new Long(4)),getConstituency(new Long(6)),null,getNominationsList(new Long(6)),getConstituencyElectionResult(new Long(6)),null);
-		ConstituencyElection constiElection7 = new ConstituencyElection(new Long(7),getElection(new Long(4)),getConstituency(new Long(7)),null,getNominationsList(new Long(7)),getConstituencyElectionResult(new Long(7)),null);
-		ConstituencyElection constiElection8 = new ConstituencyElection(new Long(8),getElection(new Long(4)),getConstituency(new Long(8)),null,getNominationsList(new Long(8)),getConstituencyElectionResult(new Long(8)),null);
-		ConstituencyElection constiElection9 = new ConstituencyElection(new Long(9),getElection(new Long(4)),getConstituency(new Long(9)),null,getNominationsList(new Long(9)),getConstituencyElectionResult(new Long(9)),null);
-		ConstituencyElection constiElection10 = new ConstituencyElection(new Long(10),getElection(new Long(4)),getConstituency(new Long(10)),null,getNominationsList(new Long(10)),getConstituencyElectionResult(new Long(10)),null);
-		ConstituencyElection constiElection11 = new ConstituencyElection(new Long(11),getElection(new Long(3)),getConstituency(new Long(1)),null,getNominationsList(new Long(11)),getConstituencyElectionResult(new Long(11)),null);
-		ConstituencyElection constiElection12 = new ConstituencyElection(new Long(12),getElection(new Long(3)),getConstituency(new Long(2)),null,getNominationsList(new Long(12)),getConstituencyElectionResult(new Long(12)),null);
-		ConstituencyElection constiElection13 = new ConstituencyElection(new Long(13),getElection(new Long(3)),getConstituency(new Long(3)),null,getNominationsList(new Long(13)),getConstituencyElectionResult(new Long(13)),null);
-		ConstituencyElection constiElection14 = new ConstituencyElection(new Long(14),getElection(new Long(3)),getConstituency(new Long(6)),null,getNominationsList(new Long(14)),getConstituencyElectionResult(new Long(14)),null);
-		ConstituencyElection constiElection15 = new ConstituencyElection(new Long(15),getElection(new Long(3)),getConstituency(new Long(7)),null,getNominationsList(new Long(15)),getConstituencyElectionResult(new Long(15)),null);
-		ConstituencyElection constiElection16 = new ConstituencyElection(new Long(16),getElection(new Long(3)),getConstituency(new Long(8)),null,getNominationsList(new Long(16)),getConstituencyElectionResult(new Long(16)),null);
-		ConstituencyElection constiElection17 = new ConstituencyElection(new Long(17),getElection(new Long(3)),getConstituency(new Long(9)),null,getNominationsList(new Long(17)),getConstituencyElectionResult(new Long(17)),null);
-		ConstituencyElection constiElection18 = new ConstituencyElection(new Long(18),getElection(new Long(3)),getConstituency(new Long(10)),null,getNominationsList(new Long(18)),getConstituencyElectionResult(new Long(18)),null);
-		ConstituencyElection constiElection19 = new ConstituencyElection(new Long(19),getElection(new Long(3)),getConstituency(new Long(11)),null,getNominationsList(new Long(19)),getConstituencyElectionResult(new Long(19)),null);
-		ConstituencyElection constiElection20 = new ConstituencyElection(new Long(20),getElection(new Long(3)),getConstituency(new Long(12)),null,getNominationsList(new Long(20)),getConstituencyElectionResult(new Long(20)),null);
-		ConstituencyElection constiElection21 = new ConstituencyElection(new Long(21),getElection(new Long(3)),getConstituency(new Long(13)),null,getNominationsList(new Long(21)),getConstituencyElectionResult(new Long(21)),null);
+		ConstituencyElection constiElection1 = new ConstituencyElection(new Long(1),getElection(new Long(4)),getConstituency(new Long(1)),null,getNominationsList(new Long(1)),getConstituencyElectionResult(new Long(1)), null);
+		ConstituencyElection constiElection2 = new ConstituencyElection(new Long(2),getElection(new Long(4)),getConstituency(new Long(2)),null,getNominationsList(new Long(2)),getConstituencyElectionResult(new Long(2)), null);
+		ConstituencyElection constiElection3 = new ConstituencyElection(new Long(3),getElection(new Long(4)),getConstituency(new Long(3)),null,getNominationsList(new Long(3)),getConstituencyElectionResult(new Long(3)), null);
+		ConstituencyElection constiElection4 = new ConstituencyElection(new Long(4),getElection(new Long(4)),getConstituency(new Long(4)),null,getNominationsList(new Long(4)),getConstituencyElectionResult(new Long(4)), null);
+		ConstituencyElection constiElection5 = new ConstituencyElection(new Long(5),getElection(new Long(4)),getConstituency(new Long(5)),null,getNominationsList(new Long(5)),getConstituencyElectionResult(new Long(5)), null);
+		ConstituencyElection constiElection6 = new ConstituencyElection(new Long(6),getElection(new Long(4)),getConstituency(new Long(6)),null,getNominationsList(new Long(6)),getConstituencyElectionResult(new Long(6)), null);
+		ConstituencyElection constiElection7 = new ConstituencyElection(new Long(7),getElection(new Long(4)),getConstituency(new Long(7)),null,getNominationsList(new Long(7)),getConstituencyElectionResult(new Long(7)), null);
+		ConstituencyElection constiElection8 = new ConstituencyElection(new Long(8),getElection(new Long(4)),getConstituency(new Long(8)),null,getNominationsList(new Long(8)),getConstituencyElectionResult(new Long(8)), null);
+		ConstituencyElection constiElection9 = new ConstituencyElection(new Long(9),getElection(new Long(4)),getConstituency(new Long(9)),null,getNominationsList(new Long(9)),getConstituencyElectionResult(new Long(9)), null);
+		ConstituencyElection constiElection10 = new ConstituencyElection(new Long(10),getElection(new Long(4)),getConstituency(new Long(10)),null,getNominationsList(new Long(10)),getConstituencyElectionResult(new Long(10)), null);
+		ConstituencyElection constiElection11 = new ConstituencyElection(new Long(11),getElection(new Long(3)),getConstituency(new Long(1)),null,getNominationsList(new Long(11)),getConstituencyElectionResult(new Long(11)), null);
+		ConstituencyElection constiElection12 = new ConstituencyElection(new Long(12),getElection(new Long(3)),getConstituency(new Long(2)),null,getNominationsList(new Long(12)),getConstituencyElectionResult(new Long(12)), null);
+		ConstituencyElection constiElection13 = new ConstituencyElection(new Long(13),getElection(new Long(3)),getConstituency(new Long(3)),null,getNominationsList(new Long(13)),getConstituencyElectionResult(new Long(13)), null);
+		ConstituencyElection constiElection14 = new ConstituencyElection(new Long(14),getElection(new Long(3)),getConstituency(new Long(6)),null,getNominationsList(new Long(14)),getConstituencyElectionResult(new Long(14)), null);
+		ConstituencyElection constiElection15 = new ConstituencyElection(new Long(15),getElection(new Long(3)),getConstituency(new Long(7)),null,getNominationsList(new Long(15)),getConstituencyElectionResult(new Long(15)), null);
+		ConstituencyElection constiElection16 = new ConstituencyElection(new Long(16),getElection(new Long(3)),getConstituency(new Long(8)),null,getNominationsList(new Long(16)),getConstituencyElectionResult(new Long(16)), null);
+		ConstituencyElection constiElection17 = new ConstituencyElection(new Long(17),getElection(new Long(3)),getConstituency(new Long(9)),null,getNominationsList(new Long(17)),getConstituencyElectionResult(new Long(17)), null);
+		ConstituencyElection constiElection18 = new ConstituencyElection(new Long(18),getElection(new Long(3)),getConstituency(new Long(10)),null,getNominationsList(new Long(18)),getConstituencyElectionResult(new Long(18)), null);
+		ConstituencyElection constiElection19 = new ConstituencyElection(new Long(19),getElection(new Long(3)),getConstituency(new Long(11)),null,getNominationsList(new Long(19)),getConstituencyElectionResult(new Long(19)), null);
+		ConstituencyElection constiElection20 = new ConstituencyElection(new Long(20),getElection(new Long(3)),getConstituency(new Long(12)),null,getNominationsList(new Long(20)),getConstituencyElectionResult(new Long(20)), null);
+		ConstituencyElection constiElection21 = new ConstituencyElection(new Long(21),getElection(new Long(3)),getConstituency(new Long(13)),null,getNominationsList(new Long(21)),getConstituencyElectionResult(new Long(21)), null);
 		/*ConstituencyElection(Long constiElecId, Election election,
 				Constituency constituency, Date electionDate,
 				Set<Nomination> nominations,
@@ -1103,247 +1107,249 @@ public class MockData {
 		getCandidates();
 		getParties();
 		getCandidateResults();
-		Nomination n1 = new Nomination(new Long(1),getConstituencyElection(new Long(1)),getParty(new Long(11)),getCandidate(new Long(1)),null,null,null,null,getCandidateResult(new Long(1)),null);
-		Nomination n2 = new Nomination(new Long(2),getConstituencyElection(new Long(1)),getParty(new Long(1)),getCandidate(new Long(2)),null,null,null,null,getCandidateResult(new Long(2)),null);
-		Nomination n3 = new Nomination(new Long(3),getConstituencyElection(new Long(1)),getParty(new Long(9)),getCandidate(new Long(3)),null,null,null,null,getCandidateResult(new Long(3)),null);
-		Nomination n4 = new Nomination(new Long(4),getConstituencyElection(new Long(1)),getParty(new Long(2)),getCandidate(new Long(4)),null,null,null,null,getCandidateResult(new Long(4)),null);
-		Nomination n5 = new Nomination(new Long(5),getConstituencyElection(new Long(1)),getParty(new Long(3)),getCandidate(new Long(5)),null,null,null,null,getCandidateResult(new Long(5)),null);
-		Nomination n6 = new Nomination(new Long(6),getConstituencyElection(new Long(1)),getParty(new Long(13)),getCandidate(new Long(6)),null,null,null,null,getCandidateResult(new Long(6)),null);
-		Nomination n7 = new Nomination(new Long(7),getConstituencyElection(new Long(1)),getParty(new Long(14)),getCandidate(new Long(7)),null,null,null,null,getCandidateResult(new Long(7)),null);
-		Nomination n8 = new Nomination(new Long(8),getConstituencyElection(new Long(1)),getParty(new Long(13)),getCandidate(new Long(8)),null,null,null,null,getCandidateResult(new Long(8)),null);
-		Nomination n9 = new Nomination(new Long(9),getConstituencyElection(new Long(1)),getParty(new Long(13)),getCandidate(new Long(9)),null,null,null,null,getCandidateResult(new Long(9)),null);
-		Nomination n10 = new Nomination(new Long(10),getConstituencyElection(new Long(1)),getParty(new Long(13)),getCandidate(new Long(10)),null,null,null,null,getCandidateResult(new Long(10)),null);
-		Nomination n11 = new Nomination(new Long(11),getConstituencyElection(new Long(2)),getParty(new Long(1)),getCandidate(new Long(11)),null,null,null,null,getCandidateResult(new Long(11)),null);
-		Nomination n12 = new Nomination(new Long(12),getConstituencyElection(new Long(2)),getParty(new Long(11)),getCandidate(new Long(12)),null,null,null,null,getCandidateResult(new Long(12)),null);
-		Nomination n13 = new Nomination(new Long(13),getConstituencyElection(new Long(2)),getParty(new Long(9)),getCandidate(new Long(13)),null,null,null,null,getCandidateResult(new Long(13)),null);
-		Nomination n14 = new Nomination(new Long(14),getConstituencyElection(new Long(2)),getParty(new Long(3)),getCandidate(new Long(14)),null,null,null,null,getCandidateResult(new Long(14)),null);
-		Nomination n15 = new Nomination(new Long(15),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(15)),null,null,null,null,getCandidateResult(new Long(15)),null);
-		Nomination n16 = new Nomination(new Long(16),getConstituencyElection(new Long(2)),getParty(new Long(14)),getCandidate(new Long(16)),null,null,null,null,getCandidateResult(new Long(16)),null);
-		Nomination n17 = new Nomination(new Long(17),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(17)),null,null,null,null,getCandidateResult(new Long(17)),null);
-		Nomination n18 = new Nomination(new Long(18),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(18)),null,null,null,null,getCandidateResult(new Long(18)),null);
-		Nomination n19 = new Nomination(new Long(19),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(19)),null,null,null,null,getCandidateResult(new Long(19)),null);
-		Nomination n20 = new Nomination(new Long(20),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(20)),null,null,null,null,getCandidateResult(new Long(20)),null);
-		Nomination n21 = new Nomination(new Long(21),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(21)),null,null,null,null,getCandidateResult(new Long(21)),null);
-		Nomination n22 = new Nomination(new Long(22),getConstituencyElection(new Long(3)),getParty(new Long(11)),getCandidate(new Long(22)),null,null,null,null,getCandidateResult(new Long(22)),null);
-		Nomination n23 = new Nomination(new Long(23),getConstituencyElection(new Long(3)),getParty(new Long(1)),getCandidate(new Long(23)),null,null,null,null,getCandidateResult(new Long(23)),null);
-		Nomination n24 = new Nomination(new Long(24),getConstituencyElection(new Long(3)),getParty(new Long(9)),getCandidate(new Long(24)),null,null,null,null,getCandidateResult(new Long(24)),null);
-		Nomination n25 = new Nomination(new Long(25),getConstituencyElection(new Long(3)),getParty(new Long(3)),getCandidate(new Long(25)),null,null,null,null,getCandidateResult(new Long(25)),null);
-		Nomination n26 = new Nomination(new Long(26),getConstituencyElection(new Long(3)),getParty(new Long(12)),getCandidate(new Long(26)),null,null,null,null,getCandidateResult(new Long(26)),null);
-		Nomination n27 = new Nomination(new Long(27),getConstituencyElection(new Long(3)),getParty(new Long(13)),getCandidate(new Long(27)),null,null,null,null,getCandidateResult(new Long(27)),null);
-		Nomination n28 = new Nomination(new Long(28),getConstituencyElection(new Long(3)),getParty(new Long(13)),getCandidate(new Long(28)),null,null,null,null,getCandidateResult(new Long(28)),null);
-		Nomination n29 = new Nomination(new Long(29),getConstituencyElection(new Long(3)),getParty(new Long(14)),getCandidate(new Long(29)),null,null,null,null,getCandidateResult(new Long(29)),null);
-		Nomination n30 = new Nomination(new Long(30),getConstituencyElection(new Long(3)),getParty(new Long(13)),getCandidate(new Long(30)),null,null,null,null,getCandidateResult(new Long(30)),null);
-		Nomination n31 = new Nomination(new Long(31),getConstituencyElection(new Long(3)),getParty(new Long(17)),getCandidate(new Long(31)),null,null,null,null,getCandidateResult(new Long(31)),null);
-		Nomination n32 = new Nomination(new Long(32),getConstituencyElection(new Long(3)),getParty(new Long(13)),getCandidate(new Long(32)),null,null,null,null,getCandidateResult(new Long(32)),null);
-		Nomination n33 = new Nomination(new Long(33),getConstituencyElection(new Long(4)),getParty(new Long(9)),getCandidate(new Long(33)),null,null,null,null,getCandidateResult(new Long(33)),null);
-		Nomination n34 = new Nomination(new Long(34),getConstituencyElection(new Long(4)),getParty(new Long(1)),getCandidate(new Long(34)),null,null,null,null,getCandidateResult(new Long(34)),null);
-		Nomination n35 = new Nomination(new Long(35),getConstituencyElection(new Long(4)),getParty(new Long(11)),getCandidate(new Long(35)),null,null,null,null,getCandidateResult(new Long(35)),null);
-		Nomination n36 = new Nomination(new Long(36),getConstituencyElection(new Long(4)),getParty(new Long(12)),getCandidate(new Long(36)),null,null,null,null,getCandidateResult(new Long(36)),null);
-		Nomination n37 = new Nomination(new Long(37),getConstituencyElection(new Long(4)),getParty(new Long(2)),getCandidate(new Long(37)),null,null,null,null,getCandidateResult(new Long(37)),null);
-		Nomination n38 = new Nomination(new Long(38),getConstituencyElection(new Long(4)),getParty(new Long(13)),getCandidate(new Long(38)),null,null,null,null,getCandidateResult(new Long(38)),null);
-		Nomination n39 = new Nomination(new Long(39),getConstituencyElection(new Long(4)),getParty(new Long(13)),getCandidate(new Long(39)),null,null,null,null,getCandidateResult(new Long(39)),null);
-		Nomination n40 = new Nomination(new Long(40),getConstituencyElection(new Long(4)),getParty(new Long(14)),getCandidate(new Long(40)),null,null,null,null,getCandidateResult(new Long(40)),null);
-		Nomination n41 = new Nomination(new Long(41),getConstituencyElection(new Long(4)),getParty(new Long(3)),getCandidate(new Long(41)),null,null,null,null,getCandidateResult(new Long(41)),null);
-		Nomination n42 = new Nomination(new Long(42),getConstituencyElection(new Long(4)),getParty(new Long(23)),getCandidate(new Long(42)),null,null,null,null,getCandidateResult(new Long(42)),null);
-		Nomination n43 = new Nomination(new Long(43),getConstituencyElection(new Long(4)),getParty(new Long(13)),getCandidate(new Long(43)),null,null,null,null,getCandidateResult(new Long(43)),null);
-		Nomination n44 = new Nomination(new Long(44),getConstituencyElection(new Long(4)),getParty(new Long(17)),getCandidate(new Long(44)),null,null,null,null,getCandidateResult(new Long(44)),null);
-		Nomination n45 = new Nomination(new Long(45),getConstituencyElection(new Long(5)),getParty(new Long(1)),getCandidate(new Long(45)),null,null,null,null,getCandidateResult(new Long(45)),null);
-		Nomination n46 = new Nomination(new Long(46),getConstituencyElection(new Long(5)),getParty(new Long(9)),getCandidate(new Long(46)),null,null,null,null,getCandidateResult(new Long(46)),null);
-		Nomination n47 = new Nomination(new Long(47),getConstituencyElection(new Long(5)),getParty(new Long(5)),getCandidate(new Long(47)),null,null,null,null,getCandidateResult(new Long(47)),null);
-		Nomination n48 = new Nomination(new Long(48),getConstituencyElection(new Long(5)),getParty(new Long(12)),getCandidate(new Long(48)),null,null,null,null,getCandidateResult(new Long(48)),null);
-		Nomination n49 = new Nomination(new Long(49),getConstituencyElection(new Long(5)),getParty(new Long(2)),getCandidate(new Long(49)),null,null,null,null,getCandidateResult(new Long(49)),null);
-		Nomination n50 = new Nomination(new Long(50),getConstituencyElection(new Long(5)),getParty(new Long(3)),getCandidate(new Long(50)),null,null,null,null,getCandidateResult(new Long(50)),null);
-		Nomination n51 = new Nomination(new Long(51),getConstituencyElection(new Long(5)),getParty(new Long(14)),getCandidate(new Long(51)),null,null,null,null,getCandidateResult(new Long(51)),null);
-		Nomination n52 = new Nomination(new Long(52),getConstituencyElection(new Long(5)),getParty(new Long(13)),getCandidate(new Long(52)),null,null,null,null,getCandidateResult(new Long(52)),null);
-		Nomination n53 = new Nomination(new Long(53),getConstituencyElection(new Long(5)),getParty(new Long(13)),getCandidate(new Long(53)),null,null,null,null,getCandidateResult(new Long(53)),null);
-		Nomination n54 = new Nomination(new Long(54),getConstituencyElection(new Long(5)),getParty(new Long(13)),getCandidate(new Long(54)),null,null,null,null,getCandidateResult(new Long(54)),null);
-		Nomination n55 = new Nomination(new Long(55),getConstituencyElection(new Long(5)),getParty(new Long(51)),getCandidate(new Long(55)),null,null,null,null,getCandidateResult(new Long(55)),null);
-		Nomination n56 = new Nomination(new Long(56),getConstituencyElection(new Long(6)),getParty(new Long(1)),getCandidate(new Long(56)),null,null,null,null,getCandidateResult(new Long(56)),null);
-		Nomination n57 = new Nomination(new Long(57),getConstituencyElection(new Long(6)),getParty(new Long(11)),getCandidate(new Long(57)),null,null,null,null,getCandidateResult(new Long(57)),null);
+		Nomination n1 = new Nomination(new Long(1),getConstituencyElection(new Long(1)),getParty(new Long(11)),getCandidate(new Long(1)),null,null,null,null,getCandidateResult(new Long(1)), null);
+		Nomination n2 = new Nomination(new Long(2),getConstituencyElection(new Long(1)),getParty(new Long(1)),getCandidate(new Long(2)),null,null,null,null,getCandidateResult(new Long(2)), null);
+		Nomination n3 = new Nomination(new Long(3),getConstituencyElection(new Long(1)),getParty(new Long(9)),getCandidate(new Long(3)),null,null,null,null,getCandidateResult(new Long(3)), null);
+		Nomination n4 = new Nomination(new Long(4),getConstituencyElection(new Long(1)),getParty(new Long(2)),getCandidate(new Long(4)),null,null,null,null,getCandidateResult(new Long(4)), null);
+		Nomination n5 = new Nomination(new Long(5),getConstituencyElection(new Long(1)),getParty(new Long(3)),getCandidate(new Long(5)),null,null,null,null,getCandidateResult(new Long(5)), null);
+		Nomination n6 = new Nomination(new Long(6),getConstituencyElection(new Long(1)),getParty(new Long(13)),getCandidate(new Long(6)),null,null,null,null,getCandidateResult(new Long(6)), null);
+
+		Nomination n7 = new Nomination(new Long(7),getConstituencyElection(new Long(1)),getParty(new Long(14)),getCandidate(new Long(7)),null,null,null,null,getCandidateResult(new Long(7)), null);
+		Nomination n8 = new Nomination(new Long(8),getConstituencyElection(new Long(1)),getParty(new Long(13)),getCandidate(new Long(8)),null,null,null,null,getCandidateResult(new Long(8)), null);
+		Nomination n9 = new Nomination(new Long(9),getConstituencyElection(new Long(1)),getParty(new Long(13)),getCandidate(new Long(9)),null,null,null,null,getCandidateResult(new Long(9)), null);
+		Nomination n10 = new Nomination(new Long(10),getConstituencyElection(new Long(1)),getParty(new Long(13)),getCandidate(new Long(10)),null,null,null,null,getCandidateResult(new Long(10)), null);
+		Nomination n11 = new Nomination(new Long(11),getConstituencyElection(new Long(2)),getParty(new Long(1)),getCandidate(new Long(11)),null,null,null,null,getCandidateResult(new Long(11)), null);
+		Nomination n12 = new Nomination(new Long(12),getConstituencyElection(new Long(2)),getParty(new Long(11)),getCandidate(new Long(12)),null,null,null,null,getCandidateResult(new Long(12)), null);
+		Nomination n13 = new Nomination(new Long(13),getConstituencyElection(new Long(2)),getParty(new Long(9)),getCandidate(new Long(13)),null,null,null,null,getCandidateResult(new Long(13)), null);
+		Nomination n14 = new Nomination(new Long(14),getConstituencyElection(new Long(2)),getParty(new Long(3)),getCandidate(new Long(14)),null,null,null,null,getCandidateResult(new Long(14)), null);
+		Nomination n15 = new Nomination(new Long(15),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(15)),null,null,null,null,getCandidateResult(new Long(15)), null);
+		Nomination n16 = new Nomination(new Long(16),getConstituencyElection(new Long(2)),getParty(new Long(14)),getCandidate(new Long(16)),null,null,null,null,getCandidateResult(new Long(16)), null);
+		Nomination n17 = new Nomination(new Long(17),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(17)),null,null,null,null,getCandidateResult(new Long(17)), null);
+		Nomination n18 = new Nomination(new Long(18),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(18)),null,null,null,null,getCandidateResult(new Long(18)), null);
+		Nomination n19 = new Nomination(new Long(19),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(19)),null,null,null,null,getCandidateResult(new Long(19)), null);
+		Nomination n20 = new Nomination(new Long(20),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(20)),null,null,null,null,getCandidateResult(new Long(20)), null);
+		Nomination n21 = new Nomination(new Long(21),getConstituencyElection(new Long(2)),getParty(new Long(13)),getCandidate(new Long(21)),null,null,null,null,getCandidateResult(new Long(21)), null);
+		Nomination n22 = new Nomination(new Long(22),getConstituencyElection(new Long(3)),getParty(new Long(11)),getCandidate(new Long(22)),null,null,null,null,getCandidateResult(new Long(22)), null);
+		Nomination n23 = new Nomination(new Long(23),getConstituencyElection(new Long(3)),getParty(new Long(1)),getCandidate(new Long(23)),null,null,null,null,getCandidateResult(new Long(23)), null);
+		Nomination n24 = new Nomination(new Long(24),getConstituencyElection(new Long(3)),getParty(new Long(9)),getCandidate(new Long(24)),null,null,null,null,getCandidateResult(new Long(24)), null);
+		Nomination n25 = new Nomination(new Long(25),getConstituencyElection(new Long(3)),getParty(new Long(3)),getCandidate(new Long(25)),null,null,null,null,getCandidateResult(new Long(25)), null);
+		Nomination n26 = new Nomination(new Long(26),getConstituencyElection(new Long(3)),getParty(new Long(12)),getCandidate(new Long(26)),null,null,null,null,getCandidateResult(new Long(26)), null);
+		Nomination n27 = new Nomination(new Long(27),getConstituencyElection(new Long(3)),getParty(new Long(13)),getCandidate(new Long(27)),null,null,null,null,getCandidateResult(new Long(27)), null);
+		Nomination n28 = new Nomination(new Long(28),getConstituencyElection(new Long(3)),getParty(new Long(13)),getCandidate(new Long(28)),null,null,null,null,getCandidateResult(new Long(28)), null);
+		Nomination n29 = new Nomination(new Long(29),getConstituencyElection(new Long(3)),getParty(new Long(14)),getCandidate(new Long(29)),null,null,null,null,getCandidateResult(new Long(29)), null);
+		Nomination n30 = new Nomination(new Long(30),getConstituencyElection(new Long(3)),getParty(new Long(13)),getCandidate(new Long(30)),null,null,null,null,getCandidateResult(new Long(30)), null);
+		Nomination n31 = new Nomination(new Long(31),getConstituencyElection(new Long(3)),getParty(new Long(17)),getCandidate(new Long(31)),null,null,null,null,getCandidateResult(new Long(31)), null);
+		Nomination n32 = new Nomination(new Long(32),getConstituencyElection(new Long(3)),getParty(new Long(13)),getCandidate(new Long(32)),null,null,null,null,getCandidateResult(new Long(32)), null);
+		Nomination n33 = new Nomination(new Long(33),getConstituencyElection(new Long(4)),getParty(new Long(9)),getCandidate(new Long(33)),null,null,null,null,getCandidateResult(new Long(33)), null);
+		Nomination n34 = new Nomination(new Long(34),getConstituencyElection(new Long(4)),getParty(new Long(1)),getCandidate(new Long(34)),null,null,null,null,getCandidateResult(new Long(34)), null);
+		Nomination n35 = new Nomination(new Long(35),getConstituencyElection(new Long(4)),getParty(new Long(11)),getCandidate(new Long(35)),null,null,null,null,getCandidateResult(new Long(35)), null);
+		Nomination n36 = new Nomination(new Long(36),getConstituencyElection(new Long(4)),getParty(new Long(12)),getCandidate(new Long(36)),null,null,null,null,getCandidateResult(new Long(36)), null);
+		Nomination n37 = new Nomination(new Long(37),getConstituencyElection(new Long(4)),getParty(new Long(2)),getCandidate(new Long(37)),null,null,null,null,getCandidateResult(new Long(37)), null);
+		Nomination n38 = new Nomination(new Long(38),getConstituencyElection(new Long(4)),getParty(new Long(13)),getCandidate(new Long(38)),null,null,null,null,getCandidateResult(new Long(38)), null);
+		Nomination n39 = new Nomination(new Long(39),getConstituencyElection(new Long(4)),getParty(new Long(13)),getCandidate(new Long(39)),null,null,null,null,getCandidateResult(new Long(39)), null);
+		Nomination n40 = new Nomination(new Long(40),getConstituencyElection(new Long(4)),getParty(new Long(14)),getCandidate(new Long(40)),null,null,null,null,getCandidateResult(new Long(40)), null);
+		Nomination n41 = new Nomination(new Long(41),getConstituencyElection(new Long(4)),getParty(new Long(3)),getCandidate(new Long(41)),null,null,null,null,getCandidateResult(new Long(41)), null);
+		Nomination n42 = new Nomination(new Long(42),getConstituencyElection(new Long(4)),getParty(new Long(23)),getCandidate(new Long(42)),null,null,null,null,getCandidateResult(new Long(42)), null);
+		Nomination n43 = new Nomination(new Long(43),getConstituencyElection(new Long(4)),getParty(new Long(13)),getCandidate(new Long(43)),null,null,null,null,getCandidateResult(new Long(43)), null);
+		Nomination n44 = new Nomination(new Long(44),getConstituencyElection(new Long(4)),getParty(new Long(17)),getCandidate(new Long(44)),null,null,null,null,getCandidateResult(new Long(44)), null);
+		Nomination n45 = new Nomination(new Long(45),getConstituencyElection(new Long(5)),getParty(new Long(1)),getCandidate(new Long(45)),null,null,null,null,getCandidateResult(new Long(45)), null);
+		Nomination n46 = new Nomination(new Long(46),getConstituencyElection(new Long(5)),getParty(new Long(9)),getCandidate(new Long(46)),null,null,null,null,getCandidateResult(new Long(46)), null);
+		Nomination n47 = new Nomination(new Long(47),getConstituencyElection(new Long(5)),getParty(new Long(5)),getCandidate(new Long(47)),null,null,null,null,getCandidateResult(new Long(47)), null);
+		Nomination n48 = new Nomination(new Long(48),getConstituencyElection(new Long(5)),getParty(new Long(12)),getCandidate(new Long(48)),null,null,null,null,getCandidateResult(new Long(48)), null);
+		Nomination n49 = new Nomination(new Long(49),getConstituencyElection(new Long(5)),getParty(new Long(2)),getCandidate(new Long(49)),null,null,null,null,getCandidateResult(new Long(49)), null);
+		Nomination n50 = new Nomination(new Long(50),getConstituencyElection(new Long(5)),getParty(new Long(3)),getCandidate(new Long(50)),null,null,null,null,getCandidateResult(new Long(50)), null);
+		Nomination n51 = new Nomination(new Long(51),getConstituencyElection(new Long(5)),getParty(new Long(14)),getCandidate(new Long(51)),null,null,null,null,getCandidateResult(new Long(51)), null);
+		Nomination n52 = new Nomination(new Long(52),getConstituencyElection(new Long(5)),getParty(new Long(13)),getCandidate(new Long(52)),null,null,null,null,getCandidateResult(new Long(52)), null);
+		Nomination n53 = new Nomination(new Long(53),getConstituencyElection(new Long(5)),getParty(new Long(13)),getCandidate(new Long(53)),null,null,null,null,getCandidateResult(new Long(53)), null);
+		Nomination n54 = new Nomination(new Long(54),getConstituencyElection(new Long(5)),getParty(new Long(13)),getCandidate(new Long(54)),null,null,null,null,getCandidateResult(new Long(54)), null);
+		Nomination n55 = new Nomination(new Long(55),getConstituencyElection(new Long(5)),getParty(new Long(51)),getCandidate(new Long(55)),null,null,null,null,getCandidateResult(new Long(55)), null);
+		Nomination n56 = new Nomination(new Long(56),getConstituencyElection(new Long(6)),getParty(new Long(1)),getCandidate(new Long(56)),null,null,null,null,getCandidateResult(new Long(56)), null);
+		Nomination n57 = new Nomination(new Long(57),getConstituencyElection(new Long(6)),getParty(new Long(11)),getCandidate(new Long(57)),null,null,null,null,getCandidateResult(new Long(57)), null);
 		
 		//new nomination
-		Nomination n58 = new Nomination(new Long(58),getConstituencyElection(new Long(6)),getParty(new Long(9)),getCandidate(new Long(58)),null,null,null,null,getCandidateResult(new Long(58)),null);
-		Nomination n59 = new Nomination(new Long(59),getConstituencyElection(new Long(6)),getParty(new Long(3)),getCandidate(new Long(59)),null,null,null,null,getCandidateResult(new Long(59)),null);
-		Nomination n60 = new Nomination(new Long(60),getConstituencyElection(new Long(6)),getParty(new Long(2)),getCandidate(new Long(60)),null,null,null,null,getCandidateResult(new Long(60)),null);
-		Nomination n61 = new Nomination(new Long(61),getConstituencyElection(new Long(6)),getParty(new Long(13)),getCandidate(new Long(61)),null,null,null,null,getCandidateResult(new Long(61)),null);
-		Nomination n62 = new Nomination(new Long(62),getConstituencyElection(new Long(6)),getParty(new Long(13)),getCandidate(new Long(62)),null,null,null,null,getCandidateResult(new Long(62)),null);
-		Nomination n63 = new Nomination(new Long(63),getConstituencyElection(new Long(6)),getParty(new Long(12)),getCandidate(new Long(63)),null,null,null,null,getCandidateResult(new Long(63)),null);
-		Nomination n64 = new Nomination(new Long(64),getConstituencyElection(new Long(6)),getParty(new Long(13)),getCandidate(new Long(64)),null,null,null,null,getCandidateResult(new Long(64)),null);
-		Nomination n65 = new Nomination(new Long(65),getConstituencyElection(new Long(6)),getParty(new Long(14)),getCandidate(new Long(65)),null,null,null,null,getCandidateResult(new Long(65)),null);
-		Nomination n66 = new Nomination(new Long(66),getConstituencyElection(new Long(6)),getParty(new Long(13)),getCandidate(new Long(66)),null,null,null,null,getCandidateResult(new Long(66)),null);
-		Nomination n67 = new Nomination(new Long(67),getConstituencyElection(new Long(6)),getParty(new Long(45)),getCandidate(new Long(67)),null,null,null,null,getCandidateResult(new Long(67)),null);
-		Nomination n68 = new Nomination(new Long(68),getConstituencyElection(new Long(7)),getParty(new Long(11)),getCandidate(new Long(68)),null,null,null,null,getCandidateResult(new Long(68)),null);
-		Nomination n69 = new Nomination(new Long(69),getConstituencyElection(new Long(7)),getParty(new Long(1)),getCandidate(new Long(69)),null,null,null,null,getCandidateResult(new Long(69)),null);
-		Nomination n70 = new Nomination(new Long(70),getConstituencyElection(new Long(7)),getParty(new Long(9)),getCandidate(new Long(70)),null,null,null,null,getCandidateResult(new Long(70)),null);
-		Nomination n71 = new Nomination(new Long(71),getConstituencyElection(new Long(7)),getParty(new Long(3)),getCandidate(new Long(71)),null,null,null,null,getCandidateResult(new Long(71)),null);
-		Nomination n72 = new Nomination(new Long(72),getConstituencyElection(new Long(7)),getParty(new Long(12)),getCandidate(new Long(72)),null,null,null,null,getCandidateResult(new Long(72)),null);
-		Nomination n73 = new Nomination(new Long(73),getConstituencyElection(new Long(7)),getParty(new Long(13)),getCandidate(new Long(73)),null,null,null,null,getCandidateResult(new Long(73)),null);
-		Nomination n74 = new Nomination(new Long(74),getConstituencyElection(new Long(7)),getParty(new Long(14)),getCandidate(new Long(74)),null,null,null,null,getCandidateResult(new Long(74)),null);
-		Nomination n75 = new Nomination(new Long(75),getConstituencyElection(new Long(7)),getParty(new Long(13)),getCandidate(new Long(75)),null,null,null,null,getCandidateResult(new Long(75)),null);
-		Nomination n76 = new Nomination(new Long(76),getConstituencyElection(new Long(8)),getParty(new Long(11)),getCandidate(new Long(76)),null,null,null,null,getCandidateResult(new Long(76)),null);
-		Nomination n77 = new Nomination(new Long(77),getConstituencyElection(new Long(8)),getParty(new Long(1)),getCandidate(new Long(77)),null,null,null,null,getCandidateResult(new Long(77)),null);
-		Nomination n78 = new Nomination(new Long(78),getConstituencyElection(new Long(8)),getParty(new Long(9)),getCandidate(new Long(78)),null,null,null,null,getCandidateResult(new Long(78)),null);
-		Nomination n79 = new Nomination(new Long(79),getConstituencyElection(new Long(8)),getParty(new Long(3)),getCandidate(new Long(79)),null,null,null,null,getCandidateResult(new Long(79)),null);
-		Nomination n80 = new Nomination(new Long(80),getConstituencyElection(new Long(8)),getParty(new Long(12)),getCandidate(new Long(80)),null,null,null,null,getCandidateResult(new Long(80)),null);
-		Nomination n81 = new Nomination(new Long(81),getConstituencyElection(new Long(8)),getParty(new Long(14)),getCandidate(new Long(81)),null,null,null,null,getCandidateResult(new Long(81)),null);
-		Nomination n82 = new Nomination(new Long(82),getConstituencyElection(new Long(8)),getParty(new Long(13)),getCandidate(new Long(82)),null,null,null,null,getCandidateResult(new Long(82)),null);
-		Nomination n83 = new Nomination(new Long(83),getConstituencyElection(new Long(8)),getParty(new Long(13)),getCandidate(new Long(83)),null,null,null,null,getCandidateResult(new Long(83)),null);
-		Nomination n84 = new Nomination(new Long(84),getConstituencyElection(new Long(8)),getParty(new Long(13)),getCandidate(new Long(84)),null,null,null,null,getCandidateResult(new Long(84)),null);
-		Nomination n85 = new Nomination(new Long(85),getConstituencyElection(new Long(9)),getParty(new Long(11)),getCandidate(new Long(85)),null,null,null,null,getCandidateResult(new Long(85)),null);
-		Nomination n86 = new Nomination(new Long(86),getConstituencyElection(new Long(9)),getParty(new Long(1)),getCandidate(new Long(86)),null,null,null,null,getCandidateResult(new Long(86)),null);
-		Nomination n87 = new Nomination(new Long(87),getConstituencyElection(new Long(9)),getParty(new Long(9)),getCandidate(new Long(87)),null,null,null,null,getCandidateResult(new Long(87)),null);
-		Nomination n88 = new Nomination(new Long(88),getConstituencyElection(new Long(9)),getParty(new Long(2)),getCandidate(new Long(88)),null,null,null,null,getCandidateResult(new Long(88)),null);
-		Nomination n89 = new Nomination(new Long(89),getConstituencyElection(new Long(9)),getParty(new Long(12)),getCandidate(new Long(89)),null,null,null,null,getCandidateResult(new Long(89)),null);
-		Nomination n90 = new Nomination(new Long(90),getConstituencyElection(new Long(9)),getParty(new Long(13)),getCandidate(new Long(90)),null,null,null,null,getCandidateResult(new Long(90)),null);
-		Nomination n91 = new Nomination(new Long(91),getConstituencyElection(new Long(9)),getParty(new Long(3)),getCandidate(new Long(91)),null,null,null,null,getCandidateResult(new Long(91)),null);
-		Nomination n92 = new Nomination(new Long(92),getConstituencyElection(new Long(9)),getParty(new Long(14)),getCandidate(new Long(92)),null,null,null,null,getCandidateResult(new Long(92)),null);
-		Nomination n93 = new Nomination(new Long(93),getConstituencyElection(new Long(9)),getParty(new Long(13)),getCandidate(new Long(93)),null,null,null,null,getCandidateResult(new Long(93)),null);
-		Nomination n94 = new Nomination(new Long(94),getConstituencyElection(new Long(10)),getParty(new Long(11)),getCandidate(new Long(94)),null,null,null,null,getCandidateResult(new Long(94)),null);
-		Nomination n95 = new Nomination(new Long(95),getConstituencyElection(new Long(10)),getParty(new Long(3)),getCandidate(new Long(95)),null,null,null,null,getCandidateResult(new Long(95)),null);
-		Nomination n96 = new Nomination(new Long(96),getConstituencyElection(new Long(10)),getParty(new Long(1)),getCandidate(new Long(96)),null,null,null,null,getCandidateResult(new Long(96)),null);
-		Nomination n97 = new Nomination(new Long(97),getConstituencyElection(new Long(10)),getParty(new Long(12)),getCandidate(new Long(97)),null,null,null,null,getCandidateResult(new Long(97)),null);
-		Nomination n98 = new Nomination(new Long(98),getConstituencyElection(new Long(10)),getParty(new Long(6)),getCandidate(new Long(98)),null,null,null,null,getCandidateResult(new Long(98)),null);
-		Nomination n99 = new Nomination(new Long(99),getConstituencyElection(new Long(10)),getParty(new Long(14)),getCandidate(new Long(99)),null,null,null,null,getCandidateResult(new Long(99)),null);
-		Nomination n100 = new Nomination(new Long(100),getConstituencyElection(new Long(10)),getParty(new Long(9)),getCandidate(new Long(100)),null,null,null,null,getCandidateResult(new Long(100)),null);
-		Nomination n101 = new Nomination(new Long(101),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(101)),null,null,null,null,getCandidateResult(new Long(101)),null);
-		Nomination n102 = new Nomination(new Long(102),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(102)),null,null,null,null,getCandidateResult(new Long(102)),null);
-		Nomination n103 = new Nomination(new Long(103),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(103)),null,null,null,null,getCandidateResult(new Long(103)),null);
-		Nomination n104 = new Nomination(new Long(104),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(104)),null,null,null,null,getCandidateResult(new Long(104)),null);
-		Nomination n105 = new Nomination(new Long(105),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(105)),null,null,null,null,getCandidateResult(new Long(105)),null);
-		Nomination n106 = new Nomination(new Long(106),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(106)),null,null,null,null,getCandidateResult(new Long(106)),null);
-		Nomination n107 = new Nomination(new Long(107),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(107)),null,null,null,null,getCandidateResult(new Long(107)),null);
+		Nomination n58 = new Nomination(new Long(58),getConstituencyElection(new Long(6)),getParty(new Long(9)),getCandidate(new Long(58)),null,null,null,null,getCandidateResult(new Long(58)), null);
+		Nomination n59 = new Nomination(new Long(59),getConstituencyElection(new Long(6)),getParty(new Long(3)),getCandidate(new Long(59)),null,null,null,null,getCandidateResult(new Long(59)), null);
+		Nomination n60 = new Nomination(new Long(60),getConstituencyElection(new Long(6)),getParty(new Long(2)),getCandidate(new Long(60)),null,null,null,null,getCandidateResult(new Long(60)), null);
+		Nomination n61 = new Nomination(new Long(61),getConstituencyElection(new Long(6)),getParty(new Long(13)),getCandidate(new Long(61)),null,null,null,null,getCandidateResult(new Long(61)), null);
+		Nomination n62 = new Nomination(new Long(62),getConstituencyElection(new Long(6)),getParty(new Long(13)),getCandidate(new Long(62)),null,null,null,null,getCandidateResult(new Long(62)), null);
+		Nomination n63 = new Nomination(new Long(63),getConstituencyElection(new Long(6)),getParty(new Long(12)),getCandidate(new Long(63)),null,null,null,null,getCandidateResult(new Long(63)), null);
+		Nomination n64 = new Nomination(new Long(64),getConstituencyElection(new Long(6)),getParty(new Long(13)),getCandidate(new Long(64)),null,null,null,null,getCandidateResult(new Long(64)), null);
+		Nomination n65 = new Nomination(new Long(65),getConstituencyElection(new Long(6)),getParty(new Long(14)),getCandidate(new Long(65)),null,null,null,null,getCandidateResult(new Long(65)), null);
+		Nomination n66 = new Nomination(new Long(66),getConstituencyElection(new Long(6)),getParty(new Long(13)),getCandidate(new Long(66)),null,null,null,null,getCandidateResult(new Long(66)), null);
+		Nomination n67 = new Nomination(new Long(67),getConstituencyElection(new Long(6)),getParty(new Long(45)),getCandidate(new Long(67)),null,null,null,null,getCandidateResult(new Long(67)), null);
+		Nomination n68 = new Nomination(new Long(68),getConstituencyElection(new Long(7)),getParty(new Long(11)),getCandidate(new Long(68)),null,null,null,null,getCandidateResult(new Long(68)), null);
+		Nomination n69 = new Nomination(new Long(69),getConstituencyElection(new Long(7)),getParty(new Long(1)),getCandidate(new Long(69)),null,null,null,null,getCandidateResult(new Long(69)), null);
+		Nomination n70 = new Nomination(new Long(70),getConstituencyElection(new Long(7)),getParty(new Long(9)),getCandidate(new Long(70)),null,null,null,null,getCandidateResult(new Long(70)), null);
+		Nomination n71 = new Nomination(new Long(71),getConstituencyElection(new Long(7)),getParty(new Long(3)),getCandidate(new Long(71)),null,null,null,null,getCandidateResult(new Long(71)), null);
+		Nomination n72 = new Nomination(new Long(72),getConstituencyElection(new Long(7)),getParty(new Long(12)),getCandidate(new Long(72)),null,null,null,null,getCandidateResult(new Long(72)), null);
+		Nomination n73 = new Nomination(new Long(73),getConstituencyElection(new Long(7)),getParty(new Long(13)),getCandidate(new Long(73)),null,null,null,null,getCandidateResult(new Long(73)), null);
+		Nomination n74 = new Nomination(new Long(74),getConstituencyElection(new Long(7)),getParty(new Long(14)),getCandidate(new Long(74)),null,null,null,null,getCandidateResult(new Long(74)), null);
+		Nomination n75 = new Nomination(new Long(75),getConstituencyElection(new Long(7)),getParty(new Long(13)),getCandidate(new Long(75)),null,null,null,null,getCandidateResult(new Long(75)), null);
+		Nomination n76 = new Nomination(new Long(76),getConstituencyElection(new Long(8)),getParty(new Long(11)),getCandidate(new Long(76)),null,null,null,null,getCandidateResult(new Long(76)), null);
+		Nomination n77 = new Nomination(new Long(77),getConstituencyElection(new Long(8)),getParty(new Long(1)),getCandidate(new Long(77)),null,null,null,null,getCandidateResult(new Long(77)), null);
+		Nomination n78 = new Nomination(new Long(78),getConstituencyElection(new Long(8)),getParty(new Long(9)),getCandidate(new Long(78)),null,null,null,null,getCandidateResult(new Long(78)), null);
+		Nomination n79 = new Nomination(new Long(79),getConstituencyElection(new Long(8)),getParty(new Long(3)),getCandidate(new Long(79)),null,null,null,null,getCandidateResult(new Long(79)), null);
+		Nomination n80 = new Nomination(new Long(80),getConstituencyElection(new Long(8)),getParty(new Long(12)),getCandidate(new Long(80)),null,null,null,null,getCandidateResult(new Long(80)), null);
+		Nomination n81 = new Nomination(new Long(81),getConstituencyElection(new Long(8)),getParty(new Long(14)),getCandidate(new Long(81)),null,null,null,null,getCandidateResult(new Long(81)), null);
+		Nomination n82 = new Nomination(new Long(82),getConstituencyElection(new Long(8)),getParty(new Long(13)),getCandidate(new Long(82)),null,null,null,null,getCandidateResult(new Long(82)), null);
+		Nomination n83 = new Nomination(new Long(83),getConstituencyElection(new Long(8)),getParty(new Long(13)),getCandidate(new Long(83)),null,null,null,null,getCandidateResult(new Long(83)), null);
+		Nomination n84 = new Nomination(new Long(84),getConstituencyElection(new Long(8)),getParty(new Long(13)),getCandidate(new Long(84)),null,null,null,null,getCandidateResult(new Long(84)), null);
+		Nomination n85 = new Nomination(new Long(85),getConstituencyElection(new Long(9)),getParty(new Long(11)),getCandidate(new Long(85)),null,null,null,null,getCandidateResult(new Long(85)), null);
+		Nomination n86 = new Nomination(new Long(86),getConstituencyElection(new Long(9)),getParty(new Long(1)),getCandidate(new Long(86)),null,null,null,null,getCandidateResult(new Long(86)), null);
+		Nomination n87 = new Nomination(new Long(87),getConstituencyElection(new Long(9)),getParty(new Long(9)),getCandidate(new Long(87)),null,null,null,null,getCandidateResult(new Long(87)), null);
+		Nomination n88 = new Nomination(new Long(88),getConstituencyElection(new Long(9)),getParty(new Long(2)),getCandidate(new Long(88)),null,null,null,null,getCandidateResult(new Long(88)), null);
+		Nomination n89 = new Nomination(new Long(89),getConstituencyElection(new Long(9)),getParty(new Long(12)),getCandidate(new Long(89)),null,null,null,null,getCandidateResult(new Long(89)), null);
+		Nomination n90 = new Nomination(new Long(90),getConstituencyElection(new Long(9)),getParty(new Long(13)),getCandidate(new Long(90)),null,null,null,null,getCandidateResult(new Long(90)), null);
+		Nomination n91 = new Nomination(new Long(91),getConstituencyElection(new Long(9)),getParty(new Long(3)),getCandidate(new Long(91)),null,null,null,null,getCandidateResult(new Long(91)), null);
+		Nomination n92 = new Nomination(new Long(92),getConstituencyElection(new Long(9)),getParty(new Long(14)),getCandidate(new Long(92)),null,null,null,null,getCandidateResult(new Long(92)), null);
+		Nomination n93 = new Nomination(new Long(93),getConstituencyElection(new Long(9)),getParty(new Long(13)),getCandidate(new Long(93)),null,null,null,null,getCandidateResult(new Long(93)), null);
+		Nomination n94 = new Nomination(new Long(94),getConstituencyElection(new Long(10)),getParty(new Long(11)),getCandidate(new Long(94)),null,null,null,null,getCandidateResult(new Long(94)), null);
+		Nomination n95 = new Nomination(new Long(95),getConstituencyElection(new Long(10)),getParty(new Long(3)),getCandidate(new Long(95)),null,null,null,null,getCandidateResult(new Long(95)), null);
+		Nomination n96 = new Nomination(new Long(96),getConstituencyElection(new Long(10)),getParty(new Long(1)),getCandidate(new Long(96)),null,null,null,null,getCandidateResult(new Long(96)), null);
+		Nomination n97 = new Nomination(new Long(97),getConstituencyElection(new Long(10)),getParty(new Long(12)),getCandidate(new Long(97)),null,null,null,null,getCandidateResult(new Long(97)), null);
+		Nomination n98 = new Nomination(new Long(98),getConstituencyElection(new Long(10)),getParty(new Long(6)),getCandidate(new Long(98)),null,null,null,null,getCandidateResult(new Long(98)), null);
+		Nomination n99 = new Nomination(new Long(99),getConstituencyElection(new Long(10)),getParty(new Long(14)),getCandidate(new Long(99)),null,null,null,null,getCandidateResult(new Long(99)), null);
+		Nomination n100 = new Nomination(new Long(100),getConstituencyElection(new Long(10)),getParty(new Long(9)),getCandidate(new Long(100)),null,null,null,null,getCandidateResult(new Long(100)), null);
+		Nomination n101 = new Nomination(new Long(101),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(101)),null,null,null,null,getCandidateResult(new Long(101)), null);
+		Nomination n102 = new Nomination(new Long(102),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(102)),null,null,null,null,getCandidateResult(new Long(102)), null);
+		Nomination n103 = new Nomination(new Long(103),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(103)),null,null,null,null,getCandidateResult(new Long(103)), null);
+		Nomination n104 = new Nomination(new Long(104),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(104)),null,null,null,null,getCandidateResult(new Long(104)), null);
+		Nomination n105 = new Nomination(new Long(105),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(105)),null,null,null,null,getCandidateResult(new Long(105)), null);
+		Nomination n106 = new Nomination(new Long(106),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(106)),null,null,null,null,getCandidateResult(new Long(106)), null);
+		Nomination n107 = new Nomination(new Long(107),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(107)),null,null,null,null,getCandidateResult(new Long(107)), null);
 		
 		Nomination n108 = new Nomination(new Long(108),getConstituencyElection(new Long(10)),getParty(new Long(1)),getCandidate(new Long(108)),null,null,null,null,
-				getCandidateResult(new Long(108)),null);
+				getCandidateResult(new Long(108)), null);
 		Nomination n109 = new Nomination(new Long(109),getConstituencyElection(new Long(10)),getParty(new Long(11)),getCandidate(new Long(109)),null,null,null,null,
-				getCandidateResult(new Long(109)),null);
+				getCandidateResult(new Long(109)), null);
 		Nomination n110 = new Nomination(new Long(110),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(110)),null,null,null,null,
-				getCandidateResult(new Long(110)),null);
-		Nomination n111 = new Nomination(new Long(111),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(111)),null,null,null,null,getCandidateResult(new Long(111)),null);
+				getCandidateResult(new Long(110)), null);
+		Nomination n111 = new Nomination(new Long(111),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(111)),null,null,null,null,getCandidateResult(new Long(111)), null);
 		Nomination n112 = new Nomination(new Long(112),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(112)),null,null,null,null,
-				getCandidateResult(new Long(112)),null);
+				getCandidateResult(new Long(112)), null);
 		
-		Nomination n113 = new Nomination(new Long(113),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(105)),null,null,null,null,getCandidateResult(new Long(113)),null);
-		Nomination n114 = new Nomination(new Long(114),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(113)),null,null,null,null,getCandidateResult(new Long(114)),null);
-		Nomination n115 = new Nomination(new Long(115),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(114)),null,null,null,null,getCandidateResult(new Long(115)),null);
-		Nomination n116 = new Nomination(new Long(116),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(115)),null,null,null,null,getCandidateResult(new Long(116)),null);
-		Nomination n117 = new Nomination(new Long(117),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(116)),null,null,null,null,getCandidateResult(new Long(117)),null);
-		Nomination n118 = new Nomination(new Long(118),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(117)),null,null,null,null,getCandidateResult(new Long(118)),null);
-		Nomination n119 = new Nomination(new Long(119),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(118)),null,null,null,null,getCandidateResult(new Long(119)),null);
-		Nomination n120 = new Nomination(new Long(120),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(119)),null,null,null,null,getCandidateResult(new Long(120)),null);
+		Nomination n113 = new Nomination(new Long(113),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(105)),null,null,null,null,getCandidateResult(new Long(113)), null);
+		Nomination n114 = new Nomination(new Long(114),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(113)),null,null,null,null,getCandidateResult(new Long(114)), null);
+		Nomination n115 = new Nomination(new Long(115),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(114)),null,null,null,null,getCandidateResult(new Long(115)), null);
+		Nomination n116 = new Nomination(new Long(116),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(115)),null,null,null,null,getCandidateResult(new Long(116)), null);
+		Nomination n117 = new Nomination(new Long(117),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(116)),null,null,null,null,getCandidateResult(new Long(117)), null);
+		Nomination n118 = new Nomination(new Long(118),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(117)),null,null,null,null,getCandidateResult(new Long(118)), null);
+		Nomination n119 = new Nomination(new Long(119),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(118)),null,null,null,null,getCandidateResult(new Long(119)), null);
+		Nomination n120 = new Nomination(new Long(120),getConstituencyElection(new Long(10)),getParty(new Long(13)),getCandidate(new Long(119)),null,null,null,null,getCandidateResult(new Long(120)), null);
 		Nomination n121 = new Nomination(new Long(122),getConstituencyElection(new Long(11)),getParty(new Long(1)),getCandidate(new Long(120)),null,null,null,null,
-				getCandidateResult(new Long(121)),null);
+				getCandidateResult(new Long(121)), null);
 		Nomination n122 = new Nomination(new Long(123),getConstituencyElection(new Long(11)),getParty(new Long(11)),getCandidate(new Long(121)),null,null,null,null,
-				getCandidateResult(new Long(122)),null);
+				getCandidateResult(new Long(122)), null);
 		Nomination n123 = new Nomination(new Long(124),getConstituencyElection(new Long(11)),getParty(new Long(14)),getCandidate(new Long(122)),null,null,null,null,
-				getCandidateResult(new Long(123)),null);
+				getCandidateResult(new Long(123)), null);
 		Nomination n124 = new Nomination(new Long(125),getConstituencyElection(new Long(11)),getParty(new Long(13)),getCandidate(new Long(123)),null,null,null,null,
-				getCandidateResult(new Long(124)),null);
+				getCandidateResult(new Long(124)), null);
 		Nomination n125 = new Nomination(new Long(126),getConstituencyElection(new Long(11)),getParty(new Long(13)),getCandidate(new Long(124)),null,null,null,null,
-				getCandidateResult(new Long(123)),null);
+				getCandidateResult(new Long(123)), null);
 		Nomination n126 = new Nomination(new Long(128),getConstituencyElection(new Long(20)),getParty(new Long(1)),getCandidate(new Long(2)),null,null,null,null,
-				getCandidateResult(new Long(126)),null);
+				getCandidateResult(new Long(126)), null);
 		Nomination n127 = new Nomination(new Long(129),getConstituencyElection(new Long(20)),getParty(new Long(11)),getCandidate(new Long(1)),null,null,null,null,
-				getCandidateResult(new Long(127)),null);
+				getCandidateResult(new Long(127)), null);
 		Nomination n128 = new Nomination(new Long(130),getConstituencyElection(new Long(20)),getParty(new Long(13)),getCandidate(new Long(125)),null,null,null,null,
-				getCandidateResult(new Long(128)),null);
+				getCandidateResult(new Long(128)), null);
 		Nomination n129 = new Nomination(new Long(131),getConstituencyElection(new Long(20)),getParty(new Long(6)),getCandidate(new Long(126)),null,null,null,null,
-				getCandidateResult(new Long(129)),null);
+				getCandidateResult(new Long(129)), null);
 		Nomination n130 = new Nomination(new Long(132),getConstituencyElection(new Long(20)),getParty(new Long(13)),getCandidate(new Long(127)),null,null,null,null,
-				getCandidateResult(new Long(130)),null);
+				getCandidateResult(new Long(130)), null);
 		Nomination n131 = new Nomination(new Long(134),getConstituencyElection(new Long(13)),getParty(new Long(1)),getCandidate(new Long(23)),null,null,null,null,
-				getCandidateResult(new Long(131)),null);
+				getCandidateResult(new Long(131)), null);
 		Nomination n132 = new Nomination(new Long(135),getConstituencyElection(new Long(13)),getParty(new Long(11)),getCandidate(new Long(22)),null,null,null,null,
-				getCandidateResult(new Long(132)),null);
+				getCandidateResult(new Long(132)), null);
 		Nomination n133 = new Nomination(new Long(136),getConstituencyElection(new Long(13)),getParty(new Long(5)),getCandidate(new Long(128)),null,null,null,null,
-				getCandidateResult(new Long(133)),null);
+				getCandidateResult(new Long(133)), null);
 		Nomination n134 = new Nomination(new Long(137),getConstituencyElection(new Long(13)),getParty(new Long(3)),getCandidate(new Long(129)),null,null,null,null,
-				getCandidateResult(new Long(134)),null);
+				getCandidateResult(new Long(134)), null);
 		Nomination n135 = new Nomination(new Long(138),getConstituencyElection(new Long(13)),getParty(new Long(13)),getCandidate(new Long(130)),null,null,null,null,
-				getCandidateResult(new Long(135)),null);
+				getCandidateResult(new Long(135)), null);
 		Nomination n136 = new Nomination(new Long(139),getConstituencyElection(new Long(13)),getParty(new Long(44)),getCandidate(new Long(131)),null,null,null,null,
-				getCandidateResult(new Long(136)),null);
+				getCandidateResult(new Long(136)), null);
 		Nomination n137 = new Nomination(new Long(140),getConstituencyElection(new Long(13)),getParty(new Long(13)),getCandidate(new Long(132)),null,null,null,null,
-				getCandidateResult(new Long(137)),null);
+				getCandidateResult(new Long(137)), null);
 		Nomination n138 = new Nomination(new Long(141),getConstituencyElection(new Long(13)),getParty(new Long(13)),getCandidate(new Long(133)),null,null,null,null,
-				getCandidateResult(new Long(138)),null);
+				getCandidateResult(new Long(138)), null);
 		Nomination n139 = new Nomination(new Long(142),getConstituencyElection(new Long(13)),getParty(new Long(13)),getCandidate(new Long(134)),null,null,null,null,
-				getCandidateResult(new Long(139)),null);
+				getCandidateResult(new Long(139)), null);
 		Nomination n140 = new Nomination(new Long(144),getConstituencyElection(new Long(12)),getParty(new Long(13)),getCandidate(new Long(12)),null,null,null,null,
-				getCandidateResult(new Long(140)),null);
+				getCandidateResult(new Long(140)), null);
 		Nomination n141 = new Nomination(new Long(145),getConstituencyElection(new Long(12)),getParty(new Long(2)),getCandidate(new Long(135)),null,null,null,null,
-				getCandidateResult(new Long(141)),null);
+				getCandidateResult(new Long(141)), null);
 		Nomination n142 = new Nomination(new Long(146),getConstituencyElection(new Long(12)),getParty(new Long(1)),getCandidate(new Long(136)),null,null,null,null,
-				getCandidateResult(new Long(142)),null);
+				getCandidateResult(new Long(142)), null);
 		Nomination n143 = new Nomination(new Long(147),getConstituencyElection(new Long(12)),getParty(new Long(13)),getCandidate(new Long(137)),null,null,null,null,
-				getCandidateResult(new Long(143)),null);
+				getCandidateResult(new Long(143)), null);
 		Nomination n144 = new Nomination(new Long(148),getConstituencyElection(new Long(12)),getParty(new Long(13)),getCandidate(new Long(138)),null,null,null,null,
-				getCandidateResult(new Long(144)),null);
+				getCandidateResult(new Long(144)), null);
 		Nomination n145 = new Nomination(new Long(149),getConstituencyElection(new Long(12)),getParty(new Long(13)),getCandidate(new Long(139)),null,null,null,null,
-				getCandidateResult(new Long(145)),null);
+				getCandidateResult(new Long(145)), null);
 		Nomination n146 = new Nomination(new Long(150),getConstituencyElection(new Long(12)),getParty(new Long(13)),getCandidate(new Long(140)),null,null,null,null,
-				getCandidateResult(new Long(146)),null);
+				getCandidateResult(new Long(146)), null);
 		Nomination n147 = new Nomination(new Long(151),getConstituencyElection(new Long(12)),getParty(new Long(13)),getCandidate(new Long(141)),null,null,null,null,
-				getCandidateResult(new Long(147)),null);
+				getCandidateResult(new Long(147)), null);
 		Nomination n148 = new Nomination(new Long(152),getConstituencyElection(new Long(12)),getParty(new Long(13)),getCandidate(new Long(142)),null,null,null,null,
-				getCandidateResult(new Long(148)),null);
+				getCandidateResult(new Long(148)), null);
 		Nomination n149 = new Nomination(new Long(154),getConstituencyElection(new Long(19)),getParty(new Long(1)),getCandidate(new Long(11)),null,null,null,null,
-				getCandidateResult(new Long(149)),null);
+				getCandidateResult(new Long(149)), null);
 		Nomination n150 = new Nomination(new Long(155),getConstituencyElection(new Long(19)),getParty(new Long(11)),getCandidate(new Long(143)),null,null,null,null,
-				getCandidateResult(new Long(150)),null);
+				getCandidateResult(new Long(150)), null);
 		Nomination n151 = new Nomination(new Long(156),getConstituencyElection(new Long(19)),getParty(new Long(54)),getCandidate(new Long(144)),null,null,null,null,
-				getCandidateResult(new Long(151)),null);
-		Nomination n152 = new Nomination(new Long(157),getConstituencyElection(new Long(19)),getParty(new Long(13)),getCandidate(new Long(145)),null,null,null,null,getCandidateResult(new Long(152)),null);
-		Nomination n153 = new Nomination(new Long(158),getConstituencyElection(new Long(19)),getParty(new Long(13)),getCandidate(new Long(146)),null,null,null,null,getCandidateResult(new Long(153)),null);
-		Nomination n154 = new Nomination(new Long(159),getConstituencyElection(new Long(19)),getParty(new Long(13)),getCandidate(new Long(147)),null,null,null,null,getCandidateResult(new Long(154)),null);
-		Nomination n155 = new Nomination(new Long(161),getConstituencyElection(new Long(21)),getParty(new Long(1)),getCandidate(new Long(45)),null,null,null,null,getCandidateResult(new Long(155)),null);
+				getCandidateResult(new Long(151)), null);
+		Nomination n152 = new Nomination(new Long(157),getConstituencyElection(new Long(19)),getParty(new Long(13)),getCandidate(new Long(145)),null,null,null,null,getCandidateResult(new Long(152)), null);
+		Nomination n153 = new Nomination(new Long(158),getConstituencyElection(new Long(19)),getParty(new Long(13)),getCandidate(new Long(146)),null,null,null,null,getCandidateResult(new Long(153)), null);
+		Nomination n154 = new Nomination(new Long(159),getConstituencyElection(new Long(19)),getParty(new Long(13)),getCandidate(new Long(147)),null,null,null,null,getCandidateResult(new Long(154)), null);
+		Nomination n155 = new Nomination(new Long(161),getConstituencyElection(new Long(21)),getParty(new Long(1)),getCandidate(new Long(45)),null,null,null,null,getCandidateResult(new Long(155)), null);
 		Nomination n156 = new Nomination(new Long(162),getConstituencyElection(new Long(21)),getParty(new Long(2)),getCandidate(new Long(148)),null,null,null,null,
-				getCandidateResult(new Long(156)),null);
-		Nomination n157 = new Nomination(new Long(163),getConstituencyElection(new Long(21)),getParty(new Long(3)),getCandidate(new Long(149)),null,null,null,null,getCandidateResult(new Long(157)),null);
-		Nomination n158 = new Nomination(new Long(164),getConstituencyElection(new Long(21)),getParty(new Long(13)),getCandidate(new Long(44)),null,null,null,null,getCandidateResult(new Long(158)),null);
-		Nomination n159 = new Nomination(new Long(165),getConstituencyElection(new Long(21)),getParty(new Long(6)),getCandidate(new Long(150)),null,null,null,null,getCandidateResult(new Long(159)),null);
+				getCandidateResult(new Long(156)), null);
+		Nomination n157 = new Nomination(new Long(163),getConstituencyElection(new Long(21)),getParty(new Long(3)),getCandidate(new Long(149)),null,null,null,null,getCandidateResult(new Long(157)), null);
+		Nomination n158 = new Nomination(new Long(164),getConstituencyElection(new Long(21)),getParty(new Long(13)),getCandidate(new Long(44)),null,null,null,null,getCandidateResult(new Long(158)), null);
+		Nomination n159 = new Nomination(new Long(165),getConstituencyElection(new Long(21)),getParty(new Long(6)),getCandidate(new Long(150)),null,null,null,null,getCandidateResult(new Long(159)), null);
 		Nomination n160 = new Nomination(new Long(166),getConstituencyElection(new Long(21)),getParty(new Long(13)),getCandidate(new Long(151)),null,null,null,null,
-				getCandidateResult(new Long(160)),null);
-		Nomination n161 = new Nomination(new Long(168),getConstituencyElection(new Long(14)),getParty(new Long(1)),getCandidate(new Long(56)),null,null,null,null,getCandidateResult(new Long(161)),null);
-		Nomination n162 = new Nomination(new Long(169),getConstituencyElection(new Long(14)),getParty(new Long(11)),getCandidate(new Long(57)),null,null,null,null,getCandidateResult(new Long(162)),null);
-		Nomination n163 = new Nomination(new Long(170),getConstituencyElection(new Long(14)),getParty(new Long(3)),getCandidate(new Long(59)),null,null,null,null,getCandidateResult(new Long(163)),null);
-		Nomination n164 = new Nomination(new Long(171),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(152)),null,null,null,null,getCandidateResult(new Long(164)),null);
-		Nomination n165 = new Nomination(new Long(172),getConstituencyElection(new Long(14)),getParty(new Long(6)),getCandidate(new Long(153)),null,null,null,null,getCandidateResult(new Long(165)),null);
-		Nomination n166 = new Nomination(new Long(173),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(154)),null,null,null,null,getCandidateResult(new Long(166)),null);
-		Nomination n167 = new Nomination(new Long(174),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(155)),null,null,null,null,getCandidateResult(new Long(167)),null);
-		Nomination n168 = new Nomination(new Long(175),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(156)),null,null,null,null,getCandidateResult(new Long(168)),null);
-		Nomination n169 = new Nomination(new Long(176),getConstituencyElection(new Long(14)),getParty(new Long(44)),getCandidate(new Long(157)),null,null,null,null,getCandidateResult(new Long(169)),null);
-		Nomination n170 = new Nomination(new Long(177),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(158)),null,null,null,null,getCandidateResult(new Long(170)),null);
-		Nomination n171 = new Nomination(new Long(178),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(159)),null,null,null,null,getCandidateResult(new Long(171)),null);
-		Nomination n172 = new Nomination(new Long(179),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(160)),null,null,null,null,getCandidateResult(new Long(172)),null);
-		Nomination n173 = new Nomination(new Long(180),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(161)),null,null,null,null,getCandidateResult(new Long(73)),null);
+				getCandidateResult(new Long(160)), null);
+		Nomination n161 = new Nomination(new Long(168),getConstituencyElection(new Long(14)),getParty(new Long(1)),getCandidate(new Long(56)),null,null,null,null,getCandidateResult(new Long(161)), null);
+		Nomination n162 = new Nomination(new Long(169),getConstituencyElection(new Long(14)),getParty(new Long(11)),getCandidate(new Long(57)),null,null,null,null,getCandidateResult(new Long(162)), null);
+		Nomination n163 = new Nomination(new Long(170),getConstituencyElection(new Long(14)),getParty(new Long(3)),getCandidate(new Long(59)),null,null,null,null,getCandidateResult(new Long(163)), null);
+		Nomination n164 = new Nomination(new Long(171),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(152)),null,null,null,null,getCandidateResult(new Long(164)), null);
+		Nomination n165 = new Nomination(new Long(172),getConstituencyElection(new Long(14)),getParty(new Long(6)),getCandidate(new Long(153)),null,null,null,null,getCandidateResult(new Long(165)), null);
+		Nomination n166 = new Nomination(new Long(173),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(154)),null,null,null,null,getCandidateResult(new Long(166)), null);
+		Nomination n167 = new Nomination(new Long(174),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(155)),null,null,null,null,getCandidateResult(new Long(167)), null);
+		Nomination n168 = new Nomination(new Long(175),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(156)),null,null,null,null,getCandidateResult(new Long(168)), null);
+		Nomination n169 = new Nomination(new Long(176),getConstituencyElection(new Long(14)),getParty(new Long(44)),getCandidate(new Long(157)),null,null,null,null,getCandidateResult(new Long(169)), null);
+		Nomination n170 = new Nomination(new Long(177),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(158)),null,null,null,null,getCandidateResult(new Long(170)), null);
+		Nomination n171 = new Nomination(new Long(178),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(159)),null,null,null,null,getCandidateResult(new Long(171)), null);
+		Nomination n172 = new Nomination(new Long(179),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(160)),null,null,null,null,getCandidateResult(new Long(172)), null);
+		Nomination n173 = new Nomination(new Long(180),getConstituencyElection(new Long(14)),getParty(new Long(13)),getCandidate(new Long(161)),null,null,null,null,getCandidateResult(new Long(73)), null);
 		Nomination n174 = new Nomination(new Long(182),getConstituencyElection(new Long(15)),getParty(new Long(1)),getCandidate(new Long(162)),null,null,null,null,
-				getCandidateResult(new Long(174)),null);
-		Nomination n175 = new Nomination(new Long(183),getConstituencyElection(new Long(15)),getParty(new Long(11)),getCandidate(new Long(163)),null,null,null,null,getCandidateResult(new Long(175)),null);
-		Nomination n176 = new Nomination(new Long(184),getConstituencyElection(new Long(15)),getParty(new Long(3)),getCandidate(new Long(164)),null,null,null,null,getCandidateResult(new Long(176)),null);
-		Nomination n177 = new Nomination(new Long(185),getConstituencyElection(new Long(15)),getParty(new Long(13)),getCandidate(new Long(165)),null,null,null,null,getCandidateResult(new Long(177)),null);
-		Nomination n178 = new Nomination(new Long(186),getConstituencyElection(new Long(15)),getParty(new Long(13)),getCandidate(new Long(166)),null,null,null,null,getCandidateResult(new Long(178)),null);
-		Nomination n179 = new Nomination(new Long(188),getConstituencyElection(new Long(16)),getParty(new Long(1)),getCandidate(new Long(167)),null,null,null,null,getCandidateResult(new Long(179)),null);
+				getCandidateResult(new Long(174)), null);
+		Nomination n175 = new Nomination(new Long(183),getConstituencyElection(new Long(15)),getParty(new Long(11)),getCandidate(new Long(163)),null,null,null,null,getCandidateResult(new Long(175)), null);
+		Nomination n176 = new Nomination(new Long(184),getConstituencyElection(new Long(15)),getParty(new Long(3)),getCandidate(new Long(164)),null,null,null,null,getCandidateResult(new Long(176)), null);
+		Nomination n177 = new Nomination(new Long(185),getConstituencyElection(new Long(15)),getParty(new Long(13)),getCandidate(new Long(165)),null,null,null,null,getCandidateResult(new Long(177)), null);
+		Nomination n178 = new Nomination(new Long(186),getConstituencyElection(new Long(15)),getParty(new Long(13)),getCandidate(new Long(166)),null,null,null,null,getCandidateResult(new Long(178)), null);
+		Nomination n179 = new Nomination(new Long(188),getConstituencyElection(new Long(16)),getParty(new Long(1)),getCandidate(new Long(167)),null,null,null,null,getCandidateResult(new Long(179)), null);
 		Nomination n180 = new Nomination(new Long(189),getConstituencyElection(new Long(16)),getParty(new Long(11)),getCandidate(new Long(168)),null,null,null,null,
-				getCandidateResult(new Long(180)),null);
-		Nomination n181 = new Nomination(new Long(190),getConstituencyElection(new Long(16)),getParty(new Long(3)),getCandidate(new Long(169)),null,null,null,null,getCandidateResult(new Long(181)),null);
-		Nomination n182 = new Nomination(new Long(191),getConstituencyElection(new Long(16)),getParty(new Long(13)),getCandidate(new Long(170)),null,null,null,null,getCandidateResult(new Long(182)),null);
-		Nomination n183 = new Nomination(new Long(192),getConstituencyElection(new Long(16)),getParty(new Long(13)),getCandidate(new Long(171)),null,null,null,null,getCandidateResult(new Long(183)),null);
-		Nomination n184 = new Nomination(new Long(193),getConstituencyElection(new Long(16)),getParty(new Long(13)),getCandidate(new Long(172)),null,null,null,null,getCandidateResult(new Long(184)),null);
+				getCandidateResult(new Long(180)), null);
+		Nomination n181 = new Nomination(new Long(190),getConstituencyElection(new Long(16)),getParty(new Long(3)),getCandidate(new Long(169)),null,null,null,null,getCandidateResult(new Long(181)), null);
+		Nomination n182 = new Nomination(new Long(191),getConstituencyElection(new Long(16)),getParty(new Long(13)),getCandidate(new Long(170)),null,null,null,null,getCandidateResult(new Long(182)), null);
+		Nomination n183 = new Nomination(new Long(192),getConstituencyElection(new Long(16)),getParty(new Long(13)),getCandidate(new Long(171)),null,null,null,null,getCandidateResult(new Long(183)), null);
+		Nomination n184 = new Nomination(new Long(193),getConstituencyElection(new Long(16)),getParty(new Long(13)),getCandidate(new Long(172)),null,null,null,null,getCandidateResult(new Long(184)), null);
 		Nomination n185 = new Nomination(new Long(194),getConstituencyElection(new Long(16)),getParty(new Long(13)),getCandidate(new Long(173)),null,null,null,null,
-				getCandidateResult(new Long(185)),null);
+				getCandidateResult(new Long(185)), null);
 		Nomination n186 = new Nomination(new Long(195),getConstituencyElection(new Long(16)),getParty(new Long(13)),getCandidate(new Long(82)),null,null,null,null,
-				getCandidateResult(new Long(186)),null);
+				getCandidateResult(new Long(186)), null);
 		Nomination n187 = new Nomination(new Long(197),getConstituencyElection(new Long(17)),getParty(new Long(1)),getCandidate(new Long(174)),null,null,null,null,
-				getCandidateResult(new Long(187)),null);
+				getCandidateResult(new Long(187)), null);
 		Nomination n188 = new Nomination(new Long(198),getConstituencyElection(new Long(17)),getParty(new Long(11)),getCandidate(new Long(175)),null,null,null,null,
-				getCandidateResult(new Long(188)),null);
+				getCandidateResult(new Long(188)), null);
 		Nomination n189 = new Nomination(new Long(199),getConstituencyElection(new Long(17)),getParty(new Long(3)),getCandidate(new Long(176)),null,null,null,null,
-				getCandidateResult(new Long(189)),null);
+				getCandidateResult(new Long(189)), null);
 		Nomination n190 = new Nomination(new Long(200),getConstituencyElection(new Long(17)),getParty(new Long(62)),getCandidate(new Long(177)),null,null,null,null,
-				getCandidateResult(new Long(190)),null);
+				getCandidateResult(new Long(190)), null);
 		Nomination n191 = new Nomination(new Long(201),getConstituencyElection(new Long(17)),getParty(new Long(6)),getCandidate(new Long(178)),null,null,null,null,
-				getCandidateResult(new Long(191)),null);
+				getCandidateResult(new Long(191)), null);
+		 
 		 
 		nominations.add(n1);
 		nominations.add(n2);
@@ -1823,5 +1829,16 @@ public class MockData {
 		districts.add(new District(new Long(22),	"Warangal",	"Warangal",	new Double(12.9),	new Double(2818832), getState()	,null	,null	,null,null, null));
 		districts.add(new District(new Long(23),	"West Godavari",	"Eluru",	new Double(7.7),	new Double(1), getState()	,null	,null	,null,null, null));
 		return districts;
+	}
+	public static List<Party> getAllianceParties() {
+		Party dummy4 = new Party(new Long(4), "Communist Party of India", "CPI",null, null, null,null, null);
+		Party dummy5 = new Party(new Long(5), "Communist Party of India (Marxist)", "CPM",null, null, null,null, null);
+		Party dummy10 = new Party(new Long(10), "Telangana Rashtra Samithi", "TRP",null, null, null,null, null);
+		Party dummy11 = new Party(new Long(11), "Telugu Desam", "TDP",null, null, null,null, null);
+		allianceParties.add(dummy4);
+		allianceParties.add(dummy5);
+		allianceParties.add(dummy10);
+		allianceParties.add(dummy11);
+		return allianceParties;
 	}
 }
