@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.service.impl.PartyResultService;
 import com.itgrids.partyanalyst.util.DummyPartyResultsData;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
 //5

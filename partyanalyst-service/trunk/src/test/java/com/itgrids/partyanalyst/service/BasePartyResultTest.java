@@ -28,7 +28,7 @@ import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
 
-
+import com.itgrids.partyanalyst.service.impl.BasePartyResultsServiceImpl;
 
 public class BasePartyResultTest {
 

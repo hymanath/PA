@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.service.impl.ConstituencySearchService;
 import com.itgrids.partyanalyst.util.DummyConstituencies;
 
 public class ConstituencySearchServiceTest{

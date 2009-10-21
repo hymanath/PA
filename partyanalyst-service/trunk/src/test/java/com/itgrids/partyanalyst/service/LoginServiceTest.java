@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.service.impl.LoginService;
 import com.itgrids.partyanalyst.util.DummyRegistrationDAOStuff;
 
 	public class LoginServiceTest{

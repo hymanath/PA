@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.service.impl.CandidateSearchService;
 import com.itgrids.partyanalyst.util.DummyCandidates;
 import com.itgrids.partyanalyst.util.DummyNominations;
 

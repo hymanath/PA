@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dao.ICandidateResultObjectsDAO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
 import com.itgrids.partyanalyst.model.CandidateResult;
+import com.itgrids.partyanalyst.service.impl.StateElectionResultsService;
 import com.itgrids.partyanalyst.util.DummyCandidateResults;
 
 public class StateElectionResultsServiceTest {

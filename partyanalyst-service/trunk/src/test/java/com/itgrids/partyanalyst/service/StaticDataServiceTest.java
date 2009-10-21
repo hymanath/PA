@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.service.impl.StaticDataService;
 import com.itgrids.partyanalyst.util.MockData;
 
 public class StaticDataServiceTest {
