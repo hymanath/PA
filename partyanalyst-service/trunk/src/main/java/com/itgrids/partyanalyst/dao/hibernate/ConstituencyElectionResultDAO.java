@@ -7,13 +7,16 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.appfuse.dao.jpa.GenericDaoJpa;
-import javax.persistence.Query;
-import com.itgrids.partyanalyst.dao.columns.enums.ConstituencyElectionResultColumnNames;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.criterion.Expression;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
+import com.itgrids.partyanalyst.dao.columns.enums.ConstituencyElectionResultColumnNames;
 
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
@@ -79,6 +82,25 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 	@SuppressWarnings("unchecked")
 	public List<ConstituencyElectionResult> findByConstituencyElections(String constituencyElectionIDs){
 		return getHibernateTemplate().find( "from ConstituencyElectionResult model where model.constituencyElection.constiElecId in ("+constituencyElectionIDs+")");
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyElectionResult> findByElectionTypeIdAndYear(
+		final Long electionTypeId, final String electionYear) {
+		return ( List<ConstituencyElectionResult> ) getHibernateTemplate().execute( new HibernateCallback() {
+            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+            		List<ConstituencyElectionResult> constElectionResults = session.createCriteria(ConstituencyElectionResult.class)
+            							.createAlias("constituencyElection", "constElec")
+            							.createAlias("constElec.election", "elec")
+            							.createAlias("elec.electionScope", "scope")
+            							.createAlias("scope.electionType", "type")
+            							.add(Expression.eq("type.electionTypeId", electionTypeId))
+            							.add(Expression.eq("elec.electionYear", electionYear))
+            							.list();
+            		 return constElectionResults;
+            }
+        });
 	}
 	
 }

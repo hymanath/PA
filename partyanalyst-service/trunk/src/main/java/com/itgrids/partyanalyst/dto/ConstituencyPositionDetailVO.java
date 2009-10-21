@@ -21,6 +21,7 @@ public class ConstituencyPositionDetailVO implements Serializable{
 	private String oppositeParty;// opposite party short name
 	private String oppositePartyLongName;// opposite party long name
 	private String oppositePartyCandidate;
+	private BigDecimal oppositePartyPercentageOfVotes;
 	private BigDecimal percentageOfVotesPolled;//percentage of votes polled in the present election
 	private String prevElectionCandidateName;
 	private BigDecimal prevElectionPercentageOfVotesPolled;//percentage of votes polled in the previous election
@@ -133,6 +134,16 @@ public class ConstituencyPositionDetailVO implements Serializable{
 	public String getOppositePartyCandidate() {
 		return oppositePartyCandidate;
 	}
+	
+	public BigDecimal getOppositePartyPercentageOfVotes() {
+		return oppositePartyPercentageOfVotes;
+	}
+
+	public void setOppositePartyPercentageOfVotes(
+			BigDecimal oppositePartyPercentageOfVotes) {
+		this.oppositePartyPercentageOfVotes = oppositePartyPercentageOfVotes;
+	}
+
 
 	public void setOppositePartyCandidate(String oppositePartyCandidate) {
 		this.oppositePartyCandidate = oppositePartyCandidate;

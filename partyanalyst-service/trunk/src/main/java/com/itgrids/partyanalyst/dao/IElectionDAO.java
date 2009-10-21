@@ -49,4 +49,8 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List<String> listOfYears();
 	
 	public Election findByESIdEleYear(ElectionScope eleScope,String eleYear);
+	
+	public List<Election> findByElectionScope_OrderByAsc(Long electionScopeID);
+	
+	public String findPreviousElectionYear(String year, Long typeId, Long stateId, Long countryId);
 }

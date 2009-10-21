@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.SortedMap;
 
 import com.itgrids.partyanalyst.BaseObject;
+import com.itgrids.partyanalyst.model.Party;
 
 public class PartyPerformanceReportVO extends BaseObject {
 
@@ -56,12 +57,60 @@ public class PartyPerformanceReportVO extends BaseObject {
 	/** total no. of party postions w.r.t 2nd, 3rd, 4th and nth positions **/
 	//private int[] partyPositions;
 	
-	/** percentage of votes flown to other parties**/
+	/** percentage of votes flown to other parties -- difference with previous year **/
 	private Map<String, String> partyVotesFlown;
+	private Map<String, BigDecimal> votesFlown;
+	private List<Party> allianceParties;
+	private List<ConstituencyPositionDetailVO> rebelPartyCandidates;
+	private List<ConstituencyPositionDetailVO> partyWinners;
+	private List<ConstituencyPositionDetailVO> partyLosers;
 	
+	
+	public List<ConstituencyPositionDetailVO> getPartyWinners() {
+		return partyWinners;
+	}
+
+	public void setPartyWinners(List<ConstituencyPositionDetailVO> partyWinners) {
+		this.partyWinners = partyWinners;
+	}
+
+	public List<ConstituencyPositionDetailVO> getPartyLosers() {
+		return partyLosers;
+	}
+
+	public void setPartyLosers(List<ConstituencyPositionDetailVO> partyLosers) {
+		this.partyLosers = partyLosers;
+	}
+
+	public List<ConstituencyPositionDetailVO> getRebelPartyCandidates() {
+		return rebelPartyCandidates;
+	}
+
+	public void setRebelPartyCandidates(
+			List<ConstituencyPositionDetailVO> rebels) {
+		this.rebelPartyCandidates = rebels;
+	}
+
+	public Map<String, BigDecimal> getVotesFlown() {
+		return votesFlown;
+	}
+
+	public void setVotesFlown(Map<String, BigDecimal> votesFlown) {
+		this.votesFlown = votesFlown;
+	}
+	
+	public List<Party> getAllianceParties() {
+		return allianceParties;
+	}
+
+	public void setAllianceParties(List<Party> allianceParties) {
+		this.allianceParties = allianceParties;
+	}
+
 	public Map<String, String> getPartyVotesFlown(){
 		return partyVotesFlown;
 	}
+	
 	public void setPartyVotesFlown(Map<String, String> partyVotesFlown){
 		this.partyVotesFlown = partyVotesFlown;
 	}

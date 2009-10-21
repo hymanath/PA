@@ -9,6 +9,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 
@@ -70,13 +73,25 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Election> findByPropertyTypeId_CountryId_StateId(Long typeID, Long countryId, Long stateId) {
+	public List<Election> findByPropertyTypeId_CountryId_StateId(final Long typeID, final Long countryId, final Long stateId) {
 		//Long[] params = {new (typeID), new Long(stateId), new Long(countryId)};
-		Long[] params = {typeID, countryId, stateId};
-		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId =? and model.electionScope.state.stateId=? and model.electionScope.country.countryId=?", params);
-		
+		//Long[] params = {typeID, countryId, stateId};
+		//return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId =? and model.electionScope.state.stateId=? and model.electionScope.country.countryId=?", params);
+		return ( List<Election> ) getHibernateTemplate().execute( new HibernateCallback() {
+            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+            		List<Election> elections = session.createCriteria(Election.class)
+            							.createAlias("electionScope", "scope")
+            							.createAlias("scope.electionType", "type")
+            							.createAlias("scope.state", "state")
+            							.createAlias("scope.country", "country")
+            							.add(Expression.eq("type.electionTypeId", typeID))
+            							.add(Expression.eq("state.stateId", stateId))
+            							.add(Expression.eq("country.countryId", countryId))
+            							.list();
+            		 return elections;
+            }
+        });
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	public List<Election> findByElectionScope(Long electionScopeID)
@@ -116,5 +131,24 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 			return lelectionObj=list.get(0);
 		}
 		return lelectionObj;		
+	}
+	
+	public String findPreviousElectionYear(final String year, final Long typeId, final Long stateId, final Long countryId) {
+		return (String) getHibernateTemplate().execute( new HibernateCallback() {
+            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+            		return (String) session.createCriteria(Election.class)
+            							. setProjection(Projections.property("electionYear"))
+            							.createAlias("electionScope", "scope")
+            							.createAlias("scope.electionType", "type")
+            							.createAlias("scope.state", "state")
+            							.createAlias("scope.country", "country")
+            							.add(Expression.eq("type.electionTypeId", typeId))
+            							.add(Expression.eq("state.stateId", stateId))
+            							.add(Expression.eq("country.countryId", countryId))
+            							.add(Restrictions.lt("electionYear", year))
+            							.addOrder(Order.desc("electionYear"))
+            							.setMaxResults(1).uniqueResult();
+            }
+        });
 	}
 }
