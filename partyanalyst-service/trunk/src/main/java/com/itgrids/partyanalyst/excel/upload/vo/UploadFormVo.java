@@ -12,7 +12,7 @@ public class UploadFormVo {
 	private String district;
 	private String country;
 	private String electionYear;
-	private List<ConstituencyBlock> constituencies;
+	private List<ConstituencyBlock> constituencyBlocks;
 	public UploadFormVo(){
 		
 	}
@@ -51,11 +51,5 @@ public class UploadFormVo {
 	}
 	public void setElectionYear(String electionYear) {
 		this.electionYear = electionYear;
-	}
-	public List<ConstituencyBlock> getConstituencies() {
-		return constituencies;
-	}
-	public void setConstituencies(List<ConstituencyBlock> constituencies) {
-		this.constituencies = constituencies;
 	}
 }
