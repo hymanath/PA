@@ -15,13 +15,16 @@
 
 <script type="text/javascript">
 
-	function setCadreValue(var value){
-		//cadreLevelValueField
+	function setCadreValue(value){
 		document.getElementById("cadreLevelValueField").value=value;
 		return true;
 	}
 	function getDistrictLevelValues(name,value,id)
 	{
+	if(value=="MANDAL")
+		document.getElementById("cadreLevelMandal").disabled = false;
+	else
+		document.getElementById("cadreLevelMandal").disabled = true;
 
 		var jsObj=
 			{
