@@ -15,9 +15,8 @@ import org.apache.commons.lang.StringUtils;
 
 public class CsvReader implements IExcelReader{
 	private ConstituencyBlock constituencyBlock;
-	private List<CsvColumnMapper> constituencyCandidates = new ArrayList<CsvColumnMapper>();
 	private CandidateElectionResult candidateElectionResult;
-	private List<ConstituencyBlock> constituencyBlocks= new ArrayList<ConstituencyBlock>();
+	private List<ConstituencyBlock> constituencyBlocks;
 	private List<CandidateElectionResult> candidateElectionResults;
 	private CsvColumnMapper columnMapper;
 	private String constituencyName;
@@ -27,8 +26,10 @@ public class CsvReader implements IExcelReader{
 	}
 
 	public void readCSV(String filePath) throws CsvException{
-		File exceFile= new File(filePath);
+		
 		try{
+			File exceFile= new File(filePath);
+			constituencyBlocks= new ArrayList<ConstituencyBlock>();
 			Workbook workbook=Workbook.getWorkbook(exceFile);	
 			Sheet sheet = workbook.getSheet(0);
 			// Loop over first 10 column and lines
@@ -60,10 +61,10 @@ public class CsvReader implements IExcelReader{
 			//D:/documents/elections data converted to excel from pdf/excel - assembly/forTest/Assembly-ElectionResults-AP-2004
 			//D:\documents\elections data converted to excel from pdf\excel - assembly\forTst\Assembly1-ElectionResults-AP-2004_Pattern1
 			//D:/documents/elections data converted to excel from pdf/excel  -parliament/forTst/Parlament-AP-Results-2009_Pattern1
-			csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel  -parliament/forTst/Parlament-AP-Results-2009_Pattern1.xls");
+			csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel  -parliament/forTst/Parlament-AP-Results-2009_Pattern1_Test.xls");
 			List<ConstituencyBlock> constituencies= csvReader.getConstituencyBlocks();
 			System.out.println("\nConstitution Blocak details =="+csvReader.getConstituencyBlocks().size());
-			ConstituencyBlock constituencyBlock=constituencies.get(178);
+			ConstituencyBlock constituencyBlock=constituencies.get(0);
 			System.out.println("Constituency Name == "+constituencyBlock.getConstituencyName());
 			System.out.println("Constituency Margin =="+constituencyBlock.getMargin());
 			System.out.println("Constituency Remarks =="+constituencyBlock.getRemarks());
@@ -77,7 +78,7 @@ public class CsvReader implements IExcelReader{
 			System.out.println("This is the end of the line");
 
 
-			CandidateElectionResult candidateElectionResult = constituencyBlock.getCandidateElectionlst().get(9);
+			CandidateElectionResult candidateElectionResult = constituencyBlock.getCandidateElectionlst().get(3);
 			System.out.println("Candidate Name == "+candidateElectionResult.getCandidateName());
 
 		} catch (Exception e) {
@@ -193,13 +194,7 @@ public class CsvReader implements IExcelReader{
 
 		return tempDouble;
 	}
-	public List<CsvColumnMapper> getConstituencyCandidates() {
-		return constituencyCandidates;
-	}
-	public void setConstituencyCandidates(
-			List<CsvColumnMapper> constituencyCandidates) {
-		this.constituencyCandidates = constituencyCandidates;
-	}
+	
 	public CandidateElectionResult getCandidateElectionResult() {
 		return candidateElectionResult;
 	}
