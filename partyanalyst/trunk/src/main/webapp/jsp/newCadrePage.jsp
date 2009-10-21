@@ -16,15 +16,32 @@
 <script type="text/javascript">
 
 	function setCadreValue(value){
-		document.getElementById("cadreLevelValueField").value=value;
+		document.getElementById("cadreLevelValue").value=value;
 		return true;
+	}
+
+	function getMandalLevelValues(name,value,id){
+		if(document.getElementById("cadreLevelField").value == 2){
+			document.getElementById("cadreLevelValue").value=1;
+			document.getElementById("cadreLevelDistrict").disabled = true;
+		}else{
+			document.getElementById("cadreLevelDistrict").disabled = false;
+		}
+		if(document.getElementById("cadreLevelField").value == 5)
+			getDistrictLevelValues(name,value,id)
 	}
 	function getDistrictLevelValues(name,value,id)
 	{
-	if(value=="MANDAL")
-		document.getElementById("cadreLevelMandal").disabled = false;
-	else
-		document.getElementById("cadreLevelMandal").disabled = true;
+		if(document.getElementById("cadreLevelField").value == 2){
+			document.getElementById("cadreLevelValue").value=1;
+			document.getElementById("cadreLevelDistrict").disabled = true;
+		}else{
+			document.getElementById("cadreLevelDistrict").disabled = false;
+		}
+		if(document.getElementById("cadreLevelField").value == 5)
+			document.getElementById("cadreLevelMandal").disabled = false;
+		else
+			document.getElementById("cadreLevelMandal").disabled = true;
 
 		var jsObj=
 			{
@@ -87,6 +104,8 @@
 			selectedElmt=document.getElementById("villageField");
 		else if(selectedValue=="cadreLevel")
 			selectedElmt=document.getElementById("cadreLevelDistrict");
+		else if(selectedValue=="cadreLevelDistrict")
+			selectedElmt=document.getElementById("cadreLevelMandal");
 		
 		for(var val in results.namesList)
 		{
@@ -194,7 +213,7 @@
 			<th><s:label for="cadreLevelValueField" id="cadreLevelValueLabel"  value="Cadre Level Value" /></th>
 			<td>
 				<select id="cadreLevelDistrict" name="cadreLevelDistrict" onchange="setCadreValue(this.options[this.selectedIndex].value);
-										getDistrictLevelValues(this.name,this.options[this.selectedIndex].text,
+										getMandalLevelValues(this.name,this.options[this.selectedIndex].text,
 										this.options[this.selectedIndex].value)">
 					<option>Select District Level Value</option>					
 				</select> 
