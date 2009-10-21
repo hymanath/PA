@@ -42,7 +42,7 @@ import com.opensymphony.xwork2.ObjectFactory;
 
 public class UploadCSVAction extends ActionSupport implements ServletResponseAware, ServletRequestAware, ServletContextAware {
 	private static final long serialVersionUID = 1L;
-	private final static Log log = LogFactory.getLog(PartyPerformanceJasperAction.class);
+	private final static Log log = LogFactory.getLog(UploadCSVAction.class);
 
     private HttpServletResponse response;
     private HttpServletRequest request; 

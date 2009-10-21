@@ -24,7 +24,7 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
 public class UploadExcelAction extends ActionSupport implements ServletResponseAware, ServletRequestAware, ServletContextAware {
 	private static final long serialVersionUID = 1L;
-	private final static Log log = LogFactory.getLog(PartyPerformanceJasperAction.class);
+	private final static Log log = LogFactory.getLog(UploadExcelAction.class);
 
     private HttpServletResponse response;
     private HttpServletRequest request; 
