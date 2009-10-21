@@ -112,9 +112,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		{
 			String value=jObj.getString("value");
 			String id=jObj.getString("id");
-			if("COUNTRY".equalsIgnoreCase(value)){
-				
-			} else if("COUNTRY".equalsIgnoreCase(value)){
+			/*if("COUNTRY".equalsIgnoreCase(value)){
 				List<SelectOptionVO> countryNames=new ArrayList<SelectOptionVO>();
 				SelectOptionVO countrySelectOptionVO = new SelectOptionVO();
 				countrySelectOptionVO.setId(1L);
@@ -137,7 +135,16 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			} else if("MANDAL".equalsIgnoreCase(value)){
 				List<SelectOptionVO> mandalsNames=cadreManagementService.findMandalsByDistrict("15");			
 				setNamesList(mandalsNames);	
-			}
+			}*/
+			List<SelectOptionVO> districtNames=cadreManagementService.findDistrictsByState("1");				
+			setNamesList(districtNames);
+		}//cadreLevelDistrict
+		else if(jObj.getString("reportLevel").equalsIgnoreCase("cadreLevelDistrict"))
+		{
+			String value=jObj.getString("value");
+			String id=jObj.getString("id");
+			List<SelectOptionVO> mandalNames=cadreManagementService.findMandalsByDistrict(id);				
+			setNamesList(mandalNames);
 		}
 		return Action.SUCCESS;
 	}

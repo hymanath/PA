@@ -128,7 +128,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	}
 
 	public void setMobile(String mobile) {
-		this.mobile = mobile;
+		cadreInfo.setMobile(mobile);
 	}
 
 	public String getEmail() {
@@ -136,7 +136,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
+		cadreInfo.setEmail(email);
 	}
 
 	public String execute() throws Exception{

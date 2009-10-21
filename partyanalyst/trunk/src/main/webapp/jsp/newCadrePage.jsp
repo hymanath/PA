@@ -15,7 +15,12 @@
 
 <script type="text/javascript">
 
-	function getCadreLevelValues(name,value,id)
+	function setCadreValue(var value){
+		//cadreLevelValueField
+		document.getElementById("cadreLevelValueField").value=value;
+		return true;
+	}
+	function getDistrictLevelValues(name,value,id)
 	{
 
 		var jsObj=
@@ -78,7 +83,7 @@
 		else if(selectedValue=="mandal")
 			selectedElmt=document.getElementById("villageField");
 		else if(selectedValue=="cadreLevel")
-			selectedElmt=document.getElementById("cadreLevelValueField");
+			selectedElmt=document.getElementById("cadreLevelDistrict");
 		
 		for(var val in results.namesList)
 		{
@@ -173,21 +178,31 @@
 		<tr>
 			<th><s:label for="cadreLevelField" id="cadreLevelLabel"  value="Cadre Level" /></th>
 			<td>
-				<select id="cadreLevelField" name="cadreLevel" onchange="getCadreLevelValues(this.name,		
+				<select id="cadreLevelField" name="cadreLevel" onchange="getDistrictLevelValues(this.name,		
 														this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">
 					<option>Select Level</option>		
 					<option  value='2'>STATE</option>	
 					<option  value='3'>DISTRICT</option>	
 					<option  value='5'>MANDAL</option>					
+				</select> <input type='hidden' name='cadreLevelValue' id='cadreLevelValue'>
+			</td>
+		</tr>
+		<tr>		
+			<th><s:label for="cadreLevelValueField" id="cadreLevelValueLabel"  value="Cadre Level Value" /></th>
+			<td>
+				<select id="cadreLevelDistrict" name="cadreLevelDistrict" onchange="setCadreValue(this.options[this.selectedIndex].value);
+										getDistrictLevelValues(this.name,this.options[this.selectedIndex].text,
+										this.options[this.selectedIndex].value)">
+					<option>Select District Level Value</option>					
 				</select> 
 			</td>
 		</tr>
 		
+		
 		<tr>
-			<th><s:label for="cadreLevelValueField" id="cadreLevelValueLabel"  value="Cadre Level Value" /></th>
 			<td>
-				<select id="cadreLevelValueField" name="cadreLevelValue">
-					<option>Select Cadre Level Value</option>					
+				<select id="cadreLevelMandal" name="cadreLevelMandal" onchange="setCadreValue(this.options[this.selectedIndex].value)">
+					<option>Select Mandal Level Value</option>					
 				</select> 
 			</td>
 		</tr>
