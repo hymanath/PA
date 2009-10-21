@@ -56,7 +56,10 @@ public class StaticDataService implements IStaticDataService {
 		this.stateDAO = stateDAO;
 	}
 
-
+	public void setElectionAllianceDAO(IElectionAllianceDAO electionAllianceDAO){
+    	this.electionAllianceDAO = electionAllianceDAO;
+    }
+	
 	public void setElectionScopeDAO(IElectionScopeDAO electionScopeDAO) {
 		this.electionScopeDAO = electionScopeDAO;
 	}
@@ -69,8 +72,6 @@ public class StaticDataService implements IStaticDataService {
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	}
-
-	
 
 	public List<ElectionScope> getElectionScope(Long electionType){
 		return electionScopeDAO.findByPropertyElectionTypeId(electionType);
