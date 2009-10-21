@@ -1,24 +1,12 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IDistrictDAO;
-import com.itgrids.partyanalyst.dao.IElectionDAO;
-import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
-import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionScope;
-import com.itgrids.partyanalyst.model.ElectionType;
-import com.itgrids.partyanalyst.model.Party;
-import com.itgrids.partyanalyst.model.State;
-import com.itgrids.partyanalyst.service.BasePartyResultsServiceImpl;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
 /**
  * 
