@@ -12,7 +12,7 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IRegistrationService;
-import com.itgrids.partyanalyst.service.UserService;
+import com.itgrids.partyanalyst.service.impl.UserService;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.*;
 
