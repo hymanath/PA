@@ -53,6 +53,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	private List<SelectOptionVO> districts;
 	private Set<String> years;
 	private List<SelectOptionVO> levels;
+	private boolean hasAllianceParties;
 	private Long defaultId;
 
 
@@ -91,6 +92,12 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		this.states = states;
 	}
 	
+	
+	
+	public void setHasAllianceParties(boolean hasAllianceParties) {
+		this.hasAllianceParties = hasAllianceParties;
+	}
+	
 	@JSON (serialize= false )
 	public PartyPerformanceReportVO getStateData() {
 		return reportVO;
@@ -99,6 +106,9 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		this.reportVO = stateData;
 	}
 	
+	public boolean isHasAllianceParties() {
+		return hasAllianceParties;
+	}
 	@JSON (serialize= false )
 	public HttpServletRequest getRequest() {
 		return request;
@@ -156,6 +166,8 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		log.debug("partyPerformance excute started...");
 	
 		Map<String, String> params = request.getParameterMap();
+		String year = null;
+		Long partyId = null;
 		
 		String param = null;
 		defaultId = new Long(2);
@@ -166,7 +178,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			param = request.getParameter("stateId");
 			setDistricts(getStaticDataService().getDistricts(new Long(param)));
 			return Action.SUCCESS;
-		}
+		} 
 		
 		if(param != null) {
 			defaultId = new Long(param);
@@ -176,11 +188,35 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		setYears(getStaticDataService().getElectionYears(defaultId));
 		setParties(getStaticDataService().getParties());
 		setDistricts(new ArrayList<SelectOptionVO>());
-		setLevels(getReportLevels());
+		setLevels(getReportLevels());    
+	
+		if(year == null && partyId == null){
+			year = getYears().iterator().next();
+			partyId = getParties().get(0).getId();
+		}
+		
+		boolean t = getStaticDataService().hasAlliances(year, partyId);
+		setHasAllianceParties(t);
 		return Action.SUCCESS;
 	 
     }
 
+	@SuppressWarnings("unchecked")
+	public String getAlliances() throws JRException {
+		String year = null;
+		Long partyId = null;
+		Map<String, String> params = request.getParameterMap();
+		
+		if(params.containsKey("allianceWith")){
+			partyId = new Long(request.getParameter("allianceWith"));
+			year = request.getParameter("year");
+		}
+		
+		boolean t = getStaticDataService().hasAlliances(year, partyId);
+		setHasAllianceParties(t);
+		
+		return Action.SUCCESS;
+	}
 	private List<SelectOptionVO> getReportLevels() {
 		List<SelectOptionVO>levels = new ArrayList<SelectOptionVO>();
 	    levels.add(new SelectOptionVO(new Long(1), "State Level"));
@@ -204,12 +240,13 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		String electionType = request.getParameter("electionType");
 		String year = request.getParameter("year");
 		String state = request.getParameter("state");
+		Boolean alliances = new Boolean(request.getParameter("alliances"));
 		
 		if("2".equals(reportLevel)){
 			district = request.getParameter("district");
 		}
 		
-		reportVO = getPartyService().getPartyPerformanceReport(state, party, year, electionType, country, 0, new BigDecimal(10), new BigDecimal(2));
+		reportVO = getPartyService().getPartyPerformanceReport(state, party, year, electionType, country, 0, new BigDecimal(10), new BigDecimal(2), alliances);
 		SortedMap<String, Integer> positions = reportVO.getPositionDistribution();
 		
 		session = request.getSession();
@@ -220,6 +257,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
 		request.setAttribute("chartName", chartName);
 		session.setAttribute("reportVO", reportVO);
+		session.setAttribute("chartName", chartName);
 		return Action.SUCCESS;
     }
 	
@@ -229,10 +267,14 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		log.debug("Party Performance Jasper execution started...");
 		String contextPath = context.getRealPath("/");
 		
+		session = request.getSession();
+		
+       
        	String jasperXML = contextPath + request.getParameter("jasperFile");	
        	log.debug(jasperXML);
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("REPORT_DIR", "charts\\partyPositionsChart_" + request.getSession().getId() + ".png");
+		//params.put("REPORT_DIR", "charts\\partyPositionsChart_" + request.getSession().getId() + ".png");
+		params.put("REPORT_DIR", "charts\\" + session.getAttribute("chartName"));
 		params.put("CONTEXT_PATH", contextPath);
 		params.put("REPORT_TYPE", request.getParameter("type"));
 		
