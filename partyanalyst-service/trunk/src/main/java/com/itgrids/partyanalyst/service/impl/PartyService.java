@@ -489,6 +489,8 @@ public class PartyService implements IPartyService {
 		List<ConstituencyPositionDetailVO> positionDetailVOsForWonMinorBand = new ArrayList<ConstituencyPositionDetailVO>();
 		for(ConstituencyPositionDetailVO valueObject : presentPartyWinners){
 			double percentageDifference = valueObject.getPercentageDiffBetweenTop2().doubleValue();
+			if(percentageDifference < 0) 
+				percentageDifference = -percentageDifference;
 			if(percentageDifference >= majorBand)
 				positionDetailVOsForWonMajorBand.add(valueObject);
 			else if(minorBand>= percentageDifference)
