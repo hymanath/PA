@@ -45,7 +45,7 @@
 			if(response == true) {
 				document.getElementById("allianceRow").style.display="table-row";
 			} else {
-				document.getElementById("allianceRow").checked = false;
+				document.getElementById("alliances").checked = false;
 				document.getElementById("allianceRow").style.display="none";
 			}
 		}else {
