@@ -16,9 +16,8 @@ import org.apache.commons.lang.StringUtils;
 
 public class CsvReaderNew implements IExcelReader{
 	private ConstituencyBlock constituencyBlock;
-	private List<CsvColumnMapper> constituencyCandidates = new ArrayList<CsvColumnMapper>();
 	private CandidateElectionResult candidateElectionResult;
-	private List<ConstituencyBlock> constituencyBlocks= new ArrayList<ConstituencyBlock>();
+	private List<ConstituencyBlock> constituencyBlocks;
 	private List<CandidateElectionResult> candidateElectionResults;
 	private ExclRowExtracter columnMapper;
 	private String constituencyName;
@@ -27,8 +26,10 @@ public class CsvReaderNew implements IExcelReader{
 	}
 	
 	public void readCSV(String filePath) throws CsvException{
-		File exceFile= new File(filePath);
+	
 		try{
+			File exceFile= new File(filePath);
+			constituencyBlocks= new ArrayList<ConstituencyBlock>();
 			Workbook workbook=Workbook.getWorkbook(exceFile);	
 			Sheet sheet = workbook.getSheet(0);
 			// Loop over first no column and rows in the excel sheet
@@ -190,16 +191,6 @@ public class CsvReaderNew implements IExcelReader{
 		}
 		return tempDouble;
 	}
-
-	public List<CsvColumnMapper> getConstituencyCandidates() {
-		return constituencyCandidates;
-	}
-
-	public void setConstituencyCandidates(
-			List<CsvColumnMapper> constituencyCandidates) {
-		this.constituencyCandidates = constituencyCandidates;
-	}
-
 	public CandidateElectionResult getCandidateElectionResult() {
 		return candidateElectionResult;
 	}
