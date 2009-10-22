@@ -103,7 +103,7 @@ table.mars thead tr {
 	background-color: #9c9;
 }
 table.partyPerformanceReportTable tr.even {
-	background-color: #ccb;
+	background-color: #FFFFFF;
 	border-width: 1px;
 	padding: 8px;
 	border-style: solid;
@@ -111,7 +111,7 @@ table.partyPerformanceReportTable tr.even {
 }
 
 table.partyPerformanceReportTable tr.odd {
-	background-color: #eec;
+	background-color: #ECF1F5;
 	border-width: 1px;
 	padding: 8px;
 	border-style: solid;
