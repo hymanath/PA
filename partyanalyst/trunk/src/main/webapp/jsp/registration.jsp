@@ -13,24 +13,24 @@
 	var ACCESSVALUE;
 
 	function getAccessValue(value)
-	{
+	{		
 		var thElmt=document.getElementById("thId");
 		var tdElmt=document.getElementById("tdId");
 
 		thElmt.innerHTML='<s:label theme="simple" for="accessValueField" id="accessValueLabel"  value="%{getText(\'accessValue\')}" />';
 
 		var str='';
-		if(value=="Country")
-		{				
+		if(value=="COUNTRY")
+		{			
 			str+='<select id="accessValueField" name="accessValue">';			
 			str+='<option value="1">India</option>';
 			str+='</select>';			
-		}else if(value=="State")
+		}else if(value=="STATE")
 		{
 			ACCESSVALUE="State";
 			getAList(value,"null");
 
-		}else if(value=="District")
+		}else if(value=="DISTRICT")
 		{
 			ACCESSVALUE="District";
 			getAList(value,"null");
@@ -131,9 +131,9 @@
 		else 
 			levelValue=ACCESSVALUE;
 
-		console.log(levelValue+"NameSelect");
+		
 		var elmt=document.getElementById(levelValue+"NameSelect");
-		console.log("elmt = ",elmt);
+		
 		if (!elmt || ACCESSVALUE=="State")
 			return;
 
@@ -168,14 +168,13 @@
 			elmt.remove(i);
 	}
 	function callAjax(param){
-		console.log(param);
+		
  		var myResults;
  		var url = "<%=request.getContextPath()%>/partyResultScopeAction.action?"+param;		
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText); 
-								console.log(myResults.namesList);
+								myResults = YAHOO.lang.JSON.parse(o.responseText); 								
 								buildSelectBox(myResults.namesList,param);								
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
