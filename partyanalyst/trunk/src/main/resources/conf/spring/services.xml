@@ -121,4 +121,7 @@
 		<property name="boothResultDAO" ref="boothResultDAO" />
 	</bean>
 	<bean name="uploadFormVo" class="com.itgrids.partyanalyst.excel.upload.vo.UploadFormVo"/>
+	<bean name="regionServiceDataImp" class="com.itgrids.partyanalyst.service.impl.RegionServiceDataImp">
+		<property name="districtDAO" ref="districtDAO"/>
+	</bean>
 </beans>

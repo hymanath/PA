@@ -14,8 +14,8 @@ public class PartyResultScopeAction {
 	private List<SelectOptionVO> namesList;
 	JSONObject jObj = null,respObj=null;
 	private String task = null;
-	private IConstituencySearchService constituencySearchService;
-	private IRegionServiceData regionServiceData;
+	private IConstituencySearchService constituencySearchService=null;
+	private IRegionServiceData regionServiceDataImp=null;
 	
 	public List<SelectOptionVO> getNamesList() {
 		return namesList;
@@ -41,8 +41,8 @@ public class PartyResultScopeAction {
 		return constituencySearchService;
 	}
 
-	public IRegionServiceData getRegionServiceData() {
-		return regionServiceData;
+	public void setRegionServiceDataImp(IRegionServiceData service) {
+		regionServiceDataImp = service;
 	}
 	
 	public void setConstituencySearchService(
@@ -55,7 +55,13 @@ public class PartyResultScopeAction {
 	
 	public String execute() 
 	{
-		System.out.println("In execute method + Election scope level action");				
+		System.out.println("In execute method + Election scope level action");	
+		if(regionServiceDataImp==null){
+			System.out.println("regionServiceData is null Narender");
+		}
+		if(constituencySearchService==null){
+			System.out.println("constituencySearchService is null Narender");
+		}
 		String param=null;
 		
 		param=getTask();
@@ -91,7 +97,7 @@ public class PartyResultScopeAction {
 				String selectedVal=jObj.getString("selected");
 				
 
-				List<SelectOptionVO> districtNames= regionServiceData.getDistrictsByStateID(new Long(1));	
+				List<SelectOptionVO> districtNames= regionServiceDataImp.getDistrictsByStateID(new Long(1));	
 					
 				
 				setNamesList(districtNames);								
