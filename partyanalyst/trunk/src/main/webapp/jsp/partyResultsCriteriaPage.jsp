@@ -312,16 +312,24 @@
 			return true;
 		}
   </script>
- </HEAD>
+  <style type="text/css">
+	#partyResultsMainDiv
+	{
+		text-align:left;
+		 margin-left: 50px;
+		 font-size: 12px; 		 
+	}
 
+  </style>
+ </HEAD>
+	
  <BODY>
+	<H3><U>Select Criteria</U></H3>
+	<div id="partyResultsMainDiv">
  <s:form name="partyResultsForm" action="partyResultsAction" onsubmit="return validateData()" method="post">
  <input type="hidden" id="selectedPartyShortName" name="selectedPartyShortName">
  <input type="hidden" id="selectedElectionTypeName" name="selectedElectionTypeName">
 <table width="800px" style="font-family: sans-serif;">
- <tr>
-	<th colspan="3"><H3><U>Select Criteria</U></H3></th>
- </tr>
  <tr>
  	<th width="250px">
  		<div  class="tdLabelDiv">
@@ -388,7 +396,7 @@
  </tr>
  </table>
  </s:form>
-
+	</div>
  </BODY>
 </HTML>
 
