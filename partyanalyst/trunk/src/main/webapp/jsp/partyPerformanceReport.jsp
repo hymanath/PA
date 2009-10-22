@@ -46,47 +46,57 @@ function setOpacity(obj, opacity)
 	document.getElementById(divtag).style.display = 'none';
 }*/
 </script>
+<style type="text/css">
+	#partyPerformanceReportMainDiv
+	{
+		text-align:left;
+		margin-left:50px;
+		font-size:12px;
+	}
+</style>
 </head> 
 <body>
-
+<div id="partyPerformanceReportMainDiv">
 <div style="padding: 5px; font-weight: bold; color: #46505B; font-family: Trebuchet MS; font-size: 15px;text-align:center;">
 	<u>
 		Party Performance Report for the year <s:property value="stateData.year" /> 
 	</u>
 	<!--<u><s:property value="stateData.state" /> State - Party <s:property value="stateData.party" /> </u> -->
 </div>
-<center>
+<br/><br/>
+ <s:label labelposition="left"><b><U>Party Details:</U></b></s:label>
+<div style="margin-left: 15px;">
 <table class="partyPerformanceReportTable" border="1">
 	<tr>
 		<th>State</th>
-		<td style="background-color: #eec"><s:property value="stateData.state" /></td>
-		<td rowspan="4" style="padding: 0px; width: 300px; height: 250px;">
-			<IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="300" HEIGHT="250" style="opacity:0.0;">
-		</td>
+		<td style="background-color: #ECF1F5"><s:property value="stateData.state" /></td>
 	</tr>
 	<tr>
 		<th>Party</th>
-		<td style="background-color: #ccb"><s:property value="stateData.party" /></td>
+		<td style="background-color: #FFFFFF"><s:property value="stateData.party" /></td>
 	</tr>
 	<tr>
 		<th>Seats Won</th>
-		<td style="background-color: #eec"> <s:property value="stateData.totalSeatsWon" />( <s:property value="stateData.diffSeatsWon" /> )</td>
+		<td style="background-color: #ECF1F5"> <s:property value="stateData.totalSeatsWon" />( <s:property value="stateData.diffSeatsWon" /> )</td>
 	</tr>
 	<tr>
 		<th>Votes %</th>
-		<td style="background-color: #eec"><s:property value="stateData.totalPercentageOfVotesWon" />%( <s:property value="stateData.diffOfTotalPercentageWinWithPrevElection"/>%)</td>
+		<td style="background-color: #FFFFFF"><s:property value="stateData.totalPercentageOfVotesWon" />%( <s:property value="stateData.diffOfTotalPercentageWinWithPrevElection"/>%)</td>
 	</tr>	
 </table>
-</center>
+</div>
+<div style="left:650px;margin-right:20px;position:absolute;top:320px;">
+	<IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350" style="opacity:0.0;">
+</div>
 <!--Total Seats Won: <s:property value="stateData.totalSeatsWon" />( <s:property value="stateData.diffSeatsWon" /> ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <s:label labelposition="right">Total Percentage of Votes: <s:property value="stateData.totalPercentageOfVotesWon" />%( <s:property value="stateData.diffOfTotalPercentageWinWithPrevElection"/>%) </s:label> -->
-
-<br><br>
+<BR/><BR/>
  <s:label labelposition="left"><b><U>Party Positions:</U></b></s:label>
 <!--<br><p align="center"> -->
+<div style="margin-left: 15px;">
 <c:set var="data" value="stateData" scope="session" />
 <c:set var="myId" value="row" />
-<center>
+
 <display:table class="partyPerformanceReportTable" name="stateData.positionDistribution" id="${myId}" length="1" cellpadding="10px" >
     <c:forEach var="pd" items="${stateData.positionDistribution}" varStatus="status">
     	<jsp:useBean id="status" type="javax.servlet.jsp.jstl.core.LoopTagStatus" />
@@ -106,11 +116,11 @@ function setOpacity(obj, opacity)
 		</c:choose>	          
 	</c:forEach>
 </display:table>  
-</center>
+</div>
 
 <!--<center><IMG SRC="charts/partyPositionsChart_<%=request.getSession().getId()%>.png" WIDTH="300" HEIGHT="200"  BORDER="0" ></center> -->
 
-<br>
+<br/><BR/>
 <div>
 	<B><U>Detailed Report...</U></B>
 </div>
@@ -202,16 +212,15 @@ function setOpacity(obj, opacity)
 			</div>
 		</c:when>
 	</c:choose>
-<div id="${constPositions.type}" style="display:none">
+<div id="${constPositions.type}" style="display:none;font-size:12px;margin-right:15px;">
 <center>
 				<display:table class="partyPerformanceReportTable" name="${constPositions.constituencyPositionDetails}" id="row" style="margin-top:0px;"> 
-							<display:column title="Constiuency Name" property="constiuencyName" />
-							<display:column title="Candidate Name" property="candidateName" />
-							<display:column title="% of Votes" property="percentageOfVotes" />
-							<display:column title="Previous Election %" property="prevElectionPercentage" />
-							<display:column title="Oppositin Party % of Votes" property = "oppositePartyPercentageOfVotes" />
-							<display:column title="Opposition Party" property="oppositeParty" />
-							<display:column title="Opposition Party Candidate" property="oppositePartyCandidate" />
+							<display:column title="Constiuency Name" property="constiuencyName" style="padding-left:4px;"/>
+							<display:column title="Candidate Name" property="candidateName" style="padding-left:4px;"/>
+							<display:column title="% of Votes" property="percentageOfVotes" style="text-align:center;"/>
+							<display:column title="Previous Election %" property="prevElectionPercentage" style="text-align:center;"/>
+							<display:column title="Opposition Party" property="oppositeParty" style="text-align:center;"/>
+							<display:column title="Opposition Party Candidate" property="oppositePartyCandidate" style="padding-left:4px;"/>
 				</display:table>	
 </center>
 <!--<a href="#" onclick="closeSection('${constPositions.type}');">close</a><BR>-->
@@ -221,27 +230,18 @@ function setOpacity(obj, opacity)
 <br/><br/>
 
  <s:label labelposition="left"><b><U>Your votes are flown to any one of the below parties:</U></b></s:label>
-<center>
+<div style="margin-left: 15px;"> 
 <table class="partyPerformanceReportTable" border="1">
 	<c:forEach var="p" items="${stateData.toPartySwing}" >
 	<tr>
 		<th>${p.key}</th>
-		<td style="background-color: #eec">${p.value}% </td>
+		<td style="background-color: #ECF1F5">${p.value}% </td>
 	</tr>
 	</c:forEach>
 </table>
-</center>
+</div> 
 <br>
-<s:label labelposition="left"><b><U>Rebel Candidates::</U></b></s:label>
-<display:table class="partyPerformanceReportTable" name="${stateData.rebelPartyCandidates}" id="row" style="margin-top:0px;"> 
-							<display:column title="Constiuency Name" property="constiuencyName" />
-							<display:column title="Candidate Name" property="candidateName" />
-							<display:column title="% of Votes" property="percentageOfVotes" />
-							<display:column title="Position" property="rank" />
-							<display:column title="Party" property="oppositeParty" />
-				</display:table>	
-<br>
-<div>
+<div >
 <s:form action="partyPerformanceJasper.action?jasperFile=jasper\partyPerformance\partyPerformanceReport.jrxml&type=normal" style="float: left;margin-right:20px;">
 <input type="submit" value="Generate PDF">
 </s:form>
@@ -252,6 +252,7 @@ function setOpacity(obj, opacity)
 <script type="text/javascript">
 	fadeIn("chartImg",10);
 </script>
+</div>
 </body>
 </html>
 
