@@ -1,14 +1,16 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dto.BaseDTO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.service.IRegistrationService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class RegistrationService implements IRegistrationService{
 	
@@ -74,8 +76,14 @@ public class RegistrationService implements IRegistrationService{
 		reg.setGender(values.getGender());
 		reg.setUserName(values.getUserName());
 		reg.setPassword(values.getPassword());
-		java.util.Date dt =java.sql.Date.valueOf(values.getDateOfBirth());
-		reg.setDateOfBirth(dt);
+		SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
+		Date date =null;
+		try{
+			date= format.parse(values.getDateOfBirth());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		reg.setDateOfBirth(date);
 		reg.setEmail(values.getEmail());
 		reg.setPhone(values.getPhone());
 		reg.setMobile(values.getMobile());
