@@ -881,5 +881,9 @@ public class DummyPartyResultsData {
 		return constituencyElectionList;
 		
 	}
+	
+	public static List<Party> getParties(){
+		return parties;
+	}
 
 }
