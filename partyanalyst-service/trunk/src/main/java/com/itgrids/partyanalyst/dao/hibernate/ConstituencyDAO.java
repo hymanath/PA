@@ -1,11 +1,18 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.criterion.Expression;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.columns.enums.ConstituencyColumnNames;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
+import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 
@@ -50,5 +57,25 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	public List<Constituency> findByConstituencyId(Long constituencyId){
 		return getHibernateTemplate().find("from Constituency model where model.constituencyId = ?",constituencyId);
 	}
+	
+	@SuppressWarnings("unchecked")
+    public List<Constituency> findConstitueniesByPartyAndElectionType(final Long partyId, final Long electionType, final String electionYear){
+           
+            return ( List<Constituency> ) getHibernateTemplate().execute( new HibernateCallback() {
+                public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+                		List<Constituency> constElectionResults = session.createCriteria(Constituency.class)
+                							.createAlias("constituencyElection", "constElec")
+                							.createAlias("party", "p")
+                							.createAlias("constElec.election", "elec")
+                							.createAlias("elec.electionScope", "scope")
+                							.createAlias("scope.electionType", "type")
+                							.add(Expression.eq("type.electionTypeId", electionType))
+                							.add(Expression.eq("elec.electionYear", electionYear))
+                							.add(Expression.eq("p.partyId", partyId))
+                							.list();
+                		 return constElectionResults;
+                }
+            });
+    }
 
 }

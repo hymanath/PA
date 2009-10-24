@@ -84,19 +84,44 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 		return getHibernateTemplate().find( "from ConstituencyElectionResult model where model.constituencyElection.constiElecId in ("+constituencyElectionIDs+")");
 	}
 
-
 	@SuppressWarnings("unchecked")
-	public List<ConstituencyElectionResult> findByElectionTypeIdAndYear(
-		final Long electionTypeId, final String electionYear) {
+	public List<ConstituencyElectionResult> findByElectionTypeId_Year_StateId(
+		final Long electionTypeId, final String electionYear, final Long stateId) {
 		return ( List<ConstituencyElectionResult> ) getHibernateTemplate().execute( new HibernateCallback() {
             public Object doInHibernate( Session session ) throws HibernateException, SQLException {
             		List<ConstituencyElectionResult> constElectionResults = session.createCriteria(ConstituencyElectionResult.class)
             							.createAlias("constituencyElection", "constElec")
+            							.createAlias("constElec.constituency", "consti")
+            							.createAlias("consti.state", "state")
             							.createAlias("constElec.election", "elec")
             							.createAlias("elec.electionScope", "scope")
             							.createAlias("scope.electionType", "type")
             							.add(Expression.eq("type.electionTypeId", electionTypeId))
             							.add(Expression.eq("elec.electionYear", electionYear))
+            							.add(Expression.eq("state.stateId", stateId))
+            							.list();
+            		 return constElectionResults;
+            }
+        });
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyElectionResult> findByElectionTypeId_Year_StateId_DistrictId(
+		final Long electionTypeId, final String electionYear, final Long stateId, final Long districtId) {
+		return ( List<ConstituencyElectionResult> ) getHibernateTemplate().execute( new HibernateCallback() {
+            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+            		List<ConstituencyElectionResult> constElectionResults = session.createCriteria(ConstituencyElectionResult.class)
+            							.createAlias("constituencyElection", "constElec")
+            							.createAlias("constElec.constituency", "consti")
+            							.createAlias("consti.state", "state")
+            							.createAlias("consti.district", "dist")
+            							.createAlias("constElec.election", "elec")
+            							.createAlias("elec.electionScope", "scope")
+            							.createAlias("scope.electionType", "type")
+            							.add(Expression.eq("type.electionTypeId", electionTypeId))
+            							.add(Expression.eq("elec.electionYear", electionYear))
+            							.add(Expression.eq("state.stateId", stateId))
+            							.add(Expression.eq("dist.districtId", districtId))
             							.list();
             		 return constElectionResults;
             }
