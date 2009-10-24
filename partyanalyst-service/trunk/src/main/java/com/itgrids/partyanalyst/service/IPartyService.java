@@ -6,7 +6,7 @@ import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
 
 public interface IPartyService {
 	
-	public PartyPerformanceReportVO getPartyPerformanceReport(String state, String party, String year, String electionType, 
+	public PartyPerformanceReportVO getPartyPerformanceReport(String state, String district, String party, String year, String electionType, 
 			String countryID, int noOfPositionDistribution, BigDecimal majorBand, BigDecimal minorBand, Boolean includeAllianceParties);
 
 	public PartyPerformanceReportVO getPartyPerformanceReport(String state, String party, String year, String electionType, int noOfPositionDistribution);
