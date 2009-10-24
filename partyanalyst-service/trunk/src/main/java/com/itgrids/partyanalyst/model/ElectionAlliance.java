@@ -21,31 +21,31 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "election_alliance")
+@Table(name = "election_alliances")
 public class ElectionAlliance extends BaseModel implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private Long allianceId;
+	private Long electionAllianceId;
 	private Election election;
-	private Party party;
+	private Group group;
 	
 	public ElectionAlliance(){}
 	
-	public ElectionAlliance(Long allianceId, Election election, Party party) {
-		this.allianceId = allianceId;
+	public ElectionAlliance(Long allianceId, Election election, Group group) {
+		this.electionAllianceId = allianceId;
 		this.election = election;
-		this.party = party;
+		this.group = group;
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "alliance_id", unique = true, nullable = false)
-	public Long getAllianceId() {
-		return allianceId;
+	@Column(name = "election_alliance_id", unique = true, nullable = false)
+	public Long getElectionAllianceId() {
+		return electionAllianceId;
 	}
 	
-	public void setAllianceId(Long allianceId) {
-		this.allianceId = allianceId;
+	public void setElectionAllianceId(Long allianceId) {
+		this.electionAllianceId = allianceId;
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
@@ -61,14 +61,15 @@ public class ElectionAlliance extends BaseModel implements Serializable {
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "party_id")
+	@JoinColumn(name = "group_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Party getParty() {
-		return party;
+	public Group getGroup() {
+		return group;
 	}
 	
-	public void setParty(Party party) {
-		this.party = party;
+	public void setGroup(Group group) {
+		this.group = group;
 	}
+
 }
