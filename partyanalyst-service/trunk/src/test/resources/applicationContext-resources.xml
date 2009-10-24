@@ -58,6 +58,8 @@
 				<value>com.itgrids.partyanalyst.model.BoothResult</value>
 				<value>com.itgrids.partyanalyst.model.BoothVillageCensus</value>
 				<value>com.itgrids.partyanalyst.model.ElectionAlliance</value>
+				<value>com.itgrids.partyanalyst.model.Group</value>
+				<value>com.itgrids.partyanalyst.model.AllianceGroup</value>
 			</list>
 		</property>
 	</bean>
@@ -206,6 +208,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="electionAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionAllianceDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="allianceGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.AllianceGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
