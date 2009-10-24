@@ -133,6 +133,11 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return lelectionObj;		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Election> findByElectionScopeId(Long electionScopeId){
+		return getHibernateTemplate().find("from Election model where model.electionScope.electionScopeId = ?", electionScopeId);
+	}
+	
 	public String findPreviousElectionYear(final String year, final Long typeId, final Long stateId, final Long countryId) {
 		return (String) getHibernateTemplate().execute( new HibernateCallback() {
             public Object doInHibernate( Session session ) throws HibernateException, SQLException {
