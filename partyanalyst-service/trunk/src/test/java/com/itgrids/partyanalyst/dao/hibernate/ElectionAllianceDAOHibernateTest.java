@@ -28,12 +28,6 @@ public class ElectionAllianceDAOHibernateTest extends BaseDaoTestCase {
 	//@Test
 	public void testHasAlliances(){
 		List<ElectionAlliance> allianceList = electionAllianceDAO.findByElectionYear("2009");
-		for(ElectionAlliance alliance: allianceList){
-			Long partyId = alliance.getParty().getPartyId();
-			if(partyId.equals(new Long(11))){
-				System.out.println("true");
-			} 
-		}
-	
+		
 	}
 }
