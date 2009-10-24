@@ -52,6 +52,8 @@ public interface IConstituencyElectionResultDAO extends GenericDao<ConstituencyE
 
 	public List<ConstituencyElectionResult> findByConstituencyElections(String constituencyElectionIDs);
 	
-	public List<ConstituencyElectionResult> findByElectionTypeIdAndYear(Long electionTypeId, String electionYear);
+	public List<ConstituencyElectionResult> findByElectionTypeId_Year_StateId(Long electionTypeId, String electionYear, Long stateId);
+	
+	public List<ConstituencyElectionResult> findByElectionTypeId_Year_StateId_DistrictId(Long electionTypeId, String electionYear, Long stateId, Long districtId);
 
 }
