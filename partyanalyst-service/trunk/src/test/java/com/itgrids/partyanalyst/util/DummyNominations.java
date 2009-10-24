@@ -42,4 +42,64 @@ public class DummyNominations {
 		return nominations;
 	}
 	
+	public static List<Nomination> getNominationsWithBoothResults(){
+		List <Nomination> nominations = new ArrayList<Nomination>();
+		Booth booth1 = new Booth(new Long(1), null , "Nimmanapalli Road","Basinikonda, Ramacharlapalli", null, null,null,new Double(1000),null,null);
+		Booth booth2 = new Booth(new Long(2), null , "Nimmanapalli Road1","Basinikonda, Ramacharlapalli1", null, null,null,new Double(1500),null,null);
+		Booth booth3= new Booth(new Long(3), null , "Nimmanapalli Road2","Basinikonda, Ramacharlapalli2", null, null,null,new Double(1400),null,null);
+		Booth booth4 = new Booth(new Long(4), null , "Nimmanapalli Road3","Basinikonda, Ramacharlapalli3", null, null,null,new Double(900),null,null);
+		Booth booth5 = new Booth(new Long(5), null , "Nimmanapalli Road4","Basinikonda, Ramacharlapalli4", null, null,null,new Double(1220),null,null);
+		
+		BoothConstituencyElection bce1 = new BoothConstituencyElection(booth1, null,null);
+		BoothConstituencyElection bce2= new BoothConstituencyElection(booth2, null,null);
+		BoothConstituencyElection bce3 = new BoothConstituencyElection(booth3, null,null);
+		BoothConstituencyElection bce4 = new BoothConstituencyElection(booth4, null,null);
+		BoothConstituencyElection bce5 = new BoothConstituencyElection(booth5, null,null);
+		
+		BoothResult br1 = new BoothResult(new Double(900),null,bce1);
+		BoothResult br2 = new BoothResult(new Double(1200),null,bce2);
+		BoothResult br3 = new BoothResult(new Double(1300),null,bce3);
+		BoothResult br4 = new BoothResult(new Double(750),null,bce4);
+		BoothResult br5 = new BoothResult(new Double(1100),null,bce5);
+		
+		Set<BoothResult> brs = new HashSet<BoothResult>();
+		brs.add(br1);
+		brs.add(br2);
+		brs.add(br3);
+		brs.add(br4);
+		brs.add(br5);
+		
+		Candidate candidate = new Candidate();
+		candidate.setLastname("Konedala Chiranjeevi");
+		
+		Constituency consti = new Constituency();
+		consti.setName("Tirupathi");
+		
+		ElectionType elecType = new ElectionType();
+		elecType.setElectionType("Assembly");
+		
+		ElectionScope elecScope = new ElectionScope();
+		elecScope.setElectionType(elecType);
+		
+		Election elec = new Election();
+		elec.setElectionScope(elecScope);
+		elec.setElectionYear("2004");
+		
+		ConstituencyElection consElec = new ConstituencyElection();
+		consElec.setElection(elec);
+		consElec.setConstituency(consti);
+		
+		Party party = new Party();
+		party.setShortName("PRP");
+		
+		Nomination nomination = new Nomination();
+		nomination.setBoothResults(brs);
+		nomination.setConstituencyElection(consElec);
+		nomination.setCandidate(candidate);
+		nomination.setParty(party);
+		nominations.add(nomination);
+		
+		return nominations;
+	}
+	
 }
