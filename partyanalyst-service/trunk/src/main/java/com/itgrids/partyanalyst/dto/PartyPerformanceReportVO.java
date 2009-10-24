@@ -64,7 +64,7 @@ public class PartyPerformanceReportVO extends BaseObject {
 	private List<ConstituencyPositionDetailVO> rebelPartyCandidates;
 	private List<ConstituencyPositionDetailVO> partyWinners;
 	private List<ConstituencyPositionDetailVO> partyLosers;
-	
+	private String district;
 	
 	public List<ConstituencyPositionDetailVO> getPartyWinners() {
 		return partyWinners;
@@ -248,6 +248,14 @@ public class PartyPerformanceReportVO extends BaseObject {
 
 	public void setToPartySwing(Map<String, String> toPartySwing) {
 		this.toPartySwing = toPartySwing;
+	}
+
+	public String getDistrict(){
+		return district;
+	}
+	
+	public void setDistrict(String districtName) {
+		this.district = districtName;
 	}
 
 }
