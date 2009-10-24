@@ -75,7 +75,7 @@
 </table><br>
 </div>
 
-<IMG id="chartImg" SRC="charts/<%= request.getAttribute("chartName")%>" WIDTH="450" HEIGHT="400" style="opacity:0.0;">
+<IMG id="chartImg" SRC="charts/<%= request.getAttribute("chartName")%>" WIDTH="450" HEIGHT="400">
 
 </body>
 </html>
