@@ -14,7 +14,7 @@ import com.itgrids.partyanalyst.service.IPartyService;
 
 public class PartyServiceStub implements IPartyService {
 	
-	public PartyPerformanceReportVO getPartyPerformanceReport(String state,
+	public PartyPerformanceReportVO getPartyPerformanceReport(String state, String district,
 			String party, String year, String electionType, String countryID, int noOfPositionDistribution,
 			BigDecimal majorBand, BigDecimal minorBand, Boolean includeAlliances) {
 

@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
 import com.itgrids.partyanalyst.dto.PositionType;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
@@ -35,10 +37,12 @@ public class PartyService implements IPartyService {
 
 	private IElectionDAO electionDAO;
 	private IStateDAO stateDAO;
-	private State stateVO;
+	private IDistrictDAO districtDAO;
 	private IPartyDAO partyDAO;
 	private IStaticDataService staticDataService;
 	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
+	private static int POSITIVE_SWING = 10;
+	private static int NEGATIVE_SWING = 10;
 	
 	private final static Log log = LogFactory.getLog(PartyService.class);
 	
@@ -54,104 +58,35 @@ public class PartyService implements IPartyService {
 		this.stateDAO = stateDAO;
 	}
 
+	public void setDistrictDAO(IDistrictDAO districtDAO){
+		this.districtDAO = districtDAO;
+	}
+	
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
 	}
-
+	
 	public void setConstituencyElectionResultDAO(
 			IConstituencyElectionResultDAO constituencyElectionResultDAO) {
 		this.constituencyElectionResultDAO = constituencyElectionResultDAO;
 	}
 
-	public PartyPerformanceReportVO getPartyPerformanceReport(String state,
-			String partyId, String year, String elecType, String countryID,
+	public PartyPerformanceReportVO getPartyPerformanceReport(String state, String district,
+			String party, String year, String elecType, String countryID,
 			int noOfPositionDistribution, BigDecimal majorBand,
 			BigDecimal minorBand, Boolean includeAllianceParties) {	
 		log.debug("getPartyPerformanceReport start.....");
 		
-		Party selectedParty = partyDAO.get(new Long(partyId)); 
+		Long stateId = new Long(state);
+		Long districtId = (district != null) ? new Long(district): 0;
+		Long partyId = new Long(party);
 		Long electionType = new Long(elecType);
-		stateVO = stateDAO.get(new Long(state));
-		String prevYear = electionDAO.findPreviousElectionYear(year, electionType, new Long(state), new Long(countryID));
+		String prevYear = electionDAO.findPreviousElectionYear(year, electionType, stateId, new Long(countryID));
 				
-		PartyPerformanceReportVO presentYearPartyPerformanceReportVO = getElectionData(year, electionType, includeAllianceParties, selectedParty, false);
-		PartyPerformanceReportVO previousYearPartyPerformanceReportVO = getElectionData(prevYear, electionType, includeAllianceParties, selectedParty, true);
+		PartyPerformanceReportVO presentYearPartyPerformanceReportVO = getElectionResults(stateId, districtId, year, electionType, partyId, includeAllianceParties, false);
+		PartyPerformanceReportVO previousYearPartyPerformanceReportVO = getElectionResults(stateId, districtId, prevYear, electionType, partyId, includeAllianceParties, true);
 				
-		List<ConstituencyPositionDetailVO> presentPartyWinners = presentYearPartyPerformanceReportVO.getPartyWinners();
-		List<ConstituencyPositionDetailVO> presentPartyLoosers = presentYearPartyPerformanceReportVO.getPartyLosers();				
-
-		Map<String, List<ConstituencyPositionDetailVO>> marginDifferenceWinConstituencyPositions = 
-				marginDifferenceWinData(presentPartyWinners, minorBand.doubleValue(), majorBand.doubleValue());
-		
-		List<ConstituencyPositionsVO> constituencyPositionsList = new ArrayList<ConstituencyPositionsVO>();
-		constituencyPositionsList.add(new ConstituencyPositionsVO(
-										PositionType.POSITIONS_WON_MAJOR_BAND
-										, marginDifferenceWinConstituencyPositions.get("MAJOR_DIFF").size()
-										, marginDifferenceWinConstituencyPositions.get("MAJOR_DIFF")
-										, "Winning Positions with higher percentage margin"));
-		
-		constituencyPositionsList.add(new ConstituencyPositionsVO(
-										PositionType.POSITIONS_WON_MINOR_BAND
-										, marginDifferenceWinConstituencyPositions.get("MINOR_DIFF").size()
-										, marginDifferenceWinConstituencyPositions.get("MINOR_DIFF")
-										, "Winning Positions with lower percentage margin"));
-
-		Map<String, List<ConstituencyPositionDetailVO>> marginDifferenceLossConstituencyPositions = 
-			marginDifferenceWinData(presentPartyLoosers, minorBand.doubleValue(), majorBand.doubleValue());
-		
-		constituencyPositionsList.add(new ConstituencyPositionsVO(
-										PositionType.POSITIONS_LOST_MINOR_BAND
-										, marginDifferenceLossConstituencyPositions.get("MINOR_DIFF").size()
-										, marginDifferenceLossConstituencyPositions.get("MINOR_DIFF")
-										, "Losing Positions with lower percentage margin"));
-		constituencyPositionsList.add(new ConstituencyPositionsVO(
-										PositionType.POSITIONS_LOST_MAJOR_BAND
-										, marginDifferenceLossConstituencyPositions.get("MAJOR_DIFF").size()
-										, marginDifferenceLossConstituencyPositions.get("MAJOR_DIFF")
-										, "Losing Positions with higher percentage margin"));
-		
-		int positiveSwing = 10;
-		int negativeSwing = 10;
-		List<ConstituencyPositionDetailVO> previousElectionWinners_Loosers = new ArrayList<ConstituencyPositionDetailVO>();
-		previousElectionWinners_Loosers.addAll(previousYearPartyPerformanceReportVO.getPartyWinners());
-		previousElectionWinners_Loosers.addAll(previousYearPartyPerformanceReportVO.getPartyLosers());
-		
-		Map<String, List<ConstituencyPositionDetailVO>> swingDifferenceWinConstituencyPositions = 
-				swingDifferenceWinData(presentPartyWinners, previousElectionWinners_Loosers, negativeSwing, positiveSwing);
-		
-		constituencyPositionsList.add(new ConstituencyPositionsVO(
-										PositionType.POSITIONS_WON_WITH_POSITIVE_SWING
-										, swingDifferenceWinConstituencyPositions.get("POSITIVE_SWING").size()
-										, swingDifferenceWinConstituencyPositions.get("POSITIVE_SWING")
-										, "Winning Positions with Positive Swing"));
-		constituencyPositionsList.add(new ConstituencyPositionsVO(
-										PositionType.POSITIONS_WON_WITH_NEGATIVE_SWING
-										, swingDifferenceWinConstituencyPositions.get("NEGATIVE_SWING").size()
-										, swingDifferenceWinConstituencyPositions.get("NEGATIVE_SWING")
-										, "Winning Positions with Negative Swing"));
-		
-		Map<String, List<ConstituencyPositionDetailVO>> swingDifferenceLossConstituencyPositions = 
-			swingDifferenceWinData(presentPartyWinners, previousElectionWinners_Loosers, negativeSwing, positiveSwing);
-		
-		constituencyPositionsList.add(new ConstituencyPositionsVO(
-										PositionType.POSITIONS_LOST_WITH_POSITIVE_SWING
-										, swingDifferenceLossConstituencyPositions.get("POSITIVE_SWING").size()
-										, swingDifferenceLossConstituencyPositions.get("POSITIVE_SWING")
-										, "Losing Positions with Positive Swing"));
-		
-		constituencyPositionsList.add(new ConstituencyPositionsVO(
-										PositionType.POSITIONS_LOST_WITH_NEGATIVE_SWING
-										, swingDifferenceLossConstituencyPositions.get("NEGATIVE_SWING").size()
-										, swingDifferenceLossConstituencyPositions.get("NEGATIVE_SWING")
-										, "Loosing Positions with Negative Swing"));
-		
-		List<ConstituencyPositionDetailVO> positionsLostByDroppingVotes = getListLostByDroppingVotes(presentPartyLoosers,previousElectionWinners_Loosers);
-				
-		constituencyPositionsList.add(new ConstituencyPositionsVO(
-				PositionType.POSITIONS_LOST_BY_DROPPING_VOTES
-				, positionsLostByDroppingVotes.size()
-				, positionsLostByDroppingVotes
-				, "Losing Positions with droping votes percentage"));		
+		setConstituencyPositionsForDetailedReport(presentYearPartyPerformanceReportVO, previousYearPartyPerformanceReportVO, majorBand, minorBand);
 		
 		Map<String, String> partyVotesFlown = partyVotesFlow(presentYearPartyPerformanceReportVO.getVotesFlown()
 				, previousYearPartyPerformanceReportVO.getVotesFlown());
@@ -164,20 +99,16 @@ public class PartyService implements IPartyService {
 		
 		presentYearPartyPerformanceReportVO.setDiffSeatsWon(presentYearPartyPerformanceReportVO.getTotalSeatsWon() 
 				- previousYearPartyPerformanceReportVO.getTotalSeatsWon());
-		presentYearPartyPerformanceReportVO.setTotalPercentageOfVotesWon(presentElectionTotalPercentageOfVotesWon);
 		presentYearPartyPerformanceReportVO.setTotalPercentageOfVotesWonPreviousElection(prevElectionTotalPercentageOfVotesWon);
 		presentYearPartyPerformanceReportVO.setDiffOfTotalPercentageWinWithPrevElection(diffOfTotalPercentageWinWithPrevElection);
-		presentYearPartyPerformanceReportVO.setState(stateVO.getStateName());
 		presentYearPartyPerformanceReportVO.setToPartySwing(partyVotesFlown);
-		presentYearPartyPerformanceReportVO.setPartyVotesFlown(partyVotesFlown);
-		presentYearPartyPerformanceReportVO.setConstituencyPositions(constituencyPositionsList);
-
+	
 		SortedMap<String, Integer> partyPositions = presentYearPartyPerformanceReportVO.getPositionDistribution();
 		SortedMap<String, Integer> positionDistribution = new TreeMap<String, Integer>();
-		positionDistribution.put("1st Positions", partyPositions.get("1"));
-		positionDistribution.put("2nd Positions", partyPositions.get("2"));
-		positionDistribution.put("3rd Positions", partyPositions.get("3"));
-		positionDistribution.put("4th Positions", partyPositions.get("4"));
+		positionDistribution.put("1st Positions", (partyPositions.get("1") != null)? partyPositions.get("1") : 0);
+		positionDistribution.put("2nd Positions", (partyPositions.get("2") != null)? partyPositions.get("2") : 0);
+		positionDistribution.put("3rd Positions", (partyPositions.get("3") != null)? partyPositions.get("3") : 0);
+		positionDistribution.put("4th Positions", (partyPositions.get("4") != null)? partyPositions.get("4") : 0);
 		positionDistribution.put("5th Positions", (partyPositions.get("5") != null)? partyPositions.get("5") : 0);
 		
 		
@@ -187,48 +118,131 @@ public class PartyService implements IPartyService {
 		
 		return presentYearPartyPerformanceReportVO;
 	}
+
+
+	private void setConstituencyPositionsForDetailedReport(
+			PartyPerformanceReportVO presentYearPartyPerformanceReportVO,
+			PartyPerformanceReportVO previousYearPartyPerformanceReportVO, 
+			BigDecimal majorBand, BigDecimal minorBand) {
+		log.debug("comparing present and previous results for detailed report..");
+		
+		List<ConstituencyPositionDetailVO> presentPartyWinners = presentYearPartyPerformanceReportVO.getPartyWinners();
+		List<ConstituencyPositionDetailVO> presentPartyLoosers = presentYearPartyPerformanceReportVO.getPartyLosers();				
+
+		Map<String, List<ConstituencyPositionDetailVO>> marginDifferenceWinConstituencyPositions = 
+			marginDifferenceWinData(presentPartyWinners, minorBand.doubleValue(), majorBand.doubleValue());
 	
-	public PartyPerformanceReportVO getElectionData(String year, Long electionType, Boolean includeAllianceParties, 
-											Party selectedParty, boolean isPrevYear) {
+		List<ConstituencyPositionsVO> constituencyPositionsList = new ArrayList<ConstituencyPositionsVO>();
+		constituencyPositionsList.add(new ConstituencyPositionsVO(
+				PositionType.POSITIONS_WON_MAJOR_BAND
+				, marginDifferenceWinConstituencyPositions.get("MAJOR_DIFF").size()
+				, marginDifferenceWinConstituencyPositions.get("MAJOR_DIFF")
+				, "Winning Positions with higher percentage margin"));
+
+		constituencyPositionsList.add(new ConstituencyPositionsVO(
+				PositionType.POSITIONS_WON_MINOR_BAND
+				, marginDifferenceWinConstituencyPositions.get("MINOR_DIFF").size()
+				, marginDifferenceWinConstituencyPositions.get("MINOR_DIFF")
+				, "Winning Positions with lower percentage margin"));
+
+		Map<String, List<ConstituencyPositionDetailVO>> marginDifferenceLossConstituencyPositions = 
+			marginDifferenceWinData(presentPartyLoosers, minorBand.doubleValue(), majorBand.doubleValue());
+
+		constituencyPositionsList.add(new ConstituencyPositionsVO(
+				PositionType.POSITIONS_LOST_MINOR_BAND
+				, marginDifferenceLossConstituencyPositions.get("MINOR_DIFF").size()
+				, marginDifferenceLossConstituencyPositions.get("MINOR_DIFF")
+				, "Losing Positions with lower percentage margin"));
+		constituencyPositionsList.add(new ConstituencyPositionsVO(
+				PositionType.POSITIONS_LOST_MAJOR_BAND
+				, marginDifferenceLossConstituencyPositions.get("MAJOR_DIFF").size()
+				, marginDifferenceLossConstituencyPositions.get("MAJOR_DIFF")
+				, "Losing Positions with higher percentage margin"));
+
+		List<ConstituencyPositionDetailVO> previousElectionWinners_Loosers = new ArrayList<ConstituencyPositionDetailVO>();
+		previousElectionWinners_Loosers.addAll(previousYearPartyPerformanceReportVO.getPartyWinners());
+		previousElectionWinners_Loosers.addAll(previousYearPartyPerformanceReportVO.getPartyLosers());
+
+		Map<String, List<ConstituencyPositionDetailVO>> swingDifferenceWinConstituencyPositions = 
+			swingDifferenceWinData(presentPartyWinners, previousElectionWinners_Loosers);
+
+		constituencyPositionsList.add(new ConstituencyPositionsVO(
+				PositionType.POSITIONS_WON_WITH_POSITIVE_SWING
+				, swingDifferenceWinConstituencyPositions.get("POSITIVE_SWING").size()
+				, swingDifferenceWinConstituencyPositions.get("POSITIVE_SWING")
+				, "Winning Positions with Positive Swing"));
+		constituencyPositionsList.add(new ConstituencyPositionsVO(
+				PositionType.POSITIONS_WON_WITH_NEGATIVE_SWING
+				, swingDifferenceWinConstituencyPositions.get("NEGATIVE_SWING").size()
+				, swingDifferenceWinConstituencyPositions.get("NEGATIVE_SWING")
+				, "Winning Positions with Negative Swing"));
+
+		Map<String, List<ConstituencyPositionDetailVO>> swingDifferenceLossConstituencyPositions = 
+			swingDifferenceWinData(presentPartyLoosers, previousElectionWinners_Loosers);
+
+		constituencyPositionsList.add(new ConstituencyPositionsVO(
+				PositionType.POSITIONS_LOST_WITH_POSITIVE_SWING
+				, swingDifferenceLossConstituencyPositions.get("POSITIVE_SWING").size()
+				, swingDifferenceLossConstituencyPositions.get("POSITIVE_SWING")
+				, "Losing Positions with Positive Swing"));
+
+		constituencyPositionsList.add(new ConstituencyPositionsVO(
+				PositionType.POSITIONS_LOST_WITH_NEGATIVE_SWING
+				, swingDifferenceLossConstituencyPositions.get("NEGATIVE_SWING").size()
+				, swingDifferenceLossConstituencyPositions.get("NEGATIVE_SWING")
+				, "Loosing Positions with Negative Swing"));
+
+		List<ConstituencyPositionDetailVO> positionsLostByDroppingVotes = getListLostByDroppingVotes(presentPartyLoosers,previousElectionWinners_Loosers);
+
+		constituencyPositionsList.add(new ConstituencyPositionsVO(
+				PositionType.POSITIONS_LOST_BY_DROPPING_VOTES
+				, positionsLostByDroppingVotes.size()
+				, positionsLostByDroppingVotes
+				, "Losing Positions with droping votes percentage"));		
+
+		presentYearPartyPerformanceReportVO.setConstituencyPositions(constituencyPositionsList);
+	}
+
+	public PartyPerformanceReportVO getElectionResults(Long stateId,
+			Long districtId, String year, Long electionType, Long partyId,
+			Boolean includeAllianceParties, boolean b) {
+		
 		log.debug("getElectionData start.....for year.." + year);
 		
+		Party selectedParty = partyDAO.get(partyId); 
+		State stateVO = stateDAO.get(stateId);
+		District districtVO = null;
+		List<ConstituencyElectionResult> constElectionResultList = null;
 		List<Party> allianceParties = new ArrayList<Party>();
 		PartyPerformanceReportVO partyPerformanceReportVO = new PartyPerformanceReportVO();
 		// Process Selected Election Year Data
-		List<ConstituencyElectionResult> constElectionResultList = constituencyElectionResultDAO.findByElectionTypeIdAndYear(new Long(electionType), year);
-		partyPerformanceReportVO.setParty(selectedParty.getShortName());
 		
+		partyPerformanceReportVO.setParty(selectedParty.getShortName());
+		partyPerformanceReportVO.setState(stateVO.getStateName());
+		
+		if(districtId != 0) {
+			districtVO = districtDAO.get(districtId);
+			partyPerformanceReportVO.setDistrict(districtVO.getDistrictName());
+			constElectionResultList = constituencyElectionResultDAO.findByElectionTypeId_Year_StateId_DistrictId(new Long(electionType), year, stateId, districtId);
+		} else {
+			constElectionResultList = constituencyElectionResultDAO.findByElectionTypeId_Year_StateId(new Long(electionType), year, stateId);
+		}
+	
 		if(includeAllianceParties){
-			allianceParties = staticDataService.getAllianceParties(year);
+			allianceParties = staticDataService.getAllianceParties(year, electionType, selectedParty.getPartyId());
 			allianceParties.remove(selectedParty);
 			partyPerformanceReportVO.setAllianceParties(allianceParties);
 			partyPerformanceReportVO.setYear(year);
 			partyPerformanceReportVO.setParty(selectedParty.getShortName().concat(" & Alliance Parties"));
 		}  
-		
-		Map<String, List<ConstituencyPositionDetailVO>> presentElectionData = 
-											getPartyConstituenciesData(constElectionResultList, selectedParty, 
-													includeAllianceParties, partyPerformanceReportVO);
+
+		getPartyConstituenciesData(constElectionResultList, selectedParty, includeAllianceParties, partyPerformanceReportVO);
         
-		List<ConstituencyPositionDetailVO> partyWinners = presentElectionData.get("PARTY_WINNER");
-		List<ConstituencyPositionDetailVO> partyLosers = presentElectionData.get("PARTY_LOOSER");
-		List<ConstituencyPositionDetailVO> rebels = presentElectionData.get("REBEL_ALLIANCE_PARTIES");
-		
-		int totalSeatsWon = partyWinners.size();
-		int totalSeatsLost = partyLosers.size();
-		
-		partyPerformanceReportVO.setPartyLosers(partyLosers);
-		partyPerformanceReportVO.setPartyWinners(partyWinners);
-		partyPerformanceReportVO.setRebelPartyCandidates(rebels);
-		partyPerformanceReportVO.setTotalSeatsWon(totalSeatsWon);
-		partyPerformanceReportVO.setTotalSeatsLost(totalSeatsLost);
-		partyPerformanceReportVO.setTotalSeatsContested(totalSeatsWon + totalSeatsLost);
-		
 		log.debug("getElectionData Ended for year..." + year);
 		return partyPerformanceReportVO;
 	}
 
-	public Map<String, List<ConstituencyPositionDetailVO>> getPartyConstituenciesData(
+	public void getPartyConstituenciesData(
 			List<ConstituencyElectionResult> constElectionResultList, 
 			Party selectedParty, Boolean includeAllianceParties, 
 			PartyPerformanceReportVO partyPerformanceReportVO){
@@ -238,7 +252,7 @@ public class PartyService implements IPartyService {
 		List<ConstituencyPositionDetailVO> positionDetailVOsForPartyWinners = new ArrayList<ConstituencyPositionDetailVO>();
 		List<ConstituencyPositionDetailVO> positionDetailVOsForPartyLoosers = new ArrayList<ConstituencyPositionDetailVO>();
 		List<ConstituencyPositionDetailVO> positionDetailVOForAllianceRebelParties = new ArrayList<ConstituencyPositionDetailVO>();
-		Map<String, List<ConstituencyPositionDetailVO>> resultData = new HashMap<String, List<ConstituencyPositionDetailVO>>();
+		
 		List<Party> allianceParties = partyPerformanceReportVO.getAllianceParties();
 		Map<String, BigDecimal> votesFlow = new HashMap<String, BigDecimal>();
 		SortedMap<String, Integer> positionDistribution = new TreeMap<String, Integer>();
@@ -266,7 +280,7 @@ public class PartyService implements IPartyService {
 	         
 				boolean isSelectedParty = (selectedParty.equals(party))? true : false;
 				boolean isAllianceParty = (includeAllianceParties && allianceParties.contains(party))? true : false;
-				boolean isRebelAllianceParty = (includeAllianceParties && rebelAllianceParty != null && party.equals(rebelAllianceParty))? true : false;
+				boolean isRebelAllianceParty = (rebelAllianceParty != null && party.equals(rebelAllianceParty))? true : false;
 				double votesEarned = nomination.getCandidateResult().getVotesEarned().doubleValue();
 				
 				if(isSelectedParty || (isAllianceParty && !isRebelAllianceParty)){
@@ -329,11 +343,14 @@ public class PartyService implements IPartyService {
 		partyPerformanceReportVO.setTotalPercentageOfVotesWon(new BigDecimal((totalVotesEarnedByParty*100)/totalValidVotes).setScale(2,BigDecimal.ROUND_HALF_UP));
 		partyPerformanceReportVO.setVotesFlown(votesFlow);
 		partyPerformanceReportVO.setPositionDistribution(positionDistribution);
-		resultData.put("PARTY_WINNER", positionDetailVOsForPartyWinners);
-		resultData.put("PARTY_LOOSER", positionDetailVOsForPartyLoosers);
-		resultData.put("REBEL_ALLIANCE_PARTIES", positionDetailVOForAllianceRebelParties);
+		partyPerformanceReportVO.setPartyWinners(positionDetailVOsForPartyWinners);
+		partyPerformanceReportVO.setPartyLosers(positionDetailVOsForPartyLoosers);
+		partyPerformanceReportVO.setRebelPartyCandidates(positionDetailVOForAllianceRebelParties);
+		partyPerformanceReportVO.setTotalSeatsWon(positionDetailVOsForPartyWinners.size());
+		partyPerformanceReportVO.setTotalSeatsLost(positionDetailVOsForPartyLoosers.size());
+		partyPerformanceReportVO.setTotalSeatsContested(positionDetailVOsForPartyWinners.size() + positionDetailVOsForPartyLoosers.size());
+		
 		log.debug("getPartyConstituenciesData....end");
-		return resultData;
 	}
 
 	public ConstituencyPositionDetailVO getConstituencyPositionDetails(ConstituencyElectionResult constElectionResult, 
@@ -426,8 +443,8 @@ public class PartyService implements IPartyService {
 	}
 	
 	public List<ConstituencyPositionDetailVO> getListLostByDroppingVotes(
-								List<ConstituencyPositionDetailVO> presentPartyLoosers,
-								List<ConstituencyPositionDetailVO> previousElectionWinners_Loosers){
+			List<ConstituencyPositionDetailVO> presentPartyLoosers,
+			List<ConstituencyPositionDetailVO> previousElectionWinners_Loosers){
 		int lostPositionsLimitByDroppingVotes = 1;
 		Set<ConstituencyPositionDetailVO> listOfVotesByDroppingVotes = new HashSet<ConstituencyPositionDetailVO>();
 		for(ConstituencyPositionDetailVO presentValueObject : presentPartyLoosers){
@@ -449,31 +466,30 @@ public class PartyService implements IPartyService {
 		constPosDetailVOlist.addAll(listOfVotesByDroppingVotes);
 		return constPosDetailVOlist;
 	}
-	
+
 	public Map<String, List<ConstituencyPositionDetailVO>> swingDifferenceWinData(
-														List<ConstituencyPositionDetailVO> presentPartyWinners, 
-														List<ConstituencyPositionDetailVO> previousElectionWinners_Loosers, 
-														int negativeSwing, int positiveSwing){
+			List<ConstituencyPositionDetailVO> presentPartyWinners, 
+			List<ConstituencyPositionDetailVO> previousElectionWinners_Loosers){
 		List<ConstituencyPositionDetailVO> positionDetailVOsForMajorSwingWin = new ArrayList<ConstituencyPositionDetailVO>();
 		List<ConstituencyPositionDetailVO> positionDetailVOsForMinorSwingWin = new ArrayList<ConstituencyPositionDetailVO>();
 		for(ConstituencyPositionDetailVO presentValueObject : presentPartyWinners){
 			for(ConstituencyPositionDetailVO previousValueObject : previousElectionWinners_Loosers){
 				if(presentValueObject.getConstiuencyName().equals(previousValueObject.getConstiuencyName())){
 					double swingDifference = presentValueObject.getPercentageOfVotes().doubleValue()
-											- previousValueObject.getPercentageOfVotes().doubleValue();
-					if(swingDifference >= positiveSwing){
+					- previousValueObject.getPercentageOfVotes().doubleValue();
+					if(swingDifference >= POSITIVE_SWING){
 						presentValueObject.setPrevElectionPercentage(previousValueObject.getPercentageOfVotes());
 						positionDetailVOsForMajorSwingWin.add(presentValueObject);
 					}else if(swingDifference <0){
 						swingDifference = -swingDifference;
-						if(swingDifference >= negativeSwing){
+						if(swingDifference >= NEGATIVE_SWING){
 							presentValueObject.setPrevElectionPercentage(previousValueObject.getPercentageOfVotes());
 							positionDetailVOsForMinorSwingWin.add(presentValueObject);
 						}
 					}
 					break;
 				}
-				
+
 			}
 		}
 		Map<String, List<ConstituencyPositionDetailVO>> swingDiffWinData = new HashMap<String, List<ConstituencyPositionDetailVO>>();
@@ -481,6 +497,7 @@ public class PartyService implements IPartyService {
 		swingDiffWinData.put("NEGATIVE_SWING",positionDetailVOsForMinorSwingWin);
 		return swingDiffWinData;
 	}
+
 	
 	public Map<String, List<ConstituencyPositionDetailVO>> marginDifferenceWinData(
 												List<ConstituencyPositionDetailVO> presentPartyWinners, 
@@ -522,8 +539,8 @@ public class PartyService implements IPartyService {
 				nominatedParties.add(nomination.getParty());
 		}
 		if(nominatedParties.contains(selectedParty)) {
-			for(Party party : allianceParties) {
-				if(nominatedParties.contains(party) )
+			for(Party party : nominatedParties) {
+				if(allianceParties.contains(party) && !party.getPartyId().equals(selectedParty.getPartyId()))
 					return party;
 			}
 		}
