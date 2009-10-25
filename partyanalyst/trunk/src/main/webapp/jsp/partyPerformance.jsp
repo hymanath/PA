@@ -102,8 +102,19 @@
  	 	var partyId = document.getElementById("partyList").options[index].value;
  	 	index = document.getElementById("yearList").selectedIndex;
  	 	var year = document.getElementById("yearList").options[index].value;
+ 	 	var radObj = document.getElementsByName("electionType"); 
+ 	 	var elecType = getSelectedValue(document.getElementsByName("electionType"));
  	 	var url = "<%=request.getContextPath()%>/partyPerformanceAllianceAjax.action?";
- 	 	callAjax("allianceWith="+partyId+"&year="+year, url);
+ 	 	callAjax("allianceWith="+partyId+"&year="+year+"&elecType="+elecType, url);
+ 	}
+ 	function getSelectedValue(radiobuttonlist) {
+ 	 	
+ 		for (i=0;i<radiobuttonlist.length;i++) {
+ 		           if(radiobuttonlist[i].checked == true)  {
+ 		                radiocheckedvalue = radiobuttonlist[i].value;
+ 		             }
+ 		   }
+ 		return radiocheckedvalue;
  	}
 	</script>
 	<link href="styles/partyPerformance.css" rel="stylesheet" type="text/css" /> 
