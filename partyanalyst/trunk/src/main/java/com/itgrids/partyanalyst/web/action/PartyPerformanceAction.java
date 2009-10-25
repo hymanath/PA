@@ -54,7 +54,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	private Set<String> years;
 	private List<SelectOptionVO> levels;
 	private boolean hasAllianceParties;
-	private Long defaultId;
+	private Long electionTypeId;
 
 
 	public List<SelectOptionVO> getLevels() {
@@ -116,7 +116,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	
 	@JSON (serialize= false )
 	public Long getDefaultId() {
-		return defaultId;
+		return electionTypeId;
 	}
 	
 	@JSON (serialize= false )
@@ -170,7 +170,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		Long partyId = null;
 		
 		String param = null;
-		defaultId = new Long(2);
+		electionTypeId = new Long(2);
 		
 		if(params.containsKey("type")){
 			param = request.getParameter("type");
@@ -181,11 +181,11 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		} 
 		
 		if(param != null) {
-			defaultId = new Long(param);
+			electionTypeId = new Long(param);
 		}
 		
-		setStates(getStaticDataService().getStates(defaultId));
-		setYears(getStaticDataService().getElectionYears(defaultId));
+		setStates(getStaticDataService().getStates(electionTypeId));
+		setYears(getStaticDataService().getElectionYears(electionTypeId));
 		setParties(getStaticDataService().getParties());
 		setDistricts(new ArrayList<SelectOptionVO>());
 		setLevels(getReportLevels());    
@@ -195,7 +195,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			partyId = getParties().get(0).getId();
 		}
 		
-		boolean t = getStaticDataService().hasAlliances(year, partyId);
+		boolean t = getStaticDataService().hasAlliances(year, electionTypeId, partyId);
 		setHasAllianceParties(t);
 		return Action.SUCCESS;
 	 
@@ -205,14 +205,16 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	public String getAlliances() throws JRException {
 		String year = null;
 		Long partyId = null;
+		Long electionType = null;
 		Map<String, String> params = request.getParameterMap();
 		
 		if(params.containsKey("allianceWith")){
 			partyId = new Long(request.getParameter("allianceWith"));
 			year = request.getParameter("year");
+			electionType = new Long(request.getParameter("elecType"));
 		}
 		
-		boolean t = getStaticDataService().hasAlliances(year, partyId);
+		boolean t = getStaticDataService().hasAlliances(year, electionType, partyId);
 		setHasAllianceParties(t);
 		
 		return Action.SUCCESS;
@@ -233,7 +235,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	public String getReport() {
 		
 		log.debug("partyPerformanceReport action started...");
-		String district = "";
+		String district = "0";
 		String country = request.getParameter("country");
 		String reportLevel = request.getParameter("1");
 		String party = request.getParameter("party");
@@ -246,7 +248,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			district = request.getParameter("district");
 		}
 		
-		reportVO = getPartyService().getPartyPerformanceReport(state, party, year, electionType, country, 0, new BigDecimal(10), new BigDecimal(2), alliances);
+		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(10), new BigDecimal(2), alliances);
 		SortedMap<String, Integer> positions = reportVO.getPositionDistribution();
 		
 		session = request.getSession();
