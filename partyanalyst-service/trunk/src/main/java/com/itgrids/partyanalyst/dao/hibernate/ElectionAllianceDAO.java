@@ -20,16 +20,10 @@ IElectionAllianceDAO {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ElectionAlliance> findByElectionYear(final String year) {
-		return ( List<ElectionAlliance> ) getHibernateTemplate().execute( new HibernateCallback() {
-            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
-            		List<ElectionAlliance> alliances = session.createCriteria(ElectionAlliance.class)
-            							.createAlias("election", "elec")
-            							.add(Expression.eq("elec.electionYear", year))
-            							.list();
-            		 return alliances;
-            }
-        });
+	public List<ElectionAlliance> findByElectionYearAndType(final String electionYear, final Long electionType) {
+		Object[] params = {electionYear, electionType};
+		return getHibernateTemplate().find("from ElectionAlliance as model where model.election.electionYear=? " +
+				"and model.election.electionScope.electionType.electionTypeId=? ",params); 
 	}
 
 }

@@ -22,7 +22,7 @@ public class Group extends BaseModel implements Serializable {
 	private Long groupId;
 	private String groupName;
 	private String comments;
-	private List<ElectionAlliance> electionAlliances;
+	private List<AllianceGroup> allianceGroups;
 
 
 	
@@ -31,12 +31,12 @@ public class Group extends BaseModel implements Serializable {
 	}
 
 	public Group(Long groupId, String groupName, String comments,
-			List<ElectionAlliance> electionAlliances) {
+			List<AllianceGroup> allianceGroups) {
 		super();
 		this.groupId = groupId;
 		this.groupName = groupName;
 		this.comments = comments;
-		this.electionAlliances = electionAlliances;
+		this.allianceGroups = allianceGroups;
 	}
 
 	@Id
@@ -69,11 +69,11 @@ public class Group extends BaseModel implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
-	public List<ElectionAlliance> getElectionAlliances() {
-		return electionAlliances;
+	public List<AllianceGroup> getAllianceGroups() {
+		return allianceGroups;
 	}
 
-	public void setElectionAlliances(List<ElectionAlliance> electionAlliances) {
-		this.electionAlliances = electionAlliances;
+	public void setAllianceGroups(List<AllianceGroup> allianceGroups) {
+		this.allianceGroups = allianceGroups;
 	}
 }

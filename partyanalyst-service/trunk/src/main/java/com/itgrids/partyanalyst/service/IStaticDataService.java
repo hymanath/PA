@@ -10,6 +10,7 @@ import org.appfuse.service.GenericManager;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.ElectionAlliance;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
@@ -24,6 +25,6 @@ public interface IStaticDataService {
 	public List<State> getAllStates();
 	public List<SelectOptionVO> getAlliancePartiesAsVO(String electionYear, Long electionType, Long partyId);
 	public List<Party> getAllianceParties(String electionYear, Long electionType, Long partyId);
-	public Long getGroupIdIfPartyHasAlliances(List<AllianceGroup> allianceList, Long partyId);
+	public Long getGroupIdIfPartyHasAlliances(List<ElectionAlliance> allianceList, Long partyId);
 	public boolean hasAlliances(String year, Long electionType, Long partyId);
 }

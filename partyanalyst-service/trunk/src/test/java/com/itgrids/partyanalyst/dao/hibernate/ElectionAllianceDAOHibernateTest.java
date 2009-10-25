@@ -20,14 +20,10 @@ public class ElectionAllianceDAOHibernateTest extends BaseDaoTestCase {
 	}
 	
 	//@Test
-	public void testFindByElectionYear(){
-		List<ElectionAlliance> alliances = electionAllianceDAO.findByElectionYear("2009");
-		Assert.assertEquals(4, alliances.size());
+	public void testFindByElectionYearAndType(){
+		List<ElectionAlliance> alliances = electionAllianceDAO.findByElectionYearAndType("2009", new Long(2));
+		Assert.assertEquals(6, alliances.size());
 	}
 
-	//@Test
-	public void testHasAlliances(){
-		List<ElectionAlliance> allianceList = electionAllianceDAO.findByElectionYear("2009");
-		
-	}
+	
 }

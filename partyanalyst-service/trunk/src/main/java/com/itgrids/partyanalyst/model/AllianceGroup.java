@@ -23,7 +23,7 @@ public class AllianceGroup extends BaseModel implements Serializable {
 
 	private Long allianceGroupId;
 	private Party party;
-	private ElectionAlliance electionAlliance;
+	private Group group;
 	
 	
 	public AllianceGroup() {
@@ -35,7 +35,7 @@ public class AllianceGroup extends BaseModel implements Serializable {
 		super();
 		this.allianceGroupId = alliance_group_id;
 		this.party = party;
-		this.electionAlliance = electionAlliance;
+		this.group = group;
 	}
 
 	@Id
@@ -62,15 +62,15 @@ public class AllianceGroup extends BaseModel implements Serializable {
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "election_alliance_id")
+	@JoinColumn(name = "group_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public ElectionAlliance getElectionAlliance() {
-		return electionAlliance;
+	public Group getGroup() {
+		return group;
 	}
 
-	public void setElectionAlliance(ElectionAlliance electionAlliance) {
-		this.electionAlliance = electionAlliance;
+	public void setGroup(Group group) {
+		this.group = group;
 	}
 	
 	

@@ -19,7 +19,7 @@ IDistrictDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<District> findByProperty(DistrictColumnNames propertyName, Object value){
-		return getHibernateTemplate().find("from District where " + propertyName + "=?", value);
+		return getHibernateTemplate().find("from District where " + propertyName + "=? order by districtName", value);
 	}
 	
 
@@ -45,6 +45,13 @@ IDistrictDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<District> findByStateId(Long stateId){
-		return getHibernateTemplate().find("from District model where model.state.stateId=?", stateId);
+		return getHibernateTemplate().find("from District model where model.state.stateId=? order by districtName", stateId);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<District> getAllOrderByName() {
+		return getHibernateTemplate().find("from District model order by districtName");
+	}
+	
+	
 }

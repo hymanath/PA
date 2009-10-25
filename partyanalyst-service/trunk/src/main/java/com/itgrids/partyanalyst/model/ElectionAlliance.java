@@ -27,14 +27,14 @@ public class ElectionAlliance extends BaseModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Long electionAllianceId;
 	private Election election;
-	private Group group;
+	private AllianceGroup allianceGroup;
 	
 	public ElectionAlliance(){}
 	
-	public ElectionAlliance(Long allianceId, Election election, Group group) {
+	public ElectionAlliance(Long allianceId, Election election, AllianceGroup allianceGroup) {
 		this.electionAllianceId = allianceId;
 		this.election = election;
-		this.group = group;
+		this.allianceGroup = allianceGroup;
 	}
 
 	@Id
@@ -61,15 +61,15 @@ public class ElectionAlliance extends BaseModel implements Serializable {
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "group_id")
+	@JoinColumn(name = "alliance_group_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Group getGroup() {
-		return group;
+	public AllianceGroup getAllianceGroup() {
+		return allianceGroup;
 	}
 	
-	public void setGroup(Group group) {
-		this.group = group;
+	public void setAllianceGroup(AllianceGroup allianceGroup) {
+		this.allianceGroup = allianceGroup;
 	}
 
 }

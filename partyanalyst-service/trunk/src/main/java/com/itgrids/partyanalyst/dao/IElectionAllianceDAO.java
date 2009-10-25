@@ -5,5 +5,5 @@ import java.util.List;
 import com.itgrids.partyanalyst.model.ElectionAlliance;
 
 public interface IElectionAllianceDAO {
-	public List<ElectionAlliance> findByElectionYear(String year);
+	public List<ElectionAlliance> findByElectionYearAndType(String year, Long electionType);
 }
