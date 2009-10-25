@@ -46,6 +46,8 @@
 				<value>com.itgrids.partyanalyst.model.BoothResult</value>
 				<value>com.itgrids.partyanalyst.model.BoothVillageCensus</value> 
 				<value>com.itgrids.partyanalyst.model.ElectionAlliance</value>
+				<value>com.itgrids.partyanalyst.model.Group</value>
+				<value>com.itgrids.partyanalyst.model.AllianceGroup</value>
 		</list>
 		</property>
 	</bean>

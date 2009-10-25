@@ -109,6 +109,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="allianceGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.AllianceGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
 
 
