@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
 
 /**
@@ -43,4 +44,10 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<Nomination> findByConstituencyElection(Long constituencyElectionID);
 	
 	public Nomination findByConstituencyElectionAndCandidate(String candidateName, Long constituencyElectionID);
+	
+	public List<Constituency> findConstitueniesByPartyAndElectionType(Long partyId, Long electionTypeId, String electionYear);
+	
+	public List<Nomination> findByConstituencyPartyAndElectionYear(Long partyId, Long constituencyId, String electionYear);
+	
+	public List<Nomination> findByConstituencyAndElectionYear(Long constituencyId, String electionYear);
 }
