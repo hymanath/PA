@@ -22,11 +22,7 @@
 		<action name="index" class="com.itgrids.partyanalyst.IndexAction">
 			<result>/jsp/index.jsp</result>
 		</action>
-		<action name="helloWorld" class="helloWorldAction">
-			<result name="input">/jsp/index.jsp</result>
-			<result>/jsp/helloWorld.jsp</result>
-		</action>
-		
+	
 		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
 			<result name="error">/jsp/loginForm.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
