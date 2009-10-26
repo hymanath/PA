@@ -136,6 +136,22 @@
            <result name="success">/jsp/uploadBoothResult.jsp</result>
         </action>
 		
+		<action name="partyBoothResultAction" class="partyBoothResultAction">
+           <result name="success">/jsp/boothResultsForParty.jsp</result>
+        </action>
+        
+        <action name="partyBoothResult1Action" class="partyBoothResult1Action">
+            <result name="success">/jsp/boothResults1.jsp</result>
+        </action>
+        
+        <action name="partyBoothResult1AjaxAction" class="partyBoothResult1Action">
+            <result type="json" name="success"/>
+        </action>
+        
+        <action name="partyBoothResult2Action" class="partyBoothResult2Action">
+            <result name="success">/jsp/boothResults2.jsp</result>
+        </action>
+		
 		<action name="cadresInfoAjaxAction" class="cadresInfoAjaxAction">
 			<result type="json" name="success"/>
 		</action>
