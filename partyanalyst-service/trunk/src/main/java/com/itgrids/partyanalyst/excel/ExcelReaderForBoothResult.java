@@ -47,10 +47,10 @@ public class ExcelReaderForBoothResult {
 				candidateBoothWiseResult.setCandidateName(names.get(i));
 				Cell[] columnData = s.getColumn(i);
 				System.out.println("########"+i+"th Column::");
-				List<BoothResultVO> boothResultVOs = new ArrayList<BoothResultVO>();
+				List<BoothResultExcelVO> boothResultVOs = new ArrayList<BoothResultExcelVO>();
 				
 				for(int j=1;j<columnData.length;j++){
-					BoothResultVO boothResultVO = new BoothResultVO();
+					BoothResultExcelVO boothResultVO = new BoothResultExcelVO();
 					boothResultVO.setPartNo(new Long(checkCellContent(partNos[j].getContents())));
 					boothResultVO.setVotesEarned(new Double(checkCellContent(columnData[j].getContents())));
 					boothResultVOs.add(boothResultVO);
@@ -73,7 +73,7 @@ public class ExcelReaderForBoothResult {
 	
 	public static void main(String a[])throws Exception{
 		ExcelReaderForBoothResult readFile = new ExcelReaderForBoothResult();
-		readFile.readExcelFile("C:/Documents and Settings/USER/Desktop/booth/Kavali_booth_results_2004.xls");
+		readFile.readExcelFile("C:/Documents and Settings/USER/Desktop/booth/Kavali_booth_results_2004_Assembly.xls");
 	}
 	
 	private String checkCellContent(String data){

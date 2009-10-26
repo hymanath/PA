@@ -6,14 +6,14 @@ import java.util.List;
 public class CandidateBoothWiseResult {
 	
 	private String candidateName;
-	private List<BoothResultVO> boothresults = new ArrayList<BoothResultVO>();
+	private List<BoothResultExcelVO> boothresults = new ArrayList<BoothResultExcelVO>();
 	
 	public CandidateBoothWiseResult(){
 		
 	}
 	
 	public CandidateBoothWiseResult(String candidateName,
-			List<BoothResultVO> boothresults) {
+			List<BoothResultExcelVO> boothresults) {
 		this.candidateName = candidateName;
 		this.boothresults = boothresults;
 	}
@@ -26,11 +26,11 @@ public class CandidateBoothWiseResult {
 		this.candidateName = candidateName;
 	}
 
-	public List<BoothResultVO> getBoothresults() {
+	public List<BoothResultExcelVO> getBoothresults() {
 		return boothresults;
 	}
 
-	public void setBoothresults(List<BoothResultVO> boothresults) {
+	public void setBoothresults(List<BoothResultExcelVO> boothresults) {
 		this.boothresults = boothresults;
 	}	
 
