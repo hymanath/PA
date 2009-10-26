@@ -76,6 +76,10 @@ public class StaticDataService implements IStaticDataService {
 		return electionScopeDAO.findByPropertyElectionTypeId(electionType);
 	}
 	
+	public void setAllianceGroupDAO(IAllianceGroupDAO allianceGroupDAO) {
+		this.allianceGroupDAO = allianceGroupDAO;
+	}
+
 	public List<SelectOptionVO> getStates(Long electionType){
 		List<ElectionScope> electionScopes = electionScopeDAO.findByPropertyElectionTypeId(electionType);
 		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>();
@@ -134,14 +138,12 @@ public class StaticDataService implements IStaticDataService {
 
 	//Need refactoring the code and unit testing- Ashok	
 	public List<SelectOptionVO> getAlliancePartiesAsVO(String electionYear, Long electionType, Long partyId) {
-		List<ElectionAlliance> allianceList = electionAllianceDAO.findByElectionYearAndType(electionYear, electionType);
 		List<SelectOptionVO> allianceParties = new ArrayList<SelectOptionVO>();
 		
-		Long groupId = getGroupIdIfPartyHasAlliances(allianceList, partyId);
+		Long groupId = getGroupIdIfPartyHasAlliances(partyId, electionYear, electionType);
 			
 		if(groupId != null) {
 			List<AllianceGroup> allianceGroupList = allianceGroupDAO.findByGroupId(groupId);
-			
 			for(AllianceGroup allianceGroup : allianceGroupList){
 					allianceParties.add(new SelectOptionVO(allianceGroup.getParty().getPartyId()
 							, allianceGroup.getParty().getShortName()));
@@ -152,56 +154,44 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 	//Need refactoring the code and unit testing- Ashok	
-	public Long getGroupIdIfPartyHasAlliances(List<ElectionAlliance> allianceList, Long partyId) {
+	public Long getGroupIdIfPartyHasAlliances(Long partyId, String electionYear, Long electionType) {
+		List<ElectionAlliance> allianceList = electionAllianceDAO.findByElectionYearAndType(electionYear, electionType);
 		
 		for(ElectionAlliance alliance: allianceList){
 			Long groupId = alliance.getGroup().getGroupId();
 			List<AllianceGroup> allianceGroupList = allianceGroupDAO.findByGroupId(groupId);
-			
 			for(AllianceGroup allianceGroup : allianceGroupList){
-				
-				if(allianceGroup.getParty().getPartyId().equals(partyId))
-				return groupId;
-			} 
+				if(allianceGroup.getParty().getPartyId().equals(partyId)){
+					return allianceGroup.getGroup().getGroupId();
+				}
+			}
 		}
-
 		return null;
 	}
 
 	//Need refactoring the code and unit testing- Ashok
 	public List<Party> getAllianceParties(String electionYear, Long electionType, Long partyId) {
-		List<ElectionAlliance> allianceList = electionAllianceDAO.findByElectionYearAndType(electionYear, electionType);
 		List<Party> allianceParties = new ArrayList<Party>();
 		
-		Long groupId = getGroupIdIfPartyHasAlliances(allianceList, partyId);
-		
-		List<AllianceGroup> allianceGroupList = allianceGroupDAO.findByGroupId(groupId);
-		
-		for(AllianceGroup allianceGroup : allianceGroupList){
-			allianceParties.add(allianceGroup.getParty());
+		Long groupId = getGroupIdIfPartyHasAlliances(partyId, electionYear, electionType);
+		if(groupId != null) {
+			List<AllianceGroup> allianceGroupList = allianceGroupDAO.findByGroupId(groupId);
+			for(AllianceGroup allianceGroup : allianceGroupList){
+				allianceParties.add(allianceGroup.getParty());
+			}
 		}
 		return allianceParties;
 	}
 
 	//Need refactoring the code and unit testing- Ashok
 	public boolean hasAlliances(String electionYear, Long electionType, Long partyId) {
-		List<ElectionAlliance> allianceList = electionAllianceDAO.findByElectionYearAndType(electionYear, electionType);
-		
-		if (getGroupIdIfPartyHasAlliances(allianceList, partyId) != null )
+		if (getGroupIdIfPartyHasAlliances(partyId, electionYear, electionType) != null )
 			return true;
 		
 		return false;
 	}
 
 
-	public void setAllianceGroupDAO(IAllianceGroupDAO allianceGroupDAO) {
-		this.allianceGroupDAO = allianceGroupDAO;
-	}
-
-
-	public IAllianceGroupDAO getAllianceGroupDAO() {
-		return allianceGroupDAO;
-	}
 	
 	
 }

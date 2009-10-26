@@ -108,4 +108,6 @@ public class StaticDataServiceTest {
 		List<Party> allianceParties = service.getAllianceParties("2009", new Long(2), new Long(1));
 		Assert.assertEquals(0, allianceParties.size());
 	}
+		
+	
 }
