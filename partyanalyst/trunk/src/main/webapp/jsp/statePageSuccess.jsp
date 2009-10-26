@@ -53,7 +53,6 @@ table.stateResultsTable td {
  		               success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
-								
 								insertData(param,myResults.stateElectionResults.partyResultsVO);								
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -82,6 +81,7 @@ function doAjax(param){
 		spanElmt.innerHTML=" (view results)";
 		return;
 	}
+	
  	callAjax("electionId="+param);
  }
 
@@ -90,12 +90,14 @@ function insertData(param,results)
 
 	var index=param.indexOf("=");
 	var subStr=param.substr(index+1)
-	var tableElmt=document.getElementById("table"+subStr);
+	var tableDivElmt=document.getElementById("table"+subStr);
 	var spanElmt=document.getElementById("span"+subStr);	
 	var searchElmt=document.getElementById("search"+subStr);
+		
+	tableDivElmt.style.display="block";
 	
-	tableElmt.style.display="block";
 	var str='';
+	str+='<table style="margin-left:20px;margin-top:10px;" class="stateResultsTable">';
 	str+='<tr>';
 	str+='	<th align="center"> Party Name </th>';
 	str+='	<th align="center"> Seats Won </th>';
@@ -104,14 +106,14 @@ function insertData(param,results)
 	for(var item in results)
 	{		
 		str+='<tr>';
-		str+='<td colspan="2">'+results[item].partyName+'</th>';
+		str+='<td>'+results[item].partyName+'</th>';
 		str+='<td align="center">'+results[item].totalSeatsWon+'</td>';
 		str+='</tr>';
 	}
+	str+='</table>';
 	
-    
-	tableElmt.innerHTML=str;	
-
+	tableDivElmt.innerHTML=str;	
+	
 	spanElmt.innerHTML=" (close)";
 	searchElmt.style.display="none";
 }
@@ -119,62 +121,59 @@ function insertData(param,results)
  </HEAD>
 
  <BODY>
-<div id="stateOuterDiv">
-		<div style="float: right; width: 600px; text-align: left; font-family: Trebuchet MS; font-weight: bold; color: Black;" id="stateInfoDiv">
-			 <h1> <c:out value="${statePage.stateName}" /> State Details</h1>
- <h5>
+ <h2><u style="color:#1C4B7A;"><c:out value="${statePage.stateName}" /> State Details</u></h2>
+<div id="stateOuterDiv" style="text-align:left;margin-left:50px;">
+	
+
  <table border="0" cellpadding="0" cellspacing="0">
  <tr>
-	 <td align="left"><c:out value="  State Capital " /> : </td>
-	 <td  align="left"><c:out value="${statePage.adminCapital}" /></td>
-	 <td></td>
-	 	<td  align="left"><c:out value="  State Language " /> : </td>
-    <td  align="left"><c:out value="${statePage.stateLanguage}" /></td>
+	 <td align="left" style="color:#1C4B7A;"><c:out value="State Capital "/> </td>
+	 <td  align="left" style="color:#18325A;font-weight:bold;"> : <c:out value="${statePage.adminCapital}" /></td>
  </tr>
- <tr>     
-</tr>
-<tr>     <td  align="left">      <c:out value="  State Song  " /> : </td>
-    <td align="left"> <c:out value="${statePage.stateSong}" /></td>
-	<td colspan="2"></td>
+ <tr>
+	<td  align="left" style="color:#1C4B7A;"><c:out value="State Language"/> </td>
+    <td  align="left" style="color:#18325A;font-weight:bold;"> : <c:out value="${statePage.stateLanguage}" /></td>
+ </tr>
+ <tr>
+	<td  align="left" style="color:#1C4B7A;"><c:out value="State Song"/></td>
+    <td align="left" style="color:#18325A;font-weight:bold;"> : <c:out value="${statePage.stateSong}" /></td>	
 </tr>
 </table>
-</h5> 
-<table><tr><td align="Center"><h3>Census Info</h3></td></tr></table>
-<table border="1" width="70%" class="stateResultsTable">
-<tr><th>Type</th>
-<th align="center">Total Population</th>
-<th align="center">Male Population</th>
-<th align="center">Female Population</th></tr>
-<c:forEach var="census" items="${censusVO}">
-<tr><td align="left"><c:out value="${census.tru }" /></td>
-<td align="center"><c:out value="${census.totalPopulation }" /></td>
-<td align="center"><c:out value="${census.malePopulation }" /></td>
-<td align="center"><c:out value="${census.femalePopulation }" /></td></tr>
-</c:forEach></table>
-<table border="0" width="70%"><tr></tr><tr><td align="left"><br><font size="3"><b><c:out value="${statePage.stateName}" />  Previous Elections Results:</b></font></td></tr></table>
 
+<h3><u style="color:#1C4B7A;">Census Info</u></h3>
+
+<table border="1" width="70%" class="stateResultsTable">
+	<tr>
+		<th>Type</th>
+		<th align="center">Total Population</th>
+		<th align="center">Male Population</th>
+		<th align="center">Female Population</th>
+	</tr>
+	<c:forEach var="census" items="${censusVO}">
+	<tr>
+		<td align="left" style="font-weight:bold;"><c:out value="${census.tru }" /></td>
+		<td align="center"><c:out value="${census.totalPopulation }" /></td>
+		<td align="center"><c:out value="${census.malePopulation }" /></td>
+		<td align="center"><c:out value="${census.femalePopulation }" /></td>
+	</tr>
+	</c:forEach>
+</table>
+<H3><u  style="color:#1C4B7A;"><c:out value="${statePage.stateName}" />  Previous Elections Results:</u></H3>
 
 <c:forEach var="state" items="${stateElections}">
-<table border="0" >
-     <tr></tr>
+<table border="0" >     
 	<tr>
+		<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/> </td>
 		<td align="center">
-		<ul type="square" style="margin:0"><li><c:out value="${state.electionType}" /> Election In
+			<c:out value="${state.electionType}" /> Election In	<c:out value="${state.year}" /><span id="span${state.electionId}" style="color:#4F6177;cursor:pointer;" onclick="doAjax(${state.electionId});"style="cursor:pointer;"> <c:out value="(view results)" /></span> 
 		</td>
-		<td align="center">
-			<c:out value="${state.year}" /><span id="span${state.electionId}" style="color:blue;cursor:pointer;" onclick="doAjax(${state.electionId});"style="cursor:pointer;"> <c:out value="(view results)" /></span> 
-		</li></ul></td>
-		<td id="search${state.electionId}" align="left" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/arrows.gif" /></img></td>
-		
+		<td id="search${state.electionId}" align="left" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/arrows.gif" /></img></td>		
 	</tr>
 </table>
-<table style="display:none;" id="table${state.electionId}" class="stateResultsTable">
-</table>
-
-
-</c:forEach>
+<div style="display:none;" id="table${state.electionId}">
 
 </div>
+</c:forEach>
 </div>
 
  </BODY>
