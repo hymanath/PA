@@ -134,39 +134,4 @@ public class ElectionScope extends BaseModel implements java.io.Serializable {
 		this.constituencies = constituencies;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString()).append(
-				"electionScopeId", electionScopeId).toString();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	/*@Override
-	public boolean equals(final Object other) {
-		if (!(other instanceof ElectionScope))
-			return false;
-		ElectionScope castOther = (ElectionScope) other;
-		return new EqualsBuilder().append(electionScopeId,
-				castOther.electionScopeId).append(electionType,
-				castOther.electionType).append(countryStateId,
-				castOther.countryStateId)
-				.append(elections, castOther.elections).append(constituencies,
-						castOther.constituencies).isEquals();
-	}
-*/
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	/*@Override
-	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(electionScopeId).append(
-				electionType).append(countryStateId).append(elections).append(
-				constituencies).toHashCode();
-	}
-*/
 }

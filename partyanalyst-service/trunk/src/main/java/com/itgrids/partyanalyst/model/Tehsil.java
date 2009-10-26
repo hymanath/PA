@@ -148,20 +148,6 @@ public class Tehsil implements java.io.Serializable {
 
 	public void setBooths(Set<Booth> booths) {
 		this.booths = booths;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString()).append(
-				"tehsilId", tehsilId).append("district", district).append(
-				"tehsilName", tehsilName).append("tehsilCode", tehsilCode)
-				.append("startDate", startDate)
-				.append("deformDate", deformDate)
-				.append("townships", townships).toString();
-	}
-	
+	}	
 
 }

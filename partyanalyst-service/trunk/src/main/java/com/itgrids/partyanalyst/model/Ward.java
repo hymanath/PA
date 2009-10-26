@@ -96,37 +96,4 @@ public class Ward implements java.io.Serializable {
 		this.wardCode = wardCode;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString()).append(
-				"wardId", wardId).append("township", township).append(
-				"wardName", wardName).append("wardCode", wardCode).toString();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(final Object other) {
-		if (!(other instanceof Ward))
-			return false;
-		Ward castOther = (Ward) other;
-		return new EqualsBuilder().append(wardId, castOther.wardId).append(
-				township, castOther.township).append(wardName,
-				castOther.wardName).append(wardCode, castOther.wardCode)
-				.isEquals();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(wardId).append(township)
-				.append(wardName).append(wardCode).toHashCode();
-	}
-
 }

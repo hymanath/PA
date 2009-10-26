@@ -123,16 +123,4 @@ public class Township implements java.io.Serializable {
 		this.wards = wards;
 	}
 
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString()).append(
-				"townshipId", townshipId).append("tehsil", tehsil).append(
-				"townshipName", townshipName).append("townshipCode",
-				townshipCode).append("townshipType", townshipType).toString();
-	}
-	
 }

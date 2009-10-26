@@ -317,7 +317,7 @@ public class State implements java.io.Serializable {
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
-	 */
+	 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString()).append(
@@ -340,9 +340,9 @@ public class State implements java.io.Serializable {
 				.toString();
 	}
 
-	/* (non-Javadoc)
+	 (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
+	 
 	@Override
 	public boolean equals(final Object other) {
 		if (!(other instanceof State))
@@ -373,9 +373,9 @@ public class State implements java.io.Serializable {
 						.isEquals();
 	}
 
-	/* (non-Javadoc)
+	 (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
-	 */
+	 
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder(17, 37).append(stateId)//.append(country)
@@ -387,6 +387,6 @@ public class State implements java.io.Serializable {
 				.append(isoCode).append(stateCode).append(startDate).append(
 						deformDate)//.append(constituencies).append(districts)
 				.toHashCode();
-	}
+	}*/
 
 }

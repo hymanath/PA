@@ -101,14 +101,4 @@ public class ElectionType extends BaseModel implements java.io.Serializable {
 		this.electionScopes = electionScopes;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString()).append(
-				"electionTypeId", electionTypeId).append("electionType",
-				electionType).toString();
-	}
-
 }

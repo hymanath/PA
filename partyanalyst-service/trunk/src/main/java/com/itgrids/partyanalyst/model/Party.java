@@ -146,17 +146,4 @@ public class Party implements java.io.Serializable {
 		this.nominations = nominations;
 	}
 
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString()).append(
-				"partyId", partyId).append("longName", longName).append(
-				"shortName", shortName).append("symbol", symbol).append(
-				"address", address).append("comments", comments).append(
-				"partyRecognization", partyRecognization).toString();
-	}
-
 }

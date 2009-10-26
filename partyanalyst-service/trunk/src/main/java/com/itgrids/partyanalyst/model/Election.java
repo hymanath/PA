@@ -150,18 +150,4 @@ public class Election extends BaseModel implements java.io.Serializable {
 		this.constituencyElections = constituencyElections;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).appendSuper(super.toString()).append(
-				"electionId", electionId)
-				.append("electionScope", electionScope).append(
-						"notificationDate", notificationDate).append(
-						"startDate", startDate).append("endDate", endDate)
-				.append("electionYear", electionYear).toString();
-	}
-
-	
 }

@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,7 +28,7 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 	private Long boothConstituencyElectionId;
 	private Booth booth;
 	private ConstituencyElection constituencyElection;
-	private BoothResult boothResult;
+	private Set<BoothResult> boothResults;
 	
 	public BoothConstituencyElection(){
 		
@@ -36,10 +39,10 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 	}
 
 	public BoothConstituencyElection(Booth booth, ConstituencyElection constituencyElection,
-			BoothResult boothResult) {
+			Set<BoothResult> boothResults) {
 		this.booth = booth;
 		this.constituencyElection = constituencyElection;
-		this.boothResult = boothResult;
+		this.boothResults = boothResults;
 	}
 
 	@Id
@@ -77,13 +80,13 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 		this.constituencyElection = constituencyElection;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "boothConstituencyElection")
-	public BoothResult getBoothResult() {
-		return boothResult;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "boothConstituencyElection")
+	public Set<BoothResult> getBoothResults() {
+		return boothResults;
 	}
 
-	public void setBoothResult(BoothResult boothResult) {
-		this.boothResult = boothResult;
+	public void setBoothResults(Set<BoothResult> boothResults) {
+		this.boothResults = boothResults;
 	}
 		
 }

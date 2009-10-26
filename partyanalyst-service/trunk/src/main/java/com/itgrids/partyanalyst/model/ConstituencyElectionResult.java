@@ -151,9 +151,9 @@ public class ConstituencyElectionResult extends BaseModel implements java.io.Ser
 		this.tenderedVotes = tenderedVotes;
 	}
 
-	/* (non-Javadoc)
+/*	 (non-Javadoc)
 	 * @see java.lang.Object#toString()
-	 */
+	 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString()).append(
@@ -166,7 +166,7 @@ public class ConstituencyElectionResult extends BaseModel implements java.io.Ser
 				.append("tenderedVotes", tenderedVotes).toString();
 	}
 
-	/*@Override
+	@Override
 	public boolean equals(final Object other) {
 		if (!(other instanceof ConstituencyElectionResult))
 			return false;
@@ -188,6 +188,6 @@ public class ConstituencyElectionResult extends BaseModel implements java.io.Ser
 				.append(rejectedVotes).append(missingVotes).append(
 						totalVotesPolled).append(tenderedVotes).toHashCode();
 	}
-	*/
-
+	
+*/
 }

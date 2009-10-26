@@ -113,12 +113,12 @@ public class Country implements java.io.Serializable {
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
-	 */
+	 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).appendSuper(super.toString()).append(
 				"countryId", countryId).append("countryName", countryName)
 				.append("capital", capital).append("isoCode", isoCode).toString();
-	}
+	}*/
 	
 }
