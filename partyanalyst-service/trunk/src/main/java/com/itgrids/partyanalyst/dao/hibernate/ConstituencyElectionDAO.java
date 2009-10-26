@@ -54,7 +54,7 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	
 	@SuppressWarnings("unchecked")
 	public List<ConstituencyElection> findByConstituency(Constituency constituency){
-		return getHibernateTemplate().find("from ConstituencyElection model where and model.constituency.constituencyId=?", constituency.getId());	
+		return getHibernateTemplate().find("from ConstituencyElection model where and model.constituency.constituencyId=?", constituency.getConstituencyId());	
 	}
 	
 	@SuppressWarnings("unchecked")
