@@ -6,7 +6,7 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
-import com.itgrids.partyanalyst.excel.BoothResultVO;
+import com.itgrids.partyanalyst.excel.BoothResultExcelVO;
 import com.itgrids.partyanalyst.excel.CandidateBoothWiseResult;
 import com.itgrids.partyanalyst.excel.ExcelReaderForBoothResult;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
@@ -71,8 +71,8 @@ public class BoothResultPopulationService implements IBoothResultPopulationServi
 		for(CandidateBoothWiseResult candidateBoothWiseResult:candidateResults){
 			System.out.println("In checkAndInsertBoothResult---in for");
 			Nomination nomination = nominationDAO.findByConstituencyElectionAndCandidate(candidateBoothWiseResult.getCandidateName() , constiElecObj.getConstiElecId());
-			List<BoothResultVO> boothResults = candidateBoothWiseResult.getBoothresults();
-			for(BoothResultVO boothResult:boothResults){
+			List<BoothResultExcelVO> boothResults = candidateBoothWiseResult.getBoothresults();
+			for(BoothResultExcelVO boothResult:boothResults){
 				System.out.println("In checkAndInsertBoothResult---in for BoothResultVO");
 				BoothConstituencyElection boothConstituencyElection = boothConstituencyElectionDAO.findByBoothAndConstiuencyElection(boothResult.getPartNo(), constiElecObj.getConstiElecId());
 				insertBoothResult(nomination, boothConstituencyElection, boothResult.getVotesEarned());
