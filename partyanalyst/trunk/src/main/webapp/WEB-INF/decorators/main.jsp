@@ -100,7 +100,8 @@
 	        id: "reports",  
 	        itemdata: [ 
 	            { text: "Party Performance Report", url: "partyPerformanceMain.action" }, 
-	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" }	                          
+	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
+	            { text: "Party Booth Results Report", url: "partyBoothResultAction.action" }                         
 	        ]  
 	    }, 
 	     
