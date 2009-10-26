@@ -93,4 +93,15 @@
 	<bean id="cadreRegisterAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
 	</bean> 
+	<bean id="partyBoothResultAction" class="com.itgrids.partyanalyst.web.action.PartyBoothResultAction" singleton="false">
+		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
+	</bean>
+	
+	<bean id="partyBoothResult1Action" class="com.itgrids.partyanalyst.web.action.PartyBoothResult1Action" singleton="false">
+		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
+	</bean>
+	
+	<bean id="partyBoothResult2Action" class="com.itgrids.partyanalyst.web.action.PartyBoothResult2Action" singleton="false">
+		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
+	</bean>
 </beans>
