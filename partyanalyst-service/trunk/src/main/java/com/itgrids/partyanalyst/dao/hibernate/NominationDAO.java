@@ -10,10 +10,10 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.appfuse.dao.jpa.GenericDaoJpa;
-import javax.persistence.Query;
+
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.NominationColumnNames;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
 
 /**
@@ -67,5 +67,23 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		if(list != null && list.size() > 0)
 			nomination = list.get(0);
 		return nomination;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Constituency> findConstitueniesByPartyAndElectionType(Long partyId, Long electionTypeId, String electionYear){
+		Object[] params = {partyId, electionTypeId, electionYear};
+		return getHibernateTemplate().find( "select model.constituencyElection.constituency from Nomination model where model.party.partyId = ? and model.constituencyElection.election.electionScope.electionType.electionTypeId = ? and model.constituencyElection.election.electionYear = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByConstituencyPartyAndElectionYear(Long partyId, Long constituencyId, String electionYear){
+		Object[] params = {partyId, electionYear, constituencyId};
+		return getHibernateTemplate().find( "from Nomination model where model.party.partyId = ? and model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId = ?)", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByConstituencyAndElectionYear(Long constituencyId, String electionYear){
+		Object[] params = {electionYear, constituencyId};
+		return getHibernateTemplate().find( "from Nomination model where model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId = ?)", params);
 	}
 }
