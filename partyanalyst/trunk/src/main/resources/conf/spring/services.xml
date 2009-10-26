@@ -127,7 +127,7 @@
 	<bean name="regionServiceDataImp" class="com.itgrids.partyanalyst.service.impl.RegionServiceDataImp">
 		<property name="districtDAO" ref="districtDAO"/>
 	</bean>
-	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.PartyBoothWiseResultsService" >		
+	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />	
 	</bean>
