@@ -51,6 +51,7 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 	private Election election;
 	private Constituency constituency;
 	private Date electionDate;
+	private String reservationZone;
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	private ConstituencyElectionResult constituencyElectionResult;
 	private Set<BoothConstituencyElection> boothConstituencyElections = new HashSet<BoothConstituencyElection>(0);
@@ -158,6 +159,19 @@ public class ConstituencyElection extends BaseModel implements java.io.Serializa
 	public void setBoothConstituencyElections(
 			Set<BoothConstituencyElection> boothConstituencyElections) {
 		this.boothConstituencyElections = boothConstituencyElections;
+	}
+
+	@Column(name = "reservation_zone", length = 10)
+	public String getReservationZone() {
+		return reservationZone;
+	}
+
+	public void setReservationZone(String reservationZone) {
+		this.reservationZone = reservationZone;
+	}
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
 	}
 
 	
