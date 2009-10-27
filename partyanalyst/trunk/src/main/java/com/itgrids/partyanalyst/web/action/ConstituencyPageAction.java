@@ -33,8 +33,15 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private Long constituencyId;
 	 private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
 	 private ConstituencyInfoVO constituencyDetails;
+	 private String electionType;
 	 
-	
+	 public String getElectionType() {
+			return electionType;
+	}
+
+	 public void setElectionType(String electionType) {
+			this.electionType = electionType;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
@@ -84,6 +91,12 @@ public class ConstituencyPageAction extends ActionSupport implements
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId);
 				
 		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
+		
+		if(constituencyElectionResultsVO != null){
+			
+			electionType = constituencyElectionResultsVO.get(0).getElectionType();			
+		}
+		
 		if(constituencyElectionResultsVO != null || constituencyDetails != null){
 			return SUCCESS;
 		}
