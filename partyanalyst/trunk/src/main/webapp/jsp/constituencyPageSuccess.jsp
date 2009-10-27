@@ -68,49 +68,48 @@
 </script>
 </head>
 <body onLoad="getString()">
-<div id="ResultsDiv" style="padding:5px;">
-   <h2><b><c:out value="${constituencyDetails.constituencyName}" /> Constituency Details </b></h2>
-  <table class="ConstituencyElectionsTable" style="float:left;margin-left:40px;" >
+	<h3><u style="color: #4D2828;"><c:out value="${constituencyDetails.constituencyName}" /> <s:property value="electionType"/> Constituency Details </u></h3>
+<div id="ResultsDiv" style="padding:5px;text-align:left;margin-left:50px;">
+  <h4><u style="color: #4D2828;">Constituency Details</u></h4> 
+  <table style="float:left;" class="constituencyDetailsTable">
    <tr>
       <th><c:out value="Constituency Name" /></th>
-      <td><b><c:out value="${constituencyDetails.constituencyName}" /></b></td> 
+      <td><c:out value="${constituencyDetails.constituencyName}" /></td> 
    </tr>
    <tr>
       <th><c:out value="District" /></th>
-      <td><b><c:out value="${constituencyDetails.districtName}" /></b></td> 
+      <td><c:out value="${constituencyDetails.districtName}" /></td> 
    </tr>
    <tr>
       <th><c:out value="State" /></th>
-      <td><b><c:out value="${constituencyDetails.stateName}" /></b></td> 
+      <td><c:out value="${constituencyDetails.stateName}" /></td> 
    </tr>
    <tr>
       <th><c:out value="Formation Date" /></th>
-      <td><b><c:out value="${constituencyDetails.startDate}" /></b></td> 
+      <td><c:out value="${constituencyDetails.startDate}" /></td> 
    </tr>
   </table>
 
-<div id="map_canvas" style="border: 1px solid ; width: 200px; height: 150px;">
+<div id="map_canvas" style="border: 1px solid ; width: 260px; height: 200px;margin-left:400px;">
 </div>
 
-    <h2>Constituency Election Info</h2>
+    <h4><u style="color: #4D2828;">Previous <s:property value="electionType"/> Results</u></h4>
 	
 	<table class="ConstituencyElectionsTable" border="1">
-	<tr>
-		<th>Election Type</th>
-        <th>Year</th>
+	<tr>        
 		<th>Candidate Won</th>
 		<th>Party Name</th>
+		<th>Year</th>
 		<th>Votes Earned</th>
 		<th>Votes Percentage</th>
 		<th></th>
 
 	</tr>
 	<c:forEach var="constituencyElectionResults" items="${constituencyElectionResultsVO}" >		
-	<tr>
-		<td><c:out value="${constituencyElectionResults.electionType}"/></td>
-		<td><c:out value="${constituencyElectionResults.electionYear}"/></td>
-		<td><c:out value="${constituencyElectionResults.candidateResultsVO.candidateName}"/></td>
+	<tr>		
+		<td><c:out value="${constituencyElectionResults.candidateResultsVO.candidateName}"/></td>		
 		<td><c:out value="${constituencyElectionResults.candidateResultsVO.partyName}"/></td>
+		<td><c:out value="${constituencyElectionResults.electionYear}"/></td>		
 		<td><c:out value="${constituencyElectionResults.candidateResultsVO.votesEarned}"/></td>
 		<td><c:out value="${constituencyElectionResults.candidateResultsVO.votesPercentage}"/></td>
 		<td><a href="javascript:showDetails(${constituencyElectionResults.electionId})">More Details</a></td>
@@ -118,21 +117,18 @@
 	<tr id="${constituencyElectionResults.electionId}" style="display:none;">
 	  <th colspan="7" align="center">Complete Results Of <c:out value="${constituencyDetails.constituencyName}" /> Constituency <c:out value="${constituencyElectionResults.electionType}"/> <c:out value="${constituencyElectionResults.electionYear}"/> Election</th>
 	</tr>
-	 	<tr id="${constituencyElectionResults.electionId}" style="display:none;">
- 
-		<td ><b>Election Type</b></td>
-		<td ><b>Year</b></td>
-		<td ><b>Candidate Name</b></td>
-		<td colspan="2"><b>Party Name</b></td>
-		<td ><b>Votes Earned</b></td>
+	 <tr id="${constituencyElectionResults.electionId}" style="display:none;">		
+		<td><b>Candidate Name</b></td>
+		<td><b>Party Name</b></td>
+		<td><b>Year</b></td>
+		<td><b>Votes Earned</b></td>
 		<td colspan="2"><b>Votes Percentage</b></td>
 	</tr>
 	<c:forEach var="detailedResult" items="${constituencyElectionResults.candidateOppositionList}" >
-	<tr id="${constituencyElectionResults.electionId}" style="display:none;">
-		<td ><c:out value="${constituencyElectionResults.electionType}"/></td>
-		<td ><c:out value="${constituencyElectionResults.electionYear}"/></td>
+	<tr id="${constituencyElectionResults.electionId}" style="display:none;">		
 		<td ><c:out value="${detailedResult.candidateName}"/></td>
-		<td colspan="2"><c:out value="${detailedResult.partyName}"/></td>
+		<td ><c:out value="${detailedResult.partyName}"/></td>
+		<td ><c:out value="${constituencyElectionResults.electionYear}"/></td>
 		<td ><c:out value="${detailedResult.votesEarned}"/></td>
 		<td colspan="2"><c:out value="${detailedResult.votesPercentage}"/></td>
 	</tr>
