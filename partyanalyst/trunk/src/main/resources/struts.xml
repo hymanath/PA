@@ -168,10 +168,7 @@
 			<result name="success">/jsp/electionComparisonPage.jsp</result>
 		</action>
 															
-		<action name="electionComparisonAjaxAction" class="electionComparisonAjaxAction">
-			<result type="json" name="success"/>
-		</action>
-		
+			
 		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
 			<result name="success">/jsp/electionComparisonReportPage.jsp</result>
 			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
