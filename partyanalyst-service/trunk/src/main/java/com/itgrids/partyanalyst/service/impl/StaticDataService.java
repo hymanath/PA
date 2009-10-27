@@ -192,6 +192,13 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 
+	public Long getGroupIdIfPartyHasAlliances(
+			List<ElectionAlliance> allianceList, Long partyId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	
 	
 }
