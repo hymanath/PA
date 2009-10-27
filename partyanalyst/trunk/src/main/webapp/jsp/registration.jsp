@@ -17,7 +17,7 @@
 		var thElmt=document.getElementById("thId");
 		var tdElmt=document.getElementById("tdId");
 
-		thElmt.innerHTML='<s:label theme="simple" for="accessValueField" id="accessValueLabel"  value="%{getText(\'accessValue\')}" />';
+		thElmt.innerHTML='<font class="requiredFont"> * </font> <s:label theme="simple" for="accessValueField" id="accessValueLabel"  value="%{getText(\'accessValue\')}" />';
 
 		var str='';
 		if(value=="COUNTRY")
@@ -47,11 +47,13 @@
 	}
 	function getAList(value,svalue)
 	{
+		
 		var jsObj=
 			{
 					reportLevel:value,
 					selected:svalue
 			}
+					
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
 			callAjax(rparam);
@@ -64,15 +66,15 @@
 		
 		if(jsObj.selected!="null")
 		{
-			var levelValue;
-
+			var levelValue;			
+			/*
 			if(ACCESSVALUE=="MLA" || ACCESSVALUE=="MP")
 			levelValue="Constituency";
-			else 
+			else */
 			levelValue=ACCESSVALUE;
 
 			var elmt=document.getElementById(levelValue+"NameSelect");	
-			console.log(elmt);
+			
 			removeSelectElements(elmt);			
 			for (var l in results)
 			{
@@ -93,6 +95,7 @@
 			return;
 		}
 
+
 		var str='';
 		if(ACCESSVALUE=="State")
 		{
@@ -100,7 +103,7 @@
 		}
 		else
 		{
-			str+='<select name="stateSelect" id="stateNameSelect" onchange="getValues(this.options[this.selectedIndex].text)">';
+			str+='<select name="stateSelect" id="stateNameSelect" onchange="getValues(this.options[this.selectedIndex].value)">';
 		}		
 			str+='<option>Select State</option>';
 			for(var item in results)
@@ -113,9 +116,15 @@
 			str+='<option>Select District</option>';
 			str+='</select>';
 		}
-		if(ACCESSVALUE=="MLA" || ACCESSVALUE=="MP")
+		if(ACCESSVALUE=="MLA")
 		{
-			str+='<select name="accessValue" id="ConstituencyNameSelect" style="margin-left:5px;">';
+			str+='<select name="accessValue" id="MLANameSelect" style="margin-left:5px;">';
+			str+='<option>Select Constituency</option>';
+			str+='</select>';
+		}
+		if(ACCESSVALUE=="MP")
+		{
+			str+='<select name="accessValue" id="MPNameSelect" style="margin-left:5px;">';
 			str+='<option>Select Constituency</option>';
 			str+='</select>';
 		}
@@ -125,18 +134,20 @@
 	function getValues(value)
 	{
 		var levelValue;
-
+		/*
 		if(ACCESSVALUE=="MLA" || ACCESSVALUE=="MP")
 			levelValue="Constituency";
-		else 
+		else */
 			levelValue=ACCESSVALUE;
-
+			
+         
 		
 		var elmt=document.getElementById(levelValue+"NameSelect");
 		
 		if (!elmt || ACCESSVALUE=="State")
 			return;
 
+		
 		removeSelectElements(elmt);
 
 		if(value=="Select State")
@@ -189,84 +200,145 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
 </script>
+<style type="text/css">
+	
+	.registrationTable td
+	{
+		text-align:left;
+		color:#926682
+		
+	}
+
+	.requiredFont
+	{
+		color:red;
+		margin-left:5px;
+	}
+	#registrationMainDiv
+	{
+		text-align:left;
+		margin-left:200px;
+	}
+	.accessDivHead
+	{
+		font-weight:bold;
+	}
+	.accessDivMain
+	{
+		padding-bottom:20px;
+	}
+	.accessDivHead
+	{
+		color:#664141;
+	}
+	.accessDivBody
+	{
+		padding-top:10px;
+	}
+</style>
 </head>  
 <body>  
 <s:form action="RegistrationAction" method="POST" theme="simple">  
-    <h2>User Registration Form</h2>  
-     <table>
-		<tr>
-			<td colspan="2">
-				<div style="color: red;">
-					<s:actionerror />
-					<s:fielderror />
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<th><s:label for="firstNameField" id="fnameLabel"  value="%{getText('firstName')}" /></th>
-			<td><s:textfield id="firstNameField" name="firstName"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="middleNameField" id="middleNameLabel"  value="%{getText('middleName')}" /></th>
-			<td><s:textfield id="middleNameField" name="middleName"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="lastNameField" id="lastNameLabel"  value="%{getText('lastName')}" /></th>
-			<td><s:textfield id="lastNameField" name="lastName"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></th>
-			<td><s:textfield id="genderField" name="gender"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="userNameField" id="userNameLabel"  value="%{getText('userName')}" /></th>
-			<td><s:textfield id="userNameField" name="userName"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="passwordField" id="passwordLabel"  value="%{getText('password')}" /></th>
-			<td><s:textfield id="passwordField" name="password"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="dateOfBirthField" id="dateOfBirthLabel"  value="%{getText('dateOfBirth')}" /></th>
-			<td><s:textfield id="dateOfBirthField" name="dateOfBirth"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></th>
-			<td><s:textfield id="emailField" name="email"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></th>
-			<td><s:textfield id="telephoneNoField" name="phone"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></th>
-			<td><s:textfield id="mobileField" name="mobile"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="addressField" id="addressLabel"  value="%{getText('address')}" /></th>
-			<td><s:textfield id="addressField" name="address"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="countryField" id="countryLabel"  value="%{getText('country')}" /></th>
-			<td><s:textfield id="countryField" name="country"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="pincodeField" id="pincodeLabel"  value="%{getText('pincode')}" /></th>
-			<td><s:textfield id="pincodeField" name="pincode"/>  </td>
-		</tr>
-		<tr>
-			<th><s:label for="accessTypeField" id="accessTypeLabel"  value="%{getText('accessType')}" /></th>
-			<td><s:radio id="accessTypeField" name="accessType" list="type" onclick="getAccessValue(this.value);"></s:radio> </td>
-		</tr>
-		<tr>
-			<th id="thId"> </th>
-			<td id="tdId"> </td>
-		</tr>
-		<tr>			
-			<td colspan="2" align="center"><s:submit name="Save"></s:submit> </td>
-		</tr>
-	 </table>
-   
+    <h2>User Registration Form</h2> 
+ <div id="registrationMainDiv">
+		<table class="registrationTable">
+			<tr>
+				<td colspan="2">
+					<div style="color: red;">
+						<s:actionerror />
+						<s:fielderror />
+					</div>
+				</td>
+			</tr>
+		</table>
+
+		 <div id="loginDetailsDiv" class="accessDivMain">
+			<div id="loginDetailsDivHead" class="accessDivHead"><u>Login Details...</u></div>
+			<div id="loginDetailsDivBody" class="accessDivBody">
+				<table class="registrationTable">
+					<tr>
+						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="userNameField" id="userNameLabel"  value="%{getText('userName')}" /></td>
+						<td><s:textfield id="userNameField" name="userName"/>  </td>
+					</tr>
+					<tr>
+						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="passwordField" id="passwordLabel"  value="%{getText('password')}" /></td>
+						<td><s:password id="passwordField" name="password"/>  </td>
+					</tr>
+				</table>
+			</div>
+		 </div>
+
+		 <div id="personalDetailsDiv" class="accessDivMain">
+			 <div id="personalDetailsDivHead" class="accessDivHead"><u>Personal Details...</u></div>
+			 <div id="personalDetailsDivBody" class="accessDivBody">
+				<table class="registrationTable">
+					<tr>
+						<td width="100px;"><font class="requiredFont"> * </font><s:label for="firstNameField" id="fnameLabel"  value="%{getText('firstName')}" /></td>
+						<td><s:textfield id="firstNameField" name="firstName"/>  </td>
+					</tr>
+					<tr>
+						<td width="100px;" style="padding-left:15px;" ><s:label for="middleNameField" id="middleNameLabel"  value="%{getText('middleName')}" /></td>
+						<td><s:textfield id="middleNameField" name="middleName"/>  </td>
+					</tr>
+					<tr>
+						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="lastNameField" id="lastNameLabel"  value="%{getText('lastName')}" /></td>
+						<td align="left"><s:textfield id="lastNameField" name="lastName"/>  </td>
+					</tr>
+					<tr>
+						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></td>
+						<td><s:radio id="genderField" name="gender" list="gender" required="true" />  </td>			
+					</tr>
+					<tr>
+						<td width="100px;"> <font class="requiredFont"> * </font><s:label for="dateOfBirthField" id="dateOfBirthLabel"  value="%{getText('dateOfBirth')}" /></td>
+						<td> 
+							<s:select name="dobDay" list="dobDay" listKey="id" listValue="name"></s:select>
+							<s:select name="dobMonth" list="dobMonth" listKey="id" listValue="name"></s:select>
+							<s:select name="dobYear" list="dobYear" listKey="id" listValue="name"></s:select>
+						 </td>
+					</tr>
+					<tr>
+						<td width="100px;" style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>
+						<td><s:textfield id="emailField" name="email"/>  </td>
+					</tr>
+					<tr>
+						<td width="100px;" style="padding-left:15px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
+						<td><s:textfield id="telephoneNoField" name="phone"/>  </td>
+					</tr>
+					<tr>
+						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></td>
+						<td><s:textfield id="mobileField" name="mobile"/>  </td>
+					</tr>
+					<tr>
+						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="addressField" id="addressLabel"  value="%{getText('address')}" /></td>
+						<td><s:textfield id="addressField" name="address"/>  </td>
+					</tr>
+					
+				</table>
+			</div>	
+		 </div>
+
+		 <div id="accessDetailsDiv" class="accessDivMain">
+			 <div id="accessDetailsDivHead" class="accessDivHead"><u>Access Level Details...</u></div>
+			 <div id="accessDetailsDivBody" class="accessDivBody">
+				<table class="registrationTable">		
+					<tr>
+						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="accessTypeField" id="accessTypeLabel"  value="%{getText('accessType')}" /></td>
+						<td><s:radio id="accessTypeField" name="accessType" list="type" onclick="getAccessValue(this.value);" required="true"></s:radio> </td>
+					</tr>
+					<tr>
+						<td width="100px;" id="thId"> </td>
+						<td id="tdId"> </td>
+					</tr>
+					<tr>			
+						<td colspan="2" align="center"></td>
+					</tr>
+				 </table>
+			 </div>
+		</div> 
+		<div style="text-align: center;">
+			<s:submit name="Save"></s:submit> 
+		</div>
+</div>
 </s:form>  
 </body>  
 </html>
