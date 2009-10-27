@@ -93,6 +93,20 @@
 	<bean id="cadreRegisterAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
 	</bean> 
+
+	
+	<bean id="electionComparisonAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonAction" singleton="false">
+	   <property name="electionsComparisonService" ref="electionsComparisonService" />
+	</bean>
+																						
+	<bean id="electionComparisonAjaxAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonAjaxAction" singleton="false">
+	    <property name="electionsComparisonService" ref="electionsComparisonService" />
+	</bean>
+	
+	<bean id="electionComparisonReportAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonReportAction" singleton="false">
+	     <property name="electionsComparisonService" ref="electionsComparisonService" />
+	</bean> 
+
 	<bean id="partyBoothResultAction" class="com.itgrids.partyanalyst.web.action.PartyBoothResultAction" singleton="false">
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
 	</bean>
@@ -104,4 +118,5 @@
 	<bean id="partyBoothResult2Action" class="com.itgrids.partyanalyst.web.action.PartyBoothResult2Action" singleton="false">
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
 	</bean>
+
 </beans>
