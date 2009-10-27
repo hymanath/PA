@@ -116,20 +116,20 @@ table.CandidateElectionResultsTable td {
 	</tr>
 	<tr>
 	   <th>Election Type</th>
-	   <td >
+	   <td align="left">
 			<s:select theme="simple" name="electionType" id="electionTypeList" list="electionType" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
 		</td>
 	 </tr>
 	 <tr>
 	   <th >State</th>
-	   <td >
-			<s:select theme="simple" name="states" id="statesList" list="statesList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
+	   <td  align="left">
+			<s:select theme="simple" name="state" id="statesList" list="statesList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
 		</td>
 	 </tr>
 	
 	 <tr >
 	   <th>Party</th>
-	   <td >
+	   <td  align="left">
 			<s:select theme="simple" name="party" id="partyList" list="partyList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
 		</td>
 	 </tr>
@@ -139,7 +139,7 @@ table.CandidateElectionResultsTable td {
 	 
 	 <tr>
 	   <th>Elections Years</th>
-	   <td colspan="2" >
+	   <td colspan="2"  align="left" >
 			<s:select theme="simple" name="electionYears1" id="yearsList1" list="yearsList" headerKey="0" headerValue="Select" listKey="name" listValue="name" />
 		
 			<s:select theme="simple" name="electionYears2" id="yearsList2" list="yearsList" headerKey="0" headerValue="Select" listKey="name" listValue="name" />
