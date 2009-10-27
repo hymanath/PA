@@ -340,7 +340,11 @@ public class PartyService implements IPartyService {
 		for(String partyName: votesFlow.keySet()){
 			votesFlow.put(partyName, new BigDecimal((votesFlow.get(partyName).doubleValue()*100)/totalValidVotes).setScale(2,BigDecimal.ROUND_HALF_UP));
 		}
-		partyPerformanceReportVO.setTotalPercentageOfVotesWon(new BigDecimal((totalVotesEarnedByParty*100)/totalValidVotes).setScale(2,BigDecimal.ROUND_HALF_UP));
+		double votesPercentage = 0;
+		if(totalValidVotes!=0){
+			votesPercentage = (totalVotesEarnedByParty*100)/totalValidVotes ;
+		}
+		partyPerformanceReportVO.setTotalPercentageOfVotesWon(new BigDecimal(votesPercentage).setScale(2,BigDecimal.ROUND_HALF_UP));
 		partyPerformanceReportVO.setVotesFlown(votesFlow);
 		partyPerformanceReportVO.setPositionDistribution(positionDistribution);
 		partyPerformanceReportVO.setPartyWinners(positionDetailVOsForPartyWinners);
