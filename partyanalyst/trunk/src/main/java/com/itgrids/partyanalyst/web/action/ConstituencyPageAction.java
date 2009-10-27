@@ -92,12 +92,8 @@ public class ConstituencyPageAction extends ActionSupport implements
 				
 		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
 		
-		if(constituencyElectionResultsVO != null){
-			
-			electionType = constituencyElectionResultsVO.get(0).getElectionType();			
-		}
-		
 		if(constituencyElectionResultsVO != null || constituencyDetails != null){
+			//electionType = constituencyElectionResultsVO.get(0).getElectionType();
 			return SUCCESS;
 		}
 		else
