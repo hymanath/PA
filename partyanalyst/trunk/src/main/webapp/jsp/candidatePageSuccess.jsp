@@ -33,6 +33,31 @@ table.CandidateElectionResultsTable td {
 	background-color: #ffffff;
 }
 
+#candidateDetailsTable
+{
+	float: left;
+	margin-left: 70px;
+}
+
+#candidateDetailsTable th
+{
+	padding:8px;
+	color:#8A9194;
+}
+
+#candidateDetailsTable td
+{
+	padding:8px;
+	color:#3A4750;
+}
+
+#moreDetailsAnc
+{
+	text-decoration:none;
+	color:#64941D;
+}
+
+
 </style>
 <script type="text/javascript">
 	
@@ -61,13 +86,15 @@ table.CandidateElectionResultsTable td {
 <body>
 <div id="ResultsDiv" style="padding:5px;">
    
-    <table style="float: left; margin-left: 0px;">
+	<h2><u style="color:#0C3E57;">Candidate Details</u></h2>
+    <table id="candidateDetailsTable" style="">
 		<tr>
-			<th style="background-color: #94A9C8;text-align:center;"><h4>Name</h4></th>
+			<th>Name</th>
+			<td><c:out value="${candidateVO.candidateName}"/></td>
 		</tr>
 		<tr>
-			<td><h5><c:out value="${candidateVO.candidateName}"/></h5></td>
-		</tr>		
+			<td colspan="2" align="right"><a id="moreDetailsAnc" href="javascript:{}">More Details... </a></td>
+		</tr>
 	</table>
 
 	<div style="background-color: #efefef; height: 180px; width: 200px; margin-left:50px;display:inline;">
@@ -75,7 +102,7 @@ table.CandidateElectionResultsTable td {
 	</div>
 	
 	
-	<h2><c:out value="${candidateVO.candidateName}"/>  Election Info</h2>
+	<h4 style="text-align:left;"><u style="color:#0C3E57;"><c:out value="${candidateVO.candidateName}"/>  Election Info</u></h4>
 	
 	<table class="CandidateElectionResultsTable" border="1">
 	<tr>
@@ -149,8 +176,6 @@ table.CandidateElectionResultsTable td {
 	</c:forEach>
 </table><br>
 
-
-<a href="javascript:{}">More about: <c:out value="${candidateVO.candidateName}"/> </a>
 </div>
 
 </body>
