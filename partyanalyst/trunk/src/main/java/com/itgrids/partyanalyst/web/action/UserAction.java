@@ -15,6 +15,7 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	private HttpServletRequest request;
 	private UserService userService;
 	private List<String> type = new ArrayList<String>();
+	private List<String> gender = new ArrayList<String>();
 	
 	public void setUserService(UserService userService){
 		this.userService  = userService;
@@ -31,7 +32,15 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	public void setType(List<String> type) {
 		this.type = type;
 	}
+	
+	public List<String> getGender() {
+		return gender;
+	}
+	public void setGender(List<String> gender) {
+		this.gender = gender;
+	}
 
+	
 	public String registration(){
 		if(type.size()==0){
 			type.add("COUNTRY");
@@ -40,6 +49,11 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 			type.add("MLA");
 			type.add("MP");			
 		}
+		
+		if(gender.size() == 0){
+			gender.add("Male");
+			gender.add("Female");
+		}		
 		
 		return Action.SUCCESS;
 	}
