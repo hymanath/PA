@@ -23,7 +23,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements Ser
 	 * 
 	 */
 	private String electionType;
-	private String states;
+	private String state;
 	private String party;
 	private String electionYears1;
 	private String electionYears2;
@@ -37,12 +37,13 @@ public class ElectionComparisonReportAction extends ActionSupport implements Ser
 		this.electionType = electionType;
 	}
 
-	public String getStates() {
-		return states;
+	
+	public String getState() {
+		return state;
 	}
 
-	public void setStates(String states) {
-		this.states = states;
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public String getParty() {
@@ -122,7 +123,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements Ser
 	public String execute()
 	{
 		
-		Long electionScopeId = electionsComparisonService.getElectionScopeId(Long.parseLong(getElectionType()), Long.parseLong(getStates()));
+		Long electionScopeId = electionsComparisonService.getElectionScopeId(Long.parseLong(getElectionType()), Long.parseLong(getState()));
 		
 		if(electionScopeId != null){
 			
@@ -132,31 +133,20 @@ public class ElectionComparisonReportAction extends ActionSupport implements Ser
 			if(firstYear.equals(true) && secondYear.equals(true)){
 				electionsComparisonVO = electionsComparisonService.getPartyElectionComparedResults(electionScopeId, Long.parseLong(getParty()), getElectionYears1(), getElectionYears2());
 				electionComparisonResultVO = null;
-				System.out.println("Both true -->" + electionComparisonResultVO);
-				System.out.println("First Year --> " + firstYear);
-				System.out.println("Second Year --> " + secondYear);
-				System.out.println("Scope Id ->" + electionScopeId);
+				
 			}
 			else if(firstYear.equals(true) && secondYear.equals(false)){
 				electionComparisonResultVO = electionsComparisonService.getPartyElectionResults(electionScopeId, Long.parseLong(getParty()), getElectionYears1());
 				electionsComparisonVO = null;
-				System.out.println("one true 1-->" + electionsComparisonVO);
-				System.out.println("First Year --> " + firstYear);
-				System.out.println("Second Year --> " + secondYear);
-				System.out.println("Scope Id ->" + electionScopeId);
+				
 			}
 			else{
 				electionComparisonResultVO = electionsComparisonService.getPartyElectionResults(electionScopeId, Long.parseLong(getParty()), getElectionYears2());
 				electionsComparisonVO = null;
-				System.out.println("one true 2-->" + electionsComparisonVO);
-				System.out.println("First Year --> " + firstYear);
-				System.out.println("Second Year --> " + secondYear);
-				System.out.println("Scope Id ->" + electionScopeId);
+				
 			}
-			
 			 
 		}
-		
 		if(electionsComparisonVO != null || electionComparisonResultVO != null)
 			return Action.SUCCESS;
 		else
