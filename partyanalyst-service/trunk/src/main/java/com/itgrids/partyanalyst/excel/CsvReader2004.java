@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import jxl.Sheet;
 import jxl.Workbook;
@@ -60,11 +61,12 @@ public class CsvReader2004 implements IExcelReader{
 			csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel - assembly/forTst/Assembly-ElectionResults-AP-1989_Pattern2.xls");
 			System.out.println("\nConstitution Blocak details =="+csvReader.getConstituencyBlocks().size());
 			List<ConstituencyBlock> constituencies= csvReader.getConstituencyBlocks();
-			ConstituencyBlock constituencyBlock=constituencies.get(1);
+			ConstituencyBlock constituencyBlock=constituencies.get(7);
 			
 			System.out.println("Constituency Name == "+constituencyBlock.getConstituencyName());
 			System.out.println("Constituency Margin =="+constituencyBlock.getMargin());
 			System.out.println("Constituency Remarks =="+constituencyBlock.getRemarks());
+			System.out.println("Constituency Reservation Info =="+constituencyBlock.getReservationInfo());
 			System.out.println("Total Votes Polled == "+constituencyBlock.getTotalVotesPolled());
 			System.out.println("Missing Votes == "+constituencyBlock.getMissingVotes());
 			System.out.println("Rejected Votes == "+constituencyBlock.getRejectedVotes());
@@ -103,10 +105,11 @@ public class CsvReader2004 implements IExcelReader{
 			for (int i = 0; i < methods.length; i++) {
 				if(methods[i].getName().startsWith("get")){
 					String str=(String)methods[i].invoke(csvColumnMapperObj, null);
-					if(methods[i].getName().equals("getExcelColumn2")&& str.indexOf(".")>1 && csvColumnMapperObj.getExcelColumn3().length()==0 && csvColumnMapperObj.getExcelColumn4().length()==0){
+					if(methods[i].getName().equals("getExcelColumn2")&& str.indexOf(".")>0 && csvColumnMapperObj.getExcelColumn3().length()==0 && csvColumnMapperObj.getExcelColumn4().length()==0){
 						candidateElectionResults=new ArrayList<CandidateElectionResult>();
-						constituencyBlock= new ConstituencyBlock();
-						constituencyBlock.setConstituencyName(StringUtils.split(str,".")[1].trim());
+						constituencyBlock= checkConstituencyForReservation(str);
+						/*new ConstituencyBlock();
+						constituencyBlock.setConstituencyName(StringUtils.split(str,".")[1].trim());*/
 						break;
 					}else if(str.startsWith(ConstituencyElectionResultCSVColumnNames.ELECTORS))
 					{
@@ -199,5 +202,19 @@ public class CsvReader2004 implements IExcelReader{
 
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
+	}
+
+	private ConstituencyBlock checkConstituencyForReservation(String constituencyName){
+		ConstituencyBlock constituencyBlock = new ConstituencyBlock();
+		if(constituencyName!=null && constituencyName.length()>0){
+			String str[]=StringUtils.split(constituencyName+"(PA)", ".()");
+			constituencyBlock.setConstituencyName(str[1].trim());
+			if(str.length>2 && !str[2].equalsIgnoreCase("PA")){
+				constituencyBlock.setReservationInfo(str[2].trim());
+			}			
+		}
+
+		
+		return constituencyBlock;
 	}
 }
