@@ -80,6 +80,21 @@ table.ConstituencyElectionsTable td {
 	background-color: #ffffff;
 }
 
+.constituencyDetailsTable 
+{
+	padding:8px;
+}
+.constituencyDetailsTable th
+{
+	color:#7F6C6C;
+	padding:8px;
+}
+.constituencyDetailsTable td
+{
+	color:#6B0B0B;
+	padding:8px;
+}
+
 /* Party Performance report  styles */
 table.partyPerformanceReportTable{
 	font-family: verdana,arial,sans-serif;
