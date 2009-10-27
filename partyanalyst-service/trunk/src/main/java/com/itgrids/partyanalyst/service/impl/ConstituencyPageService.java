@@ -76,8 +76,9 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				 
 				 constituencyElectionResultList.add(constElecResultVO);
 			 }
+		 return constituencyElectionResultList;
 		 }
-		return constituencyElectionResultList;
+	return null;	
 	}
 	
 	public CandidateWonVO getCandidateWon(List<Nomination> nominationsList){
