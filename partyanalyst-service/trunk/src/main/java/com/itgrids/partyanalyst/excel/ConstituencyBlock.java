@@ -22,6 +22,7 @@ public class ConstituencyBlock {
 	private Double missingVotes;
 	private Double totalVotesPolled;
 	private Double tenderedVotes;
+	private String reservationInfo;
 	List<CandidateElectionResult> candidateElectionlst;
 	public ConstituencyBlock(){
 		constituencyName="";
@@ -31,6 +32,7 @@ public class ConstituencyBlock {
 		missingVotes= new Double(0);
 		totalVotesPolled= new Double(0);
 		tenderedVotes= new Double(0);
+		reservationInfo="";
 	}
 	
 	public ConstituencyBlock(String constituencyName, Double totalElectors,
@@ -126,6 +128,13 @@ public class ConstituencyBlock {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+	public String getReservationInfo() {
+		return reservationInfo;
+	}
+
+	public void setReservationInfo(String reservationInfo) {
+		this.reservationInfo = reservationInfo;
 	}
 
 }
