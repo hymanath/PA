@@ -4,18 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.service.IConstituencySearchService;
 
 public class ConstituencySearchService implements IConstituencySearchService{
 
 	private IConstituencyDAO constituencyDAO;
+	private IElectionScopeDAO electionScopeDAO;
 	private List<SelectOptionVO> constituencyNamesAndIdsList;
-	
+
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+	public void setElectionScopeDAO(IElectionScopeDAO electionScopeDAO) {
+		this.electionScopeDAO = electionScopeDAO;
 	}
 	
 	public List<SelectOptionVO> getConstituencyNamesAndIds(){
@@ -58,6 +64,28 @@ public class ConstituencySearchService implements IConstituencySearchService{
 	public List<SelectOptionVO> getConstituencyNames(Long stateId)
 	{
 		List<Constituency> constituencies = constituencyDAO.findByStateId(stateId);
+		List<SelectOptionVO> selectOptionList=new ArrayList<SelectOptionVO>();
+		for(Constituency constituency:constituencies)
+		{
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(constituency.getConstituencyId());
+			selectOptionVO.setName(constituency.getName());
+			selectOptionList.add(selectOptionVO);			
+		}
+		
+		return selectOptionList;
+	}
+	
+
+	public List<SelectOptionVO> getConstituencyNamesByElectionScope(Long countryID, Long stateID, Long typeID){
+		List<ElectionScope> scopes = electionScopeDAO.findByTypeIdCountryIdStateId(typeID, countryID, stateID);
+		Long scopeID = 0L;
+		if(scopes!=null && scopes.size()>0){
+			ElectionScope scope = scopes.get(0);
+			scopeID = scope.getElectionScopeId();
+		}
+		
+		List<Constituency> constituencies = constituencyDAO.findByElectionScope(scopeID);
 		List<SelectOptionVO> selectOptionList=new ArrayList<SelectOptionVO>();
 		for(Constituency constituency:constituencies)
 		{

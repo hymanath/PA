@@ -10,6 +10,7 @@ public interface IConstituencySearchService {
 	public List<SelectOptionVO>  getConstituencyNamesAndIds();
 	
 	public List<ConstituencyVO> getConstituencyDetails(String name);
-	
+
 	public List<SelectOptionVO> getConstituencyNames(Long stateId);
+	public List<SelectOptionVO> getConstituencyNamesByElectionScope(Long countryId, Long stateId, Long electionTypeID);
 }

@@ -13,6 +13,7 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.CandidateColumnNames;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ElectionScope;
 
 /**
  * Interface for ConstituencyDAO.
@@ -43,5 +44,7 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	public List<Constituency> findByStateId(Long stateId);
 	
 	public List<Constituency> findByConstituencyId(Long constituencyId);
+	
+	public List<Constituency> findByElectionScope(Long scopeID);
 
 }

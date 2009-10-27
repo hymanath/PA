@@ -48,4 +48,11 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		Assert.assertEquals(13, constituencies.size());
 	}
 	
+	public void testFindByElectionScope(){
+		List<Constituency> parlCons = constituencyDAO.findByElectionScope(1L);
+		List<Constituency> assemCons = constituencyDAO.findByElectionScope(2L);
+		Assert.assertNotNull(parlCons);
+		Assert.assertNotNull(assemCons);
+	}
+	
 }

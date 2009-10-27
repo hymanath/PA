@@ -12,6 +12,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import com.itgrids.partyanalyst.dao.columns.enums.ConstituencyColumnNames;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
+import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -77,5 +78,10 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
                 }
             });
     }
+	
+	@SuppressWarnings("unchecked")
+	public List<Constituency> findByElectionScope(Long scopeID){
+		return getHibernateTemplate().find("from Constituency model where model.electionScope.electionScopeId = ?",scopeID);
+	}
 
 }
