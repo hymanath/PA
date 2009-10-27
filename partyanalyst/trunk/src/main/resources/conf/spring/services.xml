@@ -66,6 +66,14 @@
 		<property name="candidateResultObjectsDAO" ref="candidateResultObjectsDAO" />
 		<property name="candidateDAO" ref="candidateDAO" />
 	</bean>
+	
+	<bean name="electionsComparisonService" class="com.itgrids.partyanalyst.service.impl.ElectionsComparisonService" >
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="partyDAO" ref="partyDAO" />
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="candidateResultDAO" ref="candidateResultDAO" />
+		<property name="electionScopeDAO" ref="electionScopeDAO" />
+	</bean>
 
 	<bean name="excelToDBService" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService" >
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
