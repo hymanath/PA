@@ -99,9 +99,6 @@
 	   <property name="electionsComparisonService" ref="electionsComparisonService" />
 	</bean>
 																						
-	<bean id="electionComparisonAjaxAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonAjaxAction" singleton="false">
-	    <property name="electionsComparisonService" ref="electionsComparisonService" />
-	</bean>
 	
 	<bean id="electionComparisonReportAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonReportAction" singleton="false">
 	     <property name="electionsComparisonService" ref="electionsComparisonService" />
