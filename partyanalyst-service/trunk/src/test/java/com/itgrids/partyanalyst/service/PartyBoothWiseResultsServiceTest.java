@@ -8,12 +8,12 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.BoothResultVO;
 import com.itgrids.partyanalyst.excel.PartyBoothPerformanceVO;
+import com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.util.DummyConstituencies;
 import com.itgrids.partyanalyst.util.DummyNominations;
 import com.itgrids.partyanalyst.util.DummyPartyResultsData;
@@ -61,7 +61,7 @@ public class PartyBoothWiseResultsServiceTest {
 		EasyMock.verify(nominationDAO);
 	}
 	
-	/*@Test
+	@Test
 	public void checkGetBoothWiseResultsForParty(){
 		EasyMock.expect(nominationDAO.findByConstituencyPartyAndElectionYear(new Long(1), new Long(123), "2004")).andReturn(DummyNominations.getNominationsWithBoothResults());
 		EasyMock.replay(nominationDAO);
@@ -80,5 +80,5 @@ public class PartyBoothWiseResultsServiceTest {
 		System.out.println(boothResultVO.getVotesEarned());
 		System.out.println(boothResultVO.getPercentage());
 		EasyMock.verify(nominationDAO);
-	}*/
+	}
 }
