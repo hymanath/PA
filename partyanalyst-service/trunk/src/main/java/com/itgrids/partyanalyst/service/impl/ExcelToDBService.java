@@ -181,6 +181,7 @@ public int processBatch(List<Party> parties,List<Candidate> candidates,List<Cons
 			ConstituencyElection constituencyElectionObj = new ConstituencyElection();
 			constituencyElectionObj.setConstituency(constituencyObj);
 			constituencyElectionObj.setElection(electionObj);
+			constituencyElectionObj.setReservationZone(constituecBlock.getReservationInfo());
 			constituencyElectionObj = constituencyElectionDAO.save(constituencyElectionObj);
 
 			List<CandidateElectionResult> candidateElectionResults= constituecBlock.getCandidateElectionlst();
@@ -456,7 +457,7 @@ public TransactionTemplate getTransactionTemplate() {
 public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 	this.transactionTemplate = transactionTemplate;
 }
-
+//Assembly-ElectionResults-AP-1989_Pattern2.xls
 private UploadFormVo selectReaderAndFetchConstituencyBlocks(UploadFormVo uploadFormVo) throws CsvException{
 	System.out.println("In the selectReaderAndFetchConstituencyBlock metbod");
 	List<ConstituencyBlock> constituencyBlocks=null;
