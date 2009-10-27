@@ -61,7 +61,7 @@ public class CsvReader implements IExcelReader{
 			//D:/documents/elections data converted to excel from pdf/excel - assembly/forTest/Assembly-ElectionResults-AP-2004
 			//D:\documents\elections data converted to excel from pdf\excel - assembly\forTst\Assembly1-ElectionResults-AP-2004_Pattern1
 			//D:/documents/elections data converted to excel from pdf/excel  -parliament/forTst/Parlament-AP-Results-2009_Pattern1
-			csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel  -parliament/forTst/Parlament-AP-Results-2009_Pattern1_Test.xls");
+			csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel  -parliament/forTst/Parlament-AP-Results-2009_Pattern1.xls");
 			List<ConstituencyBlock> constituencies= csvReader.getConstituencyBlocks();
 			System.out.println("\nConstitution Blocak details =="+csvReader.getConstituencyBlocks().size());
 			ConstituencyBlock constituencyBlock=constituencies.get(0);
@@ -109,8 +109,9 @@ public class CsvReader implements IExcelReader{
 						constituencyName=(str.split("-"))[1].trim();
 						constituencyName=StringUtils.trim(constituencyName);
 						candidateElectionResults=new ArrayList<CandidateElectionResult>();
-						constituencyBlock= new ConstituencyBlock();
-						constituencyBlock.setConstituencyName(constituencyName);
+						constituencyBlock= checkConstituencyForReservation(str);
+/*							new ConstituencyBlock();
+						constituencyBlock.setConstituencyName(constituencyName);*/
 						constituencyBlock.setMargin(csvColumnMapperObj.getCsvColumn5());
 						constituencyBlock.setRemarks(csvColumnMapperObj.getCsvColumn6());
 						break;
@@ -220,5 +221,18 @@ public class CsvReader implements IExcelReader{
 	}
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
+	}
+	private ConstituencyBlock checkConstituencyForReservation(String constituencyName){
+		ConstituencyBlock constituencyBlock = new ConstituencyBlock();
+		if(constituencyName!=null && constituencyName.length()>0){
+			String str[]=StringUtils.split(constituencyName+"(PA)", "-()");
+			constituencyBlock.setConstituencyName(str[1].trim());
+			if(str.length>2 && !str[2].equalsIgnoreCase("PA")){
+				constituencyBlock.setReservationInfo(str[2].trim());
+			}			
+		}
+
+		
+		return constituencyBlock;
 	}
 }
