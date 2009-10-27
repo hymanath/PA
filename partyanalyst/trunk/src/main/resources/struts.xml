@@ -163,5 +163,18 @@
            <result name="success"> /jsp/CadreRegisterSuccess.jsp</result>
            <result name="fail"> /jsp/CadreRegisterFail.jsp</result>
         </action> 
+        
+        <action name="electionComparisonAction" class="electionComparisonAction">
+			<result name="success">/jsp/electionComparisonPage.jsp</result>
+		</action>
+															
+		<action name="electionComparisonAjaxAction" class="electionComparisonAjaxAction">
+			<result type="json" name="success"/>
+		</action>
+		
+		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
+			<result name="success">/jsp/electionComparisonReportPage.jsp</result>
+			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
+		</action>
 	</package>
 </struts>
