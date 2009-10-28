@@ -90,7 +90,6 @@ table.searchresultsTable td {
 							<a href='<c:out value="${candidateName}" />'><s:property value="candidateName" /></a></td>
 						<td rowspan="3" style="padding:0px;width:90px;">
 							<div id="photoMainDiv" style="background-color: Gainsboro; height: 90px; width: 90px;">
-							<s:set name="image" value="getText('imageURL')"/>
 								<c:if test="${empty image}">
 									<div id="photoDiv">
 										<img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" >
@@ -114,7 +113,7 @@ table.searchresultsTable td {
 					</tr>				
 					<tr>
 						<td colspan="3">
-							<div style="color:#4C5157; font-weight: bold; font-family: fantasy; font-size: 12px;">Constituencies Participated...</div>
+							<div style="color:#4C5157; font-weight: bold; font-size: 12px;">Constituencies Participated...</div>
 						</td>
 					</tr>
 					<tr>						
