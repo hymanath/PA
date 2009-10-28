@@ -16,7 +16,7 @@ public class UserCadresInfoVO implements Serializable{
 	private Long userID = null;
 	private String userAccessType = null;
 	private String userAccessValue = null;
-
+	private String userAccesDisplayValue = null;
 	private Long totalCadres = null;
 
 	/**
@@ -59,6 +59,12 @@ public class UserCadresInfoVO implements Serializable{
 	}
 	public void setUserAccessValue(String userAccessValue) {
 		this.userAccessValue = userAccessValue;
+	}
+	public String getUserAccessDisplayValue() {
+		return userAccesDisplayValue;
+	}
+	public void setUserAccessDisplayValue(String userAccesDisplayValue) {
+		this.userAccesDisplayValue = userAccesDisplayValue;
 	}
 	public Long getTotalCadres() {
 		return totalCadres;
