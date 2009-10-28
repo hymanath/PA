@@ -219,6 +219,7 @@ public class PartyService implements IPartyService {
 		
 		partyPerformanceReportVO.setParty(selectedParty.getShortName());
 		partyPerformanceReportVO.setState(stateVO.getStateName());
+		partyPerformanceReportVO.setYear(year);
 		
 		if(districtId != 0) {
 			districtVO = districtDAO.get(districtId);
@@ -232,7 +233,6 @@ public class PartyService implements IPartyService {
 			allianceParties = staticDataService.getAllianceParties(year, electionType, selectedParty.getPartyId());
 			allianceParties.remove(selectedParty);
 			partyPerformanceReportVO.setAllianceParties(allianceParties);
-			partyPerformanceReportVO.setYear(year);
 			partyPerformanceReportVO.setParty(selectedParty.getShortName().concat(" & Alliance Parties"));
 		}  
 
