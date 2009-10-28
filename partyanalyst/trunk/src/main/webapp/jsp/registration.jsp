@@ -258,11 +258,11 @@
 				<table class="registrationTable">
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="userNameField" id="userNameLabel"  value="%{getText('userName')}" /></td>
-						<td><s:textfield id="userNameField" name="userName"/>  </td>
+						<td style="padding-left: 15px;"><s:textfield id="userNameField" name="userName"/>  </td>
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="passwordField" id="passwordLabel"  value="%{getText('password')}" /></td>
-						<td><s:password id="passwordField" name="password"/>  </td>
+						<td style="padding-left: 15px;"><s:password id="passwordField" name="password"/>  </td>
 					</tr>
 				</table>
 			</div>
@@ -291,9 +291,9 @@
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font><s:label for="dateOfBirthField" id="dateOfBirthLabel"  value="%{getText('dateOfBirth')}" /></td>
 						<td> 
-							<s:select name="dobDay" list="dobDay" listKey="id" listValue="name"></s:select>
-							<s:select name="dobMonth" list="dobMonth" listKey="id" listValue="name"></s:select>
-							<s:select name="dobYear" list="dobYear" listKey="id" listValue="name"></s:select>
+							<s:select name="dobDay" id="dobDay"  list="dobDay" listKey="id" listValue="name"></s:select>
+							<s:select name="dobMonth" id="dobMonth" list="dobMonth" listKey="id" listValue="name"></s:select>
+							<s:select name="dobYear" id="dobYear" list="dobYear" listKey="id" listValue="name"></s:select>							
 						 </td>
 					</tr>
 					<tr>
@@ -323,14 +323,11 @@
 				<table class="registrationTable">		
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="accessTypeField" id="accessTypeLabel"  value="%{getText('accessType')}" /></td>
-						<td><s:radio id="accessTypeField" name="accessType" list="type" onclick="getAccessValue(this.value);" required="true"></s:radio> </td>
+						<td style="padding-left: 10px;"><s:radio id="accessTypeField" name="accessType" list="type" onclick="getAccessValue(this.value);" required="true"></s:radio> </td>
 					</tr>
 					<tr>
 						<td width="100px;" id="thId"> </td>
-						<td id="tdId"> </td>
-					</tr>
-					<tr>			
-						<td colspan="2" align="center"></td>
+						<td style="padding-left: 15px;" id="tdId"> </td>
 					</tr>
 				 </table>
 			 </div>
