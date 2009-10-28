@@ -25,6 +25,6 @@ public interface IStaticDataService {
 	public List<State> getAllStates();
 	public List<SelectOptionVO> getAlliancePartiesAsVO(String electionYear, Long electionType, Long partyId);
 	public List<Party> getAllianceParties(String electionYear, Long electionType, Long partyId);
-	public Long getGroupIdIfPartyHasAlliances(List<ElectionAlliance> allianceList, Long partyId);
+	public Long getGroupIdIfPartyHasAlliances(Long partyId, String electionYear, Long electionType);
 	public boolean hasAlliances(String year, Long electionType, Long partyId);
 }
