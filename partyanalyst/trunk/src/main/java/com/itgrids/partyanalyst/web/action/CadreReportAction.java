@@ -36,24 +36,17 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 
 	
 	public String execute() throws Exception{
-		try{
-			System.out.println("Narender CadreReportAction Action Action Action Action Action Action1111111111111111111111");
-			session=request.getSession();
-			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-			userCadresInfoVO.setUserID(user.getRegistrationID()); 
-			userCadresInfoVO.setUserAccessType(user.getAccessType());
-			userCadresInfoVO.setUserAccessValue(user.getAccessValue());
-			System.out.println("Narender CadreReportAction Action Action Action Action Action Action22222222222222222222222222222");
-			userCadresInfoVO = cadreManagementService.getUserCadresInfo(userCadresInfoVO);
-			System.out.println("Narender CadreReportAction Action Action Action Action Action Action....................................");
-			System.out.println(userCadresInfoVO.getRegionLevelCadres().size());
-		}catch (Exception e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}finally{
-			System.out.println("Narender CadreReportAction End");
-			return Action.SUCCESS;			
+		session=request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		userCadresInfoVO.setUserID(user.getRegistrationID()); 
+		userCadresInfoVO.setUserAccessType(user.getAccessType());
+		userCadresInfoVO.setUserAccessValue(user.getAccessValue());
+		if("MLA".equalsIgnoreCase(user.getAccessType())){
+			String constituencyName = cadreManagementService.getConstituencyName(new Long(user.getAccessValue()));
+			userCadresInfoVO.setUserAccessDisplayValue(constituencyName);
 		}
+		userCadresInfoVO = cadreManagementService.getUserCadresInfo(userCadresInfoVO);
+		return Action.SUCCESS;
 	}
 	public void setServletContext(ServletContext arg0) {
 		// TODO Auto-generated method stub
