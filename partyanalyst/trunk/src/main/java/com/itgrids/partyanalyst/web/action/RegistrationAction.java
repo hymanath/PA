@@ -19,7 +19,7 @@ import com.opensymphony.xwork2.validator.annotations.*;
 public class RegistrationAction extends ActionSupport implements
 		ServletRequestAware, ServletResponseAware {
 
-	 private static final long serialVersionUID = -2526485695057725966L;
+	private static final long serialVersionUID = -2526485695057725966L;
 	 //private String registrationId;
 	 private String firstName;
 	 private String middleName;
@@ -39,6 +39,11 @@ public class RegistrationAction extends ActionSupport implements
 	 //narender start
 	 private UserService userService;
 	 private List<String> type = new ArrayList<String>();
+	 private List<String> dobDay = new ArrayList<String>();
+	 private List<String> dobMonth = new ArrayList<String>();
+	 private List<String> dobYear = new ArrayList<String>();
+	 
+	 
 		
 		public void setUserService(UserService userService){
 			this.userService  = userService;
@@ -56,6 +61,33 @@ public class RegistrationAction extends ActionSupport implements
 	 HttpServletResponse response;
 	 IRegistrationService registrationService;
 	 HttpSession session;
+	 
+
+	 public List<String> getDobDay() {
+		return dobDay;
+	}
+
+	public void setDobDay(List<String> dobDay) {
+		
+		this.dobDay = dobDay;
+	}
+
+	public List<String> getDobMonth() {
+		return dobMonth;
+	}
+
+	public void setDobMonth(List<String> dobMonth) {
+		
+		this.dobMonth = dobMonth;
+	}
+
+	public List<String> getDobYear() {
+		return dobYear;
+	}
+
+	public void setDobYear(List<String> dobYear) {		
+		this.dobYear = dobYear;
+	}
 	 
 	 private RegistrationVO regVO = new RegistrationVO();
 	 
@@ -76,10 +108,14 @@ public class RegistrationAction extends ActionSupport implements
 		 this.response = response;
 	 }
 	public String execute() throws Exception{
-		System.out.println("regVO..getAccessType() " + regVO.getAccessType());
-		System.out.println("regVO..getAccessValue() " + regVO.getAccessValue());
-		System.out.println("accessType: " + request.getParameter("accessType"));
-		System.out.println("accessType: " + request.getParameter("accessValue"));
+		
+		String dobDayValue = dobDay.get(0);
+		String dobMonthValue = dobMonth.get(0);
+		String dobYearValue = dobYear.get(0);
+		
+		String dob=dobDayValue+"/"+dobMonthValue+"/"+dobYearValue;
+		
+		this.setDateOfBirth(dob);
 		
 		String requestStatus = registrationService.saveRegistration(regVO);
 		if(requestStatus != "SUCCESS"){
@@ -92,8 +128,7 @@ public class RegistrationAction extends ActionSupport implements
 			session.setAttribute("password",regVO.getPassword());
 			session.setAttribute("registrationStatus", true);
 			regVO.setAccessType(request.getParameter("accessType"));
-			System.out.println("AccessType::::::::::::::::::::::::"+regVO.getAccessType());
-			System.out.println("AccessType::::::::::::::::::::::::"+regVO.getAccessType());
+			
 			return SUCCESS;
 		}
 		
@@ -101,7 +136,7 @@ public class RegistrationAction extends ActionSupport implements
 	}
     
    
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getFirstName() {
 		return regVO.getFirstName();
 		
@@ -112,7 +147,7 @@ public class RegistrationAction extends ActionSupport implements
 		
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getMiddleName() {
 		return regVO.getMiddleName();
 	}
@@ -121,7 +156,7 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setMiddleName(middleName);
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getLastName() {
 		return regVO.getLastName();
 	}
@@ -130,7 +165,7 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setLastName(lastName);
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getGender() {
 		return regVO.getGender();
 	}
@@ -139,7 +174,7 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setGender(gender);
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getUserName() {
 		return regVO.getUserName();
 	}
@@ -148,7 +183,7 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setUserName(userName);
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getPassword() {
 		return regVO.getPassword();
 	}
@@ -157,17 +192,19 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setPassword(password);
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getDateOfBirth() {
 		return regVO.getDateOfBirth();
 	}
 
 	public void setDateOfBirth(String dateOfBirth) {
+		
 		this.regVO.setDateOfBirth(dateOfBirth);
+		
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
-	@EmailValidator(key="invalidEmail",shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@EmailValidator(key="invalidEmail",shortCircuit=true)
 	public String getEmail() {
 		return regVO.getEmail();
 	}
@@ -176,7 +213,7 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setEmail(email);
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getPhone() {
 		return regVO.getPhone();
 	}
@@ -185,7 +222,7 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setPhone(phone);
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getMobile() {
 		return regVO.getMobile();
 	}
@@ -194,7 +231,7 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setMobile(mobile);
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getAddress() {
 		return regVO.getAddress();
 	}
@@ -203,7 +240,7 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setAddress(address);
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getCountry() {
 		return regVO.getCountry();
 	}
@@ -212,7 +249,7 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setCountry(country);
 	}
 
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getPincode() {
 		return regVO.getPincode();
 	}
