@@ -12,6 +12,7 @@ import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.ElectionComparisonResultVO;
 import com.itgrids.partyanalyst.dto.ElectionsComparisonVO;
+import com.itgrids.partyanalyst.dto.PartyResultsPercentageVO;
 import com.itgrids.partyanalyst.service.IElectionsComparisonService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -78,6 +79,17 @@ public class ElectionComparisonReportAction extends ActionSupport implements Ser
 
 	private ElectionsComparisonVO electionsComparisonVO = null;
 	private List<ElectionComparisonResultVO> electionComparisonResultVO = null;
+	private PartyResultsPercentageVO partyResultsPercentageForYear1;
+	private PartyResultsPercentageVO partyResultsPercentageForYear2;
+	public PartyResultsPercentageVO getPartyResultsPercentageForYear2() {
+		return partyResultsPercentageForYear2;
+	}
+
+	public void setPartyResultsPercentageForYear2(
+			PartyResultsPercentageVO partyResultsPercentageForYear2) {
+		this.partyResultsPercentageForYear2 = partyResultsPercentageForYear2;
+	}
+
 	private IElectionsComparisonService electionsComparisonService;
 
 	public ElectionsComparisonVO getElectionsComparisonVO() {
@@ -86,6 +98,15 @@ public class ElectionComparisonReportAction extends ActionSupport implements Ser
 
 	public void setElectionsComparisonVO(ElectionsComparisonVO electionsComparisonVO) {
 		this.electionsComparisonVO = electionsComparisonVO;
+	}
+
+	public PartyResultsPercentageVO getPartyResultsPercentageForYear1() {
+		return partyResultsPercentageForYear1;
+	}
+
+	public void setPartyResultsPercentageForYear1(
+			PartyResultsPercentageVO partyResultsPercentageForYear1) {
+		this.partyResultsPercentageForYear1 = partyResultsPercentageForYear1;
 	}
 
 	public IElectionsComparisonService getElectionsComparisonService() {
@@ -131,8 +152,11 @@ public class ElectionComparisonReportAction extends ActionSupport implements Ser
 			Boolean secondYear = electionsComparisonService.IsPartyParticipated(electionScopeId, Long.parseLong(getParty()), getElectionYears2());
 			
 			if(firstYear.equals(true) && secondYear.equals(true)){
+				
 				electionsComparisonVO = electionsComparisonService.getPartyElectionComparedResults(electionScopeId, Long.parseLong(getParty()), getElectionYears1(), getElectionYears2());
 				electionComparisonResultVO = null;
+				partyResultsPercentageForYear1 = electionsComparisonService.getPartyResultsPercentage(electionScopeId, Long.parseLong(getParty()), getElectionYears1());
+				partyResultsPercentageForYear2 = electionsComparisonService.getPartyResultsPercentage(electionScopeId, Long.parseLong(getParty()), getElectionYears2());
 				
 			}
 			else if(firstYear.equals(true) && secondYear.equals(false)){
