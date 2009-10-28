@@ -38,6 +38,8 @@
     </H3>
 </center>
 
+<IMG id="chartImg" SRC="charts/<%= request.getAttribute("chartName")%>" WIDTH="450" HEIGHT="400">
+
 <div id="partyResultsDiv" style="padding:5px;">
 	
 		<table class="searchresultsTable" border="1">
@@ -75,7 +77,7 @@
 </table><br>
 </div>
 
-<IMG id="chartImg" SRC="charts/<%= request.getAttribute("chartName")%>" WIDTH="450" HEIGHT="400">
+
 
 </body>
 </html>
