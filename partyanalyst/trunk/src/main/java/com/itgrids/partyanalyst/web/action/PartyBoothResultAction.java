@@ -57,11 +57,7 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
-	
-	
-	
-	//modified By Dp
-	
+		
 	public String execute()throws Exception{
 		
 		System.out.println("In execute party Booth results action");
@@ -78,24 +74,6 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		electionYears.add("2004");
 		setElectionYears(electionYears);
 		System.out.println("before success party Booth results action");
-		
-		/*String param = getTask();
-		try {
-			JSONObject task1 = new JSONObject(param);
-			System.out.println(task1);
-			this.setPartyName(task1.getString("partyId"));
-			this.setElectionType(task1.getString("electionType"));
-			this.setElectionYear(task1.getString("electionYear"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Party Name with getter = "+this.getPartyName());
-		System.out.println("Party Name with parameter = "+partyName);
-		constituencyVOs = partyBoothWiseResultsService.getConstituenciesForParty(new Long(this.getPartyName()),new Long(this.getElectionType()), this.getElectionYear());
-		
-		setConstituencyVOs(constituencyVOs);
-	System.out.println("Before party ************ action"+constituencyVOs.size());*/
 		return SUCCESS;	
 		
 	}
