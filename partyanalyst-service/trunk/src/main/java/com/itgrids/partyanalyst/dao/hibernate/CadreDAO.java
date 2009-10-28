@@ -67,6 +67,12 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return totalMandals;
 	}
 	@SuppressWarnings("unchecked")
+	public List findMandalsByConstituencyID(String constituencyId){
+		List totalMandals = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName from ConstituencyTehsil model " +
+				"where model.constituency.constituencyId in(" + constituencyId + ")"); 
+		return totalMandals;
+	}
+	@SuppressWarnings("unchecked")
 	public List findVillagesByTehsilID(String tehsilIDs){
 		List totalVillages = getHibernateTemplate().find("Select model.townshipId, model.townshipName from Township model " +
 					"where model.tehsil.tehsilId in(" + tehsilIDs + ")");
@@ -150,5 +156,11 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
 				"where model.registration.registrationId = ? and model.village.townshipId=?", params); 
 		return results;
+	}
+	
+	public List findMandalCadresByMandals(String mandalIDs, Long userID){
+		List result = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName, count(model.tehsil.tehsilId) from Cadre model " +
+				"where model.registration.registrationId = "+userID+" and model.tehsil.tehsilId in(" + mandalIDs + ") group by model.tehsil.tehsilId");
+		return result;
 	}
 }

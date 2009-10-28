@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyTehsilDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -19,6 +20,7 @@ import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreLevel;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ConstituencyTehsil;
 /**
  * 
  * @author Narender Akula
@@ -38,7 +40,7 @@ public class CadreManagementService {
 	private ITownshipDAO townshipDAO;
 	private IRegistrationDAO registrationDAO;
 	private IConstituencyDAO constituencyDAO;
-	
+	private IConstituencyTehsilDAO constituencyTehsilDAO;
 	
 	
 	
@@ -64,9 +66,13 @@ public class CadreManagementService {
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
 		this.registrationDAO = registrationDAO;
 	}
-	
+
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+
+	public void setConstituencyTehsilDAO(IConstituencyTehsilDAO constituencyTehsilDAO) {
+		this.constituencyTehsilDAO = constituencyTehsilDAO;
 	}
 	
 
@@ -124,6 +130,18 @@ public class CadreManagementService {
 		String accessID = userCadreInfo.getUserAccessValue();
 		//Long accessID = new Long(userAccessValue);
 		Map<String,Long> regionLevelZeroCadres = userCadreInfo.getRegionLevelZeroCadres(); 
+		if("MLA".equals(userAccessType)){ 
+			List mandals = cadreDAO.findMandalsByConstituencyID(accessID);
+			StringBuilder sbMandals = getFormatedData(mandals,userAccessMandals);
+			userCadreInfo.setUserAccessMandals(userAccessMandals);
+
+			accessID = sbMandals.substring(0, sbMandals.length()-1);
+			
+			List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID());
+			long mandalLevelZeroCadres = userCadreInfo.getUserAccessMandals().size() - cadreSizeMandalWise.size();//getZeroSize(cadreSizeZero4Mandal);
+			if(mandalLevelZeroCadres > 0)
+				regionLevelZeroCadres.put("MANDAL", mandalLevelZeroCadres);
+		}
 		 
 		if("COUNTRY".equals(userAccessType)){
 			List states = cadreDAO.findStatesByCountryID(accessID);
@@ -164,7 +182,8 @@ public class CadreManagementService {
 				regionLevelZeroCadres.put("MANDAL", mandalLevelZeroCadres);
 			
 		}if("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType)
-				 || "DISTRICT".equals(userAccessType) || "MANDAL".equals(userAccessType)){
+				 || "DISTRICT".equals(userAccessType) || "MANDAL".equals(userAccessType)
+				 || "MLA".equals(userAccessType)){
 			List villages = cadreDAO.findVillagesByTehsilID(accessID);
 			StringBuilder sbVillages = getFormatedData(villages,userAccessVillages);
 			userCadreInfo.setUserAccessVillages(userAccessVillages);
@@ -254,10 +273,16 @@ public class CadreManagementService {
 		}
 		return formattedData;	
 	}
-	/*//Narender 28th October 2009
+	//Narender 28th October 2009
 	@SuppressWarnings("unchecked")
-	public List<CadreRegionInfoVO> getConstituencyAllMandalsCadres(Long districtID, Long userID){123
-		List mandalCadres = cadreDAO.findMandalCadresByDist(districtID, userID);
+	public List<CadreRegionInfoVO> getConstituencyAllMandalsCadres(Long constituencyID, Long userID){
+		List<ConstituencyTehsil> constituencyTehsils = constituencyTehsilDAO.getTehsilsByConstituency(constituencyID);
+		StringBuilder mandalIDs = new StringBuilder();
+		for(ConstituencyTehsil constituencyTehsil: constituencyTehsils){
+			mandalIDs.append(",").append(constituencyTehsil.getTehsil().getTehsilId());
+		}
+		String strMandalIDs = mandalIDs.toString().substring(1);
+		List mandalCadres = cadreDAO.findMandalCadresByMandals(strMandalIDs, userID);
 		int size = mandalCadres.size();
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		for(int i=0; i<size;i++){
@@ -269,7 +294,7 @@ public class CadreManagementService {
 			formattedData.add(regionInfoVo);
 		}
 		return formattedData;	
-	}*/
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getMandalAllVillagesCadres(Long mandalID, Long userID){
