@@ -29,6 +29,7 @@ import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.Constants;
 import com.itgrids.partyanalyst.helper.JasperProducer;
 import com.itgrids.partyanalyst.service.IPartyService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -248,7 +249,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			district = request.getParameter("district");
 		}
 		
-		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(10), new BigDecimal(2), alliances);
+		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(Constants.MAJAR_BRAND), new BigDecimal(Constants.MINOR_BRAND), alliances);
 		SortedMap<String, Integer> positions = reportVO.getPositionDistribution();
 		
 		session = request.getSession();
