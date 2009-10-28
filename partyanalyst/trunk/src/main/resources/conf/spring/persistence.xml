@@ -48,6 +48,7 @@
 				<value>com.itgrids.partyanalyst.model.ElectionAlliance</value>
 				<value>com.itgrids.partyanalyst.model.Group</value>
 				<value>com.itgrids.partyanalyst.model.AllianceGroup</value>
+				<value>com.itgrids.partyanalyst.model.ConstituencyTehsil</value>
 		</list>
 		</property>
 	</bean>

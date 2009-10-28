@@ -117,6 +117,7 @@
 		<property name="townshipDAO" ref="townshipDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="constituencyTehsilDAO" ref="constituencyTehsilDAO" />
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >		

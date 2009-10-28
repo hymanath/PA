@@ -112,6 +112,11 @@
 	<bean id="allianceGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.AllianceGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="constituencyTehsilDAO" class="com.itgrids.partyanalyst.dao.hibernate.ConstituencyTehsilDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>
 
 

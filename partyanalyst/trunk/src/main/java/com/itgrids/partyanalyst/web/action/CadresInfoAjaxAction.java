@@ -103,31 +103,14 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			
 			this.setCadreRegionInfo(cadreRegionInfo);
 		}
-		/*else if(region.equalsIgnoreCase("Constituency"))
+		else if(region.equalsIgnoreCase("MLA"))
 		{
 			System.out.println("Inside if block level = "+region);
-			
-			CadreRegionInfoVO cinfo1=new CadreRegionInfoVO();
-			cinfo1.setRegion("Mandal");
-			cinfo1.setRegionId(new Long(1));
-			cinfo1.setCadreCount(new Long(1));
-			
-			CadreRegionInfoVO cinfo2=new CadreRegionInfoVO();
-			cinfo2.setRegion("Mandal");
-			cinfo2.setRegionId(new Long(2));
-			cinfo2.setCadreCount(new Long(1));
-			
-			CadreRegionInfoVO cinfo3=new CadreRegionInfoVO();
-			cinfo3.setRegion("Mandal");
-			cinfo3.setRegionId(new Long(1));
-			cinfo3.setCadreCount(new Long(1));	
-			
-			cadreRegionInfo.add(cinfo1);
-			cadreRegionInfo.add(cinfo2);
-			cadreRegionInfo.add(cinfo3);
+
+			cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(new Long(regionId), userID);
 			
 			this.setCadreRegionInfo(cadreRegionInfo);
-		}*/
+		}
 		else if(region.equalsIgnoreCase("Mandal"))
 		{
 			System.out.println("Inside if block level = "+region);
