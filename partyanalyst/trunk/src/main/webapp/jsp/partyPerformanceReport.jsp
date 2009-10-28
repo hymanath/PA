@@ -224,15 +224,28 @@ function setOpacity(obj, opacity)
 				<display:table class="partyPerformanceReportTable" name="${constPositions.constituencyPositionDetails}" id="row" style="margin-top:0px;"> 
 							<display:column title="Constiuency Name" property="constiuencyName" />
 							<display:column title="Candidate Name" property="candidateName" />
-							<display:column title="% of Votes" property="percentageOfVotes" />
-							<display:column title="% of Votes Polled" property="prevElectionPercentage" />
-							<display:column title="Previous Election %" property="prevElectionPercentage" />
+							<display:column title="% of Votes Earned" property="percentageOfVotes" />
+							<c:if test="${constPositions.type == 'POSITIONS_WON_MINOR_BAND' ||
+							              constPositions.type == 'POSITIONS_WON_MAJOR_BAND' ||
+							              constPositions.type == 'POSITIONS_LOST_MINOR_BAND' ||
+							              constPositions.type == 'POSITIONS_LOST_MAJOR_BAND' }">
 							<display:column title="Oppositin Party % of Votes" property = "oppositePartyPercentageOfVotes" />
 							<display:column title="Opposition Party" property="oppositeParty" />
 							<display:column title="Opposition Party Candidate" property="oppositePartyCandidate" />
-							<display:column title="Previous Election Candidate Name" property = "prevElectionCandidateName" />
-							<display:column title="Previous Election % of Votes" property="prevElectionVotes" />
+							</c:if>
+							<c:if test="${constPositions.type == 'POSITIONS_LOST_BY_DROPPING_VOTES'}">
+							<display:column title="% of Votes Polled" property="prevElectionPercentage" />
+							</c:if>
+							<c:if test="${constPositions.type == 'POSITIONS_WON_WITH_POSITIVE_SWING' ||
+							              constPositions.type == 'POSITIONS_LOST_WITH_POSITIVE_SWING' ||
+							              constPositions.type == 'POSITIONS_WON_WITH_NEGATIVE_SWING' ||
+							              constPositions.type == 'POSITIONS_LOST_WITH_NEGATIVE_SWING' ||
+							              constPositions.type == 'POSITIONS_LOST_BY_DROPPING_VOTES'}">
+							<display:column title="Previous Election % of Votes Earned" property="prevElectionPercentage" />
+							<display:column title="Previous Election Candidate" property = "prevElectionCandidateName" />
 							<display:column title="Previous Election % of Votes Polled" property="prevElectionPercentageOfVotesPolled" />
+							</c:if>
+						
 				</display:table>	
 </center>
 <!--<a href="#" onclick="closeSection('${constPositions.type}');">close</a><BR>-->
