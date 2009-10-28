@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ElectionComparisonResultVO;
 import com.itgrids.partyanalyst.dto.ElectionsComparisonVO;
+import com.itgrids.partyanalyst.dto.PartyResultsPercentageVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IElectionsComparisonService {
@@ -28,5 +29,7 @@ public interface IElectionsComparisonService {
     public ElectionsComparisonVO getPartyElectionComparedResults(Long electionScopeId,Long partyId,String firstYear,String secondYear);
     
     public Long getElectionScopeId(Long electionTypeId,Long stateId);
+    
+    public PartyResultsPercentageVO getPartyResultsPercentage(Long electionScopeId,Long partyId,String year);
     
 }
