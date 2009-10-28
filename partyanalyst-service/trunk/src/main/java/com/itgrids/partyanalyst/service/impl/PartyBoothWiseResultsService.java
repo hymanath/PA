@@ -74,6 +74,9 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			partyBoothPerformanceVO.setConstituencyName(nomination.getConstituencyElection().getConstituency().getName());
 			partyBoothPerformanceVO.setElectionType(nomination.getConstituencyElection().getElection().getElectionScope().getElectionType().getElectionType());
 			partyBoothPerformanceVO.setElectionYear(nomination.getConstituencyElection().getElection().getElectionYear());
+			partyBoothPerformanceVO.setVotesGained(nomination.getCandidateResult().getVotesEarned().intValue());
+			partyBoothPerformanceVO.setTotalValidVotes(nomination.getConstituencyElection().getConstituencyElectionResult().getValidVotes().intValue());
+			partyBoothPerformanceVO.setPercentage(nomination.getCandidateResult().getVotesPercengate());
 			List<BoothResult> boothResults = new ArrayList<BoothResult>(nomination.getBoothResults());
 			System.out.println("In getBoothWiseResultsForParty::"+boothResults.size());
 			for(BoothResult boothResult:boothResults){
