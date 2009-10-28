@@ -114,6 +114,32 @@ public class PartyResultScopeAction {
 			}			
 			setNamesList(selectOptionList);
 		}
+		else if (jObj.getString("reportLevel").equalsIgnoreCase("MLA") && jObj.getString("selected")!="null")
+		{
+			Long countryID = 1L;// India
+			Long stateID = 1L;//AP
+			Long typeID = 2L;//Parliamentry
+			List<SelectOptionVO> selectOptionList = constituencySearchService.getConstituencyNamesByElectionScope(countryID,stateID,typeID);
+			
+			for(SelectOptionVO selectOptionVO:selectOptionList)
+			{
+				System.out.println(selectOptionVO.getId()+ " " + selectOptionVO.getName());
+			}			
+			setNamesList(selectOptionList);
+		}
+		else if (jObj.getString("reportLevel").equalsIgnoreCase("MP") && jObj.getString("selected")!="null")
+		{
+			Long countryID = 1L;// India
+			Long stateID = 1L;//AP
+			Long typeID = 1L;//Assembly
+			List<SelectOptionVO> selectOptionList = constituencySearchService.getConstituencyNamesByElectionScope(countryID,stateID,typeID);
+			
+			for(SelectOptionVO selectOptionVO:selectOptionList)
+			{
+				System.out.println(selectOptionVO.getId()+ " " + selectOptionVO.getName());
+			}			
+			setNamesList(selectOptionList);
+		}
 		
 		System.out.println("param = "+param);
         
