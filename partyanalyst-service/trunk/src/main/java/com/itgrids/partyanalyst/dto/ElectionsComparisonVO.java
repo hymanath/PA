@@ -14,8 +14,30 @@ public class ElectionsComparisonVO {
 	private String firstYear;
 	private String secondYear;
 	private String partyName;
+	private int votesGainedCount;
+	private int votesLostCount;
+	private int count;
 	private List<ElectionComparisonResultVO> votesGained;
 	private List<ElectionComparisonResultVO> votesLost;
+	public int getVotesGainedCount() {
+		return votesGainedCount;
+	}
+	public void setVotesGainedCount(int votesGainedCount) {
+		this.votesGainedCount = votesGainedCount;
+	}
+	public int getVotesLostCount() {
+		return votesLostCount;
+	}
+	public void setVotesLostCount(int votesLostCount) {
+		this.votesLostCount = votesLostCount;
+	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	private List<ElectionComparisonResultVO> constituenciesNotConsidered;
 	
 	//getters and setters
 	public String getFirstYear() {
@@ -48,5 +70,12 @@ public class ElectionsComparisonVO {
 	}
 	public void setVotesLost(List<ElectionComparisonResultVO> votesLost) {
 		this.votesLost = votesLost;
+	}
+	public List<ElectionComparisonResultVO> getConstituenciesNotConsidered() {
+		return constituenciesNotConsidered;
+	}
+	public void setConstituenciesNotConsidered(
+			List<ElectionComparisonResultVO> constituenciesNotConsidered) {
+		this.constituenciesNotConsidered = constituenciesNotConsidered;
 	}
 }
