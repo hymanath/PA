@@ -31,7 +31,7 @@ public class AllianceGroup extends BaseModel implements Serializable {
 	}
 
 	public AllianceGroup(Long alliance_group_id, Party party,
-			ElectionAlliance electionAlliance) {
+			Group group) {
 		super();
 		this.allianceGroupId = alliance_group_id;
 		this.party = party;
