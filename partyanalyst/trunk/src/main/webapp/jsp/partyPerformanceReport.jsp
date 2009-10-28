@@ -135,113 +135,80 @@ function setOpacity(obj, opacity)
 <br/>
 <div>
 <c:set var="constituencyPositionsList" value="stateData.constituencyPositions" scope="session" />
-<c:forEach var="margins" items="${stateData.constituencyPositions}" >
-	<c:choose>
-		<c:when test="${margins.type=='POSITIONS_WON_MINOR_BAND'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Winning Positions with lower % margin: <c:out value="${margins.positionsWon}" />
-				<c:if test="${margins.positionsWon > 0}" >
-					<span id="${margins.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${margins.type}');">Display details</span>	
-				</c:if>
-			</div>
-		</c:when>
-		<c:when test="${margins.type=='POSITIONS_WON_MAJOR_BAND'}">
-			<div style="padding: 5px 5px 10px 0px;font-family: Trebuchet MS;font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Winning Positions with highest % margin: <c:out value="${margins.positionsWon}" /> 
-				<c:if test="${margins.positionsWon > 0}" >
-					<span id="${margins.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${margins.type}');">Display details</span>
-				</c:if>
-			</div>
-		</c:when>		
-		<c:when test="${margins.type=='POSITIONS_LOST_MINOR_BAND'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Losing Positions with lower % margin: <c:out value="${margins.positionsWon}" />
-				<c:if test="${margins.positionsWon > 0}" >
-					<span id="${margins.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${margins.type}');">Display details</span>
-				</c:if>
-			</div>
-		</c:when>
-		<c:when test="${margins.type=='POSITIONS_LOST_MAJOR_BAND'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Losing Positions with highest % margin: <c:out value="${margins.positionsWon}" />
-				<c:if test="${margins.positionsWon > 0}" >
-					<span id="${margins.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${margins.type}');">Display details</span>
-				</c:if>
-			</div>
-		</c:when>	
-	</c:choose>
-<div id="${margins.type}" style="display:none">
-<center>
-				<display:table class="partyPerformanceReportTable" name="${margins.constituencyPositionDetails}" id="row" style="margin-top:0px;"> 
-							<display:column title="Constiuency Name" property="constiuencyName" />
-							<display:column title="Candidate Name" property="candidateName" />
-							<display:column title="% of Votes" property="percentageOfVotes" />
-							<display:column title="Oppositin Party % of Votes" property = "oppositePartyPercentageOfVotes" />
-							<display:column title="Opposition Party" property="oppositeParty" />
-							<display:column title="Opposition Party Candidate" property="oppositePartyCandidate" />
-				</display:table>	
-</center>
-</div>
-</c:forEach>
-<c:forEach var="swing" items="${stateData.constituencyPositions}" >
-	<c:choose>
-		<c:when test="${swing.type=='POSITIONS_WON_WITH_POSITIVE_SWING'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Winning Positions with Positive Swing: <c:out value="${swing.positionsWon}" />
-				<c:if test="${swing.positionsWon > 0}" >
-					<span id="${swing.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${swing.type}');">Display details</span>
-				</c:if>
-			</div>
-		</c:when>		
-		<c:when test="${swing.type=='POSITIONS_LOST_WITH_POSITIVE_SWING'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Loosing Positions with Positive Swing: <c:out value="${swing.positionsWon}" />
-				<c:if test="${swing.positionsWon > 0}" >
-					<span id="${swing.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${swing.type}');">Display details</span>
-				</c:if>
-			</div>
-		</c:when>		
-		<c:when test="${swing.type=='POSITIONS_WON_WITH_NEGATIVE_SWING'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Winning Positions with Negative Swing: <c:out value="${swing.positionsWon}" />
-				<c:if test="${swing.positionsWon > 0}" >
-					<span id="${swing.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${swing.type}');">Display details</span>
-				</c:if>
-			</div>
-		</c:when>
-		<c:when test="${swing.type=='POSITIONS_LOST_WITH_NEGATIVE_SWING'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Loosing Positions with Negative Swing: <c:out value="${swing.positionsWon}" /> 
-				<c:if test="${swing.positionsWon > 0}" >
-					<span id="${swing.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${swing.type}');">Display details</span>
-				</c:if>
-			</div>
-		</c:when>	
-	</c:choose>
-<div id="${swing.type}" style="display:none">
-<center>
-				<display:table class="partyPerformanceReportTable" name="${swing.constituencyPositionDetails}" id="row" style="margin-top:0px;"> 
-							<display:column title="Constiuency Name" property="constiuencyName" />
-							<display:column title="Candidate Name" property="candidateName" />
-							<display:column title="% of Votes" property="percentageOfVotes" />
-							<display:column title="Previous Election %" property="prevElectionPercentage" />
-							<display:column title="Oppositin Party % of Votes" property = "oppositePartyPercentageOfVotes" />
-							<display:column title="Opposition Party" property="oppositeParty" />
-							<display:column title="Opposition Party Candidate" property="oppositePartyCandidate" />
-				</display:table>	
-</center>
-</div>
-</c:forEach>
 <c:forEach var="constPositions" items="${stateData.constituencyPositions}" >
 	<c:choose>
+		<c:when test="${constPositions.type=='POSITIONS_WON_MINOR_BAND'}">
+			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
+				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
+				Winning Positions with lower % margin: <c:out value="${constPositions.positionsWon}" />
+				<c:if test="${constPositions.positionsWon > 0}" >
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>	
+				</c:if>
+			</div>
+		</c:when>
+		<c:when test="${constPositions.type=='POSITIONS_WON_MAJOR_BAND'}">
+			<div style="padding: 5px 5px 10px 0px;font-family: Trebuchet MS;font-weight: bold; font-size: 14px;">
+				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
+				Winning Positions with highest % margin: <c:out value="${constPositions.positionsWon}" /> 
+				<c:if test="${constPositions.positionsWon > 0}" >
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+				</c:if>
+			</div>
+		</c:when>		
+		<c:when test="${constPositions.type=='POSITIONS_LOST_MINOR_BAND'}">
+			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
+				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
+				Losing Positions with lower % margin: <c:out value="${constPositions.positionsWon}" />
+				<c:if test="${constPositions.positionsWon > 0}" >
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+				</c:if>
+			</div>
+		</c:when>
+		<c:when test="${constPositions.type=='POSITIONS_LOST_MAJOR_BAND'}">
+			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
+				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
+				Losing Positions with highest % margin: <c:out value="${constPositions.positionsWon}" />
+				<c:if test="${constPositions.positionsWon > 0}" >
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+				</c:if>
+			</div>
+		</c:when>	
+		<c:when test="${constPositions.type=='POSITIONS_WON_WITH_POSITIVE_SWING'}">
+			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
+				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
+				Winning Positions with Positive Swing: <c:out value="${constPositions.positionsWon}" />
+				<c:if test="${constPositions.positionsWon > 0}" >
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+				</c:if>
+			</div>
+		</c:when>		
+		<c:when test="${constPositions.type=='POSITIONS_LOST_WITH_POSITIVE_SWING'}">
+			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
+				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
+				Loosing Positions with Positive Swing: <c:out value="${constPositions.positionsWon}" />
+				<c:if test="${constPositions.positionsWon > 0}" >
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+				</c:if>
+			</div>
+		</c:when>		
+		<c:when test="${constPositions.type=='POSITIONS_WON_WITH_NEGATIVE_SWING'}">
+			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
+				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
+				Winning Positions with Negative Swing: <c:out value="${constPositions.positionsWon}" />
+				<c:if test="${constPositions.positionsWon > 0}" >
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+				</c:if>
+			</div>
+		</c:when>
+		<c:when test="${constPositions.type=='POSITIONS_LOST_WITH_NEGATIVE_SWING'}">
+			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
+				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
+				Loosing Positions with Negative Swing: <c:out value="${constPositions.positionsWon}" /> 
+				<c:if test="${constPositions.positionsWon > 0}" >
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+				</c:if>
+			</div>
+		</c:when>	
 		<c:when test="${constPositions.type=='POSITIONS_LOST_BY_DROPPING_VOTES'}">
 			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
@@ -251,7 +218,7 @@ function setOpacity(obj, opacity)
 				</c:if>
 			</div>
 		</c:when>
-	</c:choose>
+</c:choose>
 <div id="${constPositions.type}" style="display:none">
 <center>
 				<display:table class="partyPerformanceReportTable" name="${constPositions.constituencyPositionDetails}" id="row" style="margin-top:0px;"> 
@@ -259,6 +226,10 @@ function setOpacity(obj, opacity)
 							<display:column title="Candidate Name" property="candidateName" />
 							<display:column title="% of Votes" property="percentageOfVotes" />
 							<display:column title="% of Votes Polled" property="prevElectionPercentage" />
+							<display:column title="Previous Election %" property="prevElectionPercentage" />
+							<display:column title="Oppositin Party % of Votes" property = "oppositePartyPercentageOfVotes" />
+							<display:column title="Opposition Party" property="oppositeParty" />
+							<display:column title="Opposition Party Candidate" property="oppositePartyCandidate" />
 							<display:column title="Previous Election Candidate Name" property = "prevElectionCandidateName" />
 							<display:column title="Previous Election % of Votes" property="prevElectionVotes" />
 							<display:column title="Previous Election % of Votes Polled" property="prevElectionPercentageOfVotesPolled" />
@@ -302,6 +273,7 @@ function setOpacity(obj, opacity)
 <script type="text/javascript">
 	fadeIn("chartImg",10);
 </script>
+</div>
 </body>
 </html>
 
