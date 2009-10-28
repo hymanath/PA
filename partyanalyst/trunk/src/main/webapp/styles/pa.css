@@ -111,6 +111,7 @@ div#contenttable a:hover {
 	padding-top:10px;
 	line-height:16px;
 	color:#666666;
+	text-align:justify;
 }
 
 .bodytext1{
@@ -120,6 +121,7 @@ div#contenttable a:hover {
 	padding-right:5px;
 	line-height:16px;
 	color:#666666;
+	text-align:justify;
 }
 
 .more{
