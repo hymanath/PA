@@ -460,6 +460,7 @@ public class PartyService implements IPartyService {
 						presentValueObject.setPrevElectionPercentage(previousValueObject.getPercentageOfVotes().setScale (2,BigDecimal.ROUND_HALF_UP));
 						presentValueObject.setPrevElectionPercentageOfVotesPolled(previousValueObject.getPercentageOfVotesPolled());
 						presentValueObject.setPrevElectionVotes(previousValueObject.getPresentElectionVotes());
+						presentValueObject.setPrevElectionCandidateName(previousValueObject.getCandidateName());
 						listOfVotesByDroppingVotes.add(presentValueObject);
 					}
 					break;
