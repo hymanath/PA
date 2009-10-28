@@ -33,8 +33,8 @@
 	<script type="text/javascript">
 			function showTree()
 			{
-				
-				var myLabel='${userCadresInfoVO.userAccessType}-${userCadresInfoVO.totalCadres}';
+				//'${userCadresInfoVO.userAccessType}'
+				var myLabel='${userCadresInfoVO.userAccessDisplayValue}-${userCadresInfoVO.totalCadres}';
 				
 				var tree;
 				var myobj;
@@ -43,7 +43,7 @@
 				tree.setDynamicLoad(loadNodeData);				
 				var rootNode = tree.getRoot(); 				
 
-				myobj = { label: myLabel, id:'${userCadresInfoVO.userAccessValue}' } ; 
+				myobj = { label: myLabel, labelAccessValue: '${userCadresInfoVO.userAccessType}',id:'${userCadresInfoVO.userAccessValue}' } ; 
 				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);
 				
 
@@ -57,7 +57,7 @@
 				var index=nodeLabel.indexOf("-");
 				var subString = nodeLabel.substring(0,index);				
 				
-				var cadreUrl = "<%=request.getContextPath()%>/cadresInfoAjaxAction.action?cadreRegion="+subString+"&cadreId="+node.data.id; 
+				var cadreUrl = "<%=request.getContextPath()%>/cadresInfoAjaxAction.action?cadreRegion="+node.data.labelAccessValue+"&cadreId="+node.data.id; 
 				var callback = {			
  		               success : function( o )
 									{
@@ -75,7 +75,7 @@
 											YAHOO.util.Event.addListener(anchortag, "click", function (evt)
 											{ 												
 												href = this.getAttribute("href"); 
-												window.open(href);												
+												window.location.assign(href);												
 											})
 										}
 										catch (e)
@@ -133,7 +133,8 @@
 				for (var i in cadreData)
 				{ 
 					var myobj = { 
-									label	: cadreData[i].region+"-"+cadreData[i].cadreCount,
+									label	: cadreData[i].regionName+"-"+cadreData[i].cadreCount,
+									labelAccessValue : cadreData[i].region,
 									id		: cadreData[i].regionId 
 								} ;
 					
