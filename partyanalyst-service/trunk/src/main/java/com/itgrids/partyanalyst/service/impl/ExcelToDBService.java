@@ -298,23 +298,29 @@ private Party checkAndInsertParty(List<Party> partis,String partyName){
 
 private ElectionScope checkAndInsertElectionScope(ElectionType electionType,Country country,State state,String eleYear) throws CsvException{
 	ElectionScope electionScope=null;
-	if(electionType.getElectionTypeId().longValue()==1){
-		electionScope= electionScopeDAO.findByElectionTypeCountry(electionType, country);
-		if(electionScope==null){
-			electionScope= new ElectionScope();
-			electionScope.setElectionType(electionType);
-			electionScope.setCountry(country);
-			electionScope=electionScopeDAO.save(electionScope);
+	try{
+		if(electionType.getElectionTypeId().longValue()==1){
+			electionScope= electionScopeDAO.findByElectionTypeCountry(electionType, country);
+			if(electionScope==null){
+				electionScope= new ElectionScope();
+				electionScope.setElectionType(electionType);
+				electionScope.setCountry(country);
+				electionScope.setState(state);
+				electionScope=electionScopeDAO.save(electionScope);
+			}
+		}else{
+			electionScope= electionScopeDAO.findByElectionTypeCountryState(electionType, country, state);
+			if(electionScope==null){
+				electionScope= new ElectionScope();
+				electionScope.setElectionType(electionType);
+				electionScope.setCountry(country);
+				electionScope.setState(state);
+				electionScope=electionScopeDAO.save(electionScope);
+			}
 		}
-	}else{
-		electionScope= electionScopeDAO.findByElectionTypeCountryState(electionType, country, state);
-		if(electionScope==null){
-			electionScope= new ElectionScope();
-			electionScope.setElectionType(electionType);
-			electionScope.setCountry(country);
-			electionScope.setState(state);
-			electionScope=electionScopeDAO.save(electionScope);
-		}
+
+	}catch(Exception excep){
+		System.out.println("Exception == "+excep.getMessage());
 	}
 	return electionScope;
 }
