@@ -204,7 +204,8 @@
 														this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">
 					<option>Select Level</option>		
 					<option  value='2'>STATE</option>	
-					<option  value='3'>DISTRICT</option>	
+					<option  value='3'>DISTRICT</option>
+					<option  value='4'>CONSTITUENCY</option>	
 					<option  value='5'>MANDAL</option>					
 				</select> <input type='hidden' name='cadreLevelValue' id='cadreLevelValue'>
 			</td>
