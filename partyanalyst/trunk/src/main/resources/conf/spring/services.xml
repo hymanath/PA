@@ -31,6 +31,7 @@
 	</bean>
 	<bean name="constituencySearchService" class="com.itgrids.partyanalyst.service.impl.ConstituencySearchService" >
 		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="electionScopeDAO" ref="electionScopeDAO" />
 	</bean>
 	<bean name="candidateSearchService" class="com.itgrids.partyanalyst.service.impl.CandidateSearchService" >
 		<property name="candidateDAO" ref="candidateDAO" />		
