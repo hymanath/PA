@@ -34,14 +34,7 @@ table.CandidateElectionResultsTable td {
 <script>
 	function displayYearList()
 	{
-		var electionTypeElmt=document.getElementById("electionTypeList");
-		var electionTypevalue=electionTypeElmt.options[electionTypeElmt.selectedIndex].value;
-
-		var statesListElmt=document.getElementById("statesList");
-		var statesListvalue=statesListElmt.options[statesListElmt.selectedIndex].value;
-
-		var partyListElmt=document.getElementById("partyList");
-		var partyListvalue=partyListElmt.options[partyListElmt.selectedIndex].value;
+		
 
 		if(electionTypevalue==0 || statesListvalue==0 || partyListvalue==0)
 			return;
@@ -103,10 +96,35 @@ table.CandidateElectionResultsTable td {
 		str+='</td>';
 		rowElmt.innerHTML=str;
 	}
+
+	function validateInput()
+	{
+       var electionTypeElmt=document.getElementById("electionTypeList");
+		var electionTypevalue=electionTypeElmt.options[electionTypeElmt.selectedIndex].value;
+
+		var statesListElmt=document.getElementById("statesList");
+		var statesListvalue=statesListElmt.options[statesListElmt.selectedIndex].value;
+
+		var partyListElmt=document.getElementById("partyList");
+		var partyListvalue=partyListElmt.options[partyListElmt.selectedIndex].value;
+
+		var years1ListElmt=document.getElementById("yearsList1");
+		var years1Listvalue=years1ListElmt.options[years1ListElmt.selectedIndex].value;
+
+		var years2ListElmt=document.getElementById("yearsList2");
+		var years2Listvalue=years2ListElmt.options[years2ListElmt.selectedIndex].value;
+
+		if(electionTypevalue == 0 || statesListvalue == 0 || partyListvalue == 0 || years1Listvalue == 0 || years2Listvalue == 0){
+			alert("Invalid Selection");
+			return false;
+		}
+		else
+			return true;
+	}
 </script>
 </head>
 <body>
-<s:form action="electionComparisonReportAction.action">
+<s:form action="electionComparisonReportAction.action" onsubmit="return validateInput()">
 
 	<table class="CandidateElectionResultsTable" width="300px" border="1">
 	<tr>
