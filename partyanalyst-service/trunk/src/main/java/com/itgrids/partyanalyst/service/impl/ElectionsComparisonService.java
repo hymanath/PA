@@ -7,8 +7,12 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.velocity.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -19,10 +23,12 @@ import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.ElectionComparisonResultVO;
 import com.itgrids.partyanalyst.dto.ElectionsComparisonVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.PartyResultsPercentageVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionScope;
@@ -167,7 +173,7 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 	
 	   List<ElectionComparisonResultVO> electionComparisonResultVO = new ArrayList<ElectionComparisonResultVO>();
 	
-	   List<CandidateResult> candidateResults = candidateResultDAO.findCandidateResults(electionScopeId, partyId, year);
+	   List<CandidateResult> candidateResults = getCandidateElectionResults(electionScopeId, partyId, year);
 	
 	   if(candidateResults != null){
 		   List<Long> districtIds = getDistrictIds(candidateResults);
@@ -181,6 +187,15 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 	
    return null;	
    }
+    
+    public List<CandidateResult> getCandidateElectionResults(Long electionScopeId,Long partyId,String year){
+    	
+    	List<CandidateResult> candidateResults = candidateResultDAO.findCandidateResults(electionScopeId, partyId, year);
+    	if(candidateResults != null)
+    		return candidateResults;
+    	else 
+    		return null;
+    }
 
    public List<Long> getDistrictIds(List<CandidateResult> candidateResults){
 	
@@ -255,6 +270,7 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 	List<ElectionComparisonResultVO> resultForSecondYear = null;
 	List<ElectionComparisonResultVO> resultsForVotesGained = new ArrayList<ElectionComparisonResultVO>();
 	List<ElectionComparisonResultVO> resultsForVotesLost = new ArrayList<ElectionComparisonResultVO>();
+	List<ElectionComparisonResultVO> constituenciesNotConsidered = new ArrayList<ElectionComparisonResultVO>();
 	
 	ElectionsComparisonVO electionsComparisionVO = new ElectionsComparisonVO();
 	
@@ -263,25 +279,25 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 	
 	 if(resultForFirstYear != null && resultForSecondYear != null){
 		 
+		 int votesGainedCount = 0;
+		 int votesLostCount = 0;
+		 int count = 0;
 		 String partyName = null;
 		 electionsComparisionVO.setFirstYear(firstYear);
 		 electionsComparisionVO.setSecondYear(secondYear);
+		 
 		 for(ElectionComparisonResultVO resultFirst:resultForFirstYear){
 			 
+			  
 			  for(ElectionComparisonResultVO resultSecond:resultForSecondYear){
 				 if(resultSecond.getDistrictId().equals(resultFirst.getDistrictId())){
+					 
 					 List<PartyElectionResultsVO> partyElectionResultsForFirst = new ArrayList<PartyElectionResultsVO>();
 					 List<PartyElectionResultsVO> partyElectionResultsForSecond = new ArrayList<PartyElectionResultsVO>();
-					 ElectionComparisonResultVO resultVO = new ElectionComparisonResultVO();
-					 ElectionComparisonResultVO resultVOforSecond = new ElectionComparisonResultVO();
-					 resultVO.setDistrictId(resultSecond.getDistrictId());
-					 resultVO.setDistrictName(resultSecond.getDistrictName());
-					 resultVO.setStateId(resultSecond.getStateId());
-					 resultVOforSecond.setDistrictId(resultFirst.getDistrictId());
-					 resultVOforSecond.setDistrictName(resultFirst.getDistrictName());
-					 resultVOforSecond.setStateId(resultFirst.getStateId());
+					 List<PartyElectionResultsVO> partyElectionResultsNotConsidered = new ArrayList<PartyElectionResultsVO>();
 					 
 					 for(PartyElectionResultsVO firstPartyResults:resultFirst.getPartyElectionResultsVO()){
+						 Boolean flag = false;
 						 for(PartyElectionResultsVO secondPartyResults:resultSecond.getPartyElectionResultsVO()){
 							 if(firstPartyResults.getConstituencyId().equals(secondPartyResults.getConstituencyId()) && firstPartyResults.getVotesEarned() < secondPartyResults.getVotesEarned()){
 								 
@@ -290,6 +306,8 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 							    Double votesDiff = partyResultVO.getVotesEarnedBySecond() - partyResultVO.getVotesEarned();
 							    partyResultVO.setVotesDiff(votesDiff);
 							    partyElectionResultsForFirst.add(partyResultVO);
+							    flag = true;
+							    votesGainedCount++;
 							    break;
 							 }
 							 else if(firstPartyResults.getConstituencyId().equals(secondPartyResults.getConstituencyId()) && firstPartyResults.getVotesEarned() >= secondPartyResults.getVotesEarned()){
@@ -299,23 +317,57 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 								 Double votesDiff = partyResultVO.getVotesEarned() - partyResultVO.getVotesEarnedBySecond();
 								 partyResultVO.setVotesDiff(votesDiff);
 								 partyElectionResultsForSecond.add(partyResultVO);
+								 flag = true;
+								 votesLostCount++;
 								 break;
 							 }
+												 
+						 }
+						 if(flag == false){
+							 PartyElectionResultsVO partyResultVO = new PartyElectionResultsVO();
+							 partyResultVO = getResults(firstPartyResults);
+							 partyElectionResultsNotConsidered.add(partyResultVO);
+							 flag = true;
+							 count++;
 						 }
 						 partyName = firstPartyResults.getPartyName();
 	    				 electionsComparisionVO.setPartyName(partyName);
 					 }
-					 resultVO.setPartyElectionResultsVO(partyElectionResultsForFirst);
-					 resultsForVotesGained.add(resultVO);
-					 	 
-					 resultVOforSecond.setPartyElectionResultsVO(partyElectionResultsForSecond);
-					 resultsForVotesLost.add(resultVOforSecond);
+					 
+					 if(votesGainedCount>0 || votesLostCount>0){
+						 ElectionComparisonResultVO resultVO = new ElectionComparisonResultVO();
+						 ElectionComparisonResultVO resultVOforSecond = new ElectionComparisonResultVO();
+						 resultVO.setDistrictId(resultSecond.getDistrictId());
+						 resultVO.setDistrictName(resultSecond.getDistrictName());
+						 resultVO.setStateId(resultSecond.getStateId());
+						 resultVOforSecond.setDistrictId(resultFirst.getDistrictId());
+						 resultVOforSecond.setDistrictName(resultFirst.getDistrictName());
+						 resultVOforSecond.setStateId(resultFirst.getStateId());
+						 
+						 resultVO.setPartyElectionResultsVO(partyElectionResultsForFirst);
+						 resultsForVotesGained.add(resultVO);
+						 	 
+						 resultVOforSecond.setPartyElectionResultsVO(partyElectionResultsForSecond);
+						 resultsForVotesLost.add(resultVOforSecond);
+					 }
+					 
+					 ElectionComparisonResultVO resultVOforConstituenciesNotConsi = new ElectionComparisonResultVO();
+					 resultVOforConstituenciesNotConsi.setDistrictId(resultFirst.getDistrictId());
+					 resultVOforConstituenciesNotConsi.setDistrictName(resultFirst.getDistrictName());
+					 resultVOforConstituenciesNotConsi.setStateId(resultFirst.getStateId());
+					 resultVOforConstituenciesNotConsi.setPartyElectionResultsVO(partyElectionResultsNotConsidered);
+					 constituenciesNotConsidered.add(resultVOforConstituenciesNotConsi);
 				 break;
 				 }
 			}
 		 }
+		 electionsComparisionVO.setVotesGainedCount(votesGainedCount);
+		 electionsComparisionVO.setVotesLostCount(votesLostCount);
+		 electionsComparisionVO.setCount(count);
 		 electionsComparisionVO.setVotesGained(resultsForVotesGained);
 		 electionsComparisionVO.setVotesLost(resultsForVotesLost);
+		 electionsComparisionVO.setConstituenciesNotConsidered(constituenciesNotConsidered);
+		 
 	 return electionsComparisionVO;
 	 }
 	
@@ -338,6 +390,65 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 	partyResultVO.setVotesPercentageBySecond(secondPartyResults.getVotesPercentage());
 	
    return partyResultVO;
+   }
+   
+   public PartyElectionResultsVO getResults(PartyElectionResultsVO firstPartyResults){
+
+		PartyElectionResultsVO partyResultVO = new PartyElectionResultsVO();
+		partyResultVO.setCandidateId(firstPartyResults.getCandidateId());
+		partyResultVO.setCandidateName(firstPartyResults.getCandidateName());
+		partyResultVO.setConstituencyId(firstPartyResults.getConstituencyId());
+		partyResultVO.setConstituencyName(firstPartyResults.getConstituencyName());
+		partyResultVO.setRank(firstPartyResults.getRank());
+		partyResultVO.setVotesEarned(firstPartyResults.getVotesEarned());
+		partyResultVO.setVotesPercentage(firstPartyResults.getVotesPercentage());
+		
+	return partyResultVO;
+	}
+   
+   
+   public PartyResultsPercentageVO getPartyResultsPercentage(Long electionScopeId,Long partyId,String year){
+
+	   List<CandidateResult> candidateResults = getCandidateElectionResults(electionScopeId,partyId,year);
+	   
+	   if(candidateResults != null){
+		   PartyResultsPercentageVO resultsPercentage = new PartyResultsPercentageVO();
+		   Long validVotes = new Long(0);
+		   Long votesEarned = new Long(0);
+		   Long totalSeatsWon = new Long(0);
+		   
+		   for(CandidateResult result:candidateResults){
+			   ConstituencyElectionResult constituencyElectionResult = result.getNomination().getConstituencyElection().getConstituencyElectionResult();
+			   if(result.getRank().equals(new Long(1))){
+				   totalSeatsWon++;
+			   }
+			   
+			   votesEarned = votesEarned + Long.parseLong(String.valueOf(result.getVotesEarned()).replace(".",""));
+			   validVotes = validVotes + Long.parseLong(String.valueOf(constituencyElectionResult.getValidVotes()).replace(".",""));
+		   }
+		   
+		   System.out.println("votesEarned -->" + votesEarned);
+		   System.out.println("validVotes -->" + validVotes);
+		   String percentage = getPercentage(validVotes,votesEarned);
+		   resultsPercentage.setPercentage(percentage);
+		   resultsPercentage.setYear(year);
+		   resultsPercentage.setSeatsWOn(totalSeatsWon);
+		   
+	   return resultsPercentage;
+	   }
+	   
+   return null;
+   }
+   
+   public String getPercentage(Long validVotes,Long votesEarned){
+	   
+	    String percentage = null;
+		if((validVotes!=null && validVotes.longValue()>0) && (votesEarned!=null && votesEarned.longValue()>0)){
+			percentage = String.valueOf((votesEarned.doubleValue()/validVotes.doubleValue())*100);
+			System.out.println("inside percentage ->" + percentage);
+		}
+		
+   return percentage.substring(0,4);
    }
 
 }
