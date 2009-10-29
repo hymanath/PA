@@ -83,9 +83,10 @@ table.CandidateElectionResultsTable td {
 	   <br/>
 	   	<c:if test="${electionComparisonResultVO != null }">
 		<div style="text-align:left;margin-left:100px;margin-right:10px;">
-		<b>Party Participated In Only One Election</b>
+		<b>Party Participated In Only One Election</b><br/><br/>
 		
 		<table class="CandidateElectionResultsTable"  width="600px">
+	
 		    <tr>
 			   <th align="center" colspan = "5">District Wise Complete Results</th>
 			</tr>  
@@ -337,13 +338,11 @@ table.CandidateElectionResultsTable td {
 				</tr>	
 				<tr id="constituenciesNotConsidered${comparison.districtId}" style="display:none;">
 					<td colspan="5"  align="center">
-					    <b> In <c:out value="${electionsComparisonVO.firstYear}"/> </b>
+					    <b>Complete  Results</b>
 						
-						<b>Complete Votes Gained Results</b>
-						
-						<b> In <c:out value="${electionsComparisonVO.secondYear}"/> </b>
 					</td>
 				</tr>
+				
 				<tr id="constituenciesNotConsidered${comparison.districtId}" style="display:none;">					
 					<th>Candidate Name</th>
 					<th>Constituency Name</th>
