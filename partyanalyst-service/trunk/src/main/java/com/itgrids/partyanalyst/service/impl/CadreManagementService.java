@@ -21,6 +21,9 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreLevel;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyTehsil;
+import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
 /**
  * 
  * @author Narender Akula
@@ -407,10 +410,33 @@ public class CadreManagementService {
 	}
 	
 	public String getConstituencyName(Long constituencyID){
-		List<Constituency> names = constituencyDAO.findByConstituencyId(constituencyID);
+		Constituency constituency = constituencyDAO.get(constituencyID);
 		String name = "";
-		if(names!=null && names.size()>0)
-			name=names.get(0).getName();
+		if(constituency!=null)
+			name=constituency.getName();
+		return name;
+	}
+
+	public String getStateName(Long stateID){
+		State state = stateDAO.get(stateID);
+		String name = "";
+		if(state!=null)
+			name=state.getStateName();
+		return name;
+	}
+	public String getDistrictName(Long districtID){
+		District district = districtDAO.get(districtID);
+		String name = "";
+		if(district!=null)
+			name=district.getDistrictName();
+		return name;
+	}
+
+	public String getMandalName(Long mandalID){
+		Tehsil mandal = tehsilDAO.get(mandalID);
+		String name = "";
+		if(mandal!=null)
+			name=mandal.getTehsilName();
 		return name;
 	}
 }
