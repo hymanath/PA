@@ -124,7 +124,7 @@ table.CandidateElectionResultsTable td {
 		                <c:if test="${partyResults.rank != 1 }">
 		                <td><c:out value="Lost"/></td>
 		                </c:if>
-						<td>${partyResults.votesPercentage}</td>
+						<td>${partyResults.votesPercentage}<c:out value="%" /></td>
 					</tr>	
 					
 					</c:forEach>
@@ -176,8 +176,8 @@ table.CandidateElectionResultsTable td {
        </div>
 		<div>
 			<h4><u>District Wise Results</u></h4>
-			<span>  Votes Gained  - <c:out value="${electionsComparisonVO.votesGainedCount}"/></span> <a id="votesGained_Anc" href="javascript:{}" onclick="showTableDiv(this.id)"> View</a>
-			<span style="margin-left:20px;">  Votes Lost  - <c:out value="${electionsComparisonVO.votesLostCount}"/><a  id="votesLost_Anc" href="javascript:{}" onclick="showTableDiv(this.id)"> View</a>
+			<span>  Votes % Gained  - <c:out value="${electionsComparisonVO.votesGainedCount}"/></span> <a id="votesGained_Anc" href="javascript:{}" onclick="showTableDiv(this.id)"> View</a>
+			<span style="margin-left:20px;">  Votes % Lost  - <c:out value="${electionsComparisonVO.votesLostCount}"/><a  id="votesLost_Anc" href="javascript:{}" onclick="showTableDiv(this.id)"> View</a>
 			</span>
 			<span style="margin-left:20px;"> Constituencies Not Considered  - <c:out value="${electionsComparisonVO.count}"/><a  id="constiNotConsi_Anc" href="javascript:{}" onclick="showTableDiv(this.id)"> View</a>
 			</span>
@@ -187,7 +187,7 @@ table.CandidateElectionResultsTable td {
 		<div style="display:none;" id="votesGainedDiv">
 			<table class="CandidateElectionResultsTable" width="600px">
 			<tr>
-				<th colspan="10" align="center"> Votes Gained</th>
+				<th colspan="10" align="center"> Votes % Gained</th>
 			</tr>
 			<c:forEach var="comparison" items="${electionsComparisonVO.votesGained}">
 				<tr>
@@ -196,9 +196,11 @@ table.CandidateElectionResultsTable td {
 				</tr>	
 				<tr id="votesGained${comparison.districtId}" style="display:none;">
 					<td colspan="10"  align="center">
-					    <b> In <c:out value="${electionsComparisonVO.firstYear}"/> </b>
+					    <b> In <c:out value="${electionsComparisonVO.firstYear}"/> </b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 						
-						<b>Complete Votes Gained Results</b>
+						<b>Complete Votes Gained Results</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 						
 						<b> In <c:out value="${electionsComparisonVO.secondYear}"/> </b>
 					</td>
@@ -208,11 +210,11 @@ table.CandidateElectionResultsTable td {
 					<th>Constituency Name</th>
 					<th>Votes Earned</th>
 					<th>Status</th>
-					<th>Votes Percentage</th>
-					<th>[ Votes Diff ]</th>
+					<th>Votes %</th>
+					<th> Votes % Increase</th>
 					<th>Candidate Name</th>
 					<th>Votes Earned</th>
-					<th>VotesPercentage</th>
+					<th>Votes %</th>
 					<th>Status</th>
 				</tr>				
 					<c:forEach var="partyResults" items="${comparison.partyElectionResultsVO}">
@@ -232,11 +234,11 @@ table.CandidateElectionResultsTable td {
 		                <c:if test="${partyResults.rank != 1 }">
 		                <td><c:out value="Lost"/></td>
 		                </c:if>
-						<td>${partyResults.votesPercentage}</td>
-						<th>${partyResults.votesDiff}</th>
+						<td>${partyResults.votesPercentage}<c:out value="%" /></td>
+						<th>${partyResults.votesDiff}<c:out value="%" /></th>
 						<td><b>${partyResults.secondCandidateName}</b></td>
 						<td>${partyResults.votesEarnedBySecond}</td>
-						<td>${partyResults.votesPercentageBySecond}</td>
+						<td>${partyResults.votesPercentageBySecond}<c:out value="%" /></td>
 						<c:if test="${partyResults.rankBySecond == 1 }">
 		                <td><c:out value="Won"/></td>
 		                </c:if>
@@ -256,7 +258,7 @@ table.CandidateElectionResultsTable td {
 		<div style="display:none;" id="votesLostDiv">
 			<table class="CandidateElectionResultsTable"  width="600px">
 			<tr>
-				<th colspan="10" align="center"> Votes Lost</th>
+				<th colspan="10" align="center"> Votes % Lost</th>
 			</tr>
 			<c:forEach var="comparison" items="${electionsComparisonVO.votesLost}">
 				<tr>
@@ -265,9 +267,9 @@ table.CandidateElectionResultsTable td {
 				</tr>	
 				<tr id="${comparison.districtId}" style="display:none;">
 					<td colspan="10"  align="center">
-					    <b> In <c:out value="${electionsComparisonVO.firstYear}"/>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>
+					    <b> In <c:out value="${electionsComparisonVO.firstYear}"/></b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-						<b>Complete Votes Lost Results &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b>
+						<b>Complete Votes Lost Results </b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 						<b> In <c:out value="${electionsComparisonVO.secondYear}"/> </b>
 					</td>
@@ -277,11 +279,11 @@ table.CandidateElectionResultsTable td {
 					<th>Constituency Name</th>
 					<th>Votes Earned</th>
 					<th>Status</th>
-					<th>Votes Percentage</th>
-					<th>[ votes Diff ]</th>
+					<th>Votes %</th>
+					<th>Votes % Decrease</th>
 					<th>Candidate Name</th>
 					<th>Votes Earned</th>
-					<th>VotesPercentage</th>
+					<th>Votes %</th>
 					<th>Status</th>
 				</tr>				
 					<c:forEach var="partyResults" items="${comparison.partyElectionResultsVO}">
@@ -301,11 +303,11 @@ table.CandidateElectionResultsTable td {
 		                <c:if test="${partyResults.rank != 1 }">
 		                <td><c:out value="Lost"/></td>
 		                </c:if>
-						<td>${partyResults.votesPercentage}</td>
-						<th>${partyResults.votesDiff}</th>
+						<td>${partyResults.votesPercentage}<c:out value="%" /></td>
+						<th>${partyResults.votesDiff}<c:out value="%" /></th>
 						<td><b>${partyResults.secondCandidateName}</b></td>
 						<td>${partyResults.votesEarnedBySecond}</td>
-						<td>${partyResults.votesPercentageBySecond}</td>
+						<td>${partyResults.votesPercentageBySecond}<c:out value="%" /></td>
 						<c:if test="${partyResults.rankBySecond == 1 }">
 		                <td><c:out value="Won"/></td>
 		                </c:if>
@@ -347,7 +349,7 @@ table.CandidateElectionResultsTable td {
 					<th>Constituency Name</th>
 					<th>Votes Earned</th>
 					<th>Status</th>
-					<th>Votes Percentage</th>
+					<th>Votes %</th>
 					
 				</tr>				
 					<c:forEach var="partyResults" items="${comparison.partyElectionResultsVO}">
@@ -367,7 +369,7 @@ table.CandidateElectionResultsTable td {
 		                <c:if test="${partyResults.rank != 1 }">
 		                <td><c:out value="Lost"/></td>
 		                </c:if>
-						<td>${partyResults.votesPercentage}</td>
+						<td>${partyResults.votesPercentage}<c:out value="%" /></td>
 						
 					</tr>	
 					</c:forEach>
