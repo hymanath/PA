@@ -11,6 +11,9 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 
 public class CadreReportAction extends ActionSupport implements ServletContextAware,ServletRequestAware{
@@ -44,6 +47,15 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 		if("MLA".equalsIgnoreCase(user.getAccessType())){
 			String constituencyName = cadreManagementService.getConstituencyName(new Long(user.getAccessValue()));
 			userCadresInfoVO.setUserAccessDisplayValue(constituencyName);
+		}else if("STATE".equalsIgnoreCase(user.getAccessType())){
+			String stateName = cadreManagementService.getStateName(new Long(user.getAccessValue()));
+			userCadresInfoVO.setUserAccessDisplayValue(stateName);
+		}else if("DISTRICT".equalsIgnoreCase(user.getAccessType())){
+			String districtName = cadreManagementService.getDistrictName(new Long(user.getAccessValue()));
+			userCadresInfoVO.setUserAccessDisplayValue(districtName);
+		}else if("MANDAL".equalsIgnoreCase(user.getAccessType())){
+			String mandalName = cadreManagementService.getMandalName(new Long(user.getAccessValue()));
+			userCadresInfoVO.setUserAccessDisplayValue(mandalName);
 		}
 		userCadresInfoVO = cadreManagementService.getUserCadresInfo(userCadresInfoVO);
 		return Action.SUCCESS;
@@ -57,6 +69,4 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 		this.request = arg0;
 		
 	}
-	
-
 }
