@@ -299,23 +299,23 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 					 for(PartyElectionResultsVO firstPartyResults:resultFirst.getPartyElectionResultsVO()){
 						 Boolean flag = false;
 						 for(PartyElectionResultsVO secondPartyResults:resultSecond.getPartyElectionResultsVO()){
-							 if(firstPartyResults.getConstituencyId().equals(secondPartyResults.getConstituencyId()) && firstPartyResults.getVotesEarned() < secondPartyResults.getVotesEarned()){
+							 if(firstPartyResults.getConstituencyId().equals(secondPartyResults.getConstituencyId()) && Double.parseDouble(firstPartyResults.getVotesPercentage()) < Double.parseDouble(secondPartyResults.getVotesPercentage())){
 								 
 							    PartyElectionResultsVO partyResultVO = new PartyElectionResultsVO();
 							    partyResultVO = getResult(firstPartyResults,secondPartyResults);
-							    Double votesDiff = partyResultVO.getVotesEarnedBySecond() - partyResultVO.getVotesEarned();
-							    partyResultVO.setVotesDiff(votesDiff);
+							    Double votesDiff = Double.parseDouble(partyResultVO.getVotesPercentageBySecond()) - Double.parseDouble(partyResultVO.getVotesPercentage());
+							    partyResultVO.setVotesDiff(String.valueOf(votesDiff).substring(0,3));
 							    partyElectionResultsForFirst.add(partyResultVO);
 							    flag = true;
 							    votesGainedCount++;
 							    break;
 							 }
-							 else if(firstPartyResults.getConstituencyId().equals(secondPartyResults.getConstituencyId()) && firstPartyResults.getVotesEarned() >= secondPartyResults.getVotesEarned()){
+							 else if(firstPartyResults.getConstituencyId().equals(secondPartyResults.getConstituencyId()) && Double.parseDouble(firstPartyResults.getVotesPercentage()) >= Double.parseDouble(secondPartyResults.getVotesPercentage())){
 								 
 								 PartyElectionResultsVO partyResultVO = new PartyElectionResultsVO();
 								 partyResultVO = getResult(firstPartyResults,secondPartyResults);
-								 Double votesDiff = partyResultVO.getVotesEarned() - partyResultVO.getVotesEarnedBySecond();
-								 partyResultVO.setVotesDiff(votesDiff);
+								 Double votesDiff = Double.parseDouble(partyResultVO.getVotesPercentage()) - Double.parseDouble(partyResultVO.getVotesPercentageBySecond());
+								 partyResultVO.setVotesDiff(String.valueOf(votesDiff).substring(0,3));
 								 partyElectionResultsForSecond.add(partyResultVO);
 								 flag = true;
 								 votesLostCount++;
