@@ -210,8 +210,8 @@ table.CandidateElectionResultsTable td {
 					<th>Candidate Name</th>
 					<th>Constituency Name</th>
 					<th>Votes Earned</th>
-					<th>Status</th>
 					<th>Votes %</th>
+					<th>Status</th>
 					<th> Votes % Increase</th>
 					<th>Candidate Name</th>
 					<th>Votes Earned</th>
@@ -229,13 +229,13 @@ table.CandidateElectionResultsTable td {
 						</c:url>
 						<a href='<c:out value="${constituencyName}" />'>${partyResults.constituencyName}</a></td>
 						<td>${partyResults.votesEarned}</td>
+						<td>${partyResults.votesPercentage}<c:out value="%" /></td>
 						<c:if test="${partyResults.rank == 1 }">
 		                <td><c:out value="Won"/></td>
 		                </c:if>
 		                <c:if test="${partyResults.rank != 1 }">
 		                <td><c:out value="Lost"/></td>
 		                </c:if>
-						<td>${partyResults.votesPercentage}<c:out value="%" /></td>
 						<th>${partyResults.votesDiff}<c:out value="%" /></th>
 						<td><b>${partyResults.secondCandidateName}</b></td>
 						<td>${partyResults.votesEarnedBySecond}</td>
@@ -279,8 +279,8 @@ table.CandidateElectionResultsTable td {
 					<th>Candidate Name</th>
 					<th>Constituency Name</th>
 					<th>Votes Earned</th>
-					<th>Status</th>
 					<th>Votes %</th>
+					<th>Status</th>
 					<th>Votes % Decrease</th>
 					<th>Candidate Name</th>
 					<th>Votes Earned</th>
@@ -298,13 +298,13 @@ table.CandidateElectionResultsTable td {
 						</c:url>
 						<a href='<c:out value="${constituencyName}" />'>${partyResults.constituencyName}</a></td>
 						<td>${partyResults.votesEarned}</td>
+						<td>${partyResults.votesPercentage}<c:out value="%" /></td>
 						<c:if test="${partyResults.rank == 1 }">
 		                <td><c:out value="Won"/></td>
 		                </c:if>
 		                <c:if test="${partyResults.rank != 1 }">
 		                <td><c:out value="Lost"/></td>
 		                </c:if>
-						<td>${partyResults.votesPercentage}<c:out value="%" /></td>
 						<th>${partyResults.votesDiff}<c:out value="%" /></th>
 						<td><b>${partyResults.secondCandidateName}</b></td>
 						<td>${partyResults.votesEarnedBySecond}</td>
