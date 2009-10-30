@@ -288,13 +288,15 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 		 
 		 for(ElectionComparisonResultVO resultFirst:resultForFirstYear){
 			 
-			  
 			  for(ElectionComparisonResultVO resultSecond:resultForSecondYear){
 				 if(resultSecond.getDistrictId().equals(resultFirst.getDistrictId())){
 					 
 					 List<PartyElectionResultsVO> partyElectionResultsForFirst = new ArrayList<PartyElectionResultsVO>();
 					 List<PartyElectionResultsVO> partyElectionResultsForSecond = new ArrayList<PartyElectionResultsVO>();
 					 List<PartyElectionResultsVO> partyElectionResultsNotConsidered = new ArrayList<PartyElectionResultsVO>();
+					 int statusForGained = 0;
+					 int statusForLost = 0;
+					 int statusForNotConsidered = 0;
 					 
 					 for(PartyElectionResultsVO firstPartyResults:resultFirst.getPartyElectionResultsVO()){
 						 Boolean flag = false;
@@ -307,6 +309,7 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 							    partyResultVO.setVotesDiff(String.valueOf(votesDiff).substring(0,3));
 							    partyElectionResultsForFirst.add(partyResultVO);
 							    flag = true;
+							    statusForGained = 1;
 							    votesGainedCount++;
 							    break;
 							 }
@@ -318,6 +321,7 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 								 partyResultVO.setVotesDiff(String.valueOf(votesDiff).substring(0,3));
 								 partyElectionResultsForSecond.add(partyResultVO);
 								 flag = true;
+								 statusForLost = 1;
 								 votesLostCount++;
 								 break;
 							 }
@@ -328,13 +332,14 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 							 partyResultVO = getResults(firstPartyResults);
 							 partyElectionResultsNotConsidered.add(partyResultVO);
 							 flag = true;
+							 statusForNotConsidered = 1;
 							 count++;
 						 }
 						 partyName = firstPartyResults.getPartyName();
 	    				 electionsComparisionVO.setPartyName(partyName);
 					 }
 					 
-					 if(votesGainedCount>0 || votesLostCount>0){
+					 if(statusForGained == 1){
 						 ElectionComparisonResultVO resultVO = new ElectionComparisonResultVO();
 						 ElectionComparisonResultVO resultVOforSecond = new ElectionComparisonResultVO();
 						 resultVO.setDistrictId(resultSecond.getDistrictId());
@@ -346,17 +351,28 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 						 
 						 resultVO.setPartyElectionResultsVO(partyElectionResultsForFirst);
 						 resultsForVotesGained.add(resultVO);
-						 	 
+					 }
+					 if(statusForLost == 1){
+						 ElectionComparisonResultVO resultVO = new ElectionComparisonResultVO();
+						 ElectionComparisonResultVO resultVOforSecond = new ElectionComparisonResultVO();
+						 resultVO.setDistrictId(resultSecond.getDistrictId());
+						 resultVO.setDistrictName(resultSecond.getDistrictName());
+						 resultVO.setStateId(resultSecond.getStateId());
+						 resultVOforSecond.setDistrictId(resultFirst.getDistrictId());
+						 resultVOforSecond.setDistrictName(resultFirst.getDistrictName());
+						 resultVOforSecond.setStateId(resultFirst.getStateId());
+									 	 
 						 resultVOforSecond.setPartyElectionResultsVO(partyElectionResultsForSecond);
 						 resultsForVotesLost.add(resultVOforSecond);
 					 }
-					 
-					 ElectionComparisonResultVO resultVOforConstituenciesNotConsi = new ElectionComparisonResultVO();
-					 resultVOforConstituenciesNotConsi.setDistrictId(resultFirst.getDistrictId());
-					 resultVOforConstituenciesNotConsi.setDistrictName(resultFirst.getDistrictName());
-					 resultVOforConstituenciesNotConsi.setStateId(resultFirst.getStateId());
-					 resultVOforConstituenciesNotConsi.setPartyElectionResultsVO(partyElectionResultsNotConsidered);
-					 constituenciesNotConsidered.add(resultVOforConstituenciesNotConsi);
+					 if(statusForNotConsidered == 1){
+						 ElectionComparisonResultVO resultVOforConstituenciesNotConsi = new ElectionComparisonResultVO();
+						 resultVOforConstituenciesNotConsi.setDistrictId(resultFirst.getDistrictId());
+						 resultVOforConstituenciesNotConsi.setDistrictName(resultFirst.getDistrictName());
+						 resultVOforConstituenciesNotConsi.setStateId(resultFirst.getStateId());
+						 resultVOforConstituenciesNotConsi.setPartyElectionResultsVO(partyElectionResultsNotConsidered);
+						 constituenciesNotConsidered.add(resultVOforConstituenciesNotConsi);
+					 }
 				 break;
 				 }
 			}
@@ -443,11 +459,15 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
    public String getPercentage(Long validVotes,Long votesEarned){
 	   
 	    String percentage = null;
+	    try{
 		if((validVotes!=null && validVotes.longValue()>0) && (votesEarned!=null && votesEarned.longValue()>0)){
 			percentage = String.valueOf((votesEarned.doubleValue()/validVotes.doubleValue())*100);
 			System.out.println("inside percentage ->" + percentage);
 		}
-		
+	    }
+	    catch(Exception e){
+	    	System.out.println("Exception Caught : " + e);
+	    }
    return percentage.substring(0,4);
    }
 
