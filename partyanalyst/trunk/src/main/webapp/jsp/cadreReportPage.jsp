@@ -113,9 +113,9 @@
 				{
 					str+='<tr>';					
 					str+='<td><a name="cadreName" href="cadreInformationPageAction.action">'+cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName+'</a></td>';		
-					str+='<td>'+cadreData[i].mobileNo+'</td>';
+					str+='<td>'+cadreData[i].mobile+'</td>';
 					str+='<td>'+cadreData[i].landLineNo+'</td>';
-					str+='<td>'+cadreData[i].cadreLevel+'</td>';
+					str+='<td>'+cadreData[i].strCadreLevel+'-'+strCadreLevelValue+'</td>';
 					str+='<td>'+cadreData[i].email+'</td>';					
 					str+='</tr>';
 				}

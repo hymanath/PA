@@ -11,9 +11,6 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.model.District;
-import com.itgrids.partyanalyst.model.State;
-import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 
 public class CadreReportAction extends ActionSupport implements ServletContextAware,ServletRequestAware{
@@ -44,9 +41,13 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 		userCadresInfoVO.setUserID(user.getRegistrationID()); 
 		userCadresInfoVO.setUserAccessType(user.getAccessType());
 		userCadresInfoVO.setUserAccessValue(user.getAccessValue());
-		if("MLA".equalsIgnoreCase(user.getAccessType())){
+		if("MLA".equalsIgnoreCase(user.getAccessType())
+				|| "MP".equalsIgnoreCase(user.getAccessType())){
 			String constituencyName = cadreManagementService.getConstituencyName(new Long(user.getAccessValue()));
 			userCadresInfoVO.setUserAccessDisplayValue(constituencyName);
+		}else if("COUNTRY".equalsIgnoreCase(user.getAccessType())){
+			String countryName = cadreManagementService.getCountryName(new Long(user.getAccessValue()));
+			userCadresInfoVO.setUserAccessDisplayValue(countryName);
 		}else if("STATE".equalsIgnoreCase(user.getAccessType())){
 			String stateName = cadreManagementService.getStateName(new Long(user.getAccessValue()));
 			userCadresInfoVO.setUserAccessDisplayValue(stateName);
