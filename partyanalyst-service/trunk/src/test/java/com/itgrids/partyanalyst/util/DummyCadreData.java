@@ -121,6 +121,7 @@ public class DummyCadreData {
 		c1.setMobile("9959988988");
 		c1.setEmail("email1@email.com");
 		c1.setCadreLevel(new CadreLevel(1L, "COUNTRY"));
+		c1.setCadreLevelValue(1L);
 		
 		Cadre c2=new Cadre();
 		c2.setCadreId(2L);
@@ -131,6 +132,7 @@ public class DummyCadreData {
 		c2.setMobile("9959988977");
 		c2.setEmail("email2@gmail.com");
 		c2.setCadreLevel(new CadreLevel(2L, "MANDAL"));
+		c2.setCadreLevelValue(1L);
 
 		list.add(c1);		list.add(c2);
 		return list;
