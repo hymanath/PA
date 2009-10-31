@@ -14,6 +14,8 @@ public class CadreInfo implements Serializable{
 	private String gender;
 	private Long cadreLevel;
 	private Long cadreLevelValue;
+	private String strCadreLevel;
+	private String strCadreLevelValue;
 	private String state;
 	private String district;
 	private String mandal;
@@ -80,6 +82,19 @@ public class CadreInfo implements Serializable{
 	}
 	public void setCadreLevelValue(Long cadreLevelValue) {
 		this.cadreLevelValue = cadreLevelValue;
+	}
+	
+	public String getStrCadreLevel() {
+		return strCadreLevel;
+	}
+	public void setStrCadreLevel(String strCadreLevel) {
+		this.strCadreLevel = strCadreLevel;
+	}
+	public String getStrCadreLevelValue() {
+		return strCadreLevelValue;
+	}
+	public void setStrCadreLevelValue(String strCadreLevelValue) {
+		this.strCadreLevelValue = strCadreLevelValue;
 	}
 	public String getState() {
 		return state;

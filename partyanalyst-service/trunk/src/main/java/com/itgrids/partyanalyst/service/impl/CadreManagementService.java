@@ -8,6 +8,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyTehsilDAO;
+import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -21,6 +22,7 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreLevel;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyTehsil;
+import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -37,6 +39,7 @@ public class CadreManagementService {
 		this.cadreDAO = cadreDAO;
 	}
 
+	private ICountryDAO countryDAO;
 	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
 	private ITehsilDAO tehsilDAO;
@@ -45,8 +48,11 @@ public class CadreManagementService {
 	private IConstituencyDAO constituencyDAO;
 	private IConstituencyTehsilDAO constituencyTehsilDAO;
 	
-	
-	
+	public void setCountryDAO(ICountryDAO countryDAO) {
+		this.countryDAO = countryDAO;
+	}
+
+
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
 	}
@@ -337,8 +343,24 @@ public class CadreManagementService {
 			cadreInfo.setMobile(cadre.getMobile());
 			cadreInfo.setLandLineNo("-");
 			cadreInfo.setEmail(cadre.getEmail());
+			String level = cadre.getCadreLevel().getLevel();
 			cadreInfo.setCadreLevel(cadre.getCadreLevel().getCadreLevelID());
-			cadreInfo.setCadreLevelValue(cadre.getCadreLevelValue());
+			cadreInfo.setStrCadreLevel(level);
+			String levelValue = "";
+			Long levelValueID = cadre.getCadreLevelValue();
+			if("COUNTRY".equals(level)){
+				levelValue = getCountryName(levelValueID);
+			}else if("STATE".equals(level)){
+				levelValue = getStateName(levelValueID);
+			}else if("DISTRICT".equals(level)){
+				levelValue = getDistrictName(levelValueID);
+			}else if("CONSTITUENCY".equals(level)){
+				levelValue = getConstituencyName(levelValueID);
+			}else if("MANDAL".equals(level)){
+				levelValue = getMandalName(levelValueID);
+			}
+			cadreInfo.setCadreLevelValue(levelValueID);
+			cadreInfo.setStrCadreLevelValue(levelValue);
 			formattedData.add(cadreInfo);
 		}
 		return formattedData;
@@ -444,6 +466,14 @@ public class CadreManagementService {
 		String name = "";
 		if(mandal!=null)
 			name=mandal.getTehsilName();
+		return name;
+	}
+
+	public String getCountryName(Long countryID){
+		Country country = countryDAO.get(countryID);
+		String name = "";
+		if(country!=null)
+			name=country.getCountryName();
 		return name;
 	}
 }
