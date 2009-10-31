@@ -31,6 +31,76 @@
 	
 	<!-- YUI Dependency Files-->
 	<script type="text/javascript">
+			
+		var regionLevelZeroCadres = new Array();
+		var regionLevelCadres = new Array();
+
+			function buildJSObject(id,value,type)
+			{				
+				var ob =
+					{
+						id:id,
+						val:value
+					};
+
+				if(type=="regionLevelZeroCadres")
+					regionLevelZeroCadres.push(ob);
+				else if(type="regionLevelCadres")
+					regionLevelCadres.push(ob);
+
+
+			}
+
+			function buildTreeView()
+			{
+				for (var i in  regionLevelZeroCadres)
+				{
+					buildZeroCadreTree(regionLevelZeroCadres[i].id,regionLevelZeroCadres[i].val);
+				}
+				
+				for (var j in  regionLevelCadres)
+				{
+					buildRegionCadreTree(regionLevelCadres[j].id,regionLevelCadres[j].val);
+				}
+			}
+
+			function buildZeroCadreTree(id,val)
+			{
+				var myLabel=val+"-"+id;
+				
+				var tree;
+				var myobj;
+				
+				tree = new YAHOO.widget.TreeView("zeroCadreInfoDivBody");				 
+				tree.setDynamicLoad(loadNodeData);				
+				var rootNode = tree.getRoot(); 				
+
+				myobj = { label: myLabel, labelAccessValue: val,id:id ,type:'ZeroLevelCadre'} ;
+				console.log(myobj);
+				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);
+				
+
+				tree.render();
+			}
+
+			function buildRegionCadreTree(id,val)
+			{
+				var myLabel=val+"-"+id;
+				
+				var tree;
+				var myobj;
+				
+				tree = new YAHOO.widget.TreeView("cadreLevelInfoDivBody");				 
+				tree.setDynamicLoad(loadNodeData);				
+				var rootNode = tree.getRoot(); 				
+
+				myobj = { label: myLabel, labelAccessValue: val,id:id ,type:'RegionLevelCadre'} ;
+				console.log(myobj);
+				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);				
+
+				tree.render();
+			}		
+			
 			function showTree()
 			{
 				//'${userCadresInfoVO.userAccessType}'
@@ -43,7 +113,7 @@
 				tree.setDynamicLoad(loadNodeData);				
 				var rootNode = tree.getRoot(); 				
 
-				myobj = { label: myLabel, labelAccessValue: '${userCadresInfoVO.userAccessType}',id:'${userCadresInfoVO.userAccessValue}' } ; 
+				myobj = { label: myLabel, labelAccessValue: '${userCadresInfoVO.userAccessType}',id:'${userCadresInfoVO.userAccessValue}',type:'TotalCadre' } ; 
 				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);
 				
 
@@ -57,7 +127,7 @@
 				var index=nodeLabel.indexOf("-");
 				var subString = nodeLabel.substring(0,index);				
 				
-				var cadreUrl = "<%=request.getContextPath()%>/cadresInfoAjaxAction.action?cadreRegion="+node.data.labelAccessValue+"&cadreId="+node.data.id; 
+				var cadreUrl = "<%=request.getContextPath()%>/cadresInfoAjaxAction.action?cadreRegion="+node.data.labelAccessValue+"&cadreId="+node.data.id+"&cadreType="+node.data.type; 
 				var callback = {			
  		               success : function( o )
 									{
@@ -157,10 +227,8 @@
 				<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
 				Cadres Availabilty <b>:</b>
 			</div>
-			<div id="cadreInfoDivBody" style="padding-left: 50px;padding-top: 10px"><table>
-				<script type="text/javascript">
-						showTree();
-				</script>	</table>			
+			<div id="cadreInfoDivBody" style="padding-left: 50px;padding-top: 10px">
+				
 			</div>
 		</div>
 		<div id="zeroCadreInfoDiv" style="margin-bottom: 20px;">
@@ -170,23 +238,23 @@
 					Non Available Region Cadres <b>:</b>
 				</div>
 			
-			<div id="zeroCadreInfoDivBody" style="padding-left: 50px;padding-top: 10px"">
+			<div id="zeroCadreInfoDivBody" style="padding-left: 50px;padding-top: 10px">				
 				<table>
 					<c:forEach var="pd" items="${userCadresInfoVO.regionLevelZeroCadres}" >
 					<tr>
-						<td><c:out value="${pd.key}" /> </td>
-						<td><c:out value="${pd.value}" /></td>
+						<td><c:out value="${pd.id}" /> </td>
+						<td><c:out value="${pd.name}" /></td>
 					</tr>
 					</c:forEach>			
 				</table>
 			</div>
 		</div>
-		<div id="levelCadreInfoDiv" style="margin-bottom: 20px;">
-			<div id="levelCadreInfoDivHead">
+		<div id="cadreLevelInfoDiv" style="margin-bottom: 20px;">
+			<div id="cadreLevelInfoDivHead">
 				<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
 				Region Level Cadres Available <b>:</b>
 			</div>
-			<div id="levelCadreInfoDivBody" style="padding-left: 50px;padding-top: 10px"">
+			<div id="cadreLevelInfoDivBody" style="padding-left: 50px;padding-top: 10px"">
 				<table>
 				<c:forEach var="pd1" items="${userCadresInfoVO.regionLevelCadres}" >
 				<tr>
@@ -211,6 +279,20 @@
 			</td>
 		</tr>
 	</table>
+		<script type="text/javascript">
+
+			showTree();
+
+			<c:forEach var="pd" items="${userCadresInfoVO.regionLevelZeroCadres}" >
+				buildJSObject('${pd.id}','${pd.name}',"regionLevelZeroCadres");
+			</c:forEach>
+
+			<c:forEach var="pd1" items="${userCadresInfoVO.regionLevelCadres}" >
+				buildJSObject('${pd1.value}','${pd1.key}','regionLevelCadres');
+			</c:forEach>
+
+			buildTreeView();	
+		</script>	
 	</s:form>
 </body>
 </html>

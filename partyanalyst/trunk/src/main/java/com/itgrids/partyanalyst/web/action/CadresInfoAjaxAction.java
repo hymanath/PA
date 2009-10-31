@@ -19,8 +19,10 @@ import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 @SuppressWarnings("serial")
 public class CadresInfoAjaxAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 	
+	
 	private String region;
 	private String regionId;	
+	private String cadreType;
 	private HttpServletRequest request;
 	private HttpSession session;
 	private List<CadreRegionInfoVO> cadreRegionInfo;
@@ -32,6 +34,14 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		this.cadreManagementService = cadreManagementService;
 	}
 
+	public String getCadreType() {
+		return cadreType;
+	}
+
+	public void setCadreType(String cadreType) {
+		this.cadreType = cadreType;
+	}
+	
 	public String getRegion() {
 		return region;
 	}
@@ -69,62 +79,78 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		Long userID = user.getRegistrationID();
-		region=request.getParameter("cadreRegion");
-		regionId=request.getParameter("cadreId");
+		region = request.getParameter("cadreRegion");
+		regionId = request.getParameter("cadreId");
+		cadreType = request.getParameter("cadreType");
 		this.setRegion(region);
 		this.setRegionId(regionId);
+		this.setCadreType(cadreType);
+		
 		System.out.println("level = "+region);
 		System.out.println("level id = "+regionId);
+		System.out.println("cadre Type = "+cadreType);
 		
 		cadreRegionInfo = new ArrayList<CadreRegionInfoVO>();
 		cadreInfo = new ArrayList<CadreInfo>();
-	
-		if(region.equalsIgnoreCase("Country"))
+		
+		if(cadreType.equalsIgnoreCase("TotalCadre"))
 		{
-			System.out.println("Inside if block level = "+region);			
-			
-			cadreRegionInfo = cadreManagementService.getCountryAllStatesCadres(new Long(regionId), userID);
-			
-			this.setCadreRegionInfo(cadreRegionInfo);
-		}
-		else if(region.equalsIgnoreCase("State"))
-		{
-			System.out.println("Inside if block level = "+region);
-			
-			cadreRegionInfo = cadreManagementService.getStateAllDistrictsCadres(new Long(regionId), userID);
-			
-			this.setCadreRegionInfo(cadreRegionInfo);
-		}
-		else if(region.equalsIgnoreCase("District"))
-		{		
-			System.out.println("Inside if block level = "+region);
-			
-			cadreRegionInfo = cadreManagementService.getDistrictAllMandalsCadres(new Long(regionId), userID);
-			
-			this.setCadreRegionInfo(cadreRegionInfo);
-		}
-		else if(region.equalsIgnoreCase("MLA"))
-		{
-			System.out.println("Inside if block level = "+region);
+			System.out.println("In if total cadre");
+			if(region.equalsIgnoreCase("Country"))
+			{
+				System.out.println("Inside if block level = "+region);			
+				
+				cadreRegionInfo = cadreManagementService.getCountryAllStatesCadres(new Long(regionId), userID);
+				
+				this.setCadreRegionInfo(cadreRegionInfo);
+			}
+			else if(region.equalsIgnoreCase("State"))
+			{
+				System.out.println("Inside if block level = "+region);
+				
+				cadreRegionInfo = cadreManagementService.getStateAllDistrictsCadres(new Long(regionId), userID);
+				
+				this.setCadreRegionInfo(cadreRegionInfo);
+			}
+			else if(region.equalsIgnoreCase("District"))
+			{		
+				System.out.println("Inside if block level = "+region);
+				
+				cadreRegionInfo = cadreManagementService.getDistrictAllMandalsCadres(new Long(regionId), userID);
+				
+				this.setCadreRegionInfo(cadreRegionInfo);
+			}
+			else if(region.equalsIgnoreCase("MLA"))
+			{
+				System.out.println("Inside if block level = "+region);
 
-			cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(new Long(regionId), userID);
-			
-			this.setCadreRegionInfo(cadreRegionInfo);
-		}
-		else if(region.equalsIgnoreCase("Mandal"))
-		{
-			System.out.println("Inside if block level = "+region);
+				cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(new Long(regionId), userID);
+				
+				this.setCadreRegionInfo(cadreRegionInfo);
+			}
+			else if(region.equalsIgnoreCase("Mandal"))
+			{
+				System.out.println("Inside if block level = "+region);
 
-			cadreRegionInfo = cadreManagementService.getMandalAllVillagesCadres(new Long(regionId), userID);
-			
-			this.setCadreRegionInfo(cadreRegionInfo);
+				cadreRegionInfo = cadreManagementService.getMandalAllVillagesCadres(new Long(regionId), userID);
+				
+				this.setCadreRegionInfo(cadreRegionInfo);
+			}
+			else if(region.equalsIgnoreCase("Village"))
+			{
+				
+				cadreInfo = cadreManagementService.getCadresByVillage(new Long(regionId), userID);
+				
+				this.setCadreInfo(cadreInfo);
+			}
 		}
-		else if(region.equalsIgnoreCase("Village"))
+		else if(cadreType.equalsIgnoreCase("ZeroLevelCadre"))
 		{
-			
-			cadreInfo = cadreManagementService.getCadresByVillage(new Long(regionId), userID);
-			
-			this.setCadreInfo(cadreInfo);
+			System.out.println("In if Zero level cadre");
+		}
+		else if(cadreType.equalsIgnoreCase("RegionLevelCadre"))
+		{
+			System.out.println("In if Region level cadre");
 		}
 				
 		return Action.SUCCESS;		
