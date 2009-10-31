@@ -27,7 +27,7 @@
 		else
 			var constituencyvalue=constituencyElmt.options[constituencyElmt.selectedIndex].value;
 		
-		console.log(constituencyvalue);
+		
 
 		if(partyNamevalue==0 || electionTypevalue==0 || electionYearvalue=="Select")
 			return;
@@ -46,13 +46,13 @@
 
 	function callAjaxForBoothResults(rparam)
 	{
-		console.log(rparam);
+		
 		var url = "<%=request.getContextPath()%>/partyBoothResult1AjaxAction.action?"+rparam;		
  		var callback = {			
  		               success : function( o ) {
 							try {
 								var myResults = YAHOO.lang.JSON.parse(o.responseText); 
-								console.log(myResults);
+								
 								buildConstituencySelect(myResults.constituencyVOs);								
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
