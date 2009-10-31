@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,8 @@ public class UserCadresInfoVO implements Serializable{
 	 * Zero Cadres in 7 Mandal 
 	 * Zero Cadres in  9 Village
 	 */
-	private Map<String,Long> regionLevelZeroCadres = new LinkedHashMap<String, Long>(); 
+	//private Map<String,Long> regionLevelZeroCadres = new LinkedHashMap<String, Long>(); 
+	List<SelectOptionVO> regionLevelZeroCadres = new ArrayList<SelectOptionVO>();
 	
 	/**
 	 *  regionLevelCadres contains info like following
@@ -74,10 +76,10 @@ public class UserCadresInfoVO implements Serializable{
 	}
 	
 	
-	public Map<String, Long> getRegionLevelZeroCadres() {
+	public List<SelectOptionVO> getRegionLevelZeroCadres() {
 		return regionLevelZeroCadres;
 	}
-	public void setRegionLevelZeroCadres(Map<String, Long> regionLevelZeroCadres) {
+	public void setRegionLevelZeroCadres(List<SelectOptionVO> regionLevelZeroCadres) {
 		this.regionLevelZeroCadres = regionLevelZeroCadres;
 	}
 	public Map<String, Long> getRegionLevelCadres() {
@@ -116,6 +118,12 @@ public class UserCadresInfoVO implements Serializable{
 	}
 	public void setUserAccessVillages(Map<Long, String> userAccessVillages) {
 		this.userAccessVillages = userAccessVillages;
+	}
+	public String getUserAccesDisplayValue() {
+		return userAccesDisplayValue;
+	}
+	public void setUserAccesDisplayValue(String userAccesDisplayValue) {
+		this.userAccesDisplayValue = userAccesDisplayValue;
 	}
 	
 }
