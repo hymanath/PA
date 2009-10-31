@@ -38,11 +38,20 @@ table.stateResultsTable td {
 	background-color: #ffffff;
 }
     <!-- Dependencies --> 
+
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<!-- OPTIONAL: JSON (enables JSON validation) --> 
-	<script type="text/javascript" src="js/json/json-min.js"></script> 
-  	<!-- Dependencies --> 
+	<script type="text/javascript" src="js/yahoo/element-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>   
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/calendar-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
+
+	<link href="styles/yuiStyles/datatable.css" rel="stylesheet" type="text/css" />
+
  	<script type="text/javascript">	
   </style>
   <script type="text/javascript">
@@ -53,6 +62,7 @@ table.stateResultsTable td {
  		               success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
+								//buildDataTable(param,myResults.stateElectionResults.partyResultsVO);
 								insertData(param,myResults.stateElectionResults.partyResultsVO);								
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -85,6 +95,59 @@ function doAjax(param){
  	callAjax("electionId="+param);
  }
 
+
+function buildDataTable(param,results)
+{
+	var index=param.indexOf("=");
+	var subStr=param.substr(index+1)
+	var tableDivElmt=document.getElementById("table"+subStr);
+	var spanElmt=document.getElementById("span"+subStr);	
+	var searchElmt=document.getElementById("search"+subStr);
+
+	tableDivElmt.style.display="block";
+
+	exData = { 
+	    partys: [ 
+	         
+	    ] 
+	}
+
+	for (var i in results)
+	{
+		exData.partys[i]=
+			{
+				name:results[i].partyName,
+				seats:results[i].totalSeatsWon	
+			}
+	}
+
+	console.log(exData.partys);
+
+	YAHOO.example.Basic = function(){
+	 var myColumnDefs = [ 
+	            {key:"Party Name", sortable:true, resizeable:true}, 
+	            {key:"Seats Won", sortable:true,resizeable:true}
+	        ]; 
+	
+	console.log(myColumnDefs);
+
+	var myDataSource = new YAHOO.util.DataSource(exData.partys); 
+	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	myDataSource.responseSchema = { 
+	     fields: ["Party Name","Seats Won"] 
+	}; 
+	
+	var myDataTable = new YAHOO.widget.DataTable("table"+subStr,myColumnDefs, myDataSource, {caption:"DataTable Caption"}); 
+	return 
+		{ 
+	      oDS: myDataSource
+	      
+	    }; 
+	}(); 
+
+	spanElmt.innerHTML=" (close)";
+	searchElmt.style.display="none";
+}
 function insertData(param,results)
 {
 
@@ -173,6 +236,7 @@ function insertData(param,results)
 <div style="display:none;" id="table${state.electionId}">
 
 </div>
+<br/><br/>
 </c:forEach>
 </div>
 

@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
    <%@taglib prefix="s" uri="/struts-tags" %>
    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+   <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
    <%@page import="com.itgrids.partyanalyst.excel.PartyBoothPerformanceVO" %>
 <%@page import="com.itgrids.partyanalyst.excel.BoothResultVO" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -61,29 +62,18 @@
 		<br/>
 		<div>
 			<h4><u>Booth Wise Performance : </u></h4>
-			<table class="searchresultsTable" style="width:auto;text-align:center;margin-right:20px;">		
-					<tr>
-						<th>Booth No</th>
-						<th>Location</th>
-						<th>Villages Covered</th>
-						<th>Mandal</th>
-						<th>Votes Earned</th>
-						<th>Total Voters</th>
-						<th>Votes %</th>
-					</tr>
-					<c:forEach var="booth" items="${boothResult.boothResults}">
-						<tr>
-							<td style="text-align: center;">${booth.partNo}</td>
-							<td style="text-align: left;">${booth.location}</td>
-							<td style="text-align: left;">${booth.villagesCovered}</td>
-							<td style="text-align: center;">${booth.mandal}</td>
-							<td style="text-align: center;">${booth.votesEarned}</td>
-							<td style="text-align: center;">${booth.totalVoters}</td>
-							<td style="text-align: center;">${booth.percentage}</td>
-						</tr>
-					</c:forEach>	
-			</table>
+
+				<display:table class="searchresultsTable" name="${boothResult.boothResults}" defaultorder="ascending" defaultsort="4" style="width:auto;margin-right:20px;"> 
+					<display:column style="text-align: center;" title="Booth No" property="partNo" />
+					<display:column style="text-align: left;" title="Location" property="location" />
+					<display:column style="text-align: left;" title="Villages Covered" property="villagesCovered" />
+					<display:column style="text-align: center;" title="Mandal" property="mandal" />
+					<display:column style="text-align: center;" title="Votes Earned" property="votesEarned" />
+					<display:column style="text-align: center;" title="Total Voters" property="totalVoters" />
+					<display:column style="text-align: center;" title="Percentage" property="percentage" />
+				</display:table>
+
 			</div>
-		</div>
+	</div>
 </body>
 </html>
