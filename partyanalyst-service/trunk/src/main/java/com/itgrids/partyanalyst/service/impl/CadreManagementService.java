@@ -138,7 +138,7 @@ public class CadreManagementService {
 		String userAccessType = userCadreInfo.getUserAccessType();
 		String accessID = userCadreInfo.getUserAccessValue();
 		//Long accessID = new Long(userAccessValue);
-		Map<String,Long> regionLevelZeroCadres = userCadreInfo.getRegionLevelZeroCadres(); 
+		List<SelectOptionVO> regionLevelZeroCadres = userCadreInfo.getRegionLevelZeroCadres(); 
 		if("MLA".equals(userAccessType)){ 
 			List mandals = cadreDAO.findMandalsByConstituencyID(accessID);
 			StringBuilder sbMandals = getFormatedData(mandals,userAccessMandals);
@@ -149,8 +149,9 @@ public class CadreManagementService {
 			
 			List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID());
 			long mandalLevelZeroCadres = userCadreInfo.getUserAccessMandals().size() - cadreSizeMandalWise.size();//getZeroSize(cadreSizeZero4Mandal);
+			SelectOptionVO voObject = new SelectOptionVO(mandalLevelZeroCadres,"MANDAL");
 			if(mandalLevelZeroCadres > 0)
-				regionLevelZeroCadres.put("MANDAL", mandalLevelZeroCadres);
+				regionLevelZeroCadres.add(voObject);
 		}
 		 
 		if("COUNTRY".equals(userAccessType)){
@@ -163,8 +164,9 @@ public class CadreManagementService {
 			
 			List cadreSizeStateWise = cadreDAO.findCadreSizeStateWise(userCadreInfo.getUserID());
 			long stateLevelZeroCadres = userCadreInfo.getUserAccessStates().size() - cadreSizeStateWise.size();//getZeroSize(cadreSizeZero4State);
+			SelectOptionVO voObject = new SelectOptionVO(stateLevelZeroCadres,"STATE");
 			if(stateLevelZeroCadres > 0)
-				regionLevelZeroCadres.put("STATE", stateLevelZeroCadres);
+				regionLevelZeroCadres.add(voObject);
 			
 		}
 		if("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType)){
@@ -177,8 +179,9 @@ public class CadreManagementService {
 			
 			List cadreSizeDistrictWise = cadreDAO.findCadreSizeDistrictWise( userCadreInfo.getUserID());
 			long districtLevelZeroCadres = userCadreInfo.getUserAccessDistricts().size() - cadreSizeDistrictWise.size();//getZeroSize(cadreSizeZero4District);
+			SelectOptionVO voObject = new SelectOptionVO(districtLevelZeroCadres,"DISTRICT");
 			if(districtLevelZeroCadres > 0)
-				regionLevelZeroCadres.put("DISTRICT", districtLevelZeroCadres);
+				regionLevelZeroCadres.add(voObject);
 			
 		}
 		if("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType) || "DISTRICT".equals(userAccessType)){
@@ -191,8 +194,9 @@ public class CadreManagementService {
 			
 			List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID());
 			long mandalLevelZeroCadres = userCadreInfo.getUserAccessMandals().size() - cadreSizeMandalWise.size();//getZeroSize(cadreSizeZero4Mandal);
+			SelectOptionVO voObject = new SelectOptionVO(mandalLevelZeroCadres,"MANDAL");
 			if(mandalLevelZeroCadres > 0)
-				regionLevelZeroCadres.put("MANDAL", mandalLevelZeroCadres);
+				regionLevelZeroCadres.add(voObject);
 			
 		}if("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType)
 				 || "DISTRICT".equals(userAccessType) || "MANDAL".equals(userAccessType)
@@ -205,9 +209,9 @@ public class CadreManagementService {
 				accessID = sbVillages.substring(0, sbVillages.length()-1);
 			List cadreSizeVillageWise = cadreDAO.findCadreSizeVillageWise(userCadreInfo.getUserID());
 			long villageLevelZeroCadres = userCadreInfo.getUserAccessVillages().size() - cadreSizeVillageWise.size();//getZeroSize(cadreSizeZero4Mandal);
-
+			SelectOptionVO voObject = new SelectOptionVO(villageLevelZeroCadres,"VILLAGE");
 			if(villageLevelZeroCadres > 0)
-				regionLevelZeroCadres.put("VILLAGE", villageLevelZeroCadres);
+				regionLevelZeroCadres.add(voObject);
 		}
 		
 		userCadreInfo.setRegionLevelZeroCadres(regionLevelZeroCadres);

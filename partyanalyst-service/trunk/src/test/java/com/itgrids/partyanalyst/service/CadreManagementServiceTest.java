@@ -14,22 +14,30 @@ import org.junit.Test;
 
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.Country;
+import com.itgrids.partyanalyst.model.Tehsil;
 
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.util.DummyCadreData;
 
 public class CadreManagementServiceTest {
-	
+
 	private ICadreDAO cadreDAO;
+	private ICountryDAO countryDAO;
+	private ITehsilDAO tehsilDAO;
 	@Before
 	public void init(){
 		System.out.println("called init method..........");
 		cadreDAO = EasyMock.createMock(ICadreDAO.class);
+		countryDAO = EasyMock.createMock(ICountryDAO.class);
+		tehsilDAO = EasyMock.createMock(ITehsilDAO.class);
 	}
 	@SuppressWarnings("unchecked")
 	@Test
@@ -113,12 +121,12 @@ public class CadreManagementServiceTest {
 		service.setCadreDAO(cadreDAO);
 		
 		userCadreInfo=service.getUserCadresInfo(userCadreInfo);
-		Map<String,Long> mapData = userCadreInfo.getRegionLevelZeroCadres();
+		List<SelectOptionVO> voData = userCadreInfo.getRegionLevelZeroCadres();
 		
-		Assert.assertEquals(new Long(1), mapData.get("STATE"));
-		Assert.assertEquals(new Long(6), mapData.get("DISTRICT"));
-		Assert.assertEquals(new Long(9), mapData.get("MANDAL"));
-		Assert.assertEquals(new Long(20), mapData.get("VILLAGE"));
+		Assert.assertEquals(new Long(1), voData.get(0).getId());
+		Assert.assertEquals(new Long(6), voData.get(1).getId());
+		Assert.assertEquals(new Long(9), voData.get(2).getId());
+		Assert.assertEquals(new Long(20), voData.get(3).getId());
 		
 		Long countryLevelCadres = userCadreInfo.getRegionLevelCadres().get("COUNTRY");
 		Long stateLevelCadres = userCadreInfo.getRegionLevelCadres().get("STATE");
@@ -206,12 +214,12 @@ public class CadreManagementServiceTest {
 		service.setCadreDAO(cadreDAO);
 		
 		userCadreInfo = service.getUserAccessRegions(userCadreInfo);
-		Map<String,Long> mapData = userCadreInfo.getRegionLevelZeroCadres();
+		List<SelectOptionVO> voData = userCadreInfo.getRegionLevelZeroCadres();
 		
-		Assert.assertEquals(new Long(1), mapData.get("STATE"));
-		Assert.assertEquals(new Long(6), mapData.get("DISTRICT"));
-		Assert.assertEquals(new Long(9), mapData.get("MANDAL"));
-		Assert.assertEquals(new Long(20), mapData.get("VILLAGE"));
+		Assert.assertEquals(new Long(1), voData.get(0).getId());
+		Assert.assertEquals(new Long(6), voData.get(1).getId());
+		Assert.assertEquals(new Long(9), voData.get(2).getId());
+		Assert.assertEquals(new Long(20), voData.get(3).getId());
 		
 	}
 	
@@ -276,18 +284,13 @@ public class CadreManagementServiceTest {
 		service.setCadreDAO(cadreDAO);
 		
 		userCadreInfo = service.getUserAccessRegions(userCadreInfo);
-		Map<String,Long> mapData = userCadreInfo.getRegionLevelZeroCadres();
-		java.util.Set set = mapData.entrySet();
-		java.util.Iterator it = set.iterator();
-		while(it.hasNext()){
-			Map.Entry entry = (Map.Entry)it.next();
-			System.out.println(entry.getKey()+"="+entry.getValue());
-		}
-		Assert.assertEquals(null, mapData.get("COUNTRY"));
-		Assert.assertEquals(null, mapData.get("STATE"));
-		Assert.assertEquals(new Long(6), mapData.get("DISTRICT"));
-		Assert.assertEquals(new Long(9), mapData.get("MANDAL"));
-		Assert.assertEquals(new Long(20), mapData.get("VILLAGE"));
+		List<SelectOptionVO> voData = userCadreInfo.getRegionLevelZeroCadres();
+		/*
+		Assert.assertEquals(null, voData.get(1));//country
+		Assert.assertEquals(null, voData.get(1));//state
+*/		Assert.assertEquals(new Long(6), voData.get(0).getId());//district
+		Assert.assertEquals(new Long(9), voData.get(1).getId());//mandal
+		Assert.assertEquals(new Long(20), voData.get(2).getId());//village
 	} 
 	//007
 	
@@ -340,18 +343,18 @@ public class CadreManagementServiceTest {
 		service.setCadreDAO(cadreDAO);
 		
 		userCadreInfo = service.getUserAccessRegions(userCadreInfo);
-		Map<String,Long> mapData = userCadreInfo.getRegionLevelZeroCadres();
-		java.util.Set set = mapData.entrySet();
+		List<SelectOptionVO> voData = userCadreInfo.getRegionLevelZeroCadres();
+		/*java.util.Set set = mapData.entrySet();
 		java.util.Iterator it = set.iterator();
 		while(it.hasNext()){
 			Map.Entry entry = (Map.Entry)it.next();
 			System.out.println(entry.getKey()+"="+entry.getValue());
-		}
-		Assert.assertEquals(null, mapData.get("COUNTRY"));
-		Assert.assertEquals(null, mapData.get("STATE"));
-		Assert.assertEquals(null, mapData.get("DISTRICT")); 
-		Assert.assertEquals(new Long(9), mapData.get("MANDAL"));
-		Assert.assertEquals(new Long(20), mapData.get("VILLAGE"));
+		}*//*
+		Assert.assertEquals(null, voData.get(1));
+		Assert.assertEquals(null, voData.get(1));
+		Assert.assertEquals(null, voData.get(1));*/ 
+		Assert.assertEquals(new Long(9), voData.get(0).getId());
+		Assert.assertEquals(new Long(20), voData.get(1).getId());
 	}
 	
 	@Test
@@ -385,18 +388,13 @@ public class CadreManagementServiceTest {
 		service.setCadreDAO(cadreDAO);
 		
 		userCadreInfo = service.getUserAccessRegions(userCadreInfo);
-		Map<String,Long> mapData = userCadreInfo.getRegionLevelZeroCadres();
-		java.util.Set set = mapData.entrySet();
-		java.util.Iterator it = set.iterator();
-		while(it.hasNext()){
-			Map.Entry entry = (Map.Entry)it.next();
-			System.out.println(entry.getKey()+"="+entry.getValue());
-		}
-		Assert.assertEquals(null, mapData.get("COUNTRY"));
-		Assert.assertEquals(null, mapData.get("STATE"));
-		Assert.assertEquals(null, mapData.get("DISTRICT"));
-		Assert.assertEquals(null, mapData.get("MANDAL"));
-		Assert.assertEquals(new Long(20), mapData.get("VILLAGE"));
+		List<SelectOptionVO> voData = userCadreInfo.getRegionLevelZeroCadres();
+
+		/*Assert.assertEquals(null, voData.get(1));
+		Assert.assertEquals(null, voData.get(1));
+		Assert.assertEquals(null, voData.get(1));
+		Assert.assertEquals(null, voData.get(1));*/
+		Assert.assertEquals(new Long(20), voData.get(0).getId());
 	}
 
 	@Test
@@ -608,9 +606,20 @@ public class CadreManagementServiceTest {
 	public void testGetCadresByVillage(){
 		CadreManagementService service = new CadreManagementService();
 		List<Cadre> cadres = DummyCadreData.getCadres();
+		Country country = new Country(1L,"India");
 		EasyMock.expect(cadreDAO.findCadresByVillage(1L,1L)).andReturn(cadres);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
+		EasyMock.expect(countryDAO.get(1L)).andReturn(country);
+		EasyMock.replay(countryDAO);
+		service.setCountryDAO(countryDAO);
+		
+		Tehsil tehsil = new Tehsil(1L);
+		tehsil.setTehsilName("tehsil_Name");
+		EasyMock.expect(tehsilDAO.get(1L)).andReturn(tehsil);
+		EasyMock.replay(tehsilDAO);
+		service.setTehsilDAO(tehsilDAO);
+		
 		List<CadreInfo> result = service.getCadresByVillage(1L, 1L);
 		Assert.assertEquals(2, result.size());
 		Assert.assertEquals(new Long(1), result.get(0).getCadreLevel());
