@@ -36,27 +36,25 @@ public class RegistrationAction extends ActionSupport implements
 	 private String pincode;
 	 private String accessType;
 	 private String accessValue;
-	 //narender start
+	 
 	 private UserService userService;
 	 private List<String> type = new ArrayList<String>();
 	 private List<String> dobDay = new ArrayList<String>();
 	 private List<String> dobMonth = new ArrayList<String>();
 	 private List<String> dobYear = new ArrayList<String>();
 	 
-	 
-		
-		public void setUserService(UserService userService){
-			this.userService  = userService;
-		}
-		
-		public List<String> getType() {
-			return type;
-		}
+	public void setUserService(UserService userService){
+		this.userService  = userService;
+	}
+	
+	public List<String> getType() {
+		return type;
+	}
 
-		public void setType(List<String> type) {
-			this.type = type;
-		}
-		//narender end
+	public void setType(List<String> type) {
+		this.type = type;
+	}
+	
 	 HttpServletRequest request;
 	 HttpServletResponse response;
 	 IRegistrationService registrationService;
@@ -118,16 +116,19 @@ public class RegistrationAction extends ActionSupport implements
 		this.setDateOfBirth(dob);
 		
 		String requestStatus = registrationService.saveRegistration(regVO);
+		String name = regVO.getFirstName() + " " + regVO.getLastName();
 		if(requestStatus != "SUCCESS"){
 			addActionError("UserName Already Exists");
 			return ERROR;
 		}
 		else{
 			session=request.getSession();
-			session.setAttribute("userName", regVO.getUserName());
-			session.setAttribute("password",regVO.getPassword());
-			session.setAttribute("registrationStatus", true);
-			regVO.setAccessType(request.getParameter("accessType"));
+			//session.setAttribute("UserName", name);
+			//session.setAttribute("loginStatus", "out");
+			//regVO.setAccessType(request.getParameter("accessType"));
+			
+			//session.setAttribute("USER", regVO);
+			session.setAttribute("USER_REG_SUCCESS", "User Successfully Registered");
 			
 			return SUCCESS;
 		}
