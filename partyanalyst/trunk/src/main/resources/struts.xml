@@ -147,6 +147,10 @@
         <action name="partyBoothResult2Action" class="partyBoothResult2Action">
             <result name="success">/jsp/boothResults2.jsp</result>
         </action>
+        
+         <action name="partyBoothResult2AjaxAction" class="com.itgrids.partyanalyst.web.action.PartyBoothResult2Action">
+            <result name="success" type="json"/>
+        </action>
 		
 		<action name="cadresInfoAjaxAction" class="cadresInfoAjaxAction">
 			<result type="json" name="success"/>
