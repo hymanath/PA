@@ -59,7 +59,7 @@
 				}
 				
 				for (var j in  regionLevelCadres)
-				{
+				{	
 					buildRegionCadreTree(regionLevelCadres[j].id,regionLevelCadres[j].val);
 				}
 			}
@@ -71,12 +71,22 @@
 				var tree;
 				var myobj;
 				
-				tree = new YAHOO.widget.TreeView("zeroCadreInfoDivBody");				 
+				var divElmt = document.getElementById("zeroCadreInfoDivBody");
+				
+				if(!divElmt)
+					alert("No div element present to create tree");
+
+				var childDivElmt = document.createElement('div');
+				childDivElmt.setAttribute('id',val+''+id+'ZeroCadreDiv');
+				divElmt.appendChild(childDivElmt);
+				
+
+				tree = new YAHOO.widget.TreeView(childDivElmt.id);					 
 				tree.setDynamicLoad(loadNodeData);				
 				var rootNode = tree.getRoot(); 				
 
 				myobj = { label: myLabel, labelAccessValue: val,id:id ,type:'ZeroLevelCadre'} ;
-				console.log(myobj);
+				
 				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);
 				
 
@@ -89,13 +99,22 @@
 				
 				var tree;
 				var myobj;
+				var divElmt = document.getElementById("cadreLevelInfoDivBody");
 				
-				tree = new YAHOO.widget.TreeView("cadreLevelInfoDivBody");				 
+				if(!divElmt)
+					alert("No div element present to create tree");
+
+				var childDivElmt = document.createElement('div');
+				childDivElmt.setAttribute('id',val+''+id+'RegioncadreDiv');
+				divElmt.appendChild(childDivElmt);
+				
+
+				tree = new YAHOO.widget.TreeView(childDivElmt.id);				 
 				tree.setDynamicLoad(loadNodeData);				
 				var rootNode = tree.getRoot(); 				
 
 				myobj = { label: myLabel, labelAccessValue: val,id:id ,type:'RegionLevelCadre'} ;
-				console.log(myobj);
+				
 				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);				
 
 				tree.render();
