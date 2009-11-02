@@ -101,7 +101,7 @@
 				tree.render();
 			}		
 			
-			function showTree()
+			function showTree(cType)
 			{
 				//'${userCadresInfoVO.userAccessType}'
 				var myLabel='${userCadresInfoVO.userAccessDisplayValue}-${userCadresInfoVO.totalCadres}';
@@ -113,7 +113,7 @@
 				tree.setDynamicLoad(loadNodeData);				
 				var rootNode = tree.getRoot(); 				
 
-				myobj = { label: myLabel, labelAccessValue: '${userCadresInfoVO.userAccessType}',id:'${userCadresInfoVO.userAccessValue}',type:'TotalCadre' } ; 
+				myobj = { label: myLabel, labelAccessValue: '${userCadresInfoVO.userAccessType}',id:'${userCadresInfoVO.userAccessValue}',type:cType } ; 
 				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);
 				
 
@@ -133,12 +133,12 @@
 									{
 										try 
 										{
-											myResults = YAHOO.lang.JSON.parse(o.responseText);								
+											myResults = YAHOO.lang.JSON.parse(o.responseText);						
 											
 											if(myResults.cadreInfo[0])											
 												buildHtmlNode(myResults.cadreInfo,node);																					
 											else											
-												buildTextNode(myResults.cadreRegionInfo,node);																			
+												buildTextNode(myResults,node);																			
 											
 											fnLoadComplete(); 
 											var anchortag = YAHOO.util.Dom.get("cadreInfoDivBody").getElementsByTagName("a");											
@@ -185,7 +185,7 @@
 					str+='<td><a name="cadreName" href="cadreInformationPageAction.action">'+cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName+'</a></td>';		
 					str+='<td>'+cadreData[i].mobile+'</td>';
 					str+='<td>'+cadreData[i].landLineNo+'</td>';
-					str+='<td>'+cadreData[i].strCadreLevel+'-'+strCadreLevelValue+'</td>';
+					str+='<td>'+cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue+'</td>';
 					str+='<td>'+cadreData[i].email+'</td>';					
 					str+='</tr>';
 				}
@@ -198,14 +198,15 @@
 				
 			}
 
-			function buildTextNode(cadreData,node)
+			function buildTextNode(results,node)
 			{
-				for (var i in cadreData)
+				for (var i in results.cadreRegionInfo)
 				{ 
 					var myobj = { 
-									label	: cadreData[i].regionName+"-"+cadreData[i].cadreCount,
-									labelAccessValue : cadreData[i].region,
-									id		: cadreData[i].regionId 
+									label				: results.cadreRegionInfo[i].regionName+"-"+results.cadreRegionInfo[i].cadreCount,
+									labelAccessValue	: results.cadreRegionInfo[i].region,
+									id					: results.cadreRegionInfo[i].regionId ,
+									type				: results.cadreType
 								} ;
 					
 					var tempNode = new YAHOO.widget.TextNode(myobj, node, false); 
@@ -239,14 +240,7 @@
 				</div>
 			
 			<div id="zeroCadreInfoDivBody" style="padding-left: 50px;padding-top: 10px">				
-				<table>
-					<c:forEach var="pd" items="${userCadresInfoVO.regionLevelZeroCadres}" >
-					<tr>
-						<td><c:out value="${pd.id}" /> </td>
-						<td><c:out value="${pd.name}" /></td>
-					</tr>
-					</c:forEach>			
-				</table>
+				
 			</div>
 		</div>
 		<div id="cadreLevelInfoDiv" style="margin-bottom: 20px;">
@@ -255,15 +249,7 @@
 				Region Level Cadres Available <b>:</b>
 			</div>
 			<div id="cadreLevelInfoDivBody" style="padding-left: 50px;padding-top: 10px"">
-				<table>
-				<c:forEach var="pd1" items="${userCadresInfoVO.regionLevelCadres}" >
-				<tr>
-					<td><c:out value="${pd1.key}" /></td>
-					<td>  level cadres - </td>
-					<td><c:out value="${pd1.value}" /></td>
-				</tr>
-				</c:forEach>
-				</table>
+				
 			</div>
 		</div>	
 		<div id="cadreRegistration" style="margin-left: 50px;">
@@ -281,7 +267,7 @@
 	</table>
 		<script type="text/javascript">
 
-			showTree();
+			showTree("TotalCadre");
 
 			<c:forEach var="pd" items="${userCadresInfoVO.regionLevelZeroCadres}" >
 				buildJSObject('${pd.id}','${pd.name}',"regionLevelZeroCadres");
