@@ -141,7 +141,9 @@
         </action>
         
         <action name="partyBoothResult1AjaxAction" class="partyBoothResult1Action">
-            <result type="json" name="success"/>
+            <result type="json" name="success">
+            	<param name="root">constituencyVOs</param>
+            </result>
         </action>
         
         <action name="partyBoothResult2Action" class="partyBoothResult2Action">
