@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,7 +123,6 @@ public class CadreManagementService {
 		
 		userCadreInfo = getUserAccessRegions(userCadreInfo);
 		userCadreInfo = getRegionLevelCadresCount(userCadreInfo);
-		System.out.println(userCadreInfo.getRegionLevelCadres().size());
 		
 		return userCadreInfo;
 	}
@@ -134,6 +134,11 @@ public class CadreManagementService {
 		Map<Long, String> userAccessDistricts = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessMandals = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessVillages = new LinkedHashMap<Long, String>();
+
+		Map<Long, String> zeroCadreStates = new LinkedHashMap<Long, String>();
+		Map<Long, String> zeroCadreDistricts = new LinkedHashMap<Long, String>();
+		Map<Long, String> zeroCadreMandals = new LinkedHashMap<Long, String>();
+		Map<Long, String> zeroCadreVillages = new LinkedHashMap<Long, String>();
 		
 		String userAccessType = userCadreInfo.getUserAccessType();
 		String accessID = userCadreInfo.getUserAccessValue();
@@ -141,14 +146,14 @@ public class CadreManagementService {
 		List<SelectOptionVO> regionLevelZeroCadres = userCadreInfo.getRegionLevelZeroCadres(); 
 		if("MLA".equals(userAccessType)){ 
 			List mandals = cadreDAO.findMandalsByConstituencyID(accessID);
-			StringBuilder sbMandals = getFormatedData(mandals,userAccessMandals);
+			List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID());
+			long mandalLevelZeroCadres = mandals.size() - cadreSizeMandalWise.size();
+			StringBuilder sbMandals = getFormatedData(mandals,userAccessMandals,cadreSizeMandalWise,zeroCadreMandals);
 			userCadreInfo.setUserAccessMandals(userAccessMandals);
 
 			if(sbMandals!=null && sbMandals.length()>0)
 				accessID = sbMandals.substring(0, sbMandals.length()-1);
 			
-			List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID());
-			long mandalLevelZeroCadres = userCadreInfo.getUserAccessMandals().size() - cadreSizeMandalWise.size();//getZeroSize(cadreSizeZero4Mandal);
 			SelectOptionVO voObject = new SelectOptionVO(mandalLevelZeroCadres,"MANDAL");
 			if(mandalLevelZeroCadres > 0)
 				regionLevelZeroCadres.add(voObject);
@@ -156,14 +161,14 @@ public class CadreManagementService {
 		 
 		if("COUNTRY".equals(userAccessType)){
 			List states = cadreDAO.findStatesByCountryID(accessID);
-			StringBuilder sbStates = getFormatedData(states,userAccessStates);
+			List cadreSizeStateWise = cadreDAO.findCadreSizeStateWise(userCadreInfo.getUserID());
+			long stateLevelZeroCadres = states.size() - cadreSizeStateWise.size();
+			StringBuilder sbStates = getFormatedData(states,userAccessStates,cadreSizeStateWise,zeroCadreStates);
 			userCadreInfo.setUserAccessStates(userAccessStates);
 
 			if(sbStates!=null && sbStates.length()>0)
 				accessID = sbStates.substring(0, sbStates.length()-1);
 			
-			List cadreSizeStateWise = cadreDAO.findCadreSizeStateWise(userCadreInfo.getUserID());
-			long stateLevelZeroCadres = userCadreInfo.getUserAccessStates().size() - cadreSizeStateWise.size();//getZeroSize(cadreSizeZero4State);
 			SelectOptionVO voObject = new SelectOptionVO(stateLevelZeroCadres,"STATE");
 			if(stateLevelZeroCadres > 0)
 				regionLevelZeroCadres.add(voObject);
@@ -171,14 +176,14 @@ public class CadreManagementService {
 		}
 		if("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType)){
 			List districts = cadreDAO.findDistrictsByStateID(accessID);
-			StringBuilder sbDistricts = getFormatedData(districts,userAccessDistricts);
+			List cadreSizeDistrictWise = cadreDAO.findCadreSizeDistrictWise( userCadreInfo.getUserID());
+			long districtLevelZeroCadres = districts.size() - cadreSizeDistrictWise.size();//getZeroSize(cadreSizeZero4District);
+			StringBuilder sbDistricts = getFormatedData(districts,userAccessDistricts,cadreSizeDistrictWise,zeroCadreDistricts);
 			userCadreInfo.setUserAccessDistricts(userAccessDistricts);
 
 			if(sbDistricts!=null && sbDistricts.length()>0)
 				accessID = sbDistricts.substring(0, sbDistricts.length()-1);
 			
-			List cadreSizeDistrictWise = cadreDAO.findCadreSizeDistrictWise( userCadreInfo.getUserID());
-			long districtLevelZeroCadres = userCadreInfo.getUserAccessDistricts().size() - cadreSizeDistrictWise.size();//getZeroSize(cadreSizeZero4District);
 			SelectOptionVO voObject = new SelectOptionVO(districtLevelZeroCadres,"DISTRICT");
 			if(districtLevelZeroCadres > 0)
 				regionLevelZeroCadres.add(voObject);
@@ -186,29 +191,32 @@ public class CadreManagementService {
 		}
 		if("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType) || "DISTRICT".equals(userAccessType)){
 			List mandals = cadreDAO.findMandalsByDistrictID(accessID);
-			StringBuilder sbMandals = getFormatedData(mandals,userAccessMandals);
+			List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID());
+			long mandalLevelZeroCadres = mandals.size() - cadreSizeMandalWise.size();//getZeroSize(cadreSizeZero4Mandal);
+			StringBuilder sbMandals = getFormatedData(mandals,userAccessMandals, cadreSizeMandalWise, zeroCadreMandals);
 			userCadreInfo.setUserAccessMandals(userAccessMandals);
 
 			if(sbMandals!=null && sbMandals.length()>0)
 				accessID = sbMandals.substring(0, sbMandals.length()-1);
 			
-			List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID());
-			long mandalLevelZeroCadres = userCadreInfo.getUserAccessMandals().size() - cadreSizeMandalWise.size();//getZeroSize(cadreSizeZero4Mandal);
 			SelectOptionVO voObject = new SelectOptionVO(mandalLevelZeroCadres,"MANDAL");
 			if(mandalLevelZeroCadres > 0)
 				regionLevelZeroCadres.add(voObject);
 			
-		}if("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType)
+		}
+		if("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType)
 				 || "DISTRICT".equals(userAccessType) || "MANDAL".equals(userAccessType)
 				 || "MLA".equals(userAccessType)){
 			List villages = cadreDAO.findVillagesByTehsilID(accessID);
-			StringBuilder sbVillages = getFormatedData(villages,userAccessVillages);
+			List cadreSizeVillageWise = cadreDAO.findCadreSizeVillageWise(userCadreInfo.getUserID());
+			long villageLevelZeroCadres = villages.size() - cadreSizeVillageWise.size();//getZeroSize(cadreSizeZero4Mandal);
+			
+			StringBuilder sbVillages = getFormatedData(villages,userAccessVillages,cadreSizeVillageWise,zeroCadreVillages);
 			userCadreInfo.setUserAccessVillages(userAccessVillages);
 
-			if(sbVillages!=null && sbVillages.length()>0)
-				accessID = sbVillages.substring(0, sbVillages.length()-1);
-			List cadreSizeVillageWise = cadreDAO.findCadreSizeVillageWise(userCadreInfo.getUserID());
-			long villageLevelZeroCadres = userCadreInfo.getUserAccessVillages().size() - cadreSizeVillageWise.size();//getZeroSize(cadreSizeZero4Mandal);
+			/*if(sbVillages!=null && sbVillages.length()>0)
+				accessID = sbVillages.substring(0, sbVillages.length()-1);*/
+			
 			SelectOptionVO voObject = new SelectOptionVO(villageLevelZeroCadres,"VILLAGE");
 			if(villageLevelZeroCadres > 0)
 				regionLevelZeroCadres.add(voObject);
@@ -216,6 +224,33 @@ public class CadreManagementService {
 		
 		userCadreInfo.setRegionLevelZeroCadres(regionLevelZeroCadres);
 		return userCadreInfo;
+	}
+	@SuppressWarnings("unchecked")
+	public StringBuilder getFormatedData(List regionData, Map<Long, String> userAccessRegions, 
+			List cadreAvailableRegions, Map<Long, String> zeroCadreRegions){
+		
+		StringBuilder sb = new StringBuilder();
+		Map<Long, Object> availableCadreRegions = new HashMap<Long, Object>();
+		for(int i=0; i<cadreAvailableRegions.size(); i++){
+			Object[] objInfo = (Object[]) cadreAvailableRegions.get(i);
+			Long key = new Long(objInfo[0].toString());
+			availableCadreRegions.put(key, objInfo[0]);
+		}
+		
+		
+		for(int i=0; i<regionData.size(); i++){
+			Object[] objInfo = (Object[]) regionData.get(i);
+			Long key = new Long(objInfo[0].toString());
+			String value = objInfo[1].toString();
+			userAccessRegions.put(key, value);
+			if(null==availableCadreRegions.get(key)){
+				zeroCadreRegions.put(key, value);				
+			}else{
+				sb.append(key).append(",");
+			}
+		}
+		
+		return sb;
 	}
 	@SuppressWarnings("unchecked")
 	public StringBuilder getFormatedData(List regionData, Map<Long, String> userAccessRegions){
@@ -333,38 +368,10 @@ public class CadreManagementService {
 	}
 	
 	public List<CadreInfo> getCadresByVillage(Long villageID, Long userID){
-		System.out.println("Testing.....Testing...........Testing...............................");
 		List<CadreInfo> formattedData = new ArrayList<CadreInfo>();
 		List<Cadre> cadresList = cadreDAO.findCadresByVillage(villageID, userID);
 		for(Cadre cadre:cadresList){
-			System.out.println("MobileNO============="+cadre.getMobile());
-			CadreInfo cadreInfo = new CadreInfo();
-			cadreInfo.setCadreID(cadre.getCadreId());
-			cadreInfo.setFirstName(cadre.getFirstName());
-			cadreInfo.setMiddleName(cadre.getMiddleName());
-			cadreInfo.setLastName(cadre.getLastName());
-			cadreInfo.setGender(cadre.getGender());
-			cadreInfo.setMobile(cadre.getMobile());
-			cadreInfo.setLandLineNo("-");
-			cadreInfo.setEmail(cadre.getEmail());
-			String level = cadre.getCadreLevel().getLevel();
-			cadreInfo.setCadreLevel(cadre.getCadreLevel().getCadreLevelID());
-			cadreInfo.setStrCadreLevel(level);
-			String levelValue = "";
-			Long levelValueID = cadre.getCadreLevelValue();
-			if("COUNTRY".equals(level)){
-				levelValue = getCountryName(levelValueID);
-			}else if("STATE".equals(level)){
-				levelValue = getStateName(levelValueID);
-			}else if("DISTRICT".equals(level)){
-				levelValue = getDistrictName(levelValueID);
-			}else if("CONSTITUENCY".equals(level)){
-				levelValue = getConstituencyName(levelValueID);
-			}else if("MANDAL".equals(level)){
-				levelValue = getMandalName(levelValueID);
-			}
-			cadreInfo.setCadreLevelValue(levelValueID);
-			cadreInfo.setStrCadreLevelValue(levelValue);
+			CadreInfo cadreInfo = convertCadreToCadreInfo(cadre);
 			formattedData.add(cadreInfo);
 		}
 		return formattedData;
@@ -479,5 +486,47 @@ public class CadreManagementService {
 		if(country!=null)
 			name=country.getCountryName();
 		return name;
+	}
+	
+	public List<CadreInfo> getCadresByCadreLevel(String cadreLevel, Long userID){
+		List<CadreInfo> cadreInfoList = new ArrayList<CadreInfo>();
+		List<Cadre> cadresList = cadreDAO.findCadresByCadreLevel(cadreLevel,userID);
+		for(Cadre cadre:cadresList){
+			CadreInfo cadreInfo = convertCadreToCadreInfo(cadre);
+			cadreInfoList.add(cadreInfo);
+		}
+		return cadreInfoList;
+	}
+	
+	public CadreInfo convertCadreToCadreInfo(Cadre cadre){
+		CadreInfo cadreInfo = new CadreInfo();
+		cadreInfo.setCadreID(cadre.getCadreId());
+		cadreInfo.setFirstName(cadre.getFirstName());
+		cadreInfo.setMiddleName(cadre.getMiddleName());
+		cadreInfo.setLastName(cadre.getLastName());
+		cadreInfo.setGender(cadre.getGender());
+		cadreInfo.setMobile(cadre.getMobile());
+		cadreInfo.setLandLineNo("-");
+		cadreInfo.setEmail(cadre.getEmail());
+		String level = cadre.getCadreLevel().getLevel();
+		cadreInfo.setCadreLevel(cadre.getCadreLevel().getCadreLevelID());
+		cadreInfo.setStrCadreLevel(level);
+		String levelValue = "";
+		Long levelValueID = cadre.getCadreLevelValue();
+		if("COUNTRY".equals(level)){
+			levelValue = getCountryName(levelValueID);
+		}else if("STATE".equals(level)){
+			levelValue = getStateName(levelValueID);
+		}else if("DISTRICT".equals(level)){
+			levelValue = getDistrictName(levelValueID);
+		}else if("CONSTITUENCY".equals(level)){
+			levelValue = getConstituencyName(levelValueID);
+		}else if("MANDAL".equals(level)){
+			levelValue = getMandalName(levelValueID);
+		}
+		cadreInfo.setCadreLevelValue(levelValueID);
+		cadreInfo.setStrCadreLevelValue(levelValue);
+		
+		return cadreInfo;
 	}
 }

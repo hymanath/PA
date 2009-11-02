@@ -39,9 +39,15 @@ public class UserCadresInfoVO implements Serializable{
 	 
 	private Map<Long, String> userAccessStates = null;
 	private Map<Long, String> userAccessDistricts = null;
-	//private Map<Long, String> userAccessConstituencies = new LinkedHashMap<Long, String>();
 	private Map<Long, String> userAccessMandals = null;
 	private Map<Long, String> userAccessVillages = null;
+	
+	private Map<Long, String> zeroCadreStates = null;
+	private Map<Long, String> zeroCadreDistricts = null;
+	private Map<Long, String> zeroCadreMandals = null;
+	private Map<Long, String> zeroCadreVillages = null;
+	
+	
 	
 
 	public Long getUserID() {
@@ -100,13 +106,7 @@ public class UserCadresInfoVO implements Serializable{
 	public void setUserAccessDistricts(Map<Long, String> userAccessDistricts) {
 		this.userAccessDistricts = userAccessDistricts;
 	}
-	/*public Map<Long, String> getUserAccessConstituencies() {
-		return userAccessConstituencies;
-	}
-	public void setUserAccessConstituencies(
-			Map<Long, String> userAccessConstituencies) {
-		this.userAccessConstituencies = userAccessConstituencies;
-	}*/
+	
 	public Map<Long, String> getUserAccessMandals() {
 		return userAccessMandals;
 	}
@@ -125,5 +125,28 @@ public class UserCadresInfoVO implements Serializable{
 	public void setUserAccesDisplayValue(String userAccesDisplayValue) {
 		this.userAccesDisplayValue = userAccesDisplayValue;
 	}
-	
+	public Map<Long, String> getZeroCadreStates() {
+		return zeroCadreStates;
+	}
+	public void setZeroCadreStates(Map<Long, String> zeroCadreStates) {
+		this.zeroCadreStates = zeroCadreStates;
+	}
+	public Map<Long, String> getZeroCadreDistricts() {
+		return zeroCadreDistricts;
+	}
+	public void setZeroCadreDistricts(Map<Long, String> zeroCadreDistricts) {
+		this.zeroCadreDistricts = zeroCadreDistricts;
+	}
+	public Map<Long, String> getZeroCadreMandals() {
+		return zeroCadreMandals;
+	}
+	public void setZeroCadreMandals(Map<Long, String> zeroCadreMandals) {
+		this.zeroCadreMandals = zeroCadreMandals;
+	}
+	public Map<Long, String> getZeroCadreVillages() {
+		return zeroCadreVillages;
+	}
+	public void setZeroCadreVillages(Map<Long, String> zeroCadreVillages) {
+		this.zeroCadreVillages = zeroCadreVillages;
+	}
 }

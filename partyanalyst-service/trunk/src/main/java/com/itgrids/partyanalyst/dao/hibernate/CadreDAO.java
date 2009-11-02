@@ -1,14 +1,14 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.model.Cadre;
+
+
 /**
  * 
  * @author Narender Akula
@@ -162,5 +162,14 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		List result = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName, count(model.tehsil.tehsilId) from Cadre model " +
 				"where model.registration.registrationId = "+userID+" and model.tehsil.tehsilId in(" + mandalIDs + ") group by model.tehsil.tehsilId");
 		return result;
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadresByCadreLevel(String cadreLevel, Long userID){
+		Object[] params = {userID,cadreLevel};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.cadreLevel.level=?", params); 
+		return results;
 	}
 }
