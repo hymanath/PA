@@ -7,6 +7,7 @@
 	<body>
 		<c:remove var="loginStatus" scope="session" />
 		<c:remove var="USER" scope="session" />
+		<c:remove var="USERCADRESINFOVO" scope="session" />
 		<p> You are successfully logged out </p><br/><br/>
 	</body>
 </html>

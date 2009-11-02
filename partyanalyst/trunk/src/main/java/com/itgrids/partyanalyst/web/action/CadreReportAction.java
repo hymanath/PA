@@ -59,6 +59,7 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 			userCadresInfoVO.setUserAccessDisplayValue(mandalName);
 		}
 		userCadresInfoVO = cadreManagementService.getUserCadresInfo(userCadresInfoVO);
+		session.setAttribute("USERCADRESINFOVO", userCadresInfoVO);
 		return Action.SUCCESS;
 	}
 	public void setServletContext(ServletContext arg0) {

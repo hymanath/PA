@@ -151,6 +151,29 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		else if(cadreType.equalsIgnoreCase("RegionLevelCadre"))
 		{
 			System.out.println("In if Region level cadre");
+			cadreInfo = cadreManagementService.getCadresByCadreLevel(region, userID);
+			
+			this.setCadreInfo(cadreInfo);
+			/*
+			if(region.equalsIgnoreCase("State"))
+			{
+			}
+			else if(region.equalsIgnoreCase("District"))
+			{		
+			}
+			else if(region.equalsIgnoreCase("Constituency"))
+			{
+			}
+			else if(region.equalsIgnoreCase("Mandal"))
+			{
+			}
+			else if(region.equalsIgnoreCase("Village"))
+			{
+				
+				cadreInfo = cadreManagementService.getCadresByVillage(new Long(regionId), userID);
+				
+				this.setCadreInfo(cadreInfo);
+			}*/
 		}
 				
 		return Action.SUCCESS;		
