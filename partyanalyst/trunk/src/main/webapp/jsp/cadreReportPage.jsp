@@ -265,7 +265,7 @@
 		<div id="cadreLevelInfoDiv" style="margin-bottom: 20px;">
 			<div id="cadreLevelInfoDivHead">
 				<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
-				Region Level Cadres Available <b>:</b>
+				Cadre Details By Cadre Level <b>:</b>
 			</div>
 			<div id="cadreLevelInfoDivBody" style="padding-left: 50px;padding-top: 10px"">
 				
