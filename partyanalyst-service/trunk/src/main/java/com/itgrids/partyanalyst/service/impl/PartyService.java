@@ -11,8 +11,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -44,7 +43,7 @@ public class PartyService implements IPartyService {
 	private static int POSITIVE_SWING = 10;
 	private static int NEGATIVE_SWING = 10;
 	
-	private final static Log log = LogFactory.getLog(PartyService.class);
+	private final static Logger log = Logger.getLogger(PartyService.class);
 	
 	public void setPartyDAO(IPartyDAO partyDAO){
 		this.partyDAO = partyDAO;
@@ -550,6 +549,24 @@ public class PartyService implements IPartyService {
 			}
 		}
 		return null;
+	}
+	
+	public String getBlo(String str) {
+		String reply = "In getBlo-String";
+		System.out.println(reply);
+		return reply+"+Reply";
+	}
+
+	public String getBlah(String str) {
+		String reply = "In getBlah-String";
+		System.out.println(reply);
+		return reply+"+Reply";
+	}
+
+	public String getBlah(int str) {
+		String reply = "In getBlah-int";
+		System.out.println(reply);
+		return reply+"+Reply";
 	}
 
 }

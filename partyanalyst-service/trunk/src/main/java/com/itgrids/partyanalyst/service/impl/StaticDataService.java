@@ -5,8 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -15,7 +14,6 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AllianceGroupDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.District;
@@ -37,7 +35,7 @@ public class StaticDataService implements IStaticDataService {
 	private IDistrictDAO districtDAO;
 	private IAllianceGroupDAO  allianceGroupDAO;
 	
-	private final static Log log = LogFactory.getLog(StaticDataService.class);
+	private final static Logger log = Logger.getLogger(StaticDataService.class);
 	
 
 	/**

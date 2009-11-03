@@ -12,5 +12,9 @@ public interface IPartyService {
 	public PartyPerformanceReportVO getPartyPerformanceReport(String state, String party, String year, String electionType, int noOfPositionDistribution);
 
 	public PartyPerformanceReportVO getPartyPerformanceReport(String state, String party, String year, String electionType);
+	
+	public String getBlo(String str);
+	public String getBlah(String str);
+	public String getBlah(int str);
 
 }

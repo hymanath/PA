@@ -319,5 +319,20 @@ public class PartyServiceStub implements IPartyService {
 		return getPartyPerformanceReport(state, party, year, 5);
 	}
 
+	public String getBlah(String str) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getBlah(int str) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getBlo(String str) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
 
