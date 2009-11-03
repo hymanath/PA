@@ -1,9 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Map;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,8 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -24,7 +19,7 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
 public class UploadExcelAction extends ActionSupport implements ServletResponseAware, ServletRequestAware, ServletContextAware {
 	private static final long serialVersionUID = 1L;
-	private final static Log log = LogFactory.getLog(UploadExcelAction.class);
+	private final static Logger log = Logger.getLogger(UploadExcelAction.class);
 
     private HttpServletResponse response;
     private HttpServletRequest request; 

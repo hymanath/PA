@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import net.sf.jasperreports.engine.JRException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -39,7 +37,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class PartyPerformanceAction extends ActionSupport implements ServletRequestAware, ServletResponseAware, ServletContextAware {
 
 	private static final long serialVersionUID = 1L;
-	private final static Log log = LogFactory.getLog(PartyPerformanceAction.class);
+	private final static Logger log = Logger.getLogger(PartyPerformanceAction.class);
 
     private HttpServletRequest request;
     private HttpServletResponse response;

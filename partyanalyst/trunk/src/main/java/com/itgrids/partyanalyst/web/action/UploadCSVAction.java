@@ -3,46 +3,32 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.naming.spi.ObjectFactoryBuilder;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 
-import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import au.com.bytecode.opencsv.bean.CsvToBean;
-import au.com.bytecode.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
 
 import com.itgrids.partyanalyst.csv.Assembly;
 import com.itgrids.partyanalyst.csv.AssemblyConstCandidate;
 import com.itgrids.partyanalyst.csv.AssemblyConstituency;
 import com.itgrids.partyanalyst.helper.Constants;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ConstituencyElection;
-import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
-import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.ElectionType;
-import com.itgrids.partyanalyst.model.Party;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ObjectFactory;
 
 public class UploadCSVAction extends ActionSupport implements ServletResponseAware, ServletRequestAware, ServletContextAware {
 	private static final long serialVersionUID = 1L;
-	private final static Log log = LogFactory.getLog(UploadCSVAction.class);
+	private final static Logger log = Logger.getLogger(UploadCSVAction.class);
 
     private HttpServletResponse response;
     private HttpServletRequest request; 

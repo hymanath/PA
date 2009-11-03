@@ -12,9 +12,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -25,9 +22,10 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
-import com.itgrids.partyanalyst.helper.LegacyJasperInputStream;
-import com.itgrids.partyanalyst.jasper.dataSource.BeanDataSourceProvider;
+import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
+import com.itgrids.partyanalyst.jasper.dataSource.BeanDataSourceProvider;
 
 /**
  * jasper producer for Party performance Report
@@ -37,7 +35,7 @@ import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
 
 public class JasperProducer {
 
-	private final static Log log = LogFactory.getLog(JasperProducer.class);
+	private final static Logger log = Logger.getLogger(JasperProducer.class);
 	
 	public static byte[] createJasperReport(String jasperXML, Map<String, Object> params, PartyPerformanceReportVO partyReportVO) throws JRException {
 		JasperDesign jasperDesign = null;
