@@ -59,7 +59,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadreSizeStateWise(userCadreInfo.getUserID())).andReturn(list);
 		
 		List districts = DummyCadreData.getDistricts();
-		EasyMock.expect(cadreDAO.findDistrictsByStateID("1,2,3")).andReturn(districts);
+		EasyMock.expect(cadreDAO.findDistrictsByStateID("1,2")).andReturn(districts);
 		
 		List cadreSizeDistrictWise = new ArrayList();
 		Object[] obj1110 = {new Long(10), new Long(11)};
@@ -74,7 +74,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadreSizeDistrictWise(userCadreInfo.getUserID())).andReturn(cadreSizeDistrictWise);
 
 		List mandals = DummyCadreData.getMandals();
-		EasyMock.expect(cadreDAO.findMandalsByDistrictID("10,11,12,13,14,21,22,23,24,25,31,32,33")).andReturn(mandals);
+		EasyMock.expect(cadreDAO.findMandalsByDistrictID("10,12,14,22,25,31,33")).andReturn(mandals);
 
 		List cadreSizeMandalWise = new ArrayList();
 		Object[] mandalWiseCadres1 = {new Long(1), new Long(33)};
@@ -88,7 +88,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID())).andReturn(cadreSizeMandalWise);
 		
 		List villages = DummyCadreData.getVillages();
-		EasyMock.expect(cadreDAO.findVillagesByTehsilID("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15")).andReturn(villages);
+		EasyMock.expect(cadreDAO.findVillagesByTehsilID("1,2,5,10,12,13")).andReturn(villages);
 		
 		List cadreSizeVillageWise = new ArrayList();
 		Object[] villageWiseCadres1 = {new Long(2), new Long(33)};
@@ -139,8 +139,6 @@ public class CadreManagementServiceTest {
 		
 		
 	}
-	//public UserCadresInfoVO getUserAccessRegions(UserCadresInfoVO userCadreInfo) throws Exception{
-	
 	
 	@SuppressWarnings("unchecked")
 	@Test
@@ -161,7 +159,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadreSizeStateWise(userCadreInfo.getUserID())).andReturn(list);
 		
 		List districts = DummyCadreData.getDistricts();
-		EasyMock.expect(cadreDAO.findDistrictsByStateID("1,2,3")).andReturn(districts);
+		EasyMock.expect(cadreDAO.findDistrictsByStateID("1,2")).andReturn(districts);
 		
 
 		List cadreSizeDistrictWise = new ArrayList();
@@ -177,7 +175,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadreSizeDistrictWise(userCadreInfo.getUserID())).andReturn(cadreSizeDistrictWise);
 
 		List mandals = DummyCadreData.getMandals();
-		EasyMock.expect(cadreDAO.findMandalsByDistrictID("10,11,12,13,14,21,22,23,24,25,31,32,33")).andReturn(mandals);
+		EasyMock.expect(cadreDAO.findMandalsByDistrictID("10,12,14,22,25,31,33")).andReturn(mandals);
 
 		List cadreSizeMandalWise = new ArrayList();
 		Object[] mandalWiseCadres1 = {new Long(1), new Long(33)};
@@ -191,7 +189,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID())).andReturn(cadreSizeMandalWise);
 		
 		List villages = DummyCadreData.getVillages();
-		EasyMock.expect(cadreDAO.findVillagesByTehsilID("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15")).andReturn(villages);
+		EasyMock.expect(cadreDAO.findVillagesByTehsilID("1,2,5,10,12,13")).andReturn(villages);
 		
 		List cadreSizeVillageWise = new ArrayList();
 		Object[] villageWiseCadres1 = {new Long(2), new Long(33)};
@@ -247,7 +245,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadreSizeDistrictWise(userCadreInfo.getUserID())).andReturn(data11);
 		
 		List mandals = DummyCadreData.getMandals(); 
-		EasyMock.expect(cadreDAO.findMandalsByDistrictID("10,11,12,13,14,21,22,23,24,25,31,32,33")).andReturn(mandals);
+		EasyMock.expect(cadreDAO.findMandalsByDistrictID("10,12,14,22,25,31,33")).andReturn(mandals);
 		
 		List cadreSizeMandalWise = new ArrayList();
 		Object[] mandalWiseCadres1 = {new Long(1), new Long(33)};
@@ -261,7 +259,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID())).andReturn(cadreSizeMandalWise);
 		
 		List villages = DummyCadreData.getVillages();
-		EasyMock.expect(cadreDAO.findVillagesByTehsilID("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15")).andReturn(villages);
+		EasyMock.expect(cadreDAO.findVillagesByTehsilID("1,2,5,10,12,13")).andReturn(villages);
 		
 		List cadreSizeVillageWise = new ArrayList();
 		Object[] villageWiseCadres1 = {new Long(2), new Long(33)};
@@ -320,7 +318,7 @@ public class CadreManagementServiceTest {
 		
 
 		List villages = DummyCadreData.getVillages();
-		EasyMock.expect(cadreDAO.findVillagesByTehsilID("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15")).andReturn(villages);
+		EasyMock.expect(cadreDAO.findVillagesByTehsilID("1,2,5,10,12,13")).andReturn(villages);
 		
 		List cadreSizeVillageWise = new ArrayList();
 		Object[] villageWiseCadres1 = {new Long(2), new Long(33)};
