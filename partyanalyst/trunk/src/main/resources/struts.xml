@@ -66,7 +66,7 @@
         </action>
         
         <action name="ajaxSearchAction" class="com.itgrids.partyanalyst.web.action.AjaxSearchAction" method="getJSON">
-			<result name="success" type="json">Names</result>						
+			<result name="success" type="json" />						
 		</action> 
 		<action name="cncSearchResultsAction" class="com.itgrids.partyanalyst.web.action.CnCSearchResultsAction">
 			<result name="success">/jsp/searchResultsPage.jsp</result>
@@ -169,15 +169,19 @@
            <result name="success"> /jsp/CadreRegisterSuccess.jsp</result>
            <result name="fail"> /jsp/CadreRegisterFail.jsp</result>
         </action> 
-        
+
+        <action name="addRebelsAction" class="addRebelsAction">
+        	<result name="success">/jsp/AddRebels.jsp</result>
+        </action>
+
         <action name="electionComparisonAction" class="electionComparisonAction">
 			<result name="success">/jsp/electionComparisonPage.jsp</result>
-		</action>
-															
+		</action>											
 			
 		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
 			<result name="success">/jsp/electionComparisonReportPage.jsp</result>
 			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
 		</action>
+
 	</package>
 </struts>
