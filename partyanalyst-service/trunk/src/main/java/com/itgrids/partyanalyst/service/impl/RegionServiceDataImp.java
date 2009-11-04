@@ -77,4 +77,48 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		
 		return mandalNames;
 	}
+	
+	public List<SelectOptionVO> getStateDistrictByConstituencyID(Long constituencyID){
+		List stateDistrictConstituency = constituencyDAO.getStateDistrictConstituency(constituencyID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		SelectOptionVO state = new SelectOptionVO();
+		SelectOptionVO district = new SelectOptionVO();
+		SelectOptionVO constituency = new SelectOptionVO();
+		Object[] objVO = (Object[])stateDistrictConstituency.get(0);
+
+		state.setId(new Long(objVO[0].toString()));
+		state.setName(objVO[1].toString());
+
+		district.setId(new Long(objVO[2].toString()));
+		district.setName(objVO[3].toString());
+
+		constituency.setId(constituencyID);
+		constituency.setName(objVO[4].toString());
+		
+		result.add(state);
+		result.add(district);
+		result.add(constituency);
+		
+		return result;
+		
+	}
+	public List<SelectOptionVO> getStateDistrictByDistrictID(Long districtID){
+		List stateDistrictConstituency = districtDAO.getStateDistrictByDistrictID(districtID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		SelectOptionVO state = new SelectOptionVO();
+		SelectOptionVO district = new SelectOptionVO();
+		Object[] objVO = (Object[])stateDistrictConstituency.get(0);
+
+		state.setId(new Long(objVO[0].toString()));
+		state.setName(objVO[1].toString());
+
+		district.setId(districtID);
+		district.setName(objVO[2].toString());
+
+		result.add(state);
+		result.add(district);
+		
+		return result;
+	}
+	
 }

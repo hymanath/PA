@@ -24,4 +24,11 @@ public class ConstituencyTehsilDAO  extends GenericDaoHibernate<ConstituencyTehs
 	public List getTehsilsByConstituency(Long constituencyID){
 		return getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName from ConstituencyTehsil model where model.constituency.constituencyId = ?",constituencyID);
 	}
+	
+	public List getStateDistConstituencyMandalByMandalID(Long mandalID){
+		return getHibernateTemplate().find("Select model.tehsil.district.state.stateId,model.tehsil.district.state.stateName," +
+				"model.tehsil.district.districtId,model.tehsil.district.districtName," +
+				"model.constituency.constituencyId,model.constituency.name," +
+				"model.tehsil.tehsilName from ConstituencyTehsil model where model.tehsil.tehsilId = ?",mandalID);
+	}
 }

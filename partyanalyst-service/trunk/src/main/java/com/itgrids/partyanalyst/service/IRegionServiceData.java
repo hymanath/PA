@@ -11,4 +11,7 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID);	
 	public List<SelectOptionVO> getConstituenciesByDistrictID(Long districtID);
 	public List<SelectOptionVO> getMandalsByConstituencyID(Long constituencyID);
+	public List<SelectOptionVO> getStateDistrictByConstituencyID(Long constituencyID);
+	public List<SelectOptionVO> getStateDistrictByDistrictID(Long constituencyID);
+	
 }

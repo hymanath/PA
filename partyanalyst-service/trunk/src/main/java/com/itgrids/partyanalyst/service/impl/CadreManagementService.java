@@ -90,6 +90,7 @@ public class CadreManagementService {
 
 
 	public Long saveCader(CadreInfo cadreInfo){
+		System.out.println("cadrerManagementService.saveCadre():::------------------------------constituencyID::"+cadreInfo.getConstituencyID());
 		
 		Cadre cadre = new Cadre();
 		cadre.setFirstName(cadreInfo.getFirstName());
@@ -108,6 +109,7 @@ public class CadreManagementService {
 		cadre.setCadreLevelValue(cadreInfo.getCadreLevelValue());
 		cadre.setMobile(cadreInfo.getMobile());
 		cadre.setEmail(cadreInfo.getEmail());
+		cadre.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyID()));
 		cadre.setRegistration(registrationDAO.get(cadreInfo.getUserID()));
 		cadre = cadreDAO.save(cadre);
 		return cadre.getCadreId();
@@ -343,10 +345,12 @@ public class CadreManagementService {
 	//Narender 28th October 2009
 	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getConstituencyAllMandalsCadres(Long constituencyID, Long userID){
-		List<ConstituencyTehsil> constituencyTehsils = constituencyTehsilDAO.getTehsilsByConstituency(constituencyID);
+		List tehsils = constituencyTehsilDAO.getTehsilsByConstituency(constituencyID);
 		StringBuilder mandalIDs = new StringBuilder();
-		for(ConstituencyTehsil constituencyTehsil: constituencyTehsils){
-			mandalIDs.append(",").append(constituencyTehsil.getTehsil().getTehsilId());
+		for(int i = 0; i<tehsils.size(); i++){
+			//for(ConstituencyTehsil constituencyTehsil: constituencyTehsils){
+			Object[] tehsil = (Object[]) tehsils.get(i);		
+			mandalIDs.append(",").append(tehsil[0]);
 		}
 		String strMandalIDs = new String();
 		if(mandalIDs.length()>0)
@@ -542,5 +546,30 @@ public class CadreManagementService {
 		cadreInfo.setStrCadreLevelValue(levelValue);
 		
 		return cadreInfo;
+	}
+	
+
+	public List<SelectOptionVO> getStateDistConstituencyMandalByMandalID(Long mandalID){
+
+		List stateDistConstMandal = constituencyTehsilDAO.getStateDistConstituencyMandalByMandalID(mandalID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		SelectOptionVO state = new SelectOptionVO();
+		SelectOptionVO district = new SelectOptionVO();
+		SelectOptionVO mandal = new SelectOptionVO();
+		Object[] objVO = (Object[])stateDistConstMandal.get(0);
+
+		state.setId(new Long(objVO[0].toString()));
+		state.setName(objVO[1].toString());
+
+		district.setId(new Long(objVO[2].toString()));
+		district.setName(objVO[3].toString());
+		
+		mandal.setId(mandalID);
+		district.setName(objVO[4].toString());
+
+		result.add(state);
+		result.add(district);
+		
+		return result;
 	}
 }

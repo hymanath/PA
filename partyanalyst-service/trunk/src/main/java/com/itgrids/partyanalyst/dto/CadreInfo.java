@@ -18,6 +18,16 @@ public class CadreInfo implements Serializable{
 	private String strCadreLevelValue;
 	private String state;
 	private String district;
+	private Long constituencyID;
+	public Long getConstituencyID() {
+		return constituencyID;
+	}
+	public void setConstituencyID(Long constituencyID) {
+		this.constituencyID = constituencyID;
+	}
+	public void setUserID(Long userID) {
+		this.userID = userID;
+	}
 	private String mandal;
 	private String village;
 	private String booth;

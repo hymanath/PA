@@ -34,6 +34,7 @@ public class Cadre extends BaseModel{
 	 private String mobile;
 	 private State state;
 	 private District district;
+	 private Constituency constituency;
 	 private Tehsil tehsil;
 	 //private Long villageId;
 	 private Township village;
@@ -139,7 +140,17 @@ public class Cadre extends BaseModel{
 	 public void setDistrict(District district) {
 		this.district = district;
 	 }
-	
+
+	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	 @JoinColumn(name = "constituency_id")
+	 public Constituency getConstituency(){
+		 return constituency;
+	 }
+	 
+	 public void setConstituency(Constituency constituency){
+		 this.constituency = constituency;
+	 }
+	 
 	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	 @JoinColumn(name = "mandal_id")
 	 public Tehsil getTehsil() {
