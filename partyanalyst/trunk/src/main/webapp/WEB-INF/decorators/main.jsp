@@ -102,7 +102,8 @@
 	            { text: "Party Performance Report", url: "partyPerformanceMain.action" }, 	            
 	            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
 	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
-	            { text: "Party Booth Results Report", url: "partyBoothResultAction.action" }                         
+	            { text: "Party Booth Results Report", url: "partyBoothResultAction.action" },  
+	            { text: "Add Rebels", url: "addRebelsAction.action" }                       
 
 	        ]  
 	    }, 
