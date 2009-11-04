@@ -84,4 +84,8 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return getHibernateTemplate().find("from Constituency model where model.electionScope.electionScopeId = ?",scopeID);
 	}
 
+	public List<Constituency> getConstituenciesByDistrictID (Long districtID)
+	{
+		return getHibernateTemplate().find("from Constituency model where model.district.districtId = ?",districtID);
+	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IConstituencyTehsilDAO;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.ConstituencyTehsil;
 
 public class ConstituencyTehsilDAO  extends GenericDaoHibernate<ConstituencyTehsil, Long>
@@ -15,7 +16,12 @@ public class ConstituencyTehsilDAO  extends GenericDaoHibernate<ConstituencyTehs
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ConstituencyTehsil> getTehsilsByConstituency(Long constituencyID){
+	public List<ConstituencyTehsil> findByConstituency(Long constituencyID){
 		return getHibernateTemplate().find("from ConstituencyTehsil model where model.constituency.constituencyId = ?",constituencyID);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getTehsilsByConstituency(Long constituencyID){
+		return getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName from ConstituencyTehsil model where model.constituency.constituencyId = ?",constituencyID);
 	}
 }
