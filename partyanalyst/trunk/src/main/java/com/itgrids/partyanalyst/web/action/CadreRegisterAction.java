@@ -32,6 +32,7 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 	private String gender;
 	private String state;
 	private String district;
+	private String constituency;
 	private String mandal;
 	private String village;
 	private String cadreLevel;
@@ -88,6 +89,13 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 		cadreInfo.setDistrict(district);
 	}
 
+	public String getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(String constituency) {
+		cadreInfo.setConstituencyID(new Long(constituency));
+	}
 	public String getMandal() {
 		return mandal;
 	}

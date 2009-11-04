@@ -12,6 +12,7 @@ import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -34,6 +35,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> constituencyList;
 	private List<SelectOptionVO> mandalList;
 	private List<SelectOptionVO> villageList;
+	private IRegionServiceData regionServiceData;
 	
 	public List<SelectOptionVO> getStateList() {
 		return stateList;
@@ -81,6 +83,10 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		this.cadreManagementService = cadreManagementService;
 	}
 	
+	public void setRegionServiceData(IRegionServiceData regionServiceData){
+		this.regionServiceData = regionServiceData;
+	}
+	
 	public void setServletRequest(HttpServletRequest request) {		
 		this.request = request;
 	}
@@ -91,367 +97,71 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	}
 	
 	public String execute(){
-		List<SelectOptionVO> sList = new ArrayList<SelectOptionVO>();
-		List<SelectOptionVO> dList = new ArrayList<SelectOptionVO>();
-		List<SelectOptionVO> cList = new ArrayList<SelectOptionVO>();
-		List<SelectOptionVO> mList = new ArrayList<SelectOptionVO>();
-		List<SelectOptionVO> vList = new ArrayList<SelectOptionVO>();
 		
 		session = request.getSession();
 		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		String accessType =regVO.getAccessType();
-	
+		Long accessValue= new Long(regVO.getAccessValue());
+
+		stateList = new ArrayList<SelectOptionVO>();
+		districtList = new ArrayList<SelectOptionVO>();
+		constituencyList = new ArrayList<SelectOptionVO>();
+		mandalList = new ArrayList<SelectOptionVO>();
+		villageList = new ArrayList<SelectOptionVO>();
+		
 		if("MLA".equals(accessType))
 		{
 			System.out.println("Access Type = MLA ****");
+			List<SelectOptionVO> list = regionServiceData.getStateDistrictByConstituencyID(accessValue);
 			
-			stateList = new ArrayList<SelectOptionVO>();			
-			SelectOptionVO state1 = new SelectOptionVO();
-			state1.setId(new Long(1));
-			state1.setName("Andhra Pradesh");
+			stateList.add(list.get(0));			
+			districtList.add(list.get(1));
 			
-			stateList.add(state1);
-			
-			//--------------
-			districtList = new ArrayList<SelectOptionVO>();
-			SelectOptionVO district1 = new SelectOptionVO();
-			district1.setId(new Long(0));
-			district1.setName("Nellore");
-			districtList.add(district1);
-			
-			setDistrictList(dList);
-			
-			//------------------
-			constituencyList = new ArrayList<SelectOptionVO>();
-			SelectOptionVO constituency1 = new SelectOptionVO();
-			constituency1.setId(new Long(0));
-			constituency1.setName("Allur");
-			constituencyList.add(constituency1);
-			
-			setConstituencyList(cList);
-			
-			//--------------------
-			mandalList = new ArrayList<SelectOptionVO>();
-			SelectOptionVO mandal1 = new SelectOptionVO();
-			mandal1.setId(new Long(0));
-			mandal1.setName("Select Mandal");
-			mandalList.add(mandal1);
-			
-			setMandalList(mList);
-			
-			//-----------------
-						
-			SelectOptionVO village1 = new SelectOptionVO();
-			village1.setId(new Long(0));
-			village1.setName("Select village");
-			vList.add(village1);
-			
-			setVillageList(vList);
+			constituencyList.add(new SelectOptionVO(0L,"Select Constituency"));
+			constituencyList.add(list.get(2));
 						
 		}else if("COUNTRY".equals(accessType))
 		{
 			System.out.println("Access Type = Country ****");
+			stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
+			stateList.add(0,new SelectOptionVO(0L, "Select State"));
 			
-			SelectOptionVO state1 = new SelectOptionVO();
-			state1.setId(new Long(1));
-			state1.setName("Andhra Pradesh");
-			
-			SelectOptionVO state2 = new SelectOptionVO();
-			state2.setId(new Long(2));
-			state2.setName("Karnataka");
-			
-			SelectOptionVO state3 = new SelectOptionVO();
-			state3.setId(new Long(3));
-			state3.setName("Tamil Nadu");
-			
-			SelectOptionVO state4 = new SelectOptionVO();
-			state4.setId(new Long(4));
-			state4.setName("Kerala");
-			
-			sList.add(state1);
-			sList.add(state2);
-			sList.add(state3);
-			sList.add(state4);
-			
-			setStateList(sList);
-			
-			 //--------------
-			
-			SelectOptionVO district1 = new SelectOptionVO();
-			district1.setId(new Long(0));
-			district1.setName("Select District");
-			dList.add(district1);
-			
-			setDistrictList(dList);
-			
-			//------------------
-			
-			SelectOptionVO constituency1 = new SelectOptionVO();
-			constituency1.setId(new Long(0));
-			constituency1.setName("Select Constituency");
-			cList.add(constituency1);
-			
-			setConstituencyList(cList);
-			
-			//--------------------
-			
-			SelectOptionVO mandal1 = new SelectOptionVO();
-			mandal1.setId(new Long(0));
-			mandal1.setName("Select Mandal");
-			mList.add(mandal1);
-			
-			setMandalList(mList);
-			
-			//-----------------
-						
-			SelectOptionVO village1 = new SelectOptionVO();
-			village1.setId(new Long(0));
-			village1.setName("Select village");
-			vList.add(village1);
-			
-			setVillageList(vList);
-			
-			
-		}else if("STATE".equals(accessType))
-		{
+		}else if("STATE".equals(accessType)){
 			System.out.println("Access Type = State ****");
 			
-			SelectOptionVO state1 = new SelectOptionVO();
-			state1.setId(new Long(1));
-			state1.setName("Andhra Pradesh");
+			String name = cadreManagementService.getStateName(accessValue);
+			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select State");
+			SelectOptionVO obj2 = new SelectOptionVO();
+			obj2.setId(accessValue);
+			obj2.setName(name);
+			stateList.add(obj1);
+			stateList.add(obj2);
 			
-			sList.add(state1);
-			
-			//--------------
-			
-			SelectOptionVO district1 = new SelectOptionVO();
-			district1.setId(new Long(0));
-			district1.setName("Select District");
-			dList.add(district1);
-			
-			setDistrictList(dList);
-			
-			//------------------
-			
-			SelectOptionVO constituency1 = new SelectOptionVO();
-			constituency1.setId(new Long(0));
-			constituency1.setName("Select Constituency");
-			cList.add(constituency1);
-			
-			setConstituencyList(cList);
-			
-			//--------------------
-			
-			SelectOptionVO mandal1 = new SelectOptionVO();
-			mandal1.setId(new Long(0));
-			mandal1.setName("Select Mandal");
-			mList.add(mandal1);
-			
-			setMandalList(mList);
-			
-			//-----------------
-						
-			SelectOptionVO village1 = new SelectOptionVO();
-			village1.setId(new Long(0));
-			village1.setName("Select village");
-			vList.add(village1);
-			
-			setVillageList(vList);
-			
-		}else if("DISTRICT".equals(accessType))
-		{
-			System.out.println("Access Type = District ****");
-			
-			SelectOptionVO state1 = new SelectOptionVO();
-			state1.setId(new Long(1));
-			state1.setName("Andhra Pradesh");
-			
-			sList.add(state1);
-			
-			//--------------
-			
-			SelectOptionVO district1 = new SelectOptionVO();
-			district1.setId(new Long(1));
-			district1.setName("Nellore");
-			dList.add(district1);
-			
-			setDistrictList(dList);
-			
-			//------------------
-			
-			SelectOptionVO constituency1 = new SelectOptionVO();
-			constituency1.setId(new Long(0));
-			constituency1.setName("Select Constituency");
-			cList.add(constituency1);
-			
-			setConstituencyList(cList);
-			
-			//--------------------
-			
-			SelectOptionVO mandal1 = new SelectOptionVO();
-			mandal1.setId(new Long(0));
-			mandal1.setName("Select Mandal");
-			mList.add(mandal1);
-			
-			setMandalList(mList);
-			
-			//-----------------
-						
-			SelectOptionVO village1 = new SelectOptionVO();
-			village1.setId(new Long(0));
-			village1.setName("Select village");
-			vList.add(village1);
-			
-			setVillageList(vList);
+		}else if("DISTRICT".equals(accessType)){
+			System.out.println("Access Type = District ****");			
+
+			List<SelectOptionVO> list = regionServiceData.getStateDistrictByDistrictID(accessValue);
+			stateList.add(list.get(0));
+			districtList.add(new SelectOptionVO(0l,"Select District"));
+			districtList.add(list.get(1));
 			
 			
-			
-		}else if("MANDAL".equals(accessType))
-		{
+		}else if("MANDAL".equals(accessType)){
 			System.out.println("Access Type = Mandal ****");
 			
-			SelectOptionVO state1 = new SelectOptionVO();
-			state1.setId(new Long(1));
-			state1.setName("Andhra Pradesh");
+			List<SelectOptionVO> list = cadreManagementService.getStateDistConstituencyMandalByMandalID(accessValue);
+			stateList.add(list.get(0));
+			districtList.add(list.get(1));
+			mandalList.add(new SelectOptionVO(0L,"Select Mandal"));
+			mandalList.add(list.get(2));
 			
-			sList.add(state1);
 			
-			//--------------
-			
-			SelectOptionVO district1 = new SelectOptionVO();
-			district1.setId(new Long(1));
-			district1.setName("Nellore");
-			dList.add(district1);
-			
-			setDistrictList(dList);
-			
-			//------------------
-			
-			SelectOptionVO constituency1 = new SelectOptionVO();
-			constituency1.setId(new Long(1));
-			constituency1.setName("Allur");
-			cList.add(constituency1);
-			
-			setConstituencyList(cList);
-			
-			//--------------------
-			
-			SelectOptionVO mandal1 = new SelectOptionVO();
-			mandal1.setId(new Long(0));
-			mandal1.setName("Select Mandal");
-			mList.add(mandal1);
-			
-			setMandalList(mList);
-			
-			//-----------------
-						
-			SelectOptionVO village1 = new SelectOptionVO();
-			village1.setId(new Long(0));
-			village1.setName("Select village");
-			vList.add(village1);
-			
-			setVillageList(vList);
-			
-		}else if("VILLAGE".equals(accessType))
-		{
-			System.out.println("Access Type = Village ****");
-			
-			SelectOptionVO state1 = new SelectOptionVO();
-			state1.setId(new Long(1));
-			state1.setName("Andhra Pradesh");
-			
-			sList.add(state1);
-			
-			//--------------
-			
-			SelectOptionVO district1 = new SelectOptionVO();
-			district1.setId(new Long(0));
-			district1.setName("Nellore");
-			dList.add(district1);
-			
-			setDistrictList(dList);
-			
-			//------------------
-			
-			SelectOptionVO constituency1 = new SelectOptionVO();
-			constituency1.setId(new Long(0));
-			constituency1.setName("Allur");
-			cList.add(constituency1);
-			
-			setConstituencyList(cList);
-			
-			//--------------------
-			
-			SelectOptionVO mandal1 = new SelectOptionVO();
-			mandal1.setId(new Long(0));
-			mandal1.setName("Allur");
-			mList.add(mandal1);
-			
-			setMandalList(mList);
-			
-			//-----------------
-						
-			SelectOptionVO village1 = new SelectOptionVO();
-			village1.setId(new Long(0));
-			village1.setName("Allur Village");
-			vList.add(village1);
-			
-			setVillageList(vList);
-			
-		}else if("MP".equals(accessType))
-		{
+		}else if("MP".equals(accessType)){
 			System.out.println("Access Type = MP ****");
-			
-			SelectOptionVO state1 = new SelectOptionVO();
-			state1.setId(new Long(1));
-			state1.setName("Andhra Pradesh");
-			
-			sList.add(state1);
-			
-			//--------------
-			
-			SelectOptionVO district1 = new SelectOptionVO();
-			district1.setId(new Long(0));
-			district1.setName("Nellore");
-			dList.add(district1);
-			
-			setDistrictList(dList);
-			
-			//------------------
-			
-			SelectOptionVO constituency1 = new SelectOptionVO();
-			constituency1.setId(new Long(0));
-			constituency1.setName("Allur");
-			cList.add(constituency1);
-			
-			setConstituencyList(cList);
-			
-			//--------------------
-			
-			SelectOptionVO mandal1 = new SelectOptionVO();
-			mandal1.setId(new Long(0));
-			mandal1.setName("Select Mandal");
-			mList.add(mandal1);
-			
-			setMandalList(mList);
-			
-			//-----------------
-						
-			SelectOptionVO village1 = new SelectOptionVO();
-			village1.setId(new Long(0));
-			village1.setName("Select village");
-			vList.add(village1);
-			
-			setVillageList(vList);
+			// TODO task is pending... to be implemented
 			
 		}
-		
-		
-		
-		
-		
-		
 		return Action.SUCCESS;
 	}
 	
