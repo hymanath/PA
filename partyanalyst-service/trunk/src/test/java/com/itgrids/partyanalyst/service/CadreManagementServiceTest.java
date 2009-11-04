@@ -446,7 +446,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
-		userCadres = service.getRegionLevelCadresCount(userCadres);
+		userCadres = service.getCadreLevelCadresCount(userCadres);
 		Long countryLevelCadres = userCadres.getRegionLevelCadres().get("COUNTRY");
 		Long stateLevelCadres = userCadres.getRegionLevelCadres().get("STATE");
 		Long districtLevelCadres = userCadres.getRegionLevelCadres().get("DISTRICT");
@@ -477,7 +477,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
-		userCadres = service.getRegionLevelCadresCount(userCadres);
+		userCadres = service.getCadreLevelCadresCount(userCadres);
 		Long stateLevelCadres = userCadres.getRegionLevelCadres().get("STATE");
 		Long districtLevelCadres = userCadres.getRegionLevelCadres().get("DISTRICT");
 		Long mandalLevelCadres = userCadres.getRegionLevelCadres().get("MANDAL"); 
@@ -503,7 +503,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
-		userCadres = service.getRegionLevelCadresCount(userCadres);
+		userCadres = service.getCadreLevelCadresCount(userCadres);
 		Long districtLevelCadres = userCadres.getRegionLevelCadres().get("DISTRICT");
 		Long mandalLevelCadres = userCadres.getRegionLevelCadres().get("MANDAL");
 		Assert.assertEquals(new Long(12),districtLevelCadres);
@@ -526,7 +526,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
-		userCadres = service.getRegionLevelCadresCount(userCadres); 
+		userCadres = service.getCadreLevelCadresCount(userCadres); 
 		Long mandalLevelCadres = userCadres.getRegionLevelCadres().get("MANDAL"); 
 		Assert.assertEquals(new Long(23),mandalLevelCadres);
 	}
