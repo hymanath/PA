@@ -1,13 +1,16 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -16,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionAlliance;
@@ -34,6 +38,7 @@ public class StaticDataService implements IStaticDataService {
 	private IElectionAllianceDAO electionAllianceDAO;
 	private IDistrictDAO districtDAO;
 	private IAllianceGroupDAO  allianceGroupDAO;
+	private IConstituencyDAO constituencyDAO;
 	
 	private final static Logger log = Logger.getLogger(StaticDataService.class);
 	
@@ -78,6 +83,12 @@ public class StaticDataService implements IStaticDataService {
 		this.allianceGroupDAO = allianceGroupDAO;
 	}
 
+	
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+
 	public List<SelectOptionVO> getStates(Long electionType){
 		List<ElectionScope> electionScopes = electionScopeDAO.findByPropertyElectionTypeId(electionType);
 		List<SelectOptionVO> stateList = new ArrayList<SelectOptionVO>();
@@ -111,11 +122,11 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 
-	public Set<String> getElectionYears(Long electionTypeId) {
+	public List<SelectOptionVO> getElectionIdsAndYears(Long electionTypeId) {
 		List<Election> elections = electionDAO.findByPropertyTypeId(electionTypeId);
-		Set<String> years = new HashSet<String>();
+		List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
 		for(Election election: elections){
-			years.add(election.getElectionYear());
+			years.add(new SelectOptionVO(election.getElectionId(), election.getElectionYear()));
 		}
 		return years;
 	}
@@ -190,13 +201,30 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 
+	public Set<String> getElectionYears(Long electionType) {
+		List<Election> elections = electionDAO.findByPropertyTypeId(electionType);
+		Set<String> years = new HashSet<String>();
+		for(Election election: elections){
+			years.add(election.getElectionYear());
+		}
+		return years;
+	}
+
 	public Long getGroupIdIfPartyHasAlliances(
 			List<ElectionAlliance> allianceList, Long partyId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
+	public List<SelectOptionVO> getConstituencies(Long stateId) {
+		List<Constituency> constList = constituencyDAO.findByStateId(stateId);
+		List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
+		
+		for(Constituency constituency: constList){
+			constituencies.add(new SelectOptionVO(constituency.getConstituencyId(), constituency.getName()));
+		}
+		return constituencies;
+	}
 	
 	
 }
