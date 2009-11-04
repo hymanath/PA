@@ -19,6 +19,7 @@ public interface IStaticDataService {
 
 	public List<SelectOptionVO> getStates(Long electionType);
 	public List<ElectionScope> getElectionScope(Long electionType);
+	public List<SelectOptionVO> getElectionIdsAndYears(Long electionType);
 	public Set<String> getElectionYears(Long electionType);
 	public List<SelectOptionVO> getParties();
 	public List<SelectOptionVO> getDistricts(Long stateId);
@@ -27,4 +28,5 @@ public interface IStaticDataService {
 	public List<Party> getAllianceParties(String electionYear, Long electionType, Long partyId);
 	public Long getGroupIdIfPartyHasAlliances(Long partyId, String electionYear, Long electionType);
 	public boolean hasAlliances(String year, Long electionType, Long partyId);
+	public List<SelectOptionVO> getConstituencies(Long stateId);
 }

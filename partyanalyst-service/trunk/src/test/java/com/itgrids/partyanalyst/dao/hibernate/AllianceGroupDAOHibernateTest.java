@@ -19,8 +19,7 @@ public class AllianceGroupDAOHibernateTest extends BaseDaoTestCase {
 	}
 
 	public void testFinBYElectionYear(){
-		List<AllianceGroup> res = allianceGroupDAO.findByElectionYearAndElectionTypeId("2009", new Long(2));
-		
+		List<AllianceGroup> res = allianceGroupDAO.findByGroupId(new Long(2));
 	}
 	
 }
