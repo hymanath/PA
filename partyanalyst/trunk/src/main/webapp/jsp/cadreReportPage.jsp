@@ -156,7 +156,9 @@
 											
 											if(myResults.cadreInfo[0])											
 												buildHtmlNode(myResults.cadreInfo,node);																					
-											else											
+											else if(myResults.zeroCadresRegion)	
+												buildZeroCadreTable(myResults.zeroCadresRegion,node);
+											else
 												buildTextNode(myResults,node);																			
 											
 											fnLoadComplete(); 
@@ -186,6 +188,25 @@
  			YAHOO.util.Connect.asyncRequest('GET', cadreUrl, callback);
 			}
 			
+			function buildZeroCadreTable(cadreData,node)
+			{
+				var str='';
+				str+='<table class="partyPerformanceCriteriaTable">';
+				str+='<tr>';
+				str+='<th>Name</th>';											
+				str+='</tr>';				
+				for(var i in cadreData)
+				{
+					str+='<tr>';					
+					str+='<td>'+cadreData[i].name+'</td>';											
+					str+='</tr>';
+				}
+				str+='</table>';
+
+				//str+='<div id="basic" class="yui-skin-sam"></div>';
+				var tempNode = new YAHOO.widget.HTMLNode(str, node, false); 
+				tempNode.isLeaf = true;
+			}
 			function buildHtmlNode(cadreData,node)
 			{
 				
