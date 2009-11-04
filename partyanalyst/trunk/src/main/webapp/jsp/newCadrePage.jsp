@@ -15,51 +15,122 @@
 
 <script type="text/javascript">
 
+		
 	function setCadreValue(value){
 		document.getElementById("cadreLevelValue").value=value;
 		return true;
 	}
 
-	function getMandalLevelValues(name,value,id){
-		if(document.getElementById("cadreLevelField").value == 2){
-			document.getElementById("cadreLevelValue").value=1;
-			document.getElementById("cadreLevelDistrict").disabled = true;
-		}else{
-			document.getElementById("cadreLevelDistrict").disabled = false;
-		}
-		if(document.getElementById("cadreLevelField").value == 5)
-			getDistrictLevelValues(name,value,id)
-	}
-	function getDistrictLevelValues(name,value,id)
+	function getCadreLevelValues(name,value,id)
 	{
-		if(document.getElementById("cadreLevelField").value == 2){
-			document.getElementById("cadreLevelValue").value=1;
-			document.getElementById("cadreLevelDistrict").disabled = true;
-		}else{
-			document.getElementById("cadreLevelDistrict").disabled = false;
+		console.log("name = ",name,", value = ",value," , id = ",id);
+		var cadreLevelElmt = document.getElementById("cadreLevelField");
+		var cadreLevelElmtText = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].text;
+		var cadreLevelElmtValue = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].value;
+		
+		if(name == "cadreLevelState" && cadreLevelElmtText == "State")
+		{
+			document.getElementById("cadreLevelValue").value=1;						
 		}
-		if(document.getElementById("cadreLevelField").value == 5)
-			document.getElementById("cadreLevelMandal").disabled = false;
-		else
-			document.getElementById("cadreLevelMandal").disabled = true;
+		else if((name == "cadreLevelState" && cadreLevelElmtText == "District") || (name == "cadreLevelState" && cadreLevelElmtText == "Constituency") 
+			|| (name == "cadreLevelState" && cadreLevelElmtText == "Mandal"))
+		{
+			getnextList("state",id,"true");				
+		}
+		else if(name == "cadreLevelDistrict" && cadreLevelElmtText == "Constituency")
+		{
+			getnextList("constituency",id,"true");				
+		}
+		else if(name == "cadreLevelDistrict" && cadreLevelElmtText == "Mandal")
+		{
+			getnextList("district",id,"true");				
+		}
+		
+		//if(document.getElementById("cadreLevelField").value == 5)
+		//	getDistrictLevelValues(name,value,id)
+	}
+	function getStateList()
+	{
+		var cadreLevelElmt = document.getElementById("cadreLevelField");
+		
+		var stateElmt = document.getElementById("cadreLevelState");
+		var districtElmt = document.getElementById("cadreLevelDistrict");
+		var constituencyElmt = document.getElementById("cadreLevelConstituency");
+		var mandalElmt = document.getElementById("cadreLevelMandal");
 
+		if(!cadreLevelElmt || !stateElmt || !districtElmt || !constituencyElmt || !mandalElmt)
+			alert("Selected Element is null !!");
+		
+		var cadreLevelElmtText = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].text;
+		var cadreLevelElmtValue = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].value;
+
+		var stateElmtText = stateElmt.options[stateElmt.selectedIndex].text;
+		var stateElmtValue = stateElmt.options[stateElmt.selectedIndex].value;
+
+		var districtElmtText = districtElmt.options[districtElmt.selectedIndex].text;
+		var districtElmtValue = districtElmt.options[districtElmt.selectedIndex].value;
+
+		var constituencyElmtText = constituencyElmt.options[constituencyElmt.selectedIndex].text;
+		var constituencyElmtValue = constituencyElmt.options[constituencyElmt.selectedIndex].value;
+
+		var mandalElmtText = mandalElmt.options[mandalElmt.selectedIndex].text;
+		var mandalElmtValue = mandalElmt.options[mandalElmt.selectedIndex].value;
+
+		stateElmt.disabled = true;
+		districtElmt.disabled = true;
+		constituencyElmt.disabled = true;
+		mandalElmt.disabled = true;
+
+		
+					
+		if(cadreLevelElmtText == "State")
+		{
+			stateElmt.disabled = false;	
+			document.getElementById("cadreLevelValue").value=1;
+		}
+		else if(cadreLevelElmtText == "District")			
+		{
+			stateElmt.disabled = false;
+			districtElmt.disabled = false;
+		}		
+		else if(cadreLevelElmtText == "Constituency")
+		{
+			stateElmt.disabled = false;
+			districtElmt.disabled = false;
+			constituencyElmt.disabled = false;
+		}
+		else if(cadreLevelElmtText == "Mandal")
+		{
+			stateElmt.disabled = false;
+			districtElmt.disabled = false;
+			mandalElmt.disabled = false;
+		}
+
+		getStatesNDistricts("cadreLevel",cadreLevelElmtText,cadreLevelElmtValue)
+		
+	}
+
+	function getStatesNDistricts(level,text,value)
+	{
 		var jsObj=
 			{
-					reportLevel:name,
-					value:value,
-					id:id
+					type:level,
+					reportLevel:text,
+					selected:value
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
 			callAjax(rparam);
 	}
-	function getnextList(name,value)
+	function getnextList(name,value,choice)
 	{
 
 		var jsObj=
 			{
+					type:"cadreDetails",
 					reportLevel:name,
-					selected:value
+					selected:value,
+					changed:choice
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
@@ -74,7 +145,7 @@
  		               success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText); 
-								//console.log(myResults);
+								console.log(myResults);
 								buildSelectOption(myResults);								
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -89,21 +160,80 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
 
+	function getMandalList(name,value,choice)
+	{
+		console.log(name,value,choice);
+		var jsObj=
+			{
+					type:"cadreDetails",
+					reportLevel:"Constituencies",
+					selected:value,
+					changed:choice
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+			callAjax(rparam);
+	}
+	function getConstituencyList(name,value,choice)
+	{
+		var jsObj=
+			{
+					type:"cadreDetails",
+					reportLevel:"constituency",
+					selected:value,
+					changed:choice
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+			callAjax(rparam);
+	}
 	function buildSelectOption(results)
 	{
 		//console.log("In function");
 		var taskValue= YAHOO.lang.JSON.parse(results.task);
-		var selectedValue=taskValue.reportLevel;
-		var selectedElmt;
 
-		if(selectedValue=="state")
-			selectedElmt=document.getElementById("districtField");
-		else if(selectedValue=="district")
-			selectedElmt=document.getElementById("mandalField");
-		else if(selectedValue=="mandal")
-			selectedElmt=document.getElementById("villageField");
-		else if(selectedValue=="cadreLevel")
-			selectedElmt=document.getElementById("cadreLevelDistrict");
+		var selectedValue=taskValue.reportLevel;
+		
+		var taskType=taskValue.type;
+		var changedVal = taskValue.changed;
+
+		var selectedElmt;
+		
+		if(taskType == "cadreDetails")
+		{
+			if(selectedValue=="state")
+			{
+				if(changedVal == "false")
+					selectedElmt=document.getElementById("districtField");
+				else if(changedVal == "true")
+					selectedElmt=document.getElementById("cadreLevelDistrict");
+			}
+			else if(selectedValue=="district")
+			{
+				if(changedVal == "false")
+					selectedElmt=document.getElementById("constituencyField");
+				else if(changedVal == "true")
+					selectedElmt=document.getElementById("cadreLevelMandal");
+			}
+			else if(selectedValue=="constituency")
+			{
+				if(changedVal == "true")
+					selectedElmt=document.getElementById("cadreLevelConstituency");
+				else if(changedVal == "false")
+					selectedElmt=document.getElementById("constituencyField");
+			}
+			else if(selectedValue=="mandal")
+				selectedElmt=document.getElementById("villageField");
+			else if(selectedValue=="Constituencies")
+				selectedElmt=document.getElementById("mandalField");
+		}
+		else if(taskType=="cadreLevel")
+		{
+			if(selectedValue == "State" || selectedValue == "District" || selectedValue == "Constituency" || selectedValue == "Mandal")
+				selectedElmt=document.getElementById("cadreLevelState");
+			else
+				selectedElmt=document.getElementById("cadreLevelDistrict");
+		}
 		else if(selectedValue=="cadreLevelDistrict")
 			selectedElmt=document.getElementById("cadreLevelMandal");
 		
@@ -125,11 +255,19 @@
 		}
 	}
 </script>
+<style type="text/css">
+	#cadreRegistrationTable th
+	{
+		text-align:left;
+		color:#DFA1A1;
+	}
+
+</style>
 </head>
 <body>
 <s:form action="cadreRegisterAction" method="POST" theme="simple">
-	<h3>Cadre Registration Page</h3>
-		<table>
+	<h2>Cadre Registration Page</h2>
+		<table id="cadreRegistrationTable">
 		<tr>
 			<td colspan="2">
 				<div style="color: red;">
@@ -137,6 +275,9 @@
 					<s:fielderror />
 				</div>
 			</td>
+		</tr>
+		<tr>
+			<td colspan="2"><h3><u style="color:#4D0A0A;">Cadre Details</u></h3></td>		
 		</tr>
 		<tr>
 			<th><s:label for="firstNameField" id="fnameLabel"  value="%{getText('firstName')}" /></th>
@@ -152,7 +293,10 @@
 		</tr>
 		<tr>
 			<th><s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></th>
-			<td><s:textfield id="genderField" name="gender"/>  </td>
+			<td>
+				<input type="radio" name="gender" value="M"/>Male
+				<input type="radio" name="gender" value="F"/>FeMale
+			</td>		
 		</tr>
 		<tr>
 			<th><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></th>
@@ -165,67 +309,73 @@
 		<tr>
 			<th><s:label for="stateField" id="stateLabel"  value="State" /></th>
 			<td>
-				<select id="stateField" name="state" onchange="getnextList(this.name,this.options[this.selectedIndex].value)">
-					<option>Select State</option>
-					<option value="1">Andhra Pradesh</option>
-				</select> 
+				<s:select id="stateField" name="state" list="stateList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>
+
+				
 			</td>
 		</tr>
 		<tr>
 			<th><s:label for="districtField" id="districtLabel"  value="District" /></th>
 			<td>
-				<select id="districtField" name="district" onchange="getnextList(this.name,this.options[this.selectedIndex].value)">
-					<option>Select District</option>					
-				</select> 
+				<s:select id="districtField" name="district" list="districtList" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>
+				
+			</td>
+		</tr>
+		<tr>
+			<th><s:label for="constituencyField" id="constituencyLabel"  value="Constituency" /></th>
+			<td>
+				<s:select id="constituencyField" name="constituency" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false')"></s:select> 
 			</td>
 		</tr>
 		<tr>
 			<th><s:label for="mandalField" id="mandalLabel"  value="Mandal" /></th>
 			<td>
-				<select id="mandalField" name="mandal" onchange="getnextList(this.name,this.options[this.selectedIndex].value)">
-					<option>Select Mandal</option>					
-				</select> 
+				<s:select id="mandalField" name="mandal" list="mandalList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>				 
 			</td>
 		</tr>
 		<tr>
 			<th><s:label for="villageField" id="villageLabel"  value="Village" /></th>
 			<td>
-				<select id="villageField" name="village">
-					<option>Select Village</option>					
-				</select> 
+				<s:select id="villageField" name="village" list="villageList" listKey="id" listValue="name"></s:select>				
 			</td>
 		</tr>
-		
-				
+		<tr>
+			<td colspan="2"><h3><u style="color:#4D0A0A;">Cadre Level Details</u></h3></td>
+		</tr>				
 		<tr>
 			<th><s:label for="cadreLevelField" id="cadreLevelLabel"  value="Cadre Level" /></th>
 			<td>
-				<select id="cadreLevelField" name="cadreLevel" onchange="getDistrictLevelValues(this.name,		
-														this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">
-					<option>Select Level</option>		
-					<option  value='2'>STATE</option>	
-					<option  value='3'>DISTRICT</option>
-					<option  value='4'>CONSTITUENCY</option>	
-					<option  value='5'>MANDAL</option>					
+				<select id="cadreLevelField" name="cadreLevel" onchange="getStateList()">
+					<option	 value='0'>Select Level</option>		
+					<option  value='2'>State</option>	
+					<option  value='3'>District</option>
+					<option  value='4'>Constituency</option>	
+					<option  value='5'>Mandal</option>					
 				</select> <input type='hidden' name='cadreLevelValue' id='cadreLevelValue'>
 			</td>
 		</tr>
 		<tr>		
 			<th><s:label for="cadreLevelValueField" id="cadreLevelValueLabel"  value="Cadre Level Value" /></th>
 			<td>
-				<select id="cadreLevelDistrict" name="cadreLevelDistrict" onchange="setCadreValue(this.options[this.selectedIndex].value);
-										getMandalLevelValues(this.name,this.options[this.selectedIndex].text,
+				<select id="cadreLevelState" name="cadreLevelState" disabled = "true" onchange="setCadreValue(this.options[this.selectedIndex].value);
+										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,
 										this.options[this.selectedIndex].value)">
-					<option>Select District Level Value</option>					
+					<option>Select State</option>					
 				</select> 
-			</td>
-		</tr>
+				<select id="cadreLevelDistrict" name="cadreLevelDistrict" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);
+										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,
+										this.options[this.selectedIndex].value)">
+					<option>Select District</option>					
+				</select> 
+				
+				<select id="cadreLevelConstituency" name="cadreLevelConstituency" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);
+										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,
+										this.options[this.selectedIndex].value)">
+					<option>Select Constituency</option>					
+				</select> 
 		
-		
-		<tr>
-			<td>
-				<select id="cadreLevelMandal" name="cadreLevelMandal" onchange="setCadreValue(this.options[this.selectedIndex].value)">
-					<option>Select Mandal Level Value</option>					
+				<select id="cadreLevelMandal" name="cadreLevelMandal" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value)">
+					<option>Select Mandal</option>					
 				</select> 
 			</td>
 		</tr>

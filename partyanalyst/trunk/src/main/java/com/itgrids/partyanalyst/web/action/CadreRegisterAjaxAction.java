@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -27,11 +28,16 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 	
 	
 	private CadreManagementService cadreManagementService;
+	private RegionServiceDataImp regionServiceDataImp; 
+	
 	public void setCadreManagementService(
 			CadreManagementService cadreManagementService) {
 		this.cadreManagementService = cadreManagementService;
 	}
 	
+	public void setRegionServiceDataImp(RegionServiceDataImp regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
 	
 	public List<SelectOptionVO> getNamesList() {
 		return namesList;
@@ -78,16 +84,16 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			
 		}
 		else */
-		if(jObj.getString("reportLevel").equalsIgnoreCase("state"))
+		if(jObj.getString("reportLevel").equalsIgnoreCase("state") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
 		{
 			System.out.println("In report level state");
 			String selectedVal=jObj.getString("selected");
 			
-			List<SelectOptionVO> districtNames=cadreManagementService.findDistrictsByState(selectedVal);	
+			List<SelectOptionVO> districtNames=cadreManagementService.findDistrictsByState(selectedVal);			
 			
 			setNamesList(districtNames);	
-		}
-		else if(jObj.getString("reportLevel").equalsIgnoreCase("district"))
+		}		
+		else if(jObj.getString("reportLevel").equalsIgnoreCase("district") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
 		{
 			System.out.println("In report level District");
 			String selectedVal=jObj.getString("selected");
@@ -97,7 +103,17 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			
 			setNamesList(mandalsNames);	
 		}
-		else if(jObj.getString("reportLevel").equalsIgnoreCase("mandal"))
+		else if(jObj.getString("reportLevel").equalsIgnoreCase("constituency") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
+		{
+			System.out.println("In report level Constituency");
+			String selectedVal=jObj.getString("selected");
+			
+			List<SelectOptionVO> constituencynames=regionServiceDataImp.getConstituenciesByDistrictID(new Long(selectedVal));			
+			setNamesList(constituencynames);	
+			
+			
+		}
+		else if(jObj.getString("reportLevel").equalsIgnoreCase("mandal") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
 		{
 			System.out.println("In report level Mandal");
 			String selectedVal=jObj.getString("selected");
@@ -105,36 +121,32 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			List<SelectOptionVO> villageNames=cadreManagementService.findVillagesByTehsilID(selectedVal);	
 			
 			setNamesList(villageNames);	
-		}else if(jObj.getString("reportLevel").equalsIgnoreCase("cadreLevel"))
+		}
+		else if(jObj.getString("reportLevel").equalsIgnoreCase("Constituencies") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
 		{
-			String value=jObj.getString("value");
-			String id=jObj.getString("id");
-			/*if("COUNTRY".equalsIgnoreCase(value)){
-				List<SelectOptionVO> countryNames=new ArrayList<SelectOptionVO>();
-				SelectOptionVO countrySelectOptionVO = new SelectOptionVO();
-				countrySelectOptionVO.setId(1L);
-				countrySelectOptionVO.setName("India");
-				countryNames.add(countrySelectOptionVO);
-				setNamesList(countryNames);
-				
-			} else if("STATE".equalsIgnoreCase(value)){
-				List<SelectOptionVO> stateNames=new ArrayList<SelectOptionVO>();
-				SelectOptionVO stateSelectOptionVO = new SelectOptionVO();
-				stateSelectOptionVO.setId(1L);
-				stateSelectOptionVO.setName("Andhra Pradesh");
-				stateNames.add(stateSelectOptionVO);
+			System.out.println("In report level Constituencies");
+			String selectedVal=jObj.getString("selected");
+			
+			List<SelectOptionVO> mandals=regionServiceDataImp.getMandalsByConstituencyID(new Long(selectedVal));	
+			
+			setNamesList(mandals);	
+		}
+		else if((jObj.getString("reportLevel").equalsIgnoreCase("State") || 
+					jObj.getString("reportLevel").equalsIgnoreCase("District") || 
+					jObj.getString("reportLevel").equalsIgnoreCase("Constituency") || 
+					jObj.getString("reportLevel").equalsIgnoreCase("Mandal")) && jObj.getString("type").equalsIgnoreCase("cadreLevel"))
+		{
+			String value=jObj.getString("reportLevel");
+			String id=jObj.getString("type");
+			System.out.println("value = "+value+"id = "+id);
+			
+						
+				List<SelectOptionVO> stateNames=cadreManagementService.findStatesByCountryID("1");				
 				setNamesList(stateNames);
-			} else if("DISTRICT".equalsIgnoreCase(value)){
-
-				List<SelectOptionVO> districtNames=cadreManagementService.findDistrictsByState("1");	
-				
-				setNamesList(districtNames);
-			} else if("MANDAL".equalsIgnoreCase(value)){
-				List<SelectOptionVO> mandalsNames=cadreManagementService.findMandalsByDistrict("15");			
-				setNamesList(mandalsNames);	
-			}*/
-			List<SelectOptionVO> districtNames=cadreManagementService.findDistrictsByState("1");				
-			setNamesList(districtNames);
+			/*
+				List<SelectOptionVO> districtNames=cadreManagementService.findDistrictsByState(id);
+				setNamesList(districtNames);*/
+			
 		}//cadreLevelDistrict
 		else if(jObj.getString("reportLevel").equalsIgnoreCase("cadreLevelDistrict"))
 		{

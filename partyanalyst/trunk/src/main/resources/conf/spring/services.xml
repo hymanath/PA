@@ -138,6 +138,8 @@
 	<bean name="uploadFormVo" class="com.itgrids.partyanalyst.excel.upload.vo.UploadFormVo"/>
 	<bean name="regionServiceDataImp" class="com.itgrids.partyanalyst.service.impl.RegionServiceDataImp">
 		<property name="districtDAO" ref="districtDAO"/>
+		<property name="constituencyDAO" ref="constituencyDAO"/>
+		<property name="constituencyTehsilDAO" ref="constituencyTehsilDAO"/>
 	</bean>
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
 		<property name="partyDAO" ref="partyDAO" />

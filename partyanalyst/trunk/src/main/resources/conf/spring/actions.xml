@@ -88,6 +88,7 @@
 	
 	<bean id="cadreRegisterAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAjaxAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean> 
 	
 	<bean id="cadreRegisterAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAction" singleton="false">
