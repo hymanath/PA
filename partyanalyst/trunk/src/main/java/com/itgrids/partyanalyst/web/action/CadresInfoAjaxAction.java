@@ -1,7 +1,12 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +19,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 
 @SuppressWarnings("serial")
@@ -26,7 +33,8 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 	private HttpServletRequest request;
 	private HttpSession session;
 	private List<CadreRegionInfoVO> cadreRegionInfo;
-	private List<CadreInfo> cadreInfo; 
+	private List<CadreInfo> cadreInfo;
+	private List<SelectOptionVO> zeroCadresRegion;
 	
 	private CadreManagementService cadreManagementService;
 	public void setCadreManagementService(
@@ -75,6 +83,15 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		this.cadreInfo = cadreInfo;
 	}
 	
+	
+	public List<SelectOptionVO> getZeroCadresRegion() {
+		return zeroCadresRegion;
+	}
+
+	public void setZeroCadresRegion(List<SelectOptionVO> zeroCadresRegion) {
+		this.zeroCadresRegion = zeroCadresRegion;
+	}
+
 	public String execute() throws Exception{
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -147,6 +164,36 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		else if(cadreType.equalsIgnoreCase("ZeroLevelCadre"))
 		{
 			System.out.println("In if Zero level cadre");
+			UserCadresInfoVO userCadresInfoVo = (UserCadresInfoVO) session.getAttribute("USERCADRESINFOVO");
+			List<SelectOptionVO> regions = new ArrayList<SelectOptionVO>();
+			Map<Long, String> zeroLevelCadres = new HashMap<Long, String>();
+			if(region.equalsIgnoreCase("STATE"))
+			{
+				 zeroLevelCadres=userCadresInfoVo.getZeroCadreStates();
+			}else if(region.equalsIgnoreCase("DISTRICT"))
+			{
+				 zeroLevelCadres=userCadresInfoVo.getZeroCadreDistricts();
+			}else if(region.equalsIgnoreCase("MANDAL"))
+			{
+				 zeroLevelCadres=userCadresInfoVo.getZeroCadreMandals();
+			}else if(region.equalsIgnoreCase("VILLAGE"))
+			{
+				 zeroLevelCadres=userCadresInfoVo.getZeroCadreVillages();
+			}
+			
+			 
+			 Set<Long> set = zeroLevelCadres.keySet();
+			 Iterator<Long> iterator = set.iterator();
+			 while(iterator.hasNext()){
+				 Long key = iterator.next();
+				 String value = zeroLevelCadres.get(key);
+				 SelectOptionVO obj = new SelectOptionVO();
+				 obj.setId(key);
+				 obj.setName(value);
+				 regions.add(obj);
+			 }
+
+			 this.setZeroCadresRegion(regions);
 		}
 		else if(cadreType.equalsIgnoreCase("RegionLevelCadre"))
 		{
@@ -154,26 +201,6 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			cadreInfo = cadreManagementService.getCadresByCadreLevel(region, userID);
 			
 			this.setCadreInfo(cadreInfo);
-			/*
-			if(region.equalsIgnoreCase("State"))
-			{
-			}
-			else if(region.equalsIgnoreCase("District"))
-			{		
-			}
-			else if(region.equalsIgnoreCase("Constituency"))
-			{
-			}
-			else if(region.equalsIgnoreCase("Mandal"))
-			{
-			}
-			else if(region.equalsIgnoreCase("Village"))
-			{
-				
-				cadreInfo = cadreManagementService.getCadresByVillage(new Long(regionId), userID);
-				
-				this.setCadreInfo(cadreInfo);
-			}*/
 		}
 				
 		return Action.SUCCESS;		
