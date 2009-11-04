@@ -17,6 +17,8 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
@@ -118,11 +120,18 @@ public class CadreManagementService {
 
 	
 	public UserCadresInfoVO getUserCadresInfo(UserCadresInfoVO userCadreInfo){
-		Long totalUserAccessLevelCaders = cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID());
-		userCadreInfo.setTotalCadres(totalUserAccessLevelCaders);
-		
-		userCadreInfo = getUserAccessRegions(userCadreInfo);
-		userCadreInfo = getRegionLevelCadresCount(userCadreInfo);
+		ResultStatus resultStatus = new ResultStatus();
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		try{
+			Long totalUserAccessLevelCaders = cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID());
+			userCadreInfo.setTotalCadres(totalUserAccessLevelCaders);
+			userCadreInfo = getUserAccessRegions(userCadreInfo);
+			userCadreInfo = getCadreLevelCadresCount(userCadreInfo);
+		}catch(Exception e){
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setResultPartial(true);
+			resultStatus.setExceptionEncountered(e);
+		}
 		
 		return userCadreInfo;
 	}
@@ -150,7 +159,8 @@ public class CadreManagementService {
 			long mandalLevelZeroCadres = mandals.size() - cadreSizeMandalWise.size();
 			StringBuilder sbMandals = getFormatedData(mandals,userAccessMandals,cadreSizeMandalWise,zeroCadreMandals);
 			userCadreInfo.setUserAccessMandals(userAccessMandals);
-
+			userCadreInfo.setZeroCadreMandals(zeroCadreMandals);
+			
 			if(sbMandals!=null && sbMandals.length()>0)
 				accessID = sbMandals.substring(0, sbMandals.length()-1);
 			
@@ -165,6 +175,7 @@ public class CadreManagementService {
 			long stateLevelZeroCadres = states.size() - cadreSizeStateWise.size();
 			StringBuilder sbStates = getFormatedData(states,userAccessStates,cadreSizeStateWise,zeroCadreStates);
 			userCadreInfo.setUserAccessStates(userAccessStates);
+			userCadreInfo.setZeroCadreStates(zeroCadreStates);
 
 			if(sbStates!=null && sbStates.length()>0)
 				accessID = sbStates.substring(0, sbStates.length()-1);
@@ -180,7 +191,8 @@ public class CadreManagementService {
 			long districtLevelZeroCadres = districts.size() - cadreSizeDistrictWise.size();//getZeroSize(cadreSizeZero4District);
 			StringBuilder sbDistricts = getFormatedData(districts,userAccessDistricts,cadreSizeDistrictWise,zeroCadreDistricts);
 			userCadreInfo.setUserAccessDistricts(userAccessDistricts);
-
+			userCadreInfo.setZeroCadreDistricts(zeroCadreDistricts);
+			
 			if(sbDistricts!=null && sbDistricts.length()>0)
 				accessID = sbDistricts.substring(0, sbDistricts.length()-1);
 			
@@ -195,7 +207,8 @@ public class CadreManagementService {
 			long mandalLevelZeroCadres = mandals.size() - cadreSizeMandalWise.size();//getZeroSize(cadreSizeZero4Mandal);
 			StringBuilder sbMandals = getFormatedData(mandals,userAccessMandals, cadreSizeMandalWise, zeroCadreMandals);
 			userCadreInfo.setUserAccessMandals(userAccessMandals);
-
+			userCadreInfo.setZeroCadreMandals(zeroCadreMandals);
+			
 			if(sbMandals!=null && sbMandals.length()>0)
 				accessID = sbMandals.substring(0, sbMandals.length()-1);
 			
@@ -213,7 +226,8 @@ public class CadreManagementService {
 			
 			StringBuilder sbVillages = getFormatedData(villages,userAccessVillages,cadreSizeVillageWise,zeroCadreVillages);
 			userCadreInfo.setUserAccessVillages(userAccessVillages);
-
+			userCadreInfo.setZeroCadreVillages(zeroCadreVillages);
+			
 			/*if(sbVillages!=null && sbVillages.length()>0)
 				accessID = sbVillages.substring(0, sbVillages.length()-1);*/
 			
@@ -265,7 +279,7 @@ public class CadreManagementService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public UserCadresInfoVO getRegionLevelCadresCount(UserCadresInfoVO userCadreInfo){
+	public UserCadresInfoVO getCadreLevelCadresCount(UserCadresInfoVO userCadreInfo){
 		List cadresByRegionList = cadreDAO.findCadresByLevels(userCadreInfo.getUserID());
 		Map<String,Long> tempMap = new LinkedHashMap<String,Long>();
 		for(int i =0; i<cadresByRegionList.size(); i++){

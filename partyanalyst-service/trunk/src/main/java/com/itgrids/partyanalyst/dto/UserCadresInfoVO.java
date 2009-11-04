@@ -47,6 +47,7 @@ public class UserCadresInfoVO implements Serializable{
 	private Map<Long, String> zeroCadreMandals = null;
 	private Map<Long, String> zeroCadreVillages = null;
 	
+	private ResultStatus resultStatus = null;
 	
 	
 
@@ -149,4 +150,12 @@ public class UserCadresInfoVO implements Serializable{
 	public void setZeroCadreVillages(Map<Long, String> zeroCadreVillages) {
 		this.zeroCadreVillages = zeroCadreVillages;
 	}
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	
+	
 }
