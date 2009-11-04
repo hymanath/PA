@@ -19,6 +19,7 @@ import com.opensymphony.xwork2.Action;
 public class AjaxSearchAction implements ServletRequestAware{
 
 	private List<String> namesList;
+	private List<SelectOptionVO> candidatesList;
 	JSONObject jObj = null,respObj=null;
 	private String task = null;
 	private IConstituencySearchService constituencySearchService;
@@ -26,6 +27,16 @@ public class AjaxSearchAction implements ServletRequestAware{
 	private HttpServletRequest request;
 	private HttpSession session;
 	
+	
+	
+	public List<SelectOptionVO> getCandidatesList() {
+		return candidatesList;
+	}
+
+	public void setCandidatesList(List<SelectOptionVO> candidatesList) {
+		this.candidatesList = candidatesList;
+	}
+
 	public ICandidateSearchService getCandidateSearchService() {
 		return candidateSearchService;
 	}
@@ -88,7 +99,8 @@ public class AjaxSearchAction implements ServletRequestAware{
 		{
 			System.out.println("Search criteria = candidate");			
 			List<SelectOptionVO> candidateNamesAndIds = candidateSearchService.getCandidateNamesAndIds();
-			setNamesList(getNamesFromSelectOptionVos(candidateNamesAndIds));		
+			setNamesList(getNamesFromSelectOptionVos(candidateNamesAndIds));	
+			setCandidatesList(candidateNamesAndIds);
 			session.setAttribute("candidateNamesAndIds", candidateNamesAndIds);
 		}
 		else if (jObj.getString("searchCriteria").equalsIgnoreCase("Constituency"))
