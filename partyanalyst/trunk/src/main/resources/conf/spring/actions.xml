@@ -117,5 +117,9 @@
 	<bean id="partyBoothResult2Action" class="com.itgrids.partyanalyst.web.action.PartyBoothResult2Action" singleton="false">
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
 	</bean>
+	
+	<bean id="addRebelsAction" class="com.itgrids.partyanalyst.web.action.AddRebelsAction" singleton="false">
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
 
 </beans>
