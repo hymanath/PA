@@ -5,6 +5,7 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 import com.itgrids.partyanalyst.keys.PropertyKeys;
 import com.itgrids.partyanalyst.service.IPartyAnalystPropertyService;
@@ -29,7 +30,7 @@ public class SmsCountrySmsService implements ISmsService {
 			String... mobileNumbers) {
 		HttpClient client = null;
 		PostMethod post = null;
-
+		
 		client = new HttpClient(new MultiThreadedHttpConnectionManager());
 
 		/* SETUP PROXY */
@@ -39,7 +40,8 @@ public class SmsCountrySmsService implements ISmsService {
 				port = Integer.parseInt(propertyService
 						.getProperty(PropertyKeys.SERVER_PROXY_PORT));
 			} catch (NumberFormatException nfe) {
-				log.warn(nfe);
+				if(log.isTraceEnabled())
+				log.error(nfe);
 			}
 			client.getHostConfiguration().setProxy(propertyService.getProperty(PropertyKeys.SERVER_PROXY_HOST), port);
 		}
@@ -73,12 +75,16 @@ public class SmsCountrySmsService implements ISmsService {
 		/* PUSH the URL */
 		try {
 			int statusCode = client.executeMethod(post);
-			log.info(post.getStatusLine().toString());
+			if(log.isInfoEnabled()){
+				log.info(post.getStatusLine().toString());
+			}
 			if (statusCode != HttpStatus.SC_OK) {
 				log.error("SmsCountrySmsService.sendSMS failed: "
 						+ post.getStatusLine());
 			}
-			log.info(post.getResponseBodyAsString());
+			if(log.isInfoEnabled()){
+				log.info(post.getResponseBodyAsString());
+			}
 		} catch (Exception e) {
 			log.error(e);
 		} finally {
