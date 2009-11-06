@@ -103,8 +103,8 @@
 	            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
 	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
 	            { text: "Party Booth Results Report", url: "partyBoothResultAction.action" },  
-	            { text: "Add Rebels", url: "addRebelsAction.action" }                       
-
+	            { text: "Add Rebels", url: "addRebelsAction.action" },                       
+				{ text: "Party Influence Report", url: "partyInfluenceMainAction.action" }  
 	        ]  
 	    }, 
 	     
@@ -130,7 +130,7 @@
 <div id="maincontainer">
 	<div id="header">
 		<div id="logo"></div>
-		<div id="searchDiv" style="position:absolute;color: white;margin-left:410px;margin-top:25px;font-size: 11px; font-family: Arial;display:inline;width:360px;" >
+		<div id="searchDiv" style="position:absolute;color: white;margin-left:415px;margin-top:25px;font-size: 11px; font-family: Arial;display:inline;width:360px;" >
 			<jsp:include page="../../jsp/cncSearch.jsp" />
 		</div>
 		<div id="loginarea">

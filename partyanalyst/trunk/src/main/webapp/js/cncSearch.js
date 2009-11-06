@@ -9,13 +9,13 @@ function buildAutoSuggest(value)
 	if(navigator.appName=="Microsoft Internet Explorer")
 	{		
 		var txtstr='<input id="myInput" type="text" name="searchText" style="position:absolute;top:2px;"/>';
-		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:28px;"></div>';
+		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;"></div>';
 		txtDivElmt.innerHTML=txtstr;
 	}
 	else
 	{
 		var txtstr='<input id="myInput" type="text" name="searchText" style="padding: 3px 0px 2px 0px; font-size: 10px; font-family: arial;"/>';
-		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;"></div>';
+		txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;top:22px;width:215px;"></div>';
 		txtDivElmt.innerHTML=txtstr;
 	}
 	
@@ -114,13 +114,13 @@ function getAutoComplete()
 		if(navigator.appName=="Microsoft Internet Explorer")
 		{				
 			var txtstr='<input id="myInput" type="text" name="searchText" onKeyup="validateRadio()" style="position:absolute;top:2px;"/>';
-			txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;"></div>';
+			txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;width:215px;"></div>';
 			txtDivElmt.innerHTML=txtstr;
 		}
 		else
 		{
 			var txtstr='<input id="myInput" type="text" name="searchText" onKeyup="validateRadio()" style="padding: 3px 0px 2px 0px; font-size: 10px; font-family: arial;"/>';
-			txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;"></div>';
+			txtstr+='<div id="suggestDiv" style="position:absolute;z-index:50000000;font-size:10px;width:215px;"></div>';
 			txtDivElmt.innerHTML=txtstr;
 		}
 

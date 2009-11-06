@@ -48,7 +48,10 @@ div#contenttable a:hover {
 	color:#00BF00;
 	padding-top:5px;
 }
-
+#loginarea a
+{
+	color:#F5A2A2;
+}
 #content{
 	width:960px;
 	background:#FFFFFF;
@@ -199,9 +202,9 @@ div#contenttable a:hover {
 	border-bottom: 3px solid #FFF; 
 	width:100%;
 	
-	float:right;*/
-	margin-left:500px;
-	padding-top:100px;
+	float:right;
+	margin-left:500px;*/
+	padding-top:100px;	
 }
 
 #navlist{
