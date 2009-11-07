@@ -182,6 +182,13 @@
 			<result name="success">/jsp/electionComparisonReportPage.jsp</result>
 			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
 		</action>
-
+		
+		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">
+			<result name="success">/jsp/partyInfluenceMainPage.jsp</result>
+		</action>
+		
+		<action name="partyInfluenceAction" class="partyInfluenceAction">
+			<result name="success">/jsp/partyInfluenceReportPage.jsp</result>
+		</action>
 	</package>
 </struts>
