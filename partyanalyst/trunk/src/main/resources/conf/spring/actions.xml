@@ -122,4 +122,11 @@
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
+	<bean id="partyInfluenceMainAction" class="com.itgrids.partyanalyst.web.action.PartyInfluenceMainAction" singleton="false"/>
+	
+	<bean id="partyInfluenceAction" class="com.itgrids.partyanalyst.web.action.partyInfluenceAction" singleton="false">
+	   <property name="partyInfluenceService" ref="partyInfluenceService" />
+	 </bean>
+	
+	
 </beans>
