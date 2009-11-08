@@ -134,6 +134,19 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	}
 	
 	@SuppressWarnings("unchecked")
+	public Election findByElectionScopeIdElectionYear(Long electionScope,String electionYear){
+		Election electionObj=null;
+		Query query = getSession().createQuery("from Election model where model.electionScope.electionScopeId =? and model.electionYear=?");
+		query.setParameter(0, electionScope);
+		query.setParameter(1, electionYear);
+		List<Election> list= query.list();
+		if(list!=null && list.size()>0){
+			return electionObj=list.get(0);
+		}
+	return electionObj;		
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Election> findByElectionScopeId(Long electionScopeId){
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionScopeId = ?", electionScopeId);
 	}
