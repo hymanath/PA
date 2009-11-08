@@ -157,9 +157,10 @@ public class StaticDataService implements IStaticDataService {
 					allianceParties.add(new SelectOptionVO(allianceGroup.getParty().getPartyId()
 							, allianceGroup.getParty().getShortName()));
 			}
+		return allianceParties;
 		}
 		
-		return null;
+	return null;
 	}
 
 	//Need refactoring the code and unit testing- Ashok	
