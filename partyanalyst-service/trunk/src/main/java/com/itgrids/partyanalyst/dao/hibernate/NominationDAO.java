@@ -7,13 +7,17 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.NominationColumnNames;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Nomination;
 
 /**
@@ -85,5 +89,18 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	public List<Nomination> findByConstituencyAndElectionYear(Long constituencyId, String electionYear){
 		Object[] params = {electionYear, constituencyId};
 		return getHibernateTemplate().find( "from Nomination model where model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId = ?)", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndPartys(Long electionId,List<Long> partys){
+		
+		StringBuffer queryBuffer = new StringBuffer("from Nomination model where model.nominationId in(select model.nominationId from model where model.constituencyElection.election.electionId = " + electionId + " and model.party.partyId in(");
+		for(int i=0;i<partys.size();i++){
+			queryBuffer.append(partys.get(i) + ",");
+		}
+		String query = queryBuffer.toString().substring(0, queryBuffer.toString().length()-1);
+		query = query + "))";
+				
+		return getHibernateTemplate().find(query);
 	}
 }
