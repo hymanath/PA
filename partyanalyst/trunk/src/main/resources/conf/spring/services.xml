@@ -69,6 +69,12 @@
 		<property name="candidateDAO" ref="candidateDAO" />
 	</bean>
 	
+	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
+	
 	<bean name="electionsComparisonService" class="com.itgrids.partyanalyst.service.impl.ElectionsComparisonService" >
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="partyDAO" ref="partyDAO" />
