@@ -62,11 +62,17 @@ public class CandidateSearchService implements ICandidateSearchService{
 	public List<SelectOptionVO> getNominatedPartyCandidates(Long stateId, Long partyId, Long electionId) {
 		List<Nomination> nominations = nominationDAO.findByStatePartyAndElectionId(stateId, electionId, partyId);
 		List<PartyRebelCandidate> rebelCandidates = partyRebelCandidateDAO.findByPartyIdAndElectionId(partyId, electionId);
-		
+
 		List<SelectOptionVO> candidatesList = new ArrayList<SelectOptionVO>();
+		List<Long> rebelIds = new ArrayList<Long>();
+		
+		for(PartyRebelCandidate cand : rebelCandidates) {
+			rebelIds.add(cand.getCandidate().getCandidateId());
+		}
+		
 		for(Nomination nomination : nominations) {
 			Candidate candidate = nomination.getCandidate();
-			if(!rebelCandidates.contains(candidate)) {
+			if(!rebelIds.contains(candidate.getCandidateId())) {
 				candidatesList.add(new SelectOptionVO(candidate.getCandidateId(), candidate.getLastname()));
 			}
 		}
