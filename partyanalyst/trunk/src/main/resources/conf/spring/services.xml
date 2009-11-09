@@ -159,5 +159,6 @@
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="partyRebelCandidateDAO" ref="partyRebelCandidateDAO" />
 		<property name="rebelPartyDAO" ref="rebelPartyDAO" />
+		<property name="candidateDAO" ref="candidateDAO" />
 	</bean>
 </beans>
