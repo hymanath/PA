@@ -179,7 +179,8 @@
 		</action>
 		
 		<action name="addRebelsSubmit" class="addRebelsAction" method="addPartyRebels" >
-			<result type="json" name="success"/>
+			<result name="input">/jsp/AddRebels.jsp</result>
+			<result name="success">/jsp/AddRebels.jsp</result>
 		</action>
 	
         <action name="electionComparisonAction" class="electionComparisonAction">
