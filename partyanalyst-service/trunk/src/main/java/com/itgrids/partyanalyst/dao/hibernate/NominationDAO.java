@@ -7,15 +7,23 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Query;
+
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.criterion.Expression;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.hibernate.Query;
+
 
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.NominationColumnNames;
+import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Nomination;
@@ -90,6 +98,27 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		Object[] params = {electionYear, constituencyId};
 		return getHibernateTemplate().find( "from Nomination model where model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId = ?)", params);
 	}
+
+	
+	@SuppressWarnings("unchecked")
+    public List<Nomination> findByStatePartyAndElectionId(final Long stateId, final Long electionId, final Long partyId){
+           
+            return ( List<Nomination> ) getHibernateTemplate().execute( new HibernateCallback() {
+                public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+                		List<Nomination> constElectionResults = session.createCriteria(Nomination.class)
+                							.createAlias("constituencyElection", "constElec")
+                							.createAlias("party", "p")
+                							.createAlias("constElec.election", "elec")
+                							.createAlias("constElec.constituency", "const")
+                							.createAlias("const.state", "state")
+                							.add(Expression.eq("state.stateId", stateId))
+                							.add(Expression.eq("elec.electionId", electionId))
+                							.add(Expression.eq("p.partyId", partyId))
+                							.list();
+                		 return constElectionResults;
+                }
+            });
+    }
 	
 	@SuppressWarnings("unchecked")
 	public List<Nomination> findByElectionIdAndPartys(Long electionId,List<Long> partys){
@@ -103,4 +132,5 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				
 		return getHibernateTemplate().find(query);
 	}
+
 }
