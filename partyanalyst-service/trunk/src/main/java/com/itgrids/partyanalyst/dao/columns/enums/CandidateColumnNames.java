@@ -25,7 +25,7 @@
                MOBILE("mobile"),
                ADDRESS("address"),
                EDUCATION("education"),
-               GENDER("gender");
+               GENDER("gender"), CANDIDATE_ID("candidateId");
  
                private final String value;
 

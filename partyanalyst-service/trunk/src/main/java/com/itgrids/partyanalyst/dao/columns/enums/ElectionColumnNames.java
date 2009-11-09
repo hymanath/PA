@@ -16,6 +16,7 @@ package com.itgrids.partyanalyst.dao.columns.enums;
 
 public enum ElectionColumnNames {
 
+	ELECTION_ID("electionId"),
 	END_DATE("endDate"),
 	ELECTION_YEAR("electionYear");
 	
