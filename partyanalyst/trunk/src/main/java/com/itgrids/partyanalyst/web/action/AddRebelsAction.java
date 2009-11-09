@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
@@ -62,8 +63,6 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO> rebelCandidates;
 	private ICandidateSearchService candidateSearchService;
 	private IPartyRebelCandidatesService partyRebelCandidatesService;
-	
-	
 	
 	
 	public void setPartyRebelCandidatesService(
@@ -187,14 +186,11 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 	public String getJSON() throws JRException {
 		log.debug("getCandidates Ajax action started...");
 		Map<String, String> params = request.getParameterMap();
-		Long partyId = null;
-		Long stateId = null;
-		Long electionId = null;
-		
+	
 		if(params.containsKey("stateId")) {
-			electionId = new Long(request.getParameter("electionId"));
-			partyId = new Long(request.getParameter("partyId"));
-			stateId = new Long(request.getParameter("stateId"));
+			Long electionId = new Long(request.getParameter("electionId"));
+			Long partyId = new Long(request.getParameter("partyId"));
+			Long stateId = new Long(request.getParameter("stateId"));
 			setCandidates(candidateSearchService.getNominatedPartyCandidates(stateId, partyId, electionId));
 			setRebelCandidates(partyRebelCandidatesService.findByPartyIdAndElectionId(partyId, electionId));
 		}
@@ -206,20 +202,34 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 		log.debug("addPartyRebels action started...");
 		
 		Map<String, String> params = request.getParameterMap();
-		Long partyId = null;
-		Long stateId = null;
+		Long defaultElectionTypeId = new Long(2);
+		Long stateId = new Long(1);
 		Long electionId = null;
-		//String list = params.get("rebels");
-		// Need to get JSON from jsp and set the list to rebelsList below.
+		Long partyId = null;
 		
-		if(params.containsKey("rebels")) {
-			electionId = new Long(request.getParameter("electionId"));
-			partyId = new Long(request.getParameter("partyId"));
-			stateId = new Long(request.getParameter("stateId"));
-			List<Long> rebelsList = null;
-			partyRebelCandidatesService.savePartyRebelCandidates(stateId, partyId, electionId, rebelsList);
+		// Need to get JSON from jsp and set the list to rebelsList below.
+		if(params != null) {
+			electionId = new Long(request.getParameter("year"));
+			partyId = new Long(request.getParameter("party"));
+			stateId = new Long(request.getParameter("state"));
+		
+			if(params.containsKey("rebels")) {
+				StringTokenizer rebels = new StringTokenizer(request.getParameter("rebels"), ",");
+				List<Long> rebelsList = new ArrayList<Long>();
+				while(rebels.hasMoreTokens()) {
+					rebelsList.add(new Long(rebels.nextToken()));
+				}
+				partyRebelCandidatesService.savePartyRebelCandidates(stateId, partyId, electionId, rebelsList);
+			}
+			defaultElectionTypeId = new Long(request.getParameter("electionType"));
 		}
 		
+		setStates(getStaticDataService().getStates(defaultElectionTypeId));
+		setYears(getStaticDataService().getElectionIdsAndYears(defaultElectionTypeId));
+		setParties(getStaticDataService().getParties());
+		setConstituencies(getStaticDataService().getConstituencies(stateId));
+		setCandidates(candidateSearchService.getNominatedPartyCandidates(stateId, partyId, electionId));
+		setRebelCandidates(partyRebelCandidatesService.findByPartyIdAndElectionId(partyId, electionId));
 		
 		return Action.SUCCESS;
 	}
