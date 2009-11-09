@@ -107,11 +107,6 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		
 	}
 	
-	public List<Election> findByProperty(String propertyName, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<Election> findByPropertyTypeId(Long typeID) {
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId =?", typeID);
@@ -169,4 +164,5 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
             }
         });
 	}
+	
 }
