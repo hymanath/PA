@@ -111,8 +111,8 @@ function addRebel()
 	 		} 
 	var selectBox = document.getElementById("rebelList");
 	 addOption(selectBox, data.name, data.id);
-	 candList.remove(index);
-	 document.getElementById("rebels").disabled= false;  	 	
+	 candList.remove(index); 
+	
 }
 
 function removeRebel()
@@ -130,20 +130,20 @@ function removeRebel()
 }
 
 function submitRebels() {
-	var rebels = [];
+	var rebels;
 	var selectBox = document.getElementById("rebelList");
 	var i;
  	for(i=selectBox.options.length-1;i>=0;i--)
  	{
  	 	var option = selectBox.options[i];
-	 	rebels[i] = option.value;
+ 	 	if(i == selectBox.options.length-1) {
+	 		rebels = option.value;
+ 	 	} else {
+	 		rebels = rebels + "," + option.value;
+ 	 	}
  	}
-	/*var rebelList = { 
-			"rebels" : rebels 
-	}
-	var rparam ="rebelCandidates="+YAHOO.lang.JSON.stringify(rebelList); */
-	var url =  "<%=request.getContextPath()%>/addRebelsSubmit.action?" ;
-	callAjax("rebels="+rebels, url);
+	document.getElementById("rebels").value = rebels;
+	
 }
 	</script>
 		<script type="text/javascript" src="js/cncSearch.js"></script>
@@ -151,7 +151,7 @@ function submitRebels() {
 	
 </head> 
 <body >
-<s:form name="addRebels" action="#"  method="GET">
+<s:form name="addRebels" action="addRebelsSubmit"  method="GET">
 <s:hidden name="country" value="1" id="country"/>
 <table class="partyPerformanceCriteriaTable">
 	<tr>
@@ -198,7 +198,8 @@ function submitRebels() {
 		</td>
 	</tr>
 	<tr>
-	<td><button type="submit" name="submit" onclick="submitRebels()" value="Submit">Submit</button>
+	<th><input type="hidden" name="rebels" id="rebels" /></th>
+	<td><button type="submit" name="submit" value="Submit" onclick="submitRebels()">Submit</button>
 	</td>
 	</tr>
 </table>
