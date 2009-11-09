@@ -60,6 +60,8 @@
 				<value>com.itgrids.partyanalyst.model.ElectionAlliance</value>
 				<value>com.itgrids.partyanalyst.model.Group</value>
 				<value>com.itgrids.partyanalyst.model.AllianceGroup</value>
+				<value>com.itgrids.partyanalyst.model.PartyRebel</value>
+				<value>com.itgrids.partyanalyst.model.PartyRebelCandidate</value>
 			</list>
 		</property>
 	</bean>
@@ -211,6 +213,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="allianceGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.AllianceGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="rebelPartyDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyRebelDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="partyRebelCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyRebelCandidateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>

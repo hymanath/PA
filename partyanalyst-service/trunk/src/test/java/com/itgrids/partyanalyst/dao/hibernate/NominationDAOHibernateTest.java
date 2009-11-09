@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
 
 public class NominationDAOHibernateTest extends BaseDaoTestCase {
@@ -17,10 +18,19 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		this.nominationDAO = nominationDAO;
 	}
 
-	public void testFindByConstituencyElection(){
+	/*public void testFindByConstituencyElection(){
 		List<Nomination> actualResult = nominationDAO.findByConstituencyElection(new Long(1));
 		for(Nomination nomination: actualResult)
 			System.out.println("NominationID=:"+nomination.getNominationId()+" partyID=:"+nomination.getParty().getPartyId());
 		Assert.assertEquals(10, actualResult.size());
+	}*/
+	
+	
+	public void testFindByStatePartyAndElectionId() {
+		List<Nomination> nominations = nominationDAO.findByStatePartyAndElectionId(new Long(1), new Long(27), new Long(1));
+		for(Nomination n : nominations) {
+			System.out.println(n.getCandidate().getLastname());
+		}
 	}
+        
 }
