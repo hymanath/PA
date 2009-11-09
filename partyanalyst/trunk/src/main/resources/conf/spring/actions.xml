@@ -120,6 +120,8 @@
 	
 	<bean id="addRebelsAction" class="com.itgrids.partyanalyst.web.action.AddRebelsAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="candidateSearchService" ref="candidateSearchService" />
+		<property name="partyRebelCandidatesService" ref="partyRebelCandidatesService" />
 	</bean>
 	
 	<bean id="partyInfluenceMainAction" class="com.itgrids.partyanalyst.web.action.PartyInfluenceMainAction" singleton="false"/>

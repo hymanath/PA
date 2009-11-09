@@ -49,6 +49,8 @@
 				<value>com.itgrids.partyanalyst.model.Group</value>
 				<value>com.itgrids.partyanalyst.model.AllianceGroup</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyTehsil</value>
+				<value>com.itgrids.partyanalyst.model.PartyRebel</value>
+				<value>com.itgrids.partyanalyst.model.PartyRebelCandidate</value>
 		</list>
 		</property>
 	</bean>

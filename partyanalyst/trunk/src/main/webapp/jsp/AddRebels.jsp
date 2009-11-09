@@ -40,20 +40,14 @@
  	}
  	
     function processResponse(param, response){
+
 		if(param.substring(0, 4) == "type"){
 	    	fillDropDown(document.getElementById("stateList"), response.states);
 		 	fillDropDown(document.getElementById("yearList"), response.years);
 		 	fillDropDown(document.getElementById("partyList"), response.parties);
-		} if(param.substring(0, 8) == "alliance"){
-			if(response == true) {
-				document.getElementById("allianceRow").style.display="table-row";
-			} else {
-				document.getElementById("allianceRow").checked = false;
-				document.getElementById("allianceRow").style.display="none";
-			}
-		}else {
-	 		fillDropDown(document.getElementById("districtList"), response.districts);			
-	 		document.getElementById("districtList").disabled= false;  	 			 		
+		} else if(param.substring(0, 5) == "state") {
+	 		fillDropDown(document.getElementById("candidateList"), response.candidates);	
+	 		fillDropDown(document.getElementById("rebelList"), response.rebelCandidates);					 		
 		}
     }
     
@@ -75,162 +69,81 @@
  			selectbox.options.add(optn);
  	}
 
+ 	function removeOptions(selectbox)
+ 	{
+	 	var i;
+	 	for(i=selectbox.options.length-1;i>=0;i--)
+	 	{
+		 	if(selectbox.options[i].selected)
+		 	selectbox.remove(i);
+	 	}
+ 	}
+	
  	function doAjax(param){
- 		var url = "<%=request.getContextPath()%>/partyPerformanceAjax.action?";
+ 		var url = "<%=request.getContextPath()%>/addRebelsAction.action?";
  		callAjax("type="+param, url);
  	}
 
- 	function getDistricts(level){
- 	 	if(level == 2){
-	 	 	var index = document.getElementById("stateList").selectedIndex;
-	 	 	var stateId = document.getElementById("stateList").options[index].value;
-	 	 	var url = "<%=request.getContextPath()%>/partyPerformanceAjax.action?";
-			callAjax("stateId="+stateId, url);
- 	 	} else {
- 	 		document.getElementById("districtList").disabled= true;  
- 	 	}
+ 	function getCandidates(){
+	 	 	var sIndex = document.getElementById("stateList").selectedIndex;
+	 	 	var pIndex = document.getElementById("partyList").selectedIndex;
+	 	 	var eIndex = document.getElementById("yearList").selectedIndex;
+	 	 	var stateId = document.getElementById("stateList").options[sIndex].value;
+	 	 	var partyId = document.getElementById("partyList").options[pIndex].value;
+	 	 	var electionId = document.getElementById("yearList").options[eIndex].value;
+	 	 	var url = "<%=request.getContextPath()%>/addRebelsAjax.action?";
+	 	 	var params = "stateId="+stateId+"&partyId="+partyId+"&electionId="+electionId;
+			callAjax(params, url);
+ 	
  	}
-
- 	function fetchDistricts(){
- 	 	var reportLevels = document.getElementsByName("1");
- 	 	for(var i=0; i < reportLevels.length; i++){
- 	 	 	if(reportLevels[i].checked){
- 	 	 		getDistricts(i+1);
- 	 	 	}
- 	 	}
- 	}
-
- 	function hasAllianceParties(){
- 		var index = document.getElementById("partyList").selectedIndex;
- 	 	var partyId = document.getElementById("partyList").options[index].value;
- 	 	index = document.getElementById("yearList").selectedIndex;
- 	 	var year = document.getElementById("yearList").options[index].value;
- 	 	var url = "<%=request.getContextPath()%>/partyPerformanceAllianceAjax.action?";
- 	 	callAjax("allianceWith="+partyId+"&year="+year, url);
- 	}
-
- 	function ajaxCall2(param)
-	{		
-		var url2 = "<%=request.getContextPath()%>/ajaxSearchAction.action?"; 
-		var xmlHttp=getXmlHttpObj2();		
-		xmlHttp.open("post",url2,true);
-		xmlHttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-		xmlHttp.send(param);
-		xmlHttp.onreadystatechange = function()
-		{
-			if(xmlHttp.readyState==4 && xmlHttp.status == 200)
-			{
-				var jObj=eval('('+xmlHttp.responseText+')');				
-				buildAutoSuggest2(jObj.namesList);	
-				var candidateSelect = document.getElementById("candidate");
-				fillDropDown(candidateSelect, jObj.candidatesList);	
-			}			
-		}
-	} 
- 	function getXmlHttpObj2()
- 	{	
- 		var xmlHttp;
- 		// Firefox, Opera 8.0+, Safari
- 		try
- 		{	
- 			xmlHttp=new XMLHttpRequest();
- 		}
- 		// Internet Explorer
- 		catch (e)
- 		{
- 			try
- 			{
- 				xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
- 				
- 			}
- 			catch (e)
- 			{
- 				try
- 				{
- 					xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
- 					
- 				}
- 				catch (e){return null;}
- 			}
- 		}
- 		return xmlHttp;	
- 	}
-function buildAutoSuggest2(value)
-{
-	var datastore= value;
-	
-	var txtDivElmt=document.getElementById("candFldDiv");
-	/*if(navigator.appName=="Microsoft Internet Explorer")
-	{		
-		var txtstr='<input id="myInput2" type="text" name="searchText" style="padding-bottom:23px;padding-left:10px;color:black;position:relative;z-index:1;"/>';
-		txtstr+='<div id="suggestDiv2" style="padding-bottom:23px;padding-left:10px;color:black;position:relative;z-index:1;"></div>';
-		txtDivElmt.innerHTML=txtstr;
-	}
-	else
-	{
-		var txtstr='<input id="myInput2" type="text" name="searchText" style="padding-bottom:23px;padding-left:10px;color:black;position:relative;z-index:1;"/>';
-		txtstr+='<div id="suggestDiv2" style="padding-bottom:23px;padding-left:10px;color:black;position:relative;z-index:1;"></div>';
-		txtDivElmt.innerHTML=txtstr;
-	}*/
-	var dsLocalArray = new YAHOO.util.LocalDataSource(datastore); 
-	var myAutoComp = new YAHOO.widget.AutoComplete("myInput2","myContainer",dsLocalArray);
-	myAutoComp.prehighlightClassName = "yui-ac-prehighlight"; 
-    myAutoComp.useShadow = true;
-	myAutoComp.useIFrame = true;
-	
-	//myAutoComp.textboxKeyEvent.subscribe(getCandidates); 
-}
-function getCandidates()
- {
-	var jsObj=
-	{
-		searchCriteria:"Candidate"
-	}
-	
-	//var param = "task="+JSON.stringify(jsObj);
-	var param ="task="+YAHOO.lang.JSON.stringify(jsObj); 
-	ajaxCall2(param);
- }
-	
-function getAutoCandidate()
-{
-		var datastore="";
-		var txtDivElmt=document.getElementById("candFldDiv");
-		/*if(navigator.appName=="Microsoft Internet Explorer")
-		{				
-			var txtstr='<input id="myInput2" type="text" name="searchText" onKeyup="getCandidates();" style="position:absolute;top:2px;"/>';
-			txtstr+='<div id="suggestDiv2" style="position:absolute;z-index:50000000;font-size:10px;"></div>';
-			txtDivElmt.innerHTML=txtstr;
-		}
-		else
-		{
-			var txtstr='<input id="myInput2" type="text" name="searchText" onKeyup="getCandidates();"  style="padding: 3px 0px 2px 0px; font-size: 10px; font-family: arial;"/>';
-			txtstr+='<div id="suggestDiv2" style="position:absolute;z-index:50000000;font-size:10px;"></div>';
-			txtDivElmt.innerHTML=txtstr;
-		}*/
-		
-		var dsLocalArray = new YAHOO.util.LocalDataSource(datastore); 
-		var myAutoComp = new YAHOO.widget.AutoComplete("myInput2","myContainer",dsLocalArray);
-		myAutoComp.prehighlightClassName = "yui-ac-prehighlight"; 
-	   
-		myAutoComp.alwaysShowContainer = true;
-		myAutoComp.allowBrowserAutocomplete = false;
-		myAutoComp.autoSnapContainer = true;
-}
 
 function addRebel()
 {
-	
-	var index = document.getElementById("myInput2").selectedIndex;
-	 	var candidateId = document.getElementById("myInput2").options[index].value;
-	 	var candidateName = document.getElementById("myInput2").options[index].text;
-	 	alert(candidateName);
-	/* var data=
+	var candList = document.getElementById("candidateList");
+	var index = candList.selectedIndex;
+	var candidateId = candList.options[index].value;
+	var candidateName = candList.options[index].text;
+
+	var data =
 	 		{
 	 			"id":candidateId,
 	 			"name":candidateName
-	 		}
-	fillDropDown(document.getElementById("rebelCandidates"), data);*/
+	 		} 
+	var selectBox = document.getElementById("rebelList");
+	 addOption(selectBox, data.name, data.id);
+	 candList.remove(index);
+	 document.getElementById("rebels").disabled= false;  	 	
+}
+
+function removeRebel()
+{
+	var selectBox = document.getElementById("rebelList");
+	var i;
+ 	for(i=selectBox.options.length-1;i>=0;i--)
+ 	{
+ 	 	var option = selectBox.options[i];
+	 	if(option.selected)	{
+			addOption(document.getElementById("candidateList"), option.text, option.value);
+			selectBox.remove(i);
+	 	}
+ 	}
+}
+
+function submitRebels() {
+	var rebels = [];
+	var selectBox = document.getElementById("rebelList");
+	var i;
+ 	for(i=selectBox.options.length-1;i>=0;i--)
+ 	{
+ 	 	var option = selectBox.options[i];
+	 	rebels[i] = option.value;
+ 	}
+	/*var rebelList = { 
+			"rebels" : rebels 
+	}
+	var rparam ="rebelCandidates="+YAHOO.lang.JSON.stringify(rebelList); */
+	var url =  "<%=request.getContextPath()%>/addRebelsSubmit.action?" ;
+	callAjax("rebels="+rebels, url);
 }
 	</script>
 		<script type="text/javascript" src="js/cncSearch.js"></script>
@@ -238,12 +151,12 @@ function addRebel()
 	
 </head> 
 <body >
-<s:form name="addRebels" action="#" onsubmit="javascript:{}" method="post">
+<s:form name="addRebels" action="#"  method="GET">
 <s:hidden name="country" value="1" id="country"/>
 <table class="partyPerformanceCriteriaTable">
 	<tr>
 		<th colspan="2">
-			<span style="margin: 0px; text-align: center;">Party Performance</span>
+			<span style="margin: 0px; text-align: center;">Add Rebels</span>
 		</th>
 	</tr>
 	<tr>
@@ -256,34 +169,37 @@ function addRebel()
 	<tr>
 		<th> State</th>
 		<td>
-			<s:select theme="simple" label="State" name="state" id="stateList" list="states" listKey="id" listValue="name" />
+			<s:select theme="simple" label="State" name="state" id="stateList" list="states" listKey="id" listValue="name" onchange="getCandidates()"/>
 		</td>
 	</tr>
 	<tr>
 		<th> Year</th>
-		<td><s:select theme="simple" label="Year" name="year" id="yearList" list="years" /></td>
+		<td><s:select theme="simple" label="Year" name="year" id="yearList" list="years" listKey="id" listValue="name" onchange="getCandidates()"/></td>
+	</tr>
+	<tr>
+		<th>Constituency</th>
+		<td><s:select theme="simple"  label="Constituency" name="constituency" id="constList" list="constituencies" listKey="id" listValue="name" onchange="getCandidates()" /></td>
 	</tr>
 	<tr>
 		<th>Party</th>
-		<td><s:select theme="simple"  label="Party" name="party" id="partyList" list="parties" listKey="id" listValue="name" /></td>
+		<td><s:select theme="simple"  label="Party" name="party" id="partyList" list="parties" listKey="id" listValue="name" onchange="getCandidates()" /></td>
 	</tr>
-	<tr><th></th>
-		<td>
-			<s:select theme="simple" id="candidate" name="candidate"  list="candidates" cssStyle="width:100px" />
+	
+	<tr>
+		<th>Candidate</th>
+		<td><s:select theme="simple" id="candidateList"  list="candidates" listKey="id" listValue="name"/>
+         <button type="button" name="add" onclick="addRebel()">Add</button> 	
 		</td>
 	</tr>
 	<tr>
-		<th>Candidate</th>
-		<td><div id="myAutoComplete">   
-       <input id="myInput2" type="text" onkeyup="getCandidates()"> <div id="myContainer" class="yui-ac-container" ></div>   
-         <button type="button" name="add" onclick="addRebel()">Add</button> 	
-    
- </div>   
-</td>
+		<th>Rebels</th>
+		<td><s:select theme="simple" id="rebelList" list="rebelCandidates" listKey="id" listValue="name"/>
+			  <button type="button" name="remove" onclick="removeRebel()">Remove</button>   
+		</td>
 	</tr>
 	<tr>
-		<th>Rebels</th>
-		<td><s:select cssStyle="width:100px" theme="simple" multiple="true"  name="rebels" list="rebelCandidates" /></td>
+	<td><button type="submit" name="submit" onclick="submitRebels()" value="Submit">Submit</button>
+	</td>
 	</tr>
 </table>
 </s:form>

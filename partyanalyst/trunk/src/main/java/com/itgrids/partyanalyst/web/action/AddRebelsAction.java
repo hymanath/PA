@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +18,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.json.JSONArray;
+import net.sf.json.util.JSONTokener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
+import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.ICandidateSearchService;
+import com.itgrids.partyanalyst.service.IPartyRebelCandidatesService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -53,9 +60,22 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO> candidates;
 	private List<SelectOptionVO> constituencies;
 	private List<SelectOptionVO> rebelCandidates;
+	private ICandidateSearchService candidateSearchService;
+	private IPartyRebelCandidatesService partyRebelCandidatesService;
 	
 	
 	
+	
+	public void setPartyRebelCandidatesService(
+			IPartyRebelCandidatesService partyRebelCandidatesService) {
+		this.partyRebelCandidatesService = partyRebelCandidatesService;
+	}
+
+	public void setCandidateSearchService(
+			ICandidateSearchService candidateSearchService) {
+		this.candidateSearchService = candidateSearchService;
+	}
+
 	public List<SelectOptionVO> getRebelCandidates() {
 		return rebelCandidates;
 	}
@@ -64,6 +84,7 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 		this.rebelCandidates = rebelCandidates;
 	}
 
+	@JSON (serialize= false )
 	public List<SelectOptionVO> getConstituencies() {
 		return constituencies;
 	}
@@ -80,22 +101,17 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 		this.candidates = candidates;
 	}
 
-	public static long getSerialVersionUID() {
-		return serialVersionUID;
-	}
-
-	public static Log getLog() {
-		return log;
-	}
-
+	@JSON (serialize= false )
 	public List<SelectOptionVO> getStates() {
 		return states;
 	}
 
+	@JSON (serialize= false )
 	public List<SelectOptionVO> getParties() {
 		return parties;
 	}
 
+	@JSON (serialize= false )
 	public List<SelectOptionVO> getYears() {
 		return years;
 	}
@@ -133,19 +149,81 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 		log.debug("AddRebels ... excute started...");
 		
 		Map<String, String> params = request.getParameterMap();
-		String year = null;
-		Long partyId = null;
+		
 		Long defaultElectionTypeId = new Long(2);
+		
+		String param = null;
+		defaultElectionTypeId = new Long(2);
+		
+		
+		if(params.containsKey("type")){
+			param = request.getParameter("type");
+		} else if(params.containsKey("stateId") && params.size() == 1){
+			param = request.getParameter("stateId");
+			setConstituencies(getStaticDataService().getConstituencies(new Long(param)));
+			return Action.SUCCESS;
+		} 
+		
+		if(param != null) {
+			defaultElectionTypeId = new Long(param);
+		}
 		
 		setStates(getStaticDataService().getStates(defaultElectionTypeId));
 		setYears(getStaticDataService().getElectionIdsAndYears(defaultElectionTypeId));
 		setParties(getStaticDataService().getParties());
-		setCandidates(new ArrayList<SelectOptionVO>());
 		setConstituencies(getStaticDataService().getConstituencies(new Long(getStates().get(0).getId())));
-		setRebelCandidates(new ArrayList<SelectOptionVO>());
+		Long stateId = getStates().get(0).getId();
+		Long partyId = getParties().get(0).getId();
+		Long electionId = getYears().get(0).getId();
+		setCandidates(candidateSearchService.getNominatedPartyCandidates(stateId, partyId, electionId));
+		setRebelCandidates(partyRebelCandidatesService.findByPartyIdAndElectionId(partyId, electionId));
+		//setCandidates(candidateSearchService.getCandidateNamesAndIds());
+		
+		//setRebelCandidates(new ArrayList<SelectOptionVO>());
 		return Action.SUCCESS;
 	}
 
+	@SuppressWarnings("unchecked")
+	public String getJSON() throws JRException {
+		log.debug("getCandidates Ajax action started...");
+		Map<String, String> params = request.getParameterMap();
+		Long partyId = null;
+		Long stateId = null;
+		Long electionId = null;
+		
+		if(params.containsKey("stateId")) {
+			electionId = new Long(request.getParameter("electionId"));
+			partyId = new Long(request.getParameter("partyId"));
+			stateId = new Long(request.getParameter("stateId"));
+			setCandidates(candidateSearchService.getNominatedPartyCandidates(stateId, partyId, electionId));
+			setRebelCandidates(partyRebelCandidatesService.findByPartyIdAndElectionId(partyId, electionId));
+		}
+		
+		return Action.SUCCESS;
+	}
+
+	public String addPartyRebels() throws JRException {
+		log.debug("addPartyRebels action started...");
+		
+		Map<String, String> params = request.getParameterMap();
+		Long partyId = null;
+		Long stateId = null;
+		Long electionId = null;
+		//String list = params.get("rebels");
+		// Need to get JSON from jsp and set the list to rebelsList below.
+		
+		if(params.containsKey("rebels")) {
+			electionId = new Long(request.getParameter("electionId"));
+			partyId = new Long(request.getParameter("partyId"));
+			stateId = new Long(request.getParameter("stateId"));
+			List<Long> rebelsList = null;
+			partyRebelCandidatesService.savePartyRebelCandidates(stateId, partyId, electionId, rebelsList);
+		}
+		
+		
+		return Action.SUCCESS;
+	}
+	@JSON (serialize= false )
 	private IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
