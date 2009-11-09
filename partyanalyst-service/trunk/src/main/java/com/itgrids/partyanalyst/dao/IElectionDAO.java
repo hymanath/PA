@@ -34,7 +34,7 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	 *            the property value to match
 	 * @return List<Election> found by query
 	 */
-	public List<Election> findByProperty(String propertyName, Object value);
+	public List<Election> findByProperty(ElectionColumnNames propertyName, Object value);
 
 	public List<Election> findByEndDate(Object endDate);
 
