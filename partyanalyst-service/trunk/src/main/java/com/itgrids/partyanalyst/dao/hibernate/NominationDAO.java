@@ -7,19 +7,16 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
-
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.hibernate.Query;
-
+import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.NominationColumnNames;
@@ -98,7 +95,6 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		Object[] params = {electionYear, constituencyId};
 		return getHibernateTemplate().find( "from Nomination model where model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId = ?)", params);
 	}
-
 	
 	@SuppressWarnings("unchecked")
     public List<Nomination> findByStatePartyAndElectionId(final Long stateId, final Long electionId, final Long partyId){
@@ -132,5 +128,4 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				
 		return getHibernateTemplate().find(query);
 	}
-
 }
