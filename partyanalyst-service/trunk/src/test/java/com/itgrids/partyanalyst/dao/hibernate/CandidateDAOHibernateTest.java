@@ -39,6 +39,7 @@ public class CandidateDAOHibernateTest extends BaseDaoTestCase {
 		candidateDAO.remove(new Long(184));
 		setComplete();
 	}*/
+	
 	@Test
 	public void test(){
 		Assert.assertEquals(1, 1);

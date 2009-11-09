@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.ElectionScope;
@@ -53,6 +55,14 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		List<Constituency> assemCons = constituencyDAO.findByElectionScope(2L);
 		Assert.assertNotNull(parlCons);
 		Assert.assertNotNull(assemCons);
+	}
+	
+	public void testGetConstituencies() {
+		List<Constituency> constList = constituencyDAO.findByStateId(new Long(1));
+		
+		for(Constituency constituency: constList){
+			System.out.println(constituency.getName());
+		}
 	}
 	
 }
