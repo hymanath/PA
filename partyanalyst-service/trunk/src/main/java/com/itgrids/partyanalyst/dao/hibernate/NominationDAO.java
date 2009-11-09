@@ -14,6 +14,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -107,9 +108,11 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
                 							.createAlias("constElec.election", "elec")
                 							.createAlias("constElec.constituency", "const")
                 							.createAlias("const.state", "state")
+                							.createAlias("candidate", "cand")
                 							.add(Expression.eq("state.stateId", stateId))
                 							.add(Expression.eq("elec.electionId", electionId))
                 							.add(Expression.eq("p.partyId", partyId))
+                							.addOrder(Order.asc("cand.lastname"))
                 							.list();
                 		 return constElectionResults;
                 }

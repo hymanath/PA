@@ -46,7 +46,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	
 	@SuppressWarnings("unchecked")
 	public List<Constituency> findByStateId(Long stateId) {
-		return getHibernateTemplate().find("from Constituency model where model.state.stateId = ?",stateId);
+		return getHibernateTemplate().find("from Constituency model where model.state.stateId = ? order by name",stateId);
 	}
 	
 	@SuppressWarnings("unchecked")

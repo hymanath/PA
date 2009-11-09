@@ -6,10 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyRebelCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPartyRebelDAO;
+import com.itgrids.partyanalyst.dao.columns.enums.CandidateColumnNames;
 import com.itgrids.partyanalyst.dao.columns.enums.ElectionColumnNames;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
@@ -25,8 +27,12 @@ public class PartyRebelCandidatesService implements IPartyRebelCandidatesService
 	IPartyRebelDAO rebelPartyDAO;
 	IElectionDAO electionDAO;
 	IPartyDAO partyDAO;
+	ICandidateDAO candidateDAO;
 	
-
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
+	}
+	
 	public void setElectionDAO(IElectionDAO electionDAO) {
 		this.electionDAO = electionDAO;
 	}
@@ -52,8 +58,8 @@ public class PartyRebelCandidatesService implements IPartyRebelCandidatesService
 		
 		Election election =  electionDAO.findByProperty(ElectionColumnNames.ELECTION_ID, electionId).get(0);
 		Party party = partyDAO.findByPartyId(partyId).get(0);
+		
 		//Create PartyRebel Entity
-
 		PartyRebel rebelParty = new PartyRebel();
 		rebelParty.setElection(election);
 		rebelParty.setParty(party);
@@ -63,7 +69,8 @@ public class PartyRebelCandidatesService implements IPartyRebelCandidatesService
 		for(Long rebelCandId : rebelsList) {
 			PartyRebelCandidate rebelCandidate = new PartyRebelCandidate();
 			rebelCandidate.setPartyRebel(rebelParty);
-			rebelCandidate.setCandidate(new Candidate(rebelCandId));
+			Candidate candidate = candidateDAO.findByProperty(CandidateColumnNames.CANDIDATE_ID, rebelCandId).get(0);
+			rebelCandidate.setCandidate(candidate);
 			candList.add(rebelCandidate);
 		}
 
@@ -85,7 +92,8 @@ public class PartyRebelCandidatesService implements IPartyRebelCandidatesService
 				if(!isRebelCandidateExist(rebelCandId, rebelsCandList)) {
 					PartyRebelCandidate rebelCandidate = new PartyRebelCandidate();
 					rebelCandidate.setPartyRebel(rParty);
-					rebelCandidate.setCandidate(new Candidate(rebelCandId));
+					Candidate candidate = candidateDAO.findByProperty(CandidateColumnNames.CANDIDATE_ID, rebelCandId).get(0);
+					rebelCandidate.setCandidate(candidate);
 					partyRebelCandidateDAO.save(rebelCandidate);
 				}
 			}

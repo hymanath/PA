@@ -70,7 +70,9 @@ public class RebelDAOHibernateTest extends BaseDaoTestCase {
 		for(Long rebelCandId : rebelsList) {
 			PartyRebelCandidate rebelCandidate = new PartyRebelCandidate();
 			rebelCandidate.setPartyRebel(rebelParty);
-			rebelCandidate.setCandidate(new Candidate(rebelCandId));
+			//rebelCandidate.setCandidate(new Candidate(rebelCandId));
+			Candidate candidate = candidateDAO.findByProperty(CandidateColumnNames.CANDIDATE_ID, rebelCandId).get(0);
+			rebelCandidate.setCandidate(candidate);
 			candList.add(rebelCandidate);
 		}
 		
