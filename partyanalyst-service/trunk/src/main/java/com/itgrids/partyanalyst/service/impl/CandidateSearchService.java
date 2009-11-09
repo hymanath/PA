@@ -3,22 +3,40 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPartyRebelCandidateDAO;
+import com.itgrids.partyanalyst.dao.IPartyRebelDAO;
 import com.itgrids.partyanalyst.dto.CandidateElectionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.PartyRebel;
+import com.itgrids.partyanalyst.model.PartyRebelCandidate;
 import com.itgrids.partyanalyst.service.ICandidateSearchService;
 
 public class CandidateSearchService implements ICandidateSearchService{
 
 	private ICandidateDAO candidateDAO;	
 	private List<SelectOptionVO> candidateNamesAndIdsList;
+	private INominationDAO nominationDAO;
+	private IPartyRebelCandidateDAO partyRebelCandidateDAO;
 	
+	
+	public void setPartyRebelCandidateDAO(
+			IPartyRebelCandidateDAO partyRebelCandidateDAO) {
+		this.partyRebelCandidateDAO = partyRebelCandidateDAO;
+	}
+
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
+
 	public void setCandidateDAO(ICandidateDAO candidateDAO) {
 		this.candidateDAO = candidateDAO;
 	}
@@ -39,6 +57,20 @@ public class CandidateSearchService implements ICandidateSearchService{
 		}else
 			System.out.println("Entered into else loop for getCandidateNames");
 		return candidateNamesAndIdsList;
+	}
+	
+	public List<SelectOptionVO> getNominatedPartyCandidates(Long stateId, Long partyId, Long electionId) {
+		List<Nomination> nominations = nominationDAO.findByStatePartyAndElectionId(stateId, electionId, partyId);
+		List<PartyRebelCandidate> rebelCandidates = partyRebelCandidateDAO.findByPartyIdAndElectionId(partyId, electionId);
+		
+		List<SelectOptionVO> candidatesList = new ArrayList<SelectOptionVO>();
+		for(Nomination nomination : nominations) {
+			Candidate candidate = nomination.getCandidate();
+			if(!rebelCandidates.contains(candidate)) {
+				candidatesList.add(new SelectOptionVO(candidate.getCandidateId(), candidate.getLastname()));
+			}
+		}
+		return candidatesList;
 	}
 	
 	public List<CandidateVO> getCandidatesDetails(Long candidateId, String name){

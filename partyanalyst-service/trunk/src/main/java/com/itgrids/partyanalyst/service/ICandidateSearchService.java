@@ -10,4 +10,5 @@ public interface ICandidateSearchService {
 	public List<SelectOptionVO> getCandidateNamesAndIds();
 	
 	public List<CandidateVO> getCandidatesDetails(Long candidateId, String name);
+	public List<SelectOptionVO> getNominatedPartyCandidates(Long stateId, Long partyId, Long electionId);
 }

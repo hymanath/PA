@@ -1,18 +1,25 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
+@Entity
+@Table(name = "party_rebel")
 public class PartyRebel extends BaseModel {
 
 	
@@ -20,8 +27,13 @@ public class PartyRebel extends BaseModel {
 	private Long partyRebelId;
 	private Election election;
 	private Party party;
+	private Set<PartyRebelCandidate> rebelCandidates;
 	
 	public PartyRebel(){}
+	
+	public PartyRebel(Long partyRebelId) {
+		this.partyRebelId = partyRebelId;
+	}
 	
 	public PartyRebel(Long partyRebelId, Election election, Party party) {
 		super();
@@ -62,6 +74,15 @@ public class PartyRebel extends BaseModel {
 	}
 	public void setParty(Party party) {
 		this.party = party;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "partyRebel")
+	public Set<PartyRebelCandidate> getRebelCandidates() {
+		return rebelCandidates;
+	}
+
+	public void setRebelCandidates(Set<PartyRebelCandidate> rebelCandidates) {
+		this.rebelCandidates = rebelCandidates;
 	}
 	
 	

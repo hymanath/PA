@@ -2,17 +2,21 @@ package com.itgrids.partyanalyst.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
+@Entity
+@Table(name = "party_rebel_candidate")
 public class PartyRebelCandidate {
 
 	private Long partyRebelCandidateId;
@@ -20,6 +24,10 @@ public class PartyRebelCandidate {
 	private Candidate candidate;
 	
 	public PartyRebelCandidate(){}
+	
+	public PartyRebelCandidate(Long partyRebelCandidateId) {
+		this.partyRebelCandidateId = partyRebelCandidateId;
+	}
 	
 	public PartyRebelCandidate(Long partyRebelCandidateId,
 			PartyRebel partyRebel, Candidate candidate) {
