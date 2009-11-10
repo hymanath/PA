@@ -100,7 +100,7 @@ function initializeResultsTable() {
 		sortable : true
 	}, {
 		key : "percentage",
-		label : "Percentage",
+		label : "Votes %",
 		sortable : true
 	} ];
 
