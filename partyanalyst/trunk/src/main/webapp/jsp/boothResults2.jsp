@@ -30,49 +30,29 @@
 </style>
 </head>
 <body>
-<h3><u>Booth Results</u></h3>
+<h3><u><s:property value="boothResult.constituencyName" /> Constituency Booth Results for <s:property value="boothResult.partyName" /> in  <s:property value="boothResult.electionYear" /> <s:property value="boothResult.electionType" /></u></h3>
 <div id="boothResultsDiv">
 <h4><u>Candidate Details : </u></h4>
 <table class="searchresultsTable" style="width: auto; float: left;">
 	<tr>
-		<th>Party Name</th>
-		<td><s:property value="boothResult.partyName" /></td>
-	</tr>
-	<tr>
 		<th>Candidate Name</th>
-		<td><s:property value="boothResult.candidateName" /></td>
+		<td><s:property value="boothResult.candidateName" /><br></td>
+		<th>Total Percentage</th>
+		<td><s:property value="boothResult.percentage" /></td>		
 	</tr>
-	<tr>
-		<th>Constituency Name</th>
-		<td><s:property value="boothResult.constituencyName" /></td>
-	</tr>
-	<tr>
-		<th>Election Type</th>
-		<td><s:property value="boothResult.electionType" /></td>
-	</tr>
-	<tr>
-		<th>Election Year</th>
-		<td><s:property value="boothResult.electionYear" /></td>
-	</tr>
-</table>
-<table style="padding-left: 100px; padding-bottom: 100px;">
 	<tr>
 		<th>Total Valid votes</th>
 		<td><s:property value="boothResult.totalValidVotes" /></td>
-	</tr>
-	<tr>
 		<th>Total Votes Gained</th>
 		<td><s:property value="boothResult.votesGained" /></td>
-	</tr>
-	<tr>
-		<th>Total Percentage</th>
-		<td><s:property value="boothResult.percentage" /></td>
+		
 	</tr>
 </table>
-<br />
+<br /><br><br /><br><br><br>
 <h4><u>Booth Wise Performance : </u></h4>
 
-<div id="boothResultsMarkup"><display:table id="boothResultsTable"
+<div id="boothResultsMarkup">
+<display:table id="boothResultsTable"
 	class="searchresultsTable" name="${boothResult.boothResults}"
 	defaultorder="ascending" defaultsort="4"
 	style="width:auto;margin-right:20px;">
@@ -90,7 +70,8 @@
 		property="totalVoters" />
 	<display:column style="text-align: center;" title="Percentage"
 		property="percentage" />
-</display:table></div>
+</display:table>
+</div>
 </div>
 
 <script language="javascript">
