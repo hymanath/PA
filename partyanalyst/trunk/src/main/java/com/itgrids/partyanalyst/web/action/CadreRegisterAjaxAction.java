@@ -90,7 +90,8 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			String selectedVal=jObj.getString("selected");
 			
 			List<SelectOptionVO> districtNames=cadreManagementService.findDistrictsByState(selectedVal);			
-			
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select District");
+			districtNames.add(0, obj);
 			setNamesList(districtNames);	
 		}		
 		else if(jObj.getString("reportLevel").equalsIgnoreCase("district") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
@@ -99,7 +100,8 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			String selectedVal=jObj.getString("selected");
 			
 			List<SelectOptionVO> mandalsNames=cadreManagementService.findMandalsByDistrict(selectedVal);	
-			
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select Mandal");
+			mandalsNames.add(0, obj);
 			
 			setNamesList(mandalsNames);	
 		}
@@ -108,7 +110,9 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			System.out.println("In report level Constituency");
 			String selectedVal=jObj.getString("selected");
 			
-			List<SelectOptionVO> constituencynames=regionServiceDataImp.getConstituenciesByDistrictID(new Long(selectedVal));			
+			List<SelectOptionVO> constituencynames=regionServiceDataImp.getConstituenciesByDistrictID(new Long(selectedVal));	
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select Constituency");
+			constituencynames.add(0, obj);
 			setNamesList(constituencynames);	
 			
 			
@@ -128,7 +132,8 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			String selectedVal=jObj.getString("selected");
 			
 			List<SelectOptionVO> mandals=regionServiceDataImp.getMandalsByConstituencyID(new Long(selectedVal));	
-			
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select Mandal");
+			mandals.add(0, obj);
 			setNamesList(mandals);	
 		}
 		else if((jObj.getString("reportLevel").equalsIgnoreCase("State") || 
@@ -141,7 +146,9 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			System.out.println("value = "+value+"id = "+id);
 			
 						
-				List<SelectOptionVO> stateNames=cadreManagementService.findStatesByCountryID("1");				
+				List<SelectOptionVO> stateNames=cadreManagementService.findStatesByCountryID("1");	
+				SelectOptionVO obj = new SelectOptionVO(0L,"Select State");
+				stateNames.add(0, obj);
 				setNamesList(stateNames);
 			/*
 				List<SelectOptionVO> districtNames=cadreManagementService.findDistrictsByState(id);
@@ -152,7 +159,9 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		{
 			String value=jObj.getString("value");
 			String id=jObj.getString("id");
-			List<SelectOptionVO> mandalNames=cadreManagementService.findMandalsByDistrict(id);				
+			List<SelectOptionVO> mandalNames=cadreManagementService.findMandalsByDistrict(id);	
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select Mandal");
+			mandalNames.add(0, obj);
 			setNamesList(mandalNames);
 		}
 		return Action.SUCCESS;
