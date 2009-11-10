@@ -237,6 +237,12 @@
 		else if(selectedValue=="cadreLevelDistrict")
 			selectedElmt=document.getElementById("cadreLevelMandal");
 		
+		
+		var len=selectedElmt.length;			
+		for(i=len-1;i>=0;i--)
+		{
+			selectedElmt.remove(i);
+		}	
 		for(var val in results.namesList)
 		{
 			console.log(results.namesList[val].name);
