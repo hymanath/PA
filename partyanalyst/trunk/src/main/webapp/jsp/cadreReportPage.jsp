@@ -222,7 +222,8 @@
 				for(var i in cadreData)
 				{
 					str+='<tr>';					
-					str+='<td><a name="cadreName" href="cadreInformationPageAction.action">'+cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName+'</a></td>';		
+					//str+='<td><a name="cadreName" href="cadreInformationPageAction.action">'+cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName+'</a></td>';		
+					str+='<td>'+cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName+'</td>';
 					str+='<td>'+cadreData[i].mobile+'</td>';
 					str+='<td>'+cadreData[i].landLineNo+'</td>';
 					str+='<td>'+cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue+'</td>';
