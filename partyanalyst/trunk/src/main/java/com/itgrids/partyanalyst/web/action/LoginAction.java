@@ -60,7 +60,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		RegistrationVO regVO = loginService.checkForValidUser(userName, password);
 		name = regVO.getFirstName() + " " + regVO.getLastName();
 				
-		if (name.equals(" ")) {
+		if (regVO.getRegistrationID()==null) {
 			session.setAttribute("loginStatus", "in");
 			addActionError("Invalid user name or password! Please try again!");
 			return ERROR;
