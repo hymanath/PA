@@ -27,6 +27,25 @@
 	margin-left: 50px;
 	font-size: 12px;
 }
+.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
+{
+	background:none;
+}
+
+.yui-skin-sam thead .yui-dt-sortable {
+
+	background-color:#C4DEFF;
+	color:#3F546F;
+}
+.searchresultsTable td {
+	background-color:#F8FBFF;
+}
+.searchresultsTable th {
+	background-color:#C4DEFF;
+}
+.yui-skin-sam .yui-dt-liner {
+	padding:4px 8px;
+}
 </style>
 </head>
 <body>
@@ -35,25 +54,25 @@
 <h4><u>Candidate Details : </u></h4>
 <table class="searchresultsTable" style="width: auto; float: left;">
 	<tr>
-		<th>Candidate Name</th>
-		<td><s:property value="boothResult.candidateName" /><br></td>
-		<th>Total Percentage</th>
-		<td><s:property value="boothResult.percentage" /></td>		
+		<th style="background-color:#C4DEFF;">Candidate Name</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.candidateName" /><br></td>
+		<th style="background-color:#C4DEFF;">Total Percentage</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.percentage" /></td>		
 	</tr>
 	<tr>
-		<th>Total Valid votes</th>
-		<td><s:property value="boothResult.totalValidVotes" /></td>
-		<th>Total Votes Gained</th>
-		<td><s:property value="boothResult.votesGained" /></td>
+		<th style="background-color:#C4DEFF;">Total Valid votes</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.totalValidVotes" /></td>
+		<th style="background-color:#C4DEFF;">Total Votes Gained</th>
+		<td style="background-color:#F8FBFF;"><s:property value="boothResult.votesGained" /></td>
 		
 	</tr>
 </table>
 <br /><br><br /><br><br><br>
 <h4><u>Booth Wise Performance : </u></h4>
 
-<div id="boothResultsMarkup">
+<div id="boothResultsMarkup" class="yui-skin-sam">
 <display:table id="boothResultsTable"
-	class="searchresultsTable" name="${boothResult.boothResults}"
+	 name="${boothResult.boothResults}"
 	defaultorder="ascending" defaultsort="4"
 	style="width:auto;margin-right:20px;">
 	<display:column style="text-align: center;" title="Booth No"
