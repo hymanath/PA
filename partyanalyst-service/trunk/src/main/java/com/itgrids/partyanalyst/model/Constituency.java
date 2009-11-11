@@ -53,8 +53,8 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Date startDate;
 	private Date deformDate;
 	private Long countryId;
-	private Set<ConstituencyElection> constituencyElections = new HashSet<ConstituencyElection>(
-			0);
+	private Set<ConstituencyElection> constituencyElections = new HashSet<ConstituencyElection>(0);
+	private Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses = new HashSet<DelimitationConstituencyAssemblyDetails>(0);
 
 	// Constructors
 
@@ -71,7 +71,8 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public Constituency(Long constituencyId, District district,
 			ElectionScope electionScope, State state, String name,
 			Date startDate, Date deformDate, Long countryId,
-			Set<ConstituencyElection> constituencyElections) {
+			Set<ConstituencyElection> constituencyElections,
+			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses) {
 		this.constituencyId = constituencyId;
 		this.district = district;
 		this.electionScope = electionScope;
@@ -81,6 +82,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 		this.deformDate = deformDate;
 		this.countryId = countryId;
 		this.constituencyElections = constituencyElections;
+		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
 	}
 
 	// Property accessors
@@ -179,6 +181,17 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setConstituencyElections(
 			Set<ConstituencyElection> constituencyElections) {
 		this.constituencyElections = constituencyElections;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<DelimitationConstituencyAssemblyDetails> getDelimitationConstituencyAssemblyDetailses() {
+		return delimitationConstituencyAssemblyDetailses;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailses(
+			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses) {
+		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
 	}
 
 

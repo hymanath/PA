@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.NotFoundAction;
@@ -25,7 +29,31 @@ public class DelimitationConstituency extends BaseModel {
 	private Constituency constituency;
 	private Long year;
 	private Long constituencyNO;
+	private Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses = new HashSet<DelimitationConstituencyAssemblyDetails>(0);
 	
+	public DelimitationConstituency(){
+		
+	}
+	
+	public DelimitationConstituency(Long delimitationConstituencyID){
+		this.delimitationConstituencyID = delimitationConstituencyID;
+	}
+	
+	
+	
+	public DelimitationConstituency(
+			Long delimitationConstituencyID,
+			Constituency constituency,
+			Long year,
+			Long constituencyNO,
+			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses) {
+		this.delimitationConstituencyID = delimitationConstituencyID;
+		this.constituency = constituency;
+		this.year = year;
+		this.constituencyNO = constituencyNO;
+		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "delimitation_constituency_id", unique = true, nullable = false)
@@ -58,5 +86,17 @@ public class DelimitationConstituency extends BaseModel {
 	public void setConstituencyNO(Long constituencyNO) {
 		this.constituencyNO = constituencyNO;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "delimitationConstituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<DelimitationConstituencyAssemblyDetails> getDelimitationConstituencyAssemblyDetailses() {
+		return delimitationConstituencyAssemblyDetailses;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailses(
+			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses) {
+		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
+	}
+	
 	
 }
