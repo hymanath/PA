@@ -52,7 +52,7 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{
 
 	public List<Candidate> findByGender(Object gender);
 	
-	public List<Candidate> findCandidteIds(String[] firstName);
+	public List<Candidate> findByFirstMiddleAndLastNames(String[] firstName);
 	
 
 	public List findCandidatesSize();

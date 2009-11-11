@@ -6,6 +6,7 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Tehsil;
 
 public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
@@ -19,6 +20,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List<Booth> findByTehsil(Long tehsilId);
 	
-	public Booth findByTehsilAndPartNo(String tehsilName, Long partNo);
-	
+	public Booth findByTehsilAndPartNo(String tehsilName, String partNo);
+
+	public List<Tehsil> findTehsilsByConstituencyElectionScopeAndElection(String electionYear,Long constituencyId);
 }
