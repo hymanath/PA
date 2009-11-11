@@ -9,7 +9,7 @@ public class BoothUploadAction extends ActionSupport implements ServletRequestAw
 
 	private static final long serialVersionUID = 1L;
 	private String filePath;
-	private String electionType;
+	private String electionScopeId;
 	private String electionYear;
 	private HttpServletRequest request; 
 	private IBoothPopulationService boothPopulationService;
@@ -31,14 +31,6 @@ public class BoothUploadAction extends ActionSupport implements ServletRequestAw
 		this.filePath = filePath;
 	}
 
-	public String getElectionType() {
-		return electionType;
-	}
-
-	public void setElectionType(String electionType) {
-		this.electionType = electionType;
-	}
-
 	public String getElectionYear() {
 		return electionYear;
 	}
@@ -52,7 +44,18 @@ public class BoothUploadAction extends ActionSupport implements ServletRequestAw
 	}
 
 	public String execute() throws Exception{
-		boothPopulationService.readExcelFileAndPolpulate(filePath, electionYear, electionType);
+		System.out.println("File Path::"+filePath);
+		System.out.println("Election Year::"+electionYear);
+		System.out.println("election Scope Id::"+electionScopeId);
+		boothPopulationService.readExcelFileAndPolpulate(filePath, electionYear, new Long(electionScopeId.trim()));
 		return SUCCESS;
+	}
+
+	public String getElectionScopeId() {
+		return electionScopeId;
+	}
+
+	public void setElectionScopeId(String electionScopeId) {
+		this.electionScopeId = electionScopeId;
 	}
 }

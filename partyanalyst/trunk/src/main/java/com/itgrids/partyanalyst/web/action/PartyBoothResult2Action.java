@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 
-import com.itgrids.partyanalyst.excel.PartyBoothPerformanceVO;
+import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.opensymphony.xwork2.ActionSupport;
 
