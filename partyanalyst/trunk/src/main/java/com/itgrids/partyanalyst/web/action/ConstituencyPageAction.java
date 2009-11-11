@@ -13,12 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
+import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
+import com.itgrids.partyanalyst.service.impl.DelimitationConstituencyMandalService;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ConstituencyPageAction extends ActionSupport implements
@@ -34,6 +38,10 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
 	 private ConstituencyInfoVO constituencyDetails;
 	 private String electionType;
+	 
+	 private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
+	 private DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO;
+	 private static final Logger log = Logger.getLogger(ConstituencyPageAction.class);
 	 
 	 public String getElectionType() {
 			return electionType;
@@ -86,12 +94,31 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.constituencyPageService = constituencyPageService;
 	}
 
+
+	public void setDelimitationConstituencyMandalService(
+			IDelimitationConstituencyMandalService delimitationConstituencyMandalService) {
+		this.delimitationConstituencyMandalService = delimitationConstituencyMandalService;
+	}
+
+	
+	public DelimitationConstituencyMandalResultVO getDelimitationConstituencyMandalResultVO() {
+		return delimitationConstituencyMandalResultVO;
+	}
+
+	public void setDelimitationConstituencyMandalResultVO(
+			DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO) {
+		this.delimitationConstituencyMandalResultVO = delimitationConstituencyMandalResultVO;
+	}
+
 	public String execute() throws Exception{
 		
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId);
 				
 		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
-		
+		DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO = delimitationConstituencyMandalService.getMandalsForDelConstituency(constituencyId);
+		log.info("delimitationConstituencyMandalResultVO.getMandals().size()::::"+delimitationConstituencyMandalResultVO.getPresentMandals().size());
+		log.info("delimitationConstituencyMandalResultVO..getConstituencyType()::::"+delimitationConstituencyMandalResultVO.getConstituencyType());
+		setDelimitationConstituencyMandalResultVO(delimitationConstituencyMandalResultVO);
 		if(constituencyElectionResultsVO != null || constituencyDetails != null){
 			//electionType = constituencyElectionResultsVO.get(0).getElectionType();
 			return SUCCESS;

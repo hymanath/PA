@@ -131,6 +131,12 @@
 	<bean id="partyRebelCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyRebelCandidateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="delimitationConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="delimitationConstituencyMandalDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyMandalDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
 
 

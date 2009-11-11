@@ -135,5 +135,7 @@
 	
 	<bean id="crossVotingReportAjaxAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportAjaxAction" singleton="false">
 	</bean>
-	
+	<bean id="mandalPageAction" class="com.itgrids.partyanalyst.web.action.MandalPageAction" singleton="false">
+		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
+	</bean>
 </beans>

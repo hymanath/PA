@@ -92,7 +92,85 @@
 
 <div id="map_canvas" style="border: 1px solid ; width: 260px; height: 200px;margin-left:400px;">
 </div>
-
+<c:out value="${delimitationConstituencyMandalResultVO.constituencyType}"/>
+<table border="2">
+	<tr>
+		<td>
+			<table>
+				 <tr>		
+					<td><b>MandalID</b></td>
+					<td><b>Mandal Name</b></td>
+					<td><b>Total Populations</b></td>
+					<td><b>SC Population</b></td>
+					<td><b>ST Population</b></td>
+					<td><b>Literate Population</b></td>
+					<td><b>Illiterate Population</b></td>
+					<td><b>Working Population</b></td>
+				</tr>
+				<c:forEach var="presentMandals" items="${delimitationConstituencyMandalResultVO.presentMandals}" >	
+					<tr>
+						<td ><c:out value="${presentMandals.mandalID}"/></td>
+						<td >						
+							<c:url value="mandalPageAction.action" var="displayMandalURL">
+								<c:param name="MANDAL_ID"   value="${presentMandals.mandalID}" />
+								<c:param name="MANDAL_NAME"   value="${presentMandals.mandalName}" />
+							</c:url>				
+	      	 				<a href='<c:out value="${displayMandalURL}" />'> 
+								<c:out value="${presentMandals.mandalName}"/> 
+							</a>						
+						</td>
+						<td ><c:out value="${presentMandals.totalPersons}"/></td>
+						<td ><c:out value="${presentMandals.totalSCPersons}"/></td>
+						<td ><c:out value="${presentMandals.totalSTPersons}"/></td>
+						<td ><c:out value="${presentMandals.totalLiteratePersons}"/></td>
+						<td ><c:out value="${presentMandals.totalIlliteratePersons}"/></td>
+						<td ><c:out value="${presentMandals.totalWorkingPersons}"/></td>
+					</tr>
+				</c:forEach>
+			
+			</table>
+		</td>
+		
+		<td>
+			<c:if test="${delimitationConstituencyMandalResultVO.constituencyType==CHANGE_CONSTITUENCY}">
+				<table>
+				<tr>		
+						<td><b>MandalID</b></td>
+						<td><b>Mandal Name</b></td>
+						<td><b>Total Populations</b></td>
+						<td><b>SC Population</b></td>
+						<td><b>ST Population</b></td>
+						<td><b>Literate Population</b></td>
+						<td><b>Illiterate Population</b></td>
+						<td><b>Working Population</b></td>
+					</tr>
+					<c:forEach var="mandalsBeforeDelimitationConstituency" items="${delimitationConstituencyMandalResultVO.mandalsBeforeDelimitationConstituency}" >	
+						<tr>
+							<td ><c:out value="${mandalsBeforeDelimitationConstituency.mandalID}"/></td>
+							<td>
+								<c:url value="mandalPageAction.action" var="displayMandalURL">
+									<c:param name="mandalId"   value="${mandalsBeforeDelimitationConstituency.mandalID}" />
+								</c:url>
+				
+	      	 					<a href='<c:out value="${displayMandalURL}" />'> 
+							
+							
+								 <c:out value="${mandalsBeforeDelimitationConstituency.mandalName}"/> </a>
+							</td>
+							<td ><c:out value="${mandalsBeforeDelimitationConstituency.totalPersons}"/></td>
+							<td ><c:out value="${mandalsBeforeDelimitationConstituency.totalSCPersons}"/></td>
+							<td ><c:out value="${mandalsBeforeDelimitationConstituency.totalSTPersons}"/></td>
+							<td ><c:out value="${mandalsBeforeDelimitationConstituency.totalLiteratePersons}"/></td>
+							<td ><c:out value="${mandalsBeforeDelimitationConstituency.totalIlliteratePersons}"/></td>
+							<td ><c:out value="${mandalsBeforeDelimitationConstituency.totalWorkingPersons}"/></td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>
+		</td>
+		
+	</tr>
+</table>
     <h4><u style="color: #4D2828;">Previous <s:property value="electionType"/> Results</u></h4>
 	
 	<table class="ConstituencyElectionsTable" border="1">
@@ -138,6 +216,7 @@
 	</tr>
 	</c:forEach>
 </table><br>
+
 </div>
 <script type="text/javascript">
 	

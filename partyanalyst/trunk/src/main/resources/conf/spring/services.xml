@@ -171,4 +171,10 @@
 		<property name="rebelPartyDAO" ref="rebelPartyDAO" />
 		<property name="candidateDAO" ref="candidateDAO" />
 	</bean>
+	<bean name="delimitationConstituencyMandalService" class="com.itgrids.partyanalyst.service.impl.DelimitationConstituencyMandalService" >	
+		<property name="constituencyDAO" ref="constituencyDAO" />		
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+		<property name="censusDAO" ref="censusDAO" />	
+	</bean>
 </beans>

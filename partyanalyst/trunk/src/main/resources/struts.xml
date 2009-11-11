@@ -210,5 +210,9 @@
 				<param name="cVoting">parliamentList</param>
 			</result>
 		</action>
+		
+		<action name="mandalPageAction" class="mandalPageAction">
+			<result name="success">/jsp/mandalPage.jsp</result>
+		</action>
 	</package>
 </struts>
