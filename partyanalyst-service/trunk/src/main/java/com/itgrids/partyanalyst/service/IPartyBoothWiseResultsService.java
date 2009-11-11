@@ -3,7 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.excel.PartyBoothPerformanceVO;
+import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 
 public interface IPartyBoothWiseResultsService {
 
