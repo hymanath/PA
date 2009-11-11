@@ -102,6 +102,8 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 
 	}
 
-	
+	public List<Census> findByYearAndTehsilIDs(Long year, String tehsilIDs){
+		return getHibernateTemplate().find("from Census model where model.year="+year+" and model.tehsilId in ("+tehsilIDs +")");
+	}
 
 }
