@@ -13,8 +13,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 
 public class CandidateDAOHibernateTest extends BaseDaoTestCase {
 	private ICandidateDAO candidateDAO;
-	Candidate c = new Candidate(new Long(184),"aaa","bbb","ccc",java.sql.Date.valueOf("2009-08-09"),"aaa@gmail.com",
-			"999952456","254653","Hyd","M.C.A","male",null,null);
+	
 	public void setCandidateDAO(ICandidateDAO candidateDAO) {
 		this.candidateDAO = candidateDAO;
 	}

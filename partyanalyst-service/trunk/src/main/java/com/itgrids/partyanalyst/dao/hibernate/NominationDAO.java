@@ -137,14 +137,4 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find( "from Nomination model where model.candidate.candidateId = ?", candidateId);
 	}
 	
-	public List<Nomination> findByStatePartyAndElectionId(Long stateId,
-			Long electionId, Long partyId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public List<Nomination> findByElectionIdAndPartys(Long electionId,
-			List<Long> partys) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
