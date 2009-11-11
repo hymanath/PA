@@ -279,38 +279,38 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2"><h3><u style="color:#4D0A0A;">Cadre Details</u></h3></td>		
+			<td colspan="2" align="left"><h3><u style="color:#4D0A0A;">Cadre Details</u></h3></td>		
 		</tr>
 		<tr>
 			<th><s:label for="firstNameField" id="fnameLabel"  value="%{getText('firstName')}" /></th>
-			<td><s:textfield id="firstNameField" name="firstName"/>  </td>
+			<td align="left"><s:textfield id="firstNameField" name="firstName"/>  </td>
 		</tr>
 		<tr>
 			<th><s:label for="middleNameField" id="middleNameLabel"  value="%{getText('middleName')}" /></th>
-			<td><s:textfield id="middleNameField" name="middleName"/>  </td>
+			<td align="left"><s:textfield id="middleNameField" name="middleName"/>  </td>
 		</tr>
 		<tr>
 			<th><s:label for="lastNameField" id="lastNameLabel"  value="%{getText('lastName')}" /></th>
-			<td><s:textfield id="lastNameField" name="lastName"/>  </td>
+			<td align="left"><s:textfield id="lastNameField" name="lastName"/>  </td>
 		</tr>
 		<tr>
 			<th><s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></th>
-			<td>
-				<input type="radio" name="gender" value="M"/>Male
-				<input type="radio" name="gender" value="F"/>FeMale
+			<td align="left">
+				<input type="radio" name="gender" value="M" checked="checked"/>Male
+				<input type="radio" name="gender" value="F"/>Female
 			</td>		
 		</tr>
 		<tr>
 			<th><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></th>
-			<td><s:textfield id="mobileField" name="mobile"/>  </td>
+			<td align="left"><s:textfield id="mobileField" name="mobile"/>  </td>
 		</tr>
 		<tr>
 			<th><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></th>
-			<td><s:textfield id="emailField" name="email"/>  </td>
+			<td align="left"><s:textfield id="emailField" name="email"/>  </td>
 		</tr>
 		<tr>
 			<th><s:label for="stateField" id="stateLabel"  value="State" /></th>
-			<td>
+			<td align="left">
 				<s:select id="stateField" name="state" list="stateList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>
 
 				
@@ -318,35 +318,35 @@
 		</tr>
 		<tr>
 			<th><s:label for="districtField" id="districtLabel"  value="District" /></th>
-			<td>
-				<s:select id="districtField" name="district" list="districtList" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>
+			<td align="left">
+				<s:select id="districtField" name="district" list="districtList" listKey="id" listValue="name" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select District"></s:select>
 				
 			</td>
 		</tr>
 		<tr>
 			<th><s:label for="constituencyField" id="constituencyLabel"  value="Constituency" /></th>
-			<td>
-				<s:select id="constituencyField" name="constituency" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false')"></s:select> 
+			<td align="left">
+				<s:select id="constituencyField" name="constituency" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Constituency"></s:select> 
 			</td>
 		</tr>
 		<tr>
 			<th><s:label for="mandalField" id="mandalLabel"  value="Mandal" /></th>
-			<td>
-				<s:select id="mandalField" name="mandal" list="mandalList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>				 
+			<td align="left">
+				<s:select id="mandalField" name="mandal" list="mandalList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
 			</td>
 		</tr>
 		<tr>
 			<th><s:label for="villageField" id="villageLabel"  value="Village" /></th>
-			<td>
-				<s:select id="villageField" name="village" list="villageList" listKey="id" listValue="name"></s:select>				
+			<td align="left">
+				<s:select id="villageField" name="village" list="villageList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2"><h3><u style="color:#4D0A0A;">Cadre Level Details</u></h3></td>
+			<td colspan="2" align="left"><h3><u style="color:#4D0A0A;">Cadre Level Details</u></h3></td>
 		</tr>				
 		<tr>
 			<th><s:label for="cadreLevelField" id="cadreLevelLabel"  value="Cadre Level" /></th>
-			<td>
+			<td align="left">
 				<select id="cadreLevelField" name="cadreLevel" onchange="getStateList()">
 					<option	 value='0'>Select Level</option>		
 					<option  value='2'>State</option>	
@@ -358,7 +358,7 @@
 		</tr>
 		<tr>		
 			<th><s:label for="cadreLevelValueField" id="cadreLevelValueLabel"  value="Cadre Level Value" /></th>
-			<td>
+			<td align="left">
 				<select id="cadreLevelState" name="cadreLevelState" disabled = "true" onchange="setCadreValue(this.options[this.selectedIndex].value);
 										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,
 										this.options[this.selectedIndex].value)">
