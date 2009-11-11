@@ -130,5 +130,10 @@
 	   <property name="partyInfluenceService" ref="partyInfluenceService" />
 	 </bean>
 	
+	<bean id="crossVotingReportInputAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportInputAction" singleton="false">
+	</bean>
+	
+	<bean id="crossVotingReportAjaxAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportAjaxAction" singleton="false">
+	</bean>
 	
 </beans>

@@ -201,5 +201,14 @@
 			<result name="error">/jsp/PartyInfluenceReportError.jsp</result>
 		</action>
 		
+		<action name="crossVotingReportInputAction" class="crossVotingReportInputAction">
+			<result name="success">/jsp/crossVotingInputPage.jsp</result>
+		</action>
+		<action name="crossVotingReportAjaxAction" class="crossVotingReportAjaxAction">
+			<result type="json"  name="success">
+				<param name="pList">parliamentList</param>
+				<param name="cVoting">parliamentList</param>
+			</result>
+		</action>
 	</package>
 </struts>
