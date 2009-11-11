@@ -92,7 +92,8 @@
 	    { 
 	        id: "states",  
 	        itemdata: [ 
-	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" }	            
+	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
+				{ text: "Maharashtra", url: "statePageAction.action?stateId=15" }
 	        ]     
 	    }, 
 	     
