@@ -13,6 +13,7 @@ public class ConstituencyElectionsDetailedResultVO {
 	private String constituencyName;
 	private Long districtId;
 	private String votesPercentageDiff;
+	private Double votesPercntDiff;
 	
 	private ConstituencyElectionResults constituencyElectionResultsForYearOne;
 	private ConstituencyElectionResults constituencyElectionResultsForYearTwo;
@@ -23,6 +24,12 @@ public class ConstituencyElectionsDetailedResultVO {
 	}
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+	public Double getVotesPercntDiff() {
+		return votesPercntDiff;
+	}
+	public void setVotesPercntDiff(Double votesPercntDiff) {
+		this.votesPercntDiff = votesPercntDiff;
 	}
 	public String getConstituencyName() {
 		return constituencyName;
