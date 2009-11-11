@@ -23,7 +23,7 @@
 
 	function getCadreLevelValues(name,value,id)
 	{
-		console.log("name = ",name,", value = ",value," , id = ",id);
+		
 		var cadreLevelElmt = document.getElementById("cadreLevelField");
 		var cadreLevelElmtText = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].text;
 		var cadreLevelElmtValue = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].value;
@@ -138,14 +138,12 @@
 	}
 
 	function callAjax(param){
-		console.log(param);
- 		var myResults;
+		var myResults;
  		var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+param;			
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText); 
-								console.log(myResults);
+								myResults = YAHOO.lang.JSON.parse(o.responseText);								
 								buildSelectOption(myResults);								
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -162,7 +160,7 @@
 
 	function getMandalList(name,value,choice)
 	{
-		console.log(name,value,choice);
+		
 		var jsObj=
 			{
 					type:"cadreDetails",
@@ -188,8 +186,7 @@
 			callAjax(rparam);
 	}
 	function buildSelectOption(results)
-	{
-		//console.log("In function");
+	{		
 		var taskValue= YAHOO.lang.JSON.parse(results.task);
 
 		var selectedValue=taskValue.reportLevel;
@@ -244,8 +241,7 @@
 			selectedElmt.remove(i);
 		}	
 		for(var val in results.namesList)
-		{
-			console.log(results.namesList[val].name);
+		{			
 			var opElmt=document.createElement('option');
 			opElmt.value=results.namesList[val].id;
 			opElmt.text=results.namesList[val].name;
