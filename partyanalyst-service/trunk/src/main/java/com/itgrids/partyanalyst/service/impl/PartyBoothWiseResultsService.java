@@ -7,10 +7,10 @@ import java.util.List;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.excel.BoothResultVO;
-import com.itgrids.partyanalyst.excel.PartyBoothPerformanceVO;
+import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
+import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.BoothResult;
+import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
@@ -77,14 +77,14 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			partyBoothPerformanceVO.setVotesGained(nomination.getCandidateResult().getVotesEarned().intValue());
 			partyBoothPerformanceVO.setTotalValidVotes(nomination.getConstituencyElection().getConstituencyElectionResult().getValidVotes().intValue());
 			partyBoothPerformanceVO.setPercentage(nomination.getCandidateResult().getVotesPercengate());
-			List<BoothResult> boothResults = new ArrayList<BoothResult>(nomination.getBoothResults());
-			System.out.println("In getBoothWiseResultsForParty::"+boothResults.size());
-			for(BoothResult boothResult:boothResults){
-				Booth booth =  boothResult.getBoothConstituencyElection().getBooth();
-				int totalVoters = booth.getTotalVoters().intValue();
-				int votesEarned = boothResult.getVotesEarned().intValue();
-				String percentage = calculateVotesPercengate(new Double(totalVoters), new Double(votesEarned));	
-				BoothResultVO boothResultVO = new BoothResultVO(booth.getPartNo(), booth.getLocation(), booth.getvillagesCovered(), votesEarned, totalVoters, percentage, booth.getTehsil().getTehsilName());
+			List<CandidateBoothResult> candidateboothResults = new ArrayList<CandidateBoothResult>(nomination.getCandidateBoothResults());
+			System.out.println("In getBoothWiseResultsForParty::"+candidateboothResults.size());
+			for(CandidateBoothResult candidateBoothResult:candidateboothResults){
+				Booth booth =  candidateBoothResult.getBoothConstituencyElection().getBooth();
+				int totalValidVotes = candidateBoothResult.getBoothConstituencyElection().getBoothResult().getValidVotes().intValue();
+				int votesEarned = candidateBoothResult.getVotesEarned().intValue();
+				String percentage = calculateVotesPercengate(new Double(totalValidVotes), new Double(votesEarned));	
+				BoothResultVO boothResultVO = new BoothResultVO(booth.getPartNo(), booth.getLocation(), booth.getvillagesCovered(), votesEarned, totalValidVotes, percentage, booth.getTehsil().getTehsilName());
 				boothResultVOs.add(boothResultVO);
 			}
 			partyBoothPerformanceVO.setBoothResults(boothResultVOs);

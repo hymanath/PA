@@ -88,7 +88,7 @@ public class CandidateSearchService implements ICandidateSearchService{
 		}
 		else{
 			String firstAndLastNames [] = StringUtils.delimitedListToStringArray(StringUtils.trimWhitespace(name), " ");
-			List<Candidate> candidates = candidateDAO.findCandidteIds(firstAndLastNames);
+			List<Candidate> candidates = candidateDAO.findByFirstMiddleAndLastNames(firstAndLastNames);
 					
 			for(Candidate candidate:candidates)
 			{

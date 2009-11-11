@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -10,8 +9,9 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothVillageCensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.excel.BoothInfo;
-import com.itgrids.partyanalyst.excel.ExcelReader;
+import com.itgrids.partyanalyst.excel.booth.BoothDataExcelReader;
+import com.itgrids.partyanalyst.excel.booth.BoothInfo;
+import com.itgrids.partyanalyst.excel.CsvException;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.BoothVillageCensus;
@@ -74,29 +74,32 @@ public class BoothPopulationService implements IBoothPopulationService{
 		this.boothVillageCensusDAO = boothVillageCensusDAO;
 	}
 
-	public boolean readExcelFileAndPolpulate(String filePath, String electionYear, String electionType){
-		List<BoothInfo> boothRecords = new ArrayList<BoothInfo>();
-		ExcelReader excelReader = new ExcelReader();
-		boothRecords = excelReader.readExcelFile(filePath);
-		insertData(boothRecords, electionYear, electionType);
+	public boolean readExcelFileAndPolpulate(String filePath, String electionYear, Long electionScopeId) throws CsvException{
+		BoothDataExcelReader excelReader = new BoothDataExcelReader();
+		System.out.println("-----------------------In readExcelFileAndPolpulate");
+		excelReader.readExcelFile(filePath);
+		List<BoothInfo> boothRecords = excelReader.getBoothsInfo();
+		System.out.println("Total Records:"+boothRecords.size());
+		insertData(boothRecords, electionYear, electionScopeId);
 		return true;
 	}
 	
-	private void insertData(List<BoothInfo> boothRecords, String electionYear, String electionType){
+	private void insertData(List<BoothInfo> boothRecords, String electionYear, Long electionScopeId){
+		System.out.println("-----------------------In insertData");
 		for(int i=0; i<boothRecords.size(); i++){
 			System.out.println("Record No :"+i);
 			BoothInfo boothRecord = boothRecords.get(i);
 			String tehsilName = boothRecord.getMandalName();
-			String districtName = boothRecord.getDistrictName();
+			Long districtId = boothRecord.getDistrictId();
 			String constituencyName = boothRecord.getConstituencyName();
 			String censusCode = boothRecord.getCensusCode();
 			String partNo = boothRecord.getPartNo();
 			String partName = boothRecord.getPartName();
 			String location = boothRecord.getLocation();
 			String villagesCovered = boothRecord.getVillagesCovered();
-			Double maleVoters = checkForBlank(boothRecord.getMaleVoters());
-			Double femaleVoters = checkForBlank(boothRecord.getFemaleVoters());
-			Double totalVoters = checkForBlank(boothRecord.getTotalVoters());
+			Long maleVoters = boothRecord.getMaleVoters();
+			Long femaleVoters = boothRecord.getFemaleVoters();
+			Long totalVoters = boothRecord.getTotalVoters();
 			
 			if(StringUtils.isBlank(partName)&&(partNo.contains("-")||partNo.contains("."))){
 				String [] nameAndNo = StringUtils.split(partNo.trim(), "-.");
@@ -104,15 +107,16 @@ public class BoothPopulationService implements IBoothPopulationService{
 				partName = nameAndNo[1];
 			}
 			
-			Booth booth = checkAndInsertBooth(new Long(partNo), partName, location, villagesCovered, maleVoters, femaleVoters, totalVoters, tehsilName, districtName);
-			checkAndInsertBoothConstituencyElection(booth, electionYear, constituencyName, electionType, districtName);
+			Booth booth = checkAndInsertBooth(partNo, partName, location, villagesCovered, maleVoters, femaleVoters, totalVoters, tehsilName, districtId);
+			checkAndInsertBoothConstituencyElection(booth, electionYear, constituencyName, electionScopeId, districtId);
 			checkAndInsertBoothVillageCensus(booth,censusCode.trim());
 		}
 	}
 	
-	private Booth checkAndInsertBooth(Long partNo, String partName, String location, String villagesCovered, Double maleVoters, Double femaleVoters, Double totalVoters, String tehsilName, String districtName){
+	private Booth checkAndInsertBooth(String partNo, String partName, String location, String villagesCovered, Long maleVoters, Long femaleVoters, Long totalVoters, String tehsilName, Long districtId){
+		System.out.println("-----------------------In checkAndInsertBooth");
 		Booth booth = null;
-		List<Tehsil> tehsils = tehsilDAO.findByTehsilNameAndDistrict(tehsilName, districtName);
+		List<Tehsil> tehsils = tehsilDAO.findByTehsilNameAndDistrict(tehsilName, districtId);
 		if(tehsils!=null && tehsils.size() == 1){
 			Tehsil tehsil = tehsils.get(0);
 			booth = boothDAO.findByTehsilAndPartNo(tehsilName, partNo);
@@ -124,26 +128,27 @@ public class BoothPopulationService implements IBoothPopulationService{
 				return boothDAO.save(booth);
 			}
 		}else{
-			System.out.println("More than one Tehsils Exist With Tehsil:"+tehsilName+" and District:"+districtName);
+			System.out.println("More than one Tehsils Exist With Tehsil:"+tehsilName+" and District:"+districtId);
 		}
 		return booth;
 	}
 	
-	private BoothConstituencyElection checkAndInsertBoothConstituencyElection(Booth booth, String electionYear, String constituencyName, String electionType, String districtName){
+	private BoothConstituencyElection checkAndInsertBoothConstituencyElection(Booth booth, String electionYear, String constituencyName, Long electionScopeId, Long districtId){
+		System.out.println("-----------------------In checkAndInsertBoothConstituencyElection");
 		BoothConstituencyElection boothConstituencyElection = null;
-		List<ConstituencyElection> constituencyElections = constituencyElectionDAO.findByConstituencyElectionAndDistrict(electionYear, constituencyName, electionType, districtName);
+		List<ConstituencyElection> constituencyElections = constituencyElectionDAO.findByConstituencyElectionAndDistrict(electionYear, constituencyName, electionScopeId, districtId);
 		if(constituencyElections!=null && constituencyElections.size() == 1){
 			ConstituencyElection constituencyElection = constituencyElections.get(0);
 			boothConstituencyElection = boothConstituencyElectionDAO.findByBoothAndConstiuencyElection(booth.getPartNo(), constituencyElection.getConstiElecId());
 			if(boothConstituencyElection != null)
 				return boothConstituencyElection;		
 			else{
-				boothConstituencyElection = new BoothConstituencyElection(booth,constituencyElection,null);
+				boothConstituencyElection = new BoothConstituencyElection(booth,constituencyElection,null,null);
 				System.out.println("BoothConstituencyElection inserted With Booth Id:"+booth.getPartName()+" and ConstiElecId:"+constituencyElection.getConstiElecId());
 				return boothConstituencyElectionDAO.save(boothConstituencyElection);
 			}
 		}else{
-			System.out.println("More than one ConstituencyElections Exist With electionYear, constituencyName, electionType, districtName:"+electionYear+" "+constituencyName+" "+electionType+" "+districtName);
+			System.out.println("More than one ConstituencyElections Exist With electionYear, constituencyName, electionType, districtName:"+electionYear+" "+constituencyName+" "+electionScopeId+" "+districtId);
 		}
 		return boothConstituencyElection;
 	}
@@ -187,13 +192,6 @@ public class BoothPopulationService implements IBoothPopulationService{
 			censusFlag = false;
 		}
 		return censusFlag;
-	}
-	
-	private Double checkForBlank(String svalue){
-		Double dvalue = new Double(0);
-		if(!StringUtils.isBlank(svalue))
-			dvalue = new Double(svalue);
-		return dvalue;
 	}
 	
 
