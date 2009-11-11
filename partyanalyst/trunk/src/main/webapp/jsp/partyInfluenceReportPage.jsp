@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
- <%@ taglib prefix="s" uri="/struts-tags" %>
- <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -33,7 +33,31 @@
 	<script type="text/javascript" src="js/yahoo/history.js"></script> 
 	
 	<!-- YUI Dependency Files-->
+<style type="text/css">
+table.CandidateElectionResultsTable{
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 2px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.CandidateElectionResultsTable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #909090;
+}
+table.CandidateElectionResultsTable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
 
+</style>
 <style type="text/css">
 		
 	.searchresultsTable
@@ -72,32 +96,141 @@
 	{
 		padding:5px;
 	}
+	.districtDiv
+	{
+		text-align:left;
+		margin-top:5px;
+		margin-left:50px;
+	}
+	.treeTable th
+	{
+		color:#859098;
+		background-color:#EFEFEF;
+	}
+	.treeTable td
+	{
+		color:#224662;
+		width:100px;
+		background-color:#EFEFEF;
+	}
+	.ygtvchildren
+	{
+		color:#224662;
+	}
 
 </style>
 <script type="text/javascript">
 
-	function buildJSObj(districtName,stateName,diff,obj)
+	function buildJSObj(distObj,constObj)
 	{
 		
 
-		var divElmt = document.getElementById("districtInfluenceDiv");
-
+		var divElmt = document.getElementById("treeViewDiv");
+		
 		var childDivElmt = document.createElement('div');
-		childDivElmt.setAttribute('id',districtName+'districtInfluenceDiv');
+		childDivElmt.setAttribute('id','districtInfluenceDiv_'+distObj.districtId);
+		childDivElmt.setAttribute('class','districtDiv');
 		divElmt.appendChild(childDivElmt);
 
 		var tree;	
+			
+		tree = new YAHOO.widget.TreeView(childDivElmt.id);	
 		
-		tree = new YAHOO.widget.TreeView(childDivElmt.id);				 
-		var rootNode = tree.getRoot(); 				
-		var label=districtName+"-"+diff;
-		var stateNode = new YAHOO.widget.TextNode(label, rootNode);		
-		tree.render();
+		var rootNode = tree.getRoot(); 	
+		
+		var distStr='';
+		distStr+='<table class="treeTable">';
+		distStr+='<tr>';		
+		distStr+='<td>'+distObj.districtName+'</td>';		
 
-		for (var i in obj)
+		distStr+='<th>Impacted % :</th>';
+		distStr+='<td align="center" style="color:#FF0000">'+distObj.distVotesPercentage+' %</td>';
+
+		distStr+='<th>2009 % :</th>';
+		distStr+='<td align="center">'+distObj.partyVotesPercentage+' %</td>';
+		
+		
+		distStr+='<th> '+distObj.newPartyName+' - 2009 % :</th>';
+		distStr+='<td align="center">'+distObj.newPartyVotesPercentage+' %</td>';
+
+		
+		distStr+='</tr>';
+		distStr+='</table>';
+
+
+		//var label=distObj.districtName;
+
+		var stateNode = new YAHOO.widget.TextNode(distStr, rootNode);		
+
+		for ( var cons in constObj ) 
+		{ 			
+	        var constNode = new YAHOO.widget.TextNode(constObj[cons].constName, stateNode, false);
+			
+			var str='';
+			str+='<table class="partyPerformanceCriteriaTable" style="margin-right:10px;">';
+			str+='<tr>';
+			str+='<th colspan="6" align="center">Year '+distObj.year+'</th>';
+			str+='<th colspan="3" align="center">Year '+distObj.previousYear+'</th>';
+			str+='<th colspan="2" align="center">('+distObj.year+'-'+distObj.previousYear+')</th>';			
+			str+='</tr>';
+
+			str+='<tr>';
+			str+='<th align="center">Party</th>';
+			str+='<th colspan="2" align="center">Votes %</th>';
+			str+='<th align="center">Party</th>';
+			str+='<th colspan="2" align="center">Votes %</th>';
+			str+='<th align="center">Party</th>';
+			str+='<th colspan="2" align="center">Votes %</th>';
+			str+='<th align="center">Party %</th>';
+			str+='<th align="center">Votes Diff %</th>';			
+			str+='</tr>';			
+			
+			str+='<tr>';					
+			str+='<td>'+constObj[cons].electionResultOne.partyOne.partyName+'</td>';
+			str+='<td colspan="2" align="center">'+constObj[cons].electionResultOne.partyOne.VotesPercentage+' %</td>';
+			str+='<td>'+constObj[cons].electionResultOne.partyTwo.partyName+'</td>';
+			str+='<td colspan="2" align="center">'+constObj[cons].electionResultOne.partyTwo.VotesPercentage+' %</td>';
+			str+='<td>'+constObj[cons].electionResultTwo.partyOne.partyName+'</td>';
+			str+='<td colspan="2" align="center">'+constObj[cons].electionResultTwo.partyOne.VotesPercentage+' %</td>';
+			str+='<td rowspan="3">'+constObj[cons].electionResultTwo.partyOne.partyName+'</td>';
+			str+='<td rowspan="3">'+constObj[cons].votesDiff+' %</td>';			
+			str+='</tr>';	
+
+			str+='<tr>';
+			str+='<th>Candidate Name</th>';
+			str+='<th>Votes Earned</th>';
+			str+='<th>Valid Votes</th>';
+			str+='<th>Candidate Name</th>';
+			str+='<th>Votes Earned</th>';
+			str+='<th>Valid Votes</th>';
+			str+='<th>Candidate Name</th>';
+			str+='<th>Votes Earned</th>';
+			str+='<th>Valid Votes</th>';
+			str+='</tr>';
+			str+='<tr>';
+			str+='<td>'+constObj[cons].electionResultOne.partyOne.candidateName+'</td>';
+			str+='<td>'+constObj[cons].electionResultOne.partyOne.votesEarned+'</td>';
+			str+='<td>'+constObj[cons].electionResultOne.partyOne.validVotes+'</td>';
+			str+='<td>'+constObj[cons].electionResultOne.partyTwo.candidateName+'</td>';
+			str+='<td>'+constObj[cons].electionResultOne.partyTwo.votesEarned+'</td>';
+			str+='<td>'+constObj[cons].electionResultOne.partyTwo.validVotes+'</td>';
+			str+='<td>'+constObj[cons].electionResultTwo.partyOne.candidateName+'</td>';
+			str+='<td>'+constObj[cons].electionResultTwo.partyOne.votesEarned+'</td>';
+			str+='<td>'+constObj[cons].electionResultTwo.partyOne.validVotes+'</td>';
+			str+='</tr>';
+
+			str+='</table>';
+			
+			var constDetailNode = new YAHOO.widget.HTMLNode(str, constNode, false); 
+			constDetailNode.isLeaf = true;
+		}
+		 tree.draw(); 
+
+		/*for (var i in obj)
 		{
 			new YAHOO.widget.TextNode("HI", node, false); 
 		}
+		*/
 	}
 
 	function showTableRow(val)
@@ -185,168 +318,120 @@
 </script>
 </head>
 <body>
-		<h3>Party Influence Report</h3>
-		<div id="influenceReportMain" style="text-align:left;margin-left:50px;">
-			<div id="constFullDetails">
-				<div id="constFullDetailsHead">
-					<span id="constFullDetailsHeadDetails">Complete Party  Results..</span>	
-					<span id="closeSpan" onclick="hideDetails()">X</span>
-				</div>
-				<div id="constFullDetailsBody"></div>
-			</div>
-			<div id="influenceReportMain">
-				<div><u>District wise result..</u></div>
-				
-				<c:forEach var="result" items="${districtWiseConstituencyElectionResultsVO}">
-				<table style="margin-top:10px;">
-					<tr>
-						<td><c:out value="${result.districtName}"></c:out></td>
-						<td><c:out value="${result.districtVotesPercentageDiff}"></c:out> %</td>
-						<td><a href="javascript:{}" id="${result.districtName}_${result.districtId}_consTr" onclick="showTableRow(this.id)">view results</a></td>
-					</tr>
-				</table >
-				<c:forEach var="constResult" items="${result.constituencyElectionsDetailedResults}">	
-						<table id="${result.districtName}_${result.districtId}_consTr_table" style="display:none;margin-left:30px;margin-top:10px;" class="searchresultsTable">
-							<tr>
-								<th>Constituency Name</th>
-								<td><c:out value="${constResult.constituencyName}"></c:out> </td>
-							
-							
-								<th>Votes % Difference</th>
-								<td><c:out value="${constResult.votesPercentageDiff}"></c:out> %</td>
-							
-								<td colspan="4" align="right"><a href="javascript:{}" id="${constResult.constituencyName}_${constResult.constituencyId}_candTr" onclick="showTableRow(this.id)">view results</a></td>
-								
-							</tr>
-							
-						</table >
-						<table id="${constResult.constituencyName}_${constResult.constituencyId}_candTr_table" style="display:none;margin-left:30px;margin-top:10px;width:auto;margin-right:10px;" class="searchresultsTable">
-							<tr>
-								<th colspan="6" align="center">Year - <c:out value="${constResult.constituencyElectionResultsForYearOne.electionResultForParty.year}"></c:out></th>
-								<th> </th>
-								<th colspan="4" align="center">Year - <c:out value="${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.year}"></c:out></th>
-							</tr>
+		<h3>PARTY INFLUENCE REPORT</h3>
 
-							<tr>
-								<th>Candidate Name</th>
-								<th>Party Name</th>								
-								<th>% Votes</th>
-								<th>Candidate Name</th>
-								<th>Party Name</th>								
-								<th>% Votes</th>
-								<th> </th>
-								<th>Candidate Name</th>
-								<th>Party Name</th>								
-								<th>% Votes</th>
-								<c:if test="${constResult.constituencyElectionResultsForYearTwo.electionResultForNewParty !=null}" >
-									<th>Candidate Name</th>
-									<th>Party Name</th>								
-									<th>% Votes</th>
-								</c:if>
-								<th> </th>
-							</tr>
-							
-							<tr>												
-								<td><c:out value="${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.candidateName}"></c:out> </td>
-								<td><c:out value="${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.partyName}"></c:out> </td>					
-								<td><c:out value="${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.percentageOfVotes}"></c:out> %</td>
-
-								<td><c:out value="${constResult.constituencyElectionResultsForYearOne.electionResultForParty.candidateName}"></c:out> </td>
-								<td><c:out value="${constResult.constituencyElectionResultsForYearOne.electionResultForParty.partyName}"></c:out> </td>						
-								<td><c:out value="${constResult.constituencyElectionResultsForYearOne.electionResultForParty.percentageOfVotes}"></c:out> %</td>
-								
-								<td> </td>
-								<td><c:out value="${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.candidateName}"></c:out> </td>
-								<td><c:out value="${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.partyName}"></c:out> </td>						
-								<td><c:out value="${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.percentageOfVotes}"> </c:out> %</td>	
-
-								<c:if test="${constResult.constituencyElectionResultsForYearTwo.electionResultForNewParty !=null}" >
-									<td><c:out value="${constResult.constituencyElectionResultsForYearTwo.electionResultForNewParty.candidateName}"></c:out> </td>
-									<td><c:out value="${constResult.constituencyElectionResultsForYearTwo.electionResultForNewParty.partyName}"></c:out> </td>				
-									<td><c:out value="${constResult.constituencyElectionResultsForYearTwo.electionResultForNewParty.percentageOfVotes}"></c:out></td>	
-								</c:if>
-
-								<script type="text/javascript">
-									var dataArray=new Array();
-									dataArray.push("${constResult.constituencyElectionResultsForYearOne.electionResultForParty.candidateName}");
-									dataArray.push("${constResult.constituencyElectionResultsForYearOne.electionResultForParty.votesEarned}");
-								
-									
-									dataArray.push("${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.candidateName}");
-									dataArray.push("${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.votesEarned}");
-								
-
-									dataArray.push("${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.candidateName}");
-									dataArray.push("${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.votesEarned}");
-									
-									<c:if test="${constResult.constituencyElectionResultsForYearTwo.electionResultForNewParty !=null}" >
-										dataArray.push("${constResult.constituencyElectionResultsForYearTwo.electionResultForNewParty.candidateName}");
-										dataArray.push("${constResult.constituencyElectionResultsForYearTwo.electionResultForNewParty.votesEarned}");
-										
-									</c:if>
-									
-								</script>
-								<td><a href="javascript:{}" onclick="showDetails(dataArray)">Details..</a></td>
-							</tr>
-							</table>
-						</c:forEach>
+			<div id="influenceReportMain">				
+				<div id="reportMain">
+				<div id="tableDiv" style="text-align:left;margin-left:85px;">
+				  <table class="CandidateElectionResultsTable" width="600px" border="2">
+				    <tr>
+					   <th align="center" ><b><c:out value="New Party " /></b></th>
+					   <th align="center" ><b><c:out value="${partyInfluenceReportVO.newPartyName}" /></b></th>
+					   <th align="center" ><b><c:out value="Impacted Party " /></b></th>
+					   <th align="center"><b><c:out value="${partyInfluenceReportVO.impactedPartyName}" /></b></th>
+					   <th align="center" ><b><c:out value="Constituencies Considered " /></b></th>
+					   <th align="center" > <b><c:out value="${partyInfluenceReportVO.totalConstituenciesConsidered}" /></b></th>
 					
-				</c:forEach>
+					   <th align="center" ><b><c:out value="Districts Considered " /></b></th>
+					   <th align="center" > <b><c:out value="${partyInfluenceReportVO.totalDistrictsConsidered}" /></b></th>
+					</tr>
+					<tr>
+					   <td align="center"  colspan="2"><b><c:out value="Total Percentage Of Votes For " /><c:out value="${partyInfluenceReportVO.impactedPartyName}" />
+					   <c:out value=" In " /> <c:out value="${partyInfluenceReportVO.year}" /></b></td>
+					   <td align="center" > <b><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForPartyForYearOne}" /> %</b></td>
+					
+					   <td align="center" colspan="2"><b><c:out value="Total Percentage Of Votes For " /><c:out value="${partyInfluenceReportVO.impactedPartyName}" />
+					   <c:out value=" In " /> <c:out value="${partyInfluenceReportVO.previousYear}" /></b></td>
+					   <td align="center" > <b><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForPartyForYearTwo}" /> %</b></td>
+					   <td align="center" ><b><c:out value="Total Percentage Of Votes For " /><c:out value="${partyInfluenceReportVO.newPartyName}" />
+					   <c:out value=" In " /> <c:out value="${partyInfluenceReportVO.year}" /></b></td>
+					   <td align="center" > <b><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForNewPartyForYearOne}" /> %</b></td>
+					 </tr>
+					<tr>
+					   <th align="center" colspan="6"><b><c:out value="Total Percentage Difference Of Votes For " /><c:out value="${partyInfluenceReportVO.impactedPartyName}" />
+					   <c:out value=" In " /><c:out value="${partyInfluenceReportVO.year}" /> <c:out value=" - " /><c:out value="${partyInfluenceReportVO.previousYear}" /></b></th>
+					   <th align="center" colspan="2"> <b><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentDiffForParty}" /> %</b></th>
+					</tr>
 				</table>
-			
-			</div>
-			
-			
-			<!--
-			<div id="districtInfluenceDiv">
-			
-			</div>
-		
-			<script type="text/javascript">
-				<c:forEach var="result" items="${districtList}">
-				var consObj;
-					<c:forEach var="constituency" items="${result.constituencyElectionsDetailedResults}">
-						consObj={
-							constName:'${constituency.constituencyName}',
-							votesDiff:'${constituency.votesPercentageDiff}',
+				</div>	
+				<br/><br/>	
+				<div id="treeViewDiv">
+					<h3 style="text-align: left; margin-left: 50px;"><u> District wise results..</u></h3>
+				</div>
+				</div>
+				<script type="text/javascript">
+				<c:forEach var="result" items="${partyInfluenceReportVO.districtWiseConstituencyElectionResultsVO}">
+					var distObj={
+									districtId:'${result.districtId}',
+									districtName:'${result.districtName}',
+									stateName:'${result.stateName}',
+									distVotesPercentage:'${result.districtVotesPercentageDiff}',
+									partyVotesPercentage:'${result.partyVotesPercentage}',
+									newPartyVotesPercentage:'${result.newPartyVotesPercentage}',
+									partyVotesPercentageYear2:'${result.partyVotesPercentForYear2}',
+									year:'${result.year}',
+									previousYear:'${result.previousYear}',
+									partyName:'${result.partyName}',
+									newPartyName:'${result.newPartyName}',									
+								}
+					var consObj=new Array();
+					<c:forEach var="constResult" items="${result.constituencyElectionsDetailedResults}">	
+						var consData={
+							constId:'${constResult.constituencyId}',
+							constDistId:'${constResult.districtId}',
+							constName:'${constResult.constituencyName}',
+							votesDiff:'${constResult.votesPercentageDiff}',
 							electionResultOne:{
 												partyOne:{
-															year:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.year}',
-															candName:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.candidateName}',
-															partyName:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.partyName}',
-															votesEarned:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.votesEarned}',
-															VotesPercentage:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.percentageOfVotes}',
-															hasRebel:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.hasRebel}'
+															year:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.year}',
+															candidateId:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.candidateId}',
+															constituencyId:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.constituencyId}',
+															districtId:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.districtId}',
+															districtName:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.districtName}',
+															constituencyName:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.constituencyName}',
+															candidateName:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.candidateName}',
+															partyName:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.partyName}',
+															votesEarned:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.votesEarned}',	
+															validVotes:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.validVotes}',
+															VotesPercentage:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.percentageOfVotes}',
+															hasRebel:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.hasRebel}'				
 														 },
 												partyTwo:{
-															year:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.year}',
-															candName:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.candidateName}',
-															partyName:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.partyName}',
-															votesEarned:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.votesEarned}',
-															VotesPercentage:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.percentageOfVotes}',
-															hasRebel:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.hasRebel}'
+															year:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.year}',
+															candidateId:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.candidateId}',
+															constituencyId:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.constituencyId}',
+															districtId:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.districtId}',
+															districtName:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.districtName}',
+															constituencyName:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.constituencyName}',
+															candidateName:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.candidateName}',
+															partyName:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.partyName}',
+															votesEarned:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.votesEarned}',	
+															validVotes:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.validVotes}',
+															VotesPercentage:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.percentageOfVotes}',
+															hasRebel:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.hasRebel}'	
 														 }
 											   },
 							electionResultTwo:{
 												partyOne:{
-															year:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.year}',
-															candName:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.candidateName}',
-															partyName:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.partyName}',
-															votesEarned:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.votesEarned}',
-															VotesPercentage:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.percentageOfVotes}',
-															hasRebel:'${constituency.constituencyElectionResultsOne.electionResultForPartyOne.hasRebel}'
+															year:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.year}',
+															candidateId:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.candidateId}',
+															constituencyId:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.constituencyId}',
+															districtId:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.districtId}',
+															districtName:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.districtName}',
+															constituencyName:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.constituencyName}',
+															candidateName:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.candidateName}',
+															partyName:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.partyName}',
+															votesEarned:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.votesEarned}',	
+															validVotes:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.validVotes}',
+															VotesPercentage:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.percentageOfVotes}',
+															hasRebel:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.hasRebel}'		
 														}
 											  }
 						}
-
-						//buildJSObj(consObj);
+						consObj.push(consData);
 					</c:forEach>
-					
-					buildJSObj('${result.districtName}','${result.stateName}','${result.districtVotesPercentageDiff}',consObj);
+					buildJSObj(distObj,consObj);
 				</c:forEach>
-			</script>
-			
-			-->
-		</div>
+				</script>		
 </body>
 </html>
