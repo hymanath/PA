@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.util;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,8 +15,8 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.State;
 
 
 public class MockData {
@@ -148,19 +147,19 @@ public class MockData {
 	public static List<Constituency> getConstituencies() {
 		if(constituencies.size()>0)
 			return constituencies;
-		Constituency constituency1 = new Constituency(new Long(1),district, electionScope,state,"Kavali",null,null,country.getCountryId(),null);
-		Constituency constituency2 = new Constituency(new Long(2),district, electionScope,state,"Atmakuru",null,null,country.getCountryId(),null);
-		Constituency constituency3 = new Constituency(new Long(3),district, electionScope,state,"Kovuru",null,null,country.getCountryId(),null);
-		Constituency constituency4= new Constituency(new Long(4),district, electionScope,state,"Nellore City",null,null,country.getCountryId(),null);
-		Constituency constituency5 = new Constituency(new Long(5),district, electionScope,state,"Nellore Rural",null,null,country.getCountryId(),null);
-		Constituency constituency6 = new Constituency(new Long(6),district, electionScope,state,"Sarvepalli",null,null,country.getCountryId(),null);
-		Constituency constituency7 = new Constituency(new Long(7),district, electionScope,state,"Gudur",null,null,country.getCountryId(),null);
-		Constituency constituency8 = new Constituency(new Long(8),district, electionScope,state,"Sullurpeta",null,null,country.getCountryId(),null);
-		Constituency constituency9 = new Constituency(new Long(9),district, electionScope,state,"Venkatagiri",null,null,country.getCountryId(),null);
-		Constituency constituency10 = new Constituency(new Long(10),district, electionScope,state,"Udayagiri",null,null,country.getCountryId(),null);
-		Constituency constituency11 = new Constituency(new Long(11),district, electionScope,state,"Rapur",null,null,country.getCountryId(),null);
-		Constituency constituency12 = new Constituency(new Long(12),district, electionScope,state,"Allur",null,null,country.getCountryId(),null);
-		Constituency constituency13 = new Constituency(new Long(13),district, electionScope,state,"Nellore",null,null,country.getCountryId(),null);
+		Constituency constituency1 = new Constituency(new Long(1),district, electionScope,state,"Kavali",null,null,country.getCountryId(),null,null);
+		Constituency constituency2 = new Constituency(new Long(2),district, electionScope,state,"Atmakuru",null,null,country.getCountryId(),null,null);
+		Constituency constituency3 = new Constituency(new Long(3),district, electionScope,state,"Kovuru",null,null,country.getCountryId(),null,null);
+		Constituency constituency4= new Constituency(new Long(4),district, electionScope,state,"Nellore City",null,null,country.getCountryId(),null,null);
+		Constituency constituency5 = new Constituency(new Long(5),district, electionScope,state,"Nellore Rural",null,null,country.getCountryId(),null,null);
+		Constituency constituency6 = new Constituency(new Long(6),district, electionScope,state,"Sarvepalli",null,null,country.getCountryId(),null,null);
+		Constituency constituency7 = new Constituency(new Long(7),district, electionScope,state,"Gudur",null,null,country.getCountryId(),null,null);
+		Constituency constituency8 = new Constituency(new Long(8),district, electionScope,state,"Sullurpeta",null,null,country.getCountryId(),null,null);
+		Constituency constituency9 = new Constituency(new Long(9),district, electionScope,state,"Venkatagiri",null,null,country.getCountryId(),null,null);
+		Constituency constituency10 = new Constituency(new Long(10),district, electionScope,state,"Udayagiri",null,null,country.getCountryId(),null,null);
+		Constituency constituency11 = new Constituency(new Long(11),district, electionScope,state,"Rapur",null,null,country.getCountryId(),null,null);
+		Constituency constituency12 = new Constituency(new Long(12),district, electionScope,state,"Allur",null,null,country.getCountryId(),null,null);
+		Constituency constituency13 = new Constituency(new Long(13),district, electionScope,state,"Nellore",null,null,country.getCountryId(),null,null);
 		/*Constituency c1 = new Constituency(Long constituencyId, District district,
 				ElectionScope electionScope, State state, String name,
 				Date startDate, Date deformDate, Long countryId,
