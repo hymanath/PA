@@ -98,7 +98,7 @@ table.CandidateElectionResultsTable td {
 	</table>
 
 	<div style="background-color: #efefef; height: 180px; width: 200px; margin-left:50px;display:inline;">
-				<img  height="180" width="200" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />chiru.jpg" >
+				<img  height="180" width="200" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" >
 	</div>
 	
 	
