@@ -15,23 +15,47 @@ import com.itgrids.partyanalyst.dto.DistrictWiseConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionsDetailedResultVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResults;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyInfluenceReportVO;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.service.IPartyInfluenceService;
 
 public class partyInfluenceAction extends ActionSupport implements ServletContextAware,ServletConfigAware{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String electionType;
-	private String statename;
+	private String stateName;
 	private String electionYear;
 	private String newParty;
 	private String partyName;
+	private String alliances;
 	
     private IPartyInfluenceService partyInfluenceService;
 	
 	private List<DistrictWiseConstituencyElectionResultsVO> districtWiseConstituencyElectionResultsVO;
 	private List<ConstituencyElectionsDetailedResultVO> constituencyElectionsDetailedResultVO;
+	private PartyInfluenceReportVO partyInfluenceReportVO;
 	
+	public PartyInfluenceReportVO getPartyInfluenceReportVO() {
+		return partyInfluenceReportVO;
+	}
+
+	public void setPartyInfluenceReportVO(
+			PartyInfluenceReportVO partyInfluenceReportVO) {
+		this.partyInfluenceReportVO = partyInfluenceReportVO;
+	}
+
+	public String getAlliances() {
+		return alliances;
+	}
+
+	public void setAlliances(String alliances) {
+		this.alliances = alliances;
+	}
+
 	public IPartyInfluenceService getPartyInfluenceService() {
 		return partyInfluenceService;
 	}
@@ -78,12 +102,12 @@ public class partyInfluenceAction extends ActionSupport implements ServletContex
 		this.electionType = electionType;
 	}
 
-	public String getStatename() {
-		return statename;
+	public String getStateName() {
+		return stateName;
 	}
 
-	public void setStatename(String statename) {
-		this.statename = statename;
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
 	}
 
 	public String getElectionYear() {
@@ -110,15 +134,15 @@ public class partyInfluenceAction extends ActionSupport implements ServletContex
 		this.partyName = partyName;
 	}
 
-	public String execute()
-	{
-		System.out.println("in party Influence Action ******");
+	public String execute(){
 		
-		System.out.println("##################values = "+electionType+"=="+electionYear+"=="+statename+"=="+newParty+"=="+partyName);
+		Boolean hasAlliances = new Boolean(alliances);
+	
+		partyInfluenceReportVO = partyInfluenceService.getPartyInfluenceReportResults(Long.parseLong(electionType), Long.parseLong(partyName), Long.parseLong(newParty), electionYear,hasAlliances ,Long.parseLong(stateName));
 		
-		districtWiseConstituencyElectionResultsVO = partyInfluenceService.getPartyInfluenceReportResults(Long.parseLong(electionType), Long.parseLong(partyName), Long.parseLong(newParty), electionYear, true);
+		System.out.println("StateId -->" + Long.parseLong(stateName));
 		
-		if(districtWiseConstituencyElectionResultsVO.size() > 0 && districtWiseConstituencyElectionResultsVO != null)
+		if(partyInfluenceReportVO != null)
 	     return Action.SUCCESS;
 		else
 		 return Action.ERROR;
