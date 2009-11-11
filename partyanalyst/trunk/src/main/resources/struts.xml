@@ -125,7 +125,7 @@
 		</action>
 		
 		<action name="boothUploadAction" class="com.itgrids.partyanalyst.web.action.BoothUploadAction">
-           <result name="success">/jsp/uploadBooth.jsp</result>
+           <result name="success">/jsp/boothUpload.jsp</result>
         </action>
         
         <action name="boothResultUploadAction" class="com.itgrids.partyanalyst.web.action.BoothResultUploadAction">
