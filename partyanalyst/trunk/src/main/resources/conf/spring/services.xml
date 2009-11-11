@@ -143,7 +143,17 @@
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		<property name="boothResultDAO" ref="boothResultDAO" />
+		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 	</bean>
+	
+	<bean name="parliamentBoothResultPopulationService" class="com.itgrids.partyanalyst.service.impl.ParliamentBoothResultPopulationService" >		
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+    	<property name="nominationDAO" ref="nominationDAO" />
+    	<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+    	<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+    	<property name="boothResultDAO" ref="boothResultDAO" />
+	</bean>
+	
 	<bean name="uploadFormVo" class="com.itgrids.partyanalyst.excel.upload.vo.UploadFormVo"/>
 	<bean name="regionServiceDataImp" class="com.itgrids.partyanalyst.service.impl.RegionServiceDataImp">
 		<property name="districtDAO" ref="districtDAO"/>
