@@ -51,7 +51,7 @@ public class DelimitationConstituency extends BaseModel {
 	public void setYear(Long year) {
 		this.year = year;
 	}
-	 @Column(name = "constutuency_no", length = 15)
+	 @Column(name = "constituency_no", length = 15)
 	public Long getConstituencyNO() {
 		return constituencyNO;
 	}
