@@ -1,10 +1,10 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <html>
 <head>
-<title>Booth Result Upload</title>
+<title>Booth Data Upload</title>
 </head>
 	<body>
-	<s:form name="BoothResultUploadForm" action="boothResultUploadAction" method="POST" >
+	<s:form name="BoothUploadAction" action="boothUploadAction" method="POST" >
 		<table border="1" style="border-collapse:collapse">
 			<tr>
 				<td>Election Type</td>
@@ -13,6 +13,7 @@
 						<option value="0">Select option..</option>
 						<option value="1">Parliament</option>
 						<option value="2">AP Assembly</option>
+						<option value="4">MH Assembly</option>
 					</select>
 				</td>
 			</tr>
