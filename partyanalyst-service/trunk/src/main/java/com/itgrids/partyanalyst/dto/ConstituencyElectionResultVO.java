@@ -16,8 +16,10 @@ public class ConstituencyElectionResultVO {
 	private String districtName;
 	private String constituencyName;
 	private String candidateName;
+	private Long partyId;
 	private String partyName;
 	private String votesEarned;
+	private String validVotes;
 	private String percentageOfVotes;
 	private Boolean hasRebel;
 	private CandidateWonVO rebelCandidate;
@@ -40,6 +42,12 @@ public class ConstituencyElectionResultVO {
 	}
 	public void setCandidateName(String candidateName) {
 		this.candidateName = candidateName;
+	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
 	}
 	public String getPartyName() {
 		return partyName;
@@ -94,6 +102,12 @@ public class ConstituencyElectionResultVO {
 	}
 	public void setDistrictName(String districtName) {
 		this.districtName = districtName;
+	}
+	public String getValidVotes() {
+		return validVotes;
+	}
+	public void setValidVotes(String validVotes) {
+		this.validVotes = validVotes;
 	}
 	
 }
