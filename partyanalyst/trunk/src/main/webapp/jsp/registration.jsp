@@ -286,7 +286,7 @@
 					</tr>
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></td>
-						<td><s:radio id="genderField" name="gender" list="gender" required="true" />  </td>			
+						<td><s:radio id="genderField" name="gender" list="gender" value="male"/>  </td>			
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font><s:label for="dateOfBirthField" id="dateOfBirthLabel"  value="%{getText('dateOfBirth')}" /></td>
