@@ -51,6 +51,9 @@
 				<value>com.itgrids.partyanalyst.model.ConstituencyTehsil</value>
 				<value>com.itgrids.partyanalyst.model.PartyRebel</value>
 				<value>com.itgrids.partyanalyst.model.PartyRebelCandidate</value>
+				<value>com.itgrids.partyanalyst.model.CandidateBoothResult</value>
+				<value>com.itgrids.partyanalyst.model.NominationHistory</value>
+				<value>com.itgrids.partyanalyst.model.CandidateConsolidationTask</value>
 		</list>
 		</property>
 	</bean>
