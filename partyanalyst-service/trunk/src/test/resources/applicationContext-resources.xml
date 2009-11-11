@@ -62,6 +62,8 @@
 				<value>com.itgrids.partyanalyst.model.AllianceGroup</value>
 				<value>com.itgrids.partyanalyst.model.PartyRebel</value>
 				<value>com.itgrids.partyanalyst.model.PartyRebelCandidate</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandal</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationConstituency</value>
 			</list>
 		</property>
 	</bean>
