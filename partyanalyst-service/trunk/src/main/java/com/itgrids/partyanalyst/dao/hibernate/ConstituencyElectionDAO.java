@@ -58,9 +58,18 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ConstituencyElection> findByConstituencyElectionAndDistrict(String electionYear, String constituencyName, String electionType, String districtName){
-		Object[] params = {electionYear,constituencyName, electionType, districtName};
-		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionYear =? and model.constituency.name=? and model.constituency.electionScope.electionType.electionType = ? and model.constituency.district.districtName = ?", params);	
+	public List<ConstituencyElection> findByConstituencyElectionAndDistrict(String electionYear, String constituencyName, Long electionScopeId, Long districtId){
+		Object[] params = {electionYear,constituencyName, electionScopeId, districtId};
+		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionYear =? and model.constituency.name=? and model.election.electionScope.electionScopeId = ? and model.constituency.district.districtId = ?", params);	
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyElection> findByConstituencyElectionAndState(
+			String electionYear, String parliamentConstituencyName,
+			Long electionScopeId, Long stateId) {
+		Object[] params = {electionYear, parliamentConstituencyName, electionScopeId, stateId};
+		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionYear =? and model.constituency.name=? and model.election.electionScope.electionScopeId = ? and model.constituency.state.stateId = ?", params);	
+	}
+	
 	
 }

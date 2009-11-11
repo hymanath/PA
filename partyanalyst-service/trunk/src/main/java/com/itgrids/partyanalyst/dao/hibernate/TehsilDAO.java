@@ -38,9 +38,9 @@ public class TehsilDAO extends GenericDaoHibernate<Tehsil, Long> implements ITeh
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Tehsil> findByTehsilNameAndDistrict(String name, String districtName){
-		String[] params = {name,districtName};
-		return getHibernateTemplate().find("from Tehsil model where model.tehsilName = ? and model.district.districtName = ?", params);
+	public List<Tehsil> findByTehsilNameAndDistrict(String name, Long districtId){
+		Object[] params = {name, districtId};
+		return getHibernateTemplate().find("from Tehsil model where model.tehsilName = ? and model.district.districtId = ?", params);
 	}
 	
 }

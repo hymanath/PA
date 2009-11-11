@@ -92,7 +92,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Candidate> findCandidteIds(String[] names){
+	public List<Candidate> findByFirstMiddleAndLastNames(String[] names){
 		
 		StringBuffer queryBuffer = new StringBuffer("select model from Candidate model where ");
 		

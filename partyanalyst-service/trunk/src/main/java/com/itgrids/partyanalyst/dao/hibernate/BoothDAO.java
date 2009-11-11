@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Tehsil;
 
 public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBoothDAO{
 
@@ -42,7 +43,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Booth findByTehsilAndPartNo(String tehsilName, Long partNo){
+	public Booth findByTehsilAndPartNo(String tehsilName, String partNo){
 		Booth booth = null;
 		Object[] params = {tehsilName, partNo};
 		List<Booth> booths = getHibernateTemplate().find("from Booth model where model.tehsil.tehsilName = ? and model.partNo = ?", params);
@@ -52,4 +53,10 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return booth;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Tehsil> findTehsilsByConstituencyElectionScopeAndElection(String electionYear,Long constituencyId){
+		Object[] params = {constituencyId, electionYear};
+		return getHibernateTemplate().find("select distinct model.tehsil from Booth model where model.boothId in(select model1.booth.boothId from BoothConstituencyElection model1 where model1.constituencyElection.constituency.constituencyId = ? and model1.constituencyElection.election.electionYear=?)",params);
+	}
+
 }
