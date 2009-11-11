@@ -7,13 +7,16 @@ import java.util.List;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.CrossVotedBoothVO;
 import com.itgrids.partyanalyst.dto.CrossVotedCandidateVO;
 import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
@@ -24,6 +27,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;	
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private INominationDAO nominationDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
 	public INominationDAO getNominationDAO() {
 		return nominationDAO;
@@ -32,6 +36,15 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	public void setNominationDAO(INominationDAO nominationDAO) {
 		this.nominationDAO = nominationDAO;
 	}
+	
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}	
 	
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
@@ -53,6 +66,17 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	public void setCandidateBoothResultDAO(
 			ICandidateBoothResultDAO candidateBoothResultDAO) {
 		this.candidateBoothResultDAO = candidateBoothResultDAO;
+	}
+	
+	
+	public List<SelectOptionVO> getAssembliesForParliament(Long parliamentId, Long electionYear){
+		List<Constituency> constituencies = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(parliamentId, electionYear);
+		List<SelectOptionVO> constituencyVOs = new ArrayList<SelectOptionVO>();
+		for(Constituency constituency:constituencies){
+			SelectOptionVO constituencyVO = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
+			constituencyVOs.add(constituencyVO);
+		}
+		return constituencyVOs;
 	}
 	
 	public CrossVotingConsolidateVO getConsolidatedCrossVotingDetails(String electionYear, Long partyId, Long acId, Long pcId){
@@ -154,6 +178,5 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		}
 		return percentage.toString();
 	}
-
 	
 }

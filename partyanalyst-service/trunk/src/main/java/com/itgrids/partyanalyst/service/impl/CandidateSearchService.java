@@ -3,20 +3,17 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyRebelCandidateDAO;
-import com.itgrids.partyanalyst.dao.IPartyRebelDAO;
 import com.itgrids.partyanalyst.dto.CandidateElectionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.PartyRebel;
 import com.itgrids.partyanalyst.model.PartyRebelCandidate;
 import com.itgrids.partyanalyst.service.ICandidateSearchService;
 
