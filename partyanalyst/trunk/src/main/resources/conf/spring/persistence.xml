@@ -54,6 +54,8 @@
 				<value>com.itgrids.partyanalyst.model.CandidateBoothResult</value>
 				<value>com.itgrids.partyanalyst.model.NominationHistory</value>
 				<value>com.itgrids.partyanalyst.model.CandidateConsolidationTask</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationConstituency</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyAssemblyDetails</value>
 		</list>
 		</property>
 	</bean>

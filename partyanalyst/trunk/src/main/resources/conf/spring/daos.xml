@@ -109,6 +109,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	 <bean id="delimitationConstituencyAssemblyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyAssemblyDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="electionAllianceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionAllianceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
