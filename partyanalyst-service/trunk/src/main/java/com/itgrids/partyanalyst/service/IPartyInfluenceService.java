@@ -10,12 +10,13 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.DistrictWiseConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.PartyInfluenceReportVO;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
 
 public interface IPartyInfluenceService {
 
-	public List<DistrictWiseConstituencyElectionResultsVO> getPartyInfluenceReportResults(Long electionTypeId,Long partyId,Long newPartyId,String electionYear,Boolean includeAlliance);
+	public PartyInfluenceReportVO getPartyInfluenceReportResults(Long electionTypeId,Long partyId,Long newPartyId,String electionYear,Boolean includeAlliance,Long stateId);
 	
 	public Election getElection(Long electionScopeId,String electionYear);
 	
