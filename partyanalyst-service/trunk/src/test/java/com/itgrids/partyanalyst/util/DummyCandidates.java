@@ -9,7 +9,7 @@ public class DummyCandidates {
 
 	public static List<Candidate> getCandidates(){
 		List <Candidate> candidates = new ArrayList<Candidate>();
-		Candidate c1 = new Candidate(new Long(1),"aaa1", null ,"bbb1",  null ,  null , null , null ,  null ,  null , null ,  null ,null);
+	/*	Candidate c1 = new Candidate(new Long(1),"aaa1", null ,"bbb1",  null ,  null , null , null ,  null ,  null , null ,  null ,null);
 		Candidate c2 = new Candidate(new Long(1),"aaa2", null ,"bbb2",  null ,  null , null , null ,  null ,  null , null ,  null ,null);
 		Candidate c3 = new Candidate(new Long(1),"aaa3", null ,"bbb3",  null ,  null , null , null ,  null ,  null , null ,  null ,null);
 		Candidate c4 = new Candidate(new Long(1),"aaa4", null ,"bbb5",  null ,  null , null , null ,  null ,  null , null ,  null ,null);
@@ -19,7 +19,7 @@ public class DummyCandidates {
 		candidates.add(c2);
 		candidates.add(c3);
 		candidates.add(c4);
-		candidates.add(c5);
+		candidates.add(c5);*/
 		
 		return candidates;
 	}

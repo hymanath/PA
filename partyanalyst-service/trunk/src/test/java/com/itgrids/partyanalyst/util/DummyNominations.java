@@ -7,8 +7,8 @@ import java.util.Set;
 
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
-import com.itgrids.partyanalyst.model.BoothResult;
 import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Election;
@@ -27,9 +27,7 @@ public class DummyNominations {
 		Election electionl = new Election();
 		electionl.setElectionYear("2004");
 		constituencyElection1.setElection(electionl);
-		nomination1.setConstituencyElection(constituencyElection1);
-		
-		
+		nomination1.setConstituencyElection(constituencyElection1);		
 		
 		Nomination nomination2 = new Nomination();
 		ConstituencyElection constituencyElection2 = new ConstituencyElection();
@@ -53,25 +51,25 @@ public class DummyNominations {
 	
 	public static List<Nomination> getNominationsWithBoothResults(){
 		List <Nomination> nominations = new ArrayList<Nomination>();
-		Booth booth1 = new Booth(new Long(1), null , "Nimmanapalli Road","Basinikonda, Ramacharlapalli", null, null,null,new Double(1000),null,null);
-		Booth booth2 = new Booth(new Long(2), null , "Nimmanapalli Road1","Basinikonda, Ramacharlapalli1", null, null,null,new Double(1500),null,null);
-		Booth booth3= new Booth(new Long(3), null , "Nimmanapalli Road2","Basinikonda, Ramacharlapalli2", null, null,null,new Double(1400),null,null);
-		Booth booth4 = new Booth(new Long(4), null , "Nimmanapalli Road3","Basinikonda, Ramacharlapalli3", null, null,null,new Double(900),null,null);
-		Booth booth5 = new Booth(new Long(5), null , "Nimmanapalli Road4","Basinikonda, Ramacharlapalli4", null, null,null,new Double(1220),null,null);
+		Booth booth1 = new Booth("1", null , "Nimmanapalli Road","Basinikonda, Ramacharlapalli", null, null,null,new Long(1000),null,null);
+		Booth booth2 = new Booth("2", null , "Nimmanapalli Road1","Basinikonda, Ramacharlapalli1", null, null,null,new Long(1500),null,null);
+		Booth booth3= new Booth("3", null , "Nimmanapalli Road2","Basinikonda, Ramacharlapalli2", null, null,null,new Long(1400),null,null);
+		Booth booth4 = new Booth("4", null , "Nimmanapalli Road3","Basinikonda, Ramacharlapalli3", null, null,null,new Long(900),null,null);
+		Booth booth5 = new Booth("5", null , "Nimmanapalli Road4","Basinikonda, Ramacharlapalli4", null, null,null,new Long(1220),null,null);
 		
-		BoothConstituencyElection bce1 = new BoothConstituencyElection(booth1, null,null);
-		BoothConstituencyElection bce2= new BoothConstituencyElection(booth2, null,null);
-		BoothConstituencyElection bce3 = new BoothConstituencyElection(booth3, null,null);
-		BoothConstituencyElection bce4 = new BoothConstituencyElection(booth4, null,null);
-		BoothConstituencyElection bce5 = new BoothConstituencyElection(booth5, null,null);
+		BoothConstituencyElection bce1 = new BoothConstituencyElection(booth1, null,null,null);
+		BoothConstituencyElection bce2= new BoothConstituencyElection(booth2, null,null,null);
+		BoothConstituencyElection bce3 = new BoothConstituencyElection(booth3, null,null,null);
+		BoothConstituencyElection bce4 = new BoothConstituencyElection(booth4, null,null,null);
+		BoothConstituencyElection bce5 = new BoothConstituencyElection(booth5, null,null,null);
 		
-		BoothResult br1 = new BoothResult(new Double(900),null,bce1);
-		BoothResult br2 = new BoothResult(new Double(1200),null,bce2);
-		BoothResult br3 = new BoothResult(new Double(1300),null,bce3);
-		BoothResult br4 = new BoothResult(new Double(750),null,bce4);
-		BoothResult br5 = new BoothResult(new Double(1100),null,bce5);
+		CandidateBoothResult br1 = new CandidateBoothResult(new Long(900),null,null,bce1);
+		CandidateBoothResult br2 = new CandidateBoothResult(new Long(1200),null,null,bce2);
+		CandidateBoothResult br3 = new CandidateBoothResult(new Long(1300),null,null,bce3);
+		CandidateBoothResult br4 = new CandidateBoothResult(new Long(750),null,null,bce4);
+		CandidateBoothResult br5 = new CandidateBoothResult(new Long(1100),null,null,bce5);
 		
-		Set<BoothResult> brs = new HashSet<BoothResult>();
+		Set<CandidateBoothResult> brs = new HashSet<CandidateBoothResult>();
 		brs.add(br1);
 		brs.add(br2);
 		brs.add(br3);
@@ -102,7 +100,7 @@ public class DummyNominations {
 		party.setShortName("PRP");
 		
 		Nomination nomination = new Nomination();
-		nomination.setBoothResults(brs);
+		nomination.setCandidateBoothResults(brs);
 		nomination.setConstituencyElection(consElec);
 		nomination.setCandidate(candidate);
 		nomination.setParty(party);
@@ -110,5 +108,4 @@ public class DummyNominations {
 		
 		return nominations;
 	}
-	
 }
