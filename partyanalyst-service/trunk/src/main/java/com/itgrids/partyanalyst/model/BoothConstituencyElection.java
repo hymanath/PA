@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -28,7 +29,8 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 	private Long boothConstituencyElectionId;
 	private Booth booth;
 	private ConstituencyElection constituencyElection;
-	private Set<BoothResult> boothResults;
+	private BoothResult boothResult;
+	private Set<CandidateBoothResult> candidateBoothResults = new HashSet<CandidateBoothResult>(0);
 	
 	public BoothConstituencyElection(){
 		
@@ -39,10 +41,11 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 	}
 
 	public BoothConstituencyElection(Booth booth, ConstituencyElection constituencyElection,
-			Set<BoothResult> boothResults) {
+			BoothResult boothResult,Set<CandidateBoothResult> candidateBoothResults) {
 		this.booth = booth;
 		this.constituencyElection = constituencyElection;
-		this.boothResults = boothResults;
+		this.boothResult = boothResult;
+		this.candidateBoothResults = candidateBoothResults;
 	}
 
 	@Id
@@ -80,13 +83,23 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 		this.constituencyElection = constituencyElection;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "boothConstituencyElection")
-	public Set<BoothResult> getBoothResults() {
-		return boothResults;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "boothConstituencyElection")
+	public BoothResult getBoothResult() {
+		return boothResult;
 	}
 
-	public void setBoothResults(Set<BoothResult> boothResults) {
-		this.boothResults = boothResults;
+	public void setBoothResult(BoothResult boothResult) {
+		this.boothResult = boothResult;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "boothConstituencyElection")
+	public Set<CandidateBoothResult> getCandidateBoothResults() {
+		return candidateBoothResults;
+	}
+
+	public void setCandidateBoothResults(
+			Set<CandidateBoothResult> candidateBoothResults) {
+		this.candidateBoothResults = candidateBoothResults;
 	}
 		
 }

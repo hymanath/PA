@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.model;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,9 +22,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Candidate entity. 
@@ -52,6 +50,9 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private String education;
 	private String gender;
 	private String image;
+	private String isDelete;
+	private Set<CandidateConsolidationTask> candidateConsolidationTasks = new HashSet<CandidateConsolidationTask>(0);
+	private Set<NominationHistory> nominationHistories = new HashSet<NominationHistory>(0);
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 
 	// Constructors
@@ -69,7 +70,9 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	public Candidate(Long candidateId, String firstname, String middlename,
 			String lastname, Date dateofbirth, String emailAddress,
 			String phone, String mobile, String address, String education,
-			String gender, String image,Set<Nomination> nominations) {
+			String gender, String image,String isDelete,
+			Set<CandidateConsolidationTask> candidateConsolidationTasks,Set<Nomination> nominations,
+			Set<NominationHistory> nominationHistories) {
 		this.candidateId = candidateId;
 		this.firstname = firstname;
 		this.middlename = middlename;
@@ -83,6 +86,9 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 		this.gender = gender;
 		this.nominations = nominations;
 		this.image = image;
+		this.candidateConsolidationTasks = candidateConsolidationTasks;
+		this.isDelete = isDelete;
+		this.nominationHistories = nominationHistories;
 	}
 
 	// Property accessors
@@ -206,5 +212,33 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 		this.image = image;
 	}
 
+	@Column(name = "is_delete", length = 50)
+	public String getIsDelete() {
+		return isDelete;
+	}
 
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")	
+	public Set<CandidateConsolidationTask> getCandidateConsolidationTasks() {
+		return candidateConsolidationTasks;
+	}
+
+	public void setCandidateConsolidationTasks(
+			Set<CandidateConsolidationTask> candidateConsolidationTasks) {
+		this.candidateConsolidationTasks = candidateConsolidationTasks;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	public Set<NominationHistory> getNominationHistories() {
+		return nominationHistories;
+	}
+
+	public void setNominationHistories(Set<NominationHistory> nominationHistories) {
+		this.nominationHistories = nominationHistories;
+	}
+
+	
 }

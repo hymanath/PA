@@ -26,14 +26,14 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private static final long serialVersionUID = 4318484808348719448L;
 
 	private Long boothId;
-	private Long partNo;
+	private String partNo;
 	private String partName;
 	private String location;
 	private String villagesCovered;
 	private Tehsil tehsil;
-	private Double maleVoters;
-	private Double femaleVoters;
-	private Double totalVoters;
+	private Long maleVoters;
+	private Long femaleVoters;
+	private Long totalVoters;
 	private Set<BoothConstituencyElection> boothConstituencyElections = new HashSet<BoothConstituencyElection>(0);
 	private Set<BoothVillageCensus> boothVillageCensuses = new HashSet<BoothVillageCensus>(0);
 	
@@ -47,9 +47,9 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Booth(Long partNo, String partName, String location,
-			String villagesCovered, Tehsil tehsil, Double maleVoters, Double femaleVoters,
-			Double totalVoters,
+	public Booth(String partNo, String partName, String location,
+			String villagesCovered, Tehsil tehsil, Long maleVoters, Long femaleVoters,
+			Long totalVoters,
 			Set<BoothConstituencyElection> boothConstituencyElections,
 			Set<BoothVillageCensus> boothVillageCensuses) {
 		this.partNo = partNo;
@@ -75,12 +75,12 @@ public class Booth extends BaseModel implements java.io.Serializable {
 		this.boothId = boothId;
 	}
 
-	@Column(name = "part_no")
-	public Long getPartNo() {
+	@Column(name = "part_no", length = 50)
+	public String getPartNo() {
 		return partNo;
 	}
 
-	public void setPartNo(Long partNo) {
+	public void setPartNo(String partNo) {
 		this.partNo = partNo;
 	}
 
@@ -123,30 +123,30 @@ public class Booth extends BaseModel implements java.io.Serializable {
 		this.tehsil = tehsil;
 	}
 
-	@Column(name = "male_voters",precision = 10, scale = 0)
-	public Double getMaleVoters() {
+	@Column(name = "male_voters")
+	public Long getMaleVoters() {
 		return maleVoters;
 	}
 
-	public void setMaleVoters(Double maleVoters) {
+	public void setMaleVoters(Long maleVoters) {
 		this.maleVoters = maleVoters;
 	}
 
-	@Column(name = "female_voters",precision = 10, scale = 0)
-	public Double getFemaleVoters() {
+	@Column(name = "female_voters")
+	public Long getFemaleVoters() {
 		return femaleVoters;
 	}
 
-	public void setFemaleVoters(Double femaleVoters) {
+	public void setFemaleVoters(Long femaleVoters) {
 		this.femaleVoters = femaleVoters;
 	}
 
-	@Column(name = "total_voters",precision = 10, scale = 0)
-	public Double getTotalVoters() {
+	@Column(name = "total_voters")
+	public Long getTotalVoters() {
 		return totalVoters;
 	}
 
-	public void setTotalVoters(Double totalVoters) {
+	public void setTotalVoters(Long totalVoters) {
 		this.totalVoters = totalVoters;
 	}
 

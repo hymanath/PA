@@ -52,8 +52,9 @@ public class Nomination extends BaseModel implements java.io.Serializable {
 	private Double liabilities;
 	private String criminalCharges;
 	private CandidateResult candidateResult;
-	private Set<BoothResult> boothResults = new HashSet<BoothResult>(0);
-
+	private Set<CandidateBoothResult> candidateBoothResults = new HashSet<CandidateBoothResult>(0);
+	private Set<NominationHistory> nominationHistories = new HashSet<NominationHistory>(0);
+	
 	// Constructors
 
 	/** default constructor */
@@ -70,7 +71,8 @@ public class Nomination extends BaseModel implements java.io.Serializable {
 			ConstituencyElection constituencyElection, Party party,
 			Candidate candidate, String nominationStatus, Double assets,
 			Double liabilities, String criminalCharges,
-			CandidateResult candidateResult, Set<BoothResult> boothResults) {
+			CandidateResult candidateResult, Set<CandidateBoothResult> candidateBoothResults,
+			Set<NominationHistory> nominationHistories) {
 		this.nominationId = nominationId;
 		this.constituencyElection = constituencyElection;
 		this.party = party;
@@ -80,7 +82,8 @@ public class Nomination extends BaseModel implements java.io.Serializable {
 		this.liabilities = liabilities;
 		this.criminalCharges = criminalCharges;
 		this.candidateResult = candidateResult;
-		this.boothResults = boothResults;
+		this.candidateBoothResults = candidateBoothResults;
+		this.nominationHistories = nominationHistories;
 	}
 
 	// Property accessors
@@ -179,14 +182,21 @@ public class Nomination extends BaseModel implements java.io.Serializable {
 
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "nomination")
-	public Set<BoothResult> getBoothResults() {
-		return boothResults;
+	public Set<CandidateBoothResult> getCandidateBoothResults() {
+		return candidateBoothResults;
 	}
 
-	public void setBoothResults(Set<BoothResult> boothResults) {
-		this.boothResults = boothResults;
+	public void setCandidateBoothResults(Set<CandidateBoothResult> candidateBoothResults) {
+		this.candidateBoothResults = candidateBoothResults;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "nomination")
+	public Set<NominationHistory> getNominationHistories() {
+		return nominationHistories;
+	}
+
+	public void setNominationHistories(Set<NominationHistory> nominationHistories) {
+		this.nominationHistories = nominationHistories;
 	}
 	
-	
-
 }

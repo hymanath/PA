@@ -8,37 +8,37 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
-
 @Entity
 @Table(name = "booth_result")
 public class BoothResult extends BaseModel implements java.io.Serializable{
-
+	
 	private static final long serialVersionUID = 1L;
-
 	private Long boothResultId;
-	private Double votesEarned;
-	private Nomination nomination;
 	private BoothConstituencyElection boothConstituencyElection;
+	private Long validVotes;
+	private Long rejectedVotes;
+	private Long tenderedVotes;
 	
 	public BoothResult(){
-	}
 		
+	}
+	
 	public BoothResult(Long boothResultId){
 		this.boothResultId = boothResultId;
 	}
 
-	public BoothResult(Double votesEarned,
-			Nomination nomination,
-			BoothConstituencyElection boothConstituencyElection) {
-		this.votesEarned = votesEarned;
-		this.nomination = nomination;
+	public BoothResult(BoothConstituencyElection boothConstituencyElection,
+			Long validVotes, Long rejectedVotes, Long tenderedVotes) {
 		this.boothConstituencyElection = boothConstituencyElection;
+		this.validVotes = validVotes;
+		this.rejectedVotes = rejectedVotes;
+		this.tenderedVotes = tenderedVotes;
 	}
 
 	@Id
@@ -52,28 +52,7 @@ public class BoothResult extends BaseModel implements java.io.Serializable{
 		this.boothResultId = boothResultId;
 	}
 
-	@Column(name = "votes_earned", precision = 10, scale = 0)
-	public Double getVotesEarned() {
-		return votesEarned;
-	}
-
-	public void setVotesEarned(Double votesEarned) {
-		this.votesEarned = votesEarned;
-	}
-
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "nomination_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Nomination getNomination() {
-		return nomination;
-	}
-
-	public void setNomination(Nomination nomination) {
-		this.nomination = nomination;
-	}
-
-	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "booth_constituency_election_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -85,6 +64,32 @@ public class BoothResult extends BaseModel implements java.io.Serializable{
 			BoothConstituencyElection boothConstituencyElection) {
 		this.boothConstituencyElection = boothConstituencyElection;
 	}
-	
+
+	@Column(name = "valid_votes")
+	public Long getValidVotes() {
+		return validVotes;
+	}
+
+	public void setValidVotes(Long validVotes) {
+		this.validVotes = validVotes;
+	}
+
+	@Column(name = "rejected_votes")
+	public Long getRejectedVotes() {
+		return rejectedVotes;
+	}
+
+	public void setRejectedVotes(Long rejectedVotes) {
+		this.rejectedVotes = rejectedVotes;
+	}
+
+	@Column(name = "tendered_votes")
+	public Long getTenderedVotes() {
+		return tenderedVotes;
+	}
+
+	public void setTenderedVotes(Long tenderedVotes) {
+		this.tenderedVotes = tenderedVotes;
+	}
 	
 }
