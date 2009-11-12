@@ -131,9 +131,12 @@
 	 </bean>
 	
 	<bean id="crossVotingReportInputAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportInputAction" singleton="false">
+	 	<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
 	</bean>
 	
 	<bean id="crossVotingReportAjaxAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportAjaxAction" singleton="false">
+		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	</bean>
 	<bean id="mandalPageAction" class="com.itgrids.partyanalyst.web.action.MandalPageAction" singleton="false">
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
