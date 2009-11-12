@@ -45,6 +45,11 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		List<MandalInfoVO> mandalInfo = delimitationConstituencyMandalService.getCensusInfoForMandals(mandalID);
 		for(MandalInfoVO mandalInfoVO : mandalInfo){
 			mandalInfoVO.setMandalName(mandalName);
+			Throwable ex = mandalInfoVO.getExceptionEncountered();
+			if(ex!=null){
+				log.error("exception raised while retrieving mandal details ", ex);
+				return ERROR;
+			}
 		}
 		setMandalInfoVOList(mandalInfo);
 		if(log.isDebugEnabled()){

@@ -116,6 +116,12 @@ public class ConstituencyPageAction extends ActionSupport implements
 				
 		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
 		DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO = delimitationConstituencyMandalService.getMandalsForDelConstituency(constituencyId);
+		
+		Throwable ex = delimitationConstituencyMandalResultVO.getExceptionEncountered();
+		if(ex!=null){
+			log.error("exception raised while retrieving mandal details ", ex);
+		}
+		
 		log.info("delimitationConstituencyMandalResultVO.getMandals().size()::::"+delimitationConstituencyMandalResultVO.getPresentMandals().size());
 		log.info("delimitationConstituencyMandalResultVO..getConstituencyType()::::"+delimitationConstituencyMandalResultVO.getConstituencyType());
 		setDelimitationConstituencyMandalResultVO(delimitationConstituencyMandalResultVO);

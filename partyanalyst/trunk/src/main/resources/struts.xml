@@ -212,6 +212,7 @@
 		
 		<action name="mandalPageAction" class="mandalPageAction">
 			<result name="success">/jsp/mandalPage.jsp</result>
+			<result name="error">/jsp/mandalPageFail.jsp</result>
 		</action>
 	</package>
 </struts>
