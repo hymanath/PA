@@ -153,10 +153,6 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletCo
 		party3.setId(new Long(4));
 		party3.setName("CPI");
 		
-		SelectOptionVO party4  = new SelectOptionVO();
-		party4.setId(new Long(5));
-		party4.setName("CPM");
-		
 		SelectOptionVO party5  = new SelectOptionVO();
 		party5.setId(new Long(11));
 		party5.setName("TDP");
@@ -168,7 +164,6 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletCo
 		partyNames.add(party1);
 		partyNames.add(party2);
 		partyNames.add(party3);
-		partyNames.add(party4);
 		partyNames.add(party5);
 		partyNames.add(party6);
 		
