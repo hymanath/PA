@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.enums.DelimitationConstituencyType;
@@ -8,7 +9,7 @@ import com.itgrids.partyanalyst.dto.enums.DelimitationConstituencyType;
 public class DelimitationConstituencyMandalResultVO extends ResultStatus implements Serializable {
 
 	private DelimitationConstituencyType constituencyType;
-	private List<MandalInfoVO> presentMandals;
+	private List<MandalInfoVO> presentMandals = new ArrayList<MandalInfoVO>();
 	private List<MandalInfoVO> mandalsBeforeDelimitationConstituency;
 	private Long delimitationYear;
 	private Long beforeDelimitationYear;

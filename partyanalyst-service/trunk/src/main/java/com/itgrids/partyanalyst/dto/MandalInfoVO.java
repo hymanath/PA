@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 
-public class MandalInfoVO implements Serializable{
+public class MandalInfoVO extends ResultStatus implements Serializable{
 	
 	private Long mandalID;
 	private String mandalName;
