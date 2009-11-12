@@ -11,17 +11,19 @@ import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VillageCensusInfoVO;
+import com.itgrids.partyanalyst.dto.VillageDetailsVO;
 import com.itgrids.partyanalyst.dto.enums.DelimitationConstituencyType;
 import com.itgrids.partyanalyst.model.Census;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituencyMandal;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -31,6 +33,7 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IConstituencyDAO constituencyDAO;
 	private ICensusDAO censusDAO;
+	private ITownshipDAO townshipDAO;
 	
 	private static final Logger log = Logger.getLogger(DelimitationConstituencyMandalService.class);
 
@@ -50,6 +53,10 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 
 	public void setCensusDAO(ICensusDAO censusDAO){
 		this.censusDAO = censusDAO;
+	}
+ 
+	public void setTownshipDAO(ITownshipDAO townshipDAO) {
+		this.townshipDAO = townshipDAO;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -161,5 +168,76 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		obj.setTotalWorkingFemalePersons(mandalCensus.getWorkingFemale());
 		obj.setTotalWorkingMalePersons(mandalCensus.getWorkingMale());
 		return obj;
+	}
+	
+	public VillageDetailsVO getVillagesFormMandal(Long mandalID){
+		VillageDetailsVO villageDetailsVO = new VillageDetailsVO();
+		List<VillageCensusInfoVO> villageCensusList = new ArrayList<VillageCensusInfoVO>();
+		try{
+			List<Township> villages = townshipDAO.findByTehsilID(mandalID);
+			if(log.isDebugEnabled()){
+				log.debug("total villages available for the mandalID:"+mandalID+" is ::"+villages.size());
+			}
+			StringBuilder villageIDs = new StringBuilder();
+			Map<Long,String> villageMap = new HashMap<Long, String>();
+			for(Township township : villages){
+				villageMap.put(township.getTownshipId(), township.getTownshipName());
+				villageIDs.append(",").append(township.getTownshipId());
+			}
+			if(log.isDebugEnabled()){
+				log.debug("total villages villageIDs ::"+villageIDs.toString());
+			}
+			
+			List<Census> censusList = censusDAO.findByYearAndTownshipIDs(IConstants.CENSUS_YEAR,villageIDs.substring(1));
+			if(log.isDebugEnabled()){
+				log.debug("censusList villages available for the censusList ::"+censusList.size());
+			}
+			for(Census villageCensus : censusList){
+				VillageCensusInfoVO villageInfo = new VillageCensusInfoVO();
+				villageInfo.setTownshipName(villageMap.get(villageCensus.getTownshipId()));
+				convertCencesToVillageInfo(villageCensus, villageInfo);
+				villageCensusList.add(villageInfo);
+				if(log.isDebugEnabled()){
+					log.debug("List Village Name ::"+villageMap.get(villageCensus.getTownshipId()));
+				}
+			}
+			villageDetailsVO.setVillageCensusList(villageCensusList);
+		}catch(Exception ex){
+			villageDetailsVO.setExceptionEncountered(ex);
+			villageDetailsVO.setResultCode(ResultCodeMapper.FAILURE);
+			villageDetailsVO.setResultPartial(true);
+		}
+		
+		return villageDetailsVO;
+	}
+	public void convertCencesToVillageInfo(Census villageCensus, VillageCensusInfoVO obj){
+		Long villageID = villageCensus.getTownshipId();
+		
+		obj.setTownshipID(villageID);
+		
+		obj.setTotalPersons(villageCensus.getTotalPopulation());
+		obj.setTotalMalePersons(villageCensus.getTotalMalePopulation());
+		obj.setTotalFemalePersons(villageCensus.getTotalFemalePopulation());
+		
+		obj.setTotalSCPersons(villageCensus.getPopulationSC());
+		obj.setTotalSCFemalePersons(villageCensus.getFemaleSC());
+		obj.setTotalSCMalePersons(villageCensus.getMaleSC());
+
+		obj.setTotalSTPersons(villageCensus.getPopulationST());
+		obj.setTotalSTFemalePersons(villageCensus.getFemaleST());
+		obj.setTotalSTMalePersons(villageCensus.getMaleST());
+
+		obj.setTotalLiteratePersons(villageCensus.getPopulationLiterates());
+		obj.setTotalLiterateFemalePersons(villageCensus.getFemaleLiterates());
+		obj.setTotalLiterateMalePersons(villageCensus.getMaleLiterates());
+
+		obj.setTotalIlliteratePersons(villageCensus.getPopulationIlliterates());
+		obj.setTotalIlliterateFemalePersons(villageCensus.getFemaleIlliterates());
+		obj.setTotalIlliterateMalePersons(villageCensus.getMaleIlliterates());
+
+
+		obj.setTotalWorkingPersons(villageCensus.getWorkingPopulation());
+		obj.setTotalWorkingFemalePersons(villageCensus.getWorkingFemale());
+		obj.setTotalWorkingMalePersons(villageCensus.getWorkingMale());
 	}
 }

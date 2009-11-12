@@ -34,5 +34,10 @@ public class TownshipDAO extends GenericDaoHibernate<Township, Long> implements 
 	public List<Township> findByTownshipType(Object townshipType){
 		return findByProperty(TownshipColumnNames.TOWNSHIP_TYPE, townshipType);
 	}
+	
+	public List<Township> findByTehsilID(Long mandalID){
+		return getHibernateTemplate().find("from Township model where model.tehsil.tehsilId=?", mandalID);
+		
+	}
 
 }

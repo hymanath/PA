@@ -26,4 +26,6 @@ public interface ICensusDAO extends GenericDao<Census, Long> {
 	
 	public List<Census> findByYearAndTehsilIDs(Long year, String tehsilIDs);
 	
+	public List<Census> findByYearAndTownshipIDs(Long year, String townshipIDs);
+	
 }

@@ -38,5 +38,7 @@ public interface ITownshipDAO extends GenericDao<Township, Long>{
 	public List<Township> findByTownshipCode(Object townshipCode);
 
 	public List<Township> findByTownshipType(Object townshipType);
+	
+	public List<Township> findByTehsilID(Long mandalID);
 
 }
