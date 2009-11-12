@@ -20,6 +20,7 @@
 <body> 
 
 <h3><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
+<tr><td>
 	<table class="ConstituencyElectionsTable" align="left" style="margin-left:20px">		
 		<tr>
 			<th></th>
@@ -65,6 +66,33 @@
 			<td><c:out value="${mandalInfoVO.totalWorkingPersons}"/></td>
 		</tr>	
 	</table>
-
+</td>
+<td>
+<table class="ConstituencyElectionsTable" align="left" style="margin-left:50px">
+	<tr>		
+		<th><b>Village ID</b></th>
+		<th><b>Village Name</b></th>
+		<th><b>Total Populations</b></th>
+		<th><b>SC Population</b></th>
+		<th><b>ST Population</b></th>
+		<th><b>Literate Population</b></th>
+		<th><b>Illiterate Population</b></th>
+		<th><b>Working Population</b></th>
+	</tr>
+	<c:forEach var="villageCensus" items="${villageDetailsVO.villageCensusList}" >	
+		<tr>
+			<td ><c:out value="${villageCensus.townshipID}"/></td>
+			<td ><c:out value="${villageCensus.townshipName}"/></td>
+			<td ><c:out value="${villageCensus.totalPersons}"/></td>
+			<td ><c:out value="${villageCensus.totalSCPersons}"/></td>
+			<td ><c:out value="${villageCensus.totalSTPersons}"/></td>
+			<td ><c:out value="${villageCensus.totalLiteratePersons}"/></td>
+			<td ><c:out value="${villageCensus.totalIlliteratePersons}"/></td>
+			<td ><c:out value="${villageCensus.totalWorkingPersons}"/></td>
+		</tr>
+	</c:forEach>
+</table>
+</td>
+</tr>
 </body>
 </html>

@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.VillageDetailsVO;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.impl.DelimitationConstituencyMandalService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -18,6 +18,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	private HttpServletRequest request;
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	private MandalInfoVO mandalInfoVO;
+	private VillageDetailsVO villageDetailsVO;
 
 	private static final Logger log = Logger.getLogger(MandalPageAction.class);
 	
@@ -37,6 +38,14 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	public MandalInfoVO getMandalInfoVO(){
 		return mandalInfoVO;
 	}
+	
+	public VillageDetailsVO getVillageDetailsVO() {
+		return villageDetailsVO;
+	}
+
+	public void setVillageDetailsVO(VillageDetailsVO villageDetailsVO) {
+		this.villageDetailsVO = villageDetailsVO;
+	}
 
 	public String execute() throws Exception {
 		
@@ -53,8 +62,16 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 			setMandalInfoVO(mandalInfoVO);
 			break;
 		}
+		villageDetailsVO = delimitationConstituencyMandalService.getVillagesFormMandal(new Long(mandalID));
+		villageDetailsVO.setMandalName(mandalName);
+		Throwable ex = villageDetailsVO.getExceptionEncountered();
+		if(ex!=null){
+			log.error("exception raised while retrieving mandal details ", ex);
+		}
+		
 		if(log.isDebugEnabled()){
 			log.debug("size============================================"+mandalInfo.size());
+			log.debug("size============================================"+(villageDetailsVO.getVillageCensusList()).size());
 			log.debug("end of MandalPageAction.execute()");
 		}
 		return SUCCESS;

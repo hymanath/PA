@@ -92,7 +92,7 @@
 
 <div id="map_canvas" style="border: 1px solid ; width: 260px; height: 200px;margin-left:400px;">
 </div>
-<c:out value="${delimitationConstituencyMandalResultVO.constituencyType}"/>
+Mandals of the <c:out value="${constituencyDetails.constituencyName}"/> Constituency 
 <table border="2">
 	<tr>
 		<td>
@@ -133,6 +133,7 @@
 		
 		<td>
 			<c:if test="${delimitationConstituencyMandalResultVO.constituencyType==CHANGE_CONSTITUENCY}">
+			Mandals before delimitation of the <c:out value="${constituencyDetails.constituencyName}"/> Constituency 	
 				<table>
 				<tr>		
 						<td><b>MandalID</b></td>
