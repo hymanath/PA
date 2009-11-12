@@ -89,7 +89,7 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		previousElectionYear = electionDAO.findPreviousElectionYear(electionYear, electionTypeId, stateId, new Long(1));
 		//List<ElectionScope> electionScope = electionScopeDAO.findByPropertyElectionTypeIdandStateId(electionTypeId, stateId);
 		
-		if(previousElectionYear == null)
+	 if(previousElectionYear == null)
 			return null;
 		System.out.println("prev year -->" + previousElectionYear);
 		Election election1 = getElection(new Long(2),electionYear);
@@ -105,9 +105,11 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		}
 		else if(nominationsForPartyForYearOne != null && nominationsForNewPartyForYearOne == null){
 			constituencyElectionResultForYearOne = getConstituencyElectionResults(nominationsForPartyForYearOne);
+			constituencyElectionResultForYearOne = getDetailsOfPartysParticipated(constituencyElectionResultForYearOne,true);
 		}
 		else if(nominationsForPartyForYearOne == null && nominationsForNewPartyForYearOne != null){
 			constituencyElectionResultForYearOne = getConstituencyElectionResults(nominationsForNewPartyForYearOne);
+			constituencyElectionResultForYearOne = getDetailsOfPartysParticipated(constituencyElectionResultForYearOne,false);
 		}
 		
 		//year 2
@@ -116,32 +118,46 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	
 		if(nominationsForPartyForYearTwo != null && nominationsForNewPartyForYearTwo != null){
 			constituencyElectionResultForYearTwo = getConstituencyElectionResults(nominationsForPartyForYearTwo,nominationsForNewPartyForYearTwo);
+			
 		}
 		else if(nominationsForPartyForYearTwo != null && nominationsForNewPartyForYearTwo == null){
 			constituencyElectionResultForYearTwo = getConstituencyElectionResults(nominationsForPartyForYearTwo);
+			constituencyElectionResultForYearTwo = getDetailsOfPartysParticipated(constituencyElectionResultForYearTwo,true);
 		}
 		else if(nominationsForPartyForYearTwo == null && nominationsForNewPartyForYearTwo != null){
 			constituencyElectionResultForYearTwo = getConstituencyElectionResults(nominationsForNewPartyForYearTwo);
+			constituencyElectionResultForYearTwo = getDetailsOfPartysParticipated(constituencyElectionResultForYearTwo,false);
 		}
 			
 		if(constituencyElectionResultForYearOne != null && constituencyElectionResultForYearTwo != null)
-		  constituencyElectionsDetailedResultVO = getDetailedConstituencyWiseElectionResultsForTwoYears(constituencyElectionResultForYearOne,constituencyElectionResultForYearTwo);
+		constituencyElectionsDetailedResultVO = getDetailedConstituencyWiseElectionResultsForTwoYears(constituencyElectionResultForYearOne,constituencyElectionResultForYearTwo);
 		
 		if(constituencyElectionsDetailedResultVO.size() > 0){
 			districtWiseConstituencyElectionResultsVO = new ArrayList<DistrictWiseConstituencyElectionResultsVO>();
 			districtWiseConstituencyElectionResultsVO = getDistrictWiseResults(constituencyElectionsDetailedResultVO);
-		    if(districtWiseConstituencyElectionResultsVO.size() > 0){
+		    if(districtWiseConstituencyElectionResultsVO != null && districtWiseConstituencyElectionResultsVO.size() > 0){
 		    	
 		    	partyInfluenceReportVO = new PartyInfluenceReportVO();
 		    	partyInfluenceReportVO = getPartyInfluenceReportFinalResults(districtWiseConstituencyElectionResultsVO,partyId,newPartyId);
 		    	
 		    return partyInfluenceReportVO;
 		    }
-		}
+		 }
 
 	return null;
 	}
 	
+	
+	public List<ConstituencyElectionResults> getDetailsOfPartysParticipated(List<ConstituencyElectionResults> constituencyElectionResults,Boolean flag){
+		for(ConstituencyElectionResults result:constituencyElectionResults){
+			if(flag.equals(true))
+				result.setElectionResultForNewParty(null);
+			else
+				result.setElectionResultForParty(null);
+		}
+		
+	return constituencyElectionResults;
+	}
 	public PartyInfluenceReportVO getPartyInfluenceReportFinalResults(List<DistrictWiseConstituencyElectionResultsVO> districtWiseConstituencyElectionResultsVO,Long partyId,Long newPartyId){
 		
 		PartyInfluenceReportVO partyInfluenceReportVO = new PartyInfluenceReportVO();
@@ -199,18 +215,28 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	public List<Nomination> getNominationsForAPartyForAnElection(Long electionTypeId,Long partyId,String electionYear,Long electionId,Boolean includeAlliance){
 		
         List<Long> partyIds = null;
-		
+		System.out.println("PartyIds 1-->" + partyIds);
+		try{
 		if(includeAlliance.equals(true)){
 			partyIds = getHasAllianceParties(electionYear,electionTypeId,partyId);
+			System.out.println("PartyIds loop 1-->" + partyIds);
 		}
 		else if(includeAlliance.equals(false)){
 			partyIds = new ArrayList<Long>();
 			partyIds.add(partyId);
+			System.out.println("PartyIds loop 2-->" + partyIds);
 		}
 		
-		List<Nomination> nominations = getNominations(electionId,partyIds);
-		if(nominations != null && nominations.size() > 0)
+		if(partyIds != null){
+			System.out.println("PartyIds loop 3-->" + partyIds);
+		 List<Nomination> nominations = getNominations(electionId,partyIds);
+		 if(nominations != null && nominations.size() > 0)
 			return nominations;
+		}
+		}
+		catch(Exception e){
+			System.out.println("Exception -->" + e);
+		}
 		
 	return null;
 	}
@@ -244,7 +270,7 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		
 		if(allianceParties != null && allianceParties.size() > 0){
 			partyIds = new ArrayList<Long>();
-			
+			System.out.println("Partyid's" + partyIds);
 			for(SelectOptionVO partys:allianceParties){
 				partyIds.add(partys.getId());
 				System.out.println("PartyIds alliances -->"+ partys.getId());
@@ -253,6 +279,7 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		else{
 			partyIds = new ArrayList<Long>();
 			partyIds.add(partyId);	
+			System.out.println("Partyid's2" + partyIds);
 		}
 	return partyIds;
 	}
@@ -412,8 +439,8 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 				districtWiseConstituencyElectionResults = new DistrictWiseConstituencyElectionResultsVO();
 				districtIds.add(constituencyElectionsDetailedResult.getDistrictId());
 				districtWiseConstituencyElectionResults = getConstituencyResultsForADistrict(constituencyElectionsDetailedResultVO,constituencyElectionsDetailedResult.getDistrictId());
-				
-				districtWiseConstituencyElectionResultsVO.add(districtWiseConstituencyElectionResults);
+				if(districtWiseConstituencyElectionResults != null)
+					districtWiseConstituencyElectionResultsVO.add(districtWiseConstituencyElectionResults);
 			}
 		}
 		if(districtWiseConstituencyElectionResultsVO != null && districtWiseConstituencyElectionResultsVO.size() > 0){
@@ -448,8 +475,12 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		Double totalValidVotesForNewPartyForYearOne = new Double(0);
 		Double totalValidVotesForPartyForYearTwo = new Double(0);
 				
+	if(constituencyElectionsDetailedResultVO != null && constituencyElectionsDetailedResultVO.get(0).getConstituencyElectionResultsForYearOne().getElectionResultForNewParty() != null){
+		
 		for(ConstituencyElectionsDetailedResultVO constituencyElectionsDetailedResult:constituencyElectionsDetailedResultVO){
+			
 			if(constituencyElectionsDetailedResult.getDistrictId().equals(districtId)){
+							
 				partyId = constituencyElectionsDetailedResult.getConstituencyElectionResultsForYearOne().getElectionResultForParty().getPartyId();
 				newPartyId = constituencyElectionsDetailedResult.getConstituencyElectionResultsForYearOne().getElectionResultForNewParty().getPartyId();
 				
@@ -514,6 +545,7 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 			
 		return districtWiseConstituencyElectionResults;
 		}
+	}
 	return null;
 	}
 	
