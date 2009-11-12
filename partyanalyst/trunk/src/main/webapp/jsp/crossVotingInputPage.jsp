@@ -59,26 +59,53 @@
 {
 	padding-left: 10px;
 }
-#assemblyCandidateSpan
+#assemblyCandidateDiv
 {
 	float:left;
+	padding-right:20px;
+	background-color:#EFEFEF;
+	border:2px outset #CCCCCC;
 }
-#parliamentCandidateSpan
+#parliamentCandidateDiv
 {
-	/*padding-left:30px; */
+	background-color:#EFEFEF;
+	margin-left:401px;
+	margin-right:44px;
+	border:2px outset #CCCCCC;
 }
 #treeDiv
 {
 	margin-top: 30px;
 }
+.detailsTable td
+{
+	padding:5px;
+	color:#156FAB;
+}
+.detailsTable th
+{
+	padding:5px;
+	color:#234E7A
+}
+.detailsTable a
+{
+	color:#156FAB;
+	font-size:12px;
+}
+
 .mandalDatatable th
 {
-	color:#CFCFCF;	
+	color:#94A3AC;	
+	padding-right:5px;
 }
 .mandalDatatable td
 {
-	color:#BABABA;
-	
+	color:#275D81;
+	padding-right:5px;	
+}
+.mandalDiv
+{
+	padding:5px;
 }
 
 </style>
@@ -124,14 +151,25 @@
 	
 	function getCrossVoting()
 	{
+		var elecYearElmt = document.getElementById("electionYearField");
+		var partyElmt = document.getElementById("partyListField");
+		var parliamentSelectElmt =  document.getElementById("ParliamentSelect");
 		var assemblySelectElmt =  document.getElementById("AssemblySelect");
+
+		var elecValue =  elecYearElmt.options[elecYearElmt.selectedIndex].value;
+		var partyValue =  partyElmt.options[partyElmt.selectedIndex].value;
+		var parliamentValue =  parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].value;
 		var assemblyValue =  assemblySelectElmt.options[assemblySelectElmt.selectedIndex].value;
+
 		var jsObj={
+						electionValue : elecValue,
+						partyValue : partyValue,
+						parliamentValue : parliamentValue,
 						assemblyValue : assemblyValue,
 						task:"crossVotingReport"
 				  }
 			
-			var bparam="assemblyValue="+jsObj.assemblyValue;
+			var bparam="election="+jsObj.electionValue+"&party="+jsObj.partyValue+"&parliamentValue="+jsObj.parliamentValue+"&assemblyValue="+jsObj.assemblyValue;
 			callAjax(jsObj,bparam);
 	}
 	function callAjax(jObj,param)
@@ -142,7 +180,7 @@
  		               success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText); 
-								console.log(myResults);
+								
 								if(jObj.task == "Parliament" || jObj.task=="Assembly")
 									buildParliamemtSelect(jObj,myResults.dataList);
 								else if(jObj.task == "crossVotingReport")
@@ -163,7 +201,7 @@
 
 	function buildCrossVotingReport(obj,result)
 	{
-		//console.log(results);
+		
 
 		var resultDiv = document.getElementById("crossVotingResultDiv");
 		resultDiv.style.display="block";
@@ -171,22 +209,30 @@
 		var str='';
 		str+='<div id="headingDiv"><h3><u>Cross Voting Details..</u></h3></div>';
 		str+='<div id="candidateDetailsDiv">';
-		str+='<span id="assemblyCandidateSpan">';
-		str+='<table id="assemblyTable" class="searchresultsTable" style="width:auto;">';
-		str+='<tr><th colspan="3">Assembly Candidate Details..</th></tr>';
-		str+='<tr><th>Candidate Name</th><td>'+result.acCandidateData.candidateName+'</td><td rowspan="3">Image</td></tr>';
+		str+='<div id="assemblyCandidateDiv">';
+		str+='<table id="assemblyTable" class="detailsTable" style="width:auto;">';
+		str+='<tr><th colspan="2"><u>Assembly Candidate Details..</u></th>';		
+		str+='</tr>';
+		str+='<tr>';
+		str+='<th>Name</th>';
+		str+='<td><a href="candidateElectionResultsAction.action?candidateId='+result.acCandidateData.candidateId+'">'+result.acCandidateData.candidateName+'</a></td>';
+		str+='<td rowspan="3"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
+		str+='</tr>';
 		str+='<tr><th>Rank</th><td>'+result.acCandidateData.rank+'</td></tr>';
 		str+='<tr><th>Votes %</th><td>'+result.acCandidateData.votesPercentage+'</td></tr>';
 		str+='</table>';		
-		str+='</span>';
-		str+='<span id="parliamentCandidateSpan">';
-		str+='<table id="parliamentTable" class="searchresultsTable" style="width:auto;">';
-		str+='<tr><th colspan="3">Parliament Candidate Details..</th></tr>';
-		str+='<tr><th>Candidate Name</th><td>'+result.pcCandidateData.candidateName+'</td><td rowspan="3">Image</td></tr>';
+		str+='</div>';
+		str+='<div id="parliamentCandidateDiv">';
+		str+='<table id="parliamentTable" class="detailsTable" style="width:auto;">';
+		str+='<tr><th colspan="2"><u>Parliament Candidate Details..</u></th></tr>';
+		str+='<tr><th>Name</th>';
+		str+='<td> <a href="candidateElectionResultsAction.action?candidateId='+result.pcCandidateData.candidateId+'">'+result.pcCandidateData.candidateName+'</a></td>';
+		str+='<td rowspan="4"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
+		str+='</tr>';
 		str+='<tr><th>Rank</th><td>'+result.pcCandidateData.rank+'</td></tr>';
 		str+='<tr><th>Votes %</th><td>'+result.pcCandidateData.votesPercentage+'</td></tr>';
 		str+='</table>';	
-		str+='</span>';
+		str+='</div>';
 		str+='<div id="treeDiv"><span><h4><u>Mandals Details..</u></h4></span><div id="treeDataDiv"></div></div>';
 		str+='</div>';
 
@@ -201,7 +247,7 @@
 
 	function buildTreeView(mandal)
 	{
-		console.log("in function = ",mandal);
+		
 		var divElmt = document.getElementById("treeDataDiv");
 				
 		var childDivElmt = document.createElement('div');
@@ -216,13 +262,13 @@
 		var mstr='';
 		mstr+='<table class="mandalDatatable">';
 		mstr+='<tr>';
-		mstr+='<th width="100px;">'+mandal.mandalName+'</th>';
-		mstr+='<th>Parliament %</th>';
-		mstr+='<td>'+mandal.pcPercentageInMandal+'</td>';
-		mstr+='<th>Assembly %</th>';
-		mstr+='<td>'+mandal.acPercentageInMandal+'</td>';
-		mstr+='<th>% Diff</th>';
-		mstr+='<th>'+mandal.percentageDifferenceInMandal+'</th>';					
+		mstr+='<th width="100px;">'+mandal.mandalName+'</th>';		
+		mstr+='<th>Assembly :</th>';
+		mstr+='<td>'+mandal.acPercentageInMandal+'  %</td>';
+		mstr+='<th>Parliament :</th>';
+		mstr+='<td>'+mandal.pcPercentageInMandal+'  %</td>';
+		mstr+='<th>%age of votes flown from assembly to parliament:</th>';
+		mstr+='<td>'+mandal.percentageDifferenceInMandal+' %</td>';					
 		mstr+='</tr>';
 		mstr+='</table>'
 
@@ -262,10 +308,10 @@
 	function buildParliamemtSelect(jObj,results)
 	{
 
-		console.log(jObj,results);
+		
 		if(jObj.task=="Parliament")
 		{			
-			console.log("IN if");
+			
 			var pSelectElmt = document.getElementById("ParliamentSelect");	
 		}
 		else if(jObj.task=="Assembly")
