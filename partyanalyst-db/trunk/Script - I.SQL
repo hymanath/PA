@@ -854,7 +854,8 @@ GO
 insert into election_scope values(2,'2',1 ,1)
 GO
 insert into election_scope values(3,'2',2 ,1)
-
+GO
+insert into election_scope values(4,'2',15 ,1)
 GO
 insert into party (party_id,long_name,short_name,party_recognization) values(1,'Indian National Congress','INC','NP')
 GO
