@@ -312,7 +312,10 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 					constituencyElectionResultForParty.setConstituencyName(constituencyOne.getName());
 					constituencyElectionResultForParty.setDistrictId(constituencyOne.getDistrict().getDistrictId());
 					constituencyElectionResultForParty.setDistrictName(constituencyOne.getDistrict().getDistrictName());
-					constituencyElectionResultForParty.setPartyName(partyOne.getShortName());
+					if(partyOne.getShortName().trim() != null)
+					 constituencyElectionResultForParty.setPartyName(partyOne.getShortName());
+					else
+					 constituencyElectionResultForParty.setPartyName(partyOne.getLongName());
 					constituencyElectionResultForParty.setVotesEarned(candidateResultOne.getVotesEarned().toString());
 					constituencyElectionResultForParty.setPercentageOfVotes(candidateResultOne.getVotesPercengate());
 					constituencyElectionResultForParty.setYear(candidateResultOne.getNomination().getConstituencyElection().getElection().getElectionYear());
@@ -326,12 +329,12 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 					constituencyElectionResultForNewParty.setConstituencyName(constituencyTwo.getName());
 					constituencyElectionResultForNewParty.setDistrictId(constituencyTwo.getDistrict().getDistrictId());
 					constituencyElectionResultForNewParty.setDistrictName(constituencyTwo.getDistrict().getDistrictName());
-					constituencyElectionResultForNewParty.setPartyName(partyTwo.getShortName());
+					constituencyElectionResultForNewParty.setPartyName(partyTwo.getLongName().trim());
 					constituencyElectionResultForNewParty.setVotesEarned(candidateResultTwo.getVotesEarned().toString());
 					constituencyElectionResultForNewParty.setPercentageOfVotes(candidateResultTwo.getVotesPercengate());
 					constituencyElectionResultForNewParty.setValidVotes(nominationsForNewParty.getConstituencyElection().getConstituencyElectionResult().getValidVotes().toString());
 					constituencyElectionResultForNewParty.setPartyId(partyTwo.getPartyId());
-					constituencyElectionResultForNewParty.setPartyName(partyTwo.getShortName());
+					constituencyElectionResultForNewParty.setPartyName(partyTwo.getLongName());
 					
 					constituencyElectionResult.setElectionResultForParty(constituencyElectionResultForParty);
 					constituencyElectionResult.setElectionResultForNewParty(constituencyElectionResultForNewParty);
@@ -370,7 +373,10 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 			constituencyElectionResultForParty.setDistrictId(constituencyOne.getDistrict().getDistrictId());
 			constituencyElectionResultForParty.setDistrictName(constituencyOne.getDistrict().getDistrictName());
 			constituencyElectionResultForParty.setPartyId(partyOne.getPartyId());
-			constituencyElectionResultForParty.setPartyName(partyOne.getShortName());
+			if(partyOne.getShortName().trim() != null)
+			 constituencyElectionResultForParty.setPartyName(partyOne.getShortName());
+			else
+			 constituencyElectionResultForParty.setPartyName(partyOne.getLongName());
 			constituencyElectionResultForParty.setVotesEarned(candidateResultOne.getVotesEarned().toString());
 			constituencyElectionResultForParty.setPercentageOfVotes(candidateResultOne.getVotesPercengate());
 			constituencyElectionResultForParty.setYear(candidateResultOne.getNomination().getConstituencyElection().getElection().getElectionYear());
