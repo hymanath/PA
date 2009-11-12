@@ -206,8 +206,7 @@
 		</action>
 		<action name="crossVotingReportAjaxAction" class="crossVotingReportAjaxAction">
 			<result type="json"  name="success">
-				<param name="pList">parliamentList</param>
-				<param name="cVoting">parliamentList</param>
+				<param name="root">resultObjectVO</param>				
 			</result>
 		</action>
 		
