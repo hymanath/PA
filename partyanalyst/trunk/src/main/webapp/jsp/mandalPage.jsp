@@ -5,34 +5,66 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Tehsil Details</title>
+<style type="text/css">
+.ConstituencyElectionsTable th
+{
+	text-align:left;
+}
+.ConstituencyElectionsTable td
+{
+	text-align:right;
+}
+</style>
 </head>
-<body>
-<table>
-				 <tr>		
-					<td><b>MandalID</b></td>
-					<td><b>Mandal Name</b></td>
-					<td><b>Total Populations</b></td>
-					<td><b>SC Population</b></td>
-					<td><b>ST Population</b></td>
-					<td><b>Literate Population</b></td>
-					<td><b>Illiterate Population</b></td>
-					<td><b>Working Population</b></td>
-				</tr>
-				<c:forEach var="mandal" items="${mandalInfoVOList}" >	
-					<tr>
-						<td ><c:out value="${mandal.mandalID}"/></td>
-						<td ><c:out value="${mandal.mandalName}"/> 						
-						</td>
-						<td ><c:out value="${mandal.totalPersons}"/></td>
-						<td ><c:out value="${mandal.totalSCPersons}"/></td>
-						<td ><c:out value="${mandal.totalSTPersons}"/></td>
-						<td ><c:out value="${mandal.totalLiteratePersons}"/></td>
-						<td ><c:out value="${mandal.totalIlliteratePersons}"/></td>
-						<td ><c:out value="${mandal.totalWorkingPersons}"/></td>
-					</tr>
-				</c:forEach>
+<body> 
+
+<h3><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
+	<table class="ConstituencyElectionsTable" align="left" style="margin-left:20px">		
+		<tr>
+			<th></th>
+			<th>Male</th>
+			<th>Female</th>
+			<th>Total</th>
+		</tr>
+		<tr>
+			<th>Population</th>
+			<td><c:out value="${mandalInfoVO.totalMalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalFemalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalPersons}"/></td>
+		</tr>
+		<tr>
+			<th>SC Population</th>
+			<td><c:out value="${mandalInfoVO.totalSCMalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalSCFemalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalSCPersons}"/></td>
+		</tr>
+		<tr>
+			<th>ST Population</th>
+			<td><c:out value="${mandalInfoVO.totalSTMalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalSTFemalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalSTPersons}"/></td>
+		</tr>
 			
-			</table>
+		<tr>
+			<th>Literate Populations</th>
+			<td><c:out value="${mandalInfoVO.totalLiterateMalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalLiterateFemalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalLiteratePersons}"/></td>
+		</tr>
+		<tr>
+			<th>Illiterate Population</th>
+			<td><c:out value="${mandalInfoVO.totalIlliterateMalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalIlliterateFemalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalIlliteratePersons}"/></td>
+		</tr>
+		<tr>
+			<th>Working Population</th>
+			<td><c:out value="${mandalInfoVO.totalWorkingMalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalWorkingFemalePersons}"/></td>
+			<td><c:out value="${mandalInfoVO.totalWorkingPersons}"/></td>
+		</tr>	
+	</table>
+
 </body>
 </html>

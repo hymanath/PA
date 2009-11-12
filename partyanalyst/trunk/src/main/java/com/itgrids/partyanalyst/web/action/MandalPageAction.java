@@ -17,7 +17,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	
 	private HttpServletRequest request;
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
-	private List<MandalInfoVO> mandalInfoVOList;
+	private MandalInfoVO mandalInfoVO;
 
 	private static final Logger log = Logger.getLogger(MandalPageAction.class);
 	
@@ -30,12 +30,12 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		this.delimitationConstituencyMandalService = delimitationConstituencyMandalService;
 	}
 
-	public void setMandalInfoVOList(List<MandalInfoVO> mandalInfoVOList) {
-		this.mandalInfoVOList = mandalInfoVOList;
+	public void setMandalInfoVO(MandalInfoVO mandalInfoVO) {
+		this.mandalInfoVO = mandalInfoVO;
 	}
 	
-	public List<MandalInfoVO> getMandalInfoVOList(){
-		return mandalInfoVOList;
+	public MandalInfoVO getMandalInfoVO(){
+		return mandalInfoVO;
 	}
 
 	public String execute() throws Exception {
@@ -50,8 +50,9 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 				log.error("exception raised while retrieving mandal details ", ex);
 				return ERROR;
 			}
+			setMandalInfoVO(mandalInfoVO);
+			break;
 		}
-		setMandalInfoVOList(mandalInfo);
 		if(log.isDebugEnabled()){
 			log.debug("size============================================"+mandalInfo.size());
 			log.debug("end of MandalPageAction.execute()");
