@@ -39,7 +39,6 @@ public class StaticDataService implements IStaticDataService {
 	private IDistrictDAO districtDAO;
 	private IAllianceGroupDAO  allianceGroupDAO;
 	private IConstituencyDAO constituencyDAO;
-	
 	private final static Logger log = Logger.getLogger(StaticDataService.class);
 	
 

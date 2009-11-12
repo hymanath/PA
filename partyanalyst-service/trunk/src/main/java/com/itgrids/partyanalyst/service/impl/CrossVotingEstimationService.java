@@ -89,11 +89,13 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			System.out.println("--------Exists More than One Nominations For the Give Cryteria-----");
 		}
 		Nomination acNomination = acNominations.get(0);
+		acCandidate.setCandidateId(acNomination.getCandidate().getCandidateId());
 		acCandidate.setCandidateName(acNomination.getCandidate().getLastname());
 		acCandidate.setImage(acNomination.getCandidate().getImage());
 		acCandidate.setRank(acNomination.getCandidateResult().getRank().toString());
 		acCandidate.setVotesPercentage(acNomination.getCandidateResult().getVotesPercengate());
 		Nomination pcNomination = pcNominations.get(0);
+		pcCandidate.setCandidateId(pcNomination.getCandidate().getCandidateId());
 		pcCandidate.setCandidateName(pcNomination.getCandidate().getLastname());
 		pcCandidate.setImage(pcNomination.getCandidate().getImage());
 		pcCandidate.setRank(pcNomination.getCandidateResult().getRank().toString());

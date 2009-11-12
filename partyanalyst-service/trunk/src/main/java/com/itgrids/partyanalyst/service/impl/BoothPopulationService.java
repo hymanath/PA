@@ -156,8 +156,8 @@ public class BoothPopulationService implements IBoothPopulationService{
 	private BoothVillageCensus checkAndInsertBoothVillageCensus(Booth booth,String censusCode){
 		BoothVillageCensus boothVillageCensus = null;
 		String [] censusCodes = null;
-		if(censusCode.contains("\n")||censusCode.contains(",")){
-			censusCodes = StringUtils.split(censusCode, ",\n");
+		if(censusCode.contains("\n")||censusCode.contains(",")||censusCode.contains(" ")){
+			censusCodes = StringUtils.split(censusCode, ",\n ");
 			System.out.println("No of census codes :"+censusCodes.length);
 			for(int i=0; i < censusCodes.length; i++){
 				Long censusCodeL = new Long(censusCodes[i]);
