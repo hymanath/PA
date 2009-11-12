@@ -41,13 +41,14 @@ table.CandidateElectionResultsTable{
 	border-width: 2px;
 	border-color: #666666;
 	border-collapse: collapse;
+	margin:center;
 }
 table.CandidateElectionResultsTable th {
 	border-width: 1px;
 	padding: 8px;
 	border-style: solid;
 	border-color: #666666;
-	background-color: #909090;
+	background-color: #fhfhgh;
 }
 table.CandidateElectionResultsTable td {
 	border-width: 1px;
@@ -57,9 +58,7 @@ table.CandidateElectionResultsTable td {
 	background-color: #ffffff;
 }
 
-</style>
-<style type="text/css">
-		
+
 	.searchresultsTable
 	{
 		width:auto;
@@ -105,7 +104,7 @@ table.CandidateElectionResultsTable td {
 	.treeTable th
 	{
 		color:#859098;
-		background-color:#EFEFEF;
+		background-color:#f1f2f3;
 	}
 	.treeTable td
 	{
@@ -116,6 +115,12 @@ table.CandidateElectionResultsTable td {
 	.ygtvchildren
 	{
 		color:#224662;
+		text-align:left;
+	}
+
+	#treeViewDiv
+	{
+		margin-left:20px;
 	}
 
 </style>
@@ -123,7 +128,6 @@ table.CandidateElectionResultsTable td {
 
 	function buildJSObj(distObj,constObj)
 	{
-		
 
 		var divElmt = document.getElementById("treeViewDiv");
 		
@@ -146,11 +150,11 @@ table.CandidateElectionResultsTable td {
 		distStr+='<th>Impacted % :</th>';
 		distStr+='<td align="center" style="color:#FF0000">'+distObj.distVotesPercentage+' %</td>';
 
-		distStr+='<th>2009 % :</th>';
-		distStr+='<td align="center">'+distObj.partyVotesPercentage+' %</td>';
+		distStr+='<th> '+distObj.year+'% :</th>';
+		distStr+='<td align="center">'+distObj.partyVotesPercentage+' %</td>';	
 		
-		
-		distStr+='<th> '+distObj.newPartyName+' - 2009 % :</th>';
+
+		distStr+='<th> '+distObj.newPartyName+' - '+distObj.previousYear+' % :</th>';
 		distStr+='<td align="center">'+distObj.newPartyVotesPercentage+' %</td>';
 
 		
@@ -318,41 +322,43 @@ table.CandidateElectionResultsTable td {
 </script>
 </head>
 <body>
-		<h3>PARTY INFLUENCE REPORT</h3>
+		<h3>PARTY INFLUENCE REPORT FOR <c:out value="${partyInfluenceReportVO.impactedPartyName}" /> AGAINST <c:out value="${partyInfluenceReportVO.newPartyName}" /> </h3>
 
 			<div id="influenceReportMain">				
 				<div id="reportMain">
 				<div id="tableDiv" style="text-align:left;margin-left:85px;">
-				  <table class="CandidateElectionResultsTable" width="600px" border="2">
-				    <tr>
-					   <th align="center" ><b><c:out value="New Party " /></b></th>
-					   <th align="center" ><b><c:out value="${partyInfluenceReportVO.newPartyName}" /></b></th>
-					   <th align="center" ><b><c:out value="Impacted Party " /></b></th>
-					   <th align="center"><b><c:out value="${partyInfluenceReportVO.impactedPartyName}" /></b></th>
-					   <th align="center" ><b><c:out value="Constituencies Considered " /></b></th>
-					   <th align="center" > <b><c:out value="${partyInfluenceReportVO.totalConstituenciesConsidered}" /></b></th>
+					<table class="CandidateElectionResultsTable">
+						<tr>
+							<th><c:out value="New Party " /></th>
+							<td colspan="2" align="center"><c:out value="${partyInfluenceReportVO.newPartyName}" /></td>
+							<th><c:out value="Total Percentage Of Votes For " /><c:out value="${partyInfluenceReportVO.impactedPartyName}" />
+					   <c:out value=" In " /> <c:out value="${partyInfluenceReportVO.year}" /></th>
+							<td ><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForPartyForYearOne}" /> %</td>
+						</tr>
+						<tr>
+							<th><c:out value="Impacted Party " /></th>
+							<td colspan="2" align="center"><c:out value="${partyInfluenceReportVO.impactedPartyName}" /></td>
+							<th><c:out value="Total Percentage Of Votes For " /><c:out value="${partyInfluenceReportVO.impactedPartyName}" />
+					   <c:out value=" In " /> <c:out value="${partyInfluenceReportVO.previousYear}" /></th>
+							<td><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForPartyForYearTwo}" /> %</td>
+						</tr>
+						<tr>
+							<th><c:out value="Constituencies Considered " /></th>
+							<td colspan="2"><c:out value="${partyInfluenceReportVO.totalConstituenciesConsidered}" /></td>
+							<th><c:out value="Total Percentage Of Votes For " /><c:out value="${partyInfluenceReportVO.newPartyName}" />
+							 <c:out value=" In " /> <c:out value="${partyInfluenceReportVO.year}" /></th>
+							<td><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForNewPartyForYearOne}" /> %</td>
+						</tr>
+						
+						<tr>
+							<th colspan="5" align="center"><c:out value="Total Percentage Difference Of Votes For " /><c:out value="${partyInfluenceReportVO.impactedPartyName}" />
+					   <c:out value=" In (" /><c:out value="${partyInfluenceReportVO.year}" /> <c:out value=" - " /><c:out value="${partyInfluenceReportVO.previousYear}" />  <c:out value=") Is   " /><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentDiffForParty}" /> %</th>
+							
+						</tr>
+					</table>
+				 
 					
-					   <th align="center" ><b><c:out value="Districts Considered " /></b></th>
-					   <th align="center" > <b><c:out value="${partyInfluenceReportVO.totalDistrictsConsidered}" /></b></th>
-					</tr>
-					<tr>
-					   <td align="center"  colspan="2"><b><c:out value="Total Percentage Of Votes For " /><c:out value="${partyInfluenceReportVO.impactedPartyName}" />
-					   <c:out value=" In " /> <c:out value="${partyInfluenceReportVO.year}" /></b></td>
-					   <td align="center" > <b><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForPartyForYearOne}" /> %</b></td>
-					
-					   <td align="center" colspan="2"><b><c:out value="Total Percentage Of Votes For " /><c:out value="${partyInfluenceReportVO.impactedPartyName}" />
-					   <c:out value=" In " /> <c:out value="${partyInfluenceReportVO.previousYear}" /></b></td>
-					   <td align="center" > <b><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForPartyForYearTwo}" /> %</b></td>
-					   <td align="center" ><b><c:out value="Total Percentage Of Votes For " /><c:out value="${partyInfluenceReportVO.newPartyName}" />
-					   <c:out value=" In " /> <c:out value="${partyInfluenceReportVO.year}" /></b></td>
-					   <td align="center" > <b><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForNewPartyForYearOne}" /> %</b></td>
-					 </tr>
-					<tr>
-					   <th align="center" colspan="6"><b><c:out value="Total Percentage Difference Of Votes For " /><c:out value="${partyInfluenceReportVO.impactedPartyName}" />
-					   <c:out value=" In " /><c:out value="${partyInfluenceReportVO.year}" /> <c:out value=" - " /><c:out value="${partyInfluenceReportVO.previousYear}" /></b></th>
-					   <th align="center" colspan="2"> <b><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentDiffForParty}" /> %</b></th>
-					</tr>
-				</table>
+				
 				</div>	
 				<br/><br/>	
 				<div id="treeViewDiv">
