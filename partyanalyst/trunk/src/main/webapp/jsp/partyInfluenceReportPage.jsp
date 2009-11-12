@@ -372,7 +372,7 @@ table.CandidateElectionResultsTable td {
 									year:'${result.year}',
 									previousYear:'${result.previousYear}',
 									partyName:'${result.partyName}',
-									newPartyName:'${result.newPartyName}',									
+									newPartyName:'${result.newPartyName}'									
 								}
 					var consObj=new Array();
 					<c:forEach var="constResult" items="${result.constituencyElectionsDetailedResults}">	
