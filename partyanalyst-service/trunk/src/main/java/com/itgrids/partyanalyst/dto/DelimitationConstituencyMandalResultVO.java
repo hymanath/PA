@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.enums.DelimitationConstituencyType;
 
-public class DelimitationConstituencyMandalResultVO implements Serializable {
+public class DelimitationConstituencyMandalResultVO extends ResultStatus implements Serializable {
 
 	private DelimitationConstituencyType constituencyType;
 	private List<MandalInfoVO> presentMandals;
