@@ -322,8 +322,8 @@ table.CandidateElectionResultsTable td {
 </script>
 </head>
 <body>
-		<h3>PARTY INFLUENCE REPORT FOR <c:out value="${partyInfluenceReportVO.impactedPartyName}" /> AGAINST <c:out value="${partyInfluenceReportVO.newPartyName}" /> </h3>
-
+		<h3><u>Party Influence Report For <c:out value="${partyInfluenceReportVO.impactedPartyName}" /> Against <c:out value="${partyInfluenceReportVO.newPartyName}" /> </u></h3>
+            <br>
 			<div id="influenceReportMain">				
 				<div id="reportMain">
 				<div id="tableDiv" style="text-align:left;margin-left:85px;">
@@ -344,7 +344,7 @@ table.CandidateElectionResultsTable td {
 						</tr>
 						<tr>
 							<th><c:out value="Constituencies Considered " /></th>
-							<td colspan="2"><c:out value="${partyInfluenceReportVO.totalConstituenciesConsidered}" /></td>
+							<td colspan="2" align="center"><c:out value="${partyInfluenceReportVO.totalConstituenciesConsidered}" /></td>
 							<th><c:out value="Total Percentage Of Votes For " /><c:out value="${partyInfluenceReportVO.newPartyName}" />
 							 <c:out value=" In " /> <c:out value="${partyInfluenceReportVO.year}" /></th>
 							<td><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForNewPartyForYearOne}" /> %</td>
@@ -360,7 +360,7 @@ table.CandidateElectionResultsTable td {
 					
 				
 				</div>	
-				<br/><br/>	
+				<br/>
 				<div id="treeViewDiv">
 					<h3 style="text-align: left; margin-left: 50px;"><u> District wise results..</u></h3>
 				</div>
