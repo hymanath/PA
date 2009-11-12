@@ -177,4 +177,13 @@
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		<property name="censusDAO" ref="censusDAO" />	
 	</bean>
+	
+	 <bean id="crossVotingEstimationService" class="com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService">
+    	<property name="boothDAO" ref="boothDAO" />
+    	<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+    	<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+    	<property name="nominationDAO" ref="nominationDAO" />
+    	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+    </bean>
+	
 </beans>
