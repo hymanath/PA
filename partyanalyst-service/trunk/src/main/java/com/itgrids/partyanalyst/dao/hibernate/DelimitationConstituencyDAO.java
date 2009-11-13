@@ -19,7 +19,7 @@ IDelimitationConstituencyDAO {
 	public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyID(
 			Long constituencyID) {
 		return getHibernateTemplate().find("from DelimitationConstituency model where " +
-				"model.constituency.constituencyId =?", 
+				"model.constituency.constituencyId =? order by model.year desc", 
 				constituencyID);
 	}
 

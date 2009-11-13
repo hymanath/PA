@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -70,12 +72,25 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 			
 			List<DelimitationConstituency> delimitationConstituencies = delimitationConstituencyDAO
 					.findDelimitationConstituencyByConstituencyID(constituencyID);
+			if(delimitationConstituencies.size()==0){
+				if(log.isEnabledFor(Level.WARN))
+					log.warn(constituency.getName() +" Constituency is not available in the delimitation_constituency table");
+					resultVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+					resultVO.setResultPartial(true);
+					return resultVO;
+			}
 			DelimitationConstituency delimitationConstituency1 = delimitationConstituencies.get(0);
 			Long dc1 = delimitationConstituency1.getDelimitationConstituencyID();
 			resultVO.setDelimitationYear(delimitationConstituency1.getYear());
 			
 			List<DelimitationConstituencyMandal>  results = delimitationConstituencyMandalDAO.findDelConstMandalByDelConstID(dc1);
-			
+			if(results.size()==0){
+				if(log.isEnabledFor(Level.WARN))
+					log.warn(dc1 +" delimitationConstituencyID is not available in the delimitation_constituency_mandal_details table");
+					resultVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+					resultVO.setResultPartial(true);
+					return resultVO;
+			}
 			List<MandalInfoVO> currentResult = getMandalsForDelimitationConstituency(results);
 			resultVO.setPresentMandals(currentResult);
 			if(delimitationConstituencies.size()>1){
@@ -85,17 +100,19 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 				resultVO.setBeforeDelimitationYear(delimitationConstituency2.getYear());
 				
 				results = delimitationConstituencyMandalDAO.findDelConstMandalByDelConstID(dc2);
-				
+				if(results.size()==0){
+					if(log.isEnabledFor(Level.WARN))
+						log.warn(dc2 +" delimitationConstituencyID is not available in the delimitation_constituency_mandal_details table");
+						resultVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+						resultVO.setResultPartial(true);
+						return resultVO;
+				}
 				currentResult = getMandalsForDelimitationConstituency(results);
 				if(constituency.getDeformDate()!=null){
 					resultVO.setConstituencyType(DelimitationConstituencyType.NON_EXISTING_CONSTITUENCY);
 				}
 				resultVO.setMandalsBeforeDelimitationConstituency(currentResult);
 			}
-		}catch(IndexOutOfBoundsException ex){
-			resultVO.setExceptionEncountered(ex);
-			resultVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
-			resultVO.setResultPartial(true);
 		}catch(Exception ex){
 			resultVO.setExceptionEncountered(ex);
 			resultVO.setResultCode(ResultCodeMapper.FAILURE);

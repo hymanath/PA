@@ -6,10 +6,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IConstituencyTehsilDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -24,8 +27,8 @@ import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreLevel;
 import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ConstituencyTehsil;
 import com.itgrids.partyanalyst.model.Country;
+import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -49,7 +52,9 @@ public class CadreManagementService {
 	private ITownshipDAO townshipDAO;
 	private IRegistrationDAO registrationDAO;
 	private IConstituencyDAO constituencyDAO;
-	private IConstituencyTehsilDAO constituencyTehsilDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private static final Logger log = Logger.getLogger(CadreManagementService.class);
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
 		this.countryDAO = countryDAO;
@@ -83,15 +88,22 @@ public class CadreManagementService {
 		this.constituencyDAO = constituencyDAO;
 	}
 
-	public void setConstituencyTehsilDAO(IConstituencyTehsilDAO constituencyTehsilDAO) {
-		this.constituencyTehsilDAO = constituencyTehsilDAO;
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
-	
+
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
 
 
 	public Long saveCader(CadreInfo cadreInfo){
-		System.out.println("cadrerManagementService.saveCadre():::------------------------------constituencyID::"+cadreInfo.getConstituencyID());
-		
+		if(log.isDebugEnabled()){
+			log.debug("cadrerManagementService.saveCadre():::-constituencyID::"+cadreInfo.getConstituencyID());
+		}
 		Cadre cadre = new Cadre();
 		cadre.setFirstName(cadreInfo.getFirstName());
 		cadre.setMiddleName(cadreInfo.getMiddleName());
@@ -122,6 +134,9 @@ public class CadreManagementService {
 
 	
 	public UserCadresInfoVO getUserCadresInfo(UserCadresInfoVO userCadreInfo){
+		if(log.isDebugEnabled()){
+			log.debug("CadreManagementService.getUserCadresInfo() started");
+		}
 		ResultStatus resultStatus = new ResultStatus();
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		try{
@@ -141,6 +156,9 @@ public class CadreManagementService {
 	
 	@SuppressWarnings("unchecked")
 	public UserCadresInfoVO getUserAccessRegions(UserCadresInfoVO userCadreInfo){
+		if(log.isDebugEnabled()){
+			log.debug("CadreManagementService.getUserAccessRegions() started");
+		}
 		Map<Long, String> userAccessStates = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessDistricts = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessMandals = new LinkedHashMap<Long, String>();
@@ -157,24 +175,46 @@ public class CadreManagementService {
 		List<SelectOptionVO> regionLevelZeroCadres = userCadreInfo.getRegionLevelZeroCadres(); 
 		boolean downLevelCadresFlag = true;
 		if("MLA".equals(userAccessType)){ 
-			List mandals = cadreDAO.findMandalsByConstituencyID(accessID);
+			if(log.isDebugEnabled()){
+				log.debug("CadreManagementService.getUserAccessRegions() if MLA started");
+			}
+			//List mandals = cadreDAO.findMandalsByConstituencyID(accessID);
+			
+			List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(new Long(accessID));
+			Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+			List<Tehsil> tehsils = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
+			/*StringBuilder mandalIDs = new StringBuilder();
+			for(Tehsil tehsil : tehsils){
+				mandalIDs.append(",").append(tehsil.getTehsilId());
+			}*/
+			
+			
+			log.debug("CadreManagementService.getUserAccessRegions() mandals::"+tehsils.size());
 			List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID());
+			log.debug("CadreManagementService.getUserAccessRegions() cadreSizeMandalWise::"+cadreSizeMandalWise.size());
 			if(cadreSizeMandalWise.size() == 0)
 				downLevelCadresFlag = false;
-			long mandalLevelZeroCadres = mandals.size() - cadreSizeMandalWise.size();
-			StringBuilder sbMandals = getFormatedData(mandals,userAccessMandals,cadreSizeMandalWise,zeroCadreMandals);
+			log.debug("downLevelCadresFlag::"+downLevelCadresFlag);
+			long mandalLevelZeroCadres = tehsils.size() - cadreSizeMandalWise.size();
+			StringBuilder sbMandals = getMLAFormatedData(tehsils,userAccessMandals,cadreSizeMandalWise,zeroCadreMandals);
+			log.debug("CadreManagementService.getUserAccessRegions() sbMandals::"+sbMandals);
 			userCadreInfo.setUserAccessMandals(userAccessMandals);
 			userCadreInfo.setZeroCadreMandals(zeroCadreMandals);
 			
 			if(sbMandals!=null && sbMandals.length()>0)
 				accessID = sbMandals.substring(0, sbMandals.length()-1);
-			
+			if(log.isDebugEnabled()){
+				log.debug(userCadreInfo.getUserAccessValue()+"::mandalIDs for MLA constituencyID="+accessID);
+			}
 			SelectOptionVO voObject = new SelectOptionVO(mandalLevelZeroCadres,"MANDAL");
 			if(mandalLevelZeroCadres > 0)
 				regionLevelZeroCadres.add(voObject);
 		}
 		 
 		if("COUNTRY".equals(userAccessType)){
+			if(log.isDebugEnabled()){
+			log.debug("CadreManagementService.getUserAccessRegions() if COUNTRY started");
+		}
 			List states = cadreDAO.findStatesByCountryID(accessID);
 			List cadreSizeStateWise = cadreDAO.findCadreSizeStateWise(userCadreInfo.getUserID());
 			if(cadreSizeStateWise.size() == 0)
@@ -183,7 +223,9 @@ public class CadreManagementService {
 			StringBuilder sbStates = getFormatedData(states,userAccessStates,cadreSizeStateWise,zeroCadreStates);
 			userCadreInfo.setUserAccessStates(userAccessStates);
 			userCadreInfo.setZeroCadreStates(zeroCadreStates);
-
+			if(log.isDebugEnabled()){
+				log.debug("CadreManagementService.getUserAccessRegions() sbStates:"+sbStates);
+			}
 			if(sbStates!=null && sbStates.length()>0)
 				accessID = sbStates.substring(0, sbStates.length()-1);
 			
@@ -193,6 +235,9 @@ public class CadreManagementService {
 			
 		}
 		if((downLevelCadresFlag) && ("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType))){
+			if(log.isDebugEnabled()){
+				log.debug("CadreManagementService.getUserAccessRegions() if STATE started");
+			}
 			List districts = cadreDAO.findDistrictsByStateID(accessID);
 			List cadreSizeDistrictWise = cadreDAO.findCadreSizeDistrictWise( userCadreInfo.getUserID());
 			if(cadreSizeDistrictWise.size() == 0)
@@ -201,7 +246,9 @@ public class CadreManagementService {
 			StringBuilder sbDistricts = getFormatedData(districts,userAccessDistricts,cadreSizeDistrictWise,zeroCadreDistricts);
 			userCadreInfo.setUserAccessDistricts(userAccessDistricts);
 			userCadreInfo.setZeroCadreDistricts(zeroCadreDistricts);
-			
+			if(log.isDebugEnabled()){
+				log.debug("CadreManagementService.getUserAccessRegions() sbDistricts:"+sbDistricts);
+			}
 			if(sbDistricts!=null && sbDistricts.length()>0)
 				accessID = sbDistricts.substring(0, sbDistricts.length()-1);
 			
@@ -211,6 +258,9 @@ public class CadreManagementService {
 			
 		}
 		if((downLevelCadresFlag) && ("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType) || "DISTRICT".equals(userAccessType))){
+			if(log.isDebugEnabled()){
+				log.debug("CadreManagementService.getUserAccessRegions() if DISTRICT started");
+			}
 			List mandals = cadreDAO.findMandalsByDistrictID(accessID);
 			List cadreSizeMandalWise = cadreDAO.findCadreSizeMandalWise(userCadreInfo.getUserID());
 			if(cadreSizeMandalWise.size() == 0)
@@ -219,7 +269,9 @@ public class CadreManagementService {
 			StringBuilder sbMandals = getFormatedData(mandals,userAccessMandals, cadreSizeMandalWise, zeroCadreMandals);
 			userCadreInfo.setUserAccessMandals(userAccessMandals);
 			userCadreInfo.setZeroCadreMandals(zeroCadreMandals);
-			
+			if(log.isDebugEnabled()){
+				log.debug("CadreManagementService.getUserAccessRegions() sbMandals:"+sbMandals);
+			}
 			if(sbMandals!=null && sbMandals.length()>0)
 				accessID = sbMandals.substring(0, sbMandals.length()-1);
 			
@@ -231,11 +283,17 @@ public class CadreManagementService {
 		if((downLevelCadresFlag) && ("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType)
 				 || "DISTRICT".equals(userAccessType) || "MANDAL".equals(userAccessType)
 				 || "MLA".equals(userAccessType))){
+			if(log.isDebugEnabled()){
+				log.debug("CadreManagementService.getUserAccessRegions() if MANDAL started");
+			}
 			List villages = cadreDAO.findVillagesByTehsilID(accessID);
 			List cadreSizeVillageWise = cadreDAO.findCadreSizeVillageWise(userCadreInfo.getUserID());
 			long villageLevelZeroCadres = villages.size() - cadreSizeVillageWise.size();//getZeroSize(cadreSizeZero4Mandal);
 			
 			StringBuilder sbVillages = getFormatedData(villages,userAccessVillages,cadreSizeVillageWise,zeroCadreVillages);
+			if(log.isDebugEnabled()){
+				log.debug("CadreManagementService.getUserAccessRegions() sbVillages:"+sbVillages);
+			}
 			userCadreInfo.setUserAccessVillages(userAccessVillages);
 			userCadreInfo.setZeroCadreVillages(zeroCadreVillages);
 			
@@ -275,6 +333,30 @@ public class CadreManagementService {
 			}
 		}
 		
+		return sb;
+	}
+	@SuppressWarnings("unchecked")
+	public StringBuilder getMLAFormatedData(List<Tehsil> regionData, Map<Long, String> userAccessRegions, 
+			List cadreAvailableRegions, Map<Long, String> zeroCadreRegions){
+		
+		StringBuilder sb = new StringBuilder();
+		Map<Long, Object> availableCadreRegions = new HashMap<Long, Object>();
+		for(int i=0; i<cadreAvailableRegions.size(); i++){
+			Object[] objInfo = (Object[]) cadreAvailableRegions.get(i);
+			Long key = new Long(objInfo[0].toString());
+			availableCadreRegions.put(key, objInfo[0]);
+		}
+		
+		for(Tehsil tehsil:regionData){
+			Long key = tehsil.getTehsilId();
+			String value = tehsil.getTehsilName();
+			userAccessRegions.put(key, value);
+			if(null==availableCadreRegions.get(key)){
+				zeroCadreRegions.put(key, value);				
+			}else{
+				sb.append(key).append(",");
+			}
+		}
 		return sb;
 	}
 	@SuppressWarnings("unchecked")
@@ -354,13 +436,14 @@ public class CadreManagementService {
 	//Narender 28th October 2009
 	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getConstituencyAllMandalsCadres(Long constituencyID, Long userID){
-		List tehsils = constituencyTehsilDAO.getTehsilsByConstituency(constituencyID);
+		List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
+		Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+		List<Tehsil> tehsils = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
 		StringBuilder mandalIDs = new StringBuilder();
-		for(int i = 0; i<tehsils.size(); i++){
-			//for(ConstituencyTehsil constituencyTehsil: constituencyTehsils){
-			Object[] tehsil = (Object[]) tehsils.get(i);		
-			mandalIDs.append(",").append(tehsil[0]);
+		for(Tehsil tehsil : tehsils){
+			mandalIDs.append(",").append(tehsil.getTehsilId());
 		}
+		
 		System.out.println("mandalIDs.toString():::"+mandalIDs.toString());
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		String strMandalIDs = new String();
@@ -562,7 +645,7 @@ public class CadreManagementService {
 
 	public List<SelectOptionVO> getStateDistConstituencyMandalByMandalID(Long mandalID){
 
-		List stateDistConstMandal = constituencyTehsilDAO.getStateDistConstituencyMandalByMandalID(mandalID);
+		List stateDistConstMandal = delimitationConstituencyMandalDAO.getStateDistConstituencyMandalByMandalID(mandalID);
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
 		SelectOptionVO state = new SelectOptionVO();
 		SelectOptionVO district = new SelectOptionVO();

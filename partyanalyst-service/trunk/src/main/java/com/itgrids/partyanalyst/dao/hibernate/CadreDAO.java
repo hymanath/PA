@@ -66,12 +66,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 				"where model.district.districtId in(" + districtIDs + ")"); 
 		return totalMandals;
 	}
-	@SuppressWarnings("unchecked")
-	public List findMandalsByConstituencyID(String constituencyId){
-		List totalMandals = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName from ConstituencyTehsil model " +
-				"where model.constituency.constituencyId in(" + constituencyId + ")"); 
-		return totalMandals;
-	}
+	
 	@SuppressWarnings("unchecked")
 	public List findVillagesByTehsilID(String tehsilIDs){
 		List totalVillages = getHibernateTemplate().find("Select model.townshipId, model.townshipName from Township model " +

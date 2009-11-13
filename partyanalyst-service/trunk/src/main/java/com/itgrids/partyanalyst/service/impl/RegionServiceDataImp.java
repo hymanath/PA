@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IConstituencyTehsilDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -16,7 +18,8 @@ public class RegionServiceDataImp implements IRegionServiceData {
 
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
-	private IConstituencyTehsilDAO constituencyTehsilDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
@@ -26,11 +29,17 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		this.districtDAO = districtDAO;
 	}
 
-	public void setConstituencyTehsilDAO(
-			IConstituencyTehsilDAO constituencyTehsilDAO) {
-		this.constituencyTehsilDAO = constituencyTehsilDAO;
-	}
 	
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID) {
 		List<SelectOptionVO> formattedDistricts = new ArrayList<SelectOptionVO>();
 		List<District> districts = districtDAO.findByStateId(stateID);
@@ -61,16 +70,18 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	
 
 	@SuppressWarnings("unchecked")
-	public List<SelectOptionVO> getMandalsByConstituencyID(Long constituencyID){
-		List mandals = constituencyTehsilDAO.getTehsilsByConstituency(constituencyID);
+	public List<SelectOptionVO> getMandalsByConstituencyID(
+		Long constituencyID){List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
+		Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+		List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
+	
 		System.out.println("RegionservicedataImpl.......... mandals.size()-----"+mandals.size());
 		List<SelectOptionVO> mandalNames=new ArrayList<SelectOptionVO>();
 		
-		for(int i=0;i<mandals.size();i++){
-			Object[] obj = (Object[])mandals.get(i);
+		for(Tehsil tehsil : mandals){
 			SelectOptionVO objVO = new SelectOptionVO();
-			objVO.setId(new Long(obj[0].toString()));
-			objVO.setName(obj[1].toString());
+			objVO.setId(tehsil.getTehsilId());
+			objVO.setName(tehsil.getTehsilName());
 			mandalNames.add(objVO);
 		}
 		System.out.println("RegionservicedataImpl.......... mandalNames.size()-----"+mandalNames.size());
