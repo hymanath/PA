@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -15,12 +16,45 @@
 {
 	text-align:right;
 }
+<style type="text/css">
+#boothResultsDiv {
+	text-align: left;
+	margin-left: 50px;
+	font-size: 12px;
+}
+.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
+{
+	background:none;
+}
+
+.yui-skin-sam thead .yui-dt-sortable {
+
+	background-color:#C4DEFF;
+	color:#3F546F;
+}
+.searchresultsTable td {
+	background-color:#F8FBFF;
+}
+.searchresultsTable th {
+	background-color:#C4DEFF;
+}
+.yui-skin-sam .yui-dt-liner {
+	padding:4px 8px;
+}
 </style>
+<!-- Combo-handled YUI CSS files: -->
+<link rel="stylesheet" type="text/css"
+	href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
+<!-- Combo-handled YUI JS files: -->
+<script type="text/javascript"
+	src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
+
 </head>
 <body> 
 
 <h3><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
-<tr><td>
+
+<div id="boothResultsDiv">
 	<table class="ConstituencyElectionsTable" align="left" style="margin-left:20px">		
 		<tr>
 			<th></th>
@@ -66,33 +100,29 @@
 			<td><c:out value="${mandalInfoVO.totalWorkingPersons}"/></td>
 		</tr>	
 	</table>
-</td>
-<td>
-<table class="ConstituencyElectionsTable" align="left" style="margin-left:50px">
-	<tr>		
-		<th><b>Village ID</b></th>
-		<th><b>Village Name</b></th>
-		<th><b>Total Populations</b></th>
-		<th><b>SC Population</b></th>
-		<th><b>ST Population</b></th>
-		<th><b>Literate Population</b></th>
-		<th><b>Illiterate Population</b></th>
-		<th><b>Working Population</b></th>
-	</tr>
-	<c:forEach var="villageCensus" items="${villageDetailsVO.villageCensusList}" >	
-		<tr>
-			<td ><c:out value="${villageCensus.townshipID}"/></td>
-			<td ><c:out value="${villageCensus.townshipName}"/></td>
-			<td ><c:out value="${villageCensus.totalPersons}"/></td>
-			<td ><c:out value="${villageCensus.totalSCPersons}"/></td>
-			<td ><c:out value="${villageCensus.totalSTPersons}"/></td>
-			<td ><c:out value="${villageCensus.totalLiteratePersons}"/></td>
-			<td ><c:out value="${villageCensus.totalIlliteratePersons}"/></td>
-			<td ><c:out value="${villageCensus.totalWorkingPersons}"/></td>
-		</tr>
-	</c:forEach>
-</table>
-</td>
-</tr>
+	<div id="ConstituencyElectionsTable" class="yui-skin-sam">
+	<display:table id="ConstituencyElectionsTable"
+	 name="${villageDetailsVO.villageCensusList}"
+	defaultorder="ascending" defaultsort="2"
+	style="width:auto;margin-right:20px;">
+	<display:column style="text-align: left;" title="Village Name"
+		property="townshipName" />
+	<display:column style="text-align: left;" title="Total Populations"
+		property="totalPersons" />
+	<display:column style="text-align: left;" title="SC Population"
+		property="totalSCPersons" />
+	<display:column style="text-align: center;" title="ST Population"
+		property="totalSTPersons" />
+	<display:column style="text-align: center;" title="Literate Population"
+		property="totalLiteratePersons" />
+	<display:column style="text-align: center;" title="Illiterate Population"
+		property="totalIlliteratePersons" />
+	<display:column style="text-align: center;" title="Working Population"
+		property="totalWorkingPersons" />
+</display:table>
+	
+</div>
+	
+</div>
 </body>
 </html>

@@ -92,13 +92,13 @@
 
 <div id="map_canvas" style="border: 1px solid ; width: 260px; height: 200px;margin-left:400px;">
 </div>
-Mandals of the <c:out value="${constituencyDetails.constituencyName}"/> Constituency 
-<table border="2">
+<b><u>Mandals of the <c:out value="${constituencyDetails.constituencyName}"/> Constituency</u></b>
+<table border="0">
 	<tr>
 		<td>
-			<table>
+			<table class="ConstituencyElectionsTable">
 				 <tr>		
-					<td><b>MandalID</b></td>
+					
 					<td><b>Mandal Name</b></td>
 					<td><b>Total Populations</b></td>
 					<td><b>SC Population</b></td>
@@ -109,7 +109,7 @@ Mandals of the <c:out value="${constituencyDetails.constituencyName}"/> Constitu
 				</tr>
 				<c:forEach var="presentMandals" items="${delimitationConstituencyMandalResultVO.presentMandals}" >	
 					<tr>
-						<td ><c:out value="${presentMandals.mandalID}"/></td>
+					
 						<td >						
 							<c:url value="mandalPageAction.action" var="displayMandalURL">
 								<c:param name="MANDAL_ID"   value="${presentMandals.mandalID}" />
@@ -134,9 +134,8 @@ Mandals of the <c:out value="${constituencyDetails.constituencyName}"/> Constitu
 		<td>
 			<c:if test="${delimitationConstituencyMandalResultVO.constituencyType==CHANGE_CONSTITUENCY}">
 			Mandals before delimitation of the <c:out value="${constituencyDetails.constituencyName}"/> Constituency 	
-				<table>
+				<table class="ConstituencyElectionsTable">
 				<tr>		
-						<td><b>MandalID</b></td>
 						<td><b>Mandal Name</b></td>
 						<td><b>Total Populations</b></td>
 						<td><b>SC Population</b></td>
@@ -147,7 +146,6 @@ Mandals of the <c:out value="${constituencyDetails.constituencyName}"/> Constitu
 					</tr>
 					<c:forEach var="mandalsBeforeDelimitationConstituency" items="${delimitationConstituencyMandalResultVO.mandalsBeforeDelimitationConstituency}" >	
 						<tr>
-							<td ><c:out value="${mandalsBeforeDelimitationConstituency.mandalID}"/></td>
 							<td>
 								<c:url value="mandalPageAction.action" var="displayMandalURL">
 									<c:param name="mandalId"   value="${mandalsBeforeDelimitationConstituency.mandalID}" />
