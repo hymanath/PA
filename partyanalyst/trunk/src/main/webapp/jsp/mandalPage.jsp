@@ -16,7 +16,12 @@
 {
 	text-align:right;
 }
-<style type="text/css">
+
+#VillageTable th
+{
+	background-color:#afafaf;
+}
+
 #boothResultsDiv {
 	text-align: left;
 	margin-left: 50px;
@@ -55,74 +60,80 @@
 <h3><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
 
 <div id="boothResultsDiv">
-	<table class="ConstituencyElectionsTable" align="left" style="margin-left:20px">		
-		<tr>
-			<th></th>
-			<th>Male</th>
-			<th>Female</th>
-			<th>Total</th>
-		</tr>
-		<tr>
-			<th>Population</th>
-			<td><c:out value="${mandalInfoVO.totalMalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalFemalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalPersons}"/></td>
-		</tr>
-		<tr>
-			<th>SC Population</th>
-			<td><c:out value="${mandalInfoVO.totalSCMalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalSCFemalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalSCPersons}"/></td>
-		</tr>
-		<tr>
-			<th>ST Population</th>
-			<td><c:out value="${mandalInfoVO.totalSTMalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalSTFemalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalSTPersons}"/></td>
-		</tr>
-			
-		<tr>
-			<th>Literate Populations</th>
-			<td><c:out value="${mandalInfoVO.totalLiterateMalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalLiterateFemalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalLiteratePersons}"/></td>
-		</tr>
-		<tr>
-			<th>Illiterate Population</th>
-			<td><c:out value="${mandalInfoVO.totalIlliterateMalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalIlliterateFemalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalIlliteratePersons}"/></td>
-		</tr>
-		<tr>
-			<th>Working Population</th>
-			<td><c:out value="${mandalInfoVO.totalWorkingMalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalWorkingFemalePersons}"/></td>
-			<td><c:out value="${mandalInfoVO.totalWorkingPersons}"/></td>
-		</tr>	
-	</table>
-	<div id="ConstituencyElectionsTable" class="yui-skin-sam">
-	<display:table id="ConstituencyElectionsTable"
-	 name="${villageDetailsVO.villageCensusList}"
-	defaultorder="ascending" defaultsort="2"
-	style="width:auto;margin-right:20px;">
-	<display:column style="text-align: left;" title="Village Name"
-		property="townshipName" />
-	<display:column style="text-align: left;" title="Total Populations"
-		property="totalPersons" />
-	<display:column style="text-align: left;" title="SC Population"
-		property="totalSCPersons" />
-	<display:column style="text-align: center;" title="ST Population"
-		property="totalSTPersons" />
-	<display:column style="text-align: center;" title="Literate Population"
-		property="totalLiteratePersons" />
-	<display:column style="text-align: center;" title="Illiterate Population"
-		property="totalIlliteratePersons" />
-	<display:column style="text-align: center;" title="Working Population"
-		property="totalWorkingPersons" />
-</display:table>
-	
-</div>
-	
+	<div id="mandalCensusDiv">
+		<div id="mandalCensusDivHead"><h4><u>Mandal Details..</u></h4></div>
+		<div id="mandalCensusDivBody">
+			<table class="ConstituencyElectionsTable" >		
+				<tr>
+					<th></th>
+					<th>Male</th>
+					<th>Female</th>
+					<th>Total</th>
+				</tr>
+				<tr>
+					<th>Population</th>
+					<td><c:out value="${mandalInfoVO.totalMalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalFemalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalPersons}"/></td>
+				</tr>
+				<tr>
+					<th>SC Population</th>
+					<td><c:out value="${mandalInfoVO.totalSCMalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalSCFemalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalSCPersons}"/></td>
+				</tr>
+				<tr>
+					<th>ST Population</th>
+					<td><c:out value="${mandalInfoVO.totalSTMalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalSTFemalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalSTPersons}"/></td>
+				</tr>
+					
+				<tr>
+					<th>Literate Populations</th>
+					<td><c:out value="${mandalInfoVO.totalLiterateMalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalLiterateFemalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalLiteratePersons}"/></td>
+				</tr>
+				<tr>
+					<th>Illiterate Population</th>
+					<td><c:out value="${mandalInfoVO.totalIlliterateMalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalIlliterateFemalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalIlliteratePersons}"/></td>
+				</tr>
+				<tr>
+					<th>Working Population</th>
+					<td><c:out value="${mandalInfoVO.totalWorkingMalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalWorkingFemalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalWorkingPersons}"/></td>
+				</tr>	
+			</table>
+		</div>
+	</div>
+	<div id="villageCensusDiv">
+		<div id="villageCensusDivHead"><h4><u>Villages Details..</u></h4></div>
+		<div id="villageCensusDivBody">
+			<display:table class="searchresultsTable"
+			 name="${villageDetailsVO.villageCensusList}"
+			defaultorder="ascending" defaultsort="2"
+			style="width:auto;margin-right:20px;">
+				<display:column style="text-align: left;" title="Village Name"
+					property="townshipName" />
+				<display:column style="text-align: left;" title="Total Populations"
+					property="totalPersons" />
+				<display:column style="text-align: left;" title="SC Population"
+					property="totalSCPersons" />
+				<display:column style="text-align: center;" title="ST Population"
+					property="totalSTPersons" />
+				<display:column style="text-align: center;" title="Literate Population"
+					property="totalLiteratePersons" />
+				<display:column style="text-align: center;" title="Illiterate Population"
+					property="totalIlliteratePersons" />
+				<display:column style="text-align: center;" title="Working Population"
+					property="totalWorkingPersons" />
+			</display:table>
+		</div>
+	</div>		
 </div>
 </body>
 </html>
