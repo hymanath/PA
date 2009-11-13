@@ -154,7 +154,7 @@ table.CandidateElectionResultsTable td {
 		distStr+='<td align="center">'+distObj.partyVotesPercentage+' %</td>';	
 		
 
-		distStr+='<th> '+distObj.newPartyName+' - '+distObj.previousYear+' % :</th>';
+		distStr+='<th> '+distObj.newPartyName+' - '+distObj.year+' % :</th>';
 		distStr+='<td align="center">'+distObj.newPartyVotesPercentage+' %</td>';
 
 		
@@ -364,7 +364,7 @@ table.CandidateElectionResultsTable td {
 				<div id="treeViewDiv">
 					<h3 style="text-align: left; margin-left: 50px;"><u> District wise results..</u></h3>
 				</div>
-				</div>
+		</div>
 				<script type="text/javascript">
 				<c:forEach var="result" items="${partyInfluenceReportVO.districtWiseConstituencyElectionResultsVO}">
 					var distObj={
