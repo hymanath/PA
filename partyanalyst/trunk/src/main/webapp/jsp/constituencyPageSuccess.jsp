@@ -99,13 +99,13 @@
 			<table class="ConstituencyElectionsTable">
 				 <tr>		
 					
-					<td><b>Mandal Name</b></td>
-					<td><b>Total Populations</b></td>
-					<td><b>SC Population</b></td>
-					<td><b>ST Population</b></td>
-					<td><b>Literate Population</b></td>
-					<td><b>Illiterate Population</b></td>
-					<td><b>Working Population</b></td>
+					<th>Mandal Name</th>
+					<th>Total Populations</th>
+					<th>SC Population</th>
+					<th>ST Population</th>
+					<th>Literate Population</th>
+					<th>Illiterate Population</th>
+					<th>Working Population</th>
 				</tr>
 				<c:forEach var="presentMandals" items="${delimitationConstituencyMandalResultVO.presentMandals}" >	
 					<tr>
@@ -136,13 +136,13 @@
 			Mandals before delimitation of the <c:out value="${constituencyDetails.constituencyName}"/> Constituency 	
 				<table class="ConstituencyElectionsTable">
 				<tr>		
-						<td><b>Mandal Name</b></td>
-						<td><b>Total Populations</b></td>
-						<td><b>SC Population</b></td>
-						<td><b>ST Population</b></td>
-						<td><b>Literate Population</b></td>
-						<td><b>Illiterate Population</b></td>
-						<td><b>Working Population</b></td>
+						<th>Mandal Name</th>
+						<th>Total Populations</th>
+						<th>SC Population</th>
+						<th>ST Population</th>
+						<th>Literate Population</th>
+						<th>Illiterate Population</th>
+						<th>Working Population</th>
 					</tr>
 					<c:forEach var="mandalsBeforeDelimitationConstituency" items="${delimitationConstituencyMandalResultVO.mandalsBeforeDelimitationConstituency}" >	
 						<tr>
