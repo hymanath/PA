@@ -82,7 +82,7 @@ table.CandidateElectionResultsTable td {
        <h2>Elections Comparison Report</h2>
 	   <br/>
 	   	<c:if test="${electionComparisonResultVO != null }">
-		<div style="text-align:left;margin-left:100px;margin-right:10px;">
+		<div style="text-align:left;margin-left:50px;margin-right:10px;">
 		<b>Party Participated In Only One Election</b><br/><br/>
 		
 		<table class="CandidateElectionResultsTable"  width="600px">
@@ -140,7 +140,7 @@ table.CandidateElectionResultsTable td {
 		</c:if>
 
         <c:if test="${electionsComparisonVO != null }">
-		 <div style="text-align:left;margin-left:200px;margin-right:10px;">
+		 <div style="text-align:left;margin-left:50px;margin-right:10px;">
 
 		   <div>
             <table border = "0" >
