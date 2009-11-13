@@ -127,7 +127,8 @@
 		<property name="townshipDAO" ref="townshipDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
-		<property name="constituencyTehsilDAO" ref="constituencyTehsilDAO" />
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >		
@@ -158,7 +159,8 @@
 	<bean name="regionServiceDataImp" class="com.itgrids.partyanalyst.service.impl.RegionServiceDataImp">
 		<property name="districtDAO" ref="districtDAO"/>
 		<property name="constituencyDAO" ref="constituencyDAO"/>
-		<property name="constituencyTehsilDAO" ref="constituencyTehsilDAO"/>
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
 	</bean>
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
 		<property name="partyDAO" ref="partyDAO" />

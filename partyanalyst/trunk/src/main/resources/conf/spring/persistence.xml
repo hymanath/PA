@@ -48,7 +48,6 @@
 				<value>com.itgrids.partyanalyst.model.ElectionAlliance</value>
 				<value>com.itgrids.partyanalyst.model.Group</value>
 				<value>com.itgrids.partyanalyst.model.AllianceGroup</value>
-				<value>com.itgrids.partyanalyst.model.ConstituencyTehsil</value>
 				<value>com.itgrids.partyanalyst.model.PartyRebel</value>
 				<value>com.itgrids.partyanalyst.model.PartyRebelCandidate</value>
 				<value>com.itgrids.partyanalyst.model.CandidateBoothResult</value>
