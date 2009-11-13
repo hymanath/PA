@@ -3,8 +3,8 @@
 <%@taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
-<%@page import="com.itgrids.partyanalyst.excel.PartyBoothPerformanceVO"%>
-<%@page import="com.itgrids.partyanalyst.excel.BoothResultVO"%>
+<%@page import="com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO"%>
+<%@page import="com.itgrids.partyanalyst.excel.booth.BoothResultVO"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
