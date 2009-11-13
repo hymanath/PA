@@ -31,7 +31,7 @@
 						<td width="98" class="tablemargin1"><img src="images/site/imgpartyperf.jpg" width="96" height="117" /></td>
 						<td width="302" valign="top" class="tablemargin2"><table width="300" border="0" cellspacing="0" cellpadding="0">
                           <tr>
-                            <td class="heading2">Party/Cadiddate Performance</td>
+                            <td class="heading2">Party/Candidate Performance</td>
                           </tr>
                           <tr>
                             <td class="bodytext1">Political Parties see party performance through out country, state, district, constituency, mandal, village based preferences for any particular election. This identifies the bottle neck areas in terms of votes loose when compared to previous election. </td>
