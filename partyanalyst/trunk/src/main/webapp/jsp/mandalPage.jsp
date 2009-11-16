@@ -7,15 +7,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Tehsil Details</title>
+
+<!-- Combo-handled YUI CSS files: -->
+<link rel="stylesheet" type="text/css"
+	href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
+<!-- Combo-handled YUI JS files: -->
+<script type="text/javascript"
+	src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
+
 <style type="text/css">
-.ConstituencyElectionsTable th
-{
-	text-align:left;
-}
-.ConstituencyElectionsTable td
-{
-	text-align:right;
-}
+
+
 
 #VillageTable th
 {
@@ -26,17 +28,29 @@
 	text-align: left;
 	margin-left: 50px;
 	font-size: 12px;
+	margin-right:10px;
+	
+}
+#villageCensusDivHead,#mandalCensusDiv
+{
+	color:#0D3A5C;
+}
+#villageCensusDivBody
+{
+	border:2px solid #A5CCFF;
 }
 .yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
 {
-	background:none;
+	background-image:none;
 }
 
 .yui-skin-sam thead .yui-dt-sortable {
 
 	background-color:#C4DEFF;
 	color:#3F546F;
+	text-decoration:none;
 }
+
 .searchresultsTable td {
 	background-color:#F8FBFF;
 }
@@ -46,14 +60,85 @@
 .yui-skin-sam .yui-dt-liner {
 	padding:4px 8px;
 }
-</style>
-<!-- Combo-handled YUI CSS files: -->
-<link rel="stylesheet" type="text/css"
-	href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
-<!-- Combo-handled YUI JS files: -->
-<script type="text/javascript"
-	src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
+.ConstituencyElectionsTable th
+{
+	text-align:left;
+	background-color:#C4DEFF;
+}
+.ConstituencyElectionsTable td
+{
+	text-align:right;
+}
 
+</style>
+
+
+
+<script type="text/javascript">
+	
+	function buildCensusDataTable()
+	{
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("villageCensusTable"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "townshipName"
+		}, {
+			key : "totalPersons",parser:"number"
+		}, {
+			key : "totalSCPersons",parser:"number"
+		}, {
+			key : "totalSTPersons",parser:"number"
+		}, {
+			key : "totalLiteratePersons",parser:"number"
+		}, {
+			key : "totalIlliteratePersons",parser:"number"
+		} , {
+			key : "totalWorkingPersons",parser:"number"
+		} ]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "townshipName",		
+		label : "Village Name",
+		sortable : true
+	}, {
+		key : "totalPersons",
+		parser:"number",
+		label : "Total Populations",
+		sortable : true
+	}, {
+		key : "totalSCPersons",
+		parser:"number",
+		label : "SC Populations",
+		sortable : true
+	}, {
+		key : "totalSTPersons",
+		parser:"number",
+		label : "ST Populations",
+		sortable : true
+	}, {
+		key : "totalLiteratePersons",
+		parser:"number",
+		label : "Literate Populations",
+		sortable : true
+	}, {
+		key : "totalIlliteratePersons",
+		parser:"number",
+		label : "Illiterate Populations",
+		sortable : true
+	}, {
+		key : "totalWorkingPersons",
+		parser:"number",
+		label : "Working Populations",
+		sortable : true
+	} ];
+
+	var myDataTable = new YAHOO.widget.DataTable("villageCensusDivBody",resultsColumnDefs, resultsDataSource,{});  
+
+	}
+</script>
 </head>
 <body> 
 
@@ -63,57 +148,52 @@
 	<div id="mandalCensusDiv">
 		<div id="mandalCensusDivHead"><h4><u>Mandal Details..</u></h4></div>
 		<div id="mandalCensusDivBody">
-			<table class="ConstituencyElectionsTable" >		
+		<table class="ConstituencyElectionsTable" >		
 				<tr>
 					<th></th>
-					<th>Male</th>
-					<th>Female</th>
-					<th>Total</th>
-				</tr>
-				<tr>
 					<th>Population</th>
-					<td><c:out value="${mandalInfoVO.totalMalePersons}"/></td>
-					<td><c:out value="${mandalInfoVO.totalFemalePersons}"/></td>
-					<td><c:out value="${mandalInfoVO.totalPersons}"/></td>
-				</tr>
-				<tr>
 					<th>SC Population</th>
-					<td><c:out value="${mandalInfoVO.totalSCMalePersons}"/></td>
-					<td><c:out value="${mandalInfoVO.totalSCFemalePersons}"/></td>
-					<td><c:out value="${mandalInfoVO.totalSCPersons}"/></td>
-				</tr>
-				<tr>
 					<th>ST Population</th>
-					<td><c:out value="${mandalInfoVO.totalSTMalePersons}"/></td>
-					<td><c:out value="${mandalInfoVO.totalSTFemalePersons}"/></td>
-					<td><c:out value="${mandalInfoVO.totalSTPersons}"/></td>
-				</tr>
-					
-				<tr>
 					<th>Literate Populations</th>
-					<td><c:out value="${mandalInfoVO.totalLiterateMalePersons}"/></td>
-					<td><c:out value="${mandalInfoVO.totalLiterateFemalePersons}"/></td>
-					<td><c:out value="${mandalInfoVO.totalLiteratePersons}"/></td>
-				</tr>
-				<tr>
 					<th>Illiterate Population</th>
-					<td><c:out value="${mandalInfoVO.totalIlliterateMalePersons}"/></td>
-					<td><c:out value="${mandalInfoVO.totalIlliterateFemalePersons}"/></td>
-					<td><c:out value="${mandalInfoVO.totalIlliteratePersons}"/></td>
+					<th>Working Population</th>
+					
 				</tr>
 				<tr>
-					<th>Working Population</th>
+					<th>Male</th>
+					<td><c:out value="${mandalInfoVO.totalMalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalSCMalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalSTMalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalLiterateMalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalIlliterateMalePersons}"/></td>
 					<td><c:out value="${mandalInfoVO.totalWorkingMalePersons}"/></td>
+				</tr>
+				<tr>
+					<th>Female</th>
+					<td><c:out value="${mandalInfoVO.totalFemalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalSCFemalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalSTFemalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalLiterateFemalePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalIlliterateFemalePersons}"/></td>
 					<td><c:out value="${mandalInfoVO.totalWorkingFemalePersons}"/></td>
+				</tr>
+				<tr>
+					<th>Total</th>
+					<td><c:out value="${mandalInfoVO.totalPersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalSCPersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalSTPersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalLiteratePersons}"/></td>
+					<td><c:out value="${mandalInfoVO.totalIlliteratePersons}"/></td>
 					<td><c:out value="${mandalInfoVO.totalWorkingPersons}"/></td>
-				</tr>	
+				</tr>
+				
 			</table>
 		</div>
 	</div>
 	<div id="villageCensusDiv">
 		<div id="villageCensusDivHead"><h4><u>Villages Details..</u></h4></div>
-		<div id="villageCensusDivBody">
-			<display:table class="searchresultsTable"
+		<div id="villageCensusDivBody" class="yui-skin-sam">
+			<display:table id="villageCensusTable" class="searchresultsTable"
 			 name="${villageDetailsVO.villageCensusList}"
 			defaultorder="ascending" defaultsort="2"
 			style="width:auto;margin-right:20px;">
@@ -135,5 +215,8 @@
 		</div>
 	</div>		
 </div>
+<script type="text/javascript">
+	buildCensusDataTable();
+</script>
 </body>
 </html>
