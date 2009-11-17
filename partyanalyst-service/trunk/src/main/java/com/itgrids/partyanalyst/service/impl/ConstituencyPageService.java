@@ -150,11 +150,13 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		
 		ConstituencyInfoVO constituencyDetails = new ConstituencyInfoVO();
 		List<Constituency> constituency = constituencyDAO.findByConstituencyId(constituencyId);
-		
+		String districtName ="";
 		if(constituency != null){
 			for(Constituency result:constituency){
+				if(result.getDistrict() != null)
+					districtName = result.getDistrict().getDistrictName();
 				constituencyDetails.setConstituencyName(result.getName());
-				constituencyDetails.setDistrictName(result.getDistrict().getDistrictName());
+				constituencyDetails.setDistrictName(districtName);
 				constituencyDetails.setStateName(result.getState().getStateName());
 				constituencyDetails.setStartDate(result.getStartDate());
 				constituencyDetails.setDeformDate(result.getDeformDate());
