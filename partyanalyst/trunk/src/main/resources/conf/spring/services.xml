@@ -14,6 +14,7 @@
 		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="stateDAO" ref="stateDAO" />
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
