@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.service.IConstituencySearchService;
 
@@ -50,10 +51,12 @@ public class ConstituencySearchService implements IConstituencySearchService{
 	public List<ConstituencyVO> getConstituencyDetails(String name){
 		List<Constituency> constituencies = constituencyDAO.findByConstituencyNamePattern(name);
 		List<ConstituencyVO> constituencyVOs = new ArrayList<ConstituencyVO>();
-		
+		String districtName = "";
 		for(Constituency constituency:constituencies){
+			if(constituency.getDistrict() != null)
+				districtName = constituency.getDistrict().getDistrictName();
 			ConstituencyVO constituencyVO =new ConstituencyVO(constituency.getConstituencyId(), constituency.getName(),
-								constituency.getState().getStateName(), constituency.getDistrict().getDistrictName(),
+								constituency.getState().getStateName(), districtName ,
 								constituency.getElectionScope().getElectionType().getElectionType(),constituency.getDeformDate());
 			constituencyVOs.add(constituencyVO);
 		}
