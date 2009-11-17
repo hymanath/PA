@@ -21,12 +21,18 @@ import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyPositionDetailVO;
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
+import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
+import com.itgrids.partyanalyst.dto.PartyPostionInfoVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.impl.PartyService;
+import com.itgrids.partyanalyst.service.IPartyService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.MockData;
 public class PartyServiceTest {
@@ -41,7 +47,7 @@ public class PartyServiceTest {
 	Party selectedParty;
 	PartyPerformanceReportVO presentYearPartyPerformanceReportVO;
 	PartyPerformanceReportVO previousYearPartyPerformanceReportVO;
-	PartyService partyService;
+	IPartyService partyService;
 	
 	@Before
 	public void init(){
@@ -56,7 +62,7 @@ public class PartyServiceTest {
 		selectedParty = MockData.getParties().get(14);
 		presentYearPartyPerformanceReportVO = new PartyPerformanceReportVO();
 		previousYearPartyPerformanceReportVO = new PartyPerformanceReportVO();
-		partyService =  EasyMock.createMock(PartyService.class);
+		partyService =  EasyMock.createMock(IPartyService.class);
 	}
 	
 	@Test
@@ -314,6 +320,88 @@ public class PartyServiceTest {
 	}
 	*/
 	
+	@Test
+	public void testPartyParticipatedNomination(){
+		Set<Nomination> nominations = MockData.getNominationList();
+		PartyService service = new PartyService();
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		SelectOptionVO obj = new SelectOptionVO(); obj.setId(13L);
+		parties.add(obj);
+		Nomination nomination = service.partyParticipatedNomination(nominations, parties, 3);
+		Assert.assertNull(nomination);
+		SelectOptionVO obj1 = new SelectOptionVO(); obj1.setId(3L);
+		parties.add(obj1);
+		nomination = service.partyParticipatedNomination(nominations, parties, 3);
+		Assert.assertNotNull(nomination);
+	}
+
+	@Test
+	public void testGetAlliancePartiesAsVOWithAlliances(){
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		parties.add(new SelectOptionVO(1L,"INC"));
+		parties.add(new SelectOptionVO(2L,"TRS"));
+		parties.add(new SelectOptionVO(2L,"PRP"));
+		EasyMock.expect(staticDataService.getAlliancePartiesAsVO("2009", 1L, 1L)).andReturn(parties);
+		EasyMock.replay(staticDataService);
+		PartyService service = new PartyService();
+		service.setStaticDataService(staticDataService);
+		List<SelectOptionVO> actualResult = service.getAlliancePartiesAsVO(2009L, 1L, 1L, true);
+		Assert.assertTrue(actualResult.size()>1);
+	}
+
+	@Test
+	public void testGetAlliancePartiesAsVOWithOutAlliances(){
+		Party party = new Party(1L);
+		party.setShortName("PRP");
+		EasyMock.expect(partyDAO.get(1L)).andReturn(party);
+		EasyMock.replay(partyDAO);
+		PartyService service = new PartyService();
+		service.setPartyDAO(partyDAO);
+		List<SelectOptionVO> actualResult = service.getAlliancePartiesAsVO(2009L, 1L, 1L, false);
+		Assert.assertEquals(1, actualResult.size());
+	}
+
+	@Test
+	public void testGetPartyPositionDisplayVO(){
+		ConstituencyElection ce = MockData.createConstituencyElection();
+		PartyService service = new PartyService();
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		SelectOptionVO obj1 = new SelectOptionVO(); obj1.setId(1L);obj1.setName("INC");
+		SelectOptionVO obj2 = new SelectOptionVO(); obj2.setId(5L);obj1.setName("MIM");
+		parties.add(obj1);parties.add(obj2);
+		PartyPositionDisplayVO voObject = service.getPartyPositionDisplayVO(ce, parties, 5L, 5);
+		//Assert.assertNotNull(voObject);
+		Assert.assertEquals(4, voObject.getOppPartyPositionInfoList().size());
+	}
 	
+	@Test
+	public void testGetNthPositionPartyDetails(){
+		Election election = new Election(1L);
+		List<Election> elections = new ArrayList<Election>();
+		election.setElectionYear("2009");
+		elections.add(election);
+		EasyMock.expect(electionDAO.findByPropertyTypeId_CountryId_StateId(1L,1L,1L)).andReturn(elections);
+		EasyMock.replay(electionDAO);
+		
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		SelectOptionVO obj1 = new SelectOptionVO(); obj1.setId(1L);obj1.setName("INC");
+		SelectOptionVO obj2 = new SelectOptionVO(); obj2.setId(5L);obj1.setName("MIM");
+		parties.add(obj1);parties.add(obj2);
+		EasyMock.expect(staticDataService.getAlliancePartiesAsVO("2009",1L,1L)).andReturn(parties);
+		ConstituencyElection ce = MockData.createConstituencyElection();
+		List<ConstituencyElection> ceList = new ArrayList<ConstituencyElection>();
+		ceList.add(ce);
+		
+		EasyMock.expect(staticDataService.getConstituencyElections(1L,null)).andReturn(ceList);
+		EasyMock.replay(staticDataService);
+		PartyService service = new PartyService();
+		service.setElectionDAO(electionDAO);
+		service.setStaticDataService(staticDataService);
+		
+		List<PartyPositionDisplayVO> actualResult = service.getNthPositionPartyDetails(1L, 1L, null, 2009L, 1L, true, 5);
+		Assert.assertEquals(1, actualResult.size());
+		
+		
+	}
 
 }
