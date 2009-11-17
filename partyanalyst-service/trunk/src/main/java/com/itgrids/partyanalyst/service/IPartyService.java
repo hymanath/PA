@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
+import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
 
 public interface IPartyService {
 	
@@ -16,5 +18,5 @@ public interface IPartyService {
 	public String getBlo(String str);
 	public String getBlah(String str);
 	public String getBlah(int str);
-
+	public List<PartyPositionDisplayVO> getNthPositionPartyDetails(Long electionTypeID, Long stateID, Long districtID, Long year, Long partyID, boolean alliances, int rank);
 }

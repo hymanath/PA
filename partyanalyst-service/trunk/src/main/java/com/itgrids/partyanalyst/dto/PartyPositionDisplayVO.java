@@ -8,8 +8,8 @@ public class PartyPositionDisplayVO implements Serializable{
 	private String constituencyName;
 	private String candidateName;
 	
-	private Integer rank;
-	private BigDecimal votePercentage;
+	private Long rank;
+	private String votePercentage;
 	private List<PartyPostionInfoVO> oppPartyPositionInfoList;
 	public String getConstituencyName() {
 		return constituencyName;
@@ -23,16 +23,16 @@ public class PartyPositionDisplayVO implements Serializable{
 	public void setCandidateName(String candidateName) {
 		this.candidateName = candidateName;
 	}
-	public Integer getRank() {
+	public Long getRank() {
 		return rank;
 	}
-	public void setRank(Integer rank) {
+	public void setRank(Long rank) {
 		this.rank = rank;
 	}
-	public BigDecimal getVotePercentage() {
+	public String getVotePercentage() {
 		return votePercentage;
 	}
-	public void setVotePercentage(BigDecimal votePercentage) {
+	public void setVotePercentage(String votePercentage) {
 		this.votePercentage = votePercentage;
 	}
 	public List<PartyPostionInfoVO> getOppPartyPositionInfoList() {

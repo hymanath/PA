@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -20,6 +21,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionAlliance;
@@ -39,6 +41,7 @@ public class StaticDataService implements IStaticDataService {
 	private IDistrictDAO districtDAO;
 	private IAllianceGroupDAO  allianceGroupDAO;
 	private IConstituencyDAO constituencyDAO;
+	private IConstituencyElectionDAO constituencyElectionDAO;
 	private final static Logger log = Logger.getLogger(StaticDataService.class);
 	
 
@@ -85,6 +88,10 @@ public class StaticDataService implements IStaticDataService {
 	
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+	
+	public void setConstituencyElectionDAO(IConstituencyElectionDAO constituencyElectionDAO) {
+		this.constituencyElectionDAO = constituencyElectionDAO;
 	}
 
 
@@ -226,5 +233,13 @@ public class StaticDataService implements IStaticDataService {
 		return constituencies;
 	}
 	
-	
+	public List<ConstituencyElection> getConstituencyElections(Long electionID, Long  districtID){
+		List<ConstituencyElection>  constituencyElectionList = null;
+		if(districtID==null){
+			constituencyElectionList = constituencyElectionDAO.findByElection(electionID);
+		}else{
+			constituencyElectionList = constituencyElectionDAO.findByElectionAndDistrict(electionID, districtID);
+		}
+		return constituencyElectionList;
+	}
 }

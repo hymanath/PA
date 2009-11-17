@@ -9,6 +9,7 @@ import java.util.Map;
 import com.itgrids.partyanalyst.dto.ConstituencyPositionDetailVO;
 import com.itgrids.partyanalyst.dto.ConstituencyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
+import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
 import com.itgrids.partyanalyst.dto.PositionType;
 import com.itgrids.partyanalyst.service.IPartyService;
 
@@ -334,5 +335,8 @@ public class PartyServiceStub implements IPartyService {
 		return null;
 	}
 
+	public List<PartyPositionDisplayVO> getNthPositionPartyDetails(Long electionType, Long stateID, Long districtID, Long year, Long partyID, boolean alliances, int rank){
+		return null;
+	}
 }
 

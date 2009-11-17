@@ -3,12 +3,12 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class PartyPostionInfoVO implements Serializable{
+public class PartyPostionInfoVO implements Serializable, Comparable<PartyPostionInfoVO>{
 	//private String constituencyName;
 	private String partyName;
 	private String candidateName;
 	private Integer rank;
-	private BigDecimal votePercentage;
+	private String votePercentage;
 	/*public String getConstituencyName() {
 		return constituencyName;
 	}
@@ -33,11 +33,15 @@ public class PartyPostionInfoVO implements Serializable{
 	public void setRank(Integer rank) {
 		this.rank = rank;
 	}
-	public BigDecimal getVotePercentage() {
+	public String getVotePercentage() {
 		return votePercentage;
 	}
-	public void setVotePercentage(BigDecimal votePercentage) {
+	public void setVotePercentage(String votePercentage) {
 		this.votePercentage = votePercentage;
+	}
+	
+	public int compareTo(PartyPostionInfoVO obj) {
+		return this.rank.compareTo(obj.getRank());
 	}
 	
 	
