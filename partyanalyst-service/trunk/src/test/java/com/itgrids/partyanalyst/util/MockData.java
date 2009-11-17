@@ -1840,4 +1840,80 @@ public class MockData {
 		allianceParties.add(dummy11);
 		return allianceParties;
 	}
+	
+	public static Set<Nomination> getNominationList(){
+		Set<Nomination> nominations = new HashSet<Nomination>();
+		Nomination n1 = new Nomination();
+		Party party1 = new Party(1L); party1.setShortName("INC");
+		n1.setParty(party1);
+		CandidateResult cr1 = new CandidateResult(1L);
+		cr1.setRank(1L);
+		n1.setCandidateResult(cr1);
+		Candidate cand1 = new Candidate(1L); cand1.setFirstname("firstname");cand1.setMiddlename("MiddleName");cand1.setMiddlename("LastName");
+		n1.setCandidate(cand1);
+		nominations.add(n1);
+		
+		Nomination n3 = new Nomination();
+		Party party3 = new Party(3L); party3.setShortName("LSP");
+		n3.setParty(party3);
+		CandidateResult cr3 = new CandidateResult(3L);
+		cr3.setRank(3L);
+		n3.setCandidateResult(cr3);
+		Candidate cand3 = new Candidate(1L); cand3.setFirstname("firstname");cand3.setMiddlename("MiddleName");cand3.setMiddlename("LastName");
+		n3.setCandidate(cand3);
+		nominations.add(n3);
+		
+		Nomination n2 = new Nomination();
+		Party party2 = new Party(2L); party2.setShortName("TDP");
+		n2.setParty(party2);
+		CandidateResult cr2 = new CandidateResult(2L);
+		cr2.setRank(2L);
+		n2.setCandidateResult(cr2);
+		Candidate cand2 = new Candidate(1L); cand2.setFirstname("firstname");cand2.setMiddlename("MiddleName");cand2.setMiddlename("LastName");
+		n2.setCandidate(cand2);
+		nominations.add(n2);
+		
+		Nomination n4 = new Nomination();
+		Party party4 = new Party(4L); party4.setShortName("TRS");
+		n4.setParty(party4);
+		CandidateResult cr4 = new CandidateResult(4L);
+		cr4.setRank(4L);
+		n4.setCandidateResult(cr4);
+		Candidate cand4 = new Candidate(1L); cand4.setFirstname("firstname");cand4.setMiddlename("MiddleName");cand4.setMiddlename("LastName");
+		n4.setCandidate(cand4);
+		nominations.add(n4);
+		
+		Nomination n5 = new Nomination();
+		Party party5 = new Party(5L); party5.setShortName("MIM");
+		n5.setParty(party5);
+		CandidateResult cr5 = new CandidateResult(5L);
+		cr5.setRank(5L);
+		n5.setCandidateResult(cr5);
+		Candidate cand5 = new Candidate(1L); cand5.setFirstname("firstname");cand5.setMiddlename("MiddleName");cand5.setMiddlename("LastName");
+		n5.setCandidate(cand5);
+		nominations.add(n5);
+		
+		Nomination n6 = new Nomination();
+		Party party6 = new Party(6L); party1.setShortName("INC");
+		n6.setParty(party6);
+		CandidateResult cr6 = new CandidateResult(6L);
+		cr6.setRank(6L);
+		n6.setCandidateResult(cr6);
+		Candidate cand6 = new Candidate(1L); cand6.setFirstname("firstname");cand6.setMiddlename("MiddleName");cand6.setMiddlename("LastName");
+		n6.setCandidate(cand6);
+		nominations.add(n6);
+		
+		return nominations;
+	}
+	
+	public static ConstituencyElection createConstituencyElection(){
+		ConstituencyElection constituencyElection = new ConstituencyElection();
+		constituencyElection.setNominations(getNominationList());
+		Constituency constituency = new Constituency(1L);
+		constituency.setName("constituencyName");
+		constituencyElection.setConstituency(constituency);
+		// for constituencyElection --->nominations, constituency
+		// for nomination ----> candidateresult, party, candidate
+		return constituencyElection;
+	}
 }
