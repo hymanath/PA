@@ -7,15 +7,18 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 
 public class RegionServiceDataImp implements IRegionServiceData {
 
+	private IStateDAO stateDAO;
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
@@ -23,6 +26,10 @@ public class RegionServiceDataImp implements IRegionServiceData {
 
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
 	}
 
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
@@ -129,6 +136,16 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		result.add(state);
 		result.add(district);
 		
+		return result;
+	}
+	
+
+	public List<SelectOptionVO> getStatesByCountry(Long countryID){
+		List<State> states = stateDAO.findByCountryId(countryID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(State state : states){
+			result.add(new SelectOptionVO(state.getStateId(),state.getStateName()));
+		}
 		return result;
 	}
 	
