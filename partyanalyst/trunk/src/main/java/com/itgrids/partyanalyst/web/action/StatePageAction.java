@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,8 @@ import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.dto.StatePageVO;
 import com.itgrids.partyanalyst.service.IStatePageService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.opensymphony.xwork2.ActionSupport;
 
 
@@ -35,10 +38,13 @@ public class StatePageAction extends ActionSupport implements
 	private List<StateElectionsVO> stateElections;
 	private StatePageVO statePage;
 	private List<CensusVO> censusVO;
-	 private HttpServletRequest request;
-	  private HttpServletResponse response;
-	  private HttpSession session;
-	  private IStatePageService statePageService;
+	private HttpServletRequest request;
+	private HttpServletResponse response;
+	private HttpSession session;
+	private IStatePageService statePageService;
+	private IRegionServiceData regionServiceDataImp;	
+	private List<SelectOptionVO> districtData;
+	private int districtNumber;
 	
 	  
 	public String getStateId() {
@@ -91,24 +97,51 @@ public class StatePageAction extends ActionSupport implements
 		this.response = response;
    
 	}
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
 	
-    public String execute() throws Exception{
+	public List<SelectOptionVO> getDistrictData() {
+		return districtData;
+	}
+
+	public void setDistrictData(List<SelectOptionVO> districtData) {
+		this.districtData = districtData;
+	}
+	
+    public int getDistrictNumber() {
+		return districtNumber;
+	}
+
+	public void setDistrictNumber(int districtNumber) {
+		this.districtNumber = districtNumber;
+	}
+
+	public String execute() throws Exception{    	
     	
-    	statePage = statePageService.getStateDetails(Long.parseLong(stateId));
+    	statePage = statePageService.getStateDetails(Long.parseLong(stateId)); 
     	
-    	if(statePage.getStateName().equalsIgnoreCase("NoState") || statePage == null)
-    	return ERROR;
+    	districtData = regionServiceDataImp.getDistrictsByStateID(Long.parseLong(stateId));
     	
+    	districtNumber = districtData.size();   	
     	
-    		stateElections = statePageService.getStateElections(statePage.getStateId());
-       	  	
-       	  	censusVO = statePageService.getCensusDetails(statePage.getStateId(), 2001);
-       	  	
-       	  	
-       	  	if(stateElections == null)
-       	  	return ERROR;
+    	if(statePage.getStateName().equalsIgnoreCase("NoState") || statePage == null || districtNumber == 0)
+    		return ERROR;
+    	    	
+		stateElections = statePageService.getStateElections(statePage.getStateId());
+   	  	
+   	  	censusVO = statePageService.getCensusDetails(statePage.getStateId(), 2001);   	  	
+   	  	
+   	  	if(stateElections == null)
+   	  		return ERROR;
        	  	       	  		
     	
-    return SUCCESS;
+   	  	return SUCCESS;
     }
+
+	
 }
