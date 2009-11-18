@@ -1,5 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="s" uri="/struts-tags"%>
 
  <%@page import="com.itgrids.partyanalyst.dto.StatePageVO" %>
  <%@page import="com.itgrids.partyanalyst.dto.PartyResultsVO" %>
@@ -14,29 +15,8 @@
   <META NAME="Author" CONTENT="">
   <META NAME="Keywords" CONTENT="Andhra Pradesh State, Election">
   <META NAME="Description" CONTENT="">
-  <style type="text/css">
-table.stateResultsTable{
-	font-family: verdana,arial,sans-serif;
-	font-size:11px;
-	color:#333333;
-	border-width: 1px;
-	border-color: #666666;
-	border-collapse: collapse;
-}
-table.stateResultsTable th {
-	border-width: 1px;
-	padding: 8px;
-	border-style: solid;
-	border-color: #666666;
-	background-color: #CFDCE4;
-}
-table.stateResultsTable td {
-	border-width: 1px;
-	padding: 8px;
-	border-style: solid;
-	border-color: #666666;
-	background-color: #ffffff;
-}
+
+  
     <!-- Dependencies --> 
 
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -52,30 +32,91 @@ table.stateResultsTable td {
 
 	<link href="styles/yuiStyles/datatable.css" rel="stylesheet" type="text/css" />
 
- 	<script type="text/javascript">	
+  <style type="text/css">
+		table.stateResultsTable{
+			font-family: verdana,arial,sans-serif;
+			font-size:11px;
+			color:#333333;
+			border-width: 1px;
+			border-color: #666666;
+			border-collapse: collapse;
+		}
+		table.stateResultsTable th {
+			border-width: 1px;
+			padding: 8px;
+			border-style: solid;
+			border-color: #666666;
+			background-color: #CFDCE4;
+		}
+		table.stateResultsTable td {
+			border-width: 1px;
+			padding: 8px;
+			border-style: solid;
+			border-color: #666666;
+			background-color: #ffffff;
+		}
+		#districtInfoDiv
+		{
+			margin-top:10px;
+			margin-bottom:10px;
+			margin-right:30px;
+		}
+		#districtInfoDivHead
+		{
+			font-weight:bold;
+			color:#1C4B7A;
+			text-decoration:underline;
+			font-size:15px;
+			padding:5px 5px 5px 0px;
+		}
+		#districtInfoDivBody
+		{
+			padding:5px;
+			background-color:#F1F5F7;
+		}				
+		#districtAncSpan
+		{
+			padding:10px;
+		}
+		.districtAnc
+		{
+			color:#1C4B7A;
+		}	
+		
+		.stateDetailsTable tr
+		{
+
+		}
+		.stateDetailsTable td
+		{
+
+		}
+		
   </style>
-  <script type="text/javascript">
-  function callAjax(param){
- 		var myResults;
- 		var url = "<%=request.getContextPath()%>/stateElectionResultsAjax.action?"+param;
- 		var callback = {			
- 		               success : function( o ) {
+
+	
+	<script type="text/javascript">
+	function callAjax(param){
+		var myResults;
+		var url = "<%=request.getContextPath()%>/stateElectionResultsAjax.action?"+param;
+		var callback = {			
+					   success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
 								//buildDataTable(param,myResults.stateElectionResults.partyResultsVO);
 								insertData(param,myResults.stateElectionResults.partyResultsVO);								
 							}catch (e) {   
-							   	alert("Invalid JSON result" + e);   
+								alert("Invalid JSON result" + e);   
 							}  
- 		               },
- 		               scope : this,
- 		               failure : function( o ) {
- 		                			alert( "Failed to load result" + o.status + " " + o.statusText);
- 		                         }
- 		               };
+					   },
+					   scope : this,
+					   failure : function( o ) {
+									alert( "Failed to load result" + o.status + " " + o.statusText);
+								 }
+					   };
 
- 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
- 	}
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
  	
   
 function doAjax(param){
@@ -188,10 +229,13 @@ function insertData(param,results)
 <div id="stateOuterDiv" style="text-align:left;margin-left:50px;">
 	
 
- <table border="0" cellpadding="0" cellspacing="0">
+ <table border="0" cellpadding="0" cellspacing="0" class="stateDetailsTable">
  <tr>
 	 <td align="left" style="color:#1C4B7A;"><c:out value="State Capital "/> </td>
 	 <td  align="left" style="color:#18325A;font-weight:bold;"> : <c:out value="${statePage.adminCapital}" /></td>
+
+	 <td  align="left" style="color:#1C4B7A;padding-left:20px;"><c:out value="Total Districts"/></td>
+	 <td align="left" style="color:#18325A;font-weight:bold;"> : <c:out value="${districtNumber}" /></td>	
  </tr>
  <tr>
 	<td  align="left" style="color:#1C4B7A;"><c:out value="State Language"/> </td>
@@ -201,9 +245,32 @@ function insertData(param,results)
 	<td  align="left" style="color:#1C4B7A;"><c:out value="State Song"/></td>
     <td align="left" style="color:#18325A;font-weight:bold;"> : <c:out value="${statePage.stateSong}" /></td>	
 </tr>
+
 </table>
 
-<h3><u style="color:#1C4B7A;">Census Info</u></h3>
+<div id="districtInfoDiv">
+	<div id="districtInfoDivHead">
+		District's Info
+	</div>
+	<div id="districtInfoDivBody">
+		<table><tr>
+		<c:forEach var="district" varStatus="stat" items="${districtData}">				
+			<td>
+				<span id="districtAncSpan">
+					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
+					<a href="districtPageAction.action?districtId=${district.id}&districtName=${district.name }" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${district.name}
+					</a>
+				</span>
+			</td>	
+			<c:if test="${stat.count % 7==0}">
+				</tr><tr><td colspan="7"> </td></tr><tr>
+			</c:if>			
+		</c:forEach>			
+		</tr></table>		
+	</div>
+</div>
+
+<h3><u style="color:#1C4B7A;">Census Info *</u></h3>
 
 <table border="1" width="70%" class="stateResultsTable">
 	<tr>
@@ -238,6 +305,8 @@ function insertData(param,results)
 </div>
 <br/><br/>
 </c:forEach>
+
+
 </div>
 
  </BODY>
