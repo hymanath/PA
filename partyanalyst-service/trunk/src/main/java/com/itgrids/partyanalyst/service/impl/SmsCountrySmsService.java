@@ -5,12 +5,15 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 
 import com.itgrids.partyanalyst.keys.PropertyKeys;
 import com.itgrids.partyanalyst.service.IPartyAnalystPropertyService;
 import com.itgrids.partyanalyst.service.ISmsService;
 
+/*
+ * Username: dakavaram
+ * Password: 19716044
+ */
 public class SmsCountrySmsService implements ISmsService {
 
 	private static final Logger log = Logger
@@ -27,20 +30,19 @@ public class SmsCountrySmsService implements ISmsService {
 	}
 
 	public void sendSms(String message, boolean isEnglish,
-			String... mobileNumbers) {
+			String... phoneNumbers) {
 		HttpClient client = null;
 		PostMethod post = null;
 		
 		client = new HttpClient(new MultiThreadedHttpConnectionManager());
 
 		/* SETUP PROXY */
-		if (propertyService.getProperty(PropertyKeys.SERVER_PROXY_HOST) != null) {
+		if (propertyService.getProperty(PropertyKeys.SERVER_PROXY_HOST) != null && propertyService.getProperty(PropertyKeys.SERVER_PROXY_HOST).trim().length() > 0) {
 			int port = 8080;
 			try {
 				port = Integer.parseInt(propertyService
 						.getProperty(PropertyKeys.SERVER_PROXY_PORT));
 			} catch (NumberFormatException nfe) {
-				if(log.isTraceEnabled())
 				log.error(nfe);
 			}
 			client.getHostConfiguration().setProxy(propertyService.getProperty(PropertyKeys.SERVER_PROXY_HOST), port);
@@ -61,9 +63,12 @@ public class SmsCountrySmsService implements ISmsService {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < mobileNumbers.length; i++) {
 			sb.append(mobileNumbers[i]);
-			if (i < mobileNumbers.length)
+			if (i < (mobileNumbers.length-1))
 				sb.append(",");
 		}
+		System.out.println("Using "+propertyService
+				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_USER)+propertyService
+				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_PASSWORD)+" for "+sb);
 		post.addParameter("mobilenumber", sb.toString());
 		post.addParameter("message", message);
 		post.addParameter("sid", propertyService
@@ -77,16 +82,21 @@ public class SmsCountrySmsService implements ISmsService {
 			int statusCode = client.executeMethod(post);
 			if(log.isInfoEnabled()){
 				log.info(post.getStatusLine().toString());
+				System.out.println(post.getStatusLine().toString()+"***"+statusCode+"*****"+post.getQueryString());
 			}
 			if (statusCode != HttpStatus.SC_OK) {
 				log.error("SmsCountrySmsService.sendSMS failed: "
 						+ post.getStatusLine());
+				System.out.println("SmsCountrySmsService.sendSMS failed: "
+						+ post.getStatusLine());
 			}
 			if(log.isInfoEnabled()){
 				log.info(post.getResponseBodyAsString());
+				System.out.println(post.getResponseBodyAsString());
 			}
 		} catch (Exception e) {
 			log.error(e);
+			System.out.println(e);
 		} finally {
 			post.releaseConnection();
 		}
