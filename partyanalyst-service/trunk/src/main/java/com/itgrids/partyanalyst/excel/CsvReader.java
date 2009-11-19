@@ -11,15 +11,20 @@ import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
+import com.itgrids.partyanalyst.service.impl.ExcelToDBService;
 
 
 public class CsvReader implements IExcelReader{
+	
 	private ConstituencyBlock constituencyBlock;
 	private CandidateElectionResult candidateElectionResult;
 	private List<ConstituencyBlock> constituencyBlocks;
 	private List<CandidateElectionResult> candidateElectionResults;
 	private CsvColumnMapper columnMapper;
 	private String constituencyName;
+	private Long districtId;
 	
 	public CsvReader(){
 		
@@ -106,10 +111,18 @@ public class CsvReader implements IExcelReader{
 				if(methods[i].getName().startsWith("get")){
 					String str=(String)methods[i].invoke(csvColumnMapperObj, null);
 					if(methods[i].getName().equals("getCsvColumn2") && str.trim().indexOf("-")>-1 && csvColumnMapperObj.getCsvColumn3().length()==0 && csvColumnMapperObj.getCsvColumn4().length()==0){
+						//modified by sai
+						boolean flag=false;
+						String constiName[] = str.split("-");
+						if(constiName.length > 2){
+							flag = true;
+							districtId = new Long(constiName[2].trim());
+						}
+						//end
 						constituencyName=(str.split("-"))[1].trim();
 						constituencyName=StringUtils.trim(constituencyName);
 						candidateElectionResults=new ArrayList<CandidateElectionResult>();
-						constituencyBlock= checkConstituencyForReservation(str);
+						constituencyBlock= checkConstituencyForReservation(str,flag);
 /*							new ConstituencyBlock();
 						constituencyBlock.setConstituencyName(constituencyName);*/
 						constituencyBlock.setMargin(csvColumnMapperObj.getCsvColumn5());
@@ -222,8 +235,12 @@ public class CsvReader implements IExcelReader{
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
 	}
-	private ConstituencyBlock checkConstituencyForReservation(String constituencyName){
+	private ConstituencyBlock checkConstituencyForReservation(String constituencyName,Boolean flag){
 		ConstituencyBlock constituencyBlock = new ConstituencyBlock();
+		//modified by sai
+		if(flag == true)
+			constituencyBlock.setDistrictId(districtId);
+		//end
 		if(constituencyName!=null && constituencyName.length()>0){
 			String str[]=StringUtils.split(constituencyName+"(PA)", "-()");
 			constituencyBlock.setConstituencyName(str[1].trim());
