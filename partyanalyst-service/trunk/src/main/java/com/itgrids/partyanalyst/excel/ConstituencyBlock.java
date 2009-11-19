@@ -14,6 +14,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ConstituencyBlock {
 
 	private String constituencyName;
+	private Long districtId;
 	private String margin;
 	private String remarks;
 	private Double totalElectors;
@@ -26,6 +27,7 @@ public class ConstituencyBlock {
 	List<CandidateElectionResult> candidateElectionlst;
 	public ConstituencyBlock(){
 		constituencyName="";
+		districtId = new Long(0);
 		totalElectors= new Double(0);
 		validVotes= new Double(0);
 		rejectedVotes= new Double(0);
@@ -35,12 +37,13 @@ public class ConstituencyBlock {
 		reservationInfo="";
 	}
 	
-	public ConstituencyBlock(String constituencyName, Double totalElectors,
+	public ConstituencyBlock(String constituencyName,Long districtId, Double totalElectors,
 			Double validVotes, Double rejectedVotes, Double missingVotes,
 			Double totalVotesPolled, Double tenderedVotes,
 			List<CandidateElectionResult> candidateElectionlst) {
 		super();
 		this.constituencyName = constituencyName;
+		this.districtId = districtId;
 		this.totalElectors = totalElectors;
 		this.validVotes = validVotes;
 		this.rejectedVotes = rejectedVotes;
@@ -135,6 +138,14 @@ public class ConstituencyBlock {
 
 	public void setReservationInfo(String reservationInfo) {
 		this.reservationInfo = reservationInfo;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
 	}
 
 }
