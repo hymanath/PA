@@ -50,13 +50,13 @@ public class CsvColumnMapper {
 	}
 
 	public String checkCellData(String cellData){
-		String cellContect="";
+		String cellContent="";
 		if(cellData!=null){
 			if(cellData.length()>0){
-				cellContect=StringUtils.trim(cellData.trim());
+				cellContent=StringUtils.trim(cellData.trim());
 			}
 		}
-		return cellContect;
+		return cellContent;
 	}
 
 
