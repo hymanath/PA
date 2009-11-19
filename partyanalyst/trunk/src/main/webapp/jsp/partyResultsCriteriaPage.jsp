@@ -163,7 +163,15 @@
 					var lstr=getStateList();
 					stateSelectDivElmt.innerHTML=lstr;							
 				}
-				var stateSelectElmt = document.getElementById("stateNameSelect");				
+				var stateSelectElmt = document.getElementById("stateNameSelect");
+				var item = document.forms["partyResultsForm"].electionType;
+                for (var i=0; i < item.length; i++)
+                {
+                  if (item[i].checked)
+                  {
+                    var elecTypeId = item[i].value;
+                   }
+                }
 				var stateValue = stateSelectElmt.options[stateSelectElmt.selectedIndex].text;	
 				var str='';							
 				str+='<select class="nameSelect" name="constituencySelectName" id="ConstituencyNameSelect">';
@@ -171,7 +179,7 @@
 					str+='	<option>Select Constituency</option>';
 				else
 				{					
-					var List=getList(REPORTLEVEL,stateValue);					
+					var List=getList(REPORTLEVEL,elecTypeId);					
 					for(var v in List)
 						str+='	<option value="' +List[v].id+'">'+List[v].name+'</option>';
 				}				
