@@ -69,14 +69,16 @@ public class ExcelToDBService implements IExcelToDBService {
 	public void readCSVFileAndStoreIntoDB(UploadFormVo uploadFormVo) throws Exception{
 
 		try{
-			logger.debug("Congrats logger has been initialized");			
-			System.out.println("Congrats Successes fully entered in the service layer.. ");
-			System.out.println("Fila path == "+uploadFormVo.getInputFile());
-			System.out.println("Country Name == "+uploadFormVo.getCountry());
-			System.out.println("State =="+uploadFormVo.getElectionScope());
-			System.out.println("District =="+uploadFormVo.getDistrict());
-			System.out.println("Type of Election == "+uploadFormVo.getElectionType());
-			System.out.println("Election Year == "+uploadFormVo.getElectionYear());
+			if(logger.isDebugEnabled()){
+			 logger.debug("Congrats logger has been initialized");			
+			 logger.debug("Congrats Successes fully entered in the service layer.. ");
+			 logger.debug("Fila path == "+uploadFormVo.getInputFile());
+			 logger.debug("Country Name == "+uploadFormVo.getCountry());
+			 logger.debug("State =="+uploadFormVo.getElectionScope());
+			 logger.debug("District =="+uploadFormVo.getDistrict());
+			 logger.debug("Type of Election == "+uploadFormVo.getElectionType());
+			 logger.debug("Election Year == "+uploadFormVo.getElectionYear());
+			}
 			insertIntoDatabase(selectReaderAndFetchConstituencyBlocks(uploadFormVo));
 		}catch(Exception excep){
 			throw new Exception(excep.getMessage());
@@ -87,7 +89,8 @@ public class ExcelToDBService implements IExcelToDBService {
 //private void insertIntoDatabase(String countryNam,String stateName,String distName,String typeOfElection, String electionYear,List<ConstituencyBlock> constituenciesBlocks) throws CsvException{
 private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
 	List<ConstituencyBlock>  constituencyBlocks=uploadFormVo.getConstituencyBlocks();
-	System.out.println("Total no of constituency blocks =="+constituencyBlocks.size());
+	if(logger.isDebugEnabled())
+	 logger.debug("Total no of constituency blocks =="+constituencyBlocks.size());
 	Country countryObj=null;
 	State stateObj=null;
 	District districtObj=null;
@@ -95,25 +98,30 @@ private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
 	List<ElectionType> electionTypes=electionTypeDAO.findByElectionType(uploadFormVo.getElectionType());
 	//Election Type has been defined in the system so we can proceed ahead
 	if(electionTypes.size()>0){
-		System.out.println("1");
+		if(logger.isDebugEnabled())
+		logger.debug("1");
 		ElectionType electionTypeObj= electionTypes.get(0);
 		Long electionTypeId=electionTypeObj.getElectionTypeId();
 		//Checking for the existance of state if insert state and get the stateID
 		List<Country> countries= countryDAO.findByCountryName(uploadFormVo.getCountry());
-		System.out.println("2");
+		if(logger.isDebugEnabled())
+		logger.debug("2");
 		List<State> states=stateDAO.findByStateName(uploadFormVo.getElectionScope());
 		List<District> districts=districtDAO.findByDistrictName(uploadFormVo.getDistrict());
-		System.out.println("3");
+		if(logger.isDebugEnabled())
+		logger.debug("3");
 		if(states!=null && countries!=null && districts!=null){
 			countryObj=countries.get(0);
 			stateObj= states.get(0);
 			districtObj=districts.get(0);
-			System.out.println("4");
+			if(logger.isDebugEnabled())
+			logger.debug("4");
 			ElectionScope electionScopeObj=checkAndInsertElectionScope(electionTypeObj, countryObj, stateObj,uploadFormVo.getElectionYear());
 			Election electionObj=checkAndInsertElection(electionScopeObj,uploadFormVo.getElectionYear());
 			try {
 				int constituencyNo=0;
-				System.out.println("4.1");
+				if(logger.isDebugEnabled())
+				logger.debug("4.1");
 				List<Party> parties=partyDAO.getAll();
 				List<Candidate> candidates= candidateDAO.getAll();
 				List<Constituency> constituencies= constituencyDAO.getAll();
@@ -174,10 +182,18 @@ public int processBatch(List<Party> parties,List<Candidate> candidates,List<Cons
 	
 		try {
 			long currentTime=System.currentTimeMillis();
-			System.out.println("4.2");
-			System.out.println("Constituency No =="+(++constituencyNo));
-			Constituency constituencyObj=checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj);
-
+			if(logger.isDebugEnabled()){
+			logger.debug("4.2");
+			logger.debug("Constituency No =="+(++constituencyNo));
+			}
+			Constituency constituencyObj;
+			//modified by sai
+			if(constituecBlock.getDistrictId() != null && constituecBlock.getDistrictId().longValue() != 0)
+				constituencyObj = checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj,constituecBlock.getDistrictId());
+			//end
+			else
+				constituencyObj=checkAndInsertConstituency(constituencies,constituecBlock.getConstituencyName(), countryObj.getCountryId(), stateObj, districtObj, electionScopeObj,null);
+			
 			ConstituencyElection constituencyElectionObj = new ConstituencyElection();
 			constituencyElectionObj.setConstituency(constituencyObj);
 			constituencyElectionObj.setElection(electionObj);
@@ -187,11 +203,13 @@ public int processBatch(List<Party> parties,List<Candidate> candidates,List<Cons
 			List<CandidateElectionResult> candidateElectionResults= constituecBlock.getCandidateElectionlst();
 			Collections.sort(candidateElectionResults,new CandidateVotesComparator());
 			int rankByVotes=1;
-			System.out.println("4.3");
+			if(logger.isDebugEnabled())
+			logger.debug("4.3");
 			for (CandidateElectionResult candidateElectionResult : candidateElectionResults) {
 				Candidate candidateObj=checkAndInsertCandidate(candidates,candidateElectionResult.getCandidateName());
 				Party partyObj= checkAndInsertParty(parties,candidateElectionResult.getCandidatePrty());
-				System.out.println("4.6");
+				if(logger.isDebugEnabled())
+				logger.debug("4.6");
 				Nomination nominationObj = new Nomination();
 				nominationObj.setCandidate(candidateObj);
 				nominationObj.setParty(partyObj);
@@ -205,7 +223,8 @@ public int processBatch(List<Party> parties,List<Candidate> candidates,List<Cons
 				candidateResultObj.setVotesPercengate(calculateVotesPercengate(constituecBlock.getValidVotes(),candidateElectionResult.getVotesEarned()));
 				candidateResultObj.setNomination(nominationObj);
 				candidateResultDAO.save(candidateResultObj);
-				System.out.println("4.7");
+				if(logger.isDebugEnabled())
+				logger.debug("4.7");
 			}
 			ConstituencyElectionResult constituencyElectionResultObj = new ConstituencyElectionResult();
 			constituencyElectionResultObj.setMissingVotes(constituecBlock.getMissingVotes());
@@ -214,26 +233,39 @@ public int processBatch(List<Party> parties,List<Candidate> candidates,List<Cons
 			constituencyElectionResultObj.setTotalVotes(constituecBlock.getTotalElectors());
 			constituencyElectionResultObj.setTotalVotesPolled(constituecBlock.getTotalVotesPolled());
 			constituencyElectionResultObj.setValidVotes(constituecBlock.getValidVotes());
+			constituencyElectionResultObj.setVotingPercentage(calculateVotesPercengate(constituecBlock.getTotalElectors(),constituecBlock.getTotalVotesPolled()));
 			constituencyElectionResultObj.setConstituencyElection(constituencyElectionObj);
 			constituencyElectionResultDAO.save(constituencyElectionResultObj);
-
-			System.out.println("4.5");
+			
+			if(logger.isDebugEnabled())
+			logger.debug("4.5");
 			long lastTime=System.currentTimeMillis();
-			System.out.println("Time difference == "+(lastTime-currentTime)/1000);
+			if(logger.isDebugEnabled())
+			logger.debug("Time difference == "+(lastTime-currentTime)/1000);
 		} catch (Exception e) {
-			System.out.println("Exception == "+e.getMessage());
+			if(logger.isDebugEnabled())
+			logger.debug("Exception == "+e.getMessage());
 		}
 	return constituencyNo;
 }
-private Constituency checkAndInsertConstituency(List<Constituency> constituencis,String constituencyName, Long countryId, State state,District district,ElectionScope electionScope){
+private Constituency checkAndInsertConstituency(List<Constituency> constituencis,String constituencyName, Long countryId, State state,District district,ElectionScope electionScope,Long districtId){
 	boolean constituencyFlag = true;
 	Constituency lconstituencyObj= null;
 	if(constituencis!=null && constituencis.size()>0){
 		for(Constituency con: constituencis){
-			if(constituencyName.equalsIgnoreCase(con.getName().trim())){
+			if(districtId == null){
+			 if(constituencyName.equalsIgnoreCase(con.getName().trim()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId())){
 				lconstituencyObj = con;
 				constituencyFlag = false;
 				break;
+			 }
+			}
+			else if(districtId != null){
+				if(constituencyName.equalsIgnoreCase(con.getName().trim()) && electionScope.getElectionScopeId().equals(con.getElectionScope().getElectionScopeId()) && districtId.equals(con.getDistrict().getDistrictId())){
+				 lconstituencyObj = con;
+				 constituencyFlag = false;
+				 break;
+				 }
 			}
 		}
 	}
@@ -246,7 +278,8 @@ private Constituency checkAndInsertConstituency(List<Constituency> constituencis
 		lconstituencyObj.setElectionScope(electionScope);
 		lconstituencyObj=constituencyDAO.save(lconstituencyObj);
 		constituencis.add(lconstituencyObj);
-		System.out.println("New party has been created");
+		if(logger.isDebugEnabled())
+		logger.debug("New Constituency has been created");
 	}
 	return lconstituencyObj;
 }
@@ -284,7 +317,8 @@ private Party checkAndInsertParty(List<Party> partis,String partyName){
 		}
 	}
 	if(partyFlag){
-		System.out.println("New party has been identified.");
+		if(logger.isDebugEnabled())
+		logger.debug("New party has been identified.");
 		lpartyObj= new Party();
 		lpartyObj.setLongName(partyName);
 		String shortName=(partyName.length()>25)?"":partyName;
@@ -320,7 +354,8 @@ private ElectionScope checkAndInsertElectionScope(ElectionType electionType,Coun
 		}
 
 	}catch(Exception excep){
-		System.out.println("Exception == "+excep.getMessage());
+		if(logger.isDebugEnabled())
+		logger.debug("Exception == "+excep.getMessage());
 	}
 	return electionScope;
 }
@@ -465,16 +500,20 @@ public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 }
 //Assembly-ElectionResults-AP-1989_Pattern2.xls
 private UploadFormVo selectReaderAndFetchConstituencyBlocks(UploadFormVo uploadFormVo) throws CsvException{
-	System.out.println("In the selectReaderAndFetchConstituencyBlock metbod");
+	if(logger.isDebugEnabled())
+	logger.debug("In the selectReaderAndFetchConstituencyBlock metbod");
 	List<ConstituencyBlock> constituencyBlocks=null;
 	if(uploadFormVo.getInputFile().length()>0){
-		System.out.println("File name length is>0");
+		if(logger.isDebugEnabled())
+		logger.debug("File name length is>0");
 		IExcelReader excelReader=ExcelReaderFactory.selectReader(fetchPattern(uploadFormVo.getInputFile()));
 		excelReader.readCSV(uploadFormVo.getInputFile());
 		constituencyBlocks=excelReader.getConstituencyBlocks();
-		System.out.println("Constituencies blocks =="+constituencyBlocks.size());
+		if(logger.isDebugEnabled())
+		logger.debug("Constituencies blocks =="+constituencyBlocks.size());
 		if(constituencyBlocks!=null && constituencyBlocks.size()>0){
-			System.out.println("Constituencies blocks greated than zero.");
+			if(logger.isDebugEnabled())
+			logger.debug("Constituencies blocks greated than zero.");
 			uploadFormVo.setConstituencyBlocks(constituencyBlocks);			
 		}else{
 			throw new CsvException("Sorry no constituency blocks were returned from the selected reader "+excelReader.getClass().getName());
