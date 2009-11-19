@@ -46,6 +46,7 @@ public class ConstituencyElectionResult extends BaseModel implements java.io.Ser
 	private Double missingVotes;
 	private Double totalVotesPolled;
 	private Double tenderedVotes;
+	private String votingPercentage;
 
 	// Constructors
 
@@ -149,6 +150,15 @@ public class ConstituencyElectionResult extends BaseModel implements java.io.Ser
 
 	public void setTenderedVotes(Double tenderedVotes) {
 		this.tenderedVotes = tenderedVotes;
+	}
+
+	@Column(name = "voting_percentage")
+	public String getVotingPercentage() {
+		return votingPercentage;
+	}
+
+	public void setVotingPercentage(String votingPercentage) {
+		this.votingPercentage = votingPercentage;
 	}
 
 /*	 (non-Javadoc)
