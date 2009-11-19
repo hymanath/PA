@@ -62,6 +62,7 @@ public class State implements java.io.Serializable {
 	private Long stateCode;
 	private Date startDate;
 	private Date deformDate;
+	private String adminControl;
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 	private Set<District> districts = new HashSet<District>(0);
 
@@ -295,6 +296,15 @@ public class State implements java.io.Serializable {
 
 	public void setDeformDate(Date deformDate) {
 		this.deformDate = deformDate;
+	}
+
+	@Column(name = "admin_control")
+	public String getAdminControl() {
+		return adminControl;
+	}
+
+	public void setAdminControl(String adminControl) {
+		this.adminControl = adminControl;
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
