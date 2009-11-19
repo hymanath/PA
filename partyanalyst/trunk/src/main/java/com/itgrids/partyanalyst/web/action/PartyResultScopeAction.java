@@ -104,9 +104,12 @@ public class PartyResultScopeAction {
 		}
 		else if (jObj.getString("reportLevel").equalsIgnoreCase("Constituency") && jObj.getString("selected")!="null")
 		{
+			Long countryID = 1L;
+			Long stateID = 1L;
 			String selectedVal=jObj.getString("selected");
+			Long elecTypeId = new Long(selectedVal);
 			
-			List<SelectOptionVO> selectOptionList = constituencySearchService.getConstituencyNames(new Long(1));
+			List<SelectOptionVO> selectOptionList = constituencySearchService.getConstituencyNamesByElectionScope(countryID,stateID,elecTypeId);
 			
 			for(SelectOptionVO selectOptionVO:selectOptionList)
 			{
@@ -118,7 +121,7 @@ public class PartyResultScopeAction {
 		{
 			Long countryID = 1L;// India
 			Long stateID = 1L;//AP
-			Long typeID = 2L;//Parliamentry
+			Long typeID = 2L;//Parliamentary
 			List<SelectOptionVO> selectOptionList = constituencySearchService.getConstituencyNamesByElectionScope(countryID,stateID,typeID);
 			
 			for(SelectOptionVO selectOptionVO:selectOptionList)
