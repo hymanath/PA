@@ -7,6 +7,11 @@ import java.io.Serializable;
  *
  */
 public class ResultStatus implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4612224221019720019L;
+	
 	private int resultCode;
     private Throwable exceptionEncountered;
     private boolean isResultPartial;
