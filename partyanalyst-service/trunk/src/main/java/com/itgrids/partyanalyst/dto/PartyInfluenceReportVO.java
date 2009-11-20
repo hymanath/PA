@@ -7,10 +7,16 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PartyInfluenceReportVO {
+public class PartyInfluenceReportVO extends ResultStatus implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3119757028618351557L;
+	
 	private String impactedPartyName;
 	private String newPartyName;
 	private String year;
