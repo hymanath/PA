@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
@@ -20,6 +22,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResults;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionsDetailedResultVO;
 import com.itgrids.partyanalyst.dto.DistrictWiseConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyInfluenceReportVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
@@ -35,6 +38,8 @@ import com.itgrids.partyanalyst.utils.VotesPercentageComparator;
 
 
 public class PartyInfluenceService implements IPartyInfluenceService {
+	
+	private static Logger logger = Logger.getLogger(PartyInfluenceService.class);
 	
 	private IElectionDAO electionDAO;
 	private INominationDAO nominationDAO;
@@ -79,67 +84,120 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	//Returns DistrictWiseConstituencyElectionResults VO
 	public PartyInfluenceReportVO getPartyInfluenceReportResults(Long electionTypeId,Long partyId,Long newPartyId,String electionYear,Boolean includeAlliance,Long stateId){
 		
-		PartyInfluenceReportVO partyInfluenceReportVO = null;
+		PartyInfluenceReportVO partyInfluenceReportVO =  new PartyInfluenceReportVO();
 		List<ConstituencyElectionResults> constituencyElectionResultForYearOne = null;
 		List<ConstituencyElectionResults> constituencyElectionResultForYearTwo = null;
 		List<ConstituencyElectionsDetailedResultVO> constituencyElectionsDetailedResultVO = null;
 		List<DistrictWiseConstituencyElectionResultsVO> districtWiseConstituencyElectionResultsVO = null;
 		String previousElectionYear = "";
+		Election election1 = null;
+		Election election2 = null;
 		
-		previousElectionYear = electionDAO.findPreviousElectionYear(electionYear, electionTypeId, stateId, new Long(1));
-		//List<ElectionScope> electionScope = electionScopeDAO.findByPropertyElectionTypeIdandStateId(electionTypeId, stateId);
-		
-	 if(previousElectionYear == null)
-			return null;
-		System.out.println("prev year -->" + previousElectionYear);
-		Election election1 = getElection(new Long(2),electionYear);
-		Election election2 = getElection(new Long(2),previousElectionYear);
-		
-		
-		//year 1
-		List<Nomination> nominationsForPartyForYearOne = getNominationsForAPartyForAnElection(electionTypeId,partyId,electionYear,election1.getElectionId(),includeAlliance);
-		List<Nomination> nominationsForNewPartyForYearOne = getNominationsForAPartyForAnElection(electionTypeId,newPartyId,electionYear,election1.getElectionId(),includeAlliance);
-		
-		if(nominationsForPartyForYearOne != null && nominationsForNewPartyForYearOne != null){
-			constituencyElectionResultForYearOne = getConstituencyElectionResults(nominationsForPartyForYearOne,nominationsForNewPartyForYearOne);
+		if(logger.isDebugEnabled()){
+			logger.debug("Election TypeId =" + electionTypeId);
+			logger.debug("PartyId =" + partyId);
+			logger.debug("New PartyId = " + newPartyId);
+			logger.debug("Election Year = " + electionYear);
+			logger.debug("StateId = " + stateId);
+			logger.debug("Is Alliance Included ="  + includeAlliance);
 		}
-		else if(nominationsForPartyForYearOne != null && nominationsForNewPartyForYearOne == null){
+		
+		try{
+		  previousElectionYear = electionDAO.findPreviousElectionYear(electionYear, electionTypeId, stateId, new Long(1));
+		  //List<ElectionScope> electionScope = electionScopeDAO.findByPropertyElectionTypeIdandStateId(electionTypeId, stateId);
+		
+	      if(previousElectionYear == null)
+			return null;
+	      if(logger.isDebugEnabled())
+		     logger.debug("Prev Year Is" + previousElectionYear);
+	    
+		  election1 = getElection(new Long(2),electionYear);
+		  election2 = getElection(new Long(2),previousElectionYear);
+		
+		}
+		catch(Exception ex){
+			if(logger.isDebugEnabled())
+				logger.debug(" Elections Data Not Available" );
+			partyInfluenceReportVO.setExceptionEncountered(ex);
+			partyInfluenceReportVO.setResultCode(ResultCodeMapper.FAILURE);
+			partyInfluenceReportVO.setResultPartial(true);
+			return partyInfluenceReportVO;
+		}
+		
+		try{
+		  //year 1
+		  List<Nomination> nominationsForPartyForYearOne = getNominationsForAPartyForAnElection(electionTypeId,partyId,electionYear,election1.getElectionId(),includeAlliance);
+		  List<Nomination> nominationsForNewPartyForYearOne = getNominationsForAPartyForAnElection(electionTypeId,newPartyId,electionYear,election1.getElectionId(),includeAlliance);
+		
+		  if(nominationsForPartyForYearOne != null && nominationsForNewPartyForYearOne != null){
+			if(logger.isDebugEnabled())
+				logger.debug("Both Partys Have Nominations");
+			constituencyElectionResultForYearOne = getConstituencyElectionResults(nominationsForPartyForYearOne,nominationsForNewPartyForYearOne);
+		  }
+		  else if(nominationsForPartyForYearOne != null && nominationsForNewPartyForYearOne == null){
+			if(logger.isDebugEnabled())
+				logger.debug(" Only Impacted Party Have Nominations");
 			constituencyElectionResultForYearOne = getConstituencyElectionResults(nominationsForPartyForYearOne);
 			constituencyElectionResultForYearOne = getDetailsOfPartysParticipated(constituencyElectionResultForYearOne,true);
-		}
-		else if(nominationsForPartyForYearOne == null && nominationsForNewPartyForYearOne != null){
+		  }
+		  else if(nominationsForPartyForYearOne == null && nominationsForNewPartyForYearOne != null){
+			if(logger.isDebugEnabled())
+				logger.debug(" Only New Party Have Nominations");
 			constituencyElectionResultForYearOne = getConstituencyElectionResults(nominationsForNewPartyForYearOne);
 			constituencyElectionResultForYearOne = getDetailsOfPartysParticipated(constituencyElectionResultForYearOne,false);
-		}
+		  }
 		
-		//year 2
-		List<Nomination> nominationsForPartyForYearTwo = getNominationsForAPartyForAnElection(electionTypeId,partyId,previousElectionYear,election2.getElectionId(),includeAlliance);
-		List<Nomination> nominationsForNewPartyForYearTwo = getNominationsForAPartyForAnElection(electionTypeId,newPartyId,previousElectionYear,election2.getElectionId(),includeAlliance);
+		
+		  //year 2
+		  List<Nomination> nominationsForPartyForYearTwo = getNominationsForAPartyForAnElection(electionTypeId,partyId,previousElectionYear,election2.getElectionId(),includeAlliance);
+		  List<Nomination> nominationsForNewPartyForYearTwo = getNominationsForAPartyForAnElection(electionTypeId,newPartyId,previousElectionYear,election2.getElectionId(),includeAlliance);
 	
-		if(nominationsForPartyForYearTwo != null && nominationsForNewPartyForYearTwo != null){
+		  if(nominationsForPartyForYearTwo != null && nominationsForNewPartyForYearTwo != null){
+			if(logger.isDebugEnabled())
+				logger.debug("Both Partys Have Nominations");
 			constituencyElectionResultForYearTwo = getConstituencyElectionResults(nominationsForPartyForYearTwo,nominationsForNewPartyForYearTwo);
 			
-		}
-		else if(nominationsForPartyForYearTwo != null && nominationsForNewPartyForYearTwo == null){
+		  }
+		  else if(nominationsForPartyForYearTwo != null && nominationsForNewPartyForYearTwo == null){
+			if(logger.isDebugEnabled())
+				logger.debug(" Only Impacted Party Have Nominations");
 			constituencyElectionResultForYearTwo = getConstituencyElectionResults(nominationsForPartyForYearTwo);
 			constituencyElectionResultForYearTwo = getDetailsOfPartysParticipated(constituencyElectionResultForYearTwo,true);
-		}
-		else if(nominationsForPartyForYearTwo == null && nominationsForNewPartyForYearTwo != null){
+		  }
+		  else if(nominationsForPartyForYearTwo == null && nominationsForNewPartyForYearTwo != null){
+			if(logger.isDebugEnabled())
+				logger.debug(" Only New Party Have Nominations");
 			constituencyElectionResultForYearTwo = getConstituencyElectionResults(nominationsForNewPartyForYearTwo);
 			constituencyElectionResultForYearTwo = getDetailsOfPartysParticipated(constituencyElectionResultForYearTwo,false);
+		  }
+		 
+		}
+		catch(Exception ex){
+			if(logger.isDebugEnabled())
+				logger.debug(" Elections Data Not Available" );
+			partyInfluenceReportVO.setExceptionEncountered(ex);
+			partyInfluenceReportVO.setResultCode(ResultCodeMapper.FAILURE);
+			partyInfluenceReportVO.setResultPartial(true);
+			return partyInfluenceReportVO;
 		}
 			
-		if(constituencyElectionResultForYearOne != null && constituencyElectionResultForYearTwo != null)
-		constituencyElectionsDetailedResultVO = getDetailedConstituencyWiseElectionResultsForTwoYears(constituencyElectionResultForYearOne,constituencyElectionResultForYearTwo);
-		
+		if(constituencyElectionResultForYearOne != null && constituencyElectionResultForYearTwo != null){
+		    if(logger.isDebugEnabled())
+		    	logger.debug("Constituency wise Election Results For Both Years Are Not Null");
+			constituencyElectionsDetailedResultVO = getDetailedConstituencyWiseElectionResultsForTwoYears(constituencyElectionResultForYearOne,constituencyElectionResultForYearTwo);
+		}
 		if(constituencyElectionsDetailedResultVO.size() > 0){
+			if(logger.isDebugEnabled())
+				logger.debug("Constituency Wise Results Successfull");
 			districtWiseConstituencyElectionResultsVO = new ArrayList<DistrictWiseConstituencyElectionResultsVO>();
 			districtWiseConstituencyElectionResultsVO = getDistrictWiseResults(constituencyElectionsDetailedResultVO);
 		    if(districtWiseConstituencyElectionResultsVO != null && districtWiseConstituencyElectionResultsVO.size() > 0){
-		    	
-		    	partyInfluenceReportVO = new PartyInfluenceReportVO();
+		    	if(logger.isDebugEnabled())
+					logger.debug("District Wise Results Successfull");
+		    	//partyInfluenceReportVO = new PartyInfluenceReportVO();
 		    	partyInfluenceReportVO = getPartyInfluenceReportFinalResults(districtWiseConstituencyElectionResultsVO,partyId,newPartyId);
-		    	
+		    	if(logger.isDebugEnabled())
+					logger.debug("Returning The Final Results");
 		    return partyInfluenceReportVO;
 		    }
 		 }
@@ -158,7 +216,12 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		
 	return constituencyElectionResults;
 	}
+	
+	
 	public PartyInfluenceReportVO getPartyInfluenceReportFinalResults(List<DistrictWiseConstituencyElectionResultsVO> districtWiseConstituencyElectionResultsVO,Long partyId,Long newPartyId){
+		
+		if(logger.isDebugEnabled())
+			logger.debug("Entered Into getPartyInfluenceReportFinalResults Method");
 		
 		PartyInfluenceReportVO partyInfluenceReportVO = new PartyInfluenceReportVO();
 		int constituencies = 0;
@@ -208,6 +271,8 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		    partyInfluenceReportVO.setTotalConstituenciesConsidered(constituencies);
 		    partyInfluenceReportVO.setDistrictWiseConstituencyElectionResultsVO(districtWiseConstituencyElectionResultsVO);
 	
+		    if(logger.isDebugEnabled())
+		    	logger.debug("total constituencies Size -->" + constituencies);
 	return partyInfluenceReportVO;
 	}
 	
@@ -215,27 +280,32 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	public List<Nomination> getNominationsForAPartyForAnElection(Long electionTypeId,Long partyId,String electionYear,Long electionId,Boolean includeAlliance){
 		
         List<Long> partyIds = null;
-		System.out.println("PartyIds 1-->" + partyIds);
+        if(logger.isDebugEnabled())
+        	logger.debug("PartyIds at beginning -->" + partyIds);
 		try{
-		if(includeAlliance.equals(true)){
+		   if(includeAlliance.equals(true)){
 			partyIds = getHasAllianceParties(electionYear,electionTypeId,partyId);
-			System.out.println("PartyIds loop 1-->" + partyIds);
-		}
-		else if(includeAlliance.equals(false)){
+			if(logger.isDebugEnabled())
+	        	logger.debug("PartyIds if alliance is true -->" + partyIds);
+		   }
+		   else if(includeAlliance.equals(false)){
 			partyIds = new ArrayList<Long>();
 			partyIds.add(partyId);
-			System.out.println("PartyIds loop 2-->" + partyIds);
-		}
+			if(logger.isDebugEnabled())
+	        	logger.debug("PartyIds if alliance is false -->" + partyIds);
+		   }
 		
-		if(partyIds != null){
-			System.out.println("PartyIds loop 3-->" + partyIds);
-		 List<Nomination> nominations = getNominations(electionId,partyIds);
-		 if(nominations != null && nominations.size() > 0)
+		   if(partyIds != null){
+			if(logger.isDebugEnabled())
+	        	logger.debug("PartyIds at end -->" + partyIds);
+		   List<Nomination> nominations = getNominations(electionId,partyIds);
+		   if(nominations != null && nominations.size() > 0)
 			return nominations;
-		}
+		  }
 		}
 		catch(Exception e){
-			System.out.println("Exception -->" + e);
+			if(logger.isDebugEnabled())
+	        	logger.debug("Exception -->" + e);
 		}
 		
 	return null;
@@ -244,6 +314,8 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	//Returns List Of Nominations for An Election For A Single or Alliance Party's.
 	public List<Nomination> getNominations(Long electionId,List<Long> partyIds){
 		
+		if(logger.isDebugEnabled())
+        	logger.debug("Entered Into getNominations method");
 		List<Nomination> nominations = null;
 		if(electionId != null && partyIds != null && partyIds.size() > 0){
 			nominations = nominationDAO.findByElectionIdAndPartys(electionId, partyIds);
@@ -254,6 +326,8 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	//Returns Election Object for A Election Year And ElectionType
 	public Election getElection(Long electionScopeId,String electionYear){
 		
+		if(logger.isDebugEnabled())
+        	logger.debug("Entered Into getElection method");
         Election election = electionDAO.findByElectionScopeIdElectionYear(electionScopeId, electionYear);
 		
 		if(election.getElectionId() != null)
@@ -265,21 +339,29 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	//Returns list Of Party Id's If a Party Has Alliance Party's
 	public List<Long> getHasAllianceParties(String electionYear,Long electionType,Long partyId){
 		
+		
+		if(logger.isDebugEnabled())
+			logger.debug("Entered Into getAlliances method");
+		
 		List<SelectOptionVO> allianceParties = staticDataService.getAlliancePartiesAsVO(electionYear, electionType, partyId);
 		List<Long> partyIds = null;
 		
+		
 		if(allianceParties != null && allianceParties.size() > 0){
 			partyIds = new ArrayList<Long>();
-			System.out.println("Partyid's" + partyIds);
+			if(logger.isDebugEnabled())
+	        	logger.debug("Partyid's" + partyIds);
 			for(SelectOptionVO partys:allianceParties){
 				partyIds.add(partys.getId());
-				System.out.println("PartyIds alliances -->"+ partys.getId());
+				if(logger.isDebugEnabled())
+		        	logger.debug("Partyid's alliances" + partys.getId());
 			}
 		}
 		else{
 			partyIds = new ArrayList<Long>();
 			partyIds.add(partyId);	
-			System.out.println("Partyid's2" + partyIds);
+			if(logger.isDebugEnabled())
+	        	logger.debug("Partyid's at else Block" + partyIds);
 		}
 	return partyIds;
 	}
@@ -288,6 +370,9 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	public List<ConstituencyElectionResults> getConstituencyElectionResults(List<Nomination> nominationsForPartyForYearOne,List<Nomination> nominationsForNewPartyForYearOne){
 		
 		List<ConstituencyElectionResults> constituencyElectionResults = new ArrayList<ConstituencyElectionResults>();
+		
+		if(logger.isDebugEnabled())
+			logger.debug("Entered Into getConstituencyElectionResults Merhod");
 		
 		for(Nomination nominationsForParty:nominationsForPartyForYearOne){
 			Constituency constituencyOne = nominationsForParty.getConstituencyElection().getConstituency();
@@ -486,7 +571,8 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		for(ConstituencyElectionsDetailedResultVO constituencyElectionsDetailedResult:constituencyElectionsDetailedResultVO){
 			
 			if(constituencyElectionsDetailedResult.getDistrictId().equals(districtId)){
-							
+						
+					
 				partyId = constituencyElectionsDetailedResult.getConstituencyElectionResultsForYearOne().getElectionResultForParty().getPartyId();
 				newPartyId = constituencyElectionsDetailedResult.getConstituencyElectionResultsForYearOne().getElectionResultForNewParty().getPartyId();
 				
@@ -564,7 +650,8 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 			return bd1.doubleValue();
 		}
 		catch(Exception e){
-			
+			if(logger.isDebugEnabled())
+				logger.debug("exception -->" + e);
 		}
 	return null;
 	}
@@ -577,7 +664,8 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 			return percentage;
 		}
 		catch(Exception e){
-			
+			if(logger.isDebugEnabled())
+				logger.debug("exception -->" + e);
 		}
 	return null;
 	}
