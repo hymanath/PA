@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.util.ServletContextAware;
 import org.springframework.web.context.ServletConfigAware;
 
@@ -34,6 +35,8 @@ public class partyInfluenceAction extends ActionSupport implements ServletContex
 	private String alliances;
 	
     private IPartyInfluenceService partyInfluenceService;
+    
+    public static final Logger logger = Logger.getLogger(partyInfluenceAction.class);
 	
 	private List<DistrictWiseConstituencyElectionResultsVO> districtWiseConstituencyElectionResultsVO;
 	private List<ConstituencyElectionsDetailedResultVO> constituencyElectionsDetailedResultVO;
@@ -137,15 +140,31 @@ public class partyInfluenceAction extends ActionSupport implements ServletContex
 	public String execute(){
 		
 		Boolean hasAlliances = new Boolean(alliances);
+		
+		if(logger.isDebugEnabled()){
+			logger.debug(" ElectionType :" + electionType);
+			logger.debug("Impacted Party :" + partyName);
+			logger.debug("New Party :" + newParty);
+			logger.debug("Election Year :" + electionYear);
+			logger.debug("State " + stateName);
+			logger.debug("Has Alliances " + hasAlliances);
+			
+		}
 	
 		partyInfluenceReportVO = partyInfluenceService.getPartyInfluenceReportResults(Long.parseLong(electionType), Long.parseLong(partyName), Long.parseLong(newParty), electionYear,hasAlliances ,Long.parseLong(stateName));
 		
-		System.out.println("StateId -->" + Long.parseLong(stateName));
+		if(partyInfluenceReportVO != null){
+			
+			Throwable ex = partyInfluenceReportVO.getExceptionEncountered();
+			if(ex != null){
+				if(logger.isDebugEnabled())
+					logger.debug(" Exception Raised " + ex);
+				return ERROR;
+				
+			}
+		}
 		
-		if(partyInfluenceReportVO != null)
-	     return Action.SUCCESS;
-		else
-		 return Action.ERROR;
+	return Action.SUCCESS;
 	}
 
 }
