@@ -374,9 +374,9 @@ public class PartyService implements IPartyService {
 		double validVotes = constElectionResult.getValidVotes();					
 		double totalVotes = constElectionResult.getTotalVotes();
 		double votingPercentage = 0;
-		if(totalVotes!=0){
-			votingPercentage = (constElectionResult.getTotalVotesPolled()*100)/totalVotes;
-		}
+		if(totalVotes!=0)
+			votingPercentage = (validVotes*100)/totalVotes;
+		
 		if(oppositePartyWhichLostOrWon != null) {
 			firstOrSecondHighestVotes = oppositePartyWhichLostOrWon.getCandidateResult().getVotesEarned();
 			oppositePartyShortNameWhichLostOrWon = oppositePartyWhichLostOrWon.getParty().getShortName();
