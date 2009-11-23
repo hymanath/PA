@@ -61,9 +61,9 @@ public class SmsCountrySmsService implements ISmsService {
 		post.addParameter("passwd", propertyService
 				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_PASSWORD));
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < mobileNumbers.length; i++) {
-			sb.append(mobileNumbers[i]);
-			if (i < (mobileNumbers.length-1))
+		for (int i = 0; i < phoneNumbers.length; i++) {
+			sb.append(phoneNumbers[i]);
+			if (i < (phoneNumbers.length-1))
 				sb.append(",");
 		}
 		System.out.println("Using "+propertyService
