@@ -1,6 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -9,6 +14,8 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothVillageCensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothDataExcelReader;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
 import com.itgrids.partyanalyst.excel.CsvException;
@@ -16,8 +23,10 @@ import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.BoothVillageCensus;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IBoothPopulationService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 
 public class BoothPopulationService implements IBoothPopulationService{
 
@@ -26,7 +35,7 @@ public class BoothPopulationService implements IBoothPopulationService{
 	private IBoothDAO boothDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IBoothVillageCensusDAO boothVillageCensusDAO;
-	
+	private IStaticDataService staticDataService;
 	public BoothPopulationService(){
 		
 	}
@@ -46,6 +55,11 @@ public class BoothPopulationService implements IBoothPopulationService{
 	public void setConstituencyElectionDAO(
 			IConstituencyElectionDAO constituencyElectionDAO) {
 		this.constituencyElectionDAO = constituencyElectionDAO;
+	}
+
+	public void setStaticDataService(
+			IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
 	}
 	
 	public IBoothDAO getBoothDAO() {
@@ -195,4 +209,88 @@ public class BoothPopulationService implements IBoothPopulationService{
 	}
 	
 
+	public List getMandalAllElectionDetails(Long tehsilID, Long partyID, boolean allianceFlag){
+		List<MandalAllElectionDetailsVO> mandalAllElectionDetails = new ArrayList<MandalAllElectionDetailsVO>();
+		// 0 - election, 1 - totalvoters , 2 - validvotes, 3- rejectedvotes, 4-tenderedvotes
+		List result = boothConstituencyElectionDAO.getAllElectionBoothVotersForMandal(tehsilID);
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+			MandalAllElectionDetailsVO objectVO = new MandalAllElectionDetailsVO();
+			Election election = (Election)obj[0];
+			objectVO.setElectionYear(election.getElectionYear());
+			objectVO.setElectionType(election.getElectionScope().getElectionType().getElectionType());
+			objectVO.setTotalVoters(new Long(obj[1].toString()));
+			objectVO.setValidVoters(new Long(obj[2].toString()));
+			objectVO.setRejectedVoters(new Long(obj[3].toString()));
+			objectVO.setTenderedVoters(new Long(obj[4].toString()));
+			objectVO.setElectionScopeID(election.getElectionScope().getElectionScopeId());
+			objectVO.setElectionID(election.getElectionId());
+			mandalAllElectionDetails.add(objectVO);
+		}
+		
+		Iterator<MandalAllElectionDetailsVO> iterator =mandalAllElectionDetails.iterator();
+		while(iterator.hasNext()){
+			MandalAllElectionDetailsVO mandalAllElectionDetailsVO = iterator.next();
+
+			StringBuilder sb = new StringBuilder();
+			if(allianceFlag){
+				List<SelectOptionVO> partyIDs = staticDataService.getAlliancePartiesAsVO(
+						mandalAllElectionDetailsVO.getElectionYear(), 
+						new Long(mandalAllElectionDetailsVO.getElectionType()), partyID);
+				for(SelectOptionVO obj : partyIDs){
+					sb.append(",").append(obj.getId());
+				}
+			}else{
+				sb.append(",").append(partyID);
+			}
+			
+			List temp = boothConstituencyElectionDAO.getPartyVotesByMandal(tehsilID, sb.substring(1), 
+					mandalAllElectionDetailsVO.getElectionID());
+			//0-firstName, 1-middlename, 2-lastname, 3-election, 4-votesearned, 5-partyId, 6-shortName
+			int i = getAlliancePartyInfo(temp, partyID);
+			Object[] obj = (Object[]) temp.get(i);
+			StringBuilder name = new StringBuilder();
+			if(obj[0]!=null){
+				name.append(obj[0].toString()).append(" ");
+			}
+			if(obj[1]!=null){
+				name.append(obj[1].toString()).append(" ");
+			}
+			if(obj[2]!=null){
+				name.append(obj[2].toString());
+			}
+			mandalAllElectionDetailsVO.setPartyShortName(obj[6].toString());
+			mandalAllElectionDetailsVO.setCandidateName(name.toString());
+			Long totalPartyVotes = new Long(obj[4].toString());
+			double partyPercentage = (totalPartyVotes*100)/mandalAllElectionDetailsVO.getValidVoters();//getTotalVoters();
+			mandalAllElectionDetailsVO.setPartyVotesPercentage(new Double(partyPercentage).toString());
+		}
+		
+		return mandalAllElectionDetails;
+	}
+	/**
+	 * checking for rebels in the the List temp and sending the alliance party handler
+	 * @param temp
+	 * @param partyID
+	 * @return
+	 */
+	private int getAlliancePartyInfo(List temp, Long partyID){
+		int result = 0;
+		if(temp.size()==0)
+			return 0;
+		long partyVotes = 0;
+		for(int i=0; i<temp.size(); i++){
+			Object[] obj = (Object[]) temp.get(i);
+			if(partyID.equals(obj[5]))
+				return i;
+			long presentPartyVotes = new Long(obj[4].toString()).longValue();
+			
+			if(presentPartyVotes>partyVotes){
+				partyVotes=presentPartyVotes;
+				result = i;
+			}						
+		}
+		return result;
+		
+	}
 }
