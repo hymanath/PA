@@ -62,49 +62,52 @@ public class ExcelBoothResultReader {
 		
 		try{
 			System.out.println("In Reader "+ filePath);
-			String headerInf[]=new String[50];
+			String headerInf[] = new String[50];
 			File exceFile= new File(filePath);
 			excelRows= new ArrayList<BoothResultExcelColumnMapper>();
 			Workbook workbook=Workbook.getWorkbook(exceFile);	
 			Sheet[] sheets = workbook.getSheets();
 			constituenciesBlocks = new ArrayList<ConstituencyBoothBlock>();
 			for(Sheet sheet:sheets){
-				//System.out.println("######### Sheet Start ##########");
+				System.out.println("######### Sheet Start ##########");
 				ConstituencyBoothBlock assemblyConstituencyBlock = new ConstituencyBoothBlock();
-				String name = sheet.getName();
+				String name = sheet.getName().trim();
+				System.out.println("Sheet Name::"+name);
 				String[] constiNameAndDistrictId = StringUtils.split(name.trim(), "_");
+				System.out.println("Size:"+constiNameAndDistrictId.length);
 				if(isParliament == true){
-					String parliamentName = constiNameAndDistrictId[0];
-					Long stateId = new Long(constiNameAndDistrictId[1]);
-					String constituencyName = constiNameAndDistrictId[2];
-					Long districtId = new Long(constiNameAndDistrictId[3]);
+					System.out.println("In true");
+					String parliamentName = constiNameAndDistrictId[0].trim();
+					System.out.println(parliamentName);
+					Long stateId = new Long(constiNameAndDistrictId[1].trim());
+					System.out.println(stateId);
+					String constituencyName = constiNameAndDistrictId[2].trim();
+					System.out.println(constituencyName);
+					Long districtId = new Long(constiNameAndDistrictId[3].trim());
+					System.out.println(districtId);
 					assemblyConstituencyBlock.setParliamentConstituencyName(parliamentName);
 					assemblyConstituencyBlock.setStateId(stateId);
 					assemblyConstituencyBlock.setConstituencyName(constituencyName);
 					assemblyConstituencyBlock.setDistrictId(districtId);
 				}
 				if(isParliament == false){
+					System.out.println("In False");
 					String constituencyName = constiNameAndDistrictId[0];
 					Long districtId = new Long(constiNameAndDistrictId[1]);
 					assemblyConstituencyBlock.setConstituencyName(constituencyName);
 					assemblyConstituencyBlock.setDistrictId(districtId);
 				}
-			//	System.out.println("constiName = "+constituencyName+" districtId = "+districtId);
 				int rows = sheet.getRows();
 				int columns = sheet.getColumns();
 				fillHeaderInfo(sheet,sheet.getColumns(),headerInf);
-			//	System.out.println("Rows::"+rows);
-			//	System.out.println("Columns::"+columns);
+				System.out.println("Rows::"+rows);
 				excelRows = getExcelRecords(sheet, rows, columns);
-			//	System.out.println("Total Records"+excelRows.size());
 				identifyRowAndBindObject(excelRows, headerInf, columns);
-			//	System.out.println("Total Booths:"+booths.size());
-			//	System.out.println("Total Candidates:"+candidates.size());
 				assemblyConstituencyBlock.setBoothResults(booths);
 				assemblyConstituencyBlock.setCandidateResults(candidates);
 				constituenciesBlocks.add(assemblyConstituencyBlock);
-			//	System.out.println("######### Sheet End ##########");
 			}
+			System.out.println("Total Sheets"+sheets.length);
 			System.out.println("Total Constituencies:"+constituenciesBlocks.size());
 		}catch(IOException ioe){
 			System.out.println("ioe =="+ioe.getMessage());
@@ -119,12 +122,12 @@ public class ExcelBoothResultReader {
 		candidates= new ArrayList<CandidateBoothWiseResult>();
 		booths= new ArrayList<BoothResultValueObject>();
 		BoothResultValueObject boothResultValueObject=null;
-		int tempInt=columnsOfExcel-3;
+		System.out.println("Total Columns::"+columnsOfExcel);
+		int tempInt=columnsOfExcel-2;
 		try{
-			for(int i=2;i<columnsOfExcel-4;i++){
+			for(int i=2;i<columnsOfExcel-3;i++){
 				CandidateBoothWiseResult candidateBoothWiseResult = new CandidateBoothWiseResult();
 				candidateBoothWiseResult.setCandidateName(headerInfo[i]);
-			//	System.out.println("Candidate Name:"+headerInfo[i]);
 				List<BoothResultExcelVO> boothResultVOs = new ArrayList<BoothResultExcelVO>();
 				for (BoothResultExcelColumnMapper boothResultExcelColumnMapper : boothResults) {
 					boothResultValueObject = new BoothResultValueObject();
@@ -136,24 +139,18 @@ public class ExcelBoothResultReader {
 							if(method.getName().equals("getColumn"+String.valueOf(i+1))){
 								boothResultExcelVO.setVotesEarned(checkForComma(longVar));
 							}
-							if(method.getName().equals("getColumn1")){
+							if(method.getName().equals("getColumn2")){
 								boothResultExcelVO.setPartNo(longVar);
 								boothResultValueObject.setPartNumber(longVar);
 							}
 							if(i==2){
 								if(method.getName().equals("getColumn"+String.valueOf(tempInt))){
-									boothResultValueObject.setTotalNoOfValidVotes(checkForComma(longVar));
-								
+									boothResultValueObject.setTotalNoOfValidVotes(checkForComma(longVar));								
 								}
 								if(method.getName().equals("getColumn"+String.valueOf(tempInt+1))){
 									boothResultValueObject.setRejectedVotes(checkForComma(longVar));
-						
 								}
 								if(method.getName().equals("getColumn"+String.valueOf(tempInt+2))){
-									boothResultValueObject.setTotalVotes(checkForComma(longVar));
-								
-								}
-								if(method.getName().equals("getColumn"+String.valueOf(tempInt+3))){
 									boothResultValueObject.setTenderedVotes(checkForComma(longVar));
 								}
 							}
@@ -179,7 +176,7 @@ public class ExcelBoothResultReader {
 
 	public static void main(String[] args) throws Exception {
 		ExcelBoothResultReader excelBoothResultReader = new ExcelBoothResultReader();
-		excelBoothResultReader.readExcel("C:/Documents and Settings/USER/Desktop/booth/upload/kavali_booth_results_2004_parliament.xls", true);
+		excelBoothResultReader.readExcel("C:/Documents and Settings/USER/Desktop/New Folder/forTest/2004_assembly_test.xls", false);
 		excelBoothResultReader.testConstituencyBlock();
 	}
 
@@ -215,6 +212,8 @@ public class ExcelBoothResultReader {
 		List<BoothResultExcelColumnMapper> totalRecords = new ArrayList<BoothResultExcelColumnMapper>();
 		for(int i=1; i< rows; i++){
 			BoothResultExcelColumnMapper record = new BoothResultExcelColumnMapper(sheet, i, columns);
+			if(StringUtils.isEmpty(record.getColumn1()))
+				break;
 			totalRecords.add(record);
 		}
 		return totalRecords;

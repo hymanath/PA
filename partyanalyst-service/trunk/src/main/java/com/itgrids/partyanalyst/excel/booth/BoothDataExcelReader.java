@@ -18,43 +18,44 @@ import com.itgrids.partyanalyst.excel.booth.BoothDataExcelColumnMapper;
 
 public class BoothDataExcelReader {
 	
-	private List<BoothInfo> boothsInfo;
-	private List<BoothDataExcelColumnMapper> boothDataExcelRows;
+	private List<BoothDataUploadVO> boothDataUploadVOs;
 	
 	public BoothDataExcelReader(){
 	}	
 
-	public List<BoothInfo> getBoothsInfo() {
-		return boothsInfo;
+	public List<BoothDataUploadVO> getBoothDataUploadVOs() {
+		return boothDataUploadVOs;
 	}
 
-	public void setBoothsInfo(List<BoothInfo> boothsInfo) {
-		this.boothsInfo = boothsInfo;
-	}
-
-	public List<BoothDataExcelColumnMapper> getBoothDataExcelRows() {
-		return boothDataExcelRows;
-	}
-
-	public void setBoothDataExcelRows(List<BoothDataExcelColumnMapper> boothDataExcelRows) {
-		this.boothDataExcelRows = boothDataExcelRows;
+	public void setBoothDataUploadVOs(List<BoothDataUploadVO> boothDataUploadVOs) {
+		this.boothDataUploadVOs = boothDataUploadVOs;
 	}
 
 	public void readExcelFile(String filePath) throws CsvException{
-		BoothDataExcelColumnMapper boothDataExcelColumnMapper;
 		try{
 			File exceFile = new File(filePath);
-			boothDataExcelRows = new ArrayList<BoothDataExcelColumnMapper>();
 			Workbook workbook=Workbook.getWorkbook(exceFile);	
-			Sheet sheet = workbook.getSheet(0);		
-			System.out.println("Rows::"+sheet.getRows());
-			System.out.println("Columns::"+sheet.getColumns());
-			for (int row = 1; row < sheet.getRows(); row++) {
-				boothDataExcelColumnMapper = new BoothDataExcelColumnMapper(sheet,row,sheet.getColumns());
-				boothDataExcelRows.add(boothDataExcelColumnMapper);
+			Sheet[] sheets = workbook.getSheets();
+			boothDataUploadVOs = new ArrayList<BoothDataUploadVO>();
+			for(Sheet sheet:sheets){
+				BoothDataUploadVO boothDataUploadVO = new BoothDataUploadVO();
+				String sheetName  = sheet.getName();
+				String [] constituencyAndDistrinct = StringUtils.split(sheetName,"_");
+				String constituencyName = constituencyAndDistrinct[0];
+				String districtId = constituencyAndDistrinct[1];
+				boothDataUploadVO.setConstituencyName(constituencyName);
+				boothDataUploadVO.setDistrictId(new Long(districtId.trim()));
+				List<BoothDataExcelColumnMapper> boothDataExcelRows = new ArrayList<BoothDataExcelColumnMapper>();
+				for (int row = 1; row < sheet.getRows(); row++) {
+					BoothDataExcelColumnMapper boothDataExcelColumnMapper = new BoothDataExcelColumnMapper(sheet,row,sheet.getColumns());
+					if(StringUtils.isEmpty(boothDataExcelColumnMapper.getColumn1()))
+						break;
+					boothDataExcelRows.add(boothDataExcelColumnMapper);
+				}
+				
+				boothDataUploadVO.setBooths(identifyRowAndBindObject(boothDataExcelRows));
+				boothDataUploadVOs.add(boothDataUploadVO);
 			}
-			System.out.println("Total No.Of Rows Read From Excel::"+boothDataExcelRows.size());
-			identifyRowAndBindObject(boothDataExcelRows);
 		} catch(IOException ioe){
 			throw new CsvException(ioe.getMessage());
 		}catch(BiffException ioe){
@@ -64,9 +65,8 @@ public class BoothDataExcelReader {
 		}
 	}
 	
-	public void identifyRowAndBindObject(List<BoothDataExcelColumnMapper> boothDataExcelRows) throws CsvException{
-		System.out.println("Total Rows In the Booth#"+boothDataExcelRows.size());
-		boothsInfo = new ArrayList<BoothInfo>();
+	public List<BoothInfo> identifyRowAndBindObject(List<BoothDataExcelColumnMapper> boothDataExcelRows) throws CsvException{
+		List<BoothInfo> boothsInfo = new ArrayList<BoothInfo>();
 		try{
 			for(BoothDataExcelColumnMapper boothDataExcelRow:boothDataExcelRows){
 				BoothInfo boothRecord = new BoothInfo();
@@ -74,70 +74,40 @@ public class BoothDataExcelReader {
 				for(Method method:methods){
 					if(method.getName().startsWith("get")){
 						String stringVar=(String)method.invoke(boothDataExcelRow, null);
-						System.out.println("Siva  "+stringVar+"Method Name:"+method.getName());
-						if(method.getName().equals("getColumn1")){
-							System.out.println("DistrictName "+stringVar);
-							boothRecord.setDistrictName(stringVar);
-						}
-						else
 						if(method.getName().equals("getColumn2")){
-							boothRecord.setDistrictId(checkAndAssignLong(stringVar));
-							System.out.println("DistrictId "+stringVar);
+							boothRecord.setMandalName(stringVar);
 						}
 						else
 						if(method.getName().equals("getColumn3")){
-							boothRecord.setConstituencyNo(checkAndAssignLong(stringVar));
-							System.out.println("ConstituencyNo "+stringVar);
+							boothRecord.setPartNo(stringVar);
 						}
 						else
 						if(method.getName().equals("getColumn4")){
-							System.out.println("ConstituencyName "+stringVar);
-							boothRecord.setConstituencyName(stringVar);
+							boothRecord.setPartName(stringVar);
+						}
+						else
+						if(method.getName().equals("getColumn5")){
+							boothRecord.setLocation(stringVar);
 						}
 						else
 						if(method.getName().equals("getColumn6")){
-							boothRecord.setMandalName(stringVar);
-							System.out.println("MandalName "+stringVar);
+							boothRecord.setVillagesCovered(stringVar);
 						}
 						else
 						if(method.getName().equals("getColumn7")){
-							boothRecord.setPartNo(stringVar);
-							System.out.println("PartNo "+stringVar);
+							boothRecord.setCensusCode(checkForSpecialCharacterInCensusCodes(stringVar));
 						}
 						else
 						if(method.getName().equals("getColumn8")){
-							boothRecord.setPartName(stringVar);
-							System.out.println("PartName "+stringVar);
+							boothRecord.setMaleVoters(stringVar);
 						}
 						else
 						if(method.getName().equals("getColumn9")){
-							boothRecord.setLocation(stringVar);
-							System.out.println("Location "+stringVar);
+							boothRecord.setFemaleVoters(stringVar);
 						}
 						else
 						if(method.getName().equals("getColumn10")){
-							boothRecord.setVillagesCovered(stringVar);
-							System.out.println("VillagesCovered "+stringVar);
-						}
-						else
-						if(method.getName().equals("getColumn11")){
-							boothRecord.setCensusCode(stringVar);
-							System.out.println("CensusCode "+stringVar);
-						}
-						else
-						if(method.getName().equals("getColumn12")){
-							boothRecord.setMaleVoters(checkAndAssignLong(stringVar));
-							System.out.println("MaleVoters "+stringVar);
-						}
-						else
-						if(method.getName().equals("getColumn13")){
-							boothRecord.setFemaleVoters(checkAndAssignLong(stringVar));
-							System.out.println("FemaleVoters "+stringVar);
-						}
-						else
-						if(method.getName().equals("getColumn14")){
-							boothRecord.setTotalVoters(checkAndAssignLong(stringVar));
-							System.out.println("TotalVoters "+stringVar);
+							boothRecord.setTotalVoters(stringVar);
 						}
 					}
 				}
@@ -150,21 +120,48 @@ public class BoothDataExcelReader {
 		}catch(IllegalAccessException iace){
 			throw new CsvException(iace.getMessage());
 		}
-		
+		return boothsInfo;
 	}
 	
-	public Long checkAndAssignLong(String value){
-		System.out.println();
-		Long longVal = new Long(0);
-		if(!StringUtils.isEmpty(value))
-			if(StringUtils.isNumeric(value.trim()))
-				longVal = new Long(value);
-		return longVal;
+	public void testExcelReading(){
+		System.out.println("Total Constituencies:"+boothDataUploadVOs.size());
+		for(BoothDataUploadVO boothDataUploadVO:boothDataUploadVOs){
+			System.out.println("Constituency Name:"+boothDataUploadVO.getConstituencyName());
+			System.out.println("District Id:"+boothDataUploadVO.getDistrictId());
+			System.out.println("Total Booths : "+ boothDataUploadVO.getBooths().size());
+			int i = 0;
+			for(BoothInfo booth:boothDataUploadVO.getBooths()){
+				System.out.print(booth.getMandalName()+" ");
+				System.out.print(booth.getPartNo()+" ");
+				System.out.print(booth.getPartName()+" ");
+				System.out.print(booth.getVillagesCovered()+" ");
+				System.out.print(booth.getLocation()+" ");
+				System.out.print(booth.getCensusCode()+" ");
+				System.out.print(booth.getMaleVoters()+" ");
+				System.out.print(booth.getFemaleVoters()+" ");
+				System.out.println(booth.getTotalVoters()+" ");
+				i++;
+				if(i==9)
+					break;
+			}
+		}
+	}
+	
+	public String checkForSpecialCharacterInCensusCodes(String censusCode){
+		Long value = new Long(0);
+		if(StringUtils.isEmpty(censusCode))
+			return value.toString();
+		if(StringUtils.contains(censusCode, "'")){
+			censusCode = StringUtils.replace(censusCode, "'", "");
+			System.out.print(censusCode+",");
+		}
+		return censusCode.trim();
 	}
 	
 	public static void main(String[] args)throws Exception {
 		BoothDataExcelReader reader = new BoothDataExcelReader();
-		reader.readExcelFile("C:/Documents and Settings/USER/Desktop/booth/kavali_booth_data_2004.xls");
+		reader.readExcelFile("C:/Documents and Settings/USER/Desktop/New Folder/forTest/Nelloreboothdata2004_test.xls");
+		reader.testExcelReading();
 	}
 	
 }

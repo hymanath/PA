@@ -2,18 +2,14 @@ package com.itgrids.partyanalyst.excel.booth;
 
 public class BoothInfo {
 	
-	private String districtName;
-	private Long districtId;
 	private String partNo;
 	private String partName;
 	private String location;
 	private String villagesCovered;
 	private String mandalName;
-	private Long maleVoters;
-	private Long femaleVoters;
-	private Long totalVoters;
-	private String constituencyName;
-	private Long constituencyNo;
+	private String maleVoters;
+	private String femaleVoters;
+	private String totalVoters;
 	private String censusCode;
 	
 	public BoothInfo(){
@@ -22,12 +18,10 @@ public class BoothInfo {
 
 	public BoothInfo(String districtName, Long districtId, String partNo,
 			String partName, String location, String villagesCovered,
-			String mandalName, Long maleVoters, Long femaleVoters,
-			Long totalVoters, String constituencyName, Long constituencyNo,
+			String mandalName, String maleVoters, String femaleVoters,
+			String totalVoters, String constituencyName, String constituencyNo,
 			String censusCode) {
 		super();
-		this.districtName = districtName;
-		this.districtId = districtId;
 		this.partNo = partNo;
 		this.partName = partName;
 		this.location = location;
@@ -36,25 +30,7 @@ public class BoothInfo {
 		this.maleVoters = maleVoters;
 		this.femaleVoters = femaleVoters;
 		this.totalVoters = totalVoters;
-		this.constituencyName = constituencyName;
-		this.constituencyNo = constituencyNo;
 		this.censusCode = censusCode;
-	}
-
-	public String getDistrictName() {
-		return districtName;
-	}
-
-	public void setDistrictName(String districtName) {
-		this.districtName = districtName;
-	}
-
-	public Long getDistrictId() {
-		return districtId;
-	}
-
-	public void setDistrictId(Long districtId) {
-		this.districtId = districtId;
 	}
 
 	public String getPartNo() {
@@ -97,44 +73,28 @@ public class BoothInfo {
 		this.mandalName = mandalName;
 	}
 
-	public Long getMaleVoters() {
+	public String getMaleVoters() {
 		return maleVoters;
 	}
 
-	public void setMaleVoters(Long maleVoters) {
+	public void setMaleVoters(String maleVoters) {
 		this.maleVoters = maleVoters;
 	}
 
-	public Long getFemaleVoters() {
+	public String getFemaleVoters() {
 		return femaleVoters;
 	}
 
-	public void setFemaleVoters(Long femaleVoters) {
+	public void setFemaleVoters(String femaleVoters) {
 		this.femaleVoters = femaleVoters;
 	}
 
-	public Long getTotalVoters() {
+	public String getTotalVoters() {
 		return totalVoters;
 	}
 
-	public void setTotalVoters(Long totalVoters) {
+	public void setTotalVoters(String totalVoters) {
 		this.totalVoters = totalVoters;
-	}
-
-	public String getConstituencyName() {
-		return constituencyName;
-	}
-
-	public void setConstituencyName(String constituencyName) {
-		this.constituencyName = constituencyName;
-	}
-
-	public Long getConstituencyNo() {
-		return constituencyNo;
-	}
-
-	public void setConstituencyNo(Long constituencyNo) {
-		this.constituencyNo = constituencyNo;
 	}
 
 	public String getCensusCode() {
