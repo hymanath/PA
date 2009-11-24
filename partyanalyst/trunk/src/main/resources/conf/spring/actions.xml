@@ -142,5 +142,9 @@
 	</bean>
 	
 	<bean id="districtPageAction" class="com.itgrids.partyanalyst.web.action.DistrictPageAction" singleton="false"/>
-	
+		
+	<bean id="staticDataAction" class="com.itgrids.partyanalyst.web.action.StaticDataAction" singleton="false">
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
 </beans>
