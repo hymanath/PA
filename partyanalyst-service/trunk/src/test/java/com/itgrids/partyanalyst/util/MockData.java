@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
 
 
 public class MockData {
@@ -87,6 +88,15 @@ public class MockData {
 		
 	}
 	 
+	public static List<Tehsil> getTehsils(){
+		List<Tehsil> tehsils = new ArrayList<Tehsil>();
+		Tehsil obj = new Tehsil();
+		obj.setTehsilName("Kondapuram");
+		obj.setDistrict(district);
+		tehsils.add(obj);		
+		return tehsils;
+	}
+	
 	public static List<Party> getParties(){
 		//Party dummy1 = new Party(new Long(1), "longName", "shortName",null, null, null,null, Set<Nomination> nominations);
 		Party dummy1 = new Party(new Long(1), "Indian National Congress", "INC",null, null, null,null, null);

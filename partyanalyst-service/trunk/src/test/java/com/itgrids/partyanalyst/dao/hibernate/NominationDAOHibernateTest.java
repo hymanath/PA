@@ -1,19 +1,19 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
-import junit.framework.Assert;
+import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
+import org.junit.Assert;
 
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyRebelCandidateDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyRebelCandidate;
 
 public class NominationDAOHibernateTest extends BaseDaoTestCase {
@@ -36,7 +36,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		for(Nomination nomination: actualResult)
 			System.out.println("NominationID=:"+nomination.getNominationId()+" partyID=:"+nomination.getParty().getPartyId());
 		Assert.assertEquals(10, actualResult.size());
-	}*/
+	}
 	
 	
 	public void testFindByStatePartyAndElectionId() {
@@ -55,4 +55,34 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}
 	
+	public void testParliamentConstituencyNomination(){
+		List<Nomination> list = nominationDAO.findByConstituencyPartyAndElectionYear(new Long(1), new Long(913), "2004");
+		System.out.println(list);
+		assertEquals(list.get(0).getCandidate().getLastname(), "Magunta");
+	}
+	
+	public void testFindPartiesForConstituencyAndElection(){
+		List<Party> list = nominationDAO.findPartiesByConstituencyAndElection(new Long(232), "2009");
+		System.out.println(list.get(0).getLongName());
+		assertEquals(10, list.size());
+		
+	}
+	
+	public void testFindByConstituencyPartyAndElectionYear(){
+		List<Nomination> list = nominationDAO.findByConstituencyPartyAndElectionYear(new Long(1), new Long(232), "2009");
+		assertEquals(1, list.size());
+	}
+	
+	public void testFindConstitueniesByPartyAndElectionType(){
+		List<Constituency> list = nominationDAO.findConstitueniesByPartyAndElectionType(new Long(1), new Long(1), "2004");
+		assertEquals(1, list.size());
+	}*/
+	
+	public void testFindByConstituencyPartyAndElectionYearIncludingAliance(){
+		List<Long> partyIds = new ArrayList<Long>();
+		partyIds.add(new Long(1));
+		partyIds.add(new Long(11));
+		List<Nomination> list = nominationDAO.findByConstituencyPartyAndElectionYearIncludingAliance(partyIds, new Long(408), "2009");
+		assertEquals(1, list.size());
+	}
 }

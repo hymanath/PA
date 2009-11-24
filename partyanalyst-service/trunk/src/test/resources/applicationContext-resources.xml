@@ -64,6 +64,10 @@
 				<value>com.itgrids.partyanalyst.model.PartyRebelCandidate</value>
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandal</value>
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituency</value>
+				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyAssemblyDetails</value>
+				<value>com.itgrids.partyanalyst.model.CandidateBoothResult</value>
+				<value>com.itgrids.partyanalyst.model.NominationHistory</value>
+				<value>com.itgrids.partyanalyst.model.CandidateConsolidationTask</value>
 			</list>
 		</property>
 	</bean>
@@ -197,8 +201,21 @@
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 	</bean>
     <bean id="excelToDBServiice" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService">
-    	<property name="excelDAO" ref="excelDAO" />
+    	<property name="excelDAO" ref="excelDAO" /> 
     </bean>
+    <bean id="crossVotingEstimationService" class="com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService">
+    	<property name="boothDAO" ref="boothDAO" />
+    	<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+    	<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+    	<property name="nominationDAO" ref="nominationDAO" />
+    	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+    </bean>
+     <bean id="delimitationConstituencyAssemblyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyAssemblyDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	 <bean id="candidateBoothResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateBoothResultDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
     <bean id="boothDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
