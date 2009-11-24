@@ -130,10 +130,12 @@
 		
 		<action name="boothUploadAction" class="com.itgrids.partyanalyst.web.action.BoothUploadAction">
            <result name="success">/jsp/boothUpload.jsp</result>
+           <result name="error">/jsp/mandalPageFail.jsp</result>
         </action>
         
         <action name="boothResultUploadAction" class="com.itgrids.partyanalyst.web.action.BoothResultUploadAction">
            <result name="success">/jsp/uploadBoothResult.jsp</result>
+           <result name="error">/jsp/mandalPageFail.jsp</result>
         </action>
 		
 		<action name="partyBoothResultAction" class="partyBoothResultAction">
