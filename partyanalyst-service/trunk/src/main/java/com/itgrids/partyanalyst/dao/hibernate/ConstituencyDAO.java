@@ -84,6 +84,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return getHibernateTemplate().find("from Constituency model where model.electionScope.electionScopeId = ?",scopeID);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Constituency> getConstituenciesByDistrictID (Long districtID)
 	{
 		return getHibernateTemplate().find("from Constituency model where model.district.districtId = ?",districtID);

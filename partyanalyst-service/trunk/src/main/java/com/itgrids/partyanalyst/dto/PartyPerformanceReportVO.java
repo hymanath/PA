@@ -65,6 +65,11 @@ public class PartyPerformanceReportVO extends BaseObject {
 	private List<ConstituencyPositionDetailVO> partyWinners;
 	private List<ConstituencyPositionDetailVO> partyLosers;
 	private String district;
+	private Long electionTypeId;
+	private Long stateId;
+	private Long partyId;
+	private Long districtId;
+	private Boolean hasAlliances;
 	
 	public List<ConstituencyPositionDetailVO> getPartyWinners() {
 		return partyWinners;
@@ -258,4 +263,45 @@ public class PartyPerformanceReportVO extends BaseObject {
 		this.district = districtName;
 	}
 
+	public Long getElectionTypeId() {
+		return electionTypeId;
+	}
+
+	public void setElectionTypeId(Long electionTypeId) {
+		this.electionTypeId = electionTypeId;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public Boolean getHasAlliances() {
+		return hasAlliances;
+	}
+
+	public void setHasAlliances(Boolean hasAlliances) {
+		this.hasAlliances = hasAlliances;
+	}
+
+	
 }
