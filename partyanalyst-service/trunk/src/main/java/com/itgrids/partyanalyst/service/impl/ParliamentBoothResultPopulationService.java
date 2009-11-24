@@ -3,12 +3,15 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
-import com.itgrids.partyanalyst.excel.CsvException;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.excel.booth.BoothResultExcelVO;
 import com.itgrids.partyanalyst.excel.booth.BoothResultValueObject;
 import com.itgrids.partyanalyst.excel.booth.CandidateBoothWiseResult;
@@ -29,6 +32,7 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 	private IBoothResultDAO boothResultDAO;
 	private INominationDAO nominationDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
+	private static final Logger log = Logger.getLogger(ParliamentBoothResultPopulationService.class);
 	
 	public IBoothConstituencyElectionDAO getBoothConstituencyElectionDAO() {
 		return boothConstituencyElectionDAO;
@@ -73,15 +77,36 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 		this.candidateBoothResultDAO = candidateBoothResultDAO;
 	}
 	
-	public void readExcel(String filePath, Long electionScopeId, String electionYear) throws CsvException{
-		ExcelBoothResultReader excel = new ExcelBoothResultReader();
-		excel.readExcel(filePath, true);
-		List<ConstituencyBoothBlock> list = excel.getConstituenciesBlocsks();
-		for(ConstituencyBoothBlock constituencyBoothBlock:list)
-			insertParliamentBoothConstiElection(constituencyBoothBlock, electionScopeId, electionYear);
+	public ResultStatus readExcel(String filePath, Long electionScopeId, String electionYear){
+		ResultStatus resultVO = new ResultStatus();
+		try{
+			ExcelBoothResultReader excel = new ExcelBoothResultReader();
+			excel.readExcel(filePath, true);
+			List<ConstituencyBoothBlock> list = excel.getConstituenciesBlocsks();
+			for(ConstituencyBoothBlock constituencyBoothBlock:list){
+				String parliamentConstituencyName = constituencyBoothBlock.getParliamentConstituencyName();
+				List<BoothResult> boothResults = boothResultDAO.findByConstituencyAndElection(parliamentConstituencyName, electionYear, electionScopeId);
+				if(boothResults.size() > 0){
+					if(log.isDebugEnabled()){
+						log.debug("Booth Results Already Exists For ElectionYear::"+electionYear+" Constituency Name::"+parliamentConstituencyName);
+					}
+					continue;
+				}
+				insertParliamentBoothConstiElection(constituencyBoothBlock, electionScopeId, electionYear);
+			}
+		}catch(IndexOutOfBoundsException ex){
+			resultVO.setExceptionEncountered(ex);
+			resultVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+			resultVO.setResultPartial(true);
+		}catch(Exception ex){
+			resultVO.setExceptionEncountered(ex);
+			resultVO.setResultCode(ResultCodeMapper.FAILURE);
+			resultVO.setResultPartial(true);
+		}
+		return resultVO;
 	}
 
-	public void insertParliamentBoothConstiElection(ConstituencyBoothBlock constituencyBoothBlock, Long electionScopeId, String electionYear){
+	public void insertParliamentBoothConstiElection(ConstituencyBoothBlock constituencyBoothBlock, Long electionScopeId, String electionYear)throws Exception{
 		String parliamentConstituencyName = constituencyBoothBlock.getParliamentConstituencyName();
 		String assemblyConstituencyName = constituencyBoothBlock.getConstituencyName();
 		Long stateId = constituencyBoothBlock.getStateId();
@@ -89,34 +114,62 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 		List<CandidateBoothWiseResult> candidateResults = constituencyBoothBlock.getCandidateResults();
 		List<BoothResultValueObject> boothResults = constituencyBoothBlock.getBoothResults();
 		List<ConstituencyElection> assemblyConstituencyElections = constituencyElectionDAO.findByConstituencyElectionAndDistrict(electionYear, assemblyConstituencyName, new Long(2), districtId);
-		List<Booth> booths = boothConstituencyElectionDAO.findBoothsByConstituencyElection(assemblyConstituencyElections.get(0).getConstiElecId());
 		List<ConstituencyElection> parliamentConstituencyElections = constituencyElectionDAO.findByConstituencyElectionAndState(electionYear, parliamentConstituencyName, electionScopeId, stateId);
+		if(assemblyConstituencyElections.size() != 1 || parliamentConstituencyElections.size() != 1 ){
+			if(log.isDebugEnabled()){
+				log.error("Exists More than One Parliament Or Assembly Constituency Election For :"+assemblyConstituencyName+","+parliamentConstituencyName);
+			}
+		}
+		
 		List<BoothConstituencyElection> boothConstituencyElections = new ArrayList<BoothConstituencyElection>();
+		List<Booth> booths = boothConstituencyElectionDAO.findBoothsByConstituencyElection(assemblyConstituencyElections.get(0).getConstiElecId());		
+		if(log.isDebugEnabled()){
+			log.debug("Total Booths::"+booths.size());
+		}
 		for(Booth booth:booths){
-			BoothConstituencyElection boothConstituencyElection = boothConstituencyElectionDAO.findByBoothAndConstiuencyElection(booth.getPartNo(), parliamentConstituencyElections.get(0).getConstiElecId());
-			if(boothConstituencyElection != null){
-				System.out.println("boothConstituencyElection Already Exists with Id ::"+boothConstituencyElection.getBoothConstituencyElectionId());
+			List<BoothConstituencyElection> boothConstituencyElectionModels = boothConstituencyElectionDAO.findByBoothAndConstiuencyElection(booth.getPartNo(), parliamentConstituencyElections.get(0).getConstiElecId());
+			if(boothConstituencyElectionModels.size() > 0){
+				if(log.isDebugEnabled()){
+					log.error("boothConstituencyElection Already Exists with Id ::"+boothConstituencyElectionModels.get(0).getBoothConstituencyElectionId());
+				}
 				return;
 			}
 			else{
-				boothConstituencyElection = new BoothConstituencyElection(booth, parliamentConstituencyElections.get(0), null, null);
+				BoothConstituencyElection boothConstituencyElection = new BoothConstituencyElection(booth, parliamentConstituencyElections.get(0), null, null);
 				boothConstituencyElections.add(boothConstituencyElectionDAO.save(boothConstituencyElection));
+				if(log.isDebugEnabled()){
+					log.info("boothConstituencyElection List size ::"+boothConstituencyElectionModels.size()+"");
+				}
 			}
+		}
+		if(log.isDebugEnabled()){
+			log.debug("Parliament Constituency Name:"+parliamentConstituencyName+" And Assembly Constituency name::"+assemblyConstituencyName);
+			log.debug("assemblyConstituencyElectionId and parliamentConstituencyElectionId are ::"+assemblyConstituencyElections.get(0).getConstiElecId()+","+parliamentConstituencyElections.get(0).getConstiElecId());
+			
 		}
 		checkAndInsertBoothResult(parliamentConstituencyElections.get(0), candidateResults, boothResults, boothConstituencyElections);
 	}
 
-	public void checkAndInsertBoothResult(ConstituencyElection constiElecObj, List<CandidateBoothWiseResult> candidateResults, List<BoothResultValueObject> boothResults, List<BoothConstituencyElection> boothConstituencyElections){
+	public void checkAndInsertBoothResult(ConstituencyElection constiElecObj, List<CandidateBoothWiseResult> candidateResults, List<BoothResultValueObject> boothResults, List<BoothConstituencyElection> boothConstituencyElections)throws Exception{
+		
 		for(int i =0 ; i<boothResults.size(); i++){
 			List<BoothResult> boothResultModels = boothResultDAO.findByBoothConstituencyElection(boothConstituencyElections.get(i).getBoothConstituencyElectionId());
-			if(boothResultModels != null && boothResultModels.size()>0){
-				System.out.println("Booth Result Already Exists With BoothConstiElecId:"+boothConstituencyElections.get(i).getBoothConstituencyElectionId());
+			if(boothResultModels.size()>0){
+				if(log.isDebugEnabled()){
+					log.error("Booth Result Already Exists With BoothConstiElecId:"+boothConstituencyElections.get(i).getBoothConstituencyElectionId());
+				}
 			}
 			BoothResult boothResultModel = new BoothResult(boothConstituencyElections.get(i), boothResults.get(i).getTotalNoOfValidVotes(), boothResults.get(i).getRejectedVotes(), boothResults.get(i).getTenderedVotes());
 			boothResultDAO.save(boothResultModel);
 		}		
 		for(CandidateBoothWiseResult candidateBoothWiseResult:candidateResults){
-			Nomination nomination = nominationDAO.findByConstituencyElectionAndCandidate(candidateBoothWiseResult.getCandidateName() , constiElecObj.getConstiElecId());
+			List<Nomination> nominations  = nominationDAO.findByConstituencyElectionAndCandidate(candidateBoothWiseResult.getCandidateName() , constiElecObj.getConstiElecId());
+			if(nominations.size() != 1){
+				if(log.isDebugEnabled()){
+					log.error("Exists More than One Or No Nominations for Part No:"+candidateBoothWiseResult.getCandidateName()+","+constiElecObj.getConstiElecId());
+				}
+			}
+			Nomination nomination = nominations.get(0);
 			List<BoothResultExcelVO> boothResultsForCandidate = candidateBoothWiseResult.getBoothresults();
 			for(int i=0; i<boothResultsForCandidate.size(); i++){
 				BoothConstituencyElection boothConstituencyElection = boothConstituencyElections.get(i);
@@ -125,12 +178,13 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 		}
 	}
 			
-	public CandidateBoothResult insertCandidateBoothResult(Nomination nomination, BoothConstituencyElection boothConstituencyElection, Long votesEarned){
+	public CandidateBoothResult insertCandidateBoothResult(Nomination nomination, BoothConstituencyElection boothConstituencyElection, Long votesEarned)throws Exception{
 		CandidateBoothResult candidateBoothResult = null;
-		candidateBoothResult = candidateBoothResultDAO.findByNominationAndBoothConstituencyElection(nomination.getNominationId(), boothConstituencyElection.getBoothConstituencyElectionId());
-		if(candidateBoothResult != null){
-			System.out.println("Booth Result Already Exists With NominationId:"+nomination.getNominationId()+"And BoothConstiElecId:"+boothConstituencyElection.getBoothConstituencyElectionId());
-			return candidateBoothResult;
+		List<CandidateBoothResult> candidateBoothResults = candidateBoothResultDAO.findByNominationAndBoothConstituencyElection(nomination.getNominationId(), boothConstituencyElection.getBoothConstituencyElectionId());
+		if(candidateBoothResults.size() > 0){
+			if(log.isDebugEnabled()){
+				log.error("CandidateBoothResults Already Exists With NominationId:"+nomination.getNominationId()+"And BoothConstiElecId:"+boothConstituencyElection.getBoothConstituencyElectionId());
+			}
 		}
 		candidateBoothResult = new CandidateBoothResult(votesEarned, nomination, null, boothConstituencyElection);
 		return candidateBoothResultDAO.save(candidateBoothResult);

@@ -2,7 +2,10 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -18,16 +21,22 @@ import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.CrossVotedBoothVOComparator;
+import com.itgrids.partyanalyst.utils.CrossVotedMandalVOComparator;
 
 public class CrossVotingEstimationService implements ICrossVotingEstimationService{
 
+	private static final Logger log = Logger.getLogger(SmsCountrySmsService.class);
 	private IBoothDAO boothDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;	
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private INominationDAO nominationDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IStaticDataService staticDataService;
 	
 	public INominationDAO getNominationDAO() {
 		return nominationDAO;
@@ -79,14 +88,43 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		return constituencyVOs;
 	}
 	
-	public CrossVotingConsolidateVO getConsolidatedCrossVotingDetails(String electionYear, Long partyId, Long acId, Long pcId){
+	public List<SelectOptionVO> getPartiesForConstituency(Long assemblyId, String electionYear){
+		List<Party> parties = nominationDAO.findPartiesByConstituencyAndElection(assemblyId, electionYear);
+		List<SelectOptionVO> partyVOs = new ArrayList<SelectOptionVO>();
+		for(Party party:parties){
+			SelectOptionVO partyVO = new SelectOptionVO(party.getPartyId(), party.getShortName());
+			partyVOs.add(partyVO);
+		}
+		return partyVOs;		
+	}
+	
+	public CrossVotingConsolidateVO getConsolidatedCrossVotingDetails(String electionYear, Long partyId, Long acId, Long pcId, String includeAliance){
 		CrossVotingConsolidateVO crossVotingConsolidateVO = new CrossVotingConsolidateVO(); 
 		CrossVotedCandidateVO acCandidate = new CrossVotedCandidateVO();
 		CrossVotedCandidateVO pcCandidate = new CrossVotedCandidateVO();
 		List<Nomination> acNominations = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, acId, electionYear);
-		List<Nomination> pcNominations = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, pcId, electionYear);
-		if((acNominations.size() > 1 || acNominations == null)&&(pcNominations.size() > 1 || pcNominations == null)){
-			System.out.println("--------Exists More than One Nominations For the Give Cryteria-----");
+		List<Nomination> pcNominations;
+		if(includeAliance.equals("true")){
+			List<SelectOptionVO> alianceParties = staticDataService.getAlliancePartiesAsVO(electionYear, new Long(1), partyId);
+			if(alianceParties.size() == 0){
+				crossVotingConsolidateVO.setHasAlliance(false);
+				return crossVotingConsolidateVO;
+			}
+			List<Long> aliancePartyIds = new ArrayList<Long>();
+			for(SelectOptionVO alianceParty:alianceParties)
+				aliancePartyIds.add(alianceParty.getId());
+			pcNominations = nominationDAO.findByConstituencyPartyAndElectionYearIncludingAliance(aliancePartyIds, pcId, electionYear);
+		}else{
+			pcNominations = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, pcId, electionYear);
+		}						
+		if(((acNominations.size() != 1)||(pcNominations.size() != 1))&& includeAliance.equals("false")){
+			if(pcNominations.size() == 0){
+				crossVotingConsolidateVO.setPartyPartisipated(false);
+				return crossVotingConsolidateVO;
+			}
+			if(log.isInfoEnabled()){
+				log.debug("--------Exists More than One Nominations For the Give Cryteria-----");
+			}	
 		}
 		Nomination acNomination = acNominations.get(0);
 		acCandidate.setCandidateId(acNomination.getCandidate().getCandidateId());
@@ -102,7 +140,10 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		pcCandidate.setVotesPercentage(pcNomination.getCandidateResult().getVotesPercengate());
 		crossVotingConsolidateVO.setAcCandidateData(acCandidate);
 		crossVotingConsolidateVO.setPcCandidateData(pcCandidate);
-		crossVotingConsolidateVO.setMandals(getTehsilsForConstituency(electionYear, partyId, acId));
+		List<CrossVotedMandalVO> mandals = getTehsilsForConstituency(electionYear, partyId, acId);
+		CrossVotedMandalVOComparator comparator = new CrossVotedMandalVOComparator();
+		Collections.sort(mandals, comparator);
+		crossVotingConsolidateVO.setMandals(mandals);
 		return crossVotingConsolidateVO;
 	}
 	
@@ -113,19 +154,21 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		for(Tehsil tehsil:tehsils){
 			CrossVotedMandalVO crossVotedMandalVO = new CrossVotedMandalVO();
 			crossVotedMandalVO.setMandalName(tehsil.getTehsilName());
-			crossVotedMandalVO.setCrossVotedBooths(getCrossVotingDetails(tehsil.getTehsilId(), partyId, electionYear, crossVotedMandalVO));
+			List<CrossVotedBoothVO> crossVotedBooths = getCrossVotingDetails(tehsil.getTehsilId(), partyId, electionYear, crossVotedMandalVO);
+			CrossVotedBoothVOComparator comparator  = new CrossVotedBoothVOComparator(); 
+			Collections.sort(crossVotedBooths, comparator);
+			crossVotedMandalVO.setCrossVotedBooths(crossVotedBooths);
 			crossVotedMandalVOs.add(crossVotedMandalVO);
 		}
 		long endTimeMillis = System.currentTimeMillis();
-		System.out.println("beginTimeMillis:"+beginTimeMillis);
-		System.out.println("endTimeMillis:"+endTimeMillis);
-		System.out.println("Total time taken:" + (endTimeMillis-beginTimeMillis)/1000);
-		System.out.println("IN getTehsilsForConstituency "+tehsils.size());
+		if(log.isInfoEnabled()){
+			log.info("Total time taken:" + (endTimeMillis-beginTimeMillis)/1000);
+			log.info("IN getTehsilsForConstituency "+tehsils.size());
+		}	
 		return crossVotedMandalVOs;
 	}
 	
 	public List<CrossVotedBoothVO> getCrossVotingDetails(Long tehsilId, Long partyId, String electionYear, CrossVotedMandalVO crossVotedMandalVO){
-		System.out.println("IN getCrossVotingDetails mandal Id::"+tehsilId);
 		List<CrossVotedBoothVO> crossVotingInfoVOs = new ArrayList<CrossVotedBoothVO>();
 		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByTehsilElectionAndScope(electionYear, new Long(1), tehsilId);
 		Long acValidVotesInMandal = new Long(0);
@@ -176,9 +219,16 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		BigDecimal percentage= new BigDecimal(0.0);
 		if((validVotes!=null && validVotes.longValue()>0) && (votesEarned!=null && votesEarned.longValue()>0)){
 			percentage= new BigDecimal((votesEarned.floatValue()/validVotes.floatValue())*100).setScale (2,BigDecimal.ROUND_HALF_UP);
-			//System.out.println("Percentage::"+percentage);
 		}
 		return percentage.toString();
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
 	}
 	
 }
