@@ -7,6 +7,8 @@ public class CrossVotingConsolidateVO {
 	private CrossVotedCandidateVO acCandidateData;
 	private CrossVotedCandidateVO pcCandidateData;
 	private List<CrossVotedMandalVO> mandals;
+	boolean partyPartisipated = true;
+	boolean hasAlliance = true;
 	
 	public CrossVotingConsolidateVO(){
 		
@@ -42,6 +44,22 @@ public class CrossVotingConsolidateVO {
 
 	public void setMandals(List<CrossVotedMandalVO> mandals) {
 		this.mandals = mandals;
+	}
+
+	public boolean getPartyPartisipated() {
+		return partyPartisipated;
+	}
+
+	public void setPartyPartisipated(boolean partyPartisipated) {
+		this.partyPartisipated = partyPartisipated;
+	}
+
+	public boolean getHasAlliance() {
+		return hasAlliance;
+	}
+
+	public void setHasAlliance(boolean hasAlliance) {
+		this.hasAlliance = hasAlliance;
 	}
 	
 }

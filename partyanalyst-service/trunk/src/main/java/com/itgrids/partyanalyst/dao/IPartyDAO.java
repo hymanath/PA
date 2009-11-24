@@ -46,5 +46,5 @@ public interface IPartyDAO extends GenericDao<Party, Long>{
 	public List<Party> findByPartyRecognization(Object partyRecognization);
 	
 	public List<Party> findByPartyId(Long partyId);
-
+	
 }
