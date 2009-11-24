@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -45,7 +46,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 
 	public List<Nomination> findByConstituencyElection(Long constituencyElectionID);
 	
-	public Nomination findByConstituencyElectionAndCandidate(String candidateName, Long constituencyElectionID);
+	public List<Nomination> findByConstituencyElectionAndCandidate(String candidateName, Long constituencyElectionID);
 	
 	public List<Constituency> findConstitueniesByPartyAndElectionType(Long partyId, Long electionTypeId, String electionYear);
 	
@@ -56,5 +57,9 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	 public List<Nomination> findByStatePartyAndElectionId(Long stateId, Long electionId, Long partyId);
 	 
 	 public List<Nomination> findByElectionIdAndPartys(Long electionId,List<Long> partys);
+	 
+	 public List<Party> findPartiesByConstituencyAndElection(Long constituencyId, String electionYear);
+
+	public List<Nomination> findByConstituencyPartyAndElectionYearIncludingAliance(List<Long> aliancePartyIds, Long pcId, String electionYear);
    
 }

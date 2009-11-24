@@ -20,7 +20,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List<Booth> findByTehsil(Long tehsilId);
 	
-	public Booth findByTehsilAndPartNo(String tehsilName, String partNo);
+	public List<Booth> findByTehsilAndPartNo(String tehsilName, String partNo);
 
 	public List<Tehsil> findTehsilsByConstituencyElectionScopeAndElection(String electionYear,Long constituencyId);
 }

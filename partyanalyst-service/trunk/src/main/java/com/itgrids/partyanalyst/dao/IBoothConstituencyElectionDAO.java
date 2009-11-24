@@ -6,18 +6,21 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
-import com.itgrids.partyanalyst.model.BoothResult;
 
 public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstituencyElection, Long>{
-
-	public BoothConstituencyElection findByBoothAndConstiuencyElection(String partNo, Long constituencyElectionId);
 
 	public List<Booth> findBoothsByConstituencyElection(Long constiElecId);
 	
 	public List<BoothConstituencyElection> findByBoothElectionAndScope(Long boothId, String electionYear, Long electionScopeId);
 
 	public List<BoothConstituencyElection> findByTehsilElectionAndScope(String electionYear, Long electionScopeId, Long tehsilId);
+
+	public List<BoothConstituencyElection> findByConstituencyElectionTehsilAndPartNo(Long constituencyElectionId, Long tehsilId, String partNo);
+
+	public List<BoothConstituencyElection> findByBoothAndConstiuencyElection(String partNo, Long constiElecId);
 	
+	public List<BoothConstituencyElection> findByConstituencyAndElection(String constituencyName, String electionYear, Long electionScope);
+
 	public List getAllElectionBoothVotersForMandal(Long tehsilID);
 	
 	public List getPartyVotesByMandal(Long tehsilID, String partyIDs, Long electionID);
