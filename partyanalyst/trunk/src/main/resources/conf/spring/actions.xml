@@ -74,6 +74,7 @@
 
 	<bean id="boothUploadAction" class="com.itgrids.partyanalyst.web.action.BoothUploadAction" singleton="false">
 		<property name="boothPopulationService" ref="boothPopulationService" />
+		<property name="boothDataValidationService" ref="boothDataValidationService" />
 	</bean>
 	
 	<bean id="boothResultUploadAction" class="com.itgrids.partyanalyst.web.action.BoothResultUploadAction" singleton="false">
@@ -131,12 +132,9 @@
 	   <property name="partyInfluenceService" ref="partyInfluenceService" />
 	 </bean>
 	
-	<bean id="crossVotingReportInputAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportInputAction" singleton="false">
-	 	<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
-	</bean>
+	<bean id="crossVotingReportInputAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportInputAction" singleton="false"/>
 	
-	<bean id="crossVotingReportAjaxAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportAjaxAction" singleton="false">
-		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
+	<bean id="crossVotingReportAjaxAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportAjaxAction" singleton="false">		
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	</bean>
 	<bean id="mandalPageAction" class="com.itgrids.partyanalyst.web.action.MandalPageAction" singleton="false">
