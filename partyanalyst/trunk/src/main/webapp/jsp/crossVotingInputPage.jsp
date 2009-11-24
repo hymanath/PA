@@ -31,6 +31,13 @@
 	<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/connection.js"></script> 
 	<script type="text/javascript" src="js/yahoo/history.js"></script> 
+
+	<!-- Combo-handled YUI CSS files: -->
+<link rel="stylesheet" type="text/css"
+	href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
+<!-- Combo-handled YUI JS files: -->
+<script type="text/javascript"
+	src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
 	
 	<!-- YUI Dependency Files-->
 
@@ -110,68 +117,60 @@
 
 </style>
 <script type="text/javascript">
-	function getParliament()
+	
+	function getParty()
 	{
 		var elecYearElmt = document.getElementById("electionYearField");
-		var partyElmt = document.getElementById("partyListField");
-
-		if(!elecYearElmt || !partyElmt)
+		var assemblyElmt = document.getElementById("AssemblySelect");
+	
+		if(!elecYearElmt || !assemblyElmt)
 			return;
 
 		var elecValue =  elecYearElmt.options[elecYearElmt.selectedIndex].value;
-		var partyValue =  partyElmt.options[partyElmt.selectedIndex].value;
+		var assemblyValue =  assemblyElmt.options[assemblyElmt.selectedIndex].value;
 					
-		if(elecValue == -1 || partyValue == -1)
+		if(elecValue == -1 || assemblyElmt == -1)
+			return;
+		else
+		{
+			var jsObj={						
+						electionYear:elecValue,
+						assemblyVal:assemblyValue ,
+						task:"getParty"
+				  }
+			
+			var bparam="assemblyValue="+jsObj.assemblyVal+"&election="+jsObj.electionYear;
+			callAjax(jsObj,bparam);
+		}
+	}
+	
+	function getAssembly()
+	{
+		var parliamentSelectElmt =  document.getElementById("parliamentField");
+		var electionYearElmt =  document.getElementById("electionYearField");	
+
+		if(!parliamentSelectElmt || !electionYearElmt)
+			return;
+
+		var parliamentValue =  parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].value;
+		var electionYearValue =  electionYearElmt.options[electionYearElmt.selectedIndex].value;
+					
+		if(parliamentValue == -1 || electionYearValue == -1)
 			return;
 		else
 		{
 			var jsObj={
-						election:elecValue,
-						party:partyValue,
-						task:"Parliament"
-					  }
-
-			var bparam="election="+jsObj.election+"&party="+jsObj.party;
-			callAjax(jsObj,bparam);
-		}
-	}
-
-	function getAssembly()
-	{
-		var parliamentSelectElmt =  document.getElementById("ParliamentSelect");
-		var parliamentValue =  parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].value;
-		var jsObj={
 						parliamentValue : parliamentValue,
+						electionYear:electionYearValue,
 						task:"Assembly"
 				  }
 			
-			var bparam="parliamentValue="+jsObj.parliamentValue;
+			var bparam="parliamentValue="+jsObj.parliamentValue+"&election="+jsObj.electionYear;
 			callAjax(jsObj,bparam);
+		}
 	}
 	
-	function getCrossVoting()
-	{
-		var elecYearElmt = document.getElementById("electionYearField");
-		var partyElmt = document.getElementById("partyListField");
-		var parliamentSelectElmt =  document.getElementById("ParliamentSelect");
-		var assemblySelectElmt =  document.getElementById("AssemblySelect");
-
-		var elecValue =  elecYearElmt.options[elecYearElmt.selectedIndex].value;
-		var partyValue =  partyElmt.options[partyElmt.selectedIndex].value;
-		var parliamentValue =  parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].value;
-		var assemblyValue =  assemblySelectElmt.options[assemblySelectElmt.selectedIndex].value;
-
-		var jsObj={
-						electionValue : elecValue,
-						partyValue : partyValue,
-						parliamentValue : parliamentValue,
-						assemblyValue : assemblyValue,
-						task:"crossVotingReport"
-				  }
-			
-			var bparam="election="+jsObj.electionValue+"&party="+jsObj.partyValue+"&parliamentValue="+jsObj.parliamentValue+"&assemblyValue="+jsObj.assemblyValue;
-			callAjax(jsObj,bparam);
-	}
+	
 	function callAjax(jObj,param)
 	{
 		var myResults;		
@@ -179,9 +178,8 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText); 
-								
-								if(jObj.task == "Parliament" || jObj.task=="Assembly")
+								myResults = YAHOO.lang.JSON.parse(o.responseText); 								
+								if(jObj.task == "Assembly" || jObj.task=="getParty")
 									buildParliamemtSelect(jObj,myResults.dataList);
 								else if(jObj.task == "crossVotingReport")
 									buildCrossVotingReport(jObj,myResults.crossVotingConsolidateVO);
@@ -277,7 +275,7 @@
 		var mandalNode = new YAHOO.widget.TextNode(mstr, rootNode);		
 		
 		var str='';
-			str+='<table class="searchresultsTable" style="width:auto;">';
+			str+='<div id="mandalVotingDiv" class="yui-skin-sam"><table id="boothVotingDetailsTable" class="searchresultsTable" style="width:auto;">';
 			str+='<tr>';
 			str+='<th>Part No</th>';
 			str+='<th>Villages Covered</th>';
@@ -299,28 +297,110 @@
 				str+='<td>'+mandal.crossVotedBooths[j].percentageDifference+'</td>';
 				str+='</tr>';			
 			}
-			str+='</table>';
+			str+='</table></div>';
 	        var constNode = new YAHOO.widget.TextNode(str, mandalNode, false);
 		
 		tree.draw(); 
 		
+		//buildBoothDataTable();
+
+	}
+	
+	function buildBoothDataTable()
+	{
+		
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("boothVotingDetailsTable"));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "partNo",parser:"number"
+			}, {
+				key : "villagesCovered"
+			}, {
+				key : "pcPercentage",parser:"number"
+			}, {
+				key : "pcValidVotes",parser:"number"
+			}, {
+				key : "acPercentage",parser:"number"
+			}, {
+				key : "acValidVotes",parser:"number"
+			}, {
+				key : "percentageDifference",parser:"number"
+			}]
+		};
+
+		console.log(resultsDataSource.responseSchema.fields);
+
+		var resultsColumnDefs = [ {
+			key : "partNo",
+			parser:"number",
+			label : "Booth No",
+			sortable : true
+		}, {
+			key : "villagesCovered",
+			label : "villages&nbspCovered",
+			sortable : true
+		}, {
+			key : "pcPercentage",
+			label : "Percentage(P)",
+			parser:"number",
+			sortable : true
+		}, {
+			key : "pcValidVotes",
+			parser:"number",
+			label : "Valid&nbspVotes(P)",
+			sortable : true
+		}, {
+			key : "acPercentage",
+			parser:"number",
+			label : "Percentage(A)",
+			sortable : true
+		}, {
+			key : "acValidVotes",
+			parser:"number",
+			label : "Valid&nbspVotes(A)",
+			sortable : true
+		}, {
+			key : "percentageDifference",
+			parser:"number",
+			label : "% Diff",
+			sortable : true
+		} ];
+
+		console.log(resultsColumnDefs);
+		var myDataTable = new YAHOO.widget.DataTable("mandalVotingDiv",resultsColumnDefs, resultsDataSource,{});  		
+
 	}
 	function buildParliamemtSelect(jObj,results)
 	{
 
 		
-		if(jObj.task=="Parliament")
+		if(jObj.task=="Assembly")
 		{			
 			
-			var pSelectElmt = document.getElementById("ParliamentSelect");	
-		}
-		else if(jObj.task=="Assembly")
-		{			
 			var pSelectElmt = document.getElementById("AssemblySelect");	
+		}
+		else if(jObj.task=="getParty")
+		{			
+			var pSelectElmt = document.getElementById("PartySelect");	
 		}
 		else
 			return;
 		
+		removeSelectElements(pSelectElmt);
+
+		var y=document.createElement('option');				
+		y.text="Select";						
+		try
+		{
+			pSelectElmt.add(y,null); // standards compliant
+		}
+		catch(ex)
+		{
+			pSelectElmt.add(y); // IE only
+		}
+
 		for(var i in results)
 		{
 			var childElmt = document.createElement('option');
@@ -337,7 +417,41 @@
 			}				
 		}		
 	}
+	
+	function removeSelectElements(elmt)
+	{
+		if(!elmt)
+			return;
 
+		var len=elmt.length;			
+		for(i=len-1;i>=0;i--)
+		{
+			elmt.remove(i);
+		}	
+	}
+	function getCrossVoting()
+	{
+		var elecYearElmt = document.getElementById("electionYearField");
+		var partyElmt = document.getElementById("PartySelect");
+		var parliamentSelectElmt =  document.getElementById("parliamentField");
+		var assemblySelectElmt =  document.getElementById("AssemblySelect");
+
+		var elecValue =  elecYearElmt.options[elecYearElmt.selectedIndex].value;
+		var partyValue =  partyElmt.options[partyElmt.selectedIndex].value;
+		var parliamentValue =  parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].value;
+		var assemblyValue =  assemblySelectElmt.options[assemblySelectElmt.selectedIndex].value;
+
+		var jsObj={
+						electionValue : elecValue,
+						partyValue : partyValue,
+						parliamentValue : parliamentValue,
+						assemblyValue : assemblyValue,
+						task:"crossVotingReport"
+				  }
+			
+			var bparam="election="+jsObj.electionValue+"&party="+jsObj.partyValue+"&parliamentValue="+jsObj.parliamentValue+"&assemblyValue="+jsObj.assemblyValue;
+			callAjax(jsObj,bparam);
+	}
 </script>
 </head>
 <body>
@@ -354,28 +468,30 @@
 					</td>
 				</tr>
 				<tr>
-					<td align="left"><s:label theme="simple" for="partyListField" id="partyListLabel" value="Party"></s:label></td>
+					<td align="left"><s:label theme="simple" for="parliamentField" id="parliamentLabel" value="Parliament Constituency"></s:label></td>
 					<td align="left">
-						<s:select theme="simple" id="partyListField" name="partyListField" list="partyList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Year" onchange="getParliament()"></s:select>
+						<s:select theme="simple" id="parliamentField" name="parliamentField" list="parliamentList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Constituency" onchange="getAssembly()"></s:select>
 					</td>
-				</tr>
-				<tr>
-					<td align="left">Parliament Constituency</td>
-					<td align="left">
-							<select id="ParliamentSelect" onchange="getAssembly()">
-								<option value="-1">Select </option>
-								
-							</select>						
-					</td>
-				</tr>
+				</tr>			
 				<tr>
 					<td align="left">Assembly Constituency</td>
 					<td align="left">
-						<select id="AssemblySelect" onchange="getCrossVoting()">
+						<select id="AssemblySelect" onchange="getParty()">
 							<option value="-1">Select</option>
 						</select>
 					</td>
 				</tr>
+				
+				<tr>
+					<td align="left">Party</td>
+					<td align="left">
+							<select id="PartySelect" onchange="getCrossVoting()">
+								<option value="-1">Select </option>			
+							</select>						
+					</td>
+					<td><s:checkbox name="includeAliance" id="includeAliance" label="Include Aliance Parties"/></td>
+				</tr>
+				
 			</table>
 		</div>
 		<div id="crossVotingResultDiv" style="display:none;"></div>
