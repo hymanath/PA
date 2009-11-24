@@ -131,6 +131,10 @@ table.partyPerformanceReportTable tr.odd {
 	padding: 8px;
 	border-style: solid;
 }
+table.partyPerformanceReportTable td
+{
+	border-width:1px;
+}
 
 /* Party Results Criteria Page*/
 
@@ -156,3 +160,27 @@ table.partyResultsCriteriaTable td {
 	padding:3px;
 }
 
+/* Styles for tag cloud*/
+
+#candidateTagDiv,#constituencyTagDiv
+{
+	background-color:#F5F9FD;
+	border:2px solid #D8DFE4;
+	height:190px;
+}
+.tagSpan
+{
+	font-weight:bold;
+	margin:5px;
+	position:relative;
+}
+.cloudTagAnc
+{
+	text-decoration:none;
+	color:#648EAB;
+}
+.cloudTagAnc hover
+{
+	text-decoration:underline;
+	background-color:#AAAAAA;
+}
