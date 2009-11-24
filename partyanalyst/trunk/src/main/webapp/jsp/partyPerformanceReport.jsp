@@ -7,6 +7,17 @@
 <link href="<s:url value='/styles/table.css'/>" rel="stylesheet" type="text/css" media="all"/>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+
+<script type="text/javascript" src="js/yahoo/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+
+<!-- Combo-handled YUI CSS files: -->
+<link rel="stylesheet" type="text/css"
+	href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
+<!-- Combo-handled YUI JS files: -->
+<script type="text/javascript"
+	src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
+
 <script type="text/javaScript">
 function showBand(divtag)
 { 
@@ -42,16 +53,263 @@ function setOpacity(obj, opacity)
 	obj.style.MozOpacity = opacity/100;// Older Mozilla and Firefoxv
 	obj.style.opacity = opacity/100;// Safari 1.2, newer Firefox and Mozilla, CSS3
 }
-/*function closeSection(divtag) {
-	document.getElementById(divtag).style.display = 'none';
-}*/
+
+function getDetails(pos)
+{		
+	var imgElmt = document.getElementById("loaderGif");
+	imgElmt.style.display='block';
+	
+	var position = pos;
+	var party = '${stateData.partyId}';
+	var partyName='${stateData.party}';
+	var electionTypeId='${stateData.electionTypeId}';
+	var state = '${stateData.stateId}';
+	var year = '${stateData.year}';
+	var district = '${stateData.districtId}';	
+	var alliances = '${stateData.hasAlliances}';
+
+	
+	var jsObj=
+	{
+			positionValue:position,
+			partyValue:party,			
+			eId:electionTypeId,
+			stateValue:state,
+			yearValue:year,
+			districtValue:district,
+			hasAlliances:alliances
+	}
+	var param ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	callAjax(param,jsObj);
+}
+
+function callAjax(param,jsObj){
+	var myResults;
+	var url = "<%=request.getContextPath()%>/partyPositionAjax.action?"+param;
+	var callback = {			
+				   success : function( o ) {
+						try {
+							myResults = YAHOO.lang.JSON.parse(o.responseText); 
+							
+							displayPartyPositions(jsObj,myResults);							
+						}catch (e) {   
+							alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function displayPartyPositions(jsObj,data)
+{
+	var imgElmt = document.getElementById("loaderGif");
+	imgElmt.style.display='none';
+
+	if(data[0]==null)
+	{
+		alert("No results found");
+		return;
+	}
+
+	var divElmt = document.getElementById("partyPositions");
+	var divElmtBody = document.getElementById("partyPositionsBody");
+
+	var divElmtHead = document.getElementById("labelHead");	
+	divElmtHead.innerHTML="Opposition Party Details for "+'${stateData.party}'+" In position : "+jsObj.positionValue;
+
+	divElmt.style.display = 'block';
+
+	var str='';
+	str+='<table id="partyPositionTable"  class="partyPerformanceReportTable" border="1">';	
+	for(var i in data)
+	{		
+		str+='<tr>';
+		str+='<td>'+data[i].candidateName+'</td>';
+		str+='<td>'+data[i].constituencyName+'</td>';
+		str+='<td align="right">'+data[i].votePercentage+'</td>';
+		for (var d in data[i].oppPartyPositionInfoList)
+		{
+			str+='<td>'+data[i].oppPartyPositionInfoList[d].candidateName+'</td>';
+			str+='<td>'+data[i].oppPartyPositionInfoList[d].partyName+'</td>';
+			str+='<td align="center">'+data[i].oppPartyPositionInfoList[d].rank+'</td>';
+			str+='<td align="right">'+data[i].oppPartyPositionInfoList[d].votePercentage+'</td>';
+		}
+		str+='</tr>';
+	}	
+	str+='</table>'
+	divElmtBody.innerHTML=str;
+	
+	buildPartyPositionDataTable(data);
+	fadeIn('partyPositions',40);
+}
+
+function closeSpan()
+{
+	var divElmt = document.getElementById("partyPositions");  
+	divElmt.style.display = 'none';
+}
+
+function buildPartyPositionDataTable(info)
+{
+	if(info[0]==null)	
+		return;
+	
+	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("partyPositionTable"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : []
+	};	
+	
+	var key1={key:"candidateName"};
+	var key2={key : "constituencyName"};
+	var key3={key : "votePercentage",parser:"number"};
+	resultsDataSource.responseSchema.fields.push(key1);
+	resultsDataSource.responseSchema.fields.push(key2);
+	resultsDataSource.responseSchema.fields.push(key3);
+
+	for (var k in  info[0].oppPartyPositionInfoList)
+	{
+		var key4={key : "cName"+k};
+		var key5={key : "pName"+k};
+		var key6={key : "rank"+k,parser:"number"};
+		var key7={key : "vPercentage"+k,parser:"number"};
+		resultsDataSource.responseSchema.fields.push(key4);
+		resultsDataSource.responseSchema.fields.push(key5);
+		resultsDataSource.responseSchema.fields.push(key6);
+		resultsDataSource.responseSchema.fields.push(key7);
+	}
+
+	
+	//--------
+	var resultsColumnDefs = [];
+	var obj1={
+		key : "candidateName",		
+		label : "Candidate Name",
+		sortable : true
+	};
+	var obj2= {
+		key : "constituencyName",		
+		label : "Constituency Name",
+		sortable : true
+	};
+	var obj3= {
+		key : "votePercentage",
+		parser:"number",
+		label : "Votes&nbsp%",
+		sortable : true
+	};
+	resultsColumnDefs.push(obj1);
+	resultsColumnDefs.push(obj2);
+	resultsColumnDefs.push(obj3);
+
+	for (var d in info[0].oppPartyPositionInfoList)
+	{
+		var obj4={
+		key : "cName"+d,		
+		label : "Name",
+		sortable : true
+		};
+		var obj5= {
+			key : "pName"+d,		
+			label : "Party",
+			sortable : true
+		};
+		var obj6= {
+			key : "rank"+d,
+			parser:"number",
+			label : "Rank",
+			sortable : true
+		};
+		var obj7= {
+			key : "vPercentage"+d,
+			parser:"number",
+			label : "Votes&nbsp%",
+			sortable : true
+		};	
+		resultsColumnDefs.push(obj4);
+		resultsColumnDefs.push(obj5);
+		resultsColumnDefs.push(obj6);
+		resultsColumnDefs.push(obj7);
+	}
+
+	var myDataTable = new YAHOO.widget.DataTable("partyPositionsBody",resultsColumnDefs, resultsDataSource,{});  
+
+	}
+
 </script>
+
 <style type="text/css">
 	#partyPerformanceReportMainDiv
 	{
 		text-align:left;
 		margin-left:50px;
 		font-size:12px;
+	}
+	#partyPositions
+	{
+		background-color:#DCE3E9;
+		position:absolute;
+		margin-right:20px;
+		margin-top:15px;
+		z-index:10;
+		display:none;
+		opacity:0;
+		left:155px;
+		border:2px solid #839AB7;
+	}
+	#closeSpan
+	{
+		float:right;
+		cursor:pointer;
+		font-weight:bold;
+		margin-right:10px;
+		border:1px solid;
+	}
+	#partyPositionsBody
+	{
+		padding-left:10px;
+		padding-bottom:20px;
+		padding-right:10px;
+	}
+	#closeLabelSpan
+	{
+		float:right;padding-right:5px;
+		cursor:pointer;
+	}
+	#labelHead
+	{
+		font-weight:bold;
+		font-size:14px;		
+		color:#394351;
+	}
+	#partyPositionsHead
+	{
+		padding:10px;
+		background-color:#A6BAD1;
+		text-decoration:underline;
+	}
+
+	.yui-skin-sam .yui-dt-liner 
+	{
+		padding:0px;
+	}
+	.yui-skin-sam thead .yui-dt-sortable
+	{
+		background-color:#B0C7EB;
+	}
+	.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
+	{
+		background-color:#B0C7EB;
+		background-image:none;
+	}
+	.yui-skin-sam th.yui-dt-asc .yui-dt-liner 
+	{
+		background-color:#B0C7EB;
 	}
 </style>
 </head> 
@@ -83,7 +341,7 @@ function setOpacity(obj, opacity)
 	<tr>
 		<th>Party</th>
 		<td style="background-color: #FFFFFF"><s:property value="stateData.party" /></td>
-	</tr>
+	</tr>	
 	<tr>
 		<th>Seats Won</th>
 		<td style="background-color: #ECF1F5"> <s:property value="stateData.totalSeatsWon" />( <s:property value="stateData.diffSeatsWon" /> )</td>
@@ -105,29 +363,47 @@ function setOpacity(obj, opacity)
 <div style="margin-left: 15px;">
 <c:set var="data" value="stateData" scope="session" />
 <c:set var="myId" value="row" />
-
+<table>
+<tr>
+<td>
 <display:table class="partyPerformanceReportTable" name="stateData.positionDistribution" id="${myId}" length="1" cellpadding="10px" >
     <c:forEach var="pd" items="${stateData.positionDistribution}" varStatus="status">
     	<jsp:useBean id="status" type="javax.servlet.jsp.jstl.core.LoopTagStatus" />
 		<c:choose>
 			<c:when test="<%=status.getIndex() == 1%>">
-					<display:column title="2nd Position" > <c:out value="${pd.value}" />  </display:column>
+					<display:column title="2nd Position" ><a href="javascript:{}" onclick="getDetails('2')"> <c:out value="${pd.value}" /> </a> </display:column>
 			</c:when>
 			<c:when test="<%=status.getIndex() == 2%>">
-					<display:column title="3rd Position" > <c:out value="${pd.value}" />  </display:column> 
+					<display:column title="3rd Position" ><a href="javascript:{}" onclick="getDetails('3')"> <c:out value="${pd.value}" /> </a> </display:column> 
 			</c:when>
 			<c:when test="<%=status.getIndex() == 3%>">
-					<display:column title="4th Position" > <c:out value="${pd.value}" />  </display:column>
+					<display:column title="4th Position" ><a href="javascript:{}" onclick="getDetails('4')"> <c:out value="${pd.value}" /></a>  </display:column>
 			</c:when>
 			<c:when test="<%=status.getIndex() == 4%>">
-					<display:column title="Nth Position" > <c:out value="${pd.value}" />  </display:column>
+					<display:column title="Nth Position" ><a href="javascript:{}" onclick="getDetails('-1')"> <c:out value="${pd.value}" /></a></display:column>
 			</c:when>
 		</c:choose>	          
-	</c:forEach>
-</display:table>  
+	</c:forEach>		
+</display:table>
+</td>
+<td>
+<span>
+	<img id="loaderGif" src="<%=request.getContextPath()%>/images/icons/arrows.gif" style="display:none;"/>
+</span>
+</td>
+</tr></table>
 </div>
 <!--<center><IMG SRC="charts/partyPositionsChart_<%=request.getSession().getId()%>.png" WIDTH="300" HEIGHT="200"  BORDER="0" ></center> -->
-
+<div id="partyPositions">
+	<div id="partyPositionsHead">
+		<span id="closeSpan" onclick="closeSpan()">X</span>
+		<span id="closeLabelSpan"style="" onclick="closeSpan()"><u>Close</u></span>
+		<center>
+			<span id="labelHead"></span>		
+		</center>
+	</div>
+	<div id="partyPositionsBody" class="yui-skin-sam"></div>
+</div>
 <br>
 <div>
 	<B><U>Detailed Report...</U></B>
