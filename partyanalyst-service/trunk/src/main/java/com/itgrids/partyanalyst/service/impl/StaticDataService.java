@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class StaticDataService implements IStaticDataService {
@@ -235,11 +236,23 @@ public class StaticDataService implements IStaticDataService {
 	
 	public List<ConstituencyElection> getConstituencyElections(Long electionID, Long  districtID){
 		List<ConstituencyElection>  constituencyElectionList = null;
-		if(districtID==null){
+		if(districtID==null && districtID==0L){
 			constituencyElectionList = constituencyElectionDAO.findByElection(electionID);
 		}else{
 			constituencyElectionList = constituencyElectionDAO.findByElectionAndDistrict(electionID, districtID);
 		}
 		return constituencyElectionList;
+	}
+	
+	public List<SelectOptionVO> getStaticParties(){
+		List<SelectOptionVO> staticParties = new ArrayList<SelectOptionVO>();
+		List<Party> parties = partyDAO.findByShortNames(IConstants.STATIC_PARTIES);
+		for(Party party : parties){
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(party.getPartyId());
+			selectOptionVO.setName(party.getShortName());
+			staticParties.add(selectOptionVO);
+		}
+		return staticParties;
 	}
 }
