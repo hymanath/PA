@@ -601,7 +601,15 @@ public class PartyService implements IPartyService {
 		if(selectedNomination==null)
 			return null;
 		partyPositionDisplayVO.setConstituencyName(constituencyElection.getConstituency().getName());
-		partyPositionDisplayVO.setCandidateName(selectedNomination.getCandidate().getFirstname());
+		StringBuilder fullName = new StringBuilder();
+		if(selectedNomination.getCandidate().getFirstname()!=null)
+			fullName.append(selectedNomination.getCandidate().getFirstname()).append(" ");
+		if(selectedNomination.getCandidate().getMiddlename()!=null)
+			fullName.append(selectedNomination.getCandidate().getMiddlename()).append(" ");
+		if(selectedNomination.getCandidate().getLastname()!=null)
+			fullName.append(selectedNomination.getCandidate().getLastname());
+		if(fullName.length()>0)
+			partyPositionDisplayVO.setCandidateName(fullName.toString());
 		partyPositionDisplayVO.setVotePercentage(selectedNomination.getCandidateResult().getVotesPercengate());
 		
 		List<PartyPostionInfoVO>  partyPostionInfoVOList = new ArrayList<PartyPostionInfoVO>();
@@ -612,7 +620,16 @@ public class PartyService implements IPartyService {
 				if(partyName==null || partyName.length()==0)	
 					partyName = nomination.getParty().getLongName();
 				partyPostionInfoVO.setPartyName(partyName);
-				partyPostionInfoVO.setCandidateName(nomination.getCandidate().getFirstname());//rank vote %
+				StringBuilder name = new StringBuilder();
+				if(nomination.getCandidate().getFirstname()!=null)
+					name.append(nomination.getCandidate().getFirstname()).append(" ");
+				if(nomination.getCandidate().getMiddlename()!=null)
+					name.append(nomination.getCandidate().getMiddlename()).append(" ");
+				if(nomination.getCandidate().getLastname()!=null)
+					name.append(nomination.getCandidate().getLastname());
+				
+				
+				partyPostionInfoVO.setCandidateName(name.toString());//rank vote %
 				partyPostionInfoVO.setRank(Integer.valueOf(nomination.getCandidateResult().getRank().intValue()));
 				partyPostionInfoVO.setVotePercentage(nomination.getCandidateResult().getVotesPercengate());
 				partyPostionInfoVOList.add(partyPostionInfoVO);
