@@ -4,6 +4,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,9 +23,11 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
 import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
+import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.Constants;
@@ -54,6 +57,9 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	private List<SelectOptionVO> levels;
 	private boolean hasAllianceParties;
 	private Long electionTypeId;
+	JSONObject jObj = null;
+	private String task = null;
+	private List<PartyPositionDisplayVO> partyPositionDisplayVO;
 
 
 	public List<SelectOptionVO> getLevels() {
@@ -158,6 +164,20 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
     public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
+    
+	public String getTask() {
+		return task;
+	}
+	public void setTask(String task) {
+		this.task = task;
+	}
+	public List<PartyPositionDisplayVO> getPartyPositionDisplayVO() {
+		return partyPositionDisplayVO;
+	}
+	public void setPartyPositionDisplayVO(
+			List<PartyPositionDisplayVO> partyPositionDisplayVO) {
+		this.partyPositionDisplayVO = partyPositionDisplayVO;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public String execute() throws JRException {
@@ -248,6 +268,15 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		}
 		
 		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(Constants.MAJAR_BRAND), new BigDecimal(Constants.MINOR_BRAND), alliances);
+		reportVO.setElectionTypeId(new Long(electionType));
+		reportVO.setStateId(new Long(state));
+		reportVO.setPartyId(new Long(party));
+		reportVO.setHasAlliances(alliances);
+		
+		if(district!=null)
+			reportVO.setDistrictId(new Long(district));
+		
+		
 		SortedMap<String, Integer> positions = reportVO.getPositionDistribution();
 		
 		session = request.getSession();
@@ -299,6 +328,32 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	 
     } 
 
+	public String getpartyPosition() throws Exception{
+		
+		String param=null;		
+		param=request.getParameter("task");
+		System.out.println("param:"+param);
+		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}		
+		String electionTypeID = jObj.getString("eId");
+		String stateID = jObj.getString("stateValue");
+		String districtID = jObj.getString("districtValue");
+		String year = jObj.getString("yearValue");
+		String partyID = jObj.getString("partyValue");
+		String alliances = jObj.getString("hasAlliances");
+		String rank = jObj.getString("positionValue");
+		
+		partyPositionDisplayVO = partyService.getNthPositionPartyDetails(new Long(electionTypeID),new Long (stateID),new Long (districtID),new Long (year),new Long (partyID),new Boolean (alliances).booleanValue(),new Integer (rank).intValue());
+		
+		System.out.println("Length = "+partyPositionDisplayVO.size());
+		return Action.SUCCESS;
+	}
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
