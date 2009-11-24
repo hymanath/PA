@@ -21,7 +21,7 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText); 
+								myResults = YAHOO.lang.JSON.parse(o.responseText);								
 								processResponse(param, myResults);
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -36,24 +36,35 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
  	
-    function processResponse(param, response){
-		if(param.substring(0, 4) == "type"){
+    function processResponse(param, response)
+	{		
+		if(param.substring(0, 4) == "type")
+		{
 	    	fillDropDown(document.getElementById("stateList"), response.states);
 		 	fillDropDown(document.getElementById("yearList"), response.years);
 		 	fillDropDown(document.getElementById("partyList"), response.parties);
-		} if(param.substring(0, 8) == "alliance"){
-			if(response == true) {
-				document.getElementById("allianceRow").style.display="table-row";
-			} else {
+		}
+		if(param.substring(0, 8) == "alliance")
+		{		
+			if(response == true) 
+			{		
+				if(navigator.appName == 'Microsoft Internet Explorer')				
+					document.getElementById("allianceRow").style.display="block";										
+				else
+					document.getElementById("allianceRow").style.display="table-row";	
+				
+			}else
+			{
 				document.getElementById("alliances").checked = false;
 				document.getElementById("allianceRow").style.display="none";
 			}
-		}else {
+		}else
+		{
 	 		fillDropDown(document.getElementById("districtList"), response.districts);			
 	 		document.getElementById("districtList").disabled= false;  	 			 		
 		}
     }
-    
+	
     function fillDropDown(selectbox, data){
           selectbox.options.length = 0;
           for( var counter = 0 ; counter < data.length ; counter++ ) {
@@ -104,7 +115,7 @@
  	 	var year = document.getElementById("yearList").options[index].value;
  	 	var radObj = document.getElementsByName("electionType"); 
  	 	var elecType = getSelectedValue(document.getElementsByName("electionType"));
- 	 	var url = "<%=request.getContextPath()%>/partyPerformanceAllianceAjax.action?";
+ 	 	var url = "<%=request.getContextPath()%>/partyPerformanceAllianceAjax.action?";		
  	 	callAjax("allianceWith="+partyId+"&year="+year+"&elecType="+elecType, url);
  	}
  	function getSelectedValue(radiobuttonlist) {
