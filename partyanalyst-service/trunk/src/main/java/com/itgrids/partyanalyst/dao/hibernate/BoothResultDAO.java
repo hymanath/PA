@@ -15,4 +15,10 @@ public class BoothResultDAO extends GenericDaoHibernate<BoothResult, Long> imple
 	public List<BoothResult> findByBoothConstituencyElection(Long boothConstituencyElectionId) {
 		return getHibernateTemplate().find("from BoothResult model where model.boothConstituencyElection.boothConstituencyElectionId =?", boothConstituencyElectionId);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<BoothResult> findByConstituencyAndElection(String constituencyName, String electionYear, Long electionScopeId) {
+		Object[] params = {constituencyName,  electionYear, electionScopeId};
+		return getHibernateTemplate().find("from BoothResult model where model.boothConstituencyElection.constituencyElection.constituency.name = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ? and model.boothConstituencyElection.constituencyElection.constituency.electionScope.electionScopeId = ?", params);
+	}
 }

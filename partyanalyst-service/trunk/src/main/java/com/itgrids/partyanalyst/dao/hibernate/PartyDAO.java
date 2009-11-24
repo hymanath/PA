@@ -5,9 +5,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dao.columns.enums.ElectionColumnNames;
 import com.itgrids.partyanalyst.dao.columns.enums.PartyColumnNames;
-import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Party;
 
 public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IPartyDAO{
@@ -19,7 +17,6 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 	public List<Party> findByProperty(PartyColumnNames propertyName, Object value) {
 		return getHibernateTemplate().find("from Party model where model." + propertyName.getValue() + "=?", value);		
 	}
-	
 	
 	public List<Party> findByLongName(Object longName){
 		return findByProperty(PartyColumnNames.LONG_NAME, longName);
@@ -51,5 +48,4 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 		return getHibernateTemplate().find("from Party model where model.partyId=?", partyId);
 	}
 
-	
 }

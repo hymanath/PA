@@ -15,13 +15,8 @@ public class BoothVillageCensusDAO extends GenericDaoHibernate<BoothVillageCensu
 	}
 	
 	@SuppressWarnings("unchecked")
-	public BoothVillageCensus findByBoothAndCensusCode(Long boothId, Long cencusCode) {
+	public List<BoothVillageCensus> findByBoothAndCensusCode(Long boothId, Long cencusCode) {
 		Object[] params = {boothId, cencusCode};
-		BoothVillageCensus boothVillageCensus = null;
-		List<BoothVillageCensus> list = getHibernateTemplate().find("from BoothVillageCensus model where model.booth.boothId = ? and model.villageCensusCode = ?", params);
-		if(list != null && list.size() > 0){
-			boothVillageCensus = list.get(0);
-		}
-		return boothVillageCensus;
+		return getHibernateTemplate().find("from BoothVillageCensus model where model.booth.boothId = ? and model.villageCensusCode = ?", params);
 	}
 }

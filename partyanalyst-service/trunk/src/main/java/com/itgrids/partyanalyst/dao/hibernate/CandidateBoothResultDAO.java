@@ -19,13 +19,9 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 	}
 	
 	@SuppressWarnings("unchecked")
-	public CandidateBoothResult findByNominationAndBoothConstituencyElection(Long nominationId, Long boothConstituencyElectionId) {
-		CandidateBoothResult candidateBoothResult = null;
+	public List<CandidateBoothResult> findByNominationAndBoothConstituencyElection(Long nominationId, Long boothConstituencyElectionId) {
 		Object[] params = {nominationId, boothConstituencyElectionId};
-		List<CandidateBoothResult> list = getHibernateTemplate().find("from CandidateBoothResult model where model.nomination.nominationId = ? and model.nomination.constituencyElection.constiElecId = ?", params);
-		if(list != null && list.size() > 0)
-			candidateBoothResult  = list.get(0);
-		return candidateBoothResult;
+		return getHibernateTemplate().find("from CandidateBoothResult model where model.nomination.nominationId = ? and model.boothConstituencyElection.boothConstituencyElectionId = ?", params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -38,5 +34,10 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 	public List<CandidateBoothResult> findByBoothConstituencyElectionAndParty(Long boothConstituencyElectionId, Long partyId) {
 		Object[] params = {boothConstituencyElectionId, partyId};
 		return getHibernateTemplate().find("from CandidateBoothResult model where model.boothConstituencyElection.boothConstituencyElectionId = ? and model.nomination.party.partyId = ?", params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<CandidateBoothResult> findByConstituencyElection(Long constituencyElectionId) {
+		return getHibernateTemplate().find("from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.constiElecId = ?", constituencyElectionId);
 	}
 }

@@ -43,14 +43,9 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Booth findByTehsilAndPartNo(String tehsilName, String partNo){
-		Booth booth = null;
+	public List<Booth> findByTehsilAndPartNo(String tehsilName, String partNo){
 		Object[] params = {tehsilName, partNo};
-		List<Booth> booths = getHibernateTemplate().find("from Booth model where model.tehsil.tehsilName = ? and model.partNo = ?", params);
-		if(booths!=null && booths.size()>0){
-			booth = booths.get(0);
-		}
-		return booth;
+		return getHibernateTemplate().find("from Booth model where model.tehsil.tehsilName = ? and model.partNo = ?", params);
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.HibernateException;
@@ -16,15 +17,12 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.springframework.orm.hibernate3.HibernateCallback;
-import org.hibernate.Query;
-import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.NominationColumnNames;
-import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.Party;
 
 /**
 *@author <a href="mailto:sai.basetti@gmail.com">Sai Krishna</a>
@@ -70,13 +68,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Nomination findByConstituencyElectionAndCandidate(String candidateName, Long constituencyElectionID){
-		Nomination nomination = null;
+	public List<Nomination> findByConstituencyElectionAndCandidate(String candidateName, Long constituencyElectionID){
 		Object[] params = {candidateName, constituencyElectionID};
-		List<Nomination> list = getHibernateTemplate().find( "from Nomination model where model.candidate.lastname = ? and model.constituencyElection.constiElecId = ?",params);
-		if(list != null && list.size() > 0)
-			nomination = list.get(0);
-		return nomination;
+		return getHibernateTemplate().find( "from Nomination model where model.candidate.lastname = ? and model.constituencyElection.constiElecId = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -132,9 +126,26 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find(query);
 	}
 	
+	
 	@SuppressWarnings("unchecked")
 	public List<Nomination> findByCandidate(Long candidateId) {
 		return getHibernateTemplate().find( "from Nomination model where model.candidate.candidateId = ?", candidateId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Party> findPartiesByConstituencyAndElection(Long constituencyId, String electionYear) {
+		Object[] params = {constituencyId, electionYear};
+		return getHibernateTemplate().find( "select model.party from Nomination model where model.constituencyElection.constituency.constituencyId = ? and model.constituencyElection.election.electionYear = ?", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByConstituencyPartyAndElectionYearIncludingAliance(List<Long> aliancePartyIds, Long pcId, String electionYear) {
+		StringBuilder queryBuffer = new StringBuilder();
+		queryBuffer.append("from Nomination model where model.party.partyId in( ");
+		for(int i=0; i<aliancePartyIds.size(); i++)
+			queryBuffer.append(aliancePartyIds.get(i)+",");
+		String query = queryBuffer.toString().substring(0, queryBuffer.toString().length()-1)+" ) and model.constituencyElection.election.electionYear = "+electionYear
+						+"and model.constituencyElection.constituency.constituencyId =" +pcId;
+		return getHibernateTemplate().find(query.toString());
+	}
 }
