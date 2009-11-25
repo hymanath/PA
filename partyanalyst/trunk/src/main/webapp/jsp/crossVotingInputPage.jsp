@@ -435,21 +435,27 @@
 		var partyElmt = document.getElementById("PartySelect");
 		var parliamentSelectElmt =  document.getElementById("parliamentField");
 		var assemblySelectElmt =  document.getElementById("AssemblySelect");
+		var allianceCheckElmt =  document.getElementById("allianceCheck");
 
 		var elecValue =  elecYearElmt.options[elecYearElmt.selectedIndex].value;
 		var partyValue =  partyElmt.options[partyElmt.selectedIndex].value;
 		var parliamentValue =  parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].value;
 		var assemblyValue =  assemblySelectElmt.options[assemblySelectElmt.selectedIndex].value;
+		if(allianceCheckElmt.checked==true)
+			var allianceValue = "true";
+		else
+			var allianceValue = "false";
 
 		var jsObj={
 						electionValue : elecValue,
 						partyValue : partyValue,
 						parliamentValue : parliamentValue,
 						assemblyValue : assemblyValue,
+						alliances:allianceValue,
 						task:"crossVotingReport"
 				  }
 			
-			var bparam="election="+jsObj.electionValue+"&party="+jsObj.partyValue+"&parliamentValue="+jsObj.parliamentValue+"&assemblyValue="+jsObj.assemblyValue;
+			var bparam="election="+jsObj.electionValue+"&party="+jsObj.partyValue+"&parliamentValue="+jsObj.parliamentValue+"&assemblyValue="+jsObj.assemblyValue+"&includeAliance="+jsObj.alliances;
 			callAjax(jsObj,bparam);
 	}
 </script>
@@ -481,15 +487,18 @@
 						</select>
 					</td>
 				</tr>
-				
+				<tr>
+					<td>Alliances</td>
+					<td><input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" />Include Aliance Parties</td>
+					<!--<td><s:checkbox theme="simple" name="includeAliance" id="includeAliance" label="Include Aliance Parties"/></td> -->
+				</tr>
 				<tr>
 					<td align="left">Party</td>
 					<td align="left">
 							<select id="PartySelect" onchange="getCrossVoting()">
 								<option value="-1">Select </option>			
 							</select>						
-					</td>
-					<td><s:checkbox name="includeAliance" id="includeAliance" label="Include Aliance Parties"/></td>
+					</td>					
 				</tr>
 				
 			</table>
