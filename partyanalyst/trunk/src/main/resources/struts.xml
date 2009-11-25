@@ -226,6 +226,11 @@
 			<result name="error">/jsp/districtPageFail.jsp</result>
 		</action>
 		
+		<action name="adminUpload"><result>/jsp/adminUpload.jsp</result></action>
+		<action name="electionUpload"><result>/jsp/csvUpload.jsp</result></action>
+		<action name="boothDataUpload"><result>/jsp/boothUpload.jsp</result></action>
+		<action name="boothResultUpload"><result>/jsp/uploadBoothResult.jsp</result></action>
+		
 		<action name="mandalPageSDetailAction" class="staticDataAction" method="getStatesList" >
 			<result name="success">/jsp/mandalPageDetail.jsp</result>
 		</action>		
