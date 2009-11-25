@@ -114,6 +114,11 @@
 {
 	padding:5px;
 }
+.msgspan
+{
+	font-weight:bold;
+	margin-left:100px;
+}
 
 </style>
 <script type="text/javascript">
@@ -178,7 +183,8 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText); 								
+								myResults = YAHOO.lang.JSON.parse(o.responseText); 		
+								console.log(myResults);
 								if(jObj.task == "Assembly" || jObj.task=="getParty")
 									buildParliamemtSelect(jObj,myResults.dataList);
 								else if(jObj.task == "crossVotingReport")
@@ -200,46 +206,76 @@
 	function buildCrossVotingReport(obj,result)
 	{
 		
+		console.log(result.partyPartisipated);
 
 		var resultDiv = document.getElementById("crossVotingResultDiv");
 		resultDiv.style.display="block";
-
-		var str='';
-		str+='<div id="headingDiv"><h3><u>Cross Voting Details..</u></h3></div>';
-		str+='<div id="candidateDetailsDiv">';
-		str+='<div id="assemblyCandidateDiv">';
-		str+='<table id="assemblyTable" class="detailsTable" style="width:auto;">';
-		str+='<tr><th colspan="2"><u>Assembly Candidate Details..</u></th>';		
-		str+='</tr>';
-		str+='<tr>';
-		str+='<th>Name</th>';
-		str+='<td><a href="candidateElectionResultsAction.action?candidateId='+result.acCandidateData.candidateId+'">'+result.acCandidateData.candidateName+'</a></td>';
-		str+='<td rowspan="3"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
-		str+='</tr>';
-		str+='<tr><th>Rank</th><td>'+result.acCandidateData.rank+'</td></tr>';
-		str+='<tr><th>Votes %</th><td>'+result.acCandidateData.votesPercentage+'</td></tr>';
-		str+='</table>';		
-		str+='</div>';
-		str+='<div id="parliamentCandidateDiv">';
-		str+='<table id="parliamentTable" class="detailsTable" style="width:auto;">';
-		str+='<tr><th colspan="2"><u>Parliament Candidate Details..</u></th></tr>';
-		str+='<tr><th>Name</th>';
-		str+='<td> <a href="candidateElectionResultsAction.action?candidateId='+result.pcCandidateData.candidateId+'">'+result.pcCandidateData.candidateName+'</a></td>';
-		str+='<td rowspan="4"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
-		str+='</tr>';
-		str+='<tr><th>Rank</th><td>'+result.pcCandidateData.rank+'</td></tr>';
-		str+='<tr><th>Votes %</th><td>'+result.pcCandidateData.votesPercentage+'</td></tr>';
-		str+='</table>';	
-		str+='</div>';
-		str+='<div id="treeDiv"><span><h4><u>Mandals Details..</u></h4></span><div id="treeDataDiv"></div></div>';
-		str+='</div>';
-
-
-		resultDiv.innerHTML=str;
 		
-		for(var i in result.mandals)
+		var elecYearElmt = document.getElementById("electionYearField");
+		var partyElmt = document.getElementById("PartySelect");
+		var parliamentSelectElmt =  document.getElementById("parliamentField");
+
+		var partyValue = partyElmt.options[partyElmt.selectedIndex].text;
+		var parliamentValue = parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].text;
+		var electionValue = elecYearElmt.options[elecYearElmt.selectedIndex].text;
+
+		if(result.partyPartisipated == false)
+		{	
+			var str='';
+			str+='<span class="msgspan">';
+			str+=partyValue+" did not participate in "+parliamentValue+" in the year "+electionValue;
+			str+='</span>';
+			resultDiv.innerHTML=str;
+			return;
+		}
+		else if(result.hasAlliance == false)
 		{
-			buildTreeView(result.mandals[i]);
+			var str='';
+			str+='<span class="msgspan">';
+			str+=partyValue+" didn't have alliance in the year "+electionValue;
+			str+='</span>';
+			resultDiv.innerHTML=str;
+			return;
+		}
+		else
+		{
+			var str='';
+			str+='<div id="headingDiv"><h3><u>Cross Voting Details..</u></h3></div>';
+			str+='<div id="candidateDetailsDiv">';
+			str+='<div id="assemblyCandidateDiv">';
+			str+='<table id="assemblyTable" class="detailsTable" style="width:auto;">';
+			str+='<tr><th colspan="2"><u>Assembly Candidate Details..</u></th>';		
+			str+='</tr>';
+			str+='<tr>';
+			str+='<th>Name</th>';
+			str+='<td><a href="candidateElectionResultsAction.action?candidateId='+result.acCandidateData.candidateId+'">'+result.acCandidateData.candidateName+'</a></td>';
+			str+='<td rowspan="3"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
+			str+='</tr>';
+			str+='<tr><th>Rank</th><td>'+result.acCandidateData.rank+'</td></tr>';
+			str+='<tr><th>Votes %</th><td>'+result.acCandidateData.votesPercentage+'</td></tr>';
+			str+='</table>';		
+			str+='</div>';
+			str+='<div id="parliamentCandidateDiv">';
+			str+='<table id="parliamentTable" class="detailsTable" style="width:auto;">';
+			str+='<tr><th colspan="2"><u>Parliament Candidate Details..</u></th></tr>';
+			str+='<tr><th>Name</th>';
+			str+='<td> <a href="candidateElectionResultsAction.action?candidateId='+result.pcCandidateData.candidateId+'">'+result.pcCandidateData.candidateName+'</a></td>';
+			str+='<td rowspan="4"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
+			str+='</tr>';
+			str+='<tr><th>Rank</th><td>'+result.pcCandidateData.rank+'</td></tr>';
+			str+='<tr><th>Votes %</th><td>'+result.pcCandidateData.votesPercentage+'</td></tr>';
+			str+='</table>';	
+			str+='</div>';
+			str+='<div id="treeDiv"><span><h4><u>Mandals Details..</u></h4></span><div id="treeDataDiv"></div></div>';
+			str+='</div>';
+
+
+			resultDiv.innerHTML=str;
+			
+			for(var i in result.mandals)
+			{
+				buildTreeView(result.mandals[i]);
+			}
 		}
 	}
 
@@ -463,7 +499,7 @@
 <body>
 		<h3><u>Cross Voting Report</u></h3>
 		<div id="crossVotingInputDiv">
-			<table class="crossVotingInputTable">
+			<table class="crossVotingInputTable" border='0'>
 				<tr>
 					<td colspan="2"><h4><span id="labelspan">Select Election year and party :</span></h4></td>
 				</tr>
@@ -472,9 +508,8 @@
 					<td align="left">
 						<s:select theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Year"></s:select>
 					</td>
-				</tr>
-				<tr>
-					<td align="left"><s:label theme="simple" for="parliamentField" id="parliamentLabel" value="Parliament Constituency"></s:label></td>
+				
+					<td align="left" style="padding-left:10px;"><s:label theme="simple" for="parliamentField" id="parliamentLabel" value="Parliament Constituency"></s:label></td>
 					<td align="left">
 						<s:select theme="simple" id="parliamentField" name="parliamentField" list="parliamentList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Constituency" onchange="getAssembly()"></s:select>
 					</td>
@@ -485,20 +520,21 @@
 						<select id="AssemblySelect" onchange="getParty()">
 							<option value="-1">Select</option>
 						</select>
+
+						<input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" />Include Aliance Parties
 					</td>
-				</tr>
-				<tr>
-					<td>Alliances</td>
-					<td><input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" />Include Aliance Parties</td>
-					<!--<td><s:checkbox theme="simple" name="includeAliance" id="includeAliance" label="Include Aliance Parties"/></td> -->
-				</tr>
-				<tr>
-					<td align="left">Party</td>
+				
+					
+					<td align="left" style="padding-left:10px;">Party</td>
 					<td align="left">
 							<select id="PartySelect" onchange="getCrossVoting()">
 								<option value="-1">Select </option>			
 							</select>						
-					</td>					
+					</td>
+					<!--<td><s:checkbox theme="simple" name="includeAliance" id="includeAliance" label="Include Aliance Parties"/></td> -->
+				</tr>
+				<tr>
+										
 				</tr>
 				
 			</table>
