@@ -134,9 +134,11 @@ public class CrossVotingReportAjaxAction extends ActionSupport implements Servle
 		party = request.getParameter("party");
 		parliamentValue = request.getParameter("parliamentValue");
 		assemblyValue = request.getParameter("assemblyValue");
+		includeAliance = request.getParameter("includeAliance");
+		
 		
 		resultObjectVO = new ResultObjectVO();
-		System.out.println("year == "+electionYear+",party == "+party+",parliament = "+parliamentValue+",assembly = "+assemblyValue);
+		System.out.println("year == "+electionYear+",party == "+party+",parliament = "+parliamentValue+",assembly = "+assemblyValue+", alliance = "+includeAliance);
 		
 		if(electionYear != null && party == null && parliamentValue != null && assemblyValue == null)
 		{
