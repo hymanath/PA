@@ -173,9 +173,8 @@ public class CrossVotingReportAjaxAction extends ActionSupport implements Servle
 			crossVotingConsolidateVO = crossVotingEstimationService.getConsolidatedCrossVotingDetails(electionYear, new Long(party.trim()), new Long(assemblyValue.trim()), new Long(parliamentValue.trim()), includeAliance);
 			isPartyParticipated = crossVotingConsolidateVO.getPartyPartisipated();
 			hasAliance = crossVotingConsolidateVO.getHasAlliance();
-			System.out.println("Size = "+crossVotingConsolidateVO.getMandals().size());
-			System.out.println("After service execution");
-			
+			System.out.println("#########hasAliance::"+hasAliance);
+			System.out.println("#########isPartyParticipated::"+isPartyParticipated);
 			resultObjectVO.setCrossVotingConsolidateVO(crossVotingConsolidateVO);	
 		}		
 				
