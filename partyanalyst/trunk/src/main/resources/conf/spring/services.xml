@@ -196,6 +196,7 @@
     	<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
     	<property name="nominationDAO" ref="nominationDAO" />
     	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+    	<property name="staticDataService" ref="staticDataService" />
     </bean>
 	
 </beans>
