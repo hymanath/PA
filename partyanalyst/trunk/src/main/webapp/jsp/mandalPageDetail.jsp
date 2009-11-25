@@ -132,8 +132,8 @@
 			</tr>
 			<tr>
 				<th><s:label for="partyField" id="mandalLabel"  value="%{getText('PARTY')}" /></th>
-				<td align="left">
-					<select id="partyField" name="party"></select>				 
+				<td align="left">	
+					<s:select id="partyField" name="party" list="partyList" listKey="id" listValue="name"></s:select>
 				</td>
 			</tr>
 		</table>
