@@ -46,6 +46,14 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		this.nominationDAO = nominationDAO;
 	}
 	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+	
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -105,15 +113,36 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		List<Nomination> acNominations = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, acId, electionYear);
 		List<Nomination> pcNominations;
 		if(includeAliance.equals("true")){
-			List<SelectOptionVO> alianceParties = staticDataService.getAlliancePartiesAsVO(electionYear, new Long(1), partyId);
+			System.out.println("\n====================in True Block-----");
+			if(log.isInfoEnabled()){
+				log.debug("\n====================in True Block-----"+electionYear + partyId);
+			}
+			List<SelectOptionVO> alianceParties = staticDataService.getAlliancePartiesAsVO(electionYear, new Long(2), partyId);
+			System.out.println("\n====================Aliance Parties Size::-----"+alianceParties.size());
+			if(log.isInfoEnabled()){
+				log.debug("\n====================Aliance Parties Size::-----"+alianceParties.size());
+			}
+			
 			if(alianceParties.size() == 0){
 				crossVotingConsolidateVO.setHasAlliance(false);
 				return crossVotingConsolidateVO;
 			}
 			List<Long> aliancePartyIds = new ArrayList<Long>();
-			for(SelectOptionVO alianceParty:alianceParties)
+			for(SelectOptionVO alianceParty:alianceParties){
+				if(alianceParty.getId().equals(partyId))
+					continue;
 				aliancePartyIds.add(alianceParty.getId());
+
+			}
+			System.out.println("\n====================Aliance Parties Ids Size::-----"+aliancePartyIds.size()+" Id: "+aliancePartyIds.get(0));
+			if(log.isInfoEnabled()){
+				log.debug("\n====================Aliance Parties Ids Size::-----"+aliancePartyIds.size());
+			}
 			pcNominations = nominationDAO.findByConstituencyPartyAndElectionYearIncludingAliance(aliancePartyIds, pcId, electionYear);
+			System.out.println("\n=================Nominations with aliance Size::-----"+pcNominations.size());
+			if(log.isInfoEnabled()){
+				log.debug("\n=================Nominations with aliance Size::-----"+pcNominations.size());
+			}
 		}else{
 			pcNominations = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, pcId, electionYear);
 		}						
@@ -221,14 +250,6 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			percentage= new BigDecimal((votesEarned.floatValue()/validVotes.floatValue())*100).setScale (2,BigDecimal.ROUND_HALF_UP);
 		}
 		return percentage.toString();
-	}
-
-	public IStaticDataService getStaticDataService() {
-		return staticDataService;
-	}
-
-	public void setStaticDataService(IStaticDataService staticDataService) {
-		this.staticDataService = staticDataService;
 	}
 	
 }

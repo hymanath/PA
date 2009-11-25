@@ -78,6 +78,9 @@ public class BoothResultPopulationService implements IBoothResultPopulationServi
 			}		
 			for(ConstituencyBoothBlock assemblyConstituencyBlock:list){
 				String constituencyName = assemblyConstituencyBlock.getConstituencyName();
+				if(log.isDebugEnabled()){
+					log.debug("=======================================In Assembly Constituency::"+constituencyName);
+				}
 				Long districtId = assemblyConstituencyBlock.getDistrictId();
 				if(log.isDebugEnabled()){
 					log.info("constituencyName "+constituencyName);
@@ -104,7 +107,7 @@ public class BoothResultPopulationService implements IBoothResultPopulationServi
 				if(log.isDebugEnabled()){
 					log.debug("====================================Before Pecentage Calculation=====================================");
 				}
-				calculatePecentages(constiElecObj.getConstiElecId());
+				//calculatePecentages(constiElecObj.getConstiElecId());
 			}
 			
 		}catch(IndexOutOfBoundsException ex){
@@ -127,6 +130,7 @@ public class BoothResultPopulationService implements IBoothResultPopulationServi
 					if(log.isDebugEnabled()){
 						log.error("Exists More than One Or No BoothConstituencyElections for Part No:"+boothResult.getPartNumber()+",ConstiElecId:"+constiElecObj.getConstiElecId());
 					}
+					continue;
 				}
 				BoothConstituencyElection boothConstituencyElection = boothConstituencyElections.get(0);
 				List<BoothResult> boothResultModels = boothResultDAO.findByBoothConstituencyElection(boothConstituencyElection.getBoothConstituencyElectionId());
@@ -134,6 +138,7 @@ public class BoothResultPopulationService implements IBoothResultPopulationServi
 					if(log.isDebugEnabled()){
 						log.error("Exists More than One Or No BoothResults for Part No:"+boothConstituencyElection.getBoothConstituencyElectionId());
 					}
+					continue;
 				}
 				BoothResult boothResultModel = new BoothResult(boothConstituencyElection, boothResult.getTotalNoOfValidVotes(), boothResult.getRejectedVotes(), boothResult.getTenderedVotes());
 				System.out.println("boothResultDAO Inserted with Id:"+boothResultDAO.save(boothResultModel).getBoothResultId());
@@ -145,6 +150,7 @@ public class BoothResultPopulationService implements IBoothResultPopulationServi
 					if(log.isDebugEnabled()){
 						log.error("Exists More than One Or No Nominations for Part No:"+candidateBoothWiseResult.getCandidateName()+","+constiElecObj.getConstiElecId());
 					}
+					continue;
 				}
 				Nomination nomination = nominations.get(0);
 				List<BoothResultExcelVO> boothResultsForCandidate = candidateBoothWiseResult.getBoothresults();
@@ -154,6 +160,7 @@ public class BoothResultPopulationService implements IBoothResultPopulationServi
 						if(log.isDebugEnabled()){
 							log.error("Exists More than One Or No BoothConstituencyElections for Part No:"+boothResultExcel.getPartNo()+",ConstiElecId:"+constiElecObj.getConstiElecId());
 						}
+						continue;
 					}
 					BoothConstituencyElection boothConstituencyElection = boothConstituencyElections.get(0);
 					insertCandidateBoothResult(nomination, boothConstituencyElection, boothResultExcel.getVotesEarned());
@@ -167,6 +174,7 @@ public class BoothResultPopulationService implements IBoothResultPopulationServi
 			if(log.isDebugEnabled()){
 				log.error("CandidateBoothResults Already Exists With NominationId:"+nomination.getNominationId()+"And BoothConstiElecId:"+boothConstituencyElection.getBoothConstituencyElectionId());
 			}
+			return null;
 		}
 		CandidateBoothResult candidateBoothResult = new CandidateBoothResult(votesEarned, nomination, null, boothConstituencyElection);
 		return candidateBoothResultDAO.save(candidateBoothResult);

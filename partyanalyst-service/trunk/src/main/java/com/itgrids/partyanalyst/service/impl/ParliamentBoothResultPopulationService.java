@@ -85,6 +85,9 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 			List<ConstituencyBoothBlock> list = excel.getConstituenciesBlocsks();
 			for(ConstituencyBoothBlock constituencyBoothBlock:list){
 				String parliamentConstituencyName = constituencyBoothBlock.getParliamentConstituencyName();
+				if(log.isDebugEnabled()){
+					log.debug("=======================================In Parliament Constituency::"+parliamentConstituencyName+" And "+"Assembly :"+constituencyBoothBlock.getConstituencyName());
+				}
 				List<BoothResult> boothResults = boothResultDAO.findByConstituencyAndElection(parliamentConstituencyName, electionYear, electionScopeId);
 				if(boothResults.size() > 0){
 					if(log.isDebugEnabled()){
@@ -117,20 +120,23 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 		List<ConstituencyElection> parliamentConstituencyElections = constituencyElectionDAO.findByConstituencyElectionAndState(electionYear, parliamentConstituencyName, electionScopeId, stateId);
 		if(assemblyConstituencyElections.size() != 1 || parliamentConstituencyElections.size() != 1 ){
 			if(log.isDebugEnabled()){
-				log.error("Exists More than One Parliament Or Assembly Constituency Election For :"+assemblyConstituencyName+","+parliamentConstituencyName);
+				log.debug("Exists More than One Parliament Or Assembly Constituency Election For :"+assemblyConstituencyName+","+parliamentConstituencyName);
 			}
 		}
 		
 		List<BoothConstituencyElection> boothConstituencyElections = new ArrayList<BoothConstituencyElection>();
 		List<Booth> booths = boothConstituencyElectionDAO.findBoothsByConstituencyElection(assemblyConstituencyElections.get(0).getConstiElecId());		
-		if(log.isDebugEnabled()){
-			log.debug("Total Booths::"+booths.size());
+		if(booths.size() == 0){
+			if(log.isDebugEnabled()){
+				log.debug("No Booth Data Exists For Constituency ::"+parliamentConstituencyName+"In Assembly Constituency::"+assemblyConstituencyName);
+			}
+			return;
 		}
 		for(Booth booth:booths){
 			List<BoothConstituencyElection> boothConstituencyElectionModels = boothConstituencyElectionDAO.findByBoothAndConstiuencyElection(booth.getPartNo(), parliamentConstituencyElections.get(0).getConstiElecId());
 			if(boothConstituencyElectionModels.size() > 0){
 				if(log.isDebugEnabled()){
-					log.error("boothConstituencyElection Already Exists with Id ::"+boothConstituencyElectionModels.get(0).getBoothConstituencyElectionId());
+					log.debug("boothConstituencyElection Already Exists with Id ::"+boothConstituencyElectionModels.get(0).getBoothConstituencyElectionId());
 				}
 				return;
 			}
@@ -138,7 +144,7 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 				BoothConstituencyElection boothConstituencyElection = new BoothConstituencyElection(booth, parliamentConstituencyElections.get(0), null, null);
 				boothConstituencyElections.add(boothConstituencyElectionDAO.save(boothConstituencyElection));
 				if(log.isDebugEnabled()){
-					log.info("boothConstituencyElection List size ::"+boothConstituencyElectionModels.size()+"");
+					log.debug("boothConstituencyElection List size ::"+boothConstituencyElectionModels.size()+"");
 				}
 			}
 		}
@@ -156,8 +162,9 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 			List<BoothResult> boothResultModels = boothResultDAO.findByBoothConstituencyElection(boothConstituencyElections.get(i).getBoothConstituencyElectionId());
 			if(boothResultModels.size()>0){
 				if(log.isDebugEnabled()){
-					log.error("Booth Result Already Exists With BoothConstiElecId:"+boothConstituencyElections.get(i).getBoothConstituencyElectionId());
+					log.debug("Booth Result Already Exists With BoothConstiElecId:"+boothConstituencyElections.get(i).getBoothConstituencyElectionId());
 				}
+				continue;
 			}
 			BoothResult boothResultModel = new BoothResult(boothConstituencyElections.get(i), boothResults.get(i).getTotalNoOfValidVotes(), boothResults.get(i).getRejectedVotes(), boothResults.get(i).getTenderedVotes());
 			boothResultDAO.save(boothResultModel);
@@ -166,8 +173,9 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 			List<Nomination> nominations  = nominationDAO.findByConstituencyElectionAndCandidate(candidateBoothWiseResult.getCandidateName() , constiElecObj.getConstiElecId());
 			if(nominations.size() != 1){
 				if(log.isDebugEnabled()){
-					log.error("Exists More than One Or No Nominations for Part No:"+candidateBoothWiseResult.getCandidateName()+","+constiElecObj.getConstiElecId());
+					log.debug("Exists More than One Or No Nominations for Part No:"+candidateBoothWiseResult.getCandidateName()+","+constiElecObj.getConstiElecId());
 				}
+				continue;
 			}
 			Nomination nomination = nominations.get(0);
 			List<BoothResultExcelVO> boothResultsForCandidate = candidateBoothWiseResult.getBoothresults();
@@ -183,8 +191,9 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 		List<CandidateBoothResult> candidateBoothResults = candidateBoothResultDAO.findByNominationAndBoothConstituencyElection(nomination.getNominationId(), boothConstituencyElection.getBoothConstituencyElectionId());
 		if(candidateBoothResults.size() > 0){
 			if(log.isDebugEnabled()){
-				log.error("CandidateBoothResults Already Exists With NominationId:"+nomination.getNominationId()+"And BoothConstiElecId:"+boothConstituencyElection.getBoothConstituencyElectionId());
+				log.debug("CandidateBoothResults Already Exists With NominationId:"+nomination.getNominationId()+"And BoothConstiElecId:"+boothConstituencyElection.getBoothConstituencyElectionId());
 			}
+			return null;
 		}
 		candidateBoothResult = new CandidateBoothResult(votesEarned, nomination, null, boothConstituencyElection);
 		return candidateBoothResultDAO.save(candidateBoothResult);
