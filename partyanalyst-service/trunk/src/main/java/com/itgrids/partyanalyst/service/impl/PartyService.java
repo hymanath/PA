@@ -579,10 +579,13 @@ public class PartyService implements IPartyService {
 		List<PartyPositionDisplayVO>  partyPositionDisplayVOList = new ArrayList<PartyPositionDisplayVO>();
 		
 		Long electionID = getElectionID(electionTypeID, 1L, stateID, year);
-		
+		System.out.println("ElectionId -->" + electionID);
 		List<SelectOptionVO> parties = getAlliancePartiesAsVO(year, electionTypeID, partyID,alliances);
-		
+		System.out.println("Allianc  Parties -->" + parties.size());
 		List<ConstituencyElection> constituencyElectionList =  staticDataService.getConstituencyElections(electionID, districtID);
+		
+		if(constituencyElectionList != null)
+		System.out.println("inside getNth position -->" + constituencyElectionList.size());
 		
 		for(ConstituencyElection constituencyElection : constituencyElectionList){
 			PartyPositionDisplayVO partyPositionDisplayVO = getPartyPositionDisplayVO(constituencyElection, parties, partyID, rank);
@@ -596,6 +599,7 @@ public class PartyService implements IPartyService {
 			List<SelectOptionVO> parties, Long partyID, int rank){
 		PartyPositionDisplayVO partyPositionDisplayVO = new PartyPositionDisplayVO();
 		Set<Nomination> nominations = constituencyElection.getNominations();
+		System.out.println("Inside getPartyPositionDisplayVO -->" + nominations.size());
 		
 		Nomination selectedNomination = partyParticipatedNomination(nominations , parties, rank);
 		if(selectedNomination==null)
