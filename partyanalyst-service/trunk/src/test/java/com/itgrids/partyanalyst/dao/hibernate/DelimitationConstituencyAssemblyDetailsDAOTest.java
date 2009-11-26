@@ -25,4 +25,9 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		for(Constituency constituency:list)
 			System.out.println(constituency.getName());
 	}
+	
+	public void testFindConstituenciesByDelimitationAssembly(){
+		List<Constituency> list = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituenciesByDelimitationConstituencyId(new Long(15));
+		assertEquals(4, list.size());
+	}
 }
