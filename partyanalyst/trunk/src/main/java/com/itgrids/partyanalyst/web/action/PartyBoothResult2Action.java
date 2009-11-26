@@ -16,6 +16,7 @@ public class PartyBoothResult2Action extends ActionSupport implements ServletReq
 	private String constituencyName;
 	private String partyName;
 	private String electionYear;
+	private String electionType;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private PartyBoothPerformanceVO boothResult;
 
@@ -81,6 +82,15 @@ public class PartyBoothResult2Action extends ActionSupport implements ServletReq
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
+	}
+	
+	public String getElectionType() {
+		return electionType;
+	}
+
+
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
 	}
 	
 	public String execute(){

@@ -13,10 +13,10 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class CrossVotingReportInputAction extends ActionSupport implements ServletRequestAware {
 
+	private static final long serialVersionUID = 1L;
 	private List<SelectOptionVO> electionYearList;
 	private List<SelectOptionVO> parliamentList;
 	private HttpServletRequest request;
-
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;	
@@ -37,7 +37,7 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 	public void setParliamentList(List<SelectOptionVO> parliamentList) {
 		this.parliamentList = parliamentList;
 	}
-
+	
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -60,15 +60,7 @@ public class CrossVotingReportInputAction extends ActionSupport implements Servl
 		electionYearList.add(eList1);
 		electionYearList.add(eList2);
 		setElectionYearList(electionYearList);
-		//****
-		
-		parliamentList = new ArrayList<SelectOptionVO>();		
-		SelectOptionVO pList1 = new SelectOptionVO();
-		pList1.setId(new Long(408));
-		pList1.setName("Nellore");
-		
-		parliamentList.add(pList1);		
-		
+
 		return Action.SUCCESS;
 	}
 
