@@ -248,9 +248,11 @@ public class StaticDataService implements IStaticDataService {
 	
 	public List<ConstituencyElection> getConstituencyElections(Long electionID, Long  districtID){
 		List<ConstituencyElection>  constituencyElectionList = null;
-		if(districtID==null && districtID==0L){
+		if(districtID==null || districtID==0L){
+			System.out.println(" DAO ...1");
 			constituencyElectionList = constituencyElectionDAO.findByElection(electionID);
 		}else{
+			System.out.println("DAO ... 2");
 			constituencyElectionList = constituencyElectionDAO.findByElectionAndDistrict(electionID, districtID);
 		}
 		return constituencyElectionList;
