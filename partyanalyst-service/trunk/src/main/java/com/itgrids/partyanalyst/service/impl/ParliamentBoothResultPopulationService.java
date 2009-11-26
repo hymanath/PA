@@ -143,12 +143,10 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 			else{
 				BoothConstituencyElection boothConstituencyElection = new BoothConstituencyElection(booth, parliamentConstituencyElections.get(0), null, null);
 				boothConstituencyElections.add(boothConstituencyElectionDAO.save(boothConstituencyElection));
-				if(log.isDebugEnabled()){
-					log.debug("boothConstituencyElection List size ::"+boothConstituencyElectionModels.size()+"");
-				}
 			}
 		}
 		if(log.isDebugEnabled()){
+			log.debug("boothConstituencyElection List size ::"+boothConstituencyElections.size()+"");
 			log.debug("Parliament Constituency Name:"+parliamentConstituencyName+" And Assembly Constituency name::"+assemblyConstituencyName);
 			log.debug("assemblyConstituencyElectionId and parliamentConstituencyElectionId are ::"+assemblyConstituencyElections.get(0).getConstiElecId()+","+parliamentConstituencyElections.get(0).getConstiElecId());
 			
