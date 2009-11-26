@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.CrossVotedBoothVO;
 import com.itgrids.partyanalyst.dto.CrossVotedCandidateVO;
@@ -20,6 +21,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -30,11 +32,12 @@ import com.itgrids.partyanalyst.utils.CrossVotedMandalVOComparator;
 
 public class CrossVotingEstimationService implements ICrossVotingEstimationService{
 
-	private static final Logger log = Logger.getLogger(SmsCountrySmsService.class);
+	private static final Logger log = Logger.getLogger(CrossVotingEstimationService.class);
 	private IBoothDAO boothDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;	
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private INominationDAO nominationDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IStaticDataService staticDataService;
 	
@@ -44,6 +47,15 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	
 	public void setNominationDAO(INominationDAO nominationDAO) {
 		this.nominationDAO = nominationDAO;
+	}
+	
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
 	
 	public IStaticDataService getStaticDataService() {
@@ -86,8 +98,8 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	}
 	
 	
-	public List<SelectOptionVO> getAssembliesForParliament(Long parliamentId, Long electionYear){
-		List<Constituency> constituencies = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(parliamentId, electionYear);
+	public List<SelectOptionVO> getAssembliesForParliament(Long delimitationConstituencyId){
+		List<Constituency> constituencies = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituenciesByDelimitationConstituencyId(delimitationConstituencyId);
 		List<SelectOptionVO> constituencyVOs = new ArrayList<SelectOptionVO>();
 		for(Constituency constituency:constituencies){
 			SelectOptionVO constituencyVO = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
@@ -96,14 +108,14 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		return constituencyVOs;
 	}
 	
-	public List<SelectOptionVO> getPartiesForConstituency(Long assemblyId, String electionYear){
-		List<Party> parties = nominationDAO.findPartiesByConstituencyAndElection(assemblyId, electionYear);
-		List<SelectOptionVO> partyVOs = new ArrayList<SelectOptionVO>();
-		for(Party party:parties){
-			SelectOptionVO partyVO = new SelectOptionVO(party.getPartyId(), party.getShortName());
-			partyVOs.add(partyVO);
+	public List<SelectOptionVO> getParliamentConstituenciesForElectionYear(Long electionYear){
+		List<DelimitationConstituency> list = delimitationConstituencyDAO.findByElectionScopeIdStateIdAndElectionYear(new Long(1), new Long(1), electionYear);
+		List<SelectOptionVO> delimitationConstituencyVOs = new ArrayList<SelectOptionVO>();
+		for(DelimitationConstituency delimitationConstituency:list){
+			SelectOptionVO delimitationConstituencyVO = new SelectOptionVO(delimitationConstituency.getDelimitationConstituencyID(), delimitationConstituency.getConstituency().getName());
+			delimitationConstituencyVOs.add(delimitationConstituencyVO);
 		}
-		return partyVOs;		
+		return delimitationConstituencyVOs;
 	}
 	
 	public CrossVotingConsolidateVO getConsolidatedCrossVotingDetails(String electionYear, Long partyId, Long acId, Long pcId, String includeAliance){
@@ -251,5 +263,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		}
 		return percentage.toString();
 	}
+
+	
 	
 }
