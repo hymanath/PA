@@ -132,6 +132,7 @@ public class StatePageService implements IStatePageService {
 		   state.setStateFlower(stateDetails.getStateFlower());
 		   state.setStartDate(stateDetails.getStartDate());
 		   state.setDeformDate(stateDetails.getDeformDate());
+		   state.setAdmin_control(stateDetails.getAdminControl());
 		}
 		return state;
 	}
