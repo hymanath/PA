@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class StatePageVO {
 
-	private Long    stateId;
+	private Long   stateId;
 	private String country;
 	private String stateName;
 	private String adminCapital;
@@ -31,6 +31,7 @@ public class StatePageVO {
 	private Long   stateCode;
 	private Date   startDate;
 	private Date   deformDate;
+	private String admin_control;
 	
 	//getters and setters
 	public Long getStateId() {
@@ -152,6 +153,12 @@ public class StatePageVO {
 	}
 	public void setDeformDate(Date deformDate) {
 		this.deformDate = deformDate;
+	}
+	public String getAdmin_control() {
+		return admin_control;
+	}
+	public void setAdmin_control(String admin_control) {
+		this.admin_control = admin_control;
 	}
 	 
 	
