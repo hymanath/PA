@@ -7,7 +7,6 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,6 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 
 import com.itgrids.partyanalyst.dto.CensusVO;
-import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.dto.StatePageVO;
 import com.itgrids.partyanalyst.service.IStatePageService;
@@ -134,13 +132,11 @@ public class StatePageAction extends ActionSupport implements
     	    	
 		stateElections = statePageService.getStateElections(statePage.getStateId());
    	  	
-   	  	censusVO = statePageService.getCensusDetails(statePage.getStateId(), 2001);   	  	
+   	  	censusVO = statePageService.getCensusDetails(statePage.getStateId(),2001);   	  	
    	  	
-   	  	if(stateElections == null)
-   	  		return ERROR;
-       	  	       	  		
-    	
-   	  	return SUCCESS;
+   	  	if(statePage == null || districtData == null)  	  	       	  		
+    	 return ERROR;
+   	return SUCCESS;
     }
 
 	
