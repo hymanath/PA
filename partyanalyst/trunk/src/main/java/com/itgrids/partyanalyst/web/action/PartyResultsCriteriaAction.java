@@ -43,23 +43,23 @@ public class PartyResultsCriteriaAction extends ActionSupport implements Servlet
 		List<SelectOptionVO> partyNames=new ArrayList<SelectOptionVO>();
 		
 		SelectOptionVO partySelectOptionVO1 = new SelectOptionVO();
-		partySelectOptionVO1.setId(new Long(1));
+		partySelectOptionVO1.setId(new Long(24));
 		partySelectOptionVO1.setName("INC");
 		
 		SelectOptionVO partySelectOptionVO2 = new SelectOptionVO();
-		partySelectOptionVO2.setId(new Long(2));
+		partySelectOptionVO2.setId(new Long(15));
 		partySelectOptionVO2.setName("BJP");
 		
 		SelectOptionVO partySelectOptionVO3 = new SelectOptionVO();
-		partySelectOptionVO3.setId(new Long(11));
+		partySelectOptionVO3.setId(new Long(62));
 		partySelectOptionVO3.setName("TDP");				
 		
 		SelectOptionVO partySelectOptionVO4 = new SelectOptionVO();
-		partySelectOptionVO4.setId(new Long(9));
+		partySelectOptionVO4.setId(new Long(43));
 		partySelectOptionVO4.setName("PRP");
 		
 		SelectOptionVO partySelectOptionVO5 = new SelectOptionVO();
-		partySelectOptionVO5.setId(new Long(10));
+		partySelectOptionVO5.setId(new Long(61));
 		partySelectOptionVO5.setName("TRS");
 		
 		partyNames.add(partySelectOptionVO1);
