@@ -127,11 +127,11 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletCo
 		// Setting samples of New Party
 		
 		SelectOptionVO nParty1 = new SelectOptionVO();
-		nParty1.setId(new Long(9));
+		nParty1.setId(new Long(43));
 		nParty1.setName("PRP");
 		
 		SelectOptionVO nParty2  = new SelectOptionVO();
-		nParty2.setId(new Long(12));
+		nParty2.setId(new Long(32));
 		nParty2.setName("Lok Satta");
 		
 		newParty.add(nParty1);
@@ -142,23 +142,23 @@ public class PartyInfluenceMainAction extends ActionSupport implements ServletCo
 		//Setting party for party names
 		
 		SelectOptionVO party1 = new SelectOptionVO();
-		party1 .setId(new Long(1));
+		party1 .setId(new Long(24));
 		party1 .setName("INC");
 		
 		SelectOptionVO party2  = new SelectOptionVO();
-		party2.setId(new Long(2));
+		party2.setId(new Long(15));
 		party2.setName("BJP");
 		
 		SelectOptionVO party3  = new SelectOptionVO();
-		party3.setId(new Long(4));
+		party3.setId(new Long(17));
 		party3.setName("CPI");
 		
 		SelectOptionVO party5  = new SelectOptionVO();
-		party5.setId(new Long(11));
+		party5.setId(new Long(62));
 		party5.setName("TDP");
 		
 		SelectOptionVO party6  = new SelectOptionVO();
-		party6.setId(new Long(10));
+		party6.setId(new Long(61));
 		party6.setName("TRS");
 		
 		partyNames.add(party1);
