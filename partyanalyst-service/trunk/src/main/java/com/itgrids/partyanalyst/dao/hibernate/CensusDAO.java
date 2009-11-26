@@ -46,7 +46,8 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 
                 Criteria criteria = session.createCriteria( Census.class )
                 	.add( Expression.eq( "stateId" , stateId  ))
-                	.add( Expression.eq( "year" , year  )); 
+                	.add( Expression.eq( "year" , year  ))
+            	    .add( Expression.eq( "level" , "STATE"  ));
                 
                 return new HashSet( criteria.list() );
             }
@@ -102,9 +103,11 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Census> findByYearAndTehsilIDs(Long year, String tehsilIDs){
 		return getHibernateTemplate().find("from Census model where model.year="+year+" and model.tru=? and model.tehsilId in ("+tehsilIDs +")", "Total");
 	}
+	@SuppressWarnings("unchecked")
 	public List<Census> findByYearAndTownshipIDs(Long year, String townshipIDs){
 		return getHibernateTemplate().find("from Census model where model.year="+year+" and model.townshipId in ("+townshipIDs +")");
 	}
