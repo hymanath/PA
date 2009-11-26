@@ -10,4 +10,6 @@ import com.itgrids.partyanalyst.model.DelimitationConstituencyAssemblyDetails;
 public interface IDelimitationConstituencyAssemblyDetailsDAO extends GenericDao<DelimitationConstituencyAssemblyDetails, Long>{
 
 	public List<Constituency> findAssemblyConstituencies(Long parliamentConstituencyId, Long electionYear);
+	
+	public List<Constituency> findAssemblyConstituenciesByDelimitationConstituencyId(Long delimitationConstituencyId);
 }
