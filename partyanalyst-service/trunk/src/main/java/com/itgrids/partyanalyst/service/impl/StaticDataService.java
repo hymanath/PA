@@ -84,6 +84,11 @@ public class StaticDataService implements IStaticDataService {
 		return electionScopeDAO.findByPropertyElectionTypeId(electionType);
 	}
 	
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
+
+
 	public void setAllianceGroupDAO(IAllianceGroupDAO allianceGroupDAO) {
 		this.allianceGroupDAO = allianceGroupDAO;
 	}
