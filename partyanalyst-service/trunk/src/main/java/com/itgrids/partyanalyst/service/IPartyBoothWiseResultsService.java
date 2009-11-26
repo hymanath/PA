@@ -7,9 +7,7 @@ import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 
 public interface IPartyBoothWiseResultsService {
 
-	public List<SelectOptionVO> getParties();
-	
-	public List<SelectOptionVO> getConstituenciesForParty(Long partyId, Long electionTypeId, String electionYear);
+	public List<SelectOptionVO> getConstituenciesForElectionScopeAndYear(Long electionScopeId, Long electionYear);
 	
 	public List<PartyBoothPerformanceVO> getBoothWiseResultsForParty(Long partyId, Long constituencyId, String electionYear);
 }

@@ -32,4 +32,5 @@ public interface IStaticDataService {
 	public List<SelectOptionVO> getConstituencies(Long stateId);
 	public List<ConstituencyElection> getConstituencyElections(Long electionID, Long  districtID);
 	public List<SelectOptionVO> getStaticParties();
+	public List<SelectOptionVO> getPartiesForConstituency(Long constituencyId, String electionYear);
 }

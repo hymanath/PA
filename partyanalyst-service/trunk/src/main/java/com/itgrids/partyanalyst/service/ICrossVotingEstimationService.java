@@ -7,9 +7,10 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface ICrossVotingEstimationService {
 	
+	public List<SelectOptionVO> getParliamentConstituenciesForElectionYear(Long electionYear);
+	
+	public List<SelectOptionVO> getAssembliesForParliament(Long delimitationConstituencyId);
+	
 	public CrossVotingConsolidateVO getConsolidatedCrossVotingDetails(String electionYear, Long partyId, Long acId, Long pcId, String includeAliance);
 	
-	public List<SelectOptionVO> getAssembliesForParliament(Long parliamentId, Long electionYear);
-	
-	public List<SelectOptionVO> getPartiesForConstituency(Long assemblyId, String electionYear);
 }
