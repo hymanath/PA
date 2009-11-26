@@ -152,6 +152,12 @@
             </result>
         </action>
         
+        <action name="partyBoothResultPartyAjaxAction" class="partyBoothResult1Action" method="getParty">
+            <result type="json" name="success">
+            	<param name="root">constituencyVOs</param>
+            </result>
+        </action>
+        
         <action name="partyBoothResult2Action" class="partyBoothResult2Action">
             <result name="success">/jsp/boothResults2.jsp</result>
         </action>
