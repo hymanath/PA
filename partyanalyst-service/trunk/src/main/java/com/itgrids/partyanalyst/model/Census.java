@@ -19,6 +19,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Table(name = "census_master")
 public class Census extends BaseModel implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4937621822394860105L;
 	private Long censusId;
 	private Long stateId;
 	private Long districtId;
