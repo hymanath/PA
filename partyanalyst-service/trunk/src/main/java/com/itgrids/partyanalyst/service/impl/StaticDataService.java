@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -43,6 +44,7 @@ public class StaticDataService implements IStaticDataService {
 	private IAllianceGroupDAO  allianceGroupDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IConstituencyElectionDAO constituencyElectionDAO;
+	private INominationDAO nominationDAO;
 	private final static Logger log = Logger.getLogger(StaticDataService.class);
 	
 
@@ -268,5 +270,15 @@ public class StaticDataService implements IStaticDataService {
 			staticParties.add(selectOptionVO);
 		}
 		return staticParties;
+	}
+	
+	public List<SelectOptionVO> getPartiesForConstituency(Long constituencyId, String electionYear){
+		List<Party> parties = nominationDAO.findPartiesByConstituencyAndElection(constituencyId, electionYear);
+		List<SelectOptionVO> partyVOs = new ArrayList<SelectOptionVO>();
+		for(Party party:parties){
+			SelectOptionVO partyVO = new SelectOptionVO(party.getPartyId(), party.getShortName());
+			partyVOs.add(partyVO);
+		}
+		return partyVOs;
 	}
 }
