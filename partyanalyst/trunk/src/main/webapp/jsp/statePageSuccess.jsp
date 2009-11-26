@@ -289,7 +289,7 @@ function insertData(param,results)
 	</c:forEach>
 </table>
 <H3><u  style="color:#1C4B7A;"><c:out value="${statePage.stateName}" />  Previous Elections Results:</u></H3>
-
+<c:if test="${stateElections != null }">
 <c:forEach var="state" items="${stateElections}">
 <table border="0" >     
 	<tr>
@@ -305,7 +305,7 @@ function insertData(param,results)
 </div>
 <br/><br/>
 </c:forEach>
-
+</c:if>
 
 </div>
 
