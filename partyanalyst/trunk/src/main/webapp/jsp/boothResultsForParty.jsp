@@ -13,19 +13,13 @@
 </HEAD>
 <body>
 <s:url action="partyBoothResult1AjaxAction" id="getConsituencyURL" />
+<s:url action="partyBoothResultPartyAjaxAction" id="getPartyURL" />
 <h4>Party Booth Results</h4>
 <s:form action="partyBoothResult2Action" name="BoothPerformanceReport" cssClass="inputTable">
 	
-
-
-	<s:select label="Party" name="partyName" list="partyVOs" listKey="id"
-		listValue="name" headerKey="0" headerValue="Select"
-		onchange="getConstituenciesList(this.form,'%{getConsituencyURL}')"/>
-
 	<s:select label="Election Type" name="electionType"
 		list="electionTypes" listKey="id" listValue="name" headerKey="0"
-		headerValue="Select"
-		onchange="getConstituenciesList(this.form,'%{getConsituencyURL}')" />
+		headerValue="Select"/>
 
 	<s:select label="Election Year" name="electionYear"
 		list="electionYears" headerKey="0" headerValue="Select"
@@ -35,9 +29,14 @@
 	<tr id="constituencyRow" style="display: none">
 		<th>Constituency</th>
 		<td><s:select label="Constituency" name="constituencyName"
-			list="%{#{'0':'Select'}}" theme="simple" /></td>
+			list="%{#{'0':'Select'}}" theme="simple" onchange="getConstituenciesList(this.form,'%{getPartyURL}')"/></td>
 	</tr>
 
+	<tr id="partyRow" style="display: none">
+		<th>Party</th>
+		<td><s:select label="Party" name="partyName"
+			list="%{#{'0':'Select'}}" theme="simple"/></td>
+	</tr>
 	<s:submit value="Get Booth Results" />
 
 </s:form>

@@ -1,6 +1,6 @@
 
 function getConstituenciesList(form, url) {
-	if (form.partyName.value == 0 || form.electionType.value == 0
+	if (form.electionType.value == 0
 			|| form.electionYear.value == "0")
 		return;
 
@@ -14,8 +14,17 @@ function getConstituencies(form, url) {
 		success : function(o) {
 			try {
 				var results = YAHOO.lang.JSON.parse(o.responseText);
-				buildConstituencySelect(form, results);
-				document.getElementById("constituencyRow").style.display = "";
+				console.log(results);
+				if(url=="/PartyAnalyst/partyBoothResult1AjaxAction.action")
+				{
+					buildConstituencySelect(form, results);
+					document.getElementById("constituencyRow").style.display = "";
+				}
+				else if(url=="/PartyAnalyst/partyBoothResultPartyAjaxAction.action")
+				{
+					buildPartySelect(form, results);
+					document.getElementById("partyRow").style.display = "";
+				}
 
 			} catch (e) {
 				alert("Invalid JSON result" + e);
@@ -32,12 +41,21 @@ function getConstituencies(form, url) {
 }
 
 function buildConstituencySelect(form, results) {
-
+	
 	for (i = 0; i < results.length; i++) {
 		addOption(form.constituencyName, results[i].name, results[i].id);
 	}
 
 }
+
+function buildPartySelect(form, results) {
+	
+	for (i = 0; i < results.length; i++) {
+		addOption(form.partyName, results[i].name, results[i].id);
+	}
+
+}
+
 
 function addOption(selectbox, text, value) {
 	var optn = document.createElement("OPTION");

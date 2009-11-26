@@ -185,7 +185,7 @@
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText); 		
 								console.log(myResults);
-								if(jObj.task == "Assembly" || jObj.task=="getParty")
+								if(jObj.task == "Assembly" || jObj.task=="getParty" || jObj.task=="getParliament")
 									buildParliamemtSelect(jObj,myResults.dataList);
 								else if(jObj.task == "crossVotingReport")
 									buildCrossVotingReport(jObj,myResults.crossVotingConsolidateVO);
@@ -410,9 +410,12 @@
 	}
 	function buildParliamemtSelect(jObj,results)
 	{
-
-		
-		if(jObj.task=="Assembly")
+		if(jObj.task=="getParliament")
+		{			
+			
+			var pSelectElmt = document.getElementById("AssemblySelect");	
+		}		
+		else if(jObj.task=="Assembly")
 		{			
 			
 			var pSelectElmt = document.getElementById("AssemblySelect");	
@@ -494,6 +497,19 @@
 			var bparam="election="+jsObj.electionValue+"&party="+jsObj.partyValue+"&parliamentValue="+jsObj.parliamentValue+"&assemblyValue="+jsObj.assemblyValue+"&includeAliance="+jsObj.alliances;
 			callAjax(jsObj,bparam);
 	}
+	function getParliament()
+	{
+		var elecYearElmt = document.getElementById("electionYearField");
+		var elecValue =  elecYearElmt.options[elecYearElmt.selectedIndex].value;
+
+		var jsObj={
+						electionValue : elecValue,
+						task:"getParliament"
+				  }
+
+		var bparam="election="+jsObj.electionValue;
+		callAjax(jsObj,bparam);		
+	}
 </script>
 </head>
 <body>
@@ -506,12 +522,14 @@
 				<tr>
 					<td align="left"><s:label theme="simple" for="electionYearField" id="electionYearLabel" value="Election Year"></s:label></td>
 					<td align="left">
-						<s:select theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Year"></s:select>
+						<s:select theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Year" onchange="getParliament()"></s:select>
 					</td>
 				
 					<td align="left" style="padding-left:10px;"><s:label theme="simple" for="parliamentField" id="parliamentLabel" value="Parliament Constituency"></s:label></td>
-					<td align="left">
-						<s:select theme="simple" id="parliamentField" name="parliamentField" list="parliamentList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Constituency" onchange="getAssembly()"></s:select>
+					<td align="left"> 
+						<select id="parliamentField" onchange="getAssembly()">
+							<option value="-1">Select</option>
+						</select>
 					</td>
 				</tr>			
 				<tr>
@@ -531,7 +549,6 @@
 								<option value="-1">Select </option>			
 							</select>						
 					</td>
-					<!--<td><s:checkbox theme="simple" name="includeAliance" id="includeAliance" label="Include Aliance Parties"/></td> -->
 				</tr>
 				<tr>
 										
