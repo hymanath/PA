@@ -4,29 +4,26 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
-import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 
 public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsService{
 	
-	private IPartyDAO partyDAO;
 	private INominationDAO nominationDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private static final Logger log = Logger.getLogger(PartyBoothWiseResultsService.class);
 	
-	public IPartyDAO getPartyDAO() {
-		return partyDAO;
-	}
-	public void setPartyDAO(IPartyDAO partyDAO) {
-		this.partyDAO = partyDAO;
-	}
 	public INominationDAO getNominationDAO() {
 		return nominationDAO;
 	}
@@ -34,28 +31,25 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		this.nominationDAO = nominationDAO;
 	}
 	
-	public List<SelectOptionVO> getParties(){
-		List<SelectOptionVO> partyVOs = new ArrayList<SelectOptionVO>();
-		List<Party> parties = partyDAO.getAll();
-		for(Party party:parties){
-			if(party.getShortName() != null){
-				SelectOptionVO partyVO = new SelectOptionVO(party.getPartyId(), party.getShortName());
-				partyVOs.add(partyVO);
-			}
-		}
-		return partyVOs;
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
 	}
 	
-	public List<SelectOptionVO> getConstituenciesForParty(Long partyId, Long electionTypeId, String electionYear){
-		System.out.println("In getConstituenciesForParty::partyId, electionType, electionYear::"+partyId+","+electionTypeId+","+electionYear);
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+	
+	public List<SelectOptionVO> getConstituenciesForElectionScopeAndYear(Long electionScopeId, Long electionYear){
 		List<SelectOptionVO> constituencyVOs = new ArrayList<SelectOptionVO>();
 		long beginTimeMillis = System.currentTimeMillis();
-		List<Constituency> constituencies = nominationDAO.findConstitueniesByPartyAndElectionType(partyId, electionTypeId, electionYear);
+		List<DelimitationConstituency> delimitationConstituencies = delimitationConstituencyDAO.findByElectionScopeIdStateIdAndElectionYear(electionScopeId, new Long(1), electionYear);
 		long endTimeMillis = System.currentTimeMillis();
 		System.out.println("beginTimeMillis:"+beginTimeMillis);
 		System.out.println("endTimeMillis:"+endTimeMillis);
 		System.out.println("Total time taken:" + (beginTimeMillis-endTimeMillis)/1000);
-		for(Constituency constituency:constituencies){
+		for(DelimitationConstituency delimitationConstituency:delimitationConstituencies){
+			Constituency constituency = delimitationConstituency.getConstituency();
 			SelectOptionVO constituencyVO = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
 			constituencyVOs.add(constituencyVO);
 		}
@@ -100,6 +94,4 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		}
 		return percengate.toString();
 	}
-
-
 }
