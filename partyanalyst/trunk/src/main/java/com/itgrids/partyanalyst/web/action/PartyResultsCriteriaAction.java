@@ -13,6 +13,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.PartyResultService;
 import com.opensymphony.xwork2.ActionSupport;
 /**
@@ -27,6 +28,8 @@ public class PartyResultsCriteriaAction extends ActionSupport implements Servlet
 	HttpServletResponse response;
 	HttpSession session;
 	private List<SelectOptionVO> partyList;
+	private IStaticDataService staticDataService;
+	
 	//private String[] partyList={"INC","TDP","PRP","TRS","CPI","CPM","MIM"};
 
 	public List<SelectOptionVO> getPartyList() {
@@ -40,7 +43,7 @@ public class PartyResultsCriteriaAction extends ActionSupport implements Servlet
 	public String execute() {	
 		System.out.println("IN PartyResultsCriteria action");
 		
-		List<SelectOptionVO> partyNames=new ArrayList<SelectOptionVO>();
+		/*List<SelectOptionVO> partyNames=new ArrayList<SelectOptionVO>();
 		
 		SelectOptionVO partySelectOptionVO1 = new SelectOptionVO();
 		partySelectOptionVO1.setId(new Long(24));
@@ -68,7 +71,11 @@ public class PartyResultsCriteriaAction extends ActionSupport implements Servlet
 		partyNames.add(partySelectOptionVO4);
 		partyNames.add(partySelectOptionVO5);
 		//partyList={"INC","TDP","PRP","TRS","CPI","CPM","MIM"};
-		setPartyList(partyNames);		
+		setPartyList(partyNames);*/
+		
+		
+		partyList = staticDataService.getStaticParties();
+		
 		return SUCCESS;
 		
 	}
@@ -85,6 +92,14 @@ public class PartyResultsCriteriaAction extends ActionSupport implements Servlet
 	public void setServletContext(ServletContext arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
 	}
 
 }
