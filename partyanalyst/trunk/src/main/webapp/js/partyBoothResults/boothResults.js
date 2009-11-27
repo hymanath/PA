@@ -13,8 +13,7 @@ function getConstituencies(form, url) {
 
 		success : function(o) {
 			try {
-				var results = YAHOO.lang.JSON.parse(o.responseText);
-				console.log(results);
+				var results = YAHOO.lang.JSON.parse(o.responseText);				
 				if(url=="/PartyAnalyst/partyBoothResult1AjaxAction.action")
 				{
 					buildConstituencySelect(form, results);
