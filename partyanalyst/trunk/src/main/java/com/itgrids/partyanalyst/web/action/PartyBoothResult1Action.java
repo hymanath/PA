@@ -1,14 +1,12 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
-import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -25,8 +23,7 @@ public class PartyBoothResult1Action extends ActionSupport  {
 	private String electionYear;
 	private String constituencyName;
 	private PartyBoothPerformanceVO result;
-	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
-	private IStaticDataService staticDataService;
+	private ICrossVotingEstimationService crossVotingEstimationService;
 	private List<SelectOptionVO> constituencyVOs;
 	private HttpServletResponse response;
 
@@ -38,14 +35,6 @@ public class PartyBoothResult1Action extends ActionSupport  {
 		this.partyName = partyName;
 	}
 	
-	public IStaticDataService getStaticDataService() {
-		return staticDataService;
-	}
-
-	public void setStaticDataService(IStaticDataService staticDataService) {
-		this.staticDataService = staticDataService;
-	}
-
 	public String getElectionType() {
 		return electionType;
 	}
@@ -78,13 +67,13 @@ public class PartyBoothResult1Action extends ActionSupport  {
 		this.constituencyVOs = constituencyVOs;
 	}
 
-	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
-		return partyBoothWiseResultsService;
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
 	}
 
-	public void setPartyBoothWiseResultsService(
-			IPartyBoothWiseResultsService partyBoothWiseResultsService) {
-		this.partyBoothWiseResultsService = partyBoothWiseResultsService;
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
 	}
 
 	public PartyBoothPerformanceVO getResult() {
@@ -114,8 +103,7 @@ public class PartyBoothResult1Action extends ActionSupport  {
 	public String execute() throws Exception {
 
 		System.out.println("In execute = "+electionType+" ,election year =  "+electionYear);
-		constituencyVOs = partyBoothWiseResultsService.getConstituenciesForElectionScopeAndYear(new Long(electionType), new Long(electionYear));
-		setConstituencyVOs(constituencyVOs);
+		constituencyVOs = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(electionYear, new Long(electionType));
 
 		return Action.SUCCESS;
 	}
@@ -123,7 +111,7 @@ public class PartyBoothResult1Action extends ActionSupport  {
 	public String getParty() throws Exception{
 	
 		System.out.println("In get party = ");
-		constituencyVOs = staticDataService.getPartiesForConstituency(new Long(constituencyName), electionYear);
+		constituencyVOs = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(new Long(constituencyName), electionYear);
 		return Action.SUCCESS;
 	}
 	
