@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
+import com.itgrids.partyanalyst.model.Party;
 
 public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothResult, Long> implements ICandidateBoothResultDAO{
 
@@ -39,5 +40,13 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 	@SuppressWarnings("unchecked")
 	public List<CandidateBoothResult> findByConstituencyElection(Long constituencyElectionId) {
 		return getHibernateTemplate().find("from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.constiElecId = ?", constituencyElectionId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Party> findPartiesByConstituencyAndElectionYear(Long constituencyId, String electionYear){
+		Object[] params = {constituencyId, electionYear};
+		return getHibernateTemplate().find("select distinct model.nomination.party from CandidateBoothResult model where " +
+				"model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ?" +
+				" and model.boothConstituencyElection.constituencyElection.election.electionYear = ?",params);
 	}
 }
