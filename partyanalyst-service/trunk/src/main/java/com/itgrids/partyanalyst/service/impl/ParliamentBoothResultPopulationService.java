@@ -145,8 +145,14 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 				boothConstituencyElections.add(boothConstituencyElectionDAO.save(boothConstituencyElection));
 			}
 		}
+		if(boothConstituencyElections.size() < boothResults.size()){
+			if(log.isDebugEnabled()){
+				log.debug("Booth Data And Booth Results Data Are Not Same For Parliament Constituency:"+parliamentConstituencyName +" In Assembly Constituency::"+assemblyConstituencyName);
+			}
+			return;
+		}
 		if(log.isDebugEnabled()){
-			log.debug("boothConstituencyElection List size ::"+boothConstituencyElections.size()+"");
+			log.debug("boothConstituencyElection List size ::"+boothConstituencyElections.size());
 			log.debug("Parliament Constituency Name:"+parliamentConstituencyName+" And Assembly Constituency name::"+assemblyConstituencyName);
 			log.debug("assemblyConstituencyElectionId and parliamentConstituencyElectionId are ::"+assemblyConstituencyElections.get(0).getConstiElecId()+","+parliamentConstituencyElections.get(0).getConstiElecId());
 			
@@ -154,6 +160,7 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 		checkAndInsertBoothResult(parliamentConstituencyElections.get(0), candidateResults, boothResults, boothConstituencyElections);
 	}
 
+	
 	public void checkAndInsertBoothResult(ConstituencyElection constiElecObj, List<CandidateBoothWiseResult> candidateResults, List<BoothResultValueObject> boothResults, List<BoothConstituencyElection> boothConstituencyElections)throws Exception{
 		
 		for(int i =0 ; i<boothResults.size(); i++){
