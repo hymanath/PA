@@ -10,7 +10,6 @@ import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.ResultObjectVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -27,7 +26,6 @@ public class CrossVotingReportAjaxAction extends ActionSupport implements Servle
 	private CrossVotingConsolidateVO crossVotingConsolidateVO;
 	private ResultObjectVO resultObjectVO; 
 	private ICrossVotingEstimationService crossVotingEstimationService;
-	private IStaticDataService staticDataService;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -57,14 +55,6 @@ public class CrossVotingReportAjaxAction extends ActionSupport implements Servle
 
 	public void setIncludeAliance(String includeAliance) {
 		this.includeAliance = includeAliance;
-	}
-	
-	public IStaticDataService getStaticDataService() {
-		return staticDataService;
-	}
-
-	public void setStaticDataService(IStaticDataService staticDataService) {
-		this.staticDataService = staticDataService;
 	}
 	
 	public String getParty() {
@@ -130,7 +120,7 @@ public class CrossVotingReportAjaxAction extends ActionSupport implements Servle
 		System.out.println("year == "+electionYear+",party == "+party+",parliament = "+parliamentValue+",assembly = "+assemblyValue+", alliance = "+includeAliance);
 		if(electionYear != null && party == null && parliamentValue == null && assemblyValue == null){
 			System.out.println("IN parliament if");
-			parliamentList = crossVotingEstimationService.getParliamentConstituenciesForElectionYear(new Long(electionYear));
+			parliamentList = crossVotingEstimationService.getConstituenciesForElectionYearAndScopeForBoothData(electionYear.trim(), new Long(1));
 			System.out.println("Parliament Constituencies Size::"+parliamentList.size());
 			resultObjectVO.setDataList(parliamentList);	
 		}
@@ -138,14 +128,14 @@ public class CrossVotingReportAjaxAction extends ActionSupport implements Servle
 		if(electionYear != null && party == null && parliamentValue != null && assemblyValue == null)
 		{
 			System.out.println("IN election year");
-			parliamentList = crossVotingEstimationService.getAssembliesForParliament(new Long(parliamentValue.trim()));
+			parliamentList = crossVotingEstimationService.getAssembliesForParliament(new Long(parliamentValue.trim()), new Long(electionYear.trim()));
 			System.out.println("Assemblies Consties List Size $$$$$$$$$"+parliamentList.size());			
 			resultObjectVO.setDataList(parliamentList);				
 		}
 		else if(electionYear != null && party == null && parliamentValue == null && assemblyValue != null)
 		{
 			System.out.println("IN parliament value");
-			parliamentList = staticDataService.getPartiesForConstituency(new Long(assemblyValue), electionYear);
+			parliamentList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(new Long(assemblyValue), electionYear);
 			System.out.println("Parties List Size $$$$$$$$$"+parliamentList.size());
 			resultObjectVO.setDataList(parliamentList);	
 		}
