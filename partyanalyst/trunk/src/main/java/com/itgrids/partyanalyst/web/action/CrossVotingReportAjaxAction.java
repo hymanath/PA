@@ -132,6 +132,7 @@ public class CrossVotingReportAjaxAction extends ActionSupport implements Servle
 			System.out.println("IN parliament if");
 			parliamentList = crossVotingEstimationService.getParliamentConstituenciesForElectionYear(new Long(electionYear));
 			System.out.println("Parliament Constituencies Size::"+parliamentList.size());
+			resultObjectVO.setDataList(parliamentList);	
 		}
 		
 		if(electionYear != null && party == null && parliamentValue != null && assemblyValue == null)
