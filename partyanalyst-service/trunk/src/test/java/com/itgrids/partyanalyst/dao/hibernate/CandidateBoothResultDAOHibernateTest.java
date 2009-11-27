@@ -6,6 +6,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
+import com.itgrids.partyanalyst.model.Party;
 
 public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -34,4 +35,9 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		List<CandidateBoothResult> list = candidateBoothResultDAO.findByNominationAndBoothConstituencyElection(new Long(690), new Long(77));
 		assertEquals(1, list.size());
 	}*/
+	
+	public void testFidPartiesForConstituencyAndElection(){
+		List<Party> list = candidateBoothResultDAO.findPartiesByConstituencyAndElectionYear(new Long(408), "2004");
+		assertEquals("INC", list.get(0).getShortName());
+	}
 }

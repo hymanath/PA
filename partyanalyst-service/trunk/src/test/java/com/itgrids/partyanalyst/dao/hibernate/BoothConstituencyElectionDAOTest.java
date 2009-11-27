@@ -7,6 +7,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
+import com.itgrids.partyanalyst.model.Constituency;
 
 public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 
@@ -51,4 +52,17 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		assertEquals(list.size(), 5);
 	}
 	
+	public void testFindConstituencyByElectionYearAndElectionScope(){
+		List<Constituency> list = boothConstituencyElectionDAO.findConstituencyByElectionYearAndElectionScope("2004", new Long(1));
+		for(Constituency obj:list)
+			System.out.println("Name::"+obj.getName());
+		assertEquals(list.get(0).getName(), "Ongole");
+	}
+	
+	public void testFindElectionYearsForBoothData(){
+		List<String> list = boothConstituencyElectionDAO.findElectionYearsForBoothData();
+		for(String obj:list)
+			System.out.println("Name::"+obj);
+		assertEquals(list.get(0), "2004");
+	}
 }
