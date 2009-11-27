@@ -183,8 +183,7 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText); 		
-								console.log(myResults);
+								myResults = YAHOO.lang.JSON.parse(o.responseText); 										
 								if(jObj.task == "Assembly" || jObj.task=="getParty" || jObj.task=="getParliament")
 									buildParliamemtSelect(jObj,myResults.dataList);
 								else if(jObj.task == "crossVotingReport")
@@ -205,9 +204,6 @@
 
 	function buildCrossVotingReport(obj,result)
 	{
-		
-		console.log(result.partyPartisipated);
-
 		var resultDiv = document.getElementById("crossVotingResultDiv");
 		resultDiv.style.display="block";
 		
@@ -364,9 +360,7 @@
 			}, {
 				key : "percentageDifference",parser:"number"
 			}]
-		};
-
-		console.log(resultsDataSource.responseSchema.fields);
+		};		
 
 		var resultsColumnDefs = [ {
 			key : "partNo",
@@ -403,17 +397,15 @@
 			label : "% Diff",
 			sortable : true
 		} ];
-
-		console.log(resultsColumnDefs);
+		
 		var myDataTable = new YAHOO.widget.DataTable("mandalVotingDiv",resultsColumnDefs, resultsDataSource,{});  		
 
 	}
 	function buildParliamemtSelect(jObj,results)
 	{
 		if(jObj.task=="getParliament")
-		{			
-			
-			var pSelectElmt = document.getElementById("AssemblySelect");	
+		{				
+			var pSelectElmt = document.getElementById("parliamentField");	
 		}		
 		else if(jObj.task=="Assembly")
 		{			
