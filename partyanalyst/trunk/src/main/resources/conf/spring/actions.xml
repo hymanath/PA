@@ -140,6 +140,7 @@
 	</bean>
 	<bean id="mandalPageAction" class="com.itgrids.partyanalyst.web.action.MandalPageAction" singleton="false">
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
+		<property name="boothPopulationService" ref="boothPopulationService" />
 	</bean>
 	
 	<bean id="districtPageAction" class="com.itgrids.partyanalyst.web.action.DistrictPageAction" singleton="false"/>

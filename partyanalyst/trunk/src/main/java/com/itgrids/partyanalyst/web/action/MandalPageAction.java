@@ -6,11 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
+import com.itgrids.partyanalyst.service.IBoothPopulationService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
-import com.itgrids.partyanalyst.service.impl.DelimitationConstituencyMandalService;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class MandalPageAction extends ActionSupport implements ServletRequestAware{
@@ -19,8 +22,12 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	private MandalInfoVO mandalInfoVO;
 	private VillageDetailsVO villageDetailsVO;
+	private JSONObject jsonObj = null;
+	private String task = null;
 
 	private static final Logger log = Logger.getLogger(MandalPageAction.class);
+	private IBoothPopulationService boothPopulationService;
+	private List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO;
 	
 	public void setServletRequest(HttpServletRequest arg0) {
 		request = arg0;	
@@ -45,6 +52,32 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 
 	public void setVillageDetailsVO(VillageDetailsVO villageDetailsVO) {
 		this.villageDetailsVO = villageDetailsVO;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+	
+	public List<MandalAllElectionDetailsVO> getMandalAllElectionDetailsVO() {
+		return mandalAllElectionDetailsVO;
+	}
+
+	public void setMandalAllElectionDetailsVO(			
+			List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO) {
+		this.mandalAllElectionDetailsVO = mandalAllElectionDetailsVO;
+	}
+
+	public IBoothPopulationService getBoothPopulationService() {
+		return boothPopulationService;
+	}
+
+	public void setBoothPopulationService(
+			IBoothPopulationService boothPopulationService) {
+		this.boothPopulationService = boothPopulationService;
 	}
 
 	public String execute() throws Exception {
@@ -76,4 +109,29 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		}
 		return SUCCESS;
 	}
+	
+	public String getMandalPartyResult() throws Exception{		
+		
+		String param = getTask();		
+		try {
+			jsonObj = new JSONObject(param);
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}		
+		
+		String mandalId = jsonObj.getString("mandal");
+		String partyId = jsonObj.getString("party");
+		String alliance = jsonObj.getString("alliance");
+		
+		//mandalAllElectionDetailsVO = boothPopulationService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
+		
+		System.out.println("List size = "+mandalAllElectionDetailsVO.size());
+		
+		if(mandalAllElectionDetailsVO!=null)				
+			return Action.SUCCESS;
+		else
+			return Action.ERROR;
+	}
+
+	
 }

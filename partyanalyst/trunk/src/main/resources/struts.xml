@@ -247,5 +247,12 @@
 			</result>
 		</action>
 		
+		<action name="mandalVotingResultAction" class="mandalPageAction" method="getMandalPartyResult" >
+			<result type="json" name="success">
+				<param name="root">mandalAllElectionDetailsVO</param>				
+			</result>
+			<result name="error"></result>
+		</action>
+		
 	</package>
 </struts>
