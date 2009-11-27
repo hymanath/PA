@@ -88,7 +88,7 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 	}
 
 	public String getStatesList() throws Exception{
-		states = regionServiceDataImp.getStatesByCountry(1L);
+		states = regionServiceDataImp.getStatesByCountryFromBooth(1L);
 		states.add(0, new SelectOptionVO(0L,"Select State"));
 		partyList = staticDataService.getStaticParties();
 		partyList.add(0, new SelectOptionVO(0L,"Select Party"));
@@ -110,11 +110,11 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 			log.debug("value:"+value);
 		}
 		if("STATE".equals(type)){
-			commonList = regionServiceDataImp.getDistrictsByStateID(new Long(value));
+			commonList = regionServiceDataImp.getDistrictsByStateIDFromBooth(new Long(value));
 		} else if("DISTRICT".equals(type)){
-			commonList = regionServiceDataImp.getConstituenciesByDistrictID(new Long(value));
+			commonList = regionServiceDataImp.getConstituenciesByDistrictIDFromBooth(new Long(value));
 		} else if("CONSTITUENCY".equals(type)){
-			commonList = regionServiceDataImp.getMandalsByConstituencyID(new Long(value));
+			commonList = regionServiceDataImp.getMandalsByConstituencyIDFromBooth(new Long(value));
 		}
 		if(log.isDebugEnabled())
 			log.debug("commonList.size():::"+commonList.size());

@@ -121,11 +121,10 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		
 		String mandalId = jsonObj.getString("mandal");
 		String partyId = jsonObj.getString("party");
-		String alliance = jsonObj.getString("alliance");
+		String alliance = "true";//jsonObj.getString("alliance");
 		
-		//mandalAllElectionDetailsVO = boothPopulationService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
+		mandalAllElectionDetailsVO = boothPopulationService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
 		
-		System.out.println("List size = "+mandalAllElectionDetailsVO.size());
 		
 		if(mandalAllElectionDetailsVO!=null)				
 			return Action.SUCCESS;
