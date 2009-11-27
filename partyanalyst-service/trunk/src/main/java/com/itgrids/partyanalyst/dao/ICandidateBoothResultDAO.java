@@ -6,6 +6,7 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.BoothResult;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
+import com.itgrids.partyanalyst.model.Party;
 
 public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResult, Long>{
 
@@ -18,4 +19,6 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List<CandidateBoothResult> findByBoothConstituencyElectionAndParty(Long boothConstituencyElectionId, Long partyId);
 
 	public List<CandidateBoothResult> findByConstituencyElection(Long constituencyElectionId);
+	
+	public List<Party> findPartiesByConstituencyAndElectionYear(Long constituencyId, String electionYear);
 }
