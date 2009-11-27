@@ -38,7 +38,9 @@
 	<bean id="partyResultsAction" class="com.itgrids.partyanalyst.web.action.PartyResultsAction" singleton="false">
 		<property name="partyResultService" ref="partyResultService" />
 	</bean>
-	<bean id="partyResultsCriteriaAction" class ="com.itgrids.partyanalyst.web.action.PartyResultsCriteriaAction" singleton="false"/>
+	<bean id="partyResultsCriteriaAction" class ="com.itgrids.partyanalyst.web.action.PartyResultsCriteriaAction" singleton="false">
+	   <property name="staticDataService" ref="staticDataService" />
+	</bean>
 	<bean id="uploadExcelAction" class="com.itgrids.partyanalyst.web.action.UploadExcelAction"
 		singleton="false">
 		<property name="excelToDBService" ref="excelToDBService" />
