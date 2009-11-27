@@ -239,6 +239,8 @@ public class BoothPopulationService implements IBoothPopulationService{
 		List<MandalAllElectionDetailsVO> mandalAllElectionDetails = new ArrayList<MandalAllElectionDetailsVO>();
 		// 0 - election, 1 - totalvoters , 2 - validvotes, 3- rejectedvotes, 4-tenderedvotes
 		List result = boothConstituencyElectionDAO.getAllElectionBoothVotersForMandal(tehsilID);
+		if(result.size()==0)
+			return mandalAllElectionDetails;
 		for(int i=0; i<result.size(); i++){
 			Object[] obj = (Object[]) result.get(i);
 			MandalAllElectionDetailsVO objectVO = new MandalAllElectionDetailsVO();
@@ -273,7 +275,12 @@ public class BoothPopulationService implements IBoothPopulationService{
 			List temp = boothConstituencyElectionDAO.getPartyVotesByMandal(tehsilID, sb.substring(1), 
 					mandalAllElectionDetailsVO.getElectionID());
 			//0-firstName, 1-middlename, 2-lastname, 3-election, 4-votesearned, 5-partyId, 6-shortName
+			if(temp.size()==0){
+				iterator.remove();
+				continue;
+			}
 			int i = getAlliancePartyInfo(temp, partyID);
+			
 			Object[] obj = (Object[]) temp.get(i);
 			StringBuilder name = new StringBuilder();
 			if(obj[0]!=null){
@@ -302,8 +309,8 @@ public class BoothPopulationService implements IBoothPopulationService{
 	 */
 	private int getAlliancePartyInfo(List temp, Long partyID){
 		int result = 0;
-		if(temp.size()==0)
-			return 0;
+		/*if(temp.size()==0)
+			return 0;*/
 		long partyVotes = 0;
 		for(int i=0; i<temp.size(); i++){
 			Object[] obj = (Object[]) temp.get(i);

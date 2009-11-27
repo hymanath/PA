@@ -53,7 +53,7 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	
 	public List getAllElectionBoothVotersForMandal(Long tehsilID){
 		StringBuilder query = new StringBuilder();
-		query.append("Select constituencyElection.election.election, ");
+		query.append("Select constituencyElection.election, ");
 		query.append(" sum(model.booth.totalVoters) , sum(model.boothResult.validVotes), ");
 		query.append(" sum(model.boothResult.rejectedVotes), sum(model.boothResult.tenderedVotes)");
 		query.append(" from BoothConstituencyElection model ");
@@ -68,7 +68,7 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		query.append("Select model.nomination.candidate.firstname,");
 		query.append(" model.nomination.candidate.middlename,"); 
 		query.append(" model.nomination.candidate.lastname,");		 
-		query.append(" model.boothConstituencyElection.constituencyElection.election");
+		query.append(" model.boothConstituencyElection.constituencyElection.election,");
 		query.append(" sum(model.votesEarned), model.nomination.party.partyId, model.nomination.party.shortName"); 
 		query.append(" from CandidateBoothResult model"); 
 		query.append(" where model.boothConstituencyElection.booth.tehsil.tehsilId =").append(tehsilID);    
@@ -76,5 +76,32 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		query.append(" and model.nomination.party.partyId in (").append(partyIDs);
 		query.append(") group by model.nomination.party.partyId");
 		return getHibernateTemplate().find(query.toString());
+	}
+	
+
+
+	public List getStatesByCountryFromBooth(Long countryID) {
+		return getHibernateTemplate().find("select distinct model.constituencyElection.constituency.state.stateId, " +
+				"model.constituencyElection.constituency.state.stateName from BoothConstituencyElection model " +
+				"where model.constituencyElection.constituency.state.country.countryId=? " +
+				"order by model.constituencyElection.constituency.state.stateName",countryID);
+	}
+
+	public List getDistrictsByStateIDFromBooth(Long stateID) {
+		return getHibernateTemplate().find("select distinct model.booth.tehsil.district.districtId, " +
+				"model.booth.tehsil.district.districtName from BoothConstituencyElection model " +
+				"where model.booth.tehsil.district.state.stateId=? order by model.booth.tehsil.district.districtName",stateID);
+	}
+
+	public List getConstituenciesByDistrictIDFromBooth(Long districtID) {
+		return getHibernateTemplate().find("select distinct model.constituencyElection.constituency.constituencyId, " +
+				"model.constituencyElection.constituency.name from BoothConstituencyElection model " +
+				"where model.constituencyElection.constituency.district.districtId=? " +
+				"order by model.constituencyElection.constituency.name",districtID);
+	}
+
+	public List getMandalsByConstituencyIDFromBooth(Long constituencyID) {
+		return getHibernateTemplate().find("select distinct model.booth.tehsil.tehsilId, model.booth.tehsil.tehsilName from BoothConstituencyElection model " +
+				"where model.constituencyElection.constituency.constituencyId=? order by model.booth.tehsil.tehsilName",constituencyID);
 	}
 }

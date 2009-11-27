@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
@@ -23,6 +24,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IConstituencyDAO constituencyDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
@@ -45,6 +47,11 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	public void setDelimitationConstituencyMandalDAO(
 			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
 		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+
+	public void setBoothConstituencyElectionDAO(
+			IBoothConstituencyElectionDAO boothConstituencyElectionDAO) {
+		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
 	}
 
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID) {
@@ -145,6 +152,46 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
 		for(State state : states){
 			result.add(new SelectOptionVO(state.getStateId(),state.getStateName()));
+		}
+		return result;
+	}
+
+	public List<SelectOptionVO> getStatesByCountryFromBooth(Long countryID){
+		List list = boothConstituencyElectionDAO.getStatesByCountryFromBooth(countryID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(int i=0; i<list.size(); i++){
+			Object[] obj = (Object[]) list.get(i);
+			result.add(new SelectOptionVO(new Long(obj[0].toString()),obj[1].toString()));
+		}
+		return result;
+	}
+	
+	public List<SelectOptionVO> getDistrictsByStateIDFromBooth(Long stateID) {
+		List list = boothConstituencyElectionDAO.getDistrictsByStateIDFromBooth(stateID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(int i=0; i<list.size(); i++){
+			Object[] obj = (Object[]) list.get(i);
+			result.add(new SelectOptionVO(new Long(obj[0].toString()),obj[1].toString()));
+		}
+		return result;
+	}
+	
+	public List<SelectOptionVO> getConstituenciesByDistrictIDFromBooth(Long districtID) {
+		List list = boothConstituencyElectionDAO.getConstituenciesByDistrictIDFromBooth(districtID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(int i=0; i<list.size(); i++){
+			Object[] obj = (Object[]) list.get(i);
+			result.add(new SelectOptionVO(new Long(obj[0].toString()),obj[1].toString()));
+		}
+		return result;
+	}
+	
+	public List<SelectOptionVO> getMandalsByConstituencyIDFromBooth(Long constituencyID) {
+		List list = boothConstituencyElectionDAO.getMandalsByConstituencyIDFromBooth(constituencyID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(int i=0; i<list.size(); i++){
+			Object[] obj = (Object[]) list.get(i);
+			result.add(new SelectOptionVO(new Long(obj[0].toString()),obj[1].toString()));
 		}
 		return result;
 	}
