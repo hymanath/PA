@@ -7,8 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
-import com.itgrids.partyanalyst.model.BoothResult;
-import com.itgrids.partyanalyst.model.CandidateBoothResult;
+import com.itgrids.partyanalyst.model.Constituency;
 
 public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConstituencyElection, Long> implements IBoothConstituencyElectionDAO{
 
@@ -76,6 +75,20 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		query.append(" and model.nomination.party.partyId in (").append(partyIDs);
 		query.append(") group by model.nomination.party.partyId");
 		return getHibernateTemplate().find(query.toString());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Constituency> findConstituencyByElectionYearAndElectionScope(String electionYear, Long electionScopeId){
+		Object[] params = {electionScopeId, electionYear};
+		return getHibernateTemplate().find("select distinct model.constituencyElection.constituency from BoothConstituencyElection model " +
+				"where model.constituencyElection.constituency.electionScope.electionScopeId = ? " +
+				"and model.constituencyElection.election.electionYear = ?", params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> findElectionYearsForBoothData(){
+		return getHibernateTemplate().find("select distinct model.constituencyElection.election.electionYear from " +
+				"BoothConstituencyElection model");
 	}
 	
 
