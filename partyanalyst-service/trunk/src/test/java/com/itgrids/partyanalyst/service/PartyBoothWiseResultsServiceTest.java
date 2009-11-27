@@ -21,19 +21,16 @@ import com.itgrids.partyanalyst.util.DummyPartyResultsData;
 public class PartyBoothWiseResultsServiceTest {
 	
 	private INominationDAO nominationDAO;
-	private IPartyDAO partyDAO;
 	private PartyBoothWiseResultsService partyBoothWiseResultsService;
 
 	@Before
 	public void setUp() throws Exception {
-		nominationDAO = EasyMock.createMock(INominationDAO.class);
-		partyDAO = EasyMock.createMock(IPartyDAO.class);
+		nominationDAO = EasyMock.createMock(INominationDAO.class);		
 		partyBoothWiseResultsService = new PartyBoothWiseResultsService();
-		partyBoothWiseResultsService.setNominationDAO(nominationDAO);
-		partyBoothWiseResultsService.setPartyDAO(partyDAO);
+		partyBoothWiseResultsService.setNominationDAO(nominationDAO);		
 	}
 	
-	@Test
+	/*@Test
 	public void checkGetParties(){
 		EasyMock.expect(partyDAO.getAll()).andReturn(DummyPartyResultsData.getParties());
 		EasyMock.replay(partyDAO);
@@ -59,7 +56,7 @@ public class PartyBoothWiseResultsServiceTest {
 				Assert.assertEquals("Nellore", obj.getName());
 		}
 		EasyMock.verify(nominationDAO);
-	}
+	}*/
 	
 	@Test
 	public void checkGetBoothWiseResultsForParty(){
