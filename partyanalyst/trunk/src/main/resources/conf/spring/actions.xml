@@ -113,8 +113,7 @@
 	<bean id="partyBoothResultAction" class="com.itgrids.partyanalyst.web.action.PartyBoothResultAction" singleton="false"/>
 	
 	<bean id="partyBoothResult1Action" class="com.itgrids.partyanalyst.web.action.PartyBoothResult1Action" singleton="false">
-		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
-		<property name="staticDataService" ref="staticDataService" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	</bean>
 	<bean id="partyBoothResult2Action" class="com.itgrids.partyanalyst.web.action.PartyBoothResult2Action" singleton="false">
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
@@ -136,7 +135,6 @@
 	
 	<bean id="crossVotingReportAjaxAction" class="com.itgrids.partyanalyst.web.action.CrossVotingReportAjaxAction" singleton="false">		
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
-		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	<bean id="mandalPageAction" class="com.itgrids.partyanalyst.web.action.MandalPageAction" singleton="false">
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
