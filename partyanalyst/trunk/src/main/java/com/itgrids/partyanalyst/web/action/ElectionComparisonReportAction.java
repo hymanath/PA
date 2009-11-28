@@ -152,8 +152,13 @@ public class ElectionComparisonReportAction extends ActionSupport implements Ser
 			Boolean secondYear = electionsComparisonService.IsPartyParticipated(electionScopeId, Long.parseLong(getParty()), getElectionYears2());
 			
 			if(firstYear.equals(true) && secondYear.equals(true)){
-				
-				electionsComparisonVO = electionsComparisonService.getPartyElectionComparedResults(electionScopeId, Long.parseLong(getParty()), getElectionYears1(), getElectionYears2());
+				String previousYear = getElectionYears1();
+				String presentYear = getElectionYears2();
+				if(Long.parseLong(getElectionYears1()) > Long.parseLong(getElectionYears2())){
+					previousYear = getElectionYears2();
+					presentYear = getElectionYears1();
+				}
+				electionsComparisonVO = electionsComparisonService.getPartyElectionComparedResults(electionScopeId, Long.parseLong(getParty()), previousYear, presentYear);
 				electionComparisonResultVO = null;
 				partyResultsPercentageForYear1 = electionsComparisonService.getPartyResultsPercentage(electionScopeId, Long.parseLong(getParty()), getElectionYears1());
 				partyResultsPercentageForYear2 = electionsComparisonService.getPartyResultsPercentage(electionScopeId, Long.parseLong(getParty()), getElectionYears2());
