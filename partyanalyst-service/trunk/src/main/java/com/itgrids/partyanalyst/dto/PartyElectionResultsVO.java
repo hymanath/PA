@@ -24,6 +24,7 @@ public class PartyElectionResultsVO {
 	private String votesPercentageBySecond;
 	private Long rankBySecond;
 	private String votesDiff;
+	private Double voteDiff;
 	
 	
 	//getters and setters
@@ -110,6 +111,12 @@ public class PartyElectionResultsVO {
 	}
 	public void setVotesDiff(String votesDiff) {
 		this.votesDiff = votesDiff;
+	}
+	public Double getVoteDiff() {
+		return voteDiff;
+	}
+	public void setVoteDiff(Double voteDiff) {
+		this.voteDiff = voteDiff;
 	}
 	
 	
