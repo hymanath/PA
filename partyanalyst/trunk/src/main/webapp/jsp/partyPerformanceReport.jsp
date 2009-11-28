@@ -508,8 +508,8 @@ function buildPartyPositionDataTable(info)
 							<display:column title="Previous Election % of Votes Gained" property="prevElectionPercentage" />
 							</c:if>
 							<c:if test="${constPositions.type == 'POSITIONS_LOST_BY_DROPPING_VOTES'}">
-							<display:column title="% of Votes Polled" property="percentageOfVotesPolled" />
 							<display:column title="Previous Election % of Votes Gained" property="prevElectionPercentage" />
+							<display:column title="% of Votes Polled" property="percentageOfVotesPolled" />
 							<display:column title="Previous Election % of Votes Polled" property="prevElectionPercentageOfVotesPolled" />
 							<display:column title="Previous Election Candidate" property = "prevElectionCandidateName" />
 							</c:if>
