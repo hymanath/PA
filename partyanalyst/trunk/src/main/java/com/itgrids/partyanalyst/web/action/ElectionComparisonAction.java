@@ -14,6 +14,7 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IElectionsComparisonService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 
 public class ElectionComparisonAction extends ActionSupport implements ServletRequestAware,
 		ServletContextAware {
@@ -31,6 +32,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 	
 	private HttpServletRequest request;
 	private IElectionsComparisonService electionsComparisonService;
+	private IStaticDataService staticDataService;
 	
 	public List<SelectOptionVO> getStatesList() {
 		return statesList;
@@ -84,27 +86,47 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 
 	public String execute() throws Exception {
 		
-		statesList = electionsComparisonService.getStatesList();
-		partyList = electionsComparisonService.getPartiesList();
+		partyList = staticDataService.getParties();
 		yearsList = electionsComparisonService.getYearsList();
 		
 		List<SelectOptionVO> eList = new ArrayList<SelectOptionVO>();
 		
-		SelectOptionVO parliament = new SelectOptionVO();
-		parliament.setId(new Long(1));
-		parliament.setName("Parliament");
-		
 		SelectOptionVO assembly = new SelectOptionVO();
 		assembly.setId(new Long(2));
 		assembly.setName("Assembly");
+		
+		SelectOptionVO parliament = new SelectOptionVO();
+		parliament.setId(new Long(1));
+		parliament.setName("Parliament");
 		
 		eList.add(parliament);
 		eList.add(assembly);
 		
 		this.setElectionType(eList);
 		
+		List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
 		
+		SelectOptionVO state1 = new SelectOptionVO();
+		state1.setId(new Long(1));
+		state1.setName("Andhra Pradesh");
 		
-		return Action.SUCCESS;
+		SelectOptionVO state2 = new SelectOptionVO();
+		state2.setId(new Long(15));
+		state2.setName("Maharastra");
+		
+		statesList.add(state1);
+		statesList.add(state2);
+		
+		this.setStatesList(statesList);
+			
+	return Action.SUCCESS;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
 	}
 }
