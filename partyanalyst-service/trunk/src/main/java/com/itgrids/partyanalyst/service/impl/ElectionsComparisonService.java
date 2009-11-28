@@ -267,7 +267,7 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 				partyResults.setPartyId(party.getPartyId());
 				partyResults.setPartyName(party.getLongName());
 				partyResults.setRank(candidateResult.getRank());
-				partyResults.setVotesEarned(candidateResult.getVotesEarned());
+				partyResults.setVotesEarned(candidateResult.getVotesEarned().longValue());
 				partyResults.setVotesPercentage(candidateResult.getVotesPercengate());
 			partyElectionResultsVO.add(partyResults);
 			}
