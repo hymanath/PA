@@ -205,7 +205,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		
 		setStates(getStaticDataService().getStates(electionTypeId));
 		setYears(getStaticDataService().getElectionYears(electionTypeId));
-		setParties(getStaticDataService().getParties());
+		setParties(getStaticDataService().getStaticParties());
 		setDistricts(new ArrayList<SelectOptionVO>());
 		setLevels(getReportLevels());    
 	
