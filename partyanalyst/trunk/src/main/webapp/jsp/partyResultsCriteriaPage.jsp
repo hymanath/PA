@@ -332,7 +332,7 @@
  </HEAD>
 	
  <BODY>
-	<H3><U>Select Criteria</U></H3>
+	<H3><U>Party Results Report Input Selection</U></H3>
 	<div id="partyResultsMainDiv">
  <s:form name="partyResultsForm" action="partyResultsAction" onsubmit="return validateData()" method="post">
  <input type="hidden" id="selectedPartyShortName" name="selectedPartyShortName">
