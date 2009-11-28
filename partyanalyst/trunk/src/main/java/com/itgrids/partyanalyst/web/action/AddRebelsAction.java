@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.json.JSONArray;
-import net.sf.json.util.JSONTokener;
+//import net.sf.json.JSONArray;
+//import net.sf.json.util.JSONTokener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -169,7 +169,7 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 		
 		setStates(getStaticDataService().getStates(defaultElectionTypeId));
 		setYears(getStaticDataService().getElectionIdsAndYears(defaultElectionTypeId));
-		setParties(getStaticDataService().getParties());
+		setParties(getStaticDataService().getStaticParties());
 		setConstituencies(getStaticDataService().getConstituencies(new Long(getStates().get(0).getId())));
 		Long stateId = getStates().get(0).getId();
 		Long partyId = getParties().get(0).getId();
@@ -226,7 +226,7 @@ public class AddRebelsAction extends ActionSupport implements ServletRequestAwar
 		
 		setStates(getStaticDataService().getStates(defaultElectionTypeId));
 		setYears(getStaticDataService().getElectionIdsAndYears(defaultElectionTypeId));
-		setParties(getStaticDataService().getParties());
+		setParties(getStaticDataService().getStaticParties());
 		setConstituencies(getStaticDataService().getConstituencies(stateId));
 		setCandidates(candidateSearchService.getNominatedPartyCandidates(stateId, partyId, electionId));
 		setRebelCandidates(partyRebelCandidatesService.findByPartyIdAndElectionId(partyId, electionId));

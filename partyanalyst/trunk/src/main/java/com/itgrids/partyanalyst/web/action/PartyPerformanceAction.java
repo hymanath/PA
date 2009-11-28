@@ -60,8 +60,15 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	JSONObject jObj = null;
 	private String task = null;
 	private List<PartyPositionDisplayVO> partyPositionDisplayVO;
+	private Map statesYearList = new HashMap();
 
 
+	public Map getStatesYearList() {
+		return statesYearList;
+	}
+	public void setStatesYearList(Map statesYearList) {
+		this.statesYearList = statesYearList;
+	}
 	public List<SelectOptionVO> getLevels() {
 		return levels;
 	}
@@ -193,11 +200,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		
 		if(params.containsKey("type")){
 			param = request.getParameter("type");
-		} else if(params.containsKey("stateId")){
-			param = request.getParameter("stateId");
-			setDistricts(getStaticDataService().getDistricts(new Long(param)));
-			return Action.SUCCESS;
-		} 
+		}
 		
 		if(param != null) {
 			electionTypeId = new Long(param);
@@ -249,7 +252,30 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		log.debug("partyPerformanceAjax action started...");
 		return execute();
 	}
+	
+	public String getDistrictsList(){
+		String param = request.getParameter("stateId");
+		districts = getStaticDataService().getDistricts(new Long(param));
+		return Action.SUCCESS;
+	}
 
+	public String getElectionTypeFilterData(){
+
+		Map<String, String> params = request.getParameterMap();
+		String param = null;
+		electionTypeId = new Long(2);
+		
+		if(params.containsKey("type")){
+			param = request.getParameter("type");
+		}
+		if(param != null) {
+			electionTypeId = new Long(param);
+		}
+		
+		statesYearList.put("STATES", staticDataService.getStates(electionTypeId));
+		statesYearList.put("YEARS", staticDataService.getElectionYears(electionTypeId));
+		return Action.SUCCESS;
+	}
 	@JSON (serialize= false )   
 	public String getReport() {
 		

@@ -37,9 +37,23 @@
 		
 
 		<!-- PARTY PERFORMANCE ACTIONS -->
-		<action name="partyPerformanceAjax" class="partyPerformanceAction" method="getJSON" >
-			<result type="json" name="success"/>
+		
+		<action name="partyPerformanceDistrict" class="partyPerformanceAction" method="getDistrictsList" >
+			<result type="json" name="success">
+				<param name="root">districts</param>
+			</result> 
 		</action>
+		
+		<!-- <action name="partyPerformanceAjax" class="partyPerformanceAction" method="getJSON" >
+			<result type="json" name="success"/>
+		</action>-->
+		
+		<action name="partyPerformanceElectionTypeFilterData" class="partyPerformanceAction" method="getElectionTypeFilterData" >
+			<result type="json" name="success">
+				<param name="root">statesYearList</param>
+			</result> 
+		</action>
+		
 		<action name="partyPerformanceAllianceAjax" class="partyPerformanceAction" method="getAlliances" >
 			<result type="json" name="success">
 				<param name="root">hasAllianceParties</param>
