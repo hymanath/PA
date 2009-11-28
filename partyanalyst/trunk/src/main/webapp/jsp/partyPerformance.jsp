@@ -40,9 +40,9 @@
 	{		
 		if(param.substring(0, 4) == "type")
 		{
-	    	fillDropDown(document.getElementById("stateList"), response.states);
-		 	fillDropDown(document.getElementById("yearList"), response.years);
-		 	fillDropDown(document.getElementById("partyList"), response.parties);
+	    	fillDropDown(document.getElementById("stateList"), response.STATES);
+		 	fillDropDown(document.getElementById("yearList"), response.YEARS);
+		 	//fillDropDown(document.getElementById("partyList"), response.parties);
 		}
 		if(param.substring(0, 8) == "alliance")
 		{		
@@ -58,9 +58,10 @@
 				document.getElementById("alliances").checked = false;
 				document.getElementById("allianceRow").style.display="none";
 			}
-		}else
+		}
+		if(param.substring(0, 7) == "stateId")
 		{
-	 		fillDropDown(document.getElementById("districtList"), response.districts);			
+	 		fillDropDown(document.getElementById("districtList"), response);			
 	 		document.getElementById("districtList").disabled= false;  	 			 		
 		}
     }
@@ -84,7 +85,7 @@
  	}
 
  	function doAjax(param){
- 		var url = "<%=request.getContextPath()%>/partyPerformanceAjax.action?";
+ 		var url = "<%=request.getContextPath()%>/partyPerformanceElectionTypeFilterData.action?";
  		callAjax("type="+param, url);
  	}
 
@@ -92,7 +93,7 @@
  	 	if(level == 2){
 	 	 	var index = document.getElementById("stateList").selectedIndex;
 	 	 	var stateId = document.getElementById("stateList").options[index].value;
-	 	 	var url = "<%=request.getContextPath()%>/partyPerformanceAjax.action?";
+	 	 	var url = "<%=request.getContextPath()%>/partyPerformanceDistrict.action?";
 			callAjax("stateId="+stateId, url);
  	 	} else {
  	 		document.getElementById("districtList").disabled= true;  
