@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IPartyService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ValueComparator;
 
 public class PartyService implements IPartyService {
@@ -453,14 +454,13 @@ public class PartyService implements IPartyService {
 	public List<ConstituencyPositionDetailVO> getListLostByDroppingVotes(
 			List<ConstituencyPositionDetailVO> presentPartyLoosers,
 			List<ConstituencyPositionDetailVO> previousElectionWinners_Loosers){
-		int lostPositionsLimitByDroppingVotes = 1;
 		Set<ConstituencyPositionDetailVO> listOfVotesByDroppingVotes = new HashSet<ConstituencyPositionDetailVO>();
 		for(ConstituencyPositionDetailVO presentValueObject : presentPartyLoosers){
 			for(ConstituencyPositionDetailVO previousValueObject : previousElectionWinners_Loosers){
 				if(presentValueObject.getConstiuencyName().equals(previousValueObject.getConstiuencyName())){
-					int differences = presentValueObject.getPercentageOfVotesPolled().intValue()
-					- previousValueObject.getPercentageOfVotesPolled().intValue();
-					if(differences >= lostPositionsLimitByDroppingVotes){
+					int differences = previousValueObject.getPercentageOfVotesPolled().intValue()
+					- presentValueObject.getPercentageOfVotesPolled().intValue();
+					if(differences >= IConstants.LOOSING_BY_DROPPING_VOTES_CONSTANTS){
 						presentValueObject.setPrevElectionPercentage(previousValueObject.getPercentageOfVotes().setScale (2,BigDecimal.ROUND_HALF_UP));
 						presentValueObject.setPrevElectionPercentageOfVotesPolled(previousValueObject.getPercentageOfVotesPolled());
 						presentValueObject.setPrevElectionVotes(previousValueObject.getPresentElectionVotes());
