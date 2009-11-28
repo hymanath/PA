@@ -263,7 +263,18 @@
 		.yui-skin-sam .yui-dt-liner {
 			padding:4px 8px;
 		}	
-
+		.yui-skin-sam tr.yui-dt-odd
+		{
+			background-color:#F3F6FC;
+		}
+		.yui-skin-sam tr.yui-dt-odd td.yui-dt-asc, .yui-skin-sam tr.yui-dt-odd td.yui-dt-desc 
+		{
+			background-color:#E8EDF5;
+		}
+		.yui-skin-sam tr.yui-dt-even td.yui-dt-asc, .yui-skin-sam tr.yui-dt-even td.yui-dt-desc 
+		{
+			background-color:#F8FAFF;
+		}
 		#mandalVotingResultsDiv
 		{
 			margin-top:25px;
