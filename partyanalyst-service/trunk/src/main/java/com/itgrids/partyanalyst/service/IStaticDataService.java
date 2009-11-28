@@ -22,7 +22,7 @@ public interface IStaticDataService {
 	public List<ElectionScope> getElectionScope(Long electionType);
 	public List<SelectOptionVO> getElectionIdsAndYears(Long electionType);
 	public Set<String> getElectionYears(Long electionType);
-	public List<SelectOptionVO> getParties();
+	//public List<SelectOptionVO> getParties();
 	public List<SelectOptionVO> getDistricts(Long stateId);
 	public List<State> getAllStates();
 	public List<SelectOptionVO> getAlliancePartiesAsVO(String electionYear, Long electionType, Long partyId);

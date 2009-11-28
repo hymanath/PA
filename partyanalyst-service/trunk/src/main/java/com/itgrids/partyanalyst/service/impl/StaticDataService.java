@@ -116,37 +116,6 @@ public class StaticDataService implements IStaticDataService {
 	public List<String> getElectionYears(){
 		return electionDAO.listOfYears();
 	}
-	
-	public List<SelectOptionVO> getParties(){
-		List<SelectOptionVO> partyList = new ArrayList<SelectOptionVO>();
-		/*partyList.add(new SelectOptionVO(new Long(1), "Indian National Congress"));
-		partyList.add(new SelectOptionVO(new Long(2), "Bharatiya Janata Party"));
-		partyList.add(new SelectOptionVO(new Long(3), "Bahujan Samaj Party"));
-		partyList.add(new SelectOptionVO(new Long(4), "Communist Party of India"));
-		partyList.add(new SelectOptionVO(new Long(5), "Communist Party of India (Marxist)"));
-		partyList.add(new SelectOptionVO(new Long(6), "Samajwadi Party"));
-		partyList.add(new SelectOptionVO(new Long(7), "Samata Party"));
-		partyList.add(new SelectOptionVO(new Long(8), "Rashtriya Janata Dal"));
-		partyList.add(new SelectOptionVO(new Long(9), "Praja Rajyam Party"));
-		partyList.add(new SelectOptionVO(new Long(10), "Telangana Rashtra Samithi"));
-		partyList.add(new SelectOptionVO(new Long(11), "Telugu Desam"));
-		partyList.add(new SelectOptionVO(new Long(12), "Lok Satta Party"));
-		partyList.add(new SelectOptionVO(new Long(13), "Independent"));*/
-		
-		List<Party> parties = partyDAO.getAll();
-		if(parties != null){
-			for(Party partyDetails:parties){
-				if(partyDetails.getShortName().equals("INC")||partyDetails.getShortName().equals("BJP")||partyDetails.getShortName().equals("BSP")||partyDetails.getShortName().equals("TDP")||partyDetails.getShortName().equals("TRS")||partyDetails.getShortName().equals("PRP")||partyDetails.getShortName().equals("CPI")||partyDetails.getShortName().equals("CPM")||partyDetails.getShortName().equals("SP")||partyDetails.getShortName().equals("AIMIM")||partyDetails.getLongName().equals("Lok Satta Party")){
-				  SelectOptionVO party = new SelectOptionVO();
-				  party.setId(partyDetails.getPartyId());
-				  party.setName(partyDetails.getLongName());
-				  partyList.add(party);
-			    }
-			}
-		}
-	return partyList;
-	}
-
 
 	public List<SelectOptionVO> getElectionIdsAndYears(Long electionTypeId) {
 		List<Election> elections = electionDAO.findByPropertyTypeId(electionTypeId);
