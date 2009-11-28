@@ -103,6 +103,7 @@
 	
 	<bean id="electionComparisonAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonAction" singleton="false">
 	   <property name="electionsComparisonService" ref="electionsComparisonService" />
+	   <property name="staticDataService" ref="staticDataService" />
 	</bean>
 																						
 	
