@@ -16,11 +16,11 @@ public class PartyElectionResultsVO {
 	private String candidateName;
 	private Long constituencyId;
 	private String constituencyName;
-	private Double votesEarned;
+	private Long votesEarned;
 	private Long rank;
 	private String votesPercentage;
 	private String secondCandidateName;
-	private Double votesEarnedBySecond;
+	private Long votesEarnedBySecond;
 	private String votesPercentageBySecond;
 	private Long rankBySecond;
 	private String votesDiff;
@@ -64,10 +64,10 @@ public class PartyElectionResultsVO {
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
 	}
-	public Double getVotesEarned() {
+	public Long getVotesEarned() {
 		return votesEarned;
 	}
-	public void setVotesEarned(Double votesEarned) {
+	public void setVotesEarned(Long votesEarned) {
 		this.votesEarned = votesEarned;
 	}
 	public Long getRank() {
@@ -88,10 +88,10 @@ public class PartyElectionResultsVO {
 	public void setSecondCandidateName(String secondCandidateName) {
 		this.secondCandidateName = secondCandidateName;
 	}
-	public Double getVotesEarnedBySecond() {
+	public Long getVotesEarnedBySecond() {
 		return votesEarnedBySecond;
 	}
-	public void setVotesEarnedBySecond(Double votesEarnedBySecond) {
+	public void setVotesEarnedBySecond(Long votesEarnedBySecond) {
 		this.votesEarnedBySecond = votesEarnedBySecond;
 	}
 	public String getVotesPercentageBySecond() {
