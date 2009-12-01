@@ -176,6 +176,7 @@ table.partyResultsCriteriaTable td {
 }
 .cloudTagAnc
 {
+	cursor:default;
 	text-decoration:none;
 	color:#648EAB;
 }
