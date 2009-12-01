@@ -21,15 +21,19 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<BoothConstituencyElection> findByTehsilElectionAndScope(String electionYear, Long electionScopeId, Long tehsilId) {
-		Object[] params = {tehsilId, electionYear, electionScopeId};
-		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.tehsil.tehsilId = ? and model.constituencyElection.election.electionYear = ? and model.constituencyElection.election.electionScope.electionScopeId = ?", params);
+	public List<BoothConstituencyElection> findByElectionConstituencyAndTehsil(String electionYear, Long tehsilId, Long constituencyId){
+		Object[] params = {tehsilId, electionYear, constituencyId};
+		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.tehsil.tehsilId = ? " +
+				"and model.constituencyElection.election.electionYear = ? " +
+				"and model.constituencyElection.constituency.constituencyId = ?", params);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<BoothConstituencyElection> findByBoothElectionAndScope(Long boothId, String electionYear, Long electionScopeId) {
-		Object[] params = {boothId, electionYear, electionScopeId};
-		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.boothId = ? and model.constituencyElection.election.electionYear = ? and model.constituencyElection.election.electionScope.electionScopeId = ?", params);
+	public List<BoothConstituencyElection> findByElectionConstituencyAndBooth(Long boothId, String electionYear, Long constituencyId) {
+		Object[] params = {boothId, electionYear, constituencyId};
+		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.boothId = ? and " +
+				"model.constituencyElection.election.electionYear = ? and " +
+				"model.constituencyElection.constituency.constituencyId = ?", params);
 	}
 
 	@SuppressWarnings("unchecked")
