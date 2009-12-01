@@ -241,6 +241,91 @@ function buildPartyPositionDataTable(info)
 
 	}
 
+	function buildpartyPerformanceDataTable(tableId,divId)
+	{	
+		
+		console.log(tableId);
+	/*	if(divId=="")
+		"${constPositions.type == 'POSITIONS_WON_WITH_POSITIVE_SWING' ||
+							              constPositions.type == 'POSITIONS_LOST_WITH_POSITIVE_SWING' ||
+							              constPositions.type == 'POSITIONS_WON_WITH_NEGATIVE_SWING' ||
+							              constPositions.type == 'POSITIONS_LOST_WITH_NEGATIVE_SWING'}" */
+	
+
+	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get(tableId));
+	console.log(resultsDataSource);
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "constiuencyName"
+		}, {
+			key : "candidateName"
+		}, {
+			key : "percentageOfVotes",parser:"number"
+		}, {
+			key : "prevElectionPercentage",parser:"number"
+		}, {
+			key : "percentageOfVotesPolled ",parser:"number"
+		}, {
+			key : "prevElectionPercentageOfVotesPolled ",parser:"number"
+		},{
+			key : "prevElectionCandidateName",parser:"number"
+		},{
+			key : "oppositePartyPercentageOfVotes",parser:"number"
+		}, {
+			key : "oppositeParty"
+		}, {
+			key : "oppositePartyCandidate"
+		} ]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "constiuencyName",		
+		label : "Constituency Name",
+		sortable : true
+	}, {
+		key : "candidateName",
+		label : "Candidate Name",
+		sortable : true
+	}, {
+		key : "percentageOfVotes",
+		label : "% Votes Gained",
+		sortable : true
+	}, {
+		key : "prevElectionPercentage",
+		label : "Previous Election %",
+		sortable : true
+	}, {
+		key : "percentageOfVotesPolled",
+		label : "% votes Polled %",
+		sortable : true
+	}, {
+		key : "prevElectionPercentageOfVotesPolled",
+		label : "Prev Election % votes Polled %",
+		sortable : true
+	}, {
+		key : "prevElectionCandidateName",
+		label : "Prev Election Candidate Name %",
+		sortable : true
+	}, {
+		key : "oppositePartyPercentageOfVotes",
+		label : "Opposition Party % Votes Gained",
+		sortable : true
+	}, {
+		key : "oppositeParty",
+		label : "Opposition Party",
+		sortable : true
+	}, {
+		key : "oppositePartyCandidate",
+		label : "Opposite Party Candidate",
+		sortable : true
+	} ];
+
+	var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,{});  
+
+	}
+
 </script>
 
 <style type="text/css">
@@ -310,6 +395,16 @@ function buildPartyPositionDataTable(info)
 	.yui-skin-sam th.yui-dt-asc .yui-dt-liner 
 	{
 		background-color:#B0C7EB;
+	}
+
+	.tableDiv
+	{
+		display:none;
+		margin-right:20px;
+	}
+	.tableColoumn
+	{
+		text-align:left;
 	}
 </style>
 </head> 
@@ -404,7 +499,7 @@ function buildPartyPositionDataTable(info)
 	</div>
 	<div id="partyPositionsBody" class="yui-skin-sam"></div>
 </div>
-<br>
+<br/><br/><br/><br/><br/>
 <div>
 	<B><U>Detailed Report...</U></B>
 </div>
@@ -418,7 +513,7 @@ function buildPartyPositionDataTable(info)
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Winning Positions with lower % margin: <c:out value="${constPositions.positionsWon}" />
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>	
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>	
 				</c:if>
 			</div>
 		</c:when>
@@ -427,7 +522,7 @@ function buildPartyPositionDataTable(info)
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Winning Positions with highest % margin: <c:out value="${constPositions.positionsWon}" /> 
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
 				</c:if>
 			</div>
 		</c:when>		
@@ -436,7 +531,7 @@ function buildPartyPositionDataTable(info)
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Losing Positions with lower % margin: <c:out value="${constPositions.positionsWon}" />
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
 				</c:if>
 			</div>
 		</c:when>
@@ -454,7 +549,7 @@ function buildPartyPositionDataTable(info)
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Winning Positions with Positive Swing: <c:out value="${constPositions.positionsWon}" />
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
 				</c:if>
 			</div>
 		</c:when>		
@@ -463,7 +558,7 @@ function buildPartyPositionDataTable(info)
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Loosing Positions with Positive Swing: <c:out value="${constPositions.positionsWon}" />
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
 				</c:if>
 			</div>
 		</c:when>		
@@ -472,7 +567,7 @@ function buildPartyPositionDataTable(info)
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Winning Positions with Negative Swing: <c:out value="${constPositions.positionsWon}" />
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
 				</c:if>
 			</div>
 		</c:when>
@@ -481,7 +576,7 @@ function buildPartyPositionDataTable(info)
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Loosing Positions with Negative Swing: <c:out value="${constPositions.positionsWon}" /> 
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
 				</c:if>
 			</div>
 		</c:when>	
@@ -490,33 +585,37 @@ function buildPartyPositionDataTable(info)
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Losing Positions with droping voting percentage: <c:out value="${constPositions.positionsWon}" />
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
 				</c:if>
 			</div>
 		</c:when>
 </c:choose>
-<div id="${constPositions.type}" style="display:none">
+<div id="${constPositions.type}" class="tableDiv" style="display:none;" class="yui-skin-sam">
 <center>
-				<display:table class="partyPerformanceReportTable" name="${constPositions.constituencyPositionDetails}" id="row" style="margin-top:0px;"> 
-							<display:column title="Constiuency Name" property="constiuencyName" />
-							<display:column title="Candidate Name" property="candidateName" />
+				<display:table class="partyPerformanceReportTable" name="${constPositions.constituencyPositionDetails}" id="table_${constPositions.type}" style="margin-top:0px;"> 
+							<display:column class="tableColoumn" title="Constiuency Name" property="constiuencyName" />
+							<display:column class="tableColoumn" title="Candidate Name" property="candidateName" />
 							<display:column title="% of Votes Gained" property="percentageOfVotes" />
 							<c:if test="${constPositions.type == 'POSITIONS_WON_WITH_POSITIVE_SWING' ||
 							              constPositions.type == 'POSITIONS_LOST_WITH_POSITIVE_SWING' ||
 							              constPositions.type == 'POSITIONS_WON_WITH_NEGATIVE_SWING' ||
 							              constPositions.type == 'POSITIONS_LOST_WITH_NEGATIVE_SWING'}">
-							<display:column title="Previous Election % of Votes Gained" property="prevElectionPercentage" />
+							<display:column class="tableColoumn" title="Previous Election % of Votes Gained" property="prevElectionPercentage" />
 							</c:if>
 							<c:if test="${constPositions.type == 'POSITIONS_LOST_BY_DROPPING_VOTES'}">
-							<display:column title="Previous Election % of Votes Gained" property="prevElectionPercentage" />
-							<display:column title="% of Votes Polled" property="percentageOfVotesPolled" />
-							<display:column title="Previous Election % of Votes Polled" property="prevElectionPercentageOfVotesPolled" />
-							<display:column title="Previous Election Candidate" property = "prevElectionCandidateName" />
+							<display:column  title="Previous Election % of Votes Gained" property="prevElectionPercentage" />
+							<display:column  title="% of Votes Polled" property="percentageOfVotesPolled" />
+							<display:column  title="Previous Election % of Votes Polled" property="prevElectionPercentageOfVotesPolled" />
+							<display:column  title="Previous Election Candidate" property = "prevElectionCandidateName" />
 							</c:if>
-							<display:column title="Oppositin Party % of Votes Gained" property = "oppositePartyPercentageOfVotes" />
-							<display:column title="Opposition Party" property="oppositeParty" />
-							<display:column title="Opposition Party Candidate" property="oppositePartyCandidate" />
-				</display:table>	
+							<display:column  title="Oppositin Party % of Votes Gained" property = "oppositePartyPercentageOfVotes" />
+							<display:column  title="Opposition Party" property="oppositeParty" />
+							<display:column class="tableColoumn" title="Opposition Party Candidate" property="oppositePartyCandidate" />
+				</display:table>
+				
+				<script type="text/javascript">
+					//buildpartyPerformanceDataTable("table_${constPositions.type}","${constPositions.type}");
+				</script>
 </center>
 <!--<a href="#" onclick="closeSection('${constPositions.type}');">close</a><BR>-->
 </div> 
