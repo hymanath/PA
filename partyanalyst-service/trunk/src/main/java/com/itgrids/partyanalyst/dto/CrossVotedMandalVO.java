@@ -11,7 +11,9 @@ public class CrossVotedMandalVO {
 	private Long pcValidVotesInMandal;
 	private String acPercentageInMandal;
 	private String pcPercentageInMandal;
+	private Long earnedVotesDiffernce;
 	private String percentageDifferenceInMandal;
+	private String percentageImpactOnConstituency;
 	private List<CrossVotedBoothVO> crossVotedBooths;
 	
 	public CrossVotedMandalVO(){
@@ -22,7 +24,7 @@ public class CrossVotedMandalVO {
 			Long acEarnedVotesInMandal, Long pcEarnedVotesInMandal,
 			Long pcValidVotesInMandal, String acPercentageInMandal,
 			String pcPercentageInMandal, String percentageDifferenceInMandal,
-			List<CrossVotedBoothVO> crossVotedBooths) {
+			List<CrossVotedBoothVO> crossVotedBooths, String percentageImpactOnConstituency, Long earnedVotesDiffernce) {
 		this.mandalName = mandalName;
 		this.acValidVotesInMandal = acValidVotesInMandal;
 		this.acEarnedVotesInMandal = acEarnedVotesInMandal;
@@ -32,6 +34,25 @@ public class CrossVotedMandalVO {
 		this.pcPercentageInMandal = pcPercentageInMandal;
 		this.percentageDifferenceInMandal = percentageDifferenceInMandal;
 		this.crossVotedBooths = crossVotedBooths;
+		this.percentageImpactOnConstituency = percentageImpactOnConstituency;
+		this.earnedVotesDiffernce = earnedVotesDiffernce;
+	}
+
+	public String getPercentageImpactOnConstituency() {
+		return percentageImpactOnConstituency;
+	}
+
+	public void setPercentageImpactOnConstituency(
+			String percentageImpactOnConstituency) {
+		this.percentageImpactOnConstituency = percentageImpactOnConstituency;
+	}
+
+	public Long getEarnedVotesDiffernce() {
+		return earnedVotesDiffernce;
+	}
+
+	public void setEarnedVotesDiffernce(Long earnedVotesDiffernce) {
+		this.earnedVotesDiffernce = earnedVotesDiffernce;
 	}
 
 	public String getMandalName() {
