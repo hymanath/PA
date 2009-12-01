@@ -9,4 +9,6 @@ public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationCon
 	public List<DelimitationConstituency> findDelimitationConstituencyByConstituencyID(Long constituencyID);
 	
 	public List<DelimitationConstituency> findByElectionScopeIdStateIdAndElectionYear(Long electionScopeId, Long stateId, Long electionYear);
+
+	public List getConstituenciesByDistrictID(Long districtID);
 }

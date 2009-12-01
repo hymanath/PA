@@ -68,14 +68,14 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getConstituenciesByDistrictID(Long districtID){
-		List<Constituency> constituencies = constituencyDAO.getConstituenciesByDistrictID(districtID);
-		
+		List constituencies = delimitationConstituencyDAO.getConstituenciesByDistrictID(districtID);
 		List<SelectOptionVO> constituencyNames=new ArrayList<SelectOptionVO>();
 		
-		for(Constituency constituency:constituencies){
+		for(int i=0; i< constituencies.size(); i++){
+			Object[] obj = (Object[])constituencies.get(i);
 			SelectOptionVO objVO = new SelectOptionVO();
-			objVO.setId(constituency.getConstituencyId());
-			objVO.setName(constituency.getName());
+			objVO.setId(new Long(obj[0].toString()));
+			objVO.setName(obj[1].toString());
 			constituencyNames.add(objVO);
 		}
 		
