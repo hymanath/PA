@@ -11,7 +11,59 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Election Comparison Report</title>
+
+	<!-- YUI Dependency Files-->
+	
+	<link href="styles/yuiStyles/treeview.css" rel="stylesheet" type="text/css" />
+	<link href="styles/yuiStyles/calendar.css" rel="stylesheet" type="text/css" />
+	<link href="styles/yuiStyles/datatable.css" rel="stylesheet" type="text/css" />
+
+
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>
+	<script type="text/javascript" src="js/yahoo/animation-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/calendar-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/treeview-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/connection.js"></script> 
+	<script type="text/javascript" src="js/yahoo/history.js"></script> 
+
+	<!-- Combo-handled YUI CSS files: -->
+
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">	
+
+	<script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+	<script type="text/javascript" src="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/gallery-accordion-min.js"></script>
+
+
+	<!-- Sam Skin CSS --> 
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css"> 
+	 
+	<!-- Dependencies --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	 
+	<!-- OPTIONAL: Animation (only required if using ContainerEffect) --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script> 
+	 
+	<!-- OPTIONAL: Drag & Drop (only required if enabling Drag & Drop) --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script> 
+	 
+	<!-- Source file --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script> 
+
+
 <style type="text/css">
+
+.yui-widget-bd
+{
+	border:1px solid #93B2CC;
+}
 table.CandidateElectionResultsTable{
 	font-family: verdana,arial,sans-serif;
 	font-size:11px;
@@ -25,7 +77,7 @@ table.CandidateElectionResultsTable th {
 	padding: 8px;
 	border-style: solid;
 	border-color: #666666;
-	background-color: #94A9C8;
+	background-color: #C0D9E5;
 }
 table.CandidateElectionResultsTable td {
 	border-width: 1px;
@@ -35,9 +87,369 @@ table.CandidateElectionResultsTable td {
 	background-color: #ffffff;
 }
 
+.headingStyle
+{
+	color:#1C4472;
+	font-weight:bold;
+	padding:10px 10px 10px 0;
+	text-decoration:underline;
+}
+.partyElectionTable th
+{
+	color:#1C4472;
+}
+districtVotesTable td
+{
+	padding-bottom:10px;
+}
+
+
+.districtAnc
+{
+	text-decoration:none;
+	color:#1C4472;
+	padding-right:60px;
+}
+.districtAnc hover
+{
+	text-decoration:underline;
+}
+#electionResultsMain,#districtWiseResultsMain
+{
+	margin-left:55px;
+	text-align:left;
+}
+#electionResultsMainBody
+{
+	padding-left:10px;
+}
+.yui-skin-sam .yui-accordion
+{
+	border:1px solid #93B2CC;
+}
+.yui-accordion-item
+{
+	width:80%;
+}
+#closeSpan
+{
+	float:right;
+	cursor:pointer;
+	font-weight:bold;
+	margin-right:10px;
+	border:1px solid;
+}
+#closeLabelSpan
+{
+	float:right;padding-right:5px;
+	cursor:pointer;
+}
+#labelHead
+{
+	font-weight:bold;
+	font-size:14px;		
+	color:#394351;
+}
+#electionResultsPopupDiv
+{
+	border: 2px solid #A0B7C3;
+	margin:10px;
+}
+#electionResultsPopupDivHead
+{
+	padding:10px;
+	background-color:#C0D9E5;
+	text-decoration:underline;
+}
+#electionResultsPopupDivBody
+{
+	background-color:#ECEFF0;
+}
+
 </style>
 <script type="text/javascript">
+
+
+
+var electionObject=	{
+						constsGained:[],
+						constsLost:[],
+                        constsNotConsidered:[]
+					};
 	
+   function setContentToPanel(type,val)
+   {
+		var elmt = document.getElementById("electionResultsPopupDiv");
+		var elmtHead = document.getElementById("electionResultsPopupDivHead");
+		var elmtBody = document.getElementById("electionResultsPopupDivBody");
+		
+		if(elmt)
+			elmt.style.display="block";
+
+		if(type == "constsGained")
+			var localArr=electionObject.constsGained[val].electionResults;
+		else if(type == "constsLost")
+			var localArr=electionObject.constsLost[val].electionResults;
+		else if(type == "constsNotConsidered")
+			var localArr=electionObject.constsNotConsidered[val].electionResults;
+
+		var str='';
+		str+='<table class="CandidateElectionResultsTable">';
+		str+='<tr>';
+		str+='<th>Candidate Name</th>';
+		str+='<th>Constituency Name</th>';
+		str+='<th>Votes Earned</th>';
+		str+='<th>Votes %</th>';
+		str+='<th>Status</th>';
+		str+='<th> Votes % Increase</th>';
+		str+='<th>Candidate Name</th>';
+		str+='<th>Votes Earned</th>';
+		str+='<th>Votes %</th>';
+		str+='<th>Status</th>';		
+		str+='</tr>';
+		for(var i in localArr)
+		{
+			str+='<tr>';
+			str+='<td>'+localArr[i].candidateName+'</td>';
+			str+='<td>'+localArr[i].constituencyName+'</td>';
+			str+='<td>'+localArr[i].votesEarned+'</td>';
+			str+='<td>'+localArr[i].votesPercentage+'</td>';
+			if(localArr[i].rank == "1")
+				str+='<td>Won</td>';
+			else
+				str+='<td>Lost</td>';
+
+			str+='<td>'+localArr[i].votesDiff+'</td>';
+			str+='<td>'+localArr[i].secondCandidateName+'</td>';
+			str+='<td>'+localArr[i].votesEarnedBySecond+'</td>';
+			str+='<td>'+localArr[i].votesPercentageBySecond+'</td>';
+			if(localArr[i].rankBySecond == "1")
+				str+='<td>Won</td>';
+			else
+				str+='<td>Lost</td>';			
+			str+='</tr>';
+		}
+		str+='</table>';
+
+		elmtBody.innerHTML=str;
+		
+
+   }	
+	
+	function buildJSObj()
+	{
+		<c:forEach var="comparison" items="${electionsComparisonVO.votesGained}">
+			var distObj={
+							districtId:'${comparison.districtId}',
+							stateId:'${comparison.stateId}',
+							districtName:'${comparison.districtName}',
+							electionResults:[]
+						}
+				
+			<c:forEach var="partyResults" items="${comparison.partyElectionResultsVO}">
+				var electionObj={
+									partyId:'${partyResults.partyId}',
+									partyName:'${partyResults.partyName}',
+									candidateId:'${partyResults.candidateId}',
+									candidateName:'${partyResults.candidateName}',
+									constituencyId:'${partyResults.constituencyId}',
+									constituencyName:'${partyResults.constituencyName}',
+									votesEarned:'${partyResults.votesEarned}',
+									rank:'${partyResults.rank}',
+									votesPercentage:'${partyResults.votesPercentage}',
+									secondCandidateName:'${partyResults.secondCandidateName}',
+									votesEarnedBySecond:'${partyResults.votesEarnedBySecond}',
+									votesPercentageBySecond:'${partyResults.votesPercentageBySecond}',
+									rankBySecond:'${partyResults.rankBySecond}',
+									votesDiff:'${partyResults.votesDiff}'
+								}
+					distObj.electionResults.push(electionObj);
+			</c:forEach>
+			this.electionObject.constsGained.push(distObj);
+		</c:forEach>
+
+		<c:forEach var="comparison" items="${electionsComparisonVO.votesLost}">
+			var distObj={
+							districtId:'${comparison.districtId}',
+							stateId:'${comparison.stateId}',
+							districtName:'${comparison.districtName}',
+							electionResults:[]
+						}
+				
+			<c:forEach var="partyResults" items="${comparison.partyElectionResultsVO}">
+				var electionObj={
+									partyId:'${partyResults.partyId}',
+									partyName:'${partyResults.partyName}',
+									candidateId:'${partyResults.candidateId}',
+									candidateName:'${partyResults.candidateName}',
+									constituencyId:'${partyResults.constituencyId}',
+									constituencyName:'${partyResults.constituencyName}',
+									votesEarned:'${partyResults.votesEarned}',
+									rank:'${partyResults.rank}',
+									votesPercentage:'${partyResults.votesPercentage}',
+									secondCandidateName:'${partyResults.secondCandidateName}',
+									votesEarnedBySecond:'${partyResults.votesEarnedBySecond}',
+									votesPercentageBySecond:'${partyResults.votesPercentageBySecond}',
+									rankBySecond:'${partyResults.rankBySecond}',
+									votesDiff:'${partyResults.votesDiff}'
+								}
+					distObj.electionResults.push(electionObj);
+			</c:forEach>
+			this.electionObject.constsLost.push(distObj);
+		</c:forEach>
+
+		<c:forEach var="comparison" items="${electionsComparisonVO.constituenciesNotConsidered}">
+			var distObj={
+							districtId:'${comparison.districtId}',
+							stateId:'${comparison.stateId}',
+							districtName:'${comparison.districtName}',
+							electionResults:[]
+						}
+				
+			<c:forEach var="partyResults" items="${comparison.partyElectionResultsVO}">
+				var electionObj={
+									partyId:'${partyResults.partyId}',
+									partyName:'${partyResults.partyName}',
+									candidateId:'${partyResults.candidateId}',
+									candidateName:'${partyResults.candidateName}',
+									constituencyId:'${partyResults.constituencyId}',
+									constituencyName:'${partyResults.constituencyName}',
+									votesEarned:'${partyResults.votesEarned}',
+									rank:'${partyResults.rank}',
+									votesPercentage:'${partyResults.votesPercentage}',
+									secondCandidateName:'${partyResults.secondCandidateName}',
+									votesEarnedBySecond:'${partyResults.votesEarnedBySecond}',
+									votesPercentageBySecond:'${partyResults.votesPercentageBySecond}',
+									rankBySecond:'${partyResults.rankBySecond}',
+									votesDiff:'${partyResults.votesDiff}'
+								}
+					distObj.electionResults.push(electionObj);
+			</c:forEach>
+			this.electionObject.constsNotConsidered.push(distObj);
+		</c:forEach>
+
+		buildAccordian();
+	}
+
+
+   function buildAccordian()
+	{		
+       YUI().use( 'gallery-accordion', function(Y) {
+		
+		var accordion = new Y.Accordion( {
+		contentBox: "#districtWiseResultsMainBody",
+		useAnimation: true,
+		collapseOthersOnExpand: true
+		});
+	 
+		accordion.render();
+
+		var item1, item2, item3;
+		 
+		item1 = new Y.AccordionItem( {
+		label: "Constituencies which has gained votes - ${electionsComparisonVO.votesGainedCount}",
+		expanded: true,
+		contentBox: "dynamicContentBox1",
+		contentHeight: {
+			method: "fixed",
+			height: 140
+		},
+		closable: false
+		} );
+	 
+		var str='';
+		str+='<table class="districtVotesTable"><tr>';		
+		for(var i in electionObject.constsGained)
+		{			
+		str+='<td>';
+		str+='<span id="districtAncSpan">';
+		str+='	<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>';
+		str+='	<a href="javascript:{}" onclick="setContentToPanel(\'constsGained\','+i+')" class="districtAnc">'+electionObject.constsGained[i].districtName+'</a>';
+		str+='	</span>';
+		str+='</td>';			
+		if(i!=0 && i%3==0)
+		{			
+			str+='	</tr><tr><td colspan="3"> </td></tr><tr>';
+		}		
+		}
+		str+='</tr></table>	';
+		item1.set( "bodyContent",str);
+
+		accordion.addItem( item1 );
+
+		item2 = new Y.AccordionItem( {
+		label: "Constituencies which has lost votes - ${electionsComparisonVO.votesLostCount}",
+		expanded: false,
+		contentBox: "dynamicContentBox2",
+		contentHeight: {
+			method: "fixed",
+			height:140
+		}
+		} );
+	
+		var str1='';
+		str1+='<table class="districtVotesTable"><tr>';		
+		for(var i in electionObject.constsLost)
+		{			
+		str1+='<td>';
+		str1+='<span id="districtAncSpan">';
+		str1+='	<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>';
+		str1+='	<a href="javascript:{}" onclick="setContentToPanel(\'constsLost\','+i+')" class="districtAnc">'+electionObject.constsLost[i].districtName+'</a>';
+		str1+='	</span>';
+		str1+='</td>';			
+		if(i!=0 && i%3==0)
+		{			
+			str1+='	</tr><tr><td colspan="3"> </td></tr><tr>';
+		}		
+		}
+		str1+='</tr></table>	';
+
+		item2.set( "bodyContent", str1);
+		 
+		accordion.addItem( item2);
+		 
+		item3 = new Y.AccordionItem( {
+		label: "Constituencies which has not considered - ${electionsComparisonVO.count}",
+		expanded: false,
+		contentBox: "dynamicContentBox3",
+		contentHeight: {
+			method: "fixed",
+			height:140
+		}
+		} );
+ 
+		var str2='';
+		str2+='<table class="districtVotesTable"><tr>';		
+		for(var i in electionObject.constsNotConsidered)
+		{			
+		str2+='<td>';
+		str2+='<span id="districtAncSpan">';
+		str2+='	<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>';
+		str2+='	<a href="javascript:{}" onclick="setContentToPanel(\'constsNotConsidered\','+i+')" class="districtAnc">'+electionObject.constsNotConsidered[i].districtName+'</a>';
+		str2+='	</span>';
+		str2+='</td>';			
+		if(i!=0 && i%3==0)
+		{			
+			str2+='	</tr><tr><td colspan="3"> </td></tr><tr>';
+		}		
+		}
+		str2+='</tr></table>	';
+
+		item3.set( "bodyContent",str2);
+		 
+		accordion.addItem( item3);
+		 
+
+	   });
+    }
+
+	function closeSpan()
+	{
+		var elmt = document.getElementById("electionResultsPopupDiv");
+		if(elmt)
+			elmt.style.display="none";
+	}
+
 	function showComparisonDetails(id)
 	{	
 		tr=document.getElementsByTagName('tr')
@@ -76,6 +488,8 @@ table.CandidateElectionResultsTable td {
 			elmt.style.display='none';
 		}
 	}
+	
+
 </script>
 </head>
 <body>
@@ -140,247 +554,65 @@ table.CandidateElectionResultsTable td {
 		</c:if>
 
         <c:if test="${electionsComparisonVO != null }">
-		 <div style="text-align:left;margin-left:50px;margin-right:10px;">
-
-		   <div>
-            <table border = "0" >
-            <tr>
-			  <th align="left">Party Name </th>
-			  <td align="left"><c:out value=" : ${electionsComparisonVO.partyName}"/></td>
-			
-			  <th style="padding-left:20px;">Elections Years Compared </th>
-			  <td ><c:out value=" : ${electionsComparisonVO.firstYear}"/><c:out value=" - " /><c:out value="${electionsComparisonVO.secondYear}"/></td>
-			</tr>
-			<tr>
-			</tr>
-		   </table>
+		<div style="text-align:left;margin-left:50px;margin-right:10px;">
+			<div id="partyHeadingDiv">
+				<table border = "0" class="partyElectionTable">
+					<tr>
+					  <th align="left">Party Name </th>
+					  <td align="left"><c:out value=" : ${electionsComparisonVO.partyName}"/></td>
+					  
+					  <th style="padding-left:20px;">Elections Years Compared </th>
+					  <td ><c:out value=" : ${electionsComparisonVO.firstYear}"/><c:out value=" - " /><c:out value="${electionsComparisonVO.secondYear}"/></td>
+					</tr>				
+				</table>
+			</div>
 		</div>
-        <div>
-		<br/>
-		 <table class="CandidateElectionResultsTable" width="350px">
-		    <tr>
-			   <th align="center"> Election Year </th>
-		       <th align="center"> Total Votes Percentage </th>
-			   <th align="center"> Total Seats Won </th>
-		    </tr>
-			<tr>
-			  <td align="center">${partyResultsPercentageForYear1.year}</td>
-			  <td align="center">${partyResultsPercentageForYear1.percentage} %</td>
-			  <td align="center">${partyResultsPercentageForYear1.seatsWOn}</td>
-			</tr>
-			<tr>
-			  <td align="center">${partyResultsPercentageForYear2.year}</td>
-			  <td align="center">${partyResultsPercentageForYear2.percentage} %</td>
-			  <td align="center">${partyResultsPercentageForYear2.seatsWOn}</td>
-			</tr>
-	   </table>
+        <div id="electionResultsMain">
+			<div id="electionResultsMainHead" class="headingStyle"> Election Results </div>
+			<div id="electionResultsMainBody">
+			 <table class="CandidateElectionResultsTable" width="350px">
+				<tr>
+				   <th align="center"> Election &nbsp Year </th>
+				   <th align="center"> Votes &nbsp % </th>
+				   <th align="center"> Seats &nbsp Won </th>
+				</tr>
+				<tr>
+				  <td align="center">${partyResultsPercentageForYear1.year}</td>
+				  <td align="center">${partyResultsPercentageForYear1.percentage} %</td>
+				  <td align="center">${partyResultsPercentageForYear1.seatsWOn}</td>
+				</tr>
+				<tr>
+				  <td align="center">${partyResultsPercentageForYear2.year}</td>
+				  <td align="center">${partyResultsPercentageForYear2.percentage} %</td>
+				  <td align="center">${partyResultsPercentageForYear2.seatsWOn}</td>
+				</tr>
+			</table>
+		   </div>	
        </div>
-		<div>
-			<h4><u>District Wise Results</u></h4>
-			<span>  Votes % Gained  - <c:out value="${electionsComparisonVO.votesGainedCount}"/></span> <a id="votesGained_Anc" href="javascript:{}" onclick="showTableDiv(this.id)"> View</a>
-			<span style="margin-left:20px;">  Votes % Lost  - <c:out value="${electionsComparisonVO.votesLostCount}"/><a  id="votesLost_Anc" href="javascript:{}" onclick="showTableDiv(this.id)"> View</a>
-			</span>
-			<span style="margin-left:20px;"> Constituencies Not Considered  - <c:out value="${electionsComparisonVO.count}"/><a  id="constiNotConsi_Anc" href="javascript:{}" onclick="showTableDiv(this.id)"> View</a>
-			</span>
+
+		<div id="districtWiseResultsMain">
+			<div id="districtWiseResultsMainHead" class="headingStyle">
+				District Wise Results
+			</div>
+			<div id="districtWiseResultsMainBody" class="yui-skin-sam">				
+			</div>
+			<script type="text/javascript">				
+				buildJSObj();
+			</script>
 		</div>
-		<br/><br/>
 		
-		<div style="display:none;" id="votesGainedDiv">
-			<table class="CandidateElectionResultsTable" width="600px">
-			<tr>
-				<th colspan="10" align="center"> Votes % Gained</th>
-			</tr>
-			<c:forEach var="comparison" items="${electionsComparisonVO.votesGained}">
-				<tr>
-					<td  align="left"><b>${comparison.districtName}</b></td>
-					<td colspan="9"  align="center"> <a href="javascript:{}" id="votesGained${comparison.districtId}" onclick="showComparisonDetails(this.id)"> View Results</a></td>
-				</tr>	
-				<tr id="votesGained${comparison.districtId}" style="display:none;">
-					<td colspan="10"  align="center">
-					    <b> In <c:out value="${electionsComparisonVO.firstYear}"/> </b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-						
-						<b>Complete Votes Gained Results</b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-						
-						<b> In <c:out value="${electionsComparisonVO.secondYear}"/> </b>
-					</td>
-				</tr>
-				<tr id="votesGained${comparison.districtId}" style="display:none;">					
-					<th>Candidate Name</th>
-					<th>Constituency Name</th>
-					<th>Votes Earned</th>
-					<th>Votes %</th>
-					<th>Status</th>
-					<th> Votes % Increase</th>
-					<th>Candidate Name</th>
-					<th>Votes Earned</th>
-					<th>Votes %</th>
-					<th>Status</th>
-				</tr>				
-					<c:forEach var="partyResults" items="${comparison.partyElectionResultsVO}">
-					<tr id="votesGained${comparison.districtId}" style="display:none;">
-					    <td><c:url value="candidateElectionResultsAction.action" var="candidateName">
-			            <c:param name="candidateId"   value="${partyResults.candidateId}" />
-						</c:url>
-						<a href='<c:out value="${candidateName}" />'>${partyResults.candidateName}</a></td>
-						<td><c:url value="constituencyPageAction.action" var="constituencyName">
-			            <c:param name="constituencyId"   value="${partyResults.constituencyId}" />
-						</c:url>
-						<a href='<c:out value="${constituencyName}" />'>${partyResults.constituencyName}</a></td>
-						<td>${partyResults.votesEarned}</td>
-						<td>${partyResults.votesPercentage}<c:out value="%" /></td>
-						<c:if test="${partyResults.rank == 1 }">
-		                <td><c:out value="Won"/></td>
-		                </c:if>
-		                <c:if test="${partyResults.rank != 1 }">
-		                <td><c:out value="Lost"/></td>
-		                </c:if>
-						<th>${partyResults.votesDiff}<c:out value="%" /></th>
-						<td><b>${partyResults.secondCandidateName}</b></td>
-						<td>${partyResults.votesEarnedBySecond}</td>
-						<td>${partyResults.votesPercentageBySecond}<c:out value="%" /></td>
-						<c:if test="${partyResults.rankBySecond == 1 }">
-		                <td><c:out value="Won"/></td>
-		                </c:if>
-		                <c:if test="${partyResults.rankBySecond != 1 }">
-		                <td><c:out value="Lost"/></td>
-		                </c:if>
-					</tr>	
-					</c:forEach>
-					<tr id="votesGained${comparison.districtId}" style="display:none;">
-						<th colspan="10"></th>
-					</tr>
-			</c:forEach>
-			
-			</table>
+		<div id="electionResultsPopupDiv" style="display:none;">
+			<div id="electionResultsPopupDivHead">
+				<span id="closeSpan" onclick="closeSpan()">X</span>
+				<span id="closeLabelSpan"style="" onclick="closeSpan()"><u>Close</u></span>
+				<center>
+					<span id="labelHead">Candidate Details..</span>		
+				</center>
+			</div>
+			<div id="electionResultsPopupDivBody">
+				Content
+			</div>		
 		</div>
-		<br/><br/>
-		<div style="display:none;" id="votesLostDiv">
-			<table class="CandidateElectionResultsTable"  width="600px">
-			<tr>
-				<th colspan="10" align="center"> Votes % Lost</th>
-			</tr>
-			<c:forEach var="comparison" items="${electionsComparisonVO.votesLost}">
-				<tr>
-					<td  align="left"><b>${comparison.districtName}</b></td>
-					<td colspan="9"  align="center"> <a href="javascript:{}" id="${comparison.districtId}" onclick="showComparisonDetails(this.id)"> View Results</a></td>
-				</tr>	
-				<tr id="${comparison.districtId}" style="display:none;">
-					<td colspan="10"  align="center">
-					    <b> In <c:out value="${electionsComparisonVO.firstYear}"/></b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-						<b>Complete Votes Lost Results </b>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-						&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-						<b> In <c:out value="${electionsComparisonVO.secondYear}"/> </b>
-					</td>
-				</tr>
-				<tr id="${comparison.districtId}" style="display:none;">					
-					<th>Candidate Name</th>
-					<th>Constituency Name</th>
-					<th>Votes Earned</th>
-					<th>Votes %</th>
-					<th>Status</th>
-					<th>Votes % Decrease</th>
-					<th>Candidate Name</th>
-					<th>Votes Earned</th>
-					<th>Votes %</th>
-					<th>Status</th>
-				</tr>				
-					<c:forEach var="partyResults" items="${comparison.partyElectionResultsVO}">
-					<tr id="${comparison.districtId}" style="display:none;">						
-						<td><c:url value="candidateElectionResultsAction.action" var="candidateName">
-			            <c:param name="candidateId"   value="${partyResults.candidateId}" />
-						</c:url>
-						<a href='<c:out value="${candidateName}" />'>${partyResults.candidateName}</a></td>
-						<td><c:url value="constituencyPageAction.action" var="constituencyName">
-			            <c:param name="constituencyId"   value="${partyResults.constituencyId}" />
-						</c:url>
-						<a href='<c:out value="${constituencyName}" />'>${partyResults.constituencyName}</a></td>
-						<td>${partyResults.votesEarned}</td>
-						<td>${partyResults.votesPercentage}<c:out value="%" /></td>
-						<c:if test="${partyResults.rank == 1 }">
-		                <td><c:out value="Won"/></td>
-		                </c:if>
-		                <c:if test="${partyResults.rank != 1 }">
-		                <td><c:out value="Lost"/></td>
-		                </c:if>
-						<th>${partyResults.votesDiff}<c:out value="%" /></th>
-						<td><b>${partyResults.secondCandidateName}</b></td>
-						<td>${partyResults.votesEarnedBySecond}</td>
-						<td>${partyResults.votesPercentageBySecond}<c:out value="%" /></td>
-						<c:if test="${partyResults.rankBySecond == 1 }">
-		                <td><c:out value="Won"/></td>
-		                </c:if>
-		                <c:if test="${partyResults.rankBySecond != 1 }">
-		                <td><c:out value="Lost"/></td>
-		                </c:if>
-					</tr>	
-					</c:forEach>
-					<tr id="${comparison.districtId}" style="display:none;">
-						<th colspan="10"></th>
-					</tr>
-			</c:forEach>
-			
-			</table>
-
-		</div>
-		<br/><br/>
-		<div style="display:none;" id="constiNotConsiDiv">
-			<table class="CandidateElectionResultsTable" width="600px">
-			<tr>
-				<th colspan="10" align="center"> Constituencies Not Considered</th>
-			</tr>
-			<c:forEach var="comparison" items="${electionsComparisonVO.constituenciesNotConsidered}">
-				<tr>
-					<td  align="left"><b>${comparison.districtName}</b></td>
-					<td colspan="9"  align="center"> <a href="javascript:{}" id="constituenciesNotConsidered${comparison.districtId}" onclick="showComparisonDetails(this.id)"> View Results</a></td>
-				</tr>	
-				<tr id="constituenciesNotConsidered${comparison.districtId}" style="display:none;">
-					<td colspan="5"  align="center">
-					    <b>Complete  Results</b>
-						
-					</td>
-				</tr>
-				
-				<tr id="constituenciesNotConsidered${comparison.districtId}" style="display:none;">					
-					<th>Candidate Name</th>
-					<th>Constituency Name</th>
-					<th>Votes Earned</th>
-					<th>Status</th>
-					<th>Votes %</th>
-					
-				</tr>				
-					<c:forEach var="partyResults" items="${comparison.partyElectionResultsVO}">
-					<tr id="constituenciesNotConsidered${comparison.districtId}" style="display:none;">
-					    <td><c:url value="candidateElectionResultsAction.action" var="candidateName">
-			            <c:param name="candidateId"   value="${partyResults.candidateId}" />
-						</c:url>
-						<a href='<c:out value="${candidateName}" />'>${partyResults.candidateName}</a></td>
-						<td><c:url value="constituencyPageAction.action" var="constituencyName">
-			            <c:param name="constituencyId"   value="${partyResults.constituencyId}" />
-						</c:url>
-						<a href='<c:out value="${constituencyName}" />'>${partyResults.constituencyName}</a></td>
-						<td>${partyResults.votesEarned}</td>
-						<c:if test="${partyResults.rank == 1 }">
-		                <td><c:out value="Won"/></td>
-		                </c:if>
-		                <c:if test="${partyResults.rank != 1 }">
-		                <td><c:out value="Lost"/></td>
-		                </c:if>
-						<td>${partyResults.votesPercentage}<c:out value="%" /></td>
-						
-					</tr>	
-					</c:forEach>
-					<tr id="constituenciesNotConsidered${comparison.districtId}" style="display:none;">
-						<th colspan="5"></th>
-					</tr>
-			</c:forEach>
-			
-			</table>
-		</div>
-
-	</div>
-	</c:if>
+		</c:if>
 </body>
 </html>
