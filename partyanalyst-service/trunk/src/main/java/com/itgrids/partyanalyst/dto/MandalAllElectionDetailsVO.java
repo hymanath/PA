@@ -15,6 +15,7 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private Long electionScopeID;
 	private String partyShortName;
 	private Long electionID;
+	private Long electionTypeID;
 	
 	public String getTehsilName() {
 		return tehsilName;
@@ -88,6 +89,12 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	}
 	public void setElectionID(Long electionID) {
 		this.electionID = electionID;
+	}
+	public Long getElectionTypeID() {
+		return electionTypeID;
+	}
+	public void setElectionTypeID(Long electionTypeID) {
+		this.electionTypeID = electionTypeID;
 	}
 	
 }

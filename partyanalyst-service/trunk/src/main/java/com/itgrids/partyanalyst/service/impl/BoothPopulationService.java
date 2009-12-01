@@ -1,11 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -15,9 +12,9 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothVillageCensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothDataExcelReader;
 import com.itgrids.partyanalyst.excel.booth.BoothDataUploadVO;
@@ -247,6 +244,7 @@ public class BoothPopulationService implements IBoothPopulationService{
 			Election election = (Election)obj[0];
 			objectVO.setElectionYear(election.getElectionYear());
 			objectVO.setElectionType(election.getElectionScope().getElectionType().getElectionType());
+			objectVO.setElectionTypeID(election.getElectionScope().getElectionType().getElectionTypeId());
 			objectVO.setTotalVoters(new Long(obj[1].toString()));
 			objectVO.setValidVoters(new Long(obj[2].toString()));
 			objectVO.setRejectedVoters(new Long(obj[3].toString()));
