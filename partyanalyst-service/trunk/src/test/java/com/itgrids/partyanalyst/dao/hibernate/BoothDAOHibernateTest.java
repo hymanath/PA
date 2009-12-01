@@ -20,7 +20,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 	}
 	
 	public void testFindTehsilsByConstituencyElectionScopeAndElection(){
-		List<Tehsil> mandals = boothDAO.findTehsilsByConstituencyElectionScopeAndElection("2009", new Long(232));
+		List<Tehsil> mandals = boothDAO.findTehsilsByElectionAndConstituency("2009", new Long(232));
 		assertEquals(mandals.size(), 7);
 	}
 
