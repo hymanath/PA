@@ -22,22 +22,22 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
 	}
 	
-	public void testFindByTehsil(){
-		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByTehsilElectionAndScope("2004", new Long(10), new Long(835));
+/*	public void testFindByTehsil(){
+		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByTehsilElectionAndScope("2004", new Long(10), new Long(835), new Long(408));
 		System.out.println("Total Booth Constituency Elections:"+ list.size());
 	}
 	
 	public void testFindBoothsForConstituencyElection(){
 		List<Booth> list = boothConstituencyElectionDAO.findBoothsByConstituencyElection(new Long(1058));
 		assertEquals(256, list.size());
-	}
+	}*/
 	
 	public void testFindByTehsilElectionAndScope(){
-		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByTehsilElectionAndScope("2009", new Long(1), new Long(844));
+		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByElectionConstituencyAndTehsil("2004", new Long(846), new Long(240));
 		assertEquals(list.size(), 5);
 	}
 	
-	public void testFindByBoothElectionAndScope(){
+	/*public void testFindByBoothElectionAndScope(){
 		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByBoothElectionAndScope(new Long(4500), "2009", new Long(1));
 		assertEquals(list.size(), 5);
 	}
@@ -64,5 +64,10 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		for(String obj:list)
 			System.out.println("Name::"+obj);
 		assertEquals(list.get(0), "2004");
+	}*/
+	
+	public void testFindByElectionConstituencyAndBooth(){
+		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByElectionConstituencyAndBooth(new Long(2123), "2009", new Long(408));
+		assertEquals(1, list.size());
 	}
 }
