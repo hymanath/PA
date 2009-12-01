@@ -26,18 +26,18 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		assertEquals(1, list.size());
 	}*/
 
-	public void testFindByConstituencyElection(){
+	/*public void testFindByConstituencyElection(){
 		List<CandidateBoothResult> list = candidateBoothResultDAO.findByConstituencyElection(new Long(125));
 		assertEquals(1950, list.size());
-	}
-	
-	/*public void testFindByNominationAndBoothConstituencyElection(){
-		List<CandidateBoothResult> list = candidateBoothResultDAO.findByNominationAndBoothConstituencyElection(new Long(690), new Long(77));
-		assertEquals(1, list.size());
 	}*/
 	
-	public void testFidPartiesForConstituencyAndElection(){
+	public void testFindByNominationAndBoothConstituencyElection(){
+		List<CandidateBoothResult> list = candidateBoothResultDAO.findByNominationAndBoothConstituencyElection(new Long(690), new Long(77));
+		assertEquals(1, list.size());
+	}
+	
+	/*public void testFidPartiesForConstituencyAndElection(){
 		List<Party> list = candidateBoothResultDAO.findPartiesByConstituencyAndElectionYear(new Long(408), "2004");
 		assertEquals("INC", list.get(0).getShortName());
-	}
+	}*/
 }
