@@ -30,12 +30,6 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		Object[] params = {boothId, electionYear, electionScopeId, partyId};
 		return getHibernateTemplate().find("from CandidateBoothResult model where model.boothConstituencyElection.booth.boothId = ? and model.nomination.constituencyElection.election.electionYear = ? and model.nomination.constituencyElection.election.electionScope.electionScopeId = ? and model.nomination.party.partyId = ?", params);
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<CandidateBoothResult> findByBoothConstituencyElectionAndParty(Long boothConstituencyElectionId, Long partyId) {
-		Object[] params = {boothConstituencyElectionId, partyId};
-		return getHibernateTemplate().find("from CandidateBoothResult model where model.boothConstituencyElection.boothConstituencyElectionId = ? and model.nomination.party.partyId = ?", params);
-	}
 
 	@SuppressWarnings("unchecked")
 	public List<CandidateBoothResult> findByConstituencyElection(Long constituencyElectionId) {
