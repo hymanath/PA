@@ -60,7 +60,7 @@
 }
 #crossVotingResultDiv
 {
-	text-align: left; margin-top: 30px; margin-left: 100px;
+	text-align: left; margin-top: 30px; margin-left: 50px;
 }
 #candidateDetailsDiv
 {
@@ -68,16 +68,15 @@
 }
 #assemblyCandidateDiv
 {
-	float:left;
-	padding-right:20px;
+	float:left;	
 	background-color:#EFEFEF;
 	border:2px outset #CCCCCC;
 }
 #parliamentCandidateDiv
 {
 	background-color:#EFEFEF;
-	margin-left:401px;
-	margin-right:44px;
+	margin-left:480px;
+	margin-right:20px;
 	border:2px outset #CCCCCC;
 }
 #treeDiv
@@ -245,10 +244,11 @@
 			str+='<tr>';
 			str+='<th>Name</th>';
 			str+='<td><a href="candidateElectionResultsAction.action?candidateId='+result.acCandidateData.candidateId+'">'+result.acCandidateData.candidateName+'</a></td>';
-			str+='<td rowspan="3"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
+			str+='<td rowspan="4"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
 			str+='</tr>';
 			str+='<tr><th>Rank</th><td>'+result.acCandidateData.rank+'</td></tr>';
-			str+='<tr><th>Votes %</th><td>'+result.acCandidateData.votesPercentage+'</td></tr>';
+			str+='<tr><th>Party</th><td>'+result.acCandidateData.party+'</td></tr>';
+			str+='<tr><th>Votes Gained</th><td>'+result.acCandidateData.votesPercentage+' %</td></tr>';
 			str+='</table>';		
 			str+='</div>';
 			str+='<div id="parliamentCandidateDiv">';
@@ -259,7 +259,8 @@
 			str+='<td rowspan="4"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
 			str+='</tr>';
 			str+='<tr><th>Rank</th><td>'+result.pcCandidateData.rank+'</td></tr>';
-			str+='<tr><th>Votes %</th><td>'+result.pcCandidateData.votesPercentage+'</td></tr>';
+			str+='<tr><th>Party</th><td>'+result.pcCandidateData.party+'</td></tr>';
+			str+='<tr><th>Votes Gained</th><td>'+result.pcCandidateData.votesPercentage+' %</td></tr>';
 			str+='</table>';	
 			str+='</div>';
 			str+='<div id="treeDiv"><span><h4><u>Mandals Details..</u></h4></span><div id="treeDataDiv"></div></div>';
@@ -292,13 +293,15 @@
 		var mstr='';
 		mstr+='<table class="mandalDatatable">';
 		mstr+='<tr>';
-		mstr+='<th width="100px;">'+mandal.mandalName+'</th>';		
-		mstr+='<th>Assembly :</th>';
-		mstr+='<td>'+mandal.acPercentageInMandal+'  %</td>';
-		mstr+='<th>Parliament :</th>';
-		mstr+='<td>'+mandal.pcPercentageInMandal+'  %</td>';
-		mstr+='<th>%age of votes flown from assembly to parliament:</th>';
-		mstr+='<td>'+mandal.percentageDifferenceInMandal+' %</td>';					
+		mstr+='<th style="width:140px;">'+mandal.mandalName+'</th>';		
+		mstr+='<th>| Assembly :</th>';
+		mstr+='<td style="width:50px;">'+mandal.acPercentageInMandal+'  %</td>';
+		mstr+='<th>| Parliament :</th>';
+		mstr+='<td style="width: 50px;">'+mandal.pcPercentageInMandal+'  %</td>';
+		mstr+='<th>| votes flown :</th>';
+		mstr+='<td style="width: 50px;">'+mandal.percentageDifferenceInMandal+' %</td>';	
+		mstr+='<th>| Impact On Constituency:</th>';
+		mstr+='<td style="width: 50px;">'+mandal.percentageImpactOnConstituency+' %</td>';	
 		mstr+='</tr>';
 		mstr+='</table>'
 
