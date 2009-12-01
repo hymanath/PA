@@ -261,11 +261,14 @@ public class BoothPopulationService implements IBoothPopulationService{
 			StringBuilder sb = new StringBuilder();
 			if(allianceFlag){
 				List<SelectOptionVO> partyIDs = staticDataService.getAlliancePartiesAsVO(
-						mandalAllElectionDetailsVO.getElectionYear(), 
-						new Long(mandalAllElectionDetailsVO.getElectionType()), partyID);
-				for(SelectOptionVO obj : partyIDs){
-					sb.append(",").append(obj.getId());
-				}
+						mandalAllElectionDetailsVO.getElectionYear(), mandalAllElectionDetailsVO.getElectionTypeID(), partyID);
+				if(partyIDs==null){
+					sb.append(",").append(partyID);
+				}else{	
+					for(SelectOptionVO obj : partyIDs){
+						sb.append(",").append(obj.getId());
+					}
+				} 
 			}else{
 				sb.append(",").append(partyID);
 			}
