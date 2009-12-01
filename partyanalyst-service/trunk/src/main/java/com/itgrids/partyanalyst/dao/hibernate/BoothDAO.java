@@ -49,9 +49,11 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Tehsil> findTehsilsByConstituencyElectionScopeAndElection(String electionYear,Long constituencyId){
+	public List<Tehsil> findTehsilsByElectionAndConstituency(String electionYear,Long constituencyId){
 		Object[] params = {constituencyId, electionYear};
-		return getHibernateTemplate().find("select distinct model.tehsil from Booth model where model.boothId in(select model1.booth.boothId from BoothConstituencyElection model1 where model1.constituencyElection.constituency.constituencyId = ? and model1.constituencyElection.election.electionYear=?)",params);
+		return getHibernateTemplate().find("select distinct model.tehsil from Booth model where model.boothId in(select model1.booth.boothId from " +
+				"BoothConstituencyElection model1 where model1.constituencyElection.constituency.constituencyId = ? " +
+				"and model1.constituencyElection.election.electionYear=?)",params);
 	}
 
 }
