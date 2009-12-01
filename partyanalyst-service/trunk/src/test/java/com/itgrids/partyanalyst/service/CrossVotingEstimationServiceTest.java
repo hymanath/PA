@@ -51,7 +51,7 @@ public class CrossVotingEstimationServiceTest{
 		staticDataService.setElectionAllianceDAO(electionAllianceDAO);
 	}
 	
-	/*@Test
+	@Test
 	public void checkGetAssembliesForParliament(){
 		EasyMock.expect(delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(new Long(408), new Long(2004))).andReturn(MockData.getConstituencies());
 		EasyMock.replay(delimitationConstituencyAssemblyDetailsDAO);
@@ -61,6 +61,17 @@ public class CrossVotingEstimationServiceTest{
 			Assert.assertEquals(list.get(i).getName(), names[i]);
 		}		
 		EasyMock.verify(delimitationConstituencyAssemblyDetailsDAO);
-	}*/
+	}
 	
+	
+	@Test
+	public void checkPecentages(){
+		String value = crossVotingEstimationService.calculateVotesPercengate(new Long(4000), new Long(5000));
+		Assert.assertEquals(value, "0.0");
+	}
+	
+	/*@Test
+	public void checkPercentageImpactOnConstituency(){
+		//crossVotingEstimationService.calculateCrossVotingPercentageImpactOnMandals(earnedVotesDifferenceInConstituency, percentageDifferenceInConstituencyRound, crossVotedMandalVOs);
+	}*/
 }
