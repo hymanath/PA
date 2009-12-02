@@ -14,6 +14,7 @@ public class ElectionComparisonResultVO {
 	private Long districtId;
 	private Long stateId;
 	private String districtName;
+	private int constituenciesCount;
 	private List<PartyElectionResultsVO> partyElectionResultsVO;
 	private List<CandidateOppositionVO> candidateOppositionVO;
 	
@@ -49,5 +50,11 @@ public class ElectionComparisonResultVO {
 	public void setCandidateOppositionVO(
 			List<CandidateOppositionVO> candidateOppositionVO) {
 		this.candidateOppositionVO = candidateOppositionVO;
+	}
+	public int getConstituenciesCount() {
+		return constituenciesCount;
+	}
+	public void setConstituenciesCount(int constituenciesCount) {
+		this.constituenciesCount = constituenciesCount;
 	}
 }
