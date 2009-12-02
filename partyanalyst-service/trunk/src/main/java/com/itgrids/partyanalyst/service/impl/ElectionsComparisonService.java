@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.velocity.util.StringUtils;
-
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
@@ -297,6 +294,14 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 		 int votesGainedCount = 0;
 		 int votesLostCount = 0;
 		 int count = 0;
+		 int seatsWonWhenVotesGainedForFirstYear = 0;
+		 int seatsWonWhenVotesGainedForSecondYear = 0;
+		 int seatsLostWhenVotesGainedForFirstYear = 0;
+		 int seatsLostWhenVotesGainedForSecondYear = 0;
+		 int seatsWonWhenVotesLostForFirstYear = 0;
+		 int seatsWonWhenVotesLostForSecondYear = 0;
+		 int seatsLostWhenVotesLostForFirstYear = 0;
+		 int seatsLostWhenVotesLostForSecondYear = 0;
 		 String partyName = null;
 		 electionsComparisionVO.setFirstYear(firstYear);
 		 electionsComparisionVO.setSecondYear(secondYear);
@@ -324,6 +329,14 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 								 
 							    PartyElectionResultsVO partyResultVO = new PartyElectionResultsVO();
 							    partyResultVO = getResult(firstPartyResults,secondPartyResults);
+							    if(partyResultVO.getRank() != null && partyResultVO.getRank().equals(new Long(1)))
+							    	seatsWonWhenVotesGainedForFirstYear++;
+							    else if(partyResultVO.getRank() != null)
+							    	seatsLostWhenVotesGainedForFirstYear++;
+							    if(partyResultVO.getRankBySecond() != null && partyResultVO.getRankBySecond().equals(new Long(1)))
+							    	seatsWonWhenVotesGainedForSecondYear++;
+							    else if(partyResultVO.getRankBySecond() != null)
+							    	seatsLostWhenVotesGainedForSecondYear++;
 							    Double votesDiff = Double.parseDouble(partyResultVO.getVotesPercentageBySecond()) - Double.parseDouble(partyResultVO.getVotesPercentage());
 							    partyResultVO.setVoteDiff(votesDiff);
 							    partyResultVO.setVotesDiff(getRoundedDoubleValue(votesDiff).toString());
@@ -338,6 +351,14 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 								 
 								 PartyElectionResultsVO partyResultVO = new PartyElectionResultsVO();
 								 partyResultVO = getResult(firstPartyResults,secondPartyResults);
+								 if(partyResultVO.getRank() != null && partyResultVO.getRank().equals(new Long(1)))
+									 seatsWonWhenVotesLostForFirstYear++;
+								 else if(partyResultVO.getRank() != null)
+									 seatsLostWhenVotesLostForFirstYear++;
+								 if(partyResultVO.getRankBySecond() != null && partyResultVO.getRankBySecond().equals(new Long(1)))
+									 seatsWonWhenVotesLostForSecondYear++;
+								 else if(partyResultVO.getRankBySecond() != null)
+									 seatsLostWhenVotesLostForSecondYear++;
 								 Double votesDiff = Double.parseDouble(partyResultVO.getVotesPercentage()) - Double.parseDouble(partyResultVO.getVotesPercentageBySecond());
 								 partyResultVO.setVoteDiff(votesDiff);
 								 partyResultVO.setVotesDiff(getRoundedDoubleValue(votesDiff).toString());
@@ -377,6 +398,7 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 						 if(partyElectionResultsForFirst != null && partyElectionResultsForFirst.size() > 1)
 						  Collections.sort(partyElectionResultsForFirst,new VotesDifferenceComparator());
 						 resultVO.setPartyElectionResultsVO(partyElectionResultsForFirst);
+						 resultVO.setConstituenciesCount(partyElectionResultsForFirst.size());
 						 resultsForVotesGained.add(resultVO);
 					 }
 					 if(statusForLost == 1){
@@ -393,6 +415,7 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 						 if(partyElectionResultsForSecond != null && partyElectionResultsForSecond.size() > 1)
 							 Collections.sort(partyElectionResultsForSecond,new VotesDifferenceComparator());
 						 resultVOforSecond.setPartyElectionResultsVO(partyElectionResultsForSecond);
+						 resultVOforSecond.setConstituenciesCount(partyElectionResultsForSecond.size());
 						 resultsForVotesLost.add(resultVOforSecond);
 					 }
 					 if(statusForNotConsidered == 1){
@@ -429,6 +452,14 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 		 electionsComparisionVO.setVotesGained(resultsForVotesGained);
 		 electionsComparisionVO.setVotesLost(resultsForVotesLost);
 		 electionsComparisionVO.setConstituenciesNotConsidered(constituenciesNotConsidered);
+		 electionsComparisionVO.setSeatsWonInFirstYearForVotesGained(seatsWonWhenVotesGainedForFirstYear);
+		 electionsComparisionVO.setSeatsWonInSecondYearForVotesGained(seatsWonWhenVotesGainedForSecondYear);
+		 electionsComparisionVO.setSeatsLostInFirstYearForVotesGained(seatsLostWhenVotesGainedForFirstYear);
+		 electionsComparisionVO.setSeatsLostInSecondYearForVotesGained(seatsLostWhenVotesGainedForSecondYear);
+		 electionsComparisionVO.setSeatsWonInFirstYearForVotesLost(seatsWonWhenVotesLostForFirstYear);
+		 electionsComparisionVO.setSeatsWonInSecondYearForVotesLost(seatsWonWhenVotesLostForSecondYear);
+		 electionsComparisionVO.setSeatsLostInFirstYearForVotesLost(seatsLostWhenVotesLostForFirstYear);
+		 electionsComparisionVO.setSeatsLostInSecondYearForVotesLost(seatsLostWhenVotesLostForSecondYear);
 		 
 	 return electionsComparisionVO;
 	 }
