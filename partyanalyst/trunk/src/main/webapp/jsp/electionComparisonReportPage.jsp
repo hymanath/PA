@@ -35,6 +35,14 @@
 	<script type="text/javascript" src="js/yahoo/history.js"></script> 
 
 	<!-- Combo-handled YUI CSS files: -->
+	<link rel="stylesheet" type="text/css"
+		href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
+	<!-- Combo-handled YUI JS files: -->
+	<script type="text/javascript"
+		src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
+
+
+	<!-- Combo-handled YUI CSS files: -->
 
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">	
 
@@ -97,6 +105,11 @@ table.CandidateElectionResultsTable td {
 .partyElectionTable th
 {
 	color:#1C4472;
+	padding:5px;
+}
+.partyElectionTable td
+{
+	padding:5px;
 }
 districtVotesTable td
 {
@@ -153,7 +166,8 @@ districtVotesTable td
 #electionResultsPopupDiv
 {
 	border: 2px solid #A0B7C3;
-	margin:10px;
+	margin:30px 10px 10px 20px;
+	text-align:left;
 }
 #electionResultsPopupDivHead
 {
@@ -165,6 +179,35 @@ districtVotesTable td
 {
 	background-color:#ECEFF0;
 }
+
+.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
+{
+	background:none;
+}
+
+.yui-skin-sam thead .yui-dt-sortable {
+
+	background-color:#C0D9E5;
+	color:#3F546F;
+}
+.yui-skin-sam .yui-dt-liner
+{
+	padding:4px 8px;
+	font-size:12px;
+}	
+.yui-skin-sam tr.yui-dt-odd
+{
+	background-color:#F6FDFF;
+}
+.yui-skin-sam tr.yui-dt-odd td.yui-dt-asc, .yui-skin-sam tr.yui-dt-odd td.yui-dt-desc 
+{
+	background-color:#EBF9FF;
+}
+.yui-skin-sam tr.yui-dt-even td.yui-dt-asc, .yui-skin-sam tr.yui-dt-even td.yui-dt-desc 
+{
+	background-color:#F5FAFD;
+}
+
 
 </style>
 <script type="text/javascript">
@@ -194,19 +237,7 @@ var electionObject=	{
 			var localArr=electionObject.constsNotConsidered[val].electionResults;
 
 		var str='';
-		str+='<table class="CandidateElectionResultsTable">';
-		str+='<tr>';
-		str+='<th>Candidate Name</th>';
-		str+='<th>Constituency Name</th>';
-		str+='<th>Votes Earned</th>';
-		str+='<th>Votes %</th>';
-		str+='<th>Status</th>';
-		str+='<th> Votes % Increase</th>';
-		str+='<th>Candidate Name</th>';
-		str+='<th>Votes Earned</th>';
-		str+='<th>Votes %</th>';
-		str+='<th>Status</th>';		
-		str+='</tr>';
+		str+='<table class="CandidateElectionResultsTable" id="electionComparisonTable">';
 		for(var i in localArr)
 		{
 			str+='<tr>';
@@ -214,27 +245,126 @@ var electionObject=	{
 			str+='<td>'+localArr[i].constituencyName+'</td>';
 			str+='<td>'+localArr[i].votesEarned+'</td>';
 			str+='<td>'+localArr[i].votesPercentage+'</td>';
+
 			if(localArr[i].rank == "1")
 				str+='<td>Won</td>';
 			else
 				str+='<td>Lost</td>';
 
-			str+='<td>'+localArr[i].votesDiff+'</td>';
-			str+='<td>'+localArr[i].secondCandidateName+'</td>';
-			str+='<td>'+localArr[i].votesEarnedBySecond+'</td>';
-			str+='<td>'+localArr[i].votesPercentageBySecond+'</td>';
-			if(localArr[i].rankBySecond == "1")
-				str+='<td>Won</td>';
+			if(localArr[i].votesDiff != "")
+				str+='<td>'+localArr[i].votesDiff+'</td>';			
 			else
-				str+='<td>Lost</td>';			
+				str+='<td> 0 </td>';
+			
+			if(localArr[i].secondCandidateName != "")
+				str+='<td>'+localArr[i].secondCandidateName+'</td>';
+			else
+				str+='<td> -- </td>';
+
+			if(localArr[i].votesEarnedBySecond != "")
+				str+='<td>'+localArr[i].votesEarnedBySecond+'</td>';
+			else
+				str+='<td> 0 </td>';
+
+			if(localArr[i].votesPercentageBySecond != "")
+				str+='<td>'+localArr[i].votesPercentageBySecond+'</td>';
+			else
+				str+='<td> 0 </td>';
+
+			if(localArr[i].rankBySecond != "")
+			{
+				if(localArr[i].rankBySecond == "1")
+					str+='<td>Won</td>';
+				else
+					str+='<td>Lost</td>';			
+			}
+			else
+				str+='<td> -- </td>';			
 			str+='</tr>';
 		}
 		str+='</table>';
 
 		elmtBody.innerHTML=str;
 		
+		buildelectionDataTable();
 
    }	
+
+   function buildelectionDataTable()
+   {
+
+	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("electionComparisonTable"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "candidateName"
+		}, {
+			key : "constituencyName"
+		}, {
+			key : "votesEarned",parser:"number"
+		}, {
+			key : "votesPercentage"
+		}, {
+			key : "rank"
+		}, {
+			key : "votesDiff",parser:"number"
+		} , {
+			key : "secondCandidateName"
+		} , {
+			key : "votesEarnedBySecond",parser:"number"
+		} , {
+			key : "votesPercentageBySecond",parser:"number"
+		} , {
+			key : "rankBySecond"
+		} ]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "candidateName",		
+		label : "Candidate",
+		sortable : true
+	}, {
+		key : "constituencyName",
+		label : "Constituency",
+		sortable : true
+	}, {
+		key : "votesEarned",
+		label : "Votes&nbsp;Earned",
+		sortable : true
+	}, {
+		key : "votesPercentage",
+		label : "Votes&nbsp;%",
+		sortable : true
+	}, {
+		key : "rank",
+		label : "Status",
+		sortable : true
+	}, {
+		key : "votesDiff",
+		label : "Votes&nbsp;Diff",
+		sortable : true
+	}, {
+		key : "secondCandidateName",
+		label : "Candidate",
+		sortable : true
+	}, {
+		key : "votesEarnedBySecond",
+		label : "Votes&nbsp;Earned",
+		sortable : true
+	}, {
+		key : "votesPercentageBySecond",
+		label : "Votes&nbsp;%",
+		sortable : true
+	}, {
+		key : "rankBySecond",
+		label : "Status",
+		sortable : true
+	} ];
+
+	var myDataTable = new YAHOO.widget.DataTable("electionResultsPopupDivBody",resultsColumnDefs, resultsDataSource,{});  
+
+}
 	
 	function buildJSObj()
 	{
@@ -554,15 +684,19 @@ var electionObject=	{
 		</c:if>
 
         <c:if test="${electionsComparisonVO != null }">
-		<div style="text-align:left;margin-left:50px;margin-right:10px;">
+		<div style="float:right;left:-150px;position:relative;top:10px;">
 			<div id="partyHeadingDiv">
 				<table border = "0" class="partyElectionTable">
 					<tr>
+						<th colspan="2" align="left"><u>Party Details...</u></th>
+					</tr>
+					<tr>
 					  <th align="left">Party Name </th>
 					  <td align="left"><c:out value=" : ${electionsComparisonVO.partyName}"/></td>
-					  
-					  <th style="padding-left:20px;">Elections Years Compared </th>
-					  <td ><c:out value=" : ${electionsComparisonVO.firstYear}"/><c:out value=" - " /><c:out value="${electionsComparisonVO.secondYear}"/></td>
+					 </tr>
+					 <tr>
+					  <th align="left">Elections Years Compared </th>
+					  <td align="left"><c:out value=" : ${electionsComparisonVO.firstYear}"/><c:out value=" - " /><c:out value="${electionsComparisonVO.secondYear}"/></td>
 					</tr>				
 				</table>
 			</div>
@@ -590,6 +724,17 @@ var electionObject=	{
 		   </div>	
        </div>
 
+		<div id="electionResultsPopupDiv" style="display:none;">
+			<div id="electionResultsPopupDivHead">
+				<span id="closeSpan" onclick="closeSpan()">X</span>
+				<span id="closeLabelSpan"style="" onclick="closeSpan()"><u>Close</u></span>			
+				<span id="labelHead">Candidate Details..</span>						
+			</div>
+			<div id="electionResultsPopupDivBody" class="yui-skin-sam">
+				Content
+			</div>		
+		</div>
+
 		<div id="districtWiseResultsMain">
 			<div id="districtWiseResultsMainHead" class="headingStyle">
 				District Wise Results
@@ -601,18 +746,7 @@ var electionObject=	{
 			</script>
 		</div>
 		
-		<div id="electionResultsPopupDiv" style="display:none;">
-			<div id="electionResultsPopupDivHead">
-				<span id="closeSpan" onclick="closeSpan()">X</span>
-				<span id="closeLabelSpan"style="" onclick="closeSpan()"><u>Close</u></span>
-				<center>
-					<span id="labelHead">Candidate Details..</span>		
-				</center>
-			</div>
-			<div id="electionResultsPopupDivBody">
-				Content
-			</div>		
-		</div>
+		
 		</c:if>
 </body>
 </html>
