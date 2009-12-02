@@ -302,7 +302,7 @@
 		</tr>
 		<tr>
 			<th><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></th>
-			<td align="left"><s:textfield id="mobileField" name="mobile"/>  </td>
+			<td align="left"><s:textfield id="mobileField" name="mobile" maxlength="10" />  </td>
 		</tr>
 		<tr>
 			<th><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></th>
