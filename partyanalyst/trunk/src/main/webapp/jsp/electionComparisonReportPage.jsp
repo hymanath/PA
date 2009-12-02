@@ -373,6 +373,7 @@ var electionObject=	{
 							districtId:'${comparison.districtId}',
 							stateId:'${comparison.stateId}',
 							districtName:'${comparison.districtName}',
+							constiCount:'${comparison.constituenciesCount}',
 							electionResults:[]
 						}
 				
@@ -403,6 +404,7 @@ var electionObject=	{
 							districtId:'${comparison.districtId}',
 							stateId:'${comparison.stateId}',
 							districtName:'${comparison.districtName}',
+							constiCount:'${comparison.constituenciesCount}',
 							electionResults:[]
 						}
 				
@@ -477,7 +479,7 @@ var electionObject=	{
 		var item1, item2, item3;
 		 
 		item1 = new Y.AccordionItem( {
-		label: "Constituencies which has gained votes - ${electionsComparisonVO.votesGainedCount}",
+		label: "Constituencies Gained Votes% : ${electionsComparisonVO.votesGainedCount} --  In ${electionsComparisonVO.firstYear} [Seats -Won : ${electionsComparisonVO.seatsWonInFirstYearForVotesGained} Lost : ${electionsComparisonVO.seatsLostInFirstYearForVotesGained}] In ${electionsComparisonVO.secondYear} [Seats - Won : ${electionsComparisonVO.seatsWonInSecondYearForVotesGained} Lost : ${electionsComparisonVO.seatsLostInSecondYearForVotesGained}] ",
 		expanded: true,
 		contentBox: "dynamicContentBox1",
 		contentHeight: {
@@ -494,7 +496,7 @@ var electionObject=	{
 		str+='<td>';
 		str+='<span id="districtAncSpan">';
 		str+='	<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>';
-		str+='	<a href="javascript:{}" onclick="setContentToPanel(\'constsGained\','+i+')" class="districtAnc">'+electionObject.constsGained[i].districtName+'</a>';
+		str+='	<a href="javascript:{}" onclick="setContentToPanel(\'constsGained\','+i+')" class="districtAnc">'+electionObject.constsGained[i].districtName+':'+electionObject.constsGained[i].constiCount+'</a>';
 		str+='	</span>';
 		str+='</td>';			
 		if(i!=0 && i%3==0)
@@ -508,7 +510,7 @@ var electionObject=	{
 		accordion.addItem( item1 );
 
 		item2 = new Y.AccordionItem( {
-		label: "Constituencies which has lost votes - ${electionsComparisonVO.votesLostCount}",
+		label: "Constituencies Lost Votes% : ${electionsComparisonVO.votesLostCount} --  In ${electionsComparisonVO.firstYear} [Seats -Won : ${electionsComparisonVO.seatsWonInFirstYearForVotesLost} Lost : ${electionsComparisonVO.seatsLostInFirstYearForVotesLost}] In ${electionsComparisonVO.secondYear} [Seats - Won : ${electionsComparisonVO.seatsWonInSecondYearForVotesLost} Lost : ${electionsComparisonVO.seatsLostInSecondYearForVotesLost}]",
 		expanded: false,
 		contentBox: "dynamicContentBox2",
 		contentHeight: {
@@ -524,7 +526,7 @@ var electionObject=	{
 		str1+='<td>';
 		str1+='<span id="districtAncSpan">';
 		str1+='	<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>';
-		str1+='	<a href="javascript:{}" onclick="setContentToPanel(\'constsLost\','+i+')" class="districtAnc">'+electionObject.constsLost[i].districtName+'</a>';
+		str1+='	<a href="javascript:{}" onclick="setContentToPanel(\'constsLost\','+i+')" class="districtAnc">'+electionObject.constsLost[i].districtName+':'+electionObject.constsLost[i].constiCount+'</a>';
 		str1+='	</span>';
 		str1+='</td>';			
 		if(i!=0 && i%3==0)
