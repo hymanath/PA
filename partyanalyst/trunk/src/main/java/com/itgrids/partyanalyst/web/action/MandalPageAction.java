@@ -1,22 +1,30 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
+import org.springframework.web.context.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
+import com.itgrids.partyanalyst.dto.MandalDataWithChartVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
+import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBoothPopulationService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class MandalPageAction extends ActionSupport implements ServletRequestAware{
+public class MandalPageAction extends ActionSupport implements ServletRequestAware, ServletContextAware{
 	
 	private HttpServletRequest request;
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
@@ -27,10 +35,20 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 
 	private static final Logger log = Logger.getLogger(MandalPageAction.class);
 	private IBoothPopulationService boothPopulationService;
-	private List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO;
+	private MandalDataWithChartVO mandalDataWithChartVO;
+	private HttpSession session;
+	private ServletContext context;
 	
-	public void setServletRequest(HttpServletRequest arg0) {
-		request = arg0;	
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;	
 	}
 
 	public void setDelimitationConstituencyMandalService(
@@ -61,14 +79,13 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	public void setTask(String task) {
 		this.task = task;
 	}
-	
-	public List<MandalAllElectionDetailsVO> getMandalAllElectionDetailsVO() {
-		return mandalAllElectionDetailsVO;
+
+	public MandalDataWithChartVO getMandalDataWithChartVO() {
+		return mandalDataWithChartVO;
 	}
 
-	public void setMandalAllElectionDetailsVO(			
-			List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO) {
-		this.mandalAllElectionDetailsVO = mandalAllElectionDetailsVO;
+	public void setMandalDataWithChartVO(MandalDataWithChartVO mandalDataWithChartVO) {
+		this.mandalDataWithChartVO = mandalDataWithChartVO;
 	}
 
 	public IBoothPopulationService getBoothPopulationService() {
@@ -80,6 +97,10 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		this.boothPopulationService = boothPopulationService;
 	}
 
+	public void setServletContext(ServletContext context) {
+		this.context = context;
+	}
+	
 	public String execute() throws Exception {
 		
 		String mandalID = request.getParameter("MANDAL_ID");
@@ -110,6 +131,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		return SUCCESS;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String getMandalPartyResult() throws Exception{		
 		
 		String param = getTask();		
@@ -123,14 +145,33 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		String partyId = jsonObj.getString("party");
 		String alliance = "true";//jsonObj.getString("alliance");
 		
-		mandalAllElectionDetailsVO = boothPopulationService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
-		
-		
-		if(mandalAllElectionDetailsVO!=null)				
+		String chartName = "mandalWisePartyPerformance_"+mandalId+"_"+partyId+".png";
+        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+        
+        mandalDataWithChartVO = new MandalDataWithChartVO();
+		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = boothPopulationService.getMandalAllElectionDetails(new Long(mandalId), new Long(partyId),new Boolean(alliance).booleanValue());
+		mandalDataWithChartVO.setMandalAllElectionDetailsVO(mandalAllElectionDetailsVO);
+		mandalDataWithChartVO.setChart(chartName);
+	 	
+        ChartProducer.createBarChart("Party Results - Year Vs Votes Percentage", "Years", "Votes Percentage", createDataset(mandalAllElectionDetailsVO), chartPath);
+	   if(mandalAllElectionDetailsVO!=null)				
 			return Action.SUCCESS;
 		else
 			return Action.ERROR;
+		
 	}
 
-	
+	private CategoryDataset createDataset(List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO) {
+        final String series1 =  "Assembly";
+        final String series2 = "Parliament";
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for(MandalAllElectionDetailsVO result: mandalAllElectionDetailsVO){
+        	if(result.getElectionType().equals("Assembly"))
+        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), series1, result.getElectionYear());
+        	else
+        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), series2, result.getElectionYear());
+        }
+        return dataset;
+        
+    }
 }

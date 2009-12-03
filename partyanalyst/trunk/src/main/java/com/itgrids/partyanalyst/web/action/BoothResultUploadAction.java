@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +23,14 @@ public class BoothResultUploadAction extends ActionSupport implements ServletReq
 	private HttpServletRequest request;
 	private String electionScopeId;
 	private String electionYear;
-	private String filePath;
+	private File filePath;
 	private String isValidate;
 	private List<String> corrections;
 	private static final Logger log = Logger.getLogger(BoothResultUploadAction.class);
 
+	public void setFilePath(File filePath) {
+		this.filePath = filePath;
+	}
 	
 	public String getElectionYear() {
 		return electionYear;
@@ -59,14 +63,6 @@ public class BoothResultUploadAction extends ActionSupport implements ServletReq
 
 	public void setIsValidate(String isValidate) {
 		this.isValidate = isValidate;
-	}
-	
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
 	}
 	
 	public String getElectionScopeId() {

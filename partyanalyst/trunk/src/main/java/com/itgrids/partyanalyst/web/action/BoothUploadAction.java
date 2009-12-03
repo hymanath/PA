@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class BoothUploadAction extends ActionSupport implements ServletRequestAware{
 
 	private static final long serialVersionUID = 1L;
-	private String filePath;
+	private File filePath;
 	private String electionScopeId;
 	private String electionYear;
 	private String isValidate;
@@ -25,6 +26,9 @@ public class BoothUploadAction extends ActionSupport implements ServletRequestAw
 	private IBoothDataValidationService boothDataValidationService;
 	private static final Logger log = Logger.getLogger(BoothUploadAction.class);
 
+	public void setFilePath(File filePath) {
+		this.filePath = filePath;
+	}
 	
 	public IBoothDataValidationService getBoothDataValidationService() {
 		return boothDataValidationService;
@@ -66,14 +70,6 @@ public class BoothUploadAction extends ActionSupport implements ServletRequestAw
 	public void setBoothPopulationService(
 			IBoothPopulationService boothPopulationService) {
 		this.boothPopulationService = boothPopulationService;
-	}
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
 	}
 
 	public String getElectionYear() {
