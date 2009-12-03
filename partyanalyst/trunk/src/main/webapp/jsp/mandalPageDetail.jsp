@@ -59,8 +59,9 @@
 	 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	 	}
 		
-		function buildMandalVoting(result)
+		function buildMandalVoting(myResult)
 		{
+			var result = myResult.mandalAllElectionDetailsVO;
 			
 			if(result == "")
 			{
@@ -70,12 +71,19 @@
  	 		var elmt= document.getElementById("mandalVotingResultsDiv");
  	 		var elmtHead= document.getElementById("mandalVotingResultsDivHead");
  	 		var elmtBody= document.getElementById("mandalVotingResultsDivBody");
+			var elmtBodyGraph= document.getElementById("mandalVotingResultsDivGraph");
 
 			var mandalElmt = document.getElementById("mandalField");
 			var mandalValue = mandalElmt.options[mandalElmt.selectedIndex].text;
 
  	 		if(elmtHead)
  	 	 		elmtHead.innerHTML="Election Results for "+result[0].partyShortName+" party in "+mandalValue+" mandal";
+			
+			var imgStr='';
+			imgStr+='<IMG id="chartImg" SRC="charts/'+myResult.chart+'" WIDTH="450" HEIGHT="400">';
+
+			if(elmtBodyGraph)
+				elmtBodyGraph.innerHTML=imgStr;
 
  	 	 	var str='';
  	 	 	str+='<table id="mandalVotingTable">';
@@ -389,9 +397,9 @@
 				</div>
 		</div>
 	</s:form>
-
 	<div id="mandalVotingResultsDiv">
 		<div id="mandalVotingResultsDivHead"></div>
+		<div id="mandalVotingResultsDivGraph"></div>
 		<div id="mandalVotingResultsDivBody" class="yui-skin-sam"></div>
 	</div>
 </body>

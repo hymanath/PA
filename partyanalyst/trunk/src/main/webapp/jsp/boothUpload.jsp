@@ -2,10 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Booth Data Upload</title>
 </head>
 	<body>
-	<s:form name="BoothUploadAction" action="boothUploadAction" method="POST" >
+	<s:form name="BoothUploadAction" action="boothUploadAction" method="post" enctype="multipart/form-data" >
 		<table border="1" style="border-collapse:collapse">
 			<tr>
 				<td>Election Type</td>
@@ -29,8 +30,7 @@
 				</td>			
 			</tr>
 			<tr>
-				<td>Select File</td>
-				<td> <input name="filePath" type="file"/></td>
+				<td> <s:file name="filePath" label="File Path" /></td>
 			</tr>			
 			<tr>
 				<td colspan="2"><s:checkbox name="isValidate" id="isValidate" label="Validate Data"/></td>
