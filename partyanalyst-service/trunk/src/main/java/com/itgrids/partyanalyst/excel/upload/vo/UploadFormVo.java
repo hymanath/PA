@@ -1,14 +1,15 @@
 package com.itgrids.partyanalyst.excel.upload.vo;
 
+import java.io.File;
 import java.util.List;
 
 import com.itgrids.partyanalyst.excel.ConstituencyBlock;
 import com.itgrids.partyanalyst.model.Constituency;
 
 public class UploadFormVo {
+	private File inputFile;
 	private String electionType;
 	private String electionScope;
-	private String inputFile;
 	private String district;
 	private String country;
 	private String electionYear;
@@ -27,12 +28,6 @@ public class UploadFormVo {
 	}
 	public void setElectionScope(String electionScope) {
 		this.electionScope = electionScope;
-	}
-	public String getInputFile() {
-		return inputFile;
-	}
-	public void setInputFile(String inputFile) {
-		this.inputFile = inputFile;
 	}
 	public String getDistrict() {
 		return district;
@@ -58,4 +53,12 @@ public class UploadFormVo {
 	public void setConstituencyBlocks(List<ConstituencyBlock> constituencyBlocks) {
 		this.constituencyBlocks = constituencyBlocks;
 	}
+	public File getInputFile() {
+		return inputFile;
+	}
+	public void setInputFile(File inputFile) {
+		this.inputFile = inputFile;
+	}
+	
+	
 }
