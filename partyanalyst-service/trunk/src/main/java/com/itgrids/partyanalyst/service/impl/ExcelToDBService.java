@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashSet;
@@ -66,20 +67,20 @@ public class ExcelToDBService implements IExcelToDBService {
 	private IConstituencyElectionResultDAO constituencyElectionResultDAO; 
 	private TransactionTemplate transactionTemplate;
 	//public void readCSVFileAndStoreIntoDB(String excelFilePath,String countryName,String stateName,String districtName, String typeOfElection, String electionYear) throws Exception{
-	public void readCSVFileAndStoreIntoDB(UploadFormVo uploadFormVo) throws Exception{
+	public void readCSVFileAndStoreIntoDB(UploadFormVo uploadFormVo,String fileName,File fileToUpload) throws Exception{
 
 		try{
 			if(logger.isDebugEnabled()){
 			 logger.debug("Congrats logger has been initialized");			
 			 logger.debug("Congrats Successes fully entered in the service layer.. ");
-			 logger.debug("Fila path == "+uploadFormVo.getInputFile());
+			 logger.debug("File path == "+fileToUpload);
 			 logger.debug("Country Name == "+uploadFormVo.getCountry());
 			 logger.debug("State =="+uploadFormVo.getElectionScope());
 			 logger.debug("District =="+uploadFormVo.getDistrict());
 			 logger.debug("Type of Election == "+uploadFormVo.getElectionType());
 			 logger.debug("Election Year == "+uploadFormVo.getElectionYear());
 			}
-			insertIntoDatabase(selectReaderAndFetchConstituencyBlocks(uploadFormVo));
+			insertIntoDatabase(selectReaderAndFetchConstituencyBlocks(uploadFormVo,fileName,fileToUpload));
 		}catch(Exception excep){
 			throw new Exception(excep.getMessage());
 		}
@@ -499,15 +500,15 @@ public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 	this.transactionTemplate = transactionTemplate;
 }
 //Assembly-ElectionResults-AP-1989_Pattern2.xls
-private UploadFormVo selectReaderAndFetchConstituencyBlocks(UploadFormVo uploadFormVo) throws CsvException{
+private UploadFormVo selectReaderAndFetchConstituencyBlocks(UploadFormVo uploadFormVo,String fileName,File fileToUpload) throws CsvException{
 	if(logger.isDebugEnabled())
 	logger.debug("In the selectReaderAndFetchConstituencyBlock metbod");
 	List<ConstituencyBlock> constituencyBlocks=null;
-	if(uploadFormVo.getInputFile().length()>0){
+	if(fileToUpload.exists()){
 		if(logger.isDebugEnabled())
 		logger.debug("File name length is>0");
-		IExcelReader excelReader=ExcelReaderFactory.selectReader(fetchPattern(uploadFormVo.getInputFile()));
-		excelReader.readCSV(uploadFormVo.getInputFile());
+		IExcelReader excelReader=ExcelReaderFactory.selectReader(fetchPattern(fileName));
+		excelReader.readCSV(fileToUpload);
 		constituencyBlocks=excelReader.getConstituencyBlocks();
 		if(logger.isDebugEnabled())
 		logger.debug("Constituencies blocks =="+constituencyBlocks.size());
