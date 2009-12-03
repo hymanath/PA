@@ -31,10 +31,10 @@ public class BoothDataExcelReader {
 		this.boothDataUploadVOs = boothDataUploadVOs;
 	}
 
-	public void readExcelFile(String filePath) throws CsvException{
+	public void readExcelFile(File filePath) throws CsvException{
 		try{
-			File exceFile = new File(filePath);
-			Workbook workbook=Workbook.getWorkbook(exceFile);	
+			//File exceFile = new File(filePath);
+			Workbook workbook=Workbook.getWorkbook(filePath);	
 			Sheet[] sheets = workbook.getSheets();
 			boothDataUploadVOs = new ArrayList<BoothDataUploadVO>();
 			for(Sheet sheet:sheets){
@@ -160,7 +160,8 @@ public class BoothDataExcelReader {
 	
 	public static void main(String[] args)throws Exception {
 		BoothDataExcelReader reader = new BoothDataExcelReader();
-		reader.readExcelFile("C:/Documents and Settings/USER/Desktop/New Folder/forTest/Nelloreboothdata2004_test.xls");
+		File exceFile = new File("C:/Documents and Settings/USER/Desktop/Booth Data Upload/Nellore_boothdata_2009.xls");
+		reader.readExcelFile(exceFile);
 		reader.testExcelReading();
 	}
 	

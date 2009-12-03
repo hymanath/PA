@@ -58,14 +58,14 @@ public class ExcelBoothResultReader {
 		this.constituenciesBlocks = constituenciesBlocsks;
 	}
 
-	public void readExcel(String filePath, boolean isParliament) throws CsvException{
+	public void readExcel(File filePath, boolean isParliament) throws CsvException{
 		
 		try{
 			System.out.println("In Reader "+ filePath);
 			String headerInf[] = new String[50];
-			File exceFile= new File(filePath);
+			//File exceFile= new File(filePath);
 			excelRows= new ArrayList<BoothResultExcelColumnMapper>();
-			Workbook workbook=Workbook.getWorkbook(exceFile);	
+			Workbook workbook=Workbook.getWorkbook(filePath);	
 			Sheet[] sheets = workbook.getSheets();
 			constituenciesBlocks = new ArrayList<ConstituencyBoothBlock>();
 			for(Sheet sheet:sheets){
@@ -176,7 +176,8 @@ public class ExcelBoothResultReader {
 
 	public static void main(String[] args) throws Exception {
 		ExcelBoothResultReader excelBoothResultReader = new ExcelBoothResultReader();
-		excelBoothResultReader.readExcel("C:/Documents and Settings/USER/Desktop/New Folder/forTest/2004_assembly_test.xls", false);
+		File exceFile= new File("C:/Documents and Settings/USER/Desktop/New Folder/forTest/2004_assembly_test.xls");
+		excelBoothResultReader.readExcel(exceFile, false);
 		excelBoothResultReader.testConstituencyBlock();
 	}
 
