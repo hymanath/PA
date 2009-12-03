@@ -103,11 +103,11 @@
 	            { text: "Party Performance Report", url: "partyPerformanceMain.action" }, 	            
 	            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
 	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
-	            { text: "Party Booth Results Report", url: "partyBoothResultAction.action" },  
-	            { text: "Add Rebels", url: "addRebelsAction.action" },                       
 				{ text: "Party Influence Report", url: "partyInfluenceMainAction.action" },
-				{ text: "Cross Voting Report", url: "crossVotingReportInputAction.action" },
-				{ text: "Mandal Voting Report", url: "mandalPageSDetailAction.action" }
+				{ text: "Mandal Voting Report", url: "mandalPageSDetailAction.action" },
+				{ text: "Cross Voting Report", url: "crossVotingReportInputAction.action" },				
+	            { text: "Constituencey Booth Results Report", url: "partyBoothResultAction.action" },
+	            { text: "Rebels", url: "addRebelsAction.action" }				
 	        ]  
 	    }, 
 	     
@@ -152,7 +152,7 @@
 							<a class="yuimenubaritemlabel" href="${pageContext.request.contextPath}">HOME</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="javascript:{}">STATES</a> 
+							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="javascript:{}">REPORTS</a> 
@@ -161,7 +161,7 @@
 							<a class="yuimenubaritemlabel" href="cadreReportAction.action">CADRE MANAGEMENT</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="javascript:{}">POLITICAL PLANNER</a> 
+							<a class="yuimenubaritemlabel" href="javascript:{}">CONSTITUENCEY MANAGEMENT</a> 
 						</li> 
 					</ul> 
 				</div> 
