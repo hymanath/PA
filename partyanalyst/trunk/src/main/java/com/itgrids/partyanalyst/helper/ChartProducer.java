@@ -8,11 +8,13 @@
 package com.itgrids.partyanalyst.helper;
 
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.io.File;
 import java.util.List;
 import java.util.SortedMap;
 
 import org.apache.log4j.Logger;
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -23,6 +25,7 @@ import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.CombinedDomainCategoryPlot;
 import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarPainter;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
@@ -137,4 +140,29 @@ public class ChartProducer {
 		}
 	}
 		
+	public static void createBarChart(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
+		JFreeChart chart = ChartFactory.createBarChart(title, domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, true, true, false );
+		chart.setBackgroundPaint(new Color(0xBBBBDD));
+		CategoryPlot plot = chart.getCategoryPlot();
+		NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		BarRenderer renderer = (BarRenderer) plot.getRenderer();
+		renderer.setDrawBarOutline(false);
+		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, Color.lightGray);
+		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, Color.lightGray);	
+		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, Color.lightGray);
+		renderer.setSeriesPaint(0, gp0);
+		renderer.setSeriesPaint(1, gp1);
+		renderer.setSeriesPaint(2, gp2);
+		try	 {
+			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+			final File image = new File(fileName);
+			ChartUtilities.saveChartAsPNG(image, chart, 450, 400, info);
+		}
+		catch (java.io.IOException exc)
+		{
+		log.error("Error writing image to file");
+		}
+		
+	}
 }
