@@ -8,13 +8,10 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 
@@ -38,22 +35,6 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	public void setDelimitationConstituencyDAO(
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
-	}
-	
-	public List<SelectOptionVO> getConstituenciesForElectionScopeAndYear(Long electionScopeId, Long electionYear){
-		List<SelectOptionVO> constituencyVOs = new ArrayList<SelectOptionVO>();
-		long beginTimeMillis = System.currentTimeMillis();
-		List<DelimitationConstituency> delimitationConstituencies = delimitationConstituencyDAO.findByElectionScopeIdStateIdAndElectionYear(electionScopeId, new Long(1), electionYear);
-		long endTimeMillis = System.currentTimeMillis();
-		System.out.println("beginTimeMillis:"+beginTimeMillis);
-		System.out.println("endTimeMillis:"+endTimeMillis);
-		System.out.println("Total time taken:" + (beginTimeMillis-endTimeMillis)/1000);
-		for(DelimitationConstituency delimitationConstituency:delimitationConstituencies){
-			Constituency constituency = delimitationConstituency.getConstituency();
-			SelectOptionVO constituencyVO = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
-			constituencyVOs.add(constituencyVO);
-		}
-		return constituencyVOs;
 	}
 	
 	public List<PartyBoothPerformanceVO> getBoothWiseResultsForParty(Long partyId, Long constituencyId, String electionYear){
