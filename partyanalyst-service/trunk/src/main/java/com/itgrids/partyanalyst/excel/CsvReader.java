@@ -30,10 +30,10 @@ public class CsvReader implements IExcelReader{
 		
 	}
 
-	public void readCSV(String filePath) throws CsvException{
+	public void readCSV(File filePath) throws CsvException{
 		
 		try{
-			File exceFile= new File(filePath);
+			File exceFile= filePath;
 			constituencyBlocks= new ArrayList<ConstituencyBlock>();
 			Workbook workbook=Workbook.getWorkbook(exceFile);	
 			Sheet sheet = workbook.getSheet(0);
@@ -66,7 +66,7 @@ public class CsvReader implements IExcelReader{
 			//D:/documents/elections data converted to excel from pdf/excel - assembly/forTest/Assembly-ElectionResults-AP-2004
 			//D:\documents\elections data converted to excel from pdf\excel - assembly\forTst\Assembly1-ElectionResults-AP-2004_Pattern1
 			//D:/documents/elections data converted to excel from pdf/excel  -parliament/forTst/Parlament-AP-Results-2009_Pattern1
-			csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel  -parliament/forTst/Parlament-AP-Results-2009_Pattern1.xls");
+			//csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel  -parliament/forTst/Parlament-AP-Results-2009_Pattern1.xls");
 			List<ConstituencyBlock> constituencies= csvReader.getConstituencyBlocks();
 			System.out.println("\nConstitution Blocak details =="+csvReader.getConstituencyBlocks().size());
 			ConstituencyBlock constituencyBlock=constituencies.get(0);
