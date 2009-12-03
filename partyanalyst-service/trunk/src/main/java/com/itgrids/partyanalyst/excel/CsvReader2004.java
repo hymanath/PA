@@ -21,10 +21,10 @@ public class CsvReader2004 implements IExcelReader{
 	private List<CandidateElectionResult> candidateElectionResults;
 	private ExcelRowExtracter columnMapper;
 	private String constituencyName;
-	public void readCSV(String filePath) throws CsvException{
+	public void readCSV(File filePath) throws CsvException{
 		
 		try{
-			File exceFile= new File(filePath);
+			File exceFile= filePath;
 			constituencyBlocks= new ArrayList<ConstituencyBlock>();
 			Workbook workbook=Workbook.getWorkbook(exceFile);	
 			Sheet sheet = workbook.getSheet(0);
@@ -58,7 +58,7 @@ public class CsvReader2004 implements IExcelReader{
 			//Assembly-ElectionResults-AP-1994
 			//Assembly-ElectionResults-AP-1999
 			//D:/documents/elections data converted to excel from pdf/excel - assembly/forTst/Assembly-ElectionResults-AP-1989_Pattern2.xls
-			csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel - assembly/forTst/Assembly-ElectionResults-AP-1989_Pattern2.xls");
+			//csvReader.readCSV("D:/documents/elections data converted to excel from pdf/excel - assembly/forTst/Assembly-ElectionResults-AP-1989_Pattern2.xls");
 			System.out.println("\nConstitution Blocak details =="+csvReader.getConstituencyBlocks().size());
 			List<ConstituencyBlock> constituencies= csvReader.getConstituencyBlocks();
 			ConstituencyBlock constituencyBlock=constituencies.get(7);
