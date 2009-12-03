@@ -142,12 +142,12 @@
 			<result name="success">/jsp/cadreReportPage.jsp</result>
 		</action>
 		
-		<action name="boothUploadAction" class="com.itgrids.partyanalyst.web.action.BoothUploadAction">
+		<action name="boothUploadAction" class="boothUploadAction">
            <result name="success">/jsp/boothUpload.jsp</result>
            <result name="error">/jsp/mandalPageFail.jsp</result>
         </action>
         
-        <action name="boothResultUploadAction" class="com.itgrids.partyanalyst.web.action.BoothResultUploadAction">
+        <action name="boothResultUploadAction" class="boothResultUploadAction">
            <result name="success">/jsp/uploadBoothResult.jsp</result>
            <result name="error">/jsp/mandalPageFail.jsp</result>
         </action>
@@ -248,8 +248,6 @@
 		
 		<action name="adminUpload"><result>/jsp/adminUpload.jsp</result></action>
 		<action name="electionUpload"><result>/jsp/csvUpload.jsp</result></action>
-		<action name="boothDataUpload"><result>/jsp/boothUpload.jsp</result></action>
-		<action name="boothResultUpload"><result>/jsp/uploadBoothResult.jsp</result></action>
 		
 		<action name="mandalPageSDetailAction" class="staticDataAction" method="getStatesList" >
 			<result name="success">/jsp/mandalPageDetail.jsp</result>
@@ -263,7 +261,7 @@
 		
 		<action name="mandalVotingResultAction" class="mandalPageAction" method="getMandalPartyResult" >
 			<result type="json" name="success">
-				<param name="root">mandalAllElectionDetailsVO</param>				
+				<param name="root">mandalDataWithChartVO</param>				
 			</result>
 			<result name="error"></result>
 		</action>
