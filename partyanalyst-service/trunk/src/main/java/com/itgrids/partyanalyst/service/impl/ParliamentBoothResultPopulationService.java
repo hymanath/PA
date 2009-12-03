@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +78,7 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 		this.candidateBoothResultDAO = candidateBoothResultDAO;
 	}
 	
-	public ResultStatus readExcel(String filePath, Long electionScopeId, String electionYear){
+	public ResultStatus readExcel(File filePath, Long electionScopeId, String electionYear){
 		ResultStatus resultVO = new ResultStatus();
 		try{
 			ExcelBoothResultReader excel = new ExcelBoothResultReader();

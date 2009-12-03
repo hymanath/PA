@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -90,7 +91,7 @@ public class BoothPopulationService implements IBoothPopulationService{
 		this.boothVillageCensusDAO = boothVillageCensusDAO;
 	}
 
-	public ResultStatus readExcelFileAndPolpulate(String filePath, String electionYear, Long electionScopeId) {
+	public ResultStatus readExcelFileAndPolpulate(File filePath, String electionYear, Long electionScopeId) {
 		ResultStatus resultVO = new ResultStatus();
 		try{
 			BoothDataExcelReader excelReader = new BoothDataExcelReader();

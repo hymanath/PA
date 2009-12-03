@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		this.nominationDAO = nominationDAO;
 	}
 	
-	public List<String> readBoothDataExcelFileAndPolpulate(String filePath, String electionYear, Long electionScopeId) throws CsvException{
+	public List<String> readBoothDataExcelFileAndPolpulate(File filePath, String electionYear, Long electionScopeId) throws CsvException{
 		BoothDataExcelReader excelReader = new BoothDataExcelReader();
 		excelReader.readExcelFile(filePath);
 		List<String> corrections = new ArrayList<String>();
@@ -127,7 +128,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		return longVal;
 	}
 	
-	public List<String> readAssemblyBoothResultExcelAndPopulate(String filePath, String electionYear, Long electionScopeId)throws CsvException{
+	public List<String> readAssemblyBoothResultExcelAndPopulate(File filePath, String electionYear, Long electionScopeId)throws CsvException{
 		List<String> corrections = new ArrayList<String>();
 		ExcelBoothResultReader excelBoothResultReader = new ExcelBoothResultReader();
 		excelBoothResultReader.readExcel(filePath, false);
@@ -162,7 +163,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 		}
 	}
 	
-	public List<String> readParliamentBoothResultExcelAndPopulate(String filePath, String electionYear, Long electionScopeId) throws CsvException{
+	public List<String> readParliamentBoothResultExcelAndPopulate(File filePath, String electionYear, Long electionScopeId) throws CsvException{
 		List<String> corrections = new ArrayList<String>();
 		ExcelBoothResultReader excelBoothResultReader = new ExcelBoothResultReader();
 		excelBoothResultReader.readExcel(filePath, true);

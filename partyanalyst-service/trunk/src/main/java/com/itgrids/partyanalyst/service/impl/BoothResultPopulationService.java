@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class BoothResultPopulationService implements IBoothResultPopulationServi
 		this.candidateBoothResultDAO = candidateBoothResultDAO;
 	}
 	
-	public ResultStatus readExcelAndInsertData(String electionYear, Long electionScopeId, String filePath){
+	public ResultStatus readExcelAndInsertData(String electionYear, Long electionScopeId, File filePath){
 		ExcelBoothResultReader excelBoothResultReader = new ExcelBoothResultReader();
 		ResultStatus resultVO = new ResultStatus();
 		try{
