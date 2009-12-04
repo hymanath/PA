@@ -70,7 +70,7 @@
 			//this.getItem(0).cfg.setProperty("submenu", aSubmenuData[0]); 
 	        this.getItem(1).cfg.setProperty("submenu", aSubmenuData[1]); 
 	        this.getItem(2).cfg.setProperty("submenu", aSubmenuData[2]); 
-			//this.getItem(3).cfg.setProperty("submenu", aSubmenuData[3]); 
+			this.getItem(3).cfg.setProperty("submenu", aSubmenuData[3]); 
 			//this.getItem(4).cfg.setProperty("submenu", aSubmenuData[4]); 
 	    } 
 	 
@@ -113,8 +113,10 @@
 	     
 	    { 
 	        id: "cadreManagement", 
-	        itemdata: [ 
-	            
+	        itemdata: [ 				
+	   	            { text: "Cadre Report", url: "cadreReportAction.action" },
+		            { text: "Send SMS", url: "cadreSMSAction.action" }	
+
 	        ] 
 	    },  
 		{ 
@@ -158,7 +160,7 @@
 							<a class="yuimenubaritemlabel" href="javascript:{}">REPORTS</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="cadreReportAction.action">CADRE MANAGEMENT</a> 
+							<a class="yuimenubaritemlabel" href="javascript:{}">CADRE MANAGEMENT</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="javascript:{}">CONSTITUENCEY MANAGEMENT</a> 

@@ -131,6 +131,7 @@
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
+    	<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >		
@@ -200,5 +201,10 @@
     	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
     	<property name="staticDataService" ref="staticDataService" />
     </bean>
+	<bean id="smsCountrySmsService" class="com.itgrids.partyanalyst.service.impl.SmsCountrySmsService" >
+    	<!-- property name="partyAnalystPropertyService" ref="partyAnalystPropertyService" /-->
+	</bean>
+    
+    
 	
 </beans>
