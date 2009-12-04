@@ -130,6 +130,19 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return results;
 	}
 
+	public List findConstituencyCadresByDist(Long districtID, Long userID){
+		Object[] params = {userID,districtID};
+		List  results = getHibernateTemplate().find("Select model.constituency.constituencyId, model.constituency.name, count(model.constituency.constituencyId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.district.districtId=? group by model.constituency.constituencyId", params); 
+		return results;
+	}
+	public List findMandalCadresByConstituency(Long constituencyID, Long userID){
+		Object[] params = {userID,constituencyID};
+		List  results = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName, count(model.tehsil.tehsilId)from Cadre model " +
+				"where model.registration.registrationId = ? and model.constituency.constituencyId=? group by model.tehsil.tehsilId", params); 
+		return results;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List findMandalCadresByDist(Long districtID, Long userID){
 		Object[] params = {userID,districtID};

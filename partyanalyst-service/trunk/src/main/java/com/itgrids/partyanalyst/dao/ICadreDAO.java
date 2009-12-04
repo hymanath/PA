@@ -28,6 +28,10 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	//Ajax call methods
 	public List findStateCadresByCountry(Long countryID, Long userID);
 	public List findDistCadresByState(Long stateID, Long userID);
+
+	public List findConstituencyCadresByDist(Long districtID, Long userID);
+	public List findMandalCadresByConstituency(Long constituencyID, Long userID);
+	
 	public List findMandalCadresByDist(Long districtID, Long userID);
 	public List findVillageCadresByMandal(Long mandalID, Long userID);
 	public List findCadresByVillage(Long villageID, Long userID);

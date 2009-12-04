@@ -500,17 +500,7 @@ public class CadreManagementService {
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> findStatesByCountryID(String countryID){
 		List states = cadreDAO.findStatesByCountryID(countryID);
-		List<SelectOptionVO> stateNames=new ArrayList<SelectOptionVO>();
-		
-		int size = states.size();
-		for(int i=0; i<size;i++){
-			Object[] voObject=(Object[]) states.get(i);
-			SelectOptionVO objVO = new SelectOptionVO();
-			objVO.setId(new Long(voObject[0].toString()));
-			objVO.setName(voObject[1].toString());
-			stateNames.add(objVO);
-		}
-		
+		List<SelectOptionVO> stateNames = dataFormatTo_SelectOptionVO(states);
 		return stateNames;
 	}
 	
@@ -518,17 +508,7 @@ public class CadreManagementService {
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> findDistrictsByState(String stateID){
 		List districts = cadreDAO.findDistrictsByStateID(stateID);
-		List<SelectOptionVO> districtNames=new ArrayList<SelectOptionVO>();
-		
-		int size = districts.size();
-		for(int i=0; i<size;i++){
-			Object[] voObject=(Object[]) districts.get(i);
-			SelectOptionVO objVO = new SelectOptionVO();
-			objVO.setId(new Long(voObject[0].toString()));
-			objVO.setName(voObject[1].toString());
-			districtNames.add(objVO);
-		}
-		
+		List<SelectOptionVO> districtNames = dataFormatTo_SelectOptionVO(districts);
 		return districtNames;
 	}
 	
@@ -537,17 +517,7 @@ public class CadreManagementService {
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> findMandalsByDistrict(String districtID){
 		List mandals = cadreDAO.findMandalsByDistrictID(districtID);
-		List<SelectOptionVO> mandalNames=new ArrayList<SelectOptionVO>();
-		
-		int size = mandals.size();
-		for(int i=0; i<size;i++){
-			Object[] voObject=(Object[]) mandals.get(i);
-			SelectOptionVO objVO = new SelectOptionVO();
-			objVO.setId(new Long(voObject[0].toString()));
-			objVO.setName(voObject[1].toString());
-			mandalNames.add(objVO);
-		}
-		
+		List<SelectOptionVO> mandalNames = dataFormatTo_SelectOptionVO(mandals);		
 		return mandalNames;
 	}
 	
@@ -555,17 +525,7 @@ public class CadreManagementService {
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> findVillagesByTehsilID(String mandalID){
 		List villages = cadreDAO.findVillagesByTehsilID(mandalID);
-		List<SelectOptionVO> villageNames=new ArrayList<SelectOptionVO>();
-		
-		int size = villages.size();
-		for(int i=0; i<size;i++){
-			Object[] voObject=(Object[]) villages.get(i);
-			SelectOptionVO objVO = new SelectOptionVO();
-			objVO.setId(new Long(voObject[0].toString()));
-			objVO.setName(voObject[1].toString());
-			villageNames.add(objVO);
-		}
-		
+		List<SelectOptionVO> villageNames = dataFormatTo_SelectOptionVO(villages);		
 		return villageNames;
 	}
 	
@@ -785,8 +745,30 @@ public class CadreManagementService {
 		return mobileNos;
 	}
 	
-	public List<SelectOptionVO> findCadreDistrictsByState(Long userID,Long id, String region){
-		
-		return null;
+	public List<SelectOptionVO> findRegionByCadreScope(Long userID,Long id, String region){
+		List list = new ArrayList();
+		if("STATE".equals(region)){
+			list = cadreDAO.findDistCadresByState(id,userID);
+		}else if("DISTRICT".equals(region)){
+			list = cadreDAO.findConstituencyCadresByDist(id,userID);
+		}else if("CONSTITUENCY".equals(region)){
+			list = cadreDAO.findMandalCadresByConstituency(id,userID);
+		}else if("MANDAL".equals(region)){
+			list = cadreDAO.findVillageCadresByMandal(id,userID);
+		} 
+		List<SelectOptionVO> result = dataFormatTo_SelectOptionVO(list);
+		return result;
+	}
+	
+	public List<SelectOptionVO> dataFormatTo_SelectOptionVO(List list){
+		List<SelectOptionVO> formattedData = new ArrayList<SelectOptionVO>();
+		for(int i=0; i<list.size(); i++){
+			Object[] obj = (Object[]) list.get(i);
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(new Long(obj[0].toString()));
+			selectOptionVO.setName(obj[1].toString());
+			formattedData.add(selectOptionVO);
+		}
+		return formattedData;
 	}
 }
