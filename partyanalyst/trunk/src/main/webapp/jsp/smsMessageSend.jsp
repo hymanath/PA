@@ -19,14 +19,10 @@
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
 								if(jsObj.task == "getUserLocation")
 									fillDataOptions(myResults);	
-								else if(jsObj.task == "DISTRICT")
-									fillData(myResults,"DistrictSelect");
-								else if(jsObj.task == "CONSTITUENCY")
-									fillData(myResults,"ConstituencySelect");
-								else if(jsObj.task == "MANDAL")
-									fillData(myResults,"MandalSelect");
-								else if(jsObj.task == "VILLAGE")
-									fillData(myResults,"VillageSelect");	
+								else if(jsObj.task == "fillSelectElements")
+									fillSelectElement(myResults,jsObj);
+								else if(jsObj.task == "sendSMS")
+									displaySuccessMessage(myResults,jsObj);
 
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -41,10 +37,64 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
+	function displaySuccessMessage(results,jsObj)
+	{
+		var divElmt = document.getElementById("successDiv");
 
-	function fillDataOptions(results, id)
-	{	
-		var element = document.getElementById(id);
+		var str="SMS sent successfully to "+results+" cadres";
+		divElmt.innerHTML=str;
+	}
+	function fillSelectElement(results,jsObj)
+	{
+		if(jsObj.type == "STATE")
+		{
+			var elmt = document.getElementById("DistrictSelect");
+		}
+		else if(jsObj.type == "DISTRICT	")
+		{
+			var elmt = document.getElementById("ConstituencySelect");
+		}
+		else if(jsObj.type == "CONSTITUENCY")
+		{	
+			var elmt = document.getElementById("MandalSelect");
+		}	
+		else if(jsObj.type == "MANDAL")
+		{
+			var elmt = document.getElementById("VillageSelect");
+		}
+
+		var len=elmt.length;			
+		for(i=len-1;i>=0;i--)		
+			elmt.remove(i);
+		
+		var x=document.createElement('option');		
+		x.value="0";		
+		x.text="Select";		
+
+		try
+		{
+			elmt.add(x,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(x); // IE only
+		}
+		
+		for (var l in results)
+		{
+			var y=document.createElement('option');
+			y.value=results[l].id;
+			y.text=results[l].name;
+			
+			try
+			{
+				elmt.add(y,null); // standards compliant
+			}
+			catch(ex)
+			{
+				elmt.add(y); // IE only
+			}
+		}
 		
 	}
 	function getUserLocationData(val)
@@ -57,47 +107,25 @@
 		var url = "<%=request.getContextPath()%>/cadreSMSLocationWiseData.action?";
 		callAjax(jsObj,url);
 	}
-	function getDistricts(val)
-	{
-		var jsObj={
-					value:val,
-					task:"DISTRICT"
-				  };	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?"+rparam;
-		callAjax(jsObj,url);
-		
-	}
-	function getConstituencies(val)
-	{
-		var jsObj={
-					value:val,
-					task:"CONSTITUENCY"
-				  };
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?"+rparam;
-		callAjax(jsObj,url);
-	}
-	function getMandals(val)
-	{
-		var jsObj={
-					value:val,
-					task:"MANDAL"
-				  };
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?"+rparam;
-		callAjax(jsObj,url);
-	}
-	function getVillages(val)
-	{
-		var jsObj={
-					value:val,
-					task:"VILLAGE"
-				  };
-		var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?"+rparam;
-		callAjax(jsObj,url);
-	}
 
+	function getNextRegions(id,val)
+	{
+		var selectElmt = document.getElementById(id);
+		var selectValue = selectElmt.options[selectElmt.selectedIndex].value;
+		
+		if(selectValue=="0")
+			return;
+
+		var jsObj={
+					value:selectValue,
+					type:val,
+					task:"fillSelectElements"
+				  };
+		var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?REGION="+val+"&REGION_ID="+selectValue;
+		callAjax(jsObj,url);
+
+	}
+	
 	function getUsersGroupData(){
 		
 	}
@@ -106,7 +134,7 @@
 	}
 	function fillDataOptions(results)
 	{	
-		console.log(results);
+		
 		
 		//Setting values for region type..
 		var regionTypeElmtLabel = document.getElementById("region_type_Label");
@@ -133,7 +161,7 @@
 
 		var regionStr='';
 		
-		regionStr+='<select id="StateSelect" class="selectBox" onchange="getDistricts(this.value)" disabled="true">';
+		regionStr+='<select id="StateSelect" class="selectBox" onchange="getNextRegions(this.id,\'STATE\')" disabled="true">';
 		if(results.states != "")
 		{
 			for(var state in results.states)
@@ -148,7 +176,7 @@
 		regionStr+='</select>';	
 
 		
-		regionStr+='<select id="DistrictSelect" class="selectBox" onchange="getConstituencies(this.value)" disabled="true">';
+		regionStr+='<select id="DistrictSelect" class="selectBox" onchange="getNextRegions(this.id,\'DISTRICT\')" disabled="true">';
 		if(results.districts != "")
 		{
 			for(var district in results.districts)
@@ -163,7 +191,7 @@
 		regionStr+='</select>';
 		
 		
-		regionStr+='<select id="ConstituencySelect" class="selectBox" onchange="getMandals(this.value)" disabled="true">';
+		regionStr+='<select id="ConstituencySelect" class="selectBox" onchange="getNextRegions(this.id,\'CONSTITUENCY\')" disabled="true">';
 		if(results.constituencies != "")
 		{
 			for(var consti in results.constituencies)
@@ -179,7 +207,7 @@
 	
 	
 	
-		regionStr+='<select id="MandalSelect" class="selectBox" onchange="getVillages(this.value)" disabled="true">';
+		regionStr+='<select id="MandalSelect" class="selectBox" onchange="getNextRegions(this.id,\'MANDAL\')" disabled="true">';
 		if(results.mandals != "")
 		{
 			for(var mandal in results.mandals)
@@ -262,7 +290,7 @@
 					SMS_MESSAGE:textAreaElmtValue,
 					task:"sendSMS"
 				  };
-		console.log(jsObj);
+		
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/sendCadreSMS.action?"+rparam;
@@ -339,6 +367,11 @@
 	margin-left:180px;
 	padding:5px;	
 }
+#successDiv
+{
+	color:blue;
+	font-weight:bold;
+}
 </style>
 </head>
 	<body>
@@ -373,6 +406,11 @@
 			</tr>
 			<tr>
 				<td align="center" colspan="2"><div id="button_div"></div></td>				
+			</tr>
+			<tr>
+				<td align="left" colspan="2">
+					<div id="successDiv" ></div>
+				</td>
 			</tr>
 		</table>
 	  </s:form>
