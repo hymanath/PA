@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Cadre;
 /**
  * 
@@ -34,5 +35,17 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	//public List findMandalsByConstituencyID(String constituencyId);
 	
 	public List<Cadre> findCadresByCadreLevel(String cadreLevel, Long userID);
+	
+	public List getUserAccessStates(Long userID);
+	public List getUserAccessDistricts(Long userID);
+	public List getUserAccessMLAConstituencies(Long userID);
+	public List getUserAccessMandals(Long userID);
+	
+
+	public List<String> getMobileNosByState(Long userID, Long stateID);
+	public List<String> getMobileNosByDistrict(Long userID, Long districtID);
+	public List<String> getMobileNosByConstituency(Long userID, Long constituencyId);
+	public List<String> getMobileNosByMandal(Long userID, Long mandalID);
+	public List<String> getMobileNosByVillage(Long userID, Long villageID); 
 
 }

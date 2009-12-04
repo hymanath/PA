@@ -28,7 +28,7 @@ public class SmsCountrySmsService implements ISmsService {
 	public void setPropertyService(IPartyAnalystPropertyService propertyService) {
 		this.propertyService = propertyService;
 	}
-
+	
 	public void sendSms(String message, boolean isEnglish,
 			String... phoneNumbers) {
 		HttpClient client = null;
@@ -37,7 +37,7 @@ public class SmsCountrySmsService implements ISmsService {
 		client = new HttpClient(new MultiThreadedHttpConnectionManager());
 
 		/* SETUP PROXY */
-		if (propertyService.getProperty(PropertyKeys.SERVER_PROXY_HOST) != null && propertyService.getProperty(PropertyKeys.SERVER_PROXY_HOST).trim().length() > 0) {
+		/*if (propertyService.getProperty(PropertyKeys.SERVER_PROXY_HOST) != null && propertyService.getProperty(PropertyKeys.SERVER_PROXY_HOST).trim().length() > 0) {
 			int port = 8080;
 			try {
 				port = Integer.parseInt(propertyService
@@ -46,36 +46,43 @@ public class SmsCountrySmsService implements ISmsService {
 				log.error(nfe);
 			}
 			client.getHostConfiguration().setProxy(propertyService.getProperty(PropertyKeys.SERVER_PROXY_HOST), port);
-		}
+		}*/
 
-		client.getHttpConnectionManager().getParams().setConnectionTimeout(
+		/*client.getHttpConnectionManager().getParams().setConnectionTimeout(
 				Integer.parseInt(propertyService.getProperty(
-								PropertyKeys.SMS_SMSCOUNTRY_CONNECTION_TIMEOUT,"30000")));
+								PropertyKeys.SMS_SMSCOUNTRY_CONNECTION_TIMEOUT,"30000")));*/
+		client.getHttpConnectionManager().getParams().setConnectionTimeout(
+				Integer.parseInt("30000"));
 
-		post = new PostMethod(propertyService
-				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_SERVICE_URL));
-
+		/*post = new PostMethod(propertyService
+				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_SERVICE_URL));*/
+		post = new PostMethod("http://www.smscountry.com/SMSCwebservice.asp");
 		// give all in string
-		post.addParameter("User", propertyService
+		/*post.addParameter("User", propertyService
 				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_USER));
 		post.addParameter("passwd", propertyService
-				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_PASSWORD));
+				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_PASSWORD));*/
+		
+		post.addParameter("User", "dakavaram");
+		post.addParameter("passwd", "nellore");
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < phoneNumbers.length; i++) {
 			sb.append(phoneNumbers[i]);
 			if (i < (phoneNumbers.length-1))
 				sb.append(",");
 		}
-		System.out.println("Using "+propertyService
+	/*	System.out.println("Using "+propertyService
 				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_USER)+propertyService
-				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_PASSWORD)+" for "+sb);
+				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_PASSWORD)+" for "+sb);*/
 		post.addParameter("mobilenumber", sb.toString());
-		post.addParameter("message", message);
+		post.addParameter("message", message);/*
 		post.addParameter("sid", propertyService
-				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_SID));
+				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_SID));*/
+		post.addParameter("sid", "SMSCountry");
 		post.addParameter("mtype", isEnglish ? "N" : "OL");
-		post.addParameter("DR", propertyService
-				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_DR));
+		/*post.addParameter("DR", propertyService
+				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_DR));*/
+		post.addParameter("DR", "YES");
 
 		/* PUSH the URL */
 		try {

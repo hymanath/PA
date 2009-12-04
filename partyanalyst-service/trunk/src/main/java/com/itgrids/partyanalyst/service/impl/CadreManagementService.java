@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.service.IPartyAnalystPropertyService;
 /**
  * 
  * @author Narender Akula
@@ -54,6 +55,8 @@ public class CadreManagementService {
 	private IConstituencyDAO constituencyDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private SmsCountrySmsService smsCountrySmsService;
+	
 	private static final Logger log = Logger.getLogger(CadreManagementService.class);
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
@@ -97,6 +100,11 @@ public class CadreManagementService {
 	public void setDelimitationConstituencyMandalDAO(
 			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
 		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+
+
+	public void setSmsCountrySmsService(SmsCountrySmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
 	}
 
 
@@ -433,7 +441,7 @@ public class CadreManagementService {
 		}
 		return formattedData;	
 	}
-	//Narender 28th October 2009
+	
 	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getConstituencyAllMandalsCadres(Long constituencyID, Long userID){
 		List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyID);
@@ -665,5 +673,120 @@ public class CadreManagementService {
 		result.add(district);
 		
 		return result;
+	}
+	
+	public List<SelectOptionVO> getUserAccessStates(Long userID){
+		List states = cadreDAO.getUserAccessStates(userID);
+		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
+		for(int i=0; i<states.size(); i++){
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			Object[] object = (Object[])states.get(i);
+			selectOptionVO.setId(new Long(object[0].toString()));
+			selectOptionVO.setName(object[1].toString());
+			results.add(selectOptionVO);
+		}
+		return results;
+	}
+	
+
+	public List<SelectOptionVO> getUserAccessDistricts(Long userID){
+		List states = cadreDAO.getUserAccessDistricts(userID);
+		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
+		for(int i=0; i<states.size(); i++){
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			Object[] object = (Object[])states.get(i);
+			selectOptionVO.setId(new Long(object[0].toString()));
+			selectOptionVO.setName(object[1].toString());
+			results.add(selectOptionVO);
+		}
+		return results;
+	}
+	public List<SelectOptionVO> getUserAccessMLAConstituencies(Long userID){
+		List states = cadreDAO.getUserAccessMLAConstituencies(userID);
+		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
+		for(int i=0; i<states.size(); i++){
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			Object[] object = (Object[])states.get(i);
+			selectOptionVO.setId(new Long(object[0].toString()));
+			selectOptionVO.setName(object[1].toString());
+			results.add(selectOptionVO);
+		}
+		return results;
+	}
+	public List<SelectOptionVO> getUserAccessMandals(Long userID){
+		List states = cadreDAO.getUserAccessMandals(userID);
+		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
+		for(int i=0; i<states.size(); i++){
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			Object[] object = (Object[])states.get(i);
+			selectOptionVO.setId(new Long(object[0].toString()));
+			selectOptionVO.setName(object[1].toString());
+			results.add(selectOptionVO);
+		}
+		return results;
+	}
+	
+	public List<SelectOptionVO> getStateDistrictByDistrictID(Long districtID){
+		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
+		District district = districtDAO.get(districtID);
+		State state = district.getState();
+		SelectOptionVO stateObj = new SelectOptionVO(state.getStateId(),state.getStateName());
+		SelectOptionVO districtObj = new SelectOptionVO(district.getDistrictId(),district.getDistrictName());
+		results.add(stateObj);
+		results.add(districtObj);
+		return results;
+	}
+	
+
+	public List<SelectOptionVO> getStateDistricConstituencytByConstituencyID(Long constituencyID){
+		Constituency constituency = constituencyDAO.get(constituencyID);
+		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
+		
+		State state = constituency.getState();
+		District district = constituency.getDistrict(); 
+		
+		SelectOptionVO stateObj = new SelectOptionVO(state.getStateId(),state.getStateName());
+		SelectOptionVO districtObj = new SelectOptionVO(district.getDistrictId(),district.getDistrictName());
+		SelectOptionVO constituencyObj = new SelectOptionVO(constituency.getConstituencyId(),constituency.getName());
+		results.add(stateObj);
+		results.add(districtObj);
+		results.add(constituencyObj);
+		return results;
+	}
+	
+	
+	public Integer sendSMSMessage(Long userID,String type, Long value, String message){
+		if(log.isDebugEnabled())
+			log.debug("CadreManagementService.sendSMSMEssage():userID:"+userID+":type:"+type+":value:"+value+":message:"+message);
+		List<String> list = new ArrayList<String>();
+		if("STATE".equals(type)){
+			list = cadreDAO.getMobileNosByState(userID, value); 
+		}else if("DISTRICT".equals(type)){
+			list = cadreDAO.getMobileNosByDistrict(userID, value);
+		}else if("CONSTITUENCY".equals(type)){
+			list = cadreDAO.getMobileNosByConstituency(userID, value);
+		}else if("MANDAL".equals(type)){
+			list = cadreDAO.getMobileNosByMandal(userID, value);
+		}else if("VILLAGE".equals(type)){
+			list = cadreDAO.getMobileNosByVillage(userID, value);
+		}
+		String[] cadreMobileNos = new String[list.size()];
+		int i=-1;
+		for (String mobile : list) {
+			cadreMobileNos[++i] = mobile;
+		}
+		Integer mobileNos = 0;
+		if(cadreMobileNos!=null && cadreMobileNos.length>0)
+			mobileNos = cadreMobileNos.length;
+		//PartyAnalystPropertyService propertyService = new PartyAnalystPropertyService();
+		//smsCountrySmsService.setPropertyService(propertyService);
+		smsCountrySmsService.sendSms(message, true, cadreMobileNos);
+
+		return mobileNos;
+	}
+	
+	public List<SelectOptionVO> findCadreDistrictsByState(Long userID,Long id, String region){
+		
+		return null;
 	}
 }
