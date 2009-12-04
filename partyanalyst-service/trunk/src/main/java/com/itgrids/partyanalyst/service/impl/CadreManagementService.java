@@ -32,7 +32,6 @@ import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
-import com.itgrids.partyanalyst.service.IPartyAnalystPropertyService;
 /**
  * 
  * @author Narender Akula
@@ -617,72 +616,51 @@ public class CadreManagementService {
 		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
 		SelectOptionVO state = new SelectOptionVO();
 		SelectOptionVO district = new SelectOptionVO();
+		SelectOptionVO constituency = new SelectOptionVO();
 		SelectOptionVO mandal = new SelectOptionVO();
 		Object[] objVO = (Object[])stateDistConstMandal.get(0);
-
+		
+		
 		state.setId(new Long(objVO[0].toString()));
 		state.setName(objVO[1].toString());
 
 		district.setId(new Long(objVO[2].toString()));
 		district.setName(objVO[3].toString());
 		
+		constituency.setId(new Long(objVO[4].toString()));
+		constituency.setName(objVO[5].toString());
+		
 		mandal.setId(mandalID);
-		district.setName(objVO[4].toString());
+		district.setName(objVO[6].toString());
 
 		result.add(state);
 		result.add(district);
+		result.add(constituency);
+		result.add(mandal);
 		
 		return result;
 	}
 	
 	public List<SelectOptionVO> getUserAccessStates(Long userID){
 		List states = cadreDAO.getUserAccessStates(userID);
-		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
-		for(int i=0; i<states.size(); i++){
-			SelectOptionVO selectOptionVO = new SelectOptionVO();
-			Object[] object = (Object[])states.get(i);
-			selectOptionVO.setId(new Long(object[0].toString()));
-			selectOptionVO.setName(object[1].toString());
-			results.add(selectOptionVO);
-		}
+		List<SelectOptionVO> results = dataFormatTo_SelectOptionVO(states);
 		return results;
 	}
 	
 
 	public List<SelectOptionVO> getUserAccessDistricts(Long userID){
-		List states = cadreDAO.getUserAccessDistricts(userID);
-		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
-		for(int i=0; i<states.size(); i++){
-			SelectOptionVO selectOptionVO = new SelectOptionVO();
-			Object[] object = (Object[])states.get(i);
-			selectOptionVO.setId(new Long(object[0].toString()));
-			selectOptionVO.setName(object[1].toString());
-			results.add(selectOptionVO);
-		}
+		List districts = cadreDAO.getUserAccessDistricts(userID);
+		List<SelectOptionVO> results =dataFormatTo_SelectOptionVO(districts);
 		return results;
 	}
 	public List<SelectOptionVO> getUserAccessMLAConstituencies(Long userID){
-		List states = cadreDAO.getUserAccessMLAConstituencies(userID);
-		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
-		for(int i=0; i<states.size(); i++){
-			SelectOptionVO selectOptionVO = new SelectOptionVO();
-			Object[] object = (Object[])states.get(i);
-			selectOptionVO.setId(new Long(object[0].toString()));
-			selectOptionVO.setName(object[1].toString());
-			results.add(selectOptionVO);
-		}
+		List constituencies = cadreDAO.getUserAccessMLAConstituencies(userID);
+		List<SelectOptionVO> results = dataFormatTo_SelectOptionVO(constituencies);
 		return results;
 	}
 	public List<SelectOptionVO> getUserAccessMandals(Long userID){
-		List states = cadreDAO.getUserAccessMandals(userID);
-		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
-		for(int i=0; i<states.size(); i++){
-			SelectOptionVO selectOptionVO = new SelectOptionVO();
-			Object[] object = (Object[])states.get(i);
-			selectOptionVO.setId(new Long(object[0].toString()));
-			selectOptionVO.setName(object[1].toString());
-			results.add(selectOptionVO);
-		}
+		List mandals = cadreDAO.getUserAccessMandals(userID);
+		List<SelectOptionVO> results = dataFormatTo_SelectOptionVO(mandals);
 		return results;
 	}
 	
@@ -729,6 +707,8 @@ public class CadreManagementService {
 			list = cadreDAO.getMobileNosByMandal(userID, value);
 		}else if("VILLAGE".equals(type)){
 			list = cadreDAO.getMobileNosByVillage(userID, value);
+		}else if("CADRE_LEVEL".equals(type)){
+			list = cadreDAO.getMobileNosByCadreLevel(userID, value);
 		}
 		String[] cadreMobileNos = new String[list.size()];
 		int i=-1;

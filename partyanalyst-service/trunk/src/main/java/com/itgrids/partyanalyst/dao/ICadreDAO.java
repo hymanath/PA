@@ -51,5 +51,7 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<String> getMobileNosByConstituency(Long userID, Long constituencyId);
 	public List<String> getMobileNosByMandal(Long userID, Long mandalID);
 	public List<String> getMobileNosByVillage(Long userID, Long villageID); 
+	
+	public List<String> getMobileNosByCadreLevel(Long userID, Long level);
 
 }

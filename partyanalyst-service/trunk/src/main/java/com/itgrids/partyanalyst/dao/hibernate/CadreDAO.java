@@ -246,4 +246,13 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return results;
 	}
 
+
+	@SuppressWarnings("unchecked")
+	public List<String> getMobileNosByCadreLevel(Long userID, Long level) {
+		Long[] ids = {userID, level};
+		List<String> results = getHibernateTemplate().find("select  model.mobile from Cadre model " +
+				"where model.registration.registrationId = ? and model.cadre.cadreLevelID=?", ids);
+		return results;
+	}
+
 }
