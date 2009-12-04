@@ -19,13 +19,13 @@
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
 								if(jsObj.task == "getUserLocation")
 									fillDataOptions(myResults);	
-								else if(jsObj.task == "getDistricts")
+								else if(jsObj.task == "DISTRICT")
 									fillData(myResults,"DistrictSelect");
-								else if(jsObj.task == "getconstituencies")
+								else if(jsObj.task == "CONSTITUENCY")
 									fillData(myResults,"ConstituencySelect");
-								else if(jsObj.task == "getMandals")
+								else if(jsObj.task == "MANDAL")
 									fillData(myResults,"MandalSelect");
-								else if(jsObj.task == "getVillages")
+								else if(jsObj.task == "VILLAGE")
 									fillData(myResults,"VillageSelect");	
 
 							}catch (e) {   
@@ -53,7 +53,7 @@
 					value:val,
 					task:"getUserLocation"
 				  };
-		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/cadreSMSLocationWiseData.action?";
 		callAjax(jsObj,url);
 	}
@@ -61,9 +61,10 @@
 	{
 		var jsObj={
 					value:val,
-					task:"getDistricts"
-				  };		
-		var url = "<%=request.getContextPath()%>/getDistricts.action?STATE_ID="+val;
+					task:"DISTRICT"
+				  };	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?"+rparam;
 		callAjax(jsObj,url);
 		
 	}
@@ -71,27 +72,29 @@
 	{
 		var jsObj={
 					value:val,
-					task:"getconstituencies"
+					task:"CONSTITUENCY"
 				  };
-		var url = "<%=request.getContextPath()%>/getConstituencies.action?DISTRICT_ID="+val;
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?"+rparam;
 		callAjax(jsObj,url);
 	}
 	function getMandals(val)
 	{
 		var jsObj={
 					value:val,
-					task:"getMandals"
+					task:"MANDAL"
 				  };
-		var url = "<%=request.getContextPath()%>/getMandals.action?CONSTITUENCY_ID="+val;
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?"+rparam;
 		callAjax(jsObj,url);
 	}
 	function getVillages(val)
 	{
 		var jsObj={
 					value:val,
-					task:"getVillages"
+					task:"VILLAGE"
 				  };
-		var url = "<%=request.getContextPath()%>/getVillages.action?MANDAL_ID="+val;
+		var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?"+rparam;
 		callAjax(jsObj,url);
 	}
 
