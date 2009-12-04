@@ -170,7 +170,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 		String message = jsonObject.getString("SMS_MESSAGE");
 
 		if(log.isDebugEnabled())
-		log.debug("cadre type:"+type);
+			log.debug("cadre type:"+type);
 		totalCadres = cadreManagementService.sendSMSMessage(userID,type,value, message);
 		return SUCCESS;
 	}
@@ -182,12 +182,45 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		Long userID = user.getRegistrationID();
-		Long stateID = new Long(request.getParameter("STATE_ID"));
+		Long stateID = new Long(request.getParameter("REGION_ID"));
 		String region = request.getParameter("REGION");
 
 		if(log.isDebugEnabled())
-		log.debug("region scope:"+region);
+			log.debug("region scope:"+region);
 		list = cadreManagementService.findRegionByCadreScope(userID,stateID,region);
+		return SUCCESS;
+	}
+	
+	public String getUsersCadreLevelData(){
+		if(log.isDebugEnabled())
+			log.debug("CadreSMSMessage.getuserLocationWiseData() started");
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		String accessType = user.getAccessType();
+		
+		if("COUNTRY".equals(accessType)){
+			list.add(new SelectOptionVO(0L,"Country"));
+			list.add(new SelectOptionVO(1L,"State"));
+			list.add(new SelectOptionVO(2L,"District"));
+			list.add(new SelectOptionVO(3L,"Constituency"));
+			list.add(new SelectOptionVO(4L,"Mandal"));
+			list.add(new SelectOptionVO(5L,"Village"));
+		} else if("STATE".equals(accessType)){
+			list.add(new SelectOptionVO(1L,"State"));
+			list.add(new SelectOptionVO(2L,"District"));
+			list.add(new SelectOptionVO(3L,"Constituency"));
+			list.add(new SelectOptionVO(4L,"Mandal"));
+			list.add(new SelectOptionVO(5L,"Village"));
+		} else if("DISTRICT".equals(accessType)){
+			list.add(new SelectOptionVO(2L,"District"));
+			list.add(new SelectOptionVO(3L,"Constituency"));
+			list.add(new SelectOptionVO(4L,"Mandal"));
+			list.add(new SelectOptionVO(5L,"Village"));
+		} else if("MLA".equals(accessType) || "MP".equals(accessType) ){
+			list.add(new SelectOptionVO(3L,"Constituency"));
+			list.add(new SelectOptionVO(4L,"Mandal"));
+			list.add(new SelectOptionVO(5L,"Village"));
+		}
 		return SUCCESS;
 	}
 }
