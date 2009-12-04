@@ -282,28 +282,11 @@
 			</result>
 		</action>		
 		
-		<action name="getDistricts" class="cadreSMSAction" method="getDistricts" >
+		<action name="regionsByCadreScope" class="cadreSMSAction" method="getRegionsByCadreScope" >
 			<result type="json" name="success">
 				<param name="root">list</param>				
 			</result>
 		</action>
 		
-		<action name="getConstituencies" class="cadreSMSAction" method="getConstituencies" >
-			<result type="json" name="success">
-				<param name="root">list</param>				
-			</result>
-		</action>
-		
-		<action name="getMandals" class="cadreSMSAction" method="getMandals" >
-			<result type="json" name="success">
-				<param name="root">list</param>				
-			</result>
-		</action>
-		
-		<action name="getVillages" class="cadreSMSAction" method="getVillages" >
-			<result type="json" name="success">
-				<param name="root">list</param>				
-			</result>
-		</action>
 	</package>
 </struts>
