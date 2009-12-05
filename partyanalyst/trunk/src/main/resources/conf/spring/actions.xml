@@ -81,6 +81,7 @@
 	
 	<bean id="boothResultUploadAction" class="com.itgrids.partyanalyst.web.action.BoothResultUploadAction" singleton="false">
 		<property name="boothResultPopulationService" ref="boothResultPopulationService" />
+		<property name="parliamentBoothResultPopulationService" ref="parliamentBoothResultPopulationService" />
 		<property name="boothDataValidationService" ref="boothDataValidationService" />
 	</bean>
 	
