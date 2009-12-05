@@ -166,7 +166,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		Long userID = user.getRegistrationID();
 		String type = jsonObject.getString("SMS_LEVEL_TYPE");
-		Long value = new Long(jsonObject.getString("SMS_LEVEL_VALUE"));
+		Long value = value = new Long(jsonObject.getString("SMS_LEVEL_VALUE"));
 		String message = jsonObject.getString("SMS_MESSAGE");
 
 		if(log.isDebugEnabled())
@@ -182,12 +182,12 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		Long userID = user.getRegistrationID();
-		Long stateID = new Long(request.getParameter("REGION_ID"));
+		Long regionID = new Long(request.getParameter("REGION_ID"));
 		String region = request.getParameter("REGION");
 
 		if(log.isDebugEnabled())
 			log.debug("region scope:"+region);
-		list = cadreManagementService.findRegionByCadreScope(userID,stateID,region);
+		list = cadreManagementService.findRegionByCadreScope(userID,regionID,region);
 		return SUCCESS;
 	}
 	

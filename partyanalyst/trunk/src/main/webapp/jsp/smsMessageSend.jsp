@@ -23,7 +23,9 @@
 									fillSelectElement(myResults,jsObj);
 								else if(jsObj.task == "sendSMS")
 									displaySuccessMessage(myResults,jsObj);
-
+								else if(jsObj.task=="CADRE_LEVEL")
+									fillDataForCadreLevel(myResults);
+									
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
 							}  
@@ -108,6 +110,16 @@
 		callAjax(jsObj,url);
 	}
 
+
+	function getUsersCadreLevelData(){
+		alert(123);
+		var jsObj={
+				task:"CADRE_LEVEL"
+			  };
+		var url = "<%=request.getContextPath()%>/usersCadreLevelData.action";
+		callAjax(jsObj,url);
+	}
+	
 	function getNextRegions(id,val)
 	{
 		var selectElmt = document.getElementById(id);
@@ -125,11 +137,49 @@
 		callAjax(jsObj,url);
 
 	}
-	
-	function getUsersGroupData(){
+
+	function fillDataForCadreLevel(results){
+		var regionTypeElmtLabel = document.getElementById("region_type_Label");
+		var regionTypeElmtData = document.getElementById("region_type_Data");
+		regionTypeElmtLabel.innerHTML="";
+		regionTypeElmtData.innerHTML="";
+
+alert(1234567);
+		var regionTypeSelectElmtLabel = document.getElementById("region_select_Label");
+		var regionTypeSelectElmtData = document.getElementById("region_select_Data");
+		if(regionTypeSelectElmtLabel)
+			regionTypeSelectElmtLabel.innerHTML="Select Cadre Level";
 		
-	}
-	function getUsersCadreLevelData(){
+		var str='';
+		for(var i in results)
+		{
+			str='<input type="radio" name="region_type_radio" value="'+results[i].id+'> '+results[i].name+' ';
+			regionTypeSelectElmtData.innerHTML+=str;
+		
+		}
+
+		
+
+		var smsTextElmtLabel = document.getElementById("sms_text_Label");
+		var smsTextElmtData = document.getElementById("sms_text_Data");
+		
+		if(smsTextElmtLabel)
+			smsTextElmtLabel.innerHTML="SMS Text";
+
+		var smsStr='';
+		smsStr+='<div><textarea rows="5" cols="50" id="smsTextArea" onkeyup="" ></textarea></div> ';
+		smsStr+='<div id="limitDiv">Should not exceed 200 chars</div>';		
+		
+		if(smsTextElmtData)
+			smsTextElmtData.innerHTML=smsStr;
+
+
+		var buttonDiv =  document.getElementById("button_div");
+		var bstr='';
+		bstr+='<input type="button" value="Send SMS" onclick="sendSMSCadreLevel()"';
+		
+		if(buttonDiv)
+			buttonDiv.innerHTML=bstr;
 		
 	}
 	function fillDataOptions(results)
@@ -270,6 +320,31 @@
 	
 	}
 
+	function sendSMSCadreLevel(){
+		for( i = 0; i < document.smsForm.region_type_radio.length; i++ )
+		{
+			if( document.smsForm.region_type_radio[i].checked == true ){
+				val = document.smsForm.region_type_radio[i].value;
+				alert(val);
+			}
+		}
+		
+		var textAreaElmt = document.getElementById("smsTextArea");
+
+		textAreaElmtValue = textAreaElmt.value
+		val=val.toUpperCase();
+		var jsObj={
+					SMS_LEVEL_TYPE:'CADRE_LEVEL',
+					SMS_LEVEL_VALUE:val,
+					SMS_MESSAGE:textAreaElmtValue,
+					task:"sendSMS"
+				  };
+		
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/sendCadreSMS.action?"+rparam;
+		callAjax(jsObj,url);
+	}
 	function sendSMS()
 	{
 		for( i = 0; i < document.smsForm.region_type_radio.length; i++ )

@@ -287,6 +287,12 @@
 			<result type="json" name="success">
 				<param name="root">list</param>				
 			</result>
+		</action>	
+		
+		<action name="usersCadreLevelData" class="cadreSMSAction" method="getUsersCadreLevelData" >
+			<result type="json" name="success">
+				<param name="root">list</param>				
+			</result>
 		</action>
 		
 	</package>
