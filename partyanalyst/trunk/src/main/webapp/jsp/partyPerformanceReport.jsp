@@ -241,89 +241,75 @@ function buildPartyPositionDataTable(info)
 
 	}
 
-	function buildpartyPerformanceDataTable(tableId,divId)
-	{	
+	function buildpartyPerformanceDataTable(data,divId)
+	{
+		if(data.partyPerformanceArray == "")
+			return;
 		
-		console.log(tableId);
-	/*	if(divId=="")
-		"${constPositions.type == 'POSITIONS_WON_WITH_POSITIVE_SWING' ||
-							              constPositions.type == 'POSITIONS_LOST_WITH_POSITIVE_SWING' ||
-							              constPositions.type == 'POSITIONS_WON_WITH_NEGATIVE_SWING' ||
-							              constPositions.type == 'POSITIONS_LOST_WITH_NEGATIVE_SWING'}" */
-	
+		if(divId == "POSITIONS_WON_MAJOR_BAND" || divId == "POSITIONS_WON_MINOR_BAND" || divId == "POSITIONS_LOST_MINOR_BAND" || divId == "POSITIONS_LOST_MAJOR_BAND")
+		{	
+			var myColumnDefs = [ 	           
+	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
+				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
+				{key:"percentageOfVotes",label : "Votes % Gained", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes % Gained", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "Opposition Party",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "Opposition Party Candidate", sortable:true, resizeable:true}    
+				
+	        ]; 
+			var myDataSource = new YAHOO.util.LocalDataSource(data.partyPerformanceArray); 		
+	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+			myDataSource.responseSchema = { 
+			fields : [
+						{key : "constituencyName"}, {key : "candidateName"}, {key : "percentageOfVotes",parser:"number"},
+						{key :"oppositionPartyPercentageOfVotes",parser:"number"},{key : "oppositionParty"}, {key : "oppositionPartyCandidate"}
+					 ]
+	        };
+			var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource, {}); 			
+		}
+		else if(divId == "POSITIONS_WON_WITH_POSITIVE_SWING" || divId == "POSITIONS_WON_WITH_NEGATIVE_SWING" || divId == "POSITIONS_LOST_WITH_POSITIVE_SWING" || divId == "POSITIONS_LOST_WITH_NEGATIVE_SWING")
+		{			
+			var myColumnDefs = [ 	           
+	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
+				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
+				{key:"percentageOfVotes",label : "Votes % Gained", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesGained",label : "Previous Election Votes % Gained", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes % Gained", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "Opposition Party",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "Opposition Party Candidate", sortable:true, resizeable:true}    
+				
+	        ]; 
 
-	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-			.get(tableId));
-	console.log(resultsDataSource);
-	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
-	resultsDataSource.responseSchema = {
-		fields : [ {
-			key : "constiuencyName"
-		}, {
-			key : "candidateName"
-		}, {
-			key : "percentageOfVotes",parser:"number"
-		}, {
-			key : "prevElectionPercentage",parser:"number"
-		}, {
-			key : "percentageOfVotesPolled ",parser:"number"
-		}, {
-			key : "prevElectionPercentageOfVotesPolled ",parser:"number"
-		},{
-			key : "prevElectionCandidateName",parser:"number"
-		},{
-			key : "oppositePartyPercentageOfVotes",parser:"number"
-		}, {
-			key : "oppositeParty"
-		}, {
-			key : "oppositePartyCandidate"
-		} ]
-	};
+			var myDataSource = new YAHOO.util.DataSource(data.partyPerformanceArray); 
+	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	        myDataSource.responseSchema = { 
+	            fields: ["constituencyName","candidateName","percentageOfVotes","previousElectionPercentageOfVotesGained","oppositionPartyPercentageOfVotes","oppositionParty","oppositionPartyCandidate"] 
+	        };
+			 var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource, {}); 
+		}		  
+		else if(divId == "POSITIONS_LOST_BY_DROPPING_VOTES")
+		{
+			var myColumnDefs = [ 	           
+	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
+				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
+				{key:"percentageOfVotes",label : "Votes % Gained", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesGained",label : "Previous Election Votes % Gained", sortable:true, resizeable:true},
+				{key:"percentageOfVotesPolled",label : "Votes Polled %", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesPolled",label : "Previous Election Votes Polled %", sortable:true, resizeable:true},
+				{key:"previousElectionCandidate",label : "Previous Election Candidate", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes % Gained", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "Opposition Party",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "Opposition Party Candidate", sortable:true, resizeable:true}    
+				
+	        ]; 
 
-	var resultsColumnDefs = [ {
-		key : "constiuencyName",		
-		label : "Constituency Name",
-		sortable : true
-	}, {
-		key : "candidateName",
-		label : "Candidate Name",
-		sortable : true
-	}, {
-		key : "percentageOfVotes",
-		label : "% Votes Gained",
-		sortable : true
-	}, {
-		key : "prevElectionPercentage",
-		label : "Previous Election %",
-		sortable : true
-	}, {
-		key : "percentageOfVotesPolled",
-		label : "% votes Polled %",
-		sortable : true
-	}, {
-		key : "prevElectionPercentageOfVotesPolled",
-		label : "Prev Election % votes Polled %",
-		sortable : true
-	}, {
-		key : "prevElectionCandidateName",
-		label : "Prev Election Candidate Name %",
-		sortable : true
-	}, {
-		key : "oppositePartyPercentageOfVotes",
-		label : "Opposition Party % Votes Gained",
-		sortable : true
-	}, {
-		key : "oppositeParty",
-		label : "Opposition Party",
-		sortable : true
-	}, {
-		key : "oppositePartyCandidate",
-		label : "Opposite Party Candidate",
-		sortable : true
-	} ];
-
-	var myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,{});  
-
+			var myDataSource = new YAHOO.util.DataSource(data.partyPerformanceArray); 
+	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	        myDataSource.responseSchema = { 
+	            fields: ["constituencyName","candidateName","percentageOfVotes","previousElectionPercentageOfVotesGained","percentageOfVotesPolled","previousElectionPercentageOfVotesPolled","previousElectionCandidate","oppositionPartyPercentageOfVotes","oppositionParty","oppositionPartyCandidate"] 
+	        };
+			var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource, {}); 
+		}	
 	}
 
 </script>
@@ -508,7 +494,7 @@ function buildPartyPositionDataTable(info)
 <c:set var="constituencyPositionsList" value="stateData.constituencyPositions" scope="session" />
 <c:forEach var="constPositions" items="${stateData.constituencyPositions}" >
 	<c:choose>
-		<c:when test="${constPositions.type=='POSITIONS_WON_MINOR_BAND'}">
+		<c:when test="${constPositions.type=='POSITIONS_WON_MINOR_BAND'}">			
 			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Winning Positions with lower % margin: <c:out value="${constPositions.positionsWon}" />
@@ -517,7 +503,7 @@ function buildPartyPositionDataTable(info)
 				</c:if>
 			</div>
 		</c:when>
-		<c:when test="${constPositions.type=='POSITIONS_WON_MAJOR_BAND'}">
+		<c:when test="${constPositions.type=='POSITIONS_WON_MAJOR_BAND'}">		
 			<div style="padding: 5px 5px 10px 0px;font-family: Trebuchet MS;font-weight: bold; font-size: 14px;">
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Winning Positions with highest % margin: <c:out value="${constPositions.positionsWon}" /> 
@@ -526,7 +512,7 @@ function buildPartyPositionDataTable(info)
 				</c:if>
 			</div>
 		</c:when>		
-		<c:when test="${constPositions.type=='POSITIONS_LOST_MINOR_BAND'}">
+		<c:when test="${constPositions.type=='POSITIONS_LOST_MINOR_BAND'}">			
 			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Losing Positions with lower % margin: <c:out value="${constPositions.positionsWon}" />
@@ -535,7 +521,7 @@ function buildPartyPositionDataTable(info)
 				</c:if>
 			</div>
 		</c:when>
-		<c:when test="${constPositions.type=='POSITIONS_LOST_MAJOR_BAND'}">
+		<c:when test="${constPositions.type=='POSITIONS_LOST_MAJOR_BAND'}">			
 			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
 				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
 				Losing Positions with highest % margin: <c:out value="${constPositions.positionsWon}" />
@@ -590,35 +576,73 @@ function buildPartyPositionDataTable(info)
 			</div>
 		</c:when>
 </c:choose>
-<div id="${constPositions.type}" class="tableDiv" style="display:none;" class="yui-skin-sam">
+<div id="${constPositions.type}" style="display:none;" class="yui-skin-sam">
 <center>
-				<display:table class="partyPerformanceReportTable" name="${constPositions.constituencyPositionDetails}" id="table_${constPositions.type}" style="margin-top:0px;"> 
-							<display:column class="tableColoumn" title="Constiuency Name" property="constiuencyName" />
-							<display:column class="tableColoumn" title="Candidate Name" property="candidateName" />
-							<display:column title="% of Votes Gained" property="percentageOfVotes" />
-							<c:if test="${constPositions.type == 'POSITIONS_WON_WITH_POSITIVE_SWING' ||
-							              constPositions.type == 'POSITIONS_LOST_WITH_POSITIVE_SWING' ||
-							              constPositions.type == 'POSITIONS_WON_WITH_NEGATIVE_SWING' ||
-							              constPositions.type == 'POSITIONS_LOST_WITH_NEGATIVE_SWING'}">
-							<display:column class="tableColoumn" title="Previous Election % of Votes Gained" property="prevElectionPercentage" />
-							</c:if>
-							<c:if test="${constPositions.type == 'POSITIONS_LOST_BY_DROPPING_VOTES'}">
-							<display:column  title="Previous Election % of Votes Gained" property="prevElectionPercentage" />
-							<display:column  title="% of Votes Polled" property="percentageOfVotesPolled" />
-							<display:column  title="Previous Election % of Votes Polled" property="prevElectionPercentageOfVotesPolled" />
-							<display:column  title="Previous Election Candidate" property = "prevElectionCandidateName" />
-							</c:if>
-							<display:column  title="Oppositin Party % of Votes Gained" property = "oppositePartyPercentageOfVotes" />
-							<display:column  title="Opposition Party" property="oppositeParty" />
-							<display:column class="tableColoumn" title="Opposition Party Candidate" property="oppositePartyCandidate" />
-				</display:table>
-				
-				<script type="text/javascript">
-					//buildpartyPerformanceDataTable("table_${constPositions.type}","${constPositions.type}");
-				</script>
 </center>
 <!--<a href="#" onclick="closeSection('${constPositions.type}');">close</a><BR>-->
 </div> 
+	<script type="text/javascript">
+	
+	var partyObj={
+					partyPerformanceArray:[]
+				 };
+	
+
+	<c:if test="${constPositions.type == 'POSITIONS_WON_MAJOR_BAND' ||
+							  constPositions.type == 'POSITIONS_WON_MINOR_BAND' ||
+							  constPositions.type == 'POSITIONS_LOST_MINOR_BAND' ||
+							  constPositions.type == 'POSITIONS_LOST_MAJOR_BAND'}">
+		<c:forEach var="performance" items="${constPositions.constituencyPositionDetails}" >
+			var performanceObj={
+									constituencyName:"${performance.constiuencyName}",
+									candidateName:"${performance.candidateName}",
+									percentageOfVotes:"${performance.percentageOfVotes}",
+									oppositionPartyPercentageOfVotes:"${performance.oppositePartyPercentageOfVotes}",
+									oppositionParty:"${performance.oppositeParty}",
+									oppositionPartyCandidate:"${performance.oppositePartyCandidate}"
+								};
+			partyObj.partyPerformanceArray.push(performanceObj);
+		</c:forEach>
+	</c:if>
+	<c:if test="${constPositions.type == 'POSITIONS_WON_WITH_POSITIVE_SWING' ||
+					  constPositions.type == 'POSITIONS_LOST_WITH_POSITIVE_SWING' ||
+					  constPositions.type == 'POSITIONS_WON_WITH_NEGATIVE_SWING' ||
+					  constPositions.type == 'POSITIONS_LOST_WITH_NEGATIVE_SWING'}">	
+		<c:forEach var="performance" items="${constPositions.constituencyPositionDetails}" >
+			var performanceObj={
+									constituencyName:"${performance.constiuencyName}",
+									candidateName:"${performance.candidateName}",
+									percentageOfVotes:"${performance.percentageOfVotes}",
+									previousElectionPercentageOfVotesGained:"${performance.prevElectionPercentage}",
+									oppositionPartyPercentageOfVotes:"${performance.oppositePartyPercentageOfVotes}",
+									oppositionParty:"${performance.oppositeParty}",
+									oppositionPartyCandidate:"${performance.oppositePartyCandidate}"
+								};
+			partyObj.partyPerformanceArray.push(performanceObj);
+		</c:forEach>
+	</c:if>				
+	<c:if test="${constPositions.type == 'POSITIONS_LOST_BY_DROPPING_VOTES'}">
+		<c:forEach var="performance" items="${constPositions.constituencyPositionDetails}" >
+			var performanceObj={
+								constituencyName:"${performance.constiuencyName}",
+								candidateName:"${performance.candidateName}",
+								percentageOfVotes:"${performance.percentageOfVotes}",
+								previousElectionPercentageOfVotesGained:"${performance.prevElectionPercentage}",											
+								percentageOfVotesPolled:"${performance.percentageOfVotesPolled}",
+								previousElectionPercentageOfVotesPolled:"${performance.prevElectionPercentageOfVotesPolled}",
+								previousElectionCandidate:"${performance.prevElectionCandidateName}",
+								oppositionPartyPercentageOfVotes:"${performance.oppositePartyPercentageOfVotes}",
+								oppositionParty:"${performance.oppositeParty}",
+								oppositionPartyCandidate:"${performance.oppositePartyCandidate}"
+							};
+			partyObj.partyPerformanceArray.push(performanceObj);	
+		</c:forEach>
+	</c:if>
+	
+	buildpartyPerformanceDataTable(partyObj,"${constPositions.type}");
+	
+	</script>
+
 </c:forEach> 
 </div>
 <br/><br/>
