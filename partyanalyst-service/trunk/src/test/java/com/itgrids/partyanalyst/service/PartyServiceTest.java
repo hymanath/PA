@@ -169,7 +169,7 @@ public class PartyServiceTest {
 		
 
 		PartyService service = new PartyService();
-		Map<String,String> result = service.partyVotesFlow(present,previous);
+		Map<String,String> result = service.partyVotesFlow(present,previous, true);
 	/*	Set set = result.entrySet();
 		java.util.Iterator itr = set.iterator();
 		System.out.println("********************************************************************************************");

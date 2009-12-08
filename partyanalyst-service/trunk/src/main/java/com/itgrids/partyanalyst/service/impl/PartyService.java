@@ -93,14 +93,19 @@ public class PartyService implements IPartyService {
 				
 		setConstituencyPositionsForDetailedReport(presentYearPartyPerformanceReportVO, previousYearPartyPerformanceReportVO, majorBand, minorBand);
 		
-		Map<String, String> partyVotesFlown = partyVotesFlow(presentYearPartyPerformanceReportVO.getVotesFlown()
-				, previousYearPartyPerformanceReportVO.getVotesFlown());
+		/*Map<String, String> partyVotesFlown = partyVotesFlow(presentYearPartyPerformanceReportVO.getVotesFlown()
+				, previousYearPartyPerformanceReportVO.getVotesFlown());*/
 		
 		BigDecimal presentElectionTotalPercentageOfVotesWon = presentYearPartyPerformanceReportVO.getTotalPercentageOfVotesWon();
 		BigDecimal prevElectionTotalPercentageOfVotesWon = previousYearPartyPerformanceReportVO.getTotalPercentageOfVotesWon();
 		BigDecimal diffOfTotalPercentageWinWithPrevElection = new BigDecimal(
 											presentElectionTotalPercentageOfVotesWon.doubleValue() - 
 											prevElectionTotalPercentageOfVotesWon.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP);
+		boolean positiveVotesFlowFlag = true;
+		if(diffOfTotalPercentageWinWithPrevElection.doubleValue()<0)
+			positiveVotesFlowFlag = false;
+		Map<String, String> partyVotesFlown = partyVotesFlow(presentYearPartyPerformanceReportVO.getVotesFlown()
+				, previousYearPartyPerformanceReportVO.getVotesFlown(),positiveVotesFlowFlag);
 		
 		presentYearPartyPerformanceReportVO.setDiffSeatsWon(presentYearPartyPerformanceReportVO.getTotalSeatsWon() 
 				- previousYearPartyPerformanceReportVO.getTotalSeatsWon());
@@ -415,7 +420,7 @@ public class PartyService implements IPartyService {
 
 	@SuppressWarnings("unchecked")
 	public Map<String, String> partyVotesFlow(Map<String, BigDecimal> presentElectionPartyVotePerc, 
-			Map<String, BigDecimal> previousElectionPartyVotePerc){
+			Map<String, BigDecimal> previousElectionPartyVotePerc, boolean isPositiveVotesFlow){
 		
 		Map<String, String> votesFlow = new LinkedHashMap<String, String>();
 		Map<String, String> tempMap = new HashMap<String, String>();
@@ -430,12 +435,16 @@ public class PartyService implements IPartyService {
 										(previousElectionPartyVotePerc.get(partyName).setScale (2,BigDecimal.ROUND_HALF_UP)).doubleValue();
 			double differences = new BigDecimal(presentValue - previousValue).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
 			StringBuilder sb = new StringBuilder();
-			sb.append(presentValue).append("%");
-			if(differences>=0)
-				sb.append(" (Gain: ");
-			else
-				sb.append(" (Loss: ");
-			sb.append(Math.abs(differences)).append(")");
+			//sb.append(presentValue).append("%");
+			/*if(!ifPositiveVotesFlow && differences>=0)
+				sb.append(" (Gain: ").append(Math.abs(differences)).append(")");*/
+			if(isPositiveVotesFlow && differences<0 ){
+				sb.append(presentValue).append("%").append(" (Loss: ").append(Math.abs(differences)).append(")");
+			}
+			else if(!isPositiveVotesFlow && differences>=0){
+				sb.append(presentValue).append("%").append(" (Gain: ").append(Math.abs(differences)).append(")");
+			}
+			//sb.append(Math.abs(differences)).append(")");
 			tempMap.put(partyName, sb.toString());
 			sortedVotesFlowMap.put(partyName, presentValue);
 	    }
@@ -443,7 +452,9 @@ public class PartyService implements IPartyService {
 		for(Map.Entry<String, Double> entry : sortedVotesFlowMap.entrySet()) {
 			 if(count < 4) {
 				 String partyName = entry.getKey();
-				 votesFlow.put(partyName, tempMap.get(partyName));
+				 String value = tempMap.get(partyName);
+				 if(value.length()>0)
+					 votesFlow.put(partyName, value);
 				 count ++;
 			 }
 		 }
