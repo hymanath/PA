@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IElectionObjectsDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -25,6 +26,11 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
+	private IElectionObjectsDAO electionObjectsDAO;
+
+	public void setElectionObjectsDAO(IElectionObjectsDAO electionObjectsDAO) {
+		this.electionObjectsDAO = electionObjectsDAO;
+	}
 
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
@@ -194,6 +200,24 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			result.add(new SelectOptionVO(new Long(obj[0].toString()),obj[1].toString()));
 		}
 		return result;
+	}
+	
+	public List<SelectOptionVO> getStateByParliamentConstituencyID(Long constituencyID){
+		List state = constituencyDAO.getStateForParliamentConstituency(constituencyID);
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		if(state!=null && state.size()==1){
+			Object[] object = (Object[]) state.get(0);
+			result.add(new SelectOptionVO(new Long(object[0].toString()), object[1].toString()));
+		}
+		return result;
+	}
+	
+	public Long getLatestParliamentElectionYear(Long stateID){
+		List list = electionObjectsDAO.findLatestParliamentaryElectionYear(stateID);
+		Long year = null;
+		if(list!=null && list.size()==1)
+			year = new Long(list.get(0).toString());
+		return year;
 	}
 	
 }

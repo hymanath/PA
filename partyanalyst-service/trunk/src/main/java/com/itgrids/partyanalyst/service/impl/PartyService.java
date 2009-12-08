@@ -434,6 +434,8 @@ public class PartyService implements IPartyService {
 			double previousValue = (previousElectionPartyVotePerc.get(partyName)==null)? 0 :
 										(previousElectionPartyVotePerc.get(partyName).setScale (2,BigDecimal.ROUND_HALF_UP)).doubleValue();
 			double differences = new BigDecimal(presentValue - previousValue).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
+			if(Math.abs(differences)<1)
+				continue;
 			StringBuilder sb = new StringBuilder();
 			//sb.append(presentValue).append("%");
 			/*if(!ifPositiveVotesFlow && differences>=0)

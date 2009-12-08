@@ -59,7 +59,14 @@ public class ElectionObjectsDAO extends GenericDaoHibernate<Election, Long> impl
 		  queryObject.setParameter(0, state_id);
 		 		 
 		return queryObject.list();
-	}
-
+	}	
 	
+	@SuppressWarnings("unchecked")
+	public List findLatestParliamentaryElectionYear(Long state_id) {
+		
+		Query queryObject = getSession().createQuery("select max(model.electionYear) from Election as model where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType='Parliament'");
+		  queryObject.setParameter(0, state_id);
+		 		 
+		return queryObject.list();
+	}	
 }

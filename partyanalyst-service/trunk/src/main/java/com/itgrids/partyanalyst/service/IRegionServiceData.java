@@ -18,4 +18,6 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getDistrictsByStateIDFromBooth(Long stateID);
 	public List<SelectOptionVO> getConstituenciesByDistrictIDFromBooth(Long districtID);
 	public List<SelectOptionVO> getMandalsByConstituencyIDFromBooth(Long constituencyID);
+	public List<SelectOptionVO> getStateByParliamentConstituencyID(Long constituencyID);
+	public Long getLatestParliamentElectionYear(Long stateID);
 }
