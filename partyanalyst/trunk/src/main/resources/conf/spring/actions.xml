@@ -154,4 +154,7 @@
 	<bean id="cadreSMSAction" class="com.itgrids.partyanalyst.web.action.CadreSMSAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
 	</bean>
+	
+	<bean id="userGroupsMainAction" class="com.itgrids.partyanalyst.web.action.UserGroupsMainAction" singleton="false">		
+	</bean>
 </beans>

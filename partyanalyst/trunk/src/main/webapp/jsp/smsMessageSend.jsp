@@ -111,8 +111,7 @@
 	}
 
 
-	function getUsersCadreLevelData(){
-		alert(123);
+	function getUsersCadreLevelData(){		
 		var jsObj={
 				task:"CADRE_LEVEL"
 			  };
@@ -139,27 +138,29 @@
 	}
 
 	function fillDataForCadreLevel(results){
+		
+		//console.log(results);
 		var regionTypeElmtLabel = document.getElementById("region_type_Label");
 		var regionTypeElmtData = document.getElementById("region_type_Data");
-		regionTypeElmtLabel.innerHTML="";
-		regionTypeElmtData.innerHTML="";
 
-alert(1234567);
-		var regionTypeSelectElmtLabel = document.getElementById("region_select_Label");
-		var regionTypeSelectElmtData = document.getElementById("region_select_Data");
-		if(regionTypeSelectElmtLabel)
-			regionTypeSelectElmtLabel.innerHTML="Select Cadre Level";
-		
+		regionTypeElmtLabel.innerHTML="Select Cadre Level";
+
 		var str='';
 		for(var i in results)
 		{
-			str='<input type="radio" name="region_type_radio" value="'+results[i].id+'> '+results[i].name+' ';
-			regionTypeSelectElmtData.innerHTML+=str;
-		
+			str+='<input type="radio" name="region_type_radio" value="'+results[i].id+'"> '+results[i].name+' ';
 		}
+		regionTypeElmtData.innerHTML=str;
+		//--------------
+		var regionTypeSelectElmtLabel = document.getElementById("region_select_Label");
+		var regionTypeSelectElmtData = document.getElementById("region_select_Data");
 
-		
-
+		if(regionTypeSelectElmtLabel && regionTypeSelectElmtData)
+		{
+			regionTypeSelectElmtLabel.innerHTML="";
+			regionTypeSelectElmtData.innerHTML="";
+		}
+		//-------------
 		var smsTextElmtLabel = document.getElementById("sms_text_Label");
 		var smsTextElmtData = document.getElementById("sms_text_Data");
 		
@@ -176,7 +177,7 @@ alert(1234567);
 
 		var buttonDiv =  document.getElementById("button_div");
 		var bstr='';
-		bstr+='<input type="button" value="Send SMS" onclick="sendSMSCadreLevel()"';
+		bstr+='<input type="button" value="Send SMS" onclick="sendSMSCadreLevel()"/>';
 		
 		if(buttonDiv)
 			buttonDiv.innerHTML=bstr;
@@ -311,12 +312,13 @@ alert(1234567);
 		//--------------------------
 		//Displaying button
 
-		var buttonDiv =  document.getElementById("button_div");
+		var buttonDiv = document.getElementById("button_div");
 		var bstr='';
-		bstr+='<input type="button" value="Send SMS" onclick="sendSMS()"';
-		
+		bstr+='<input type="button" value="Send SMS" onclick="sendSMS()"/>';
 		if(buttonDiv)
+		{
 			buttonDiv.innerHTML=bstr;
+		}
 	
 	}
 
@@ -325,7 +327,7 @@ alert(1234567);
 		{
 			if( document.smsForm.region_type_radio[i].checked == true ){
 				val = document.smsForm.region_type_radio[i].value;
-				alert(val);
+				
 			}
 		}
 		
