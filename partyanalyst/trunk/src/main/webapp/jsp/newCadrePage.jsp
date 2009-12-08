@@ -320,7 +320,7 @@
 		<tr>
 			<th><s:label for="districtField" id="districtLabel"  value="District" /></th>
 			<td align="left">
-				<select id="districtField" name="district" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if>>
+				<select id="districtField" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 					<c:forEach var="dist" items="${districtList}" >
 					<option value="${dist.id}">${dist.name}</option>
 					</c:forEach>
