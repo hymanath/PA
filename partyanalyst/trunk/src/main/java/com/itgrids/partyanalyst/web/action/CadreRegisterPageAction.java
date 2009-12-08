@@ -7,6 +7,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
@@ -14,6 +15,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -27,6 +29,9 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private static final long serialVersionUID = 1L;
 
 	private CadreManagementService cadreManagementService;
+	private CrossVotingEstimationService crossVotingEstimationService;
+	private static final Logger log = Logger.getLogger(CadreRegisterPageAction.class);
+
 	private UserCadresInfoVO userCadresInfoVO = new UserCadresInfoVO();
 	private HttpServletRequest request;
 	private HttpSession session;
@@ -86,6 +91,11 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	public void setRegionServiceData(IRegionServiceData regionServiceData){
 		this.regionServiceData = regionServiceData;
 	}
+
+	public void setCrossVotingEstimationService(
+			CrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
+	}
 	
 	public void setServletRequest(HttpServletRequest request) {		
 		this.request = request;
@@ -97,7 +107,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	}
 	
 	public String execute(){
-		
+		if(log.isDebugEnabled())
+			log.debug("CadreRegisterPageAction.execute() start");
 		session = request.getSession();
 		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
@@ -112,7 +123,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		
 		if("MLA".equals(accessType))
 		{
-			System.out.println("Access Type = MLA ****");
+			log.debug("Access Type = MLA ****");
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByConstituencyID(accessValue);
 			
 			stateList.add(list.get(0));			
@@ -123,12 +134,12 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 						
 		}else if("COUNTRY".equals(accessType))
 		{
-			System.out.println("Access Type = Country ****");
+			log.debug("Access Type = Country ****");
 			stateList = cadreManagementService.findStatesByCountryID(accessValue.toString());
 			stateList.add(0,new SelectOptionVO(0L, "Select State"));
 			
 		}else if("STATE".equals(accessType)){
-			System.out.println("Access Type = State ****");
+			log.debug("Access Type = State ****");
 			
 			String name = cadreManagementService.getStateName(accessValue);
 			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select State");
@@ -139,7 +150,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			stateList.add(obj2);
 			
 		}else if("DISTRICT".equals(accessType)){
-			System.out.println("Access Type = District ****");			
+			log.debug("Access Type = District ****");			
 
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByDistrictID(accessValue);
 			stateList.add(list.get(0));
@@ -148,9 +159,9 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			
 			
 		}else if("MANDAL".equals(accessType)){
-			System.out.println("Access Type = Mandal ****");
+			log.debug("Access Type = Mandal ****");
 			
-			List<SelectOptionVO> list = cadreManagementService.getStateDistConstituencyMandalByMandalID(accessValue);
+			List<SelectOptionVO> list = cadreManagementService.getStateDistConstituencyMandalByMandalID( accessValue);
 			stateList.add(list.get(0));
 			districtList.add(list.get(1));
 			mandalList.add(new SelectOptionVO(0L,"Select Mandal"));
@@ -158,9 +169,17 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			
 			
 		}else if("MP".equals(accessType)){
-			System.out.println("Access Type = MP ****");
-			// TODO task is pending... to be implemented
-			
+			log.debug("Access Type = MP ****");
+			stateList = regionServiceData.getStateByParliamentConstituencyID(accessValue);
+			SelectOptionVO state = stateList.get(0);
+			Long stateID = state.getId();
+			Long year = regionServiceData.getLatestParliamentElectionYear(stateID);
+			log.debug("year:::::"+year);
+			log.debug("stateID:::::"+stateID);
+			if(year!=null){
+				constituencyList = crossVotingEstimationService.getAssembliesForParliament(accessValue,year);
+			}	
+			log.debug("constituencyList.size():"+constituencyList.size());		
 		}
 		return Action.SUCCESS;
 	}

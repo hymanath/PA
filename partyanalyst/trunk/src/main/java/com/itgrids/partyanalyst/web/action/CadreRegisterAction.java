@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,6 +11,7 @@ import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -148,6 +151,14 @@ public class CadreRegisterAction extends ActionSupport implements ServletRequest
 		session=request.getSession();
 		RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		cadreInfo.setuserID(regVO.getRegistrationID());
+		if("MP".equals(regVO.getAccessType())){
+			Long constituencyID = cadreInfo.getConstituencyID();
+			List<SelectOptionVO> list = cadreManagementService.getStateDistricConstituencytByConstituencyID(constituencyID);
+			SelectOptionVO obj = new SelectOptionVO();
+			if(list.size()==3)
+				obj = list.get(1);
+			cadreInfo.setDistrict(obj.getId().toString());
+		}
 		Long id = cadreManagementService.saveCader(cadreInfo);
 		String result = Action.SUCCESS;
 		if(id==null)

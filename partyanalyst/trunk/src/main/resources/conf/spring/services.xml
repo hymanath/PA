@@ -173,6 +173,7 @@
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO"/>
+		<property name="electionObjectsDAO" ref="electionObjectsDAO"/>
 	</bean>
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
