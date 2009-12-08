@@ -137,9 +137,11 @@
 
 	}
 
-	function fillDataForCadreLevel(results){
-		
-		//console.log(results);
+	function fillDataForCadreLevel(results)
+	{
+		var successDivElmt=	 document.getElementById("successDiv");
+		successDivElmt.innerHTML="";
+
 		var regionTypeElmtLabel = document.getElementById("region_type_Label");
 		var regionTypeElmtData = document.getElementById("region_type_Data");
 
@@ -166,10 +168,16 @@
 		
 		if(smsTextElmtLabel)
 			smsTextElmtLabel.innerHTML="SMS Text";
-
+		
 		var smsStr='';
-		smsStr+='<div><textarea rows="5" cols="50" id="smsTextArea" onkeyup="" ></textarea></div> ';
-		smsStr+='<div id="limitDiv">Should not exceed 200 chars</div>';		
+		smsStr+='<div><textarea rows="5" cols="50" id="smsTextArea" onkeyup="limitText(\'smsTextArea\',\'maxcount\',200)" ></textarea></div> ';
+		smsStr+='<div id="limitDiv">';
+		smsStr+='<table style="width:100%;"><tr>';
+		smsStr+='<td style="width:50%;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+		smsStr+='<td style="width:50%;"><div>Should not exceed 200 chars</div></td>';
+		smsStr+='</tr></table>';
+		smsStr+='</div>';	
+			
 		
 		if(smsTextElmtData)
 			smsTextElmtData.innerHTML=smsStr;
@@ -198,7 +206,7 @@
 		}		
 
 		if(regionTypeElmtLabel)
-			regionTypeElmtLabel.innerHTML="Select Location";
+			regionTypeElmtLabel.innerHTML="Select Level";
 		if(regionTypeElmtData)
 			regionTypeElmtData.innerHTML=str;
 
@@ -208,7 +216,7 @@
 		var regionTypeSelectElmtData = document.getElementById("region_select_Data");
 
 		if(regionTypeSelectElmtLabel)
-			regionTypeSelectElmtLabel.innerHTML="Select Data";
+			regionTypeSelectElmtLabel.innerHTML="Select Location";
 
 		var regionStr='';
 		
@@ -299,15 +307,16 @@
 			smsTextElmtLabel.innerHTML="SMS Text";
 
 		var smsStr='';
-		smsStr+='<div><textarea rows="5" cols="50" id="smsTextArea" onkeyup="" ></textarea></div> ';
-		smsStr+='<div id="limitDiv">Should not exceed 200 chars</div>';		
+		smsStr+='<div><textarea rows="5" cols="50" id="smsTextArea" onkeyup="limitText(\'smsTextArea\',\'maxcount\',200)" ></textarea></div> ';
+		smsStr+='<div id="limitDiv">';
+		smsStr+='<table style="width:100%;"><tr>';
+		smsStr+='<td style="width:50%;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+		smsStr+='<td style="width:50%;"><div>Should not exceed 200 chars</div></td>';
+		smsStr+='</tr></table>';
+		smsStr+='</div>';	
 		
 		if(smsTextElmtData)
 			smsTextElmtData.innerHTML=smsStr;
-
-		/*var smsStr1='<div style="text-align:right;"> You have <input type="text" id="sizeInput" size="3" value="200"/> chars left</div>';
-		if(smsTextElmtData)
-			smsTextElmtData.innerHTML+=smsStr1;*/
 
 		//--------------------------
 		//Displaying button
@@ -320,6 +329,21 @@
 			buttonDiv.innerHTML=bstr;
 		}
 	
+	}
+	
+	function limitText(limitField, limitCount, limitNum)
+	{		
+		var limitFieldElmt = document.getElementById(limitField);
+		var limitCountElmt = document.getElementById(limitCount);
+
+		if (limitFieldElmt.value.length > limitNum) 
+		{
+			limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+		}
+		else
+		{			
+			limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
+		}
 	}
 
 	function sendSMSCadreLevel(){
@@ -375,18 +399,6 @@
 		
 	}
 	
-	function limitText(limitField, limitCount, limitNum)
-	{
-		if (limitField.value.length > limitNum) 
-		{
-			limitField.value = limitField.value.substring(0, limitNum);
-		}
-		else
-		{
-			limitCount.value = limitNum - limitField.value.length;
-		}
-	}
-
 	function displayRegionsSelect(val)
 	{
 		var stateSelectElmt = document.getElementById("StateSelect");
@@ -440,8 +452,7 @@
 #limitDiv
 {
 	color:#AAAAAA;
-	font-size:11px;
-	margin-left:180px;
+	font-size:11px;	
 	padding:5px;	
 }
 #successDiv
