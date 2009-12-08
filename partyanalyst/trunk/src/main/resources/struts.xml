@@ -268,7 +268,7 @@
 		
 		<action name="cadreSMSAction" class="cadreSMSAction">
 			<result name="success">/jsp/smsMessageSend.jsp</result>
-			<result name="error">/jsp/smsMessageSendError.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		
 		<action name="cadreSMSLocationWiseData" class="cadreSMSAction" method="getUserLocationWiseData" >
@@ -293,6 +293,10 @@
 			<result type="json" name="success">
 				<param name="root">list</param>				
 			</result>
+		</action>
+		
+		<action name="userGroupsMainAction" class="userGroupsMainAction">
+			<result name="success">/jsp/userGroupMain.jsp</result>
 		</action>
 		
 	</package>
