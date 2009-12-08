@@ -60,7 +60,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 		this.totalCadres = totalCadres;
 	}
 
-	public String execution(){
+	public String execute() throws Exception{
 		if(log.isDebugEnabled())
 			log.debug("CadreSMSMessage.execute() started");
 		HttpSession session = request.getSession();
