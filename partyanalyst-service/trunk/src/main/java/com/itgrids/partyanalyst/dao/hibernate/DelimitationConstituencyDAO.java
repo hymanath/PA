@@ -35,6 +35,6 @@ IDelimitationConstituencyDAO {
 	public List getConstituenciesByDistrictID(Long districtID) {
 		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name,model.year from DelimitationConstituency model " +
 				"where model.constituency.district.districtId = "+districtID+
-				" group by model.constituency having max(model.year)=model.year");
+				" group by model.constituency having max(model.year)=model.year order by model.constituency.name");
 	}
 }

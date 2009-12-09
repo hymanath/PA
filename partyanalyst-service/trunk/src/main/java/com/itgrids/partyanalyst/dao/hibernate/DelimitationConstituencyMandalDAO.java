@@ -24,7 +24,7 @@ IDelimitationConstituencyMandalDAO {
 
 	public List<Tehsil> getTehsilsByDelimitationConstituencyID(Long delimitationConstituencyID) {
 		return getHibernateTemplate().find("Select model.tehsil from DelimitationConstituencyMandal model where " +
-				"model.delimitationConstituency.delimitationConstituencyID =?", 
+				"model.delimitationConstituency.delimitationConstituencyID =? order by model.tehsil.tehsilName", 
 				delimitationConstituencyID);
 	}
 	

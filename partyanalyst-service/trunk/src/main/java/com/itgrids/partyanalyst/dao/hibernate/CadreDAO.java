@@ -51,26 +51,26 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List findStatesByCountryID(String countryIDs){
 		System.out.println("CadreDAO.findStatesByCountryID:::::::::::::::::::::::::"+countryIDs);
 		List totalStates = getHibernateTemplate().find("Select model.stateId, model.stateName from State model " +
-												"where model.country.countryId in(" + countryIDs + ")"); 
+												"where model.country.countryId in(" + countryIDs + ") order by model.stateName"); 
 		return totalStates;
 	}
 	@SuppressWarnings("unchecked")
 	public List findDistrictsByStateID(String stateIDs){
 		List totalDistricts = getHibernateTemplate().find("Select model.districtId, model.districtName from District model " +
-												"where model.state.stateId in(" + stateIDs + ")"); 
+												"where model.state.stateId in(" + stateIDs + ") order by model.districtName"); 
 		return totalDistricts;
 	}
 	@SuppressWarnings("unchecked")
 	public List findMandalsByDistrictID(String districtIDs){
 		List totalMandals = getHibernateTemplate().find("Select model.tehsilId, model.tehsilName from Tehsil model " +
-				"where model.district.districtId in(" + districtIDs + ")"); 
+				"where model.district.districtId in(" + districtIDs + ") order by model.tehsilName"); 
 		return totalMandals;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List findVillagesByTehsilID(String tehsilIDs){
 		List totalVillages = getHibernateTemplate().find("Select model.townshipId, model.townshipName from Township model " +
-					"where model.tehsil.tehsilId in(" + tehsilIDs + ")");
+					"where model.tehsil.tehsilId in(" + tehsilIDs + ") order by model.townshipName");
 		return totalVillages;
 	}
 	
@@ -119,27 +119,27 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List findStateCadresByCountry(Long countryID, Long userID){
 		//Object[] params = {userID,stateID};
 		List  results = getHibernateTemplate().find("Select model.state.stateId, model.state.stateName, count(model.state.stateId)from Cadre model " +
-				"where model.registration.registrationId = ? group by model.state.stateId", userID); 
+				"where model.registration.registrationId = ? group by model.state.stateId order by model.state.stateName", userID); 
 		return results;
 	}
 	@SuppressWarnings("unchecked")
 	public List findDistCadresByState(Long stateID, Long userID){
 		Object[] params = {userID,stateID};
 		List  results = getHibernateTemplate().find("Select model.district.districtId, model.district.districtName, count(model.district.districtId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.state.stateId=? group by model.district.districtId", params); 
+				"where model.registration.registrationId = ? and model.state.stateId=? group by model.district.districtId order by model.district.districtName", params); 
 		return results;
 	}
 
 	public List findConstituencyCadresByDist(Long districtID, Long userID){
 		Object[] params = {userID,districtID};
 		List  results = getHibernateTemplate().find("Select model.constituency.constituencyId, model.constituency.name, count(model.constituency.constituencyId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.district.districtId=? group by model.constituency.constituencyId", params); 
+				"where model.registration.registrationId = ? and model.district.districtId=? group by model.constituency.constituencyId order by model.constituency.name", params); 
 		return results;
 	}
 	public List findMandalCadresByConstituency(Long constituencyID, Long userID){
 		Object[] params = {userID,constituencyID};
 		List  results = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName, count(model.tehsil.tehsilId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.constituency.constituencyId=? group by model.tehsil.tehsilId", params); 
+				"where model.registration.registrationId = ? and model.constituency.constituencyId=? group by model.tehsil.tehsilId order by model.tehsil.tehsilName", params); 
 		return results;
 	}
 	
@@ -147,14 +147,14 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List findMandalCadresByDist(Long districtID, Long userID){
 		Object[] params = {userID,districtID};
 		List  results = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName, count(model.tehsil.tehsilId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.district.districtId=? group by model.tehsil.tehsilId", params); 
+				"where model.registration.registrationId = ? and model.district.districtId=? group by model.tehsil.tehsilId order by model.tehsil.tehsilName", params); 
 		return results;
 	}
 	@SuppressWarnings("unchecked")
 	public List findVillageCadresByMandal(Long mandalID, Long userID){
 		Object[] params = {userID,mandalID};
 		List  results = getHibernateTemplate().find("Select model.village.townshipId, model.village.townshipName, count(model.village.townshipId)from Cadre model " +
-				"where model.registration.registrationId = ? and model.tehsil.tehsilId=? group by model.village.townshipId", params); 
+				"where model.registration.registrationId = ? and model.tehsil.tehsilId=? group by model.village.townshipId order by model.village.townshipName", params); 
 		return results;
 	}
 	
@@ -168,7 +168,8 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	
 	public List findMandalCadresByMandals(String mandalIDs, Long userID){
 		List result = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName, count(model.tehsil.tehsilId) from Cadre model " +
-				"where model.registration.registrationId = "+userID+" and model.tehsil.tehsilId in(" + mandalIDs + ") group by model.tehsil.tehsilId");
+				"where model.registration.registrationId = "+userID+" and model.tehsil.tehsilId in(" + mandalIDs + ") " +
+						" order by model.tehsil.tehsilName group by model.tehsil.tehsilId");
 		return result;
 	}
 	

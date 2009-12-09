@@ -54,7 +54,7 @@ IDistrictDAO {
 	}
 	
 	public List getStateDistrictByDistrictID(Long districtID){
-		return getHibernateTemplate().find("Select model.state.stateId, model.state.stateName, model.districtName from District model where model.districtId=?",districtID);
+		return getHibernateTemplate().find("Select model.state.stateId, model.state.stateName, model.districtName from District model where model.districtId=? order by model.state.stateName",districtID);
 		
 	}
 	
