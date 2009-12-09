@@ -142,7 +142,7 @@ districtVotesTable td
 }
 .yui-accordion-item
 {
-	width:80%;
+	width:90%;
 }
 #closeSpan
 {
@@ -217,7 +217,8 @@ districtVotesTable td
 var electionObject=	{
 						constsGained:[],
 						constsLost:[],
-                        constsNotConsidered:[]
+                        constsNotConsideredYearOne:[],
+						constsNotConsideredYearTwo:[]
 					};
 	
    function setContentToPanel(type,val)
@@ -233,9 +234,11 @@ var electionObject=	{
 			var localArr=electionObject.constsGained[val].electionResults;
 		else if(type == "constsLost")
 			var localArr=electionObject.constsLost[val].electionResults;
-		else if(type == "constsNotConsidered")
-			var localArr=electionObject.constsNotConsidered[val].electionResults;
-
+		else if(type == "constsNotConsideredYearOne")
+			var localArr=electionObject.constsNotConsideredYearOne[val].electionResults;
+        else if(type == "constsNotConsideredYearTwo")
+			var localArr=electionObject.constsNotConsideredYearTwo[val].electionResults;
+		
 		var str='';
 		str+='<table class="CandidateElectionResultsTable" id="electionComparisonTable">';
 		for(var i in localArr)
@@ -256,6 +259,8 @@ var electionObject=	{
 			else
 				str+='<td> 0 </td>';
 			
+			str+='<td>'+localArr[i].electorsDiff+'</td>';
+
 			if(localArr[i].secondCandidateName != "")
 				str+='<td>'+localArr[i].secondCandidateName+'</td>';
 			else
@@ -309,7 +314,9 @@ var electionObject=	{
 			key : "rank"
 		}, {
 			key : "votesDiff",parser:"number"
-		} , {
+		} ,	{
+			key : "electorsDiff",parser:"number"
+		} ,{
 			key : "secondCandidateName"
 		} , {
 			key : "votesEarnedBySecond",parser:"number"
@@ -330,7 +337,7 @@ var electionObject=	{
 		sortable : true
 	}, {
 		key : "votesEarned",
-		label : "Votes&nbsp;Earned",
+		label : "Votes Earned",
 		sortable : true
 	}, {
 		key : "votesPercentage",
@@ -342,7 +349,11 @@ var electionObject=	{
 		sortable : true
 	}, {
 		key : "votesDiff",
-		label : "Votes&nbsp;Diff",
+		label : "Votes Diff",
+		sortable : true
+	}, {
+		key : "electorsDiff",
+		label : "Electors&nbsp;%",
 		sortable : true
 	}, {
 		key : "secondCandidateName",
@@ -350,7 +361,7 @@ var electionObject=	{
 		sortable : true
 	}, {
 		key : "votesEarnedBySecond",
-		label : "Votes&nbsp;Earned",
+		label : "Votes Earned",
 		sortable : true
 	}, {
 		key : "votesPercentageBySecond",
@@ -392,7 +403,8 @@ var electionObject=	{
 									votesEarnedBySecond:'${partyResults.votesEarnedBySecond}',
 									votesPercentageBySecond:'${partyResults.votesPercentageBySecond}',
 									rankBySecond:'${partyResults.rankBySecond}',
-									votesDiff:'${partyResults.votesDiff}'
+									votesDiff:'${partyResults.votesDiff}',
+									electorsDiff:'${partyResults.electorsPercentageDiff}'
 								}
 					distObj.electionResults.push(electionObj);
 			</c:forEach>
@@ -423,18 +435,20 @@ var electionObject=	{
 									votesEarnedBySecond:'${partyResults.votesEarnedBySecond}',
 									votesPercentageBySecond:'${partyResults.votesPercentageBySecond}',
 									rankBySecond:'${partyResults.rankBySecond}',
-									votesDiff:'${partyResults.votesDiff}'
+									votesDiff:'${partyResults.votesDiff}',
+								    electorsDiff:'${partyResults.electorsPercentageDiff}'
 								}
 					distObj.electionResults.push(electionObj);
 			</c:forEach>
 			this.electionObject.constsLost.push(distObj);
 		</c:forEach>
 
-		<c:forEach var="comparison" items="${electionsComparisonVO.constituenciesNotConsidered}">
+		<c:forEach var="comparison" items="${electionsComparisonVO.constituenciesNotConsideredForYearOne}">
 			var distObj={
 							districtId:'${comparison.districtId}',
 							stateId:'${comparison.stateId}',
 							districtName:'${comparison.districtName}',
+							constiCount:'${comparison.constituenciesCount}',
 							electionResults:[]
 						}
 				
@@ -453,11 +467,44 @@ var electionObject=	{
 									votesEarnedBySecond:'${partyResults.votesEarnedBySecond}',
 									votesPercentageBySecond:'${partyResults.votesPercentageBySecond}',
 									rankBySecond:'${partyResults.rankBySecond}',
-									votesDiff:'${partyResults.votesDiff}'
+									votesDiff:'${partyResults.votesDiff}',
+									electorsDiff:'${partyResults.electorsPercentageDiff}'
 								}
 					distObj.electionResults.push(electionObj);
 			</c:forEach>
-			this.electionObject.constsNotConsidered.push(distObj);
+			this.electionObject.constsNotConsideredYearOne.push(distObj);
+		</c:forEach>
+
+		<c:forEach var="comparison" items="${electionsComparisonVO.constituenciesNotConsideredForYearTwo}">
+			var distObj={
+							districtId:'${comparison.districtId}',
+							stateId:'${comparison.stateId}',
+							districtName:'${comparison.districtName}',
+							constiCount:'${comparison.constituenciesCount}',
+							electionResults:[]
+						}
+				
+			<c:forEach var="partyResults" items="${comparison.partyElectionResultsVO}">
+				var electionObj={
+									partyId:'${partyResults.partyId}',
+									partyName:'${partyResults.partyName}',
+									candidateId:'${partyResults.candidateId}',
+									candidateName:'${partyResults.candidateName}',
+									constituencyId:'${partyResults.constituencyId}',
+									constituencyName:'${partyResults.constituencyName}',
+									votesEarned:'${partyResults.votesEarned}',
+									rank:'${partyResults.rank}',
+									votesPercentage:'${partyResults.votesPercentage}',
+									secondCandidateName:'${partyResults.secondCandidateName}',
+									votesEarnedBySecond:'${partyResults.votesEarnedBySecond}',
+									votesPercentageBySecond:'${partyResults.votesPercentageBySecond}',
+									rankBySecond:'${partyResults.rankBySecond}',
+									votesDiff:'${partyResults.votesDiff}',
+									electorsDiff:'${partyResults.electorsPercentageDiff}'
+								}
+					distObj.electionResults.push(electionObj);
+			</c:forEach>
+			this.electionObject.constsNotConsideredYearTwo.push(distObj);
 		</c:forEach>
 
 		buildAccordian();
@@ -476,10 +523,10 @@ var electionObject=	{
 	 
 		accordion.render();
 
-		var item1, item2, item3;
+		var item1, item2, item3, item4;
 		 
 		item1 = new Y.AccordionItem( {
-		label: "Constituencies Gained Votes% : ${electionsComparisonVO.votesGainedCount} --  In ${electionsComparisonVO.firstYear} [Seats -Won : ${electionsComparisonVO.seatsWonInFirstYearForVotesGained} Lost : ${electionsComparisonVO.seatsLostInFirstYearForVotesGained}] In ${electionsComparisonVO.secondYear} [Seats - Won : ${electionsComparisonVO.seatsWonInSecondYearForVotesGained} Lost : ${electionsComparisonVO.seatsLostInSecondYearForVotesGained}] ",
+		label: "Constituencies Gained Votes% : ${electionsComparisonVO.votesGainedCount} --  in ${electionsComparisonVO.firstYear} [Seats -Won : ${electionsComparisonVO.seatsWonInFirstYearForVotesGained} Lost : ${electionsComparisonVO.seatsLostInFirstYearForVotesGained}] --- in ${electionsComparisonVO.secondYear} [Seats - Won : ${electionsComparisonVO.seatsWonInSecondYearForVotesGained} Lost : ${electionsComparisonVO.seatsLostInSecondYearForVotesGained}] ",
 		expanded: true,
 		contentBox: "dynamicContentBox1",
 		contentHeight: {
@@ -510,7 +557,7 @@ var electionObject=	{
 		accordion.addItem( item1 );
 
 		item2 = new Y.AccordionItem( {
-		label: "Constituencies Lost Votes% : ${electionsComparisonVO.votesLostCount} --  In ${electionsComparisonVO.firstYear} [Seats -Won : ${electionsComparisonVO.seatsWonInFirstYearForVotesLost} Lost : ${electionsComparisonVO.seatsLostInFirstYearForVotesLost}] In ${electionsComparisonVO.secondYear} [Seats - Won : ${electionsComparisonVO.seatsWonInSecondYearForVotesLost} Lost : ${electionsComparisonVO.seatsLostInSecondYearForVotesLost}]",
+		label: "Constituencies Lost Votes% : ${electionsComparisonVO.votesLostCount} --  in ${electionsComparisonVO.firstYear} [Seats -Won : ${electionsComparisonVO.seatsWonInFirstYearForVotesLost} Lost : ${electionsComparisonVO.seatsLostInFirstYearForVotesLost}] --- in ${electionsComparisonVO.secondYear} [Seats - Won : ${electionsComparisonVO.seatsWonInSecondYearForVotesLost} Lost : ${electionsComparisonVO.seatsLostInSecondYearForVotesLost}]",
 		expanded: false,
 		contentBox: "dynamicContentBox2",
 		contentHeight: {
@@ -541,7 +588,7 @@ var electionObject=	{
 		accordion.addItem( item2);
 		 
 		item3 = new Y.AccordionItem( {
-		label: "Constituencies which has not considered - ${electionsComparisonVO.count}",
+		label: "Constituencies which has not considered in ${electionsComparisonVO.firstYear} -- ( ${electionsComparisonVO.constiNotConstiCountForYearOne} ) -- [Seats -Won : ${electionsComparisonVO.constiNotConsideredForYearOneSeatsWon} Lost : ${electionsComparisonVO.constiNotConsideredForYearOneSeatsLost}] ",
 		expanded: false,
 		contentBox: "dynamicContentBox3",
 		contentHeight: {
@@ -552,12 +599,12 @@ var electionObject=	{
  
 		var str2='';
 		str2+='<table class="districtVotesTable"><tr>';		
-		for(var i in electionObject.constsNotConsidered)
+		for(var i in electionObject.constsNotConsideredYearOne)
 		{			
 		str2+='<td>';
 		str2+='<span id="districtAncSpan">';
 		str2+='	<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>';
-		str2+='	<a href="javascript:{}" onclick="setContentToPanel(\'constsNotConsidered\','+i+')" class="districtAnc">'+electionObject.constsNotConsidered[i].districtName+'</a>';
+		str2+='	<a href="javascript:{}" onclick="setContentToPanel(\'constsNotConsideredYearOne\','+i+')" class="districtAnc">'+electionObject.constsNotConsideredYearOne[i].districtName+':'+electionObject.constsNotConsideredYearOne[i].constiCount+'</a>';
 		str2+='	</span>';
 		str2+='</td>';			
 		if(i!=0 && i%3==0)
@@ -570,6 +617,38 @@ var electionObject=	{
 		item3.set( "bodyContent",str2);
 		 
 		accordion.addItem( item3);
+
+
+		item4 = new Y.AccordionItem( {
+		label: "Constituencies which has not considered in ${electionsComparisonVO.secondYear} -- ( ${electionsComparisonVO.constiNotConstiCountForYearTwo} ) -- [Seats -Won : ${electionsComparisonVO.constiNotConsideredForYearTwoSeatsWon} Lost : ${electionsComparisonVO.constiNotConsideredForYearTwoSeatsLost}]",
+		expanded: false,
+		contentBox: "dynamicContentBox3",
+		contentHeight: {
+			method: "fixed",
+			height:140
+		}
+		} );
+ 
+		var str3='';
+		str3+='<table class="districtVotesTable"><tr>';		
+		for(var i in electionObject.constsNotConsideredYearTwo)
+		{			
+		str3+='<td>';
+		str3+='<span id="districtAncSpan">';
+		str3+='	<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>';
+		str3+='	<a href="javascript:{}" onclick="setContentToPanel(\'constsNotConsideredYearTwo\','+i+')" class="districtAnc">'+electionObject.constsNotConsideredYearTwo[i].districtName+':'+electionObject.constsNotConsideredYearTwo[i].constiCount+'</a>';
+		str3+='	</span>';
+		str3+='</td>';			
+		if(i!=0 && i%3==0)
+		{			
+			str3+='	</tr><tr><td colspan="3"> </td></tr><tr>';
+		}		
+		}
+		str3+='</tr></table>	';
+
+		item4.set( "bodyContent",str3);
+		 
+		accordion.addItem( item4);
 		 
 
 	   });
@@ -728,9 +807,19 @@ var electionObject=	{
 
 		<div id="electionResultsPopupDiv" style="display:none;">
 			<div id="electionResultsPopupDivHead">
-				<span id="closeSpan" onclick="closeSpan()">X</span>
-				<span id="closeLabelSpan"style="" onclick="closeSpan()"><u>Close</u></span>			
-				<span id="labelHead">Candidate Details..</span>						
+				<div>
+					<span id="closeSpan" onclick="closeSpan()">X</span>
+					<span id="closeLabelSpan"style="" onclick="closeSpan()"><u>Close</u></span>			
+					<span id="labelHead">Candidate Details..</span>						
+				</div>
+				<div style="font-weight:bold;">
+					<table width="100%">
+						<tr>
+							<td align="center"> Year -- ${electionsComparisonVO.firstYear}</td>
+							<td align="center"> Year -- ${electionsComparisonVO.secondYear}</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 			<div id="electionResultsPopupDivBody" class="yui-skin-sam">
 				Content
