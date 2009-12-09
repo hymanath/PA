@@ -64,4 +64,18 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		return queryObject.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<CandidateResult> findCandidateResults(Long electionScopeId,List<Long> partyIds,String year){
+		
+		StringBuffer queryBuffer = new StringBuffer("from CandidateResult as model where model.nomination.nominationId in ( select model.nomination.nominationId from model where model.nomination.constituencyElection.election.electionScope.electionScopeId = " + electionScopeId + " and model.nomination.constituencyElection.election.electionYear = " + year + " ) and model.nomination.party.partyId in(");
+		for(int i=0;i<partyIds.size();i++){
+			queryBuffer.append(partyIds.get(i) + ",");
+		}
+		String query = queryBuffer.toString().substring(0, queryBuffer.toString().length()-1);
+		query = query + "))";
+		
+		return getHibernateTemplate().find(query);
+		
+	}
+	
 }
