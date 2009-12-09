@@ -151,10 +151,6 @@ table.CandidateElectionResultsTable td {
 			<s:select theme="simple" name="party" id="partyList" list="partyList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
 		</td>
 	 </tr>
-	 <tr id="yearRow">
-		
-	 </tr>
-	 
 	 <tr>
 	   <th>Elections Years</th>
 	   <td colspan="2"  align="left" >
@@ -163,14 +159,18 @@ table.CandidateElectionResultsTable td {
 			<s:select theme="simple" name="electionYears2" id="yearsList2" list="yearsList" headerKey="0" headerValue="Select" listKey="name" listValue="name" />
 		</td>
 	 </tr>
-	 <tr id="yearRow">
-		
+	 <tr>
+		<th>Include Alliances</th>
+		<td><s:checkbox theme="simple" id="allianceCheck" name="allianceCheck" value="hasAllianceParties"></s:checkbox> Include in the Report
+		 </td>
 	 </tr>
+	
 	 <tr>
 		<th colspan="2" align="center">
 			<s:submit theme="simple" value="display Results"/>
 		</th>
 	 </tr>
+
 	 
    </table>
 
