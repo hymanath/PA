@@ -331,6 +331,8 @@ public class PartyService implements IPartyService {
 						positionDetailVOForAllianceRebelParties.add(positionDetail);		
 					}
 					// Set Votes Flown to other parties
+					if(votesFlow.get(party.getShortName())!=null)
+						votesEarned+=votesFlow.get(party.getShortName()).doubleValue();
 					votesFlow.put(party.getShortName(), new BigDecimal(votesEarned).setScale (2,BigDecimal.ROUND_HALF_UP));
 				}
 			}
@@ -437,28 +439,24 @@ public class PartyService implements IPartyService {
 			if(Math.abs(differences)<1)
 				continue;
 			StringBuilder sb = new StringBuilder();
-			//sb.append(presentValue).append("%");
-			/*if(!ifPositiveVotesFlow && differences>=0)
-				sb.append(" (Gain: ").append(Math.abs(differences)).append(")");*/
 			if(isPositiveVotesFlow && differences<0 ){
 				sb.append(presentValue).append("%").append(" (Loss: ").append(Math.abs(differences)).append(")");
 			}
 			else if(!isPositiveVotesFlow && differences>=0){
 				sb.append(presentValue).append("%").append(" (Gain: ").append(Math.abs(differences)).append(")");
 			}
-			//sb.append(Math.abs(differences)).append(")");
 			tempMap.put(partyName, sb.toString());
 			sortedVotesFlowMap.put(partyName, presentValue);
 	    }
 	
 		for(Map.Entry<String, Double> entry : sortedVotesFlowMap.entrySet()) {
-			 if(count < 4) {
-				 String partyName = entry.getKey();
+			 String partyName = entry.getKey();
+			if(log.isDebugEnabled())
+				log.debug("partyNames::::"+partyName);
 				 String value = tempMap.get(partyName);
 				 if(value.length()>0)
 					 votesFlow.put(partyName, value);
 				 count ++;
-			 }
 		 }
 		
 		return votesFlow;
