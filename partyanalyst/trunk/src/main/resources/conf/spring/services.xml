@@ -85,6 +85,8 @@
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="candidateResultDAO" ref="candidateResultDAO" />
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 
 	<bean name="excelToDBService" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService" >
