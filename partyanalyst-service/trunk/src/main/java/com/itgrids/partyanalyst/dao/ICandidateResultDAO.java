@@ -41,6 +41,8 @@ public interface ICandidateResultDAO extends GenericDao<CandidateResult, Long>{
 	
     public List<Long> findCandidateResultsCount(Long electionScopeId,Long partyId,String year);
 	
-	public List<CandidateResult> findCandidateResults(Long electionScopeId,Long partyId,String year); 
+	public List<CandidateResult> findCandidateResults(Long electionScopeId,Long partyId,String year);
+	
+	public List<CandidateResult> findCandidateResults(Long electionScopeId,List<Long> partyIds,String year);
 	
 }
