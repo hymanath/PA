@@ -140,6 +140,7 @@
 		
 		<action name="cadreReportAction" class="cadreReportAction">
 			<result name="success">/jsp/cadreReportPage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
 		
 		<action name="boothUploadAction" class="boothUploadAction">

@@ -38,6 +38,8 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 	public String execute() throws Exception{
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user==null)
+			return ERROR;
 		if(user==null){
 			userCadresInfoVO = new UserCadresInfoVO();
 		}else{
