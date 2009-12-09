@@ -6,6 +6,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
@@ -28,7 +29,18 @@ public class ElectionComparisonReportAction extends ActionSupport implements Ser
 	private String party;
 	private String electionYears1;
 	private String electionYears2;
+	private String allianceCheck;
 	
+	public static final Logger logger = Logger.getLogger(ElectionComparisonReportAction.class);
+	
+	public String getAllianceCheck() {
+		return allianceCheck;
+	}
+
+	public void setAllianceCheck(String allianceCheck) {
+		this.allianceCheck = allianceCheck;
+	}
+
 	private static final long serialVersionUID = 1L;
 	public String getElectionType() {
 		return electionType;
@@ -144,6 +156,10 @@ public class ElectionComparisonReportAction extends ActionSupport implements Ser
 	public String execute()
 	{
 		
+		Boolean hasAlliances = new Boolean(allianceCheck);
+		if(logger.isDebugEnabled())
+			logger.debug("alliance-->" + allianceCheck);
+		
 		Long electionScopeId = electionsComparisonService.getElectionScopeId(Long.parseLong(getElectionType()), Long.parseLong(getState()));
 		
 		if(electionScopeId != null){
@@ -158,24 +174,28 @@ public class ElectionComparisonReportAction extends ActionSupport implements Ser
 					previousYear = getElectionYears2();
 					presentYear = getElectionYears1();
 				}
-				electionsComparisonVO = electionsComparisonService.getPartyElectionComparedResults(electionScopeId, Long.parseLong(getParty()), previousYear, presentYear);
+				electionsComparisonVO = electionsComparisonService.getPartyElectionComparedResults(electionScopeId, Long.parseLong(getElectionType()),Long.parseLong(getParty()), previousYear, presentYear,hasAlliances);
 				electionComparisonResultVO = null;
-				partyResultsPercentageForYear1 = electionsComparisonService.getPartyResultsPercentage(electionScopeId, Long.parseLong(getParty()), getElectionYears1());
-				partyResultsPercentageForYear2 = electionsComparisonService.getPartyResultsPercentage(electionScopeId, Long.parseLong(getParty()), getElectionYears2());
+				partyResultsPercentageForYear1 = electionsComparisonService.getPartyResultsPercentage(electionScopeId, Long.parseLong(getElectionType()),Long.parseLong(getParty()), getElectionYears1(),hasAlliances);
+				partyResultsPercentageForYear2 = electionsComparisonService.getPartyResultsPercentage(electionScopeId, Long.parseLong(getElectionType()),Long.parseLong(getParty()), getElectionYears2(),hasAlliances);
 				
 			}
 			else if(firstYear.equals(true) && secondYear.equals(false)){
-				electionComparisonResultVO = electionsComparisonService.getPartyElectionResults(electionScopeId, Long.parseLong(getParty()), getElectionYears1());
+				List<Long> partyIds = electionsComparisonService.getAlliancePartysAsVO(Long.parseLong(getElectionType()), Long.parseLong(getParty()), getElectionYears1());
+				electionComparisonResultVO = electionsComparisonService.getPartyElectionResults(electionScopeId, partyIds, getElectionYears1());
 				electionsComparisonVO = null;
 				
 			}
 			else{
-				electionComparisonResultVO = electionsComparisonService.getPartyElectionResults(electionScopeId, Long.parseLong(getParty()), getElectionYears2());
+				List<Long> partyIds = electionsComparisonService.getAlliancePartysAsVO(Long.parseLong(getElectionType()), Long.parseLong(getParty()), getElectionYears2());
+				electionComparisonResultVO = electionsComparisonService.getPartyElectionResults(electionScopeId, partyIds, getElectionYears2());
 				electionsComparisonVO = null;
 				
 			}
 			 
 		}
+		if(logger.isDebugEnabled())
+			logger.debug("alliance-->" + allianceCheck);
 		if(electionsComparisonVO != null || electionComparisonResultVO != null)
 			return Action.SUCCESS;
 		else
