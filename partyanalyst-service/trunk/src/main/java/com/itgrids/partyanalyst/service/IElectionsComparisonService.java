@@ -24,12 +24,14 @@ public interface IElectionsComparisonService {
 	
     public boolean IsPartyParticipated(Long electionScopeId,Long partyId,String year);
     
-    public List<ElectionComparisonResultVO> getPartyElectionResults(Long electionScopeId,Long partyId,String year);
+    public List<ElectionComparisonResultVO> getPartyElectionResults(Long electionScopeId,List<Long> partyIds,String year);
     
-    public ElectionsComparisonVO getPartyElectionComparedResults(Long electionScopeId,Long partyId,String firstYear,String secondYear);
+    public ElectionsComparisonVO getPartyElectionComparedResults(Long electionScopeId,Long electionTypeId,Long partyId,String firstYear,String secondYear,Boolean includeAlliance);
     
     public Long getElectionScopeId(Long electionTypeId,Long stateId);
     
-    public PartyResultsPercentageVO getPartyResultsPercentage(Long electionScopeId,Long partyId,String year);
+    public PartyResultsPercentageVO getPartyResultsPercentage(Long electionScopeId,Long electionTypeId,Long partyId,String year,Boolean includeAlliance);
+    
+    public List<Long> getAlliancePartysAsVO(Long electionTypeId,Long partyId,String year);
     
 }
