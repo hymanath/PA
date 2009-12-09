@@ -48,6 +48,7 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 		return getHibernateTemplate().find("from Party model where model.partyId=?", partyId);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Party> findByShortNames(String shortNames){
 		return getHibernateTemplate().find("from Party model where model.shortName in ("+shortNames+")");
 	}
