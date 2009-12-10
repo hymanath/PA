@@ -379,7 +379,7 @@ table.CandidateElectionResultsTable td {
 										<td><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentForPartyForYearTwo}" /> %</td>
 									</tr>
 									<tr>
-										<th align="center"><c:out value="Percentage Diff ( " />
+										<th align="center"><c:out value="Votes % Diff ( " />
 								   <c:out value="${partyInfluenceReportVO.year}" /> <c:out value=" - " /><c:out value="${partyInfluenceReportVO.previousYear}" />  <c:out value=") " /></th>
 									<td style="color:red;"><c:out value="${partyInfluenceReportVO.totalDistrictsVotesPercentDiffForParty}" /> %</td>
 										
