@@ -266,6 +266,11 @@ public class PartyService implements IPartyService {
 		List<Party> allianceParties = partyPerformanceReportVO.getAllianceParties();
 		Map<String, BigDecimal> votesFlow = new HashMap<String, BigDecimal>();
 		SortedMap<String, Integer> positionDistribution = new TreeMap<String, Integer>();
+		positionDistribution.put("1",0);
+		positionDistribution.put("2",0);
+		positionDistribution.put("3",0);
+		positionDistribution.put("4",0);
+		positionDistribution.put("5",0);
 		double totalValidVotes = 0;
 		double totalVotesEarnedByParty=0;
 		
@@ -292,7 +297,14 @@ public class PartyService implements IPartyService {
 				boolean isAllianceParty = (includeAllianceParties && allianceParties.contains(party))? true : false;
 				boolean isRebelAllianceParty = (rebelAllianceParty != null && party.equals(rebelAllianceParty))? true : false;
 				double votesEarned = nomination.getCandidateResult().getVotesEarned().doubleValue();
-				
+
+				// Party Positions
+				if(isSelectedParty){
+					String position = (rank > 4)? "5" : rank.toString();
+					//int positionCount = (positionDistribution.get(position) != null )? positionDistribution.get(position).intValue() :  0;
+					int positionCount = positionDistribution.get(position);
+					positionDistribution.put(position, ++positionCount );
+				}
 				if(isSelectedParty || (isAllianceParty && !isRebelAllianceParty)){
 					log.debug("Selected Parties...NominationID:" + nomination.getNominationId() + " PartyName:" +nomination.getParty().getShortName() 
 							+ " Rank="+nomination.getCandidateResult().getRank()
@@ -303,11 +315,6 @@ public class PartyService implements IPartyService {
 						partyNominationWhoWon = nomination;
 					else 
 						partyNominationWhoLost = nomination;
-					
-					// Party Positions
-					String position = (rank > 4)? "5" : rank.toString();
-					int positionCount = (positionDistribution.get(position) != null )? positionDistribution.get(position).intValue() :  0;
-					positionDistribution.put(position, ++positionCount );
 					
 					totalVotesEarnedByParty+= votesEarned;
 
@@ -366,6 +373,11 @@ public class PartyService implements IPartyService {
 		partyPerformanceReportVO.setTotalSeatsLost(positionDetailVOsForPartyLoosers.size());
 		partyPerformanceReportVO.setTotalSeatsContested(positionDetailVOsForPartyWinners.size() + positionDetailVOsForPartyLoosers.size());
 		
+		log.debug("positionDistribution.get(1)::"+positionDistribution.get("1"));
+		log.debug("positionDistribution.get(2)::"+positionDistribution.get("2"));
+		log.debug("positionDistribution.get(3)::"+positionDistribution.get("3"));
+		log.debug("positionDistribution.get(4)::"+positionDistribution.get("4"));
+		log.debug("positionDistribution.get(5)::"+positionDistribution.get("5"));
 		log.debug("getPartyConstituenciesData....end");
 	}
 
@@ -612,7 +624,7 @@ public class PartyService implements IPartyService {
 		Set<Nomination> nominations = constituencyElection.getNominations();
 		System.out.println("Inside getPartyPositionDisplayVO -->" + nominations.size());
 		
-		Nomination selectedNomination = partyParticipatedNomination(nominations , parties, rank);
+		Nomination selectedNomination = partyParticipatedNomination(nominations , parties, rank,partyID);
 		if(selectedNomination==null)
 			return null;
 		partyPositionDisplayVO.setConstituencyName(constituencyElection.getConstituency().getName());
@@ -625,11 +637,17 @@ public class PartyService implements IPartyService {
 			fullName.append(selectedNomination.getCandidate().getLastname());
 		if(fullName.length()>0)
 			partyPositionDisplayVO.setCandidateName(fullName.toString());
+		partyPositionDisplayVO.setRank(selectedNomination.getCandidateResult().getRank());
 		partyPositionDisplayVO.setVotePercentage(selectedNomination.getCandidateResult().getVotesPercengate());
 		
 		List<PartyPostionInfoVO>  partyPostionInfoVOList = new ArrayList<PartyPostionInfoVO>();
 		for(Nomination nomination : nominations){
-			if(nomination.getCandidateResult().getRank().intValue() < rank){
+			Long pID = nomination.getParty().getPartyId();
+			if(pID.equals(partyID))
+				continue;
+			
+			if((rank ==-1 && nomination.getCandidateResult().getRank().intValue() <3) 
+					|| nomination.getCandidateResult().getRank().intValue() < rank){
 				PartyPostionInfoVO partyPostionInfoVO = new PartyPostionInfoVO();
 				String partyName = nomination.getParty().getShortName();
 				if(partyName==null || partyName.length()==0)	
@@ -651,20 +669,23 @@ public class PartyService implements IPartyService {
 				
 			}
 		}
+		if(log.isDebugEnabled()){
+			log.debug("partyPostionInfoVOList::::"+partyPostionInfoVOList.size());
+			log.debug("rank::::"+rank);
+		}
 		Collections.sort(partyPostionInfoVOList);
 		partyPositionDisplayVO.setOppPartyPositionInfoList(partyPostionInfoVOList);
 		
 		
 		return partyPositionDisplayVO;
 	}
-
-	public Nomination partyParticipatedNomination(Set<Nomination> nominations, List<SelectOptionVO> parties, int rank){
+	
+	public Nomination partyParticipatedNomination(Set<Nomination> nominations, List<SelectOptionVO> parties, int rank,Long partyID){
 		for(Nomination nomination : nominations){
-			if(nomination.getCandidateResult().getRank().intValue() == rank){
-				for(SelectOptionVO obj : parties){
-					if(nomination.getParty().getPartyId().equals(obj.getId()))
-						return nomination;
-				}
+			if((rank==-1 && nomination.getCandidateResult().getRank().intValue() > 4)
+					|| nomination.getCandidateResult().getRank().intValue() == rank){
+				if(partyID.equals(nomination.getParty().getPartyId()))
+					return nomination;
 			}
 			
 		}

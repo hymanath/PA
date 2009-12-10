@@ -327,11 +327,11 @@ public class PartyServiceTest {
 		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
 		SelectOptionVO obj = new SelectOptionVO(); obj.setId(13L);
 		parties.add(obj);
-		Nomination nomination = service.partyParticipatedNomination(nominations, parties, 3);
+		Nomination nomination = service.partyParticipatedNomination(nominations, parties, 3,13L);
 		Assert.assertNull(nomination);
 		SelectOptionVO obj1 = new SelectOptionVO(); obj1.setId(3L);
 		parties.add(obj1);
-		nomination = service.partyParticipatedNomination(nominations, parties, 3);
+		nomination = service.partyParticipatedNomination(nominations, parties, 3,13L);
 		Assert.assertNotNull(nomination);
 	}
 
