@@ -120,7 +120,10 @@ function displayPartyPositions(jsObj,data)
 	var divElmtBody = document.getElementById("partyPositionsBody");
 
 	var divElmtHead = document.getElementById("labelHead");	
-	divElmtHead.innerHTML="Opposition Party Details for "+'${stateData.party}'+" In position : "+jsObj.positionValue;
+	rank = jsObj.positionValue;
+	if(rank==-1)
+		rank = 'N';
+	divElmtHead.innerHTML="Opposition Party Details for "+'${stateData.party}'+" In position : "+rank;
 
 	divElmt.style.display = 'block';
 
@@ -129,8 +132,8 @@ function displayPartyPositions(jsObj,data)
 	for(var i in data)
 	{		
 		str+='<tr>';
-		str+='<td>'+data[i].candidateName+'</td>';
 		str+='<td>'+data[i].constituencyName+'</td>';
+		str+='<td>'+data[i].candidateName+'</td>';
 		str+='<td align="right">'+data[i].votePercentage+'</td>';
 		for (var d in data[i].oppPartyPositionInfoList)
 		{
@@ -165,8 +168,8 @@ function buildPartyPositionDataTable(info)
 		fields : []
 	};	
 	
-	var key1={key:"candidateName"};
-	var key2={key : "constituencyName"};
+	var key1={key : "constituencyName"};
+	var key2={key:"candidateName"};
 	var key3={key : "votePercentage",parser:"number"};
 	resultsDataSource.responseSchema.fields.push(key1);
 	resultsDataSource.responseSchema.fields.push(key2);
@@ -187,14 +190,14 @@ function buildPartyPositionDataTable(info)
 	
 	//--------
 	var resultsColumnDefs = [];
-	var obj1={
-		key : "candidateName",		
-		label : "Candidate Name",
-		sortable : true
-	};
-	var obj2= {
+	var obj1= {
 		key : "constituencyName",		
 		label : "Constituency Name",
+		sortable : true
+	};
+	var obj2={
+		key : "candidateName",		
+		label : "Candidate Name",
 		sortable : true
 	};
 	var obj3= {
