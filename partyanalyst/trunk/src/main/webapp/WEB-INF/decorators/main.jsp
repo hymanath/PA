@@ -161,7 +161,7 @@
 							<a class="yuimenubaritemlabel" href="javascript:{}">REPORTS</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="javascript:{}">CADRE MANAGEMENT</a> 
+							<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE MANAGEMENT</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="javascript:{}">CONSTITUENCEY MANAGEMENT</a> 
