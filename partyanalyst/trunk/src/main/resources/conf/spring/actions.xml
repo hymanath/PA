@@ -158,4 +158,7 @@
 	
 	<bean id="userGroupsMainAction" class="com.itgrids.partyanalyst.web.action.UserGroupsMainAction" singleton="false">		
 	</bean>
+	
+	<bean id="cadreManagementAction" class="com.itgrids.partyanalyst.web.action.CadreManagementAction" singleton="false">		
+	</bean>
 </beans>
