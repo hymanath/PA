@@ -68,8 +68,8 @@
 
 	#cadreSMSGroupsMainDiv
 	{
-		height:100%;
-		width:100%;
+		height:330px;
+		width:auto;
 		background-color:#CBDCE8;		
 	}
 	
@@ -77,7 +77,7 @@
 	{
 		height:100%;
 		width:100%;
-		background-color:#CBDCE8;
+		background-color:#F9FCFF;
 	}	
 
 	#cadreTeamsMainDiv
@@ -156,7 +156,27 @@
 		float:none;
 	}
 
+	.cadreInfoDiv
+	{
+		padding:5px;
+	}
 
+	#regionLevelCadreDiv
+	{
+		padding-top:20px;
+		height:80%;
+	}
+	#cadreStrengthAreasDiv
+	{
+		text-align:right;
+		margin-right:10px;
+	}
+	#regionLevelCadreDivHead
+	{
+		padding:5px;
+		font-weight:bold;
+		text-decoration:underline;
+	}
 </style>
 
 <script type="text/javascript">
@@ -169,7 +189,7 @@
 					{ 
 						position: 'right',
 						width: 300,	
-						height:500,
+						height:520,
 						header: 'Cadre Teams',
 						resize: false,
 						gutter: '5px',
@@ -190,8 +210,8 @@
 						animate: true }, 
 					{
 						position: 'left',
-						width: 200,
-						height:500,
+						width: 220,
+						height:520,
 						header: 'Cadre SMS',
 						body: 'cadreSMSGroupsMainDiv',
 						resize: false, 
@@ -389,11 +409,27 @@
 			</div>
 		</div>
 		<div id="cadreGroupsMainDiv">
-			<div id="cadreGroupsHeadDiv">Cadre Groups</div>
-			<div id="cadreGroupsBodyDiv"></div>
+			<div id="cadreGroupsHeadDiv">Associate Groups</div>
+			<div id="cadreGroupsBodyDiv" style="height: 130px;">Associate groups</div>
 		</div>
 	</div>
-	<div id="cadreDetailsMainDiv">Cadre Details</div>		
+	<div id="cadreDetailsMainDiv">
+		<div id="regionLevelCadreDiv">
+			<div id="regionLevelCadreDivHead">Region Level Cadres</div>
+			<div id="regionLevelCadreDivBody">
+				<div id="stateLevelCadre" class="cadreInfoDiv">
+					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>State Level Cadre - 25000
+				</div>
+				<div id="districtLevelCadre" class="cadreInfoDiv">
+					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>District Level Cadre - 15000
+				</div>
+				<div id="MandalLevelCadre" class="cadreInfoDiv"><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>Mandal Level Cadre - 10000</div>
+				<div id="VillageLevelCadre" class="cadreInfoDiv"><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>Village Level Cadre - 5500</div>
+			</div>
+		</div>
+		
+		<div id="cadreStrengthAreasDiv" class="cadreInfoDiv"><a href="cadreReportAction.action">Know your Cadre Strength areas</a></div>
+	</div>		
 	<div id="cadreTeamsMainDiv">
 		<div id="cadreTeamsAccordianDiv"></div>
 	</div>
@@ -406,13 +442,13 @@
 				<tr>
 					<td width="50%">
 						<div id="cadreImpDatesDiv">
-							<div id="cadreImpDatesHeadDiv"> Imp Dates Header</div>
+							<div id="cadreImpDatesHeadDiv"> Important Dates </div>
 							<div id="cadreImpDatesBodyDiv"> Imp Dates Content </div>
 						</div>
 					</td>
 					<td width="50%">
 						<div id="cadreImpEventsDiv">
-							<div id="cadreImpEventsHeadDiv"> Imp Events Header</div>
+							<div id="cadreImpEventsHeadDiv"> Important Events</div>
 							<div id="cadreImpEventsBodyDiv"> Imp Events Content</div>
 						</div>
 					</td>
