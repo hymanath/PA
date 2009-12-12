@@ -53,7 +53,7 @@
 		{			
 	      if (!point) 
 		  {
-			alert(address + " not found");
+			//alert(address + " not found");
 		  }
 		  else 
 		  {
@@ -179,13 +179,17 @@
 				<tr>
 					<td style="text-align:left;">
 						<c:url value="mandalPageAction.action" var="displayMandalURL">
-							<c:param name="mandalId"   value="${mandalsBeforeDelimitationConstituency.mandalID}" />
+							<c:param name="MANDAL_ID"   value="${mandalsBeforeDelimitationConstituency.mandalID}" />
+							<c:param name="MANDAL_NAME"   value="${mandalsBeforeDelimitationConstituency.mandalName}" />
 						</c:url>
 
 						<a href='<c:out value="${displayMandalURL}" />'> 
 					
 					
 						 <c:out value="${mandalsBeforeDelimitationConstituency.mandalName}"/> </a>
+						 
+						 
+						 
 					</td>
 					<td ><c:out value="${mandalsBeforeDelimitationConstituency.totalPersons}"/></td>
 					<td ><c:out value="${mandalsBeforeDelimitationConstituency.totalSCPersons}"/></td>
