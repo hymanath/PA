@@ -301,7 +301,7 @@
 			<result name="error">/jsp/loginForm.jsp</result>			
 		</action>
 		
-		<action name="cadreManagementAction" class="cadreManagementAction">
+		<action name="cadreManagementAction" class="cadreReportAction">
 			<result name="success">/jsp/cadreManagementMainPage.jsp</result>						
 		</action>
 		
