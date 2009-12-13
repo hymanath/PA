@@ -26,6 +26,7 @@
 			</tr>
 		</table>
 		<s:form name="loginForm" action="loginAction" method="POST" >
+		<s:hidden name="src" value="<%=request.getParameter('src')" />
 			<c:out value="${sessionScope.USER_REG_SUCCESS}" />
 			<c:remove var="USER_REG_SUCCESS" scope="session" />
 			<s:textfield name="userName" label="%{getText('userName')}"/>

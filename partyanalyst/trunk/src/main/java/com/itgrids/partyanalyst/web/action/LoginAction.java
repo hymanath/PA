@@ -4,11 +4,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.service.impl.DelimitationConstituencyMandalService;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 
@@ -23,7 +25,17 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 	private String password = null;
 	private ILoginService loginService;
 	private String name = null;
+	private String src = null;
+	private static final Logger log = Logger.getLogger(LoginAction.class);
 	
+	public String getSrc() {
+		return src;
+	}
+
+	public void setSrc(String src) {
+		this.src = src;
+	}
+
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
@@ -71,7 +83,14 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute("USER",regVO);
 			session.setAttribute("UserName", name);
 			session.setAttribute("loginStatus", "out");
-			return SUCCESS;
+			if(log.isDebugEnabled()){
+				log.debug("src value: " + src);
+			}
+			
+			if(src != null)
+				return src;
+			else
+				return SUCCESS;
 			
 		}
 

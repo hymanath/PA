@@ -26,6 +26,7 @@
 		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
 			<result name="error">/jsp/loginForm.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
+			<result type="redirect" name="cadreManagementAction">cadreManagementAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 		</action>
 		
@@ -302,7 +303,8 @@
 		</action>
 		
 		<action name="cadreManagementAction" class="cadreReportAction">
-			<result name="success">/jsp/cadreManagementMainPage.jsp</result>						
+			<result name="success">/jsp/cadreManagementMainPage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=cadreManagementAction</result>						
 		</action>
 		
 	</package>
