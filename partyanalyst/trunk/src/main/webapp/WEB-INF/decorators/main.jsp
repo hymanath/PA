@@ -115,8 +115,7 @@
 	    { 
 	        id: "cadreManagement", 
 	        itemdata: [ 				
-	   	            { text: "Cadre Report", url: "cadreReportAction.action" },
-		            { text: "Send SMS", url: "cadreSMSAction.action" }	
+	   	          
 
 	        ] 
 	    },  
