@@ -29,6 +29,7 @@ public class ConstituencyPositionDetailVO implements Serializable{
 	
 	private double presentElectionVotes; // total votes in the present election
 	private int rank;
+	private int oppositePartyRank;
 	private String partyName;  
 	private BigDecimal percentageDiffBetweenTop2;
 	
@@ -155,6 +156,22 @@ public class ConstituencyPositionDetailVO implements Serializable{
 
 	public void setOppositePartyLongName(String oppositePartyLongName){
 		this.oppositePartyLongName = oppositePartyLongName;
+	}
+
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
+	public int getOppositePartyRank() {
+		return oppositePartyRank;
+	}
+
+	public void setOppositePartyRank(int oppositePartyRank) {
+		this.oppositePartyRank = oppositePartyRank;
 	}
 
 }
