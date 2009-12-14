@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
 import com.itgrids.partyanalyst.dto.PartyPostionInfoVO;
 import com.itgrids.partyanalyst.dto.PositionType;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.District;
@@ -123,6 +124,13 @@ public class PartyService implements IPartyService {
 		
 		
 		presentYearPartyPerformanceReportVO.setPositionDistribution(positionDistribution);
+		
+		log.debug("positionDistribution.get(1)::"+positionDistribution.get("1st Positions"));
+		log.debug("positionDistribution.get(2)::"+positionDistribution.get("2nd Positions"));
+		log.debug("positionDistribution.get(3)::"+positionDistribution.get("3rd Positions"));
+		log.debug("positionDistribution.get(4)::"+positionDistribution.get("4th Positions"));
+		log.debug("positionDistribution.get(5)::"+positionDistribution.get("5th Positions"));
+		log.debug("getPartyConstituenciesData....end");
 		
 		log.debug("getPartyPerformanceReport ended.....");
 		
@@ -274,6 +282,9 @@ public class PartyService implements IPartyService {
 		double totalValidVotes = 0;
 		double totalVotesEarnedByParty=0;
 		
+		
+		//
+		
 		for(ConstituencyElectionResult constElectionResult : constElectionResultList) {
 			
 			Nomination partyNominationWhoWon = null;
@@ -287,9 +298,15 @@ public class PartyService implements IPartyService {
 			ConstituencyElection constituencyElection = constElectionResult.getConstituencyElection();
 			String constituencyName = constituencyElection.getConstituency().getName();
 			nominations = constituencyElection.getNominations();
+			
 			Party rebelAllianceParty = (includeAllianceParties) ? getNominatedPartiesAsRebels(nominations, allianceParties, selectedParty): null;
-	
-			for(Nomination nomination : nominations){
+	        Nomination selectedPartyNomination = getSelectedPartyNomination(nominations,selectedParty);
+	        Nomination alliancePartyNomination = null;
+			
+			
+	        
+	        
+	        for(Nomination nomination : nominations){
 				Party party = nomination.getParty();
 				Long rank = nomination.getCandidateResult().getRank();
 	         
@@ -299,13 +316,24 @@ public class PartyService implements IPartyService {
 				double votesEarned = nomination.getCandidateResult().getVotesEarned().doubleValue();
 
 				// Party Positions
-				if(isSelectedParty){
+				/*if(isSelectedParty){
 					String position = (rank > 4)? "5" : rank.toString();
 					//int positionCount = (positionDistribution.get(position) != null )? positionDistribution.get(position).intValue() :  0;
 					int positionCount = positionDistribution.get(position);
 					positionDistribution.put(position, ++positionCount );
-				}
+				}*/
+				
+				if(isAllianceParty)	
+					alliancePartyNomination = nomination;
+				
 				if(isSelectedParty || (isAllianceParty && !isRebelAllianceParty)){
+					
+					// Party Positions
+					String position = (rank > 4)? "5" : rank.toString();
+					//int positionCount = (positionDistribution.get(position) != null )? positionDistribution.get(position).intValue() :  0;
+					int positionCount = positionDistribution.get(position);
+					positionDistribution.put(position, ++positionCount );
+					
 					log.debug("Selected Parties...NominationID:" + nomination.getNominationId() + " PartyName:" +nomination.getParty().getShortName() 
 							+ " Rank="+nomination.getCandidateResult().getRank()
 							+ " Constituency=" + constituencyElection.getConstituency().getName()
@@ -334,11 +362,31 @@ public class PartyService implements IPartyService {
 						positionDetail.setPresentElectionVotes(totalVotes);
 						positionDetail.setRank(rank.intValue());
 						// Using OppositeParty field as Rebel Candidate Party to display in front end
-						positionDetail.setOppositeParty(party.getShortName());
+						positionDetail.setPartyName(party.getShortName());
+						//Set details for selected party along with rebel party details
+						if(selectedPartyNomination != null){
+							Party selectdParty = selectedPartyNomination.getParty();
+							Candidate selectdPartyCandidate = selectedPartyNomination.getCandidate();
+							positionDetail.setOppositeParty(selectdParty.getShortName());
+							positionDetail.setOppositePartyCandidate(selectdPartyCandidate.getLastname());
+							double selectedPartyPercentageOfVotesEarned = (selectedPartyNomination.getCandidateResult().getVotesEarned() * 100)/validVotes;
+							positionDetail.setOppositePartyPercentageOfVotes(new BigDecimal(selectedPartyPercentageOfVotesEarned).setScale(2, BigDecimal.ROUND_HALF_UP));
+							positionDetail.setOppositePartyRank(selectedPartyNomination.getCandidateResult().getRank().intValue());
+						}
+						if(alliancePartyNomination != null){
+							Party selectdParty = alliancePartyNomination.getParty();
+							Candidate selectdPartyCandidate = alliancePartyNomination.getCandidate();
+							positionDetail.setOppositeParty(selectdParty.getShortName());
+							positionDetail.setOppositePartyCandidate(selectdPartyCandidate.getLastname());
+							double selectedPartyPercentageOfVotesEarned = (alliancePartyNomination.getCandidateResult().getVotesEarned() * 100)/validVotes;
+							positionDetail.setOppositePartyPercentageOfVotes(new BigDecimal(selectedPartyPercentageOfVotesEarned).setScale(2, BigDecimal.ROUND_HALF_UP));
+							positionDetail.setOppositePartyRank(alliancePartyNomination.getCandidateResult().getRank().intValue());
+						}
 						positionDetailVOForAllianceRebelParties.add(positionDetail);		
 					}
 					// Set Votes Flown to other parties
-					if(votesFlow.get(party.getShortName())!=null)
+					//if(votesFlow.get(party.getShortName())!= null)
+					if(votesFlow.containsKey(party.getShortName()))
 						votesEarned+=votesFlow.get(party.getShortName()).doubleValue();
 					votesFlow.put(party.getShortName(), new BigDecimal(votesEarned).setScale (2,BigDecimal.ROUND_HALF_UP));
 				}
@@ -355,6 +403,8 @@ public class PartyService implements IPartyService {
 			}
 									
 		}
+		
+		
 		// Set Votes Flown to other parties
 		for(String partyName: votesFlow.keySet()){
 			votesFlow.put(partyName, new BigDecimal((votesFlow.get(partyName).doubleValue()*100)/totalValidVotes).setScale(2,BigDecimal.ROUND_HALF_UP));
@@ -370,6 +420,7 @@ public class PartyService implements IPartyService {
 		partyPerformanceReportVO.setPartyLosers(positionDetailVOsForPartyLoosers);
 		partyPerformanceReportVO.setRebelPartyCandidates(positionDetailVOForAllianceRebelParties);
 		partyPerformanceReportVO.setTotalSeatsWon(positionDetailVOsForPartyWinners.size());
+		//partyPerformanceReportVO.setTotalSeatsWon(positionDistribution.get("1"));
 		partyPerformanceReportVO.setTotalSeatsLost(positionDetailVOsForPartyLoosers.size());
 		partyPerformanceReportVO.setTotalSeatsContested(positionDetailVOsForPartyWinners.size() + positionDetailVOsForPartyLoosers.size());
 		
@@ -445,7 +496,7 @@ public class PartyService implements IPartyService {
 	    for (Map.Entry<String, BigDecimal> entry : presentElectionPartyVotePerc.entrySet()) {
 	    	String partyName = entry.getKey();
 			double presentValue = entry.getValue().doubleValue();
-			double previousValue = (previousElectionPartyVotePerc.get(partyName)==null)? 0 :
+			double previousValue = (previousElectionPartyVotePerc.get(partyName)== null)? 0 :
 										(previousElectionPartyVotePerc.get(partyName).setScale (2,BigDecimal.ROUND_HALF_UP)).doubleValue();
 			double differences = new BigDecimal(presentValue - previousValue).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
 			if(Math.abs(differences)<1)
@@ -576,6 +627,26 @@ public class PartyService implements IPartyService {
 					return party;
 			}
 		}
+		else if(!nominatedParties.contains(selectedParty)){
+			List<Party> tempPartys = new ArrayList<Party>();
+			int rank=0;
+			Party resultParty = null;
+			for(Party party:allianceParties){
+				if(nominatedParties.contains(party))
+					tempPartys.add(party);
+			}
+			if(tempPartys.size() > 1){
+			   for(Nomination nomination:nominations){
+				 if(tempPartys.contains(nomination.getParty())){
+					if(nomination.getCandidateResult().getRank().intValue()>rank){
+						rank = nomination.getCandidateResult().getRank().intValue();
+						resultParty = nomination.getParty();
+					}
+				 }
+			   }
+			}
+			return resultParty;
+		}
 		return null;
 	}
 	
@@ -601,17 +672,22 @@ public class PartyService implements IPartyService {
 			Long districtID, Long year, Long partyID, boolean alliances, int rank){
 		List<PartyPositionDisplayVO>  partyPositionDisplayVOList = new ArrayList<PartyPositionDisplayVO>();
 		
+		if(log.isDebugEnabled())
+			log.debug(" Inside getNthPositionPartyDetails Method ....");
+		
 		Long electionID = getElectionID(electionTypeID, 1L, stateID, year);
-		System.out.println("ElectionId -->" + electionID);
+		if(log.isDebugEnabled())
+			log.debug("ElectionId -->" + electionID);
 		List<SelectOptionVO> parties = getAlliancePartiesAsVO(year, electionTypeID, partyID,alliances);
-		System.out.println("Allianc  Parties -->" + parties.size());
+		if(log.isDebugEnabled())
+			log.debug("Alliance Parties -->" + parties.size());
 		List<ConstituencyElection> constituencyElectionList =  staticDataService.getConstituencyElections(electionID, districtID);
 		
 		if(constituencyElectionList != null)
 		System.out.println("inside getNth position -->" + constituencyElectionList.size());
 		
 		for(ConstituencyElection constituencyElection : constituencyElectionList){
-			PartyPositionDisplayVO partyPositionDisplayVO = getPartyPositionDisplayVO(constituencyElection, parties, partyID, rank);
+			PartyPositionDisplayVO partyPositionDisplayVO = getPartyPositionDisplayVO(constituencyElection, parties, partyID, rank,alliances);
 			if(partyPositionDisplayVO!=null)
 				partyPositionDisplayVOList.add(partyPositionDisplayVO);
 		}
@@ -619,12 +695,12 @@ public class PartyService implements IPartyService {
 	}
 	
 	public PartyPositionDisplayVO getPartyPositionDisplayVO(ConstituencyElection constituencyElection, 
-			List<SelectOptionVO> parties, Long partyID, int rank){
+			List<SelectOptionVO> parties, Long partyID, int rank,Boolean alliances){
 		PartyPositionDisplayVO partyPositionDisplayVO = new PartyPositionDisplayVO();
 		Set<Nomination> nominations = constituencyElection.getNominations();
 		System.out.println("Inside getPartyPositionDisplayVO -->" + nominations.size());
 		
-		Nomination selectedNomination = partyParticipatedNomination(nominations , parties, rank,partyID);
+		Nomination selectedNomination = partyParticipatedNomination(nominations , parties, rank,partyID,alliances);
 		if(selectedNomination==null)
 			return null;
 		partyPositionDisplayVO.setConstituencyName(constituencyElection.getConstituency().getName());
@@ -680,25 +756,75 @@ public class PartyService implements IPartyService {
 		return partyPositionDisplayVO;
 	}
 	
-	public Nomination partyParticipatedNomination(Set<Nomination> nominations, List<SelectOptionVO> parties, int rank,Long partyID){
+	public Nomination partyParticipatedNomination(Set<Nomination> nominations, List<SelectOptionVO> parties, int rank,Long partyID,boolean alliances){
+		
+		Nomination selectedNomination = null;
+		List<Long> alliancePartyIds = null;
+		if(parties != null && parties.size() >0)
+		alliancePartyIds = getAlliancePartyIds(parties);
+		
+		List<Nomination> selectedPartyAndItsAlliances = new ArrayList<Nomination>();
+		
+		for(Nomination nomination : nominations){
+			
+			if(alliances == false && nomination.getParty().getPartyId().equals(partyID) && nomination.getCandidateResult().getRank().equals(rank))
+				return nomination;
+			
+			if(alliancePartyIds != null && alliancePartyIds.size() >0 && alliances == true){
+			  if(alliancePartyIds.contains(nomination.getParty().getPartyId())) 
+				 selectedPartyAndItsAlliances.add(nomination);
+			}
+			
+		}
+		if(selectedPartyAndItsAlliances != null && selectedPartyAndItsAlliances.size() > 0 && alliances == true){
+			
+			if(selectedPartyAndItsAlliances.size() == 1 && selectedPartyAndItsAlliances.get(0).getCandidateResult().getRank().intValue() == rank){
+				selectedNomination = selectedPartyAndItsAlliances.get(0);
+				return selectedNomination;
+			}
+		  for(Nomination selectdNomination:selectedPartyAndItsAlliances){
+			  if(selectdNomination.getCandidateResult().getRank().intValue() < rank)
+				  return null;
+			  if(rank == -1 && selectdNomination.getCandidateResult().getRank() < 4)
+				  return null;
+			if((rank==-1 && selectdNomination.getCandidateResult().getRank().intValue() > 4) || selectdNomination.getCandidateResult().getRank().intValue() == rank)
+				selectedNomination = selectdNomination;
+		  }
+		}
+		/*
 		for(Nomination nomination : nominations){
 			if((rank==-1 && nomination.getCandidateResult().getRank().intValue() > 4)
 					|| nomination.getCandidateResult().getRank().intValue() == rank){
 				if(partyID.equals(nomination.getParty().getPartyId()))
 					return nomination;
+				for(SelectOptionVO party : parties){
+					if(nomination.getParty().getPartyId().equals(party.getId())){
+						selectedNomination = nomination;
+						return selectedNomination;	
+					}
+				}
 			}
 			
-		}
-		return null;		
+		}*/
+		
+	return selectedNomination;		
 	}
-
+	
 	public List<SelectOptionVO> getAlliancePartiesAsVO(Long year, Long electionTypeID, Long partyID, boolean alliances){
 
 		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		
+		if(log.isDebugEnabled())
+			log.debug("Entered Into getAllianceParties Method .....");
 		if(alliances){
 			parties = staticDataService.getAlliancePartiesAsVO(year.toString(), electionTypeID, partyID);
+			if(parties != null){
+				for(SelectOptionVO option:parties)
+					if(log.isDebugEnabled())
+						log.debug("Alliance Parties ::" + option.getName());
+			}
 		}
-		if(parties.size()==0){
+		if(parties.size() == 0){
 			Party party = partyDAO.get(partyID);
 			SelectOptionVO obj = new SelectOptionVO();
 			obj.setId(partyID);
@@ -720,6 +846,24 @@ public class PartyService implements IPartyService {
 			}
 		}
 		return electionID;
+	}
+	
+	public Nomination getSelectedPartyNomination(Set<Nomination> nominations,Party selectedParty){
+		for(Nomination nomination:nominations){
+			if(nomination.getParty().getPartyId().equals(selectedParty.getPartyId()))
+				return nomination;
+		}
+	return null;
+	}
+	
+	public List<Long> getAlliancePartyIds(List<SelectOptionVO> allianceParties){
+		List<Long> partyIds = null;
+		if(allianceParties != null && allianceParties.size() > 0){
+		 partyIds = new ArrayList<Long>();
+		 for(SelectOptionVO resultVO:allianceParties)
+			partyIds.add(resultVO.getId());
+		}
+	return partyIds;
 	}
 
 }
