@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Mandal Voting Report</title>
+<title>Party Voting Trends in a Mandal</title>
 
 	<!-- Combo-handled YUI CSS files: -->
 <link rel="stylesheet" type="text/css"
@@ -18,8 +18,17 @@
 	<script type="text/javascript" src="js/json/json-min.js"></script> 
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
 	<script type="text/javascript">
+
+		function checkForFormSubmit(){
+			if(document.mandalVotingTrends.partyField.value != 0){
+					getMandalVotingReport();
+			}
+		}
 		function getList(name,value)
 		{ 
+			var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+			ajaxImgElmt.style.display = "block";
+
 			var jsObj=
 			{
 				type:name,
@@ -36,6 +45,11 @@
 	 		var callback = {			
                success : function( o ) {
 				try {
+
+					var img1=document.getElementById('ajaxLoadDiv');
+								img1.style.display='none';
+
+
 					myResults = YAHOO.lang.JSON.parse(o.responseText);
 					
 					if(jsObj.task=="mandalVoting")
@@ -77,7 +91,7 @@
 			var mandalValue = mandalElmt.options[mandalElmt.selectedIndex].text;
 
  	 		if(elmtHead)
- 	 	 		elmtHead.innerHTML="Election Results for "+result[0].partyShortName+" party in "+mandalValue+" mandal";
+ 	 	 		elmtHead.innerHTML=result[0].partyShortName+ " Party Voting Trends in "+mandalValue+" Mandal:";
 			
 			var imgStr='';
 			imgStr+='<IMG id="chartImg" SRC="charts/'+myResult.chart+'" WIDTH="450" HEIGHT="400">';
@@ -220,6 +234,9 @@
 
 		function getMandalVotingReport()
 		{
+			var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+			ajaxImgElmt.style.display = "block";
+
 			var stateElmt = document.getElementById("stateField");
 			var districtElmt = document.getElementById("districtField");
 			var constituencyElmt = document.getElementById("constituencyField");
@@ -349,8 +366,8 @@
 
 </head>
 <body>
-	<s:form action="mandalPageDetailAction" method="POST" theme="simple">
-		<div id="mainHeadingDiv">Mandal / Tehsil Page Info</div>
+	<s:form action="mandalPageDetailAction" method="POST" theme="simple" name="mandalVotingTrends">
+		<div id="mainHeadingDiv">Party Voting Trends in a Mandal / Tehsil</div>
 		<div id="mandalSelectTableDiv">
 			<div id="mandalSelectTableDivHead">Select Criteria ..</div>
 			<div id="mandalSelectTableDivBody">
@@ -381,7 +398,7 @@
 						
 						<th align="left" class="tdLeftBorder" style="padding-left:30px;"><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /></th>
 						<td align="left">
-							<select class="mySelectBox" id="mandalField" name="mandal">
+							<select class="mySelectBox" id="mandalField" name="mandal" onchange= "checkForFormSubmit()">
 								<option value="0">Select Mandal</option>
 							</select>	
 							
@@ -397,6 +414,12 @@
 				</div>
 		</div>
 	</s:form>
+
+	<div id="ajaxLoadDiv" style="display:none;padding-top:20px;">
+							<span><b>Processing Request ...</b> </span>
+							<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
+	</div>
+
 	<div id="mandalVotingResultsDiv">
 		<div id="mandalVotingResultsDivHead"></div>
 		<div id="mandalVotingResultsDivGraph"></div>
