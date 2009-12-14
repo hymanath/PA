@@ -123,7 +123,7 @@ function displayPartyPositions(jsObj,data)
 	rank = jsObj.positionValue;
 	if(rank==-1)
 		rank = 'N';
-	divElmtHead.innerHTML="Opposition Party Details for "+'${stateData.party}'+" In position : "+rank;
+	divElmtHead.innerHTML=" "+'${stateData.party}'+" In position : "+rank+" And Its Opposition Party Details";
 
 	divElmt.style.display = 'block';
 
@@ -139,7 +139,6 @@ function displayPartyPositions(jsObj,data)
 		{
 			str+='<td>'+data[i].oppPartyPositionInfoList[d].candidateName+'</td>';
 			str+='<td>'+data[i].oppPartyPositionInfoList[d].partyName+'</td>';
-			str+='<td align="center">'+data[i].oppPartyPositionInfoList[d].rank+'</td>';
 			str+='<td align="right">'+data[i].oppPartyPositionInfoList[d].votePercentage+'</td>';
 		}
 		str+='</tr>';
@@ -147,7 +146,7 @@ function displayPartyPositions(jsObj,data)
 	str+='</table>'
 	divElmtBody.innerHTML=str;
 	
-	buildPartyPositionDataTable(data);
+	buildPartyPositionDataTable(data,rank);
 	fadeIn('partyPositions',40);
 }
 
@@ -157,11 +156,12 @@ function closeSpan()
 	divElmt.style.display = 'none';
 }
 
-function buildPartyPositionDataTable(info)
+function buildPartyPositionDataTable(info,rank)
 {
 	if(info[0]==null)	
 		return;
-	
+	var count=1;
+
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("partyPositionTable"));
 	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
 	resultsDataSource.responseSchema = {
@@ -177,17 +177,28 @@ function buildPartyPositionDataTable(info)
 
 	for (var k in  info[0].oppPartyPositionInfoList)
 	{
+		count++;
 		var key4={key : "cName"+k};
-		var key5={key : "pName"+k};
-		var key6={key : "rank"+k,parser:"number"};
+		var key5={key : "pName"+k};		
 		var key7={key : "vPercentage"+k,parser:"number"};
 		resultsDataSource.responseSchema.fields.push(key4);
 		resultsDataSource.responseSchema.fields.push(key5);
-		resultsDataSource.responseSchema.fields.push(key6);
 		resultsDataSource.responseSchema.fields.push(key7);
 	}
 
-	
+	console.log(count);
+	var headElmt = document.getElementById('positionHeading');
+	var tstr='<table width="100%">';
+	tstr+='<tr>';
+	tstr+='<td align="center">Candidate Details in position '+rank+'</td>';
+	for(var i=1;i<count;i++)
+	{	
+		tstr+='<td align="center"> Candidate Details in position '+i+'</td>';
+	}
+	tstr+='</tr>';
+	tstr+='</table>';
+
+	headElmt.innerHTML=tstr;
 	//--------
 	var resultsColumnDefs = [];
 	var obj1= {
@@ -222,12 +233,6 @@ function buildPartyPositionDataTable(info)
 			label : "Party",
 			sortable : true
 		};
-		var obj6= {
-			key : "rank"+d,
-			parser:"number",
-			label : "Rank",
-			sortable : true
-		};
 		var obj7= {
 			key : "vPercentage"+d,
 			parser:"number",
@@ -236,7 +241,6 @@ function buildPartyPositionDataTable(info)
 		};	
 		resultsColumnDefs.push(obj4);
 		resultsColumnDefs.push(obj5);
-		resultsColumnDefs.push(obj6);
 		resultsColumnDefs.push(obj7);
 	}
 
@@ -314,6 +318,75 @@ function buildPartyPositionDataTable(info)
 			var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource, {}); 
 		}	
 	}
+
+	function initializeRebelsDataTable() {
+
+	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("rebelsTable"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "constiuencyName"
+		}, {
+			key : "candidateName"
+		}, {
+			key : "partyName"
+		}, {
+			key : "percentageOfVotes",parser:"number"
+		}, {
+			key : "rank",parser:"number"
+		}, {
+			key : "oppositeParty"
+		} , {
+			key : "oppositePartyCandidate"
+		} , {
+			key : "oppositePartyPercentageOfVotes",parser:"number"
+		} , {
+			key : "oppositePartyRank",parser:"number"
+		} ]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "constiuencyName",
+		label : "Constiuency Name",
+		sortable : true
+	}, {
+		key : "candidateName",
+		label : "Candidate Name",
+		sortable : true
+	}, {
+		key : "partyName",
+		label : "Rebel Party",
+		sortable : true
+	}, {
+		key : "percentageOfVotes",
+		label : "% Votes",
+		sortable : true
+	}, {
+		key : "rank",
+		label : "Rank",
+		sortable : true
+	}, {
+		key : "oppositeParty",
+		label : "Party",
+		sortable : true
+	}, {
+		key : "oppositePartyCandidate",
+		label : "Candidate Name",
+		sortable : true
+	} , {
+		key : "oppositePartyPercentageOfVotes",
+		label : "Votes %",
+		sortable : true
+	} , {
+		key : "oppositePartyRank",
+		label : "Rank",
+		sortable : true
+	} ];
+
+	var myDataTable = new YAHOO.widget.DataTable("rebelsDiv",resultsColumnDefs, resultsDataSource,{});  
+
+}
 
 </script>
 
@@ -394,6 +467,12 @@ function buildPartyPositionDataTable(info)
 	.tableColoumn
 	{
 		text-align:left;
+	}
+
+	#positionHeading
+	{
+		font-weight:bold;
+		background-color:#FFFFFF;
 	}
 </style>
 </head> 
@@ -485,6 +564,7 @@ function buildPartyPositionDataTable(info)
 		<center>
 			<span id="labelHead"></span>		
 		</center>
+		<div id="positionHeading">Heading</div>
 	</div>
 	<div id="partyPositionsBody" class="yui-skin-sam"></div>
 </div>
@@ -663,13 +743,23 @@ function buildPartyPositionDataTable(info)
 </div>
 <br>
 <s:label labelposition="left"><b><U>Rebel Candidates::</U></b></s:label>
-<display:table class="partyPerformanceReportTable" name="${stateData.rebelPartyCandidates}" id="row" style="margin-top:0px;"> 
+<div id="rebelsDiv" class="yui-skin-sam">
+<display:table class="partyPerformanceReportTable" name="${stateData.rebelPartyCandidates}" id="rebelsTable" style="margin-top:0px;"> 
 							<display:column title="Constiuency Name" property="constiuencyName" />
 							<display:column title="Candidate Name" property="candidateName" />
+							<display:column title="RebelParty" property="partyName" />
 							<display:column title="% of Votes" property="percentageOfVotes" />
 							<display:column title="Position" property="rank" />
 							<display:column title="Party" property="oppositeParty" />
-				</display:table>	
+							<display:column title="Candidate Name" property="oppositePartyCandidate" />
+							<display:column title="% of Votes" property="oppositePartyPercentageOfVotes" />
+							<display:column title="Position" property="oppositePartyRank" />
+							
+</display:table>	
+</div>
+<script language="javascript">
+	initializeRebelsDataTable();
+</script>
 <br>
 <div>
 <s:form action="partyPerformanceJasper.action?jasperFile=jasper\partyPerformance\partyPerformanceReport.jrxml&type=normal" style="float: left;margin-right:20px;">
