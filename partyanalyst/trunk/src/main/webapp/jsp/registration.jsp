@@ -284,6 +284,12 @@
 						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="lastNameField" id="lastNameLabel"  value="%{getText('lastName')}" /></td>
 						<td align="left"><s:textfield id="lastNameField" name="lastName"/>  </td>
 					</tr>
+					
+					<tr>
+						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="partyField" id="partyLabel"  value="%{getText('party')}" /></td>
+						<td align="left"> <s:select name="party" id="party"  list="parties" listKey="id" listValue="name"></s:select> </td>
+					</tr>
+					
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></td>
 						<td><s:radio id="genderField" name="gender" list="gender" value="male"/>  </td>			

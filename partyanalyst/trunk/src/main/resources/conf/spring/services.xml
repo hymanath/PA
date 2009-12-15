@@ -31,6 +31,7 @@
 	</bean>
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
 		<property name="registrationDAO" ref="registrationDAO" />
+		<property name="partyDAO" ref="partyDAO" />
 	</bean>
 	<bean name="constituencySearchService" class="com.itgrids.partyanalyst.service.impl.ConstituencySearchService" >
 		<property name="constituencyDAO" ref="constituencyDAO" />
@@ -208,6 +209,11 @@
     	<!-- property name="partyAnalystPropertyService" ref="partyAnalystPropertyService" /-->
 	</bean>
     
+	<bean id="userCalendarService" class="com.itgrids.partyanalyst.service.impl.UserCalendarService" ></bean>
+	<bean name="userCadreManagementService" class="com.itgrids.partyanalyst.service.impl.UserCadreManagementService" >		
+		<property name="userCalendarService" ref="userCalendarService" />
+		<property name="cadreManagementService" ref="cadreManagementService" />	
+	</bean>
     
 	
 </beans>

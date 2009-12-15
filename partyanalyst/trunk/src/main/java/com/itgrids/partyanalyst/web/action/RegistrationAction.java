@@ -36,6 +36,7 @@ public class RegistrationAction extends ActionSupport implements
 	 private String pincode;
 	 private String accessType;
 	 private String accessValue;
+	 private Long party;
 	 
 	 private UserService userService;
 	 private List<String> type = new ArrayList<String>();
@@ -105,6 +106,15 @@ public class RegistrationAction extends ActionSupport implements
 	 public void setServletResponse(HttpServletResponse response){
 		 this.response = response;
 	 }
+	 
+	public Long getParty() {
+		return regVO.getParty();
+	}
+
+	public void setParty(Long party) {
+		this.regVO.setParty(party);;
+	}
+
 	public String execute() throws Exception{
 		
 		String dobDayValue = dobDay.get(0);

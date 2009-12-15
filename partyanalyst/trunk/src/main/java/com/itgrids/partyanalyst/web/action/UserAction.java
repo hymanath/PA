@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.UserService;
 public class UserAction extends ActionSupport implements ServletRequestAware {
 	
@@ -23,7 +24,8 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	private List<SelectOptionVO> dobDay;
 	private List<SelectOptionVO> dobYear;
 	private List<SelectOptionVO> dobMonth;
-	
+	private List<SelectOptionVO> parties;
+	private IStaticDataService staticDataService;
 	
 	
 	public void setUserService(UserService userService){
@@ -34,6 +36,9 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		session = request.getSession();
 	}
 	
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
 	public List<String> getType() {
 		return type;
 	}
@@ -68,7 +73,12 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		this.dobMonth = dobMonth;
 	}
 
-
+	public List<SelectOptionVO> getParties() {
+		return parties;
+	}
+	public void setParties(List<SelectOptionVO> parties) {
+		this.parties = parties;
+	}
 	
 	public String registration(){
 		if(type.size()==0){
@@ -155,7 +165,7 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		dobMonth.add(novVO);
 		dobMonth.add(decVO);
 		
-		
+		parties = staticDataService.getStaticParties();
 		
 		session.setAttribute("type", type);
 		session.setAttribute("gender", gender);
