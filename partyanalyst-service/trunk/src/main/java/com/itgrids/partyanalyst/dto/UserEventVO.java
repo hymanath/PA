@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 public class UserEventVO extends ResultStatus {
  
@@ -14,8 +14,8 @@ public class UserEventVO extends ResultStatus {
 	private Long locationId;
 	private Date startDate;
 	private Date endDate;
-	private Set <CadreInfo> organizers;
-	private Set<EventActionPlanVO> actionPlans;
+	private List <SelectOptionVO> organizers;
+	private List<EventActionPlanVO> actionPlans;
 	
 	public Long getUserEventsId() {
 		return userEventsId;
@@ -59,16 +59,16 @@ public class UserEventVO extends ResultStatus {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public Set<CadreInfo> getOrganizers() {
+	public List<SelectOptionVO> getOrganizers() {
 		return organizers;
 	}
-	public void setOrganizers(Set<CadreInfo> organizers) {
+	public void setOrganizers(List<SelectOptionVO> organizers) {
 		this.organizers = organizers;
 	}
-	public Set<EventActionPlanVO> getActionPlans() {
+	public List<EventActionPlanVO> getActionPlans() {
 		return actionPlans;
 	}
-	public void setActionPlans(Set<EventActionPlanVO> actionPlans) {
+	public void setActionPlans(List<EventActionPlanVO> actionPlans) {
 		this.actionPlans = actionPlans;
 	}
 	
