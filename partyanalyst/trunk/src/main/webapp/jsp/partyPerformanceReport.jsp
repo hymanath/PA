@@ -186,7 +186,6 @@ function buildPartyPositionDataTable(info,rank)
 		resultsDataSource.responseSchema.fields.push(key7);
 	}
 
-	console.log(count);
 	var headElmt = document.getElementById('positionHeading');
 	var tstr='<table width="100%">';
 	tstr+='<tr>';
