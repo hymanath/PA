@@ -5,10 +5,11 @@ public class CrossVotedCandidateVO {
 	private Long candidateId;
 	private String candidateName;
 	private String rank;
-	private String votesPercentage;
 	private String image;
 	private String party;
 	private Long votesEarned;
+	private String votesPercentage;
+	private Long totalPolledVotesInConstituency;
 	
 	public CrossVotedCandidateVO(){
 		

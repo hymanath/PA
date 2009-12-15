@@ -4,7 +4,10 @@ import java.util.List;
 
 public class CrossVotedMandalVO {
 
+	private Long mandalId;
 	private String mandalName;
+	private Long totalVoters;
+	private Long polledVotes;
 	private Long acValidVotesInMandal;
 	private Long acEarnedVotesInMandal;
 	private Long pcEarnedVotesInMandal;
@@ -20,39 +23,36 @@ public class CrossVotedMandalVO {
 		
 	}
 
-	public CrossVotedMandalVO(String mandalName, Long acValidVotesInMandal,
+	public CrossVotedMandalVO(Long mandalId, String mandalName,
+			Long totalVoters, Long polledVotes, Long acValidVotesInMandal,
 			Long acEarnedVotesInMandal, Long pcEarnedVotesInMandal,
 			Long pcValidVotesInMandal, String acPercentageInMandal,
-			String pcPercentageInMandal, String percentageDifferenceInMandal,
-			List<CrossVotedBoothVO> crossVotedBooths, String percentageImpactOnConstituency, Long earnedVotesDiffernce) {
+			String pcPercentageInMandal, Long earnedVotesDiffernce,
+			String percentageDifferenceInMandal,
+			String percentageImpactOnConstituency,
+			List<CrossVotedBoothVO> crossVotedBooths) {
+		this.mandalId = mandalId;
 		this.mandalName = mandalName;
+		this.totalVoters = totalVoters;
+		this.polledVotes = polledVotes;
 		this.acValidVotesInMandal = acValidVotesInMandal;
 		this.acEarnedVotesInMandal = acEarnedVotesInMandal;
 		this.pcEarnedVotesInMandal = pcEarnedVotesInMandal;
 		this.pcValidVotesInMandal = pcValidVotesInMandal;
 		this.acPercentageInMandal = acPercentageInMandal;
 		this.pcPercentageInMandal = pcPercentageInMandal;
+		this.earnedVotesDiffernce = earnedVotesDiffernce;
 		this.percentageDifferenceInMandal = percentageDifferenceInMandal;
+		this.percentageImpactOnConstituency = percentageImpactOnConstituency;
 		this.crossVotedBooths = crossVotedBooths;
-		this.percentageImpactOnConstituency = percentageImpactOnConstituency;
-		this.earnedVotesDiffernce = earnedVotesDiffernce;
 	}
 
-	public String getPercentageImpactOnConstituency() {
-		return percentageImpactOnConstituency;
+	public Long getMandalId() {
+		return mandalId;
 	}
 
-	public void setPercentageImpactOnConstituency(
-			String percentageImpactOnConstituency) {
-		this.percentageImpactOnConstituency = percentageImpactOnConstituency;
-	}
-
-	public Long getEarnedVotesDiffernce() {
-		return earnedVotesDiffernce;
-	}
-
-	public void setEarnedVotesDiffernce(Long earnedVotesDiffernce) {
-		this.earnedVotesDiffernce = earnedVotesDiffernce;
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
 	}
 
 	public String getMandalName() {
@@ -61,6 +61,22 @@ public class CrossVotedMandalVO {
 
 	public void setMandalName(String mandalName) {
 		this.mandalName = mandalName;
+	}
+
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
+	}
+
+	public Long getPolledVotes() {
+		return polledVotes;
+	}
+
+	public void setPolledVotes(Long polledVotes) {
+		this.polledVotes = polledVotes;
 	}
 
 	public Long getAcValidVotesInMandal() {
@@ -111,12 +127,29 @@ public class CrossVotedMandalVO {
 		this.pcPercentageInMandal = pcPercentageInMandal;
 	}
 
+	public Long getEarnedVotesDiffernce() {
+		return earnedVotesDiffernce;
+	}
+
+	public void setEarnedVotesDiffernce(Long earnedVotesDiffernce) {
+		this.earnedVotesDiffernce = earnedVotesDiffernce;
+	}
+
 	public String getPercentageDifferenceInMandal() {
 		return percentageDifferenceInMandal;
 	}
 
 	public void setPercentageDifferenceInMandal(String percentageDifferenceInMandal) {
 		this.percentageDifferenceInMandal = percentageDifferenceInMandal;
+	}
+
+	public String getPercentageImpactOnConstituency() {
+		return percentageImpactOnConstituency;
+	}
+
+	public void setPercentageImpactOnConstituency(
+			String percentageImpactOnConstituency) {
+		this.percentageImpactOnConstituency = percentageImpactOnConstituency;
 	}
 
 	public List<CrossVotedBoothVO> getCrossVotedBooths() {
@@ -126,5 +159,7 @@ public class CrossVotedMandalVO {
 	public void setCrossVotedBooths(List<CrossVotedBoothVO> crossVotedBooths) {
 		this.crossVotedBooths = crossVotedBooths;
 	}
+
+	
 		
 }
