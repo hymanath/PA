@@ -79,12 +79,10 @@ public class CnCSearchResultsAction extends ActionSupport implements ServletRequ
 		this.request = request;
 		
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public String execute() {
 		session = request.getSession();		
-		System.out.println("getSearchName:" + getSearchName());
-		System.out.println("getSearchText:" + getSearchText());
 		
 		if(getSearchName() != null && getSearchName().equals("Constituency"))
 		{			
