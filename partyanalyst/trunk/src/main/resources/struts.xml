@@ -307,5 +307,11 @@
 			<result name="error">/jsp/loginForm.jsp?src=cadreManagementAction</result>						
 		</action>
 		
+		<action name="createEventAction" class="createEventAction">
+			<result type="json" name="success">
+				<param name="root">event</param>				
+			</result>
+		</action>
+		
 	</package>
 </struts>
