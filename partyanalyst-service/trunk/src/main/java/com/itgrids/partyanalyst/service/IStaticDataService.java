@@ -30,7 +30,7 @@ public interface IStaticDataService {
 	public Long getGroupIdIfPartyHasAlliances(Long partyId, String electionYear, Long electionType);
 	public boolean hasAlliances(String year, Long electionType, Long partyId);
 	public List<SelectOptionVO> getConstituencies(Long stateId);
-	public List<ConstituencyElection> getConstituencyElections(Long electionID, Long  districtID);
+	public List<ConstituencyElection> getConstituencyElections(Long electionID,Long stateId,Long  districtID);
 	public List<SelectOptionVO> getStaticParties();
 	public List<SelectOptionVO> getPartiesForConstituency(Long constituencyId, String electionYear);
 }
