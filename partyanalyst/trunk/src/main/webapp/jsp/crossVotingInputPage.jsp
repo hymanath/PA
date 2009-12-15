@@ -119,11 +119,40 @@
 	margin-left:100px;
 }
 
+#constDetails
+{
+	padding:5px;
+	background-color:#efefef;
+	margin-top:30px;
+	margin-right:10px;
+}
+#constDetailsHead
+{
+	color:#234E7A;
+	padding:5px;
+	font-weight:bold;
+	text-decoration:underline;
+}
+#constDetailsBody
+{
+	color:#AAAAAA;
+}
+#indexDataDiv
+{
+	color:#AAAAAA;
+	font-size:11px;
+	padding:10px 100px 10px 10px;
+	text-align:right;
+}
+
 </style>
 <script type="text/javascript">
 	
 	function getParty()
 	{
+		var img = document.getElementById("ajaxImg3");
+		img.style.display = 'block';
+		
 		var elecYearElmt = document.getElementById("electionYearField");
 		var assemblyElmt = document.getElementById("AssemblySelect");
 	
@@ -150,6 +179,9 @@
 	
 	function getAssembly()
 	{
+		var img = document.getElementById("ajaxImg2");
+		img.style.display = 'block';
+
 		var parliamentSelectElmt =  document.getElementById("parliamentField");
 		var electionYearElmt =  document.getElementById("electionYearField");	
 
@@ -182,6 +214,15 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
+								var img1=document.getElementById('ajaxImg1');
+								img1.style.display='none';
+
+								var img2=document.getElementById('ajaxImg2');
+								img2.style.display='none';
+
+								var img3=document.getElementById('ajaxImg3');
+								img3.style.display='none';
+
 								myResults = YAHOO.lang.JSON.parse(o.responseText); 										
 								if(jObj.task == "Assembly" || jObj.task=="getParty" || jObj.task=="getParliament")
 									buildParliamemtSelect(jObj,myResults.dataList);
@@ -211,13 +252,16 @@
 		var resultDiv = document.getElementById("crossVotingResultDiv");
 		resultDiv.style.display="block";
 		
+
 		var elecYearElmt = document.getElementById("electionYearField");
 		var partyElmt = document.getElementById("PartySelect");
 		var parliamentSelectElmt =  document.getElementById("parliamentField");
+		var assemblySelectElmt = document.getElementById("AssemblySelect");
 
 		var partyValue = partyElmt.options[partyElmt.selectedIndex].text;
 		var parliamentValue = parliamentSelectElmt.options[parliamentSelectElmt.selectedIndex].text;
 		var electionValue = elecYearElmt.options[elecYearElmt.selectedIndex].text;
+		var assemblyValue = assemblySelectElmt.options[assemblySelectElmt.selectedIndex].text;
 
 		if(result.partyPartisipated == false)
 		{	
@@ -240,35 +284,52 @@
 		else
 		{
 			var str='';
-			str+='<div id="headingDiv"><h3><u>Cross Voting Details..</u></h3></div>';
+			str+='<div id="headingDiv"><h3><u>Cross Voting Details for '+ partyValue +' Party in '+ electionValue +' ' + assemblyValue +' Assembly Constituency</u></h3></div>';
 			str+='<div id="candidateDetailsDiv">';
-			str+='<div id="assemblyCandidateDiv">';
-			str+='<table id="assemblyTable" class="detailsTable" style="width:auto;">';
-			str+='<tr><th colspan="2"><u>Assembly Candidate Details..</u></th>';		
-			str+='</tr>';
-			str+='<tr>';
-			str+='<th>Name</th>';
-			str+='<td><a href="candidateElectionResultsAction.action?candidateId='+result.acCandidateData.candidateId+'">'+result.acCandidateData.candidateName+'</a></td>';
-			str+='<td rowspan="4"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
-			str+='</tr>';
-			str+='<tr><th>Rank</th><td>'+result.acCandidateData.rank+'</td></tr>';
-			str+='<tr><th>Party</th><td>'+result.acCandidateData.party+'</td></tr>';
-			str+='<tr><th>Votes Gained</th><td>'+result.acCandidateData.votesPercentage+' %</td></tr>';
-			str+='</table>';		
-			str+='</div>';
-			str+='<div id="parliamentCandidateDiv">';
-			str+='<table id="parliamentTable" class="detailsTable" style="width:auto;">';
-			str+='<tr><th colspan="2"><u>Parliament Candidate Details..</u></th></tr>';
-			str+='<tr><th>Name</th>';
-			str+='<td> <a href="candidateElectionResultsAction.action?candidateId='+result.pcCandidateData.candidateId+'">'+result.pcCandidateData.candidateName+'</a></td>';
-			str+='<td rowspan="4"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
-			str+='</tr>';
-			str+='<tr><th>Rank</th><td>'+result.pcCandidateData.rank+'</td></tr>';
-			str+='<tr><th>Party</th><td>'+result.pcCandidateData.party+'</td></tr>';
-			str+='<tr><th>Votes Gained</th><td>'+result.pcCandidateData.votesPercentage+' %</td></tr>';
-			str+='</table>';	
-			str+='</div>';
-			str+='<div id="treeDiv"><span><h4><u>Mandals Details..</u></h4></span><div id="treeDataDiv"></div></div>';
+				str+='<div id="assemblyCandidateDiv">';
+					str+='<table id="assemblyTable" class="detailsTable" style="width:auto;" >';
+					str+='<tr><th colspan="2"><u>Assembly Candidate Details..</u></th>';		
+					str+='</tr>';
+					str+='<tr>';
+					str+='<th>Name</th>';
+					str+='<td><a href="candidateElectionResultsAction.action?candidateId='+result.acCandidateData.candidateId+'">'+result.acCandidateData.candidateName+'</a></td>';
+					str+='<td rowspan="3"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
+					str+='</tr>';
+					str+='<tr><th>Rank</th><td>'+result.acCandidateData.rank+' &nbsp;&nbsp;&nbsp; <b>Party:</b> '+ result.acCandidateData.party +'</td></tr>';
+					
+					str+='<tr><th>Votes Gained</th><td>'+result.acCandidateData.votesPercentage+' %</td></tr>';
+					str+='<tr><td colspan="3"><table cellpadding="0" cellspacing="0"><tr><th>Total Voters</th><td>'+result.totalVotersInAC+' </td><th>Total Polled Votes</th><td>'+ result.totalACPolledVotesInConstituency +'</td></tr></table></td></tr>';
+					str+='</table>';		
+				str+='</div>';
+				str+='<div id="parliamentCandidateDiv">';
+					str+='<table id="parliamentTable" class="detailsTable" style="width:auto;">';
+					str+='<tr><th colspan="2"><u>Parliament Candidate Details..</u></th></tr>';
+					str+='<tr><th>Name</th>';
+					str+='<td> <a href="candidateElectionResultsAction.action?candidateId='+result.pcCandidateData.candidateId+'">'+result.pcCandidateData.candidateName+'</a></td>';
+					str+='<td rowspan="3"><img  height="90" width="90" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ></td>';
+					str+='</tr>';
+					str+='<tr><th>Rank</th><td>'+result.pcCandidateData.rank+' &nbsp;&nbsp;&nbsp;<b>Party:</b> '+ result.pcCandidateData.party+'</td></tr>';
+
+					str+='<tr><th>Votes Gained</th><td>'+result.pcCandidateData.votesPercentage+' %</td></tr>';
+					str+='<tr><td colspan="3"><table cellpadding="0" cellspacing="0"><tr><th>Total Voters</th><td>'+result.totalVotersInPC+' </td><th>Total Polled Votes</th><td>'+ result.totalPCPolledVotesInConstituency +'</td></tr></table></td></tr>';
+
+
+					str+='</table>';	
+				str+='</div>';		
+				str+='<div id="constDetails">';
+					str+='<div id="constDetailsHead">Cross Voting & Impact Details </div>'
+					
+					str+='<table>';
+					str+='<tr><td colspan="2"><br><b>Votes Percentage Difference between Assembly Candidate and Parlament Candidate: '+result.differenceInACAndPC+'%</b></td></tr>';
+					str+='<tr><td colspan="2"><br><b>Votes Percentage Difference in Assembly Impact On Parliament: '+result.impactOfAssemblyOnParliament+'%</b></td></tr>';	
+					str+='</table>';
+					
+				str+='</div>';
+				str+='<div id="treeDiv">';
+				str+='	<span><h4><u>Voting Details in Mandal/s:</u></h4></span>';
+				str+='	<div id="treeDataDiv"></div>';
+				str+='	<div  id="indexDataDiv"> AC* - Assembly Constituency, PC* - Parliament Constituency, IC* - Impact On Constituency</div>';
+				str+='</div>';
 			str+='</div>';
 
 
@@ -299,13 +360,15 @@
 		mstr+='<table class="mandalDatatable">';
 		mstr+='<tr>';
 		mstr+='<th style="width:140px;">'+mandal.mandalName+'</th>';		
-		mstr+='<th>| Assembly :</th>';
+		mstr+='<th>|Polled Votes :</th>';
+		mstr+='<td style="width:50px;">'+mandal.polledVotes+'</td>';
+		mstr+='<th>| AC<font color="red">*</font> :</th>';
 		mstr+='<td style="width:50px;">'+mandal.acPercentageInMandal+'  %</td>';
-		mstr+='<th>| Parliament :</th>';
+		mstr+='<th>| PC<font color="red">*</font> :</th>';
 		mstr+='<td style="width: 50px;">'+mandal.pcPercentageInMandal+'  %</td>';
-		mstr+='<th>| votes flown :</th>';
+		mstr+='<th>| Votes Flown :</th>';
 		mstr+='<td style="width: 50px;">'+mandal.percentageDifferenceInMandal+' %</td>';	
-		mstr+='<th>| Impact On Constituency:</th>';
+		mstr+='<th>| IC<font color="red">*</font>:</th>';
 		mstr+='<td style="width: 50px;">'+mandal.percentageImpactOnConstituency+' %</td>';	
 		mstr+='</tr>';
 		mstr+='</table>'
@@ -318,11 +381,11 @@
 			str+='<div id="mandalVotingDiv" class="yui-skin-sam"><table id="boothVotingDetailsTable" class="searchresultsTable" style="width:auto;">';
 			str+='<tr>';
 			str+='<th>Part No</th>';
-			str+='<th>Villages Covered</th>';
-			str+='<th>Percentage (P)</th>';
-			str+='<th>Valid Votes (P)</th>';
-			str+='<th>Percentage (A)</th>';
-			str+='<th>Valid Votes (A)</th>';			
+			str+='<th>Areas Covered</th>';
+			str+='<th>Total Voters</th>';
+			str+='<th>Polled Votes</th>';
+			str+='<th>AC<font color="red">*</font> Candidate %</th>';
+			str+='<th>PC<font color="red">*</font> Candidate %</th>';			
 			str+='<th>% Diff</th>';			
 			str+='</tr>';
 			for (var j in mandal.crossVotedBooths) 
@@ -330,10 +393,10 @@
 				str+='<tr>';			
 				str+='<td>'+mandal.crossVotedBooths[j].partNO+'</td>';
 				str+='<td>'+mandal.crossVotedBooths[j].villagesCovered+'</td>';
+				str+='<td>'+mandal.crossVotedBooths[j].totalVoters+'</td>';
+				str+='<td>'+mandal.crossVotedBooths[j].polledVotes+'</td>';
 				str+='<td>'+mandal.crossVotedBooths[j].pcPercentage+'</td>';
-				str+='<td>'+mandal.crossVotedBooths[j].pcValidVotes+'</td>';
 				str+='<td>'+mandal.crossVotedBooths[j].acPercentage+'</td>';
-				str+='<td>'+mandal.crossVotedBooths[j].acValidVotes+'</td>';
 				str+='<td>'+mandal.crossVotedBooths[j].percentageDifference+'</td>';
 				str+='</tr>';			
 			}
@@ -502,6 +565,9 @@
 	}
 	function getParliament()
 	{
+		var img = document.getElementById("ajaxImg1");
+		img.style.display = 'block';
+
 		var elecYearElmt = document.getElementById("electionYearField");
 		var elecValue =  elecYearElmt.options[elecYearElmt.selectedIndex].value;
 
@@ -520,23 +586,25 @@
 		<div id="crossVotingInputDiv">
 			<table class="crossVotingInputTable" border='0'>
 				<tr>
-					<td colspan="2"><h4><span id="labelspan">Select Election year and party :</span></h4></td>
+					<td colspan="2"><h4><span id="labelspan">Select All Mandatory Fields :</span></h4></td>
 				</tr>
 				<tr>
-					<td align="left"><s:label theme="simple" for="electionYearField" id="electionYearLabel" value="Election Year"></s:label></td>
+					<td align="left"><s:label theme="simple" for="electionYearField" id="electionYearLabel" value="Election Year"></s:label><font color="red">*</font></td>
 					<td align="left">
 						<s:select theme="simple" id="electionYearField" name="electionYearField" list="electionYearList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Year" onchange="getParliament()"></s:select>
 					</td>
+					<td><img id="ajaxImg1" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 				
-					<td align="left" style="padding-left:10px;"><s:label theme="simple" for="parliamentField" id="parliamentLabel" value="Parliament Constituency"></s:label></td>
+					<td align="left" style="padding-left:10px;"><s:label theme="simple" for="parliamentField" id="parliamentLabel" value="Parliament Constituency"></s:label><font color="red">*</font></td>
 					<td align="left"> 
 						<select id="parliamentField" onchange="getAssembly()">
 							<option value="-1">Select</option>
 						</select>
 					</td>
+					<td><img id="ajaxImg2" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 				</tr>			
 				<tr>
-					<td align="left">Assembly Constituency</td>
+					<td align="left">Assembly Constituency<font color="red">*</font></td>
 					<td align="left">
 						<select id="AssemblySelect" onchange="getParty()">
 							<option value="-1">Select</option>
@@ -544,19 +612,26 @@
 
 						<input type="checkbox" name="includeAliance" id="allianceCheck" value="alliance" />Include Aliance Parties
 					</td>
-				
+					<td><img id="ajaxImg3" style="display:none;" height="15" width="15" src="<%=request.getContextPath()%>/images/icons/arrows.gif"/></td>
 					
-					<td align="left" style="padding-left:10px;">Party</td>
+					<td align="left" style="padding-left:10px;">Party<font color="red">*</font></td>
 					<td align="left">
 							<select id="PartySelect" onchange="getCrossVoting()">
 								<option value="-1">Select </option>			
 							</select>						
 					</td>
+					
+				</tr>
+				<tr>
+					<td colspan="4">
+							<br>
+							Note: <b><font color="red">*</font></b> indicates mandatory field
+					</td>
 				</tr>
 				<tr>
 					<td colspan="4" align="center">
 						<div id="ajaxLoadDiv" style="display:none;padding-top:20px;">
-							<span><b>Processing Information ...</b> </span>
+							<span><b>Processing Request ...</b> </span>
 							<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
 						</div>
 					</td>					
@@ -565,5 +640,7 @@
 			</table>
 		</div>
 		<div id="crossVotingResultDiv" style="display:none;"></div>
+
+	
 </body>
 </html>
