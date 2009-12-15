@@ -87,7 +87,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		List<SelectOptionVO> constituencyVOs = new ArrayList<SelectOptionVO>();
 		List<Constituency> constituencies = boothConstituencyElectionDAO.findConstituencyByElectionYearAndElectionScope(electionYear, electionScopeId);
 		for(Constituency constituency:constituencies){
-			SelectOptionVO constituencyVO = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
+			SelectOptionVO constituencyVO = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName().toUpperCase());
 			constituencyVOs.add(constituencyVO);
 		}
 		return constituencyVOs;
@@ -103,7 +103,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			boothConstituencyElections = boothConstituencyElectionDAO.findByConstituencyIdAndElectionYear(constituencyId, electionYear.toString());
 			if(boothConstituencyElections == null || boothConstituencyElections.size() == 0)
 				continue;
-			SelectOptionVO constituencyVO = new SelectOptionVO(constituencyId, constituency.getName());
+			SelectOptionVO constituencyVO = new SelectOptionVO(constituencyId, constituency.getName().toUpperCase());
 			constituencyVOs.add(constituencyVO);
 		}
 		return constituencyVOs;
@@ -114,7 +114,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		List<Party> list = candidateBoothResultDAO.findPartiesByConstituencyAndElectionYear(constituencyId, electionYear);
 		List<SelectOptionVO> partyVOs = new ArrayList<SelectOptionVO>();
 		for(Party party:list){
-			SelectOptionVO delimitationConstituencyVO = new SelectOptionVO(party.getPartyId(), party.getShortName());
+			SelectOptionVO delimitationConstituencyVO = new SelectOptionVO(party.getPartyId(), party.getShortName().toUpperCase());
 			partyVOs.add(delimitationConstituencyVO);
 		}
 		return partyVOs;
