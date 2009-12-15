@@ -162,4 +162,7 @@
 	
 	<bean id="cadreManagementAction" class="com.itgrids.partyanalyst.web.action.CadreManagementAction" singleton="false">		
 	</bean>
+	
+	<bean id="createEventAction" class="com.itgrids.partyanalyst.web.action.CreateEventAction" singleton="false">		
+	</bean>
 </beans>
