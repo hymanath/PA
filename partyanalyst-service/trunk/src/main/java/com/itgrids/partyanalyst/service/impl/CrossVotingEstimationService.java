@@ -96,8 +96,14 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	public List<SelectOptionVO> getAssembliesForParliament(Long parliamentId, Long electionYear){
 		List<Constituency> constituencies = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(parliamentId, electionYear);
 		List<SelectOptionVO> constituencyVOs = new ArrayList<SelectOptionVO>();
+		List<BoothConstituencyElection> boothConstituencyElections = null;
+		Long constituencyId;
 		for(Constituency constituency:constituencies){
-			SelectOptionVO constituencyVO = new SelectOptionVO(constituency.getConstituencyId(), constituency.getName());
+			constituencyId = constituency.getConstituencyId();
+			boothConstituencyElections = boothConstituencyElectionDAO.findByConstituencyIdAndElectionYear(constituencyId, electionYear.toString());
+			if(boothConstituencyElections == null || boothConstituencyElections.size() == 0)
+				continue;
+			SelectOptionVO constituencyVO = new SelectOptionVO(constituencyId, constituency.getName());
 			constituencyVOs.add(constituencyVO);
 		}
 		return constituencyVOs;
@@ -121,96 +127,97 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		List<Nomination> acNominations = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, acId, electionYear);
 		List<Nomination> pcNominations;
 		if(includeAliance.equals("true")){
-			if(log.isInfoEnabled()){
-				log.debug("\n====================in True Block-----"+electionYear + partyId);
-			}
 			List<SelectOptionVO> alianceParties = staticDataService.getAlliancePartiesAsVO(electionYear, new Long(2), partyId);
 			
-			if(alianceParties == null || alianceParties.size() == 0){
-				crossVotingConsolidateVO.setHasAlliance(false);
-				return crossVotingConsolidateVO;
+			if(alianceParties == null || alianceParties.size() == 0)
+				pcNominations = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, pcId, electionYear);
+			else{
+				List<Long> aliancePartyIds = new ArrayList<Long>();
+				
+				for(SelectOptionVO alianceParty:alianceParties)
+					aliancePartyIds.add(alianceParty.getId());
+				
+				pcNominations = nominationDAO.findByConstituencyPartyAndElectionYearIncludingAliance(aliancePartyIds, pcId, electionYear);
 			}
-			List<Long> aliancePartyIds = new ArrayList<Long>();
-			for(SelectOptionVO alianceParty:alianceParties){
-				aliancePartyIds.add(alianceParty.getId());
-			}
-			if(log.isInfoEnabled()){
-				log.debug("\n====================Aliance Parties Ids Size::-----"+aliancePartyIds.size());
-			}
-			pcNominations = nominationDAO.findByConstituencyPartyAndElectionYearIncludingAliance(aliancePartyIds, pcId, electionYear);
-			if(log.isInfoEnabled()){
-				log.debug("\n=================Nominations with aliance Size::-----"+pcNominations.size());
-			}
+			
 		}else{
 			pcNominations = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, pcId, electionYear);
-		}						
+		}		
+		
 		if(((acNominations.size() != 1)||(pcNominations.size() != 1))&& includeAliance.equals("false")){
 			if(pcNominations.size() == 0){
 				crossVotingConsolidateVO.setPartyPartisipated(false);
 				return crossVotingConsolidateVO;
-			}
-			if(log.isInfoEnabled()){
-				log.debug("--------Exists More than One Nominations For the Give Cryteria-----");
 			}	
 		}
+		
 		Nomination acNomination = acNominations.get(0);
 		acCandidate.setCandidateId(acNomination.getCandidate().getCandidateId());
 		acCandidate.setCandidateName(acNomination.getCandidate().getLastname());
 		acCandidate.setImage(acNomination.getCandidate().getImage());
 		acCandidate.setRank(checkForCandidateWonOrLost(acNomination));
-		acCandidate.setParty(acNomination.getParty().getLongName());
-		acCandidate.setVotesPercentage(acNomination.getCandidateResult().getVotesPercengate());
-		acCandidate.setVotesEarned(new Long(acNomination.getCandidateResult().getVotesEarned().longValue()));
+		acCandidate.setParty(acNomination.getParty().getShortName());
+		
 		Nomination pcNomination = pcNominations.get(0);
 		pcCandidate.setCandidateId(pcNomination.getCandidate().getCandidateId());
 		pcCandidate.setCandidateName(pcNomination.getCandidate().getLastname());
 		pcCandidate.setImage(pcNomination.getCandidate().getImage());
 		pcCandidate.setRank(checkForCandidateWonOrLost(pcNomination));
-		pcCandidate.setParty(pcNomination.getParty().getLongName());
+		pcCandidate.setParty(pcNomination.getParty().getShortName());
+		
+		crossVotingConsolidateVO.setTotalACPolledVotesInConstituency(acNomination.getConstituencyElection().getConstituencyElectionResult().getTotalVotesPolled().longValue());
+		crossVotingConsolidateVO.setTotalPCPolledVotesInConstituency(pcNomination.getConstituencyElection().getConstituencyElectionResult().getTotalVotesPolled().longValue());
+		crossVotingConsolidateVO.setTotalVotersInAC(acNomination.getConstituencyElection().getConstituencyElectionResult().getTotalVotes().longValue());
+		crossVotingConsolidateVO.setTotalVotersInPC(pcNomination.getConstituencyElection().getConstituencyElectionResult().getTotalVotes().longValue());
 		crossVotingConsolidateVO.setAcCandidateData(acCandidate);
 		crossVotingConsolidateVO.setPcCandidateData(pcCandidate);
-		List<CrossVotedMandalVO> mandals = getTehsilsForConstituency(acCandidate, pcCandidate, electionYear, partyId, acId, pcId, acNomination.getNominationId(), pcNomination.getNominationId());
+		List<CrossVotedMandalVO> mandals = getTehsilsForConstituency(crossVotingConsolidateVO, electionYear, partyId, acId, pcId, acNomination.getNominationId(), pcNomination.getNominationId());
 		crossVotingConsolidateVO.setMandals(mandals);
 		return crossVotingConsolidateVO;
 	}
 	
-	public List<CrossVotedMandalVO> getTehsilsForConstituency(CrossVotedCandidateVO acCandidate, CrossVotedCandidateVO pcCandidate, String electionYear, Long partyId, Long assemblyConstituencyId, Long parliamentConstituencyId, Long acNominationId, Long pcNominationId){
+	public List<CrossVotedMandalVO> getTehsilsForConstituency(CrossVotingConsolidateVO crossVotingConsolidateVO, String electionYear, Long partyId, Long assemblyConstituencyId, Long parliamentConstituencyId, Long acNominationId, Long pcNominationId){
 		List<CrossVotedMandalVO> crossVotedMandalVOs = new ArrayList<CrossVotedMandalVO>();
 		List<Tehsil> tehsils = boothDAO.findTehsilsByElectionAndConstituency(electionYear, assemblyConstituencyId);
-		long beginTimeMillis = System.currentTimeMillis();
-		Long acVotesEarnedInConstituency = acCandidate.getVotesEarned();
+		CrossVotedCandidateVO acCandidate = crossVotingConsolidateVO.getAcCandidateData();
+		CrossVotedCandidateVO pcCandidate = crossVotingConsolidateVO.getPcCandidateData();
+		Long totalPolledVotesInAC = new Long(0);
+		Long acVotesEarnedInConstituency = new Long(0);
+		Long acValidVotesInConstituency = new Long(0);
 		Long pcVotesEarnedInConstituency = new Long(0);
 		Long pcValidVotesInConstituency = new Long(0);
 		CrossVotedMandalVO crossVotedMandalVO = null;
+		
 		for(Tehsil tehsil:tehsils){
 			crossVotedMandalVO = new CrossVotedMandalVO();
 			crossVotedMandalVO.setMandalName(tehsil.getTehsilName());
 			List<CrossVotedBoothVO> crossVotedBooths = getCrossVotingDetails(tehsil.getTehsilId(), electionYear, crossVotedMandalVO, assemblyConstituencyId, parliamentConstituencyId, acNominationId, pcNominationId);
 			pcVotesEarnedInConstituency = pcVotesEarnedInConstituency + crossVotedMandalVO.getPcEarnedVotesInMandal();
 			pcValidVotesInConstituency = pcValidVotesInConstituency + crossVotedMandalVO.getPcValidVotesInMandal();
+			acVotesEarnedInConstituency = acVotesEarnedInConstituency + crossVotedMandalVO.getAcEarnedVotesInMandal();
+			acValidVotesInConstituency = acValidVotesInConstituency + crossVotedMandalVO.getAcValidVotesInMandal();
+			totalPolledVotesInAC = totalPolledVotesInAC + crossVotedMandalVO.getPolledVotes();
 			crossVotedMandalVO.setCrossVotedBooths(crossVotedBooths);
 			crossVotedMandalVOs.add(crossVotedMandalVO);
 		}
 		
-		long endTimeMillis = System.currentTimeMillis();
-		if(log.isInfoEnabled()){
-			log.info("Total time taken:" + (endTimeMillis-beginTimeMillis)/1000);
-			log.info("IN getTehsilsForConstituency "+tehsils.size());
-		}	
-		Long earnedVotesDifferenceInConstituency = acVotesEarnedInConstituency - pcVotesEarnedInConstituency;
-		String acPercetageInConstituency = acCandidate.getVotesPercentage();
+		String acPercetageInConstituency = calculateVotesPercengate(acValidVotesInConstituency, acVotesEarnedInConstituency);
 		String pcPercetageInConstituency = calculateVotesPercengate(pcValidVotesInConstituency, pcVotesEarnedInConstituency);
-		acCandidate.setVotesPercentage(acPercetageInConstituency);
+		Double percentageDifferenceInConstituency = new Double(acPercetageInConstituency) - new Double(pcPercetageInConstituency);
+		Double  impactOfAssemblyOnParliament = (totalPolledVotesInAC*percentageDifferenceInConstituency)/crossVotingConsolidateVO.getTotalPCPolledVotesInConstituency();
+		crossVotingConsolidateVO.setDifferenceInACAndPC(new BigDecimal(percentageDifferenceInConstituency).setScale (2,BigDecimal.ROUND_HALF_UP).toString());
+		crossVotingConsolidateVO.setImpactOfAssemblyOnParliament(new BigDecimal(impactOfAssemblyOnParliament).setScale (2,BigDecimal.ROUND_HALF_UP).toString());
 		pcCandidate.setVotesPercentage(pcPercetageInConstituency);
-		Double percentageDifferenceInConstituency = Double.parseDouble(acPercetageInConstituency)-Double.parseDouble(pcPercetageInConstituency);
-		calculateCrossVotingPercentageImpactOnMandals(earnedVotesDifferenceInConstituency, percentageDifferenceInConstituency, crossVotedMandalVOs);
+		acCandidate.setVotesPercentage(acPercetageInConstituency);
+		calculateCrossVotingPercentageImpactByMandals(totalPolledVotesInAC, crossVotedMandalVOs);
 		return crossVotedMandalVOs;
 	}
 	
-	public void calculateCrossVotingPercentageImpactOnMandals(Long earnedVotesDifferenceInConstituency, Double percentageDifferenceInConstituencyRound, List<CrossVotedMandalVO> crossVotedMandalVOs) {
+	public void calculateCrossVotingPercentageImpactByMandals(Long polledVotesInConstituency, List<CrossVotedMandalVO> crossVotedMandalVOs) {
 		for(CrossVotedMandalVO crossMandalVO:crossVotedMandalVOs){
-			Long earnedVotesDifferenceInMandal = crossMandalVO.getEarnedVotesDiffernce();
-			Double percentageImpactOnConstituency = (earnedVotesDifferenceInMandal.longValue()*percentageDifferenceInConstituencyRound.doubleValue())/earnedVotesDifferenceInConstituency.longValue();
+			Long polledVotesInMandal = crossMandalVO.getPolledVotes();
+			Double crossVotingPercentageInMandal = new Double(crossMandalVO.getPercentageDifferenceInMandal());
+			Double percentageImpactOnConstituency = (polledVotesInMandal.longValue()*crossVotingPercentageInMandal)/polledVotesInConstituency;
 			BigDecimal percentageImpactOnConstituencyRound = new BigDecimal(percentageImpactOnConstituency).setScale (2,BigDecimal.ROUND_HALF_UP);
 			crossMandalVO.setPercentageImpactOnConstituency(percentageImpactOnConstituencyRound.toString());
 		}
@@ -219,19 +226,25 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	public List<CrossVotedBoothVO> getCrossVotingDetails(Long tehsilId, String electionYear, CrossVotedMandalVO crossVotedMandalVO, Long acId, Long pcId, Long acNominationId, Long pcNominationId){
 		List<CrossVotedBoothVO> crossVotingInfoVOs = new ArrayList<CrossVotedBoothVO>();
 		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByElectionConstituencyAndTehsil(electionYear, tehsilId, acId);
+		Long totalVotersInMandal = new Long(0);
 		Long acValidVotesInMandal = new Long(0);
 		Long acEarnedVotesInMandal = new Long(0);
 		Long pcEarnedVotesInMandal = new Long(0);
 		Long pcValidVotesInMandal = new Long(0);
+		Long acTotalVotesPolledInMandal = new Long(0);
 		CrossVotedBoothVO crossVotedBoothVO = null;		
 		for(BoothConstituencyElection boothConstituencyElection:list){
 			crossVotedBoothVO = new CrossVotedBoothVO();
-			crossVotedBoothVO.setPartNO(boothConstituencyElection.getBooth().getPartNo());
+			crossVotedBoothVO.setPartNO(boothConstituencyElection.getBooth().getPartNo());			
 			crossVotedBoothVO.setVillagesCovered(boothConstituencyElection.getBooth().getvillagesCovered());
+			Long totalVoters = boothConstituencyElection.getBooth().getTotalVoters();
 			Long acValidVotes = boothConstituencyElection.getBoothResult().getValidVotes();
+			Long acRejectedVotes = boothConstituencyElection.getBoothResult().getRejectedVotes();
+			Long acTenderedVotes = boothConstituencyElection.getBoothResult().getTenderedVotes();
 			List<CandidateBoothResult> acCandidateBoothResults = candidateBoothResultDAO.findByNominationAndBoothConstituencyElection(acNominationId, boothConstituencyElection.getBoothConstituencyElectionId());
 			Long acEarnedVotes = acCandidateBoothResults.get(0).getVotesEarned();
-			String acPercentage = calculateVotesPercengate(acValidVotes, acEarnedVotes);	
+			String acPercentage = calculateVotesPercengate(acValidVotes, acEarnedVotes);
+			crossVotedBoothVO.setTotalVoters(totalVoters);
 			crossVotedBoothVO.setAcValidVotes(acValidVotes);
 			crossVotedBoothVO.setAcPercentage(acPercentage);
 			List<BoothConstituencyElection> parliamentBoothResults = boothConstituencyElectionDAO.findByElectionConstituencyAndBooth(boothConstituencyElection.getBooth().getBoothId(), electionYear, pcId);
@@ -244,10 +257,14 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			Double percentageDifference = Double.parseDouble(acPercentage)-Double.parseDouble(pcPercentage);
 			BigDecimal percentageDifferenceRound = new BigDecimal(percentageDifference).setScale (2,BigDecimal.ROUND_HALF_UP);			
 			crossVotedBoothVO.setPercentageDifference(percentageDifferenceRound.toString());
+			totalVotersInMandal = totalVotersInMandal + totalVoters;		
 			acValidVotesInMandal = acValidVotesInMandal + acValidVotes;
 			acEarnedVotesInMandal = acEarnedVotesInMandal + acEarnedVotes;
 			pcValidVotesInMandal = pcValidVotesInMandal + pcValidVotes;
 			pcEarnedVotesInMandal = pcEarnedVotesInMandal + pcEarnedVotes;
+			Long totalVotesPolled = acValidVotes + acRejectedVotes + acTenderedVotes;
+			acTotalVotesPolledInMandal = acTotalVotesPolledInMandal + totalVotesPolled;
+			crossVotedBoothVO.setPolledVotes(totalVotesPolled);
 			crossVotingInfoVOs.add(crossVotedBoothVO);
 		}
 		String acPercentageInMandal = calculateVotesPercengate(acValidVotesInMandal, acEarnedVotesInMandal);
@@ -261,6 +278,8 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		crossVotedMandalVO.setPcValidVotesInMandal(pcValidVotesInMandal);
 		crossVotedMandalVO.setPcEarnedVotesInMandal(pcEarnedVotesInMandal);
 		crossVotedMandalVO.setPcPercentageInMandal(pcPercentageInMandal);
+		crossVotedMandalVO.setTotalVoters(totalVotersInMandal);
+		crossVotedMandalVO.setPolledVotes(acTotalVotesPolledInMandal);
 		crossVotedMandalVO.setPercentageDifferenceInMandal(percentageDifferenceInMandalRound.toString());
 		return crossVotingInfoVOs;
 	}
