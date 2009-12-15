@@ -34,4 +34,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List getDistrictsByStateIDFromBooth(Long stateID);
 	public List getConstituenciesByDistrictIDFromBooth(Long districtID);
 	public List getMandalsByConstituencyIDFromBooth(Long constituencyID);
+	
+	public List<BoothConstituencyElection> findByConstituencyIdAndElectionYear(Long constituencyId, String electionYear);
 }
