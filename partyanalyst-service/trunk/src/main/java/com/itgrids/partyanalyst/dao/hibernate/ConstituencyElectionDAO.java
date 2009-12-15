@@ -77,6 +77,19 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionScope.electionScopeId = ? and model.election.electionYear = ?",params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyElection> findByElectionAndState(Long electionID,Long stateId){
+		Long[] params = {electionID,stateId};
+		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionId =? and model.constituency.state.stateId =?", params);	
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyElection> findByElectionAndStateAndDistrict(Long electionID,Long stateId,Long districtID){
+		Long[] params = {electionID,stateId,districtID};
+		return getHibernateTemplate().find("from ConstituencyElection model where model.election.electionId =? and model.constituency.state.stateId =? and model.constituency.district.districtId=?", params);
+	}
+	
 	
 	
 }
