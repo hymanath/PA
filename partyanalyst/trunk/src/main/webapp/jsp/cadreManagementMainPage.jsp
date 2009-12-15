@@ -59,7 +59,7 @@
 	#cadreManagementMainDiv
 	{
 		background-color:#EFEFEF;
-		height:900px;
+		height:920px;
 		margin-left:25px;
 		margin-right:25px;
 		text-align:left;
@@ -116,7 +116,6 @@
 	#cadreImpDatesHeadDiv, #cadreImpEventsHeadDiv, #cadreSMSHeadDiv, #cadreGroupsHeadDiv
 	{
 		padding:5px;
-		text-align:center;
 		font-weight:bold;
 		background-color:#839DB7;
 		height:20px;
@@ -128,17 +127,25 @@
 		overflow:auto;		
 	}
 	
-	#cadreSMSMainDiv, #cadreGroupsMainDiv
+	#cadreSMSMainDiv
 	{
-		height:48%;
+		height:38%;		
+		margin-top:5px;
+		background-color:#F9FCFF;		
+		border:2px solid #95A6B7;
+	}
+	#cadreGroupsMainDiv
+	{
+		height:100%;
 		background-color:#F9FCFF;		
 		margin-bottom:5px;
 		border:2px solid #95A6B7;
 	}
+
 	
 	#cadreSMSBodyDiv
 	{
-		height:100px;
+		height:65px;
 	}
 	#cadreSMSFooterDiv
 	{
@@ -162,12 +169,13 @@
 	.cadreInfoDiv
 	{
 		padding:5px;
+		font-size:12px;
 	}
 
 	#regionLevelCadreDiv
-	{
-		padding-top:20px;
-		height:80%;
+	{		
+		border:2px solid #95A6B7;
+		height:58%;
 	}
 	#cadreStrengthAreasDiv
 	{
@@ -176,9 +184,14 @@
 	}
 	#regionLevelCadreDivHead
 	{
-		padding:5px;
+		background-color:#839DB7;
+		padding:8px;
 		font-weight:bold;
-		text-decoration:underline;
+		text-align:center;
+	}
+	#regionLevelCadreDivBody
+	{
+		height:130px;
 	}
 	#sendSMSAnc
 	{
@@ -187,10 +200,40 @@
 		padding:5px;
 		text-decoration:none;
 	}
+	#newEventSpan
+	{
+		float:right;
+		margin-right:5px;
+
+	}
+	#cadreEventsDetailsDivMain
+	{
+		margin-right:10px;
+		text-align:right;
+		padding:7px;
+	}
+	.impInfoSpan
+	{
+		font-size:12px;
+		padding:5px;
+	}
+
+	.yui-skin-sam .yui-calendar td.calcell.highlight1 
+	{
+		background-color:#39e7de;
+	}
+
+	.tinyDateCal
+	{
+		position:absolute;
+	}
 </style>
 
 <script type="text/javascript">
-	var smsDialog;
+	var smsDialog, newEventDialog, newDateDialog, mainEventCalendar,dateCalendar ;
+	var cadreObj={
+					regionCadres:[]
+				 };
 
 	function buildLayout()
 	{
@@ -210,7 +253,7 @@
 					},
 					{ 
 						position: 'bottom', 
-						height: 500,
+						height: 520,
 						header: 'Cadre Events', 
 						body: 'cadreEventsCalMainDiv',
 						resize: false,
@@ -220,9 +263,9 @@
 						animate: true }, 
 					{
 						position: 'left',
-						width: 220,
+						width: 270,
 						height:520,
-						header: 'Cadre SMS',
+						header: 'Associate Groups',
 						body: 'cadreSMSGroupsMainDiv',
 						resize: false, 
 						gutter: '5px',
@@ -245,6 +288,10 @@
 		layoutEl.render(); 
 	}
 
+	function buildAssociateGroupsAccrodian()
+	{
+
+	}
 	function buildCadreTeamsAccrodian()
 	{
 		//----------------------
@@ -314,53 +361,6 @@
 		accordion.addItem( item3 );
 		 });
 	}
-
-	function dateToLocaleString(dt, cal)
-	{ 
-		var wStr = cal.cfg.getProperty("WEEKDAYS_LONG")[dt.getDay()]; 
-		var dStr = dt.getDate(); 
-		var mStr = cal.cfg.getProperty("MONTHS_LONG")[dt.getMonth()]; 
-		var yStr = dt.getFullYear(); 
-		return (wStr + ", " + dStr + " " + mStr + " " + yStr); 
-	} 
-	 
-	function mySelectHandler(type,args,obj)
-	{ 
-		var selected = args[0]; 
-		var selDate = this.toDate(selected[0]); 
-
-		var calDateResult = dateToLocaleString(selDate, this);
-
-		var divElmt = document.createElement('div');
-		divElmt.setAttribute('id',calDateResult);
-		divElmt.innerHTML="SELECTED: " + calDateResult;
-	
-		var elmt = document.getElementById("cadreImpEventsBodyDiv");
-		if(elmt)
-		{
-			elmt.appendChild(divElmt);
-		}
-	     
-	}; 
-
-	function buildCalendarControl()
-	{
-		var navConfig = { 
-	      strings : { 
-	          month: "Choose Month", 
-	          year: "Enter Year", 
-	          submit: "OK", 
-	          cancel: "Cancel", 
-	          invalidYear: "Please enter a valid year" 
-	      }, 
-	      monthFormat: YAHOO.widget.Calendar.SHORT, 
-	      initialFocus: "year" 
-	}; 
-
-		var cal1 = new YAHOO.widget.Calendar("cadreDatesYUICalDiv", {navigator:navConfig}); 
-		cal1.selectEvent.subscribe(mySelectHandler, cal1, true); 
-		cal1.render(); 
-	}
 	
 	function buildSMSPopup()
 	{
@@ -378,8 +378,6 @@
 
 	function showSendSMSPopup()
 	{
-		// Instantiate the Dialog 
-		
 		smsDialog.show(); 
 	}
 	
@@ -391,7 +389,8 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText);									
+								myResults = YAHOO.lang.JSON.parse(o.responseText);
+							
 								if(jsObj.task == "getUserLocation")
 									fillDataOptions(myResults);	
 								else if(jsObj.task == "fillSelectElements")
@@ -400,6 +399,10 @@
 									displaySuccessMessage(myResults,jsObj);
 								else if(jsObj.task=="CADRE_LEVEL")
 									fillDataForCadreLevel(myResults);
+								else if(jsObj.task=="createEvent")
+									addCreatedEvent(myResults,jsObj);
+
+
 									
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -817,8 +820,321 @@
 		}		
 	}
 
+	function showRegionLevelCadres(arr)
+	{
+		cadreObj.regionCadres=arr;
+		var elmt = document.getElementById("regionLevelCadreDivBody");
+		if(!elmt)
+			alert("No Div Element present for displaying cadre details");		
+		elmt.innerHTML='';
+
+		for(var i in cadreObj.regionCadres)
+		{
+			var child = document.createElement('div');
+			child.setAttribute('id',cadreObj.regionCadres[i].val+"_"+cadreObj.regionCadres[i].id+"_div");
+			child.setAttribute('class','cadreInfoDiv');
+			if(i%2!=0)
+				child.setAttribute('style','background-color:#EBF5FF;');
+
+			var str='';
+			str+='<table>';
+			str+='<tr>';
+			str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>'
+			str+='<td>'+cadreObj.regionCadres[i].val+' level cadres - '+cadreObj.regionCadres[i].id+'</td>';
+			str+='</tr>';
+			str+='</table>';
 
 
+			child.innerHTML=str;
+
+			elmt.appendChild(child);
+		}
+	}
+
+
+	function dateToLocaleString(dt, cal)
+	{ 
+		 
+		var dStr = dt.getDate(); 
+		var mStr = dt.getMonth(); 
+		var yStr = dt.getFullYear(); 
+		return (dStr + "/" + mStr + "/" + yStr); 
+	} 
+	 
+	function mySelectHandler(type,args,obj)
+	{ 
+		var selected = args[0]; 
+		var selDate = this.toDate(selected[0]); 
+
+		var calDateResult = dateToLocaleString(selDate, this);
+
+		var divElmt = document.createElement('div');
+		divElmt.setAttribute('id',calDateResult);
+		divElmt.innerHTML="SELECTED: " + calDateResult;
+	
+		var elmt = document.getElementById("cadreImpEventsBodyDiv");
+		if(elmt)
+		{
+			//elmt.appendChild(divElmt);
+		}
+	     
+	};
+	
+	function displayDateText(type,args,obj)
+	{
+		var selected = args[0]; 
+		var selDate = this.toDate(selected[0]); 
+
+		var calDateResult = dateToLocaleString(selDate, this);
+
+		var elmt = document.getElementById("startDateText");
+		if(elmt)
+		{
+			elmt.value = calDateResult;
+		}
+	}
+	
+	function addCreatedEvent(results,jsObj)
+	{
+		var divElmt = document.createElement('div');
+		divElmt.setAttribute('id',results.startDate);
+		divElmt.setAttribute('class','eventSummaryDiv');
+
+		var str='';
+		str+='<table>';
+		str+='<tr>';
+		str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
+		str+='<td>'+results.title+'</td>';
+		str+='<tr>';
+		str+='</table>';
+		divElmt.innerHTML=str;
+
+		var elmt = document.getElementById("cadreImpEventsBodyDiv");
+		if(elmt)
+		{
+			elmt.appendChild(divElmt);
+		}
+
+		newEventDialog.cancel();
+
+		mainEventCalendar.addRenderer("12/19", mainEventCalendar.renderCellStyleHighlight1); 
+		mainEventCalendar.render(); 
+	}
+	function buildCalendarControl()
+	{
+		var navConfig = { 
+	      strings : { 
+	          month: "Choose Month", 
+	          year: "Enter Year", 
+	          submit: "OK", 
+	          cancel: "Cancel", 
+	          invalidYear: "Please enter a valid year" 
+	      }, 
+	      monthFormat: YAHOO.widget.Calendar.SHORT, 
+	      initialFocus: "year" 
+	}; 
+
+		mainEventCalendar = new YAHOO.widget.Calendar("cadreDatesYUICalDiv", {navigator:navConfig}); 
+		mainEventCalendar.selectEvent.subscribe(mySelectHandler, mainEventCalendar, true); 
+		mainEventCalendar.render(); 
+	}
+
+	function showDateCal(id)
+	{
+		if(dateCalendar)
+			dateCalendar.destroy();
+
+		var navConfig = { 
+	      strings : { 
+	          month: "Choose Month", 
+	          year: "Enter Year", 
+	          submit: "OK", 
+	          cancel: "Cancel", 
+	          invalidYear: "Please enter a valid year" 
+	      }, 
+	      monthFormat: YAHOO.widget.Calendar.SHORT, 
+	      initialFocus: "year" 
+	}; 
+
+		dateCalendar = new YAHOO.widget.Calendar(id, {navigator:navConfig}); 
+		dateCalendar.selectEvent.subscribe(displayDateText, dateCalendar, true); 		
+		dateCalendar.render(); 
+		
+	}
+	function buildNewEventPopup()
+	{
+		var elmt = document.getElementById('cadreManagementMainDiv');
+		var date = new Date().getFullYear()+"/"+(new Date().getMonth()+1)+"/"+new Date().getDate();
+
+				
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','newEventDiv');
+		divChild.setAttribute('class','yui-skin-sam');
+		
+		var eventStr='';
+		eventStr+='<div class="hd">New Event</div> ';
+		eventStr+='<div class="bd">'; 
+		eventStr+='<table>';
+		eventStr+='<tr>';
+		eventStr+='<th>Event Name</th>';
+		eventStr+='<td colspan="3"><input type="text" size="50" id="eventNameText" name="eventNameText"/></td>';
+		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='<th>Start Date</th>';
+		eventStr+='<td>';
+		eventStr+='<input type="text" id="startDateText" name="startDateText" onfocus="showDateCal(\'startCalDiv\')"/>';
+		eventStr+='<div id="startCalDiv" class="tinyDateCal"></div>';
+		eventStr+='</td>';
+		eventStr+='<th>End Date</th>';
+		eventStr+='<td><input type="text" id="endDateText" name="endDateText" onfocus="showDateCal(\'endCalDiv\')"/><div id="endCalDiv" class="tinyDateCal"></div></td>';
+		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='<th>Start Time</th>';
+		eventStr+='<td><input type="text" id="startTimeText" name="startTimeText"/></td>';
+		eventStr+='<th>End Time</th>';
+		eventStr+='<td><input type="text" id="endTimeText" name="endTimeText"/></td>';
+		eventStr+='</tr>';
+	
+		eventStr+='<tr>';
+		eventStr+='<th>Description</th>';
+		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="descTextArea" name="descTextArea"></textarea></td>';
+		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='<th>Organisers</th>';
+		eventStr+='<td colspan="3"><input type="text" size="50" id="organisersText" name="organisersText"/></td>';
+		eventStr+='</tr>';
+		
+		eventStr+='<tr>';
+		eventStr+='<th>Action plans</th>';
+		eventStr+='<td colspan="3"><input type="text" size="50" id="actionPlansText" name="actionPlansText"/></td>';
+		eventStr+='</tr>';
+
+		eventStr+='</table>';
+		eventStr+='</div>';
+
+		divChild.innerHTML=eventStr;
+		elmt.appendChild(divChild);
+
+		newEventDialog = new YAHOO.widget.Dialog("newEventDiv",
+				{ width : "600px", 
+	              fixedcenter : true, 
+	              visible : false,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  hideaftersubmit:true,
+		          buttons : [ { text:"Create Event", handler:handleSubmit, isDefault:true }, 
+	                          { text:"Cancel", handler:handleCancel } ]
+	             } ); 
+		newEventDialog.render(); 
+	}
+
+	function showNewEventPopup()
+	{
+		newEventDialog.show();
+	}
+
+	function handleSubmit()
+	{
+		var eventNameVal = document.getElementById("eventNameText").value;
+		var startDateVal = document.getElementById("startDateText").value;
+		var endDateVal = document.getElementById("endDateText").value;
+		var startTimeVal = document.getElementById("startTimeText").value;
+		var endTimeVal = document.getElementById("endTimeText").value;
+		var descVal = document.getElementById("descTextArea").value;
+		var organisersVal = document.getElementById("organisersText").value;
+		var actionPlansVal = document.getElementById("actionPlansText").value;
+		
+		var jsObj={
+					eventName:eventNameVal,
+					startDate:startDateVal,
+					endDate:endDateVal,
+					startTime:startTimeVal,
+					endTime:endTimeVal,
+					desc:descVal,
+					organisers:organisersVal,
+					actionPlans:actionPlansVal,
+					task:"createEvent"
+				  }
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
+		callAjax(jsObj,url);
+	}
+
+	function handleCancel()
+	{
+		this.cancel();
+	}	
+
+	function buildNewImpDatePopup()
+	{
+		var elmt = document.getElementById('cadreManagementMainDiv');
+		var date = new Date().getFullYear()+"/"+(new Date().getMonth()+1)+"/"+new Date().getDate();
+
+				
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','newImpDateDiv');
+		divChild.setAttribute('class','yui-skin-sam');
+		
+		var eventStr='';
+		eventStr+='<div class="hd">New Date</div> ';
+		eventStr+='<div class="bd">'; 
+		eventStr+='<table>';
+		eventStr+='<tr>';
+		eventStr+='<th>Event Name</th>';
+		eventStr+='<td colspan="3"><input type="text" size="50" id="eventNameText" name="eventNameText"/></td>';
+		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='<th>Start Date</th>';
+		eventStr+='<td><input type="text" id="startDateText" name="startDateText"/></td>';
+		eventStr+='<th>End Date</th>';
+		eventStr+='<td><input type="text" id="endDateText" name="endDateText"/></td>';
+		eventStr+='</tr>';	
+	
+		eventStr+='<tr>';
+		eventStr+='<th>Description</th>';
+		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="descTextArea" name="descTextArea"></textarea></td>';
+		eventStr+='</tr>';		
+
+		eventStr+='</table>';
+		eventStr+='</div>';
+
+		divChild.innerHTML=eventStr;
+		elmt.appendChild(divChild);
+
+		newDateDialog = new YAHOO.widget.Dialog("newImpDateDiv",
+				{ width : "600px", 
+	              fixedcenter : true, 
+	              visible : false,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  hideaftersubmit:true,
+		          buttons : [ { text:"Create Event", handler:handleImpDateSubmit, isDefault:true }, 
+	                          { text:"Cancel", handler:handleImpDateCancel } ]
+	             } ); 
+		newDateDialog .render(); 
+	}
+
+	function showNewImpDatePopup()
+	{
+		newDateDialog.show();
+	}
+
+	function handleImpDateSubmit()
+	{
+
+	}
+	
+	function handleImpDateCancel()
+	{
+
+	}
 </script>
 </head>
 <body>
@@ -875,14 +1191,7 @@
 	
 
 	<div id="cadreSMSGroupsMainDiv">
-		<div id="cadreSMSMainDiv">
-			<div id="cadreSMSHeadDiv">Cadre SMS</div>
-			<div id="cadreSMSBodyDiv">Cadre SMS feature enables the user to send SMS to the cadres based on the location and cadre level</div>
-			<div id="cadreSMSFooterDiv">				
-				<a href="javascript:{}" id="sendSMSAnc" onclick="showSendSMSPopup()">Send SMS</a>				
-				<!--<a href="cadreSMSAction.action" id="sendSMSAnc">Send SMS</a>-->
-			</div>
-		</div>
+		
 		<div id="cadreGroupsMainDiv">
 			<div id="cadreGroupsHeadDiv">Associate Groups</div>
 			<div id="cadreGroupsBodyDiv" style="height: 130px;">Associate groups</div>
@@ -891,23 +1200,17 @@
 	<div id="cadreDetailsMainDiv">
 		<div id="regionLevelCadreDiv">
 			<div id="regionLevelCadreDivHead">Region Level Cadres</div>
-			<div id="regionLevelCadreDivBody">
-				<div id="stateLevelCadre" class="cadreInfoDiv">
-					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>State Level Cadre - 25000
-				</div>
-				<div id="districtLevelCadre" class="cadreInfoDiv">
-					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>District Level Cadre - 15000
-				</div>
-				<div id="MandalLevelCadre" class="cadreInfoDiv">
-					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>Mandal Level Cadre - 10000
-				</div>
-				<div id="VillageLevelCadre" class="cadreInfoDiv">
-					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>Village Level Cadre - 5500
-				</div>
+			<div id="regionLevelCadreDivBody"></div>
+			<div id="cadreStrengthAreasDiv" class="cadreInfoDiv"><a href="cadreReportAction.action">Know your Cadre Strength areas</a></div>
+		</div>		
+		<div id="cadreSMSMainDiv">
+			<div id="cadreSMSHeadDiv">Cadre SMS</div>
+			<div id="cadreSMSBodyDiv">Cadre SMS feature enables the user to send SMS to the cadres based on the location and cadre level</div>
+			<div id="cadreSMSFooterDiv">				
+				<a href="javascript:{}" id="sendSMSAnc" onclick="showSendSMSPopup()">Send SMS</a>				
+				<!--<a href="cadreSMSAction.action" id="sendSMSAnc">Send SMS</a>-->
 			</div>
 		</div>
-		
-		<div id="cadreStrengthAreasDiv" class="cadreInfoDiv"><a href="cadreReportAction.action">Know your Cadre Strength areas</a></div>
 	</div>		
 	<div id="cadreTeamsMainDiv">
 		<div id="cadreTeamsAccordianDiv"></div>
@@ -916,19 +1219,33 @@
 		<div id="cadreDatesYUICalDiv">
 		
 		</div>
+		<div id="cadreEventsDetailsDivMain">
+			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/bluebox.png"/> - Only Important Dates </span>
+			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/lightbluebox.png"/> - Only Important Events</span>
+			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/brownbox.png"/> - Dates & Events</span>
+		</div>
 		<div id="cadreEventsDatesMain">
 			<table width="100%">
 				<tr>
 					<td width="50%">
 						<div id="cadreImpDatesDiv">
-							<div id="cadreImpDatesHeadDiv"> Important Dates </div>
+							<div id="cadreImpDatesHeadDiv">
+								<span style="float: left;">Important Dates</span>
+								<span id="newEventSpan"><a href="javascript:{}" onclick="showNewImpDatePopup()">Create New Event</a></span>							
+							</div>
 							<div id="cadreImpDatesBodyDiv"> Imp Dates Content </div>
 						</div>
 					</td>
 					<td width="50%">
 						<div id="cadreImpEventsDiv">
-							<div id="cadreImpEventsHeadDiv"> Important Events</div>
-							<div id="cadreImpEventsBodyDiv"> Imp Events Content</div>
+							<div id="cadreImpEventsHeadDiv">
+								<span style="float: left;">Important Events</span>
+								<span id="newEventSpan"><a href="javascript:{}" onclick="showNewEventPopup()">Create New Event</a></span>
+							</div>
+							<div id="cadreImpEventsBodyDiv"> 
+								
+								
+							</div>
 						</div>
 					</td>
 				</tr>
@@ -940,9 +1257,23 @@
 
 	<script type="text/javascript">
 		buildLayout();
+		buildAssociateGroupsAccrodian();
 		buildCadreTeamsAccrodian();
 		buildCalendarControl();	
 		buildSMSPopup();
+		buildNewEventPopup();
+		buildNewImpDatePopup();
+		
+		var regionLevelCadres = new Array();
+		<c:forEach var="pd1" items="${userCadresInfoVO.regionLevelCadres}" >				
+				var ob =
+					{
+						id:'${pd1.value}',
+						val:'${pd1.key}'
+					};
+					regionLevelCadres.push(ob);				
+		</c:forEach>
+		showRegionLevelCadres(regionLevelCadres);				
 	</script>
 
 	
