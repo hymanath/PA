@@ -20,7 +20,6 @@ import com.itgrids.partyanalyst.service.ICandidateSearchService;
 public class CandidateSearchService implements ICandidateSearchService{
 
 	private ICandidateDAO candidateDAO;	
-	private List<SelectOptionVO> candidateNamesAndIdsList;
 	private INominationDAO nominationDAO;
 	private IPartyRebelCandidateDAO partyRebelCandidateDAO;
 	
@@ -39,10 +38,11 @@ public class CandidateSearchService implements ICandidateSearchService{
 	}
 	
 	public List<SelectOptionVO> getCandidateNamesAndIds() {
+		List<SelectOptionVO> candidateNamesAndIdsList = null;
+		System.out.println("======Start===============getCandidateNamesAndIds===============================");
 		if(candidateNamesAndIdsList == null){
 			List<SelectOptionVO> candidateNamesAndIds = new ArrayList<SelectOptionVO>();
 			List<Candidate> candidates = candidateDAO.getAll();
-			System.out.println(candidates);
 			for(Candidate candidate:candidates){
 				SelectOptionVO candidateNameAndId = new SelectOptionVO();
 				candidateNameAndId.setId(candidate.getCandidateId());
@@ -50,7 +50,6 @@ public class CandidateSearchService implements ICandidateSearchService{
 				candidateNamesAndIds.add(candidateNameAndId);
 			}
 			candidateNamesAndIdsList = candidateNamesAndIds;
-			System.out.println("Entered into if loop for getCandidateNames");
 		}else
 			System.out.println("Entered into else loop for getCandidateNames");
 		return candidateNamesAndIdsList;
