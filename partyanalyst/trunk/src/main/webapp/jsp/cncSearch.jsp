@@ -41,7 +41,7 @@
 				if(xmlHttp.readyState==4 && xmlHttp.status == 200)
 				{
 					var jObj=eval('('+xmlHttp.responseText+')');				
-					buildAutoSuggest(jObj.namesList);		
+					buildAutoSuggest(jObj);		
 				}			
 			}
 		} 
