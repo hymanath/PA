@@ -42,5 +42,9 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	
 	public List<ConstituencyElection> findByElectionScopeAndYear(Long electionScopeId,String year);
 	
+	public List<ConstituencyElection> findByElectionAndState(Long electionID,Long stateId);
+	
+	public List<ConstituencyElection> findByElectionAndStateAndDistrict(Long electionID,Long stateId,Long districtID);
+	
 
 }
