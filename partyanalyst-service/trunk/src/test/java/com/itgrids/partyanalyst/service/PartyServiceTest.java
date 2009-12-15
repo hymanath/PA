@@ -327,11 +327,11 @@ public class PartyServiceTest {
 		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
 		SelectOptionVO obj = new SelectOptionVO(); obj.setId(13L);
 		parties.add(obj);
-		Nomination nomination = service.partyParticipatedNomination(nominations, parties, 3,13L);
+		Nomination nomination = service.partyParticipatedNomination(nominations, parties, 3,13L,true);
 		Assert.assertNull(nomination);
 		SelectOptionVO obj1 = new SelectOptionVO(); obj1.setId(3L);
 		parties.add(obj1);
-		nomination = service.partyParticipatedNomination(nominations, parties, 3,13L);
+		nomination = service.partyParticipatedNomination(nominations, parties, 3,13L,true);
 		Assert.assertNotNull(nomination);
 	}
 
@@ -369,7 +369,7 @@ public class PartyServiceTest {
 		SelectOptionVO obj1 = new SelectOptionVO(); obj1.setId(1L);obj1.setName("INC");
 		SelectOptionVO obj2 = new SelectOptionVO(); obj2.setId(5L);obj1.setName("MIM");
 		parties.add(obj1);parties.add(obj2);
-		PartyPositionDisplayVO voObject = service.getPartyPositionDisplayVO(ce, parties, 5L, 5);
+		PartyPositionDisplayVO voObject = service.getPartyPositionDisplayVO(ce, parties, 5L, 5,true);
 		//Assert.assertNotNull(voObject);
 		Assert.assertEquals(4, voObject.getOppPartyPositionInfoList().size());
 	}
