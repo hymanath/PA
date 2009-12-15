@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.model;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,26 +44,11 @@ public class Registration implements java.io.Serializable {
 	 private String pincode;
 	 private String accessType;
 	 private String accessValue;
-	 private Party party;
 	 
-	 @Column(name = "access_type", length = 40)
-	 public String getAccessType() {
-		return accessType;
-	}
-
-	public void setAccessType(String accessType) {
-		this.accessType = accessType;
-	}
-
-	@Column(name = "access_value", length = 40)
-	public String getAccessValue() {
-		return accessValue;
-	}
-
-	public void setAccessValue(String accessValue) {
-		this.accessValue = accessValue;
-	}
-
+	 private Party party;
+	 private String includePartyImpDateStatus;
+	 private Set<UserEvents> userEvents = new HashSet<UserEvents>(0);
+	
 	public Registration() {
 		 
 	}
@@ -68,7 +56,9 @@ public class Registration implements java.io.Serializable {
 	public Registration(String firstName,
 			String middleName, String lastName, String userName, String password,
 			Date dateOfBirth, String email, String phone, String mobile,
-			String address, String gender, String country, String pincode, String accessType, String accessValue) {
+			String address, String gender, String country, String pincode, String accessType, String accessValue,
+			Party party,String includePartyImpDateStatus,
+			Set<UserEvents> userEvents) {
 		super();
 		//this.registrationId = registrationId;
 		this.firstName = firstName;
@@ -86,6 +76,9 @@ public class Registration implements java.io.Serializable {
 		this.pincode = pincode;
 		this.accessType = accessType;
 		this.accessValue = accessValue;
+		this.party = party;
+		this.includePartyImpDateStatus = includePartyImpDateStatus;
+		this.userEvents = userEvents;
 	}
 	
 	@Id
@@ -208,17 +201,57 @@ public class Registration implements java.io.Serializable {
 		this.pincode = pincode;
 	}
 	
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "party_id")
+	 @Column(name = "access_type", length = 40)
+	 public String getAccessType() {
+		return accessType;
+	}
+
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
+
+	@Column(name = "access_value", length = 40)
+	public String getAccessValue() {
+		return accessValue;
+	}
+
+	public void setAccessValue(String accessValue) {
+		this.accessValue = accessValue;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="party_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Party getParty() {
-		return party;
+	 public Party getParty() {
+	 return party;
 	}
 
 	public void setParty(Party party) {
 		this.party = party;
 	}
-	 
+	
+	@Column(name = "include_party_imp_date_status", length = 25)
+	public String getIncludePartyImpDateStatus() {
+		return includePartyImpDateStatus;
+	}
+
+	public void setIncludePartyImpDateStatus(String includePartyImpDateStatus) {
+		this.includePartyImpDateStatus = includePartyImpDateStatus;
+	}
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserEvents> getUserEvents() {
+	return userEvents;
+	}
+
+	public void setUserEvents(Set<UserEvents> userEvents) {
+		this.userEvents = userEvents;
+	}
+	
+	
+
 	
 }
