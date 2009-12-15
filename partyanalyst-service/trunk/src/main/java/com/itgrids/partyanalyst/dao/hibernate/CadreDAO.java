@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -253,6 +254,11 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		Long[] ids = {userID, level};
 		List<String> results = getHibernateTemplate().find("select  model.mobile from Cadre model " +
 				"where model.registration.registrationId = ? and model.cadreLevel.cadreLevelID=?", ids);
+		return results;
+	}
+	
+	public List<Cadre> findByCadreIDs(String cadreIDs){
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model where model.cadreId=?", cadreIDs);
 		return results;
 	}
 

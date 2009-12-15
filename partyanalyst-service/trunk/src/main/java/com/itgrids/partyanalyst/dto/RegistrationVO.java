@@ -29,6 +29,7 @@ public class RegistrationVO extends BaseDTO{
 	 private String pincode;
 	 private String accessType;
 	 private String accessValue;
+	 private Long party;
 	 
 	 public Long getRegistrationID() {
 		return registrationID;
@@ -182,6 +183,12 @@ public class RegistrationVO extends BaseDTO{
 
 	public void setAccessValue(String accessValue) {
 		this.accessValue = accessValue;
+	}
+	public Long getParty() {
+		return party;
+	}
+	public void setParty(Long party) {
+		this.party = party;
 	}
 
 }

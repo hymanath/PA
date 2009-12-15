@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dto.BaseDTO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -15,11 +16,16 @@ import com.itgrids.partyanalyst.utils.IConstants;
 public class RegistrationService implements IRegistrationService{
 	
 	IRegistrationDAO registrationDAO;
+	IPartyDAO partyDAO;
 	
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO){
 		this.registrationDAO = registrationDAO;
 	}
 	
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
+	}
+
 	//private String requestStatus;
 	BaseDTO requestStatus = new BaseDTO();
 	private Long userID = null;
@@ -76,6 +82,7 @@ public class RegistrationService implements IRegistrationService{
 		reg.setGender(values.getGender());
 		reg.setUserName(values.getUserName());
 		reg.setPassword(values.getPassword());
+		reg.setParty(partyDAO.get(values.getParty()));
 		SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
 		Date date =null;
 		try{

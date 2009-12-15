@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.UserEventVO;
+
 /**
  * 
  * @author Narender Akula
@@ -9,7 +11,7 @@ import java.util.List;
  */
 public interface IUserCalendarService {
 	public Object getUserImpDates(Long userID);
-	public Object getUserPlannedEvents(Long userID);
-	public void saveUserPlannedEvents(Object userPlannedEvents);
-	public void deleteUserPlannedEvents(Object userPlannedEvents);
+	public List<UserEventVO> getUserPlannedEvents(Long userID);
+	public UserEventVO saveUserPlannedEvents(UserEventVO userPlannedEvents);
+	public void deleteUserPlannedEvents(Long userEventID);
 }
