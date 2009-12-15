@@ -222,14 +222,16 @@ public class StaticDataService implements IStaticDataService {
 		return constituencies;
 	}
 	
-	public List<ConstituencyElection> getConstituencyElections(Long electionID, Long  districtID){
+	public List<ConstituencyElection> getConstituencyElections(Long electionID,Long stateId,Long  districtID){
 		List<ConstituencyElection>  constituencyElectionList = null;
 		if(districtID==null || districtID==0L){
 			System.out.println(" DAO ...1");
-			constituencyElectionList = constituencyElectionDAO.findByElection(electionID);
+			//constituencyElectionList = constituencyElectionDAO.findByElection(electionID);
+			constituencyElectionList = constituencyElectionDAO.findByElectionAndState(electionID, stateId);
 		}else{
 			System.out.println("DAO ... 2");
-			constituencyElectionList = constituencyElectionDAO.findByElectionAndDistrict(electionID, districtID);
+			//constituencyElectionList = constituencyElectionDAO.findByElectionAndDistrict(electionID, districtID);
+			constituencyElectionList = constituencyElectionDAO.findByElectionAndStateAndDistrict(electionID, stateId, districtID);
 		}
 		return constituencyElectionList;
 	}
