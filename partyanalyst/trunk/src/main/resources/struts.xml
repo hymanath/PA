@@ -84,8 +84,10 @@
            <result name="success">/jsp/csvUpload.jsp</result>
         </action>
         
-        <action name="ajaxSearchAction" class="com.itgrids.partyanalyst.web.action.AjaxSearchAction" method="getJSON">
-			<result name="success" type="json" />						
+        <action name="ajaxSearchAction" class="com.itgrids.partyanalyst.web.action.AjaxSearchAction">
+			<result name="success" type="json" >
+				<param name="root">namesList</param>
+			</result>						
 		</action> 
 		<action name="cncSearchResultsAction" class="com.itgrids.partyanalyst.web.action.CnCSearchResultsAction">
 			<result name="success">/jsp/searchResultsPage.jsp</result>
