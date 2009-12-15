@@ -11,14 +11,17 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPartyImportantDatesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserEventActionPlanDAO;
 import com.itgrids.partyanalyst.dao.IUserEventsDAO;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
+import com.itgrids.partyanalyst.dto.PartyImportantDatesVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
 import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.PartyImportantDates;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.UserEventActionPlan;
 import com.itgrids.partyanalyst.model.UserEvents;
@@ -37,6 +40,7 @@ public class UserCalendarService implements IUserCalendarService {
 	private IUserEventActionPlanDAO userEventActionPlanDAO;
 	private IPartyDAO partyDAO;
 	private ICadreDAO cadreDAO;
+	private IPartyImportantDatesDAO partyImportantDatesDAO;
 	private final static Logger log = Logger.getLogger(UserCalendarService.class);
 	
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
@@ -56,14 +60,42 @@ public class UserCalendarService implements IUserCalendarService {
 		this.partyDAO = partyDAO;
 	}
 
+	public void setPartyImportantDatesDAO(
+			IPartyImportantDatesDAO partyImportantDatesDAO) {
+		this.partyImportantDatesDAO = partyImportantDatesDAO;
+	}
+
 	
 	public void setCadreDAO(ICadreDAO cadreDAO) {
 		this.cadreDAO = cadreDAO;
 	}
 
-	public Object getUserImpDates(Long userID) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PartyImportantDatesVO> getUserImpDates(Long userID, Long partyId) {
+
+		List<PartyImportantDatesVO> importantDates = new ArrayList<PartyImportantDatesVO>(0);
+		Registration user = registrationDAO.get(userID);
+		if("ALL".equals(user.getIncludePartyImpDateStatus())){
+			List<PartyImportantDates> importantDatesByPartyId = partyImportantDatesDAO.findByPartyId(partyId);
+			
+			if(importantDatesByPartyId != null){
+			
+				for(PartyImportantDates dates:importantDatesByPartyId ){
+				
+					PartyImportantDatesVO importantDatesVO = new PartyImportantDatesVO();
+				
+					importantDatesVO.setPartyId(dates.getParty().getPartyId());
+					importantDatesVO.setImportantDateId(dates.getPartyImportantDatesId());
+					importantDatesVO.setImportance(dates.getImportance());
+					importantDatesVO.setDate(dates.getDate().toString());			
+					importantDatesVO.setRecursive(dates.getRecursive());
+					
+					importantDates.add(importantDatesVO);
+				}
+			
+			}
+		}
+		
+		return importantDates;
 	}
 
 	public List<UserEventVO> getUserPlannedEvents(Long userID) {
