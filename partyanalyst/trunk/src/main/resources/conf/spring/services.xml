@@ -209,12 +209,12 @@
     	<!-- property name="partyAnalystPropertyService" ref="partyAnalystPropertyService" /-->
 	</bean>
     <bean id="userCalendarService" class="com.itgrids.partyanalyst.service.impl.UserCalendarService" >
-    	<property name="registrationDAO" ref="IRegistrationDAO"/>
+    	<property name="registrationDAO" ref="registrationDAO"/>
     	<property name="userEventsDAO" ref="userEventsDAO" />
-    	<property name="userEventActionPlanDAO" ref="IUserEventActionPlanDAO"/>
-    	<property name="partyDAO" ref="IPartyDAO"/>
-    	<property name="cadreDAO" ref="ICadreDAO"/>
-    	<property name="partyImportantDatesDAO" ref="IPartyImportantDatesDAO"/>    	
+    	<property name="userEventActionPlanDAO" ref="userEventActionPlanDAO"/>
+    	<property name="partyDAO" ref="partyDAO"/>
+    	<property name="cadreDAO" ref="cadreDAO"/>
+    	<property name="partyImportantDatesDAO" ref="partyImportantDatesDAO"/>    	
 	</bean>
 	<bean name="userCadreManagementService" class="com.itgrids.partyanalyst.service.impl.UserCadreManagementService" >		
 		<property name="userCalendarService" ref="userCalendarService" />
