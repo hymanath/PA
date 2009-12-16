@@ -392,7 +392,7 @@ public class PartyServiceTest {
 		List<ConstituencyElection> ceList = new ArrayList<ConstituencyElection>();
 		ceList.add(ce);
 		
-		EasyMock.expect(staticDataService.getConstituencyElections(1L,null)).andReturn(ceList);
+		EasyMock.expect(staticDataService.getConstituencyElections(1L,null,null)).andReturn(ceList);
 		EasyMock.replay(staticDataService);
 		PartyService service = new PartyService();
 		service.setElectionDAO(electionDAO);
