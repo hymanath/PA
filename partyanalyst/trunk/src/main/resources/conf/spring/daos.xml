@@ -134,6 +134,15 @@
 	<bean id="delimitationConstituencyMandalDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyMandalDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="userEventsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEventsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userEventActionPlanDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEventActionPlanDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="importantDateDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyImportantDatesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
 </beans>
 
 
