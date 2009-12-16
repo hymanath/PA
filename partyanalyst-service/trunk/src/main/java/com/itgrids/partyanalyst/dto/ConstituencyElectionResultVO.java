@@ -18,8 +18,9 @@ public class ConstituencyElectionResultVO {
 	private String candidateName;
 	private Long partyId;
 	private String partyName;
-	private String votesEarned;
-	private String validVotes;
+	private Long votesEarned;
+	private Long validVotes;
+	private int rank;
 	private String percentageOfVotes;
 	private Boolean hasRebel;
 	private CandidateWonVO rebelCandidate;
@@ -55,12 +56,7 @@ public class ConstituencyElectionResultVO {
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
 	}
-	public String getVotesEarned() {
-		return votesEarned;
-	}
-	public void setVotesEarned(String votesEarned) {
-		this.votesEarned = votesEarned;
-	}
+	
 	public String getPercentageOfVotes() {
 		return percentageOfVotes;
 	}
@@ -103,11 +99,24 @@ public class ConstituencyElectionResultVO {
 	public void setDistrictName(String districtName) {
 		this.districtName = districtName;
 	}
-	public String getValidVotes() {
+	public Long getVotesEarned() {
+		return votesEarned;
+	}
+	public void setVotesEarned(Long votesEarned) {
+		this.votesEarned = votesEarned;
+	}
+	public Long getValidVotes() {
 		return validVotes;
 	}
-	public void setValidVotes(String validVotes) {
+	public void setValidVotes(Long validVotes) {
 		this.validVotes = validVotes;
 	}
+	public int getRank() {
+		return rank;
+	}
+	public void setRank(int rank) {
+		this.rank = rank;
+	}
+	
 	
 }
