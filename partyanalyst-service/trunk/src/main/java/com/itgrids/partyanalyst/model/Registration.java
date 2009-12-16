@@ -80,6 +80,29 @@ public class Registration implements java.io.Serializable {
 		this.includePartyImpDateStatus = includePartyImpDateStatus;
 		this.userEvents = userEvents;
 	}
+
+	public Registration(String firstName,
+			String middleName, String lastName, String userName, String password,
+			Date dateOfBirth, String email, String phone, String mobile,
+			String address, String gender, String country, String pincode, String accessType, String accessValue) {
+		super();
+		//this.registrationId = registrationId;
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.userName = userName;
+		this.password = password;
+		this.dateOfBirth = dateOfBirth;
+		this.email = email;
+		this.phone = phone;
+		this.mobile = mobile;
+		this.address = address;
+		this.country = country;
+		this.pincode = pincode;
+		this.accessType = accessType;
+		this.accessValue = accessValue;
+	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -62,6 +62,19 @@ public class Party implements java.io.Serializable {
 	/** full constructor */
 	public Party(Long partyId, String longName, String shortName,
 			String symbol, String address, String comments,
+			String partyRecognization, Set<Nomination> nominations) {
+		this.partyId = partyId;
+		this.longName = longName;
+		this.shortName = shortName;
+		this.symbol = symbol;
+		this.address = address;
+		this.comments = comments;
+		this.partyRecognization = partyRecognization;
+		this.nominations = nominations;
+	}
+	
+	public Party(Long partyId, String longName, String shortName,
+			String symbol, String address, String comments,
 			String partyRecognization, Set<Nomination> nominations,
 			Set<Registration> registrations, Set<PartyImportantDates> partyImportantDates) {
 		this.partyId = partyId;
