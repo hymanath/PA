@@ -208,12 +208,16 @@
 	<bean id="smsCountrySmsService" class="com.itgrids.partyanalyst.service.impl.SmsCountrySmsService" >
     	<!-- property name="partyAnalystPropertyService" ref="partyAnalystPropertyService" /-->
 	</bean>
-    
-	<bean id="userCalendarService" class="com.itgrids.partyanalyst.service.impl.UserCalendarService" ></bean>
+    <bean id="userCalendarService" class="com.itgrids.partyanalyst.service.impl.UserCalendarService" >
+    	<property name="registrationDAO" ref="IRegistrationDAO"/>
+    	<property name="userEventsDAO" ref="userEventsDAO" />
+    	<property name="userEventActionPlanDAO" ref="IUserEventActionPlanDAO"/>
+    	<property name="partyDAO" ref="IPartyDAO"/>
+    	<property name="cadreDAO" ref="ICadreDAO"/>
+    	<property name="partyImportantDatesDAO" ref="IPartyImportantDatesDAO"/>    	
+	</bean>
 	<bean name="userCadreManagementService" class="com.itgrids.partyanalyst.service.impl.UserCadreManagementService" >		
 		<property name="userCalendarService" ref="userCalendarService" />
 		<property name="cadreManagementService" ref="cadreManagementService" />	
 	</bean>
-    
-	
 </beans>
