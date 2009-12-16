@@ -120,7 +120,7 @@ table.CandidateElectionResultsTable td {
 
 	#treeViewDiv
 	{
-		margin-left:20px;
+		margin-left:30px;
 	}
 	.partyDetSpan
 	{
@@ -153,7 +153,10 @@ table.CandidateElectionResultsTable td {
 		distStr+='<td>'+distObj.districtName+'</td>';		
 
 		distStr+='<th>Impacted % :</th>';
+		if(distObj.distVotesPercentage < 0)
 		distStr+='<td align="center" style="color:#FF0000">'+distObj.distVotesPercentage+' %</td>';
+		else if(distObj.distVotesPercentage > 0)
+		distStr+='<td align="center" style="color:#04B45F">'+'+ '+distObj.distVotesPercentage+' %</td>';
 
 		distStr+='<th> '+distObj.year+'% :</th>';
 		distStr+='<td align="center">'+distObj.partyVotesPercentage+' %</td>';	
@@ -179,53 +182,62 @@ table.CandidateElectionResultsTable td {
 			str+='<table class="partyPerformanceCriteriaTable" style="margin-right:10px;">';
 			str+='<tr>';
 			str+='<th colspan="6" align="center">Year '+distObj.year+'</th>';
-			str+='<th colspan="3" align="center">Year '+distObj.previousYear+'</th>';
+			str+='<th colspan="6" align="center">Year '+distObj.previousYear+'</th>';
 			str+='<th colspan="2" align="center">('+distObj.year+'-'+distObj.previousYear+')</th>';			
 			str+='</tr>';
 
 			str+='<tr>';
 			str+='<th align="center">Party</th>';
-			str+='<th colspan="2" align="center">Votes %</th>';
-			str+='<th align="center">Party</th>';
-			str+='<th colspan="2" align="center">Votes %</th>';
-			str+='<th align="center">Party</th>';
-			str+='<th colspan="2" align="center">Votes %</th>';
-			str+='<th align="center">Party %</th>';
-			str+='<th align="center">Votes Diff %</th>';			
+			str+='<th align="center">Candidate Name</th>';
+			str+='<th align="center">Votes Earned</th>';
+			str+='<th colspan="2" align="center">Votes&nbsp;%</th>';
+			str+='<th align="center">Status</th>';
+			str+='<th align="center" align="center">Party</th>';
+			str+='<th align="center">Candidate Name</th>';
+			str+='<th align="center">Votes Earned</th>';
+			str+='<th colspan="2" align="center">Votes&nbsp;%</th>';
+			str+='<th align="center">Status</th>';
+			str+='<th colspan="2" align="center">Votes Diff&nbsp;%</th>';			
 			str+='</tr>';			
 			
 			str+='<tr>';					
-			str+='<td>'+constObj[cons].electionResultOne.partyOne.partyName+'</td>';
-			str+='<td colspan="2" align="center">'+constObj[cons].electionResultOne.partyOne.VotesPercentage+' %</td>';
-			str+='<td>'+constObj[cons].electionResultOne.partyTwo.partyName+'</td>';
-			str+='<td colspan="2" align="center">'+constObj[cons].electionResultOne.partyTwo.VotesPercentage+' %</td>';
-			str+='<td>'+constObj[cons].electionResultTwo.partyOne.partyName+'</td>';
-			str+='<td colspan="2" align="center">'+constObj[cons].electionResultTwo.partyOne.VotesPercentage+' %</td>';
-			str+='<td rowspan="3">'+constObj[cons].electionResultTwo.partyOne.partyName+'</td>';
-			str+='<td rowspan="3">'+constObj[cons].votesDiff+' %</td>';			
+			str+='<td align="center">'+constObj[cons].electionResultOne.partyOne.partyName+'</td>';
+			str+='<td>'+constObj[cons].electionResultOne.partyOne.candidateName+'</td>';
+			str+='<td align="center">'+constObj[cons].electionResultOne.partyOne.votesEarned+'</td>';
+			str+='<td colspan="2">'+constObj[cons].electionResultOne.partyOne.VotesPercentage+'&nbsp;%</td>';
+			if(constObj[cons].electionResultOne.partyOne.rank == 1)
+			str+='<td align="center">Won</td>';
+			else if(constObj[cons].electionResultOne.partyOne.rank == 2)
+            str+='<td align="center">Runner-up</td>';
+			else
+			str+='<td align="center">Lost</td>';
+			str+='<td rowspan="2">'+constObj[cons].electionResultTwo.partyOne.partyName+'</td>';
+            str+='<td rowspan="2">'+constObj[cons].electionResultTwo.partyOne.candidateName+'</td>';
+			str+='<td rowspan="2" align="center">'+constObj[cons].electionResultTwo.partyOne.votesEarned+'</td>';
+			str+='<td rowspan="2" colspan="2">'+constObj[cons].electionResultTwo.partyOne.VotesPercentage+'&nbsp;%</td>';
+			if(constObj[cons].electionResultTwo.partyOne.rank == 1)
+			str+='<td rowspan="2" align="center">Won</td>';
+			else if(constObj[cons].electionResultTwo.partyOne.rank == 2)
+			str+='<td rowspan="2" align="center">Runner-up</td>';
+			else
+			str+='<td rowspan="2" align="center">Lost</td>';
+			if(constObj[cons].votesDiff < 0)
+			str+='<td rowspan="2" colspan="2" style="color:#FF0000" align="center">'+constObj[cons].votesDiff+'&nbsp;%</td>';	
+			else if(constObj[cons].votesDiff > 0)
+            str+='<td rowspan="2" colspan="2" style="color:#04B45F" align="center">'+'+ '+constObj[cons].votesDiff+'&nbsp;%</td>';	
 			str+='</tr>';	
 
 			str+='<tr>';
-			str+='<th>Candidate Name</th>';
-			str+='<th>Votes Earned</th>';
-			str+='<th>Valid Votes</th>';
-			str+='<th>Candidate Name</th>';
-			str+='<th>Votes Earned</th>';
-			str+='<th>Valid Votes</th>';
-			str+='<th>Candidate Name</th>';
-			str+='<th>Votes Earned</th>';
-			str+='<th>Valid Votes</th>';
-			str+='</tr>';
-			str+='<tr>';
-			str+='<td>'+constObj[cons].electionResultOne.partyOne.candidateName+'</td>';
-			str+='<td>'+constObj[cons].electionResultOne.partyOne.votesEarned+'</td>';
-			str+='<td>'+constObj[cons].electionResultOne.partyOne.validVotes+'</td>';
+			str+='<td align="center">'+constObj[cons].electionResultOne.partyTwo.partyName+'</td>';
 			str+='<td>'+constObj[cons].electionResultOne.partyTwo.candidateName+'</td>';
-			str+='<td>'+constObj[cons].electionResultOne.partyTwo.votesEarned+'</td>';
-			str+='<td>'+constObj[cons].electionResultOne.partyTwo.validVotes+'</td>';
-			str+='<td>'+constObj[cons].electionResultTwo.partyOne.candidateName+'</td>';
-			str+='<td>'+constObj[cons].electionResultTwo.partyOne.votesEarned+'</td>';
-			str+='<td>'+constObj[cons].electionResultTwo.partyOne.validVotes+'</td>';
+            str+='<td align="center">'+constObj[cons].electionResultOne.partyTwo.votesEarned+'</td>';
+			str+='<td colspan="2">'+constObj[cons].electionResultOne.partyTwo.VotesPercentage+'&nbsp;%</td>';
+			if(constObj[cons].electionResultOne.partyTwo.rank == 1)
+			str+='<td align="center">Won</td>';
+			else if(constObj[cons].electionResultOne.partyTwo.rank == 2)
+			str+='<td align="center">Runner-up</td>';
+			else
+			str+='<td align="center">Lost</td>';
 			str+='</tr>';
 
 			str+='</table>';
@@ -327,7 +339,7 @@ table.CandidateElectionResultsTable td {
 </script>
 </head>
 <body>
-		<h3><u>Party Influence Report For <c:out value="${partyInfluenceReportVO.impactedPartyName}" /> Against <c:out value="${partyInfluenceReportVO.newPartyName}" /> </u></h3>
+		<table><tr><td><h3> PARTY INFLUENCE REPORT FOR </h3></td><td align="center" style="color:#FF0000"><h3><c:out value="${partyInfluenceReportVO.impactedPartyName}" /></h3></td><td><h3> AGAINST </h3></td><td align="center" style="color:#04B45F"><h3><c:out value="${partyInfluenceReportVO.newPartyName}"/></h3></td></tr></table>
             <br>
 			<div id="influenceReportMain">				
 				<div id="reportMain">
@@ -337,8 +349,8 @@ table.CandidateElectionResultsTable td {
 
 					<table>
 						<tr>
-							<th><span class="partyDetSpan">New Party Details..</span></th>
-							<th style="padding-left:20px;"><span class="partyDetSpan">Impacted Party Details..</span></th>
+							<th><span class="partyDetSpan">${partyInfluenceReportVO.newPartyName} State Wise Results for ${partyInfluenceReportVO.year} ..</span></th>
+							<th style="padding-left:20px;"><span class="partyDetSpan">${partyInfluenceReportVO.impactedPartyName} State Wise Results for ${partyInfluenceReportVO.year} and ${partyInfluenceReportVO.previousYear} ...</span></th>
 						</tr>
 						<tr>
 							<td>
@@ -405,7 +417,7 @@ table.CandidateElectionResultsTable td {
 									districtId:'${result.districtId}',
 									districtName:'${result.districtName}',
 									stateName:'${result.stateName}',
-									distVotesPercentage:'${result.districtVotesPercentageDiff}',
+									distVotesPercentage:'${result.districtWiseVotesPercntDiff}',
 									partyVotesPercentage:'${result.partyVotesPercentage}',
 									newPartyVotesPercentage:'${result.newPartyVotesPercentage}',
 									partyVotesPercentageYear2:'${result.partyVotesPercentForYear2}',
@@ -434,7 +446,8 @@ table.CandidateElectionResultsTable td {
 															votesEarned:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.votesEarned}',	
 															validVotes:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.validVotes}',
 															VotesPercentage:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.percentageOfVotes}',
-															hasRebel:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.hasRebel}'				
+															hasRebel:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.hasRebel}'	,
+															rank:'${constResult.constituencyElectionResultsForYearOne.electionResultForParty.rank}'
 														 },
 												partyTwo:{
 															year:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.year}',
@@ -448,7 +461,8 @@ table.CandidateElectionResultsTable td {
 															votesEarned:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.votesEarned}',	
 															validVotes:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.validVotes}',
 															VotesPercentage:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.percentageOfVotes}',
-															hasRebel:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.hasRebel}'	
+															hasRebel:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.hasRebel}',
+															rank:'${constResult.constituencyElectionResultsForYearOne.electionResultForNewParty.rank}'
 														 }
 											   },
 							electionResultTwo:{
@@ -464,7 +478,8 @@ table.CandidateElectionResultsTable td {
 															votesEarned:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.votesEarned}',	
 															validVotes:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.validVotes}',
 															VotesPercentage:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.percentageOfVotes}',
-															hasRebel:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.hasRebel}'		
+															hasRebel:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.hasRebel}',
+															rank:'${constResult.constituencyElectionResultsForYearTwo.electionResultForParty.rank}'
 														}
 											  }
 						}
