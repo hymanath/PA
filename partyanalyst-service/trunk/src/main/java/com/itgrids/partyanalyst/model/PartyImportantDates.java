@@ -27,39 +27,41 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity	
-@Table(name="party_important_dates")
+@Table(name="party_important_date")
 public class PartyImportantDates extends BaseModel {
 
 	
 	private static final long serialVersionUID = 1L;
 
-	private Long partyImportantDatesId ;
+	private Long partyImportantDateId ;
 	private Date date;
 	private String importance ;
 	private Party party;
 	private String recursive;
+	private String recursiveFrequency;
 	
 	public PartyImportantDates() {
 		
 	}
 
-	public PartyImportantDates(Date date, String importance, Party party,String recursive) {
+	public PartyImportantDates(Date date, String importance, Party party,String recursive,String recursiveFrequency) {
 
 		this.date = date;
 		this.importance = importance;
 		this.party = party;
 		this.recursive = recursive;
+		this.recursiveFrequency = recursiveFrequency;
 	}
 	
 	@Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
-	 @Column(name = "party_important_dates_id", unique = true, nullable = false)
-	public Long getPartyImportantDatesId() {
-		return partyImportantDatesId;
+	 @Column(name = "party_important_date_id", unique = true, nullable = false)
+	public Long getPartyImportantDateId() {
+		return partyImportantDateId;
 	}
 
-	public void setPartyImportantDatesId(Long partyImportantDatesId) {
-		this.partyImportantDatesId = partyImportantDatesId;
+	public void setPartyImportantDateId(Long partyImportantDateId) {
+		this.partyImportantDateId = partyImportantDateId;
 	}
 	
 	@Temporal(TemporalType.DATE)
@@ -93,13 +95,22 @@ public class PartyImportantDates extends BaseModel {
 		this.party = party;
 	}
 	
-	@Column(name = "recursive", length = 25)
+	@Column(name = "recursiveness", length = 1)
 	public String getRecursive() {
 		return recursive;
 	}
 
 	public void setRecursive(String recursive) {
 		this.recursive = recursive;
+	}
+	
+	@Column(name = "recursive_frequency", length = 25)
+	public String getRecursiveFrequency() {
+		return recursiveFrequency;
+	}
+
+	public void setRecursiveFrequency(String recursiveFrequency) {
+		this.recursiveFrequency = recursiveFrequency;
 	}
 	
 	
