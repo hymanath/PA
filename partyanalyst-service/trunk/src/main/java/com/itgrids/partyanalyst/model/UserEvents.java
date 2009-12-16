@@ -33,6 +33,7 @@ public class UserEvents extends BaseModel {
 	private Long locationId;
 	private Date startDate;
 	private Date endDate;
+	private String title;
 	private List<Cadre> organizers;
 	private List<UserEventActionPlan> userEventActionPlans;
 	
@@ -108,6 +109,14 @@ public class UserEvents extends BaseModel {
 	public void setUserEventActionPlans(
 			List<UserEventActionPlan> userEventActionPlans) {
 		this.userEventActionPlans = userEventActionPlans;
+	}
+	
+	@Column(name = "title", length = 200)
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	@Override
 	public int hashCode() {
