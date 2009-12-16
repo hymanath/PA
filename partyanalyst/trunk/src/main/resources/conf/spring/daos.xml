@@ -140,7 +140,7 @@
 	<bean id="userEventActionPlanDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEventActionPlanDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="importantDateDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyImportantDatesDAO">
+	<bean id="partyImportantDatesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyImportantDatesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
 </beans>
