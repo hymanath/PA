@@ -70,6 +70,7 @@
 				<value>com.itgrids.partyanalyst.model.CandidateConsolidationTask</value>
 				<value>com.itgrids.partyanalyst.model.UserEvents</value>
 				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
+				<value>com.itgrids.partyanalyst.model.PartyImportantDates</value>
 			</list>
 		</property>
 	</bean>
@@ -248,4 +249,9 @@
 	<bean id="userEventActionPlanDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEventActionPlanDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="partyImportantDatesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyImportantDatesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+
 </beans>
