@@ -1,9 +1,15 @@
 package com.itgrids.partyanalyst.util;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.itgrids.partyanalyst.dto.EventActionPlanVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserEventVO;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -16,8 +22,11 @@ import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.UserEventActionPlan;
+import com.itgrids.partyanalyst.model.UserEvents;
 
 
 public class MockData {
@@ -1925,5 +1934,76 @@ public class MockData {
 		// for constituencyElection --->nominations, constituency
 		// for nomination ----> candidateresult, party, candidate
 		return constituencyElection;
+	}
+	
+	public static List<UserEvents> getUserPlannedEvents(){
+		List<UserEvents> userEventsList = new ArrayList<UserEvents>();
+		UserEvents userEvents1 = new UserEvents();
+		UserEvents userEvents2 = new UserEvents();
+		
+		userEvents1.setUserEventsId(1L);
+		Registration user = new Registration();
+		user.setRegistrationId(1L);
+		user.setFirstName("fName");
+		user.setLastName("lName");
+		user.setParty(new Party(1L));
+		userEvents1.setRegistration(user);
+		userEvents1.setDescription("Event 1 Description.....");
+		userEvents1.setLocationType("DISTRICT");
+		userEvents1.setLocationId(1L);
+		userEvents1.setStartDate(Calendar.getInstance().getTime());
+		userEvents1.setEndDate(Calendar.getInstance().getTime());
+		Cadre cadre1 =  new Cadre();cadre1.setCadreId(1L);
+		Cadre cadre2 =  new Cadre();cadre2.setCadreId(2L);
+		List<Cadre> organizers = new ArrayList<Cadre>(); organizers.add(cadre1); organizers.add(cadre2);
+		userEvents1.setOrganizers(organizers);
+
+		List<UserEventActionPlan> plans1 = new ArrayList<UserEventActionPlan>();
+		UserEventActionPlan plan1= new UserEventActionPlan();plan1.setUserEvents(userEvents1);
+		UserEventActionPlan plan2= new UserEventActionPlan();plan2.setUserEvents(userEvents1);
+		plans1.add(plan1);plans1.add(plan2);
+		userEvents1.setUserEventActionPlans(plans1);
+		userEventsList.add(userEvents1);
+		
+		userEvents2.setUserEventsId(2L);
+		userEvents2.setRegistration(user);
+		userEvents2.setDescription("Event 2 Description.....");
+		userEvents2.setLocationType("MANDAL");
+		userEvents2.setLocationId(11L);
+		userEvents2.setStartDate(Calendar.getInstance().getTime());
+		userEvents2.setEndDate(Calendar.getInstance().getTime());
+		List<Cadre> organizers2 = new ArrayList<Cadre>(); organizers2.add(cadre1); //organizers2.add(cadre2);
+		userEvents2.setOrganizers(organizers2);
+		List<UserEventActionPlan> plans2 = new ArrayList<UserEventActionPlan>();
+		userEvents2.setUserEventActionPlans(plans2);
+		userEventsList.add(userEvents2);
+		return userEventsList;
+	}
+	
+	public static UserEventVO getUserEventVO(){		
+		UserEventVO userPlannedEvents = new UserEventVO();
+		userPlannedEvents.setUserID(1L);
+		userPlannedEvents.setDescription("Helping poor of Hyderabad city.....");
+		userPlannedEvents.setLocationType("YAKUTPURA");
+		userPlannedEvents.setLocationId(1L);
+		userPlannedEvents.setStartDate(Calendar.getInstance().getTime());
+		userPlannedEvents.setEndDate(Calendar.getInstance().getTime());
+		List <SelectOptionVO> organizers = new ArrayList<SelectOptionVO>();
+		SelectOptionVO obj = new SelectOptionVO(1L, "");
+		organizers.add(obj);
+		List<EventActionPlanVO> actionPlans = new ArrayList<EventActionPlanVO>();
+		EventActionPlanVO actionPlan1 = new EventActionPlanVO();
+		actionPlan1.setAction("ground work at nallakunta");
+		actionPlan1.setUserEventsId(12L);
+		actionPlan1.setTargetDate(Calendar.getInstance().getTime());
+		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
+		SelectOptionVO list1 = new SelectOptionVO(4L,"");
+		list.add(list1);
+		actionPlan1.setActionPlanOrganizers(list);
+		
+		actionPlans.add(actionPlan1);
+		userPlannedEvents.setOrganizers(organizers);
+		userPlannedEvents.setActionPlans(actionPlans);
+		return userPlannedEvents;
 	}
 }
