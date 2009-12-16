@@ -68,6 +68,8 @@
 				<value>com.itgrids.partyanalyst.model.CandidateBoothResult</value>
 				<value>com.itgrids.partyanalyst.model.NominationHistory</value>
 				<value>com.itgrids.partyanalyst.model.CandidateConsolidationTask</value>
+				<value>com.itgrids.partyanalyst.model.UserEvents</value>
+				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
 			</list>
 		</property>
 	</bean>
@@ -238,6 +240,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="partyRebelCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyRebelCandidateDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userEventsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEventsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userEventActionPlanDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEventActionPlanDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
