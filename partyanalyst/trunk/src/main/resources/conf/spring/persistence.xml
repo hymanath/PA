@@ -58,7 +58,8 @@
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandal </value>
 				<value>com.itgrids.partyanalyst.model.UserEvents</value>
 				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
-		</list>
+				<value>com.itgrids.partyanalyst.model.PartyImportantDates</value>
+				</list>
 		</property>
 	</bean>
 	
