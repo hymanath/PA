@@ -9,6 +9,7 @@ public class UserEventVO extends ResultStatus {
 	
 	private Long userEventsId;
 	private Long userID;
+	private String title;
 	private String description;
 	private String locationType;
 	private Long locationId;
@@ -17,6 +18,12 @@ public class UserEventVO extends ResultStatus {
 	private List <SelectOptionVO> organizers;
 	private List<EventActionPlanVO> actionPlans;
 	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	public Long getUserEventsId() {
 		return userEventsId;
 	}
