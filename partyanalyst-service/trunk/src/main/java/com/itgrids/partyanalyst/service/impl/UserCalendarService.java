@@ -84,7 +84,7 @@ public class UserCalendarService implements IUserCalendarService {
 					PartyImportantDatesVO importantDatesVO = new PartyImportantDatesVO();
 				
 					importantDatesVO.setPartyId(dates.getParty().getPartyId());
-					importantDatesVO.setImportantDateId(dates.getPartyImportantDatesId());
+					importantDatesVO.setImportantDateId(dates.getPartyImportantDateId());
 					importantDatesVO.setImportance(dates.getImportance());
 					importantDatesVO.setDate(dates.getDate().toString());			
 					importantDatesVO.setRecursive(dates.getRecursive());
@@ -145,6 +145,7 @@ public class UserCalendarService implements IUserCalendarService {
 		userEvents.setLocationId(userPlannedEvents.getLocationId());
 		userEvents.setStartDate(userPlannedEvents.getStartDate());
 		userEvents.setEndDate(userPlannedEvents.getEndDate());
+		userEvents.setTitle(userPlannedEvents.getTitle());
 		List<SelectOptionVO> organizerIDs =userPlannedEvents.getOrganizers();
 		if(organizerIDs!=null &&organizerIDs.size()>0){
 			StringBuilder sb = new StringBuilder();
@@ -185,6 +186,7 @@ public class UserCalendarService implements IUserCalendarService {
 		userEventVO.setLocationType(userEvent.getLocationType());
 		userEventVO.setStartDate(userEvent.getStartDate());
 		userEventVO.setEndDate(userEvent.getEndDate());
+		userEventVO.setTitle(userEvent.getTitle());
 		List<Cadre> organizers = userEvent.getOrganizers();
 		if(organizers!=null && organizers.size()>0){
 			List<SelectOptionVO> organizersVO = new ArrayList<SelectOptionVO>();
