@@ -392,34 +392,37 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 					ConstituencyElectionResults constituencyElectionResult = new ConstituencyElectionResults();
 					
 					constituencyElectionResultForParty.setCandidateId(candidateOne.getCandidateId());
-					constituencyElectionResultForParty.setCandidateName(candidateOne.getLastname());
+					constituencyElectionResultForParty.setCandidateName(candidateOne.getLastname().toUpperCase());
 					constituencyElectionResultForParty.setConstituencyId(constituencyOne.getConstituencyId());
-					constituencyElectionResultForParty.setConstituencyName(constituencyOne.getName());
+					constituencyElectionResultForParty.setConstituencyName(constituencyOne.getName().toUpperCase());
 					constituencyElectionResultForParty.setDistrictId(constituencyOne.getDistrict().getDistrictId());
 					constituencyElectionResultForParty.setDistrictName(constituencyOne.getDistrict().getDistrictName());
-					if(partyOne.getShortName().trim() != null)
-					 constituencyElectionResultForParty.setPartyName(partyOne.getShortName());
-					else
-					 constituencyElectionResultForParty.setPartyName(partyOne.getLongName());
-					constituencyElectionResultForParty.setVotesEarned(candidateResultOne.getVotesEarned().toString());
+					constituencyElectionResultForParty.setVotesEarned(candidateResultOne.getVotesEarned().longValue());
 					constituencyElectionResultForParty.setPercentageOfVotes(candidateResultOne.getVotesPercengate());
 					constituencyElectionResultForParty.setYear(candidateResultOne.getNomination().getConstituencyElection().getElection().getElectionYear());
-					constituencyElectionResultForParty.setValidVotes(nominationsForParty.getConstituencyElection().getConstituencyElectionResult().getValidVotes().toString());
+					constituencyElectionResultForParty.setValidVotes(nominationsForParty.getConstituencyElection().getConstituencyElectionResult().getValidVotes().longValue());
 					constituencyElectionResultForParty.setPartyId(partyOne.getPartyId());
-					constituencyElectionResultForParty.setPartyName(partyOne.getShortName());
+					if(partyOne.getShortName().trim() != null)
+					 constituencyElectionResultForParty.setPartyName(partyOne.getShortName().trim());
+					else
+					 constituencyElectionResultForParty.setPartyName(partyOne.getLongName().trim());
+					constituencyElectionResultForParty.setRank(candidateResultOne.getRank().intValue());
 					
 					constituencyElectionResultForNewParty.setCandidateId(candidateTwo.getCandidateId());
-					constituencyElectionResultForNewParty.setCandidateName(candidateTwo.getLastname());
+					constituencyElectionResultForNewParty.setCandidateName(candidateTwo.getLastname().toUpperCase());
 					constituencyElectionResultForNewParty.setConstituencyId(constituencyTwo.getConstituencyId());
-					constituencyElectionResultForNewParty.setConstituencyName(constituencyTwo.getName());
+					constituencyElectionResultForNewParty.setConstituencyName(constituencyTwo.getName().toUpperCase());
 					constituencyElectionResultForNewParty.setDistrictId(constituencyTwo.getDistrict().getDistrictId());
 					constituencyElectionResultForNewParty.setDistrictName(constituencyTwo.getDistrict().getDistrictName());
-					constituencyElectionResultForNewParty.setPartyName(partyTwo.getLongName().trim());
-					constituencyElectionResultForNewParty.setVotesEarned(candidateResultTwo.getVotesEarned().toString());
+					if(partyTwo.getShortName() != null)
+					 constituencyElectionResultForNewParty.setPartyName(partyTwo.getShortName().trim());
+					else
+					 constituencyElectionResultForNewParty.setPartyName(partyTwo.getLongName().trim());
+					constituencyElectionResultForNewParty.setVotesEarned(candidateResultTwo.getVotesEarned().longValue());
 					constituencyElectionResultForNewParty.setPercentageOfVotes(candidateResultTwo.getVotesPercengate());
-					constituencyElectionResultForNewParty.setValidVotes(nominationsForNewParty.getConstituencyElection().getConstituencyElectionResult().getValidVotes().toString());
+					constituencyElectionResultForNewParty.setValidVotes(nominationsForNewParty.getConstituencyElection().getConstituencyElectionResult().getValidVotes().longValue());
 					constituencyElectionResultForNewParty.setPartyId(partyTwo.getPartyId());
-					constituencyElectionResultForNewParty.setPartyName(partyTwo.getLongName());
+					constituencyElectionResultForNewParty.setRank(candidateResultTwo.getRank().intValue());
 					
 					constituencyElectionResult.setElectionResultForParty(constituencyElectionResultForParty);
 					constituencyElectionResult.setElectionResultForNewParty(constituencyElectionResultForNewParty);
@@ -452,20 +455,21 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 			constituencyElectionResult = new ConstituencyElectionResults();
 			
 			constituencyElectionResultForParty.setCandidateId(candidateOne.getCandidateId());
-			constituencyElectionResultForParty.setCandidateName(candidateOne.getLastname());
+			constituencyElectionResultForParty.setCandidateName(candidateOne.getLastname().toUpperCase());
 			constituencyElectionResultForParty.setConstituencyId(constituencyOne.getConstituencyId());
-			constituencyElectionResultForParty.setConstituencyName(constituencyOne.getName());
+			constituencyElectionResultForParty.setConstituencyName(constituencyOne.getName().toUpperCase());
 			constituencyElectionResultForParty.setDistrictId(constituencyOne.getDistrict().getDistrictId());
 			constituencyElectionResultForParty.setDistrictName(constituencyOne.getDistrict().getDistrictName());
 			constituencyElectionResultForParty.setPartyId(partyOne.getPartyId());
 			if(partyOne.getShortName().trim() != null)
-			 constituencyElectionResultForParty.setPartyName(partyOne.getShortName());
+			 constituencyElectionResultForParty.setPartyName(partyOne.getShortName().toUpperCase());
 			else
-			 constituencyElectionResultForParty.setPartyName(partyOne.getLongName());
-			constituencyElectionResultForParty.setVotesEarned(candidateResultOne.getVotesEarned().toString());
+			 constituencyElectionResultForParty.setPartyName(partyOne.getLongName().toUpperCase());
+			constituencyElectionResultForParty.setVotesEarned(candidateResultOne.getVotesEarned().longValue());
 			constituencyElectionResultForParty.setPercentageOfVotes(candidateResultOne.getVotesPercengate());
 			constituencyElectionResultForParty.setYear(candidateResultOne.getNomination().getConstituencyElection().getElection().getElectionYear());
-			constituencyElectionResultForParty.setValidVotes(nominationsForParty.getConstituencyElection().getConstituencyElectionResult().getValidVotes().toString());
+			constituencyElectionResultForParty.setValidVotes(nominationsForParty.getConstituencyElection().getConstituencyElectionResult().getValidVotes().longValue());
+			constituencyElectionResultForParty.setRank(candidateResultOne.getRank().intValue());
 			
 			constituencyElectionResult.setElectionResultForParty(constituencyElectionResultForParty);
 			constituencyElectionResults.add(constituencyElectionResult);
