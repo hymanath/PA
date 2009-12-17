@@ -222,10 +222,23 @@
 	{
 		background-color:#39e7de;
 	}
+	.yui-skin-sam .yui-calendar td.calcell.highlight2 
+	{
+		background-color:#4b83e3;
+	}
 
 	.tinyDateCal
 	{
 		position:absolute;
+	}
+	.timeSelect
+	{
+		margin-right:5px;
+		padding:2px;
+	}
+	#actionDetailsDiv
+	{
+		background-color:#EEF4FF;
 	}
 </style>
 
@@ -234,6 +247,7 @@
 	var cadreObj={
 					regionCadres:[]
 				 };
+	var actionPlanArray = new Array();
 
 	function buildLayout()
 	{
@@ -401,8 +415,8 @@
 									fillDataForCadreLevel(myResults);
 								else if(jsObj.task=="createEvent")
 									addCreatedEvent(myResults,jsObj);
-
-
+								else if(jsObj.task=="createImpDateEvent")
+									addCreatedEvent(myResults,jsObj);										
 									
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -840,7 +854,7 @@
 			str+='<table>';
 			str+='<tr>';
 			str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>'
-			str+='<td>'+cadreObj.regionCadres[i].val+' level cadres - '+cadreObj.regionCadres[i].id+'</td>';
+			str+='<td>'+cadreObj.regionCadres[i].val+' Level Cadres - '+cadreObj.regionCadres[i].id+'</td>';
 			str+='</tr>';
 			str+='</table>';
 
@@ -856,8 +870,9 @@
 	{ 
 		 
 		var dStr = dt.getDate(); 
-		var mStr = dt.getMonth(); 
-		var yStr = dt.getFullYear(); 
+		var mStr = dt.getMonth()+1; 
+		var yStr = dt.getFullYear();
+		
 		return (dStr + "/" + mStr + "/" + yStr); 
 	} 
 	 
@@ -881,25 +896,61 @@
 	};
 	
 	function displayDateText(type,args,obj)
-	{
+	{			
+		var divId = obj.containerId;		
+		var subStr = divId.substring(0,divId.indexOf('_'));		
 		var selected = args[0]; 
 		var selDate = this.toDate(selected[0]); 
 
 		var calDateResult = dateToLocaleString(selDate, this);
-
-		var elmt = document.getElementById("startDateText");
+		
+		var divElmt = document.getElementById(divId);
+		var elmt = document.getElementById(subStr);
 		if(elmt)
 		{
 			elmt.value = calDateResult;
 		}
+
+		divElmt.style.display='none';
+
 	}
 	
 	function addCreatedEvent(results,jsObj)
 	{
 		var divElmt = document.createElement('div');
 		divElmt.setAttribute('id',results.startDate);
-		divElmt.setAttribute('class','eventSummaryDiv');
-
+		divElmt.setAttribute('class','eventSummaryDiv');		
+		
+		if(results.startDate)
+		{
+			var index = results.startDate.indexOf(' ');
+			var colIndex1 = results.startDate.indexOf(':');
+			var colIndex2 = results.startDate.lastIndexOf(':');
+			
+			var StartDayStr = results.startDate.substring(0,2);		
+			var StartMonStr = results.startDate.substring(3,5);
+			var StartYearStr = results.startDate.substring(6,10);	
+			var StartTimeHrs = results.startDate.substring(index,colIndex1);	
+			var StartTimeMin = results.startDate.substring(colIndex1+1,colIndex2);	
+		}
+		if(results.endDate)
+		{
+			var index = results.endDate.indexOf(' ');
+			var colIndex1 = results.endDate.indexOf(':');
+			var colIndex2 = results.endDate.lastIndexOf(':');
+			
+			var EndDayStr = results.endDate.substring(0,2);		
+			var EndMonStr = results.endDate.substring(3,5);
+			var EndYearStr = results.endDate.substring(6,10);	
+			var EndTimeHrs = results.endDate.substring(index,colIndex1);	
+			var EndTimeMin = results.endDate.substring(colIndex1+1,colIndex2);	
+		}
+		
+		if(results.endDate)
+			var renderDate=StartMonStr+"/"+StartDayStr+"/"+StartYearStr+"-"+EndMonStr+"/"+EndDayStr+"/"+EndYearStr;
+		else
+			var renderDate=StartMonStr+"/"+StartDayStr+"/"+StartYearStr;
+		
 		var str='';
 		str+='<table>';
 		str+='<tr>';
@@ -908,17 +959,26 @@
 		str+='<tr>';
 		str+='</table>';
 		divElmt.innerHTML=str;
+				
+		if(jsObj.task == "createEvent")
+			var elmt = document.getElementById("cadreImpEventsBodyDiv");
+		else if(jsObj.task == "createImpDateEvent")
+			var elmt = document.getElementById("cadreImpDatesBodyDiv");
 
-		var elmt = document.getElementById("cadreImpEventsBodyDiv");
 		if(elmt)
 		{
 			elmt.appendChild(divElmt);
 		}
 
 		newEventDialog.cancel();
+		
+		if(jsObj.task == "createEvent")
+			mainEventCalendar.addRenderer(renderDate, mainEventCalendar.renderCellStyleHighlight1);
+		else if(jsObj.task == "createImpDateEvent")
+			mainEventCalendar.addRenderer(renderDate, mainEventCalendar.renderCellStyleHighlight2);
 
-		mainEventCalendar.addRenderer("12/19", mainEventCalendar.renderCellStyleHighlight1); 
 		mainEventCalendar.render(); 
+		
 	}
 	function buildCalendarControl()
 	{
@@ -940,10 +1000,12 @@
 	}
 
 	function showDateCal(id)
-	{
+	{		
+		var date = (new Date().getMonth()+1)+"/"+new Date().getDate()+"/"+ new Date().getFullYear();
+		
 		if(dateCalendar)
 			dateCalendar.destroy();
-
+		
 		var navConfig = { 
 	      strings : { 
 	          month: "Choose Month", 
@@ -956,25 +1018,24 @@
 	      initialFocus: "year" 
 	}; 
 
-		dateCalendar = new YAHOO.widget.Calendar(id, {navigator:navConfig}); 
+		dateCalendar = new YAHOO.widget.Calendar(id, {navigator:navConfig, mindate: date, title:"Choose a date:", close:true }); 
 		dateCalendar.selectEvent.subscribe(displayDateText, dateCalendar, true); 		
 		dateCalendar.render(); 
-		
+		dateCalendar.show();		
 	}
 	function buildNewEventPopup()
 	{
 		var elmt = document.getElementById('cadreManagementMainDiv');
-		var date = new Date().getFullYear()+"/"+(new Date().getMonth()+1)+"/"+new Date().getDate();
-
+		var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();
 				
 		var divChild = document.createElement('div');
 		divChild.setAttribute('id','newEventDiv');
 		divChild.setAttribute('class','yui-skin-sam');
 		
 		var eventStr='';
-		eventStr+='<div class="hd">New Event</div> ';
+		eventStr+='<div class="hd">Enter New Event Details...</div> ';
 		eventStr+='<div class="bd">'; 
-		eventStr+='<table>';
+		eventStr+='<div id="eventDetailsDiv"><table>';
 		eventStr+='<tr>';
 		eventStr+='<th>Event Name</th>';
 		eventStr+='<td colspan="3"><input type="text" size="50" id="eventNameText" name="eventNameText"/></td>';
@@ -983,18 +1044,52 @@
 		eventStr+='<tr>';
 		eventStr+='<th>Start Date</th>';
 		eventStr+='<td>';
-		eventStr+='<input type="text" id="startDateText" name="startDateText" onfocus="showDateCal(\'startCalDiv\')"/>';
-		eventStr+='<div id="startCalDiv" class="tinyDateCal"></div>';
+		eventStr+='<div><input type="text" id="startDateText" name="startDateText" value="'+date+'" onfocus="showDateCal(\'startDateText_Div\')"/></div>';
+		eventStr+='<div id="startDateText_Div" class="tinyDateCal"></div>';
 		eventStr+='</td>';
 		eventStr+='<th>End Date</th>';
-		eventStr+='<td><input type="text" id="endDateText" name="endDateText" onfocus="showDateCal(\'endCalDiv\')"/><div id="endCalDiv" class="tinyDateCal"></div></td>';
+		eventStr+='<td><div><input type="text" id="endDateText" name="endDateText" value="'+date+'" onfocus="showDateCal(\'endDateText_Div\')"/></div>';
+		eventStr+='<div id="endDateText_Div" class="tinyDateCal"></div></td>';
 		eventStr+='</tr>';
 
 		eventStr+='<tr>';
 		eventStr+='<th>Start Time</th>';
-		eventStr+='<td><input type="text" id="startTimeText" name="startTimeText"/></td>';
+		eventStr+='<td>';
+		eventStr+='<select id="startTimeHrs" name="startTimeText" class="timeSelect">';
+		eventStr+='<option> Hrs </option>';
+		for(var i=0;i<=23;i++)
+		{
+			eventStr+='<option>'+i+'</option>';
+		}
+		eventStr+='</select>';
+
+		eventStr+='<select id="startTimeMin" name="startTimeText" class="timeSelect">';
+		eventStr+='<option> Min </option>';
+		eventStr+='<option>00</option>';		
+		eventStr+='<option>15</option>';
+		eventStr+='<option>30</option>';
+		eventStr+='<option>45</option>';		
+		eventStr+='</select>';
+		eventStr+='</td>';
 		eventStr+='<th>End Time</th>';
-		eventStr+='<td><input type="text" id="endTimeText" name="endTimeText"/></td>';
+		eventStr+='<td>';
+		eventStr+='<select id="endTimeHrs" name="endTimeText" class="timeSelect">';
+		eventStr+='<option> Hrs </option>';
+		for(var i=0;i<=23;i++)
+		{
+			eventStr+='<option>'+i+'</option>';
+		}
+		eventStr+='</select>';
+		
+		eventStr+='<select id="endTimeMin" name="startTimeText" class="timeSelect">';
+		eventStr+='<option> Min </option>';
+		eventStr+='<option>00</option>';		
+		eventStr+='<option>15</option>';
+		eventStr+='<option>30</option>';
+		eventStr+='<option>45</option>';		
+		eventStr+='</select>';
+
+		eventStr+='</td>';
 		eventStr+='</tr>';
 	
 		eventStr+='<tr>';
@@ -1006,13 +1101,21 @@
 		eventStr+='<th>Organisers</th>';
 		eventStr+='<td colspan="3"><input type="text" size="50" id="organisersText" name="organisersText"/></td>';
 		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='<th><div id="actionPlanLabelDiv"></div></th>';
+		eventStr+='<td colspan="3"><div id="actionPlanDataDiv"></div></td>';		
+		eventStr+='</tr>';
 		
 		eventStr+='<tr>';
-		eventStr+='<th>Action plans</th>';
-		eventStr+='<td colspan="3"><input type="text" size="50" id="actionPlansText" name="actionPlansText"/></td>';
+		eventStr+='<td colspan="4" align="right"><a href="javascript:{}" onclick="createActionPlan()"> Create Action Plan</a></td>';
+		//eventStr+='<th>Action plans</th>';
+		//eventStr+='<td colspan="3"><input type="text" size="50" id="actionPlansText" name="actionPlansText"/></td>';
 		eventStr+='</tr>';
 
 		eventStr+='</table>';
+		eventStr+='<div id="actionDetailsDiv">';
+		eventStr+='</div>';
 		eventStr+='</div>';
 
 		divChild.innerHTML=eventStr;
@@ -1032,6 +1135,71 @@
 		newEventDialog.render(); 
 	}
 
+	function createActionPlan()
+	{
+		var divElmt = document.getElementById('actionDetailsDiv');
+
+		var str='';
+		str+='<table>';
+		str+='<tr>';
+		str+='<th> Action Plan</th>';
+		str+='<td><input type="text" id="actionPlanText" name="actionPlanText"/></td>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<th>Target Date</th>';
+		str+='<td>';
+		str+='<div><input type="text" id="actionTargetDateText" name="actionTargetDateText" onfocus="showDateCal(\'actionTargetDateText_Div\')"/></div>';
+		str+='<div id="actionTargetDateText_Div" class="tinyDateCal"></div>';
+		str+='</td>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<th>Organisers</th>';
+		str+='<td><select id="actionOrganisersSelect"><option> Select Organisers</option></select</td>';
+		str+='</tr>';
+		str+='<tr>';
+		str+='<td align="right"> <input type="button" value="Add" onclick="addActionPlanToEvent()"/></td>';
+		str+='<td align="left"> <input type="button" value="cancel"/></td>';
+		str+='</tr>';
+		str+='</table>';
+
+		if(divElmt)
+			divElmt.innerHTML=str;
+	}
+	
+	function addActionPlanToEvent()
+	{
+		var labelDivElmt = document.getElementById("actionPlanLabelDiv");
+		var dataDivElmt = document.getElementById("actionPlanDataDiv");
+		var actionDivElmt = document.getElementById("actionDetailsDiv");
+
+		var actionPlanValue = document.getElementById('actionPlanText').value;
+		var targetDateValue = document.getElementById('actionTargetDateText').value;
+		var organisersSelectElmt = document.getElementById('actionOrganisersSelect');
+		var organisersValue = organisersSelectElmt.options[organisersSelectElmt.selectedIndex].value;
+
+		var actionObj = {
+							actionPlan:actionPlanValue,
+							targetDate:targetDateValue,
+							organisers:organisersValue			
+						};
+		actionPlanArray.push(actionObj);
+
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','newImpDateDiv');
+		divChild.setAttribute('class','ImpDateDetailDiv');
+
+		var divStr='';
+		divStr+=actionPlanValue;
+		divChild.innerHTML=divStr;
+
+		if(labelDivElmt)
+			labelDivElmt.innerHTML="Action Plan";
+		if(dataDivElmt)
+			dataDivElmt.appendChild(divChild);
+		if(actionDivElmt)
+			actionDivElmt.innerHTML="";
+
+	}
 	function showNewEventPopup()
 	{
 		newEventDialog.show();
@@ -1039,24 +1207,37 @@
 
 	function handleSubmit()
 	{
+		
 		var eventNameVal = document.getElementById("eventNameText").value;
 		var startDateVal = document.getElementById("startDateText").value;
 		var endDateVal = document.getElementById("endDateText").value;
-		var startTimeVal = document.getElementById("startTimeText").value;
-		var endTimeVal = document.getElementById("endTimeText").value;
+		
+		var startTimeHrs = document.getElementById("startTimeHrs");
+		var startTimeHrsVal = startTimeHrs.options[startTimeHrs.selectedIndex].text;
+		var startTimeMin = document.getElementById("startTimeMin");
+		var startTimeMinVal = startTimeMin.options[startTimeMin.selectedIndex].text;
+		
+		var endTimeHrs = document.getElementById("endTimeHrs");		
+		var endTimeHrsVal = endTimeHrs.options[endTimeHrs.selectedIndex].text;
+		var endTimeMin = document.getElementById("endTimeMin");
+		var endTimeMinVal = endTimeMin.options[endTimeMin.selectedIndex].text;
+
 		var descVal = document.getElementById("descTextArea").value;
 		var organisersVal = document.getElementById("organisersText").value;
-		var actionPlansVal = document.getElementById("actionPlansText").value;
+
+		var actionPlansVal='';
 		
 		var jsObj={
 					eventName:eventNameVal,
 					startDate:startDateVal,
 					endDate:endDateVal,
-					startTime:startTimeVal,
-					endTime:endTimeVal,
+					startTimeHrs:startTimeHrsVal,
+					startTimeMin:startTimeMinVal,					
+					endTimeHrs:endTimeHrsVal,
+					endTimeMin:endTimeMinVal,
 					desc:descVal,
 					organisers:organisersVal,
-					actionPlans:actionPlansVal,
+					actionPlans:actionPlanArray,
 					task:"createEvent"
 				  }
 		
@@ -1086,19 +1267,33 @@
 		eventStr+='<table>';
 		eventStr+='<tr>';
 		eventStr+='<th>Event Name</th>';
-		eventStr+='<td colspan="3"><input type="text" size="50" id="eventNameText" name="eventNameText"/></td>';
+		eventStr+='<td colspan="3"><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText"/></td>';
 		eventStr+='</tr>';
 
 		eventStr+='<tr>';
 		eventStr+='<th>Start Date</th>';
-		eventStr+='<td><input type="text" id="startDateText" name="startDateText"/></td>';
+		eventStr+='<td>';
+		eventStr+='<div><input type="text" id="ImpStartDateText" name="ImpStartDateText" onfocus="showDateCal(\'ImpStartDateText_Div\')"/></div>';
+		eventStr+='<div id="ImpStartDateText_Div" class="tinyDateCal"></div>';
+		eventStr+='</td>';
 		eventStr+='<th>End Date</th>';
-		eventStr+='<td><input type="text" id="endDateText" name="endDateText"/></td>';
-		eventStr+='</tr>';	
+		eventStr+='<td>';
+		eventStr+='<div><input type="text" id="ImpEndDateText" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_Div\')"/></div>';
+		eventStr+='<div id="ImpEndDateText_Div" class="tinyDateCal"></div>';
+		eventStr+='</td>';
+		eventStr+='</tr>';
 	
 		eventStr+='<tr>';
 		eventStr+='<th>Description</th>';
-		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="descTextArea" name="descTextArea"></textarea></td>';
+		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="ImpdescTextArea" name="ImpdescTextArea"></textarea></td>';
+		eventStr+='</tr>';		
+
+		eventStr+='<tr>';
+		eventStr+='<th>Repeat Frequency</th>';
+		eventStr+='<td colspan="3">';
+		eventStr+='<select id="repeatFreqSelect" class="timeSelect" onchange="showEndDateText(this.options[this.selectedIndex].text)">';
+		eventStr+='<option>Does Not Repeat</option>';
+		eventStr+='<option>Yearly</option><option>Monthly</option><option>Weekly</option></select></td>';
 		eventStr+='</tr>';		
 
 		eventStr+='</table>';
@@ -1120,6 +1315,17 @@
 	             } ); 
 		newDateDialog .render(); 
 	}
+	
+	function showEndDateText(val)
+	{
+		var txtElmt = document.getElementById('ImpEndDateText');
+		if(val == "Does Not Repeat")
+		{
+			txtElmt.disabled=true;
+		}
+		else
+			txtElmt.disabled=false;
+	}
 
 	function showNewImpDatePopup()
 	{
@@ -1128,12 +1334,34 @@
 
 	function handleImpDateSubmit()
 	{
+		var ImpeventNameVal = document.getElementById("ImpeventNameText").value;
+		var ImpstartDateVal = document.getElementById("ImpStartDateText").value;		
+		var ImpendDateVal = document.getElementById("ImpEndDateText").value;		
+		var ImpDescVal = document.getElementById("ImpdescTextArea").value;
 
+		var repeatFreqElmt = document.getElementById("repeatFreqSelect");
+		repeatFreqVal =  repeatFreqElmt.options[repeatFreqElmt.selectedIndex].value;
+
+		if(repeatFreqVal = "Does Not Repeat")
+			ImpendDateVal = ImpstartDateVal;
+
+		var jsObj={
+					eventName:ImpeventNameVal,
+					startDate:ImpstartDateVal,	
+					endDate:ImpendDateVal,
+					desc:ImpDescVal,
+					frequency:repeatFreqVal,
+					task:"createImpDateEvent"
+				  }
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
+		callAjax(jsObj,url);
 	}
 	
 	function handleImpDateCancel()
 	{
-
+		this.cancel();
 	}
 </script>
 </head>
@@ -1205,7 +1433,7 @@
 		</div>		
 		<div id="cadreSMSMainDiv">
 			<div id="cadreSMSHeadDiv">Cadre SMS</div>
-			<div id="cadreSMSBodyDiv">Cadre SMS feature enables the user to send SMS to the cadres based on the location and cadre level</div>
+			<div id="cadreSMSBodyDiv">Cadre SMS feature enables the user to send SMS to the cadres, based on the location and cadre level</div>
 			<div id="cadreSMSFooterDiv">				
 				<a href="javascript:{}" id="sendSMSAnc" onclick="showSendSMSPopup()">Send SMS</a>				
 				<!--<a href="cadreSMSAction.action" id="sendSMSAnc">Send SMS</a>-->
@@ -1233,7 +1461,7 @@
 								<span style="float: left;">Important Dates</span>
 								<span id="newEventSpan"><a href="javascript:{}" onclick="showNewImpDatePopup()">Create New Event</a></span>							
 							</div>
-							<div id="cadreImpDatesBodyDiv"> Imp Dates Content </div>
+							<div id="cadreImpDatesBodyDiv"> </div>
 						</div>
 					</td>
 					<td width="50%">
