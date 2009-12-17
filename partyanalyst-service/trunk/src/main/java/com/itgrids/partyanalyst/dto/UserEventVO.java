@@ -13,8 +13,8 @@ public class UserEventVO extends ResultStatus {
 	private String description;
 	private String locationType;
 	private Long locationId;
-	private Date startDate;
-	private Date endDate;
+	private String startDate;
+	private String endDate;
 	private List <SelectOptionVO> organizers;
 	private List<EventActionPlanVO> actionPlans;
 	
@@ -54,16 +54,16 @@ public class UserEventVO extends ResultStatus {
 	public void setLocationId(Long locationId) {
 		this.locationId = locationId;
 	}
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 	public List<SelectOptionVO> getOrganizers() {
