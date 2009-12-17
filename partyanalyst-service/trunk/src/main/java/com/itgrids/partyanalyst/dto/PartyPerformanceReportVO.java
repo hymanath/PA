@@ -24,18 +24,24 @@ public class PartyPerformanceReportVO extends BaseObject {
 	private int totalSeatsContested;
 	/** Total no of seats won by the party */
 	private int totalSeatsWon;
+	/** Total no of seats won by the party for previous year*/
+	private int prevYearTotalSeatsWon;
 	/** Total no of seats lost by the party */
 	private int totalSeatsLost;
 	/** Difference of seats won w.r.t previous year **/
 	private int diffSeatsWon;
 	/** Total percentage of votes got by the party */
 	private BigDecimal totalPercentageOfVotesWon;
+	/** Total percentage of votes got by the party for previous year*/
+	private BigDecimal prevYeartotalPercentageOfVotesWon;
 	/** Total percentage of votes got by the party in previous Election*/
     private BigDecimal totalPercentageOfVotesWonPreviousElection;
 	/** Different positions party achieved */
 	private SortedMap<String, Integer> positionDistribution;
 	/** Election Year **/
 	private String year;
+	/** Previous Election Year **/
+	private String prevYear;
 	/** State **/
 	private String state;
 	/** Party Name **/
@@ -70,7 +76,7 @@ public class PartyPerformanceReportVO extends BaseObject {
 	private Long partyId;
 	private Long districtId;
 	private Boolean hasAlliances;
-	
+		
 	public List<ConstituencyPositionDetailVO> getPartyWinners() {
 		return partyWinners;
 	}
@@ -301,6 +307,31 @@ public class PartyPerformanceReportVO extends BaseObject {
 
 	public void setHasAlliances(Boolean hasAlliances) {
 		this.hasAlliances = hasAlliances;
+	}
+
+	public String getPrevYear() {
+		return prevYear;
+	}
+
+	public void setPrevYear(String prevYear) {
+		this.prevYear = prevYear;
+	}
+
+	public int getPrevYearTotalSeatsWon() {
+		return prevYearTotalSeatsWon;
+	}
+
+	public void setPrevYearTotalSeatsWon(int prevYearTotalSeatsWon) {
+		this.prevYearTotalSeatsWon = prevYearTotalSeatsWon;
+	}
+
+	public BigDecimal getPrevYeartotalPercentageOfVotesWon() {
+		return prevYeartotalPercentageOfVotesWon;
+	}
+
+	public void setPrevYeartotalPercentageOfVotesWon(
+			BigDecimal prevYeartotalPercentageOfVotesWon) {
+		this.prevYeartotalPercentageOfVotesWon = prevYeartotalPercentageOfVotesWon;
 	}
 
 	
