@@ -108,6 +108,9 @@ public class PartyService implements IPartyService {
 		Map<String, String> partyVotesFlown = partyVotesFlow(presentYearPartyPerformanceReportVO.getVotesFlown()
 				, previousYearPartyPerformanceReportVO.getVotesFlown(),positiveVotesFlowFlag);
 		
+		presentYearPartyPerformanceReportVO.setPrevYear(previousYearPartyPerformanceReportVO.getYear());
+		presentYearPartyPerformanceReportVO.setPrevYearTotalSeatsWon(previousYearPartyPerformanceReportVO.getTotalSeatsWon());
+		presentYearPartyPerformanceReportVO.setPrevYeartotalPercentageOfVotesWon(previousYearPartyPerformanceReportVO.getTotalPercentageOfVotesWon());
 		presentYearPartyPerformanceReportVO.setDiffSeatsWon(presentYearPartyPerformanceReportVO.getTotalSeatsWon() 
 				- previousYearPartyPerformanceReportVO.getTotalSeatsWon());
 		presentYearPartyPerformanceReportVO.setTotalPercentageOfVotesWonPreviousElection(prevElectionTotalPercentageOfVotesWon);
