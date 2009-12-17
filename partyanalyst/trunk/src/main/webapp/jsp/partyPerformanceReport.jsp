@@ -257,8 +257,8 @@ function buildPartyPositionDataTable(info,rank)
 			var myColumnDefs = [ 	           
 	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
 				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
-				{key:"percentageOfVotes",label : "Votes % Gained", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes % Gained", sortable:true, resizeable:true}, 
+				{key:"percentageOfVotes",label : "Votes %", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes %", sortable:true, resizeable:true}, 
 	            {key:"oppositionParty",label : "Opposition Party",sortable:true, resizeable:true}, 
 	            {key:"oppositionPartyCandidate",label : "Opposition Party Candidate", sortable:true, resizeable:true}    
 				
@@ -278,9 +278,9 @@ function buildPartyPositionDataTable(info,rank)
 			var myColumnDefs = [ 	           
 	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
 				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
-				{key:"percentageOfVotes",label : "Votes % Gained", sortable:true, resizeable:true},
-				{key:"previousElectionPercentageOfVotesGained",label : "Previous Election Votes % Gained", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes % Gained", sortable:true, resizeable:true}, 
+				{key:"percentageOfVotes",label : "Votes % ", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesGained",label : "Votes % in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes %", sortable:true, resizeable:true}, 
 	            {key:"oppositionParty",label : "Opposition Party",sortable:true, resizeable:true}, 
 	            {key:"oppositionPartyCandidate",label : "Opposition Party Candidate", sortable:true, resizeable:true}    
 				
@@ -298,12 +298,12 @@ function buildPartyPositionDataTable(info,rank)
 			var myColumnDefs = [ 	           
 	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
 				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
-				{key:"percentageOfVotes",label : "Votes % Gained", sortable:true, resizeable:true},
-				{key:"previousElectionPercentageOfVotesGained",label : "Previous Election Votes % Gained", sortable:true, resizeable:true},
+				{key:"percentageOfVotes",label : "Votes %", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesGained",label : "Votes % in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
 				{key:"percentageOfVotesPolled",label : "Votes Polled %", sortable:true, resizeable:true},
-				{key:"previousElectionPercentageOfVotesPolled",label : "Previous Election Votes Polled %", sortable:true, resizeable:true},
-				{key:"previousElectionCandidate",label : "Previous Election Candidate", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes % Gained", sortable:true, resizeable:true}, 
+				{key:"previousElectionPercentageOfVotesPolled",label : "Votes Polled % in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
+				{key:"previousElectionCandidate",label : "<s:property value="stateData.prevYear" />  Election Candidate", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes %", sortable:true, resizeable:true}, 
 	            {key:"oppositionParty",label : "Opposition Party",sortable:true, resizeable:true}, 
 	            {key:"oppositionPartyCandidate",label : "Opposition Party Candidate", sortable:true, resizeable:true}    
 				
@@ -484,12 +484,16 @@ function buildPartyPositionDataTable(info,rank)
 	<!--<u><s:property value="stateData.state" /> State - Party <s:property value="stateData.party" /> </u> -->
 </div>
 <br/><br/>
- <s:label labelposition="left"><b><U>Party Details:</U></b></s:label>
+ 
 <div style="margin-left: 15px;">
-<table class="partyPerformanceReportTable" border="1">
+
+    <table>
 	<tr>
-		<th>State</th>
-		<td style="background-color: #ECF1F5"><s:property value="stateData.state" /></td>
+		<th style="background-color: #ECF1F5"><u>State : </u></th>
+		<td><b><s:property value="stateData.state" /></b></td>
+		<td></td>
+		<th style="background-color: #ECF1F5"><u>Party :</u></th>
+		<td><b><s:property value="stateData.party" /></b></td>
 	</tr>
 	<tr id="district"
 	  <% java.lang.String district = (java.lang.String) request.getAttribute("stateData.district");
@@ -500,18 +504,41 @@ function buildPartyPositionDataTable(info,rank)
 		<th>District</th>
 		<td style="background-color: #ccb"><s:property value="stateData.district" /></td>
 	</tr>
+	</table>
+<table class="partyPerformanceReportTable" border="1" width="385px">
 	<tr>
-		<th>Party</th>
-		<td style="background-color: #FFFFFF"><s:property value="stateData.party" /></td>
-	</tr>	
-	<tr>
-		<th>Seats Won</th>
-		<td style="background-color: #ECF1F5"> <s:property value="stateData.totalSeatsWon" />( <s:property value="stateData.diffSeatsWon" /> )</td>
+	    <th></th>
+	    <th align="center"><s:property value="stateData.year" /></th>
+		<s:if test="stateData.prevYearTotalSeatsWon != 0">
+		<th align="center"><s:property value="stateData.prevYear" /></th>
+		</s:if> 
 	</tr>
 	<tr>
-		<th>Votes %</th>
-		<td style="background-color: #FFFFFF"><s:property value="stateData.totalPercentageOfVotesWon" />%( <s:property value="stateData.diffOfTotalPercentageWinWithPrevElection"/>%)</td>
-	</tr>	
+		<td style="background-color: #ECF1F5" align="center"><b>Seats Won</b></td>
+		<td style="background-color: #ECF1F5" width="100px" align="center"><s:property value="stateData.totalSeatsWon" /></td>
+		<s:if test="stateData.prevYearTotalSeatsWon != 0">
+		<td style="background-color: #ECF1F5" width="100px" align="center"><s:property value="stateData.prevYearTotalSeatsWon" /></td>
+		</s:if> 
+	</tr>
+	<tr>
+		<td style="background-color: #ECF1F5" align="center"><b>Votes %</b></td>
+		<td style="background-color: #ECF1F5" align="center"><s:property value="stateData.totalPercentageOfVotesWon" />&nbsp;%</td>
+		<s:if test="stateData.prevYearTotalSeatsWon != 0">
+		<td style="background-color: #ECF1F5" style="background-color: #FFFFFF" align="center"><s:property value="stateData.prevYeartotalPercentageOfVotesWon" />&nbsp;%</td>
+		</s:if> 
+	</tr>
+	<s:if test="stateData.prevYearTotalSeatsWon != 0">
+	<tr>
+	    <td style="background-color: #ECF1F5" align="center" colspan="3"><b>Votes % Difference ( <s:property value="stateData.year" /> - <s:property value="stateData.prevYear" /> ) : </b>
+        <s:if test="stateData.diffOfTotalPercentageWinWithPrevElection  < 0">
+		<font color="red"><s:property value="stateData.diffOfTotalPercentageWinWithPrevElection" />%</font>
+		</s:if>
+		<s:if test="stateData.diffOfTotalPercentageWinWithPrevElection  > 0">
+		<font color="green"><s:property value="stateData.diffOfTotalPercentageWinWithPrevElection" />%</font>
+		</s:if>
+		</td>
+	</tr>
+	</s:if>
 </table>
 </div>
 <div style="left:650px;margin-right:20px;position:absolute;top:320px;">
@@ -741,6 +768,8 @@ function buildPartyPositionDataTable(info,rank)
 </table>
 </div>
 <br>
+
+<s:if test="stateData.rebelPartyCandidates.size > 0">
 <s:label labelposition="left"><b><U>Rebel Candidates::</U></b></s:label>
 <div id="rebelsDiv" class="yui-skin-sam">
 <display:table class="partyPerformanceReportTable" name="${stateData.rebelPartyCandidates}" id="rebelsTable" style="margin-top:0px;"> 
@@ -760,6 +789,7 @@ function buildPartyPositionDataTable(info,rank)
 	initializeRebelsDataTable();
 </script>
 <br>
+</s:if>   
 <div>
 <s:form action="partyPerformanceJasper.action?jasperFile=jasper\partyPerformance\partyPerformanceReport.jrxml&type=normal" style="float: left;margin-right:20px;">
 <input type="submit" value="Generate PDF">
