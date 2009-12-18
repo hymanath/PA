@@ -34,9 +34,10 @@ public class PartyImportantDates extends BaseModel {
 	private static final long serialVersionUID = 1L;
 
 	private Long partyImportantDateId ;
-	private Date date;
-	private String importance ;
 	private Party party;
+	private Date importantDate;
+	private String title;
+	private String importance ;
 	private String recursive;
 	private String recursiveFrequency;
 	
@@ -44,11 +45,12 @@ public class PartyImportantDates extends BaseModel {
 		
 	}
 
-	public PartyImportantDates(Date date, String importance, Party party,String recursive,String recursiveFrequency) {
-
-		this.date = date;
-		this.importance = importance;
+	public PartyImportantDates(Party party,Date importantDate,String title, String importance, String recursive,String recursiveFrequency) {
+		
 		this.party = party;
+		this.importantDate = importantDate;
+		this.title = title;
+		this.importance = importance;
 		this.recursive = recursive;
 		this.recursiveFrequency = recursiveFrequency;
 	}
@@ -64,25 +66,6 @@ public class PartyImportantDates extends BaseModel {
 		this.partyImportantDateId = partyImportantDateId;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name="Date",length=10)
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	
-	@Column(name = "importance", length = 100)
-	public String getImportance() {
-		return importance;
-	}
-
-	public void setImportance(String importance) {
-		this.importance = importance;
-	}
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="party_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -94,8 +77,38 @@ public class PartyImportantDates extends BaseModel {
 	public void setParty(Party party) {
 		this.party = party;
 	}
+
 	
-	@Column(name = "recursiveness", length = 1)
+	@Temporal(TemporalType.DATE)
+	@Column(name="important_date")
+	public Date getImportantDate() {
+		return importantDate;
+	}
+
+	public void setImportantDate(Date importantDate) {
+		this.importantDate = importantDate;
+	}
+	
+	@Column(name="title", length=100) 	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	@Column(name = "importance", length = 300)
+	public String getImportance() {
+		return importance;
+	}
+
+	public void setImportance(String importance) {
+		this.importance = importance;
+	}
+	
+		
+	@Column(name = "recursive", length = 1)
 	public String getRecursive() {
 		return recursive;
 	}
@@ -112,10 +125,5 @@ public class PartyImportantDates extends BaseModel {
 	public void setRecursiveFrequency(String recursiveFrequency) {
 		this.recursiveFrequency = recursiveFrequency;
 	}
-	
-	
-	
-	
-	
 	
 }
