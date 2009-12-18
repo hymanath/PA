@@ -10,7 +10,9 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -27,6 +29,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Nomination;
@@ -190,12 +193,17 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 			if(logger.isDebugEnabled())
 				logger.debug("Constituency Wise Results Successfull");
 			districtWiseConstituencyElectionResultsVO = new ArrayList<DistrictWiseConstituencyElectionResultsVO>();
+			List<Long> districtIds = getDistrictIds(constituencyElectionResultForYearOne);
+			
 			districtWiseConstituencyElectionResultsVO = getDistrictWiseResults(constituencyElectionsDetailedResultVO);
+			Map<Long,String> totalDistrictWisePartyPercentage = getTotalDistrictWisePartyPercentage(constituencyElectionResultForYearOne,districtIds);
+		    Map<Long,String> totalDistrictWisePartyPercentageforPrevYear = getTotalDistrictWisePartyPercentage(constituencyElectionResultForYearTwo,districtIds);
+			
 		    if(districtWiseConstituencyElectionResultsVO != null && districtWiseConstituencyElectionResultsVO.size() > 0){
 		    	if(logger.isDebugEnabled())
 					logger.debug("District Wise Results Successfull");
 		    	//partyInfluenceReportVO = new PartyInfluenceReportVO();
-		    	partyInfluenceReportVO = getPartyInfluenceReportFinalResults(districtWiseConstituencyElectionResultsVO,partyId,newPartyId);
+		    	partyInfluenceReportVO = getPartyInfluenceReportFinalResults(districtWiseConstituencyElectionResultsVO,partyId,newPartyId,totalDistrictWisePartyPercentage,totalDistrictWisePartyPercentageforPrevYear);
 		    	if(logger.isDebugEnabled())
 					logger.debug("Returning The Final Results");
 		    return partyInfluenceReportVO;
@@ -205,6 +213,21 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	return null;
 	}
 	
+	public List<Long> getDistrictIds(List<ConstituencyElectionResults> constituencyElectionResults){
+		
+		List<Long> districtIds = new ArrayList<Long>();
+		for(ConstituencyElectionResults electionResults:constituencyElectionResults){
+			
+			if(!districtIds.contains(electionResults.getElectionResultForParty().getDistrictId())){
+				districtIds.add(electionResults.getElectionResultForParty().getDistrictId());
+				if(logger.isDebugEnabled())
+					logger.debug("districtId -->" + electionResults.getElectionResultForParty().getDistrictId());
+			}
+				
+		}
+		
+	return districtIds;
+	}
 	
 	public List<ConstituencyElectionResults> getDetailsOfPartysParticipated(List<ConstituencyElectionResults> constituencyElectionResults,Boolean flag){
 		for(ConstituencyElectionResults result:constituencyElectionResults){
@@ -217,8 +240,34 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	return constituencyElectionResults;
 	}
 	
+	public Map<Long,String> getTotalDistrictWisePartyPercentage(List<ConstituencyElectionResults> constituencyElectionResultForYearOne,List<Long> districtIds){
+		Map<Long,String> districtWisePercentage = new HashMap<Long,String>();
+		
+		if(logger.isDebugEnabled())
+			logger.debug("Entered Into getTotalDistrictWisePartyPercentage...");
+		for(Long districtId:districtIds){
+			Long votesEarned = new Long(0);
+			Long validVotes = new Long(0);
+			int count = 0;
+			if(logger.isDebugEnabled())
+				logger.debug("District Id -->" + districtId);
+			for(ConstituencyElectionResults results:constituencyElectionResultForYearOne){
+				if(results.getElectionResultForParty().getDistrictId().equals(districtId)){
+					votesEarned += results.getElectionResultForParty().getVotesEarned();
+					validVotes += results.getElectionResultForParty().getValidVotes();
+					count++;
+				}
+			}
+			if(count>0){
+			Double percentage = getPercentageOfVotes(votesEarned.doubleValue(),validVotes.doubleValue());
+			Double votesPercentRounded = getRoundedDoubleValue(percentage);
+			districtWisePercentage.put(districtId, votesPercentRounded.toString());
+			}
+		}
+	return districtWisePercentage;
+	}
 	
-	public PartyInfluenceReportVO getPartyInfluenceReportFinalResults(List<DistrictWiseConstituencyElectionResultsVO> districtWiseConstituencyElectionResultsVO,Long partyId,Long newPartyId){
+	public PartyInfluenceReportVO getPartyInfluenceReportFinalResults(List<DistrictWiseConstituencyElectionResultsVO> districtWiseConstituencyElectionResultsVO,Long partyId,Long newPartyId,Map<Long,String> totalDistrictVotesPercentages,Map<Long,String> totalDistrictVotesPercentagesforPrevYear){
 		
 		if(logger.isDebugEnabled())
 			logger.debug("Entered Into getPartyInfluenceReportFinalResults Method");
@@ -238,6 +287,20 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		Double percentageDiffForParty = new Double(0);
 		
 		for(DistrictWiseConstituencyElectionResultsVO resultVO:districtWiseConstituencyElectionResultsVO){
+			
+			if(totalDistrictVotesPercentages.containsKey(resultVO.getDistrictId()))
+				resultVO.setTotalVotesPercentageForDistrict(totalDistrictVotesPercentages.get(resultVO.getDistrictId()));
+			
+			if(totalDistrictVotesPercentagesforPrevYear.containsKey(resultVO.getDistrictId()))
+				resultVO.setTotalVotesPercentageForDistrictforPrevYear(totalDistrictVotesPercentagesforPrevYear.get(resultVO.getDistrictId()));
+			
+			if(totalDistrictVotesPercentages.containsKey(resultVO.getDistrictId()) && totalDistrictVotesPercentagesforPrevYear.containsKey(resultVO.getDistrictId())){
+				String percentforPresentYear = totalDistrictVotesPercentages.get(resultVO.getDistrictId());
+				String percentforPrevYear = totalDistrictVotesPercentagesforPrevYear.get(resultVO.getDistrictId());
+				Double diff = Double.valueOf(percentforPresentYear) - Double.valueOf(percentforPrevYear);
+				resultVO.setTotalVotesPercentageDiffForDistrict(getRoundedDoubleValue(diff).toString());
+			}
+				
 			
 			if(resultVO.getPartyId().equals(partyId))
 			 partyInfluenceReportVO.setImpactedPartyName(resultVO.getPartyName());
@@ -370,6 +433,9 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	public List<ConstituencyElectionResults> getConstituencyElectionResults(List<Nomination> nominationsForPartyForYearOne,List<Nomination> nominationsForNewPartyForYearOne){
 		
 		List<ConstituencyElectionResults> constituencyElectionResults = new ArrayList<ConstituencyElectionResults>();
+		Long votesEarnedforParty = new Long(0);
+		Long validVotesforParty = new Long(0);
+		String votesPercentageForParty = "";
 		
 		if(logger.isDebugEnabled())
 			logger.debug("Entered Into getConstituencyElectionResults Merhod");
@@ -379,6 +445,10 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 			Party partyOne = nominationsForParty.getParty();
 			CandidateResult candidateResultOne = nominationsForParty.getCandidateResult();
 			Candidate candidateOne = nominationsForParty.getCandidate();
+			ConstituencyElectionResult constituencyElectionResultforParty = nominationsForParty.getConstituencyElection().getConstituencyElectionResult();
+			
+			votesEarnedforParty += candidateResultOne.getVotesEarned().longValue();
+			validVotesforParty += constituencyElectionResultforParty.getValidVotes().longValue();
 			
 			for(Nomination nominationsForNewParty:nominationsForNewPartyForYearOne){
 				Constituency constituencyTwo =	nominationsForNewParty.getConstituencyElection().getConstituency();
@@ -433,6 +503,8 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 			}
 		}
 		
+		votesPercentageForParty = getRoundedDoubleValue(getPercentageOfVotes(votesEarnedforParty.doubleValue(),validVotesforParty.doubleValue())).toString();
+		
 		if(constituencyElectionResults.size() > 0 && constituencyElectionResults != null)
 			return constituencyElectionResults;
 		
@@ -484,6 +556,7 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		
 		List<ConstituencyElectionsDetailedResultVO> constituencyElectionsDetailedResultVO = new ArrayList<ConstituencyElectionsDetailedResultVO>();
 		
+		
 		for(ConstituencyElectionResults constituencyElectionResultsforYearOne:constituencyElectionResultForYearOne){
 			ConstituencyElectionResultVO partyYearOne = constituencyElectionResultsforYearOne.getElectionResultForParty();
 						
@@ -517,6 +590,8 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 	
 	return null;
 	}
+	
+	
 	
 	public List<DistrictWiseConstituencyElectionResultsVO> getDistrictWiseResults(List<ConstituencyElectionsDetailedResultVO> constituencyElectionsDetailedResultVO){
 		
