@@ -104,24 +104,28 @@
       <th><c:out value="Constituency Name" /></th>
       <td><c:out value="${constituencyDetails.constituencyName}" /></td> 
    </tr>
+   <c:if test="$constituencyDetails.districtName != ''">
    <tr>
       <th><c:out value="District" /></th>
       <td><c:out value="${constituencyDetails.districtName}" /></td> 
    </tr>
+   </c:if>
    <tr>
       <th><c:out value="State" /></th>
       <td><c:out value="${constituencyDetails.stateName}" /></td> 
    </tr>
+  <c:if test="$constituencyDetails.startDate != ''">
    <tr>
       <th><c:out value="Formation Date" /></th>
       <td><c:out value="${constituencyDetails.startDate}" /></td> 
    </tr>
+     </c:if>
   </table>
 
 <div id="map_canvas" style="border: 1px solid ; width: 260px; height: 200px;margin-left:400px;">
 </div>
-
-<div id="mandalsDiv">
+<c:if test="$delimitationConstituencyMandalResultVO.presentMandals != NULL">
+<div id="mandalsDiv">	
 	<div id="mandalsDivHead"><b><u>Mandals of the <c:out value="${constituencyDetails.constituencyName}"/> Constituency</u></b></div>
 	<div id="mandalsDivBody">
 		<table class="ConstituencyElectionsTable">
@@ -159,9 +163,9 @@
 		</table>
 	</div>
 </div>
+</c:if>
 
 <c:if test="${delimitationConstituencyMandalResultVO.constituencyType=='CHANGE_CONSTITUENCY'}">
-
 <div id="delimitationMandalsDiv">
 	<div id="delimitationMandalsDivHead"><b><u>Mandals before delimitation of the <c:out value="${constituencyDetails.constituencyName}"/> Constituency </u></b></div>
 	<div id="delimitationMandalsDivBody">
