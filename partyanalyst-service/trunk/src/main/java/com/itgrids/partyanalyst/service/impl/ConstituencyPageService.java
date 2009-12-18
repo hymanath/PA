@@ -160,6 +160,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				constituencyDetails.setStateName(result.getState().getStateName());
 				constituencyDetails.setStartDate(result.getStartDate());
 				constituencyDetails.setDeformDate(result.getDeformDate());
+				constituencyDetails.setConstituencyType(result.getElectionScope().getElectionType().getElectionType());
 			}
 			return constituencyDetails;
 		}
