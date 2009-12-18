@@ -31,6 +31,10 @@ public class DistrictWiseConstituencyElectionResultsVO {
 	private Double totalValidVotesInDistrictForNewPartyInYear1;
 	private Double totalVotesEarnedInDistrictForPartyInYear2;
 	private Double totalValidVotesInDistrictForPartyInYear2;
+	
+	private String totalVotesPercentageForDistrict;
+	private String totalVotesPercentageForDistrictforPrevYear;
+	private String totalVotesPercentageDiffForDistrict;
 	private List<ConstituencyElectionsDetailedResultVO> constituencyElectionsDetailedResults;
 	
 	public String getDistrictVotesPercentageDiff() {
@@ -167,6 +171,27 @@ public class DistrictWiseConstituencyElectionResultsVO {
 	public void setConstituencyElectionsDetailedResults(
 			List<ConstituencyElectionsDetailedResultVO> constituencyElectionsDetailedResults) {
 		this.constituencyElectionsDetailedResults = constituencyElectionsDetailedResults;
+	}
+	public String getTotalVotesPercentageForDistrict() {
+		return totalVotesPercentageForDistrict;
+	}
+	public void setTotalVotesPercentageForDistrict(
+			String totalVotesPercentageForDistrict) {
+		this.totalVotesPercentageForDistrict = totalVotesPercentageForDistrict;
+	}
+	public String getTotalVotesPercentageForDistrictforPrevYear() {
+		return totalVotesPercentageForDistrictforPrevYear;
+	}
+	public void setTotalVotesPercentageForDistrictforPrevYear(
+			String totalVotesPercentageForDistrictforPrevYear) {
+		this.totalVotesPercentageForDistrictforPrevYear = totalVotesPercentageForDistrictforPrevYear;
+	}
+	public String getTotalVotesPercentageDiffForDistrict() {
+		return totalVotesPercentageDiffForDistrict;
+	}
+	public void setTotalVotesPercentageDiffForDistrict(
+			String totalVotesPercentageDiffForDistrict) {
+		this.totalVotesPercentageDiffForDistrict = totalVotesPercentageDiffForDistrict;
 	}
 	
 }
