@@ -152,17 +152,19 @@ table.CandidateElectionResultsTable td {
 		distStr+='<tr>';		
 		distStr+='<td>'+distObj.districtName+'</td>';		
 
-		distStr+='<th>Impacted % :</th>';
+		distStr+='<th>CC * %diff :</th>';
 		if(distObj.distVotesPercentage < 0)
 		distStr+='<td align="center" style="color:#FF0000">'+distObj.distVotesPercentage+' %</td>';
 		else if(distObj.distVotesPercentage > 0)
 		distStr+='<td align="center" style="color:#04B45F">'+'+ '+distObj.distVotesPercentage+' %</td>';
 
-		distStr+='<th> '+distObj.year+'% :</th>';
+        distStr+='<th>CD * %diff :</th>';
+        distStr+='<td align="center">'+distObj.distTotalPercentDiff+' %</td>';
+		distStr+='<th> '+distObj.partyName+'-'+distObj.year+'%:</th>';
 		distStr+='<td align="center">'+distObj.partyVotesPercentage+' %</td>';	
 		
 
-		distStr+='<th> '+distObj.newPartyName+' - '+distObj.year+' % :</th>';
+		distStr+='<th> '+distObj.newPartyName+'-'+distObj.year+'%:</th>';
 		distStr+='<td align="center">'+distObj.newPartyVotesPercentage+' %</td>';
 
 		
@@ -408,7 +410,8 @@ table.CandidateElectionResultsTable td {
 				</div>	
 				<br/>
 				<div id="treeViewDiv">
-					<h3 style="text-align: left; margin-left: 50px;"><u> District wise results..</u></h3>
+					<h3 style="text-align: left; margin-left: 50px;"><u> District wise results..</u><h4 style="text-align: right;margin-right: 20px; color: #BDBDBD;">  CC * -- Only Considered Constituencies | CD * -- Complete District Constituencies</h4></h3>
+					
 				</div>
 		</div>
 				<script type="text/javascript">
@@ -424,7 +427,8 @@ table.CandidateElectionResultsTable td {
 									year:'${result.year}',
 									previousYear:'${result.previousYear}',
 									partyName:'${result.partyName}',
-									newPartyName:'${result.newPartyName}'									
+									newPartyName:'${result.newPartyName}',
+									distTotalPercentDiff:'${result.totalVotesPercentageDiffForDistrict}'
 								}
 					var consObj=new Array();
 					<c:forEach var="constResult" items="${result.constituencyElectionsDetailedResults}">	
