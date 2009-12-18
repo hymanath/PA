@@ -20,7 +20,14 @@ public class ConstituencyInfoVO {
 	private String stateName;
 	private Date startDate;
 	private Date deformDate;
+	private String constituencyType;
 	
+	public String getConstituencyType() {
+		return constituencyType;
+	}
+	public void setConstituencyType(String constituencyType) {
+		this.constituencyType = constituencyType;
+	}
 	//getters and setters
 	public String getConstituencyName() {
 		return constituencyName;
