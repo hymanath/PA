@@ -19,8 +19,8 @@
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script>
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/button/button-min.js"></script> 	
-	<script src="http://yui.yahooapis.com/2.8.0r4/build/resize/resize-min.js"></script> 
-	<script src="http://yui.yahooapis.com/2.8.0r4/build/layout/layout-min.js"></script> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/resize/resize-min.js"></script> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/layout/layout-min.js"></script> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script> 	
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/dom/dom-min.js"></script> 
@@ -52,9 +52,11 @@
 	#CadreManagementHeaderMain
 	{
 		color:#1C487A;
-		font-size:17px;
+		font-size:20px;
 		font-weight:bold;
 		text-decoration:underline;
+		margin-bottom:20px;
+		font-family:Georgia;
 	}
 	#cadreManagementMainDiv
 	{
@@ -67,7 +69,7 @@
 
 	#cadreSMSGroupsMainDiv
 	{
-		height:330px;
+		height:97%;
 		width:auto;
 		background-color:#CBDCE8;		
 	}
@@ -101,26 +103,31 @@
 	{
 		float:left;
 		height:200px;
-		width:100%;
+		width:99%;
 		background-color:#F9FCFF;
 		overflow:auto;
+		border:2px solid #839DB7;
 	}
 	#cadreImpEventsDiv
 	{
 		float:right;
 		height:200px;
-		width:100%;
-		background-color:#F9FCFF;	
+		width:99%;
+		background-color:#F9FCFF;
+		border:2px solid #839DB7;
 	}
 
 	#cadreImpDatesHeadDiv, #cadreImpEventsHeadDiv, #cadreSMSHeadDiv, #cadreGroupsHeadDiv
 	{
 		padding:5px;
+		color:#1E4864;
 		font-weight:bold;
 		background-color:#839DB7;
 		height:20px;
+		background-image:url(images/icons/contHeading.png);
+		background-repeat:repeat-x;
 	}
-
+	
 	#cadreImpDatesBodyDiv, #cadreImpEventsBodyDiv
 	{
 		height:170px;
@@ -185,9 +192,12 @@
 	#regionLevelCadreDivHead
 	{
 		background-color:#839DB7;
-		padding:8px;
+		color:#1E4864;
+		padding:7px;
 		font-weight:bold;
-		text-align:center;
+		text-align:left;
+		background-image:url(images/icons/contHeading.png);
+		background-repeat:repeat-x;
 	}
 	#regionLevelCadreDivBody
 	{
@@ -240,6 +250,22 @@
 	{
 		background-color:#EEF4FF;
 	}
+
+	.yui-layout-hd
+	{
+		color:#1E4864;
+		font-size:12px;
+		text-decoration:underline;
+	}
+	.yui-skin-sam .yui-accordion-item-label
+	{
+		color:#1E4864;
+	}
+
+	.yui-accordion-item .yui-widget-bd 
+	{
+		background-color:#FFFFFF;
+	}
 </style>
 
 <script type="text/javascript">
@@ -248,6 +274,8 @@
 					regionCadres:[]
 				 };
 	var actionPlanArray = new Array();
+	var ImpDatesArray = new Array();
+	var ImpEventsArray = new Array();
 
 	function buildLayout()
 	{
@@ -255,12 +283,12 @@
 			units: [ 	        
 					{ 
 						position: 'right',
+						header:false,
 						width: 300,	
-						height:520,
-						header: 'Cadre Teams',
+						height:520,						
 						resize: false,
 						gutter: '5px',
-						collapse: true,
+						collapse: false,
 						scroll: true,
 						body: 'cadreTeamsMainDiv',
 						animate: true
@@ -268,7 +296,7 @@
 					{ 
 						position: 'bottom', 
 						height: 520,
-						header: 'Cadre Events', 
+						header: 'Important Dates And Event Management', 
 						body: 'cadreEventsCalMainDiv',
 						resize: false,
 						gutter: '5px',
@@ -277,19 +305,18 @@
 						animate: true }, 
 					{
 						position: 'left',
+						header:false,
 						width: 270,
-						height:520,
-						header: 'Associate Groups',
+						height:520,						
 						body: 'cadreSMSGroupsMainDiv',
 						resize: false, 
 						gutter: '5px',
-						collapse: true,
+						collapse: false,
 						scroll: true,						
 						animate: true  
 					}, 
 					{ 
-						position: 'center',
-						header: 'Cadre Details',
+						position: 'center',						
 						body: 'cadreDetailsMainDiv',
 						resize: false,
 						gutter: '5px',
@@ -329,12 +356,12 @@
 			contentHeight: 
 			{
 				method: "fixed",
-				height: 250
+				height: 305
 			},
 			closable: false
 		} );
 	 		
-		item1.set( "bodyContent","campaign Teams");
+		item1.set( "bodyContent","Campaign Teams");
 
 		accordion.addItem( item1 );
 
@@ -347,12 +374,12 @@
 			contentHeight: 
 			{
 				method: "fixed",
-				height: 250
+				height: 305
 			},
 			closable: false
 		} );
 	 		
-		item2.set( "bodyContent","boothLevel Teams");
+		item2.set( "bodyContent","Booth Level Teams");
 
 		accordion.addItem( item2 );
 
@@ -365,7 +392,7 @@
 			contentHeight: 
 			{
 				method: "fixed",
-				height: 250
+				height: 305
 			},
 			closable: false
 		} );
@@ -919,10 +946,10 @@
 	{
 		var divElmt = document.createElement('div');
 		divElmt.setAttribute('id',results.startDate);
-		divElmt.setAttribute('class','eventSummaryDiv');		
+		divElmt.setAttribute('class','eventSummaryDiv');			
 		
 		if(results.startDate)
-		{
+		{			
 			var index = results.startDate.indexOf(' ');
 			var colIndex1 = results.startDate.indexOf(':');
 			var colIndex2 = results.startDate.lastIndexOf(':');
@@ -934,7 +961,7 @@
 			var StartTimeMin = results.startDate.substring(colIndex1+1,colIndex2);	
 		}
 		if(results.endDate)
-		{
+		{			
 			var index = results.endDate.indexOf(' ');
 			var colIndex1 = results.endDate.indexOf(':');
 			var colIndex2 = results.endDate.lastIndexOf(':');
@@ -947,9 +974,13 @@
 		}
 		
 		if(results.endDate)
+		{			
 			var renderDate=StartMonStr+"/"+StartDayStr+"/"+StartYearStr+"-"+EndMonStr+"/"+EndDayStr+"/"+EndYearStr;
+		}
 		else
+		{			
 			var renderDate=StartMonStr+"/"+StartDayStr+"/"+StartYearStr;
+		}
 		
 		var str='';
 		str+='<table>';
@@ -969,14 +1000,22 @@
 		{
 			elmt.appendChild(divElmt);
 		}
-
-		newEventDialog.cancel();
 		
 		if(jsObj.task == "createEvent")
+			newEventDialog.cancel();
+		else if(jsObj.task == "createImpDateEvent")
+			newDateDialog.cancel();		
+		
+		
+
+		if(jsObj.task == "createEvent")
+		{
 			mainEventCalendar.addRenderer(renderDate, mainEventCalendar.renderCellStyleHighlight1);
+		}
 		else if(jsObj.task == "createImpDateEvent")
 			mainEventCalendar.addRenderer(renderDate, mainEventCalendar.renderCellStyleHighlight2);
 
+		
 		mainEventCalendar.render(); 
 		
 	}
@@ -1363,6 +1402,85 @@
 	{
 		this.cancel();
 	}
+
+	function showInitialImpEventsAndDates(eventsarr,type)
+	{
+		if(type == "impEvents")
+			var elmt = document.getElementById("cadreImpEventsBodyDiv");
+		else if(type == "impDates")
+			var elmt = document.getElementById("cadreImpDatesBodyDiv");
+
+		for(var i in eventsarr)
+		{
+			if(eventsarr[i].startDate)
+			{			
+				var index = eventsarr[i].startDate.indexOf(' ');
+				var colIndex1 = eventsarr[i].startDate.indexOf(':');
+				var colIndex2 = eventsarr[i].startDate.lastIndexOf(':');
+				
+				var StartDayStr = eventsarr[i].startDate.substring(0,2);		
+				var StartMonStr = eventsarr[i].startDate.substring(3,5);
+				var StartYearStr = eventsarr[i].startDate.substring(6,10);	
+				var StartTimeHrs = eventsarr[i].startDate.substring(index,colIndex1);	
+				var StartTimeMin = eventsarr[i].startDate.substring(colIndex1+1,colIndex2);	
+
+			}
+			if(eventsarr[i].endDate)
+			{			
+				var index = eventsarr[i].endDate.indexOf(' ');
+				var colIndex1 = eventsarr[i].endDate.indexOf(':');
+				var colIndex2 = eventsarr[i].endDate.lastIndexOf(':');
+				
+				var EndDayStr = eventsarr[i].endDate.substring(0,2);		
+				var EndMonStr = eventsarr[i].endDate.substring(3,5);
+				var EndYearStr = eventsarr[i].endDate.substring(6,10);	
+				var EndTimeHrs = eventsarr[i].endDate.substring(index,colIndex1);	
+				var EndTimeMin = eventsarr[i].endDate.substring(colIndex1+1,colIndex2);
+			}
+
+			/*if(type == "impEvents")
+			{
+				for(var j=EndDayStr;j>=StartDayStr;j--)
+				{
+						ImpEventsArray.push(j);
+				}
+			}
+			else if(type == "impDates")
+			{
+				
+				ImpEventsArray.push(StartDayStr);				
+			}*/
+
+			var divElmt = document.createElement('div');
+			divElmt.setAttribute('id',eventsarr[i].title);
+			divElmt.setAttribute('class','eventSummaryDiv');
+			if(i%2!=0)
+				divElmt.setAttribute('style','background-color:#EBF5FF;');
+
+			var str='';
+			str+='<table>';
+			str+='<tr>';
+			str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
+			str+='<td>'+eventsarr[i].title+'</td>';	
+			str+='<td> - </td>';	
+			str+='<td>'+eventsarr[i].startDate+'</td>';
+
+			if(eventsarr[i].endDate)
+			{
+				str+='<td> - </td>';	
+				str+='<td>'+eventsarr[i].endDate+'</td>';
+			}
+			str+='<tr>';
+			str+='</table>';
+			divElmt.innerHTML=str;		
+				
+			if(elmt)
+			{
+				elmt.appendChild(divElmt);
+			}
+		}
+	}
+
 </script>
 </head>
 <body>
@@ -1420,8 +1538,8 @@
 
 	<div id="cadreSMSGroupsMainDiv">
 		
-		<div id="cadreGroupsMainDiv">
-			<div id="cadreGroupsHeadDiv">Associate Groups</div>
+		<div id="cadreGroupsMainDiv"  class="yui-skin-sam">
+			<div id="cadreGroupsHeadDiv" class=".yui-widget-hd">Associate Groups</div>
 			<div id="cadreGroupsBodyDiv" style="height: 130px;">Associate groups</div>
 		</div>
 	</div>
@@ -1501,7 +1619,36 @@
 					};
 					regionLevelCadres.push(ob);				
 		</c:forEach>
-		showRegionLevelCadres(regionLevelCadres);				
+		showRegionLevelCadres(regionLevelCadres);	
+		
+		var impEvents = new Array();
+		<c:forEach var="impEvent" items="${cadreManagementVO.userEvents}" >			
+				var ob =
+					{
+						title:'${impEvent.title}',
+						startDate:'${impEvent.startDate}',
+						endDate:'${impEvent.endDate}',
+						description:'${impEvent.description}',
+					};
+					impEvents.push(ob);
+		</c:forEach>
+		console.log(impEvents);
+		showInitialImpEventsAndDates(impEvents,'impEvents');
+		
+		var impDates = new Array();
+		<c:forEach var="impDate" items="${cadreManagementVO.userImpDates}" >			
+				var ob =
+					{
+						title:'${impDate.title}',
+						startDate:'${impDate.startDate}',
+						importance:'${impDate.importance}',
+						eventType:'${impDate.eventType}',
+					};
+					impDates.push(ob);
+		</c:forEach>
+		console.log(impDates);
+		showInitialImpEventsAndDates(impDates,'impDates');
+
 	</script>
 
 	
