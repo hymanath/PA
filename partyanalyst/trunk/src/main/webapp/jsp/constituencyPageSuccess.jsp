@@ -96,7 +96,7 @@
 </style>
 </head>
 <body onLoad="getString()">
-	<h3><u style="color: #4D2828;"><c:out value="${constituencyDetails.constituencyName}" /> Constituency Details </u></h3>
+	<h3><u style="color: #4D2828;"><c:out value="${constituencyDetails.constituencyName}" /> <c:out value="${constituencyDetails.constituencyType}"/> Constituency Details </u></h3>
 <div id="ResultsDiv" style="padding:5px;text-align:left;margin-left:50px;">
   <h4><u style="color: #4D2828;">Constituency Details</u></h4> 
   <table style="float:left;" class="constituencyDetailsTable">
