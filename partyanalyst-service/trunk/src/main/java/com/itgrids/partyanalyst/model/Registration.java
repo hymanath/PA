@@ -48,6 +48,7 @@ public class Registration implements java.io.Serializable {
 	 private Party party;
 	 private String includePartyImpDateStatus;
 	 private Set<UserEvents> userEvents = new HashSet<UserEvents>(0);
+	 private Set<UserImpDate> userImpDates = new HashSet<UserImpDate>(0);
 	
 	public Registration() {
 		 
@@ -263,7 +264,6 @@ public class Registration implements java.io.Serializable {
 		this.includePartyImpDateStatus = includePartyImpDateStatus;
 	}
 	
-	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "registration")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<UserEvents> getUserEvents() {
@@ -273,8 +273,15 @@ public class Registration implements java.io.Serializable {
 	public void setUserEvents(Set<UserEvents> userEvents) {
 		this.userEvents = userEvents;
 	}
-	
-	
 
-	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
+			mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<UserImpDate> getUserImpDates() {
+		return userImpDates;
+	}
+
+	public void setUserImpDates(Set<UserImpDate> userImpDates) {
+		this.userImpDates = userImpDates;
+	}
 }
