@@ -3,7 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreManagementVO;
-import com.itgrids.partyanalyst.dto.PartyImportantDatesVO;
+import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
 import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 import com.itgrids.partyanalyst.service.IUserCalendarService;
@@ -27,7 +27,7 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 		try{
 			List<UserEventVO> userPlannedEvents =userCalendarService.getUserPlannedEvents(userID);
 			cadreManagementVO.setUserEvents(userPlannedEvents);
-			List<PartyImportantDatesVO> userImpDatesList = userCalendarService.getUserImpDates(userID, partyID);
+			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserImpDates(userID, partyID);
 			cadreManagementVO.setUserImpDates(userImpDatesList);
 		}catch (Exception exceptionEncountered) {
 			cadreManagementVO.setExceptionEncountered(exceptionEncountered);

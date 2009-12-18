@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CadreManagementVO extends ResultStatus{
 	private List<UserEventVO>  UserEvents;
-	List<PartyImportantDatesVO> userImpDates;
+	List<ImportantDatesVO> userImpDates;
 	
 	public List<UserEventVO> getUserEvents() {
 		return UserEvents;
@@ -14,11 +14,11 @@ public class CadreManagementVO extends ResultStatus{
 		UserEvents = userEvents;
 	}
 
-	public List<PartyImportantDatesVO> getUserImpDates() {
+	public List<ImportantDatesVO> getUserImpDates() {
 		return userImpDates;
 	}
 
-	public void setUserImpDates(List<PartyImportantDatesVO> userImpDates) {
+	public void setUserImpDates(List<ImportantDatesVO> userImpDates) {
 		this.userImpDates = userImpDates;
 	}
 	

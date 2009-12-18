@@ -9,7 +9,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
-import com.itgrids.partyanalyst.dto.PartyImportantDatesVO;
+import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
 
 /**
@@ -19,10 +19,11 @@ import com.itgrids.partyanalyst.dto.UserEventVO;
  */
 public interface IUserCalendarService {
 	
-	public List<PartyImportantDatesVO> getUserImpDates(Long userID, Long partyId);
+	public List<ImportantDatesVO> getUserImpDates(Long userID, Long partyId);
 	public List<UserEventVO> getUserPlannedEvents(Long userID);
 	public UserEventVO saveUserPlannedEvents(UserEventVO userPlannedEvents);
 	public void deleteUserPlannedEvents(Long userEventID);
+	public void userSubscribePartyImpDates(Long userID);
 	
 	
 }
