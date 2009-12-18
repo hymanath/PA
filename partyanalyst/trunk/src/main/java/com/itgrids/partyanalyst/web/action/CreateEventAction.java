@@ -129,7 +129,9 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			
 			event = new UserEventVO();
 			event.setTitle(title);
-			event.setStartDate(Calendar.getInstance().getTime().toString());			
+			StringBuilder sDate = new StringBuilder();
+			sDate.append(startDate);
+			event.setStartDate(sDate.toString());			
 			event.setDescription(desc);
 		}
 		
