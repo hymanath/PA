@@ -274,6 +274,8 @@
 					regionCadres:[]
 				 };
 	var actionPlanArray = new Array();
+	var renderDatesArr = new Array();
+
 	var ImpDatesArray = new Array();
 	var ImpEventsArray = new Array();
 
@@ -944,10 +946,35 @@
 	
 	function addCreatedEvent(results,jsObj)
 	{
+		
 		var divElmt = document.createElement('div');
 		divElmt.setAttribute('id',results.startDate);
 		divElmt.setAttribute('class','eventSummaryDiv');			
+				
+		var str='';
+		str+='<table>';
+		str+='<tr>';
+		str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
+		str+='<td>'+results.title+'</td>';
+		str+='<tr>';
+		str+='</table>';
+		divElmt.innerHTML=str;
+				
+		if(jsObj.task == "createEvent")
+			var elmt = document.getElementById("cadreImpEventsBodyDiv");
+		else if(jsObj.task == "createImpDateEvent")
+			var elmt = document.getElementById("cadreImpDatesBodyDiv");
+
+		if(elmt)
+		{
+			elmt.appendChild(divElmt);
+		}
 		
+		if(jsObj.task == "createEvent")
+			newEventDialog.cancel();
+		else if(jsObj.task == "createImpDateEvent")
+			newDateDialog.cancel();	
+
 		if(results.startDate)
 		{			
 			var index = results.startDate.indexOf(' ');
@@ -975,40 +1002,21 @@
 		
 		if(results.endDate)
 		{			
-			var renderDate=StartMonStr+"/"+StartDayStr+"/"+StartYearStr+"-"+EndMonStr+"/"+EndDayStr+"/"+EndYearStr;
+			var renderValue=StartMonStr+"/"+StartDayStr+"/"+StartYearStr+"-"+EndMonStr+"/"+EndDayStr+"/"+EndYearStr;
 		}
 		else
 		{			
-			var renderDate=StartMonStr+"/"+StartDayStr+"/"+StartYearStr;
+			var renderValue=StartMonStr+"/"+StartDayStr+"/"+StartYearStr;
 		}
+	
+		var renderObj = {
+							renderDate:renderValue,
+							renderType:jsObj.task 
+						}
+		renderDatesArr.push(renderObj);
 		
-		var str='';
-		str+='<table>';
-		str+='<tr>';
-		str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
-		str+='<td>'+results.title+'</td>';
-		str+='<tr>';
-		str+='</table>';
-		divElmt.innerHTML=str;
-				
-		if(jsObj.task == "createEvent")
-			var elmt = document.getElementById("cadreImpEventsBodyDiv");
-		else if(jsObj.task == "createImpDateEvent")
-			var elmt = document.getElementById("cadreImpDatesBodyDiv");
-
-		if(elmt)
-		{
-			elmt.appendChild(divElmt);
-		}
-		
-		if(jsObj.task == "createEvent")
-			newEventDialog.cancel();
-		else if(jsObj.task == "createImpDateEvent")
-			newDateDialog.cancel();		
-		
-		
-
-		if(jsObj.task == "createEvent")
+		renderStack();
+		/*if(jsObj.task == "createEvent")
 		{
 			mainEventCalendar.addRenderer(renderDate, mainEventCalendar.renderCellStyleHighlight1);
 		}
@@ -1016,7 +1024,7 @@
 			mainEventCalendar.addRenderer(renderDate, mainEventCalendar.renderCellStyleHighlight2);
 
 		
-		mainEventCalendar.render(); 
+		mainEventCalendar.render(); */
 		
 	}
 	function buildCalendarControl()
@@ -1478,7 +1486,55 @@
 			{
 				elmt.appendChild(divElmt);
 			}
+			
+			if(eventsarr[i].endDate)
+			{			
+				var renderValue=StartMonStr+"/"+StartDayStr+"/"+StartYearStr+"-"+EndMonStr+"/"+EndDayStr+"/"+EndYearStr;
+			}
+			else
+			{			
+				var renderValue=StartMonStr+"/"+StartDayStr+"/"+StartYearStr;
+			}
+			
+			var renderObj = {
+								renderDate:renderValue,
+								renderType:type
+							}
+			renderDatesArr.push(renderObj);
+
+
+		/*	if(type == "impEvents")			
+				mainEventCalendar.addRenderer(renderDate, mainEventCalendar.renderCellStyleHighlight1);			
+			else if(type == "impDates")
+				mainEventCalendar.addRenderer(renderDate, mainEventCalendar.renderCellStyleHighlight2); */
+								
 		}
+	}
+
+	function renderStack()
+	{
+		for(var i in renderDatesArr)
+		{
+			if(renderDatesArr[i].renderType == "impEvents" || renderDatesArr[i].renderType == "createEvent")			
+				mainEventCalendar.addRenderer(renderDatesArr[i].renderDate, mainEventCalendar.renderCellStyleHighlight1);			
+			else if(renderDatesArr[i].renderType == "impDates" || renderDatesArr[i].renderType == "createImpDateEvent")
+				mainEventCalendar.addRenderer(renderDatesArr[i].renderDate, mainEventCalendar.renderCellStyleHighlight2); 
+		}
+		
+		mainEventCalendar.render(); 
+	/*		
+			var day = new Array();
+			day.push(2009);
+			day.push(28);
+			day.push(12);
+
+			var renderArr = new Array('D',day,function(){});
+
+			mainEventCalendar._renderStack.push(renderArr);
+
+			
+	*/	
+		
 	}
 
 </script>
@@ -1632,7 +1688,7 @@
 					};
 					impEvents.push(ob);
 		</c:forEach>
-		console.log(impEvents);
+		
 		showInitialImpEventsAndDates(impEvents,'impEvents');
 		
 		var impDates = new Array();
@@ -1646,8 +1702,9 @@
 					};
 					impDates.push(ob);
 		</c:forEach>
-		console.log(impDates);
+		
 		showInitialImpEventsAndDates(impDates,'impDates');
+		renderStack();
 
 	</script>
 
