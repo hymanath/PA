@@ -271,6 +271,15 @@
 	{
 		font-family:georgia;
 	}
+	
+	.yui-skin-sam .yui-calendar td.calcell.today 
+	{
+		background-color:none;
+	}
+	.yui-skin-sam .yui-calendar td.calcell.today a 
+	{
+		background-color:none;
+	}
 </style>
 
 <script type="text/javascript">
@@ -951,7 +960,7 @@
 	
 	function addCreatedEvent(results,jsObj)
 	{
-		console.log(results);
+		
 		var divElmt = document.createElement('div');
 		divElmt.setAttribute('id',results.startDate);
 		divElmt.setAttribute('class','eventSummaryDiv');			
@@ -1029,7 +1038,7 @@
 							renderType:jsObj.task 
 						};
 		renderDatesArr.push(renderObj);
-		console.log(renderDatesArr);
+		
 		renderStack();
 		/*if(jsObj.task == "createEvent")
 		{
@@ -1087,6 +1096,7 @@
 	}
 	function buildNewEventPopup()
 	{
+
 		var elmt = document.getElementById('cadreManagementMainDiv');
 		var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();
 				
@@ -1264,7 +1274,7 @@
 	}
 	function showNewEventPopup()
 	{
-		newEventDialog.show();
+		newEventDialog.show();		
 	}
 
 	function handleSubmit()
