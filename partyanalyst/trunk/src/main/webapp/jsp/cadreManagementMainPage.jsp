@@ -266,6 +266,11 @@
 	{
 		background-color:#FFFFFF;
 	}
+
+	.yui-layout .yui-layout-unit div.yui-layout-hd h2 
+	{
+		font-family:georgia;
+	}
 </style>
 
 <script type="text/javascript">
@@ -946,7 +951,7 @@
 	
 	function addCreatedEvent(results,jsObj)
 	{
-		
+		console.log(results);
 		var divElmt = document.createElement('div');
 		divElmt.setAttribute('id',results.startDate);
 		divElmt.setAttribute('class','eventSummaryDiv');			
@@ -956,6 +961,16 @@
 		str+='<tr>';
 		str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
 		str+='<td>'+results.title+'</td>';
+		if(results.startDate)
+		{
+			str+='<td> - </td>';
+			str+='<td>'+results.startDate+'</td>';
+		}
+		if(results.endDate)
+		{
+			str+='<td> - </td>';
+			str+='<td>'+results.endDate+'</td>';
+		}
 		str+='<tr>';
 		str+='</table>';
 		divElmt.innerHTML=str;
@@ -1012,9 +1027,9 @@
 		var renderObj = {
 							renderDate:renderValue,
 							renderType:jsObj.task 
-						}
+						};
 		renderDatesArr.push(renderObj);
-		
+		console.log(renderDatesArr);
 		renderStack();
 		/*if(jsObj.task == "createEvent")
 		{
@@ -1633,7 +1648,7 @@
 						<div id="cadreImpDatesDiv">
 							<div id="cadreImpDatesHeadDiv">
 								<span style="float: left;">Important Dates</span>
-								<span id="newEventSpan"><a href="javascript:{}" onclick="showNewImpDatePopup()">Create New Event</a></span>							
+								<span id="newEventSpan"><a href="javascript:{}" onclick="showNewImpDatePopup()">Create New Date</a></span>							
 							</div>
 							<div id="cadreImpDatesBodyDiv"> </div>
 						</div>
@@ -1684,7 +1699,7 @@
 						title:'${impEvent.title}',
 						startDate:'${impEvent.startDate}',
 						endDate:'${impEvent.endDate}',
-						description:'${impEvent.description}',
+						description:'${impEvent.description}'
 					};
 					impEvents.push(ob);
 		</c:forEach>
@@ -1698,7 +1713,7 @@
 						title:'${impDate.title}',
 						startDate:'${impDate.startDate}',
 						importance:'${impDate.importance}',
-						eventType:'${impDate.eventType}',
+						eventType:'${impDate.eventType}'
 					};
 					impDates.push(ob);
 		</c:forEach>
