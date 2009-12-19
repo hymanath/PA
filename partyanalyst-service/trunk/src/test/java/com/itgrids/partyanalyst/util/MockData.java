@@ -1986,8 +1986,8 @@ public class MockData {
 		userPlannedEvents.setDescription("Helping poor of Hyderabad city.....");
 		userPlannedEvents.setLocationType("YAKUTPURA");
 		userPlannedEvents.setLocationId(1L);
-		userPlannedEvents.setStartDate(Calendar.getInstance().getTime());
-		userPlannedEvents.setEndDate(Calendar.getInstance().getTime());
+		userPlannedEvents.setStartDate(Calendar.getInstance().getTime().toString());
+		userPlannedEvents.setEndDate(Calendar.getInstance().getTime().toString());
 		List <SelectOptionVO> organizers = new ArrayList<SelectOptionVO>();
 		SelectOptionVO obj = new SelectOptionVO(1L, "");
 		organizers.add(obj);
