@@ -143,6 +143,9 @@
 	<bean id="partyImportantDatesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyImportantDatesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
+	<bean id="userImpDatesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserImpDatesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>	
 </beans>
 
 
