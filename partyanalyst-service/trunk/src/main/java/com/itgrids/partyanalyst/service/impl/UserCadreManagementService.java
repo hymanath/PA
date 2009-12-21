@@ -24,9 +24,7 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 		this.cadreManagementService = cadreManagementService;
 	}
 
-	public CadreManagementVO getUserData(UserCadresInfoVO userCadresInfoVO) {
-		Long userID = userCadresInfoVO.getUserID();
-		Long partyID = userCadresInfoVO.getPartyID();
+	public CadreManagementVO getUserData(Long userID, Long partyID) {
 		CadreManagementVO cadreManagementVO = new CadreManagementVO();
 		try{
 			List<UserEventVO> userPlannedEvents =userCalendarService.getUserPlannedEvents(userID);

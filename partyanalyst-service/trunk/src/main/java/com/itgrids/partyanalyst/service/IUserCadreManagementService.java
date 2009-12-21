@@ -4,5 +4,5 @@ import com.itgrids.partyanalyst.dto.CadreManagementVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 
 public interface IUserCadreManagementService {
-	public CadreManagementVO getUserData(UserCadresInfoVO userCadresInfoVO);
+	public CadreManagementVO getUserData(Long userID, Long partyID);
 }
