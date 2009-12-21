@@ -214,7 +214,8 @@
     	<property name="userEventActionPlanDAO" ref="userEventActionPlanDAO"/>
     	<property name="partyDAO" ref="partyDAO"/>
     	<property name="cadreDAO" ref="cadreDAO"/>
-    	<property name="partyImportantDatesDAO" ref="partyImportantDatesDAO"/>    	
+    	<property name="partyImportantDatesDAO" ref="partyImportantDatesDAO"/>   
+    	<property name="userImpDatesDAO" ref="userImpDatesDAO"/>     	
 	</bean>
 	<bean name="userCadreManagementService" class="com.itgrids.partyanalyst.service.impl.UserCadreManagementService" >		
 		<property name="userCalendarService" ref="userCalendarService" />
