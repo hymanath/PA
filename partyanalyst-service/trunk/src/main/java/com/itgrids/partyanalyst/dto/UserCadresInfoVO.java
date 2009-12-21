@@ -19,6 +19,7 @@ public class UserCadresInfoVO implements Serializable{
 	private String userAccessValue = null;
 	private String userAccesDisplayValue = null;
 	private Long totalCadres = null;
+	private Long partyID = null;
 
 	/**
 	 *  regionLevel No Cadres contains like following
@@ -156,6 +157,10 @@ public class UserCadresInfoVO implements Serializable{
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
-	
-	
+	public Long getPartyID() {
+		return partyID;
+	}
+	public void setPartyID(Long partyID) {
+		this.partyID = partyID;
+	}
 }

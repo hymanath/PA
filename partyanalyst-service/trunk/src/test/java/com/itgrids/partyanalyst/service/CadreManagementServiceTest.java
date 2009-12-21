@@ -21,7 +21,12 @@ import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
+import com.itgrids.partyanalyst.model.DelimitationConstituency;
+import com.itgrids.partyanalyst.model.DelimitationConstituencyMandal;
+import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
@@ -446,7 +451,8 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
-		userCadres = service.getCadreLevelCadresCount(userCadres);
+		userCadres.setRegionLevelCadres(service.getCadreLevelCadresCount(userCadres.getUserID()));
+		//userCadres = service.getCadreLevelCadresCount(userCadres);
 		Long countryLevelCadres = userCadres.getRegionLevelCadres().get("COUNTRY");
 		Long stateLevelCadres = userCadres.getRegionLevelCadres().get("STATE");
 		Long districtLevelCadres = userCadres.getRegionLevelCadres().get("DISTRICT");
@@ -477,7 +483,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
-		userCadres = service.getCadreLevelCadresCount(userCadres);
+		userCadres.setRegionLevelCadres(service.getCadreLevelCadresCount(userCadres.getUserID()));
 		Long stateLevelCadres = userCadres.getRegionLevelCadres().get("STATE");
 		Long districtLevelCadres = userCadres.getRegionLevelCadres().get("DISTRICT");
 		Long mandalLevelCadres = userCadres.getRegionLevelCadres().get("MANDAL"); 
@@ -503,7 +509,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
-		userCadres = service.getCadreLevelCadresCount(userCadres);
+		userCadres.setRegionLevelCadres(service.getCadreLevelCadresCount(userCadres.getUserID()));
 		Long districtLevelCadres = userCadres.getRegionLevelCadres().get("DISTRICT");
 		Long mandalLevelCadres = userCadres.getRegionLevelCadres().get("MANDAL");
 		Assert.assertEquals(new Long(12),districtLevelCadres);
@@ -526,7 +532,7 @@ public class CadreManagementServiceTest {
 		EasyMock.expect(cadreDAO.findCadresByLevels(new Long(1))).andReturn(dummyData);
 		EasyMock.replay(cadreDAO);
 		service.setCadreDAO(cadreDAO);
-		userCadres = service.getCadreLevelCadresCount(userCadres); 
+		userCadres.setRegionLevelCadres(service.getCadreLevelCadresCount(userCadres.getUserID())); 
 		Long mandalLevelCadres = userCadres.getRegionLevelCadres().get("MANDAL"); 
 		Assert.assertEquals(new Long(23),mandalLevelCadres);
 	}
@@ -688,5 +694,21 @@ public class CadreManagementServiceTest {
 		Assert.assertTrue(result.get(0) instanceof SelectOptionVO);
 		Assert.assertEquals(new Long(1L), result.get(0).getId());
 		Assert.assertEquals(3, result.size());
+	}
+	
+	@Test
+	public void testGetStateDistConstituencyMandalByMandalID(){
+		Tehsil tehsil = new Tehsil(1L); tehsil.setTehsilName("Allur");
+		Constituency constituency = new Constituency(1L); constituency.setName("Nellore");
+		District district = new District(19L); district.setDistrictName("NelloreDistrict");
+		State state = new State(1L,"Andhra Pradesh");
+		district.setState(state);
+		//constituency.setDistrict(district);
+		tehsil.setDistrict(district);
+		
+		DelimitationConstituency delimitationConstituency = new DelimitationConstituency(1L);
+		delimitationConstituency.setConstituency(constituency);
+		DelimitationConstituencyMandal delConstMandal = new DelimitationConstituencyMandal();
+		delConstMandal.setTehsil(tehsil);
 	}
 }

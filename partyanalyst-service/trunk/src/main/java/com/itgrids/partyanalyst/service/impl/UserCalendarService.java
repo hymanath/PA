@@ -142,7 +142,7 @@ public class UserCalendarService implements IUserCalendarService {
 				importantDatesVO.setImportance(userImpDate.getDescription());
 			}
 		}
-		
+		Collections.sort(importantDates);
 		return importantDates;
 	}
 
@@ -355,6 +355,7 @@ public class UserCalendarService implements IUserCalendarService {
 			UserEventVO userEventVO = convertUserEvents2DTO(userEvent);
 			userEventVOList.add(userEventVO);
 		}
+		Collections.sort(userEventVOList);
 		return userEventVOList;
 	}
 	
@@ -464,6 +465,7 @@ public class UserCalendarService implements IUserCalendarService {
 				EventActionPlanVO eventActionPlanVO = convertUserEventActionPlan2DTO(userEventActionPlan);
 				eventActionPlanVOList.add(eventActionPlanVO);
 			}
+			Collections.sort(eventActionPlanVOList);
 			userEventVO.setActionPlans(eventActionPlanVOList);
 		}
 		

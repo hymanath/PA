@@ -150,7 +150,8 @@ public class CadreManagementService {
 			Long totalUserAccessLevelCaders = cadreDAO.findTotalCadresByUserID(userCadreInfo.getUserID());
 			userCadreInfo.setTotalCadres(totalUserAccessLevelCaders);
 			userCadreInfo = getUserAccessRegions(userCadreInfo);
-			userCadreInfo = getCadreLevelCadresCount(userCadreInfo);
+			Map<String,Long> cadresByCadreLevel = getCadreLevelCadresCount(userCadreInfo.getUserID());
+			userCadreInfo.setRegionLevelCadres(cadresByCadreLevel);
 		}catch(Exception e){
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setResultPartial(true);
@@ -220,8 +221,8 @@ public class CadreManagementService {
 		 
 		if("COUNTRY".equals(userAccessType)){
 			if(log.isDebugEnabled()){
-			log.debug("CadreManagementService.getUserAccessRegions() if COUNTRY started");
-		}
+				log.debug("CadreManagementService.getUserAccessRegions() if COUNTRY started");
+			}
 			List states = cadreDAO.findStatesByCountryID(accessID);
 			List cadreSizeStateWise = cadreDAO.findCadreSizeStateWise(userCadreInfo.getUserID());
 			if(cadreSizeStateWise.size() == 0)
@@ -379,7 +380,18 @@ public class CadreManagementService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public UserCadresInfoVO getCadreLevelCadresCount(UserCadresInfoVO userCadreInfo){
+	public Map<String,Long> getCadreLevelCadresCount(Long userID){
+		List cadresByRegionList = cadreDAO.findCadresByLevels(userID);
+		Map<String,Long> result = new LinkedHashMap<String,Long>();
+		for(int i =0; i<cadresByRegionList.size(); i++){
+			Object[] objInfo = (Object[]) cadresByRegionList.get(i);
+			result.put(objInfo[0].toString(), new Long(objInfo[1].toString()));
+		}
+		return result;
+	}
+
+	/*@SuppressWarnings("unchecked")
+	public UserCadresInfoVO getCadreLevelCadresCount12(UserCadresInfoVO userCadreInfo){
 		List cadresByRegionList = cadreDAO.findCadresByLevels(userCadreInfo.getUserID());
 		Map<String,Long> tempMap = new LinkedHashMap<String,Long>();
 		for(int i =0; i<cadresByRegionList.size(); i++){
@@ -388,7 +400,7 @@ public class CadreManagementService {
 		}
 		userCadreInfo.setRegionLevelCadres(tempMap);
 		return userCadreInfo;
-	}
+	}*/
 	
 	//Ajax calling methods
 	

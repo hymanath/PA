@@ -4,7 +4,7 @@ import java.util.Date;
 
 
 
-public class ImportantDatesVO  extends ResultStatus{
+public class ImportantDatesVO extends ResultStatus implements Comparable<ImportantDatesVO> {
 
 	
 	private static final long serialVersionUID = 1L;
@@ -65,6 +65,10 @@ public class ImportantDatesVO  extends ResultStatus{
 	}
 	public void setImportance(String importance) {
 		this.importance = importance;
+	}
+	public int compareTo(ImportantDatesVO obj) {
+		int result = this.getImpDate().compareTo(obj.getImpDate());
+		return result;
 	}
 	
 }

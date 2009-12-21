@@ -3,7 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.util.Date;
 import java.util.List;
 
-public class UserEventVO extends ResultStatus {
+public class UserEventVO extends ResultStatus implements Comparable<UserEventVO>{
  
 	private static final long serialVersionUID = 1L;
 	
@@ -77,6 +77,10 @@ public class UserEventVO extends ResultStatus {
 	}
 	public void setActionPlans(List<EventActionPlanVO> actionPlans) {
 		this.actionPlans = actionPlans;
+	}
+	public int compareTo(UserEventVO obj) {
+		int result = this.getStartDate().compareTo(obj.getStartDate());
+		return result;
 	}
 	
 	
