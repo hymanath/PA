@@ -22,12 +22,18 @@ public class UserImpDatesDAO extends GenericDaoHibernate<UserImpDate, Long> impl
 
 	public List<UserImpDate> findByUsedrId(Long userID) {
 		//jan-0, feb-1, mar-2.... dec-11
-		Calendar calendar = Calendar.getInstance();
-		int currentMonth = calendar.get(Calendar.MONTH);
-		
-		return getHibernateTemplate().find(" from UserImpDate model where model.user.registrationId=? and " +
-				calendar.getTime()+ " <= model.tillDate and " +
-				"Month(model.impDate) - " + currentMonth + " in (0,1)" , userID);
+		try{
+
+			Calendar calendar = Calendar.getInstance();
+			int currentMonth = calendar.get(Calendar.MONTH) + 1;
+			
+			return getHibernateTemplate().find(" from UserImpDate model where model.user.registrationId=? and sysdate() <= model.tillDate and " +
+					"Month(model.effectiveDate) - " + currentMonth + " in (0,1)" , userID);
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
 	}
 	public static void main(String[] sr) throws Exception{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");

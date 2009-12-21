@@ -33,7 +33,7 @@ public class UserImpDate  extends BaseModel{
  
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "user_imp_date_id", unique = true, nullable = false)
+	@Column(name = "user_imp_dates_id", unique = true, nullable = false)
 	public Long getUserImpDateID() {
 		return userImpDateID;
 	}
@@ -42,7 +42,7 @@ public class UserImpDate  extends BaseModel{
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="registration_id")
+	@JoinColumn(name="user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Registration getUser() {

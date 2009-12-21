@@ -88,7 +88,7 @@ public class UserCalendarService implements IUserCalendarService {
 
 		List<ImportantDatesVO> importantDates = new ArrayList<ImportantDatesVO>(0);
 		Registration user = registrationDAO.get(userID);
-		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
+		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 		if("ALL".equals(user.getIncludePartyImpDateStatus())){
 			List<PartyImportantDates> partyImportantDates = partyImportantDatesDAO.findByPartyId(partyId);
 			

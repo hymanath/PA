@@ -24,7 +24,7 @@ import org.hibernate.annotations.NotFoundAction;
  *
  */
 @Entity
-@Table(name="user_events")
+@Table(name="user_event")
 public class UserEvents extends BaseModel {
 	private Long userEventsId;
 	private Registration registration;
@@ -39,7 +39,7 @@ public class UserEvents extends BaseModel {
 	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
-	 @Column(name = "user_events_id", unique = true, nullable = false)
+	 @Column(name = "user_event_id", unique = true, nullable = false)
 	public Long getUserEventsId() {
 		return userEventsId;
 	}
