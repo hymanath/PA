@@ -257,9 +257,40 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return results;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Cadre> findByCadreIDs(String cadreIDs){
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model where model.cadreId=?", cadreIDs);
 		return results;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadresByDistrict(Long districtID, Long userID){
+		Object[] params = {userID,districtID};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.district.districtId=?", params); 
+		return results;
+	}
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadresByConstituency(Long constituencyID, Long userID){
+		Object[] params = {userID,constituencyID};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.constituencyID.constituencyId=?", params); 
+		return results;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadresByMandal(Long mandalID, Long userID){
+		Object[] params = {userID,mandalID};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.tehsil.tehsilId=?", params); 
+		return results;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadresByState(Long stateID, Long userID){
+		Object[] params = {userID,stateID};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.state.stateId=?", params); 
+		return results;
+	}
 }

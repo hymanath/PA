@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ImportantDatesVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
 
 /**
@@ -24,6 +25,8 @@ public interface IUserCalendarService {
 	public UserEventVO saveUserPlannedEvents(UserEventVO userPlannedEvents);
 	public void deleteUserPlannedEvents(Long userEventID);
 	public void userSubscribePartyImpDates(Long userID);
+	public List<SelectOptionVO> getCadresByRegionType(Long userID, String regionType, Long regionID);
+	public ImportantDatesVO saveUserImpDate(ImportantDatesVO importantDatesVO);
 	
 	
 }

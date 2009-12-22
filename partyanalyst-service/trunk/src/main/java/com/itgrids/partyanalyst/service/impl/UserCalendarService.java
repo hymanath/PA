@@ -497,4 +497,48 @@ public class UserCalendarService implements IUserCalendarService {
 		return eventActionPlanVO;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getCadresByRegionType(Long userID, String regionType, Long regionID){
+		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
+		List<Cadre> cadres = null;
+		if("STATE".equals(regionType)){
+			cadres = cadreDAO.findCadresByState(regionID, userID);
+		}else if("DISTRICT".equals(regionType)){
+			cadres = cadreDAO.findCadresByDistrict(regionID, userID);
+		}else if("CONSTITUENCY".equals(regionType)){
+			cadres = cadreDAO.findCadresByConstituency(regionID, userID);
+		}else if("MANDAL".equals(regionType)){
+			cadres = cadreDAO.findCadresByMandal(regionID, userID);
+		}else if("VILLAGE".equals(regionType)){
+			cadres = cadreDAO.findCadresByVillage(regionID, userID);
+		}
+		for(Cadre cadre : cadres){
+			SelectOptionVO obj = new SelectOptionVO();
+			obj.setId(cadre.getCadreId());
+			StringBuilder sb = new StringBuilder();
+			sb.append(cadre.getFirstName()).append(IConstants.SPACE).append(cadre.getMiddleName()).append(IConstants.SPACE).append(cadre.getLastName());
+			obj.setName(sb.toString());
+			results.add(obj);
+		}
+		return results;
+	}
+
+	public ImportantDatesVO saveUserImpDate(ImportantDatesVO importantDatesVO){
+		UserImpDate userImpDate = new UserImpDate();
+		try{
+			Registration user = registrationDAO.get(importantDatesVO.getEventId());
+			userImpDate.setUser(user);
+			userImpDate.setTitle(importantDatesVO.getTitle());
+			userImpDate.setDescription(importantDatesVO.getImportance());
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+			userImpDate.setEffectiveDate(sdf.parse(importantDatesVO.getStartDate()));
+			userImpDate.setTillDate(sdf.parse(importantDatesVO.getEndDate()));
+			userImpDate.setRecFreqType(importantDatesVO.getFrequency());
+			userImpDate = userImpDatesDAO.save(userImpDate);
+			importantDatesVO.setImportantDateId(userImpDate.getUserImpDateID());
+		}catch (Exception ex) {
+			importantDatesVO.setExceptionEncountered(ex);
+		}
+		return importantDatesVO;
+	}
 }
