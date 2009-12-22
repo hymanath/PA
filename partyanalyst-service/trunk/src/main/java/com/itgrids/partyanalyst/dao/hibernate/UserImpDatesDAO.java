@@ -37,6 +37,7 @@ public class UserImpDatesDAO extends GenericDaoHibernate<UserImpDate, Long> impl
 	}
 	public static void main(String[] sr) throws Exception{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		Date d = new Date("12/12/2009 "+20 +":13:00");System.out.println(sdf.format(d));
 		Calendar cal = Calendar.getInstance();/*cal.add(Calendar.DATE, 2);*/cal.set(Calendar.YEAR, 2010);
 		System.out.println(cal.get(Calendar.DAY_OF_WEEK));
 		System.out.println(cal.getTime());

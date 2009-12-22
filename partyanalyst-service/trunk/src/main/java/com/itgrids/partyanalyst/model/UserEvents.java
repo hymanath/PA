@@ -94,7 +94,7 @@ public class UserEvents extends BaseModel {
 	}
 	@ManyToMany
 	@JoinTable(name = "user_events_organizer", 
-			joinColumns = { @JoinColumn(name = "user_events_id") }, 
+			joinColumns = { @JoinColumn(name = "user_event_id") }, 
 			inverseJoinColumns = { @JoinColumn(name = "cadre_id") })
 	public List<Cadre> getOrganizers() {
 		return organizers;

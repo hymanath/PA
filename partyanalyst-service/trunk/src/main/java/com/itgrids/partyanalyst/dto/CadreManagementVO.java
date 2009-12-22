@@ -13,7 +13,7 @@ public class CadreManagementVO extends ResultStatus{
 	}
 
 	public void setUserEvents(List<UserEventVO> userEvents) {
-		userEvents = userEvents;
+		this.userEvents = userEvents;
 	}
 
 	public List<ImportantDatesVO> getUserImpDates() {

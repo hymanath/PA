@@ -59,7 +59,7 @@ public class UserEventActionPlan extends BaseModel {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_events_id")
+	@JoinColumn(name = "user_event_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	public UserEvents getUserEvents() {
 		return userEvents;
