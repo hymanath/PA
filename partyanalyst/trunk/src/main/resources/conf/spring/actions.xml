@@ -68,7 +68,7 @@
 
 	<bean id="userAction" class="com.itgrids.partyanalyst.web.action.UserAction">
 		<property name="userService" ref="userService" />
-		<property name="staticDataService" ref="staticDataService" />
+		<property name="staticDataService" ref="staticDataService" /> 
 	</bean>
 	
 	<bean id="cadreReportAction" class ="com.itgrids.partyanalyst.web.action.CadreReportAction" singleton="false">
@@ -160,9 +160,11 @@
 	<bean id="userGroupsMainAction" class="com.itgrids.partyanalyst.web.action.UserGroupsMainAction" singleton="false">		
 	</bean>
 	
-	<bean id="cadreManagementAction" class="com.itgrids.partyanalyst.web.action.CadreManagementAction" singleton="false">		
+	<bean id="cadreManagementAction" class="com.itgrids.partyanalyst.web.action.CadreManagementAction" singleton="false">
+		<property name="userCadreManagementService" ref="userCadreManagementService"></property>		
 	</bean>
 	
-	<bean id="createEventAction" class="com.itgrids.partyanalyst.web.action.CreateEventAction" singleton="false">		
+	<bean id="createEventAction" class="com.itgrids.partyanalyst.web.action.CreateEventAction" singleton="false">	
+		<property name="userCalendarService" ref="userCalendarService"></property>	
 	</bean>
 </beans>
