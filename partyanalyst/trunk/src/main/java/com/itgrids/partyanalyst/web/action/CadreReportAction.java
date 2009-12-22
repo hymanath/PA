@@ -17,12 +17,14 @@ import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
+import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 
 public class CadreReportAction extends ActionSupport implements ServletContextAware,ServletRequestAware{
 
 
 	private CadreManagementService cadreManagementService;
+	private IUserCadreManagementService userCadreManagementService; 
 	private UserCadresInfoVO userCadresInfoVO = new UserCadresInfoVO();
 	private HttpServletRequest request;
 	private HttpSession session;
@@ -92,7 +94,7 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 			/*
 			 * User Event VO Mock Data
 			 */
-			UserEventVO userEventVO = new UserEventVO();			
+			/*UserEventVO userEventVO = new UserEventVO();			
 			userEventVO.setTitle("Party Meeting");
 			userEventVO.setStartDate("20/12/2009 10:15:00");
 			userEventVO.setEndDate("22/12/2009 04:15:00");
@@ -123,7 +125,7 @@ public class CadreReportAction extends ActionSupport implements ServletContextAw
 			ImpDatesList.add(importantDatesVO1);		
 						
 			cadreManagementVO.setUserImpDates(ImpDatesList);
-			cadreManagementVO.setUserEvents(userEventList);	
+			cadreManagementVO.setUserEvents(userEventList);	*/
 			
 			this.setCadreManagementVO(cadreManagementVO);
 		}
