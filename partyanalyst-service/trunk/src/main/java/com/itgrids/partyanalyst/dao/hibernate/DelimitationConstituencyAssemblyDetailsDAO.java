@@ -18,7 +18,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	public List<Constituency> findAssemblyConstituencies(
 			Long parliamentConstituencyId, Long electionYear) {
 		Object[] params = {parliamentConstituencyId, electionYear};
-		return getHibernateTemplate().find("select model.constituency from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.constituency.constituencyId = ? and model.delimitationConstituency.year <= ?",params);
+		return getHibernateTemplate().find("select model.constituency from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.constituency.constituencyId = ? and model.delimitationConstituency.year = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
