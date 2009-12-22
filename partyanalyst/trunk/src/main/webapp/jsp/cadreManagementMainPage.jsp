@@ -60,7 +60,7 @@
 	}
 	#cadreManagementMainDiv
 	{
-		background-color:#EFEFEF;
+		/*background-color:#EFEFEF;*/
 		height:920px;
 		margin-left:25px;
 		margin-right:25px;
@@ -91,7 +91,7 @@
 	{
 		height:100%;
 		width:100%;
-		background-color:#CBDCE8;
+		/*background-color:#CBDCE8;*/
 	}
 
 	#cadreDatesYUICalDiv
@@ -280,6 +280,11 @@
 	{
 		background-color:none;
 	}
+	.yui-skin-sam .yui-calendar td.calcellhover a
+	{
+		background-color:none;
+	}
+	
 </style>
 
 <script type="text/javascript">
@@ -879,6 +884,7 @@
 
 	function showRegionLevelCadres(arr)
 	{
+		
 		cadreObj.regionCadres=arr;
 		var elmt = document.getElementById("regionLevelCadreDivBody");
 		if(!elmt)
@@ -958,17 +964,23 @@
 
 	}
 	
+
+	function demo()
+	{
+		
+	}
 	function addCreatedEvent(results,jsObj)
 	{
 		
 		var divElmt = document.createElement('div');
 		divElmt.setAttribute('id',results.startDate);
-		divElmt.setAttribute('class','eventSummaryDiv');			
+		divElmt.setAttribute('class','eventSummaryDiv');
+		
 				
 		var str='';
 		str+='<table>';
 		str+='<tr>';
-		str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/></td>';
+		str+='<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png" onclick="demo()"/></td>';
 		str+='<td>'+results.title+'</td>';
 		if(results.startDate)
 		{
@@ -1032,13 +1044,24 @@
 		{			
 			var renderValue=StartMonStr+"/"+StartDayStr+"/"+StartYearStr;
 		}
-	
+		
+		for(var i=EndYearStr;i>=StartYearStr;i--)
+		{
+			for(var j=EndMonStr;j>=StartMonStr;j--)
+			{
+				for(var k=EndDayStr;k>=StartDayStr;k--)
+				{
+					var renderValue
+				}
+			}
+		}	
 		var renderObj = {
 							renderDate:renderValue,
 							renderType:jsObj.task 
 						};
-		renderDatesArr.push(renderObj);
+				
 		
+		renderDatesArr.push(renderObj);		
 		renderStack();
 		/*if(jsObj.task == "createEvent")
 		{
@@ -1692,7 +1715,7 @@
 		buildNewImpDatePopup();
 		
 		var regionLevelCadres = new Array();
-		<c:forEach var="pd1" items="${userCadresInfoVO.regionLevelCadres}" >				
+		<c:forEach var="pd1" items="${cadreManagementVO.cadresByCadreLevel}" >				
 				var ob =
 					{
 						id:'${pd1.value}',
@@ -1712,8 +1735,7 @@
 						description:'${impEvent.description}'
 					};
 					impEvents.push(ob);
-		</c:forEach>
-		
+		</c:forEach>		
 		showInitialImpEventsAndDates(impEvents,'impEvents');
 		
 		var impDates = new Array();
