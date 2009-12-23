@@ -4,6 +4,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
@@ -19,6 +20,7 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 	private IUserCadreManagementService userCadreManagementService;
 	private HttpServletRequest request;
 	private CadreManagementVO cadreManagementVO = null;
+	private final static Logger log = Logger.getLogger(CadreManagementAction.class);
 
 	public IUserCadreManagementService getUserCadreManagementService() {
 		return userCadreManagementService;
@@ -44,7 +46,7 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 
 	public String execute() throws Exception{
 		
-		System.out.println("In execute of Cadre Management Action ********");
+		log.debug("In execute of Cadre Management Action ********");
 		
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
@@ -55,9 +57,7 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 		Long partyID = user.getParty();
 		
 		cadreManagementVO = userCadreManagementService.getUserData(userID,partyID);
-		
-		
-		
+		log.debug("cadreManagementVO.getUserImpDates().size():"+cadreManagementVO.getUserImpDates().size());
 		return Action.SUCCESS;
 	}
 }

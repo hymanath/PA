@@ -11,21 +11,21 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
+import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.service.IUserCalendarService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
-import freemarker.template.SimpleDate;
 
 public class CreateEventAction extends ActionSupport implements ServletRequestAware, ServletContextAware{
 
@@ -35,12 +35,14 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	private static final long serialVersionUID = 1L;
 	private String task = null;
 	JSONObject jObj = null;
-	private UserEventVO event;	
+	private UserEventVO event;
+	private ImportantDatesVO importantDatesVO;
 	private List<EventActionPlanVO> actionPlanList = new ArrayList<EventActionPlanVO>();
 	private IUserCalendarService userCalendarService;
 	private HttpSession session;
 	private HttpServletRequest request;
-	
+
+	private final static Logger log = Logger.getLogger(CreateEventAction.class);
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -76,10 +78,14 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	}
 
 	
-	public String execute()
+	public String execute() throws Exception
 	{
+		log.debug("CreateEventAction.execute()... started");
+		String result = "success1";
+		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
 		
 		if(user==null)
 			return ERROR;
@@ -95,14 +101,13 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		log.debug("Task::"+jObj.getString("task"));
 		if(jObj.getString("task").equalsIgnoreCase("createEvent"))
 		{
 			event = new UserEventVO();
 			
 			event.setUserID(user.getRegistrationID());
 			event.setTitle(jObj.getString("eventName"));
-			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
 			String startDate = jObj.getString("startDate");
 			String endDate = jObj.getString("endDate");
 			String startTimeHrs = jObj.getString("startTimeHrs");
@@ -113,8 +118,8 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			StringBuilder eDate = new StringBuilder();
 			sDate.append(startDate).append(IConstants.SPACE).append(startTimeHrs).append(":").append(startTimeMin).append(":00");
 			eDate.append(endDate).append(IConstants.SPACE).append(endTimeHrs).append(":").append(endTimeMin).append(":00");
-			event.setStartDate(sDate.toString());
-			event.setEndDate(eDate.toString());
+			event.setStartDate(sdf.parse(sDate.toString()));
+			event.setEndDate(sdf.parse(eDate.toString()));
 			event.setDescription(jObj.getString("desc"));
 			event.setLocationId(854L);
 			event.setLocationType("MANDAL");
@@ -136,30 +141,41 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 				EventActionPlanVO eventActionPlanVO = new EventActionPlanVO();
 				eventActionPlanVO.setAction("actionPlan");
 				eventActionPlanVO.setTargetDate(new Date(actionPlanDate));				
-				actionPlanList.add(eventActionPlanVO);
-			
-				
+				actionPlanList.add(eventActionPlanVO);	
 			}					
 			event.setActionPlans(actionPlanList);
 		
 			event = userCalendarService.saveUserPlannedEvents(event);
+			if(event.getExceptionEncountered()!=null)
+				log.error(event.getExceptionEncountered().getMessage());
+			else
+				log.debug("No Exception when saving UserEvent");
+			result = "success1";
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("createImpDateEvent"))
 		{
-			String title = jObj.getString("eventName");
-			String startDate = jObj.getString("startDate");// mm/dd/yyyy			
-			String desc = jObj.getString("desc");
+			log.debug("inside if....createImpDateEvent");
+			importantDatesVO = new ImportantDatesVO();			
 			
-			event = new UserEventVO();
-			event.setTitle(title);
-			StringBuilder sDate = new StringBuilder();
-			sDate.append(startDate);
-			event.setStartDate(sDate.toString());			
-			event.setDescription(desc);
+			importantDatesVO.setEventId(user.getRegistrationID());
+			importantDatesVO.setTitle(jObj.getString("eventName"));
+			importantDatesVO.setImportance(jObj.getString("desc"));
+			importantDatesVO.setFrequency(jObj.getString("frequency"));			
+			importantDatesVO.setStartDate(sdf.parse(jObj.getString("startDate")));
+			importantDatesVO.setEndDate(sdf.parse(jObj.getString("endDate")));				
+		
+			importantDatesVO = userCalendarService.saveUserImpDate(importantDatesVO);
+			log.debug("inside if....createImpDateEvent::"+importantDatesVO.getImportantDateId());
+			result = "success2";
+		}
+		else
+		{
+			return ERROR;
 		}
 		
 		
 		System.out.println("In Create Event Action %%%%%%%%%%%%%%");
-		return Action.SUCCESS;
+		
+		return result;
 	}
 }

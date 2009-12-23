@@ -310,10 +310,12 @@
 		</action>
 		
 		<action name="createEventAction" class="createEventAction">
-			<result type="json" name="success">
+			<result type="json" name="success1">
 				<param name="root">event</param>				
-			</result>
-		</action>
-		
+			</result>			
+		 	<result type="json" name="success2">
+				<param name="root">importantDatesVO</param>				
+			</result> 			
+		</action>		
 	</package>
 </struts>
