@@ -8,6 +8,6 @@ import com.itgrids.partyanalyst.model.UserImpDate;
 
 public interface IUserImpDatesDAO extends GenericDao<UserImpDate, Long> {
 
-	public List<UserImpDate> findByUsedrId(Long userID);
+	public List<UserImpDate> findByUserId(Long userID);
 
 }

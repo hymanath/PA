@@ -13,8 +13,8 @@ public class UserEventVO extends ResultStatus implements Comparable<UserEventVO>
 	private String description;
 	private String locationType;
 	private Long locationId;
-	private String startDate;
-	private String endDate;
+	private Date startDate;
+	private Date endDate;
 	private List <SelectOptionVO> organizers;
 	private List<EventActionPlanVO> actionPlans;
 	
@@ -54,16 +54,16 @@ public class UserEventVO extends ResultStatus implements Comparable<UserEventVO>
 	public void setLocationId(Long locationId) {
 		this.locationId = locationId;
 	}
-	public String getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 	public List<SelectOptionVO> getOrganizers() {
@@ -79,7 +79,7 @@ public class UserEventVO extends ResultStatus implements Comparable<UserEventVO>
 		this.actionPlans = actionPlans;
 	}
 	public int compareTo(UserEventVO obj) {
-		int result = this.getStartDate().compareTo(obj.getStartDate());
+		int result = obj.getStartDate().compareTo(this.getStartDate());
 		return result;
 	}
 	

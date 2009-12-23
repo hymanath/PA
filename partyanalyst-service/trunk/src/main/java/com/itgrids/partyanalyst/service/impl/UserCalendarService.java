@@ -6,9 +6,12 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
@@ -23,7 +26,6 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
 import com.itgrids.partyanalyst.model.Cadre;
-import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyImportantDates;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.UserEventActionPlan;
@@ -46,6 +48,8 @@ public class UserCalendarService implements IUserCalendarService {
 	private ICadreDAO cadreDAO;
 	private IPartyImportantDatesDAO partyImportantDatesDAO;
 	private IUserImpDatesDAO userImpDatesDAO;
+	private TransactionTemplate transactionTemplate;
+
 	private final static Logger log = Logger.getLogger(UserCalendarService.class);
 	
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
@@ -79,12 +83,16 @@ public class UserCalendarService implements IUserCalendarService {
 		this.userImpDatesDAO = userImpDatesDAO;
 	}
 
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate){
+		this.transactionTemplate = transactionTemplate;
+	}
 	public void userSubscribePartyImpDates(Long userID){
 		Registration user = registrationDAO.get(userID);
 		user.setIncludePartyImpDateStatus("ALL");
 		registrationDAO.save(user);
 	}
 	public List<ImportantDatesVO> getUserImpDates(Long userID, Long partyId) {
+		log.debug("UserCalenderService.getUserImpDates() Start...");
 
 		List<ImportantDatesVO> importantDates = new ArrayList<ImportantDatesVO>(0);
 		Registration user = registrationDAO.get(userID);
@@ -103,14 +111,15 @@ public class UserCalendarService implements IUserCalendarService {
 			
 			}
 		}
-		List<UserImpDate> userImpDates = userImpDatesDAO.findByUsedrId(userID);
+		List<UserImpDate> userImpDates = userImpDatesDAO.findByUserId(userID);
+		log.debug("UserCalenderService.getUserImpDates() userImpDates.size()"+userImpDates.size());
 		if(userImpDates != null){
 			for(UserImpDate userImpDate : userImpDates){				
-				ImportantDatesVO importantDatesVO = new ImportantDatesVO();
+				/*ImportantDatesVO importantDatesVO = new ImportantDatesVO();
 				importantDatesVO.setEventType("User");
 				importantDatesVO.setImportantDateId(userImpDate.getUserImpDateID());
 				importantDatesVO.setEventId(userImpDate.getUser().getRegistrationId());
-				importantDatesVO.setStartDate(sdf.format(userImpDate.getEffectiveDate()));
+				importantDatesVO.setStartDate(userImpDate.getEffectiveDate());
 				
 				
 				Date startDate = userImpDate.getEffectiveDate();
@@ -118,6 +127,8 @@ public class UserCalendarService implements IUserCalendarService {
 				int day = startDate.getDate();
 				Calendar calendar = Calendar.getInstance();
 				int year =calendar.get(Calendar.YEAR);
+				log.debug("User Imp Dates Recurssive Type::"+ userImpDate.getRecFreqType());
+				log.debug("User Imp Dates Month::Day::Year---" + month + "::" + day +" ::" + year);
 				if(("MONTHLY".equalsIgnoreCase(userImpDate.getRecFreqType())
 						||"YEARLY".equalsIgnoreCase(userImpDate.getRecFreqType())) &&
 						calendar.get(Calendar.MONTH)==12 && month <=2){
@@ -134,15 +145,23 @@ public class UserCalendarService implements IUserCalendarService {
 					}
 				}
 				calendar.set(year,month,day);
-				importantDatesVO.setImpDate(sdf.format(calendar.getTime()));
+				importantDatesVO.setImpDate(calendar.getTime());
 				
 				
-				importantDatesVO.setEndDate(sdf.format(userImpDate.getTillDate()));
+				importantDatesVO.setEndDate(userImpDate.getTillDate());
 				importantDatesVO.setTitle(userImpDate.getTitle());
-				importantDatesVO.setImportance(userImpDate.getDescription());
+				importantDatesVO.setImportance(userImpDate.getDescription());*/
+				
+				List<ImportantDatesVO> userImpDateVOs = convertUserImpDateModel2DTO(userImpDate);
+				log.debug("User Imp Dates Recurssive Type size::"+ userImpDateVOs.size());
+				for(ImportantDatesVO userImpDateVO : userImpDateVOs){
+					importantDates.add(userImpDateVO);
+				}
 			}
 		}
-		Collections.sort(importantDates);
+		if(importantDates.size()>1)
+			Collections.sort(importantDates);
+		log.debug("userImportant date size:::"+importantDates.size());
 		return importantDates;
 	}
 
@@ -156,14 +175,14 @@ public class UserCalendarService implements IUserCalendarService {
 		private String recFreqType;*/
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
 		ImportantDatesVO importantDatesVO = new ImportantDatesVO();
-		importantDatesVO.setEventType("Party");
+		importantDatesVO.setEventType("User");
 		importantDatesVO.setImportantDateId(impDate.getUserImpDateID());
 		importantDatesVO.setEventId(impDate.getUser().getRegistrationId());
 		importantDatesVO.setTitle(impDate.getTitle());
 		importantDatesVO.setImportance(impDate.getDescription());
-		importantDatesVO.setStartDate(sdf.format(impDate.getEffectiveDate()));
-		importantDatesVO.setEndDate(sdf.format(impDate.getTillDate()));
-		importantDatesVO.setImpDate(sdf.format(calendar.getTime()));
+		importantDatesVO.setStartDate(impDate.getEffectiveDate());
+		importantDatesVO.setEndDate(impDate.getTillDate());
+		importantDatesVO.setImpDate(calendar.getTime());
 		
 		return importantDatesVO;
 	}
@@ -187,6 +206,7 @@ public class UserCalendarService implements IUserCalendarService {
 		int currentYear =calendar.get(Calendar.YEAR);
 		int currentMonth =calendar.get(Calendar.MONTH);
 		int currentDay =calendar.get(Calendar.YEAR);
+		log.debug("Imp Recursive Date Type:::"+impDate.getRecFreqType());
 		if("YEARLY".equalsIgnoreCase(impDate.getRecFreqType())){
 			if(calendar.get(Calendar.MONTH)==11 && sMonth <=1)
 				++currentYear;
@@ -330,8 +350,8 @@ public class UserCalendarService implements IUserCalendarService {
 		importantDatesVO.setEventId(impDate.getParty().getPartyId());
 		importantDatesVO.setTitle(impDate.getTitle());
 		importantDatesVO.setImportance(impDate.getImportance());
-		importantDatesVO.setImpDate(sdf.format(calendar.getTime()));	
-		importantDatesVO.setStartDate(sdf.format(impDate.getImportantDate()));
+		importantDatesVO.setImpDate(calendar.getTime());	
+		importantDatesVO.setStartDate(impDate.getImportantDate());
 		return importantDatesVO;
 	}
 
@@ -362,25 +382,36 @@ public class UserCalendarService implements IUserCalendarService {
 	public void deleteUserPlannedEvents(Long userEventID) {
 		userEventsDAO.remove(userEventID);
 	}
-
+private UserEventVO saveUserPlannedEvents;
 	public UserEventVO saveUserPlannedEvents(UserEventVO userPlannedEvents) {
+		saveUserPlannedEvents = userPlannedEvents;
 		if(log.isDebugEnabled())
 			log.debug("UserCalendar.saveuserPlannedEvents() start");
-		UserEvents userEvent = convertDTO2UserEvents(userPlannedEvents);
-		try{
-			userEvent = userEventsDAO.save(userEvent);
-			userPlannedEvents.setUserEventsId(userEvent.getUserEventsId());
-			List<EventActionPlanVO> userEventActionPlanVOs = userPlannedEvents.getActionPlans();
-			for(EventActionPlanVO userEventActionPlanVO : userEventActionPlanVOs){
-				UserEventActionPlan userEventActionPlan = converDTO2UserEventActionPlan(userEventActionPlanVO);
-				userEventActionPlan.setUserEvents(userEvent);
-				userEventActionPlan=userEventActionPlanDAO.save(userEventActionPlan);
-				userEventActionPlanVO.setEventActionPlanId(userEventActionPlan.getEventActionPlanId());
+
+		transactionTemplate.execute(new TransactionCallback() {
+
+			public Object doInTransaction(TransactionStatus txStatus) {
+				try{
+					UserEvents userEvent = convertDTO2UserEvents(UserCalendarService.this.saveUserPlannedEvents);
+					userEvent = userEventsDAO.save(userEvent);
+					UserCalendarService.this.saveUserPlannedEvents.setUserEventsId(userEvent.getUserEventsId());
+					List<EventActionPlanVO> userEventActionPlanVOs = UserCalendarService.this.saveUserPlannedEvents.getActionPlans();
+					for(EventActionPlanVO userEventActionPlanVO : userEventActionPlanVOs){
+						UserEventActionPlan userEventActionPlan = converDTO2UserEventActionPlan(userEventActionPlanVO);
+						userEventActionPlan.setUserEvents(userEvent);
+						userEventActionPlan=userEventActionPlanDAO.save(userEventActionPlan);
+						userEventActionPlanVO.setEventActionPlanId(userEventActionPlan.getEventActionPlanId());
+					}
+				}catch (Exception e) {
+					UserCalendarService.this.saveUserPlannedEvents.setExceptionEncountered(e);
+					UserCalendarService.this.saveUserPlannedEvents.setResultCode(ResultCodeMapper.FAILURE);
+					txStatus.setRollbackOnly();
+				}
+				return UserCalendarService.this.saveUserPlannedEvents;
 			}
-		}catch (Exception e) {
-			userPlannedEvents.setExceptionEncountered(e);
-			userPlannedEvents.setResultCode(ResultCodeMapper.FAILURE);
-		}
+		});
+		userPlannedEvents = saveUserPlannedEvents;
+		saveUserPlannedEvents = null;
 		return userPlannedEvents;
 	}
 
@@ -393,10 +424,10 @@ public class UserCalendarService implements IUserCalendarService {
 		userEvents.setDescription(userPlannedEvents.getDescription());
 		userEvents.setLocationType(userPlannedEvents.getLocationType());
 		userEvents.setLocationId(userPlannedEvents.getLocationId());
-		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
+		//SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
 		try{
-			userEvents.setStartDate(sdf.parse(userPlannedEvents.getStartDate()));
-			userEvents.setEndDate(sdf.parse(userPlannedEvents.getEndDate()));
+			userEvents.setStartDate(userPlannedEvents.getStartDate());
+			userEvents.setEndDate(userPlannedEvents.getEndDate());
 		}catch(Exception e){
 			
 		}
@@ -439,9 +470,9 @@ public class UserCalendarService implements IUserCalendarService {
 		userEventVO.setLocationId(userEvent.getLocationId());
 		userEventVO.setLocationType(userEvent.getLocationType());
 		userEventVO.setTitle(userEvent.getTitle());
-		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
-		userEventVO.setStartDate(sdf.format(userEvent.getStartDate()));
-		userEventVO.setEndDate(sdf.format(userEvent.getEndDate()));
+		//SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
+		userEventVO.setStartDate(userEvent.getStartDate());
+		userEventVO.setEndDate(userEvent.getEndDate());
 		List<Cadre> organizers = userEvent.getOrganizers();
 		if(organizers!=null && organizers.size()>0){
 			List<SelectOptionVO> organizersVO = new ArrayList<SelectOptionVO>();
@@ -522,23 +553,48 @@ public class UserCalendarService implements IUserCalendarService {
 		}
 		return results;
 	}
-
+	
+	private ImportantDatesVO saveImportantDatesVO;
+	
 	public ImportantDatesVO saveUserImpDate(ImportantDatesVO importantDatesVO){
-		UserImpDate userImpDate = new UserImpDate();
-		try{
-			Registration user = registrationDAO.get(importantDatesVO.getEventId());
-			userImpDate.setUser(user);
-			userImpDate.setTitle(importantDatesVO.getTitle());
-			userImpDate.setDescription(importantDatesVO.getImportance());
-			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
-			userImpDate.setEffectiveDate(sdf.parse(importantDatesVO.getStartDate()));
-			userImpDate.setTillDate(sdf.parse(importantDatesVO.getEndDate()));
-			userImpDate.setRecFreqType(importantDatesVO.getFrequency());
-			userImpDate = userImpDatesDAO.save(userImpDate);
-			importantDatesVO.setImportantDateId(userImpDate.getUserImpDateID());
-		}catch (Exception ex) {
-			importantDatesVO.setExceptionEncountered(ex);
-		}
+		this.saveImportantDatesVO = importantDatesVO;
+		log.debug("UserCalendarService.saveUserImpDate()......");
+		
+		UserImpDate userImpDate = (UserImpDate)
+			transactionTemplate.execute(new TransactionCallback() {
+
+				public Object doInTransaction(TransactionStatus txStatus) {
+					UserImpDate userImpDate = new UserImpDate();
+					try{
+						Registration user = registrationDAO.get(UserCalendarService.this.saveImportantDatesVO.getEventId());
+						userImpDate.setUser(user);
+						userImpDate.setTitle(UserCalendarService.this.saveImportantDatesVO.getTitle());
+						userImpDate.setDescription(UserCalendarService.this.saveImportantDatesVO.getImportance());
+						SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+						log.debug("SDate::::::::"+UserCalendarService.this.saveImportantDatesVO.getStartDate());
+						userImpDate.setEffectiveDate(UserCalendarService.this.saveImportantDatesVO.getStartDate());
+						userImpDate.setTillDate(UserCalendarService.this.saveImportantDatesVO.getEndDate());
+						userImpDate.setRecFreqType(UserCalendarService.this.saveImportantDatesVO.getFrequency());
+						log.debug("EDate::::::::"+UserCalendarService.this.saveImportantDatesVO.getEndDate());
+						
+
+						log.debug("sDate::::::::"+userImpDate.getEffectiveDate());
+						log.debug("eDate::::::::"+userImpDate.getTillDate());
+						userImpDate = userImpDatesDAO.save(userImpDate);
+						return userImpDate;
+					}catch (Exception ex) {
+						txStatus.setRollbackOnly();
+
+						UserCalendarService.this.saveImportantDatesVO.setExceptionEncountered(ex);
+						log.error("Narender error:;"+ex);
+					}
+					return userImpDate;
+				}
+			
+			
+		});
+		saveImportantDatesVO = null;
+		importantDatesVO.setImportantDateId(userImpDate.getUserImpDateID());
 		return importantDatesVO;
 	}
 }

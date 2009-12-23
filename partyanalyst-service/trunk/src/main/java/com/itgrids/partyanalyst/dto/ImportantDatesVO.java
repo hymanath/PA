@@ -12,9 +12,9 @@ public class ImportantDatesVO extends ResultStatus implements Comparable<Importa
 	private Long importantDateId ;
 	private String eventType;
 	private Long eventId;
-	private String startDate;
-	private String impDate;
-	private String endDate;
+	private Date startDate;
+	private Date impDate;
+	private Date endDate;
 	private String title ;
 	private String importance ;
 	private String frequency;
@@ -37,22 +37,22 @@ public class ImportantDatesVO extends ResultStatus implements Comparable<Importa
 	public void setEventId(Long eventId) {
 		this.eventId = eventId;
 	}
-	public String getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	public String getImpDate() {
+	public Date getImpDate() {
 		return impDate;
 	}
-	public void setImpDate(String impDate) {
+	public void setImpDate(Date impDate) {
 		this.impDate = impDate;
 	}
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 	public String getTitle() {
@@ -68,7 +68,7 @@ public class ImportantDatesVO extends ResultStatus implements Comparable<Importa
 		this.importance = importance;
 	}
 	public int compareTo(ImportantDatesVO obj) {
-		int result = this.getImpDate().compareTo(obj.getImpDate());
+		int result = obj.getImpDate().compareTo(this.getImpDate());
 		return result;
 	}
 	public String getFrequency() {
