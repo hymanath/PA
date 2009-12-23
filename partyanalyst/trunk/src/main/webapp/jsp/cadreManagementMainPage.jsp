@@ -1437,7 +1437,7 @@
 		var repeatFreqElmt = document.getElementById("repeatFreqSelect");
 		repeatFreqVal =  repeatFreqElmt.options[repeatFreqElmt.selectedIndex].value;
 
-		if(repeatFreqVal = "Does Not Repeat")
+		if(repeatFreqVal == "Does Not Repeat")
 			ImpendDateVal = ImpstartDateVal;
 
 		var jsObj={
