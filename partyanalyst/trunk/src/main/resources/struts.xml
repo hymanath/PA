@@ -317,5 +317,9 @@
 				<param name="root">importantDatesVO</param>				
 			</result> 			
 		</action>		
+		
+		<action name="constituencyManagementAction" class="constituencyManagementAction">
+			<result name="success">/jsp/constituencyManagementMainPage.jsp</result>		
+		</action>
 	</package>
 </struts>
