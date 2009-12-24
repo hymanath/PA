@@ -533,9 +533,9 @@ buildOuterTabView();
 buildTabView();
 var regionLevelCadres = new Array();
 		
-		<c:forEach var="pd1" items="${constituencyManagementVO.problemManagementVO.problemDetails}" >	
-				console.log('${pd1.definition}');							
-		</c:forEach>
+		/*<c:forEach var="pd1" items="${constituencyManagementVO.problemManagementVO.problemDetails}" >	
+											
+		</c:forEach>*/
 		
 //buildTable();
 </script>
