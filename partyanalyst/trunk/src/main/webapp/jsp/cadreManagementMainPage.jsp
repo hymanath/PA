@@ -451,8 +451,7 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText);
-							
+								myResults = YAHOO.lang.JSON.parse(o.responseText);								
 								if(jsObj.task == "getUserLocation")
 									fillDataOptions(myResults);	
 								else if(jsObj.task == "fillSelectElements")

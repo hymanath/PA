@@ -22,6 +22,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
+
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.service.IUserCalendarService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -34,7 +35,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	 */
 	private static final long serialVersionUID = 1L;
 	private String task = null;
-	JSONObject jObj = null;
+	JSONObject jObj = null;	
 	private UserEventVO event;
 	private ImportantDatesVO importantDatesVO;
 	private List<EventActionPlanVO> actionPlanList = new ArrayList<EventActionPlanVO>();
@@ -69,6 +70,13 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		this.event = event;
 	}
 	
+	public ImportantDatesVO getImportantDatesVO() {
+		return importantDatesVO;
+	}
+
+	public void setImportantDatesVO(ImportantDatesVO importantDatesVO) {
+		this.importantDatesVO = importantDatesVO;
+	}
 	public IUserCalendarService getUserCalendarService() {
 		return userCalendarService;
 	}
@@ -76,7 +84,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	public void setUserCalendarService(IUserCalendarService userCalendarService) {
 		this.userCalendarService = userCalendarService;
 	}
-
+	
 	
 	public String execute() throws Exception
 	{
@@ -160,11 +168,21 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			importantDatesVO.setEventId(user.getRegistrationID());
 			importantDatesVO.setTitle(jObj.getString("eventName"));
 			importantDatesVO.setImportance(jObj.getString("desc"));
-			importantDatesVO.setFrequency(jObj.getString("frequency"));			
-			importantDatesVO.setStartDate(sdf.parse(jObj.getString("startDate")));
-			importantDatesVO.setEndDate(sdf.parse(jObj.getString("endDate")));				
+			importantDatesVO.setFrequency(jObj.getString("frequency"));		
+			
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			StringBuilder sDate = new StringBuilder();
+			StringBuilder eDate = new StringBuilder();
+			sDate.append(startDate).append(IConstants.SPACE).append("00").append(":").append("00").append(":00");
+			eDate.append(endDate).append(IConstants.SPACE).append("00").append(":").append("00").append(":00");
+			
+			importantDatesVO.setStartDate(sdf.parse(sDate.toString()));
+			importantDatesVO.setEndDate(sdf.parse(eDate.toString()));				
 		
 			importantDatesVO = userCalendarService.saveUserImpDate(importantDatesVO);
+			System.out.println("Important dates = "+importantDatesVO);
+			
 			log.debug("inside if....createImpDateEvent::"+importantDatesVO.getImportantDateId());
 			result = "success2";
 		}
