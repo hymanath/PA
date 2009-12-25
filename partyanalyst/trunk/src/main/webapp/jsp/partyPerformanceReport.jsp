@@ -560,16 +560,36 @@ function buildPartyPositionDataTable(info,rank)
     	<jsp:useBean id="status" type="javax.servlet.jsp.jstl.core.LoopTagStatus" />
 		<c:choose>
 			<c:when test="<%=status.getIndex() == 1%>">
+			       	<c:if test="${pd.value > 0}">
 					<display:column title="2nd Position" ><a href="javascript:{}" onclick="getDetails('2')"> <c:out value="${pd.value}" /> </a> </display:column>
+					</c:if>
+					<c:if test="${pd.value == 0}">
+					<display:column title="2nd Position" ><c:out value="${pd.value}" /></display:column>
+                    </c:if>
 			</c:when>
 			<c:when test="<%=status.getIndex() == 2%>">
+			        <c:if test="${pd.value > 0}">
 					<display:column title="3rd Position" ><a href="javascript:{}" onclick="getDetails('3')"> <c:out value="${pd.value}" /> </a> </display:column> 
+					</c:if>
+					<c:if test="${pd.value == 0}">
+					<display:column title="3rd Position" ><c:out value="${pd.value}" /></display:column>
+					</c:if>
 			</c:when>
 			<c:when test="<%=status.getIndex() == 3%>">
+			        <c:if test="${pd.value > 0}">
 					<display:column title="4th Position" ><a href="javascript:{}" onclick="getDetails('4')"> <c:out value="${pd.value}" /></a>  </display:column>
+					</c:if>
+					<c:if test="${pd.value == 0}">
+					<display:column title="4th Position" ><c:out value="${pd.value}" /></display:column>
+					</c:if>
 			</c:when>
 			<c:when test="<%=status.getIndex() == 4%>">
+			        <c:if test="${pd.value > 0}">
 					<display:column title="Nth Position" ><a href="javascript:{}" onclick="getDetails('-1')"> <c:out value="${pd.value}" /></a></display:column>
+					</c:if>
+					<c:if test="${pd.value == 0}">
+					<display:column title="Nth Position" ><c:out value="${pd.value}" /></display:column>
+					</c:if>
 			</c:when>
 		</c:choose>	          
 	</c:forEach>		
