@@ -99,16 +99,17 @@
 			font-size:17px;
 			font-weight:bold;
 			text-decoration:underline;
+			margin-bottom:20px;
 		}
 		#constituencyMgmtMainDiv
 		{
-			background-color:#cacaca;
+			/*background-color:#cacaca;*/
 		}
 			
 		#constituencyMgmtBodyDiv
 		{
 			height:900px;
-			background-color:#cacaca;
+			/*background-color:#cacaca;*/
 		}
 		#userGroupsHeadDiv
 		{
@@ -185,11 +186,17 @@
 		{
 			padding:5px;
 		}
-		#newProblemTabContentDiv_footer
+		#newProblemTabContentDiv_footer,#newProblemTabContentDiv_head
 		{
 			margin-right:20px;
 			text-align:right;
+			padding:5px;
 		}
+		#problemMgmtMainDiv
+		{
+			height:700px;
+		}
+		
 	</style>
 
 	<script type="text/javascript">
@@ -234,13 +241,18 @@
 	function buildOuterTabView()
 	{
 		outerTab = new YAHOO.widget.TabView();
+		
+		outerTab.addTab( new YAHOO.widget.Tab({ 
+	    label: 'Constituency Management', 
+	    content: 'Constituency Management', 
+	    active: true 
+		})); 
 
 		outerTab.addTab( new YAHOO.widget.Tab({ 
 	    label: 'Problem Management', 
-	    content: '<div id="problemMgmtTabContentDiv"></div>', 
-	    active: true 
+	    content: '<div id="problemMgmtTabContentDiv"></div>'	   
 		})); 
-	 
+		
 		outerTab.addTab( new YAHOO.widget.Tab({ 
 			label: 'User Groups', 
 			content: '<div id="userGroupsTabContent">User Groups Content</div>' 
@@ -257,7 +269,7 @@
 			content: '<div id="distEPapersTabContent">District E Papers Content' 
 		})); 
 
-		outerTab.appendTo('constituencyMgmtTabDiv'); 
+		outerTab.appendTo('problemMgmtMainDiv'); 
 	}
 	function buildProblemMgmtTabView()
 	{	
@@ -270,20 +282,25 @@
 		newTabContent+='</div>';
 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-	    label: 'New', 
+	    label: 'Classified Issues', 
 	    content: newTabContent, 
 	    active: true 
 		})); 
 	 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-			label: 'Categorized Issues', 
+			label: 'Assigned Issues', 
 			content: '<div id="categorizedTabContentDiv"></div>' 
 		 
 		})); 
 		 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-			label: 'Assigned Issues', 
+			label: 'Progress Issues', 
 			content: '<div id="assignedIssuesContentDiv"></div>' 
+		})); 
+
+		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
+			label: 'Pending Issues', 
+			content: '<div id="pendingIssuesContentDiv"></div>' 
 		})); 
 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
@@ -299,6 +316,14 @@
 	                                            label: "Categorize",  
 	                                            container: "newProblemTabContentDiv_footer"  
 	                                        }); 
+
+			var oButton = new YAHOO.widget.Button({ 
+												id: "reportNewProblem",  
+												type: "link",  
+												label: "Add New Problem",
+												href:"problemManagementAction.action",
+												container: "newProblemTabContentDiv_head"  
+												}); 
 	}
 	
 	YAHOO.example.Data = { 
@@ -462,8 +487,7 @@
 		<div id="statisticalDataHeadDiv"> Statistical Data </div>
 		<div id="statisticalDataBodyDiv"> Statistical Data Content</div>
 	</div>
-	<div id="problemMgmtMainDiv">
-		<div id="constituencyMgmtTabDiv"></div>
+	<div id="problemMgmtMainDiv">		
 	</div>
 </div>
 
