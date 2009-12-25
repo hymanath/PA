@@ -115,43 +115,6 @@ public class UserCalendarService implements IUserCalendarService {
 		log.debug("UserCalenderService.getUserImpDates() userImpDates.size()"+userImpDates.size());
 		if(userImpDates != null){
 			for(UserImpDate userImpDate : userImpDates){				
-				/*ImportantDatesVO importantDatesVO = new ImportantDatesVO();
-				importantDatesVO.setEventType("User");
-				importantDatesVO.setImportantDateId(userImpDate.getUserImpDateID());
-				importantDatesVO.setEventId(userImpDate.getUser().getRegistrationId());
-				importantDatesVO.setStartDate(userImpDate.getEffectiveDate());
-				
-				
-				Date startDate = userImpDate.getEffectiveDate();
-				int month = startDate.getMonth();
-				int day = startDate.getDate();
-				Calendar calendar = Calendar.getInstance();
-				int year =calendar.get(Calendar.YEAR);
-				log.debug("User Imp Dates Recurssive Type::"+ userImpDate.getRecFreqType());
-				log.debug("User Imp Dates Month::Day::Year---" + month + "::" + day +" ::" + year);
-				if(("MONTHLY".equalsIgnoreCase(userImpDate.getRecFreqType())
-						||"YEARLY".equalsIgnoreCase(userImpDate.getRecFreqType())) &&
-						calendar.get(Calendar.MONTH)==12 && month <=2){
-					++year;
-				}
-				if("MONTHLY".equalsIgnoreCase(userImpDate.getRecFreqType())){
-					if(day<calendar.get(Calendar.DATE)){
-						++month;
-					}
-				}
-				if("WEEKLY".equalsIgnoreCase(userImpDate.getRecFreqType())){
-					if(day<calendar.get(Calendar.DATE)){
-						++month;
-					}
-				}
-				calendar.set(year,month,day);
-				importantDatesVO.setImpDate(calendar.getTime());
-				
-				
-				importantDatesVO.setEndDate(userImpDate.getTillDate());
-				importantDatesVO.setTitle(userImpDate.getTitle());
-				importantDatesVO.setImportance(userImpDate.getDescription());*/
-				
 				List<ImportantDatesVO> userImpDateVOs = convertUserImpDateModel2DTO(userImpDate);
 				log.debug("User Imp Dates Recurssive Type size::"+ userImpDateVOs.size());
 				for(ImportantDatesVO userImpDateVO : userImpDateVOs){
@@ -166,14 +129,7 @@ public class UserCalendarService implements IUserCalendarService {
 	}
 
 	private ImportantDatesVO createImportantDatesVOForUser(Calendar calendar,UserImpDate impDate){
-		/*private Long userImpDateID;
-		private Registration user;
-		private String title;
-		private String description;
-		private Date effectiveDate;
-		private Date tillDate;
-		private String recFreqType;*/
-		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
+		//SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
 		ImportantDatesVO importantDatesVO = new ImportantDatesVO();
 		importantDatesVO.setEventType("User");
 		importantDatesVO.setImportantDateId(impDate.getUserImpDateID());
@@ -570,7 +526,7 @@ private UserEventVO saveUserPlannedEvents;
 						userImpDate.setUser(user);
 						userImpDate.setTitle(UserCalendarService.this.saveImportantDatesVO.getTitle());
 						userImpDate.setDescription(UserCalendarService.this.saveImportantDatesVO.getImportance());
-						SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+						//SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 						log.debug("SDate::::::::"+UserCalendarService.this.saveImportantDatesVO.getStartDate());
 						userImpDate.setEffectiveDate(UserCalendarService.this.saveImportantDatesVO.getStartDate());
 						userImpDate.setTillDate(UserCalendarService.this.saveImportantDatesVO.getEndDate());
@@ -586,7 +542,6 @@ private UserEventVO saveUserPlannedEvents;
 						txStatus.setRollbackOnly();
 
 						UserCalendarService.this.saveImportantDatesVO.setExceptionEncountered(ex);
-						log.error("Narender error:;"+ex);
 					}
 					return userImpDate;
 				}
@@ -595,6 +550,44 @@ private UserEventVO saveUserPlannedEvents;
 		});
 		saveImportantDatesVO = null;
 		importantDatesVO.setImportantDateId(userImpDate.getUserImpDateID());
+		return importantDatesVO;
+	}
+	
+
+	public UserEventVO getUserPlannedEvent(Long eventID){
+		if(log.isDebugEnabled())
+			log.debug("UserCalendar.getUserPlannedEvents() start");
+		UserEvents userEvent = userEventsDAO.get(eventID);
+		UserEventVO userEventVO = convertUserEvents2DTO(userEvent);
+		return userEventVO;
+	}
+	
+	public ImportantDatesVO getUserImpDate(Long impDateID, String dateType) {
+		log.debug("UserCalenderService.getUserImpDate() Start...");
+		ImportantDatesVO importantDatesVO = new ImportantDatesVO();
+		
+		if("Party".equalsIgnoreCase(dateType)){
+			PartyImportantDates partyImportantDates = partyImportantDatesDAO.get(impDateID);
+			
+			if(partyImportantDates != null){
+			
+				List<ImportantDatesVO> importantDatesVOs =convertPartyImpDateModel2DTO(partyImportantDates);
+				if(importantDatesVOs.size()>1)
+					Collections.sort(importantDatesVOs);
+				importantDatesVO = importantDatesVOs.get(0);
+			}
+		} else {
+			UserImpDate userImpDate = userImpDatesDAO.get(impDateID);
+			log.debug("UserCalenderService.getUserImpDate() userImpDates.size()"+userImpDate);
+			if(userImpDate != null){
+				List<ImportantDatesVO> userImpDateVOs = convertUserImpDateModel2DTO(userImpDate);
+				log.debug("User Imp Dates Recurssive Type size::"+ userImpDateVOs.size());
+				if(userImpDateVOs.size()>1)
+					Collections.sort(userImpDateVOs);
+				importantDatesVO = userImpDateVOs.get(0);
+			}
+		}
+		
 		return importantDatesVO;
 	}
 }
