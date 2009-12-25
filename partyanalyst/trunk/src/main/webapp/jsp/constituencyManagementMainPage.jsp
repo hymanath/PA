@@ -33,6 +33,11 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
 
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css"> 
+	
+	
+	
+
 	
 	<!-- Dependencies --> 
 	<!-- Sam Skin CSS for TabView --> 
@@ -163,12 +168,44 @@
 		{
 			background-color:blue;
 		}
+
+		#statisticalDataMainDiv
+		{
+			background-color:white;
+			height:100%;
+			width:100%;
+			text-align:left;
+		}
+		#statisticalDataHeadDiv
+		{
+			padding:5px;
+			background-color:#EFEFEF;
+		}
+		#statisticalDataBodyDiv
+		{
+			padding:5px;
+		}
+		#newProblemTabContentDiv_footer
+		{
+			margin-right:20px;
+			text-align:right;
+		}
 	</style>
 
 	<script type="text/javascript">
+
+	var outerTab,problemMgmtTabs;
+	var problemsMainObj={
+							newProblemsArr:[],
+							categorizedProblemsArr:[],
+							assignedProblemsArr:[],
+							fixedProblemsArr:[]
+						};
+
+
 	function buildConstituencyLayout()
-	{
-			var layoutEl = new YAHOO.widget.Layout('constituencyMgmtBodyDiv', { 
+	{	
+		var layoutEl = new YAHOO.widget.Layout('constituencyMgmtBodyDiv', { 
 			units: [	 
 					{ 
 						position: 'center',
@@ -177,10 +214,7 @@
 						gutter: '5px',
 						collapse: false,
 						scroll: false,						
-						animate: false,
-						
-						
-
+						animate: false
 					},
 					{
 						position: 'bottom',
@@ -199,90 +233,109 @@
 	
 	function buildOuterTabView()
 	{
-		var outerTab = new YAHOO.widget.TabView("constituencyMgmtTabDiv");
+		outerTab = new YAHOO.widget.TabView();
+
+		outerTab.addTab( new YAHOO.widget.Tab({ 
+	    label: 'Problem Management', 
+	    content: '<div id="problemMgmtTabContentDiv"></div>', 
+	    active: true 
+		})); 
+	 
+		outerTab.addTab( new YAHOO.widget.Tab({ 
+			label: 'User Groups', 
+			content: '<div id="userGroupsTabContent">User Groups Content</div>' 
+		 
+		})); 
+		 
+		outerTab.addTab( new YAHOO.widget.Tab({ 
+			label: 'Recommendation Letters', 
+			content: '<div id="recomLettTabContent">Recommendation Letters Content<div>' 
+		})); 
+
+		outerTab.addTab( new YAHOO.widget.Tab({ 
+			label: 'District E Papers', 
+			content: '<div id="distEPapersTabContent">District E Papers Content' 
+		})); 
+
+		outerTab.appendTo('constituencyMgmtTabDiv'); 
 	}
-	function buildTabView()
+	function buildProblemMgmtTabView()
 	{	
-		var myTabs = new YAHOO.widget.TabView("problemMgmtTabDiv"); 
-	        
-	}
+		problemMgmtTabs = new YAHOO.widget.TabView(); 
 		
+		var newTabContent='<div id="newProblemTabContentDiv">';
+		newTabContent+='<div id="newProblemTabContentDiv_head"></div>';
+		newTabContent+='<div id="newProblemTabContentDiv_body"></div>';
+		newTabContent+='<div id="newProblemTabContentDiv_footer"></div>';
+		newTabContent+='</div>';
+
+		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
+	    label: 'New', 
+	    content: newTabContent, 
+	    active: true 
+		})); 
+	 
+		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
+			label: 'Categorized Issues', 
+			content: '<div id="categorizedTabContentDiv"></div>' 
+		 
+		})); 
+		 
+		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
+			label: 'Assigned Issues', 
+			content: '<div id="assignedIssuesContentDiv"></div>' 
+		})); 
+
+		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
+			label: 'Fixed Issues', 
+			content: '<div id="fixedIssuesContentDiv"></div>' 
+		})); 
+
+		problemMgmtTabs.appendTo('problemMgmtTabContentDiv'); 
+	      
+			var oButton = new YAHOO.widget.Button({ 
+	                                            id: "mybuttonid",  
+	                                            type: "button",  
+	                                            label: "Categorize",  
+	                                            container: "newProblemTabContentDiv_footer"  
+	                                        }); 
+	}
+	
 	YAHOO.example.Data = { 
 	    
 	        problems: [ 
-	        {SNo:"1", Title:"Impurified Water Supply", Description: "Polluted water is being supplied since two weeks",IdentifiedDate:new Date(2009, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}, 
-			{SNo:"2", Title:"No Bus Service", Description: "APS RTC Suddenly cancelled their Bus service to NagaVaram Village", IdentifiedDate:new Date("January 3, 2009"),
+	        {SNo:"<input type='checkbox' id='check_1'></input>", Title:"Impurified Water Supply", Description: "Polluted water is being supplied since two weeks",IdentifiedDate:new Date(2009, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}, 
+			{SNo:"<input type='checkbox' id='check_1'></input>", Title:"No Bus Service", Description: "APS RTC Suddenly cancelled their Bus service to NagaVaram Village", IdentifiedDate:new Date("January 3, 2009"),
 			Location:"NagaVaram",Source:"Victim",Status:"Assigned"}, 
-	        {SNo:"3", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(1978, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
-	        {SNo:"4", Title:"AarogyaSri",Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate:new Date("March 11,2009") , Location:"Eluru",Source:"User",Status:"Categorized"}, 
-			{SNo:"5", Title:"Delay in payment of Exgratia", Description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party ",IdentifiedDate:new Date(1980, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}, 
-			{SNo:"6", Title:"No Bus Service", Description: "APS RTC Suddenly cancelled their Bus service to NagaVaram Village", IdentifiedDate:new Date("January 13, 2009"),
-			Location:"NagaVaram",Source:"Victim",Status:"Assigned"}, 
-	        {SNo:"7", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(2009, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
-	        {SNo:"8", Title:"AarogyaSri",Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate:new Date("March 11,2009") , Location:"Eluru",Source:"User",Status:"Categorized"},
-			{SNo:"9", Title:"Polluted Water Supply", Description: "Polluted water is being supplied since two weeks",IdentifiedDate:new Date(2009, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}, 
-			{SNo:"10", Title:"No Bus Service", Description: "APS RTC Suddenly cancelled their Bus service to NagaVaram Village", IdentifiedDate:new Date("January 3, 2009"),
-			Location:"NagaVaram",Source:"Victim",Status:"Assigned"}, 
-	        {SNo:"11", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(2009, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
-	        {SNo:"12", Title:"AarogyaSri",Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate:new Date("March 11,2009") , Location:"Eluru",Source:"User",Status:"Categorized"}, 
-			{SNo:"13", Title:"Delay in payment of Exgratia", Description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party ",IdentifiedDate:new Date(2009, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}, 
-			{SNo:"14", Title:"No Bus Service", Description: "APS RTC Suddenly cancelled their Bus service to NagaVaram Village", IdentifiedDate:new Date("January 3, 2009"),
-			Location:"NagaVaram",Source:"Victim",Status:"Assigned"}, 
-	        {SNo:"15", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(2009, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
-	        {SNo:"16", Title:"AarogyaSri",Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate:new Date("March 11,2009") , Location:"Eluru",Source:"User",Status:"Categorized"},
-			{SNo:"17", Title:"Polluted Water Supply", Description: "Polluted water is being supplied since two weeks",IdentifiedDate:new Date(2009, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}, 
-			{SNo:"18", Title:"No Bus Service", Description: "APS RTC Suddenly cancelled their Bus service to NagaVaram Village", IdentifiedDate:new Date("January 3, 2009"),
-			Location:"NagaVaram",Source:"Victim",Status:"Assigned"}, 
-	        {SNo:"19", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(2009, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
-	        {SNo:"20", Title:"AarogyaSri",Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate:new Date("March 11,2009") , Location:"Eluru",Source:"User",Status:"Categorized"}, 
-			{SNo:"21", Title:"Delay in payment of Exgratia", Description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party ",IdentifiedDate:new Date(2009, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}, 
-			{SNo:"22", Title:"No Bus Service", Description: "APS RTC Suddenly cancelled their Bus service to NagaVaram Village", IdentifiedDate:new Date("January 3, 2009"),
-			Location:"NagaVaram",Source:"Victim",Status:"Assigned"}, 
-	        {SNo:"23", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(2009, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
-	        {SNo:"24", Title:"AarogyaSri",Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate:new Date("March 11,2009") , Location:"Eluru",Source:"User",Status:"Categorized"},
-			{SNo:"25", Title:"Polluted Water Supply", Description: "Polluted water is being supplied since two weeks",IdentifiedDate:new Date(2009, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}, 
-			{SNo:"26", Title:"No Bus Service", Description: "APS RTC Suddenly cancelled their Bus service to NagaVaram Village", IdentifiedDate:new Date("January 3, 2009"),
-			Location:"NagaVaram",Source:"Victim",Status:"Assigned"}, 
-	        {SNo:"27", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(2009, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
-	        {SNo:"28", Title:"AarogyaSri",Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate:new Date("March 11,2009") , Location:"Eluru",Source:"User",Status:"Categorized"}, 
-			{SNo:"29", Title:"Delay in payment of Exgratia", Description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party ",IdentifiedDate:new Date(2009, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}, 
-			{SNo:"30", Title:"No Bus Service", Description: "APS RTC Suddenly cancelled their Bus service to NagaVaram Village", IdentifiedDate:new Date("January 3, 2009"),
-			Location:"NagaVaram",Source:"Victim",Status:"Assigned"}, 
-	        {SNo:"31", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(2009, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
-	        {SNo:"32", Title:"AarogyaSri",Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate:new Date("March 11,2009") , Location:"Eluru",Source:"User",Status:"Categorized"},
+	        {SNo:"<input type='checkbox' id='check_1'></input>", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(1978, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
+	        {SNo:"<input type='checkbox' id='check_1'></input>", Title:"AarogyaSri",Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate:new Date("March 11,2009") , Location:"Eluru",Source:"User",Status:"Categorized"}, 
+			{SNo:"<input type='checkbox' id='check_1'></input>", Title:"Delay in payment of Exgratia", Description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party ",IdentifiedDate:new Date(1980, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}		
 	    ] 
 	         
 	    
 	} 
-	/*  Data Table for New Tab*/
-	YAHOO.util.Event.addListener(window, "load", function() { 
-	 YAHOO.example.TabView = function() { 
-	 
-			var myColumnDefs = [ 
-	            {key:"SNo", formatter:"number", sortable:true}, 
+
+	
+	function buildNewProblemsDataTable()
+	{
+		
+		var myColumnDefs = [ 
+	            {key:"SNo"}, 
 	            {key:"Title", sortable:true}, 
 	            {key:"Description"}, 
 				{key:"IdentifiedDate", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
 				{key:"Location", sortable:true},	
 				{key:"Source"},
 				{key:"Scope", editor: new YAHOO.widget.DropdownCellEditor({multiple:true,dropdownOptions:["Village","Mandal","District","State","Country"]})},
-				{key:"Problem Type", editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:["Categorize"]}),}
+				{key:"Problem Type", editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:["Categorize"]})}
 	        ]; 
 	 
 	        var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.problems); 
 	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        myDataSource.responseSchema = { 
-	            fields: [{key:"SNo",parser:"number"},"Title","Description","IdentifiedDate","Location","Source", "Status"] 
+	            fields: ["SNo","Title","Description","IdentifiedDate","Location","Source", "Status"] 
 	        }; 
-			/*
 			
-			var pag = new YAHOO.widget.Paginator({ 
-		    rowsPerPage  : 5, 
-		    totalRecords : myDataSource.length, 
-			containers   : [problemMgmtBodyDiv] // or idStr or elem or [ elem, elem ] 
-			}); 
-			pag.render(); 
-	         */
 			var myConfigs = { 
 		    paginator : new YAHOO.widget.Paginator({ 
 	        rowsPerPage    : 10 
@@ -290,11 +343,10 @@
 			}; 
 
 			var myDataTable =  
-	            new YAHOO.widget.DataTable("dtcontainer", myColumnDefs, myDataSource,myConfigs); 
+	            new YAHOO.widget.DataTable("newProblemTabContentDiv_body", myColumnDefs, myDataSource,myConfigs); 
 	                 
-	        var myTabView = new YAHOO.widget.TabView("constituencyMgmtTabDiv"); 
-	        myTabView.getTab(0).addListener("click", function() {myDataTable.onShow()});         
-			
+	        
+			problemMgmtTabs.getTab(0).addListener("click", function() {myDataTable.onShow()});         
 						
 			var highlightEditableCell = function(oArgs) {   
              var elCell = oArgs.target;   
@@ -311,28 +363,31 @@
 			
 	        return { 
 	            oDS: myDataSource, 
-	            oDT: myDataTable, 
-	            oTV: myTabView 
+	            oDT: myDataTable 
+	           
 	      }; 
-	    }(); 
-	}); 
-
-	/*  Data Table for Classfication Tab*/
-	YAHOO.util.Event.addListener(window, "load", function() { 
-	 YAHOO.example.TabView = function() { 
-	 
+	    
+	}
+	
+	
+	function buildcategorizedDataTable()
+	{
 			var myColumnDefs = [ 
-	            {key:"SNo",formatter:"number", sortable:true}, 
+	            {key:"SNo"}, 
 	            {key:"Title", sortable:true}, 
-	            {key:"Scope"},
-				{key:"Concerned Department",},
-				{key:"Assign"}
+	            {key:"Description"}, 
+				{key:"IdentifiedDate", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+				{key:"Location", sortable:true},	
+				{key:"Source"},
+				{key:"Scope", editor: new YAHOO.widget.DropdownCellEditor({multiple:true,dropdownOptions:["Village","Mandal","District","State","Country"]})},
+				{key:"Problem Type", editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:["Assign"]})}
 	        ]; 
 	 
+	   	 
 	        var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.problems); 
 	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        myDataSource.responseSchema = { 
-	            fields: [{key:"SNo",parser:"number"},"Title","Scope","Concerned Department","Assign"] 
+	            fields: ["SNo","Title","Description","IdentifiedDate","Location","Source", "Status"] 
 	        }; 
 			
 			var myConfigs = { 
@@ -342,26 +397,22 @@
 			}; 
 
 			var myDataTable =  
-	            new YAHOO.widget.DataTable("dtcontainer1", myColumnDefs, myDataSource,myConfigs); 
+	            new YAHOO.widget.DataTable("categorizedTabContentDiv", myColumnDefs, myDataSource,myConfigs); 
 	                 
-	        var myTabView = new YAHOO.widget.TabView("problemMgmtBodyDiv"); 
-	        myTabView.getTab(0).addListener("click", function() {myDataTable.onShow()});         
+	       
+	        problemMgmtTabs.getTab(1).addListener("click", function() {myDataTable.onShow()});         
 	 
 	        return { 
 	            oDS: myDataSource, 
-	            oDT: myDataTable, 
-	            oTV: myTabView 
+	            oDT: myDataTable 	            
 	      }; 
-	    }(); 
-	}); 
+	   
+	}
 
-	/*  Data Table for Assign Tab*/
-	
-	YAHOO.util.Event.addListener(window, "load", function() { 
-	 YAHOO.example.TabView = function() { 
-	 
+	function buildAssignedIssuesdataTable()
+	{
 			var myColumnDefs = [ 
-	            {key:"SNo", sortable:true}, 
+	            {key:"SNo"}, 
 	            {key:"Title", sortable:true}, 
 	            {key:"Concerned Department",sortable:true},
 				{key:"Assigned Official"},	
@@ -383,63 +434,17 @@
 			}; 
 
 			var myDataTable =  
-	            new YAHOO.widget.DataTable("dtcontainer2", myColumnDefs, myDataSource,myConfigs); 
+	            new YAHOO.widget.DataTable("assignedIssuesContentDiv", myColumnDefs, myDataSource,myConfigs); 
 	                 
-	        var myTabView = new YAHOO.widget.TabView("problemMgmtBodyDiv"); 
-	        myTabView.getTab(0).addListener("click", function() {myDataTable.onShow()});         
+	       
+	       problemMgmtTabs.getTab(2).addListener("click", function() {myDataTable.onShow()});         
 	 
 	        return { 
 	            oDS: myDataSource, 
-	            oDT: myDataTable, 
-	            oTV: myTabView 
+	            oDT: myDataTable	           
 	      }; 
-	    }(); 
-	});
-	/*  Data Table for Fix Tab*/
-	YAHOO.util.Event.addListener(window, "load", function() { 
-	 YAHOO.example.TabView = function() { 
-	 
-			var myColumnDefs = [ 
-	            {key:"SNo", sortable:true}, 
-	            {key:"Title", sortable:true}, 
-	            {key:"Concerned Department",sortable:true},
-				{key:"Assigned Official"},	
-				//{key:"Contact Number"},
-				{key:"Assigned Date"},
-				{key:"Time Taken "}
-	        ]; 
-	 
-	        var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.problems); 
-	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-	        myDataSource.responseSchema = { 
-	            fields: ["SNo","Title","Concerned Department","Assigned Official","Assigned Date","Time Taken"] 
-	        }; 
-			
-			var myConfigs = { 
-		    paginator : new YAHOO.widget.Paginator({ 
-	        rowsPerPage    : 5 
-		    }) 
-			}; 
-
-			var myDataTable =  
-	            new YAHOO.widget.DataTable("dtcontainer3", myColumnDefs, myDataSource,myConfigs); 
-	                 
-	        var myTabView = new YAHOO.widget.TabView("problemMgmtTabDiv"); 
-	        myTabView.getTab(0).addListener("click", function() {myDataTable.onShow()});         
-	 
-	        return { 
-	            oDS: myDataSource, 
-	            oDT: myDataTable, 
-	            oTV: myTabView 
-	      }; 
-	    }(); 
-	});
-
-
-/* 
-{scrollable:true,width:"100%"},
-*/
-
+	   
+	}
 
 </script>
 
@@ -448,96 +453,46 @@
 <body>
 <div id="constituencyMgmtHeaderDiv">
 			Constituency Management
-</div><br>
+</div>
 
 <div id="constituencyMgmtMainDiv">	
 	
-	<div id="constituencyMgmtBodyDiv" class="yui-skin-sam">
-		
-
-	
+	<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"></div>
 	<div id="statisticalDataMainDiv">
-	<div id="statisticalDataHeadDiv"> Statistical data</div>
+		<div id="statisticalDataHeadDiv"> Statistical Data </div>
+		<div id="statisticalDataBodyDiv"> Statistical Data Content</div>
 	</div>
-
+	<div id="problemMgmtMainDiv">
+		<div id="constituencyMgmtTabDiv"></div>
 	</div>
 </div>
 
-<!--
-<div id ="userGroupsMainDiv">
-	<div id="userGroupsHeadDiv"><a href="javascript:{}" id="sendSMSAnc" onclick="javascript:{}">User Groups</a></div>
-	<div id="recommLettersHeadDiv"><a href="javascript:{}" id="sendSMSAnc" onclick="javascript:{}">Recommendation Letters</a></div>
-	<div id="districtNewsLinks"><a href="javascript:{}" id="sendSMSAnc" onclick="javascript:{}">District E-Papers</a></div>
-</div>-->
-
-
-<div id="problemMgmtMainDiv">
-			<div id="constituencyMgmtTabDiv" class="yui-navset">
-				<ul class="yui-nav"> 
-				<li class="selected"><a href="#tab1"><em>Problem Management</em></a></li> 
-				<li><a href="#tab2"><em>User Groups</em></a></li> 
-				<li><a href="#tab3"><em>Recommendation Letters</em></a></li>
-				<li><a href="#tab3"><em>District E-Papers</em></a></li>
-		 		</ul>             
-				<div class="yui-content"> 
-					
-					<div id="problemMgmtTabDiv">
-						<ul class="yui-nav"> 
-						<li class="selected"><a href="#tab1"><em>New</em></a></li> 
-						<li><a href="#tab2"><em>Categorized Issues</em></a></li> 
-						<li><a href="#tab3"><em>Assigned Issues</em></a></li>
-						<li><a href="#tab3"><em>Fixed Issues</em></a></li>
-						</ul>             
-					<div class="yui-content"> 
-						<div id="dtcontainer"></div> 
-						<div id="dtcontainer1"></div> 
-						<div id="dtcontainer2"></div>
-						<div id="dtcontainer3"></div>
-					</div>
-				</div> 
-				
-				<div><P>Content for User Groups</P><P></div> 
-				<div><P>Content for Recommendation Letters</P></div>
-				<div><P>Content for E-Papers</P></div>
-		</div>
-	<!--
-	<div id="problemMgmtHeadDiv">Problem Management</div><BR>
-	<div id="problemMgmtBodyDiv" class="yui-navset">
-			<ul class="yui-nav"> 
-				<li class="selected"><a href="#tab1"><em>New</em></a></li> 
-				<li><a href="#tab2"><em>Categorized Issues</em></a></li> 
-				<li><a href="#tab3"><em>Assigned Issues</em></a></li>
-				<li><a href="#tab3"><em>Fixed Issues</em></a></li>
-		 
-			</ul>             
-			<div class="yui-content"> 
-				<div id="dtcontainer">
-				<input type="button" label="Categorize"/>
-				</div> 
-				<div id="dtcontainer1"></div> 
-				<div id="dtcontainer2"></div>
-				<div id="dtcontainer3"></div>
-			</div>
-	</div>--> 
-</div>
-<!--
-<div id="statisticalDataMainDiv">
-<div id="statisticalDataHeadDiv">Statistical Data</div>
-</div>
--->
 
 
 <script type="text/javascript">
+
 buildConstituencyLayout();
 buildOuterTabView();
-buildTabView();
-var regionLevelCadres = new Array();
+buildProblemMgmtTabView();
+
+
+<c:forEach var="problem"  items="${constituencyManagementVO.problemManagementVO.problemDetails}" >	
+	var newProblemObj=	{
+							SNo:'<input type="text"></input>',
+							title:'${problem.definition}',
+							description:'${problem.description}',
+							identifiedDate:new Date('${problem.identifiedDate}'),
+							problemLocation:'${problem.location}',
+							source:'${problem.source}'
+						};
+	problemsMainObj.newProblemsArr.push(newProblemObj);											
+</c:forEach>
+
+buildNewProblemsDataTable();
+buildcategorizedDataTable();
+buildAssignedIssuesdataTable();	
 		
-		/*<c:forEach var="pd1" items="${constituencyManagementVO.problemManagementVO.problemDetails}" >	
-											
-		</c:forEach>*/
-		
-//buildTable();
+
 </script>
 </body>
 </html>
