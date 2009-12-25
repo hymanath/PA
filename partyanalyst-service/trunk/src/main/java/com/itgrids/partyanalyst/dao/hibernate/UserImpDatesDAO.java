@@ -28,8 +28,8 @@ public class UserImpDatesDAO extends GenericDaoHibernate<UserImpDate, Long> impl
 		Calendar calendar = Calendar.getInstance();
 		int currentMonth = calendar.get(Calendar.MONTH) + 1;
 
-		List<UserImpDate> result = getHibernateTemplate().find(" from UserImpDate model where model.user.registrationId=? and sysdate() <= model.tillDate and " +
-					"Month(model.effectiveDate) - " + currentMonth + " in (0,1)" , userID);
+		List<UserImpDate> result = getHibernateTemplate().find(" from UserImpDate model where model.user.registrationId=? and sysdate() <= model.tillDate",userID);// and " +
+					//"Month(model.effectiveDate) - " + currentMonth + " in (0,1)" , userID);
 		log.debug("UserImpDatesDAO.findByuser() result.size()"+result.size());
 		return  result;
 	}
