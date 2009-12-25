@@ -53,7 +53,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	private List<SelectOptionVO> states;
 	private List<SelectOptionVO> parties;
 	private List<SelectOptionVO> districts;
-	private Set<String> years;
+	private List<String> years;
 	private List<SelectOptionVO> levels;
 	private boolean hasAllianceParties;
 	private Long electionTypeId;
@@ -76,10 +76,10 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		this.levels = levels;
 	}
     
-	public Set<String> getYears() {
+	public List<String> getYears() {
 		return years;
 	}
-	public void setYears(Set<String> years) {
+	public void setYears(List<String> years) {
 		this.years = years;
 	}
 	
@@ -247,6 +247,12 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	    levels.add(new SelectOptionVO(new Long(2), "District Level"));
 		return levels;
 	}
+	
+	private List<SelectOptionVO> getReportLevelsParliament() {
+		List<SelectOptionVO>levels = new ArrayList<SelectOptionVO>();
+	    levels.add(new SelectOptionVO(new Long(1), "State Level"));
+	    return levels;
+	}
 
 	public String getJSON() throws JRException {
 		log.debug("partyPerformanceAjax action started...");
@@ -274,6 +280,12 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		
 		statesYearList.put("STATES", staticDataService.getStates(electionTypeId));
 		statesYearList.put("YEARS", staticDataService.getElectionYears(electionTypeId));
+		
+		if(electionTypeId.equals(new Long(1)))
+			statesYearList.put("LEVELS", getReportLevelsParliament());
+		else
+			statesYearList.put("LEVELS", getReportLevels());
+		
 		return Action.SUCCESS;
 	}
 	@JSON (serialize= false )   
