@@ -144,8 +144,7 @@
 	#cadreGroupsMainDiv
 	{
 		height:100%;
-		background-color:#F9FCFF;		
-		margin-bottom:5px;
+		background-color:#F9FCFF;				
 		border:2px solid #95A6B7;
 	}
 
@@ -270,6 +269,7 @@
 	.yui-layout .yui-layout-unit div.yui-layout-hd h2 
 	{
 		font-family:georgia;
+		font-size:20px;
 	}
 	
 	.yui-skin-sam .yui-calendar td.calcell.today 
@@ -306,7 +306,7 @@
 						position: 'right',
 						header:false,
 						width: 300,	
-						height:520,						
+						height:525,						
 						resize: false,
 						gutter: '5px',
 						collapse: false,
@@ -316,7 +316,7 @@
 					},
 					{ 
 						position: 'bottom', 
-						height: 520,
+						height: 525,
 						header: 'Important Dates And Event Management', 
 						body: 'cadreEventsCalMainDiv',
 						resize: false,
@@ -328,7 +328,7 @@
 						position: 'left',
 						header:false,
 						width: 270,
-						height:520,						
+						height:525,						
 						body: 'cadreSMSGroupsMainDiv',
 						resize: false, 
 						gutter: '5px',
@@ -451,7 +451,8 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText);								
+								myResults = YAHOO.lang.JSON.parse(o.responseText);
+							
 								if(jsObj.task == "getUserLocation")
 									fillDataOptions(myResults);	
 								else if(jsObj.task == "fillSelectElements")
@@ -1149,37 +1150,37 @@
 		eventStr+='<tr>';
 		eventStr+='<th>Start Time</th>';
 		eventStr+='<td>';
-		eventStr+='<select id="startTimeHrs" name="startTimeText" class="timeSelect">';
-		eventStr+='<option> Hrs </option>';
+		eventStr+='<select id="startTimeHrs" name="startTimeText" class="timeSelect">';		
 		for(var i=0;i<=23;i++)
 		{
+			if(i==9)
+				eventStr+='<option selected="selected">'+i+'</option>';
 			eventStr+='<option>'+i+'</option>';
 		}
 		eventStr+='</select>';
 
 		eventStr+='<select id="startTimeMin" name="startTimeText" class="timeSelect">';
-		eventStr+='<option> Min </option>';
 		eventStr+='<option>00</option>';		
 		eventStr+='<option>15</option>';
-		eventStr+='<option>30</option>';
+		eventStr+='<option selected="selected">30</option>';
 		eventStr+='<option>45</option>';		
 		eventStr+='</select>';
 		eventStr+='</td>';
 		eventStr+='<th>End Time</th>';
 		eventStr+='<td>';
 		eventStr+='<select id="endTimeHrs" name="endTimeText" class="timeSelect">';
-		eventStr+='<option> Hrs </option>';
 		for(var i=0;i<=23;i++)
 		{
+			if(i==17)
+				eventStr+='<option selected="selected">'+i+'</option>';
 			eventStr+='<option>'+i+'</option>';
 		}
 		eventStr+='</select>';
 		
 		eventStr+='<select id="endTimeMin" name="startTimeText" class="timeSelect">';
-		eventStr+='<option> Min </option>';
 		eventStr+='<option>00</option>';		
 		eventStr+='<option>15</option>';
-		eventStr+='<option>30</option>';
+		eventStr+='<option selected="selected">30</option>';
 		eventStr+='<option>45</option>';		
 		eventStr+='</select>';
 
