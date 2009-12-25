@@ -170,4 +170,8 @@
 	
 	<bean id="constituencyManagementAction" class="com.itgrids.partyanalyst.web.action.ConstituencyManagementAction" singleton="false">			
 	</bean>
+	
+	<bean id="problemManagementAction" class="com.itgrids.partyanalyst.web.action.ProblemManagementAction" singleton="false">
+		<property name="problemBeanVO" ref="problemBeanVO"></property>			
+	</bean>
 </beans>
