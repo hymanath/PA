@@ -321,5 +321,11 @@
 		<action name="constituencyManagementAction" class="constituencyManagementAction">
 			<result name="success">/jsp/constituencyManagementMainPage.jsp</result>		
 		</action>
+		
+		<action name="userSubscribePartyImpDates" class="createEventAction" method="subscribePartyImpDates">
+			<result type="json" name="success">
+				<param name="root">subscribe</param>				
+			</result>			
+		</action>	
 	</package>
 </struts>

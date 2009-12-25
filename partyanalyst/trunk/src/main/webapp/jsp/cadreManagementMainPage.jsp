@@ -465,7 +465,11 @@
 									addCreatedEvent(myResults,jsObj);
 								else if(jsObj.task=="createImpDateEvent")
 									addCreatedEvent(myResults,jsObj);										
-									
+								else if(jsObj.task=="subscribe"){
+									var elmt = document.getElementById('subscribePartyDates');
+									elmt.innerHTML=myResults;
+								}
+										
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
 							}  
@@ -1584,7 +1588,15 @@
 	*/	
 		
 	}
-
+	
+	function subscribe(){
+		
+		var url = "<%=request.getContextPath()%>/userSubscribePartyImpDates.action?";
+		var jsObj={
+				task:"subscribe"
+			  }		
+			callAjax(jsObj,url);
+	}
 </script>
 </head>
 <body>
@@ -1673,6 +1685,20 @@
 			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/bluebox.png"/> - Only Important Dates </span>
 			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/lightbluebox.png"/> - Only Important Events</span>
 			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/brownbox.png"/> - Dates & Events</span>
+			<span class="impInfoSpan">
+				<a href="javascript:{}" onclick="subscribe()">
+					<span id="subscribePartyDates">
+						<c:choose>
+							<c:when test="${sessionScope.USER.subscribePartyImpDate == 'ALL'}">
+								<c:out value="Unsubscribe Party Imp Dates" />
+							</c:when>
+							<c:otherwise>
+								<c:out value="Subscribe Party Imp Dates" />
+							</c:otherwise>
+						</c:choose>
+					</span>
+				</a>
+			</span>
 		</div>
 		<div id="cadreEventsDatesMain">
 			<table width="100%">

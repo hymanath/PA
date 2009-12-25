@@ -42,11 +42,13 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	private IUserCalendarService userCalendarService;
 	private HttpSession session;
 	private HttpServletRequest request;
+	private String subscribe;
 
 	private final static Logger log = Logger.getLogger(CreateEventAction.class);
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
+		this.session = request.getSession();
 	}
 
 	public void setServletContext(ServletContext arg0) {
@@ -70,6 +72,15 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		this.event = event;
 	}
 	
+	
+	public String getSubscribe() {
+		return subscribe;
+	}
+
+	public void setSubscribe(String subscribe) {
+		this.subscribe = subscribe;
+	}
+
 	public ImportantDatesVO getImportantDatesVO() {
 		return importantDatesVO;
 	}
@@ -195,5 +206,21 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		System.out.println("In Create Event Action %%%%%%%%%%%%%%");
 		
 		return result;
+	}
+	
+	public String subscribePartyImpDates() throws Exception{
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		String subscribeStatus = user.getSubscribePartyImpDate();
+		if("ALL".equalsIgnoreCase(subscribeStatus)){
+			subscribe ="Subscribe Party Imp Dates";
+			subscribeStatus = "NONE";
+		}else {
+			subscribe ="Unsubscribe Party Imp Dates";
+			subscribeStatus = "ALL";
+		}
+		userCalendarService.userSubscribePartyImpDates(user.getRegistrationID(),subscribeStatus);
+		user.setSubscribePartyImpDate(subscribeStatus);
+		session.setAttribute("USER", user);
+		return SUCCESS;
 	}
 }
