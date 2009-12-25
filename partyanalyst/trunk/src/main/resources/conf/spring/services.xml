@@ -222,4 +222,5 @@
 		<property name="userCalendarService" ref="userCalendarService" />
 		<property name="cadreManagementService" ref="cadreManagementService" />	
 	</bean>
+	<bean name="problemBeanVO" class="com.itgrids.partyanalyst.dto.ProblemBeanVO"/>
 </beans>
