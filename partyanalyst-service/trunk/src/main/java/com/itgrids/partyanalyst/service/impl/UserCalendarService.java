@@ -161,7 +161,7 @@ public class UserCalendarService implements IUserCalendarService {
 		Calendar calendar = Calendar.getInstance();
 		int currentYear =calendar.get(Calendar.YEAR);
 		int currentMonth =calendar.get(Calendar.MONTH);
-		int currentDay =calendar.get(Calendar.YEAR);
+		int currentDay =calendar.get(Calendar.DAY_OF_MONTH);
 		log.debug("Imp Recursive Date Type:::"+impDate.getRecFreqType());
 		if("YEARLY".equalsIgnoreCase(impDate.getRecFreqType())){
 			if(calendar.get(Calendar.MONTH)==11 && sMonth <=1)
