@@ -86,10 +86,10 @@ public class UserCalendarService implements IUserCalendarService {
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate){
 		this.transactionTemplate = transactionTemplate;
 	}
-	public void userSubscribePartyImpDates(Long userID){
+	public void userSubscribePartyImpDates(Long userID, String partySubscribeImpDates){
 		Registration user = registrationDAO.get(userID);
-		user.setIncludePartyImpDateStatus("ALL");
-		registrationDAO.save(user);
+		user.setIncludePartyImpDateStatus(partySubscribeImpDates);
+		user = registrationDAO.save(user);
 	}
 	public List<ImportantDatesVO> getUserImpDates(Long userID, Long partyId) {
 		log.debug("UserCalenderService.getUserImpDates() Start...");

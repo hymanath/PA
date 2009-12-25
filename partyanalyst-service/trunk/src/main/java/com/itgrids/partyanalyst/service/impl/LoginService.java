@@ -32,6 +32,7 @@ public class LoginService implements ILoginService{
 			regVO.setAccessValue(reg.getAccessValue());
 			regVO.setFirstName(reg.getFirstName());
 			regVO.setLastName(reg.getLastName());
+			regVO.setSubscribePartyImpDate(reg.getIncludePartyImpDateStatus());
 			if(reg.getParty() != null){
 				regVO.setParty(reg.getParty().getPartyId());
 			}

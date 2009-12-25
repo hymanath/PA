@@ -24,7 +24,7 @@ public interface IUserCalendarService {
 	public List<UserEventVO> getUserPlannedEvents(Long userID);
 	public UserEventVO saveUserPlannedEvents(UserEventVO userPlannedEvents);
 	public void deleteUserPlannedEvents(Long userEventID);
-	public void userSubscribePartyImpDates(Long userID);
+	public void userSubscribePartyImpDates(Long userID, String partySubscribeImpDates);
 	public List<SelectOptionVO> getCadresByRegionType(Long userID, String regionType, Long regionID);
 	public ImportantDatesVO saveUserImpDate(ImportantDatesVO importantDatesVO);
 	public UserEventVO getUserPlannedEvent(Long eventID);

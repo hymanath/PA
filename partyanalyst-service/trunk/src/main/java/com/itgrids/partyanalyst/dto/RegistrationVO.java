@@ -14,24 +14,25 @@ public class RegistrationVO extends BaseDTO{
 	private static final long serialVersionUID = 1L;
 	
 	private Long registrationID;
-	 private String firstName;
-	 private String middleName;
-	 private String lastName;
-	 private String gender;
-	 private String userName;
-	 private String password; 
-	 private String dateOfBirth;
-	 private String email;
-	 private String phone;
-	 private String mobile;
-	 private String address;
-	 private String country;
-	 private String pincode;
-	 private String accessType;
-	 private String accessValue;
-	 private Long party;
+	private String firstName;
+	private String middleName;
+	private String lastName;
+	private String gender;
+	private String userName;
+	private String password; 
+	private String dateOfBirth;
+	private String email;
+	private String phone;
+	private String mobile;
+	private String address;
+	private String country;
+	private String pincode;
+	private String accessType;
+	private String accessValue;
+	private Long party;
+	private String subscribePartyImpDate;
 	 
-	 public Long getRegistrationID() {
+	public Long getRegistrationID() {
 		return registrationID;
 	}
 	public void setRegistrationID(Long registrationID) {
@@ -191,4 +192,10 @@ public class RegistrationVO extends BaseDTO{
 		this.party = party;
 	}
 
+	 public String getSubscribePartyImpDate() {
+		return subscribePartyImpDate;
+	}
+	public void setSubscribePartyImpDate(String subscribePartyImpDate) {
+		this.subscribePartyImpDate = subscribePartyImpDate;
+	}
 }
