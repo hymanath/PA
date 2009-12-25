@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.ElectionYearsComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -197,12 +199,13 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 
-	public Set<String> getElectionYears(Long electionType) {
+	public List<String> getElectionYears(Long electionType) {
 		List<Election> elections = electionDAO.findByPropertyTypeId(electionType);
-		Set<String> years = new HashSet<String>();
+		List<String> years = new ArrayList<String>();
 		for(Election election: elections){
 			years.add(election.getElectionYear());
 		}
+		Collections.sort(years, new ElectionYearsComparator());
 		return years;
 	}
 
