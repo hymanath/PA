@@ -159,7 +159,10 @@ table.CandidateElectionResultsTable td {
 		distStr+='<td align="center" style="color:#04B45F">'+'+ '+distObj.distVotesPercentage+' %</td>';
 
         distStr+='<th>CD * %diff :</th>';
-        distStr+='<td align="center">'+distObj.distTotalPercentDiff+' %</td>';
+		if(distObj.distTotalPercentDiff < 0)
+        distStr+='<td align="center" style="color:#FF0000">'+distObj.distTotalPercentDiff+' %</td>';
+		else if(distObj.distTotalPercentDiff > 0)
+		distStr+='<td align="center" style="color:#04B45F">'+'+ '+distObj.distTotalPercentDiff+' %</td>';
 		distStr+='<th> '+distObj.partyName+'-'+distObj.year+'%:</th>';
 		distStr+='<td align="center">'+distObj.partyVotesPercentage+' %</td>';	
 		
