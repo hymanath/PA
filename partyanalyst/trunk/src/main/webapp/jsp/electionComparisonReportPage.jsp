@@ -349,11 +349,11 @@ var electionObject=	{
 		sortable : true
 	}, {
 		key : "votesDiff",
-		label : "Votes Diff",
+		label : "Votes % Diff",
 		sortable : true
 	}, {
 		key : "electorsDiff",
-		label : "Electors&nbsp;%",
+		label : "Electors&nbsp;% Diff",
 		sortable : true
 	}, {
 		key : "secondCandidateName",
