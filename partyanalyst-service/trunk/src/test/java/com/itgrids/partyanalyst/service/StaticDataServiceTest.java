@@ -76,7 +76,7 @@ public class StaticDataServiceTest {
 		EasyMock.expect(electionDAO.findByPropertyTypeId(new Long(2))).andReturn(elections);
 		EasyMock.replay(electionDAO);
 		
-		Set<String> actualYears = service.getElectionYears(new Long(2));
+		List<String> actualYears = service.getElectionYears(new Long(2));
 		
 		Assert.assertEquals(expectedYears, actualYears);
 	}
