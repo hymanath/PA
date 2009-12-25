@@ -95,11 +95,6 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 		assembly.setId(new Long(2));
 		assembly.setName("Assembly");
 		
-		SelectOptionVO parliament = new SelectOptionVO();
-		parliament.setId(new Long(1));
-		parliament.setName("Parliament");
-		
-		eList.add(parliament);
 		eList.add(assembly);
 		
 		this.setElectionType(eList);
