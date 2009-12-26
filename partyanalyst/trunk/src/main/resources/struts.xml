@@ -330,7 +330,7 @@
 		
 		<action name="userSubscribePartyImpDates" class="createEventAction" method="subscribePartyImpDates">
 			<result type="json" name="success">
-				<param name="root">subscribe</param>				
+				<param name="root">userSubscribeImpDates</param>				
 			</result>			
 		</action>	
 

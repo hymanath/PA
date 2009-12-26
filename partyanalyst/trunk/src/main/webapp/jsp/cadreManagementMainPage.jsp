@@ -467,7 +467,8 @@
 									addCreatedEvent(myResults,jsObj);										
 								else if(jsObj.task=="subscribe"){
 									var elmt = document.getElementById('subscribePartyDates');
-									elmt.innerHTML=myResults;
+									elmt.innerHTML=myResults.subscribeTitle;
+									addCreatedEvent(myResults.userImpDates,jsObj);
 								}
 										
 							}catch (e) {   
@@ -1002,7 +1003,7 @@
 				
 		if(jsObj.task == "createEvent")
 			var elmt = document.getElementById("cadreImpEventsBodyDiv");
-		else if(jsObj.task == "createImpDateEvent")
+		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "subscribe")
 			var elmt = document.getElementById("cadreImpDatesBodyDiv");
 
 		if(elmt)
@@ -1012,7 +1013,7 @@
 		
 		if(jsObj.task == "createEvent")
 			newEventDialog.cancel();
-		else if(jsObj.task == "createImpDateEvent")
+		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "subscribe")
 			newDateDialog.cancel();	
 
 		if(results.startDate)
@@ -1682,9 +1683,6 @@
 		
 		</div>
 		<div id="cadreEventsDetailsDivMain">
-			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/bluebox.png"/> - Only Important Dates </span>
-			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/lightbluebox.png"/> - Only Important Events</span>
-			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/brownbox.png"/> - Dates & Events</span>
 			<span class="impInfoSpan">
 				<a href="javascript:{}" onclick="subscribe()">
 					<span id="subscribePartyDates">
@@ -1699,6 +1697,9 @@
 					</span>
 				</a>
 			</span>
+			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/bluebox.png"/> - Only Important Dates </span>
+			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/lightbluebox.png"/> - Only Important Events</span>
+			<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/brownbox.png"/> - Dates & Events</span>
 		</div>
 		<div id="cadreEventsDatesMain">
 			<table width="100%">

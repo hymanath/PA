@@ -22,6 +22,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
+import com.itgrids.partyanalyst.dto.UserSubscribeImpDatesVO;
 
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.service.IUserCalendarService;
@@ -42,7 +43,8 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	private IUserCalendarService userCalendarService;
 	private HttpSession session;
 	private HttpServletRequest request;
-	private String subscribe;
+	//private String subscribe;
+	private UserSubscribeImpDatesVO userSubscribeImpDates = new UserSubscribeImpDatesVO();
 
 	private final static Logger log = Logger.getLogger(CreateEventAction.class);
 
@@ -73,13 +75,13 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	}
 	
 	
-	public String getSubscribe() {
+/*	public String getSubscribe() {
 		return subscribe;
 	}
 
 	public void setSubscribe(String subscribe) {
 		this.subscribe = subscribe;
-	}
+	}*/
 
 	public ImportantDatesVO getImportantDatesVO() {
 		return importantDatesVO;
@@ -97,6 +99,14 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	}
 	
 	
+	public UserSubscribeImpDatesVO getUserSubscribeImpDates() {
+		return userSubscribeImpDates;
+	}
+
+	public void setUserSubscribeImpDates(UserSubscribeImpDatesVO userSubscribeImpDates) {
+		this.userSubscribeImpDates = userSubscribeImpDates;
+	}
+
 	public String execute() throws Exception
 	{
 		log.debug("CreateEventAction.execute()... started");
@@ -211,6 +221,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	public String subscribePartyImpDates() throws Exception{
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		String subscribeStatus = user.getSubscribePartyImpDate();
+		String subscribe = new String();
 		if("ALL".equalsIgnoreCase(subscribeStatus)){
 			subscribe ="Subscribe Party Imp Dates";
 			subscribeStatus = "NONE";
@@ -218,8 +229,12 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			subscribe ="Unsubscribe Party Imp Dates";
 			subscribeStatus = "ALL";
 		}
+		
 		userCalendarService.userSubscribePartyImpDates(user.getRegistrationID(),subscribeStatus);
 		user.setSubscribePartyImpDate(subscribeStatus);
+		List<ImportantDatesVO> userImpDates = userCalendarService.getUserImpDates(user);
+		userSubscribeImpDates.setSubscribeTitle(subscribe);
+		userSubscribeImpDates.setUserImpDates(userImpDates);
 		session.setAttribute("USER", user);
 		return SUCCESS;
 	}

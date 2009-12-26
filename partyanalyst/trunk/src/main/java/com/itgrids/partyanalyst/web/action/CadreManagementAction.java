@@ -52,11 +52,8 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 			return ERROR;
-		
-		Long userID = user.getRegistrationID();
-		Long partyID = user.getParty();
-		
-		cadreManagementVO = userCadreManagementService.getUserData(userID,partyID);
+	
+		cadreManagementVO = userCadreManagementService.getUserData(user);
 		log.debug("cadreManagementVO.getUserImpDates().size():"+cadreManagementVO.getUserImpDates().size());
 		return Action.SUCCESS;
 	}
