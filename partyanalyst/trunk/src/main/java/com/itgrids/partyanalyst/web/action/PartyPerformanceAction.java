@@ -61,6 +61,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	private String task = null;
 	private List<PartyPositionDisplayVO> partyPositionDisplayVO;
 	private Map statesYearList = new HashMap();
+	private String reportTitle;
 
 
 	public Map getStatesYearList() {
@@ -314,6 +315,28 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if(district!=null)
 			reportVO.setDistrictId(new Long(district));
 		
+		String electionTypeLiteral = "";
+		String reportLevelLiteral = "";
+		String partyNameLiteral = reportVO.getParty();
+		
+		if(Long.valueOf(electionType).equals(new Long(1)))
+			electionTypeLiteral = "Parliament";
+		else if(Long.valueOf(electionType).equals(new Long(2)))
+			electionTypeLiteral = "Assembly";
+		if(Long.valueOf(reportLevel).equals(new Long(1)))
+			reportLevelLiteral = "StateLevel";
+		else if(Long.valueOf(reportLevel).equals(new Long(2)))
+			reportLevelLiteral = "DistrictLevel";
+		
+		if(log.isDebugEnabled()){
+			log.debug("Election Type -->" + electionTypeLiteral);
+			log.debug("Report Level -->" + reportLevelLiteral);
+		}
+		
+		reportTitle =  partyNameLiteral +" " + electionTypeLiteral + "(" + reportLevelLiteral + ")" + "  Performance Report for the year" + year;
+		
+		if(log.isDebugEnabled())
+			log.debug("Report Title -->" + reportTitle);
 		
 		SortedMap<String, Integer> positions = reportVO.getPositionDistribution();
 		
@@ -400,6 +423,12 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 
 	public void setServletResponse(HttpServletResponse response) {
 		this.response = response;
+	}
+	public String getReportTitle() {
+		return reportTitle;
+	}
+	public void setReportTitle(String reportTitle) {
+		this.reportTitle = reportTitle;
 	} 
 
 }
