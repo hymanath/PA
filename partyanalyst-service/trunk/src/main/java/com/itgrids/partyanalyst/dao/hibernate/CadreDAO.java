@@ -170,7 +170,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List findMandalCadresByMandals(String mandalIDs, Long userID){
 		List result = getHibernateTemplate().find("Select model.tehsil.tehsilId, model.tehsil.tehsilName, count(model.tehsil.tehsilId) from Cadre model " +
 				"where model.registration.registrationId = "+userID+" and model.tehsil.tehsilId in(" + mandalIDs + ") " +
-						" order by model.tehsil.tehsilName group by model.tehsil.tehsilId");
+						" group by model.tehsil.tehsilId order by model.tehsil.tehsilName");
 		return result;
 	}
 	
