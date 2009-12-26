@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dto.CadreManagementVO;
 import com.itgrids.partyanalyst.dto.ImportantDatesVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
 import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 import com.itgrids.partyanalyst.service.IUserCalendarService;
@@ -26,13 +27,16 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 		this.cadreManagementService = cadreManagementService;
 	}
 
-	public CadreManagementVO getUserData(Long userID, Long partyID) {
+	public CadreManagementVO getUserData(RegistrationVO user) {
 		log.debug("UserCadreManagementService.getUserData()::::started");
 		CadreManagementVO cadreManagementVO = new CadreManagementVO();
+
+		Long userID = user.getRegistrationID();
+		Long partyID = user.getParty();
 		try{
 			List<UserEventVO> userPlannedEvents =userCalendarService.getUserPlannedEvents(userID);
 			cadreManagementVO.setUserEvents(userPlannedEvents);
-			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserImpDates(userID, partyID);
+			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserImpDates(user);
 			cadreManagementVO.setUserImpDates(userImpDatesList);
 			Map<String,Long> cadresByCadreLevel = cadreManagementService.getCadreLevelCadresCount(userID);
 			cadreManagementVO.setCadresByCadreLevel(cadresByCadreLevel);

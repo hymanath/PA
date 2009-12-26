@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IUserEventsDAO;
 import com.itgrids.partyanalyst.dao.IUserImpDatesDAO;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.dto.ImportantDatesVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
@@ -86,18 +87,33 @@ public class UserCalendarService implements IUserCalendarService {
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate){
 		this.transactionTemplate = transactionTemplate;
 	}
+	private Long userID;
+	private String partySubscribeImpDates;
 	public void userSubscribePartyImpDates(Long userID, String partySubscribeImpDates){
-		Registration user = registrationDAO.get(userID);
-		user.setIncludePartyImpDateStatus(partySubscribeImpDates);
-		user = registrationDAO.save(user);
+		this.userID = userID;
+		this.partySubscribeImpDates = partySubscribeImpDates;
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus txStatus) {
+				try{
+					Registration user = registrationDAO.get(UserCalendarService.this.userID);
+					user.setIncludePartyImpDateStatus(UserCalendarService.this.partySubscribeImpDates);
+					user = registrationDAO.save(user);
+				}catch(Exception ex){
+					
+				}
+			}
+			}
+		);
 	}
-	public List<ImportantDatesVO> getUserImpDates(Long userID, Long partyId) {
+	public List<ImportantDatesVO> getUserImpDates(RegistrationVO user) {
 		log.debug("UserCalenderService.getUserImpDates() Start...");
 
+		Long userID = user.getRegistrationID();
+		Long partyId = user.getParty();
 		List<ImportantDatesVO> importantDates = new ArrayList<ImportantDatesVO>(0);
-		Registration user = registrationDAO.get(userID);
+		//Registration user = registrationDAO.get(userID);
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
-		if("ALL".equals(user.getIncludePartyImpDateStatus())){
+		if("ALL".equals(user.getSubscribePartyImpDate())){
 			List<PartyImportantDates> partyImportantDates = partyImportantDatesDAO.findByPartyId(partyId);
 			
 			if(partyImportantDates != null){
