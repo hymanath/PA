@@ -479,7 +479,7 @@ function buildPartyPositionDataTable(info,rank)
 <div id="partyPerformanceReportMainDiv">
 <div style="padding: 5px; font-weight: bold; color: #46505B; font-family: Trebuchet MS; font-size: 15px;text-align:center;">
 	<u>
-		Party Performance Report for the year <s:property value="stateData.year" /> 
+		<s:property value="reportTitle" /> 
 	</u>
 	<!--<u><s:property value="stateData.state" /> State - Party <s:property value="stateData.party" /> </u> -->
 </div>
