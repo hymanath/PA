@@ -64,6 +64,9 @@
 	 
 	<!-- Source file --> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script> 
+	
+	<!-- CSS -->  
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/container.css">   
 
 
 <style type="text/css">
@@ -127,7 +130,7 @@ districtVotesTable td
 {
 	text-decoration:underline;
 }
-#electionResultsMain,#districtWiseResultsMain
+#electionResultsMain,#districtWiseResultsMain,#detailedResultsPopupDiv
 {
 	margin-left:55px;
 	text-align:left;
@@ -220,7 +223,67 @@ var electionObject=	{
                         constsNotConsideredYearOne:[],
 						constsNotConsideredYearTwo:[]
 					};
+var electionType,constsVal;
+var myDataTable;
 	
+	
+	function showDetailedResultsPopup(oArgs)
+	{		
+		var target = oArgs.target.headers;
+	
+		var parent = oArgs.target.parentNode;
+		var index =myDataTable.getRecordIndex(parent);
+
+		if(electionType == "constsGained")
+			var data = electionObject.constsGained[constsVal].electionResults[index];
+		else if(electionType == "constsLost")
+			var data=electionObject.constsLost[constsVal].electionResults[index];
+		else if(electionType == "constsNotConsideredYearOne")
+			var data=electionObject.constsNotConsideredYearOne[constsVal].electionResults[index];
+		else if(electionType == "constsNotConsideredYearTwo")
+			var data=electionObject.constsNotConsideredYearTwo[constsVal].electionResults[index];
+
+
+		var str='';		
+		str = '<table>';
+		str+='<tr>';
+		str+='<th>${electionsComparisonVO.firstYear} :</th>';
+		str+='<th>Name :</th>';
+		str+='<td>'+data.candidateName+'</td>';
+		str+='<th>Votes Earned :</th>';
+		str+='<td>'+data.votesEarned+'</td>';
+		str+='<th>Status :</th>';
+		if(data.rank == "1")
+			str+='<td>Won</td>';
+		else
+			str+='<td>Lost</td>';		
+		str+='</tr>';
+		if(data.secondCandidateName != '')
+		{
+			str+='<tr>';
+			str+='<th>${electionsComparisonVO.secondYear} :</th>';
+			str+='<th>Name :</th>';
+			str+='<td>'+data.secondCandidateName+'</td>';
+			str+='<th>Votes Earned :</th>';
+			str+='<td>'+data.votesEarnedBySecond+'</td>';
+			str+='<th>Status :</th>';
+			if(data.rankBySecond == "1")
+				str+='<td>Won</td>';
+			else
+				str+='<td>Lost</td>';
+			
+			str+='</tr>';
+		}
+		str+='</table>';
+
+		var target = oArgs.target;
+		myTooltip = new YAHOO.widget.Tooltip("myTooltip", {    
+	    context:target,    
+	    text:str   
+	    } );  
+	
+	}
+
    function setContentToPanel(type,val)
    {
 		var elmt = document.getElementById("electionResultsPopupDiv");
@@ -229,6 +292,9 @@ var electionObject=	{
 		
 		if(elmt)
 			elmt.style.display="block";
+		
+		electionType = type;
+		constsVal = val;
 
 		if(type == "constsGained")
 			var localArr=electionObject.constsGained[val].electionResults;
@@ -244,7 +310,6 @@ var electionObject=	{
 		for(var i in localArr)
 		{
 			str+='<tr>';
-			str+='<td>'+localArr[i].candidateName+'</td>';
 			str+='<td>'+localArr[i].constituencyName+'</td>';
 			str+='<td>'+localArr[i].votesEarned+'</td>';
 			str+='<td>'+localArr[i].votesPercentage+'</td>';
@@ -260,11 +325,6 @@ var electionObject=	{
 				str+='<td> 0 </td>';
 			
 			str+='<td>'+localArr[i].electorsDiff+'</td>';
-
-			if(localArr[i].secondCandidateName != "")
-				str+='<td>'+localArr[i].secondCandidateName+'</td>';
-			else
-				str+='<td> -- </td>';
 
 			if(localArr[i].votesEarnedBySecond != "")
 				str+='<td>'+localArr[i].votesEarnedBySecond+'</td>';
@@ -303,8 +363,6 @@ var electionObject=	{
 	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
 	resultsDataSource.responseSchema = {
 		fields : [ {
-			key : "candidateName"
-		}, {
 			key : "constituencyName"
 		}, {
 			key : "votesEarned",parser:"number"
@@ -317,8 +375,6 @@ var electionObject=	{
 		} ,	{
 			key : "electorsDiff",parser:"number"
 		} ,{
-			key : "secondCandidateName"
-		} , {
 			key : "votesEarnedBySecond",parser:"number"
 		} , {
 			key : "votesPercentageBySecond",parser:"number"
@@ -328,10 +384,6 @@ var electionObject=	{
 	};
 
 	var resultsColumnDefs = [ {
-		key : "candidateName",		
-		label : "Candidate",
-		sortable : true
-	}, {
 		key : "constituencyName",
 		label : "Constituency",
 		sortable : true
@@ -356,10 +408,6 @@ var electionObject=	{
 		label : "Electors&nbsp;% Diff",
 		sortable : true
 	}, {
-		key : "secondCandidateName",
-		label : "Candidate",
-		sortable : true
-	}, {
 		key : "votesEarnedBySecond",
 		label : "Votes Earned",
 		sortable : true
@@ -373,7 +421,9 @@ var electionObject=	{
 		sortable : true
 	} ];
 
-	var myDataTable = new YAHOO.widget.DataTable("electionResultsPopupDivBody",resultsColumnDefs, resultsDataSource,{});  
+	myDataTable = new YAHOO.widget.DataTable("electionResultsPopupDivBody",resultsColumnDefs, resultsDataSource,{}); 
+	myDataTable.subscribe("cellMouseoverEvent", showDetailedResultsPopup);   
+	
 
 }
 	
@@ -701,6 +751,7 @@ var electionObject=	{
 	}
 	
 
+
 </script>
 </head>
 <body>
@@ -804,6 +855,10 @@ var electionObject=	{
 			</table>
 		   </div>	
        </div>
+		<br/><br/>
+        <div id="detailedResultsPopupDiv" style="visibility:hidden;">
+			
+		</div>
 
 		<div id="electionResultsPopupDiv" style="display:none;">
 			<div id="electionResultsPopupDivHead">
