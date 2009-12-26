@@ -384,8 +384,8 @@
 			str+='<th>Areas Covered</th>';
 			str+='<th>Total Voters</th>';
 			str+='<th>Polled Votes</th>';
-			str+='<th>AC<font color="red">*</font> Candidate %</th>';
-			str+='<th>PC<font color="red">*</font> Candidate %</th>';			
+			str+='<th>PC<font color="red">*</font> Candidate %</th>';
+			str+='<th>AC<font color="red">*</font> Candidate %</th>';			
 			str+='<th>% Diff</th>';			
 			str+='</tr>';
 			for (var j in mandal.crossVotedBooths) 
