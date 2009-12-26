@@ -450,6 +450,8 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 								constituencyIds.add(firstPartyResults.getConstituencyId());								
 								if(firstPartyResults.getPartyId().equals(partyId))
 									partyName = firstPartyResults.getPartyName();
+								if(secondPartyResults.getPartyId().equals(partyId))
+							    	 partyName = secondPartyResults.getPartyName();
 							    PartyElectionResultsVO partyResultVO = new PartyElectionResultsVO();
 							    partyResultVO = getResult(firstPartyResults,secondPartyResults);
 							    if(partyResultVO.getRank() != null && partyResultVO.getRank().equals(new Long(1)))
@@ -477,6 +479,10 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 								 if(constituencyIds.contains(firstPartyResults.getConstituencyId()))
 										break;
 							     constituencyIds.add(firstPartyResults.getConstituencyId());
+							     if(firstPartyResults.getPartyId().equals(partyId))
+							    	 partyName = firstPartyResults.getPartyName();
+							     if(secondPartyResults.getPartyId().equals(partyId))
+							    	 partyName = secondPartyResults.getPartyName();
 								 PartyElectionResultsVO partyResultVO = new PartyElectionResultsVO();
 								 partyResultVO = getResult(firstPartyResults,secondPartyResults);
 								 if(partyResultVO.getRank() != null && partyResultVO.getRank().equals(new Long(1)))
@@ -520,7 +526,7 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 						 }
 						 
 						 //partyName = firstPartyResults.getPartyName();
-	    				 electionsComparisionVO.setPartyName(partyName);
+	    				 
 					 }
 					 
 					 if(statusForGained == 1){
@@ -601,6 +607,7 @@ public class ElectionsComparisonService implements IElectionsComparisonService {
 			  if(flags == false)
 				  logger.debug("flag is false" + resultFirst.getDistrictName());
 		 }
+		 electionsComparisionVO.setPartyName(partyName);
 		 electionsComparisionVO.setVotesGainedCount(votesGainedCount);
 		 electionsComparisionVO.setVotesLostCount(votesLostCount);
 		 electionsComparisionVO.setCount(count);
