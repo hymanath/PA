@@ -196,7 +196,7 @@
         </action>
         
         <action name="cadreRegisterAction" class="cadreRegisterAction">
-           <result name="success"> /jsp/CadreRegisterSuccess.jsp</result>
+        	<result type="redirect" name="success">cadreManagementAction.action</result>
            <result name="fail"> /jsp/CadreRegisterFail.jsp</result>
         </action> 
 

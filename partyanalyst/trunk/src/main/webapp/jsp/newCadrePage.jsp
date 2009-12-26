@@ -283,7 +283,7 @@
 			<td colspan="2" align="left"><h3><u style="color:#4D0A0A;">Cadre Details</u></h3></td>		
 		</tr>
 		<tr>
-			<th><s:label for="firstNameField" id="fnameLabel"  value="%{getText('firstName')}" /></th>
+			<th><font class="requiredFont"> * </font><s:label for="firstNameField" id="fnameLabel"  value="%{getText('firstName')}" /></th>
 			<td align="left"><s:textfield id="firstNameField" name="firstName"/>  </td>
 		</tr>
 		<tr>
@@ -291,18 +291,18 @@
 			<td align="left"><s:textfield id="middleNameField" name="middleName"/>  </td>
 		</tr>
 		<tr>
-			<th><s:label for="lastNameField" id="lastNameLabel"  value="%{getText('lastName')}" /></th>
+			<th><font class="requiredFont"> * </font><s:label for="lastNameField" id="lastNameLabel"  value="%{getText('lastName')}" /></th>
 			<td align="left"><s:textfield id="lastNameField" name="lastName"/>  </td>
 		</tr>
 		<tr>
-			<th><s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></th>
+			<th><font class="requiredFont"> * </font><s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></th>
 			<td align="left">
 				<input type="radio" name="gender" value="M" checked="checked"/>Male
 				<input type="radio" name="gender" value="F"/>Female
 			</td>		
 		</tr>
 		<tr>
-			<th><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></th>
+			<th><font class="requiredFont"> * </font><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></th>
 			<td align="left"><s:textfield id="mobileField" name="mobile" maxlength="10" />  </td>
 		</tr>
 		<tr>
@@ -310,7 +310,7 @@
 			<td align="left"><s:textfield id="emailField" name="email"/>  </td>
 		</tr>
 		<tr>
-			<th><s:label for="stateField" id="stateLabel"  value="State" /></th>
+			<th><font class="requiredFont"> * </font><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /></th>
 			<td align="left">
 				<s:select id="stateField" name="state" list="stateList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>
 
@@ -318,7 +318,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th><s:label for="districtField" id="districtLabel"  value="District" /></th>
+			<th><font class="requiredFont"> * </font><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /></th>
 			<td align="left">
 				<select id="districtField" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 					<c:forEach var="dist" items="${districtList}" >
@@ -329,19 +329,19 @@
 			</td>
 		</tr>
 		<tr>
-			<th><s:label for="constituencyField" id="constituencyLabel"  value="Constituency" /></th>
+			<th><font class="requiredFont"> * </font><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/></th>
 			<td align="left">
 				<s:select id="constituencyField" name="constituency" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Constituency"></s:select> 
 			</td>
 		</tr>
 		<tr>
-			<th><s:label for="mandalField" id="mandalLabel"  value="Mandal" /></th>
+			<th><font class="requiredFont"> * </font><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /></th>
 			<td align="left">
 				<s:select id="mandalField" name="mandal" list="mandalList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
 			</td>
 		</tr>
 		<tr>
-			<th><s:label for="villageField" id="villageLabel"  value="Village" /></th>
+			<th><font class="requiredFont"> * </font><s:label for="villageField" id="villageLabel"  value="%{getText('VILLAGE')}" /></th>
 			<td align="left">
 				<s:select id="villageField" name="village" list="villageList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
 			</td>
@@ -350,7 +350,7 @@
 			<td colspan="2" align="left"><h3><u style="color:#4D0A0A;">Cadre Level Details</u></h3></td>
 		</tr>				
 		<tr>
-			<th><s:label for="cadreLevelField" id="cadreLevelLabel"  value="Cadre Level" /></th>
+			<th><font class="requiredFont"> * </font><s:label for="cadreLevelField" id="cadreLevelLabel"  value="%{getText('CADRE_LEVEL')}" /></th>
 			<td align="left">
 				<select id="cadreLevelField" name="cadreLevel" onchange="getStateList()">
 					<option	 value='0'>Select Level</option>		
@@ -362,7 +362,7 @@
 			</td>
 		</tr>
 		<tr>		
-			<th><s:label for="cadreLevelValueField" id="cadreLevelValueLabel"  value="Cadre Level Value" /></th>
+			<th><font class="requiredFont"> * </font><s:label for="cadreLevelValueField" id="cadreLevelValueLabel"  value="%{getText('CADRE_LEVEL_VALUE')}" /></th>
 			<td align="left">
 				<select id="cadreLevelState" name="cadreLevelState" disabled = "true" onchange="setCadreValue(this.options[this.selectedIndex].value);
 										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,
