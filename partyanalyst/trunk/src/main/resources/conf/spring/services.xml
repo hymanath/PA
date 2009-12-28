@@ -107,7 +107,6 @@
 		<!-- <property name="transactionTemplate" ref="transactionTemplate" /> -->
 	</bean>
 	
-	<bean name="userService" class="com.itgrids.partyanalyst.service.impl.UserService" />
 	<bean name="Pattern3" class="com.itgrids.partyanalyst.excel.CsvReaderNew" />
 	<bean name="Pattern2" class="com.itgrids.partyanalyst.excel.CsvReader2004" />
 	<bean name="Pattern1" class="com.itgrids.partyanalyst.excel.CsvReader" />
@@ -146,10 +145,21 @@
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
+	<bean name="voterDataUploadService" class="com.itgrids.partyanalyst.service.impl.VoterDataUploadService" >		
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="voterDAO" ref="voterDAO" />
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO"/>
+	</bean>
+	
 	<bean name="boothDataValidationService" class="com.itgrids.partyanalyst.service.impl.BoothDataValidationService" >		
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="nominationDAO" ref="nominationDAO"/>
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO"/>
 	</bean>
 	
 	<bean name="boothResultPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothResultPopulationService" >		
