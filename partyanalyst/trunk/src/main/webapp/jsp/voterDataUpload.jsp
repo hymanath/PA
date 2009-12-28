@@ -10,6 +10,7 @@
 </head>
 <body>
 <s:form action="voterDataUploadAction" method="POST" enctype="multipart/form-data">
+	<h3>Voter Data Upload</h3>
 	<table border="1">
 		<tr>
 			<td>Election Type</td>

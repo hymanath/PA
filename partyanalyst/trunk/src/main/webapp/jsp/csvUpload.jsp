@@ -10,6 +10,7 @@
 </head>
 <body>
 <s:form name="UploadExcelAction" action="uploadExcel" method="post" enctype="multipart/form-data">
+ 	<h3>Election Data Upload</h3>
 	<table border="1">
 		<tr>
 			<td>Country</td>
@@ -44,7 +45,7 @@
 		</tr>
 
 		<tr>
-			<td colspan="2">Select File <s:file name="inputFile" label="InputFile" /></td>
+			<td><s:file name="inputFile" label="InputFile" /></td>
 		</tr>
 		<tr>
 			<td colspan="2"><s:textfield label="Election Year" name="electionYear" /><s:submit name="upload" value="Upload" /></td>

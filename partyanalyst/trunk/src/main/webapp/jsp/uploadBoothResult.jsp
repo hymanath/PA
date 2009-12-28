@@ -6,6 +6,7 @@
 </head>
 	<body>
 	<s:form name="BoothResultUploadForm" action="boothResultUploadAction" method="POST" enctype="multipart/form-data">
+		<h3>Booth Results Upload</h3>
 		<table border="1" style="border-collapse:collapse">
 			<tr>
 				<td>Election Type</td>
