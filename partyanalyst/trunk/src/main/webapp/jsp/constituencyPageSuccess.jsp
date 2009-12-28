@@ -124,7 +124,7 @@
 
 <div id="map_canvas" style="border: 1px solid ; width: 260px; height: 200px;margin-left:400px;">
 </div>
-<c:if test="$delimitationConstituencyMandalResultVO.presentMandals != NULL">
+<c:if test="${delimitationConstituencyMandalResultVO.presentMandals != NULL}">
 <div id="mandalsDiv">	
 	<div id="mandalsDivHead"><b><u>Mandals of the <c:out value="${constituencyDetails.constituencyName}"/> Constituency</u></b></div>
 	<div id="mandalsDivBody">
