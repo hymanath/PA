@@ -508,9 +508,9 @@ function buildPartyPositionDataTable(info,rank)
 <table class="partyPerformanceReportTable" border="1" width="385px">
 	<tr>
 	    <th></th>
-	    <th align="center"><s:property value="stateData.year" /></th>
+	    <th  width="100px"  align="center"><s:property value="stateData.year" /></th>
 		<s:if test="stateData.prevYearTotalSeatsWon != 0">
-		<th align="center"><s:property value="stateData.prevYear" /></th>
+		<th  width="100px" align="center"><s:property value="stateData.prevYear" /></th>
 		</s:if> 
 	</tr>
 	<tr>
@@ -522,9 +522,9 @@ function buildPartyPositionDataTable(info,rank)
 	</tr>
 	<tr>
 		<td style="background-color: #ECF1F5" align="center"><b>Votes %</b></td>
-		<td style="background-color: #ECF1F5" align="center"><s:property value="stateData.totalPercentageOfVotesWon" />&nbsp;%</td>
+		<td style="background-color: #ECF1F5" width="100px" align="center"><s:property value="stateData.totalPercentageOfVotesWon" />&nbsp;%</td>
 		<s:if test="stateData.prevYearTotalSeatsWon != 0">
-		<td style="background-color: #ECF1F5" style="background-color: #FFFFFF" align="center"><s:property value="stateData.prevYeartotalPercentageOfVotesWon" />&nbsp;%</td>
+		<td style="background-color: #ECF1F5" width="100px" style="background-color: #FFFFFF" align="center"><s:property value="stateData.prevYeartotalPercentageOfVotesWon" />&nbsp;%</td>
 		</s:if> 
 	</tr>
 	<s:if test="stateData.prevYearTotalSeatsWon != 0">
