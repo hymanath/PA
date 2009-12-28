@@ -21,8 +21,6 @@ import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.IVoterDataUploadService;
-import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.utils.Util;
 
 public class VoterDataUploadService implements IVoterDataUploadService{
 
