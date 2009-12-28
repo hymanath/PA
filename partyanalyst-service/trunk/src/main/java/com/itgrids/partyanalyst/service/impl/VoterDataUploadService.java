@@ -182,7 +182,7 @@ public class VoterDataUploadService implements IVoterDataUploadService{
 			voterIDCardNo = voterVO.getVoterIDCardNo();
 			voter = new Voter(houseNo, voterFirstName, voterlastName, relationshipType,
 					relativeFirstName, relativeLastName, cast, castCatagery, castSubcatagery, gender, 
-					age, voterIDCardNo, localArea, Util.now(IConstants.TIME_FORMAT), hamlet, null);
+					age, voterIDCardNo, localArea, null, hamlet, null);
 			
 			//Saving Voter Data and BoothConstituencyElectionVoter
 			checkAndInsertBoothConstituencyElectionVoter(boothConstituencyElection, checkAndInsertVoterData(voter));
