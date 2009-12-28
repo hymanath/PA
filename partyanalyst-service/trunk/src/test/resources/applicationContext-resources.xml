@@ -68,6 +68,21 @@
 				<value>com.itgrids.partyanalyst.model.CandidateBoothResult</value>
 				<value>com.itgrids.partyanalyst.model.NominationHistory</value>
 				<value>com.itgrids.partyanalyst.model.CandidateConsolidationTask</value>
+				<value>com.itgrids.partyanalyst.model.Problem</value>
+				<value>com.itgrids.partyanalyst.model.ProblemHistory</value>
+				<value>com.itgrids.partyanalyst.model.ProblemSourceScope</value>
+				<value>com.itgrids.partyanalyst.model.ProblemStatus</value>
+				<value>com.itgrids.partyanalyst.model.ProblemLocation</value>
+				<value>com.itgrids.partyanalyst.model.ProblemSourceScopeConcernedDepartment</value>
+				<value>com.itgrids.partyanalyst.model.ProblemClassification</value>
+				<value>com.itgrids.partyanalyst.model.ProblemFundSource</value>
+				<value>com.itgrids.partyanalyst.model.FundSource</value>
+				<value>com.itgrids.partyanalyst.model.UserCategory</value>
+				<value>com.itgrids.partyanalyst.model.AssignedProblemProgress</value>
+				<value>com.itgrids.partyanalyst.model.ProblemSource</value>
+				<value>com.itgrids.partyanalyst.model.Hamlet</value>
+				<value>com.itgrids.partyanalyst.model.Voter</value>
+				<value>com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter</value>
 				<value>com.itgrids.partyanalyst.model.UserEvents</value>
 				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
 				<value>com.itgrids.partyanalyst.model.PartyImportantDates</value>
@@ -207,6 +222,13 @@
     <bean id="excelToDBServiice" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService">
     	<property name="excelDAO" ref="excelDAO" /> 
     </bean>
+    <bean id="voterDataUploadService" class="com.itgrids.partyanalyst.service.impl.VoterDataUploadService">
+    	<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="voterDAO" ref="voterDAO" />
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO"/>
+    </bean>
     <bean id="crossVotingEstimationService" class="com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService">
     	<property name="boothDAO" ref="boothDAO" />
     	<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
@@ -217,7 +239,7 @@
      <bean id="delimitationConstituencyAssemblyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyAssemblyDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	 <bean id="candidateBoothResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateBoothResultDAO" >
+	<bean id="candidateBoothResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateBoothResultDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
     <bean id="boothDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothDAO" >
@@ -244,6 +266,55 @@
 	<bean id="partyRebelCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyRebelCandidateDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<!-- Problem Management -->
+	<bean id="hamletDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="voterDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="boothConstituencyElectionVoterDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothConstituencyElectionVoterDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemStatusDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemHistoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemClassificationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemClassificationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemLocationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemSourceDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemSourceScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemSourceScopeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+    <bean id="problemSourceScopeConcernedDepartmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemSourceScopeConcernedDepartmentDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="fundSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.FundSourceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemFundSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemFundSourceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserCategoryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="assignedProblemProgressDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssignedProblemProgressDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- Problem Management -->
 	<bean id="userEventsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEventsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
