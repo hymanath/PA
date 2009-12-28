@@ -124,7 +124,7 @@
 	        itemdata: [ 
 	            
 	        ] 
-	    }    
+	    }   
 	]; 
 	
 	</script>
@@ -164,6 +164,9 @@
 						</li> 
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="constituencyManagementAction.action">CONSTITUENCEY MANAGEMENT</a> 
+						</li> 
+						<li class="yuimenubaritem"> 
+							<a class="yuimenubaritemlabel" href="adminUpload.action">UPLOAD</a> 
 						</li> 
 					</ul> 
 				</div> 
