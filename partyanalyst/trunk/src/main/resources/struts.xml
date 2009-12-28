@@ -35,7 +35,13 @@
 			<result name="error">/jsp/registration.jsp</result>
 			<result name="success">/jsp/loginForm.jsp</result>
 		</action>
-		
+		<!-- Data Upload -->
+		<action name="adminUpload"><result>/jsp/adminUpload.jsp</result></action>
+		<action name="electionUpload"><result>/jsp/csvUpload.jsp</result></action>
+		<action name="boothDataUpload"><result>/jsp/boothUpload.jsp</result></action>
+		<action name="boothResultUpload"><result>/jsp/uploadBoothResult.jsp</result></action>
+		<action name="voterDataUpload"><result>/jsp/voterDataUpload.jsp</result></action>
+		<!-- Data Upload -->
 
 		<!-- PARTY PERFORMANCE ACTIONS -->
 		
@@ -148,6 +154,11 @@
 		
 		<action name="boothUploadAction" class="boothUploadAction">
            <result name="success">/jsp/boothUpload.jsp</result>
+           <result name="error">/jsp/mandalPageFail.jsp</result>
+        </action>
+        
+        <action name="voterDataUploadAction" class="voterDataUploadAction">
+           <result name="success">/jsp/voterDataUpload.jsp</result>
            <result name="error">/jsp/mandalPageFail.jsp</result>
         </action>
         
