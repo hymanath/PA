@@ -67,6 +67,7 @@
 
 
 	<bean id="userAction" class="com.itgrids.partyanalyst.web.action.UserAction">
+
 		<property name="userService" ref="userService" />
 		<property name="staticDataService" ref="staticDataService" /> 
 	</bean>
@@ -77,6 +78,11 @@
 
 	<bean id="boothUploadAction" class="com.itgrids.partyanalyst.web.action.BoothUploadAction" singleton="false">
 		<property name="boothPopulationService" ref="boothPopulationService" />
+		<property name="boothDataValidationService" ref="boothDataValidationService" />
+	</bean>
+	
+	<bean id="voterDataUploadAction" class="com.itgrids.partyanalyst.web.action.VoterDataUploadAction" singleton="false">
+		<property name="voterDataUploadService" ref="voterDataUploadService" />
 		<property name="boothDataValidationService" ref="boothDataValidationService" />
 	</bean>
 	
