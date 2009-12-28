@@ -30,7 +30,7 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		Voter voter = new Voter(new Long(1));
 		voter.setFirstName("Thaniga1");
 		voter.setLastName("Mohan1");
-		voter.setInsertionDate(Util.now(IConstants.TIME_FORMAT));
+		voter.setInsertionDate(null);
 		voter = voterDAO.save(voter);
 		//setComplete();
 		Long id = voter.getVoterId();
