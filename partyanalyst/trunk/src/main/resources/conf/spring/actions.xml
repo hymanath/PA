@@ -67,8 +67,6 @@
 
 
 	<bean id="userAction" class="com.itgrids.partyanalyst.web.action.UserAction">
-
-		<property name="userService" ref="userService" />
 		<property name="staticDataService" ref="staticDataService" /> 
 	</bean>
 	
