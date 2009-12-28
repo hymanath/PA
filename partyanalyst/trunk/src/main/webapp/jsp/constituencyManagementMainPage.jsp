@@ -25,7 +25,9 @@
 	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
 	<!-- verify here in case of problem -->	
 	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
-	<script type="text/javascript" src="js/json/json-min.js"></script> 
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<!-- TreeView source file -->  
+	<script src="http://yui.yahooapis.com/2.8.0r4/build/treeview/treeview-min.js" ></script>  
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
@@ -34,7 +36,8 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
 
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css"> 
-	
+	<!-- Required CSS --> 
+	<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/treeview/assets/skins/sam/treeview.css"> 	
 	
 	
 
@@ -196,6 +199,11 @@
 		{
 			height:700px;
 		}
+		.selectWidth
+		{
+			width:120px;
+		}
+		
 		
 	</style>
 
@@ -209,6 +217,13 @@
 							fixedProblemsArr:[]
 						};
 
+	var locationDetails={
+							stateArr:[],
+							districtArr:[],
+							constituencyArr:[],
+							mandalArr:[],
+							villageArr:[]
+						};
 
 	function buildConstituencyLayout()
 	{	
@@ -235,16 +250,188 @@
 					}
 	    ] 
 		}); 
+		layoutEl.render(); 
+	}
+	/*
+	function buildConstituencyTabLayout()
+	{	
+		var layoutEl = new YAHOO.widget.Layout('constituencyMgmtTabContentDiv', { 
+			units: [	
+					{
+						position: 'left',
+						body: 'constMgmtTabCenterDiv',
+						resize: false,
+						gutter: '5px',
+						collapse: false,
+						scroll: false,						
+						animate: false,		
+						width: '200',
+						height:'100'
+						
+					},
+					{ 
+						position: 'center',
+						body: 'constMgmtTabLeftDiv',							
+						resize: false,
+						gutter: '5px',
+						collapse: false,
+						scroll: false,						
+						animate: false
+						
+					}
+					
+	    ] 
+		}); 
+		
 		layoutEl.render();
+	}*/
+	function buildSelectOption(results)
+	{
+		var taskValue= YAHOO.lang.JSON.parse(results.task);
+
+		var selectedValue=taskValue.reportLevel;
+		var selectedElmt;
+		if(selectedValue=="state")
+		{
+			selectedElmt=document.getElementById("districtField");
+		}	
+		else if(selectedValue=="district")
+		{
+			selectedElmt=document.getElementById("constituencyField");
+		}
+
+		var len=selectedElmt.length;			
+		for(i=len-1;i>=0;i--)
+		{
+			selectedElmt.remove(i);
+		}	
+		for(var val in results.namesList)
+		{			
+			var opElmt=document.createElement('option');
+			opElmt.value=results.namesList[val].id;
+			opElmt.text=results.namesList[val].name;
+			
+			try
+			{
+				selectedElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt.add(opElmt); // IE only
+			}			
+		}
+	}
+	
+	function callAjax(param){
+		var myResults;
+ 		var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+param;			
+ 		var callback = {			
+ 		               success : function( o ) {
+							try {
+								myResults = YAHOO.lang.JSON.parse(o.responseText);								
+								buildSelectOption(myResults);									
+							}catch (e) {   
+							   	alert("Invalid JSON result" + e);   
+							}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+ 	}
+	
+	function getnextList(name,value,choice)
+	{
+
+		var jsObj=
+			{
+					type:"cadreDetails",
+					reportLevel:name,
+					selected:value,
+					changed:choice
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+			callAjax(rparam);
+	}
+
+	function getConstituencyList(name,value,choice)
+	{
+		var jsObj=
+			{
+					type:"cadreDetails",
+					reportLevel:"constituency",
+					selected:value,
+					changed:choice
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+			callAjax(rparam);
 	}
 	
 	function buildOuterTabView()
 	{
-		outerTab = new YAHOO.widget.TabView();
-		
+		outerTab = new YAHOO.widget.TabView();		
+		var constTabContent ='<div id="constituencyMgmtTabContentDiv">';		
+		constTabContent+='<div id="constMgmtTabContentDiv_head" align="left">';
+		constTabContent+='<table width="100%">';
+		constTabContent+='<tr>';
+		constTabContent+='<td>State</td>';
+		constTabContent+='<td><select id="stateField" class="selectWidth" name="state" onchange="getnextList(this.name,this.options[this.selectedIndex].value,false)" width="10">';
+		for(var i in locationDetails.stateArr)
+		{
+			constTabContent+='<option value='+locationDetails.stateArr[i].id+'>'+locationDetails.stateArr[i].value+'</option>';
+		}
+		constTabContent+='</select></td>';
+		//constTabContent+='</tr>';
+		//constTabContent+='<tr>';
+		constTabContent+='<td>District</td>';
+		constTabContent+='<td><select id="districtField" class="selectWidth" name="district"  onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,false)">';
+		for(var i in locationDetails.districtArr)
+		{
+			constTabContent+='<option value='+locationDetails.districtArr[i].id+'>'+locationDetails.districtArr[i].value+'</option>';
+		}
+		constTabContent+='</select></td>';
+		//constTabContent+='</tr>';
+		//constTabContent+='<tr>';
+		constTabContent+='<td>Constituency</td>';
+		constTabContent+='<td><select id="constituencyField" class="selectWidth">';
+		for(var i in locationDetails.constituencyArr)
+		{
+			constTabContent+='<option value='+locationDetails.constituencyArr[i].id+'>'+locationDetails.constituencyArr[i].value+'</option>';
+		}
+		constTabContent+='</select></td>';
+		constTabContent+='</tr>';
+		constTabContent+='<tr>';
+		constTabContent+='<td>Mandal</td>';
+		constTabContent+='<td><select class="selectWidth">';
+		for(var i in locationDetails.mandalArr)
+		{
+			constTabContent+='<option value='+locationDetails.mandalArr[i].id+'>'+locationDetails.mandalArr[i].value+'</option>';
+		}
+		constTabContent+='</select></td>';
+		//constTabContent+='</tr>';
+		//constTabContent+='<tr>';
+		constTabContent+='<td>Village</td>';
+		constTabContent+='<td><select class="selectWidth">';
+		for(var i in locationDetails.villageArr)
+		{
+			constTabContent+='<option value='+locationDetails.villageArr[i].id+'>'+locationDetails.villageArr[i].value+'</option>';
+		}
+		constTabContent+='</select></td>';
+		constTabContent+='</tr>';
+		constTabContent+='</table>';				
+		constTabContent+='</div>';
+		constTabContent+='<br>';
+		constTabContent+='<div id="constMgmtTabContentDiv_body"></div>';
+		constTabContent+='<div id="constMgmtTabContentDiv_footer"></div>';
+		constTabContent+='</div>';
 		outerTab.addTab( new YAHOO.widget.Tab({ 
 	    label: 'Constituency Management', 
-	    content: 'Constituency Management', 
+	    content:constTabContent, 
 	    active: true 
 		})); 
 
@@ -261,12 +448,12 @@
 		 
 		outerTab.addTab( new YAHOO.widget.Tab({ 
 			label: 'Recommendation Letters', 
-			content: '<div id="recomLettTabContent">Recommendation Letters Content<div>' 
+			content: '<div id="recomLettTabContent">Recommendation Letters Content</div>' 
 		})); 
 
 		outerTab.addTab( new YAHOO.widget.Tab({ 
 			label: 'District E Papers', 
-			content: '<div id="distEPapersTabContent">District E Papers Content' 
+			content: '<div id="distEPapersTabContent">District E Papers Content</div>' 
 		})); 
 
 		outerTab.appendTo('problemMgmtMainDiv'); 
@@ -280,13 +467,20 @@
 		newTabContent+='<div id="newProblemTabContentDiv_body"></div>';
 		newTabContent+='<div id="newProblemTabContentDiv_footer"></div>';
 		newTabContent+='</div>';
-
+		
+		
+				
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-	    label: 'Classified Issues', 
-	    content: newTabContent, 
+	    label: 'New Issues', 
+	    content:newTabContent, 
 	    active: true 
 		})); 
-	 
+		
+		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
+			label: 'Classified Issues', 
+			content: '<div id="classifiedTabContentDiv"><p>Content for Classified Issues</p></div>' 
+		 
+		})); 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
 			label: 'Assigned Issues', 
 			content: '<div id="categorizedTabContentDiv"></div>' 
@@ -294,7 +488,7 @@
 		})); 
 		 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-			label: 'Progress Issues', 
+			label: 'Progress', 
 			content: '<div id="assignedIssuesContentDiv"></div>' 
 		})); 
 
@@ -323,7 +517,50 @@
 												label: "Add New Problem",
 												href:"problemManagementAction.action",
 												container: "newProblemTabContentDiv_head"  
-												}); 
+												}); 			
+	}
+
+	function buildContentMgmtTabView()
+	{	
+		contentMgmtTabs = new YAHOO.widget.TabView(); 
+
+		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+			label: 'Local Leaders',
+			content: '<div id="localLeadersTabContent">Local Leaders Content</div>',
+			active: true
+		}));
+
+		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+			label: 'Local Problems',
+			content: '<div id="localProblemsTabContent">Local Problems Content</div>'
+			
+		}));
+
+		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+			label: 'Local Cast Statistics',
+			content: '<div id="localCastTabContent">Local Cast Statistical Data</div>'
+			
+		}));
+
+		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+			label: 'Local Polictical Changess',
+			content: '<div id="localPoliticalChangesTabContent">Local Political Changes Content</div>'
+			
+		}));
+
+		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+			label: 'Voters By Location/Booth',
+			content: '<div id="votersByLocationTabContent">Voters By Location Content</div>'
+			
+		}));
+
+		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+			label: ' Impacted Voters ',
+			content: '<div id="impactedVoters">Impacted Voters</div>'
+			
+		}));
+				
+		contentMgmtTabs.appendTo('constMgmtTabContentDiv_body');
 	}
 	
 	YAHOO.example.Data = { 
@@ -339,7 +576,6 @@
 	         
 	    
 	} 
-
 	
 	function buildNewProblemsDataTable()
 	{
@@ -476,8 +712,10 @@
 
 </head>
 <body>
+
 <div id="constituencyMgmtHeaderDiv">
 			Constituency Management
+			
 </div>
 
 <div id="constituencyMgmtMainDiv">	
@@ -489,17 +727,65 @@
 	</div>
 	<div id="problemMgmtMainDiv">		
 	</div>
+	<!-- 
+	<div id="constituencyMgmtTabContentDiv"></div>
+	<div id="constMgmtTabLeftDiv"><p>Left Content</p></div>
+	<div id="constMgmtTabCenterDiv"><p>Center Content</p></div>
+		-->	
 </div>
 
 
 
 <script type="text/javascript">
 
+<c:forEach var="state"  items="${stateList}" >
+var ob={
+			id:'${state.id}',
+			value:'${state.name}'
+		};
+locationDetails.stateArr.push(ob);	
+</c:forEach>
+
+
+<c:forEach var="district"  items="${districtList}" >
+var ob={
+			id:'${district.id}',
+			value:'${district.name}'
+		};
+locationDetails.districtArr.push(ob);	
+</c:forEach>
+
+
+<c:forEach var="constituency"  items="${constituencyList}" >
+var ob={
+			id:'${constituency.id}',
+			value:'${constituency.name}'
+		};
+locationDetails.constituencyArr.push(ob);	
+</c:forEach>
+<c:forEach var="mandal"  items="${mandalList}" >
+var ob={
+			id:'${mandal.id}',
+			value:'${mandal.name}'
+		};
+locationDetails.mandalArr.push(ob);	
+</c:forEach>
+<c:forEach var="village"  items="${villageList}" >
+var ob={
+			id:'${village.id}',
+			value:'${village.name}'
+		};
+locationDetails.villageArr.push(ob);	
+</c:forEach>
 buildConstituencyLayout();
 buildOuterTabView();
+//buildConstituencyTabLayout();
 buildProblemMgmtTabView();
+buildContentMgmtTabView();
 
 
+
+	
 <c:forEach var="problem"  items="${constituencyManagementVO.problemManagementVO.problemDetails}" >	
 	var newProblemObj=	{
 							SNo:'<input type="text"></input>',
@@ -518,5 +804,6 @@ buildAssignedIssuesdataTable();
 		
 
 </script>
+
 </body>
 </html>
