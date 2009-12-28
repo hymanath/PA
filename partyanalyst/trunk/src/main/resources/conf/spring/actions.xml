@@ -173,6 +173,9 @@
 	</bean>
 	
 	<bean id="constituencyManagementAction" class="com.itgrids.partyanalyst.web.action.ConstituencyManagementAction" singleton="false">			
+	<property name="crossVotingEstimationService" ref="crossVotingEstimationService"></property>	
+	<property name="cadreManagementService" ref="cadreManagementService"></property>
+	<property name="regionServiceData" ref="regionServiceDataImp" />
 	</bean>
 	
 	<bean id="problemManagementAction" class="com.itgrids.partyanalyst.web.action.ProblemManagementAction" singleton="false">
