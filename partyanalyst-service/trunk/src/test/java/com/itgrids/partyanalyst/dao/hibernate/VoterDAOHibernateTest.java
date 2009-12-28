@@ -6,8 +6,6 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.model.Voter;
-import com.itgrids.partyanalyst.utils.IConstants;
-import com.itgrids.partyanalyst.utils.Util;
 
 public class VoterDAOHibernateTest extends BaseDaoTestCase{
 
