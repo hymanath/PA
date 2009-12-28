@@ -14,7 +14,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.current_session_context_class">thread</prop>
 				<prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
 			</props>
@@ -56,6 +56,23 @@
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituency</value>
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyAssemblyDetails</value>
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyMandal </value>
+				<value>com.itgrids.partyanalyst.model.UserEvents</value>
+				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
+				<value>com.itgrids.partyanalyst.model.Problem</value>
+				<value>com.itgrids.partyanalyst.model.ProblemHistory</value>
+				<value>com.itgrids.partyanalyst.model.ProblemSourceScope</value>
+				<value>com.itgrids.partyanalyst.model.ProblemStatus</value>
+				<value>com.itgrids.partyanalyst.model.ProblemLocation</value>
+				<value>com.itgrids.partyanalyst.model.ProblemSourceScopeConcernedDepartment</value>
+				<value>com.itgrids.partyanalyst.model.ProblemClassification</value>
+				<value>com.itgrids.partyanalyst.model.ProblemFundSource</value>
+				<value>com.itgrids.partyanalyst.model.FundSource</value>
+				<value>com.itgrids.partyanalyst.model.UserCategory</value>
+				<value>com.itgrids.partyanalyst.model.AssignedProblemProgress</value>
+				<value>com.itgrids.partyanalyst.model.ProblemSource</value>
+				<value>com.itgrids.partyanalyst.model.Hamlet</value>
+				<value>com.itgrids.partyanalyst.model.Voter</value>
+				<value>com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter</value>
 				<value>com.itgrids.partyanalyst.model.UserEvents</value>
 				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
 				<value>com.itgrids.partyanalyst.model.PartyImportantDates</value>
