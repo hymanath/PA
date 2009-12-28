@@ -11,9 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -44,6 +44,7 @@ public class Registration implements java.io.Serializable {
 	 private String pincode;
 	 private String accessType;
 	 private String accessValue;
+	 private Set<ProblemSource> problemSources = new HashSet<ProblemSource>(0);
 	 
 	 private Party party;
 	 private String includePartyImpDateStatus;
@@ -82,10 +83,15 @@ public class Registration implements java.io.Serializable {
 		this.userEvents = userEvents;
 	}
 
+	public Registration(Long registrationId) {
+		 this.registrationId = registrationId;
+	}
+	
 	public Registration(String firstName,
 			String middleName, String lastName, String userName, String password,
 			Date dateOfBirth, String email, String phone, String mobile,
-			String address, String gender, String country, String pincode, String accessType, String accessValue) {
+			String address, String gender, String country, String pincode, String accessType, String accessValue,
+			Set<ProblemSource> problemSources) {
 		super();
 		//this.registrationId = registrationId;
 		this.firstName = firstName;
@@ -103,6 +109,7 @@ public class Registration implements java.io.Serializable {
 		this.pincode = pincode;
 		this.accessType = accessType;
 		this.accessValue = accessValue;
+		this.problemSources = problemSources;
 	}
 	
 	@Id
@@ -224,6 +231,17 @@ public class Registration implements java.io.Serializable {
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	public Set<ProblemSource> getProblemSources() {
+		return problemSources;
+	}
+
+	public void setProblemSources(Set<ProblemSource> problemSources) {
+		this.problemSources = problemSources;
+	}
+	 
+	
 	
 	 @Column(name = "access_type", length = 40)
 	 public String getAccessType() {

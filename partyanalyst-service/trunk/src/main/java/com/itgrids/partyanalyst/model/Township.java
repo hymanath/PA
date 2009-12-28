@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.model;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,9 +19,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Township entity. 
@@ -43,6 +41,7 @@ public class Township implements java.io.Serializable {
 	private Long townshipCode;
 	private String townshipType;
 	private Set<Ward> wards = new HashSet<Ward>(0);
+	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
 
 	// Constructors
 
@@ -57,13 +56,15 @@ public class Township implements java.io.Serializable {
 
 	/** full constructor */
 	public Township(Long townshipId, Tehsil tehsil, String townshipName,
-			Long townshipCode, String townshipType, Set<Ward> wards) {
+			Long townshipCode, String townshipType, Set<Ward> wards,
+			Set<ProblemLocation> problemLocations) {
 		this.townshipId = townshipId;
 		this.tehsil = tehsil;
 		this.townshipName = townshipName;
 		this.townshipCode = townshipCode;
 		this.townshipType = townshipType;
 		this.wards = wards;
+		//this.problemLocations = problemLocations;
 	}
 
 	// Property accessors
@@ -121,6 +122,15 @@ public class Township implements java.io.Serializable {
 
 	public void setWards(Set<Ward> wards) {
 		this.wards = wards;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "township")
+	public Set<ProblemLocation> getProblemLocations() {
+		return problemLocations;
+	}
+
+	public void setProblemLocations(Set<ProblemLocation> problemLocations) {
+		this.problemLocations = problemLocations;
 	}
 
 }
