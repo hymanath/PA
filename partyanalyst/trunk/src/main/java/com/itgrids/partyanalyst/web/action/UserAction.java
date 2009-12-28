@@ -17,7 +17,6 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	
 	
 	private HttpServletRequest request;
-	private UserService userService;
 	private HttpSession session;
 	private List<String> type = new ArrayList<String>();
 	private List<String> gender = new ArrayList<String>();
@@ -27,10 +26,6 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	private List<SelectOptionVO> parties;
 	private IStaticDataService staticDataService;
 	
-	
-	public void setUserService(UserService userService){
-		this.userService  = userService;
-	}
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		session = request.getSession();
