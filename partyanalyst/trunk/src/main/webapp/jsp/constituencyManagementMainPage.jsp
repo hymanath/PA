@@ -175,15 +175,16 @@
 
 		#statisticalDataMainDiv
 		{
-			background-color:white;
-			height:100%;
-			width:100%;
+			background-color:#EDF5FF;
+			border:2px solid #99A8B7;
+			height:97%;
 			text-align:left;
+			width:99%;
 		}
 		#statisticalDataHeadDiv
 		{
 			padding:5px;
-			background-color:#EFEFEF;
+			background-color:#B2C2D2;
 		}
 		#statisticalDataBodyDiv
 		{
@@ -208,7 +209,11 @@
 			margin-top:10px;
 			display:none;
 		}
-		
+		.yui-skin-sam .yui-dt table 
+		{
+			width:100%;
+		}
+
 	</style>
 
 	<script type="text/javascript">
@@ -579,7 +584,7 @@
 		}));
 
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
-			label: 'Local Polictical Changess',
+			label: 'Local Polictical Changes',
 			content: '<div id="localPoliticalChangesTabContent">Local Political Changes Content</div>'
 			
 		}));
