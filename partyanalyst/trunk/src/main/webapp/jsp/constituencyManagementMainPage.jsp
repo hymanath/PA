@@ -203,7 +203,11 @@
 		{
 			width:120px;
 		}
-		
+		#ajaxImgSpan
+		{
+			margin-top:10px;
+			display:none;
+		}
 		
 	</style>
 
@@ -290,15 +294,25 @@
 		var taskValue= YAHOO.lang.JSON.parse(results.task);
 
 		var selectedValue=taskValue.reportLevel;
+		
 		var selectedElmt;
 		if(selectedValue=="state")
 		{
 			selectedElmt=document.getElementById("districtField");
 		}	
-		else if(selectedValue=="district")
+		else if(selectedValue=="constituency")
 		{
-			selectedElmt=document.getElementById("constituencyField");
+			selectedElmt=document.getElementById("constituencyField");			
 		}
+		else if(selectedValue=="Constituencies")
+		{
+			selectedElmt=document.getElementById("mandalField");
+		}
+		else if(selectedValue=="mandal")
+		{
+			selectedElmt=document.getElementById("villageField");
+		}
+		
 
 		var len=selectedElmt.length;			
 		for(i=len-1;i>=0;i--)
@@ -328,9 +342,13 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText);								
+								myResults = YAHOO.lang.JSON.parse(o.responseText);	
+								var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
+								ajaxImgSpanElmt.style.display = 'none';						
 								buildSelectOption(myResults);									
 							}catch (e) {   
+								var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
+								ajaxImgSpanElmt.style.display = 'none';
 							   	alert("Invalid JSON result" + e);   
 							}  
  		               },
@@ -345,7 +363,8 @@
 	
 	function getnextList(name,value,choice)
 	{
-
+		var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
+		ajaxImgSpanElmt.style.display = 'block';
 		var jsObj=
 			{
 					type:"cadreDetails",
@@ -357,13 +376,27 @@
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
 			callAjax(rparam);
 	}
-
 	function getConstituencyList(name,value,choice)
 	{
 		var jsObj=
 			{
 					type:"cadreDetails",
 					reportLevel:"constituency",
+					selected:value,
+					changed:choice
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+			callAjax(rparam);
+	}
+	function getMandalList(name,value,choice)
+	{
+		var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
+		ajaxImgSpanElmt.style.display = 'block';
+		var jsObj=
+			{
+					type:"cadreDetails",
+					reportLevel:"Constituencies",
 					selected:value,
 					changed:choice
 			}
@@ -398,7 +431,7 @@
 		//constTabContent+='</tr>';
 		//constTabContent+='<tr>';
 		constTabContent+='<td>Constituency</td>';
-		constTabContent+='<td><select id="constituencyField" class="selectWidth">';
+		constTabContent+='<td><select id="constituencyField" class="selectWidth" name="constituency"  onchange="getMandalList(this.name,this.options[this.selectedIndex].value,false)">';
 		for(var i in locationDetails.constituencyArr)
 		{
 			constTabContent+='<option value='+locationDetails.constituencyArr[i].id+'>'+locationDetails.constituencyArr[i].value+'</option>';
@@ -407,7 +440,7 @@
 		constTabContent+='</tr>';
 		constTabContent+='<tr>';
 		constTabContent+='<td>Mandal</td>';
-		constTabContent+='<td><select class="selectWidth">';
+		constTabContent+='<td><select id="mandalField" class="selectWidth" name="mandal" onchange="getnextList(this.name,this.options[this.selectedIndex].value,false)">';
 		for(var i in locationDetails.mandalArr)
 		{
 			constTabContent+='<option value='+locationDetails.mandalArr[i].id+'>'+locationDetails.mandalArr[i].value+'</option>';
@@ -416,13 +449,16 @@
 		//constTabContent+='</tr>';
 		//constTabContent+='<tr>';
 		constTabContent+='<td>Village</td>';
-		constTabContent+='<td><select class="selectWidth">';
+		constTabContent+='<td><select class="selectWidth" id="villageField">';
 		for(var i in locationDetails.villageArr)
 		{
 			constTabContent+='<option value='+locationDetails.villageArr[i].id+'>'+locationDetails.villageArr[i].value+'</option>';
 		}
 		constTabContent+='</select></td>';
 		constTabContent+='</tr>';
+		constTabContent+='<tr><td colspan="6" align="center">';
+		constTabContent+='<span id="ajaxImgSpan"><img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/></span>';
+		constTabContent+='</td></tr>';
 		constTabContent+='</table>';				
 		constTabContent+='</div>';
 		constTabContent+='<br>';
@@ -520,47 +556,47 @@
 												}); 			
 	}
 
-	function buildContentMgmtTabView()
+	function buildConstMgmtTabView()
 	{	
-		contentMgmtTabs = new YAHOO.widget.TabView(); 
+		constMgmtTabs = new YAHOO.widget.TabView(); 
 
-		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+		constMgmtTabs.addTab( new YAHOO.widget.Tab({
 			label: 'Local Leaders',
-			content: '<div id="localLeadersTabContent">Local Leaders Content</div>',
-			active: true
+			content: '<div id="localLeadersTabContent"></div>'
+			
 		}));
 
-		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+		constMgmtTabs.addTab( new YAHOO.widget.Tab({
 			label: 'Local Problems',
-			content: '<div id="localProblemsTabContent">Local Problems Content</div>'
+			content: '<div id="localProblemsTabContent"></div>'
 			
 		}));
 
-		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+		constMgmtTabs.addTab( new YAHOO.widget.Tab({
 			label: 'Local Cast Statistics',
-			content: '<div id="localCastTabContent">Local Cast Statistical Data</div>'
+			content: '<div id="localCastTabContent"></div>'
 			
 		}));
 
-		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+		constMgmtTabs.addTab( new YAHOO.widget.Tab({
 			label: 'Local Polictical Changess',
 			content: '<div id="localPoliticalChangesTabContent">Local Political Changes Content</div>'
 			
 		}));
 
-		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+		constMgmtTabs.addTab( new YAHOO.widget.Tab({
 			label: 'Voters By Location/Booth',
-			content: '<div id="votersByLocationTabContent">Voters By Location Content</div>'
+			content: '<div id="votersByLocationTabContent"></div>'
 			
 		}));
 
-		contentMgmtTabs.addTab( new YAHOO.widget.Tab({
+		constMgmtTabs.addTab( new YAHOO.widget.Tab({
 			label: ' Impacted Voters ',
 			content: '<div id="impactedVoters">Impacted Voters</div>'
 			
 		}));
 				
-		contentMgmtTabs.appendTo('constMgmtTabContentDiv_body');
+		constMgmtTabs.appendTo('constMgmtTabContentDiv_body');
 	}
 	
 	YAHOO.example.Data = { 
@@ -572,11 +608,48 @@
 	        {SNo:"<input type='checkbox' id='check_1'></input>", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(1978, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
 	        {SNo:"<input type='checkbox' id='check_1'></input>", Title:"AarogyaSri",Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate:new Date("March 11,2009") , Location:"Eluru",Source:"User",Status:"Categorized"}, 
 			{SNo:"<input type='checkbox' id='check_1'></input>", Title:"Delay in payment of Exgratia", Description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party ",IdentifiedDate:new Date(1980, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}		
-	    ] 
-	         
-	    
-	} 
-	
+	    ], 
+		    leaders: [ 
+				        {SNo: "1", Name: "Ramachandra", Occupation: "Farmer",Position: "Sarpach", InfluenceScope: "village",ContactNumber: "9989922789",Hamlet: "IsakaPalli"},
+				        {SNo: "2", Name: "Ravi", Occupation: "Teacher",Position: "Ward Member", InfluenceScope: "village",ContactNumber: "9246240223",Hamlet: "PalliPadu"},
+				        {SNo: "3", Name: "Narasimha Reddy", Occupation: "NA",Position: "ZPTC", InfluenceScope: "Mandal",ContactNumber: "9885195800",Hamlet: "Allur"},
+				        {SNo: "4", Name: "Mohan", Occupation: "NA",Position: "MPTC", InfluenceScope: "village",ContactNumber: "9848098480",Hamlet: "RayaPeta"},
+				        {SNo: "5", Name: "Sai", Occupation: "Business",Position: "Ward Member", InfluenceScope: "Mandal",ContactNumber: "9848012345",Hamlet: "IsakaPalli"},
+				        {SNo: "6", Name: "Siva", Occupation: "Farmer",Position: "MPTC", InfluenceScope: "Mandal",ContactNumber: "9849012345",Hamlet: "GopalaPuram"}
+				         
+		],
+
+			localproblems: [ 
+				        {SNo:"1", Hamlet:"Hamlet", DevelopmentActivitiesCompleted: "Development Activities Completed",DevelopmentActivitiesToBeCompleleted:"Development Activities To Be Compleleted", SchemesImplemented:"Schemes Implemented",SchemesToBeImplemented:"Schemes To Be Implemented"} 
+		],
+
+			localcaststats: [
+						{SNo: "1", Cast: "Reddy", CastCategory: "OC", CasteSubCategory: "NA", CastePopulation: "150", Hamlet: "IsakaPalli"},
+						{SNo: "2", Cast: "Rajulu", CastCategory: "OC", CasteSubCategory: "NA", CastePopulation: "200", Hamlet: "IsakaPalli"},
+						{SNo: "3", Cast: "Muslim", CastCategory: "BC", CasteSubCategory: "NA", CastePopulation: "150", Hamlet: "IsakaPalli"},
+						{SNo: "4", Cast: "Yanadi", CastCategory: "ST", CasteSubCategory: "NA",CastePopulation: "100", Hamlet: "IsakaPalli"},
+						{SNo: "5", Cast: "Mala", CastCategory: "SC", CasteSubCategory: "NA", CastePopulation: "50", Hamlet: "IsakaPalli"},
+						{SNo: "1", Cast: "Reddy", CastCategory: "OC", CasteSubCategory: "NA", CastePopulation: "200", Hamlet: "Allur"},
+						{SNo: "2", Cast: "Rajulu", CastCategory: "OC", CasteSubCategory: "NA", CastePopulation: "150", Hamlet: "Allur"},
+						{SNo: "3", Cast: "Muslim", CastCategory: "BC", CasteSubCategory: "NA", CastePopulation: "100", Hamlet: "Allur"},
+						{SNo: "4", Cast: "Yanadi", CastCategory: "ST", CasteSubCategory: "NA",CastePopulation: "800", Hamlet: "Allur"},
+						{SNo: "5", Cast: "Mala", CastCategory: "SC", CasteSubCategory: "NA", CastePopulation: "50", Hamlet: "Allur"}		      
+		],
+			votersylocbth: [
+			    		
+			    		{SNo: "1", FirstName: "Ramachandra" ,LastName: "Reddy", Gender: "M", Age: "20", Cast: "Reddy", VoterIDCardNumber: "AAGC12345"},
+			    		{SNo: "2", FirstName: "Narasamma" ,LastName: "R", Gender: "F", Age: "52", Cast: "Rajulu", VoterIDCardNumber: "AAGC12345"},
+			    		{SNo: "3", FirstName: "Sayyad" ,LastName: "Khan", Gender: "M", Age: "43", Cast: "Muslim", VoterIDCardNumber: "AAGC12345"},
+			    		{SNo: "4", FirstName: "Rani" ,LastName: "K", Gender: "F", Age: "32", Cast: "Yanadi", VoterIDCardNumber: "AAGC12345"},
+			    		{SNo: "5", FirstName: "Rajani" ,LastName: "G", Gender: "F", Age: "24", Cast: "Mala", VoterIDCardNumber: "AAGC12345"}
+			    		
+
+		]
+			
+		}					
+	 
+
+		
 	function buildNewProblemsDataTable()
 	{
 		
@@ -670,7 +743,7 @@
 	   
 	}
 
-	function buildAssignedIssuesdataTable()
+	function buildAssignedIssuesDataTable()
 	{
 			var myColumnDefs = [ 
 	            {key:"SNo"}, 
@@ -706,7 +779,142 @@
 	      }; 
 	   
 	}
+	
+	function buildLocalLeadersDataTable()
+	{
+		var myColumnDefs = [ 
+		    	            {key:"SNo", formatter:"number", sortable:true}, 
+		    	            {key:"Name", sortable:true}, 
+		    	            {key:"Occupation"}, 
+		    				{key:"Position"},
+		    				{key:"InfluenceScope", sortable:true},	
+		    				{key:"ContactNumber"},
+		    				{key:"Hamlet", sortable:true}
+		    				
+		    	        ]; 
+		var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.leaders); 
+        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+        myDataSource.responseSchema = { 
+            fields: [{key:"SNo", parser:"number"},"Name","Occupation","Position","InfluenceScope","ContactNumber","Hamlet"] 
+        };
 
+        
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 5 
+			    }) 
+				};
+
+		var myDataTable =  new YAHOO.widget.DataTable("localLeadersTabContent", myColumnDefs, myDataSource, myConfigs);
+		constMgmtTabs.getTab(0).addListener("click", function() {myDataTable.onShow()});
+
+			return {
+				oDS: myDataSource,
+				oDT: myDataTable
+			};
+	}
+
+	function buildLocalProblemsDataTable()
+	{
+		var myColumnDefs = [ 
+		    	            {key:"SNo", formatter:"number", sortable:true}, 
+		    	            {key:"Hamlet", sortable:true}, 
+		    	            {key:"DevelopmentActivitiesCompleted"}, 
+		    				{key:"DevelopmentActivitiesToBeCompleleted"},
+		    				{key:"SchemesImplemented", sortable:true},	
+		    				{key:"SchemesToBeImplemented"}
+		    				
+		    				
+		    	        ]; 
+		var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.localproblems); 
+        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+        myDataSource.responseSchema = { 
+            fields: [{key:"SNo", parser:"number"},"Hamlet","DevelopmentActivitiesCompleted","DevelopmentActivitiesToBeCompleleted","SchemesImplemented","SchemesToBeImplemented"] 
+        };
+
+        
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 5 
+			    }) 
+				};
+
+		var myDataTable =  new YAHOO.widget.DataTable("localProblemsTabContent", myColumnDefs, myDataSource, myConfigs);
+		constMgmtTabs.getTab(1).addListener("click", function() {myDataTable.onShow()});
+
+			return {
+				oDS: myDataSource,
+				oDT: myDataTable
+			};
+	} 
+	
+	function buildLocalCastStatisticsDataTable()
+	{
+		var myColumnDefs = [ 
+		    	            {key:"SNo", formatter:"number", sortable:true}, 
+		    	            {key:"Cast", sortable:true}, 
+		    	            {key:"CastCategory"}, 
+		    				{key:"CasteSubCategory"},
+		    				{key:"CastePopulation"},
+		    				{key:"Hamlet", sortable:true}	
+		    					    			    				
+		    	        ]; 
+		var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.localcaststats); 
+        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+        myDataSource.responseSchema = { 
+            fields: [{key:"SNo", parser:"number"},"Cast","CastCategory","CasteSubCategory","CastePopulation","Hamlet"] 
+        };
+
+        
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 5 
+			    }) 
+				};
+
+		var myDataTable =  new YAHOO.widget.DataTable("localCastTabContent", myColumnDefs, myDataSource, myConfigs);
+		constMgmtTabs.getTab(1).addListener("click", function() {myDataTable.onShow()});
+
+			return {
+				oDS: myDataSource,
+				oDT: myDataTable
+			};
+	} 
+
+	function buildVotersByLocBoothDataTable()
+	{
+		var myColumnDefs = [ 
+		    	            {key:"SNo", formatter:"number", sortable:true}, 
+		    	            {key:"FirstName", sortable:true}, 
+		    	            {key:"LastName"}, 
+		    				{key:"Gender"},
+		    				{key:"Age"},
+		    				{key:"Cast", sortable:true},
+		    				{key:"VoterIDCardNumber"}	
+		    					    			    				
+		    	        ]; 
+		var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.votersylocbth); 
+        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+        myDataSource.responseSchema = { 
+            fields: [{key:"SNo", parser:"number"},"FirstName","LastName","Gender","Age","Cast","VoterIDCardNumber"] 
+        };
+
+        
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 5 
+			    }) 
+				};
+
+		var myDataTable =  new YAHOO.widget.DataTable("votersByLocationTabContent", myColumnDefs, myDataSource, myConfigs);
+		constMgmtTabs.getTab(1).addListener("click", function() {myDataTable.onShow()});
+
+			return {
+				oDS: myDataSource,
+				oDT: myDataTable
+			};
+	}
+	
 </script>
 
 
@@ -781,9 +989,7 @@ buildConstituencyLayout();
 buildOuterTabView();
 //buildConstituencyTabLayout();
 buildProblemMgmtTabView();
-buildContentMgmtTabView();
-
-
+buildConstMgmtTabView();
 
 	
 <c:forEach var="problem"  items="${constituencyManagementVO.problemManagementVO.problemDetails}" >	
@@ -798,9 +1004,14 @@ buildContentMgmtTabView();
 	problemsMainObj.newProblemsArr.push(newProblemObj);											
 </c:forEach>
 
+
 buildNewProblemsDataTable();
 buildcategorizedDataTable();
-buildAssignedIssuesdataTable();	
+buildAssignedIssuesDataTable();	
+buildLocalLeadersDataTable();
+buildLocalProblemsDataTable();
+buildLocalCastStatisticsDataTable();
+buildVotersByLocBoothDataTable();
 		
 
 </script>
