@@ -1,3 +1,10 @@
+/* 
+ * Copyright (c) 2009 IT Grids.
+ * All Rights Reserved.
+ *
+ * IT Grids Confidential Information.
+ * Created on September 23, 2009
+ */
 package com.itgrids.partyanalyst.excel;
 
 import java.io.File;
@@ -13,8 +20,13 @@ import jxl.read.biff.BiffException;
 
 import org.apache.commons.lang.StringUtils;
 
+import common.Logger;
+
 
 public class CsvReaderNew implements IExcelReader{
+	
+	private static Logger logger = Logger.getLogger(CsvReaderNew.class);
+	
 	private ConstituencyBlock constituencyBlock;
 	private CandidateElectionResult candidateElectionResult;
 	private List<ConstituencyBlock> constituencyBlocks;
@@ -44,8 +56,10 @@ public class CsvReaderNew implements IExcelReader{
 			if(constituencyBlocks!=null && constituencyBlocks.size()>0){
 				setConstituencyBlocks(constituencyBlocks);
 			}else
+				
+				logger.debug("!!!!!!!!!!!!!!!!!!!!!!No constituency Blocks are created....");
 				System.out.println("!!!!!!!!!!!!!!!!!!!!!!No constituency Blocks are created....");
-			//		System.out.println("Completed in readCSVFileAndStoreIntoDB");
+			   //System.out.println("Completed in readCSVFileAndStoreIntoDB");
 		}catch(IOException ioe){
 			throw new CsvException(ioe.getMessage());
 		}catch(BiffException ioe){
@@ -121,12 +135,13 @@ public class CsvReaderNew implements IExcelReader{
 						constituencyBlock=checkConstituencyForReservation(str);
 /*							new ConstituencyBlock();
 						constituencyBlock.setConstituencyName(constituencyName);*/
+						logger.debug("Uploading Data For " + constituencyName + " ......");
 						break;
 					}else if(str.startsWith(ConstituencyElectionResultCSVColumnNames.ELECTORS))
 					{
 						constituencyBlock.setTotalElectors(validateNumericColumn(csvColumnMapperObj.getExcelColumn2()));
-						constituencyBlock.setValidVotes(validateNumericColumn(csvColumnMapperObj.getExcelColumn9()));
-						constituencyBlock.setTotalVotesPolled(validateNumericColumn1(csvColumnMapperObj.getExcelColumn3()));
+						constituencyBlock.setValidVotes(validateNumericColumn(csvColumnMapperObj.getExcelColumn8()));
+						constituencyBlock.setTotalVotesPolled(validateNumericColumn(csvColumnMapperObj.getExcelColumn9()));
 						constituencyBlock.setCandidateElectionlst(candidateElectionResults);
 						constituencyBlocks.add(constituencyBlock);
 						break;
@@ -171,6 +186,7 @@ public class CsvReaderNew implements IExcelReader{
 
 	public Double validateNumericColumn1(String columnValue){
 		Double tempDouble= new Double(0);
+		logger.debug("Column value inside validateNumericColumn1 :" + columnValue);
 		if(StringUtils.isNotEmpty(columnValue.split(":")[1])){
 			String tempValue=StringUtils.replace(columnValue, ",", "");
 			if(StringUtils.isNumeric(tempValue)){
@@ -183,6 +199,7 @@ public class CsvReaderNew implements IExcelReader{
 	
 	public Double validateNumericColumn(String columnValue){
 		Double tempDouble= new Double(0);
+		logger.debug("Column value inside validateNumericColumn :" + columnValue);
 		if(StringUtils.isNotEmpty(columnValue)){
 			String tempValue=StringUtils.replace(columnValue, ",", "");
 			if(StringUtils.isNumeric(tempValue)){
