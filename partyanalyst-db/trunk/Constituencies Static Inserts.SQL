@@ -2379,7 +2379,7 @@ insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituenc
 values(91, (select constituency_id from constituency where upper(name)=upper('TUNGATURTHI') and district_id =8 and election_scope_id=2 ),2009 ,96)
 GO
 insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(92, (select constituency_id from constituency where upper(name)=upper('Devarakonda') and district_id =8 and election_scope_id=2 ),2009 ,86)
+values(92, (select constituency_id from constituency where upper(name)=upper('DEVERKONDA') and district_id =8 and election_scope_id=2 ),2009 ,86)
 GO
 insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
 values(93, (select constituency_id from constituency where upper(name)=upper('Huzurnagar') and district_id =8 and election_scope_id=2 ),2009 ,89)
@@ -4549,7 +4549,7 @@ insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_const
 values(183,135,507,FALSE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(184,,507,FALSE)
+values(184,135,507,FALSE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(185,273,997,TRUE)
@@ -4798,13 +4798,13 @@ insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_const
 values(266,183,644,TRUE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(267,,517,TRUE)
+values(267,137,517,TRUE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(268,137,517,FALSE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(269,,517,FALSE)
+values(269,137,517,FALSE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(270,261,953,FALSE)
@@ -4873,10 +4873,10 @@ insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_const
 values(291,257,966,FALSE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(292,10,39,FALSEALSE)
+values(292,10,39,FALSE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(293,9,39,FALSEALSE)
+values(293,9,39,FALSE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(294,54,215,TRUE)
@@ -5029,11 +5029,9 @@ insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_const
 values(343,181,689,FALSE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(344,,508,FALSE)
+values(344,182,508,FALSE)
 GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(345,,508,FALSE)
-GO
+
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(346,124,479,TRUE)
 GO
@@ -5143,7 +5141,7 @@ insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_const
 values(381,275,1029,TRUE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(382,8,6,FALSEALSE)
+values(382,8,6,FALS)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(383,7,6,FALSE)
@@ -5172,9 +5170,7 @@ GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(391,267,996,TRUE)
 GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(392,,486,TRUE)
-GO
+
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(393,111,296,FALSE)
 GO
@@ -5190,9 +5186,7 @@ GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(397,269,986,FALSE)
 GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(398,,506,TRUE)
-GO
+
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(399,93,335,FALSE)
 GO
@@ -5328,11 +5322,9 @@ GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(443,127,470,TRUE)
 GO
+
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(444,,513,TRUE)
-GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(445,,513,TRUE)
+values(445,133,513,TRUE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(446,250,892,TRUE)
@@ -5361,9 +5353,7 @@ GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(454,40,187,FALSE)
 GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(455,,488,TRUE)
-GO
+
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(456,13,69,TRUE)
 GO
@@ -5629,9 +5619,7 @@ GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(544,85,287,TRUE)
 GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(545,,485,FALSE)
-GO
+
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(546,131,485,FALSE)
 GO
@@ -5722,9 +5710,7 @@ GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(575,166,604,TRUE)
 GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(576,,512,TRUE)
-GO
+
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(577,84,238,TRUE)
 GO
@@ -5800,21 +5786,11 @@ GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(601,255,936,FALSE)
 GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(602,,487,TRUE)
-GO
+
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(603,113,433,TRUE)
 GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(604,,511,FALSE)
-GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(605,,511,FALSE)
-GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(606,,511,FALSE)
-GO
+
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(607,123,465,FALSE)
 GO
@@ -7841,10 +7817,1911 @@ insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_const
 values(1283,214,746,TRUE)
 GO
 
+				
 
 
---2004 delimitation scripts 1
 
+
+
+ 
+ insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(301, (select constituency_id from constituency where upper(name)=upper('ALLUR') and district_id =19 and election_scope_id=2 ),2004 ,126)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(302, (select constituency_id from constituency where upper(name)=upper('ATMAKUR') and district_id =19 and election_scope_id=2 ),2004 ,128)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(303, (select constituency_id from constituency where upper(name)=upper('GUDUR') and district_id =19 and election_scope_id=2 ),2004 ,132)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(304, (select constituency_id from constituency where upper(name)=upper('KAVALI') and district_id =19 and election_scope_id=2 ),2004 ,125)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(305, (select constituency_id from constituency where upper(name)=upper('KOVUR') and district_id =19 and election_scope_id=2 ),2004 ,127)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(306, (select constituency_id from constituency where upper(name)=upper('NELLORE') and district_id =19 and election_scope_id=2 ),2004 ,130)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(307, (select constituency_id from constituency where upper(name)=upper('RAPUR') and district_id =19 and election_scope_id=2 ),2004 ,129)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(308, (select constituency_id from constituency where upper(name)=upper('SATYAVEDU') and district_id =23 and election_scope_id=2 ),2004 ,136)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(309, (select constituency_id from constituency where upper(name)=upper('SULLURPET') and district_id =19 and election_scope_id=2 ),2004 ,133)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(310, (select constituency_id from constituency where upper(name)=upper('SARVEPALLI') and district_id =19 and election_scope_id=2 ),2004 ,131)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(311, (select constituency_id from constituency where upper(name)=upper('UDAYAGIRI') and district_id =19 and election_scope_id=2 ),2004 ,124)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(312, (select constituency_id from constituency where upper(name)=upper('VENKATAGIRI') and district_id =19 and election_scope_id=2 ),2004 ,134)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(313, (select constituency_id from constituency where upper(name)=upper('SATYAVEDU') and district_id =23 and election_scope_id=2 ),2004 ,136)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(314, (select constituency_id from constituency where upper(name)=upper('SRIKALAHASTI') and district_id =23 and election_scope_id=2 ),2004 ,135)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(315, (select constituency_id from constituency where upper(name)=upper('NAGARI') and district_id =23 and election_scope_id=2 ),2004 ,137)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(316, (select constituency_id from constituency where upper(name)=upper('TIRUPATI') and district_id =23 and election_scope_id=2 ),2004 ,139)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(317, (select constituency_id from constituency where upper(name)=upper('ONGOLE') and district_id =18 and election_scope_id=2 ),2004 ,115)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(318, (select constituency_id from constituency where upper(name)=upper('SANTHANUTHALAPADU') and district_id =18 and election_scope_id=2 ),2004 ,116)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(319, (select constituency_id from constituency where upper(name)=upper('KANIGIRI') and district_id =18 and election_scope_id=2 ),2004 ,118)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(320, (select constituency_id from constituency where upper(name)=upper('KANDUKUR') and district_id =18 and election_scope_id=2 ),2004 ,117)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(321, (select constituency_id from constituency where upper(name)=upper('KONDEPI') and district_id =18 and election_scope_id=2 ),2004 ,119)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(322, (select constituency_id from constituency where upper(name)=upper('ADILABAD') and district_id =1 and election_scope_id=2 ),2004 ,242)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(323, (select constituency_id from constituency where upper(name)=upper('ASIFABAD') and district_id =1 and election_scope_id=2 ),2004 ,244)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(324, (select constituency_id from constituency where upper(name)=upper('BOATH') and district_id =1 and election_scope_id=2 ),2004 ,241)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(325, (select constituency_id from constituency where upper(name)=upper('CHENNUR') and district_id =1 and election_scope_id=2 ),2004 ,247)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(326, (select constituency_id from constituency where upper(name)=upper('KHANAPUR') and district_id =1 and election_scope_id=2 ),2004 ,243)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(327, (select constituency_id from constituency where upper(name)=upper('MUDHOLE') and district_id =1 and election_scope_id=2 ),2004 ,239)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(328, (select constituency_id from constituency where upper(name)=upper('NIRMAL') and district_id =1 and election_scope_id=2 ),2004 ,240)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(329, (select constituency_id from constituency where upper(name)=upper('SIRPUR') and district_id =1 and election_scope_id=2 ),2004 ,246)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(330, (select constituency_id from constituency where upper(name)=upper('LUXETTIPET') and district_id =1 and election_scope_id=2 ),2004 ,245)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(331, (select constituency_id from constituency where upper(name)=upper('ARMOOR') and district_id =2 and election_scope_id=2 ),2004 ,231)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(332, (select constituency_id from constituency where upper(name)=upper('BALKONDA') and district_id =2 and election_scope_id=2 ),2004 ,230)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(333, (select constituency_id from constituency where upper(name)=upper('BANSWADA') and district_id =2 and election_scope_id=2 ),2004 ,235)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(334, (select constituency_id from constituency where upper(name)=upper('BODHAN') and district_id =2 and election_scope_id=2 ),2004 ,236)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(335, (select constituency_id from constituency where upper(name)=upper('DICHPALLI') and district_id =2 and election_scope_id=2 ),2004 ,238)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(336, (select constituency_id from constituency where upper(name)=upper('JUKKAL') and district_id =2 and election_scope_id=2 ),2004 ,234)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(337, (select constituency_id from constituency where upper(name)=upper('KAMAREDDY') and district_id =2 and election_scope_id=2 ),2004 ,232)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(338, (select constituency_id from constituency where upper(name)=upper('NIZAMABAD') and district_id =2 and election_scope_id=2 ),2004 ,237)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(339, (select constituency_id from constituency where upper(name)=upper('YELLAREDDY') and district_id =2 and election_scope_id=2 ),2004 ,233)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(340, (select constituency_id from constituency where upper(name)=upper('BUGGARAM') and district_id =3 and election_scope_id=2 ),2004 ,257)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(341, (select constituency_id from constituency where upper(name)=upper('CHOPPADANDI') and district_id =3 and election_scope_id=2 ),2004 ,255)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(342, (select constituency_id from constituency where upper(name)=upper('HUZURABAD') and district_id =3 and election_scope_id=2 ),2004 ,251)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(343, (select constituency_id from constituency where upper(name)=upper('INDURTHI') and district_id =3 and election_scope_id=2 ),2004 ,253)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(344, (select constituency_id from constituency where upper(name)=upper('JAGTIAL') and district_id =3 and election_scope_id=2 ),2004 ,256)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(345, (select constituency_id from constituency where upper(name)=upper('KARIMNAGAR') and district_id =3 and election_scope_id=2 ),2004 ,254)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(346, (select constituency_id from constituency where upper(name)=upper('KAMALAPUR') and district_id =3 and election_scope_id=2 ),2004 ,252)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(347, (select constituency_id from constituency where upper(name)=upper('MANTHANI') and district_id =3 and election_scope_id=2 ),2004 ,248)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(348, (select constituency_id from constituency where upper(name)=upper('METPALLI') and district_id =3 and election_scope_id=2 ),2004 ,258)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(349, (select constituency_id from constituency where upper(name)=upper('MYDARAM') and district_id =3 and election_scope_id=2 ),2004 ,250)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(350, (select constituency_id from constituency where upper(name)=upper('NARELLA') and district_id =3 and election_scope_id=2 ),2004 ,260)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(351, (select constituency_id from constituency where upper(name)=upper('PEDDAPALLI') and district_id =3 and election_scope_id=2 ),2004 ,249)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(352, (select constituency_id from constituency where upper(name)=upper('SIRCILLA') and district_id =3 and election_scope_id=2 ),2004 ,259)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(353, (select constituency_id from constituency where upper(name)=upper('ANDOLE') and district_id =4 and election_scope_id=2 ),2004 ,229)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(354, (select constituency_id from constituency where upper(name)=upper('DOMMAT') and district_id =4 and election_scope_id=2 ),2004 ,221)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(355, (select constituency_id from constituency where upper(name)=upper('GAJWEL') and district_id =4 and election_scope_id=2 ),2004 ,222)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(356, (select constituency_id from constituency where upper(name)=upper('MEDAK') and district_id =4 and election_scope_id=2 ),2004 ,227)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(357, (select constituency_id from constituency where upper(name)=upper('NARAYANKHED') and district_id =4 and election_scope_id=2 ),2004 ,226)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(358, (select constituency_id from constituency where upper(name)=upper('NARSAPUR') and district_id =4 and election_scope_id=2 ),2004 ,223)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(359, (select constituency_id from constituency where upper(name)=upper('RAMAYAMPET') and district_id =4 and election_scope_id=2 ),2004 ,228)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(360, (select constituency_id from constituency where upper(name)=upper('SANGAREDDY') and district_id =4 and election_scope_id=2 ),2004 ,224)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(361, (select constituency_id from constituency where upper(name)=upper('SIDDIPET') and district_id =4 and election_scope_id=2 ),2004 ,220)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(362, (select constituency_id from constituency where upper(name)=upper('ZAHIRABAD') and district_id =4 and election_scope_id=2 ),2004 ,225)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(363, (select constituency_id from constituency where upper(name)=upper('ASAFNAGAR') and district_id =5 and election_scope_id=2 ),2004 ,213)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(364, (select constituency_id from constituency where upper(name)=upper('CHANDRAYANGUTTA') and district_id =5 and election_scope_id=2 ),2004 ,217)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(365, (select constituency_id from constituency where upper(name)=upper('CHARMINAR') and district_id =5 and election_scope_id=2 ),2004 ,218)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(366, (select constituency_id from constituency where upper(name)=upper('HIMAYATNAGAR') and district_id =5 and election_scope_id=2 ),2004 ,207)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(367, (select constituency_id from constituency where upper(name)=upper('KARWAN') and district_id =5 and election_scope_id=2 ),2004 ,215)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(368, (select constituency_id from constituency where upper(name)=upper('KHAIRATABAD') and district_id =5 and election_scope_id=2 ),2004 ,210)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(369, (select constituency_id from constituency where upper(name)=upper('MAHARAJGUNJ') and district_id =5 and election_scope_id=2 ),2004 ,214)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(370, (select constituency_id from constituency where upper(name)=upper('MALAKPET') and district_id =5 and election_scope_id=2 ),2004 ,212)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(371, (select constituency_id from constituency where upper(name)=upper('MUSHEERABAD') and district_id =5 and election_scope_id=2 ),2004 ,206)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(372, (select constituency_id from constituency where upper(name)=upper('SANATHNAGAR') and district_id =5 and election_scope_id=2 ),2004 ,208)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(373, (select constituency_id from constituency where upper(name)=upper('SECUNDERABAD') and district_id =5 and election_scope_id=2 ),2004 ,209)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(374, (select constituency_id from constituency where upper(name)=upper('SECUNDERABAD CANTONMENT') and district_id =5 and election_scope_id=2 ),2004 ,211)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(375, (select constituency_id from constituency where upper(name)=upper('YAKUTPURA') and district_id =5 and election_scope_id=2 ),2004 ,216)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(376, (select constituency_id from constituency where upper(name)=upper('CHEVELLA') and district_id =6 and election_scope_id=2 ),2004 ,204)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(377, (select constituency_id from constituency where upper(name)=upper('IBRAHIMPATNAM') and district_id =6 and election_scope_id=2 ),2004 ,205)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(378, (select constituency_id from constituency where upper(name)=upper('MEDCHAL') and district_id =6 and election_scope_id=2 ),2004 ,219)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(379, (select constituency_id from constituency where upper(name)=upper('PARGI') and district_id =6 and election_scope_id=2 ),2004 ,203)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(380, (select constituency_id from constituency where upper(name)=upper('TANDUR') and district_id =6 and election_scope_id=2 ),2004 ,201)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(381, (select constituency_id from constituency where upper(name)=upper('VICARABAD') and district_id =6 and election_scope_id=2 ),2004 ,202)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(382, (select constituency_id from constituency where upper(name)=upper('ACHAMPET') and district_id =7 and election_scope_id=2 ),2004 ,188)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(383, (select constituency_id from constituency where upper(name)=upper('ALAMPUR') and district_id =7 and election_scope_id=2 ),2004 ,196)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(384, (select constituency_id from constituency where upper(name)=upper('GADWAL') and district_id =7 and election_scope_id=2 ),2004 ,197)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(385, (select constituency_id from constituency where upper(name)=upper('JADCHERLA') and district_id =7 and election_scope_id=2 ),2004 ,192)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(386, (select constituency_id from constituency where upper(name)=upper('KALWAKURTHI') and district_id =7 and election_scope_id=2 ),2004 ,190)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(387, (select constituency_id from constituency where upper(name)=upper('KODANGAL') and district_id =7 and election_scope_id=2 ),2004 ,200)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(388, (select constituency_id from constituency where upper(name)=upper('KOLLAPUR') and district_id =7 and election_scope_id=2 ),2004 ,195)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(389, (select constituency_id from constituency where upper(name)=upper('MAHBUBNAGAR') and district_id =7 and election_scope_id=2 ),2004 ,193)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(390, (select constituency_id from constituency where upper(name)=upper('MAKTHAL') and district_id =7 and election_scope_id=2 ),2004 ,199)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(391, (select constituency_id from constituency where upper(name)=upper('NAGARKURNOOL') and district_id =7 and election_scope_id=2 ),2004 ,189)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(392, (select constituency_id from constituency where upper(name)=upper('SHADNAGAR') and district_id =7 and election_scope_id=2 ),2004 ,191)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(393, (select constituency_id from constituency where upper(name)=upper('AMARCHINTA') and district_id =7 and election_scope_id=2 ),2004 ,198)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(394, (select constituency_id from constituency where upper(name)=upper('WANAPARTHY') and district_id =7 and election_scope_id=2 ),2004 ,194)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(395, (select constituency_id from constituency where upper(name)=upper('ALAIR') and district_id =8 and election_scope_id=2 ),2004 ,291)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(396, (select constituency_id from constituency where upper(name)=upper('BHONGIR') and district_id =8 and election_scope_id=2 ),2004 ,292)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(397, (select constituency_id from constituency where upper(name)=upper('CHALAKURTHI') and district_id =8 and election_scope_id=2 ),2004 ,287)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(398, (select constituency_id from constituency where upper(name)=upper('DEVERKONDA') and district_id =8 and election_scope_id=2 ),2004 ,294)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(399, (select constituency_id from constituency where upper(name)=upper('KODAD') and district_id =8 and election_scope_id=2 ),2004 ,285)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(400, (select constituency_id from constituency where upper(name)=upper('MIRYALGUDA') and district_id =8 and election_scope_id=2 ),2004 ,286)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(401, (select constituency_id from constituency where upper(name)=upper('MUNGODE') and district_id =8 and election_scope_id=2 ),2004 ,293)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(402, (select constituency_id from constituency where upper(name)=upper('NAKREKAL') and district_id =8 and election_scope_id=2 ),2004 ,288)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(403, (select constituency_id from constituency where upper(name)=upper('NALGONDA') and district_id =8 and election_scope_id=2 ),2004 ,289)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(404, (select constituency_id from constituency where upper(name)=upper('RAMANNAPET') and district_id =8 and election_scope_id=2 ),2004 ,290)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(405, (select constituency_id from constituency where upper(name)=upper('SURYAPET') and district_id =8 and election_scope_id=2 ),2004 ,284)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(406, (select constituency_id from constituency where upper(name)=upper('TUNGATURTHI') and district_id =8 and election_scope_id=2 ),2004 ,283)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(407, (select constituency_id from constituency where upper(name)=upper('DORNAKAL') and district_id =9 and election_scope_id=2 ),2004 ,264)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(408, (select constituency_id from constituency where upper(name)=upper('GHANPUR') and district_id =9 and election_scope_id=2 ),2004 ,268)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(409, (select constituency_id from constituency where upper(name)=upper('HANAMKONDA') and district_id =9 and election_scope_id=2 ),2004 ,270)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(410, (select constituency_id from constituency where upper(name)=upper('JANGAON') and district_id =9 and election_scope_id=2 ),2004 ,262)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(411, (select constituency_id from constituency where upper(name)=upper('CHERIYAL') and district_id =9 and election_scope_id=2 ),2004 ,261)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(412, (select constituency_id from constituency where upper(name)=upper('MAHBUBABAD') and district_id =9 and election_scope_id=2 ),2004 ,265)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(413, (select constituency_id from constituency where upper(name)=upper('MULUG') and district_id =9 and election_scope_id=2 ),2004 ,273)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(414, (select constituency_id from constituency where upper(name)=upper('NARSAMPET') and district_id =9 and election_scope_id=2 ),2004 ,266)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(415, (select constituency_id from constituency where upper(name)=upper('PARKAL') and district_id =9 and election_scope_id=2 ),2004 ,272)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(416, (select constituency_id from constituency where upper(name)=upper('SHYAMPET') and district_id =9 and election_scope_id=2 ),2004 ,271)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(417, (select constituency_id from constituency where upper(name)=upper('WARANGAL') and district_id =9 and election_scope_id=2 ),2004 ,269)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(418, (select constituency_id from constituency where upper(name)=upper('WARDHANNAPET') and district_id =9 and election_scope_id=2 ),2004 ,267)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(419, (select constituency_id from constituency where upper(name)=upper('CHINNUR') and district_id =9 and election_scope_id=2 ),2004 ,263)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(420, (select constituency_id from constituency where upper(name)=upper('BURGAMPAHAD') and district_id =10 and election_scope_id=2 ),2004 ,275)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(421, (select constituency_id from constituency where upper(name)=upper('BHADRACHALAM') and district_id =10 and election_scope_id=2 ),2004 ,274)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(422, (select constituency_id from constituency where upper(name)=upper('KHAMMAM') and district_id =10 and election_scope_id=2 ),2004 ,280)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(423, (select constituency_id from constituency where upper(name)=upper('KOTHAGUDEM') and district_id =10 and election_scope_id=2 ),2004 ,276)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(424, (select constituency_id from constituency where upper(name)=upper('MADHIRA') and district_id =10 and election_scope_id=2 ),2004 ,278)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(425, (select constituency_id from constituency where upper(name)=upper('PALAIR') and district_id =10 and election_scope_id=2 ),2004 ,279)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(426, (select constituency_id from constituency where upper(name)=upper('SATHUPALLI') and district_id =10 and election_scope_id=2 ),2004 ,277)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(427, (select constituency_id from constituency where upper(name)=upper('SHUJATNAGAR') and district_id =10 and election_scope_id=2 ),2004 ,281)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(428, (select constituency_id from constituency where upper(name)=upper('YELLANDU') and district_id =10 and election_scope_id=2 ),2004 ,282)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(429, (select constituency_id from constituency where upper(name)=upper('AMADALAVALASA') and district_id =11 and election_scope_id=2 ),2004 ,15)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(430, (select constituency_id from constituency where upper(name)=upper('ETCHERLA') and district_id =11 and election_scope_id=2 ),2004 ,17)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(431, (select constituency_id from constituency where upper(name)=upper('HARISCHANDRAPURAM') and district_id =11 and election_scope_id=2 ),2004 ,4)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(432, (select constituency_id from constituency where upper(name)=upper('ICHAPURAM') and district_id =11 and election_scope_id=2 ),2004 ,1)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(433, (select constituency_id from constituency where upper(name)=upper('NARASANNAPETA') and district_id =11 and election_scope_id=2 ),2004 ,5)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(434, (select constituency_id from constituency where upper(name)=upper('PALAKONDA') and district_id =11 and election_scope_id=2 ),2004 ,14)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(435, (select constituency_id from constituency where upper(name)=upper('PATHAPATNAM') and district_id =11 and election_scope_id=2 ),2004 ,6)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(436, (select constituency_id from constituency where upper(name)=upper('SOMPETA') and district_id =11 and election_scope_id=2 ),2004 ,2)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(437, (select constituency_id from constituency where upper(name)=upper('SRIKAKULAM') and district_id =11 and election_scope_id=2 ),2004 ,16)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(438, (select constituency_id from constituency where upper(name)=upper('TEKKALI') and district_id =11 and election_scope_id=2 ),2004 ,3)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(439, (select constituency_id from constituency where upper(name)=upper('VUNUKURU') and district_id =11 and election_scope_id=2 ),2004 ,13)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(440, (select constituency_id from constituency where upper(name)=upper('KOTHURU') and district_id =11 and election_scope_id=2 ),2004 ,7)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(441, (select constituency_id from constituency where upper(name)=upper('CHEEPURUPALLI') and district_id =12 and election_scope_id=2 ),2004 ,18)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(442, (select constituency_id from constituency where upper(name)=upper('GAJAPATHINAGARAM') and district_id =12 and election_scope_id=2 ),2004 ,19)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(443, (select constituency_id from constituency where upper(name)=upper('BOBBILI') and district_id =12 and election_scope_id=2 ),2004 ,11)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(444, (select constituency_id from constituency where upper(name)=upper('NAGURU') and district_id =12 and election_scope_id=2 ),2004 ,8)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(445, (select constituency_id from constituency where upper(name)=upper('PARVATHIPURAM') and district_id =12 and election_scope_id=2 ),2004 ,9)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(446, (select constituency_id from constituency where upper(name)=upper('SALUR') and district_id =12 and election_scope_id=2 ),2004 ,10)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(447, (select constituency_id from constituency where upper(name)=upper('SATHIVADA') and district_id =12 and election_scope_id=2 ),2004 ,21)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(448, (select constituency_id from constituency where upper(name)=upper('SRUNGAVARAPUKOTA') and district_id =12 and election_scope_id=2 ),2004 ,28)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(449, (select constituency_id from constituency where upper(name)=upper('THERLAM') and district_id =12 and election_scope_id=2 ),2004 ,12)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(450, (select constituency_id from constituency where upper(name)=upper('VIZIANAGARAM') and district_id =12 and election_scope_id=2 ),2004 ,20)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(451, (select constituency_id from constituency where upper(name)=upper('BHOGAPURAM') and district_id =12 and election_scope_id=2 ),2004 ,22)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(452, (select constituency_id from constituency where upper(name)=upper('UTTARAPALLI') and district_id =12 and election_scope_id=2 ),2004 ,27)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(453, (select constituency_id from constituency where upper(name)=upper('BHEEMUNIPATNAM') and district_id =13 and election_scope_id=2 ),2004 ,23)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(454, (select constituency_id from constituency where upper(name)=upper('ANAKAPALLI') and district_id =13 and election_scope_id=2 ),2004 ,32)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(455, (select constituency_id from constituency where upper(name)=upper('CHODAVARAM') and district_id =13 and election_scope_id=2 ),2004 ,31)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(456, (select constituency_id from constituency where upper(name)=upper('ELAMANCHILI') and district_id =13 and election_scope_id=2 ),2004 ,34)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(457, (select constituency_id from constituency where upper(name)=upper('MADUGULA') and district_id =13 and election_scope_id=2 ),2004 ,30)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(458, (select constituency_id from constituency where upper(name)=upper('NARSIPATNAM') and district_id =13 and election_scope_id=2 ),2004 ,36)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(459, (select constituency_id from constituency where upper(name)=upper('PADERU') and district_id =13 and election_scope_id=2 ),2004 ,29)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(460, (select constituency_id from constituency where upper(name)=upper('PARAVADA') and district_id =13 and election_scope_id=2 ),2004 ,33)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(461, (select constituency_id from constituency where upper(name)=upper('PAYAKARAOPETA') and district_id =13 and election_scope_id=2 ),2004 ,35)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(462, (select constituency_id from constituency where upper(name)=upper('PENDURTHI') and district_id =13 and election_scope_id=2 ),2004 ,26)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(463, (select constituency_id from constituency where upper(name)=upper('CHINTAPALLI') and district_id =13 and election_scope_id=2 ),2004 ,37)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(464, (select constituency_id from constituency where upper(name)=upper('VISAKHAPATNAM[I]') and district_id =13 and election_scope_id=2 ),2004 ,24)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(465, (select constituency_id from constituency where upper(name)=upper('VISAKHAPATNAM[II]') and district_id =13 and election_scope_id=2 ),2004 ,25)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(466, (select constituency_id from constituency where upper(name)=upper('ALLAVARAM') and district_id =14 and election_scope_id=2 ),2004 ,54)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(467, (select constituency_id from constituency where upper(name)=upper('Amalapuram') and district_id =14 and election_scope_id=2 ),2004 ,55)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(468, (select constituency_id from constituency where upper(name)=upper('ANAPARTHY') and district_id =14 and election_scope_id=2 ),2004 ,50)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(469, (select constituency_id from constituency where upper(name)=upper('BURUGUPUDI') and district_id =14 and election_scope_id=2 ),2004 ,39)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(470, (select constituency_id from constituency where upper(name)=upper('JAGGAMPETA') and district_id =14 and election_scope_id=2 ),2004 ,42)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(471, (select constituency_id from constituency where upper(name)=upper('KADIAM') and district_id =14 and election_scope_id=2 ),2004 ,41)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(472, (select constituency_id from constituency where upper(name)=upper('KAKINADA') and district_id =14 and election_scope_id=2 ),2004 ,48)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(473, (select constituency_id from constituency where upper(name)=upper('KOTHAPETA') and district_id =14 and election_scope_id=2 ),2004 ,56)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(474, (select constituency_id from constituency where upper(name)=upper('MUMMIDIVARAM') and district_id =14 and election_scope_id=2 ),2004 ,53)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(475, (select constituency_id from constituency where upper(name)=upper('NAGARAM') and district_id =14 and election_scope_id=2 ),2004 ,57)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(476, (select constituency_id from constituency where upper(name)=upper('PEDDAPURAM') and district_id =14 and election_scope_id=2 ),2004 ,43)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(477, (select constituency_id from constituency where upper(name)=upper('PITHAPURAM') and district_id =14 and election_scope_id=2 ),2004 ,46)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(478, (select constituency_id from constituency where upper(name)=upper('PRATHIPAD') and district_id =14 and election_scope_id=2 ),2004 ,44)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(479, (select constituency_id from constituency where upper(name)=upper('RAJAHMUNDRY') and district_id =14 and election_scope_id=2 ),2004 ,40)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(480, (select constituency_id from constituency where upper(name)=upper('RAMACHANDRAPURAM') and district_id =14 and election_scope_id=2 ),2004 ,51)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(481, (select constituency_id from constituency where upper(name)=upper('RAZOLE') and district_id =14 and election_scope_id=2 ),2004 ,58)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(482, (select constituency_id from constituency where upper(name)=upper('SAMPARA') and district_id =14 and election_scope_id=2 ),2004 ,47)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(483, (select constituency_id from constituency where upper(name)=upper('TALLAREVU') and district_id =14 and election_scope_id=2 ),2004 ,49)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(484, (select constituency_id from constituency where upper(name)=upper('TUNI') and district_id =14 and election_scope_id=2 ),2004 ,45)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(485, (select constituency_id from constituency where upper(name)=upper('ALAMURU') and district_id =14 and election_scope_id=2 ),2004 ,52)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(486, (select constituency_id from constituency where upper(name)=upper('YELLAVARAM') and district_id =14 and election_scope_id=2 ),2004 ,38)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(487, (select constituency_id from constituency where upper(name)=upper('ATTILI') and district_id =15 and election_scope_id=2 ),2004 ,66)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(488, (select constituency_id from constituency where upper(name)=upper('BHIMAVARAM') and district_id =15 and election_scope_id=2 ),2004 ,62)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(489, (select constituency_id from constituency where upper(name)=upper('CHINTALAPUDI') and district_id =15 and election_scope_id=2 ),2004 ,74)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(490, (select constituency_id from constituency where upper(name)=upper('DENDULUR') and district_id =15 and election_scope_id=2 ),2004 ,69)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(491, (select constituency_id from constituency where upper(name)=upper('ELURU') and district_id =15 and election_scope_id=2 ),2004 ,70)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(492, (select constituency_id from constituency where upper(name)=upper('GOPALPURAM') and district_id =15 and election_scope_id=2 ),2004 ,71)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(493, (select constituency_id from constituency where upper(name)=upper('KOVVUR') and district_id =15 and election_scope_id=2 ),2004 ,72)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(494, (select constituency_id from constituency where upper(name)=upper('NARASAPUR') and district_id =15 and election_scope_id=2 ),2004 ,59)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(495, (select constituency_id from constituency where upper(name)=upper('PALACOLE') and district_id =15 and election_scope_id=2 ),2004 ,60)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(496, (select constituency_id from constituency where upper(name)=upper('PENUGONDA') and district_id =15 and election_scope_id=2 ),2004 ,64)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(497, (select constituency_id from constituency where upper(name)=upper('POLAVARAM') and district_id =15 and election_scope_id=2 ),2004 ,73)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(498, (select constituency_id from constituency where upper(name)=upper('TADEPALLIGUDEM') and district_id =15 and election_scope_id=2 ),2004 ,67)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(499, (select constituency_id from constituency where upper(name)=upper('TANUKU') and district_id =15 and election_scope_id=2 ),2004 ,65)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(500, (select constituency_id from constituency where upper(name)=upper('UNDI') and district_id =15 and election_scope_id=2 ),2004 ,63)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(501, (select constituency_id from constituency where upper(name)=upper('UNGUTUR') and district_id =15 and election_scope_id=2 ),2004 ,68)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(502, (select constituency_id from constituency where upper(name)=upper('ACHANTA') and district_id =15 and election_scope_id=2 ),2004 ,61)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(503, (select constituency_id from constituency where upper(name)=upper('AVANIGADDA') and district_id =16 and election_scope_id=2 ),2004 ,91)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(504, (select constituency_id from constituency where upper(name)=upper('BANDAR') and district_id =16 and election_scope_id=2 ),2004 ,89)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(505, (select constituency_id from constituency where upper(name)=upper('GANNAVARAM') and district_id =16 and election_scope_id=2 ),2004 ,83)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(506, (select constituency_id from constituency where upper(name)=upper('GUDIVADA') and district_id =16 and election_scope_id=2 ),2004 ,85)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(507, (select constituency_id from constituency where upper(name)=upper('JAGGAYYAPET') and district_id =16 and election_scope_id=2 ),2004 ,75)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(508, (select constituency_id from constituency where upper(name)=upper('KAIKALUR') and district_id =16 and election_scope_id=2 ),2004 ,87)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(509, (select constituency_id from constituency where upper(name)=upper('KANKIPADU') and district_id =16 and election_scope_id=2 ),2004 ,79)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(510, (select constituency_id from constituency where upper(name)=upper('MALLESWARAM') and district_id =16 and election_scope_id=2 ),2004 ,88)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(511, (select constituency_id from constituency where upper(name)=upper('MUDINEPALLI') and district_id =16 and election_scope_id=2 ),2004 ,86)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(512, (select constituency_id from constituency where upper(name)=upper('MYLAVARAM') and district_id =16 and election_scope_id=2 ),2004 ,80)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(513, (select constituency_id from constituency where upper(name)=upper('NANDIGAMA') and district_id =16 and election_scope_id=2 ),2004 ,76)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(514, (select constituency_id from constituency where upper(name)=upper('NUZVID') and district_id =16 and election_scope_id=2 ),2004 ,82)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(515, (select constituency_id from constituency where upper(name)=upper('TIRUVURU') and district_id =16 and election_scope_id=2 ),2004 ,81)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(516, (select constituency_id from constituency where upper(name)=upper('VIJAYAWADA EAST') and district_id =16 and election_scope_id=2 ),2004 ,78)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(517, (select constituency_id from constituency where upper(name)=upper('VIJAYAWADA WEST') and district_id =16 and election_scope_id=2 ),2004 ,77)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(518, (select constituency_id from constituency where upper(name)=upper('VUYYUR') and district_id =16 and election_scope_id=2 ),2004 ,84)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(519, (select constituency_id from constituency where upper(name)=upper('NIDUMOLU') and district_id =16 and election_scope_id=2 ),2004 ,90)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(520, (select constituency_id from constituency where upper(name)=upper('CHILAKALURIPET') and district_id =17 and election_scope_id=2 ),2004 ,110)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(521, (select constituency_id from constituency where upper(name)=upper('DUGGIRALA') and district_id =17 and election_scope_id=2 ),2004 ,95)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(522, (select constituency_id from constituency where upper(name)=upper('GUNTUR[I]') and district_id =17 and election_scope_id=2 ),2004 ,100)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(523, (select constituency_id from constituency where upper(name)=upper('GUNTUR[II]') and district_id =17 and election_scope_id=2 ),2004 ,101)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(524, (select constituency_id from constituency where upper(name)=upper('GURZALA') and district_id =17 and election_scope_id=2 ),2004 ,106)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(525, (select constituency_id from constituency where upper(name)=upper('KUCHINAPUDI') and district_id =17 and election_scope_id=2 ),2004 ,92)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(526, (select constituency_id from constituency where upper(name)=upper('MACHERLA') and district_id =17 and election_scope_id=2 ),2004 ,107)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(527, (select constituency_id from constituency where upper(name)=upper('MANGALAGIRI') and district_id =17 and election_scope_id=2 ),2004 ,102)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(528, (select constituency_id from constituency where upper(name)=upper('VINUKONDA') and district_id =17 and election_scope_id=2 ),2004 ,108)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(529, (select constituency_id from constituency where upper(name)=upper('NARASARAOPET') and district_id =17 and election_scope_id=2 ),2004 ,109)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(530, (select constituency_id from constituency where upper(name)=upper('BAPATLA') and district_id =17 and election_scope_id=2 ),2004 ,98)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(531, (select constituency_id from constituency where upper(name)=upper('PEDDAKURAPADU') and district_id =17 and election_scope_id=2 ),2004 ,105)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(532, (select constituency_id from constituency where upper(name)=upper('PONNUR') and district_id =17 and election_scope_id=2 ),2004 ,97)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(533, (select constituency_id from constituency where upper(name)=upper('PRATHIPADU') and district_id =17 and election_scope_id=2 ),2004 ,99)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(534, (select constituency_id from constituency where upper(name)=upper('REPALLE') and district_id =17 and election_scope_id=2 ),2004 ,93)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(535, (select constituency_id from constituency where upper(name)=upper('SATTENAPALLI') and district_id =17 and election_scope_id=2 ),2004 ,104)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(536, (select constituency_id from constituency where upper(name)=upper('TADIKONDA') and district_id =17 and election_scope_id=2 ),2004 ,103)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(537, (select constituency_id from constituency where upper(name)=upper('TENALI') and district_id =17 and election_scope_id=2 ),2004 ,96)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(538, (select constituency_id from constituency where upper(name)=upper('VEMURU') and district_id =17 and election_scope_id=2 ),2004 ,94)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(539, (select constituency_id from constituency where upper(name)=upper('ADDANKI') and district_id =18 and election_scope_id=2 ),2004 ,114)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(540, (select constituency_id from constituency where upper(name)=upper('CHIRALA') and district_id =18 and election_scope_id=2 ),2004 ,111)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(541, (select constituency_id from constituency where upper(name)=upper('CUMBUM') and district_id =18 and election_scope_id=2 ),2004 ,120)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(542, (select constituency_id from constituency where upper(name)=upper('DARSI') and district_id =18 and election_scope_id=2 ),2004 ,121)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(543, (select constituency_id from constituency where upper(name)=upper('GIDDALUR') and district_id =18 and election_scope_id=2 ),2004 ,123)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(544, (select constituency_id from constituency where upper(name)=upper('MARKAPUR') and district_id =18 and election_scope_id=2 ),2004 ,122)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(545, (select constituency_id from constituency where upper(name)=upper('PARCHUR') and district_id =18 and election_scope_id=2 ),2004 ,112)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(546, (select constituency_id from constituency where upper(name)=upper('MARTUR') and district_id =18 and election_scope_id=2 ),2004 ,113)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(547, (select constituency_id from constituency where upper(name)=upper('BADVEL') and district_id =20 and election_scope_id=2 ),2004 ,155)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(548, (select constituency_id from constituency where upper(name)=upper('Kadapa') and district_id =20 and election_scope_id=2 ),2004 ,154)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(549, (select constituency_id from constituency where upper(name)=upper('JAMMALAMADUGU') and district_id =20 and election_scope_id=2 ),2004 ,158)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(550, (select constituency_id from constituency where upper(name)=upper('KAMALAPURAM') and district_id =20 and election_scope_id=2 ),2004 ,159)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(551, (select constituency_id from constituency where upper(name)=upper('KODUR') and district_id =20 and election_scope_id=2 ),2004 ,150)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(552, (select constituency_id from constituency where upper(name)=upper('LAKKIREDDIPALLI') and district_id =20 and election_scope_id=2 ),2004 ,153)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(553, (select constituency_id from constituency where upper(name)=upper('RAYACHOTY') and district_id =20 and election_scope_id=2 ),2004 ,152)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(554, (select constituency_id from constituency where upper(name)=upper('MYDUKUR') and district_id =20 and election_scope_id=2 ),2004 ,156)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(555, (select constituency_id from constituency where upper(name)=upper('PRODDATUR') and district_id =20 and election_scope_id=2 ),2004 ,157)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(556, (select constituency_id from constituency where upper(name)=upper('Pulivendla') and district_id =20 and election_scope_id=2 ),2004 ,160)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(557, (select constituency_id from constituency where upper(name)=upper('RAJAMPET') and district_id =20 and election_scope_id=2 ),2004 ,151)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(558, (select constituency_id from constituency where upper(name)=upper('ADONI') and district_id =21 and election_scope_id=2 ),2004 ,176)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(559, (select constituency_id from constituency where upper(name)=upper('ALLAGADDA') and district_id =21 and election_scope_id=2 ),2004 ,183)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(560, (select constituency_id from constituency where upper(name)=upper('ALUR') and district_id =21 and election_scope_id=2 ),2004 ,175)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(561, (select constituency_id from constituency where upper(name)=upper('DHONE') and district_id =21 and election_scope_id=2 ),2004 ,181)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(562, (select constituency_id from constituency where upper(name)=upper('KODUMUR') and district_id =21 and election_scope_id=2 ),2004 ,178)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(563, (select constituency_id from constituency where upper(name)=upper('KOILKUNTLA') and district_id =21 and election_scope_id=2 ),2004 ,182)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(564, (select constituency_id from constituency where upper(name)=upper('KURNOOL') and district_id =21 and election_scope_id=2 ),2004 ,179)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(565, (select constituency_id from constituency where upper(name)=upper('NANDIKOTKUR') and district_id =21 and election_scope_id=2 ),2004 ,185)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(566, (select constituency_id from constituency where upper(name)=upper('NANDYAL') and district_id =21 and election_scope_id=2 ),2004 ,186)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(567, (select constituency_id from constituency where upper(name)=upper('PANYAM') and district_id =21 and election_scope_id=2 ),2004 ,184)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(568, (select constituency_id from constituency where upper(name)=upper('PATTIKONDA') and district_id =21 and election_scope_id=2 ),2004 ,180)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(569, (select constituency_id from constituency where upper(name)=upper('YEMMIGANUR') and district_id =21 and election_scope_id=2 ),2004 ,177)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(570, (select constituency_id from constituency where upper(name)=upper('ANANTAPUR') and district_id =22 and election_scope_id=2 ),2004 ,172)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(571, (select constituency_id from constituency where upper(name)=upper('DHARMAVARAM') and district_id =22 and election_scope_id=2 ),2004 ,173)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(572, (select constituency_id from constituency where upper(name)=upper('GOOTY') and district_id =22 and election_scope_id=2 ),2004 ,170)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(573, (select constituency_id from constituency where upper(name)=upper('GORANTLA') and district_id =22 and election_scope_id=2 ),2004 ,163)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(574, (select constituency_id from constituency where upper(name)=upper('HINDUPUR') and district_id =22 and election_scope_id=2 ),2004 ,164)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(575, (select constituency_id from constituency where upper(name)=upper('KADIRI') and district_id =22 and election_scope_id=2 ),2004 ,161)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(576, (select constituency_id from constituency where upper(name)=upper('KALYANDURG') and district_id =22 and election_scope_id=2 ),2004 ,167)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(577, (select constituency_id from constituency where upper(name)=upper('MADAKASIRA') and district_id =22 and election_scope_id=2 ),2004 ,165)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(578, (select constituency_id from constituency where upper(name)=upper('NALLAMADA') and district_id =22 and election_scope_id=2 ),2004 ,162)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(579, (select constituency_id from constituency where upper(name)=upper('PENUKONDA') and district_id =22 and election_scope_id=2 ),2004 ,166)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(580, (select constituency_id from constituency where upper(name)=upper('RAYADURG') and district_id =22 and election_scope_id=2 ),2004 ,168)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(581, (select constituency_id from constituency where upper(name)=upper('SINGANAMALA') and district_id =22 and election_scope_id=2 ),2004 ,171)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(582, (select constituency_id from constituency where upper(name)=upper('TADPATRI') and district_id =22 and election_scope_id=2 ),2004 ,174)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(583, (select constituency_id from constituency where upper(name)=upper('URAVAKONDA') and district_id =22 and election_scope_id=2 ),2004 ,169)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(584, (select constituency_id from constituency where upper(name)=upper('CHANDRAGIRI') and district_id =23 and election_scope_id=2 ),2004 ,148)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(585, (select constituency_id from constituency where upper(name)=upper('CHITTOOR') and district_id =23 and election_scope_id=2 ),2004 ,140)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(586, (select constituency_id from constituency where upper(name)=upper('KUPPAM') and district_id =23 and election_scope_id=2 ),2004 ,142)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(587, (select constituency_id from constituency where upper(name)=upper('Palamaner') and district_id =23 and election_scope_id=2 ),2004 ,141)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(588, (select constituency_id from constituency where upper(name)=upper('PILERU') and district_id =23 and election_scope_id=2 ),2004 ,147)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(589, (select constituency_id from constituency where upper(name)=upper('PUNGANUR') and district_id =23 and election_scope_id=2 ),2004 ,143)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(590, (select constituency_id from constituency where upper(name)=upper('PUTTUR') and district_id =23 and election_scope_id=2 ),2004 ,138)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(591, (select constituency_id from constituency where upper(name)=upper('THAMBALLAPALLE') and district_id =23 and election_scope_id=2 ),2004 ,145)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(592, (select constituency_id from constituency where upper(name)=upper('VEPANJERI') and district_id =23 and election_scope_id=2 ),2004 ,139)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(593, (select constituency_id from constituency where upper(name)=upper('VAYALPAD') and district_id =23 and election_scope_id=2 ),2004 ,146)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(594, (select constituency_id from constituency where upper(name)=upper('MADANPALLE') and district_id =23 and election_scope_id=2 ),2004 ,144)
+GO
+
+
+
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2750, (select constituency_id from constituency where upper(name)=upper('Adilabad ')  and election_scope_id=1 ),2004 ,35)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2751, (select constituency_id from constituency where upper(name)=upper('Amalapuram')  and election_scope_id=1 ),2004 ,9)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2752, (select constituency_id from constituency where upper(name)=upper('Anakapalli')  and election_scope_id=1 ),2004 ,6)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2753, (select constituency_id from constituency where upper(name)=upper('Anantapur')  and election_scope_id=1 ),2004 ,25)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2754, (select constituency_id from constituency where upper(name)=upper('Bapatla')  and election_scope_id=1 ),2004 ,16)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2755, (select constituency_id from constituency where upper(name)=upper('Bhadrachalam')  and election_scope_id=1 ),2004 ,5)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2756, (select constituency_id from constituency where upper(name)=upper('Bobbili')  and election_scope_id=1 ),2004 ,3)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2757, (select constituency_id from constituency where upper(name)=upper('Chittoor')  and election_scope_id=1 ),2004 ,21)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2758, (select constituency_id from constituency where upper(name)=upper('Eluru')  and election_scope_id=1 ),2004 ,11)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2759, (select constituency_id from constituency where upper(name)=upper('Guntur')  and election_scope_id=1 ),2004 ,15)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2760, (select constituency_id from constituency where upper(name)=upper('Hanamkonda')  and election_scope_id=1 ),2004 ,38)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2761, (select constituency_id from constituency where upper(name)=upper('Hindupur')  and election_scope_id=1 ),2004 ,24)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2762, (select constituency_id from constituency where upper(name)=upper('Hyderabad')  and election_scope_id=1 ),2004 ,30)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2763, (select constituency_id from constituency where upper(name)=upper('Kadapa')  and election_scope_id=1 ),2004 ,23)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2764, (select constituency_id from constituency where upper(name)=upper('Kakinada')  and election_scope_id=1 ),2004 ,7)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2765, (select constituency_id from constituency where upper(name)=upper('Karimnagar')  and election_scope_id=1 ),2004 ,37)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2766, (select constituency_id from constituency where upper(name)=upper('Khammam')  and election_scope_id=1 ),2004 ,40)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2767, (select constituency_id from constituency where upper(name)=upper('Kurnool')  and election_scope_id=1 ),2004 ,26)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2768, (select constituency_id from constituency where upper(name)=upper('Machilipatnam')  and election_scope_id=1 ),2004 ,12)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2769, (select constituency_id from constituency where upper(name)=upper('Mahbubnagar')  and election_scope_id=1 ),2004 ,29)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2770, (select constituency_id from constituency where upper(name)=upper('Medak')  and election_scope_id=1 ),2004 ,33)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2771, (select constituency_id from constituency where upper(name)=upper('Miryalguda')  and election_scope_id=1 ),2004 ,42)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2772, (select constituency_id from constituency where upper(name)=upper('Nagarkurnool')  and election_scope_id=1 ),2004 ,28)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2773, (select constituency_id from constituency where upper(name)=upper('Nalgonda')  and election_scope_id=1 ),2004 ,41)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2774, (select constituency_id from constituency where upper(name)=upper('Nandyal')  and election_scope_id=1 ),2004 ,27)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2775, (select constituency_id from constituency where upper(name)=upper('Narasapur')  and election_scope_id=1 ),2004 ,10)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2776, (select constituency_id from constituency where upper(name)=upper('Narasaraopet')  and election_scope_id=1 ),2004 ,17)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2777, (select constituency_id from constituency where upper(name)=upper('Nellore')  and election_scope_id=1 ),2004 ,19)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2778, (select constituency_id from constituency where upper(name)=upper('Nizamabad')  and election_scope_id=1 ),2004 ,34)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2779, (select constituency_id from constituency where upper(name)=upper('Ongole')  and election_scope_id=1 ),2004 ,18)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2780, (select constituency_id from constituency where upper(name)=upper('Parvathipuram')  and election_scope_id=1 ),2004 ,2)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2781, (select constituency_id from constituency where upper(name)=upper('Peddapalli')  and election_scope_id=1 ),2004 ,36)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2782, (select constituency_id from constituency where upper(name)=upper('Rajahmundry')  and election_scope_id=1 ),2004 ,8)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2783, (select constituency_id from constituency where upper(name)=upper('Rajampet')  and election_scope_id=1 ),2004 ,22)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2784, (select constituency_id from constituency where upper(name)=upper('Secunderabad')  and election_scope_id=1 ),2004 ,31)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2785, (select constituency_id from constituency where upper(name)=upper('Siddipet')  and election_scope_id=1 ),2004 ,32)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2786, (select constituency_id from constituency where upper(name)=upper('Srikakulam')  and election_scope_id=1 ),2004 ,1)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2787, (select constituency_id from constituency where upper(name)=upper('Tenali')  and election_scope_id=1 ),2004 ,14)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2788, (select constituency_id from constituency where upper(name)=upper('Tirupati ')  and election_scope_id=1 ),2004 ,20)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2789, (select constituency_id from constituency where upper(name)=upper('Vijayawada')  and election_scope_id=1 ),2004 ,13)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2790, (select constituency_id from constituency where upper(name)=upper('Visakhapatnam')  and election_scope_id=1 ),2004 ,4)
+GO
+insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
+values(2791, (select constituency_id from constituency where upper(name)=upper('Warangal')  and election_scope_id=1 ),2004 ,39)
+GO
+
+
+
+
+
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2314,2777,(select constituency_id from constituency where upper(name)=upper('ALLUR') and election_scope_id=2 and district_id=19) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2315,2777,(select constituency_id from constituency where upper(name)=upper('ATMAKUR') and election_scope_id=2 and district_id=19) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2316,2777,(select constituency_id from constituency where upper(name)=upper('GUDUR') and election_scope_id=2 and district_id=19) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2317,2779,(select constituency_id from constituency where upper(name)=upper('KAVALI') and election_scope_id=2 and district_id=19) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2318,2777,(select constituency_id from constituency where upper(name)=upper('KOVUR') and election_scope_id=2 and district_id=19) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2319,2777,(select constituency_id from constituency where upper(name)=upper('NELLORE') and election_scope_id=2 and district_id=19) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2320,2777,(select constituency_id from constituency where upper(name)=upper('RAPUR') and election_scope_id=2 and district_id=19) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2321,2788,(select constituency_id from constituency where upper(name)=upper('SATYAVEDU') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2322,2788,(select constituency_id from constituency where upper(name)=upper('SULLURPET') and election_scope_id=2 and district_id=19) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2323,2777,(select constituency_id from constituency where upper(name)=upper('SARVEPALLI') and election_scope_id=2 and district_id=19) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2324,2779,(select constituency_id from constituency where upper(name)=upper('UDAYAGIRI') and election_scope_id=2 and district_id=19) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2325,2788,(select constituency_id from constituency where upper(name)=upper('VENKATAGIRI') and election_scope_id=2 and district_id=19) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2326,2788,(select constituency_id from constituency where upper(name)=upper('SATYAVEDU') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2327,2788,(select constituency_id from constituency where upper(name)=upper('SRIKALAHASTI') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2328,2788,(select constituency_id from constituency where upper(name)=upper('NAGARI') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2329,2788,(select constituency_id from constituency where upper(name)=upper('TIRUPATI') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2330,2779,(select constituency_id from constituency where upper(name)=upper('ONGOLE') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2331,2779,(select constituency_id from constituency where upper(name)=upper('SANTHANUTHALAPADU') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2332,2779,(select constituency_id from constituency where upper(name)=upper('KANIGIRI') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2333,2779,(select constituency_id from constituency where upper(name)=upper('KANDUKUR') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2334,2779,(select constituency_id from constituency where upper(name)=upper('KONDEPI') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2335,2750,(select constituency_id from constituency where upper(name)=upper('Adilabad') and election_scope_id=2 and district_id=1) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2336,2750,(select constituency_id from constituency where upper(name)=upper('ASIFABAD') and election_scope_id=2 and district_id=1) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2337,2750,(select constituency_id from constituency where upper(name)=upper('BOATH') and election_scope_id=2 and district_id=1) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2338,2791,(select constituency_id from constituency where upper(name)=upper('CHENNUR') and election_scope_id=2 and district_id=1) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2339,2750,(select constituency_id from constituency where upper(name)=upper('KHANAPUR') and election_scope_id=2 and district_id=1) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2340,2750,(select constituency_id from constituency where upper(name)=upper('MUDHOLE') and election_scope_id=2 and district_id=1) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2341,2750,(select constituency_id from constituency where upper(name)=upper('NIRMAL') and election_scope_id=2 and district_id=1) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2342,2750,(select constituency_id from constituency where upper(name)=upper('SIRPUR') and election_scope_id=2 and district_id=1) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2343,2781,(select constituency_id from constituency where upper(name)=upper('LUXETTIPET') and election_scope_id=2 and district_id=1) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2344,2778,(select constituency_id from constituency where upper(name)=upper('ARMOOR') and election_scope_id=2 and district_id=2) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2345,2778,(select constituency_id from constituency where upper(name)=upper('BALKONDA') and election_scope_id=2 and district_id=2) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2346,2778,(select constituency_id from constituency where upper(name)=upper('BANSWADA') and election_scope_id=2 and district_id=2) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2347,2778,(select constituency_id from constituency where upper(name)=upper('BODHAN') and election_scope_id=2 and district_id=2) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2348,2778,(select constituency_id from constituency where upper(name)=upper('DICHPALLI') and election_scope_id=2 and district_id=2) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2349,2778,(select constituency_id from constituency where upper(name)=upper('JUKKAL') and election_scope_id=2 and district_id=2) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2350,2770,(select constituency_id from constituency where upper(name)=upper('KAMAREDDY') and election_scope_id=2 and district_id=2) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2351,2778,(select constituency_id from constituency where upper(name)=upper('NIZAMABAD') and election_scope_id=2 and district_id=2) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2352,2770,(select constituency_id from constituency where upper(name)=upper('YELLAREDDY') and election_scope_id=2 and district_id=2) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2353,2765,(select constituency_id from constituency where upper(name)=upper('BUGGARAM') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2354,2765,(select constituency_id from constituency where upper(name)=upper('CHOPPADANDI') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2355,2781,(select constituency_id from constituency where upper(name)=upper('HUZURABAD') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2356,2781,(select constituency_id from constituency where upper(name)=upper('INDURTHI') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2357,2765,(select constituency_id from constituency where upper(name)=upper('JAGTIAL') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2358,2765,(select constituency_id from constituency where upper(name)=upper('KARIMNAGAR') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2359,2760,(select constituency_id from constituency where upper(name)=upper('KAMALAPUR') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2360,2781,(select constituency_id from constituency where upper(name)=upper('MANTHANI') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2361,2765,(select constituency_id from constituency where upper(name)=upper('METPALLI') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2362,2781,(select constituency_id from constituency where upper(name)=upper('MYDARAM') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2363,2765,(select constituency_id from constituency where upper(name)=upper('NARELLA') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2364,2781,(select constituency_id from constituency where upper(name)=upper('PEDDAPALLI') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2365,2765,(select constituency_id from constituency where upper(name)=upper('SIRCILLA') and election_scope_id=2 and district_id=3) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2366,2770,(select constituency_id from constituency where upper(name)=upper('ANDOLE') and election_scope_id=2 and district_id=4) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2367,2785,(select constituency_id from constituency where upper(name)=upper('DOMMAT') and election_scope_id=2 and district_id=4) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2368,2785,(select constituency_id from constituency where upper(name)=upper('GAJWEL') and election_scope_id=2 and district_id=4) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2369,2770,(select constituency_id from constituency where upper(name)=upper('MEDAK') and election_scope_id=2 and district_id=4) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2370,2770,(select constituency_id from constituency where upper(name)=upper('NARAYANKHED') and election_scope_id=2 and district_id=4) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2371,2785,(select constituency_id from constituency where upper(name)=upper('Narsapur') and election_scope_id=2 and district_id=4) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2372,2785,(select constituency_id from constituency where upper(name)=upper('RAMAYAMPET') and election_scope_id=2 and district_id=4) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2373,2770,(select constituency_id from constituency where upper(name)=upper('SANGAREDDY') and election_scope_id=2 and district_id=4) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2374,2785,(select constituency_id from constituency where upper(name)=upper('SIDDIPET') and election_scope_id=2 and district_id=4) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2375,2770,(select constituency_id from constituency where upper(name)=upper('ZAHIRABAD') and election_scope_id=2 and district_id=4) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2376,2784,(select constituency_id from constituency where upper(name)=upper('ASAFNAGAR') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2377,2762,(select constituency_id from constituency where upper(name)=upper('CHANDRAYANGUTTA') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2378,2762,(select constituency_id from constituency where upper(name)=upper('CHARMINAR') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2379,2784,(select constituency_id from constituency where upper(name)=upper('HIMAYATNAGAR') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2380,2762,(select constituency_id from constituency where upper(name)=upper('KARWAN') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2381,2784,(select constituency_id from constituency where upper(name)=upper('KHAIRATABAD') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2382,2784,(select constituency_id from constituency where upper(name)=upper('MAHARAJGUNJ') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2383,2773,(select constituency_id from constituency where upper(name)=upper('MALAKPET') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2384,2784,(select constituency_id from constituency where upper(name)=upper('MUSHEERABAD') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2385,2784,(select constituency_id from constituency where upper(name)=upper('SANATHNAGAR') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2386,2784,(select constituency_id from constituency where upper(name)=upper('SECUNDERABAD') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2387,2785,(select constituency_id from constituency where upper(name)=upper('SECUNDERABAD CANTONMENT') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2388,2762,(select constituency_id from constituency where upper(name)=upper('YAKUTPURA') and election_scope_id=2 and district_id=5) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2389,2762,(select constituency_id from constituency where upper(name)=upper('CHEVELLA') and election_scope_id=2 and district_id=6) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2390,2773,(select constituency_id from constituency where upper(name)=upper('IBRAHIMPATNAM') and election_scope_id=2 and district_id=6) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2391,2785,(select constituency_id from constituency where upper(name)=upper('MEDCHAL') and election_scope_id=2 and district_id=6) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2392,2772,(select constituency_id from constituency where upper(name)=upper('PARGI') and election_scope_id=2 and district_id=6) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2393,2762,(select constituency_id from constituency where upper(name)=upper('TANDUR') and election_scope_id=2 and district_id=6) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2394,2762,(select constituency_id from constituency where upper(name)=upper('VICARABAD') and election_scope_id=2 and district_id=6) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2395,2772,(select constituency_id from constituency where upper(name)=upper('ACHAMPET') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2396,2769,(select constituency_id from constituency where upper(name)=upper('ALAMPUR') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2397,2769,(select constituency_id from constituency where upper(name)=upper('GADWAL') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2398,2772,(select constituency_id from constituency where upper(name)=upper('JADCHERLA') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2399,2772,(select constituency_id from constituency where upper(name)=upper('KALWAKURTHI') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2400,2769,(select constituency_id from constituency where upper(name)=upper('KODANGAL') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2401,2772,(select constituency_id from constituency where upper(name)=upper('KOLLAPUR') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2402,2769,(select constituency_id from constituency where upper(name)=upper('MAHBUBNAGAR') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2403,2769,(select constituency_id from constituency where upper(name)=upper('MAKTHAL') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2404,2772,(select constituency_id from constituency where upper(name)=upper('NAGARKURNOOL') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2405,2772,(select constituency_id from constituency where upper(name)=upper('SHADNAGAR') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2406,2769,(select constituency_id from constituency where upper(name)=upper('AMARCHINTA') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2407,2769,(select constituency_id from constituency where upper(name)=upper('WANAPARTHY') and election_scope_id=2 and district_id=7) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2408,2773,(select constituency_id from constituency where upper(name)=upper('ALAIR') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2409,2773,(select constituency_id from constituency where upper(name)=upper('BHONGIR') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2410,2771,(select constituency_id from constituency where upper(name)=upper('CHALAKURTHI') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2411,2773,(select constituency_id from constituency where upper(name)=upper('DEVERKONDA') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2412,2771,(select constituency_id from constituency where upper(name)=upper('KODAD') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2413,2771,(select constituency_id from constituency where upper(name)=upper('MIRYALGUDA') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2414,2773,(select constituency_id from constituency where upper(name)=upper('MUNGODE') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2415,2771,(select constituency_id from constituency where upper(name)=upper('NAKREKAL') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2416,2773,(select constituency_id from constituency where upper(name)=upper('NALGONDA') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2417,2771,(select constituency_id from constituency where upper(name)=upper('RAMANNAPET') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2418,2771,(select constituency_id from constituency where upper(name)=upper('SURYAPET') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2419,2771,(select constituency_id from constituency where upper(name)=upper('TUNGATURTHI') and election_scope_id=2 and district_id=8) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2420,2791,(select constituency_id from constituency where upper(name)=upper('DORNAKAL') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2421,2760,(select constituency_id from constituency where upper(name)=upper('GHANPUR') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2422,2760,(select constituency_id from constituency where upper(name)=upper('HANAMKONDA') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2423,2760,(select constituency_id from constituency where upper(name)=upper('JANGAON') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2424,2760,(select constituency_id from constituency where upper(name)=upper('CHERIYAL') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2425,2791,(select constituency_id from constituency where upper(name)=upper('MAHBUBABAD') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2426,2791,(select constituency_id from constituency where upper(name)=upper('MULUG') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2427,2791,(select constituency_id from constituency where upper(name)=upper('NARSAMPET') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2428,2760,(select constituency_id from constituency where upper(name)=upper('PARKAL') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2429,2760,(select constituency_id from constituency where upper(name)=upper('SHYAMPET') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2430,2791,(select constituency_id from constituency where upper(name)=upper('WARANGAL') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2431,2791,(select constituency_id from constituency where upper(name)=upper('WARDHANNAPET') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2432,2791,(select constituency_id from constituency where upper(name)=upper('CHINNUR') and election_scope_id=2 and district_id=9) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2433,2755,(select constituency_id from constituency where upper(name)=upper('BURGAMPAHAD') and election_scope_id=2 and district_id=10) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2434,2755,(select constituency_id from constituency where upper(name)=upper('BHADRACHALAM') and election_scope_id=2 and district_id=10) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2435,2766,(select constituency_id from constituency where upper(name)=upper('KHAMMAM') and election_scope_id=2 and district_id=10) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2436,2766,(select constituency_id from constituency where upper(name)=upper('KOTHAGUDEM') and election_scope_id=2 and district_id=10) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2437,2766,(select constituency_id from constituency where upper(name)=upper('MADHIRA') and election_scope_id=2 and district_id=10) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2438,2766,(select constituency_id from constituency where upper(name)=upper('PALAIR') and election_scope_id=2 and district_id=10) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2439,2766,(select constituency_id from constituency where upper(name)=upper('SATHUPALLI') and election_scope_id=2 and district_id=10) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2440,2766,(select constituency_id from constituency where upper(name)=upper('SHUJATNAGAR') and election_scope_id=2 and district_id=10) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2441,2766,(select constituency_id from constituency where upper(name)=upper('YELLANDU') and election_scope_id=2 and district_id=10) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2442,2786,(select constituency_id from constituency where upper(name)=upper('AMADALAVALASA') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2443,2756,(select constituency_id from constituency where upper(name)=upper('ETCHERLA') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2444,2786,(select constituency_id from constituency where upper(name)=upper('HARISCHANDRAPURAM') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2445,2786,(select constituency_id from constituency where upper(name)=upper('ICHAPURAM') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2446,2786,(select constituency_id from constituency where upper(name)=upper('NARASANNAPETA') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2447,2780,(select constituency_id from constituency where upper(name)=upper('PALAKONDA') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2448,2780,(select constituency_id from constituency where upper(name)=upper('PATHAPATNAM') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2449,2786,(select constituency_id from constituency where upper(name)=upper('SOMPETA') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2450,2786,(select constituency_id from constituency where upper(name)=upper('SRIKAKULAM') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2451,2786,(select constituency_id from constituency where upper(name)=upper('TEKKALI') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2452,2780,(select constituency_id from constituency where upper(name)=upper('VUNUKURU') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2453,2780,(select constituency_id from constituency where upper(name)=upper('KOTHURU') and election_scope_id=2 and district_id=11) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2454,2756,(select constituency_id from constituency where upper(name)=upper('CHEEPURUPALLI') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2455,2756,(select constituency_id from constituency where upper(name)=upper('GAJAPATHINAGARAM') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2456,2756,(select constituency_id from constituency where upper(name)=upper('BOBBILI') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2457,2780,(select constituency_id from constituency where upper(name)=upper('NAGURU') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2458,2780,(select constituency_id from constituency where upper(name)=upper('PARVATHIPURAM') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2459,2780,(select constituency_id from constituency where upper(name)=upper('SALUR') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2460,2756,(select constituency_id from constituency where upper(name)=upper('SATHIVADA') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2461,2790,(select constituency_id from constituency where upper(name)=upper('SRUNGAVARAPUKOTA') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2462,2756,(select constituency_id from constituency where upper(name)=upper('THERLAM') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2463,2756,(select constituency_id from constituency where upper(name)=upper('VIZIANAGARAM') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2464,2790,(select constituency_id from constituency where upper(name)=upper('BHOGAPURAM') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2465,2790,(select constituency_id from constituency where upper(name)=upper('UTTARAPALLI') and election_scope_id=2 and district_id=12) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2466,2790,(select constituency_id from constituency where upper(name)=upper('BHEEMUNIPATNAM') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2467,2752,(select constituency_id from constituency where upper(name)=upper('ANAKAPALLI') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2468,2752,(select constituency_id from constituency where upper(name)=upper('CHODAVARAM') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2469,2752,(select constituency_id from constituency where upper(name)=upper('ELAMANCHILI') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2470,2752,(select constituency_id from constituency where upper(name)=upper('MADUGULA') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2471,2752,(select constituency_id from constituency where upper(name)=upper('NARSIPATNAM') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2472,2755,(select constituency_id from constituency where upper(name)=upper('PADERU') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2473,2752,(select constituency_id from constituency where upper(name)=upper('PARAVADA') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2474,2752,(select constituency_id from constituency where upper(name)=upper('PAYAKARAOPETA') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2475,2790,(select constituency_id from constituency where upper(name)=upper('PENDURTHI') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2476,2755,(select constituency_id from constituency where upper(name)=upper('CHINTAPALLI') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2477,2790,(select constituency_id from constituency where upper(name)=upper('VISAKHAPATNAM[I]') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2478,2790,(select constituency_id from constituency where upper(name)=upper('VISAKHAPATNAM[II]') and election_scope_id=2 and district_id=13) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2479,2751,(select constituency_id from constituency where upper(name)=upper('ALLAVARAM') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2480,2751,(select constituency_id from constituency where upper(name)=upper('Amalapuram') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2481,2782,(select constituency_id from constituency where upper(name)=upper('ANAPARTHY') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2482,2782,(select constituency_id from constituency where upper(name)=upper('BURUGUPUDI') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2483,2764,(select constituency_id from constituency where upper(name)=upper('JAGGAMPETA') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2484,2782,(select constituency_id from constituency where upper(name)=upper('KADIAM') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2485,2764,(select constituency_id from constituency where upper(name)=upper('KAKINADA') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2486,2751,(select constituency_id from constituency where upper(name)=upper('KOTHAPETA') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2487,2751,(select constituency_id from constituency where upper(name)=upper('MUMMIDIVARAM') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2488,2751,(select constituency_id from constituency where upper(name)=upper('NAGARAM') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2489,2764,(select constituency_id from constituency where upper(name)=upper('PEDDAPURAM') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2490,2764,(select constituency_id from constituency where upper(name)=upper('PITHAPURAM') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2491,2764,(select constituency_id from constituency where upper(name)=upper('PRATHIPAD') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2492,2782,(select constituency_id from constituency where upper(name)=upper('RAJAHMUNDRY') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2493,2782,(select constituency_id from constituency where upper(name)=upper('RAMACHANDRAPURAM') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2494,2751,(select constituency_id from constituency where upper(name)=upper('RAZOLE') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2495,2764,(select constituency_id from constituency where upper(name)=upper('SAMPARA') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2496,2751,(select constituency_id from constituency where upper(name)=upper('TALLAREVU') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2497,2764,(select constituency_id from constituency where upper(name)=upper('TUNI') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2498,2782,(select constituency_id from constituency where upper(name)=upper('ALAMURU') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2499,2755,(select constituency_id from constituency where upper(name)=upper('YELLAVARAM') and election_scope_id=2 and district_id=14) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2500,2775,(select constituency_id from constituency where upper(name)=upper('ATTILI') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2501,2775,(select constituency_id from constituency where upper(name)=upper('BHIMAVARAM') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2502,2758,(select constituency_id from constituency where upper(name)=upper('CHINTALAPUDI') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2503,2758,(select constituency_id from constituency where upper(name)=upper('DENDULUR') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2504,2758,(select constituency_id from constituency where upper(name)=upper('ELURU') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2505,2782,(select constituency_id from constituency where upper(name)=upper('GOPALPURAM') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2506,2782,(select constituency_id from constituency where upper(name)=upper('KOVVUR') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2507,2775,(select constituency_id from constituency where upper(name)=upper('NARASAPUR') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2508,2775,(select constituency_id from constituency where upper(name)=upper('PALACOLE') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2509,2775,(select constituency_id from constituency where upper(name)=upper('PENUGONDA') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2510,2755,(select constituency_id from constituency where upper(name)=upper('POLAVARAM') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2511,2758,(select constituency_id from constituency where upper(name)=upper('TADEPALLIGUDEM') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2512,2758,(select constituency_id from constituency where upper(name)=upper('TANUKU') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2513,2775,(select constituency_id from constituency where upper(name)=upper('UNDI') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2514,2758,(select constituency_id from constituency where upper(name)=upper('UNGUTUR') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2515,2775,(select constituency_id from constituency where upper(name)=upper('ACHANTA') and election_scope_id=2 and district_id=15) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2516,2787,(select constituency_id from constituency where upper(name)=upper('AVANIGADDA') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2517,2768,(select constituency_id from constituency where upper(name)=upper('BANDAR') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2518,2768,(select constituency_id from constituency where upper(name)=upper('GANNAVARAM') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2519,2768,(select constituency_id from constituency where upper(name)=upper('GUDIVADA') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2520,2789,(select constituency_id from constituency where upper(name)=upper('JAGGAYYAPET') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2521,2758,(select constituency_id from constituency where upper(name)=upper('KAIKALUR') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2522,2789,(select constituency_id from constituency where upper(name)=upper('KANKIPADU') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2523,2768,(select constituency_id from constituency where upper(name)=upper('MALLESWARAM') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2524,2768,(select constituency_id from constituency where upper(name)=upper('MUDINEPALLI') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2525,2789,(select constituency_id from constituency where upper(name)=upper('MYLAVARAM') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2526,2789,(select constituency_id from constituency where upper(name)=upper('NANDIGAMA') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2527,2768,(select constituency_id from constituency where upper(name)=upper('NUZVID') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2528,2789,(select constituency_id from constituency where upper(name)=upper('TIRUVURU') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2529,2789,(select constituency_id from constituency where upper(name)=upper('VIJAYAWADA EAST') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2530,2789,(select constituency_id from constituency where upper(name)=upper('VIJAYAWADA WEST') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2531,2768,(select constituency_id from constituency where upper(name)=upper('VUYYUR') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2532,2787,(select constituency_id from constituency where upper(name)=upper('NIDUMOLU') and election_scope_id=2 and district_id=16) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2533,2759,(select constituency_id from constituency where upper(name)=upper('CHILAKALURIPET') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2534,2787,(select constituency_id from constituency where upper(name)=upper('DUGGIRALA') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2535,2759,(select constituency_id from constituency where upper(name)=upper('GUNTUR[I]') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2536,2759,(select constituency_id from constituency where upper(name)=upper('GUNTUR[II]') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2537,2776,(select constituency_id from constituency where upper(name)=upper('GURZALA') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2538,2754,(select constituency_id from constituency where upper(name)=upper('KUCHINAPUDI') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2539,2776,(select constituency_id from constituency where upper(name)=upper('MACHERLA') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2540,2787,(select constituency_id from constituency where upper(name)=upper('MANGALAGIRI') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2541,2776,(select constituency_id from constituency where upper(name)=upper('VINUKONDA') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2542,2776,(select constituency_id from constituency where upper(name)=upper('NARASARAOPET') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2543,2754,(select constituency_id from constituency where upper(name)=upper('BAPATLA') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2544,2759,(select constituency_id from constituency where upper(name)=upper('PEDDAKURAPADU') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2545,2754,(select constituency_id from constituency where upper(name)=upper('PONNUR') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2546,2759,(select constituency_id from constituency where upper(name)=upper('PRATHIPADU') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2547,2787,(select constituency_id from constituency where upper(name)=upper('REPALLE') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2548,2759,(select constituency_id from constituency where upper(name)=upper('SATTENAPALLI') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2549,2759,(select constituency_id from constituency where upper(name)=upper('TADIKONDA') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2550,2787,(select constituency_id from constituency where upper(name)=upper('TENALI') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2551,2787,(select constituency_id from constituency where upper(name)=upper('VEMURU') and election_scope_id=2 and district_id=17) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2552,2754,(select constituency_id from constituency where upper(name)=upper('ADDANKI') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2553,2754,(select constituency_id from constituency where upper(name)=upper('CHIRALA') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2554,2776,(select constituency_id from constituency where upper(name)=upper('CUMBUM') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2555,2776,(select constituency_id from constituency where upper(name)=upper('DARSI') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2556,2754,(select constituency_id from constituency where upper(name)=upper('GIDDALUR') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2557,2776,(select constituency_id from constituency where upper(name)=upper('MARKAPUR') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2558,2754,(select constituency_id from constituency where upper(name)=upper('PARCHUR') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2559,2754,(select constituency_id from constituency where upper(name)=upper('MARTUR') and election_scope_id=2 and district_id=18) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2560,2763,(select constituency_id from constituency where upper(name)=upper('BADVEL') and election_scope_id=2 and district_id=20) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2561,2763,(select constituency_id from constituency where upper(name)=upper('Kadapa') and election_scope_id=2 and district_id=20) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2562,2763,(select constituency_id from constituency where upper(name)=upper('JAMMALAMADUGU') and election_scope_id=2 and district_id=20) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2563,2763,(select constituency_id from constituency where upper(name)=upper('KAMALAPURAM') and election_scope_id=2 and district_id=20) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2564,2783,(select constituency_id from constituency where upper(name)=upper('KODUR') and election_scope_id=2 and district_id=20) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2565,2783,(select constituency_id from constituency where upper(name)=upper('LAKKIREDDIPALLI') and election_scope_id=2 and district_id=20) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2566,2783,(select constituency_id from constituency where upper(name)=upper('RAYACHOTY') and election_scope_id=2 and district_id=20) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2567,2763,(select constituency_id from constituency where upper(name)=upper('MYDUKUR') and election_scope_id=2 and district_id=20) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2568,2763,(select constituency_id from constituency where upper(name)=upper('PRODDATUR') and election_scope_id=2 and district_id=20) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2569,2763,(select constituency_id from constituency where upper(name)=upper('Pulivendla') and election_scope_id=2 and district_id=20) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2570,2783,(select constituency_id from constituency where upper(name)=upper('RAJAMPET') and election_scope_id=2 and district_id=20) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2571,2767,(select constituency_id from constituency where upper(name)=upper('ADONI') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2572,2774,(select constituency_id from constituency where upper(name)=upper('ALLAGADDA') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2573,2767,(select constituency_id from constituency where upper(name)=upper('ALUR') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2574,2767,(select constituency_id from constituency where upper(name)=upper('DHONE') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2575,2767,(select constituency_id from constituency where upper(name)=upper('KODUMUR') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2576,2774,(select constituency_id from constituency where upper(name)=upper('KOILKUNTLA') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2577,2767,(select constituency_id from constituency where upper(name)=upper('KURNOOL') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2578,2774,(select constituency_id from constituency where upper(name)=upper('NANDIKOTKUR') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2579,2774,(select constituency_id from constituency where upper(name)=upper('NANDYAL') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2580,2774,(select constituency_id from constituency where upper(name)=upper('PANYAM') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2581,2767,(select constituency_id from constituency where upper(name)=upper('PATTIKONDA') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2582,2767,(select constituency_id from constituency where upper(name)=upper('YEMMIGANUR') and election_scope_id=2 and district_id=21) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2583,2753,(select constituency_id from constituency where upper(name)=upper('ANANTAPUR') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2584,2761,(select constituency_id from constituency where upper(name)=upper('DHARMAVARAM') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2585,2753,(select constituency_id from constituency where upper(name)=upper('GOOTY') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2586,2761,(select constituency_id from constituency where upper(name)=upper('GORANTLA') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2587,2761,(select constituency_id from constituency where upper(name)=upper('HINDUPUR') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2588,2761,(select constituency_id from constituency where upper(name)=upper('KADIRI') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2589,2753,(select constituency_id from constituency where upper(name)=upper('KALYANDURG') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2590,2761,(select constituency_id from constituency where upper(name)=upper('MADAKASIRA') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2591,2761,(select constituency_id from constituency where upper(name)=upper('NALLAMADA') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2592,2761,(select constituency_id from constituency where upper(name)=upper('PENUKONDA') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2593,2753,(select constituency_id from constituency where upper(name)=upper('RAYADURG') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2594,2753,(select constituency_id from constituency where upper(name)=upper('SINGANAMALA') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2595,2753,(select constituency_id from constituency where upper(name)=upper('TADPATRI') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2596,2753,(select constituency_id from constituency where upper(name)=upper('URAVAKONDA') and election_scope_id=2 and district_id=22) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2597,2757,(select constituency_id from constituency where upper(name)=upper('CHANDRAGIRI') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2598,2757,(select constituency_id from constituency where upper(name)=upper('CHITTOOR') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2599,2757,(select constituency_id from constituency where upper(name)=upper('KUPPAM') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2600,2757,(select constituency_id from constituency where upper(name)=upper('Palamaner') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2601,2757,(select constituency_id from constituency where upper(name)=upper('PILERU') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2602,2757,(select constituency_id from constituency where upper(name)=upper('PUNGANUR') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2603,2788,(select constituency_id from constituency where upper(name)=upper('PUTTUR') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2604,2783,(select constituency_id from constituency where upper(name)=upper('THAMBALLAPALLE') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2605,2757,(select constituency_id from constituency where upper(name)=upper('VEPANJERI') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2606,2783,(select constituency_id from constituency where upper(name)=upper('VAYALPAD') and election_scope_id=2 and district_id=23) )
+GO
+insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
+values(2607,2783,(select constituency_id from constituency where upper(name)=upper('MADANPALLE') and election_scope_id=2 and district_id=23) )
+GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(2500,301,844,TRUE)
 GO
@@ -11858,1905 +13735,4 @@ values(3862,520,748,TRUE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(3863,520,746,TRUE)
-GO
-
-// 2
- 
- insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(301, (select constituency_id from constituency where upper(name)=upper('ALLUR') and district_id =19 and election_scope_id=2 ),2004 ,126)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(302, (select constituency_id from constituency where upper(name)=upper('ATMAKUR') and district_id =19 and election_scope_id=2 ),2004 ,128)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(303, (select constituency_id from constituency where upper(name)=upper('GUDUR') and district_id =19 and election_scope_id=2 ),2004 ,132)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(304, (select constituency_id from constituency where upper(name)=upper('KAVALI') and district_id =19 and election_scope_id=2 ),2004 ,125)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(305, (select constituency_id from constituency where upper(name)=upper('KOVUR') and district_id =19 and election_scope_id=2 ),2004 ,127)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(306, (select constituency_id from constituency where upper(name)=upper('NELLORE') and district_id =19 and election_scope_id=2 ),2004 ,130)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(307, (select constituency_id from constituency where upper(name)=upper('RAPUR') and district_id =19 and election_scope_id=2 ),2004 ,129)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(308, (select constituency_id from constituency where upper(name)=upper('SATYAVEDU') and district_id =23 and election_scope_id=2 ),2004 ,136)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(309, (select constituency_id from constituency where upper(name)=upper('SULLURPET') and district_id =19 and election_scope_id=2 ),2004 ,133)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(310, (select constituency_id from constituency where upper(name)=upper('SARVEPALLI') and district_id =19 and election_scope_id=2 ),2004 ,131)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(311, (select constituency_id from constituency where upper(name)=upper('UDAYAGIRI') and district_id =19 and election_scope_id=2 ),2004 ,124)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(312, (select constituency_id from constituency where upper(name)=upper('VENKATAGIRI') and district_id =19 and election_scope_id=2 ),2004 ,134)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(313, (select constituency_id from constituency where upper(name)=upper('SATYAVEDU') and district_id =23 and election_scope_id=2 ),2004 ,136)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(314, (select constituency_id from constituency where upper(name)=upper('SRIKALAHASTI') and district_id =23 and election_scope_id=2 ),2004 ,135)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(315, (select constituency_id from constituency where upper(name)=upper('NAGARI') and district_id =23 and election_scope_id=2 ),2004 ,137)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(316, (select constituency_id from constituency where upper(name)=upper('TIRUPATI') and district_id =23 and election_scope_id=2 ),2004 ,139)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(317, (select constituency_id from constituency where upper(name)=upper('ONGOLE') and district_id =18 and election_scope_id=2 ),2004 ,115)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(318, (select constituency_id from constituency where upper(name)=upper('SANTHANUTHALAPADU') and district_id =18 and election_scope_id=2 ),2004 ,116)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(319, (select constituency_id from constituency where upper(name)=upper('KANIGIRI') and district_id =18 and election_scope_id=2 ),2004 ,118)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(320, (select constituency_id from constituency where upper(name)=upper('KANDUKUR') and district_id =18 and election_scope_id=2 ),2004 ,117)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(321, (select constituency_id from constituency where upper(name)=upper('KONDEPI') and district_id =18 and election_scope_id=2 ),2004 ,119)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(322, (select constituency_id from constituency where upper(name)=upper('ADILABAD') and district_id =1 and election_scope_id=2 ),2004 ,242)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(323, (select constituency_id from constituency where upper(name)=upper('ASIFABAD') and district_id =1 and election_scope_id=2 ),2004 ,244)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(324, (select constituency_id from constituency where upper(name)=upper('BOATH') and district_id =1 and election_scope_id=2 ),2004 ,241)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(325, (select constituency_id from constituency where upper(name)=upper('CHENNUR') and district_id =1 and election_scope_id=2 ),2004 ,247)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(326, (select constituency_id from constituency where upper(name)=upper('KHANAPUR') and district_id =1 and election_scope_id=2 ),2004 ,243)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(327, (select constituency_id from constituency where upper(name)=upper('MUDHOLE') and district_id =1 and election_scope_id=2 ),2004 ,239)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(328, (select constituency_id from constituency where upper(name)=upper('NIRMAL') and district_id =1 and election_scope_id=2 ),2004 ,240)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(329, (select constituency_id from constituency where upper(name)=upper('SIRPUR') and district_id =1 and election_scope_id=2 ),2004 ,246)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(330, (select constituency_id from constituency where upper(name)=upper('LUXETTIPET') and district_id =1 and election_scope_id=2 ),2004 ,245)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(331, (select constituency_id from constituency where upper(name)=upper('ARMOOR') and district_id =2 and election_scope_id=2 ),2004 ,231)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(332, (select constituency_id from constituency where upper(name)=upper('BALKONDA') and district_id =2 and election_scope_id=2 ),2004 ,230)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(333, (select constituency_id from constituency where upper(name)=upper('BANSWADA') and district_id =2 and election_scope_id=2 ),2004 ,235)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(334, (select constituency_id from constituency where upper(name)=upper('BODHAN') and district_id =2 and election_scope_id=2 ),2004 ,236)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(335, (select constituency_id from constituency where upper(name)=upper('DICHPALLI') and district_id =2 and election_scope_id=2 ),2004 ,238)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(336, (select constituency_id from constituency where upper(name)=upper('JUKKAL') and district_id =2 and election_scope_id=2 ),2004 ,234)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(337, (select constituency_id from constituency where upper(name)=upper('KAMAREDDY') and district_id =2 and election_scope_id=2 ),2004 ,232)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(338, (select constituency_id from constituency where upper(name)=upper('NIZAMABAD') and district_id =2 and election_scope_id=2 ),2004 ,237)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(339, (select constituency_id from constituency where upper(name)=upper('YELLAREDDY') and district_id =2 and election_scope_id=2 ),2004 ,233)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(340, (select constituency_id from constituency where upper(name)=upper('BUGGARAM') and district_id =3 and election_scope_id=2 ),2004 ,257)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(341, (select constituency_id from constituency where upper(name)=upper('CHOPPADANDI') and district_id =3 and election_scope_id=2 ),2004 ,255)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(342, (select constituency_id from constituency where upper(name)=upper('HUZURABAD') and district_id =3 and election_scope_id=2 ),2004 ,251)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(343, (select constituency_id from constituency where upper(name)=upper('INDURTHI') and district_id =3 and election_scope_id=2 ),2004 ,253)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(344, (select constituency_id from constituency where upper(name)=upper('JAGTIAL') and district_id =3 and election_scope_id=2 ),2004 ,256)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(345, (select constituency_id from constituency where upper(name)=upper('KARIMNAGAR') and district_id =3 and election_scope_id=2 ),2004 ,254)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(346, (select constituency_id from constituency where upper(name)=upper('KAMALAPUR') and district_id =3 and election_scope_id=2 ),2004 ,252)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(347, (select constituency_id from constituency where upper(name)=upper('MANTHANI') and district_id =3 and election_scope_id=2 ),2004 ,248)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(348, (select constituency_id from constituency where upper(name)=upper('METPALLI') and district_id =3 and election_scope_id=2 ),2004 ,258)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(349, (select constituency_id from constituency where upper(name)=upper('MYDARAM') and district_id =3 and election_scope_id=2 ),2004 ,250)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(350, (select constituency_id from constituency where upper(name)=upper('NARELLA') and district_id =3 and election_scope_id=2 ),2004 ,260)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(351, (select constituency_id from constituency where upper(name)=upper('PEDDAPALLI') and district_id =3 and election_scope_id=2 ),2004 ,249)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(352, (select constituency_id from constituency where upper(name)=upper('SIRCILLA') and district_id =3 and election_scope_id=2 ),2004 ,259)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(353, (select constituency_id from constituency where upper(name)=upper('ANDOLE') and district_id =4 and election_scope_id=2 ),2004 ,229)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(354, (select constituency_id from constituency where upper(name)=upper('DOMMAT') and district_id =4 and election_scope_id=2 ),2004 ,221)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(355, (select constituency_id from constituency where upper(name)=upper('GAJWEL') and district_id =4 and election_scope_id=2 ),2004 ,222)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(356, (select constituency_id from constituency where upper(name)=upper('MEDAK') and district_id =4 and election_scope_id=2 ),2004 ,227)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(357, (select constituency_id from constituency where upper(name)=upper('NARAYANKHED') and district_id =4 and election_scope_id=2 ),2004 ,226)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(358, (select constituency_id from constituency where upper(name)=upper('NARSAPUR') and district_id =4 and election_scope_id=2 ),2004 ,223)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(359, (select constituency_id from constituency where upper(name)=upper('RAMAYAMPET') and district_id =4 and election_scope_id=2 ),2004 ,228)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(360, (select constituency_id from constituency where upper(name)=upper('SANGAREDDY') and district_id =4 and election_scope_id=2 ),2004 ,224)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(361, (select constituency_id from constituency where upper(name)=upper('SIDDIPET') and district_id =4 and election_scope_id=2 ),2004 ,220)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(362, (select constituency_id from constituency where upper(name)=upper('ZAHIRABAD') and district_id =4 and election_scope_id=2 ),2004 ,225)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(363, (select constituency_id from constituency where upper(name)=upper('ASAFNAGAR') and district_id =5 and election_scope_id=2 ),2004 ,213)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(364, (select constituency_id from constituency where upper(name)=upper('CHANDRAYANGUTTA') and district_id =5 and election_scope_id=2 ),2004 ,217)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(365, (select constituency_id from constituency where upper(name)=upper('CHARMINAR') and district_id =5 and election_scope_id=2 ),2004 ,218)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(366, (select constituency_id from constituency where upper(name)=upper('HIMAYATNAGAR') and district_id =5 and election_scope_id=2 ),2004 ,207)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(367, (select constituency_id from constituency where upper(name)=upper('KARWAN') and district_id =5 and election_scope_id=2 ),2004 ,215)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(368, (select constituency_id from constituency where upper(name)=upper('KHAIRATABAD') and district_id =5 and election_scope_id=2 ),2004 ,210)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(369, (select constituency_id from constituency where upper(name)=upper('MAHARAJGUNJ') and district_id =5 and election_scope_id=2 ),2004 ,214)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(370, (select constituency_id from constituency where upper(name)=upper('MALAKPET') and district_id =5 and election_scope_id=2 ),2004 ,212)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(371, (select constituency_id from constituency where upper(name)=upper('MUSHEERABAD') and district_id =5 and election_scope_id=2 ),2004 ,206)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(372, (select constituency_id from constituency where upper(name)=upper('SANATHNAGAR') and district_id =5 and election_scope_id=2 ),2004 ,208)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(373, (select constituency_id from constituency where upper(name)=upper('SECUNDERABAD') and district_id =5 and election_scope_id=2 ),2004 ,209)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(374, (select constituency_id from constituency where upper(name)=upper('SECUNDERABAD CANTONMENT') and district_id =5 and election_scope_id=2 ),2004 ,211)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(375, (select constituency_id from constituency where upper(name)=upper('YAKUTPURA') and district_id =5 and election_scope_id=2 ),2004 ,216)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(376, (select constituency_id from constituency where upper(name)=upper('CHEVELLA') and district_id =6 and election_scope_id=2 ),2004 ,204)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(377, (select constituency_id from constituency where upper(name)=upper('IBRAHIMPATNAM') and district_id =6 and election_scope_id=2 ),2004 ,205)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(378, (select constituency_id from constituency where upper(name)=upper('MEDCHAL') and district_id =6 and election_scope_id=2 ),2004 ,219)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(379, (select constituency_id from constituency where upper(name)=upper('PARGI') and district_id =6 and election_scope_id=2 ),2004 ,203)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(380, (select constituency_id from constituency where upper(name)=upper('TANDUR') and district_id =6 and election_scope_id=2 ),2004 ,201)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(381, (select constituency_id from constituency where upper(name)=upper('VICARABAD') and district_id =6 and election_scope_id=2 ),2004 ,202)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(382, (select constituency_id from constituency where upper(name)=upper('ACHAMPET') and district_id =7 and election_scope_id=2 ),2004 ,188)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(383, (select constituency_id from constituency where upper(name)=upper('ALAMPUR') and district_id =7 and election_scope_id=2 ),2004 ,196)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(384, (select constituency_id from constituency where upper(name)=upper('GADWAL') and district_id =7 and election_scope_id=2 ),2004 ,197)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(385, (select constituency_id from constituency where upper(name)=upper('JADCHERLA') and district_id =7 and election_scope_id=2 ),2004 ,192)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(386, (select constituency_id from constituency where upper(name)=upper('KALWAKURTHI') and district_id =7 and election_scope_id=2 ),2004 ,190)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(387, (select constituency_id from constituency where upper(name)=upper('KODANGAL') and district_id =7 and election_scope_id=2 ),2004 ,200)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(388, (select constituency_id from constituency where upper(name)=upper('KOLLAPUR') and district_id =7 and election_scope_id=2 ),2004 ,195)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(389, (select constituency_id from constituency where upper(name)=upper('MAHBUBNAGAR') and district_id =7 and election_scope_id=2 ),2004 ,193)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(390, (select constituency_id from constituency where upper(name)=upper('MAKTHAL') and district_id =7 and election_scope_id=2 ),2004 ,199)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(391, (select constituency_id from constituency where upper(name)=upper('NAGARKURNOOL') and district_id =7 and election_scope_id=2 ),2004 ,189)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(392, (select constituency_id from constituency where upper(name)=upper('SHADNAGAR') and district_id =7 and election_scope_id=2 ),2004 ,191)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(393, (select constituency_id from constituency where upper(name)=upper('AMARCHINTA') and district_id =7 and election_scope_id=2 ),2004 ,198)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(394, (select constituency_id from constituency where upper(name)=upper('WANAPARTHY') and district_id =7 and election_scope_id=2 ),2004 ,194)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(395, (select constituency_id from constituency where upper(name)=upper('ALAIR') and district_id =8 and election_scope_id=2 ),2004 ,291)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(396, (select constituency_id from constituency where upper(name)=upper('BHONGIR') and district_id =8 and election_scope_id=2 ),2004 ,292)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(397, (select constituency_id from constituency where upper(name)=upper('CHALAKURTHI') and district_id =8 and election_scope_id=2 ),2004 ,287)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(398, (select constituency_id from constituency where upper(name)=upper('DEVERKONDA') and district_id =8 and election_scope_id=2 ),2004 ,294)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(399, (select constituency_id from constituency where upper(name)=upper('KODAD') and district_id =8 and election_scope_id=2 ),2004 ,285)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(400, (select constituency_id from constituency where upper(name)=upper('MIRYALGUDA') and district_id =8 and election_scope_id=2 ),2004 ,286)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(401, (select constituency_id from constituency where upper(name)=upper('MUNGODE') and district_id =8 and election_scope_id=2 ),2004 ,293)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(402, (select constituency_id from constituency where upper(name)=upper('NAKREKAL') and district_id =8 and election_scope_id=2 ),2004 ,288)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(403, (select constituency_id from constituency where upper(name)=upper('NALGONDA') and district_id =8 and election_scope_id=2 ),2004 ,289)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(404, (select constituency_id from constituency where upper(name)=upper('RAMANNAPET') and district_id =8 and election_scope_id=2 ),2004 ,290)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(405, (select constituency_id from constituency where upper(name)=upper('SURYAPET') and district_id =8 and election_scope_id=2 ),2004 ,284)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(406, (select constituency_id from constituency where upper(name)=upper('TUNGATURTHI') and district_id =8 and election_scope_id=2 ),2004 ,283)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(407, (select constituency_id from constituency where upper(name)=upper('DORNAKAL') and district_id =9 and election_scope_id=2 ),2004 ,264)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(408, (select constituency_id from constituency where upper(name)=upper('GHANPUR') and district_id =9 and election_scope_id=2 ),2004 ,268)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(409, (select constituency_id from constituency where upper(name)=upper('HANAMKONDA') and district_id =9 and election_scope_id=2 ),2004 ,270)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(410, (select constituency_id from constituency where upper(name)=upper('JANGAON') and district_id =9 and election_scope_id=2 ),2004 ,262)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(411, (select constituency_id from constituency where upper(name)=upper('CHERIYAL') and district_id =9 and election_scope_id=2 ),2004 ,261)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(412, (select constituency_id from constituency where upper(name)=upper('MAHBUBABAD') and district_id =9 and election_scope_id=2 ),2004 ,265)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(413, (select constituency_id from constituency where upper(name)=upper('MULUG') and district_id =9 and election_scope_id=2 ),2004 ,273)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(414, (select constituency_id from constituency where upper(name)=upper('NARSAMPET') and district_id =9 and election_scope_id=2 ),2004 ,266)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(415, (select constituency_id from constituency where upper(name)=upper('PARKAL') and district_id =9 and election_scope_id=2 ),2004 ,272)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(416, (select constituency_id from constituency where upper(name)=upper('SHYAMPET') and district_id =9 and election_scope_id=2 ),2004 ,271)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(417, (select constituency_id from constituency where upper(name)=upper('WARANGAL') and district_id =9 and election_scope_id=2 ),2004 ,269)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(418, (select constituency_id from constituency where upper(name)=upper('WARDHANNAPET') and district_id =9 and election_scope_id=2 ),2004 ,267)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(419, (select constituency_id from constituency where upper(name)=upper('CHINNUR') and district_id =9 and election_scope_id=2 ),2004 ,263)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(420, (select constituency_id from constituency where upper(name)=upper('BURGAMPAHAD') and district_id =10 and election_scope_id=2 ),2004 ,275)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(421, (select constituency_id from constituency where upper(name)=upper('BHADRACHALAM') and district_id =10 and election_scope_id=2 ),2004 ,274)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(422, (select constituency_id from constituency where upper(name)=upper('KHAMMAM') and district_id =10 and election_scope_id=2 ),2004 ,280)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(423, (select constituency_id from constituency where upper(name)=upper('KOTHAGUDEM') and district_id =10 and election_scope_id=2 ),2004 ,276)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(424, (select constituency_id from constituency where upper(name)=upper('MADHIRA') and district_id =10 and election_scope_id=2 ),2004 ,278)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(425, (select constituency_id from constituency where upper(name)=upper('PALAIR') and district_id =10 and election_scope_id=2 ),2004 ,279)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(426, (select constituency_id from constituency where upper(name)=upper('SATHUPALLI') and district_id =10 and election_scope_id=2 ),2004 ,277)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(427, (select constituency_id from constituency where upper(name)=upper('SHUJATNAGAR') and district_id =10 and election_scope_id=2 ),2004 ,281)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(428, (select constituency_id from constituency where upper(name)=upper('YELLANDU') and district_id =10 and election_scope_id=2 ),2004 ,282)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(429, (select constituency_id from constituency where upper(name)=upper('AMADALAVALASA') and district_id =11 and election_scope_id=2 ),2004 ,15)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(430, (select constituency_id from constituency where upper(name)=upper('ETCHERLA') and district_id =11 and election_scope_id=2 ),2004 ,17)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(431, (select constituency_id from constituency where upper(name)=upper('HARISCHANDRAPURAM') and district_id =11 and election_scope_id=2 ),2004 ,4)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(432, (select constituency_id from constituency where upper(name)=upper('ICHAPURAM') and district_id =11 and election_scope_id=2 ),2004 ,1)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(433, (select constituency_id from constituency where upper(name)=upper('NARASANNAPETA') and district_id =11 and election_scope_id=2 ),2004 ,5)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(434, (select constituency_id from constituency where upper(name)=upper('PALAKONDA') and district_id =11 and election_scope_id=2 ),2004 ,14)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(435, (select constituency_id from constituency where upper(name)=upper('PATHAPATNAM') and district_id =11 and election_scope_id=2 ),2004 ,6)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(436, (select constituency_id from constituency where upper(name)=upper('SOMPETA') and district_id =11 and election_scope_id=2 ),2004 ,2)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(437, (select constituency_id from constituency where upper(name)=upper('SRIKAKULAM') and district_id =11 and election_scope_id=2 ),2004 ,16)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(438, (select constituency_id from constituency where upper(name)=upper('TEKKALI') and district_id =11 and election_scope_id=2 ),2004 ,3)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(439, (select constituency_id from constituency where upper(name)=upper('VUNUKURU') and district_id =11 and election_scope_id=2 ),2004 ,13)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(440, (select constituency_id from constituency where upper(name)=upper('KOTHURU') and district_id =11 and election_scope_id=2 ),2004 ,7)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(441, (select constituency_id from constituency where upper(name)=upper('CHEEPURUPALLI') and district_id =12 and election_scope_id=2 ),2004 ,18)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(442, (select constituency_id from constituency where upper(name)=upper('GAJAPATHINAGARAM') and district_id =12 and election_scope_id=2 ),2004 ,19)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(443, (select constituency_id from constituency where upper(name)=upper('BOBBILI') and district_id =12 and election_scope_id=2 ),2004 ,11)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(444, (select constituency_id from constituency where upper(name)=upper('NAGURU') and district_id =12 and election_scope_id=2 ),2004 ,8)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(445, (select constituency_id from constituency where upper(name)=upper('PARVATHIPURAM') and district_id =12 and election_scope_id=2 ),2004 ,9)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(446, (select constituency_id from constituency where upper(name)=upper('SALUR') and district_id =12 and election_scope_id=2 ),2004 ,10)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(447, (select constituency_id from constituency where upper(name)=upper('SATHIVADA') and district_id =12 and election_scope_id=2 ),2004 ,21)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(448, (select constituency_id from constituency where upper(name)=upper('SRUNGAVARAPUKOTA') and district_id =12 and election_scope_id=2 ),2004 ,28)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(449, (select constituency_id from constituency where upper(name)=upper('THERLAM') and district_id =12 and election_scope_id=2 ),2004 ,12)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(450, (select constituency_id from constituency where upper(name)=upper('VIZIANAGARAM') and district_id =12 and election_scope_id=2 ),2004 ,20)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(451, (select constituency_id from constituency where upper(name)=upper('BHOGAPURAM') and district_id =12 and election_scope_id=2 ),2004 ,22)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(452, (select constituency_id from constituency where upper(name)=upper('UTTARAPALLI') and district_id =12 and election_scope_id=2 ),2004 ,27)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(453, (select constituency_id from constituency where upper(name)=upper('BHEEMUNIPATNAM') and district_id =13 and election_scope_id=2 ),2004 ,23)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(454, (select constituency_id from constituency where upper(name)=upper('ANAKAPALLI') and district_id =13 and election_scope_id=2 ),2004 ,32)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(455, (select constituency_id from constituency where upper(name)=upper('CHODAVARAM') and district_id =13 and election_scope_id=2 ),2004 ,31)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(456, (select constituency_id from constituency where upper(name)=upper('ELAMANCHILI') and district_id =13 and election_scope_id=2 ),2004 ,34)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(457, (select constituency_id from constituency where upper(name)=upper('MADUGULA') and district_id =13 and election_scope_id=2 ),2004 ,30)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(458, (select constituency_id from constituency where upper(name)=upper('NARSIPATNAM') and district_id =13 and election_scope_id=2 ),2004 ,36)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(459, (select constituency_id from constituency where upper(name)=upper('PADERU') and district_id =13 and election_scope_id=2 ),2004 ,29)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(460, (select constituency_id from constituency where upper(name)=upper('PARAVADA') and district_id =13 and election_scope_id=2 ),2004 ,33)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(461, (select constituency_id from constituency where upper(name)=upper('PAYAKARAOPETA') and district_id =13 and election_scope_id=2 ),2004 ,35)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(462, (select constituency_id from constituency where upper(name)=upper('PENDURTHI') and district_id =13 and election_scope_id=2 ),2004 ,26)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(463, (select constituency_id from constituency where upper(name)=upper('CHINTAPALLI') and district_id =13 and election_scope_id=2 ),2004 ,37)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(464, (select constituency_id from constituency where upper(name)=upper('VISAKHAPATNAM[I]') and district_id =13 and election_scope_id=2 ),2004 ,24)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(465, (select constituency_id from constituency where upper(name)=upper('VISAKHAPATNAM[II]') and district_id =13 and election_scope_id=2 ),2004 ,25)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(466, (select constituency_id from constituency where upper(name)=upper('ALLAVARAM') and district_id =14 and election_scope_id=2 ),2004 ,54)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(467, (select constituency_id from constituency where upper(name)=upper('Amalapuram') and district_id =14 and election_scope_id=2 ),2004 ,55)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(468, (select constituency_id from constituency where upper(name)=upper('ANAPARTHY') and district_id =14 and election_scope_id=2 ),2004 ,50)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(469, (select constituency_id from constituency where upper(name)=upper('BURUGUPUDI') and district_id =14 and election_scope_id=2 ),2004 ,39)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(470, (select constituency_id from constituency where upper(name)=upper('JAGGAMPETA') and district_id =14 and election_scope_id=2 ),2004 ,42)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(471, (select constituency_id from constituency where upper(name)=upper('KADIAM') and district_id =14 and election_scope_id=2 ),2004 ,41)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(472, (select constituency_id from constituency where upper(name)=upper('KAKINADA') and district_id =14 and election_scope_id=2 ),2004 ,48)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(473, (select constituency_id from constituency where upper(name)=upper('KOTHAPETA') and district_id =14 and election_scope_id=2 ),2004 ,56)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(474, (select constituency_id from constituency where upper(name)=upper('MUMMIDIVARAM') and district_id =14 and election_scope_id=2 ),2004 ,53)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(475, (select constituency_id from constituency where upper(name)=upper('NAGARAM') and district_id =14 and election_scope_id=2 ),2004 ,57)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(476, (select constituency_id from constituency where upper(name)=upper('PEDDAPURAM') and district_id =14 and election_scope_id=2 ),2004 ,43)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(477, (select constituency_id from constituency where upper(name)=upper('PITHAPURAM') and district_id =14 and election_scope_id=2 ),2004 ,46)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(478, (select constituency_id from constituency where upper(name)=upper('PRATHIPAD') and district_id =14 and election_scope_id=2 ),2004 ,44)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(479, (select constituency_id from constituency where upper(name)=upper('RAJAHMUNDRY') and district_id =14 and election_scope_id=2 ),2004 ,40)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(480, (select constituency_id from constituency where upper(name)=upper('RAMACHANDRAPURAM') and district_id =14 and election_scope_id=2 ),2004 ,51)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(481, (select constituency_id from constituency where upper(name)=upper('RAZOLE') and district_id =14 and election_scope_id=2 ),2004 ,58)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(482, (select constituency_id from constituency where upper(name)=upper('SAMPARA') and district_id =14 and election_scope_id=2 ),2004 ,47)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(483, (select constituency_id from constituency where upper(name)=upper('TALLAREVU') and district_id =14 and election_scope_id=2 ),2004 ,49)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(484, (select constituency_id from constituency where upper(name)=upper('TUNI') and district_id =14 and election_scope_id=2 ),2004 ,45)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(485, (select constituency_id from constituency where upper(name)=upper('ALAMURU') and district_id =14 and election_scope_id=2 ),2004 ,52)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(486, (select constituency_id from constituency where upper(name)=upper('YELLAVARAM') and district_id =14 and election_scope_id=2 ),2004 ,38)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(487, (select constituency_id from constituency where upper(name)=upper('ATTILI') and district_id =15 and election_scope_id=2 ),2004 ,66)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(488, (select constituency_id from constituency where upper(name)=upper('BHIMAVARAM') and district_id =15 and election_scope_id=2 ),2004 ,62)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(489, (select constituency_id from constituency where upper(name)=upper('CHINTALAPUDI') and district_id =15 and election_scope_id=2 ),2004 ,74)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(490, (select constituency_id from constituency where upper(name)=upper('DENDULUR') and district_id =15 and election_scope_id=2 ),2004 ,69)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(491, (select constituency_id from constituency where upper(name)=upper('ELURU') and district_id =15 and election_scope_id=2 ),2004 ,70)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(492, (select constituency_id from constituency where upper(name)=upper('GOPALPURAM') and district_id =15 and election_scope_id=2 ),2004 ,71)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(493, (select constituency_id from constituency where upper(name)=upper('KOVVUR') and district_id =15 and election_scope_id=2 ),2004 ,72)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(494, (select constituency_id from constituency where upper(name)=upper('NARASAPUR') and district_id =15 and election_scope_id=2 ),2004 ,59)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(495, (select constituency_id from constituency where upper(name)=upper('PALACOLE') and district_id =15 and election_scope_id=2 ),2004 ,60)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(496, (select constituency_id from constituency where upper(name)=upper('PENUGONDA') and district_id =15 and election_scope_id=2 ),2004 ,64)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(497, (select constituency_id from constituency where upper(name)=upper('POLAVARAM') and district_id =15 and election_scope_id=2 ),2004 ,73)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(498, (select constituency_id from constituency where upper(name)=upper('TADEPALLIGUDEM') and district_id =15 and election_scope_id=2 ),2004 ,67)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(499, (select constituency_id from constituency where upper(name)=upper('TANUKU') and district_id =15 and election_scope_id=2 ),2004 ,65)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(500, (select constituency_id from constituency where upper(name)=upper('UNDI') and district_id =15 and election_scope_id=2 ),2004 ,63)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(501, (select constituency_id from constituency where upper(name)=upper('UNGUTUR') and district_id =15 and election_scope_id=2 ),2004 ,68)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(502, (select constituency_id from constituency where upper(name)=upper('ACHANTA') and district_id =15 and election_scope_id=2 ),2004 ,61)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(503, (select constituency_id from constituency where upper(name)=upper('AVANIGADDA') and district_id =16 and election_scope_id=2 ),2004 ,91)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(504, (select constituency_id from constituency where upper(name)=upper('BANDAR') and district_id =16 and election_scope_id=2 ),2004 ,89)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(505, (select constituency_id from constituency where upper(name)=upper('GANNAVARAM') and district_id =16 and election_scope_id=2 ),2004 ,83)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(506, (select constituency_id from constituency where upper(name)=upper('GUDIVADA') and district_id =16 and election_scope_id=2 ),2004 ,85)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(507, (select constituency_id from constituency where upper(name)=upper('JAGGAYYAPET') and district_id =16 and election_scope_id=2 ),2004 ,75)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(508, (select constituency_id from constituency where upper(name)=upper('KAIKALUR') and district_id =16 and election_scope_id=2 ),2004 ,87)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(509, (select constituency_id from constituency where upper(name)=upper('KANKIPADU') and district_id =16 and election_scope_id=2 ),2004 ,79)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(510, (select constituency_id from constituency where upper(name)=upper('MALLESWARAM') and district_id =16 and election_scope_id=2 ),2004 ,88)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(511, (select constituency_id from constituency where upper(name)=upper('MUDINEPALLI') and district_id =16 and election_scope_id=2 ),2004 ,86)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(512, (select constituency_id from constituency where upper(name)=upper('MYLAVARAM') and district_id =16 and election_scope_id=2 ),2004 ,80)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(513, (select constituency_id from constituency where upper(name)=upper('NANDIGAMA') and district_id =16 and election_scope_id=2 ),2004 ,76)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(514, (select constituency_id from constituency where upper(name)=upper('NUZVID') and district_id =16 and election_scope_id=2 ),2004 ,82)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(515, (select constituency_id from constituency where upper(name)=upper('TIRUVURU') and district_id =16 and election_scope_id=2 ),2004 ,81)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(516, (select constituency_id from constituency where upper(name)=upper('VIJAYAWADA EAST') and district_id =16 and election_scope_id=2 ),2004 ,78)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(517, (select constituency_id from constituency where upper(name)=upper('VIJAYAWADA WEST') and district_id =16 and election_scope_id=2 ),2004 ,77)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(518, (select constituency_id from constituency where upper(name)=upper('VUYYUR') and district_id =16 and election_scope_id=2 ),2004 ,84)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(519, (select constituency_id from constituency where upper(name)=upper('NIDUMOLU') and district_id =16 and election_scope_id=2 ),2004 ,90)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(520, (select constituency_id from constituency where upper(name)=upper('CHILAKALURIPET') and district_id =17 and election_scope_id=2 ),2004 ,110)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(521, (select constituency_id from constituency where upper(name)=upper('DUGGIRALA') and district_id =17 and election_scope_id=2 ),2004 ,95)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(522, (select constituency_id from constituency where upper(name)=upper('GUNTUR[I]') and district_id =17 and election_scope_id=2 ),2004 ,100)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(523, (select constituency_id from constituency where upper(name)=upper('GUNTUR[II]') and district_id =17 and election_scope_id=2 ),2004 ,101)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(524, (select constituency_id from constituency where upper(name)=upper('GURZALA') and district_id =17 and election_scope_id=2 ),2004 ,106)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(525, (select constituency_id from constituency where upper(name)=upper('KUCHINAPUDI') and district_id =17 and election_scope_id=2 ),2004 ,92)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(526, (select constituency_id from constituency where upper(name)=upper('MACHERLA') and district_id =17 and election_scope_id=2 ),2004 ,107)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(527, (select constituency_id from constituency where upper(name)=upper('MANGALAGIRI') and district_id =17 and election_scope_id=2 ),2004 ,102)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(528, (select constituency_id from constituency where upper(name)=upper('VINUKONDA') and district_id =17 and election_scope_id=2 ),2004 ,108)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(529, (select constituency_id from constituency where upper(name)=upper('NARASARAOPET') and district_id =17 and election_scope_id=2 ),2004 ,109)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(530, (select constituency_id from constituency where upper(name)=upper('BAPATLA') and district_id =17 and election_scope_id=2 ),2004 ,98)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(531, (select constituency_id from constituency where upper(name)=upper('PEDDAKURAPADU') and district_id =17 and election_scope_id=2 ),2004 ,105)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(532, (select constituency_id from constituency where upper(name)=upper('PONNUR') and district_id =17 and election_scope_id=2 ),2004 ,97)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(533, (select constituency_id from constituency where upper(name)=upper('PRATHIPADU') and district_id =17 and election_scope_id=2 ),2004 ,99)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(534, (select constituency_id from constituency where upper(name)=upper('REPALLE') and district_id =17 and election_scope_id=2 ),2004 ,93)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(535, (select constituency_id from constituency where upper(name)=upper('SATTENAPALLI') and district_id =17 and election_scope_id=2 ),2004 ,104)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(536, (select constituency_id from constituency where upper(name)=upper('TADIKONDA') and district_id =17 and election_scope_id=2 ),2004 ,103)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(537, (select constituency_id from constituency where upper(name)=upper('TENALI') and district_id =17 and election_scope_id=2 ),2004 ,96)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(538, (select constituency_id from constituency where upper(name)=upper('VEMURU') and district_id =17 and election_scope_id=2 ),2004 ,94)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(539, (select constituency_id from constituency where upper(name)=upper('ADDANKI') and district_id =18 and election_scope_id=2 ),2004 ,114)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(540, (select constituency_id from constituency where upper(name)=upper('CHIRALA') and district_id =18 and election_scope_id=2 ),2004 ,111)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(541, (select constituency_id from constituency where upper(name)=upper('CUMBUM') and district_id =18 and election_scope_id=2 ),2004 ,120)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(542, (select constituency_id from constituency where upper(name)=upper('DARSI') and district_id =18 and election_scope_id=2 ),2004 ,121)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(543, (select constituency_id from constituency where upper(name)=upper('GIDDALUR') and district_id =18 and election_scope_id=2 ),2004 ,123)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(544, (select constituency_id from constituency where upper(name)=upper('MARKAPUR') and district_id =18 and election_scope_id=2 ),2004 ,122)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(545, (select constituency_id from constituency where upper(name)=upper('PARCHUR') and district_id =18 and election_scope_id=2 ),2004 ,112)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(546, (select constituency_id from constituency where upper(name)=upper('MARTUR') and district_id =18 and election_scope_id=2 ),2004 ,113)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(547, (select constituency_id from constituency where upper(name)=upper('BADVEL') and district_id =20 and election_scope_id=2 ),2004 ,155)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(548, (select constituency_id from constituency where upper(name)=upper('Kadapa') and district_id =20 and election_scope_id=2 ),2004 ,154)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(549, (select constituency_id from constituency where upper(name)=upper('JAMMALAMADUGU') and district_id =20 and election_scope_id=2 ),2004 ,158)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(550, (select constituency_id from constituency where upper(name)=upper('KAMALAPURAM') and district_id =20 and election_scope_id=2 ),2004 ,159)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(551, (select constituency_id from constituency where upper(name)=upper('KODUR') and district_id =20 and election_scope_id=2 ),2004 ,150)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(552, (select constituency_id from constituency where upper(name)=upper('LAKKIREDDIPALLI') and district_id =20 and election_scope_id=2 ),2004 ,153)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(553, (select constituency_id from constituency where upper(name)=upper('RAYACHOTY') and district_id =20 and election_scope_id=2 ),2004 ,152)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(554, (select constituency_id from constituency where upper(name)=upper('MYDUKUR') and district_id =20 and election_scope_id=2 ),2004 ,156)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(555, (select constituency_id from constituency where upper(name)=upper('PRODDATUR') and district_id =20 and election_scope_id=2 ),2004 ,157)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(556, (select constituency_id from constituency where upper(name)=upper('Pulivendla') and district_id =20 and election_scope_id=2 ),2004 ,160)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(557, (select constituency_id from constituency where upper(name)=upper('RAJAMPET') and district_id =20 and election_scope_id=2 ),2004 ,151)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(558, (select constituency_id from constituency where upper(name)=upper('ADONI') and district_id =21 and election_scope_id=2 ),2004 ,176)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(559, (select constituency_id from constituency where upper(name)=upper('ALLAGADDA') and district_id =21 and election_scope_id=2 ),2004 ,183)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(560, (select constituency_id from constituency where upper(name)=upper('ALUR') and district_id =21 and election_scope_id=2 ),2004 ,175)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(561, (select constituency_id from constituency where upper(name)=upper('DHONE') and district_id =21 and election_scope_id=2 ),2004 ,181)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(562, (select constituency_id from constituency where upper(name)=upper('KODUMUR') and district_id =21 and election_scope_id=2 ),2004 ,178)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(563, (select constituency_id from constituency where upper(name)=upper('KOILKUNTLA') and district_id =21 and election_scope_id=2 ),2004 ,182)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(564, (select constituency_id from constituency where upper(name)=upper('KURNOOL') and district_id =21 and election_scope_id=2 ),2004 ,179)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(565, (select constituency_id from constituency where upper(name)=upper('NANDIKOTKUR') and district_id =21 and election_scope_id=2 ),2004 ,185)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(566, (select constituency_id from constituency where upper(name)=upper('NANDYAL') and district_id =21 and election_scope_id=2 ),2004 ,186)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(567, (select constituency_id from constituency where upper(name)=upper('PANYAM') and district_id =21 and election_scope_id=2 ),2004 ,184)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(568, (select constituency_id from constituency where upper(name)=upper('PATTIKONDA') and district_id =21 and election_scope_id=2 ),2004 ,180)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(569, (select constituency_id from constituency where upper(name)=upper('YEMMIGANUR') and district_id =21 and election_scope_id=2 ),2004 ,177)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(570, (select constituency_id from constituency where upper(name)=upper('ANANTAPUR') and district_id =22 and election_scope_id=2 ),2004 ,172)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(571, (select constituency_id from constituency where upper(name)=upper('DHARMAVARAM') and district_id =22 and election_scope_id=2 ),2004 ,173)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(572, (select constituency_id from constituency where upper(name)=upper('GOOTY') and district_id =22 and election_scope_id=2 ),2004 ,170)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(573, (select constituency_id from constituency where upper(name)=upper('GORANTLA') and district_id =22 and election_scope_id=2 ),2004 ,163)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(574, (select constituency_id from constituency where upper(name)=upper('HINDUPUR') and district_id =22 and election_scope_id=2 ),2004 ,164)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(575, (select constituency_id from constituency where upper(name)=upper('KADIRI') and district_id =22 and election_scope_id=2 ),2004 ,161)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(576, (select constituency_id from constituency where upper(name)=upper('KALYANDURG') and district_id =22 and election_scope_id=2 ),2004 ,167)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(577, (select constituency_id from constituency where upper(name)=upper('MADAKASIRA') and district_id =22 and election_scope_id=2 ),2004 ,165)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(578, (select constituency_id from constituency where upper(name)=upper('NALLAMADA') and district_id =22 and election_scope_id=2 ),2004 ,162)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(579, (select constituency_id from constituency where upper(name)=upper('PENUKONDA') and district_id =22 and election_scope_id=2 ),2004 ,166)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(580, (select constituency_id from constituency where upper(name)=upper('RAYADURG') and district_id =22 and election_scope_id=2 ),2004 ,168)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(581, (select constituency_id from constituency where upper(name)=upper('SINGANAMALA') and district_id =22 and election_scope_id=2 ),2004 ,171)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(582, (select constituency_id from constituency where upper(name)=upper('TADPATRI') and district_id =22 and election_scope_id=2 ),2004 ,174)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(583, (select constituency_id from constituency where upper(name)=upper('URAVAKONDA') and district_id =22 and election_scope_id=2 ),2004 ,169)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(584, (select constituency_id from constituency where upper(name)=upper('CHANDRAGIRI') and district_id =23 and election_scope_id=2 ),2004 ,148)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(585, (select constituency_id from constituency where upper(name)=upper('CHITTOOR') and district_id =23 and election_scope_id=2 ),2004 ,140)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(586, (select constituency_id from constituency where upper(name)=upper('KUPPAM') and district_id =23 and election_scope_id=2 ),2004 ,142)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(587, (select constituency_id from constituency where upper(name)=upper('Palamaner') and district_id =23 and election_scope_id=2 ),2004 ,141)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(588, (select constituency_id from constituency where upper(name)=upper('PILERU') and district_id =23 and election_scope_id=2 ),2004 ,147)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(589, (select constituency_id from constituency where upper(name)=upper('PUNGANUR') and district_id =23 and election_scope_id=2 ),2004 ,143)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(590, (select constituency_id from constituency where upper(name)=upper('PUTTUR') and district_id =23 and election_scope_id=2 ),2004 ,138)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(591, (select constituency_id from constituency where upper(name)=upper('THAMBALLAPALLE') and district_id =23 and election_scope_id=2 ),2004 ,145)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(592, (select constituency_id from constituency where upper(name)=upper('VEPANJERI') and district_id =23 and election_scope_id=2 ),2004 ,139)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(593, (select constituency_id from constituency where upper(name)=upper('VAYALPAD') and district_id =23 and election_scope_id=2 ),2004 ,146)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(594, (select constituency_id from constituency where upper(name)=upper('MADANPALLE') and district_id =23 and election_scope_id=2 ),2004 ,144)
-GO
-
-// 3
-
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2750, (select constituency_id from constituency where upper(name)=upper('Adilabad ')  and election_scope_id=1 ),2004 ,35)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2751, (select constituency_id from constituency where upper(name)=upper('Amalapuram')  and election_scope_id=1 ),2004 ,9)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2752, (select constituency_id from constituency where upper(name)=upper('Anakapalli')  and election_scope_id=1 ),2004 ,6)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2753, (select constituency_id from constituency where upper(name)=upper('Anantapur')  and election_scope_id=1 ),2004 ,25)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2754, (select constituency_id from constituency where upper(name)=upper('Bapatla')  and election_scope_id=1 ),2004 ,16)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2755, (select constituency_id from constituency where upper(name)=upper('Bhadrachalam')  and election_scope_id=1 ),2004 ,5)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2756, (select constituency_id from constituency where upper(name)=upper('Bobbili')  and election_scope_id=1 ),2004 ,3)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2757, (select constituency_id from constituency where upper(name)=upper('Chittoor')  and election_scope_id=1 ),2004 ,21)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2758, (select constituency_id from constituency where upper(name)=upper('Eluru')  and election_scope_id=1 ),2004 ,11)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2759, (select constituency_id from constituency where upper(name)=upper('Guntur')  and election_scope_id=1 ),2004 ,15)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2760, (select constituency_id from constituency where upper(name)=upper('Hanamkonda')  and election_scope_id=1 ),2004 ,38)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2761, (select constituency_id from constituency where upper(name)=upper('Hindupur')  and election_scope_id=1 ),2004 ,24)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2762, (select constituency_id from constituency where upper(name)=upper('Hyderabad')  and election_scope_id=1 ),2004 ,30)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2763, (select constituency_id from constituency where upper(name)=upper('Kadapa')  and election_scope_id=1 ),2004 ,23)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2764, (select constituency_id from constituency where upper(name)=upper('Kakinada')  and election_scope_id=1 ),2004 ,7)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2765, (select constituency_id from constituency where upper(name)=upper('Karimnagar')  and election_scope_id=1 ),2004 ,37)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2766, (select constituency_id from constituency where upper(name)=upper('Khammam')  and election_scope_id=1 ),2004 ,40)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2767, (select constituency_id from constituency where upper(name)=upper('Kurnool')  and election_scope_id=1 ),2004 ,26)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2768, (select constituency_id from constituency where upper(name)=upper('Machilipatnam')  and election_scope_id=1 ),2004 ,12)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2769, (select constituency_id from constituency where upper(name)=upper('Mahbubnagar')  and election_scope_id=1 ),2004 ,29)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2770, (select constituency_id from constituency where upper(name)=upper('Medak')  and election_scope_id=1 ),2004 ,33)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2771, (select constituency_id from constituency where upper(name)=upper('Miryalguda')  and election_scope_id=1 ),2004 ,42)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2772, (select constituency_id from constituency where upper(name)=upper('Nagarkurnool')  and election_scope_id=1 ),2004 ,28)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2773, (select constituency_id from constituency where upper(name)=upper('Nalgonda')  and election_scope_id=1 ),2004 ,41)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2774, (select constituency_id from constituency where upper(name)=upper('Nandyal')  and election_scope_id=1 ),2004 ,27)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2775, (select constituency_id from constituency where upper(name)=upper('Narasapur')  and election_scope_id=1 ),2004 ,10)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2776, (select constituency_id from constituency where upper(name)=upper('Narasaraopet')  and election_scope_id=1 ),2004 ,17)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2777, (select constituency_id from constituency where upper(name)=upper('Nellore')  and election_scope_id=1 ),2004 ,19)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2778, (select constituency_id from constituency where upper(name)=upper('Nizamabad')  and election_scope_id=1 ),2004 ,34)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2779, (select constituency_id from constituency where upper(name)=upper('Ongole')  and election_scope_id=1 ),2004 ,18)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2780, (select constituency_id from constituency where upper(name)=upper('Parvathipuram')  and election_scope_id=1 ),2004 ,2)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2781, (select constituency_id from constituency where upper(name)=upper('Peddapalli')  and election_scope_id=1 ),2004 ,36)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2782, (select constituency_id from constituency where upper(name)=upper('Rajahmundry')  and election_scope_id=1 ),2004 ,8)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2783, (select constituency_id from constituency where upper(name)=upper('Rajampet')  and election_scope_id=1 ),2004 ,22)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2784, (select constituency_id from constituency where upper(name)=upper('Secunderabad')  and election_scope_id=1 ),2004 ,31)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2785, (select constituency_id from constituency where upper(name)=upper('Siddipet')  and election_scope_id=1 ),2004 ,32)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2786, (select constituency_id from constituency where upper(name)=upper('Srikakulam')  and election_scope_id=1 ),2004 ,1)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2787, (select constituency_id from constituency where upper(name)=upper('Tenali')  and election_scope_id=1 ),2004 ,14)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2788, (select constituency_id from constituency where upper(name)=upper('Tirupati ')  and election_scope_id=1 ),2004 ,20)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2789, (select constituency_id from constituency where upper(name)=upper('Vijayawada')  and election_scope_id=1 ),2004 ,13)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2790, (select constituency_id from constituency where upper(name)=upper('Visakhapatnam')  and election_scope_id=1 ),2004 ,4)
-GO
-insert into DELIMITATION_CONSTITUENCY ( delimitation_constituency_id,constituency_id, year, constituency_no) 
-values(2791, (select constituency_id from constituency where upper(name)=upper('Warangal')  and election_scope_id=1 ),2004 ,39)
-GO
-
-
-// 4
-
-
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2314,2777,(select constituency_id from constituency where upper(name)=upper('ALLUR') and election_scope_id=2 and district_id=19) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2315,2777,(select constituency_id from constituency where upper(name)=upper('ATMAKUR') and election_scope_id=2 and district_id=19) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2316,2777,(select constituency_id from constituency where upper(name)=upper('GUDUR') and election_scope_id=2 and district_id=19) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2317,2779,(select constituency_id from constituency where upper(name)=upper('KAVALI') and election_scope_id=2 and district_id=19) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2318,2777,(select constituency_id from constituency where upper(name)=upper('KOVUR') and election_scope_id=2 and district_id=19) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2319,2777,(select constituency_id from constituency where upper(name)=upper('NELLORE') and election_scope_id=2 and district_id=19) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2320,2777,(select constituency_id from constituency where upper(name)=upper('RAPUR') and election_scope_id=2 and district_id=19) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2321,2788,(select constituency_id from constituency where upper(name)=upper('SATYAVEDU') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2322,2788,(select constituency_id from constituency where upper(name)=upper('SULLURPET') and election_scope_id=2 and district_id=19) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2323,2777,(select constituency_id from constituency where upper(name)=upper('SARVEPALLI') and election_scope_id=2 and district_id=19) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2324,2779,(select constituency_id from constituency where upper(name)=upper('UDAYAGIRI') and election_scope_id=2 and district_id=19) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2325,2788,(select constituency_id from constituency where upper(name)=upper('VENKATAGIRI') and election_scope_id=2 and district_id=19) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2326,2788,(select constituency_id from constituency where upper(name)=upper('SATYAVEDU') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2327,2788,(select constituency_id from constituency where upper(name)=upper('SRIKALAHASTI') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2328,2788,(select constituency_id from constituency where upper(name)=upper('NAGARI') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2329,2788,(select constituency_id from constituency where upper(name)=upper('TIRUPATI') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2330,2779,(select constituency_id from constituency where upper(name)=upper('ONGOLE') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2331,2779,(select constituency_id from constituency where upper(name)=upper('SANTHANUTHALAPADU') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2332,2779,(select constituency_id from constituency where upper(name)=upper('KANIGIRI') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2333,2779,(select constituency_id from constituency where upper(name)=upper('KANDUKUR') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2334,2779,(select constituency_id from constituency where upper(name)=upper('KONDEPI') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2335,2750,(select constituency_id from constituency where upper(name)=upper('Adilabad') and election_scope_id=2 and district_id=1) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2336,2750,(select constituency_id from constituency where upper(name)=upper('ASIFABAD') and election_scope_id=2 and district_id=1) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2337,2750,(select constituency_id from constituency where upper(name)=upper('BOATH') and election_scope_id=2 and district_id=1) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2338,2791,(select constituency_id from constituency where upper(name)=upper('CHENNUR') and election_scope_id=2 and district_id=1) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2339,2750,(select constituency_id from constituency where upper(name)=upper('KHANAPUR') and election_scope_id=2 and district_id=1) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2340,2750,(select constituency_id from constituency where upper(name)=upper('MUDHOLE') and election_scope_id=2 and district_id=1) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2341,2750,(select constituency_id from constituency where upper(name)=upper('NIRMAL') and election_scope_id=2 and district_id=1) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2342,2750,(select constituency_id from constituency where upper(name)=upper('SIRPUR') and election_scope_id=2 and district_id=1) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2343,2781,(select constituency_id from constituency where upper(name)=upper('LUXETTIPET') and election_scope_id=2 and district_id=1) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2344,2778,(select constituency_id from constituency where upper(name)=upper('ARMOOR') and election_scope_id=2 and district_id=2) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2345,2778,(select constituency_id from constituency where upper(name)=upper('BALKONDA') and election_scope_id=2 and district_id=2) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2346,2778,(select constituency_id from constituency where upper(name)=upper('BANSWADA') and election_scope_id=2 and district_id=2) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2347,2778,(select constituency_id from constituency where upper(name)=upper('BODHAN') and election_scope_id=2 and district_id=2) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2348,2778,(select constituency_id from constituency where upper(name)=upper('DICHPALLI') and election_scope_id=2 and district_id=2) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2349,2778,(select constituency_id from constituency where upper(name)=upper('JUKKAL') and election_scope_id=2 and district_id=2) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2350,2770,(select constituency_id from constituency where upper(name)=upper('KAMAREDDY') and election_scope_id=2 and district_id=2) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2351,2778,(select constituency_id from constituency where upper(name)=upper('NIZAMABAD') and election_scope_id=2 and district_id=2) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2352,2770,(select constituency_id from constituency where upper(name)=upper('YELLAREDDY') and election_scope_id=2 and district_id=2) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2353,2765,(select constituency_id from constituency where upper(name)=upper('BUGGARAM') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2354,2765,(select constituency_id from constituency where upper(name)=upper('CHOPPADANDI') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2355,2781,(select constituency_id from constituency where upper(name)=upper('HUZURABAD') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2356,2781,(select constituency_id from constituency where upper(name)=upper('INDURTHI') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2357,2765,(select constituency_id from constituency where upper(name)=upper('JAGTIAL') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2358,2765,(select constituency_id from constituency where upper(name)=upper('KARIMNAGAR') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2359,2760,(select constituency_id from constituency where upper(name)=upper('KAMALAPUR') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2360,2781,(select constituency_id from constituency where upper(name)=upper('MANTHANI') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2361,2765,(select constituency_id from constituency where upper(name)=upper('METPALLI') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2362,2781,(select constituency_id from constituency where upper(name)=upper('MYDARAM') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2363,2765,(select constituency_id from constituency where upper(name)=upper('NARELLA') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2364,2781,(select constituency_id from constituency where upper(name)=upper('PEDDAPALLI') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2365,2765,(select constituency_id from constituency where upper(name)=upper('SIRCILLA') and election_scope_id=2 and district_id=3) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2366,2770,(select constituency_id from constituency where upper(name)=upper('ANDOLE') and election_scope_id=2 and district_id=4) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2367,2785,(select constituency_id from constituency where upper(name)=upper('DOMMAT') and election_scope_id=2 and district_id=4) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2368,2785,(select constituency_id from constituency where upper(name)=upper('GAJWEL') and election_scope_id=2 and district_id=4) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2369,2770,(select constituency_id from constituency where upper(name)=upper('MEDAK') and election_scope_id=2 and district_id=4) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2370,2770,(select constituency_id from constituency where upper(name)=upper('NARAYANKHED') and election_scope_id=2 and district_id=4) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2371,2785,(select constituency_id from constituency where upper(name)=upper('Narsapur') and election_scope_id=2 and district_id=4) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2372,2785,(select constituency_id from constituency where upper(name)=upper('RAMAYAMPET') and election_scope_id=2 and district_id=4) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2373,2770,(select constituency_id from constituency where upper(name)=upper('SANGAREDDY') and election_scope_id=2 and district_id=4) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2374,2785,(select constituency_id from constituency where upper(name)=upper('SIDDIPET') and election_scope_id=2 and district_id=4) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2375,2770,(select constituency_id from constituency where upper(name)=upper('ZAHIRABAD') and election_scope_id=2 and district_id=4) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2376,2784,(select constituency_id from constituency where upper(name)=upper('ASAFNAGAR') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2377,2762,(select constituency_id from constituency where upper(name)=upper('CHANDRAYANGUTTA') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2378,2762,(select constituency_id from constituency where upper(name)=upper('CHARMINAR') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2379,2784,(select constituency_id from constituency where upper(name)=upper('HIMAYATNAGAR') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2380,2762,(select constituency_id from constituency where upper(name)=upper('KARWAN') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2381,2784,(select constituency_id from constituency where upper(name)=upper('KHAIRATABAD') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2382,2784,(select constituency_id from constituency where upper(name)=upper('MAHARAJGUNJ') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2383,2773,(select constituency_id from constituency where upper(name)=upper('MALAKPET') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2384,2784,(select constituency_id from constituency where upper(name)=upper('MUSHEERABAD') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2385,2784,(select constituency_id from constituency where upper(name)=upper('SANATHNAGAR') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2386,2784,(select constituency_id from constituency where upper(name)=upper('SECUNDERABAD') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2387,2785,(select constituency_id from constituency where upper(name)=upper('SECUNDERABAD CANTONMENT') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2388,2762,(select constituency_id from constituency where upper(name)=upper('YAKUTPURA') and election_scope_id=2 and district_id=5) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2389,2762,(select constituency_id from constituency where upper(name)=upper('CHEVELLA') and election_scope_id=2 and district_id=6) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2390,2773,(select constituency_id from constituency where upper(name)=upper('IBRAHIMPATNAM') and election_scope_id=2 and district_id=6) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2391,2785,(select constituency_id from constituency where upper(name)=upper('MEDCHAL') and election_scope_id=2 and district_id=6) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2392,2772,(select constituency_id from constituency where upper(name)=upper('PARGI') and election_scope_id=2 and district_id=6) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2393,2762,(select constituency_id from constituency where upper(name)=upper('TANDUR') and election_scope_id=2 and district_id=6) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2394,2762,(select constituency_id from constituency where upper(name)=upper('VICARABAD') and election_scope_id=2 and district_id=6) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2395,2772,(select constituency_id from constituency where upper(name)=upper('ACHAMPET') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2396,2769,(select constituency_id from constituency where upper(name)=upper('ALAMPUR') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2397,2769,(select constituency_id from constituency where upper(name)=upper('GADWAL') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2398,2772,(select constituency_id from constituency where upper(name)=upper('JADCHERLA') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2399,2772,(select constituency_id from constituency where upper(name)=upper('KALWAKURTHI') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2400,2769,(select constituency_id from constituency where upper(name)=upper('KODANGAL') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2401,2772,(select constituency_id from constituency where upper(name)=upper('KOLLAPUR') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2402,2769,(select constituency_id from constituency where upper(name)=upper('MAHBUBNAGAR') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2403,2769,(select constituency_id from constituency where upper(name)=upper('MAKTHAL') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2404,2772,(select constituency_id from constituency where upper(name)=upper('NAGARKURNOOL') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2405,2772,(select constituency_id from constituency where upper(name)=upper('SHADNAGAR') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2406,2769,(select constituency_id from constituency where upper(name)=upper('AMARCHINTA') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2407,2769,(select constituency_id from constituency where upper(name)=upper('WANAPARTHY') and election_scope_id=2 and district_id=7) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2408,2773,(select constituency_id from constituency where upper(name)=upper('ALAIR') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2409,2773,(select constituency_id from constituency where upper(name)=upper('BHONGIR') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2410,2771,(select constituency_id from constituency where upper(name)=upper('CHALAKURTHI') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2411,2773,(select constituency_id from constituency where upper(name)=upper('DEVERKONDA') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2412,2771,(select constituency_id from constituency where upper(name)=upper('KODAD') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2413,2771,(select constituency_id from constituency where upper(name)=upper('MIRYALGUDA') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2414,2773,(select constituency_id from constituency where upper(name)=upper('MUNGODE') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2415,2771,(select constituency_id from constituency where upper(name)=upper('NAKREKAL') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2416,2773,(select constituency_id from constituency where upper(name)=upper('NALGONDA') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2417,2771,(select constituency_id from constituency where upper(name)=upper('RAMANNAPET') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2418,2771,(select constituency_id from constituency where upper(name)=upper('SURYAPET') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2419,2771,(select constituency_id from constituency where upper(name)=upper('TUNGATURTHI') and election_scope_id=2 and district_id=8) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2420,2791,(select constituency_id from constituency where upper(name)=upper('DORNAKAL') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2421,2760,(select constituency_id from constituency where upper(name)=upper('GHANPUR') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2422,2760,(select constituency_id from constituency where upper(name)=upper('HANAMKONDA') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2423,2760,(select constituency_id from constituency where upper(name)=upper('JANGAON') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2424,2760,(select constituency_id from constituency where upper(name)=upper('CHERIYAL') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2425,2791,(select constituency_id from constituency where upper(name)=upper('MAHBUBABAD') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2426,2791,(select constituency_id from constituency where upper(name)=upper('MULUG') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2427,2791,(select constituency_id from constituency where upper(name)=upper('NARSAMPET') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2428,2760,(select constituency_id from constituency where upper(name)=upper('PARKAL') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2429,2760,(select constituency_id from constituency where upper(name)=upper('SHYAMPET') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2430,2791,(select constituency_id from constituency where upper(name)=upper('WARANGAL') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2431,2791,(select constituency_id from constituency where upper(name)=upper('WARDHANNAPET') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2432,2791,(select constituency_id from constituency where upper(name)=upper('CHINNUR') and election_scope_id=2 and district_id=9) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2433,2755,(select constituency_id from constituency where upper(name)=upper('BURGAMPAHAD') and election_scope_id=2 and district_id=10) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2434,2755,(select constituency_id from constituency where upper(name)=upper('BHADRACHALAM') and election_scope_id=2 and district_id=10) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2435,2766,(select constituency_id from constituency where upper(name)=upper('KHAMMAM') and election_scope_id=2 and district_id=10) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2436,2766,(select constituency_id from constituency where upper(name)=upper('KOTHAGUDEM') and election_scope_id=2 and district_id=10) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2437,2766,(select constituency_id from constituency where upper(name)=upper('MADHIRA') and election_scope_id=2 and district_id=10) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2438,2766,(select constituency_id from constituency where upper(name)=upper('PALAIR') and election_scope_id=2 and district_id=10) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2439,2766,(select constituency_id from constituency where upper(name)=upper('SATHUPALLI') and election_scope_id=2 and district_id=10) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2440,2766,(select constituency_id from constituency where upper(name)=upper('SHUJATNAGAR') and election_scope_id=2 and district_id=10) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2441,2766,(select constituency_id from constituency where upper(name)=upper('YELLANDU') and election_scope_id=2 and district_id=10) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2442,2786,(select constituency_id from constituency where upper(name)=upper('AMADALAVALASA') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2443,2756,(select constituency_id from constituency where upper(name)=upper('ETCHERLA') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2444,2786,(select constituency_id from constituency where upper(name)=upper('HARISCHANDRAPURAM') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2445,2786,(select constituency_id from constituency where upper(name)=upper('ICHAPURAM') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2446,2786,(select constituency_id from constituency where upper(name)=upper('NARASANNAPETA') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2447,2780,(select constituency_id from constituency where upper(name)=upper('PALAKONDA') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2448,2780,(select constituency_id from constituency where upper(name)=upper('PATHAPATNAM') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2449,2786,(select constituency_id from constituency where upper(name)=upper('SOMPETA') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2450,2786,(select constituency_id from constituency where upper(name)=upper('SRIKAKULAM') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2451,2786,(select constituency_id from constituency where upper(name)=upper('TEKKALI') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2452,2780,(select constituency_id from constituency where upper(name)=upper('VUNUKURU') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2453,2780,(select constituency_id from constituency where upper(name)=upper('KOTHURU') and election_scope_id=2 and district_id=11) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2454,2756,(select constituency_id from constituency where upper(name)=upper('CHEEPURUPALLI') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2455,2756,(select constituency_id from constituency where upper(name)=upper('GAJAPATHINAGARAM') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2456,2756,(select constituency_id from constituency where upper(name)=upper('BOBBILI') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2457,2780,(select constituency_id from constituency where upper(name)=upper('NAGURU') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2458,2780,(select constituency_id from constituency where upper(name)=upper('PARVATHIPURAM') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2459,2780,(select constituency_id from constituency where upper(name)=upper('SALUR') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2460,2756,(select constituency_id from constituency where upper(name)=upper('SATHIVADA') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2461,2790,(select constituency_id from constituency where upper(name)=upper('SRUNGAVARAPUKOTA') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2462,2756,(select constituency_id from constituency where upper(name)=upper('THERLAM') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2463,2756,(select constituency_id from constituency where upper(name)=upper('VIZIANAGARAM') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2464,2790,(select constituency_id from constituency where upper(name)=upper('BHOGAPURAM') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2465,2790,(select constituency_id from constituency where upper(name)=upper('UTTARAPALLI') and election_scope_id=2 and district_id=12) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2466,2790,(select constituency_id from constituency where upper(name)=upper('BHEEMUNIPATNAM') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2467,2752,(select constituency_id from constituency where upper(name)=upper('ANAKAPALLI') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2468,2752,(select constituency_id from constituency where upper(name)=upper('CHODAVARAM') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2469,2752,(select constituency_id from constituency where upper(name)=upper('ELAMANCHILI') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2470,2752,(select constituency_id from constituency where upper(name)=upper('MADUGULA') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2471,2752,(select constituency_id from constituency where upper(name)=upper('NARSIPATNAM') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2472,2755,(select constituency_id from constituency where upper(name)=upper('PADERU') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2473,2752,(select constituency_id from constituency where upper(name)=upper('PARAVADA') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2474,2752,(select constituency_id from constituency where upper(name)=upper('PAYAKARAOPETA') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2475,2790,(select constituency_id from constituency where upper(name)=upper('PENDURTHI') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2476,2755,(select constituency_id from constituency where upper(name)=upper('CHINTAPALLI') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2477,2790,(select constituency_id from constituency where upper(name)=upper('VISAKHAPATNAM[I]') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2478,2790,(select constituency_id from constituency where upper(name)=upper('VISAKHAPATNAM[II]') and election_scope_id=2 and district_id=13) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2479,2751,(select constituency_id from constituency where upper(name)=upper('ALLAVARAM') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2480,2751,(select constituency_id from constituency where upper(name)=upper('Amalapuram') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2481,2782,(select constituency_id from constituency where upper(name)=upper('ANAPARTHY') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2482,2782,(select constituency_id from constituency where upper(name)=upper('BURUGUPUDI') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2483,2764,(select constituency_id from constituency where upper(name)=upper('JAGGAMPETA') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2484,2782,(select constituency_id from constituency where upper(name)=upper('KADIAM') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2485,2764,(select constituency_id from constituency where upper(name)=upper('KAKINADA') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2486,2751,(select constituency_id from constituency where upper(name)=upper('KOTHAPETA') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2487,2751,(select constituency_id from constituency where upper(name)=upper('MUMMIDIVARAM') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2488,2751,(select constituency_id from constituency where upper(name)=upper('NAGARAM') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2489,2764,(select constituency_id from constituency where upper(name)=upper('PEDDAPURAM') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2490,2764,(select constituency_id from constituency where upper(name)=upper('PITHAPURAM') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2491,2764,(select constituency_id from constituency where upper(name)=upper('PRATHIPAD') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2492,2782,(select constituency_id from constituency where upper(name)=upper('RAJAHMUNDRY') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2493,2782,(select constituency_id from constituency where upper(name)=upper('RAMACHANDRAPURAM') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2494,2751,(select constituency_id from constituency where upper(name)=upper('RAZOLE') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2495,2764,(select constituency_id from constituency where upper(name)=upper('SAMPARA') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2496,2751,(select constituency_id from constituency where upper(name)=upper('TALLAREVU') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2497,2764,(select constituency_id from constituency where upper(name)=upper('TUNI') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2498,2782,(select constituency_id from constituency where upper(name)=upper('ALAMURU') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2499,2755,(select constituency_id from constituency where upper(name)=upper('YELLAVARAM') and election_scope_id=2 and district_id=14) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2500,2775,(select constituency_id from constituency where upper(name)=upper('ATTILI') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2501,2775,(select constituency_id from constituency where upper(name)=upper('BHIMAVARAM') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2502,2758,(select constituency_id from constituency where upper(name)=upper('CHINTALAPUDI') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2503,2758,(select constituency_id from constituency where upper(name)=upper('DENDULUR') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2504,2758,(select constituency_id from constituency where upper(name)=upper('ELURU') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2505,2782,(select constituency_id from constituency where upper(name)=upper('GOPALPURAM') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2506,2782,(select constituency_id from constituency where upper(name)=upper('KOVVUR') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2507,2775,(select constituency_id from constituency where upper(name)=upper('NARASAPUR') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2508,2775,(select constituency_id from constituency where upper(name)=upper('PALACOLE') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2509,2775,(select constituency_id from constituency where upper(name)=upper('PENUGONDA') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2510,2755,(select constituency_id from constituency where upper(name)=upper('POLAVARAM') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2511,2758,(select constituency_id from constituency where upper(name)=upper('TADEPALLIGUDEM') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2512,2758,(select constituency_id from constituency where upper(name)=upper('TANUKU') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2513,2775,(select constituency_id from constituency where upper(name)=upper('UNDI') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2514,2758,(select constituency_id from constituency where upper(name)=upper('UNGUTUR') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2515,2775,(select constituency_id from constituency where upper(name)=upper('ACHANTA') and election_scope_id=2 and district_id=15) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2516,2787,(select constituency_id from constituency where upper(name)=upper('AVANIGADDA') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2517,2768,(select constituency_id from constituency where upper(name)=upper('BANDAR') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2518,2768,(select constituency_id from constituency where upper(name)=upper('GANNAVARAM') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2519,2768,(select constituency_id from constituency where upper(name)=upper('GUDIVADA') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2520,2789,(select constituency_id from constituency where upper(name)=upper('JAGGAYYAPET') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2521,2758,(select constituency_id from constituency where upper(name)=upper('KAIKALUR') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2522,2789,(select constituency_id from constituency where upper(name)=upper('KANKIPADU') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2523,2768,(select constituency_id from constituency where upper(name)=upper('MALLESWARAM') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2524,2768,(select constituency_id from constituency where upper(name)=upper('MUDINEPALLI') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2525,2789,(select constituency_id from constituency where upper(name)=upper('MYLAVARAM') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2526,2789,(select constituency_id from constituency where upper(name)=upper('NANDIGAMA') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2527,2768,(select constituency_id from constituency where upper(name)=upper('NUZVID') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2528,2789,(select constituency_id from constituency where upper(name)=upper('TIRUVURU') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2529,2789,(select constituency_id from constituency where upper(name)=upper('VIJAYAWADA EAST') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2530,2789,(select constituency_id from constituency where upper(name)=upper('VIJAYAWADA WEST') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2531,2768,(select constituency_id from constituency where upper(name)=upper('VUYYUR') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2532,2787,(select constituency_id from constituency where upper(name)=upper('NIDUMOLU') and election_scope_id=2 and district_id=16) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2533,2759,(select constituency_id from constituency where upper(name)=upper('CHILAKALURIPET') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2534,2787,(select constituency_id from constituency where upper(name)=upper('DUGGIRALA') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2535,2759,(select constituency_id from constituency where upper(name)=upper('GUNTUR[I]') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2536,2759,(select constituency_id from constituency where upper(name)=upper('GUNTUR[II]') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2537,2776,(select constituency_id from constituency where upper(name)=upper('GURZALA') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2538,2754,(select constituency_id from constituency where upper(name)=upper('KUCHINAPUDI') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2539,2776,(select constituency_id from constituency where upper(name)=upper('MACHERLA') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2540,2787,(select constituency_id from constituency where upper(name)=upper('MANGALAGIRI') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2541,2776,(select constituency_id from constituency where upper(name)=upper('VINUKONDA') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2542,2776,(select constituency_id from constituency where upper(name)=upper('NARASARAOPET') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2543,2754,(select constituency_id from constituency where upper(name)=upper('BAPATLA') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2544,2759,(select constituency_id from constituency where upper(name)=upper('PEDDAKURAPADU') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2545,2754,(select constituency_id from constituency where upper(name)=upper('PONNUR') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2546,2759,(select constituency_id from constituency where upper(name)=upper('PRATHIPADU') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2547,2787,(select constituency_id from constituency where upper(name)=upper('REPALLE') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2548,2759,(select constituency_id from constituency where upper(name)=upper('SATTENAPALLI') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2549,2759,(select constituency_id from constituency where upper(name)=upper('TADIKONDA') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2550,2787,(select constituency_id from constituency where upper(name)=upper('TENALI') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2551,2787,(select constituency_id from constituency where upper(name)=upper('VEMURU') and election_scope_id=2 and district_id=17) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2552,2754,(select constituency_id from constituency where upper(name)=upper('ADDANKI') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2553,2754,(select constituency_id from constituency where upper(name)=upper('CHIRALA') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2554,2776,(select constituency_id from constituency where upper(name)=upper('CUMBUM') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2555,2776,(select constituency_id from constituency where upper(name)=upper('DARSI') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2556,2754,(select constituency_id from constituency where upper(name)=upper('GIDDALUR') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2557,2776,(select constituency_id from constituency where upper(name)=upper('MARKAPUR') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2558,2754,(select constituency_id from constituency where upper(name)=upper('PARCHUR') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2559,2754,(select constituency_id from constituency where upper(name)=upper('MARTUR') and election_scope_id=2 and district_id=18) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2560,2763,(select constituency_id from constituency where upper(name)=upper('BADVEL') and election_scope_id=2 and district_id=20) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2561,2763,(select constituency_id from constituency where upper(name)=upper('Kadapa') and election_scope_id=2 and district_id=20) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2562,2763,(select constituency_id from constituency where upper(name)=upper('JAMMALAMADUGU') and election_scope_id=2 and district_id=20) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2563,2763,(select constituency_id from constituency where upper(name)=upper('KAMALAPURAM') and election_scope_id=2 and district_id=20) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2564,2783,(select constituency_id from constituency where upper(name)=upper('KODUR') and election_scope_id=2 and district_id=20) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2565,2783,(select constituency_id from constituency where upper(name)=upper('LAKKIREDDIPALLI') and election_scope_id=2 and district_id=20) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2566,2783,(select constituency_id from constituency where upper(name)=upper('RAYACHOTY') and election_scope_id=2 and district_id=20) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2567,2763,(select constituency_id from constituency where upper(name)=upper('MYDUKUR') and election_scope_id=2 and district_id=20) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2568,2763,(select constituency_id from constituency where upper(name)=upper('PRODDATUR') and election_scope_id=2 and district_id=20) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2569,2763,(select constituency_id from constituency where upper(name)=upper('Pulivendla') and election_scope_id=2 and district_id=20) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2570,2783,(select constituency_id from constituency where upper(name)=upper('RAJAMPET') and election_scope_id=2 and district_id=20) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2571,2767,(select constituency_id from constituency where upper(name)=upper('ADONI') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2572,2774,(select constituency_id from constituency where upper(name)=upper('ALLAGADDA') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2573,2767,(select constituency_id from constituency where upper(name)=upper('ALUR') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2574,2767,(select constituency_id from constituency where upper(name)=upper('DHONE') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2575,2767,(select constituency_id from constituency where upper(name)=upper('KODUMUR') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2576,2774,(select constituency_id from constituency where upper(name)=upper('KOILKUNTLA') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2577,2767,(select constituency_id from constituency where upper(name)=upper('KURNOOL') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2578,2774,(select constituency_id from constituency where upper(name)=upper('NANDIKOTKUR') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2579,2774,(select constituency_id from constituency where upper(name)=upper('NANDYAL') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2580,2774,(select constituency_id from constituency where upper(name)=upper('PANYAM') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2581,2767,(select constituency_id from constituency where upper(name)=upper('PATTIKONDA') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2582,2767,(select constituency_id from constituency where upper(name)=upper('YEMMIGANUR') and election_scope_id=2 and district_id=21) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2583,2753,(select constituency_id from constituency where upper(name)=upper('ANANTAPUR') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2584,2761,(select constituency_id from constituency where upper(name)=upper('DHARMAVARAM') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2585,2753,(select constituency_id from constituency where upper(name)=upper('GOOTY') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2586,2761,(select constituency_id from constituency where upper(name)=upper('GORANTLA') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2587,2761,(select constituency_id from constituency where upper(name)=upper('HINDUPUR') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2588,2761,(select constituency_id from constituency where upper(name)=upper('KADIRI') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2589,2753,(select constituency_id from constituency where upper(name)=upper('KALYANDURG') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2590,2761,(select constituency_id from constituency where upper(name)=upper('MADAKASIRA') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2591,2761,(select constituency_id from constituency where upper(name)=upper('NALLAMADA') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2592,2761,(select constituency_id from constituency where upper(name)=upper('PENUKONDA') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2593,2753,(select constituency_id from constituency where upper(name)=upper('RAYADURG') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2594,2753,(select constituency_id from constituency where upper(name)=upper('SINGANAMALA') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2595,2753,(select constituency_id from constituency where upper(name)=upper('TADPATRI') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2596,2753,(select constituency_id from constituency where upper(name)=upper('URAVAKONDA') and election_scope_id=2 and district_id=22) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2597,2757,(select constituency_id from constituency where upper(name)=upper('CHANDRAGIRI') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2598,2757,(select constituency_id from constituency where upper(name)=upper('CHITTOOR') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2599,2757,(select constituency_id from constituency where upper(name)=upper('KUPPAM') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2600,2757,(select constituency_id from constituency where upper(name)=upper('Palamaner') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2601,2757,(select constituency_id from constituency where upper(name)=upper('PILERU') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2602,2757,(select constituency_id from constituency where upper(name)=upper('PUNGANUR') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2603,2788,(select constituency_id from constituency where upper(name)=upper('PUTTUR') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2604,2783,(select constituency_id from constituency where upper(name)=upper('THAMBALLAPALLE') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2605,2757,(select constituency_id from constituency where upper(name)=upper('VEPANJERI') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2606,2783,(select constituency_id from constituency where upper(name)=upper('VAYALPAD') and election_scope_id=2 and district_id=23) )
-GO
-insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(2607,2783,(select constituency_id from constituency where upper(name)=upper('MADANPALLE') and election_scope_id=2 and district_id=23) )
 GO
