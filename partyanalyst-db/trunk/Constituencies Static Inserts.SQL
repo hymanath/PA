@@ -3393,7 +3393,7 @@ insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_con
 values(5090,2010,(select constituency_id from constituency where upper(name)=upper('TUNGATURTHI') and election_scope_id=2 and district_id=8) )
 GO
 insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
-values(5091,2014,(select constituency_id from constituency where upper(name)=upper('Devarakonda') and election_scope_id=2 and district_id=8) )
+values(5091,2014,(select constituency_id from constituency where upper(name)=upper('DEVERKONDA') and election_scope_id=2 and district_id=8) )
 GO
 insert into DELIMITATION_CONSTITUENCY_ASSEMBLY_DETAILS (dca_id, delimitation_constituency_id, constituency_id)
 values(5092,2014,(select constituency_id from constituency where upper(name)=upper('Huzurnagar') and election_scope_id=2 and district_id=8) )
@@ -4187,7 +4187,7 @@ insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_const
 values(61,189,682,FALSE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(62,163,0,TRUE)
+values(62,163,610,TRUE)
 GO
 
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
@@ -4481,9 +4481,7 @@ GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(160,3,24,FALSE)
 GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(161,,518,TRUE)
-GO
+
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(162,97,306,FALSE)
 GO
@@ -5050,9 +5048,7 @@ GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(351,271,1001,TRUE)
 GO
-insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(352,,489,FALSE)
-GO
+
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(353,131,489,FALSE)
 GO
@@ -5141,7 +5137,7 @@ insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_const
 values(381,275,1029,TRUE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
-values(382,8,6,FALS)
+values(382,8,6,FALSE)
 GO
 insert into DELIMITATION_CONSTITUENCY_MANDAL_DETAILS (dcm_id, delimitation_constituency_id, tehsil_id, is_partial)
 values(383,7,6,FALSE)
