@@ -1,0 +1,169 @@
+package com.itgrids.partyanalyst.web.action;
+
+import java.text.ParseException;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
+
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionSupport;
+
+public class CadreRegisterAjaxAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private List<SelectOptionVO> namesList;
+	JSONObject jObj = null;
+	private String task = null;
+	
+	
+	private CadreManagementService cadreManagementService;
+	private RegionServiceDataImp regionServiceDataImp; 
+	
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}
+	
+	public void setRegionServiceDataImp(RegionServiceDataImp regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+	
+	public List<SelectOptionVO> getNamesList() {
+		return namesList;
+	}
+
+	public void setNamesList(List<SelectOptionVO> namesList) {
+		this.namesList = namesList;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+	
+	public void setServletRequest(HttpServletRequest arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setServletContext(ServletContext arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public String execute() throws Exception
+	{
+		System.out.println("In execute ****************");
+		String param=null;
+		
+		param=getTask();
+		System.out.println("param:"+param);		
+		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		/*if(jObj.getString("reportLevel").equalsIgnoreCase("Country")){
+			
+		}
+		else */
+		if(jObj.getString("reportLevel").equalsIgnoreCase("state") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
+		{
+			System.out.println("In report level state");
+			String selectedVal=jObj.getString("selected");
+			
+			List<SelectOptionVO> districtNames=cadreManagementService.findDistrictsByState(selectedVal);			
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select District");
+			districtNames.add(0, obj);
+			setNamesList(districtNames);	
+		}		
+		else if(jObj.getString("reportLevel").equalsIgnoreCase("district") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
+		{
+			System.out.println("In report level District");
+			String selectedVal=jObj.getString("selected");
+			
+			List<SelectOptionVO> mandalsNames=cadreManagementService.findMandalsByDistrict(selectedVal);	
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select Mandal");
+			mandalsNames.add(0, obj);
+			
+			setNamesList(mandalsNames);	
+		}
+		else if(jObj.getString("reportLevel").equalsIgnoreCase("constituency") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
+		{
+			System.out.println("In report level Constituency");
+			String selectedVal=jObj.getString("selected");
+			
+			List<SelectOptionVO> constituencynames=regionServiceDataImp.getConstituenciesByDistrictID(new Long(selectedVal));	
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select Constituency");
+			constituencynames.add(0, obj);
+			setNamesList(constituencynames);	
+			
+			
+		}
+		else if(jObj.getString("reportLevel").equalsIgnoreCase("mandal") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
+		{
+			System.out.println("In report level Mandal");
+			String selectedVal=jObj.getString("selected");
+			
+			List<SelectOptionVO> villageNames=cadreManagementService.findVillagesByTehsilID(selectedVal);	
+			
+			setNamesList(villageNames);	
+		}
+		else if(jObj.getString("reportLevel").equalsIgnoreCase("Constituencies") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
+		{
+			System.out.println("In report level Constituencies");
+			String selectedVal=jObj.getString("selected");
+			
+			List<SelectOptionVO> mandals=regionServiceDataImp.getMandalsByConstituencyID(new Long(selectedVal));	
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select Mandal");
+			mandals.add(0, obj);
+			setNamesList(mandals);	
+		}
+		else if((jObj.getString("reportLevel").equalsIgnoreCase("State") || 
+					jObj.getString("reportLevel").equalsIgnoreCase("District") || 
+					jObj.getString("reportLevel").equalsIgnoreCase("Constituency") || 
+					jObj.getString("reportLevel").equalsIgnoreCase("Mandal")) && jObj.getString("type").equalsIgnoreCase("cadreLevel"))
+		{
+			String value=jObj.getString("reportLevel");
+			String id=jObj.getString("type");
+			System.out.println("value = "+value+"id = "+id);
+			
+						
+				List<SelectOptionVO> stateNames=cadreManagementService.findStatesByCountryID("1");	
+				SelectOptionVO obj = new SelectOptionVO(0L,"Select State");
+				stateNames.add(0, obj);
+				setNamesList(stateNames);
+			/*
+				List<SelectOptionVO> districtNames=cadreManagementService.findDistrictsByState(id);
+				setNamesList(districtNames);*/
+			
+		}//cadreLevelDistrict
+		else if(jObj.getString("reportLevel").equalsIgnoreCase("cadreLevelDistrict"))
+		{
+			String value=jObj.getString("value");
+			String id=jObj.getString("id");
+			List<SelectOptionVO> mandalNames=cadreManagementService.findMandalsByDistrict(id);	
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select Mandal");
+			mandalNames.add(0, obj);
+			setNamesList(mandalNames);
+		}
+		return Action.SUCCESS;
+	}
+}

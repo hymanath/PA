@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC 
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="myPackage" extends="struts-default,json-default">
+
+		<!-- TilesIntegration -->
+		<result-types>
+			<result-type name="tiles"
+				class="org.apache.struts2.views.tiles.TilesResult" />
+			<result-type name="jasper" 
+    			class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+		</result-types>
+		<!--
+			For each result that should go to a Tiles page, add a type attribute
+		-->
+		<!--result type="tiles" name="input">admin.login</result-->
+
+		<action name="index" class="com.itgrids.partyanalyst.IndexAction">
+			<result>/jsp/index.jsp</result>
+		</action>
+	
+		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
+			<result name="error">/jsp/loginForm.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+			<result type="redirect" name="cadreManagementAction">cadreManagementAction.action</result>
+			<result type="redirect" name="constituencyManagementAction">constituencyManagementAction.action</result>
+			<result>/jsp/loginsuccess.jsp</result>
+		</action>
+		
+		<action name="RegistrationAction" class="com.itgrids.partyanalyst.web.action.RegistrationAction">
+			<result name="input">/jsp/registration.jsp</result>
+			<result name="error">/jsp/registration.jsp</result>
+			<result name="success">/jsp/loginForm.jsp</result>
+		</action>
+		<!-- Data Upload -->
+		<action name="adminUpload"><result>/jsp/adminUpload.jsp</result></action>
+		<action name="electionUpload"><result>/jsp/csvUpload.jsp</result></action>
+		<action name="boothDataUpload"><result>/jsp/boothUpload.jsp</result></action>
+		<action name="boothResultUpload"><result>/jsp/uploadBoothResult.jsp</result></action>
+		<action name="voterDataUpload"><result>/jsp/voterDataUpload.jsp</result></action>
+		<!-- Data Upload -->
+
+		<!-- PARTY PERFORMANCE ACTIONS -->
+		
+		<action name="partyPerformanceDistrict" class="partyPerformanceAction" method="getDistrictsList" >
+			<result type="json" name="success">
+				<param name="root">districts</param>
+			</result> 
+		</action>
+		
+		<!-- <action name="partyPerformanceAjax" class="partyPerformanceAction" method="getJSON" >
+			<result type="json" name="success"/>
+		</action>-->
+		
+		<action name="partyPerformanceElectionTypeFilterData" class="partyPerformanceAction" method="getElectionTypeFilterData" >
+			<result type="json" name="success">
+				<param name="root">statesYearList</param>
+			</result> 
+		</action>
+		
+		<action name="partyPerformanceAllianceAjax" class="partyPerformanceAction" method="getAlliances" >
+			<result type="json" name="success">
+				<param name="root">hasAllianceParties</param>
+			</result> 
+		</action>
+		<action name="partyPerformanceMain" class="partyPerformanceAction" method="execute" >
+			<result name="success" >/jsp/partyPerformance.jsp</result> 
+		</action>
+		<action name="partyPerformanceReport" class="partyPerformanceAction" method="getReport">
+			<result name="success">/jsp/partyPerformanceReport.jsp</result>
+		</action>
+		<action name="partyPerformanceJasper" class="partyPerformanceAction" method="getJasper">
+			<result name="success" type="stream">
+			<param name="contentType">application/pdf</param>
+ 				<param name="contentDisposition">filename="new_report.pdf"</param>
+  				<param name="inputName">reportStream</param> 
+			</result>
+		</action>
+		<action name="partyPositionAjax" class="partyPerformanceAction" method="getpartyPosition" >
+			<result type="json" name="success">
+				 <param name="root">partyPositionDisplayVO</param> 
+			</result>
+		</action>
+		<!-- End Party Performance Actions -->
+		
+        <action name="uploadCSV" class="uploadCSVAction">
+           <result name="success">/jsp/csvUpload.jsp</result>
+        </action>
+        
+        <action name="ajaxSearchAction" class="com.itgrids.partyanalyst.web.action.AjaxSearchAction">
+			<result name="success" type="json" >
+				<param name="root">namesList</param>
+			</result>						
+		</action> 
+		<action name="cncSearchResultsAction" class="com.itgrids.partyanalyst.web.action.CnCSearchResultsAction">
+			<result name="success">/jsp/searchResultsPage.jsp</result>
+		</action>
+		<action name="constituencySearchAction" class="com.itgrids.partyanalyst.web.action.ConstituencySearchAction">
+			<result name="success">/jsp/constituencyDetailsPage.jsp</result>
+		</action>
+		<action name="candidateSearchAction" class="com.itgrids.partyanalyst.web.action.CandidateSearchAction">
+			<result name="success">/jsp/candidateDetailsPage.jsp</result>			                            
+		</action>
+		
+		<action name="partyResultScopeAction" class="com.itgrids.partyanalyst.web.action.PartyResultScopeAction" method="getJSON">
+			<result name="success" type="json">Names</result>						
+		</action>
+		<action name="partyResultsCriteriaAction" class="partyResultsCriteriaAction">
+			<result name="success">/jsp/partyResultsCriteriaPage.jsp</result>							
+		</action>
+		<action name="partyResultsAction" class="partyResultsAction">
+			<result name="success">/jsp/partyResultsPage.jsp</result>							
+		</action>
+
+		<action name="statePageAction" class="com.itgrids.partyanalyst.web.action.StatePageAction">
+			<result name="input">/jsp/statePage.jsp</result>
+			<result name="error">/jsp/statePageError.jsp</result>
+			<result name="success">/jsp/statePageSuccess.jsp</result>
+		</action>
+		<action name="constituencyPageAction" class="com.itgrids.partyanalyst.web.action.ConstituencyPageAction">
+			<result name="input">/jsp/constituencyPage.jsp</result>
+			<result name="success">/jsp/constituencyPageSuccess.jsp</result>
+		</action>
+
+
+        <action name="stateElectionResultsAjax" class="com.itgrids.partyanalyst.web.action.StateElectionResultsAction" method="getJSON">
+			<result type="json" name="success"/> 
+		</action>
+        
+
+
+        <action name="candidateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.CandidateElectionResultsAction">
+			<result name="input">/jsp/candidatePage.jsp</result>
+			<result name="success">/jsp/candidatePageSuccess.jsp</result>
+		</action>
+        
+
+		<action name="uploadExcel" class="uploadExcelAction">
+			<result name="input">/jsp/csvUpload.jsp</result>
+           <result name="success">/jsp/csvUpload.jsp</result>
+        </action>
+
+		<action name="userRegPageAction" class="userAction" method="registration">
+			<result name="success">/jsp/registration.jsp</result>
+		</action>
+		
+		<action name="cadreReportAction" class="cadreReportAction">
+			<result name="success">/jsp/cadreReportPage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="boothUploadAction" class="boothUploadAction">
+           <result name="success">/jsp/boothUpload.jsp</result>
+           <result name="error">/jsp/mandalPageFail.jsp</result>
+        </action>
+        
+        <action name="voterDataUploadAction" class="voterDataUploadAction">
+           <result name="success">/jsp/voterDataUpload.jsp</result>
+           <result name="error">/jsp/mandalPageFail.jsp</result>
+        </action>
+        
+        <action name="boothResultUploadAction" class="boothResultUploadAction">
+           <result name="success">/jsp/uploadBoothResult.jsp</result>
+           <result name="error">/jsp/mandalPageFail.jsp</result>
+        </action>
+		
+		<action name="partyBoothResultAction" class="partyBoothResultAction">
+           <result name="success">/jsp/boothResultsForParty.jsp</result>
+        </action>
+        
+        <action name="partyBoothResult1Action" class="partyBoothResult1Action">
+            <result name="success">/jsp/boothResults1.jsp</result>
+        </action>
+        
+        <action name="partyBoothResult1AjaxAction" class="partyBoothResult1Action">
+            <result type="json" name="success">
+            	<param name="root">constituencyVOs</param>
+            </result>
+        </action>
+        
+        <action name="partyBoothResultPartyAjaxAction" class="partyBoothResult1Action" method="getParty">
+            <result type="json" name="success">
+            	<param name="root">constituencyVOs</param>
+            </result>
+        </action>
+        
+        <action name="partyBoothResult2Action" class="partyBoothResult2Action">
+            <result name="success">/jsp/boothResults2.jsp</result>
+        </action>
+        
+         <action name="partyBoothResult2AjaxAction" class="com.itgrids.partyanalyst.web.action.PartyBoothResult2Action">
+            <result name="success" type="json"/>
+        </action>
+		
+		<action name="cadresInfoAjaxAction" class="cadresInfoAjaxAction">
+			<result type="json" name="success"/>
+		</action>
+		<action name="cadreRegisterPageAction" class="cadreRegisterPageAction">
+			<result name="success">/jsp/newCadrePage.jsp</result>
+		</action>
+		 
+        <action name="cadreRegisterAjaxAction" class="cadreRegisterAjaxAction">
+           <result type="json" name="success"/>
+        </action>
+        
+        <action name="cadreRegisterAction" class="cadreRegisterAction">
+        	<result type="redirect" name="success">cadreManagementAction.action</result>
+           <result name="fail"> /jsp/CadreRegisterFail.jsp</result>
+        </action> 
+
+        <action name="addRebelsAction" class="addRebelsAction">
+        	<result name="success">/jsp/AddRebels.jsp</result>
+        </action>
+
+		<action name="addRebelsAjax" class="addRebelsAction" method="getJSON" >
+			<result type="json" name="success"/>
+		</action>
+		
+		<action name="addRebelsSubmit" class="addRebelsAction" method="addPartyRebels" >
+			<result name="input">/jsp/AddRebels.jsp</result>
+			<result name="success">/jsp/AddRebels.jsp</result>
+		</action>
+	
+        <action name="electionComparisonAction" class="electionComparisonAction">
+			<result name="success">/jsp/electionComparisonPage.jsp</result>
+		</action>											
+			
+		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
+			<result name="success">/jsp/electionComparisonReportPage.jsp</result>
+			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
+		</action>
+		
+		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">
+			<result name="success">/jsp/partyInfluenceMainPage.jsp</result>
+		</action>
+		
+		<action name="partyInfluenceAction" class="partyInfluenceAction">
+			<result name="success">/jsp/partyInfluenceReportPage.jsp</result>
+			<result name="error">/jsp/PartyInfluenceReportError.jsp</result>
+		</action>
+		
+		<action name="crossVotingReportInputAction" class="crossVotingReportInputAction">
+			<result name="success">/jsp/crossVotingInputPage.jsp</result>
+		</action>
+		<action name="crossVotingReportAjaxAction" class="crossVotingReportAjaxAction">
+			<result type="json"  name="success">
+				<param name="root">resultObjectVO</param>				
+			</result>
+		</action>
+		
+		<action name="mandalPageAction" class="mandalPageAction">
+			<result name="success">/jsp/mandalPage.jsp</result>
+			<result name="error">/jsp/mandalPageFail.jsp</result>
+		</action>
+		
+		<action name="districtPageAction" class="districtPageAction">
+			<result name="success">/jsp/districtPage.jsp</result>
+			<result name="error">/jsp/districtPageFail.jsp</result>
+		</action>
+		
+		<action name="adminUpload"><result>/jsp/adminUpload.jsp</result></action>
+		<action name="electionUpload"><result>/jsp/csvUpload.jsp</result></action>
+		
+		<action name="mandalPageSDetailAction" class="staticDataAction" method="getStatesList" >
+			<result name="success">/jsp/mandalPageDetail.jsp</result>
+		</action>		
+		
+		<action name="mandalPageDetailAction" class="staticDataAction" method="getList" >
+			<result type="json" name="success">
+				<param name="root">commonList</param>				
+			</result>
+		</action>
+		
+		<action name="mandalVotingResultAction" class="mandalPageAction" method="getMandalPartyResult" >
+			<result type="json" name="success">
+				<param name="root">mandalDataWithChartVO</param>				
+			</result>
+			<result name="error"></result>
+		</action>
+		
+		<action name="cadreSMSAction" class="cadreSMSAction">
+			<result name="success">/jsp/smsMessageSend.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="cadreSMSLocationWiseData" class="cadreSMSAction" method="getUserLocationWiseData" >
+			<result type="json" name="success">
+				<param name="root">cadreSMSVO</param>				
+			</result>
+		</action>
+		
+		<action name="sendCadreSMS" class="cadreSMSAction" method="sendSMS" >
+			<result type="json" name="success">
+				<param name="root">totalCadres</param>				
+			</result>
+		</action>		
+		
+		<action name="regionsByCadreScope" class="cadreSMSAction" method="getRegionsByCadreScope" >
+			<result type="json" name="success">
+				<param name="root">list</param>				
+			</result>
+		</action>	
+		
+		<action name="usersCadreLevelData" class="cadreSMSAction" method="getUsersCadreLevelData" >
+			<result type="json" name="success">
+				<param name="root">list</param>				
+			</result>
+		</action>
+		
+		<action name="userGroupsMainAction" class="userGroupsMainAction">
+			<result name="success">/jsp/userGroupMain.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>			
+		</action>
+		
+		<action name="cadreManagementAction" class="cadreManagementAction">
+			<result name="success">/jsp/cadreManagementMainPage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=cadreManagementAction</result>						
+		</action>
+		
+		<action name="createEventAction" class="createEventAction">
+			<result type="json" name="success1">
+				<param name="root">event</param>				
+			</result>			
+		 	<result type="json" name="success2">
+				<param name="root">importantDatesVO</param>				
+			</result> 			
+		</action>		
+		
+		<action name="constituencyManagementAction" class="constituencyManagementAction">
+			<result name="success">/jsp/constituencyManagementMainPage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=constituencyManagementAction</result>		
+		</action>
+
+		
+		<action name="problemManagementAction" class="problemManagementAction">
+			<result name="success">/jsp/addNewProblem.jsp</result>		
+		</action>
+
+		
+		<action name="userSubscribePartyImpDates" class="createEventAction" method="subscribePartyImpDates">
+			<result type="json" name="success">
+				<param name="root">userSubscribeImpDates</param>				
+			</result>			
+		</action>	
+
+	</package>
+</struts>
