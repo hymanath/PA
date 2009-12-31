@@ -326,7 +326,7 @@
 				<param name="root">event</param>				
 			</result>			
 		 	<result type="json" name="success2">
-				<param name="root">importantDatesVO</param>				
+				<param name="root">importantDatesVOs</param>				
 			</result> 			
 		</action>		
 		
@@ -346,6 +346,14 @@
 				<param name="root">userSubscribeImpDates</param>				
 			</result>			
 		</action>	
-
+		
+		<action name="showImpDateEvent" class="createEventAction" method="showImpDateEvent">
+			<result type="json" name="userEvent">
+				<param name="root">event</param>				
+			</result>			
+		 	<result type="json" name="impDate">
+				<param name="root">importantDatesVOs</param>				
+			</result>		
+		</action>	
 	</package>
 </struts>
