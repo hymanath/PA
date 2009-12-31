@@ -154,7 +154,14 @@ public class UserCalendarService implements IUserCalendarService {
 		importantDatesVO.setImportance(impDate.getDescription());
 		importantDatesVO.setStartDate(impDate.getEffectiveDate());
 		importantDatesVO.setEndDate(impDate.getTillDate());
-		importantDatesVO.setImpDate(calendar.getTime());
+		
+		Date iDate=(Date)(impDate.getEffectiveDate()).clone();
+		iDate.setYear(calendar.get(Calendar.YEAR) - 1900);
+		iDate.setMonth(calendar.get(Calendar.MONTH));
+		iDate.setDate(calendar.get(Calendar.DAY_OF_MONTH));
+		importantDatesVO.setImpDate(iDate);
+
+		//importantDatesVO.setImpDate(calendar.getTime());
 		
 		return importantDatesVO;
 	}
@@ -322,7 +329,11 @@ public class UserCalendarService implements IUserCalendarService {
 		importantDatesVO.setEventId(impDate.getParty().getPartyId());
 		importantDatesVO.setTitle(impDate.getTitle());
 		importantDatesVO.setImportance(impDate.getImportance());
-		importantDatesVO.setImpDate(calendar.getTime());	
+		Date iDate = (Date)(impDate.getImportantDate()).clone();
+		iDate.setYear(calendar.get(Calendar.YEAR));
+		iDate.setMonth(calendar.get(Calendar.MONTH));
+		iDate.setDate(calendar.get(Calendar.DAY_OF_MONTH));
+		importantDatesVO.setImpDate(iDate);	
 		importantDatesVO.setStartDate(impDate.getImportantDate());
 		return importantDatesVO;
 	}
@@ -528,7 +539,7 @@ private UserEventVO saveUserPlannedEvents;
 	
 	private ImportantDatesVO saveImportantDatesVO;
 	
-	public ImportantDatesVO saveUserImpDate(ImportantDatesVO importantDatesVO){
+	public List<ImportantDatesVO> saveUserImpDate(ImportantDatesVO importantDatesVO){
 		this.saveImportantDatesVO = importantDatesVO;
 		log.debug("UserCalendarService.saveUserImpDate()......");
 		
@@ -565,8 +576,9 @@ private UserEventVO saveUserPlannedEvents;
 			
 		});
 		saveImportantDatesVO = null;
-		importantDatesVO.setImportantDateId(userImpDate.getUserImpDateID());
-		return importantDatesVO;
+		List<ImportantDatesVO> importantDatesVOs = convertUserImpDateModel2DTO(userImpDate);
+		//importantDatesVO.setImportantDateId(userImpDate.getUserImpDateID());
+		return importantDatesVOs;
 	}
 	
 
@@ -578,32 +590,32 @@ private UserEventVO saveUserPlannedEvents;
 		return userEventVO;
 	}
 	
-	public ImportantDatesVO getUserImpDate(Long impDateID, String dateType) {
+	public List<ImportantDatesVO> getUserImpDate(Long impDateID, String dateType) {
 		log.debug("UserCalenderService.getUserImpDate() Start...");
-		ImportantDatesVO importantDatesVO = new ImportantDatesVO();
-		
+		//ImportantDatesVO importantDatesVO = new ImportantDatesVO();
+		List<ImportantDatesVO> importantDatesVOs = new ArrayList<ImportantDatesVO>();
 		if("Party".equalsIgnoreCase(dateType)){
 			PartyImportantDates partyImportantDates = partyImportantDatesDAO.get(impDateID);
 			
 			if(partyImportantDates != null){
 			
-				List<ImportantDatesVO> importantDatesVOs =convertPartyImpDateModel2DTO(partyImportantDates);
+				importantDatesVOs =convertPartyImpDateModel2DTO(partyImportantDates);
 				if(importantDatesVOs.size()>1)
 					Collections.sort(importantDatesVOs);
-				importantDatesVO = importantDatesVOs.get(0);
+				//importantDatesVO = importantDatesVOs.get(0);
 			}
 		} else {
 			UserImpDate userImpDate = userImpDatesDAO.get(impDateID);
 			log.debug("UserCalenderService.getUserImpDate() userImpDates.size()"+userImpDate);
 			if(userImpDate != null){
-				List<ImportantDatesVO> userImpDateVOs = convertUserImpDateModel2DTO(userImpDate);
-				log.debug("User Imp Dates Recurssive Type size::"+ userImpDateVOs.size());
-				if(userImpDateVOs.size()>1)
-					Collections.sort(userImpDateVOs);
-				importantDatesVO = userImpDateVOs.get(0);
+				importantDatesVOs = convertUserImpDateModel2DTO(userImpDate);
+				log.debug("User Imp Dates Recurssive Type size::"+ importantDatesVOs.size());
+				if(importantDatesVOs.size()>1)
+					Collections.sort(importantDatesVOs);
+				//importantDatesVO = userImpDateVOs.get(0);
 			}
 		}
 		
-		return importantDatesVO;
+		return importantDatesVOs;
 	}
 }
