@@ -38,7 +38,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	private String task = null;
 	JSONObject jObj = null;	
 	private UserEventVO event;
-	private ImportantDatesVO importantDatesVO;
+	private List<ImportantDatesVO> importantDatesVOs;
 	private List<EventActionPlanVO> actionPlanList = new ArrayList<EventActionPlanVO>();
 	private IUserCalendarService userCalendarService;
 	private HttpSession session;
@@ -83,12 +83,12 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		this.subscribe = subscribe;
 	}*/
 
-	public ImportantDatesVO getImportantDatesVO() {
-		return importantDatesVO;
+	public List<ImportantDatesVO> getImportantDatesVOs() {
+		return importantDatesVOs;
 	}
 
-	public void setImportantDatesVO(ImportantDatesVO importantDatesVO) {
-		this.importantDatesVO = importantDatesVO;
+	public void setImportantDatesVOs(List<ImportantDatesVO> importantDatesVOs) {
+		this.importantDatesVOs = importantDatesVOs;
 	}
 	public IUserCalendarService getUserCalendarService() {
 		return userCalendarService;
@@ -184,7 +184,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		else if(jObj.getString("task").equalsIgnoreCase("createImpDateEvent"))
 		{
 			log.debug("inside if....createImpDateEvent");
-			importantDatesVO = new ImportantDatesVO();			
+			ImportantDatesVO importantDatesVO = new ImportantDatesVO();			
 			
 			importantDatesVO.setEventId(user.getRegistrationID());
 			importantDatesVO.setTitle(jObj.getString("eventName"));
@@ -201,10 +201,10 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			importantDatesVO.setStartDate(sdf.parse(sDate.toString()));
 			importantDatesVO.setEndDate(sdf.parse(eDate.toString()));				
 		
-			importantDatesVO = userCalendarService.saveUserImpDate(importantDatesVO);
-			System.out.println("Important dates = "+importantDatesVO);
+			importantDatesVOs = userCalendarService.saveUserImpDate(importantDatesVO);
+			//System.out.println("Important dates = "+importantDatesVO);
 			
-			log.debug("inside if....createImpDateEvent::"+importantDatesVO.getImportantDateId());
+			//log.debug("inside if....createImpDateEvent::"+importantDatesVO.getImportantDateId());
 			result = "success2";
 		}
 		else
@@ -237,5 +237,35 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		userSubscribeImpDates.setUserImpDates(userImpDates);
 		session.setAttribute("USER", user);
 		return SUCCESS;
+	}
+	
+	public String showImpDateEvent() throws Exception
+	{
+		String result = "userEvent";
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String eventId = jObj.getString("eventId");
+		String eventType = jObj.getString("eventType");
+		if(jObj.getString("taskType").equalsIgnoreCase("impEvent"))
+		{
+			event = userCalendarService.getUserPlannedEvent(new Long(eventId));
+			result = "userEvent";
+		}
+		else if(jObj.getString("taskType").equalsIgnoreCase("impDate"))
+		{
+			importantDatesVOs =  userCalendarService.getUserImpDate(new Long(eventId), eventType);
+			result = "impDate";
+		}
+			
+		return result;
 	}
 }
