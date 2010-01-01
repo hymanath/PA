@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter;
+import com.itgrids.partyanalyst.model.Voter;
 
 public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<BoothConstituencyElectionVoter, Long> implements IBoothConstituencyElectionVoterDAO{
 	public BoothConstituencyElectionVoterDAO(){
@@ -46,5 +47,12 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				query.append(" and model.boothConstituencyElection.constituencyElection.election.electionYear = "+electionYear);
 				query.append(" and gender like 'm%'");
 				return getHibernateTemplate().find(query.toString());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Voter> findVotersByHamletAndElectiuonYear(Long hamletId, String year){
+		Object[] params = {hamletId, year};
+		return getHibernateTemplate().find("select model.voter from BoothConstituencyElectionVoter model where model.voter.hamlet.hamletId = ? and" +
+				" model.boothConstituencyElection.constituencyElection.election.electionYear = ?", params);
 	}
 }
