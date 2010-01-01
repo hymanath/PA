@@ -163,6 +163,10 @@
            <result name="error">/jsp/mandalPageFail.jsp</result>
         </action>
         
+        <action name="voterInfoAction" class="voterInfoAction">
+           <result name="success">/jsp/voterInfo.jsp</result>
+        </action>
+        
         <action name="boothResultUploadAction" class="boothResultUploadAction">
            <result name="success">/jsp/uploadBoothResult.jsp</result>
            <result name="error">/jsp/mandalPageFail.jsp</result>
