@@ -1886,7 +1886,7 @@
 						<div id="cadreImpDatesDiv">
 							<div id="cadreImpDatesHeadDiv">
 								<span style="float: left;">Important Dates</span>
-								<span id="newEventSpan"><a href="javascript:{}" onclick="buildNewEventPopup()">Create New Date</a></span>							
+								<span id="newEventSpan"><a href="javascript:{}" onclick="buildNewImpDatePopup()">Create New Date</a></span>							
 							</div>
 							<div id="cadreImpDatesBodyDiv"> </div>
 						</div>
@@ -1895,7 +1895,7 @@
 						<div id="cadreImpEventsDiv">
 							<div id="cadreImpEventsHeadDiv">
 								<span style="float: left;">Important Events</span>
-								<span id="newEventSpan"><a href="javascript:{}" onclick="buildNewImpDatePopup()">Create New Event</a></span>
+								<span id="newEventSpan"><a href="javascript:{}" onclick="buildNewEventPopup()">Create New Event</a></span>
 							</div>
 							<div id="cadreImpEventsBodyDiv"> 
 								
