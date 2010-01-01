@@ -44,7 +44,7 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 			cadreManagementVO.setExceptionEncountered(exceptionEncountered);
 			
 		}
-		log.debug("UserCadreManagementService.getUserData()::::cadreManagementVO.getUserImpDates().size()::"+cadreManagementVO.getUserImpDates().size());
+		//log.debug("UserCadreManagementService.getUserData()::::cadreManagementVO.getUserImpDates().size()::"+cadreManagementVO.getUserImpDates().size());
 		return cadreManagementVO;
 	}
 
