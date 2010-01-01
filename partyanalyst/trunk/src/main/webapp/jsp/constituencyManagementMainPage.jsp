@@ -190,7 +190,7 @@
 		{
 			padding:5px;
 		}
-		#newProblemTabContentDiv_footer,#newProblemTabContentDiv_head
+		#newProblemTabContentDiv_footer,#newProblemTabContentDiv_head,#classifiedTabContentDiv_footer
 		{
 			margin-right:20px;
 			text-align:right;
@@ -506,7 +506,7 @@
 		var newTabContent='<div id="newProblemTabContentDiv">';
 		newTabContent+='<div id="newProblemTabContentDiv_head"></div>';
 		newTabContent+='<div id="newProblemTabContentDiv_body"></div>';
-		newTabContent+='<div id="newProblemTabContentDiv_footer"></div>';
+		newTabContent+='<div id="newProblemTabContentDiv_footer" align="right"></div>';
 		newTabContent+='</div>';
 		
 		
@@ -516,10 +516,15 @@
 	    content:newTabContent, 
 	    active: true 
 		})); 
-		
+
+		var classifiedTabContent='<div id="classifiedTabContentDiv">';
+		classifiedTabContent+='<div id="classifiedTabContentDiv_head"></div>' ;
+		classifiedTabContent+='<div id="classifiedTabContentDiv_body"></div>';
+		classifiedTabContent+='<div id="classifiedTabContentDiv_footer"></div>';
+		classifiedTabContent+='</div>';
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
 			label: 'Classified Issues', 
-			content: '<div id="classifiedTabContentDiv"><p>Content for Classified Issues</p></div>' 
+			content:classifiedTabContent 
 		 
 		})); 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
@@ -558,7 +563,14 @@
 												label: "Add New Problem",
 												href:"problemManagementAction.action",
 												container: "newProblemTabContentDiv_head"  
-												}); 			
+												}); 		
+
+			var oButton = new YAHOO.widget.Button({ 
+								                id: "assignButton",  
+								                type: "button",  
+								                label: "Assign",  
+								                container: "classifiedTabContentDiv_footer"  
+            }); 	
 	}
 
 	function buildConstMgmtTabView()
@@ -585,13 +597,27 @@
 
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
 			label: 'Local Polictical Changes',
-			content: '<div id="localPoliticalChangesTabContent">Local Political Changes Content</div>'
+			content: '<div id="localPoliticalChangesTabContent"></div>'
 			
 		}));
 
+		var votersByLocBoothContent = '<div id="votersByLocationTabContentDiv">';
+		votersByLocBoothContent+='<br>';
+		votersByLocBoothContent+='<div id="votersByLocationTabContentDiv_head" align="left">';
+		votersByLocBoothContent+='<table>';
+		votersByLocBoothContent+='<tr>';
+		votersByLocBoothContent+='<td>Select Year</td>';	
+		votersByLocBoothContent+='<td><select id="year"><option>2009</option></select></td>';
+		votersByLocBoothContent+='</tr>';
+		votersByLocBoothContent+='</table>';
+		votersByLocBoothContent+='</div>';
+		votersByLocBoothContent+='<div id="votersByLocationTabContentDiv_body"></div>';
+		votersByLocBoothContent+='<div id="votersByLocationTabContentDiv_footer"></div>';
+		votersByLocBoothContent+='</div>';
+
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
 			label: 'Voters By Location/Booth',
-			content: '<div id="votersByLocationTabContent"></div>'
+			content: votersByLocBoothContent
 			
 		}));
 
@@ -610,22 +636,27 @@
 	        {SNo:"<input type='checkbox' id='check_1'></input>", Title:"Impurified Water Supply", Description: "Polluted water is being supplied since two weeks",IdentifiedDate:new Date(2009, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}, 
 			{SNo:"<input type='checkbox' id='check_1'></input>", Title:"No Bus Service", Description: "APS RTC Suddenly cancelled their Bus service to NagaVaram Village", IdentifiedDate:new Date("January 3, 2009"),
 			Location:"NagaVaram",Source:"Victim",Status:"Assigned"}, 
-	        {SNo:"<input type='checkbox' id='check_1'></input>", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(1978, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
+	        {SNo:"<input type='checkbox' id='check_1'></input>", Title:"No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate:new Date(2009, 11, 12),Location:"Eluru",Source:"Call Centre",Status:"Categorized"}, 
 	        {SNo:"<input type='checkbox' id='check_1'></input>", Title:"AarogyaSri",Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate:new Date("March 11,2009") , Location:"Eluru",Source:"User",Status:"Categorized"}, 
-			{SNo:"<input type='checkbox' id='check_1'></input>", Title:"Delay in payment of Exgratia", Description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party ",IdentifiedDate:new Date(1980, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}		
+			{SNo:"<input type='checkbox' id='check_1'></input>", Title:"Delay in payment of Exgratia", Description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party",IdentifiedDate:new Date(1980, 2, 4), Location:"MadanaPalle",Source:"Party Analyst",Status:"New"}		
 	    ], 
 		    leaders: [ 
-				        {SNo: "1", Name: "Ramachandra", Occupation: "Farmer",Position: "Sarpach", InfluenceScope: "village",ContactNumber: "9989922789",Hamlet: "IsakaPalli"},
-				        {SNo: "2", Name: "Ravi", Occupation: "Teacher",Position: "Ward Member", InfluenceScope: "village",ContactNumber: "9246240223",Hamlet: "PalliPadu"},
+				        {SNo: "1", Name: "Ramachandra", Occupation: "Farmer",Position: "Sarpach", InfluenceScope: "Village",ContactNumber: "9989922789",Hamlet: "IsakaPalli"},
+				        {SNo: "2", Name: "Ravi", Occupation: "Teacher",Position: "Ward Member", InfluenceScope: "Village",ContactNumber: "9246240223",Hamlet: "PalliPadu"},
 				        {SNo: "3", Name: "Narasimha Reddy", Occupation: "NA",Position: "ZPTC", InfluenceScope: "Mandal",ContactNumber: "9885195800",Hamlet: "Allur"},
-				        {SNo: "4", Name: "Mohan", Occupation: "NA",Position: "MPTC", InfluenceScope: "village",ContactNumber: "9848098480",Hamlet: "RayaPeta"},
+				        {SNo: "4", Name: "Mohan", Occupation: "NA",Position: "MPTC", InfluenceScope: "Village",ContactNumber: "9848098480",Hamlet: "RayaPeta"},
 				        {SNo: "5", Name: "Sai", Occupation: "Business",Position: "Ward Member", InfluenceScope: "Mandal",ContactNumber: "9848012345",Hamlet: "IsakaPalli"},
 				        {SNo: "6", Name: "Siva", Occupation: "Farmer",Position: "MPTC", InfluenceScope: "Mandal",ContactNumber: "9849012345",Hamlet: "GopalaPuram"}
 				         
 		],
 
 			localproblems: [ 
-				        {SNo:"1", Hamlet:"Hamlet", DevelopmentActivitiesCompleted: "Development Activities Completed",DevelopmentActivitiesToBeCompleleted:"Development Activities To Be Compleleted", SchemesImplemented:"Schemes Implemented",SchemesToBeImplemented:"Schemes To Be Implemented"} 
+				        {SNo:"1", Problem: "Impurified Water Supply", Description: "Polluted water is being supplied since two weeks", IdentifiedDate: new Date(2009, 2, 4), Source: "Party Analyst", Hamlet:"PalliPadu"},
+				        {SNo:"2", Problem: "No Bus Service", Description: "APS RTC Suddenly cancelled their Bus service", IdentifiedDate: new Date("December3 , 2009"), Source: "Party Analyst", Hamlet:"IsakaPalli"},
+				        {SNo:"3", Problem: "No White Ration Cards issued in Hamlet", Description: "White Ration card is not at all issued to eligible families even after the preliminary process", IdentifiedDate: new Date(2009, 11, 12), Source: "Call Center", Hamlet:"IsakaPalli"},
+				        {SNo:"4", Problem: "Delay for Surgery (AarogyaSri)", Description: "Delay for Cardiac Surgery with AarogyaSri Scheme", IdentifiedDate: new Date("March 11,2009"), Source: "User", Hamlet:"PalliPadu"},
+				        {SNo:"5", Problem: "Delay in payment of Exgratia", Description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party", IdentifiedDate: new Date(2009, 2, 4), Source: "Victim", Hamlet:"IsakaPalli"},
+				        {SNo:"6", Problem: "Impurified Water Supply", Description: "Polluted water is being supplied since two weeks", IdentifiedDate: new Date("December 11, 2009"), Source: "Party Analyst", Hamlet:"IsakaPalli"} 
 		],
 
 			localcaststats: [
@@ -640,14 +671,22 @@
 						{SNo: "4", Cast: "Yanadi", CastCategory: "ST", CasteSubCategory: "NA",CastePopulation: "800", Hamlet: "Allur"},
 						{SNo: "5", Cast: "Mala", CastCategory: "SC", CasteSubCategory: "NA", CastePopulation: "50", Hamlet: "Allur"}		      
 		],
+
+			localPoliticalChanges: [
+						{SNo:"1", Description: "Brief Description about the political changes", Date: new Date("December3 , 2009"),Impact: "The impact for that particular Context"},
+						{SNo:"2", Description: "Brief Description about the political changes", Date: new Date("December3 , 2009"),Impact: "The impact for that particular Context"},
+						{SNo:"3", Description: "Brief Description about the political changes", Date: new Date("December3 , 2009"),Impact: "The impact for that particular Context"},
+						{SNo:"4", Description: "Brief Description about the political changes", Date: new Date("December3 , 2009"),Impact: "The impact for that particular Context"},
+						{SNo:"5", Description: "Brief Description about the political changes", Date: new Date("December3 , 2009"),Impact: "The impact for that particular Context"}
+		],
+		
 			votersylocbth: [
 			    		
 			    		{SNo: "1", FirstName: "Ramachandra" ,LastName: "Reddy", Gender: "M", Age: "20", Cast: "Reddy", VoterIDCardNumber: "AAGC12345"},
 			    		{SNo: "2", FirstName: "Narasamma" ,LastName: "R", Gender: "F", Age: "52", Cast: "Rajulu", VoterIDCardNumber: "AAGC12345"},
 			    		{SNo: "3", FirstName: "Sayyad" ,LastName: "Khan", Gender: "M", Age: "43", Cast: "Muslim", VoterIDCardNumber: "AAGC12345"},
 			    		{SNo: "4", FirstName: "Rani" ,LastName: "K", Gender: "F", Age: "32", Cast: "Yanadi", VoterIDCardNumber: "AAGC12345"},
-			    		{SNo: "5", FirstName: "Rajani" ,LastName: "G", Gender: "F", Age: "24", Cast: "Mala", VoterIDCardNumber: "AAGC12345"}
-			    		
+			    		{SNo: "5", FirstName: "Rajani" ,LastName: "G", Gender: "F", Age: "24", Cast: "Mala", VoterIDCardNumber: "AAGC12345"} 		
 
 		]
 			
@@ -659,20 +698,20 @@
 	{
 		
 		var myColumnDefs = [ 
-	            {key:"SNo"}, 
+	            {key:"Select"}, 
 	            {key:"Title", sortable:true}, 
 	            {key:"Description"}, 
 				{key:"IdentifiedDate", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
 				{key:"Location", sortable:true},	
 				{key:"Source"},
 				{key:"Scope", editor: new YAHOO.widget.DropdownCellEditor({multiple:true,dropdownOptions:["Village","Mandal","District","State","Country"]})},
-				{key:"Problem Type", editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:["Categorize"]})}
+				{key:"Problem Type", editor: new YAHOO.widget.DropdownCellEditor({multiple:false,dropdownOptions:["Social","Economical","Political","Administrative","LegalIssue","Personal"]})}
 	        ]; 
 	 
-	        var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.problems); 
+	        var myDataSource = new YAHOO.util.DataSource(problemsMainObj.newProblemsArr); 
 	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        myDataSource.responseSchema = { 
-	            fields: ["SNo","Title","Description","IdentifiedDate","Location","Source", "Status"] 
+	            fields: ["Select","Title","Description","IdentifiedDate","Location","Source"] 
 	        }; 
 			
 			var myConfigs = { 
@@ -694,7 +733,7 @@
              } 
 			  }; 
 
-			var myTooltip = new YAHOO.widget.Tooltip("myTooltip", { context:"myDataTable", text:"Some tooltip text" } );
+			
 
 			myDataTable.subscribe("cellMouseoverEvent", highlightEditableCell);  			
 			myDataTable.subscribe("cellMouseoutEvent", myDataTable.onEventUnhighlightCell);
@@ -709,24 +748,24 @@
 	}
 	
 	
-	function buildcategorizedDataTable()
+	function buildClassifiedDataTable()
 	{
 			var myColumnDefs = [ 
 	            {key:"SNo"}, 
 	            {key:"Title", sortable:true}, 
-	            {key:"Description"}, 
-				{key:"IdentifiedDate", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+	            {key:"IdentifiedDate", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
 				{key:"Location", sortable:true},	
-				{key:"Source"},
-				{key:"Scope", editor: new YAHOO.widget.DropdownCellEditor({multiple:true,dropdownOptions:["Village","Mandal","District","State","Country"]})},
-				{key:"Problem Type", editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:["Assign"]})}
+				{key:"Scope", sortable:true},
+				{key:"ProblemType", editor: new YAHOO.widget.CheckboxCellEditor({checkboxOptions:["Assign"]})},
+				{key:"Department", editor: new YAHOO.widget.DropdownCellEditor({multiple:false,dropdownOptions:["Irrigation","DRDO","R & B","Indian Railways","APSRTC","APSEB","RTA"]})}
+				
 	        ]; 
 	 
 	   	 
 	        var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.problems); 
 	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        myDataSource.responseSchema = { 
-	            fields: ["SNo","Title","Description","IdentifiedDate","Location","Source", "Status"] 
+	            fields: ["SNo","Title","IdentifiedDate","Location"] 
 	        }; 
 			
 			var myConfigs = { 
@@ -736,11 +775,22 @@
 			}; 
 
 			var myDataTable =  
-	            new YAHOO.widget.DataTable("categorizedTabContentDiv", myColumnDefs, myDataSource,myConfigs); 
+	            new YAHOO.widget.DataTable("classifiedTabContentDiv_body", myColumnDefs, myDataSource,myConfigs); 
 	                 
 	       
 	        problemMgmtTabs.getTab(1).addListener("click", function() {myDataTable.onShow()});         
-	 
+
+	        var highlightEditableCell = function(oArgs) {   
+	             var elCell = oArgs.target;   
+	             if(YAHOO.util.Dom.hasClass(elCell, "yui-dt-editable")) {   
+	                 this.highlightCell(elCell);   
+	             } 
+				  }; 
+			
+	        myDataTable.subscribe("cellMouseoverEvent", highlightEditableCell);  			
+			myDataTable.subscribe("cellMouseoutEvent", myDataTable.onEventUnhighlightCell);
+			myDataTable.subscribe("cellClickEvent", myDataTable.onEventShowCellEditor);
+	 		
 	        return { 
 	            oDS: myDataSource, 
 	            oDT: myDataTable 	            
@@ -821,20 +871,18 @@
 
 	function buildLocalProblemsDataTable()
 	{
-		var myColumnDefs = [ 
+		var localProbColumnDefs = [ 
 		    	            {key:"SNo", formatter:"number", sortable:true}, 
-		    	            {key:"Hamlet", sortable:true}, 
-		    	            {key:"DevelopmentActivitiesCompleted"}, 
-		    				{key:"DevelopmentActivitiesToBeCompleleted"},
-		    				{key:"SchemesImplemented", sortable:true},	
-		    				{key:"SchemesToBeImplemented"}
-		    				
-		    				
+		    	            {key:"Problem", sortable:true}, 
+		    				{key:"Description"},
+		    				{key:"IdentifiedDate",formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+		    				{key:"Source", sortable:true},
+		    				{key:"Hamlet", sortable:true}		    				
 		    	        ]; 
 		var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.localproblems); 
         myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
         myDataSource.responseSchema = { 
-            fields: [{key:"SNo", parser:"number"},"Hamlet","DevelopmentActivitiesCompleted","DevelopmentActivitiesToBeCompleleted","SchemesImplemented","SchemesToBeImplemented"] 
+            fields: [{key:"SNo", parser:"number"},"Problem","Description","IdentifiedDate","Source","Hamlet",] 
         };
 
         
@@ -844,7 +892,7 @@
 			    }) 
 				};
 
-		var myDataTable =  new YAHOO.widget.DataTable("localProblemsTabContent", myColumnDefs, myDataSource, myConfigs);
+		var myDataTable =  new YAHOO.widget.DataTable("localProblemsTabContent", localProbColumnDefs, myDataSource, myConfigs);
 		constMgmtTabs.getTab(1).addListener("click", function() {myDataTable.onShow()});
 
 			return {
@@ -878,7 +926,7 @@
 				};
 
 		var myDataTable =  new YAHOO.widget.DataTable("localCastTabContent", myColumnDefs, myDataSource, myConfigs);
-		constMgmtTabs.getTab(1).addListener("click", function() {myDataTable.onShow()});
+		constMgmtTabs.getTab(2).addListener("click", function() {myDataTable.onShow()});
 
 			return {
 				oDS: myDataSource,
@@ -886,32 +934,67 @@
 			};
 	} 
 
-	function buildVotersByLocBoothDataTable()
+	function buildLocalPoliticalChangesDataTable()
 	{
-		var myColumnDefs = [ 
-		    	            {key:"SNo", formatter:"number", sortable:true}, 
-		    	            {key:"FirstName", sortable:true}, 
-		    	            {key:"LastName"}, 
-		    				{key:"Gender"},
-		    				{key:"Age"},
-		    				{key:"Cast", sortable:true},
-		    				{key:"VoterIDCardNumber"}	
-		    					    			    				
-		    	        ]; 
-		var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.votersylocbth); 
-        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-        myDataSource.responseSchema = { 
-            fields: [{key:"SNo", parser:"number"},"FirstName","LastName","Gender","Age","Cast","VoterIDCardNumber"] 
-        };
 
-        
+		var localPolChangesColumnDefs = [
+		                                 {key: "SNo", formatter:"number", sortable:true},
+		                                 {key: "Description"},
+		                                 {key: "Date", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+		                                 {key: "Impact"}
+
+		                                 ];
+
+		var localPolChangesDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.localPoliticalChanges);
+		localPolChangesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		localPolChangesDataSource.responseSchema = { 
+	            fields: [{key:"SNo", parser:"number"}, "Description", "Date", "Impact"]
+		};
+
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 5 
 			    }) 
 				};
+		
+		var localPoliticalChangesDataTable = new YAHOO.widget.DataTable("localPoliticalChangesTabContent", localPolChangesColumnDefs, localPolChangesDataSource, myConfigs);
+		constMgmtTabs.getTab(3).addListener("click", function() {localPoliticalChangesDataTable.onShow()});
 
-		var myDataTable =  new YAHOO.widget.DataTable("votersByLocationTabContent", myColumnDefs, myDataSource, myConfigs);
+		return {
+			oDS: localPolChangesDataSource,
+			oDT: localPoliticalChangesDataTable
+		};
+	}
+	
+	function buildVotersByLocBoothDataTable()
+	{
+		var myColumnDefs = [ 
+		    	            {key:"SNo", formatter:"number", sortable:true}, 
+		    	            {key:"Name", sortable: true}, 
+		    	            {key:"Gender", sortable: true},
+		    				{key:"Age"},
+		    				{key:"HNo"},
+		    				{key:"RelativeName"},
+		    				{key:"Relationship"},	
+		    				{key:"Cast", sortable:true},
+		    				{key:"CastCategory", sortable:true}
+		    					
+		    					    			    				
+		    	        ]; 
+		var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.votersylocbth); 
+        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+        myDataSource.responseSchema = { 
+            fields: [{key:"SNo", parser:"number"}, "Name", "Gender", "Age", "HNo","RelativeName","Relationship","Cast","CastCategory"] 
+        };
+
+        
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 20 
+			    }) 
+				};
+
+		var myDataTable =  new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body", myColumnDefs, myDataSource, myConfigs);
 		constMgmtTabs.getTab(1).addListener("click", function() {myDataTable.onShow()});
 
 			return {
@@ -999,23 +1082,24 @@ buildConstMgmtTabView();
 	
 <c:forEach var="problem"  items="${constituencyManagementVO.problemManagementVO.problemDetails}" >	
 	var newProblemObj=	{
-							SNo:'<input type="text"></input>',
-							title:'${problem.definition}',
-							description:'${problem.description}',
-							identifiedDate:new Date('${problem.identifiedDate}'),
-							problemLocation:'${problem.location}',
-							source:'${problem.source}'
+							Select:'<input type="checkbox"></input>',
+							Title:'${problem.definition}',
+							Description:'${problem.description}',
+							IdentifiedDate:new Date('${problem.identifiedDate}'),
+							Location:'${problem.location}',
+							Source:'${problem.source}'
 						};
 	problemsMainObj.newProblemsArr.push(newProblemObj);											
 </c:forEach>
 
 
 buildNewProblemsDataTable();
-buildcategorizedDataTable();
+buildClassifiedDataTable();
 buildAssignedIssuesDataTable();	
 buildLocalLeadersDataTable();
 buildLocalProblemsDataTable();
 buildLocalCastStatisticsDataTable();
+buildLocalPoliticalChangesDataTable();
 buildVotersByLocBoothDataTable();
 		
 
