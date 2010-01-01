@@ -5,7 +5,6 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
-import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter;
 import com.itgrids.partyanalyst.model.Voter;
 
@@ -52,5 +51,10 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 	public void testFindByBoothConstituencyElection(){
 		List<BoothConstituencyElectionVoter> list = boothConstituencyElectionVoterDAO.findByBoothConstituencyElection(new Long(2346));
 		assertEquals(1, list.size());	
+	}
+	
+	public void testFindVotersByHamletAndElectionYear(){
+		List<Voter> list = boothConstituencyElectionVoterDAO.findVotersByHamletAndElectiuonYear(new Long(4), "2009");
+		assertEquals(1, list.size());
 	}
 }
