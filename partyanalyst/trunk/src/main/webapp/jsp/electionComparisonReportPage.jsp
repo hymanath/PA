@@ -35,38 +35,35 @@
 	<script type="text/javascript" src="js/yahoo/history.js"></script> 
 
 	<!-- Combo-handled YUI CSS files: -->
-	<link rel="stylesheet" type="text/css"
-		href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/datatable.css">
 	<!-- Combo-handled YUI JS files: -->
-	<script type="text/javascript"
-		src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
-
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script>
 
 	<!-- Combo-handled YUI CSS files: -->
 
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">	
-
-	<script type="text/javascript" src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
 	<script type="text/javascript" src="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/gallery-accordion-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	
 
 
 	<!-- Sam Skin CSS --> 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
 	 
 	<!-- Dependencies --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
 	 
 	<!-- OPTIONAL: Animation (only required if using ContainerEffect) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
 	 
 	<!-- OPTIONAL: Drag & Drop (only required if enabling Drag & Drop) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	 
 	<!-- Source file --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
 	
 	<!-- CSS -->  
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/container.css">   
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css">   
 
 
 <style type="text/css">

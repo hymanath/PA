@@ -12,10 +12,10 @@
   <META NAME="Description" CONTENT="">
     
   <!-- Dependencies --> 
-	<script src="http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js"></script> 
+	<script src="styles/yuiStyles/yahoo-min.js"></script> 
 	 
 	<!-- Source file --> 
-	<script src="http://yui.yahooapis.com/2.7.0/build/json/json-min.js"></script>
+	<script src="js/json/json-min.js"></script>
 	 
   <script type="text/javascript">
   var ELECTIONTYPE;

@@ -33,11 +33,9 @@
 	<script type="text/javascript" src="js/yahoo/history.js"></script> 
 
 	<!-- Combo-handled YUI CSS files: -->
-<link rel="stylesheet" type="text/css"
-	href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles">
 <!-- Combo-handled YUI JS files: -->
-<script type="text/javascript"
-	src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
+<script type="text/javascript" src="js/yahoo/datatable-min.js"></script>
 	
 	<!-- YUI Dependency Files-->
 

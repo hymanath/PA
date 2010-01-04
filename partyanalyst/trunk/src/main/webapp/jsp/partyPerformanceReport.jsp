@@ -10,6 +10,13 @@
 
 <script type="text/javascript" src="js/yahoo/json-min.js" ></script>
 <script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>
+<script type="text/javascript" src="js/yahoo/element-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
+
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/datatable.css"> 
 
 <!-- Combo-handled YUI CSS files: -->
 <link rel="stylesheet" type="text/css"
