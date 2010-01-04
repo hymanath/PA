@@ -27,7 +27,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
 	<script type="text/javascript" src="js/json/json-min.js"></script>
 	<!-- TreeView source file -->  
-	<script src="http://yui.yahooapis.com/2.8.0r4/build/treeview/treeview-min.js" ></script>  
+	<script src="js/yahoo/treeview-min.js" ></script>  
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
@@ -35,9 +35,9 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
 	<!-- Required CSS --> 
-	<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/treeview/assets/skins/sam/treeview.css"> 	
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/treeview.css"> 	
 	
 	
 
