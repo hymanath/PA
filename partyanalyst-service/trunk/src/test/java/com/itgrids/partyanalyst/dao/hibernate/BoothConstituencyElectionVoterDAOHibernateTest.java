@@ -5,12 +5,16 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
+import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.model.BoothConstituencyElectionVoter;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.service.impl.ConstituencyManagementService;
 
 public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestCase{
 
 	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
+	private ConstituencyManagementService constituencyManagementService;
 
 	public IBoothConstituencyElectionVoterDAO getBoothConstituencyElectionVoterDAO() {
 		return boothConstituencyElectionVoterDAO;
@@ -43,7 +47,7 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		setComplete();
 	}*/
 	
-	public void testFindByBoothConstituencyElectionAndVoter(){
+	/*public void testFindByBoothConstituencyElectionAndVoter(){
 		List<BoothConstituencyElectionVoter> list = boothConstituencyElectionVoterDAO.findByBoothConstituencyElectionAndVoter(new Long(2346), new Long(1));
 		assertEquals(1, list.size());	
 	}
@@ -51,10 +55,41 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 	public void testFindByBoothConstituencyElection(){
 		List<BoothConstituencyElectionVoter> list = boothConstituencyElectionVoterDAO.findByBoothConstituencyElection(new Long(2346));
 		assertEquals(1, list.size());	
-	}
+	}*/
 	
-	public void testFindVotersByHamletAndElectionYear(){
-		List<Voter> list = boothConstituencyElectionVoterDAO.findVotersByHamletAndElectiuonYear(new Long(4), "2009");
+	/*public void testFindVotersByHamletAndElectionYear(){
+		constituencyManagementService = new ConstituencyManagementService();
+		List<Voter> list = boothConstituencyElectionVoterDAO.findVotersCastInfoByHamletAndElectionYear(new Long(6), "2009");
+		VoterCastInfoVO voterCastInfoVO = constituencyManagementService.caluculatePercentage(list);
+		System.out.println("TOTAL HAMLETS::"+list.size());
+		System.out.println(" Total Voters:"+voterCastInfoVO.getTotalVoters());
+		System.out.println(" Female "+voterCastInfoVO.getFemaleVoters());
+		System.out.println(" Male "+voterCastInfoVO.getMaleVoters());
+		System.out.println(" Casts "+voterCastInfoVO.getCastVOs().size());
+		System.out.println("---------------------------------------------");
+		for(CastVO castVO:voterCastInfoVO.getCastVOs()){
+			System.out.print(castVO.getCastName()+" ");
+			System.out.print(castVO.getCastPercentage()+" ");
+			System.out.println(castVO.getCastCount());
+		}
+		System.out.println("---------------------------------------------");
 		assertEquals(1, list.size());
+	}*/
+	
+	/*public void testFindVotersGroupByHouseNoForHamlet(){
+		List<Voter> list = boothConstituencyElectionVoterDAO.findVotersGroupByHouseNoForHamlet(new Long(6), "2009");
+		System.out.println("TOTAL HAMLETS::"+list.size());
+	}*/
+	
+	/*public void testFindVotersHouseDetails(){
+		List<String> list = boothConstituencyElectionVoterDAO.findVoterHouseNosInHamlet(new Long(6), "2009");
+		System.out.print(list.size());
+		System.out.print(list);
+	}*/
+	
+	public void testFindVotersHouseDetails(){
+		List<Voter> list = boothConstituencyElectionVoterDAO.findVotersByHouseNoAndHamlet("1-72",new Long(6), "2009");
+		System.out.print(list.size());
+		//System.out.print(list);
 	}
 }

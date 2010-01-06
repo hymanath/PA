@@ -33,4 +33,9 @@ public class ProblemLocationDAOHibernateTest extends BaseDaoTestCase{
 		List<ProblemLocation> list = problemLocationDAO.getAll();
 		assertEquals(1, list.size());
 	}
+	
+	public void testFindByHamletId(){
+		List<ProblemLocation> list = problemLocationDAO.findByHamletId(new Long(20));
+		assertEquals(1, list.size());
+	}
 }
