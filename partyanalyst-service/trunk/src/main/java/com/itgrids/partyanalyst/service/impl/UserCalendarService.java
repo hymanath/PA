@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IUserEventActionPlanDAO;
 import com.itgrids.partyanalyst.dao.IUserEventsDAO;
 import com.itgrids.partyanalyst.dao.IUserImpDatesDAO;
+import com.itgrids.partyanalyst.dto.CadreManagementVO;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -105,7 +106,7 @@ public class UserCalendarService implements IUserCalendarService {
 			}
 		);
 	}
-	public List<ImportantDatesVO> getUserImpDates(RegistrationVO user) {
+	public List<ImportantDatesVO> getUserImpDates(RegistrationVO user, Calendar inputDate) {
 		log.debug("UserCalenderService.getUserImpDates() Start...");
 
 		Long userID = user.getRegistrationID();
@@ -119,7 +120,7 @@ public class UserCalendarService implements IUserCalendarService {
 			if(partyImportantDates != null){
 			
 				for(PartyImportantDates impDate:partyImportantDates ){
-					List<ImportantDatesVO> importantDatesVOs =convertPartyImpDateModel2DTO(impDate);
+					List<ImportantDatesVO> importantDatesVOs =convertPartyImpDateModel2DTO(impDate, inputDate);
 					for(ImportantDatesVO importantDatesVO : importantDatesVOs){
 						importantDates.add(importantDatesVO);
 					}
@@ -131,7 +132,7 @@ public class UserCalendarService implements IUserCalendarService {
 		log.debug("UserCalenderService.getUserImpDates() userImpDates.size()"+userImpDates.size());
 		if(userImpDates != null){
 			for(UserImpDate userImpDate : userImpDates){				
-				List<ImportantDatesVO> userImpDateVOs = convertUserImpDateModel2DTO(userImpDate);
+				List<ImportantDatesVO> userImpDateVOs = convertUserImpDateModel2DTO(userImpDate,inputDate);
 				log.debug("User Imp Dates Recurssive Type size::"+ userImpDateVOs.size());
 				for(ImportantDatesVO userImpDateVO : userImpDateVOs){
 					importantDates.add(userImpDateVO);
@@ -165,9 +166,9 @@ public class UserCalendarService implements IUserCalendarService {
 		
 		return importantDatesVO;
 	}
-	private List<ImportantDatesVO> convertUserImpDateModel2DTO(UserImpDate impDate){
+	private List<ImportantDatesVO> convertUserImpDateModel2DTO(UserImpDate impDate, Calendar inputDate){
 		List<ImportantDatesVO> importantDatesVOs = new ArrayList<ImportantDatesVO>();
-		Calendar startCalendar = Calendar.getInstance();
+		Calendar startCalendar = (Calendar) inputDate.clone();
 		int dayOfWeek1 = startCalendar.get(Calendar.DAY_OF_WEEK);
 		
 		Calendar endCalendar = Calendar.getInstance();
@@ -181,7 +182,7 @@ public class UserCalendarService implements IUserCalendarService {
 		int eMonth = startDate.getMonth();
 		int eDay = startDate.getDate();
 		
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = (Calendar) inputDate.clone();
 		int currentYear =calendar.get(Calendar.YEAR);
 		int currentMonth =calendar.get(Calendar.MONTH);
 		int currentDay =calendar.get(Calendar.DAY_OF_MONTH);
@@ -204,7 +205,7 @@ public class UserCalendarService implements IUserCalendarService {
 				months[1]=currentMonth+2;
 			}
 			for(int m : months){
-				Calendar currentCalendar = Calendar.getInstance();
+				Calendar currentCalendar = (Calendar) inputDate.clone();
 				currentCalendar.set(currentYear,m,sDay);
 				if(!(currentCalendar.before(startCalendar)) && (!currentCalendar.after(endCalendar))){
 					ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(currentCalendar,impDate);
@@ -217,7 +218,7 @@ public class UserCalendarService implements IUserCalendarService {
 			calendar.setTime(startDate);
 			int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 			
-			Calendar calCalendar = Calendar.getInstance();
+			Calendar calCalendar = (Calendar) inputDate.clone();
 			//int difference = dayOfWeek1 - dayOfWeek;
 			int nextWeekDay = 0;
 			while(true){
@@ -229,7 +230,7 @@ public class UserCalendarService implements IUserCalendarService {
 			}
 			for(int i=nextWeekDay; i<61; i+=7){
 				int calDay = currentDay +i;
-				Calendar cal = Calendar.getInstance();
+				Calendar cal = (Calendar) inputDate.clone();
 				cal.set(currentYear,currentMonth,calDay);
 				if(cal.before(startCalendar) || cal.after(endCalendar)){
 					break;
@@ -240,17 +241,17 @@ public class UserCalendarService implements IUserCalendarService {
 		}
 		return importantDatesVOs;
 	}
-	private List<ImportantDatesVO> convertPartyImpDateModel2DTO(PartyImportantDates impDate){
+	private List<ImportantDatesVO> convertPartyImpDateModel2DTO(PartyImportantDates impDate,Calendar inputDate){
 
 		List<ImportantDatesVO> importantDatesVOs = new ArrayList<ImportantDatesVO>();
 		//SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
-		Calendar startCalendar = Calendar.getInstance();
+		Calendar startCalendar = (Calendar) inputDate.clone();
 		//int year1 = startCalendar.get(Calendar.YEAR);
 		//int month1 = startCalendar.get(Calendar.MONTH);
 		//int day1 = startCalendar.get(Calendar.DAY_OF_MONTH);
 		int dayOfWeek1 = startCalendar.get(Calendar.DAY_OF_WEEK);
 		
-		Calendar endCalendar = Calendar.getInstance();
+		Calendar endCalendar = (Calendar) inputDate.clone();
 		endCalendar.add(Calendar.DATE, 60);
 		//int year2 = endCalendar.get(Calendar.YEAR);
 		//int month2 = endCalendar.get(Calendar.MONTH);
@@ -261,7 +262,7 @@ public class UserCalendarService implements IUserCalendarService {
 		int month = startDate.getMonth();
 		int day = startDate.getDate();
 		
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = (Calendar) inputDate.clone();
 		int currentYear =calendar.get(Calendar.YEAR);
 		int currentMonth =calendar.get(Calendar.MONTH);
 		int currentDay =calendar.get(Calendar.YEAR);
@@ -284,7 +285,7 @@ public class UserCalendarService implements IUserCalendarService {
 				months[1]=currentMonth+2;
 			}
 			for(int m : months){
-				Calendar currentCalendar = Calendar.getInstance();
+				Calendar currentCalendar = (Calendar) inputDate.clone();
 				currentCalendar.set(currentYear,m,day);
 				if(!(currentCalendar.before(startCalendar)) && (!currentCalendar.after(endCalendar))){
 					ImportantDatesVO importantDatesVO = createImportantDatesVOForParty(currentCalendar,impDate);
@@ -297,7 +298,7 @@ public class UserCalendarService implements IUserCalendarService {
 			calendar.setTime(startDate);
 			int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
 			
-			Calendar calCalendar = Calendar.getInstance();
+			Calendar calCalendar = (Calendar) inputDate.clone();
 			//int difference = dayOfWeek1 - dayOfWeek;
 			int nextWeekDay = 0;
 			while(true){
@@ -338,20 +339,20 @@ public class UserCalendarService implements IUserCalendarService {
 		return importantDatesVO;
 	}
 
-	public List<UserEventVO> getUserPlannedEvents(Long userID) {
+	public List<UserEventVO> getUserPlannedEvents(Long userID, Calendar inputDate) {
 		if(log.isDebugEnabled())
 			log.debug("UserCalendar.getUserPlannedEvents() start");
 		
-		Calendar startCalendar = Calendar.getInstance();
+		Calendar startCalendar = (Calendar)inputDate.clone();
 		
-		Calendar endCalendar = Calendar.getInstance();
+		Calendar endCalendar = (Calendar)inputDate.clone();
 		endCalendar.add(Calendar.DATE, 60);
 		
 		List<UserEvents> userEventsList = userEventsDAO.findEventsByUserId(userID);
 		List<UserEventVO> userEventVOList = new ArrayList<UserEventVO>();
 		for(UserEvents userEvent : userEventsList){
 			Date startDate= userEvent.getStartDate();
-			Calendar dbCalendar = Calendar.getInstance();
+			Calendar dbCalendar = (Calendar)inputDate.clone();
 			dbCalendar.setTime(startDate);
 			if(dbCalendar.before(startCalendar) || dbCalendar.after(endCalendar))
 				continue;
@@ -389,6 +390,8 @@ private UserEventVO saveUserPlannedEvents;
 					UserCalendarService.this.saveUserPlannedEvents.setExceptionEncountered(e);
 					UserCalendarService.this.saveUserPlannedEvents.setResultCode(ResultCodeMapper.FAILURE);
 					txStatus.setRollbackOnly();
+					e.printStackTrace();
+					System.out.println(e.getMessage());
 				}
 				return UserCalendarService.this.saveUserPlannedEvents;
 			}
@@ -407,6 +410,7 @@ private UserEventVO saveUserPlannedEvents;
 		userEvents.setDescription(userPlannedEvents.getDescription());
 		userEvents.setLocationType(userPlannedEvents.getLocationType());
 		userEvents.setLocationId(userPlannedEvents.getLocationId());
+		userEvents.setIsDeleted(userPlannedEvents.getIsDeleted());
 		//SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
 		try{
 			userEvents.setStartDate(userPlannedEvents.getStartDate());
@@ -558,6 +562,7 @@ private UserEventVO saveUserPlannedEvents;
 						userImpDate.setEffectiveDate(UserCalendarService.this.saveImportantDatesVO.getStartDate());
 						userImpDate.setTillDate(UserCalendarService.this.saveImportantDatesVO.getEndDate());
 						userImpDate.setRecFreqType(UserCalendarService.this.saveImportantDatesVO.getFrequency());
+						userImpDate.setIsDeleted(UserCalendarService.this.saveImportantDatesVO.getIsDeleted());
 						log.debug("EDate::::::::"+UserCalendarService.this.saveImportantDatesVO.getEndDate());
 						
 
@@ -576,7 +581,7 @@ private UserEventVO saveUserPlannedEvents;
 			
 		});
 		saveImportantDatesVO = null;
-		List<ImportantDatesVO> importantDatesVOs = convertUserImpDateModel2DTO(userImpDate);
+		List<ImportantDatesVO> importantDatesVOs = convertUserImpDateModel2DTO(userImpDate,Calendar.getInstance());
 		//importantDatesVO.setImportantDateId(userImpDate.getUserImpDateID());
 		return importantDatesVOs;
 	}
@@ -599,7 +604,7 @@ private UserEventVO saveUserPlannedEvents;
 			
 			if(partyImportantDates != null){
 			
-				importantDatesVOs =convertPartyImpDateModel2DTO(partyImportantDates);
+				importantDatesVOs =convertPartyImpDateModel2DTO(partyImportantDates,Calendar.getInstance());
 				if(importantDatesVOs.size()>1)
 					Collections.sort(importantDatesVOs);
 				//importantDatesVO = importantDatesVOs.get(0);
@@ -608,7 +613,7 @@ private UserEventVO saveUserPlannedEvents;
 			UserImpDate userImpDate = userImpDatesDAO.get(impDateID);
 			log.debug("UserCalenderService.getUserImpDate() userImpDates.size()"+userImpDate);
 			if(userImpDate != null){
-				importantDatesVOs = convertUserImpDateModel2DTO(userImpDate);
+				importantDatesVOs = convertUserImpDateModel2DTO(userImpDate,Calendar.getInstance());
 				log.debug("User Imp Dates Recurssive Type size::"+ importantDatesVOs.size());
 				if(importantDatesVOs.size()>1)
 					Collections.sort(importantDatesVOs);
@@ -618,4 +623,22 @@ private UserEventVO saveUserPlannedEvents;
 		
 		return importantDatesVOs;
 	}
+	
+	public CadreManagementVO getUserImpDateAndEvent(RegistrationVO user, Calendar calendar) {
+		log.debug("UserCalendarService.getUserImpDataAndEvent()::::started");
+		CadreManagementVO cadreManagementVO = new CadreManagementVO();
+
+		Long userID = user.getRegistrationID();
+		try{
+			List<UserEventVO> userPlannedEvents =getUserPlannedEvents(userID,calendar);
+			cadreManagementVO.setUserEvents(userPlannedEvents);
+			List<ImportantDatesVO> userImpDatesList = getUserImpDates(user,calendar);
+			cadreManagementVO.setUserImpDates(userImpDatesList);
+		}catch (Exception exceptionEncountered) {
+			cadreManagementVO.setExceptionEncountered(exceptionEncountered);
+			
+		}
+		return cadreManagementVO;
+	}
+
 }
