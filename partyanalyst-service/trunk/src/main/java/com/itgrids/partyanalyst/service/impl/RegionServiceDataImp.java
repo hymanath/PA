@@ -1,7 +1,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -9,13 +12,16 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionObjectsDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 
 public class RegionServiceDataImp implements IRegionServiceData {
@@ -27,7 +33,9 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IElectionObjectsDAO electionObjectsDAO;
-
+	private ITownshipDAO townshipDAO;
+	private IHamletDAO hamletDAO;
+	
 	public void setElectionObjectsDAO(IElectionObjectsDAO electionObjectsDAO) {
 		this.electionObjectsDAO = electionObjectsDAO;
 	}
@@ -58,6 +66,15 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	public void setBoothConstituencyElectionDAO(
 			IBoothConstituencyElectionDAO boothConstituencyElectionDAO) {
 		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
+	}
+
+	
+	public void setTownshipDAO(ITownshipDAO townshipDAO) {
+		this.townshipDAO = townshipDAO;
+	}
+
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
 	}
 
 	public List<SelectOptionVO> getDistrictsByStateID(Long stateID) {
@@ -218,6 +235,31 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		if(list!=null && list.size()==1)
 			year = new Long(list.get(0).toString());
 		return year;
+	}
+
+
+	public List<SelectOptionVO> getTownshipsHamletsWards(String type, Long id) {
+		List<SelectOptionVO> results = new ArrayList<SelectOptionVO>();
+		if("Township".equalsIgnoreCase(type)){
+			List<Township> townships = townshipDAO.findByTehsilID(id);
+			for(Township township : townships){
+				SelectOptionVO obj = new SelectOptionVO();
+				obj.setId(township.getTownshipId());
+				obj.setName(township.getTownshipName());
+				results.add(obj);
+			}
+		}else if("Hamlet".equalsIgnoreCase(type)){
+			List<Hamlet> hamlets = hamletDAO.findByTownshipId(id);
+			for(Hamlet hamlet : hamlets){
+				SelectOptionVO obj = new SelectOptionVO();
+				obj.setId(hamlet.getHamletId());
+				obj.setName(hamlet.getHamletName());
+				results.add(obj);
+			}
+		}else if("Ward".equalsIgnoreCase(type)){
+		// TODO task to be completed for the ward....
+		}
+		return results;
 	}
 	
 }
