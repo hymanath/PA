@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -34,9 +35,9 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 		Long userID = user.getRegistrationID();
 		Long partyID = user.getParty();
 		try{
-			List<UserEventVO> userPlannedEvents =userCalendarService.getUserPlannedEvents(userID);
+			List<UserEventVO> userPlannedEvents =userCalendarService.getUserPlannedEvents(userID,Calendar.getInstance());
 			cadreManagementVO.setUserEvents(userPlannedEvents);
-			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserImpDates(user);
+			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserImpDates(user,Calendar.getInstance());
 			cadreManagementVO.setUserImpDates(userImpDatesList);
 			Map<String,Long> cadresByCadreLevel = cadreManagementService.getCadreLevelCadresCount(userID);
 			cadreManagementVO.setCadresByCadreLevel(cadresByCadreLevel);
