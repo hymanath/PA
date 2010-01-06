@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.util;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -97,6 +96,49 @@ public class MockData {
 		
 	}
 	 
+	public static List getVoterCastDetails(){
+		List VoterCastInfo = new ArrayList();
+		Object[] set1 = new Object[3];
+		Object[] set2 = new Object[3];
+		Object[] set3 = new Object[3];
+		Object[] set4 = new Object[3];
+		Object[] set5 = new Object[3];
+		Object[] set6 = new Object[3];
+		
+		set1[0] = new Long(10);
+		set1[1] = "m";
+		set1[2] = "Balija";
+		
+		set2[0] = new Long(20);
+		set2[1] = "f";
+		set2[2] = "Balija";
+		
+		set3[0] = new Long(5);
+		set3[1] = "m";
+		set3[2] = "Chowdary";
+		
+		set4[0] = new Long(10);
+		set4[1] = "f";
+		set4[2] = "Chowdary";
+		
+		set5[0] = new Long(20);
+		set5[1] = "f";
+		set5[2] = "Reddy";
+		
+		set6[0] = new Long(20);
+		set6[1] = "m";
+		set6[2] = "Reddy";
+		
+		VoterCastInfo.add(set1);
+		VoterCastInfo.add(set2);
+		VoterCastInfo.add(set3);
+		VoterCastInfo.add(set4);
+		VoterCastInfo.add(set5);
+		VoterCastInfo.add(set6);
+	
+		return VoterCastInfo;
+	}
+	
 	public static List<Tehsil> getTehsils(){
 		List<Tehsil> tehsils = new ArrayList<Tehsil>();
 		Tehsil obj = new Tehsil();
