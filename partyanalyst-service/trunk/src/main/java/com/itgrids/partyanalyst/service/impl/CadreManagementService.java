@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -14,6 +15,7 @@ import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -30,8 +32,11 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.Township;
+import com.itgrids.partyanalyst.utils.IConstants;
 /**
  * 
  * @author Narender Akula
@@ -55,6 +60,7 @@ public class CadreManagementService {
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private SmsCountrySmsService smsCountrySmsService;
+	private IHamletDAO hamletDAO;
 	
 	private static final Logger log = Logger.getLogger(CadreManagementService.class);
 	
@@ -107,6 +113,11 @@ public class CadreManagementService {
 	}
 
 
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
+
+
 	public Long saveCader(CadreInfo cadreInfo){
 		if(log.isDebugEnabled()){
 			log.debug("cadrerManagementService.saveCadre():::-constituencyID::"+cadreInfo.getConstituencyID());
@@ -119,12 +130,24 @@ public class CadreManagementService {
 		cadre.setState(stateDAO.get(new Long(cadreInfo.getState())));
 		cadre.setDistrict(districtDAO.get(new Long(cadreInfo.getDistrict())));
 		cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
-		cadre.setVillage(townshipDAO.get(new Long(cadreInfo.getVillage())));
+
+		String villageFlag = cadreInfo.getVillage().substring(0, 1);
+		Long id = new Long(cadreInfo.getVillage().substring(1));
+		if(IConstants.HAMLET_TYPE.equalsIgnoreCase(villageFlag)){
+			Hamlet hamlet = hamletDAO.get(id);
+			cadre.setHamlet(hamlet);
+			cadre.setVillage(hamlet.getTownship());
+		}else{
+			cadre.setVillage(townshipDAO.get(id));
+		}
+		//cadre.setVillage(townshipDAO.get(new Long(cadreInfo.getVillage())));
 		CadreLevel level = new CadreLevel();
 		level.setCadreLevelID(cadreInfo.getCadreLevel());
 		String[] values = {"","COUNTRY","STATE","DISTRICT","CONSTITUENCY","MANDAL","VILLAGE"};
 		level.setLevel(values[cadreInfo.getCadreLevel().intValue()]);
 		cadre.setCadreLevel(level);
+		log.debug("CadreManagementService.saveCadre();;FirstName::"+cadreInfo.getFirstName());
+		log.debug("CadreManagementService.saveCadre();;cadreLevelValue::"+cadreInfo.getCadreLevelValue());
 		cadre.setCadreLevelValue(cadreInfo.getCadreLevelValue());
 		cadre.setMobile(cadreInfo.getMobile());
 		cadre.setEmail(cadreInfo.getEmail());
@@ -134,7 +157,6 @@ public class CadreManagementService {
 		return cadre.getCadreId();
 	}
 	
-
 	public void deleteCadre(Long cadreID){
 		cadreDAO.remove(cadreID);
 	}
@@ -535,8 +557,10 @@ public class CadreManagementService {
 
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> findVillagesByTehsilID(String mandalID){
-		List villages = cadreDAO.findVillagesByTehsilID(mandalID);
-		List<SelectOptionVO> villageNames = dataFormatTo_SelectOptionVO(villages);		
+		//List villages = cadreDAO.findVillagesByTehsilID(mandalID);
+		List<Township> townships = townshipDAO.findByTehsilID(new Long(mandalID));
+		List<SelectOptionVO> villageNames = getTownshipHamlets(townships);
+		//List<SelectOptionVO> villageNames = dataFormatTo_SelectOptionVO(villages);		
 		return villageNames;
 	}
 	
@@ -603,25 +627,42 @@ public class CadreManagementService {
 		cadreInfo.setCadreLevel(cadre.getCadreLevel().getCadreLevelID());
 		cadreInfo.setStrCadreLevel(level);
 		String levelValue = "";
-		Long levelValueID = cadre.getCadreLevelValue();
+		String levelValueID = cadre.getCadreLevelValue().toString();
 		if("COUNTRY".equals(level)){
-			levelValue = getCountryName(levelValueID);
+			levelValue = getCountryName(new Long(levelValueID));
 		}else if("STATE".equals(level)){
-			levelValue = getStateName(levelValueID);
+			levelValue = getStateName(new Long(levelValueID));
 		}else if("DISTRICT".equals(level)){
-			levelValue = getDistrictName(levelValueID);
+			levelValue = getDistrictName(new Long(levelValueID));
 		}else if("CONSTITUENCY".equals(level)){
-			levelValue = getConstituencyName(levelValueID);
+			levelValue = getConstituencyName(new Long(levelValueID));
 		}else if("MANDAL".equals(level)){
-			levelValue = getMandalName(levelValueID);
+			levelValue = getMandalName(new Long(levelValueID));
+		}else if("VILLAGE".equals(level)){
+			log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+levelValueID);
+			String type = levelValueID.substring(0, 1);
+			Long id = new Long(levelValueID.substring(1));
+			if(IConstants.HAMLET_TYPE.equals(type)){
+				levelValue = getHamletName(id);
+			}else if(IConstants.TOWNSHIP_TYPE.equals(type)){
+				levelValue = getTownshipName(id);
+			}
+			log.debug("CadreManagementService.convertCadreToCadreInfo::: levelValueID="+levelValueID);
 		}
-		cadreInfo.setCadreLevelValue(levelValueID);
+		cadreInfo.setCadreLevelValue(cadre.getCadreLevelValue());
 		cadreInfo.setStrCadreLevelValue(levelValue);
 		
 		return cadreInfo;
 	}
-	
 
+	private String getHamletName(Long hamletId){
+		Hamlet hamlet = hamletDAO.get(hamletId);
+		return hamlet.getHamletName();
+	}
+	private String getTownshipName(Long townshipId){
+		Township township = townshipDAO.get(townshipId);
+		return township.getTownshipName();
+	}
 	public List<SelectOptionVO> getStateDistConstituencyMandalByMandalID(Long mandalID){
 
 		List stateDistConstMandal = delimitationConstituencyMandalDAO.getStateDistConstituencyMandalByMandalID(mandalID);
@@ -762,5 +803,27 @@ public class CadreManagementService {
 			formattedData.add(selectOptionVO);
 		}
 		return formattedData;
+	}
+	
+	private List<SelectOptionVO> getTownshipHamlets(List<Township> townships){
+		log.debug("CadreManagementService.getTownshipHamlets() townships.size()="+townships.size());
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		for(Township township : townships){
+			if("V".equalsIgnoreCase(township.getTownshipType())){
+				Set<Hamlet> hamlets = township.getHamlets();
+				for(Hamlet hamlet : hamlets){
+					SelectOptionVO obj = new SelectOptionVO();
+					obj.setId(new Long(IConstants.HAMLET_TYPE+hamlet.getHamletId()));
+					obj.setName(hamlet.getHamletName());
+					result.add(obj);
+				}
+			}else{
+				SelectOptionVO obj = new SelectOptionVO();
+				obj.setId(new Long(IConstants.TOWNSHIP_TYPE+township.getTownshipId()));
+				obj.setName(township.getTownshipName());
+				result.add(obj);
+			}
+		}
+		return result;
 	}
 }
