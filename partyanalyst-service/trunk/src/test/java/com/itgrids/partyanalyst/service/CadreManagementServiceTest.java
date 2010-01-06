@@ -679,7 +679,7 @@ public class CadreManagementServiceTest {
 		Assert.assertEquals(3, result.size());
 	}
 	//	public List<SelectOptionVO> findVillagesByTehsilID(String mandalID){
-	@Test
+/*	@Test
 	public void testFindVillagesByTehsilID(){
 		CadreManagementService service = new CadreManagementService();
 		List dummyData = new ArrayList();
@@ -694,7 +694,7 @@ public class CadreManagementServiceTest {
 		Assert.assertTrue(result.get(0) instanceof SelectOptionVO);
 		Assert.assertEquals(new Long(1L), result.get(0).getId());
 		Assert.assertEquals(3, result.size());
-	}
+	}*/
 	
 	@Test
 	public void testGetStateDistConstituencyMandalByMandalID(){
