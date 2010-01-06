@@ -134,6 +134,7 @@
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
     	<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+    	<property name="hamletDAO" ref="hamletDAO" />
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >		
@@ -187,6 +188,8 @@
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO"/>
 		<property name="electionObjectsDAO" ref="electionObjectsDAO"/>
+		<property name="hamletDAO" ref="hamletDAO"/>
+		<property name="townshipDAO" ref="townshipDAO"/>
 	</bean>
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
