@@ -564,6 +564,17 @@ public class CadreManagementService {
 		return villageNames;
 	}
 	
+	public List<SelectOptionVO> findTownShipsByTehsilID(String mandalID){
+		List<SelectOptionVO> townshipVOs = new ArrayList<SelectOptionVO>();
+		SelectOptionVO townshipVO = null;
+		List<Township> townships = townshipDAO.findByTehsilID(new Long(mandalID));
+		for(Township township:townships){
+			townshipVO = new SelectOptionVO(township.getTownshipId(), township.getTownshipName());
+			townshipVOs.add(townshipVO);
+		}
+		return townshipVOs;
+	}
+	
 	public String getConstituencyName(Long constituencyID){
 		Constituency constituency = constituencyDAO.get(constituencyID);
 		String name = "";
