@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -19,6 +21,8 @@ import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
@@ -32,8 +36,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private static final Logger log = Logger.getLogger(ConstituencyManagementAction.class);
 	private CadreManagementService cadreManagementService;
 	private CrossVotingEstimationService crossVotingEstimationService;
-	
-	
 	private ConstituencyManagementVO constituencyManagementVO;
 	private List<ProblemDetailsVO> problemDetailsList;
 	private HttpServletRequest request;
@@ -42,8 +44,8 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> constituencyList;
 	private List<SelectOptionVO> mandalList;
 	private List<SelectOptionVO> villageList;
+	private List<SelectOptionVO> hamletList;
 	private IRegionServiceData regionServiceData;
-	
 
 	public ConstituencyManagementVO getConstituencyManagementVO() {
 		return constituencyManagementVO;
@@ -66,7 +68,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	
 	
 
-public List<SelectOptionVO> getStateList() {
+	public List<SelectOptionVO> getStateList() {
 		return stateList;
 	}
 
@@ -74,7 +76,7 @@ public List<SelectOptionVO> getStateList() {
 		this.stateList = stateList;
 	}
 
-public List<ProblemDetailsVO> getProblemDetailsList() {
+	public List<ProblemDetailsVO> getProblemDetailsList() {
 		return problemDetailsList;
 	}
 
@@ -90,7 +92,7 @@ public List<ProblemDetailsVO> getProblemDetailsList() {
 		
 	
 	
-public CadreManagementService getCadreManagementService() {
+	public CadreManagementService getCadreManagementService() {
 		return cadreManagementService;
 	}
 
@@ -139,6 +141,16 @@ public CadreManagementService getCadreManagementService() {
 	public void setVillageList(List<SelectOptionVO> villageList) {
 		this.villageList = villageList;
 	}
+		
+	
+	
+	public List<SelectOptionVO> getHamletList() {
+		return hamletList;
+	}
+
+	public void setHamletList(List<SelectOptionVO> hamletList) {
+		this.hamletList = hamletList;
+	}
 
 	public IRegionServiceData getRegionServiceData() {
 		return regionServiceData;
@@ -151,8 +163,9 @@ public CadreManagementService getCadreManagementService() {
 	public HttpServletRequest getRequest() {
 		return request;
 	}
-
-public String execute() throws Exception{
+	
+	
+	public String execute() throws Exception{
 		
 		log.debug("In execute of Constituency Management Action ********");
 		
@@ -257,7 +270,7 @@ public String execute() throws Exception{
 			}	
 			log.debug("constituencyList.size():"+constituencyList.size());		
 		}
-		
+	
 		return SUCCESS;
 	}
 }
