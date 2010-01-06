@@ -208,7 +208,9 @@
 		</action>
 		 
         <action name="cadreRegisterAjaxAction" class="cadreRegisterAjaxAction">
-           <result type="json" name="success"/>
+           <result type="json" name="success">
+           		<param name="root">namesList</param>
+        	</result>
         </action>
         
         <action name="cadreRegisterAction" class="cadreRegisterAction">
@@ -339,6 +341,11 @@
 			<result name="error">/jsp/loginForm.jsp?src=constituencyManagementAction</result>		
 		</action>
 
+		<action name="voterInfoAction" class="voterInfoAction" method="getVotersByHamlet">
+			<result type="json" name="success">
+				<param name="root">constituencyManagementVO</param>				
+			</result> 
+		</action>
 		
 		<action name="problemManagementAction" class="problemManagementAction">
 			<result name="success">/jsp/addNewProblem.jsp</result>		
@@ -358,11 +365,11 @@
 		 	<result type="json" name="impDate">
 				<param name="root">importantDatesVOs</param>				
 			</result>		
-		</action>	
+		</action>
 		<action name="getNextMonthDatesEvents" class="createEventAction" method="getNextMonthDatesEvents">
 			<result type="json" name="success">
 				<param name="root">cadreManagementVO</param>				
 			</result>			
-		</action>
+		</action>	
 	</package>
 </struts>
