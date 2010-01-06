@@ -12,7 +12,7 @@ import com.itgrids.partyanalyst.util.MockData;
 
 public class ConstituencyManagementServiceTest {
 	
-	private IConstituencyManagementService constituencyManagementService;
+	private ConstituencyManagementService constituencyManagementService;
 	
 	@Before
 	public void init(){
