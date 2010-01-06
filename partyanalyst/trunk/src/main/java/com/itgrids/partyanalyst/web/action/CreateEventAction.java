@@ -232,7 +232,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		
 		userCalendarService.userSubscribePartyImpDates(user.getRegistrationID(),subscribeStatus);
 		user.setSubscribePartyImpDate(subscribeStatus);
-		List<ImportantDatesVO> userImpDates = userCalendarService.getUserImpDates(user);
+		List<ImportantDatesVO> userImpDates = userCalendarService.getUserImpDates(user, Calendar.getInstance());
 		userSubscribeImpDates.setSubscribeTitle(subscribe);
 		userSubscribeImpDates.setUserImpDates(userImpDates);
 		session.setAttribute("USER", user);
