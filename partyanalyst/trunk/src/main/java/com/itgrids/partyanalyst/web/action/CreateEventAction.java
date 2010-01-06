@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import com.itgrids.partyanalyst.dto.CadreManagementVO;
 import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
@@ -45,8 +46,9 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	private HttpServletRequest request;
 	//private String subscribe;
 	private UserSubscribeImpDatesVO userSubscribeImpDates = new UserSubscribeImpDatesVO();
+	private CadreManagementVO cadreManagementVO;
 
-	private final static Logger log = Logger.getLogger(CreateEventAction.class);
+	private final static Logger log = Logger.getLogger(CreateEventAction.class);	
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -72,6 +74,14 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 
 	public void setEvent(UserEventVO event) {
 		this.event = event;
+	}
+	
+	public CadreManagementVO getCadreManagementVO() {
+		return cadreManagementVO;
+	}
+
+	public void setCadreManagementVO(CadreManagementVO cadreManagementVO) {
+		this.cadreManagementVO = cadreManagementVO;
 	}
 	
 	
@@ -152,6 +162,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			event.setDescription(jObj.getString("desc"));
 			event.setLocationId(854L);
 			event.setLocationType("MANDAL");
+			event.setIsDeleted("NO");
 			//String organisers = jObj.getString("organisers");
 			
 			System.out.println("Start date ============ "+startDate);
@@ -199,7 +210,8 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			eDate.append(endDate).append(IConstants.SPACE).append("00").append(":").append("00").append(":00");
 			
 			importantDatesVO.setStartDate(sdf.parse(sDate.toString()));
-			importantDatesVO.setEndDate(sdf.parse(eDate.toString()));				
+			importantDatesVO.setEndDate(sdf.parse(eDate.toString()));
+			importantDatesVO.setIsDeleted("NO");
 		
 			importantDatesVOs = userCalendarService.saveUserImpDate(importantDatesVO);
 			//System.out.println("Important dates = "+importantDatesVO);
@@ -232,7 +244,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		
 		userCalendarService.userSubscribePartyImpDates(user.getRegistrationID(),subscribeStatus);
 		user.setSubscribePartyImpDate(subscribeStatus);
-		List<ImportantDatesVO> userImpDates = userCalendarService.getUserImpDates(user, Calendar.getInstance());
+		List<ImportantDatesVO> userImpDates = userCalendarService.getUserImpDates(user,Calendar.getInstance());
 		userSubscribeImpDates.setSubscribeTitle(subscribe);
 		userSubscribeImpDates.setUserImpDates(userImpDates);
 		session.setAttribute("USER", user);
@@ -267,5 +279,35 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		}
 			
 		return result;
+	}
+	
+	public String getNextMonthDatesEvents() throws Exception
+	{
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int month = Integer.parseInt(jObj.getString("monthVal"));
+		int year = Integer.parseInt(jObj.getString("yearval"));
+		
+		System.out.println("@@@@@@@@@@@IN getNextMonth method ="+month+" - "+year);
+		
+		Calendar calendar =Calendar.getInstance();
+		calendar.set(Calendar.DATE, 1);
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.YEAR, year);
+		
+		cadreManagementVO = userCalendarService.getUserImpDateAndEvent(user, calendar);
+		
+		return SUCCESS;
 	}
 }
