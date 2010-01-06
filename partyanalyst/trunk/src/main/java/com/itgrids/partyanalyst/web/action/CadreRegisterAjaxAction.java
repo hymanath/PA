@@ -11,6 +11,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.opensymphony.xwork2.Action;
@@ -28,8 +29,18 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 	
 	
 	private CadreManagementService cadreManagementService;
-	private RegionServiceDataImp regionServiceDataImp; 
+	private RegionServiceDataImp regionServiceDataImp;
+	private IConstituencyManagementService constituencyManagementService;
 	
+	public IConstituencyManagementService getConstituencyManagementService() {
+		return constituencyManagementService;
+	}
+
+	public void setConstituencyManagementService(
+			IConstituencyManagementService constituencyManagementService) {
+		this.constituencyManagementService = constituencyManagementService;
+	}
+
 	public void setCadreManagementService(
 			CadreManagementService cadreManagementService) {
 		this.cadreManagementService = cadreManagementService;
@@ -122,9 +133,20 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			System.out.println("In report level Mandal");
 			String selectedVal=jObj.getString("selected");
 			
-			List<SelectOptionVO> villageNames=cadreManagementService.findVillagesByTehsilID(selectedVal);	
-			
+			List<SelectOptionVO> villageNames=cadreManagementService.findVillagesByTehsilID(selectedVal);
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select Village");
+			villageNames.add(0, obj);
 			setNamesList(villageNames);	
+		}
+		else if(jObj.getString("reportLevel").equalsIgnoreCase("village") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
+		{
+			System.out.println("In report level Mandal");
+			String selectedVal=jObj.getString("selected");
+			
+			List<SelectOptionVO> hamletNames = constituencyManagementService.getHamletsForTownship(new Long(selectedVal));	
+			SelectOptionVO obj = new SelectOptionVO(0L,"Select Hamlet");
+			hamletNames.add(0, obj);
+			setNamesList(hamletNames);	
 		}
 		else if(jObj.getString("reportLevel").equalsIgnoreCase("Constituencies") && jObj.getString("type").equalsIgnoreCase("cadreDetails"))
 		{
