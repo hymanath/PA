@@ -13,11 +13,14 @@ public interface IBoothConstituencyElectionVoterDAO extends GenericDao<BoothCons
 
 	public List<BoothConstituencyElectionVoter> findByBoothConstituencyElectionAndVoter(Long boothConstituencyElectionId, Long voterId);
 	
-	public List findCastFromVoterByConstituencyAndElection(Long constituencyID, String electionYear);
+	public List<Voter> findVotersByHamletAndElectionYear(Long hamletId, String year);
 	
-	public List findVotersByConstituencyAndElectionForGender(Long constituencyID, String electionYear);
+	public List findVotersCastInfoByHamletAndElectionYear(Long hamletId, String year);
 	
-	public List<Voter> findVotersByHamletAndElectiuonYear(Long hamletId, String year);
+	public List<Voter> findVotersGroupByHouseNoForHamlet(Long hamletId, String year);
 
+	public List<String> findVoterHouseNosInHamlet(Long hamletId, String year);
+
+	public List<Voter> findVotersByHouseNoAndHamlet(String houseNo, Long hamletId,	String year);
 
 }
