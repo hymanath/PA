@@ -133,7 +133,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			System.out.println("In report level Mandal");
 			String selectedVal=jObj.getString("selected");
 			
-			List<SelectOptionVO> villageNames=cadreManagementService.findVillagesByTehsilID(selectedVal);
+			List<SelectOptionVO> villageNames=cadreManagementService.findTownShipsByTehsilID(selectedVal);
 			SelectOptionVO obj = new SelectOptionVO(0L,"Select Village");
 			villageNames.add(0, obj);
 			setNamesList(villageNames);	
