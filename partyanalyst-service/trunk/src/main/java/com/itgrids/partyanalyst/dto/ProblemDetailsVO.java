@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.Date;
+
 public class ProblemDetailsVO {
 
 	private Long problemID;
 	private String definition;
 	private String description;
-	private String identifiedDate;
+	private Date identifiedDate;
 	private String location;	
 	private String source;
 	
@@ -27,10 +29,10 @@ public class ProblemDetailsVO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getIdentifiedDate() {
+	public Date getIdentifiedDate() {
 		return identifiedDate;
 	}
-	public void setIdentifiedDate(String identifiedDate) {
+	public void setIdentifiedDate(Date identifiedDate) {
 		this.identifiedDate = identifiedDate;
 	}
 	
