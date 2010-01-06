@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CrossVotingEstimationService implements ICrossVotingEstimationService{
 
@@ -114,6 +115,8 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		List<Party> list = candidateBoothResultDAO.findPartiesByConstituencyAndElectionYear(constituencyId, electionYear);
 		List<SelectOptionVO> partyVOs = new ArrayList<SelectOptionVO>();
 		for(Party party:list){
+			if(party.getShortName().equals(IConstants.INDIPENDENT))
+				continue;
 			SelectOptionVO delimitationConstituencyVO = new SelectOptionVO(party.getPartyId(), party.getShortName().toUpperCase());
 			partyVOs.add(delimitationConstituencyVO);
 		}
@@ -205,8 +208,8 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		String pcPercetageInConstituency = calculateVotesPercengate(pcValidVotesInConstituency, pcVotesEarnedInConstituency);
 		Double percentageDifferenceInConstituency = new Double(acPercetageInConstituency) - new Double(pcPercetageInConstituency);
 		Double  impactOfAssemblyOnParliament = (totalPolledVotesInAC*percentageDifferenceInConstituency)/crossVotingConsolidateVO.getTotalPCPolledVotesInConstituency();
-		crossVotingConsolidateVO.setDifferenceInACAndPC(new BigDecimal(percentageDifferenceInConstituency).setScale (2,BigDecimal.ROUND_HALF_UP).toString());
-		crossVotingConsolidateVO.setImpactOfAssemblyOnParliament(new BigDecimal(impactOfAssemblyOnParliament).setScale (2,BigDecimal.ROUND_HALF_UP).toString());
+		crossVotingConsolidateVO.setDifferenceInACAndPC(new BigDecimal(percentageDifferenceInConstituency).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+		crossVotingConsolidateVO.setImpactOfAssemblyOnParliament(new BigDecimal(impactOfAssemblyOnParliament).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
 		pcCandidate.setVotesPercentage(pcPercetageInConstituency);
 		acCandidate.setVotesPercentage(acPercetageInConstituency);
 		calculateCrossVotingPercentageImpactByMandals(totalPolledVotesInAC, crossVotedMandalVOs);
@@ -218,7 +221,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			Long polledVotesInMandal = crossMandalVO.getPolledVotes();
 			Double crossVotingPercentageInMandal = new Double(crossMandalVO.getPercentageDifferenceInMandal());
 			Double percentageImpactOnConstituency = (polledVotesInMandal.longValue()*crossVotingPercentageInMandal)/polledVotesInConstituency;
-			BigDecimal percentageImpactOnConstituencyRound = new BigDecimal(percentageImpactOnConstituency).setScale (2,BigDecimal.ROUND_HALF_UP);
+			BigDecimal percentageImpactOnConstituencyRound = new BigDecimal(percentageImpactOnConstituency).setScale(2,BigDecimal.ROUND_HALF_UP);
 			crossMandalVO.setPercentageImpactOnConstituency(percentageImpactOnConstituencyRound.toString());
 		}
 	}
@@ -255,7 +258,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			crossVotedBoothVO.setPcValidVotes(pcValidVotes);
 			crossVotedBoothVO.setPcPercentage(pcPercentage);
 			Double percentageDifference = Double.parseDouble(acPercentage)-Double.parseDouble(pcPercentage);
-			BigDecimal percentageDifferenceRound = new BigDecimal(percentageDifference).setScale (2,BigDecimal.ROUND_HALF_UP);			
+			BigDecimal percentageDifferenceRound = new BigDecimal(percentageDifference).setScale(2,BigDecimal.ROUND_HALF_UP);			
 			crossVotedBoothVO.setPercentageDifference(percentageDifferenceRound.toString());
 			totalVotersInMandal = totalVotersInMandal + totalVoters;		
 			acValidVotesInMandal = acValidVotesInMandal + acValidVotes;
@@ -270,7 +273,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		String acPercentageInMandal = calculateVotesPercengate(acValidVotesInMandal, acEarnedVotesInMandal);
 		String pcPercentageInMandal = calculateVotesPercengate(pcValidVotesInMandal, pcEarnedVotesInMandal);
 		Double percentageDifferenceInMandal = Double.parseDouble(acPercentageInMandal)-Double.parseDouble(pcPercentageInMandal);
-		BigDecimal percentageDifferenceInMandalRound = new BigDecimal(percentageDifferenceInMandal).setScale (2,BigDecimal.ROUND_HALF_UP);
+		BigDecimal percentageDifferenceInMandalRound = new BigDecimal(percentageDifferenceInMandal).setScale(2,BigDecimal.ROUND_HALF_UP);
 		crossVotedMandalVO.setEarnedVotesDiffernce(acEarnedVotesInMandal - pcEarnedVotesInMandal);
 		crossVotedMandalVO.setAcEarnedVotesInMandal(acEarnedVotesInMandal);
 		crossVotedMandalVO.setAcValidVotesInMandal(acValidVotesInMandal);
@@ -287,7 +290,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	public String calculateVotesPercengate(Long validVotes, Long votesEarned){
 		BigDecimal percentage = new BigDecimal(0.0);
 		if((validVotes!=null && validVotes.longValue()>0) && (votesEarned!=null && votesEarned.longValue()>0)){
-			percentage= new BigDecimal((votesEarned.floatValue()/validVotes.floatValue())*100).setScale (2,BigDecimal.ROUND_HALF_UP);
+			percentage= new BigDecimal((votesEarned.floatValue()/validVotes.floatValue())*100).setScale(2,BigDecimal.ROUND_HALF_UP);
 		}
 		return percentage.toString();
 	}	
