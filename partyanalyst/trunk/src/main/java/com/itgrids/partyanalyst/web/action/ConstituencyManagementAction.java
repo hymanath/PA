@@ -66,8 +66,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 	}
 	
-	
-
 	public List<SelectOptionVO> getStateList() {
 		return stateList;
 	}
@@ -83,15 +81,11 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	public void setProblemDetailsList(List<ProblemDetailsVO> problemDetailsList) {
 		this.problemDetailsList = problemDetailsList;
 	}
-
-	
-	
+		
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
 	}
 		
-	
-	
 	public CadreManagementService getCadreManagementService() {
 		return cadreManagementService;
 	}
@@ -142,8 +136,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		this.villageList = villageList;
 	}
 		
-	
-	
 	public List<SelectOptionVO> getHamletList() {
 		return hamletList;
 	}
@@ -163,8 +155,8 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	public HttpServletRequest getRequest() {
 		return request;
 	}
-	
-	
+		
+	@SuppressWarnings("deprecation")
 	public String execute() throws Exception{
 		
 		log.debug("In execute of Constituency Management Action ********");
@@ -176,14 +168,14 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO(); 
 		problemDetailsVO.setDefinition("Impurity water");
 		problemDetailsVO.setDescription("Polluted water is beign supplied");
-		problemDetailsVO.setIdentifiedDate("03/04/2009");
+		problemDetailsVO.setIdentifiedDate(new java.util.Date("03/04/2009"));
 		problemDetailsVO.setLocation("Madanapalle");
 		problemDetailsVO.setSource("Party Analyst");
 		
 		ProblemDetailsVO problemDetailsVO1 = new ProblemDetailsVO();
 		problemDetailsVO1.setDefinition("No Bus Service");
 		problemDetailsVO1.setDescription("Bus service cancelled to village");
-		problemDetailsVO1.setIdentifiedDate("01/03/2009");
+		problemDetailsVO1.setIdentifiedDate(new java.util.Date("01/03/2009"));
 		problemDetailsVO1.setLocation("Nagavaram");
 		problemDetailsVO1.setSource("VIctim");
 		
