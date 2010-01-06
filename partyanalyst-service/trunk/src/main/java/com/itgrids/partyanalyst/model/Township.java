@@ -67,7 +67,7 @@ public class Township implements java.io.Serializable {
 		this.townshipCode = townshipCode;
 		this.townshipType = townshipType;
 		this.wards = wards;
-		//this.problemLocations = problemLocations;
+		this.problemLocations = problemLocations;
 	}
 
 	// Property accessors
