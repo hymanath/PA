@@ -33,20 +33,19 @@ public class BoothDataExcelReader {
 
 	public void readExcelFile(File filePath) throws CsvException{
 		try{
-			//File exceFile = new File(filePath);
 			Workbook workbook=Workbook.getWorkbook(filePath);	
 			Sheet[] sheets = workbook.getSheets();
 			boothDataUploadVOs = new ArrayList<BoothDataUploadVO>();
 			for(Sheet sheet:sheets){
 				BoothDataUploadVO boothDataUploadVO = new BoothDataUploadVO();
-				String sheetName  = sheet.getName();
+				String sheetName  = sheet.getCell(0,0).getContents().trim();
 				String [] constituencyAndDistrinct = StringUtils.split(sheetName,"_");
 				String constituencyName = constituencyAndDistrinct[0];
 				String districtId = constituencyAndDistrinct[1];
 				boothDataUploadVO.setConstituencyName(constituencyName);
 				boothDataUploadVO.setDistrictId(new Long(districtId.trim()));
 				List<BoothDataExcelColumnMapper> boothDataExcelRows = new ArrayList<BoothDataExcelColumnMapper>();
-				for (int row = 1; row < sheet.getRows(); row++) {
+				for (int row = 2; row < sheet.getRows(); row++) {
 					BoothDataExcelColumnMapper boothDataExcelColumnMapper = new BoothDataExcelColumnMapper(sheet,row,sheet.getColumns());
 					if(StringUtils.isEmpty(boothDataExcelColumnMapper.getColumn1()))
 						break;
@@ -56,6 +55,7 @@ public class BoothDataExcelReader {
 				boothDataUploadVO.setBooths(identifyRowAndBindObject(boothDataExcelRows));
 				boothDataUploadVOs.add(boothDataUploadVO);
 			}
+			testExcelReading();
 		} catch(IOException ioe){
 			throw new CsvException(ioe.getMessage());
 		}catch(BiffException ioe){
@@ -129,7 +129,7 @@ public class BoothDataExcelReader {
 			System.out.println("Constituency Name:"+boothDataUploadVO.getConstituencyName());
 			System.out.println("District Id:"+boothDataUploadVO.getDistrictId());
 			System.out.println("Total Booths : "+ boothDataUploadVO.getBooths().size());
-			int i = 0;
+			/*int i = 0;
 			for(BoothInfo booth:boothDataUploadVO.getBooths()){
 				System.out.print(booth.getMandalName()+" ");
 				System.out.print(booth.getPartNo()+" ");
@@ -143,7 +143,7 @@ public class BoothDataExcelReader {
 				i++;
 				if(i==9)
 					break;
-			}
+			}*/
 		}
 	}
 	
@@ -160,7 +160,7 @@ public class BoothDataExcelReader {
 	
 	public static void main(String[] args)throws Exception {
 		BoothDataExcelReader reader = new BoothDataExcelReader();
-		File exceFile = new File("C:/Documents and Settings/USER/Desktop/Booth Data Upload/Nellore_boothdata_2009.xls");
+		File exceFile = new File("C:/Documents and Settings/ITGrids/Desktop/Siva Files/Booth Data Upload1/Nelloreboothdata2004_New.xls");
 		reader.readExcelFile(exceFile);
 		reader.testExcelReading();
 	}
