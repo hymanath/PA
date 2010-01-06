@@ -71,7 +71,7 @@ public class ExcelBoothResultReader {
 			for(Sheet sheet:sheets){
 				System.out.println("######### Sheet Start ##########");
 				ConstituencyBoothBlock assemblyConstituencyBlock = new ConstituencyBoothBlock();
-				String name = sheet.getName().trim();
+				String name = sheet.getCell(0,0).getContents().trim();
 				System.out.println("Sheet Name::"+name);
 				String[] constiNameAndDistrictId = StringUtils.split(name.trim(), "_");
 				System.out.println("Size:"+constiNameAndDistrictId.length);
@@ -90,6 +90,7 @@ public class ExcelBoothResultReader {
 					assemblyConstituencyBlock.setConstituencyName(constituencyName);
 					assemblyConstituencyBlock.setDistrictId(districtId);
 				}
+				
 				if(isParliament == false){
 					System.out.println("In False");
 					String constituencyName = constiNameAndDistrictId[0];
@@ -107,14 +108,14 @@ public class ExcelBoothResultReader {
 				assemblyConstituencyBlock.setCandidateResults(candidates);
 				constituenciesBlocks.add(assemblyConstituencyBlock);
 			}
-			System.out.println("Total Sheets"+sheets.length);
-			System.out.println("Total Constituencies:"+constituenciesBlocks.size());
+			//Test for the data reading
+			testConstituencyBlock();
 		}catch(IOException ioe){
-			System.out.println("ioe =="+ioe.getMessage());
+			System.out.println("ioe1 =="+ioe.getMessage());
 		}catch(BiffException ioe){
-			System.out.println("ioe =="+ioe.getMessage());
+			System.out.println("ioe2 =="+ioe.getMessage());
 		}catch(Exception excep){
-			System.out.println("ioe =="+excep.getMessage());
+			System.out.println("ioe3 =="+excep.getMessage());
 		}
 	}
 
@@ -176,14 +177,14 @@ public class ExcelBoothResultReader {
 
 	public static void main(String[] args) throws Exception {
 		ExcelBoothResultReader excelBoothResultReader = new ExcelBoothResultReader();
-		File exceFile= new File("C:/Documents and Settings/USER/Desktop/New Folder/forTest/2004_assembly_test.xls");
+		File exceFile= new File("C:/Documents and Settings/ITGrids/Desktop/Siva Files/Booth Data Upload1/2009_assembly_booth_results_fro_nellore_district.xls");
 		excelBoothResultReader.readExcel(exceFile, false);
 		excelBoothResultReader.testConstituencyBlock();
 	}
 
 	private void fillHeaderInfo(Sheet sheet,int noOfColumns,String headerInformation[]){
 		for(int columnPos=0; columnPos<noOfColumns; columnPos++){
-			String cellData=checkCellData(sheet.getCell(columnPos,0).getContents());
+			String cellData=checkCellData(sheet.getCell(columnPos,1).getContents());
 			headerInformation[columnPos]=cellData;
 		}
 	}
@@ -211,7 +212,7 @@ public class ExcelBoothResultReader {
 
 	public List<BoothResultExcelColumnMapper> getExcelRecords(Sheet sheet,int rows, int columns){
 		List<BoothResultExcelColumnMapper> totalRecords = new ArrayList<BoothResultExcelColumnMapper>();
-		for(int i=1; i< rows; i++){
+		for(int i=2; i< rows; i++){
 			BoothResultExcelColumnMapper record = new BoothResultExcelColumnMapper(sheet, i, columns);
 			if(StringUtils.isEmpty(record.getColumn1()))
 				break;
@@ -222,13 +223,14 @@ public class ExcelBoothResultReader {
 
 	public void testConstituencyBlock(){
 		List<ConstituencyBoothBlock> list = getConstituenciesBlocsks();
+		System.out.println("Total Constituencies Read From EXCEL::"+list.size());
 		for(ConstituencyBoothBlock assemblyConstituencyBlock:list){
 			System.out.println("###########################################################################################");
 			System.out.println("Parliament Name::"+assemblyConstituencyBlock.getParliamentConstituencyName());
 			System.out.println("State Id::"+assemblyConstituencyBlock.getStateId());
 			System.out.println("@@@@@constituency Name : "+ assemblyConstituencyBlock.getConstituencyName());
-			System.out.println("District Id"+assemblyConstituencyBlock.getDistrictId());
-			List<CandidateBoothWiseResult> canList = assemblyConstituencyBlock.getCandidateResults();
+			System.out.println("District Id"+assemblyConstituencyBlock.getDistrictId()+" Total Booths:"+assemblyConstituencyBlock.getBoothResults().size());
+			/*List<CandidateBoothWiseResult> canList = assemblyConstituencyBlock.getCandidateResults();
 			for(CandidateBoothWiseResult candidateBoothWiseResult:canList){
 				System.out.println("######Candidate Name::"+candidateBoothWiseResult.getCandidateName());
 				List<BoothResultExcelVO> brList = candidateBoothWiseResult.getBoothresults();
@@ -244,7 +246,7 @@ public class ExcelBoothResultReader {
 				System.out.println("Rejected Votes:"+boothResultValueObject.getRejectedVotes());
 				System.out.println("Tendered Votes:"+boothResultValueObject.getTenderedVotes());
 				System.out.println("Total votes:"+boothResultValueObject.getTotalVotes());
-			}
+			}*/
 			System.out.println("###########################################################################################");
 		}
 	}
