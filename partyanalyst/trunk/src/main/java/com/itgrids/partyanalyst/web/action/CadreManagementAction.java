@@ -54,7 +54,7 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 			return ERROR;
 	
 		cadreManagementVO = userCadreManagementService.getUserData(user);
-		log.debug("cadreManagementVO.getUserImpDates().size():"+cadreManagementVO.getUserImpDates().size());
+		//log.debug("cadreManagementVO.getUserImpDates().size():"+cadreManagementVO.getUserImpDates().size());
 		return Action.SUCCESS;
 	}
 }

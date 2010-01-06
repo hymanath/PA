@@ -139,7 +139,8 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		else if((jObj.getString("reportLevel").equalsIgnoreCase("State") || 
 					jObj.getString("reportLevel").equalsIgnoreCase("District") || 
 					jObj.getString("reportLevel").equalsIgnoreCase("Constituency") || 
-					jObj.getString("reportLevel").equalsIgnoreCase("Mandal")) && jObj.getString("type").equalsIgnoreCase("cadreLevel"))
+					jObj.getString("reportLevel").equalsIgnoreCase("Mandal") || 
+					jObj.getString("reportLevel").equalsIgnoreCase("Village")) && jObj.getString("type").equalsIgnoreCase("cadreLevel"))
 		{
 			String value=jObj.getString("reportLevel");
 			String id=jObj.getString("type");
