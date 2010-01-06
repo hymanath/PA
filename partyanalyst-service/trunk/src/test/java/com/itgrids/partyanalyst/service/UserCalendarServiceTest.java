@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.easymock.EasyMock;
@@ -124,7 +125,7 @@ public class UserCalendarServiceTest {
 		EasyMock.replay(userEventsDAO);
 		service.setUserEventsDAO(userEventsDAO);
 		
-		List<UserEventVO> userEventVOList = service.getUserPlannedEvents(1L);
+		List<UserEventVO> userEventVOList = service.getUserPlannedEvents(1L,Calendar.getInstance());
 		Assert.assertEquals(2, userEventVOList.size());
 		Assert.assertEquals(2, userEventVOList.get(0).getActionPlans().size());
 	}
