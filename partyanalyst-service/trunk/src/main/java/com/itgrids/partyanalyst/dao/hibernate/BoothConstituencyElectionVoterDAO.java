@@ -26,33 +26,40 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				"model.boothConstituencyElection.boothConstituencyElectionId = ? and " +
 				"model.voter.voterId = ?", params);
 	}
-
-	public List findCastFromVoterByConstituencyAndElection(Long constituencyID, String electionYear){
-		StringBuilder query = new StringBuilder();
-		query.append("Select model.voter.cast,");
-		query.append("count(model.voter.cast) ");
-		query.append("from BoothConstituencyElectionVoter model where ");
-		query.append("model.boothConstituencyElection.constituencyElection.constituency.constituencyId = "+constituencyID);
-		query.append(" and model.boothConstituencyElection.constituencyElection.election.electionYear = "+electionYear);
-		query.append(" group by model.voter.cast");
-		return getHibernateTemplate().find(query.toString());
-	}
-	
-	
-	public List findVotersByConstituencyAndElectionForGender(Long constituencyID, String electionYear){
-		StringBuilder query = new StringBuilder();
-				query.append("Select model.voter.gender,count(model.voter.gender)");
-				query.append("from BoothConstituencyElectionVoter model where ");
-				query.append("model.boothConstituencyElection.constituencyElection.constituency.constituencyId = "+constituencyID);
-				query.append(" and model.boothConstituencyElection.constituencyElection.election.electionYear = "+electionYear);
-				query.append(" and gender like 'm%'");
-				return getHibernateTemplate().find(query.toString());
-	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Voter> findVotersByHamletAndElectiuonYear(Long hamletId, String year){
+	public List<Voter> findVotersByHamletAndElectionYear(Long hamletId, String year){
 		Object[] params = {hamletId, year};
 		return getHibernateTemplate().find("select model.voter from BoothConstituencyElectionVoter model where model.voter.hamlet.hamletId = ? and" +
 				" model.boothConstituencyElection.constituencyElection.election.electionYear = ?", params);
+	}
+	
+	public List findVotersCastInfoByHamletAndElectionYear(Long hamletId, String year){
+		Object[] params = {hamletId, year};
+		return getHibernateTemplate().find("select count(model.voter.voterId), model.voter.gender, model.voter.cast from BoothConstituencyElectionVoter model " +
+				"where model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?" +
+				"group by model.voter.cast, model.voter.gender order by model.voter.cast", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Voter> findVotersGroupByHouseNoForHamlet(Long hamletId, String year){
+		Object[] params = {hamletId, year};
+		return getHibernateTemplate().find("select model.voter from BoothConstituencyElectionVoter model " +
+				"where model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?", params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> findVoterHouseNosInHamlet(Long hamletId, String year) {
+		Object[] params = {hamletId, year};
+		return getHibernateTemplate().find("select distinct(model.voter.houseNo) from BoothConstituencyElectionVoter model " +
+				"where model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?", params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Voter> findVotersByHouseNoAndHamlet(String houseNo, Long hamletId,String year) {
+		Object[] params = {houseNo, hamletId, "m", year};
+		return getHibernateTemplate().find("select model.voter from BoothConstituencyElectionVoter model " +
+				"where model.voter.houseNo = ? and model.voter.hamlet.hamletId = ? and model.voter.gender = ? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear = ? order by age", params);
 	}
 }
