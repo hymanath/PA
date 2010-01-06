@@ -17,6 +17,7 @@ public class UserEventVO extends ResultStatus implements Comparable<UserEventVO>
 	private Date endDate;
 	private List <SelectOptionVO> organizers;
 	private List<EventActionPlanVO> actionPlans;
+	private String isDeleted;
 	
 	public String getTitle() {
 		return title;
@@ -78,13 +79,14 @@ public class UserEventVO extends ResultStatus implements Comparable<UserEventVO>
 	public void setActionPlans(List<EventActionPlanVO> actionPlans) {
 		this.actionPlans = actionPlans;
 	}
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	public int compareTo(UserEventVO obj) {
 		int result = obj.getStartDate().compareTo(this.getStartDate());
 		return result;
 	}
-	
-	
-	
-	
-	
 }

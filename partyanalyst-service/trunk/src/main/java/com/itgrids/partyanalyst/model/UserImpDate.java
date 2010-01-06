@@ -30,6 +30,7 @@ public class UserImpDate  extends BaseModel{
 	private Date effectiveDate;
 	private Date tillDate;
 	private String recFreqType;
+	private String isDeleted;
  
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -89,5 +90,13 @@ public class UserImpDate  extends BaseModel{
 	}
 	public void setRecFreqType(String recFreqType) {
 		this.recFreqType = recFreqType;
+	}
+	
+	@Column(name = "is_deleted", length = 6)
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }

@@ -18,6 +18,7 @@ public class ImportantDatesVO extends ResultStatus implements Comparable<Importa
 	private String title ;
 	private String importance ;
 	private String frequency;
+	private String isDeleted;
 	
 	public Long getImportantDateId() {
 		return importantDateId;
@@ -77,4 +78,11 @@ public class ImportantDatesVO extends ResultStatus implements Comparable<Importa
 	public void setFrequency(String frequency) {
 		this.frequency = frequency;
 	}
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 }

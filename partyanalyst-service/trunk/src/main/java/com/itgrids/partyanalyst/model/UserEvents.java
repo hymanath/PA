@@ -36,6 +36,7 @@ public class UserEvents extends BaseModel {
 	private String title;
 	private List<Cadre> organizers;
 	private List<UserEventActionPlan> userEventActionPlans;
+	private String isDeleted;
 	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -110,13 +111,20 @@ public class UserEvents extends BaseModel {
 			List<UserEventActionPlan> userEventActionPlans) {
 		this.userEventActionPlans = userEventActionPlans;
 	}
-	
+
 	@Column(name = "title", length = 200)
 	public String getTitle() {
 		return title;
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	@Column(name = "is_deleted", length = 6)
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 	@Override
 	public int hashCode() {
