@@ -24,7 +24,6 @@
 
 	function getCadreLevelValues(name,value,id)
 	{
-		
 		var cadreLevelElmt = document.getElementById("cadreLevelField");
 		var cadreLevelElmtText = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].text;
 		var cadreLevelElmtValue = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].value;
@@ -34,7 +33,7 @@
 			document.getElementById("cadreLevelValue").value=1;						
 		}
 		else if((name == "cadreLevelState" && cadreLevelElmtText == "District") || (name == "cadreLevelState" && cadreLevelElmtText == "Constituency") 
-			|| (name == "cadreLevelState" && cadreLevelElmtText == "Mandal"))
+			|| (name == "cadreLevelState" && cadreLevelElmtText == "Mandal")|| (name == "cadreLevelState" && cadreLevelElmtText == "Village"))
 		{
 			getnextList("state",id,"true");				
 		}
@@ -42,9 +41,13 @@
 		{
 			getnextList("constituency",id,"true");				
 		}
-		else if(name == "cadreLevelDistrict" && cadreLevelElmtText == "Mandal")
+		else if(name == "cadreLevelDistrict" && (cadreLevelElmtText == "Mandal" || cadreLevelElmtText == "Village"))
 		{
 			getnextList("district",id,"true");				
+		}
+		else if(name == "cadreLevelMandal" && (cadreLevelElmtText == "Village"))
+		{
+			getnextList("mandal",id,"true");				
 		}
 		
 		//if(document.getElementById("cadreLevelField").value == 5)
@@ -58,8 +61,9 @@
 		var districtElmt = document.getElementById("cadreLevelDistrict");
 		var constituencyElmt = document.getElementById("cadreLevelConstituency");
 		var mandalElmt = document.getElementById("cadreLevelMandal");
+		var villageElmt = document.getElementById("cadreLevelVillage");
 
-		if(!cadreLevelElmt || !stateElmt || !districtElmt || !constituencyElmt || !mandalElmt)
+		if(!cadreLevelElmt || !stateElmt || !districtElmt || !constituencyElmt || !mandalElmt || !villageElmt)
 			alert("Selected Element is null !!");
 		
 		var cadreLevelElmtText = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].text;
@@ -77,12 +81,15 @@
 		var mandalElmtText = mandalElmt.options[mandalElmt.selectedIndex].text;
 		var mandalElmtValue = mandalElmt.options[mandalElmt.selectedIndex].value;
 
+		var villageElmtText = villageElmt.options[villageElmt.selectedIndex].text;
+		var villageElmtValue = villageElmt.options[villageElmt.selectedIndex].value;
+
 		stateElmt.disabled = true;
 		districtElmt.disabled = true;
 		constituencyElmt.disabled = true;
 		mandalElmt.disabled = true;
-
-		
+		villageElmt.disabled = true;
+		//alert(cadreLevelElmtText);
 					
 		if(cadreLevelElmtText == "State")
 		{
@@ -106,13 +113,23 @@
 			districtElmt.disabled = false;
 			mandalElmt.disabled = false;
 		}
-
+		else if(cadreLevelElmtText == "Village")
+		{
+			stateElmt.disabled = false;
+			districtElmt.disabled = false;
+			mandalElmt.disabled = false;
+			villageElmt.disabled = false;
+		}
+//alert(123);
 		getStatesNDistricts("cadreLevel",cadreLevelElmtText,cadreLevelElmtValue)
 		
 	}
 
 	function getStatesNDistricts(level,text,value)
 	{
+		//alert(level);//type ==== cadreLevel
+		//alert(text);//reportLevel ====Village
+		//alert(value);//selected ====6
 		var jsObj=
 			{
 					type:level,
@@ -144,7 +161,8 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText);								
+								myResults = YAHOO.lang.JSON.parse(o.responseText);	
+								//console.log(myResults);
 								buildSelectOption(myResults);								
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -191,10 +209,9 @@
 		var taskValue= YAHOO.lang.JSON.parse(results.task);
 
 		var selectedValue=taskValue.reportLevel;
-		
 		var taskType=taskValue.type;
 		var changedVal = taskValue.changed;
-
+		
 		var selectedElmt;
 		
 		if(taskType == "cadreDetails")
@@ -221,19 +238,26 @@
 					selectedElmt=document.getElementById("constituencyField");
 			}
 			else if(selectedValue=="mandal")
-				selectedElmt=document.getElementById("villageField");
+			{
+				if(changedVal == "true")
+					selectedElmt=document.getElementById("cadreLevelVillage");
+				else if(changedVal == "false")
+					selectedElmt=document.getElementById("villageField");
+			}
 			else if(selectedValue=="Constituencies")
 				selectedElmt=document.getElementById("mandalField");
 		}
 		else if(taskType=="cadreLevel")
 		{
-			if(selectedValue == "State" || selectedValue == "District" || selectedValue == "Constituency" || selectedValue == "Mandal")
+			if(selectedValue == "State" || selectedValue == "District" || selectedValue == "Constituency" || selectedValue == "Mandal" || selectedValue == "Village")
 				selectedElmt=document.getElementById("cadreLevelState");
 			else
 				selectedElmt=document.getElementById("cadreLevelDistrict");
 		}
 		else if(selectedValue=="cadreLevelDistrict")
 			selectedElmt=document.getElementById("cadreLevelMandal");
+		else if(selectedValue=="cadreLevelMandal")
+			selectedElmt=document.getElementById("cadreLevelVillage");
 		
 		
 		var len=selectedElmt.length;			
@@ -357,7 +381,8 @@
 					<option  value='2'>State</option>	
 					<option  value='3'>District</option>
 					<option  value='4'>Constituency</option>	
-					<option  value='5'>Mandal</option>					
+					<option  value='5'>Mandal</option>		
+					<option  value='6'>Village</option>					
 				</select> <input type='hidden' name='cadreLevelValue' id='cadreLevelValue'>
 			</td>
 		</tr>
@@ -381,8 +406,14 @@
 					<option>Select Constituency</option>					
 				</select> 
 		
-				<select id="cadreLevelMandal" name="cadreLevelMandal" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value)">
+				<select id="cadreLevelMandal" name="cadreLevelMandal" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);
+										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,
+										this.options[this.selectedIndex].value)">
 					<option>Select Mandal</option>					
+				</select> 
+
+				<select id="cadreLevelVillage" name="cadreLevelVillage" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value)">
+					<option>Select Village</option>					
 				</select> 
 			</td>
 		</tr>

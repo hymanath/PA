@@ -13,6 +13,11 @@
 	<link href="styles/yuiStyles/calendar.css" rel="stylesheet" type="text/css" />
 	<link href="styles/yuiStyles/datatable.css" rel="stylesheet" type="text/css" />
 
+	
+<link rel="stylesheet" type="text/css" href="js/assets/dpSyntaxHighlighter.css">
+<link rel="stylesheet" type="text/css" href="js/build/container/assets/skins/sam/container.css" />
+<link rel="stylesheet" type="text/css" href="js/build/button/assets/skins/sam/button.css" />
+
 
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>
 	<script type="text/javascript" src="js/yahoo/animation-min.js" ></script>
@@ -28,12 +33,22 @@
 	<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/connection.js"></script> 
 	<script type="text/javascript" src="js/yahoo/history.js"></script> 
+
+	
+<script type="text/javascript" src="js/build/yuiloader/yuiloader-min.js"></script>
+<script type="text/javascript" src="js/build/dom/dom-min.js"></script>
+<script type="text/javascript" src="js/build/event/event-min.js"></script>
+<script type="text/javascript" src="js/build/dragdrop/dragdrop-min.js"></script>
+<script type="text/javascript" src="js/build/container/container-min.js"></script>
+<script type="text/javascript" src="js/build/element/element-min.js"></script>
+<script type="text/javascript" src="js/build/button/button-min.js"></script>
 	
 	<!-- YUI Dependency Files-->
 	<script type="text/javascript">
 			
 		var regionLevelZeroCadres = new Array();
 		var regionLevelCadres = new Array();
+		var cadreDetailsArr = new Array();
 
 			function buildJSObject(id,value,type)
 			{				
@@ -155,7 +170,10 @@
 											myResults = YAHOO.lang.JSON.parse(o.responseText);						
 											
 											if(myResults.cadreInfo[0])											
+											{
+												//console.log(myResults);
 												buildHtmlNode(myResults.cadreInfo,node);																					
+											}
 											else if(myResults.zeroCadresRegion)	
 												buildZeroCadreTable(myResults.zeroCadresRegion,node);
 											else
@@ -209,7 +227,30 @@
 			}
 			function buildHtmlNode(cadreData,node)
 			{
+				var obj={
+							"label":node.label,
+							"obj":cadreData
+						};
 				
+				cadreDetailsArr.push(obj);
+				
+				var tempNode = new YAHOO.widget.HTMLNode('<a href="javascript:{}" id="'+node.label+'" onclick="showLink(this.id)"/>view Details</a>', node, false); 
+				tempNode.isLeaf = true;
+			}
+
+			function showLink(value)
+			{	
+				
+				var cadreData = new Array();
+
+				for(var i in cadreDetailsArr)
+				{
+					if(cadreDetailsArr[i].label == value)
+					{
+						cadreData = cadreDetailsArr[i].obj;
+					}
+				}
+
 				var str='';
 				str+='<table class="partyPerformanceCriteriaTable">';
 				str+='<tr>';
@@ -221,8 +262,7 @@
 				str+='</tr>';				
 				for(var i in cadreData)
 				{
-					str+='<tr>';					
-					//str+='<td><a name="cadreName" href="cadreInformationPageAction.action">'+cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName+'</a></td>';		
+					str+='<tr>';									
 					str+='<td>'+cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName+'</td>';
 					str+='<td>'+cadreData[i].mobile+'</td>';
 					str+='<td>'+cadreData[i].landLineNo+'</td>';
@@ -231,12 +271,16 @@
 					str+='</tr>';
 				}
 				str+='</table>';
+//alert(str);
+var panel = new YAHOO.widget.Panel("panel2", { width:"320px", visible:true, draggable:true, close:true } ); 
+panel.setHeader("List of Cadres"); 
+panel.setBody(str); 
 
-				//str+='<div id="basic" class="yui-skin-sam"></div>';
-				var tempNode = new YAHOO.widget.HTMLNode(str, node, false); 
-				tempNode.isLeaf = true;
-				
-				
+panel.render("divPanel"); 
+
+			YAHOO.util.Event.addListener("show1", "click", YAHOO.example.container.panel1.show, panel, true);
+			//YAHOO.util.Event.addListener("hide1", "click", YAHOO.example.container.panel1.hide, YAHOO.example.container.panel1, true);
+				//console.log(str);
 			}
 
 			function buildTextNode(results,node)
@@ -321,5 +365,7 @@
 			buildTreeView();	
 		</script>	
 	</s:form>
+	<div id="divPanel">
+	</div>
 </body>
 </html>
