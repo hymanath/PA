@@ -2,10 +2,19 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
 public interface IConstituencyManagementService {
 	
-	public List<VoterVO> createProblem(Long hamletId, String year);
+	public List<VoterVO> getVoterInfo(Long hamletId, String year);
+	
+	public List<SelectOptionVO> getHamletsForTownship(Long townshipId);
+	
+	public VoterCastInfoVO getVotersCastInfoForHamlet(Long hamletId, String year);
+	
+	public List<VoterHouseInfoVO> getVoterHouseDetails(Long hamletId, String year);
 	
 }
