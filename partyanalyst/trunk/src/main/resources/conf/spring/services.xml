@@ -237,6 +237,7 @@
 	</bean>
 	<bean name="constituencyManagementService" class="com.itgrids.partyanalyst.service.impl.ConstituencyManagementService" >		
 		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
 	</bean>
 	<bean name="problemBeanVO" class="com.itgrids.partyanalyst.dto.ProblemBeanVO"/>
 </beans>
