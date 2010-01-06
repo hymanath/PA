@@ -359,5 +359,10 @@
 				<param name="root">importantDatesVOs</param>				
 			</result>		
 		</action>	
+		<action name="getNextMonthDatesEvents" class="createEventAction" method="getNextMonthDatesEvents">
+			<result type="json" name="success">
+				<param name="root">cadreManagementVO</param>				
+			</result>			
+		</action>
 	</package>
 </struts>
