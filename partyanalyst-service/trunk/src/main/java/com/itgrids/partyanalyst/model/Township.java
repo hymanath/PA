@@ -20,6 +20,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFoundAction;
+
 /**
  * Township entity. 
  * @author <a href="mailto:shan.javaee@gmail.com">Shan Nagarajan</a>
@@ -42,6 +44,7 @@ public class Township implements java.io.Serializable {
 	private String townshipType;
 	private Set<Ward> wards = new HashSet<Ward>(0);
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
+	private Set<Hamlet> hamlets = new HashSet<Hamlet>(0);
 
 	// Constructors
 
@@ -133,4 +136,13 @@ public class Township implements java.io.Serializable {
 		this.problemLocations = problemLocations;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "township")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<Hamlet> getHamlets() {
+		return hamlets;
+	}
+
+	public void setHamlets(Set<Hamlet> hamlets) {
+		this.hamlets = hamlets;
+	}
 }
