@@ -7,14 +7,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Voting Trends in a Mandal</title>
 
-	<!-- Combo-handled YUI CSS files: -->
-<link rel="stylesheet" type="text/css" 	href="styles/yuiStyles/datatable.css">
-<!-- Combo-handled YUI JS files: -->
-<script type="text/javascript" src="js/yahoo/datatable-min.js"></script>
+
+	<!--CSS file (default YUI Sam Skin) --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/datatable.css">
+	 
+	<!-- Dependencies --> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/connection-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/datatable-min.js" ></script>
+
+
+<!--<link rel="stylesheet" type="text/css" 	href="styles/yuiStyles/datatable.css">
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> -->
+
 
 
 	<script type="text/javascript" src="js/json/json-min.js"></script> 
-   	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+
 	<script type="text/javascript">
 
 		function checkForFormSubmit(){
