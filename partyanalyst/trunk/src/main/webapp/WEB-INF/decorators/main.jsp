@@ -106,9 +106,7 @@
 				{ text: "Party Influence Report", url: "partyInfluenceMainAction.action" },
 				{ text: "Mandal Voting Report", url: "mandalPageSDetailAction.action" },
 				{ text: "Cross Voting Report", url: "crossVotingReportInputAction.action" },				
-	            { text: "Constituencey Booth Results Report", url: "partyBoothResultAction.action" },
-	            { text: "Rebels", url: "addRebelsAction.action" },
-	            { text: "User Groups ", url: "userGroupsMainAction.action" }												
+	            { text: "Constituencey Booth Results Report", url: "partyBoothResultAction.action" }						
 	        ]  
 	    }, 
 	     
