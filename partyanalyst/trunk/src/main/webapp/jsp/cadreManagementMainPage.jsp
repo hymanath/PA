@@ -279,8 +279,7 @@
 	#sendSMSAnc
 	{
 		background-color:#80B4E8;
-		color:#244565;
-		padding:5px;
+		color:#244565;		
 		text-decoration:none;
 	}
 	#newEventSpan
@@ -599,8 +598,7 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText);
-								console.log("results = ",myResults);
+								myResults = YAHOO.lang.JSON.parse(o.responseText);								
 								if(jsObj.task == "getUserLocation")
 									fillDataOptions(myResults);	
 								else if(jsObj.task == "fillSelectElements")
@@ -1154,7 +1152,6 @@
 		var parent = elmt.parentNode;
 		var value = elmt.innerHTML;
 
-		console.log(field);
 		var str='';
 
 		if(type == "text")
@@ -1209,8 +1206,7 @@
 	}
 
 	function changeToLabelField(elmt,type,task,field)
-	{
-		console.log(elmt,type,task,field);
+	{		
 		var parent = elmt.parentNode;
 		var value = elmt.innerHTML;
 	}
@@ -1404,10 +1400,7 @@
 	}
 
 	function updateSelectedEvent(type)
-	{
-		alert('Hi');
-		console.log("In updateSelectedEvent");
-		
+	{		
 		var jsObj;
 		if(type == 'impEvent')
 		{	
@@ -1425,7 +1418,7 @@
 
 	function deleteSelectedEvent(type)
 	{
-		console.log("In deleteSelectedEvent",type);
+		
 	}
 
 	function cancelSelectedEvent(type)
@@ -1442,7 +1435,7 @@
 					task:"showSelectedDateEvent"
 				  }
 		
-		console.log(jsObj);
+		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/showImpDateEvent.action?"+rparam;		
 		callAjax(jsObj,url);
@@ -1930,7 +1923,7 @@
 					task:"createEvent"
 				  }
 		
-		console.log("jsObj = ",jsObj);
+		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
 		callAjax(jsObj,url);
@@ -2283,7 +2276,7 @@
 		</div>		
 		<div id="cadreSMSMainDiv">
 			<div id="cadreSMSHeadDiv">Cadre SMS</div>
-			<div id="cadreSMSBodyDiv">Cadre SMS feature enables the user to send SMS to the cadres, based on the location and cadre level</div>
+			<div id="cadreSMSBodyDiv">Cadre SMS feature enables the user to send SMS to the cadres, based on the location and cadre level.</div>
 			<div id="cadreSMSFooterDiv">				
 				<a href="javascript:{}" id="sendSMSAnc" onclick="showSendSMSPopup()">Send SMS</a>				
 				<!--<a href="cadreSMSAction.action" id="sendSMSAnc">Send SMS</a>-->
@@ -2356,6 +2349,9 @@
 		buildSMSPopup();
 		//buildNewEventPopup();
 		//buildNewImpDatePopup();
+		var sendSMSButton = new YAHOO.widget.Button("sendSMSAnc"); 
+		sendSMSButton.on("click", showSendSMSPopup);
+
 		
 		var regionLevelCadres = new Array();
 		<c:forEach var="pd1" items="${cadreManagementVO.cadresByCadreLevel}" >				
@@ -2381,7 +2377,7 @@
 					};
 					impEvents.push(ob);
 		</c:forEach>		
-		console.log(impEvents);
+		
 		showInitialImpEventsAndDates(impEvents,'impEvents',"");
 		
 		var impDates = new Array();
@@ -2396,7 +2392,7 @@
 					};
 					impDates.push(ob);
 		</c:forEach>
-		console.log(impDates);
+		
 		showInitialImpEventsAndDates(impDates,'impDates',"");
 		renderStack();
 
