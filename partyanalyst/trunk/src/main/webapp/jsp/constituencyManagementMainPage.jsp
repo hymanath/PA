@@ -392,6 +392,25 @@
 		
 		
 	}
+
+	function getTownshipsForMandal(name,value,choice)
+	{
+		var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
+		ajaxImgSpanElmt.style.display = 'block';
+		var jsObj=
+			{
+					type:"cadreDetails",
+					reportLevel:name,
+					selected:value,
+					changed:choice,
+					task:"findTownships"
+					
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/townshipsForMandalAjaxAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+	}
 	
 	function getnextList(name,value,choice)
 	{
@@ -487,7 +506,7 @@
 		constTabContent+='</tr>';
 		constTabContent+='<tr>';
 		constTabContent+='<td>Mandal</td>';
-		constTabContent+='<td><select id="mandalField" class="selectWidth" name="mandal" onchange="getnextList(this.name,this.options[this.selectedIndex].value,false)">';
+		constTabContent+='<td><select id="mandalField" class="selectWidth" name="mandal" onchange="getTownshipsForMandal(this.name,this.options[this.selectedIndex].value,false)">';
 		for(var i in locationDetails.mandalArr)
 		{
 			constTabContent+='<option value='+locationDetails.mandalArr[i].id+'>'+locationDetails.mandalArr[i].value+'</option>';
