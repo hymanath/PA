@@ -2,11 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -20,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -30,6 +27,7 @@ import com.itgrids.partyanalyst.model.ElectionAlliance;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionYearsComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -47,6 +45,7 @@ public class StaticDataService implements IStaticDataService {
 	private IConstituencyDAO constituencyDAO;
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	private INominationDAO nominationDAO;
+	private ITownshipDAO townshipDAO;
 	private final static Logger log = Logger.getLogger(StaticDataService.class);
 	
 
@@ -103,7 +102,25 @@ public class StaticDataService implements IStaticDataService {
 	public void setConstituencyElectionDAO(IConstituencyElectionDAO constituencyElectionDAO) {
 		this.constituencyElectionDAO = constituencyElectionDAO;
 	}
+	
+	public ITownshipDAO getTownshipDAO() {
+		return townshipDAO;
+	}
 
+	public void setTownshipDAO(ITownshipDAO townshipDAO) {
+		this.townshipDAO = townshipDAO;
+	}
+
+	public List<SelectOptionVO> findTownshipsByTehsilID(String mandalID){
+		List<SelectOptionVO> townshipVOs = new ArrayList<SelectOptionVO>();
+		SelectOptionVO townshipVO = null;
+		List<Township> townships = townshipDAO.findByTehsilID(new Long(mandalID));
+		for(Township township:townships){
+			townshipVO = new SelectOptionVO(township.getTownshipId(), township.getTownshipName());
+			townshipVOs.add(townshipVO);
+		}
+		return townshipVOs;
+	}
 
 	public List<SelectOptionVO> getStates(Long electionType){
 		List<ElectionScope> electionScopes = electionScopeDAO.findByPropertyElectionTypeId(electionType);
