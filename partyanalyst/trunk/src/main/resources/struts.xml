@@ -346,7 +346,13 @@
 				<param name="root">constituencyManagementVO</param>				
 			</result> 
 		</action>
-		
+
+		<action name="townshipsForMandalAjaxAction" class="cadreRegisterAjaxAction" method="getTownshipsForMandal">
+			<result type="json" name="success">
+				<param name="root">namesList</param>				
+			</result> 
+		</action>
+
 		<action name="problemManagementAction" class="problemManagementAction">
 			<result name="success">/jsp/addNewProblem.jsp</result>		
 		</action>
