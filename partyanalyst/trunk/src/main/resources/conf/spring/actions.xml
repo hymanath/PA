@@ -103,6 +103,7 @@
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="constituencyManagementService" ref="constituencyManagementService" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean> 
 	
 	<bean id="cadreRegisterAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAction" singleton="false">
