@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.opensymphony.xwork2.Action;
@@ -31,7 +32,18 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 	private CadreManagementService cadreManagementService;
 	private RegionServiceDataImp regionServiceDataImp;
 	private IConstituencyManagementService constituencyManagementService;
+	private IStaticDataService staticDataService;
 	
+	
+	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public IConstituencyManagementService getConstituencyManagementService() {
 		return constituencyManagementService;
 	}
@@ -133,7 +145,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			System.out.println("In report level Mandal");
 			String selectedVal=jObj.getString("selected");
 			
-			List<SelectOptionVO> villageNames=cadreManagementService.findTownShipsByTehsilID(selectedVal);
+			List<SelectOptionVO> villageNames = cadreManagementService.findVillagesByTehsilID(selectedVal);
 			SelectOptionVO obj = new SelectOptionVO(0L,"Select Village");
 			villageNames.add(0, obj);
 			setNamesList(villageNames);	
@@ -188,5 +200,26 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			setNamesList(mandalNames);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getTownshipsForMandal(){
+		String param=null;
+		
+		param=getTask();
+		System.out.println("param:"+param);		
+		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("findTownships"))
+		{
+			String mandalId = jObj.getString("selected");
+			namesList = staticDataService.findTownshipsByTehsilID(mandalId);
+		}
+		return SUCCESS;
 	}
 }
