@@ -14,6 +14,7 @@
 		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="stateDAO" ref="stateDAO" />
+		<property name="townshipDAO" ref="townshipDAO" />
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 	</bean>
