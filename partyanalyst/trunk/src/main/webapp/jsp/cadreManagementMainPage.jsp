@@ -10,10 +10,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cadre Management </title>
+
 	
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/yahoo-min.js"></script>
-
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/animation-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/dragdrop-min.js"></script>
@@ -24,32 +24,29 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/connection-min.js"></script> 	
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/container-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script> 
 	
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/yui-min.js"></script>
+	
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script> 
-
 	<script type="text/javascript" src="js/json/json-min.js"></script> 
-	<!-- Skin CSS files resize.css must load before layout.css --> 
+	
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/layout.css">
-	
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/layout.css">	
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/button.css"> 
-
-	<!-- Combo-handled YUI CSS files: -->
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
-	<!--CSS file (default YUI Sam Skin) --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/button.css">	
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/calendar.css">
-	
+
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+
 	<!-- YUI Dependency files (End) -->
 
 	<!--<script type="text/javascript" src="js/cadreManagement/cadreSMSPageJs.js"></script>-->
 
-<style type="text/css">
-
 	
+	<style type="text/css">
+
 	/*
 		Overriding YUI images ---Start
 	*/
@@ -603,7 +600,7 @@
  		               success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText);
-								
+								console.log("results = ",myResults);
 								if(jsObj.task == "getUserLocation")
 									fillDataOptions(myResults);	
 								else if(jsObj.task == "fillSelectElements")
@@ -626,8 +623,8 @@
 									buildSelectedDateEventPopup(myResults,jsObj);
 								else if(jsObj.task=="nextMonthEvents")
 								{
-									showInitialImpEventsAndDates(myResults.userEvents,'impEvents');
-									showInitialImpEventsAndDates(myResults.userImpDates,'impDates');
+									showInitialImpEventsAndDates(myResults.userEvents,"impEvents","nextPreviousMonthEvents");
+									showInitialImpEventsAndDates(myResults.userImpDates,"impDates","nextPreviousMonthEvents");
 								}
 										
 							}catch (e) {   
@@ -1153,8 +1150,11 @@
 	
 	function changeToEditableField(elmt,type,task,field)
 	{	
+		return;
 		var parent = elmt.parentNode;
-		var value = elmt.innerHTML;		
+		var value = elmt.innerHTML;
+
+		console.log(field);
 		var str='';
 
 		if(type == "text")
@@ -1209,7 +1209,8 @@
 	}
 
 	function changeToLabelField(elmt,type,task,field)
-	{	
+	{
+		console.log(elmt,type,task,field);
 		var parent = elmt.parentNode;
 		var value = elmt.innerHTML;
 	}
@@ -1375,11 +1376,13 @@
 			}
 			eventStr+='</tr>';
 		}
+		/*
 		eventStr+='<tr>';
 		eventStr+='<td><input type="button" value="Update" onclick="updateSelectedEvent(\''+jsObj.taskType+'\')"></input></td>';
 		eventStr+='<td><input type="button" value="Delete" onclick="deleteSelectedEvent(\''+jsObj.taskType+'\')"></input></td>';
 		eventStr+='<td><input type="button" value="Delete" onclick="cancelSelectedEvent(\''+jsObj.taskType+'\')"></input></td>';
 		eventStr+='</tr>';
+		*/
 		eventStr+='</table>';
 		eventStr+='</div>';		
 		divChild.innerHTML=eventStr;
@@ -1401,7 +1404,9 @@
 	}
 
 	function updateSelectedEvent(type)
-	{	
+	{
+		alert('Hi');
+		console.log("In updateSelectedEvent");
 		
 		var jsObj;
 		if(type == 'impEvent')
@@ -1420,7 +1425,7 @@
 
 	function deleteSelectedEvent(type)
 	{
-		
+		console.log("In deleteSelectedEvent",type);
 	}
 
 	function cancelSelectedEvent(type)
@@ -1437,6 +1442,7 @@
 					task:"showSelectedDateEvent"
 				  }
 		
+		console.log(jsObj);
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/showImpDateEvent.action?"+rparam;		
 		callAjax(jsObj,url);
@@ -1924,7 +1930,7 @@
 					task:"createEvent"
 				  }
 		
-		
+		console.log("jsObj = ",jsObj);
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
 		callAjax(jsObj,url);
@@ -2051,7 +2057,7 @@
 		this.cancel();
 	}
 
-	function showInitialImpEventsAndDates(eventsarr,type)
+	function showInitialImpEventsAndDates(eventsarr,type,task)
 	{
 	
 		if(type == "impEvents")
@@ -2065,43 +2071,67 @@
 
 		for(var i in eventsarr)
 		{				
-			if(eventsarr[i].startDate)
-			{			
-				var index = eventsarr[i].startDate.indexOf(' ');
-				var strLength = eventsarr[i].startDate.length;
-				
-				var substring1 = eventsarr[i].startDate.substring(0,index); 
-				var substring2 = eventsarr[i].startDate.substring(index+1,strLength); 
+			if(task == "nextPreviousMonthEvents")
+			{
+				if(eventsarr[i].startDate)
+				{	
+					var sDayobj = getDateTime(eventsarr[i].startDate);				
+					startDayStr = sDayobj.day;
+					startMonStr = sDayobj.month;
+					startYearStr = sDayobj.year;
+					startTimeHrs = sDayobj.hours;
+					startTimeMin = sDayobj.minutes;
+				}
 
-				var colIndex1 = eventsarr[i].startDate.indexOf(':');
-				var colIndex2 = eventsarr[i].startDate.lastIndexOf(':');
-				
-				var startDayStr = substring1.substring(8,10);		
-				var startMonStr = substring1.substring(5,7);
-				var startYearStr = substring1.substring(0,4);	
-
-				var startTimeHrs = eventsarr[i].startDate.substring(index,colIndex1);	
-				var startTimeMin = eventsarr[i].startDate.substring(colIndex1+1,colIndex2);	
+				if(eventsarr[i].endDate)
+				{
+					var eDayobj = getDateTime(eventsarr[i].endDate);				
+					endDayStr = eDayobj.day;
+					endMonStr = eDayobj.month;
+					endYearStr = eDayobj.year;
+					endTimeHrs = eDayobj.hours;
+					endTimeMin = eDayobj.minutes;
+				}
 			}
-			if(eventsarr[i].endDate)
-			{			
-				var index = eventsarr[i].endDate.indexOf(' ');
-				var strLength = eventsarr[i].endDate.length;
-				
-				var substring1 = eventsarr[i].endDate.substring(0,index); 
-				var substring2 = eventsarr[i].endDate.substring(index+1,strLength); 
+			else
+			{
+				if(eventsarr[i].startDate)
+				{			
+					var index = eventsarr[i].startDate.indexOf(' ');
+					var strLength = eventsarr[i].startDate.length;
+					
+					var substring1 = eventsarr[i].startDate.substring(0,index); 
+					var substring2 = eventsarr[i].startDate.substring(index+1,strLength); 
 
-				var colIndex1 = eventsarr[i].endDate.indexOf(':');
-				var colIndex2 = eventsarr[i].endDate.lastIndexOf(':');
-				
-				var endDayStr = substring1.substring(8,10);		
-				var endMonStr = substring1.substring(5,7);
-				var endYearStr = substring1.substring(0,4);	
+					var colIndex1 = eventsarr[i].startDate.indexOf(':');
+					var colIndex2 = eventsarr[i].startDate.lastIndexOf(':');
+					
+					var startDayStr = substring1.substring(8,10);		
+					var startMonStr = substring1.substring(5,7);
+					var startYearStr = substring1.substring(0,4);	
 
-				var endTimeHrs = eventsarr[i].endDate.substring(index,colIndex1);	
-				var endTimeMin = eventsarr[i].endDate.substring(colIndex1+1,colIndex2);					
+					var startTimeHrs = eventsarr[i].startDate.substring(index,colIndex1);	
+					var startTimeMin = eventsarr[i].startDate.substring(colIndex1+1,colIndex2);	
+				}
+				if(eventsarr[i].endDate)
+				{			
+					var index = eventsarr[i].endDate.indexOf(' ');
+					var strLength = eventsarr[i].endDate.length;
+					
+					var substring1 = eventsarr[i].endDate.substring(0,index); 
+					var substring2 = eventsarr[i].endDate.substring(index+1,strLength); 
+
+					var colIndex1 = eventsarr[i].endDate.indexOf(':');
+					var colIndex2 = eventsarr[i].endDate.lastIndexOf(':');
+					
+					var endDayStr = substring1.substring(8,10);		
+					var endMonStr = substring1.substring(5,7);
+					var endYearStr = substring1.substring(0,4);	
+
+					var endTimeHrs = eventsarr[i].endDate.substring(index,colIndex1);	
+					var endTimeMin = eventsarr[i].endDate.substring(colIndex1+1,colIndex2);					
+				}
 			}
-
 			var divElmt = document.createElement('div');						
 
 			if(i%2!=0)
@@ -2110,11 +2140,11 @@
 			var str='';
 			if(type == "impEvents")
 			{
-				str+='<div id="'+eventsarr[i].userEventId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\'\',\'impEvent\')">';
+				str+='<div id="'+eventsarr[i].userEventsId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\'\',\'impEvent\')">';
 			}
 			else if(type == "impDates")
 			{
-				str+='<div id="'+eventsarr[i].impDateId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\''+eventsarr[i].eventType+'\',\'impDate\')">';
+				str+='<div id="'+eventsarr[i].importantDateId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\''+eventsarr[i].eventType+'\',\'impDate\')">';
 			}
 			str+='<table>';
 			str+='<tr>';
@@ -2343,7 +2373,7 @@
 		<c:forEach var="impEvent" items="${cadreManagementVO.userEvents}" >			
 				var ob =
 					{
-						userEventId:'${impEvent.userEventsId}',
+						userEventsId:'${impEvent.userEventsId}',
 						title:'${impEvent.title}',
 						startDate:'${impEvent.startDate}',
 						endDate:'${impEvent.endDate}',
@@ -2351,14 +2381,14 @@
 					};
 					impEvents.push(ob);
 		</c:forEach>		
-		
-		showInitialImpEventsAndDates(impEvents,'impEvents');
+		console.log(impEvents);
+		showInitialImpEventsAndDates(impEvents,'impEvents',"");
 		
 		var impDates = new Array();
 		<c:forEach var="impDate" items="${cadreManagementVO.userImpDates}" >			
 				var ob =
 					{
-						impDateId:'${impDate.importantDateId}',
+						importantDateId:'${impDate.importantDateId}',
 						title:'${impDate.title}',
 						startDate:'${impDate.impDate}',
 						importance:'${impDate.importance}',
@@ -2366,8 +2396,8 @@
 					};
 					impDates.push(ob);
 		</c:forEach>
-		
-		showInitialImpEventsAndDates(impDates,'impDates');
+		console.log(impDates);
+		showInitialImpEventsAndDates(impDates,'impDates',"");
 		renderStack();
 
 	</script>
