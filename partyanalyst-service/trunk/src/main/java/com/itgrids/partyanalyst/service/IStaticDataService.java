@@ -1,17 +1,9 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.appfuse.service.GenericManager;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
-import com.itgrids.partyanalyst.model.District;
-import com.itgrids.partyanalyst.model.ElectionAlliance;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
@@ -33,4 +25,5 @@ public interface IStaticDataService {
 	public List<ConstituencyElection> getConstituencyElections(Long electionID,Long stateId,Long  districtID);
 	public List<SelectOptionVO> getStaticParties();
 	public List<SelectOptionVO> getPartiesForConstituency(Long constituencyId, String electionYear);
+	public List<SelectOptionVO> findTownshipsByTehsilID(String mandalID);
 }
