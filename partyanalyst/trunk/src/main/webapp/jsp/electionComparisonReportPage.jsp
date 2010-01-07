@@ -14,11 +14,35 @@
 
 	<!-- YUI Dependency Files-->
 	
-	<link href="styles/yuiStyles/treeview.css" rel="stylesheet" type="text/css" />
-	<link href="styles/yuiStyles/calendar.css" rel="stylesheet" type="text/css" />
-	<link href="styles/yuiStyles/datatable.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/treeview-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/datatable-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/history.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/container-min.js"></script> 
+	
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/yui-min.js"></script>
 
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
+	<!-- YUI Skin Sam -->
+
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/container.css">  
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/treeview.css" />
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/calendar.css">
+	
+	<!--<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>
 	<script type="text/javascript" src="js/yahoo/animation-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/calendar-min.js" ></script>
@@ -33,40 +57,69 @@
 	<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/connection.js"></script> 
 	<script type="text/javascript" src="js/yahoo/history.js"></script> 
-
-	<!-- Combo-handled YUI CSS files: -->
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/datatable.css">
-	<!-- Combo-handled YUI JS files: -->
-	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script>
-
-	<!-- Combo-handled YUI CSS files: -->
-
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">	
-	<script type="text/javascript" src="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/gallery-accordion-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
-	
-
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 	
+	<script type="text/javascript" src="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/gallery-accordion-min.js"></script> -->
 
 	<!-- Sam Skin CSS --> 
+	<!--<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">	
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-	 
-	<!-- Dependencies --> 
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	 
-	<!-- OPTIONAL: Animation (only required if using ContainerEffect) --> 
-	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
-	 
-	<!-- OPTIONAL: Drag & Drop (only required if enabling Drag & Drop) --> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
-	 
-	<!-- Source file --> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
-	
-	<!-- CSS -->  
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css">   
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/treeview.css" />
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"/>
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/datatable.css"/> -->
 
 
 <style type="text/css">
+
+/* ------ Styles for Accordian Container -------*/
+
+	.yui-skin-sam .yui-accordion-item .yui-widget-hd 
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 0;
+	}
+ 	.yui-skin-sam .yui-accordion-item-icon
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:center -25px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconalwaysvisible-on 
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -55px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconclose
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -235px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconalwaysvisible, .yui-skin-sam .yui-accordion-item-iconalwaysvisible-off 
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -86px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconexpanded-on 
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -115px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconexpanded, .yui-skin-sam .yui-accordion-item-iconexpanded-off
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -175px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconexpanded-off:hover
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -205px;
+	}
+	.yui-skin-sam .yui-accordion-item-iconexpanded-on:hover
+	{
+		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
+		background-position:0 -145px;
+	}
+
+/* ------ End ------*/
 
 .yui-widget-bd
 {
