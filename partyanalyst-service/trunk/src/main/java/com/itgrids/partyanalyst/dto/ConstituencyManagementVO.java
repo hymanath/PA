@@ -11,6 +11,7 @@ public class ConstituencyManagementVO {
 	private VoterCastInfoVO VoterCastInfodetails;
 	private List<VoterHouseInfoVO> votersByHouseNos;
 	private List<LocalLeadersVO> localLeaders;
+	private List<PoliticalChangesVO> politicalChanges;
 
 	public ProblemManagementVO getProblemManagementVO() {
 		return problemManagementVO;
@@ -50,6 +51,14 @@ public class ConstituencyManagementVO {
 
 	public void setLocalLeaders(List<LocalLeadersVO> localLeaders) {
 		this.localLeaders = localLeaders;
+	}
+
+	public List<PoliticalChangesVO> getPoliticalChanges() {
+		return politicalChanges;
+	}
+
+	public void setPoliticalChanges(List<PoliticalChangesVO> politicalChanges) {
+		this.politicalChanges = politicalChanges;
 	}
 	
 	
