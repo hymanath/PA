@@ -166,6 +166,10 @@
 	<bean id="cadreDAO" class="com.itgrids.partyanalyst.dao.hibernate.CadreDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="delimitationConstituencyMandalDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyMandalDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!-- 
 	<bean id="cadreService" class="com.itgrids.partyanalyst.service.CadreManagementService">
 	<property name="cadreDAO" ref="cadreDAO" />
@@ -328,5 +332,8 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="delimitationConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 
 </beans>
