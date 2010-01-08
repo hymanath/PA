@@ -81,7 +81,7 @@ public class Township implements java.io.Serializable {
 		this.townshipId = townshipId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "tehsil_id")
 	public Tehsil getTehsil() {
 		return this.tehsil;
