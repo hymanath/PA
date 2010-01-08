@@ -11,6 +11,10 @@ import javax.persistence.Table;
 @Table(name = "problem_classification")
 public class ProblemClassification extends BaseModel{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3804134197097303226L;
 	private Long problemClassificationId;
 	private String classification;
 	private String description;
