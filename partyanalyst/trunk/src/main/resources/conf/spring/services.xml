@@ -172,6 +172,19 @@
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 	</bean>
 	
+	<bean name="problemUploadService" class="com.itgrids.partyanalyst.service.impl.ProblemUploadService" >	
+	    <property name="hamletDAO" ref="hamletDAO" />
+	    <property name="tehsilDAO" ref="tehsilDAO" />
+	    <property name="townshipDAO" ref="townshipDAO" />
+	    <property name="constituencyDAO" ref="constituencyDAO" />
+	    <property name="boothDAO" ref="boothDAO" />
+	    <property name="problemDAO" ref="problemDAO" />
+	    <property name="problemSourceDAO" ref="problemSourceDAO" />
+	    <property name="problemLocationDAO" ref="problemLocationDAO" />
+	    <property name="problemExternalSourceDAO" ref="problemExternalSourceDAO" />
+	    <property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>
+	
 	<bean name="parliamentBoothResultPopulationService" class="com.itgrids.partyanalyst.service.impl.ParliamentBoothResultPopulationService" >		
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
     	<property name="nominationDAO" ref="nominationDAO" />
