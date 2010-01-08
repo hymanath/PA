@@ -31,6 +31,7 @@
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
@@ -38,7 +39,23 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
  	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
+	
+	
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/calendar/assets/skins/sam/calendar.css">    
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css"> 
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css"> 
+	<!--
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/button/button-min.js"></script> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script> 
+	-->
+	
 	
 	 
 	<!-- YUI Dependency files (End) -->
@@ -92,7 +109,7 @@
 		{
 			padding:5px;
 		}
-		#newProblemTabContentDiv_footer,#newProblemTabContentDiv_head,#classifiedTabContentDiv_footer
+		#newProblemTabContentDiv_footer,#newProblemTabContentDiv_head,#classifiedTabContentDiv_footer,#assignedIssuesTabContentDiv_footer
 		{
 			margin-right:20px;
 			text-align:right;
@@ -115,13 +132,28 @@
 		{
 			width:100%;
 		}
+		.requiredFont
+		{
+		color:red;
+		margin-left:5px;
+		}
+		.tinyDateCal
+		{
+		position:absolute;
+		}
+		.newProbdialog
+		{
+			background-color:#EDF5FF;
+		}
 
 	</style>
 
 	<script type="text/javascript">
 
 	var outerTab,problemMgmtTabs;
+	var newProblemDialog;
 	var problemsMainObj={
+							problemSourcesArr:[],	
 							newProblemsArr:[],
 							categorizedProblemsArr:[],
 							assignedProblemsArr:[],
@@ -141,7 +173,8 @@
 							castStatsArray:[],
 							totalvotersStatsArray:[],
 							votersByHouseNoArray:[],
-							localLeadersArray:[]						
+							localLeadersArray:[],
+							localPoliticalChangesArray:[]						
 							
 						};
 	function buildConstituencyLayout()
@@ -179,23 +212,38 @@
 		var selectedElmt;
 		if(selectedValue=="state")
 		{
-			selectedElmt=document.getElementById("districtField");
+			if(jsObj.changed=="addProblem")
+				selectedElmt=document.getElementById("districtField");
+			else
+				selectedElmt=document.getElementById("districtField");
 		}	
 		else if(selectedValue=="constituency")
 		{
-			selectedElmt=document.getElementById("constituencyField");			
+			if(jsObj.changed=="addProblem")
+				selectedElmt=document.getElementById("pconstituencyField");	
+			else
+				selectedElmt=document.getElementById("constituencyField");			
 		}
 		else if(selectedValue=="Constituencies")
 		{
-			selectedElmt=document.getElementById("mandalField");
+			if(jsObj.changed=="addProblem")
+				selectedElmt=document.getElementById("pmandalField");	
+			else
+				selectedElmt=document.getElementById("mandalField");
 		}
 		else if(selectedValue=="mandal")
 		{
-			selectedElmt=document.getElementById("villageField");
+			if(jsObj.changed=="addProblem")
+				selectedElmt=document.getElementById("pvillageField");	
+			else
+				selectedElmt=document.getElementById("villageField");
 		}
 		else if(selectedValue=="village")
 		{
-			selectedElmt=document.getElementById("hamletField");
+			if(jsObj.changed=="addProblem")
+				selectedElmt=document.getElementById("phamletField");	
+			else
+				selectedElmt=document.getElementById("hamletField");
 		}
 	
 		var len=selectedElmt.length;			
@@ -260,6 +308,7 @@
 		assignToVotersCastStats = new Array();
 		assignToVotersByHouseNo = new Array();
 		assignToLocalLeaders = new Array();
+		assignToPoliticalChanges = new Array();
 		var localLeaders = results.localLeaders;
 		var voters = results.voterDetails;
 		var cast = results.voterCastInfodetails.castVOs;
@@ -267,6 +316,7 @@
 		var maleVoters = results.voterCastInfodetails.maleVoters;
 		var femaleVoters = results.voterCastInfodetails.femaleVoters;
 		var votersByHouseNo = results.votersByHouseNos;
+		var politicalChanges = results.politicalChanges;
 		var count=0;
 		var votersByHouseNoCount = 0;
 		
@@ -335,6 +385,20 @@
 			constMgmtMainObj.localLeadersArray=assignToLocalLeaders;
 				
 		}
+
+		for(var i in politicalChanges)
+		{
+
+			var localPoliticalChanges = {
+					 
+					description: politicalChanges[i].description,
+					date: politicalChanges[i].date,
+					impact: politicalChanges[i].impact
+			};
+			assignToPoliticalChanges.push(localPoliticalChanges);
+			constMgmtMainObj.localPoliticalChangesArray=assignToPoliticalChanges;
+			
+		}
 		
 		var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 
@@ -360,7 +424,8 @@
 			constMgmtMainObj.castStatsArray = emptyArr;
 			constMgmtMainObj.votersArray = emptyArr;
 			constMgmtMainObj.votersByHouseNoArray = emptyArr;
-			
+			constMgmtMainObj.localPoliticalChangesArray = emptyArr;
+			buildLocalPoliticalChangesDataTable();
 			buildLocalLeadersDataTable();
 			buildLocalCastStatisticsDataTable();			
 			buildVotersByLocBoothDataTable();	
@@ -369,6 +434,7 @@
 		}
 		else
 		{	
+			buildLocalPoliticalChangesDataTable();
 			buildLocalLeadersDataTable();
 			buildLocalCastStatisticsDataTable();			
 			buildVotersByLocBoothDataTable();
@@ -573,8 +639,18 @@
 		newTabContent+='<div id="newProblemTabContentDiv_body"></div>';
 		newTabContent+='<div id="newProblemTabContentDiv_footer" align="right"></div>';
 		newTabContent+='</div>';
+
+		var classifiedTabContent='<div id="classifiedTabContentDiv">';
+		classifiedTabContent+='<div id="classifiedTabContentDiv_head"></div>' ;
+		classifiedTabContent+='<div id="classifiedTabContentDiv_body"></div>';
+		classifiedTabContent+='<div id="classifiedTabContentDiv_footer"></div>';
+		classifiedTabContent+='</div>';
 		
-		
+		var assignedIssuesTabContent='<div id="assignedIssuesTabContentDiv">';
+		assignedIssuesTabContent+='<div id="assignedIssuesTabContentDiv_head"></div>';
+		assignedIssuesTabContent+='<div id="assignedIssuesTabContentDiv_body"></div>';
+		assignedIssuesTabContent+='<div id="assignedIssuesTabContentDiv_footer"></div>';
+		assignedIssuesTabContent+='</div>';				
 				
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
 	    label: 'New Issues', 
@@ -582,35 +658,29 @@
 	    active: true 
 		})); 
 
-		var classifiedTabContent='<div id="classifiedTabContentDiv">';
-		classifiedTabContent+='<div id="classifiedTabContentDiv_head"></div>' ;
-		classifiedTabContent+='<div id="classifiedTabContentDiv_body"></div>';
-		classifiedTabContent+='<div id="classifiedTabContentDiv_footer"></div>';
-		classifiedTabContent+='</div>';
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-			label: 'Classified Issues', 
-			content:classifiedTabContent 
-		 
-		})); 
-		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-			label: 'Assigned Issues', 
-			content: '<div id="assignedIssuesContentDiv"></div>' 
-		 
-		})); 
-		 
-		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-			label: 'Progress', 
-			content: '<div id="progressContentDiv"></div>' 
+		label: 'Classified Issues', 
+		content:classifiedTabContent		 
 		})); 
 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-			label: 'Pending Issues', 
-			content: '<div id="pendingIssuesContentDiv"></div>' 
+		label: 'Assigned Issues', 
+		content: assignedIssuesTabContent		 
+		})); 
+		 
+		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
+		label: 'Progress', 
+		content: '<div id="progressContentDiv"></div>' 
 		})); 
 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-			label: 'Fixed Issues', 
-			content: '<div id="fixedIssuesContentDiv"></div>' 
+		label: 'Pending Issues', 
+		content: '<div id="pendingIssuesContentDiv"></div>' 
+		})); 
+
+		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
+		label: 'Fixed Issues', 
+		content: '<div id="fixedIssuesContentDiv"></div>' 
 		})); 
 
 		problemMgmtTabs.appendTo('problemMgmtTabContentDiv'); 
@@ -626,16 +696,27 @@
 												id: "reportNewProblem",  
 												type: "link",  
 												label: "Add New Problem",
-												href:"problemManagementAction.action",
+												href: "javascript:{}",
+												//click: "buildNewImpDatePopup()",
 												container: "newProblemTabContentDiv_head"  
-												}); 		
+												});
+
+			oButton.on("click", buildAddNewProblemPopup); 
+			//oButton.addListener("click", ); 		
 
 			var oButton = new YAHOO.widget.Button({ 
 								                id: "assignButton",  
 								                type: "button",  
 								                label: "Assign",  
 								                container: "classifiedTabContentDiv_footer"  
-            }); 	
+            }); 
+
+			var oButton = new YAHOO.widget.Button({ 
+								                id: "progressButton",  
+								                type: "button",  
+								                label: "Progress",  
+								                container: "assignedIssuesTabContentDiv_footer"  
+			});	
 	}
 
 	function buildConstMgmtTabView()
@@ -718,17 +799,7 @@
 				 {sNo:"4", description: "Delay for Cardiac Surgery with AarogyaSri Scheme", identifiedDate: new Date("March 11,2009"), source: "User", status:"New" },
 				 {sNo:"5", description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party", IdentifiedDate: new Date(2009, 2, 4), source: "Victim", status:"New" },
 				 {sNo:"6", description: "Polluted water is being supplied since two weeks", identifiedDate: new Date("December 11, 2009"), source: "Party Analyst", status:"New" } 
-		],
-
-			
-			localPoliticalChanges: [
-					{SNo:"1", Description: "Brief Description about the political changes", Date: new Date("December3 , 2009"),Impact: "The impact for that particular Context"},
-					{SNo:"2", Description: "Brief Description about the political changes", Date: new Date("December3 , 2009"),Impact: "The impact for that particular Context"},
-					{SNo:"3", Description: "Brief Description about the political changes", Date: new Date("December3 , 2009"),Impact: "The impact for that particular Context"},
-					{SNo:"4", Description: "Brief Description about the political changes", Date: new Date("December3 , 2009"),Impact: "The impact for that particular Context"},
-					{SNo:"5", Description: "Brief Description about the political changes", Date: new Date("December3 , 2009"),Impact: "The impact for that particular Context"}
-		]
-				           			
+		]				           			
 		}					
 	 
 
@@ -840,19 +911,19 @@
 	function buildAssignedIssuesDataTable()
 	{
 			var myColumnDefs = [ 
-	            {key:"SNo"}, 
-	            {key:"Title", sortable:true}, 
-	            {key:"Concerned Department",sortable:true},
-				{key:"Assigned Official" ,sortable:true},	
-				{key:"Contact Number"},
-				{key:"Progress"},
-				{key:"Fix"}
+	            {key:"select", label: "Select"}, 
+	            {key:"title", label: "Title", sortable:true}, 
+	            {key:"concernedDepartment", label:"Concerned Department", sortable:true},
+				{key:"assignedOfficial" , label: "Assigned Official", sortable:true},	
+				{key:"contactNumber", label: "Contact Number"}
+				//{key:"progress" ,Progress},
+				//{key:"fix" ,Fix}
 	        ]; 
 	 
 	        var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.problems); 
 	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        myDataSource.responseSchema = { 
-	            fields: ["SNo","Title","Concerned Department","Progress"] 
+	            fields: ["select","title","concernedDepartment"] 
 	        }; 
 			
 			var myConfigs = { 
@@ -862,7 +933,7 @@
 			}; 
 
 			var myDataTable =  
-	            new YAHOO.widget.DataTable("assignedIssuesContentDiv", myColumnDefs, myDataSource,myConfigs); 
+	            new YAHOO.widget.DataTable("assignedIssuesTabContentDiv_body", myColumnDefs, myDataSource,myConfigs); 
 	                 
 	       
 	       problemMgmtTabs.getTab(2).addListener("click", function() {myDataTable.onShow()});         
@@ -975,17 +1046,19 @@
 	{
 
 		var localPolChangesColumnDefs = [
-		                                 {key: "SNo", formatter:"number", sortable:true},
-		                                 {key: "Description", sortable:true},
-		                                 {key: "Date", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
-		                                 {key: "Impact", sortable:true}
+		                                 //{key: "sNo", label: "SNo", formatter:"number", sortable:true},
+		                                 {key: "description", label: "Description", sortable:true},
+		                                 {key: "date", label: "Date", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+		                                 {key: "impact", label: "Impact", sortable:true}
 
 		                                 ];
 
-		var localPolChangesDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.localPoliticalChanges);
+		var localPolChangesDataSource = new YAHOO.util.DataSource(constMgmtMainObj.localPoliticalChangesArray);
 		localPolChangesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 		localPolChangesDataSource.responseSchema = { 
-	            fields: [{key:"SNo", parser:"number"}, "Description", "Date", "Impact"]
+	            fields: [
+	     	            //{key:"sNo", parser:"number"}, 
+	     	            "description", "date", "impact"]
 		};
 
 		var myConfigs = { 
@@ -1078,7 +1151,229 @@
 				oDT: myDataTable
 			};
 	}
+
+	function showDateCal(id)
+	{
+		if(dateCalendar)
+			dateCalendar.destroy();
+		
+		var navConfig = { 
+	      strings : { 
+	          month: "Choose Month", 
+	          year: "Enter Year", 
+	          submit: "OK", 
+	          cancel: "Cancel", 
+	          invalidYear: "Please enter a valid year" 
+	      }, 
+	      monthFormat: YAHOO.widget.Calendar.SHORT, 
+	      initialFocus: "year" 
+	}; 
+
+		var dateCalendar = new YAHOO.widget.Calendar(id, {navigator:navConfig, title:"Choose a date:", close:true }); 
+		dateCalendar.selectEvent.subscribe(displayDateText, dateCalendar, true); 		
+		dateCalendar.render(); 
+		dateCalendar.show();	
+	}
+	function displayDateText(type,args,obj)
+	{			
+		var dates = args[0]; 
+		var date = dates[0]; 
+		var year = date[0], month = date[1], day = date[2]; 
+
+		var txtDate1 = document.getElementById("existingFromText"); 
+		txtDate1.value = day + "/" + month + "/" + year; 
+		
+
+	}
+	function getPersonDetails(value)
+	{
+		//var probSource = document.form.probSource.value;
+		var elmt = document.getElementById("personDetailsDiv");
+		if(!elmt)
+			alert("No div present to display personal details");
+		if(value=="External Person" || value=="Call Center") 
+		{		
+			elmt.style.display = 'block';
+		}
+		else
+		{	
+			elmt.style.display = 'none';
+		}
+	}
 	
+	function buildAddNewProblemPopup()
+	{
+		var elmt = document.getElementById('constituencyMgmtBodyDiv');
+		var m_names = new Array("January", "February", "March", 
+				"April", "May", "June", "July", "August", "September", 
+				"October", "November", "December");
+
+
+				var d = new Date();
+				var curr_date = d.getDate();
+				var curr_month = d.getMonth();
+				var curr_year = d.getFullYear();
+				
+				var todayDate=curr_date + "/" + m_names[curr_month] + "/" + curr_year;
+					
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','addNewProblemDiv');
+		divChild.setAttribute('class','newProbdialog');
+
+		var contentStr=''; 
+		
+		contentStr+='<div class="hd" align="left">Add New Problem</div>';
+		contentStr+='<div class="bd" align="left">';
+		contentStr+='<div id="problemDetailsDivBody">';
+		contentStr+='<form name="form" action="problemManagementAction" method="POST">';
+		contentStr+='<table>';
+		contentStr+='<tr>';
+		contentStr+='<th align="left" colspan="3"><u>Problem Details</u></th>';
+		contentStr+='</tr>';
+		contentStr+='<tr></tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>Problem</td>';
+		contentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="problemText" name="problemText"/></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>Description</td>';
+		contentStr+='<td style="padding-left: 15px;"><textarea cols="50" id="descTextArea" name="descTextArea"></textarea></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';	
+		contentStr+='<td>State</td>';
+		contentStr+='<td style="padding-left: 15px;"><select id="pstateField" name="state" onchange="getnextList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
+		for(var i in locationDetails.stateArr)
+		{
+			contentStr+='<option value='+locationDetails.stateArr[i].id+'>'+locationDetails.stateArr[i].value+'</option>';
+		}
+		contentStr+='</select></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>District</td>';
+		contentStr+='<td style="padding-left: 15px;"><select id="pdistrictField" class="selectWidth" name="district"  onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
+		for(var i in locationDetails.districtArr)
+		{
+			contentStr+='<option value='+locationDetails.districtArr[i].id+'>'+locationDetails.districtArr[i].value+'</option>';
+		}
+		contentStr+='</select></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>Constituency</td>';
+		contentStr+='<td style="padding-left: 15px;"><select id="pconstituencyField" class="selectWidth" name="constituency"  onchange="getMandalList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
+		for(var i in locationDetails.constituencyArr)
+		{
+			contentStr+='<option value='+locationDetails.constituencyArr[i].id+'>'+locationDetails.constituencyArr[i].value+'</option>';
+		}
+		contentStr+='</select></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>Mandal</td>';
+		contentStr+='<td style="padding-left: 15px;"><select id="pmandalField" class="selectWidth" name="mandal" onchange="getTownshipsForMandal(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
+		for(var i in locationDetails.mandalArr)
+		{
+			contentStr+='<option value='+locationDetails.mandalArr[i].id+'>'+locationDetails.mandalArr[i].value+'</option>';
+		}
+		contentStr+='</select></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>Village</td>';
+		contentStr+='<td style="padding-left: 15px;"><select class="selectWidth" id="pvillageField" name="village" onchange="getnextList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
+		for(var i in locationDetails.villageArr)
+		{
+			contentStr+='<option value='+locationDetails.villageArr[i].id+'>'+locationDetails.villageArr[i].value+'</option>';
+		}
+		contentStr+='</select></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>Hamlet</td>';
+		contentStr+='<td style="padding-left: 15px;"><select class="selectWidth" id="phamletField" name="hamlet">';
+		for(var i in locationDetails.hamletArr)
+		{
+			contentStr+='<option value='+locationDetails.hamletArr[i].id+'>'+locationDetails.hamletArr[i].value+'</option>';
+		}
+		contentStr+='</select></td>';
+		contentStr+='</tr>';		
+		contentStr+='<tr>';
+		contentStr+='<td>Reported Date</td>';
+		contentStr+='<td style="padding-left: 15px;"><input type="text" value="'+todayDate+'" size="53" id="reportedDateText" name="reportedDateText"/></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>Existing From </td>';
+		contentStr+='<td style="padding-left: 15px;">';
+		contentStr+='<div><input type="text" id="existingFromText" name="existingFromText" size="53" onfocus="showDateCal(\'existingFromText_Div\')"/></div>';
+		contentStr+='<div id="existingFromText_Div" class="tinyDateCal"></div>';
+		contentStr+='</td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>Problem Source</td>';
+		contentStr+='<td style="padding-left: 15px;"><select id="problemSource" class="selectWidth" name="problemSource" onchange="getPersonDetails(this.options[this.selectedIndex].text)">';
+		for(var i in problemsMainObj.problemSourcesArr)
+		{
+			contentStr+='<option value='+problemsMainObj.problemSourcesArr[i].id+'>'+problemsMainObj.problemSourcesArr[i].value+'</option>';
+		}
+		contentStr+='</td>';	
+		contentStr+='</tr>';
+		contentStr+='</table>';
+		contentStr+='<div id="personDetailsDiv" style="display: none;">';
+		contentStr+='<table>';
+		contentStr+='<tr>';
+		contentStr+='<th align="left" colspan="2"><u>Complained Person Details</u></th>';
+		contentStr+='</tr>';
+		contentStr+='<tr></tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>Person Name</td>';
+		contentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="problemText" name="problemText"/></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>Mobile</td>';
+		contentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="mobileText" name="mobileText"/></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>Tele Phone</td>';
+		contentStr+='<td style="padding-left:15px;"><input type="text" size="53" id="mobileText" name="mobileText"/></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td>E Mail</td>';
+		contentStr+='<td style="padding-left:15px;"><input type="text" size="53" id="emailText" name="emailText"/></td>';
+		contentStr+='</tr>';
+		contentStr+='<tr>';
+		contentStr+='<td width="100px;">Address</td>';
+		contentStr+='<td style="padding-left:15px;"><input type="text" size="53" id="addressText" name="addressText"/></td>';
+		contentStr+='</tr>';
+		contentStr+='</table>';
+		contentStr+='</div>';
+		contentStr+='</form>';
+		contentStr+='</div>';
+		contentStr+='</div>';
+		divChild.innerHTML=contentStr;
+		elmt.appendChild(divChild);	 
+	
+		if(newProblemDialog)
+			newProblemDialog.destroy();
+		newProblemDialog = new YAHOO.widget.Dialog("addNewProblemDiv",
+				{ width : "600px", 
+	              fixedcenter : false, 
+	              visible : true,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  hideaftersubmit:true,
+				  close:true,
+				  buttons : [ { text:"Add Problem", isDefault:true}, 
+	                          { text:"Cancel", handler: handleNewProbCancel}]
+	             } ); 
+		newProblemDialog.render();
+		
+	}
+	function handleNewProbSubmit()
+	{
+		
+	}
+
+	function handleNewProbCancel()
+	{
+		this.cancel();
+	}
 </script>
 </head>
 <body>
@@ -1146,6 +1441,13 @@
 			};
 	locationDetails.hamletArr.push(ob);	
 </c:forEach>
+<c:forEach var="probSources"  items="${problemSources}" >
+var ob={
+			id:'${probSources.id}',
+			value:'${probSources.name}'
+		};
+problemsMainObj.problemSourcesArr.push(ob);	
+</c:forEach>
 
 buildConstituencyLayout();
 buildOuterTabView();
@@ -1169,7 +1471,7 @@ buildNewProblemsDataTable();
 buildClassifiedDataTable();
 buildAssignedIssuesDataTable();	
 buildLocalProblemsDataTable();
-buildLocalPoliticalChangesDataTable();
+
 
 </script>
 </body>
