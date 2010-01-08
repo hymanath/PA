@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.LocalLeadersVO;
+import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -20,12 +21,17 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class VoterInfoAction extends ActionSupport implements ServletRequestAware{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long hamletId;
 	private ConstituencyManagementVO constituencyManagementVO;
 	private IConstituencyManagementService constituencyManagementService;
 	private HttpServletRequest request;
 	private List<VoterHouseInfoVO> votersByHouseNos;
 	private List<LocalLeadersVO> localLeaders;
+	private List<PoliticalChangesVO> politicalChanges;
 	JSONObject jObj = null;
 	private String task = null;
 	
@@ -82,7 +88,16 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 	public void setLocalLeaders(List<LocalLeadersVO> localLeaders) {
 		this.localLeaders = localLeaders;
 	}
+	
+	public List<PoliticalChangesVO> getPoliticalChanges() {
+		return politicalChanges;
+	}
 
+	public void setPoliticalChanges(List<PoliticalChangesVO> politicalChanges) {
+		this.politicalChanges = politicalChanges;
+	}
+
+	
 	public String getVotersByHamlet()
 	{
 		String param=null;
@@ -161,6 +176,21 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			
 			constituencyManagementVO.setLocalLeaders(localLeaders);
 			
+			PoliticalChangesVO politicalChangesVO1 = new PoliticalChangesVO();
+			PoliticalChangesVO politicalChangesVO2 = new PoliticalChangesVO();
+			
+			politicalChangesVO1.setDate("09-12-2009");
+			politicalChangesVO1.setDescription("Description about change");
+			politicalChangesVO1.setImpact("Impact");
+			
+			politicalChangesVO2.setDate("29-12-2009");
+			politicalChangesVO2.setDescription("Description about change");
+			politicalChangesVO2.setImpact("Impact");
+			
+			politicalChanges = new ArrayList<PoliticalChangesVO>();
+			politicalChanges.add(politicalChangesVO1);
+			politicalChanges.add(politicalChangesVO2);
+			constituencyManagementVO.setPoliticalChanges(politicalChanges);
 		}
 		
 		return SUCCESS;
