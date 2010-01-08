@@ -128,7 +128,7 @@ public class UserCalendarService implements IUserCalendarService {
 			
 			}
 		}
-		List<UserImpDate> userImpDates = userImpDatesDAO.findByUserId(userID);
+		List<UserImpDate> userImpDates = userImpDatesDAO.findByUserId(userID, inputDate);
 		log.debug("UserCalenderService.getUserImpDates() userImpDates.size()"+userImpDates.size());
 		if(userImpDates != null){
 			for(UserImpDate userImpDate : userImpDates){				
@@ -239,6 +239,12 @@ public class UserCalendarService implements IUserCalendarService {
 				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(cal,impDate);
 				importantDatesVOs.add(importantDatesVO);				
 			}
+		}else{
+			calendar.setTime(startDate);
+			if(!(calendar.before(startCalendar)) && (!calendar.after(endCalendar))){				
+				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(calendar,impDate);			 
+				importantDatesVOs.add(importantDatesVO);
+			}
 		}
 		return importantDatesVOs;
 	}
@@ -318,6 +324,12 @@ public class UserCalendarService implements IUserCalendarService {
 				}
 				ImportantDatesVO importantDatesVO = createImportantDatesVOForParty(cal,impDate);
 				importantDatesVOs.add(importantDatesVO);				
+			}
+		} else{
+			calendar.setTime(startDate);
+			if(!(calendar.before(startCalendar)) && (!calendar.after(endCalendar))){				
+				ImportantDatesVO importantDatesVO = createImportantDatesVOForParty(calendar,impDate);			 
+				importantDatesVOs.add(importantDatesVO);
 			}
 		}
 		return importantDatesVOs;

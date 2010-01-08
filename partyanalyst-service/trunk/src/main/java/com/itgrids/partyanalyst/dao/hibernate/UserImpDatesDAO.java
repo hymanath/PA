@@ -22,13 +22,10 @@ public class UserImpDatesDAO extends GenericDaoHibernate<UserImpDate, Long> impl
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<UserImpDate> findByUserId(Long userID) {
+	public List<UserImpDate> findByUserId(Long userID, Calendar inputDate) {
 		log.debug("UserImpDatesDAO.findByuser() ...Start");
-		//jan-0, feb-1, mar-2.... dec-11
-		Calendar calendar = Calendar.getInstance();
-		int currentMonth = calendar.get(Calendar.MONTH) + 1;
-
-		List<UserImpDate> result = getHibernateTemplate().find(" from UserImpDate model where model.user.registrationId=? and sysdate() <= model.tillDate",userID);// and " +
+		Object[] params = {userID, inputDate.getTime()};
+		List<UserImpDate> result = getHibernateTemplate().find(" from UserImpDate model where model.user.registrationId=? and ? <= model.tillDate",params);// and " +
 					//"Month(model.effectiveDate) - " + currentMonth + " in (0,1)" , userID);
 		log.debug("UserImpDatesDAO.findByuser() result.size()"+result.size());
 		return  result;
