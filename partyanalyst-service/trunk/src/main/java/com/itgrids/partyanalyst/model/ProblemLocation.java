@@ -24,6 +24,10 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "problem_location")
 public class ProblemLocation extends BaseModel implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8098244953899201518L;
 	private Long problemLocationId;
 	private Hamlet hamlet;
 	private Ward ward;
@@ -66,7 +70,7 @@ public class ProblemLocation extends BaseModel implements Serializable{
 		this.problemLocationId = problemLocationId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "township_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -78,7 +82,7 @@ public class ProblemLocation extends BaseModel implements Serializable{
 		this.township = township;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "hamlet_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -90,7 +94,7 @@ public class ProblemLocation extends BaseModel implements Serializable{
 		this.hamlet = hamlet;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "ward_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -102,7 +106,7 @@ public class ProblemLocation extends BaseModel implements Serializable{
 		this.ward = ward;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "problem_classification_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -123,7 +127,7 @@ public class ProblemLocation extends BaseModel implements Serializable{
 		this.problemHistories = problemHistories;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "problem_source_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
