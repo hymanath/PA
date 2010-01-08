@@ -40,5 +40,7 @@ public interface ITownshipDAO extends GenericDao<Township, Long>{
 	public List<Township> findByTownshipType(Object townshipType);
 	
 	public List<Township> findByTehsilID(Long mandalID);
+	
+	public List<Township> findByTownshipNameAndTehsilId(String townshipName,Long tehsilId);
 
 }
