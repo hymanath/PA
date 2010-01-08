@@ -598,7 +598,8 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText);								
+								myResults = YAHOO.lang.JSON.parse(o.responseText);	
+								console.log(myResults);
 								if(jsObj.task == "getUserLocation")
 									fillDataOptions(myResults);	
 								else if(jsObj.task == "fillSelectElements")
@@ -1441,7 +1442,7 @@
 		callAjax(jsObj,url);
 	}
 	function addCreatedEvent(results,jsObj)
-	{			
+	{	
 		var divElmt = document.createElement('div');
 
 		var str='';
@@ -1449,7 +1450,7 @@
 		{			
 			str+='<div id="'+results.userEventsId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\'\',\'impEvent\')">';
 		}
-		else if(jsObj.task == "createImpDateEvent")
+		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "subscribe")
 		{			
 			str+='<div id="'+results[0].importantDateId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\''+results[0].eventType+'\',\'impDate\')">';
 		}
@@ -1472,7 +1473,7 @@
 				str+='<td>'+eDayobj.day+'/'+eDayobj.month+'/'+eDayobj.year+'</td>';	
 			}
 		}
-		else if(jsObj.task == "createImpDateEvent")
+		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "subscribe")
 		{
 			var impDayobj = getDateTime(results[0].impDate);	
 			str+='<td>'+results[0].title+'</td>';
@@ -1495,44 +1496,25 @@
 		}
 		
 		if(jsObj.task == "createEvent")
-			newEventDialog.cancel();
+		{	
+			if(newEventDialog)
+				newEventDialog.cancel();
+		}
 		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "subscribe")
-			newDateDialog.cancel();	
+		{
+			if(newDateDialog)
+				newDateDialog.cancel();	
+		}
 
-		if(results.startDate)
-		{			
-			var index = results.startDate.indexOf(' ');
-			var colIndex1 = results.startDate.indexOf(':');
-			var colIndex2 = results.startDate.lastIndexOf(':');
-			
-			var StartDayStr = results.startDate.substring(0,2);		
-			var StartMonStr = results.startDate.substring(3,5);
-			var StartYearStr = results.startDate.substring(6,10);	
-			var StartTimeHrs = results.startDate.substring(index,colIndex1);	
-			var StartTimeMin = results.startDate.substring(colIndex1+1,colIndex2);	
-		}
-		if(results.endDate)
-		{			
-			var index = results.endDate.indexOf(' ');
-			var colIndex1 = results.endDate.indexOf(':');
-			var colIndex2 = results.endDate.lastIndexOf(':');
-			
-			var EndDayStr = results.endDate.substring(0,2);		
-			var EndMonStr = results.endDate.substring(3,5);
-			var EndYearStr = results.endDate.substring(6,10);	
-			var EndTimeHrs = results.endDate.substring(index,colIndex1);	
-			var EndTimeMin = results.endDate.substring(colIndex1+1,colIndex2);	
-		}
 		
 		if(results.endDate)
 		{			
-			var renderValue=StartMonStr+"/"+StartDayStr+"/"+StartYearStr+"-"+EndMonStr+"/"+EndDayStr+"/"+EndYearStr;
+			var renderValue=sDayobj.month+"/"+sDayobj.day+"/"+sDayobj.year+"-"+eDayobj.month+"/"+eDayobj.day+"/"+eDayobj.year;
 		}
 		else
 		{			
-			var renderValue=StartMonStr+"/"+StartDayStr+"/"+StartYearStr;
+			var renderValue=impDayobj.month+"/"+impDayobj.day+"/"+impDayobj.year;
 		}
-		
 		
 		var renderObj = {
 							renderDate:renderValue,
@@ -1954,16 +1936,11 @@
 		eventStr+='</tr>';
 
 		eventStr+='<tr>';
-		eventStr+='<th>Start Date</th>';
+		eventStr+='<th>Important Date</th>';
 		eventStr+='<td>';
 		eventStr+='<div><input type="text" id="ImpStartDateText" value="'+date+'" name="ImpStartDateText" onfocus="showDateCal(\'ImpStartDateText_Div\')"/></div>';
 		eventStr+='<div id="ImpStartDateText_Div" class="tinyDateCal"></div>';
-		eventStr+='</td>';
-		eventStr+='<th>End Date</th>';
-		eventStr+='<td>';
-		eventStr+='<div><input type="text" id="ImpEndDateText" value="'+date+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_Div\')"/></div>';
-		eventStr+='<div id="ImpEndDateText_Div" class="tinyDateCal"></div>';
-		eventStr+='</td>';
+		eventStr+='</td>';		
 		eventStr+='</tr>';
 	
 		eventStr+='<tr>';
@@ -1973,10 +1950,15 @@
 
 		eventStr+='<tr>';
 		eventStr+='<th>Repeat Frequency</th>';
-		eventStr+='<td colspan="3">';
+		eventStr+='<td>';
 		eventStr+='<select id="repeatFreqSelect" class="timeSelect" onchange="showEndDateText(this.options[this.selectedIndex].text)">';
 		eventStr+='<option>No Repeat</option>';
 		eventStr+='<option>Yearly</option><option>Monthly</option><option>Weekly</option></select></td>';
+		eventStr+='<th>Repeat Until</th>';
+		eventStr+='<td>';
+		eventStr+='<div><input type="text" id="ImpEndDateText" value="'+date+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_Div\')"/></div>';
+		eventStr+='<div id="ImpEndDateText_Div" class="tinyDateCal"></div>';
+		eventStr+='</td>';
 		eventStr+='</tr>';		
 
 		eventStr+='</table>';
@@ -2005,7 +1987,7 @@
 	function showEndDateText(val)
 	{
 		var txtElmt = document.getElementById('ImpEndDateText');
-		if(val == "Does Not Repeat")
+		if(val == "No repeat")
 		{
 			txtElmt.disabled=true;
 		}
@@ -2377,7 +2359,7 @@
 					};
 					impEvents.push(ob);
 		</c:forEach>		
-		
+		console.log(impEvents);
 		showInitialImpEventsAndDates(impEvents,'impEvents',"");
 		
 		var impDates = new Array();
@@ -2392,7 +2374,7 @@
 					};
 					impDates.push(ob);
 		</c:forEach>
-		
+		console.log(impDates);
 		showInitialImpEventsAndDates(impDates,'impDates',"");
 		renderStack();
 
