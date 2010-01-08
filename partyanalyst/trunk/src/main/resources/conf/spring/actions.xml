@@ -60,6 +60,9 @@
 		<property name="stateElectionResultsService" ref="stateElectionResultsService" />
 	</bean>
 	
+	<bean id="districtPageAction" class="com.itgrids.partyanalyst.web.action.DistrictPageAction" singleton="false">
+		<property name="districtPageService" ref="districtPageService" />
+	</bean>
 
 	<bean id="candidateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.CandidateElectionResultsAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
