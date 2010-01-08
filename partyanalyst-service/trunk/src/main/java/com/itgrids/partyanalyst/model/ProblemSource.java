@@ -24,11 +24,16 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "problem_source")
 public class ProblemSource extends BaseModel implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3768383074738249375L;
 	private Long problemSourceId;
 	private String postedBy;
 	private String source;
 	private Registration user;
 	private Problem problem;
+	private ProblemExternalSource problemExternalSource;
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
 	
 	public ProblemSource(){
@@ -40,11 +45,12 @@ public class ProblemSource extends BaseModel implements Serializable{
 	}
 	
 	public ProblemSource(String postedBy, String source,
-			Registration user, Problem problem, Set<ProblemLocation> problemLocations) {
+			Registration user, Problem problem,ProblemExternalSource problemExternalSource, Set<ProblemLocation> problemLocations) {
 		this.postedBy = postedBy;
 		this.source = source;
 		this.user = user;
 		this.problem = problem;
+		this.problemExternalSource = problemExternalSource;
 		this.problemLocations = problemLocations;
 	}
 
@@ -77,7 +83,7 @@ public class ProblemSource extends BaseModel implements Serializable{
 		this.source = source;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -89,7 +95,7 @@ public class ProblemSource extends BaseModel implements Serializable{
 		this.user = user;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "problem_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -99,6 +105,18 @@ public class ProblemSource extends BaseModel implements Serializable{
 
 	public void setProblem(Problem problem) {
 		this.problem = problem;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "problem_external_source_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public ProblemExternalSource getProblemExternalSource() {
+		return problemExternalSource;
+	}
+
+	public void setProblemExternalSource(ProblemExternalSource problemExternalSource) {
+		this.problemExternalSource = problemExternalSource;
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemSource")
