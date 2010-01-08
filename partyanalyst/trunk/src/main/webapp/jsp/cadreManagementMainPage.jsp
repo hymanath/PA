@@ -1443,8 +1443,13 @@
 	}
 	function addCreatedEvent(results,jsObj)
 	{	
+		
 		var divElmt = document.createElement('div');
-
+		if(results == "")
+		{
+			alert("No dates to display");
+			return;
+		}
 		var str='';
 		if(jsObj.task == "createEvent")
 		{			
