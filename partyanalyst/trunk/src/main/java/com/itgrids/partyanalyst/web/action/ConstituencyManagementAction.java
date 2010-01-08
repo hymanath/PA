@@ -46,6 +46,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> villageList;
 	private List<SelectOptionVO> hamletList;
 	private IRegionServiceData regionServiceData;
+	private List<SelectOptionVO> problemSources;
 
 	public ConstituencyManagementVO getConstituencyManagementVO() {
 		return constituencyManagementVO;
@@ -155,11 +156,29 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	public HttpServletRequest getRequest() {
 		return request;
 	}
-		
+			
+	public List<SelectOptionVO> getProblemSources() {
+		return problemSources;
+	}
+
+	public void setProblemSources(List<SelectOptionVO> problemSources) {
+		this.problemSources = problemSources;
+	}
+
 	@SuppressWarnings("deprecation")
 	public String execute() throws Exception{
 		
 		log.debug("In execute of Constituency Management Action ********");
+		
+		SelectOptionVO probSource1 = new SelectOptionVO(1L, "Party Analyst");
+		SelectOptionVO probSource2 = new SelectOptionVO(2L, "Call Center");
+		SelectOptionVO probSource3 = new SelectOptionVO(3L, "User");
+		SelectOptionVO probSource4 = new SelectOptionVO(4L, "External Person");
+		problemSources = new ArrayList<SelectOptionVO>();
+		problemSources.add(probSource1);
+		problemSources.add(probSource2);
+		problemSources.add(probSource3);
+		problemSources.add(probSource4);
 		
 		constituencyManagementVO = new ConstituencyManagementVO();
 		ProblemManagementVO problemManagementVO = new ProblemManagementVO();
@@ -168,14 +187,14 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO(); 
 		problemDetailsVO.setDefinition("Impurity water");
 		problemDetailsVO.setDescription("Polluted water is beign supplied");
-		problemDetailsVO.setIdentifiedDate(new java.util.Date("03/04/2009"));
+		problemDetailsVO.setIdentifiedDate("03/04/2009");
 		problemDetailsVO.setLocation("Madanapalle");
 		problemDetailsVO.setSource("Party Analyst");
 		
 		ProblemDetailsVO problemDetailsVO1 = new ProblemDetailsVO();
 		problemDetailsVO1.setDefinition("No Bus Service");
 		problemDetailsVO1.setDescription("Bus service cancelled to village");
-		problemDetailsVO1.setIdentifiedDate(new java.util.Date("01/03/2009"));
+		problemDetailsVO1.setIdentifiedDate("01/03/2009");
 		problemDetailsVO1.setLocation("Nagavaram");
 		problemDetailsVO1.setSource("VIctim");
 		
