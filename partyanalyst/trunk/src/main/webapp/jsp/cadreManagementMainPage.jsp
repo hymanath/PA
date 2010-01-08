@@ -1952,8 +1952,8 @@
 		eventStr+='<th>Repeat Frequency</th>';
 		eventStr+='<td>';
 		eventStr+='<select id="repeatFreqSelect" class="timeSelect" onchange="showEndDateText(this.options[this.selectedIndex].text)">';
-		eventStr+='<option>No Repeat</option>';
-		eventStr+='<option>Yearly</option><option>Monthly</option><option>Weekly</option></select></td>';
+		eventStr+='<option value="No Repeat">No Repeat</option>';
+		eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
 		eventStr+='<th>Repeat Until</th>';
 		eventStr+='<td>';
 		eventStr+='<div><input type="text" id="ImpEndDateText" value="'+date+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_Div\')"/></div>';
@@ -2010,7 +2010,7 @@
 		var repeatFreqElmt = document.getElementById("repeatFreqSelect");
 		repeatFreqVal =  repeatFreqElmt.options[repeatFreqElmt.selectedIndex].value;
 
-		if(repeatFreqVal == "Does Not Repeat")
+		if(repeatFreqVal == "No Repeat")
 			ImpendDateVal = ImpstartDateVal;
 
 		var jsObj={
