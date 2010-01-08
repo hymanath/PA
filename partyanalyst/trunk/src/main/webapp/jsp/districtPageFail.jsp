@@ -8,5 +8,6 @@
 </head>
 <body>
 	Cannot Find details for the district.
+	To know complete exception details please verify the log file.
 </body>
 </html>
