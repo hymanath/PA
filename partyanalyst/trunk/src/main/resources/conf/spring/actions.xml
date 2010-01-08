@@ -90,6 +90,10 @@
 		<property name="boothDataValidationService" ref="boothDataValidationService" />
 	</bean>
 	
+	<bean id="problemUploadAction" class="com.itgrids.partyanalyst.web.action.ProblemUploadAction" singleton="false">
+		<property name="problemUploadService" ref="problemUploadService" />
+    </bean>
+	
 	<bean id="cadresInfoAjaxAction" class ="com.itgrids.partyanalyst.web.action.CadresInfoAjaxAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
 	</bean>
