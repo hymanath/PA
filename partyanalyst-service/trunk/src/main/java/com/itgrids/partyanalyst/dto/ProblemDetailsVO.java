@@ -7,7 +7,7 @@ public class ProblemDetailsVO {
 	private Long problemID;
 	private String definition;
 	private String description;
-	private Date identifiedDate;
+	private String identifiedDate;
 	private String location;	
 	private String source;
 	
@@ -29,10 +29,10 @@ public class ProblemDetailsVO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Date getIdentifiedDate() {
+	public String getIdentifiedDate() {
 		return identifiedDate;
 	}
-	public void setIdentifiedDate(Date identifiedDate) {
+	public void setIdentifiedDate(String identifiedDate) {
 		this.identifiedDate = identifiedDate;
 	}
 	
