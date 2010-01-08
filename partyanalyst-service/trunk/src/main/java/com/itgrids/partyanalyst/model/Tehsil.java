@@ -85,7 +85,7 @@ public class Tehsil implements java.io.Serializable {
 		this.tehsilId = tehsilId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "district_id")
 	public District getDistrict() {
 		return this.district;
