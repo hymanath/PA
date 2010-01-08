@@ -171,6 +171,11 @@
            <result name="success">/jsp/uploadBoothResult.jsp</result>
            <result name="error">/jsp/mandalPageFail.jsp</result>
         </action>
+        
+        <action name="problemUploadAction" class="problemUploadAction">
+           <result name="success">/jsp/ProblemUpload.jsp</result>
+           <result name="error">/jsp/ProblemUploadError.jsp</result>
+        </action>
 		
 		<action name="partyBoothResultAction" class="partyBoothResultAction">
            <result name="success">/jsp/boothResultsForParty.jsp</result>
