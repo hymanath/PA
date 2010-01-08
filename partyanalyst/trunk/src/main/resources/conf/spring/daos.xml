@@ -164,6 +164,9 @@
 	<bean id="problemSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemSourceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="problemExternalSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemExternalSourceDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="problemSourceScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemSourceScopeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
