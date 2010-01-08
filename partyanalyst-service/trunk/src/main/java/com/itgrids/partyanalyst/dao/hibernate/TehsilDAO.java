@@ -43,4 +43,16 @@ public class TehsilDAO extends GenericDaoHibernate<Tehsil, Long> implements ITeh
 		return getHibernateTemplate().find("from Tehsil model where model.tehsilName = ? and model.district.districtId = ?", params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List findTehsilsByDistrict(Long districtId){
+		StringBuilder query = new StringBuilder();
+		query.append("Select model.tehsilId, model.tehsilName ");
+		query.append("from Tehsil model where ");
+		query.append("model.district.districtId ="+districtId);
+		query.append("order by model.tehsilName");
+		return getHibernateTemplate().find(query.toString());
+	}
+	
+	
+	
 }
