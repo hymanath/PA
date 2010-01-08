@@ -137,8 +137,9 @@
 					selected:value
 			}
 		
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-			callAjax(rparam);
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;		
+		callAjax(rparam, jsObj, url);
 	}
 	function getnextList(name,value,choice)
 	{
@@ -152,18 +153,18 @@
 			}
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-			callAjax(rparam);
+			var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;
+		callAjax(rparam, jsObj, url);
 	}
 
-	function callAjax(param){
-		var myResults;
- 		var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+param;			
+	function callAjax(param, jsObj, url){
+		var myResults;			
  		var callback = {			
  		               success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
 								//console.log(myResults);
-								buildSelectOption(myResults);								
+								buildSelectOption(myResults, jsObj);								
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
 							}  
@@ -188,8 +189,9 @@
 					changed:choice
 			}
 		
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-			callAjax(rparam);
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);			
+			var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;			
+		callAjax(rparam, jsObj, url);
 	}
 	function getConstituencyList(name,value,choice)
 	{
@@ -201,16 +203,16 @@
 					changed:choice
 			}
 		
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-			callAjax(rparam);
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);					
+			var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;	
+			callAjax(rparam, jsObj, url);
 	}
-	function buildSelectOption(results)
+	function buildSelectOption(results, jsObj)
 	{		
-		var taskValue= YAHOO.lang.JSON.parse(results.task);
 
-		var selectedValue=taskValue.reportLevel;
-		var taskType=taskValue.type;
-		var changedVal = taskValue.changed;
+		var selectedValue= jsObj.reportLevel;
+		var taskType=jsObj.type;
+		var changedVal = jsObj.changed;
 		
 		var selectedElmt;
 		
@@ -265,11 +267,11 @@
 		{
 			selectedElmt.remove(i);
 		}	
-		for(var val in results.namesList)
+		for(var val in results)
 		{			
 			var opElmt=document.createElement('option');
-			opElmt.value=results.namesList[val].id;
-			opElmt.text=results.namesList[val].name;
+			opElmt.value=results[val].id;
+			opElmt.text=results[val].name;
 			
 			try
 			{
