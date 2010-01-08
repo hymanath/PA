@@ -21,6 +21,11 @@ import javax.persistence.TemporalType;
 @Table(name = "problem")
 public class Problem extends BaseModel implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 181918698345045266L;
+	
 	private Long problemId;
 	private String description;
 	private String intensity;
