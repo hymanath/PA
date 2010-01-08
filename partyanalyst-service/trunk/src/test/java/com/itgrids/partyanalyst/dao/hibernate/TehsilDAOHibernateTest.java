@@ -1,23 +1,27 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Tehsil;
 
 public class TehsilDAOHibernateTest extends BaseDaoTestCase {
-	/*private ITehsilDAO tehsilDAO;
-	Tehsil t = new Tehsil(new Long(2),null,"ppp",new Long(200),java.sql.Date.valueOf("2005-5-8"),"2009-6-8",null);
+	private ITehsilDAO tehsilDAO;
+	//Tehsil t = new Tehsil(new Long(2),null,"ppp",new Long(200),java.sql.Date.valueOf("2005-5-8"),"2009-6-8",null);
 	
 	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
 		this.tehsilDAO = tehsilDAO;
 	}
 	
-	//@Test
+	/*//@Test
 	public void testFindByTehsilName(){
 		Tehsil t = tehsilDAO.findByTehsilName("xxx").get(0);
 		Assert.assertEquals(new Long(1), t.getTehsilId());
@@ -53,4 +57,11 @@ public class TehsilDAOHibernateTest extends BaseDaoTestCase {
 	public void test(){
 		Assert.assertEquals(1, 1);
 	}
+	
+	@Test
+	public void testFindByTehsilsByDistrict(){
+		List tehsil =  tehsilDAO.findTehsilsByDistrict(new Long(17));
+		Assert.assertEquals(57, tehsil.size());
+	}
+	
 }
