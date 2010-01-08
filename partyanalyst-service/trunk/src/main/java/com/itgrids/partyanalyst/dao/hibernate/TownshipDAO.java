@@ -18,6 +18,7 @@ public class TownshipDAO extends GenericDaoHibernate<Township, Long> implements 
 		super(Township.class);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Township> findByProperty(TownshipColumnNames propertyName, Object value){
 
 		return getHibernateTemplate().find("from Township where " + propertyName.getValue() + "=?", value);
@@ -35,9 +36,15 @@ public class TownshipDAO extends GenericDaoHibernate<Township, Long> implements 
 		return findByProperty(TownshipColumnNames.TOWNSHIP_TYPE, townshipType);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Township> findByTehsilID(Long mandalID){
 		return getHibernateTemplate().find("from Township model where model.tehsil.tehsilId=?", mandalID);
 		
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Township> findByTownshipNameAndTehsilId(String townshipName,Long tehsilId){
+		Object[] params = {townshipName,tehsilId};
+		return getHibernateTemplate().find("from Township model where model.townshipName=? and model.tehsil.tehsilId=?",params);
+	}
 }
