@@ -43,6 +43,7 @@
 	<!-- YUI Dependency files (End) -->
 
 	<!--<script type="text/javascript" src="js/cadreManagement/cadreSMSPageJs.js"></script>-->
+	<script type="text/javascript" src="js/cadreManagement/cadreLocation.js"></script>
 
 	
 	<style type="text/css">
@@ -595,11 +596,12 @@
 
 	function callAjax(jsObj,url)
 	{			
+		
  		var callback = {			
  		               success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
-								console.log(myResults);
+								
 								if(jsObj.task == "getUserLocation")
 									fillDataOptions(myResults);	
 								else if(jsObj.task == "fillSelectElements")
@@ -616,7 +618,7 @@
 								{
 									var elmt = document.getElementById('subscribePartyDates');
 									elmt.innerHTML=myResults.subscribeTitle;
-									addCreatedEvent(myResults.userImpDates,jsObj);
+									showInitialImpEventsAndDates(myResults.userImpDates,"impDates","subscribe");
 								}
 								else if(jsObj.task=="showSelectedDateEvent")
 									buildSelectedDateEventPopup(myResults,jsObj);
@@ -638,6 +640,95 @@
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
+	
+
+	function getStateList()
+	{	
+		var cadreLevelElmt = document.getElementById("cadreLevelField");
+		
+		var stateElmt = document.getElementById("cadreLevelState");
+		var districtElmt = document.getElementById("cadreLevelDistrict");
+		var constituencyElmt = document.getElementById("cadreLevelConstituency");
+		var mandalElmt = document.getElementById("cadreLevelMandal");
+		var villageElmt = document.getElementById("cadreLevelVillage");
+
+		if(!cadreLevelElmt || !stateElmt || !districtElmt || !constituencyElmt || !mandalElmt || !villageElmt)
+			alert("Selected Element is null !!");
+		
+		var cadreLevelElmtText = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].text;
+		var cadreLevelElmtValue = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].value;
+
+		var stateElmtText = stateElmt.options[stateElmt.selectedIndex].text;
+		var stateElmtValue = stateElmt.options[stateElmt.selectedIndex].value;
+
+		var districtElmtText = districtElmt.options[districtElmt.selectedIndex].text;
+		var districtElmtValue = districtElmt.options[districtElmt.selectedIndex].value;
+
+		var constituencyElmtText = constituencyElmt.options[constituencyElmt.selectedIndex].text;
+		var constituencyElmtValue = constituencyElmt.options[constituencyElmt.selectedIndex].value;
+
+		var mandalElmtText = mandalElmt.options[mandalElmt.selectedIndex].text;
+		var mandalElmtValue = mandalElmt.options[mandalElmt.selectedIndex].value;
+
+		var villageElmtText = villageElmt.options[villageElmt.selectedIndex].text;
+		var villageElmtValue = villageElmt.options[villageElmt.selectedIndex].value;
+
+		stateElmt.disabled = true;
+		districtElmt.disabled = true;
+		constituencyElmt.disabled = true;
+		mandalElmt.disabled = true;
+		villageElmt.disabled = true;		
+					
+		if(cadreLevelElmtText == "State")
+		{
+			stateElmt.disabled = false;	
+			document.getElementById("cadreLevelValue").value=1;
+		}
+		else if(cadreLevelElmtText == "District")			
+		{
+			stateElmt.disabled = false;
+			districtElmt.disabled = false;
+		}		
+		else if(cadreLevelElmtText == "Constituency")
+		{
+			stateElmt.disabled = false;
+			districtElmt.disabled = false;
+			constituencyElmt.disabled = false;
+		}
+		else if(cadreLevelElmtText == "Mandal")
+		{
+			stateElmt.disabled = false;
+			districtElmt.disabled = false;
+			mandalElmt.disabled = false;
+		}
+		else if(cadreLevelElmtText == "Village")
+		{
+			stateElmt.disabled = false;
+			districtElmt.disabled = false;
+			mandalElmt.disabled = false;
+			villageElmt.disabled = false;
+		}
+
+		getStatesNDistricts("cadreLevel",cadreLevelElmtText,cadreLevelElmtValue)
+		
+	}
+
+	function getStatesNDistricts(level,text,value)
+	{		
+		var jsObj=
+			{
+					type:level,
+					reportLevel:text,
+					selected:value
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;
+
+		callAjax(jsObj, url);
+	}
+
+
 
 	function displaySuccessMessage(results,jsObj)
 	{
@@ -1125,8 +1216,15 @@
 	}
 
 	function getDateTime(date)
-	{
-		var index = date.indexOf('T');
+	{		
+		var startDayStr = date.substring(8,10);		
+		var startMonStr = date.substring(5,7);
+		var startYearStr = date.substring(0,4);	
+
+		var startTimeHrs = date.substring(11,13);	
+		var startTimeMin = date.substring(14,16);	
+
+	/*	var index = date.indexOf('T');
 		var colIndex1 = date.indexOf(':');
 		var colIndex2 = date.lastIndexOf(':');
 		
@@ -1135,7 +1233,7 @@
 		var startYearStr = date.substring(0,4);	
 		var startTimeHrs = date.substring(index+1,colIndex1);	
 		var startTimeMin = date.substring(colIndex1+1,colIndex2);	
-
+    */
 		var dateTimeObj={
 							day:startDayStr,
 							month:startMonStr,
@@ -1219,6 +1317,7 @@
 		divChild.setAttribute('id','eventDateDetails');
 		divChild.setAttribute('class','yui-skin-sam');
 		
+		
 		if(jsObj.taskType == "impEvent")
 		{
 			if(results.startDate)
@@ -1228,8 +1327,12 @@
 		}
 		else if (jsObj.taskType == "impDate")
 		{
-			var startDateObj = getDateTime(results[0].startDate);
-			var endDateObj = getDateTime(results[0].endDate);
+			if(results[0].startDate)
+				var startDateObj = getDateTime(results[0].startDate);
+			if(results[0].endDate)
+				var endDateObj = getDateTime(results[0].endDate);
+			if(results[0].impDate)
+				var impDateObj = getDateTime(results[0].impDate);
 		}
 		
 		if(jsObj.taskType == "impEvent")
@@ -1253,8 +1356,10 @@
 			updateSelectedDateObj.eventId = results[0].eventId;
 			updateSelectedDateObj.eventType = results[0].eventType;
 			updateSelectedDateObj.eventName = results[0].title;
-			updateSelectedDateObj.startDate = startDateObj.day+'/'+startDateObj.month+'/'+startDateObj.year;
-			updateSelectedDateObj.endDate = endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year;
+			if(results[0].startDate)
+				updateSelectedDateObj.startDate = startDateObj.day+'/'+startDateObj.month+'/'+startDateObj.year;
+			if(results[0].endDate)
+				updateSelectedDateObj.endDate = endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year;
 			updateSelectedDateObj.desc = results[0].importance;
 			updateSelectedDateObj.frequency = results[0].frequency;
 			updateSelectedDateObj.isDeleted = results[0].isDeleted;
@@ -1307,12 +1412,8 @@
 		{
 			eventStr+='<tr>';
 
-			eventStr+='<th>Start date</th>';
-			eventStr+='<td><span class="fieldSpan" onclick="changeToEditableField(this,\'date\',\'impDate\',\'startDate\')">'+startDateObj.day+'/'+startDateObj.month+'/'+startDateObj.year+'</span></td>';
-
-			eventStr+='<th>End date</th>';
-			eventStr+='<td><span class="fieldSpan" onclick="changeToEditableField(this,\'date\',\'impDate\',\'endDate\')">'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'</span></td>';
-
+			eventStr+='<th>Imp date</th>';
+			eventStr+='<td><span class="fieldSpan" onclick="changeToEditableField(this,\'date\',\'impDate\',\'startDate\')">'+impDateObj.day+'/'+impDateObj.month+'/'+impDateObj.year+'</span></td>';
 			eventStr+='</tr>';
 		}
 
@@ -1364,12 +1465,14 @@
 			eventStr+='<tr>';
 			eventStr+='<th>Repeat Frequency</th>';
 			if(results[0].frequency != null)
-			{
 				eventStr+='<td colspan="3"><span class="fieldSpan" onclick="changeToEditableField(this,\'select\',\'impDate\',\'frequency\')">'+results[0].frequency+'</span></td>';		
-			}
 			else
-			{
 				eventStr+='<td colspan="3"><span class="fieldSpan" onclick="changeToEditableField(this,\'select\',\'impDate\',\'frequency\')"> - </span></td>';		
+			
+			if(results[0].endDate)
+			{
+				eventStr+='<th>Repeat Until</th>';
+				eventStr+='<td><span class="fieldSpan" onclick="changeToEditableField(this,\'date\',\'impDate\',\'endDate\')">'+endDateObj.day+'/'+endDateObj.month+'/'+endDateObj.year+'</span></td>';
 			}
 			eventStr+='</tr>';
 		}
@@ -1442,20 +1545,26 @@
 		callAjax(jsObj,url);
 	}
 	function addCreatedEvent(results,jsObj)
-	{	
-		
+	{			
 		var divElmt = document.createElement('div');
+
+		if(results.userEventsId == "" || results.importantDateId == "")
+		{
+			alert("Event/Date is not created due to some exception");
+			return;
+		}
 		if(results == "")
 		{
 			alert("No dates to display");
 			return;
 		}
+
 		var str='';
 		if(jsObj.task == "createEvent")
 		{			
 			str+='<div id="'+results.userEventsId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\'\',\'impEvent\')">';
 		}
-		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "subscribe")
+		else if(jsObj.task == "createImpDateEvent")
 		{			
 			str+='<div id="'+results[0].importantDateId+'" class="eventSummaryDiv" onclick="showSelectedDateEvent(this.id,\''+results[0].eventType+'\',\'impDate\')">';
 		}
@@ -1478,7 +1587,7 @@
 				str+='<td>'+eDayobj.day+'/'+eDayobj.month+'/'+eDayobj.year+'</td>';	
 			}
 		}
-		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "subscribe")
+		else if(jsObj.task == "createImpDateEvent")
 		{
 			var impDayobj = getDateTime(results[0].impDate);	
 			str+='<td>'+results[0].title+'</td>';
@@ -1492,7 +1601,7 @@
 				
 		if(jsObj.task == "createEvent")
 			var elmt = document.getElementById("cadreImpEventsBodyDiv");
-		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "subscribe")
+		else if(jsObj.task == "createImpDateEvent")
 			var elmt = document.getElementById("cadreImpDatesBodyDiv");
 
 		if(elmt)
@@ -1505,7 +1614,7 @@
 			if(newEventDialog)
 				newEventDialog.cancel();
 		}
-		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "subscribe")
+		else if(jsObj.task == "createImpDateEvent")
 		{
 			if(newDateDialog)
 				newDateDialog.cancel();	
@@ -1602,6 +1711,12 @@
 		dateCalendar.render(); 
 		dateCalendar.show();		
 	}
+
+	function setEndDateText()
+	{
+		
+
+	}
 	function buildNewEventPopup()
 	{
 
@@ -1615,7 +1730,7 @@
 		var eventStr='';
 		eventStr+='<div class="hd">Enter New Event Details...</div> ';
 		eventStr+='<div class="bd">'; 
-		eventStr+='<div id="eventDetailsDiv"><table>';
+		eventStr+='<div id="eventDetailsDiv"><table class="selectedDateEvent">';
 		eventStr+='<tr>';
 		eventStr+='<th>Event Name</th>';
 		eventStr+='<td colspan="3"><input type="text" size="50" id="eventNameText" name="eventNameText"/></td>';
@@ -1624,11 +1739,11 @@
 		eventStr+='<tr>';
 		eventStr+='<th>Start Date</th>';
 		eventStr+='<td>';
-		eventStr+='<div><input type="text" id="startDateText" name="startDateText" value="'+date+'" onfocus="showDateCal(\'startDateText_Div\')"/></div>';
+		eventStr+='<div><input type="text" id="startDateText" readonly="readonly" name="startDateText" value="'+date+'" onfocus="showDateCal(\'startDateText_Div\')"/></div>';
 		eventStr+='<div id="startDateText_Div" class="tinyDateCal"></div>';
 		eventStr+='</td>';
 		eventStr+='<th>End Date</th>';
-		eventStr+='<td><div><input type="text" id="endDateText" name="endDateText" value="'+date+'" onfocus="showDateCal(\'endDateText_Div\')"/></div>';
+		eventStr+='<td><div><input type="text" id="endDateText" readonly="readonly" name="endDateText" value="'+date+'" onfocus="showDateCal(\'endDateText_Div\')"/></div>';
 		eventStr+='<div id="endDateText_Div" class="tinyDateCal"></div></td>';
 		eventStr+='</tr>';
 
@@ -1671,7 +1786,45 @@
 
 		eventStr+='</td>';
 		eventStr+='</tr>';
-	
+				
+		/*
+		eventStr+='<tr>';
+		eventStr+='<th>Location Level</th>';
+		eventStr+='<td colspan="3"><select id="cadreLevelField" name="cadreLevel" onchange="getStateList()">';
+		eventStr+='	<option	 value="0">Select Level</option>';		
+		eventStr+='	<option  value="2">State</option>';	
+		eventStr+='	<option  value="3">District</option>';
+		eventStr+='	<option  value="4">Constituency</option>';	
+		eventStr+='	<option  value="5">Mandal</option>';		
+		eventStr+='	<option  value="6">Village</option>	';				
+		eventStr+=' </select> <input type="hidden" name="cadreLevelValue" id="cadreLevelValue"></td>';
+		eventStr+='</tr>';
+		
+		eventStr+='<tr>';
+		eventStr+='<th>Location</th>';
+		eventStr+='<td colspan="3">';
+		eventStr+='<select id="cadreLevelState" name="cadreLevelState" disabled = "true" onchange="getCadreLevelValues(this)">';
+		eventStr+='	<option>Select State</option>';					
+		eventStr+='	</select>';
+
+ 		eventStr+='	<select id="cadreLevelDistrict" name="cadreLevelDistrict" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);							getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<option>Select District</option>';					
+		eventStr+='	</select>'; 
+				
+		eventStr+='	<select id="cadreLevelConstituency" name="cadreLevelConstituency" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);					getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<option>Select Constituency</option>';					
+		eventStr+='	</select> ';
+		
+		eventStr+='	<select id="cadreLevelMandal" name="cadreLevelMandal" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);								getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<option>Select Mandal</option>';					
+		eventStr+='	</select> ';
+		
+		eventStr+='	<select id="cadreLevelVillage" name="cadreLevelVillage" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value)">';
+		eventStr+=' 	<option>Select Village</option>';					
+		eventStr+='	</select>';
+		eventStr+='</td>';
+		eventStr+='</tr>';*/
+
 		eventStr+='<tr>';
 		eventStr+='<th>Description</th>';
 		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="descTextArea" name="descTextArea"></textarea></td>';
@@ -1705,7 +1858,7 @@
 			newEventDialog.destroy();
 
 		newEventDialog = new YAHOO.widget.Dialog("newEventDiv",
-				{ width : "600px", 
+				{ width : "730px", 
 	              fixedcenter : false, 
 	              visible : true,  
 	              constraintoviewport : true, 
@@ -1943,7 +2096,7 @@
 		eventStr+='<tr>';
 		eventStr+='<th>Important Date</th>';
 		eventStr+='<td>';
-		eventStr+='<div><input type="text" id="ImpStartDateText" value="'+date+'" name="ImpStartDateText" onfocus="showDateCal(\'ImpStartDateText_Div\')"/></div>';
+		eventStr+='<div><input type="text" id="ImpStartDateText" value="'+date+'" name="ImpStartDateText" readonly="readonly" onfocus="showDateCal(\'ImpStartDateText_Div\')"/></div>';
 		eventStr+='<div id="ImpStartDateText_Div" class="tinyDateCal"></div>';
 		eventStr+='</td>';		
 		eventStr+='</tr>';
@@ -1961,7 +2114,7 @@
 		eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
 		eventStr+='<th>Repeat Until</th>';
 		eventStr+='<td>';
-		eventStr+='<div><input type="text" id="ImpEndDateText" value="'+date+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_Div\')"/></div>';
+		eventStr+='<div><input type="text" id="ImpEndDateText" readonly="readonly" value="'+date+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_Div\')"/></div>';
 		eventStr+='<div id="ImpEndDateText_Div" class="tinyDateCal"></div>';
 		eventStr+='</td>';
 		eventStr+='</tr>';		
@@ -1992,7 +2145,7 @@
 	function showEndDateText(val)
 	{
 		var txtElmt = document.getElementById('ImpEndDateText');
-		if(val == "No repeat")
+		if(val == "No Repeat")
 		{
 			txtElmt.disabled=true;
 		}
@@ -2048,70 +2201,39 @@
 		if(elmt)
 			elmt.innerHTML='';
 		
-
+		
 		for(var i in eventsarr)
 		{				
-			if(task == "nextPreviousMonthEvents")
-			{
-				if(eventsarr[i].startDate)
-				{	
-					var sDayobj = getDateTime(eventsarr[i].startDate);				
-					startDayStr = sDayobj.day;
-					startMonStr = sDayobj.month;
-					startYearStr = sDayobj.year;
-					startTimeHrs = sDayobj.hours;
-					startTimeMin = sDayobj.minutes;
-				}
-
-				if(eventsarr[i].endDate)
-				{
-					var eDayobj = getDateTime(eventsarr[i].endDate);				
-					endDayStr = eDayobj.day;
-					endMonStr = eDayobj.month;
-					endYearStr = eDayobj.year;
-					endTimeHrs = eDayobj.hours;
-					endTimeMin = eDayobj.minutes;
-				}
+			if(type == "impEvents" && eventsarr[i].startDate)
+			{	
+				var sDayobj = getDateTime(eventsarr[i].startDate);				
+				startDayStr = sDayobj.day;
+				startMonStr = sDayobj.month;
+				startYearStr = sDayobj.year;
+				startTimeHrs = sDayobj.hours;
+				startTimeMin = sDayobj.minutes;
 			}
-			else
-			{
-				if(eventsarr[i].startDate)
-				{			
-					var index = eventsarr[i].startDate.indexOf(' ');
-					var strLength = eventsarr[i].startDate.length;
-					
-					var substring1 = eventsarr[i].startDate.substring(0,index); 
-					var substring2 = eventsarr[i].startDate.substring(index+1,strLength); 
-
-					var colIndex1 = eventsarr[i].startDate.indexOf(':');
-					var colIndex2 = eventsarr[i].startDate.lastIndexOf(':');
-					
-					var startDayStr = substring1.substring(8,10);		
-					var startMonStr = substring1.substring(5,7);
-					var startYearStr = substring1.substring(0,4);	
-
-					var startTimeHrs = eventsarr[i].startDate.substring(index,colIndex1);	
-					var startTimeMin = eventsarr[i].startDate.substring(colIndex1+1,colIndex2);	
-				}
-				if(eventsarr[i].endDate)
-				{			
-					var index = eventsarr[i].endDate.indexOf(' ');
-					var strLength = eventsarr[i].endDate.length;
-					
-					var substring1 = eventsarr[i].endDate.substring(0,index); 
-					var substring2 = eventsarr[i].endDate.substring(index+1,strLength); 
-
-					var colIndex1 = eventsarr[i].endDate.indexOf(':');
-					var colIndex2 = eventsarr[i].endDate.lastIndexOf(':');
-					
-					var endDayStr = substring1.substring(8,10);		
-					var endMonStr = substring1.substring(5,7);
-					var endYearStr = substring1.substring(0,4);	
-
-					var endTimeHrs = eventsarr[i].endDate.substring(index,colIndex1);	
-					var endTimeMin = eventsarr[i].endDate.substring(colIndex1+1,colIndex2);					
-				}
+			
+			if(type == "impDates" && eventsarr[i].impDate)
+			{	
+				var sDayobj = getDateTime(eventsarr[i].impDate);				
+				startDayStr = sDayobj.day;
+				startMonStr = sDayobj.month;
+				startYearStr = sDayobj.year;
+				startTimeHrs = sDayobj.hours;
+				startTimeMin = sDayobj.minutes;
 			}
+
+			if(eventsarr[i].endDate)
+			{
+				var eDayobj = getDateTime(eventsarr[i].endDate);				
+				endDayStr = eDayobj.day;
+				endMonStr = eDayobj.month;
+				endYearStr = eDayobj.year;
+				endTimeHrs = eDayobj.hours;
+				endTimeMin = eDayobj.minutes;
+			}
+			
 			var divElmt = document.createElement('div');						
 
 			if(i%2!=0)
@@ -2363,10 +2485,11 @@
 						description:'${impEvent.description}'
 					};
 					impEvents.push(ob);
-		</c:forEach>		
-		console.log(impEvents);
+		</c:forEach>			
+		
 		showInitialImpEventsAndDates(impEvents,'impEvents',"");
 		
+
 		var impDates = new Array();
 		<c:forEach var="impDate" items="${cadreManagementVO.userImpDates}" >			
 				var ob =
@@ -2379,10 +2502,10 @@
 					};
 					impDates.push(ob);
 		</c:forEach>
-		console.log(impDates);
+		
 		showInitialImpEventsAndDates(impDates,'impDates',"");
 		renderStack();
-
+		
 	</script>
 
 	
