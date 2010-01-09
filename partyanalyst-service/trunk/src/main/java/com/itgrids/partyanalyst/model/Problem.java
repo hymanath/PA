@@ -30,6 +30,7 @@ public class Problem extends BaseModel implements Serializable{
 	private String description;
 	private String intensity;
 	private Date identifiedOn;
+	private String year;
 	private Set<ProblemSource> problemSources = new HashSet<ProblemSource>(0);
 	
 	public Problem(){
@@ -95,6 +96,15 @@ public class Problem extends BaseModel implements Serializable{
 
 	public void setProblemSources(Set<ProblemSource> problemSources) {
 		this.problemSources = problemSources;
+	}
+    
+	@Column(name = "year", length = 25)
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
 	}
 	
 }
