@@ -151,7 +151,7 @@ public class ProblemUploadService implements IProblemUploadService {
 	 * Second parameter "year" is the data processed year.
 	 * Third parameter "stateName" is the state to which this data belongs.
 	 */
-	public ResultStatus readExcelAndInsertData(final File filePath, String year,String stateName,final String problemSourceName) {
+	public ResultStatus readExcelAndInsertData(final File filePath,final String year,String stateName,final String problemSourceName) {
 		
 		final ResultStatus resultStatus = new ResultStatus();
 		
@@ -261,7 +261,7 @@ public class ProblemUploadService implements IProblemUploadService {
 								log.debug("Hamlet " +hamletName+"Details Found....");
 								log.debug("Problems for " +hamletName+ " identified And Ready To Upload");
 								
-								checkAndInsertHamletProblems(hamlet,township,tehsil,constituency,hamletProblems,problemDate,problemExternalSrc);
+								checkAndInsertHamletProblems(hamlet,township,tehsil,constituency,hamletProblems,problemDate,problemExternalSrc,year);
 							}
 						}
 						
@@ -298,7 +298,7 @@ public class ProblemUploadService implements IProblemUploadService {
 	 * @param constituency
 	 * @param hamletProblems
 	 */
-	public void checkAndInsertHamletProblems(Hamlet hamlet,Township township,Tehsil tehsil,Constituency constituency,List<HamletProblemVO> hamletProblems,String problemDate,ProblemExternalSource problemExternalSrc) throws Exception{
+	public void checkAndInsertHamletProblems(Hamlet hamlet,Township township,Tehsil tehsil,Constituency constituency,List<HamletProblemVO> hamletProblems,String problemDate,ProblemExternalSource problemExternalSrc,String year) throws Exception{
 		
 		if(log.isDebugEnabled())
 			log.debug("Entered Into checkAndInsertHamletProblems method.......");
@@ -314,7 +314,7 @@ public class ProblemUploadService implements IProblemUploadService {
         
        	for(HamletProblemVO hamletProblem:hamletProblems){
 			problem = new Problem();
-			problem = insertProblemData(hamletProblem,now);
+			problem = insertProblemData(hamletProblem,now,year);
 			
 			problemSource = new ProblemSource();
 			problemSource.setProblem(problem);
@@ -339,7 +339,7 @@ public class ProblemUploadService implements IProblemUploadService {
 	 * @param hamletProblem contains data for a problem in a hamlet.
 	 * @return Problem.
 	 */
-	public Problem insertProblemData(HamletProblemVO hamletProblem,Date problemIdentifiedDate){
+	public Problem insertProblemData(HamletProblemVO hamletProblem,Date problemIdentifiedDate,String year){
 		Problem problem = null;
 		if(log.isDebugEnabled())
 			log.debug("Entered Into insertProblemData method.......");
@@ -347,6 +347,7 @@ public class ProblemUploadService implements IProblemUploadService {
 		    problem = new Problem();
 			problem.setDescription(hamletProblem.getProblemDesc());
 			problem.setIdentifiedOn(problemIdentifiedDate);
+			problem.setYear(year);
 			
 	return problem;
 	}
