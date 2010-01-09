@@ -84,7 +84,7 @@ public class UserImpDate  extends BaseModel{
 		this.tillDate = tillDate;
 	}
 	
-	@Column(name = "rec_freq_type", length = 7)
+	@Column(name = "rec_freq_type", length = 10)
 	public String getRecFreqType() {
 		return recFreqType;
 	}
