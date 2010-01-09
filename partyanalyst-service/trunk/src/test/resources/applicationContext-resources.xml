@@ -87,7 +87,8 @@
 				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
 				<value>com.itgrids.partyanalyst.model.PartyImportantDates</value>
 				<value>com.itgrids.partyanalyst.model.UserImpDate</value>
-			</list>
+				<value>com.itgrids.partyanalyst.model.ProblemExternalSource</value>
+		 </list>
 		</property>
 	</bean>
 
@@ -329,6 +330,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="userImpDatesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserImpDatesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="problemExternalSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemExternalSourceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
