@@ -42,6 +42,7 @@
 		<action name="boothDataUpload"><result>/jsp/boothUpload.jsp</result></action>
 		<action name="boothResultUpload"><result>/jsp/uploadBoothResult.jsp</result></action>
 		<action name="voterDataUpload"><result>/jsp/voterDataUpload.jsp</result></action>
+		<action name="problemDataUpload"><result>/jsp/ProblemUpload.jsp</result></action>
 		<!-- Data Upload -->
 
 		<!-- PARTY PERFORMANCE ACTIONS -->
@@ -173,7 +174,7 @@
         </action>
         
         <action name="problemUploadAction" class="problemUploadAction">
-           <result name="success">/jsp/ProblemUpload.jsp</result>
+           <result name="success">/jsp/ProblemUploadSuccess.jsp</result>
            <result name="error">/jsp/ProblemUploadError.jsp</result>
         </action>
 		
