@@ -12,6 +12,7 @@ public class ConstituencyManagementVO {
 	private List<VoterHouseInfoVO> votersByHouseNos;
 	private List<LocalLeadersVO> localLeaders;
 	private List<PoliticalChangesVO> politicalChanges;
+	private List<HamletProblemVO> hamletProblems;
 
 	public ProblemManagementVO getProblemManagementVO() {
 		return problemManagementVO;
@@ -59,6 +60,14 @@ public class ConstituencyManagementVO {
 
 	public void setPoliticalChanges(List<PoliticalChangesVO> politicalChanges) {
 		this.politicalChanges = politicalChanges;
+	}
+
+	public List<HamletProblemVO> getHamletProblems() {
+		return hamletProblems;
+	}
+
+	public void setHamletProblems(List<HamletProblemVO> hamletProblems) {
+		this.hamletProblems = hamletProblems;
 	}
 	
 	
