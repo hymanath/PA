@@ -87,8 +87,8 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		System.out.print(list);
 	}*/
 	
-	public void testFindVotersHouseDetails(){
-		List<Voter> list = boothConstituencyElectionVoterDAO.findVotersByHouseNoAndHamlet("1-72",new Long(6), "2009");
+	public void testFindVotersGroupByHouseNoAndAgeForHamletAndYear(){
+		List<Voter> list = boothConstituencyElectionVoterDAO.findVotersGroupByHouseNoAndAgeForHamletAndYear(new Long(6), "2009");
 		System.out.print(list.size());
 		//System.out.print(list);
 	}
