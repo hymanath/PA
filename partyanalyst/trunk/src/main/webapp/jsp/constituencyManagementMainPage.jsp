@@ -3,6 +3,9 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.ResourceBundle;" %>
+
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -41,8 +44,6 @@
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	
-	
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/calendar/assets/skins/sam/calendar.css">    
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css"> 
@@ -150,6 +151,12 @@
 
 	<script type="text/javascript">
 
+	var Localization = { <%
+			
+			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
+			String problemLabel = rb.getString("problem");	 
+			  %> }
+	
 	var outerTab,problemMgmtTabs;
 	var newProblemDialog;
 	var problemsMainObj={
@@ -174,7 +181,8 @@
 							totalvotersStatsArray:[],
 							votersByHouseNoArray:[],
 							localLeadersArray:[],
-							localPoliticalChangesArray:[]						
+							localPoliticalChangesArray:[],
+							localProblemsArr:[]						
 							
 						};
 	function buildConstituencyLayout()
@@ -309,6 +317,7 @@
 		assignToVotersByHouseNo = new Array();
 		assignToLocalLeaders = new Array();
 		assignToPoliticalChanges = new Array();
+		assignToLocalProblems = new Array();
 		var localLeaders = results.localLeaders;
 		var voters = results.voterDetails;
 		var cast = results.voterCastInfodetails.castVOs;
@@ -317,8 +326,10 @@
 		var femaleVoters = results.voterCastInfodetails.femaleVoters;
 		var votersByHouseNo = results.votersByHouseNos;
 		var politicalChanges = results.politicalChanges;
+		var localProblems = results.hamletProblems;
 		var count=0;
 		var votersByHouseNoCount = 0;
+		var localProbCount = 0;
 		
 		
 		for(var i in voters)
@@ -399,6 +410,20 @@
 			constMgmtMainObj.localPoliticalChangesArray=assignToPoliticalChanges;
 			
 		}
+		for(var i in localProblems)
+		{
+			localProbCount = localProbCount + 1;
+			var localProblemsObj = {
+					sNo: localProbCount,
+					description: localProblems[i].problemDesc,
+					identifiedDate: localProblems[i].identifiedDate,
+					source: localProblems[i].problemSource,
+					status: localProblems[i].problemStatus
+			};
+			assignToLocalProblems.push(localProblemsObj);
+			constMgmtMainObj.localProblemsArr=assignToLocalProblems;
+			
+		}
 		
 		var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 
@@ -425,11 +450,13 @@
 			constMgmtMainObj.votersArray = emptyArr;
 			constMgmtMainObj.votersByHouseNoArray = emptyArr;
 			constMgmtMainObj.localPoliticalChangesArray = emptyArr;
+			constMgmtMainObj.localProblemsArr = emptyArr; 
 			buildLocalPoliticalChangesDataTable();
 			buildLocalLeadersDataTable();
 			buildLocalCastStatisticsDataTable();			
 			buildVotersByLocBoothDataTable();	
-			buildImportantVotersDataTable();		
+			buildImportantVotersDataTable();
+			buildLocalProblemsDataTable();		
 			return;
 		}
 		else
@@ -439,6 +466,7 @@
 			buildLocalCastStatisticsDataTable();			
 			buildVotersByLocBoothDataTable();
 			buildImportantVotersDataTable();
+			buildLocalProblemsDataTable();
 			
 		}
 		constMgmtTabs.getTab(0).set("disabled", false);
@@ -453,10 +481,7 @@
 		constMgmtTabs.getTab(3).set("disabled", false);
 		constMgmtTabs.getTab(4).set("disabled", false);
 		constMgmtTabs.getTab(5).set("disabled", false);
-		
-		
-		
-		
+				
 	}
 
 	function getTownshipsForMandal(name,value,choice)
@@ -791,19 +816,10 @@
 		        {select:"<input type='checkbox' id='check_1'></input>", title:"No White Ration Cards issued in Hamlet", description: "White Ration card is not at all issued to eligible families even after the preliminary process", identifiedDate:new Date(2009, 11, 12), location:"Eluru", source:"Call Centre", status:"Categorized"}, 
 		        {select:"<input type='checkbox' id='check_1'></input>", title:"AarogyaSri", description: "Delay for Cardiac Surgery with AarogyaSri Scheme", identifiedDate:new Date("March 11,2009") , location:"Eluru", source:"User", status:"Categorized"}, 
 				{select:"<input type='checkbox' id='check_1'></input>", title:"Delay in payment of Exgratia", description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party", identifiedDate:new Date(1980, 2, 4), location:"MadanaPalle", source:"Party Analyst", status:"New"}		
-	    ], 
-		    localproblems: [ 
-				 {sNo:"1", description: "Polluted water is being supplied since two weeks", identifiedDate: new Date(2009, 2, 4), source: "Party Analyst", status:"New"},
-				 {sNo:"2", description: "APS RTC Suddenly cancelled their Bus service", identifiedDate: new Date("December3 , 2009"), source: "Party Analyst", status:"Assigned" },
-				 {sNo:"3", description: "White Ration card is not at all issued to eligible families even after the preliminary process", identifiedDate: new Date(2009, 11, 12), source: "Call Center", status:"Categorized" },
-				 {sNo:"4", description: "Delay for Cardiac Surgery with AarogyaSri Scheme", identifiedDate: new Date("March 11,2009"), source: "User", status:"New" },
-				 {sNo:"5", description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party", IdentifiedDate: new Date(2009, 2, 4), source: "Victim", status:"New" },
-				 {sNo:"6", description: "Polluted water is being supplied since two weeks", identifiedDate: new Date("December 11, 2009"), source: "Party Analyst", status:"New" } 
-		]				           			
+	    ] 
+		    			           			
 		}					
 	 
-
-		
 	function buildNewProblemsDataTable()
 	{
 		
@@ -989,7 +1005,7 @@
 		    				{key:"status", label: "Status", sortable:true}
 		    						    				
 		    	        ]; 
-		var localProbDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.localproblems); 
+		var localProbDataSource = new YAHOO.util.DataSource(constMgmtMainObj.localProblemsArr); 
 		localProbDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		localProbDataSource.responseSchema = { 
             fields: [{key:"sNo", parser:"number"}, "description", "identifiedDate", "source", "status"] 
@@ -1232,7 +1248,7 @@
 		contentStr+='</tr>';
 		contentStr+='<tr></tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>Problem</td>';
+		contentStr+='<td><%=problemLabel%></td>';
 		contentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="problemText" name="problemText"/></td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
@@ -1470,7 +1486,7 @@ buildConstMgmtTabView();
 buildNewProblemsDataTable();
 buildClassifiedDataTable();
 buildAssignedIssuesDataTable();	
-buildLocalProblemsDataTable();
+//buildLocalProblemsDataTable();
 
 
 </script>
