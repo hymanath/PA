@@ -2,8 +2,10 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
@@ -102,10 +104,9 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			if(gender.equalsIgnoreCase("m"))
 				maleVoters = maleVoters + (Long)voterInfo[0];
 			if(casts.add(cast)&& (!prevCast.equals(""))){
-				System.out.println("Cast:"+cast+"  "+"prevCast:"+prevCast);
 				castVO = new CastVO();
 				castVO.setCastName(prevCast);
-				castVO.setCastCount(castCount--);
+				castVO.setCastCount(castCount);
 				castVOs.add(castVO);
 				castCount = 0L;
 			}
@@ -136,25 +137,40 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		return voterCastInfoVO;				
 	}
 	
-	public List<VoterHouseInfoVO> getVoterHouseDetails(Long hamletId, String year){
+	public List<VoterHouseInfoVO> getVoterHouseDetails(Long hamletId,String year) {	
+		List<Voter> voters = boothConstituencyElectionVoterDAO.findVotersGroupByHouseNoAndAgeForHamletAndYear(hamletId, year);
+		Map<String, List<VoterVO>> voterByHouseNoMap = new HashMap<String, List<VoterVO>>();
 		List<VoterHouseInfoVO> voterHouseInfoVOs = new ArrayList<VoterHouseInfoVO>();
 		VoterHouseInfoVO voterHouseInfoVO = null;
-		List<String> houseNos = boothConstituencyElectionVoterDAO.findVoterHouseNosInHamlet(hamletId, year);
-		List<Voter> voters = null;
-		for(String houseNo:houseNos){
+		List<VoterVO> voterVOs = null;
+		VoterVO voterVO = null;
+		String houseNo = "";
+		for(Voter voter : voters){
+			houseNo = voter.getHouseNo();
+			voterVO = new VoterVO();
+			voterVO.setVoterFirstName(voter.getFirstName());
+			voterVO.setVoterLastName(voter.getLastName());
+			voterVO.setAge(voter.getAge());
+			voterVO.setCast(voter.getCast());
+			voterVOs = voterByHouseNoMap.get(houseNo);
+			if(voterVOs ==null)
+				voterVOs = new ArrayList<VoterVO>();
+			voterVOs.add(voterVO);
+			voterByHouseNoMap.put(houseNo, voterVOs);
+			
+		}
+		for(Map.Entry<String, List<VoterVO>> entry:voterByHouseNoMap.entrySet()){
 			voterHouseInfoVO = new VoterHouseInfoVO();
-			voters = boothConstituencyElectionVoterDAO.findVotersByHouseNoAndHamlet(houseNo, hamletId, year);
-			if(voters.size() == 0)
-				continue;
-			voterHouseInfoVO.setHouseNo(houseNo);
-			voterHouseInfoVO.setCast(voters.get(0).getCast());
-			voterHouseInfoVO.setYounger(voters.get(0).getFirstName());
-			voterHouseInfoVO.setElder(voters.get(voters.size()-1).getFirstName());
-			voterHouseInfoVO.setNumberOfPeople(voters.size());
+			voterVOs = entry.getValue();
+			voterHouseInfoVO.setHouseNo(entry.getKey());
+			voterHouseInfoVO.setCast(voterVOs.get(0).getCast());
+			voterHouseInfoVO.setYounger(voterVOs.get(0).getVoterFirstName());
+			voterHouseInfoVO.setElder(voterVOs.get(voterVOs.size()-1).getVoterFirstName());
+			voterHouseInfoVO.setNumberOfPeople(voterVOs.size());
 			voterHouseInfoVOs.add(voterHouseInfoVO);
 		}
-		return voterHouseInfoVOs;		
+		
+		return voterHouseInfoVOs;
 	}
-	
 	
 }
