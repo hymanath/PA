@@ -127,7 +127,7 @@
 	<bean id="electionComparisonReportAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonReportAction" singleton="false">
 	     <property name="electionsComparisonService" ref="electionsComparisonService" />
 	</bean> 
-
+	
 	<bean id="partyBoothResultAction" class="com.itgrids.partyanalyst.web.action.PartyBoothResultAction" singleton="false"/>
 	
 	<bean id="partyBoothResult1Action" class="com.itgrids.partyanalyst.web.action.PartyBoothResult1Action" singleton="false">
@@ -189,6 +189,7 @@
 		<property name="problemBeanVO" ref="problemBeanVO"></property>			
 	</bean>
 	<bean id="voterInfoAction" class="com.itgrids.partyanalyst.web.action.VoterInfoAction" singleton="false">
-		<property name="constituencyManagementService" ref="constituencyManagementService"></property>			
+		<property name="constituencyManagementService" ref="constituencyManagementService"></property>	
+        <property name="problemManagementService" ref="problemManagementService"></property>	
 	</bean>
 </beans>
