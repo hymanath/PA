@@ -62,4 +62,12 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				"where model.voter.houseNo = ? and model.voter.hamlet.hamletId = ? and model.voter.gender = ? and " +
 				"model.boothConstituencyElection.constituencyElection.election.electionYear = ? order by age", params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Voter> findVotersGroupByHouseNoAndAgeForHamletAndYear(Long hamletId, String year){
+		Object[] params = {hamletId, year};
+		return getHibernateTemplate().find("select model.voter from BoothConstituencyElectionVoter model " +
+				"where model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?" +
+				" group by model.voter.houseNo, model.voter.age", params);
+	}
 }
