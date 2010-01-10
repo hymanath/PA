@@ -7,16 +7,21 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
+import com.itgrids.partyanalyst.dto.HamletProblemVO;
 import com.itgrids.partyanalyst.dto.LocalLeadersVO;
 import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
+import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
+import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class VoterInfoAction extends ActionSupport implements ServletRequestAware{
@@ -32,6 +37,9 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 	private List<VoterHouseInfoVO> votersByHouseNos;
 	private List<LocalLeadersVO> localLeaders;
 	private List<PoliticalChangesVO> politicalChanges;
+	private List<HamletProblemVO> hamletProblems;
+	private ProblemManagementDataVO problemManagementDataVO;
+	private IProblemManagementService problemManagementService;
 	JSONObject jObj = null;
 	private String task = null;
 	
@@ -49,6 +57,15 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 
 	public void setHamletId(Long hamletId) {
 		this.hamletId = hamletId;
+	}
+
+	public ProblemManagementDataVO getProblemManagementDataVO() {
+		return problemManagementDataVO;
+	}
+
+	public void setProblemManagementDataVO(
+			ProblemManagementDataVO problemManagementDataVO) {
+		this.problemManagementDataVO = problemManagementDataVO;
 	}
 
 	public IConstituencyManagementService getConstituencyManagementService() {
@@ -96,7 +113,22 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 	public void setPoliticalChanges(List<PoliticalChangesVO> politicalChanges) {
 		this.politicalChanges = politicalChanges;
 	}
+	
+	public List<HamletProblemVO> getHamletProblems() {
+		return hamletProblems;
+	}
 
+	public void setHamletProblems(List<HamletProblemVO> hamletProblems) {
+		this.hamletProblems = hamletProblems;
+	}
+
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+
+	public void setProblemManagementService(IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
+	}
 	
 	public String getVotersByHamlet()
 	{
@@ -122,6 +154,16 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			VoterCastInfoVO votersByCast  = constituencyManagementService.getVotersCastInfoForHamlet(new Long(hamletId), "2009");
 			constituencyManagementVO.setVoterCastInfodetails(votersByCast);								
 			
+			
+			problemManagementDataVO = problemManagementService.getProblemsForAHamlet(new Long(hamletId), "2009");
+			ResultStatus resultStatus = problemManagementDataVO.getResultStatus();
+			if(resultStatus.getResultCode() == 0)
+				constituencyManagementVO.setHamletProblems(problemManagementDataVO.getHamletProblems());
+			for(HamletProblemVO problems:problemManagementDataVO.getHamletProblems()){
+				Log.debug("Problems" + problems.getProblemDesc());
+			}
+			if(resultStatus.getResultCode() == 1)
+				Log.debug("No Problems Data Found....");
 			LocalLeadersVO localLeadersVO1 = new LocalLeadersVO();
 			LocalLeadersVO localLeadersVO2 = new LocalLeadersVO();
 			LocalLeadersVO localLeadersVO3 = new LocalLeadersVO();
@@ -190,7 +232,10 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			politicalChanges = new ArrayList<PoliticalChangesVO>();
 			politicalChanges.add(politicalChangesVO1);
 			politicalChanges.add(politicalChangesVO2);
+			
 			constituencyManagementVO.setPoliticalChanges(politicalChanges);
+			
+			
 		}
 		
 		return SUCCESS;
@@ -201,6 +246,7 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 		
 		return SUCCESS;
 	}
+
 	
 	
 }
