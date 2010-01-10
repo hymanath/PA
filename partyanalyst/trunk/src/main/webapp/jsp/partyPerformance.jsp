@@ -156,18 +156,13 @@
 	</tr>
 	<tr>
 		<th> Year</th>
-		<td><s:select theme="simple" label="Year" name="year" id="yearList" list="years"  onchange="hasAllianceParties();"/></td>
+		<td><s:select theme="simple" label="Year" name="year" id="yearList" list="years" /></td>
 	</tr>
 	<tr>
 		<th>Party</th>
-		<td><s:select theme="simple" label="Party" name="party" id="partyList" list="parties" listKey="id" listValue="name" onchange="hasAllianceParties();"/></td>
+		<td><s:select theme="simple" label="Party" name="party" id="partyList" list="parties" listKey="id" listValue="name" /></td>
 	</tr>
-	<tr id="allianceRow"
-	<% java.lang.Boolean alliances = (java.lang.Boolean) request.getAttribute("hasAllianceParties");
-		if(alliances == false) { %> 
-			style="display:none"
-		<% } %>
-	 >
+	<tr id="allianceRow">
 		<th>Alliance Parties</th>
 		<td>
 			<s:checkbox theme="simple" id="alliances" name="alliances" value="hasAllianceParties"></s:checkbox> Include in the Report
