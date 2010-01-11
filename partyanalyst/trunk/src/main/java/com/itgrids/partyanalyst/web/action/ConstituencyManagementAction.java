@@ -47,7 +47,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> hamletList;
 	private IRegionServiceData regionServiceData;
 	private List<SelectOptionVO> problemSources;
-
+	private String accessType;
 	public ConstituencyManagementVO getConstituencyManagementVO() {
 		return constituencyManagementVO;
 	}
@@ -164,6 +164,14 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	public void setProblemSources(List<SelectOptionVO> problemSources) {
 		this.problemSources = problemSources;
 	}
+	
+	public String getAccessType() {
+		return accessType;
+	}
+
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
 
 	@SuppressWarnings("deprecation")
 	public String execute() throws Exception{
@@ -212,7 +220,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			return ERROR;
 		log.debug("test");
 		
-		String accessType =user.getAccessType();
+		accessType =user.getAccessType();
 		Long accessValue= new Long(user.getAccessValue());
 
 		stateList = new ArrayList<SelectOptionVO>();
@@ -231,6 +239,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			
 			constituencyList.add(new SelectOptionVO(0L,"Select Constituency"));
 			constituencyList.add(list.get(2));
+			mandalList = regionServiceData.getMandalsByConstituencyID(accessValue);			
 						
 		}else if("COUNTRY".equals(accessType))
 		{
@@ -256,6 +265,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			stateList.add(list.get(0));
 			districtList.add(new SelectOptionVO(0l,"Select District"));
 			districtList.add(list.get(1));
+			constituencyList = regionServiceData.getConstituenciesByDistrictID(accessValue);
 			
 			
 		}else if("MANDAL".equals(accessType)){
