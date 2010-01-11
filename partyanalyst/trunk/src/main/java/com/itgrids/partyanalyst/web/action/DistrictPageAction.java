@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import com.itgrids.partyanalyst.dto.CandidateInfoVO;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.IDistrictPageService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
-import com.itgrids.partyanalyst.service.impl.DistrictPageService;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.log4j.Logger;
@@ -28,7 +25,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private String districtId;
 	private String districtName;
 	private HttpServletRequest request;
-	private IDistrictPageService districtPageService;	
+	private IStaticDataService staticDataService;	
 	private IRegionServiceData regionServiceDataImp;
 	private ConstituenciesStatusVO constituenciesStatusVO;
 	private List<SelectOptionVO> constituencies ;
@@ -77,14 +74,6 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		this.constituencies = constituencies;
 	}
 
-	public IDistrictPageService getDistrictPageService() {
-		return districtPageService;
-	}
-
-	public void setDistrictPageService(IDistrictPageService districtPageService) {
-		this.districtPageService = districtPageService;
-	}
-
 	public String getDistrictId() {
 		return districtId;
 	}
@@ -111,8 +100,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		districtId = request.getParameter("districtId");
 		districtName = request.getParameter("districtName");
 		
-		constituenciesStatusVO = districtPageService.getConstituenciesWinnerInfo(Long.parseLong(districtId));	
-		mandals = districtPageService.getMandalsForDistrict(Long.parseLong(districtId));
+		constituenciesStatusVO = staticDataService.getConstituenciesWinnerInfo(Long.parseLong(districtId));	
+		mandals = staticDataService.getMandalsForDistrict(Long.parseLong(districtId));
 			if(mandals == null){
 				if(log.isDebugEnabled())
 					log.error("Failed to get Mandal Data");
@@ -121,6 +110,10 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 
 		log.debug("District Id = "+districtId+" & District Name = "+districtName);
 		return Action.SUCCESS;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
 	}
 
 }

@@ -61,7 +61,7 @@
 	</bean>
 	
 	<bean id="districtPageAction" class="com.itgrids.partyanalyst.web.action.DistrictPageAction" singleton="false">
-		<property name="districtPageService" ref="districtPageService" />
+		<property name="staticDataService" ref="staticDataService" />
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>			
 
