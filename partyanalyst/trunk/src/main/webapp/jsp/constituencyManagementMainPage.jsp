@@ -154,8 +154,77 @@
 	var Localization = { <%
 			
 			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
-			String problemLabel = rb.getString("problem");	 
-			  %> }
+			String problemLabel = rb.getString("problem");
+			String constituencyMgmt = rb.getString("constMgmt");
+			String probMgmt = rb.getString("probMgmt");
+			String userGroups = rb.getString("userGrps");
+			String recommLetters = rb.getString("recommLetters");
+			String distEPapers = rb.getString("distEPapers");
+			String localLeaders = rb.getString("localLeaders");
+			String localProbs = rb.getString("localProbs");
+			String localCastStats = rb.getString("localCastStats");
+			String localPolChanges = rb.getString("localPolChanges");
+			String voterByLoc= rb.getString("voterByLoc");
+			String impVoters= rb.getString("impVoters");
+			String name = rb.getString("name");
+			String occupation = rb.getString("occupation");
+			String position = rb.getString("position");
+			String inflScope = rb.getString("inflScope");
+			String contactnbr= rb.getString("contactnbr");
+			String description = rb.getString("description");
+			String identifiedDate = rb.getString("identifiedDate");
+			String source = rb.getString("source");
+			String status = rb.getString("status");
+			String cast = rb.getString("cast");
+			String castPopulation = rb.getString("castPopulation");
+			String castPercentage = rb.getString("castPercentage");
+			String date = rb.getString("date");
+			String impact = rb.getString("impact");
+			String gender = rb.getString("gender");
+			String age = rb.getString("age");
+			String hNo = rb.getString("hNo");
+			String guardName= rb.getString("guardName");
+			String relationship = rb.getString("relationship");
+			String castCategory = rb.getString("castCategory");
+			String mbrsInFamily = rb.getString("mbrsInFamily");
+			String eldstPersonName = rb.getString("eldstPersonName");
+			String ygstPersonName = rb.getString("ygstPersonName");
+			String newIssues= rb.getString("newIssues");
+			String clasfdIssues = rb.getString("clasfdIssues");
+			String assignedIssues = rb.getString("assignedIssues");
+			String progress = rb.getString("progress");
+			String fixedIssues = rb.getString("fixedIssues");
+			String sNo = rb.getString("sNo");
+			String title = rb.getString("title");
+			String location = rb.getString("location");
+			String scope = rb.getString("scope");
+			String problemType = rb.getString("problemType");
+			String department = rb.getString("department");
+			String concernedDept = rb.getString("concernedDept");
+			String assignedOfficial = rb.getString("assignedOfficial");
+			String addNewProb = rb.getString("addNewProb");
+			String pendingIssues = rb.getString("pendingIssues");
+			String select = rb.getString("select");
+			String STATE = rb.getString("STATE");
+			String DISTRICT = rb.getString("DISTRICT");
+			String CONSTITUENCY = rb.getString("CONSTITUENCY");
+			String MANDAL  = rb.getString("MANDAL");
+			String VILLAGE = rb.getString("VILLAGE");
+			String HAMLET   = rb.getString("HAMLET");
+			String classify = rb.getString("classify");
+			String assign = rb.getString("assign");
+			String totalNumOfVoters = rb.getString("totalNumOfVoters");
+			String maleVoters = rb.getString("maleVoters");
+			String femaleVoters = rb.getString("femaleVoters");
+			String email = rb.getString("email");
+			String address = rb.getString("address");
+			String telephoneNo = rb.getString("telephoneNo");
+			String reportedDate = rb.getString("reportedDate");
+			String existingFrom = rb.getString("existingFrom");
+			String problemSource = rb.getString("problemSource");
+			String mobile  = rb.getString("mobile");
+			String constMgmtAlertMessage = rb.getString("constMgmtAlertMessage");
+		  %> }
 	
 	var outerTab,problemMgmtTabs;
 	var newProblemDialog;
@@ -318,6 +387,7 @@
 		assignToLocalLeaders = new Array();
 		assignToPoliticalChanges = new Array();
 		assignToLocalProblems = new Array();
+
 		var localLeaders = results.localLeaders;
 		var voters = results.voterDetails;
 		var cast = results.voterCastInfodetails.castVOs;
@@ -371,12 +441,12 @@
 		{
 			votersByHouseNoCount = votersByHouseNoCount + 1;		
 			var totalVotersByHouseNos = {
-						SNo:votersByHouseNoCount,
-						HouseNo:votersByHouseNo[i].houseNo,
-						MembersInFamily:votersByHouseNo[i].numberOfPeople,
-						EldestPersonName:votersByHouseNo[i].elder,
-						YoungestPersonName:votersByHouseNo[i].younger,
-						Cast:votersByHouseNo[i].cast						                    	
+						sNo: votersByHouseNoCount,
+						houseNo: votersByHouseNo[i].houseNo,
+						membersInFamily: votersByHouseNo[i].numberOfPeople,
+						eldestPersonName: votersByHouseNo[i].elder,
+						youngestPersonName: votersByHouseNo[i].younger,
+						cast: votersByHouseNo[i].cast						                    	
 					}; 
 			assignToVotersByHouseNo.push(totalVotersByHouseNos);
 			constMgmtMainObj.votersByHouseNoArray=assignToVotersByHouseNo;
@@ -429,46 +499,52 @@
 
 		var localCastStatsTabContent = '<table width="80%">';
 		localCastStatsTabContent+='<tr colspan="2">';
-		localCastStatsTabContent+='<th>Total Number of Voters:</th>';
+		localCastStatsTabContent+='<th><%=totalNumOfVoters%></th>';
 		localCastStatsTabContent+='<td align="left">'+totalVoters+'</td>';
 		localCastStatsTabContent+='</tr>';
 		localCastStatsTabContent+='<tr>';
-		localCastStatsTabContent+='<th>Male Voters:</th>';
+		localCastStatsTabContent+='<th><%=maleVoters%></th>';
 		localCastStatsTabContent+='<td align="left">'+maleVoters+'</td>';
-		localCastStatsTabContent+='<th>Female Voters:</th>';
+		localCastStatsTabContent+='<th><%=femaleVoters%></th>';
 		localCastStatsTabContent+='<td>'+femaleVoters+'</td>';
 		localCastStatsTabContent+='</tr>';
 		localCastStatsTabContent+='</table>';
 
 		localCastStatsTabContent_headerEl.innerHTML=localCastStatsTabContent;
-
-		if(cast.length == 0)
-		{			
-			var emptyArr = new Array();
-			constMgmtMainObj.votersByHouseNoArray = emptyArr;
-			constMgmtMainObj.castStatsArray = emptyArr;
-			constMgmtMainObj.votersArray = emptyArr;
-			constMgmtMainObj.votersByHouseNoArray = emptyArr;
-			constMgmtMainObj.localPoliticalChangesArray = emptyArr;
-			constMgmtMainObj.localProblemsArr = emptyArr; 
-			buildLocalPoliticalChangesDataTable();
-			buildLocalLeadersDataTable();
-			buildLocalCastStatisticsDataTable();			
-			buildVotersByLocBoothDataTable();	
-			buildImportantVotersDataTable();
-			buildLocalProblemsDataTable();		
-			return;
-		}
-		else
-		{	
+		var emptyArr = new Array();
+		if(localLeaders.length == 0)
+			{	
+				constMgmtMainObj.localLeadersArray = emptyArr;	
+				buildLocalLeadersDataTable();
+			} if(localProblems.length == 0)
+			{
+				constMgmtMainObj.localProblemsArr = emptyArr;
+				buildLocalProblemsDataTable();	
+			} if(cast.length == 0)
+			{
+				constMgmtMainObj.castStatsArray = emptyArr;
+				buildLocalCastStatisticsDataTable();
+			} if(politicalChanges.length == 0)
+			{
+				constMgmtMainObj.localPoliticalChangesArray = emptyArr;
+				buildLocalPoliticalChangesDataTable();
+			} if (voters.length == 0)
+			{	
+				constMgmtMainObj.votersArray = emptyArr;
+				buildVotersByLocBoothDataTable();
+			} if(votersByHouseNo.length == 0)
+			{
+				constMgmtMainObj.votersByHouseNoArray = emptyArr;
+				buildImportantVotersDataTable();
+			} else
+			{	
 			buildLocalPoliticalChangesDataTable();
 			buildLocalLeadersDataTable();
 			buildLocalCastStatisticsDataTable();			
 			buildVotersByLocBoothDataTable();
 			buildImportantVotersDataTable();
-			buildLocalProblemsDataTable();
-			
-		}
+			buildLocalProblemsDataTable();			
+			}
 		constMgmtTabs.getTab(0).set("disabled", false);
 		constMgmtTabs.getTab(0).set("active", true);
 		constMgmtTabs.getTab(1).set("active", false);
@@ -480,8 +556,7 @@
 		constMgmtTabs.getTab(2).set("disabled", false);
 		constMgmtTabs.getTab(3).set("disabled", false);
 		constMgmtTabs.getTab(4).set("disabled", false);
-		constMgmtTabs.getTab(5).set("disabled", false);
-				
+		constMgmtTabs.getTab(5).set("disabled", false);				
 	}
 
 	function getTownshipsForMandal(name,value,choice)
@@ -573,44 +648,45 @@
 		constTabContent+='<div id="constMgmtTabContentDiv_head" align="left">';
 		constTabContent+='<table width="100%">';
 		constTabContent+='<tr>';
-		constTabContent+='<td>State</td>';
+		constTabContent+='<td><%=STATE%></td>';
 		constTabContent+='<td><select id="stateField" class="selectWidth" name="state" onchange="getnextList(this.name,this.options[this.selectedIndex].value,false)" width="10">';
 		for(var i in locationDetails.stateArr)
 		{
 			constTabContent+='<option value='+locationDetails.stateArr[i].id+'>'+locationDetails.stateArr[i].value+'</option>';
 		}
 		constTabContent+='</select></td>';
-		constTabContent+='<td>District</td>';
+		constTabContent+='<td><%=DISTRICT%></td>';
 		constTabContent+='<td><select id="districtField" class="selectWidth" name="district"  onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,false)">';
 		for(var i in locationDetails.districtArr)
 		{
 			constTabContent+='<option value='+locationDetails.districtArr[i].id+'>'+locationDetails.districtArr[i].value+'</option>';
 		}
 		constTabContent+='</select></td>';
-		constTabContent+='<td>Constituency</td>';
+		constTabContent+='<td><%=CONSTITUENCY%></td>';
 		constTabContent+='<td><select id="constituencyField" class="selectWidth" name="constituency"  onchange="getMandalList(this.name,this.options[this.selectedIndex].value,false)">';
 		for(var i in locationDetails.constituencyArr)
 		{
 			constTabContent+='<option value='+locationDetails.constituencyArr[i].id+'>'+locationDetails.constituencyArr[i].value+'</option>';
-		}
+		} 
 		constTabContent+='</select></td>';
 		constTabContent+='</tr>';
+		
 		constTabContent+='<tr>';
-		constTabContent+='<td>Mandal</td>';
+		constTabContent+='<td><%=MANDAL%></td>';
 		constTabContent+='<td><select id="mandalField" class="selectWidth" name="mandal" onchange="getTownshipsForMandal(this.name,this.options[this.selectedIndex].value,false)">';
 		for(var i in locationDetails.mandalArr)
 		{
 			constTabContent+='<option value='+locationDetails.mandalArr[i].id+'>'+locationDetails.mandalArr[i].value+'</option>';
 		}
 		constTabContent+='</select></td>';
-		constTabContent+='<td>Village</td>';
+		constTabContent+='<td><%=VILLAGE%></td>';
 		constTabContent+='<td><select class="selectWidth" id="villageField" name="village" onchange="getnextList(this.name,this.options[this.selectedIndex].value,false)">';
 		for(var i in locationDetails.villageArr)
 		{
 			constTabContent+='<option value='+locationDetails.villageArr[i].id+'>'+locationDetails.villageArr[i].value+'</option>';
 		}
 		constTabContent+='</select></td>';
-		constTabContent+='<td>Hamlet</td>';
+		constTabContent+='<td><%=HAMLET%></td>';
 		constTabContent+='<td><select class="selectWidth" id="hamletField" name="hamlet" onchange="getVotersForHamlet(this.name,this.options[this.selectedIndex].value)">';
 		for(var i in locationDetails.hamletArr)
 		{
@@ -627,29 +703,30 @@
 		constTabContent+='<div id="constMgmtTabContentDiv_footer"></div>';
 		constTabContent+='</div>';
 		outerTab.addTab( new YAHOO.widget.Tab({ 
-	    label: 'Constituency Management', 
+			
+		label: '<%=constituencyMgmt%>', 
 	    content:constTabContent, 
 	    active: true 
 		})); 
-
+		
 		outerTab.addTab( new YAHOO.widget.Tab({ 
-	    label: 'Problem Management', 
+	    label: '<%=probMgmt%>', 
 	    content: '<div id="problemMgmtTabContentDiv"></div>'	   
 		})); 
 		
 		outerTab.addTab( new YAHOO.widget.Tab({ 
-			label: 'User Groups', 
+			label: '<%=userGroups%>', 
 			content: '<div id="userGroupsTabContent">User Groups Content</div>' 
 		 
 		})); 
 		 
 		outerTab.addTab( new YAHOO.widget.Tab({ 
-			label: 'Recommendation Letters', 
+			label: '<%=recommLetters%>', 
 			content: '<div id="recomLettTabContent">Recommendation Letters Content</div>' 
 		})); 
 
 		outerTab.addTab( new YAHOO.widget.Tab({ 
-			label: 'District E Papers', 
+			label: '<%=distEPapers%>', 
 			content: '<div id="distEPapersTabContent">District E Papers Content</div>' 
 		})); 
 
@@ -678,33 +755,33 @@
 		assignedIssuesTabContent+='</div>';				
 				
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-	    label: 'New Issues', 
+	    label: '<%=newIssues%>', 
 	    content:newTabContent, 
 	    active: true 
 		})); 
-
+		
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-		label: 'Classified Issues', 
+		label: '<%=clasfdIssues%>', 
 		content:classifiedTabContent		 
 		})); 
 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-		label: 'Assigned Issues', 
+		label: '<%=assignedIssues%>', 
 		content: assignedIssuesTabContent		 
 		})); 
 		 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-		label: 'Progress', 
+		label: '<%=progress%>', 
 		content: '<div id="progressContentDiv"></div>' 
 		})); 
 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-		label: 'Pending Issues', 
+		label: '<%=pendingIssues%>', 
 		content: '<div id="pendingIssuesContentDiv"></div>' 
 		})); 
 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
-		label: 'Fixed Issues', 
+		label: '<%=fixedIssues%>', 
 		content: '<div id="fixedIssuesContentDiv"></div>' 
 		})); 
 
@@ -713,33 +790,32 @@
 			var oButton = new YAHOO.widget.Button({ 
 	                                            id: "mybuttonid",  
 	                                            type: "button",  
-	                                            label: "Categorize",  
+	                                            label: "<%=classify%>",  
 	                                            container: "newProblemTabContentDiv_footer"  
 	                                        }); 
 
 			var oButton = new YAHOO.widget.Button({ 
 												id: "reportNewProblem",  
 												type: "link",  
-												label: "Add New Problem",
+												label: "<%=addNewProb%>",
 												href: "javascript:{}",
-												//click: "buildNewImpDatePopup()",
 												container: "newProblemTabContentDiv_head"  
 												});
 
 			oButton.on("click", buildAddNewProblemPopup); 
-			//oButton.addListener("click", ); 		
+			 		
 
 			var oButton = new YAHOO.widget.Button({ 
 								                id: "assignButton",  
 								                type: "button",  
-								                label: "Assign",  
+								                label: "<%=assign%>",  
 								                container: "classifiedTabContentDiv_footer"  
             }); 
 
 			var oButton = new YAHOO.widget.Button({ 
 								                id: "progressButton",  
 								                type: "button",  
-								                label: "Progress",  
+								                label: "<%=progress%>",  
 								                container: "assignedIssuesTabContentDiv_footer"  
 			});	
 	}
@@ -749,7 +825,7 @@
 		 constMgmtTabs = new YAHOO.widget.TabView(); 
 
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
-			label: 'Local Leaders',
+			label: '<%=localLeaders%>',
 			content: '<div id="localLeadersTabContent"></div>',
 			disabled: true			
 			
@@ -758,7 +834,7 @@
 		}));
 
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
-			label: 'Local Problems',
+			label: '<%=localProbs%>',
 			content: '<div id="localProblemsTabContent"></div>',
 			disabled: true
 		}));
@@ -768,13 +844,13 @@
 		castStatistics+='<div id="localCastStatsTabContent_footer"></div>';
 		castStatistics+='</div>';
 			constMgmtTabs.addTab( new YAHOO.widget.Tab({
-			label: 'Local Cast Statistics',
+			label: '<%=localCastStats%>',
 			content: castStatistics,
 			disabled: true
 		}));
 
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
-			label: 'Local Polictical Changes',
+			label: '<%=localPolChanges%>',
 			content: '<div id="localPoliticalChangesTabContent"></div>',
 			disabled: true
 		}));
@@ -786,7 +862,7 @@
 		votersByLocBoothContent+='</div>';
 
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
-			label: 'Voters By Location/Booth',
+			label: '<%=voterByLoc%>',
 			content: votersByLocBoothContent,
 			disabled: true
 			
@@ -798,13 +874,27 @@
 		importantVotersTabContent+='<div id="importantVotersTabContent_footer"></div>';
 		importantVotersTabContent+='</div>';
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
-			label: 'Important Voters',
+			label: '<%=impVoters%>',
 			content: importantVotersTabContent,
 			disabled: true
 			
 		}));
 				
 		constMgmtTabs.appendTo('constMgmtTabContentDiv_body');
+
+		function handleClick(e) {   
+			var id = document.getElementById("hamletField");
+			if(id==null || id.value==0)
+	        	alert("<%=constMgmtAlertMessage%>"); 
+	    }
+
+			constMgmtTabs.getTab(0).addListener('click', handleClick);
+			constMgmtTabs.getTab(1).addListener('click', handleClick);
+			constMgmtTabs.getTab(2).addListener('click', handleClick);
+			constMgmtTabs.getTab(3).addListener('click', handleClick);
+			constMgmtTabs.getTab(4).addListener('click', handleClick);
+			constMgmtTabs.getTab(5).addListener('click', handleClick);
+			
 	}
 	
 	YAHOO.example.Data = { 
@@ -816,24 +906,23 @@
 		        {select:"<input type='checkbox' id='check_1'></input>", title:"No White Ration Cards issued in Hamlet", description: "White Ration card is not at all issued to eligible families even after the preliminary process", identifiedDate:new Date(2009, 11, 12), location:"Eluru", source:"Call Centre", status:"Categorized"}, 
 		        {select:"<input type='checkbox' id='check_1'></input>", title:"AarogyaSri", description: "Delay for Cardiac Surgery with AarogyaSri Scheme", identifiedDate:new Date("March 11,2009") , location:"Eluru", source:"User", status:"Categorized"}, 
 				{select:"<input type='checkbox' id='check_1'></input>", title:"Delay in payment of Exgratia", description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party", identifiedDate:new Date(1980, 2, 4), location:"MadanaPalle", source:"Party Analyst", status:"New"}		
-	    ] 
-		    			           			
+	    ]		           			
 		}					
 	 
 	function buildNewProblemsDataTable()
 	{
 		
 		var myColumnDefs = [ 
-	            {key:"select", label: "Select"}, 
-	            {key:"title", label: "Title", sortable:true}, 
-	            {key:"description", label: "Description", sortable:true}, 
-				{key:"identifiedDate", label: "Identified Date", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
-				{key:"location", label: "Location", sortable:true},	
-				{key:"source", label: "Source", sortable:true},
-				{key:"scope", label: "Scope", sortable:true, editor: new YAHOO.widget.DropdownCellEditor({multiple:true,dropdownOptions:["Village","Mandal","District","State","Country"]})},
-				{key:"problemType", label: "Problem Type", sortable:true, editor: new YAHOO.widget.DropdownCellEditor({multiple:false,dropdownOptions:["Social","Economical","Political","Administrative","LegalIssue","Personal"]})}
+	            {key:"select", label: "<%=select%>"}, 
+	            {key:"title", label: "<%=title%>", sortable:true}, 
+	            {key:"description", label: "<%=description%>", sortable:true}, 
+				{key:"identifiedDate", label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+				{key:"location", label: "<%=location%>", sortable:true},	
+				{key:"source", label: "<%=source%>", sortable:true},
+				{key:"scope", label: "<%=scope%>", sortable:true, editor: new YAHOO.widget.DropdownCellEditor({multiple:true,dropdownOptions:["Village","Mandal","District","State","Country"]})},
+				{key:"problemType", label: "<%=problemType%>", sortable:true, editor: new YAHOO.widget.DropdownCellEditor({multiple:false,dropdownOptions:["Social","Economical","Political","Administrative","LegalIssue","Personal"]})}
 	        ]; 
-	 
+		
 	        var myDataSource = new YAHOO.util.DataSource(problemsMainObj.newProblemsArr); 
 	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        myDataSource.responseSchema = { 
@@ -877,13 +966,13 @@
 	function buildClassifiedDataTable()
 	{
 			var myColumnDefs = [ 
-	            {key:"select", label: "Select"}, 
-	            {key:"title", label: "Title", sortable:true}, 
-	            {key:"identifiedDate", label: "Identified Date", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
-				{key:"location", label: "Location", sortable:true},	
-				{key:"scope", label: "Scope", sortable:true},
-				{key:"problemType", label: "Problem Type", sortable:true},
-				{key:"department", label: "Department", editor: new YAHOO.widget.DropdownCellEditor({multiple:false,dropdownOptions:["Irrigation","DRDO","R & B","Indian Railways","APSRTC","APSEB","RTA"]})}
+	            {key:"select", label: "<%=select%>"}, 
+	            {key:"title", label: "<%=title%>", sortable:true}, 
+	            {key:"identifiedDate", label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+				{key:"location", label: "<%=location%>", sortable:true},	
+				{key:"scope", label: "<%=scope%>", sortable:true},
+				{key:"problemType", label: "<%=problemType%>", sortable:true},
+				{key:"department", label: "<%=department%>", editor: new YAHOO.widget.DropdownCellEditor({multiple:false,dropdownOptions:["Irrigation","DRDO","R & B","Indian Railways","APSRTC","APSEB","RTA"]})}
 				
 	        ]; 
 	 
@@ -927,11 +1016,11 @@
 	function buildAssignedIssuesDataTable()
 	{
 			var myColumnDefs = [ 
-	            {key:"select", label: "Select"}, 
-	            {key:"title", label: "Title", sortable:true}, 
-	            {key:"concernedDepartment", label:"Concerned Department", sortable:true},
-				{key:"assignedOfficial" , label: "Assigned Official", sortable:true},	
-				{key:"contactNumber", label: "Contact Number"}
+	            {key:"select", label: "<%=select%>"}, 
+	            {key:"title", label: "<%=title%>", sortable:true}, 
+	            {key:"concernedDepartment", label:"<%=concernedDept%>", sortable:true},
+				{key:"assignedOfficial" , label: "<%=assignedOfficial%>", sortable:true},	
+				{key:"contactNumber", label: "<%=contactnbr%>"}
 				//{key:"progress" ,Progress},
 				//{key:"fix" ,Fix}
 	        ]; 
@@ -965,11 +1054,11 @@
 	{
 		var localLeadersColumnDefs = [ 
 		    	             
-		    	            {key:"name", label: "Name", sortable:true}, 
-		    	            {key:"occupation", label: "Occupation", sortable:true}, 
-		    				{key:"position", label: "Position", sortable:true},
-		    				{key:"influenceScope", label: "Influence Scope", sortable:true},	
-		    				{key:"contactNumber", label: "Contact Number"}
+		    	            {key:"name", label: "<%=name%>", sortable:true}, 
+		    	            {key:"occupation", label: "<%=occupation%>", sortable:true}, 
+		    				{key:"position", label: "<%=position%>", sortable:true},
+		    				{key:"influenceScope", label: "<%=inflScope%>", sortable:true},	
+		    				{key:"contactNumber", label: "<%=contactnbr%>"}
 		    				
 		    				
 		    	        ]; 
@@ -998,11 +1087,11 @@
 	function buildLocalProblemsDataTable()
 	{
 		var localProbColumnDefs = [ 
-		    	            {key:"sNo", label: "SNo", formatter:"number", sortable:true}, 
-		    	            {key:"description", label: "Description", sortable:true},
-		    				{key:"identifiedDate", label: "Identified Date",formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
-		    				{key:"source", label: "Source", sortable:true},
-		    				{key:"status", label: "Status", sortable:true}
+		    	            {key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true}, 
+		    	            {key:"description", label: "<%=description%>", sortable:true},
+		    				{key:"identifiedDate", label: "<%=identifiedDate%>",formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+		    				{key:"source", label: "<%=scope%>", sortable:true},
+		    				{key:"status", label: "<%=status%>", sortable:true}
 		    						    				
 		    	        ]; 
 		var localProbDataSource = new YAHOO.util.DataSource(constMgmtMainObj.localProblemsArr); 
@@ -1031,9 +1120,9 @@
 	{
 		var localCastStatsColumnDefs = [ 
 		    	            
-		    	            {key:"caste", label: "Caste", sortable: true}, 
-		    	           	{key:"castePopulation", label: "Caste Population", formatter:"number", sortable: true},
-		    				{key:"castePercentage", label: "Caste Percentage", formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}	
+		    	            {key:"caste", label: "<%=cast%>", sortable: true}, 
+		    	           	{key:"castePopulation", label: "<%=castPopulation%>", formatter:"number", sortable: true},
+		    				{key:"castePercentage", label: "<%=castPercentage%>", formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}	
 		    					    			    				
 		    	        ]; 
 		var localCastStatsDataSource = new YAHOO.util.DataSource(constMgmtMainObj.castStatsArray); 
@@ -1063,9 +1152,9 @@
 
 		var localPolChangesColumnDefs = [
 		                                 //{key: "sNo", label: "SNo", formatter:"number", sortable:true},
-		                                 {key: "description", label: "Description", sortable:true},
-		                                 {key: "date", label: "Date", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
-		                                 {key: "impact", label: "Impact", sortable:true}
+		                                 {key: "description", label: "<%=description%>", sortable:true},
+		                                 {key: "date", label: "<%=date%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+		                                 {key: "impact", label: "<%=impact%>", sortable:true}
 
 		                                 ];
 
@@ -1095,15 +1184,15 @@
 	function buildVotersByLocBoothDataTable()
 	{
 		var votersByLocBoothColumnDefs = [ 
-		    	            {key:"sNo", label: "SNo", formatter:"number", sortable:true}, 
-		    	            {key:"name", label: "Name", sortable: true}, 
-		    	            {key:"gender", label: "Gender", sortable: true},
-		    				{key:"age", label: "Age", sortable:true},
-		    				{key:"hNo", label: "HNo", sortable:true},
-		    				{key:"guardianName", label: "Guardian Name", sortable:true},
-		    				{key:"relationship", label: "Relationship", sortable:true},	
-		    				{key:"cast", label: "Cast", sortable:true},
-		    				{key:"castCategory", label: "Cast Category", sortable:true}
+		    	            {key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true}, 
+		    	            {key:"name", label: "<%=name%>", sortable: true}, 
+		    	            {key:"gender", label: "<%=gender%>", sortable: true},
+		    				{key:"age", label: "<%=age%>", sortable:true},
+		    				{key:"hNo", label: "<%=hNo%>", sortable:true},
+		    				{key:"guardianName", label: "<%=guardName%>", sortable:true},
+		    				{key:"relationship", label: "<%=relationship%>", sortable:true},	
+		    				{key:"cast", label: "<%=cast%>", sortable:true},
+		    				{key:"castCategory", label: "<%=castCategory%>", sortable:true}
 		    					
 		    					    			    				
 		    	        ]; 
@@ -1134,12 +1223,12 @@
 	function buildImportantVotersDataTable()
 	{
 		var myColumnDefs = [ 
-		    	            {key:"SNo", formatter:"number", sortable:true}, 
-		    	            {key:"HouseNo", sortable: true}, 
-		    	            {key:"MembersInFamily", sortable: true},
-		    				{key:"EldestPersonName", sortable:true},
-		    				{key:"YoungestPersonName", sortable:true},
-		    				{key:"Cast", sortable:true}
+		    	            {key:"sNo", label:"<%=sNo%>", formatter:"number", sortable:true}, 
+		    	            {key:"houseNo", label:"<%=hNo%>", sortable: true}, 
+		    	            {key:"membersInFamily", label:"<%=mbrsInFamily%>", sortable: true},
+		    				{key:"eldestPersonName", label:"<%=eldstPersonName%>", sortable:true},
+		    				{key:"youngestPersonName", label:"<%=ygstPersonName%>", sortable:true},
+		    				{key:"cast", label:"<%=cast%>", sortable:true}
 		    				//{key:"Mobile"}
 		    				  					    			    				
 		    	        ]; 
@@ -1148,8 +1237,8 @@
         myDataSource.responseSchema = { 
             fields: [
                      
-                         {key:"SNo", parser:"number"}, 
-                         "HouseNo", "MembersInFamily", "EldestPersonName", "YoungestPersonName", "Cast"] 
+                         {key:"sNo", parser:"number"}, 
+                         "houseNo", "membersInFamily", "eldestPersonName", "youngestPersonName", "cast"] 
         };
 
         
@@ -1203,7 +1292,7 @@
 	}
 	function getPersonDetails(value)
 	{
-		//var probSource = document.form.probSource.value;
+		
 		var elmt = document.getElementById("personDetailsDiv");
 		if(!elmt)
 			alert("No div present to display personal details");
@@ -1252,11 +1341,11 @@
 		contentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="problemText" name="problemText"/></td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>Description</td>';
+		contentStr+='<td><%=description%></td>';
 		contentStr+='<td style="padding-left: 15px;"><textarea cols="50" id="descTextArea" name="descTextArea"></textarea></td>';
 		contentStr+='</tr>';
-		contentStr+='<tr>';	
-		contentStr+='<td>State</td>';
+		contentStr+='<tr>';
+		contentStr+='<td><%=STATE%></td>';
 		contentStr+='<td style="padding-left: 15px;"><select id="pstateField" name="state" onchange="getnextList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
 		for(var i in locationDetails.stateArr)
 		{
@@ -1265,7 +1354,7 @@
 		contentStr+='</select></td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>District</td>';
+		contentStr+='<td><%=DISTRICT%></td>';
 		contentStr+='<td style="padding-left: 15px;"><select id="pdistrictField" class="selectWidth" name="district"  onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
 		for(var i in locationDetails.districtArr)
 		{
@@ -1274,7 +1363,7 @@
 		contentStr+='</select></td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>Constituency</td>';
+		contentStr+='<td><%=CONSTITUENCY%></td>';
 		contentStr+='<td style="padding-left: 15px;"><select id="pconstituencyField" class="selectWidth" name="constituency"  onchange="getMandalList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
 		for(var i in locationDetails.constituencyArr)
 		{
@@ -1283,7 +1372,7 @@
 		contentStr+='</select></td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>Mandal</td>';
+		contentStr+='<td><%=MANDAL%></td>';
 		contentStr+='<td style="padding-left: 15px;"><select id="pmandalField" class="selectWidth" name="mandal" onchange="getTownshipsForMandal(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
 		for(var i in locationDetails.mandalArr)
 		{
@@ -1291,8 +1380,9 @@
 		}
 		contentStr+='</select></td>';
 		contentStr+='</tr>';
+		
 		contentStr+='<tr>';
-		contentStr+='<td>Village</td>';
+		contentStr+='<td><%=VILLAGE%></td>';
 		contentStr+='<td style="padding-left: 15px;"><select class="selectWidth" id="pvillageField" name="village" onchange="getnextList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
 		for(var i in locationDetails.villageArr)
 		{
@@ -1301,7 +1391,7 @@
 		contentStr+='</select></td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>Hamlet</td>';
+		contentStr+='<td><%=HAMLET%></td>';
 		contentStr+='<td style="padding-left: 15px;"><select class="selectWidth" id="phamletField" name="hamlet">';
 		for(var i in locationDetails.hamletArr)
 		{
@@ -1310,18 +1400,18 @@
 		contentStr+='</select></td>';
 		contentStr+='</tr>';		
 		contentStr+='<tr>';
-		contentStr+='<td>Reported Date</td>';
+		contentStr+='<td><%=reportedDate%></td>';
 		contentStr+='<td style="padding-left: 15px;"><input type="text" value="'+todayDate+'" size="53" id="reportedDateText" name="reportedDateText"/></td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>Existing From </td>';
+		contentStr+='<td><%=existingFrom%></td>';
 		contentStr+='<td style="padding-left: 15px;">';
 		contentStr+='<div><input type="text" id="existingFromText" name="existingFromText" size="53" onfocus="showDateCal(\'existingFromText_Div\')"/></div>';
 		contentStr+='<div id="existingFromText_Div" class="tinyDateCal"></div>';
 		contentStr+='</td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>Problem Source</td>';
+		contentStr+='<td><%=problemSource%></td>';
 		contentStr+='<td style="padding-left: 15px;"><select id="problemSource" class="selectWidth" name="problemSource" onchange="getPersonDetails(this.options[this.selectedIndex].text)">';
 		for(var i in problemsMainObj.problemSourcesArr)
 		{
@@ -1337,23 +1427,23 @@
 		contentStr+='</tr>';
 		contentStr+='<tr></tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>Person Name</td>';
+		contentStr+='<td><%=name%></td>';
 		contentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="problemText" name="problemText"/></td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>Mobile</td>';
+		contentStr+='<td><%=mobile%></td>';
 		contentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="mobileText" name="mobileText"/></td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>Tele Phone</td>';
-		contentStr+='<td style="padding-left:15px;"><input type="text" size="53" id="mobileText" name="mobileText"/></td>';
+		contentStr+='<td><%=telephoneNo%></td>';
+		contentStr+='<td style="padding-left:15px;"><input type="text" size="53" id="telePhoneText" name="telePhoneText"/></td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
-		contentStr+='<td>E Mail</td>';
+		contentStr+='<td><%=email%></td>';
 		contentStr+='<td style="padding-left:15px;"><input type="text" size="53" id="emailText" name="emailText"/></td>';
 		contentStr+='</tr>';
 		contentStr+='<tr>';
-		contentStr+='<td width="100px;">Address</td>';
+		contentStr+='<td width="100px;"><%=address%></td>';
 		contentStr+='<td style="padding-left:15px;"><input type="text" size="53" id="addressText" name="addressText"/></td>';
 		contentStr+='</tr>';
 		contentStr+='</table>';
@@ -1375,6 +1465,8 @@
 				  modal :true,
 				  hideaftersubmit:true,
 				  close:true,
+				  x:400,
+				  y:300,				  
 				  buttons : [ { text:"Add Problem", isDefault:true}, 
 	                          { text:"Cancel", handler: handleNewProbCancel}]
 	             } ); 
@@ -1383,7 +1475,7 @@
 	}
 	function handleNewProbSubmit()
 	{
-		
+	
 	}
 
 	function handleNewProbCancel()
@@ -1464,31 +1556,25 @@ var ob={
 		};
 problemsMainObj.problemSourcesArr.push(ob);	
 </c:forEach>
+<c:forEach var="problem"  items="${constituencyManagementVO.problemManagementVO.problemDetails}" >	
+var newProblemObj=	{
+						select:'<input type="checkbox"></input>',
+						title:'${problem.definition}',
+						description:'${problem.description}',
+						identifiedDate:new Date('${problem.identifiedDate}'),
+						location:'${problem.location}',
+						source:'${problem.source}'
+					};
+problemsMainObj.newProblemsArr.push(newProblemObj);											
+</c:forEach>
 
 buildConstituencyLayout();
 buildOuterTabView();
 buildProblemMgmtTabView();
 buildConstMgmtTabView();
-
-	
-<c:forEach var="problem"  items="${constituencyManagementVO.problemManagementVO.problemDetails}" >	
-	var newProblemObj=	{
-							select:'<input type="checkbox"></input>',
-							title:'${problem.definition}',
-							description:'${problem.description}',
-							identifiedDate:new Date('${problem.identifiedDate}'),
-							location:'${problem.location}',
-							source:'${problem.source}'
-						};
-	problemsMainObj.newProblemsArr.push(newProblemObj);											
-</c:forEach>
-
 buildNewProblemsDataTable();
 buildClassifiedDataTable();
-buildAssignedIssuesDataTable();	
-//buildLocalProblemsDataTable();
-
-
+buildAssignedIssuesDataTable();
 </script>
 </body>
 </html>
