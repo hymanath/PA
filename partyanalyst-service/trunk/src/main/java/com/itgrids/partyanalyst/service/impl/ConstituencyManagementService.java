@@ -162,6 +162,8 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		for(Map.Entry<String, List<VoterVO>> entry:voterByHouseNoMap.entrySet()){
 			voterHouseInfoVO = new VoterHouseInfoVO();
 			voterVOs = entry.getValue();
+			if(voterVOs.size() == 0)
+				continue;
 			voterHouseInfoVO.setHouseNo(entry.getKey());
 			voterHouseInfoVO.setCast(voterVOs.get(0).getCast());
 			voterHouseInfoVO.setYounger(voterVOs.get(0).getVoterFirstName());
