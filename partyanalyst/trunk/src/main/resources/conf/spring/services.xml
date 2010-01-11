@@ -69,7 +69,9 @@
 	<bean name="districtPageService" class="com.itgrids.partyanalyst.service.impl.DistrictPageService" >
 	     <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 	     <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
-	      <property name="tehsilDAO" ref="tehsilDAO" />
+	     <property name="tehsilDAO" ref="tehsilDAO" />
+	      <property name="constituencyDAO" ref="constituencyDAO" />
+	      <property name="nominationDAO" ref="nominationDAO" />
 	</bean>
 	
 	<bean name="constituencyPageService" class="com.itgrids.partyanalyst.service.impl.ConstituencyPageService" >

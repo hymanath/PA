@@ -1,15 +1,19 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
+import com.itgrids.partyanalyst.dto.CandidateInfoVO;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IDistrictPageService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.DistrictPageService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.log4j.Logger;
@@ -25,11 +29,30 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private String districtName;
 	private HttpServletRequest request;
 	private IDistrictPageService districtPageService;	
+	private IRegionServiceData regionServiceDataImp;
+	private ConstituenciesStatusVO constituenciesStatusVO;
 	private List<SelectOptionVO> constituencies ;
 	private List<MandalVO> mandals ;
 	private String constituencyId;
 	private final Logger log = Logger.getLogger(DistrictPageAction.class);
+ 
+	public ConstituenciesStatusVO getConstituenciesStatusVO() {
+		return constituenciesStatusVO;
+	}
+
+	public void setConstituenciesStatusVO(
+			ConstituenciesStatusVO constituenciesStatusVO) {
+		this.constituenciesStatusVO = constituenciesStatusVO;
+	}
 	
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
 	public String getConstituencyId() {
 		return constituencyId;
 	}
@@ -82,32 +105,21 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		this.request = request;
 		
 	}
-	
+
 	public String execute() throws Exception
 	{
 		districtId = request.getParameter("districtId");
 		districtName = request.getParameter("districtName");
 		
-		constituencies = districtPageService.getConstituenciesForDistrict(Long.parseLong(districtId));
-			if(constituencies == null){
-				if(log.isDebugEnabled())
-					log.error("Failed to get Constituency Data");
-				return Action.ERROR;
-			}
-		
+		constituenciesStatusVO = districtPageService.getConstituenciesWinnerInfo(Long.parseLong(districtId));	
 		mandals = districtPageService.getMandalsForDistrict(Long.parseLong(districtId));
 			if(mandals == null){
 				if(log.isDebugEnabled())
 					log.error("Failed to get Mandal Data");
 				return Action.ERROR;
 			}
-			
-		setConstituencies(constituencies);
-		setMandals(mandals);
-		this.setDistrictName(districtName);
-		this.setDistrictId(districtId);
-		
-		System.out.println("District Id = "+districtId+" & District Name = "+districtName);
+
+		log.debug("District Id = "+districtId+" & District Name = "+districtName);
 		return Action.SUCCESS;
 	}
 

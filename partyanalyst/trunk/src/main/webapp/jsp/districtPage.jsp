@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -43,16 +43,53 @@
 </head>
 <body>
 <div class="detailsHead">
-		Welcome to <c:out value="${districtName}"></c:out> district Page <br/><br/>
+		Welcome to <c:out value="${districtName}"></c:out> District Page <br/><br/>
 </div>
 <div id="districtInfoDiv" class="detailsDiv">
 	<div id="districtInfoDivHead" class="detailsHead">
-		Constituencie's Info 
+		Constituencies after Delimitation ${constituenciesStatusVO.delimitationYear}
+	</div>
+		<div id="districtInfoDivBody" class="detailsBody">
+
+		<table><tr>
+		<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.existConstituencies}">			
+				<td>
+				<span id="districtAncSpan">
+					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
+					<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${result.name}
+					</a>
+				</span>
+			</td>	
+			<c:if test="${stat.count % 5==0}">
+				</tr><tr><td colspan="5"> </td></tr><tr>
+			</c:if>			
+		</c:forEach>			
+		
+		<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.newConstituencies}">			
+				<td>
+				<span id="districtAncSpan">
+					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
+					<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}"> *${result.name}
+					</a>
+				</span>
+			</td>	
+			<c:if test="${stat.count % 5==0}">
+				</tr><tr><td colspan="5"> </td></tr><tr>
+			</c:if>			
+		</c:forEach>		
+		</tr></table>		
+	</div>
+	&nbsp &nbsp	* indicates New Constituencies after Delimitation
+</div>
+
+<div id="districtInfoDiv" class="detailsDiv">
+<div id="districtInfoDivHead" class="detailsHead">
+		Constituencies before Delimitation ${constituenciesStatusVO.delimitationYear}
 	</div>
 
 	<div id="districtInfoDivBody" class="detailsBody">
 		<table><tr>
-		<c:forEach var="result" varStatus="stat" items="${constituencies}">			
+		<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.deletedConstituencies}">			
 				<td>
 				<span id="districtAncSpan">
 					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
@@ -67,8 +104,30 @@
 		</tr></table>		
 	</div>
 </div>
+</div>
 
+<div id="districtInfoDiv" class="detailsDiv">
+<div id="districtInfoDivHead" class="detailsHead">
+		MLA's in the District
+	</div>
 
+	<div id="districtInfoDivBody" class="detailsBody">
+		<table>
+			<tr>
+				<th>Constituency Name &nbsp</th>
+				<th>Candidate Name &nbsp</th>
+				<th>Party Name &nbsp</th>
+			</tr>
+			<c:forEach var="candidate" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">			
+				<tr>
+					<td><c:out value="${candidate.constituencyName}"/> &nbsp </td>
+					<td><c:out value="${candidate.candidateName}"/> &nbsp </td>
+					<td><c:out value="${candidate.partyName}"/></td>
+				</tr>
+			</c:forEach>
+		</table>		
+	</div>
+</div>
 <div id="mandalInfoDiv" class="detailsDiv">
 	<div id="mandalInfoDivHead" class="detailsHead">
 		Mandal Info 
@@ -89,6 +148,7 @@
 			</c:if>			
 		</c:forEach>			
 		</tr></table>		
+	</div>
 	</div>
 </div>
 </body>

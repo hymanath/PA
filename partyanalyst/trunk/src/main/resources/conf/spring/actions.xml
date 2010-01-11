@@ -62,7 +62,8 @@
 	
 	<bean id="districtPageAction" class="com.itgrids.partyanalyst.web.action.DistrictPageAction" singleton="false">
 		<property name="districtPageService" ref="districtPageService" />
-	</bean>
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+	</bean>			
 
 	<bean id="candidateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.CandidateElectionResultsAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
@@ -127,7 +128,7 @@
 	<bean id="electionComparisonReportAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonReportAction" singleton="false">
 	     <property name="electionsComparisonService" ref="electionsComparisonService" />
 	</bean> 
-	
+
 	<bean id="partyBoothResultAction" class="com.itgrids.partyanalyst.web.action.PartyBoothResultAction" singleton="false"/>
 	
 	<bean id="partyBoothResult1Action" class="com.itgrids.partyanalyst.web.action.PartyBoothResult1Action" singleton="false">
