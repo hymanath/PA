@@ -85,4 +85,11 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		List<Nomination> list = nominationDAO.findByConstituencyPartyAndElectionYearIncludingAliance(partyIds, new Long(408), "2009");
 		assertEquals(1, list.size());
 	}
+	
+	public void testFindByConstituencyPartyAndElectionYear(){
+		
+		List list = nominationDAO.findCandidateNamePartyByConstituencyAndElection("1342", "2009");
+		
+		assertEquals(1, list.size());
+	}
 }

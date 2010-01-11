@@ -10,11 +10,13 @@ import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
@@ -24,7 +26,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
 	}
-	
+/*	
  	//@Test
 	public void testFindStates() {
 		State state = constituencyDAO.get(new Long(1)).getState();
@@ -64,5 +66,8 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(constituency.getName());
 		}
 	}
+	*/
+	//@Test
+	
 	
 }

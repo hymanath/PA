@@ -37,4 +37,20 @@ IDelimitationConstituencyDAO {
 				"where model.constituency.district.districtId = "+districtID+
 				" group by model.constituency having max(model.year)=model.year order by model.constituency.name");
 	}
+
+	
+	public List getDelimitationConstituenciesByDistrictID(Long districtID,Long electionYear) {
+		Object[] params = {districtID, electionYear};
+		return getHibernateTemplate().find("Select model.constituency.constituencyId ,model.constituency.name, " +
+				" YEAR(model.constituency.startDate), YEAR(model.constituency.deformDate) from " +
+				"DelimitationConstituency model where model.constituency.district.districtId =? " +
+				"and model.year =?",params);
+	}
+
+	public List getLatestDelimitationYear() {
+		
+		return getHibernateTemplate().find("Select max(model.year) from DelimitationConstituency model ");
+	}
+
+	
 }
