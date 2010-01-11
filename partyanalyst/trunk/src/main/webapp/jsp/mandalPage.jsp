@@ -5,14 +5,30 @@
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Tehsil Details</title>
-
-<!-- Combo-handled YUI CSS files: -->
-<link rel="stylesheet" type="text/css" 	href="styles/yuiStyles/datatable.css">
-<!-- Combo-handled YUI JS files: -->
-<script type="text/javascript" 	src="js/yahoo/datatable-min.js"></script>
-
+<!--CSS file (default YUI Sam Skin) --> 
+	<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/datatable/assets/skins/sam/datatable.css"> 	 
+	<!-- Dependencies --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource-min.js"></script> 
+	 
+	<!-- OPTIONAL: JSON Utility (for DataSource) --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/json/json-min.js"></script> 
+	 
+	<!-- OPTIONAL: Connection Manager (enables XHR for DataSource) --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script> 
+	 
+	<!-- OPTIONAL: Get Utility (enables dynamic script nodes for DataSource) --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/get/get-min.js"></script> 
+	 
+	<!-- OPTIONAL: Drag Drop (enables resizeable or reorderable columns) --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script> 
+	 
+	<!-- OPTIONAL: Calendar (enables calendar editors) --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/calendar/calendar-min.js"></script> 
+ 
+	<!-- Source files --> 
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datatable/datatable-min.js"></script> 
 <style type="text/css">
 
 
@@ -196,19 +212,19 @@
 			defaultorder="ascending" defaultsort="2"
 			style="width:auto;margin-right:20px;">
 				<display:column style="text-align: left;" title="Village Name"
-					property="townshipName" />
+					property="townshipName" sortable="true" />
 				<display:column style="text-align: left;" title="Total Populations"
-					property="totalPersons" />
+					property="totalPersons" sortable="true" />
 				<display:column style="text-align: left;" title="SC Population"
-					property="totalSCPersons" />
+					property="totalSCPersons" sortable="true" />
 				<display:column style="text-align: center;" title="ST Population"
-					property="totalSTPersons" />
+					property="totalSTPersons" sortable="true" />
 				<display:column style="text-align: center;" title="Literate Population"
-					property="totalLiteratePersons" />
+					property="totalLiteratePersons" sortable="true" />
 				<display:column style="text-align: center;" title="Illiterate Population"
-					property="totalIlliteratePersons" />
+					property="totalIlliteratePersons"  sortable="true"/>
 				<display:column style="text-align: center;" title="Working Population"
-					property="totalWorkingPersons" />
+					property="totalWorkingPersons" sortable="true" />
 			</display:table>
 		</div>
 	</div>		
