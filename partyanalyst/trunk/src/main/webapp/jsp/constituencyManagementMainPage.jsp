@@ -512,39 +512,38 @@
 
 		localCastStatsTabContent_headerEl.innerHTML=localCastStatsTabContent;
 		var emptyArr = new Array();
-		if(localLeaders.length == 0)
+		    if(localLeaders.length == 0)
 			{	
 				constMgmtMainObj.localLeadersArray = emptyArr;	
-				buildLocalLeadersDataTable();
+				//buildLocalLeadersDataTable();
 			} if(localProblems.length == 0)
 			{
 				constMgmtMainObj.localProblemsArr = emptyArr;
-				buildLocalProblemsDataTable();	
+				//buildLocalProblemsDataTable();	
 			} if(cast.length == 0)
 			{
 				constMgmtMainObj.castStatsArray = emptyArr;
-				buildLocalCastStatisticsDataTable();
+				//buildLocalCastStatisticsDataTable();
 			} if(politicalChanges.length == 0)
 			{
 				constMgmtMainObj.localPoliticalChangesArray = emptyArr;
-				buildLocalPoliticalChangesDataTable();
+				//buildLocalPoliticalChangesDataTable();
 			} if (voters.length == 0)
 			{	
 				constMgmtMainObj.votersArray = emptyArr;
-				buildVotersByLocBoothDataTable();
+				//buildVotersByLocBoothDataTable();
 			} if(votersByHouseNo.length == 0)
 			{
 				constMgmtMainObj.votersByHouseNoArray = emptyArr;
-				buildImportantVotersDataTable();
-			} else
-			{	
+				//buildImportantVotersDataTable();
+			} 
 			buildLocalPoliticalChangesDataTable();
 			buildLocalLeadersDataTable();
 			buildLocalCastStatisticsDataTable();			
 			buildVotersByLocBoothDataTable();
 			buildImportantVotersDataTable();
 			buildLocalProblemsDataTable();			
-			}
+			
 		constMgmtTabs.getTab(0).set("disabled", false);
 		constMgmtTabs.getTab(0).set("active", true);
 		constMgmtTabs.getTab(1).set("active", false);
