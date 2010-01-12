@@ -194,4 +194,8 @@
 		<property name="constituencyManagementService" ref="constituencyManagementService"></property>	
         <property name="problemManagementService" ref="problemManagementService"></property>	
 	</bean>
+	<bean id="mptcElectionAction" class="com.itgrids.partyanalyst.web.action.MPTCElectionAction" singleton="false">
+		<property name="regionServiceDataImp" ref="regionServiceDataImp"/>
+		<property name="mptcElectionService" ref="mptcElectionService"/>			
+	</bean>
 </beans>
