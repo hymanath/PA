@@ -42,8 +42,8 @@
 
 	<!-- YUI Dependency files (End) -->
 
-	<!--<script type="text/javascript" src="js/cadreManagement/cadreSMSPageJs.js"></script>-->
-	<script type="text/javascript" src="js/cadreManagement/cadreLocation.js"></script>
+	<!--<script type="text/javascript" src="js/cadreManagement/cadreSMSPageJs.js"></script>
+	<script type="text/javascript" src="js/cadreManagement/cadreLocation.js"></script>-->
 
 	
 	<style type="text/css">
@@ -405,6 +405,11 @@
 	{
 		cursor:pointer;
 	}
+	.cadreLevelSelect
+	{
+		width:150px;
+		padding:2px;
+	}
 </style>
 
 <script type="text/javascript">
@@ -445,6 +450,8 @@
 
 	var ImpDatesArray = new Array();
 	var ImpEventsArray = new Array();
+	var eventCadresArray = new Array();
+	var actionCadresArray = new Array();
 
 	function buildLayout()
 	{
@@ -603,20 +610,22 @@
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
 								
 								if(jsObj.task == "getUserLocation")
-									fillDataOptions(myResults);	
+									fillDataOptions(myResults,jsObj);	
 								else if(jsObj.task == "fillSelectElements")
 									fillSelectElement(myResults,jsObj);
 								else if(jsObj.task == "sendSMS")
 									displaySuccessMessage(myResults,jsObj);
 								else if(jsObj.task=="CADRE_LEVEL")
-									fillDataForCadreLevel(myResults);
+									fillDataForCadreLevel(myResults,jsObj);
 								else if(jsObj.task=="createEvent")
 									addCreatedEvent(myResults,jsObj);
 								else if(jsObj.task=="createImpDateEvent")
-									addCreatedEvent(myResults,jsObj);										
+									addCreatedEvent(myResults,jsObj);																		
 								else if(jsObj.task=="subscribe")
 								{
 									var elmt = document.getElementById('subscribePartyDates');
+									if(!elmt)
+										alert("No subscribe Element");
 									elmt.innerHTML=myResults.subscribeTitle;
 									showInitialImpEventsAndDates(myResults.userImpDates,"impDates","subscribe");
 								}
@@ -626,6 +635,18 @@
 								{
 									showInitialImpEventsAndDates(myResults.userEvents,"impEvents","nextPreviousMonthEvents");
 									showInitialImpEventsAndDates(myResults.userImpDates,"impDates","nextPreviousMonthEvents");
+								}
+								else if(jsObj.type=="cadreLevel")
+								{
+									fillSelectElement(myResults,jsObj);
+								}
+								else if(jsObj.type=="cadreDetails")
+								{
+									fillSelectElement(myResults,jsObj);
+								}
+								else if(jsObj.task=="getEventCadres")
+								{									
+									showEventForCadres(myResults,jsObj);
 								}
 										
 							}catch (e) {   
@@ -641,6 +662,47 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 	
+	function setCadreValue(value)
+	{
+		document.getElementById("cadreLevelValue").value=value;
+		return true;
+	}
+	
+	function getCadreLevelValues(name,value,id)
+	{
+		var cadreLevelElmt = document.getElementById("cadreLevelField");
+		var cadreLevelElmtText = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].text;
+		var cadreLevelElmtValue = cadreLevelElmt.options[cadreLevelElmt.selectedIndex].value;
+		
+		if(name == "cadreLevelState" && cadreLevelElmtText == "State")
+		{
+			document.getElementById("cadreLevelValue").value=1;						
+		}
+		else if((name == "cadreLevelState" && cadreLevelElmtText == "District") || (name == "cadreLevelState" && cadreLevelElmtText == "Constituency") 
+			|| (name == "cadreLevelState" && cadreLevelElmtText == "Mandal")|| (name == "cadreLevelState" && cadreLevelElmtText == "Village"))
+		{
+			
+			getnextList("state",id,"true");				
+		}
+		else if(name == "cadreLevelDistrict" && cadreLevelElmtText == "Constituency")
+		{
+			
+			getnextList("constituency",id,"true");				
+		}
+		else if(name == "cadreLevelDistrict" && (cadreLevelElmtText == "Mandal" || cadreLevelElmtText == "Village"))
+		{
+			
+			getnextList("district",id,"true");				
+		}
+		else if(name == "cadreLevelMandal" && (cadreLevelElmtText == "Village"))
+		{
+			
+			getnextList("mandal",id,"true");				
+		}
+		
+		//if(document.getElementById("cadreLevelField").value == 5)
+		//	getDistrictLevelValues(name,value,id)
+	}
 
 	function getStateList()
 	{	
@@ -708,6 +770,7 @@
 			mandalElmt.disabled = false;
 			villageElmt.disabled = false;
 		}
+		
 
 		getStatesNDistricts("cadreLevel",cadreLevelElmtText,cadreLevelElmtValue)
 		
@@ -728,7 +791,21 @@
 		callAjax(jsObj, url);
 	}
 
+	function getnextList(name,value,choice)
+	{
 
+		var jsObj=
+			{
+					type:"cadreDetails",
+					reportLevel:name,
+					selected:value,
+					changed:choice
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+			var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;
+		callAjax(jsObj, url);
+	}
 
 	function displaySuccessMessage(results,jsObj)
 	{
@@ -738,29 +815,48 @@
 		divElmt.innerHTML=str;
 	}
 	function fillSelectElement(results,jsObj)
-	{
-		if(jsObj.type == "STATE")
+	{			
+		if(jsObj.type == "cadreDetails")
 		{
-			var elmt = document.getElementById("DistrictSelect");
+			if(jsObj.reportLevel=="state")
+			{
+				var elmt = document.getElementById("cadreLevelDistrict");
+			}
+			else if(jsObj.reportLevel=="district")
+			{
+				var elmt=document.getElementById("cadreLevelMandal");
+			}
+			else if(jsObj.reportLevel=="constituency")
+			{
+				var elmt=document.getElementById("cadreLevelConstituency");
+			}
+			else if(jsObj.reportLevel=="mandal")
+			{
+				var elmt=document.getElementById("cadreLevelVillage");
+			}
+			else if(jsObj.reportLevel=="Constituencies")
+			{
+				var elmt=document.getElementById("mandalField");
+			}
 		}
+		else if(jsObj.type == "cadreLevel")
+			var elmt = document.getElementById("cadreLevelState");
+		else if(jsObj.type == "STATE")
+			var elmt = document.getElementById(jsObj.taskType+"_DistrictSelect");
 		else if(jsObj.type == "DISTRICT	")
-		{
-			var elmt = document.getElementById("ConstituencySelect");
-		}
+			var elmt = document.getElementById(jsObj.taskType+"_ConstituencySelect");
 		else if(jsObj.type == "CONSTITUENCY")
-		{	
-			var elmt = document.getElementById("MandalSelect");
-		}	
+			var elmt = document.getElementById(jsObj.taskType+"_MandalSelect");
 		else if(jsObj.type == "MANDAL")
-		{
-			var elmt = document.getElementById("VillageSelect");
-		}
-
+			var elmt = document.getElementById(jsObj.taskType+"_VillageSelect");
+		else if(jsObj.type == "cadreLevel")
+			var elmt=document.getElementById(jsObj.taskType+"_cadreLevelState");
+		
 		var len=elmt.length;			
 		for(i=len-1;i>=0;i--)		
 			elmt.remove(i);
 		
-		var x=document.createElement('option');		
+		/*var x=document.createElement('option');		
 		x.value="0";		
 		x.text="Select";		
 
@@ -771,7 +867,7 @@
 		catch(ex)
 		{
 			elmt.add(x); // IE only
-		}
+		}*/
 		
 		for (var l in results)
 		{
@@ -790,10 +886,11 @@
 		}
 		
 	}
-	function getUserLocationData(val)
+	function getUserLocationData(val,type)
 	{
 		var jsObj={
 					value:val,
+					taskType:type,
 					task:"getUserLocation"
 				  };
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -802,15 +899,16 @@
 	}
 
 
-	function getUsersCadreLevelData(){		
+	function getUsersCadreLevelData(value,type){		
 		var jsObj={
+				taskType:type,
 				task:"CADRE_LEVEL"
 			  };
 		var url = "<%=request.getContextPath()%>/usersCadreLevelData.action";
 		callAjax(jsObj,url);
 	}
 	
-	function getNextRegions(id,val)
+	function getNextRegions(id,val,regTask)
 	{
 		var selectElmt = document.getElementById(id);
 		var selectValue = selectElmt.options[selectElmt.selectedIndex].value;
@@ -821,6 +919,7 @@
 		var jsObj={
 					value:selectValue,
 					type:val,
+					taskType:regTask,
 					task:"fillSelectElements"
 				  };
 		var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?REGION="+val+"&REGION_ID="+selectValue;
@@ -828,14 +927,27 @@
 
 	}
 
-	function fillDataForCadreLevel(results)
+	function fillDataForCadreLevel(results,jsObj)
 	{
 		var successDivElmt=	 document.getElementById("successDiv");
 		successDivElmt.innerHTML="";
+		
+		var actionVal = jsObj.taskType;
 
-		var regionTypeElmtLabel = document.getElementById("region_type_Label");
-		var regionTypeElmtData = document.getElementById("region_type_Data");
-
+		if(jsObj.taskType == "sms")
+		{
+			var regionTypeElmtLabel = document.getElementById("region_type_Label");
+			var regionTypeElmtData = document.getElementById("region_type_Data");
+			var regionTypeSelectElmtLabel = document.getElementById("region_select_Label");
+			var regionTypeSelectElmtData = document.getElementById("region_select_Data");
+		}
+		else if(jsObj.taskType == "event" || jsObj.taskType == "action")
+		{			
+			var regionTypeElmtLabel = document.getElementById(actionVal+"_region_type_Label");
+			var regionTypeElmtData = document.getElementById(actionVal+"_region_type_Data");
+			var regionTypeSelectElmtLabel = document.getElementById(actionVal+"_region_select_Label");
+			var regionTypeSelectElmtData = document.getElementById(actionVal+"_region_select_Data");
+		}
 		regionTypeElmtLabel.innerHTML="Select Cadre Level";
 
 		var str='';
@@ -845,13 +957,20 @@
 		}
 		regionTypeElmtData.innerHTML=str;
 		//--------------
-		var regionTypeSelectElmtLabel = document.getElementById("region_select_Label");
-		var regionTypeSelectElmtData = document.getElementById("region_select_Data");
+
 
 		if(regionTypeSelectElmtLabel && regionTypeSelectElmtData)
 		{
 			regionTypeSelectElmtLabel.innerHTML="";
 			regionTypeSelectElmtData.innerHTML="";
+		}
+
+		if(jsObj.taskType == "event" || jsObj.taskType == "action")
+		{
+			var submitStr='<input type="button" onclick="getCadresLevelForEvent()" value="Get Cadres"/>';
+			var submitDiv = document.getElementById(actionVal+"_region_submit");
+			submitDiv.innerHTML = submitStr;
+			return;
 		}
 		//-------------
 		var smsTextElmtLabel = document.getElementById("sms_text_Label");
@@ -882,36 +1001,84 @@
 			buttonDiv.innerHTML=bstr;
 		
 	}
-	function fillDataOptions(results)
+
+	function getCadresLevelForEvent()
+	{
+		var region;
+
+		var elements = document.getElementsByTagName('input'); 
+		for(var i in elements)
+		{
+			if(elements[i].type=="radio" && elements[i].name=="region_type_radio" && elements[i].checked==true)
+				region = elements[i].value.toUpperCase();
+		}
+		if(region == '1')
+			region = 'COUNTRY';
+		else if(region == '2')
+			region = 'STATE';
+		else if(region == '3')
+			region = 'DISTRICT';
+		else if(region == '4')
+			region = 'CONSTITUENCY';
+		else if(region == '5')
+			region = 'MANDAL';
+		else if(region == '6')
+			region = 'VILLAGE';
+
+		var jsObj={	
+					regionVal:region,
+					regionSelectVal:"",
+					cadreLevel:"cadreLevel",
+					task:"getEventCadres"
+					};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+		var url = "<%=request.getContextPath()%>/getCadresForEvent.action?"+rparam;
+		
+		callAjax(jsObj, url);
+	}
+	function fillDataOptions(results,jsObj)
 	{	
-		
-		
 		//Setting values for region type..
-		var regionTypeElmtLabel = document.getElementById("region_type_Label");
-		var regionTypeElmtData = document.getElementById("region_type_Data");
+		var regTask = jsObj.taskType;
+		if(jsObj.taskType == 'sms')
+		{
+			var regionTypeElmtLabel = document.getElementById("region_type_Label");
+			var regionTypeElmtData = document.getElementById("region_type_Data");
+
+			var regionTypeSelectElmtLabel = document.getElementById("region_select_Label");
+			var regionTypeSelectElmtData = document.getElementById("region_select_Data");
+
+		}
+		else if(jsObj.taskType == 'event' || jsObj.taskType == 'action')
+		{			
+			var regionTypeElmtLabel = document.getElementById(regTask+"_region_type_Label");
+			var regionTypeElmtData = document.getElementById(regTask+"_region_type_Data");
+
+			var regionTypeSelectElmtLabel = document.getElementById(regTask+"_region_select_Label");
+			var regionTypeSelectElmtData = document.getElementById(regTask+"_region_select_Data");
+
+		}
 
 		var str='';
 		for(var i in results.regions)
 		{
-			str+='<input type="radio" name="region_type_radio" value="'+results.regions[i].name+'" onclick="displayRegionsSelect(this.value)" /> '+results.regions[i].name+'';
+			str+='<input type="radio" name="region_type_radio" value="'+results.regions[i].name+'" onclick="displayRegionsSelect(this.value,\''+regTask+'\')" /> '+results.regions[i].name+'';
 		}		
 
 		if(regionTypeElmtLabel)
 			regionTypeElmtLabel.innerHTML="Select Level";
 		if(regionTypeElmtData)
 			regionTypeElmtData.innerHTML=str;
-
+		
 		//---------
 		//Setting values for select box..
-		var regionTypeSelectElmtLabel = document.getElementById("region_select_Label");
-		var regionTypeSelectElmtData = document.getElementById("region_select_Data");
-
+		
 		if(regionTypeSelectElmtLabel)
 			regionTypeSelectElmtLabel.innerHTML="Select Location";
 
 		var regionStr='';
 		
-		regionStr+='<select id="StateSelect" class="selectBox" onchange="getNextRegions(this.id,\'STATE\')" disabled="true">';
+		regionStr+='<select id="'+regTask+'_StateSelect" class="selectBox" onchange="getNextRegions(this.id,\'STATE\',\''+regTask+'\')" disabled="true">';
 		if(results.states != "")
 		{
 			for(var state in results.states)
@@ -926,7 +1093,7 @@
 		regionStr+='</select>';	
 
 		
-		regionStr+='<select id="DistrictSelect" class="selectBox" onchange="getNextRegions(this.id,\'DISTRICT\')" disabled="true">';
+		regionStr+='<select id="'+regTask+'_DistrictSelect" class="selectBox" onchange="getNextRegions(this.id,\'DISTRICT\',\''+regTask+'\')" disabled="true">';
 		if(results.districts != "")
 		{
 			for(var district in results.districts)
@@ -941,7 +1108,7 @@
 		regionStr+='</select>';
 		
 		
-		regionStr+='<select id="ConstituencySelect" class="selectBox" onchange="getNextRegions(this.id,\'CONSTITUENCY\')" disabled="true">';
+		regionStr+='<select id="'+regTask+'_ConstituencySelect" class="selectBox" onchange="getNextRegions(this.id,\'CONSTITUENCY\',\''+regTask+'\')" disabled="true">';
 		if(results.constituencies != "")
 		{
 			for(var consti in results.constituencies)
@@ -957,7 +1124,7 @@
 	
 	
 	
-		regionStr+='<select id="MandalSelect" class="selectBox" onchange="getNextRegions(this.id,\'MANDAL\')" disabled="true">';
+		regionStr+='<select id="'+regTask+'_MandalSelect" class="selectBox" onchange="getNextRegions(this.id,\'MANDAL\',\''+regTask+'\')" disabled="true">';
 		if(results.mandals != "")
 		{
 			for(var mandal in results.mandals)
@@ -972,7 +1139,7 @@
 		regionStr+='</select>';
 
 		
-		regionStr+='<select id="VillageSelect" class="selectBox" disabled="true">';
+		regionStr+='<select id="'+regTask+'_VillageSelect" class="selectBox" disabled="true">';
 		if(results.villages != "")
 		{
 			for(var village in results.villages)
@@ -989,6 +1156,13 @@
 		if(regionTypeSelectElmtData)
 			regionTypeSelectElmtData.innerHTML=regionStr;
 
+		if(jsObj.taskType == 'event' || jsObj.taskType == 'action')
+		{
+			var submitStr='<input type="button" onclick="getCadresForEvent(\''+regTask+'\')" value="Get Cadres"/>';
+			var submitDiv = document.getElementById(regTask+"_region_submit");
+			submitDiv.innerHTML = submitStr;
+			return;
+		}
 		//---------------
 		// Displaying Text Area
 		var smsTextElmtLabel = document.getElementById("sms_text_Label");
@@ -1021,6 +1195,47 @@
 		}
 
 	
+	}
+
+	function getCadresForEvent(regTask)
+	{
+		var region,regionSelect;
+
+		var elements = document.getElementsByTagName('input'); 
+
+		for(var i=0;i<elements.length;i++)
+		{
+			if(elements[i].type=="radio" && elements[i].name=="region_type_radio" && elements[i].checked==true)
+			{
+				region = elements[i].value.toUpperCase();				
+			}
+		}	
+		
+		if(region == "STATE")
+			var selectElmt = document.getElementById(regTask+"_StateSelect");
+		else if(region == "DISTRICT")
+	 		var selectElmt = document.getElementById(regTask+"_DistrictSelect");
+		else if(region == "CONSTITUENCY")
+	 		var selectElmt = document.getElementById(regTask+"_ConstituencySelect");
+		else if(region == "MANDAL")
+	 		var selectElmt = document.getElementById(regTask+"_MandalSelect");
+		else if(region == "VILLAGE")
+	 		var selectElmt = document.getElementById(regTask+"_VillageSelect");
+
+		var regionSelect = selectElmt.options[selectElmt.selectedIndex].value;
+				
+		var jsObj={	
+					regionVal:region,
+					regionSelectVal:regionSelect,
+					displayType:regTask,
+					cadreLevel:"locationLevel",
+					task:"getEventCadres"
+					};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+		var url = "<%=request.getContextPath()%>/getCadresForEvent.action?"+rparam;
+		
+		callAjax(jsObj, url);
+		
 	}
 	
 	function limitText(limitField, limitCount, limitNum)
@@ -1091,13 +1306,13 @@
 		
 	}
 	
-	function displayRegionsSelect(val)
+	function displayRegionsSelect(val,regTask)
 	{
-		var stateSelectElmt = document.getElementById("StateSelect");
-		var districtSelectElmt = document.getElementById("DistrictSelect");
-		var constituencySelectElmt = document.getElementById("ConstituencySelect");
-		var mandalSelectElmt = document.getElementById("MandalSelect");
-		var villageSelectElmt = document.getElementById("VillageSelect");
+		var stateSelectElmt = document.getElementById(regTask+"_StateSelect");
+		var districtSelectElmt = document.getElementById(regTask+"_DistrictSelect");
+		var constituencySelectElmt = document.getElementById(regTask+"_ConstituencySelect");
+		var mandalSelectElmt = document.getElementById(regTask+"_MandalSelect");
+		var villageSelectElmt = document.getElementById(regTask+"_VillageSelect");
 		
 		stateSelectElmt.disabled=true;
 		districtSelectElmt.disabled=true;	
@@ -1311,6 +1526,7 @@
 	}
 	function buildSelectedDateEventPopup(results,jsObj)
 	{			
+		
 		var elmt = document.getElementById('cadreManagementMainDiv');		
 
 		var divChild = document.createElement('div');
@@ -1440,7 +1656,12 @@
 			eventStr+='<tr>';
 			eventStr+='<th>Organizers</th>';
 			if(results.organizers != null)
-				eventStr+='<td colspan="3"><span class="fieldSpan" onclick="changeToEditableField(this,\'text\',\'impEvent\',\'organizers\')">'+results.organizers+'</span></td>';
+			{
+				eventStr+='<td colspan="3">';
+				for(var cadre in results.organizers)
+					eventStr+='<div class="fieldSpan" id="'+results.organizers[cadre].id+'_div" onclick="changeToEditableField(this,\'text\',\'impEvent\',\'organizers\')">'+results.organizers[cadre].name+'</div>';
+				eventStr+='</td>';
+			}
 			else
 				eventStr+='<td colspan="3"><span class="fieldSpan" onclick="changeToEditableField(this,\'text\',\'impEvent\',\'organizers\')"> - </span></td>';
 			eventStr+='</tr>';
@@ -1496,6 +1717,8 @@
 				{ width : "600px", 
 	              fixedcenter : false, 
 	              visible : true,  
+				  x:350,
+				  y:800,
 	              constraintoviewport : true, 
 				  iframe :true,
 				  modal :true
@@ -1545,12 +1768,12 @@
 		callAjax(jsObj,url);
 	}
 	function addCreatedEvent(results,jsObj)
-	{			
+	{		
 		var divElmt = document.createElement('div');
 
-		if(results.userEventsId == "" || results.importantDateId == "")
+		if(results.userEventsId == null && results.importantDateId == null)
 		{
-			alert("Event/Date is not created due to some exception");
+			alert("Event/Date is cannot be created due to some exception");
 			return;
 		}
 		if(results == "")
@@ -1787,7 +2010,7 @@
 		eventStr+='</td>';
 		eventStr+='</tr>';
 				
-		/*
+		
 		eventStr+='<tr>';
 		eventStr+='<th>Location Level</th>';
 		eventStr+='<td colspan="3"><select id="cadreLevelField" name="cadreLevel" onchange="getStateList()">';
@@ -1803,37 +2026,34 @@
 		eventStr+='<tr>';
 		eventStr+='<th>Location</th>';
 		eventStr+='<td colspan="3">';
-		eventStr+='<select id="cadreLevelState" name="cadreLevelState" disabled = "true" onchange="getCadreLevelValues(this)">';
-		eventStr+='	<option>Select State</option>';					
-		eventStr+='	</select>';
+		eventStr+='	<select id="cadreLevelState" name="cadreLevelState" disabled = "true" class="cadreLevelSelect" onchange="setCadreValue(this.options[this.selectedIndex].value);										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<option> </option>';					
+		eventStr+='	</select>'; 
 
- 		eventStr+='	<select id="cadreLevelDistrict" name="cadreLevelDistrict" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);							getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
-		eventStr+='	<option>Select District</option>';					
+ 		eventStr+='	<select id="cadreLevelDistrict" class="cadreLevelSelect" name="cadreLevelDistrict" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);							getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<option></option>';					
 		eventStr+='	</select>'; 
 				
-		eventStr+='	<select id="cadreLevelConstituency" name="cadreLevelConstituency" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);					getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
-		eventStr+='	<option>Select Constituency</option>';					
+		eventStr+='	<select id="cadreLevelConstituency" class="cadreLevelSelect" name="cadreLevelConstituency" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);					getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<option></option>';					
 		eventStr+='	</select> ';
 		
-		eventStr+='	<select id="cadreLevelMandal" name="cadreLevelMandal" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);								getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
-		eventStr+='	<option>Select Mandal</option>';					
+		eventStr+='	<select id="cadreLevelMandal" class="cadreLevelSelect" name="cadreLevelMandal" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);								getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<option></option>';					
 		eventStr+='	</select> ';
 		
-		eventStr+='	<select id="cadreLevelVillage" name="cadreLevelVillage" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value)">';
-		eventStr+=' 	<option>Select Village</option>';					
+		eventStr+='	<select id="cadreLevelVillage" class="cadreLevelSelect" name="cadreLevelVillage" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value)">';
+		eventStr+=' 	<option></option>';					
 		eventStr+='	</select>';
 		eventStr+='</td>';
-		eventStr+='</tr>';*/
+		eventStr+='</tr>';
 
 		eventStr+='<tr>';
 		eventStr+='<th>Description</th>';
 		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="descTextArea" name="descTextArea"></textarea></td>';
 		eventStr+='</tr>';
-
-		eventStr+='<tr>';
-		eventStr+='<th>Organisers</th>';
-		eventStr+='<td colspan="3"><input type="text" size="50" id="organisersText" name="organisersText"/></td>';
-		eventStr+='</tr>';
+		
+		eventStr+=getOrganisersString("event");
 
 		eventStr+='<tr>';
 		eventStr+='<th><div id="actionPlanLabelDiv"></div></th>';
@@ -1858,17 +2078,138 @@
 			newEventDialog.destroy();
 
 		newEventDialog = new YAHOO.widget.Dialog("newEventDiv",
-				{ width : "730px", 
+				{ width : "800px", 
 	              fixedcenter : false, 
 	              visible : true,  
 	              constraintoviewport : true, 
 				  iframe :true,
 				  modal :true,
+				  x:200,
+				  y:500,
 				  hideaftersubmit:true,
 		          buttons : [ { text:"Create Event", handler:handleSubmit, isDefault:true }, 
 	                          { text:"Cancel", handler:handleCancel } ]
 	             } ); 
 		newEventDialog.render(); 
+	}
+	
+	function getOrganisersString(regTask)
+	{
+		var eventStr='';
+		eventStr+='<tr>';
+		eventStr+='<th>Organisers</th>';		
+		eventStr+='<td colspan="3"><input type="radio" name="sms_type" value="locationWise" onclick="getUserLocationData(this.value,\''+regTask+'\')"/> Location Wise';	eventStr+='<input type="radio" name="sms_type" value="cadreLevelWise" onclick="getUsersCadreLevelData(this.value,\''+regTask+'\')"/> Cadre Level Wise</td>';
+		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='<th align="left"><div id="'+regTask+'_region_type_Label"></div></th>';
+		eventStr+='	<td align="left"><div id="'+regTask+'_region_type_Data"></div></td>';				
+		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='	<th align="left"><div id="'+regTask+'_region_select_Label">	</div></th>';
+		eventStr+='	<td align="left"><div id="'+regTask+'_region_select_Data">	</div>';
+		eventStr+=' <div id="'+regTask+'_region_submit"></div></td>';
+		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='<th><div id="'+regTask+'CadreDivHead"></div></th>';
+		eventStr+='<td colspan="3"><div id="'+regTask+'CadreDivBody"></div></td>';		
+		eventStr+='</tr>';
+
+		return eventStr;
+
+	}
+	function showEventForCadres(results,jsObj)
+	{
+		
+		var taskType = jsObj.displayType;
+		var eventsHeadElmt = document.getElementById(taskType+"CadreDivHead");
+		var eventsBodyElmt = document.getElementById(taskType+"CadreDivBody");
+		
+		if(eventsHeadElmt)
+			eventsHeadElmt.innerHTML="Select Cadres";
+		if(results.length == 0)
+		{
+			eventsBodyElmt.innerHTML="No Cadres Present";
+			return;
+		}
+
+		var str='';
+		str+='<table>';
+		for(var i in results)
+		{
+			str+='<tr>';			
+			if(jsObj.cadreLevel == 'locationLevel')
+			{
+				str+='<td><input type="checkbox" name="eventCadreCheck" id="'+taskType+'_'+results[i].id+'" value="'+results[i].name+'"/></td>';
+				str+='<td><span id="'+results[i].id+'_span">'+results[i].name+'</span></td>';
+			}
+			else if(jsObj.cadreLevel == 'cadreLevel')
+			{
+				str+='<td><input type="checkbox" name="eventCadreCheck" id="'+taskType+'_'+results[i].cadreID+'" value="'+results[i].firstName+' '+results[i].middleName+' '+results[i].lastName+'"/></td>';
+				str+='<td><span id="'+results[i].cadreId+'_span">'+results[i].firstName+' '+results[i].middleName+' '+results[i].lastName+'</span></td>';			
+			}
+			str+='</tr>';
+		}
+		str+='<tr>';
+		str+='<td colspan="2" align="center"><input type="button" onclick="addCadresToEvent(\''+taskType+'\')" value="Select Cadres"><></td>';
+		str+='<tr>';
+		str+='</table>';
+
+		if(eventsBodyElmt)
+			eventsBodyElmt.innerHTML=str;
+
+	}
+
+	function addCadresToEvent(type)
+	{		
+		var elements = document.getElementsByTagName('input'); 
+		var length;
+		var array = new Array();
+		if(type == 'event')
+		{
+			length = eventCadresArray.length;
+			array  = eventCadresArray;
+		}
+		else if(type == 'action')
+		{
+			length = actionCadresArray.length;
+			array = actionCadresArray;
+		}
+		for(var i=0;i<elements.length;i++)
+		{
+			if(elements[i].type=="checkbox" && elements[i].name=="eventCadreCheck" && elements[i].checked==true)
+			{
+				var eid = elements[i].id.substring((elements[i].id.indexOf('_'))+1,elements[i].id.length);	
+				
+				/*for(var j=0;j<length;j++)
+				{
+					if(array[j].cadreId == eid)
+					{
+						alert("Cadre already selected");
+						continue;
+					}
+				}*/
+				
+				var eventCadresObj ={
+										cadreId:eid,
+										cadreName:elements[i].value								
+									};
+
+				if(type == 'event')
+					eventCadresArray.push(eventCadresObj);
+				else if(type == 'action')
+					actionCadresArray.push(eventCadresObj);
+			}			
+		}
+		
+
+		if((type == 'event' && eventCadresArray.length == 0) ||(type == 'action' && actionCadresArray.length == 0))
+		{
+			alert("No cadres has been selected");
+			return;
+		}				
 	}
 
 	function createActionPlan()
@@ -1913,12 +2254,14 @@
 		}
 		str+='</td>';
 		str+='</tr>';
-		str+='<tr>';
-		str+='<th>Organisers</th>';
+		str+='<tr>';		
 		if(status == "false")
-			str+='<td><select id="actionOrganisersSelect"><option> Select Organisers</option></select</td>';
+			str+=getOrganisersString("action");
 		else if(status == "true")
+		{
+			str+='<th>Organisers</th>';
 			str+='<td><select id="actionOrganisersSelect_'+index+'"><option> Select Organisers</option></select</td>';
+		}
 		str+='</tr>';
 
 		return str;
@@ -1932,14 +2275,14 @@
 
 		var actionPlanValue = document.getElementById('actionPlanText').value;
 		var targetDateValue = document.getElementById('actionTargetDateText').value;
-		var organisersSelectElmt = document.getElementById('actionOrganisersSelect');
-		var organisersValue = organisersSelectElmt.options[organisersSelectElmt.selectedIndex].value;
+		//var organisersSelectElmt = document.getElementById('actionOrganisersSelect');
+		//var organisersValue = organisersSelectElmt.options[organisersSelectElmt.selectedIndex].value;
 		
 		var actionPlanArrLength = actionPlanArray.length;		
 		var actionObj = {
 							actionPlan:actionPlanValue,
 							targetDate:targetDateValue,
-							organisers:organisersValue			
+							organisers:actionCadresArray			
 						};
 		actionPlanArray.push(actionObj);
 
@@ -2028,8 +2371,7 @@
 	}
 
 	function handleSubmit()
-	{
-		
+	{		
 		var eventNameVal = document.getElementById("eventNameText").value;
 		var startDateVal = document.getElementById("startDateText").value;
 		var endDateVal = document.getElementById("endDateText").value;
@@ -2044,8 +2386,27 @@
 		var endTimeMin = document.getElementById("endTimeMin");
 		var endTimeMinVal = endTimeMin.options[endTimeMin.selectedIndex].text;
 
+		var loctionLevelFieldElmt = document.getElementById("cadreLevelField");
+		locationLevelFieldval = loctionLevelFieldElmt.options[loctionLevelFieldElmt.selectedIndex].text.toUpperCase();
+
 		var descVal = document.getElementById("descTextArea").value;
-		var organisersVal = document.getElementById("organisersText").value;
+		
+		var locationValueElmt;
+		if(locationLevelFieldval == "STATE")
+			locationValueElmt = document.getElementById("cadreLevelState");
+		else if(locationLevelFieldval == "DISTRICT")
+			locationValueElmt = document.getElementById("cadreLevelDistrict");
+		else if(locationLevelFieldval == "CONSTITUENCY")
+			locationValueElmt = document.getElementById("cadreLevelConstituency");
+		else if(locationLevelFieldval == "MANDAL")
+			locationValueElmt = document.getElementById("cadreLevelMandal");
+		else if(locationLevelFieldval == "VILLAGE")
+			locationValueElmt = document.getElementById("cadreLevelVillage");
+
+		var locationValue = locationValueElmt.options[locationValueElmt.selectedIndex].value;
+		
+
+		//var organisersVal = document.getElementById("organisersText").value;
 
 		var actionPlansVal='';
 		
@@ -2057,8 +2418,10 @@
 					startTimeMin:startTimeMinVal,					
 					endTimeHrs:endTimeHrsVal,
 					endTimeMin:endTimeMinVal,
+					locationType:locationLevelFieldval,
+					locaitonId:locationValue,
 					desc:descVal,
-					organisers:organisersVal,
+					organizers:eventCadresArray,
 					actionPlans:actionPlanArray,
 					task:"createEvent"
 				  }
@@ -2135,6 +2498,8 @@
 	              constraintoviewport : true, 
 				  iframe :true,
 				  modal :true,
+				  x:200,
+				  y:700,
 				  hideaftersubmit:true,
 		          buttons : [ { text:"Create New Date", handler:handleImpDateSubmit, isDefault:true }, 
 	                          { text:"Cancel", handler:handleImpDateCancel } ]
@@ -2191,8 +2556,7 @@
 	}
 
 	function showInitialImpEventsAndDates(eventsarr,type,task)
-	{
-	
+	{		
 		if(type == "impEvents")
 			var elmt = document.getElementById("cadreImpEventsBodyDiv");
 		else if(type == "impDates")
@@ -2203,7 +2567,8 @@
 		
 		
 		for(var i in eventsarr)
-		{				
+		{			
+			
 			if(type == "impEvents" && eventsarr[i].startDate)
 			{	
 				var sDayobj = getDateTime(eventsarr[i].startDate);				
@@ -2331,9 +2696,8 @@
 						<tr>
 							<th align="left">SMS Type</th>
 							<td align="left">
-								<input type="radio" name="sms_type" value="locationWise" onclick="getUserLocationData(this.value)"/> Location Wise
-								<!-- <td><input type="radio" name="sms_type" onselect="getUsersGroupData()"/> Group Wise</td>-->
-								<input type="radio" name="sms_type" value="cadreLevelWise" onclick="getUsersCadreLevelData(this.value)"/> Cadre Level Wise
+								<input type="radio" name="sms_type" value="locationWise" onclick="getUserLocationData(this.value,'sms')"/> Location Wise				
+								<input type="radio" name="sms_type" value="cadreLevelWise" onclick="getUsersCadreLevelData(this.value,'sms')"/> Cadre Level Wise
 							</td>		
 						</tr>
 						<tr>
@@ -2478,11 +2842,11 @@
 		<c:forEach var="impEvent" items="${cadreManagementVO.userEvents}" >			
 				var ob =
 					{
-						userEventsId:'${impEvent.userEventsId}',
-						title:'${impEvent.title}',
-						startDate:'${impEvent.startDate}',
-						endDate:'${impEvent.endDate}',
-						description:'${impEvent.description}'
+						userEventsId:"${impEvent.userEventsId}",
+						title:"${impEvent.title}",
+						startDate:"${impEvent.startDate}",
+						endDate:"${impEvent.endDate}",
+						description:"${impEvent.description}"
 					};
 					impEvents.push(ob);
 		</c:forEach>			
@@ -2494,11 +2858,11 @@
 		<c:forEach var="impDate" items="${cadreManagementVO.userImpDates}" >			
 				var ob =
 					{
-						importantDateId:'${impDate.importantDateId}',
-						title:'${impDate.title}',
-						startDate:'${impDate.impDate}',
-						importance:'${impDate.importance}',
-						eventType:'${impDate.eventType}'
+						importantDateId:"${impDate.importantDateId}",
+						title:"${impDate.title}",
+						startDate:"${impDate.impDate}",
+						importance:"${impDate.importance}",
+						eventType:"${impDate.eventType}"
 					};
 					impDates.push(ob);
 		</c:forEach>
