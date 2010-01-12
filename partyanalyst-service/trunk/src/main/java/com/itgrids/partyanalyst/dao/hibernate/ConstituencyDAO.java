@@ -11,9 +11,6 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.columns.enums.ConstituencyColumnNames;
 import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
-import com.itgrids.partyanalyst.model.ElectionScope;
-import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 
@@ -110,5 +107,10 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return getHibernateTemplate().find("select model.constituencyId, upper(model.name), " +
 				"YEAR(model.startDate),YEAR(model.deformDate) from Constituency model where " +
 				"model.district.districtId = ?",districtId);
+	}
+	
+	public List<Constituency> findByConstituencyNameDistrictIdTehsilName(String constituencyName, Long districtID, String tehsilName){
+		Object[] params = {constituencyName.toUpperCase(),districtID,tehsilName.toUpperCase()};
+		return getHibernateTemplate().find("from Constituency model where upper(model.name)=? and model.district.districtId = ? and upper(model.tehsil.tehsilName)=?",params);
 	}
 }
