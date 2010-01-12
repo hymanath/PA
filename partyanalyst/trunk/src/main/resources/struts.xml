@@ -382,6 +382,14 @@
 			<result type="json" name="success">
 				<param name="root">cadreManagementVO</param>				
 			</result>			
+		</action>
+		<action name="getCadresForEvent" class="createEventAction" method="getCadresForEvent">
+			<result type="json" name="locationLevel">
+				<param name="root">cadresLevel</param>				
+			</result>			
+		 	<result type="json" name="cadreLevel">
+				<param name="root">cadresLocation</param>				
+			</result>				
 		</action>	
 	</package>
 </struts>
