@@ -259,7 +259,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	
 	@SuppressWarnings("unchecked")
 	public List<Cadre> findByCadreIDs(String cadreIDs){
-		List<Cadre>  results = getHibernateTemplate().find("from Cadre model where model.cadreId=?", cadreIDs);
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model where model.cadreId in ("+ cadreIDs+")");
 		return results;
 	}
 
@@ -274,7 +274,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	public List<Cadre> findCadresByConstituency(Long constituencyID, Long userID){
 		Object[] params = {userID,constituencyID};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
-				"where model.registration.registrationId = ? and model.constituencyID.constituencyId=?", params); 
+				"where model.registration.registrationId = ? and model.constituency.constituencyId=?", params); 
 		return results;
 	}
 	

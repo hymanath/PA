@@ -345,7 +345,7 @@ public class UserCalendarService implements IUserCalendarService {
 		importantDatesVO.setImportance(impDate.getImportance());
 		importantDatesVO.setFrequency(impDate.getRecursiveFrequency());
 		Date iDate = (Date)(impDate.getImportantDate()).clone();
-		iDate.setYear(calendar.get(Calendar.YEAR));
+		iDate.setYear(calendar.get(Calendar.YEAR)-1900);
 		iDate.setMonth(calendar.get(Calendar.MONTH));
 		iDate.setDate(calendar.get(Calendar.DAY_OF_MONTH));
 		importantDatesVO.setImpDate(iDate);	
