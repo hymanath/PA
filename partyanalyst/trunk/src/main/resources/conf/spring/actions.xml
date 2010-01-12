@@ -178,6 +178,7 @@
 	
 	<bean id="createEventAction" class="com.itgrids.partyanalyst.web.action.CreateEventAction" singleton="false">	
 		<property name="userCalendarService" ref="userCalendarService"></property>	
+		<property name="cadreManagementService" ref="cadreManagementService"></property>
 	</bean>
 	
 	<bean id="constituencyManagementAction" class="com.itgrids.partyanalyst.web.action.ConstituencyManagementAction" singleton="false">			
