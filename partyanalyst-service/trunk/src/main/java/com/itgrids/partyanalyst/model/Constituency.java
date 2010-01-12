@@ -47,6 +47,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	
 	private Long constituencyId;
 	private District district;
+	private Tehsil tehsil;
 	private ElectionScope electionScope;
 	private State state;
 	private String name;
@@ -68,6 +69,24 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	}
 
 	/** full constructor */
+	public Constituency(Long constituencyId, District district,
+			ElectionScope electionScope, State state, String name,
+			Date startDate, Date deformDate, Long countryId,
+			Set<ConstituencyElection> constituencyElections,
+			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses, Tehsil tehsil) {
+		this.constituencyId = constituencyId;
+		this.district = district;
+		this.electionScope = electionScope;
+		this.state = state;
+		this.name = name;
+		this.startDate = startDate;
+		this.deformDate = deformDate;
+		this.countryId = countryId;
+		this.constituencyElections = constituencyElections;
+		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
+		this.tehsil = tehsil;
+	}
+	
 	public Constituency(Long constituencyId, District district,
 			ElectionScope electionScope, State state, String name,
 			Date startDate, Date deformDate, Long countryId,
@@ -107,6 +126,19 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 
 	public void setDistrict(District district) {
 		this.district = district;
+	}
+
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "tehsil_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Tehsil getTehsil() {
+		return tehsil;
+	}
+
+	public void setTehsil(Tehsil tehsil) {
+		this.tehsil = tehsil;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)

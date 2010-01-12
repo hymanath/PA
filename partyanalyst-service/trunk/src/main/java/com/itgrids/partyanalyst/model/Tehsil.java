@@ -48,6 +48,7 @@ public class Tehsil implements java.io.Serializable {
 	private String deformDate;
 	private Set<Township> townships = new HashSet<Township>(0);
 	private Set<Booth> booths = new HashSet<Booth>(0);
+	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 
 	// Constructors
 
@@ -148,6 +149,15 @@ public class Tehsil implements java.io.Serializable {
 
 	public void setBooths(Set<Booth> booths) {
 		this.booths = booths;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tehsil")
+	public Set<Constituency> getConstituencies() {
+		return constituencies;
+	}
+
+	public void setConstituencies(Set<Constituency> constituencies) {
+		this.constituencies = constituencies;
 	}	
 
 }
