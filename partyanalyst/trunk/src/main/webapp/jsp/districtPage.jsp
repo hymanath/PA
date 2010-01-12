@@ -65,26 +65,14 @@
 			</c:if>			
 		</c:forEach>			
 		
-		<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.newConstituencies}">			
-				<td>
-				<span id="districtAncSpan">
-					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
-					<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}"> *${result.name}
-					</a>
-				</span>
-			</td>	
-			<c:if test="${stat.count % 5==0}">
-				</tr><tr><td colspan="5"> </td></tr><tr>
-			</c:if>			
-		</c:forEach>		
+		
 		</tr></table>		
 	</div>
 	&nbsp &nbsp	* indicates New Constituencies after Delimitation
 </div>
-
 <div id="districtInfoDiv" class="detailsDiv">
 <div id="districtInfoDivHead" class="detailsHead">
-		Constituencies before Delimitation ${constituenciesStatusVO.delimitationYear}
+		 Dissolved Constituencies in Delimitation ${constituenciesStatusVO.delimitationYear}
 	</div>
 
 	<div id="districtInfoDivBody" class="detailsBody">
@@ -103,7 +91,7 @@
 		</c:forEach>			
 		</tr></table>		
 	</div>
-</div>
+
 </div>
 
 <div id="districtInfoDiv" class="detailsDiv">
@@ -128,9 +116,10 @@
 		</table>		
 	</div>
 </div>
+
 <div id="mandalInfoDiv" class="detailsDiv">
 	<div id="mandalInfoDivHead" class="detailsHead">
-		Mandal Info 
+		Mandal in <c:out value="${districtName}"/> District 
 	</div>
 
 	<div id="mandalInfoDivBody" class="detailsBody">
@@ -143,13 +132,13 @@
 					</a>
 				</span>
 			</td>	
-			<c:if test="${stat.count % 7==0}">
-				</tr><tr><td colspan="7"> </td></tr><tr>
+			<c:if test="${stat.count % 6==0}">
+				</tr><tr><td colspan="6"> </td></tr><tr>
 			</c:if>			
 		</c:forEach>			
 		</tr></table>		
 	</div>
-	</div>
+	
 </div>
 </body>
 </html>
