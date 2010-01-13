@@ -67,11 +67,11 @@
 	 
 	    if (this.getRoot() == this) { 
 	 
-			//this.getItem(0).cfg.setProperty("submenu", aSubmenuData[0]); 
+		this.getItem(0).cfg.setProperty("submenu", aSubmenuData[0]); 
 	        this.getItem(1).cfg.setProperty("submenu", aSubmenuData[1]); 
 	        this.getItem(2).cfg.setProperty("submenu", aSubmenuData[2]); 
-			this.getItem(3).cfg.setProperty("submenu", aSubmenuData[3]); 
-			//this.getItem(4).cfg.setProperty("submenu", aSubmenuData[4]); 
+		this.getItem(3).cfg.setProperty("submenu", aSubmenuData[3]); 
+		this.getItem(4).cfg.setProperty("submenu", aSubmenuData[4]); 
 	    } 
 	 
 	}); 
@@ -83,33 +83,15 @@
 	var aSubmenuData = [ 
 	 
 	    { 
-	        id: "home",  
+	        id: "partyanalysis",  
 	        itemdata: [  
-	                       
-	        ] 
-	    }, 
-	 
-	    { 
-	        id: "states",  
-	        itemdata: [ 
-	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
-				{ text: "Maharashtra", url: "statePageAction.action?stateId=15" }
-	        ]     
-	    }, 
-	     
-	    { 
-	        id: "reports",  
-	        itemdata: [ 
 	            { text: "Party Performance Report", url: "partyPerformanceMain.action" }, 	            
 	            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
 	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
-				{ text: "Party Influence Report", url: "partyInfluenceMainAction.action" },
-				{ text: "Mandal Voting Report", url: "mandalPageSDetailAction.action" },
-				{ text: "Cross Voting Report", url: "crossVotingReportInputAction.action" },				
-	            { text: "Constituencey Booth Results Report", url: "partyBoothResultAction.action" }						
-	        ]  
+	            { text: "Party Influence Report", url: "partyInfluenceMainAction.action" },
+	                       
+	        ] 
 	    }, 
-	     
 	    { 
 	        id: "cadreManagement", 
 	        itemdata: [ 				
@@ -118,11 +100,29 @@
 	        ] 
 	    },  
 		{ 
-	        id: "politicalPlanner", 
+	        id: "constituenceyManagement", 
 	        itemdata: [ 
 	            
 	        ] 
-	    }   
+	    },   
+	    { 
+	        id: "politicianAnalysis",  
+	        itemdata: [ 
+		    { text: "Mandal Voting Report", url: "mandalPageSDetailAction.action" },
+		    { text: "Cross Voting Report", url: "crossVotingReportInputAction.action" },				
+	            { text: "Constituencey Booth Results Report", url: "partyBoothResultAction.action" }						
+	        ]  
+	    }, 
+	 
+	    { 
+	        id: "staticData",  
+	        itemdata: [ 
+	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
+				{ text: "Maharashtra", url: "statePageAction.action?stateId=15" }
+	        ]     
+	    }, 
+	     
+	     
 	]; 
 	
 	</script>
@@ -138,33 +138,30 @@
 		</div>
 		<div id="loginarea">
 			<c:if test="${sessionScope.loginStatus == 'out'}">        		
-        		<c:out value="Welcome, ${sessionScope.UserName}|"/><a href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a>         		
+        		<c:out value="Welcome, ${sessionScope.UserName} | "/><a href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | <a href="<c:out value="${pageContext.request.contextPath}" />" >Home</a> | <a href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
            	</c:if>		
         	<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-        		<a href="<c:out value="${pageContext.request.contextPath}" />/loginForm.jsp" >Login</a> | <a href="<c:out value="${pageContext.request.contextPath}" />/userRegPageAction.action" >Register</a> 
+        		<a href="<c:out value="${pageContext.request.contextPath}" />" >Home</a> | <a href="<c:out value="${pageContext.request.contextPath}" />/loginForm.jsp" >Login</a> | <a href="<c:out value="${pageContext.request.contextPath}" />/userRegPageAction.action" >Register</a> | <a href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
         	</c:if>		
 		</div>
 		<div id="navcontainer" class="yui-skin-sam">
 			<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
 				<div class="bd"> 
 					<ul class="first-of-type"> 
-						<li class="yuimenubaritem first-of-type"> 
-							<a class="yuimenubaritemlabel" href="${pageContext.request.contextPath}">HOME</a> 
+						<li class="yuimenubaritem"> 
+							<a class="yuimenubaritemlabel" href="javascript:{}">PARTY ANALYSIS</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATES</a> 
-						</li> 
-						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="javascript:{}">REPORTS</a> 
-						</li> 
-						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE MANAGEMENT</a> 
+							<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="constituencyManagementAction.action">CONSTITUENCEY MANAGEMENT</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="adminUpload.action">UPLOAD</a> 
+							<a class="yuimenubaritemlabel" href="adminUpload.action">POLITICIAN ANALYSIS</a> 
+						</li> 
+						<li class="yuimenubaritem"> 
+							<a class="yuimenubaritemlabel" href="statePageAction.action?stateId=1">STATIC DATA</a> 
 						</li> 
 					</ul> 
 				</div> 
@@ -180,7 +177,7 @@
 			</div>
 		</div>
 		<div id="footer">
-			<div class="footertext">All information © Party Analyst. Hyderabad, India</div>
+			<div class="footertext">All information Â© Party Analyst. Hyderabad, India</div>
 		</div>
 	</div>
 </body>
