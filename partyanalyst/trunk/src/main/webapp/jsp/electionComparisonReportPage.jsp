@@ -13,61 +13,33 @@
 <title>Election Comparison Report</title>
 
 	<!-- YUI Dependency Files-->
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/conainer/container-min.js"></script> 
 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/treeview-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/connection-min.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/get-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/dragdrop-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/datatable-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/connection-min.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/history.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/container-min.js"></script> 
-	
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/yui-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
 	<!-- YUI Skin Sam -->
 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/container.css">  
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/datatable.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/treeview.css" />
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/calendar.css">
-	
-	<!--<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>
-	<script type="text/javascript" src="js/yahoo/animation-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/calendar-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/treeview-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/element-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/connection-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/get-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/connection.js"></script> 
-	<script type="text/javascript" src="js/yahoo/history.js"></script> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 	
-	<script type="text/javascript" src="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/gallery-accordion-min.js"></script> -->
 
-	<!-- Sam Skin CSS --> 
-	<!--<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2009.11.09-19/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">	
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/datatable.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/treeview.css" />
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"/>
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/datatable.css"/> -->
-
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 
 <style type="text/css">
 
@@ -220,17 +192,22 @@ districtVotesTable td
 {
 	border: 2px solid #A0B7C3;
 	margin:30px 10px 10px 20px;
-	text-align:left;
 }
 #electionResultsPopupDivHead
 {
 	padding:10px;
 	background-color:#C0D9E5;
 	text-decoration:underline;
+	text-align:left;
 }
 #electionResultsPopupDivBody
 {
 	background-color:#ECEFF0;
+}
+
+#electionResultsPopupDivBody table
+{
+	width:100%;
 }
 
 .yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
@@ -433,43 +410,71 @@ var myDataTable;
 		} ]
 	};
 
-	var resultsColumnDefs = [ {
+	var resultsColumnDefs = [ 
+	{
 		key : "constituencyName",
 		label : "Constituency",
 		sortable : true
-	}, {
-		key : "votesEarned",
-		label : "Votes Earned",
-		sortable : true
-	}, {
-		key : "votesPercentage",
-		label : "Votes&nbsp;%",
-		sortable : true
-	}, {
-		key : "rank",
-		label : "Status",
-		sortable : true
-	}, {
-		key : "votesDiff",
-		label : "Votes % Diff",
-		sortable : true
-	}, {
-		key : "electorsDiff",
-		label : "Electors&nbsp;% Diff",
-		sortable : true
-	}, {
-		key : "votesEarnedBySecond",
-		label : "Votes Earned",
-		sortable : true
-	}, {
-		key : "votesPercentageBySecond",
-		label : "Votes&nbsp;%",
-		sortable : true
-	}, {
-		key : "rankBySecond",
-		label : "Status",
-		sortable : true
-	} ];
+	}, 
+	{
+		label:"Year - 2004",
+		className:"yui-dt-sortable ",
+		children:[ 
+					{
+						key : "votesEarned",
+						label : "Votes Earned",
+						sortable : true
+					},
+					{
+						key : "votesPercentage",
+						label : "Votes&nbsp;%",
+						sortable : true
+					},
+					{
+						key : "rank",
+						label : "Status",
+						sortable : true
+					}
+				]
+	},
+	{
+		label:"Diff %",
+		className:"yui-dt-sortable ",
+		children:[ 					
+					{
+						key : "votesDiff",
+						label : "Votes % Diff",
+						sortable : true
+					}, 
+					{
+						key : "electorsDiff",
+						label : "Electors&nbsp;% Diff",
+						sortable : true
+					}
+				]
+	},
+	{
+		label:"Year - 2009",
+		className:"yui-dt-sortable ",
+		children:[ 
+					{
+						key : "votesEarnedBySecond",
+						label : "Votes Earned",
+						sortable : true
+					},
+					{
+						key : "votesPercentageBySecond",
+						label : "Votes&nbsp;%",
+						sortable : true
+					},
+					{
+						key : "rankBySecond",
+						label : "Status",
+						sortable : true
+					} 
+				]
+	}
+	];
 
 	myDataTable = new YAHOO.widget.DataTable("electionResultsPopupDivBody",resultsColumnDefs, resultsDataSource,{}); 
 	myDataTable.subscribe("cellMouseoverEvent", showDetailedResultsPopup);   
@@ -916,19 +921,9 @@ var myDataTable;
 					<span id="closeSpan" onclick="closeSpan()">X</span>
 					<span id="closeLabelSpan"style="" onclick="closeSpan()"><u>Close</u></span>			
 					<span id="labelHead">Candidate Details..</span>						
-				</div>
-				<div style="font-weight:bold;">
-					<table width="100%">
-						<tr>
-							<td align="center"> Year -- ${electionsComparisonVO.firstYear}</td>
-							<td align="center"> Year -- ${electionsComparisonVO.secondYear}</td>
-						</tr>
-					</table>
-				</div>
+				</div>				
 			</div>
-			<div id="electionResultsPopupDivBody" class="yui-skin-sam">
-				Content
-			</div>		
+			<div id="electionResultsPopupDivBody" class="yui-skin-sam">	</div>		
 		</div>
 
 		<div id="districtWiseResultsMain">
