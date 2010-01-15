@@ -8,22 +8,35 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<script type="text/javascript" src="js/yahoo/json-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>
-<script type="text/javascript" src="js/yahoo/element-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
+<!-- YUI Dependency Files-->
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/conainer/container-min.js"></script> 
+	
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="styles/yuiStyles/datatable.css"> 
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
-<!-- Combo-handled YUI CSS files: -->
-<link rel="stylesheet" type="text/css"
-	href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
-<!-- Combo-handled YUI JS files: -->
-<script type="text/javascript"
-	src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
+	<!-- YUI Skin Sam -->
+
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+
 
 <script type="text/javaScript">
 function showBand(divtag)
@@ -43,24 +56,6 @@ function showBand(divtag)
 		spanElmt.innerHTML="Display Details";
 	}
 }
-function fadeIn(objId, opacity)
-{
-	var obj = document.getElementById(objId);
-	if(obj && opacity <= 100){
-		setOpacity(obj, opacity);
-		opacity += 4;
-		window.setTimeout("fadeIn('"+objId+"',"+opacity+")", 100);		
-	}
-}
-function setOpacity(obj, opacity)
-{
-	opacity = (opacity == 100)?99.999:opacity;
-	obj.style.filter ="alpha(opacity:"+opacity+")";// IE/Win
-	obj.style.KHTMLOpacity = opacity/100;// Safari<1.2, Konqueror
-	obj.style.MozOpacity = opacity/100;// Older Mozilla and Firefoxv
-	obj.style.opacity = opacity/100;// Safari 1.2, newer Firefox and Mozilla, CSS3
-}
-
 function getDetails(pos)
 {		
 	var imgElmt = document.getElementById("loaderGif");
@@ -153,8 +148,7 @@ function displayPartyPositions(jsObj,data)
 	str+='</table>'
 	divElmtBody.innerHTML=str;
 	
-	buildPartyPositionDataTable(data,rank);
-	fadeIn('partyPositions',40);
+	buildPartyPositionDataTable(data,rank);	
 }
 
 function closeSpan()
@@ -167,7 +161,7 @@ function buildPartyPositionDataTable(info,rank)
 {
 	if(info[0]==null)	
 		return;
-	var count=1;
+	var count=0;
 
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("partyPositionTable"));
 	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
@@ -183,71 +177,67 @@ function buildPartyPositionDataTable(info,rank)
 	resultsDataSource.responseSchema.fields.push(key3);
 
 	for (var k in  info[0].oppPartyPositionInfoList)
-	{
-		count++;
+	{		
 		var key4={key : "cName"+k};
 		var key5={key : "pName"+k};		
 		var key7={key : "vPercentage"+k,parser:"number"};
 		resultsDataSource.responseSchema.fields.push(key4);
 		resultsDataSource.responseSchema.fields.push(key5);
 		resultsDataSource.responseSchema.fields.push(key7);
-	}
-
-	var headElmt = document.getElementById('positionHeading');
-	var tstr='<table width="100%">';
-	tstr+='<tr>';
-	tstr+='<td align="center">Candidate Details in position '+rank+'</td>';
-	for(var i=1;i<count;i++)
-	{	
-		tstr+='<td align="center"> Candidate Details in position '+i+'</td>';
-	}
-	tstr+='</tr>';
-	tstr+='</table>';
-
-	headElmt.innerHTML=tstr;
+	}	
 	//--------
-	var resultsColumnDefs = [];
-	var obj1= {
-		key : "constituencyName",		
-		label : "Constituency Name",
-		sortable : true
-	};
-	var obj2={
-		key : "candidateName",		
-		label : "Candidate Name",
-		sortable : true
-	};
-	var obj3= {
-		key : "votePercentage",
-		parser:"number",
-		label : "Votes&nbsp%",
-		sortable : true
-	};
-	resultsColumnDefs.push(obj1);
-	resultsColumnDefs.push(obj2);
-	resultsColumnDefs.push(obj3);
-
+	var resultsColumnDefs = [
+		{
+			label:"Candidate Details in "+rank+" position ",
+			className:"yui-dt-sortable ",
+			children:[ 	
+						{
+							key : "constituencyName",		
+							label : "Constituency",
+							sortable : true
+						},
+						{
+							key : "candidateName",		
+							label : "Candidate Name",
+							sortable : true
+						},
+						{
+							key : "votePercentage",
+							parser:"number",
+							label : "Votes&nbsp%",
+							sortable : true
+						}
+					 ]
+		}
+	];
+	
 	for (var d in info[0].oppPartyPositionInfoList)
 	{
-		var obj4={
-		key : "cName"+d,		
-		label : "Name",
-		sortable : true
-		};
-		var obj5= {
-			key : "pName"+d,		
-			label : "Party",
-			sortable : true
-		};
-		var obj7= {
-			key : "vPercentage"+d,
-			parser:"number",
-			label : "Votes&nbsp%",
-			sortable : true
-		};	
-		resultsColumnDefs.push(obj4);
-		resultsColumnDefs.push(obj5);
-		resultsColumnDefs.push(obj7);
+		count++;
+		var obj = {
+						label:"Candidate Details in "+(count)+" position ",
+						className:"yui-dt-sortable ",
+						children:[ 	
+									{
+										key : "cName"+d,		
+										label : "Name",
+										sortable : true
+									},
+									{
+										key : "pName"+d,		
+										label : "Party",
+										sortable : true
+									},
+									{
+										key : "vPercentage"+d,
+										parser:"number",
+										label : "Votes&nbsp%",
+										sortable : true
+									}
+								 ]
+					}
+		
+		resultsColumnDefs.push(obj);		
 	}
 
 	var myDataTable = new YAHOO.widget.DataTable("partyPositionsBody",resultsColumnDefs, resultsDataSource,{});  
@@ -410,8 +400,7 @@ function buildPartyPositionDataTable(info,rank)
 		margin-right:20px;
 		margin-top:15px;
 		z-index:10;
-		display:none;
-		opacity:0;
+		display:none;		
 		left:155px;
 		border:2px solid #839AB7;
 	}
@@ -422,13 +411,7 @@ function buildPartyPositionDataTable(info,rank)
 		font-weight:bold;
 		margin-right:10px;
 		border:1px solid;
-	}
-	#partyPositionsBody
-	{
-		padding-left:10px;
-		padding-bottom:20px;
-		padding-right:10px;
-	}
+	}	
 	#closeLabelSpan
 	{
 		float:right;padding-right:5px;
@@ -446,6 +429,10 @@ function buildPartyPositionDataTable(info,rank)
 		background-color:#A6BAD1;
 		text-decoration:underline;
 	}
+	#partyPositionsBody table
+	{
+		width:100%;
+	}
 
 	.yui-skin-sam .yui-dt-liner 
 	{
@@ -454,6 +441,7 @@ function buildPartyPositionDataTable(info,rank)
 	.yui-skin-sam thead .yui-dt-sortable
 	{
 		background-color:#B0C7EB;
+		padding:4px;
 	}
 	.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
 	{
@@ -549,7 +537,7 @@ function buildPartyPositionDataTable(info,rank)
 </table>
 </div>
 <div style="left:650px;margin-right:20px;position:absolute;top:320px;">
-	<IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350" style="opacity:0.0;">
+	<IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350">
 </div>
 <!--Total Seats Won: <s:property value="stateData.totalSeatsWon" />( <s:property value="stateData.diffSeatsWon" /> ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <s:label labelposition="right">Total Percentage of Votes: <s:property value="stateData.totalPercentageOfVotesWon" />%( <s:property value="stateData.diffOfTotalPercentageWinWithPrevElection"/>%) </s:label> -->
@@ -617,7 +605,7 @@ function buildPartyPositionDataTable(info,rank)
 		<center>
 			<span id="labelHead"></span>		
 		</center>
-		<div id="positionHeading">Heading</div>
+		<div id="positionHeading"></div>
 	</div>
 	<div id="partyPositionsBody" class="yui-skin-sam"></div>
 </div>
@@ -825,9 +813,7 @@ function buildPartyPositionDataTable(info,rank)
 <input type="submit" value="Generate Detailed PDF">
 </s:form>
 </div>
-<script type="text/javascript">
-	fadeIn("chartImg",10);
-</script>
+
 </div>
 </body>
 </html>
