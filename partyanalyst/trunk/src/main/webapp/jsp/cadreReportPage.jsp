@@ -9,46 +9,40 @@
 <title>Cadre Report</title>
 	<!-- YUI Dependency Files-->
 	
-	<link href="styles/yuiStyles/treeview.css" rel="stylesheet" type="text/css" />
-	<link href="styles/yuiStyles/calendar.css" rel="stylesheet" type="text/css" />
-	<link href="styles/yuiStyles/datatable.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 
-	
-<link rel="stylesheet" type="text/css" href="js/assets/dpSyntaxHighlighter.css">
-<link rel="stylesheet" type="text/css" href="js/build/container/assets/skins/sam/container.css" />
-<link rel="stylesheet" type="text/css" href="js/build/button/assets/skins/sam/button.css" />
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
 
-
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>
-	<script type="text/javascript" src="js/yahoo/animation-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/calendar-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/treeview-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/element-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/connection-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/get-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/connection.js"></script> 
-	<script type="text/javascript" src="js/yahoo/history.js"></script> 
-
-	
-<script type="text/javascript" src="js/build/yuiloader/yuiloader-min.js"></script>
-<script type="text/javascript" src="js/build/dom/dom-min.js"></script>
-<script type="text/javascript" src="js/build/event/event-min.js"></script>
-<script type="text/javascript" src="js/build/dragdrop/dragdrop-min.js"></script>
-<script type="text/javascript" src="js/build/container/container-min.js"></script>
-<script type="text/javascript" src="js/build/element/element-min.js"></script>
-<script type="text/javascript" src="js/build/button/button-min.js"></script>
-	
 	<!-- YUI Dependency Files-->
+
 	<script type="text/javascript">
 			
 		var regionLevelZeroCadres = new Array();
 		var regionLevelCadres = new Array();
 		var cadreDetailsArr = new Array();
+		var panel;
 
 			function buildJSObject(id,value,type)
 			{				
@@ -240,7 +234,7 @@
 
 			function showLink(value)
 			{	
-				
+				var divElmt = document.getElementById("cReportMain");
 				var cadreData = new Array();
 
 				for(var i in cadreDetailsArr)
@@ -250,8 +244,13 @@
 						cadreData = cadreDetailsArr[i].obj;
 					}
 				}
-
+				
+				var divChild = document.createElement('div');
+				divChild.setAttribute('id','cadreDiv');
+				divChild.setAttribute('class','yui-skin-sam');
 				var str='';
+				str+='<div class="hd">List Of Cadres...</div> ';
+				str+='<div class="bd">'; 
 				str+='<table class="partyPerformanceCriteriaTable">';
 				str+='<tr>';
 				str+='<th>Name</th>';				
@@ -271,14 +270,18 @@
 					str+='</tr>';
 				}
 				str+='</table>';
-//alert(str);
-var panel = new YAHOO.widget.Panel("panel2", { width:"320px", visible:true, draggable:true, close:true } ); 
-panel.setHeader("List of Cadres"); 
-panel.setBody(str); 
+				str+='</div>';
 
-panel.render("divPanel"); 
+				divChild.innerHTML=str;
+				divElmt.appendChild(divChild);
+		
+				if(panel)
+					panel.destroy();
 
-			YAHOO.util.Event.addListener("show1", "click", YAHOO.example.container.panel1.show, panel, true);
+				panel = new YAHOO.widget.Panel("cadreDiv", {x:300,y:500,visible:true, draggable:true, close:true } ); 
+				panel.render(); 
+
+				
 			//YAHOO.util.Event.addListener("hide1", "click", YAHOO.example.container.panel1.hide, YAHOO.example.container.panel1, true);
 				//console.log(str);
 			}
@@ -307,7 +310,7 @@ panel.render("divPanel");
 	<table>
 		<tr>
 			<td>
-	<div id="cReportMain" style="text-align: left; font-size: 12px; font-family: Verdana;">
+	<div id="cReportMain" class="yui-skin-sam" style="text-align: left; font-size: 12px; font-family: Verdana;">
 		<div id="cadreInfoDiv" style="margin-bottom: 20px;">
 			<div id="cadreInfoDivHead">
 				<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
@@ -364,8 +367,6 @@ panel.render("divPanel");
 
 			buildTreeView();	
 		</script>	
-	</s:form>
-	<div id="divPanel">
-	</div>
+	</s:form>	
 </body>
 </html>
