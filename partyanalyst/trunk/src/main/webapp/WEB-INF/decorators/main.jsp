@@ -88,8 +88,7 @@
 	            { text: "Party Performance Report", url: "partyPerformanceMain.action" }, 	            
 	            { text: "Elections Comparisons Report", url: "electionComparisonAction.action" },
 	            { text: "Party Results Report", url: "partyResultsCriteriaAction.action" },	 
-	            { text: "Party Influence Report", url: "partyInfluenceMainAction.action" },
-	                       
+	            { text: "Party Influence Report", url: "partyInfluenceMainAction.action" }	                       
 	        ] 
 	    }, 
 	    { 
@@ -112,15 +111,14 @@
 		    { text: "Cross Voting Report", url: "crossVotingReportInputAction.action" },				
 	            { text: "Constituencey Booth Results Report", url: "partyBoothResultAction.action" }						
 	        ]  
-	    }, 
-	 
+	    },	 
 	    { 
 	        id: "staticData",  
 	        itemdata: [ 
 	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
 				{ text: "Maharashtra", url: "statePageAction.action?stateId=15" }
 	        ]     
-	    }, 
+	    }
 	     
 	     
 	]; 
