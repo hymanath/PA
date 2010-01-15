@@ -123,7 +123,7 @@ function initializeResultsTable() {
 
 	var myConfigs = {
     paginator : new YAHOO.widget.Paginator({
-        rowsPerPage: 10
+        rowsPerPage: 50
     })
 };
 
