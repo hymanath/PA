@@ -121,6 +121,13 @@ function initializeResultsTable() {
 		sortable : true
 	} ];
 
-	var myDataTable = new YAHOO.widget.DataTable("boothResultsMarkup",resultsColumnDefs, resultsDataSource,{});  
+	var myConfigs = {
+    paginator : new YAHOO.widget.Paginator({
+        rowsPerPage: 10
+    })
+};
+
+
+	var myDataTable = new YAHOO.widget.DataTable("boothResultsMarkup",resultsColumnDefs, resultsDataSource,myConfigs);  
 
 }
