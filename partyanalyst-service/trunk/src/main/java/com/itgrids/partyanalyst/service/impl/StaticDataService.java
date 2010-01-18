@@ -311,7 +311,8 @@ public class StaticDataService implements IStaticDataService {
 
 		log.debug("DistrictPageService.getConstituenciesWinnerInfo() delimitationYear:"+electionYear);
 		ConstituenciesStatusVO constituenciesStatusVO = getConstituenciesForDistrict(districtId, electionYear);
-		List<SelectOptionVO> constituencies = constituenciesStatusVO.getExistConstituencies();
+		
+		List<SelectOptionVO> constituencies = (constituenciesStatusVO.getExistConstituencies());
 		constituencies.addAll(constituenciesStatusVO.getNewConstituencies());
 		List<ConstituencyWinnerInfoVO> constituencyWinnerInfoVOList = new ArrayList<ConstituencyWinnerInfoVO>();
 		StringBuilder constituencyIDs = new StringBuilder();
@@ -320,7 +321,7 @@ public class StaticDataService implements IStaticDataService {
 		}
 		log.debug("DistrictPageService.getConstituenciesWinnerInfo() constituencies:"+constituencyIDs);
 		List candidates =  nominationDAO.findCandidateNamePartyByConstituencyAndElection(constituencyIDs.substring(1), electionYear.toString());
-
+		constituencies.removeAll(constituenciesStatusVO.getNewConstituencies());
 		log.debug("DistrictPageService.getConstituenciesWinnerInfo() total candidates:"+candidates.size());
 		for(int i = 0; i<candidates.size(); i++){
 			ConstituencyWinnerInfoVO constituencyWinnerInfoVO = new ConstituencyWinnerInfoVO();
@@ -332,6 +333,7 @@ public class StaticDataService implements IStaticDataService {
 		}
 		constituenciesStatusVO.setConstituencyWinnerInfoVO(constituencyWinnerInfoVOList);
 		constituenciesStatusVO.setDelimitationYear(electionYear);
+	
 		return constituenciesStatusVO;
 	}
 	
@@ -360,21 +362,20 @@ public class StaticDataService implements IStaticDataService {
 			
 			if(parms[2]!= null && parms[3] == null && parms[2].toString().equals(electionYear.toString())){
 				selectOptionVO.setId(Long.parseLong(parms[0].toString()));
-				selectOptionVO.setName(parms[1].toString());
-				
+				selectOptionVO.setName(parms[1].toString());		
 				newList.add(selectOptionVO);			
 			}else if(parms[3] == null){
 				selectOptionVO.setId(Long.parseLong(parms[0].toString()));
-				selectOptionVO.setName(parms[1].toString());
-			
+				selectOptionVO.setName(parms[1].toString());			
 				existList.add(selectOptionVO);
 				}
 			else if(parms[3] != null && parms[3].toString().equals(electionYear.toString())){					
 						selectOptionVO.setId(Long.parseLong(parms[0].toString()));
 						selectOptionVO.setName(parms[1].toString());
-						deleteList.add(selectOptionVO);				
+						deleteList.add(selectOptionVO);								
 			}			
-		}		
+		}	
+		
 		return constituencyVO;
 	}
 	
