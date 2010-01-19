@@ -135,9 +135,9 @@ public class MptcElectionService implements IMptcElectionService {
 		headers.add(IConstants.CONSTITUENCY_MISSING_VOTES);
 		headers.add(IConstants.CONSTITUENCY_REJECTED_VOTES);//
 		headers.add(IConstants.CONSTITUENCY_RESERVATION_ZONE);
-		mandatoryHeaders.add(IConstants.CONSTITUENCY_TOTAL_VOTES);//
-		mandatoryHeaders.add(IConstants.CONSTITUENCY_TOTAL_VOTES_POLLED);//
-		mandatoryHeaders.add(IConstants.CONSTITUENCY_VALID_VOTES);//
+		headers.add(IConstants.CONSTITUENCY_TOTAL_VOTES);//
+		headers.add(IConstants.CONSTITUENCY_TOTAL_VOTES_POLLED);//
+		headers.add(IConstants.CONSTITUENCY_VALID_VOTES);//
 		
 		for(String header : mandatoryHeaders){
 			boolean notAvailable = true;
