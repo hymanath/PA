@@ -328,6 +328,8 @@ public class StaticDataService implements IStaticDataService {
 			Object[] obj = (Object[]) candidates.get(i);
 			constituencyWinnerInfoVO.setConstituencyName(obj[0].toString());
 			constituencyWinnerInfoVO.setCandidateName(obj[1].toString());
+			constituencyWinnerInfoVO.setCandidateId(obj[4].toString());
+			constituencyWinnerInfoVO.setConstituencyId(obj[3].toString());
 			constituencyWinnerInfoVO.setPartyName(obj[2].toString());
 			constituencyWinnerInfoVOList.add(constituencyWinnerInfoVO);
 		}

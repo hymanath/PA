@@ -8,13 +8,29 @@ public class ConstituencyWinnerInfoVO implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private String constituencyName;
+	private String constituencyId;
 	private String candidateName; // winner in the constituency
+	private String candidateId;
 	private String partyName;
+	
+	public String getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(String candidateId) {
+		this.candidateId = candidateId;
+	}
+	
 	public String getConstituencyName() {
 		return constituencyName;
 	}
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
+	}
+	public String getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(String constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	public String getCandidateName() {
 		return candidateName;
