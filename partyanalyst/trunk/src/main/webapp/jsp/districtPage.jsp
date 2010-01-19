@@ -8,6 +8,71 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>District Page</title>
+
+
+<!-- YUI files dependencies (start) -->
+
+<!--CSS files (default YUI Sam Skin) -->
+<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+ 
+<!--JS files Dependencies -->
+<script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/json/json-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/get/get-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script>
+<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+
+<!-- YUI files dependencies (end) -->
+
+
+<script type="text/javascript">
+	function initializeResultsTable() {
+
+	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("mlaDataSortingTable"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "constituencyName",formatter:YAHOO.widget.DataTable.formatLink
+		}, {
+			key : "candidateName",formatter:YAHOO.widget.DataTable.formatLink
+		}, {
+			key : "partyName"
+		} ]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "constituencyName",
+		label : "Constituency Name",
+		sortable : true
+	}, {
+		key : "candidateName",
+		label : "Candidate Name",
+		sortable : true
+	}, {
+		key : "partyName",
+		label : "Party Name",
+		sortable : true
+	} ];
+
+	var myConfigs = {
+    paginator : new YAHOO.widget.Paginator({
+        rowsPerPage: 10
+    })
+};
+
+
+	var myDataTable = new YAHOO.widget.DataTable("mlaInfoDivBody",resultsColumnDefs, resultsDataSource,myConfigs);  
+
+}
+</script>
+
   <style type="text/css">
 		.detailsDiv
 		{
@@ -39,7 +104,19 @@
 		{
 			color:#1C4B7A;
 		}	
+		.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
+		{
+			background:none;
+		}
+
+		.yui-skin-sam thead .yui-dt-sortable {
+
+			background-color:#C4DEFF;
+			color:#3F546F;
+		}
+
 	</style>
+
 </head>
 <body>
 <div class="detailsHead">
@@ -83,6 +160,9 @@
 	</div>
 	&nbsp &nbsp	* indicates New Constituencies after Delimitation
 </div>
+
+
+
 <div id="districtInfoDiv" class="detailsDiv">
 <div id="districtInfoDivHead" class="detailsHead">
 		 Dissolved Constituencies in Delimitation ${constituenciesStatusVO.delimitationYear}
@@ -107,28 +187,40 @@
 
 </div>
 
+
 <div id="districtInfoDiv" class="detailsDiv">
 <div id="districtInfoDivHead" class="detailsHead">
 		MLA's in the District
 	</div>
 
-	<div id="districtInfoDivBody" class="detailsBody">
-		<table>
-			<tr>
-				<th>Constituency Name &nbsp</th>
-				<th>Candidate Name &nbsp</th>
-				<th>Party Name &nbsp</th>
-			</tr>
+	<div id="mlaInfoDivBody" class="yui-skin-sam">
+		<table  id="mlaDataSortingTable">
+			
 			<c:forEach var="candidate" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">			
 				<tr>
-					<td><c:out value="${candidate.constituencyName}"/> &nbsp </td>
-					<td><c:out value="${candidate.candidateName}"/> &nbsp </td>
+					<td>
+						<span id="districtAncSpan">
+							<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${candidate.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.constituencyName}
+							</a>
+						</span>
+					</td>
+					<td>
+					<span id="districtAncSpan">
+							<a href="candidateElectionResultsAction.action?candidateId=${candidate.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.candidateName}
+							</a>
+						</span>
+					 &nbsp </td>
 					<td><c:out value="${candidate.partyName}"/></td>
-				</tr>
+				</tr>  
 			</c:forEach>
 		</table>		
 	</div>
 </div>
+
+<script language="javascript">
+initializeResultsTable();
+</script>
+
 
 <div id="mandalInfoDiv" class="detailsDiv">
 	<div id="mandalInfoDivHead" class="detailsHead">
@@ -142,16 +234,19 @@
 				<span id="mandalAncSpan">
 					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
 					<a href="mandalPageAction.action?MANDAL_ID=${mandalsBeforeDelimitationConstituency.id}&MANDAL_NAME=${mandalsBeforeDelimitationConstituency.name}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mandalsBeforeDelimitationConstituency.name}
-					</a>
+					</a>&nbsp 
 				</span>
 			</td>	
-			<c:if test="${stat.count % 6==0}">
-				</tr><tr><td colspan="6"> </td></tr><tr>
+			<c:if test="${stat.count % 4==0}">
+				</tr><tr><td colspan="4"> </td></tr><tr>
 			</c:if>			
 		</c:forEach>			
-		</tr></table>		
+		</tr>  </table>		
 	</div>
 	
+</div>
+
+
 </div>
 </body>
 </html>
