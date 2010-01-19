@@ -23,6 +23,8 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.opensymphony.xwork2.ActionSupport;
+import com.itgrids.partyanalyst.dto.MPTCMandalLeaderVO;
+import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 
 public class VoterInfoAction extends ActionSupport implements ServletRequestAware{
 
@@ -235,7 +237,10 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			
 			constituencyManagementVO.setPoliticalChanges(politicalChanges);
 			
+			String mandalID = jObj.getString("MANDAL");
 			
+			//TotalMPTCMandalLeaderVO   mptcMandalLeaders = constituencyManagementService.getMPTCElectionResultForMandal(new Long(mandalID));
+			//constituencyManagementVO.setTotalMPTCMandalLeaderVO(mptcMandalLeaders);
 		}
 		
 		return SUCCESS;
