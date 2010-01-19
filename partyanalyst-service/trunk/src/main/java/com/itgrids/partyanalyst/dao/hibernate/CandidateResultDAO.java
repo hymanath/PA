@@ -7,13 +7,22 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
+import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.CandidateResult;
+import com.itgrids.partyanalyst.model.ConstituencyElection;
+import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.NominationHistory;
+import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 import com.itgrids.partyanalyst.dao.columns.enums.CandidateResultColumnNames;
@@ -76,6 +85,20 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		
 		return getHibernateTemplate().find(query);
 		
+	}
+
+	public List getMPTCElectionResultForMandal(Long mandalID){
+		Object[] params = {mandalID,IConstants.MPTC};
+		return getHibernateTemplate().find("select cr.nomination.constituencyElection.election.electionYear, " +
+				"cr.rank, " +
+				"cr.nomination.constituencyElection.constituency.name, " +
+				"cr.nomination.party.shortName, " +
+				"cr.nomination.candidate.lastname, cr.votesEarned, cr.nomination.constituencyElection.constituencyElectionResult.validVotes " +
+				"from CandidateResult cr where cr.nomination.constituencyElection.constituency.tehsil.tehsilId=? and " +
+				"cr.nomination.constituencyElection.constituency.electionScope.electionType.electionType=? " +
+				"order by cr.nomination.constituencyElection.election.electionYear, " +
+				"cr.nomination.constituencyElection.constituency.name," +
+				"cr.rank", params);
 	}
 	
 }

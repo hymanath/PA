@@ -13,6 +13,7 @@ public class ConstituencyManagementVO {
 	private List<LocalLeadersVO> localLeaders;
 	private List<PoliticalChangesVO> politicalChanges;
 	private List<HamletProblemVO> hamletProblems;
+	private TotalMPTCMandalLeaderVO totalMPTCMandalLeaderVO;
 
 	public ProblemManagementVO getProblemManagementVO() {
 		return problemManagementVO;
@@ -69,8 +70,14 @@ public class ConstituencyManagementVO {
 	public void setHamletProblems(List<HamletProblemVO> hamletProblems) {
 		this.hamletProblems = hamletProblems;
 	}
-	
-	
 
-	
+	public TotalMPTCMandalLeaderVO getTotalMPTCMandalLeaderVO() {
+		return totalMPTCMandalLeaderVO;
+	}
+
+	public void setTotalMPTCMandalLeaderVO(
+			TotalMPTCMandalLeaderVO totalMPTCMandalLeaderVO) {
+		this.totalMPTCMandalLeaderVO = totalMPTCMandalLeaderVO;
+	}
+
 }

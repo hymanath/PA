@@ -45,4 +45,5 @@ public interface ICandidateResultDAO extends GenericDao<CandidateResult, Long>{
 	
 	public List<CandidateResult> findCandidateResults(Long electionScopeId,List<Long> partyIds,String year);
 	
+	public List getMPTCElectionResultForMandal(Long mandalID);
 }

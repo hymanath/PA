@@ -9,9 +9,12 @@ import java.util.Map;
 import java.util.Set;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
+import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.MPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -23,6 +26,7 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 	
 	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
 	private IHamletDAO hamletDAO;
+	private ICandidateResultDAO candidateResultDAO;
 	
 	public IHamletDAO getHamletDAO() {
 		return hamletDAO;
@@ -30,6 +34,10 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 
 	public void setHamletDAO(IHamletDAO hamletDAO) {
 		this.hamletDAO = hamletDAO;
+	}
+
+	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
+		this.candidateResultDAO = candidateResultDAO;
 	}
 
 	public IBoothConstituencyElectionVoterDAO getBoothConstituencyElectionVoterDAO() {
@@ -173,6 +181,37 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		}
 		
 		return voterHouseInfoVOs;
+	}
+	/**
+	 * retrieving the mptc election candidate results.
+	 * @param mandalID
+	 * @return
+	 */
+	public TotalMPTCMandalLeaderVO getMPTCElectionResultForMandal(Long mandalID){
+		List result = candidateResultDAO.getMPTCElectionResultForMandal(mandalID);
+		TotalMPTCMandalLeaderVO totalMPTCMandalLeaderVO = new TotalMPTCMandalLeaderVO();
+		
+		List<MPTCMandalLeaderVO> totalLeaders = totalMPTCMandalLeaderVO.getTotalLeaders();
+		List<MPTCMandalLeaderVO> winners = totalMPTCMandalLeaderVO.getWinners();
+		for(int i=0; i<result.size(); i++){
+			Object[] obj = (Object[]) result.get(i);
+			MPTCMandalLeaderVO mptcMandalLeaderVO = new MPTCMandalLeaderVO();
+			mptcMandalLeaderVO.setElectionYear(obj[0].toString()); 
+			mptcMandalLeaderVO.setRank(new Long(obj[1].toString()));
+
+			mptcMandalLeaderVO.setMptcName(obj[2].toString());
+			mptcMandalLeaderVO.setParty(obj[3].toString());
+			mptcMandalLeaderVO.setCandidateName(obj[4].toString());
+			mptcMandalLeaderVO.setCandidateEarnedVotes(new Long(obj[5].toString()));
+			mptcMandalLeaderVO.setValidVotes(new Long(obj[5].toString()));
+			
+			totalLeaders.add(mptcMandalLeaderVO);
+			if(mptcMandalLeaderVO.getRank().equals(new Long(1))){
+				winners.add(mptcMandalLeaderVO);
+			}
+		}
+		
+		return totalMPTCMandalLeaderVO;
 	}
 	
 }
