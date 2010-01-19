@@ -14,6 +14,7 @@
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -34,6 +35,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+	<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 
 	<!-- YUI Dependency Files-->
 
@@ -42,6 +44,7 @@
 		var regionLevelZeroCadres = new Array();
 		var regionLevelCadres = new Array();
 		var cadreDetailsArr = new Array();
+		//var cadresArray = new Array();
 		var panel;
 
 			function buildJSObject(id,value,type)
@@ -150,7 +153,7 @@
 			}
 
 			function loadNodeData(node, fnLoadComplete)
-			{
+			{				
 				var nodeLabel = node.label;
 				var index=nodeLabel.indexOf("-");
 				var subString = nodeLabel.substring(0,index);				
@@ -164,8 +167,7 @@
 											myResults = YAHOO.lang.JSON.parse(o.responseText);						
 											
 											if(myResults.cadreInfo[0])											
-											{
-												//console.log(myResults);
+											{												
 												buildHtmlNode(myResults.cadreInfo,node);																					
 											}
 											else if(myResults.zeroCadresRegion)	
@@ -236,6 +238,10 @@
 			{	
 				var divElmt = document.getElementById("cReportMain");
 				var cadreData = new Array();
+				var cadresArray = new Array();
+
+				if(panel)
+					panel.destroy();
 
 				for(var i in cadreDetailsArr)
 				{
@@ -245,45 +251,64 @@
 					}
 				}
 				
+
+				for(var i in cadreData)
+				{
+					var cObj={
+								name:cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName,
+								mobile:cadreData[i].mobile,
+								landLine:cadreData[i].landLineNo,
+								cadreLevel:cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue,
+								email:cadreData[i].email
+							 };
+
+					cadresArray.push(cObj);
+				}
+				
+				
 				var divChild = document.createElement('div');
 				divChild.setAttribute('id','cadreDiv');
 				divChild.setAttribute('class','yui-skin-sam');
 				var str='';
 				str+='<div class="hd">List Of Cadres...</div> ';
 				str+='<div class="bd">'; 
-				str+='<table class="partyPerformanceCriteriaTable">';
-				str+='<tr>';
-				str+='<th>Name</th>';				
-				str+='<th>MobileNo</th>';
-				str+='<th>LandLineNo</th>';				
-				str+='<th>CadreLevel</th>';
-				str+='<th>Email</th>';				
-				str+='</tr>';				
-				for(var i in cadreData)
-				{
-					str+='<tr>';									
-					str+='<td>'+cadreData[i].firstName+' '+cadreData[i].middleName+' '+cadreData[i].lastName+'</td>';
-					str+='<td>'+cadreData[i].mobile+'</td>';
-					str+='<td>'+cadreData[i].landLineNo+'</td>';
-					str+='<td>'+cadreData[i].strCadreLevel+'-'+cadreData[i].strCadreLevelValue+'</td>';
-					str+='<td>'+cadreData[i].email+'</td>';					
-					str+='</tr>';
-				}
-				str+='</table>';
+				str+='<div id="cadresDetailsDiv"></div>';
 				str+='</div>';
 
 				divChild.innerHTML=str;
 				divElmt.appendChild(divChild);
+
+				var myColumnDefs = [ 	           
+										{key:"name",label : "Name",sortable:true,resizeable:true}, 
+										{key:"mobile",label : "Mobile", sortable:true, resizeable:true}, 
+										{key:"landLine",label : "Landline", sortable:true, resizeable:true},
+										{key:"cadreLevel",label : "Cadre Level", sortable:true, resizeable:true}, 
+										{key:"email",label : "Email",sortable:true, resizeable:true}
+									]; 
+				var myDataSource = new YAHOO.util.LocalDataSource(cadresArray); 		
+				myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+				myDataSource.responseSchema = { 
+				fields : [
+							{key : "name"}, {key : "mobile",parser:"number"}, {key : "landLine",parser:"number"},
+							{key :"cadreLevel"},{key : "email"}
+						 ]
+				};
+				
+				var myConfigs = {
+					paginator : new YAHOO.widget.Paginator({
+						rowsPerPage: 10
+					})
+				};
+
+				var myDataTable = new YAHOO.widget.DataTable("cadresDetailsDiv",myColumnDefs, myDataSource,myConfigs); 			
 		
-				if(panel)
-					panel.destroy();
+				
 
 				panel = new YAHOO.widget.Panel("cadreDiv", {x:300,y:500,visible:true, draggable:true, close:true } ); 
 				panel.render(); 
-
-				
+								
 			//YAHOO.util.Event.addListener("hide1", "click", YAHOO.example.container.panel1.hide, YAHOO.example.container.panel1, true);
-				//console.log(str);
+				
 			}
 
 			function buildTextNode(results,node)
