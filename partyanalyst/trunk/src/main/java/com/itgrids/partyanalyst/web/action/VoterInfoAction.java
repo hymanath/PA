@@ -237,7 +237,7 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			
 			constituencyManagementVO.setPoliticalChanges(politicalChanges);
 			
-			String mandalID = jObj.getString("MANDAL");
+			//String mandalID = jObj.getString("MANDAL");
 			
 			//TotalMPTCMandalLeaderVO   mptcMandalLeaders = constituencyManagementService.getMPTCElectionResultForMandal(new Long(mandalID));
 			//constituencyManagementVO.setTotalMPTCMandalLeaderVO(mptcMandalLeaders);
