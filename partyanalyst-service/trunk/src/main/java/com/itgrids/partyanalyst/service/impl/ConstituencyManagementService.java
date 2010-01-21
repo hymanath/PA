@@ -202,8 +202,8 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			mptcMandalLeaderVO.setMptcName(obj[2].toString());
 			mptcMandalLeaderVO.setParty(obj[3].toString());
 			mptcMandalLeaderVO.setCandidateName(obj[4].toString());
-			mptcMandalLeaderVO.setCandidateEarnedVotes(new Long(obj[5].toString()));
-			mptcMandalLeaderVO.setValidVotes(new Long(obj[5].toString()));
+			mptcMandalLeaderVO.setCandidateEarnedVotes(formatedData(obj[5]));
+			mptcMandalLeaderVO.setValidVotes(formatedData(obj[6]));
 			
 			totalLeaders.add(mptcMandalLeaderVO);
 			if(mptcMandalLeaderVO.getRank().equals(new Long(1))){
@@ -212,6 +212,16 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		}
 		
 		return totalMPTCMandalLeaderVO;
+	}
+	
+	private Long formatedData(Object obj){
+		Long result = new Long(0);
+		try{
+			result = new Long(obj.toString());
+		}catch(NumberFormatException ex){
+			result = new Long(0);
+		}
+		return result;
 	}
 	
 }
