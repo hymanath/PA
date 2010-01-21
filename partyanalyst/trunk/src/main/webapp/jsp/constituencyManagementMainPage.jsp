@@ -224,6 +224,16 @@
 			String problemSource = rb.getString("problemSource");
 			String mobile  = rb.getString("mobile");
 			String constMgmtAlertMessage = rb.getString("constMgmtAlertMessage");
+			String mandalLeaders= rb.getString("mandalLeaders");
+			String electionYear= rb.getString("electionYear");
+			String rank= rb.getString("rank");
+			String mptcName= rb.getString("mptcName");
+			String party= rb.getString("party");
+			String candidateName= rb.getString("candidateName");
+			String votesEarned= rb.getString("votesEarned");
+			String totalValidVotes= rb.getString("totalValidVotes");
+
+			
 		  %> }
 	
 	var outerTab,problemMgmtTabs;
@@ -251,7 +261,9 @@
 							votersByHouseNoArray:[],
 							localLeadersArray:[],
 							localPoliticalChangesArray:[],
-							localProblemsArr:[]						
+							localProblemsArr:[],
+							totalLeadersArr:[],
+							electedMandalLeadersArr:[]	
 							
 						};
 	function buildConstituencyLayout()
@@ -387,6 +399,8 @@
 		assignToLocalLeaders = new Array();
 		assignToPoliticalChanges = new Array();
 		assignToLocalProblems = new Array();
+		assignToTotalLeaders = new Array();
+		assignToElectedLeaders = new Array();
 
 		var localLeaders = results.localLeaders;
 		var voters = results.voterDetails;
@@ -397,9 +411,13 @@
 		var votersByHouseNo = results.votersByHouseNos;
 		var politicalChanges = results.politicalChanges;
 		var localProblems = results.hamletProblems;
+		var totalLeaders = results.totalMPTCMandalLeaderVO.totalLeaders;
+		var electedLeaders = results.totalMPTCMandalLeaderVO.winners;
 		var count=0;
 		var votersByHouseNoCount = 0;
 		var localProbCount = 0;
+		var totalLeadersCount = 0;
+		var electedLeadersCount = 0;
 		
 		
 		for(var i in voters)
@@ -494,7 +512,40 @@
 			constMgmtMainObj.localProblemsArr=assignToLocalProblems;
 			
 		}
-		
+		for(var i in totalLeaders)
+		{	
+			totalLeadersCount = totalLeadersCount + 1;
+			var totalLeadersObj = {
+					sNo: totalLeadersCount,
+					electionYear: totalLeaders[i].electionYear,
+					rank: totalLeaders[i].rank,
+					mptcName: totalLeaders[i].mptcName,
+					party: totalLeaders[i].party,
+					candidateName: totalLeaders[i].candidateName,
+					votesEarned: totalLeaders[i].candidateEarnedVotes,
+					totalValidVotes: totalLeaders[i].validVotes	
+			};
+			assignToTotalLeaders.push(totalLeadersObj);
+			constMgmtMainObj.totalLeadersArr=assignToTotalLeaders;
+
+		}
+		for(var i in electedLeaders )
+		{	
+			electedLeadersCount = electedLeadersCount + 1;
+			var electedLeadersObj = {
+				sNo: electedLeadersCount,
+				electionYear: electedLeaders[i].electionYear,
+				mptcName: electedLeaders[i].mptcName,
+				party: electedLeaders[i].party,
+				candidateName: electedLeaders[i].candidateName,
+				votesEarned: electedLeaders[i].candidateEarnedVotes,
+				totalValidVotes: electedLeaders[i].validVotes	
+			};
+			
+			assignToElectedLeaders.push(electedLeadersObj);
+			constMgmtMainObj.electedMandalLeadersArr = assignToElectedLeaders;
+
+		}
 		var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 
 		var localCastStatsTabContent = '<table width="80%">';
@@ -515,34 +566,36 @@
 		    if(localLeaders.length == 0)
 			{	
 				constMgmtMainObj.localLeadersArray = emptyArr;	
-				//buildLocalLeadersDataTable();
 			} if(localProblems.length == 0)
 			{
-				constMgmtMainObj.localProblemsArr = emptyArr;
-				//buildLocalProblemsDataTable();	
+				constMgmtMainObj.localProblemsArr = emptyArr;				
 			} if(cast.length == 0)
 			{
-				constMgmtMainObj.castStatsArray = emptyArr;
-				//buildLocalCastStatisticsDataTable();
+				constMgmtMainObj.castStatsArray = emptyArr;				
 			} if(politicalChanges.length == 0)
 			{
-				constMgmtMainObj.localPoliticalChangesArray = emptyArr;
-				//buildLocalPoliticalChangesDataTable();
+				constMgmtMainObj.localPoliticalChangesArray = emptyArr;				
 			} if (voters.length == 0)
 			{	
-				constMgmtMainObj.votersArray = emptyArr;
-				//buildVotersByLocBoothDataTable();
+				constMgmtMainObj.votersArray = emptyArr;				
 			} if(votersByHouseNo.length == 0)
 			{
-				constMgmtMainObj.votersByHouseNoArray = emptyArr;
-				//buildImportantVotersDataTable();
-			} 
+				constMgmtMainObj.votersByHouseNoArray = emptyArr;				
+			} if(totalLeaders.length == 0)
+			{
+				constMgmtMainObj.totalLeadersArr = emptyArr;
+			} if(electedLeaders == 0)
+			{
+				constMgmtMainObj.electedMandalLeadersArr = emptyArr;
+			}
 			buildLocalPoliticalChangesDataTable();
 			buildLocalLeadersDataTable();
 			buildLocalCastStatisticsDataTable();			
 			buildVotersByLocBoothDataTable();
 			buildImportantVotersDataTable();
-			buildLocalProblemsDataTable();			
+			buildLocalProblemsDataTable();
+			buildAllMandalLeadersDataTable();
+			buildElectedMandalLeadersDataTable();
 			
 		constMgmtTabs.getTab(0).set("disabled", false);
 		constMgmtTabs.getTab(0).set("active", true);
@@ -551,11 +604,13 @@
 		constMgmtTabs.getTab(3).set("active", false);
 		constMgmtTabs.getTab(4).set("active", false);
 		constMgmtTabs.getTab(5).set("active", false);
+		constMgmtTabs.getTab(6).set("active", false);
 		constMgmtTabs.getTab(1).set("disabled", false);
 		constMgmtTabs.getTab(2).set("disabled", false);
 		constMgmtTabs.getTab(3).set("disabled", false);
 		constMgmtTabs.getTab(4).set("disabled", false);
-		constMgmtTabs.getTab(5).set("disabled", false);				
+		constMgmtTabs.getTab(5).set("disabled", false);
+		constMgmtTabs.getTab(6).set("disabled", false);	
 	}
 
 	function getTownshipsForMandal(name,value,choice)
@@ -627,11 +682,13 @@
 	function getVotersForHamlet(name,value)
 	{
 		var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
+		var mandalID = document.getElementById("mandalField").value;
 		ajaxImgSpanElmt.style.display = 'block';
 		var jsObj=
 			{
 					selectName:name,
 					selected:value,
+					MANDAL:mandalID,
 					task:"findVoters"
 			}
 		
@@ -872,28 +929,41 @@
 		importantVotersTabContent+='<div id="importantVotersTabContent_body"></div>';
 		importantVotersTabContent+='<div id="importantVotersTabContent_footer"></div>';
 		importantVotersTabContent+='</div>';
+
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
 			label: '<%=impVoters%>',
 			content: importantVotersTabContent,
 			disabled: true
 			
 		}));
+		var mandalLeadersTabContent='<div id="mandalLeadersTabContent">';
+		mandalLeadersTabContent+='<div id="mandalLeadersTabContent_header">';
+		mandalLeadersTabContent+='<input type="radio" name="mandalLeaders" value="All" onclick="displayDiv(\'mandalLeadersAll\');hideDiv(\'mandalLeadersWinners\')"> All';
+		mandalLeadersTabContent+='<input type="radio" name="mandalLeaders" value="Winners" onclick="displayDiv(\'mandalLeadersWinners\');hideDiv(\'mandalLeadersAll\')"> Winners';
+		mandalLeadersTabContent+='</div>';
+		mandalLeadersTabContent+='<div id="mandalLeadersTabContent_body">';
+		mandalLeadersTabContent+='<div id="mandalLeadersAll" style="display:none;">1</div><div id="mandalLeadersWinners" style="display:none;">1</div></div>';
+		mandalLeadersTabContent+='</div>';
+		constMgmtTabs.addTab( new YAHOO.widget.Tab({
+			label: '<%=mandalLeaders%>',
+			content: mandalLeadersTabContent,
+			disabled: true
+			
+		}));
 				
 		constMgmtTabs.appendTo('constMgmtTabContentDiv_body');
-
 		function handleClick(e) {   
 			var id = document.getElementById("hamletField");
 			if(id==null || id.value==0)
 	        	alert("<%=constMgmtAlertMessage%>"); 
 	    }
-
-			constMgmtTabs.getTab(0).addListener('click', handleClick);
-			constMgmtTabs.getTab(1).addListener('click', handleClick);
-			constMgmtTabs.getTab(2).addListener('click', handleClick);
-			constMgmtTabs.getTab(3).addListener('click', handleClick);
-			constMgmtTabs.getTab(4).addListener('click', handleClick);
-			constMgmtTabs.getTab(5).addListener('click', handleClick);
-			
+		constMgmtTabs.getTab(0).addListener('click', handleClick);
+		constMgmtTabs.getTab(1).addListener('click', handleClick);
+		constMgmtTabs.getTab(2).addListener('click', handleClick);
+		constMgmtTabs.getTab(3).addListener('click', handleClick);
+		constMgmtTabs.getTab(4).addListener('click', handleClick);
+		constMgmtTabs.getTab(5).addListener('click', handleClick);
+		constMgmtTabs.getTab(6).addListener('click', handleClick);
 	}
 	
 	YAHOO.example.Data = { 
@@ -906,7 +976,121 @@
 		        {select:"<input type='checkbox' id='check_1'></input>", title:"AarogyaSri", description: "Delay for Cardiac Surgery with AarogyaSri Scheme", identifiedDate:new Date("March 11,2009") , location:"Eluru", source:"User", status:"Categorized"}, 
 				{select:"<input type='checkbox' id='check_1'></input>", title:"Delay in payment of Exgratia", description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party", identifiedDate:new Date(1980, 2, 4), location:"MadanaPalle", source:"Party Analyst", status:"New"}		
 	    ]		           			
-		}					
+		}
+		
+	function buildAllMandalLeadersDataTable()
+		{
+			
+			var myColumnDefs = [ 
+					{key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true},
+		            {key:"electionYear", label: "<%=electionYear%>"}, 
+		            {key:"rank", label: "<%=rank%>", sortable:true}, 
+		            {key:"mptcName", label: "<%=mptcName%>", sortable:true}, 
+					{key:"party", label: "<%=party%>",  sortable:true},
+					{key:"candidateName", label: "<%=candidateName%>", sortable:true},	
+					{key:"votesEarned", label: "<%=votesEarned%>", sortable:true},	
+					{key:"totalValidVotes", label: "<%=totalValidVotes%>", sortable:true}
+		        ]; 
+			
+		        var myDataSource = new YAHOO.util.DataSource(constMgmtMainObj.totalLeadersArr); 
+		        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		        myDataSource.responseSchema = { 
+		            fields: [{key:"sNo", parser:"number"},"electionYear","rank","mptcName","party","candidateName","votesEarned","totalValidVotes"] 
+		        }; 
+				
+				var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 15 
+			    }) 
+				}; 
+
+				var myDataTable =  
+		            new YAHOO.widget.DataTable("mandalLeadersAll", myColumnDefs, myDataSource,myConfigs); 
+		                 
+		        
+				problemMgmtTabs.getTab(0).addListener("click", function() {myDataTable.onShow()});         
+							
+				var highlightEditableCell = function(oArgs) {   
+	             var elCell = oArgs.target;   
+	             if(YAHOO.util.Dom.hasClass(elCell, "yui-dt-editable")) {   
+	                 this.highlightCell(elCell);   
+	             } 
+				  }; 
+
+				
+
+				myDataTable.subscribe("cellMouseoverEvent", highlightEditableCell);  			
+				myDataTable.subscribe("cellMouseoutEvent", myDataTable.onEventUnhighlightCell);
+				myDataTable.subscribe("cellClickEvent", myDataTable.onEventShowCellEditor);
+				
+		        return { 
+		            oDS: myDataSource, 
+		            oDT: myDataTable 
+		           
+		      }; 
+		    
+		}
+		
+		function displayDiv(id){
+			var ele = document.getElementById(id);
+			ele.style.display='block';
+		}
+		function hideDiv(id){
+			var ele = document.getElementById(id);
+			ele.style.display='none';
+		}
+
+		function buildElectedMandalLeadersDataTable()
+		{
+			
+			var myColumnDefs = [
+					{key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true},
+		            {key:"electionYear", label: "<%=electionYear%>"}, 
+		            {key:"mptcName", label: "<%=mptcName%>", sortable:true}, 
+					{key:"party", label: "<%=party%>",  sortable:true},
+					{key:"candidateName", label: "<%=candidateName%>", sortable:true},	
+					{key:"votesEarned", label: "<%=votesEarned%>", sortable:true},	
+					{key:"totalValidVotes", label: "<%=totalValidVotes%>", sortable:true}
+		        ]; 
+			
+		        var myDataSource = new YAHOO.util.DataSource(constMgmtMainObj.electedMandalLeadersArr); 
+		        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		        myDataSource.responseSchema = { 
+		            fields: [{key:"sNo", parser:"number"},"electionYear","mptcName","party","candidateName","votesEarned","totalValidVotes"] 
+		        }; 
+				
+				var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 15 
+			    }) 
+				}; 
+
+				var myDataTable =  
+		            new YAHOO.widget.DataTable("mandalLeadersWinners", myColumnDefs, myDataSource,myConfigs); 
+		                 
+		        
+				problemMgmtTabs.getTab(0).addListener("click", function() {myDataTable.onShow()});         
+							
+				var highlightEditableCell = function(oArgs) {   
+	             var elCell = oArgs.target;   
+	             if(YAHOO.util.Dom.hasClass(elCell, "yui-dt-editable")) {   
+	                 this.highlightCell(elCell);   
+	             } 
+				  }; 
+
+				
+
+				myDataTable.subscribe("cellMouseoverEvent", highlightEditableCell);  			
+				myDataTable.subscribe("cellMouseoutEvent", myDataTable.onEventUnhighlightCell);
+				myDataTable.subscribe("cellClickEvent", myDataTable.onEventShowCellEditor);
+				
+		        return { 
+		            oDS: myDataSource, 
+		            oDT: myDataTable 
+		           
+		      }; 
+		    
+		}
 	 
 	function buildNewProblemsDataTable()
 	{
