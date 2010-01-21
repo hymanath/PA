@@ -307,7 +307,9 @@ public class MptcElectionService implements IMptcElectionService {
 			int rowNo) throws Exception {
 		String constituencyName = constituencyElectionResult.getConstituencyElection().getConstituency().getName();
 
-		String totalVotes = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CONSTITUENCY_TOTAL_VOTES),rowNo)).getContents());
+		String totalVotes = null;
+		if(excelHeaderData.get(IConstants.CONSTITUENCY_TOTAL_VOTES)!=null)
+			totalVotes = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CONSTITUENCY_TOTAL_VOTES),rowNo)).getContents());
 		if(totalVotes==null || !NumberUtils.isNumber(totalVotes.trim())){
 			//throw new CsvException
 			log.info("Constituency " + constituencyName + " not valid totalVotes in Excel File " +
@@ -317,7 +319,9 @@ public class MptcElectionService implements IMptcElectionService {
 			constituencyElectionResult.setTotalVotes(totalVotesDouble);
 		}
 		
-		String validVotes = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CONSTITUENCY_VALID_VOTES),rowNo)).getContents());
+		String validVotes = null;
+		if(excelHeaderData.get(IConstants.CONSTITUENCY_VALID_VOTES)!=null)
+		 validVotes = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CONSTITUENCY_VALID_VOTES),rowNo)).getContents());
 		if(validVotes==null || !NumberUtils.isNumber(validVotes.trim())){
 			//throw new CsvException
 			log.info("Constituency " + constituencyName + " not valid valid-votes in Excel File " +
@@ -328,7 +332,9 @@ public class MptcElectionService implements IMptcElectionService {
 		}
 		
 
-		String polledVotes = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CONSTITUENCY_TOTAL_VOTES_POLLED),rowNo)).getContents());
+		String polledVotes = null;
+		if(excelHeaderData.get(IConstants.CONSTITUENCY_TOTAL_VOTES_POLLED)!=null)
+			polledVotes = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CONSTITUENCY_TOTAL_VOTES_POLLED),rowNo)).getContents());
 		if(polledVotes==null || !NumberUtils.isNumber(polledVotes.trim())){
 			//throw new CsvException
 			log.info("Constituency " + constituencyName + " not valid polledVotes in Excel File " +
@@ -360,7 +366,7 @@ public class MptcElectionService implements IMptcElectionService {
 			}
 			constituencyElectionResult.setVotingPercentage(polledVotesPercentage);
 		}*/
-		if(excelHeaderData.get(IConstants.CONSTITUENCY_VOTING_PERCENTAGE)==null){
+		if(excelHeaderData.get(IConstants.CONSTITUENCY_VOTING_PERCENTAGE)!=null){
 			String polledVotesPercentage = checkCellData((sheet.getCell(excelHeaderData.get(
 					IConstants.CONSTITUENCY_VOTING_PERCENTAGE), rowNo)).getContents());
 			constituencyElectionResult.setVotingPercentage(polledVotesPercentage);
@@ -507,12 +513,14 @@ public class MptcElectionService implements IMptcElectionService {
 				if(constituencyTotalValidVotes==null || constituencyTotalValidVotes==0L){
 					constituencyTotalValidVotes = totalSumOfCandidateVotes;
 				}
-				Double percentage = (votes*100)/constituencyTotalValidVotes;
+				Double percentage = 0D;
+				if(constituencyTotalValidVotes!=0D)
+					percentage = (votes*100)/constituencyTotalValidVotes;
 				String candidateVotesEarnedPercentage = new BigDecimal(percentage).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 				candidateResult.setVotesPercengate(candidateVotesEarnedPercentage);
 			}
 			//candidateResult.setVotesPercengate(candidateVotesEarnedPercentage);
-			candidateResultDAO.save(candidateResult);
+			candidateResult = candidateResultDAO.save(candidateResult);
 			resultVO.addCandidateResults();
 		}
 	}
