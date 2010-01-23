@@ -360,7 +360,7 @@
 		</action>
 
 		<action name="problemManagementAction" class="problemManagementAction">
-			<result name="success">/jsp/addNewProblem.jsp</result>		
+			<result type="json" name="success"><param name="root">problemManagementDataVO</param></result>		
 		</action>
 
 		
