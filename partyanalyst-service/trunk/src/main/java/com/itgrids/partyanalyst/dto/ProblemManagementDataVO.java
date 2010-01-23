@@ -13,7 +13,15 @@ public class ProblemManagementDataVO {
 
 	private List<HamletProblemVO> hamletProblems;
 	private ResultStatus resultStatus;
+	private List<ProblemBeanVO> newProblems;
+	private ProblemBeanVO problemBeanVO;
 	
+	public ProblemBeanVO getProblemBeanVO() {
+		return problemBeanVO;
+	}
+	public void setProblemBeanVO(ProblemBeanVO problemBeanVO) {
+		this.problemBeanVO = problemBeanVO;
+	}
 	public List<HamletProblemVO> getHamletProblems() {
 		return hamletProblems;
 	}
@@ -26,4 +34,11 @@ public class ProblemManagementDataVO {
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
+	public List<ProblemBeanVO> getNewProblems() {
+		return newProblems;
+	}
+	public void setNewProblems(List<ProblemBeanVO> newProblems) {
+		this.newProblems = newProblems;
+	}
+	
 }
