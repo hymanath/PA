@@ -31,6 +31,7 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 	private Long problemExternalSourceId;
 	private String name;
 	private String mobile;
+	private String telePhone;
 	private String email;
 	private String address;
 	private Set<ProblemSource> problemSource;
@@ -46,7 +47,7 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 	}
 	
     //parameterized constructor
-    public ProblemExternalSource(String name,String mobile,String email,String address,Set<ProblemSource> problemSource){
+    public ProblemExternalSource(String name,String mobile,String email,String address, Set<ProblemSource> problemSource){
 		this.name = name;
 		this.mobile = mobile;
 		this.email = email;
@@ -109,6 +110,15 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 	public void setProblemSource(Set<ProblemSource> problemSource) {
 		this.problemSource = problemSource;
 	}
+	@Column(name = "telephone", length = 25)
+	public String getTelePhone() {
+		return telePhone;
+	}
+
+	public void setTelePhone(String telePhone) {
+		this.telePhone = telePhone;
+	}
+	
     
     
     
