@@ -198,7 +198,14 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		String accessType = user.getAccessType();
 		
-		if("COUNTRY".equals(accessType)){
+		list.add(new SelectOptionVO(0L,"Country"));
+		list.add(new SelectOptionVO(1L,"State"));
+		list.add(new SelectOptionVO(2L,"District"));
+		list.add(new SelectOptionVO(3L,"Constituency"));
+		list.add(new SelectOptionVO(4L,"Mandal"));
+		list.add(new SelectOptionVO(5L,"Village"));
+		
+		/*if("COUNTRY".equals(accessType)){
 			list.add(new SelectOptionVO(0L,"Country"));
 			list.add(new SelectOptionVO(1L,"State"));
 			list.add(new SelectOptionVO(2L,"District"));
@@ -220,7 +227,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 			list.add(new SelectOptionVO(3L,"Constituency"));
 			list.add(new SelectOptionVO(4L,"Mandal"));
 			list.add(new SelectOptionVO(5L,"Village"));
-		}
+		}*/
 		return SUCCESS;
 	}
 }
