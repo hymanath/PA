@@ -185,3 +185,36 @@ table.partyResultsCriteriaTable td {
 	text-decoration:underline;
 	background-color:#AAAAAA;
 }
+
+/* Styles for registration */
+
+.registrationTable td
+{
+	text-align:left;
+	color:#926682
+	
+}
+#registrationMainDiv
+{
+	text-align:left;
+	margin-left:70px;
+}
+.accessDivHead
+{
+	font-weight:bold;
+	color:#664141;
+}
+.accessDivMain
+{
+	padding-bottom:20px;
+}
+.accessDivBody
+{
+	padding-top:10px;
+}
+.regionSelect
+{
+	width:155px;
+	padding:2px;
+}
+
