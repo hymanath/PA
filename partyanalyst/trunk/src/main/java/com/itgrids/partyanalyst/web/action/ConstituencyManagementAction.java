@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyManagementAction extends ActionSupport implements ServletRequestAware, ServletContextAware {
 
@@ -37,7 +38,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private CadreManagementService cadreManagementService;
 	private CrossVotingEstimationService crossVotingEstimationService;
 	private ConstituencyManagementVO constituencyManagementVO;
-	private List<ProblemDetailsVO> problemDetailsList;
 	private HttpServletRequest request;
 	private List<SelectOptionVO> stateList;
 	private List<SelectOptionVO> districtList;
@@ -75,14 +75,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		this.stateList = stateList;
 	}
 
-	public List<ProblemDetailsVO> getProblemDetailsList() {
-		return problemDetailsList;
-	}
-
-	public void setProblemDetailsList(List<ProblemDetailsVO> problemDetailsList) {
-		this.problemDetailsList = problemDetailsList;
-	}
-		
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -178,16 +170,14 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 		log.debug("In execute of Constituency Management Action ********");
 		
-		SelectOptionVO probSource1 = new SelectOptionVO(1L, "Party Analyst");
-		SelectOptionVO probSource2 = new SelectOptionVO(2L, "Call Center");
-		SelectOptionVO probSource3 = new SelectOptionVO(3L, "User");
-		SelectOptionVO probSource4 = new SelectOptionVO(4L, "External Person");
+		SelectOptionVO probSource1 = new SelectOptionVO(2L, IConstants.CALL_CENTER);
+		SelectOptionVO probSource2 = new SelectOptionVO(3L, IConstants.USER);
+		SelectOptionVO probSource3 = new SelectOptionVO(4L, IConstants.EXTERNAL_PERSON);
 		problemSources = new ArrayList<SelectOptionVO>();
 		problemSources.add(probSource1);
 		problemSources.add(probSource2);
 		problemSources.add(probSource3);
-		problemSources.add(probSource4);
-		
+		/*	
 		constituencyManagementVO = new ConstituencyManagementVO();
 		ProblemManagementVO problemManagementVO = new ProblemManagementVO();
 		problemDetailsList = new ArrayList<ProblemDetailsVO>();		
@@ -210,7 +200,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		problemDetailsList.add(problemDetailsVO1);
 		
 		problemManagementVO.setProblemDetails(problemDetailsList);
-		constituencyManagementVO.setProblemManagementVO(problemManagementVO);
+		constituencyManagementVO.setProblemManagementVO(problemManagementVO);*/
 		
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
