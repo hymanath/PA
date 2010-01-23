@@ -188,7 +188,7 @@
 	</bean>
 	
 	<bean id="problemManagementAction" class="com.itgrids.partyanalyst.web.action.ProblemManagementAction" singleton="false">
-		<property name="problemBeanVO" ref="problemBeanVO"></property>			
+		<property name="problemManagementService" ref="problemManagementService"></property>			
 	</bean>
 	<bean id="voterInfoAction" class="com.itgrids.partyanalyst.web.action.VoterInfoAction" singleton="false">
 		<property name="constituencyManagementService" ref="constituencyManagementService"></property>	
