@@ -14,6 +14,8 @@
   	<!-- Dependencies --> 
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
 
+	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
+
 <script type="text/javascript">
 
 		
@@ -285,68 +287,73 @@
 	}
 </script>
 <style type="text/css">
-	#cadreRegistrationTable th
+	
+	#registrationMainDiv
 	{
 		text-align:left;
-		color:#DFA1A1;
+		margin-left:70px;
 	}
-
+	
 </style>
 </head>
 <body>
 <s:form action="cadreRegisterAction" method="POST" theme="simple">
 	<h2>Cadre Registration Page</h2>
-		<table id="cadreRegistrationTable">
+	<div id="registrationMainDiv">
+	<table id="cadreRegistrationTable" class="registrationTable">
+	<tr>
+		<td colspan="2">
+			<div style="color: red;">
+				<s:actionerror />
+				<s:fielderror />
+			</div>
+		</td>
+	</tr>
+	</table>
+
+	<div id="loginDetailsDiv" class="accessDivMain">
+		<div id="loginDetailsDivHead" class="accessDivHead"><u>Cadre Details...</u></div>
+		<div id="loginDetailsDivBody" class="accessDivBody">
+		<table class="registrationTable">		
 		<tr>
-			<td colspan="2">
-				<div style="color: red;">
-					<s:actionerror />
-					<s:fielderror />
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2" align="left"><h3><u style="color:#4D0A0A;">Cadre Details</u></h3></td>		
-		</tr>
-		<tr>
-			<th><font class="requiredFont"> * </font><s:label for="firstNameField" id="fnameLabel"  value="%{getText('firstName')}" /></th>
+			<td><font class="requiredFont"> * </font><s:label for="firstNameField" id="fnameLabel"  value="%{getText('firstName')}" /></td>
 			<td align="left"><s:textfield id="firstNameField" name="firstName"/>  </td>
 		</tr>
 		<tr>
-			<th><s:label for="middleNameField" id="middleNameLabel"  value="%{getText('middleName')}" /></th>
+			<td><s:label for="middleNameField" id="middleNameLabel"  value="%{getText('middleName')}" /></td>
 			<td align="left"><s:textfield id="middleNameField" name="middleName"/>  </td>
 		</tr>
 		<tr>
-			<th><font class="requiredFont"> * </font><s:label for="lastNameField" id="lastNameLabel"  value="%{getText('lastName')}" /></th>
+			<td><font class="requiredFont"> * </font><s:label for="lastNameField" id="lastNameLabel"  value="%{getText('lastName')}" /></td>
 			<td align="left"><s:textfield id="lastNameField" name="lastName"/>  </td>
 		</tr>
 		<tr>
-			<th><font class="requiredFont"> * </font><s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></th>
+			<td><font class="requiredFont"> * </font><s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></td>
 			<td align="left">
 				<input type="radio" name="gender" value="M" checked="checked"/>Male
 				<input type="radio" name="gender" value="F"/>Female
 			</td>		
 		</tr>
 		<tr>
-			<th><font class="requiredFont"> * </font><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></th>
+			<td><font class="requiredFont"> * </font><s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></td>
 			<td align="left"><s:textfield id="mobileField" name="mobile" maxlength="10" />  </td>
 		</tr>
 		<tr>
-			<th><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></th>
+			<td><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></th>
 			<td align="left"><s:textfield id="emailField" name="email"/>  </td>
 		</tr>
 		<tr>
-			<th><font class="requiredFont"> * </font><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /></th>
+			<td><font class="requiredFont"> * </font><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /></td>
 			<td align="left">
-				<s:select id="stateField" name="state" list="stateList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>
+				<s:select id="stateField" cssClass="regionSelect" name="state" list="stateList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>
 
 				
 			</td>
 		</tr>
 		<tr>
-			<th><font class="requiredFont"> * </font><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /></th>
+			<td><font class="requiredFont"> * </font><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /></td>
 			<td align="left">
-				<select id="districtField" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
+				<select id="districtField" class="regionSelect" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
 					<c:forEach var="dist" items="${districtList}" >
 					<option value="${dist.id}">${dist.name}</option>
 					</c:forEach>
@@ -355,28 +362,33 @@
 			</td>
 		</tr>
 		<tr>
-			<th><font class="requiredFont"> * </font><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/></th>
+			<td><font class="requiredFont"> * </font><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/></td>
 			<td align="left">
-				<s:select id="constituencyField" name="constituency" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Constituency"></s:select> 
+				<s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Constituency"></s:select> 
 			</td>
 		</tr>
 		<tr>
-			<th><font class="requiredFont"> * </font><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /></th>
+			<td><font class="requiredFont"> * </font><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /></td>
 			<td align="left">
-				<s:select id="mandalField" name="mandal" list="mandalList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
+				<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="mandalList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
 			</td>
 		</tr>
 		<tr>
-			<th><font class="requiredFont"> * </font><s:label for="villageField" id="villageLabel"  value="%{getText('VILLAGE')}" /></th>
+			<td><font class="requiredFont"> * </font><s:label for="villageField" id="villageLabel"  value="%{getText('VILLAGE')}" /></td>
 			<td align="left">
-				<s:select id="villageField" name="village" list="villageList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
+				<s:select id="villageField" cssClass="regionSelect" name="village" list="villageList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
 			</td>
 		</tr>
+		</table>
+		</div>
+		</div>
+		
+		<div id="personalDetailsDiv" class="accessDivMain">
+		<div id="personalDetailsDivHead" class="accessDivHead"><u>Cadre Level Details...</u></div>
+		<div id="personalDetailsDivBody" class="accessDivBody">
+		<table class="registrationTable">				
 		<tr>
-			<td colspan="2" align="left"><h3><u style="color:#4D0A0A;">Cadre Level Details</u></h3></td>
-		</tr>				
-		<tr>
-			<th><font class="requiredFont"> * </font><s:label for="cadreLevelField" id="cadreLevelLabel"  value="%{getText('CADRE_LEVEL')}" /></th>
+			<td><font class="requiredFont"> * </font><s:label for="cadreLevelField" id="cadreLevelLabel"  value="%{getText('CADRE_LEVEL')}" /></td>
 			<td align="left">
 				<select id="cadreLevelField" name="cadreLevel" onchange="getStateList()">
 					<option	 value='0'>Select Level</option>		
@@ -389,7 +401,7 @@
 			</td>
 		</tr>
 		<tr>		
-			<th><font class="requiredFont"> * </font><s:label for="cadreLevelValueField" id="cadreLevelValueLabel"  value="%{getText('CADRE_LEVEL_VALUE')}" /></th>
+			<td><font class="requiredFont"> * </font><s:label for="cadreLevelValueField" id="cadreLevelValueLabel"  value="%{getText('CADRE_LEVEL_VALUE')}" /></td>
 			<td align="left">
 				<select id="cadreLevelState" name="cadreLevelState" disabled = "true" onchange="setCadreValue(this.options[this.selectedIndex].value);
 										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,
@@ -419,14 +431,12 @@
 				</select> 
 			</td>
 		</tr>
-		
-		<tr>
-		<td colspan="2" align="center">
-			<input type="submit" value="Register">
-		</td>
-			
-		</tr>
 		</table>
+		</div></div>
+		<div style="text-align: center;">
+			<input type="submit" value="Register">
+		</div>
+	</div>
 	</s:form>
 </body>
 </html>
