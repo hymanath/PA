@@ -36,4 +36,10 @@ public class ProblemLocationDAO extends GenericDaoHibernate<ProblemLocation, Lon
 		Object[] params ={hamletId,year};
 		return getHibernateTemplate().find("from ProblemLocation model where model.hamlet.hamletId = ? and model.problemSource.problem.year = ?",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemLocation> findProblemsByUserId(Long registrationId){
+		return getHibernateTemplate().find("from ProblemLocation model where model.problemSource.user.registrationId = ?",registrationId);
+	}
+	
 }
