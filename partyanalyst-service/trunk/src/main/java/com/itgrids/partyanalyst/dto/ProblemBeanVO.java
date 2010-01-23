@@ -1,11 +1,16 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.util.List;
-
 public class ProblemBeanVO {
+	private Long newProbId;
+	private Long userID;
 	private String problem;
 	private String description;
-	private String location;
+	private String state;
+	private String district;
+	private String constituency;
+	private String tehsil;
+	private String village;
+	private String hamlet;
 	private String reportedDate;
 	private String existingFrom;
 	private String name;
@@ -14,29 +19,8 @@ public class ProblemBeanVO {
 	private String mobile;
 	private String address;
 	private String probSource;
+	private String year;
 	
-	public ProblemBeanVO() {
-		
-	}
-
-	public ProblemBeanVO(String problem, String description, String location,
-			String reportedDate, String existingFrom, String name,
-			String email, String phone, String mobile, String address,
-			String probSource) {
-		
-		this.problem = problem;
-		this.description = description;
-		this.location = location;
-		this.reportedDate = reportedDate;
-		this.existingFrom = existingFrom;
-		this.name = name;
-		this.email = email;
-		this.phone = phone;
-		this.mobile = mobile;
-		this.address = address;
-		this.probSource = probSource;
-	}
-
 	public String getProblem() {
 		return problem;
 	}
@@ -51,14 +35,6 @@ public class ProblemBeanVO {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
 	}
 
 	public String getReportedDate() {
@@ -123,6 +99,78 @@ public class ProblemBeanVO {
 
 	public void setProbSource(String probSource) {
 		this.probSource = probSource;
+	}
+
+	public Long getNewProbId() {
+		return newProbId;
+	}
+
+	public void setNewProbId(Long newProbId) {
+		this.newProbId = newProbId;
+	}
+
+	public Long getUserID() {
+		return userID;
+	}
+
+	public void setUserID(Long userID) {
+		this.userID = userID;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+
+	public String getTehsil() {
+		return tehsil;
+	}
+
+	public void setTehsil(String tehsil) {
+		this.tehsil = tehsil;
+	}
+
+	public String getVillage() {
+		return village;
+	}
+
+	public void setVillage(String village) {
+		this.village = village;
+	}
+
+	public String getHamlet() {
+		return hamlet;
+	}
+
+	public void setHamlet(String hamlet) {
+		this.hamlet = hamlet;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
 	}
 	
 	
