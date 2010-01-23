@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.ProblemManagementVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
 import com.itgrids.partyanalyst.model.Cadre;
@@ -19,8 +21,12 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.ElectionType;
+import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemLocation;
+import com.itgrids.partyanalyst.model.ProblemSource;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -2047,5 +2053,50 @@ public class MockData {
 		userPlannedEvents.setOrganizers(organizers);
 		userPlannedEvents.setActionPlans(actionPlans);
 		return userPlannedEvents;
+	}
+	public static List<ProblemLocation> getProblemsForUser(){
+		List<ProblemLocation> list = new ArrayList<ProblemLocation>();
+		
+		Problem problem1 = new Problem();
+		problem1.setProblem("No Trasportation FAcilities");
+		problem1.setDescription("No Bus service provided to Ramanthapur Hamlet");
+		problem1.setIdentifiedOn(Calendar.getInstance().getTime());
+		problem1.setExistingFrom(Calendar.getInstance().getTime());
+		
+		ProblemSource problemSource1 = new ProblemSource();
+		problemSource1.setSource("User");
+		
+		
+		Hamlet hamlet1 = new Hamlet();
+		hamlet1.setHamletName("IsakaPalli");
+		
+		ProblemLocation problemLocation1 = new ProblemLocation(); 
+		problemLocation1.setHamlet(hamlet1);
+		
+		problemSource1.setProblem(problem1);
+		problemLocation1.setProblemSource(problemSource1);
+		list.add(problemLocation1);
+			
+		Problem problem2 = new Problem();
+		problem2.setProblem("No Street Lights");
+		problem2.setDescription("No Street Lights in Harijamwada Colony");
+		problem2.setIdentifiedOn(Calendar.getInstance().getTime());
+		problem2.setExistingFrom(Calendar.getInstance().getTime());
+		
+		ProblemSource problemSource2 = new ProblemSource();
+		problemSource2.setSource("PartyAnalyst");
+		
+		
+		Hamlet hamlet2 = new Hamlet();
+		hamlet2.setHamletName("singaPeta");
+		
+		ProblemLocation problemLocation2 = new ProblemLocation(); 
+		problemLocation2.setHamlet(hamlet2);
+		
+		problemSource2.setProblem(problem2);
+		problemLocation2.setProblemSource(problemSource2);
+		list.add(problemLocation2);
+		return list;
+		
 	}
 }
