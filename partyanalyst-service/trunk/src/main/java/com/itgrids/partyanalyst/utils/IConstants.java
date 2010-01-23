@@ -35,5 +35,8 @@ public interface IConstants {
 	public final static String CONSTITUENCY_RESERVATION_ZONE = "CONSTITUENCY_RESERVATION_ZONE";
 //MPTC  data upload column names in excel sheet - end
 	public static final String MPTC = "MPTC";
-		
+	public static final String CALL_CENTER = "Call Center";
+	public static final String USER = "User";
+	public static final String EXTERNAL_PERSON = "External Person"; 
+	public static final String PRESENT_YEAR = "2010";	
 }
