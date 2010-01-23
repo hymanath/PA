@@ -8,6 +8,9 @@
 	<script type="text/javascript" src="js/json/json-min.js"></script> 
   	<!-- Dependencies --> 
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
+
+	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
+
 <script type="text/javascript">
 
 	var ACCESSVALUE;
@@ -200,42 +203,7 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
 </script>
-<style type="text/css">
-	
-	.registrationTable td
-	{
-		text-align:left;
-		color:#926682
-		
-	}
 
-	.requiredFont
-	{
-		color:red;
-		margin-left:5px;
-	}
-	#registrationMainDiv
-	{
-		text-align:left;
-		margin-left:200px;
-	}
-	.accessDivHead
-	{
-		font-weight:bold;
-	}
-	.accessDivMain
-	{
-		padding-bottom:20px;
-	}
-	.accessDivHead
-	{
-		color:#664141;
-	}
-	.accessDivBody
-	{
-		padding-top:10px;
-	}
-</style>
 </head>  
 <body>  
 <s:form action="RegistrationAction" method="POST" theme="simple">  
