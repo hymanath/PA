@@ -95,7 +95,7 @@
 		{
 			padding:5px;
 		}
-		#newProblemTabContentDiv_footer,#newProblemTabContentDiv_head,#classifiedTabContentDiv_footer,#assignedIssuesTabContentDiv_footer
+		#newProblemTabContentDiv_footer,#newProblemTabContentDiv_head,#classifiedTabContentDiv_footer,#assignedIssuesTabContentDiv_footer,#pendingTabContentDiv_footer,#progressTabContentDiv_footer
 		{
 			margin-right:20px;
 			text-align:right;
@@ -226,8 +226,10 @@
 			String candidateName= rb.getString("candidateName");
 			String votesEarned= rb.getString("votesEarned");
 			String totalValidVotes= rb.getString("totalValidVotes");
-
-			
+			String reason= rb.getString("reason");
+			String fixedDate= rb.getString("fixedDate");
+			String pending=rb.getString("pending");
+			String fixed=rb.getString("fixed"); 
 		  %> }
 	
 	var outerTab,problemMgmtTabs,newProbDataTable;
@@ -880,8 +882,27 @@
 		assignedIssuesTabContent+='<div id="assignedIssuesTabContentDiv_head"></div>';
 		assignedIssuesTabContent+='<div id="assignedIssuesTabContentDiv_body"></div>';
 		assignedIssuesTabContent+='<div id="assignedIssuesTabContentDiv_footer"></div>';
-		assignedIssuesTabContent+='</div>';				
-				
+		assignedIssuesTabContent+='</div>';	
+
+		var progressTabContent='<div id="progressTabContentDiv">';
+		progressTabContent+='<div id="progressTabContentDiv_header"></div>';
+		progressTabContent+='<div id="progressTabContentDiv_body"></div>';
+		progressTabContent+='<div id="progressTabContentDiv_footer"></div>';
+		progressTabContent+='</div>';			
+
+		var pendingTabContent='<div id="pendingTabContentDiv">'; 
+		pendingTabContent+='<div id="pendingTabContentDiv_head"></div>';
+		pendingTabContent+='<div id="pendingTabContentDiv_body"></div>';
+		pendingTabContent+='<div id="pendingTabContentDiv_footer"></div>';
+		//pendingTabContent+='<div id="pendingTabContentDiv_footer1"></div>';
+		pendingTabContent+='</div>';		
+
+		var fixedIssuesTabContent='<div id="fixedIssuesContentDiv"></div>';
+		fixedIssuesTabContent+='<div id="fixedIssuesContentDiv_header"></div>';
+		fixedIssuesTabContent+='<div id="fixedIssuesContentDiv_body"></div>';
+		fixedIssuesTabContent+='<div id="fixedIssuesContentDiv_footer"></div>';
+		fixedIssuesTabContent+='</div>';
+		
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
 	    label: '<%=newIssues%>', 
 	    content:newTabContent, 
@@ -900,29 +921,29 @@
 		 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
 		label: '<%=progress%>', 
-		content: '<div id="progressContentDiv"></div>' 
+		content: progressTabContent  
 		})); 
 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
 		label: '<%=pendingIssues%>', 
-		content: '<div id="pendingIssuesContentDiv"></div>' 
+		content: pendingTabContent 
 		})); 
 
 		problemMgmtTabs.addTab( new YAHOO.widget.Tab({ 
 		label: '<%=fixedIssues%>', 
-		content: '<div id="fixedIssuesContentDiv"></div>' 
+		content: fixedIssuesTabContent
 		})); 
 
 		problemMgmtTabs.appendTo('problemMgmtTabContentDiv'); 
 	      
-			var oButton = new YAHOO.widget.Button({ 
+			var classifyButton = new YAHOO.widget.Button({ 
 	                                            id: "mybuttonid",  
 	                                            type: "button",  
 	                                            label: "<%=classify%>",  
 	                                            container: "newProblemTabContentDiv_footer"  
 	                                        }); 
 
-			var oButton = new YAHOO.widget.Button({ 
+			var addProblemButton = new YAHOO.widget.Button({ 
 												id: "reportNewProblem",  
 												type: "link",  
 												label: "<%=addNewProb%>",
@@ -930,22 +951,43 @@
 												container: "newProblemTabContentDiv_head"  
 												});
 
-			oButton.on("click", buildAddNewProblemPopup); 
+			addProblemButton.on("click", buildAddNewProblemPopup); 
 			 		
 
-			var oButton = new YAHOO.widget.Button({ 
+			var assignButton = new YAHOO.widget.Button({ 
 								                id: "assignButton",  
 								                type: "button",  
 								                label: "<%=assign%>",  
 								                container: "classifiedTabContentDiv_footer"  
             }); 
 
-			var oButton = new YAHOO.widget.Button({ 
+			var progressButton = new YAHOO.widget.Button({ 
 								                id: "progressButton",  
 								                type: "button",  
 								                label: "<%=progress%>",  
 								                container: "assignedIssuesTabContentDiv_footer"  
-			});	
+			});
+
+			var pPendingButton = new YAHOO.widget.Button({ 
+                id: "pPendingButton",  
+                type: "button",  
+                label: "<%=pending%>",  
+                container: "progressTabContentDiv_footer"  
+			});
+			
+			var pFixedButton = new YAHOO.widget.Button({ 
+                id: "pFixedButton",  
+                type: "button",  
+                label: "<%=fixed%>",  
+                container: "progressTabContentDiv_footer"  
+			});
+			
+			var pendingButton = new YAHOO.widget.Button({ 
+                id: "pendingButton",  
+                type: "button",  
+                label: "<%=progress%>",  
+                container: "pendingTabContentDiv_footer"  
+			});				
 	}
 
 	function buildConstMgmtTabView()
@@ -1164,7 +1206,7 @@
 	{		
 		var myColumnDefs = [ 
 	            {key:"select", label: "<%=select%>"}, 
-	            {key:"title", label: "<%=title%>", sortable:true}, 
+	            {key:"title", label: "<%=problemLabel%>", sortable:true}, 
 	            {key:"description", label: "<%=description%>", sortable:true}, 
 				{key:"identifiedDate", label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
 				{key:"existingFrom", label: "<%=existingFrom%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
@@ -1212,7 +1254,7 @@
 	{
 			var myColumnDefs = [ 
 	            {key:"select", label: "<%=select%>"}, 
-	            {key:"title", label: "<%=title%>", sortable:true}, 
+	            {key:"title", label: "<%=problemLabel%>", sortable:true}, 
 	            {key:"identifiedDate", label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
 				{key:"location", label: "<%=location%>", sortable:true},	
 				{key:"scope", label: "<%=scope%>", sortable:true},
@@ -1259,9 +1301,10 @@
 	{
 			var myColumnDefs = [ 
 	            {key:"select", label: "<%=select%>"}, 
-	            {key:"title", label: "<%=title%>", sortable:true}, 
+	            {key:"title", label: "<%=problemLabel%>", sortable:true}, 
 	            {key:"concernedDepartment", label:"<%=concernedDept%>", sortable:true},
 				{key:"assignedOfficial" , label: "<%=assignedOfficial%>", sortable:true},	
+				{key:"name", label: "<%=name%>", sortable:true},
 				{key:"contactNumber", label: "<%=contactnbr%>"}
 				//{key:"progress" ,Progress},
 				//{key:"fix" ,Fix}
@@ -1284,6 +1327,121 @@
 	                 
 	       
 	       problemMgmtTabs.getTab(2).addListener("click", function() {myDataTable.onShow()});         
+	 
+	        return { 
+	            oDS: myDataSource, 
+	            oDT: myDataTable	           
+	      }; 
+	   
+	}
+
+	function buildProgressDataTable()
+	{
+			var myColumnDefs = [ 
+	            {key:"select", label: "<%=select%>"}, 
+	            {key:"title", label: "<%=problemLabel%>", sortable:true}, 
+	            {key:"identifiedDate", label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+	            {key:"concernedDepartment", label:"<%=concernedDept%>", sortable:true},
+				{key:"assignedOfficial" , label: "<%=assignedOfficial%>", sortable:true},
+				{key:"name", label: "<%=name%>", sortable:true},	
+				{key:"contactNumber", label: "<%=contactnbr%>"}
+				//{key:"progress" ,Progress},
+				//{key:"fix" ,Fix}
+	        ]; 
+	 
+	        var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.problems); 
+	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	        myDataSource.responseSchema = { 
+	            fields: ["select","title","identifiedDate","concernedDepartment","assignedOfficial","name","contactNumber"] 
+	        }; 
+			
+			var myConfigs = { 
+		    paginator : new YAHOO.widget.Paginator({ 
+	        rowsPerPage    : 15 
+		    }) 
+			}; 
+
+			var myDataTable =  
+	            new YAHOO.widget.DataTable("progressTabContentDiv_body", myColumnDefs, myDataSource,myConfigs); 
+	                 
+	       
+	       problemMgmtTabs.getTab(3).addListener("click", function() {myDataTable.onShow()});         
+	 
+	        return { 
+	            oDS: myDataSource, 
+	            oDT: myDataTable	           
+	      }; 
+	   
+	}
+
+	function buildPendingDataTable()
+	{
+			var myColumnDefs = [ 
+	            {key:"select", label: "<%=select%>"}, 
+	            {key:"title", label: "<%=problemLabel%>", sortable:true}, 
+	            {key:"identifiedDate", label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+	            {key:"concernedDepartment", label:"<%=concernedDept%>", sortable:true},
+				{key:"assignedOfficial" , label: "<%=assignedOfficial%>", sortable:true},
+				{key:"name", label: "<%=name%>", sortable:true},	
+				{key:"contactNumber", label: "<%=contactnbr%>"},
+				{key:"reason", label: "<%=reason%>"}
+				//{key:"progress" ,Progress},
+				//{key:"fix" ,Fix}
+	        ]; 
+	 
+	        var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.problems); 
+	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	        myDataSource.responseSchema = { 
+	            fields: ["select","title","identifiedDate","concernedDepartment","assignedOfficial","name","contactNumber"] 
+	        }; 
+			
+			var myConfigs = { 
+		    paginator : new YAHOO.widget.Paginator({ 
+	        rowsPerPage    : 15 
+		    }) 
+			}; 
+
+			var myDataTable =  
+	            new YAHOO.widget.DataTable("pendingTabContentDiv_body", myColumnDefs, myDataSource,myConfigs); 
+	                 
+	       
+	       problemMgmtTabs.getTab(3).addListener("click", function() {myDataTable.onShow()});         
+	 
+	        return { 
+	            oDS: myDataSource, 
+	            oDT: myDataTable	           
+	      }; 
+	   
+	}
+
+	function buildFixedDataTable()
+	{
+			var myColumnDefs = [ 
+	            {key:"select", label: "<%=select%>"}, 
+	            {key:"title", label: "<%=problemLabel%>", sortable:true}, 
+	            {key:"identifiedDate", label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+	            {key:"concernedDepartment", label:"<%=concernedDept%>", sortable:true},
+	            {key:"fixedDate", label: "<%=fixedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}}
+				
+	        ]; 
+	 
+	        var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.problems); 
+	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	        myDataSource.responseSchema = { 
+	            fields: ["select","title","identifiedDate","concernedDepartment"] 
+	        }; 
+			
+			var myConfigs = { 
+		    paginator : new YAHOO.widget.Paginator({ 
+	        rowsPerPage    : 15 
+		    }) 
+			}; 
+
+			var myDataTable =  
+	            new YAHOO.widget.DataTable("fixedIssuesContentDiv_body", myColumnDefs, myDataSource,myConfigs); 
+	                 
+	       
+	       problemMgmtTabs.getTab(3).addListener("click", function() {myDataTable.onShow()});         
 	 
 	        return { 
 	            oDS: myDataSource, 
@@ -1860,6 +2018,9 @@ buildProblemMgmtTabView();
 buildConstMgmtTabView();
 buildClassifiedDataTable();
 buildAssignedIssuesDataTable();
+buildProgressDataTable();
+buildPendingDataTable();
+buildFixedDataTable();
 </script>
 </body>
 </html>
