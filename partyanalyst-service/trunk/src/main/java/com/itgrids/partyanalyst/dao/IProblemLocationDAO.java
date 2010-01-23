@@ -17,5 +17,6 @@ public interface IProblemLocationDAO extends GenericDao<ProblemLocation, Long>{
 	public List findByHamletandYear(Long hamletId,String year);
 	
 	public List<ProblemLocation> findByHamletIdandYear(Long hamletId,String year);
+	public List<ProblemLocation> findProblemsByUserId(Long registrationId);
 	
 }
