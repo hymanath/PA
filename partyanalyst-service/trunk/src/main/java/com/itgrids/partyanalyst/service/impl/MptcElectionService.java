@@ -242,8 +242,9 @@ public class MptcElectionService implements IMptcElectionService {
 		int rowNo = 0;
 		Sheet sheet = workbook.getSheet(0);
 		addExcelHeaderInfo(sheet.getRow(rowNo++));
-		boolean sheetFlag = true;
-		while(sheetFlag){
+		int totalRows = sheet.getRows();
+		//boolean sheetFlag = true;
+		while(rowNo<totalRows){// ||sheetFlag){
 			if(log.isDebugEnabled())
 				log.debug("MptcElectionService.readAndInsertData() rowNo:"+rowNo);
 			String constituencyName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MPTC_NAME),rowNo)).getContents());
@@ -263,7 +264,7 @@ public class MptcElectionService implements IMptcElectionService {
 				throw new CsvException("Constituency " + constituencyName + " not exist in DB and Excel File " +
 						" Row No:" + rowNo + " Column No:" + excelHeaderData.get(IConstants.MPTC_NAME));
 			
-			int candidateSize = getConstituencyCandidateSize(sheet, rowNo);
+			int candidateSize = getConstituencyCandidateSize(sheet, rowNo,totalRows);
 			
 			Constituency constituency = constituencies.get(0);
 			ConstituencyElection constituencyElection = new ConstituencyElection();
@@ -286,12 +287,12 @@ public class MptcElectionService implements IMptcElectionService {
 			addCandidateResultToDB(sheet, rowNo, candidateSize, candidates, parties, constituencyElection,resultVO,constituencyElectionResult.getValidVotes());
 			log.debug("MptcElectionService.readAndInsertData() candidateSize:"+candidateSize);			
 			rowNo = rowNo + candidateSize;
-			constituencyName = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MPTC_NAME), rowNo)).getContents());
+			/*constituencyName = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MPTC_NAME), rowNo)).getContents());
 			String candidateName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_NAME), rowNo)).getContents());
 			if((constituencyName==null || constituencyName.length()==0) && (candidateName==null || candidateName.length()==0)){
 				sheetFlag = false;
 				log.info("End of the File since No Candidate and Constituency Name exist in excel sheet at Row No. :"+rowNo);
-			}
+			}*/
 		}
 	}
 	/**
@@ -540,14 +541,15 @@ public class MptcElectionService implements IMptcElectionService {
 	 * @param row
 	 * @return
 	 */
-	private int getConstituencyCandidateSize(Sheet sheet, int row){
+	private int getConstituencyCandidateSize(Sheet sheet, int row, int totalRows){
 		int candidateSize = 0;
 		boolean candidateFlag = true;
 		String prevConstituencyName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MPTC_NAME),row)).getContents());
 		//String candidateName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_NAME),row)).getContents());
 		candidateSize++;
+		row++;
 		while(candidateFlag){
-			String presentConstituencyName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MPTC_NAME),++row)).getContents());
+			String presentConstituencyName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MPTC_NAME),row)).getContents());
 			boolean isNewConstituency = (presentConstituencyName!=null) && (presentConstituencyName.length()>0) && !prevConstituencyName.equals(presentConstituencyName);
 			String candidateName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_NAME),row)).getContents());
 			if(candidateName.length()==0 || isNewConstituency){
@@ -555,6 +557,8 @@ public class MptcElectionService implements IMptcElectionService {
 			}else{
 				candidateSize++;
 			}
+			if(++row>=totalRows)
+				candidateFlag = false;
 		}
 		return candidateSize;
 	}
@@ -563,9 +567,10 @@ public class MptcElectionService implements IMptcElectionService {
 		Workbook workbook=Workbook.getWorkbook(file);
 		int rowNo = 0;
 		Sheet sheet = workbook.getSheet(0);
+		int total = sheet.getRows();
 		MptcElectionService service = new MptcElectionService();
 		service.addExcelHeaderInfo(sheet.getRow(rowNo++));
-		System.out.println(service.getConstituencyCandidateSize( sheet, rowNo));
+		System.out.println(service.getConstituencyCandidateSize( sheet, rowNo,total));
 		service.addCandidateResultToDB( sheet, rowNo, 5, 
 				 new ArrayList(), new ArrayList(),
 				new ConstituencyElection(),
