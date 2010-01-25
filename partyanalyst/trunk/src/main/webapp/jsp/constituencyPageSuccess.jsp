@@ -138,6 +138,7 @@
 				<th>Literate Population</th>
 				<th>Illiterate Population</th>
 				<th>Working Population</th>
+				<th>Is Partial</th>
 			</tr>
 			<c:forEach var="presentMandals" items="${delimitationConstituencyMandalResultVO.presentMandals}" >	
 				<tr>
@@ -157,6 +158,7 @@
 					<td ><c:out value="${presentMandals.totalLiteratePersons}"/></td>
 					<td ><c:out value="${presentMandals.totalIlliteratePersons}"/></td>
 					<td ><c:out value="${presentMandals.totalWorkingPersons}"/></td>
+					<td ><c:out value="${presentMandals.isPartial}"/></td>
 				</tr>
 			</c:forEach>
 		
