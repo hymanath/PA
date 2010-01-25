@@ -123,19 +123,23 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	
 	public List<MandalInfoVO> getMandalsForDelimitationConstituency(
 			List<DelimitationConstituencyMandal> delimitationConstituencyMandalList){
+		String array[] = {"YES","NO"};
 		Map<Long, String> mandalNames = new HashMap<Long, String>();
 		StringBuilder mandalIDs = new StringBuilder();
 		for(DelimitationConstituencyMandal delimitationConstituencyMandal :
 												delimitationConstituencyMandalList){
 			Tehsil mandal = delimitationConstituencyMandal.getTehsil();
-			mandalNames.put(mandal.getTehsilId(), mandal.getTehsilName());
+			mandalNames.put(mandal.getTehsilId(), mandal.getTehsilName()+"-"+array[new Integer(delimitationConstituencyMandal.getIsPartial())]);
 			mandalIDs.append(",").append(mandal.getTehsilId());
+			
 		}
 		String mandalsStr = mandalIDs.toString().substring(1);
 		List<MandalInfoVO> mandalInfoList = getCensusInfoForMandals(mandalsStr);
 		for(MandalInfoVO voObject : mandalInfoList){
-			String name = mandalNames.get(voObject.getMandalID());
-			voObject.setMandalName(name);
+			String[] arrayData =mandalNames.get(voObject.getMandalID()).split("-");
+			//String name = mandalNames.get(voObject.getMandalID());
+			voObject.setMandalName(arrayData[0]);
+			voObject.setIsPartial(arrayData[1]);
 		}
 		return mandalInfoList;
 	}
@@ -256,5 +260,11 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		obj.setTotalWorkingPersons(villageCensus.getWorkingPopulation());
 		obj.setTotalWorkingFemalePersons(villageCensus.getWorkingFemale());
 		obj.setTotalWorkingMalePersons(villageCensus.getWorkingMale());
+	}
+	
+	public static void main(String arg[]) throws Exception{
+		String a = "00001";
+		String arr[] = {"YES","NO"};
+		System.out.println(arr[new Integer(a)]);
 	}
 }

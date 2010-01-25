@@ -31,6 +31,8 @@ public class MandalInfoVO extends ResultStatus implements Serializable{
 	private Long totalWorkingPersons;
 	private Long totalWorkingMalePersons;
 	private Long totalWorkingFemalePersons;
+	
+	private String isPartial;
 		
 	public Long getMandalID() {
 		return mandalID;
@@ -157,5 +159,11 @@ public class MandalInfoVO extends ResultStatus implements Serializable{
 	}
 	public void setTotalWorkingFemalePersons(Long totalWorkingFemalePersons) {
 		this.totalWorkingFemalePersons = totalWorkingFemalePersons;
+	}
+	public String getIsPartial() {
+		return isPartial;
+	}
+	public void setIsPartial(String isPartial) {
+		this.isPartial = isPartial;
 	}	
 }
