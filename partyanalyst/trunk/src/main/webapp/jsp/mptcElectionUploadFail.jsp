@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-Failure
+Failure:<%out.println(((com.itgrids.partyanalyst.dto.MPTCElectionResultVO)request.getAttribute("resultVO")).getExceptionEncountered().getMessage());%>
+
 </body>
 </html>
