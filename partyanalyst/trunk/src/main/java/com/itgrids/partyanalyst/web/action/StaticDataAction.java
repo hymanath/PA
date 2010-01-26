@@ -112,7 +112,7 @@ public class StaticDataAction  extends ActionSupport implements ServletRequestAw
 		if("STATE".equals(type)){
 			commonList = regionServiceDataImp.getDistrictsByStateIDFromBooth(new Long(value));
 		} else if("DISTRICT".equals(type)){
-			commonList = regionServiceDataImp.getConstituenciesByDistrictIDFromBooth(new Long(value));
+			commonList = regionServiceDataImp.getConstituenciesByDistrictID(new Long(value));
 		} else if("CONSTITUENCY".equals(type)){
 			commonList = regionServiceDataImp.getMandalsByConstituencyIDFromBooth(new Long(value));
 		}
