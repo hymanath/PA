@@ -44,6 +44,7 @@ public class Registration implements java.io.Serializable {
 	 private String pincode;
 	 private String accessType;
 	 private String accessValue;
+	 private UserCategory userCategory;
 	 private Set<ProblemSource> problemSources = new HashSet<ProblemSource>(0);
 	 
 	 private Party party;
@@ -292,8 +293,7 @@ public class Registration implements java.io.Serializable {
 		this.userEvents = userEvents;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
-			mappedBy = "user")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<UserImpDate> getUserImpDates() {
 		return userImpDates;
@@ -302,4 +302,17 @@ public class Registration implements java.io.Serializable {
 	public void setUserImpDates(Set<UserImpDate> userImpDates) {
 		this.userImpDates = userImpDates;
 	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_category_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserCategory getUserCategory() {
+		return userCategory;
+	}
+
+	public void setUserCategory(UserCategory userCategory) {
+		this.userCategory = userCategory;
+	}
+	
 }
