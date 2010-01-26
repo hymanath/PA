@@ -68,7 +68,7 @@ public class ProblemSourceScope extends BaseModel implements Serializable{
 		this.problemSourceScopeId = problemSourceScopeId;
 	}
 
-	@Column(name = "scope", length = 50)
+	@Column(name = "problem_source_scope", length = 50)
 	public String getScope() {
 		return scope;
 	}
