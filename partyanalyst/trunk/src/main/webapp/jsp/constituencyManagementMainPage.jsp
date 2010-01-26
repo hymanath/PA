@@ -135,12 +135,12 @@
 		{
 			text-align:left;
 			font-weight:bold;
-			color:red;
-			
-			
-		}
-		
-
+			color:red;					
+		}	
+		#distEPapersTabContent_body yui-skin-sam yui-dt-sortable
+		{
+			width:100px;
+		}	
 	</style>
 
 	<script type="text/javascript">
@@ -229,11 +229,17 @@
 			String reason= rb.getString("reason");
 			String fixedDate= rb.getString("fixedDate");
 			String pending=rb.getString("pending");
-			String fixed=rb.getString("fixed"); 
-		  %> }
+			String fixed=rb.getString("fixed");
+			String groupName=rb.getString("groupName");
+			String createNewGrp= rb.getString("createNewGrp");
+			String addToGrpAsSubGrpRadio=rb.getString("addToGrpAsSubGrpRadio");
+			String mainEdition = rb.getString("mainEdition");
+			String distEdition = rb.getString("distEdition");
+			String language = rb.getString("language");
+			%> }
 	
-	var outerTab,problemMgmtTabs,newProbDataTable;
-	var newProblemDialog;
+	var outerTab,problemMgmtTabs,newProbDataTable, ePapersDataTable;
+	var newProblemDialog, createGroupDialog;
 	var problemsMainObj={
 							problemSourcesArr:[],	
 							newProblemsArr:[],
@@ -248,7 +254,8 @@
 							constituencyArr:[],
 							mandalArr:[],
 							villageArr:[],
-							hamletArr:[]
+							hamletArr:[],
+							allDistrictsByStateArr:[]
 						};
 	var constMgmtMainObj={
 							votersArray:[],
@@ -261,6 +268,9 @@
 							totalLeadersArr:[],
 							electedMandalLeadersArr:[]	
 							
+						};
+	var distPapersObj={
+							ePapersArray:[]
 						};
 	function buildConstituencyLayout()
 	{	
@@ -289,7 +299,30 @@
 		}); 
 		layoutEl.render(); 
 	}
-	
+	function buildDistrictsByStateSelectOption(results)
+	{	
+		var distByState = results.districtsList;
+		var selectedElmt = document.getElementById("allDistrictsField");
+		
+		for(var val in distByState)
+		{			
+			var opElmt=document.createElement('option');
+			opElmt.value=distByState[val].id;
+			opElmt.text=distByState[val].name;
+			
+			try
+			{
+				selectedElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt.add(opElmt); // IE only
+			}			
+		}
+		
+		
+		
+	}
 	function buildSelectOption(results,jsObj)
 	{
 		var selectedValue=jsObj.reportLevel;
@@ -371,8 +404,14 @@
 										updateNewProblemData(myResults)										
 									} else if(jsObj.task == "newProblemsByUserID")
 									{
-										
 										showNewProblemsForUser(myResults)	
+									} else if(jsObj.task == "distPapersUrl")
+									{
+										showNewsPapersLinks(myResults);
+										buildDistrictsByStateSelectOption(myResults);
+									} else if(jsObj.task == "getSelectedDistPaper")
+									{
+										updateSelectedDistUrls(myResults)
 									} else
 									{
 										buildSelectOption(myResults,jsObj);									
@@ -697,6 +736,19 @@
 		var url = "<%=request.getContextPath()%>/voterInfoAction.action?"+rparam;
 		callAjax(rparam,jsObj,url);
 	}
+	function getNewPapersForSelectedDist(name, value)
+	{
+		var jsObj=
+		{
+				selectName:name,
+				selected:value,
+				task:"getSelectedDistPaper"
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+	var url = "<%=request.getContextPath()%>/distPapersAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);
+	}
 	
 	function getNewProblemsForUser()
 	{	
@@ -713,7 +765,7 @@
 	
 	function updateNewProblemData(results)
 	{	
-		//newProbDataArray = new Array();
+		
 		var newProbDataObj=
 		{		
 				select: '<input type="checkbox"></input>',
@@ -724,7 +776,7 @@
 				location: results.problemBeanVO.hamlet,
 				source: results.problemBeanVO.probSource  		
 		};
-		//newProbDataArray.push(newProbDataObj);
+		
 		newProbDataTable.addRow(newProbDataObj,0);				
 	}
 	
@@ -758,15 +810,84 @@
 	function handleRecommLetrsTabClick()
 	{
 		var elmt = document.getElementById("alertMessage");
-		elmt.style.display = 'none';	
+		elmt.style.display = 'none';			
 	} 	
-
+	
 	function handleDistPapersTabClick ()
 	{
 		var elmt = document.getElementById("alertMessage");
 		elmt.style.display = 'none';
+		var jsObj=
+		{
+				task:"distPapersUrl"
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+	var url = "<%=request.getContextPath()%>/distPapersAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);
 	}
 	
+	function showNewsPapersLinks(results)
+	{	
+		assignToEPapersURL = new Array();
+		var newsPaperURL = results.EPapersURLsVO;
+		for(var i in newsPaperURL)
+		{
+			var distEditionUrl;// = ""+newsPaperURL[i].epaperUrl;
+			var mainEditionUrl = ""+newsPaperURL[i].mainUrl;
+			var paperName = ""+newsPaperURL[i].paperName;
+			var distName;// = ""+newsPaperURL[i].districtName;
+			var image = newsPaperURL[i].image;
+			if(newsPaperURL[i].districtName == null)
+			{
+				distName = "";
+			} else distName = ""+newsPaperURL[i].districtName;
+			if(newsPaperURL[i].epaperUrl == null)
+			{
+				distEditionUrl = "";
+			} else distEditionUrl = ""+newsPaperURL[i].epaperUrl;
+			
+			var epapersObj={
+					mainEdition: '<A href="'+mainEditionUrl+'" target="_blank" title="Click To Visit"><Img src="<%=request.getContextPath()%>/images/icons/'+image+'" border="none" width="250" height="100"/></A>',
+					distEdition: '<A href="'+distEditionUrl+'" target="_blank">'+distName+' Edition</A>',
+					language: newsPaperURL[i].language 								 
+			};
+			
+		assignToEPapersURL.push(epapersObj);	
+		distPapersObj.ePapersArray = assignToEPapersURL;
+		}
+		
+		buildEPapersURLDataTable();
+		//ePapersDataTable.setColumnWidth(mainEdition,100);
+	}
+
+	function updateSelectedDistUrls(results)
+	{
+		
+		assignToEPapersURL = new Array();
+		var newsPaperURL = results.EPapersURLsVO;
+		for(var i in newsPaperURL)
+		{
+			var distEditionUrl = ""+newsPaperURL[i].epaperUrl;
+			var mainEditionUrl = ""+newsPaperURL[i].mainUrl;
+			var paperName = ""+newsPaperURL[i].paperName;
+			var distName = ""+newsPaperURL[i].districtName;
+			var image = newsPaperURL[i].image;
+			var epapersObj={
+				mainEdition: '<A href="'+mainEditionUrl+'" target="_blank"><Img src="<%=request.getContextPath()%>/images/icons/'+image+'" border="none" width="250" height="100"/></A>',
+				distEdition: '<A href="'+distEditionUrl+'" target="_blank">'+distName+' Edition</A>',
+				language: newsPaperURL[i].language 								 
+			};
+			
+		assignToEPapersURL.push(epapersObj);
+		distPapersObj.ePapersArray = assignToEPapersURL;
+		}
+		//ePapersDataTable.addRows(assignToEPapersURL);
+		
+		if(ePapersDataTable)
+			ePapersDataTable.destroy();
+		buildEPapersURLDataTable();
+	}
 	function buildOuterTabView()
 	{
 		outerTab = new YAHOO.widget.TabView();		
@@ -828,8 +949,27 @@
 		constTabContent+='<div id="constMgmtTabContentDiv_body"></div>';
 		constTabContent+='<div id="constMgmtTabContentDiv_footer"></div>';
 		constTabContent+='</div>';
-		outerTab.addTab( new YAHOO.widget.Tab({ 
-			
+
+		var distEPapersTabContent='<div id="distEPapersTabContent">'; 
+		distEPapersTabContent+='<div id="distEPapersTabContent_header" align="left">';
+		distEPapersTabContent+='<select id="allDistrictsField" class="selectWidth" name="allDistrictsField" onchange="getNewPapersForSelectedDist(this.name,this.options[this.selectedIndex].value)">';
+		for(var i in locationDetails.allDistrictsByStateArr)
+		{
+			distEPapersTabContent+='<option value='+locationDetails.allDistrictsByStateArr[i].id+'>'+locationDetails.allDistrictsByStateArr[i].value+'</option>';
+		}
+		distEPapersTabContent+='</select>';
+		distEPapersTabContent+='</div>';
+		distEPapersTabContent+='<div id="distEPapersTabContent_body"></div>';
+		distEPapersTabContent+='<div id="distEPapersTabContent_footer"></div>';
+		distEPapersTabContent+='</div>';
+
+		var userGroupsContent='<div id="userGroupsTabContent">';
+		userGroupsContent+='<div id="userGroupsTabContent_head" align="left"></div>';
+		userGroupsContent+='<div id="userGroupsTabContent_body"></div>';
+		userGroupsContent+='<div id="userGroupsTabContent_footer"></div>';	
+		userGroupsContent+='</div>';
+		
+		outerTab.addTab( new YAHOO.widget.Tab({			
 		label: '<%=constituencyMgmt%>', 
 	    content:constTabContent, 
 	    active: true 
@@ -842,7 +982,7 @@
 		
 		outerTab.addTab( new YAHOO.widget.Tab({ 
 			label: '<%=userGroups%>', 
-			content: '<div id="userGroupsTabContent">User Groups Content</div>' 
+			content:userGroupsContent 
 		 
 		})); 
 		 
@@ -853,7 +993,7 @@
 
 		outerTab.addTab( new YAHOO.widget.Tab({ 
 			label: '<%=distEPapers%>', 
-			content: '<div id="distEPapersTabContent">District E Papers Content</div>' 
+			content: distEPapersTabContent 
 		})); 
 
 		outerTab.appendTo('problemMgmtMainDiv');
@@ -861,6 +1001,15 @@
 		outerTab.getTab(2).addListener('click',handleUserGrpsTabClick);
 		outerTab.getTab(3).addListener('click',handleRecommLetrsTabClick);
 		outerTab.getTab(4).addListener('click',handleDistPapersTabClick); 
+
+		var addUserGroupButton = new YAHOO.widget.Button({ 
+            id: "addUserGroupButton",  
+            type: "link",  
+            label: "Create Group",  
+            container: "userGroupsTabContent_head" 
+		});
+		addUserGroupButton.on("click", buildCreateGroupPopup); 
+		
 	}
 	function buildProblemMgmtTabView()
 	{	
@@ -1088,120 +1237,32 @@
 		        {select:"<input type='checkbox' id='check_1'></input>", title:"AarogyaSri", description: "Delay for Cardiac Surgery with AarogyaSri Scheme", identifiedDate:new Date("March 11,2009") , location:"Eluru", source:"User", status:"Categorized"}, 
 				{select:"<input type='checkbox' id='check_1'></input>", title:"Delay in payment of Exgratia", description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party", identifiedDate:new Date(1980, 2, 4), location:"MadanaPalle", source:"Party Analyst", status:"New"}		
 	    ]		           			
-	}					
-	function buildAllMandalLeadersDataTable()
-		{
-			
-			var myColumnDefs = [ 
-					{key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true},
-		            {key:"electionYear", label: "<%=electionYear%>"}, 
-		            {key:"rank", label: "<%=rank%>", sortable:true}, 
-		            {key:"mptcName", label: "<%=mptcName%>", sortable:true}, 
-					{key:"party", label: "<%=party%>",  sortable:true},
-					{key:"candidateName", label: "<%=candidateName%>", sortable:true},	
-					{key:"votesEarned", label: "<%=votesEarned%>", sortable:true},	
-					{key:"totalValidVotes", label: "<%=totalValidVotes%>", sortable:true}
-		        ]; 
-			
-		        var myDataSource = new YAHOO.util.DataSource(constMgmtMainObj.totalLeadersArr); 
-		        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-		        myDataSource.responseSchema = { 
-		            fields: [{key:"sNo", parser:"number"},"electionYear","rank","mptcName","party","candidateName","votesEarned","totalValidVotes"] 
-		        }; 
-				
-				var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15 
-			    }) 
-				}; 
+	}	
+					
+	function buildEPapersURLDataTable()
+	{	
+		var ePapersUrlColumnDefs = [
+								{key: "mainEdition", label: "<%=mainEdition%>", sortable:true, minWidth:"500"},		
+		              	 	    {key: "distEdition", label: "<%=distEdition%>", sortable:true},
+		              	 	    {key: "language", label: "<%=language%>", sortable:true}
+		              	 	    ];                	 	    
 
-				var myDataTable =  
-		            new YAHOO.widget.DataTable("mandalLeadersAll", myColumnDefs, myDataSource,myConfigs); 
-		                 
-		        
-				problemMgmtTabs.getTab(0).addListener("click", function() {myDataTable.onShow()});         
-							
-				var highlightEditableCell = function(oArgs) {   
-	             var elCell = oArgs.target;   
-	             if(YAHOO.util.Dom.hasClass(elCell, "yui-dt-editable")) {   
-	                 this.highlightCell(elCell);   
-	             } 
-				  }; 
-
-				
-
-				myDataTable.subscribe("cellMouseoverEvent", highlightEditableCell);  			
-				myDataTable.subscribe("cellMouseoutEvent", myDataTable.onEventUnhighlightCell);
-				myDataTable.subscribe("cellClickEvent", myDataTable.onEventShowCellEditor);
-				
-		        return { 
-		            oDS: myDataSource, 
-		            oDT: myDataTable 
-		           
-		      }; 
-		    
-		}
+		var ePapersDataSource = new YAHOO.util.DataSource(distPapersObj.ePapersArray); 
+		ePapersDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		ePapersDataSource.responseSchema = {
+                fields: ["mainEdition","distEdition", "language"] 
+        		};
+		ePapersDataTable = new YAHOO.widget.DataTable("distEPapersTabContent_body", ePapersUrlColumnDefs, ePapersDataSource);
+		ePapersDataTable.setColumnWidth(ePapersUrlColumnDefs[0],1000);
+		constMgmtTabs.getTab(4).addListener("click", function() {ePapersDataTable.onShow()});
 		
-		function displayDiv(id){
-			var ele = document.getElementById(id);
-			ele.style.display='block';
-		}
-		function hideDiv(id){
-			var ele = document.getElementById(id);
-			ele.style.display='none';
-		}
-
-		function buildElectedMandalLeadersDataTable()
-		{
-			
-			var myColumnDefs = [
-					{key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true},
-		            {key:"electionYear", label: "<%=electionYear%>"}, 
-		            {key:"mptcName", label: "<%=mptcName%>", sortable:true}, 
-					{key:"party", label: "<%=party%>",  sortable:true},
-					{key:"candidateName", label: "<%=candidateName%>", sortable:true},	
-					{key:"votesEarned", label: "<%=votesEarned%>", sortable:true},	
-					{key:"totalValidVotes", label: "<%=totalValidVotes%>", sortable:true}
-		        ]; 
-			
-		        var myDataSource = new YAHOO.util.DataSource(constMgmtMainObj.electedMandalLeadersArr); 
-		        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-		        myDataSource.responseSchema = { 
-		            fields: [{key:"sNo", parser:"number"},"electionYear","mptcName","party","candidateName","votesEarned","totalValidVotes"] 
-		        }; 
-				
-				var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15 
-			    }) 
-				}; 
-
-				var myDataTable =  
-		            new YAHOO.widget.DataTable("mandalLeadersWinners", myColumnDefs, myDataSource,myConfigs); 
-		                 
-		        
-				problemMgmtTabs.getTab(0).addListener("click", function() {myDataTable.onShow()});         
-							
-				var highlightEditableCell = function(oArgs) {   
-	             var elCell = oArgs.target;   
-	             if(YAHOO.util.Dom.hasClass(elCell, "yui-dt-editable")) {   
-	                 this.highlightCell(elCell);   
-	             } 
-				  }; 
-
-				
-
-				myDataTable.subscribe("cellMouseoverEvent", highlightEditableCell);  			
-				myDataTable.subscribe("cellMouseoutEvent", myDataTable.onEventUnhighlightCell);
-				myDataTable.subscribe("cellClickEvent", myDataTable.onEventShowCellEditor);
-				
-		        return { 
-		            oDS: myDataSource, 
-		            oDT: myDataTable 
-		           
-		      }; 
-		    
-		} 
+        return { 
+            oDS: ePapersDataSource, 
+            oDT: ePapersDataTable 
+           
+      };	     	
+	}	 
+	
 	function buildNewProblemsDataTable()
 	{		
 		var myColumnDefs = [ 
@@ -1657,6 +1718,120 @@
 			};
 	}
 
+	function buildAllMandalLeadersDataTable()
+	{
+		
+		var myColumnDefs = [ 
+				{key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true},
+	            {key:"electionYear", label: "<%=electionYear%>"}, 
+	            {key:"rank", label: "<%=rank%>", sortable:true}, 
+	            {key:"mptcName", label: "<%=mptcName%>", sortable:true}, 
+				{key:"party", label: "<%=party%>",  sortable:true},
+				{key:"candidateName", label: "<%=candidateName%>", sortable:true},	
+				{key:"votesEarned", label: "<%=votesEarned%>", sortable:true},	
+				{key:"totalValidVotes", label: "<%=totalValidVotes%>", sortable:true}
+	        ]; 
+		
+	        var myDataSource = new YAHOO.util.DataSource(constMgmtMainObj.totalLeadersArr); 
+	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	        myDataSource.responseSchema = { 
+	            fields: [{key:"sNo", parser:"number"},"electionYear","rank","mptcName","party","candidateName","votesEarned","totalValidVotes"] 
+	        }; 
+			
+			var myConfigs = { 
+		    paginator : new YAHOO.widget.Paginator({ 
+	        rowsPerPage    : 15 
+		    }) 
+			}; 
+
+			var myDataTable =  
+	            new YAHOO.widget.DataTable("mandalLeadersAll", myColumnDefs, myDataSource,myConfigs); 
+	                 
+	        
+			problemMgmtTabs.getTab(0).addListener("click", function() {myDataTable.onShow()});         
+						
+			var highlightEditableCell = function(oArgs) {   
+             var elCell = oArgs.target;   
+             if(YAHOO.util.Dom.hasClass(elCell, "yui-dt-editable")) {   
+                 this.highlightCell(elCell);   
+             } 
+			  }; 
+
+			
+
+			myDataTable.subscribe("cellMouseoverEvent", highlightEditableCell);  			
+			myDataTable.subscribe("cellMouseoutEvent", myDataTable.onEventUnhighlightCell);
+			myDataTable.subscribe("cellClickEvent", myDataTable.onEventShowCellEditor);
+			
+	        return { 
+	            oDS: myDataSource, 
+	            oDT: myDataTable 
+	           
+	      }; 
+	    
+	}
+	
+	function displayDiv(id){
+		var ele = document.getElementById(id);
+		ele.style.display='block';
+	}
+	function hideDiv(id){
+		var ele = document.getElementById(id);
+		ele.style.display='none';
+	}
+
+	function buildElectedMandalLeadersDataTable()
+	{
+		
+		var myColumnDefs = [
+				{key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true},
+	            {key:"electionYear", label: "<%=electionYear%>"}, 
+	            {key:"mptcName", label: "<%=mptcName%>", sortable:true}, 
+				{key:"party", label: "<%=party%>",  sortable:true},
+				{key:"candidateName", label: "<%=candidateName%>", sortable:true},	
+				{key:"votesEarned", label: "<%=votesEarned%>", sortable:true},	
+				{key:"totalValidVotes", label: "<%=totalValidVotes%>", sortable:true}
+	        ]; 
+		
+	        var myDataSource = new YAHOO.util.DataSource(constMgmtMainObj.electedMandalLeadersArr); 
+	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	        myDataSource.responseSchema = { 
+	            fields: [{key:"sNo", parser:"number"},"electionYear","mptcName","party","candidateName","votesEarned","totalValidVotes"] 
+	        }; 
+			
+			var myConfigs = { 
+		    paginator : new YAHOO.widget.Paginator({ 
+	        rowsPerPage    : 15 
+		    }) 
+			}; 
+
+			var myDataTable =  
+	            new YAHOO.widget.DataTable("mandalLeadersWinners", myColumnDefs, myDataSource,myConfigs); 
+	                 
+	        
+			problemMgmtTabs.getTab(0).addListener("click", function() {myDataTable.onShow()});         
+						
+			var highlightEditableCell = function(oArgs) {   
+             var elCell = oArgs.target;   
+             if(YAHOO.util.Dom.hasClass(elCell, "yui-dt-editable")) {   
+                 this.highlightCell(elCell);   
+             } 
+			  }; 
+
+			
+
+			myDataTable.subscribe("cellMouseoverEvent", highlightEditableCell);  			
+			myDataTable.subscribe("cellMouseoutEvent", myDataTable.onEventUnhighlightCell);
+			myDataTable.subscribe("cellClickEvent", myDataTable.onEventShowCellEditor);
+			
+	        return { 
+	            oDS: myDataSource, 
+	            oDT: myDataTable 
+	           
+	      }; 
+	    
+	} 
+
 	function showDateCal(id)
 	{
 		if(dateCalendar)
@@ -1938,6 +2113,87 @@
 	{
 		this.cancel();
 	}
+
+	function buildCreateGroupPopup()
+	{
+		
+		var elmt = document.getElementById('constituencyMgmtBodyDiv');
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','createGroupmDiv');
+		var createGroupContentStr='';
+		createGroupContentStr+='<div class="hd" align="left">Create New User Group</div>';
+		createGroupContentStr+='<div class="bd" align="left">';
+		createGroupContentStr+='<div id="userGroupDetailsDivBody">';
+		createGroupContentStr+='<table>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<th align="left" colspan="3"><u>Group Details</u></th>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='<tr></tr>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<td><%=groupName%></td>';
+		createGroupContentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupNameText" name="problemText"/></td>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<td><%=description%></td>';
+		createGroupContentStr+='<td style="padding-left: 15px;"><textarea cols="50" id="descTextArea" name="groupDescTextArea"></textarea></td>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<td><input type="radio" id="createNewGrpRadio" name="createGroup" value="Create New Group" /><%=createNewGrp%></td>';
+		createGroupContentStr+='<td style="padding-left: 15px;"><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group" /><%=addToGrpAsSubGrpRadio%></td>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='</table>';
+		createGroupContentStr+='</div>';
+		createGroupContentStr+='</div>';
+		createGroupContentStr+='</div>'; 
+		divChild.innerHTML=createGroupContentStr;
+		
+		elmt.appendChild(divChild);	
+		if(createGroupDialog)
+			createGroupDialog.destroy();
+		createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
+				{ width : "600px", 
+	              fixedcenter : false, 
+	              visible : true,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  hideaftersubmit:true,
+				  close:true,
+				  x:400,
+				  y:300,				  
+				  buttons : [ { text:"Create", handler: handleCreateGroupSubmit, isDefault:true}, 
+	                          { text:"Cancel", handler: handleCreateGroupCancel}]
+	             } ); 
+		createGroupDialog.render();
+	}	
+
+	function handleCreateGroupSubmit()
+	{
+		var groupNameTextVal = document.getElementById("groupNameText").value;   
+		var groupDescTextAreaVal = document.getElementById("groupDescTextArea").value;
+		var createNewGrpRadioval  = document.getElementById("createNewGrpRadio").value;
+		var addToGrpAsSubGrpRadioVal = document.getElementById("addToGrpAsSubGrpRadio").value;
+
+		var jsObj={
+
+				groupName: groupNameTextVal,
+				groupDescription: groupDescTextAreaVal,
+				
+				task: "createNewGroup"
+		}
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/userGroupAction.action?"+rparam;		
+		callAjax(rparam,jsObj,url);
+		createGroupDialog.hide();
+			
+	}
+	
+	function handleCreateGroupCancel()
+	{
+		this.cancel();
+	}
+	
 </script>
 </head>
 <body>
