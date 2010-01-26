@@ -86,12 +86,6 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Nomination> findByConstituencyAndElectionYear(Long constituencyId, String electionYear){
-		Object[] params = {electionYear, constituencyId};
-		return getHibernateTemplate().find( "from Nomination model where model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId = ?)", params);
-	}
-	
-	@SuppressWarnings("unchecked")
     public List<Nomination> findByStatePartyAndElectionId(final Long stateId, final Long electionId, final Long partyId){
            
             return ( List<Nomination> ) getHibernateTemplate().execute( new HibernateCallback() {
@@ -155,6 +149,20 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" model.constituencyElection.constituency.constituencyId , model.candidate.candidateId from Nomination model where model.constituencyElection.constituency.constituencyId in (  " + constituencyIds +
 				") and model.constituencyElection.election.electionYear = ? " +
 				" and model.candidateResult.rank = 1", electionYear);
+	}
+	
+	public List findMPTCInfoByElectionTypeTehsilAndParty(String mptcElectionType, Long tehsilID, Long partyId) {
+		Object[] params = {tehsilID, mptcElectionType};
+		return getHibernateTemplate().find("select model.party.shortName, model.constituencyElection.election.electionYear, sum(model.constituencyElection.constituencyElectionResult.totalVotesPolled), sum(model.constituencyElection.constituencyElectionResult.validVotes), "+
+				"sum(model.candidateResult.votesEarned) from Nomination model where model.constituencyElection.constituency.tehsil.tehsilId = ? " +
+				"and model.constituencyElection.constituency.electionScope.electionType.electionType = ? and model.party.partyId in ("+partyId+") group by model.constituencyElection.election.electionYear",params);
+	}
+
+	public List findCandidatesInfoByConstituencyAndElectionYear(Long constituencyId, String electionYear){
+		Object[] params = {electionYear, constituencyId};
+		return getHibernateTemplate().find( "select model.nomination.candidate.candidateId, model.nomination.candidate.lastname, model.nomination.candidateResult.rank " +
+				"from Nomination model where model.constituencyElection.election.electionYear = ? " +
+				"and model.constituencyElection.constituency.constituencyId = ?)", params);
 	}
 	
 }
