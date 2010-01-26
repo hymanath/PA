@@ -8,15 +8,22 @@
 package com.itgrids.partyanalyst.entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.itgrids.partyanalyst.model.EPaper;
 
 /**
  * State entity. 
@@ -50,7 +57,7 @@ public class State implements java.io.Serializable {
 	private String stateDance;
 	private String stateFlower;
 	private String isoCode;
-
+	private Set<EPaper> epaper = new HashSet<EPaper>(0);
 	// Constructors
 
 	/** 
@@ -75,7 +82,7 @@ public class State implements java.io.Serializable {
 			Date yearEstablished, String stateLanguage, String stateSymbol,
 			String stateSong, String stateAnimal, String stateBird,
 			String stateTree, String stateSport, String stateDance,
-			String stateFlower, String isoCode) {
+			String stateFlower, String isoCode,Set<EPaper> epaper) {
 		this.stateId = stateId;
 		this.country = country;
 		this.stateName = stateName;
@@ -93,10 +100,12 @@ public class State implements java.io.Serializable {
 		this.stateDance = stateDance;
 		this.stateFlower = stateFlower;
 		this.isoCode = isoCode;
+		this.epaper = epaper;
 	}
 
 	// Property Accessors
 	
+
 	/**
 	 * @return - The Unique State Id.
 	 */
@@ -299,6 +308,14 @@ public class State implements java.io.Serializable {
 	 */
 	public void setIsoCode(String isoCode) {
 		this.isoCode = isoCode;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
+	public Set<EPaper> getEpaper() {
+		return epaper;
+	}
+
+	public void setEpaper(Set<EPaper> epaper) {
+		this.epaper = epaper;
 	}
 
 }
