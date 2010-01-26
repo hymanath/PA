@@ -144,16 +144,19 @@ public class ChartProducer {
 		JFreeChart chart = ChartFactory.createBarChart(title, domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, true, true, false );
 		chart.setBackgroundPaint(new Color(0xBBBBDD));
 		CategoryPlot plot = chart.getCategoryPlot();
+		CategoryAxis axis = plot.getDomainAxis();
+		axis.setCategoryMargin(0.3);
 		NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setDrawBarOutline(false);
 		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, Color.lightGray);
 		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, Color.lightGray);	
-		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, Color.lightGray);
+		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.orange, 0.0f, 0.0f, Color.lightGray);
 		renderer.setSeriesPaint(0, gp0);
 		renderer.setSeriesPaint(1, gp1);
 		renderer.setSeriesPaint(2, gp2);
+		renderer.setItemMargin(0.0);
 		try	 {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File image = new File(fileName);
