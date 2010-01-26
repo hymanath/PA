@@ -15,7 +15,7 @@
 	</tr>
 	<tr>
 		<td>No. of constituency Election Results added:</td>
-		<td> <c:out value="${pd.constituencyElectionResults}" /> </td>
+		<td> <c:out value="${resultVO.constituencyElectionResults}" /> </td>
 	</tr>
 	<tr>
 		<td>No. of constituency Election added:</td>
