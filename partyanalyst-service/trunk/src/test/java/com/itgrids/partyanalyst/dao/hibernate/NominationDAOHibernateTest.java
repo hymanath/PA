@@ -78,7 +78,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		assertEquals(1, list.size());
 	}*/
 	
-	public void testFindByConstituencyPartyAndElectionYearIncludingAliance(){
+	/*public void testFindByConstituencyPartyAndElectionYearIncludingAliance(){
 		List<Long> partyIds = new ArrayList<Long>();
 		partyIds.add(new Long(1));
 		partyIds.add(new Long(11));
@@ -92,4 +92,16 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		
 		assertEquals(1, list.size());
 	}
+	*/
+	public void testFindByElectionTypeTehsilAndParty(){
+		List list = nominationDAO.findMPTCInfoByElectionTypeTehsilAndParty("MPTC", new Long(834), new Long(24));
+		for(int i=0; i<list.size(); i++){
+			Object[] params = (Object[])list.get(0);
+			Double totalVotesPolled = (Double)params[2];
+			Double totalValidVotes = (Double)params[3];
+			Double votesEarned = (Double)params[4];
+			assertEquals(votesEarned, new Double(12055));
+		}
+	}
+	
 }
