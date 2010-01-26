@@ -52,7 +52,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List<Nomination> findByConstituencyPartyAndElectionYear(Long partyId, Long constituencyId, String electionYear);
 	
-	public List<Nomination> findByConstituencyAndElectionYear(Long constituencyId, String electionYear);
+	public List findCandidatesInfoByConstituencyAndElectionYear(Long constituencyId, String electionYear);
 	
 	 public List<Nomination> findByStatePartyAndElectionId(Long stateId, Long electionId, Long partyId);
 	 
@@ -63,5 +63,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<Nomination> findByConstituencyPartyAndElectionYearIncludingAliance(List<Long> aliancePartyIds, Long pcId, String electionYear);
 	
 	public List findCandidateNamePartyByConstituencyAndElection(String constituencyIds, String electionYear);
-   
+
+	public List findMPTCInfoByElectionTypeTehsilAndParty(String mptcElectionType, Long tehsilID, Long partyId);
+ 
 }
