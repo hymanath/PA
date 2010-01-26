@@ -65,7 +65,8 @@ public class State implements java.io.Serializable {
 	private String adminControl;
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 	private Set<District> districts = new HashSet<District>(0);
-
+	private Set<EPaper> epaper = new HashSet<EPaper>(0);
+	
 	// Constructors
 
 	/** default constructor */
@@ -86,7 +87,7 @@ public class State implements java.io.Serializable {
 			String stateTree, String stateSport, String stateDance,
 			String stateFlower, String isoCode, Long stateCode, Date startDate,
 			Date deformDate, Set<Constituency> constituencies,
-			Set<District> districts) {
+			Set<District> districts,Set<EPaper> epaper) {
 		this.stateId = stateId;
 		this.country = country;
 		this.stateName = stateName;
@@ -109,7 +110,9 @@ public class State implements java.io.Serializable {
 		this.deformDate = deformDate;
 		this.constituencies = constituencies;
 		this.districts = districts;
+		this.epaper = epaper;
 	}
+
 
 	// Property accessors
 	@Id
@@ -324,6 +327,15 @@ public class State implements java.io.Serializable {
 	public void setDistricts(Set<District> districts) {
 		this.districts = districts;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
+	public Set<EPaper> getEpaper() {
+		return epaper;
+	}
+
+	public void setEpaper(Set<EPaper> epaper) {
+		this.epaper = epaper;
+	}
+
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
