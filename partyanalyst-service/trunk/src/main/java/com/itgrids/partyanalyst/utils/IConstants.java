@@ -39,4 +39,9 @@ public interface IConstants {
 	public static final String USER = "User";
 	public static final String EXTERNAL_PERSON = "External Person"; 
 	public static final String PRESENT_YEAR = "2010";	
+	
+	public final static String MPTC_ELECTION_TYPE = "MPTC";
+	public final static String ASSEMBLY_ELECTION_TYPE = "Assembly";
+	public final static String PARLIAMENT_ELECTION_TYPE = "Parliament";
+	
 }
