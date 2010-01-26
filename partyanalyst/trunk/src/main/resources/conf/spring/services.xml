@@ -277,4 +277,10 @@
 		<property name="partyDAO" ref="partyDAO" />			
 		<property name="electionScopeDAO" ref="electionScopeDAO" />	
 	</bean>
+	<bean id="epaperService" class="com.itgrids.partyanalyst.service.impl.EPaperService" >
+    	<property name="epaperDAO" ref="epaperDAO" />
+    	<property name="constituencyDAO" ref="constituencyDAO" />
+    	<property name="districtDAO" ref="districtDAO" />
+	</bean>
+	
 </beans>
