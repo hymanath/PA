@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.dao;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
+
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 
 public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationConstituency, Long>{
@@ -13,6 +15,8 @@ public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationCon
 	public List<Long> getConstituenciesByDistrictID(Long districtID);
 	
 	//public List getDelimitationConstituenciesByDistrictID(Long districtID, Long electionYear);
+	
+	public List<Constituency> getLatestConstituenciesForDistrict(Long districtId);
 	
 	public List getLatestDelimitationYear();
 
