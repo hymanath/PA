@@ -69,5 +69,14 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	*/
 	//@Test
 	
+	public void testFindDistrictIdByConstituencyID(){
+		List<Long> districtId = constituencyDAO.getDistrictIdByConstituencyId(new Long(1234));
+		Assert.assertEquals(1, districtId.size());
+	}
 	
+	
+	public void testFindById(){
+		Constituency constituency  = constituencyDAO.get(new Long(1));
+		System.out.println("Constituency Name ::" + constituency.getName());
+	}
 }
