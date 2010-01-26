@@ -110,7 +110,7 @@ public class DistPapersAction extends ActionSupport implements ServletRequestAwa
 				log.debug(accessValue);
 				if("DISTRICT".equals(accessType))
 					stateID = epaperService.getStateIdFromDistrictByDistrictId(accessValue);
-				if("STATE".equals(accessType))
+				else if("STATE".equals(accessType))
 					stateID = new Long(accessType);
 				else
 				stateID= epaperService.getStateIdFromConstitunecyByAccessValue(accessValue);
