@@ -147,6 +147,7 @@
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		<property name="boothVillageCensusDAO" ref="boothVillageCensusDAO" />
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="nominationDAO" ref="nominationDAO"/>
 	</bean>
 	
 	<bean name="voterDataUploadService" class="com.itgrids.partyanalyst.service.impl.VoterDataUploadService" >		
