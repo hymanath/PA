@@ -157,6 +157,7 @@ public class ChartProducer {
 		renderer.setSeriesPaint(1, gp1);
 		renderer.setSeriesPaint(2, gp2);
 		renderer.setItemMargin(0.0);
+		renderer.setMaximumBarWidth(0.15);
 		try	 {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File image = new File(fileName);
