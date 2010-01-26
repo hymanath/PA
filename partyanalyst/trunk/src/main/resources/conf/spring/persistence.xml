@@ -78,6 +78,7 @@
 				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
 				<value>com.itgrids.partyanalyst.model.PartyImportantDates</value>
 				<value>com.itgrids.partyanalyst.model.UserImpDate</value>
+				<value>com.itgrids.partyanalyst.model.EPaper</value>
 				</list>
 		</property>
 	</bean>
