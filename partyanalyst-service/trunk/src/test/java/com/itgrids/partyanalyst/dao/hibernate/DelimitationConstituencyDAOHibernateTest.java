@@ -22,10 +22,10 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
 	
-	public void testDelimitationConstituencies(){
+	/*public void testDelimitationConstituencies(){
 		List<DelimitationConstituency> list = delimitationConstituencyDAO.findByElectionScopeIdStateIdAndElectionYear(new Long(1), new Long(1), new Long(2009));
 		assertEquals(42,list.size());
-	} 
+	}*/ 
 	
 	/*@SuppressWarnings("unchecked")
 	public void testGetDelimitationConstituenciesByDistrictID(){
@@ -33,9 +33,14 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		Assert.assertEquals(13, result.size());
 	}*/
 	
-	public void testLatestDelimitationYear(){
+	/*public void testLatestDelimitationYear(){
 		List result =  delimitationConstituencyDAO.getLatestDelimitationYear();
 		System.out.println(result.get(0).toString());
 		Assert.assertEquals(1, result.size());
+	}
+	*/
+	public void testGetConstituenciesForDistrict(){
+		List list = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(new Long(19));
+		assertEquals(list.size(), 10);
 	}
 }
