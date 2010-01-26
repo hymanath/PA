@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
@@ -89,19 +90,11 @@ public class RegionServiceDataImp implements IRegionServiceData {
 		return formattedDistricts;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getConstituenciesByDistrictID(Long districtID){
-		List constituencies = delimitationConstituencyDAO.getConstituenciesByDistrictID(districtID);
+		List<Constituency> constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(districtID);
 		List<SelectOptionVO> constituencyNames=new ArrayList<SelectOptionVO>();
-		
-		for(int i=0; i< constituencies.size(); i++){
-			Object[] obj = (Object[])constituencies.get(i);
-			SelectOptionVO objVO = new SelectOptionVO();
-			objVO.setId(new Long(obj[0].toString()));
-			objVO.setName(obj[1].toString());
-			constituencyNames.add(objVO);
-		}
-		
+		for(Constituency constituency:constituencies)
+			constituencyNames.add(new SelectOptionVO(constituency.getConstituencyId(), constituency.getName()));		
 		return constituencyNames;
 	}
 	
