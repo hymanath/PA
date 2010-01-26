@@ -53,6 +53,7 @@ public class District extends BaseModel implements java.io.Serializable {
 	private Date deformDate;
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 	private Set<Tehsil> tehsils = new HashSet<Tehsil>(0);
+	private Set<EPaper> epaper = new HashSet<EPaper>(0);
 
 	// Constructors
 
@@ -69,7 +70,7 @@ public class District extends BaseModel implements java.io.Serializable {
 	public District(Long districtId, String districtName,
 			String districtCapital, Double area, Double population,  State state,
 			Long districtCode, Date startDate, Date deformDate,
-			Set<Constituency> constituencies, Set<Tehsil> tehsils) {
+			Set<Constituency> constituencies, Set<Tehsil> tehsils,Set<EPaper> epaper) {
 		this.districtId = districtId;
 		this.state = state;
 		this.districtName = districtName;
@@ -81,6 +82,7 @@ public class District extends BaseModel implements java.io.Serializable {
 		this.deformDate = deformDate;
 		this.constituencies = constituencies;
 		this.tehsils = tehsils;
+		this.epaper = epaper;
 	}
 
 	// Property accessors
@@ -187,5 +189,15 @@ public class District extends BaseModel implements java.io.Serializable {
 	public void setTehsils(Set<Tehsil> tehsils) {
 		this.tehsils = tehsils;
 	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "district")
+	public Set<EPaper> getEpaper() {
+		return epaper;
+	}
+
+	public void setEpaper(Set<EPaper> epaper) {
+		this.epaper = epaper;
+	}
+
 
 }
