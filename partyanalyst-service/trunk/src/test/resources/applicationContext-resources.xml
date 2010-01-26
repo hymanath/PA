@@ -88,6 +88,7 @@
 				<value>com.itgrids.partyanalyst.model.PartyImportantDates</value>
 				<value>com.itgrids.partyanalyst.model.UserImpDate</value>
 				<value>com.itgrids.partyanalyst.model.ProblemExternalSource</value>
+				<value>com.itgrids.partyanalyst.model.EPaper</value>
 		 </list>
 		</property>
 	</bean>
@@ -337,6 +338,9 @@
 	</bean>
 	
 	<bean id="delimitationConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="epaperDAO" class="com.itgrids.partyanalyst.dao.hibernate.EPaperDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
