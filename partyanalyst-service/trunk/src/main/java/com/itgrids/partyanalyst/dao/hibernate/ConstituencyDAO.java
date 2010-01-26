@@ -37,7 +37,6 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	}
 
 	public List<Constituency> findByState(String property, State state) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -103,14 +102,22 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return getHibernateTemplate().find("from Constituency model where model.name = ? and model.district.districtId = ?", params);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List findConstituencyByDistrictId(Long districtId) {
 		return getHibernateTemplate().find("select model.constituencyId, upper(model.name), " +
 				"YEAR(model.startDate),YEAR(model.deformDate) from Constituency model where " +
 				"model.district.districtId = ?",districtId);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Constituency> findByConstituencyNameDistrictIdTehsilName(String constituencyName, Long districtID, String tehsilName){
 		Object[] params = {constituencyName.toUpperCase(),districtID,tehsilName.toUpperCase()};
 		return getHibernateTemplate().find("from Constituency model where upper(model.name)=? and model.district.districtId = ? and upper(model.tehsil.tehsilName)=?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getDistrictIdByConstituencyId(Long constituencyId) {
+		return getHibernateTemplate().find("select model.district.districtId from Constituency model where" +
+				" model.constituencyId = ?",constituencyId);
 	}
 }
