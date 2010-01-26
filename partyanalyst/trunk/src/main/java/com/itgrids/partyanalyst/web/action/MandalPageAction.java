@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.VillageDetailsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBoothPopulationService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -162,14 +163,17 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	}
 
 	private CategoryDataset createDataset(List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO) {
-        final String series1 =  "Assembly";
-        final String series2 = "Parliament";
+        final String series1 =  IConstants.ASSEMBLY_ELECTION_TYPE;
+        final String series2 = IConstants.PARLIAMENT_ELECTION_TYPE;
+        final String series3 = IConstants.MPTC_ELECTION_TYPE;
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for(MandalAllElectionDetailsVO result: mandalAllElectionDetailsVO){
-        	if(result.getElectionType().equals("Assembly"))
-        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), series1, result.getElectionYear());
-        	else
-        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), series2, result.getElectionYear());
+        	if(result.getElectionType().equals(series1))
+        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), result.getElectionYear(), series1);
+        	else if(result.getElectionType().equals(series2))
+        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), result.getElectionYear(), series2);
+        	else if(result.getElectionType().equals(series3))
+        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), result.getElectionYear(), series3);
         }
         return dataset;
         
