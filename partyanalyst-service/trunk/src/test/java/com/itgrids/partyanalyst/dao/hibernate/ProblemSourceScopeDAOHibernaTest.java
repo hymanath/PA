@@ -28,8 +28,8 @@ public class ProblemSourceScopeDAOHibernaTest extends BaseDaoTestCase {
 		setComplete();
 	}*/
 	
-	public void testFindByUserCategory(){
+	/*public void testFindByUserCategory(){
 		List<ProblemSourceScope> list = problemSourceScopeDAO.findByUserCategory(new Long(2));
 		assertEquals(6, list.size());
-	}
+	}*/
 }
