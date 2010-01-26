@@ -198,4 +198,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp"/>
 		<property name="mptcElectionService" ref="mptcElectionService"/>			
 	</bean>
+	<bean id="distPapersAction" class="com.itgrids.partyanalyst.web.action.DistPapersAction" singleton="false">
+		<property name="epaperService" ref="epaperService"/>
+	</bean>
 </beans>
