@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 
 public class DelimitationConstituencyDAO extends GenericDaoHibernate<DelimitationConstituency, Long> implements
@@ -51,6 +52,11 @@ IDelimitationConstituencyDAO {
 		
 		return getHibernateTemplate().find("Select max(model.year) from DelimitationConstituency model ");
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List<Constituency> getLatestConstituenciesForDistrict(Long districtId){
+		return getHibernateTemplate().find("select model.constituency from DelimitationConstituency model where " +
+				"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model)",districtId);
+	}
 	
 }
