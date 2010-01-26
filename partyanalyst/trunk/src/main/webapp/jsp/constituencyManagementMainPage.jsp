@@ -1198,11 +1198,12 @@
 		}));
 		var mandalLeadersTabContent='<div id="mandalLeadersTabContent">';
 		mandalLeadersTabContent+='<div id="mandalLeadersTabContent_header">';
-		mandalLeadersTabContent+='<input type="radio" name="mandalLeaders" value="All" onclick="displayDiv(\'mandalLeadersAll\');hideDiv(\'mandalLeadersWinners\')"> All';
+		mandalLeadersTabContent+='<input type="radio" name="mandalLeaders" value="All" 
+			onclick="displayDiv(\'mandalLeadersAll\');hideDiv(\'mandalLeadersWinners\')" checked="checked"> All';
 		mandalLeadersTabContent+='<input type="radio" name="mandalLeaders" value="Winners" onclick="displayDiv(\'mandalLeadersWinners\');hideDiv(\'mandalLeadersAll\')"> Winners';
 		mandalLeadersTabContent+='</div>';
 		mandalLeadersTabContent+='<div id="mandalLeadersTabContent_body">';
-		mandalLeadersTabContent+='<div id="mandalLeadersAll" style="display:none;">1</div><div id="mandalLeadersWinners" style="display:none;">1</div></div>';
+		mandalLeadersTabContent+='<div id="mandalLeadersAll""></div><div id="mandalLeadersWinners" style="display:none;"></div></div>';
 		mandalLeadersTabContent+='</div>';
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
 			label: '<%=mandalLeaders%>',
