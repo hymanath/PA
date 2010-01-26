@@ -404,6 +404,12 @@
 		<action name="mptcElectionUpload" class="mptcElectionAction">
 			<result name="success">/jsp/mptcElectionUploadSuccess.jsp</result>	
 			<result name="error">/jsp/mptcElectionUploadFail.jsp</result>			
-		</action>	
+		</action>
+		<action name="distPapersAction" class="distPapersAction">
+			<result type="json" name="success">
+				<param name="root">newsPaperURLsVO</param>				
+			</result>			
+		</action>
+			
 	</package>
 </struts>
