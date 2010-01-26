@@ -216,10 +216,12 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 			List<ConstituencyElection> acConstituencyElections = constituencyElectionDAO.findByConstituencyElectionAndDistrict(electionYear, acName, new Long(2), districtId);
 			List<ConstituencyElection> pcConstituencyElections = constituencyElectionDAO.findByConstituencyElectionAndState(electionYear, pcName, electionScopeId, stateId);
 			if(pcConstituencyElections.size() != 1){
-				corrections.add("More than One or no ConstituencyElection Exists For electionYear:"+ electionYear+" Constituency Name:"+acName+" and District Id:"+districtId);
-				if(acConstituencyElections.size() != 1)
-					corrections.add("More than One or no ConstituencyElection Exists For electionYear:"+ electionYear+" Constituency Name:"+acName+" and District Id:"+districtId);
+				corrections.add("More than One or no ConstituencyElection Exists For electionYear:"+ electionYear+" Constituency Name:"+pcName);
 				continue;	
+			}
+			if(acConstituencyElections.size() != 1){
+				corrections.add("More than One or no ConstituencyElection Exists For electionYear:"+ electionYear+" Constituency Name:"+acName+" and District Id:"+districtId);
+				continue;
 			}
 			List<CandidateBoothWiseResult> candidateBoothResults = assemblyConstituencyBlock.getCandidateResults();
 			ConstituencyElection constiElecObj = pcConstituencyElections.get(0);
