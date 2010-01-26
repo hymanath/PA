@@ -244,16 +244,21 @@ public class MptcElectionService implements IMptcElectionService {
 		addExcelHeaderInfo(sheet.getRow(rowNo++));
 		int totalRows = sheet.getRows();
 		//boolean sheetFlag = true;
+		log.debug("Excel sheet total rows::::::::::::::::::::::::::::::::"+totalRows);
 		while(rowNo<totalRows){// ||sheetFlag){
 			if(log.isDebugEnabled())
 				log.debug("MptcElectionService.readAndInsertData() rowNo:"+rowNo);
 			String constituencyName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MPTC_NAME),rowNo)).getContents());
+			String tehsilName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MANDAL_NAME),rowNo)).getContents());
+			if((constituencyName==null || constituencyName.length()==0)&&(tehsilName==null || tehsilName.length()==0)){
+				rowNo++;
+				continue;
+			}
 			if(constituencyName==null || constituencyName.length()==0)
 				throw new CsvException("Constituency Name is empty in Excel File " +
 						" Row No:" + rowNo + " Column No:" + excelHeaderData.get(IConstants.MPTC_NAME));
 			
 
-			String tehsilName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MANDAL_NAME),rowNo)).getContents());
 			if(tehsilName==null || tehsilName.length()==0)
 				throw new CsvException("Tehsil Name is empty in Excel File " +
 						" Row No:" + rowNo + " Column No:" + excelHeaderData.get(IConstants.MANDAL_NAME));
@@ -356,17 +361,6 @@ public class MptcElectionService implements IMptcElectionService {
 			}
 			
 		}
-		
-		/*if(excelHeaderData.get(IConstants.CONSTITUENCY_VOTING_PERCENTAGE)==null){
-			constituencyElectionResult.setVotingPercentage(String.valueOf((polledVotesDouble*100)/totalVotesDouble));
-		}else{
-			String polledVotesPercentage = checkCellData((sheet.getCell(excelHeaderData.get(
-					IConstants.CONSTITUENCY_VOTING_PERCENTAGE), rowNo)).getContents());
-			if(polledVotesPercentage==null || polledVotesPercentage.length()==0 || !NumberUtils.isNumber(polledVotesPercentage.trim())){
-				constituencyElectionResult.setVotingPercentage(String.valueOf((polledVotesDouble*100)/totalVotesDouble));
-			}
-			constituencyElectionResult.setVotingPercentage(polledVotesPercentage);
-		}*/
 		if(excelHeaderData.get(IConstants.CONSTITUENCY_VOTING_PERCENTAGE)!=null){
 			String polledVotesPercentage = checkCellData((sheet.getCell(excelHeaderData.get(
 					IConstants.CONSTITUENCY_VOTING_PERCENTAGE), rowNo)).getContents());
@@ -409,7 +403,7 @@ public class MptcElectionService implements IMptcElectionService {
 									 List<Candidate> candidates, List<Party> parties,
 									ConstituencyElection constituencyElection,
 									MPTCElectionResultVO resultVO, Double constituencyTotalValidVotes) throws Exception{
-		double[] sortedCandidateVotes = new double[candidateSize];
+		double[] array = new double[candidateSize];
 		double totalSumOfCandidateVotes = 0;
 		for(int i=0; i<candidateSize; i++){
 			String candidateVotesEarned = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_VOTES_EARNED), rowNo+i)).getContents());
@@ -418,7 +412,7 @@ public class MptcElectionService implements IMptcElectionService {
 						" Row No:" + (rowNo+i) + " Column No:" + excelHeaderData.get(IConstants.CANDIDATE_VOTES_EARNED));
 			try{
 				double votesEarned =Double.parseDouble(candidateVotesEarned) ;
-				sortedCandidateVotes[i] = votesEarned;
+				array[i] = votesEarned;
 				totalSumOfCandidateVotes += votesEarned;
 			}catch(NumberFormatException ex){
 				throw new CsvException("Candidate earned Votes is not valid number in Excel File " +
@@ -426,8 +420,15 @@ public class MptcElectionService implements IMptcElectionService {
 			
 			}
 		}
-		Arrays.sort(sortedCandidateVotes);
-		
+		Arrays.sort(array);
+		double[] sortedCandidateVotes = new double[candidateSize];
+		int indexPoint = sortedCandidateVotes.length;
+		//to maintain descending order
+		for(int i = 0; i<sortedCandidateVotes.length;  i++){
+			sortedCandidateVotes[--indexPoint] = array[i];
+		}
+		log.debug("Final Sorting....Arrays.toString(sortedCandidateVotes)::::::::::"
+				+ Arrays.toString(sortedCandidateVotes));
 		for(int i=0; i<candidateSize; i++){
 			String candidateName = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_NAME), (rowNo+i))).getContents());
 			if(candidateName==null || candidateName.length()==0)
@@ -468,43 +469,7 @@ public class MptcElectionService implements IMptcElectionService {
 					break;
 				}
 			}
-			
-			/*Double constituencyValidVotes = totalSumOfCandidateVotes;
-			if(excelHeaderData.get(IConstants.CONSTITUENCY_VALID_VOTES)!=null){
-				try{
-					constituencyValidVotes = new Double(
-							checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CONSTITUENCY_VALID_VOTES), 
-							rowNo)).getContents()));
-				}catch(Exception ex){
-					log.info(ex.getMessage());
-					constituencyValidVotes = totalSumOfCandidateVotes;
-				}
-			}
-			String candidateVotesEarnedPercentage = String.valueOf((votes*100)/constituencyValidVotes);
-			*/
-			/*if(excelHeaderData.get(IConstants.CANDIDATE_VOTES_PERCENTAGE)!=null){
-				candidateVotesEarnedPercentage = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_VOTES_PERCENTAGE), rowNo+i)).getContents());
-				if(candidateVotesEarnedPercentage==null || candidateVotesEarnedPercentage.length()==0){
-					
-					if(excelHeaderData.get(IConstants.CONSTITUENCY_VALID_VOTES)!=null){
-						try{
-							constituencyValidVotes = new Double(
-									checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CONSTITUENCY_VALID_VOTES), 
-									rowNo)).getContents()).trim());
-						}catch(Exception ex){
-							log.info(ex.getMessage());
-							constituencyValidVotes = totalSumOfCandidateVotes;
-						}
-					}
-					if(constituencyValidVotes==0){
-						constituencyValidVotes = totalSumOfCandidateVotes;*/
-						/*throw new CsvException("constituency valid votes is zero which is not valid in Excel File " +
-								" Row No:" + rowNo+i + " Column No:" + excelHeaderData.get(IConstants.CONSTITUENCY_VALID_VOTES));*/
-					/*}
-					candidateVotesEarnedPercentage = String.valueOf((votes*100)/totalSumOfCandidateVotes);
-				}
-			}
-				*/
+
 			if (excelHeaderData.get(IConstants.CANDIDATE_VOTES_PERCENTAGE) != null) {
 				candidateResult.setVotesPercengate(
 						checkCellData((sheet.getCell(excelHeaderData.get(
@@ -562,20 +527,7 @@ public class MptcElectionService implements IMptcElectionService {
 		}
 		return candidateSize;
 	}
-	public static void main(String args[]) throws Exception{
-		File file = new File("C:/Documents and Settings/USER/Desktop/MPTC/test.xls");
-		Workbook workbook=Workbook.getWorkbook(file);
-		int rowNo = 0;
-		Sheet sheet = workbook.getSheet(0);
-		int total = sheet.getRows();
-		MptcElectionService service = new MptcElectionService();
-		service.addExcelHeaderInfo(sheet.getRow(rowNo++));
-		System.out.println(service.getConstituencyCandidateSize( sheet, rowNo,total));
-		service.addCandidateResultToDB( sheet, rowNo, 5, 
-				 new ArrayList(), new ArrayList(),
-				new ConstituencyElection(),
-				new MPTCElectionResultVO(),null);
-	}
+	
 	/**
 	 * adding the candidate into DB if the candidate is not existing in DB
 	 * @param candidates
