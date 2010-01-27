@@ -1198,8 +1198,7 @@
 		}));
 		var mandalLeadersTabContent='<div id="mandalLeadersTabContent">';
 		mandalLeadersTabContent+='<div id="mandalLeadersTabContent_header">';
-		mandalLeadersTabContent+='<input type="radio" name="mandalLeaders" value="All" 
-			onclick="displayDiv(\'mandalLeadersAll\');hideDiv(\'mandalLeadersWinners\')" checked="checked"> All';
+		mandalLeadersTabContent+='<input type="radio" name="mandalLeaders" value="All" onclick="displayDiv(\'mandalLeadersAll\');hideDiv(\'mandalLeadersWinners\')" checked="checked"> All';
 		mandalLeadersTabContent+='<input type="radio" name="mandalLeaders" value="Winners" onclick="displayDiv(\'mandalLeadersWinners\');hideDiv(\'mandalLeadersAll\')"> Winners';
 		mandalLeadersTabContent+='</div>';
 		mandalLeadersTabContent+='<div id="mandalLeadersTabContent_body">';
