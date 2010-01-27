@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -27,7 +29,8 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
 	private IHamletDAO hamletDAO;
 	private ICandidateResultDAO candidateResultDAO;
-	
+
+	private static final Logger log = Logger.getLogger(ConstituencyManagementService.class);
 	public IHamletDAO getHamletDAO() {
 		return hamletDAO;
 	}
@@ -188,6 +191,7 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 	 * @return
 	 */
 	public TotalMPTCMandalLeaderVO getMPTCElectionResultForMandal(Long mandalID){
+		log.debug(" getMPTCElectionResultForMandal() start....");
 		List result = candidateResultDAO.getMPTCElectionResultForMandal(mandalID);
 		TotalMPTCMandalLeaderVO totalMPTCMandalLeaderVO = new TotalMPTCMandalLeaderVO();
 		
@@ -214,12 +218,12 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		return totalMPTCMandalLeaderVO;
 	}
 	
-	private Long formatedData(Object obj){
-		Long result = new Long(0);
+	private Double formatedData(Object obj){
+		Double result = new Double(0);
 		try{
-			result = new Long(obj.toString());
+			result = new Double(obj.toString().trim());
 		}catch(NumberFormatException ex){
-			result = new Long(0);
+			result = new Double(0);
 		}
 		return result;
 	}

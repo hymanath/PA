@@ -18,8 +18,8 @@ public class MPTCMandalLeaderVO implements Serializable {
 	private String mptcName;
 	private String party;
 	private String candidateName;
-	private Long candidateEarnedVotes;
-	private Long validVotes;
+	private Double candidateEarnedVotes;
+	private Double validVotes;
 	
 	public String getElectionYear() {
 		return electionYear;
@@ -51,16 +51,16 @@ public class MPTCMandalLeaderVO implements Serializable {
 	public void setCandidateName(String candidateName) {
 		this.candidateName = candidateName;
 	}
-	public Long getCandidateEarnedVotes() {
+	public Double getCandidateEarnedVotes() {
 		return candidateEarnedVotes;
 	}
-	public void setCandidateEarnedVotes(Long candidateEarnedVotes) {
+	public void setCandidateEarnedVotes(Double candidateEarnedVotes) {
 		this.candidateEarnedVotes = candidateEarnedVotes;
 	}
-	public Long getValidVotes() {
+	public Double getValidVotes() {
 		return validVotes;
 	}
-	public void setValidVotes(Long validVotes) {
+	public void setValidVotes(Double validVotes) {
 		this.validVotes = validVotes;
 	}
 	
