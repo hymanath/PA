@@ -1543,6 +1543,8 @@
 		}
 		else if (jsObj.taskType == "impDate")
 		{
+			if(!results[0])
+				return;
 			if(results[0].startDate)
 				var startDateObj = getDateTime(results[0].startDate);
 			if(results[0].endDate)
