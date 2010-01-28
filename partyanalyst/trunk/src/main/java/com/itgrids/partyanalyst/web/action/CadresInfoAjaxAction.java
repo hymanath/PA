@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 
@@ -34,7 +35,8 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 	private HttpSession session;
 	private List<CadreRegionInfoVO> cadreRegionInfo;
 	private List<CadreInfo> cadreInfo;
-	private List<SelectOptionVO> zeroCadresRegion;
+	private List<SelectOptionVO> zeroCadresRegion;	
+	private static final Logger log = Logger.getLogger(CadresInfoAjaxAction.class);
 	
 	private CadreManagementService cadreManagementService;
 	public void setCadreManagementService(
@@ -93,6 +95,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 	}
 
 	public String execute() throws Exception{
+		log.debug("CadresInfoAjaxAction.execute() started");
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		Long userID = user.getRegistrationID();
@@ -109,13 +112,13 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		
 		cadreRegionInfo = new ArrayList<CadreRegionInfoVO>();
 		cadreInfo = new ArrayList<CadreInfo>();
-		
+		log.debug("region::"+region);
 		if(cadreType.equalsIgnoreCase("TotalCadre"))
 		{
-			System.out.println("In if total cadre");
+			log.debug("In if total cadre");
 			if(region.equalsIgnoreCase("Country"))
 			{
-				System.out.println("Inside if block level = "+region);			
+				log.debug("Inside if block level = "+region);			
 				
 				cadreRegionInfo = cadreManagementService.getCountryAllStatesCadres(new Long(regionId), userID);
 				
@@ -123,7 +126,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			}
 			else if(region.equalsIgnoreCase("State"))
 			{
-				System.out.println("Inside if block level = "+region);
+				log.debug("Inside if block level = "+region);
 				
 				cadreRegionInfo = cadreManagementService.getStateAllDistrictsCadres(new Long(regionId), userID);
 				
@@ -131,7 +134,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			}
 			else if(region.equalsIgnoreCase("District"))
 			{		
-				System.out.println("Inside if block level = "+region);
+				log.debug("Inside if block level = "+region);
 				
 				cadreRegionInfo = cadreManagementService.getDistrictAllMandalsCadres(new Long(regionId), userID);
 				
@@ -139,7 +142,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			}
 			else if(region.equalsIgnoreCase("MLA"))
 			{
-				System.out.println("Inside if block level = "+region);
+				log.debug("Inside if block level = "+region);
 
 				cadreRegionInfo = cadreManagementService.getConstituencyAllMandalsCadres(new Long(regionId), userID);
 				
@@ -147,23 +150,44 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			}
 			else if(region.equalsIgnoreCase("Mandal"))
 			{
-				System.out.println("Inside if block level = "+region);
+				log.debug("Inside if block level = "+region);
 
 				cadreRegionInfo = cadreManagementService.getMandalAllVillagesCadres(new Long(regionId), userID);
 				
 				this.setCadreRegionInfo(cadreRegionInfo);
 			}
-			else if(region.equalsIgnoreCase("Village"))
+			/*else if(region.equalsIgnoreCase("Village"))
 			{
 				
 				cadreInfo = cadreManagementService.getCadresByVillage(new Long(regionId), userID);
+				
+				this.setCadreInfo(cadreInfo);
+			}*/
+			else if(region.equalsIgnoreCase("T"))
+			{
+				log.debug("region:"+region);
+				cadreInfo = cadreManagementService.getCadresByVillage(new Long(regionId), userID);
+				
+				this.setCadreInfo(cadreInfo);
+			}
+			else if(region.equalsIgnoreCase("V"))
+			{
+				log.debug("region:"+region);
+				cadreRegionInfo = cadreManagementService.getCadreSizeByHamlet(new Long(regionId), userID);
+				
+				this.setCadreInfo(cadreInfo);
+			}
+			else if(region.equalsIgnoreCase("HAMLET"))
+			{
+				log.debug("region:"+region);
+				cadreInfo = cadreManagementService.getCadresByHamlet(new Long(regionId), userID);
 				
 				this.setCadreInfo(cadreInfo);
 			}
 		}
 		else if(cadreType.equalsIgnoreCase("ZeroLevelCadre"))
 		{
-			System.out.println("In if Zero level cadre");
+			log.debug("In if Zero level cadre");
 			UserCadresInfoVO userCadresInfoVo = (UserCadresInfoVO) session.getAttribute("USERCADRESINFOVO");
 			List<SelectOptionVO> regions = new ArrayList<SelectOptionVO>();
 			Map<Long, String> zeroLevelCadres = new HashMap<Long, String>();
@@ -197,7 +221,7 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 		}
 		else if(cadreType.equalsIgnoreCase("RegionLevelCadre"))
 		{
-			System.out.println("In if Region level cadre");
+			log.debug("In if Region level cadre");
 			cadreInfo = cadreManagementService.getCadresByCadreLevel(region, userID);
 			
 			this.setCadreInfo(cadreInfo);
