@@ -43,7 +43,6 @@
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/calendar/assets/skins/sam/calendar.css">    
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css"> 
-		 
 	<!-- YUI Dependency files (End) -->
 	
 		<style type="text/css">
@@ -107,7 +106,7 @@
 		}
 		.selectWidth
 		{
-			width:120px;
+			width:160px;
 		}
 		#ajaxImgSpan
 		{
@@ -140,7 +139,34 @@
 		#distEPapersTabContent_body yui-skin-sam yui-dt-sortable
 		{
 			width:100px;
+		}
+		#groupDetailsHead
+		{
+			text-align:center;
+			font-weight:bold;
+			text-decoration:underline;
+			margin-top:10px;
+			margin-bottom:10px;
 		}	
+		#groupDetails
+		{
+			padding:10px;
+			background-color:#D3DEE8;
+			margin-top:10px;
+		}
+		.groupMembersLinks
+		{
+			padding:5px;
+			
+		}
+		#userGroupsTabContent_footer
+		{
+			margin-top:10px;
+		}
+		#distEPapersTabContent_body
+		{
+			width:50%;
+		}
 	</style>
 
 	<script type="text/javascript">
@@ -272,6 +298,7 @@
 	var distPapersObj={
 							ePapersArray:[]
 						};
+	
 	function buildConstituencyLayout()
 	{	
 		var layoutEl = new YAHOO.widget.Layout('constituencyMgmtBodyDiv', { 
@@ -318,10 +345,7 @@
 			{
 				selectedElmt.add(opElmt); // IE only
 			}			
-		}
-		
-		
-		
+		}		
 	}
 	function buildSelectOption(results,jsObj)
 	{
@@ -412,6 +436,9 @@
 									} else if(jsObj.task == "getSelectedDistPaper")
 									{
 										updateSelectedDistUrls(myResults)
+									} else if(jsObj.task == "userGroupInfoDisplay")
+									{
+										showGroupsCreatedByUsers(myResults);										
 									} else
 									{
 										buildSelectOption(myResults,jsObj);									
@@ -804,7 +831,14 @@
 	function handleUserGrpsTabClick ()
 	{
 		var elmt = document.getElementById("alertMessage");
-		elmt.style.display = 'none';	
+		elmt.style.display = 'none';
+		var jsObj= 
+		{
+			task:"userGroupInfoDisplay"
+		}
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/userGroupAction.action?"+param;
+		callAjax(param,jsObj,url);		
 	}
 	
 	function handleRecommLetrsTabClick()
@@ -833,10 +867,10 @@
 		var newsPaperURL = results.EPapersURLsVO;
 		for(var i in newsPaperURL)
 		{
-			var distEditionUrl;// = ""+newsPaperURL[i].epaperUrl;
+			var distEditionUrl;
 			var mainEditionUrl = ""+newsPaperURL[i].mainUrl;
 			var paperName = ""+newsPaperURL[i].paperName;
-			var distName;// = ""+newsPaperURL[i].districtName;
+			var distName; 
 			var image = newsPaperURL[i].image;
 			if(newsPaperURL[i].districtName == null)
 			{
@@ -848,7 +882,7 @@
 			} else distEditionUrl = ""+newsPaperURL[i].epaperUrl;
 			
 			var epapersObj={
-					mainEdition: '<A href="'+mainEditionUrl+'" target="_blank" title="Click To Visit"><Img src="<%=request.getContextPath()%>/images/icons/'+image+'" border="none" width="250" height="100"/></A>',
+					mainEdition: '<A href="'+mainEditionUrl+'" target="_blank" title="Click To Visit"><Img src="<%=request.getContextPath()%>/images/icons/'+image+'" border="none"/></A>',
 					distEdition: '<A href="'+distEditionUrl+'" target="_blank">'+distName+' Edition</A>',
 					language: newsPaperURL[i].language 								 
 			};
@@ -857,8 +891,7 @@
 		distPapersObj.ePapersArray = assignToEPapersURL;
 		}
 		
-		buildEPapersURLDataTable();
-		//ePapersDataTable.setColumnWidth(mainEdition,100);
+		buildEPapersURLDataTable();		
 	}
 
 	function updateSelectedDistUrls(results)
@@ -874,7 +907,7 @@
 			var distName = ""+newsPaperURL[i].districtName;
 			var image = newsPaperURL[i].image;
 			var epapersObj={
-				mainEdition: '<A href="'+mainEditionUrl+'" target="_blank"><Img src="<%=request.getContextPath()%>/images/icons/'+image+'" border="none" width="250" height="100"/></A>',
+				mainEdition: '<A href="'+mainEditionUrl+'" target="_blank"><Img src="<%=request.getContextPath()%>/images/icons/'+image+'" border="none"/></A>',
 				distEdition: '<A href="'+distEditionUrl+'" target="_blank">'+distName+' Edition</A>',
 				language: newsPaperURL[i].language 								 
 			};
@@ -882,12 +915,41 @@
 		assignToEPapersURL.push(epapersObj);
 		distPapersObj.ePapersArray = assignToEPapersURL;
 		}
-		//ePapersDataTable.addRows(assignToEPapersURL);
+		
 		
 		if(ePapersDataTable)
 			ePapersDataTable.destroy();
 		buildEPapersURLDataTable();
 	}
+
+	function showGroupsCreatedByUsers(results)
+	{
+		var groupsByUser = results.groupsCreatedByUser;
+		var userGrpsDivEle = document.getElementById("userGroupsTabContent_body");
+		var userGrpsTableContent ='';
+		userGrpsTableContent+='<div>';
+		userGrpsTableContent+='<div id="groupDetailsHead"> Group Details </div>';
+		for(var i in groupsByUser )
+		{
+		userGrpsTableContent+='<div id="groupDetails">';	
+		userGrpsTableContent+='<table width="100%">';
+		userGrpsTableContent+='<tr>';
+		userGrpsTableContent+='<th>Group Name : </th>';
+		userGrpsTableContent+='<th align="left">'+groupsByUser[i].groupName+'</th>';
+		userGrpsTableContent+='</tr>';
+		userGrpsTableContent+='<tr>';
+		userGrpsTableContent+='<th>Group Description : </th>';
+		userGrpsTableContent+='<td>'+groupsByUser[i].groupDesc+'</td>';
+		userGrpsTableContent+='</tr>';
+		userGrpsTableContent+='<tr>';
+		userGrpsTableContent+='<td align="right" colspan="2"><span class="groupMembersLinks"><a href="#" onclick="" >View Members</a></span>';
+		userGrpsTableContent+='<span class="groupMembersLinks"><a href="#" onclick="" >Add Members</a></span></td>';
+		userGrpsTableContent+='</tr>';
+		userGrpsTableContent+='</table></div>';
+		}		
+		
+		userGrpsDivEle.innerHTML = userGrpsTableContent;
+	}		
 	function buildOuterTabView()
 	{
 		outerTab = new YAHOO.widget.TabView();		
@@ -951,22 +1013,24 @@
 		constTabContent+='</div>';
 
 		var distEPapersTabContent='<div id="distEPapersTabContent">'; 
-		distEPapersTabContent+='<div id="distEPapersTabContent_header" align="left">';
-		distEPapersTabContent+='<select id="allDistrictsField" class="selectWidth" name="allDistrictsField" onchange="getNewPapersForSelectedDist(this.name,this.options[this.selectedIndex].value)">';
+		distEPapersTabContent+='<br>';
+		distEPapersTabContent+='<div id="distEPapersTabContent_header" align="center">';
+		distEPapersTabContent+='Select a District To Access Other  District Editions: <select id="allDistrictsField" class="selectWidth" name="allDistrictsField" onchange="getNewPapersForSelectedDist(this.name,this.options[this.selectedIndex].value)">';
 		for(var i in locationDetails.allDistrictsByStateArr)
 		{
 			distEPapersTabContent+='<option value='+locationDetails.allDistrictsByStateArr[i].id+'>'+locationDetails.allDistrictsByStateArr[i].value+'</option>';
 		}
 		distEPapersTabContent+='</select>';
 		distEPapersTabContent+='</div>';
+		distEPapersTabContent+='<br>';
 		distEPapersTabContent+='<div id="distEPapersTabContent_body"></div>';
 		distEPapersTabContent+='<div id="distEPapersTabContent_footer"></div>';
 		distEPapersTabContent+='</div>';
 
 		var userGroupsContent='<div id="userGroupsTabContent">';
 		userGroupsContent+='<div id="userGroupsTabContent_head" align="left"></div>';
-		userGroupsContent+='<div id="userGroupsTabContent_body"></div>';
-		userGroupsContent+='<div id="userGroupsTabContent_footer"></div>';	
+		userGroupsContent+='<div id="userGroupsTabContent_body" align="left"></div>';
+		userGroupsContent+='<div id="userGroupsTabContent_footer" align="right"></div>';	
 		userGroupsContent+='</div>';
 		
 		outerTab.addTab( new YAHOO.widget.Tab({			
@@ -1006,7 +1070,7 @@
             id: "addUserGroupButton",  
             type: "link",  
             label: "Create Group",  
-            container: "userGroupsTabContent_head" 
+            container: "userGroupsTabContent_footer" 
 		});
 		addUserGroupButton.on("click", buildCreateGroupPopup); 
 		
@@ -1242,7 +1306,7 @@
 	function buildEPapersURLDataTable()
 	{	
 		var ePapersUrlColumnDefs = [
-								{key: "mainEdition", label: "<%=mainEdition%>", sortable:true, minWidth:"500"},		
+								{key: "mainEdition", label: "<%=mainEdition%>", sortable:true},		
 		              	 	    {key: "distEdition", label: "<%=distEdition%>", sortable:true},
 		              	 	    {key: "language", label: "<%=language%>", sortable:true}
 		              	 	    ];                	 	    
@@ -1880,7 +1944,6 @@
 			elmt.style.display = 'none';
 		}
 	}
-	
 	function buildAddNewProblemPopup()
 	{
 		var elmt = document.getElementById('constituencyMgmtBodyDiv');
@@ -1901,7 +1964,6 @@
 		divChild.setAttribute('class','newProbdialog');
 
 		var contentStr=''; 
-		
 		contentStr+='<div class="hd" align="left">Add New Problem</div>';
 		contentStr+='<div class="bd" align="left">';
 		contentStr+='<div id="problemDetailsDivBody">';
@@ -2169,24 +2231,7 @@
 
 	function handleCreateGroupSubmit()
 	{
-		var groupNameTextVal = document.getElementById("groupNameText").value;   
-		var groupDescTextAreaVal = document.getElementById("groupDescTextArea").value;
-		var createNewGrpRadioval  = document.getElementById("createNewGrpRadio").value;
-		var addToGrpAsSubGrpRadioVal = document.getElementById("addToGrpAsSubGrpRadio").value;
-
-		var jsObj={
-
-				groupName: groupNameTextVal,
-				groupDescription: groupDescTextAreaVal,
-				
-				task: "createNewGroup"
-		}
-		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/userGroupAction.action?"+rparam;		
-		callAjax(rparam,jsObj,url);
-		createGroupDialog.hide();
-			
+		createGroupDialog.hide();			
 	}
 	
 	function handleCreateGroupCancel()
