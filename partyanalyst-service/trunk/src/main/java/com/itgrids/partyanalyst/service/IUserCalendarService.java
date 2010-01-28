@@ -33,5 +33,6 @@ public interface IUserCalendarService {
 	public UserEventVO getUserPlannedEvent(Long eventID);
 	public List<ImportantDatesVO> getUserImpDate(Long impDateID, String dateType);
 	public CadreManagementVO getUserImpDateAndEvent(RegistrationVO user, Calendar calendar);
+	public void deleteUserImpDate(Long impDateID);
 	
 }

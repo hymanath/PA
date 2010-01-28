@@ -23,7 +23,7 @@ public class UserEventsDAO extends GenericDaoHibernate<UserEvents, Long> impleme
 
 	@SuppressWarnings("unchecked")
 	public List<UserEvents> findEventsByUserId(Long userId) {
-		
-		return getHibernateTemplate().find("from UserEvents model where model.registration.registrationId = ?", userId) ;
+		Object[] params = {"NO",userId};
+		return getHibernateTemplate().find("from UserEvents model where model.isDeleted=? and model.registration.registrationId = ?", params) ;
 	}
 }

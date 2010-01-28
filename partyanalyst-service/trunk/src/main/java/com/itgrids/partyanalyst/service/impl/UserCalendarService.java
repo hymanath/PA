@@ -376,10 +376,19 @@ public class UserCalendarService implements IUserCalendarService {
 		Collections.sort(userEventVOList);
 		return userEventVOList;
 	}
-	
+
 	public void deleteUserPlannedEvents(Long userEventID) {
-		userEventsDAO.remove(userEventID);
+		UserEvents event = userEventsDAO.get(userEventID);
+		event.setIsDeleted("YES");
+		userEventsDAO.save(event);
 	}
+
+	public void deleteUserImpDate(Long impDateID) {
+		UserImpDate impDate = userImpDatesDAO.get(impDateID);
+		impDate.setIsDeleted("YES");
+		userImpDatesDAO.save(impDate);
+	}
+	
 private UserEventVO saveUserPlannedEvents;
 	public UserEventVO saveUserPlannedEvents(UserEventVO userPlannedEvents) {
 		saveUserPlannedEvents = userPlannedEvents;
@@ -394,11 +403,16 @@ private UserEventVO saveUserPlannedEvents;
 					userEvent = userEventsDAO.save(userEvent);
 					UserCalendarService.this.saveUserPlannedEvents.setUserEventsId(userEvent.getUserEventsId());
 					List<EventActionPlanVO> userEventActionPlanVOs = UserCalendarService.this.saveUserPlannedEvents.getActionPlans();
-					for(EventActionPlanVO userEventActionPlanVO : userEventActionPlanVOs){
-						UserEventActionPlan userEventActionPlan = converDTO2UserEventActionPlan(userEventActionPlanVO);
-						userEventActionPlan.setUserEvents(userEvent);
-						userEventActionPlan=userEventActionPlanDAO.save(userEventActionPlan);
-						userEventActionPlanVO.setEventActionPlanId(userEventActionPlan.getEventActionPlanId());
+					if(userEventActionPlanVOs != null){
+						if(userEventActionPlanVOs.size() > 0){
+							for(EventActionPlanVO userEventActionPlanVO : userEventActionPlanVOs){
+								UserEventActionPlan userEventActionPlan = converDTO2UserEventActionPlan(userEventActionPlanVO);
+								userEventActionPlan.setUserEvents(userEvent);
+								userEventActionPlan=userEventActionPlanDAO.save(userEventActionPlan);
+								userEventActionPlanVO.setEventActionPlanId(userEventActionPlan.getEventActionPlanId());
+							}
+					
+						}
 					}
 				}catch (Exception e) {
 					UserCalendarService.this.saveUserPlannedEvents.setExceptionEncountered(e);
@@ -569,6 +583,7 @@ private UserEventVO saveUserPlannedEvents;
 					try{
 						Registration user = registrationDAO.get(UserCalendarService.this.saveImportantDatesVO.getEventId());
 						userImpDate.setUser(user);
+						userImpDate.setUserImpDateID(UserCalendarService.this.saveImportantDatesVO.getImportantDateId());
 						userImpDate.setTitle(UserCalendarService.this.saveImportantDatesVO.getTitle());
 						userImpDate.setDescription(UserCalendarService.this.saveImportantDatesVO.getImportance());
 						//SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
