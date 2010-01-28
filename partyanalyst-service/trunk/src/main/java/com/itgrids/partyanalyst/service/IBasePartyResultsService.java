@@ -15,5 +15,5 @@ public interface IBasePartyResultsService {
 	public ElectionScope getElectionScope(Long typeId, Long countryID, Long stateID);
 	public List<Election> getElections(ElectionScope scope);
 	public List<PartyInfoVO> getPartyAndCompetetorsInfo(Election election,
-			String partyShortName, Long districtID, Long constituencyID, int competetorSize, ElectionScopeLevelEnum level);
+			String partyShortName,Long stateID, Long districtID, Long constituencyID, int competetorSize, ElectionScopeLevelEnum level);
 }

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
@@ -38,7 +40,8 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
 	private INominationDAO nominationDAO;
-	
+
+	private final static Logger log = Logger.getLogger(BasePartyResultsServiceImpl.class);
 	public IElectionScopeDAO getElectionScopeDAO() {
 		return electionScopeDAO;
 	}
@@ -96,8 +99,8 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 	 */
 	
 	public List<PartyInfoVO> getPartyAndCompetetorsInfo(Election election, 
-			String requiredPartyShortName, Long districtID, Long constituencyID, int competetorSize,ElectionScopeLevelEnum level) {
-
+			String requiredPartyShortName, Long stateID, Long districtID, Long constituencyID, int competetorSize,ElectionScopeLevelEnum level) {
+		log.debug("BasePartyResultsServiceImpl.getPartyAndCompetetorsInfo() Start");
 		String electionYear = election.getElectionYear();
 		StringBuilder constituencyElectionIDs = new StringBuilder();
 		//Map<String, PartyInfoVO> partyAndCompetetorsInfo = new HashMap<String, PartyInfoVO>();
@@ -106,10 +109,13 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 			ConstituencyElectionList = constituencyElectionDAO.findByElectionAndDistrict(election.getElectionId(), districtID);
 		} else if(level.equals(ElectionScopeLevelEnum.CONSTITUENCY_LEVEL)){
 				ConstituencyElectionList = constituencyElectionDAO.findByElectionAndConstituency(election.getElectionId(), constituencyID);
-		} else if(level.equals(ElectionScopeLevelEnum.STATE_LEVEL) || level.equals(ElectionScopeLevelEnum.COUNTRY_LEVEL)){
+		} else if(level.equals(ElectionScopeLevelEnum.COUNTRY_LEVEL)){
 				ConstituencyElectionList = constituencyElectionDAO.findByElection(election.getElectionId());
+		} else if(level.equals(ElectionScopeLevelEnum.STATE_LEVEL)){
+			log.debug("BasePartyResultsServiceImpl.getPartyAndCompetetorsInfo() State Level");
+				ConstituencyElectionList = constituencyElectionDAO.findByElectionAndState(election.getElectionId(),stateID);
 		}
-		
+		log.debug("BasePartyResultsServiceImpl.getPartyAndCompetetorsInfo() ConstituencyElectionList.size()="+ConstituencyElectionList.size());
 		if(ConstituencyElectionList.size()==0){
 			return new ArrayList<PartyInfoVO>();
 		}
@@ -117,13 +123,16 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 			constituencyElectionIDs.append(",").append(constituencyElection.getConstiElecId());
 		}
 		String strConstituencyElectionIDs = constituencyElectionIDs.substring(1);
-		System.out.println("String Length="+strConstituencyElectionIDs);
+		log.debug("Constituency ElectionIDs="+strConstituencyElectionIDs);
 		
 		Long constituencyGrandTotalValidVotes = getConstituencyGrandTotalValidVotes(strConstituencyElectionIDs);
 		
 		Map<String, PartyInfoVO> partyAndCompetetorsInfo = getConstituencyPartyResults(ConstituencyElectionList, electionYear);
 		
 		PartyInfoVO requiredPartyInfoVO = partyAndCompetetorsInfo.get(requiredPartyShortName);
+		if(requiredPartyInfoVO==null){
+			return new ArrayList<PartyInfoVO>();
+		}
 		partyAndCompetetorsInfo.remove(requiredPartyShortName);
 		if(requiredPartyInfoVO!=null)
 			requiredPartyInfoVO.setPercentageOfVotes(getPercentage(requiredPartyInfoVO,constituencyGrandTotalValidVotes));
@@ -245,7 +254,8 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 							constituencyElectionResultDAO.findByConstituencyElections(strConstituencyElectionIDs);
 		long constituencyGrandTotalValidVotes = 0;
 		for(ConstituencyElectionResult constituencyElectionResult : constituencyElectionResultList){
-			constituencyGrandTotalValidVotes += constituencyElectionResult.getValidVotes().longValue();
+			if(constituencyElectionResult.getValidVotes()!=null)
+				constituencyGrandTotalValidVotes += constituencyElectionResult.getValidVotes().longValue();
 		}
 		System.out.println("Contituency constituencyGrandTotalValidVotes="+constituencyGrandTotalValidVotes);
 		return new Long(constituencyGrandTotalValidVotes);

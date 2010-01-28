@@ -42,9 +42,10 @@ public class PartyResultService extends BasePartyResultsServiceImpl{
 		int competetorSize = 3;
 		
 		for(Election election : elections){
-			List<PartyInfoVO> partyInfoList = getPartyAndCompetetorsInfo(election, partyShortName, districtID, constituencyID, competetorSize, level);
+			List<PartyInfoVO> partyInfoList = getPartyAndCompetetorsInfo(election, partyShortName,stateID, districtID, constituencyID, competetorSize, level);
 
-			if(partyInfoList.size()<=0) break;
+			if(partyInfoList==null || partyInfoList.size()==0) 
+				continue;
 			
 			PartyInfoVO requiredParty = partyInfoList.get(0);
 			partyInfoList.remove(0);
