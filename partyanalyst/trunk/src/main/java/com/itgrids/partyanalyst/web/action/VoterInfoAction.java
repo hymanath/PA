@@ -221,19 +221,19 @@ public class VoterInfoAction extends ActionSupport implements ServletRequestAwar
 			constituencyManagementVO.setLocalLeaders(localLeaders);
 			
 			PoliticalChangesVO politicalChangesVO1 = new PoliticalChangesVO();
-			PoliticalChangesVO politicalChangesVO2 = new PoliticalChangesVO();
+			//PoliticalChangesVO politicalChangesVO2 = new PoliticalChangesVO();
 			
 			politicalChangesVO1.setDate("09-12-2009");
-			politicalChangesVO1.setDescription("Description about change");
-			politicalChangesVO1.setImpact("Impact");
-			
+			politicalChangesVO1.setDescription("Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!");
+			politicalChangesVO1.setImpact("Congress");
+			/*
 			politicalChangesVO2.setDate("29-12-2009");
-			politicalChangesVO2.setDescription("Description about change");
+			politicalChangesVO2.setDescription("Opposition leader arranged a free health checkup camp");
 			politicalChangesVO2.setImpact("Impact");
-			
+			*/
 			politicalChanges = new ArrayList<PoliticalChangesVO>();
 			politicalChanges.add(politicalChangesVO1);
-			politicalChanges.add(politicalChangesVO2);
+			//politicalChanges.add(politicalChangesVO2);
 			
 			constituencyManagementVO.setPoliticalChanges(politicalChanges);
 			
