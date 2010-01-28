@@ -208,7 +208,7 @@ public class BasePartyResultTest {
 		EasyMock.replay(constituencyElectionResultDAO);
 		service.setConstituencyElectionDAO(constituencyElectionDAO);
 		service.setConstituencyElectionResultDAO(constituencyElectionResultDAO);
-		List<PartyInfoVO> actual = service.getPartyAndCompetetorsInfo(election,"TDP",null,null,3,ElectionScopeLevelEnum.STATE_LEVEL);
+		List<PartyInfoVO> actual = service.getPartyAndCompetetorsInfo(election,"TDP",null,null,null,3,ElectionScopeLevelEnum.STATE_LEVEL);
 		Assert.assertEquals("INC", actual.get(1).getPartyShortName());	
 	}
 	
