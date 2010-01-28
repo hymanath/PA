@@ -383,6 +383,11 @@
 				<param name="root">cadreManagementVO</param>				
 			</result>			
 		</action>
+		<action name="deleteEventAction" class="createEventAction" method="deleteSelectedEvent">
+			<result type="json" name="success">
+				<param name="root">deleteStatus</param>				
+			</result>			
+		</action>
 		<action name="getCadresForEvent" class="createEventAction" method="getCadresForEvent">
 			<result type="json" name="locationLevel">
 				<param name="root">cadresLevel</param>				
