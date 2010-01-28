@@ -177,31 +177,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		problemSources.add(probSource1);
 		problemSources.add(probSource2);
 		problemSources.add(probSource3);
-		/*	
-		constituencyManagementVO = new ConstituencyManagementVO();
-		ProblemManagementVO problemManagementVO = new ProblemManagementVO();
-		problemDetailsList = new ArrayList<ProblemDetailsVO>();		
-		
-		ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO(); 
-		problemDetailsVO.setDefinition("Impurity water");
-		problemDetailsVO.setDescription("Polluted water is beign supplied");
-		problemDetailsVO.setIdentifiedDate("03/04/2009");
-		problemDetailsVO.setLocation("Madanapalle");
-		problemDetailsVO.setSource("Party Analyst");
-		
-		ProblemDetailsVO problemDetailsVO1 = new ProblemDetailsVO();
-		problemDetailsVO1.setDefinition("No Bus Service");
-		problemDetailsVO1.setDescription("Bus service cancelled to village");
-		problemDetailsVO1.setIdentifiedDate("01/03/2009");
-		problemDetailsVO1.setLocation("Nagavaram");
-		problemDetailsVO1.setSource("VIctim");
-		
-		problemDetailsList.add(problemDetailsVO);
-		problemDetailsList.add(problemDetailsVO1);
-		
-		problemManagementVO.setProblemDetails(problemDetailsList);
-		constituencyManagementVO.setProblemManagementVO(problemManagementVO);*/
-		
+				
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		//String result = SUCCESS;
