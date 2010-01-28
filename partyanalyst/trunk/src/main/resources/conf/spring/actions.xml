@@ -201,4 +201,6 @@
 	<bean id="distPapersAction" class="com.itgrids.partyanalyst.web.action.DistPapersAction" singleton="false">
 		<property name="epaperService" ref="epaperService"/>
 	</bean>
+	<bean id="userGroupAction" class="com.itgrids.partyanalyst.web.action.UserGroupAction" singleton="false">
+	</bean>
 </beans>
