@@ -233,9 +233,17 @@
 					elmt.add(y); // IE only
 			  	}
 				return;
+			}	
+			if(REPORTLEVEL=='Constituency'){
+				var item = document.forms["partyResultsForm"].electionType;
+                for (var i=0; i < item.length; i++)
+                {
+                  if (item[i].checked)
+                  {
+                    value = item[i].value;
+                   }
+                }
 			}
-
-						
 			var List=getList(REPORTLEVEL,value);			
 					
 			var len=elmt.length;			
@@ -365,8 +373,8 @@
 	<div  class="tdDataDiv">
 		<input type="radio" name="electionType" value="2" onclick="getReportLevel(this.value);setElectionType('Assembly');"/>Assembly
 		<input type="radio" name="electionType" value="1" onclick="getReportLevel(this.value);setElectionType('Parliament');"/>Parliament	
-		<input type="radio" name="electionType" value="3" onclick="getReportLevel(this.value);setElectionType('ZPTC');"/>ZPTC	
-		<input type="radio" name="electionType" value="4" onclick="getReportLevel(this.value);setElectionType('MPTC');"/>MPTC	
+		<input type="radio" name="electionType" value="4" onclick="getReportLevel(this.value);setElectionType('ZPTC');"/>ZPTC	
+		<input type="radio" name="electionType" value="3" onclick="getReportLevel(this.value);setElectionType('MPTC');"/>MPTC	
 		<input type="radio" name="electionType" value="5" onclick="getReportLevel(this.value);setElectionType('Municipal');"/>Municipal
 		<input type="radio" name="electionType" value="6" onclick="getReportLevel(this.value);setElectionType('Corporation');"/>Corporation	
 	</div>
@@ -407,4 +415,3 @@
 	</div>
  </BODY>
 </HTML>
-
