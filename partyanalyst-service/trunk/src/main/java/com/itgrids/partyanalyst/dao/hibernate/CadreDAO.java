@@ -154,7 +154,7 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	@SuppressWarnings("unchecked")
 	public List findVillageCadresByMandal(Long mandalID, Long userID){
 		Object[] params = {userID,mandalID};
-		List  results = getHibernateTemplate().find("Select model.village.townshipId, model.village.townshipName, count(model.village.townshipId)from Cadre model " +
+		List  results = getHibernateTemplate().find("Select model.village.townshipId, model.village.townshipName, count(model.village.townshipId), model.village.townshipType from Cadre model " +
 				"where model.registration.registrationId = ? and model.tehsil.tehsilId=? group by model.village.townshipId order by model.village.townshipName", params); 
 		return results;
 	}
@@ -291,6 +291,29 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		Object[] params = {userID,stateID};
 		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
 				"where model.registration.registrationId = ? and model.state.stateId=?", params); 
+		return results;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getCadreSizeByHamlet(Long revenueVillageID, Long userID){
+		Object[] params = {userID,revenueVillageID};
+		List  results = getHibernateTemplate().find("Select model.hamlet.hamletId, model.hamlet.hamletName, " +
+				"count(model.hamlet.hamletId) from Cadre model " +
+				"where model.registration.registrationId = ? and model.village.townshipId=? group by model.hamlet.hamletId order by model.hamlet.hamletName", params); 
+		return results;
+	}
+	/*@SuppressWarnings("unchecked")
+	public List<Cadre> findCadresByVillage(Long villageID, Long userID){
+		Object[] params = {userID,villageID};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.village.townshipId=?", params); 
+		return results;
+	}*/
+	@SuppressWarnings("unchecked")
+	public List<Cadre> findCadresByHamlet(Long hamletID, Long userID){
+		Object[] params = {userID,hamletID};
+		List<Cadre>  results = getHibernateTemplate().find("from Cadre model " +
+				"where model.registration.registrationId = ? and model.hamlet.hamletId=?", params); 
 		return results;
 	}
 }

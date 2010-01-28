@@ -511,7 +511,7 @@ public class CadreManagementService {
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		for(int i=0; i<size;i++){
 			Object[] voObject=(Object[]) villageCadres.get(i);
-			CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("VILLAGE");
+			CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO(voObject[3].toString());// V or T is the value but not VILLAGE
 			regionInfoVo.setRegionId(new Long(voObject[0].toString()));
 			regionInfoVo.setRegionName(voObject[1].toString());
 			regionInfoVo.setCadreCount(new Long(voObject[2].toString()));
@@ -825,5 +825,32 @@ public class CadreManagementService {
 			}
 		}
 		return result;
+	}
+	
+	public List<CadreInfo> getCadresByHamlet(Long hamletID, Long userID){
+		List<CadreInfo> formattedData = new ArrayList<CadreInfo>();
+		List<Cadre> cadresList = cadreDAO.findCadresByHamlet(hamletID, userID);
+		for(Cadre cadre:cadresList){
+			CadreInfo cadreInfo = convertCadreToCadreInfo(cadre);
+			formattedData.add(cadreInfo);
+		}
+		return formattedData;
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public List<CadreRegionInfoVO> getCadreSizeByHamlet(Long revenueVillageID, Long userID){
+		List hamletCadres = cadreDAO.getCadreSizeByHamlet(revenueVillageID, userID);
+		int size = hamletCadres.size();
+		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
+		for(int i=0; i<size;i++){
+			Object[] voObject=(Object[]) hamletCadres.get(i);
+			CadreRegionInfoVO regionInfoVo = new CadreRegionInfoVO("HAMLET");
+			regionInfoVo.setRegionId(new Long(voObject[0].toString()));
+			regionInfoVo.setRegionName(voObject[1].toString());
+			regionInfoVo.setCadreCount(new Long(voObject[2].toString()));
+			formattedData.add(regionInfoVo);
+		}
+		return formattedData;	
 	}
 }

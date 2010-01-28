@@ -61,4 +61,6 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Cadre> findCadresByConstituency(Long constituencyID, Long userID);
 	public List<Cadre> findCadresByMandal(Long mandalID, Long userID);
 
+	public List getCadreSizeByHamlet(Long revenueVillageID, Long userID);
+	public List<Cadre> findCadresByHamlet(Long hamletID, Long userID);
 }
