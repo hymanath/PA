@@ -15,11 +15,13 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEPaperDAO;
+import com.itgrids.partyanalyst.dao.IEPaperUrlDAO;
 import com.itgrids.partyanalyst.dto.EPaperVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.EPaper;
+import com.itgrids.partyanalyst.model.EPaperUrl;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.service.IEPaperService;
 
@@ -27,10 +29,19 @@ public class EPaperService implements IEPaperService {
 
 	private IEPaperDAO epaperDAO;
 	private IConstituencyDAO constituencyDAO;
-	private final static Logger log =  Logger.getLogger(EPaperService.class);
 	private IDistrictDAO districtDAO;
+	private IEPaperUrlDAO epaperUrlDAO;
+	private final static Logger log =  Logger.getLogger(EPaperService.class);
 	
 	
+	public IEPaperUrlDAO getEpaperUrlDAO() {
+		return epaperUrlDAO;
+	}
+
+	public void setEpaperUrlDAO(IEPaperUrlDAO epaperUrlDAO) {
+		this.epaperUrlDAO = epaperUrlDAO;
+	}
+
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
 	}
@@ -109,128 +120,111 @@ public class EPaperService implements IEPaperService {
 	 * @return List<EPaperVO>	
 	 * */
 	
-	public List<EPaperVO> getEPapers(String accessType ,Long accessValue) {
-		
+	public List<EPaperVO> getEPapers(String accessType ,Long accessValue) {		
 		List<EPaperVO> epaper =new  ArrayList<EPaperVO>();
 		List epaperUrl = new ArrayList();	
 		List<String> mainUrl = new ArrayList<String>();	
 		List<Long> result;
 		Long districtId;
+		Long stateId;
 		try{
-		if(accessType.equalsIgnoreCase("mla")){		
-			if(log.isDebugEnabled())
-				log.debug("Calling constituencyDAO.getDistrictIdByConstituencyId() ");
+		if(accessType.equalsIgnoreCase("mla") || accessType.equalsIgnoreCase("district")){			
+			if(accessType.equalsIgnoreCase("mla")){
+				if(log.isDebugEnabled())
+					log.debug("Calling constituencyDAO.getDistrictIdByConstituencyId() ");	
 			result = constituencyDAO.getDistrictIdByConstituencyId(accessValue);
 			districtId = result.get(0).longValue();
-			epaperUrl = epaperDAO.findEPapersForDistrictByDistrictId(districtId);
-			if(log.isDebugEnabled())
-				log.debug("Calling getEPaper method");
-			epaper = getEPaper(epaperUrl);
-		}
-		else if(accessType.equalsIgnoreCase("district")){
-			if(log.isDebugEnabled())
-				log.debug("Calling epaperDAO.findEPapersForDistrictByDistrictId() ");
-			epaperUrl = epaperDAO.findEPapersForDistrictByDistrictId(accessValue);
-			if(log.isDebugEnabled())
-				log.debug("Calling getEPaper method");
-			epaper = getEPaper(epaperUrl);			
-		}
-		else {
-			Long districtID=1L;
-            int count=0,limit=0;
-            char dot='.';
-            if(log.isDebugEnabled())
-                    log.debug("Calling epaperDAO.findMainEPapersForStateByStateId() ");
-            epaperUrl = epaperDAO.findMainEPapersForStateByStateId(districtID);
-            for(int i=0;i<epaperUrl.size();i++){
-                    count=0;
-            EPaperVO epaperVO = new EPaperVO();
-            Object[] parms = (Object[]) epaperUrl.get(i);
-                    epaperVO.setMainUrl(parms[0].toString());
-                    String paperName = parms[0].toString().trim();
-                    StringBuffer sb = new StringBuffer(paperName);                                
-                    sb = sb.delete(0,11);
-                    paperName = sb.toString().toUpperCase();
-                    paperName = paperName.toUpperCase();
-                    for(int j=0;j<paperName.length();j++){
-                            if(paperName.charAt(j) == dot && count==0){
-                                    limit=j;count++;
-                            }
-                            
-                    }
-                    epaperVO.setPaperName(paperName.substring(0,limit));
-                    epaperVO.setLanguage(parms[1].toString());
-                    epaperVO.setImage(parms[2].toString());
-                    epaper.add(epaperVO);
-            }        
-    }}catch(Exception ex){
-            log.debug("Exception Raised -->" + ex);
-            return null;
-    }
-		return epaper;
-	}
-	
-	/**
-	 * This method takes districtId and returns the list of epapers for that district.	
-	 * @param accessType
-	 * @param accessValue
-	 * @return List<EPaperVO>	
-	 * */
-	public List<EPaperVO> getEPapersForDistrict(Long districtId) {
-		List<EPaperVO> epaper =new  ArrayList<EPaperVO>();
-		List epaperUrl = new ArrayList();	
-		try{
-		if(log.isDebugEnabled())
-			log.debug("Calling epaperDAO.findEPapersForDistrictByDistrictId() ");
-		epaperUrl = epaperDAO.findEPapersForDistrictByDistrictId(districtId);
-		if(log.isDebugEnabled())
-			log.debug("Calling getEPaper method");
-		epaper = getEPaper(epaperUrl);
-		}catch(Exception ex){
-			log.error("Exception Raised -->" + ex);
-			return null;
-		}
-		return epaper;		
-	}
-	
-	/**
-	 * This method is called by the getEPapers() and getEPapersForDistrict which sets the 
-	 * corresponding values into the VO's.	
-	 * @param List epaperUrl
-	 * @return List<EPaperVO>	
-	 * */
-	public List<EPaperVO> getEPaper(List epaperUrl){
-		List<EPaperVO> epaper =new  ArrayList<EPaperVO>();
-		char dot='.';
-		int count=0,limit=0;
-		
-		try{
-			for(int i=0;i<epaperUrl.size();i++){
-				count=0;
-				EPaperVO epaperVO = new EPaperVO();
-				Object[] parms = (Object[]) epaperUrl.get(i);
-				String paperName = parms[1].toString().trim();
-				StringBuffer sb = new StringBuffer(paperName);				
-				sb = sb.delete(0,11);
-				paperName = sb.toString().toUpperCase();
-				paperName = paperName.toUpperCase();
-				for(int j=0;j<paperName.length();j++){
-					if(paperName.charAt(j) == dot && count==0){
-						limit=j;count++;
-					}
+			}
+			else{
+				districtId = accessValue;
+			}		
+			
+			epaper  = getEPapersForDistrict(districtId);			
+		}		
+		else if(accessType.equalsIgnoreCase("mp") || accessType.equalsIgnoreCase("state") || accessType.equalsIgnoreCase("country")){
+			if(accessType.equalsIgnoreCase("mp")){
+				if(log.isDebugEnabled())
+					log.debug("Calling constituencyDAO.getStateIdByConstituencyId()");	
+				List<Long> stateIds = constituencyDAO.getStateIdByConstituencyId(accessValue);
+				stateId = stateIds.get(0);
 				}
-				epaperVO.setEpaperUrl(parms[0].toString());
-				epaperVO.setMainUrl(parms[1].toString());
-				epaperVO.setPaperName(paperName.substring(0,limit));
-				epaperVO.setDistrictName(parms[2].toString());
-				epaperVO.setLanguage(parms[3].toString());
-				epaperVO.setImage(parms[4].toString());
+			else  {
+				stateId = accessValue;
+				}
+			if(log.isDebugEnabled())
+				log.debug("Calling epaperDAO.findByStateId()");	
+			List<EPaper> epapers = epaperDAO.findByStateId(stateId);
+			for(EPaper parms :epapers){
+				EPaperVO epaperVO = new EPaperVO();
+				epaperVO.setPaperName(parms.getName().toString());
+				if(parms.getCountryUrl().equalsIgnoreCase("null")){
+				}
+				else{
+					epaperVO.setEpaperUrl(parms.getStateUrl().toString());
+					epaperVO.setDistrictName("A.P Edition");
+				}
+				epaperVO.setMainUrl(parms.getCountryUrl());
+				epaperVO.setLanguage(parms.getLanguage());
+				epaperVO.setImage(parms.getImage());
+			
 				epaper.add(epaperVO);
+			}
 			}
 		}catch(Exception ex){
 			log.error("Exception Raised -->" + ex);
 			return null;
 		}
-		return epaper;		
+		return epaper;
 	}
-}
+
+
+	/**
+	 * This method is called by the getEPapers() which sets the 
+	 * corresponding values into the VO's.	
+	 * @param List districtId
+	 * @return List<EPaperVO>	
+	 * */
+	public List<EPaperVO> getEPapersForDistrict(Long districtId){
+		List<EPaperVO> epaper =new  ArrayList<EPaperVO>();
+		try{
+			if(log.isDebugEnabled())
+				log.debug("Calling districtDAO.getDistrictNameByDistrictId()");	
+		List list = districtDAO.getDistrictNameByDistrictId(districtId);
+		Object[] results= (Object[]) list.get(0);
+		String districtName = results[0].toString();
+		Long stateID = new Long(results[1].toString());	
+		if(log.isDebugEnabled())
+			log.debug("Calling epaperDAO.findByStateId()");	
+		List<EPaper> epapers = epaperDAO.findByStateId(stateID);
+		for(EPaper parms :epapers){
+			EPaperVO epaperVO = new EPaperVO();
+			if(parms.getClassification().equalsIgnoreCase("np")){
+			epaperVO.setPaperName(parms.getName().toString());
+			epaperVO.setEpaperUrl(parms.getStateUrl().toString());
+			epaperVO.setMainUrl(parms.getCountryUrl());
+			epaperVO.setLanguage(parms.getLanguage());
+			epaperVO.setImage(parms.getImage());
+			epaperVO.setDistrictName("A.P Edition");			
+			epaper.add(epaperVO);
+			}
+		}
+		if(log.isDebugEnabled())
+			log.debug("Calling epaperUrlDAO.findEPapersForDistrictByDistrictId()");
+		List<EPaperUrl> epaperUrls = epaperUrlDAO.findEPapersForDistrictByDistrictId(districtId);
+		for(EPaperUrl parms :epaperUrls){
+			EPaperVO epaperVO = new EPaperVO();
+			epaperVO.setPaperName(parms.getEpaper().getName().toString());	
+			epaperVO.setEpaperUrl(parms.getDistrictUrl().toString());	
+			epaperVO.setMainUrl(parms.getEpaper().getStateUrl().toString());
+			epaperVO.setLanguage(parms.getEpaper().getLanguage());
+			epaperVO.setImage(parms.getEpaper().getImage());
+			epaperVO.setDistrictName(districtName.concat(" Edition"));			
+			epaper.add(epaperVO);
+		}
+	}catch(Exception ex){
+		log.error("Exception Raised -->" + ex);
+		return null;
+	}
+		return epaper;	
+	}
+	}
