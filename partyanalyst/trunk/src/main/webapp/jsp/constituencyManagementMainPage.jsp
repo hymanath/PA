@@ -13,8 +13,8 @@
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
 	<script src="js/yahoo/resize-min.js"></script> 
@@ -262,10 +262,11 @@
 			String mainEdition = rb.getString("mainEdition");
 			String subEdition = rb.getString("subEdition");
 			String language = rb.getString("language");
+			String designation = rb.getString("designation");
 			%> }
 	
 	var outerTab,problemMgmtTabs,newProbDataTable, ePapersDataTable;
-	var newProblemDialog, createGroupDialog;
+	var newProblemDialog, createGroupDialog, showGrpMbrsDialog, addGrpMbrsDialog;
 	var problemsMainObj={
 							problemSourcesArr:[],	
 							newProblemsArr:[],
@@ -298,6 +299,9 @@
 	var distPapersObj={
 							ePapersArray:[]
 						};
+	var userGrpsObj={
+							showGrpMembersArr:[]
+	};
 	
 	function buildConstituencyLayout()
 	{	
@@ -438,7 +442,11 @@
 										updateSelectedDistUrls(myResults)
 									} else if(jsObj.task == "userGroupInfoDisplay")
 									{
-										showGroupsCreatedByUsers(myResults);										
+										showGroupsCreatedByUsers(myResults);
+																				
+									} else if(jsObj.task == "grpMbrsByGrpId")
+									{
+										showGrpMembers(myResults);
 									} else
 									{
 										buildSelectOption(myResults,jsObj);									
@@ -942,14 +950,50 @@
 		userGrpsTableContent+='<td>'+groupsByUser[i].groupDesc+'</td>';
 		userGrpsTableContent+='</tr>';
 		userGrpsTableContent+='<tr>';
-		userGrpsTableContent+='<td align="right" colspan="2"><span class="groupMembersLinks"><a href="#" onclick="" >View Members</a></span>';
-		userGrpsTableContent+='<span class="groupMembersLinks"><a href="#" onclick="" >Add Members</a></span></td>';
+		userGrpsTableContent+='<td align="right" colspan="2"><span class="groupMembersLinks"><a href="#" onclick="showGroupMbrsInGroup('+groupsByUser[i].groupId+')" >View Members</a></span>';
+		userGrpsTableContent+='<span class="groupMembersLinks"><a href="#" onclick="addGrpMembersDialog()" >Add Members</a></span></td>';
 		userGrpsTableContent+='</tr>';
 		userGrpsTableContent+='</table></div>';
 		}		
 		
 		userGrpsDivEle.innerHTML = userGrpsTableContent;
-	}		
+	}
+			
+	function showGroupMbrsInGroup(id)
+	{
+		
+		var jsObj=
+		{		grpId: id,
+				task: "grpMbrsByGrpId"
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+	var url = "<%=request.getContextPath()%>/membersInAGroupAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);	
+	}
+	
+	function showGrpMembers(results)
+	{
+		var assignToGrpMbrs = new Array();
+		var grpMembers = results.groupsMembers;
+		for(var i in grpMembers)
+		{
+			var grpMembersObj = {
+					name: grpMembers[i].userName,
+					address: grpMembers[i].address,
+					mobile: grpMembers[i].mobileNumber,
+					telephoneNo: grpMembers[i].phoneNumber,
+					designation: grpMembers[i].designation,
+					grpName: grpMembers[i].groupName,  
+					location: grpMembers[i].location 			
+			};
+			assignToGrpMbrs.push(grpMembersObj);
+			userGrpsObj.showGrpMembersArr = assignToGrpMbrs;			
+		}
+		//showGrpMembersDataTable();		 
+		showGroupMbrsPopup();
+	}
+
 	function buildOuterTabView()
 	{
 		outerTab = new YAHOO.widget.TabView();		
@@ -1892,10 +1936,37 @@
 	            oDS: myDataSource, 
 	            oDT: myDataTable 
 	           
-	      }; 
-	    
+	      }; 	    
 	} 
 
+	function showGrpMembersDataTable()
+	{	
+		var grpMbrsDetailsColumnDefs = [
+									{key: "name", label: "<%=name%>", sortable:true},		
+									{key: "designation", label: "<%=designation%>", sortable:true},	
+			              	 	    {key: "mobile", label: "<%=mobile%>"},
+			              	 	 	{key: "telephoneNo", label: "<%=telephoneNo%>"},
+			              	 	 	{key: "address", label: "<%=address%>", sortable:true},
+			              	 	 	{key: "location", label:"<%=location%>", sortable: true},
+			              	 	 	{key: "grpName", label:"<%=groupName%>", sortable: true}
+			              	 	    ];                	 	    
+
+			var grpMbrsDetailsDataSource = new YAHOO.util.DataSource(userGrpsObj.showGrpMembersArr); 
+			grpMbrsDetailsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+			grpMbrsDetailsDataSource.responseSchema = {
+	                fields: ["name", "designation", "address", "mobile","telephoneNo", "grpName", "location" ] 
+	        		};
+			grpMbrsDetailsDataTable = new YAHOO.widget.DataTable("showGrpMbrsDataTableDiv", grpMbrsDetailsColumnDefs, grpMbrsDetailsDataSource);
+			outerTab.getTab(2).addListener("click", function() {grpMbrsDetailsDataTable.onShow()});
+			
+	        return { 
+	            oDS: grpMbrsDetailsDataSource, 
+	            oDT: grpMbrsDetailsDataTable 
+	           
+	      };	     	
+		
+	}
+	
 	function showDateCal(id)
 	{
 		if(dateCalendar)
@@ -2238,6 +2309,111 @@
 	{
 		this.cancel();
 	}
+
+	function showGroupMbrsPopup()
+	{
+		var elmt = document.getElementById('constituencyMgmtBodyDiv');
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','showGroupMbrsDiv');
+		var showGrpMbrsContent='';
+		showGrpMbrsContent+='<div class="hd" align="left">Group Members</div>';
+		showGrpMbrsContent+='<div class="bd">';
+		showGrpMbrsContent+='<div id="showGrpMbrsDataTableDiv"></div>';
+		divChild.innerHTML = showGrpMbrsContent; 
+		elmt.appendChild(divChild);
+		
+		if(showGrpMbrsDialog)
+			showGrpMbrsDialog.destroy();
+		showGrpMbrsDialog = new YAHOO.widget.Dialog("showGroupMbrsDiv",
+				{ width : "800px", 
+	              fixedcenter : false, 
+	              visible : true,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  hideaftersubmit:true,
+				  close:true,
+				  x:300,
+				  y:200,				  
+				  buttons : [ { text:"Close", handler: handleshowGroupMbrsSubmit, isDefault:true}]
+	             } ); 
+		showGrpMbrsDialog.render();
+		showGrpMembersDataTable();
+	}
+
+	function handleshowGroupMbrsSubmit()
+	{
+		showGrpMbrsDialog.hide();
+	}
+
+	function addGrpMembersDialog()
+	{
+		var elmt = document.getElementById('constituencyMgmtBodyDiv');
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','addGroupMbrsDiv');
+		var addGrpMbrsContent = '';
+		addGrpMbrsContent+='<div class="hd" align="left">Add Members To A Group</div>';
+		addGrpMbrsContent+='<div class="bd" align="left">';
+		addGrpMbrsContent+='<div id="addGroupMbrsDivBody">';
+		addGrpMbrsContent+='<table>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=name%></td>';
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="grpMbrNameText" name="grpMbrNameText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=mobile%></td>';
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrMobileText" name="groupMbrMobileText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=address%></td>'
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrAdrsText" name="groupMbrAdrsText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=location%></td>'
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=groupName%></td>'
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=designation%></td>'
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='</table>';
+		addGrpMbrsContent+='</div>';
+		addGrpMbrsContent+='</div>';
+		addGrpMbrsContent+='</div>';
+		divChild.innerHTML=addGrpMbrsContent;
+		elmt.appendChild(divChild);	
+		if(addGrpMbrsDialog)
+			addGrpMbrsDialog.destroy();
+		addGrpMbrsDialog = new YAHOO.widget.Dialog("addGroupMbrsDiv",
+				{ width : "600px", 
+	              fixedcenter : false, 
+	              visible : true,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  hideaftersubmit:true,
+				  close:true,
+				  x:400,
+				  y:400,				  
+				  buttons : [ { text:"Add", handler: handleAddGrpMbrSubmit, isDefault:true}, 
+	                          { text:"Cancel", handler: handleAddGrpMbrCancel}]
+	             } ); 
+		addGrpMbrsDialog.render();		
+		
+	}
+	function handleAddGrpMbrSubmit()
+	{
+		addGrpMbrsDialog.hide();
+	}
+
+	function handleAddGrpMbrCancel()
+	{
+		this.cancel();
+	}	
 	
 </script>
 </head>
