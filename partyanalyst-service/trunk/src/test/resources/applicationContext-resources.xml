@@ -89,6 +89,7 @@
 				<value>com.itgrids.partyanalyst.model.UserImpDate</value>
 				<value>com.itgrids.partyanalyst.model.ProblemExternalSource</value>
 				<value>com.itgrids.partyanalyst.model.EPaper</value>
+				<value>com.itgrids.partyanalyst.model.EPaperUrl</value>
 		 </list>
 		</property>
 	</bean>
@@ -343,5 +344,7 @@
 	<bean id="epaperDAO" class="com.itgrids.partyanalyst.dao.hibernate.EPaperDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
+	<bean id="epaperUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.EPaperUrlDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
