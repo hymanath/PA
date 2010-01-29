@@ -420,6 +420,11 @@
 				<param name="root">userGroupsVO</param>				
 			</result>			
 		</action>
+		<action name="membersInAGroupAction" class="userGroupAction" method="getGroupMbrsForGroup">
+			<result type="json" name="success">
+				<param name="root">userGroupsVO</param>				
+			</result> 
+		</action>
 			
 	</package>
 </struts>
