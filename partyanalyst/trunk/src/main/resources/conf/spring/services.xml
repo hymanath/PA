@@ -281,6 +281,7 @@
     	<property name="epaperDAO" ref="epaperDAO" />
     	<property name="constituencyDAO" ref="constituencyDAO" />
     	<property name="districtDAO" ref="districtDAO" />
+    	<property name="epaperUrlDAO" ref="epaperUrlDAO" />
 	</bean>
 	
 </beans>
