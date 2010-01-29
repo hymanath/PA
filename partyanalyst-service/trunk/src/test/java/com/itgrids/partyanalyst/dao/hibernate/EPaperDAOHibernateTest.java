@@ -12,6 +12,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IEPaperDAO;
+import com.itgrids.partyanalyst.dto.EPaperVO;
 import com.itgrids.partyanalyst.model.EPaper;
 
 public class EPaperDAOHibernateTest extends BaseDaoTestCase {
@@ -27,16 +28,18 @@ public class EPaperDAOHibernateTest extends BaseDaoTestCase {
 		this.epaperDAO = epaperDAO;
 	}
 
-
-	@SuppressWarnings("unchecked")
-	public void testFindEPapersForDistrictByDistrictId(){
-		List list = epaperDAO.findEPapersForDistrictByDistrictId(new Long(19));
-		assertEquals(4, list.size());
+/*
+	public void testGet(){
+		assertEquals(0,0);
 	}
-
-	@SuppressWarnings("unchecked")
-	public void testFindByMainUrl(){
-		List list = epaperDAO.findMainEPapersForStateByStateId(new Long(19));
-		assertEquals(4, list.size());
+	
+	public void testFindStateEPapersByStateId(){
+		List result = epaperDAO.findStateEPapersByStateId(1l);
+		assertEquals(4, result.size());
+	}
+*/	
+	public void testFfindStateEPapersByStateId(){
+		List<EPaper> result = epaperDAO.findByStateId(1l);
+		assertEquals(7,result.size());
 	}
 }
