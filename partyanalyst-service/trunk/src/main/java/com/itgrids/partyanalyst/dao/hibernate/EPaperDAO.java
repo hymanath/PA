@@ -27,23 +27,50 @@ public class EPaperDAO extends GenericDaoHibernate<EPaper,Long> implements IEPap
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<EPaper> findByEpaperUrl(String epaperUrl) {
-		return getHibernateTemplate().find("from EPaper model where model.epaperUrl = ?", epaperUrl);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<EPaper> findByMainUrl(String mainUrl) {
-		return getHibernateTemplate().find("from EPaper model where model.mainUrl = ?", mainUrl);
+	public List<EPaper> findByClassification(String classification) {
+		return getHibernateTemplate().find("from EPaper model where model.epaperId = ?", classification);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List findEPapersForDistrictByDistrictId(Long districtId) {
-		return getHibernateTemplate().find("select model.epaperUrl,model.mainUrl,model.district.districtName,model.language,model.image from EPaper model where model.district.districtId = ?", districtId);
+	public List<EPaper> findByCountryId(Long countryId) {
+		return getHibernateTemplate().find("from EPaper model where model.countryId = ?", countryId);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List findMainEPapersForStateByStateId(Long districtId) {
-		return getHibernateTemplate().find("select model.mainUrl,model.language,model.image from EPaper model where model.district.districtId = ?", districtId);
+	public List<EPaper> findByDescription(String description) {
+		return getHibernateTemplate().find("from EPaper model where model.description = ?", description);
 	}
 
+
+	@SuppressWarnings("unchecked")
+	public List<EPaper> findByImage(String image) {
+		return getHibernateTemplate().find("from EPaper model where model.image = ?", image);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<EPaper> findByLanguage(String language) {
+		return getHibernateTemplate().find("from EPaper model where model.language = ?", language);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<EPaper> findByName(String name) {
+		return getHibernateTemplate().find("from EPaper model where model.name = ?", name);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List<EPaper> findByStateId(Long stateId) {
+		return getHibernateTemplate().find("from EPaper model where model.stateId = ? order by epaperId desc", stateId);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List<EPaper> findByStateUrl(String stateUrl) {
+		return getHibernateTemplate().find("from EPaper model where model.stateUrl = ?", stateUrl);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<EPaper> findBycountryUrl(String countryUrl) {
+		return getHibernateTemplate().find("from EPaper model where model.countryUrl = ?", countryUrl);
+	}
 }
