@@ -156,17 +156,18 @@ public class EPaperService implements IEPaperService {
 			List<EPaper> epapers = epaperDAO.findByStateId(stateId);
 			for(EPaper parms :epapers){
 				EPaperVO epaperVO = new EPaperVO();
-				epaperVO.setPaperName(parms.getName().toString());
+				epaperVO.setPaperName(parms.getName().toString());System.out.println();
 				if(parms.getCountryUrl().equalsIgnoreCase("null")){
+					epaperVO.setMainUrl(parms.getStateUrl().toString());
 				}
 				else{
-					epaperVO.setEpaperUrl(parms.getStateUrl().toString());
+					epaperVO.setMainUrl(parms.getCountryUrl());
+					if(stateId==1)
 					epaperVO.setDistrictName("A.P Edition");
-				}
-				epaperVO.setMainUrl(parms.getCountryUrl());
+				}	
+				epaperVO.setEpaperUrl(parms.getStateUrl().toString());				
 				epaperVO.setLanguage(parms.getLanguage());
-				epaperVO.setImage(parms.getImage());
-			
+				epaperVO.setImage(parms.getImage());			
 				epaper.add(epaperVO);
 			}
 			}
