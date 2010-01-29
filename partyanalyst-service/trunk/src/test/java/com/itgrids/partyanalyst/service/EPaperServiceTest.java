@@ -18,99 +18,89 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEPaperDAO;
+import com.itgrids.partyanalyst.dao.IEPaperUrlDAO;
+import com.itgrids.partyanalyst.dto.EPaperVO;
+import com.itgrids.partyanalyst.model.EPaper;
+import com.itgrids.partyanalyst.model.EPaperUrl;
 import com.itgrids.partyanalyst.service.impl.EPaperService;
 
 public class EPaperServiceTest {
 
 	private IEPaperDAO epaperDAO;
 	private IConstituencyDAO constituencyDAO;
+	private IDistrictDAO districtDAO;
+	private IEPaperUrlDAO epaperUrlDAO;
 		
 	@Before
 	public void init(){
 		epaperDAO = EasyMock.createMock(IEPaperDAO.class);
 		constituencyDAO = EasyMock.createMock(IConstituencyDAO.class);
-	}
-	
-	@Test
-	public void testEpaper(){
-		EPaperService service = new EPaperService();
-		List<Long> district = new ArrayList<Long>();			
-		List url = new ArrayList();	
-		
-		Long obj1 = 19L;
-		
-		Object[] set1 = new Object[5];
-		Object[] set2 = new Object[5];
-		
-		
-		set1[0] = "http://www.eenadu.net/district/districtshow1.asp?dis=adilabad";
-		set1[1] = "http://www.eenadu.com/";
-		set1[2] = "ADILABAD";
-		set1[3] = "Telugu";
-		set1[4] = "eenadu.jpg";
-		
-		set2[0] = "http://www.andhrajyothy.net/district/districtshow1.asp?dis=guntur";
-		set2[1] = "http://www.andhrajyothy.com/";
-		set2[2] = "guntur";
-		set2[3] = "Telugu";
-		set2[4] = "andhrajyothy.jpg";
-		
-		
-		district.add(obj1); 		
-		url.add(set1);
-		url.add(set2);
-		
-		
-		EasyMock.expect(constituencyDAO.getDistrictIdByConstituencyId(new Long(19))).andReturn(district);
-		EasyMock.expect(epaperDAO.findEPapersForDistrictByDistrictId(new Long(19))).andReturn(url);
-		EasyMock.replay(constituencyDAO);
-		service.setConstituencyDAO(constituencyDAO);
-		
-		
-		EasyMock.replay(epaperDAO);
-		service.setEpaperDAO(epaperDAO);		
-		
-		List EPaperVO = service.getEPapers("mla", new Long(19));	
-		Assert.assertEquals(2, EPaperVO.size());
+		districtDAO =  EasyMock.createMock(IDistrictDAO.class);
+		epaperUrlDAO =  EasyMock.createMock(IEPaperUrlDAO.class);
 	}
 	
 	@Test
 	public void testGetEPapersForDistrict(){
-		
 		EPaperService service = new EPaperService();
 		List<Long> district = new ArrayList<Long>();			
-		List url = new ArrayList();	
+		List<EPaper> url = new ArrayList<EPaper>();	
+		List<EPaperUrl> epaperUrl = new ArrayList<EPaperUrl>();	
+		List districtName = new ArrayList();
+		List<Long> stateId = new ArrayList<Long>();
+		Long obj1 = 19L;
 		
-		Long obj1 = 17L;
+		Object[] set1 = new Object[7];
+		Object[] set2 = new Object[7];
+		Object[] set3 = new Object[2];
 		
-		Object[] set1 = new Object[5];
-		Object[] set2 = new Object[5];
+		EPaper epaper = new EPaper();
+		epaper.setClassification("np");
+		epaper.setName("Hindu");
+		epaper.setStateUrl("http://www.hindu.com/");
+		epaper.setCountryUrl("www.hindu.com");
+		epaper.setLanguage("English");
+		epaper.setImage("hindulogo.jpg");
+		url.add(epaper);
+		
+		EPaperUrl epaperur = new EPaperUrl();
+		epaperur.setDistrictUrl("www.sakshi.com/adilabad");
+		epaperur.setEpaper(epaper);	
+		
+		EPaperUrl epaperurl = new EPaperUrl();
+		epaperurl.setDistrictUrl("www.eenadu.com/adilabad");
+		epaperurl.setEpaper(epaper);
+		
+		epaperUrl.add(epaperurl);
+		epaperUrl.add(epaperur);
 		
 		
-		set1[0] = "http://www.eenadu.net/district/districtshow1.asp?dis=adilabad";
-		set1[1] = "http://www.eenadu.com/";
-		set1[2] = "ADILABAD";
-		set1[3] = "Telugu";
-		set1[4] = "eenadu.jpg";
+		set3[0] = "adilabad";
+		set3[1] = new Long(1);
+	
 		
-		set2[0] = "http://www.andhrajyothy.net/district/districtshow1.asp?dis=guntur";
-		set2[1] = "http://www.andhrajyothy.com/";
-		set2[2] = "guntur";
-		set2[3] = "Telugu";
-		set2[4] = "andhrajyothy.jpg";
-		
-		district.add(obj1); 		
-		url.add(set1);
-		url.add(set2);
-			
-		EasyMock.expect(epaperDAO.findEPapersForDistrictByDistrictId(new Long(17))).andReturn(url);
-				
-		EasyMock.replay(epaperDAO);
-		service.setEpaperDAO(epaperDAO);		
-		
-		List EPaperVO = service.getEPapersForDistrict(new Long(17));	
-		Assert.assertEquals(2, EPaperVO.size());
+		district.add(obj1);		
+		districtName.add(set3);
 
-	}	
+		
+		EasyMock.expect(districtDAO.getDistrictNameByDistrictId(new Long(19))).andReturn(districtName);
+		EasyMock.expect(epaperDAO.findByStateId(new Long(1))).andReturn(url);
+		EasyMock.expect(epaperUrlDAO.findEPapersForDistrictByDistrictId(new Long(19))).andReturn(epaperUrl);
+
+		
+		EasyMock.replay(districtDAO);
+		service.setDistrictDAO(districtDAO);
+		
+		EasyMock.replay(epaperDAO);
+		service.setEpaperDAO(epaperDAO);
+		
+		EasyMock.replay(epaperUrlDAO);
+		service.setEpaperUrlDAO(epaperUrlDAO);	
+		
+		List<EPaperVO> EPaperVO = service.getEPapersForDistrict(new Long(19));	
+		Assert.assertEquals(3, EPaperVO.size());
+	}
+		
+
 }
