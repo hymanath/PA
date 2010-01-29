@@ -260,7 +260,7 @@
 			String createNewGrp= rb.getString("createNewGrp");
 			String addToGrpAsSubGrpRadio=rb.getString("addToGrpAsSubGrpRadio");
 			String mainEdition = rb.getString("mainEdition");
-			String distEdition = rb.getString("distEdition");
+			String subEdition = rb.getString("subEdition");
 			String language = rb.getString("language");
 			%> }
 	
@@ -883,7 +883,7 @@
 			
 			var epapersObj={
 					mainEdition: '<A href="'+mainEditionUrl+'" target="_blank" title="Click To Visit"><Img src="<%=request.getContextPath()%>/images/icons/'+image+'" border="none"/></A>',
-					distEdition: '<A href="'+distEditionUrl+'" target="_blank">'+distName+' Edition</A>',
+					distEdition: '<A href="'+distEditionUrl+'" target="_blank">'+distName+'</A>',
 					language: newsPaperURL[i].language 								 
 			};
 			
@@ -908,7 +908,7 @@
 			var image = newsPaperURL[i].image;
 			var epapersObj={
 				mainEdition: '<A href="'+mainEditionUrl+'" target="_blank"><Img src="<%=request.getContextPath()%>/images/icons/'+image+'" border="none"/></A>',
-				distEdition: '<A href="'+distEditionUrl+'" target="_blank">'+distName+' Edition</A>',
+				distEdition: '<A href="'+distEditionUrl+'" target="_blank">'+distName+'</A>',
 				language: newsPaperURL[i].language 								 
 			};
 			
@@ -1307,7 +1307,7 @@
 	{	
 		var ePapersUrlColumnDefs = [
 								{key: "mainEdition", label: "<%=mainEdition%>", sortable:true},		
-		              	 	    {key: "distEdition", label: "<%=distEdition%>", sortable:true},
+		              	 	    {key: "distEdition", label: "<%=subEdition%>", sortable:true},
 		              	 	    {key: "language", label: "<%=language%>", sortable:true}
 		              	 	    ];                	 	    
 
