@@ -7,12 +7,13 @@ import java.util.Map;
 
 import com.mysql.jdbc.ResultSetImpl;
 
+@SuppressWarnings("serial")
 public class UserGroupDetailsVO  implements Serializable {
 
 	private String groupName;
 	private Long groupId;
 	private String groupDesc;
-	private List<UserGroupMembersVO> members;
+	private List<UserGroupDetailsVO> userSubGroups;
 	
 	public Long getGroupId() {
 		return groupId;
@@ -29,15 +30,13 @@ public class UserGroupDetailsVO  implements Serializable {
 	public String getGroupName() {
 		return groupName;
 	}
-
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
-	public List<UserGroupMembersVO> getMembers() {
-		return members;
+	public List<UserGroupDetailsVO> getUserSubGroups() {
+		return userSubGroups;
 	}
-	public void setMembers(List<UserGroupMembersVO> members) {
-		this.members = members;
-	}
-	
+	public void setUserSubGroups(List<UserGroupDetailsVO> userSubGroups) {
+		this.userSubGroups = userSubGroups;
+	}	
 }
