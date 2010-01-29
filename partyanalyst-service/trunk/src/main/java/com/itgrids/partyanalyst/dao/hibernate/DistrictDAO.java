@@ -1,11 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
-import javax.persistence.Query;
-
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.appfuse.dao.jpa.GenericDaoJpa;
-
 import com.itgrids.partyanalyst.dao.IDistrictDAO; 
 import com.itgrids.partyanalyst.dao.columns.enums.DistrictColumnNames; 
 import com.itgrids.partyanalyst.model.District;
@@ -53,10 +49,14 @@ IDistrictDAO {
 		return getHibernateTemplate().find("from District model order by districtName");
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List getStateDistrictByDistrictID(Long districtID){
 		return getHibernateTemplate().find("Select model.state.stateId, model.state.stateName, model.districtName from District model where model.districtId=? order by model.state.stateName",districtID);
 		
 	}
-	
-	
+
+	@SuppressWarnings("unchecked")
+	public List getDistrictNameByDistrictId(Long districtId) {
+		return getHibernateTemplate().find("Select model.districtName,model.state.stateId from District model where model.districtId=? ", districtId);
+	}	
 }
