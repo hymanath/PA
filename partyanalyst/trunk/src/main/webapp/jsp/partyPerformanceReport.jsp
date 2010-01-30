@@ -23,7 +23,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/conainer/container-min.js"></script> 
-	
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
@@ -31,7 +31,7 @@
 	<!-- YUI Skin Sam -->
 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
-
+    <link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
@@ -69,7 +69,7 @@ function getDetails(pos)
 	var year = '${stateData.year}';
 	var district = '${stateData.districtId}';	
 	var alliances = '${stateData.hasAlliances}';
-
+    var reportLevel =  '${stateData.reportLevel}';
 	
 	var jsObj=
 	{
@@ -79,7 +79,8 @@ function getDetails(pos)
 			stateValue:state,
 			yearValue:year,
 			districtValue:district,
-			hasAlliances:alliances
+			hasAlliances:alliances,
+			reportLevel:reportLevel
 	}
 	var param ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	callAjax(param,jsObj);
@@ -108,7 +109,7 @@ function callAjax(param,jsObj){
 }
 
 function displayPartyPositions(jsObj,data)
-{
+{	
 	var imgElmt = document.getElementById("loaderGif");
 	imgElmt.style.display='none';
 
@@ -240,7 +241,13 @@ function buildPartyPositionDataTable(info,rank)
 		resultsColumnDefs.push(obj);		
 	}
 
-	var myDataTable = new YAHOO.widget.DataTable("partyPositionsBody",resultsColumnDefs, resultsDataSource,{});  
+	var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10
+			    }) 
+				};	
+
+	var myDataTable = new YAHOO.widget.DataTable("partyPositionsBody",resultsColumnDefs, resultsDataSource,myConfigs);  
 
 	}
 
@@ -468,6 +475,11 @@ function buildPartyPositionDataTable(info,rank)
 		font-weight:bold;
 		background-color:#FFFFFF;
 	}
+	.yui-skin-sam .yui-dt-paginator 
+	{
+		margin-left:20px;
+	}
+
 </style>
 </head> 
 <body>
