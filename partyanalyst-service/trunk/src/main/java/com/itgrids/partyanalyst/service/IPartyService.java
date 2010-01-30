@@ -9,7 +9,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
 public interface IPartyService {
 	
 	public PartyPerformanceReportVO getPartyPerformanceReport(String state, String district, String party, String year, String electionType, 
-			String countryID, int noOfPositionDistribution, BigDecimal majorBand, BigDecimal minorBand, Boolean includeAllianceParties);
+			String countryID, int noOfPositionDistribution, BigDecimal majorBand, BigDecimal minorBand, Boolean includeAllianceParties,String reportLevel);
 
 	public PartyPerformanceReportVO getPartyPerformanceReport(String state, String party, String year, String electionType, int noOfPositionDistribution);
 
@@ -18,5 +18,6 @@ public interface IPartyService {
 	public String getBlo(String str);
 	public String getBlah(String str);
 	public String getBlah(int str);
-	public List<PartyPositionDisplayVO> getNthPositionPartyDetails(Long electionTypeID, Long stateID, Long districtID, Long year, Long partyID, boolean alliances, int rank);
+	public List<PartyPositionDisplayVO> getNthPositionPartyDetails(Long electionTypeID, Long stateID, Long districtID, Long year, Long partyID, boolean alliances, int rank,String reportLevel);
+
 }
