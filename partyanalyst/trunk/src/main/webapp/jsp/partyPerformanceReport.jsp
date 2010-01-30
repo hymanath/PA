@@ -393,6 +393,11 @@ function buildPartyPositionDataTable(info,rank)
 		sortable : true
 	} ];
 
+    var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10
+			    }) 
+				};	
 	var myDataTable = new YAHOO.widget.DataTable("rebelsDiv",resultsColumnDefs, resultsDataSource,myConfigs);  
 
 }
