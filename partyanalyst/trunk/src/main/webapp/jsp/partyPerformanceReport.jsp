@@ -255,6 +255,12 @@ function buildPartyPositionDataTable(info,rank)
 	{
 		if(data.partyPerformanceArray == "")
 			return;
+
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10
+			    }) 
+				};	
 		
 		if(divId == "POSITIONS_WON_MAJOR_BAND" || divId == "POSITIONS_WON_MINOR_BAND" || divId == "POSITIONS_LOST_MINOR_BAND" || divId == "POSITIONS_LOST_MAJOR_BAND")
 		{	
@@ -275,7 +281,7 @@ function buildPartyPositionDataTable(info,rank)
 						{key :"oppositionPartyPercentageOfVotes",parser:"number"},{key : "oppositionParty"}, {key : "oppositionPartyCandidate"}
 					 ]
 	        };
-			var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource, {}); 			
+			var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource,myConfigs); 			
 		}
 		else if(divId == "POSITIONS_WON_WITH_POSITIVE_SWING" || divId == "POSITIONS_WON_WITH_NEGATIVE_SWING" || divId == "POSITIONS_LOST_WITH_POSITIVE_SWING" || divId == "POSITIONS_LOST_WITH_NEGATIVE_SWING")
 		{			
@@ -295,7 +301,7 @@ function buildPartyPositionDataTable(info,rank)
 	        myDataSource.responseSchema = { 
 	            fields: ["constituencyName","candidateName","percentageOfVotes","previousElectionPercentageOfVotesGained","oppositionPartyPercentageOfVotes","oppositionParty","oppositionPartyCandidate"] 
 	        };
-			 var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource, {}); 
+			 var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource,myConfigs); 
 		}		  
 		else if(divId == "POSITIONS_LOST_BY_DROPPING_VOTES")
 		{
@@ -318,7 +324,7 @@ function buildPartyPositionDataTable(info,rank)
 	        myDataSource.responseSchema = { 
 	            fields: ["constituencyName","candidateName","percentageOfVotes","previousElectionPercentageOfVotesGained","percentageOfVotesPolled","previousElectionPercentageOfVotesPolled","previousElectionCandidate","oppositionPartyPercentageOfVotes","oppositionParty","oppositionPartyCandidate"] 
 	        };
-			var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource, {}); 
+			var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource,myConfigs); 
 		}	
 	}
 
@@ -387,7 +393,7 @@ function buildPartyPositionDataTable(info,rank)
 		sortable : true
 	} ];
 
-	var myDataTable = new YAHOO.widget.DataTable("rebelsDiv",resultsColumnDefs, resultsDataSource,{});  
+	var myDataTable = new YAHOO.widget.DataTable("rebelsDiv",resultsColumnDefs, resultsDataSource,myConfigs);  
 
 }
 
