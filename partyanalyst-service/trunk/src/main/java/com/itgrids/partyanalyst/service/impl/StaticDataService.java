@@ -413,4 +413,57 @@ public class StaticDataService implements IStaticDataService {
 		}		
 		return mandal;
 	}
+	
+	public List<ConstituencyElection> getConstituencyElectionsFromNomination(Long electionID,Long stateId,Long districtID,Long rank,Long partyId){
+		List<ConstituencyElection>  constituencyElectionList = null;
+		if(districtID==null || districtID==0L){
+			System.out.println(" DAO ...1");
+			if(rank.intValue() == -1)
+				constituencyElectionList = nominationDAO.findByElectionAndStateAndNthRank(electionID, stateId, new Long(4), partyId);
+			else
+			    constituencyElectionList = nominationDAO.findByElectionAndStateAndRank(electionID, stateId, rank, partyId);
+		}else{
+			System.out.println("DAO ... 2");
+			if(rank.intValue() == -1)
+				constituencyElectionList = nominationDAO.findByElectionAndStateAndDistrictAndNthRank(electionID, stateId, districtID, new Long(4), partyId);
+			else
+			    constituencyElectionList = nominationDAO.findByElectionAndStateAndDistrictAndRank(electionID, stateId, districtID, rank, partyId);
+		}
+	return constituencyElectionList;
+	}
+	
+	public List<ConstituencyElection> getConstituencyElectionsFromNominationWithAlliances(Long electionID,Long stateId,Long districtID,Long rank,List<SelectOptionVO> parties){
+		List<ConstituencyElection>  constituencyElectionList = null;
+		List<Long> partyIds = null;
+		if(parties != null && parties.size() > 0){
+			partyIds = new ArrayList<Long>();
+			for(SelectOptionVO party:parties)
+				partyIds.add(party.getId());
+		}
+		if(districtID==null || districtID==0L){
+			System.out.println(" DAO ...1");
+			if(rank.intValue() == -1)
+				constituencyElectionList = nominationDAO.findByElectionAndStateAndNthRank(electionID, stateId,new Long(4),partyIds);
+			else
+			    constituencyElectionList = nominationDAO.findByElectionAndStateAndRank(electionID, stateId,rank ,partyIds);
+		}else{
+			System.out.println("DAO ... 2");
+			if(rank.intValue() == -1)
+				constituencyElectionList = nominationDAO.findByElectionAndStateAndDistrictAndNthRank(electionID, stateId, districtID, new Long(4), partyIds);
+			else
+			    constituencyElectionList = nominationDAO.findByElectionAndStateAndDistrictAndRank(electionID, stateId, districtID, rank, partyIds);
+		}
+		
+	return constituencyElectionList;
+	}
+	
+	public List<ConstituencyElection> getConstituencyElectionsFromNominationForCountry(Long electionID,Long stateId,Long countryId,Long rank,Long partyId){
+		List<ConstituencyElection>  constituencyElectionList = null;
+		log.debug("Inside getConstituencyElectionsFromNominationForCountry(staticDataService).....");
+		if(rank.intValue() > 0)
+			constituencyElectionList = nominationDAO.findByElectionIdAndStateIdAndCountryIdAndRank(electionID, stateId, countryId, rank, partyId);
+		else
+			constituencyElectionList = nominationDAO.findByElectionIdAndStateIdAndCountryIdAndNthRank(electionID, stateId, countryId, rank, partyId);
+	return constituencyElectionList;
+	}
 }
