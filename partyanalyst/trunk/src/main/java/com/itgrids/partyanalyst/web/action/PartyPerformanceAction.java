@@ -246,12 +246,15 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		List<SelectOptionVO>levels = new ArrayList<SelectOptionVO>();
 	    levels.add(new SelectOptionVO(new Long(1), "State Level"));
 	    levels.add(new SelectOptionVO(new Long(2), "District Level"));
+	    
+	    
 		return levels;
 	}
 	
 	private List<SelectOptionVO> getReportLevelsParliament() {
 		List<SelectOptionVO>levels = new ArrayList<SelectOptionVO>();
 	    levels.add(new SelectOptionVO(new Long(1), "State Level"));
+	    levels.add(new SelectOptionVO(new Long(3), "Country Level"));
 	    return levels;
 	}
 
@@ -305,12 +308,14 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if("2".equals(reportLevel)){
 			district = request.getParameter("district");
 		}
+		log.debug("Report Level :: " + reportLevel);
 		
-		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(Constants.MAJAR_BRAND), new BigDecimal(Constants.MINOR_BRAND), alliances);
+		reportVO = getPartyService().getPartyPerformanceReport(state, district, party, year, electionType, country, 0, new BigDecimal(Constants.MAJAR_BRAND), new BigDecimal(Constants.MINOR_BRAND), alliances,reportLevel);
 		reportVO.setElectionTypeId(new Long(electionType));
 		reportVO.setStateId(new Long(state));
 		reportVO.setPartyId(new Long(party));
 		reportVO.setHasAlliances(alliances);
+		reportVO.setReportLevel(reportLevel);
 		
 		if(district!=null)
 			reportVO.setDistrictId(new Long(district));
@@ -327,7 +332,8 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			reportLevelLiteral = "StateLevel";
 		else if(Long.valueOf(reportLevel).equals(new Long(2)))
 			reportLevelLiteral = "DistrictLevel";
-		
+		else if(Long.valueOf(reportLevel).equals(new Long(3)))
+			reportLevelLiteral = "CountryLevel";
 		if(log.isDebugEnabled()){
 			log.debug("Election Type -->" + electionTypeLiteral);
 			log.debug("Report Level -->" + reportLevelLiteral);
@@ -409,8 +415,11 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		String partyID = jObj.getString("partyValue");
 		String alliances = jObj.getString("hasAlliances");
 		String rank = jObj.getString("positionValue");
+		String reportLevel = jObj.getString("reportLevel");
 		
-		partyPositionDisplayVO = partyService.getNthPositionPartyDetails(new Long(electionTypeID),new Long (stateID),new Long (districtID),new Long (year),new Long (partyID),new Boolean (alliances).booleanValue(),new Integer (rank).intValue());
+		log.debug("Report Level Inside getpartyPosition method (Action) :" + reportLevel);
+		
+		partyPositionDisplayVO = partyService.getNthPositionPartyDetails(new Long(electionTypeID),new Long (stateID),new Long (districtID),new Long (year),new Long (partyID),new Boolean (alliances).booleanValue(),new Integer (rank).intValue(),reportLevel);
 		
 		System.out.println("Length = "+partyPositionDisplayVO.size());
 		return Action.SUCCESS;
