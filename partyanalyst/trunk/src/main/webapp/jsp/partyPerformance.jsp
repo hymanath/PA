@@ -42,6 +42,8 @@
 		{
 	    	fillDropDown(document.getElementById("stateList"), response.STATES);
 		 	fillDropDown(document.getElementById("yearList"), response.YEARS);
+			buildRadioButton(response.LEVELS);
+
 		 	//fillDropDown(document.getElementById("partyList"), response.parties);
 		}
 		if(param.substring(0, 8) == "alliance")
@@ -65,6 +67,21 @@
 	 		document.getElementById("districtList").disabled= false;  	 			 		
 		}
     }
+	
+	function buildRadioButton(results)
+	{		
+		var divElmt = document.getElementById("reportLevelRadio");
+		var distElmt = document.getElementById("districtList").disabled = true;
+
+		var str='';
+		
+		str+='<input type="radio" checked="checked" name="1" value="'+results[0].id+'" onclick="getDistricts(this.value);">'+results[0].name+'</input>';
+		str+='<input type="radio" name="1" value="'+results[1].id+'" onclick="getDistricts(this.value);">'+results[1].name+'</input>';
+				
+		if(divElmt)
+			divElmt.innerHTML=str;
+
+	}
 	
     function fillDropDown(selectbox, data){
           selectbox.options.length = 0;
@@ -95,9 +112,16 @@
 	 	 	var stateId = document.getElementById("stateList").options[index].value;
 	 	 	var url = "<%=request.getContextPath()%>/partyPerformanceDistrict.action?";
 			callAjax("stateId="+stateId, url);
- 	 	} else {
- 	 		document.getElementById("districtList").disabled= true;  
  	 	}
+		if(level == 3){
+			document.getElementById("alliances").disabled=true;
+			document.getElementById("alliances").checked = false;
+		}else {
+ 	 		document.getElementById("districtList").disabled= true; 
+			document.getElementById("alliances").disabled=false;
+			
+ 	 	}
+		
  	}
 
  	function fetchDistricts(){
@@ -162,15 +186,10 @@
 		<th>Party</th>
 		<td><s:select theme="simple" label="Party" name="party" id="partyList" list="parties" listKey="id" listValue="name" /></td>
 	</tr>
-	<tr id="allianceRow">
-		<th>Alliance Parties</th>
-		<td>
-			<s:checkbox theme="simple" id="alliances" name="alliances" value="hasAllianceParties"></s:checkbox> Include in the Report
-		</td>
-	</tr>
+	
 	<tr>
 		<th>Report Level</th>
-		<td><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onclick="getDistricts(this.value);"/></td>
+		<td><div id="reportLevelRadio"><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onclick="getDistricts(this.value);"/></div></td>
 	</tr>	
 	<tr>		
 		<th>			
@@ -180,6 +199,12 @@
 			<s:select theme="simple" name="district" id="districtList" list="districts"  disabled="true" listKey="id" listValue="name"/>	
 		</td>
 	</tr>	
+	<tr id="allianceRow">
+		<th>Alliance Parties</th>
+		<td>
+			<s:checkbox theme="simple" id="alliances" disabled="false" name="alliances" value="hasAllianceParties"></s:checkbox> Include in the Report
+		</td>
+	</tr>
 	<tr>
 		<td colspan="2" align="center"><s:submit theme="simple" action="partyPerformanceReport" type="submit" value="View Report" /></td>
 	</tr>
