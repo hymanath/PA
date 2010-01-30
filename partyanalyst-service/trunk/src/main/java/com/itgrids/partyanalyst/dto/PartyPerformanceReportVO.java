@@ -76,6 +76,7 @@ public class PartyPerformanceReportVO extends BaseObject {
 	private Long partyId;
 	private Long districtId;
 	private Boolean hasAlliances;
+	private String reportLevel;
 		
 	public List<ConstituencyPositionDetailVO> getPartyWinners() {
 		return partyWinners;
@@ -332,6 +333,14 @@ public class PartyPerformanceReportVO extends BaseObject {
 	public void setPrevYeartotalPercentageOfVotesWon(
 			BigDecimal prevYeartotalPercentageOfVotesWon) {
 		this.prevYeartotalPercentageOfVotesWon = prevYeartotalPercentageOfVotesWon;
+	}
+
+	public String getReportLevel() {
+		return reportLevel;
+	}
+
+	public void setReportLevel(String reportLevel) {
+		this.reportLevel = reportLevel;
 	}
 
 	
