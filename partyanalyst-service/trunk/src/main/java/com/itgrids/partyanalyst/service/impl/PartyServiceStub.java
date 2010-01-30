@@ -17,7 +17,7 @@ public class PartyServiceStub implements IPartyService {
 	
 	public PartyPerformanceReportVO getPartyPerformanceReport(String state, String district,
 			String party, String year, String electionType, String countryID, int noOfPositionDistribution,
-			BigDecimal majorBand, BigDecimal minorBand, Boolean includeAlliances) {
+			BigDecimal majorBand, BigDecimal minorBand, Boolean includeAlliances,String reportLevel) {
 
 		PartyPerformanceReportVO vo = new PartyPerformanceReportVO();
 		vo.setParty(party);
@@ -335,7 +335,7 @@ public class PartyServiceStub implements IPartyService {
 		return null;
 	}
 
-	public List<PartyPositionDisplayVO> getNthPositionPartyDetails(Long electionType, Long stateID, Long districtID, Long year, Long partyID, boolean alliances, int rank){
+	public List<PartyPositionDisplayVO> getNthPositionPartyDetails(Long electionType, Long stateID, Long districtID, Long year, Long partyID, boolean alliances, int rank,String reportLevel){
 		return null;
 	}
 }
