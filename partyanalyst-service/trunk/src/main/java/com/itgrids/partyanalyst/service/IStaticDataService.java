@@ -25,6 +25,9 @@ public interface IStaticDataService {
 	public boolean hasAlliances(String year, Long electionType, Long partyId);
 	public List<SelectOptionVO> getConstituencies(Long stateId);
 	public List<ConstituencyElection> getConstituencyElections(Long electionID,Long stateId,Long  districtID);
+	public List<ConstituencyElection> getConstituencyElectionsFromNomination(Long electionID,Long stateId,Long districtID,Long rank,Long partyId);
+	public List<ConstituencyElection> getConstituencyElectionsFromNominationWithAlliances(Long electionID,Long stateId,Long districtID,Long rank,List<SelectOptionVO> parties);
+	public List<ConstituencyElection> getConstituencyElectionsFromNominationForCountry(Long electionID,Long stateId,Long countryId,Long rank,Long partyId);
 	public List<SelectOptionVO> getStaticParties();
 	public List<SelectOptionVO> getPartiesForConstituency(Long constituencyId, String electionYear);
 	public List<SelectOptionVO> findTownshipsByTehsilID(String mandalID);
