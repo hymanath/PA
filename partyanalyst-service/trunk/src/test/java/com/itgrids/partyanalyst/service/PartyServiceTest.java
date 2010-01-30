@@ -122,7 +122,7 @@ public class PartyServiceTest {
 				new BigDecimal(5));*/ 
 		
 		PartyPerformanceReportVO valueObject = service.getPartyPerformanceReport("1", "1", "14", "2009", "2","1", 0, new BigDecimal(35),
-				new BigDecimal(5), hasAlliances); 
+				new BigDecimal(5), hasAlliances,"1"); 
 		Assert.assertNotNull(valueObject);
 		Assert.assertNotNull(valueObject.getTotalPercentageOfVotesWon());
 		Assert.assertNotNull(valueObject.getTotalPercentageOfVotesWonPreviousElection());
@@ -190,10 +190,10 @@ public class PartyServiceTest {
 		PartyService service = new PartyService();
 		List<Constituency> constituencies = MockData.getConstituencies();
 		List<ConstituencyElectionResult> elecResults = MockData.getConstituencyElectionResults();
-		
+		List electionResults = null;
 		
 		service.getPartyConstituenciesData(
-				elecResults, selectedParty, true, presentYearPartyPerformanceReportVO);
+				electionResults,elecResults, selectedParty, true, presentYearPartyPerformanceReportVO);
 		
 		List<ConstituencyPositionDetailVO> listWinner = presentYearPartyPerformanceReportVO.getPartyWinners();
 		List<ConstituencyPositionDetailVO> listLooser = presentYearPartyPerformanceReportVO.getPartyLosers();
@@ -210,15 +210,15 @@ public class PartyServiceTest {
 		PartyService service = new PartyService();
 		List<Constituency> constituencies = MockData.getConstituencies();
 		List<ConstituencyElectionResult> elecResults = MockData.getConstituencyElectionResults();
-		
+		List electionResults = null;
 		
 		service.getPartyConstituenciesData(
-				elecResults, selectedParty, true, presentYearPartyPerformanceReportVO);
+				electionResults,elecResults, selectedParty, true, presentYearPartyPerformanceReportVO);
 		List<ConstituencyPositionDetailVO> presentWinners =  presentYearPartyPerformanceReportVO.getPartyWinners();
 		List<ConstituencyPositionDetailVO> presentLoosers = presentYearPartyPerformanceReportVO.getPartyLosers();
 
 		service.getPartyConstituenciesData(
-				elecResults,selectedParty, true, previousYearPartyPerformanceReportVO);
+				electionResults,elecResults,selectedParty, true, previousYearPartyPerformanceReportVO);
 		List<ConstituencyPositionDetailVO> previousWinners = previousYearPartyPerformanceReportVO.getPartyWinners();
 		List<ConstituencyPositionDetailVO> previousLoosers = previousYearPartyPerformanceReportVO.getPartyLosers();
 		
@@ -237,6 +237,7 @@ public class PartyServiceTest {
 		PartyService service = new PartyService();
 		List<Constituency> constituencies = MockData.getConstituencies();
 		List<ConstituencyElectionResult> elecResults = MockData.getConstituencyElectionResults();
+		List electionResults = null;
 		/*Set<Constituency>  constituencyList = new HashSet<Constituency>();
 		constituencyList.addAll(constituencies);
 		*/
@@ -247,12 +248,12 @@ public class PartyServiceTest {
 		BigDecimal prevElectionTotalPercentageOfVotesWon = new BigDecimal(0);
 		
 		service.getPartyConstituenciesData(
-				elecResults, selectedParty, true, presentYearPartyPerformanceReportVO);
+				electionResults,elecResults, selectedParty, true, presentYearPartyPerformanceReportVO);
 		List<ConstituencyPositionDetailVO> presentWinners = presentYearPartyPerformanceReportVO.getPartyWinners();
 		List<ConstituencyPositionDetailVO> presentLoosers = presentYearPartyPerformanceReportVO.getPartyLosers();
 
 		service.getPartyConstituenciesData(
-				elecResults, selectedParty, true, previousYearPartyPerformanceReportVO);
+				electionResults,elecResults, selectedParty, true, previousYearPartyPerformanceReportVO);
 		List<ConstituencyPositionDetailVO> previousWinners = previousYearPartyPerformanceReportVO.getPartyWinners();
 		List<ConstituencyPositionDetailVO> previousLoosers = previousYearPartyPerformanceReportVO.getPartyLosers();
 		
@@ -280,9 +281,10 @@ public class PartyServiceTest {
 		PartyService service = new PartyService();
 		List<Constituency> constituencies = MockData.getConstituencies();
 		List<ConstituencyElectionResult> elecResults = MockData.getConstituencyElectionResults();
+		List electionResults = null;
 		
 		service.getPartyConstituenciesData(
-				elecResults, selectedParty, true, presentYearPartyPerformanceReportVO);
+				electionResults,elecResults, selectedParty, true, presentYearPartyPerformanceReportVO);
 		List<ConstituencyPositionDetailVO> listWinner = presentYearPartyPerformanceReportVO.getPartyWinners();
 		List<ConstituencyPositionDetailVO> listLooser = presentYearPartyPerformanceReportVO.getPartyLosers();
 		Map<String, List<ConstituencyPositionDetailVO>> marginDiffDataWin = service
@@ -398,7 +400,7 @@ public class PartyServiceTest {
 		service.setElectionDAO(electionDAO);
 		service.setStaticDataService(staticDataService);
 		
-		List<PartyPositionDisplayVO> actualResult = service.getNthPositionPartyDetails(1L, 1L, null, 2009L, 1L, true, 5);
+		List<PartyPositionDisplayVO> actualResult = service.getNthPositionPartyDetails(1L, 1L, null, 2009L, 1L, true, 5,"3");
 		Assert.assertEquals(1, actualResult.size());
 		
 		
