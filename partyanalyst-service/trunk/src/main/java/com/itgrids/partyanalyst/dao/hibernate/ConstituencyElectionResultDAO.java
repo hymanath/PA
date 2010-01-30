@@ -128,4 +128,28 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
         });
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyElectionResult> findByElectionTypeAndYearAndCountry(Long electionTypeId,String year,Long countryId){
+		Object params[] = {electionTypeId,year,countryId};
+		return getHibernateTemplate().find("from ConstituencyElectionResult model where model.constituencyElection.election.electionScope.electionType.electionTypeId = ? and model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.countryId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findByElectionTypeIdAndYearAndStateId(Long electionTypeId, String electionYear, Long stateId){
+		Object params[] = {electionTypeId,electionYear,stateId};
+		return getHibernateTemplate().find("select model.constituencyElection.constituencyElectionResult,model.constituencyElection,model.constituencyElection.constituency from ConstituencyElectionResult model where model.constituencyElection.election.electionScope.electionType.electionTypeId = ? and model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.state.stateId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findByElectionTypeIdAndYearAndCountryId(Long electionTypeId,String year,Long countryId){
+		Object params[] = {electionTypeId,year,countryId};
+		return getHibernateTemplate().find("select model.constituencyElection.constituencyElectionResult,model.constituencyElection,model.constituencyElection.constituency from ConstituencyElectionResult model where model.constituencyElection.election.electionScope.electionType.electionTypeId = ? and model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.countryId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findByElectionTypeIdYearStateIdDistrictId(Long electionTypeId, String electionYear, Long stateId, Long districtId){
+		Object params[] = {electionTypeId,electionYear,stateId,districtId};
+		return getHibernateTemplate().find("select model.constituencyElection.constituencyElectionResult,model.constituencyElection,model.constituencyElection.constituency from ConstituencyElectionResult model where model.constituencyElection.election.electionScope.electionType.electionTypeId = ? and model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.state.stateId = ? and model.constituencyElection.constituency.district.districtId = ?",params);
+	}
+	
 }
