@@ -42,7 +42,7 @@ public class Cadre extends BaseModel{
 	 //private Long villageId;
 	 private Township village;
 	 private Long boothId;
-	 private Hamlet hamlet = new Hamlet();
+	 private Hamlet hamlet = null;
 	 
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -188,7 +188,7 @@ public class Cadre extends BaseModel{
 		this.cadreLevelValue = cadreLevelValue;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hamlet_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)

@@ -1,11 +1,8 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
-import java.util.Map;
-
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Cadre;
 /**
  * 
@@ -51,6 +48,7 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<String> getMobileNosByConstituency(Long userID, Long constituencyId);
 	public List<String> getMobileNosByMandal(Long userID, Long mandalID);
 	public List<String> getMobileNosByVillage(Long userID, Long villageID); 
+	public List<String> getMobileNosByHamlet(Long userID, Long hamletID);
 	
 	public List<String> getMobileNosByCadreLevel(Long userID, Long level);
 	
@@ -61,6 +59,6 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List<Cadre> findCadresByConstituency(Long constituencyID, Long userID);
 	public List<Cadre> findCadresByMandal(Long mandalID, Long userID);
 
-	public List getCadreSizeByHamlet(Long revenueVillageID, Long userID);
+	public List getCadreSizeByHamlet(String revenueVillageIDs, Long userID);
 	public List<Cadre> findCadresByHamlet(Long hamletID, Long userID);
 }

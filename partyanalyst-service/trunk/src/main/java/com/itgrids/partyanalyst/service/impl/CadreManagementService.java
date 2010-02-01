@@ -759,7 +759,15 @@ public class CadreManagementService {
 		}else if("MANDAL".equals(type)){
 			list = cadreDAO.getMobileNosByMandal(userID, value);
 		}else if("VILLAGE".equals(type)){
-			list = cadreDAO.getMobileNosByVillage(userID, value);
+			String village = value.toString();
+			
+			if(IConstants.TOWNSHIP_TYPE.equals(village.substring(0, 1))){
+				log.debug("TownshipID::::"+new Long(village.substring(1)));
+				list = cadreDAO.getMobileNosByVillage(userID, new Long(village.substring(1)));
+			} else {
+				log.debug("HamletID::::"+new Long(village.substring(1)));
+				list = cadreDAO.getMobileNosByHamlet(userID, new Long(village.substring(1)));
+			}
 		}else if("CADRE_LEVEL".equals(type)){
 			list = cadreDAO.getMobileNosByCadreLevel(userID, value);
 		}
@@ -777,19 +785,60 @@ public class CadreManagementService {
 
 		return mobileNos;
 	}
-	
+	/**
+	 *  retrieving the ids and names for the region(District, Tehsil, Township/Hamlet)
+	 * @param userID
+	 * @param id
+	 * @param region
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> findRegionByCadreScope(Long userID,Long id, String region){
 		List list = new ArrayList();
-		if("STATE".equals(region)){
-			list = cadreDAO.findDistCadresByState(id,userID);
-		}else if("DISTRICT".equals(region)){
-			list = cadreDAO.findConstituencyCadresByDist(id,userID);
-		}else if("CONSTITUENCY".equals(region)){
-			list = cadreDAO.findMandalCadresByConstituency(id,userID);
-		}else if("MANDAL".equals(region)){
+		List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		if("MANDAL".equals(region)){
 			list = cadreDAO.findVillageCadresByMandal(id,userID);
-		} 
-		List<SelectOptionVO> result = dataFormatTo_SelectOptionVO(list);
+			int size = list.size();
+			StringBuilder revenueVillageIDs = new StringBuilder();
+			for(int i = 0; i<size; i++){
+				Object[] obj = (Object[]) list.get(i);
+				//Township constists of 2 types: township and revenue village
+				if("T".equals(obj[3].toString())){
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId(new Long(IConstants.TOWNSHIP_TYPE+obj[0].toString()));
+					selectOptionVO.setName(obj[1].toString());
+					result.add(selectOptionVO);
+				}else{
+					revenueVillageIDs.append(",").append(obj[0].toString());
+				}
+			}
+			// retrieving hamlets from the revenue villages
+			if(revenueVillageIDs.length()>0){
+				List hamlets = cadreDAO.getCadreSizeByHamlet(revenueVillageIDs.toString().substring(1), userID);
+				int hamletSize = hamlets.size();
+				for(int i = 0; i<hamletSize; i++){
+					Object[] obj = (Object[]) hamlets.get(i);
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId(new Long(IConstants.HAMLET_TYPE+obj[0].toString()));
+					selectOptionVO.setName(obj[1].toString());
+					result.add(selectOptionVO);
+				}
+			}
+			
+		} else {
+			SelectOptionVO selectOptionVO = new SelectOptionVO(0L,"select District");
+			if("STATE".equals(region)){
+				list = cadreDAO.findDistCadresByState(id,userID);
+			}else if("DISTRICT".equals(region)){
+				list = cadreDAO.findConstituencyCadresByDist(id,userID);
+				selectOptionVO.setName("select Constituency");
+			}else if("CONSTITUENCY".equals(region)){
+				list = cadreDAO.findMandalCadresByConstituency(id,userID);
+				selectOptionVO.setName("select Tehsil");
+			}
+			result = dataFormatTo_SelectOptionVO(list);
+			result.add(0, selectOptionVO);
+		}
 		return result;
 	}
 	
@@ -840,7 +889,7 @@ public class CadreManagementService {
 
 	@SuppressWarnings("unchecked")
 	public List<CadreRegionInfoVO> getCadreSizeByHamlet(Long revenueVillageID, Long userID){
-		List hamletCadres = cadreDAO.getCadreSizeByHamlet(revenueVillageID, userID);
+		List hamletCadres = cadreDAO.getCadreSizeByHamlet(revenueVillageID.toString(), userID);
 		int size = hamletCadres.size();
 		List<CadreRegionInfoVO> formattedData = new ArrayList<CadreRegionInfoVO>();
 		for(int i=0; i<size;i++){

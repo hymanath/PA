@@ -8,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.model.Cadre;
+import com.itgrids.partyanalyst.model.Hamlet;
 
 
 /**
@@ -239,12 +240,19 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return results;
 	}
 
-
 	@SuppressWarnings("unchecked")
 	public List<String> getMobileNosByVillage(Long userID, Long villageID) {
-		Long[] ids = {userID, villageID};
+		Object[] ids = {userID, villageID};
 		List<String> results = getHibernateTemplate().find("select  model.mobile from Cadre model " +
 				"where model.registration.registrationId = ? and model.village.townshipId=?", ids);
+		return results;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> getMobileNosByHamlet(Long userID, Long hamletID) {
+		Long[] ids = {userID, hamletID};
+		List<String> results = getHibernateTemplate().find("select  model.mobile from Cadre model " +
+				"where model.registration.registrationId = ? and model.hamlet.hamletId=?", ids);
 		return results;
 	}
 
@@ -295,11 +303,11 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	}
 
 	@SuppressWarnings("unchecked")
-	public List getCadreSizeByHamlet(Long revenueVillageID, Long userID){
-		Object[] params = {userID,revenueVillageID};
+	public List getCadreSizeByHamlet(String revenueVillageIDs, Long userID){
 		List  results = getHibernateTemplate().find("Select model.hamlet.hamletId, model.hamlet.hamletName, " +
 				"count(model.hamlet.hamletId) from Cadre model " +
-				"where model.registration.registrationId = ? and model.village.townshipId=? group by model.hamlet.hamletId order by model.hamlet.hamletName", params); 
+				"where model.registration.registrationId = ? and model.village.townshipId in (" + revenueVillageIDs +")"+
+				"group by model.hamlet.hamletId order by model.hamlet.hamletName", userID); 
 		return results;
 	}
 	/*@SuppressWarnings("unchecked")
