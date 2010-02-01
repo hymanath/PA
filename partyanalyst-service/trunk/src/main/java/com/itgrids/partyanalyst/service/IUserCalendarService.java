@@ -31,7 +31,7 @@ public interface IUserCalendarService {
 	public List<SelectOptionVO> getCadresByRegionType(Long userID, String regionType, Long regionID);
 	public List<ImportantDatesVO> saveUserImpDate(ImportantDatesVO importantDatesVO);
 	public UserEventVO getUserPlannedEvent(Long eventID);
-	public List<ImportantDatesVO> getUserImpDate(Long impDateID, String dateType);
+	public List<ImportantDatesVO> getUserImpDate(Long impDateID, String dateType, Calendar calendar);
 	public CadreManagementVO getUserImpDateAndEvent(RegistrationVO user, Calendar calendar);
 	public void deleteUserImpDate(Long impDateID);
 	
