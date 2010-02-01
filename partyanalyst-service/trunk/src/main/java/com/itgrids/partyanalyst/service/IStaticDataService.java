@@ -33,7 +33,7 @@ public interface IStaticDataService {
 	public List<SelectOptionVO> findTownshipsByTehsilID(String mandalID);
 
 
-	public ConstituenciesStatusVO getConstituenciesForDistrict(Long districtId,Long electionYear);
+	public ConstituenciesStatusVO getConstituenciesForDistrict(Long districtId,Long electionYear, String electionType);
 	
 	public List<MandalVO>	getMandalsForDistrict(Long districtId);
 	

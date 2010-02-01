@@ -304,13 +304,13 @@ public class StaticDataService implements IStaticDataService {
 	 */	
 	@SuppressWarnings("unchecked")
 	public ConstituenciesStatusVO getConstituenciesWinnerInfo(Long districtId){
-		log.debug("DistrictPageService.getConstituenciesWinnerInfo()...started");
+		log.debug("DistrictPageService.getConstituenciesWinnerInfo()...started started..");
 		List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
 
 		Long electionYear = new Long(delimitationYear.get(0).toString()) ;
 
 		log.debug("DistrictPageService.getConstituenciesWinnerInfo() delimitationYear:"+electionYear);
-		ConstituenciesStatusVO constituenciesStatusVO = getConstituenciesForDistrict(districtId, electionYear);
+		ConstituenciesStatusVO constituenciesStatusVO = getConstituenciesForDistrict(districtId, electionYear, IConstants.ASSEMBLY_ELECTION_TYPE);
 		
 		List<SelectOptionVO> constituencies = (constituenciesStatusVO.getExistConstituencies());
 		constituencies.addAll(constituenciesStatusVO.getNewConstituencies());
@@ -348,10 +348,10 @@ public class StaticDataService implements IStaticDataService {
 	 */	
 	
 	@SuppressWarnings("unchecked")
-	public ConstituenciesStatusVO getConstituenciesForDistrict(Long districtId,Long electionYear){
+	public ConstituenciesStatusVO getConstituenciesForDistrict(Long districtId,Long electionYear, String electionType){
 		ConstituenciesStatusVO constituencyVO = new ConstituenciesStatusVO();
 	
-		List result  = constituencyDAO.findConstituencyByDistrictId(districtId);
+		List result  = constituencyDAO.findConstituencyByDistrictElectionType(districtId,electionType);
 		List<SelectOptionVO> deleteList= constituencyVO.getDeletedConstituencies();
 		List<SelectOptionVO> existList= constituencyVO.getExistConstituencies();
 		List<SelectOptionVO> newList= constituencyVO.getNewConstituencies();
