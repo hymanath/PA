@@ -447,6 +447,10 @@
 		cursor:pointer;		
 		font-weight:bold;
 	}
+	.smsColumnHeaderTable th
+	{
+		width:150px;
+	}
 </style>
 
 <script type="text/javascript">
@@ -624,7 +628,7 @@
 	function buildSMSPopup()
 	{
 		smsDialog = new YAHOO.widget.Dialog("myDialog",
-				{ width : "600px", 
+				{ width : "700px", 
 	              fixedcenter : true, 
 	              visible : false,  
 	              constraintoviewport : true, 
@@ -1421,13 +1425,14 @@
 	}
 	function sendSMS()
 	{
+		val='';
 		for( i = 0; i < document.smsForm.region_type_radio.length; i++ )
 		{
 			if( document.smsForm.region_type_radio[i].checked == true )
 				val = document.smsForm.region_type_radio[i].value;
 		}
 		
-		var valSelect = document.getElementById(val+"Select");
+		var valSelect = document.getElementById("sms_"+val+"Select");
 		var textAreaElmt = document.getElementById("smsTextArea");
 
 		textAreaElmtValue = textAreaElmt.value
@@ -3330,7 +3335,7 @@
 			<div class="hd">Cadre SMS Page</div> 
 			<div class="bd"> 
 				 <s:form action="cadreRegisterAction" method="POST" theme="simple" name="smsForm">
-					<table>
+					<table class="smsColumnHeaderTable">
 						<tr>
 							<th align="left">SMS Type</th>
 							<td align="left">
