@@ -360,7 +360,10 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		}
 		else if(jObj.getString("taskType").equalsIgnoreCase("impDate"))
 		{
-			importantDatesVOs =  userCalendarService.getUserImpDate(new Long(eventId), eventType);
+			Calendar cal = Calendar.getInstance();
+			cal.set(new Integer(jObj.getString("currentYear")).intValue(), new Integer(jObj.getString("currentMonth")).intValue(),new Integer(jObj.getString("currentDay")).intValue());
+			//cal.set(year, month, date);
+			importantDatesVOs =  userCalendarService.getUserImpDate(new Long(eventId), eventType, cal);
 			result = "impDate";
 		}
 			
