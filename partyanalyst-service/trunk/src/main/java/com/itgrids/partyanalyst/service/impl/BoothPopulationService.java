@@ -364,6 +364,13 @@ public class BoothPopulationService implements IBoothPopulationService{
 				totalVoters = (Double)values[2];
 				validVotes = (Double)values[3];
 				votesGainedByParty = (Double)values[4];
+				if(validVotes == null || validVotes == 0){
+					List votes = nominationDAO.findValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear("MPTC", "2001", new Long(844));
+					validVotes = (Double)votes.get(0);
+				}
+				if(totalVoters == null)
+					totalVoters = 0D;
+				validVotes = votesGainedByParty;
 				partyVotesPercentage = calculateVotesPercengate(validVotes.longValue(), votesGainedByParty.longValue());
 				
 				mandalAllElectionDetailsVO.setCandidateName(IConstants.MPTC_ELECTION_TYPE);
