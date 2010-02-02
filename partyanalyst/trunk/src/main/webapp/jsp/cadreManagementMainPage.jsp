@@ -2354,7 +2354,7 @@
 		var str='';
 		if(jsObj.task == "createEvent" || jsObj.task == "updateCreateEvent")
 		{			
-			str+='<div id="ImpEvent_'+results.userEventsId+'" class="eventSummaryDiv"';
+			str+='<div id="ImpEvent_'+results.userEventsId+'" class="eventSummaryDiv">';
 			//str+='onmouseover="displayEditCloseIcons(this.id)" ';
 			//str+='onmouseout="hideEditCloseIcons(this.id)">';
 			str+='<span id="cadreSpan_'+results.userEventsId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impEvent\','+results.userEventsId+')"> X </span>';
@@ -2365,7 +2365,7 @@
 		}
 		else if(jsObj.task == "createImpDateEvent" || jsObj.task == "updateImpDateEvent")
 		{			
-			str+='<div id="ImpDate_'+results[0].importantDateId+'" class="eventSummaryDiv"';	
+			str+='<div id="ImpDate_'+results[0].importantDateId+'" class="eventSummaryDiv">';	
 			//str+='onmouseover="displayEditCloseIcons(this.id)" ';
 			//str+='onmouseout="hideEditCloseIcons(this.id)">';
 			str+='<span id="cadreSpan_'+results[0].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+results[0].importantDateId+')"> X </span>';
@@ -3469,7 +3469,7 @@
 			var str='';
 			if(type == "impEvents")
 			{
-				str+='<div id="ImpEvent_'+eventsarr[i].userEventsId+'" class="eventSummaryDiv"';
+				str+='<div id="ImpEvent_'+eventsarr[i].userEventsId+'" class="eventSummaryDiv">';
 				//str+='onmouseover="displayEditCloseIcons(this.id)" ';
 				//str+='onmouseout="hideEditCloseIcons(this.id)">';
 				str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impEvent\','+eventsarr[i].userEventsId+')"> X </span>';
@@ -3478,7 +3478,7 @@
 			}			
 			else if(type == "impDates")
 			{
-				str+='<div id="ImpDate_'+eventsarr[i].importantDateId+'" class="eventSummaryDiv"';	
+				str+='<div id="ImpDate_'+eventsarr[i].importantDateId+'" class="eventSummaryDiv">';	
 				//str+='onmouseover="displayEditCloseIcons(this.id)" ';
 				//str+='onmouseout="hideEditCloseIcons(this.id)">';
 				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+eventsarr[i].importantDateId+')"> X </span>';
