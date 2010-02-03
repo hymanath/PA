@@ -11,7 +11,7 @@
 <body>
 <table>
 	<tr>
-		<td>Successfully added the MPTC Election Data</td>
+		<td>Successfully added the Election Data</td>
 	</tr>
 	<tr>
 		<td>No. of constituency Election Results added:</td>

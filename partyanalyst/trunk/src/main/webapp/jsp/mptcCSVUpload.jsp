@@ -87,6 +87,7 @@
 			<td>Election Type</td>
 			<td><select name="electionTypeID" id="electionTypeID">
 				<option value="3">MPTC</option>
+				<option value="4">ZPTC</option>
 			</select></td>
 		</tr>
 		<tr>
