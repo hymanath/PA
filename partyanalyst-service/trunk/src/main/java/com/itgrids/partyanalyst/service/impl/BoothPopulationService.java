@@ -370,7 +370,6 @@ public class BoothPopulationService implements IBoothPopulationService{
 				}
 				if(totalVoters == null)
 					totalVoters = 0D;
-				validVotes = votesGainedByParty;
 				partyVotesPercentage = calculateVotesPercengate(validVotes.longValue(), votesGainedByParty.longValue());
 				
 				mandalAllElectionDetailsVO.setCandidateName(IConstants.MPTC_ELECTION_TYPE);
