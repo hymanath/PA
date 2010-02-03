@@ -111,9 +111,10 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Constituency> findByConstituencyNameDistrictIdTehsilName(String constituencyName, Long districtID, String tehsilName){
-		Object[] params = {constituencyName.toUpperCase(),districtID,tehsilName.toUpperCase()};
-		return getHibernateTemplate().find("from Constituency model where upper(model.name)=? and model.district.districtId = ? and upper(model.tehsil.tehsilName)=?",params);
+	public List<Constituency> findByConstituencyNameDistrictIdTehsilName(String constituencyName, Long districtID, String tehsilName, Long electionScopeID){
+		Object[] params = {constituencyName.toUpperCase(),districtID,tehsilName.toUpperCase(),  electionScopeID};
+		return getHibernateTemplate().find("from Constituency model where upper(model.name)=? and model.district.districtId = ? " +
+				"and upper(model.tehsil.tehsilName)=? and model.electionScope.electionScopeId=?",params);
 	}
 	
 	@SuppressWarnings("unchecked")

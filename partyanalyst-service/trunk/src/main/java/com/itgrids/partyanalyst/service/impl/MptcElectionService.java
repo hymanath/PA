@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
@@ -35,6 +36,7 @@ import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Nomination;
@@ -60,8 +62,11 @@ public class MptcElectionService implements IMptcElectionService {
 	private ICandidateResultDAO candidateResultDAO;
 	private IPartyDAO partyDAO;
 	private IElectionScopeDAO electionScopeDAO;
+	private IDistrictDAO districtDAO;
 	private static Logger log = Logger.getLogger(MptcElectionService.class);
 	private Map<String, Integer> excelHeaderData = new HashMap<String, Integer>();
+	
+	private String constituencyMptcZptc;
 		
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
@@ -106,6 +111,10 @@ public class MptcElectionService implements IMptcElectionService {
 		this.electionScopeDAO = electionScopeDAO;
 	}
 
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
 	/**
 	 * reading the header column names and maintaining the column numbers for reading the data
 	 * @param cells
@@ -116,7 +125,7 @@ public class MptcElectionService implements IMptcElectionService {
 		// thats why working with 2 ArrayList objects
 		List<String> mandatoryHeaders = new ArrayList<String>();
 		List<String> headers = new ArrayList<String>();
-		mandatoryHeaders.add(IConstants.MPTC_NAME);//
+		mandatoryHeaders.add(constituencyMptcZptc);//
 		mandatoryHeaders.add(IConstants.CANDIDATE_NAME);//
 		mandatoryHeaders.add(IConstants.PARTY_NAME);//
 		mandatoryHeaders.add(IConstants.CANDIDATE_VOTES_EARNED);//
@@ -138,6 +147,7 @@ public class MptcElectionService implements IMptcElectionService {
 		headers.add(IConstants.CONSTITUENCY_TOTAL_VOTES);//
 		headers.add(IConstants.CONSTITUENCY_TOTAL_VOTES_POLLED);//
 		headers.add(IConstants.CONSTITUENCY_VALID_VOTES);//
+		headers.add(IConstants.ELECTION_UPLOAD_DISTRICT_COLUMN);
 		
 		for(String header : mandatoryHeaders){
 			boolean notAvailable = true;
@@ -154,9 +164,12 @@ public class MptcElectionService implements IMptcElectionService {
 		}
 		
 		for(String header : headers){
+			log.debug("Column Names::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 			for(Cell cell : cells){
+				log.debug(cell.getContents());
 				if(header.equals(cell.getContents())){
 					excelHeaderData.put(header,cell.getColumn());
+					log.debug("Selected Column Name::"+cell.getContents());
 				}
 			}
 		}
@@ -185,7 +198,7 @@ public class MptcElectionService implements IMptcElectionService {
 			public Object doInTransaction(TransactionStatus txStatus) {
 				MPTCElectionResultVO resultVO = new MPTCElectionResultVO();
 				try{
-					MptcElectionService.this.readAndInsertData(resultVO);
+					readAndInsertData(resultVO);
 					
 				}catch(Exception ex){
 					txStatus.setRollbackOnly();
@@ -234,6 +247,13 @@ public class MptcElectionService implements IMptcElectionService {
 			throw new CsvException("ElectionScope is null or in election_scope table more than one set of values exist for type_id-"+
 					electionTypeID +	"countryID-" + countryID + " stateID-" + stateID);
 		ElectionScope electionScope = electionScopes.get(0);
+		String type = electionScope.getElectionType().getElectionType();
+		if(IConstants.MPTC_ELECTION_TYPE.equals(type)){
+			constituencyMptcZptc = IConstants.MPTC_NAME;
+		}else{
+			constituencyMptcZptc = IConstants.ZPTC_NAME;
+		}
+		
 		Election election = checkAndInsertElection(electionScope,year);
 		
 		List<Candidate> candidates = candidateDAO.getAll();
@@ -242,13 +262,21 @@ public class MptcElectionService implements IMptcElectionService {
 		int rowNo = 0;
 		Sheet sheet = workbook.getSheet(0);
 		addExcelHeaderInfo(sheet.getRow(rowNo++));
+		log.debug("constituencyMptcZptc:"+constituencyMptcZptc);
+		log.debug("IConstants.ZPTC_NAME:"+IConstants.ZPTC_NAME);
+		log.debug("districtID:"+districtID);
+		log.debug("excelHeaderData.get(IConstants.ELECTION_UPLOAD_DISTRICT_COLUMN):"+excelHeaderData.get(IConstants.ELECTION_UPLOAD_DISTRICT_COLUMN));
+		if(constituencyMptcZptc == IConstants.ZPTC_NAME && districtID==0 
+				&& excelHeaderData.get(IConstants.ELECTION_UPLOAD_DISTRICT_COLUMN)==null){
+			throw new CsvException("District Name is not available in Excel File and district is not selected in the election upload page ");
+		}
 		int totalRows = sheet.getRows();
 		//boolean sheetFlag = true;
 		log.debug("Excel sheet total rows::::::::::::::::::::::::::::::::"+totalRows);
 		while(rowNo<totalRows){// ||sheetFlag){
 			if(log.isDebugEnabled())
 				log.debug("MptcElectionService.readAndInsertData() rowNo:"+rowNo);
-			String constituencyName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MPTC_NAME),rowNo)).getContents());
+			String constituencyName=checkCellData((sheet.getCell(excelHeaderData.get(constituencyMptcZptc),rowNo)).getContents());
 			String tehsilName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MANDAL_NAME),rowNo)).getContents());
 			if((constituencyName==null || constituencyName.length()==0)&&(tehsilName==null || tehsilName.length()==0)){
 				rowNo++;
@@ -256,18 +284,31 @@ public class MptcElectionService implements IMptcElectionService {
 			}
 			if(constituencyName==null || constituencyName.length()==0)
 				throw new CsvException("Constituency Name is empty in Excel File " +
-						" Row No:" + rowNo + " Column No:" + excelHeaderData.get(IConstants.MPTC_NAME));
+						" Row No:" + rowNo + " Column No:" + excelHeaderData.get(constituencyMptcZptc));
 			
 
 			if(tehsilName==null || tehsilName.length()==0)
 				throw new CsvException("Tehsil Name is empty in Excel File " +
 						" Row No:" + rowNo + " Column No:" + excelHeaderData.get(IConstants.MANDAL_NAME));
 			
+			if(excelHeaderData.get(IConstants.ELECTION_UPLOAD_DISTRICT_COLUMN)!=null ){
+				String district = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.ELECTION_UPLOAD_DISTRICT_COLUMN),rowNo)).getContents());
+
+				if(district==null || district.length()==0)
+					throw new CsvException("District Name is empty in Excel File " +
+							" Row No:" + rowNo + " Column No:" + excelHeaderData.get(IConstants.ELECTION_UPLOAD_DISTRICT_COLUMN));
+				List<District> districts = districtDAO.getDistrictIDByStateIDAndDistrictName(stateID, district);
+				if(district==null || districts.size()!=1){
+					throw new CsvException("District Name is not available in DB or more than 1 available " +
+							" Row No:" + rowNo + " Column No:" + excelHeaderData.get(IConstants.ELECTION_UPLOAD_DISTRICT_COLUMN));
+				}
+				districtID = districts.get(0).getDistrictId();
+			}
 			List<Constituency> constituencies = constituencyDAO.findByConstituencyNameDistrictIdTehsilName(
-					constituencyName, districtID, tehsilName);
+					constituencyName, districtID, tehsilName, electionScope.getElectionScopeId());
 			if(constituencies==null || constituencies.size()==0)
 				throw new CsvException("Constituency " + constituencyName + " not exist in DB and Excel File " +
-						" Row No:" + rowNo + " Column No:" + excelHeaderData.get(IConstants.MPTC_NAME));
+						" Row No:" + rowNo + " Column No:" + excelHeaderData.get(constituencyMptcZptc));
 			
 			int candidateSize = getConstituencyCandidateSize(sheet, rowNo,totalRows);
 			
@@ -286,19 +327,20 @@ public class MptcElectionService implements IMptcElectionService {
 			
 			ConstituencyElectionResult constituencyElectionResult = new ConstituencyElectionResult();
 			constituencyElectionResult.setConstituencyElection(constituencyElection);
-			constituencyElectionResult = collectConstituencyElectionResultData(sheet, constituencyElectionResult, rowNo);
+			constituencyElectionResult = collectConstituencyElectionResultData(sheet, constituencyElectionResult, rowNo,candidateSize);
 			
 			resultVO.addConstituencyElectionResults();
 			addCandidateResultToDB(sheet, rowNo, candidateSize, candidates, parties, constituencyElection,resultVO,constituencyElectionResult.getValidVotes());
 			log.debug("MptcElectionService.readAndInsertData() candidateSize:"+candidateSize);			
 			rowNo = rowNo + candidateSize;
-			/*constituencyName = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MPTC_NAME), rowNo)).getContents());
+			/*constituencyName = checkCellData((sheet.getCell(excelHeaderData.get(constituencyMptcZptc), rowNo)).getContents());
 			String candidateName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_NAME), rowNo)).getContents());
 			if((constituencyName==null || constituencyName.length()==0) && (candidateName==null || candidateName.length()==0)){
 				sheetFlag = false;
 				log.info("End of the File since No Candidate and Constituency Name exist in excel sheet at Row No. :"+rowNo);
 			}*/
 		}
+		excelHeaderData = new HashMap<String, Integer>();
 	}
 	/**
 	 *  reading constituency election result data from excel sheet and save to data base
@@ -310,7 +352,7 @@ public class MptcElectionService implements IMptcElectionService {
 	 */
 	private ConstituencyElectionResult collectConstituencyElectionResultData(
 			Sheet sheet, ConstituencyElectionResult constituencyElectionResult,
-			int rowNo) throws Exception {
+			int rowNo, int candidateSize) throws Exception {
 		String constituencyName = constituencyElectionResult.getConstituencyElection().getConstituency().getName();
 
 		String totalVotes = null;
@@ -382,10 +424,39 @@ public class MptcElectionService implements IMptcElectionService {
 							" Row No:" + rowNo + " Column No:" + excelHeaderData.get(IConstants.CONSTITUENCY_MISSING_VOTES));
 				}
 			}
-		}	
+		}
+		if(constituencyElectionResult.getValidVotes()==null){
+			constituencyElectionResult.setValidVotes(getConstituencyValidVotes(sheet, rowNo, candidateSize));
+		}
 		constituencyElectionResult = constituencyElectionResultDAO.save(constituencyElectionResult);
 		
 		return constituencyElectionResult;
+	}
+	/**
+	 * sum of candidates earned votes w.r.t the constituency
+	 * @param sheet
+	 * @param rowNo
+	 * @param candidateSize
+	 * @return
+	 * @throws CsvException
+	 */
+	private Double getConstituencyValidVotes(Sheet sheet,int rowNo, int candidateSize) throws CsvException{
+		double validVotes =0;
+		for(int i=0; i<candidateSize; i++){
+			String candidateVotesEarned = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_VOTES_EARNED), rowNo+i)).getContents());
+			if(candidateVotesEarned==null || candidateVotesEarned.length()==0)
+				throw new CsvException("Candidate earned Votes is not valid in Excel File " +
+						" Row No:" + (rowNo+i) + " Column No:" + excelHeaderData.get(IConstants.CANDIDATE_VOTES_EARNED));
+			try{
+				double votesEarned =Double.parseDouble(candidateVotesEarned);
+				validVotes += votesEarned;
+			}catch(NumberFormatException ex){
+				throw new CsvException("Candidate earned Votes is not valid number in Excel File " +
+						" Row No:" + (rowNo+i) + " Column No:" + excelHeaderData.get(IConstants.CANDIDATE_VOTES_EARNED));
+			
+			}
+		}
+		return validVotes;
 	}
 	
 	/**
@@ -404,7 +475,7 @@ public class MptcElectionService implements IMptcElectionService {
 									ConstituencyElection constituencyElection,
 									MPTCElectionResultVO resultVO, Double constituencyTotalValidVotes) throws Exception{
 		double[] array = new double[candidateSize];
-		double totalSumOfCandidateVotes = 0;
+		//double totalSumOfCandidateVotes = 0;
 		for(int i=0; i<candidateSize; i++){
 			String candidateVotesEarned = checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_VOTES_EARNED), rowNo+i)).getContents());
 			if(candidateVotesEarned==null || candidateVotesEarned.length()==0)
@@ -413,7 +484,7 @@ public class MptcElectionService implements IMptcElectionService {
 			try{
 				double votesEarned =Double.parseDouble(candidateVotesEarned) ;
 				array[i] = votesEarned;
-				totalSumOfCandidateVotes += votesEarned;
+				//totalSumOfCandidateVotes += votesEarned;
 			}catch(NumberFormatException ex){
 				throw new CsvException("Candidate earned Votes is not valid number in Excel File " +
 						" Row No:" + (rowNo+i) + " Column No:" + excelHeaderData.get(IConstants.CANDIDATE_VOTES_EARNED));
@@ -476,9 +547,9 @@ public class MptcElectionService implements IMptcElectionService {
 								IConstants.CANDIDATE_VOTES_PERCENTAGE),rowNo + i)
 						).getContents()));
 			} else {
-				if(constituencyTotalValidVotes==null || constituencyTotalValidVotes==0L){
+				/*if(constituencyTotalValidVotes==null || constituencyTotalValidVotes==0L){
 					constituencyTotalValidVotes = totalSumOfCandidateVotes;
-				}
+				}*/
 				Double percentage = 0D;
 				if(constituencyTotalValidVotes!=0D)
 					percentage = (votes*100)/constituencyTotalValidVotes;
@@ -509,12 +580,12 @@ public class MptcElectionService implements IMptcElectionService {
 	private int getConstituencyCandidateSize(Sheet sheet, int row, int totalRows){
 		int candidateSize = 0;
 		boolean candidateFlag = true;
-		String prevConstituencyName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MPTC_NAME),row)).getContents());
+		String prevConstituencyName=checkCellData((sheet.getCell(excelHeaderData.get(constituencyMptcZptc),row)).getContents());
 		//String candidateName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_NAME),row)).getContents());
 		candidateSize++;
 		row++;
 		while(candidateFlag){
-			String presentConstituencyName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.MPTC_NAME),row)).getContents());
+			String presentConstituencyName=checkCellData((sheet.getCell(excelHeaderData.get(constituencyMptcZptc),row)).getContents());
 			boolean isNewConstituency = (presentConstituencyName!=null) && (presentConstituencyName.length()>0) && !prevConstituencyName.equals(presentConstituencyName);
 			String candidateName=checkCellData((sheet.getCell(excelHeaderData.get(IConstants.CANDIDATE_NAME),row)).getContents());
 			if(candidateName.length()==0 || isNewConstituency){

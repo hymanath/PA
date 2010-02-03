@@ -34,6 +34,10 @@ public interface IConstants {
 	public final static String CONSTITUENCY_REJECTED_VOTES = "CONSTITUENCY_REJECTED_VOTES";//ok
 	public final static String CONSTITUENCY_RESERVATION_ZONE = "CONSTITUENCY_RESERVATION_ZONE";
 //MPTC  data upload column names in excel sheet - end
+
+	public final static String ZPTC_NAME = "ZPTC_NAME";
+	public final static String ELECTION_UPLOAD_DISTRICT_COLUMN = "DISTRICT";
+	
 	public static final String MPTC = "MPTC";
 	public static final String CALL_CENTER = "Call Center";
 	public static final String USER = "User";
