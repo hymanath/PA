@@ -35,9 +35,11 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 		Long userID = user.getRegistrationID();
 		Long partyID = user.getParty();
 		try{
-			List<UserEventVO> userPlannedEvents =userCalendarService.getUserPlannedEvents(userID,Calendar.getInstance());
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.DAY_OF_MONTH, -1);
+			List<UserEventVO> userPlannedEvents =userCalendarService.getUserPlannedEvents(userID,calendar);
 			cadreManagementVO.setUserEvents(userPlannedEvents);
-			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserImpDates(user,Calendar.getInstance());
+			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserImpDates(user,calendar);
 			cadreManagementVO.setUserImpDates(userImpDatesList);
 			Map<String,Long> cadresByCadreLevel = cadreManagementService.getCadreLevelCadresCount(userID);
 			cadreManagementVO.setCadresByCadreLevel(cadresByCadreLevel);
