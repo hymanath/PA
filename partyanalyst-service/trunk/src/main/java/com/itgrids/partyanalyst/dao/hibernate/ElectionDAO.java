@@ -176,4 +176,10 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		}
 		return null;
 	}
+	
+	public List<Election> findByElectionTypeCountry(Long typeId, Long countryID){
+		Object[] params = {typeId, countryID};
+		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId = ? " +
+				"and model.electionScope.country.countryId=?", params);
+	}
 }

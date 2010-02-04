@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
 import com.itgrids.partyanalyst.model.Election;
@@ -14,7 +16,8 @@ import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
  *
  */
 public class PartyResultService extends BasePartyResultsServiceImpl{
-	
+
+	private final static Logger log = Logger.getLogger(PartyResultService.class);
 	public List<Election> getElections(ElectionScope scope){
 		List<Election> list = getElectionDAO().findByElectionScope(scope.getElectionScopeId());
 		return list;
@@ -35,8 +38,15 @@ public class PartyResultService extends BasePartyResultsServiceImpl{
 	public List<PartyResultInfoVO> getPartyResultsInfo(String partyShortName, Long typeId, Long countryID, Long stateID, 
 			Long districtID, Long constituencyID, ElectionScopeLevelEnum level){
 		List<PartyResultInfoVO> result = new ArrayList<PartyResultInfoVO>();
-		ElectionScope scope = getElectionScope(typeId, countryID, stateID);
-		List<Election> elections = getElections(scope);
+		List<Election> elections = null;
+		if(stateID==null){
+
+			elections = getElectionDAO().findByElectionTypeCountry(typeId, countryID);
+		}else{
+
+			ElectionScope scope = getElectionScope(typeId, countryID, stateID);
+			elections = getElections(scope);
+		}
 		
 		// competetorSize value should be taken from the configuration 
 		int competetorSize = 3;
