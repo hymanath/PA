@@ -239,7 +239,7 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 		long grandTotalVotes = partyInfoVO.getPartyTotalVotes().longValue();
 		BigDecimal result = new BigDecimal(0);
 		if(constituencyGrandTotalValidVotes!=0){
-			result = new BigDecimal((grandTotalVotes*100)/constituencyGrandTotalValidVotes);
+			result = new BigDecimal((grandTotalVotes*100.0)/constituencyGrandTotalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP);;
 		}
 		return result;
 	}
