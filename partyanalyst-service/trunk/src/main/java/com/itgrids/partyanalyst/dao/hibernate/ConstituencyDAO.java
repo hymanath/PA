@@ -42,7 +42,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	
 	@SuppressWarnings("unchecked")
 	public List<Constituency> findByStateId(Long stateId) {
-		return getHibernateTemplate().find("from Constituency model where model.state.stateId = ? order by name",stateId);
+		return getHibernateTemplate().find("from Constituency model where model.state.stateId = ? order by model.name",stateId);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -77,13 +77,14 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	
 	@SuppressWarnings("unchecked")
 	public List<Constituency> findByElectionScope(Long scopeID){
-		return getHibernateTemplate().find("from Constituency model where model.electionScope.electionScopeId = ?",scopeID);
+		return getHibernateTemplate().find("from Constituency model where model.electionScope.electionScopeId = ? " +
+				" order by model.name",scopeID);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Constituency> getConstituenciesByDistrictID (Long districtID)
 	{
-		return getHibernateTemplate().find("from Constituency model where model.district.districtId = ?",districtID);
+		return getHibernateTemplate().find("from Constituency model where model.district.districtId = ?  order by model.name",districtID);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -126,5 +127,10 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	public List<Long> getStateIdByConstituencyId(Long constituencyId){
 		return getHibernateTemplate().find("select model.state.stateId from Constituency model where" +
 				" model.constituencyId = ?",constituencyId);
+	}
+	
+	public List<Constituency> findByElectionScopeState(Long scopeID, Long stateID){
+		Object[] params = {scopeID, stateID};
+		return getHibernateTemplate().find("from Constituency model where model.electionScope.electionScopeId = ? and model.state.stateId=?  order by model.name",params);
 	}
 }

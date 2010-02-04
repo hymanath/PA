@@ -86,7 +86,7 @@ public class ConstituencySearchService implements IConstituencySearchService{
 			scopeID = scope.getElectionScopeId();
 		}
 		
-		List<Constituency> constituencies = constituencyDAO.findByElectionScope(scopeID);
+		List<Constituency> constituencies = constituencyDAO.findByElectionScopeState(scopeID,stateID);
 		List<SelectOptionVO> selectOptionList=new ArrayList<SelectOptionVO>();
 		for(Constituency constituency:constituencies)
 		{
