@@ -330,7 +330,10 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		
 		userCalendarService.userSubscribePartyImpDates(user.getRegistrationID(),subscribeStatus);
 		user.setSubscribePartyImpDate(subscribeStatus);
-		List<ImportantDatesVO> userImpDates = userCalendarService.getUserImpDates(user,Calendar.getInstance());
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, -1);
+		List<ImportantDatesVO> userImpDates = userCalendarService.getUserImpDates(user,calendar);
 		userSubscribeImpDates.setSubscribeTitle(subscribe);
 		userSubscribeImpDates.setUserImpDates(userImpDates);
 		session.setAttribute("USER", user);
@@ -363,6 +366,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 			Calendar cal = Calendar.getInstance();
 			cal.set(new Integer(jObj.getString("currentYear")).intValue(), new Integer(jObj.getString("currentMonth")).intValue(),new Integer(jObj.getString("currentDay")).intValue());
 			//cal.set(year, month, date);
+			cal.add(Calendar.DAY_OF_MONTH, -1);
 			importantDatesVOs =  userCalendarService.getUserImpDate(new Long(eventId), eventType, cal);
 			result = "impDate";
 		}
@@ -394,7 +398,7 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 		calendar.set(Calendar.DATE, 1);
 		calendar.set(Calendar.MONTH, month);
 		calendar.set(Calendar.YEAR, year);
-		
+		calendar.add(Calendar.DAY_OF_MONTH, -1);
 		cadreManagementVO = userCalendarService.getUserImpDateAndEvent(user, calendar);
 		
 		return SUCCESS;
