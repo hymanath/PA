@@ -227,6 +227,31 @@
 					property="totalWorkingPersons" sortable="true" />
 			</display:table>
 		</div>
+	</div>
+	<div id="partyVoters">
+		
+		<div id="mandalPartyVotersDivHead"><h4><u>Mandal Party Election Voters</u></h4></div>
+
+		<table class="ConstituencyElectionsTable" >	
+		<c:set var="headerData1" value="${partyElectionVotersHeaderDataVO}"/>
+		<tr>
+			<th><c:out value="Party"/></th>
+			<c:forEach var="header1" items="${headerData1.header}" varStatus="status">
+				<th><c:out value="${header1}"/></th>
+			</c:forEach>
+		</tr>
+		<c:forEach var="data1" items="${headerData1.data}" varStatus="status">
+			<tr>
+				<td><c:out value="${data1.partyName}"/></td>
+				<c:forEach var="partyElectionVoter" items="${data1.partyElectionVotersList1}">
+					<td><c:out value="${partyElectionVoter}"/></td>
+				</c:forEach>
+			
+			</tr>
+		
+		</c:forEach>
+		
+		</table>	
 	</div>		
 </div>
 <script type="text/javascript">

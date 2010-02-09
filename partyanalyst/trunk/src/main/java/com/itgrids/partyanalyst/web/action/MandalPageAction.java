@@ -14,6 +14,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 import org.springframework.web.context.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalDataWithChartVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
@@ -39,6 +40,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	private MandalDataWithChartVO mandalDataWithChartVO;
 	private HttpSession session;
 	private ServletContext context;
+	private PartyElectionVotersHeaderDataVO partyElectionVotersHeaderDataVO;
 	
 	public HttpSession getSession() {
 		return session;
@@ -102,6 +104,16 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		this.context = context;
 	}
 	
+	
+	public PartyElectionVotersHeaderDataVO getPartyElectionVotersHeaderDataVO() {
+		return partyElectionVotersHeaderDataVO;
+	}
+
+	public void setPartyElectionVotersHeaderDataVO(
+			PartyElectionVotersHeaderDataVO partyElectionVotersHeaderDataVO) {
+		this.partyElectionVotersHeaderDataVO = partyElectionVotersHeaderDataVO;
+	}
+
 	public String execute() throws Exception {
 		
 		String mandalID = request.getParameter("MANDAL_ID");
@@ -123,7 +135,11 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		if(ex!=null){
 			log.error("exception raised while retrieving mandal details ", ex);
 		}
-		
+		partyElectionVotersHeaderDataVO = delimitationConstituencyMandalService.getPartyElectionVotersForMandal(new Long(mandalID));
+		ex = partyElectionVotersHeaderDataVO.getExceptionEncountered();
+		if(ex!=null){
+			log.error("exception raised while retrieving mandal voters party wise ", ex);
+		}
 		if(log.isDebugEnabled()){
 			log.debug("size============================================"+mandalInfo.size());
 			log.debug("size============================================"+(villageDetailsVO.getVillageCensusList()).size());
