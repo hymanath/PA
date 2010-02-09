@@ -47,5 +47,7 @@ public interface IConstants {
 	public final static String MPTC_ELECTION_TYPE = "MPTC";
 	public final static String ASSEMBLY_ELECTION_TYPE = "Assembly";
 	public final static String PARLIAMENT_ELECTION_TYPE = "Parliament";
+
+	public final static String NOT_APPLICABLE = "N/A";
 	
 }

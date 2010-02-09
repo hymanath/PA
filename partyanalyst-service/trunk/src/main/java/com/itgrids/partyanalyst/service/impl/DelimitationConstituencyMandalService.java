@@ -1,21 +1,31 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 
+import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
+import com.itgrids.partyanalyst.dto.PartyElectionVotersListVO;
+import com.itgrids.partyanalyst.dto.PartyElectionVotersVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.VillageCensusInfoVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
@@ -24,6 +34,7 @@ import com.itgrids.partyanalyst.model.Census;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituencyMandal;
+import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
@@ -36,6 +47,9 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	private IConstituencyDAO constituencyDAO;
 	private ICensusDAO censusDAO;
 	private ITownshipDAO townshipDAO;
+	private IElectionTypeDAO electionTypeDAO;
+	private IElectionDAO electionDAO;
+	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	
 	private static final Logger log = Logger.getLogger(DelimitationConstituencyMandalService.class);
 
@@ -61,7 +75,20 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		this.townshipDAO = townshipDAO;
 	}
 
-	@SuppressWarnings("unchecked")
+	
+	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
+		this.electionTypeDAO = electionTypeDAO;
+	}
+	
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
+	}
+
+	public void setCandidateBoothResultDAO(
+			ICandidateBoothResultDAO candidateBoothResultDAO) {
+		this.candidateBoothResultDAO = candidateBoothResultDAO;
+	}
+
 	public DelimitationConstituencyMandalResultVO getMandalsForDelConstituency(Long constituencyID){
 		if(log.isDebugEnabled())
 			log.debug("DelimitationConstituencyMandalService.java--getMandalsForDelConstituency() ID::"+constituencyID);
@@ -261,10 +288,115 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		obj.setTotalWorkingFemalePersons(villageCensus.getWorkingFemale());
 		obj.setTotalWorkingMalePersons(villageCensus.getWorkingMale());
 	}
+
+	/**
+	 * to retrieves party, election wise voters for a mandal
+	 * @param mandalID
+	 * @return
+	 */
+	public PartyElectionVotersHeaderDataVO getPartyElectionVotersForMandal(Long mandalID){
+		log.debug("DelimitationConstituencyMandalService.getPartyElectionVotersForMandal() started...");
+		Set<String> header = new TreeSet<String>();
+		List<PartyElectionVotersListVO> partyElectionVotersListVOs = new ArrayList<PartyElectionVotersListVO>();
+		Map<String, Set<PartyElectionVotersVO>> partyElectionVotersMap = new LinkedHashMap<String, Set<PartyElectionVotersVO>>();
+		PartyElectionVotersHeaderDataVO partyElectionVotersHeaderDataVO = new PartyElectionVotersHeaderDataVO();
+		
+		List<ElectionType> types = electionTypeDAO.getAll();
+		StringBuilder electionTypeIDs = new StringBuilder();
+		for(ElectionType type: types){
+			electionTypeIDs.append(",").append(type.getElectionTypeId());
+		}
+		if(electionTypeIDs.length()<1){
+			Exception exception = new Exception("Election Types are not available in the DB");
+			partyElectionVotersHeaderDataVO.setExceptionEncountered(exception);
+			return partyElectionVotersHeaderDataVO;
+			
+		}
+		List<String> years = electionDAO.listOfYears();
+		StringBuilder electionYears = new StringBuilder();
+		for(String year:years){
+			electionYears.append(",").append(year);
+		}
+		if(electionYears.length()<1){
+			Exception exception = new Exception("Election Years are not available in the DB");
+			partyElectionVotersHeaderDataVO.setExceptionEncountered(exception);
+			return partyElectionVotersHeaderDataVO;
+			
+		}
+		List partyElectionVoters = candidateBoothResultDAO.findPartyElectionResultForMandal(mandalID, electionTypeIDs.substring(1),electionYears.substring(1));
+		int dbRows = partyElectionVoters.size();
+		log.debug("Party Election voters for the mandal:::::::");
+		for(int i=0; i < dbRows; i++){
+			Object[] rowData = (Object[]) partyElectionVoters.get(i);
+			log.debug(rowData[0].toString()+"-"+rowData[1].toString()+"-"+rowData[2].toString()+"-"+rowData[3].toString());
+			PartyElectionVotersVO electionVoters = new PartyElectionVotersVO();
+			
+			electionVoters.setParty(rowData[0].toString());
+			electionVoters.setElectionType(rowData[1].toString());
+			int year =0;
+			try{
+				year = Integer.parseInt(rowData[2].toString().trim());
+			}catch(Exception e){
+				continue;
+			}
+			electionVoters.setElectionYear(year);
+			header.add(electionVoters.getElectionYear()+IConstants.SPACE+electionVoters.getElectionType());
+			long totalVoters = 0;
+			try{
+				totalVoters = Long.parseLong(rowData[3].toString().trim());
+			}catch(Exception e){
+				continue;
+			}
+			electionVoters.setVoterSize(totalVoters);
+			Set<PartyElectionVotersVO> formattedDataList = partyElectionVotersMap.get(electionVoters.getParty());
+			if(formattedDataList==null){
+				formattedDataList = new TreeSet<PartyElectionVotersVO>();
+				partyElectionVotersMap.put(electionVoters.getParty(), formattedDataList);
+			}
+			formattedDataList.add(electionVoters);
+		}
 	
-	public static void main(String arg[]) throws Exception{
-		String a = "00001";
-		String arr[] = {"YES","NO"};
-		System.out.println(arr[new Integer(a)]);
+		Set<Entry<String,Set<PartyElectionVotersVO>>> parties = partyElectionVotersMap.entrySet();
+		Iterator<Entry<String,Set<PartyElectionVotersVO>>> partiesIterator = parties.iterator();
+		
+		while(partiesIterator.hasNext()){
+			Iterator<String> headerNames = header.iterator();
+			
+			Entry<String,Set<PartyElectionVotersVO>> entry = partiesIterator.next();
+			String party = entry.getKey();
+			Set<PartyElectionVotersVO> partyVotersInfoList = entry.getValue();
+			
+			PartyElectionVotersListVO partyElectionVotersListVO = new PartyElectionVotersListVO();
+			partyElectionVotersListVO.setPartyName(party);
+			List<String> electionVoters = new ArrayList<String>();
+			while(headerNames.hasNext()){
+				String data = getVotersForElection(headerNames.next(), partyVotersInfoList);
+				electionVoters.add(data);
+			}
+			partyElectionVotersListVO.setPartyElectionVotersList1(electionVoters);
+			
+			
+			partyElectionVotersListVOs.add(partyElectionVotersListVO);
+		}
+		partyElectionVotersHeaderDataVO.setHeader(header);
+		partyElectionVotersHeaderDataVO.setData(partyElectionVotersListVOs);
+		return partyElectionVotersHeaderDataVO;
 	}
+	
+
+	private String getVotersForElection(String columnName, Set<PartyElectionVotersVO> partyVotersInfoList){
+		String data = IConstants.NOT_APPLICABLE;
+		Iterator<PartyElectionVotersVO> iterator = partyVotersInfoList.iterator();
+		while(iterator.hasNext()){
+			PartyElectionVotersVO obj = iterator.next();
+			if(columnName.startsWith(obj.getElectionYear().toString()) && columnName.endsWith(obj.getElectionType())){
+				data = obj.getVoterSize().toString();
+				break;
+			}
+		}
+		
+		return data;
+	}
+	
+	
 }

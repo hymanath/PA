@@ -43,4 +43,20 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ?" +
 				" and model.boothConstituencyElection.constituencyElection.election.electionYear = ?",params);
 	}
+	
+	public List findPartyElectionResultForMandal(Long tehsilID,String electionTypeIDs, String electionYears){
+		return getHibernateTemplate().find("select model.nomination.party.shortName, " +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType, " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear, " +
+				"sum(model.votesEarned) from CandidateBoothResult model " +
+				"where model.boothConstituencyElection.booth.tehsil.tehsilId=? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear in (" + electionYears +
+				") and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionTypeId " +
+				"in (" + electionTypeIDs + ") group by model.nomination.party.shortName," +
+						"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType," +
+						"model.boothConstituencyElection.constituencyElection.election.electionYear " +
+						"order by model.nomination.party.shortName, " +
+						"model.boothConstituencyElection.constituencyElection.election.electionYear, " +
+						"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType desc" , tehsilID);
+	}
 }
