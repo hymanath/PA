@@ -51,13 +51,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	*/
 	@SuppressWarnings("unchecked")
 	public List<String> listOfYears(){
-		return ( List<String> ) getHibernateTemplate().execute( new HibernateCallback() {
-            public Object doInHibernate( Session session ) throws HibernateException, SQLException {
-            	String SQL_QUERY = "select distinct election.electionYear from Election election";
-            		Query query = session.createQuery(SQL_QUERY);
-            		return query.list();
-            }
-		});
+		return getHibernateTemplate().find("select distinct election.electionYear from Election election");
 		 
 	}
 
