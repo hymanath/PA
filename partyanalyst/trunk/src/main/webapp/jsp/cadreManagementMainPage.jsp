@@ -416,7 +416,7 @@
 	.ImpDateDetailDivBody
 	{
 		position:absolute;
-		width:360px;
+		width:585px;
 		margin-top:5px;
 		border:2px solid #DBE2F0;
 		background-color:#FAFAFA;
@@ -428,13 +428,24 @@
 		width:150px;
 		padding:2px;
 	}
-	.cadreLevelDivClass,.actioncadreLevelDivClass
+	.cadreLevelDivClass
 	{
 		position:relative;
 		overflow:hidden;
 		z-index:99;
 		background-color:#FFFFFF;
-		display:block;		
+		display:none;		
+		height:30px;
+		border:1px solid #EFEFEF;
+		margin-top:10px;
+	}	
+	.actioncadreLevelDivClass
+	{
+		position:relative;
+		overflow:hidden;
+		z-index:1;
+		background-color:#FFFFFF;
+		display:none;		
 		height:30px;
 		border:1px solid #EFEFEF;
 		margin-top:10px;
@@ -459,9 +470,11 @@
 		font-weight:bold;
 		padding:4px;
 	}
-	.smsColumnHeaderTable th
+	.buttonSpan
 	{
-		width:150px;
+		background-color:#DBE4E9;
+		cursor:pointer;
+		padding:5px;	
 	}
 </style>
 
@@ -516,6 +529,8 @@
 	var eventsRenderArr = new Array();
 	var datesRenderArr = new Array();
 	var eventDateRenderArr = new Array();	
+	var emptyArray = new Array();
+
 
 	function buildLayout()
 	{
@@ -646,7 +661,7 @@
 	function buildSMSPopup()
 	{
 		smsDialog = new YAHOO.widget.Dialog("myDialog",
-				{ width : "700px", 
+				{ width : "600px", 
 	              fixedcenter : true, 
 	              visible : false,  
 	              constraintoviewport : true, 
@@ -994,20 +1009,23 @@
 		
 	}
 	function getUserLocationData(val,type)
-	{
-		var str="cadreLevelDivId_"+type;
-		
-		cadreAnim = new YAHOO.util.Anim(str, {
-			height: {
-				to: 150 
-			} 
-		}, 1, YAHOO.util.Easing.easeOut);
+	{			
+		if(type == 'event' || type == 'Editevent' )
+		{
+			var str="cadreLevelDivId_"+type;
+			
+			cadreAnim = new YAHOO.util.Anim(str, {
+				height: {
+					to: 150 
+				} 
+			}, 1, YAHOO.util.Easing.easeOut);
 
-		cadreAnim.animate();
-
-		var ancElmt = document.getElementById('cadreLevelDivId_'+type+'_anc');
-		if(ancElmt)
+			cadreAnim.animate();
+			var ancElmt = document.getElementById('cadreLevelDivId_'+type+'_anc');
+			if(ancElmt)
 			ancElmt.style.display = 'block';
+		}
+		
 
 		var eventCadreDivHeadElmt = document.getElementById(type+"CadreDivHead");
 		var eventCadreDivBodyElmt = document.getElementById(type+"CadreDivBody");
@@ -1029,7 +1047,8 @@
 	}
 
 
-	function getUsersCadreLevelData(value,type){		
+	function getUsersCadreLevelData(value,type)
+	{		
 		var str="cadreLevelDivId_"+type;
 		
 		cadreAnim = new YAHOO.util.Anim(str, {
@@ -1160,7 +1179,7 @@
 		var region;
 		var elmtId = "cadreLevelDivId_"+regTask;
 
-		animateExpandDiv(elmtId);
+		animateExpandDiv(elmtId,350);
 		
 		var elements = document.getElementsByTagName('input'); 
 		for(var i=0;i<elements.length;i++)
@@ -1195,9 +1214,10 @@
 		callAjax(jsObj, url);
 	}
 	function fillDataOptions(results,jsObj)
-	{	
+	{			
 		//Setting values for region type..
 		var regTask = jsObj.taskType;
+		
 		if(jsObj.taskType == 'sms')
 		{
 			var regionTypeElmtLabel = document.getElementById("region_type_Label");
@@ -1355,14 +1375,16 @@
 	
 	}
 
-	function animateExpandDiv(val)
+	function animateExpandDiv(val,num)
 	{			
 		if(!document.getElementById(""+val))
-			alert("No ID present to close container");
+		{
+			return;
+		}
 				
 		var myAnim = new YAHOO.util.Anim(val, {
 			height: {
-				to: 350 
+				to: num 
 			} 
 		}, 1, YAHOO.util.Easing.easeIn);
 
@@ -1372,9 +1394,20 @@
 	function getCadresForEvent(regTask)
 	{		
 		var region,regionSelect;
-		var elmtId = "cadreLevelDivId_"+regTask;
-
-		animateExpandDiv(elmtId);
+		
+		if(regTask == 'action')
+		{
+			var elmtId = "cadreLevelDivId_eventAction";
+			animateExpandDiv(elmtId,480);
+		}
+		else
+		{
+			var elmtId = "cadreLevelDivId_"+regTask;
+			animateExpandDiv(elmtId,350);
+		}
+				
+		
+		
 
 		var elements = document.getElementsByTagName('input'); 
 
@@ -1455,14 +1488,13 @@
 	}
 	function sendSMS()
 	{
-		val='';
 		for( i = 0; i < document.smsForm.region_type_radio.length; i++ )
 		{
 			if( document.smsForm.region_type_radio[i].checked == true )
 				val = document.smsForm.region_type_radio[i].value;
 		}
 		
-		var valSelect = document.getElementById("sms_"+val+"Select");
+		var valSelect = document.getElementById(val+"Select");
 		var textAreaElmt = document.getElementById("smsTextArea");
 
 		textAreaElmtValue = textAreaElmt.value
@@ -1988,13 +2020,10 @@
 				eventStr+='<div id="eventOrganizersDiv_Body">';
 				for(var cadre in results.organizers)
 				{
-					eventStr+='<div id="'+results.organizers[cadre].id+'_div" class="cadresDivForPanel" ';
-					//eventStr+='onmouseover="javascript:{document.getElementById(\'cadreSpan_\'+id.substring(0,id.indexOf(\'_\'))).style.display=\'block\';}"'; 
-					//eventStr+='onmouseout="javascript:{document.getElementById(\'cadreSpan_\'+id.substring(0,id.indexOf(\'_\'))).style.display=\'none\';}">';
+					eventStr+='<div id="event_'+results.organizers[cadre].id+'_div" class="cadresDivForPanel" ';					
 					eventStr+='<span id="cadreSpan_'+results.organizers[cadre].id+'" class="cadresCloseSpan" onclick="deleteEventCadreFromPanelDiv(this.id,\'event\')"> X </span>';	
 					eventStr+=results.organizers[cadre].name;
-					eventStr+='</div>';			
-					//eventStr+='<div class="cadresDivForPanel" id="'+results.organizers[cadre].id+'_div" onclick="changeToEditableField(this,\'text\',\'impEvent\',\'organizers\')">'+results.organizers[cadre].name+'</div>';
+					eventStr+='</div>';								
 				}
 				eventStr+='</div>';				
 				eventStr+='</div>';				
@@ -2005,17 +2034,47 @@
 			eventStr+='</tr>';
 		}
 		if(results.actionPlans)
-		{
+		{				
+			for(var a=0;a<results.actionPlans.length;a++)
+			{
+				var targetDateObj = getDateTime(results.actionPlans[a].targetDate);
+				var actObj={
+								action:results.actionPlans[a].action,
+								targetDate:targetDateObj.day+'/'+targetDateObj.month+'/'+targetDateObj.year,
+								actionPlanOrganizers:results.actionPlans[a].actionPlanOrganizers	
+						   }
+				actionPlanArray.push(actObj);
+			}
+		
 			eventStr+='<tr>';
 			eventStr+='<th>Action Plan(s)</th>';
+			
 			eventStr+='<td colspan="3">';
+			eventStr+='<div id="actionPlanDiv_Main">';
+			eventStr+='<div id="actionPlanDiv_Head" style="text-align:right;">';
+			eventStr+='<a href="javascript:{}" onclick="editactionPlanForEvent(\'actionPlanDiv_Body\')">Add Action Plan</a>';
+			eventStr+='</div>';
+			eventStr+='<div id="actionPlanDiv_Body">';
+			for(var i in results.actionPlans)
+			{
+				var actionDayobj = getDateTime(results.actionPlans[i].targetDate);	
+				eventStr+='<div id="action_'+results.actionPlans[i].eventActionPlanId+'_div" class="cadresDivForPanel" ';				
+				eventStr+='<span id="cadreSpan_'+results.actionPlans[i].eventActionPlanId+'" class="cadresCloseSpan" onclick="deleteActionPlanFromPanelDiv(this.id,\'event\')"> X </span>';	
+				eventStr+=results.actionPlans[i].action+'-'+actionDayobj.day+'/'+actionDayobj.month+'/'+actionDayobj.year;
+				eventStr+='</div>';							
+			}
+			eventStr+='</div>';				
+			eventStr+='</div>';				
+			eventStr+='</td>';
+
+			/*eventStr+='<td colspan="3">';
 			for(var i in results.actionPlans)
 			{	
 				var actionDayobj = getDateTime(results.actionPlans[i].targetDate);	
 				eventStr+='<div class="eventActionPlanDiv">'+results.actionPlans[i].action+'-'+actionDayobj.day+'/'+actionDayobj.month+'/'+actionDayobj.year+'</div>';	
 				
 			}
-			eventStr+='</td>';
+			eventStr+='</td>';*/
 			eventStr+='</tr>';
 
 		}
@@ -2067,6 +2126,17 @@
 		eventDateDialog.render(); 
 	}
 	
+	function editactionPlanForEvent(id)
+	{
+		var divElmt = document.getElementById(id);
+		if(divElmt)
+			divElmt.innerHTML='';
+
+		var editEventStr=createActionPlan("EditactionPlan");
+		divElmt.innerHTML=editEventStr;		
+		var divElmt = document.getElementById("cadreLevelDivId_EditactionPlan");
+		divElmt.style.display = 'block';
+	}
 	function editOrganizersForEvent(id)
 	{		
 		var divElmt = document.getElementById(id);
@@ -2075,6 +2145,9 @@
 
 		var editEventStr=getOrganisersString("Editevent");
 		divElmt.innerHTML=editEventStr;		
+
+		var divElmt = document.getElementById("cadreLevelDivId_Editevent");
+		divElmt.style.display = 'block';
 	}
 
 	function addCadresToEditEventPanel(type)
@@ -2094,7 +2167,7 @@
 			divElmt = document.getElementById("actionPlansDiv");
 		}
 		
-		console.log(cadreArray);
+		
 		if(cadreArray.length == 0 || !divElmt)
 			return;
 
@@ -2196,8 +2269,7 @@
 			selectedDateObj.task="createImpDateEvent";
 		}*/
 		if(type == 'impEvent')
-		{	
-			
+		{				
 			var eventNameVal = document.getElementById("eventNameText").value;
 			var startDateVal = document.getElementById("startDateText").value;
 			var endDateVal = document.getElementById("endDateText").value;
@@ -2226,7 +2298,7 @@
 			selectedEventObj.locationId=results.locationId;
 			selectedEventObj.desc=descVal;
 			selectedEventObj.organizers = eventCadresArray;
-			selectedEventObj.actionPlans = results.actionPlans;
+			selectedEventObj.actionPlans = actionPlanArray;
 			selectedEventObj.isDeleted = "NO";
 			selectedEventObj.task="updateCreateEvent";
 
@@ -2300,7 +2372,7 @@
 					task:"showSelectedDateEvent"
 				  }
 		
-		console.log(jsObj);
+		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/showImpDateEvent.action?"+rparam;		
 		callAjax(jsObj,url);
@@ -2319,6 +2391,7 @@
 					taskType:taskType,					
 					task:"showSelectedDateEvent_nonEditable"
 				  }
+		
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/showImpDateEvent.action?"+rparam;		
@@ -2560,9 +2633,22 @@
 	{
 		
 	}
+	function removeElementsArray(arr)
+	{	
+		if(!arr && arr.length == 0)
+			return;
+		
+		for(var i=0;arr.length!=0;i++)
+			arr.pop();
+		
+	}
 	function buildNewEventPopup()
-	{
-
+	{		
+		
+		removeElementsArray(eventCadresArray);
+		removeElementsArray(actionCadresArray);
+		removeElementsArray(actionPlanArray);
+		
 		var elmt = document.getElementById('cadreManagementMainDiv');
 		var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();
 				
@@ -2674,11 +2760,29 @@
 		eventStr+='</tr>';
 		eventStr+='</table>';
 		
+		eventStr+='<table class="selectedDateEvent" width="100%">';
+		eventStr+='<tr>';
+		eventStr+='<th>Organizers</th>';
+		eventStr+='<td><div id="eventCadresDiv"><span style="color:#CFCFCF">No Organizers For Event</span></div></td>';		
+		eventStr+='</tr>';
+		eventStr+='<tr>';
+		eventStr+='<td colspan="2" align="right"><span class="buttonSpan" onclick="javascript:{document.getElementById(\'cadreLevelDivId_event\').style.display=\'block\';}">Add Organizers</span></td>';		
+		eventStr+='</tr>';
+		eventStr+='</table>';
 		eventStr+=getOrganisersString("event");
-		eventStr+='<div id="eventCadresDiv"></div>';		
 		
-		//eventStr+=createActionPlan("eventAction");
-		//eventStr+='<div id="actionPlansDiv"></div>';		
+		eventStr+='<table class="selectedDateEvent" width="100%">';
+		eventStr+='<tr>';
+		eventStr+='<th><div id="actionPlanDiv_Label">Action Plans</div></th>';
+		eventStr+='<td><div id="actionPlanDiv_Body"><span style="color:#CFCFCF">No Action Plans For Event</span></div></td>';		
+		eventStr+='</tr>';
+		eventStr+='<tr>';
+		eventStr+='<td colspan="2" align="right"><span class="buttonSpan" onclick="javascript:{document.getElementById(\'cadreLevelDivId_eventAction\').style.display=\'block\';removeElementsArray(actionCadresArray);}">Add Action Plan</span></td>';		
+		eventStr+='</tr>';
+		eventStr+='</table>';
+		eventStr+='<div id="actionPlansDiv"></div>';
+		eventStr+=createActionPlan("eventAction");
+				
 
 		/*eventStr+='<table class="cadreLevelDivClass">';
 		eventStr+='<tr>';
@@ -2690,12 +2794,10 @@
 
 		/*eventStr+='<tr>';
 		eventStr+='<td colspan="4" align="right"><a href="javascript:{}" onclick="createActionPlan()"> Create Action Plan</a></td>';		
-		eventStr+='</tr>';*/
-
-
-		eventStr+='<div id="actionDetailsDiv">';
-		eventStr+='</div>';
-		eventStr+='</div>';
+		eventStr+='</tr>';
+		eventStr+='<div id="actionDetailsDiv"></div>';*/
+		
+		eventStr+='</div></div>';
 
 		divChild.innerHTML=eventStr;
 		elmt.appendChild(divChild);
@@ -2725,16 +2827,21 @@
 		var str='';
 		str+='<div id="cadreLevelDivId_'+regTask+'" class="actioncadreLevelDivClass">';
 		str+='<div id="cadreLevelDivId_'+regTask+'_inner" class="actioncadreLevelDivClassInner">';
-		str+='<table class="selectedDateEvent">';
+		str+='<table class="selectedDateEvent" width="100%">';
 
 		str+=getActionPlanString(actObj,"false","",regTask);
-
 		str+='<tr>';
-		str+='<td align="right"> <input type="button" value="Add" onclick="addActionPlanToEvent()"/></td>';
-		str+='<td align="left"> <input type="button" value="cancel" onclick="javascript:{document.getElementById(\'actionDetailsDiv\').innerHTML=\'\';}"/></td>';
+		str+='<th><div id="cadresForActionPlanDiv_Label"></div></th>';
+		str+='<td>';
+		str+='<div id="cadresForActionPlanDiv_Body"></div>';
+		str+='</td>';
 		str+='</tr>';
-		str+='</table>';
-		str+='<div></div>';
+		str+='<tr>';
+		str+='<td align="right"> <input type="button" value="Add" onclick="addActionPlanToEvent(\''+regTask+'\')"/></td>';
+		str+='<td align="left"> <input type="button" id="cadreLevelDivId_'+regTask+'_anc" value="cancel" onclick="clearActionPlanDetails(this.id,\''+regTask+'\')"/></td>';
+		str+='</tr>';
+		str+='</table>';		
+		str+='</div></div>';
 
 		return str;
 	}
@@ -2748,6 +2855,9 @@
 			str+='<td><input type="text" id="actionPlanText" size ="60" onfocus="expandActionPlansDiv(\''+regTask+'\')"  name="actionPlanText"/></td>';
 		else if(status == "true")
 			str+='<td><input type="text" id="actionPlanText_'+index+'" size ="60" name="actionPlanText" value="'+actObj.actionPlan+'"/></td>';
+		str+='<td  align="right">';			
+		str+='<a id="cadreLevelDivId_'+regTask+'_anc" href="javascript:{}" onclick="closeCadresInfoDiv(this.id,\''+regTask+'\')">Close</a>';
+		str+='</td>';	
 		str+='</tr>';
 		str+='<tr>';
 		str+='<th>Target Date</th>';
@@ -2763,18 +2873,38 @@
 			str+='<div id="actionTargetDateText_'+index+'_Div" class="tinyDateCal"></div>';
 		}
 		str+='</td>';
-		str+='</tr>';
-		str+='<tr>';		
+		str+='</tr>';				
 		if(status == "false")
 		{
-			//str+=getOrganisersString("action");
+			str+='<tr>';
+			str+='<th>Organisers Level</th>';		
+			str+='<td colspan="2">';
+			str+='<input type="radio" name="sms_type" value="locationWise" onclick="getUserLocationData(this.value,\'action\')"/> Location Wise';	
+			str+='<input type="radio" name="sms_type" value="cadreLevelWise" onclick="getUsersCadreLevelData(this.value,\'action\')"/> Cadre Level Wise';
+			str+='</td>';			
+			str+='</tr>';
+			
+			str+='<tr>';		
+			str+='<th align="left"><div id="action_region_type_Label"></div></th>';
+			str+='<td align="left"><div id="action_region_type_Data"></div></td>';				
+			str+='</tr><tr>';		
+			str+='	<th align="left"><div id="action_region_select_Label">	</div></th>';
+			str+='	<td align="left"><div id="action_region_select_Data">	</div>';
+			str+=' <div id="action_region_submit"></div></td>';
+			str+='</tr>';
+			str+='<tr>';		
+			str+='<th><div id="actionCadreDivHead"></div></th>';
+			str+='<td colspan="3"><div id="actionCadreDivBody"></div></td>';		
+			str+='</tr>';					
 		}
 		else if(status == "true")
 		{
+			str+='<tr>';
 			str+='<th>Organisers</th>';
 			str+='<td><select id="actionOrganisersSelect_'+index+'"><option> Select Organisers</option></select</td>';
+			str+='</tr>';
 		}
-		str+='</tr>';
+			
 
 		return str;
 	}
@@ -2785,11 +2915,14 @@
 		
 		cadreAnim = new YAHOO.util.Anim(str, {
 			height: {
-				to: 200 
+				to: 310 
 			} 
 		}, 1, YAHOO.util.Easing.easeOut);
 
 		cadreAnim.animate();
+
+		var elmt = document.getElementById('cadreLevelDivId_'+type+'_anc');
+		elmt.style.display = 'block';
 	}
 
 	function getOrganisersString(regTask)
@@ -2799,13 +2932,13 @@
 		eventStr+='<div id="cadreLevelDivId_'+regTask+'_inner" class="cadreLevelDivClassInner">';
 		eventStr+='<table class="selectedDateEvent" width="100%">';
 		eventStr+='<tr>';
-		eventStr+='<th>Organisers Level</th>';		
+		eventStr+='<th>Select Organizers</th>';		
 		eventStr+='<td colspan="2">';
-		eventStr+='<input type="radio" name="sms_type" value="locationWise" onclick="getUserLocationData(this.value,\''+regTask+'\')"/> Location Wise';	
+		eventStr+='<input type="radio" name="sms_type" value="locationWise" onclick="javascript:{getUserLocationData(this.value,\''+regTask+'\')}"/> Location Wise';	
 		eventStr+='<input type="radio" name="sms_type" value="cadreLevelWise" onclick="getUsersCadreLevelData(this.value,\''+regTask+'\')"/> Cadre Level Wise';
 		eventStr+='</td>';
 		eventStr+='<td  align="right">';			
-		eventStr+='<a style="display:none;" id="cadreLevelDivId_'+regTask+'_anc" href="javascript:{}" onclick="closeCadresInfoDiv(this.id)">Close</a>';
+		eventStr+='<a id="cadreLevelDivId_'+regTask+'_anc" href="javascript:{}" onclick="clearActionPlanDetails(this.id,\''+regTask+'\')">Close</a>';
 		eventStr+='</td>';			
 		eventStr+='</tr>';		
 		eventStr+='<tr>';		
@@ -2826,13 +2959,31 @@
 		return eventStr;
 
 	}
-
-	function closeCadresInfoDiv(id)
+	
+	function clearActionPlanDetails(id,type)
 	{
-		var ancElmt = document.getElementById(id);
+		if(document.getElementById('actionPlanText'))
+			document.getElementById('actionPlanText').value = '';
+		if(document.getElementById('actionTargetDateText'))
+			document.getElementById('actionTargetDateText').value = '';
+		
+		if(document.getElementById("cadresForActionPlanDiv_Label"))
+			document.getElementById("cadresForActionPlanDiv_Label").innerHTML='';
+		if(document.getElementById("cadresForActionPlanDiv_Body"))
+			document.getElementById("cadresForActionPlanDiv_Body").innerHTML='';
+				
+		removeElementsArray(actionCadresArray);
+		removeElementsArray(actionPlanArray);
+
+		closeCadresInfoDiv(id,type);
+	}
+	function closeCadresInfoDiv(id,type)
+	{
+		/*var ancElmt = document.getElementById(id);
 		if(ancElmt)
-			ancElmt.style.display = 'none';
+			ancElmt.style.display = 'none';*/
 		var elmtId = id.substring(0,(id.lastIndexOf('_')));
+	
 		if(!elmtId)
 			alert("No ID present to close container");
 				
@@ -2843,6 +2994,12 @@
 		}, 1, YAHOO.util.Easing.easeIn);
 
 		myAnim.animate();
+
+		cleanCadresInfoDiv(type);
+
+		var animElmt = document.getElementById(elmtId);
+		if(animElmt)
+			animElmt.style.display = 'none';
 	}
 	function showEventForCadres(results,jsObj)
 	{	
@@ -3017,7 +3174,7 @@
 	}
 	
 	function addCadresToEventPanel(type)
-	{
+	{		
 		var cadreArray = new Array();
 
 		if(type == 'Editevent' || type == 'Editaction')
@@ -3030,49 +3187,94 @@
 		{
 			cadreArray = eventCadresArray;
 			divElmt = document.getElementById("eventCadresDiv");
+			if(cadreArray.length == 0 || !divElmt)
+			return;
+
+			var str = '';
+			str+='<table class="selectedCadresDateEvent" width="100%">';			
+			for(var i in cadreArray)
+			{
+				str+='<tr>';					
+				str+='<td>';
+				str+='<div id="cadreNameDiv_'+cadreArray[i].id+'" class="cadresDivForPanel"';
+				//str+='onmouseover="javascript:{document.getElementById(\'cadreSpan_\'+id.substring(id.indexOf(\'_\')+1,id.length)).style.display=\'block\';}"';
+				//str+='onmouseout="javascript:{document.getElementById(\'cadreSpan_\'+id.substring(id.indexOf(\'_\')+1,id.length)).style.display=\'none\';}">';
+				str+='<span id="cadreSpan_'+cadreArray[i].id+'" class="cadresCloseSpan" onclick="closeEventCadrePanelDiv(this.id,\''+type+'\')"> X </span>';			
+				str+=cadreArray[i].name;
+				str+='</div>';			
+				str+='</td>';
+				str+='</tr>';
+			}
+			str+='</table>';
+			if(divElmt)
+				divElmt.innerHTML=str;
 		}
 		else if(type == 'action')
 		{
 			cadreArray = actionCadresArray;
-			divElmt = document.getElementById("actionPlansDiv");
-		}
-				
-		if(cadreArray.length == 0 || !divElmt)
+			divElmt_Label = document.getElementById("cadresForActionPlanDiv_Label");
+			divElmt_Body = document.getElementById("cadresForActionPlanDiv_Body");
+
+			if(cadreArray.length == 0 || !divElmt_Label || !divElmt_Body)
 			return;
 
-		var str = '';
-		str+='<table class="selectedCadresDateEvent" width="100%">';
-		str+='<tr>';	
-		str+='<th>Oragnizers</th>';
-		str+='<td></td>';
-		str+='</tr>';	
-		for(var i in cadreArray)
-		{
-			str+='<tr>';	
-			str+='<th></th>';
-			str+='<td>';
-			str+='<div id="cadreNameDiv_'+cadreArray[i].id+'" class="cadresDivForPanel" onmouseover="javascript:{document.getElementById(\'cadreSpan_\'+id.substring(id.indexOf(\'_\')+1,id.length)).style.display=\'block\';}" onmouseout="javascript:{document.getElementById(\'cadreSpan_\'+id.substring(id.indexOf(\'_\')+1,id.length)).style.display=\'none\';}">';
-			str+='<span id="cadreSpan_'+cadreArray[i].id+'" class="cadresCloseSpan" onclick="closeEventCadrePanelDiv(this.id,\''+type+'\')"> X </span>';			
-			str+=cadreArray[i].name;
-			str+='</div>';			
-			str+='</td>';
-			str+='</tr>';
-		}
-		str+='</table>';
+			var labelstr='';
+			labelstr+='Action Organizers';
+			
+			var str = '';	
+			str+='<div>';	
+			for(var i in cadreArray)
+			{				
+				str+='<div id="cadreNameDiv_'+cadreArray[i].id+'" class="cadresDivForPanel"';
+				//str+='onmouseover="javascript:{document.getElementById(\'cadreSpan_\'+id.substring(id.indexOf(\'_\')+1,id.length)).style.display=\'block\';}" ';
+				//str+='onmouseout="javascript:{document.getElementById(\'cadreSpan_\'+id.substring(id.indexOf(\'_\')+1,id.length)).style.display=\'none\';}">';
+				str+='<span id="cadreSpan_'+cadreArray[i].id+'" class="cadresCloseSpan" onclick="closeEventCadrePanelDiv(this.id,\''+type+'\')"> X </span>';			
+				str+=cadreArray[i].name;
+				str+='</div>';							
+			}
+			str+= '</div>';	
 
-		if(divElmt)
-			divElmt.innerHTML=str;
+			if(divElmt_Label)
+				divElmt_Label.innerHTML=labelstr;
+			if(divElmt_Body)
+				divElmt_Body.innerHTML=str;		
+		}	
+		
+		cleanCadresInfoDiv(type);
+		closeCadresInfoDiv("cadreLevelDivId_"+type+"_anc");
+	}
 
+	function cleanCadresInfoDiv(type)
+	{
+		var actionRegionSelectLabel = document.getElementById(type+'_region_select_Label');
+		var actionRegionSelectData = document.getElementById(type+'_region_select_Data');
+		var actionRegionSubmit = document.getElementById(type+'_region_submit');
+		var actionRegionTypeLabel = document.getElementById(type+'_region_type_Label');
+		var actionRegionTypeData = document.getElementById(type+'_region_type_Data');
 		var eventCadreDivHeadElmt = document.getElementById(type+"CadreDivHead");
 		var eventCadreDivBodyElmt = document.getElementById(type+"CadreDivBody");
 
-		if(eventCadreDivHeadElmt && eventCadreDivBodyElmt)
+
+		if(actionRegionSelectLabel && actionRegionSelectData && actionRegionSubmit && actionRegionTypeLabel && actionRegionTypeData && eventCadreDivHeadElmt && eventCadreDivBodyElmt)
 		{
+			actionRegionSelectLabel.innerHTML="";
+			actionRegionSelectData.innerHTML="";
+			actionRegionSubmit.innerHTML="";
+			actionRegionTypeLabel.innerHTML="";
+			actionRegionTypeData.innerHTML="";
 			eventCadreDivHeadElmt.innerHTML="";
 			eventCadreDivBodyElmt.innerHTML="";
 		}
-		
-		closeCadresInfoDiv("cadreLevelDivId_"+type+"_anc");
+		/*if(type == 'action')
+		{
+			var actionPlanDivLabel = document.getElementById("cadresForActionPlanDiv_Label");
+			var actionPlanDivBody = document.getElementById("cadresForActionPlanDiv_Body");
+			if(actionPlanDivLabel && actionPlanDivBody)
+			{
+				actionPlanDivLabel.innerHTML='';
+				actionPlanDivBody.innerHTML='';
+			}
+		}*/
 	}
 	
 	function closeEventCadrePanelDiv(id,type)
@@ -3081,33 +3283,104 @@
 
 		if(type == 'event')
 		{
-			divElmt = document.getElementById("eventCadresDiv");
-			cadreArray = eventCadresArray;
-			for(var i=0; i<cadreArray.length;i++ )
+			divElmt = document.getElementById("eventCadresDiv");			
+			for(var i=0; i<eventCadresArray.length;i++ )
 			{ 
-				if(cadreArray[i].cadreId==id.substring(id.indexOf('_')+1,id.length))
-					cadreArray.splice(i,1); 
-			} 		
+				if(eventCadresArray[i].id==id.substring(id.indexOf('_')+1,id.length))
+					eventCadresArray.splice(i,1); 
+			} 	
+			if(eventCadresArray.length == 0)
+			divElmt.innerHTML='<span style="color:#CFCFCF">No Organizers For Event</span>';
 		}
 		else if(type == 'action')
 		{
-			divElmt = document.getElementById("actionPlansDiv");
-			cadreArray = actionCadresArray;
+			divElmt = document.getElementById("actionPlansDiv");			
+			for(var i=0; i<actionCadresArray.length;i++ )
+			{ 
+				if(actionCadresArray[i].id==id.substring(id.indexOf('_')+1,id.length))
+					actionCadresArray.splice(i,1); 
+			} 	
+			if(actionCadresArray.length == 0)
+			divElmt.innerHTML='<span style="color:#CFCFCF">No Organizers For Action Plan</span>';
 		}
 		
-		if(cadreArray.length == 0)
-			divElmt.innerHTML="";
-
 		var elmt = document.getElementById("cadreNameDiv_"+id.substring(id.indexOf('_')+1,id.length));
 	
 		if(elmt)
 		elmt.style.display='none';
 	}
 	
-	function addActionPlanToEvent()
-	{
-		var labelDivElmt = document.getElementById("actionPlanLabelDiv");
-		var dataDivElmt = document.getElementById("actionPlanDataDiv");
+	function addActionPlanForEditablePanel(type)
+	{		
+		actionPlansElmt = document.getElementById("actionPlanDiv_Body");
+		var actionDivElmt = document.getElementById("actionDetailsDiv");
+
+		var actionPlanValue = document.getElementById('actionPlanText').value;
+		var targetDateValue = document.getElementById('actionTargetDateText').value;
+		//var organisersSelectElmt = document.getElementById('actionOrganisersSelect');
+		//var organisersValue = organisersSelectElmt.options[organisersSelectElmt.selectedIndex].value;
+		
+		
+		/*var actDemoArray = new Array();
+		for(var a=0;a<actionPlanArray;a++)
+		{
+			var targetDateObj = getDateTime(actionPlanArray[a].targetDate);
+			var actObj={
+							action:actionPlanArray[a].action,
+							targetDate:targetDateObj.day+'/'+targetDateObj.month+'/'+targetDateObj.year,
+							actionPlanOrganizers:actionPlanArray[a].actionPlanOrganizers	
+					   }
+			actDemoArray.push(actObj);
+		}*/
+		
+		var actionObj = {
+							action:actionPlanValue,
+							targetDate:targetDateValue,
+							actionPlanOrganizers:actionCadresArray			
+						};
+		actionPlanArray.push(actionObj);
+
+		
+		
+		var divStr='';
+		divStr+='<div id="newImpDateDiv">';
+		divStr+='<table class="selectedDateEvent" width="100%">';		
+		divStr+='<tr>';		
+		divStr+='<td>';		
+		for(var i=0;i<actionPlanArray.length;i++)
+		{
+			divStr+='<div class="ImpDateDetailDiv" id="actionPlanDiv_'+i+'">';
+			divStr+='<div id="actionPlanDiv_'+i+'_head" class="ImpDateDetailDivHead">';			
+			divStr+='<span id="actionPlanClose_'+actionPlanArray[i].action+'" class="cadresCloseSpan" onclick="deleteActionPlanFormEventPanel(this.id,\''+type+'\')"> X </span>';	
+			divStr+='<span id="actionPlanDiv_'+i+'_head" class="cadresCloseSpan" onclick="showCreatedActionPlan(this.id,\''+type+'\')"> Edit </span>';	
+			divStr+=actionPlanArray[i].action+' - '+actionPlanArray[i].targetDate+'</div>';
+			divStr+='<div id="actionPlanDiv_'+i+'_body" class="ImpDateDetailDivBody"></div>';
+			divStr+='</div>';
+		}
+
+		divStr+='</td>';
+		divStr+='</tr>';
+		divStr+='</table>';
+		divStr+='</div>';
+
+		if(actionPlansElmt)
+			actionPlansElmt.innerHTML = divStr;
+	}
+	function addActionPlanToEvent(type)
+	{	
+		var actionPlansElmt; 
+		if(type == 'eventAction')
+		{			
+			actionPlansElmt = document.getElementById("actionPlanDiv_Body");
+		}
+		else if(type == 'EditactionPlan')
+		{
+			//actionPlansElmt = document.getElementById("actionPlanDiv_Body");
+			addActionPlanForEditablePanel(type);
+			return;
+		}
+
+		
 		var actionDivElmt = document.getElementById("actionDetailsDiv");
 
 		var actionPlanValue = document.getElementById('actionPlanText').value;
@@ -3117,31 +3390,75 @@
 		
 		var actionPlanArrLength = actionPlanArray.length;		
 		var actionObj = {
-							actionPlan:actionPlanValue,
+							action:actionPlanValue,
 							targetDate:targetDateValue,
-							organisers:actionCadresArray			
+							actionPlanOrganizers:actionCadresArray			
 						};
 		actionPlanArray.push(actionObj);
 
-		var divChild = document.createElement('div');
-		divChild.setAttribute('id','newImpDateDiv');
+		var divStr='';
+		divStr+='<div id="newImpDateDiv">';
+		divStr+='<table class="selectedDateEvent" width="100%">';
+		divStr+='<tr>';		
+		divStr+='<td>';		
+		for(var i=0;i<actionPlanArray.length;i++)
+		{
+			divStr+='<div class="ImpDateDetailDiv" id="actionPlanDiv_'+i+'">';
+			divStr+='<div id="actionPlanDiv_'+i+'_head" class="ImpDateDetailDivHead">';			
+			divStr+='<span id="actionPlanClose_'+actionPlanArray[i].action+'" class="cadresCloseSpan" onclick="deleteActionPlanFormEventPanel(this.id,\''+type+'\')"> X </span>';	
+			divStr+='<span id="actionPlanDiv_'+i+'_head" class="cadresCloseSpan" onclick="showCreatedActionPlan(this.id,\''+type+'\')"> Edit </span>';	
+			divStr+=actionPlanArray[i].action+' - '+actionPlanArray[i].targetDate+'</div>';
+			divStr+='<div id="actionPlanDiv_'+i+'_body" class="ImpDateDetailDivBody"></div>';
+			divStr+='</div>';
+		}
 
-		var divStr='<div class="ImpDateDetailDiv" id="actionPlanDiv_'+actionPlanArrLength+'">';
-		divStr+='<div id="actionPlanDiv_'+actionPlanArrLength+'_head" class="ImpDateDetailDivHead" onclick="showCreatedActionPlan(this.id)">'+actionPlanValue+' - '+targetDateValue+'</div>';
-		divStr+='<div id="actionPlanDiv_'+actionPlanArrLength+'_body" class="ImpDateDetailDivBody"></div>';
+		divStr+='</td>';
+		divStr+='</tr>';
+		divStr+='</table>';
 		divStr+='</div>';
-		divChild.innerHTML=divStr;
 
-		if(labelDivElmt)
-			labelDivElmt.innerHTML="Action Plan";
-		if(dataDivElmt)
-			dataDivElmt.appendChild(divChild);
+		if(actionPlansElmt)
+			actionPlansElmt.innerHTML = divStr;
+       
 		if(actionDivElmt)
 			actionDivElmt.innerHTML="";
+		
+		document.getElementById('actionPlanText').value = '';
+		document.getElementById('actionTargetDateText').value = '';
+		if(document.getElementById("cadresForActionPlanDiv_Label"))
+			document.getElementById("cadresForActionPlanDiv_Label").innerHTML='';
+		if(document.getElementById("cadresForActionPlanDiv_Body"))
+			document.getElementById("cadresForActionPlanDiv_Body").innerHTML='';
+		
+
+		cleanCadresInfoDiv('action');
+		closeCadresInfoDiv('cadreLevelDivId_'+type+'_anc');
 
 	}
 
-	function showCreatedActionPlan(divId)
+	function deleteActionPlanFormEventPanel(id,type)
+	{			
+		var actPlan = id.substring(id.indexOf('_')+1,id.length);
+		var actionPlansDiv = document.getElementById("actionPlanDiv_Body");
+
+		for(var i=0;i<actionPlanArray.length;i++)
+		{
+			if(actionPlanArray[i].actionPlan == actPlan)
+				actionPlanArray.splice(i,1);
+		}
+		
+		var elmt = document.getElementById(id);
+		var parent = elmt.parentNode.parentNode;
+		if(parent)
+		{
+			parent.innerHTML='';
+			parent.style.display='none';
+		}
+
+		if(actionPlanArray.length == 0 && actionPlansDiv)
+			actionPlansDiv.innerHTML='<span style="color:#CFCFCF">No Action Plans For Event</span>';	
+	}
+	function showCreatedActionPlan(divId,type)
 	{
 		var score = divId.indexOf('_');	
 		var lastScore = divId.lastIndexOf('_');	
@@ -3162,7 +3479,7 @@
 		str+='<table>';
 		str = getActionPlanString(actionPlanArray[index],"true",index,"");
 		str+='<tr>';
-		str+='<td align="right"> <input type="button" value="Update" onclick="upDateActionPlanToEvent(\''+index+'\')"/></td>';
+		str+='<td align="right"> <input type="button" value="Update" onclick="upDateActionPlanToEvent(\''+index+'\',\''+type+'\')"/></td>';
 		str+='<td align="left"> <input type="button" value="cancel" onclick="hideActionBodyDiv(\''+firstDiv+'\')"/></td>';
 		str+='</tr>';
 		str+='</table>';
@@ -3172,7 +3489,7 @@
 		
 	}
 	
-	function upDateActionPlanToEvent(index)
+	function upDateActionPlanToEvent(index,type)
 	{
 		var actionPlanValue = document.getElementById('actionPlanText_'+index).value;
 		var targetDateValue = document.getElementById('actionTargetDateText_'+index).value;
@@ -3181,15 +3498,20 @@
 		
 		var actionPlanObj= actionPlanArray[index];		
 		
-		actionPlanObj.actionPlan=actionPlanValue;
-		actionPlanObj.targetDate=targetDateValue;
-		actionPlanObj.organisers=organisersValue;
+		actionPlanArray[index].actionPlan=actionPlanValue;
+		actionPlanArray[index].targetDate=targetDateValue;
+		actionPlanArray[index].organisers=[];
 		
 		var headElmt = document.getElementById('actionPlanDiv_'+index+'_head');
 		var bodyElmt = document.getElementById('actionPlanDiv_'+index+'_body');
+		
+		var divStr='';
+		divStr+='<span id="actionPlanClose_'+actionPlanArray[index].actionPlan+'" class="cadresCloseSpan" onclick="deleteActionPlanFormEventPanel(this.id,\''+type+'\')"> X </span>';	
+		divStr+='<span id="actionPlanDiv_'+index+'_head" class="cadresCloseSpan" onclick="showCreatedActionPlan(this.id)"> Edit </span>';	
+		divStr+=actionPlanValue+' - '+targetDateValue+'</div>';
 
 		if(headElmt)
-			headElmt.innerHTML=actionPlanValue+' - '+targetDateValue;
+			headElmt.innerHTML=divStr;
 		if(bodyElmt)
 		{
 			bodyElmt.innerHTML="";
@@ -3208,7 +3530,7 @@
 	}
 
 	function handleSubmit()
-	{		
+	{
 		var eventNameVal = document.getElementById("eventNameText").value;
 		var startDateVal = document.getElementById("startDateText_new").value;
 		var endDateVal = document.getElementById("endDateText_new").value;
@@ -3263,10 +3585,7 @@
 		selectedEventObj.isDeleted="NO";
 		selectedEventObj.task="createEvent";
 
-		
-
 		var rparam ="task="+YAHOO.lang.JSON.stringify(selectedEventObj);
-
 		var url = "<%=request.getContextPath()%>/createEventAction.action?"+rparam;		
 
 		callAjax(selectedEventObj,url);
@@ -3663,7 +3982,7 @@
 			<div class="hd">Cadre SMS Page</div> 
 			<div class="bd"> 
 				 <s:form action="cadreRegisterAction" method="POST" theme="simple" name="smsForm">
-					<table class="smsColumnHeaderTable">
+					<table>
 						<tr>
 							<th align="left">SMS Type</th>
 							<td align="left">
