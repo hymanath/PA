@@ -14,6 +14,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 import org.springframework.web.context.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.CastWiseElectionVotersVO;
 import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalDataWithChartVO;
@@ -41,6 +42,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	private HttpSession session;
 	private ServletContext context;
 	private PartyElectionVotersHeaderDataVO partyElectionVotersHeaderDataVO;
+	private CastWiseElectionVotersVO castWiseElectionVoters;
 	
 	public HttpSession getSession() {
 		return session;
@@ -114,6 +116,14 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		this.partyElectionVotersHeaderDataVO = partyElectionVotersHeaderDataVO;
 	}
 
+	public void setCastWiseElectionVoters(
+			CastWiseElectionVotersVO castWiseElectionVoters) {
+		this.castWiseElectionVoters = castWiseElectionVoters;
+	}
+	public CastWiseElectionVotersVO getCastWiseElectionVoters() {
+		return castWiseElectionVoters;
+	}
+
 	public String execute() throws Exception {
 		
 		String mandalID = request.getParameter("MANDAL_ID");
@@ -140,9 +150,16 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		if(ex!=null){
 			log.error("exception raised while retrieving mandal voters party wise ", ex);
 		}
+
+		castWiseElectionVoters = delimitationConstituencyMandalService.findCastWiseVotersForMandal(new Long(mandalID));
+		ex = castWiseElectionVoters.getExceptionEncountered();
+		if(ex!=null){
+			log.error("exception raised while retrieving mandal voters cast wise ", ex);
+		}
 		if(log.isDebugEnabled()){
 			log.debug("size============================================"+mandalInfo.size());
 			log.debug("size============================================"+(villageDetailsVO.getVillageCensusList()).size());
+			log.debug("size============================================"+castWiseElectionVoters.getCasteVoters().size());
 			log.debug("end of MandalPageAction.execute()");
 		}
 		return SUCCESS;

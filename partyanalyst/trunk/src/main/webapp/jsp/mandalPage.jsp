@@ -6,7 +6,8 @@
 <html>
 <head>
 <!--CSS file (default YUI Sam Skin) --> 
-	<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/datatable/assets/skins/sam/datatable.css"> 	 
+	<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/datatable/assets/skins/sam/datatable.css"> 
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">	 
 	<!-- Dependencies --> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script> 
@@ -29,6 +30,8 @@
  
 	<!-- Source files --> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datatable/datatable-min.js"></script> 
+	<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 <style type="text/css">
 
 
@@ -152,6 +155,74 @@
 	var myDataTable = new YAHOO.widget.DataTable("villageCensusDivBody",resultsColumnDefs, resultsDataSource,{});  
 
 	}
+	function buildCastVotersDataTableTemp()
+	{
+		var localCastStatsColumnDefs = [ 
+		    	            
+		    	            {key:"casteName", label: "Cast", sortable: true}, 
+		    	           	{key:"totalVoters", label: "Total Voters", formatter:"number", sortable: true},
+		    				{key:"voterPercentage", label: "Percentage", formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}	
+		    					    			    				
+		    	        ]; 
+		var localCastStatsDataSource = new YAHOO.util.DataSource(castWiseElectionVoters.casteVoters); 
+		localCastStatsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		localCastStatsDataSource.responseSchema = { 
+            fields: ["casteName", {key: "totalVoters", parser:"number"},{key: "voterPercentage", parser:YAHOO.util.DataSourceBase.parseNumber}] 
+        };
+
+        
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10 
+			    }) 
+				};
+
+		var localCastStatsDataTable =  new YAHOO.widget.DataTable("mandalCastVotersDivBody", localCastStatsColumnDefs, localCastStatsDataSource, myConfigs);
+		constMgmtTabs.getTab(2).addListener("click", function() {localCastStatsDataTable.onShow()});
+
+			return {
+				oDS: localCastStatsDataSource,
+				oDT: localCastStatsDataTable
+			};
+	}
+
+	function buildCastVotersDataTable()
+	{
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("mandalCastVotersTable"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "casteName"
+		}, {
+			key : "totalVoters",parser:"number"
+		}, {
+			key : "voterPercentage", parser:YAHOO.util.DataSourceBase.parseNumber
+		} ]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "casteName",		
+		label : "Cast",
+		sortable : true
+	}, {
+		key : "totalVoters",
+		parser:"number",
+		label : "Total Voters",
+		sortable : true
+	}, {
+		key : "voterPercentage",
+		label : "Percentage",formatter:YAHOO.widget.DataTable.formatFloat,
+		sortable : true
+	} ];
+	var myConfigs = {
+		paginator : new YAHOO.widget.Paginator({
+			rowsPerPage: 10
+		})
+};
+	var myDataTable = new YAHOO.widget.DataTable("mandalCastVotersDivBody",resultsColumnDefs, resultsDataSource,myConfigs);  
+
+	}
 </script>
 </head>
 <body> 
@@ -228,7 +299,7 @@
 			</display:table>
 		</div>
 	</div>
-	<div id="partyVoters">
+	<div id="partyVotersDiv">
 		
 		<div id="mandalPartyVotersDivHead"><h4><u>Mandal Party Election Voters</u></h4></div>
 
@@ -252,10 +323,29 @@
 		</c:forEach>
 		
 		</table>	
-	</div>		
+	</div>
+
+	
+	<div id="mandalCastVotersDiv">
+		<div id="mandalCastVotersDivHead"><h4><u>Mandal Cast Election Voters</u></h4></div>
+		<div id="mandalCastVotersDivBody" class="yui-skin-sam">
+			<display:table id="mandalCastVotersTable" class="searchresultsTable"
+			  name="${castWiseElectionVoters.casteVoters}"
+			defaultorder="ascending" defaultsort="2"
+			style="width:auto;margin-right:20px;">
+				<display:column style="text-align: left;" title="Cast"
+					property="casteName" sortable="true" />
+				<display:column style="text-align: left;" title="Total Voters"
+					property="totalVoters" sortable="true" />
+				<display:column style="text-align: left;" title="Percentage"
+					property="voterPercentage" sortable="true" />
+			</display:table>
+		</div>
+	</div>
 </div>
 <script type="text/javascript">
 	buildCensusDataTable();
+	buildCastVotersDataTable();
 </script>
 </body>
 </html>

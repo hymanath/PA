@@ -236,6 +236,7 @@
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+		<property name="voterDAO" ref="voterDAO" />
 	</bean>
 	
 	 <bean id="crossVotingEstimationService" class="com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService">
