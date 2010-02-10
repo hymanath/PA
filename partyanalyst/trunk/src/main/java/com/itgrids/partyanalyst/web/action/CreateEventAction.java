@@ -238,26 +238,31 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 				
 				for(int j=0;j<size;j++)
 				{
-					JSONObject jsonobj = actionPlans.getJSONObject(j);				
-					String actionPlan = jsonobj.getString("actionPlan");
-					JSONArray actionOrganisers = jsonobj.getJSONArray("organisers");
+					JSONObject jsonobj = actionPlans.getJSONObject(j);	
 					
-					String actionPlanDate = jsonobj.getString("targetDate");
-					int actionOrgSize = actionPlans.length();
-					for(int k=0;k<actionOrgSize;k++)
+					String actionPlan = jsonobj.getString("action");
+					String actionPlanDate = jsonobj.getString("targetDate");					
+					JSONArray actionOrganisers = jsonobj.getJSONArray("actionPlanOrganizers");
+					
+					System.out.println("actionOrganisers = "+actionOrganisers);
+					if(actionOrganisers.length()>0)
 					{
-						JSONObject actionobj = actionOrganisers.getJSONObject(k);
-						String orgID = actionobj.getString("cadreId");
-						String orgName = actionobj.getString("cadreName");
-						
-						SelectOptionVO orgVO = new SelectOptionVO();
-						orgVO.setId(new Long(orgID));
-						orgVO.setName(orgName);	
-						actionOrgList.add(orgVO); 
+						int actionOrgSize = actionOrganisers.length();
+						for(int k=0;k<actionOrgSize;k++)
+						{
+							JSONObject actionobj = actionOrganisers.getJSONObject(k);
+							String orgID = actionobj.getString("id");
+							String orgName = actionobj.getString("name");
+							
+							SelectOptionVO orgVO = new SelectOptionVO();
+							orgVO.setId(new Long(orgID));
+							orgVO.setName(orgName);	
+							actionOrgList.add(orgVO); 
+						}
 					}
 					
 					EventActionPlanVO eventActionPlanVO = new EventActionPlanVO();
-					eventActionPlanVO.setAction("actionPlan");
+					eventActionPlanVO.setAction(actionPlan);
 					eventActionPlanVO.setTargetDate(new Date(actionPlanDate));
 					eventActionPlanVO.setActionPlanOrganizers(actionOrgList);
 					actionPlanList.add(eventActionPlanVO);	
