@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalDataWithChartVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
+import com.itgrids.partyanalyst.dto.GenderAgeWiseVotersVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBoothPopulationService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
@@ -43,6 +44,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	private ServletContext context;
 	private PartyElectionVotersHeaderDataVO partyElectionVotersHeaderDataVO;
 	private CastWiseElectionVotersVO castWiseElectionVoters;
+	private GenderAgeWiseVotersVO genderAgeWiseVoters;
 	
 	public HttpSession getSession() {
 		return session;
@@ -124,6 +126,14 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		return castWiseElectionVoters;
 	}
 
+	public GenderAgeWiseVotersVO getGenderAgeWiseVoters() {
+		return genderAgeWiseVoters;
+	}
+
+	public void setGenderAgeWiseVoters(GenderAgeWiseVotersVO genderAgeWiseVoters) {
+		this.genderAgeWiseVoters = genderAgeWiseVoters;
+	}
+
 	public String execute() throws Exception {
 		
 		String mandalID = request.getParameter("MANDAL_ID");
@@ -156,6 +166,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		if(ex!=null){
 			log.error("exception raised while retrieving mandal voters cast wise ", ex);
 		}
+		genderAgeWiseVoters = delimitationConstituencyMandalService.findGenderAgeWiseVotersForMandal(new Long(mandalID));
 		if(log.isDebugEnabled()){
 			log.debug("size============================================"+mandalInfo.size());
 			log.debug("size============================================"+(villageDetailsVO.getVillageCensusList()).size());

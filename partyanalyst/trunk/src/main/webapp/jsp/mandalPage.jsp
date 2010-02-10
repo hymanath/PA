@@ -342,6 +342,88 @@
 			</display:table>
 		</div>
 	</div>
+	
+	<div id="mandalGenderAgeVotersDiv">
+		<div id="mandalGenderAgeVotersDivHead"><h4><u>Mandal Gender/Age Election Voters</u></h4></div>
+		<div id="mandalGenderAgeVotersDivBody" class="yui-skin-sam">
+			<c:set var="genderAgeVoters" value="${genderAgeWiseVoters}"/>
+			<display:table class="searchresultsTable" name="" id="mandalGenderAgeVotersTable" style="width:auto;margin-right:20px;">
+    			<display:column title="Gender" ><c:out value="Male" /></display:column>
+    			<c:forEach var="maleData" items="${genderAgeVoters.maleVotersAgeWise}" varStatus="male">
+    				<jsp:useBean id="male" type="javax.servlet.jsp.jstl.core.LoopTagStatus" />
+    				<c:choose>
+						<c:when test="<%=male.getIndex() == 1%>">
+							<display:column title="18-23" ><c:out value="${maleData}" /></display:column>
+						</c:when>
+						<c:when test="<%=male.getIndex() == 2%>">
+							<display:column title="23-35" ><c:out value="${maleData}" /></display:column>
+						</c:when>
+						<c:when test="<%=male.getIndex() == 3%>">
+							<display:column title="35-50" ><c:out value="${maleData}" /></display:column>
+						</c:when>
+						<c:when test="<%=male.getIndex() == 4%>">
+							<display:column title="50-65" ><c:out value="${maleData}" /></display:column>
+						</c:when>
+						<c:when test="<%=male.getIndex() == 5%>">
+							<display:column title="65 Above" ><c:out value="${maleData}" /></display:column>
+						</c:when>
+						<c:when test="<%=male.getIndex() == 6%>">
+							<display:column title="Total" ><c:out value="${maleData}" /></display:column>
+						</c:when>
+					</c:choose>
+    			</c:forEach>
+    			<display:column title="Gender" ><c:out value="Female" /></display:column>
+    			<c:forEach var="femaleData" items="${genderAgeVoters.femaleVotersAgeWise}" varStatus="female">
+    				<jsp:useBean id="female" type="javax.servlet.jsp.jstl.core.LoopTagStatus" />
+    				<c:choose>
+						<c:when test="<%=female.getIndex() == 1%>">
+							<display:column title="18-23" ><c:out value="${femaleData}" /></display:column>
+						</c:when>
+						<c:when test="<%=female.getIndex() == 2%>">
+							<display:column title="23-35" ><c:out value="${femaleData}" /></display:column>
+						</c:when>
+						<c:when test="<%=female.getIndex() == 3%>">
+							<display:column title="35-50" ><c:out value="${femaleData}" /></display:column>
+						</c:when>
+						<c:when test="<%=female.getIndex() == 4%>">
+							<display:column title="50-65" ><c:out value="${femaleData}" /></display:column>
+						</c:when>
+						<c:when test="<%=female.getIndex() == 5%>">
+							<display:column title="65 Above" ><c:out value="${femaleData}" /></display:column>
+						</c:when>
+						<c:when test="<%=female.getIndex() == 6%>">
+							<display:column title="Total" ><c:out value="${femaleData}" /></display:column>
+						</c:when>
+					</c:choose>
+    			</c:forEach>
+    			<display:column title="Gender" ><c:out value="Total" /></display:column>
+    			<c:forEach var="totalData" items="${genderAgeVoters.maleVotersAgeWise}" varStatus="total">
+    				<jsp:useBean id="total" type="javax.servlet.jsp.jstl.core.LoopTagStatus" />
+    				<c:choose>
+						<c:when test="<%=total.getIndex() == 1%>">
+							<display:column title="18-23" ><c:out value="${totalData}" /></display:column>
+						</c:when>
+						<c:when test="<%=total.getIndex() == 2%>">
+							<display:column title="23-35" ><c:out value="${totalData}" /></display:column>
+						</c:when>
+						<c:when test="<%=total.getIndex() == 3%>">
+							<display:column title="35-50" ><c:out value="${totalData}" /></display:column>
+						</c:when>
+						<c:when test="<%=total.getIndex() == 4%>">
+							<display:column title="50-65" ><c:out value="${totalData}" /></display:column>
+						</c:when>
+						<c:when test="<%=total.getIndex() == 5%>">
+							<display:column title="65 Above" ><c:out value="${totalData}" /></display:column>
+						</c:when>
+						<c:when test="<%=total.getIndex() == 6%>">
+							<display:column title="Total" ><c:out value="${totalData}" /></display:column>
+						</c:when>
+					</c:choose>
+    			</c:forEach>
+    		</display:table>
+    	</div>
+	</div>
+	
 </div>
 <script type="text/javascript">
 	buildCensusDataTable();
