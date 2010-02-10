@@ -22,5 +22,11 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				" and model.lastName = ? and model.relativeFirstName = ?" +
 				"and model.relativeLastName = ? and model.voterIDCardNo = ?",params);
 	}
+	@SuppressWarnings("unchecked")
+	public List findCastWiseVotersForMandal(Long mandalID){
+		return getHibernateTemplate().find("select model.cast, count(model.cast) from Voter model " +
+				"where model.hamlet.township.tehsil.tehsilId=? " +
+				"group by model.cast order by model.cast",mandalID);
+	}
 	
 }

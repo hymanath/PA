@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -21,6 +22,9 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dto.CastTotalVotersVO;
+import com.itgrids.partyanalyst.dto.CastWiseElectionVotersVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
@@ -50,7 +54,7 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	private IElectionTypeDAO electionTypeDAO;
 	private IElectionDAO electionDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
-	
+	private IVoterDAO voterDAO;
 	private static final Logger log = Logger.getLogger(DelimitationConstituencyMandalService.class);
 
 	public void setDelimitationConstituencyMandalDAO(
@@ -87,6 +91,10 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	public void setCandidateBoothResultDAO(
 			ICandidateBoothResultDAO candidateBoothResultDAO) {
 		this.candidateBoothResultDAO = candidateBoothResultDAO;
+	}
+
+	public void setVoterDAO(IVoterDAO voterDAO) {
+		this.voterDAO = voterDAO;
 	}
 
 	public DelimitationConstituencyMandalResultVO getMandalsForDelConstituency(Long constituencyID){
@@ -398,5 +406,103 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		return data;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public CastWiseElectionVotersVO findCastWiseVotersForMandal(Long mandalID){
+		log.debug("DelimitationConstituencyMandalService.findCastWiseVotersForMandal() stated....");
+		CastWiseElectionVotersVO castWiseElectionVoters = new CastWiseElectionVotersVO();
+
+		List list = voterDAO.findCastWiseVotersForMandal(mandalID);
+		
+		int size = list.size();
+		if(size==0){
+			List censusList = censusDAO.findCastWiseVotersForMandal(mandalID);
+			if(censusList.size()==1){
+				//sc, st
+				Object[] obj = (Object[])censusList.get(0);
+				Object[] obj1 ={"SC", obj[0]};
+				Object[] obj2 ={"ST", obj[1]};
+				list.add(obj1); list.add(obj2);
+			}
+			size = list.size();
+			log.debug("cast data from census table :::sie="+list.size());
+		}
+		long mandalTotalVoters =0;
+		List<CastTotalVotersVO> castTotalVotersVOList = new ArrayList<CastTotalVotersVO>();
+		for(int i=0; i<size; i++){
+			CastTotalVotersVO castTotalVotersVO = new CastTotalVotersVO();
+			try{
+				Object[] obj = (Object[]) list.get(i);
+				castTotalVotersVO.setCasteName(obj[0].toString());
+				Long  voters = new Long(obj[1].toString());
+				mandalTotalVoters += voters;
+				castTotalVotersVO.setTotalVoters(voters);
+			}catch(Exception e){
+				StringBuilder message = new StringBuilder("Problem while reading voters:::");
+				message.append(e.getMessage());
+				Exception ex = new Exception(message.toString());
+				castWiseElectionVoters.setExceptionEncountered(ex);
+				return castWiseElectionVoters;
+			}
+			castTotalVotersVOList.add(castTotalVotersVO);
+			
+		}
+		if(size!=0 && mandalTotalVoters==0){
+			Exception ex = new Exception("No voters available in the Mandal");
+			castWiseElectionVoters.setExceptionEncountered(ex);
+			return castWiseElectionVoters;
+		}
+		for(CastTotalVotersVO cast : castTotalVotersVOList){
+			String voterPercentage = new BigDecimal((cast.getTotalVoters()*100)/mandalTotalVoters).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			cast.setVoterPercentage(voterPercentage);
+		}
+
+		log.debug("final cast data sie="+castTotalVotersVOList.size());
+		castWiseElectionVoters.setCasteVoters(castTotalVotersVOList);
+		return castWiseElectionVoters;
+	}
 	
+	public static void main(String[] args){
+		log.debug("DelimitationConstituencyMandalService.findCastWiseVotersForMandal() stated....");
+		CastWiseElectionVotersVO castWiseElectionVoters = new CastWiseElectionVotersVO();
+
+		//List list = voterDAO.findCastWiseVotersForMandal(mandalID);
+		List list = new ArrayList();
+		Object[] a = {"cast1",199L};list.add(a);
+		Object[] a1 = {"cast2",100L};list.add(a1);
+		Object[] a2 = {"cast3",210L};list.add(a2);
+		Object[] a3 = {"cast4",1500L};list.add(a3);
+		int size = list.size();
+		long mandalTotalVoters =0;
+		List<CastTotalVotersVO> castTotalVotersVOList = new ArrayList<CastTotalVotersVO>();
+		for(int i=0; i<size; i++){
+			CastTotalVotersVO castTotalVotersVO = new CastTotalVotersVO();
+			try{
+				Object[] obj = (Object[]) list.get(i);
+				castTotalVotersVO.setCasteName(obj[0].toString());
+				Long  voters = new Long(obj[1].toString());
+				mandalTotalVoters += voters;
+				castTotalVotersVO.setTotalVoters(voters);
+			}catch(Exception e){
+				StringBuilder message = new StringBuilder("Problem while reading voters:::");
+				message.append(e.getMessage());
+				Exception ex = new Exception(message.toString());
+				castWiseElectionVoters.setExceptionEncountered(ex);
+				//return castWiseElectionVoters;
+			}
+			castTotalVotersVOList.add(castTotalVotersVO);
+			
+		}
+		if(size!=0 && mandalTotalVoters==0){
+			Exception ex = new Exception("No voters available in the Mandal");
+			castWiseElectionVoters.setExceptionEncountered(ex);
+			//return castWiseElectionVoters;
+		}
+		for(CastTotalVotersVO cast : castTotalVotersVOList){
+			String voterPercentage = new BigDecimal((cast.getTotalVoters()*100)/mandalTotalVoters).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			cast.setVoterPercentage(voterPercentage);
+		}
+		
+		castWiseElectionVoters.setCasteVoters(castTotalVotersVOList);
+		//return castWiseElectionVoters;
+	}
 }

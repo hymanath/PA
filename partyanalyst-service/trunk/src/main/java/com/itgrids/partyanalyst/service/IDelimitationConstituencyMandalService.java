@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CastWiseElectionVotersVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
@@ -12,4 +13,5 @@ public interface IDelimitationConstituencyMandalService {
 	public List<MandalInfoVO> getCensusInfoForMandals(String mandalIDs);
 	public VillageDetailsVO getVillagesFormMandal(Long mandalID);
 	public PartyElectionVotersHeaderDataVO getPartyElectionVotersForMandal(Long mandalID);
+	public CastWiseElectionVotersVO findCastWiseVotersForMandal(Long mandalID);
 }

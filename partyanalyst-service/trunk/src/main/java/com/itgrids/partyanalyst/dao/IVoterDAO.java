@@ -12,4 +12,5 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 			String firstName, String lastName, String relativeFirstName,
 			String relativeLastName, String voterIDCardNo);
 
+	public List findCastWiseVotersForMandal(Long mandalID);
 }

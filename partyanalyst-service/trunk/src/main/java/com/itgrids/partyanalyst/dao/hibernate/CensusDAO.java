@@ -15,6 +15,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.model.Census;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICensusDAO {
 
@@ -112,4 +113,9 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 		return getHibernateTemplate().find("from Census model where model.year="+year+" and model.townshipId in ("+townshipIDs +")");
 	}
 
+	public List findCastWiseVotersForMandal(Long mandalID){
+		Object[] params = {mandalID,"Total"};
+		return getHibernateTemplate().find("select model.populationSC, model.populationST " +
+				"from Census model where model.year in ("+IConstants.CENSUS_YEAR+") and model.tehsilId=? and model.tru=?", params);
+	}
 }

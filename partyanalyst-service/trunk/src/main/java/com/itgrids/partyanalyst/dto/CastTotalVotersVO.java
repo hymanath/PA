@@ -6,7 +6,7 @@ public class CastTotalVotersVO implements Serializable {
 
 	private String casteName;
 	private Long totalVoters;
-	private Double voterPercentage;
+	private String voterPercentage;
 	
 	public String getCasteName() {
 		return casteName;
@@ -20,10 +20,10 @@ public class CastTotalVotersVO implements Serializable {
 	public void setTotalVoters(Long totalVoters) {
 		this.totalVoters = totalVoters;
 	}
-	public Double getVoterPercentage() {
+	public String getVoterPercentage() {
 		return voterPercentage;
 	}
-	public void setVoterPercentage(Double voterPercentage) {
+	public void setVoterPercentage(String voterPercentage) {
 		this.voterPercentage = voterPercentage;
 	}
 	

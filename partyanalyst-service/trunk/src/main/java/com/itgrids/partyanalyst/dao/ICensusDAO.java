@@ -28,4 +28,6 @@ public interface ICensusDAO extends GenericDao<Census, Long> {
 	
 	public List<Census> findByYearAndTownshipIDs(Long year, String townshipIDs);
 	
+	public List findCastWiseVotersForMandal(Long mandalID);
+	
 }
