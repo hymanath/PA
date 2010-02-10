@@ -29,4 +29,11 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				"group by model.cast order by model.cast",mandalID);
 	}
 	
+	public List findGenderAgeWiseVotersForMandal(Long mandalID,Long minAge, Long maxAge){
+		Object[] params = {mandalID,minAge, maxAge};
+		return getHibernateTemplate().find("select model.gender, count(model.gender) from Voter model " +
+				"where model.hamlet.township.tehsil.tehsilId=? and model.age>=? and " +
+				" model.age<? group by model.gender",params);
+	}
+	
 }

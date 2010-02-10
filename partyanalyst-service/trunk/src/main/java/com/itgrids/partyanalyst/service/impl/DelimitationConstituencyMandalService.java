@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dto.CastTotalVotersVO;
 import com.itgrids.partyanalyst.dto.CastWiseElectionVotersVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
+import com.itgrids.partyanalyst.dto.GenderAgeWiseVotersVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
 import com.itgrids.partyanalyst.dto.PartyElectionVotersListVO;
@@ -461,7 +462,7 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		return castWiseElectionVoters;
 	}
 	
-	public static void main(String[] args){
+	public static void main1(String[] args){
 		log.debug("DelimitationConstituencyMandalService.findCastWiseVotersForMandal() stated....");
 		CastWiseElectionVotersVO castWiseElectionVoters = new CastWiseElectionVotersVO();
 
@@ -504,5 +505,84 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		
 		castWiseElectionVoters.setCasteVoters(castTotalVotersVOList);
 		//return castWiseElectionVoters;
+	}
+	
+	public GenderAgeWiseVotersVO findGenderAgeWiseVotersForMandal(Long mandalID){
+		Long minAge = 18L;
+		Long maxAge = 23L;
+		Long maleTotalVoters = 0L;
+		Long femaleTotalVoters = 0L;
+		Long grandTotalVoters = 0L;
+		GenderAgeWiseVotersVO genderAgeWiseVoters = new GenderAgeWiseVotersVO();
+		List<Long> maleVotersAgeWise = new ArrayList<Long>();
+		List<Long> femaleVotersAgeWise = new ArrayList<Long>();
+		List<Long> totalVotersAgeWise = new ArrayList<Long>();
+		
+		genderAgeWiseVoters.setMaleVotersAgeWise(maleVotersAgeWise);
+		genderAgeWiseVoters.setFemaleVotersAgeWise(femaleVotersAgeWise);
+		genderAgeWiseVoters.setTotalVotersAgeWise(totalVotersAgeWise);
+		
+		List voters = voterDAO.findGenderAgeWiseVotersForMandal(mandalID, minAge, maxAge);
+		formatVoterGenderAgeWise(maleVotersAgeWise, femaleVotersAgeWise, totalVotersAgeWise, voters);
+		minAge = 23L; maxAge = 35L;
+		voters = voterDAO.findGenderAgeWiseVotersForMandal(mandalID, minAge, maxAge);
+		formatVoterGenderAgeWise(maleVotersAgeWise, femaleVotersAgeWise, totalVotersAgeWise, voters);
+		minAge = 35L; maxAge = 50L;
+		voters = voterDAO.findGenderAgeWiseVotersForMandal(mandalID, minAge, maxAge);
+		formatVoterGenderAgeWise(maleVotersAgeWise, femaleVotersAgeWise, totalVotersAgeWise, voters);
+		minAge = 50L; maxAge = 65L;
+		voters = voterDAO.findGenderAgeWiseVotersForMandal(mandalID, minAge, maxAge);
+		formatVoterGenderAgeWise(maleVotersAgeWise, femaleVotersAgeWise, totalVotersAgeWise, voters);
+		minAge = 65L; maxAge = 200L;
+		voters = voterDAO.findGenderAgeWiseVotersForMandal(mandalID, minAge, maxAge);
+		formatVoterGenderAgeWise(maleVotersAgeWise, femaleVotersAgeWise, totalVotersAgeWise, voters);
+		addTotal(maleVotersAgeWise); addTotal(femaleVotersAgeWise); addTotal(totalVotersAgeWise);
+		return genderAgeWiseVoters;
+	}
+	private void addTotal(List<Long> list){
+		Long total = 0L;
+		for(Long value : list){
+			total +=value;
+		}
+		list.add(total);
+		
+	}
+	private void formatVoterGenderAgeWise(List<Long> maleVotersAgeWise, List<Long> femaleVotersAgeWise, 
+			List<Long> totalVotersAgeWise, List voters){
+		if(voters.size()==2){
+			Object[] obj1 = (Object[])voters.get(0);
+			Object[] obj2 = (Object[])voters.get(1);
+			String gender = obj1[0].toString();
+			log.debug("gender Value:"+gender);
+			if("M".equals(gender)){
+				Long maleSize = new Long(obj1[1].toString());
+				Long femaleSize = new Long(obj2[1].toString());
+				maleVotersAgeWise.add(maleSize);
+				femaleVotersAgeWise.add(femaleSize);
+				totalVotersAgeWise.add(maleSize+femaleSize);
+			}else{
+				Long maleSize = new Long(obj2[1].toString());
+				Long femaleSize = new Long(obj1[1].toString());
+				maleVotersAgeWise.add(maleSize);
+				femaleVotersAgeWise.add(femaleSize);
+				totalVotersAgeWise.add(maleSize+femaleSize);
+			}
+				
+		} else if(voters.size()==1){
+			Object[] obj1 = (Object[])voters.get(0);
+			String gender = obj1[0].toString();
+			Long maleSize = new Long(obj1[1].toString());
+			totalVotersAgeWise.add(maleSize);
+			if("M".equals(gender)){
+				maleVotersAgeWise.add(maleSize);
+			}else{
+				femaleVotersAgeWise.add(maleSize);
+			}
+			
+		}
+		log.debug("male Voters size:"+maleVotersAgeWise.size());
+		log.debug("female Voters size:"+femaleVotersAgeWise.size());
+		log.debug("total Voters size:"+totalVotersAgeWise.size());
+		
 	}
 }
