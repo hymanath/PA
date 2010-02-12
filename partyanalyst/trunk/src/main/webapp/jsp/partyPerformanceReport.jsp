@@ -25,11 +25,47 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/conainer/container-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css">
+	<!-- Dependencies -->
+	<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
+	<script src="http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource-min.js"></script>
+	<script src="http://yui.yahooapis.com/2.8.0r4/build/json/json-min.js"></script>
+	<script src="http://yui.yahooapis.com/2.8.0r4/build/swf/swf-min.js"></script>
+	<!-- Source files -->
+	<script src="http://yui.yahooapis.com/2.8.0r4/build/charts/charts-min.js"></script>
+    <!-- OPTIONAL: Animation (only required if using ContainerEffect) -->
+    <script src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script>
+ 	<!-- Combo-handled YUI CSS files: --> 
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/tabview/assets/skins/sam/tabview.css"> 
+    <!-- Combo-handled YUI JS files: --> 
+    <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/connection/connection-min.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/tabview/tabview-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+    <!-- Combo-handled YUI CSS files: --> 
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/container/assets/skins/sam/container.css&2.8.0r4/build/resize/assets/skins/sam/resize.css"> 
+    <!-- Combo-handled YUI JS files: --> 
+    <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/dragdrop/dragdrop-min.js&2.8.0r4/build/container/container-min.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/resize/resize-min.js"></script> 
+	<!-- Combo-handled YUI CSS files: -->
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
+	<!-- Combo-handled YUI JS files: -->
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/json/json-min.js&2.8.0r4/build/swf/swf-min.js&2.8.0r4/build/charts/charts-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
 
-	<!-- YUI Skin Sam -->
+	<!-- Combo-handled YUI JS files: -->
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/swf/swf-min.js"></script>
+	<!-- Combo-handled YUI CSS files: -->
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/autocomplete/assets/skins/sam/autocomplete.css">
+	<!-- Combo-handled YUI JS files: -->
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/animation/animation-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/autocomplete/autocomplete-min.js"></script>
+    <!-- Combo-handled YUI JS files: -->
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/json/json-min.js&2.8.0r4/build/swf/swf-min.js&2.8.0r4/build/charts/charts-min.js"></script>
+    <!-- Combo-handled YUI CSS files: -->
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/container/assets/skins/sam/container.css">
+	<!-- Combo-handled YUI JS files: -->
+	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/dragdrop/dragdrop-min.js&2.8.0r4/build/container/container-min.js"></script>
 
+
+    <!-- YUI Skin Sam -->
+   
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
     <link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
@@ -56,7 +92,8 @@ function showBand(divtag)
 		spanElmt.innerHTML="Display Details";
 	}
 }
-function getDetails(pos)
+
+/*function getDetails(pos)
 {		
 	var imgElmt = document.getElementById("loaderGif");
 	imgElmt.style.display='block';
@@ -85,6 +122,33 @@ function getDetails(pos)
 	var param ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	callAjax(param,jsObj);
 }
+*/
+function getPartyPositionDetails(pos,partyId)
+{		
+	var position = pos;
+	var party = partyId;
+	var partyName='${stateData.party}';
+	var electionTypeId='${stateData.electionTypeId}';
+	var state = '${stateData.stateId}';
+	var year = '${stateData.year}';
+	var district = '${stateData.districtId}';	
+	var alliances = '${stateData.hasAlliances}';
+    var reportLevel =  '${stateData.reportLevel}';
+	
+	var jsObj=
+	{
+			positionValue:position,
+			partyValue:party,			
+			eId:electionTypeId,
+			stateValue:state,
+			yearValue:year,
+			districtValue:district,
+			hasAlliances:alliances,
+			reportLevel:reportLevel
+	}
+	var param ="task="+YAHOO.lang.JSON.stringify(jsObj);	
+	callPositionAjax(param,jsObj);
+}
 
 function callAjax(param,jsObj){
 	var myResults;
@@ -108,10 +172,32 @@ function callAjax(param,jsObj){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+function callPositionAjax(param,jsObj){
+	var myResults;
+	var url = "<%=request.getContextPath()%>/partyPositionDetailsAjax.action?"+param;
+	var callback = {			
+				   success : function( o ) {
+						try {
+							myResults = YAHOO.lang.JSON.parse(o.responseText); 
+							
+							displayPartyPositions(jsObj,myResults);							
+						}catch (e) {   
+							alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
 function displayPartyPositions(jsObj,data)
 {	
-	var imgElmt = document.getElementById("loaderGif");
-	imgElmt.style.display='none';
+	//var imgElmt = document.getElementById("loaderGif");
+	//imgElmt.style.display='none';
 
 	if(data[0]==null)
 	{
@@ -328,6 +414,309 @@ function buildPartyPositionDataTable(info,rank)
 		}	
 	}
 
+	function viewPartyBasicResults()
+	{
+        var obj = {
+                    year:'${stateData.year}',
+					previousYear:'${stateData.prevYear}',
+					totalSeatsWon:'${stateData.totalSeatsWon}',
+					prevYearTotSeatsWon:'${stateData.prevYearTotalSeatsWon}',
+					votesPercent:'${stateData.totalPercentageOfVotesWon}',
+					prevYearVotesPercent:'${stateData.prevYeartotalPercentageOfVotesWon}',
+					votesPercentDiff:'${stateData.diffOfTotalPercentageWinWithPrevElection}'
+		           };
+
+		 var str='';
+		 str+='<table border="1" id="partyPositionDetailsTable">';
+	     str+='<tr>';
+	     str+='<th></th>';
+	     str+='<th align="center">'+obj.year+'</th>';
+		 if(obj.prevYearTotSeatsWon != 0)
+		   str+='<th  width="100px" align="center">'+obj.previousYear+'</th>';
+		 str+='</tr>';
+	     str+='<tr>';
+		 str+='<td style="background-color: #ECF1F5" align="center"><b>Seats Won</b></td>';
+		 str+='<td style="background-color: #ECF1F5" width="100px" align="center">'+obj.totalSeatsWon+'</td>';
+		 if(obj.prevYearTotSeatsWon != 0)
+		    str+='<td style="background-color: #ECF1F5" width="100px" align="center">'+obj.prevYearTotSeatsWon+'</td>';
+		 str+='</tr>';
+	     str+='<tr>';
+		 str+='<td style="background-color: #ECF1F5" align="center"><b>Votes %</b></td>';
+		 str+='<td style="background-color: #ECF1F5" width="100px" align="center">'+obj.votesPercent+'&nbsp;%</td>';
+		 if(obj.prevYearTotSeatsWon != 0)
+		   str+='<td style="background-color: #ECF1F5" width="100px" style="background-color: #FFFFFF" align="center">'+obj.prevYearVotesPercent+'&nbsp;%</td>';
+		 str+='</tr>';
+	     if(obj.prevYearTotSeatsWon != 0){
+	     str+='<tr>';
+	     str+='<td style="background-color: #ECF1F5" align="center" colspan="3"><b>Votes % Difference ('+obj.year+' - '+obj.previousYear+' )  :  </b>';
+         if(obj.votesPercentDiff < 0)
+		   str+='<font color="red">'+obj.votesPercentDiff+'%</font>';
+		 if(obj.votesPercentDiff > 0)
+		   str+='<font color="green">'+obj.votesPercentDiff+'%</font>';
+		 str+='</td>';
+	     str+='</tr>';
+	     }
+         str+='</table>';
+
+	   myPanel = new YAHOO.widget.Panel("party", {
+                 width: "300px", 
+                 fixedcenter: false, 
+                 constraintoviewport: false, 
+                 underlay: "none", 
+                 close: false, 
+                 visible: true, 
+                 draggable: false
+       });
+	   myPanel.setHeader("");
+       myPanel.setBody(str);
+       myPanel.render();
+
+	}
+
+	function viewResizeablePanel()
+	{
+		var arr = new Array();
+		<c:forEach var="results" items="${stateData.partyPositionsVO}">
+			var obj = {
+			            partyId:'${results.partyId}',
+						constituency:'${results.totalConstiParticipated}',
+						seats:'${results.totalSeatsWon}',
+						partyName:'${results.partyName}',
+						secondPos:'${results.secondPosWon}',
+						thirdPos:'${results.thirdPosWon}',
+						fourthPos:'${results.fourthPosWon}',
+						nthPos:'${results.nthPosWon}',
+						votesPercent:'${results.votesPercentage}'
+					  };
+					arr.push(obj);
+		</c:forEach>
+            var str='';
+			str+='<table border="1" id="partyPositionDetailsTable">';
+			str+='<tr>';
+			str+='<th align="center">Party Name</th>';
+			str+='<th align="center">Seats Won</th>';
+			str+='<th align="center">2nd Pos</th>';
+			str+='<th align="center">3rd Pos</th>';
+			str+='<th align="center">4th Pos</th>';
+			str+='<th align="center">Nth Pos</th>';
+			str+='<th align="center">Participated Constituencies</th>';
+			str+='<th align="center">Votes %</th>';
+			str+='</tr>';
+			for(var i in arr)
+		    {
+			
+			str+='<tr>';
+			if(i == 0)
+				str+='<td align="center" style="color:#FF0000">'+arr[i].partyName+'*</td>';
+			else
+			    str+='<td align="center">'+arr[i].partyName+'</td>';
+			if(arr[i].seats == 0)
+				str+='<td align="center">'+arr[i].seats+'</td>';
+			else
+			   str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(1,\''+arr[i].partyId+'\')">'+arr[i].seats+'</a></td>';
+			if(arr[i].secondPos == 0)
+               str+='<td align="center">'+arr[i].secondPos+'</td>';
+			else
+			   str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(2,\''+arr[i].partyId+'\')">'+arr[i].secondPos+'</td>';
+			if(arr[i].thirdPos == 0)
+               str+='<td align="center">'+arr[i].thirdPos+'</td>';
+			else
+               str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(3,\''+arr[i].partyId+'\')">'+arr[i].thirdPos+'</td>';
+			if(arr[i].fourthPos == 0)
+               str+='<td align="center">'+arr[i].fourthPos+'</td>';
+			else
+			   str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(4,\''+arr[i].partyId+'\')">'+arr[i].fourthPos+'</td>';
+			if(arr[i].nthPos == 0)
+                str+='<td align="center">'+arr[i].nthPos+'</td>';
+			else
+		    	str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(-1,\''+arr[i].partyId+'\')">'+arr[i].nthPos+'</td>';
+			str+='<td align="center">'+arr[i].constituency+'</td>';
+            str+='<td align="center">'+arr[i].votesPercent+'</td>';
+			str+='</tr>';
+			}
+			str+='<tr>';
+			str+='<b><th colspan="8" style="color:#FF0000">* Main Party</b></th>';
+			str+='</tr>';
+			str+='</table>';
+
+       myPanel = new YAHOO.widget.Panel("resizablepanel", {
+                 width: "450px", 
+                 fixedcenter: false, 
+                 constraintoviewport: false, 
+                 underlay: "none", 
+                 close: false, 
+                 visible: true, 
+                 draggable: false
+       });
+       myPanel.setHeader("Party Positions ...");
+       myPanel.setBody(str);
+       myPanel.render();
+
+   }
+
+	function initializeGraph()
+	{
+        var partyPositionsDataGraph = new Array();
+		<c:forEach var="results" items="${stateData.partyPositionsVO}">
+			var obj = {
+			           	partyName:'${results.partyName}',
+						seatsWon:'${results.totalSeatsWon}',
+						secndPos:'${results.secondPosWon}',
+						thirdPos:'${results.thirdPosWon}'
+					  };
+					partyPositionsDataGraph.push(obj);
+		</c:forEach>
+
+        YAHOO.widget.Chart.SWFURL = "http://yui.yahooapis.com/2.8.0r4/build/charts/assets/charts.swf";
+
+		var incomeData = new YAHOO.util.DataSource(partyPositionsDataGraph);
+		incomeData.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		incomeData.responseSchema = { fields: [ "partyName","seatsWon", "secndPos","thirdPos"] };
+
+		var seriesDef =
+		[		
+			{
+				yField: "seatsWon",
+				displayName: "SeatsWon"
+			},
+			{
+				yField: "secndPos",
+				displayName: "2nd Pos"
+			},
+			{
+				yField: "thirdPos",
+				displayName: "3rd Pos"
+			}
+		];
+
+        
+		
+
+	  	var currencyAxis = new YAHOO.widget.NumericAxis(); 
+		currencyAxis.minimum = 50; 
+		currencyAxis.maximun = 200; 
+		
+		var seatsCount = new Array();
+        seatsCount.push(100);
+		seatsCount.push(200);
+		seatsCount.push(300);
+
+		var mychart = new YAHOO.widget.ColumnChart( "partyPosChart", incomeData,
+		{
+		series: seriesDef,
+		xField: "partyName",
+		yField: currencyAxis
+		
+		});
+
+		/*var columns =
+		[
+			{key: "partyName", sortable: true, resizeable: true },
+			{key: "secndPos", sortable: true, resizeable: true },
+			{key: "seatsWon", sortable: true, resizeable: true }
+		];
+		var table = new YAHOO.widget.DataTable( "datatable", columns, incomeData);*/
+
+        
+	}
+
+
+    function swfProperties()
+	{
+       var params = {
+		version: 10.42,
+		useExpressInstall: true,
+		fixedAttributes: {
+			allowScriptAccess: "always",
+			allowNetworking: "all",
+			width: 50
+		},
+		flashVars: {
+			flashvar1: "One word", 
+			flashvar2: "A word & another", 
+			flashvar3: "Three words - 100% done & done"
+		}
+	   }; 
+	   var newswf = new YAHOO.widget.SWF("swfContainer", "charts.swf", params);
+	}
+	function initializePartyPositionsDetails()
+	{
+		var arr = new Array();
+		<c:forEach var="results" items="${stateData.partyPositionsVO}">
+			var obj = {
+			            partyId:'${results.partyId}',
+						constituency:'${results.totalConstiParticipated}',
+						seats:'${results.totalSeatsWon}',
+						partyName:'${results.partyName}',
+						secondPos:'${results.secondPosWon}',
+						thirdPos:'${results.thirdPosWon}',
+						fourthPos:'${results.fourthPosWon}',
+						nthPos:'${results.nthPosWon}',
+						votesPercent:'${results.votesPercentage}'
+					  };
+					arr.push(obj);
+		</c:forEach>
+			
+		var tabView = new YAHOO.widget.TabView(); 
+		
+		for(var i in arr)
+		{
+			var str='';
+			str+='<table border="1" style="border-collapse:collapse;height:75px;">';
+			str+='<tr>';
+			str+='<th align="center">Seats Won</th>';
+			str+='<th align="center">2nd Pos</th>';
+			str+='<th align="center">3rd Pos</th>';
+			str+='<th align="center">4th Pos</th>';
+			str+='<th align="center">Nth Pos</th>';
+			str+='<th align="center">Participated Constituencies</th>';
+			str+='<th align="center">Votes %</th>';
+			str+='</tr>';
+			str+='<tr>';
+			if(arr[i].seats == 0)
+				str+='<td align="center">'+arr[i].seats+'</td>';
+			else
+			   str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(1,\''+arr[i].partyId+'\')">'+arr[i].seats+'</a></td>';
+			if(arr[i].secondPos == 0)
+               str+='<td align="center">'+arr[i].secondPos+'</td>';
+			else
+			   str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(2,\''+arr[i].partyId+'\')">'+arr[i].secondPos+'</td>';
+			if(arr[i].thirdPos == 0)
+               str+='<td align="center">'+arr[i].thirdPos+'</td>';
+			else
+               str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(3,\''+arr[i].partyId+'\')">'+arr[i].thirdPos+'</td>';
+			if(arr[i].fourthPos == 0)
+               str+='<td align="center">'+arr[i].fourthPos+'</td>';
+			else
+			   str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(4,\''+arr[i].partyId+'\')">'+arr[i].fourthPos+'</td>';
+			if(arr[i].nthPos == 0)
+                str+='<td align="center">'+arr[i].nthPos+'</td>';
+			else
+		    	str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(-1,\''+arr[i].partyId+'\')">'+arr[i].nthPos+'</td>';
+			str+='<td align="center">'+arr[i].constituency+'</td>';
+            str+='<td align="center">'+arr[i].votesPercent+'</td>';
+			str+='</tr>';
+			str+='</table>';
+            	if(i == 0)
+			    {
+				tabView.addTab( new YAHOO.widget.Tab({ 
+				label: arr[i].partyName, 
+				content: str,
+				active: true
+				}));
+				}
+				else
+				{
+				tabView.addTab( new YAHOO.widget.Tab({ 
+				label: arr[i].partyName, 
+				content: str
+				}));
+				}
+		}
+
+		tabView.appendTo('tabView'); 
+    }
+
 	function initializeRebelsDataTable() {
 
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
@@ -402,6 +791,22 @@ function buildPartyPositionDataTable(info,rank)
 
 }
 
+
+function reportTitleDivFunc()
+{
+	var str='${reportTitle}';
+
+	var reportTitle = new YAHOO.widget.Panel("reportTitleDiv", { width:"600",
+		         fixedcenter: false, 
+                 constraintoviewport: false, 
+                 underlay: "none", 
+                 close: false, 
+                 visible: true, 
+                 draggable: false } );
+	reportTitle.setHeader(str);
+	reportTitle.render();
+
+}
 </script>
 
 <style type="text/css">
@@ -490,17 +895,65 @@ function buildPartyPositionDataTable(info,rank)
 	{
 		margin-left:20px;
 	}
+	#tabView
+	{
+		width:53%;
+	}
+		
+	.yui-overlay, .yui-panel-container
+	{
+		position:relative;
+	}
+	
+	#resizablepanelMain
+	{
+		margin-top:30px;
+	}
+	#partyPositionDetailsTable
+	{
+		border-collapse:collapse;
+		height:75px;
+	}
+	#partyPositionDetailsTable th
+	{
+		padding:8px;
+	}
+	#partyPositionDetailsTable td
+	{
+		padding:8px;
+	}
+	.yui-skin-sam .yui-panel 
+	{
+		border:none;
+		width:700px;
+	}
+	#reportTitleDiv.yui-panel .hd {
+		
+	    padding:0; 	    
+	    color:#61396E; 
+	    height:22px; 	    
+	    text-align:center; 
+	    overflow:visible; 
+		font-size:13px;
+		
+	} 
+	
 
 </style>
 </head> 
 <body>
 <div id="partyPerformanceReportMainDiv">
-<div style="padding: 5px; font-weight: bold; color: #46505B; font-family: Trebuchet MS; font-size: 15px;text-align:center;">
-	<u>
-		<s:property value="reportTitle" /> 
-	</u>
+<center>
+<div id="" class="yui-skin-sam">
+     <div id="reportTitleDiv" class="yui-skin-sam"> 
+	   
+	 </div> 
+	<script language="javascript">
+	  reportTitleDivFunc();
+	  </script>
 	<!--<u><s:property value="stateData.state" /> State - Party <s:property value="stateData.party" /> </u> -->
 </div>
+</center>
 <br/><br/>
  
 <div style="margin-left: 15px;">
@@ -523,104 +976,24 @@ function buildPartyPositionDataTable(info,rank)
 		<td style="background-color: #ccb"><s:property value="stateData.district" /></td>
 	</tr>
 	</table>
-<table class="partyPerformanceReportTable" border="1" width="385px">
-	<tr>
-	    <th></th>
-	    <th  width="100px"  align="center"><s:property value="stateData.year" /></th>
-		<s:if test="stateData.prevYearTotalSeatsWon != 0">
-		<th  width="100px" align="center"><s:property value="stateData.prevYear" /></th>
-		</s:if> 
-	</tr>
-	<tr>
-		<td style="background-color: #ECF1F5" align="center"><b>Seats Won</b></td>
-		<td style="background-color: #ECF1F5" width="100px" align="center"><s:property value="stateData.totalSeatsWon" /></td>
-		<s:if test="stateData.prevYearTotalSeatsWon != 0">
-		<td style="background-color: #ECF1F5" width="100px" align="center"><s:property value="stateData.prevYearTotalSeatsWon" /></td>
-		</s:if> 
-	</tr>
-	<tr>
-		<td style="background-color: #ECF1F5" align="center"><b>Votes %</b></td>
-		<td style="background-color: #ECF1F5" width="100px" align="center"><s:property value="stateData.totalPercentageOfVotesWon" />&nbsp;%</td>
-		<s:if test="stateData.prevYearTotalSeatsWon != 0">
-		<td style="background-color: #ECF1F5" width="100px" style="background-color: #FFFFFF" align="center"><s:property value="stateData.prevYeartotalPercentageOfVotesWon" />&nbsp;%</td>
-		</s:if> 
-	</tr>
-	<s:if test="stateData.prevYearTotalSeatsWon != 0">
-	<tr>
-	    <td style="background-color: #ECF1F5" align="center" colspan="3"><b>Votes % Difference ( <s:property value="stateData.year" /> - <s:property value="stateData.prevYear" /> ) : </b>
-        <s:if test="stateData.diffOfTotalPercentageWinWithPrevElection  < 0">
-		<font color="red"><s:property value="stateData.diffOfTotalPercentageWinWithPrevElection" />%</font>
-		</s:if>
-		<s:if test="stateData.diffOfTotalPercentageWinWithPrevElection  > 0">
-		<font color="green"><s:property value="stateData.diffOfTotalPercentageWinWithPrevElection" />%</font>
-		</s:if>
-		</td>
-	</tr>
-	</s:if>
-</table>
+	<br/><br/>
+<div id="" class="yui-skin-sam" style="width:40%">
+<div id="party" class="yui-skin-sam"></div>
 </div>
-<div style="left:650px;margin-right:20px;position:absolute;top:320px;">
-	<IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350">
-</div>
-<!--Total Seats Won: <s:property value="stateData.totalSeatsWon" />( <s:property value="stateData.diffSeatsWon" /> ) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<s:label labelposition="right">Total Percentage of Votes: <s:property value="stateData.totalPercentageOfVotesWon" />%( <s:property value="stateData.diffOfTotalPercentageWinWithPrevElection"/>%) </s:label> -->
-<BR/><BR/>
- <s:label labelposition="left"><b><U>Party Positions:</U></b></s:label>
-<!--<br><p align="center"> -->
-<div style="margin-left: 15px;">
-<c:set var="data" value="stateData" scope="session" />
-<c:set var="myId" value="row" />
-<table>
-<tr>
-<td>
-<display:table class="partyPerformanceReportTable" name="stateData.positionDistribution" id="${myId}" length="1" cellpadding="10px" >
-    <c:forEach var="pd" items="${stateData.positionDistribution}" varStatus="status">
-    	<jsp:useBean id="status" type="javax.servlet.jsp.jstl.core.LoopTagStatus" />
-		<c:choose>
-			<c:when test="<%=status.getIndex() == 1%>">
-			       	<c:if test="${pd.value > 0}">
-					<display:column title="2nd Position" ><a href="javascript:{}" onclick="getDetails('2')"> <c:out value="${pd.value}" /> </a> </display:column>
-					</c:if>
-					<c:if test="${pd.value == 0}">
-					<display:column title="2nd Position" ><c:out value="${pd.value}" /></display:column>
-                    </c:if>
-			</c:when>
-			<c:when test="<%=status.getIndex() == 2%>">
-			        <c:if test="${pd.value > 0}">
-					<display:column title="3rd Position" ><a href="javascript:{}" onclick="getDetails('3')"> <c:out value="${pd.value}" /> </a> </display:column> 
-					</c:if>
-					<c:if test="${pd.value == 0}">
-					<display:column title="3rd Position" ><c:out value="${pd.value}" /></display:column>
-					</c:if>
-			</c:when>
-			<c:when test="<%=status.getIndex() == 3%>">
-			        <c:if test="${pd.value > 0}">
-					<display:column title="4th Position" ><a href="javascript:{}" onclick="getDetails('4')"> <c:out value="${pd.value}" /></a>  </display:column>
-					</c:if>
-					<c:if test="${pd.value == 0}">
-					<display:column title="4th Position" ><c:out value="${pd.value}" /></display:column>
-					</c:if>
-			</c:when>
-			<c:when test="<%=status.getIndex() == 4%>">
-			        <c:if test="${pd.value > 0}">
-					<display:column title="Nth Position" ><a href="javascript:{}" onclick="getDetails('-1')"> <c:out value="${pd.value}" /></a></display:column>
-					</c:if>
-					<c:if test="${pd.value == 0}">
-					<display:column title="Nth Position" ><c:out value="${pd.value}" /></display:column>
-					</c:if>
-			</c:when>
-		</c:choose>	          
-	</c:forEach>		
-</display:table>
-</td>
-<td>
-<span>
-	<img id="loaderGif" src="<%=request.getContextPath()%>/images/icons/arrows.gif" style="display:none;"/>
-</span>
-</td>
-</tr></table>
-</div>
-<!--<center><IMG SRC="charts/partyPositionsChart_<%=request.getSession().getId()%>.png" WIDTH="300" HEIGHT="200"  BORDER="0" ></center> -->
+<br/>
+<!--<div style="left:620px;margin-right:20px;position:absolute;top:320px;">-->
+	<div id="partyPosChartOuter"  style="left:600px;margin-right:20px;position:absolute;top:320px;height:260px;width:400px;">
+	<div id="partyPosChart" style="width:100%">
+	  <IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350">
+	  
+	</div>
+	</div>
+	 <script language="javascript">
+       //initializeGraph();
+	 </script>
+	<!--<IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350"> -->
+<!--</div>-->
+
 <div id="partyPositions">
 	<div id="partyPositionsHead">
 		<span id="closeSpan" onclick="closeSpan()">X</span>
@@ -632,7 +1005,11 @@ function buildPartyPositionDataTable(info,rank)
 	</div>
 	<div id="partyPositionsBody" class="yui-skin-sam"></div>
 </div>
-<br/><br/><br/><br/><br/>
+<br/><br/>
+<div id="resizablepanelMain" class="yui-skin-sam"  style="width:50%">
+	<div id="resizablepanel" class="yui-skin-sam"></div>
+</div>
+<br/><br/>
 <div>
 	<B><U>Detailed Report...</U></B>
 </div>
@@ -750,6 +1127,7 @@ function buildPartyPositionDataTable(info,rank)
 								};
 			partyObj.partyPerformanceArray.push(performanceObj);
 		</c:forEach>
+       
 	</c:if>
 	<c:if test="${constPositions.type == 'POSITIONS_WON_WITH_POSITIVE_SWING' ||
 					  constPositions.type == 'POSITIONS_LOST_WITH_POSITIVE_SWING' ||
@@ -825,6 +1203,8 @@ function buildPartyPositionDataTable(info,rank)
 </div>
 <script language="javascript">
 	initializeRebelsDataTable();
+	//initializePartyPositionsDetails();
+	
 </script>
 <br>
 </s:if>   
@@ -836,7 +1216,10 @@ function buildPartyPositionDataTable(info,rank)
 <input type="submit" value="Generate Detailed PDF">
 </s:form>
 </div>
-
+<script language="javascript">
+viewResizeablePanel();
+viewPartyBasicResults();
+</script>
 </div>
 </body>
 </html>
