@@ -80,6 +80,8 @@
 				<value>com.itgrids.partyanalyst.model.UserImpDate</value>
 				<value>com.itgrids.partyanalyst.model.EPaper</value>
 				<value>com.itgrids.partyanalyst.model.EPaperUrl</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionResult</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResult</value>
 				</list>
 		</property>
 	</bean>
