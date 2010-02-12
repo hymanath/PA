@@ -50,4 +50,6 @@ public interface IConstants {
 
 	public final static String NOT_APPLICABLE = "N/A";
 	
+	public final static String COMMA = ",";
+	
 }
