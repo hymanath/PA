@@ -23,4 +23,7 @@ public interface IBoothConstituencyElectionVoterDAO extends GenericDao<BoothCons
 	
 	public List<Voter> findVotersGroupByHouseNoAndAgeForHamletAndYear(Long hamletId, String year);
 
+	public List findTotalVotersForHamlet(Long revenueVillageID, String year, String electionType);
+	
+	public List findHamletBoothsForRevenueVillage(Long revenueVillageID, String year, String electionType);
 }

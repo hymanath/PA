@@ -70,4 +70,24 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				"where model.voter.hamlet.hamletId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?" +
 				" group by model.voter.houseNo, model.voter.age", params);
 	}
+	
+	public List findTotalVotersForHamlet(Long revenueVillageID, String year, String electionType){
+		Object[] params = {revenueVillageID, year,electionType};
+		return getHibernateTemplate().find("select model.voter.hamlet.hamletId, model.voter.hamlet.hamletName, count(model.voter) from BoothConstituencyElectionVoter model " +
+				"where model.voter.hamlet.township.townshipId=? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear=? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType=? " +
+				"group by model.voter.hamlet.hamletName order by model.voter.hamlet.hamletName", params);
+		
+	}
+	
+	public List findHamletBoothsForRevenueVillage(Long revenueVillageID, String year, String electionType){
+		Object[] params = {revenueVillageID, year, electionType};
+		return getHibernateTemplate().find("select model.voter.hamlet.hamletName, model.boothConstituencyElection.booth.partNo " +
+				"from BoothConstituencyElectionVoter model " +
+				"where model.voter.hamlet.township.townshipId=? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear=? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType=? " +
+				"group by model.voter.hamlet.hamletName, model.boothConstituencyElection.booth.partNo order by model.voter.hamlet.hamletName", params);
+	}
 }
