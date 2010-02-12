@@ -142,7 +142,8 @@ public class ChartProducer {
 		
 	public static void createBarChart(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
 		JFreeChart chart = ChartFactory.createBarChart(title, domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, true, true, false );
-		chart.setBackgroundPaint(new Color(0xBBBBDD));
+		//chart.setBackgroundPaint(new Color(0xBBBBDD));
+		chart.setBackgroundPaint(Color.WHITE);
 		CategoryPlot plot = chart.getCategoryPlot();
 		CategoryAxis axis = plot.getDomainAxis();
 		axis.setCategoryMargin(0.3);
