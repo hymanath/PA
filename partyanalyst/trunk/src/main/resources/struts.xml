@@ -86,6 +86,11 @@
 				 <param name="root">partyPositionDisplayVO</param> 
 			</result>
 		</action>
+		<action name="partyPositionDetailsAjax" class="partyPerformanceAction" method="getPartyPositionDetails" >
+			<result type="json" name="success">
+				 <param name="root">partyPositionDisplayVO</param> 
+			</result>
+		</action>
 		<!-- End Party Performance Actions -->
 		
         <action name="uploadCSV" class="uploadCSVAction">
