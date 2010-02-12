@@ -14,7 +14,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	private IElectionDAO electionDAO; 
 	
 	//mock data for add and remove test cases
-	Election election1 = new Election(4L,null,new Date(27-8-2009),new Date(27-8-2010),"27-08-2009","2010",null);
+	Election election1 = new Election(4L,null,new Date(27-8-2009),new Date(27-8-2010),"27-08-2009","2010",null,null,null);
 	
 	
 	public void setElectionDAO(IElectionDAO electionDAO){
@@ -88,6 +88,12 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testFindPreviousYear(){
 		String prevYear = electionDAO.findPreviousElectionYear("2009", new Long(2), new Long(1), new Long(1));
 		System.out.println(prevYear);
+	}
+	
+	@Test
+	public void testFindElection(){
+		List<Election> election = electionDAO.findByElectionTypeYearAndState(new Long(2), "2009", new Long(1), new Long(1));
+		System.out.println("Election ::"  + election.get(0).getElectionId());
 	}
 }
 
