@@ -12,8 +12,12 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ElectionDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.HamletBoothsAndVotersVO;
+import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.MPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
@@ -23,12 +27,14 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyManagementService implements IConstituencyManagementService{
 	
 	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
 	private IHamletDAO hamletDAO;
 	private ICandidateResultDAO candidateResultDAO;
+	private IElectionDAO electionDAO;
 
 	private static final Logger log = Logger.getLogger(ConstituencyManagementService.class);
 	public IHamletDAO getHamletDAO() {
@@ -52,6 +58,10 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		this.boothConstituencyElectionVoterDAO = boothConstituencyElectionVoterDAO;
 	}
 	
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
+	}
+
 	public List<VoterVO> getVoterInfo(Long hamletId, String year){
 		List<Voter> voters = boothConstituencyElectionVoterDAO.findVotersByHamletAndElectionYear(hamletId, year);
 		List<VoterVO> voterVOs = new ArrayList<VoterVO>();
@@ -228,4 +238,74 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		return result;
 	}
 	
+	/**
+	 * retrieving all hamlets and corresponding booths and voters for specific revenue village and election
+	 * @param revenueVillageID
+	 * @param year
+	 * @param electionType
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public HamletsListWithBoothsAndVotersVO getAllHamletBoothInfoForRevenueVillage(Long revenueVillageID, String year, String electionType){
+
+		log.debug("ConstituencyManagementService.getAllHamletBoothInfoForRevenueVillage() started22...");
+		HamletsListWithBoothsAndVotersVO hamletsListWithBoothsAndVotersVO = new HamletsListWithBoothsAndVotersVO();
+		if(year==null){
+			electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			List years =electionDAO.findLatestElectionYear(electionType);
+			if(years==null || years.size()==0){
+				Exception ex = new Exception("No Elections available in DB");
+				hamletsListWithBoothsAndVotersVO.setExceptionEncountered(ex);
+				return hamletsListWithBoothsAndVotersVO;
+			}/*
+			Object[] columns = (Object[])years.get(0);
+			year = columns[0].toString();*/
+			year =(String)years.get(0);
+		}
+		List<HamletBoothsAndVotersVO> hamletsListWithBoothsAndVotersList = new ArrayList<HamletBoothsAndVotersVO>();
+		log.debug("Total Hamlet Size="+hamletsListWithBoothsAndVotersList.size());
+		List listHamletsVoters = boothConstituencyElectionVoterDAO.findTotalVotersForHamlet(revenueVillageID, year, electionType);
+		log.debug("Total Hamlet Size="+listHamletsVoters.size());
+		List listHamletBooths = boothConstituencyElectionVoterDAO.findHamletBoothsForRevenueVillage(revenueVillageID, year, electionType);
+		log.debug("Total Booths including duplicate Size="+listHamletBooths.size());
+		Map<String, StringBuilder> hamletBooths = new HashMap<String, StringBuilder>();
+		int size = listHamletBooths.size();
+
+		for(int i=0; i<size; i++){
+			Object[] obj = (Object[]) listHamletBooths.get(i);
+			String hamletName = obj[0].toString();
+			String boothPartNo = obj[1].toString();
+			StringBuilder value = hamletBooths.get(hamletName);
+			if(value==null){
+				value= new StringBuilder();
+			}
+			value.append(IConstants.COMMA).append(boothPartNo);
+			hamletBooths.put(hamletName, value);
+		}
+		
+		size = listHamletsVoters.size();
+		for(int i=0; i<size; i++){
+			HamletBoothsAndVotersVO hamletBoothsAndVotersVO = new HamletBoothsAndVotersVO();
+			Object[] obj = (Object[]) listHamletsVoters.get(i);
+			String hamletId = obj[0].toString();
+			String hamletName = obj[1].toString();
+			String voters = obj[2].toString();
+			hamletBoothsAndVotersVO.setHamletID(new Long(hamletId));
+			hamletBoothsAndVotersVO.setHamletName(hamletName);
+			hamletBoothsAndVotersVO.setTotalVoters(new Long(voters));
+			StringBuilder booths = hamletBooths.get(hamletName);
+			if(booths!=null){
+				hamletBoothsAndVotersVO.setBoothPartNos(booths.substring(1));
+			}
+			hamletsListWithBoothsAndVotersList.add(hamletBoothsAndVotersVO);
+		}
+		log.debug("total size of hamlets::::"+hamletsListWithBoothsAndVotersList.size());
+		hamletsListWithBoothsAndVotersVO.setHamletsListWithBoothsAndVoters(hamletsListWithBoothsAndVotersList);
+		return hamletsListWithBoothsAndVotersVO;
+	}
+	
+	public Object findPartyElectionResultForMandal(Long mandalID){
+		List result = boothConstituencyElectionVoterDAO.findPartyElectionResultForMandal(mandalID);
+		return null;
+	}
 }
