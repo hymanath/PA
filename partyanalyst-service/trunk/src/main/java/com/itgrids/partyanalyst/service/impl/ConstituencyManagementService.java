@@ -304,8 +304,5 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		return hamletsListWithBoothsAndVotersVO;
 	}
 	
-	public Object findPartyElectionResultForMandal(Long mandalID){
-		List result = boothConstituencyElectionVoterDAO.findPartyElectionResultForMandal(mandalID);
-		return null;
-	}
+	
 }
