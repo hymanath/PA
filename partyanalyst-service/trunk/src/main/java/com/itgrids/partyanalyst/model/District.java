@@ -26,6 +26,7 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * District entity. 
@@ -53,7 +54,7 @@ public class District extends BaseModel implements java.io.Serializable {
 	private Date deformDate;
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 	private Set<Tehsil> tehsils = new HashSet<Tehsil>(0);
-	
+	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
 
 	// Constructors
 
@@ -70,7 +71,7 @@ public class District extends BaseModel implements java.io.Serializable {
 	public District(Long districtId, String districtName,
 			String districtCapital, Double area, Double population,  State state,
 			Long districtCode, Date startDate, Date deformDate,
-			Set<Constituency> constituencies, Set<Tehsil> tehsils) {
+			Set<Constituency> constituencies, Set<Tehsil> tehsils,Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
 		this.districtId = districtId;
 		this.state = state;
 		this.districtName = districtName;
@@ -82,6 +83,7 @@ public class District extends BaseModel implements java.io.Serializable {
 		this.deformDate = deformDate;
 		this.constituencies = constituencies;
 		this.tehsils = tehsils;
+		this.partyElectionDistrictResult = partyElectionDistrictResult;
 	}
 
 	// Property accessors
@@ -187,5 +189,16 @@ public class District extends BaseModel implements java.io.Serializable {
 
 	public void setTehsils(Set<Tehsil> tehsils) {
 		this.tehsils = tehsils;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "district")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<PartyElectionDistrictResult> getPartyElectionDistrictResult() {
+		return partyElectionDistrictResult;
+	}
+
+	public void setPartyElectionDistrictResult(
+			Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
+		this.partyElectionDistrictResult = partyElectionDistrictResult;
 	}
 }
