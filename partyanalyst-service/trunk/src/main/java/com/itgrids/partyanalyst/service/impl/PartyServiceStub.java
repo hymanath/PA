@@ -338,5 +338,9 @@ public class PartyServiceStub implements IPartyService {
 	public List<PartyPositionDisplayVO> getNthPositionPartyDetails(Long electionType, Long stateID, Long districtID, Long year, Long partyID, boolean alliances, int rank,String reportLevel){
 		return null;
 	}
+	
+	public List<PartyPositionDisplayVO> getPartyPositionDetailsForAnElection(Long electionTypeID, Long stateID, Long districtID, Long year, Long partyID, boolean alliances, int rank,String reportLevel){
+		return null;
+	}
 }
 
