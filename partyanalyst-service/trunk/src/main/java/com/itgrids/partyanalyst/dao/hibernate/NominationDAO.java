@@ -245,9 +245,52 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find("select constituencyElection from Nomination model where model.constituencyElection.election.electionId =? and model.constituencyElection.constituency.countryId =? and model.candidateResult.rank > ? and model.party.partyId = ?", params);
 	} 
 	
+	@SuppressWarnings("unchecked")
 	public List findValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear(String electionType, String electionYear, Long tehsilId){
 		Object [] params = {electionType, electionYear, tehsilId};
 		return getHibernateTemplate().find("select sum(model.candidateResult.votesEarned) from Nomination model where model.constituencyElection.constituency.electionScope.electionType.electionType = ? and " +
 				"model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.tehsil.tehsilId = ? ",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndPartyId(final Long electionId,final Long partyId){
+		 return ( List<Nomination> ) getHibernateTemplate().execute( new HibernateCallback() {
+             public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+             		List<Nomination> constElectionResults = session.createCriteria(Nomination.class)
+             							.createAlias("constituencyElection", "constElec")
+             							.createAlias("party", "p")
+             							.createAlias("constElec.election", "elec")
+             							.createAlias("constElec.constituency", "const")
+             							.createAlias("candidate", "cand")
+             							.add(Expression.eq("elec.electionId", electionId))
+             							.add(Expression.eq("p.partyId", partyId))
+             							.addOrder(Order.asc("cand.lastname"))
+             							.list();
+             		 return constElectionResults;
+             }
+         });
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndPartyIdStateIdAndDistrictId(final Long electionId,final Long partyId,final Long stateId,final Long districtId){
+		 return ( List<Nomination> ) getHibernateTemplate().execute( new HibernateCallback() {
+             public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+             		List<Nomination> constElectionResults = session.createCriteria(Nomination.class)
+             							.createAlias("constituencyElection", "constElec")
+             							.createAlias("party", "p")
+             							.createAlias("constElec.election", "elec")
+             							.createAlias("constElec.constituency", "const")
+             							.createAlias("const.state", "state")
+             							.createAlias("const.district", "district")
+             							.createAlias("candidate", "cand")
+             							.add(Expression.eq("state.stateId", stateId))
+             							.add(Expression.eq("district.districtId", districtId))
+             							.add(Expression.eq("elec.electionId", electionId))
+             							.add(Expression.eq("p.partyId", partyId))
+             							.addOrder(Order.asc("cand.lastname"))
+             							.list();
+             		 return constElectionResults;
+             }
+         });
 	}
 }
