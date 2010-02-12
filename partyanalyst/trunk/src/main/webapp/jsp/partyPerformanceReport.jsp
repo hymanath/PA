@@ -908,6 +908,7 @@ function reportTitleDivFunc()
 	#resizablepanelMain
 	{
 		margin-top:30px;
+		height:300px;
 	}
 	#partyPositionDetailsTable
 	{
@@ -977,15 +978,19 @@ function reportTitleDivFunc()
 	</tr>
 	</table>
 	<br/><br/>
-<div id="" class="yui-skin-sam" style="width:40%">
+<div id="seatsDetailsDiv" class="yui-skin-sam" style="width:40%height:210px;">
 <div id="party" class="yui-skin-sam"></div>
 </div>
 <br/>
 <!--<div style="left:620px;margin-right:20px;position:absolute;top:320px;">-->
-	<div id="partyPosChartOuter"  style="left:600px;margin-right:20px;position:absolute;top:320px;height:260px;width:400px;">
+	<div id="partyPosChartOuter"  style="left:650px;margin-right:20px;position:absolute;top:350px;height:150px;width:400px;">
 	<div id="partyPosChart" style="width:100%">
-	  <IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350">
-	  
+	 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("lineChartName")%>" WIDTH="350" HEIGHT="250">
+	</div>
+	</div>
+	<div id="partyResultsChartOuter"  style="left:600px;margin-right:20px;position:absolute;top:630px;height:400px;width:400px;">
+	<div id="partyResultsChart" style="width:100%">
+	 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350">
 	</div>
 	</div>
 	 <script language="javascript">
