@@ -425,6 +425,8 @@
 				<param name="root">userGroupsVO</param>				
 			</result> 
 		</action>
-			
+		<action name="hamletsForRevenueVillage" class="constituencyManagementAction" method="getHamletsForRevenueVillage">
+			<result name="success">/jsp/revenueVillageReport.jsp</result>
+		</action>
 	</package>
 </struts>

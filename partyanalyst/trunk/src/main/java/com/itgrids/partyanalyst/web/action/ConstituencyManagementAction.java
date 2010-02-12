@@ -17,18 +17,18 @@ import org.json.JSONObject;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
+import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
-public class ConstituencyManagementAction extends ActionSupport implements ServletRequestAware, ServletContextAware {
+public class ConstituencyManagementAction extends ActionSupport implements ServletRequestAware {
 
 	/**
 	 * 
@@ -48,6 +48,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private IRegionServiceData regionServiceData;
 	private List<SelectOptionVO> problemSources;
 	private String accessType;
+	private IConstituencyManagementService constituencyManagementService;
 	public ConstituencyManagementVO getConstituencyManagementVO() {
 		return constituencyManagementVO;
 	}
@@ -59,11 +60,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 
 	public void setServletRequest(HttpServletRequest arg0) {
 		this.request = arg0;
-		
-	}
-
-	public void setServletContext(ServletContext arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 	
@@ -165,6 +161,11 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		this.accessType = accessType;
 	}
 
+	public void setConstituencyManagementService(
+			IConstituencyManagementService constituencyManagementService) {
+		this.constituencyManagementService = constituencyManagementService;
+	}
+
 	@SuppressWarnings("deprecation")
 	public String execute() throws Exception{
 		
@@ -258,6 +259,19 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			log.debug("constituencyList.size():"+constituencyList.size());		
 		}
 	
+		return SUCCESS;
+	}
+	
+	public String getHamletsForRevenueVillage(){
+		log.debug("ConstituencyManagementAction.getHamletsForRevenueVillage() started.....");
+		Long revenueVillageID = new Long(request.getParameter("revenueVillageID"));
+		log.debug("revenueVillageID="+revenueVillageID);
+		String year  = request.getParameter("year");
+		log.debug("year="+year);
+		String electionType = request.getParameter("electionType");
+		log.debug("electionType="+electionType);
+		HamletsListWithBoothsAndVotersVO hamletsListWithBoothsAndVotersVO = constituencyManagementService.getAllHamletBoothInfoForRevenueVillage(revenueVillageID, year, electionType);
+		request.setAttribute("hamletsListWithBoothsAndVotersVO", hamletsListWithBoothsAndVotersVO);
 		return SUCCESS;
 	}
 }
