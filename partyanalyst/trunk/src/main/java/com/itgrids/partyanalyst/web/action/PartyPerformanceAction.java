@@ -366,6 +366,33 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		catch(Exception ex){
 			ex.printStackTrace();
 		}
+		
+		    try{
+			session = request.getSession();
+			String chartId = country.concat(party).concat(electionType).concat(state).concat(district).concat(year).concat("LineChart");
+			String lineChartName = "partyElectionResultsChart_" + chartId + session.getId()+".png";
+	        String chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
+	       
+			//ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
+	         if(reportVO.getTotalSeatsWon() != 0 && reportVO.getPrevYearTotalSeatsWon() != 0 && reportVO.getTotalPercentageOfVotesWon() != null && reportVO.getPrevYeartotalPercentageOfVotesWon() != null){
+	        	//ChartProducer.createBarChart("Results In Elections", "Years", "Seats", createDatasetForLineGraph(reportVO.getTotalSeatsWon(),reportVO.getPrevYearTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getPrevYeartotalPercentageOfVotesWon(),reportVO.getYear(),reportVO.getPrevYear()), chartPath);
+	        	ChartProducer.createALineChart("Election Result", createDatasetForLineGraph(reportVO.getTotalSeatsWon(),reportVO.getPrevYearTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getPrevYeartotalPercentageOfVotesWon(),reportVO.getYear(),reportVO.getPrevYear()), "Years", "Seats", chartPath);
+	        	request.setAttribute("lineChartName", lineChartName);
+				session.setAttribute("reportVO", reportVO);
+				session.setAttribute("lineChartName", lineChartName);
+	         }
+	         else if(reportVO.getTotalSeatsWon() != 0 && reportVO.getTotalPercentageOfVotesWon() != null){
+	        	 ChartProducer.createALineChart("Election Result", createDatasetForLineGraphNew(reportVO.getTotalSeatsWon(),reportVO.getTotalPercentageOfVotesWon(),reportVO.getYear()), "Years", "Seats", chartPath); 
+	        	 request.setAttribute("lineChartName", lineChartName);
+				 session.setAttribute("reportVO", reportVO);
+				 session.setAttribute("lineChartName", lineChartName);
+	         }
+	        
+	       	}
+			catch(Exception ex){
+				ex.printStackTrace();
+		    }
+		
 		return Action.SUCCESS;
     }
 	
@@ -497,4 +524,35 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
         return dataset;
         
     }
+	
+	@SuppressWarnings("unused")
+	private CategoryDataset createDatasetForLineGraph(int seatsWonInYear,int seatsWonInPrevYear,BigDecimal totalPercentageOfVotesWon,BigDecimal prevYeartotalPercentageOfVotesWon ,String year,String prevYear){
+		  // row keys...
+        final String series1 = "Seats Won";
+        final String series2 =  "Percentage of Votes";
+		
+        // create the dataset...
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		 dataset.addValue(seatsWonInPrevYear, series1, prevYear);
+		 dataset.addValue(prevYeartotalPercentageOfVotesWon, series2, prevYear);
+		 
+		 dataset.addValue(seatsWonInYear, series1, year);
+		 dataset.addValue(totalPercentageOfVotesWon, series2, year);
+		 
+	return dataset;
+	}
+	
+	@SuppressWarnings("unused")
+	private CategoryDataset createDatasetForLineGraphNew(int seatsWonInYear,BigDecimal totalPercentageOfVotesWon,String year){
+		  // row keys...
+        final String series1 = "Seats Won";
+        final String series2 =  "Percentage of Votes";
+		
+        // create the dataset...
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		 dataset.addValue(seatsWonInYear, series1, year);
+		 dataset.addValue(totalPercentageOfVotesWon, series2, year);
+		 
+	return dataset;
+	}
 }
