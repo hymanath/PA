@@ -125,6 +125,8 @@ function showBand(divtag)
 */
 function getPartyPositionDetails(pos,partyId)
 {		
+	var searchElmt=document.getElementById("partyPosImg");
+    searchElmt.style.display="block"
 	var position = pos;
 	var party = partyId;
 	var partyName='${stateData.party}';
@@ -196,8 +198,8 @@ function callPositionAjax(param,jsObj){
 
 function displayPartyPositions(jsObj,data)
 {	
-	//var imgElmt = document.getElementById("loaderGif");
-	//imgElmt.style.display='none';
+	var imgElmt = document.getElementById("partyPosImg");
+	imgElmt.style.display='none';
 
 	if(data[0]==null)
 	{
@@ -476,6 +478,8 @@ function buildPartyPositionDataTable(info,rank)
 	function viewResizeablePanel()
 	{
 		var arr = new Array();
+		var icon='';
+			icon+='<table><tr><td id="partyPosImg" align="left" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/partypositions.gif" /></img></td></tr></table>';
 		<c:forEach var="results" items="${stateData.partyPositionsVO}">
 			var obj = {
 			            partyId:'${results.partyId}',
@@ -550,6 +554,7 @@ function buildPartyPositionDataTable(info,rank)
        });
        myPanel.setHeader("Party Positions ...");
        myPanel.setBody(str);
+	   myPanel.setFooter(icon);
        myPanel.render();
 
    }
@@ -697,6 +702,7 @@ function buildPartyPositionDataTable(info,rank)
             str+='<td align="center">'+arr[i].votesPercent+'</td>';
 			str+='</tr>';
 			str+='</table>';
+			
             	if(i == 0)
 			    {
 				tabView.addTab( new YAHOO.widget.Tab({ 
