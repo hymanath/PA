@@ -162,12 +162,45 @@ public class ChartProducer {
 		try	 {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File image = new File(fileName);
-			ChartUtilities.saveChartAsPNG(image, chart, 450, 400, info);
+			ChartUtilities.saveChartAsPNG(image, chart, 400, 350, info);
 		}
 		catch (java.io.IOException exc)
 		{
 		log.error("Error writing image to file");
 		}
+		
+	}
+	
+	
+	public static void createALineChart(String title, final CategoryDataset dataset, String categoryAxisLabel, 
+			String valueAxisLabel, String fileName){
+		
+		    final NumberAxis seatsRangeAxis = new NumberAxis("Seats");
+	        seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+	        final LineAndShapeRenderer seatsRenderer = new LineAndShapeRenderer();
+	        seatsRenderer.setDrawOutlines(true);
+	        seatsRenderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
+	        final CategoryPlot seatsPlot = new CategoryPlot(dataset, null, seatsRangeAxis, seatsRenderer);
+	        seatsPlot.setDomainGridlinesVisible(true);
+	        seatsPlot.setForegroundAlpha(0.5f);
+	        
+	        final CategoryAxis domainAxis = new CategoryAxis("Year");
+	        CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
+	        plot.setRowRenderingOrder(SortOrder.ASCENDING);
+	        plot.add(seatsPlot, 2);
+	        
+	        final JFreeChart chart = new JFreeChart("Year Vs Seats",  plot);
+	        
+			try	 {
+				final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+				final File image = new File(fileName);
+				ChartUtilities.saveChartAsPNG(image, chart, 350, 250, info);
+			}
+			catch (java.io.IOException exc)
+			{
+			log.error("Error writing image to file");
+			}
+	       
 		
 	}
 }
