@@ -23,17 +23,22 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
 import com.googlecode.jsonplugin.annotations.JSON;
+import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
+import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.Constants;
 import com.itgrids.partyanalyst.helper.JasperProducer;
 import com.itgrids.partyanalyst.service.IPartyService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -339,22 +344,28 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			log.debug("Report Level -->" + reportLevelLiteral);
 		}
 		
-		reportTitle =  partyNameLiteral +" " + electionTypeLiteral + "(" + reportLevelLiteral + ")" + "  Performance Report for the year" + year;
+		reportTitle =  partyNameLiteral +" " + electionTypeLiteral + "(" + reportLevelLiteral + ")" + "  Performance Report for the year " + year;
 		
 		if(log.isDebugEnabled())
 			log.debug("Report Title -->" + reportTitle);
 		
 		SortedMap<String, Integer> positions = reportVO.getPositionDistribution();
-		
+		try{
 		session = request.getSession();
 		String chartId = country.concat(party).concat(electionType).concat(state).concat(district).concat(year);
 		String chartName = "partyPositionsChart_" + chartId + session.getId()+".png";
         String chartPath = context.getRealPath("/") + "charts\\" + chartName;
        
-		ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
+		//ChartProducer.createPie3DChart(positions, chartPath, "Party Positions");
+        if(reportVO.getPartyPositionsVO() != null && reportVO.getPartyPositionsVO().size() > 0)
+        ChartProducer.createBarChart("Party Positions", "Party", "Seats", createDataset(reportVO.getPartyPositionsVO()), chartPath);
 		request.setAttribute("chartName", chartName);
 		session.setAttribute("reportVO", reportVO);
 		session.setAttribute("chartName", chartName);
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
 		return Action.SUCCESS;
     }
 	
@@ -424,6 +435,37 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		System.out.println("Length = "+partyPositionDisplayVO.size());
 		return Action.SUCCESS;
 	}
+	
+      public String getPartyPositionDetails() throws Exception{
+		
+		String param=null;		
+		param=request.getParameter("task");
+		System.out.println("param:"+param);
+		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}		
+		String electionTypeID = jObj.getString("eId");
+		String stateID = jObj.getString("stateValue");
+		String districtID = jObj.getString("districtValue");
+		String year = jObj.getString("yearValue");
+		String partyID = jObj.getString("partyValue");
+		String alliances = jObj.getString("hasAlliances");
+		String rank = jObj.getString("positionValue");
+		String reportLevel = jObj.getString("reportLevel");
+		
+		log.debug("Report Level Inside getpartyPosition method (Action) :" + reportLevel);
+		
+		partyPositionDisplayVO = partyService.getPartyPositionDetailsForAnElection(new Long(electionTypeID),new Long (stateID),new Long (districtID),new Long (year),new Long (partyID),new Boolean (alliances).booleanValue(),new Integer (rank).intValue(),reportLevel);
+		
+		log.debug("Size = "+partyPositionDisplayVO.size());
+		return Action.SUCCESS;
+	}
+
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
@@ -440,4 +482,19 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		this.reportTitle = reportTitle;
 	} 
 
+	
+	private CategoryDataset createDataset(List<PartyPositionsVO> partyPositionsVO) {
+		 final String category1 =  "Seats Won";
+	     final String category2 = "2nd Pos";
+	     final String category3 = "3rd Pos";
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for(PartyPositionsVO result: partyPositionsVO){
+        	final String series =  result.getPartyName();
+        	dataset.addValue(new Long(result.getTotalSeatsWon()), category1,series );
+        	dataset.addValue(new Long(result.getSecondPosWon()), category2, series);
+        	dataset.addValue(new Long(result.getThirdPosWon()), category3, series);
+        }
+        return dataset;
+        
+    }
 }
