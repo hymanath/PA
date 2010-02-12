@@ -48,8 +48,11 @@ public class Party implements java.io.Serializable {
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	private Set<Registration> registrations = new HashSet<Registration>(0);
 	private Set<PartyImportantDates> partyImportantDates = new HashSet<PartyImportantDates>(0);
+	private Set<PartyElectionResult> partyElectionResult = new HashSet<PartyElectionResult>(0);
+	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
+	
 	// Constructors
-
+	
 	/** default constructor */
 	public Party() {
 	}
@@ -76,7 +79,7 @@ public class Party implements java.io.Serializable {
 	public Party(Long partyId, String longName, String shortName,
 			String symbol, String address, String comments,
 			String partyRecognization, Set<Nomination> nominations,
-			Set<Registration> registrations, Set<PartyImportantDates> partyImportantDates) {
+			Set<Registration> registrations, Set<PartyImportantDates> partyImportantDates,Set<PartyElectionResult> partyElectionResult,Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
 		this.partyId = partyId;
 		this.longName = longName;
 		this.shortName = shortName;
@@ -87,6 +90,8 @@ public class Party implements java.io.Serializable {
 		this.nominations = nominations;
 		this.registrations = registrations;
 		this.partyImportantDates = partyImportantDates;
+		this.partyElectionResult = partyElectionResult;
+		this.partyElectionDistrictResult = partyElectionDistrictResult;
 	}
 
 	// Property accessors
@@ -183,8 +188,28 @@ public class Party implements java.io.Serializable {
 	public void setpartyImportantDates(Set<PartyImportantDates> partyImportantDates) {
 		this.partyImportantDates = partyImportantDates;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<PartyElectionResult> getPartyElectionResult() {
+		return partyElectionResult;
+	}
+
+	public void setPartyElectionResult(Set<PartyElectionResult> partyElectionResult) {
+		this.partyElectionResult = partyElectionResult;
+	}
 	
-	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<PartyElectionDistrictResult> getPartyElectionDistrictResult() {
+		return partyElectionDistrictResult;
+	}
+
+	public void setPartyElectionDistrictResult(
+			Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
+		this.partyElectionDistrictResult = partyElectionDistrictResult;
+	}
+
 
 
 }
