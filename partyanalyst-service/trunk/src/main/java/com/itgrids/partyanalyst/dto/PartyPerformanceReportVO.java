@@ -77,6 +77,9 @@ public class PartyPerformanceReportVO extends BaseObject {
 	private Long districtId;
 	private Boolean hasAlliances;
 	private String reportLevel;
+	
+	/** party positions in an election,like first pos ,second pos.... **/
+	private List<PartyPositionsVO> partyPositionsVO;
 		
 	public List<ConstituencyPositionDetailVO> getPartyWinners() {
 		return partyWinners;
@@ -341,6 +344,14 @@ public class PartyPerformanceReportVO extends BaseObject {
 
 	public void setReportLevel(String reportLevel) {
 		this.reportLevel = reportLevel;
+	}
+
+	public List<PartyPositionsVO> getPartyPositionsVO() {
+		return partyPositionsVO;
+	}
+
+	public void setPartyPositionsVO(List<PartyPositionsVO> partyPositionsVO) {
+		this.partyPositionsVO = partyPositionsVO;
 	}
 
 	
