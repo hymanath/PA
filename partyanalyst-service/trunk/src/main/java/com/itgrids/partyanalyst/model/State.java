@@ -26,6 +26,7 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * State entity. 
@@ -65,6 +66,7 @@ public class State implements java.io.Serializable {
 	private String adminControl;
 	private Set<Constituency> constituencies = new HashSet<Constituency>(0);
 	private Set<District> districts = new HashSet<District>(0);
+	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
 	
 	
 	// Constructors
@@ -87,7 +89,7 @@ public class State implements java.io.Serializable {
 			String stateTree, String stateSport, String stateDance,
 			String stateFlower, String isoCode, Long stateCode, Date startDate,
 			Date deformDate, Set<Constituency> constituencies,
-			Set<District> districts) {
+			Set<District> districts,Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
 		this.stateId = stateId;
 		this.country = country;
 		this.stateName = stateName;
@@ -110,7 +112,7 @@ public class State implements java.io.Serializable {
 		this.deformDate = deformDate;
 		this.constituencies = constituencies;
 		this.districts = districts;
-		
+		this.partyElectionDistrictResult = partyElectionDistrictResult;
 	}
 
 
@@ -326,6 +328,17 @@ public class State implements java.io.Serializable {
 
 	public void setDistricts(Set<District> districts) {
 		this.districts = districts;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "state")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<PartyElectionDistrictResult> getPartyElectionDistrictResult() {
+		return partyElectionDistrictResult;
+	}
+
+	public void setPartyElectionDistrictResult(
+			Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
+		this.partyElectionDistrictResult = partyElectionDistrictResult;
 	}
 
 	/* (non-Javadoc)
