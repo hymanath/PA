@@ -40,14 +40,14 @@ public class MockData {
 	private static final Country country = new Country(new Long(1), "India", "Hyderabd", "IN", null); 
 
 	private static final State state = new State(new Long(1), country, "Andhra Pradesh", null, null, null,
-			null, "telugu", null,null, null, null,"Neem", "kabaddi", null,null, null, null, null, null, null,null); 
+			null, "telugu", null,null, null, null,"Neem", "kabaddi", null,null, null, null, null, null, null,null,null); 
 	
 
 	private static final ElectionType electionType = new ElectionType(new Long(2),"Assembly","State", null);
 	private static final ElectionScope electionScope = new ElectionScope(new Long(2),electionType,state,country,null,null);
 	
 	private static final List<Party> parties = new ArrayList<Party> ();	
-	private static final District  district = new District(new Long(15), "Nellore","Nellore",null,null,state,null,null,null,null,null);
+	private static final District  district = new District(new Long(15), "Nellore","Nellore",null,null,state,null,null,null,null,null,null);
 	private static final List<Election> elections = new ArrayList<Election>();
  
 	private static final List<Candidate> candidates = new ArrayList<Candidate>(); 
@@ -63,8 +63,8 @@ public class MockData {
 	private static final List<Party> allianceParties = new ArrayList<Party>();
 	
 	static{	
-		Election election1 = new Election(new Long(3), electionScope, null, null, null, "2004", null);
-		Election election2 = new Election(new Long(4), electionScope, null, null, null, "2009", null);
+		Election election1 = new Election(new Long(3), electionScope, null, null, null, "2004", null,null,null);
+		Election election2 = new Election(new Long(4), electionScope, null, null, null, "2009", null,null,null);
 		elections.add(election1);
 		elections.add(election2); 
 		getParties();
@@ -1871,29 +1871,29 @@ public class MockData {
 	}
 	public static List<District> getDistricts(Long stateId) {
 		List<District> districts = new ArrayList<District>();
-		districts.add(new District(new Long(1),"Adilabad","Adilabad",new Double(16.1), new Double(2082479), getState(),null,null,null,null, null));
-		districts.add(new District(new Long(2), 	"Ananthapur",	"Ananthapur",	new Double(19.1),	new Double(3183814),	getState(),null	,null	,null,null, null));
-		districts.add(new District(new Long(3), 	"Chittoor",	"Chittoor",	new Double(15.2),	new Double(3261118),	getState()	,null	,null	,null,null, null));
-		districts.add(new District(new Long(4), 	"Cuddapah",	"Cuddapah",	new Double(15.4),	new Double(2267769),	getState()	,null	,null	,null,null, null));
-		districts.add(new District(new Long(5),	"East Godavari",	"Kakinada",	new Double(10.8), new Double(4541222),	getState()	,null	,null	,null,null, null));
-		districts.add(new District(new Long(6),	"Guntur",	"Guntur",	new Double(11.4),	new Double(4106999),	getState()	,null	,null	,null,null, null));
-		districts.add(new District(new Long(7),	"Hyderabad",	"Hyderabad",	new Double(0.2),	new Double(3145939),	getState()	,null	,null	,null,null, null));
-		districts.add(new District(new Long(8),	"Karimnagar",	"Karimnagar",	new Double(11.8),	new Double(3037486),	getState()	,null	,null	,null,null, null));
-		districts.add(new District(new Long(9),	"Khammam",	"Khammam",	new Double(16),	new Double(2215809),	getState()	,null	,null	,null,null, null));
-		districts.add(new District(new Long(10),	"Krishna",	"Machiapatnam",	new Double(18.7),	new Double(3698933), getState()	,null	,null	,null,null, null));
-		districts.add(new District(new Long(11),	"Kurnool",	"Kurnool",	new Double(17.7),	new Double(2973024), getState(),  null	,null	,null,null, null));
-		districts.add(new District(new Long(12),	"Mahaboobnagar",	"Mahaboobnagar",	new Double(18.4),	new Double(3077050), getState()	,null,null,null, null, null));
-		districts.add(new District(new Long(13),	"Medak",	"Sangareddy",	new Double(9.7),	new Double(2269800), getState()	,null	,null	,null, null, null));
-		districts.add(new District(new Long(14),	"Nalgonda",	"Nalgonda",	new Double(14.2),	new Double(2852092), getState()	,null	,null	,null, null, null));
-		districts.add(new District(new Long(15),	"Nellore",	"Nellore",	new Double(13.1),	new Double(2392260), getState()	,null	,null	,null, null, null));
-		districts.add(new District(new Long(16),	"Prakasam",	"Ongole",	new Double(17.6),	new Double(2759166), getState()	,null	,null	,null, null, null));
-		districts.add(new District(new Long(17),	"Nizamabad",	"Nizamabad",	new Double(8), new Double(2037621), getState()	,null	,null	,null, null, null));
-		districts.add(new District(new Long(18),	"Rangareddy",	"Hyderabad",	new Double(7.5), new Double(2551966), getState()	,null	,null,null, null, null));
-		districts.add(new District(new Long(19),	"Srikakulam",	"Srikakakulam",	new Double(5.8),	new Double(2321126), getState()	,null	,null,null, null, null));
-		districts.add(new District(new Long(20),	"Vishakapatnam", "Vishakapatnam",	new Double(11.2),	new Double(3285092), getState()	,null	,null,null, null, null));
-		districts.add(new District(new Long(21),	"Vizingaram",	"Viziangaram",	new Double(6.5),	new Double(2110943),getState()	,null	,null,null, null, null));
-		districts.add(new District(new Long(22),	"Warangal",	"Warangal",	new Double(12.9),	new Double(2818832), getState()	,null	,null	,null, null, null));
-		districts.add(new District(new Long(23),	"West Godavari",	"Eluru",	new Double(7.7),	new Double(1), getState()	,null	,null	,null, null, null));
+		districts.add(new District(new Long(1),"Adilabad","Adilabad",new Double(16.1), new Double(2082479), getState(),null,null,null,null, null,null));
+		districts.add(new District(new Long(2), 	"Ananthapur",	"Ananthapur",	new Double(19.1),	new Double(3183814),	getState(),null	,null	,null,null, null,null));
+		districts.add(new District(new Long(3), 	"Chittoor",	"Chittoor",	new Double(15.2),	new Double(3261118),	getState()	,null	,null	,null,null, null,null));
+		districts.add(new District(new Long(4), 	"Cuddapah",	"Cuddapah",	new Double(15.4),	new Double(2267769),	getState()	,null	,null	,null,null, null,null));
+		districts.add(new District(new Long(5),	"East Godavari",	"Kakinada",	new Double(10.8), new Double(4541222),	getState()	,null	,null	,null,null, null,null));
+		districts.add(new District(new Long(6),	"Guntur",	"Guntur",	new Double(11.4),	new Double(4106999),	getState()	,null	,null	,null,null, null,null));
+		districts.add(new District(new Long(7),	"Hyderabad",	"Hyderabad",	new Double(0.2),	new Double(3145939),	getState()	,null	,null	,null,null, null,null));
+		districts.add(new District(new Long(8),	"Karimnagar",	"Karimnagar",	new Double(11.8),	new Double(3037486),	getState()	,null	,null	,null,null, null,null));
+		districts.add(new District(new Long(9),	"Khammam",	"Khammam",	new Double(16),	new Double(2215809),	getState()	,null	,null	,null,null, null,null));
+		districts.add(new District(new Long(10),	"Krishna",	"Machiapatnam",	new Double(18.7),	new Double(3698933), getState()	,null	,null	,null,null, null,null));
+		districts.add(new District(new Long(11),	"Kurnool",	"Kurnool",	new Double(17.7),	new Double(2973024), getState(),  null	,null	,null,null, null,null));
+		districts.add(new District(new Long(12),	"Mahaboobnagar",	"Mahaboobnagar",	new Double(18.4),	new Double(3077050), getState()	,null,null,null, null, null,null));
+		districts.add(new District(new Long(13),	"Medak",	"Sangareddy",	new Double(9.7),	new Double(2269800), getState()	,null	,null	,null, null, null,null));
+		districts.add(new District(new Long(14),	"Nalgonda",	"Nalgonda",	new Double(14.2),	new Double(2852092), getState()	,null	,null	,null, null, null,null));
+		districts.add(new District(new Long(15),	"Nellore",	"Nellore",	new Double(13.1),	new Double(2392260), getState()	,null	,null	,null, null, null,null));
+		districts.add(new District(new Long(16),	"Prakasam",	"Ongole",	new Double(17.6),	new Double(2759166), getState()	,null	,null	,null, null, null,null));
+		districts.add(new District(new Long(17),	"Nizamabad",	"Nizamabad",	new Double(8), new Double(2037621), getState()	,null	,null	,null, null, null,null));
+		districts.add(new District(new Long(18),	"Rangareddy",	"Hyderabad",	new Double(7.5), new Double(2551966), getState()	,null	,null,null, null, null,null));
+		districts.add(new District(new Long(19),	"Srikakulam",	"Srikakakulam",	new Double(5.8),	new Double(2321126), getState()	,null	,null,null, null, null,null));
+		districts.add(new District(new Long(20),	"Vishakapatnam", "Vishakapatnam",	new Double(11.2),	new Double(3285092), getState()	,null	,null,null, null, null,null));
+		districts.add(new District(new Long(21),	"Vizingaram",	"Viziangaram",	new Double(6.5),	new Double(2110943),getState()	,null	,null,null, null, null,null));
+		districts.add(new District(new Long(22),	"Warangal",	"Warangal",	new Double(12.9),	new Double(2818832), getState()	,null	,null	,null, null, null,null));
+		districts.add(new District(new Long(23),	"West Godavari",	"Eluru",	new Double(7.7),	new Double(1), getState()	,null	,null	,null, null, null,null));
 		return districts;
 	}
 	public static List<Party> getAllianceParties() {
