@@ -51,8 +51,9 @@ public class Election extends BaseModel implements java.io.Serializable {
 	private Date startDate;
 	private String endDate;
 	private String electionYear;
-	private Set<ConstituencyElection> constituencyElections = new HashSet<ConstituencyElection>(
-			0);
+	private Set<ConstituencyElection> constituencyElections = new HashSet<ConstituencyElection>(0);
+	private Set<PartyElectionResult> partyElectionResult = new HashSet<PartyElectionResult>(0);
+	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
 
 	// Constructors
 
@@ -68,7 +69,7 @@ public class Election extends BaseModel implements java.io.Serializable {
 	/** full constructor */
 	public Election(Long electionId, ElectionScope electionScope,
 			Date notificationDate, Date startDate, String endDate,
-			String electionYear, Set<ConstituencyElection> constituencyElections) {
+			String electionYear, Set<ConstituencyElection> constituencyElections,Set<PartyElectionResult> partyElectionResult,Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
 		this.electionId = electionId;
 		this.electionScope = electionScope;
 		this.notificationDate = notificationDate;
@@ -76,6 +77,8 @@ public class Election extends BaseModel implements java.io.Serializable {
 		this.endDate = endDate;
 		this.electionYear = electionYear;
 		this.constituencyElections = constituencyElections;
+		this.partyElectionResult = partyElectionResult;
+		this.partyElectionDistrictResult = partyElectionDistrictResult;
 	}
 
 	// Property accessors
@@ -148,6 +151,27 @@ public class Election extends BaseModel implements java.io.Serializable {
 	public void setConstituencyElections(
 			Set<ConstituencyElection> constituencyElections) {
 		this.constituencyElections = constituencyElections;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "election")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<PartyElectionResult> getPartyElectionResult() {
+		return partyElectionResult;
+	}
+
+	public void setPartyElectionResult(Set<PartyElectionResult> partyElectionResult) {
+		this.partyElectionResult = partyElectionResult;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "election")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<PartyElectionDistrictResult> getPartyElectionDistrictResult() {
+		return partyElectionDistrictResult;
+	}
+
+	public void setPartyElectionDistrictResult(
+			Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
+		this.partyElectionDistrictResult = partyElectionDistrictResult;
 	}
 	
 }
