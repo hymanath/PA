@@ -90,6 +90,8 @@
 				<value>com.itgrids.partyanalyst.model.ProblemExternalSource</value>
 				<value>com.itgrids.partyanalyst.model.EPaper</value>
 				<value>com.itgrids.partyanalyst.model.EPaperUrl</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionResult</value>
+				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResult</value>
 		 </list>
 		</property>
 	</bean>
@@ -320,6 +322,15 @@
 	<bean id="assignedProblemProgressDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssignedProblemProgressDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="partyElectionResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionResultDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="partyElectionDistrictResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionDistrictResultDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	
 	<!-- Problem Management -->
 	<bean id="userEventsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEventsDAO">
