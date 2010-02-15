@@ -27,8 +27,12 @@ import com.itgrids.partyanalyst.model.BaseModel;
 public class ProblemSourceScopeConcernedDepartment extends BaseModel implements Serializable{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long problemSourceScopeConcernedDepartmentId;
-	private ProblemSourceScope problemSourceScopeId;
+	private ProblemSourceScope problemSourceScope;
 	private String department;
 	private String description;
 	private Set<AssignedProblemProgress> assignedProblemProgresses = new HashSet<AssignedProblemProgress>(0);
@@ -42,17 +46,17 @@ public class ProblemSourceScopeConcernedDepartment extends BaseModel implements 
 	}
 	
 	public ProblemSourceScopeConcernedDepartment(Set<AssignedProblemProgress> assignedProblemProgresses,
-			ProblemSourceScope problemSourceScopeId, String department,
+			ProblemSourceScope problemSourceScope, String department,
 			String description) {
 		this.assignedProblemProgresses = assignedProblemProgresses;
-		this.problemSourceScopeId = problemSourceScopeId;
+		this.problemSourceScope = problemSourceScope;
 		this.department = department;
 		this.description = description;
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "user_catagory_id", unique = true, nullable = false)
+	@Column(name = "problem_source_scope_concerned_department_id", unique = true, nullable = false)
 	public Long getProblemSourceScopeConcernedDepartmentId() {
 		return problemSourceScopeConcernedDepartmentId;
 	}
@@ -73,15 +77,15 @@ public class ProblemSourceScopeConcernedDepartment extends BaseModel implements 
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "tehsil_id")
+	@JoinColumn(name = "problem_source_scope_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public ProblemSourceScope getProblemSourceScopeId() {
-		return problemSourceScopeId;
+	public ProblemSourceScope getProblemSourceScope() {
+		return problemSourceScope;
 	}
 
-	public void setProblemSourceScopeId(ProblemSourceScope problemSourceScopeId) {
-		this.problemSourceScopeId = problemSourceScopeId;
+	public void setProblemSourceScope(ProblemSourceScope problemSourceScope) {
+		this.problemSourceScope = problemSourceScope;
 	}
 
 	@Column(name = "department", length = 50)
