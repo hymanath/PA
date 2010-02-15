@@ -33,7 +33,7 @@ public class Problem extends BaseModel implements Serializable{
 	private String year;
 	private String problem;
 	private Date existingFrom;
-	private Set<ProblemSource> problemSources = new HashSet<ProblemSource>(0);
+	private Set<ProblemAndProblemSource> problemAndProblemSources = new HashSet<ProblemAndProblemSource>(0);
 	
 	public Problem(){
 		
@@ -45,11 +45,11 @@ public class Problem extends BaseModel implements Serializable{
 	
 	
 	public Problem(String description, String intensity,
-			Date identifiedOn, Set<ProblemSource> problemSources) {
+			Date identifiedOn, Set<ProblemAndProblemSource> problemAndProblemSources) {
 		this.description = description;
 		this.intensity = intensity;
 		this.identifiedOn = identifiedOn;
-		this.problemSources = problemSources;
+		this.problemAndProblemSources = problemAndProblemSources;
 	}
 
 	@Id
@@ -92,12 +92,12 @@ public class Problem extends BaseModel implements Serializable{
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problem")
-	public Set<ProblemSource> getProblemSources() {
-		return problemSources;
+	public Set<ProblemAndProblemSource> getProblemAndProblemSources() {
+		return problemAndProblemSources;
 	}
 
-	public void setProblemSources(Set<ProblemSource> problemSources) {
-		this.problemSources = problemSources;
+	public void setProblemAndProblemSources(Set<ProblemAndProblemSource> problemAndProblemSources) {
+		this.problemAndProblemSources = problemAndProblemSources;
 	}
     
 	@Column(name = "year", length = 25)
@@ -108,7 +108,7 @@ public class Problem extends BaseModel implements Serializable{
 	public void setYear(String year) {
 		this.year = year;
 	}
-	@Column(name = "problem", length = 200)
+	@Column(name = "problem_title", length = 200)
 	public String getProblem() {
 		return problem;
 	}

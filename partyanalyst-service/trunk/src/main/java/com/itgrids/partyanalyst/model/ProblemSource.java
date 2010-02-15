@@ -11,14 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "problem_source")
@@ -29,12 +23,9 @@ public class ProblemSource extends BaseModel implements Serializable{
 	 */
 	private static final long serialVersionUID = 3768383074738249375L;
 	private Long problemSourceId;
-	private String postedBy;
-	private String source;
-	private Registration user;
-	private Problem problem;
-	private ProblemExternalSource problemExternalSource;
-	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
+	private String problemSource;
+	private String description;
+	private Set<ProblemAndProblemSource> problemAndProblemSources = new HashSet<ProblemAndProblemSource>(0); 
 	
 	public ProblemSource(){
 		
@@ -44,14 +35,11 @@ public class ProblemSource extends BaseModel implements Serializable{
 		this.problemSourceId = problemSourceId;
 	}
 	
-	public ProblemSource(String postedBy, String source,
-			Registration user, Problem problem,ProblemExternalSource problemExternalSource, Set<ProblemLocation> problemLocations) {
-		this.postedBy = postedBy;
-		this.source = source;
-		this.user = user;
-		this.problem = problem;
-		this.problemExternalSource = problemExternalSource;
-		this.problemLocations = problemLocations;
+	public ProblemSource(String problemSource,
+			String description, Set<ProblemAndProblemSource> problemAndProblemSources) {
+		this.problemSource = problemSource;
+		this.description = description;
+		this.problemAndProblemSources = problemAndProblemSources;
 	}
 
 	@Id
@@ -64,69 +52,35 @@ public class ProblemSource extends BaseModel implements Serializable{
 	public void setProblemSourceId(Long problemSourceId) {
 		this.problemSourceId = problemSourceId;
 	}
-
-	@Column(name = "posted_by", length = 50)
-	public String getPostedBy() {
-		return postedBy;
+	
+	@Column(name = "problem_source", length = 50)
+	public String getProblemSource() {
+		return problemSource;
 	}
 
-	public void setPostedBy(String postedBy) {
-		this.postedBy = postedBy;
+	
+	public void setProblemSource(String problemSource) {
+		this.problemSource = problemSource;
 	}
 
-	@Column(name = "source", length = 50)	
-	public String getSource() {
-		return source;
+	@Column(name = "description", length = 50)
+	public String getDescription() {
+		return description;
 	}
 
-	public void setSource(String source) {
-		this.source = source;
-	}
-
-	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Registration getUser() {
-		return user;
-	}
-
-	public void setUser(Registration user) {
-		this.user = user;
-	}
-
-	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "problem_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Problem getProblem() {
-		return problem;
-	}
-
-	public void setProblem(Problem problem) {
-		this.problem = problem;
-	}
-
-	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "problem_external_source_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public ProblemExternalSource getProblemExternalSource() {
-		return problemExternalSource;
-	}
-
-	public void setProblemExternalSource(ProblemExternalSource problemExternalSource) {
-		this.problemExternalSource = problemExternalSource;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemSource")
-	public Set<ProblemLocation> getProblemLocations() {
-		return problemLocations;
+	public Set<ProblemAndProblemSource> getProblemAndProblemSources() {
+		return problemAndProblemSources;
 	}
 
-	public void setProblemLocations(Set<ProblemLocation> problemLocations) {
-		this.problemLocations = problemLocations;
+	public void setProblemAndProblemSources(
+			Set<ProblemAndProblemSource> problemAndProblemSources) {
+		this.problemAndProblemSources = problemAndProblemSources;
 	}
-
+	
 	
 }

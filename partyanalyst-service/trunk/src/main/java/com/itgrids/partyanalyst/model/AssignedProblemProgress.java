@@ -24,6 +24,9 @@ public class AssignedProblemProgress extends BaseModel implements Serializable{
 
 	private Long assignedProblemProgressId;
 	private String description;
+	private String concernedPersonName;
+	private String designation;
+	private String contactNo;
 	private String progressLevel;
 	private Date performedDate;
 	private ProblemHistory problemHistory; 
@@ -60,7 +63,7 @@ public class AssignedProblemProgress extends BaseModel implements Serializable{
 		this.assignedProblemProgressId = assignedProblemProgressId;
 	}
 
-	@Column(name = "description", length = 50)
+	@Column(name = "description", length = 250)
 	public String getDescription() {
 		return description;
 	}
@@ -69,7 +72,7 @@ public class AssignedProblemProgress extends BaseModel implements Serializable{
 		this.description = description;
 	}
 
-	@Column(name = "progressLevel", length = 50)
+	@Column(name = "progress_level", length = 50)
 	public String getProgressLevel() {
 		return progressLevel;
 	}
@@ -89,7 +92,7 @@ public class AssignedProblemProgress extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "problem_histroy_id")
+	@JoinColumn(name = "problem_history_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public ProblemHistory getProblemHistory() {
@@ -108,10 +111,39 @@ public class AssignedProblemProgress extends BaseModel implements Serializable{
 		return problemSourceScopeConcernedDepartment;
 	}
 
+	
 	public void setProblemSourceScopeConcernedDepartment(
 			ProblemSourceScopeConcernedDepartment problemSourceScopeConcernedDepartment) {
 		this.problemSourceScopeConcernedDepartment = problemSourceScopeConcernedDepartment;
 	}
+	
+	@Column(name = "concerned_person_name", length = 250)
+	public String getConcernedPersonName() {
+		return concernedPersonName;
+	}
+
+	public void setConcernedPersonName(String concernedPersonName) {
+		this.concernedPersonName = concernedPersonName;
+	}
+
+	@Column(name = "designation", length = 25)
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	@Column(name = "contact_no", length = 25)
+	public String getContactNo() {
+		return contactNo;
+	}
+
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
+	}
+
 	
 	
 

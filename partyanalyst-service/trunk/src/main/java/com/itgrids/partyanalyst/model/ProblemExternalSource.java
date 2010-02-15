@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -31,10 +32,10 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 	private Long problemExternalSourceId;
 	private String name;
 	private String mobile;
-	private String telePhone;
 	private String email;
 	private String address;
-	private Set<ProblemSource> problemSource;
+	private String telePhone;
+	private Set<ProblemAndProblemSource> problemAndProblemSources = new HashSet<ProblemAndProblemSource>(0);
 	
 	//default constructor
 	public ProblemExternalSource(){
@@ -47,12 +48,12 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 	}
 	
     //parameterized constructor
-    public ProblemExternalSource(String name,String mobile,String email,String address, Set<ProblemSource> problemSource){
+    public ProblemExternalSource(String name,String mobile,String email,String address, Set<ProblemAndProblemSource> problemAndProblemSources){
 		this.name = name;
 		this.mobile = mobile;
 		this.email = email;
 		this.address = address;
-		this.problemSource = problemSource;
+		this.problemAndProblemSources = problemAndProblemSources;
     }
 
     @Id
@@ -103,12 +104,12 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemExternalSource")
-	public Set<ProblemSource> getProblemSource() {
-		return problemSource;
+	public Set<ProblemAndProblemSource> getProblemAndProblemSources() {
+		return problemAndProblemSources;
 	}
 
-	public void setProblemSource(Set<ProblemSource> problemSource) {
-		this.problemSource = problemSource;
+	public void setProblemAndProblemSources(Set<ProblemAndProblemSource> problemAndProblemSources) {
+		this.problemAndProblemSources = problemAndProblemSources;
 	}
 	@Column(name = "telephone", length = 25)
 	public String getTelePhone() {
@@ -119,7 +120,5 @@ public class ProblemExternalSource extends BaseModel implements Serializable {
 		this.telePhone = telePhone;
 	}
 	
-    
-    
     
 }

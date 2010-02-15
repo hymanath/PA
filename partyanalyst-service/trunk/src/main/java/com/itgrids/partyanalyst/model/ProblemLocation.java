@@ -32,7 +32,7 @@ public class ProblemLocation extends BaseModel implements Serializable{
 	private Hamlet hamlet;
 	private Ward ward;
 	private Township township;
-	private ProblemSource problemSource;
+	private ProblemAndProblemSource problemAndProblemSource;
 	private ProblemClassification problemClassification;
 	private Set<ProblemHistory> problemHistories = new HashSet<ProblemHistory>(0); 
 	
@@ -49,13 +49,13 @@ public class ProblemLocation extends BaseModel implements Serializable{
 	public ProblemLocation(Hamlet hamlet,
 			Ward ward, Township township,
 			ProblemClassification problemClassification,
-			ProblemSource problemSource,
+			ProblemAndProblemSource problemAndProblemSource,
 			Set<ProblemHistory> problemHistories) {
 		this.hamlet = hamlet;
 		this.ward = ward;
 		this.township = township;
 		this.problemClassification = problemClassification;
-		this.problemSource = problemSource;
+		this.problemAndProblemSource = problemAndProblemSource;
 		this.problemHistories = problemHistories;
 	}
 
@@ -128,15 +128,15 @@ public class ProblemLocation extends BaseModel implements Serializable{
 	}
 
 	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "problem_source_id")
+	@JoinColumn(name = "problem_and_problem_source_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public ProblemSource getProblemSource() {
-		return problemSource;
+	public ProblemAndProblemSource getProblemAndProblemSource() {
+		return problemAndProblemSource;
 	}
 
-	public void setProblemSource(ProblemSource problemSource) {
-		this.problemSource = problemSource;
+	public void setProblemAndProblemSource(ProblemAndProblemSource problemAndProblemSource) {
+		this.problemAndProblemSource = problemAndProblemSource;
 	}
 	
 	

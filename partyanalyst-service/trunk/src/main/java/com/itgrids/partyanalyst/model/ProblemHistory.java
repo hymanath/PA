@@ -32,6 +32,8 @@ public class ProblemHistory extends BaseModel implements Serializable{
 	private ProblemLocation problemLocation;
 	private ProblemStatus problemStatus;
 	private String comments;
+	private String updatedTableColumn;
+	private String previousContent;
 	private ProblemSourceScope problemSourceScope;
 	private Date dateUpdated;
 	private Set<AssignedProblemProgress> assignedProblemProgresses = new HashSet<AssignedProblemProgress>(0); 
@@ -117,7 +119,7 @@ public class ProblemHistory extends BaseModel implements Serializable{
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "date_updated", length = 10)
+	@Column(name = "updated_date", length = 10)
 	public Date getDateUpdated() {
 		return dateUpdated;
 	}
@@ -145,5 +147,22 @@ public class ProblemHistory extends BaseModel implements Serializable{
 		this.problemFundSources = problemFundSources;
 	}
 	
+	@Column(name = "updated_table_and_column", length = 10)
+	public String getUpdatedTableColumn() {
+		return updatedTableColumn;
+	}
+
+	public void setUpdatedTableColumn(String updatedTableColumn) {
+		this.updatedTableColumn = updatedTableColumn;
+	}
+
+	@Column(name = "previous_data", length = 10)
+	public String getPreviousContent() {
+		return previousContent;
+	}
+
+	public void setPreviousContent(String previousContent) {
+		this.previousContent = previousContent;
+	}
 	
 }
