@@ -13,32 +13,92 @@ public class ProblemManagementDataVO {
 
 	private List<HamletProblemVO> hamletProblems;
 	private ResultStatus resultStatus;
-	private List<ProblemBeanVO> newProblems;
+	private ProblemsOfUserVO problemsOfUserVO;
 	private ProblemBeanVO problemBeanVO;
+	private List<ProblemBeanVO> classifiedProblems; 
+	private List<SelectOptionVO> probConcernedDepts;
+	private List<ProblemBeanVO> assignedProblems;
+	private List<ProblemBeanVO> progressedProblems;
+	private List<ProblemBeanVO> pendingProblems;
+	private List<ProblemBeanVO> fixedProblems;
+	
+	public ProblemsOfUserVO getProblemsOfUserVO() {
+		return problemsOfUserVO;
+	}
+	
+	public void setProblemsOfUserVO(ProblemsOfUserVO problemsOfUserVO) {
+		this.problemsOfUserVO = problemsOfUserVO;
+	}
 	
 	public ProblemBeanVO getProblemBeanVO() {
 		return problemBeanVO;
 	}
+	
 	public void setProblemBeanVO(ProblemBeanVO problemBeanVO) {
 		this.problemBeanVO = problemBeanVO;
 	}
+	
 	public List<HamletProblemVO> getHamletProblems() {
 		return hamletProblems;
 	}
+	
 	public void setHamletProblems(List<HamletProblemVO> hamletProblems) {
 		this.hamletProblems = hamletProblems;
 	}
+	
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
+	
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
-	public List<ProblemBeanVO> getNewProblems() {
-		return newProblems;
+
+	public List<ProblemBeanVO> getClassifiedProblems() {
+		return classifiedProblems;
 	}
-	public void setNewProblems(List<ProblemBeanVO> newProblems) {
-		this.newProblems = newProblems;
+
+	public void setClassifiedProblems(List<ProblemBeanVO> classifiedProblems) {
+		this.classifiedProblems = classifiedProblems;
 	}
-	
+
+	public List<SelectOptionVO> getProbConcernedDepts() {
+		return probConcernedDepts;
+	}
+
+	public void setProbConcernedDepts(List<SelectOptionVO> probConcernedDepts) {
+		this.probConcernedDepts = probConcernedDepts;
+	}
+
+	public List<ProblemBeanVO> getAssignedProblems() {
+		return assignedProblems;
+	}
+
+	public void setAssignedProblems(List<ProblemBeanVO> assignedProblems) {
+		this.assignedProblems = assignedProblems;
+	}
+
+	public List<ProblemBeanVO> getProgressedProblems() {
+		return progressedProblems;
+	}
+
+	public void setProgressedProblems(List<ProblemBeanVO> progressedProblems) {
+		this.progressedProblems = progressedProblems;
+	}
+
+	public List<ProblemBeanVO> getPendingProblems() {
+		return pendingProblems;
+	}
+
+	public void setPendingProblems(List<ProblemBeanVO> pendingProblems) {
+		this.pendingProblems = pendingProblems;
+	}
+
+	public List<ProblemBeanVO> getFixedProblems() {
+		return fixedProblems;
+	}
+
+	public void setFixedProblems(List<ProblemBeanVO> fixedProblems) {
+		this.fixedProblems = fixedProblems;
+	}	
 }
