@@ -21,8 +21,7 @@ public class UserCategory extends BaseModel implements Serializable{
 	
 	private Long userCatagoryId;
 	private String userCatagory;
-	private Set<ProblemSourceScope> problemSourceScopes = new HashSet<ProblemSourceScope>(0);
-	 
+	
 	public UserCategory(){
 		
 	}
@@ -31,10 +30,8 @@ public class UserCategory extends BaseModel implements Serializable{
 		this.userCatagoryId = userCatagoryId;
 	}
 	
-	
-	public UserCategory(String userCatagory, Set<ProblemSourceScope> problemSourceScopes) {
-		this.userCatagory = userCatagory;
-		this.problemSourceScopes = problemSourceScopes;
+	public UserCategory(String userCatagory ) {
+		this.userCatagory = userCatagory;		
 	}
 
 	@Id
@@ -55,16 +52,5 @@ public class UserCategory extends BaseModel implements Serializable{
 	
 	public void setUserCatagory(String userCatagory) {
 		this.userCatagory = userCatagory;
-	}
-	 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userCategory")
-	public Set<ProblemSourceScope> getProblemSourceScopes() {
-		return problemSourceScopes;
-	}
-	
-	public void setProblemSourceScopes(Set<ProblemSourceScope> problemSourceScopes) {
-		this.problemSourceScopes = problemSourceScopes;
-	}
-
-	 
+	}	 
 }
