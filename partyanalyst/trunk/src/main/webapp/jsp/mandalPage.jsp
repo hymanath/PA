@@ -2,12 +2,12 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <html>
 <head>
 <!--CSS file (default YUI Sam Skin) --> 
-	<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/datatable/assets/skins/sam/datatable.css"> 
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">	 
+	<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/datatable/assets/skins/sam/datatable.css"> 	 
 	<!-- Dependencies --> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script> 
@@ -30,8 +30,21 @@
  
 	<!-- Source files --> 
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datatable/datatable-min.js"></script> 
-	<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<!--  dependencies for tab view -->
+	<!-- Sam Skin CSS for TabView -->
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/tabview/assets/skins/sam/tabview.css">
+ 
+<!-- JavaScript Dependencies for Tabview: -->
+<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
+ 
+<!-- OPTIONAL: Connection (required for dynamic loading of data) -->
+<script src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
+ 
+<!-- Source file for TabView -->
+<script src="http://yui.yahooapis.com/2.8.0r4/build/tabview/tabview-min.js"></script>
+<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>	
+	
 <style type="text/css">
 
 
@@ -152,78 +165,179 @@
 		sortable : true
 	} ];
 
-	var myDataTable = new YAHOO.widget.DataTable("villageCensusDivBody",resultsColumnDefs, resultsDataSource,{});  
+	var myConfigs = { 
+		    paginator : new YAHOO.widget.Paginator({ 
+	        rowsPerPage    : 15 
+		    }) 
+		};
+	
+	var myDataTable = new YAHOO.widget.DataTable("dTTableDiv3",resultsColumnDefs, resultsDataSource,myConfigs);  
 
 	}
-	function buildCastVotersDataTableTemp()
-	{
-		var localCastStatsColumnDefs = [ 
-		    	            
-		    	            {key:"casteName", label: "Cast", sortable: true}, 
-		    	           	{key:"totalVoters", label: "Total Voters", formatter:"number", sortable: true},
-		    				{key:"voterPercentage", label: "Percentage", formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}	
-		    					    			    				
-		    	        ]; 
-		var localCastStatsDataSource = new YAHOO.util.DataSource(castWiseElectionVoters.casteVoters); 
-		localCastStatsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-		localCastStatsDataSource.responseSchema = { 
-            fields: ["casteName", {key: "totalVoters", parser:"number"},{key: "voterPercentage", parser:YAHOO.util.DataSourceBase.parseNumber}] 
-        };
 
-        
+	function buildBoothDataForRevenueVillagesTable(){
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+				.get("boothInfo"));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "locationName"
+			}, {
+				key : "population",parser:"number"
+			}, {
+				key : "booths"
+			}, {
+				key : "subLocations"
+			}, {
+				key : "hamletsOfTownship"
+			} ]
+		};
+
+		var resultsColumnDefs = [ {
+			key : "locationName",		
+			label : "Location Name",
+			sortable : true
+		}, {
+			key : "population",
+			parser:"number",
+			label : "Total Population",
+			sortable : true
+		}, {
+			key : "booths",
+			parser:"number",
+			label : "Booths",
+			sortable : true
+		}, {
+			key : "subLocations",
+			parser:"number",
+			label : "Sub Locations",
+			sortable : true
+		}, {
+			key : "hamletsOfTownship",
+			parser:"number",
+			label : "Hamlets Of Township",
+			sortable : true
+		}];
+
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10 
+		        rowsPerPage    : 15 
 			    }) 
-				};
-
-		var localCastStatsDataTable =  new YAHOO.widget.DataTable("mandalCastVotersDivBody", localCastStatsColumnDefs, localCastStatsDataSource, myConfigs);
-		constMgmtTabs.getTab(2).addListener("click", function() {localCastStatsDataTable.onShow()});
-
-			return {
-				oDS: localCastStatsDataSource,
-				oDT: localCastStatsDataTable
 			};
+		
+		var myDataTable = new YAHOO.widget.DataTable("dTTableDiv2",resultsColumnDefs, resultsDataSource,myConfigs);  		
 	}
 
-	function buildCastVotersDataTable()
-	{
+	function buildTabNavigator(){
+		var myTabs = new YAHOO.widget.TabView();
+		var tabOneContent = '';
+		tabOneContent+='<div id="div1">';
+		tabOneContent+='<div id="dTTableDiv1" align="center" class="yui-skin-sam"></div>';
+		tabOneContent+='</div>';
+		var tabTwoContent = '';
+		tabTwoContent+='<div id="div2" class="yui-skin-sam">';
+		tabTwoContent+='<div id="dTTableDiv2" align="center" class="yui-skin-sam"></div>';
+		tabTwoContent+='</div>';
+		var tabThreeContent = '';
+		tabThreeContent+='<div id="div3" class="yui-skin-sam">';
+		tabThreeContent+='<div id="dTTableDiv3" align="center" class="yui-skin-sam"></div>';
+		tabThreeContent+='</div>'; 
+		var tabFourContent = '';
+		tabFourContent+='<div id="partyVoters"  align="center" class="yui-skin-sam">';
+		tabFourContent+='<table class="ConstituencyElectionsTable" >';
+		tabFourContent+='<c:set var="headerData1" value="${partyElectionVotersHeaderDataVO}"/>';
+		tabFourContent+='<tr>';
+		tabFourContent+='<th><c:out value="Party"/></th>';
+		tabFourContent+='<c:forEach var="header1" items="${headerData1.header}" varStatus="status">';
+		tabFourContent+='<th><c:out value="${header1}"/></th>';
+		tabFourContent+='</c:forEach>';
+		tabFourContent+='</tr>';
+		tabFourContent+='<c:forEach var="data1" items="${headerData1.data}" varStatus="status">';
+		tabFourContent+='<tr>';
+		tabFourContent+='<td><c:out value="${data1.partyName}"/></td>';
+		tabFourContent+='<c:forEach var="partyElectionVoter" items="${data1.partyElectionVotersList1}">';
+		tabFourContent+='<td><c:out value="${partyElectionVoter}"/></td>';
+		tabFourContent+='</c:forEach>';
+		tabFourContent+='</tr>';		
+		tabFourContent+='</c:forEach>';
+		tabFourContent+='</table>';	
+		tabFourContent+='</div>';
+		myTabs.addTab( new YAHOO.widget.Tab({
+		    label: 'Mandal Local Leaders',
+		    content: tabOneContent,
+		    active: true
+		}));
+		 
+		myTabs.addTab( new YAHOO.widget.Tab({
+		    label: 'Booths in Revenue Villages',
+		    content: tabTwoContent
+		}));
+		 
+		myTabs.addTab( new YAHOO.widget.Tab({
+		    label: 'Cast Info in Revenue Villages',
+		    content: tabThreeContent
+		}));
+
+		myTabs.addTab( new YAHOO.widget.Tab({
+		    label: 'Elections In Mandal',
+		    content: tabFourContent
+		}));
+		
+		myTabs.appendTo('mandalPageTab');
+				
+	}
+
+	function buildLocalLeadersTable(){
+
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-			.get("mandalCastVotersTable"));
-	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
-	resultsDataSource.responseSchema = {
-		fields : [ {
-			key : "casteName"
-		}, {
-			key : "totalVoters",parser:"number"
-		}, {
-			key : "voterPercentage", parser:YAHOO.util.DataSourceBase.parseNumber
-		} ]
-	};
+				.get("localLeaders"));
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "personName"
+			}, {
+				key : "designation"
+			}, {
+				key : "party"
+			}, {
+				key : "localArea"
+			}, {
+				key : "year"
+			} ]
+		};
 
-	var resultsColumnDefs = [ {
-		key : "casteName",		
-		label : "Cast",
-		sortable : true
-	}, {
-		key : "totalVoters",
-		parser:"number",
-		label : "Total Voters",
-		sortable : true
-	}, {
-		key : "voterPercentage",
-		label : "Percentage",formatter:YAHOO.widget.DataTable.formatFloat,
-		sortable : true
-	} ];
-	var myConfigs = {
-		paginator : new YAHOO.widget.Paginator({
-			rowsPerPage: 10
-		})
-};
-	var myDataTable = new YAHOO.widget.DataTable("mandalCastVotersDivBody",resultsColumnDefs, resultsDataSource,myConfigs);  
+		var resultsColumnDefs = [ {
+			key : "personName",		
+			label : "Person Name",
+			sortable : true
+		}, {
+			key : "designation",
+			label : "Designation",
+			sortable : true
+		}, {
+			key : "party",
+			label : "Party",
+			sortable : true
+		}, {
+			key : "localArea",
+			label : "Local Area",
+			sortable : true
+		}, {
+			key : "year",
+			label : "Year",
+			sortable : true
+		}];
 
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 15 
+			    }) 
+			};
+		
+		var myDataTable = new YAHOO.widget.DataTable("dTTableDiv1",resultsColumnDefs, resultsDataSource, myConfigs);
 	}
-</script>
+	
+	</script>
 </head>
 <body> 
 
@@ -232,7 +346,7 @@
 <div id="boothResultsDiv">
 	<div id="mandalCensusDiv">
 		<div id="mandalCensusDivHead"><h4><u>Mandal Details..</u></h4></div>
-		<div id="mandalCensusDivBody">
+		<div id="mandalCensusDivBody" align="center" class="yui-skin-sam">
 		<table class="ConstituencyElectionsTable" >		
 				<tr>
 					<th></th>
@@ -275,14 +389,16 @@
 			</table>
 		</div>
 	</div>
-	<div id="villageCensusDiv">
+	<br/>
+	<div id="mandalPageTab" class="yui-skin-sam"></div>
+	<div id="villageCensusDiv" style="display: none;">
 		<div id="villageCensusDivHead"><h4><u>Villages Details..</u></h4></div>
 		<div id="villageCensusDivBody" class="yui-skin-sam">
 			<display:table id="villageCensusTable" class="searchresultsTable"
 			 name="${villageDetailsVO.villageCensusList}"
 			defaultorder="ascending" defaultsort="2"
 			style="width:auto;margin-right:20px;">
-				<display:column style="text-align: left;" title="Village Name" href="revenueVillageReport.action" paramId="revenueVillageID" paramProperty="townshipID"
+				<display:column style="text-align: left;" title="Village Name"
 					property="townshipName" sortable="true" />
 				<display:column style="text-align: left;" title="Total Populations"
 					property="totalPersons" sortable="true" />
@@ -299,135 +415,62 @@
 			</display:table>
 		</div>
 	</div>
-	<div id="partyVotersDiv">
 		
-		<div id="mandalPartyVotersDivHead"><h4><u>Mandal Party Election Voters</u></h4></div>
-
-		<table class="ConstituencyElectionsTable" >	
-		<c:set var="headerData1" value="${partyElectionVotersHeaderDataVO}"/>
-		<tr>
-			<th><c:out value="Party"/></th>
-			<c:forEach var="header1" items="${headerData1.header}" varStatus="status">
-				<th><c:out value="${header1}"/></th>
-			</c:forEach>
-		</tr>
-		<c:forEach var="data1" items="${headerData1.data}" varStatus="status">
+	<div id="Local Leaders" class="yui-skin-sam" style="display: none;">		
+		<div id="mandalLocalLeadersHead"><h4><u>Local Leaders In Mandal</u></h4></div>
+		<table class="ConstituencyElectionsTable" id ="localLeaders">	
+			<c:forEach var="data1" items="${influencingPeopleInMandal}" varStatus="status">
 			<tr>
-				<td><c:out value="${data1.partyName}"/></td>
-				<c:forEach var="partyElectionVoter" items="${data1.partyElectionVotersList1}">
-					<td><c:out value="${partyElectionVoter}"/></td>
-				</c:forEach>
-			
+				<td><c:out value="${data1.personName}"/></td>
+				<td><c:out value="${data1.designation}"/></td>
+				<td><c:out value="${data1.party}"/></td>
+				<td><c:out value="${data1.localArea}"/></td>
+				<td><c:out value="${data1.year}"/><br/></td>
 			</tr>
-		
-		</c:forEach>
-		
+			</c:forEach>
 		</table>	
 	</div>
-
-	
-	<div id="mandalCastVotersDiv">
-		<div id="mandalCastVotersDivHead"><h4><u>Mandal Cast Election Voters</u></h4></div>
-		<div id="mandalCastVotersDivBody" class="yui-skin-sam">
-			<display:table id="mandalCastVotersTable" class="searchresultsTable"
-			  name="${castWiseElectionVoters.casteVoters}"
-			defaultorder="ascending" defaultsort="2"
-			style="width:auto;margin-right:20px;">
-				<display:column style="text-align: left;" title="Cast"
-					property="casteName" sortable="true" />
-				<display:column style="text-align: left;" title="Total Voters"
-					property="totalVoters" sortable="true" />
-				<display:column style="text-align: left;" title="Percentage"
-					property="voterPercentage" sortable="true" />
-			</display:table>
-		</div>
+	<div id="Township Wise Booth Details" class="yui-skin-sam" style="display: none;">		
+		<div id="townshipWiseBoothDetails"><h4><u>Township Wise Booth Details</u></h4></div>
+		<table class="ConstituencyElectionsTable" id ="boothInfo">	
+			<c:forEach var="data1" items="${townshipWiseBoothDataInMandal}" varStatus="status">
+			<tr>
+				<td><c:out value="${data1.locationName}"/></td>
+				<td><c:out value="${data1.population}"/></td>
+				<td>
+					<c:forEach var="booth" items="${data1.booths}">
+						<c:out value="${booth}"/><br/>
+					</c:forEach>
+				</td>
+				<td>
+					<c:forEach var="hamlet" items="${data1.subLocations}">
+						<c:out value="${hamlet}"/><br/>
+					</c:forEach>
+				</td>
+				<td>
+					<c:forEach var="hamlet" items="${data1.hamletsOfTownship}">
+						<c:out value="${hamlet}"/><br/>
+					</c:forEach>
+				</td>
+			</tr>
+			</c:forEach>
+		</table>	
 	</div>
-	
-	<div id="mandalGenderAgeVotersDiv">
-		<div id="mandalGenderAgeVotersDivHead"><h4><u>Mandal Gender/Age Election Voters</u></h4></div>
-		<div id="mandalGenderAgeVotersDivBody" class="yui-skin-sam">
-			<c:set var="genderAgeVoters" value="${genderAgeWiseVoters}"/>
-			<display:table class="searchresultsTable" name="" id="mandalGenderAgeVotersTable" style="width:auto;margin-right:20px;">
-    			<display:column title="Gender" ><c:out value="Male" /></display:column>
-    			<c:forEach var="maleData" items="${genderAgeVoters.maleVotersAgeWise}" varStatus="male">
-    				<jsp:useBean id="male" type="javax.servlet.jsp.jstl.core.LoopTagStatus" />
-    				<c:choose>
-						<c:when test="<%=male.getIndex() == 1%>">
-							<display:column title="18-23" ><c:out value="${maleData}" /></display:column>
-						</c:when>
-						<c:when test="<%=male.getIndex() == 2%>">
-							<display:column title="23-35" ><c:out value="${maleData}" /></display:column>
-						</c:when>
-						<c:when test="<%=male.getIndex() == 3%>">
-							<display:column title="35-50" ><c:out value="${maleData}" /></display:column>
-						</c:when>
-						<c:when test="<%=male.getIndex() == 4%>">
-							<display:column title="50-65" ><c:out value="${maleData}" /></display:column>
-						</c:when>
-						<c:when test="<%=male.getIndex() == 5%>">
-							<display:column title="65 Above" ><c:out value="${maleData}" /></display:column>
-						</c:when>
-						<c:when test="<%=male.getIndex() == 6%>">
-							<display:column title="Total" ><c:out value="${maleData}" /></display:column>
-						</c:when>
-					</c:choose>
-    			</c:forEach>
-    			<display:column title="Gender" ><c:out value="Female" /></display:column>
-    			<c:forEach var="femaleData" items="${genderAgeVoters.femaleVotersAgeWise}" varStatus="female">
-    				<jsp:useBean id="female" type="javax.servlet.jsp.jstl.core.LoopTagStatus" />
-    				<c:choose>
-						<c:when test="<%=female.getIndex() == 1%>">
-							<display:column title="18-23" ><c:out value="${femaleData}" /></display:column>
-						</c:when>
-						<c:when test="<%=female.getIndex() == 2%>">
-							<display:column title="23-35" ><c:out value="${femaleData}" /></display:column>
-						</c:when>
-						<c:when test="<%=female.getIndex() == 3%>">
-							<display:column title="35-50" ><c:out value="${femaleData}" /></display:column>
-						</c:when>
-						<c:when test="<%=female.getIndex() == 4%>">
-							<display:column title="50-65" ><c:out value="${femaleData}" /></display:column>
-						</c:when>
-						<c:when test="<%=female.getIndex() == 5%>">
-							<display:column title="65 Above" ><c:out value="${femaleData}" /></display:column>
-						</c:when>
-						<c:when test="<%=female.getIndex() == 6%>">
-							<display:column title="Total" ><c:out value="${femaleData}" /></display:column>
-						</c:when>
-					</c:choose>
-    			</c:forEach>
-    			<display:column title="Gender" ><c:out value="Total" /></display:column>
-    			<c:forEach var="totalData" items="${genderAgeVoters.maleVotersAgeWise}" varStatus="total">
-    				<jsp:useBean id="total" type="javax.servlet.jsp.jstl.core.LoopTagStatus" />
-    				<c:choose>
-						<c:when test="<%=total.getIndex() == 1%>">
-							<display:column title="18-23" ><c:out value="${totalData}" /></display:column>
-						</c:when>
-						<c:when test="<%=total.getIndex() == 2%>">
-							<display:column title="23-35" ><c:out value="${totalData}" /></display:column>
-						</c:when>
-						<c:when test="<%=total.getIndex() == 3%>">
-							<display:column title="35-50" ><c:out value="${totalData}" /></display:column>
-						</c:when>
-						<c:when test="<%=total.getIndex() == 4%>">
-							<display:column title="50-65" ><c:out value="${totalData}" /></display:column>
-						</c:when>
-						<c:when test="<%=total.getIndex() == 5%>">
-							<display:column title="65 Above" ><c:out value="${totalData}" /></display:column>
-						</c:when>
-						<c:when test="<%=total.getIndex() == 6%>">
-							<display:column title="Total" ><c:out value="${totalData}" /></display:column>
-						</c:when>
-					</c:choose>
-    			</c:forEach>
-    		</display:table>
-    	</div>
-	</div>
-	
 </div>
 <script type="text/javascript">
-	buildCensusDataTable();
-	buildCastVotersDataTable();
+	buildTabNavigator();
 </script>
+<script type="text/javascript">
+	buildCensusDataTable();
+</script>
+<script type="text/javascript">
+	buildLocalLeadersTable();
+</script>
+
+<script type="text/javascript">
+	buildBoothDataForRevenueVillagesTable();
+</script>
+
+
 </body>
 </html>
