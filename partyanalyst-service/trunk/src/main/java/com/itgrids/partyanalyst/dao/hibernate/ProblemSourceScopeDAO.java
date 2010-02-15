@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IProblemSourceScopeDAO;
@@ -9,5 +11,15 @@ public class ProblemSourceScopeDAO extends GenericDaoHibernate<ProblemSourceScop
 
 	public ProblemSourceScopeDAO(){
 		super(ProblemSourceScope.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProblemSourceScope> findByUserCategory(Long userCategoryId){
+		return getHibernateTemplate().find("from ProblemSourceScope model where model.userCategory.userCatagoryId = ?",userCategoryId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ProblemSourceScope> findBySourceScope(String problemSourceScope) {
+		return getHibernateTemplate().find("from ProblemSourceScope model where model.scope = ?",problemSourceScope);
 	}
 }

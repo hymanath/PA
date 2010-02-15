@@ -26,6 +26,11 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 		return getHibernateTemplate().find("from AssignedProblemProgress model where model.progressLevel = ?", progressLevel);
 	}
 
-	
+	@SuppressWarnings("unchecked")
+	public List<AssignedProblemProgress> findByRegistrationIdAndStatusId(Long registrationId, Long statusId){
+		Object[] params = {registrationId, statusId};
+		return getHibernateTemplate().find("from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?" +
+				" and model.problemHistory.problemStatus.problemStatusId = ?",params );
+	}
 
 }

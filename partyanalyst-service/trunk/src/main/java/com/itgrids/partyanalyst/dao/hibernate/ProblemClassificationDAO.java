@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
@@ -19,4 +21,9 @@ public class ProblemClassificationDAO extends GenericDaoHibernate<ProblemClassif
 		
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<ProblemClassification> findByClassification(String problemClassification) {
+		return getHibernateTemplate().find("from ProblemClassification model where model.classification = ?",problemClassification);
+	}
+	
 }

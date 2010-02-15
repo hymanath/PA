@@ -22,24 +22,24 @@ public class ProblemLocationDAO extends GenericDaoHibernate<ProblemLocation, Lon
 	@SuppressWarnings("unchecked")
 	public List<Problem> findByHamletIdAndYear(Long hamletId,String year){
 		Object[] params ={hamletId,year};
-		return getHibernateTemplate().find("select model.problemSource.problem  from ProblemLocation model where model.hamlet.hamletId = ? and model.problemSource.problem.year = ?",params);
+		return getHibernateTemplate().find("select model.problemAndProblemSource.problem  from ProblemLocation model where model.hamlet.hamletId = ? and model.problemAndProblemSource.problem.year = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List findByHamletandYear(Long hamletId,String year){
 		Object[] params ={hamletId,year};
-		return getHibernateTemplate().find("select model.problemSource.problem,model.problemSource,model.problemSource.problemExternalSource  from ProblemLocation model where model.hamlet.hamletId = ? and model.problemSource.problem.year = ?",params);
+		return getHibernateTemplate().find("select model.problemAndProblemSource.problem,model.problemAndProblemSource,model.problemAndProblemSource.problemExternalSource  from ProblemLocation model where model.hamlet.hamletId = ? and model.problemAndProblemSource.problem.year = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<ProblemLocation> findByHamletIdandYear(Long hamletId,String year){
 		Object[] params ={hamletId,year};
-		return getHibernateTemplate().find("from ProblemLocation model where model.hamlet.hamletId = ? and model.problemSource.problem.year = ?",params);
+		return getHibernateTemplate().find("from ProblemLocation model where model.hamlet.hamletId = ? and model.problemAndProblemSource.problem.year = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<ProblemLocation> findProblemsByUserId(Long registrationId){
-		return getHibernateTemplate().find("from ProblemLocation model where model.problemSource.user.registrationId = ?",registrationId);
+		return getHibernateTemplate().find("from ProblemLocation model where model.problemAndProblemSource.user.registrationId = ?", registrationId);
 	}
 	
 }
