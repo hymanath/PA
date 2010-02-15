@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemLocation;
 import com.itgrids.partyanalyst.model.ProblemSource;
 import com.itgrids.partyanalyst.model.Registration;
@@ -2054,6 +2055,54 @@ public class MockData {
 		userPlannedEvents.setActionPlans(actionPlans);
 		return userPlannedEvents;
 	}
+	
+	public static List<ProblemBeanVO> getProblemBeanVOsToSave(){
+		List<ProblemBeanVO> problems = new ArrayList<ProblemBeanVO>();
+		ProblemBeanVO p1, p2, p3, p4;
+		p1 = new ProblemBeanVO();
+		p1.setProblemLocationId(1l);
+		p1.setProblemSourceScopeId(3l);
+		p1.setProblemClassificationId(1l);
+		p1.setProblemStatusId(2l);
+		
+		p1.setProblem("1aaaxxx");
+		p1.setDescription("1xxxaaaa");
+		
+		p2 = new ProblemBeanVO();
+		p2.setProblemLocationId(2l);
+		p2.setProblemSourceScopeId(5l);
+		p2.setProblemClassificationId(2l);
+		p2.setProblemStatusId(2l);
+		
+		p2.setProblem("2aaaxxx");
+		p2.setDescription("2xxxaaaa");
+		
+		p3 = new ProblemBeanVO();
+		p3.setProblemLocationId(3l);
+		p3.setProblemSourceScopeId(5l);
+		p3.setProblemClassificationId(1l);
+		p3.setProblemStatusId(2l);
+		
+		p3.setProblem("3aaaxxx");
+		p3.setDescription("3xxxaaaa");
+		
+		p4 = new ProblemBeanVO();
+		p4.setProblemLocationId(4l);
+		p4.setProblemSourceScopeId(5l);
+		p4.setProblemClassificationId(2l);
+		p4.setProblemStatusId(2l);
+		
+		p4.setProblem("4aaaxxx");
+		p4.setDescription("4xxxaaaa");
+		 
+		problems.add(p1);
+		problems.add(p2);
+		problems.add(p3);
+		problems.add(p4);
+		
+		return problems;
+	}
+	
 	public static List<ProblemLocation> getProblemsForUser(){
 		List<ProblemLocation> list = new ArrayList<ProblemLocation>();
 		
@@ -2063,8 +2112,8 @@ public class MockData {
 		problem1.setIdentifiedOn(Calendar.getInstance().getTime());
 		problem1.setExistingFrom(Calendar.getInstance().getTime());
 		
-		ProblemSource problemSource1 = new ProblemSource();
-		problemSource1.setSource("User");
+		ProblemAndProblemSource problemAndProblemSource1 = new ProblemAndProblemSource();
+		problemAndProblemSource1.setProblemSource(new ProblemSource(1L));
 		
 		
 		Hamlet hamlet1 = new Hamlet();
@@ -2073,8 +2122,8 @@ public class MockData {
 		ProblemLocation problemLocation1 = new ProblemLocation(); 
 		problemLocation1.setHamlet(hamlet1);
 		
-		problemSource1.setProblem(problem1);
-		problemLocation1.setProblemSource(problemSource1);
+		problemAndProblemSource1.setProblem(problem1);
+		problemLocation1.setProblemAndProblemSource(problemAndProblemSource1);
 		list.add(problemLocation1);
 			
 		Problem problem2 = new Problem();
@@ -2082,9 +2131,9 @@ public class MockData {
 		problem2.setDescription("No Street Lights in Harijamwada Colony");
 		problem2.setIdentifiedOn(Calendar.getInstance().getTime());
 		problem2.setExistingFrom(Calendar.getInstance().getTime());
-		
-		ProblemSource problemSource2 = new ProblemSource();
-		problemSource2.setSource("PartyAnalyst");
+		ProblemSource problemSource = new ProblemSource(new Long(1));
+		ProblemAndProblemSource problemAndProblemSource2 = new ProblemAndProblemSource();
+		problemAndProblemSource2.setProblemSource(problemSource);
 		
 		
 		Hamlet hamlet2 = new Hamlet();
@@ -2093,10 +2142,10 @@ public class MockData {
 		ProblemLocation problemLocation2 = new ProblemLocation(); 
 		problemLocation2.setHamlet(hamlet2);
 		
-		problemSource2.setProblem(problem2);
-		problemLocation2.setProblemSource(problemSource2);
+		problemAndProblemSource2.setProblem(problem2);
+		problemLocation2.setProblemAndProblemSource(problemAndProblemSource2);
 		list.add(problemLocation2);
-		return list;
-		
+		return list;		
 	}
+	
 }
