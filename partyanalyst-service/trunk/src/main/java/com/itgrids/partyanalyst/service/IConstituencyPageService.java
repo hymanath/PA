@@ -11,10 +11,15 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 
 public interface IConstituencyPageService {
 
 	public List<ConstituencyElectionResultsVO> getConstituencyElectionResults(Long constituencyId);
 	  
 	public ConstituencyInfoVO getConstituencyDetails(Long constituencyId);
+	
+	public ResultWithExceptionVO getAllMandalLevelLeaders(Long tehsilId);
+	
+	public ResultWithExceptionVO getTownshipWiseBoothDetailsForTehsil(Long tehsilId);
 }
