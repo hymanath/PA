@@ -81,18 +81,7 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		
 		return voterVOs;
 	}
-	
-	public List<SelectOptionVO> getHamletsForTownship(Long townshipId){
-		List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>();
-		List<Hamlet> hamletModels = hamletDAO.findByTownshipId(townshipId);
-		SelectOptionVO hamlet = null;
-		for(Hamlet hamletModel:hamletModels){
-			hamlet = new SelectOptionVO(hamletModel.getHamletId(), hamletModel.getHamletName());
-			hamlets.add(hamlet);
-		}
-		return hamlets;
-	}
-	
+
 	public VoterCastInfoVO getVotersCastInfoForHamlet(Long hamletId, String year){		
 		return caluculatePercentage(boothConstituencyElectionVoterDAO.findVotersCastInfoByHamletAndElectionYear(hamletId, year));
 	}
