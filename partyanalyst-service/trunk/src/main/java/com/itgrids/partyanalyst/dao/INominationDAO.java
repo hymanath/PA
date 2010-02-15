@@ -89,6 +89,8 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	@SuppressWarnings("unchecked")
 	public List findValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear(String electionType, String electionYear, Long tehsilId);
 	
+	public List findLocalLeadersOfMandal(Long tehsilId);
+	
 	public List<Nomination> findByElectionIdAndPartyId(Long electionId,Long partyId);
 	
 	public List<Nomination> findByElectionIdAndPartyIdStateIdAndDistrictId(Long electionId,Long partyId,Long stateId,Long districtId);
