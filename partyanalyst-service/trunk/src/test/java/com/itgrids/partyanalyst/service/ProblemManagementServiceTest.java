@@ -4,27 +4,36 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.appfuse.dao.BaseDaoTestCase;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IProblemClassificationDAO;
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
+import com.itgrids.partyanalyst.dao.IProblemSourceScopeDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.service.impl.ProblemManagementService;
 import com.itgrids.partyanalyst.util.MockData;
 
-public class ProblemManagementServiceTest {
+public class ProblemManagementServiceTest extends BaseDaoTestCase{
 
-	private IProblemLocationDAO problemLocationDAO;
+/*	private IProblemLocationDAO problemLocationDAO;
 	private IRegistrationDAO registrationDAO;
 	private IHamletDAO hamletDAO;
 	private ITownshipDAO townshipDAO;
 	private ProblemManagementService problemManagementService;	
+*/	
+
+	private IProblemManagementService problemManagementService;
 	
-	@Before
+	
+	
+	/*@Before
 	public void init()
 	{
 		registrationDAO = EasyMock.createMock(IRegistrationDAO.class);
@@ -42,7 +51,31 @@ public class ProblemManagementServiceTest {
 		Assert.assertEquals("IsakaPalli",beans.get(0).getHamlet());
 		Assert.assertEquals("User",beans.get(0).getProbSource());	
 	}
+	*/
 	
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+
+
+
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
+	}
+
+
+
+	/*public void testGetUserProblems(){
+		ProblemsOfUserVO obj = problemManagementService.getProblemsForUser(new Long(5));
+		System.out.println(obj.getProblemRegionScopes().size());
+		System.out.println(obj.getProblemTypes().size());
+		System.out.println(obj.getProblemsByUser().size());
+	}*/
 	
+	public void testSaveUpdatedProblems(){
+		problemManagementService.updateAndGetClassifiedProblemDataIntoDB(MockData.getProblemBeanVOsToSave());
+		setComplete();
+	}
 	
 }
