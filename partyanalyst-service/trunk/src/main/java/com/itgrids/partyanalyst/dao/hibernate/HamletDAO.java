@@ -40,8 +40,7 @@ public class HamletDAO extends GenericDaoHibernate<Hamlet, Long> implements IHam
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Hamlet> findByTownshipId(Long townshipId) {
-		
+	public List<Hamlet> findByTownshipId(Long townshipId) {		
 		return getHibernateTemplate().find("from Hamlet model where model.township.townshipId = ?",townshipId);
 	}
 
@@ -50,6 +49,11 @@ public class HamletDAO extends GenericDaoHibernate<Hamlet, Long> implements IHam
 		Object[] params = {tehsilId, townshipName, hamletName};
 		return getHibernateTemplate().find("from Hamlet model where model.township.tehsil.tehsilId = ?" +
 				"and model.township.townshipName = ? and model.hamletName = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> findHamletNamesByTownshipId(Long townshipId) {		
+		return getHibernateTemplate().find("select model.hamletName from Hamlet model where model.township.townshipId = ?",townshipId);
 	}
 
 }
