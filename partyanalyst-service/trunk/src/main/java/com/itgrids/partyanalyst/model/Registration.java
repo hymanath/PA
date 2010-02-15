@@ -45,7 +45,7 @@ public class Registration implements java.io.Serializable {
 	 private String accessType;
 	 private String accessValue;
 	 private UserCategory userCategory;
-	 private Set<ProblemSource> problemSources = new HashSet<ProblemSource>(0);
+	 private Set<ProblemAndProblemSource> problemAndProblemSources = new HashSet<ProblemAndProblemSource>(0);
 	 
 	 private Party party;
 	 private String includePartyImpDateStatus;
@@ -92,7 +92,7 @@ public class Registration implements java.io.Serializable {
 			String middleName, String lastName, String userName, String password,
 			Date dateOfBirth, String email, String phone, String mobile,
 			String address, String gender, String country, String pincode, String accessType, String accessValue,
-			Set<ProblemSource> problemSources) {
+			Set<ProblemAndProblemSource> problemAndProblemSources) {
 		super();
 		//this.registrationId = registrationId;
 		this.firstName = firstName;
@@ -110,7 +110,7 @@ public class Registration implements java.io.Serializable {
 		this.pincode = pincode;
 		this.accessType = accessType;
 		this.accessValue = accessValue;
-		this.problemSources = problemSources;
+		this.problemAndProblemSources = problemAndProblemSources;
 	}
 	
 	@Id
@@ -234,12 +234,12 @@ public class Registration implements java.io.Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-	public Set<ProblemSource> getProblemSources() {
-		return problemSources;
+	public Set<ProblemAndProblemSource> getProblemAndProblemSources() {
+		return problemAndProblemSources;
 	}
 
-	public void setProblemSources(Set<ProblemSource> problemSources) {
-		this.problemSources = problemSources;
+	public void setProblemAndProblemSources(Set<ProblemAndProblemSource> problemAndProblemSources) {
+		this.problemAndProblemSources = problemAndProblemSources;
 	}
 	 
 	
