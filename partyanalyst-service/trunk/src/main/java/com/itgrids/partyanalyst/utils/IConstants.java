@@ -39,9 +39,9 @@ public interface IConstants {
 	public final static String ELECTION_UPLOAD_DISTRICT_COLUMN = "DISTRICT";
 	
 	public static final String MPTC = "MPTC";
-	public static final String CALL_CENTER = "Call Center";
-	public static final String USER = "User";
-	public static final String EXTERNAL_PERSON = "External Person"; 
+	public static final String CALL_CENTER = "CALL CENTRE";
+	public static final String USER = "USER";
+	public static final String EXTERNAL_PERSON = "EXTERNAL PERSON"; 
 	public static final String PRESENT_YEAR = "2010";	
 	
 	public final static String MPTC_ELECTION_TYPE = "MPTC";
