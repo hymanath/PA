@@ -7,10 +7,14 @@
  */
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.ProblemClassification;
 
 public interface IProblemClassificationDAO extends GenericDao<ProblemClassification, Long> {
+
+	public List<ProblemClassification> findByClassification(String problemClassification);
 
 }
