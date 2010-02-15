@@ -52,4 +52,6 @@ public interface IConstants {
 	
 	public final static String COMMA = ",";
 	
+	public final static String MANDAL ="MANDAL";
+	public final static String REVENUE_VILLAGE ="RV";
 }
