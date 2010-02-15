@@ -216,10 +216,19 @@
 	</bean>
 	<bean name="problemManagementService" class="com.itgrids.partyanalyst.service.impl.ProblemManagementService" >		
 		<property name="problemLocationDAO" ref="problemLocationDAO" />
+		<property name="problemSourceScopeDAO" ref="problemSourceScopeDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="problemDAO" ref="problemDAO" />
 		<property name="problemExternalSourceDAO" ref="problemExternalSourceDAO" />
+		<property name="problemStatusDAO" ref="problemStatusDAO" />
+		<property name="problemHistoryDAO" ref="problemHistoryDAO" />
 		<property name="townshipDAO" ref="townshipDAO" />
+		<property name="problemClassificationDAO" ref="problemClassificationDAO" />
+		<property name="problemAndProblemSourceDAO" ref="problemAndProblemSourceDAO"/>
+		<property name="problemSourceDAO" ref="problemSourceDAO"/>
+		<property name="problemSourceScopeConcernedDepartmentDAO" ref="problemSourceScopeConcernedDepartmentDAO"/>
+		<property name="assignedProblemProgressDAO" ref="assignedProblemProgressDAO"/>
 		<property name="transactionTemplate" ref="transactionTemplate" /> 
    </bean>
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
@@ -291,5 +300,4 @@
     	<property name="districtDAO" ref="districtDAO" />
     	<property name="epaperUrlDAO" ref="epaperUrlDAO" />
 	</bean>
-	
 </beans>
