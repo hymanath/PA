@@ -1,0 +1,111 @@
+package com.itgrids.partyanalyst.web.action;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
+
+import com.itgrids.partyanalyst.dto.HamletsAndBoothsVO;
+import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.opensymphony.xwork2.ActionSupport;
+
+public class HamletBoothMapperAction extends ActionSupport implements ServletRequestAware{
+
+	private HttpServletRequest request;
+	private IStaticDataService staticDataService;
+	private List<SelectOptionVO> result;
+	private List<MandalVO> mandals;
+	private String task = null;
+	JSONObject jObj = null;
+	private HamletsAndBoothsVO hamletsAndBoothsVO; 
+	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+	
+	public HamletsAndBoothsVO getHamletsAndBoothsVO() {
+		return hamletsAndBoothsVO;
+	}
+
+	public void setHamletsAndBoothsVO(HamletsAndBoothsVO hamletsAndBoothsVO) {
+		this.hamletsAndBoothsVO = hamletsAndBoothsVO;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public List<SelectOptionVO> getResult() {
+		return result;
+	}
+
+	public List<MandalVO> getMandals() {
+		return mandals;
+	}
+
+	public void setMandals(List<MandalVO> mandals) {
+		this.mandals = mandals;
+	}
+
+	public void setResult(List<SelectOptionVO> result) {
+		this.result = result;
+	}
+
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
+	public String execute() throws Exception{
+		
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			if(jObj.getString("task").equals("getDistricts")){
+				System.out.println("For Districts Of State");
+				result = staticDataService.getDistricts(jObj.getLong("locationId"));
+				result.add(0,new SelectOptionVO(0l,"Select District"));
+			}else if(jObj.getString("task").equals("getMandals")){
+				System.out.println("For Mandals Of District");
+				mandals = staticDataService.getMandalsForDistrict(jObj.getLong("locationId"));
+				mandals.add(0,new MandalVO(0l,"Select Mandal"));
+			}else if(jObj.getString("task").equals("getRevenueVillages")){
+				System.out.println("For REVENUE VILLAGES Of Mandal");
+				result = staticDataService.findTownshipsByTehsilID(jObj.getLong("locationId"));
+				result.add(0,new SelectOptionVO(0l,"Select Revenue Village"));
+			}else if(jObj.getString("task").equals("getBoothsAndHamlets")){
+				System.out.println("For Booths And Hamlets ");
+				hamletsAndBoothsVO = new HamletsAndBoothsVO();
+				result = staticDataService.getHamletsForTownship(jObj.getLong("locationId"));
+				result.add(0,new SelectOptionVO(0l,"Select Revenue Village"));
+				hamletsAndBoothsVO.setHamlets(result);
+				hamletsAndBoothsVO.setConstituenciesAndBooths(staticDataService.getBoothPartNosForMandalAndElection(jObj.getLong("mandalId"), "2009"));
+				System.out.println();
+			}
+		}else{
+			result = new ArrayList<SelectOptionVO>(2);
+			result.add(0,new SelectOptionVO(0l,"Select State"));
+			result.add(1,new SelectOptionVO(1l,"Andra Pradesh"));
+		}
+		
+		return SUCCESS;
+	}
+	
+}
