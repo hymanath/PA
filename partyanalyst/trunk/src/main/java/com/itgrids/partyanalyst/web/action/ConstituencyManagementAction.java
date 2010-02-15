@@ -22,7 +22,6 @@ import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
@@ -50,7 +49,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private IRegionServiceData regionServiceData;
 	private List<SelectOptionVO> problemSources;
 	private String accessType;
-	private IConstituencyManagementService constituencyManagementService;
 	
 	
 	public IProblemManagementService getProblemManagementService() {
@@ -174,10 +172,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		this.accessType = accessType;
 	}
 
-	public void setConstituencyManagementService(
-			IConstituencyManagementService constituencyManagementService) {
-		this.constituencyManagementService = constituencyManagementService;
-	}
 
 	@SuppressWarnings("deprecation")
 	public String execute() throws Exception{
@@ -302,19 +296,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	
 		return SUCCESS;
 	}
-	
-	public String getHamletsForRevenueVillage(){
-		log.debug("ConstituencyManagementAction.getHamletsForRevenueVillage() started.....");
-		Long revenueVillageID = new Long(request.getParameter("revenueVillageID"));
-		log.debug("revenueVillageID="+revenueVillageID);
-		String year  = request.getParameter("year");
-		log.debug("year="+year);
-		String electionType = request.getParameter("electionType");
-		log.debug("electionType="+electionType);
-		HamletsListWithBoothsAndVotersVO hamletsListWithBoothsAndVotersVO = constituencyManagementService.getAllHamletBoothInfoForRevenueVillage(revenueVillageID, year, electionType);
-		request.setAttribute("hamletsListWithBoothsAndVotersVO", hamletsListWithBoothsAndVotersVO);
-		return SUCCESS;
-	}
+
 }
 
 

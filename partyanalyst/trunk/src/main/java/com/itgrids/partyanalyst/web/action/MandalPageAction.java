@@ -189,7 +189,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		if(ex!=null){
 			log.error("exception raised while retrieving mandal details ", ex);
 		}
-		partyElectionVotersHeaderDataVO = delimitationConstituencyMandalService.getPartyElectionVotersForMandal(new Long(mandalID));
+		partyElectionVotersHeaderDataVO = delimitationConstituencyMandalService.getPartyElectionVotersForMandal(new Long(mandalID), IConstants.MANDAL);
 		ex = partyElectionVotersHeaderDataVO.getExceptionEncountered();
 		if(ex!=null){
 			log.error("exception raised while retrieving mandal voters party wise ", ex);
@@ -264,6 +264,4 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
         }
         return dataset;
     }
-	
-	
 }
