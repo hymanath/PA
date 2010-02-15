@@ -282,7 +282,7 @@
 			 name="${villageDetailsVO.villageCensusList}"
 			defaultorder="ascending" defaultsort="2"
 			style="width:auto;margin-right:20px;">
-				<display:column style="text-align: left;" title="Village Name"
+				<display:column style="text-align: left;" title="Village Name" href="revenueVillageReport.action" paramId="revenueVillageID" paramProperty="townshipID"
 					property="townshipName" sortable="true" />
 				<display:column style="text-align: left;" title="Total Populations"
 					property="totalPersons" sortable="true" />
