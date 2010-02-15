@@ -71,8 +71,13 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		assertEquals(1, list.size());
 	}*/
 	
-	public void testFindByConstituencyIdAndElectionYear(){
+	/*public void testFindByConstituencyIdAndElectionYear(){
 		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByConstituencyIdAndElectionYear(new Long(241), "2009");
 		System.out.println("List Size:"+list.size());
+	}*/
+	
+	public void testFindPartNoConstituencyNameForTehsil(){
+		List list = boothConstituencyElectionDAO.findPartNoConstituencyNameForTehsil(new Long(844), "Assembly", "2009");
+		System.out.println(list.size());
 	}
 }

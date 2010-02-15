@@ -87,9 +87,27 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		System.out.print(list);
 	}*/
 	
-	public void testFindVotersGroupByHouseNoAndAgeForHamletAndYear(){
+	/*public void testFindVotersGroupByHouseNoAndAgeForHamletAndYear(){
 		List<Voter> list = boothConstituencyElectionVoterDAO.findVotersGroupByHouseNoAndAgeForHamletAndYear(new Long(6), "2009");
 		System.out.print(list.size());
 		//System.out.print(list);
+	}*/
+	
+	public void testFindTownshipWiseBoothDetailsForTehsil(){
+		long beginTimeMillis = System.currentTimeMillis();
+		List list = boothConstituencyElectionVoterDAO.findTownshipWiseBoothDetailsForTehsil(new Long(844));
+		long endTimeMillis = System.currentTimeMillis();
+		for(int i=0; i<list.size(); i++){
+			System.out.print(((Object[])list.get(i))[0]+"--");
+			System.out.print(((Object[])list.get(i))[1]+"--");
+			System.out.print(((Object[])list.get(i))[2]+"--");
+			//System.out.print(((Object[])list.get(i))[3]+"--");
+			System.out.print(((Object[])list.get(i))[4]+"--");
+			System.out.println(((Object[])list.get(i))[5]);
+		}
+		System.out.println("beginTimeMillis:"+beginTimeMillis);
+		System.out.println("endTimeMillis:"+endTimeMillis);
+		System.out.println("Total time taken:" + (endTimeMillis-beginTimeMillis)/1000);
+		System.out.println(list.size());
 	}
 }

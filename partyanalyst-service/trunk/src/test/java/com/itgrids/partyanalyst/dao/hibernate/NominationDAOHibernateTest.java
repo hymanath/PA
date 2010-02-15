@@ -105,9 +105,23 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println("Size"+list.size());
 	}*/
 	
-	public void testFindValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear(){
+	/*public void testFindValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear(){
 		List list = nominationDAO.findValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear("MPTC", "2001", new Long(844));
 		System.out.println(list.get(0));
+	}*/
+	
+	public void testFindLocalLeadersOfMandal(){
+		List list = nominationDAO.findLocalLeadersOfMandal(new Long(844));
+		for(int i = 0; i<list.size(); i++){
+			Object[] values = (Object[])list.get(i);
+			String name = ((Candidate)values[0]).getLastname();
+			String designation = (String)values[1];
+			String party = (String)values[2];
+			String year = (String)values[3];
+			String constituencyName = (String)values[4];
+			
+			System.out.println(name+"--"+designation+"--"+party+"--"+year+"--"+constituencyName);
+		}
 	}
 	
 }
