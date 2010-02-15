@@ -210,4 +210,12 @@
 	</bean>
 	<bean id="userGroupAction" class="com.itgrids.partyanalyst.web.action.UserGroupAction" singleton="false">
 	</bean>
+	<bean id="revenueVillageReportAction" class="com.itgrids.partyanalyst.web.action.RevenueVillageReportAction" singleton="false">
+		<property name="constituencyManagementService" ref="constituencyManagementService"/>
+		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService"/>
+	</bean>
+	<bean id="hamletReportAction" class="com.itgrids.partyanalyst.web.action.HamletReportAction" singleton="false">
+	</bean>
+	<bean id="boothReportAction" class="com.itgrids.partyanalyst.web.action.BoothReportAction" singleton="false">
+	</bean>
 </beans>
