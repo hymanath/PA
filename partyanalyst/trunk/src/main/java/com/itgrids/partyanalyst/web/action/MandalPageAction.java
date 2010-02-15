@@ -201,10 +201,12 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 			log.error("exception raised while retrieving mandal voters cast wise ", ex);
 		}
 		genderAgeWiseVoters = delimitationConstituencyMandalService.findGenderAgeWiseVotersForMandal(new Long(mandalID));
+		
 		if(log.isDebugEnabled()){
 			log.debug("size============================================"+mandalInfo.size());
 			log.debug("size============================================"+(villageDetailsVO.getVillageCensusList()).size());
 			log.debug("size============================================"+castWiseElectionVoters.getCasteVoters().size());
+			log.debug("size============================================"+genderAgeWiseVoters.getVoterAgeRangeVOList().size());
 			log.debug("end of MandalPageAction.execute()");
 		}
 		

@@ -262,6 +262,15 @@
 		tabFourContent+='</c:forEach>';
 		tabFourContent+='</table>';	
 		tabFourContent+='</div>';
+		var tabFiveContent = '';
+		tabFiveContent+='<div id="div5">';
+		tabFiveContent+='<div id="dTTableDiv5" align="center" class="yui-skin-sam"></div>';
+		tabFiveContent+='</div>';
+		var tabSixContent = '';
+		tabSixContent+='<div id="div6">';
+		tabSixContent+='<div id="dTTableDiv6" align="center" class="yui-skin-sam"></div>';
+		tabSixContent+='</div>';
+
 		myTabs.addTab( new YAHOO.widget.Tab({
 		    label: 'Mandal Local Leaders',
 		    content: tabOneContent,
@@ -274,13 +283,24 @@
 		}));
 		 
 		myTabs.addTab( new YAHOO.widget.Tab({
-		    label: 'Cast Info in Revenue Villages',
+		    label: 'Census Info in Revenue Villages',
 		    content: tabThreeContent
 		}));
 
 		myTabs.addTab( new YAHOO.widget.Tab({
 		    label: 'Elections In Mandal',
 		    content: tabFourContent
+		}));
+			
+		myTabs.addTab( new YAHOO.widget.Tab({
+		    label: 'Cast wise Voters',
+		    content: tabFiveContent
+		}));
+		
+			
+		myTabs.addTab( new YAHOO.widget.Tab({
+		    label: 'Age wise Voters',
+		    content: tabSixContent
 		}));
 		
 		myTabs.appendTo('mandalPageTab');
@@ -336,7 +356,90 @@
 		
 		var myDataTable = new YAHOO.widget.DataTable("dTTableDiv1",resultsColumnDefs, resultsDataSource, myConfigs);
 	}
-	
+
+	function buildCastVotersDataTable()
+	{
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("mandalCastVotersTable"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "casteName"
+		}, {
+			key : "totalVoters",parser:"number"
+		}, {
+			key : "voterPercentage", parser:YAHOO.util.DataSourceBase.parseNumber
+		} ]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "casteName",		
+		label : "Cast",
+		sortable : true
+	}, {
+		key : "totalVoters",
+		parser:"number",
+		label : "Total Voters",
+		sortable : true
+	}, {
+		key : "voterPercentage",
+		label : "Percentage",formatter:YAHOO.widget.DataTable.formatFloat,
+		sortable : true
+	} ];
+	var myConfigs = {
+		paginator : new YAHOO.widget.Paginator({
+			rowsPerPage: 20
+		})
+	};
+	var myDataTable = new YAHOO.widget.DataTable("dTTableDiv5",resultsColumnDefs, resultsDataSource,myConfigs);  
+
+	}
+
+	function buildAgeWiseVotersDataTable()
+	{
+		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("mandalGenderAgeVotersTable"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "ageRange"
+		},{
+			key : "maleVoters",parser:"number"
+		},{
+			key : "femaleVoters",parser:"number"
+		}, {
+			key : "totalVoters",parser:"number"
+		} ]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "ageRange",		
+		label : "Age Range",
+		sortable : true
+	},{
+		key : "maleVoters",	
+		parser:"number",	
+		label : "Male",
+		sortable : true
+	},{
+		key : "femaleVoters",
+		parser:"number",		
+		label : "Female",
+		sortable : true
+	}, {
+		key : "totalVoters",
+		parser:"number",
+		label : "Total",
+		sortable : true
+	}];
+	var myConfigs = {
+		paginator : new YAHOO.widget.Paginator({
+			rowsPerPage: 20
+		})
+	};
+	var myDataTable = new YAHOO.widget.DataTable("dTTableDiv6",resultsColumnDefs, resultsDataSource,myConfigs);  
+
+	}
 	</script>
 </head>
 <body> 
@@ -398,7 +501,7 @@
 			 name="${villageDetailsVO.villageCensusList}"
 			defaultorder="ascending" defaultsort="2"
 			style="width:auto;margin-right:20px;">
-				<display:column style="text-align: left;" title="Village Name"
+				<display:column style="text-align: left;" title="Village Name" href="revenueVillageReport.action" paramId="revenueVillageID" paramProperty="townshipID"
 					property="townshipName" sortable="true" />
 				<display:column style="text-align: left;" title="Total Populations"
 					property="totalPersons" sortable="true" />
@@ -456,12 +559,49 @@
 			</c:forEach>
 		</table>	
 	</div>
+	
+	<div id="mandalCastVotersDiv"  class="yui-skin-sam" style="display: none;">
+		<div id="mandalCastVotersDivHead"><h4><u>Cast wise Voters</u></h4></div>
+		<div id="mandalCastVotersDivBody" class="yui-skin-sam">
+			<display:table id="mandalCastVotersTable" class="searchresultsTable"
+			  name="${castWiseElectionVoters.casteVoters}"
+			defaultorder="ascending" defaultsort="2"
+			style="width:auto;margin-right:20px;">
+				<display:column style="text-align: left;" title="Cast"
+					property="casteName" sortable="true" />
+				<display:column style="text-align: left;" title="Total Voters"
+					property="totalVoters" sortable="true" />
+				<display:column style="text-align: left;" title="Percentage"
+					property="voterPercentage" sortable="true" />
+			</display:table>
+		</div>
+	</div>
+
+	<div id="mandalGenderAgeVotersDiv" class="yui-skin-sam" style="display: none;">
+		<div id="mandalGenderAgeVotersDivHead"><h4><u>Age wise Voters</u></h4></div>
+		<div id="mandalGenderAgeVotersDivBody" class="yui-skin-sam">
+			<display:table class="searchresultsTable" name="${genderAgeWiseVoters.voterAgeRangeVOList}" 
+			id="mandalGenderAgeVotersTable" style="width:auto;margin-right:20px;">
+				<display:column style="text-align: left;" title="Age Range"
+					property="ageRange" sortable="true" />
+				<display:column style="text-align: left;" title="Male"
+					property="maleVoters" sortable="true" />
+				<display:column style="text-align: left;" title="Female"
+					property="femaleVoters" sortable="true" />
+				<display:column style="text-align: left;" title="Total"
+					property="totalVoters" sortable="true" />
+			</display:table>
+		</div>
+	</div>
+
 </div>
 <script type="text/javascript">
 	buildTabNavigator();
 </script>
 <script type="text/javascript">
 	buildCensusDataTable();
+	buildCastVotersDataTable();
+	buildAgeWiseVotersDataTable();
 </script>
 <script type="text/javascript">
 	buildLocalLeadersTable();
