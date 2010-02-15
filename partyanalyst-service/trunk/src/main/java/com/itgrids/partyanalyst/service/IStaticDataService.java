@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
+import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
@@ -32,14 +33,17 @@ public interface IStaticDataService {
 	public List<ConstituencyElection> getConstituencyElectionsFromNominationForCountry(Long electionID,Long stateId,Long countryId,Long rank,Long partyId);
 	public List<SelectOptionVO> getStaticParties();
 	public List<SelectOptionVO> getPartiesForConstituency(Long constituencyId, String electionYear);
-	public List<SelectOptionVO> findTownshipsByTehsilID(String mandalID);
+	public List<SelectOptionVO> findTownshipsByTehsilID(Long mandalID);
 
-
+	public List<SelectOptionVO> getHamletsForTownship(Long townshipId);
+	
 	public ConstituenciesStatusVO getConstituenciesForDistrict(Long districtId,Long electionYear, String electionType);
 	
 	public List<MandalVO>	getMandalsForDistrict(Long districtId);
 	
 	public ConstituenciesStatusVO getConstituenciesWinnerInfo(Long districtId);
+	
+	public List<ConstituencyBoothInfoVO> getBoothPartNosForMandalAndElection(Long tehsilId, String electionYear);
 	
 	public PartyElectionResult getPartyElectionResultsForAParty(Long electionId,Long partyId);
 	
