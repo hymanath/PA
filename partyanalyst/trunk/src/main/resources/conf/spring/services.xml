@@ -18,6 +18,8 @@
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
@@ -72,6 +74,9 @@
 	<bean name="constituencyPageService" class="com.itgrids.partyanalyst.service.impl.ConstituencyPageService" >
 		<property name="constituencyElectionResultObjectsDAO" ref="constituencyElectionResultObjectsDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
 	</bean>
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
@@ -219,7 +224,6 @@
 		<property name="problemSourceScopeDAO" ref="problemSourceScopeDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
-		<property name="problemDAO" ref="problemDAO" />
 		<property name="problemExternalSourceDAO" ref="problemExternalSourceDAO" />
 		<property name="problemStatusDAO" ref="problemStatusDAO" />
 		<property name="problemHistoryDAO" ref="problemHistoryDAO" />
