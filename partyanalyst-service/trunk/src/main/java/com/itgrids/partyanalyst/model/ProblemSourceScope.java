@@ -37,8 +37,8 @@ public class ProblemSourceScope extends BaseModel implements Serializable{
 
 	private Long problemSourceScopeId;
 	private String scope;
-	private UserCategory userCategory;
 	private Set<ProblemHistory> problemHistories = new HashSet<ProblemHistory>(0);
+	private Set<ProblemSourceScopeConcernedDepartment> departments = new HashSet<ProblemSourceScopeConcernedDepartment>();
 	
 	public ProblemSourceScope(){
 		
@@ -48,13 +48,10 @@ public class ProblemSourceScope extends BaseModel implements Serializable{
 		this.problemSourceScopeId = problemSourceScopeId;
 	}
 
-	
-
-	public ProblemSourceScope(String scope, UserCategory userCategory,
-			Set<ProblemHistory> problemHistories) {
+	public ProblemSourceScope(String scope, Set<ProblemHistory> problemHistories, Set<ProblemSourceScopeConcernedDepartment> departments) {
 		this.scope = scope;
-		this.userCategory = userCategory;
 		this.problemHistories = problemHistories;
+		this.departments = departments;
 	}
 
 	@Id
@@ -77,18 +74,6 @@ public class ProblemSourceScope extends BaseModel implements Serializable{
 		this.scope = scope;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_category_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public UserCategory getUserCategory() {
-		return userCategory;
-	}
-
-	public void setUserCategory(UserCategory userCategory) {
-		this.userCategory = userCategory;
-	}
-
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemSourceScope")
 	public Set<ProblemHistory> getProblemHistories() {
 		return problemHistories;
@@ -96,5 +81,15 @@ public class ProblemSourceScope extends BaseModel implements Serializable{
 
 	public void setProblemHistories(Set<ProblemHistory> problemHistories) {
 		this.problemHistories = problemHistories;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "problemSourceScope")
+	public Set<ProblemSourceScopeConcernedDepartment> getDepartments() {
+		return departments;
+	}
+
+	public void setDepartments(
+			Set<ProblemSourceScopeConcernedDepartment> departments) {
+		this.departments = departments;
 	}
 }
