@@ -158,6 +158,7 @@
 	<bean id="mandalPageAction" class="com.itgrids.partyanalyst.web.action.MandalPageAction" singleton="false">
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
 		<property name="boothPopulationService" ref="boothPopulationService" />
+		<property name="constituencyPageService" ref="constituencyPageService" />
 	</bean>
 		
 	<bean id="staticDataAction" class="com.itgrids.partyanalyst.web.action.StaticDataAction" singleton="false">
@@ -187,6 +188,10 @@
 		<property name="regionServiceData" ref="regionServiceDataImp"></property>
 		<property name="problemManagementService" ref="problemManagementService"></property>
 		<property name="constituencyManagementService" ref="constituencyManagementService"></property>
+	</bean>
+	
+	<bean id="hamletBoothMapperAction" class="com.itgrids.partyanalyst.web.action.HamletBoothMapperAction" singleton="false">			
+		<property name="staticDataService" ref="staticDataService"></property>	
 	</bean>
 	
 	<bean id="problemManagementAction" class="com.itgrids.partyanalyst.web.action.ProblemManagementAction" singleton="false">
