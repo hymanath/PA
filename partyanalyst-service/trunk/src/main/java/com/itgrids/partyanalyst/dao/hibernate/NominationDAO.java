@@ -245,12 +245,18 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find("select constituencyElection from Nomination model where model.constituencyElection.election.electionId =? and model.constituencyElection.constituency.countryId =? and model.candidateResult.rank > ? and model.party.partyId = ?", params);
 	} 
 	
-	@SuppressWarnings("unchecked")
 	public List findValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear(String electionType, String electionYear, Long tehsilId){
 		Object [] params = {electionType, electionYear, tehsilId};
 		return getHibernateTemplate().find("select sum(model.candidateResult.votesEarned) from Nomination model where model.constituencyElection.constituency.electionScope.electionType.electionType = ? and " +
 				"model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.tehsil.tehsilId = ? ",params);
 	}
+	
+	public List findLocalLeadersOfMandal(Long tehsilId){
+		return getHibernateTemplate().find("select model.candidate, model.constituencyElection.election.electionScope.electionType.electionType," +
+				"model.party.shortName, model.constituencyElection.election.electionYear, model.constituencyElection.constituency.name " +
+				"from Nomination model where model.constituencyElection.constituency.tehsil.tehsilId = ?",tehsilId);
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<Nomination> findByElectionIdAndPartyId(final Long electionId,final Long partyId){
