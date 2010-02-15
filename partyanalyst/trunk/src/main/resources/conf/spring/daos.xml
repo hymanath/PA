@@ -193,6 +193,10 @@
 	<bean id="assignedProblemProgressDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssignedProblemProgressDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="problemAndProblemSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemAndProblemSourceDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!-- Problem Management -->
 	<bean id="userEventsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserEventsDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
