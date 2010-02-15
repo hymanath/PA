@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
+import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -17,14 +17,14 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
-import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
+import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWinnerInfoVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -35,10 +35,9 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionAlliance;
 import com.itgrids.partyanalyst.model.ElectionScope;
+import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
-import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
-import com.itgrids.partyanalyst.model.PartyElectionResult;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -60,6 +59,8 @@ public class StaticDataService implements IStaticDataService {
 	private INominationDAO nominationDAO;
 	private ITownshipDAO townshipDAO;
 	private ITehsilDAO tehsilDAO;
+	private IHamletDAO hamletDAO;
+	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IPartyElectionResultDAO partyElectionResultDAO;
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
@@ -112,6 +113,16 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 	
+	public IHamletDAO getHamletDAO() {
+		return hamletDAO;
+	}
+
+
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
+
+
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
 	}
@@ -158,11 +169,28 @@ public class StaticDataService implements IStaticDataService {
 		this.partyElectionDistrictResultDAO = partyElectionDistrictResultDAO;
 	}
 
+	
 
-	public List<SelectOptionVO> findTownshipsByTehsilID(String mandalID){
+	public IBoothConstituencyElectionDAO getBoothConstituencyElectionDAO() {
+		return boothConstituencyElectionDAO;
+	}
+
+
+	public void setBoothConstituencyElectionDAO(
+			IBoothConstituencyElectionDAO boothConstituencyElectionDAO) {
+		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
+	}
+
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+
+	public List<SelectOptionVO> findTownshipsByTehsilID(Long mandalID){
 		List<SelectOptionVO> townshipVOs = new ArrayList<SelectOptionVO>();
 		SelectOptionVO townshipVO = null;
-		List<Township> townships = townshipDAO.findByTehsilID(new Long(mandalID));
+		List<Township> townships = townshipDAO.findByTehsilID(mandalID);
 		for(Township township:townships){
 			townshipVO = new SelectOptionVO(township.getTownshipId(), township.getTownshipName());
 			townshipVOs.add(townshipVO);
@@ -698,5 +726,30 @@ public class StaticDataService implements IStaticDataService {
 		}
 		
 	return partyElectionDistrictResult;
+	}
+	
+	public List<SelectOptionVO> getHamletsForTownship(Long townshipId){
+		List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>();
+		List<Hamlet> hamletModels = hamletDAO.findByTownshipId(townshipId);
+		SelectOptionVO hamlet = null;
+		for(Hamlet hamletModel:hamletModels){
+			hamlet = new SelectOptionVO(hamletModel.getHamletId(), hamletModel.getHamletName());
+			hamlets.add(hamlet);
+		}
+		return hamlets;
+	}
+	
+	public List<ConstituencyBoothInfoVO> getBoothPartNosForMandalAndElection(Long tehsilId, String electionYear){
+		List<ConstituencyBoothInfoVO> constituencyBoothsList = new ArrayList<ConstituencyBoothInfoVO>();
+		List boothsInfo = boothConstituencyElectionDAO.findPartNoConstituencyNameForTehsil(tehsilId, IConstants.ASSEMBLY_ELECTION_TYPE, electionYear);
+		for(int i=0; i < boothsInfo.size(); i++){
+			Object[] values = (Object[]) boothsInfo.get(i);
+			Long boothConstiElecId = (Long)values[0];
+			String partNo = (String)values[3];
+			String villagesCovered = (String)values[2];
+			String constituencyName = (String)values[1];
+			constituencyBoothsList.add(new ConstituencyBoothInfoVO(boothConstiElecId, partNo, constituencyName, villagesCovered));
+		}
+		return constituencyBoothsList;
 	}
 }
