@@ -5,25 +5,14 @@ import java.util.List;
 
 public class GenderAgeWiseVotersVO extends ResultStatus {
 
-	private List<Long> maleVotersAgeWise;
-	private List<Long> femaleVotersAgeWise;
-	private List<Long> totalVotersAgeWise;
-	public List<Long> getMaleVotersAgeWise() {
-		return maleVotersAgeWise;
+	private List<VoterAgeRangeVO> voterAgeRangeVOList;
+
+	public List<VoterAgeRangeVO> getVoterAgeRangeVOList() {
+		return voterAgeRangeVOList;
 	}
-	public void setMaleVotersAgeWise(List<Long> maleVotersAgeWise) {
-		this.maleVotersAgeWise = maleVotersAgeWise;
+
+	public void setVoterAgeRangeVOList(List<VoterAgeRangeVO> voterAgeRangeVOList) {
+		this.voterAgeRangeVOList = voterAgeRangeVOList;
 	}
-	public List<Long> getFemaleVotersAgeWise() {
-		return femaleVotersAgeWise;
-	}
-	public void setFemaleVotersAgeWise(List<Long> femaleVotersAgeWise) {
-		this.femaleVotersAgeWise = femaleVotersAgeWise;
-	}
-	public List<Long> getTotalVotersAgeWise() {
-		return totalVotersAgeWise;
-	}
-	public void setTotalVotersAgeWise(List<Long> totalVotersAgeWise) {
-		this.totalVotersAgeWise = totalVotersAgeWise;
-	}
+
 }
