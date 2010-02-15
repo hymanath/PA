@@ -14,15 +14,19 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 import org.springframework.web.context.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.CastWiseElectionVotersVO;
 import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalDataWithChartVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
 import com.itgrids.partyanalyst.dto.GenderAgeWiseVotersVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBoothPopulationService;
+import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -43,9 +47,39 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 	private HttpSession session;
 	private ServletContext context;
 	private PartyElectionVotersHeaderDataVO partyElectionVotersHeaderDataVO;
+	private IConstituencyPageService constituencyPageService;
+	private List<InfluencingPeopleVO> influencingPeopleInMandal;
+	private List<LocationWiseBoothDetailsVO> townshipWiseBoothDataInMandal;
 	private CastWiseElectionVotersVO castWiseElectionVoters;
 	private GenderAgeWiseVotersVO genderAgeWiseVoters;
 	
+	public List<InfluencingPeopleVO> getInfluencingPeopleInMandal() {
+		return influencingPeopleInMandal;
+	}
+
+	public void setInfluencingPeopleInMandal(
+			List<InfluencingPeopleVO> influencingPeopleInMandal) {
+		this.influencingPeopleInMandal = influencingPeopleInMandal;
+	}
+
+	public List<LocationWiseBoothDetailsVO> getTownshipWiseBoothDataInMandal() {
+		return townshipWiseBoothDataInMandal;
+	}
+
+	public void setTownshipWiseBoothDataInMandal(
+			List<LocationWiseBoothDetailsVO> townshipWiseBoothDataInMandal) {
+		this.townshipWiseBoothDataInMandal = townshipWiseBoothDataInMandal;
+	}
+
+	public IConstituencyPageService getConstituencyPageService() {
+		return constituencyPageService;
+	}
+
+	public void setConstituencyPageService(
+			IConstituencyPageService constituencyPageService) {
+		this.constituencyPageService = constituencyPageService;
+	}
+
 	public HttpSession getSession() {
 		return session;
 	}
@@ -173,6 +207,15 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 			log.debug("size============================================"+castWiseElectionVoters.getCasteVoters().size());
 			log.debug("end of MandalPageAction.execute()");
 		}
+		
+		ResultWithExceptionVO influencingPeopleInMandalVO = constituencyPageService.getAllMandalLevelLeaders(new Long(mandalID));
+		if(influencingPeopleInMandalVO.getResultStatus().getExceptionEncountered() == null){
+			influencingPeopleInMandal = (List<InfluencingPeopleVO>)influencingPeopleInMandalVO.getFinalResult();
+		}
+		ResultWithExceptionVO boothDataOfRevenueVillagesInMandal = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(new Long(mandalID));
+		if(boothDataOfRevenueVillagesInMandal.getResultStatus().getExceptionEncountered() == null){
+			townshipWiseBoothDataInMandal = (List<LocationWiseBoothDetailsVO>)boothDataOfRevenueVillagesInMandal.getFinalResult();
+		}
 		return SUCCESS;
 	}
 	
@@ -220,6 +263,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
         		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), result.getElectionYear(), series3);
         }
         return dataset;
-        
     }
+	
+	
 }
