@@ -224,11 +224,31 @@
         	</result>
         </action>
         
+        <action name="hamletBoothMapperAction" class="hamletBoothMapperAction">
+           <result name="success">/jsp/mapBoothToHamlet.jsp</result>
+        </action> 
+        
+       	<action name="hamletBoothMapperAjaxAction" class="hamletBoothMapperAction">
+           <result type="json" name="success">
+           		<param name="root">result</param>
+        	</result>
+        </action> 
+        
+        <action name="hamletBoothMapperMandalAjaxAction" class="hamletBoothMapperAction">
+           <result type="json" name="success">
+           		<param name="root">mandals</param>
+        	</result>
+        </action> 
+        
+        <action name="hamletBoothMapperFinalAjaxAction" class="hamletBoothMapperAction">
+           <result type="json" name="success">
+           		<param name="root">hamletsAndBoothsVO</param>
+        	</result>
+        </action> 
+        
         <action name="cadreRegisterAction" class="cadreRegisterAction">
         	<result type="redirect" name="success">cadreManagementAction.action</result>
-           <result name="fail"> /jsp/CadreRegisterFail.jsp</result><!--
-           <result name="input">/jsp/newCadrePage.jsp</result>
-           --><result></result>
+           <result name="fail"> /jsp/CadreRegisterFail.jsp</result>
         </action> 
 
         <action name="addRebelsAction" class="addRebelsAction">
