@@ -40,4 +40,7 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List<BoothConstituencyElection> findByElectionElectionTypeConstituencyAndPartNo(
 			Long stateId, Long districtId, String constituencyName,
 			Long electionTypeId, String electionYear, String partNo);
+
+	public List findPartNoConstituencyNameForTehsil(Long tehsilId,
+			String assemblyElectionType, String electionYear);
 }
