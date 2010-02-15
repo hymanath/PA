@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Problem;
+import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.ProblemLocation;
 import com.itgrids.partyanalyst.model.ProblemSource;
@@ -303,7 +304,7 @@ public class ProblemUploadService implements IProblemUploadService {
 		if(log.isDebugEnabled())
 			log.debug("Entered Into checkAndInsertHamletProblems method.......");
 		Problem problem = null;
-		ProblemSource problemSource = null;
+		ProblemAndProblemSource problemAndProblemSource = null;
 		ProblemLocation problemLocation = null;
 				
 		java.util.Date now = new java.util.Date();
@@ -316,16 +317,16 @@ public class ProblemUploadService implements IProblemUploadService {
 			problem = new Problem();
 			problem = insertProblemData(hamletProblem,now,year);
 			
-			problemSource = new ProblemSource();
-			problemSource.setProblem(problem);
-			problemSource.setSource("PartyAnalyst");
-			problemSource.setPostedBy("PartyAnalyst Survey Data Upload");
-			problemSource.setProblemExternalSource(problemExternalSrc);
+			problemAndProblemSource = new ProblemAndProblemSource();
+			problemAndProblemSource.setProblem(problem);
+			problemAndProblemSource.setProblemSource(new ProblemSource(new Long(1)));
+			problemAndProblemSource.setPostedBy("PartyAnalyst Survey Data Upload");
+			problemAndProblemSource.setProblemExternalSource(problemExternalSrc);
 					
 			problemLocation = new ProblemLocation();
 			problemLocation.setHamlet(hamlet);
 			problemLocation.setTownship(township);
-			problemLocation.setProblemSource(problemSource);
+			problemLocation.setProblemAndProblemSource(problemAndProblemSource);
 			problemLocationDAO.save(problemLocation);
 			
 			if(log.isDebugEnabled())
