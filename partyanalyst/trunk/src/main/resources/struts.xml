@@ -226,7 +226,9 @@
         
         <action name="cadreRegisterAction" class="cadreRegisterAction">
         	<result type="redirect" name="success">cadreManagementAction.action</result>
-           <result name="fail"> /jsp/CadreRegisterFail.jsp</result>
+           <result name="fail"> /jsp/CadreRegisterFail.jsp</result><!--
+           <result name="input">/jsp/newCadrePage.jsp</result>
+           --><result></result>
         </action> 
 
         <action name="addRebelsAction" class="addRebelsAction">
@@ -432,6 +434,6 @@
 		</action>
 		<action name="hamletsForRevenueVillage" class="constituencyManagementAction" method="getHamletsForRevenueVillage">
 			<result name="success">/jsp/revenueVillageReport.jsp</result>
-		</action>
+		</action>	
 	</package>
 </struts>
