@@ -155,7 +155,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			System.out.println("In report level Mandal");
 			String selectedVal=jObj.getString("selected");
 			
-			List<SelectOptionVO> hamletNames = constituencyManagementService.getHamletsForTownship(new Long(selectedVal));	
+			List<SelectOptionVO> hamletNames = staticDataService.getHamletsForTownship(new Long(selectedVal));	
 			SelectOptionVO obj = new SelectOptionVO(0L,"Select Hamlet");
 			hamletNames.add(0, obj);
 			setNamesList(hamletNames);	
@@ -218,7 +218,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		if(jObj.getString("task").equalsIgnoreCase("findTownships"))
 		{
 			String mandalId = jObj.getString("selected");
-			namesList = staticDataService.findTownshipsByTehsilID(mandalId);
+			namesList = staticDataService.findTownshipsByTehsilID(new Long(mandalId));
 		}
 		return SUCCESS;
 	}
