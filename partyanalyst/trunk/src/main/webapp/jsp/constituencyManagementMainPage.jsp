@@ -42,7 +42,8 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/calendar/assets/skins/sam/calendar.css">    
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css">		 
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css"> 
+		 
 	<!-- YUI Dependency files (End) -->
 	
 		<style type="text/css">
@@ -100,13 +101,10 @@
 			text-align:right;
 			padding:5px;
 		}
-		#problemMgmtMainDiv
-		{
-			height:1000px;
-		}
+		
 		.selectWidth
 		{
-			width:160px;
+			width:120px;
 		}
 		#ajaxImgSpan
 		{
@@ -134,44 +132,14 @@
 		{
 			text-align:left;
 			font-weight:bold;
-			color:red;
+			color:red;			
 		}
-		#distEPapersTabContent_body yui-skin-sam yui-dt-sortable
-		{
-			width:100px;
-		}
-		#groupDetailsHead
-		{
-			text-align:center;
-			font-weight:bold;
-			text-decoration:underline;
-			margin-top:10px;
-			margin-bottom:10px;
-		}	
-		#groupDetails
-		{
-			padding:10px;
-			background-color:#D3DEE8;
-			margin-top:10px;
-		}
-		.groupMembersLinks
-		{
-			padding:5px;
-			
-		}
-		#userGroupsTabContent_footer
-		{
-			margin-top:10px;
-		}
-		#distEPapersTabContent_body
-		{
-			width:50%;
-		}		
 		#pendingTabContentDiv
 		{
 			width: 900px;
 			overflow-x:auto;
 		}
+
 	</style>
 
 	<script type="text/javascript">
@@ -260,21 +228,14 @@
 			String reason= rb.getString("reason");
 			String fixedDate= rb.getString("fixedDate");
 			String pending=rb.getString("pending");
-			String fixed=rb.getString("fixed");
-			String groupName=rb.getString("groupName");
-			String createNewGrp= rb.getString("createNewGrp");
-			String addToGrpAsSubGrpRadio=rb.getString("addToGrpAsSubGrpRadio");
-			String mainEdition = rb.getString("mainEdition");
-			String subEdition = rb.getString("subEdition");
-			String language = rb.getString("language");
-			String designation = rb.getString("designation"); 
+			String fixed=rb.getString("fixed"); 
 			String newIssuesAlertMessage = rb.getString("newIssuesAlertMessage");
 			String pendingFrom = rb.getString("pendingFrom");
 			String comments = rb.getString("comments");
 		  %> }
 	
-	var outerTab,problemMgmtTabs,newProbDataTable, classifiedDataTable,assignedIssDataTable, progessIssuesDataTable, classifyDTRecord, deptCellEditor,pendingIssuesDataTable, fixedIssuesDataTable, ePapersDataTable;
-	var newProblemDialog,createGroupDialog, showGrpMbrsDialog, addGrpMbrsDialog,elCheckbox,elCheckboxInClassifyDT,elCheckboxInAssignDT,elCheckboxInProgressDT,elCheckboxInPendingDT,EditClassifyProbsDialog ;
+	var outerTab,problemMgmtTabs,newProbDataTable, classifiedDataTable,assignedIssDataTable, progessIssuesDataTable, classifyDTRecord, deptCellEditor,pendingIssuesDataTable, fixedIssuesDataTable;
+	var newProblemDialog,elCheckbox,elCheckboxInClassifyDT,elCheckboxInAssignDT,elCheckboxInProgressDT,elCheckboxInPendingDT,EditClassifyProbsDialog ;
 	var classifyButton, assignButton, progressButton,pFixedButton,pPendingButton,progressButtonInPending;
 	var recordsArray = new Array();
 	var clasifyDtRecordsArray = new Array();
@@ -300,8 +261,7 @@
 							constituencyArr:[],
 							mandalArr:[],
 							villageArr:[],
-							hamletArr:[],
-							allDistrictsByStateArr:[]
+							hamletArr:[]
 						};
 	var constMgmtMainObj={
 							votersArray:[],
@@ -312,15 +272,8 @@
 							localPoliticalChangesArray:[],
 							localProblemsArr:[],
 							totalLeadersArr:[],
-							electedMandalLeadersArr:[]
-						};
-	var distPapersObj={
-							ePapersArray:[]
-						};
-	var userGrpsObj={
-							showGrpMembersArr:[]
-	};
-	
+							electedMandalLeadersArr:[]							
+						};	 
 	function buildConstituencyLayout()
 	{	
 		var layoutEl = new YAHOO.widget.Layout('constituencyMgmtBodyDiv', { 
@@ -347,28 +300,6 @@
 	    ] 
 		}); 
 		layoutEl.render(); 
-	}
-	
-	function buildDistrictsByStateSelectOption(results)
-	{	
-		var distByState = results.districtsList;
-		var selectedElmt = document.getElementById("allDistrictsField");
-		
-		for(var val in distByState)
-		{			
-			var opElmt=document.createElement('option');
-			opElmt.value=distByState[val].id;
-			opElmt.text=distByState[val].name;
-			
-			try
-			{
-				selectedElmt.add(opElmt,null); // standards compliant
-			}
-			catch(ex)
-			{
-				selectedElmt.add(opElmt); // IE only
-			}			
-		}		
 	}
 	
 	function buildSelectOption(results,jsObj)
@@ -489,21 +420,8 @@
 									} else if(jsObj.task == "movePendingProblemsToProgress")
 									{
 										updateProgressTableWithProblemsFromPendingToProgress(myResults)
-									} else if(jsObj.task == "distPapersUrl")
-									{
-										showNewsPapersLinks(myResults);
-										buildDistrictsByStateSelectOption(myResults);
-									} else if(jsObj.task == "getSelectedDistPaper")
-									{
-										updateSelectedDistUrls(myResults)
-									} else if(jsObj.task == "userGroupInfoDisplay")
-									{
-										showGroupsCreatedByUsers(myResults);
-																				
-									} else if(jsObj.task == "grpMbrsByGrpId")
-									{
-										showGrpMembers(myResults);
-									} else
+									} 
+									else
 									{
 										buildSelectOption(myResults,jsObj);									
 									}
@@ -827,21 +745,7 @@
 		var url = "<%=request.getContextPath()%>/voterInfoAction.action?"+rparam;
 		callAjax(rparam,jsObj,url);
 	}
-	
-	function getNewPapersForSelectedDist(name, value)
-	{
-		var jsObj=
-		{
-				selectName:name,
-				selected:value,
-				task:"getSelectedDistPaper"
-		}
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-	var url = "<%=request.getContextPath()%>/distPapersAction.action?"+rparam;
-	callAjax(rparam,jsObj,url);
-	}
-	
+
 	function getTodayDateTime()
 	{		now = new Date()
 			hour = now.getHours();
@@ -943,168 +847,27 @@
 			assignToProbTypeArr.push(probTypesObj);
 			problemsMainObj.probTypesArr = assignToProbTypeArr;
 		}		
-		buildNewProblemsDataTable();		
+		buildNewProblemsDataTable();
+		//newProbDataTable.addRows(problemsMainObj.newProblemsArr);		
 		}
 	
 	function handleUserGrpsTabClick ()
 	{
 		var elmt = document.getElementById("alertMessage");
-		elmt.style.display = 'none';
-		var jsObj= 
-		{
-			task:"userGroupInfoDisplay"
-		}
-		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/userGroupAction.action?"+param;
-		callAjax(param,jsObj,url);			
+		elmt.style.display = 'none';	
 	}
 	
 	function handleRecommLetrsTabClick()
 	{
 		var elmt = document.getElementById("alertMessage");
-		elmt.style.display = 'none';
+		elmt.style.display = 'none';	
 	} 	
 
 	function handleDistPapersTabClick ()
 	{
 		var elmt = document.getElementById("alertMessage");
 		elmt.style.display = 'none';
-		var jsObj=
-		{
-				task:"distPapersUrl"
-		}
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-	var url = "<%=request.getContextPath()%>/distPapersAction.action?"+rparam;
-	callAjax(rparam,jsObj,url);
 	}
-	
-	function showNewsPapersLinks(results)
-	{	
-		assignToEPapersURL = new Array();
-		var newsPaperURL = results.EPapersURLsVO;
-		for(var i in newsPaperURL)
-		{
-			var distEditionUrl;
-			var mainEditionUrl = ""+newsPaperURL[i].mainUrl;
-			var paperName = ""+newsPaperURL[i].paperName;
-			var distName; 
-			var image = newsPaperURL[i].image;
-			if(newsPaperURL[i].districtName == null)
-			{
-				distName = "";
-			} else distName = ""+newsPaperURL[i].districtName;
-			if(newsPaperURL[i].epaperUrl == null)
-			{
-				distEditionUrl = "";
-			} else distEditionUrl = ""+newsPaperURL[i].epaperUrl;
-			
-			var epapersObj={
-					mainEdition: '<A href="'+mainEditionUrl+'" target="_blank" title="Click To Visit"><Img src="<%=request.getContextPath()%>/images/icons/'+image+'" border="none"/></A>',
-					distEdition: '<A href="'+distEditionUrl+'" target="_blank">'+distName+'</A>',
-					language: newsPaperURL[i].language 								 
-			};
-			
-		assignToEPapersURL.push(epapersObj);	
-		distPapersObj.ePapersArray = assignToEPapersURL;
-		}
-		
-		buildEPapersURLDataTable();		
-	}
-	
-	function updateSelectedDistUrls(results)
-	{
-		
-		assignToEPapersURL = new Array();
-		var newsPaperURL = results.EPapersURLsVO;
-		for(var i in newsPaperURL)
-		{
-			var distEditionUrl = ""+newsPaperURL[i].epaperUrl;
-			var mainEditionUrl = ""+newsPaperURL[i].mainUrl;
-			var paperName = ""+newsPaperURL[i].paperName;
-			var distName = ""+newsPaperURL[i].districtName;
-			var image = newsPaperURL[i].image;
-			var epapersObj={
-				mainEdition: '<A href="'+mainEditionUrl+'" target="_blank"><Img src="<%=request.getContextPath()%>/images/icons/'+image+'" border="none"/></A>',
-				distEdition: '<A href="'+distEditionUrl+'" target="_blank">'+distName+'</A>',
-				language: newsPaperURL[i].language 								 
-			};
-			
-		assignToEPapersURL.push(epapersObj);
-		distPapersObj.ePapersArray = assignToEPapersURL;
-		}
-		
-		
-		if(ePapersDataTable)
-			ePapersDataTable.destroy();
-		buildEPapersURLDataTable();
-	}
-	
-	function showGroupsCreatedByUsers(results)
-	{
-		var groupsByUser = results.groupsCreatedByUser;
-		var userGrpsDivEle = document.getElementById("userGroupsTabContent_body");
-		var userGrpsTableContent ='';
-		userGrpsTableContent+='<div>';
-		userGrpsTableContent+='<div id="groupDetailsHead"> Group Details </div>';
-		for(var i in groupsByUser )
-		{
-		userGrpsTableContent+='<div id="groupDetails">';	
-		userGrpsTableContent+='<table width="100%">';
-		userGrpsTableContent+='<tr>';
-		userGrpsTableContent+='<th>Group Name : </th>';
-		userGrpsTableContent+='<th align="left">'+groupsByUser[i].groupName+'</th>';
-		userGrpsTableContent+='</tr>';
-		userGrpsTableContent+='<tr>';
-		userGrpsTableContent+='<th>Group Description : </th>';
-		userGrpsTableContent+='<td>'+groupsByUser[i].groupDesc+'</td>';
-		userGrpsTableContent+='</tr>';
-		userGrpsTableContent+='<tr>';
-		userGrpsTableContent+='<td align="right" colspan="2"><span class="groupMembersLinks"><a href="#" onclick="showGroupMbrsInGroup('+groupsByUser[i].groupId+')" >View Members</a></span>';
-		userGrpsTableContent+='<span class="groupMembersLinks"><a href="#" onclick="addGrpMembersDialog()" >Add Members</a></span></td>';
-		userGrpsTableContent+='</tr>';
-		userGrpsTableContent+='</table></div>';
-		}		
-		
-		userGrpsDivEle.innerHTML = userGrpsTableContent;
-	}
-	
-	function showGroupMbrsInGroup(id)
-	{
-		
-		var jsObj=
-		{		grpId: id,
-				task: "grpMbrsByGrpId"
-		}
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-	var url = "<%=request.getContextPath()%>/membersInAGroupAction.action?"+rparam;
-	callAjax(rparam,jsObj,url);	
-	}
-	
-	function showGrpMembers(results)
-	{
-		var assignToGrpMbrs = new Array();
-		var grpMembers = results.groupsMembers;
-		for(var i in grpMembers)
-		{
-			var grpMembersObj = {
-					name: grpMembers[i].userName,
-					address: grpMembers[i].address,
-					mobile: grpMembers[i].mobileNumber,
-					telephoneNo: grpMembers[i].phoneNumber,
-					designation: grpMembers[i].designation,
-					grpName: grpMembers[i].groupName,  
-					location: grpMembers[i].location 			
-			};
-			assignToGrpMbrs.push(grpMembersObj);
-			userGrpsObj.showGrpMembersArr = assignToGrpMbrs;			
-		}
-		//showGrpMembersDataTable();		 
-		showGroupMbrsPopup();
-	}
-	
-	
 	
 	function updateClassifyDataTable(results)
 	{	
@@ -1135,7 +898,7 @@
 		
 		classifiedDataTable.addRows(problemsMainObj.classifiedProblemsArr);
 	}
-	
+
 	function handleNewIssuesTabClick()
 	{	
 		var emptyArray = new Array();
@@ -1193,14 +956,33 @@
 			classifiedProblemsObj.scope = classifiedProblems[i].problemSourceScope;
 			classifiedProblemsObj.problemType = classifiedProblems[i].problemType;
 			classifiedProblemsObj.problemHistoryId = classifiedProblems[i].problemHistoryId;
-			classifiedProblemsObj.department = "<input type=button value=SelectDepartment id=showdepts>";			
-			assignToClassifiedArray.push(classifiedProblemsObj);													 			
+			classifiedProblemsObj.department = "<input type=button value=SelectDepartment id=showdepts>";
+
+			if(!hasRecordInClassifiedArray(classifiedProblems[i].problemHistoryId))			
+				assignToClassifiedArray.push(classifiedProblemsObj);													 			
 		}
 		
 		buildClassifiedDataTable();
-		classifiedDataTable.addRows(assignToClassifiedArray);				  	
+		if(assignToClassifiedArray.length > 0)
+		{
+			classifiedDataTable.addRows(assignToClassifiedArray);
+		}				  	
 	}
 
+
+	function hasRecordInClassifiedArray(id)
+	{
+		var status = false;
+		if(problemsMainObj.classifiedProblemsArr.length == 0)
+			return status;
+		for(var i=0;i<problemsMainObj.classifiedProblemsArr.length;i++)
+		{
+			if(problemsMainObj.classifiedProblemsArr[i].problemHistoryId == id)
+				status=true; 
+		}
+		return status;
+	}
+			
 	function updateAssignedTable(results)
 	{
 		var assignToAssignedArr = new Array();
@@ -1244,7 +1026,7 @@
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/problemManagementAction.action?"+param;
 		callAjax(param,jsObj,url);
-	}
+	}	
 	
 	function showAssignedProblemsForUser(results)
 	{
@@ -1257,12 +1039,32 @@
 					concernedDepartment: assignedProbsForUser[i].department,
 					assignedProblemProgressId: assignedProbsForUser[i].assignedProblemProgressId
 					};
-			assignToAssignedProbsForUserArr.push(assignedProbObj);
+			if(!hasRecordInAssignedDTArray(assignedProbsForUser[i].assignedProblemProgressId))		
+				assignToAssignedProbsForUserArr.push(assignedProbObj);
 			}
 		
 		buildAssignedIssuesDataTable();
-		assignedIssDataTable.addRows(assignToAssignedProbsForUserArr);
+		if(assignToAssignedProbsForUserArr.length > 0 )
+		{
+			assignedIssDataTable.addRows(assignToAssignedProbsForUserArr);
+		}
 	}
+
+	function hasRecordInAssignedDTArray(id)
+	{
+		
+		var status = false;
+		if(problemsMainObj.assignedProblemsArr.length == 0)
+			return status;
+		for(var i=0;i<problemsMainObj.assignedProblemsArr.length;i++)
+		{
+			if(problemsMainObj.assignedProblemsArr[i].assignedProblemProgressId == id)
+				status=true; 
+		}
+		return status;
+		
+	}
+
 
 	function updateProgressDataTable(results)
 	{
@@ -1330,14 +1132,33 @@
 					contactNumber: progressedProblems[i].contactNo,
 					assignedProblemProgressId: progressedProblems[i].assignedProblemProgressId					 
 					};
-			assignToProgressedProbsArr.push(progressedProblemsObj);	
+
+			if(!hasRecordInProgressedDTArray(progressedProblems[i].assignedProblemProgressId))	
+					assignToProgressedProbsArr.push(progressedProblemsObj);	
 			//problemsMainObj.progressedProblemsArr = assignToProgressedProbsArr;		
 			}
-		problemsMainObj.progressedProblemsArr = assignToProgressedProbsArr;
-		buildProgressDataTable();		 
-		//progessIssuesDataTable.addRows(assignToProgressedProbsArr);
-		progessIssuesDataTable.addRows(problemsMainObj.progressedProblemsArr);		
+		
+		//problemsMainObj.progressedProblemsArr = assignToProgressedProbsArr;
+		buildProgressDataTable();
+		if(assignToProgressedProbsArr.length>0)
+		{		 
+			progessIssuesDataTable.addRows(assignToProgressedProbsArr);
+		}
+	//	progessIssuesDataTable.addRows(problemsMainObj.progressedProblemsArr);		
 				
+	}
+
+	function hasRecordInProgressedDTArray(id)
+	{
+		var status = false;
+		if(problemsMainObj.progressedProblemsArr.length == 0)
+			return status;
+		for(var i=0;i<problemsMainObj.progressedProblemsArr.length;i++)
+		{
+			if(problemsMainObj.progressedProblemsArr[i].assignedProblemProgressId == id)
+				status=true; 
+		}
+		return status;
 	}
 
 
@@ -1411,13 +1232,30 @@
 					 reason: pendingProblems[i].reasonForPending,
 					 assignedProblemProgressId: pendingProblems[i].assignedProblemProgressId
 					};
-			assignToPendingProblemsArr.push(pendingProblemsObj);
+			if(!hasRecordInPendingDTArray(pendingProblems[i].assignedProblemProgressId))
+				assignToPendingProblemsArr.push(pendingProblemsObj);
 			//problemsMainObj.pendingProblemArr = assignToPendingProblemsArr;			
 		}
 		buildPendingDataTable();
-		pendingIssuesDataTable.addRows(assignToPendingProblemsArr);			
+		if(assignToPendingProblemsArr.length > 0)
+		{
+		pendingIssuesDataTable.addRows(assignToPendingProblemsArr);
+		}			
 	}	
 
+	function hasRecordInPendingDTArray(id)
+	{
+		var status = false;
+		if(problemsMainObj.pendingProblemArr.length == 0)
+			return status;
+		for(var i=0;i<problemsMainObj.pendingProblemArr.length;i++)
+		{
+			if(problemsMainObj.pendingProblemArr[i].assignedProblemProgressId == id)
+				status=true; 
+		}
+		return status;
+	}
+	
 	function handleFixedIssTabClick()
 	{
 		if(pendingDtRecordsArray.length>0)
@@ -1483,14 +1321,30 @@
 					 comments: fixedProblems[i].comments,
 					 assignedProblemProgressId: fixedProblems[i].assignedProblemProgressId
 					};
-			assignToFixedProblemsArr.push(fixedProblemsObj);
+			if(!hasRecordInFixedDTArray(fixedProblems[i].assignedProblemProgressId))
+				assignToFixedProblemsArr.push(fixedProblemsObj);
 			//problemsMainObj.fixedProblemsArr = assignToFixedProblemsArr;			
 		}
 		buildFixedDataTable();
-		fixedIssuesDataTable.addRows(assignToFixedProblemsArr);
+		if(assignToFixedProblemsArr.length>0)
+		{
+			fixedIssuesDataTable.addRows(assignToFixedProblemsArr);
+		}
 		
-		
-		} 
+		}
+
+	function hasRecordInFixedDTArray(id)
+	{
+		var status = false;
+		if(problemsMainObj.fixedProblemsArr.length == 0)
+			return status;
+		for(var i=0;i<problemsMainObj.fixedProblemsArr.length;i++)
+		{
+			if(problemsMainObj.fixedProblemsArr[i].assignedProblemProgressId == id)
+				status=true; 
+		}
+		return status;
+	} 
 
 	function updateProgressTableWithProblemsFromPendingToProgress(results)
 	{
@@ -1577,29 +1431,8 @@
 		constTabContent+='<div id="constMgmtTabContentDiv_body"></div>';
 		constTabContent+='<div id="constMgmtTabContentDiv_footer"></div>';
 		constTabContent+='</div>';
-		
-		var distEPapersTabContent='<div id="distEPapersTabContent">'; 
-		distEPapersTabContent+='<br>';
-		distEPapersTabContent+='<div id="distEPapersTabContent_header" align="center">';
-		distEPapersTabContent+='Select a District To Access Other  District Editions: <select id="allDistrictsField" class="selectWidth" name="allDistrictsField" onchange="getNewPapersForSelectedDist(this.name,this.options[this.selectedIndex].value)">';
-		for(var i in locationDetails.allDistrictsByStateArr)
-		{
-			distEPapersTabContent+='<option value='+locationDetails.allDistrictsByStateArr[i].id+'>'+locationDetails.allDistrictsByStateArr[i].value+'</option>';
-		}
-		distEPapersTabContent+='</select>';
-		distEPapersTabContent+='</div>';
-		distEPapersTabContent+='<br>';
-		distEPapersTabContent+='<div id="distEPapersTabContent_body"></div>';
-		distEPapersTabContent+='<div id="distEPapersTabContent_footer"></div>';
-		distEPapersTabContent+='</div>';
-
-		var userGroupsContent='<div id="userGroupsTabContent">';
-		userGroupsContent+='<div id="userGroupsTabContent_head" align="left"></div>';
-		userGroupsContent+='<div id="userGroupsTabContent_body" align="left"></div>';
-		userGroupsContent+='<div id="userGroupsTabContent_footer" align="right"></div>';	
-		userGroupsContent+='</div>';
-				
-		outerTab.addTab( new YAHOO.widget.Tab({			
+		outerTab.addTab( new YAHOO.widget.Tab({ 
+			
 		label: '<%=constituencyMgmt%>', 
 	    content:constTabContent, 
 	    active: true 
@@ -1612,7 +1445,8 @@
 		
 		outerTab.addTab( new YAHOO.widget.Tab({ 
 			label: '<%=userGroups%>', 
-			content: userGroupsContent		 
+			content: '<div id="userGroupsTabContent">User Groups Content</div>' 
+		 
 		})); 
 		 
 		outerTab.addTab( new YAHOO.widget.Tab({ 
@@ -1622,23 +1456,14 @@
 
 		outerTab.addTab( new YAHOO.widget.Tab({ 
 			label: '<%=distEPapers%>', 
-			content: distEPapersTabContent 
+			content: '<div id="distEPapersTabContent">District E Papers Content</div>' 
 		})); 
 
 		outerTab.appendTo('problemMgmtMainDiv');
 		outerTab.getTab(1).addListener('click',getNewProblemsForUser);
 		outerTab.getTab(2).addListener('click',handleUserGrpsTabClick);
 		outerTab.getTab(3).addListener('click',handleRecommLetrsTabClick);
-		outerTab.getTab(4).addListener('click',handleDistPapersTabClick);
-
-		var addUserGroupButton = new YAHOO.widget.Button({ 
-            id: "addUserGroupButton",  
-            type: "link",  
-            label: "Create Group",  
-            container: "userGroupsTabContent_footer" 
-		});
-		addUserGroupButton.on("click", buildCreateGroupPopup); 
-		 
+		outerTab.getTab(4).addListener('click',handleDistPapersTabClick); 
 	}
 	
 	function buildProblemMgmtTabView()
@@ -1858,11 +1683,11 @@
 		}));
 		var mandalLeadersTabContent='<div id="mandalLeadersTabContent">';
 		mandalLeadersTabContent+='<div id="mandalLeadersTabContent_header">';
-		mandalLeadersTabContent+='<input type="radio" name="mandalLeaders" value="All" onclick="displayDiv(\'mandalLeadersAll\');hideDiv(\'mandalLeadersWinners\')" checked="checked"> All';
+		mandalLeadersTabContent+='<input type="radio" name="mandalLeaders" value="All" onclick="displayDiv(\'mandalLeadersAll\');hideDiv(\'mandalLeadersWinners\')"> All';
 		mandalLeadersTabContent+='<input type="radio" name="mandalLeaders" value="Winners" onclick="displayDiv(\'mandalLeadersWinners\');hideDiv(\'mandalLeadersAll\')"> Winners';
 		mandalLeadersTabContent+='</div>';
 		mandalLeadersTabContent+='<div id="mandalLeadersTabContent_body">';
-		mandalLeadersTabContent+='<div id="mandalLeadersAll"></div><div id="mandalLeadersWinners" style="display:none;"></div></div>';
+		mandalLeadersTabContent+='<div id="mandalLeadersAll" style="display:none;">1</div><div id="mandalLeadersWinners" style="display:none;">1</div></div>';
 		mandalLeadersTabContent+='</div>';
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
 			label: '<%=mandalLeaders%>',
@@ -1897,32 +1722,7 @@
 		        {select:"<input type='checkbox' id='check_1'></input>", title:"AarogyaSri", description: "Delay for Cardiac Surgery with AarogyaSri Scheme", identifiedDate:new Date("March 11,2009") , location:"Eluru", source:"User", status:"Categorized"}, 
 				{select:"<input type='checkbox' id='check_1'></input>", title:"Delay in payment of Exgratia", description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party", identifiedDate:new Date(1980, 2, 4), location:"MadanaPalle", source:"Party Analyst", status:"New"}		
 	    ]		           			
-	}
-	
-	function buildEPapersURLDataTable()
-	{	
-		var ePapersUrlColumnDefs = [
-								{key: "mainEdition", label: "<%=mainEdition%>", sortable:true},		
-		              	 	    {key: "distEdition", label: "<%=subEdition%>", sortable:true},
-		              	 	    {key: "language", label: "<%=language%>", sortable:true}
-		              	 	    ];                	 	    
-
-		var ePapersDataSource = new YAHOO.util.DataSource(distPapersObj.ePapersArray); 
-		ePapersDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-		ePapersDataSource.responseSchema = {
-                fields: ["mainEdition","distEdition", "language"] 
-        		};
-		ePapersDataTable = new YAHOO.widget.DataTable("distEPapersTabContent_body", ePapersUrlColumnDefs, ePapersDataSource);
-		ePapersDataTable.setColumnWidth(ePapersUrlColumnDefs[0],1000);
-		constMgmtTabs.getTab(4).addListener("click", function() {ePapersDataTable.onShow()});
-		
-        return { 
-            oDS: ePapersDataSource, 
-            oDT: ePapersDataTable 
-           
-      };	     	
-	}
-						
+	}					
 	function buildAllMandalLeadersDataTable()
 		{
 			
@@ -2353,7 +2153,7 @@
 		classifiedDataTable.updateCell(classifyDTRecord , "departmentId" , assignedDeptValue );				
 		EditClassifyProbsDialog.hide();
 	}
-	
+	//wkg
 	function assignButtonHandler()
 	{
 		problemMgmtTabs.getTab(2).set("disabled", false);
@@ -2841,7 +2641,7 @@
 			var progressedProblemsArray = new Array();
 			for(var i in  pendingDtRecordsArray)
 			{
-				progessIssuesDataTable.deleteRow( pendingDtRecordsArray[i]);
+				pendingIssuesDataTable.deleteRow( pendingDtRecordsArray[i]);
 			}
 			for(var j in  pendingDtRecordsArray)
 			{
@@ -3198,7 +2998,8 @@
 		divChild.setAttribute('id','addNewProblemDiv');
 		divChild.setAttribute('class','newProbdialog');
 
-		var contentStr='';
+		var contentStr=''; 
+		
 		contentStr+='<div class="hd" align="left">Add New Problem</div>';
 		contentStr+='<div class="bd" align="left">';
 		contentStr+='<div id="problemDetailsDivBody">';
@@ -3411,175 +3212,6 @@
 	{
 		this.cancel();
 	}
-	
-	function buildCreateGroupPopup()
-	{
-		
-		var elmt = document.getElementById('constituencyMgmtBodyDiv');
-		var divChild = document.createElement('div');
-		divChild.setAttribute('id','createGroupmDiv');
-		var createGroupContentStr='';
-		createGroupContentStr+='<div class="hd" align="left">Create New User Group</div>';
-		createGroupContentStr+='<div class="bd" align="left">';
-		createGroupContentStr+='<div id="userGroupDetailsDivBody">';
-		createGroupContentStr+='<table>';
-		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<th align="left" colspan="3"><u>Group Details</u></th>';
-		createGroupContentStr+='</tr>';
-		createGroupContentStr+='<tr></tr>';
-		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<td><%=groupName%></td>';
-		createGroupContentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupNameText" name="problemText"/></td>';
-		createGroupContentStr+='</tr>';
-		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<td><%=description%></td>';
-		createGroupContentStr+='<td style="padding-left: 15px;"><textarea cols="50" id="descTextArea" name="groupDescTextArea"></textarea></td>';
-		createGroupContentStr+='</tr>';
-		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<td><input type="radio" id="createNewGrpRadio" name="createGroup" value="Create New Group" /><%=createNewGrp%></td>';
-		createGroupContentStr+='<td style="padding-left: 15px;"><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group" /><%=addToGrpAsSubGrpRadio%></td>';
-		createGroupContentStr+='</tr>';
-		createGroupContentStr+='</table>';
-		createGroupContentStr+='</div>';
-		createGroupContentStr+='</div>';
-		createGroupContentStr+='</div>'; 
-		divChild.innerHTML=createGroupContentStr;
-		
-		elmt.appendChild(divChild);	
-		if(createGroupDialog)
-			createGroupDialog.destroy();
-		createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
-				{ width : "600px", 
-	              fixedcenter : false, 
-	              visible : true,  
-	              constraintoviewport : true, 
-				  iframe :true,
-				  modal :true,
-				  hideaftersubmit:true,
-				  close:true,
-				  x:400,
-				  y:300,				  
-				  buttons : [ { text:"Create", handler: handleCreateGroupSubmit, isDefault:true}, 
-	                          { text:"Cancel", handler: handleCreateGroupCancel}]
-	             } ); 
-		createGroupDialog.render();
-	}
-	
-	function handleCreateGroupSubmit()
-	{
-		createGroupDialog.hide();			
-	}
-	
-	function handleCreateGroupCancel()
-	{
-		this.cancel();
-	}
-	
-	function showGroupMbrsPopup()
-	{
-		var elmt = document.getElementById('constituencyMgmtBodyDiv');
-		var divChild = document.createElement('div');
-		divChild.setAttribute('id','showGroupMbrsDiv');
-		var showGrpMbrsContent='';
-		showGrpMbrsContent+='<div class="hd" align="left">Group Members</div>';
-		showGrpMbrsContent+='<div class="bd">';
-		showGrpMbrsContent+='<div id="showGrpMbrsDataTableDiv"></div>';
-		divChild.innerHTML = showGrpMbrsContent; 
-		elmt.appendChild(divChild);
-		
-		if(showGrpMbrsDialog)
-			showGrpMbrsDialog.destroy();
-		showGrpMbrsDialog = new YAHOO.widget.Dialog("showGroupMbrsDiv",
-				{ width : "800px", 
-	              fixedcenter : false, 
-	              visible : true,  
-	              constraintoviewport : true, 
-				  iframe :true,
-				  modal :true,
-				  hideaftersubmit:true,
-				  close:true,
-				  x:300,
-				  y:200,				  
-				  buttons : [ { text:"Close", handler: handleshowGroupMbrsSubmit, isDefault:true}]
-	             } ); 
-		showGrpMbrsDialog.render();
-		showGrpMembersDataTable();
-	}
-	
-	function handleshowGroupMbrsSubmit()
-	{
-		showGrpMbrsDialog.hide();
-	}
-	
-	function addGrpMembersDialog()
-	{
-		var elmt = document.getElementById('constituencyMgmtBodyDiv');
-		var divChild = document.createElement('div');
-		divChild.setAttribute('id','addGroupMbrsDiv');
-		var addGrpMbrsContent = '';
-		addGrpMbrsContent+='<div class="hd" align="left">Add Members To A Group</div>';
-		addGrpMbrsContent+='<div class="bd" align="left">';
-		addGrpMbrsContent+='<div id="addGroupMbrsDivBody">';
-		addGrpMbrsContent+='<table>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=name%></td>';
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="grpMbrNameText" name="grpMbrNameText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=mobile%></td>';
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrMobileText" name="groupMbrMobileText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=address%></td>'
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrAdrsText" name="groupMbrAdrsText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=location%></td>'
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=groupName%></td>'
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=designation%></td>'
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='</table>';
-		addGrpMbrsContent+='</div>';
-		addGrpMbrsContent+='</div>';
-		addGrpMbrsContent+='</div>';
-		divChild.innerHTML=addGrpMbrsContent;
-		elmt.appendChild(divChild);	
-		if(addGrpMbrsDialog)
-			addGrpMbrsDialog.destroy();
-		addGrpMbrsDialog = new YAHOO.widget.Dialog("addGroupMbrsDiv",
-				{ width : "600px", 
-	              fixedcenter : false, 
-	              visible : true,  
-	              constraintoviewport : true, 
-				  iframe :true,
-				  modal :true,
-				  hideaftersubmit:true,
-				  close:true,
-				  x:400,
-				  y:400,				  
-				  buttons : [ { text:"Add", handler: handleAddGrpMbrSubmit, isDefault:true}, 
-	                          { text:"Cancel", handler: handleAddGrpMbrCancel}]
-	             } ); 
-		addGrpMbrsDialog.render();		
-		
-	}
-	
-	function handleAddGrpMbrSubmit()
-	{
-		addGrpMbrsDialog.hide();
-	}
-
-	function handleAddGrpMbrCancel()
-	{
-		this.cancel();
-	}	
 </script>
 </head>
 <body>
