@@ -79,7 +79,6 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	
 	<bean name="partyDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -216,6 +215,9 @@
 	<bean id="epaperUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.EPaperUrlDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
+	<bean id="hamletBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothElectionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
 
 
