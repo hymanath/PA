@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.ProblemManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
+import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
@@ -36,6 +37,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(ConstituencyManagementAction.class);
 	private CadreManagementService cadreManagementService;
+	private IProblemManagementService problemManagementService;
 	private CrossVotingEstimationService crossVotingEstimationService;
 	private ConstituencyManagementVO constituencyManagementVO;
 	private HttpServletRequest request;
@@ -49,6 +51,17 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> problemSources;
 	private String accessType;
 	private IConstituencyManagementService constituencyManagementService;
+	
+	
+	public IProblemManagementService getProblemManagementService() {
+		return problemManagementService;
+	}
+
+	public void setProblemManagementService(
+			IProblemManagementService problemManagementService) {
+		this.problemManagementService = problemManagementService;
+	}
+
 	public ConstituencyManagementVO getConstituencyManagementVO() {
 		return constituencyManagementVO;
 	}
@@ -178,7 +191,35 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		problemSources.add(probSource1);
 		problemSources.add(probSource2);
 		problemSources.add(probSource3);
-				
+		
+		problemSources = problemManagementService.getAllTypesOfProblemSources();
+		//problemSources.add(new SelectOptionVO(0L,"Select Source"));
+		
+		/*	
+		constituencyManagementVO = new ConstituencyManagementVO();
+		ProblemManagementVO problemManagementVO = new ProblemManagementVO();
+		problemDetailsList = new ArrayList<ProblemDetailsVO>();		
+		
+		ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO(); 
+		problemDetailsVO.setDefinition("Impurity water");
+		problemDetailsVO.setDescription("Polluted water is beign supplied");
+		problemDetailsVO.setIdentifiedDate("03/04/2009");
+		problemDetailsVO.setLocation("Madanapalle");
+		problemDetailsVO.setSource("Party Analyst");
+		
+		ProblemDetailsVO problemDetailsVO1 = new ProblemDetailsVO();
+		problemDetailsVO1.setDefinition("No Bus Service");
+		problemDetailsVO1.setDescription("Bus service cancelled to village");
+		problemDetailsVO1.setIdentifiedDate("01/03/2009");
+		problemDetailsVO1.setLocation("Nagavaram");
+		problemDetailsVO1.setSource("VIctim");
+		
+		problemDetailsList.add(problemDetailsVO);
+		problemDetailsList.add(problemDetailsVO1);
+		
+		problemManagementVO.setProblemDetails(problemDetailsList);
+		constituencyManagementVO.setProblemManagementVO(problemManagementVO);*/
+		
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		//String result = SUCCESS;
