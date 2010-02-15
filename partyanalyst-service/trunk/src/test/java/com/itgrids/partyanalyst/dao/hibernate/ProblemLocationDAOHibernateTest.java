@@ -5,9 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IProblemLocationDAO;
-import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemLocation;
-import com.itgrids.partyanalyst.model.Township;
 
 public class ProblemLocationDAOHibernateTest extends BaseDaoTestCase{
 
@@ -34,10 +32,10 @@ public class ProblemLocationDAOHibernateTest extends BaseDaoTestCase{
 		assertEquals(1, list.size());
 	}
 	
-	public void testFindByHamletId(){
+	/*public void testFindByHamletId(){
 		List<ProblemLocation> list = problemLocationDAO.findByHamletId(new Long(20));
 		assertEquals(1, list.size());
-	}
+	}*/
 	
 	public void testFindProblemsByUserId(){
 		List<ProblemLocation> list = problemLocationDAO.findProblemsByUserId(new Long(1));

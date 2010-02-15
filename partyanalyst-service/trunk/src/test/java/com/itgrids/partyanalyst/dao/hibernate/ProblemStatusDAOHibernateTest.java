@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
@@ -17,9 +19,14 @@ public class ProblemStatusDAOHibernateTest extends BaseDaoTestCase{
 		this.problemStatusDAO = problemStatusDAO;
 	}
 	
-	public void testSave(){
+	/*public void testSave(){
 		ProblemStatus problemStatus = new ProblemStatus("FIXED", null);
 		problemStatusDAO.save(problemStatus);
 		setComplete();
+	}*/
+	
+	public void testGetAll(){
+		List<ProblemStatus> list = problemStatusDAO.getAll();
+		assertEquals(1, list.size());
 	}
 }

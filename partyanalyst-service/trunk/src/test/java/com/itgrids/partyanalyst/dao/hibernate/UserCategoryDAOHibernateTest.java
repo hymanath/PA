@@ -19,19 +19,19 @@ public class UserCategoryDAOHibernateTest extends BaseDaoTestCase{
 		this.userCategoryDAO = userCategoryDAO;
 	}
 	
-	public void testSave(){
+/*	public void testSave(){
 		UserCategory userCategory = new UserCategory("MUNCIPALITY", null);
  		userCategoryDAO.save(userCategory);
  		setComplete();
-	}
+	}*/
 	
 	public void testGetAll(){
 		List<UserCategory> list = userCategoryDAO.getAll();
 		assertEquals(1, list.size());
 	}
 	
-	public void testDelete(){
+	/*public void testDelete(){
 		userCategoryDAO.remove(new Long(2));
 		setComplete();
-	}
+	}*/
 }

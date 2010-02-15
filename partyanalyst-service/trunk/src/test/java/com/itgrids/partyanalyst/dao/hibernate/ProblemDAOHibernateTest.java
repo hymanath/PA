@@ -22,12 +22,12 @@ public class ProblemDAOHibernateTest extends BaseDaoTestCase{
 		this.problemDAO = problemDAO;
 	}
 	
-	public void testSave(){
+	/*public void testSave(){
 		Date date = Calendar.getInstance().getTime();
 		Problem problem = new Problem("Living Problem", "Heivy", new java.util.Date(), null);
 		problemId = problemDAO.save(problem).getProblemId();
 		setComplete();
-	}
+	}*/
 	
 	public void testGetAll(){
 		List<Problem> list = problemDAO.getAll();

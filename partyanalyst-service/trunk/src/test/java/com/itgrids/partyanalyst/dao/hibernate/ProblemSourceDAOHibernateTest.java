@@ -19,7 +19,7 @@ public class ProblemSourceDAOHibernateTest extends BaseDaoTestCase{
 		this.problemSourceDAO = problemSourceDAO;
 	}
 
-	public void testSave(){
+	public void testGetAll(){
 		List<ProblemSource> list = problemSourceDAO.getAll();
 		assertEquals(1, list.size());
 	}
