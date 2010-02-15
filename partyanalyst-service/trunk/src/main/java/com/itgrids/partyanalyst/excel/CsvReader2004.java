@@ -105,7 +105,7 @@ public class CsvReader2004 implements IExcelReader{
 			for (int i = 0; i < methods.length; i++) {
 				if(methods[i].getName().startsWith("get")){
 					String str=(String)methods[i].invoke(csvColumnMapperObj, null);
-					if(methods[i].getName().equals("getExcelColumn2")&& str.indexOf(".")>0 && csvColumnMapperObj.getExcelColumn3().length()==0 && csvColumnMapperObj.getExcelColumn4().length()==0){
+					if(methods[i].getName().equals("getExcelColumn2")&& str.indexOf(".")>0 && csvColumnMapperObj.getExcelColumn3().length()==0 && csvColumnMapperObj.getExcelColumn4().length()==0 && csvColumnMapperObj.getExcelColumn5().length()==0 && csvColumnMapperObj.getExcelColumn6().length()==0 && csvColumnMapperObj.getExcelColumn7().length()==0 && csvColumnMapperObj.getExcelColumn8().length()==0){
 						candidateElectionResults=new ArrayList<CandidateElectionResult>();
 						constituencyBlock= checkConstituencyForReservation(str);
 						/*new ConstituencyBlock();
