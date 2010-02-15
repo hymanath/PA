@@ -92,6 +92,7 @@
 				<value>com.itgrids.partyanalyst.model.EPaperUrl</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResult</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResult</value>
+		 		<value>com.itgrids.partyanalyst.model.ProblemAndProblemSource</value>
 		 </list>
 		</property>
 	</bean>
@@ -348,7 +349,9 @@
 	<bean id="problemExternalSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemExternalSourceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="problemAndProblemSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ProblemAndProblemSourceDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="delimitationConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
