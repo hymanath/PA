@@ -268,7 +268,7 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			if(value==null){
 				value= new StringBuilder();
 			}
-			value.append(IConstants.COMMA).append(boothPartNo);
+			value.append(IConstants.COMMA).append("<a href='boothReport.action?partNo="+boothPartNo+"'>"+boothPartNo+"</a>");
 			hamletBooths.put(hamletName, value);
 		}
 		
@@ -282,9 +282,9 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			hamletBoothsAndVotersVO.setHamletID(new Long(hamletId));
 			hamletBoothsAndVotersVO.setHamletName(hamletName);
 			hamletBoothsAndVotersVO.setTotalVoters(new Long(voters));
-			StringBuilder booths = hamletBooths.get(hamletName);
-			if(booths!=null){
-				hamletBoothsAndVotersVO.setBoothPartNos(booths.substring(1));
+			StringBuilder boothsLink = hamletBooths.get(hamletName);
+			if(boothsLink!=null){
+				hamletBoothsAndVotersVO.setBoothPartNos(boothsLink.substring(1));
 			}
 			hamletsListWithBoothsAndVotersList.add(hamletBoothsAndVotersVO);
 		}
@@ -292,6 +292,5 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		hamletsListWithBoothsAndVotersVO.setHamletsListWithBoothsAndVoters(hamletsListWithBoothsAndVotersList);
 		return hamletsListWithBoothsAndVotersVO;
 	}
-	
 	
 }

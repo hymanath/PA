@@ -299,11 +299,11 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	}
 
 	/**
-	 * to retrieves party, election wise voters for a mandal
+	 * to retrieves party, election wise voters for a mandal/revenue village
 	 * @param mandalID
 	 * @return
 	 */
-	public PartyElectionVotersHeaderDataVO getPartyElectionVotersForMandal(Long mandalID){
+	public PartyElectionVotersHeaderDataVO getPartyElectionVotersForMandal(Long id, String typeFlag){
 		log.debug("DelimitationConstituencyMandalService.getPartyElectionVotersForMandal() started...");
 		Set<String> header = new TreeSet<String>();
 		List<PartyElectionVotersListVO> partyElectionVotersListVOs = new ArrayList<PartyElectionVotersListVO>();
@@ -332,7 +332,12 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 			return partyElectionVotersHeaderDataVO;
 			
 		}
-		List partyElectionVoters = candidateBoothResultDAO.findPartyElectionResultForMandal(mandalID, electionTypeIDs.substring(1),electionYears.substring(1));
+		List partyElectionVoters = null;
+		if(IConstants.MANDAL.equals(typeFlag)){
+			partyElectionVoters = candidateBoothResultDAO.findPartyElectionResultForMandal(id, electionTypeIDs.substring(1),electionYears.substring(1));
+		} else{
+			partyElectionVoters = candidateBoothResultDAO.findPartyElectionResultForRevenueVillage(id, electionTypeIDs.substring(1),electionYears.substring(1));
+		}
 		int dbRows = partyElectionVoters.size();
 		log.debug("Party Election voters for the mandal:::::::");
 		for(int i=0; i < dbRows; i++){
@@ -388,6 +393,9 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 			partyElectionVotersListVOs.add(partyElectionVotersListVO);
 		}
 		partyElectionVotersHeaderDataVO.setHeader(header);
+		log.debug("typeFlag:"+typeFlag);
+		log.debug("DelimitationConstituencyMandalService.header="+header.size());
+		log.debug("DelimitationConstituencyMandalService.data="+partyElectionVotersListVOs.size());
 		partyElectionVotersHeaderDataVO.setData(partyElectionVotersListVOs);
 		return partyElectionVotersHeaderDataVO;
 	}

@@ -13,7 +13,7 @@ public interface IDelimitationConstituencyMandalService {
 	public DelimitationConstituencyMandalResultVO getMandalsForDelConstituency(Long constituencyID);
 	public List<MandalInfoVO> getCensusInfoForMandals(String mandalIDs);
 	public VillageDetailsVO getVillagesFormMandal(Long mandalID);
-	public PartyElectionVotersHeaderDataVO getPartyElectionVotersForMandal(Long mandalID);
+	public PartyElectionVotersHeaderDataVO getPartyElectionVotersForMandal(Long mandalID, String typeFlag);
 	public CastWiseElectionVotersVO findCastWiseVotersForMandal(Long mandalID);
 	public GenderAgeWiseVotersVO findGenderAgeWiseVotersForMandal(Long mandalID);
 }
