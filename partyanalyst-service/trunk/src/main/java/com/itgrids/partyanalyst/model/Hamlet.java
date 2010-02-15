@@ -46,6 +46,7 @@ public class Hamlet extends BaseModel implements Serializable {
 	private String mppCode;
 	private Set<Voter> voters = new HashSet<Voter>(0);
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
+	private Set<HamletBoothElection> hamletBoothElections = new HashSet<HamletBoothElection>(0);
 	
 	
 	//default constructor
@@ -156,6 +157,16 @@ public class Hamlet extends BaseModel implements Serializable {
 
 	public void setProblemLocations(Set<ProblemLocation> problemLocations) {
 		this.problemLocations = problemLocations;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "hamlet")
+	public Set<HamletBoothElection> getHamletBoothElections() {
+		return hamletBoothElections;
+	}
+
+	public void setHamletBoothElections(
+			Set<HamletBoothElection> hamletBoothElections) {
+		this.hamletBoothElections = hamletBoothElections;
 	}
 
 	
