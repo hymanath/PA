@@ -20,7 +20,7 @@
 			</props>
 		</property>
 		<property name="annotatedClasses">
-		<list>
+			<list>
 				<value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
 				<value>com.itgrids.partyanalyst.model.Constituency</value>
@@ -78,6 +78,8 @@
 				<value>com.itgrids.partyanalyst.model.UserEventActionPlan</value>
 				<value>com.itgrids.partyanalyst.model.PartyImportantDates</value>
 				<value>com.itgrids.partyanalyst.model.UserImpDate</value>
+				<value>com.itgrids.partyanalyst.model.ProblemAndProblemSource</value>
+			</list>
 				<value>com.itgrids.partyanalyst.model.EPaper</value>
 				<value>com.itgrids.partyanalyst.model.EPaperUrl</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResult</value>
