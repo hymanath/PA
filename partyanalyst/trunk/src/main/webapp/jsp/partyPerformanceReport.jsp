@@ -514,26 +514,31 @@ function buildPartyPositionDataTable(info,rank)
 				str+='<td align="center" style="color:#FF0000">'+arr[i].partyName+'*</td>';
 			else
 			    str+='<td align="center">'+arr[i].partyName+'</td>';
+
 			if(arr[i].seats == 0)
-				str+='<td align="center">'+arr[i].seats+'</td>';
+				str+='<td align="center" style="color:#539E41;font-weight:bold;">'+arr[i].seats+'</td>';
 			else
-			   str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(1,\''+arr[i].partyId+'\')">'+arr[i].seats+'</a></td>';
+			   str+='<td align="center"><a href="javascript:{}" style="color:#539E41;" onclick="getPartyPositionDetails(1,\''+arr[i].partyId+'\')">'+arr[i].seats+'</a></td>';
+
 			if(arr[i].secondPos == 0)
-               str+='<td align="center">'+arr[i].secondPos+'</td>';
+               str+='<td align="center" style="color:#C44C50;font-weight:bold;">'+arr[i].secondPos+'</td>';
 			else
-			   str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(2,\''+arr[i].partyId+'\')">'+arr[i].secondPos+'</td>';
+			   str+='<td align="center"><a href="javascript:{}" style="color:#E8A0A5;font-weight:bold;" onclick="getPartyPositionDetails(2,\''+arr[i].partyId+'\')">'+arr[i].secondPos+'</td>';
+
 			if(arr[i].thirdPos == 0)
-               str+='<td align="center">'+arr[i].thirdPos+'</td>';
+               str+='<td align="center" style="color:#FF979E;font-weight:bold;">'+arr[i].thirdPos+'</td>';
 			else
-               str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(3,\''+arr[i].partyId+'\')">'+arr[i].thirdPos+'</td>';
+               str+='<td align="center"><a style="color:#FF979E;font-weight:bold;" href="javascript:{}" onclick="getPartyPositionDetails(3,\''+arr[i].partyId+'\')">'+arr[i].thirdPos+'</td>';
+
 			if(arr[i].fourthPos == 0)
-               str+='<td align="center">'+arr[i].fourthPos+'</td>';
+               str+='<td align="center" style="color:#FF7F87;font-weight:bold;">'+arr[i].fourthPos+'</td>';
 			else
-			   str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(4,\''+arr[i].partyId+'\')">'+arr[i].fourthPos+'</td>';
+			   str+='<td align="center"><a href="javascript:{}" style="color:#FF7F87;font-weight:bold;" onclick="getPartyPositionDetails(4,\''+arr[i].partyId+'\')">'+arr[i].fourthPos+'</td>';
+
 			if(arr[i].nthPos == 0)
-                str+='<td align="center">'+arr[i].nthPos+'</td>';
+                str+='<td align="center" style="color:#FF1515;font-weight:bold;">'+arr[i].nthPos+'</td>';
 			else
-		    	str+='<td align="center"><a href="javascript:{}" onclick="getPartyPositionDetails(-1,\''+arr[i].partyId+'\')">'+arr[i].nthPos+'</td>';
+		    	str+='<td align="center"><a href="javascript:{}" style="color:#FF1515;font-weight:bold;" onclick="getPartyPositionDetails(-1,\''+arr[i].partyId+'\')">'+arr[i].nthPos+'</td>';
 			str+='<td align="center">'+arr[i].constituency+'</td>';
             str+='<td align="center">'+arr[i].votesPercent+'</td>';
 			str+='</tr>';
@@ -825,13 +830,14 @@ function reportTitleDivFunc()
 	#partyPositions
 	{
 		background-color:#DCE3E9;
-		position:absolute;
+		border:2px solid #839AB7;
+		display:none;
+		left:300px;
 		margin-right:20px;
 		margin-top:15px;
+		position:absolute;
+		top:500px;
 		z-index:10;
-		display:none;		
-		left:155px;
-		border:2px solid #839AB7;
 	}
 	#closeSpan
 	{
@@ -913,8 +919,9 @@ function reportTitleDivFunc()
 	
 	#resizablepanelMain
 	{
+		/*
 		margin-top:30px;
-		height:300px;
+		height:300px;*/
 	}
 	#partyPositionDetailsTable
 	{
@@ -944,33 +951,36 @@ function reportTitleDivFunc()
 		font-size:13px;
 		
 	} 
-	
+	#titleDiv
+	{
+		background-color:#8FAFD0;
+		color:#FFFFFF;
+		font-size:15px;
+		font-weight:bold;
+		margin-left:15px;
+		margin-right:100px;
+		padding:6px;		
+	}
 
 </style>
 </head> 
 <body>
 <div id="partyPerformanceReportMainDiv">
 <center>
-<div id="" class="yui-skin-sam">
-     <div id="reportTitleDiv" class="yui-skin-sam"> 
-	   
-	 </div> 
-	<script language="javascript">
-	  reportTitleDivFunc();
-	  </script>
-	<!--<u><s:property value="stateData.state" /> State - Party <s:property value="stateData.party" /> </u> -->
+<div id="titleDiv">
+	   ${reportTitle}	
 </div>
 </center>
-<br/><br/>
+<br/><br/><br/>
  
 <div style="margin-left: 15px;">
 
     <table>
 	<tr>
-		<th style="background-color: #ECF1F5"><u>State : </u></th>
+		<th style="background-color: #E9E9E9;font-weight:bold;font-size:12px;"><u>State : </u></th>
 		<td><b><s:property value="stateData.state" /></b></td>
 		<td></td>
-		<th style="background-color: #ECF1F5"><u>Party :</u></th>
+		<th style="background-color: #E9E9E9;font-weight:bold;font-size:12px;"><u>Party :</u></th>
 		<td><b><s:property value="stateData.party" /></b></td>
 	</tr>
 	<tr id="district"
@@ -983,27 +993,41 @@ function reportTitleDivFunc()
 		<td style="background-color: #ccb"><s:property value="stateData.district" /></td>
 	</tr>
 	</table>
-	<br/><br/>
-<div id="seatsDetailsDiv" class="yui-skin-sam" style="width:40%height:210px;">
-<div id="party" class="yui-skin-sam"></div>
-</div>
-<br/>
-<!--<div style="left:620px;margin-right:20px;position:absolute;top:320px;">-->
-	<div id="partyPosChartOuter"  style="left:650px;margin-right:20px;position:absolute;top:350px;height:150px;width:400px;">
-	<div id="partyPosChart" style="width:100%">
-	 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("lineChartName")%>" WIDTH="350" HEIGHT="250">
-	</div>
-	</div>
-	<div id="partyResultsChartOuter"  style="left:600px;margin-right:20px;position:absolute;top:630px;height:400px;width:400px;">
-	<div id="partyResultsChart" style="width:100%">
-	 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350">
-	</div>
-	</div>
-	 <script language="javascript">
-       //initializeGraph();
-	 </script>
-	<!--<IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350"> -->
-<!--</div>-->
+
+<table>
+	<tr>
+		<td>
+			<div id="partyPosChartOuter"  style="width:400px;">
+				<div id="partyPosChart" style="width:100%">
+					 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("lineChartName")%>" WIDTH="350" HEIGHT="250">
+				</div>
+			</div>
+		</td>
+		<td>
+			<div id="partyResultsChartOuter"  style="margin-top:40px;">
+				<div id="partyResultsChart" style="width:100%">
+					 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350">
+				</div>
+			</div>		
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<div id="seatsDetailsDiv" class="yui-skin-sam" style="width:40%height:210px;">
+				<div id="party" class="yui-skin-sam"></div>
+			</div>
+		</td>
+		<td>
+			<div id="resizablepanelMain" class="yui-skin-sam" style="margin-top:25px;">
+				<div id="resizablepanel" class="yui-skin-sam"></div>
+			</div>
+		</td>
+	</tr>
+	
+
+</table>
+
+
 
 <div id="partyPositions">
 	<div id="partyPositionsHead">
@@ -1017,10 +1041,7 @@ function reportTitleDivFunc()
 	<div id="partyPositionsBody" class="yui-skin-sam"></div>
 </div>
 <br/><br/>
-<div id="resizablepanelMain" class="yui-skin-sam"  style="width:50%">
-	<div id="resizablepanel" class="yui-skin-sam"></div>
-</div>
-<br/><br/>
+
 <div>
 	<B><U>Detailed Report...</U></B>
 </div>
