@@ -509,9 +509,12 @@ public class PartyService implements IPartyService {
 					}
 					// Set Votes Flown to other parties
 					//if(votesFlow.get(party.getShortName())!= null)
-					if(votesFlow.containsKey(party.getShortName()))
-						votesEarned+=votesFlow.get(party.getShortName()).doubleValue();
-					votesFlow.put(party.getShortName(), new BigDecimal(votesEarned).setScale (2,BigDecimal.ROUND_HALF_UP));
+					
+				}
+				if(!isSelectedParty && !isAllianceParty && !isRebelAllianceParty){
+				if(votesFlow.containsKey(party.getShortName()))
+				votesEarned+=votesFlow.get(party.getShortName()).doubleValue();
+				votesFlow.put(party.getShortName(), new BigDecimal(votesEarned).setScale (2,BigDecimal.ROUND_HALF_UP));
 				}
 			}
 
