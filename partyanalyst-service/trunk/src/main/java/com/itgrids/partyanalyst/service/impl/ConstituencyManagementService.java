@@ -264,11 +264,12 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			Object[] obj = (Object[]) listHamletBooths.get(i);
 			String hamletName = obj[0].toString();
 			String boothPartNo = obj[1].toString();
+			String boothId = obj[2].toString();
 			StringBuilder value = hamletBooths.get(hamletName);
 			if(value==null){
 				value= new StringBuilder();
 			}
-			value.append(IConstants.COMMA).append("<a href='boothReport.action?partNo="+boothPartNo+"'>"+boothPartNo+"</a>");
+			value.append(IConstants.COMMA).append("<a href='boothReport.action?partNo="+boothPartNo+"&boothID="+boothId+"'>"+boothPartNo+"</a>");
 			hamletBooths.put(hamletName, value);
 		}
 		

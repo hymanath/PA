@@ -16,4 +16,6 @@ public interface IDelimitationConstituencyMandalService {
 	public PartyElectionVotersHeaderDataVO getPartyElectionVotersForMandal(Long mandalID, String typeFlag);
 	public CastWiseElectionVotersVO findCastWiseVotersForMandal(Long mandalID);
 	public GenderAgeWiseVotersVO findGenderAgeWiseVotersForMandal(Long mandalID);
+	public CastWiseElectionVotersVO findCastWiseVoterForRevenueVillage(Long revenueVillageID, String year, String electionType);
+	public GenderAgeWiseVotersVO findAgeWiseVotersForRevenueVillage(Long revenueVillageID, String year, String electionType);
 }

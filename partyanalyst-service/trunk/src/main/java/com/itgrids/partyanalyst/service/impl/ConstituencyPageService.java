@@ -293,6 +293,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 						totalVoters = totalVoters + (Long)values[2];
 					hamlets.add((String)values[4]);
 				}else{
+					locationWiseBoothDetailsVO.setLocationId(townshipId);
 					locationWiseBoothDetailsVO.setLocationName(townshipName);
 					locationWiseBoothDetailsVO.setBooths(boothNos);
 					locationWiseBoothDetailsVO.setPopulation(totalVoters);

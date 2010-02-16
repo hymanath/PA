@@ -7,7 +7,9 @@
  */
 package com.itgrids.partyanalyst.dto;
 
-public class PartyPositionsVO {
+import java.io.Serializable;
+
+public class PartyPositionsVO implements Serializable{
 
 	private Long partyId;
 	private String partyName;

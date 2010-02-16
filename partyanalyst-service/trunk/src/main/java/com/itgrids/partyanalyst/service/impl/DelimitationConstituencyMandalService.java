@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -57,7 +58,13 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	private IElectionDAO electionDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IVoterDAO voterDAO;
+	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
 	private static final Logger log = Logger.getLogger(DelimitationConstituencyMandalService.class);
+
+	public void setBoothConstituencyElectionVoterDAO(
+			IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO) {
+		this.boothConstituencyElectionVoterDAO = boothConstituencyElectionVoterDAO;
+	}
 
 	public void setDelimitationConstituencyMandalDAO(
 			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
@@ -608,5 +615,107 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		log.debug("femaleSize:"+femaleSize);
 		log.debug("totalVoters:"+voterAgeRangeVO.getTotalVoters());
 		return voterAgeRangeVO;
+	}
+	
+	public CastWiseElectionVotersVO findCastWiseVoterForRevenueVillage(Long revenueVillageID, String year, String electionType){
+		if(year==null){
+			electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			List years =electionDAO.findLatestElectionYear(electionType);
+			if(years==null || years.size()==0){
+				Exception ex = new Exception("No Elections available in DB");
+				//hamletsListWithBoothsAndVotersVO.setExceptionEncountered(ex);
+				//return hamletsListWithBoothsAndVotersVO;
+			}
+			year =(String)years.get(0);
+		}
+		CastWiseElectionVotersVO castWiseElectionVoters = new CastWiseElectionVotersVO();
+		List<CastTotalVotersVO> castTotalVotersVOList = new ArrayList<CastTotalVotersVO>();
+		List list = boothConstituencyElectionVoterDAO.findCastWiseVoterForRevenueVillage(revenueVillageID, year, electionType);
+		//cast, count
+		long mandalTotalVoters =0;
+		//List<CastTotalVotersVO> castTotalVotersVOList = new ArrayList<CastTotalVotersVO>();
+
+		int size = list.size();
+		for(int i=0; i<size; i++){
+			CastTotalVotersVO castTotalVotersVO = new CastTotalVotersVO();
+			try{
+				Object[] obj = (Object[]) list.get(i);
+				castTotalVotersVO.setCasteName(obj[0].toString());
+				Long  voters = new Long(obj[1].toString());
+				mandalTotalVoters += voters;
+				castTotalVotersVO.setTotalVoters(voters);
+			}catch(Exception e){
+				StringBuilder message = new StringBuilder("Problem while reading voters for revenue village id:::"+ revenueVillageID);
+				message.append(e.getMessage());
+				Exception ex = new Exception(message.toString());
+				castWiseElectionVoters.setExceptionEncountered(ex);
+				return castWiseElectionVoters;
+			}
+			castTotalVotersVOList.add(castTotalVotersVO);
+			
+		}
+		if(size!=0 && mandalTotalVoters==0){
+			Exception ex = new Exception("No voters available in the Revenue Village id::"+revenueVillageID);
+			castWiseElectionVoters.setExceptionEncountered(ex);
+			return castWiseElectionVoters;
+		}
+		for(CastTotalVotersVO cast : castTotalVotersVOList){
+			String name = cast.getCasteName();
+			if(name==null || name.length()==0)
+				cast.setCasteName(IConstants.NOT_APPLICABLE);
+			String voterPercentage = new BigDecimal((cast.getTotalVoters()*100)/mandalTotalVoters).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			cast.setVoterPercentage(voterPercentage);
+		}
+
+		log.debug("final cast data size in Revenue village="+revenueVillageID+" size is:"+castTotalVotersVOList.size());
+		castWiseElectionVoters.setCasteVoters(castTotalVotersVOList);
+		return castWiseElectionVoters;
+	}
+	
+
+	public GenderAgeWiseVotersVO findAgeWiseVotersForRevenueVillage(Long revenueVillageID, String year, String electionType){
+		if(year==null){
+			electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			List years =electionDAO.findLatestElectionYear(electionType);
+			if(years==null || years.size()==0){
+				Exception ex = new Exception("No Elections available in DB");
+				//hamletsListWithBoothsAndVotersVO.setExceptionEncountered(ex);
+				//return hamletsListWithBoothsAndVotersVO;
+			}
+			year =(String)years.get(0);
+		}
+		Long minAge = 18L;
+		Long maxAge = 23L;
+		Long maleTotalVoters = 0L;
+		Long femaleTotalVoters = 0L;
+		Long grandTotalVoters = 0L;
+		GenderAgeWiseVotersVO genderAgeWiseVoters = new GenderAgeWiseVotersVO();
+		List<VoterAgeRangeVO> voterAgeRangeVOList = new ArrayList<VoterAgeRangeVO>();
+		genderAgeWiseVoters.setVoterAgeRangeVOList(voterAgeRangeVOList);
+		/*
+		List<Long> maleVotersAgeWise = new ArrayList<Long>();
+		List<Long> femaleVotersAgeWise = new ArrayList<Long>();
+		List<Long> totalVotersAgeWise = new ArrayList<Long>();
+		
+		genderAgeWiseVoters.setMaleVotersAgeWise(maleVotersAgeWise);
+		genderAgeWiseVoters.setFemaleVotersAgeWise(femaleVotersAgeWise);
+		genderAgeWiseVoters.setTotalVotersAgeWise(totalVotersAgeWise);*/
+		
+		List voters = boothConstituencyElectionVoterDAO.findAgeWiseVotersForRevenueVillage( revenueVillageID, year, electionType, minAge, maxAge);
+		formatVoterGenderAgeWise(voterAgeRangeVOList, voters, "18-23");
+		minAge = 23L; maxAge = 35L;
+		voters = boothConstituencyElectionVoterDAO.findAgeWiseVotersForRevenueVillage(revenueVillageID, year, electionType, minAge, maxAge);
+		formatVoterGenderAgeWise(voterAgeRangeVOList, voters, "23-35");
+		minAge = 35L; maxAge = 50L;
+		voters = boothConstituencyElectionVoterDAO.findAgeWiseVotersForRevenueVillage(revenueVillageID, year, electionType, minAge, maxAge);
+		formatVoterGenderAgeWise(voterAgeRangeVOList, voters, "35-50");
+		minAge = 50L; maxAge = 65L;
+		voters = boothConstituencyElectionVoterDAO.findAgeWiseVotersForRevenueVillage(revenueVillageID, year, electionType, minAge, maxAge);
+		formatVoterGenderAgeWise(voterAgeRangeVOList, voters, "50-65");
+		minAge = 65L; maxAge = 200L;
+		voters = boothConstituencyElectionVoterDAO.findAgeWiseVotersForRevenueVillage(revenueVillageID, year, electionType, minAge, maxAge);
+		formatVoterGenderAgeWise(voterAgeRangeVOList, voters, "65 And Above");
+		addTotal(voterAgeRangeVOList);
+		return genderAgeWiseVoters;
 	}
 }
