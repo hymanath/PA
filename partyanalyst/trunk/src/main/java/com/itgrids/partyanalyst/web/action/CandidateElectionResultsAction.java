@@ -17,6 +17,9 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
+import com.itgrids.partyanalyst.dto.CandidateElectionProfileVO;
+
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -31,6 +34,27 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long candidateId;
 	private List<CandidateDetailsVO> candidateElectionDetails;
 	private CandidateVO candidateVO;
+	private CandidateProfileInfoVO candidateProfileInfoVO;
+	private String candidateURLString;
+	
+	
+
+	public String getCandidateURLString() {
+		return candidateURLString;
+	}
+
+	public void setCandidateURLString(String candidateURLString) {
+		this.candidateURLString = candidateURLString;
+	}
+
+	public CandidateProfileInfoVO getCandidateProfileInfoVO() {
+		return candidateProfileInfoVO;
+	}
+
+	public void setCandidateProfileInfoVO(
+			CandidateProfileInfoVO candidateProfileInfoVO) {
+		this.candidateProfileInfoVO = candidateProfileInfoVO;
+	}
 
 	public CandidateVO getCandidateVO() {
 		return candidateVO;
@@ -76,9 +100,43 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 
 	public String execute(){
 		
+		//candidateProfileInfoVO.setCandidateElectionProfile(candidateElectionProfile);
+		
 		candidateVO = candidateDetailsService.getCandidateDetails(candidateId);
 		
 		candidateElectionDetails = candidateDetailsService.getCandidateElectionDetails(candidateId);
+		
+		//candidateURLString = candidateVO.getCandidateName().replace(' ', '_');
+		StringBuffer candidateURLStringBuffer = new StringBuffer("candidate_static_page/andhra_pradesh/");
+		candidateURLStringBuffer.append(candidateVO.getCandidateName().replace(' ', '_'));
+		//candidateURLStringBuffer.append("/profile.jsp");
+		candidateURLString = candidateURLStringBuffer.toString();
+		
+		System.out.println("candidateURLString = "+candidateURLString);
+		
+		request.setAttribute("candidateURLString", candidateURLString);
+		
+		/* ---- Dummy Information ------- */
+		
+		candidateProfileInfoVO = new CandidateProfileInfoVO();
+		CandidateElectionProfileVO electionPrf1 = new CandidateElectionProfileVO();
+		electionPrf1.setPositionTitle("MLA");
+		electionPrf1.setConstituency("Chandragiri");
+		electionPrf1.setDistrict("Chittor");
+		electionPrf1.setState("Andhra Pradesh");
+		electionPrf1.setStartDuration("1976");
+		electionPrf1.setEndDuration("");
+		electionPrf1.setParty("Telugu Desam");
+		
+		CandidateElectionProfileVO electionPrf2 = new CandidateElectionProfileVO();
+		electionPrf2.setPositionTitle("MLA");
+		electionPrf2.setConstituency("Chandragiri");
+		electionPrf2.setDistrict("Chittor");
+		electionPrf2.setState("Andhra Pradesh");
+		electionPrf2.setStartDuration("1976");
+		electionPrf2.setEndDuration("");
+		electionPrf2.setParty("Telugu Desam");
+		
 		
 		if(candidateElectionDetails != null)
 			return SUCCESS;
