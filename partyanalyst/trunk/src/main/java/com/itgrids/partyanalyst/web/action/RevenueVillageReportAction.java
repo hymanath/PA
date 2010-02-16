@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.itgrids.partyanalyst.dto.CastWiseElectionVotersVO;
+import com.itgrids.partyanalyst.dto.GenderAgeWiseVotersVO;
 import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
@@ -20,6 +22,8 @@ public class RevenueVillageReportAction extends ActionSupport implements Servlet
 	private HamletsListWithBoothsAndVotersVO hamletsListWithBoothsAndVotersVO;
 	private PartyElectionVotersHeaderDataVO partyElectionVotersHeaderDataVO;
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
+	private CastWiseElectionVotersVO castWiseElectionVoters;
+	private GenderAgeWiseVotersVO genderAgeWiseVoters;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -48,6 +52,23 @@ public class RevenueVillageReportAction extends ActionSupport implements Servlet
 			PartyElectionVotersHeaderDataVO partyElectionVotersHeaderDataVO) {
 		this.partyElectionVotersHeaderDataVO = partyElectionVotersHeaderDataVO;
 	}
+
+
+	public void setCastWiseElectionVoters(
+			CastWiseElectionVotersVO castWiseElectionVoters) {
+		this.castWiseElectionVoters = castWiseElectionVoters;
+	}
+	public CastWiseElectionVotersVO getCastWiseElectionVoters() {
+		return castWiseElectionVoters;
+	}
+	
+	public GenderAgeWiseVotersVO getGenderAgeWiseVoters() {
+		return genderAgeWiseVoters;
+	}
+
+	public void setGenderAgeWiseVoters(GenderAgeWiseVotersVO genderAgeWiseVoters) {
+		this.genderAgeWiseVoters = genderAgeWiseVoters;
+	}
 	
 	public void setDelimitationConstituencyMandalService(
 			IDelimitationConstituencyMandalService delimitationConstituencyMandalService) {
@@ -69,7 +90,12 @@ public class RevenueVillageReportAction extends ActionSupport implements Servlet
 		log.debug("electionType="+electionType);
 		hamletsListWithBoothsAndVotersVO = constituencyManagementService.getAllHamletBoothInfoForRevenueVillage(revenueVillageID, year, electionType);
 
-		partyElectionVotersHeaderDataVO = delimitationConstituencyMandalService.getPartyElectionVotersForMandal(new Long(revenueVillageID), IConstants.REVENUE_VILLAGE);
+		partyElectionVotersHeaderDataVO = delimitationConstituencyMandalService.getPartyElectionVotersForMandal(revenueVillageID, IConstants.REVENUE_VILLAGE);
+		
+		castWiseElectionVoters = delimitationConstituencyMandalService.findCastWiseVoterForRevenueVillage(revenueVillageID, year, electionType);
+		
+		genderAgeWiseVoters = delimitationConstituencyMandalService.findAgeWiseVotersForRevenueVillage(revenueVillageID, year, electionType);
+		
 		log.debug("RevenueVillageReportAction.java");
 		log.debug("partyElectionVotersHeaderDataVO.header.size="+partyElectionVotersHeaderDataVO.getHeader().size());
 		log.debug("partyElectionVotersHeaderDataVO.data.size="+partyElectionVotersHeaderDataVO.getData().size());

@@ -383,7 +383,7 @@
 		sortable : true
 	}, {
 		key : "voterPercentage",
-		label : "Percentage",formatter:YAHOO.widget.DataTable.formatFloat,
+		label : "Percentage(%)",formatter:YAHOO.widget.DataTable.formatFloat,
 		sortable : true
 	} ];
 	var myConfigs = {
@@ -537,8 +537,16 @@
 		<div id="townshipWiseBoothDetails"><h4><u>Township Wise Booth Details</u></h4></div>
 		<table class="ConstituencyElectionsTable" id ="boothInfo">	
 			<c:forEach var="data1" items="${townshipWiseBoothDataInMandal}" varStatus="status">
+				<c:url value="revenueVillageReport.action" var="displayRVURL">
+							<c:param name="revenueVillageID"   value="${data1.locationId}" />
+						</c:url>				
+						
 			<tr>
-				<td><c:out value="${data1.locationName}"/></td>
+				<td>
+					<a href='<c:out value="${displayRVURL}" />'> 
+							<c:out value="${data1.locationName}"/>
+					</a>
+				</td>
 				<td><c:out value="${data1.population}"/></td>
 				<td>
 					<c:forEach var="booth" items="${data1.booths}">

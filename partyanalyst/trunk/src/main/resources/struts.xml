@@ -457,11 +457,11 @@
 		</action>
 		<action name="hamletReport" class="hamletReportAction">
 			<result name="success">/jsp/hamletReportSuccess.jsp</result>
-			<result name="success">/jsp/hamletReportFail.jsp</result>
+			<result name="error">/jsp/hamletReportFail.jsp</result>
 		</action>
-		<action name="boothReport" class="BoothReportAction">
+		<action name="boothReport" class="boothReportAction">
 			<result name="success">/jsp/boothReportSuccess.jsp</result>
-			<result name="success">/jsp/boothReportFail.jsp</result>
+			<result name="error">/jsp/boothReportFail.jsp</result>
 		</action>
 	</package>
 </struts>
