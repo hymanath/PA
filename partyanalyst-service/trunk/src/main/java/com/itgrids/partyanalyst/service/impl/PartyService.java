@@ -297,10 +297,12 @@ public class PartyService implements IPartyService {
 		}
 		if(includeAllianceParties){
 			allianceParties = staticDataService.getAllianceParties(year, electionType, selectedParty.getPartyId());
+			if(allianceParties != null){
 			allianceParties.remove(selectedParty);
 			partyPerformanceReportVO.setAllianceParties(allianceParties);
 			partyPerformanceReportVO.setParty(selectedParty.getShortName().concat(" & Alliance Parties"));
-			if(election != null && !districtId.equals(new Long(0))){
+			}
+			if(election != null && !districtId.equals(new Long(0)) && allianceParties != null){
 				log.debug("District Id(Alliance Party)::" + districtId);
 				for(Party alliancParty:allianceParties){
 				 partyElectionDistrictResultforAllianceParty = staticDataService.getPartyElectionResultsForAPartyDistrictLevel(election.getElectionId(), alliancParty.getPartyId(),stateId,districtId);
@@ -312,7 +314,7 @@ public class PartyService implements IPartyService {
 				  }
 				}
 			}
-			else if(election != null && districtId.equals(new Long(0)) ){
+			else if(election != null && districtId.equals(new Long(0)) && allianceParties != null){
 			   for(Party alliancParty:allianceParties){
 				partyElectionResultforAllianceParty = staticDataService.getPartyElectionResultsForAParty(election.getElectionId(), alliancParty.getPartyId());
 				if(partyElectionResultforAllianceParty == null)
@@ -416,7 +418,7 @@ public class PartyService implements IPartyService {
 				Long rank = nomination.getCandidateResult().getRank();
 	         
 				boolean isSelectedParty = (selectedParty.equals(party))? true : false;
-				boolean isAllianceParty = (includeAllianceParties && allianceParties.contains(party))? true : false;
+				boolean isAllianceParty = (includeAllianceParties && allianceParties != null && allianceParties.contains(party))? true : false;
 				boolean isRebelAllianceParty = (rebelAllianceParty != null && party.equals(rebelAllianceParty))? true : false;
 				double votesEarned = nomination.getCandidateResult().getVotesEarned().doubleValue();
                 Boolean flag = null;
@@ -757,6 +759,9 @@ public class PartyService implements IPartyService {
 
 	public Party getNominatedPartiesAsRebels(Set<Nomination> nominations, List<Party> allianceParties, Party selectedParty){
 		List<Party> nominatedParties = new ArrayList<Party>();
+		if(allianceParties == null)
+			return null;
+		
 		for(Nomination nomination : nominations) {
 				nominatedParties.add(nomination.getParty());
 		}
