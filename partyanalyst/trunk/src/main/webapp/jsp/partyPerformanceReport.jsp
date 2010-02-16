@@ -25,54 +25,40 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/conainer/container-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css">
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/yui-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/dom-min.js"></script> 
+	
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+
+	<script type="text/javascript" src="js/json/json-min.js"></script> 
+	<script type="text/javascript" src="js/json/json.js"></script> 
+	<script type="text/javascript" src="js/json/json-debug.js"></script> 
 	<!-- Dependencies -->
 	<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 	<script src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
 	<script src="http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource-min.js"></script>
 	<script src="http://yui.yahooapis.com/2.8.0r4/build/json/json-min.js"></script>
 	<script src="http://yui.yahooapis.com/2.8.0r4/build/swf/swf-min.js"></script>
-	<!-- Source files -->
-	<script src="http://yui.yahooapis.com/2.8.0r4/build/charts/charts-min.js"></script>
-    <!-- OPTIONAL: Animation (only required if using ContainerEffect) -->
-    <script src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script>
- 	<!-- Combo-handled YUI CSS files: --> 
-    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/tabview/assets/skins/sam/tabview.css"> 
-    <!-- Combo-handled YUI JS files: --> 
-    <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/connection/connection-min.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/tabview/tabview-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-    <!-- Combo-handled YUI CSS files: --> 
-    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/container/assets/skins/sam/container.css&2.8.0r4/build/resize/assets/skins/sam/resize.css"> 
-    <!-- Combo-handled YUI JS files: --> 
-    <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/dragdrop/dragdrop-min.js&2.8.0r4/build/container/container-min.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/resize/resize-min.js"></script> 
-	<!-- Combo-handled YUI CSS files: -->
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/datatable/assets/skins/sam/datatable.css">
-	<!-- Combo-handled YUI JS files: -->
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/json/json-min.js&2.8.0r4/build/swf/swf-min.js&2.8.0r4/build/charts/charts-min.js&2.8.0r4/build/datatable/datatable-min.js"></script>
-
-	<!-- Combo-handled YUI JS files: -->
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/swf/swf-min.js"></script>
-	<!-- Combo-handled YUI CSS files: -->
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/autocomplete/assets/skins/sam/autocomplete.css">
-	<!-- Combo-handled YUI JS files: -->
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/animation/animation-min.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/autocomplete/autocomplete-min.js"></script>
-    <!-- Combo-handled YUI JS files: -->
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/datasource/datasource-min.js&2.8.0r4/build/element/element-min.js&2.8.0r4/build/json/json-min.js&2.8.0r4/build/swf/swf-min.js&2.8.0r4/build/charts/charts-min.js"></script>
-    <!-- Combo-handled YUI CSS files: -->
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.0r4/build/container/assets/skins/sam/container.css">
-	<!-- Combo-handled YUI JS files: -->
-	<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js&2.8.0r4/build/dragdrop/dragdrop-min.js&2.8.0r4/build/container/container-min.js"></script>
-
-
+	
     <!-- YUI Skin Sam -->
    
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
     <link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/container.css"> 
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/layout.css">	
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/button.css">	
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/calendar.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 
+   
 
 <script type="text/javaScript">
 function showBand(divtag)
