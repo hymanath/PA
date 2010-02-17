@@ -13,15 +13,19 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultObjectsDAO;
-import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateWonVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
@@ -31,13 +35,16 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
+import com.itgrids.partyanalyst.dto.VillageBoothInfoVO;
+import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.HamletBoothElection;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.model.Township;
+import com.itgrids.partyanalyst.model.VillageBoothElection;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 
 public class ConstituencyPageService implements IConstituencyPageService {
@@ -50,18 +57,38 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IConstituencyElectionResultObjectsDAO constituencyElectionResultObjectsDAO;
 	private IConstituencyDAO constituencyDAO;
 	private INominationDAO nominationDAO;
+	private ITownshipDAO townshipDAO;
 	private IHamletDAO hamletDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
-	private IHamletBoothElectionDAO hamletBoothElectionDAO;
-		
-	public IHamletBoothElectionDAO getHamletBoothElectionDAO() {
-		return hamletBoothElectionDAO;
+	private IVillageBoothElectionDAO villageBoothElectionDAO;
+	private HamletAndBoothVO hamletAndBoothVO;
+	private TransactionTemplate transactionTemplate;
+
+
+	public IBoothConstituencyElectionDAO getBoothConstituencyElectionDAO() {
+		return boothConstituencyElectionDAO;
 	}
 
-	public void setHamletBoothElectionDAO(
-			IHamletBoothElectionDAO hamletBoothElectionDAO) {
-		this.hamletBoothElectionDAO = hamletBoothElectionDAO;
+	public void setBoothConstituencyElectionDAO(
+			IBoothConstituencyElectionDAO boothConstituencyElectionDAO) {
+		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
+	}
+
+	public HamletAndBoothVO getHamletAndBoothVO() {
+		return hamletAndBoothVO;
+	}
+
+	public void setHamletAndBoothVO(HamletAndBoothVO hamletAndBoothVO) {
+		this.hamletAndBoothVO = hamletAndBoothVO;
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
 	}
 
 	public IHamletDAO getHamletDAO() {
@@ -70,6 +97,23 @@ public class ConstituencyPageService implements IConstituencyPageService {
 
 	public void setHamletDAO(IHamletDAO hamletDAO) {
 		this.hamletDAO = hamletDAO;
+	}
+
+	public IVillageBoothElectionDAO getVillageBoothElectionDAO() {
+		return villageBoothElectionDAO;
+	}
+
+	public void setVillageBoothElectionDAO(
+			IVillageBoothElectionDAO villageBoothElectionDAO) {
+		this.villageBoothElectionDAO = villageBoothElectionDAO;
+	}
+
+	public ITownshipDAO getTownshipDAO() {
+		return townshipDAO;
+	}
+
+	public void setTownshipDAO(ITownshipDAO townshipDAO) {
+		this.townshipDAO = townshipDAO;
 	}
 
 	public IBoothConstituencyElectionVoterDAO getBoothConstituencyElectionVoterDAO() {
@@ -330,12 +374,63 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return new ResultWithExceptionVO(boothDataFromDB, resultStatus);
 	}
 	
-	public void saveAndUpdateHamletAndBoothInfo(List<HamletAndBoothVO> hamletBooths){
-		for(HamletAndBoothVO hamletAndBooth:hamletBooths){
-			for(Long boothConstituencyElectionId:hamletAndBooth.getBoothConstituencyElectionIds())
-				hamletBoothElectionDAO.save(new HamletBoothElection(boothConstituencyElectionDAO.get(boothConstituencyElectionId), hamletDAO.get(hamletAndBooth.getHamletId())));
-		}
+	public ResultWithExceptionVO saveAndUpdateHamletAndBoothInfo(HamletAndBoothVO hamletWithBoothId){
+		hamletAndBoothVO = hamletWithBoothId;
+		ResultWithExceptionVO resultWithExceptionVO = (ResultWithExceptionVO)transactionTemplate.execute(new TransactionCallback(){
+			public Object doInTransaction(TransactionStatus status) {
+				ResultStatus resultStatus = new ResultStatus(); 
+				List<VillageBoothInfoVO> villagesInfo = new ArrayList<VillageBoothInfoVO>();
+				try{
+					VillageBoothInfoVO villageBoothInfoVO;
+					Long townshipId = hamletAndBoothVO.getHamletId();
+					Township township = townshipDAO.get(townshipId);
+					BoothConstituencyElection boothConstituencyElection;
+					VillageBoothElection villageBoothElection;
+					List<Long> boothIds = hamletAndBoothVO.getBoothConstituencyElectionIds();
+					
+					for(Long boothId:boothIds){
+						boothConstituencyElection = boothConstituencyElectionDAO.get(boothId);
+						villageBoothElection = villageBoothElectionDAO.save(new VillageBoothElection(boothConstituencyElection, null, township));
+						villageBoothInfoVO = new VillageBoothInfoVO();
+						villageBoothInfoVO.setVillageBoothElectionId(villageBoothElection.getVillageBoothElectionId());
+						villageBoothInfoVO.setPartNo(boothConstituencyElection.getBooth().getPartNo());
+						villageBoothInfoVO.setVillagesCovered(boothConstituencyElection.getBooth().getvillagesCovered());
+						villageBoothInfoVO.setVillageName(villageBoothElection.getTownship().getTownshipName());
+						villageBoothInfoVO.setConstituencyName(boothConstituencyElection.getConstituencyElection().getConstituency().getName());
+						villagesInfo.add(villageBoothInfoVO);
+					}
+					
+				}catch(Exception e){
+					e.printStackTrace();
+					status.setRollbackOnly();
+					resultStatus.setExceptionEncountered(e);
+				}
+				hamletAndBoothVO = null;
+				return new ResultWithExceptionVO(villagesInfo, resultStatus);
+			}
+			
+		});
+		return resultWithExceptionVO;
 	}
 	
+	
+	public ResultWithExceptionVO deleteVillageBoothElectionRecord(HamletAndBoothVO villageBoothElectionId){
+		hamletAndBoothVO = villageBoothElectionId;
+		ResultWithExceptionVO result = (ResultWithExceptionVO)transactionTemplate.execute(new TransactionCallback(){
+
+			public Object doInTransaction(TransactionStatus status) {
+				ResultStatus resultStatus = new ResultStatus();
+				try{
+					villageBoothElectionDAO.remove(hamletAndBoothVO.getHamletId());
+				}catch(Exception e){
+					e.printStackTrace();
+					resultStatus.setExceptionEncountered(e);
+				}			
+				return new ResultWithExceptionVO(null, resultStatus);
+			}
+			
+		});
+		return result;
+	}
 	
 }
