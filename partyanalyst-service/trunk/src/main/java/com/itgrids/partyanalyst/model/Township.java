@@ -45,7 +45,8 @@ public class Township implements java.io.Serializable {
 	private Set<Ward> wards = new HashSet<Ward>(0);
 	private Set<ProblemLocation> problemLocations = new HashSet<ProblemLocation>(0);
 	private Set<Hamlet> hamlets = new HashSet<Hamlet>(0);
-
+	private Set<VillageBoothElection> villageBoothElections = new HashSet<VillageBoothElection>(0);
+	
 	// Constructors
 
 	/** default constructor */
@@ -145,4 +146,16 @@ public class Township implements java.io.Serializable {
 	public void setHamlets(Set<Hamlet> hamlets) {
 		this.hamlets = hamlets;
 	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "township")
+	public Set<VillageBoothElection> getVillageBoothElections() {
+		return villageBoothElections;
+	}
+
+	public void setVillageBoothElections(
+			Set<VillageBoothElection> villageBoothElections) {
+		this.villageBoothElections = villageBoothElections;
+	}
+	
+	
 }
