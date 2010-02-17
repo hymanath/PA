@@ -19,12 +19,10 @@ import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.HamletBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.MPTCMandalLeaderVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TotalMPTCMandalLeaderVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
-import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -294,4 +292,51 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		return hamletsListWithBoothsAndVotersVO;
 	}
 	
+	/*public HamletBoothVotersListVO findAllBoothVotersForHamlet(Long hamletID, String year, String electionType){
+		log.debug("constituencyManagementService.findAllBoothVotersForHamlet() started....");
+		HamletBoothVotersListVO hamletBoothVotersListVO = new HamletBoothVotersListVO();
+		if(year==null){
+			electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+			List years =electionDAO.findLatestElectionYear(electionType);
+			if(years==null || years.size()==0){
+				Exception ex = new Exception("No Elections available in DB");
+				hamletBoothVotersListVO.setExceptionEncountered(ex);
+				return hamletBoothVotersListVO;
+			}
+			Object[] columns = (Object[])years.get(0);
+			year = columns[0].toString();
+			year =(String)years.get(0);
+		}
+		try{
+			//model.boothConstituencyElection.boothConstituencyElectionId, model.boothConstituencyElection.booth.partNo, 
+			//model.boothConstituencyElection.booth.partName, count(model.voter)
+			List list = boothConstituencyElectionVoterDAO.findAllBoothVotersForHamlet(hamletID, year, electionType);
+			log.debug("list.size():"+list.size());
+			List<HamletBoothVotersVO> hamletBoothVotersListVOList = new ArrayList<HamletBoothVotersVO>();
+			for(int i=0; i<list.size(); i++){
+				HamletBoothVotersVO hamletBoothVotersVO = new HamletBoothVotersVO();
+				Object[] obj = (Object[]) list.get(i);
+				Long boothConstituencyElectionId = (Long)obj[0];
+				String partNO = obj[1].toString();
+				String partName = obj[2].toString();
+				Long totalVoters = (Long)obj[3];
+				log.debug(i+":::boothConstituencyElectionId:"+boothConstituencyElectionId+"partNO:"+partNO+"partName:"+partName+"totalVoters:"+totalVoters);
+				hamletBoothVotersVO.setBoothConstituencyElectionId(boothConstituencyElectionId);
+				hamletBoothVotersVO.setPartNO(partNO);
+				hamletBoothVotersVO.setPartName(partName);
+				hamletBoothVotersVO.setVoters(totalVoters);
+				hamletBoothVotersListVOList.add(hamletBoothVotersVO);
+			}
+			hamletBoothVotersListVO.setHamletBoothVotersList(hamletBoothVotersListVOList);
+			log.debug("hamletBoothVotersListVOList.size()::"+hamletBoothVotersListVOList.size());
+		}catch(Exception ex){
+			log.error("exception:::::::::::",ex);
+			hamletBoothVotersListVO.setExceptionEncountered(ex);
+		}
+		if(hamletBoothVotersListVO.getHamletBoothVotersList()==null)
+			log.debug("null null null;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+		log.debug("hamletBoothVotersListVOList.size()::"+hamletBoothVotersListVO.getHamletBoothVotersList().size());
+		
+		return hamletBoothVotersListVO;
+	}*/
 }

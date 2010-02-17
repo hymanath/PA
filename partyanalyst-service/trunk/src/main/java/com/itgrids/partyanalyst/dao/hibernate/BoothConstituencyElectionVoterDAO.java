@@ -125,4 +125,37 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				"group by model.voter.gender order by model.voter.gender", 
 				params);
 	}
+	
+	/*public List findAllBoothVotersForHamlet(Long hamletID, String year, String electionType){
+		Object[] params = {hamletID, year, electionType};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.boothConstituencyElectionId, model.boothConstituencyElection.booth.partNo, model.boothConstituencyElection.booth.partName, count(model.voter) " +
+				"from BoothConstituencyElectionVoter model where model.voter.hamlet.hamletId=? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear=? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType=? " +
+				"group by model.boothConstituencyElection.booth.partNo order by model.boothConstituencyElection.booth.partNo", 
+				params);
+	}*/
+
+	public List findCastWiseVoterForHamlet(Long hamletID, String year, String electionType){
+		Object[] params = {hamletID, year, electionType};
+		return getHibernateTemplate().find("select model.voter.cast, count(model.voter.cast) " +
+				"from BoothConstituencyElectionVoter model " +
+				"where model.voter.hamlet.hamletId=? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear=? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType=? " +
+				"group by model.voter.cast order by model.voter.cast", 
+				params);
+	}
+	
+	public List findAgeWiseVotersForHamlet(Long hamletID, String year, String electionType, Long minAge, Long maxAge){
+		Object[] params = {hamletID, year, electionType, minAge, maxAge};
+		return getHibernateTemplate().find("select model.voter.gender, count(model.voter) " +
+				"from BoothConstituencyElectionVoter model " +
+				"where model.voter.hamlet.hamletId=? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear=? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType=? and " +
+				"model.voter.age>=? and model.voter.age<? " +
+				"group by model.voter.gender order by model.voter.gender", 
+				params);
+	}
 }

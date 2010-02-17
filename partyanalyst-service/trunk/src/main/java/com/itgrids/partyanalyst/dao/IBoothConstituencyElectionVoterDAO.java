@@ -32,4 +32,9 @@ public interface IBoothConstituencyElectionVoterDAO extends GenericDao<BoothCons
 	public List findCastWiseVoterForRevenueVillage(Long revenueVillageID, String year, String electionType);
 	
 	public List findAgeWiseVotersForRevenueVillage(Long revenueVillageID, String year, String electionType, Long minAge, Long maxAge);
+	
+	//public List findAllBoothVotersForHamlet(Long hamletID, String year, String electionType);
+	public List findCastWiseVoterForHamlet(Long hamletID, String year, String electionType);
+	
+	public List findAgeWiseVotersForHamlet(Long hamletID, String year, String electionType, Long minAge, Long maxAge);
 }
