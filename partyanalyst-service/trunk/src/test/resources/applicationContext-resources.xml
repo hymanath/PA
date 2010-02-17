@@ -28,6 +28,7 @@
 		</property>
 		<property name="hibernateProperties">
 			<props>
+				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 			</props>
 		</property>
@@ -90,7 +91,7 @@
 				<value>com.itgrids.partyanalyst.model.ProblemExternalSource</value>
 				<value>com.itgrids.partyanalyst.model.EPaper</value>
 				<value>com.itgrids.partyanalyst.model.EPaperUrl</value>
-				<value>com.itgrids.partyanalyst.model.HamletBoothElection</value>
+				<value>com.itgrids.partyanalyst.model.VillageBoothElection</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResult</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResult</value>
 		 		<value>com.itgrids.partyanalyst.model.ProblemAndProblemSource</value>
@@ -362,7 +363,7 @@
 	<bean id="epaperUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.EPaperUrlDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="hamletBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothElectionDAO">
+	<bean id="villageBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.VillageBoothElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
