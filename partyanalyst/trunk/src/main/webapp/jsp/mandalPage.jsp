@@ -105,6 +105,10 @@
 
 
 <script type="text/javascript">
+
+	var fieldsArray = new Array();
+	var dataArray = new Array();
+
 	
 	function buildCensusDataTable()
 	{
@@ -243,24 +247,7 @@
 		tabThreeContent+='<div id="dTTableDiv3" align="center" class="yui-skin-sam"></div>';
 		tabThreeContent+='</div>'; 
 		var tabFourContent = '';
-		tabFourContent+='<div id="partyVoters"  align="center" class="yui-skin-sam">';
-		tabFourContent+='<table class="ConstituencyElectionsTable" >';
-		tabFourContent+='<c:set var="headerData1" value="${partyElectionVotersHeaderDataVO}"/>';
-		tabFourContent+='<tr>';
-		tabFourContent+='<th><c:out value="Party"/></th>';
-		tabFourContent+='<c:forEach var="header1" items="${headerData1.header}" varStatus="status">';
-		tabFourContent+='<th><c:out value="${header1}"/></th>';
-		tabFourContent+='</c:forEach>';
-		tabFourContent+='</tr>';
-		tabFourContent+='<c:forEach var="data1" items="${headerData1.data}" varStatus="status">';
-		tabFourContent+='<tr>';
-		tabFourContent+='<td><c:out value="${data1.partyName}"/></td>';
-		tabFourContent+='<c:forEach var="partyElectionVoter" items="${data1.partyElectionVotersList1}">';
-		tabFourContent+='<td><c:out value="${partyElectionVoter}"/></td>';
-		tabFourContent+='</c:forEach>';
-		tabFourContent+='</tr>';		
-		tabFourContent+='</c:forEach>';
-		tabFourContent+='</table>';	
+		tabFourContent+='<div id="partyVoters"  align="center" class="yui-skin-sam">';		
 		tabFourContent+='</div>';
 		var tabFiveContent = '';
 		tabFiveContent+='<div id="div5">';
@@ -305,6 +292,31 @@
 		
 		myTabs.appendTo('mandalPageTab');
 				
+	}
+
+	function electionsInMandalDatatable()
+	{
+		var votersElmt = document.getElementById("partyVoters");
+		var content='';
+		content+='<table class="ConstituencyElectionsTable" >';
+		content+='<c:set var="headerData1" value="${partyElectionVotersHeaderDataVO}"/>';
+		content+='<tr>';
+		content+='<th><c:out value="Party"/></th>';
+		content+='<c:forEach var="header1" items="${headerData1.header}" varStatus="status">';
+		content+='<th><c:out value="${header1}"/></th>';
+		content+='</c:forEach>';
+		content+='</tr>';
+		content+='<c:forEach var="data1" items="${headerData1.data}" varStatus="status">';
+		content+='<tr>';
+		content+='<td><c:out value="${data1.partyName}"/></td>';
+		content+='<c:forEach var="partyElectionVoter" items="${data1.partyElectionVotersList1}">';
+		content+='<td><c:out value="${partyElectionVoter}"/></td>';
+		content+='</c:forEach>';
+		content+='</tr>';		
+		content+='</c:forEach>';
+		content+='</table>';
+
+		votersElmt.innerHTML=content;
 	}
 
 	function buildLocalLeadersTable(){
@@ -613,6 +625,20 @@
 </script>
 <script type="text/javascript">
 	buildLocalLeadersTable();
+	fieldsArray.push('Party');
+	<c:forEach var="header1" items="${headerData1.header}" varStatus="status">
+			fieldsArray.push('${header1}');
+	</c:forEach>
+
+	<c:forEach var="data1" items="${headerData1.data}" varStatus="status">	
+		
+			dataArray.push('${data1.partyName}');			
+		<c:forEach var="partyElectionVoter" items="${data1.partyElectionVotersList1}">
+			dataArray.push('${partyElectionVoter}');				
+		</c:forEach>
+	</c:forEach>
+	console.log(dataArray);
+	electionsInMandalDatatable();
 </script>
 
 <script type="text/javascript">

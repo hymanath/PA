@@ -214,6 +214,7 @@
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService"/>
 	</bean>
 	<bean id="hamletReportAction" class="com.itgrids.partyanalyst.web.action.HamletReportAction" singleton="false">
+		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService"/>
 	</bean>
 	<bean id="boothReportAction" class="com.itgrids.partyanalyst.web.action.BoothReportAction" singleton="false">
 	</bean>
