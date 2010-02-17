@@ -240,9 +240,21 @@
         	</result>
         </action> 
         
-        <action name="hamletBoothMapperFinalAjaxAction" class="hamletBoothMapperAction">
+        <action name="villageBoothMapperFinalAjaxAction" class="hamletBoothMapperAction">
            <result type="json" name="success">
            		<param name="root">hamletsAndBoothsVO</param>
+        	</result>
+        </action> 
+        
+        <action name="hamletBoothMapperDeleteRecordAjaxAction" class="hamletBoothMapperAction">
+           <result type="json" name="success">
+           		<param name="root">requestStatus</param>
+        	</result>
+        </action>
+        
+        <action name="hamletBoothMapperDataStoreAjaxAction" class="hamletBoothMapperAction">
+           <result type="json" name="success">
+           		<param name="root">villageBooths</param>
         	</result>
         </action> 
         

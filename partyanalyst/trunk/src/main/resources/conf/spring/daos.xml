@@ -215,7 +215,7 @@
 	<bean id="epaperUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.EPaperUrlDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>	
-	<bean id="hamletBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothElectionDAO">
+	<bean id="villageBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.VillageBoothElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
