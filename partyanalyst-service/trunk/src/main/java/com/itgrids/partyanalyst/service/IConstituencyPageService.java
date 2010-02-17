@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 
 public interface IConstituencyPageService {
@@ -22,4 +23,8 @@ public interface IConstituencyPageService {
 	public ResultWithExceptionVO getAllMandalLevelLeaders(Long tehsilId);
 	
 	public ResultWithExceptionVO getTownshipWiseBoothDetailsForTehsil(Long tehsilId);
+	
+	public ResultWithExceptionVO saveAndUpdateHamletAndBoothInfo(HamletAndBoothVO hamletWithBoothIds);
+	
+	public ResultWithExceptionVO deleteVillageBoothElectionRecord(HamletAndBoothVO villageBoothElectionId);
 }
