@@ -1593,10 +1593,10 @@
 					assignedProblemProgressId: progressedProblems[i].assignedProblemProgressId					 
 					};
 			assignToProgressArray.push(progressedProblemsObj);
-			//problemsMainObj.progressedProblemsArr = assignToProgressArray;
+			problemsMainObj.progressedProblemsArr = assignToProgressArray;
 			}
 		 
-		progessIssuesDataTable.addRows(assignToProgressArray);
+		progessIssuesDataTable.addRows(problemsMainObj.progressedProblemsArr);
 		
 	}
 	
@@ -1970,19 +1970,7 @@
 			constMgmtTabs.getTab(5).addListener('click', handleClick);
 			constMgmtTabs.getTab(6).addListener('click', handleClick);			
 	}
-	
-	YAHOO.example.Data = { 
-	    
-	        problems: [ 
-		        {select:"<input type='checkbox' id='check_1'></input>", title:"Impurified Water Supply", description: "Polluted water is being supplied since two weeks", identifiedDate:new Date(2009, 2, 4), location:"MadanaPalle", source:"Party Analyst", status:"New"}, 
-				{select:"<input type='checkbox' id='check_1'></input>", title:"No Bus Service", description: "APS RTC Suddenly cancelled their Bus service to NagaVaram Village", identifiedDate:new Date("January 3, 2009"),
-				location:"NagaVaram", source:"Victim", status:"Assigned"}, 
-		        {select:"<input type='checkbox' id='check_1'></input>", title:"No White Ration Cards issued in Hamlet", description: "White Ration card is not at all issued to eligible families even after the preliminary process", identifiedDate:new Date(2009, 11, 12), location:"Eluru", source:"Call Centre", status:"Categorized"}, 
-		        {select:"<input type='checkbox' id='check_1'></input>", title:"AarogyaSri", description: "Delay for Cardiac Surgery with AarogyaSri Scheme", identifiedDate:new Date("March 11,2009") , location:"Eluru", source:"User", status:"Categorized"}, 
-				{select:"<input type='checkbox' id='check_1'></input>", title:"Delay in payment of Exgratia", description: "An activist named Ravi died while participating in the in the Rally conducted by the ruling party, but no remuneration is paid to his family from the party", identifiedDate:new Date(1980, 2, 4), location:"MadanaPalle", source:"Party Analyst", status:"New"}		
-	    ]		           			
-	}
-	
+		
 	function buildEPapersURLDataTable()
 	{	
 		var ePapersUrlColumnDefs = [
@@ -2226,7 +2214,7 @@
 		}
 		return status;
 	} 
-	//wkg
+	
 	function classifyBtnHandler (e) 
 	{	
 		var emptyArray = new Array();
@@ -2476,12 +2464,12 @@
 		problemMgmtTabs.getTab(0).set("disabled", false);
 	 	problemMgmtTabs.getTab(1).set("disabled", false);
 	 	problemMgmtTabs.getTab(3).set("disabled", false);
+	 	problemsMainObj.classifiedProblemsArr = emptyArray;
 				
 	}
 
 	function progressButtonClickHandler()
 	{	
-		
 		var emptyArray = new Array();	
 		var progressProbArray = new Array();
 		for(var i in assignDtRecordsArray)
@@ -2513,7 +2501,8 @@
 		progressButton.set("disabled", true);
 		problemMgmtTabs.getTab(0).set("disabled", false);
 	 	problemMgmtTabs.getTab(1).set("disabled", false);
-	 	problemMgmtTabs.getTab(3).set("disabled", false);		
+	 	problemMgmtTabs.getTab(3).set("disabled", false);
+	 	problemsMainObj.assignedProblemsArr = emptyArray;		
 	}
 		
 	function buildAssignedIssuesDataTable()
@@ -2634,7 +2623,7 @@
 				{key:"name", label: "<%=name%>", sortable:true},	
 				{key:"contactNumber", label: "<%=telephoneNo%>"},
 				{key:"assignedProblemProgressId", hidden: true},
-				{key:"comments", label: "<%=comments%>",editor: new YAHOO.widget.TextareaCellEditor({defaultValue:""})}
+				{key:"comments", label: "<%=comments%>",editor: new YAHOO.widget.TextareaCellEditor({defaultValue:" "})}
 				//{key:"fix" ,Fix}
 	        ]; 
 	 
@@ -2769,6 +2758,7 @@
 		problemMgmtTabs.getTab(1).set("disabled", false);		
 		problemMgmtTabs.getTab(2).set("disabled", false);
 		problemMgmtTabs.getTab(4).set("disabled", false);
+		problemsMainObj.progressedProblemsArr = emptyArray;
 						
 	}
 
@@ -2812,7 +2802,8 @@
 		problemMgmtTabs.getTab(0).set("disabled", false);		
 		problemMgmtTabs.getTab(1).set("disabled", false);		
 		problemMgmtTabs.getTab(2).set("disabled", false);
-		problemMgmtTabs.getTab(4).set("disabled", false);			
+		problemMgmtTabs.getTab(4).set("disabled", false);
+		problemsMainObj.progressedProblemsArr = emptyArray;			
 
 	}
 	function buildPendingDataTable()
@@ -2959,9 +2950,7 @@
 			problemMgmtTabs.getTab(2).set("disabled", false);
 			problemMgmtTabs.getTab(3).set("disabled", false);
 			problemMgmtTabs.getTab(5).set("disabled", false);
-			
-							
-				
+			problemsMainObj.pendingProblemArr = emptyArray;			
 		}
 
 	function buildFixedDataTable()
