@@ -327,7 +327,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		
 		try{
 			List boothDetails = boothConstituencyElectionVoterDAO.findTownshipWiseBoothDetailsForTehsil(tehsilId);
-			
+			if(boothDetails==null || boothDetails.size()==0){
+				boothDetails = villageBoothElectionDAO.findTownshipWiseBoothDetailsForTehsil(tehsilId);
+				log.debug("Narender boothDetails.size():::"+boothDetails.size());
+			}
 			for(int i=0; i<boothDetails.size(); i++){
 				locationWiseBoothDetailsVO = new LocationWiseBoothDetailsVO();
 				Object[] values = (Object[])boothDetails.get(i);
