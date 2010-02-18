@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionProfileVO;
 
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class CandidateElectionResultsAction extends ActionSupport implements
@@ -104,12 +105,11 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 		candidateVO = candidateDetailsService.getCandidateDetails(candidateId);
 		
-		candidateElectionDetails = candidateDetailsService.getCandidateElectionDetails(candidateId);
+		candidateElectionDetails = candidateDetailsService.getCandidateElectionDetails(candidateId);		
 		
-		//candidateURLString = candidateVO.getCandidateName().replace(' ', '_');
-		StringBuffer candidateURLStringBuffer = new StringBuffer("candidate_static_page/andhra_pradesh/");
+		StringBuffer candidateURLStringBuffer = new StringBuffer(IConstants.CANDIDATE_STATIC_PAGE_URL);
 		candidateURLStringBuffer.append(candidateVO.getCandidateName().replace(' ', '_'));
-		//candidateURLStringBuffer.append("/profile.jsp");
+	
 		candidateURLString = candidateURLStringBuffer.toString();
 		
 		System.out.println("candidateURLString = "+candidateURLString);
