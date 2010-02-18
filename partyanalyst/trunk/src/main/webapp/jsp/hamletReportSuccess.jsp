@@ -162,6 +162,7 @@
 
 </head>
 <body>
+<div><h4>Hamlet ( <c:out value="${hamletName} "/>)</h4></div>
 <div id="hamletInfo">
 	<div id="hamletPageTab" class="yui-skin-sam"></div>
 

@@ -19,7 +19,8 @@ public class HamletReportAction extends ActionSupport implements ServletRequestA
 	private GenderAgeWiseVotersVO genderAgeWiseVoters;
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	private static final Logger log = Logger.getLogger(RevenueVillageReportAction.class);
-
+	private String hamletName;
+	
 	/*public HamletBoothVotersListVO getHamletBoothVotersListVO() {
 		return hamletBoothVotersListVO;
 	}
@@ -55,6 +56,14 @@ public class HamletReportAction extends ActionSupport implements ServletRequestA
 		this.genderAgeWiseVoters = genderAgeWiseVoters;
 	}
 	
+	public String getHamletName() {
+		return hamletName;
+	}
+
+	public void setHamletName(String hamletName) {
+		this.hamletName = hamletName;
+	}
+
 	public String execute(){
 		log.debug("HamletReportAction.java");
 		String strHamletID = request.getParameter("hamletID");
@@ -65,7 +74,7 @@ public class HamletReportAction extends ActionSupport implements ServletRequestA
 		log.debug("year="+year);
 		String electionType = request.getParameter("electionType");
 		log.debug("electionType="+electionType);
-		
+		hamletName = request.getParameter("hamletName");
 		castWiseElectionVoters = delimitationConstituencyMandalService.findCastWiseVoterForHamlet(hamletID, year, electionType);
 		
 		genderAgeWiseVoters = delimitationConstituencyMandalService.findAgeWiseVotersForHamlet(hamletID, year, electionType);

@@ -213,6 +213,7 @@
 </head>
 <body>
 <div id="revenueVillageInfo">
+		<div><h4><u>Revenue Village <c:out value="${revenueVillageName}"/></u></h4></div>
 	<div id="revenueVillagePageTab" class="yui-skin-sam"></div>
 	<div id="partyVotersDiv"  class="yui-skin-sam" style="display: none;">
 		<div id="mandalPartyVotersDivHead"><h4><u>Revenue Village Party Election Voters</u></h4></div>
@@ -244,8 +245,7 @@
 			defaultorder="ascending" defaultsort="1"
 			style="width:auto;margin-right:20px;">
 				<display:column style="text-align: left;" title="Hamlet Name"
-					href="hamletReport.action" paramId="hamletID" paramProperty="hamletID"
-					property="hamletName" sortable="true" />
+					property="hamletNameURL" sortable="true" />
 				<display:column style="text-align: left;" title="Booth Part Nos"
 					property="boothPartNos" sortable="true" />
 				<display:column style="text-align: left;" title="Total Voters"

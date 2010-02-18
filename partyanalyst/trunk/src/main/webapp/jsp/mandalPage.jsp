@@ -513,8 +513,8 @@
 			 name="${villageDetailsVO.villageCensusList}"
 			defaultorder="ascending" defaultsort="2"
 			style="width:auto;margin-right:20px;">
-				<display:column style="text-align: left;" title="Village Name" href="revenueVillageReport.action" paramId="revenueVillageID" paramProperty="townshipID"
-					property="townshipName" sortable="true" />
+				<display:column style="text-align: left;" title="Village Name" 
+					property="townshipNameURL" sortable="true" />
 				<display:column style="text-align: left;" title="Total Populations"
 					property="totalPersons" sortable="true" />
 				<display:column style="text-align: left;" title="SC Population"
@@ -551,6 +551,7 @@
 			<c:forEach var="data1" items="${townshipWiseBoothDataInMandal}" varStatus="status">
 				<c:url value="revenueVillageReport.action" var="displayRVURL">
 							<c:param name="revenueVillageID"   value="${data1.locationId}" />
+							<c:param name="revenueVillageName"   value="${data1.locationName}" />
 						</c:url>				
 						
 			<tr>
@@ -631,13 +632,11 @@
 	</c:forEach>
 
 	<c:forEach var="data1" items="${headerData1.data}" varStatus="status">	
-		
 			dataArray.push('${data1.partyName}');			
 		<c:forEach var="partyElectionVoter" items="${data1.partyElectionVotersList1}">
 			dataArray.push('${partyElectionVoter}');				
 		</c:forEach>
 	</c:forEach>
-	console.log(dataArray);
 	electionsInMandalDatatable();
 </script>
 

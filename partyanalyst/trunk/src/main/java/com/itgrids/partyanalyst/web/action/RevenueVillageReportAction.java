@@ -24,6 +24,7 @@ public class RevenueVillageReportAction extends ActionSupport implements Servlet
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	private CastWiseElectionVotersVO castWiseElectionVoters;
 	private GenderAgeWiseVotersVO genderAgeWiseVoters;
+	private String revenueVillageName;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -75,10 +76,20 @@ public class RevenueVillageReportAction extends ActionSupport implements Servlet
 		this.delimitationConstituencyMandalService = delimitationConstituencyMandalService;
 	}
 	
+	
+	public String getRevenueVillageName() {
+		return revenueVillageName;
+	}
+
+	public void setRevenueVillageName(String revenueVillageName) {
+		this.revenueVillageName = revenueVillageName;
+	}
+
 	public String execute(){
 
 		log.debug("RevenueVillageReportAction.execute() started.....");
 		String revenueVillageStr = request.getParameter("revenueVillageID");
+		revenueVillageName = request.getParameter("revenueVillageName");
 		
 		if(revenueVillageStr==null)
 			return ERROR;
