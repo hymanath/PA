@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class VillageCensusInfoVO extends ResultStatus implements Serializable{
 	private Long townshipID;
 	private String townshipName;
+	private String townshipNameURL;
 	private Long totalPersons;
 	private Long totalMalePersons;
 	private Long totalFemalePersons;
@@ -40,6 +41,13 @@ public class VillageCensusInfoVO extends ResultStatus implements Serializable{
 	}
 	public void setTownshipName(String townshipName) {
 		this.townshipName = townshipName;
+	}
+	
+	public String getTownshipNameURL() {
+		return townshipNameURL;
+	}
+	public void setTownshipNameURL(String townshipNameURL) {
+		this.townshipNameURL = townshipNameURL;
 	}
 	public Long getTotalPersons() {
 		return totalPersons;

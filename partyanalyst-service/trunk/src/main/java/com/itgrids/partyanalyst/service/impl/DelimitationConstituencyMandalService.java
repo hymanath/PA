@@ -260,6 +260,8 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 			for(Census villageCensus : censusList){
 				VillageCensusInfoVO villageInfo = new VillageCensusInfoVO();
 				villageInfo.setTownshipName(villageMap.get(villageCensus.getTownshipId()));
+				
+				villageInfo.setTownshipNameURL("<a href='revenueVillageReport.action?revenueVillageID="+villageCensus.getTownshipId()+"&revenueVillageName="+villageInfo.getTownshipName()+"'>"+villageInfo.getTownshipName()+"</a>");
 				convertCencesToVillageInfo(villageCensus, villageInfo);
 				villageCensusList.add(villageInfo);
 				if(log.isDebugEnabled()){

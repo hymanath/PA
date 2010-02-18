@@ -280,6 +280,7 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 			String voters = obj[2].toString();
 			hamletBoothsAndVotersVO.setHamletID(new Long(hamletId));
 			hamletBoothsAndVotersVO.setHamletName(hamletName);
+			hamletBoothsAndVotersVO.setHamletNameURL("<a href='hamletReport.action?hamletID="+hamletId+"&hamletName="+hamletName+"'>"+hamletName+"</a>");
 			hamletBoothsAndVotersVO.setTotalVoters(new Long(voters));
 			StringBuilder boothsLink = hamletBooths.get(hamletName);
 			if(boothsLink!=null){

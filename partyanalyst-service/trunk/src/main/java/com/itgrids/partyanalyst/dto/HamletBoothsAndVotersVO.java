@@ -5,8 +5,10 @@ import java.io.Serializable;
 public class HamletBoothsAndVotersVO implements Serializable {
 	private Long hamletID;
 	private String hamletName;
+	private String hamletNameURL;
 	private String boothPartNos;
 	private Long totalVoters;
+	
 	public Long getHamletID() {
 		return hamletID;
 	}
@@ -19,6 +21,12 @@ public class HamletBoothsAndVotersVO implements Serializable {
 	public void setHamletName(String hamletName) {
 		this.hamletName = hamletName;
 	}
+	public String getHamletNameURL() {
+		return hamletNameURL;
+	}
+	public void setHamletNameURL(String hamletNameURL) {
+		this.hamletNameURL = hamletNameURL;
+	}
 	public String getBoothPartNos() {
 		return boothPartNos;
 	}
@@ -30,7 +38,5 @@ public class HamletBoothsAndVotersVO implements Serializable {
 	}
 	public void setTotalVoters(Long totalVoters) {
 		this.totalVoters = totalVoters;
-	}
-	
-	
+	}	
 }
