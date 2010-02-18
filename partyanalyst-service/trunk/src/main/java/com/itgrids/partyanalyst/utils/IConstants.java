@@ -54,4 +54,6 @@ public interface IConstants {
 	
 	public final static String MANDAL ="MANDAL";
 	public final static String REVENUE_VILLAGE ="RV";
+	
+	public final static String CANDIDATE_STATIC_PAGE_URL = "candidate_static_page/Andhra_Pradesh/";
 }

@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
 
+
 public class CandidateDetailsVO {
 
 	private Long candidateId;
