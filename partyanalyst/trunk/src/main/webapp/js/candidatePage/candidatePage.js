@@ -14,6 +14,10 @@ var candidatePageURLInfo={
 							'developmentsPageURL':''
 					  };
 
+var candidatePhotoGalleryURL={
+								photoURL:''		
+							};
+
 var candidateStaticPageDivs=new Array(	'candidatePageContent_body_ProfileMain','candidatePageContent_body_NewsMain','candidatePageContent_body_PhotoMain','candidatePageContent_body_VideoMain','candidatePageContent_body_DevelopmentsMain');
 
 var ancArray = new Array('profileAnc','newsAnc','photoAnc','videoAnc','developmentsAnc');
@@ -311,20 +315,7 @@ function showTopMenuContent(id)
 	ancElmt.style.color = '#FFFFFF';
 }
 
-function buildCandidatePhotoGallery()
-{
-	var divElmt = document.getElementById("candidatePageContent_body_PhotoMain");
-	var carousel = new YAHOO.widget.Carousel("candidatePageContent_body_PhotoMain");
-	
-	//carousel.set("animation", { speed: 0.5 });
 
-	carousel.addItem('<img height="600" weight="600" src="images/photo_gallery/Nara_Chandrababu_Naidu/sample/Blue hills.jpg"/>'); 
-	carousel.addItem('<img height="600" weight="600" src="images/photo_gallery/Nara_Chandrababu_Naidu/sample/Sunset.jpg"/>'); 
-	carousel.addItem('<img height="600" weight="600" src="images/photo_gallery/Nara_Chandrababu_Naidu/sample/Water lilies.jpg"/>'); 
-	carousel.render(); 
-
-
-}
 function initializeCandidatePage()
 {
 	buildCandidatePageLayout();
