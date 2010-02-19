@@ -108,7 +108,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		candidateElectionDetails = candidateDetailsService.getCandidateElectionDetails(candidateId);		
 		
 		StringBuffer candidateURLStringBuffer = new StringBuffer(IConstants.CANDIDATE_STATIC_PAGE_URL);
-		candidateURLStringBuffer.append(candidateVO.getCandidateName().replace(' ', '_'));
+		
+		if(candidateVO.getCandidateName().equalsIgnoreCase("RAJASEKHARA REDDY .Y.S") ||
+				candidateVO.getCandidateName().equalsIgnoreCase("Nara Chandrababu Naidu"))
+		{
+			candidateURLStringBuffer.append(candidateVO.getCandidateName().replace(' ', '_'));
+		}
+		else
+		{
+			candidateURLStringBuffer.append("Default_Candidate");
+		}
 	
 		candidateURLString = candidateURLStringBuffer.toString();
 		
