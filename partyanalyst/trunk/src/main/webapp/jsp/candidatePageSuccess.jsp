@@ -48,19 +48,20 @@
 
 <link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/2.8.0r4/build/carousel/assets/skins/sam/carousel.css">
-
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 <!-- YUI Dependency files (End) -->
 
 <script type="text/javascript" src="js/candidatePage/candidatePage.js"></script>
+<script type="text/javascript" src="js/candidatePage/carousel.js"></script>
+
 <link rel="stylesheet" type="text/css" href="styles/candidatePage/candidatePage.css">	
 
 
@@ -100,7 +101,7 @@
 	</div>
 	<div id="CandidatePageRightImageDiv">
 		<div id="candidateImageDiv_Main" style="padding:5px;">
-			<img id="candidateImage" height="300" width="225" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />ncb.jpg" >
+			<img id="candidateImage" height="300" width="225" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />${candidateVO.candidateName}.jpg" >
 		</div>		
 	</div>
 	<div id="CandidatePageBottomLinksDiv">
@@ -123,7 +124,7 @@
 							java.lang.String newsURL = staticURL + "/news.jsp";
 							java.lang.String photosURL = staticURL + "/photo.jsp";
 							java.lang.String videosURL = staticURL + "/video.jsp";
-							java.lang.String developmentsURL = staticURL + "/developments.jsp";
+							java.lang.String developmentsURL = staticURL + "/developments.jsp";							
 						%>
 
 						<jsp:include page="<%= profileURL%>" flush="true" />
@@ -140,7 +141,7 @@
 			</div>
 			<!-- Photo Info Div-->
 			<div id="candidatePageContent_body_PhotoMain" class="candidateStaticContentDiv">
-				<jsp:include page="<%= photosURL%>" flush="true"/>
+				<jsp:include page="<%= photosURL%>" flush="true"/>				
 			</div>
 			
 			<!-- Video Info Div-->
