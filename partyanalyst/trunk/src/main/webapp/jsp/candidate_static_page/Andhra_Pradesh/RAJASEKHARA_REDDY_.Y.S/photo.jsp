@@ -54,13 +54,16 @@ var ImagesURL = {
 										 '<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/sample/Winter.jpg"/>'
 									],
 					politicalTourImages:[
-											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/cbn_elec1.jpeg"/>',
-											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/cbn_elec2.jpeg"/>',
-											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/cbn_elec3.jpeg"/>',
-											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/cbn_elec4.jpeg"/>',
-											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/cbn_elec5.jpeg"/>',
-											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/cbn_elec6.jpeg"/>',
-											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/cbn_elec7.jpeg"/>',
+											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/ysr1.jpeg"/>',
+											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/ysr2.jpeg"/>',
+											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/ysr3.jpeg"/>',
+											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/ysr4.jpeg"/>',
+											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/ysr5.jpeg"/>',
+											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/ysr6.jpeg"/>',
+											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/ysr7.jpeg"/>',
+											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/ysr8.jpeg"/>',
+											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/ysr9.jpeg"/>',
+											
 										]
 					
 				};
@@ -102,7 +105,7 @@ var ImagesURL = {
 						<tr>
 							<td>
 								<a href="javascript:{}" onclick="buildCandidatePhotoGallery(ImagesURL.politicalTourImages)">
-									<img class="indexImgClass" height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/cbn_elec1.jpeg"/>
+									<img class="indexImgClass" height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/RAJASEKHARA_REDDY_.Y.S/election_tour/ysr1.jpeg"/>
 								</a>
 							</td>
 							<td>

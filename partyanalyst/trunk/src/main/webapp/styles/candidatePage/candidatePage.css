@@ -180,16 +180,19 @@ legend
 	height:200px;
 }
 
-#candidatePageContent_body_basicPrf_head,#candidatePageContent_body_electionPrf_head
+#candidatePageContent_body_basicPrf_head,#candidatePageContent_body_electionPrf_head,#photoTitleDivHead
 {
+	margin-bottom:10px;
 	color:#315476;
 	font-size:17px;
 	font-weight:bold;
-	text-decoration:underline;
+	text-decoration:underline;	
 }
-#candidatePageContent_body_basicPrf_body,#candidatePageContent_body_electionPrf_body
+#candidatePageContent_body_basicPrf_body,#candidatePageContent_body_electionPrf_body,#photoTitleDivBody
 {
 	color:#656C73;
+	margin-bottom:10px;
+	padding-left:10px;
 }
 
 .candidateStaticContentDiv
@@ -207,3 +210,11 @@ legend
 	background-color:#FFFFFF;
 	color:#000000;
 }
+
+/*#photo_gallery_div li
+{
+	float:left;
+	list-style-type:none;
+	margin-right:5px;
+}*/
+
