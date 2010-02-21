@@ -39,7 +39,7 @@
 
 	<!-- YUI Dependency Files-->
 
-	<script type="text/javascript">
+	<script type="text/javascript"><!--
 			
 		var regionLevelZeroCadres = new Array();
 		var regionLevelCadres = new Array();
@@ -91,7 +91,8 @@
 				var childDivElmt = document.createElement('div');
 				childDivElmt.setAttribute('id',val+''+id+'ZeroCadreDiv');
 				divElmt.appendChild(childDivElmt);
-				
+
+
 
 				tree = new YAHOO.widget.TreeView(childDivElmt.id);					 
 				tree.setDynamicLoad(loadNodeData);				
@@ -120,7 +121,8 @@
 				childDivElmt.setAttribute('id',val+''+id+'RegioncadreDiv');
 				divElmt.appendChild(childDivElmt);
 				
-
+				
+				
 				tree = new YAHOO.widget.TreeView(childDivElmt.id);				 
 				tree.setDynamicLoad(loadNodeData);				
 				var rootNode = tree.getRoot(); 				
@@ -134,8 +136,21 @@
 			
 			function showTree(cType)
 			{
-				//'${userCadresInfoVO.userAccessType}'
-				var myLabel='${userCadresInfoVO.userAccessDisplayValue}-${userCadresInfoVO.totalCadres}';
+				
+				var myLabel='${userCadresInfoVO.userAccessDisplayValue}';
+
+				var type='${userCadresInfoVO.userAccessType}';
+				if(type=="MLA" || type=="MP"){
+					myLabel+="-Constituency-";
+					myLabel+='${userCadresInfoVO.totalCadres}'
+				}
+				else{
+					myLabel+="-"+type[0].toUpperCase();
+					for(var i=1;i<type.length;i++){
+						myLabel+=type[i].toLowerCase();
+					}
+					myLabel+="-"+'${userCadresInfoVO.totalCadres}';
+				}
 				
 				var tree;
 				var myobj;
@@ -143,17 +158,18 @@
 				tree = new YAHOO.widget.TreeView("cadreInfoDivBody");				 
 				tree.setDynamicLoad(loadNodeData);				
 				var rootNode = tree.getRoot(); 				
+		
+				myobj = { label: myLabel, labelAccessValue: '${userCadresInfoVO.userAccessType}',id:'${userCadresInfoVO.userAccessValue}',type:cType } ;
 
-				myobj = { label: myLabel, labelAccessValue: '${userCadresInfoVO.userAccessType}',id:'${userCadresInfoVO.userAccessValue}',type:cType } ; 
 				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);
 				
-
 				tree.render();
 				
 			}
 
 			function loadNodeData(node, fnLoadComplete)
 			{				
+				
 				var nodeLabel = node.label;
 				var index=nodeLabel.indexOf("-");
 				var subString = nodeLabel.substring(0,index);				
@@ -168,13 +184,15 @@
 											
 											if(myResults.cadreInfo[0])											
 											{												
-												buildHtmlNode(myResults.cadreInfo,node);																					
+												buildHtmlNode(myResults.cadreInfo,node);	
+																															
 											}
-											else if(myResults.zeroCadresRegion)	
-												buildZeroCadreTable(myResults.zeroCadresRegion,node);
-											else
+											else if(myResults.zeroCadresRegion)	{
+												buildZeroCadreTable(myResults,myResults.zeroCadresRegion,node);
+											}
+											else{
 												buildTextNode(myResults,node);																			
-											
+											}
 											fnLoadComplete(); 
 											var anchortag = YAHOO.util.Dom.get("cadreInfoDivBody").getElementsByTagName("a");											
 											YAHOO.util.Event.addListener(anchortag, "click", function (evt)
@@ -202,19 +220,40 @@
  			YAHOO.util.Connect.asyncRequest('GET', cadreUrl, callback);
 			}
 			
-			function buildZeroCadreTable(cadreData,node)
+			function buildZeroCadreTable(myResults,cadreData,node)
 			{
+				
+				var myLabel='${userCadresInfoVO.userAccessDisplayValue}';
+				var location = myLabel;
+				
+				var type='${userCadresInfoVO.userAccessType}';
+				if(type=="MLA" || type=="MP"){
+					myLabel="Constituency Name";
+				}
+				else if(type=="DISTRICT"){
+					myLabel="District Name";
+				}
+				else if(type=="STATE"){
+					myLabel="State Name";
+				}
+				else if(type=="COUNTRY"){
+					myLabel="Country Name";
+				}
+								
 				var str='';
 				str+='<table class="partyPerformanceCriteriaTable">';
 				str+='<tr>';
-				str+='<th>Name</th>';											
+				str+='<th>Name</th>';	
+				str+='<th>'+myLabel+'</th>';											
 				str+='</tr>';				
 				for(var i in cadreData)
 				{
 					str+='<tr>';					
-					str+='<td>'+cadreData[i].name+'</td>';											
+					str+='<td>'+cadreData[i].name+'</td><td>'+location+'</td>';										
 					str+='</tr>';
 				}
+				
+				
 				str+='</table>';
 
 				//str+='<div id="basic" class="yui-skin-sam"></div>';
@@ -313,21 +352,32 @@
 
 			function buildTextNode(results,node)
 			{
+				
 				for (var i in results.cadreRegionInfo)
 				{ 
-					var myobj = { 
-									label				: results.cadreRegionInfo[i].regionName+"-"+results.cadreRegionInfo[i].cadreCount,
+					var type = results.region;
+					if(results.region=="MLA" || results.region=="MP"||results.region=="DISTRICT"){
+						type="Mandal";
+					}
+					if(results.region=="MANDAL" ){
+						type="Village";
+					}
+					if(results.region=="V" ){
+						type="Hamlet";
+					}
+					var myobj = { 									
+									label				: results.cadreRegionInfo[i].regionName+"-"+type+"-"+results.cadreRegionInfo[i].cadreCount,
 									labelAccessValue	: results.cadreRegionInfo[i].region,
 									id					: results.cadreRegionInfo[i].regionId ,
 									type				: results.cadreType
 								} ;
-					
+				
 					var tempNode = new YAHOO.widget.TextNode(myobj, node, false); 
 					
 				}				
 			}
 
-	</script>
+	--></script>
 </head>
 <body>
 	<s:form name="cadrereport" action="cadreRegisterPageAction" method="post">	
