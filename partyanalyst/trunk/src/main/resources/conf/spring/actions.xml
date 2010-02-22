@@ -124,10 +124,10 @@
 	   <property name="staticDataService" ref="staticDataService" />
 	</bean>
 																						
-	
 	<bean id="electionComparisonReportAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonReportAction" singleton="false">
-	     <property name="electionsComparisonService" ref="electionsComparisonService" />
-	</bean> 
+	     <property name="electionComparisonReportService" ref="electionComparisonReportService" />
+	     <property name="partyService" ref="partyService" />
+	</bean>  
 
 	<bean id="partyBoothResultAction" class="com.itgrids.partyanalyst.web.action.PartyBoothResultAction" singleton="false"/>
 	
@@ -219,4 +219,5 @@
 	</bean>
 	<bean id="boothReportAction" class="com.itgrids.partyanalyst.web.action.BoothReportAction" singleton="false">
 	</bean>
+
 </beans>
