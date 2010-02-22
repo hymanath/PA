@@ -8,6 +8,8 @@ public class VoterAgeRangeVO implements Serializable {
 	private Long maleVoters;
 	private Long femaleVoters;
 	private Long totalVoters;
+	private String percentage;
+	
 	public String getAgeRange() {
 		return ageRange;
 	}
@@ -32,6 +34,10 @@ public class VoterAgeRangeVO implements Serializable {
 	public void setTotalVoters(Long totalVoters) {
 		this.totalVoters = totalVoters;
 	}
-	
-	
+	public String getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
 }

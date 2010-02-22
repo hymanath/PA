@@ -534,6 +534,11 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		obj.setTotalVoters(total);
 		list.add(obj);
 		
+		for(VoterAgeRangeVO voterAgeRangeVO : list){
+			Long totalVoters =voterAgeRangeVO.getTotalVoters();
+			String percentage = new BigDecimal((totalVoters * 100)/total).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+			voterAgeRangeVO.setPercentage(percentage);
+		}		
 	}
 	private VoterAgeRangeVO formatVoterGenderAgeWise(List<VoterAgeRangeVO> voterAgeRangeVOList, List voters, String ageRange){
 		log.debug("ageRange::::::::::::::::"+ageRange);
