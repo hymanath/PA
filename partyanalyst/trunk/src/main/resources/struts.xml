@@ -281,8 +281,20 @@
 		</action>											
 			
 		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
-			<result name="success">/jsp/electionComparisonReportPage.jsp</result>
+			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
 			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
+		</action>
+		
+		<action name="electionComparisonAjax" class="electionComparisonReportAction" method="getComparedElectionResults" >
+			<result type="json" name="success">
+				 <param name="root">comparedResultsVO</param> 
+			</result>
+		</action>
+		
+		<action name="electionComparisonPositionAjax" class="electionComparisonReportAction" method="getPartyPositionDetails" >
+			<result type="json" name="success">
+				 <param name="root">partyPositionDisplayVO</param> 
+			</result>
 		</action>
 		
 		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">
