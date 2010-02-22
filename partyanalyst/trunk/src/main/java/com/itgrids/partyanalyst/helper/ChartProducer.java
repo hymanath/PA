@@ -151,9 +151,9 @@ public class ChartProducer {
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 		BarRenderer renderer = (BarRenderer) plot.getRenderer();
 		renderer.setDrawBarOutline(false);
-		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, Color.lightGray);
-		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, Color.lightGray);	
-		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.orange, 0.0f, 0.0f, Color.lightGray);
+		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, Color.lightGray);
+		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.pink, 0.0f, 0.0f, Color.lightGray);	
+		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.yellow, 0.0f, 0.0f, Color.lightGray);
 		renderer.setSeriesPaint(0, gp0);
 		renderer.setSeriesPaint(1, gp1);
 		renderer.setSeriesPaint(2, gp2);
@@ -188,7 +188,7 @@ public class ChartProducer {
 	        CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
 	        plot.setRowRenderingOrder(SortOrder.ASCENDING);
 	        plot.add(seatsPlot, 2);
-	        
+	       	        
 	        final JFreeChart chart = new JFreeChart("Year Vs Seats",  plot);
 	        
 			try	 {
