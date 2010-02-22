@@ -4,7 +4,11 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -25,10 +29,13 @@ import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWinnerInfoVO;
+import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -275,10 +282,11 @@ public class StaticDataService implements IStaticDataService {
 
 	//Need refactoring the code and unit testing- Ashok
 	public List<Party> getAllianceParties(String electionYear, Long electionType, Long partyId) {
-		List<Party> allianceParties = new ArrayList<Party>();
+		List<Party> allianceParties = null;
 		
 		Long groupId = getGroupIdIfPartyHasAlliances(partyId, electionYear, electionType);
 		if(groupId != null) {
+			allianceParties = new ArrayList<Party>();
 			List<AllianceGroup> allianceGroupList = allianceGroupDAO.findByGroupId(groupId);
 			for(AllianceGroup allianceGroup : allianceGroupList){
 				allianceParties.add(allianceGroup.getParty());
@@ -731,6 +739,241 @@ public class StaticDataService implements IStaticDataService {
 		
 	return partyElectionDistrictResult;
 	}
+
+	
+	public List<DistrictWisePartyResultVO> getDistrictWisePartyElectionResults(String electionYear, Long electionType,Long electionId,Long partyId,Boolean hasAlliances){
+		List<DistrictWisePartyResultVO> districtWisePartyResultVOList = null;
+		Map<Long,List<PartyResultVO>> districtWiseResultsMap = new HashMap<Long,List<PartyResultVO>>();
+	
+		log.debug("Entered Into getDistrictWisePartyElectionResults Method .....");
+		List<Party> alliancParties = null;
+		if(hasAlliances){
+			alliancParties = getAllianceParties(electionYear,electionType,partyId);
+			log.debug("Has Alliances .....");
+			if(alliancParties != null){
+				districtWiseResultsMap = getDistrictWisePartyElectionResultWithAllianc(electionYear,electionId,partyId,alliancParties);
+				if(districtWiseResultsMap != null)
+				districtWisePartyResultVOList = getResultsFromMap(districtWiseResultsMap);
+			}
+		}
+		if(!hasAlliances || alliancParties == null){
+			log.debug("Has No Alliances .....");
+			districtWiseResultsMap = getDistrictWisePartyElectionResultWithoutAllianc(electionYear,electionId,partyId);
+			if(districtWiseResultsMap != null)
+			districtWisePartyResultVOList = getResultsFromMap(districtWiseResultsMap);
+		}
+		
+	return districtWisePartyResultVOList;
+	}
+	
+	public Map<Long,List<PartyResultVO>> getDistrictWisePartyElectionResultWithoutAllianc(String electionYear,Long electionId,Long partyId){
+		
+		List<ConstituencyElection> constiElections = null;
+		Map<Long,List<PartyResultVO>> districtWiseResultsMap = null;
+		
+		log.debug("Entered Into getDistrictWisePartyElectionResultWithoutAllianc Method .....");
+		constiElections = nominationDAO.findConstituencyElectionByElectionIdAndPartyId(electionId, partyId);
+		if(constiElections != null){
+			List<PartyResultVO> partyResultsList = null;
+			districtWiseResultsMap = new HashMap<Long,List<PartyResultVO>>();
+			for(ConstituencyElection constiElecResults:constiElections){
+				PartyResultVO partyResultVO = null;
+				Long districtId = constiElecResults.getConstituency().getDistrict().getDistrictId();
+				
+				if(districtWiseResultsMap.isEmpty() || !districtWiseResultsMap.containsKey(districtId))
+				partyResultsList = new ArrayList<PartyResultVO>();
+				else
+				partyResultsList = districtWiseResultsMap.get(districtId);
+				
+				partyResultVO = getCandidateResultDetails(constiElecResults,partyId);
+				partyResultsList.add(partyResultVO);
+				
+				districtWiseResultsMap.put(districtId, partyResultsList);
+			}
+			
+		}
+		
+	return districtWiseResultsMap;
+	}
+	
+	public Map<Long,List<PartyResultVO>> getDistrictWisePartyElectionResultWithAllianc(String electionYear,Long electionId,Long partyId,List<Party> alliancPartys){
+		List<ConstituencyElection> constiElections = null;
+		Map<Long,List<PartyResultVO>> districtWiseResultsMap = null;
+		List<Long> partyIds = new ArrayList<Long>();
+		
+		log.debug("Entered Into getDistrictWisePartyElectionResultWithAllianc Method .....");
+		for(Party party:alliancPartys)
+			partyIds.add(party.getPartyId());
+				
+		constiElections = nominationDAO.findConstituencyElectionByElectionIdAndPartys(electionId, partyIds);
+		
+		log.debug("ConstiElections With Alliance size ::" + constiElections.size());
+		if(constiElections != null){
+			List<PartyResultVO> partyResultsList = null;
+			List<Long> constiIds = new ArrayList<Long>();
+			districtWiseResultsMap = new HashMap<Long,List<PartyResultVO>>();
+			for(ConstituencyElection constiElecResults:constiElections){
+				
+				if(constiIds.contains(constiElecResults.getConstituency().getConstituencyId()))
+				continue;
+				PartyResultVO partyResultVO = null;
+				constiIds.add(constiElecResults.getConstituency().getConstituencyId());
+				Long districtId = constiElecResults.getConstituency().getDistrict().getDistrictId();
+				if(districtWiseResultsMap.isEmpty() || !districtWiseResultsMap.containsKey(districtId))
+				partyResultsList = new ArrayList<PartyResultVO>();
+				else
+				partyResultsList = districtWiseResultsMap.get(districtId);
+				
+				log.debug("PartyResultsList With Alliance(for district" +districtId +") size ::" + partyResultsList.size());
+				partyResultVO = getCandidateResultDetailsWithAllianc(constiElecResults,partyId,alliancPartys,partyIds);
+				partyResultsList.add(partyResultVO);
+				
+				districtWiseResultsMap.put(districtId, partyResultsList);
+			}
+			
+		}
+		
+	return districtWiseResultsMap;
+	}
+	
+	public PartyResultVO getCandidateResultDetails(ConstituencyElection constiElecResults,Long partyId){
+		PartyResultVO partyResultVO = new PartyResultVO();
+		CandidateOppositionVO oppositionCandidate = new CandidateOppositionVO();
+		Set<Nomination> nominations = constiElecResults.getNominations();
+		log.debug("Entered Into getCandidateResultDetails Method .....");
+		if(nominations != null){
+			for(Nomination nominatn:nominations){
+				if(nominatn.getParty().getPartyId().equals(partyId)){
+					partyResultVO = getSelectedNominationResults(nominatn,partyId);
+					Long rankOfCand = nominatn.getCandidateResult().getRank();
+					oppositionCandidate = getOppCandidateResultDetails(rankOfCand,nominations,partyId);
+					partyResultVO.setOppositionCandidates(oppositionCandidate);
+					break;
+				}
+			}
+		}
+		
+		return partyResultVO;
+	}
+	
+	public PartyResultVO getSelectedNominationResults(Nomination nominatn,Long partyId){
+		PartyResultVO partyResultVO = new PartyResultVO();
+		partyResultVO.setCandidateId(nominatn.getCandidate().getCandidateId());
+		partyResultVO.setCandidateName(nominatn.getCandidate().getLastname().toLowerCase());
+		partyResultVO.setConstituencyId(nominatn.getConstituencyElection().getConstituency().getConstituencyId());
+		partyResultVO.setConstituencyName(nominatn.getConstituencyElection().getConstituency().getName().toUpperCase());
+		partyResultVO.setElectors(nominatn.getConstituencyElection().getConstituencyElectionResult().getTotalVotes().longValue());
+		partyResultVO.setPartyId(partyId);
+		partyResultVO.setPartyName(nominatn.getParty().getShortName().toUpperCase());
+		partyResultVO.setVotesEarned(nominatn.getCandidateResult().getVotesEarned().longValue());
+		partyResultVO.setVotesPercent(nominatn.getCandidateResult().getVotesPercengate());
+		partyResultVO.setRank(nominatn.getCandidateResult().getRank());
+		
+		return partyResultVO;
+	}
+	
+	public PartyResultVO getCandidateResultDetailsWithAllianc(ConstituencyElection constiElecResults,Long partyId,List<Party> alliancPartys,List<Long> alliancPartyIds){
+		PartyResultVO partyResultVO = new PartyResultVO();
+		CandidateOppositionVO oppositionCandidate = new CandidateOppositionVO();
+		Set<Nomination> nominations = constiElecResults.getNominations();
+		log.debug("Entered Into getCandidateResultDetailsWithAllianc Method .....");
+		if(nominations != null){
+			Boolean flag = false;
+			Nomination selectdNominatn = null;
+			for(Nomination nominatn:nominations){
+				if(nominatn.getParty().getPartyId().equals(partyId)){
+					partyResultVO = getSelectedNominationResults(nominatn,partyId);
+					Long rankOfCand = nominatn.getCandidateResult().getRank();
+					oppositionCandidate = getOppCandidateResultDetails(rankOfCand,nominations,partyId);
+					partyResultVO.setOppositionCandidates(oppositionCandidate);
+					break;
+				}
+				else if(alliancPartyIds.contains(nominatn.getParty().getPartyId())){
+					flag = true;
+					if(selectdNominatn != null){
+					if(nominatn.getCandidateResult().getRank() > selectdNominatn.getCandidateResult().getRank())
+					selectdNominatn = nominatn;
+					}
+					else
+					selectdNominatn = nominatn;
+				}
+			}
+			if(flag == true && selectdNominatn != null){
+				partyResultVO = getSelectedNominationResults(selectdNominatn,selectdNominatn.getParty().getPartyId());
+				Long rankOfCand = selectdNominatn.getCandidateResult().getRank();
+				oppositionCandidate = getOppCandidateResultDetails(rankOfCand,nominations,partyId);
+				partyResultVO.setOppositionCandidates(oppositionCandidate);
+			}
+		}
+	return partyResultVO;	
+	}
+	
+	public CandidateOppositionVO getOppCandidateResultDetails(Long rank,Set<Nomination> nominatns,Long partyId){
+		log.debug("Entered Into getOppCandidateResultDetails Method .....");
+		CandidateOppositionVO oppositionCandidate = new CandidateOppositionVO();
+		for(Nomination nomination:nominatns){
+			if(rank.equals(new Long(1)) && nomination.getCandidateResult().getRank().equals(new Long(2))){
+				oppositionCandidate.setCandidateId(nomination.getCandidate().getCandidateId());
+				oppositionCandidate.setCandidateName(nomination.getCandidate().getLastname().toLowerCase());
+				oppositionCandidate.setPartyId(nomination.getParty().getPartyId());
+				oppositionCandidate.setPartyName(nomination.getParty().getShortName().toUpperCase());
+				oppositionCandidate.setVotesEarned(nomination.getCandidateResult().getVotesEarned().toString());
+				oppositionCandidate.setVotesPercentage(nomination.getCandidateResult().getVotesPercengate());
+				oppositionCandidate.setRank(nomination.getCandidateResult().getRank());
+				break;
+			}
+			else if(rank > new Long(1) && nomination.getCandidateResult().getRank().equals(new Long(1))){
+				oppositionCandidate.setCandidateId(nomination.getCandidate().getCandidateId());
+				oppositionCandidate.setCandidateName(nomination.getCandidate().getLastname().toLowerCase());
+				oppositionCandidate.setPartyId(nomination.getParty().getPartyId());
+				oppositionCandidate.setPartyName(nomination.getParty().getShortName().toUpperCase());
+				oppositionCandidate.setVotesEarned(nomination.getCandidateResult().getVotesEarned().toString());
+				oppositionCandidate.setVotesPercentage(nomination.getCandidateResult().getVotesPercengate());
+				oppositionCandidate.setRank(nomination.getCandidateResult().getRank());
+				break;
+			}
+		}
+		
+		return oppositionCandidate;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<DistrictWisePartyResultVO> getResultsFromMap(Map<Long,List<PartyResultVO>> districtWiseResultsMap){
+		
+		log.debug("Entered Into getResultsFromMap Method .....");
+		List<DistrictWisePartyResultVO> districtWiseResults = null;
+		if(!districtWiseResultsMap.isEmpty()){
+			districtWiseResults = new ArrayList<DistrictWisePartyResultVO>();
+			Set entries = districtWiseResultsMap.entrySet();
+			Iterator iterator = entries.iterator();
+			while (iterator.hasNext()){
+			DistrictWisePartyResultVO resultForADist = new DistrictWisePartyResultVO();
+			Map.Entry entry = (Map.Entry)iterator.next();
+			List<PartyResultVO> partyResultsVO = (List<PartyResultVO>)entry.getValue();
+			Long distId = (Long)entry.getKey();
+			resultForADist = getDistrictCompleteDetails(distId,partyResultsVO);
+			districtWiseResults.add(resultForADist);
+			}
+		}
+		return districtWiseResults;
+	}
+	
+	public DistrictWisePartyResultVO getDistrictCompleteDetails(Long districtId,List<PartyResultVO> partyResultsVO){
+		
+		log.debug("Entered Into getDistrictCompleteDetails Method .....");
+		DistrictWisePartyResultVO resultForADist = new DistrictWisePartyResultVO();
+		District district = districtDAO.get(districtId);
+		if(district == null)
+			return null;
+		resultForADist.setDistrictId(district.getDistrictId());
+		resultForADist.setDistrictName(district.getDistrictName());
+		resultForADist.setStateId(district.getState().getStateId());
+		resultForADist.setStateName(district.getState().getStateName());
+		resultForADist.setTotalConstituencies(new Long(partyResultsVO.size()));
+		resultForADist.setPartyElectionResultsList(partyResultsVO);
+		return resultForADist;
+	}
+
 	
 	public List<SelectOptionVO> getHamletsForTownship(Long townshipId){
 		List<SelectOptionVO> hamlets = new ArrayList<SelectOptionVO>();
@@ -756,4 +999,5 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return constituencyBoothsList;
 	}
+
 }
