@@ -103,6 +103,13 @@
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
+	
+	<bean name="electionComparisonReportService" class="com.itgrids.partyanalyst.service.impl.ElectionComparisonReportService" >
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="partyDAO" ref="partyDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+	</bean>
 
 	<bean name="excelToDBService" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService" >
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
