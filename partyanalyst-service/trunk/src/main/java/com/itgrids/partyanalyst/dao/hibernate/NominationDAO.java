@@ -299,4 +299,27 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
              }
          });
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyElection> findConstituencyElectionByElectionIdAndPartyId(Long electionId,Long partyId){
+		   Object[] params={electionId,partyId};
+		   return getHibernateTemplate().find("select constituencyElection from Nomination model where model.constituencyElection.election.electionId =? and model.party.partyId = ?",params);
+    }
+		
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyElection> findConstituencyElectionByElectionIdAndPartys(Long electionId,List<Long> partyIds){
+		    Query queryObject = getSession().createQuery("select constituencyElection from Nomination model where model.constituencyElection.election.electionId =? and model.party.partyId in (:partyIds)");
+			queryObject.setParameter(0,electionId);
+			queryObject.setParameterList("partyIds", partyIds);
+			return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyElection> findConstituencyElectionByElectionIdAndDistrictIdAndPartys(Long electionId,Long districtId,List<Long> partyIds){
+		Query queryObject = getSession().createQuery("select constituencyElection from Nomination model where model.constituencyElection.election.electionId =? and model.constituencyElection.constituency.district.districtId =? and model.party.partyId in (:partyIds)");
+		queryObject.setParameter(0,electionId);
+		queryObject.setParameter(1,districtId);
+		queryObject.setParameterList("partyIds", partyIds);
+		return queryObject.list();
+	}
 }
