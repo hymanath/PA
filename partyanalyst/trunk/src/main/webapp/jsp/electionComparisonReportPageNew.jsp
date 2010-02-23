@@ -94,7 +94,6 @@
 		cursor:auto;
 		font-family:verdana;
 		font-weight:bold;
-		margin-left:20px;
 		position:absolute;
 		font-size:17px;
 		
@@ -103,7 +102,11 @@
 	#panelForYearOne
 	{
 		margin-left:60px;
-	}	
+	}
+	#panelForYearTwo
+	{
+		margin-right:60px;
+	}
 	#votesPercentageIncDiv table
 	{
 		width:100%;
@@ -114,36 +117,91 @@
 	}
 	#partyResultsHeading
 	{
-		color:inactivecaption;
-		margin:10px;
+		color:highlight;
+		font-size:16px;
+		font-weight:bold;
 		text-align:left;
+		margin:10px;
 	}
 	#mainHeadingDiv
 	{
-		color:inactivecaption;
-		font-size:15px;
+		color:highlight;
+		font-size:18px;
 		font-family:verdana;
 		font-weight:bold;
 	}
 	
 	#tdOne .yui-skin-sam .yui-panel .hd 
 	{
-		color:inactivecaption;
+		color:highlight;
+		font-weight:bold;
+        text-align:left;
+		font-size:12px;
 	}
 	#tdTwo .yui-skin-sam .yui-panel .hd 
 	{
-		color:inactivecaption;
+		color:highlight;
+		font-weight:bold;
+        text-align:left;
+		font-size:12px;
 	}
 	#tdOne .yui-skin-sam .yui-panel .bd
 	{
 		background-color:FloralWhite;
-        color:Black;
+        color:DarkGreen;
+		font-size:13px;
 	}
 	#tdTwo .yui-skin-sam .yui-panel .bd
 	{
 		background-color:FloralWhite;
-        color:Black;
+        color:DarkGreen;
+		font-size:13px;
 	}
+	#yearOnePanel .yui-skin-sam .yui-panel .bd
+	{
+		background-color:FloralWhite;
+        color:Black;
+		font-size:13px;
+	}
+    #yearTwoPanel .yui-skin-sam .yui-panel .bd
+	{
+		background-color:FloralWhite;
+        color:Black;
+		font-size:13px;
+	}
+	#yearOnePanel .yui-skin-sam .yui-panel .hd 
+	{
+	  color:highlight;
+	  font-weight:bold;
+	  text-align:left;
+	  font-size:12px;
+	}
+    #yearTwoPanel .yui-skin-sam .yui-panel .hd 
+	{
+	  color:highlight;
+	  font-weight:bold;
+	  text-align:left;
+	  font-size:12px;
+	}
+	#commentsDiv
+	{
+		color:appworkspace;
+        font-family:verdana;
+		font-weight:bold;
+		margin:10px;
+		text-align:left;
+  	}
+	#legend {
+		background-color:#567AAF;
+		color:#FFFFFF;
+		font-size:12px;
+		padding:5px;
+    }
+	#fieldset {
+		border:4px solid #CFD6DF;
+		margin-bottom:10px;
+	}
+	
 	
 </style>
 <script type="text/javascript">	
@@ -163,6 +221,10 @@ function buildDataForYearOne()
 					   districtName:'${electionResults.districtName}',
 					   stateName:'${electionResults.stateName}',
 					   constiCount:'${electionResults.totalConstituencies}',
+					   constiParticipated:'${electionResults.constiParticipated}',
+					   totalConsti:'${electionResults.constiCount}',
+					   seatsWon:'${electionResults.seatsWon}',
+					   votesPercent:'${electionResults.votesPercent}',
 					   electionResults:[]
 			          }
 		
@@ -202,6 +264,10 @@ function buildDataForYearTwo()
 					   districtName:'${electionResults.districtName}',
 					   stateName:'${electionResults.stateName}',
 					   constiCount:'${electionResults.totalConstituencies}',
+					   constiParticipated:'${electionResults.constiParticipated}',
+					   totalConsti:'${electionResults.constiCount}',
+					   seatsWon:'${electionResults.seatsWon}',
+					   votesPercent:'${electionResults.votesPercent}',
 					   electionResults:[]
 			          }
 		
@@ -241,20 +307,32 @@ function buildPanel(id,arr,year)
 	   var str='';
 	   str+='<table class="partyElecResultTable">';
 	   str+='<tr>';
+	   str+='<th>';
+       str+='</th>';
+	   str+='<th align="left">District</th>';
+       str+='<th>*TC</th>';
+       str+='<th>*PC</th>';
+	   str+='<th>Won</th>';
+	   str+='<th>%</th>';
 	   for(var i in arr)
 	   {
 		   var totalconsti=arr[i].electionResults.length;
+		   str+='<tr>';
 		   if(i==0)
-		   str+='<td align="left"><input type="radio" name="'+id+'_radio" value="'+arr[i].districtId+'" checked="true" onclick="buildPartyElecResultsTable(\''+id+'\')"/></td>';
+		   str+='<td align="center"><input type="radio" name="'+id+'_radio" value="'+arr[i].districtId+'" checked="true" onclick="buildPartyElecResultsTable(\''+id+'\')"/></td>';
 		   else
-		   str+='<td align="left"><input type="radio" name="'+id+'_radio" value="'+arr[i].districtId+'" onclick="buildPartyElecResultsTable(\''+id+'\')"/></td>';
+		   str+='<td align="center"><input type="radio" name="'+id+'_radio" value="'+arr[i].districtId+'" onclick="buildPartyElecResultsTable(\''+id+'\')"/></td>';
 		   str+='<td align="left">'+arr[i].districtName+'</td>';
 		   str+='';
-		   str+='<td align="right">'+totalconsti+'</td>';
-		   if(++i%2 == 0)
-				str+='</tr><tr>';
+		   str+='<td align="center">'+arr[i].totalConsti+'</td>';
+		   str+='<td align="center">'+arr[i].constiParticipated+'</td>';
+           str+='<td align="center">'+arr[i].seatsWon+'</td>';
+		   str+='<td align="center">'+arr[i].votesPercent+'</td>';
+		   str+='</tr>';
+		   //if(++i%2 == 0)
+				//str+='</tr><tr>';
        }
-	   str+='</tr>';
+	   //str+='</tr>';
 	   str+='</table>';
 
 	   var footer = '';
@@ -442,6 +520,7 @@ function displayLabel(year,district)
 	 str+=year;
      str+=", ";
 	 str+=district;
+	 str+='  District Results';
 
 	 var elmt = document.getElementById("displayLabelDiv");
 	 if(elmt)
@@ -454,18 +533,22 @@ function overallResultsForYearOne()
    str+='<table class="partyElecResultTable" style="width:100%;">';
    str+='<tr>';
    str+='<th>Party</th>';
-   str+='<th>SeatsWon</th>';
-   str+='<th>2ndPos</th>';
+   str+='<th>*PC</th>';
+   str+='<th>1Pos</th>';
+   str+='<th>2Pos</th>';
+   str+='<th>3Pos</th>';
+   str+='<th>4Pos</th>';
    str+='<th>Votes%</th>';
-   str+='<th>ConstiParticipated</th>';
    str+='</tr>';
    <c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearOne}">
    str+='<tr>';
    str+='<td align="center">'+"${partyPositions.partyName}"+'</td>';
+   str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';
    str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'1\')">'+"${partyPositions.totalSeatsWon}"+'</a></td>';
    str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'2\')">'+"${partyPositions.secondPosWon}"+'</a></td>';
+   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'3\')">'+"${partyPositions.thirdPosWon}"+'</a></td>';
+   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'4\')">'+"${partyPositions.fourthPosWon}"+'</a></td>';
    str+='<td align="center">'+"${partyPositions.votesPercentage}"+'</td>';
-   str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';
    str+='</tr>';
    </c:forEach>
    str+='</table>';
@@ -491,18 +574,22 @@ function overallResultsForYearTwo()
    str+='<table class="partyElecResultTable" style="width:100%;">';
    str+='<tr>';
    str+='<th>Party</th>';
-   str+='<th>SeatsWon</th>';
-   str+='<th>2ndPos</th>';
+   str+='<th>*PC</th>';
+   str+='<th>1Pos</th>';
+   str+='<th>2Pos</th>';
+   str+='<th>3Pos</th>';
+   str+='<th>4Pos</th>';
    str+='<th>Votes%</th>';
-   str+='<th>ConstiParticipated</th>';
    str+='</tr>';
    <c:forEach var="partyPositions" items="${electionComparisonReportVO.positionsForYearTwo}">
    str+='<tr>';
    str+='<td align="center">'+"${partyPositions.partyName}"+'</td>';
+   str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';
    str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'1\')">'+"${partyPositions.totalSeatsWon}"+'</a></td>';
    str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'2\')">'+"${partyPositions.secondPosWon}"+'</a></td>';
+   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'3\')">'+"${partyPositions.thirdPosWon}"+'</a></td>';
+   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearTwo\',\'4\')">'+"${partyPositions.fourthPosWon}"+'</a></td>';
    str+='<td align="center">'+"${partyPositions.votesPercentage}"+'</td>';
-   str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';
    str+='</tr>';
    </c:forEach>
    str+='</table>';
@@ -585,9 +672,9 @@ function displayPartyPositionResults(jsObj,data)
 	//var divElmtHead = document.getElementById("labelHead");	
 	rank = jsObj.rank;
 	var party = jsObj.party;
-	/*if(rank==-1)
+	if(rank==-1)
 		rank = 'N';
-	divElmtHead.innerHTML=" "+'${stateData.party}'+" In position : "+rank+" And Its Opposition Party Details";*/
+	/*divElmtHead.innerHTML=" "+'${stateData.party}'+" In position : "+rank+" And Its Opposition Party Details";*/
 
 	divElmt.style.display = 'block';
 
@@ -699,7 +786,7 @@ function buildPartyPositionDataTable(info,rank)
 
 	var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10
+		        rowsPerPage    : 5
 			    }) 
 				};	
 
@@ -780,17 +867,17 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 		}, {
 			key : "candName"
 		}, {
-			key : "votesEarned"
+			key : "votesEarned",parser:"number"
 		}, {
-			key : "votesPercent"
+			key : "votesPercent",parser:"number"
 		}, {
-			key : "votesPercentDiff"
+			key : "votesPercentDiff",parser:"number"
 		} ,	{
 			key : "secndCandName"
 		} ,{
 			key : "votesEarnedBySecnd",parser:"number"
 		} , {
-			key : "secndVotesPercent"
+			key : "secndVotesPercent",parser:"number"
 		} ]
 	};
 
@@ -811,12 +898,12 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 					},
 					{
 						key : "votesEarned",
-						label : "Votes Earned",
+						label : "Votes",
 						sortable : true
 					},
 					{
 						key : "votesPercent",
-						label : "Votes&nbsp;%",
+						label : "%",
 						sortable : true
 					}					
 				]
@@ -827,7 +914,7 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 		children:[ 					
 					{
 						key : "votesPercentDiff",
-						label : "Votes % Diff",
+						label : "% Diff",
 						sortable : true
 					}
 				]
@@ -844,12 +931,12 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 					},
 					{
 						key : "votesEarnedBySecnd",
-						label : "Votes Earned",
+						label : "Votes",
 						sortable : true
 					},
 					{
 						key : "secndVotesPercent",
-						label : "Votes&nbsp;%",
+						label : "%",
 						sortable : true
 					}									
 				 ]
@@ -864,14 +951,14 @@ function displayComparedResults(jsObj,data)
 	var str='';
 	
 	str+='<fieldset id="electionProfileField">';
-	str+='<legend> Votes Percent Increase</legend>';	
+	str+='<legend> VOTES PERCENT INCREASE</legend>';	
 	str+='<div id="votesPercentageIncDiv">';
 	
 	str+='</div>';	
 	str+='</fieldset>';
 	//--------------
 	str+='<fieldset id="electionResultsField">';
-	str+='<legend> Votes Percent Decrease </legend>';
+	str+='<legend> VOTES PERCENT DECREASE</legend>';
 	str+='<div id="votesPercentageDecDiv">';	
 	str+='</div>';	
 	str+='</fieldset>';
@@ -880,14 +967,14 @@ function displayComparedResults(jsObj,data)
 	str+='<tr>';
 	str+='<td>';
 	str+='<fieldset id="oppositionResultsField">';
-	str+='<legend> Not Considered - '+data.yearOne+' </legend>';
+	str+='<legend> NOT CONSIDERED - '+data.yearOne+' </legend>';
 	str+='<div id="notConsYearOneDiv">';	
 	str+='</div>';
 	str+='</fieldset>';
 	str+='</td>';
 	str+='<td>';
 	str+='<fieldset id="oppositionResultsField">';
-	str+='<legend> Not Considered - '+data.yearTwo+' </legend>';
+	str+='<legend> NOT CONSIDERED - '+data.yearTwo+' </legend>';
 	str+='<div id="notConsYearTwoDiv">';	
 	str+='</div>';
 	str+='</fieldset>';
@@ -934,11 +1021,11 @@ function buildYearDataTable(divId,data)
 		}, {
 			key : "partyName"
 		}, {
-			key : "votesEarned"
+			key : "votesEarned",parser:"number"
 		}, {
-			key : "votesPercent"
+			key : "votesPercent",parser:"number"
 		} ,	{
-			key : "rank"
+			key : "rank",parser:"number"
 		} ]
 	};
 
@@ -980,7 +1067,7 @@ function buildYearDataTable(divId,data)
 </script>
 </head>
 <body >
-<div id="mainHeadingDiv"><h3> Election Comparison Report </h3></div>
+<div id="mainHeadingDiv"> Election Comparison Report </div>
 <br/><br/>
 <div>
 <div id = "partyPositions" class="yui-skin-sam">
@@ -997,7 +1084,7 @@ function buildYearDataTable(divId,data)
 	  <td rowspan="2">
 	     <div id="mainGraphDiv" class="yui-skin-sam" style="margin-left:20px">
 		     <div id="graphDiv">
-			  <IMG id="chartImg" SRC="charts/<%=request.getAttribute("barChartName")%>" WIDTH="350" HEIGHT="250">
+			  <IMG id="chartImg" SRC="charts/<%=request.getAttribute("barChartName")%>" WIDTH="350" HEIGHT="300">
 			 </div>
 		 </div>
 	 </td>
@@ -1009,19 +1096,22 @@ function buildYearDataTable(divId,data)
 		 </div>
 	 </td>
 </tr>
+<tr>
+     <td align="left"><div id="commentsDiv">  *PC -- Participated Constituencies |   *TC --Total Constituencies </div></td>
 	
+</tr>
 <tr>
     <td colspan="2">
 		<div id="partyResultsHeading"><h4>Detailed Results .... </h4></div>
 	</td>
 </tr>
  <tr>
-	  <td>
+	  <td id="yearOnePanel">
 		  <div id="panelForYearOne" class="yui-skin-sam">
 				<div id="firstpanel"></div>
 			</div>
 	  </td>	   
-	  <td>
+	  <td id="yearTwoPanel">
 			<div id="panelForYearTwo" class="yui-skin-sam">	
 				<div id="secondpanel"></div>
 			</div>
