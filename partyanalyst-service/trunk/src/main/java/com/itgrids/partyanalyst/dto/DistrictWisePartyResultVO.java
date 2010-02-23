@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class DistrictWisePartyResultVO {
@@ -16,6 +17,10 @@ public class DistrictWisePartyResultVO {
 	private Long totalConstituencies;
 	private Long stateId;
 	private String stateName;
+	private Long constiCount;
+	private Long constiParticipated;
+	private Long seatsWon;
+	private Double votesPercent;
 	private List<PartyResultVO> partyElectionResultsList;
 	
 	
@@ -48,6 +53,30 @@ public class DistrictWisePartyResultVO {
 	}
 	public void setStateName(String stateName) {
 		this.stateName = stateName;
+	}
+	public Long getConstiCount() {
+		return constiCount;
+	}
+	public void setConstiCount(Long constiCount) {
+		this.constiCount = constiCount;
+	}
+	public Long getConstiParticipated() {
+		return constiParticipated;
+	}
+	public void setConstiParticipated(Long constiParticipated) {
+		this.constiParticipated = constiParticipated;
+	}
+	public Long getSeatsWon() {
+		return seatsWon;
+	}
+	public void setSeatsWon(Long seatsWon) {
+		this.seatsWon = seatsWon;
+	}
+	public Double getVotesPercent() {
+		return votesPercent;
+	}
+	public void setVotesPercent(Double votesPercent) {
+		this.votesPercent = votesPercent;
 	}
 	public List<PartyResultVO> getPartyElectionResultsList() {
 		return partyElectionResultsList;
