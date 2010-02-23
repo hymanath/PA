@@ -76,4 +76,19 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 						"model.boothConstituencyElection.constituencyElection.election.electionYear, " +
 						"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType desc" , revenueVillageID);
 	}
+	
+	public List findBoothWisePartiesAllElectionResultsByBooth(Long boothId){
+		return getHibernateTemplate().find("select model.nomination.party.shortName, model.nomination.candidate.candidateId, model.nomination.candidate.firstname, " +
+				"model.nomination.candidate.middlename, model.nomination.candidate.lastname, model.nomination.candidateResult.rank, model.boothConstituencyElection.booth, " +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType, " +
+				"model.nomination.constituencyElection.constituency.name, model.nomination.constituencyElection.constituency.constituencyId, " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear, model.votesEarned " +
+				"from CandidateBoothResult model where model.boothConstituencyElection.booth.boothId = ? " +
+				"group by model.candidateBoothResultId," +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType," +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear " +
+				"order by model.candidateBoothResultId, " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear, " +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType desc",boothId);		
+	}
 }
