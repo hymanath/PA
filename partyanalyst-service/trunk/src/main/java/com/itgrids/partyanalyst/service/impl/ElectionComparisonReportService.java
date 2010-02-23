@@ -188,33 +188,6 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		if(districtWiseElectionResultsForYearTwo != null)
 		electionCompReportVO.setDistrictWisePartyResultsForYearTwo(districtWiseElectionResultsForYearTwo);
 		
-		for(DistrictWisePartyResultVO results:districtWiseElectionResultsForYearOne){
-			log.debug("District Wise Results For Year " + firstYear + "....");
-			log.debug("District ::" + results.getDistrictName());
-			List<PartyResultVO> partyElectionResultsList = results.getPartyElectionResultsList();
-			for(PartyResultVO partyResults:partyElectionResultsList){
-				log.debug("......... Constituency ::" + partyResults.getConstituencyName());
-				log.debug("......... Party ::" + partyResults.getPartyName());
-				log.debug("......... Candidate ::" + partyResults.getCandidateName());
-				log.debug("......... Opp Party Candidate ::" + partyResults.getOppositionCandidates().getCandidateName());
-				log.debug("......... Opp Party  ::" + partyResults.getOppositionCandidates().getPartyName());
-			}
-		}
-		
-		for(DistrictWisePartyResultVO results:districtWiseElectionResultsForYearTwo){
-			log.debug("District Wise Results For Year " + secondYear + "....");
-			log.debug("District ::" + results.getDistrictName());
-			List<PartyResultVO> partyElectionResultsList = results.getPartyElectionResultsList();
-			for(PartyResultVO partyResults:partyElectionResultsList){
-				log.debug("......... Constituency ::" + partyResults.getConstituencyName());
-				log.debug("......... Party ::" + partyResults.getPartyName());
-				log.debug("......... Candidate ::" + partyResults.getCandidateName());
-				log.debug("......... Opp Party Candidate ::" + partyResults.getOppositionCandidates().getCandidateName());
-				log.debug("......... Opp Party  ::" + partyResults.getOppositionCandidates().getPartyName());
-			}
-		}
-		
-		
 		}catch(Exception ex){
 			ex.printStackTrace();
 			resultStatus.setExceptionEncountered(ex);
@@ -424,6 +397,9 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 						Double votesPercentYearOne = new BigDecimal((votesEarnedYearOne/validVotesYearOne)*100).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
 						Double votesPercentYearTwo = new BigDecimal((votesEarnedYearTwo/validVotesYearTwo)*100).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
 						Double votesPercentDiff = new BigDecimal(votesPercentYearTwo - votesPercentYearOne).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
+						
+						log.debug("Votes% One" + votesPercentYearOne);
+						log.debug("Votes% Two" + votesPercentYearTwo);
 						
 						if(votesPercentDiff > 0){
 						ComparedElectionResultVO votesPercentGainedResults = getResultDetailsIntoVO(selectedNominationYearOne,selectedNominationYearTwo,votesPercentYearOne,votesPercentYearTwo,votesPercentDiff);
