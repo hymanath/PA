@@ -26,15 +26,17 @@ public class ConstituencySearchService implements IConstituencySearchService{
 	
 	public List<SelectOptionVO> getConstituencyNamesAndIds(){
 		List<SelectOptionVO> constituencyNamesAndIdsList = null;
+		Long constituencyId = null;
+		String constituencyName = "";
 		long beginTimeMillis = System.currentTimeMillis();
 		if(constituencyNamesAndIdsList == null){
-			List<Constituency> constituencies = constituencyDAO.getAll();
+			List constituencies = constituencyDAO.getAllConstituencyNamesAndIds();
 			constituencyNamesAndIdsList = new ArrayList<SelectOptionVO>();
-			for(Constituency constituency:constituencies){
-				SelectOptionVO constituencyNameAndId = new SelectOptionVO();
-				constituencyNameAndId.setId(constituency.getConstituencyId());
-				constituencyNameAndId.setName(constituency.getName());			
-				constituencyNamesAndIdsList.add(constituencyNameAndId);
+			for(int i=0; i<constituencies.size(); i++){
+				Object[] values = (Object[]) constituencies.get(i);
+				constituencyId = (Long)values[0];
+				constituencyName = (String)values[1];
+				constituencyNamesAndIdsList.add(new SelectOptionVO(constituencyId, constituencyName));
 			}
 		}else{
 			System.out.println("Entered into else for constituencySearchResult");
