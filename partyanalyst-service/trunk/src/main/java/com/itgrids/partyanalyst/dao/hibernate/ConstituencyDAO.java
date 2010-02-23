@@ -133,4 +133,8 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		Object[] params = {scopeID, stateID};
 		return getHibernateTemplate().find("from Constituency model where model.electionScope.electionScopeId = ? and model.state.stateId=?  order by model.name",params);
 	}
+	
+	public List getAllConstituencyNamesAndIds(){
+		return getHibernateTemplate().find("select model.constituencyId, model.name from Constituency model");
+	}
 }
