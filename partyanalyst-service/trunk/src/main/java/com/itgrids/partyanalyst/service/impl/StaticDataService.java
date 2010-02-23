@@ -753,14 +753,14 @@ public class StaticDataService implements IStaticDataService {
 			if(alliancParties != null){
 				districtWiseResultsMap = getDistrictWisePartyElectionResultWithAllianc(electionYear,electionId,partyId,alliancParties);
 				if(districtWiseResultsMap != null)
-				districtWisePartyResultVOList = getResultsFromMap(districtWiseResultsMap);
+				districtWisePartyResultVOList = getResultsFromMap(districtWiseResultsMap,electionId);
 			}
 		}
 		if(!hasAlliances || alliancParties == null){
 			log.debug("Has No Alliances .....");
 			districtWiseResultsMap = getDistrictWisePartyElectionResultWithoutAllianc(electionYear,electionId,partyId);
 			if(districtWiseResultsMap != null)
-			districtWisePartyResultVOList = getResultsFromMap(districtWiseResultsMap);
+			districtWisePartyResultVOList = getResultsFromMap(districtWiseResultsMap,electionId);
 		}
 		
 	return districtWisePartyResultVOList;
@@ -866,6 +866,7 @@ public class StaticDataService implements IStaticDataService {
 		partyResultVO.setPartyId(partyId);
 		partyResultVO.setPartyName(nominatn.getParty().getShortName().toUpperCase());
 		partyResultVO.setVotesEarned(nominatn.getCandidateResult().getVotesEarned().longValue());
+		partyResultVO.setValidVotes(nominatn.getConstituencyElection().getConstituencyElectionResult().getValidVotes().longValue());
 		partyResultVO.setVotesPercent(nominatn.getCandidateResult().getVotesPercengate());
 		partyResultVO.setRank(nominatn.getCandidateResult().getRank());
 		
@@ -938,7 +939,7 @@ public class StaticDataService implements IStaticDataService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<DistrictWisePartyResultVO> getResultsFromMap(Map<Long,List<PartyResultVO>> districtWiseResultsMap){
+	public List<DistrictWisePartyResultVO> getResultsFromMap(Map<Long,List<PartyResultVO>> districtWiseResultsMap,Long electionId){
 		
 		log.debug("Entered Into getResultsFromMap Method .....");
 		List<DistrictWisePartyResultVO> districtWiseResults = null;
@@ -951,26 +952,53 @@ public class StaticDataService implements IStaticDataService {
 			Map.Entry entry = (Map.Entry)iterator.next();
 			List<PartyResultVO> partyResultsVO = (List<PartyResultVO>)entry.getValue();
 			Long distId = (Long)entry.getKey();
-			resultForADist = getDistrictCompleteDetails(distId,partyResultsVO);
+			resultForADist = getDistrictCompleteDetails(distId,partyResultsVO,electionId);
 			districtWiseResults.add(resultForADist);
 			}
 		}
 		return districtWiseResults;
 	}
 	
-	public DistrictWisePartyResultVO getDistrictCompleteDetails(Long districtId,List<PartyResultVO> partyResultsVO){
+	public DistrictWisePartyResultVO getDistrictCompleteDetails(Long districtId,List<PartyResultVO> partyResultsVO,Long electionId){
 		
 		log.debug("Entered Into getDistrictCompleteDetails Method .....");
+		
 		DistrictWisePartyResultVO resultForADist = new DistrictWisePartyResultVO();
 		District district = districtDAO.get(districtId);
 		if(district == null)
 			return null;
+		
+		int constiCount = 0;
+		int seatsWon = 0;
+		Long votesEarned = new Long(0);
+		Long validVotes = new Long(0);
+		List<Constituency> constituencys = constituencyElectionDAO.findConstituencyByElectionAndDistrict(electionId, districtId);
+		if(constituencys != null && constituencys.size() > 0)
+		constiCount = constituencys.size();
+		
 		resultForADist.setDistrictId(district.getDistrictId());
 		resultForADist.setDistrictName(district.getDistrictName());
 		resultForADist.setStateId(district.getState().getStateId());
 		resultForADist.setStateName(district.getState().getStateName());
 		resultForADist.setTotalConstituencies(new Long(partyResultsVO.size()));
+		resultForADist.setConstiCount(new Long(constiCount));
+		resultForADist.setConstiParticipated(new Long(partyResultsVO.size()));
 		resultForADist.setPartyElectionResultsList(partyResultsVO);
+		
+		try{
+		for(PartyResultVO results:partyResultsVO){
+			if(results.getRank().equals(new Long(1))){
+			seatsWon++;
+			}
+			votesEarned+=results.getVotesEarned();
+			validVotes+=results.getValidVotes();
+		}
+		Double votesPercent = new BigDecimal((votesEarned.doubleValue()/validVotes.doubleValue())*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		resultForADist.setSeatsWon(new Long(seatsWon));
+		resultForADist.setVotesPercent(votesPercent);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
 		return resultForADist;
 	}
 
