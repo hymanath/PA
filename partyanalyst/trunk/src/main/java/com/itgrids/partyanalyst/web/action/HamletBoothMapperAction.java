@@ -5,10 +5,12 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BoothPanelVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.HamletsAndBoothsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
@@ -16,7 +18,9 @@ import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VillageBoothInfoVO;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
+import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class HamletBoothMapperAction extends ActionSupport implements ServletRequestAware{
@@ -29,8 +33,11 @@ public class HamletBoothMapperAction extends ActionSupport implements ServletReq
 	JSONObject jObj = null;
 	private HamletsAndBoothsVO hamletsAndBoothsVO; 
 	private IConstituencyPageService constituencyPageService;
+	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private List<VillageBoothInfoVO> villageBooths;
 	private String requestStatus;
+	private BoothPanelVO boothPanelVO;
+	private static final Logger log = Logger.getLogger(PartyBoothWiseResultsService.class);
 	
 	public String getRequestStatus() {
 		return requestStatus;
@@ -38,6 +45,23 @@ public class HamletBoothMapperAction extends ActionSupport implements ServletReq
 
 	public void setRequestStatus(String requestStatus) {
 		this.requestStatus = requestStatus;
+	}
+
+	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
+		return partyBoothWiseResultsService;
+	}
+
+	public void setPartyBoothWiseResultsService(
+			IPartyBoothWiseResultsService partyBoothWiseResultsService) {
+		this.partyBoothWiseResultsService = partyBoothWiseResultsService;
+	}
+
+	public BoothPanelVO getBoothPanelVO() {
+		return boothPanelVO;
+	}
+
+	public void setBoothPanelVO(BoothPanelVO boothPanelVO) {
+		this.boothPanelVO = boothPanelVO;
 	}
 
 	public List<VillageBoothInfoVO> getVillageBooths() {
@@ -147,6 +171,17 @@ public class HamletBoothMapperAction extends ActionSupport implements ServletReq
 					requestStatus = "Record Deleted";
 				}
 			}
+			
+			if(jObj.getString("task").equals("boothPage")){
+				ResultWithExceptionVO resultOfBoothPage = partyBoothWiseResultsService.getBoothPageInfo(jObj.getLong("boothId"));
+				if(resultOfBoothPage.getResultStatus().getExceptionEncountered() == null){
+					boothPanelVO = (BoothPanelVO) resultOfBoothPage.getFinalResult();
+					System.out.println("All Elections Info In Booths::"+boothPanelVO.getElections().size());
+					log.debug("All Elections Info In Booths::"+boothPanelVO.getElections().size());
+				}
+					
+			}
+			
 		}else{
 			result = new ArrayList<SelectOptionVO>(2);
 			result.add(0,new SelectOptionVO(0l,"Select State"));
