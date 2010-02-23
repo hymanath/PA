@@ -21,7 +21,6 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 
@@ -81,7 +80,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			Party party = null;
 			Constituency constituency = null;
 			Election election = null;
-			
+			String districtName = "";
 			for(CandidateResult result:candidateResults){
 				//nomination = result.getNomination();
 				candidate = result.getNomination().getCandidate();
@@ -111,7 +110,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				String votesEarn[] = StringUtils.split(votes, ".");
 				candidateDetails.setVotesEarned(votesEarn[0]);
 				candidateDetails.setVotesPercentage(result.getVotesPercengate());
-				candidateDetails.setDistrictName(constituency.getDistrict().getDistrictName());
+				if(constituency.getDistrict() != null)
+					districtName = constituency.getDistrict().getDistrictName();
+				candidateDetails.setDistrictName(districtName);
 				candidateDetails.setStateName(constituency.getState().getStateName());
 				candidateDetails.setImage(candidate.getImage());
 				
