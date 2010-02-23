@@ -104,14 +104,16 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "boothConstituencyElection")
-	public Set<VillageBoothElection> getHamletBoothElections() {
+	public Set<VillageBoothElection> getVillageBoothElections() {
 		return villageBoothElections;
 	}
 
-	public void setHamletBoothElections(
+	public void setVillageBoothElections(
 			Set<VillageBoothElection> villageBoothElections) {
 		this.villageBoothElections = villageBoothElections;
 	}
+	
+	
 	
 	
 }

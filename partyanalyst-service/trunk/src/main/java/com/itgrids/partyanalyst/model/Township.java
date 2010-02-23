@@ -61,7 +61,7 @@ public class Township implements java.io.Serializable {
 	/** full constructor */
 	public Township(Long townshipId, Tehsil tehsil, String townshipName,
 			Long townshipCode, String townshipType, Set<Ward> wards,
-			Set<ProblemLocation> problemLocations) {
+			Set<ProblemLocation> problemLocations, Set<VillageBoothElection> villageBoothElections) {
 		this.townshipId = townshipId;
 		this.tehsil = tehsil;
 		this.townshipName = townshipName;
@@ -69,6 +69,7 @@ public class Township implements java.io.Serializable {
 		this.townshipType = townshipType;
 		this.wards = wards;
 		this.problemLocations = problemLocations;
+		this.villageBoothElections = villageBoothElections;
 	}
 
 	// Property accessors

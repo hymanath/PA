@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,12 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-import org.hibernate.annotations.NotFoundAction;
-
-@Table
-@Entity(name = "village_booth_election")
+@Entity
+@Table(name = "village_booth_election")
 public class VillageBoothElection extends BaseModel{
 
 	private Long villageBoothElectionId;
@@ -53,8 +48,6 @@ public class VillageBoothElection extends BaseModel{
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "booth_constituency_election_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public BoothConstituencyElection getBoothConstituencyElection() {
 		return boothConstituencyElection;
 	}
@@ -66,8 +59,6 @@ public class VillageBoothElection extends BaseModel{
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "hamlet_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Hamlet getHamlet() {
 		return hamlet;
 	}
@@ -78,8 +69,6 @@ public class VillageBoothElection extends BaseModel{
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "township_id")
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Township getTownship() {
 		return township;
 	}
