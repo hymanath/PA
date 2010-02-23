@@ -21,6 +21,7 @@ public class PartyResultVO {
 	private String constituencyName;
 	private Long rank;
 	private Long votesEarned;
+	private Long validVotes;
 	private String votesPercent;
 	private Long electors;
 	private CandidateOppositionVO oppositionCandidates;
@@ -73,6 +74,12 @@ public class PartyResultVO {
 	}
 	public void setVotesEarned(Long votesEarned) {
 		this.votesEarned = votesEarned;
+	}
+	public Long getValidVotes() {
+		return validVotes;
+	}
+	public void setValidVotes(Long validVotes) {
+		this.validVotes = validVotes;
 	}
 	public String getVotesPercent() {
 		return votesPercent;
