@@ -192,6 +192,7 @@
 	<bean id="hamletBoothMapperAction" class="com.itgrids.partyanalyst.web.action.HamletBoothMapperAction" singleton="false">			
 		<property name="staticDataService" ref="staticDataService"></property>	
 		<property name="constituencyPageService" ref="constituencyPageService"></property>	
+		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService"></property>
 	</bean>
 	
 	<bean id="problemManagementAction" class="com.itgrids.partyanalyst.web.action.ProblemManagementAction" singleton="false">
