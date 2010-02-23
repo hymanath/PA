@@ -1,15 +1,15 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 public class ElectionWiseMandalPartyResultVO  implements Serializable {
 
 	private Long electionYear;
 	private String electionType;
-	private List<PartyGenderWiseVotesVO> partyVotes;
+	private Set<PartyGenderWiseVotesVO> partyVotes;
 	private String genderBoothURL;
-	private List<BoothTotalVotesVO> boothTotalVotes;
+	private BoothTypeDetailsVO boothTypeDetailsVO;
 	
 	public Long getElectionYear() {
 		return electionYear;
@@ -23,10 +23,10 @@ public class ElectionWiseMandalPartyResultVO  implements Serializable {
 	public void setElectionType(String electionType) {
 		this.electionType = electionType;
 	}
-	public List<PartyGenderWiseVotesVO> getPartyVotes() {
+	public Set<PartyGenderWiseVotesVO> getPartyVotes() {
 		return partyVotes;
 	}
-	public void setPartyVotes(List<PartyGenderWiseVotesVO> partyVotes) {
+	public void setPartyVotes(Set<PartyGenderWiseVotesVO> partyVotes) {
 		this.partyVotes = partyVotes;
 	}
 	public String getGenderBoothURL() {
@@ -35,10 +35,21 @@ public class ElectionWiseMandalPartyResultVO  implements Serializable {
 	public void setGenderBoothURL(String genderBoothURL) {
 		this.genderBoothURL = genderBoothURL;
 	}
-	public List<BoothTotalVotesVO> getBoothTotalVotes() {
-		return boothTotalVotes;
+	public BoothTypeDetailsVO getBoothTypeDetailsVO() {
+		return boothTypeDetailsVO;
 	}
-	public void setBoothTotalVotes(List<BoothTotalVotesVO> boothTotalVotes) {
-		this.boothTotalVotes = boothTotalVotes;
+	public void setBoothTypeDetailsVO(BoothTypeDetailsVO boothTypeDetailsVO) {
+		this.boothTypeDetailsVO = boothTypeDetailsVO;
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		ElectionWiseMandalPartyResultVO voObj = (ElectionWiseMandalPartyResultVO) obj;
+		return this.electionYear.equals(voObj.getElectionYear()) && this.electionType.equals(voObj.getElectionType());
+	}
+	
+	@Override
+	public int hashCode(){
+		return this.electionYear.hashCode() + this.electionType.hashCode();
 	}
 }

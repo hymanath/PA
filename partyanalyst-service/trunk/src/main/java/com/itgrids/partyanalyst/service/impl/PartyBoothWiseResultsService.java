@@ -3,8 +3,12 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -13,7 +17,12 @@ import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.BoothPanelVO;
+import com.itgrids.partyanalyst.dto.BoothTotalVotesVO;
+import com.itgrids.partyanalyst.dto.BoothTypeDetailsVO;
 import com.itgrids.partyanalyst.dto.ElectionInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
+import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyGenderWiseVotesVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInfoVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
@@ -186,5 +195,159 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				log.debug("Exception Encountered::", e);
 		}
 		return new ResultWithExceptionVO(boothPageInfo, resultStatus);
+	}
+	
+
+	public ElectionWiseMandalPartyResultListVO getPartyGenderWiseBoothVotesForMandal(Long tehsilID){
+		ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO = new ElectionWiseMandalPartyResultListVO();
+		List<ElectionWiseMandalPartyResultVO> electionWiseMandalPartyResultVOList = new ArrayList<ElectionWiseMandalPartyResultVO>();
+		
+		List list = candidateBoothResultDAO.getPartyGenderWiseBoothVotesForMandal(tehsilID);
+		
+		// 0- partyID, 1- partyName, 2-candidateID, 3- candidateName, 4-rank, 5-electionYear, 6-electionType
+		//7-validVotes, 8-boothId, 9-partNo, 10-villageCovered, 11-maleVoters, 12-femaleVoters, 13-totalVoters,
+		//14-votesEarned by candidate in the booth
+		
+		//election type and year is populated in the vo object
+		Map<ElectionWiseMandalPartyResultVO, List<Object[]>> rawData = getElectionWiseMandalPartyResults(list);
+
+		Set<Map.Entry<ElectionWiseMandalPartyResultVO, List<Object[]>>> electionBoothWiseData = rawData.entrySet();
+		Iterator<Map.Entry<ElectionWiseMandalPartyResultVO, List<Object[]>>> iterator = electionBoothWiseData.iterator();
+		while(iterator.hasNext()){
+			Map.Entry<ElectionWiseMandalPartyResultVO, List<Object[]>> entry = iterator.next();
+			ElectionWiseMandalPartyResultVO electionWiseMandalPartyResultVO = entry.getKey();
+			List<Object[]> value = entry.getValue();
+			electionWiseMandalPartyResultVO =getBoothPartyInfoForElectionResult(electionWiseMandalPartyResultVO, value);
+			electionWiseMandalPartyResultVOList.add(electionWiseMandalPartyResultVO);
+		}
+		electionWiseMandalPartyResultListVO.setElectionWiseMandalPartyResultVOList(electionWiseMandalPartyResultVOList);
+		
+		return electionWiseMandalPartyResultListVO;
+	}
+	
+	private ElectionWiseMandalPartyResultVO getBoothPartyInfoForElectionResult(ElectionWiseMandalPartyResultVO electionWiseMandalPartyResultVO, List<Object[]> value){
+		// 0- partyID, 1- partyName, 2-candidateID, 3- candidateName, 4-rank, 5-electionYear, 6-electionType
+		//7-validVotes, 8-boothId, 9-partNo, 10-villageCovered, 11-maleVoters, 12-femaleVoters, 13-totalVoters,
+		//14-votesEarned by candidate in the booth
+		
+
+		Set<BoothTotalVotesVO> maleBoothVotes = new HashSet<BoothTotalVotesVO>();
+		Set<BoothTotalVotesVO> femaleBoothVotes = new HashSet<BoothTotalVotesVO>();
+		Set<BoothTotalVotesVO> maleFemaleBoothVotes = new HashSet<BoothTotalVotesVO>();
+		Set<PartyGenderWiseVotesVO> partyVotes = new HashSet<PartyGenderWiseVotesVO>();
+		BoothTypeDetailsVO boothTypeDetailsVO = new BoothTypeDetailsVO();
+		Map<Long, PartyGenderWiseVotesVO> partyResults = new LinkedHashMap<Long, PartyGenderWiseVotesVO>();
+		Set<PartyGenderWiseVotesVO> partyVotesList = new HashSet<PartyGenderWiseVotesVO>();
+		for(Object[] obj: value){
+			Long partyID = (Long) obj[0];
+			PartyGenderWiseVotesVO partyGenderWiseVotesVO = partyResults.get(partyID);
+			if(partyGenderWiseVotesVO==null){
+				partyGenderWiseVotesVO = new PartyGenderWiseVotesVO();
+				partyGenderWiseVotesVO.setPartyID(partyID);
+				partyGenderWiseVotesVO.setTotalVotesEarned(0L);
+				partyGenderWiseVotesVO.setMaleBoothResults(0L);
+				partyGenderWiseVotesVO.setFemaleBoothResults(0L);
+				partyGenderWiseVotesVO.setFmBoothResults(0L);
+			}
+			
+			String partyName = obj[1].toString();	
+			Long candidateID = (Long) obj[2]; 		
+			String candidateName = obj[3].toString();
+			Long rank = (Long) obj[4];
+			if(rank.equals(new Long(1)))
+				candidateName = candidateName + "(Winner)";
+			
+			
+			Long boothValidVotes = (Long) obj[7];	
+			Long boothID = (Long) obj[8];
+			Long partNo = new Long(obj[9].toString());
+			String villagesCovered = obj[10].toString();
+			Long maleBoothVoters = (Long) obj[11];
+			Long femaleBoothVoters = (Long) obj[12];
+			Long bothBoothVoters = (Long) obj[13];
+			Long candidateEarnedVotesInBooth = (Long) obj[14]; 
+
+			BoothTotalVotesVO boothTotalVotesVO = new BoothTotalVotesVO();
+			boothTotalVotesVO.setBoothID(boothID);
+			boothTotalVotesVO.setPartNo(partNo);
+			boothTotalVotesVO.setVillagesCovered(villagesCovered);
+			boothTotalVotesVO.setMaleVotes(maleBoothVoters);
+			boothTotalVotesVO.setFemaleVotes(maleBoothVoters);
+			boothTotalVotesVO.setTotalVotes(maleBoothVoters);
+			boothTotalVotesVO.setValidVotes(boothValidVotes);
+			
+			
+			
+			if(maleBoothVoters<5){
+				femaleBoothVotes.add(boothTotalVotesVO);
+				Long partyFemaleBoothResults = candidateEarnedVotesInBooth+partyGenderWiseVotesVO.getFemaleBoothResults();
+				partyGenderWiseVotesVO.setFemaleBoothResults(partyFemaleBoothResults);
+			} else if(femaleBoothVoters<5){
+				maleBoothVotes.add(boothTotalVotesVO);
+				Long partyMaleBoothResults = candidateEarnedVotesInBooth+partyGenderWiseVotesVO.getMaleBoothResults();
+				partyGenderWiseVotesVO.setMaleBoothResults(partyMaleBoothResults);
+			} else{
+				maleFemaleBoothVotes.add(boothTotalVotesVO);
+				Long partyMFBoothResults = candidateEarnedVotesInBooth+partyGenderWiseVotesVO.getFmBoothResults();
+				partyGenderWiseVotesVO.setFmBoothResults(partyMFBoothResults);
+			}
+			
+
+			partyGenderWiseVotesVO.setPartyName(partyName);
+			partyGenderWiseVotesVO.setCandidateNameWithStatus(candidateName);
+			partyGenderWiseVotesVO.setCandidateID(candidateID);
+			Long partyTotalVotes = partyGenderWiseVotesVO.getTotalVotesEarned() + candidateEarnedVotesInBooth;
+			partyGenderWiseVotesVO.setTotalVotesEarned(partyTotalVotes);
+			partyResults.put(partyID,partyGenderWiseVotesVO);
+			partyVotesList.add(partyGenderWiseVotesVO);
+		}
+		boothTypeDetailsVO.setFemaleBoothVotes(femaleBoothVotes);
+		boothTypeDetailsVO.setMaleBoothVotes(maleBoothVotes);
+		boothTypeDetailsVO.setMaleFemailBoothVotes(maleFemaleBoothVotes);
+		
+		electionWiseMandalPartyResultVO.setPartyVotes(partyVotes);
+		electionWiseMandalPartyResultVO.setBoothTypeDetailsVO(boothTypeDetailsVO);
+		
+		electionWiseMandalPartyResultVO.setPartyVotes(partyVotesList);
+		return electionWiseMandalPartyResultVO;		
+	}
+	
+	private Map<ElectionWiseMandalPartyResultVO, List<Object[]>> getElectionWiseMandalPartyResults(List list){
+		// 0- partyID, 1- partyName, 2-candidateID, 3- candidateName, 4-rank, 5-electionYear, 6-electionType
+		//7-validVotes, 8-boothId, 9-partNo, 10-villageCovered, 11-maleVoters, 12-femaleVoters, 13-totalVoters,
+		//14-votesEarned by candidate in the booth
+		int size = list.size();
+		Map<ElectionWiseMandalPartyResultVO, List<Object[]>> rawData =  
+			new LinkedHashMap<ElectionWiseMandalPartyResultVO, List<Object[]>>();
+		for(int i=0; i<size; i++){
+			Object[] obj = (Object[]) list.get(i);
+			ElectionWiseMandalPartyResultVO key =new ElectionWiseMandalPartyResultVO();
+			key.setElectionType(obj[6].toString());
+			key.setElectionYear(new Long(obj[5].toString()));
+			
+			List<Object[]> value = rawData.get(key);
+			if(value==null){
+				value = new ArrayList<Object[]>();
+			}
+			value.add(obj);
+			rawData.put(key,value);			
+		}
+		
+		return rawData;
+	}
+	public static void main(String[] args) throws Exception{
+		ElectionWiseMandalPartyResultVO obj1 = new ElectionWiseMandalPartyResultVO();
+		ElectionWiseMandalPartyResultVO obj2 = new ElectionWiseMandalPartyResultVO();
+
+		obj1.setElectionType("Assembly"); obj1.setElectionYear(2009L); obj1.setGenderBoothURL("url1");
+		obj2.setElectionType("Assembly"); obj2.setElectionYear(2009L); obj2.setGenderBoothURL("url2");
+		Map<ElectionWiseMandalPartyResultVO, String> raw =  new LinkedHashMap<ElectionWiseMandalPartyResultVO, String>();
+		raw.put(obj1,"one");
+		raw.put(obj2,"two");
+		System.out.println(raw.size());
+		System.out.println("val1="+raw.get(obj1));
+		System.out.println("val2="+raw.get(obj2));
+		System.out.println("url1="+obj1.getGenderBoothURL());
+		System.out.println("url2="+obj2.getGenderBoothURL()); 
 	}
 }

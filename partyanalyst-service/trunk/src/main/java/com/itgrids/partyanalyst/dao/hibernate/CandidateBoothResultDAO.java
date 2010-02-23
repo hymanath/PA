@@ -91,4 +91,32 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"model.boothConstituencyElection.constituencyElection.election.electionYear, " +
 				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType desc",boothId);		
 	}
+	
+
+	public List getPartyGenderWiseBoothVotesForMandal(Long tehsilID){
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.nomination.party.partyId, model.nomination.party.shortName, ")
+			.append("model.nomination.candidate.candidateId, model.nomination.candidate.lastname, model.nomination.candidateResult.rank, ")
+			.append("model.boothConstituencyElection.constituencyElection.election.electionYear, ")
+			.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType, ")
+			.append("model.boothConstituencyElection.boothResult.validVotes, model.boothConstituencyElection.booth.boothId, ")
+			.append("model.boothConstituencyElection.booth.partNo, model.boothConstituencyElection.booth.villagesCovered, ")
+			.append("model.boothConstituencyElection.booth.maleVoters,model.boothConstituencyElection.booth.femaleVoters, ")
+			.append("model.boothConstituencyElection.booth.totalVoters, model.votesEarned ");
+		hqlQuery.append("from CandidateBoothResult model ");
+		hqlQuery.append("where model.boothConstituencyElection.booth.tehsil.tehsilId=? ");
+			/*.append("and model.boothConstituencyElection.constituencyElection.election.electionYear in (").append( electionYears) 
+			.append(") and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionTypeId ")
+			.append("in (").append(electionTypeIDs).append( ")");*/
+		hqlQuery.append("group by model.boothConstituencyElection.constituencyElection.election.electionYear,")
+			.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
+			.append("model.nomination.party.shortName, ")
+			.append("model.boothConstituencyElection.booth.boothId ");
+		hqlQuery.append("order by model.boothConstituencyElection.constituencyElection.election.electionYear,")
+		.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
+		.append("model.nomination.party.shortName, ")
+		.append("model.boothConstituencyElection.booth.boothId ");
+		
+		return getHibernateTemplate().find(hqlQuery.toString(), tehsilID);
+	}
 }

@@ -7,7 +7,7 @@ public class PartyGenderWiseVotesVO implements Serializable {
 	private String partyName;
 	private String candidateNameWithStatus;
 	private Long candidateID;
-	private Long totalVotes;
+	private Long totalVotesEarned;
 	private Long maleBoothResults;
 	private Long femaleBoothResults;
 	private Long fmBoothResults;
@@ -36,11 +36,11 @@ public class PartyGenderWiseVotesVO implements Serializable {
 	public void setCandidateID(Long candidateID) {
 		this.candidateID = candidateID;
 	}
-	public Long getTotalVotes() {
-		return totalVotes;
+	public Long getTotalVotesEarned() {
+		return totalVotesEarned;
 	}
-	public void setTotalVotes(Long totalVotes) {
-		this.totalVotes = totalVotes;
+	public void setTotalVotesEarned(Long totalVotesEarned) {
+		this.totalVotesEarned = totalVotesEarned;
 	}
 	public Long getMaleBoothResults() {
 		return maleBoothResults;
@@ -59,5 +59,16 @@ public class PartyGenderWiseVotesVO implements Serializable {
 	}
 	public void setFmBoothResults(Long fmBoothResults) {
 		this.fmBoothResults = fmBoothResults;
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		PartyGenderWiseVotesVO voObj = (PartyGenderWiseVotesVO) obj;
+		return this.partyID.equals(voObj.getPartyID());
+	}
+	
+	@Override
+	public int hashCode(){
+		return this.partyID.hashCode();
 	}
 }
