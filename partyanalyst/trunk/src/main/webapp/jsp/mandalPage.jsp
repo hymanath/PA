@@ -380,7 +380,7 @@
 		}, {
 			key : "totalVoters",parser:"number"
 		}, {
-			key : "voterPercentage", parser:YAHOO.util.DataSourceBase.parseNumber
+			key : "voterPercentage"
 		} ]
 	};
 
@@ -395,8 +395,8 @@
 		sortable : true
 	}, {
 		key : "voterPercentage",
-		label : "Percentage(%)",formatter:YAHOO.widget.DataTable.formatFloat,
-		sortable : true
+		label : "Percentage(%)", 
+		formatter:YAHOO.widget.DataTable.formatFloat
 	} ];
 	var myConfigs = {
 		paginator : new YAHOO.widget.Paginator({
@@ -421,6 +421,8 @@
 			key : "femaleVoters",parser:"number"
 		}, {
 			key : "totalVoters",parser:"number"
+		}, {
+			key : "percentage"
 		} ]
 	};
 
@@ -443,6 +445,9 @@
 		parser:"number",
 		label : "Total",
 		sortable : true
+	}, {
+		key : "percentage",
+		label : "Percentage(%)"
 	}];
 	var myConfigs = {
 		paginator : new YAHOO.widget.Paginator({
@@ -505,6 +510,7 @@
 		</div>
 	</div>
 	<br/>
+	
 	<div id="mandalPageTab" class="yui-skin-sam"></div>
 	<div id="villageCensusDiv" style="display: none;">
 		<div id="villageCensusDivHead"><h4><u>Villages Details..</u></h4></div>
@@ -592,7 +598,7 @@
 					property="casteName" sortable="true" />
 				<display:column style="text-align: left;" title="Total Voters"
 					property="totalVoters" sortable="true" />
-				<display:column style="text-align: left;" title="Percentage"
+				<display:column style="text-align: right;" title="Percentage"
 					property="voterPercentage" sortable="true" />
 			</display:table>
 		</div>
@@ -611,6 +617,8 @@
 					property="femaleVoters" sortable="true" />
 				<display:column style="text-align: left;" title="Total"
 					property="totalVoters" sortable="true" />
+				<display:column style="text-align: left;" title="Percentage"
+					 property="percentage" />
 			</display:table>
 		</div>
 	</div>
