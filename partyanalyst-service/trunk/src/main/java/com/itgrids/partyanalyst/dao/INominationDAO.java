@@ -100,5 +100,8 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List<ConstituencyElection> findConstituencyElectionByElectionIdAndPartys(Long electionId,List<Long> partyIds);
 	
 	public List<ConstituencyElection> findConstituencyElectionByElectionIdAndDistrictIdAndPartys(Long electionId,Long districtId,List<Long> partyIds);
+	
+	@SuppressWarnings("unchecked")
+	public List findElectionDataByElectionId(Long electionId);
 
 }
