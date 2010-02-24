@@ -102,7 +102,9 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 			.append("model.boothConstituencyElection.boothResult.validVotes, model.boothConstituencyElection.booth.boothId, ")
 			.append("model.boothConstituencyElection.booth.partNo, model.boothConstituencyElection.booth.villagesCovered, ")
 			.append("model.boothConstituencyElection.booth.maleVoters,model.boothConstituencyElection.booth.femaleVoters, ")
-			.append("model.boothConstituencyElection.booth.totalVoters, model.votesEarned ");
+			.append("model.boothConstituencyElection.booth.totalVoters, model.votesEarned, ")
+			.append("model.nomination.constituencyElection.constituency.constituencyId, ")
+			.append(" model.nomination.constituencyElection.constituency.name ");
 		hqlQuery.append("from CandidateBoothResult model ");
 		hqlQuery.append("where model.boothConstituencyElection.booth.tehsil.tehsilId=? ");
 			/*.append("and model.boothConstituencyElection.constituencyElection.election.electionYear in (").append( electionYears) 

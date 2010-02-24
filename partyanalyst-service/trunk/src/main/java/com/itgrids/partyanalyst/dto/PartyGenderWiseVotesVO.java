@@ -16,6 +16,8 @@ public class PartyGenderWiseVotesVO implements Serializable {
 	private String fmBoothResultsPercentage;
 	private String totalVotesEarnedPercentage;
 	private Long rank;
+	private Long constituencyID;
+	private String constituencyName;
 	
 	public Long getPartyID() {
 		return partyID;
@@ -105,5 +107,17 @@ public class PartyGenderWiseVotesVO implements Serializable {
 	}
 	public void setRank(Long rank) {
 		this.rank = rank;
+	}
+	public Long getConstituencyID() {
+		return constituencyID;
+	}
+	public void setConstituencyID(Long constituencyID) {
+		this.constituencyID = constituencyID;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
 	}
 }

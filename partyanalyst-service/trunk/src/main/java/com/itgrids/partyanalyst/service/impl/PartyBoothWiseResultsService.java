@@ -206,7 +206,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		
 		// 0- partyID, 1- partyName, 2-candidateID, 3- candidateName, 4-rank, 5-electionYear, 6-electionType
 		//7-validVotes, 8-boothId, 9-partNo, 10-villageCovered, 11-maleVoters, 12-femaleVoters, 13-totalVoters,
-		//14-votesEarned by candidate in the booth
+		//14-votesEarned by candidate in the booth, 15-constituencyID, 16-constituencyName
 		
 		//election type and year is populated in the vo object
 		Map<ElectionWiseMandalPartyResultVO, List<Object[]>> rawData = getElectionWiseMandalPartyResults(list);
@@ -228,7 +228,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	private ElectionWiseMandalPartyResultVO getBoothPartyInfoForElectionResult(ElectionWiseMandalPartyResultVO electionWiseMandalPartyResultVO, List<Object[]> value){
 		// 0- partyID, 1- partyName, 2-candidateID, 3- candidateName, 4-rank, 5-electionYear, 6-electionType
 		//7-validVotes, 8-boothId, 9-partNo, 10-villageCovered, 11-maleVoters, 12-femaleVoters, 13-totalVoters,
-		//14-votesEarned by candidate in the booth
+		//14-votesEarned by candidate in the booth, 15-constituencyID, 16-constituencyName
 		
 
 		Set<BoothTotalVotesVO> maleBoothVotes = new HashSet<BoothTotalVotesVO>();
@@ -267,6 +267,8 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			Long femaleBoothVoters = (Long) obj[12];
 			Long bothBoothVoters = (Long) obj[13];
 			Long candidateEarnedVotesInBooth = (Long) obj[14]; 
+			Long constituencyID = (Long) obj[15]; 
+			String constituencyName = obj[16].toString();
 
 			BoothTotalVotesVO boothTotalVotesVO = new BoothTotalVotesVO();
 			boothTotalVotesVO.setBoothID(boothID);
@@ -310,6 +312,8 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			partyGenderWiseVotesVO.setRank(rank);
 			partyResults.put(partyID,partyGenderWiseVotesVO);
 			partyVotesList.add(partyGenderWiseVotesVO);
+			partyGenderWiseVotesVO.setConstituencyID(constituencyID);
+			partyGenderWiseVotesVO.setConstituencyName(constituencyName);
 			sumOfAllCandidateVotes = sumOfAllCandidateVotes + candidateEarnedVotesInBooth;
 		}
 		boothTypeDetailsVO.setFemaleBoothVotes(femaleBoothVotes);
@@ -351,7 +355,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	private Map<ElectionWiseMandalPartyResultVO, List<Object[]>> getElectionWiseMandalPartyResults(List list){
 		// 0- partyID, 1- partyName, 2-candidateID, 3- candidateName, 4-rank, 5-electionYear, 6-electionType
 		//7-validVotes, 8-boothId, 9-partNo, 10-villageCovered, 11-maleVoters, 12-femaleVoters, 13-totalVoters,
-		//14-votesEarned by candidate in the booth
+		//14-votesEarned by candidate in the booth, 15-constituencyID, 16-constituencyName
 		int size = list.size();
 		Map<ElectionWiseMandalPartyResultVO, List<Object[]>> rawData =  
 			new LinkedHashMap<ElectionWiseMandalPartyResultVO, List<Object[]>>();
