@@ -17,20 +17,41 @@
   <META NAME="Description" CONTENT="">
 
   
-    <!-- Dependencies --> 
+ <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+	<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/element-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/json/json-min.js"></script>   
-   	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/connection-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/get-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/calendar-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
+	
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
-	<link href="styles/yuiStyles/datatable.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+
+	<!-- YUI Skin Sam -->
+
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 
   <style type="text/css">
 		table.stateResultsTable{
@@ -83,13 +104,17 @@
 			color:#1C4B7A;
 		}	
 		
-		.stateDetailsTable tr
+		.yui-skin-sam .yui-dt table
 		{
-
-		}
-		.stateDetailsTable td
-		{
-
+			border:medium none LemonChiffon;
+			border-collapse:separate;
+			color:DarkOliveGreen;
+			font-family:verdana;
+			font-size:inherit;
+			font-weight:bold;
+			margin:0;
+			padding:0;
+			text-align:center;
 		}
 		
   </style>
@@ -162,32 +187,23 @@ function buildDataTable(param,results)
 			}
 	}
 
-	console.log(exData.partys);
-
-	YAHOO.example.Basic = function(){
-	 var myColumnDefs = [ 
+	var myColumnDefs = [ 
 	            {key:"Party Name", sortable:true, resizeable:true}, 
 	            {key:"Seats Won", sortable:true,resizeable:true}
 	        ]; 
 	
-	console.log(myColumnDefs);
-
+	
 	var myDataSource = new YAHOO.util.DataSource(exData.partys); 
 	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	myDataSource.responseSchema = { 
 	     fields: ["Party Name","Seats Won"] 
 	}; 
 	
-	var myDataTable = new YAHOO.widget.DataTable("table"+subStr,myColumnDefs, myDataSource, {caption:"DataTable Caption"}); 
-	return 
-		{ 
-	      oDS: myDataSource
-	      
-	    }; 
-	}(); 
-
+	var myDataTable = new YAHOO.widget.DataTable("table"+subStr,myColumnDefs, myDataSource); 
+		
 	spanElmt.innerHTML=" (close)";
 	searchElmt.style.display="none";
+
 }
 function insertData(param,results)
 {
@@ -201,12 +217,7 @@ function insertData(param,results)
 	tableDivElmt.style.display="block";
 	
 	var str='';
-	str+='<table style="margin-left:20px;margin-top:10px;" class="stateResultsTable">';
-	str+='<tr>';
-	str+='	<th align="center"> Party Name </th>';
-	str+='	<th align="center"> Seats Won </th>';
-	str+='</tr>';
-	
+	str+='<table id="elecResultsTab">';
 	for(var item in results)
 	{		
 		str+='<tr>';
@@ -218,8 +229,32 @@ function insertData(param,results)
 	
 	tableDivElmt.innerHTML=str;	
 	
+	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("elecResultsTab"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "partyName"
+		}, {
+			key : "totalSeatsWon",parser:"number"
+		}]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "partyName",
+		label : "PARTY NAME",
+		sortable : true
+	}, {
+		key : "totalSeatsWon",
+		label : "SEATS WON",
+		sortable : true
+	}];
+
+   	var myDataTable = new YAHOO.widget.DataTable(tableDivElmt,resultsColumnDefs, resultsDataSource);  
+
 	spanElmt.innerHTML=" (close)";
 	searchElmt.style.display="none";
+
 }
   </script>
  </HEAD>
@@ -300,8 +335,9 @@ function insertData(param,results)
 		<td id="search${state.electionId}" align="left" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/arrows.gif" /></img></td>		
 	</tr>
 </table>
+<div id="electionResultsDiv" class="yui-skin-sam">
 <div style="display:none;" id="table${state.electionId}">
-
+</div>
 </div>
 <br/><br/>
 </c:forEach>
