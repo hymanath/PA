@@ -322,4 +322,11 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		queryObject.setParameterList("partyIds", partyIds);
 		return queryObject.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findElectionDataByElectionId(Long electionId){
+		return getHibernateTemplate().find("select model.party.partyId,model.party.longName," + 
+				"count(model.candidateResult) from Nomination model where " +
+				"model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 group by model.party.partyId",electionId);
+	}
 }
