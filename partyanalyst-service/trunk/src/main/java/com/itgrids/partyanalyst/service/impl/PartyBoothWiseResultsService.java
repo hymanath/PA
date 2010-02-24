@@ -238,6 +238,10 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		BoothTypeDetailsVO boothTypeDetailsVO = new BoothTypeDetailsVO();
 		Map<Long, PartyGenderWiseVotesVO> partyResults = new LinkedHashMap<Long, PartyGenderWiseVotesVO>();
 		Set<PartyGenderWiseVotesVO> partyVotesList = new HashSet<PartyGenderWiseVotesVO>();
+		Long totalMaleBoothVotes = 0L;
+		Long totalFemaleBoothVotes = 0L;
+		Long totalFMBoothVotes = 0L;
+		Long sumOfAllCandidateVotes = 0L;
 		for(Object[] obj: value){
 			Long partyID = (Long) obj[0];
 			PartyGenderWiseVotesVO partyGenderWiseVotesVO = partyResults.get(partyID);
@@ -254,9 +258,6 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			Long candidateID = (Long) obj[2]; 		
 			String candidateName = obj[3].toString();
 			Long rank = (Long) obj[4];
-			if(rank.equals(new Long(1)))
-				candidateName = candidateName + "(Winner)";
-			
 			
 			Long boothValidVotes = (Long) obj[7];	
 			Long boothID = (Long) obj[8];
@@ -282,14 +283,22 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				femaleBoothVotes.add(boothTotalVotesVO);
 				Long partyFemaleBoothResults = candidateEarnedVotesInBooth+partyGenderWiseVotesVO.getFemaleBoothResults();
 				partyGenderWiseVotesVO.setFemaleBoothResults(partyFemaleBoothResults);
+				
+				
+				totalFemaleBoothVotes = totalFemaleBoothVotes + candidateEarnedVotesInBooth;
+				 
+				
 			} else if(femaleBoothVoters<5){
 				maleBoothVotes.add(boothTotalVotesVO);
 				Long partyMaleBoothResults = candidateEarnedVotesInBooth+partyGenderWiseVotesVO.getMaleBoothResults();
 				partyGenderWiseVotesVO.setMaleBoothResults(partyMaleBoothResults);
+				totalMaleBoothVotes = totalMaleBoothVotes + candidateEarnedVotesInBooth;
 			} else{
 				maleFemaleBoothVotes.add(boothTotalVotesVO);
 				Long partyMFBoothResults = candidateEarnedVotesInBooth+partyGenderWiseVotesVO.getFmBoothResults();
 				partyGenderWiseVotesVO.setFmBoothResults(partyMFBoothResults);
+				
+				totalFMBoothVotes = totalFMBoothVotes + candidateEarnedVotesInBooth;
 			}
 			
 
@@ -298,8 +307,10 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			partyGenderWiseVotesVO.setCandidateID(candidateID);
 			Long partyTotalVotes = partyGenderWiseVotesVO.getTotalVotesEarned() + candidateEarnedVotesInBooth;
 			partyGenderWiseVotesVO.setTotalVotesEarned(partyTotalVotes);
+			partyGenderWiseVotesVO.setRank(rank);
 			partyResults.put(partyID,partyGenderWiseVotesVO);
 			partyVotesList.add(partyGenderWiseVotesVO);
+			sumOfAllCandidateVotes = sumOfAllCandidateVotes + candidateEarnedVotesInBooth;
 		}
 		boothTypeDetailsVO.setFemaleBoothVotes(femaleBoothVotes);
 		boothTypeDetailsVO.setMaleBoothVotes(maleBoothVotes);
@@ -308,6 +319,31 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		electionWiseMandalPartyResultVO.setPartyVotes(partyVotes);
 		electionWiseMandalPartyResultVO.setBoothTypeDetailsVO(boothTypeDetailsVO);
 		
+		for(PartyGenderWiseVotesVO objVO : partyVotesList){
+			/*Long totalMaleBoothVotes = 0L;
+			Long totalFemaleBoothVotes = 0L;
+			Long totalFMBoothVotes = 0L;*/
+			String partyMaleBoothPerc = new String();
+			String partyFemaleBoothPerc = new String();
+			String partyFMBoothPerc = new String();
+			String partyTotalVotesEarnedPercentage = new String();
+			if(totalMaleBoothVotes!=null && !totalMaleBoothVotes.equals(0L))
+						partyMaleBoothPerc = new BigDecimal((objVO.getMaleBoothResults()*100)/totalMaleBoothVotes)
+												.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+			if(totalFemaleBoothVotes!=null && !totalFemaleBoothVotes.equals(0L))
+						partyFemaleBoothPerc = new BigDecimal((objVO.getFemaleBoothResults()*100)/totalFemaleBoothVotes)
+												.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+			if(totalFMBoothVotes!=null && !totalFMBoothVotes.equals(0L))
+				partyFMBoothPerc = new BigDecimal((objVO.getFmBoothResults()*100)/totalFMBoothVotes)
+										.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+			if(sumOfAllCandidateVotes!=null && !sumOfAllCandidateVotes.equals(0L))
+				partyTotalVotesEarnedPercentage = new BigDecimal((objVO.getTotalVotesEarned()*100)/sumOfAllCandidateVotes)
+										.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+			objVO.setMaleBoothResultsPercentage(partyMaleBoothPerc);
+			objVO.setFemaleBoothResultsPercentage(partyFemaleBoothPerc);
+			objVO.setFmBoothResultsPercentage(partyFMBoothPerc);
+			objVO.setTotalVotesEarnedPercentage(partyTotalVotesEarnedPercentage);
+		}
 		electionWiseMandalPartyResultVO.setPartyVotes(partyVotesList);
 		return electionWiseMandalPartyResultVO;		
 	}

@@ -11,6 +11,11 @@ public class PartyGenderWiseVotesVO implements Serializable {
 	private Long maleBoothResults;
 	private Long femaleBoothResults;
 	private Long fmBoothResults;
+	private String maleBoothResultsPercentage;
+	private String femaleBoothResultsPercentage;
+	private String fmBoothResultsPercentage;
+	private String totalVotesEarnedPercentage;
+	private Long rank;
 	
 	public Long getPartyID() {
 		return partyID;
@@ -70,5 +75,35 @@ public class PartyGenderWiseVotesVO implements Serializable {
 	@Override
 	public int hashCode(){
 		return this.partyID.hashCode();
+	}
+	public String getMaleBoothResultsPercentage() {
+		return maleBoothResultsPercentage;
+	}
+	public void setMaleBoothResultsPercentage(String maleBoothResultsPercentage) {
+		this.maleBoothResultsPercentage = maleBoothResultsPercentage;
+	}
+	public String getFemaleBoothResultsPercentage() {
+		return femaleBoothResultsPercentage;
+	}
+	public void setFemaleBoothResultsPercentage(String femaleBoothResultsPercentage) {
+		this.femaleBoothResultsPercentage = femaleBoothResultsPercentage;
+	}
+	public String getFmBoothResultsPercentage() {
+		return fmBoothResultsPercentage;
+	}
+	public void setFmBoothResultsPercentage(String fmBoothResultsPercentage) {
+		this.fmBoothResultsPercentage = fmBoothResultsPercentage;
+	}
+	public String getTotalVotesEarnedPercentage() {
+		return totalVotesEarnedPercentage;
+	}
+	public void setTotalVotesEarnedPercentage(String totalVotesEarnedPercentage) {
+		this.totalVotesEarnedPercentage = totalVotesEarnedPercentage;
+	}
+	public Long getRank() {
+		return rank;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
 	}
 }
