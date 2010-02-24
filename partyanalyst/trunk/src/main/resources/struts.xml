@@ -326,6 +326,11 @@
 			<result name="error">/jsp/mandalPageFail.jsp</result>
 		</action>
 		
+		<action name="mandalPageElectionInfoAction" class="mandalPageElectionInfoAction">
+			<result name="success">/jsp/mandalPage1.jsp</result>
+			<result name="error">/jsp/mandalPageFail.jsp</result>
+		</action>
+		
 		<action name="districtPageAction" class="districtPageAction">
 			<result name="success">/jsp/districtPage.jsp</result>
 			<result name="error">/jsp/districtPageFail.jsp</result>
