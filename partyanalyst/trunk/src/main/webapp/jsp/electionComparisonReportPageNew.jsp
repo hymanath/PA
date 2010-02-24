@@ -191,14 +191,17 @@
 		margin:10px;
 		text-align:left;
   	}
-	#legend {
-		background-color:#567AAF;
+	legend {
+		background-color:#9696C0;
 		color:#FFFFFF;
-		font-size:12px;
+		font-family:status-bar;
+		font-size:11px;
+		font-weight:bold;
 		padding:5px;
     }
-	#fieldset {
-		border:4px solid #CFD6DF;
+    }
+	fieldset {
+		border:4px solid #F6DFC9;
 		margin-bottom:10px;
 	}
 	
