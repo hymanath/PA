@@ -69,6 +69,7 @@
 	
 	<bean name="stateElectionResultsService" class="com.itgrids.partyanalyst.service.impl.StateElectionResultsService" >
 	     <property name="candidateResultObjectsDAO" ref="candidateResultObjectsDAO" />
+	     <property name="nominationDAO" ref="nominationDAO" />
 	</bean>
 	
 	<bean name="constituencyPageService" class="com.itgrids.partyanalyst.service.impl.ConstituencyPageService" >
