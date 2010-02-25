@@ -24,5 +24,10 @@ public class ProblemExternalSourceDAOHibernateTest extends BaseDaoTestCase{
 		List<ProblemExternalSource> list = problemExternalSourceDAO.getAll();
 		assertEquals(1, list.size());
 	}
+
+	public void testFindByExternalSourceId(){
+		List<ProblemExternalSource> regUser = problemExternalSourceDAO.findByProblemExternalSourceId(new Long(1));
+		assertEquals(1, regUser.size());
+	}
 	
 }
