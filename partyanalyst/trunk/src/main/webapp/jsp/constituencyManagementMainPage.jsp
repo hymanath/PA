@@ -42,8 +42,14 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/calendar/assets/skins/sam/calendar.css">    
 	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css">		 
-	<!-- YUI Dependency files (End) -->
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css">
+	
+	<!-- Required CSS -->
+	  <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/treeview/assets/skins/sam/treeview.css">  
+	<!--  <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/yui-styles-2.8/tree.css"> -->
+	<!-- TreeView source file --> 
+	<script src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+ 	<!-- YUI Dependency files (End) -->
 	
 		<style type="text/css">
 		#constituencyMgmtHeaderDiv
@@ -140,14 +146,7 @@
 		{
 			width:100px;
 		}
-		#groupDetailsHead
-		{
-			text-align:center;
-			font-weight:bold;
-			text-decoration:underline;
-			margin-top:10px;
-			margin-bottom:10px;
-		}	
+		
 		#groupDetails
 		{
 			padding:10px;
@@ -172,6 +171,118 @@
 			width: 900px;
 			overflow-x:auto;
 		}
+		#leftLayoutMain 
+		{					
+			min-height:80px;
+			padding:10px 10px 20px;
+		}
+		.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd 
+		{
+			background-color:#F0F8FF;
+			border:none;
+		}
+		#UGIntro #systemGroups #myGroups #createNewGrpDiv .link a {
+			color:#6597AF;
+			text-decoration:none;
+			margin-left:21px;
+			padding:2px 0 0 25px;
+			font-size:12px;			
+		}
+		a:hover {
+			text-decoration:underline;
+		}
+		a {
+			color:#0D5CAB;
+			text-decoration:none;
+		} 	
+		#myGroupsList li a {
+			color:#F47D31;
+			text-decoration:none;
+			align: left;
+			
+		}
+		#myGroupsList li {
+			font-weight: bold;
+			list-style-type: none;
+			
+		}
+		h1 {
+			color:#0D5CAB;
+			font-size:1.6em;
+			margin:0 0 0.5em;
+			text-align: center;
+		}
+		#groupDetailsHead {
+			color:#0D5CAB;
+			font-weight:bold;			
+			text-align: center;
+		}
+		#myGroups
+		{
+			background:transparent url(images/icons/icon_groups.png) no-repeat scroll left bottom;
+		}
+		#systemGroups
+		{
+			background:transparent url(images/icons/system_grps.png) no-repeat scroll left bottom;
+		}
+		#UGIntro
+		{
+			background:transparent url(images/icons/intro.png) no-repeat scroll left bottom;
+		}
+		#createNewGrpDiv
+		{
+			background:transparent url(images/icons/plus.png) no-repeat scroll left bottom;
+		}
+		#leftLayoutMain a
+		{
+			margin-left:21px;			
+		}
+		#groupDetails a
+		{
+			margin-left:21px;
+			padding:5px;
+		}
+		#groupDetailsDiv td 
+		{
+			color:#404040;
+		}			
+		.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover {
+			color:#808080;
+			cursor:pointer;
+			font-weight:bold;
+			margin-left:1px;
+			text-decoration:none;
+		}
+		.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover {
+			cursor:pointer;
+			margin-left:2px;
+			text-decoration:none;
+			background: #F0F8FF;
+		}
+		.section_title {
+			border-bottom:1px dotted #B9B9B9;
+			color:#0D5CAB;
+			font-size:14px;
+			font-weight:bold;
+			margin-bottom:5px;
+			padding:5px 0;
+			text-transform:uppercase;
+		}
+		#userGroupsDialogText 
+		{
+			color:#404040;
+		}
+		.createGroupTable  th {
+			color:#404040;
+			font-weight:bold;
+			text-align:left;
+		}
+		.createGroupTable th td {
+			padding:5px;
+			vertical-align:top;
+			padding-left: 15px;
+		}
+		
 	</style>
 
 	<script type="text/javascript">
@@ -271,11 +382,12 @@
 			String newIssuesAlertMessage = rb.getString("newIssuesAlertMessage");
 			String pendingFrom = rb.getString("pendingFrom");
 			String comments = rb.getString("comments");
+			String addToStaticGrpAsSubGrpRadio = rb.getString("addToStaticGrpAsSubGrpRadio");
 		  %> }
 	
 	var outerTab,problemMgmtTabs,newProbDataTable, classifiedDataTable,assignedIssDataTable, progessIssuesDataTable, classifyDTRecord, deptCellEditor,pendingIssuesDataTable, fixedIssuesDataTable, ePapersDataTable;
 	var newProblemDialog,createGroupDialog, showGrpMbrsDialog, addGrpMbrsDialog,elCheckbox,elCheckboxInClassifyDT,elCheckboxInAssignDT,elCheckboxInProgressDT,elCheckboxInPendingDT,EditClassifyProbsDialog ;
-	var classifyButton, assignButton, progressButton,pFixedButton,pPendingButton,progressButtonInPending;
+	var classifyButton, assignButton, progressButton,pFixedButton,pPendingButton,progressButtonInPending,userGrpsTree;
 	var recordsArray = new Array();
 	var clasifyDtRecordsArray = new Array();
 	var assignDtRecordsArray = new Array();
@@ -344,6 +456,36 @@
 						animate: false,		
 						height: '150'
 					}
+	    ] 
+		}); 
+		layoutEl.render(); 
+	}
+
+	function buildUserGroupsTabLayout()
+	{	
+		var layoutEl = new YAHOO.widget.Layout('layoutMain', { 
+			height:500,
+			units: [ 	        
+					{
+						position: 'left',						
+						width: 225,
+						height:200,						
+						body: 'leftLayoutMain',
+						resize: false, 
+						gutter: '5px',
+						collapse: false,
+						scroll: false,						
+						animate: false  
+					}, 
+					{ 
+						position: 'center',						
+						body: 'centerLayoutMain',
+						resize: false,
+						gutter: '5px',
+						collapse: false,
+						scroll: false,						
+						animate: false
+					} 
 	    ] 
 		}); 
 		layoutEl.render(); 
@@ -503,7 +645,16 @@
 									} else if(jsObj.task == "grpMbrsByGrpId")
 									{
 										showGrpMembers(myResults);
-									} else
+									} else if(jsObj.task == "grpDetailsByStaticGrpId")
+									{
+										showSubGroupsUnderStaticGroups(myResults,jsObj);
+										//loadNodeData(myResults);
+									} else if(jsObj.task == "getCompleteGroupDescription")
+									{
+										showGroupdDetailsInCenterLayout(myResults,jsObj);
+										//loadNodeData(myResults);
+									}		
+									 else
 									{
 										buildSelectOption(myResults,jsObj);									
 									}
@@ -950,13 +1101,7 @@
 	{
 		var elmt = document.getElementById("alertMessage");
 		elmt.style.display = 'none';
-		var jsObj= 
-		{
-			task:"userGroupInfoDisplay"
-		}
-		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/userGroupAction.action?"+param;
-		callAjax(param,jsObj,url);			
+		buildUserGroupsTabLayout();					
 	}
 	
 	function handleRecommLetrsTabClick()
@@ -1039,10 +1184,13 @@
 			ePapersDataTable.destroy();
 		buildEPapersURLDataTable();
 	}
-	
+	//rag
 	function showGroupsCreatedByUsers(results)
 	{
-		var groupsByUser = results.groupsCreatedByUser;
+		//buildUserGroupsTabLayout();
+
+		var groupsByUser = results.groupsDetailsForUser;
+		/*
 		var userGrpsDivEle = document.getElementById("userGroupsTabContent_body");
 		var userGrpsTableContent ='';
 		userGrpsTableContent+='<div>';
@@ -1067,44 +1215,187 @@
 		}		
 		
 		userGrpsDivEle.innerHTML = userGrpsTableContent;
-	}
-	
-	function showGroupMbrsInGroup(id)
-	{
+		*/
+
+		var userGroupsDivEl = document.getElementById("myGroupsLinksDiv");
+		var myGroupsLinksDivContent = '';
+		myGroupsLinksDivContent+='<ul id="myGroupsList">';
+		for(var i in groupsByUser)
+		{
+		myGroupsLinksDivContent+='<li>';	
+		myGroupsLinksDivContent+='<a href="#" style="margin-left:0px;" onclick="showUserGroupsDetails('+groupsByUser[i].staticGroupId+')">'+groupsByUser[i].staticGroupName+' - '+groupsByUser[i].numberOfGroups+'</a>';
+		myGroupsLinksDivContent+='</li>';
+		myGroupsLinksDivContent+='<div id="'+groupsByUser[i].staticGroupId+'"></div>';
 		
+		}
+		myGroupsLinksDivContent+='</ul>';
+		userGroupsDivEl.innerHTML =  myGroupsLinksDivContent; 		
+		/*
+		var userGrpsTree;
+		userGrpsTree = new YAHOO.widget.TreeView("GrpsTreeDiv");
+	    var root = userGrpsTree.getRoot();
+		
+		for(var j in groupsByUser)
+		{			
+			var mainGroupsObj = {
+					label: groupsByUser[i].groupName,
+					myNodeId: groupsByUser[i].groupId
+					};
+			var tmpNode = new YAHOO.widget.TextNode(mainGroupsObj, root);
+			for(var j in groupsByUser[i].userSubGroups)
+			{
+				var subGroupsObj = {
+						label: groupsByUser[i].userSubGroups[j].groupName,
+						myNodeId: groupsByUser[i].userSubGroups[j].groupId
+						};
+				var tempNode1 = new YAHOO.widget.TextNode(subGroupsObj, tmpNode, false); 
+				
+			}
+		}
+
+		userGrpsTree.subscribe("labelClick", function(node) {
+	        alert(node.data.myNodeId + " label was clicked");
+	        
+	    });
+		
+		userGrpsTree.render();
+		*/
+				
+	}	
+
+	function showUserGroupsDetails(id)
+	{
 		var jsObj=
-		{		grpId: id,
-				task: "grpMbrsByGrpId"
+		{		staticGrpId: id,
+				task: "grpDetailsByStaticGrpId"
 		}
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-	var url = "<%=request.getContextPath()%>/membersInAGroupAction.action?"+rparam;
+	var url = "<%=request.getContextPath()%>/subGroupsInaStaticGroupForUserAction.action?"+rparam;
 	callAjax(rparam,jsObj,url);	
 	}
-	
-	function showGrpMembers(results)
-	{
-		var assignToGrpMbrs = new Array();
-		var grpMembers = results.groupsMembers;
-		for(var i in grpMembers)
-		{
-			var grpMembersObj = {
-					name: grpMembers[i].userName,
-					address: grpMembers[i].address,
-					mobile: grpMembers[i].mobileNumber,
-					telephoneNo: grpMembers[i].phoneNumber,
-					designation: grpMembers[i].designation,
-					grpName: grpMembers[i].groupName,  
-					location: grpMembers[i].location 			
-			};
-			assignToGrpMbrs.push(grpMembersObj);
-			userGrpsObj.showGrpMembersArr = assignToGrpMbrs;			
-		}
-		//showGrpMembersDataTable();		 
-		showGroupMbrsPopup();
+
+	function showSubGroupsUnderStaticGroups(results,jsObj)
+	{	
+			var staticGrpId = jsObj.staticGrpId;
+			
+			var MyGroupsDivEl = document.getElementById(staticGrpId);
+			
+			var subGroupsOfStaticGroupsForUser = results.subGroupsCreatedByUser;
+			
+			userGrpsTree = new YAHOO.widget.TreeView(MyGroupsDivEl);
+			var root = userGrpsTree.getRoot();
+			for(var i in subGroupsOfStaticGroupsForUser)
+			{
+				var mainSubGroupsObj = {
+						label: subGroupsOfStaticGroupsForUser[i].groupName,
+						myNodeId: subGroupsOfStaticGroupsForUser[i].groupId,
+						myStaticGrpId: subGroupsOfStaticGroupsForUser[i].staticGroupId,
+						parentGrpId: subGroupsOfStaticGroupsForUser[i].parentGroupId
+						};
+				var tmpNode = new YAHOO.widget.TextNode(mainSubGroupsObj, root);				
+			}
+
+			userGrpsTree.subscribe("labelClick", function(node){
+
+		        var jsObj=
+				{		staticGrpId: node.data.myStaticGrpId,
+				   		myNodeId: node.data.myNodeId,
+				   		parentGrpId: node.data.parentGrpId,
+						task: "getCompleteGroupDescription"
+				}
+			
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+			var url = "<%=request.getContextPath()%>/subGroupsDescriptionForUserAction.action?"+rparam;
+			callAjax(rparam,jsObj,url);
+		        
+		    });
+			
+			userGrpsTree.render();
 	}
+	/*
+	function loadNodeData(node, onCompleteCallback,results)
+	{
+		
+		for(var i in results.userSubGroups)
+		{
+			var subGroupsObj = {
+					label: results.userSubGroups[i].groupName,
+					myNodeId: results.userSubGroups[i].groupId
+					};
+			var tempNode = new YAHOO.widget.TextNode(subGroupsObj, node, false);		
+		}
+		onCompleteCallback();
+			
+	}*/
+	//wkg 
+	function showGroupdDetailsInCenterLayout(results,jsObj)
+	{
+		var userGrpsDivEle = document.getElementById("userGroupsTabContent_body");
+		var node = jsObj.myNodeId;
+		var nodeToAppend = userGrpsTree.getNodeByIndex(node);
+		
+		var userGrpsTableContent ='';
+		userGrpsTableContent+='<div>';
+		userGrpsTableContent+='<div id="groupDetailsHead"> Group Details </div>';
+		
+		userGrpsTableContent+='<div id="groupDetails">';	
+		userGrpsTableContent+='<table width="100%" cellspacing="0" cellpadding="0" id="groupDetailsDiv">';
+		userGrpsTableContent+='<tr>';
+		userGrpsTableContent+='<td rowspan="4"><img alt="No Group Logo" src="images/icons/group-default.png"/></td>';		
+		userGrpsTableContent+='<td align="left"><b>'+results.groupName+'</b></td>';
+		userGrpsTableContent+='</tr>';
+		userGrpsTableContent+='<tr>';		
+		userGrpsTableContent+='<td>'+results.groupDesc+'</td>';
+		userGrpsTableContent+='</tr>';
+		userGrpsTableContent+='<tr>';		
+		userGrpsTableContent+='<td>Created On: '+results.createdDate+'</td>';
+		userGrpsTableContent+='</tr>';
+		userGrpsTableContent+='<tr>';		
+		userGrpsTableContent+='<td>No of Persons: '+results.noOfPersons+'</td>';
+		userGrpsTableContent+='</tr>';
+		userGrpsTableContent+='<tr>';
+		userGrpsTableContent+='<td align="right" colspan="2"><a href="#" onclick="showGroupMbrsInGroup('+results.groupId+','+results.staticGroupId+','+results.parentGroupId+')" class="link">View Members</a>';
+		userGrpsTableContent+='<span class="groupMembersLinks"><a href="#" onclick="addGrpMembersDialog()" >Add Members</a></span></td>';
+		userGrpsTableContent+='</tr>';
+		userGrpsTableContent+='</table></div>';		
+		userGrpsDivEle.innerHTML = userGrpsTableContent;
+		for(var i in results.userSubGroups)
+		{
+			
+			var subGroupsObj = {
+					label: results.userSubGroups[i].groupName,
+					myNodeId: results.userSubGroups[i].groupId,
+					myStaticGrpId: results.userSubGroups[i].staticGroupId,
+					parentGrpId: results.userSubGroups[i].parentGroupId
+					};
+			var tempNode = new YAHOO.widget.TextNode(subGroupsObj,false); 
+			tempNode.appendTo(nodeToAppend);
+			nodeToAppend.refresh();
+		}
+		//tempNode.appendTo(nodeToAppend);
+		//nodeToAppend.refresh();
+		
+		
+	}
+	function showUserGroupsDetails(id)
+	{
+		var elmt = document.getElementById(id);
+		if(elmt.innerHTML)
+		{
+			elmt.innerHTML='';
+			return;
+		}
+		
+		var jsObj=
+		{		staticGrpId: id,
+				task: "grpDetailsByStaticGrpId"
+		}
 	
-	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+	var url = "<%=request.getContextPath()%>/subGroupsInaStaticGroupForUserAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);	
+	}	
 	
 	function updateClassifyDataTable(results)
 	{	
@@ -1678,8 +1969,29 @@
 		distEPapersTabContent+='</div>';
 
 		var userGroupsContent='<div id="userGroupsTabContent">';
-		userGroupsContent+='<div id="userGroupsTabContent_head" align="left"></div>';
-		userGroupsContent+='<div id="userGroupsTabContent_body" align="left"></div>';
+		userGroupsContent+='<div id="layoutMain"></div>';
+		userGroupsContent+='<div id="leftLayoutMain">';
+		//userGroupsContent+='<p id="UGIntro" class="link"><a href="#" onclick="showUGIntro()"><b>Introduction</b></a></p>';
+		userGroupsContent+='<p id="systemGroups" class="link"><a href="#" onclick="getSystemGroupsForUser()"><b>System Groups</b></a></p>';
+		userGroupsContent+='<div id="myGroupsLinksDiv"></div>';		
+		userGroupsContent+='<p id="myGroups" class="link"><a href="#" onclick="getGroupsCreatedByUser()"><b>My Groups</b></a></p>';		
+		userGroupsContent+='<p id="createNewGrpDiv" class="link"><a href="#" onclick="buildCreateGroupPopup()"><b>Create New Group</b></a></p>';		
+		userGroupsContent+='</div>'; 
+		userGroupsContent+='<div id="centerLayoutMain">';
+		userGroupsContent+='<div id="userGroupsTabContent_body" align="left">';
+		userGroupsContent+='<h1> User Groups</h1>';
+		userGroupsContent+='<table style="margin-left:1cm";><tr><td>The User Groups is a Consistent interaction for creating, managing & engaging groups<br/></td></tr>';
+		userGroupsContent+='<tr><td>and it helps the users for maintaining clean relationship with people even  the users<br/></td></tr> ';
+		userGroupsContent+='<tr><td>get feedback about what is happening in his/her Constituency/Location.<br/></td></tr><br/><br/>';
+		userGroupsContent+='<tr><td>The User Groups Solves the problem of...</td></tr>';
+		userGroupsContent+='<tr><td>&nbsp identifying and gathering sets of people within the system to:'; 
+		userGroupsContent+='<ul><li>&nbsp collaborate with</li>'; 
+		userGroupsContent+='<li>&nbsp communicate with</li></ul></td></tr>';
+		userGroupsContent+='<tr><td>&nbsp To define what activities the group will do together.</td></tr>';
+		userGroupsContent+='<tr><td></td></tr></table>';
+		userGroupsContent+='</div>';
+		userGroupsContent+='</div>'; 
+		userGroupsContent+='<div id="userGroupsTabContent_head" align="left"></div>';		
 		userGroupsContent+='<div id="userGroupsTabContent_footer" align="right"></div>';	
 		userGroupsContent+='</div>';
 				
@@ -1714,7 +2026,7 @@
 		outerTab.getTab(2).addListener('click',handleUserGrpsTabClick);
 		outerTab.getTab(3).addListener('click',handleRecommLetrsTabClick);
 		outerTab.getTab(4).addListener('click',handleDistPapersTabClick);
-
+		/*
 		var addUserGroupButton = new YAHOO.widget.Button({ 
             id: "addUserGroupButton",  
             type: "link",  
@@ -1722,8 +2034,37 @@
             container: "userGroupsTabContent_footer" 
 		});
 		addUserGroupButton.on("click", buildCreateGroupPopup); 
-		 
+		 */
 	}
+
+	function getSystemGroupsForUser()
+	{
+		var jsObj= 
+		{
+			task:"userGroupInfoDisplay"
+		}
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/userGroupAction.action?"+param;
+		callAjax(param,jsObj,url);
+	}
+	/*
+	function showUGIntro()
+	{
+		var userGrpsCenterDivElement = document.getElementById("userGroupsTabContent_body");
+		var userGrpsCenterContent="";
+		userGrpsCenterContent+='<div id="groupDetailsHead"><h2>Introduction</h2></div>';
+		userGrpsCenterContent+='<div id="introductionId"> <table><tr><td>The User Groups is a Consistent interaction for creating, managing & engaging groups<br/></td></tr>';
+		userGrpsCenterContent+='<tr><td>and it helps the users for maintaining clean relationship with people even  the users<br/></td></tr> ';
+		userGrpsCenterContent+='<tr><td>get feedback about what is happening in his/her Constituency/Location.<br/></td></tr><br/><br/>';
+		userGrpsCenterContent+='<tr><td>The User Groups Solves the problem of...</td></tr>';
+		userGrpsCenterContent+='<tr><td>&nbsp identifying and gathering sets of people within the system to:'; 
+		userGrpsCenterContent+='<ul><li>&nbsp collaborate with</li>'; 
+		userGrpsCenterContent+='<li>&nbsp communicate with</li></ul></td></tr>';
+		userGrpsCenterContent+='<tr><td>&nbsp To define what activities the group will do together.</td></tr></div>';
+
+		userGrpsCenterDivElement.innerHTML = userGrpsCenterContent;
+		
+	}*/		
 	
 	function buildProblemMgmtTabView()
 	{	
@@ -3495,24 +3836,29 @@
 		createGroupContentStr+='<div class="hd" align="left">Create New User Group</div>';
 		createGroupContentStr+='<div class="bd" align="left">';
 		createGroupContentStr+='<div id="userGroupDetailsDivBody">';
-		createGroupContentStr+='<table>';
-		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<th align="left" colspan="3"><u>Group Details</u></th>';
-		createGroupContentStr+='</tr>';
+		createGroupContentStr+='<div class="section_title">Group Info</div><br>';
+		createGroupContentStr+='<div id="userGroupsDialogText">To create a new community group, complete the fields below. Be sure to include a description that will let other community members know just what your group is about!</div><br>';
+		createGroupContentStr+='<table class="createGroupTable">';
 		createGroupContentStr+='<tr></tr>';
 		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<td><%=groupName%></td>';
-		createGroupContentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupNameText" name="problemText"/></td>';
+		createGroupContentStr+='<th><%=groupName%></th>';
+		createGroupContentStr+='<td style="padding-left: 15px;"><input type="text" style="width:400px;" id="groupNameText" name="problemText"/></td>';
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<td><%=description%></td>';
-		createGroupContentStr+='<td style="padding-left: 15px;"><textarea cols="50" id="descTextArea" name="groupDescTextArea"></textarea></td>';
-		createGroupContentStr+='</tr>';
-		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<td><input type="radio" id="createNewGrpRadio" name="createGroup" value="Create New Group" /><%=createNewGrp%></td>';
-		createGroupContentStr+='<td style="padding-left: 15px;"><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group" /><%=addToGrpAsSubGrpRadio%></td>';
+		createGroupContentStr+='<th><%=description%></th>';
+		createGroupContentStr+='<td style="padding-left: 15px;"><textarea style="width:400px;" id="descTextArea" name="groupDescTextArea"></textarea></td>';
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='</table>';
+		createGroupContentStr+='<table>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<td><input type="radio" id="createNewGrpRadio" name="createGroup" value="Create New Group" /><%=createNewGrp%></td>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group" /><%=addToGrpAsSubGrpRadio%></td>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group" /><%=addToStaticGrpAsSubGrpRadio%></td>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='</table>';
+		//createGroupContentStr+='<div id="selectInCreateGrpDialogDiv"><select class="selectWidth" id="selectInCreateGrpDialogDiv" name="showGroups"></select></div>';
 		createGroupContentStr+='</div>';
 		createGroupContentStr+='</div>';
 		createGroupContentStr+='</div>'; 
