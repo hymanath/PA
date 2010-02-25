@@ -234,12 +234,6 @@
         	</result>
         </action> 
         
-        <action name="boothPageInfoAjaxAction" class="hamletBoothMapperAction">
-           <result type="json" name="success">
-           		<param name="root">boothPanelVO</param>
-        	</result>
-        </action>
-        
         <action name="hamletBoothMapperMandalAjaxAction" class="hamletBoothMapperAction">
            <result type="json" name="success">
            		<param name="root">mandals</param>
@@ -287,20 +281,8 @@
 		</action>											
 			
 		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
-			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
+			<result name="success">/jsp/electionComparisonReportPage.jsp</result>
 			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
-		</action>
-		
-		<action name="electionComparisonAjax" class="electionComparisonReportAction" method="getComparedElectionResults" >
-			<result type="json" name="success">
-				 <param name="root">comparedResultsVO</param> 
-			</result>
-		</action>
-		
-		<action name="electionComparisonPositionAjax" class="electionComparisonReportAction" method="getPartyPositionDetails" >
-			<result type="json" name="success">
-				 <param name="root">partyPositionDisplayVO</param> 
-			</result>
 		</action>
 		
 		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">
@@ -323,11 +305,6 @@
 		
 		<action name="mandalPageAction" class="mandalPageAction">
 			<result name="success">/jsp/mandalPage.jsp</result>
-			<result name="error">/jsp/mandalPageFail.jsp</result>
-		</action>
-		
-		<action name="mandalPageElectionInfoAction" class="mandalPageElectionInfoAction">
-			<result name="success">/jsp/mandalPage1.jsp</result>
 			<result name="error">/jsp/mandalPageFail.jsp</result>
 		</action>
 		
@@ -487,16 +464,6 @@
 				<param name="root">userGroupsVO</param>				
 			</result> 
 		</action>
-		<action name="subGroupsInaStaticGroupForUserAction" class="userGroupAction" method="getSubGroupsInStaticGroupForUser">
-			<result type="json" name="success">
-				<param name="root">subGroupsForStaticGroupForUser</param>				
-			</result> 
-		</action>
-		<action name="subGroupsDescriptionForUserAction" class="userGroupAction" method="getCompleteGroupDescritption">
-			<result type="json" name="success">
-				<param name="root">userGroupsDescriptionVO</param>				
-			</result> 
-		</action>
 		<action name="revenueVillageReport" class="revenueVillageReportAction">
 			<result name="success">/jsp/revenueVillageReport.jsp</result>
 		</action>
@@ -507,6 +474,20 @@
 		<action name="boothReport" class="boothReportAction">
 			<result name="success">/jsp/boothReportSuccess.jsp</result>
 			<result name="error">/jsp/boothReportFail.jsp</result>
+		</action>
+		<action name="problemManagementReportAction" class="problemManagementReportAction">
+			<result name="success">/jsp/problemManagementReport.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		<action name="problemManagementReportAjaxAction" class="problemManagementReportAction">
+			<result type="json" name="success">
+				<param name="root">result</param>				
+			</result> 
+		</action>
+		<action name="problemManagementReportResults" class="problemManagementReportAction">
+			<result type="json" name="success">
+				<param name="root">problemBean</param>				
+			</result> 
 		</action>
 	</package>
 </struts>
