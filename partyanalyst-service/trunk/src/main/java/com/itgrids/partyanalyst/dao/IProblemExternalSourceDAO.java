@@ -16,4 +16,6 @@ import com.itgrids.partyanalyst.model.ProblemExternalSource;
 public interface IProblemExternalSourceDAO extends GenericDao<ProblemExternalSource, Long> {
 
 	public List<ProblemExternalSource> findByProblemExternalSourceName(String name);
+	
+	public List<ProblemExternalSource> findByProblemExternalSourceId(Long sourceId);
 }
