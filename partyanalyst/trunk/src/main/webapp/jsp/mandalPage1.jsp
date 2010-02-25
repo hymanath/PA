@@ -130,6 +130,10 @@ padding:5px;
 .dataTableSize table{
 width:100%;
 }
+.selectWidth {
+padding:2px;
+width:120px;
+}
 
 </style>
 
@@ -199,7 +203,7 @@ var allBoothElecInfo = new Array();
 </c:forEach>
 
 
-function buildCensusDataTable()
+	function buildCensusDataTable()
 	{
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 			.get("villageCensusTable"));
@@ -268,6 +272,108 @@ function buildCensusDataTable()
 
 	}
 
+	function buildRevenueVillagesInfoTab(){
+		var revenueInfo = '';
+		revenueInfo += '<div id="div3_revenue">';
+		revenueInfo += '<div id="revenueVillageTable">';
+		revenueInfo += '</div>';
+		revenueInfo += '<div id="revenueVillagesMainDiv">';
+		revenueInfo += '<table>';
+		revenueInfo += '<tr><td>Election Type:</td>';
+		revenueInfo += '<td><select onchange = "getElectionYears(this.options[this.selectedIndex].value)" class = "selectWidth">';
+		revenueInfo += '<option value="0">Select </option>';
+		revenueInfo += '<option value="1">Parliament</option>';
+		revenueInfo += '<option value="2">Assembly</option>';
+		revenueInfo += '</select></td></tr>';
+		revenueInfo += '<tr>';
+		revenueInfo += '<td><div id="electionIdSelectDivLabel"></div></td>';
+		revenueInfo += '<td><div id="electionIdSelectDivData"></div></td>';
+		revenueInfo += '</tr>';
+		revenueInfo += '</table>';
+		revenueInfo += '</div>';
+		revenueInfo += '</div>';
+		
+		return revenueInfo;
+	}
+
+	function getElectionYears(id){
+		alert("electionTypeId::"+id);
+		var jsObj=
+			{
+					electionTypeId:id,
+					task:"getElectionYears"						
+			};
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getElectionYearsAjaxAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+	}
+
+	function getRevenueVillagesInfo(id){
+		alert("electionTypeId::"+id);
+		var jsObj=
+			{
+					electionId:id,
+					task:"getRevenueVillagesInfo"						
+			};
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getRevenueVillagesElectionsAjaxAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+	}
+	
+	function callAjax(rparam, jsObj, url){
+		var resultVO;			
+		var callback = {			
+	               success : function( o ) {
+						try {								
+								resultVO = YAHOO.lang.JSON.parse(o.responseText);										
+								
+								if(jsObj.task == "getElectionYears")
+								{								
+									showElectionYearTextBox(resultVO);				
+								}
+								else if(jsObj.task == "getRevenueVillagesInfo")
+								{								
+									showRevenueVillagesElectionInfo(resultVO);				
+								}								
+						}catch (e)  {   
+						   	alert("Invalid JSON result" + e);   
+						}  
+	               },
+	               scope : this,
+	               failure : function( o ) {
+	                			alert( "Failed to load result" + o.status + " " + o.statusText);
+	                         }
+	               };
+
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);			
+	}
+
+	function showElectionYearTextBox(resultVO){
+		
+		var electionYearSelect = '';
+		var elmtLabel = document.getElementById('electionIdSelectDivLabel');
+		var elmtData = document.getElementById('electionIdSelectDivData');
+		
+		electionYearSelect += '<select class = "selectWidth" onchange = "getRevenueVillagesInfo(this.options[this.selectedIndex].value)">';
+		for(var i in resultVO)
+		{			
+			electionYearSelect += '<option value='+resultVO[i].id+'>'+resultVO[i].name+'</option>';
+		}
+	
+		electionYearSelect += '</select>';
+
+		if(elmtLabel)
+			elmtLabel.innerHTML='Election Year:';
+		if(elmtData)
+			elmtData.innerHTML=electionYearSelect;
+	}
+
+	function showRevenueVillagesElectionInfo(resultVO){
+		alert("Revenue Village Election Info::"+resultVO);
+	}
+	
 	function buildTabNavigator(){
 		var myTabs = new YAHOO.widget.TabView();
 		var mandalElections = '';
@@ -275,11 +381,12 @@ function buildCensusDataTable()
 		mandalElections+='<div id="electionsInfoMainDiv"></div>';
 		mandalElections+='</div>';
 		
-		var tabTwoContent = '';
-		tabTwoContent+='<div id="div2" >';
-		tabTwoContent+='<div id="dTTableDiv2"></div>';
-		tabTwoContent+='</div>';
+		var cencusInfo = '';
+		cencusInfo+='<div id="div2" >';
+		cencusInfo+='<div id="dTTableDiv2"></div>';
+		cencusInfo+='</div>';
 
+		
 		myTabs.addTab( new YAHOO.widget.Tab({
 		    label: 'All Election In Mandal',
 		    active:true,
@@ -288,9 +395,15 @@ function buildCensusDataTable()
 		
 		myTabs.addTab( new YAHOO.widget.Tab({
 		    label: 'Census Info in Revenue Villages',
-		    content: tabTwoContent
+		    content: cencusInfo
 		}));
 		
+		myTabs.addTab( new YAHOO.widget.Tab({
+		    label: 'Revenue Villages Info',
+		    content: buildRevenueVillagesInfoTab()
+		    
+		}));
+
 		myTabs.appendTo('mandalPageTab');
 				
 	}
@@ -301,22 +414,37 @@ function buildCensusDataTable()
 		var elmt = document.getElementById("electionsInfoMainDiv");
 		for(var i in allBoothElecInfo)
 		{
+			var divChild = document.createElement("div");
 			var electionInfo = '';
 			electionInfo += '<fieldset>';
 			electionInfo += '<legend>'+allBoothElecInfo[i].year+' '+allBoothElecInfo[i].electionType+'</legend>';
 			electionInfo += '<div id = "div_'+i+'" class="dataTableSize">';
 			electionInfo += '</div>';
 			electionInfo += '</fieldset>';
-			
-			if(elmt.innerHTML)
-				elmt.innerHTML+= electionInfo;
-			else
-				elmt.innerHTML= electionInfo;
+			divChild.innerHTML = electionInfo;
+				
+			if(elmt)
+				elmt.appendChild(divChild);
+	
 			
 			 var myDataSource = new YAHOO.util.DataSource(allBoothElecInfo[i].partyVotes); 
 			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 			 myDataSource.responseSchema = { 
-			            fields: ["partyName","candidateName","mandalVotes","maleVotes","femaleVotes","bothVotes"] 
+			            fields: [
+									{
+										key : "partyName"
+									},{
+										key : "candidateName"
+									},{
+										key : "mandalVotes",parser:"number"
+									},{
+										key : "maleVotes",parser:"number"
+									},{
+										key : "femaleVotes",parser:"number"
+									},{
+										key : "bothVotes",parser:"number"
+									}
+								]    
 			        }; 
 			
 			 var myColumnDefs = [ 
