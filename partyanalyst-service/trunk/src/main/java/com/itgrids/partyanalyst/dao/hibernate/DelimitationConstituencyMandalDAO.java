@@ -15,6 +15,7 @@ IDelimitationConstituencyMandalDAO {
 		super(DelimitationConstituencyMandal.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<DelimitationConstituencyMandal> findDelConstMandalByDelConstID(
 			Long delimitationConstituencyID) {
 		return getHibernateTemplate().find("from DelimitationConstituencyMandal model where " +
@@ -22,6 +23,7 @@ IDelimitationConstituencyMandalDAO {
 				delimitationConstituencyID);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Tehsil> getTehsilsByDelimitationConstituencyID(Long delimitationConstituencyID) {
 		return getHibernateTemplate().find("Select model.tehsil from DelimitationConstituencyMandal model where " +
 				"model.delimitationConstituency.delimitationConstituencyID =? order by model.tehsil.tehsilName", 
@@ -34,5 +36,4 @@ IDelimitationConstituencyMandalDAO {
 				" model.delimitationConstituency.constituency.constituencyId, model.delimitationConstituency.constituency.name," +
 				" model.tehsil.tehsilName from DelimitationConstituencyMandal model where model.tehsil.tehsilId=?",mandalID);
 	}
-
 }
