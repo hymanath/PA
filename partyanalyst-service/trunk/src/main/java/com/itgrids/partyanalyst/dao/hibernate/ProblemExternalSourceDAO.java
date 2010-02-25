@@ -25,5 +25,9 @@ public class ProblemExternalSourceDAO extends GenericDaoHibernate<ProblemExterna
 		return getHibernateTemplate().find("from ProblemExternalSource model where model.name = ?", name);
 	}
 
-	
+	@SuppressWarnings("unchecked")
+	public List<ProblemExternalSource> findByProblemExternalSourceId(
+			Long sourceId) {		
+		return getHibernateTemplate().find("from ProblemExternalSource model where model.problemExternalSourceId = ?", sourceId);
+	}
 }
