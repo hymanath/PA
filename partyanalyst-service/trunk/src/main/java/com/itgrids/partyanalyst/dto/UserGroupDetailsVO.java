@@ -1,11 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
-import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import com.mysql.jdbc.ResultSetImpl;
 
 @SuppressWarnings("serial")
 public class UserGroupDetailsVO  implements Serializable {
@@ -13,6 +10,14 @@ public class UserGroupDetailsVO  implements Serializable {
 	private String groupName;
 	private Long groupId;
 	private String groupDesc;
+	private String createdDate;
+	private Long createdUserId;
+	private Long staticGroupId;
+	private Long parentGroupId;
+	private String parentGroupName;
+	private String noOfPersons;
+	
+	private List<UserGroupMembersVO> userGroupMembersVO;
 	private List<UserGroupDetailsVO> userSubGroups;
 	
 	public Long getGroupId() {
@@ -20,6 +25,37 @@ public class UserGroupDetailsVO  implements Serializable {
 	}
 	public String getGroupDesc() {
 		return groupDesc;
+	}
+	
+	public String getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+	public Long getCreatedUserId() {
+		return createdUserId;
+	}
+	public void setCreatedUserId(Long createdUserId) {
+		this.createdUserId = createdUserId;
+	}
+	public Long getParentGroupId() {
+		return parentGroupId;
+	}
+	public void setParentGroupId(Long parentGroupId) {
+		this.parentGroupId = parentGroupId;
+	}
+	public String getParentGroupName() {
+		return parentGroupName;
+	}
+	public void setParentGroupName(String parentGroupName) {
+		this.parentGroupName = parentGroupName;
+	}
+	public List<UserGroupMembersVO> getUserGroupMembersVO() {
+		return userGroupMembersVO;
+	}
+	public void setUserGroupMembersVO(List<UserGroupMembersVO> userGroupMembersVO) {
+		this.userGroupMembersVO = userGroupMembersVO;
 	}
 	public void setGroupId(Long groupId) {
 		this.groupId = groupId;
@@ -38,5 +74,19 @@ public class UserGroupDetailsVO  implements Serializable {
 	}
 	public void setUserSubGroups(List<UserGroupDetailsVO> userSubGroups) {
 		this.userSubGroups = userSubGroups;
-	}	
+	}
+	public Long getStaticGroupId() {
+		return staticGroupId;
+	}
+	public void setStaticGroupId(Long staticGroupId) {
+		this.staticGroupId = staticGroupId;
+	}
+	public String getNoOfPersons() {
+		return noOfPersons;
+	}
+	public void setNoOfPersons(String noOfPersons) {
+		this.noOfPersons = noOfPersons;
+	}
+	
+	
 }

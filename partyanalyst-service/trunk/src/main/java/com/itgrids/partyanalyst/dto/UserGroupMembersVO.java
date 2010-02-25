@@ -16,6 +16,8 @@ public class UserGroupMembersVO implements Serializable {
 	private String location;
 	private String groupName;
 	private String designation;
+	private Long groupMemberId;
+	private String emailId;
 	
 	
 	public String getUserName() {
@@ -57,6 +59,18 @@ public class UserGroupMembersVO implements Serializable {
 	public String getGroupName() {
 		return groupName;
 	}
+	public Long getGroupMemberId() {
+		return groupMemberId;
+	}
+	public void setGroupMemberId(Long groupMemberId) {
+		this.groupMemberId = groupMemberId;
+	}
+	public String getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(String emailId) {
+		this.emailId = emailId;
+	}
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
@@ -66,6 +80,7 @@ public class UserGroupMembersVO implements Serializable {
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
+	
 	
 	
 	
