@@ -33,4 +33,10 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 				" and model.problemHistory.problemStatus.problemStatusId = ?",params );
 	}
 
+	@SuppressWarnings("unchecked")
+	public List findProblemsForAHamletByHistoryId(Long historyId) {
+		return getHibernateTemplate().find("select model.problemSourceScopeConcernedDepartment.department," +
+				" model.concernedPersonName,model.problemHistory.dateUpdated" +
+				" from AssignedProblemProgress model where model.problemHistory.problemHistoryId = ?", historyId);
+	}
 }
