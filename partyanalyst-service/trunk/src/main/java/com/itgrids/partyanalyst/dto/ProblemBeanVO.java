@@ -7,6 +7,7 @@ public class ProblemBeanVO {
 	private Long problemLocationId;
 	private Long problemHistoryId;
 	private Long userID;
+	private Long tehsilId;
 	private Long hamletId;
 	private Long problemSourceScopeId;
 	private Long problemClassificationId;
@@ -25,6 +26,7 @@ public class ProblemBeanVO {
 	private String reportedDate;
 	private String existingFrom;
 	private String name;
+	private String postedPersonName;
 	private String email;
 	private String phone;
 	private String mobile;
@@ -43,7 +45,30 @@ public class ProblemBeanVO {
 	private String departmentConcernedPersonPhoneNumber;
 	private String comments;
 	private String updatedDate;
+	private String status;
 	
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+	public String getPostedPersonName() {
+		return postedPersonName;
+	}
+
+	public void setPostedPersonName(String postedPersonName) {
+		this.postedPersonName = postedPersonName;
+	}
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public String getDepartment() {
 		return department;
 	}
