@@ -47,4 +47,8 @@ public class RegistrationDAOHibernateTest extends BaseDaoTestCase{
 		setComplete();
 	}*/
 
+	public void testGetDetails(){
+		List<Registration> regUser = registrationDAO.findByUserRegistrationId(3l);
+		Assert.assertEquals(1, regUser.size());
+	}
 }
