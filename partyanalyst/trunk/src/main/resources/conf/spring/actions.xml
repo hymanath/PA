@@ -122,8 +122,8 @@
 	<bean id="electionComparisonAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonAction" singleton="false">
 	   <property name="electionsComparisonService" ref="electionsComparisonService" />
 	   <property name="staticDataService" ref="staticDataService" />
-	</bean>
-																						
+	</bean>																				
+	
 	<bean id="electionComparisonReportAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonReportAction" singleton="false">
 	     <property name="electionComparisonReportService" ref="electionComparisonReportService" />
 	     <property name="partyService" ref="partyService" />
@@ -215,7 +215,7 @@
 		<property name="epaperService" ref="epaperService"/>
 	</bean>
 	<bean id="userGroupAction" class="com.itgrids.partyanalyst.web.action.UserGroupAction" singleton="false">
-	</bean>
+	</bean>	
 	<bean id="revenueVillageReportAction" class="com.itgrids.partyanalyst.web.action.RevenueVillageReportAction" singleton="false">
 		<property name="constituencyManagementService" ref="constituencyManagementService"/>
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService"/>
@@ -225,5 +225,4 @@
 	</bean>
 	<bean id="boothReportAction" class="com.itgrids.partyanalyst.web.action.BoothReportAction" singleton="false">
 	</bean>
-
 </beans>
