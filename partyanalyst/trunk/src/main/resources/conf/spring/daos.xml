@@ -228,7 +228,6 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="userGroupPrivilegesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupPrivilegesDAO">
-	<bean id="villageBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.VillageBoothElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
