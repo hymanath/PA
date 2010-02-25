@@ -39,5 +39,7 @@ public interface IRegistrationDAO extends GenericDao<Registration, Long>{
 	public List<String> findPasswords();
 	
 	public List<Registration> findByUserNameAndPassword(String userName, String password);
+	
+	public List<Registration> findByUserRegistrationId(Long registrationId);
 
 }
