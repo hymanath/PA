@@ -95,6 +95,10 @@
 				<value>com.itgrids.partyanalyst.model.PartyElectionResult</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResult</value>
 		 		<value>com.itgrids.partyanalyst.model.ProblemAndProblemSource</value>
+		 		<value>com.itgrids.partyanalyst.model.PersonalUserGroup</value>
+				<value>com.itgrids.partyanalyst.model.StaticGroup</value>
+				<value>com.itgrids.partyanalyst.model.StaticUsers</value>
+				<value>com.itgrids.partyanalyst.model.UserGroupPrivileges</value>
 		 </list>
 		</property>
 	</bean>
@@ -364,6 +368,18 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="villageBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.VillageBoothElectionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="personalUserGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.PersonalUserGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="staticGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="staticUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticUsersDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userGroupPrivilegesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupPrivilegesDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
