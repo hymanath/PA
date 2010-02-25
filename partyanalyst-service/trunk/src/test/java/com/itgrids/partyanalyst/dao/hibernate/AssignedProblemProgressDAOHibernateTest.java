@@ -24,5 +24,9 @@ public class AssignedProblemProgressDAOHibernateTest extends BaseDaoTestCase{
 		List<AssignedProblemProgress> list = assignedProblemProgressDAO.getAll();
 		assertEquals(1, list.size());
 	}	
-	
+		
+	public void testByLocation(){
+		List result = assignedProblemProgressDAO.findProblemsForAHamletByHistoryId(new Long(1));
+		assertEquals(1, result.size());
+	}
 }
