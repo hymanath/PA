@@ -61,7 +61,7 @@
 <script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
 
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAtj-arj0xLH-lCl9FnZx0sRRH1psPGaU8keNJ-w6vMT2kOwbIpRR376mZ9g1k6g42yZHtunFsovIjug&sensor=true"
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRSqcWSqDo-rwCiW8VjO_0U_k7HAuxQBSweyAZ1v5ozDSPMDKAFtPwSrGw&sensor=true"
             type="text/javascript"></script>
 </head>
 <body onLoad="getString()">
