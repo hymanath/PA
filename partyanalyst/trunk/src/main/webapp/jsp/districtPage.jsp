@@ -99,6 +99,7 @@
 		#districtAncSpan
 		{
 			padding:10px;
+			font-size:12px;
 		}
 		.districtAnc
 		{
@@ -137,22 +138,22 @@
 					</a>
 				</span>
 			</td>	
-			<c:if test="${stat.count % 5==0}">
-				</tr><tr><td colspan="5"> </td></tr><tr>
+			<c:if test="${stat.count % 4==0}">
+				</tr><tr><td colspan="4"> </td></tr><tr>
 			</c:if>			
 		</c:forEach>			
 		
-		
-		<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.newConstituencies}">			
-				<td>
+		</tr><tr><td colspan="4"></td></tr><tr>
+		<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.newConstituencies}">
+			<td>
 				<span id="districtAncSpan">
 					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
 					<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">* ${result.name}
 					</a>
 				</span>
 			</td>	
-			<c:if test="${stat.count % 5==0}">
-				</tr><tr><td colspan="5"> </td></tr><tr>
+			<c:if test="${stat.count % 4==0}">
+				</tr><tr><td colspan="4"> </td></tr><tr>
 			</c:if>			
 		</c:forEach>			
 		</tr>
