@@ -15,8 +15,7 @@ import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 
 public interface IAssignedProblemProgressDAO extends GenericDao<AssignedProblemProgress, Long> {
 
-	public List<AssignedProblemProgress> findByProgressLevel(String progressLevel);
+	public List findProblemsForAHamletByHistoryId(Long historyId);
 	
-	public List<AssignedProblemProgress> findByRegistrationIdAndStatusId(Long registrationId, Long statusId);
-	
+	public List<AssignedProblemProgress> findByRegistrationIdAndStatusId(Long registrationId, Long statusId);	
 }
