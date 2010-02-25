@@ -218,6 +218,19 @@
 	<bean id="villageBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.VillageBoothElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="personalUserGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.PersonalUserGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="staticGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="staticUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticUsersDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userGroupPrivilegesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupPrivilegesDAO">
+	<bean id="villageBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.VillageBoothElectionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
 
 
