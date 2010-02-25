@@ -1,7 +1,10 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.GroupsDetailsForUser;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.dto.UserGroupsVO;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -23,8 +28,11 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
 	private UserGroupsVO userGroupsVO;
+	private GroupsDetailsForUser subGroupsForStaticGroupForUser;
+	private UserGroupDetailsVO userGroupsDescriptionVO;
 	private String task = null;
 	JSONObject jObj = null;
+	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	
 	
 	public HttpServletRequest getRequest() {
@@ -52,6 +60,24 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 
 	public void setTask(String task) {
 		this.task = task;
+	}	
+
+	public GroupsDetailsForUser getSubGroupsForStaticGroupForUser() {
+		return subGroupsForStaticGroupForUser;
+	}
+
+	public void setSubGroupsForStaticGroupForUser(
+			GroupsDetailsForUser subGroupsForStaticGroupForUser) {
+		this.subGroupsForStaticGroupForUser = subGroupsForStaticGroupForUser;
+	}	
+	
+	public UserGroupDetailsVO getUserGroupsDescriptionVO() {
+		return userGroupsDescriptionVO;
+	}
+
+	public void setUserGroupsDescriptionVO(
+			UserGroupDetailsVO userGroupsDescriptionVO) {
+		this.userGroupsDescriptionVO = userGroupsDescriptionVO;
 	}
 
 	public String execute() throws Exception
@@ -66,12 +92,24 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//log.debug("Task::"+jObj.getString("task"));
 		
+			
 		userGroupsVO = new UserGroupsVO();
-		List<UserGroupDetailsVO> grpsByUser = new ArrayList<UserGroupDetailsVO>();
-		 				
-		UserGroupDetailsVO userGroup1Details = new UserGroupDetailsVO();
+		List <GroupsDetailsForUser> groupsDetailsForUserList = new ArrayList<GroupsDetailsForUser>();
+		GroupsDetailsForUser mediaGroupDetailsForUser = new GroupsDetailsForUser();  
+		GroupsDetailsForUser officialGroupDetailsForUser = new GroupsDetailsForUser();
+		List<UserGroupDetailsVO> subGroupsByUser = new ArrayList<UserGroupDetailsVO>();
+		
+		mediaGroupDetailsForUser.setStaticGroupId(1L);
+		mediaGroupDetailsForUser.setStaticGroupName("Media");
+		mediaGroupDetailsForUser.setNumberOfGroups(3);
+		
+		officialGroupDetailsForUser.setStaticGroupId(2L);
+		officialGroupDetailsForUser.setStaticGroupName("Officials");
+		officialGroupDetailsForUser.setNumberOfGroups(2);
+		
+		/* 				
+		UserGroupDetailsVO userSubGroup1Details = new UserGroupDetailsVO();
 		
 		userGroup1Details.setGroupName("State Level Media");
 		userGroup1Details.setGroupId(1L);
@@ -95,11 +133,15 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 					
 		grpsByUser.add(userGroup1Details);
 		grpsByUser.add(userGroup2Details);
+		*/
 		
-		userGroupsVO.setGroupsCreatedByUser(grpsByUser);	
-	
+		groupsDetailsForUserList.add(mediaGroupDetailsForUser);
+		groupsDetailsForUserList.add(officialGroupDetailsForUser);
+		userGroupsVO.setGroupsDetailsForUser(groupsDetailsForUserList);	
+		
 		return Action.SUCCESS;
 	}
+	
 	public String getGroupMbrsForGroup()
 	{
 		String param = null;
@@ -139,7 +181,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 				group1Member2.setLocation("Hyderabad");
 				mediaGroupMembers.add(group1Member1);
 				mediaGroupMembers.add(group1Member2);
-				userGroupsVO.setGroupsMembers(mediaGroupMembers);
+				//userGroupsVO.setGroupsMembers(mediaGroupMembers);
 			} else
 			{
 				List<UserGroupMembersVO> distOffGroupMembers = new ArrayList<UserGroupMembersVO>();
@@ -165,8 +207,177 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 				group2Member2.setLocation("Nellore");
 				distOffGroupMembers.add(group2Member1);
 				distOffGroupMembers.add(group2Member2);
-				userGroupsVO.setGroupsMembers(distOffGroupMembers);
+				//userGroupsVO.setGroupsMembers(distOffGroupMembers);
 			}
 		return Action.SUCCESS;	
+	}
+	
+	public String getSubGroupsInStaticGroupForUser()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+		
+			e.printStackTrace();
+		}
+		
+		Long staticGrpId = new Long(jObj.getString("staticGrpId"));
+		subGroupsForStaticGroupForUser = new GroupsDetailsForUser();
+		List <UserGroupDetailsVO> subGroupsListForUser = new ArrayList<UserGroupDetailsVO>();
+		System.out.println(staticGrpId);
+		if(staticGrpId.equals(new Long(1)))
+		{
+			UserGroupDetailsVO mediaSubGroup1Details = new UserGroupDetailsVO();
+			UserGroupDetailsVO mediaSubGroup2Details = new UserGroupDetailsVO();
+						
+			mediaSubGroup1Details.setGroupId(1L);
+			mediaSubGroup1Details.setGroupName("State Level Print Media");
+			mediaSubGroup1Details.setStaticGroupId(1L);
+			mediaSubGroup1Details.setParentGroupId(0L);
+						
+			mediaSubGroup2Details.setGroupId(2L);
+			mediaSubGroup2Details.setGroupName("State Level Electronic Media");
+			mediaSubGroup2Details.setStaticGroupId(1L);
+			mediaSubGroup2Details.setParentGroupId(0L);
+			subGroupsListForUser.add(mediaSubGroup1Details);
+			subGroupsListForUser.add(mediaSubGroup2Details);			
+			
+			subGroupsForStaticGroupForUser.setSubGroupsCreatedByUser(subGroupsListForUser);
+			
+			
+		} else
+		{
+			
+			//List <UserGroupDetailsVO> subGroupsListForUser = new ArrayList<UserGroupDetailsVO>();
+			UserGroupDetailsVO OfficialsSubGroup1Details = new UserGroupDetailsVO();
+			UserGroupDetailsVO OfficialsSubGroup2Details = new UserGroupDetailsVO();
+			
+			OfficialsSubGroup1Details.setGroupId(1L);
+			OfficialsSubGroup1Details.setGroupName("State Govt. Officials");
+			OfficialsSubGroup1Details.setStaticGroupId(2L);
+			OfficialsSubGroup1Details.setParentGroupId(0L);
+			OfficialsSubGroup2Details.setGroupId(2L);
+			OfficialsSubGroup2Details.setGroupName("Central Govt. Officials");
+			OfficialsSubGroup2Details.setStaticGroupId(2L);
+			OfficialsSubGroup2Details.setParentGroupId(0L);
+			subGroupsListForUser.add(OfficialsSubGroup1Details);
+			subGroupsListForUser.add(OfficialsSubGroup2Details);
+			
+			subGroupsForStaticGroupForUser.setSubGroupsCreatedByUser(subGroupsListForUser);			
+		}	
+		
+		
+		return Action.SUCCESS;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public String getCompleteGroupDescritption()
+	{
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+		
+			e.printStackTrace();
+		}
+		
+		Long staticGrpId = new Long(jObj.getString("staticGrpId"));
+		Long myNodeId = new Long(jObj.getString("myNodeId"));
+		Long parentGrpId = new Long(jObj.getString("parentGrpId"));
+		List <UserGroupDetailsVO> userSubGroupsList = new ArrayList<UserGroupDetailsVO>();
+		userGroupsDescriptionVO = new UserGroupDetailsVO();
+		UserGroupDetailsVO userSubGroupDetailsVO = new UserGroupDetailsVO();
+		if(staticGrpId == 1 && myNodeId == 1 && parentGrpId == 0)
+		{
+			Date date = new Date();
+			List<UserGroupDetailsVO> subGroupInUserSubGroup = new ArrayList<UserGroupDetailsVO>();
+			userGroupsDescriptionVO.setGroupId(1L);
+			userGroupsDescriptionVO.setGroupName("State Level Print Media");
+			userGroupsDescriptionVO.setGroupDesc("This group contains memebers who are working in print media sector in state level.");
+			userGroupsDescriptionVO.setStaticGroupId(1L);
+			userGroupsDescriptionVO.setCreatedDate(sdf.format(date));
+			userGroupsDescriptionVO.setNoOfPersons("6");
+			userGroupsDescriptionVO.setParentGroupId(0L);
+					
+			List<UserGroupDetailsVO> subGroupInUserSubGroup1 = new ArrayList<UserGroupDetailsVO>();
+			
+			UserGroupDetailsVO userSubGroup1DetailsVO = new UserGroupDetailsVO();
+			
+			userSubGroup1DetailsVO.setGroupId(1L);
+			userSubGroup1DetailsVO.setGroupName("District Level Print Media");
+			userSubGroup1DetailsVO.setGroupDesc("This group contains memebers who are working in print media sector in district level.");
+			userSubGroup1DetailsVO.setParentGroupId(1L);
+			userSubGroup1DetailsVO.setParentGroupName("State Level Print Media");
+			userSubGroup1DetailsVO.setNoOfPersons("4");
+			userSubGroup1DetailsVO.setStaticGroupId(1L);
+			userSubGroup1DetailsVO.setCreatedDate(sdf.format(date));
+			
+			subGroupInUserSubGroup.add(userSubGroup1DetailsVO);
+			
+			userGroupsDescriptionVO.setUserSubGroups(subGroupInUserSubGroup);
+			
+			UserGroupDetailsVO userSubGroup2DetailsVO = new UserGroupDetailsVO();
+			
+			userSubGroup2DetailsVO.setGroupId(2L);
+			userSubGroup2DetailsVO.setGroupName("Mandal Level Print Media");
+			userSubGroup2DetailsVO.setGroupDesc("This group contains memebers who are working in print media sector in mandal level.");
+			userSubGroup2DetailsVO.setParentGroupId(1L);
+			userSubGroup2DetailsVO.setParentGroupName("District Level Print Media");
+			userSubGroup2DetailsVO.setNoOfPersons("2");
+			userSubGroup2DetailsVO.setStaticGroupId(1L);
+			userSubGroup2DetailsVO.setCreatedDate(sdf.format(date));
+			subGroupInUserSubGroup1.add(userSubGroup2DetailsVO);
+			userSubGroup1DetailsVO.setUserSubGroups(subGroupInUserSubGroup1);
+		} else if(staticGrpId == 1 && myNodeId == 1 && parentGrpId == 1 )
+		{
+			Date date = new Date();
+			userGroupsDescriptionVO.setGroupId(2L);
+			userGroupsDescriptionVO.setGroupName("District Level Print Media");
+			userGroupsDescriptionVO.setGroupDesc("This group contains memebers who are working in print media sector in district level.");
+			userGroupsDescriptionVO.setStaticGroupId(1L);
+			userGroupsDescriptionVO.setParentGroupId(1L);
+			userGroupsDescriptionVO.setCreatedDate(sdf.format(date));
+			userGroupsDescriptionVO.setNoOfPersons("2");
+			
+		} else if(staticGrpId.equals(new Long(1)) && myNodeId.equals(new Long(2)))
+		{
+			Date date = new Date();
+			userGroupsDescriptionVO = new UserGroupDetailsVO();
+			userGroupsDescriptionVO.setGroupId(3L);
+			userGroupsDescriptionVO.setGroupName("State Level Electronic Media");
+			userGroupsDescriptionVO.setGroupDesc("This group contains memebers who are working in electronic media sector in state level.");
+			userGroupsDescriptionVO.setStaticGroupId(1L);
+			userGroupsDescriptionVO.setCreatedDate(sdf.format(date));
+			userGroupsDescriptionVO.setNoOfPersons("6");
+		} else if(staticGrpId.equals(new Long(2)) && myNodeId.equals(new Long(1)))
+		{
+			Date date = new Date();
+			userGroupsDescriptionVO = new UserGroupDetailsVO();
+			userGroupsDescriptionVO.setGroupId(1L);
+			userGroupsDescriptionVO.setGroupName("State Govt. Officials");
+			userGroupsDescriptionVO.setGroupDesc("This group contains memebers who are working in several Governmenet departments in state level.");
+			userGroupsDescriptionVO.setStaticGroupId(2L);
+			userGroupsDescriptionVO.setCreatedDate(sdf.format(date));
+			userGroupsDescriptionVO.setNoOfPersons("6");
+		} else if(staticGrpId.equals(new Long(2)) && myNodeId.equals(new Long(2)))
+		{
+			Date date = new Date();
+			userGroupsDescriptionVO = new UserGroupDetailsVO();
+			userGroupsDescriptionVO.setGroupId(2L);
+			userGroupsDescriptionVO.setGroupName("Central Govt. Officials");
+			userGroupsDescriptionVO.setGroupDesc("This group contains memebers who are working in central governmenet departments .");
+			userGroupsDescriptionVO.setStaticGroupId(2L);
+			userGroupsDescriptionVO.setCreatedDate(sdf.format(date));
+			userGroupsDescriptionVO.setNoOfPersons("6");
+			
+		}
+		return Action.SUCCESS;
 	}
 }	
