@@ -420,7 +420,6 @@ var allBoothElecInfo = new Array();
 	{
 	
 		var elmt = document.getElementById("electionsInfoMainDiv");
-		console.log(allBoothElecInfo);
 		for(var i in allBoothElecInfo)
 		{			
 			var divChild = document.createElement("div");
