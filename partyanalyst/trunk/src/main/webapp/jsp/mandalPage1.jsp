@@ -148,6 +148,8 @@ var allBoothElecInfo = new Array();
 				year:'${electionResult.electionYear}',
 				electionType:'${electionResult.electionType}',
 				url:'${electionResult.genderBoothURL}',
+				constituencyName:'',
+				constituencyId:'',
 				partyVotes:[],
 				maleBooths:[],
 				femaleBooths:[],
@@ -160,10 +162,16 @@ var allBoothElecInfo = new Array();
 					candidateId:'${partyInfo.candidateID}',
 					candidateName:'${partyInfo.candidateNameWithStatus}',
 					mandalVotes:'${partyInfo.totalVotesEarned}',
+					mandalpercentage:'${partyInfo.totalVotesEarnedPercentage}',
 					maleVotes:'${partyInfo.maleBoothResults}',
+					malepercentage:'${partyInfo.maleBoothResultsPercentage}',
 					femaleVotes:'${partyInfo.femaleBoothResults}',
-					bothVotes:'${partyInfo.fmBoothResults}'
+					femalepercentage:'${partyInfo.femaleBoothResultsPercentage}',
+					bothVotes:'${partyInfo.fmBoothResults}',
+					bothpercentage:'${partyInfo.fmBoothResultsPercentage}'
 			};
+			electionInfo.constituencyName = '${partyInfo.constituencyName}';
+			electionInfo.constituencyId = '${partyInfo.constituencyID}';
 			electionInfo.partyVotes.push(singleParty);
 		</c:forEach>		
 		<c:forEach var="maleBooth" items="${electionResult.boothTypeDetailsVO.maleBoothVotes}">
@@ -412,12 +420,13 @@ var allBoothElecInfo = new Array();
 	{
 	
 		var elmt = document.getElementById("electionsInfoMainDiv");
+		console.log(allBoothElecInfo);
 		for(var i in allBoothElecInfo)
-		{
+		{			
 			var divChild = document.createElement("div");
 			var electionInfo = '';
 			electionInfo += '<fieldset>';
-			electionInfo += '<legend>'+allBoothElecInfo[i].year+' '+allBoothElecInfo[i].electionType+'</legend>';
+			electionInfo += '<legend>'+allBoothElecInfo[i].constituencyName+' '+allBoothElecInfo[i].electionType+' '+allBoothElecInfo[i].year+'</legend>';
 			electionInfo += '<div id = "div_'+i+'" class="dataTableSize">';
 			electionInfo += '</div>';
 			electionInfo += '</fieldset>';
@@ -438,11 +447,19 @@ var allBoothElecInfo = new Array();
 									},{
 										key : "mandalVotes",parser:"number"
 									},{
+										key : "mandalpercentage",parser:"float"
+									},{
 										key : "maleVotes",parser:"number"
+									},{
+										key : "malepercentage",parser:"float"
 									},{
 										key : "femaleVotes",parser:"number"
 									},{
+										key : "femalepercentage",parser:"float"
+									},{
 										key : "bothVotes",parser:"number"
+									},{
+										key : "bothpercentage",parser:"float"
 									}
 								]    
 			        }; 
@@ -451,9 +468,13 @@ var allBoothElecInfo = new Array();
 			            {key:"partyName",label:'Party Name', sortable:true, resizeable:true}, 
 			            {key:"candidateName", label:'Candidate Name', sortable:true, resizeable:true}, 
 			            {key:"mandalVotes", label:'Mandal Votes',sortable:true, resizeable:true}, 
-			            {key:"maleVotes",label:'Male Votes',formatter:YAHOO.widget.DataTable.formatNumber, sortable:true, resizeable:true}, 
+			            {key:"mandalpercentage",label:'%AGE', sortable:true, resizeable:true}, 
+			            {key:"maleVotes",label:'Male Votes', sortable:true, resizeable:true}, 
+			            {key:"malepercentage",label:'%AGE', sortable:true, resizeable:true}, 
 			            {key:"femaleVotes",label:'Female Votes', sortable:true, resizeable:true},
-			            {key:"bothVotes",label:'Both Votes', sortable:true, resizeable:true} 
+			            {key:"femalepercentage",label:'%AGE', sortable:true, resizeable:true}, 
+			            {key:"bothVotes",label:'Both Votes', sortable:true, resizeable:true},
+			            {key:"bothpercentage",label:'%AGE', sortable:true, resizeable:true} 
 			        ]; 
 			 
 			var myDataTable = new YAHOO.widget.DataTable("div_"+i,myColumnDefs, myDataSource);
