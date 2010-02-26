@@ -165,6 +165,7 @@
 	<bean id="mandalPageElectionInfoAction" class="com.itgrids.partyanalyst.web.action.MandalPageElectionInfoAction" singleton="false">
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 		
 	<bean id="staticDataAction" class="com.itgrids.partyanalyst.web.action.StaticDataAction" singleton="false">
