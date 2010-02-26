@@ -20,9 +20,9 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
+import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
-import com.itgrids.partyanalyst.service.impl.DelimitationConstituencyMandalService;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ConstituencyPageAction extends ActionSupport implements
@@ -35,15 +35,28 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 */
 	 
 	 private Long constituencyId;
+	 private String constituencyName;
 	 private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
 	 private ConstituencyInfoVO constituencyDetails;
-	 private String electionType;
+	 private List<VotersWithDelimitationInfoVO> votersInfo;	 
+
+	private String electionType;
 	 
 	 private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	 private DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO;
 	 private static final Logger log = Logger.getLogger(ConstituencyPageAction.class);
 	 
-	 public String getElectionType() {
+	 
+	
+	 public String getConstituencyName() {
+		return constituencyName;
+	}
+
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+
+	public String getElectionType() {
 			return electionType;
 	}
 
@@ -73,6 +86,14 @@ public class ConstituencyPageAction extends ActionSupport implements
 
 	public void setConstituencyDetails(ConstituencyInfoVO constituencyDetails) {
 		this.constituencyDetails = constituencyDetails;
+	}
+
+	public List<VotersWithDelimitationInfoVO> getVotersInfo() {
+		return votersInfo;
+	}
+
+	public void setVotersInfo(List<VotersWithDelimitationInfoVO> votersInfo) {
+		this.votersInfo = votersInfo;
 	}
 
 	HttpServletRequest request;
@@ -115,6 +136,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId);
 				
 		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
+		
 		DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO = delimitationConstituencyMandalService.getMandalsForDelConstituency(constituencyId);
 		
 		Throwable ex = delimitationConstituencyMandalResultVO.getExceptionEncountered();
@@ -125,6 +147,9 @@ public class ConstituencyPageAction extends ActionSupport implements
 		log.info("delimitationConstituencyMandalResultVO.getMandals().size()::::"+delimitationConstituencyMandalResultVO.getPresentMandals().size());
 		log.info("delimitationConstituencyMandalResultVO..getConstituencyType()::::"+delimitationConstituencyMandalResultVO.getConstituencyType());
 		setDelimitationConstituencyMandalResultVO(delimitationConstituencyMandalResultVO);
+		
+		votersInfo = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		
 		if(constituencyElectionResultsVO != null || constituencyDetails != null){
 			//electionType = constituencyElectionResultsVO.get(0).getElectionType();
 			return SUCCESS;
