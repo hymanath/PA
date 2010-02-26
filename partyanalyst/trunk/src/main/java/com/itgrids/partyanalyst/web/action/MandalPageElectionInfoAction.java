@@ -6,12 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class MandalPageElectionInfoAction extends ActionSupport implements ServletRequestAware{
@@ -21,7 +24,12 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO;
 	private VillageDetailsVO villageDetailsVO;
 	private MandalInfoVO mandalInfoVO;
+	private List<SelectOptionVO> electionSelectVO;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
+	private IStaticDataService staticDataService;
+	private String task = null;
+	JSONObject jObj = null;
+	private String mandalId;
 	private static final Logger log = Logger.getLogger(MandalPageAction.class);
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -71,8 +79,33 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		this.villageDetailsVO = villageDetailsVO;
 	}
 
+	public List<SelectOptionVO> getElectionSelectVO() {
+		return electionSelectVO;
+	}
+
+	public void setElectionSelectVO(List<SelectOptionVO> electionSelectVO) {
+		this.electionSelectVO = electionSelectVO;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public String execute(){
 		
+		mandalId = request.getParameter("MANDAL_ID");
 		String mandalID = request.getParameter("MANDAL_ID");
 		String mandalName = request.getParameter("MANDAL_NAME");
 		List<MandalInfoVO> mandalInfo = delimitationConstituencyMandalService.getCensusInfoForMandals(mandalID);
@@ -95,7 +128,41 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		}
 		
 		electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(new Long(mandalID));
-		
+				
+		return SUCCESS;
+	}
+	
+	public String getElectionIdsAndYears(){
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			if(jObj.getString("task").equals("getElectionYears")){
+				System.out.println("For Districts Of State");
+				electionSelectVO = staticDataService.getElectionIdsAndYears(jObj.getLong("electionTypeId"));
+				electionSelectVO.add(0,new SelectOptionVO(0l,"Select Year"));
+			}
+		}
+		return SUCCESS;
+	}
+	
+	public String getTownshipDetails(){
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			if(jObj.getString("task").equals("getRevenueVillagesInfo")){
+				electionWiseMandalPartyResultListVO = new ElectionWiseMandalPartyResultListVO();
+			}
+		}
 		return SUCCESS;
 	}
 
