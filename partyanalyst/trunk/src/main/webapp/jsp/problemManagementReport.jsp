@@ -423,7 +423,6 @@ function getVotersForConstituency(id)
 				task:"findConstituencyVoters",
 				taskType:type						
 		};
-		console.log("getVotersForConstituency"+type);
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/problemManagementReportResults.action?"+rparam;						
 		callAjax(rparam,jsObj,url);
@@ -437,7 +436,6 @@ function getVotersForTownships(id)
 				task:"findTownshipVoters",
 				taskType:type						
 		};
-	console.log("getVotersForTownships"+type);
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/problemManagementReportResults.action?"+rparam;						
 		callAjax(rparam,jsObj,url);
@@ -452,7 +450,6 @@ function getHamlet(id)
 				task:"findVoters",
 				taskType:type						
 		};
-	console.log("getHamlet"+type);
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/problemManagementReportResults.action?"+rparam;						
 		callAjax(rparam,jsObj,url);
@@ -733,7 +730,6 @@ function departmentType(departmentTypeId)
 
 function populateHamletLocations()
 {
-	console.log("type"+type);
 	var dataTable;
 	dataTable = document.getElementById("problemInfoDivBody");
 	dataTable.innerHTML = "";
