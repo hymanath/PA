@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultObjectsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -48,6 +49,8 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.TownshipPartyResultsVO;
 import com.itgrids.partyanalyst.dto.VillageBoothInfoVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
+import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
@@ -60,6 +63,7 @@ import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.TownshipElectionPartyResult;
 import com.itgrids.partyanalyst.model.VillageBoothElection;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyPageService implements IConstituencyPageService {
 
@@ -80,7 +84,17 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private TransactionTemplate transactionTemplate;
 	private ITownshipElectionPartyResultDAO townshipElectionPartyResultDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+
 	public IBoothConstituencyElectionDAO getBoothConstituencyElectionDAO() {
 		return boothConstituencyElectionDAO;
 	}
@@ -633,4 +647,59 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return townshipElectionPartyResultList;
 	}
 	
+	
+	public List<VotersWithDelimitationInfoVO> getVotersInfoInMandalsForConstituency(Long constituencyId)
+	{
+		List mandalsList = delimitationConstituencyMandalDAO.getMandalsOfConstituency(constituencyId);
+		List<VotersWithDelimitationInfoVO> votersWithDelimitationInfoVOList = new ArrayList<VotersWithDelimitationInfoVO>();
+		List<VotersInfoForMandalVO> votersInfoForMandalList = null;
+		
+		 
+		Map<String, String> mandalsIdsYear = new HashMap<String, String>();
+		for (int i = 0; i < mandalsList.size(); i++) 
+		{
+			Object[] obj = (Object[]) mandalsList.get(i);			
+			String year = obj[2].toString();
+			String value = mandalsIdsYear.get(year);
+			StringBuilder ids = new StringBuilder();
+			if(value==null){
+				ids .append(obj[0].toString());
+			}else{
+				ids.append(value).append(IConstants.COMMA).append(obj[0].toString());
+			}
+			mandalsIdsYear.put(year, ids.toString());
+			
+		}	
+		
+		Set<String>  keys = mandalsIdsYear.keySet();
+		for(String key:keys)
+		{	
+			votersInfoForMandalList = new ArrayList<VotersInfoForMandalVO>();
+			VotersWithDelimitationInfoVO votersWithDelimitationInfoVO = new VotersWithDelimitationInfoVO();
+			votersWithDelimitationInfoVO.setYear(key);
+			
+			String value = mandalsIdsYear.get(key);
+			
+			List votersList = boothConstituencyElectionDAO.findVoterInformationByMandalIdsAndDelimitationYear(value, key, constituencyId);
+			
+			for(int j = 0;j<votersList.size();j++)
+			{
+				VotersInfoForMandalVO votersInfo = new VotersInfoForMandalVO();
+				
+				Object[] vObj = (Object[]) votersList.get(j);
+				votersInfo.setMandalId( vObj[0].toString());
+				votersInfo.setMandalName(vObj[1].toString());
+				votersInfo.setTotalMaleVoters(vObj[2].toString());
+				votersInfo.setTotalFemaleVoters(vObj[3].toString());
+				votersInfo.setTotalVoters(vObj[4].toString());
+				
+				votersInfoForMandalList.add(votersInfo);
+			}
+			votersWithDelimitationInfoVO.setVotersInfoForMandalVO(votersInfoForMandalList);
+			votersWithDelimitationInfoVOList.add(votersWithDelimitationInfoVO);
+		}
+		
+		return votersWithDelimitationInfoVOList;
+		
+	}
 }
