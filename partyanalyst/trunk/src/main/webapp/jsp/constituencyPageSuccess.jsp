@@ -78,13 +78,22 @@
 			<div id="constituencyInfoDiv_Body"></div>
 		</div>
 	</div>
-	<div id="constituencyPageBottomInfoDiv" class="contentDivClass"> 
-		<div id="constituencyPageBottomInfoDiv_Head"></div>
-		<div id="constituencyPageBottomInfoDiv_Body"></div>
-	</div>
-	<div id="constituencyPageCenterInfoDiv" class="contentDivClass">
-		<div id="constituencyPageCenterInfoDiv_Head"> ${constituencyDetails.constituencyName} Constituency Details : </div>
-		<div id="constituencyPageCenterInfoDiv_Body"></div>
+	<div id="constituencyPageCenterInfoDiv">
+		
+		<div id="constituencyPageProfileInfoDiv_Main" class="innerLayoutDivClass">
+			<div id="constituencyPageProfileInfoDiv_Head" class="layoutHeadersClass"> ${constituencyDetails.constituencyName} Constituency Details : </div>
+			<div id="constituencyPageProfileInfoDiv_Body" class="layoutBodyClass"></div>
+		</div>
+
+		<div id="constituencyPageElectionInfoDiv_Main" class="innerLayoutDivClass">
+			<div id="constituencyPageElectionInfoDiv_Head" class="layoutHeadersClass"></div>
+			<div id="constituencyPageElectionInfoDiv_Body" class="layoutBodyClass"></div>
+		</div>		
+		
+		<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass">
+			<div id="constituencyVotersInfoDiv_Head" class="layoutHeadersClass">${constituencyDetails.constituencyName} Constituency Voters Details :</div>
+			<div id="constituencyVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
+		</div>
 	</div>
 	<!--<div id="constituencyExtraContent" class="rounded"> 
 		content
@@ -95,7 +104,12 @@
 	</div> -->
 	
 </div>
+
 <script type="text/javascript">
+
+	/*	Constituency Page basic Info
+		-----------------------------
+	*/
 	constituencyPageMainObj.constituencyAddress="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";
 	constituencyPageMainObj.contextPath = "<%=request.getContextPath()%>";
 
@@ -106,6 +120,11 @@
 	constituencyPageMainObj.constituencyInfo.deformDate = "${constituencyDetails.deformDate}";
 	constituencyPageMainObj.constituencyInfo.constituencyType = "${constituencyDetails.constituencyType}";
 	
+	
+	/*	Constituency Election Results Info
+		----------------------------------
+	*/
+
 	<c:forEach var="constituencyElectionResults" items="${constituencyElectionResultsVO}">	
 	var constiObj=
 				{
@@ -115,7 +134,7 @@
 					votesEarned:'${constituencyElectionResults.candidateResultsVO.votesEarned}',
 					votesPercentage:'${constituencyElectionResults.candidateResultsVO.votesPercentage}',
 					oppositionCandInfo:[]
-				 }
+				 };
 			<c:forEach var="detailedResult" items="${constituencyElectionResults.candidateOppositionList}" >
 				var oppositionList={
 										candidateName:'${detailedResult.candidateName}',
@@ -130,9 +149,29 @@
 			constituencyPageMainObj.constituencyElectionInfo.push(constiObj);			
 	</c:forEach>
 	
-	<c:forEach var="presentMandals" items="${delimitationConstituencyMandalResultVO.presentMandals}" >	
-		
+	/*	Constituency Voters Info
+		-------------------------
+	*/
+
+	<c:forEach var="vInfo" items="${votersInfo}" >	
+		var obj ={
+					year:'${vInfo.year}',
+					info:[]
+				};
+		<c:forEach var="info" items="${vInfo.votersInfoForMandalVO}" >	
+		var vObj=
+				{
+					mandalId:'${info.mandalId}',
+					mandalName:'${info.mandalName}',
+					mandalMaleVoters:'${info.totalMaleVoters}',
+					mandalFemaleVoters:'${info.totalFemaleVoters}',
+					mandalTotalVoters:'${info.totalVoters}'
+				 };
+			obj.info.push(vObj);
+		</c:forEach>
+			constituencyPageMainObj.constituencyVotersInfo.push(obj);
 	</c:forEach>
+
 	initializeConstituencyPage();
 </script>
 </body>

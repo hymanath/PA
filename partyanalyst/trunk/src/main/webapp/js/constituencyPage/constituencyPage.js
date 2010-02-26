@@ -10,7 +10,8 @@ var constituencyPageMainObj={
 													deformDate:'',
 													constituencyType:''
 												 },
-								constituencyElectionInfo:[]
+								constituencyElectionInfo:[],
+								constituencyVotersInfo:[]
 							};
 
 /*var address="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";		
@@ -161,10 +162,10 @@ function buildRightlayoutMap()
 
 }
 
-function buildBottomElectionResults()
+function buildElectionResults()
 {
-	var HeadElmt = document.getElementById('constituencyPageBottomInfoDiv_Head');
-	var BodyElmt = document.getElementById('constituencyPageBottomInfoDiv_Body');
+	var HeadElmt = document.getElementById('constituencyPageElectionInfoDiv_Head');
+	var BodyElmt = document.getElementById('constituencyPageElectionInfoDiv_Body');
 	
 	if(HeadElmt)
 		HeadElmt.innerHTML = ' Election Information in '+constituencyPageMainObj.constituencyInfo.constituencyName;
@@ -176,7 +177,7 @@ function buildBottomElectionResults()
 		var info = constituencyPageMainObj.constituencyInfo;
 		elecStr+='<div id="constituencyElectionInfo_'+i+'" class="electionInformationClass" onclick="showDetailedElectionResult(this.id)">';
 		elecStr+='<span id="pointerImg"> <img height="10" width="10" src="'+constituencyPageMainObj.contextPath+'/images/icons/arrow.png"/></span>';
-		elecStr+='<span id=""> '+info.constituencyType+' Election Results in '+data.year+' - '+data.candidateName+' Won with '+data.votesPercentage+' %</span>';		
+		elecStr+='<span id=""> '+info.constituencyType+' Election Results in '+data.year+' - '+data.candidateName+' Won with '+data.votesPercentage+' votes %</span>';		
 		elecStr+='</div>';
 	}
 	
@@ -283,32 +284,21 @@ function showDetailedElectionResult(id)
 	var myDataTable = new YAHOO.widget.DataTable("oppCandResultsDiv",myColumnDefs, myDataSource); 
 }
 function buildConstituencyLayout()
-{	
+{
 	var constituencyPageLayout = new YAHOO.widget.Layout('constituencyPageLayoutDiv', { 
-			height:800,
+			height:900,
 			units: [					 
 					{ 
 						position: 'right',
 						header:false,
-						width: 300,							
+						width: 280,							
 						resize: false,
 						gutter: '5px',
 						collapse: false,
 						scroll: true,
 						body: 'constituencyPageRightMapDiv',
 						animate: true
-					},
-					{ 
-						position: 'bottom', 
-						height: 200,
-						header:false,
-						body: 'constituencyPageBottomInfoDiv',
-						resize: false,
-						gutter: '5px',
-						collapse: false,
-						scroll: true,						
-						animate: true 
-					}, 					 
+					},	 
 					{ 
 						position: 'center',						
 						body: 'constituencyPageCenterInfoDiv',
@@ -323,9 +313,63 @@ function buildConstituencyLayout()
 		constituencyPageLayout.render(); 
 }
 
+function buildCenterVotersCandidateInfoContent()
+{
+	var elmt = document.getElementById("constituencyVotersInfoDiv_Body");
+	
+	if(constituencyPageMainObj.constituencyVotersInfo.length == 0)
+	{
+		elmt.innerHTML='Voter Info Unavailable';
+			return;
+	}
+	
+
+	for(var i in constituencyPageMainObj.constituencyVotersInfo)
+	{
+		var data = constituencyPageMainObj.constituencyVotersInfo[i];
+
+		var divChild = document.createElement('div');
+		divChild.setAttribute("id","divChild"+i);
+
+		var str = '';
+		str+='<div id="divChild_Head_'+i+'" class="voterInfoHead">';
+		if(data.year == "2009")
+			str+='Mandals After Delimitation';
+		else
+			str+='Mandals Before Delimitation';
+		str+='</div>';
+		str+='<div id="divChild_Body_'+i+'" class="voterInfoBody"></div>';
+		divChild.innerHTML=str;
+
+		if(elmt)
+			elmt.appendChild(divChild);
+		
+		 var myDataSource = new YAHOO.util.DataSource(data.info); 
+		 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		 myDataSource.responseSchema = { 
+					fields: [
+								{	key : "mandalName"},
+								{	key : "mandalMaleVoters",parser:"number"},
+								{	key : "mandalFemaleVoters",parser:"number"},
+								{	key : "mandalTotalVoters",parser:"number"}
+							]
+				}; 
+		
+		 var myColumnDefs = [ 
+					{key:"mandalName",label:'Mandal Name', sortable:true, resizeable:true}, 
+					{key:"mandalMaleVoters", label:'Male Voters', sortable:true, resizeable:true}, 
+					{key:"mandalFemaleVoters", label:'Female Voters',sortable:true, resizeable:true}, 
+					{key:"mandalTotalVoters",label:'Total Voters', sortable:true, resizeable:true}
+				]; 
+		 
+		var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
+
+	}
+}
 function initializeConstituencyPage()
 {
 	buildConstituencyLayout();
 	buildRightlayoutMap();
-	buildBottomElectionResults();
+	buildElectionResults();
+	buildCenterVotersCandidateInfoContent();
 }

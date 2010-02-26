@@ -90,7 +90,7 @@
 	padding:10px;
 }
 
-#constituencyPageCenterInfoDiv_Head,#constituencyPageBottomInfoDiv_Head
+.layoutHeadersClass
 {
 	color:#89745D;
 	font-size:16px;
@@ -100,13 +100,17 @@
 	text-decoration:underline;
 }
 
-#constituencyPageCenterInfoDiv_Body,#constituencyPageBottomInfoDiv_Body
+.layoutBodyClass
 {
 	text-align:left;
 	padding:5px;
 	margin-left:10px;
 }
 
+#constituencyPageProfileInfoDiv_Body
+{
+	height:100px;
+}
 
 #constituencyInfoDiv
 {
@@ -184,6 +188,36 @@ legend
 	color:#63516B;
 	cursor:pointer;
 	margin-top:5px;
-	padding:5px;
-	width:80%;
+	padding:5px;	
+}
+
+.voterInfoHead
+{
+	color:#737D81;
+	font-weight:bold;
+	padding:10px 10px 10px 0;
+	text-decoration:underline;
+}
+.voterInfoBody
+{
+	margin-bottom:20px;
+}
+
+#constituencyPageElectionInfoDiv_Main
+{
+	background-color:#FFFFFF;
+}
+
+#constituencyPageCensusInfoDiv_Main
+{
+	background-color:#FFFFFF;
+	margin:5px;
+}
+
+.innerLayoutDivClass
+{
+	background-color:#FFFFFF;
+	height:100%;
+	margin-bottom:20px;
+	padding-bottom:20px;
 }
