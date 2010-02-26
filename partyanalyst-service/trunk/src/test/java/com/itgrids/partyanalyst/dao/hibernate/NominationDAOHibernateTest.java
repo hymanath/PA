@@ -124,4 +124,29 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void testCandidateNPartyInfo(){
+		List list = nominationDAO.getCandidateNPartyInfo(new Long(341),"Assembly",new Long(1));
+		
+		if(list != null){
+		Object[] resultList = (Object[])list.get(0);
+		
+		Long constiId = (Long)resultList[0];
+		String constiName = (String)resultList[1];
+		Long candId = (Long)resultList[2];
+		String firstName = (String)resultList[3];
+		String midName = (String)resultList[4];
+		String lastName = (String)resultList[5];
+		Long partyId = (Long)resultList[6];
+		String partyName = (String)resultList[7];
+		
+		Assert.assertEquals(new Long(341), constiId);
+		Assert.assertEquals("Nellore Rural", constiName);
+		Assert.assertEquals(null, firstName);
+		Assert.assertEquals("Anam Vivekananda Reddy", lastName);
+		Assert.assertEquals("INC", partyName);
+		
+		}
+	}
+	
 }

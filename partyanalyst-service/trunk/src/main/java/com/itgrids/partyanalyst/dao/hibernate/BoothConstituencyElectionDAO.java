@@ -150,4 +150,13 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 				" group by model.booth.partNo",params);
 	}
 	
+	public List findVoterInformationByMandalIdsAndDelimitationYear (String mandalsIds,String year, Long constituencyId)
+	{
+		Object[] params = {year, constituencyId};
+		return getHibernateTemplate().find("select model.booth.tehsil.tehsilId," +
+				"model.booth.tehsil.tehsilName,sum(model.booth.maleVoters),sum(model.booth.femaleVoters),sum(model.booth.totalVoters) from BoothConstituencyElection model " +
+				"where model.booth.tehsil.tehsilId in (" +mandalsIds+") and model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId =? " +
+						"group by model.booth.tehsil.tehsilId",params);
+	}
+	
 }

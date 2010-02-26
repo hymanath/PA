@@ -1,10 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -76,8 +78,34 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		System.out.println("List Size:"+list.size());
 	}*/
 	
-	public void testFindPartNoConstituencyNameForTehsil(){
+	/*public void testFindPartNoConstituencyNameForTehsil(){
 		List list = boothConstituencyElectionDAO.findPartNoConstituencyNameForTehsil(new Long(844), "Assembly", "2009");
 		System.out.println(list.size());
+	}*/
+	
+	public void testmandalInfo()
+	{
+		List votersList  = boothConstituencyElectionDAO.findVoterInformationByMandalIdsAndDelimitationYear("849,851,852,853,854,859,860,862","2004", 235l);
+		List<VotersInfoForMandalVO> votersInfoForMandalList = new ArrayList<VotersInfoForMandalVO>();
+		for(int j = 0;j<votersList.size();j++)
+		{
+			VotersInfoForMandalVO votersInfo = new VotersInfoForMandalVO();
+			
+			Object[] vObj = (Object[]) votersList.get(j);
+			votersInfo.setMandalId( vObj[0].toString());
+			votersInfo.setMandalName(vObj[1].toString());
+			votersInfo.setTotalMaleVoters(vObj[2].toString());
+			votersInfo.setTotalFemaleVoters(vObj[3].toString());
+			votersInfo.setTotalVoters(vObj[4].toString());
+			
+			votersInfoForMandalList.add(votersInfo);
+		}
+		
+		for(VotersInfoForMandalVO obj : votersInfoForMandalList)
+		{
+			System.out.println(obj.getMandalId()+" - "+obj.getMandalName()+" - "+obj.getTotalVoters()+" - "+obj.getTotalMaleVoters()+" - "+obj.getTotalMaleVoters());
+		}
 	}
+	
+	
 }
