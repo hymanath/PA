@@ -253,6 +253,11 @@
         	</result>
         </action>
         
+        <action name="mandalPageElectionInfoAction" class="mandalPageElectionInfoAction">
+			<result name="success">/jsp/mandalPage1.jsp</result>
+			<result name="error">/jsp/mandalPageFail.jsp</result>
+		</action>
+        
         <action name="hamletBoothMapperDataStoreAjaxAction" class="hamletBoothMapperAction">
            <result type="json" name="success">
            		<param name="root">villageBooths</param>
