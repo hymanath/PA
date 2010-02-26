@@ -158,4 +158,36 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				"group by model.voter.gender order by model.voter.gender", 
 				params);
 	}
+	
+	public List getTownshipVotesByTehsil(Long electionID, Long tehsilID){
+//townshipID, townshipName, totalVoters, validVoters, boothID, partNo, hamletId, hamletName	
+		Object[] params = {electionID, tehsilID};
+		StringBuilder query = new StringBuilder();
+		query.append("select model.voter.hamlet.township.townshipId, model.voter.hamlet.township.townshipName, ")
+			.append("model.boothConstituencyElection.booth.totalVoters, ")
+			.append("model.boothConstituencyElection.boothResult.validVotes, ")
+			.append("model.boothConstituencyElection.booth.boothId, ")
+			.append("model.boothConstituencyElection.booth.partNo, ")
+			.append("model.voter.hamlet.hamletId, ")
+			.append("model.voter.hamlet.hamletName ");
+		query.append("from BoothConstituencyElectionVoter model ");
+		query.append("where model.boothConstituencyElection.constituencyElection.election.electionId=? and ")
+			//.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType=? and ")
+			.append("model.boothConstituencyElection.booth.tehsil.tehsilId = ? ");
+		query.append("group by model.boothConstituencyElection.booth.boothId ");
+		query.append("order by model.voter.hamlet.township.townshipName");
+		return getHibernateTemplate().find(query.toString(),params);
+	}
+	
+	/*public List getTownshipWiseParyVotesByTehsil(String electionYear, String electionType, Long tehsilID){
+		Object[] params = {electionYear, electionType, tehsilID};
+		StringBuilder query = new StringBuilder();
+		query.append("select  ");
+		query.append("from BoothConstituencyElectionVoter model ");
+		query.append("where model.boothConstituencyElection.constituencyElection.election.electionYear=? and ")
+			.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType=? and ")
+			.append("model.boothConstituencyElection.booth.tehsil.tehsilId = ? ");
+		return getHibernateTemplate().find(query.toString(),params);
+	}*/
+	
 }

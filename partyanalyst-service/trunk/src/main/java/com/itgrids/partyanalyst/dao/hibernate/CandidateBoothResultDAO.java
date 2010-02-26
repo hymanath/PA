@@ -121,4 +121,18 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		
 		return getHibernateTemplate().find(hqlQuery.toString(), tehsilID);
 	}
+	
+	public List getElectionPartyResultsForTownship(Long electionID, Long townshipID){
+		Object[] params = {townshipID, electionID};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.nomination, sum(model.votesEarned) ");
+		hqlQuery.append("from CandidateBoothResult model ")
+				.append("where model.boothConstituencyElection.boothConstituencyElectionId in ")
+				.append("( select distinct bcev.boothConstituencyElection.boothConstituencyElectionId ")
+				.append("from BoothConstituencyElectionVoter bcev ")
+				.append("where bcev.voter.hamlet.township.townshipId=? ) and ")
+				.append("model.boothConstituencyElection.constituencyElection.election.electionId=?");
+		hqlQuery.append("group by model.nomination");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
 }

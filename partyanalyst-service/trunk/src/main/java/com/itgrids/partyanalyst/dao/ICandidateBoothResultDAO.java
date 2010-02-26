@@ -26,4 +26,7 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List findBoothWisePartiesAllElectionResultsByBooth(Long boothId);
 	
 	public List getPartyGenderWiseBoothVotesForMandal(Long tehsilID);
+	
+	public List getElectionPartyResultsForTownship(Long electionID, Long townshipID);
+	
 }
