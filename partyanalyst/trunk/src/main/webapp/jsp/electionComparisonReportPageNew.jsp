@@ -262,6 +262,27 @@
 	{
 		width:100%;
 	}
+
+	#completeOneField
+	{
+		background-color:aliceBlue;
+		font-family:verdana;
+		font-weight:bold;
+		margin:20px;
+		width:700px;
+		color:Olive;
+		border:medium double;
+	}
+	#completeTwoField
+	{
+		background-color:aliceBlue;
+		font-family:verdana;
+		font-weight:bold;
+		margin:20px;
+		width:700px;
+		color:Olive;
+		border:medium double;
+	}
 </style>
 <script type="text/javascript">	
 
@@ -1263,7 +1284,66 @@ function displayComparedResults(jsObj,data)
 {   	
 	
 	var str='';
-	
+	str+='<div id="completeOneField">';
+	str+='<legend>'+data.yearOne+' Complete Results</legend>';
+	str+='<table width="100%">';
+	str+='<tr>';
+    str+='<td align="center">Party</td>';
+	str+='<td align="center" style="color:DodgerBlue;">*CP</td>';
+	str+='<td align="center">SeatsWon</td>';
+	str+='<td align="center">2 Pos</td>';
+	str+='<td align="center">3 Pos</td>';
+	str+='<td align="center">Votes %</td>';
+    str+='<td align="center">Overall %</td>';
+	for(i in data.positionsYearOne){
+	str+='<tr>';
+	if(data.positionsYearOne[i].partyId == electionObject.selectedParty)
+    str+='<td align="center" style="color:red;">'+data.positionsYearOne[i].partyName+'</td>';
+	else
+	str+='<td align="center">'+data.positionsYearOne[i].partyName+'</td>';
+	str+='<td align="center">'+data.positionsYearOne[i].totalConstiParticipated+'</td>';
+	str+='<td align="center">'+data.positionsYearOne[i].totalSeatsWon+'</td>';
+	str+='<td align="center">'+data.positionsYearOne[i].secondPosWon+'</td>';
+	str+='<td align="center">'+data.positionsYearOne[i].thirdPosWon+'</td>';
+	str+='<td align="center">'+data.positionsYearOne[i].votesPercentage+'</td>';
+	str+='<td align="center">'+data.positionsYearOne[i].completeVotesPercent+'</td>';
+	str+='</tr align="center">';
+	}
+	str+='<tr>';
+    str+='<td style="color:DodgerBlue;">* CP -- Constituencies Participated </td>';
+	str+='</tr>';
+	str+='</table>';
+	str+='</div>';
+	str+='<div id="completeTwoField">';
+	str+='<legend>'+data.yearTwo+' Complete Results</legend>';
+	str+='<table width="100%">';
+	str+='<tr>';
+    str+='<td align="center">Party</td>';
+	str+='<td align="center" style="color:DodgerBlue;">*CP</td>';
+	str+='<td align="center">SeatsWon</td>';
+	str+='<td align="center">2 Pos</td>';
+	str+='<td align="center">3 Pos</td>';
+	str+='<td align="center">Votes %</td>';
+    str+='<td align="center">Overall %</td>';
+	for(i in data.positionsYearTwo){
+	str+='<tr>';
+	if(data.positionsYearTwo[i].partyId == electionObject.selectedParty)
+    str+='<td align="center" style="color:red;">'+data.positionsYearTwo[i].partyName+'</td>';
+	else
+	str+='<td align="center">'+data.positionsYearTwo[i].partyName+'</td>';
+	str+='<td align="center">'+data.positionsYearTwo[i].totalConstiParticipated+'</td>';
+	str+='<td align="center">'+data.positionsYearTwo[i].totalSeatsWon+'</td>';
+	str+='<td align="center">'+data.positionsYearTwo[i].secondPosWon+'</td>';
+	str+='<td align="center">'+data.positionsYearTwo[i].thirdPosWon+'</td>';
+	str+='<td align="center">'+data.positionsYearTwo[i].votesPercentage+'</td>';
+	str+='<td align="center">'+data.positionsYearTwo[i].completeVotesPercent+'</td>';
+	str+='</tr align="center">';
+	}
+	str+='<tr>';
+    str+='<td style="color:DodgerBlue;">* CP -- Constituencies Participated </td>';
+	str+='</tr>';
+	str+='</table>';
+	str+='</div>';
 	str+='<fieldset id="electionProfileField">';
 	str+='<legend> VOTES PERCENT INCREASE</legend>';	
 	str+='<div id="votesPercentageIncDiv">';
