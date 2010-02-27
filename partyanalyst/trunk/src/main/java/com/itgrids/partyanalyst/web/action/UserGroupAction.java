@@ -8,14 +8,17 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.GroupsDetailsForUser;
+import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.dto.UserGroupsVO;
+import com.itgrids.partyanalyst.service.IUserGroupService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -27,14 +30,15 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	 */
 	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
+	private HttpSession session;
 	private UserGroupsVO userGroupsVO;
-	private GroupsDetailsForUser subGroupsForStaticGroupForUser;
+	private GroupsDetailsForUserVO subGroupsForStaticGroupForUser;
 	private UserGroupDetailsVO userGroupsDescriptionVO;
 	private String task = null;
 	JSONObject jObj = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
-	
-	
+	private IUserGroupService userGroupService;
+		
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -45,6 +49,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
+		this.session = request.getSession();
 	}	
 
 	public UserGroupsVO getUserGroupsVO() {
@@ -62,12 +67,12 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		this.task = task;
 	}	
 
-	public GroupsDetailsForUser getSubGroupsForStaticGroupForUser() {
+	public GroupsDetailsForUserVO getSubGroupsForStaticGroupForUser() {
 		return subGroupsForStaticGroupForUser;
 	}
 
 	public void setSubGroupsForStaticGroupForUser(
-			GroupsDetailsForUser subGroupsForStaticGroupForUser) {
+			GroupsDetailsForUserVO subGroupsForStaticGroupForUser) {
 		this.subGroupsForStaticGroupForUser = subGroupsForStaticGroupForUser;
 	}	
 	
@@ -78,10 +83,25 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	public void setUserGroupsDescriptionVO(
 			UserGroupDetailsVO userGroupsDescriptionVO) {
 		this.userGroupsDescriptionVO = userGroupsDescriptionVO;
+	}	
+
+	public IUserGroupService getUserGroupService() {
+		return userGroupService;
+	}
+
+	public void setUserGroupService(IUserGroupService userGroupService) {
+		this.userGroupService = userGroupService;
 	}
 
 	public String execute() throws Exception
 	{	
+		UserGroupDetailsVO userGroupDetailsVO;
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		if(user==null)
+			return ERROR;
+
 		String param = null;
 		param = getTask();
 		
@@ -93,52 +113,48 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			e.printStackTrace();
 		}
 		
+		if(jObj.getString("task").equalsIgnoreCase("getSystemGroupsForUser"))
+		{
+			userGroupsVO = new UserGroupsVO();
+			/*
+			List <GroupsDetailsForUserVO> groupsDetailsForUserList = new ArrayList<GroupsDetailsForUserVO>();
+			GroupsDetailsForUserVO mediaGroupDetailsForUser = new GroupsDetailsForUserVO();  
+			GroupsDetailsForUserVO officialGroupDetailsForUser = new GroupsDetailsForUserVO();
+			List<UserGroupDetailsVO> subGroupsByUser = new ArrayList<UserGroupDetailsVO>();
 			
-		userGroupsVO = new UserGroupsVO();
-		List <GroupsDetailsForUser> groupsDetailsForUserList = new ArrayList<GroupsDetailsForUser>();
-		GroupsDetailsForUser mediaGroupDetailsForUser = new GroupsDetailsForUser();  
-		GroupsDetailsForUser officialGroupDetailsForUser = new GroupsDetailsForUser();
-		List<UserGroupDetailsVO> subGroupsByUser = new ArrayList<UserGroupDetailsVO>();
-		
-		mediaGroupDetailsForUser.setStaticGroupId(1L);
-		mediaGroupDetailsForUser.setStaticGroupName("Media");
-		mediaGroupDetailsForUser.setNumberOfGroups(3);
-		
-		officialGroupDetailsForUser.setStaticGroupId(2L);
-		officialGroupDetailsForUser.setStaticGroupName("Officials");
-		officialGroupDetailsForUser.setNumberOfGroups(2);
-		
-		/* 				
-		UserGroupDetailsVO userSubGroup1Details = new UserGroupDetailsVO();
-		
-		userGroup1Details.setGroupName("State Level Media");
-		userGroup1Details.setGroupId(1L);
-		userGroup1Details.setGroupDesc("State Level Media contains information regarding all the media in the state");
-		
-		List<UserGroupDetailsVO> subGrpsByUser = new ArrayList<UserGroupDetailsVO>();
-		
-		UserGroupDetailsVO userGroup1SubGroupDetails = new UserGroupDetailsVO();
-		userGroup1SubGroupDetails.setGroupId(1L);
-		userGroup1SubGroupDetails.setGroupName("District Level Media");
-		userGroup1SubGroupDetails.setGroupDesc("This group contains media persons related to a particular district");
-		subGrpsByUser.add(userGroup1SubGroupDetails);
-		userGroup1Details.setUserSubGroups(subGrpsByUser);
-		
+			mediaGroupDetailsForUser.setStaticGroupId(1L);
+			mediaGroupDetailsForUser.setStaticGroupName("Media");
+			mediaGroupDetailsForUser.setNumberOfGroups(3L);
 			
-		UserGroupDetailsVO userGroup2Details = new UserGroupDetailsVO();
-		
-		userGroup2Details.setGroupName("District Officials");
-		userGroup2Details.setGroupId(2L);
-		userGroup2Details.setGroupDesc("District level officials is related with highest governement officials of a district");
+			officialGroupDetailsForUser.setStaticGroupId(2L);
+			officialGroupDetailsForUser.setStaticGroupName("Officials");
+			officialGroupDetailsForUser.setNumberOfGroups(2L);
+			
 					
-		grpsByUser.add(userGroup1Details);
-		grpsByUser.add(userGroup2Details);
-		*/
-		
-		groupsDetailsForUserList.add(mediaGroupDetailsForUser);
-		groupsDetailsForUserList.add(officialGroupDetailsForUser);
-		userGroupsVO.setGroupsDetailsForUser(groupsDetailsForUserList);	
-		
+			groupsDetailsForUserList.add(mediaGroupDetailsForUser);
+			groupsDetailsForUserList.add(officialGroupDetailsForUser);*/
+			userGroupsVO.setGroupsDetailsForUser(userGroupService.systemGroupsDetailsForUser(user.getRegistrationID()));	
+		} 
+		if(jObj.getString("task").equalsIgnoreCase("createNewGroup"))
+		{
+			String staticGroupId = jObj.getString("staticGroupId");
+			System.out.println(staticGroupId);
+			userGroupDetailsVO = new UserGroupDetailsVO();
+			userGroupDetailsVO.setCreatedUserId(user.getRegistrationID());
+			userGroupDetailsVO.setGroupName(jObj.getString("groupName"));
+			userGroupDetailsVO.setGroupDesc(jObj.getString("groupdDesc"));
+			if(staticGroupId == "null")
+			{
+				userGroupDetailsVO.setStaticGroupId(null);
+			}
+			else
+			{
+				userGroupDetailsVO.setStaticGroupId(new Long(staticGroupId));	
+			}
+			
+			userGroupService.createGroupForUser(userGroupDetailsVO);
+			
+		}
 		return Action.SUCCESS;
 	}
 	
@@ -226,7 +242,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		}
 		
 		Long staticGrpId = new Long(jObj.getString("staticGrpId"));
-		subGroupsForStaticGroupForUser = new GroupsDetailsForUser();
+		subGroupsForStaticGroupForUser = new GroupsDetailsForUserVO();
 		List <UserGroupDetailsVO> subGroupsListForUser = new ArrayList<UserGroupDetailsVO>();
 		System.out.println(staticGrpId);
 		if(staticGrpId.equals(new Long(1)))
