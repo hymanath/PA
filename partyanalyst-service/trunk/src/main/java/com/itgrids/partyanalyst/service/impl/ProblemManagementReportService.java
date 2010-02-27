@@ -235,13 +235,22 @@ public class ProblemManagementReportService implements
 				Object[] parms = (Object[]) list.get(i);
 				ProblemBeanVO problemBean = new ProblemBeanVO();
 				problemId = Long.parseLong(parms[4].toString());
-				if(!(parms[0].toString().equalsIgnoreCase("NEW") || parms[0].toString().equalsIgnoreCase("CLASSIFY") || parms[0].toString().equalsIgnoreCase("ASSIGNED"))){
+				if(!(parms[0].toString().equalsIgnoreCase("NEW") || parms[0].toString().equalsIgnoreCase("CLASSIFY"))){
 					if(log.isDebugEnabled())
 						log.debug("Making a DAO call to assignedProblemProgressDAO.findProblemsForAHamletByHistoryId() "); 
 					List result =  assignedProblemProgressDAO.findProblemsForAHamletByHistoryId(problemId);
 					if(result == null){
 						if(log.isDebugEnabled())
 							log.debug("0 rows have been retrived......");
+					}
+					else if(parms[0].toString().equalsIgnoreCase("ASSIGNED")){
+						for(int j=0;j<result.size();j++){
+							Object[] problemData = (Object[]) result.get(j);
+							departmentName = problemData[0].toString();
+							problemBean.setDepartment(problemData[0].toString());
+							problemBean.setDepartmentConcernedPersonName("Not Assigned.");
+							problemBean.setUpdatedDate("Not Assigned.");
+							}
 					}
 					else{
 						if(log.isDebugEnabled())
