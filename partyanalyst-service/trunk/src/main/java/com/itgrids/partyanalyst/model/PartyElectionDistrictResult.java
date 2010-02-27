@@ -48,7 +48,9 @@ public class PartyElectionDistrictResult extends BaseModel implements Serializab
 	private String fourthPosWon;
 	private String nthPosWon;
 	private String votesPercentage;
+	private String completeVotesPercent;
 	private Date lastUpdated;
+	
 	
 	//default constructor
 	public PartyElectionDistrictResult(){
@@ -60,7 +62,7 @@ public class PartyElectionDistrictResult extends BaseModel implements Serializab
 			State state, District district, String totalConstiParticipated,
 			String totalSeatsWon, String secondPosWon, String thirdPosWon,
 			String fourthPosWon, String nthPosWon, String votesPercentage,
-			Date lastUpdated) {
+			String completeVotesPercent,Date lastUpdated) {
 		super();
 		this.party = party;
 		this.election = election;
@@ -73,6 +75,7 @@ public class PartyElectionDistrictResult extends BaseModel implements Serializab
 		this.fourthPosWon = fourthPosWon;
 		this.nthPosWon = nthPosWon;
 		this.votesPercentage = votesPercentage;
+		this.completeVotesPercent = completeVotesPercent;
 		this.lastUpdated = lastUpdated;
 	}
 
@@ -197,6 +200,15 @@ public class PartyElectionDistrictResult extends BaseModel implements Serializab
 
 	public void setVotesPercentage(String votesPercentage) {
 		this.votesPercentage = votesPercentage;
+	}
+
+	@Column(name = "complete_votes_percentage", length = 25)
+	public String getCompleteVotesPercent() {
+		return completeVotesPercent;
+	}
+
+	public void setCompleteVotesPercent(String completeVotesPercent) {
+		this.completeVotesPercent = completeVotesPercent;
 	}
 
 	@Temporal(TemporalType.DATE)
