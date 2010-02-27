@@ -25,7 +25,11 @@
 		<class>com.itgrids.partyanalyst.model.Election</class>
 		<class>com.itgrids.partyanalyst.model.ElectionType</class>
 		<class>com.itgrids.partyanalyst.model.Registration</class>
-		<class>com.itgrids.partyanalyst.model.ConstituencyElectionResult</class>  
+		<class>com.itgrids.partyanalyst.model.ConstituencyElectionResult</class>
+		<class>com.itgrids.partyanalyst.model.StaticGroup</class>
+		<class>com.itgrids.partyanalyst.model.StaticUsers</class>
+		<class>com.itgrids.partyanalyst.model.PersonalUserGroup</class>
+		<class>com.itgrids.partyanalyst.model.UserGroupPrivileges</class>  
 		<properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
