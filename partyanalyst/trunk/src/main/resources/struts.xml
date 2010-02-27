@@ -291,6 +291,12 @@
 			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
 		</action>
 		
+		<action name="electionComparisonConstiResultsAjax" class="electionComparisonReportAction" method="getConstituencyElectionResults" >
+			<result type="json" name="success">
+				 <param name="root">constiElecResults</param> 
+			</result>
+		</action>
+		
 		<action name="partyInfluenceMainAction" class="partyInfluenceMainAction">
 			<result name="success">/jsp/partyInfluenceMainPage.jsp</result>
 		</action>
