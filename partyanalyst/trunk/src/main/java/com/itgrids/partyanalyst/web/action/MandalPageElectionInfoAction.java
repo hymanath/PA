@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -10,8 +11,11 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.MandalTownshipWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
+import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -20,6 +24,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class MandalPageElectionInfoAction extends ActionSupport implements ServletRequestAware{
 
 	private HttpServletRequest request;
+	private HttpSession session;
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	private ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO;
 	private VillageDetailsVO villageDetailsVO;
@@ -27,9 +32,11 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> electionSelectVO;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private IStaticDataService staticDataService;
+	private IConstituencyPageService constituencyPageService;
 	private String task = null;
 	JSONObject jObj = null;
 	private String mandalId;
+	private MandalTownshipWiseBoothDetailsVO mandalTownshipWiseBoothDetailsVO;
 	private static final Logger log = Logger.getLogger(MandalPageAction.class);
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -43,6 +50,15 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	public void setDelimitationConstituencyMandalService(
 			IDelimitationConstituencyMandalService delimitationConstituencyMandalService) {
 		this.delimitationConstituencyMandalService = delimitationConstituencyMandalService;
+	}
+
+	public IConstituencyPageService getConstituencyPageService() {
+		return constituencyPageService;
+	}
+
+	public void setConstituencyPageService(
+			IConstituencyPageService constituencyPageService) {
+		this.constituencyPageService = constituencyPageService;
 	}
 
 	public ElectionWiseMandalPartyResultListVO getElectionWiseMandalPartyResultListVO() {
@@ -103,6 +119,23 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		this.staticDataService = staticDataService;
 	}
 
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
+	public MandalTownshipWiseBoothDetailsVO getMandalTownshipWiseBoothDetailsVO() {
+		return mandalTownshipWiseBoothDetailsVO;
+	}
+
+	public void setMandalTownshipWiseBoothDetailsVO(
+			MandalTownshipWiseBoothDetailsVO mandalTownshipWiseBoothDetailsVO) {
+		this.mandalTownshipWiseBoothDetailsVO = mandalTownshipWiseBoothDetailsVO;
+	}
+
 	public String execute(){
 		
 		mandalId = request.getParameter("MANDAL_ID");
@@ -158,9 +191,16 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 			}catch(Exception e){
 				e.printStackTrace();
 			}
+			Long partyId;
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+				partyId = null;
+			else
+				partyId = user.getParty();
 			
 			if(jObj.getString("task").equals("getRevenueVillagesInfo")){
-				electionWiseMandalPartyResultListVO = new ElectionWiseMandalPartyResultListVO();
+				mandalTownshipWiseBoothDetailsVO = constituencyPageService.getTownshipVotesByTehsil(jObj.getLong("electionId"), 844l, partyId);
 			}
 		}
 		return SUCCESS;
