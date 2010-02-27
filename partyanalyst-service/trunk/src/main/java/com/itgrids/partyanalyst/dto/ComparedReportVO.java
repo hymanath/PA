@@ -20,6 +20,8 @@ public class ComparedReportVO implements java.io.Serializable{
 	private List<ComparedElectionResultVO> votesPercentLostResults;
 	private List<PartyResultVO> notConsideredYearOneResults;
 	private List<PartyResultVO> notConsideredYearTwoResults;
+	private List<PartyPositionsVO> positionsYearOne;
+	private List<PartyPositionsVO> positionsYearTwo;
 	private String yearOne;
 	private String yearTwo;
 	
@@ -51,6 +53,18 @@ public class ComparedReportVO implements java.io.Serializable{
 	public void setNotConsideredYearTwoResults(
 			List<PartyResultVO> notConsideredYearTwoResults) {
 		this.notConsideredYearTwoResults = notConsideredYearTwoResults;
+	}
+	public List<PartyPositionsVO> getPositionsYearOne() {
+		return positionsYearOne;
+	}
+	public void setPositionsYearOne(List<PartyPositionsVO> positionsYearOne) {
+		this.positionsYearOne = positionsYearOne;
+	}
+	public List<PartyPositionsVO> getPositionsYearTwo() {
+		return positionsYearTwo;
+	}
+	public void setPositionsYearTwo(List<PartyPositionsVO> positionsYearTwo) {
+		this.positionsYearTwo = positionsYearTwo;
 	}
 	public String getYearOne() {
 		return yearOne;
