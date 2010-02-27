@@ -28,35 +28,15 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		List<PersonalUserGroup>personalUserGroup=getHibernateTemplate().find("from PersonalUserGroup model where model.groupName= ?",groupName);
 		return personalUserGroup;
 	}
-
-	@Override
-	public boolean exists(Long arg0) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	@SuppressWarnings("unchecked")
+	public List<PersonalUserGroup> findMyGroupsByUserId(Long userId){		
+		return getHibernateTemplate().find("from PersonalUserGroup model where model.createdUserId.registrationId = ? and model.staticGroup.staticGroupId = null and model.parentGroupId = null"  ,userId);
 	}
-
-	@Override
-	public PersonalUserGroup get(Long arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<PersonalUserGroup> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void remove(Long arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public PersonalUserGroup save(PersonalUserGroup arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
+	@SuppressWarnings("unchecked")
+	public List findSubGroupsInSystemGroupsByUserId(Long userId)
+	{
+		return getHibernateTemplate().find("select model.staticGroup.staticGroupId, model.staticGroup.groupName, count(model.personalUserGroupId) from PersonalUserGroup model where model.createdUserId.registrationId = ? and model.staticGroup.staticGroupId != null group by model.staticGroup.staticGroupId", userId);
+	}	
 }
