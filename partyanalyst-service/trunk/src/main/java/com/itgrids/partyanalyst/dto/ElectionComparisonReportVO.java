@@ -20,7 +20,10 @@ public class ElectionComparisonReportVO {
 	private ResultStatus resultStatus;
 	private CompleteResultsVO forYearOne;
 	private CompleteResultsVO forYearTwo;
+	private String votesPercentDiff;
 	private Long electionType;
+	private Long elecIdYearOne;
+	private Long elecIdYearTwo;
 	private Long stateId;
 	private Long partyId;
 	private Boolean hasAlliances;
@@ -77,6 +80,18 @@ public class ElectionComparisonReportVO {
 	public void setElectionType(Long electionType) {
 		this.electionType = electionType;
 	}
+	public Long getElecIdYearOne() {
+		return elecIdYearOne;
+	}
+	public void setElecIdYearOne(Long elecIdYearOne) {
+		this.elecIdYearOne = elecIdYearOne;
+	}
+	public Long getElecIdYearTwo() {
+		return elecIdYearTwo;
+	}
+	public void setElecIdYearTwo(Long elecIdYearTwo) {
+		this.elecIdYearTwo = elecIdYearTwo;
+	}
 	public Long getStateId() {
 		return stateId;
 	}
@@ -112,5 +127,11 @@ public class ElectionComparisonReportVO {
 	}
 	public void setPositionsForYearTwo(List<PartyPositionsVO> positionsForYearTwo) {
 		this.positionsForYearTwo = positionsForYearTwo;
+	}
+	public String getVotesPercentDiff() {
+		return votesPercentDiff;
+	}
+	public void setVotesPercentDiff(String votesPercentDiff) {
+		this.votesPercentDiff = votesPercentDiff;
 	}
 }
