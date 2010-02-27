@@ -329,5 +329,12 @@
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />	
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />	
 	</bean>
-</beans>
+	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
+		<property name="staticGroupDAO" ref="staticGroupDAO" />
+		<property name="personalUserGroupDAO" ref="personalUserGroupDAO" />
+		<property name="staticUsersDAO" ref="staticUsersDAO" />
+		<property name="registrationDAO" ref="registrationDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>
+</beans>		
 		
