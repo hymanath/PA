@@ -11,6 +11,11 @@ import java.io.Serializable;
 
 public class PartyPositionsVO implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3958738425459624269L;
+	
 	private Long partyId;
 	private String partyName;
 	private Long totalConstiParticipated;
@@ -20,6 +25,7 @@ public class PartyPositionsVO implements Serializable{
 	private Long fourthPosWon;
 	private Long nthPosWon;
 	private String votesPercentage;
+	private String completeVotesPercent;
 	
 	
 	public Long getPartyId() {
@@ -75,5 +81,11 @@ public class PartyPositionsVO implements Serializable{
 	}
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
+	}
+	public String getCompleteVotesPercent() {
+		return completeVotesPercent;
+	}
+	public void setCompleteVotesPercent(String completeVotesPercent) {
+		this.completeVotesPercent = completeVotesPercent;
 	}
 }
