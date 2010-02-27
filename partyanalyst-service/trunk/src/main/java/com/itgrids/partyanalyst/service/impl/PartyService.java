@@ -866,6 +866,7 @@ public class PartyService implements IPartyService {
 		Nomination selectedNomination = partyParticipatedNomination(nominations , parties, rank,partyID,alliances);
 		if(selectedNomination == null)
 			return null;
+		partyPositionDisplayVO.setConstituencyId(constituencyElection.getConstituency().getConstituencyId());
 		partyPositionDisplayVO.setConstituencyName(constituencyElection.getConstituency().getName());
 		StringBuilder fullName = new StringBuilder();
 		if(selectedNomination.getCandidate().getFirstname()!=null)
@@ -1098,6 +1099,9 @@ public class PartyService implements IPartyService {
 			oppPartyPositionInfoList = new ArrayList<PartyPostionInfoVO>();
 			for(Nomination nominationForAParty:nominations){
 				if(nominationForAParty.getParty().getPartyId().equals(partyId)){
+					partyPositionDisplayVO.setConstituencyId(nominationForAParty.getConstituencyElection().getConstituency().getConstituencyId());
+					partyPositionDisplayVO.setPartyId(partyId);
+					partyPositionDisplayVO.setElectionId(nominationForAParty.getConstituencyElection().getElection().getElectionId());
 					partyPositionDisplayVO.setCandidateName(nominationForAParty.getCandidate().getLastname().trim());
 					partyPositionDisplayVO.setConstituencyName(nominationForAParty.getConstituencyElection().getConstituency().getName());
 					partyPositionDisplayVO.setRank(nominationForAParty.getCandidateResult().getRank());
