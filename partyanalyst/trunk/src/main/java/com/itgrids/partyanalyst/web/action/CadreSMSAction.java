@@ -198,12 +198,12 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		String accessType = user.getAccessType();
 		
-		list.add(new SelectOptionVO(0L,"Country"));
-		list.add(new SelectOptionVO(1L,"State"));
-		list.add(new SelectOptionVO(2L,"District"));
-		list.add(new SelectOptionVO(3L,"Constituency"));
-		list.add(new SelectOptionVO(4L,"Mandal"));
-		list.add(new SelectOptionVO(5L,"Village"));
+		list.add(new SelectOptionVO(1L,"Country"));
+		list.add(new SelectOptionVO(2L,"State"));
+		list.add(new SelectOptionVO(3L,"District"));
+		list.add(new SelectOptionVO(4L,"Constituency"));
+		list.add(new SelectOptionVO(5L,"Mandal"));
+		list.add(new SelectOptionVO(6L,"Village"));
 		
 		/*if("COUNTRY".equals(accessType)){
 			list.add(new SelectOptionVO(0L,"Country"));
