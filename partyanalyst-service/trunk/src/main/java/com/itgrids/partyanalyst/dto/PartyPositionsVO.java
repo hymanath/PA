@@ -19,6 +19,7 @@ public class PartyPositionsVO implements Serializable{
 	private Long partyId;
 	private String partyName;
 	private Long totalConstiParticipated;
+	private Long totalConstituencies;
 	private Long totalSeatsWon;
 	private Long secondPosWon;
 	private Long thirdPosWon;
@@ -39,6 +40,12 @@ public class PartyPositionsVO implements Serializable{
 	}
 	public void setTotalConstiParticipated(Long totalConstiParticipated) {
 		this.totalConstiParticipated = totalConstiParticipated;
+	}
+	public Long getTotalConstituencies() {
+		return totalConstituencies;
+	}
+	public void setTotalConstituencies(Long totalConstituencies) {
+		this.totalConstituencies = totalConstituencies;
 	}
 	public Long getTotalSeatsWon() {
 		return totalSeatsWon;
