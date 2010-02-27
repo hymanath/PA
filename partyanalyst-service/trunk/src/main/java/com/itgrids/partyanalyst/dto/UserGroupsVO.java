@@ -4,14 +4,14 @@ import java.util.List;
 
 public class UserGroupsVO {
 	
-	private List <GroupsDetailsForUser> groupsDetailsForUser;
+	private List <GroupsDetailsForUserVO> groupsDetailsForUser;
 	 
-	public List<GroupsDetailsForUser> getGroupsDetailsForUser() {
+	public List<GroupsDetailsForUserVO> getGroupsDetailsForUser() {
 		return groupsDetailsForUser;
 	}
 
 	public void setGroupsDetailsForUser(
-			List<GroupsDetailsForUser> groupsDetailsForUser) {
+			List<GroupsDetailsForUserVO> groupsDetailsForUser) {
 		this.groupsDetailsForUser = groupsDetailsForUser;
 	}	
  	
