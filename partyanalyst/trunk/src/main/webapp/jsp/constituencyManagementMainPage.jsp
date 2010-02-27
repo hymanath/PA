@@ -49,6 +49,15 @@
 	<!--  <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/yui-styles-2.8/tree.css"> -->
 	<!-- TreeView source file --> 
 	<script src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+	<!--  yui panel dependency-->
+
+<!-- 	
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css">
+<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script>
+<script src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script>
+<script src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script>
+  -->
  	<!-- YUI Dependency files (End) -->
 	
 		<style type="text/css">
@@ -171,14 +180,10 @@
 			width: 900px;
 			overflow-x:auto;
 		}
-		#leftLayoutMain 
-		{					
-			min-height:80px;
-			padding:10px 10px 20px;
-		}
+		
 		.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd 
 		{
-			background-color:#F0F8FF;
+			
 			border:none;
 		}
 		#UGIntro #systemGroups #myGroups #createNewGrpDiv .link a {
@@ -206,12 +211,13 @@
 			list-style-type: none;
 			
 		}
+		/*
 		h1 {
 			color:#0D5CAB;
 			font-size:1.6em;
 			margin:0 0 0.5em;
 			text-align: center;
-		}
+		}*/
 		#groupDetailsHead {
 			color:#0D5CAB;
 			font-weight:bold;			
@@ -257,7 +263,7 @@
 			cursor:pointer;
 			margin-left:2px;
 			text-decoration:none;
-			background: #F0F8FF;
+			background: #ECF1F5;
 		}
 		.section_title {
 			border-bottom:1px dotted #B9B9B9;
@@ -277,12 +283,47 @@
 			font-weight:bold;
 			text-align:left;
 		}
-		.createGroupTable th td {
+		.createGroupTable th td fieldset legend {
 			padding:5px;
 			vertical-align:top;
 			padding-left: 15px;
 		}
-		
+		#userGroupDetailsDivBody legend
+		{
+				font-weight:bold;
+				color:#404040;			
+		}
+		.yui-skin-sam .yui-panel {
+				background:#EFF3F7 none repeat scroll 0 0;
+				border:1px solid #96B4D3;
+				position:relative;
+				z-index:1;
+		}
+		.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
+				background:none;
+				border-color:none;
+				border-style:none;
+				text-align:left;
+				padding:4px;
+		}
+		.yui-skin-sam .yui-panel .hd {
+				background:transparent url(images/icons/aqua-hd-bg.gif) repeat-x scroll 0 0;
+				color:#628C2A;
+				font-size:93%;
+				font-weight:bold;
+				line-height:2;
+				padding:0 10px;
+				text-align:center;
+		}
+		#usergroupsHead {
+				background-color:#EBF4BF;
+				border:1px solid #A3B381;
+				color:#547212;
+				font-weight:bold;
+				margin-bottom:10px;
+				padding:5px;
+				text-align:center;
+		}
 	</style>
 
 	<script type="text/javascript">
@@ -429,8 +470,11 @@
 	var distPapersObj={
 							ePapersArray:[]
 						};
+	
 	var userGrpsObj={
-							showGrpMembersArr:[]
+							showGrpMembersArr:[],
+							systemGroupsListBoxArr:[],
+							myGroupsListBoxArr:[]
 	};
 	
 	function buildConstituencyLayout()
@@ -468,11 +512,11 @@
 			units: [ 	        
 					{
 						position: 'left',						
-						width: 225,
+						width: 300,
 						height:200,						
 						body: 'leftLayoutMain',
 						resize: false, 
-						gutter: '5px',
+						gutter: '0px',
 						collapse: false,
 						scroll: false,						
 						animate: false  
@@ -481,7 +525,7 @@
 						position: 'center',						
 						body: 'centerLayoutMain',
 						resize: false,
-						gutter: '5px',
+						gutter: '0px',
 						collapse: false,
 						scroll: false,						
 						animate: false
@@ -638,7 +682,7 @@
 									} else if(jsObj.task == "getSelectedDistPaper")
 									{
 										updateSelectedDistUrls(myResults)
-									} else if(jsObj.task == "userGroupInfoDisplay")
+									} else if(jsObj.task == "getSystemGroupsForUser")
 									{
 										showGroupsCreatedByUsers(myResults);
 																				
@@ -647,12 +691,10 @@
 										showGrpMembers(myResults);
 									} else if(jsObj.task == "grpDetailsByStaticGrpId")
 									{
-										showSubGroupsUnderStaticGroups(myResults,jsObj);
-										//loadNodeData(myResults);
+										showSubGroupsUnderStaticGroups(myResults,jsObj);										
 									} else if(jsObj.task == "getCompleteGroupDescription")
 									{
-										showGroupdDetailsInCenterLayout(myResults,jsObj);
-										//loadNodeData(myResults);
+										showGroupdDetailsInCenterLayout(myResults,jsObj);										
 									}		
 									 else
 									{
@@ -1101,9 +1143,24 @@
 	{
 		var elmt = document.getElementById("alertMessage");
 		elmt.style.display = 'none';
-		buildUserGroupsTabLayout();					
+		buildUserGroupsTabLayout();	
+		buildLeftPanelInUserGrps();	
+		buildCenterPanelInUserGrps();			
 	}
-	
+
+	function buildLeftPanelInUserGrps()
+	{
+	var	leftPanelInUserGrps = new YAHOO.widget.Panel("leftLayoutMain", { width:"280px", height:"480px", visible:true, draggable:false, close:false} ); 
+	leftPanelInUserGrps.render();
+	leftPanelInUserGrps.setHeader("Manage Groups");
+	}
+
+	function buildCenterPanelInUserGrps()
+	{
+		var	centerPanelInUserGrps = new YAHOO.widget.Panel("centerLayoutMain", { width:"620px", height:"480px", visible:true, draggable:false, close:false} ); 
+		centerPanelInUserGrps.render();
+		centerPanelInUserGrps.setHeader("User Groups");
+	}
 	function handleRecommLetrsTabClick()
 	{
 		var elmt = document.getElementById("alertMessage");
@@ -1334,6 +1391,7 @@
 		var userGrpsDivEle = document.getElementById("userGroupsTabContent_body");
 		var node = jsObj.myNodeId;
 		var nodeToAppend = userGrpsTree.getNodeByIndex(node);
+		//var nodebyid = YAHOO.widget.TreeView.getNode( userGrpsTree , nodeIndex)
 		
 		var userGrpsTableContent ='';
 		userGrpsTableContent+='<div>';
@@ -1970,7 +2028,7 @@
 
 		var userGroupsContent='<div id="userGroupsTabContent">';
 		userGroupsContent+='<div id="layoutMain"></div>';
-		userGroupsContent+='<div id="leftLayoutMain">';
+		userGroupsContent+='<div id="leftLayoutMain" class="yui-skin-sam">';
 		//userGroupsContent+='<p id="UGIntro" class="link"><a href="#" onclick="showUGIntro()"><b>Introduction</b></a></p>';
 		userGroupsContent+='<p id="systemGroups" class="link"><a href="#" onclick="getSystemGroupsForUser()"><b>System Groups</b></a></p>';
 		userGroupsContent+='<div id="myGroupsLinksDiv"></div>';		
@@ -1979,16 +2037,25 @@
 		userGroupsContent+='</div>'; 
 		userGroupsContent+='<div id="centerLayoutMain">';
 		userGroupsContent+='<div id="userGroupsTabContent_body" align="left">';
-		userGroupsContent+='<h1> User Groups</h1>';
-		userGroupsContent+='<table style="margin-left:1cm";><tr><td>The User Groups is a Consistent interaction for creating, managing & engaging groups<br/></td></tr>';
-		userGroupsContent+='<tr><td>and it helps the users for maintaining clean relationship with people even  the users<br/></td></tr> ';
-		userGroupsContent+='<tr><td>get feedback about what is happening in his/her Constituency/Location.<br/></td></tr><br/><br/>';
-		userGroupsContent+='<tr><td>The User Groups Solves the problem of...</td></tr>';
-		userGroupsContent+='<tr><td>&nbsp identifying and gathering sets of people within the system to:'; 
+		//userGroupsContent+='<div id="usergroupsHead">User Groups</div>';
+		userGroupsContent+='<br>';
+		userGroupsContent+='<br>';
+		userGroupsContent+='<table style="margin-left:1cm;">';
+		userGroupsContent+='<tr><td style="color:#404040;"><p>User Groups is a consistent interaction for creating, managing groups';
+		userGroupsContent+=' and it helps the users for maintaining relationship with people</p><br/>';
+		userGroupsContent+='<p>The User Groups Solves the problem of...</p>';
+		userGroupsContent+='&nbsp Identifying and gathering sets of people within the system to:';
+		userGroupsContent+='<ul><li>&nbsp Collaborate </li>'; 
+		userGroupsContent+='<li>&nbsp Communicate</li>';
+		userGroupsContent+='<li>&nbsp Define what activities the group can do together</li></ul>';
+		userGroupsContent+='<td ><img src="images/icons/people3.jpg" height="250" width="250" border="1" style="border-color:#404040;"/></td></tr>';
+		userGroupsContent+='</table>';
+		//userGroupsContent+='<tr><td> 
+		/*
 		userGroupsContent+='<ul><li>&nbsp collaborate with</li>'; 
 		userGroupsContent+='<li>&nbsp communicate with</li></ul></td></tr>';
-		userGroupsContent+='<tr><td>&nbsp To define what activities the group will do together.</td></tr>';
-		userGroupsContent+='<tr><td></td></tr></table>';
+		userGroupsContent+='<tr><td>&nbsp To define what activities the group can do together.</td></tr>';*/
+		//userGroupsContent+='<tr><td></td></tr></table>';
 		userGroupsContent+='</div>';
 		userGroupsContent+='</div>'; 
 		userGroupsContent+='<div id="userGroupsTabContent_head" align="left"></div>';		
@@ -2041,7 +2108,7 @@
 	{
 		var jsObj= 
 		{
-			task:"userGroupInfoDisplay"
+			task:"getSystemGroupsForUser"
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/userGroupAction.action?"+param;
@@ -3702,7 +3769,7 @@
 		{
 			contentStr+='<option value='+problemsMainObj.problemSourcesArr[i].id+'>'+problemsMainObj.problemSourcesArr[i].value+'</option>';
 		}
-		contentStr+='</td>';	
+		contentStr+='</select></td>';	
 		contentStr+='</tr>';
 		contentStr+='</table>';
 		contentStr+='<div id="personDetailsDiv" style="display: none;">';
@@ -3839,26 +3906,43 @@
 		createGroupContentStr+='<div class="section_title">Group Info</div><br>';
 		createGroupContentStr+='<div id="userGroupsDialogText">To create a new community group, complete the fields below. Be sure to include a description that will let other community members know just what your group is about!</div><br>';
 		createGroupContentStr+='<table class="createGroupTable">';
-		createGroupContentStr+='<tr></tr>';
+		//createGroupContentStr+='<tr></tr>';
 		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<th><%=groupName%></th>';
-		createGroupContentStr+='<td style="padding-left: 15px;"><input type="text" style="width:400px;" id="groupNameText" name="problemText"/></td>';
+		createGroupContentStr+='<th><%=groupName%></th>'; 
+		createGroupContentStr+='<td style="padding-left: 15px;"><input type="text" style="width:400px;" id="groupNameText"/></td>';
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='<tr>';
 		createGroupContentStr+='<th><%=description%></th>';
-		createGroupContentStr+='<td style="padding-left: 15px;"><textarea style="width:400px;" id="descTextArea" name="groupDescTextArea"></textarea></td>';
+		createGroupContentStr+='<td style="padding-left: 15px;"><textarea style="width:400px;" id="descTextArea"></textarea></td>';
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='</table>';
-		createGroupContentStr+='<table>';
+		createGroupContentStr+='<br>';
+		createGroupContentStr+='<fieldset>';
+		createGroupContentStr+='<legend>Create Group As</legend>';
+		createGroupContentStr+='<table class="createGroupTable">';
 		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<td><input type="radio" id="createNewGrpRadio" name="createGroup" value="Create New Group" /><%=createNewGrp%></td>';
+		createGroupContentStr+='<td><input type="radio" id="createNewGrpRadio" name="createGroup" value="Create New Group" onClick="hideGroupSelectionListBoxes()"/><%=createNewGrp%></td>';
 		createGroupContentStr+='</tr>';
-		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group" /><%=addToGrpAsSubGrpRadio%></td>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Static Group As Sub Group" onClick="showStaticGroupSelectionBox()"/><%=addToStaticGrpAsSubGrpRadio%></td>';
+		createGroupContentStr+='<td><select class="selectWidth" id="staticGrpSelectBox" name="systemGroups" style="display:none;">';
+		for(var i in userGrpsObj.systemGroupsListBoxArr)
+		{
+			createGroupContentStr+='<option value='+userGrpsObj.systemGroupsListBoxArr[i].id+'>'+userGrpsObj.systemGroupsListBoxArr[i].value+'</option>';
+		}
+		createGroupContentStr+='</select></td>';
 		createGroupContentStr+='</tr>';
-		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group" /><%=addToStaticGrpAsSubGrpRadio%></td>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To My Group As Sub Group" onClick="showMyGroupSelectionBox()"/><%=addToGrpAsSubGrpRadio%></td>';
+		createGroupContentStr+='<td><select class="selectWidth" id="myGrpSelectBox" name="myGroups" style="display:none;">';
+		for(var j in userGrpsObj.myGroupsListBoxArr)
+		{
+			createGroupContentStr+='<option value='+userGrpsObj.myGroupsListBoxArr[j].id+'>'+userGrpsObj.myGroupsListBoxArr[j].value+'</option>';
+		}
+		createGroupContentStr+='</select></td>';
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='</table>';
-		//createGroupContentStr+='<div id="selectInCreateGrpDialogDiv"><select class="selectWidth" id="selectInCreateGrpDialogDiv" name="showGroups"></select></div>';
+		createGroupContentStr+='</fieldset>';		
 		createGroupContentStr+='</div>';
 		createGroupContentStr+='</div>';
 		createGroupContentStr+='</div>'; 
@@ -3880,12 +3964,83 @@
 				  y:300,				  
 				  buttons : [ { text:"Create", handler: handleCreateGroupSubmit, isDefault:true}, 
 	                          { text:"Cancel", handler: handleCreateGroupCancel}]
-	             } ); 
+	             }); 
 		createGroupDialog.render();
 	}
 	
+	function hideGroupSelectionListBoxes()
+	{
+		var staticGrpSelectEl = document.getElementById("staticGrpSelectBox");
+		staticGrpSelectEl.style.display = 'none';
+
+		var myGrpSelectEl = document.getElementById("myGrpSelectBox");
+		myGrpSelectEl.style.display = 'none';
+		
+
+		
+	}
+	function showStaticGroupSelectionBox()
+	{
+		var staticGrpSelectEl = document.getElementById("staticGrpSelectBox");
+		staticGrpSelectEl.style.display = 'block';
+
+		var myGrpSelectEl = document.getElementById("myGrpSelectBox");
+		myGrpSelectEl.style.display = 'none';	
+	
+	}
+	
+	function showMyGroupSelectionBox()
+	{
+		var staticGrpSelectEl = document.getElementById("staticGrpSelectBox");
+		staticGrpSelectEl.style.display = 'none';
+
+		var myGrpSelectEl = document.getElementById("myGrpSelectBox");
+		myGrpSelectEl.style.display = 'block';
+		
+		
+	}
 	function handleCreateGroupSubmit()
 	{
+		var groupNameTextVal = document.getElementById("groupNameText").value;
+		var descTextAreaVal = document.getElementById("descTextArea").value;
+		var groupCreationOption;
+		var staticGrpSelectBoxEl = document.getElementById("staticGrpSelectBox");
+		var	staticGrpSelectBoxElVal;
+		var myGrpSelectBoxEl = document.getElementById("staticGrpSelectBox");
+		var	myGrpSelectBoxElVal;  
+		var elements = document.getElementsByTagName('input');
+		for(var i=0;i<elements.length;i++)
+		{
+			if(elements[i].type=="radio" && elements[i].name=="createGroup" && elements[i].checked==true)
+				groupCreationOption = elements[i].value;
+		}
+		if(groupCreationOption == null)
+		{
+		alert("Please Select Group Creation Option!");
+		return;
+		} else if(groupCreationOption == "Create New Group")
+		{
+			staticGrpSelectBoxElVal = null;
+			myGrpSelectBoxElVal = null;
+		} else if(groupCreationOption == "Add To Static Group As Sub Group")
+		{
+			staticGrpSelectBoxElVal = staticGrpSelectBoxEl.options[staticGrpSelectBoxEl.selectedIndex].value; 
+			myGrpSelectBoxElVal = null;
+		} else if(groupCreationOption == "Add To My Group As Sub Group")
+		{
+			staticGrpSelectBoxElVal = null; 
+			myGrpSelectBoxElVal = myGrpSelectBoxEl.options[myGrpSelectBoxEl.selectedIndex].value;
+		}
+		var jsObj={
+				groupName: groupNameTextVal,
+				groupdDesc: descTextAreaVal,
+				staticGroupId: staticGrpSelectBoxElVal,					
+				task:"createNewGroup"
+			  }
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/userGroupAction.action?"+rparam;		
+	callAjax(rparam,jsObj,url);
+		
 		createGroupDialog.hide();			
 	}
 	
@@ -3958,7 +4113,14 @@
 	{
 		showGrpMbrsDialog.hide();
 	}
-	
+	/*
+	function getSystemGroups()
+	{
+		
+		var selectEl = document.getElementById("selectInCreateGrpDialogDiv");
+		selectEl.style.display = 'block';
+			
+	}*/
 	function addGrpMembersDialog()
 	{
 		var elmt = document.getElementById('constituencyMgmtBodyDiv');
@@ -4101,6 +4263,20 @@ var ob={
 			value:'${probSources.name}'
 		};
 problemsMainObj.problemSourcesArr.push(ob);	
+</c:forEach>
+<c:forEach var="systemGroups"  items="${staticGroupsListboxOptions}" >
+var ob={
+			id:'${systemGroups.id}',
+			value:'${systemGroups.name}'
+		};
+userGrpsObj.systemGroupsListBoxArr.push(ob);	
+</c:forEach>
+<c:forEach var="myGroups"  items="${myGroupsListboxOptions}">
+var ob={
+			id:'${myGroups.id}',
+			value:'${myGroups.name}'
+		};
+userGrpsObj.myGroupsListBoxArr.push(ob);	
 </c:forEach>
 getTodayDateTime();
 buildConstituencyLayout();
