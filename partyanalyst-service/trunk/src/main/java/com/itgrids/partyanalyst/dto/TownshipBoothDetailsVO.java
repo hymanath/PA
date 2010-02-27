@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 public class TownshipBoothDetailsVO implements Serializable {
 	//0-townshipID, 1-townshipName, 2-totalVoters, 3-validVoters, 
@@ -11,11 +11,11 @@ public class TownshipBoothDetailsVO implements Serializable {
 	private String townshipName;
 	private Long totalVoters;
 	private Long validVoters;
-	private List<SelectOptionVO> booths;
+	private Set<SelectOptionVO> booths;
 	/*private Long boothID;
 	private String partNo;*/
 
-	private List<SelectOptionVO> hamlets;
+	private Set<SelectOptionVO> hamlets;
 	/*private Long hamletId;
 	private String hamletName;*/
 	
@@ -54,19 +54,19 @@ public class TownshipBoothDetailsVO implements Serializable {
 		this.validVoters = validVoters;
 	}
 
-	public List<SelectOptionVO> getBooths() {
+	public Set<SelectOptionVO> getBooths() {
 		return booths;
 	}
 
-	public void setBooths(List<SelectOptionVO> booths) {
+	public void setBooths(Set<SelectOptionVO> booths) {
 		this.booths = booths;
 	}
 
-	public List<SelectOptionVO> getHamlets() {
+	public Set<SelectOptionVO> getHamlets() {
 		return hamlets;
 	}
 
-	public void setHamlets(List<SelectOptionVO> hamlets) {
+	public void setHamlets(Set<SelectOptionVO> hamlets) {
 		this.hamlets = hamlets;
 	}
 

@@ -28,5 +28,22 @@ public class SelectOptionVO implements Serializable {
 		this.id = id;
 	}
 
+	@Override
+	public boolean equals(Object obj){
+		if(id==null)
+			id = -1L;
+		if(obj instanceof SelectOptionVO){
 
+			SelectOptionVO vo = (SelectOptionVO) obj;
+			return this.id.equals(vo.getId());
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		if(id==null)
+			id = -1L;
+		return this.id.intValue();
+	}
 }
