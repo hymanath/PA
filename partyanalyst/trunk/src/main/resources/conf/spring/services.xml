@@ -82,9 +82,10 @@
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />		
 		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />		
-		<property name="townshipDAO" ref="townshipDAO" />
+		<property name="townshipDAO" ref="townshipDAO" />		
+		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+		<property name="townshipElectionPartyResultDAO" ref="townshipElectionPartyResultDAO" />
 	</bean>
-	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
 		<property name="candidateResultObjectsDAO" ref="candidateResultObjectsDAO" />
 		<property name="candidateDAO" ref="candidateDAO" />

@@ -167,6 +167,7 @@
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="constituencyPageService" ref="constituencyPageService" />
 	</bean>
 		
 	<bean id="staticDataAction" class="com.itgrids.partyanalyst.web.action.StaticDataAction" singleton="false">
