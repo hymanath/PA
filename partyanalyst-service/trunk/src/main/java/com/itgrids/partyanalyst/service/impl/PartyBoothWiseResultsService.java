@@ -155,7 +155,8 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				
 				if(((Long)values[5]) == 1)
 					candidateFullNameWithStatus = candidateFullName + " " +"(WON)";
-				
+				else
+					candidateFullNameWithStatus = candidateFullName + " "+"("+values[5]+")";
 				electionType = (String)values[7];
 				constituencyName = (String)values[8];
 				constituencyId = (Long)values[9];
