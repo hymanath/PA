@@ -28,7 +28,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	}
 	
 	
-	public void testFindByConstituencyElectionAndDistrict(){
+	/*public void testFindByConstituencyElectionAndDistrict(){
 		List<ConstituencyElection> list = constituencyElectionDAO.findByConstituencyElectionAndDistrict("2004", "Atmakur", new Long(2), new Long(19));
 		for(ConstituencyElection obj:list){
 			System.out.println(obj.getConstiElecId());
@@ -37,4 +37,30 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 		assertEquals(list.size(),2);
 	}
+	
+	@Test
+	public void testFindConstituencyFromConstituencyElection(){
+		List<Constituency> constituencys = constituencyElectionDAO.findConstituencyByElectionAndDistrict(new Long(9), new Long(14));
+		System.out.println("Count ::" + constituencys.size());
+		for(Constituency con:constituencys){
+			System.out.println("Constituency ::" + con.getName());
+		}
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public void testFindValidVotedForAnElectionForAState(){
+		List list = constituencyElectionDAO.findTotalValidVotesForAnElectionForAState(new Long(12));
+		Object params = (Object)list.get(0);
+		Double validVotes = (Double)params;
+		System.out.println("Total ValidVotes For Assembly 2009(A.P) ::" + validVotes.longValue());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void testFindConstituenciesCount(){
+		List list = constituencyElectionDAO.findTotalValidVotesForAnElectionForAStateAndDistrict(new Long(9),new Long(19));
+		Object params = (Object)list.get(0);
+		Double validVotes = (Double)params;
+		System.out.println("Total ValidVotes For Assembly 2009(A.P) Nellore Dist ::" + validVotes.longValue());
+	}
+	
 }
