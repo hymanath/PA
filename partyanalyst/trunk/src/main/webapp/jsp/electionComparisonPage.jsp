@@ -167,7 +167,7 @@ table.CandidateElectionResultsTable td {
 	
 	 <tr>
 		<th colspan="2" align="center">
-			<s:submit theme="simple" value="display Results"/>
+			<s:submit theme="simple" value="Display Results"/>
 		</th>
 	 </tr>
 
