@@ -11,6 +11,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
@@ -21,6 +22,8 @@ public interface IUserGroupService {
     public List<UserGroupDetailsVO> getAllSubGroupNames();
     public List<UserGroupMembersVO> getMembersNames();
     public UserGroupMembersVO addMemberToGroup(Long groupId, UserGroupMembersVO userGroupMembersToSave);
-    public UserGroupDetailsVO createGroupForUser(Long userId, UserGroupDetailsVO userGroupDetailsToSave);
-  
+    public UserGroupDetailsVO createGroupForUser(UserGroupDetailsVO userGroupDetailsToSave);
+    public List<SelectOptionVO> getMyGroupsCreatedByUser(Long userId);
+    public List <GroupsDetailsForUserVO> systemGroupsDetailsForUser(Long userId);
+    //public List<GroupsDetailsForUserVO> myGroupsDetailsForUser(Long userId);
 }
