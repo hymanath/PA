@@ -37,13 +37,30 @@
 <!-- JavaScript Dependencies for Tabview: -->
 <script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
+
+<!-- Sam Skin CSS -->
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css">
+
+<!-- Dependencies -->
+<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+
+<!-- OPTIONAL: Animation (only required if using ContainerEffect) -->
+<script src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script>
+
+<!-- OPTIONAL: Drag & Drop (only required if enabling Drag & Drop) -->
+<script src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script>
+
+<!-- Source file -->
+<script src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script>
+
  
 <!-- OPTIONAL: Connection (required for dynamic loading of data) -->
 <script src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
  
 <!-- Source file for TabView -->
 <script src="http://yui.yahooapis.com/2.8.0r4/build/tabview/tabview-min.js"></script>
-<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>	
+<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+<script type="text/javascript" src="js/BoothPage/boothPage.js"></script>	
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/paginator/assets/skins/sam/paginator.css">
 	
 <style type="text/css">
@@ -135,6 +152,14 @@ padding:2px;
 width:120px;
 }
 
+#boothPagePanel fieldset
+{
+height:300px;
+}
+.yui-skin-sam .yui-panel .bd
+{
+background-color:#FFFFFF;
+}
 </style>
 
 
@@ -298,6 +323,7 @@ var allBoothElecInfo = new Array();
 		revenueInfo += '<td><div id="electionIdSelectDivData"></div></td>';
 		revenueInfo += '</tr>';
 		revenueInfo += '</table>';
+		revenueInfo += '<div id="revenueVillagesInfo"></div>';
 		revenueInfo += '</div>';
 		revenueInfo += '</div>';
 		
@@ -344,7 +370,11 @@ var allBoothElecInfo = new Array();
 								else if(jsObj.task == "getRevenueVillagesInfo")
 								{								
 									showRevenueVillagesElectionInfo(resultVO);				
-								}								
+								}			
+								else if(jsObj.task == "boothPage")
+								{								
+									showBoothPagePanel(resultVO);			
+								}					
 						}catch (e)  {   
 						   	alert("Invalid JSON result" + e);   
 						}  
@@ -379,7 +409,40 @@ var allBoothElecInfo = new Array();
 	}
 
 	function showRevenueVillagesElectionInfo(resultVO){
-		alert("Revenue Village Election Info::"+resultVO);
+		var rvStr = '';
+
+		var rvStrDiv = document.getElementById('revenueVillagesInfo');
+		rvStr += '<table>';
+		rvStr += '<tr>';
+		rvStr += '<th>Revenue Village</th>';
+		rvStr += '<th>Total Voters</th>';
+		rvStr += '<th>Polled Votes</th>';
+		rvStr += '<th>Total Booths</th>';
+		rvStr += '<th>Hamlets</th>';
+		rvStr += '</tr>';
+		for(var i in resultVO.townshipBoothDetailsVOs)
+		{
+			rvStr += '<tr>';
+			rvStr += '<td>'+resultVO.townshipBoothDetailsVOs[i].townshipName+'</td>';
+			rvStr += '<td>'+resultVO.townshipBoothDetailsVOs[i].totalVoters+'</td>';
+			rvStr += '<td>'+resultVO.townshipBoothDetailsVOs[i].validVoters+'</td>';
+			rvStr += '<td>';
+			for(var j in resultVO.townshipBoothDetailsVOs[i].booths)
+			{
+				rvStr += resultVO.townshipBoothDetailsVOs[i].booths[j].name+'<br>';
+			}
+			rvStr += '</td>';
+			rvStr += '<td>';
+			for(var k in resultVO.townshipBoothDetailsVOs[i].hamlets)
+			{
+				rvStr += resultVO.townshipBoothDetailsVOs[i].hamlets[k].name+'<br>';
+			}
+			rvStr += '</td>';
+			rvStr += '</tr>';
+		}
+		rvStr += '</table>';
+		if(rvStrDiv)
+			rvStrDiv.innerHTML = rvStr;
 	}
 	
 	function buildTabNavigator(){
@@ -433,7 +496,6 @@ var allBoothElecInfo = new Array();
 				
 			if(elmt)
 				elmt.appendChild(divChild);
-	
 			
 			 var myDataSource = new YAHOO.util.DataSource(allBoothElecInfo[i].partyVotes); 
 			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
@@ -481,14 +543,24 @@ var allBoothElecInfo = new Array();
 			
 		}		
 		
-		
-			
 	}
 
+	function getBoothPageInfo(){
+		var jsObj=
+			{
+					boothId:200,
+					task:"boothPage"						
+			};
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/boothPageAjaxAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+	}	
+	
 	</script>
 </head>
 <body> 
-
+<div><a href = "#" onclick="getBoothPageInfo()">click for booth</a></div>
 <h3><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
 
 <div id="boothResultsDiv">
@@ -563,6 +635,7 @@ var allBoothElecInfo = new Array();
 		</div>
 	</div>
 	<div id="mandalPageTab" class="yui-skin-sam"></div>
+	<div class="yui-skin-sam"><div id="boothPagePanel" ></div></div>
 </div>
 
 <script type="text/javascript">
