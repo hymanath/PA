@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IUserGroupService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -48,7 +49,10 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> hamletList;
 	private IRegionServiceData regionServiceData;
 	private List<SelectOptionVO> problemSources;
+	private List<SelectOptionVO> staticGroupsListboxOptions;
+	private List<SelectOptionVO> myGroupsListboxOptions;
 	private String accessType;
+	private IUserGroupService userGroupService;
 	
 	
 	public IProblemManagementService getProblemManagementService() {
@@ -170,8 +174,33 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 
 	public void setAccessType(String accessType) {
 		this.accessType = accessType;
+	}	
+
+	public List<SelectOptionVO> getStaticGroupsListboxOptions() {
+		return staticGroupsListboxOptions;
 	}
 
+	public void setStaticGroupsListboxOptions(
+			List<SelectOptionVO> staticGroupsListboxOptions) {
+		this.staticGroupsListboxOptions = staticGroupsListboxOptions;
+	}	
+	
+	public IUserGroupService getUserGroupService() {
+		return userGroupService;
+	}
+
+	public void setUserGroupService(IUserGroupService userGroupService) {
+		this.userGroupService = userGroupService;
+	}
+	
+	public List<SelectOptionVO> getMyGroupsListboxOptions() {
+		return myGroupsListboxOptions;
+	}
+
+	public void setMyGroupsListboxOptions(
+			List<SelectOptionVO> myGroupsListboxOptions) {
+		this.myGroupsListboxOptions = myGroupsListboxOptions;
+	}
 
 	@SuppressWarnings("deprecation")
 	public String execute() throws Exception{
@@ -187,6 +216,10 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		problemSources.add(probSource3);
 		
 		problemSources = problemManagementService.getAllTypesOfProblemSources();
+		staticGroupsListboxOptions = userGroupService.getAllStaticGroupNames();
+		staticGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select System Group"));
+		
+		
 		//problemSources.add(new SelectOptionVO(0L,"Select Source"));
 		
 		/*	
@@ -224,7 +257,9 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 		accessType =user.getAccessType();
 		Long accessValue= new Long(user.getAccessValue());
-
+		
+		myGroupsListboxOptions = userGroupService.getMyGroupsCreatedByUser(user.getRegistrationID());
+		myGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select A Group"));  
 		stateList = new ArrayList<SelectOptionVO>();
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
