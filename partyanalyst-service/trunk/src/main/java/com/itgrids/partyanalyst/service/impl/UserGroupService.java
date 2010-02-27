@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStaticGroupDAO;
 import com.itgrids.partyanalyst.dao.IStaticUsersDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupPrivilegesDAO;
+import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
@@ -110,6 +112,24 @@ public class UserGroupService implements IUserGroupService {
 		this.userMemberId = userMemberId;
 	}
 
+	public IStaticUsersDAO getStaticUsersDAO() {
+		return staticUsersDAO;
+	}
+
+
+	public void setStaticUsersDAO(IStaticUsersDAO staticUsersDAO) {
+		this.staticUsersDAO = staticUsersDAO;
+	}	
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
 
 	/**
 	 * To Get The List Of All Static groups From DB Into SelectOptionVO
@@ -122,8 +142,15 @@ public class UserGroupService implements IUserGroupService {
 		List<StaticGroup> list= staticGroupDAO.getAll();
 		for(StaticGroup staticGroup:list)
 			staticGroups.add(new SelectOptionVO(staticGroup.getStaticGroupId(), staticGroup.getGroupName()));
-		return staticGroups;
-		
+		return staticGroups;		
+	}
+	
+	public List<SelectOptionVO> getMyGroupsCreatedByUser(Long userId) {
+		List<SelectOptionVO> myGroupsList = new ArrayList<SelectOptionVO>();
+		List<PersonalUserGroup> list= personalUserGroupDAO.findMyGroupsByUserId(userId);
+		for(PersonalUserGroup myGroups:list)
+			myGroupsList.add(new SelectOptionVO(myGroups.getPersonalUserGroupId(), myGroups.getGroupName()));
+		return myGroupsList;		
 	}
 
 	
@@ -145,7 +172,7 @@ public class UserGroupService implements IUserGroupService {
 	 * This method takes the UserGroupDetailsVO object which contains the details entered by the user while creating a group.
 	 * These details are saved in to the data base.The same value object is returned.
 	 */
-	public UserGroupDetailsVO createGroupForUser(Long userId, UserGroupDetailsVO userGroupDetailsToSave) {
+	public UserGroupDetailsVO createGroupForUser(UserGroupDetailsVO userGroupDetailsToSave) {
 		this.userGroupDetailsVo = userGroupDetailsToSave;
 		if(log.isDebugEnabled()){
 			log.debug("Entered UserGroupDetails....");
@@ -157,23 +184,48 @@ public class UserGroupService implements IUserGroupService {
 				Registration reg = null;
 				PersonalUserGroup personalUserGroup=null;
 				StaticGroup staticGroupObj = null;
-				try{	
+				try{
+				System.out.println("in try");	
+				java.util.Date now = new java.util.Date();
+				String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+				String strDateNew = sdf.format(now) ;
+			    now = sdf.parse(strDateNew);	
 				reg = registrationDAO.get(UserGroupService.this.userGroupDetailsVo.getCreatedUserId());
 				personalUserGroup = new PersonalUserGroup();
 				personalUserGroup.setCreatedUserId(reg);
 				personalUserGroup.setGroupName(UserGroupService.this.userGroupDetailsVo.getGroupName());
 				personalUserGroup.setDescription(UserGroupService.this.userGroupDetailsVo.getGroupDesc());
-				staticGroupObj = staticGroupDAO.get(UserGroupService.this.userGroupDetailsVo.getStaticGroupId());
-				personalUserGroup.setStaticGroup(staticGroupObj);
-				Date createdDate = sdf.parse(UserGroupService.this.userGroupDetailsVo.getCreatedDate());
-				personalUserGroup.setCreatedDate(createdDate);
-				personalUserGroupDAO.save(personalUserGroup);
-				
+				if(UserGroupService.this.userGroupDetailsVo.getStaticGroupId()!= null)
+				{
+					System.out.println("if id == something");
+					staticGroupObj = staticGroupDAO.get(UserGroupService.this.userGroupDetailsVo.getStaticGroupId());
+					personalUserGroup.setStaticGroup(staticGroupObj);
+				}
+				else	{
+					System.out.println("if id == null");
+					personalUserGroup.setStaticGroup(null);
+				}
+				personalUserGroup.setCreatedDate(now);
+				personalUserGroup = personalUserGroupDAO.save(personalUserGroup);
+				System.out.println("after save");
+				/*
 				userGroupDetailsFromDb.setGroupId(personalUserGroup.getPersonalUserGroupId());
 				userGroupDetailsFromDb.setGroupName(personalUserGroup.getGroupName());
 				userGroupDetailsFromDb.setGroupDesc(personalUserGroup.getDescription());
-				userGroupDetailsFromDb.setStaticGroupId(personalUserGroup.getStaticGroup().getStaticGroupId());
+				System.out.println(personalUserGroup.getStaticGroup().getStaticGroupId());
+				if(personalUserGroup.getStaticGroup().getStaticGroupId()!= null)
+				{
+					userGroupDetailsFromDb.setStaticGroupId(personalUserGroup.getStaticGroup().getStaticGroupId());
+				}
+				else
+				{
+					userGroupDetailsFromDb.setStaticGroupId(null);
+				}*/
+				System.out.println("end of try");
 				}catch(Exception e){
+					System.out.println("catch");
+					e.printStackTrace();
 					status.setRollbackOnly();
 					if(log.isDebugEnabled()){
 						log.debug("Exception Raised while Update And Get Problems Under Pending::", e);
@@ -182,9 +234,48 @@ public class UserGroupService implements IUserGroupService {
 				UserGroupService.this.userGroupDetailsVo = userGroupDetailsFromDb;	
 		}
 		});	
-		return this.userGroupDetailsVo;
+		return null;
 	}
-
+	/*
+	 * 
+	 * @see com.itgrids.partyanalyst.service.IUserGroupService#systemGroupsDetailsForUser(java.lang.Long)
+	 * this method returns the sub groups count under static groups for a user
+	 */
+	public List <GroupsDetailsForUserVO> systemGroupsDetailsForUser(Long userId)
+	{
+		List subGroupsinSystemGroups = null;
+		List <GroupsDetailsForUserVO> systemGroupsDetailsForUserList = new ArrayList<GroupsDetailsForUserVO>(0);
+		subGroupsinSystemGroups = personalUserGroupDAO.findSubGroupsInSystemGroupsByUserId(userId);
+		
+		for(int i=0;i<subGroupsinSystemGroups.size();i++){
+			GroupsDetailsForUserVO groupsDetailsForUser = new GroupsDetailsForUserVO();
+			Object[] parms = (Object[])subGroupsinSystemGroups.get(i);	
+			groupsDetailsForUser.setStaticGroupId(Long.parseLong(parms[0].toString()));
+			groupsDetailsForUser.setStaticGroupName(parms[1].toString());
+			groupsDetailsForUser.setNumberOfGroups(Long.parseLong(parms[2].toString()));
+			systemGroupsDetailsForUserList.add(groupsDetailsForUser);
+	//		systemGroupsDetailsForUserList.add(new GroupsDetailsForUserVO(Long.parseLong(parms[0].toString()),parms[1].toString(),Long.parseLong(parms[2].toString())));
+		}		
+		return systemGroupsDetailsForUserList;
+	}
+	/*
+	 * this method returns the MyGroups(created by user other than system groups) and the number of sub groups(if any) in the top level group. 
+	 * @see com.itgrids.partyanalyst.service.IUserGroupService#myGroupsDetailsForUser(java.lang.Long)
+	 */
+	/*
+	public List<GroupsDetailsForUserVO> myGroupsDetailsForUser(Long userId)
+	{
+		List<PersonalUserGroup> myGoupsDetailsList = null;
+		List <GroupsDetailsForUserVO> myGroupsDetailsForUserList = new ArrayList<GroupsDetailsForUserVO>(0);
+		myGoupsDetailsList = personalUserGroupDAO.findMyGroupsByUserId(userId);
+		
+		for(PersonalUserGroup personalUserGroup:myGoupsDetailsList){
+			GroupsDetailsForUserVO groupsDetailsForUser = new GroupsDetailsForUserVO();
+			groupsDetailsForUser.setStaticGroupId(personalUserGroup.getPersonalUserGroupId());
+			groupsDetailsForUser.setStaticGroupName(personalUserGroup.getGroupName());		
+		}		
+	}*/
+	
 	/*
 	 * This method takes the UserGroupMembersVO object which contains the details entered by the user while creating a group.
 	 * These details are saved in to the data base.The same value object is returned.
