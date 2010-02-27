@@ -1494,7 +1494,7 @@
 				val = document.smsForm.region_type_radio[i].value;
 		}
 		
-		var valSelect = document.getElementById(val+"Select");
+		var valSelect = document.getElementById("sms_"+val+"Select");
 		var textAreaElmt = document.getElementById("smsTextArea");
 
 		textAreaElmtValue = textAreaElmt.value
