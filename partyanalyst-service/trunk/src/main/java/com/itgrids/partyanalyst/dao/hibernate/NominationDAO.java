@@ -341,4 +341,27 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"count(model.candidateResult) from Nomination model where " +
 				"model.constituencyElection.election.electionId = ? and model.candidateResult.rank = 1 group by model.party.partyId",electionId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findElectionResultsForACandidateForAnElectionInAConstituency(Long constituencyId,Long electionId,Long partyId){
+		Object[] params = {constituencyId,electionId,partyId};
+		return getHibernateTemplate().find("select model.candidate.lastname,model.candidate.candidateId," + 
+				" model.party.shortName,model.constituencyElection.constituency.name,model.constituencyElection.constituency.state.stateName," + 
+				" model.constituencyElection.constituency.district.districtName,model.constituencyElection.election.electionYear," + 
+				" model.constituencyElection.election.electionScope.electionType.electionType,model.candidateResult.votesEarned," +
+				" model.candidateResult.votesPercengate,model.candidateResult.rank from Nomination model where " +
+				" model.constituencyElection.constituency.constituencyId = ? and model.constituencyElection.election.electionId = ? and model.party.partyId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findElectionResultsForAnElectionInAConstituencyWithoutSelectedParty(Long constituencyId,Long electionId,Long partyId){
+		Object[] params = {constituencyId,electionId,partyId};
+		return getHibernateTemplate().find("select model.candidate.lastname,model.candidate.candidateId," + 
+				" model.party.shortName,model.constituencyElection.constituency.name,model.constituencyElection.constituency.state.stateName," + 
+				" model.constituencyElection.constituency.district.districtName,model.constituencyElection.election.electionYear," + 
+				" model.constituencyElection.election.electionScope.electionType.electionType,model.candidateResult.votesEarned," +
+				" model.candidateResult.votesPercengate,model.candidateResult.rank from Nomination model where " +
+				" model.constituencyElection.constituency.constituencyId = ? and model.constituencyElection.election.electionId = ? and model.party.partyId != ?",params);
+
+	}
 }
