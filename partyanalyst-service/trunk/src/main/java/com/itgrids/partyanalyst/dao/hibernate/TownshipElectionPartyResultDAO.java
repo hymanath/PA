@@ -13,7 +13,7 @@ public class TownshipElectionPartyResultDAO extends GenericDaoHibernate<Township
 		super(TownshipElectionPartyResult.class);
 	}
 	
-	public List<TownshipElectionPartyResult> findByTownshipID(Long townshipID){
+	public List<TownshipElectionPartyResult> findByTownshipIDElectionID(Long townshipID,Long electionID){
 		return getHibernateTemplate().find("from TownshipElectionPartyResult model where model.township.townshipId = ?", townshipID);	
 	}
 }

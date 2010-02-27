@@ -7,5 +7,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.TownshipElectionPartyResult;
 
 public interface ITownshipElectionPartyResultDAO extends GenericDao<TownshipElectionPartyResult, Long>{
-	public List<TownshipElectionPartyResult> findByTownshipID(Long townshipID);
+	public List<TownshipElectionPartyResult> findByTownshipIDElectionID(Long townshipID,Long electionID);
 }

@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.MandalTownshipWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
+import com.itgrids.partyanalyst.dto.TownshipPartyResultsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 
@@ -34,4 +35,6 @@ public interface IConstituencyPageService {
 	public ResultWithExceptionVO deleteVillageBoothElectionRecord(HamletAndBoothVO villageBoothElectionId);
 	
 	public MandalTownshipWiseBoothDetailsVO getTownshipVotesByTehsil(Long electionID, Long tehsilID, Long partyID);
+	
+	public List<TownshipPartyResultsVO> getTownshipPartyResults(Long townshipID, Long electionID);
 }

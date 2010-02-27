@@ -58,7 +58,6 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
-import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.model.TownshipElectionPartyResult;
 import com.itgrids.partyanalyst.model.VillageBoothElection;
@@ -496,11 +495,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			while(iterator.hasNext()){
 				List<TownshipPartyResultsVO> townshipPartyResultsVOs = new ArrayList<TownshipPartyResultsVO>();
 				Entry<String, TownshipBoothDetailsVO> entry = iterator.next();
-				//value --?? constists of loged in user party info......to do
 				TownshipBoothDetailsVO value = entry.getValue();
 				mandalTotalVoters = mandalTotalVoters + value.getTotalVoters();
 				mandalValidVoters = mandalValidVoters + value.getValidVoters();
-				List<TownshipElectionPartyResult> townshipElectionPartyResults = townshipElectionPartyResultDAO.findByTownshipID(value.getTownshipID());
+				List<TownshipElectionPartyResult> townshipElectionPartyResults = townshipElectionPartyResultDAO.findByTownshipIDElectionID(value.getTownshipID(), electionID);
 				if(townshipElectionPartyResults==null ||townshipElectionPartyResults.size()==0){
 					townshipElectionPartyResults = saveTownshipElectionPartyResult(electionID,value.getTownshipID());
 				}
@@ -509,6 +507,9 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				}
 				for(TownshipPartyResultsVO townshipPartyResultsVO : townshipPartyResultsVOs){
 					Long party = townshipPartyResultsVO.getPartyID();
+					if(partyID!=null && partyID.equals(party)){
+						userPartyVotesTownshipWise.add(townshipPartyResultsVO);
+					}
 					TownshipPartyResultsVO data = partyResultsForMandal.get(party);
 					if(data == null){
 						data = townshipPartyResultsVO;
@@ -534,6 +535,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			mandalTownshipWiseBoothDetailsVO.setTownshipBoothDetailsVOs(townshipBoothDetailsVOList);
 			mandalTownshipWiseBoothDetailsVO.setMandalTotalVoters(mandalTotalVoters);
 			mandalTownshipWiseBoothDetailsVO.setMandalValidVoters(mandalValidVoters);
+			mandalTownshipWiseBoothDetailsVO.setAllPartyWiseVotesForMandal(allPartyWiseVotesForMandal);
+			mandalTownshipWiseBoothDetailsVO.setUserPartyVotesTownshipWise (userPartyVotesTownshipWise);
 		}catch(Exception e){
 			mandalTownshipWiseBoothDetailsVO.setExceptionEncountered(e);
 		}
@@ -593,13 +596,13 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				townshipBoothDetailsVO.setTownshipName(townshipName);
 				townshipBoothDetailsVO.setTotalVoters(totalVoters);
 				townshipBoothDetailsVO.setValidVoters(0L);
-				townshipBoothDetailsVO.setBooths(new ArrayList<SelectOptionVO>());
-				townshipBoothDetailsVO.setHamlets(new ArrayList<SelectOptionVO>());
+				townshipBoothDetailsVO.setBooths(new HashSet<SelectOptionVO>());
+				townshipBoothDetailsVO.setHamlets(new HashSet<SelectOptionVO>());
 			}
 			SelectOptionVO booth = new SelectOptionVO(boothID,partNo);
 			SelectOptionVO hamlet = new SelectOptionVO(hamletId,hamletName);
-			List<SelectOptionVO> booths = townshipBoothDetailsVO.getBooths();
-			List<SelectOptionVO> hamlets = townshipBoothDetailsVO.getHamlets();
+			Set<SelectOptionVO> booths = townshipBoothDetailsVO.getBooths();
+			Set<SelectOptionVO> hamlets = townshipBoothDetailsVO.getHamlets();
 			booths.add(booth);
 			hamlets.add(hamlet);
 			validVoters = validVoters + townshipBoothDetailsVO.getValidVoters();
@@ -702,4 +705,15 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return votersWithDelimitationInfoVOList;
 		
 	}
+	public List<TownshipPartyResultsVO> getTownshipPartyResults(Long townshipID, Long electionID){
+		String townshipName = new String();
+		List<TownshipElectionPartyResult> townshipElectionPartyResults = townshipElectionPartyResultDAO.findByTownshipIDElectionID(townshipID, electionID);
+		if(townshipElectionPartyResults!=null && townshipElectionPartyResults.size()>0){
+			TownshipElectionPartyResult model = townshipElectionPartyResults.get(0);
+			townshipName = model.getTownship().getTownshipName();
+		}
+		List<TownshipPartyResultsVO> results =convertModel2TownshipBoothDetailsVO(townshipElectionPartyResults, townshipID, townshipName);
+		return results;
+	}
+
 }

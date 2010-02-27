@@ -14,6 +14,7 @@ public class MandalTownshipWiseBoothDetailsVO extends ResultStatus {
 	private List<TownshipBoothDetailsVO> townshipBoothDetailsVOs;
 	//private List<TownshipPartyResultsVO> townshipPartyResultsVOs;
 	private List<TownshipPartyResultsVO> allPartyWiseVotesForMandal;
+	private List<TownshipPartyResultsVO> userPartyVotesTownshipWise;
 	
 	public Long getMandalTotalVoters() {
 		return mandalTotalVoters;
@@ -78,5 +79,11 @@ public class MandalTownshipWiseBoothDetailsVO extends ResultStatus {
 			List<TownshipPartyResultsVO> allPartyWiseVotesForMandal) {
 		this.allPartyWiseVotesForMandal = allPartyWiseVotesForMandal;
 	}
-	
+	public List<TownshipPartyResultsVO> getUserPartyVotesTownshipWise() {
+		return userPartyVotesTownshipWise;
+	}
+	public void setUserPartyVotesTownshipWise(
+			List<TownshipPartyResultsVO> userPartyVotesTownshipWise) {
+		this.userPartyVotesTownshipWise = userPartyVotesTownshipWise;
+	}
 }

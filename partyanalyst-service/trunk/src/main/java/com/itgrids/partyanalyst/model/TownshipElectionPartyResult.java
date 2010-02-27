@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,6 +21,7 @@ public class TownshipElectionPartyResult extends BaseModel {
 	private Long votesEarned;
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "township_party_results_id", unique = true, nullable = false)
 	public Long getTownshipPartyResultsID() {
 		return townshipPartyResultsID;

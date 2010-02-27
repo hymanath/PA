@@ -174,7 +174,7 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 		query.append("where model.boothConstituencyElection.constituencyElection.election.electionId=? and ")
 			//.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType=? and ")
 			.append("model.boothConstituencyElection.booth.tehsil.tehsilId = ? ");
-		query.append("group by model.boothConstituencyElection.booth.boothId ");
+		query.append("group by model.boothConstituencyElection.booth.boothId, model.voter.hamlet.hamletName ");
 		query.append("order by model.voter.hamlet.township.townshipName");
 		return getHibernateTemplate().find(query.toString(),params);
 	}
