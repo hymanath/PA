@@ -46,6 +46,7 @@ public class PartyElectionResult extends BaseModel implements Serializable {
 	private String fourthPosWon;
 	private String nthPosWon;
 	private String votesPercentage;
+	private String completeVotesPercent;
 	private Date lastUpdated;
 	
 	//default constructor
@@ -57,7 +58,7 @@ public class PartyElectionResult extends BaseModel implements Serializable {
 	public PartyElectionResult(Party party, Election election,
 			String totalConstiParticipated, String totalSeatsWon,
 			String secondPosWon, String thirdPosWon, String fourthPosWon,
-			String nthPosWon, String votesPercentage,Date lastUpdated){
+			String nthPosWon, String votesPercentage,String completeVotesPercent,Date lastUpdated){
 		super();
 		this.party = party;
 		this.election = election;
@@ -68,6 +69,7 @@ public class PartyElectionResult extends BaseModel implements Serializable {
 		this.fourthPosWon = fourthPosWon;
 		this.nthPosWon = nthPosWon;
 		this.votesPercentage = votesPercentage;
+		this.completeVotesPercent = completeVotesPercent;
 		this.lastUpdated = lastUpdated;
 	}
 
@@ -169,6 +171,15 @@ public class PartyElectionResult extends BaseModel implements Serializable {
 
 	public void setVotesPercentage(String votesPercentage) {
 		this.votesPercentage = votesPercentage;
+	}
+
+	@Column(name = "complete_votes_percentage", length = 25)
+	public String getCompleteVotesPercent() {
+		return completeVotesPercent;
+	}
+
+	public void setCompleteVotesPercent(String completeVotesPercent) {
+		this.completeVotesPercent = completeVotesPercent;
 	}
 
 	@Temporal(TemporalType.DATE)
