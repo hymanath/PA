@@ -128,7 +128,8 @@
 	<bean id="electionComparisonReportAction" class ="com.itgrids.partyanalyst.web.action.ElectionComparisonReportAction" singleton="false">
 	     <property name="electionComparisonReportService" ref="electionComparisonReportService" />
 	     <property name="partyService" ref="partyService" />
-	</bean> 
+	     <property name="staticDataService" ref="staticDataService" />
+	</bean>  
 
 	<bean id="partyBoothResultAction" class="com.itgrids.partyanalyst.web.action.PartyBoothResultAction" singleton="false"/>
 	
