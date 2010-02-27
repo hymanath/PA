@@ -90,7 +90,7 @@ public void setPersonalUserGroupId(Long personalUserGroupId) {
 	this.personalUserGroupId = personalUserGroupId;
 }
 
-@Column(name = "groupname", length = 25)
+@Column(name = "groupname", length = 100)
 public String getGroupName() {
 	return groupName;
 }
@@ -98,7 +98,7 @@ public void setGroupName(String groupName) {
 	this.groupName = groupName;
 }
 
-@Column(name = "description", length = 25)
+@Column(name = "description", length = 250)
 public String getDescription() {
 	return description;
 }
