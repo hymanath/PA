@@ -5,15 +5,14 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IStaticGroupDAO;
+import com.itgrids.partyanalyst.model.ProblemSource;
 import com.itgrids.partyanalyst.model.StaticGroup;
 
 public class StaticGroupDAOHibernateTest extends BaseDaoTestCase {
 
 	private IStaticGroupDAO staticGroupDAO;
 
-	public void setStaticGroupDao(IStaticGroupDAO staticGroupDAO) {
-		this.staticGroupDAO = staticGroupDAO;
-	}
+	
 	
 	/*public void testGetAll()
 	{
@@ -21,7 +20,19 @@ public class StaticGroupDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	
+	public IStaticGroupDAO getStaticGroupDAO() {
+		return staticGroupDAO;
+	}
+
+
+
+	public void setStaticGroupDAO(IStaticGroupDAO staticGroupDAO) {
+		this.staticGroupDAO = staticGroupDAO;
+	}
+
+
+
+	/*
 	public void testfindByGroupDescription()
 	{
 		List<StaticGroup> result=staticGroupDAO.findByGroupDescription("toi");
@@ -31,5 +42,10 @@ public class StaticGroupDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("static group id" +staticGroup.getStaticGroupId().toString());
 		}
 		assertEquals(1, result.size());
+	}*/
+	public void testGetAll(){
+		List<StaticGroup> list = staticGroupDAO.getAll();
+		System.out.println(list.size());
+	//	assertEquals(1, list.size());
 	}
 }
