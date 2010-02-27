@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
@@ -571,6 +572,7 @@ public class StaticDataService implements IStaticDataService {
 		List<Nomination> nominations = null;
 		Election election = null;
 		Party party = null;
+		Long completeValidVotes = new Long(0);
 		Long totalSeatsWon = new Long(0);
 		Long totalSecondPositions = new Long(0);
 		Long totalThirdPositions = new Long(0);
@@ -580,9 +582,11 @@ public class StaticDataService implements IStaticDataService {
 		Double totalVotesEarned = new Double(0);
 		Double totalValidVotes = new Double(0);
 		Double totalVotesPercentage = new Double(0);
+		Double completeVotesPercent = new Double(0);
 		try{
 		 if(electionId != null && partyId != null){
 			nominations = nominationDAO.findByElectionIdAndPartyId(electionId, partyId);
+			completeValidVotes = getCompleteValidVotes(electionId);
 			election = electionDAO.get(electionId);
 			party = partyDAO.get(partyId);
 			if(nominations != null && nominations.size() > 0 && election != null && party != null){
@@ -608,7 +612,9 @@ public class StaticDataService implements IStaticDataService {
 					}
 				}
 				totalVotesPercentage = new BigDecimal((totalVotesEarned*100)/totalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				partyElectionResult = savePartyElectionResult(election,party,totalSeatsWon,totalSecondPositions,totalThirdPositions,totalFourthPositions,totalNthPositions,totalConstiParticipated,totalVotesPercentage);
+				completeVotesPercent = new BigDecimal((totalVotesEarned*100)/completeValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				
+				partyElectionResult = savePartyElectionResult(election,party,totalSeatsWon,totalSecondPositions,totalThirdPositions,totalFourthPositions,totalNthPositions,totalConstiParticipated,totalVotesPercentage,completeVotesPercent);
 			}
 		 }		
 		}catch(Exception ex){
@@ -618,7 +624,19 @@ public class StaticDataService implements IStaticDataService {
 	return partyElectionResult;
 	}
 	
-	public PartyElectionResult savePartyElectionResult(Election election,Party party,Long totalSeatsWon,Long secPos,Long thirdPos,Long fourthPos,Long nthPos,Long totConstiParticipated,Double totalVotesPercentage) throws Exception{
+	@SuppressWarnings("unchecked")
+	public Long getCompleteValidVotes(Long electionId) throws Exception{
+		Long completeValidVotes = new Long(0);
+		List list = constituencyElectionDAO.findTotalValidVotesForAnElectionForAState(electionId);
+		if(list != null){
+		Object params = (Object)list.get(0);
+		Double validVotes = (Double)params;
+		completeValidVotes = validVotes.longValue();
+		}
+	return completeValidVotes;
+	}
+	
+	public PartyElectionResult savePartyElectionResult(Election election,Party party,Long totalSeatsWon,Long secPos,Long thirdPos,Long fourthPos,Long nthPos,Long totConstiParticipated,Double totalVotesPercentage,Double completeVotesPercent) throws Exception{
 		PartyElectionResult partyElectionResult = null;
 		java.util.Date updatedDate = new java.util.Date();
 		String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
@@ -636,6 +654,7 @@ public class StaticDataService implements IStaticDataService {
 			partyElectionResult.setNthPosWon(nthPos.toString());
 			partyElectionResult.setTotalConstiParticipated(totConstiParticipated.toString());
 			partyElectionResult.setVotesPercentage(totalVotesPercentage.toString());
+			partyElectionResult.setCompleteVotesPercent(completeVotesPercent.toString());
 			partyElectionResult.setLastUpdated(updatedDate);
 			partyElectionResult = partyElectionResultDAO.save(partyElectionResult);
 		}
@@ -1014,6 +1033,7 @@ public class StaticDataService implements IStaticDataService {
 		return hamlets;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<ConstituencyBoothInfoVO> getBoothPartNosForMandalAndElection(Long tehsilId, String electionYear){
 		List<ConstituencyBoothInfoVO> constituencyBoothsList = new ArrayList<ConstituencyBoothInfoVO>();
 		List boothsInfo = boothConstituencyElectionDAO.findPartNoConstituencyNameForTehsil(tehsilId, IConstants.ASSEMBLY_ELECTION_TYPE, electionYear);
@@ -1026,6 +1046,98 @@ public class StaticDataService implements IStaticDataService {
 			constituencyBoothsList.add(new ConstituencyBoothInfoVO(boothConstiElecId, partNo, constituencyName, villagesCovered));
 		}
 		return constituencyBoothsList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public CandidateDetailsVO getCompleteElectionResultsForAConstituency(Long constituencyId,Long electionId,Long partyId){
+		CandidateDetailsVO candidateResults = null;
+		List<CandidateOppositionVO> oppCandidates = null;
+		if(constituencyId != null && electionId != null && partyId != null){
+		candidateResults = new CandidateDetailsVO();
+		oppCandidates = new ArrayList<CandidateOppositionVO>();
+		
+		List candidateList = nominationDAO.findElectionResultsForACandidateForAnElectionInAConstituency(constituencyId,electionId,partyId);
+		if(candidateList != null){
+		candidateResults = getCandidateResultsVO(candidateList);
+		}
+		List oppCandidateList = nominationDAO.findElectionResultsForAnElectionInAConstituencyWithoutSelectedParty(constituencyId,electionId,partyId);
+		if(oppCandidateList != null){
+		oppCandidates = getOppositionCandidateResults(oppCandidateList);
+		candidateResults.setOppositionCandidates(oppCandidates);
+		}
+		}
+		
+	return candidateResults;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public CandidateDetailsVO getCandidateResultsVO(List candidateList){
+		CandidateDetailsVO candidateResults = null;
+        if(candidateList != null){
+        candidateResults = new CandidateDetailsVO();
+        
+        Object[] params = (Object[])candidateList.get(0);
+		
+		String candidateName = (String)params[0];
+		Long candId = (Long)params[1];
+		String partyName = (String)params[2];
+		String constiName = (String)params[3];
+		String stateName = (String)params[4];
+		String districtName = (String)params[5];
+		String elecYear = (String)params[6];
+		String elecType = (String)params[7];
+		Double votesEarned = (Double)params[8];
+		String votesPercent = (String)params[9];
+		Long rank = (Long)params[10];
+		
+		candidateResults.setCandidateId(candId);
+		candidateResults.setCandidateName(candidateName);
+		candidateResults.setConstituencyName(constiName);
+		candidateResults.setPartyName(partyName);
+		candidateResults.setDistrictName(districtName);
+		candidateResults.setStateName(stateName);
+		candidateResults.setElectionType(elecType);
+		candidateResults.setElectionYear(elecYear);
+		Long voteEarned = votesEarned.longValue();
+		candidateResults.setVotesEarned(voteEarned.toString());
+		candidateResults.setVotesPercentage(votesPercent);
+		candidateResults.setRank(rank);
+		}
+       return candidateResults;
+	}
+	
+	public List<CandidateOppositionVO> getOppositionCandidateResults(List oppCandidatesList){
+		List<CandidateOppositionVO> oppCandidates = null;
+		if(oppCandidatesList != null){
+			oppCandidates = new ArrayList<CandidateOppositionVO>();
+			for(int i=0;i<oppCandidatesList.size();i++){		
+				Object[] params = (Object[])oppCandidatesList.get(i);
+				
+				String candidateName = (String)params[0];
+				Long candId = (Long)params[1];
+				String partyName = (String)params[2];
+				String constiName = (String)params[3];
+				String stateName = (String)params[4];
+				String districtName = (String)params[5];
+				String elecYear = (String)params[6];
+				String elecType = (String)params[7];
+				Double votesEarned = (Double)params[8];
+				String votesPercent = (String)params[9];
+				Long rank = (Long)params[10];
+				
+				CandidateOppositionVO oppResult = new CandidateOppositionVO();
+				oppResult.setCandidateId(candId);
+				oppResult.setCandidateName(candidateName);
+				oppResult.setPartyName(partyName);
+				Long voteEarned = votesEarned.longValue();
+				oppResult.setVotesEarned(voteEarned.toString());
+				oppResult.setVotesPercentage(votesPercent);
+				oppResult.setRank(rank);
+				
+				oppCandidates.add(oppResult);
+			}
+		}
+	return oppCandidates;
 	}
 
 }
