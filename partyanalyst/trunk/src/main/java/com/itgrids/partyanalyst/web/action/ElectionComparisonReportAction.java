@@ -19,6 +19,7 @@ import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.googlecode.jsonplugin.annotations.JSON;
+import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ComparedReportVO;
 import com.itgrids.partyanalyst.dto.CompleteResultsVO;
 import com.itgrids.partyanalyst.dto.ElectionComparisonReportVO;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IElectionComparisonReportService;
 import com.itgrids.partyanalyst.service.IElectionsComparisonService;
 import com.itgrids.partyanalyst.service.IPartyService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -50,11 +52,13 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	private ServletContext context;
 	private ComparedReportVO comparedResultsVO;
 	private List<PartyPositionDisplayVO> partyPositionDisplayVO;
+	private CandidateDetailsVO constiElecResults;
 	JSONObject jObj = null;
 	
 	private ElectionComparisonReportVO electionComparisonReportVO;
 	private IElectionComparisonReportService electionComparisonReportService;
 	private IPartyService partyService;
+	private IStaticDataService staticDataService;
 	
 	public static final Logger logger = Logger.getLogger(ElectionComparisonReportAction.class);
 	
@@ -174,6 +178,14 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	}
 
 
+	public CandidateDetailsVO getConstiElecResults() {
+		return constiElecResults;
+	}
+
+	public void setConstiElecResults(CandidateDetailsVO constiElecResults) {
+		this.constiElecResults = constiElecResults;
+	}
+
 	private ElectionsComparisonVO electionsComparisonVO = null;
 	private List<ElectionComparisonResultVO> electionComparisonResultVO = null;
 	private PartyResultsPercentageVO partyResultsPercentageForYear1;
@@ -188,6 +200,14 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	}
 
 	private IElectionsComparisonService electionsComparisonService;
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
 
 	public ElectionsComparisonVO getElectionsComparisonVO() {
 		return electionsComparisonVO;
@@ -362,6 +382,32 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		Long districtId = new Long(0);
 		
 		partyPositionDisplayVO = partyService.getPartyPositionDetailsForAnElection(new Long(electionType),new Long(stateId),new Long(districtId),new Long(electionYear),new Long(partyId),new Boolean(hasAllianc).booleanValue(),new Integer(rank).intValue(),"State Level");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getConstituencyElectionResults(){
+		
+		String param=null;		
+		param=request.getParameter("task");
+		logger.debug("param:"+param);
+		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		String constituencyId = jObj.getString("constiId");
+		String electionId = jObj.getString("electionId");
+		String partyId = jObj.getString("partyId");
+		
+		logger.debug("ConstituencyId :" + constituencyId);
+		logger.debug("electionId :" + electionId);
+		logger.debug("partyId :" + partyId);
+		
+		constiElecResults  = staticDataService.getCompleteElectionResultsForAConstituency(new Long(constituencyId), new Long(electionId), new Long(partyId));
 		
 		return Action.SUCCESS;
 	}
