@@ -108,7 +108,8 @@ public class UserCalendarService implements IUserCalendarService {
 	}
 	public List<ImportantDatesVO> getUserImpDates(RegistrationVO user, Calendar inputDate) {
 		log.debug("UserCalenderService.getUserImpDates() Start...");
-
+		log.debug("input Date Year123 ::"+inputDate.get(1)+"input Date Month123::"+inputDate.get(2)+"input Date Date123::"+inputDate.get(5));
+		
 		Long userID = user.getRegistrationID();
 		Long partyId = user.getParty();
 		List<ImportantDatesVO> importantDates = new ArrayList<ImportantDatesVO>(0);
@@ -157,32 +158,39 @@ public class UserCalendarService implements IUserCalendarService {
 		importantDatesVO.setEndDate(impDate.getTillDate());
 		importantDatesVO.setFrequency(impDate.getRecFreqType());
 		
-		Date iDate=(Date)(impDate.getEffectiveDate()).clone();
+		/*Date iDate=(Date)(impDate.getEffectiveDate()).clone();
 		iDate.setYear(calendar.get(Calendar.YEAR) - 1900);
 		iDate.setMonth(calendar.get(Calendar.MONTH));
 		iDate.setDate(calendar.get(Calendar.DAY_OF_MONTH));
-		importantDatesVO.setImpDate(iDate);
+		importantDatesVO.setImpDate(iDate);*/
 
-		//importantDatesVO.setImpDate(calendar.getTime());
+		importantDatesVO.setImpDate(calendar.getTime());
 		
 		return importantDatesVO;
 	}
 	private List<ImportantDatesVO> convertUserImpDateModel2DTO(UserImpDate impDate, Calendar inputDate){
+		log.debug("input Date Year ::"+inputDate.get(1)+"input Date Month::"+inputDate.get(2)+"input Date Date::"+inputDate.get(5));
 		List<ImportantDatesVO> importantDatesVOs = new ArrayList<ImportantDatesVO>();
 		Calendar startCalendar = (Calendar) inputDate.clone();
 		int dayOfWeek1 = startCalendar.get(Calendar.DAY_OF_WEEK);
 		
-		Calendar endCalendar = Calendar.getInstance();
+		Calendar endCalendar = (Calendar) startCalendar.clone();
 		endCalendar.add(Calendar.DATE, 60);
 		
 		Date startDate = impDate.getEffectiveDate();		
 		int sMonth = startDate.getMonth();
 		int sDay = startDate.getDate();
+
+		Calendar dbStartDate = Calendar.getInstance(); 
+		dbStartDate.setTime(startDate);
+		dbStartDate.add(Calendar.DAY_OF_MONTH, -1);
 		
 		Date endDate = impDate.getTillDate();		
 		int eMonth = startDate.getMonth();
 		int eDay = startDate.getDate();
-		
+		Calendar dbEndDate = Calendar.getInstance(); 
+		dbEndDate.setTime(endDate);
+		dbEndDate.add(Calendar.DAY_OF_MONTH, 1);
 		Calendar calendar = (Calendar) inputDate.clone();
 		int currentYear =calendar.get(Calendar.YEAR);
 		int currentMonth =calendar.get(Calendar.MONTH);
@@ -205,14 +213,27 @@ public class UserCalendarService implements IUserCalendarService {
 				months[0]=currentMonth+1;
 				months[1]=currentMonth+2;
 			}
-			for(int m : months){
-				Calendar currentCalendar = (Calendar) inputDate.clone();
-				currentCalendar.set(currentYear,m,sDay);
-				if(!(currentCalendar.before(startCalendar)) && (!currentCalendar.after(endCalendar))){
-					ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(currentCalendar,impDate);
-					importantDatesVOs.add(importantDatesVO);
-				}
-				
+			
+			//months[0]=startCalendar.get(Calendar.MONTH);
+			//months[1]=endCalendar.get(Calendar.MONTH);
+			log.debug("updated code Date 1st March 2010"); 
+			log.debug("inputDate Year ::"+inputDate.get(1)+" inputDate Month::"+inputDate.get(2)+" inputDate Date::"+inputDate.get(5));
+			log.debug("startCalendar Year ::"+startCalendar.get(1)+" startCalendar Month::"+startCalendar.get(2)+" startCalendar Date::"+startCalendar.get(5));
+			log.debug("endCalendar Year ::"+endCalendar.get(1)+" endCalendar Month::"+endCalendar.get(2)+" startCalendar Date::"+endCalendar.get(5)); 
+			Calendar monthlyCal1 = (Calendar) startCalendar.clone(); monthlyCal1.set(5, sDay);monthlyCal1.set(Calendar.MONTH, months[0]);
+			Calendar monthlyCal2 = (Calendar) monthlyCal1.clone(); 
+			monthlyCal2 = (Calendar) monthlyCal2.clone(); 
+
+			monthlyCal2.add(Calendar.MONTH, 1);
+			
+			dbEndDate.add(Calendar.DAY_OF_MONTH, 1);
+			if((monthlyCal1.after(startCalendar)) && (monthlyCal1.before(endCalendar)) && monthlyCal1.before(dbEndDate) && monthlyCal1.after(dbStartDate) ){
+				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(monthlyCal1,impDate);
+				importantDatesVOs.add(importantDatesVO);
+			}
+			if((monthlyCal2.after(startCalendar)) && (monthlyCal2.before(endCalendar)) && monthlyCal2.before(dbEndDate) && monthlyCal2.after(dbStartDate)  ){
+				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(monthlyCal2,impDate);
+				importantDatesVOs.add(importantDatesVO);
 			}
 		} else if("WEEKLY".equalsIgnoreCase(impDate.getRecFreqType())){
 			//sun -1, mon-2, tue - 3,.... sat-7
