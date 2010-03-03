@@ -82,7 +82,8 @@
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />		
 		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />		
-		<property name="townshipDAO" ref="townshipDAO" />		
+		<property name="townshipDAO" ref="townshipDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />				
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		<property name="townshipElectionPartyResultDAO" ref="townshipElectionPartyResultDAO" />
 	</bean>
