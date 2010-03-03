@@ -29,8 +29,15 @@ public class DelimitationConstituencyMandalDAOTest extends BaseDaoTestCase{
 		List mandalsList = delimitationConstituencyMandalDAO.getMandalsOfConstituency(232l);
 		List<VotersWithDelimitationInfoVO> votersWithDelimitationInfoVOList = new ArrayList<VotersWithDelimitationInfoVO>();
 		List<VotersInfoForMandalVO> votersInfoForMandalList = new ArrayList<VotersInfoForMandalVO>();
+				
+		for(int j = 0; j < mandalsList.size(); j++)
+		{			
+			Object[] obj = (Object[]) mandalsList.get(j);
+			String parialData = obj[3].toString();
+			System.out.println(parialData+" j value = "+ j);
+		}
 		
-		 
+		System.out.println("-------");
 		Map<String, String> mandalsIdsYear = new HashMap<String, String>();
 		for (int i = 0; i < mandalsList.size(); i++) 
 		{

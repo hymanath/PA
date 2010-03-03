@@ -20,7 +20,7 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 	
-	public void testFindAssemblyConstituencies(){
+	/*public void testFindAssemblyConstituencies(){
 		List<Constituency> list = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(new Long(405), new Long(2010));
 		for(Constituency constituency:list)
 			System.out.println(constituency.getName());
@@ -29,5 +29,19 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 	public void testFindConstituenciesByDelimitationAssembly(){
 		List<Constituency> list = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituenciesByDelimitationConstituencyId(new Long(15));
 		assertEquals(4, list.size());
+	}
+	*/
+	/*public void testFindParliamentForAssembly(){
+		List list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(232l);
+		assertEquals(list.size(), 1);
+		assertEquals(404l, ((Object[])list.get(0))[1]);
+	}*/
+	
+	public void testFindAssembliesConstituencies(){
+		List list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(404l);
+		for(int i=0; i<list.size(); i++){
+			Object[] params = (Object[])list.get(i);
+			System.out.println(params[0] + "--" + params[1]);
+		}	
 	}
 }

@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyRebelCandidate;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -110,7 +111,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.get(0));
 	}*/
 	
-	public void testFindLocalLeadersOfMandal(){
+	/*public void testFindLocalLeadersOfMandal(){
 		List list = nominationDAO.findLocalLeadersOfMandal(new Long(844));
 		for(int i = 0; i<list.size(); i++){
 			Object[] values = (Object[])list.get(i);
@@ -126,7 +127,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	
 	@SuppressWarnings("unchecked")
 	public void testCandidateNPartyInfo(){
-		List list = nominationDAO.getCandidateNPartyInfo(new Long(341),"Assembly",new Long(1));
+		List list = nominationDAO.getCandidateNPartyInfo("341","Assembly",new Long(1));
 		
 		if(list != null){
 		Object[] resultList = (Object[])list.get(0);
@@ -147,6 +148,30 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		Assert.assertEquals("INC", partyName);
 		
 		}
-	}
+	}*/
 	
+	public void testGetParliamentCandidateNPartyInfo()
+	{		
+		List list = nominationDAO.getParliamentCandidateNPartyInfo(404l,IConstants.PARLIAMENT_ELECTION_TYPE,1L);
+		if(list !=null)
+		{
+			Object[] result = (Object[]) list.get(0);
+			
+			Long constiId = (Long)result[0];
+			String constiName = (String)result[1];
+			
+			String firstName = (String)result[3];
+			String midName = (String)result[4];
+			String lastName = (String)result[5];
+			Long partyId = (Long)result[6];
+			String partyName = (String)result[7];
+			
+			Assert.assertEquals(new Long(404), constiId);
+			Assert.assertEquals("Nellore", constiName);
+			Assert.assertEquals(null, firstName);
+			Assert.assertEquals("Mekapati Rajamohan Reddy", lastName);
+			Assert.assertEquals("INC", partyName);
+			
+		}	
+	}
 }

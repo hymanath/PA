@@ -25,4 +25,10 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 		List<Tehsil> tehsil = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(new Long(3382));
 		System.out.println(tehsil.size());
 	}
+	
+	public void testGetMandalsOfConstituency(){
+		List tehsil = delimitationConstituencyMandalDAO.getMandalsOfConstituency(232l);
+		for(int i=0;i<tehsil.size(); i++)
+			System.out.println(((Object[])tehsil.get(i))[0]+"--"+((Object[])tehsil.get(i))[1]+"--"+((Object[])tehsil.get(i))[2]+"--"+((Object[])tehsil.get(i))[3]);
+	}
 }
