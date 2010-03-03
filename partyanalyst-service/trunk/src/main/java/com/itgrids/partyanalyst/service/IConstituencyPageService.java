@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
@@ -35,6 +36,8 @@ public interface IConstituencyPageService {
 	public ResultWithExceptionVO deleteVillageBoothElectionRecord(HamletAndBoothVO villageBoothElectionId);
 	
 	public MandalTownshipWiseBoothDetailsVO getTownshipVotesByTehsil(Long electionID, Long tehsilID, Long partyID);
+	
+	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId,String electionType);
 	
 	public List<TownshipPartyResultsVO> getTownshipPartyResults(Long townshipID, Long electionID);
 }
