@@ -27,4 +27,18 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	public List<Constituency> findAssemblyConstituenciesByDelimitationConstituencyId(Long delimitationConstituencyId){
 		return getHibernateTemplate().find("select model.constituency from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.delimitationConstituencyID = ?",delimitationConstituencyId);
 	}
+			
+	public List findAssembliesConstituencies(Long parliamentConstituencyId) 
+	{
+		Object[] params = {parliamentConstituencyId};
+		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name from DelimitationConstituencyAssemblyDetails model where " +
+				"model.delimitationConstituency.constituency.constituencyId = ? and model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1)",params);
+	}
+	
+	public List findLatestParliamentForAssembly(Long assemblyId){
+		return getHibernateTemplate().find("select model.delimitationConstituency.constituency.constituencyId," +
+				"model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) and model.constituency.constituencyId = ?",assemblyId);
+	} 
 }

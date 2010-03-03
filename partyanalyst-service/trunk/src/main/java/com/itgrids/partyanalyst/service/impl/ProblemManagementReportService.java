@@ -280,27 +280,30 @@ public class ProblemManagementReportService implements
 				}
 				else 
 					problemBean.setComments(parms[5].toString());
-				if(parms[6]==null){
-					regUser = registrationDAO.findByUserRegistrationId(registrationId.longValue());					
-					for(Registration registerdUser : regUser){
-						problemBean.setPostedPersonName(registerdUser.getFirstName());
-						problemBean.setPhone(registerdUser.getMobile());
-						problemBean.setMobile(registerdUser.getPhone());
-						problemBean.setEmail(registerdUser.getEmail());
-						problemBean.setAddress(registerdUser.getAddress());			
+				if(!(registrationId==0L)){
+					if(parms[6]==null){
+						regUser = registrationDAO.findByUserRegistrationId(registrationId.longValue());					
+						for(Registration registerdUser : regUser){
+							problemBean.setPostedPersonName(registerdUser.getFirstName());
+							problemBean.setPhone(registerdUser.getMobile());
+							problemBean.setMobile(registerdUser.getPhone());
+							problemBean.setEmail(registerdUser.getEmail());
+							problemBean.setAddress(registerdUser.getAddress());			
+						}
+					}
+					else {
+						extRegUser = problemExternalSourceDAO.findByProblemExternalSourceId(Long.parseLong(parms[6].toString()));
+						for(ProblemExternalSource problemSource : extRegUser){
+							problemBean.setPostedPersonName(problemSource.getName());
+							problemBean.setPhone(problemSource.getMobile());
+							problemBean.setMobile(problemSource.getTelePhone());
+							problemBean.setEmail(problemSource.getEmail());
+							problemBean.setAddress(problemSource.getAddress());
+						}
 					}
 				}
-				else {
-					extRegUser = problemExternalSourceDAO.findByProblemExternalSourceId(Long.parseLong(parms[6].toString()));
-					for(ProblemExternalSource problemSource : extRegUser){
-						problemBean.setPostedPersonName(problemSource.getName());
-						problemBean.setPhone(problemSource.getMobile());
-						problemBean.setMobile(problemSource.getTelePhone());
-						problemBean.setEmail(problemSource.getEmail());
-						problemBean.setAddress(problemSource.getAddress());
-					}
+				else{					
 				}
-
 				problemBean.setDescription(parms[7].toString());
 				
 				if(parms[8]==null)

@@ -39,7 +39,8 @@ IDelimitationConstituencyMandalDAO {
 	
 	
 	public List getMandalsOfConstituency(Long constituencyId){
-		return getHibernateTemplate().find("select model.tehsil.tehsilId, model.tehsil.tehsilName, model.delimitationConstituency.year " +
-				"from DelimitationConstituencyMandal model where model.delimitationConstituency.constituency.constituencyId = ?", constituencyId);
+		return getHibernateTemplate().find("select model.tehsil.tehsilId, model.tehsil.tehsilName, model.delimitationConstituency.year, " +
+				"model.isPartial from DelimitationConstituencyMandal model where model.delimitationConstituency.constituency.constituencyId = ? " +
+				"order by model.delimitationConstituency.year desc,model.tehsil.tehsilId ", constituencyId);
 	}
 }

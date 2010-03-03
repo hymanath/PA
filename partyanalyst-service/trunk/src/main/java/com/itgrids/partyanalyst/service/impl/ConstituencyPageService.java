@@ -18,23 +18,26 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultObjectsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.ITownshipElectionPartyResultDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateWonVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
@@ -83,8 +86,18 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private TransactionTemplate transactionTemplate;
 	private ITownshipElectionPartyResultDAO townshipElectionPartyResultDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
-	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;	
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO; 
 	
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
 	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
 		return delimitationConstituencyMandalDAO;
 	}
@@ -341,16 +354,16 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	
 	public String getCandidateFullName(Candidate candidate){
 		String name = " ";
-		if(StringUtils.hasText(candidate.getFirstname())){
+		if(StringUtils.isBlank(candidate.getFirstname())){
 			name = name + candidate.getFirstname() + " ";
 		}
-		if(StringUtils.hasText(candidate.getMiddlename())){
+		if(StringUtils.isBlank(candidate.getMiddlename())){
 			name = name + candidate.getMiddlename() + " ";
 		}
-		if(StringUtils.hasText(candidate.getLastname())){
-			name = name + candidate.getLastname() + " ";
+		if(StringUtils.isBlank(candidate.getLastname())){
+			name = name + candidate.getLastname();
 		}
-		return StringUtils.trimWhitespace(name);
+		return name;
 	}
 	
 	public ResultWithExceptionVO getTownshipWiseBoothDetailsForTehsil(Long tehsilId){
@@ -659,10 +672,20 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		
 		 
 		Map<String, String> mandalsIdsYear = new HashMap<String, String>();
+		Map<String, List<String>> isPartialByYear = new HashMap<String, List<String>>();
+		List<String> isPartialInfoForMandal = null;
 		for (int i = 0; i < mandalsList.size(); i++) 
 		{
 			Object[] obj = (Object[]) mandalsList.get(i);			
 			String year = obj[2].toString();
+			String partialData = obj[3].toString();
+			isPartialInfoForMandal = isPartialByYear.get(year);
+			if(isPartialInfoForMandal == null)
+				isPartialInfoForMandal = new ArrayList<String>();
+			isPartialInfoForMandal.add(partialData);
+			
+			isPartialByYear.put(year, isPartialInfoForMandal);	
+						
 			String value = mandalsIdsYear.get(year);
 			StringBuilder ids = new StringBuilder();
 			if(value==null){
@@ -682,7 +705,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			votersWithDelimitationInfoVO.setYear(key);
 			
 			String value = mandalsIdsYear.get(key);
-			
+			List<String> partailData = isPartialByYear.get(key);
 			List votersList = boothConstituencyElectionDAO.findVoterInformationByMandalIdsAndDelimitationYear(value, key, constituencyId);
 			
 			for(int j = 0;j<votersList.size();j++)
@@ -696,6 +719,17 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				votersInfo.setTotalFemaleVoters(vObj[3].toString());
 				votersInfo.setTotalVoters(vObj[4].toString());
 				
+				Object[] obj = (Object[]) mandalsList.get(j);
+				
+				
+				if(partailData.get(j).equalsIgnoreCase("1"))
+					votersInfo.setIsPartial("NO");
+				else if(partailData.get(j).equalsIgnoreCase("0"))
+					votersInfo.setIsPartial("Yes");
+				else
+					votersInfo.setIsPartial("Data Not found");
+				
+				
 				votersInfoForMandalList.add(votersInfo);
 			}
 			votersWithDelimitationInfoVO.setVotersInfoForMandalVO(votersInfoForMandalList);
@@ -704,6 +738,74 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		
 		return votersWithDelimitationInfoVOList;
 		
+	}
+		
+	public List<CandidateInfoForConstituencyVO> extractCandidateNPartyDataFromList(List candidateList)
+	{
+		List<CandidateInfoForConstituencyVO> candidateInfoList = new ArrayList<CandidateInfoForConstituencyVO>();
+		
+		for(int i=0;i<candidateList.size();i++)
+		{
+			String candidateFullName = "";
+			CandidateInfoForConstituencyVO candidateInfo1 = new CandidateInfoForConstituencyVO();
+			Object[] values = (Object[]) candidateList.get(i);	
+			candidateInfo1.setConstituencyId((Long) values[0]);
+			candidateInfo1.setConstituencyName(values[1].toString());
+			candidateInfo1.setCandidateId((Long) values[2]);
+			
+			if(!StringUtils.isBlank((String)values[3]))
+				candidateFullName = candidateFullName + ((String)values[3]) + " ";
+			if(!StringUtils.isBlank((String)values[4]))
+				candidateFullName = candidateFullName + ((String)values[4]) + " ";
+			if(!StringUtils.isBlank((String)values[5]))
+				candidateFullName = candidateFullName + ((String)values[5]);
+			
+			candidateInfo1.setCandidateName(candidateFullName);
+			candidateInfo1.setPartyId((Long) values[6]);
+			candidateInfo1.setParty(values[7].toString());
+			
+			candidateInfoList.add(candidateInfo1);
+		}
+		
+		return candidateInfoList;
+	}
+	
+	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId,String electionType)
+	{
+		CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituencyTypesVO = new CandidateDetailsForConstituencyTypesVO ();
+		
+		
+		List candidateList = nominationDAO.getCandidateNPartyInfo(constituencyId.toString(), electionType, 1L);
+		if(candidateList.size() == 0)
+			return null;
+		List<CandidateInfoForConstituencyVO> candidateInfoList = extractCandidateNPartyDataFromList(candidateList);
+		
+		
+		if(electionType.equalsIgnoreCase("Assembly")){
+			candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(candidateInfoList);
+				
+			List list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constituencyId);
+			Object[] listData = (Object[]) list.get(0);
+			Long asemblyId = (Long) listData[0];
+			candidateDetailsForConstituencyTypesVO.setParliamentCandidateInfo(extractCandidateNPartyDataFromList(nominationDAO.getParliamentCandidateNPartyInfo(asemblyId, IConstants.PARLIAMENT_ELECTION_TYPE, 1L)).get(0));
+			
+		}
+		else if(electionType.equalsIgnoreCase("Parliament")){
+			candidateDetailsForConstituencyTypesVO.setParliamentCandidateInfo(candidateInfoList.get(0));
+			
+			List assembliesData = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(constituencyId);
+			
+			StringBuilder idString = new StringBuilder();
+			for(int j = 0 ; j < assembliesData.size() ; j++)
+			{
+				Object[] ids = (Object[]) assembliesData.get(j);
+				idString.append(IConstants.COMMA).append((Long)ids[0]);
+				
+			}	
+			candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(extractCandidateNPartyDataFromList(nominationDAO.getCandidateNPartyInfo(idString.substring(1), IConstants.ASSEMBLY_ELECTION_TYPE, 1L)));
+		}
+		
+		return candidateDetailsForConstituencyTypesVO;
 	}
 	public List<TownshipPartyResultsVO> getTownshipPartyResults(Long townshipID, Long electionID){
 		String townshipName = new String();

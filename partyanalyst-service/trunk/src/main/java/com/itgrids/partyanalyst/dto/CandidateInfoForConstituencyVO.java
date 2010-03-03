@@ -5,8 +5,9 @@ public class CandidateInfoForConstituencyVO {
 	private Long constituencyId;
 	private String constituencyName;
 	private Long candidateId;
-	private String CandidateName;
-	private String Party;
+	private String candidateName;
+	private Long partyId;
+	private String party;
 	
 	
 	public Long getConstituencyId() {
@@ -26,17 +27,24 @@ public class CandidateInfoForConstituencyVO {
 	}
 	public void setCandidateId(Long candidateId) {
 		this.candidateId = candidateId;
-	}
+	}	
 	public String getCandidateName() {
-		return CandidateName;
+		return candidateName;
 	}
 	public void setCandidateName(String candidateName) {
-		CandidateName = candidateName;
+		this.candidateName = candidateName;
+	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
 	}
 	public String getParty() {
-		return Party;
+		return party;
 	}
 	public void setParty(String party) {
-		Party = party;
+		this.party = party;
 	}
+	
 }

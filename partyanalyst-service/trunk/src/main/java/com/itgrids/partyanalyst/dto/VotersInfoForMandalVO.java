@@ -1,12 +1,14 @@
 package com.itgrids.partyanalyst.dto;
 
 public class VotersInfoForMandalVO {
-
+	
 	private String mandalId;
 	private String mandalName;
 	private String totalMaleVoters;
 	private String totalFemaleVoters;
 	private String totalVoters;
+	private String isPartial;
+	
 	public String getMandalId() {
 		return mandalId;
 	}
@@ -36,5 +38,11 @@ public class VotersInfoForMandalVO {
 	}
 	public void setTotalVoters(String totalVoters) {
 		this.totalVoters = totalVoters;
+	}
+	public String getIsPartial() {
+		return isPartial;
+	}
+	public void setIsPartial(String isPartial) {
+		this.isPartial = isPartial;
 	}
 }

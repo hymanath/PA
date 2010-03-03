@@ -95,7 +95,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List<Nomination> findByElectionIdAndPartyIdStateIdAndDistrictId(Long electionId,Long partyId,Long stateId,Long districtId);
 	
-	public List getCandidateNPartyInfo(Long constituencyId,String electionType,Long rank);
+	public List getCandidateNPartyInfo(String constituencyIds,String electionType,Long rank);
 	
     public List<ConstituencyElection> findConstituencyElectionByElectionIdAndPartyId(Long electionId,Long partyId);
 	
@@ -105,6 +105,9 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List findElectionDataByElectionId(Long electionId);
+	
+	public List getParliamentCandidateNPartyInfo(Long constituencyId,String electionType,Long rank);
+
 	
 	@SuppressWarnings("unchecked")
 	public List findElectionResultsForACandidateForAnElectionInAConstituency(Long constituencyId,Long electionId,Long partyId);
