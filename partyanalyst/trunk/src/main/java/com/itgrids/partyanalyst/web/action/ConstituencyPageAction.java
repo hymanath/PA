@@ -17,17 +17,23 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 
+import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
+import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
+import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ConstituencyPageAction extends ActionSupport implements
 		ServletRequestAware, ServletResponseAware {
 
+	
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -36,17 +42,52 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 
 	 private Long constituencyId;
 	 private String constituencyName;
+	 private String delimitation;
 	 private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
 	 private ConstituencyInfoVO constituencyDetails;
 	 private List<VotersWithDelimitationInfoVO> votersInfo;	 
-
-	private String electionType;
-	 
+	 private CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituency;
+	 private IProblemManagementReportService problemManagementReportService;
+	 private List<ProblemBeanVO> problemBean;
+	 private String electionType;	 
 	 private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
-	 private DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO;
+	 private DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO;	
 	 private static final Logger log = Logger.getLogger(ConstituencyPageAction.class);
 	 
-	 
+	 public String getDelimitation() {
+		return delimitation;
+	}
+
+	public void setDelimitation(String delimitation) {
+		this.delimitation = delimitation;
+	}
+
+		
+	 public IProblemManagementReportService getProblemManagementReportService() {
+		return problemManagementReportService;
+	}
+
+	public void setProblemManagementReportService(
+			IProblemManagementReportService problemManagementReportService) {
+		this.problemManagementReportService = problemManagementReportService;
+	}
+		
+	public List<ProblemBeanVO> getProblemBean() {
+		return problemBean;
+	}
+
+	public void setProblemBean(List<ProblemBeanVO> problemBean) {
+		this.problemBean = problemBean;
+	}
+	
+	public CandidateDetailsForConstituencyTypesVO getCandidateDetailsForConstituency() {
+			return candidateDetailsForConstituency;
+	}
+
+	public void setCandidateDetailsForConstituency(
+			CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituency) {
+		this.candidateDetailsForConstituency = candidateDetailsForConstituency;
+	}
 	
 	 public String getConstituencyName() {
 		return constituencyName;
@@ -149,6 +190,16 @@ public class ConstituencyPageAction extends ActionSupport implements
 		setDelimitationConstituencyMandalResultVO(delimitationConstituencyMandalResultVO);
 		
 		votersInfo = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		
+		System.out.println("delimitation = >"+delimitation+"<");
+		if(delimitation.equalsIgnoreCase(""))
+			candidateDetailsForConstituency = constituencyPageService.getCandidateAndPartyInfoForConstituency(constituencyId, electionType);
+		else
+			candidateDetailsForConstituency  = null;
+		
+		problemBean = problemManagementReportService.getConstituencyProblemsInfo(constituencyId, 0L,"");
+		if(problemBean != null)
+			System.out.println("problemBean === "+problemBean.size());
 		
 		if(constituencyElectionResultsVO != null || constituencyDetails != null){
 			//electionType = constituencyElectionResultsVO.get(0).getElectionType();

@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Constituency Details</title>
+<title> ${constituencyDetails.constituencyName} Constituency Details</title>
 
 
 <!-- YUI Dependency files (Start) -->
@@ -66,42 +66,90 @@
 </head>
 <body onLoad="getString()">
 <div id="constituencyPageMain">
-	<div id="constituencyPageLayoutDiv">
+
+	<div id="electionResults_Panel_Main" class="yui-skin-sam">
+			<div id="electionResults_Panel">
+	</div>
+
+	<table width="100%">
+		<tr>
+			<td class="alignTD">
+				
+				<div id="constituencyPageCenterInfoDiv">
+
+
+						<div id="constituencyPageProfileInfoDiv_Main" class="innerLayoutDivClass">
+							<div id="constituencyPageProfileInfoDiv_Head" class="layoutHeadersClass"> ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType}  Constituency Details : </div>
+							<div id="constituencyPageProfileInfoDiv_Body" class="layoutBodyClass"></div>
+						</div>
+			
+					
+				
+
+						<div id="constituencyPageCandidateInfo_Main" class="innerLayoutDivClass">
+							<div id="constituencyPageCandidateInfo_Head" class="layoutHeadersClass"></div>
+							<div id="constituencyPageCandidateInfo_Body" class="layoutBodyClass yui-skin-sam">
+								<div id="constituencyPageCandidateInfo_Assembly"></div>
+								<div id="constituencyPageCandidateInfo_Parliament"></div>
+							</div>
+						</div>		
+					
+
+				
+						<div id="constituencyPageElectionInfoDiv_Main" class="innerLayoutDivClass">
+							<div id="constituencyPageElectionInfoDiv_Head" class="layoutHeadersClass"></div>
+							<div id="constituencyPageElectionInfoDiv_Body" class="layoutBodyClass"></div>
+						</div>		
+				
+					
+				
+
+						<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass">
+							<div id="constituencyVotersInfoDiv_Head" class="layoutHeadersClass">${constituencyDetails.constituencyName} Constituency Voters Details :</div>
+							<div id="constituencyVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
+						</div>
+				
+				</div>
+			</td>
+			<td> <div class="spacerTD"> </div> </td>
+			<td class="alignTD">
+				<div id="constituencyRightContentDiv">					
+
+						<div id="constituencyPageRightMapDiv" class="contentDivClass">
+							<div id="map_canvas"></div>
+							<div id="constituencyInfoDiv">
+								<div id="constituencyInfoDiv_Head"></div>
+								<div id="constituencyInfoDiv_Body"></div>
+							</div>					
+							<div id="constituencyPeopleConnectDiv">
+								<div id="constituencyPeopleConnectDiv_Head"></div>
+								<div id="constituencyPeopleConnectDiv_Body"></div>
+							</div>
+							<div id="problemViewingDiv">
+								<div id="problemViewingDiv_Head"></div>
+								<div id="problemViewingDiv_Body"></div>
+							</div>
+							<div id="problemPostingDiv">
+								<div id="problemPostingDiv_Head"></div>
+								<div id="problemPostingDiv_Body"></div>
+							</div>					
+						</div>					
+				</div>
+			</td>
+			
+		</tr>
+	</table>
+	<!--<div id="constituencyPageLayoutDiv">
 		<div id="electionResults_Panel_Main" class="yui-skin-sam">
 			<div id="electionResults_Panel">
 		</div>
 	</div>	
-	<div id="constituencyPageRightMapDiv" class="contentDivClass">
-		<div id="map_canvas"></div>
-		<div id="constituencyInfoDiv">
-			<div id="constituencyInfoDiv_Head"></div>
-			<div id="constituencyInfoDiv_Body"></div>
-		</div>
-	</div>
-	<div id="constituencyPageCenterInfoDiv">
-		
-		<div id="constituencyPageProfileInfoDiv_Main" class="innerLayoutDivClass">
-			<div id="constituencyPageProfileInfoDiv_Head" class="layoutHeadersClass"> ${constituencyDetails.constituencyName} Constituency Details : </div>
-			<div id="constituencyPageProfileInfoDiv_Body" class="layoutBodyClass"></div>
-		</div>
-
-		<div id="constituencyPageElectionInfoDiv_Main" class="innerLayoutDivClass">
-			<div id="constituencyPageElectionInfoDiv_Head" class="layoutHeadersClass"></div>
-			<div id="constituencyPageElectionInfoDiv_Body" class="layoutBodyClass"></div>
-		</div>		
-		
-		<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass">
-			<div id="constituencyVotersInfoDiv_Head" class="layoutHeadersClass">${constituencyDetails.constituencyName} Constituency Voters Details :</div>
-			<div id="constituencyVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
-		</div>
-	</div>
-	<!--<div id="constituencyExtraContent" class="rounded"> 
-		content
-		<div class="corner topLeft"></div>
-		<div class="corner topRight"></div>
-		<div class="corner bottomLeft"></div>
-	    <div class="corner bottomRight"></div>
-	</div> -->
+	<div id="constituencyRightmapOuter" class="rounded"> 						
+						<div class="corner topLeft"></div>
+						<div class="corner topRight"></div>
+						<div class="corner bottomLeft"></div>
+						<div class="corner bottomRight"></div>
+	-->
 	
 </div>
 
@@ -162,14 +210,73 @@
 		var vObj=
 				{
 					mandalId:'${info.mandalId}',
-					mandalName:'${info.mandalName}',
+					mandalName:'<a href="mandalPageElectionInfoAction.action?MANDAL_ID=${info.mandalId}&MANDAL_NAME=${info.mandalName}"> ${info.mandalName}</a>',
 					mandalMaleVoters:'${info.totalMaleVoters}',
 					mandalFemaleVoters:'${info.totalFemaleVoters}',
-					mandalTotalVoters:'${info.totalVoters}'
+					mandalTotalVoters:'${info.totalVoters}',
+					isPartial:'${info.isPartial}'
 				 };
 			obj.info.push(vObj);
 		</c:forEach>
 			constituencyPageMainObj.constituencyVotersInfo.push(obj);
+	</c:forEach>
+	
+
+	/*	Assembly Candidate Info
+		-------------------------
+	*/
+	<c:forEach var="cInfo" items="${candidateDetailsForConstituency.assemblyCandidateInfo}">	
+	var candidateObj={
+						constituencyId : '${cInfo.constituencyId}',
+						constituencyName : '${cInfo.constituencyName}',
+						candidateId : '${cInfo.candidateId}',
+						candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${cInfo.candidateId}"> ${cInfo.candidateName}</a>',	
+						partyId:' ${cInfo.partyId}',
+						party : '${cInfo.party}'
+					 };		
+	constituencyPageMainObj.presentAssemblyCandidate.push(candidateObj);
+	</c:forEach>
+	
+	/*	Parliament Candidate Info
+		-------------------------
+	*/
+	var pmtObj = {
+					constituencyId : '${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}',
+					constituencyName : '${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyName}',
+					candidateId : '${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}',
+					candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}"> ${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}</a>',		
+					partyId:' ${candidateDetailsForConstituency.parliamentCandidateInfo.partyId}',
+					party : '${candidateDetailsForConstituency.parliamentCandidateInfo.party}'
+				 };		
+	constituencyPageMainObj.presentParliamentCandidate.push(pmtObj);
+
+	
+	/*	Constituency problems Info
+		-------------------------
+	*/
+	
+	<c:forEach var="problem" items="${problemBean}">	
+	var problemObj={
+						problemId:'${problem.problemId}',
+						problem:'${problem.problem}',
+						description:'${problem.description}',
+						state:'${problem.state}',
+						district:'${problem.district}',
+						constituency:'${problem.constituency}',
+						tehsil:'${problem.tehsil}',
+						village:'${problem.village}',
+						hamlet:'${problem.hamlet}',
+						reportedDate:'${problem.reportedDate}',
+						existingFrom:'${problem.existingFrom}',
+						name:'${problem.name}',
+						postedPersonName:'${problem.postedPersonName}',
+						email:'${problem.email}',						
+						phone:'${problem.phone}',
+						mobile:'${problem.mobile}',
+						address:'${problem.address}'
+					};
+		
+	constituencyPageMainObj.problemsInfo.push(problemObj);
 	</c:forEach>
 
 	initializeConstituencyPage();

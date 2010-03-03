@@ -11,7 +11,10 @@ var constituencyPageMainObj={
 													constituencyType:''
 												 },
 								constituencyElectionInfo:[],
-								constituencyVotersInfo:[]
+								constituencyVotersInfo:[],
+								presentAssemblyCandidate:[],
+								presentParliamentCandidate:[],
+								problemsInfo:[]
 							};
 
 /*var address="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";		
@@ -108,6 +111,12 @@ function buildRightlayoutMap()
 		  }
 		})
 
+}
+
+function buildConstituencyInfo()
+{
+	var defDate = constituencyPageMainObj.constituencyInfo.deformDate;
+
 	var divElmtHead = document.getElementById("constituencyInfoDiv_Head");
 	var divElmtBody = document.getElementById("constituencyInfoDiv_Body");
 
@@ -151,9 +160,9 @@ function buildRightlayoutMap()
 	if(constituencyPageMainObj.constituencyInfo.deformDate.length > 0)
 	{
 		str+='<tr>';
-		str+='<th> Deformation Date </th>';
+		str+='<th> Deformation Year </th>';
 		str+='<th> : </th>';
-		str+='<td> '+constituencyPageMainObj.constituencyInfo.deformDate+' </td>';
+		str+='<td> '+defDate.substring(0,4)+' </td>';
 		str+='</tr>';
 	}
 	
@@ -270,7 +279,13 @@ function showDetailedElectionResult(id)
 	 var myDataSource = new YAHOO.util.DataSource(data.oppositionCandInfo); 
 	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	 myDataSource.responseSchema = { 
-	            fields: ["candidateName","partyName","year","votesEarned","votesPercentage"] 
+	            fields: [
+							{key:"candidateName"},
+							{key:"partyName"},
+							{key:"year",parser:"number"},
+							{key:"votesEarned",parser:"number"},
+							{key:"votesPercentage",parser:"number"}
+						] 
 	        }; 
 	
 	 var myColumnDefs = [ 
@@ -283,6 +298,8 @@ function showDetailedElectionResult(id)
 	 
 	var myDataTable = new YAHOO.widget.DataTable("oppCandResultsDiv",myColumnDefs, myDataSource); 
 }
+
+/*
 function buildConstituencyLayout()
 {
 	var constituencyPageLayout = new YAHOO.widget.Layout('constituencyPageLayoutDiv', { 
@@ -295,7 +312,7 @@ function buildConstituencyLayout()
 						resize: false,
 						gutter: '5px',
 						collapse: false,
-						scroll: true,
+						scroll: false,
 						body: 'constituencyPageRightMapDiv',
 						animate: true
 					},	 
@@ -305,13 +322,13 @@ function buildConstituencyLayout()
 						resize: false,
 						gutter: '5px',
 						collapse: true,
-						scroll: true,						
+						scroll: false,						
 						animate: true
 					} 
 	    ] 
 		}); 
 		constituencyPageLayout.render(); 
-}
+}*/
 
 function buildCenterVotersCandidateInfoContent()
 {
@@ -351,7 +368,8 @@ function buildCenterVotersCandidateInfoContent()
 								{	key : "mandalName"},
 								{	key : "mandalMaleVoters",parser:"number"},
 								{	key : "mandalFemaleVoters",parser:"number"},
-								{	key : "mandalTotalVoters",parser:"number"}
+								{	key : "mandalTotalVoters",parser:"number"},
+								{	key : "isPartial"}
 							]
 				}; 
 		
@@ -359,17 +377,241 @@ function buildCenterVotersCandidateInfoContent()
 					{key:"mandalName",label:'Mandal Name', sortable:true, resizeable:true}, 
 					{key:"mandalMaleVoters", label:'Male Voters', sortable:true, resizeable:true}, 
 					{key:"mandalFemaleVoters", label:'Female Voters',sortable:true, resizeable:true}, 
-					{key:"mandalTotalVoters",label:'Total Voters', sortable:true, resizeable:true}
+					{key:"mandalTotalVoters",label:'Total Voters', sortable:true, resizeable:true},
+					{key:"isPartial",label:'Is Partial', sortable:true, resizeable:true}
 				]; 
 		 
 		var myDataTable = new YAHOO.widget.DataTable("divChild_Body_"+i+"",myColumnDefs, myDataSource); 
 
 	}
 }
-function initializeConstituencyPage()
+
+function showCurrentlyElectedCandidate()
+{	
+
+	var HeadElmt = document.getElementById('constituencyPageCandidateInfo_Head');
+	var BodyElmt = document.getElementById('constituencyPageCandidateInfo_Body');
+
+	var headStr = '';
+	headStr+='Elected Candidate Info';
+	if(HeadElmt)
+		HeadElmt.innerHTML=headStr;
+
+	/* ---- Building Assembly candidate Info datatable ---- */
+	
+	if(constituencyPageMainObj.presentAssemblyCandidate.length == 0 || constituencyPageMainObj.presentParliamentCandidate == 0)
+	{		
+		BodyElmt.innerHTML = 'This constituency has been delimitated ';
+		return;
+	}
+	 var myDataSource = new YAHOO.util.DataSource(constituencyPageMainObj.presentAssemblyCandidate); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	 myDataSource.responseSchema = { 
+				fields: [
+							{	key : "candidateName"},
+							{	key : "constituencyName"},
+							{	key : "party"}
+						]
+			}; 
+	
+	 var myColumnDefs = [ 
+				{key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true}, 
+				{key:"constituencyName", label:'Constituency Name', sortable:true, resizeable:true}, 
+				{key:"party", label:'Party',sortable:true, resizeable:true}
+			]; 
+		 
+	var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Assembly",myColumnDefs, myDataSource,{caption:"Assembly Candidate : "}); 
+
+	
+	/* ---- Building Parliament candidate Info datatable ---- */
+
+	 var myDataSource = new YAHOO.util.DataSource(constituencyPageMainObj.presentParliamentCandidate); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	 myDataSource.responseSchema = { 
+				fields: [
+							{	key : "candidateName"},
+							{	key : "constituencyName"},
+							{	key : "party"}
+						]
+			}; 
+	
+	 var myColumnDefs = [ 
+				{key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true}, 
+				{key:"constituencyName", label:'Constituency Name', sortable:true, resizeable:true}, 
+				{key:"party", label:'Party',sortable:true, resizeable:true}
+			]; 
+		 
+	var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Parliament",myColumnDefs, myDataSource,{caption:"Parliament Candidate : "}); 
+}
+
+function buildProblemViewingWindow()
 {
-	buildConstituencyLayout();
+	var headElmt = document.getElementById('problemViewingDiv_Head');
+	var bodyElmt = document.getElementById('problemViewingDiv_Body');
+	
+	if(constituencyPageMainObj.presentAssemblyCandidate.length == 0 || constituencyPageMainObj.presentParliamentCandidate == 0)
+	{		
+		//bodyElmt.innerHTML = 'This constituency has been delimitated ';
+		return;
+	}
+
+	var str='';
+	str+='<fieldset id="problemViewingFieldSet">';
+	str+='<legend> View Your constituency Problems</legend>';
+	str+='<div id="problemViewingContentDiv" class="problemPostingContentDivClass">';	
+	str+='<marquee direction="up" scrolldelay="200" onmouseover="this.stop();" onmouseout="this.start();">';
+
+	if(constituencyPageMainObj.problemsInfo.length == 0)
+	{
+		str+='<div class="problemDataDivClass" onclick="javascript:{}">';
+		str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+		str+='<span> No problems has been posted </span>';
+		str+='</div>';
+	}
+	else
+	{
+		for(var i in constituencyPageMainObj.problemsInfo)
+		{
+			var data = constituencyPageMainObj.problemsInfo[i];
+			str+='<div class="problemDataDivClass" onclick="javascript:{}">';
+			str+='<span><img height="10" width="10" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></img></span>';
+			str+='<span> '+data.name+' </span>';
+			str+='</div>';
+		}
+	}
+	
+	str+='</marquee>';
+	str+='</div>';
+	str+='</fieldset>';
+	
+	if(bodyElmt)
+		bodyElmt.innerHTML=str;
+}
+
+function buildProblemPostingWindow()
+{
+	var headElmt = document.getElementById('problemPostingDiv_Head');
+	var bodyElmt = document.getElementById('problemPostingDiv_Body');
+	
+	if(constituencyPageMainObj.presentAssemblyCandidate.length == 0 || constituencyPageMainObj.presentParliamentCandidate == 0)
+	{		
+		//bodyElmt.innerHTML = 'This constituency has been delimitated ';
+		return;
+	}
+
+	var str='';
+	str+='<fieldset id="ProblemPostingFieldSet">';
+	str+='<legend> Post Your constituency Problem</legend>';
+	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
+	str+='<div>Post your constituency problem and it to the all people notice.</div>';
+	str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="javascript:{}"/></div>';
+	str+='</div>';
+	str+='</fieldset>';
+	
+	if(bodyElmt)
+		bodyElmt.innerHTML=str;
+
+	var postButton = new YAHOO.widget.Button("postButton");
+
+}
+
+function buildConstituencyConnectPeopleWindow()
+{
+	var headElmt = document.getElementById('constituencyPeopleConnectDiv_Head');
+	var bodyElmt = document.getElementById('constituencyPeopleConnectDiv_Body');
+
+	var headStr = 'Connect To Your Constituency People';
+	if(headElmt)
+		headElmt.innerHTML=headStr;
+
+	var bodyStr='';
+	bodyStr+='<div id="connectedNumberDiv"> ';
+	bodyStr+='<span><img height="20" width="25" src="/PartyAnalyst/images/icons/constituencyPage/groups.png"></img></span>';
+	bodyStr+='<span style="position:relative;left:5px;top:-5px;"> 20 people connected to this constituency </span>';
+	bodyStr+='</div>';
+	bodyStr+='<div id="connectedPersonsDiv">';
+	bodyStr+='<table width="100%">';
+	bodyStr+='<tr>';
+	bodyStr+='<td>';
+	bodyStr+='<table width="100%">';
+	bodyStr+='<tr>';
+	bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
+	bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">Sai Krishna </span></td>';
+	bodyStr+='</tr>';
+	bodyStr+='<tr>';	
+	bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass">Send Mail</span></td>';
+	bodyStr+='</tr>';
+	bodyStr+='</table>';
+	bodyStr+='</td>';
+	bodyStr+='</tr>';
+
+	bodyStr+='<tr>';
+	bodyStr+='<td><div style="border:1px solid #F1F3F5;margin:0px 5px 0px 5px"></div></td>';
+	bodyStr+='</tr>';
+	
+	bodyStr+='<tr>';
+	bodyStr+='<td>';
+	bodyStr+='<table width="100%">';
+	bodyStr+='<tr>';
+	bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
+	bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">Siva Kumar</span></td>';
+	bodyStr+='</tr>';
+	bodyStr+='<tr>';	
+	bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass">Send Mail</span></td>';
+	bodyStr+='</tr>';
+	bodyStr+='</table>';
+	bodyStr+='</td>';
+	bodyStr+='</tr>';
+	
+	bodyStr+='<tr>';
+	bodyStr+='<td><div style="border:1px solid #F1F3F5;margin:0px 5px 0px 5px"></div></td>';
+	bodyStr+='</tr>';
+
+	bodyStr+='<tr>';
+	bodyStr+='<td>';
+	bodyStr+='<table width="100%">';
+	bodyStr+='<tr>';
+	bodyStr+='<td rowspan="2" width="25%"><span><img height="40" width="35" src="/PartyAnalyst/images/icons/constituencyPage/human1.png"/></span></td>';
+	bodyStr+='<td align="left"><span class="groupPersonNameSpanClass">Raghavendra Prasad</span></td>';
+	bodyStr+='</tr>';
+	bodyStr+='<tr>';	
+	bodyStr+='<td align="right"><span class="groupPersonMessageSpanClass">Send Mail</span></td>';
+	bodyStr+='</tr>';
+	bodyStr+='</table>';
+	bodyStr+='</td>';
+	bodyStr+='</tr>';
+
+	bodyStr+='<tr>';
+	bodyStr+='<td><div style="border:1px solid #F1F3F5;margin:0px 5px 0px 5px"></div></td>';
+	bodyStr+='</tr>';
+
+	bodyStr+='</table>';
+	bodyStr+='</div>';
+
+	bodyStr+='<div id="viewAllPersonConnectDiv">';
+	bodyStr+='<table width = "100%"><tr>';
+	bodyStr+='<td align="right">';
+	bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc">View All</a> </span>';
+	bodyStr+='<span class="connectAncSpan"> | </span>';
+	bodyStr+='<span class="connectAncSpan"> <a href="javascript:{}" class="connectAnc"> Connect </a> </span>';
+	bodyStr+='</td>';
+	bodyStr+='</tr></table>';
+	bodyStr+='</div>';
+
+	if(bodyElmt)
+		bodyElmt.innerHTML=bodyStr;
+
+	var connectButton = new YAHOO.widget.Button("connectButton");
+
+}
+function initializeConstituencyPage()
+{		
 	buildRightlayoutMap();
+	buildConstituencyInfo();
+	buildConstituencyConnectPeopleWindow();
+	buildProblemPostingWindow();
+	buildProblemViewingWindow();
 	buildElectionResults();
 	buildCenterVotersCandidateInfoContent();
+	showCurrentlyElectedCandidate();
 }
