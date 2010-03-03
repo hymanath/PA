@@ -200,7 +200,8 @@ public class UserCalendarService implements IUserCalendarService {
 			if(calendar.get(Calendar.MONTH)==11 && sMonth <=1)
 				++currentYear;
 			calendar.set(currentYear,sMonth,sDay);
-			if(!(calendar.before(startCalendar)) && (!calendar.after(endCalendar))){				
+			if(calendar.after(startCalendar) &&  calendar.before(endCalendar)
+					&& calendar.after(dbStartDate) &&  calendar.before(dbEndDate)){				
 				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(calendar,impDate);			 
 				importantDatesVOs.add(importantDatesVO);
 			}
@@ -254,7 +255,8 @@ public class UserCalendarService implements IUserCalendarService {
 				int calDay = currentDay +i;
 				Calendar cal = (Calendar) inputDate.clone();
 				cal.set(currentYear,currentMonth,calDay);
-				if(cal.before(startCalendar) || cal.after(endCalendar)){
+				if(cal.before(startCalendar) || cal.after(endCalendar)
+						|| cal.before(dbStartDate) || cal.after(dbEndDate)){
 					break;
 				}
 				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(cal,impDate);
