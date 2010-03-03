@@ -95,13 +95,14 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 
 	public String execute() throws Exception
 	{	
+		
 		UserGroupDetailsVO userGroupDetailsVO;
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		if(user==null)
 			return ERROR;
-
+		/*
 		String param = null;
 		param = getTask();
 		
@@ -116,23 +117,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		if(jObj.getString("task").equalsIgnoreCase("getSystemGroupsForUser"))
 		{
 			userGroupsVO = new UserGroupsVO();
-			/*
-			List <GroupsDetailsForUserVO> groupsDetailsForUserList = new ArrayList<GroupsDetailsForUserVO>();
-			GroupsDetailsForUserVO mediaGroupDetailsForUser = new GroupsDetailsForUserVO();  
-			GroupsDetailsForUserVO officialGroupDetailsForUser = new GroupsDetailsForUserVO();
-			List<UserGroupDetailsVO> subGroupsByUser = new ArrayList<UserGroupDetailsVO>();
 			
-			mediaGroupDetailsForUser.setStaticGroupId(1L);
-			mediaGroupDetailsForUser.setStaticGroupName("Media");
-			mediaGroupDetailsForUser.setNumberOfGroups(3L);
-			
-			officialGroupDetailsForUser.setStaticGroupId(2L);
-			officialGroupDetailsForUser.setStaticGroupName("Officials");
-			officialGroupDetailsForUser.setNumberOfGroups(2L);
-			
-					
-			groupsDetailsForUserList.add(mediaGroupDetailsForUser);
-			groupsDetailsForUserList.add(officialGroupDetailsForUser);*/
 			userGroupsVO.setGroupsDetailsForUser(userGroupService.systemGroupsDetailsForUser(user.getRegistrationID()));	
 		} 
 		if(jObj.getString("task").equalsIgnoreCase("createNewGroup"))
@@ -154,11 +139,12 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			
 			userGroupService.createGroupForUser(userGroupDetailsVO);
 			
-		}
+		}*/
 		return Action.SUCCESS;
+		
 	}
 	
-	public String getGroupMbrsForGroup()
+	/*public String getGroupMbrsForGroup()
 	{
 		String param = null;
 		param = getTask();
@@ -395,5 +381,5 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			
 		}
 		return Action.SUCCESS;
-	}
+	}*/
 }	
