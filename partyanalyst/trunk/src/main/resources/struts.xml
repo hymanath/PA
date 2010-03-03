@@ -29,6 +29,7 @@
 			<result type="redirect" name="cadreManagementAction">cadreManagementAction.action</result>
 			<result type="redirect" name="constituencyManagementAction">constituencyManagementAction.action</result>
 			<result type="redirect" name="problemManagementReportAction">problemManagementReportAction.action</result>
+			<result type="redirect" name="userGroupAction">userGroupAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 		</action>
 		
@@ -496,26 +497,6 @@
 				<param name="root">newsPaperURLsVO</param>				
 			</result>			
 		</action>
-		<action name="userGroupAction" class="userGroupAction">
-			<result type="json" name="success">
-				<param name="root">userGroupsVO</param>				
-			</result>			
-		</action>
-		<action name="membersInAGroupAction" class="userGroupAction" method="getGroupMbrsForGroup">
-			<result type="json" name="success">
-				<param name="root">userGroupsVO</param>				
-			</result> 
-		</action>
-		<action name="subGroupsInaStaticGroupForUserAction" class="userGroupAction" method="getSubGroupsInStaticGroupForUser">
-			<result type="json" name="success">
-				<param name="root">subGroupsForStaticGroupForUser</param>				
-			</result> 
-		</action>
-		<action name="subGroupsDescriptionForUserAction" class="userGroupAction" method="getCompleteGroupDescritption">
-			<result type="json" name="success">
-				<param name="root">userGroupsDescriptionVO</param>				
-			</result> 
-		</action>
 		<action name="revenueVillageReport" class="revenueVillageReportAction">
 			<result name="success">/jsp/revenueVillageReport.jsp</result>
 		</action>
@@ -540,6 +521,10 @@
 			<result type="json" name="success">
 				<param name="root">problemBean</param>				
 			</result> 
+		</action>
+		<action name="userGroupAction" class="userGroupAction">
+			<result name="success">/jsp/userGroups.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=userGroupAction</result>		
 		</action>
 	</package>
 </struts>
