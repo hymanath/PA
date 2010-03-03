@@ -101,7 +101,8 @@
 		{ 
 	        id: "constituenceyManagement", 
 	        itemdata: [
-		    { text: "Problem Management Report", url: "problemManagementReportAction.action" }
+		    { text: "Problem Management Report", url: "problemManagementReportAction.action" },
+		    { text: "User Groups", url: "userGroupAction.action" }
 	        ] 
 	    },   
 	    { 
