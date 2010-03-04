@@ -144,14 +144,14 @@ function buildLayout()
 			position:relative;
 	}
 	#grpsDescTdDiv{
-			background:#96B1D2;
 			border:1px solid #96B4D3;
-			text-align:left;
+			border-width:1px 3px 3px 1px;
+			color:#628C2A;
 			font-weight:bold;
-			color:#FFFFFF;			
+			text-align:left;		
 	}
 	.hdTable h3{
-			color:#FFFFFF;
+			color:#628C2A;
 			font-size:182%;
 			font-weight:bold !important;
 			line-height:100%;
@@ -173,7 +173,8 @@ function buildLayout()
 			width:96%;
 			color:#628C2A;
 			font-family:verdana;
-			font-weight:bold;			 
+			font-weight:bold;	
+			border-width:1px 3px 3px 1px;
 	}
 	#userGroupsLeftDiv, #userGroupsCenterDiv {
 		background-color:white;	
@@ -228,7 +229,7 @@ function buildLayout()
 		text-align: center;
 		color:#96B1D2;
 		font-weight:bold;
-		font-size:18px;
+		font-size:17px;
 	}
 	.searchBoxLabels
 	{
@@ -334,7 +335,7 @@ function buildLayout()
 	<div id="userGroupsTopDiv">
 		<table class="hdTable">
 		<tr>
-		<td><img src="images/usergroups/group-of-people.jpg" height="200px" width="345px"></td>
+		<td><img src="images/usergroups/group-of-people.jpg" height="200px" width="320px" style="border:1px solid #96B4D3;border-width:1px 3px 3px 1px;"></td>
 		<td id="grpsDescTdDiv">
 			<h3>User Groups</h3>
 			<p>User Groups is a consistent interaction for creating, managing groups
