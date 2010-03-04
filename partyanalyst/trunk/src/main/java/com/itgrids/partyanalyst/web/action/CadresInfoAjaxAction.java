@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,9 @@ import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
+import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 @SuppressWarnings("serial")
 public class CadresInfoAjaxAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
@@ -35,7 +38,8 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 	private HttpSession session;
 	private List<CadreRegionInfoVO> cadreRegionInfo;
 	private List<CadreInfo> cadreInfo;
-	private List<SelectOptionVO> zeroCadresRegion;	
+	private List<SelectOptionVO> zeroCadresRegion;
+	private List<StateToHamletVO> zeroCadresRegion1;	
 	private static final Logger log = Logger.getLogger(CadresInfoAjaxAction.class);
 	
 	private CadreManagementService cadreManagementService;
@@ -92,6 +96,14 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 
 	public void setZeroCadresRegion(List<SelectOptionVO> zeroCadresRegion) {
 		this.zeroCadresRegion = zeroCadresRegion;
+	}
+
+	public List<StateToHamletVO> getZeroCadresRegion1() {
+		return zeroCadresRegion1;
+	}
+
+	public void setZeroCadresRegion1(List<StateToHamletVO> zeroCadresRegion1) {
+		this.zeroCadresRegion1 = zeroCadresRegion1;
 	}
 
 	public String execute() throws Exception{
@@ -194,18 +206,31 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			if(region.equalsIgnoreCase("STATE"))
 			{
 				 zeroLevelCadres=userCadresInfoVo.getZeroCadreStates();
+				 zeroCadresRegion1 = getStates(zeroLevelCadres);
 			}else if(region.equalsIgnoreCase("DISTRICT"))
 			{
 				 zeroLevelCadres=userCadresInfoVo.getZeroCadreDistricts();
+				 String keys = getIDs(zeroLevelCadres);
+				 if(keys.length()>0)
+					 zeroCadresRegion1=cadreManagementService.getStateToDistrictByDistrict(keys);
 			}else if(region.equalsIgnoreCase("MANDAL"))
 			{
 				 zeroLevelCadres=userCadresInfoVo.getZeroCadreMandals();
+				 String keys = getIDs(zeroLevelCadres);
+				 if(keys.length()>0)
+					 zeroCadresRegion1=cadreManagementService.getStateToMandalByTehsil(keys);
 			}else if(region.equalsIgnoreCase("VILLAGE"))
 			{
 				 zeroLevelCadres=userCadresInfoVo.getZeroCadreVillages();
+				 String keys = getIDs(zeroLevelCadres);
+				 if(keys.length()>0)
+					 zeroCadresRegion1=cadreManagementService.getStateToRevenueVillageByRV(keys);
 			}else if(region.equalsIgnoreCase("HAMLET"))
 			{
 				 zeroLevelCadres=userCadresInfoVo.getZeroCadreHamlets();
+				 String keys = getIDs(zeroLevelCadres);
+				 if(keys.length()>0)
+					 zeroCadresRegion1=cadreManagementService.getStateToHamletByHamlets(keys);
 			}
 			
 			 
@@ -241,6 +266,35 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 	public void setServletContext(ServletContext arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private String getIDs(Map<Long, String> map){
+		StringBuilder sb = new StringBuilder();
+		Set<Entry<Long, String>> set = map.entrySet();
+		Iterator<Entry<Long, String>> iterator = set.iterator();
+		while(iterator.hasNext()){
+			Entry<Long, String> entry = iterator.next();
+			sb.append(IConstants.COMMA).append(entry.getKey());
+		}
+		String result = new String();
+		if(sb.length()>0)
+			result = sb.substring(1);
+		return result;
+	}
+	
+	
+	private List<StateToHamletVO> getStates(Map<Long, String> map){
+		List<StateToHamletVO> results = new ArrayList<StateToHamletVO>();
+		Set<Entry<Long, String>> set = map.entrySet();
+		Iterator<Entry<Long, String>> iterator = set.iterator();
+		while(iterator.hasNext()){
+			Entry<Long, String> entry = iterator.next();
+			StateToHamletVO vo = new StateToHamletVO();
+			SelectOptionVO state = new SelectOptionVO(entry.getKey(), entry.getValue());
+			vo.setState(state);
+			results.add(vo);
+		}
+		return results;
 	}
 
 }
