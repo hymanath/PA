@@ -11,33 +11,41 @@
 <title>Cross Voting Report</title>
 
 	<!-- YUI Dependency Files-->
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+	<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+
 	
-	<link href="styles/yuiStyles/treeview.css" rel="stylesheet" type="text/css" />
-	<link href="styles/yuiStyles/calendar.css" rel="stylesheet" type="text/css" />
-	<link href="styles/yuiStyles/datatable.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
-	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js" ></script>
-	<script type="text/javascript" src="js/yahoo/animation-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/calendar-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/treeview-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/element-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/connection-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/get-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/datatable-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/connection.js"></script> 
-	<script type="text/javascript" src="js/yahoo/history.js"></script> 
+	<!-- YUI Skin Sam -->
 
-	<!-- Combo-handled YUI CSS files: -->
-<link rel="stylesheet" type="text/css" href="styles/yuiStyles">
-<!-- Combo-handled YUI JS files: -->
-<script type="text/javascript" src="js/yahoo/datatable-min.js"></script>
-	
-	<!-- YUI Dependency Files-->
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 
 <style type="text/css">
 
@@ -143,6 +151,23 @@
 	text-align:right;
 }
 
+.yui-skin-sam .yui-dt table
+	{
+		border:medium none Chocolate;
+		border-collapse:separate;
+		border-spacing:3px;
+		color:RoyalBlue;
+		font-family:Verdana;
+		font-size:12px;
+		text-align:center;
+	}
+
+ .yui-skin-sam .yui-pg-container {paginator.css (line 7)
+	display:block;
+	margin:6px 0;
+	text-align:center;
+	white-space:nowrap;
+ }
 </style>
 <script type="text/javascript">
 	
@@ -325,7 +350,7 @@
 				str+='</div>';
 				str+='<div id="treeDiv">';
 				str+='	<span><h4><u>Voting Details in Mandal/s:</u></h4></span>';
-				str+='	<div id="treeDataDiv"></div>';
+				str+='	<div id="treeDataDiv" class="yui-skin-sam"></div>';
 				str+='	<div  id="indexDataDiv"> AC* - Assembly Constituency, PC* - Parliament Constituency, IC* - Impact On Constituency</div>';
 				str+='</div>';
 			str+='</div>';
@@ -340,11 +365,30 @@
 		}
 	}
 
+	function hideAndUnhide(name)
+	{
+		var divElmt = "mandalNewDiv_" + name;
+		var dataTableDiv = document.getElementById(divElmt);
+		var imgDivElmt = "hideUnhideImg_" + name;
+        var imgId = document.getElementById(imgDivElmt);
+
+        if(dataTableDiv.style.display == "none")
+		{
+        dataTableDiv.style.display="block";
+		imgId.src = "images/icons/minusNew.png";
+        }
+		else if(dataTableDiv.style.display == "block")
+		{
+        dataTableDiv.style.display="none";
+		imgId.src = "images/icons/plusNew.png";
+		}
+	}
+
 	function buildTreeView(mandal)
 	{
 		
 		var divElmt = document.getElementById("treeDataDiv");
-				
+						
 		var childDivElmt = document.createElement('div');
 		childDivElmt.setAttribute('id','mandalDiv_'+mandal.mandalName);
 		childDivElmt.setAttribute('class','mandalDiv');
@@ -357,6 +401,7 @@
 		var mstr='';
 		mstr+='<table class="mandalDatatable">';
 		mstr+='<tr>';
+		mstr+='<td><a href="#" onclick="hideAndUnhide(\''+mandal.mandalName+'\')" ><img id="hideUnhideImg_'+mandal.mandalName+'" src="images/icons/plusNew.png" border="none"/></a></td>';
 		mstr+='<th style="width:140px;">'+mandal.mandalName+'</th>';		
 		mstr+='<th>|Polled Votes :</th>';
 		mstr+='<td style="width:50px;">'+mandal.polledVotes+'</td>';
@@ -365,51 +410,97 @@
 		mstr+='<th>| PC<font color="red">*</font> :</th>';
 		mstr+='<td style="width: 50px;">'+mandal.pcPercentageInMandal+'  %</td>';
 		mstr+='<th>| Votes Flown :</th>';
-		mstr+='<td style="width: 50px;">'+mandal.percentageDifferenceInMandal+' %</td>';	
+		mstr+='<td style="width: 50px;" colspan="2">'+mandal.percentageDifferenceInMandal+' %</td>';	
 		mstr+='<th>| IC<font color="red">*</font>:</th>';
 		mstr+='<td style="width: 50px;">'+mandal.percentageImpactOnConstituency+' %</td>';	
 		mstr+='</tr>';
 		mstr+='</table>'
 
-		var label = mandal.mandalName;		
+		var label = mandal.mandalName;	
+		var mandalNode = new YAHOO.widget.TextNode(mstr, rootNode);
+		
+		var childNewDivElmt = document.createElement('div');
+		childNewDivElmt.setAttribute('id','mandalNewDiv_'+mandal.mandalName);
+		childNewDivElmt.setAttribute('style','display:none;');
+		divElmt.appendChild(childNewDivElmt);
+		   		 
+		var resultsDataSource = new YAHOO.util.DataSource(mandal.crossVotedBooths);
+		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		resultsDataSource.responseSchema = {
+			fields : [ {
+				key : "partNO",parser:"number"
+			}, {
+				key : "villagesCovered"
+			}, {
+				key : "pcPercentage",parser:"number"
+			}, {
+				key : "pcValidVotes",parser:"number"
+			}, {
+				key : "acPercentage",parser:"number"
+			}, {
+				key : "acValidVotes",parser:"number"
+			}, {
+				key : "percentageDifference",parser:"number"
+			}]
+		};		
 
-		var mandalNode = new YAHOO.widget.TextNode(mstr, rootNode);		
-		
-		var str='';
-			str+='<div id="mandalVotingDiv" class="yui-skin-sam"><table id="boothVotingDetailsTable" class="searchresultsTable" style="width:auto;">';
-			str+='<tr>';
-			str+='<th>Part No</th>';
-			str+='<th>Areas Covered</th>';
-			str+='<th>Total Voters</th>';
-			str+='<th>Polled Votes</th>';
-			str+='<th>PC<font color="red">*</font> Candidate %</th>';
-			str+='<th>AC<font color="red">*</font> Candidate %</th>';			
-			str+='<th>% Diff</th>';			
-			str+='</tr>';
-			for (var j in mandal.crossVotedBooths) 
-			{			
-				str+='<tr>';			
-				str+='<td>'+mandal.crossVotedBooths[j].partNO+'</td>';
-				str+='<td>'+mandal.crossVotedBooths[j].villagesCovered+'</td>';
-				str+='<td>'+mandal.crossVotedBooths[j].totalVoters+'</td>';
-				str+='<td>'+mandal.crossVotedBooths[j].polledVotes+'</td>';
-				str+='<td>'+mandal.crossVotedBooths[j].pcPercentage+'</td>';
-				str+='<td>'+mandal.crossVotedBooths[j].acPercentage+'</td>';
-				str+='<td>'+mandal.crossVotedBooths[j].percentageDifference+'</td>';
-				str+='</tr>';			
-			}
-			str+='</table></div>';
-	        var constNode = new YAHOO.widget.TextNode(str, mandalNode, false);
-		
+		var resultsColumnDefs = [ {
+			key : "partNO",
+			parser:"number",
+			label : "Booth No",
+			sortable : true
+		}, {
+			key : "villagesCovered",
+			label : "villages Covered",
+			sortable : true
+		}, {
+			key : "pcPercentage",
+			label : "Percentage(P)",
+			parser:"number",
+			sortable : true
+		}, {
+			key : "pcValidVotes",
+			parser:"number",
+			label : "Valid Votes(P)",
+			sortable : true
+		}, {
+			key : "acPercentage",
+			parser:"number",
+			label : "Percentage(A)",
+			sortable : true
+		}, {
+			key : "acValidVotes",
+			parser:"number",
+			label : "Valid Votes(A)",
+			sortable : true
+		}, {
+			key : "percentageDifference",
+			parser:"number",
+			label : "% Diff",
+			sortable : true
+		} ];
+			
+		var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10,
+				template : "{PageLinks} {RowsPerPageDropdown}",
+                pageLinks : 5, 
+                rowsPerPageOptions : [ 5, 10, 15, 20 ]
+			    }) 
+				};
+
+    	var myDataTable = new YAHOO.widget.DataTable(childNewDivElmt.id,resultsColumnDefs, resultsDataSource,myConfigs);
+        
 		tree.draw(); 
-		
-		//buildBoothDataTable();
 
+      
 	}
 	
 	function buildBoothDataTable()
 	{
 		
+		/*var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("boothVotingDetailsTable"));*/
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 			.get("boothVotingDetailsTable"));
 		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
@@ -638,7 +729,8 @@
 			</table>
 		</div>
 		<div id="crossVotingResultDiv" style="display:none;"></div>
-
+        
+			
 	
 </body>
 </html>
