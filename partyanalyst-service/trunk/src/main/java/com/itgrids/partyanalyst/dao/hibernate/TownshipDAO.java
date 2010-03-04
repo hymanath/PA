@@ -47,4 +47,11 @@ public class TownshipDAO extends GenericDaoHibernate<Township, Long> implements 
 		Object[] params = {townshipName,tehsilId};
 		return getHibernateTemplate().find("from Township model where model.townshipName=? and model.tehsil.tehsilId=?",params);
 	}
+	
+	public List getStateToRevenueVillageByRV(String rvIDs){
+		return getHibernateTemplate().find("select model.tehsil.district.state.stateId, model.tehsil.district.state.stateName, " +
+				"model.tehsil.district.districtId, model.tehsil.district.districtName, model.tehsil.tehsilId, " +
+				"model.tehsil.tehsilName, model.townshipId, model.townshipName " +
+				" from Township model where model.townshipId in("+rvIDs+") ");
+	}
 }

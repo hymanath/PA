@@ -45,4 +45,5 @@ public interface ITehsilDAO extends GenericDao<Tehsil, Long>{
 	
 	public List findTehsilsByDistrict(Long districtId);
 
+	public List getStateToMandalByTehsil(String tehsilIDs);
 }

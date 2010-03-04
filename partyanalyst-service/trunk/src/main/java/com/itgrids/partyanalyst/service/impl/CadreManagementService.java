@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.dto.StateToHamletVO;
 /**
  * 
  * @author Narender Akula
@@ -943,5 +944,88 @@ public class CadreManagementService {
 			formattedData.add(regionInfoVo);
 		}
 		return formattedData;	
+	}
+	
+	public List<StateToHamletVO> getStateToHamletByHamlets(String hamletIDs){
+		//0-stateId, 1-stateName, 2-districtId, 3-districtName, 4-tehsilId, 
+		//5-tehsilName, 6-townshipId,7-townshipName,8-hamletName,9-hamletName
+		List<StateToHamletVO> result = new ArrayList<StateToHamletVO>();
+		List list = hamletDAO.getStateToHamletByHamlets(hamletIDs);
+		for(int i=0; i<list.size();i++){
+			Object[] obj = (Object[])list.get(i);
+			SelectOptionVO state 			= new SelectOptionVO((Long)obj[0], obj[1].toString());
+			SelectOptionVO district 		= new SelectOptionVO((Long)obj[2], obj[3].toString());
+			SelectOptionVO mandal 			= new SelectOptionVO((Long)obj[4], obj[5].toString());
+			SelectOptionVO revenueVillage 	= new SelectOptionVO((Long)obj[6], obj[7].toString());
+			SelectOptionVO hamlet 			= new SelectOptionVO((Long)obj[8], obj[9].toString());
+			
+			StateToHamletVO vo = new StateToHamletVO();
+			vo.setState(state);
+			vo.setDistrict(district);
+			vo.setMandal(mandal);
+			vo.setRevenueVillage(revenueVillage);
+			vo.setHamlet(hamlet);
+			result.add(vo);
+		}
+		return result;
+	}
+	
+	public List<StateToHamletVO> getStateToRevenueVillageByRV(String rvIDs){
+		//0-stateId, 1-stateName, 2-districtId, 3-districtName, 4-tehsilId, 
+		//5-tehsilName, 6-townshipId,7-townshipName
+		List<StateToHamletVO> result = new ArrayList<StateToHamletVO>();
+		List list = townshipDAO.getStateToRevenueVillageByRV(rvIDs);
+		for(int i=0; i<list.size();i++){
+			Object[] obj = (Object[])list.get(i);
+			SelectOptionVO state 			= new SelectOptionVO((Long)obj[0], obj[1].toString());
+			SelectOptionVO district 		= new SelectOptionVO((Long)obj[2], obj[3].toString());
+			SelectOptionVO mandal 			= new SelectOptionVO((Long)obj[4], obj[5].toString());
+			SelectOptionVO revenueVillage 	= new SelectOptionVO((Long)obj[6], obj[7].toString());
+			
+			StateToHamletVO vo = new StateToHamletVO();
+			vo.setState(state);
+			vo.setDistrict(district);
+			vo.setMandal(mandal);
+			vo.setRevenueVillage(revenueVillage);
+			result.add(vo);
+		}
+		return result;
+	}
+	
+	public List<StateToHamletVO> getStateToMandalByTehsil(String tehsilIDs){
+		//0-stateId, 1-stateName, 2-districtId, 3-districtName, 4-tehsilId, 
+		//5-tehsilName
+		List<StateToHamletVO> result = new ArrayList<StateToHamletVO>();
+		List list = tehsilDAO.getStateToMandalByTehsil(tehsilIDs);
+		for(int i=0; i<list.size();i++){
+			Object[] obj = (Object[])list.get(i);
+			SelectOptionVO state 			= new SelectOptionVO((Long)obj[0], obj[1].toString());
+			SelectOptionVO district 		= new SelectOptionVO((Long)obj[2], obj[3].toString());
+			SelectOptionVO mandal 			= new SelectOptionVO((Long)obj[4], obj[5].toString());
+			
+			StateToHamletVO vo = new StateToHamletVO();
+			vo.setState(state);
+			vo.setDistrict(district);
+			vo.setMandal(mandal);
+			result.add(vo);
+		}
+		return result;
+	}
+	
+	public List<StateToHamletVO> getStateToDistrictByDistrict(String districtIDs){
+		//0-stateId, 1-stateName, 2-districtId, 3-districtName
+		List<StateToHamletVO> result = new ArrayList<StateToHamletVO>();
+		List list = districtDAO.getStateToDistrictByDistrict(districtIDs);
+		for(int i=0; i<list.size();i++){
+			Object[] obj = (Object[])list.get(i);
+			SelectOptionVO state 			= new SelectOptionVO((Long)obj[0], obj[1].toString());
+			SelectOptionVO district 		= new SelectOptionVO((Long)obj[2], obj[3].toString());
+			
+			StateToHamletVO vo = new StateToHamletVO();
+			vo.setState(state);
+			vo.setDistrict(district);
+			result.add(vo);
+		}
+		return result;
 	}
 }

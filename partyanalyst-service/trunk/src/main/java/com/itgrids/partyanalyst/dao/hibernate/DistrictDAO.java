@@ -4,6 +4,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import com.itgrids.partyanalyst.dao.IDistrictDAO; 
 import com.itgrids.partyanalyst.dao.columns.enums.DistrictColumnNames; 
+import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.model.District;
 
 public class DistrictDAO extends GenericDaoHibernate<District, Long> implements
@@ -64,5 +65,10 @@ IDistrictDAO {
 	public List<District> getDistrictIDByStateIDAndDistrictName(Long stateID, String districtName){
 		Object[] params = {stateID, districtName};
 		return getHibernateTemplate().find("from District model where model.state.stateId=? and model.districtName=? ", params);
+	}
+	public List getStateToDistrictByDistrict(String districtIDs){
+		return getHibernateTemplate().find("select model.state.stateId, model.state.stateName, " +
+				"model.districtId, model.districtName " +
+				" from District model where model.districtId in("+districtIDs+") ");
 	}
 }
