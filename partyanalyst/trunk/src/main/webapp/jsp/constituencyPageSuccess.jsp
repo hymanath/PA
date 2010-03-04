@@ -76,16 +76,24 @@
 			<td class="alignTD">
 				
 				<div id="constituencyPageCenterInfoDiv">
+					<div id="constituencyCenterContentOuter" class="rounded"> 						
+						<div class="corner topLeft"></div>
+						<div class="corner topRight"></div>
+						<div class="corner bottomLeft"></div>
+						<div class="corner bottomRight"></div>
 
-
-						<div id="constituencyPageProfileInfoDiv_Main" class="innerLayoutDivClass">
-							<div id="constituencyPageProfileInfoDiv_Head" class="layoutHeadersClass"> ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType}  Constituency Details : </div>
-							<div id="constituencyPageProfileInfoDiv_Body" class="layoutBodyClass"></div>
-						</div>
-			
+							<div id="constituencyPageProfileInfoDiv_Main" class="innerLayoutDivClass">
+								<div id="constituencyPageProfileInfoDiv_Head" class="layoutHeadersClass"> ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType}  Constituency Details : </div>
+								<div id="constituencyPageProfileInfoDiv_Body" class="layoutBodyClass"></div>
+							</div>
+					</div>	
 					
-				
-
+					<div id="constituencyCenterContentOuter" class="rounded"> 						
+						<div class="corner topLeft"></div>
+						<div class="corner topRight"></div>
+						<div class="corner bottomLeft"></div>
+						<div class="corner bottomRight"></div>
+					
 						<div id="constituencyPageCandidateInfo_Main" class="innerLayoutDivClass">
 							<div id="constituencyPageCandidateInfo_Head" class="layoutHeadersClass"></div>
 							<div id="constituencyPageCandidateInfo_Body" class="layoutBodyClass yui-skin-sam">
@@ -93,27 +101,41 @@
 								<div id="constituencyPageCandidateInfo_Parliament"></div>
 							</div>
 						</div>		
-					
+					</div>
 
-				
+					<div id="constituencyCenterContentOuter" class="rounded"> 						
+						<div class="corner topLeft"></div>
+						<div class="corner topRight"></div>
+						<div class="corner bottomLeft"></div>
+						<div class="corner bottomRight"></div>	
 						<div id="constituencyPageElectionInfoDiv_Main" class="innerLayoutDivClass">
 							<div id="constituencyPageElectionInfoDiv_Head" class="layoutHeadersClass"></div>
 							<div id="constituencyPageElectionInfoDiv_Body" class="layoutBodyClass"></div>
 						</div>		
-				
+					</div>
 					
-				
+					<div id="constituencyCenterContentOuter" class="rounded"> 						
+						<div class="corner topLeft"></div>
+						<div class="corner topRight"></div>
+						<div class="corner bottomLeft"></div>
+						<div class="corner bottomRight"></div>
 
 						<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass">
 							<div id="constituencyVotersInfoDiv_Head" class="layoutHeadersClass">${constituencyDetails.constituencyName} Constituency Voters Details :</div>
 							<div id="constituencyVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
 						</div>
+					</div>
 				
 				</div>
 			</td>
-			<td> <div class="spacerTD"> </div> </td>
+			<!--<td> <div class="spacerTD"> </div> </td>-->
 			<td class="alignTD">
 				<div id="constituencyRightContentDiv">					
+					<div id="constituencyCenterContentOuter" class="rounded"> 						
+						<div class="corner topLeft"></div>
+						<div class="corner topRight"></div>
+						<div class="corner bottomLeft"></div>
+						<div class="corner bottomRight"></div> 
 
 						<div id="constituencyPageRightMapDiv" class="contentDivClass">
 							<div id="map_canvas"></div>
@@ -133,7 +155,8 @@
 								<div id="problemPostingDiv_Head"></div>
 								<div id="problemPostingDiv_Body"></div>
 							</div>					
-						</div>					
+						</div>	
+					</div>
 				</div>
 			</td>
 			

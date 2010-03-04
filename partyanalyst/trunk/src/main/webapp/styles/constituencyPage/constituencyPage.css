@@ -46,6 +46,10 @@
 	background-color:#FFFFFF;	
 }
 
+#constituencyRightContentDiv
+{
+	margin-top:10px;
+}
 .rounded
 {
 	position:relative; padding:10px; margin:10px 0;background-color:#FFFFFF;
@@ -61,11 +65,11 @@
 }
 .topRight 
 {
-	top:0; right:0; background-position:22px -1px;
+	top:0; right:0;background-position:20px -1px;
 }
 .bottomLeft
 {
-	bottom:0; left:0; background-position:0 17px;
+	bottom:0; left:0; background-position:-1px 18px;
 }
 .bottomRight
 {
@@ -80,17 +84,16 @@ background-color:#E4EDF0;
 
 #constituencyPageCenterInfoDiv .rounded
 {
-	width:625px;
+	width:620px;
 }
 
 #constituencyRightContentDiv .rounded
 {
-	width:260px;
+	width:250px;
 }
 #map_canvas
 {
-	height:300px;
-	padding:10px;
+	height:300px;	
 }
 
 .layoutHeadersClass
@@ -256,9 +259,8 @@ legend
 {	
 	min-height:1000px;
 	min-width:250px;
-	max-width:280px;
-	width:expression(document.body.clientWidth > 280? "280px": "auto" );
-
+	max-width:260px;
+	width:expression(document.body.clientWidth > 260? "260px": "auto" );
 }
 
 #problemPostingDiv , #problemViewingDiv , #constituencyPeopleConnectDiv

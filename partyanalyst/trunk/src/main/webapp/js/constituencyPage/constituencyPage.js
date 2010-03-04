@@ -401,6 +401,7 @@ function showCurrentlyElectedCandidate()
 	
 	if(constituencyPageMainObj.presentAssemblyCandidate.length == 0 || constituencyPageMainObj.presentParliamentCandidate == 0)
 	{		
+		
 		BodyElmt.innerHTML = 'This constituency has been delimitated ';
 		return;
 	}

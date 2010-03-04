@@ -156,7 +156,6 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.constituencyPageService = constituencyPageService;
 	}
 
-
 	public void setDelimitationConstituencyMandalService(
 			IDelimitationConstituencyMandalService delimitationConstituencyMandalService) {
 		this.delimitationConstituencyMandalService = delimitationConstituencyMandalService;
