@@ -203,6 +203,9 @@ public class CadresInfoAjaxAction extends ActionSupport implements ServletReques
 			}else if(region.equalsIgnoreCase("VILLAGE"))
 			{
 				 zeroLevelCadres=userCadresInfoVo.getZeroCadreVillages();
+			}else if(region.equalsIgnoreCase("HAMLET"))
+			{
+				 zeroLevelCadres=userCadresInfoVo.getZeroCadreHamlets();
 			}
 			
 			 
