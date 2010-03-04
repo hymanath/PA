@@ -324,4 +324,20 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 				"where model.registration.registrationId = ? and model.hamlet.hamletId=?", params); 
 		return results;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findHamletsByRVs(String townships){
+		List totalHamlets = getHibernateTemplate().find("Select model.hamletId, model.hamletName from Hamlet model " +
+					"where model.township.townshipId  in(" + townships + ") order by model.hamletName");
+		return totalHamlets;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findCadreSizeHamletWise(Long userID){
+		List  results = getHibernateTemplate().find("Select model.hamlet.hamletId, count(model.hamlet.hamletId)from Cadre model " +
+					"where model.registration.registrationId = ? group by model.hamlet.hamletId", userID); 
+		return results;
+		
+	}
+	
 }

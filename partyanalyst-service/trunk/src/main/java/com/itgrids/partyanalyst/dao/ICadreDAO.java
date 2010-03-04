@@ -61,4 +61,7 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 
 	public List getCadreSizeByHamlet(String revenueVillageIDs, Long userID);
 	public List<Cadre> findCadresByHamlet(Long hamletID, Long userID);
+	
+	public List findHamletsByRVs(String townships);
+	public List findCadreSizeHamletWise(Long userID);
 }

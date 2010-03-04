@@ -193,16 +193,19 @@ public class CadreManagementService {
 		Map<Long, String> userAccessDistricts = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessMandals = new LinkedHashMap<Long, String>();
 		Map<Long, String> userAccessVillages = new LinkedHashMap<Long, String>();
+		Map<Long, String> userAccessHamlets = new LinkedHashMap<Long, String>();
 
 		Map<Long, String> zeroCadreStates = new LinkedHashMap<Long, String>();
 		Map<Long, String> zeroCadreDistricts = new LinkedHashMap<Long, String>();
 		Map<Long, String> zeroCadreMandals = new LinkedHashMap<Long, String>();
 		Map<Long, String> zeroCadreVillages = new LinkedHashMap<Long, String>();
+		Map<Long, String> zeroCadreHamlets = new LinkedHashMap<Long, String>();
 		
 		String userAccessType = userCadreInfo.getUserAccessType();
 		String accessID = userCadreInfo.getUserAccessValue();
 		//Long accessID = new Long(userAccessValue);
 		List<SelectOptionVO> regionLevelZeroCadres = userCadreInfo.getRegionLevelZeroCadres(); 
+		
 		boolean downLevelCadresFlag = true;
 		if("MLA".equals(userAccessType)){ 
 			if(log.isDebugEnabled()){
@@ -324,6 +327,11 @@ public class CadreManagementService {
 			if(log.isDebugEnabled()){
 				log.debug("CadreManagementService.getUserAccessRegions() sbVillages:"+sbVillages);
 			}
+			
+			if(sbVillages!=null && sbVillages.length()>0)
+				accessID = sbVillages.substring(0, sbVillages.length()-1);
+			
+			
 			userCadreInfo.setUserAccessVillages(userAccessVillages);
 			userCadreInfo.setZeroCadreVillages(zeroCadreVillages);
 			
@@ -335,6 +343,38 @@ public class CadreManagementService {
 				regionLevelZeroCadres.add(voObject);
 		}
 		
+// New Code started here for Hamlet wise zero cadres......
+		if((downLevelCadresFlag) && ("COUNTRY".equals(userAccessType) || "STATE".equals(userAccessType)
+				 || "DISTRICT".equals(userAccessType) || "MANDAL".equals(userAccessType) || "VILLAGE".equals(userAccessType)
+				 || "MLA".equals(userAccessType))){
+			//narender
+			List hamlets = cadreDAO.findHamletsByRVs(accessID);
+			List cadreSizeHamletWise = cadreDAO.findCadreSizeHamletWise(userCadreInfo.getUserID());
+			long hamletLevelZeroCadres = hamlets.size() - cadreSizeHamletWise.size();//getZeroSize(cadreSizeZero4Mandal);
+			log.debug("hamletLevelZeroCadres:"+hamletLevelZeroCadres);
+			log.debug("hamlets.size():"+hamlets.size());
+			log.debug("cadreSizeHamletWise.size():"+cadreSizeHamletWise.size());
+			
+			StringBuilder sbVillages = getFormatedData(hamlets,userAccessHamlets,cadreSizeHamletWise,zeroCadreHamlets);
+			if(log.isDebugEnabled()){
+				log.debug("CadreManagementService.getUserAccessRegions() sbVillages:"+sbVillages);
+			}			
+			
+			userCadreInfo.setUserAccessHamlets(userAccessHamlets);
+			userCadreInfo.setZeroCadreHamlets(zeroCadreHamlets);
+			
+			/*if(sbVillages!=null && sbVillages.length()>0)
+				accessID = sbVillages.substring(0, sbVillages.length()-1);*/
+			
+			SelectOptionVO voObject = new SelectOptionVO(hamletLevelZeroCadres,"HAMLET");
+			if(hamletLevelZeroCadres > 0)
+				regionLevelZeroCadres.add(voObject);			
+		}
+		log.debug("End off Service....................");
+		
+		for(SelectOptionVO vo: regionLevelZeroCadres){
+			log.debug("Name:"+vo.getName()+" size="+vo.getId());
+		}
 		userCadreInfo.setRegionLevelZeroCadres(regionLevelZeroCadres);
 		return userCadreInfo;
 	}
@@ -346,6 +386,8 @@ public class CadreManagementService {
 		Map<Long, Object> availableCadreRegions = new HashMap<Long, Object>();
 		for(int i=0; i<cadreAvailableRegions.size(); i++){
 			Object[] objInfo = (Object[]) cadreAvailableRegions.get(i);
+			if(objInfo[0]==null)
+				continue;
 			Long key = new Long(objInfo[0].toString());
 			availableCadreRegions.put(key, objInfo[0]);
 		}

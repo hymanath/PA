@@ -42,11 +42,13 @@ public class UserCadresInfoVO implements Serializable{
 	private Map<Long, String> userAccessDistricts = null;
 	private Map<Long, String> userAccessMandals = null;
 	private Map<Long, String> userAccessVillages = null;
+	private Map<Long, String> userAccessHamlets = null;
 	
 	private Map<Long, String> zeroCadreStates = null;
 	private Map<Long, String> zeroCadreDistricts = null;
 	private Map<Long, String> zeroCadreMandals = null;
 	private Map<Long, String> zeroCadreVillages = null;
+	private Map<Long, String> zeroCadreHamlets = null;
 	
 	private ResultStatus resultStatus = null;
 	
@@ -162,5 +164,17 @@ public class UserCadresInfoVO implements Serializable{
 	}
 	public void setPartyID(Long partyID) {
 		this.partyID = partyID;
+	}
+	public Map<Long, String> getUserAccessHamlets() {
+		return userAccessHamlets;
+	}
+	public void setUserAccessHamlets(Map<Long, String> userAccessHamlets) {
+		this.userAccessHamlets = userAccessHamlets;
+	}
+	public Map<Long, String> getZeroCadreHamlets() {
+		return zeroCadreHamlets;
+	}
+	public void setZeroCadreHamlets(Map<Long, String> zeroCadreHamlets) {
+		this.zeroCadreHamlets = zeroCadreHamlets;
 	}
 }
