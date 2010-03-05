@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
+import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.MandalTownshipWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -36,7 +37,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private String task = null;
 	JSONObject jObj = null;
 	private String mandalId;
-	private MandalTownshipWiseBoothDetailsVO mandalTownshipWiseBoothDetailsVO;
+	private MandalAndRevenueVillagesInfoVO mandalAndRevenueVillagesInfoVO;
 	private static final Logger log = Logger.getLogger(MandalPageAction.class);
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -127,13 +128,13 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		this.session = session;
 	}
 
-	public MandalTownshipWiseBoothDetailsVO getMandalTownshipWiseBoothDetailsVO() {
-		return mandalTownshipWiseBoothDetailsVO;
+	public MandalAndRevenueVillagesInfoVO getMandalAndRevenueVillagesInfoVO() {
+		return mandalAndRevenueVillagesInfoVO;
 	}
 
-	public void setMandalTownshipWiseBoothDetailsVO(
-			MandalTownshipWiseBoothDetailsVO mandalTownshipWiseBoothDetailsVO) {
-		this.mandalTownshipWiseBoothDetailsVO = mandalTownshipWiseBoothDetailsVO;
+	public void setMandalAndRevenueVillagesInfoVO(
+			MandalAndRevenueVillagesInfoVO mandalAndRevenueVillagesInfoVO) {
+		this.mandalAndRevenueVillagesInfoVO = mandalAndRevenueVillagesInfoVO;
 	}
 
 	public String execute(){
@@ -200,7 +201,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 				partyId = user.getParty();
 			
 			if(jObj.getString("task").equals("getRevenueVillagesInfo")){
-				mandalTownshipWiseBoothDetailsVO = constituencyPageService.getTownshipVotesByTehsil(jObj.getLong("electionId"), 844l, partyId);
+				mandalAndRevenueVillagesInfoVO = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(844l, jObj.getLong("electionId"));
 			}
 		}
 		return SUCCESS;

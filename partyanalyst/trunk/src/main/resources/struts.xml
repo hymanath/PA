@@ -273,7 +273,7 @@
 		
 		<action name="getRevenueVillagesElectionsAjaxAction" class="mandalPageElectionInfoAction" method="getTownshipDetails">
 			<result type="json" name="success">
-           		<param name="root">mandalTownshipWiseBoothDetailsVO</param>
+           		<param name="root">mandalAndRevenueVillagesInfoVO</param>
         	</result>
 		</action>
         

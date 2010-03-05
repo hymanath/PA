@@ -6,62 +6,63 @@
 <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
 <html>
 <head>
-<!--CSS file (default YUI Sam Skin) --> 
-	<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/datatable/assets/skins/sam/datatable.css"> 	 
-	<!-- Dependencies --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource-min.js"></script> 
-	 
-	<!-- OPTIONAL: JSON Utility (for DataSource) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/json/json-min.js"></script> 
-	 
-	<!-- OPTIONAL: Connection Manager (enables XHR for DataSource) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script> 
-	 
-	<!-- OPTIONAL: Get Utility (enables dynamic script nodes for DataSource) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/get/get-min.js"></script> 
-	 
-	<!-- OPTIONAL: Drag Drop (enables resizeable or reorderable columns) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script> 
-	 
-	<!-- OPTIONAL: Calendar (enables calendar editors) --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/calendar/calendar-min.js"></script> 
- 
-	<!-- Source files --> 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datatable/datatable-min.js"></script> 
-	<!--  dependencies for tab view -->
+<!-- YUI Dependency files (Start) -->
+
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/tabview/tabview-min.js"></script>
+
+
+<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+
+<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+
+<!-- YUI Skin Sam -->
+
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css">
+<!-- YUI Dependency files (End) -->
+
 	<!-- Sam Skin CSS for TabView -->
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/tabview/assets/skins/sam/tabview.css">
- 
-<!-- JavaScript Dependencies for Tabview: -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-<script src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
-
-<!-- Sam Skin CSS -->
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css">
-
-<!-- Dependencies -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-
-<!-- OPTIONAL: Animation (only required if using ContainerEffect) -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script>
-
-<!-- OPTIONAL: Drag & Drop (only required if enabling Drag & Drop) -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script>
-
-<!-- Source file -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script>
 
  
-<!-- OPTIONAL: Connection (required for dynamic loading of data) -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/connection/connection-min.js"></script>
+
  
 <!-- Source file for TabView -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/tabview/tabview-min.js"></script>
+
 <script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 <script type="text/javascript" src="js/BoothPage/boothPage.js"></script>	
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/paginator/assets/skins/sam/paginator.css">
+
 	
 <style type="text/css">
 
@@ -160,6 +161,9 @@ height:300px;
 {
 background-color:#FFFFFF;
 }
+#revenueVillageDiv table{
+width:100%;
+}
 </style>
 
 
@@ -172,34 +176,40 @@ var allBoothElecInfo = new Array();
 		var electionInfo = {
 				year:'${electionResult.electionYear}',
 				electionType:'${electionResult.electionType}',
-				url:'${electionResult.genderBoothURL}',
-				constituencyName:'',
-				constituencyId:'',
+				constituencyInfo:[]
+				/*constituencyId:'',
 				partyVotes:[],
 				maleBooths:[],
 				femaleBooths:[],
-				mfBooths:[]
+				mfBooths:[]*/
 		};
-		<c:forEach var="partyInfo" items="${electionResult.partyVotes}">
-			var singleParty = {
-					partyId:'${partyInfo.partyID}',
-					partyName:'${partyInfo.partyName}',
-					candidateId:'${partyInfo.candidateID}',
-					candidateName:'${partyInfo.candidateNameWithStatus}',
-					mandalVotes:'${partyInfo.totalVotesEarned}',
-					mandalpercentage:'${partyInfo.totalVotesEarnedPercentage}',
-					maleVotes:'${partyInfo.maleBoothResults}',
-					malepercentage:'${partyInfo.maleBoothResultsPercentage}',
-					femaleVotes:'${partyInfo.femaleBoothResults}',
-					femalepercentage:'${partyInfo.femaleBoothResultsPercentage}',
-					bothVotes:'${partyInfo.fmBoothResults}',
-					bothpercentage:'${partyInfo.fmBoothResultsPercentage}'
-			};
-			electionInfo.constituencyName = '${partyInfo.constituencyName}';
-			electionInfo.constituencyId = '${partyInfo.constituencyID}';
-			electionInfo.partyVotes.push(singleParty);
-		</c:forEach>		
-		<c:forEach var="maleBooth" items="${electionResult.boothTypeDetailsVO.maleBoothVotes}">
+		<c:forEach var="constituencyInfo" items="${electionResult.constituencyWiseDataForMandalVOs}">
+			var eachConstiInfo = {
+					constituencyId:'${constituencyInfo.constituencyId}',
+					constituencyName:'${constituencyInfo.constituencyName}',
+					paritesinfo:[]
+			}
+			<c:forEach var="partyInfo" items="${constituencyInfo.partyVotes}">
+				var singleParty = {
+						partyId:'${partyInfo.partyID}',
+						partyName:'${partyInfo.partyName}',
+						candidateId:'${partyInfo.candidateID}',
+						candidateName:'${partyInfo.candidateNameWithStatus}',
+						mandalVotes:'${partyInfo.totalVotesEarned}',
+						mandalpercentage:'${partyInfo.totalVotesEarnedPercentage}',
+						maleVotes:'${partyInfo.maleBoothResults}',
+						malepercentage:'${partyInfo.maleBoothResultsPercentage}',
+						femaleVotes:'${partyInfo.femaleBoothResults}',
+						femalepercentage:'${partyInfo.femaleBoothResultsPercentage}',
+						bothVotes:'${partyInfo.fmBoothResults}',
+						bothpercentage:'${partyInfo.fmBoothResultsPercentage}'
+				};
+				eachConstiInfo.paritesinfo.push(singleParty);
+			</c:forEach>
+			electionInfo.constituencyInfo.push(eachConstiInfo);
+		</c:forEach>
+				
+		/*<c:forEach var="maleBooth" items="${electionResult.boothTypeDetailsVO.maleBoothVotes}">
 			var maleBooth = {
 					partNo:'${maleBooth.partNo}',
 					villagesCovered:'${maleBooth.villagesCovered}',
@@ -231,7 +241,7 @@ var allBoothElecInfo = new Array();
 					validVotes:'${mfBooth.validVotes}'
 			}
 			electionInfo.mfBooths.push(mfBooth);
-		</c:forEach> 
+		</c:forEach> */
 		allBoothElecInfo.push(electionInfo);
 </c:forEach>
 
@@ -307,6 +317,7 @@ var allBoothElecInfo = new Array();
 
 	function buildRevenueVillagesInfoTab(){
 		var revenueInfo = '';
+		revenueInfo += '<br>'
 		revenueInfo += '<div id="div3_revenue">';
 		revenueInfo += '<div id="revenueVillageTable">';
 		revenueInfo += '</div>';
@@ -323,6 +334,7 @@ var allBoothElecInfo = new Array();
 		revenueInfo += '<td><div id="electionIdSelectDivData"></div></td>';
 		revenueInfo += '</tr>';
 		revenueInfo += '</table>';
+		revenueInfo += '<br>';
 		revenueInfo += '<div id="revenueVillagesInfo"></div>';
 		revenueInfo += '</div>';
 		revenueInfo += '</div>';
@@ -331,7 +343,6 @@ var allBoothElecInfo = new Array();
 	}
 
 	function getElectionYears(id){
-		alert("electionTypeId::"+id);
 		var jsObj=
 			{
 					electionTypeId:id,
@@ -344,7 +355,6 @@ var allBoothElecInfo = new Array();
 	}
 
 	function getRevenueVillagesInfo(id){
-		alert("electionTypeId::"+id);
 		var jsObj=
 			{
 					electionId:id,
@@ -409,40 +419,118 @@ var allBoothElecInfo = new Array();
 	}
 
 	function showRevenueVillagesElectionInfo(resultVO){
+		
 		var rvStr = '';
-
 		var rvStrDiv = document.getElementById('revenueVillagesInfo');
-		rvStr += '<table>';
+		rvStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;">';
 		rvStr += '<tr>';
-		rvStr += '<th>Revenue Village</th>';
-		rvStr += '<th>Total Voters</th>';
-		rvStr += '<th>Polled Votes</th>';
-		rvStr += '<th>Total Booths</th>';
-		rvStr += '<th>Hamlets</th>';
+		rvStr += '<th>Party</th>';
+		for(var i in resultVO.mandalWisePartyVotes){
+			rvStr += '<td>'+resultVO.mandalWisePartyVotes[i].partyName+'</td>';	
+		}
+		rvStr += '</tr><tr>'
+		rvStr += '<th>Votes Earned</th>';
+		for(var i in resultVO.mandalWisePartyVotes){
+			rvStr += '<td>'+resultVO.mandalWisePartyVotes[i].votesEarned+'</td>';	
+		}
 		rvStr += '</tr>';
-		for(var i in resultVO.townshipBoothDetailsVOs)
-		{
+		rvStr += '</table>';
+		rvStr += '<br/>';
+		rvStr += '<div id="revenueVillageDiv">';
+		rvStr += '<table id="revillageInfoTable" >';
+				
+		for(var i in resultVO.revenueVillagesInfo)
+		{			
 			rvStr += '<tr>';
-			rvStr += '<td>'+resultVO.townshipBoothDetailsVOs[i].townshipName+'</td>';
-			rvStr += '<td>'+resultVO.townshipBoothDetailsVOs[i].totalVoters+'</td>';
-			rvStr += '<td>'+resultVO.townshipBoothDetailsVOs[i].validVoters+'</td>';
+			rvStr += '<td>'+resultVO.revenueVillagesInfo[i].locationName+'</td>';
+			rvStr += '<td>'+resultVO.revenueVillagesInfo[i].population+'</td>';
 			rvStr += '<td>';
-			for(var j in resultVO.townshipBoothDetailsVOs[i].booths)
+			for(var j in resultVO.revenueVillagesInfo[i].booths)
 			{
-				rvStr += resultVO.townshipBoothDetailsVOs[i].booths[j].name+'<br>';
+				if(j%3 == 0 && j!=0)
+					rvStr += '<br>';
+				rvStr += '<a href="#" onclick="getBoothPageInfo('+resultVO.revenueVillagesInfo[i].booths[j].id+')">'+resultVO.revenueVillagesInfo[i].booths[j].name+',';
 			}
 			rvStr += '</td>';
 			rvStr += '<td>';
-			for(var k in resultVO.townshipBoothDetailsVOs[i].hamlets)
+			for(var k in resultVO.revenueVillagesInfo[i].hamletsOfTownship)
 			{
-				rvStr += resultVO.townshipBoothDetailsVOs[i].hamlets[k].name+'<br>';
+				rvStr += resultVO.revenueVillagesInfo[i].hamletsOfTownship[k].name+'<br>';
 			}
+			rvStr += '</td>';
+			rvStr += '<td>';
+			rvStr += '<a href = "#">Census Info</a><br>';
+			rvStr += '<a href = "#">All Elections</a><br>';
+			rvStr += '<a href = "#">Cast Details</a><br>';
 			rvStr += '</td>';
 			rvStr += '</tr>';
 		}
 		rvStr += '</table>';
+		rvStr += '</div>';
+
 		if(rvStrDiv)
 			rvStrDiv.innerHTML = rvStr;
+		
+		/*if(resultVO.revenueVillagesInfo.userPartyVotes.length>0){
+			
+			var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+					.get("revillageInfoTable")); 
+			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+			  myDataSource.responseSchema = { 
+			            fields: [
+									{
+										key : "townshipName"
+									},{
+										key : "totalVoters",parser:"number"
+									},{
+										key : "votesEarned",parser:"number"
+									},{
+										key : "booths"
+									},{
+										key : "hamlets"
+									}
+								]    
+			        }; 
+			
+			 var myColumnDefs = [ 
+			            {key:"townshipName",label:'Township Name', sortable:true, resizeable:true}, 
+			            {key:"totalVoters", label:'Total Voters', sortable:true, resizeable:true}, 
+			            {key:"validVoters", label:'Valid Voters',sortable:true, resizeable:true}, 
+			            {key:"votesEarned",label:'Votes Earned By'+resultVO.userPartyVotesTownshipWise[0].partyName, sortable:true, resizeable:true}, 
+			            {key:"booths",label:'Total Booths', resizeable:true}, 
+			            {key:"hamlets",label:'Total Hamlets', resizeable:true}
+			        ]; 
+			 
+			var myDataTable = new YAHOO.widget.DataTable("revenueVillageDiv",myColumnDefs, myDataSource);	
+		}else{	*/	
+			var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+					.get("revillageInfoTable")); 
+			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+			  myDataSource.responseSchema = { 
+			            fields: [
+									{
+										key : "townshipName"
+									},{
+										key : "totalVoters",parser:"number"
+									},{
+										key : "booths"
+									},{
+										key : "hamlets"
+									}
+								]    
+			        }; 
+			
+			 var myColumnDefs = [ 
+			            {key:"townshipName",label:'Township Name', sortable:true, resizeable:true}, 
+			            {key:"totalVoters", label:'Total Voters', sortable:true, resizeable:true}, 
+			            {key:"booths",label:'Total Booths', resizeable:true}, 
+			            {key:"hamlets",label:'Total Hamlets', resizeable:true}
+			        ]; 
+			 
+			var myDataTable = new YAHOO.widget.DataTable("revenueVillageDiv",myColumnDefs, myDataSource);
+		//}
+
+		
 	}
 	
 	function buildTabNavigator(){
@@ -481,74 +569,83 @@ var allBoothElecInfo = new Array();
 
 	function showElectionResultsInPopup()
 	{
-	
+
 		var elmt = document.getElementById("electionsInfoMainDiv");
+		
 		for(var i in allBoothElecInfo)
 		{			
 			var divChild = document.createElement("div");
 			var electionInfo = '';
 			electionInfo += '<fieldset>';
-			electionInfo += '<legend>'+allBoothElecInfo[i].constituencyName+' '+allBoothElecInfo[i].electionType+' '+allBoothElecInfo[i].year+'</legend>';
-			electionInfo += '<div id = "div_'+i+'" class="dataTableSize">';
-			electionInfo += '</div>';
+			electionInfo += '<legend>'+allBoothElecInfo[i].electionType+' '+allBoothElecInfo[i].year+'</legend>';
+			for(var j in allBoothElecInfo[i].constituencyInfo){
+				electionInfo += '<fieldset>';
+				electionInfo += '<legend>'+allBoothElecInfo[i].constituencyInfo[j].constituencyName+'</legend>';
+				electionInfo += '<div id = "div_'+i+'_'+j+'" class="dataTableSize">';
+				electionInfo += '</div>';
+				electionInfo += '</legend>';
+				electionInfo += '</fieldset>';				
+			}		
 			electionInfo += '</fieldset>';
 			divChild.innerHTML = electionInfo;
 				
 			if(elmt)
-				elmt.appendChild(divChild);
-			
-			 var myDataSource = new YAHOO.util.DataSource(allBoothElecInfo[i].partyVotes); 
-			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-			 myDataSource.responseSchema = { 
-			            fields: [
-									{
-										key : "partyName"
-									},{
-										key : "candidateName"
-									},{
-										key : "mandalVotes",parser:"number"
-									},{
-										key : "mandalpercentage",parser:"float"
-									},{
-										key : "maleVotes",parser:"number"
-									},{
-										key : "malepercentage",parser:"float"
-									},{
-										key : "femaleVotes",parser:"number"
-									},{
-										key : "femalepercentage",parser:"float"
-									},{
-										key : "bothVotes",parser:"number"
-									},{
-										key : "bothpercentage",parser:"float"
-									}
-								]    
-			        }; 
-			
-			 var myColumnDefs = [ 
-			            {key:"partyName",label:'Party Name', sortable:true, resizeable:true}, 
-			            {key:"candidateName", label:'Candidate Name', sortable:true, resizeable:true}, 
-			            {key:"mandalVotes", label:'Mandal Votes',sortable:true, resizeable:true}, 
-			            {key:"mandalpercentage",label:'%AGE', sortable:true, resizeable:true}, 
-			            {key:"maleVotes",label:'Male Votes', sortable:true, resizeable:true}, 
-			            {key:"malepercentage",label:'%AGE', sortable:true, resizeable:true}, 
-			            {key:"femaleVotes",label:'Female Votes', sortable:true, resizeable:true},
-			            {key:"femalepercentage",label:'%AGE', sortable:true, resizeable:true}, 
-			            {key:"bothVotes",label:'Both Votes', sortable:true, resizeable:true},
-			            {key:"bothpercentage",label:'%AGE', sortable:true, resizeable:true} 
-			        ]; 
-			 
-			var myDataTable = new YAHOO.widget.DataTable("div_"+i,myColumnDefs, myDataSource);
-
-			
+				elmt.appendChild(divChild);			
 		}		
+
+		for(var i in allBoothElecInfo){
+			for(var j in allBoothElecInfo[i].constituencyInfo){
+				var myDataSource = new YAHOO.util.DataSource(allBoothElecInfo[i].constituencyInfo[j].paritesinfo); 
+				 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+				 myDataSource.responseSchema = { 
+				            fields: [
+										{
+											key : "partyName"
+										},{
+											key : "candidateName"
+										},{
+											key : "mandalVotes",parser:"number"
+										},{
+											key : "mandalpercentage",parser:"float"
+										},{
+											key : "maleVotes",parser:"number"
+										},{
+											key : "malepercentage",parser:"float"
+										},{
+											key : "femaleVotes",parser:"number"
+										},{
+											key : "femalepercentage",parser:"float"
+										},{
+											key : "bothVotes",parser:"number"
+										},{
+											key : "bothpercentage",parser:"float"
+										}
+									]    
+				        }; 
+				
+				 var myColumnDefs = [ 
+				            {key:"partyName",label:'Party', sortable:true, resizeable:true}, 
+				            {key:"candidateName", label:'Candidate Name', sortable:true, resizeable:true}, 
+				            {key:"mandalVotes", label:'Total Votes Earned',sortable:true, resizeable:true}, 
+				            {key:"mandalpercentage",label:'%', sortable:true, resizeable:true}, 
+				            {key:"maleVotes",label:'Male Votes', sortable:true, resizeable:true}, 
+				            {key:"malepercentage",label:'%', sortable:true, resizeable:true}, 
+				            {key:"femaleVotes",label:'Female Votes', sortable:true, resizeable:true},
+				            {key:"femalepercentage",label:'%', sortable:true, resizeable:true}, 
+				            {key:"bothVotes",label:'Male&Female Votes', sortable:true, resizeable:true},
+				            {key:"bothpercentage",label:'%', sortable:true, resizeable:true} 
+				        ]; 
+				 
+				var myDataTable = new YAHOO.widget.DataTable("div_"+i+"_"+j,myColumnDefs, myDataSource);
+			}
+		}
 		
 	}
 
-	function getBoothPageInfo(){
+	function getBoothPageInfo(id){
 		var jsObj=
 			{
-					boothId:200,
+					boothId:id,
 					task:"boothPage"						
 			};
 		
@@ -560,14 +657,13 @@ var allBoothElecInfo = new Array();
 	</script>
 </head>
 <body> 
-<div><a href = "#" onclick="getBoothPageInfo()">click for booth</a></div>
 <h3><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
 
 <div id="boothResultsDiv">
 	<div id="mandalCensusDiv">
 		<div id="mandalCensusDivHead"><h4><u>Mandal Details..</u></h4></div>
 		<div id="mandalCensusDivBody" align="center" class="yui-skin-sam">
-		<table class="censusInfoTable" >		
+		<table class="censusInfoTable" style="border:1px solid #ADADAD;">		
 				<tr>
 					<th></th>
 					<th>Population</th>
@@ -609,7 +705,7 @@ var allBoothElecInfo = new Array();
 			</table>
 		</div>
 	</div>
-	<br/>
+	<br/><br/>
 	<div id="villageCensusDiv" style="display: none;">
 		<div id="villageCensusDivHead"><h4><u>Villages Details..</u></h4></div>
 		<div id="villageCensusDivBody" class="yui-skin-sam">
@@ -631,7 +727,7 @@ var allBoothElecInfo = new Array();
 					property="totalIlliteratePersons"  sortable="true"/>
 				<display:column style="text-align: center;" title="Working Population"
 					property="totalWorkingPersons" sortable="true" />
-			</display:table>`
+			</display:table>
 		</div>
 	</div>
 	<div id="mandalPageTab" class="yui-skin-sam"></div>

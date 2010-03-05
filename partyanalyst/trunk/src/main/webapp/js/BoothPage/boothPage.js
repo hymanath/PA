@@ -1,5 +1,4 @@
 function showBoothPagePanel(resultVO){
-	console.log(resultVO);
 	var str = '';
 	str += '<table width="100%">';
 	str += '<tr><th>Part No:</th>';
@@ -27,7 +26,8 @@ function showBoothPagePanel(resultVO){
 		str += '<td>';
 		str += '<fieldset>';
 		str += '<legend>'+resultVO.elections[i].constituencyName+' '+resultVO.elections[i].electionTypeYear+'</legend>';
-		str += '<table>';
+		str += '<div>';
+		str += '<table id ="boothElections_'+i+'">';
 		str += '<tr>';
 		str += '<th>Party</th>';
 		str += '<th>Candidate Name</th>';
@@ -43,55 +43,11 @@ function showBoothPagePanel(resultVO){
 		str += '</table>';		
 		str += '</fieldset>';
 		str += '</td>';
-		
-		
-		/*
-		 var myDataSource = new YAHOO.util.DataSource(allBoothElecInfo[i].partyVotes); 
-		 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-		 myDataSource.responseSchema = { 
-		            fields: [
-								{
-									key : "partyName"
-								},{
-									key : "candidateName"
-								},{
-									key : "mandalVotes",parser:"number"
-								},{
-									key : "mandalpercentage",parser:"float"
-								},{
-									key : "maleVotes",parser:"number"
-								},{
-									key : "malepercentage",parser:"float"
-								},{
-									key : "femaleVotes",parser:"number"
-								},{
-									key : "femalepercentage",parser:"float"
-								},{
-									key : "bothVotes",parser:"number"
-								},{
-									key : "bothpercentage",parser:"float"
-								}
-							]    
-		        }; 
-		
-		 var myColumnDefs = [ 
-		            {key:"partyName",label:'Party Name', sortable:true, resizeable:true}, 
-		            {key:"candidateName", label:'Candidate Name', sortable:true, resizeable:true}, 
-		            {key:"mandalVotes", label:'Mandal Votes',sortable:true, resizeable:true}, 
-		            {key:"mandalpercentage",label:'%AGE', sortable:true, resizeable:true}, 
-		            {key:"maleVotes",label:'Male Votes', sortable:true, resizeable:true}, 
-		            {key:"malepercentage",label:'%AGE', sortable:true, resizeable:true}, 
-		            {key:"femaleVotes",label:'Female Votes', sortable:true, resizeable:true},
-		            {key:"femalepercentage",label:'%AGE', sortable:true, resizeable:true}, 
-		            {key:"bothVotes",label:'Both Votes', sortable:true, resizeable:true},
-		            {key:"bothpercentage",label:'%AGE', sortable:true, resizeable:true} 
-		        ]; 
-		 
-		var myDataTable = new YAHOO.widget.DataTable("div_"+i,myColumnDefs, myDataSource);		
-		*/
+	
 	}
 	str += '</tr>';
 	str += '</table>';
+	str += '</div>';
 	
 	myPanel = new YAHOO.widget.Panel("boothPagePanel", {
             width: "850px", 
@@ -107,4 +63,49 @@ function showBoothPagePanel(resultVO){
     myPanel.setBody(str);
 	myPanel.render();
 	
+	
+	/*
+	 var myDataSource = new YAHOO.util.DataSource(allBoothElecInfo[i].partyVotes); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	 myDataSource.responseSchema = { 
+	            fields: [
+							{
+								key : "partyName"
+							},{
+								key : "candidateName"
+							},{
+								key : "mandalVotes",parser:"number"
+							},{
+								key : "mandalpercentage",parser:"float"
+							},{
+								key : "maleVotes",parser:"number"
+							},{
+								key : "malepercentage",parser:"float"
+							},{
+								key : "femaleVotes",parser:"number"
+							},{
+								key : "femalepercentage",parser:"float"
+							},{
+								key : "bothVotes",parser:"number"
+							},{
+								key : "bothpercentage",parser:"float"
+							}
+						]    
+	        }; 
+	
+	 var myColumnDefs = [ 
+	            {key:"partyName",label:'Party Name', sortable:true, resizeable:true}, 
+	            {key:"candidateName", label:'Candidate Name', sortable:true, resizeable:true}, 
+	            {key:"mandalVotes", label:'Mandal Votes',sortable:true, resizeable:true}, 
+	            {key:"mandalpercentage",label:'%AGE', sortable:true, resizeable:true}, 
+	            {key:"maleVotes",label:'Male Votes', sortable:true, resizeable:true}, 
+	            {key:"malepercentage",label:'%AGE', sortable:true, resizeable:true}, 
+	            {key:"femaleVotes",label:'Female Votes', sortable:true, resizeable:true},
+	            {key:"femalepercentage",label:'%AGE', sortable:true, resizeable:true}, 
+	            {key:"bothVotes",label:'Both Votes', sortable:true, resizeable:true},
+	            {key:"bothpercentage",label:'%AGE', sortable:true, resizeable:true} 
+	        ]; 
+	 
+	var myDataTable = new YAHOO.widget.DataTable("div_"+i,myColumnDefs, myDataSource);		
+	*/
 }
