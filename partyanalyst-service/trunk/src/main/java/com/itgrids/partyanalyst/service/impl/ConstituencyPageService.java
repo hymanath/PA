@@ -801,7 +801,11 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			candidateInfo1.setCandidateName(candidateFullName);
 			candidateInfo1.setPartyId((Long) values[6]);
 			candidateInfo1.setParty(values[7].toString());
-			
+			candidateInfo1.setConstituencyType(values[9].toString());
+			if(values[8] == null || values[8].toString().length() == 0)
+				candidateInfo1.setDeformDate("");
+			else
+				candidateInfo1.setDeformDate(values[9].toString());
 			candidateInfoList.add(candidateInfo1);
 		}
 		

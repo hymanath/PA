@@ -8,6 +8,8 @@ public class CandidateInfoForConstituencyVO {
 	private String candidateName;
 	private Long partyId;
 	private String party;
+	private String constituencyType;
+	private String deformDate;
 	
 	
 	public Long getConstituencyId() {
@@ -46,5 +48,16 @@ public class CandidateInfoForConstituencyVO {
 	public void setParty(String party) {
 		this.party = party;
 	}
-	
+	public String getConstituencyType() {
+		return constituencyType;
+	}
+	public void setConstituencyType(String constituencyType) {
+		this.constituencyType = constituencyType;
+	}
+	public String getDeformDate() {
+		return deformDate;
+	}
+	public void setDeformDate(String deformDate) {
+		this.deformDate = deformDate;
+	}	
 }
