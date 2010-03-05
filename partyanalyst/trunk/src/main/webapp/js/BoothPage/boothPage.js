@@ -1,6 +1,11 @@
-function showBoothPagePanel(resultVO){
-	var str = '';
-	str += '<table width="100%">';
+function showBoothPagePanel(resultVO){	
+
+	var yearStr = '';
+
+	var str = '';	
+	str += '<div id="boothInfoDiv_main">';
+	str += '<div id="boothInfoDiv_head"> Booth Details</div>';
+	str += '<table id="boothInfoTable" width="80%">';
 	str += '<tr><th>Part No:</th>';
 	str += '<td>'+resultVO.partNo+'</td>';
 	str += '<th>Location:</th>';
@@ -19,93 +24,63 @@ function showBoothPagePanel(resultVO){
 	str += '<tr><th>Mandal:</th>';
 	str += '<td>'+resultVO.mandal+'</td></tr>';
 	str += '</table>';
+	str += '</div>';
+
+	str+='<br/><br/>';
 	
-	str += '<table align="center">';
+	str += '<table width="100%" align="center">';
 	str += '<tr>';
-	for(var i in resultVO.elections){
+	for(var i in resultVO.elections)
+	{
+		yearStr+=resultVO.elections[i].electionTypeYear+", ";
 		str += '<td>';
 		str += '<fieldset>';
 		str += '<legend>'+resultVO.elections[i].constituencyName+' '+resultVO.elections[i].electionTypeYear+'</legend>';
-		str += '<div>';
-		str += '<table id ="boothElections_'+i+'">';
-		str += '<tr>';
-		str += '<th>Party</th>';
-		str += '<th>Candidate Name</th>';
-		str += '<th>Votes Earned</th>';
-		str += '</tr>';
-		for(var j in resultVO.elections[i].partyResults){
-			str +='<tr>';
-			str +='<td>'+resultVO.elections[i].partyResults[j].partyName+'</td>';
-			str +='<td>'+resultVO.elections[i].partyResults[j].candidateName+'</td>';
-			str +='<td>'+resultVO.elections[i].partyResults[j].votesEarned+'</td>';
-			str +='</tr>';
-		}
-		str += '</table>';		
+		str += '<div id="'+resultVO.elections[i].constituencyId+'_div" class="boothDatatable"></div>';
 		str += '</fieldset>';
-		str += '</td>';
-	
+		str += '</td>';		
 	}
 	str += '</tr>';
 	str += '</table>';
-	str += '</div>';
+	
+	yearStr = yearStr.substring(0,yearStr.length-2);
 	
 	myPanel = new YAHOO.widget.Panel("boothPagePanel", {
-            width: "850px", 
+            width: "1000px", 
             fixedcenter: true, 
-            constraintoviewport: false, 
+            constraintoviewport: true, 
             underlay: "none", 
             close: true, 
             visible: true, 
             draggable: true
     });
     
-    myPanel.setHeader("Booth Page");
+    myPanel.setHeader("Booth Election Results for "+yearStr);
     myPanel.setBody(str);
 	myPanel.render();
 	
-	
-	/*
-	 var myDataSource = new YAHOO.util.DataSource(allBoothElecInfo[i].partyVotes); 
-	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-	 myDataSource.responseSchema = { 
-	            fields: [
-							{
-								key : "partyName"
-							},{
-								key : "candidateName"
-							},{
-								key : "mandalVotes",parser:"number"
-							},{
-								key : "mandalpercentage",parser:"float"
-							},{
-								key : "maleVotes",parser:"number"
-							},{
-								key : "malepercentage",parser:"float"
-							},{
-								key : "femaleVotes",parser:"number"
-							},{
-								key : "femalepercentage",parser:"float"
-							},{
-								key : "bothVotes",parser:"number"
-							},{
-								key : "bothpercentage",parser:"float"
-							}
-						]    
-	        }; 
-	
-	 var myColumnDefs = [ 
-	            {key:"partyName",label:'Party Name', sortable:true, resizeable:true}, 
-	            {key:"candidateName", label:'Candidate Name', sortable:true, resizeable:true}, 
-	            {key:"mandalVotes", label:'Mandal Votes',sortable:true, resizeable:true}, 
-	            {key:"mandalpercentage",label:'%AGE', sortable:true, resizeable:true}, 
-	            {key:"maleVotes",label:'Male Votes', sortable:true, resizeable:true}, 
-	            {key:"malepercentage",label:'%AGE', sortable:true, resizeable:true}, 
-	            {key:"femaleVotes",label:'Female Votes', sortable:true, resizeable:true},
-	            {key:"femalepercentage",label:'%AGE', sortable:true, resizeable:true}, 
-	            {key:"bothVotes",label:'Both Votes', sortable:true, resizeable:true},
-	            {key:"bothpercentage",label:'%AGE', sortable:true, resizeable:true} 
-	        ]; 
-	 
-	var myDataTable = new YAHOO.widget.DataTable("div_"+i,myColumnDefs, myDataSource);		
-	*/
+	for(var i in resultVO.elections)
+	{
+		 var myDataSource = new YAHOO.util.DataSource(resultVO.elections[i].partyResults); 
+		 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		 myDataSource.responseSchema = { 
+		            fields: [
+								{
+									key : "partyName"
+								},{
+									key : "candidateName"
+								},{
+									key : "votesEarned",parser:"number"
+								}
+							]    
+		        }; 
+		
+		 var myColumnDefs = [ 
+		            {key:"partyName",label:'Party Name', sortable:true, resizeable:true}, 
+		            {key:"candidateName", label:'Candidate Name', sortable:true, resizeable:true}, 
+		            {key:"votesEarned", label:'Votes Earned',sortable:true, resizeable:true}		         
+		        ]; 
+		 
+		var myDataTable = new YAHOO.widget.DataTable(resultVO.elections[i].constituencyId+"_div",myColumnDefs, myDataSource);		
+	}
 }

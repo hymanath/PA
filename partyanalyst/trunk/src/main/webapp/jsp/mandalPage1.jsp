@@ -354,7 +354,9 @@ var allBoothElecInfo = new Array();
 			callAjax(rparam,jsObj,url);
 	}
 
+	var electionId;
 	function getRevenueVillagesInfo(id){
+		electionId = id;
 		var jsObj=
 			{
 					electionId:id,
@@ -362,8 +364,21 @@ var allBoothElecInfo = new Array();
 			};
 		
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/getRevenueVillagesElectionsAjaxAction.action?"+rparam;						
+			var url = "<%=request.getContextPath()%>/getRevenueVillagesInfoAjaxAction.action?"+rparam;						
 			callAjax(rparam,jsObj,url);
+	}
+
+	function getTownshipElectionsInfo(townshipId, electionId){
+		var jsObj=
+		{
+				townshipId:townshipId;
+				electionId:electionId,
+				task:"getRevenueVillagesElectionInfo"						
+		};
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getRevenueVillagesInfoAjaxAction.action?"+rparam;						
+		callAjax(rparam,jsObj,url);
 	}
 	
 	function callAjax(rparam, jsObj, url){
@@ -379,11 +394,15 @@ var allBoothElecInfo = new Array();
 								}
 								else if(jsObj.task == "getRevenueVillagesInfo")
 								{								
-									showRevenueVillagesElectionInfo(resultVO);				
+									showRevenueVillagesInfo(resultVO);				
 								}			
 								else if(jsObj.task == "boothPage")
 								{								
 									showBoothPagePanel(resultVO);			
+								}
+								else if(jsObj.task == "getRevenueVillagesElectionInfo")
+								{								
+									showRevenueVillageElectionInfo(resultVO);			
 								}					
 						}catch (e)  {   
 						   	alert("Invalid JSON result" + e);   
@@ -418,7 +437,11 @@ var allBoothElecInfo = new Array();
 			elmtData.innerHTML=electionYearSelect;
 	}
 
-	function showRevenueVillagesElectionInfo(resultVO){
+	function showRevenueVillageElectionInfo(resultVO){
+		alert(".......T......"+resultVO.legth);
+	}
+	
+	function showRevenueVillagesInfo(resultVO){
 		
 		var rvStr = '';
 		var rvStrDiv = document.getElementById('revenueVillagesInfo');
@@ -444,6 +467,7 @@ var allBoothElecInfo = new Array();
 			rvStr += '<tr>';
 			rvStr += '<td>'+resultVO.revenueVillagesInfo[i].locationName+'</td>';
 			rvStr += '<td>'+resultVO.revenueVillagesInfo[i].population+'</td>';
+			rvStr += '<td>'+resultVO.revenueVillagesInfo[i].votesPolled+'</td>';
 			rvStr += '<td>';
 			for(var j in resultVO.revenueVillagesInfo[i].booths)
 			{
@@ -460,7 +484,7 @@ var allBoothElecInfo = new Array();
 			rvStr += '</td>';
 			rvStr += '<td>';
 			rvStr += '<a href = "#">Census Info</a><br>';
-			rvStr += '<a href = "#">All Elections</a><br>';
+			rvStr += '<a href = "#" onclick = "getTownshipElectionsInfo('+resultVO.revenueVillagesInfo[i].locationId+','+electionId+')">All Elections</a><br>';
 			rvStr += '<a href = "#">Cast Details</a><br>';
 			rvStr += '</td>';
 			rvStr += '</tr>';
@@ -513,9 +537,13 @@ var allBoothElecInfo = new Array();
 									},{
 										key : "totalVoters",parser:"number"
 									},{
+										key : "votesPolled",parser:"number"
+									},{
 										key : "booths"
 									},{
 										key : "hamlets"
+									},{
+										key : "links"
 									}
 								]    
 			        }; 
@@ -523,8 +551,10 @@ var allBoothElecInfo = new Array();
 			 var myColumnDefs = [ 
 			            {key:"townshipName",label:'Township Name', sortable:true, resizeable:true}, 
 			            {key:"totalVoters", label:'Total Voters', sortable:true, resizeable:true}, 
+			            {key:"votesPolled", label:'Votes Polled', sortable:true, resizeable:true},
 			            {key:"booths",label:'Total Booths', resizeable:true}, 
-			            {key:"hamlets",label:'Total Hamlets', resizeable:true}
+			            {key:"hamlets",label:'Total Hamlets', resizeable:true},
+			            {key:"links",label:'Links', resizeable:true}
 			        ]; 
 			 
 			var myDataTable = new YAHOO.widget.DataTable("revenueVillageDiv",myColumnDefs, myDataSource);

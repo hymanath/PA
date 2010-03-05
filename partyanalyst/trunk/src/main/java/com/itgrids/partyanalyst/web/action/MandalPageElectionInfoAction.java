@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.MandalTownshipWiseBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
@@ -38,6 +39,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	JSONObject jObj = null;
 	private String mandalId;
 	private MandalAndRevenueVillagesInfoVO mandalAndRevenueVillagesInfoVO;
+	private List<PartyVotesEarnedVO> townshipResults;
 	private static final Logger log = Logger.getLogger(MandalPageAction.class);
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -137,6 +139,14 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		this.mandalAndRevenueVillagesInfoVO = mandalAndRevenueVillagesInfoVO;
 	}
 
+	public List<PartyVotesEarnedVO> getTownshipResults() {
+		return townshipResults;
+	}
+
+	public void setTownshipResults(List<PartyVotesEarnedVO> townshipResults) {
+		this.townshipResults = townshipResults;
+	}
+
 	public String execute(){
 		
 		mandalId = request.getParameter("MANDAL_ID");
@@ -207,4 +217,19 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		return SUCCESS;
 	}
 
+	public String getTownshipElectionResults(){
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+	
+			if(jObj.getString("task").equals("getRevenueVillagesElectionInfo")){
+				townshipResults = constituencyPageService.getTownshipWiseElectionsForTehsil(jObj.getLong("townshipId"), jObj.getLong("electionId"));
+			}
+		}
+		return SUCCESS;
+	}
 }

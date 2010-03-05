@@ -271,9 +271,15 @@
         	</result>
 		</action>
 		
-		<action name="getRevenueVillagesElectionsAjaxAction" class="mandalPageElectionInfoAction" method="getTownshipDetails">
+		<action name="getRevenueVillagesInfoAjaxAction" class="mandalPageElectionInfoAction" method="getTownshipDetails">
 			<result type="json" name="success">
            		<param name="root">mandalAndRevenueVillagesInfoVO</param>
+        	</result>
+		</action>
+		
+		<action name="getRevenueVillagesElectionsAjaxAction" class="mandalPageElectionInfoAction" method="getTownshipElectionResults">
+			<result type="json" name="success">
+           		<param name="root">townshipResults</param>
         	</result>
 		</action>
         
