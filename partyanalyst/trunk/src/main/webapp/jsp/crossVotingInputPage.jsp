@@ -160,6 +160,7 @@
 		font-family:Verdana;
 		font-size:12px;
 		text-align:center;
+		
 	}
 
  .yui-skin-sam .yui-pg-container {paginator.css (line 7)
@@ -168,6 +169,7 @@
 	text-align:center;
 	white-space:nowrap;
  }
+
 </style>
 <script type="text/javascript">
 	
@@ -421,7 +423,8 @@
 		
 		var childNewDivElmt = document.createElement('div');
 		childNewDivElmt.setAttribute('id','mandalNewDiv_'+mandal.mandalName);
-		childNewDivElmt.setAttribute('style','display:none;');
+		childNewDivElmt.style.display="none";
+		
 		divElmt.appendChild(childNewDivElmt);
 		   		 
 		var resultsDataSource = new YAHOO.util.DataSource(mandal.crossVotedBooths);
