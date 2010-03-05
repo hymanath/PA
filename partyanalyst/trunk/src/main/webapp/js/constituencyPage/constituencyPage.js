@@ -504,7 +504,7 @@ function buildProblemPostingWindow()
 	str+='<fieldset id="ProblemPostingFieldSet">';
 	str+='<legend> Post Your constituency Problem</legend>';
 	str+='<div id="ProblemPostingContentDiv" class="problemPostingContentDivClass">';	
-	str+='<div>Post your constituency problem and it to the all people notice.</div>';
+	str+='<div>Post your constituency problem and bring it to the all people notice.</div>';
 	str+='<div id="problemPostingButtonDiv"><input type="button" id="postButton" value = "Post" onclick="javascript:{}"/></div>';
 	str+='</div>';
 	str+='</fieldset>';

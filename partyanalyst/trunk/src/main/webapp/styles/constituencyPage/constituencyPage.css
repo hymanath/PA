@@ -303,8 +303,7 @@ legend
 {
 	min-height:200px;
 	padding:2px;
-	border:4px solid #CFD6DF;
-	margin:50px 5px 5px 5px;
+	border:4px solid #CFD6DF;	
 }
 
 #connectedNumberDiv
@@ -364,6 +363,8 @@ legend
 
 .yui-skin-sam .yui-dt td a
 {
+	color:#89745D;
+	font-size:13px;
+	font-weight:bold;
 	text-decoration:none;
-	color:#000000;
 }

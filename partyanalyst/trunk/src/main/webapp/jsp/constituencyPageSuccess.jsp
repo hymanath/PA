@@ -251,12 +251,15 @@
 	<c:forEach var="cInfo" items="${candidateDetailsForConstituency.assemblyCandidateInfo}">	
 	var candidateObj={
 						constituencyId : '${cInfo.constituencyId}',
-						constituencyName : '${cInfo.constituencyName}',
+						constituencyName : '<a href="constituencyPageAction.action?constituencyId=${cInfo.constituencyId}&electionType=${cInfo.constituencyType}&delimitation=${cInfo.deformDate}"> ${cInfo.constituencyName}</a>',
+						constituencyType:'${cInfo.constituencyType}',
+						deformDate:'${cInfo.deformDate}',
 						candidateId : '${cInfo.candidateId}',
 						candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${cInfo.candidateId}"> ${cInfo.candidateName}</a>',	
 						partyId:' ${cInfo.partyId}',
 						party : '${cInfo.party}'
 					 };		
+	
 	constituencyPageMainObj.presentAssemblyCandidate.push(candidateObj);
 	</c:forEach>
 	
@@ -265,7 +268,9 @@
 	*/
 	var pmtObj = {
 					constituencyId : '${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}',
-					constituencyName : '${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyName}',
+					constituencyName :  '<a href="constituencyPageAction.action?constituencyId=${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}&electionType=${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}&delimitation=${candidateDetailsForConstituency.parliamentCandidateInfo.deformDate}">${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyName}</a>',									
+					constituencyType:'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}',
+					deformDate:'${candidateDetailsForConstituency.parliamentCandidateInfo.deformDate}',
 					candidateId : '${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}',
 					candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}"> ${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}</a>',		
 					partyId:' ${candidateDetailsForConstituency.parliamentCandidateInfo.partyId}',
@@ -273,7 +278,8 @@
 				 };		
 	constituencyPageMainObj.presentParliamentCandidate.push(pmtObj);
 
-	
+	//constituencyName : '<a href="constituencyPageAction.action?constituencyId=${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}&electionType=${constituencyDetails.constituencyType}&delimitation=${constituencyDetails.deformDate}">${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyName}</a>',
+
 	/*	Constituency problems Info
 		-------------------------
 	*/
