@@ -42,5 +42,6 @@ public interface IBoothConstituencyElectionVoterDAO extends GenericDao<BoothCons
 	
 	public List getAllCandidateBoothResultsForTownshipsForTehsil(Long tehsilId);
 	
-
+	public List getBoothsForTownship(Long townshipId);
+	
 }

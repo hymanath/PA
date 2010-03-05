@@ -13,7 +13,9 @@ public class TownshipElectionPartyResultDAO extends GenericDaoHibernate<Township
 		super(TownshipElectionPartyResult.class);
 	}
 	
-	public List<TownshipElectionPartyResult> findByTownshipIDElectionID(Long townshipID,Long electionID){
-		return getHibernateTemplate().find("from TownshipElectionPartyResult model where model.township.townshipId = ?", townshipID);	
+	public List findByTownshipIDElectionID(Long townshipID,Long electionID){
+		return getHibernateTemplate().find("select model.nomination.party.partyId, model.nomination.party.shortName," +
+				"sum(model.votesEarned) from TownshipElectionPartyResult model where model.township.townshipId = ? group by" +
+				" model.nomination.party.partyId", townshipID);	
 	}
 }

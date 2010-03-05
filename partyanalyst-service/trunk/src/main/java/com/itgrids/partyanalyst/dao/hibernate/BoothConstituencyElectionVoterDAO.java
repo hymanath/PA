@@ -196,4 +196,10 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 		return getHibernateTemplate().find("select model.voter.hamlet.township.townshipName,model.boothConstituencyElection.candidateBoothResults from BoothConstituencyElectionVoter model where model.voter.hamlet.township.tehsil.tehsilId = ? group by " +
 				"model.voter.hamlet.township.townshipId", tehsilId);
 	}
+	
+	public List getBoothsForTownship(Long townshipId){
+		return getHibernateTemplate().find("select distinct model.boothConstituencyElection.boothConstituencyElectionId from " +
+				"BoothConstituencyElectionVoter model where model.voter.hamlet.township.townshipId = ?", townshipId);
+	}
+	
 }

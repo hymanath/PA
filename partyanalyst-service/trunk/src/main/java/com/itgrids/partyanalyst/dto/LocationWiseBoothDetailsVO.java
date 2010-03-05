@@ -10,9 +10,8 @@ public class LocationWiseBoothDetailsVO {
 	private Set<SelectOptionVO> booths;
 	private Set<SelectOptionVO> subLocations;
 	private List<SelectOptionVO> hamletsOfTownship;
-	private String loggedInUserParty;
-	private List<Long> userPartyVotes;
 	private Long population;
+	private Long votesPolled;
 	private String electionYear;
 	
 	public String getElectionYear() {
@@ -71,23 +70,14 @@ public class LocationWiseBoothDetailsVO {
 		this.hamletsOfTownship = hamletsOfTownship;
 	}
 
-	public String getLoggedInUserParty() {
-		return loggedInUserParty;
+	public Long getVotesPolled() {
+		return votesPolled;
 	}
 
-	public void setLoggedInUserParty(String loggedInUserParty) {
-		this.loggedInUserParty = loggedInUserParty;
+	public void setVotesPolled(Long votesPolled) {
+		this.votesPolled = votesPolled;
 	}
 
-	public List<Long> getUserPartyVotes() {
-		return userPartyVotes;
-	}
-
-	public void setUserPartyVotes(List<Long> userPartyVotes) {
-		this.userPartyVotes = userPartyVotes;
-	}
-
-	
 	
 	
 }

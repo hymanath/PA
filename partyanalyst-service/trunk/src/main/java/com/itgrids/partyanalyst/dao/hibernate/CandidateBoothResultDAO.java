@@ -141,7 +141,23 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		hqlQuery.append("select model.nomination.party.partyId, model.nomination.party.shortName,")
 		.append("sum(model.votesEarned) from CandidateBoothResult model")
 		.append(" where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
-		.append(" and model.boothConstituencyElection.booth.tehsil.tehsilId = ? group by model.nomination.party.partyId");
+		.append(" and model.boothConstituencyElection.booth.tehsil.tehsilId = ? group by model.nomination.party.partyId" +
+				" order by model.votesEarned desc");
 		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	public List findTownshipElectionResult(Long townshipId, Long electionId){
+		Object[] params = {townshipId, electionId};
+		return getHibernateTemplate().find("select model.nomination.party.partyId, model.nomination.party.shortName,"+
+				"sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.boothConstituencyElectionId in (" +
+				"select distinct model1.boothConstituencyElection.boothConstituencyElectionId from BoothConstituencyElectionVoter model1 " +
+				"where model1.voter.hamlet.township.townshipId = ? and model1.boothConstituencyElection.constituencyElection.election.electionId = ?)" +
+				" group by model.nomination.party.partyId order by sum(model.votesEarned) desc", params);
+	}
+	
+	public List findPartyResultsForBooths(String boothConstituencyElectionIds){
+		return getHibernateTemplate().find("select model.nomination.party.partyId, model.nomination.party.shortName,"+
+				"sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.boothConstituencyElectionId in ("+boothConstituencyElectionIds+")" +
+						" group by model.nomination.party.partyId order by sum(model.votesEarned) desc");
 	}
 }
