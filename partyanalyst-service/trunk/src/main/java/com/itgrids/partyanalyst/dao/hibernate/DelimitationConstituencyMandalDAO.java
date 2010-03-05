@@ -34,7 +34,9 @@ IDelimitationConstituencyMandalDAO {
 		return getHibernateTemplate().find("Select model.tehsil.district.state.stateId, model.tehsil.district.state.stateName," +
 				" model.tehsil.district.districtId, model.tehsil.district.districtName," +
 				" model.delimitationConstituency.constituency.constituencyId, model.delimitationConstituency.constituency.name," +
-				" model.tehsil.tehsilName from DelimitationConstituencyMandal model where model.tehsil.tehsilId=?",mandalID);
+				" model.tehsil.tehsilName, model.delimitationConstituency.year from DelimitationConstituencyMandal model where model.tehsil.tehsilId=?" +
+				" group by model.delimitationConstituency.year, model.delimitationConstituency.constituency.name" +
+				" order by model.delimitationConstituency.year, model.delimitationConstituency.constituency.name ",mandalID);
 	}
 	
 	

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,10 +17,12 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.BoothPanelVO;
 import com.itgrids.partyanalyst.dto.BoothTotalVotesVO;
 import com.itgrids.partyanalyst.dto.BoothTypeDetailsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyWiseDataForMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
@@ -28,9 +32,11 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Nomination;
+import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 
 public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsService{
@@ -38,6 +44,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	private INominationDAO nominationDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private static final Logger log = Logger.getLogger(PartyBoothWiseResultsService.class);
 	
 	public INominationDAO getNominationDAO() {
@@ -63,6 +70,15 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	public void setDelimitationConstituencyDAO(
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+	
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+	
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
 	}
 	
 	public List<PartyBoothPerformanceVO> getBoothWiseResultsForParty(Long partyId, Long constituencyId, String electionYear){
@@ -198,7 +214,6 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		return new ResultWithExceptionVO(boothPageInfo, resultStatus);
 	}
 	
-
 	public ElectionWiseMandalPartyResultListVO getPartyGenderWiseBoothVotesForMandal(Long tehsilID){
 		ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO = new ElectionWiseMandalPartyResultListVO();
 		List<ElectionWiseMandalPartyResultVO> electionWiseMandalPartyResultVOList = new ArrayList<ElectionWiseMandalPartyResultVO>();
@@ -208,17 +223,18 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		// 0- partyID, 1- partyName, 2-candidateID, 3- candidateName, 4-rank, 5-electionYear, 6-electionType
 		//7-validVotes, 8-boothId, 9-partNo, 10-villageCovered, 11-maleVoters, 12-femaleVoters, 13-totalVoters,
 		//14-votesEarned by candidate in the booth, 15-constituencyID, 16-constituencyName
-		
 		//election type and year is populated in the vo object
+		
 		Map<ElectionWiseMandalPartyResultVO, List<Object[]>> rawData = getElectionWiseMandalPartyResults(list);
 
 		Set<Map.Entry<ElectionWiseMandalPartyResultVO, List<Object[]>>> electionBoothWiseData = rawData.entrySet();
+
 		Iterator<Map.Entry<ElectionWiseMandalPartyResultVO, List<Object[]>>> iterator = electionBoothWiseData.iterator();
 		while(iterator.hasNext()){
 			Map.Entry<ElectionWiseMandalPartyResultVO, List<Object[]>> entry = iterator.next();
 			ElectionWiseMandalPartyResultVO electionWiseMandalPartyResultVO = entry.getKey();
 			List<Object[]> value = entry.getValue();
-			electionWiseMandalPartyResultVO =getBoothPartyInfoForElectionResult(electionWiseMandalPartyResultVO, value);
+			electionWiseMandalPartyResultVO = getConstituencyWiseElectionResultInMandal(electionWiseMandalPartyResultVO, value);
 			electionWiseMandalPartyResultVOList.add(electionWiseMandalPartyResultVO);
 		}
 		electionWiseMandalPartyResultListVO.setElectionWiseMandalPartyResultVOList(electionWiseMandalPartyResultVOList);
@@ -226,131 +242,150 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		return electionWiseMandalPartyResultListVO;
 	}
 	
-	private ElectionWiseMandalPartyResultVO getBoothPartyInfoForElectionResult(ElectionWiseMandalPartyResultVO electionWiseMandalPartyResultVO, List<Object[]> value){
-		// 0- partyID, 1- partyName, 2-candidateID, 3- candidateName, 4-rank, 5-electionYear, 6-electionType
-		//7-validVotes, 8-boothId, 9-partNo, 10-villageCovered, 11-maleVoters, 12-femaleVoters, 13-totalVoters,
-		//14-votesEarned by candidate in the booth, 15-constituencyID, 16-constituencyName
+	private ElectionWiseMandalPartyResultVO getConstituencyWiseElectionResultInMandal(
+			ElectionWiseMandalPartyResultVO electionWiseMandalPartyResultVO, List<Object[]> value) {
 		
-
-		Set<BoothTotalVotesVO> maleBoothVotes = new HashSet<BoothTotalVotesVO>();
-		Set<BoothTotalVotesVO> femaleBoothVotes = new HashSet<BoothTotalVotesVO>();
-		Set<BoothTotalVotesVO> maleFemaleBoothVotes = new HashSet<BoothTotalVotesVO>();
-		Set<PartyGenderWiseVotesVO> partyVotes = new HashSet<PartyGenderWiseVotesVO>();
-		BoothTypeDetailsVO boothTypeDetailsVO = new BoothTypeDetailsVO();
-		Map<Long, PartyGenderWiseVotesVO> partyResults = new LinkedHashMap<Long, PartyGenderWiseVotesVO>();
-		Set<PartyGenderWiseVotesVO> partyVotesList = new HashSet<PartyGenderWiseVotesVO>();
-		Long totalMaleBoothVotes = 0L;
-		Long totalFemaleBoothVotes = 0L;
-		Long totalFMBoothVotes = 0L;
-		Long sumOfAllCandidateVotes = 0L;
-		for(Object[] obj: value){
-			Long partyID = (Long) obj[0];
-			PartyGenderWiseVotesVO partyGenderWiseVotesVO = partyResults.get(partyID);
-			if(partyGenderWiseVotesVO==null){
-				partyGenderWiseVotesVO = new PartyGenderWiseVotesVO();
-				partyGenderWiseVotesVO.setPartyID(partyID);
-				partyGenderWiseVotesVO.setTotalVotesEarned(0L);
-				partyGenderWiseVotesVO.setMaleBoothResults(0L);
-				partyGenderWiseVotesVO.setFemaleBoothResults(0L);
-				partyGenderWiseVotesVO.setFmBoothResults(0L);
-			}
+		Map<ConstituencyWiseDataForMandalVO, List<PartyGenderWiseVotesVO>> constituencyResultMap = 
+			new LinkedHashMap<ConstituencyWiseDataForMandalVO, List<PartyGenderWiseVotesVO>>();
+		
+		for(int i=0; i<value.size(); i++){
+			Object[] params = (Object[])value.get(i);
+			ConstituencyWiseDataForMandalVO constituencyWiseDataForMandalVO = new ConstituencyWiseDataForMandalVO();
+			constituencyWiseDataForMandalVO.setConstituencyId((Long)params[15]);
+			constituencyWiseDataForMandalVO.setConstituencyName(params[16].toString());
 			
-			String partyName = obj[1].toString();	
-			Long candidateID = (Long) obj[2]; 		
-			String candidateName = obj[3].toString();
-			Long rank = (Long) obj[4];
+			List<PartyGenderWiseVotesVO> constituencyFullList = constituencyResultMap.get(constituencyWiseDataForMandalVO);
+			if(constituencyFullList == null)
+				constituencyFullList = new ArrayList<PartyGenderWiseVotesVO>();
 			
-			Long boothValidVotes = (Long) obj[7];	
-			Long boothID = (Long) obj[8];
-			Long partNo = new Long(obj[9].toString());
-			String villagesCovered = obj[10].toString();
-			Long maleBoothVoters = (Long) obj[11];
-			Long femaleBoothVoters = (Long) obj[12];
-			Long bothBoothVoters = (Long) obj[13];
-			Long candidateEarnedVotesInBooth = (Long) obj[14]; 
-			Long constituencyID = (Long) obj[15]; 
-			String constituencyName = obj[16].toString();
-
-			BoothTotalVotesVO boothTotalVotesVO = new BoothTotalVotesVO();
-			boothTotalVotesVO.setBoothID(boothID);
-			boothTotalVotesVO.setPartNo(partNo);
-			boothTotalVotesVO.setVillagesCovered(villagesCovered);
-			boothTotalVotesVO.setMaleVotes(maleBoothVoters);
-			boothTotalVotesVO.setFemaleVotes(maleBoothVoters);
-			boothTotalVotesVO.setTotalVotes(maleBoothVoters);
-			boothTotalVotesVO.setValidVotes(boothValidVotes);
+			PartyGenderWiseVotesVO partyGenderWiseVotesVO = new PartyGenderWiseVotesVO();
+			partyGenderWiseVotesVO.setPartyID((Long)params[0]);
+			partyGenderWiseVotesVO.setPartyName(params[1].toString());
+			partyGenderWiseVotesVO.setCandidateNameWithStatus(params[3].toString());
+			partyGenderWiseVotesVO.setCandidateID((Long)params[2]);
+			partyGenderWiseVotesVO.setRank((Long)params[4]);
+			partyGenderWiseVotesVO.setMaleBoothResults((Long)params[11]);
+			partyGenderWiseVotesVO.setFemaleBoothResults((Long)params[12]);
+			partyGenderWiseVotesVO.setTotalVotesEarned((Long)params[13]);
+			partyGenderWiseVotesVO.setVotesEarnedInBoothForParty((Long)params[14]);
 			
-			
-			
-			if(maleBoothVoters<5){
-				femaleBoothVotes.add(boothTotalVotesVO);
-				Long partyFemaleBoothResults = candidateEarnedVotesInBooth+partyGenderWiseVotesVO.getFemaleBoothResults();
-				partyGenderWiseVotesVO.setFemaleBoothResults(partyFemaleBoothResults);
-				
-				
-				totalFemaleBoothVotes = totalFemaleBoothVotes + candidateEarnedVotesInBooth;
-				 
-				
-			} else if(femaleBoothVoters<5){
-				maleBoothVotes.add(boothTotalVotesVO);
-				Long partyMaleBoothResults = candidateEarnedVotesInBooth+partyGenderWiseVotesVO.getMaleBoothResults();
-				partyGenderWiseVotesVO.setMaleBoothResults(partyMaleBoothResults);
-				totalMaleBoothVotes = totalMaleBoothVotes + candidateEarnedVotesInBooth;
-			} else{
-				maleFemaleBoothVotes.add(boothTotalVotesVO);
-				Long partyMFBoothResults = candidateEarnedVotesInBooth+partyGenderWiseVotesVO.getFmBoothResults();
-				partyGenderWiseVotesVO.setFmBoothResults(partyMFBoothResults);
-				
-				totalFMBoothVotes = totalFMBoothVotes + candidateEarnedVotesInBooth;
-			}
-			
-
-			partyGenderWiseVotesVO.setPartyName(partyName);
-			partyGenderWiseVotesVO.setCandidateNameWithStatus(candidateName);
-			partyGenderWiseVotesVO.setCandidateID(candidateID);
-			Long partyTotalVotes = partyGenderWiseVotesVO.getTotalVotesEarned() + candidateEarnedVotesInBooth;
-			partyGenderWiseVotesVO.setTotalVotesEarned(partyTotalVotes);
-			partyGenderWiseVotesVO.setRank(rank);
-			partyResults.put(partyID,partyGenderWiseVotesVO);
-			partyVotesList.add(partyGenderWiseVotesVO);
-			partyGenderWiseVotesVO.setConstituencyID(constituencyID);
-			partyGenderWiseVotesVO.setConstituencyName(constituencyName);
-			sumOfAllCandidateVotes = sumOfAllCandidateVotes + candidateEarnedVotesInBooth;
+			constituencyFullList.add(partyGenderWiseVotesVO);
+			constituencyResultMap.put(constituencyWiseDataForMandalVO, constituencyFullList);
 		}
-		boothTypeDetailsVO.setFemaleBoothVotes(femaleBoothVotes);
-		boothTypeDetailsVO.setMaleBoothVotes(maleBoothVotes);
-		boothTypeDetailsVO.setMaleFemailBoothVotes(maleFemaleBoothVotes);
 		
-		electionWiseMandalPartyResultVO.setPartyVotes(partyVotes);
-		electionWiseMandalPartyResultVO.setBoothTypeDetailsVO(boothTypeDetailsVO);
+		List<ConstituencyWiseDataForMandalVO> allConstituenciesInfo = new ArrayList<ConstituencyWiseDataForMandalVO>();
 		
-		for(PartyGenderWiseVotesVO objVO : partyVotesList){
-			/*Long totalMaleBoothVotes = 0L;
+		for(Map.Entry<ConstituencyWiseDataForMandalVO, List<PartyGenderWiseVotesVO>> entry:constituencyResultMap.entrySet()){
+			ConstituencyWiseDataForMandalVO constituencyWiseDataForMandalVO = entry.getKey();
+			List<PartyGenderWiseVotesVO> constituencyResultList = entry.getValue();
+			Map<Long, List<PartyGenderWiseVotesVO>> partyWiseResultsMap = new LinkedHashMap<Long, List<PartyGenderWiseVotesVO>>();
+			List<PartyGenderWiseVotesVO> partyWiseConstituencyResultList = null;
+			for(PartyGenderWiseVotesVO partyGenderWiseVotesVO:constituencyResultList){
+				Long partyId = partyGenderWiseVotesVO.getPartyID();
+				partyWiseConstituencyResultList = partyWiseResultsMap.get(partyId);
+				if(partyWiseConstituencyResultList == null)
+					partyWiseConstituencyResultList = new ArrayList<PartyGenderWiseVotesVO>();
+				partyWiseConstituencyResultList.add(partyGenderWiseVotesVO);
+				partyWiseResultsMap.put(partyId, partyWiseConstituencyResultList);
+			}
+			getConstiteuncyWisePartyResults(constituencyWiseDataForMandalVO, partyWiseResultsMap);
+			allConstituenciesInfo.add(constituencyWiseDataForMandalVO);
+		}
+		
+		electionWiseMandalPartyResultVO.setConstituencyWiseDataForMandalVOs(allConstituenciesInfo);
+		
+		return electionWiseMandalPartyResultVO;
+	}
+		
+	private void getConstiteuncyWisePartyResults(
+			ConstituencyWiseDataForMandalVO constituencyWiseDataForMandalVO,
+			Map<Long, List<PartyGenderWiseVotesVO>> partyWiseResultsMap) {
+		List<PartyGenderWiseVotesVO> resultsOfAllPartiesInConstituency = new ArrayList<PartyGenderWiseVotesVO>();
+		
+		Long totalMaleInConstituency = 0l;
+		Long totalFemaleInConstituency = 0l;
+		Long totalFMInConstituency = 0l;
+		
+		Long allPartiesVotesInMandalForConstituency = 0l;
+		
+		for(Map.Entry<Long, List<PartyGenderWiseVotesVO>> entry:partyWiseResultsMap.entrySet()){
+			List<PartyGenderWiseVotesVO> resultsOfAParty = entry.getValue();
+			PartyGenderWiseVotesVO eashPartyResultInConstituency = new PartyGenderWiseVotesVO();
+			
+			Long totalMaleBoothVotes = 0L;
 			Long totalFemaleBoothVotes = 0L;
-			Long totalFMBoothVotes = 0L;*/
-			String partyMaleBoothPerc = new String();
-			String partyFemaleBoothPerc = new String();
-			String partyFMBoothPerc = new String();
-			String partyTotalVotesEarnedPercentage = new String();
-			if(totalMaleBoothVotes!=null && !totalMaleBoothVotes.equals(0L))
-						partyMaleBoothPerc = new BigDecimal((objVO.getMaleBoothResults()*100)/totalMaleBoothVotes)
-												.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-			if(totalFemaleBoothVotes!=null && !totalFemaleBoothVotes.equals(0L))
-						partyFemaleBoothPerc = new BigDecimal((objVO.getFemaleBoothResults()*100)/totalFemaleBoothVotes)
-												.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-			if(totalFMBoothVotes!=null && !totalFMBoothVotes.equals(0L))
-				partyFMBoothPerc = new BigDecimal((objVO.getFmBoothResults()*100)/totalFMBoothVotes)
-										.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-			if(sumOfAllCandidateVotes!=null && !sumOfAllCandidateVotes.equals(0L))
-				partyTotalVotesEarnedPercentage = new BigDecimal((objVO.getTotalVotesEarned()*100)/sumOfAllCandidateVotes)
-										.setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-			objVO.setMaleBoothResultsPercentage(partyMaleBoothPerc);
-			objVO.setFemaleBoothResultsPercentage(partyFemaleBoothPerc);
-			objVO.setFmBoothResultsPercentage(partyFMBoothPerc);
-			objVO.setTotalVotesEarnedPercentage(partyTotalVotesEarnedPercentage);
+			Long totalFMBoothVotes = 0L;
+			
+			eashPartyResultInConstituency.setCandidateID(resultsOfAParty.get(0).getCandidateID());
+			eashPartyResultInConstituency.setCandidateNameWithStatus(resultsOfAParty.get(0).getCandidateNameWithStatus());
+			eashPartyResultInConstituency.setRank(resultsOfAParty.get(0).getRank());
+			eashPartyResultInConstituency.setPartyID(resultsOfAParty.get(0).getPartyID());
+			eashPartyResultInConstituency.setPartyName(resultsOfAParty.get(0).getPartyName());
+			
+			for(PartyGenderWiseVotesVO resultsForPartyInBooth:resultsOfAParty){
+				if(resultsForPartyInBooth.getMaleBoothResults() < 5 && resultsForPartyInBooth.getFemaleBoothResults() < 5)
+					totalFMBoothVotes = totalFMBoothVotes + resultsForPartyInBooth.getVotesEarnedInBoothForParty();
+				else if(resultsForPartyInBooth.getMaleBoothResults() < 5)
+					totalFemaleBoothVotes = totalFemaleBoothVotes + resultsForPartyInBooth.getVotesEarnedInBoothForParty();
+				else if(resultsForPartyInBooth.getFemaleBoothResults() < 5)
+					totalMaleBoothVotes = totalMaleBoothVotes + resultsForPartyInBooth.getVotesEarnedInBoothForParty();
+				else
+					totalFMBoothVotes = totalFMBoothVotes + resultsForPartyInBooth.getVotesEarnedInBoothForParty();
+			}
+			Long totalVotesForPartyInConstiForMandal = totalMaleBoothVotes + totalFemaleBoothVotes + totalFMBoothVotes;
+			
+			eashPartyResultInConstituency.setTotalVotesEarned(totalVotesForPartyInConstiForMandal);
+			eashPartyResultInConstituency.setMaleBoothResults(totalMaleBoothVotes);
+			eashPartyResultInConstituency.setFemaleBoothResults(totalFemaleBoothVotes);
+			eashPartyResultInConstituency.setFmBoothResults(totalFMBoothVotes);
+			
+			totalMaleInConstituency = totalMaleInConstituency + totalMaleBoothVotes;
+			totalFemaleInConstituency = totalFemaleInConstituency + totalFemaleBoothVotes;
+			totalFMInConstituency = totalFMInConstituency + totalFMBoothVotes;
+			
+			
+			allPartiesVotesInMandalForConstituency = allPartiesVotesInMandalForConstituency + totalVotesForPartyInConstiForMandal;
+			resultsOfAllPartiesInConstituency.add(eashPartyResultInConstituency);
 		}
-		electionWiseMandalPartyResultVO.setPartyVotes(partyVotesList);
-		return electionWiseMandalPartyResultVO;		
+		
+		for(PartyGenderWiseVotesVO eachPartyInConsti:resultsOfAllPartiesInConstituency){
+			String maleVotesPercentage = "";
+			String femaleVotesPercentage = "";
+			String fmVotesPercentage = "";
+			String totalVotesPercentage = "";
+			
+			if(totalMaleInConstituency == 0){
+				maleVotesPercentage = "-";
+			}else{
+				maleVotesPercentage = new BigDecimal((eachPartyInConsti.getMaleBoothResults()*100.0)/
+						totalMaleInConstituency).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			}
+			if(totalFemaleInConstituency == 0){
+				femaleVotesPercentage = "-";
+			}else{
+				femaleVotesPercentage = new BigDecimal((eachPartyInConsti.getFemaleBoothResults()*100.0)/
+						totalFemaleInConstituency).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			}
+			if(totalFMInConstituency == 0){
+				fmVotesPercentage = "-";
+			}else{
+				fmVotesPercentage = new BigDecimal((eachPartyInConsti.getFmBoothResults()*100.0)/
+						totalFMInConstituency).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			}
+			if(allPartiesVotesInMandalForConstituency == 0){
+				totalVotesPercentage = "-";
+			}else{
+				totalVotesPercentage = new BigDecimal((eachPartyInConsti.getTotalVotesEarned()*100.0)/
+						allPartiesVotesInMandalForConstituency).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			}
+					
+			eachPartyInConsti.setMaleBoothResultsPercentage(maleVotesPercentage);
+			eachPartyInConsti.setFemaleBoothResultsPercentage(femaleVotesPercentage);
+			eachPartyInConsti.setFmBoothResultsPercentage(fmVotesPercentage);
+			eachPartyInConsti.setTotalVotesEarnedPercentage(totalVotesPercentage);
+		}
+		
+		constituencyWiseDataForMandalVO.setPartyVotes(resultsOfAllPartiesInConstituency);
 	}
 	
 	private Map<ElectionWiseMandalPartyResultVO, List<Object[]>> getElectionWiseMandalPartyResults(List list){
@@ -380,15 +415,13 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		ElectionWiseMandalPartyResultVO obj1 = new ElectionWiseMandalPartyResultVO();
 		ElectionWiseMandalPartyResultVO obj2 = new ElectionWiseMandalPartyResultVO();
 
-		obj1.setElectionType("Assembly"); obj1.setElectionYear(2009L); obj1.setGenderBoothURL("url1");
-		obj2.setElectionType("Assembly"); obj2.setElectionYear(2009L); obj2.setGenderBoothURL("url2");
+		obj1.setElectionType("Assembly"); obj1.setElectionYear(2009L);
+		obj2.setElectionType("Assembly"); obj2.setElectionYear(2009L);
 		Map<ElectionWiseMandalPartyResultVO, String> raw =  new LinkedHashMap<ElectionWiseMandalPartyResultVO, String>();
 		raw.put(obj1,"one");
 		raw.put(obj2,"two");
 		System.out.println(raw.size());
 		System.out.println("val1="+raw.get(obj1));
 		System.out.println("val2="+raw.get(obj2));
-		System.out.println("url1="+obj1.getGenderBoothURL());
-		System.out.println("url2="+obj2.getGenderBoothURL()); 
 	}
 }

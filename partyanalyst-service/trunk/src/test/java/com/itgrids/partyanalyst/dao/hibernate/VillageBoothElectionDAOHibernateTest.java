@@ -34,7 +34,7 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 	public void testSave(){
 		Hamlet hamlet = new Hamlet(new Long(1));
 		BoothConstituencyElection obj = new BoothConstituencyElection(new Long(1));
-		villageBoothElectionDAO.save(new VillageBoothElection(obj, hamlet, null));
+		villageBoothElectionDAO.save(new VillageBoothElection(obj, null));
 		setComplete();
 	}
 }

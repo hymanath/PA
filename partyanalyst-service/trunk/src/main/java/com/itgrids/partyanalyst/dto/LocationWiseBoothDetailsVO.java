@@ -7,9 +7,11 @@ public class LocationWiseBoothDetailsVO {
 
 	private Long locationId;
 	private String locationName;
-	private Set<String> booths;
-	private Set<String> subLocations;
-	private List<String> hamletsOfTownship;
+	private Set<SelectOptionVO> booths;
+	private Set<SelectOptionVO> subLocations;
+	private List<SelectOptionVO> hamletsOfTownship;
+	private String loggedInUserParty;
+	private List<Long> userPartyVotes;
 	private Long population;
 	private String electionYear;
 	
@@ -37,22 +39,6 @@ public class LocationWiseBoothDetailsVO {
 		this.locationName = locationName;
 	}
 	
-	public Set<String> getBooths() {
-		return booths;
-	}
-
-	public void setBooths(Set<String> booths) {
-		this.booths = booths;
-	}
-
-	public void setSubLocations(Set<String> subLocations) {
-		this.subLocations = subLocations;
-	}
-
-	public Set<String> getSubLocations() {
-		return subLocations;
-	}
-
 	public Long getPopulation() {
 		return population;
 	}
@@ -61,13 +47,46 @@ public class LocationWiseBoothDetailsVO {
 		this.population = population;
 	}
 
-	public List<String> getHamletsOfTownship() {
+	public Set<SelectOptionVO> getBooths() {
+		return booths;
+	}
+
+	public void setBooths(Set<SelectOptionVO> booths) {
+		this.booths = booths;
+	}
+
+	public Set<SelectOptionVO> getSubLocations() {
+		return subLocations;
+	}
+
+	public void setSubLocations(Set<SelectOptionVO> subLocations) {
+		this.subLocations = subLocations;
+	}
+
+	public List<SelectOptionVO> getHamletsOfTownship() {
 		return hamletsOfTownship;
 	}
 
-	public void setHamletsOfTownship(List<String> hamletsOfTownship) {
+	public void setHamletsOfTownship(List<SelectOptionVO> hamletsOfTownship) {
 		this.hamletsOfTownship = hamletsOfTownship;
 	}
+
+	public String getLoggedInUserParty() {
+		return loggedInUserParty;
+	}
+
+	public void setLoggedInUserParty(String loggedInUserParty) {
+		this.loggedInUserParty = loggedInUserParty;
+	}
+
+	public List<Long> getUserPartyVotes() {
+		return userPartyVotes;
+	}
+
+	public void setUserPartyVotes(List<Long> userPartyVotes) {
+		this.userPartyVotes = userPartyVotes;
+	}
+
 	
 	
 	

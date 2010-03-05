@@ -107,15 +107,14 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 			.append(" model.nomination.constituencyElection.constituency.name ");
 		hqlQuery.append("from CandidateBoothResult model ");
 		hqlQuery.append("where model.boothConstituencyElection.booth.tehsil.tehsilId=? ");
-			/*.append("and model.boothConstituencyElection.constituencyElection.election.electionYear in (").append( electionYears) 
-			.append(") and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionTypeId ")
-			.append("in (").append(electionTypeIDs).append( ")");*/
 		hqlQuery.append("group by model.boothConstituencyElection.constituencyElection.election.electionYear,")
 			.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
 			.append("model.nomination.party.shortName, ")
+			.append("model.nomination.constituencyElection.constituency.constituencyId, ")
 			.append("model.boothConstituencyElection.booth.boothId ");
-		hqlQuery.append("order by model.boothConstituencyElection.constituencyElection.election.electionYear,")
+		hqlQuery.append("order by model.boothConstituencyElection.constituencyElection.election.electionYear desc,")
 		.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
+		.append("model.nomination.constituencyElection.constituency.constituencyId, ")
 		.append("model.nomination.party.shortName, ")
 		.append("model.boothConstituencyElection.booth.boothId ");
 		
@@ -133,6 +132,16 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				.append("where bcev.voter.hamlet.township.townshipId=? ) and ")
 				.append("model.boothConstituencyElection.constituencyElection.election.electionId=?");
 		hqlQuery.append("group by model.nomination");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+
+	public List findMandalWisePartiesResultsForElection(Long tehsilId, Long electionId) {
+		Object[] params = {electionId, tehsilId};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.nomination.party.partyId, model.nomination.party.shortName,")
+		.append("sum(model.votesEarned) from CandidateBoothResult model")
+		.append(" where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
+		.append(" and model.boothConstituencyElection.booth.tehsil.tehsilId = ? group by model.nomination.party.partyId");
 		return getHibernateTemplate().find(hqlQuery.toString(), params);
 	}
 }

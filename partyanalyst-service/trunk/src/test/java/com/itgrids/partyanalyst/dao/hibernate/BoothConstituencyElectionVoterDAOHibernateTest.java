@@ -93,7 +93,7 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		//System.out.print(list);
 	}*/
 	
-	public void testFindTownshipWiseBoothDetailsForTehsil(){
+	/*public void t11estFindTownshipWiseBoothDetailsForTehsil(){
 		long beginTimeMillis = System.currentTimeMillis();
 		List list = boothConstituencyElectionVoterDAO.findTownshipWiseBoothDetailsForTehsil(new Long(844));
 		long endTimeMillis = System.currentTimeMillis();
@@ -109,5 +109,29 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		System.out.println("endTimeMillis:"+endTimeMillis);
 		System.out.println("Total time taken:" + (endTimeMillis-beginTimeMillis)/1000);
 		System.out.println(list.size());
+	}
+	
+	public void test(){
+		List list = boothConstituencyElectionVoterDAO.getTownshipVotesByTehsil(2L, 844L);
+		long total = 0L;
+		for(int i=0; i<list.size(); i++){
+			Object[] obj=(Object[]) list.get(i);
+			Long l = (Long) obj[0];
+			if(l.equals(new Long(21819L)))
+				total = total + (Long)obj[2];
+		}
+		System.out.println(total);
+	}*/
+	
+	/*public void testGetCandidateBoothResult(){
+		List list = boothConstituencyElectionVoterDAO.getAllCandidateBoothResultsForTownshipsForTehsil(844l);
+		System.out.println(list.size());
+	}*/
+	
+	public void testFindTownshipWiseBoothDetailsForTehsil(){
+		List list = boothConstituencyElectionVoterDAO.findTownshipWiseBoothDetailsForTehsil(844l, 2l);
+		for(int i=0; i<list.size(); i++){
+			System.out.println(((Object[])list.get(i))[0]+"--"+((Object[])list.get(i))[1]+"--"+((Object[])list.get(i))[2]+"--"+((Object[])list.get(i))[3]+"--"+((Object[])list.get(i))[4]+"--"+((Object[])list.get(i))[5]);
+		}
 	}
 }

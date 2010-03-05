@@ -11,6 +11,9 @@ public class TownshipPartyResultsVO implements Serializable {
 	private Long votesEarned;
 	private Long townshipID;
 	private String townshipName;
+	private Long constituencyID;
+	private String constituencyName;
+	private Long rank;
 	
 	public Long getPartyID() {
 		return partyID;
@@ -59,5 +62,23 @@ public class TownshipPartyResultsVO implements Serializable {
 	}
 	public void setTownshipName(String townshipName) {
 		this.townshipName = townshipName;
+	}
+	public Long getConstituencyID() {
+		return constituencyID;
+	}
+	public void setConstituencyID(Long constituencyID) {
+		this.constituencyID = constituencyID;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public Long getRank() {
+		return rank;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
 	}
 }

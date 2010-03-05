@@ -16,7 +16,6 @@ public class VillageBoothElection extends BaseModel{
 
 	private Long villageBoothElectionId;
 	private BoothConstituencyElection boothConstituencyElection;
-	private Hamlet hamlet;
 	private Township township;
 	
 	public VillageBoothElection(){
@@ -28,9 +27,8 @@ public class VillageBoothElection extends BaseModel{
 	}
 	
 	public VillageBoothElection(BoothConstituencyElection boothConstituencyElection,
-			Hamlet hamlet, Township township){
+			Township township){
 		this.boothConstituencyElection = boothConstituencyElection;
-		this.hamlet = hamlet;
 		this.township = township;
 	}
 
@@ -55,16 +53,6 @@ public class VillageBoothElection extends BaseModel{
 	public void setBoothConstituencyElection(
 			BoothConstituencyElection boothConstituencyElection) {
 		this.boothConstituencyElection = boothConstituencyElection;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "hamlet_id")
-	public Hamlet getHamlet() {
-		return hamlet;
-	}
-
-	public void setHamlet(Hamlet hamlet) {
-		this.hamlet = hamlet;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -71,14 +71,15 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 				" group by model.voter.houseNo, model.voter.age", params);
 	}
 	
-	public List findTownshipWiseBoothDetailsForTehsil(Long tehsilId){
-		return getHibernateTemplate().find("select model.voter.hamlet.township.townshipName, " +
-				"model.boothConstituencyElection.booth.partNo, model.boothConstituencyElection.booth.totalVoters, " +
-				"model.boothConstituencyElection.constituencyElection.election.electionYear, model.voter.hamlet.hamletName," +
-				"model.voter.hamlet.township.townshipId from BoothConstituencyElectionVoter model " +
-				"where model.boothConstituencyElection.booth.tehsil.tehsilId = ? group by " +
+	public List findTownshipWiseBoothDetailsForTehsil(Long tehsilId, Long electionId){
+		Object[] params = {tehsilId, electionId};
+		return getHibernateTemplate().find("select model.voter.hamlet.township.townshipId, model.voter.hamlet.township.townshipName, " +
+				"model.boothConstituencyElection.booth.boothId, model.boothConstituencyElection.booth.partNo, model.boothConstituencyElection.booth.totalVoters, " +
+				"model.boothConstituencyElection.boothResult.validVotes" +
+				" from BoothConstituencyElectionVoter model where model.boothConstituencyElection.booth.tehsil.tehsilId = ? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionId = ? group by " +
 				"model.boothConstituencyElection.booth.partNo, model.voter.hamlet.hamletName order by " +
-				"model.voter.hamlet.township.townshipName, model.boothConstituencyElection.booth.partNo",tehsilId);
+				"model.voter.hamlet.township.townshipName, model.boothConstituencyElection.booth.partNo",params);
 	}
 	
 	
@@ -176,7 +177,8 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 			.append("model.boothConstituencyElection.booth.tehsil.tehsilId = ? ");
 		query.append("group by model.boothConstituencyElection.booth.boothId, model.voter.hamlet.hamletName ");
 		query.append("order by model.voter.hamlet.township.townshipName");
-		return getHibernateTemplate().find(query.toString(),params);
+		List l = getHibernateTemplate().find(query.toString(),params);
+		return l;
 	}
 	
 	/*public List getTownshipWiseParyVotesByTehsil(String electionYear, String electionType, Long tehsilID){
@@ -190,4 +192,8 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 		return getHibernateTemplate().find(query.toString(),params);
 	}*/
 	
+	public List getAllCandidateBoothResultsForTownshipsForTehsil(Long tehsilId){
+		return getHibernateTemplate().find("select model.voter.hamlet.township.townshipName,model.boothConstituencyElection.candidateBoothResults from BoothConstituencyElectionVoter model where model.voter.hamlet.township.tehsil.tehsilId = ? group by " +
+				"model.voter.hamlet.township.townshipId", tehsilId);
+	}
 }

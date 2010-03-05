@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.impl.StaticDataService;
@@ -70,8 +71,13 @@ public class CrossVotingEstimationServiceTest{
 		Assert.assertEquals(value, "0.0");
 	}
 	
-	/*@Test
+	@Test
 	public void checkPercentageImpactOnConstituency(){
-		//crossVotingEstimationService.calculateCrossVotingPercentageImpactOnMandals(earnedVotesDifferenceInConstituency, percentageDifferenceInConstituencyRound, crossVotedMandalVOs);
-	}*/
+		EasyMock.expect(delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(new Long(408), new Long(2004))).andReturn(MockData.getConstituencies());
+		EasyMock.replay(delimitationConstituencyAssemblyDetailsDAO);
+		CrossVotingConsolidateVO obj = crossVotingEstimationService.getConsolidatedCrossVotingDetails("2009", 24l, 234l, 404l, "true");
+		Assert.assertEquals(new Long(1001248), obj.getTotalVotersInAC());
+		Assert.assertEquals(new Long(1573487), obj.getTotalVotersInPC());
+		EasyMock.verify(delimitationConstituencyAssemblyDetailsDAO);
+	}
 }

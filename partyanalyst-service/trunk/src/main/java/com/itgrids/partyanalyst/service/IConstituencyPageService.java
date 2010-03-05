@@ -13,10 +13,10 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
+import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.MandalTownshipWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.TownshipPartyResultsVO;
-import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 
 public interface IConstituencyPageService {
@@ -27,7 +27,7 @@ public interface IConstituencyPageService {
 	
 	public ResultWithExceptionVO getAllMandalLevelLeaders(Long tehsilId);
 	
-	public ResultWithExceptionVO getTownshipWiseBoothDetailsForTehsil(Long tehsilId);
+	public MandalAndRevenueVillagesInfoVO getTownshipWiseBoothDetailsForTehsil(Long tehsilId, Long electionId);
 	
 	public List<VotersWithDelimitationInfoVO> getVotersInfoInMandalsForConstituency(Long constituencyId);
 	

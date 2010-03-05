@@ -2,25 +2,28 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
-import junit.framework.Assert;
-
-import org.easymock.EasyMock;
-import org.junit.Before;
+import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
 
-import com.itgrids.partyanalyst.dao.INominationDAO;
-import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
-import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
-import com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService;
-import com.itgrids.partyanalyst.util.DummyConstituencies;
-import com.itgrids.partyanalyst.util.DummyNominations;
-import com.itgrids.partyanalyst.util.DummyPartyResultsData;
+import com.itgrids.partyanalyst.dto.ConstituencyWiseDataForMandalVO;
+import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
+import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyGenderWiseVotesVO;
 
-public class PartyBoothWiseResultsServiceTest {
+public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
 	
-	private INominationDAO nominationDAO;
+	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
+	
+	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
+		return partyBoothWiseResultsService;
+	}
+
+	public void setPartyBoothWiseResultsService(
+			IPartyBoothWiseResultsService partyBoothWiseResultsService) {
+		this.partyBoothWiseResultsService = partyBoothWiseResultsService;
+	}
+	
+	/*private INominationDAO nominationDAO;
 	private PartyBoothWiseResultsService partyBoothWiseResultsService;
 
 	@Before
@@ -30,7 +33,7 @@ public class PartyBoothWiseResultsServiceTest {
 		partyBoothWiseResultsService.setNominationDAO(nominationDAO);		
 	}
 	
-	/*@Test
+	@Test
 	public void checkGetParties(){
 		EasyMock.expect(partyDAO.getAll()).andReturn(DummyPartyResultsData.getParties());
 		EasyMock.replay(partyDAO);
@@ -56,7 +59,7 @@ public class PartyBoothWiseResultsServiceTest {
 				Assert.assertEquals("Nellore", obj.getName());
 		}
 		EasyMock.verify(nominationDAO);
-	}*/
+	}
 	
 	@Test
 	public void checkGetBoothWiseResultsForParty(){
@@ -77,5 +80,24 @@ public class PartyBoothWiseResultsServiceTest {
 		System.out.println(boothResultVO.getVotesEarned());
 		System.out.println(boothResultVO.getPercentage());
 		EasyMock.verify(nominationDAO);
+	}*/
+	
+	
+	//@Test
+	public void test(){
+		ElectionWiseMandalPartyResultListVO firstList = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(867l);
+		System.out.println(firstList.getElectionWiseMandalPartyResultVOList().size());
+		for(ElectionWiseMandalPartyResultVO eleTypeObj : firstList.getElectionWiseMandalPartyResultVOList()){
+			System.out.println(eleTypeObj.getElectionType()+eleTypeObj.getElectionYear()+":"+eleTypeObj.getConstituencyWiseDataForMandalVOs().size());
+			List<ConstituencyWiseDataForMandalVO> consties = eleTypeObj.getConstituencyWiseDataForMandalVOs();
+			for(ConstituencyWiseDataForMandalVO constiObj:consties){
+				System.out.print(constiObj.getConstituencyName()+"--");
+				System.out.println(constiObj.getPartyVotes().size());
+				List<PartyGenderWiseVotesVO> parties = constiObj.getPartyVotes();
+				for(PartyGenderWiseVotesVO party:parties){
+					System.out.println(party.getPartyName()+"\t"+party.getRank()+"\t"+party.getCandidateNameWithStatus()+"\t"+party.getMaleBoothResults()+"\t"+party.getMaleBoothResultsPercentage()+"\t"+party.getFemaleBoothResults()+"\t"+party.getFemaleBoothResultsPercentage()+"\t"+party.getFmBoothResults()+"\t"+party.getFmBoothResultsPercentage()+"\t"+party.getTotalVotesEarned()+"\t"+party.getTotalVotesEarnedPercentage());
+				}
+			}
+		}
 	}
 }
