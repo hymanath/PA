@@ -214,10 +214,10 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		if(influencingPeopleInMandalVO.getResultStatus().getExceptionEncountered() == null){
 			influencingPeopleInMandal = (List<InfluencingPeopleVO>)influencingPeopleInMandalVO.getFinalResult();
 		}
-		ResultWithExceptionVO boothDataOfRevenueVillagesInMandal = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(new Long(mandalID));
+		/*//ResultWithExceptionVO boothDataOfRevenueVillagesInMandal = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(new Long(mandalID), 2l);
 		if(boothDataOfRevenueVillagesInMandal.getResultStatus().getExceptionEncountered() == null){
 			townshipWiseBoothDataInMandal = (List<LocationWiseBoothDetailsVO>)boothDataOfRevenueVillagesInMandal.getFinalResult();
-		}
+		}*/
 		return SUCCESS;
 	}
 	
