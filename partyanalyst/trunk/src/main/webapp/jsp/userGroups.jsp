@@ -1,6 +1,8 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>  
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+ <%@ page import="java.util.ResourceBundle;" %>    
+ <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
@@ -11,48 +13,21 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+ <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
-
-
-
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-
-<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
 <!-- YUI Skin Sam -->
-
-<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-
- 
-
 <script type="text/javascript">
 function callAjax(param,jsObj,url){
 		var myResults;
@@ -60,7 +35,16 @@ function callAjax(param,jsObj,url){
  		var callback = {			
  		               success : function( o ) {
 							try {												
-									myResults = YAHOO.lang.JSON.parse(o.responseText);
+									if(o.responseText)
+										myResults = YAHOO.lang.JSON.parse(o.responseText);
+									if(jsObj.task == "subGrpsCountInSystemGrpsForUser")
+									{										
+										showSubGrpsCountInSystemGrps(myResults)										
+									} else if(jsObj.task == "subGrpsCountInMyGrpsForUser")
+									{										
+										showSubGrpsCountInMyGrps(myResults)										
+									}
+									
 							}catch (e) {   
 								   	alert("Invalid JSON result" + e);   
 							}  
@@ -269,8 +253,8 @@ function buildLayout()
 		border-left:1px solid #96B4D3;
 		border-right:3px solid #96B4D3;
 		border-bottom:3px solid #96B4D3;
-		min-height:560px;
-		height:560px;
+		min-height:580px;
+		height:580px;
 	}
 	h4{
 		align:left;	
@@ -315,9 +299,164 @@ function buildLayout()
 		font-family:veradana;
 		font-size:14px;
 		margin-left:5px;
-		}					
+		
+		}
+	#groupsCountDiv
+	{
+		background-image:url(images/usergroups/group2.jpg);
+		width:260px;
+		height:200px;		
+	}
+	.link  {
+			color:#247CD4;
+			text-decoration:none;
+			font-size:15px;
+			font-family:verdana;
+			font-weight:bold;			
+		}
+	.link1  {
+			color:#115C06;
+			text-decoration:none;
+			font-size:15px;
+			font-family:verdana;
+			font-weight:bold;			
+		}
+		#groupDetailsHead {
+			background-color:#EFF3F7;
+			background-image:none;
+			background-position:center top;
+			background-repeat:repeat;
+			border:1px solid;
+			color:CadetBlue;
+			font-weight:normal;
+			text-align:left;
+			}
+		#groupDetailsHead h4
+		{
+			color:#356784;
+			text-decoration:underline;
+		}
+		.promoImage {
+			float:left;
+			margin-right:10px;
+			width:40px;
+		}
+		.promoNumber {
+		color:#888888;
+		float:left;
+		font-size:2em;
+		font-weight:bold;
+		height:40px;
+		line-height:40px;
+		width:50px;
+		}
+		.promoText {
+		clear:left;
+		color:#555555;
+		font-size:1.3em;
+		margin-left:40px;
+		margin-top:0;
+		text-transform:lowercase;
+}							
 </style>
 <script type="text/javascript">
+var Localization = { <%
+		
+		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
+		String groupName = rb.getString("groupName");
+		String description = rb.getString("description"); 
+		String createNewGrp = rb.getString("createNewGrp");
+		String addToStaticGrpAsSubGrpRadio = rb.getString("addToStaticGrpAsSubGrpRadio");
+		String addToGrpAsSubGrpRadio = rb.getString("addToGrpAsSubGrpRadio");
+%> }
+var createGroupDialog;
+var userGrpsObj={
+		showGrpMembersArr:[],
+		systemGroupsListBoxArr:[],
+		myGroupsListBoxArr:[]
+};
+	function showSubGrpsCountInSystemGrps(results)
+	{	
+		var subGrpsCountInSystemGrps = results.groupsDetailsForUser;
+		var groupDetailsDivEl = document.getElementById("groupsCountDiv");
+		var myGroupsLinksDivContent = '';
+		myGroupsLinksDivContent+='<ul id="myGroupsList">';
+		for(var i in subGrpsCountInSystemGrps)
+		{
+		myGroupsLinksDivContent+='<li>';	
+		myGroupsLinksDivContent+='<a href="#" class="link1" onclick="showUserGroupsDetails()">'+subGrpsCountInSystemGrps[i].staticGroupName+' - '+subGrpsCountInSystemGrps[i].numberOfGroups+'</a>';
+		myGroupsLinksDivContent+='</li>';
+		myGroupsLinksDivContent+='<div id="'+subGrpsCountInSystemGrps[i].staticGroupId+'"></div>';
+		
+		}
+		myGroupsLinksDivContent+='</ul>';
+		groupDetailsDivEl.innerHTML =  myGroupsLinksDivContent;
+	}
+
+	function showSubGrpsCountInMyGrps(results)
+	{
+		var subGrpsCountInMyGrps = results.groupsDetailsForUser;
+		var groupDetailsDivEl = document.getElementById("groupsCountDiv");
+		var myGroupsLinksDivContent = '';
+		myGroupsLinksDivContent+='<ul id="myGroupsList">';
+		for(var i in subGrpsCountInMyGrps)
+		{
+		myGroupsLinksDivContent+='<li type="square">';	
+		myGroupsLinksDivContent+='<a href="#" class="link1" onclick="showUserGroupsDetails()">'+subGrpsCountInMyGrps[i].staticGroupName+' - '+subGrpsCountInMyGrps[i].numberOfGroups+'</a>';
+		myGroupsLinksDivContent+='</li>';
+		myGroupsLinksDivContent+='<div id="'+subGrpsCountInMyGrps[i].staticGroupId+'"></div>';
+		
+		}
+		myGroupsLinksDivContent+='</ul>';
+		groupDetailsDivEl.innerHTML =  myGroupsLinksDivContent;
+	}
+
+	function showUserGroupsDetails(id)
+	{
+		var divEl = document.getElementById("moreDetailsDiv");
+		divEl.style.display='block';
+		var linksEl = document.getElementById("centerNavLinksDiv");
+
+		var linksStr='';
+		linksStr+='<a href="#" onclick="showMoreDescription()">View Members</a>';
+		linksStr+='<a href="#" onclick="showMoreDescription()">Add Memebers</a>';
+		linksStr+='<a href="#" onclick="showMoreDescription()">Send SMS</a>';
+		linksStr+='<a href="#" onclick="showMoreDescription()">View SubGroups</a>';
+
+		linksEl.innerHTML = linksStr;
+		
+		var str='';
+		str+='<div id="groupDetailsHead">';
+		str+='<table>';
+		str+='<tr><td rowspan="2">';
+		str+='<img src="images/usergroups/group-default.png" border="none" />';
+		str+='</td>';
+		str+='<td>';
+		str+='<h4>Sponsors Group</h4>';
+		str+='<p>This group contains sub groups which contain my sponsors by region level.</p>';
+		str+='<p>Created Date:06/March/2009</p>';
+		str+='<p>Members In Group:5</p>';
+		str+='<Sub Group>';
+		str+='<ul>';
+		str+='<li type="square"><b>Districtwise Sponsors:</b>&nbsp;this group contains district level sponsors</li>';
+		str+='</ul>';
+		str+='</td>';
+		str+='<td>';
+		str+='<div class="promoImage">';
+		str+='<img src="images/usergroups/profile-default.png" border="none" class="promoImage" border="0">';
+		str+='</div>';
+		str+='<div class="promoNumber">5</div>';
+		str+='<div class="promoText">Members</div>';		
+		str+='</td>';
+		str+='</tr>';
+		str+='</table>';			
+		str+='</div>';
+
+		divEl.innerHTML=str;
+		
+				
+	}
+	
 	function showSearchOptions()
 	 	{
 			var divEl = document.getElementById("optionsRadio");
@@ -325,6 +464,192 @@ function buildLayout()
 			divEl.style.display='block';
 			else divEl.style.display='none';	 	
 		}
+
+	function buildCreateGroupPopup()
+	{
+		
+		var elmt = document.getElementById('userGroupsMainDiv');
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','createGroupmDiv');
+		var createGroupContentStr='';
+		createGroupContentStr+='<div class="hd" align="left">Create New User Group</div>';
+		createGroupContentStr+='<div class="bd" align="left">';
+		createGroupContentStr+='<div id="userGroupDetailsDivBody">';
+		createGroupContentStr+='<div class="section_title">Group Info</div><br>';
+		createGroupContentStr+='<div id="userGroupsDialogText">To create a new community group, complete the fields below. Be sure to include a description that will let other community members know just what your group is about!</div><br>';
+		createGroupContentStr+='<table class="createGroupTable">';
+		//createGroupContentStr+='<tr></tr>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<th><%=groupName%></th>'; 
+		createGroupContentStr+='<td style="padding-left: 15px;"><input type="text" style="width:400px;" id="groupNameText"/></td>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<th><%=description%></th>';
+		createGroupContentStr+='<td style="padding-left: 15px;"><textarea style="width:400px;" id="descTextArea"></textarea></td>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='</table>';
+		createGroupContentStr+='<br>';
+		createGroupContentStr+='<fieldset>';
+		createGroupContentStr+='<legend>Create Group As</legend>';
+		createGroupContentStr+='<table class="createGroupTable">';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<td><input type="radio" id="createNewGrpRadio" name="createGroup" value="Create New Group" onClick="hideGroupSelectionListBoxes()"/><%=createNewGrp%></td>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Static Group As Sub Group" onClick="showStaticGroupSelectionBox()"/><%=addToStaticGrpAsSubGrpRadio%></td>';
+		createGroupContentStr+='<td><select class="selectWidth" id="staticGrpSelectBox" name="systemGroups" style="display:none;">';
+		for(var i in userGrpsObj.systemGroupsListBoxArr)
+		{
+			createGroupContentStr+='<option value='+userGrpsObj.systemGroupsListBoxArr[i].id+'>'+userGrpsObj.systemGroupsListBoxArr[i].value+'</option>';
+		}
+		createGroupContentStr+='</select></td>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To My Group As Sub Group" onClick="showMyGroupSelectionBox()"/><%=addToGrpAsSubGrpRadio%></td>';
+		createGroupContentStr+='<td><select class="selectWidth" id="myGrpSelectBox" name="myGroups" style="display:none;">';
+		for(var j in userGrpsObj.myGroupsListBoxArr)
+		{
+			createGroupContentStr+='<option value='+userGrpsObj.myGroupsListBoxArr[j].id+'>'+userGrpsObj.myGroupsListBoxArr[j].value+'</option>';
+		}
+		createGroupContentStr+='</select></td>';
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='</table>';
+		createGroupContentStr+='</fieldset>';		
+		createGroupContentStr+='</div>';
+		createGroupContentStr+='</div>';
+		createGroupContentStr+='</div>'; 
+		divChild.innerHTML=createGroupContentStr;
+		
+		elmt.appendChild(divChild);	
+		if(createGroupDialog)
+			createGroupDialog.destroy();
+		createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
+				{ width : "600px", 
+	              fixedcenter : false, 
+	              visible : true,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  hideaftersubmit:true,
+				  close:true,
+				  x:400,
+				  y:300,				  
+				  buttons : [ { text:"Create", handler: handleCreateGroupSubmit, isDefault:true}, 
+	                          { text:"Cancel", handler: handleCreateGroupCancel}]
+	             }); 
+		createGroupDialog.render();
+	}
+	
+	function hideGroupSelectionListBoxes()
+	{
+		var staticGrpSelectEl = document.getElementById("staticGrpSelectBox");
+		staticGrpSelectEl.style.display = 'none';
+
+		var myGrpSelectEl = document.getElementById("myGrpSelectBox");
+		myGrpSelectEl.style.display = 'none';		
+	}
+	function showStaticGroupSelectionBox()
+	{
+		var staticGrpSelectEl = document.getElementById("staticGrpSelectBox");
+		staticGrpSelectEl.style.display = 'block';
+
+		var myGrpSelectEl = document.getElementById("myGrpSelectBox");
+		myGrpSelectEl.style.display = 'none';	
+	
+	}
+	
+	function showMyGroupSelectionBox()
+	{
+		var staticGrpSelectEl = document.getElementById("staticGrpSelectBox");
+		staticGrpSelectEl.style.display = 'none';
+
+		var myGrpSelectEl = document.getElementById("myGrpSelectBox");
+		myGrpSelectEl.style.display = 'block';
+		
+		
+	}
+	function getSubGroupsCountInSystemGrpsForUser()
+	{
+		var jsObj= 
+		{
+			task:"subGrpsCountInSystemGrpsForUser"
+		}
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
+		callAjax(param,jsObj,url);
+	}
+
+	function getSubGroupsCountInMyGroupsForUser()
+	{
+		var jsObj= 
+		{
+			task:"subGrpsCountInMyGrpsForUser"
+		}
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
+		callAjax(param,jsObj,url);
+	}
+	function handleCreateGroupSubmit()
+	{
+		var groupNameTextVal = document.getElementById("groupNameText").value;
+		var descTextAreaVal = document.getElementById("descTextArea").value;
+		var groupCreationOption;
+		var staticGrpSelectBoxEl = document.getElementById("staticGrpSelectBox");
+		var	staticGrpSelectBoxElVal;
+		var myGrpSelectBoxEl = document.getElementById("staticGrpSelectBox");
+		var	myGrpSelectBoxElVal; 
+		var status;
+		var categoryType;
+		//var parentGroupId; 
+		var elements = document.getElementsByTagName('input');
+		for(var i=0;i<elements.length;i++)
+		{
+			if(elements[i].type=="radio" && elements[i].name=="createGroup" && elements[i].checked==true)
+				groupCreationOption = elements[i].value;
+		}
+		if(groupCreationOption == null)
+		{
+		alert("Please Select Group Creation Option!");
+		return;
+		} else if(groupCreationOption == "Create New Group")
+		{
+			staticGrpSelectBoxElVal = null;
+			myGrpSelectBoxElVal = null;
+			status = "1";
+			categoryType = "2";
+			
+		} else if(groupCreationOption == "Add To Static Group As Sub Group")
+		{
+			staticGrpSelectBoxElVal = staticGrpSelectBoxEl.options[staticGrpSelectBoxEl.selectedIndex].value; 
+			myGrpSelectBoxElVal = null;
+			status = "2";
+			categoryType = "1";
+		} else if(groupCreationOption == "Add To My Group As Sub Group")
+		{
+			staticGrpSelectBoxElVal = null; 
+			myGrpSelectBoxElVal = myGrpSelectBoxEl.options[myGrpSelectBoxEl.selectedIndex].value;
+			status = "2";
+			categoryType = "2";
+		}
+		var jsObj={
+				groupName: groupNameTextVal,
+				groupdDesc: descTextAreaVal,
+				staticGroupId: staticGrpSelectBoxElVal,					
+				task:"createNewGroup",
+				statusVal: status,
+				categoryType: categoryType	
+			  }
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+rparam;		
+	callAjax(rparam,jsObj,url);
+		
+		createGroupDialog.hide();			
+	}
+	
+	function handleCreateGroupCancel()
+	{
+		this.cancel();
+	}		
 </script>
 </head>
 <body class="yui-skin-sam">
@@ -376,16 +701,16 @@ function buildLayout()
 	</div>
 	<div id="userGroupsLeftDiv">
 		<div id="leftNavLinksDiv">
-		<p id="systemGroups" class="link"><a href="#" onclick="getSystemGroupsForUser()"><b>System Groups</b></a></p>
-		<p id="myGroups" class="link"><a href="#" onclick="getGroupsCreatedByUser()"><b>My Groups</b></a></p>		
+		<p id="systemGroups" class="link"><a href="#" onclick="getSubGroupsCountInSystemGrpsForUser()"><b>System Groups</b></a></p>
+		<p id="myGroups" class="link"><a href="#" onclick="getSubGroupsCountInMyGroupsForUser()"><b>My Groups</b></a></p>		
 		<p id="createNewGrpDiv" class="link"><a href="#" onclick="buildCreateGroupPopup()"><b>Create New Group</b></a></p>
-		<p id="manageGrpDiv" class="link"><a href="#" onclick="buildCreateGroupPopup()"><b>Manage Groups</b></a></p>
+		<p id="manageGrpDiv" class="link"><a href="#" onclick=""><b>Manage Groups</b></a></p>
 		</div>
 		
 		<div id="groupsList">
 		<fieldset>
 			<legend>Group Details</legend>
-			<img src="images/usergroups/user_groups_details.jpg" border="none" height="200px" width="260px"/>			
+			<div id="groupsCountDiv"></div>						
 		</fieldset>
 		</div>
 		
@@ -434,7 +759,22 @@ function showMoreDescription(){
 	}
 	
 }
+<c:forEach var="systemGroups"  items="${staticGroupsListboxOptions}" >
+var ob={
+			id:'${systemGroups.id}',
+			value:'${systemGroups.name}'
+		};
+userGrpsObj.systemGroupsListBoxArr.push(ob);	
+</c:forEach>
+<c:forEach var="myGroups"  items="${myGroupsListboxOptions}">
+var ob={
+			id:'${myGroups.id}',
+			value:'${myGroups.name}'
+		};
+userGrpsObj.myGroupsListBoxArr.push(ob);	
+</c:forEach>
 buildLayout();
+
 </script>
 </body>
 </html>
