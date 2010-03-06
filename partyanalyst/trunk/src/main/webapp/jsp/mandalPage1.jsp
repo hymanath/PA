@@ -324,7 +324,7 @@ var allBoothElecInfo = new Array();
 		revenueInfo += '<div id="revenueVillagesMainDiv">';
 		revenueInfo += '<table>';
 		revenueInfo += '<tr><td>Election Type:</td>';
-		revenueInfo += '<td><select onchange = "getElectionYears(this.options[this.selectedIndex].value)" class = "selectWidth">';
+		revenueInfo += '<td><select id="electionTypeSelect" onchange = "getElectionYears(this.options[this.selectedIndex].value)" class = "selectWidth">';
 		revenueInfo += '<option value="0">Select </option>';
 		revenueInfo += '<option value="1">Parliament</option>';
 		revenueInfo += '<option value="2">Assembly</option>';
@@ -368,16 +368,17 @@ var allBoothElecInfo = new Array();
 			callAjax(rparam,jsObj,url);
 	}
 
-	function getTownshipElectionsInfo(townshipId, electionId){
+	function getTownshipElectionsInfo(name,townshipId, electionId){
 		var jsObj=
 		{
-				townshipId:townshipId;
+				villageName:name,
+				townshipId:townshipId,
 				electionId:electionId,
 				task:"getRevenueVillagesElectionInfo"						
 		};
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/getRevenueVillagesInfoAjaxAction.action?"+rparam;						
+		var url = "<%=request.getContextPath()%>/getRevenueVillagesElectionsAjaxAction.action?"+rparam;						
 		callAjax(rparam,jsObj,url);
 	}
 	
@@ -402,7 +403,7 @@ var allBoothElecInfo = new Array();
 								}
 								else if(jsObj.task == "getRevenueVillagesElectionInfo")
 								{								
-									showRevenueVillageElectionInfo(resultVO);			
+									showRevenueVillageElectionInfo(resultVO,jsObj);			
 								}					
 						}catch (e)  {   
 						   	alert("Invalid JSON result" + e);   
@@ -423,7 +424,7 @@ var allBoothElecInfo = new Array();
 		var elmtLabel = document.getElementById('electionIdSelectDivLabel');
 		var elmtData = document.getElementById('electionIdSelectDivData');
 		
-		electionYearSelect += '<select class = "selectWidth" onchange = "getRevenueVillagesInfo(this.options[this.selectedIndex].value)">';
+		electionYearSelect += '<select id="electionYearSelect" class = "selectWidth" onchange = "getRevenueVillagesInfo(this.options[this.selectedIndex].value)">';
 		for(var i in resultVO)
 		{			
 			electionYearSelect += '<option value='+resultVO[i].id+'>'+resultVO[i].name+'</option>';
@@ -437,8 +438,44 @@ var allBoothElecInfo = new Array();
 			elmtData.innerHTML=electionYearSelect;
 	}
 
-	function showRevenueVillageElectionInfo(resultVO){
-		alert(".......T......"+resultVO.legth);
+	function showRevenueVillageElectionInfo(resultVO,jsObj){
+
+		var typeSelectElmt = document.getElementById("electionTypeSelect");
+		var yearSelectElmt = document.getElementById("electionYearSelect");		
+
+		var typeVal = ""+typeSelectElmt.options[typeSelectElmt.selectedIndex].text;
+		var yearVal = ""+yearSelectElmt.options[yearSelectElmt.selectedIndex].text;
+
+		
+		 var rvEleStr = '';
+		 rvEleStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;">';
+		 rvEleStr += '<tr>';
+		 rvEleStr += '<th>Party</th>';
+		 for(var i in resultVO){
+		 rvEleStr += '<td>'+resultVO[i].partyName+'</td>';
+		 }
+		 rvEleStr += '</tr><tr>';
+		 rvEleStr += '<th>Votes Earned</th>';
+		 for(var i in resultVO){
+		 rvEleStr += '<td>'+resultVO[i].votesEarned+'</td>';
+		 }
+		 rvEleStr += '</tr>';
+		 rvEleStr += '</table>';
+
+		 myPanel = new YAHOO.widget.Panel("townshipPartyResultsPanel", {
+		 width: "550px",
+		 x:150,
+		 y:750,
+		 constraintoviewport: false,
+		 underlay: "none",
+		 close: true,
+		 visible: true,
+		 draggable: true
+		 });
+		 
+		 myPanel.setHeader(" Revenue Village : "+jsObj.villageName);
+		 myPanel.setBody(rvEleStr);
+		 myPanel.render(); 
 	}
 	
 	function showRevenueVillagesInfo(resultVO){
@@ -484,7 +521,7 @@ var allBoothElecInfo = new Array();
 			rvStr += '</td>';
 			rvStr += '<td>';
 			rvStr += '<a href = "#">Census Info</a><br>';
-			rvStr += '<a href = "#" onclick = "getTownshipElectionsInfo('+resultVO.revenueVillagesInfo[i].locationId+','+electionId+')">All Elections</a><br>';
+			rvStr += '<a href = "#" onclick = "getTownshipElectionsInfo(\''+resultVO.revenueVillagesInfo[i].locationName+'\','+resultVO.revenueVillagesInfo[i].locationId+','+electionId+')">All Elections</a><br>';
 			rvStr += '<a href = "#">Cast Details</a><br>';
 			rvStr += '</td>';
 			rvStr += '</tr>';
@@ -762,6 +799,7 @@ var allBoothElecInfo = new Array();
 	</div>
 	<div id="mandalPageTab" class="yui-skin-sam"></div>
 	<div class="yui-skin-sam"><div id="boothPagePanel" ></div></div>
+	<div class="yui-skin-sam"><div id="townshipPartyResultsPanel" ></div></div>	
 </div>
 
 <script type="text/javascript">
