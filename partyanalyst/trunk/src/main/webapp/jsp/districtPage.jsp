@@ -44,7 +44,10 @@
 			key : "candidateName",formatter:YAHOO.widget.DataTable.formatLink
 		}, {
 			key : "partyName"
-		} ]
+		}, {
+			key : "partyFlag"
+		}		
+		]
 	};
 
 	var resultsColumnDefs = [ {
@@ -59,6 +62,9 @@
 		key : "partyName",
 		label : "Party Name",
 		sortable : true
+	}, {
+		key : "partyFlag",
+		label : "Party Flag"	
 	} ];
 
 	var myConfigs = {
@@ -110,7 +116,7 @@
 			background:none;
 		}
 
-		.yui-skin-sam thead .yui-dt-sortable {
+		.yui-skin-sam thead {
 
 			background-color:#C4DEFF;
 			color:#3F546F;
@@ -212,6 +218,7 @@
 						</span>
 					 &nbsp </td>
 					<td><c:out value="${candidate.partyName}"/></td>
+					<td><img src="<%=request.getContextPath()%>/images/party_flags/${candidate.partyFlag}" height="30" width="40"/></td>
 				</tr>  
 			</c:forEach>
 		</table>		

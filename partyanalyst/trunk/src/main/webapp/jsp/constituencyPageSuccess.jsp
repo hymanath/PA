@@ -257,7 +257,8 @@
 						candidateId : '${cInfo.candidateId}',
 						candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${cInfo.candidateId}"> ${cInfo.candidateName}</a>',	
 						partyId:' ${cInfo.partyId}',
-						party : '${cInfo.party}'
+						party : '${cInfo.party}',
+						partyFlag : '<img src="<%=request.getContextPath()%>/images/party_flags/${cInfo.partyFlag}" height="30" width="40"/>'
 					 };		
 	
 	constituencyPageMainObj.presentAssemblyCandidate.push(candidateObj);
@@ -274,7 +275,8 @@
 					candidateId : '${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}',
 					candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}"> ${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}</a>',		
 					partyId:' ${candidateDetailsForConstituency.parliamentCandidateInfo.partyId}',
-					party : '${candidateDetailsForConstituency.parliamentCandidateInfo.party}'
+					party : '${candidateDetailsForConstituency.parliamentCandidateInfo.party}',
+					partyFlag : '<img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.parliamentCandidateInfo.partyFlag}" height="30" width="40"/>'
 				 };		
 	constituencyPageMainObj.presentParliamentCandidate.push(pmtObj);
 

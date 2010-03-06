@@ -220,14 +220,22 @@ function insertData(param,results)
 	str+='<table id="elecResultsTab">';
 	for(var item in results)
 	{		
+		console.log(results[item].partyFlag);
 		str+='<tr>';
-		str+='<td>'+results[item].partyName+'</th>';
+		str+='<td><a href="partyPageAction.action?partyId='+results[item].partyId+'">'+results[item].partyName+'</a></td>';
+		if(results[item].partyFlag)
+			str+='<td><img src="<%=request.getContextPath()%>/images/party_flags/'+results[item].partyFlag+'" height="30" width="40"/></td>';
+		else	
+			str+='<td><img src="<%=request.getContextPath()%>/images/party_flags/no_Image.png" height="30" width="40"/></td>';
 		str+='<td align="center">'+results[item].totalSeatsWon+'</td>';
 		str+='</tr>';
 	}
 	str+='</table>';
 	
 	tableDivElmt.innerHTML=str;	
+
+	spanElmt.innerHTML=" (close)";
+	searchElmt.style.display="none";
 	
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 			.get("elecResultsTab"));
@@ -235,6 +243,8 @@ function insertData(param,results)
 	resultsDataSource.responseSchema = {
 		fields : [ {
 			key : "partyName"
+		},{
+			key : "partyFlag"
 		}, {
 			key : "totalSeatsWon",parser:"number"
 		}]
@@ -244,16 +254,23 @@ function insertData(param,results)
 		key : "partyName",
 		label : "PARTY NAME",
 		sortable : true
+	},{
+		key : "partyFlag",
+		label : "PARTY Flag"
 	}, {
 		key : "totalSeatsWon",
 		label : "SEATS WON",
 		sortable : true
 	}];
 
-   	var myDataTable = new YAHOO.widget.DataTable(tableDivElmt,resultsColumnDefs, resultsDataSource);  
+	
+	var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10
+			    }) 
+				};	
 
-	spanElmt.innerHTML=" (close)";
-	searchElmt.style.display="none";
+   	var myDataTable = new YAHOO.widget.DataTable(tableDivElmt,resultsColumnDefs, resultsDataSource,myConfigs);  
 
 }
   </script>
