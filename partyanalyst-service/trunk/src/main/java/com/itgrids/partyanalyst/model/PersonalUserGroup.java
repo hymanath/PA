@@ -43,12 +43,13 @@ private String groupName;
 private String description;
 private StaticGroup staticGroup;
 private PersonalUserGroup parentGroupId;
-private PersonalUserGroup parentGroupName;
+private String parentGroupName;
 private Registration createdUserId;
-private Set<StaticUsers>staticUsers=new HashSet<StaticUsers>(0);
 private Set<UserGroupPrivileges> userGroupPrivileges=new HashSet<UserGroupPrivileges>(0);
 private Date updatedDate;
 private Date createdDate;
+private MyGroup myGroup;
+private Set<StaticUserGroup> staticUserGroups = new HashSet<StaticUserGroup>(0);
 
 //constructors
 
@@ -66,19 +67,19 @@ public PersonalUserGroup(Long personalUserGroupId) {
 public PersonalUserGroup(Long personalUserGroupId, String groupName,
 		String description, StaticGroup staticGroup,
 		PersonalUserGroup parentGroupId, Registration createdUserId,
-		Set<StaticUsers> staticUsers,
-		Set<UserGroupPrivileges> userGroupPrivileges,Date createdDate,PersonalUserGroup parentGroupName) {
-	super();
+		Set<UserGroupPrivileges> userGroupPrivileges,Date createdDate,String parentGroupName, MyGroup myGroup, Set<StaticUserGroup> staticUserGroups) {
+	
 	this.personalUserGroupId = personalUserGroupId;
 	this.groupName = groupName;
 	this.description = description;
 	this.staticGroup = staticGroup;
 	this.parentGroupId = parentGroupId;
 	this.createdUserId = createdUserId;
-	this.staticUsers = staticUsers;
 	this.userGroupPrivileges = userGroupPrivileges;
 	this.createdDate=createdDate;
 	this.parentGroupName=parentGroupName;
+	this.myGroup = myGroup;
+	this.staticUserGroups = staticUserGroups;
 }
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -90,7 +91,7 @@ public void setPersonalUserGroupId(Long personalUserGroupId) {
 	this.personalUserGroupId = personalUserGroupId;
 }
 
-@Column(name = "groupname", length = 100)
+@Column(name = "group_name", length = 100)
 public String getGroupName() {
 	return groupName;
 }
@@ -136,14 +137,6 @@ public void setCreatedUserId(Registration createdUserId) {
 	this.createdUserId = createdUserId;
 }
 @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "personalUserGroup")
-public Set<StaticUsers> getStaticUsers() {
-	return staticUsers;
-}
-
-public void setStaticUsers(Set<StaticUsers> staticUsers) {
-	this.staticUsers = staticUsers;
-}
-@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "personalUserGroup")
 public Set<UserGroupPrivileges> getUserGroupPrivileges() {
 	return userGroupPrivileges;
 }
@@ -159,12 +152,12 @@ public void setUpdatedDate(Date updatedDate) {
 	this.updatedDate = updatedDate;
 }
 
-@Column(name = "parent_group_name", length = 25)
-public PersonalUserGroup getParentGroupName() {
+@Column(name = "parent_group_name", length = 100)
+public String getParentGroupName() {
 	return parentGroupName;
 }
 
-public void setParentGroupName(PersonalUserGroup parentGroupName) {
+public void setParentGroupName(String parentGroupName) {
 	this.parentGroupName = parentGroupName;
 }
 @Temporal(TemporalType.TIMESTAMP)
@@ -175,6 +168,27 @@ public Date getCreatedDate() {
 public void setCreatedDate(Date createdDate) {
 	this.createdDate = createdDate;
 }
+@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+@JoinColumn(name = "my_group_id")
+@LazyToOne(LazyToOneOption.NO_PROXY)
+@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+public MyGroup getMyGroup() {
+	return myGroup;
+}
+public void setMyGroup(MyGroup myGroup) {
+	this.myGroup = myGroup;
+}
+@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "personalUserGroup")
+public Set<StaticUserGroup> getStaticUserGroups() {
+	return staticUserGroups;
+}
+public void setStaticUserGroups(Set<StaticUserGroup> staticUserGroups) {
+	this.staticUserGroups = staticUserGroups;
+}
+
+
+
+
 
 
 

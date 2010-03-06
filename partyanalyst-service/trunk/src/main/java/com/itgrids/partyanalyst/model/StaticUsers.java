@@ -32,7 +32,6 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "static_users")
-
 public class StaticUsers implements  java.io.Serializable {
 /**
 	 * 
@@ -43,12 +42,12 @@ private String name;
 private String mobileNumber;
 private String emailId;
 private String address;
-private PersonalUserGroup personalUserGroup;
 private Date updatedDate;
 private Date createdDate;
 private String location;
 private String designation;
 private String phoneNumber;
+private Set<StaticUserGroup> staticUserGroups = new HashSet<StaticUserGroup>(0);
 //constructors
 
 /** default constructors*/
@@ -62,19 +61,20 @@ public StaticUsers(Long staticUserId) {
 	this.staticUserId = staticUserId;
 }
 public StaticUsers(Long staticUserId, String name, String mobileNumber,
-		String emailId, String address, PersonalUserGroup personalUserGroup,Date updatedDate,String location,String designation,Date createdDate,String phoneNumber) {
+		String emailId, String address, Date updatedDate,String location,
+		String designation,Date createdDate,String phoneNumber, Set<StaticUserGroup> staticUserGroups) {
 	
 	this.staticUserId = staticUserId;
 	this.name = name;
 	this.mobileNumber = mobileNumber;
 	this.emailId = emailId;
 	this.address = address;
-	this.personalUserGroup = personalUserGroup;
 	this.updatedDate=updatedDate;
 	this.location=location;
 	this.designation=designation;
 	this.createdDate=createdDate;
 	this.phoneNumber=phoneNumber;
+	this.staticUserGroups = staticUserGroups;
 }
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -86,14 +86,14 @@ public void setStaticUserId(Long staticUserId) {
 	this.staticUserId = staticUserId;
 }
 
-@Column(name = "name", length = 25)
+@Column(name = "name", length = 100)
 public String getName() {
 	return name;
 }
 public void setName(String name) {
 	this.name = name;
 }
-@Column(name = "mobilenumber", length=25)
+@Column(name = "mobile", length=25)
 public String getMobileNumber() {
 	return mobileNumber;
 }
@@ -101,14 +101,14 @@ public void setMobileNumber(String mobileNumber) {
 	this.mobileNumber = mobileNumber;
 }
 
-@Column(name = "emailid", length = 25)
+@Column(name = "email", length = 100)
 public String getEmailId() {
 	return emailId;
 }
 public void setEmailId(String emailId) {
 	this.emailId = emailId;
 }
-@Column(name = "address", length = 25)
+@Column(name = "address", length = 250)
 public String getAddress() {
 	return address;
 }
@@ -133,7 +133,7 @@ public void setLocation(String location) {
 	this.location = location;
 }
 
-@Column(name = "designation", length = 25)
+@Column(name = "designation", length = 100)
 public String getDesignation() {
 	return designation;
 }
@@ -150,26 +150,19 @@ public void setCreatedDate(Date createdDate) {
 	this.createdDate = createdDate;
 }
 
-@Column(name = "phoneNumber", length = 25)
+@Column(name = "phone", length = 25)
 public String getPhoneNumber() {
 	return phoneNumber;
 }
 public void setPhoneNumber(String phoneNumber) {
 	this.phoneNumber = phoneNumber;
 }
-
-@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-@JoinColumn(name = "personal_user_group_id")
-@LazyToOne(LazyToOneOption.NO_PROXY)
-@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-public PersonalUserGroup getPersonalUserGroup() {
-	return personalUserGroup;
+@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "staticUser")
+public Set<StaticUserGroup> getStaticUserGroups() {
+	return staticUserGroups;
 }
-
-public void setPersonalUserGroup(PersonalUserGroup personalUserGroup) {
-	this.personalUserGroup = personalUserGroup;
+public void setStaticUserGroups(Set<StaticUserGroup> staticUserGroups) {
+	this.staticUserGroups = staticUserGroups;
 }
-
-
 
 }

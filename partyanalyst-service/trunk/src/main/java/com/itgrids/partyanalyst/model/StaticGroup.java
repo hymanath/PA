@@ -43,6 +43,7 @@ public class StaticGroup implements java.io.Serializable {
 	private String groupDescription;
 	private Set<PersonalUserGroup>personalUserGroup=new HashSet<PersonalUserGroup>(0);
 	private Date createdDate;
+	private Date updatedDate;
 	
 	//constructors
 	/*default constructors*/
@@ -56,13 +57,14 @@ public class StaticGroup implements java.io.Serializable {
 	}
 
 	public StaticGroup(Long staticGroupId, String groupName,
-			String groupDescription, Set<PersonalUserGroup> personalUserGroup,Date createdDate) {
+			String groupDescription, Set<PersonalUserGroup> personalUserGroup,Date createdDate, Date updatedDate) {
 		
 		this.staticGroupId = staticGroupId;
 		this.groupName = groupName;
 		this.groupDescription = groupDescription;
 		this.personalUserGroup = personalUserGroup;
 		this.createdDate=createdDate;
+		this.updatedDate=updatedDate;
 	}
 
 	@Id
@@ -75,7 +77,7 @@ public class StaticGroup implements java.io.Serializable {
 	public void setStaticGroupId(Long staticGroupId) {
 		this.staticGroupId = staticGroupId;
 	}
-	@Column(name = "groupname", length = 25)
+	@Column(name = "group_name", length = 100)
 	public String getGroupName() {
 		return groupName;
 	}
@@ -83,7 +85,7 @@ public class StaticGroup implements java.io.Serializable {
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
-	@Column(name = "groupdescription", length = 25)
+	@Column(name = "group_desc", length = 250)
 	public String getGroupDescription() {
 		return groupDescription;
 	}
@@ -108,7 +110,13 @@ public class StaticGroup implements java.io.Serializable {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	
-	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "updated_date")
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
 
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
 }
