@@ -639,6 +639,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				candidateInfo1.setDeformDate("");
 			else
 				candidateInfo1.setDeformDate(values[9].toString());
+			candidateInfo1.setPartyFlag(values[10].toString());
 			candidateInfoList.add(candidateInfo1);
 		}
 		
