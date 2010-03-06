@@ -23,20 +23,23 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 	{
 		super(PersonalUserGroup.class);
 	}
-	@SuppressWarnings("unchecked")
-	public List<PersonalUserGroup> findByGroupName(String groupName) {
-		List<PersonalUserGroup>personalUserGroup=getHibernateTemplate().find("from PersonalUserGroup model where model.groupName= ?",groupName);
-		return personalUserGroup;
-	}
+	
 	
 	@SuppressWarnings("unchecked")
-	public List<PersonalUserGroup> findMyGroupsByUserId(Long userId){		
+	public List<PersonalUserGroup> getAllMyGroupsByUserId(Long userId){		
 		return getHibernateTemplate().find("from PersonalUserGroup model where model.createdUserId.registrationId = ? and model.staticGroup.staticGroupId = null and model.parentGroupId = null"  ,userId);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List findSubGroupsInSystemGroupsByUserId(Long userId)
+	public List findSubGroupsCountInSystemGroupsByUserId(Long userId)
 	{
 		return getHibernateTemplate().find("select model.staticGroup.staticGroupId, model.staticGroup.groupName, count(model.personalUserGroupId) from PersonalUserGroup model where model.createdUserId.registrationId = ? and model.staticGroup.staticGroupId != null group by model.staticGroup.staticGroupId", userId);
-	}	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCountInMyGroupsByUserId(Long userId, Long myGroupId)
+	{
+		Object[] params = {userId, myGroupId};	
+		return getHibernateTemplate().find("select model.parentGroupId.personalUserGroupId, model.parentGroupName, count(model.personalUserGroupId) from PersonalUserGroup model where model.createdUserId.registrationId = ? and model.myGroup.myGroupId is not null and model.staticGroup.staticGroupId is null and model.parentGroupId.personalUserGroupId = ? group by model.parentGroupId.personalUserGroupId", params);
+	}
 }
