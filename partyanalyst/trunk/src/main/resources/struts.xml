@@ -537,5 +537,9 @@
 				<param name="root">userGroupsVO</param>				
 			</result>		
 		</action>
+		<action name="partyPageAction" class="partyPageAction">
+			<result name="success">/jsp/partyPage.jsp</result>					
+		</action>
 	</package>
 </struts>
+
