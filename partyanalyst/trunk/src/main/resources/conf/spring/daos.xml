@@ -230,4 +230,13 @@
 	<bean id="staticUsersDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticUsersDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="userGroupPrivilegesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupPrivilegesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="staticUserGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticUsersDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="myGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupPrivilegesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
