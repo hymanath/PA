@@ -258,8 +258,8 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		accessType =user.getAccessType();
 		Long accessValue= new Long(user.getAccessValue());
 		
-		myGroupsListboxOptions = userGroupService.getMyGroupsCreatedByUser(user.getRegistrationID());
-		myGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select A Group"));  
+		/*myGroupsListboxOptions = userGroupService.getMyGroupsCreatedByUser(user.getRegistrationID());
+		myGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select A Group"));*/  
 		stateList = new ArrayList<SelectOptionVO>();
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();

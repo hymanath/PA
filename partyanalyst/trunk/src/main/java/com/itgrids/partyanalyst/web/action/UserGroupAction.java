@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.dto.UserGroupsVO;
@@ -38,6 +39,8 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	JSONObject jObj = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	private IUserGroupService userGroupService;
+	private List<SelectOptionVO> staticGroupsListboxOptions;
+	private List<SelectOptionVO> myGroupsListboxOptions;
 		
 	public HttpServletRequest getRequest() {
 		return request;
@@ -92,16 +95,40 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	public void setUserGroupService(IUserGroupService userGroupService) {
 		this.userGroupService = userGroupService;
 	}
+	
+	public List<SelectOptionVO> getStaticGroupsListboxOptions() {
+		return staticGroupsListboxOptions;
+	}
+
+	public void setStaticGroupsListboxOptions(
+			List<SelectOptionVO> staticGroupsListboxOptions) {
+		this.staticGroupsListboxOptions = staticGroupsListboxOptions;
+	}	
+	
+	public List<SelectOptionVO> getMyGroupsListboxOptions() {
+		return myGroupsListboxOptions;
+	}
+
+	public void setMyGroupsListboxOptions(
+			List<SelectOptionVO> myGroupsListboxOptions) {
+		this.myGroupsListboxOptions = myGroupsListboxOptions;
+	}
 
 	public String execute() throws Exception
 	{	
 		
-		UserGroupDetailsVO userGroupDetailsVO;
+		staticGroupsListboxOptions = userGroupService.getAllStaticGroupNames();
+		staticGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select System Group"));
+		
+		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		if(user==null)
 			return ERROR;
+		
+		myGroupsListboxOptions = userGroupService.getAllMyGroupsCreatedByUser(user.getRegistrationID());
+		myGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select A Group"));  
 		/*
 		String param = null;
 		param = getTask();
@@ -142,6 +169,71 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		}*/
 		return Action.SUCCESS;
 		
+	}
+	
+	public String ajaxCallHandler()
+	{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		if(user==null)
+			return ERROR;
+		
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		UserGroupDetailsVO userGroupDetailsVO;
+		if(jObj.getString("task").equalsIgnoreCase("subGrpsCountInSystemGrpsForUser"))
+		{
+			userGroupsVO = new UserGroupsVO();
+			
+			userGroupsVO.setGroupsDetailsForUser(userGroupService.subGrpsCountInSystemGrpsForUser(user.getRegistrationID()));	
+		}
+		if(jObj.getString("task").equalsIgnoreCase("subGrpsCountInMyGrpsForUser"))
+		{
+			userGroupsVO = new UserGroupsVO();
+			
+			userGroupsVO.setGroupsDetailsForUser(userGroupService.subGroupsCountInMyGroupsForUser(user.getRegistrationID()));	
+		}
+		if(jObj.getString("task").equalsIgnoreCase("createNewGroup"))
+		{
+			String staticGroupId = jObj.getString("staticGroupId");
+			String status = jObj.getString("statusVal");
+			String categoryType = jObj.getString("categoryType");
+			userGroupDetailsVO = new UserGroupDetailsVO();
+			userGroupDetailsVO.setCreatedUserId(user.getRegistrationID());
+			userGroupDetailsVO.setGroupName(jObj.getString("groupName"));
+			userGroupDetailsVO.setGroupDesc(jObj.getString("groupdDesc"));
+			if(status.equals("1")){
+				userGroupDetailsVO.setStatus(IConstants.MAIN_GROUP);
+			}else if(status=="2"){
+				userGroupDetailsVO.setStatus(IConstants.SUB_GROUP);
+			}	
+			if(categoryType=="1")
+			{
+				userGroupDetailsVO.setCategoryType(IConstants.STATIC_GROUP);
+			} else if(categoryType=="2");
+			{
+				userGroupDetailsVO.setCategoryType(IConstants.MY_GROUP);
+			}
+			if(staticGroupId == "null")
+			{
+				userGroupDetailsVO.setStaticGroupId(null);
+			} else if(staticGroupId != "null")
+			{
+				userGroupDetailsVO.setStaticGroupId(new Long(staticGroupId));	
+			}
+			
+			userGroupService.createGroupForUser(userGroupDetailsVO);			
+		}
+		return Action.SUCCESS;
 	}
 	
 	/*public String getGroupMbrsForGroup()
