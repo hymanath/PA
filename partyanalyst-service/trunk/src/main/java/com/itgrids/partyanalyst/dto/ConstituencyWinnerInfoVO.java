@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 
 public class ConstituencyWinnerInfoVO implements Serializable{
+	
 	/**
 	 * 
 	 */
@@ -12,6 +13,7 @@ public class ConstituencyWinnerInfoVO implements Serializable{
 	private String candidateName; // winner in the constituency
 	private String candidateId;
 	private String partyName;
+	private String partyFlag;
 	
 	public String getCandidateId() {
 		return candidateId;
@@ -43,7 +45,11 @@ public class ConstituencyWinnerInfoVO implements Serializable{
 	}
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
+	}	
+	public String getPartyFlag() {
+		return partyFlag;
 	}
-	
-	
+	public void setPartyFlag(String partyFlag) {
+		this.partyFlag = partyFlag;
+	}
 }

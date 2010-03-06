@@ -11,6 +11,7 @@ public class PartyResultsVO {
 
 	Long partyId;
 	String partyName;
+	String partyFlag;
 	Long totalSeatsWon;
 	
 	// getters and setters
@@ -27,6 +28,14 @@ public class PartyResultsVO {
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
 	}
+
+	public String getPartyFlag() {
+		return partyFlag;
+	}
+	public void setPartyFlag(String partyFlag) {
+		this.partyFlag = partyFlag;
+	}
+
 	public Long getTotalSeatsWon() {
 		return totalSeatsWon;
 	}

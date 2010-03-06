@@ -46,6 +46,7 @@ public class StateElectionResultsService implements
 		StateElectionResultsVO stateElectionResults = new StateElectionResultsVO();
 		Long partyId = new Long(0);
 		String partyName = "";
+		String partyFlag = "";
 		Long seatsWon=new Long(0);
 		
 		List elecResults = nominationDAO.findElectionDataByElectionId(electionId);
@@ -54,13 +55,15 @@ public class StateElectionResultsService implements
 		for(int i=0; i<elecResults.size(); i++){
 			Object[] params = (Object[])elecResults.get(i);
 			partyId  = (Long)params[0];
-			partyName = (String)params[1];
+			partyName = (String)params[1];			 
 			seatsWon = (Long)params[2];
+			partyFlag = (String)params[3];
 			
 			PartyResultsVO partyResults = new PartyResultsVO();
 			partyResults.setPartyId(partyId);
 			partyResults.setPartyName(partyName);
 			partyResults.setTotalSeatsWon(seatsWon);
+			partyResults.setPartyFlag(partyFlag);
 			
 			partyResultsVO.add(partyResults);
 		}

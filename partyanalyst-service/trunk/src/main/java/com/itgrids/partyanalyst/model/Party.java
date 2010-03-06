@@ -30,6 +30,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "party")
 public class Party implements java.io.Serializable {
+	
 
 	/**
 	 * The Serial Version UID.
@@ -45,6 +46,8 @@ public class Party implements java.io.Serializable {
 	private String address;
 	private String comments;
 	private String partyRecognization;
+	private String partyLogo;
+	private String partyFlag;	
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	private Set<Registration> registrations = new HashSet<Registration>(0);
 	private Set<PartyImportantDates> partyImportantDates = new HashSet<PartyImportantDates>(0);
@@ -78,7 +81,8 @@ public class Party implements java.io.Serializable {
 	
 	public Party(Long partyId, String longName, String shortName,
 			String symbol, String address, String comments,
-			String partyRecognization, Set<Nomination> nominations,
+			String partyRecognization,
+			Set<Nomination> nominations,
 			Set<Registration> registrations, Set<PartyImportantDates> partyImportantDates,Set<PartyElectionResult> partyElectionResult,Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
 		this.partyId = partyId;
 		this.longName = longName;
@@ -86,7 +90,7 @@ public class Party implements java.io.Serializable {
 		this.symbol = symbol;
 		this.address = address;
 		this.comments = comments;
-		this.partyRecognization = partyRecognization;
+		this.partyRecognization = partyRecognization;	
 		this.nominations = nominations;
 		this.registrations = registrations;
 		this.partyImportantDates = partyImportantDates;
@@ -159,7 +163,25 @@ public class Party implements java.io.Serializable {
 	public void setPartyRecognization(String partyRecognization) {
 		this.partyRecognization = partyRecognization;
 	}
+	
+	@Column(name = "party_logo", length = 25)
+	public String getPartyLogo() {
+		return partyLogo;
+	}
 
+	public void setPartyLogo(String partyLogo) {
+		this.partyLogo = partyLogo;
+	}
+	
+	@Column(name = "party_flag", length = 25)
+	public String getPartyFlag() {
+		return partyFlag;
+	}
+
+	public void setPartyFlag(String partyFlag) {
+		this.partyFlag = partyFlag;
+	}
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
 	public Set<Nomination> getNominations() {
 		return this.nominations;
