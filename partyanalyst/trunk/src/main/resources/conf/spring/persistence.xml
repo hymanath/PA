@@ -89,6 +89,8 @@
 				<value>com.itgrids.partyanalyst.model.StaticGroup</value>
 				<value>com.itgrids.partyanalyst.model.StaticUsers</value>
 				<value>com.itgrids.partyanalyst.model.UserGroupPrivileges</value>
+				<value>com.itgrids.partyanalyst.model.StaticUserGroup</value>
+				<value>com.itgrids.partyanalyst.model.MyGroup</value>
 				</list>
 		</property>
 	</bean>
