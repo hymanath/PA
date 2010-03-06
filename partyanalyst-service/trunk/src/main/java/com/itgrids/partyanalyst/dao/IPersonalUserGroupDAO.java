@@ -17,7 +17,12 @@ import com.itgrids.partyanalyst.model.PersonalUserGroup;
 
 public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Long> {
 
-	public List<PersonalUserGroup> findByGroupName(String groupName);
-	public List<PersonalUserGroup> findMyGroupsByUserId(Long userId);
-	public List findSubGroupsInSystemGroupsByUserId(Long userId);	
+	
+	public List<PersonalUserGroup> getAllMyGroupsByUserId(Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCountInMyGroupsByUserId(Long userId, Long myGroupId);
+	
+	@SuppressWarnings("unchecked")
+	public List findSubGroupsCountInSystemGroupsByUserId(Long userId);	
 }
