@@ -40,7 +40,6 @@
 	</bean>
 	<bean id="partyResultsCriteriaAction" class ="com.itgrids.partyanalyst.web.action.PartyResultsCriteriaAction" singleton="false">
 	   <property name="staticDataService" ref="staticDataService" />
-	   <property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>
 	<bean id="uploadExcelAction" class="com.itgrids.partyanalyst.web.action.UploadExcelAction"
 		singleton="false">
