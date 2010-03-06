@@ -19,11 +19,12 @@ import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 public interface IUserGroupService {
 
 	public List<SelectOptionVO> getAllStaticGroupNames();
+	public List<SelectOptionVO> getAllMyGroupsCreatedByUser(Long userId);
     public List<UserGroupDetailsVO> getAllSubGroupNames();
     public List<UserGroupMembersVO> getMembersNames();
     public UserGroupMembersVO addMemberToGroup(Long groupId, UserGroupMembersVO userGroupMembersToSave);
     public UserGroupDetailsVO createGroupForUser(UserGroupDetailsVO userGroupDetailsToSave);
-    public List<SelectOptionVO> getMyGroupsCreatedByUser(Long userId);
-    public List <GroupsDetailsForUserVO> systemGroupsDetailsForUser(Long userId);
-    //public List<GroupsDetailsForUserVO> myGroupsDetailsForUser(Long userId);
+    
+    public List <GroupsDetailsForUserVO> subGrpsCountInSystemGrpsForUser(Long userId);
+   public List<GroupsDetailsForUserVO> subGroupsCountInMyGroupsForUser(Long userId);
 }
