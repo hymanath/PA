@@ -56,4 +56,11 @@ public interface IConstants {
 	public final static String REVENUE_VILLAGE ="RV";
 	
 	public final static String CANDIDATE_STATIC_PAGE_URL = "candidate_static_page/Andhra_Pradesh/";
+	public final static String ALL_GROUPS = "ALL_GROUPS";  
+	public final static String MY_GROUPS = "MY_GROUPS";
+	public final static String STATIC_GROUPS = "STATIC_GROUPS";
+	public final static String MAIN_GROUP = "MAIN_GROUP";
+	public final static String SUB_GROUP = "SUB_GROUP";
+	public final static String STATIC_GROUP = "STATIC_GROUP";
+	public final static String MY_GROUP = "MY_GROUP";
 }
