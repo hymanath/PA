@@ -99,6 +99,8 @@
 				<value>com.itgrids.partyanalyst.model.StaticGroup</value>
 				<value>com.itgrids.partyanalyst.model.StaticUsers</value>
 				<value>com.itgrids.partyanalyst.model.UserGroupPrivileges</value>
+				<value>com.itgrids.partyanalyst.model.StaticUserGroup</value>
+				<value>com.itgrids.partyanalyst.model.MyGroup</value>
 		 </list>
 		</property>
 	</bean>
@@ -380,6 +382,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="userGroupPrivilegesDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupPrivilegesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="staticUserGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticUserGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="myGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.MyGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
