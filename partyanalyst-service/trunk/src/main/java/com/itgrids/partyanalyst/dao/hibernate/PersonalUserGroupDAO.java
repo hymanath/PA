@@ -14,6 +14,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
+import com.itgrids.partyanalyst.model.MyGroup;
 import com.itgrids.partyanalyst.model.PersonalUserGroup;
 
 public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup, Long> implements
@@ -41,5 +42,13 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 	{
 		Object[] params = {userId, myGroupId};	
 		return getHibernateTemplate().find("select model.parentGroupId.personalUserGroupId, model.parentGroupName, count(model.personalUserGroupId) from PersonalUserGroup model where model.createdUserId.registrationId = ? and model.myGroup.myGroupId is not null and model.staticGroup.staticGroupId is null and model.parentGroupId.personalUserGroupId = ? group by model.parentGroupId.personalUserGroupId", params);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public List<MyGroup> getMyGroupObjFromPersonalUserGroup(Long personalUserGroupId) {
+		
+		return getHibernateTemplate().find("select model.myGroup from PersonalUserGroup model where model.personalUserGroupId = ?", personalUserGroupId );
+		
 	}
 }
