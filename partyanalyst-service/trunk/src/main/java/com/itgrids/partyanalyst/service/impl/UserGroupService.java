@@ -152,26 +152,12 @@ public class UserGroupService implements IUserGroupService {
 		for(PersonalUserGroup myGroups:list)
 			myGroupsList.add(new SelectOptionVO(myGroups.getPersonalUserGroupId(), myGroups.getGroupName()));
 		return myGroupsList;		
-	}
-
-	
-	public List<UserGroupDetailsVO> getAllSubGroupNames() {
-		return null;
-	}
-
-
-	
-	public List<UserGroupMembersVO> getMembersNames() {
-		return null;
-	}
-
-
-	
-	/*
+	}	
+		/*
 	 * This method takes the UserGroupDetailsVO object which contains the details entered by the user while creating a group.
 	 * These details are saved in to the data base.The same value object is returned.
 	 */
-	public UserGroupDetailsVO createGroupForUser( final UserGroupDetailsVO userGroupDetailsToSave) {
+	public UserGroupDetailsVO createGroupForUser( UserGroupDetailsVO userGroupDetailsToSave) {
 		this.userGroupDetailsVo = userGroupDetailsToSave;
 		if(log.isDebugEnabled()){
 			log.debug("Entered in service method....");
@@ -182,7 +168,7 @@ public class UserGroupService implements IUserGroupService {
 				UserGroupDetailsVO userGroupDetailsFromDb =new UserGroupDetailsVO();
 				Registration reg = null;
 				PersonalUserGroup personalUserGroup=null;
-				StaticGroup staticGroupObj = null;
+				
 				MyGroup myGroupObj = null;				
 				try{
 					/* To get current Date and time */
@@ -192,9 +178,12 @@ public class UserGroupService implements IUserGroupService {
 					String strDateNew = sdf.format(now) ;
 				    now = sdf.parse(strDateNew);
 				String groupStatus = UserGroupService.this.userGroupDetailsVo.getStatus();
-				
+				System.out.println("groupStatus:======" + groupStatus);
+				String categoryType = UserGroupService.this.userGroupDetailsVo.getCategoryType();
+				System.out.println("categoryType:=====" + categoryType);
 				if(groupStatus.equals(IConstants.MAIN_GROUP))					
 				{	
+					System.out.println("If Main Group");
 					myGroupObj = new MyGroup();
 					reg = registrationDAO.get(UserGroupService.this.userGroupDetailsVo.getCreatedUserId());
 					//createMainGroupInMyGroup(userGroupDetailsToSave);
@@ -213,10 +202,16 @@ public class UserGroupService implements IUserGroupService {
 					personalUserGroupDAO.save(personalUserGroup);
 					
 					
-				} else if(groupStatus.equals(IConstants.SUB_GROUP))
+				} else if(groupStatus.equals(IConstants.SUB_GROUP) && categoryType.equals(IConstants.STATIC_GROUP))
+				{	
+					System.out.println("If sub group in static Group");
+					System.out.println("Inside if condition");
+					createSubGroupUnderStaticGroups(userGroupDetailsVo);
+				} else if(groupStatus.equals(IConstants.SUB_GROUP) && categoryType.equals(IConstants.MY_GROUP))
 				{
-					createSubGroup(userGroupDetailsToSave);
-				}	
+					System.out.println("If sub group in My Group");
+					createSubGroupUnderMyGroups(userGroupDetailsVo);
+				}
 				/*				
 				userGroupDetailsFromDb.setGroupId(personalUserGroup.getPersonalUserGroupId());
 				userGroupDetailsFromDb.setGroupName(personalUserGroup.getGroupName());
@@ -245,10 +240,88 @@ public class UserGroupService implements IUserGroupService {
 		return null;
 	}
 	
-	public UserGroupDetailsVO createSubGroup(UserGroupDetailsVO userGroupDetailsToSave)
+	public UserGroupDetailsVO createSubGroupUnderStaticGroups(UserGroupDetailsVO userGroupDetailsToSave) throws Exception
+	{
+		StaticGroup staticGroupObj = null;
+		PersonalUserGroup personalUserGroup= new PersonalUserGroup();
+		Registration reg = null;
+		java.util.Date now = new java.util.Date();
+		String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+		String strDateNew = sdf.format(now) ;
+	    now = sdf.parse(strDateNew);
+	    Long parentGroupId = userGroupDetailsToSave.getParentGroupId();
+	    System.out.println("parentGroupId:======" + parentGroupId);
+		reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
+		staticGroupObj = staticGroupDAO.get(new Long(userGroupDetailsToSave.getStaticGroupId()));
+		personalUserGroup.setGroupName(userGroupDetailsToSave.getGroupName());
+		personalUserGroup.setDescription(userGroupDetailsToSave.getGroupDesc());
+		personalUserGroup.setStaticGroup(staticGroupObj);
+		if(parentGroupId != null)
+		{
+			System.out.println("Inside sub group method in if");
+			personalUserGroup = personalUserGroupDAO.get(parentGroupId);
+			personalUserGroup.setParentGroupId(personalUserGroup);
+			personalUserGroup.setParentGroupName(personalUserGroup.getGroupName());
+		}else
+		{
+			personalUserGroup.setParentGroupId(null);
+			personalUserGroup.setParentGroupName(null);
+		}		
+		personalUserGroup.setCreatedUserId(reg);
+		personalUserGroup.setCreatedDate(now);
+		
+		personalUserGroupDAO.save(personalUserGroup);
+		System.out.println("After Save");
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public UserGroupDetailsVO createSubGroupUnderMyGroups(UserGroupDetailsVO userGroupDetailsToSave) throws Exception
 	{
 		
+		PersonalUserGroup personalUserGroup= new PersonalUserGroup();
+		PersonalUserGroup parentGroupObj= new PersonalUserGroup();
+		Registration reg = null;
+		List<MyGroup> myGroupObj = null; 
+		java.util.Date now = new java.util.Date();
+		String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+		String strDateNew = sdf.format(now) ;
+	    now = sdf.parse(strDateNew);
+	    Long parentGroupId = userGroupDetailsToSave.getParentGroupId();
+	    System.out.println("parentGroupId:======" + parentGroupId);
+		reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
+		myGroupObj = personalUserGroupDAO.getMyGroupObjFromPersonalUserGroup(userGroupDetailsToSave.getMyGroupId());
+		personalUserGroup.setGroupName(userGroupDetailsToSave.getGroupName());
+		personalUserGroup.setDescription(userGroupDetailsToSave.getGroupDesc());
+		if(myGroupObj.size()>0 && myGroupObj != null )
+		{
+						
+				personalUserGroup.setMyGroup(myGroupObj.get(0));			
+		} else {
+			personalUserGroup.setMyGroup(null);
+		}
+		personalUserGroup.setCreatedDate(now);
+		if(parentGroupId != null)
+		{
+			System.out.println("Inside sub group method in if");
+			personalUserGroup = personalUserGroupDAO.get(parentGroupId);
+			personalUserGroup.setParentGroupId(personalUserGroup);
+			personalUserGroup.setParentGroupName(personalUserGroup.getGroupName());
+		}else
+		{
+			parentGroupObj = personalUserGroupDAO.get(userGroupDetailsToSave.getMyGroupId());
+			personalUserGroup.setParentGroupId(parentGroupObj);
+			personalUserGroup.setParentGroupName(parentGroupObj.getGroupName());
+		}		
+		personalUserGroup.setCreatedUserId(reg);
+		personalUserGroup.setCreatedDate(now);
+		
+		personalUserGroupDAO.save(personalUserGroup);
+		System.out.println("After Save");
 		return null;
+		
 	}
 	
 	/*
