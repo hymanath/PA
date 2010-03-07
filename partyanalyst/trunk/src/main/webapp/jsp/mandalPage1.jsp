@@ -164,6 +164,41 @@ background-color:#FFFFFF;
 #revenueVillageDiv table{
 width:100%;
 }
+#boothInfoTable
+{
+	border: 2px solid #EFEFEF;
+}
+#boothInfoTable th
+{
+	background-color:#567AAF;
+	color:#FFFFFF;
+	padding:5px;
+	width:20%;
+}
+
+#boothInfoTable td
+{
+	background-color:#F2F6F9;
+	font-weight:bold;
+	padding:5px;
+}
+
+#boothInfoDiv_main
+{
+	margin-left:10px;
+}
+
+#boothInfoDiv_head
+{	
+	color:#747E84;
+	font-weight:bold;
+	padding:5px;
+	text-decoration:underline;
+}
+.boothDatatable table
+{
+	width:100%;
+}
 </style>
 
 
@@ -509,7 +544,7 @@ var allBoothElecInfo = new Array();
 		for(var i in resultVO.revenueVillagesInfo)
 		{			
 			rvStr += '<tr>';
-			rvStr += '<td><a href="townshipPageAction.action?TOWNSHIP_ID='+resultVO.revenueVillagesInfo[i].locationId+'" >'+resultVO.revenueVillagesInfo[i].locationName+'</a></td>';
+			rvStr += '<td><a href="townshipPageAction.action?TOWNSHIP_ID='+resultVO.revenueVillagesInfo[i].locationId+'&TOWNSHIP_NAME='+resultVO.revenueVillagesInfo[i].locationName+'" >'+resultVO.revenueVillagesInfo[i].locationName+'</a></td>';
 			rvStr += '<td>'+resultVO.revenueVillagesInfo[i].population+'</td>';
 			rvStr += '<td>'+resultVO.revenueVillagesInfo[i].votesPolled+'</td>';
 			rvStr += '<td>';
