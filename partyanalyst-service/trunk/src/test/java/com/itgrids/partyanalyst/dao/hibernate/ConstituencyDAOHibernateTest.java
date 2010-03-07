@@ -69,7 +69,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	*/
 	//@Test
 	
-	public void testFindDistrictIdByConstituencyID(){
+	/*public void testFindDistrictIdByConstituencyID(){
 		List<Long> districtId = constituencyDAO.getDistrictIdByConstituencyId(new Long(1234));
 		Assert.assertEquals(1, districtId.size());
 	}
@@ -82,5 +82,27 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	public void testFindById(){
 		Constituency constituency  = constituencyDAO.get(new Long(1));
 		System.out.println("Constituency Name ::" + constituency.getName());
+	}
+	*/
+	public void testGetConstituencyTypeAndDelimitationInfoByConstituencyId(){
+		List constituencyTypeDetails = constituencyDAO.getConstituencyTypeAndDelimitationInfoByConstituencyId(new Long (340));
+		
+		String deformDate = "";
+		if(constituencyTypeDetails!=null && constituencyTypeDetails.size()>0)
+		{
+			Object[] obj = (Object[])constituencyTypeDetails.get(0);
+			String elecType = (String)obj[0];
+			if(obj[1]!=null)
+			 deformDate = (String)obj[1].toString();
+			
+			Assert.assertEquals(2, obj.length);
+			Assert.assertEquals("Assembly", elecType);
+			Assert.assertEquals("",deformDate);
+		}
+		else
+		{
+			System.out.println("Constituency not equal");
+		}
+		
 	}
 }
