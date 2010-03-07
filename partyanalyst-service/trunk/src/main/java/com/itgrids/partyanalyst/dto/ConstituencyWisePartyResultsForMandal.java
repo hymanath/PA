@@ -19,6 +19,8 @@ public class ConstituencyWisePartyResultsForMandal implements Serializable {
 	
 	private Long constituencyId;
 	private Long constiName;
+	private Long noOfVoters;
+	private Long noOfBooths;
 	private List<PartyElectionResultVO> partyElecResults;
 	
 	public Long getConstituencyId() {
@@ -32,6 +34,18 @@ public class ConstituencyWisePartyResultsForMandal implements Serializable {
 	}
 	public void setConstiName(Long constiName) {
 		this.constiName = constiName;
+	}
+	public Long getNoOfVoters() {
+		return noOfVoters;
+	}
+	public void setNoOfVoters(Long noOfVoters) {
+		this.noOfVoters = noOfVoters;
+	}
+	public Long getNoOfBooths() {
+		return noOfBooths;
+	}
+	public void setNoOfBooths(Long noOfBooths) {
+		this.noOfBooths = noOfBooths;
 	}
 	public List<PartyElectionResultVO> getPartyElecResults() {
 		return partyElecResults;
