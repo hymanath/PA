@@ -22,6 +22,7 @@ public class UserGroupDetailsVO  implements Serializable {
 	private String categoryType;
 	private List<UserGroupMembersVO> userGroupMembersVO;
 	private List<UserGroupDetailsVO> userSubGroups;
+	private Long myGroupId;
 	
 	public Long getGroupId() {
 		return groupId;
@@ -114,6 +115,14 @@ public class UserGroupDetailsVO  implements Serializable {
 	public void setCategoryType(String categoryType) {
 		this.categoryType = categoryType;
 	}
+	public Long getMyGroupId() {
+		return myGroupId;
+	}
+	public void setMyGroupId(Long myGroupId) {
+		this.myGroupId = myGroupId;
+	}
+	
+	
 	
 	
 	
