@@ -596,12 +596,13 @@ var userGrpsObj={
 		var groupCreationOption;
 		var staticGrpSelectBoxEl = document.getElementById("staticGrpSelectBox");
 		var	staticGrpSelectBoxElVal;
-		var myGrpSelectBoxEl = document.getElementById("staticGrpSelectBox");
+		var myGrpSelectBoxEl = document.getElementById("myGrpSelectBox");
 		var	myGrpSelectBoxElVal; 
 		var status;
-		var categoryType;
-		//var parentGroupId; 
+		var categoryType;		
+		var parentGroupId;
 		var elements = document.getElementsByTagName('input');
+		
 		for(var i=0;i<elements.length;i++)
 		{
 			if(elements[i].type=="radio" && elements[i].name=="createGroup" && elements[i].checked==true)
@@ -617,6 +618,8 @@ var userGrpsObj={
 			myGrpSelectBoxElVal = null;
 			status = "1";
 			categoryType = "2";
+			parentGroupId = null;
+			
 			
 		} else if(groupCreationOption == "Add To Static Group As Sub Group")
 		{
@@ -624,12 +627,16 @@ var userGrpsObj={
 			myGrpSelectBoxElVal = null;
 			status = "2";
 			categoryType = "1";
+			parentGroupId = null;
+			myGrpSelectBoxElVal = null;
 		} else if(groupCreationOption == "Add To My Group As Sub Group")
 		{
 			staticGrpSelectBoxElVal = null; 
 			myGrpSelectBoxElVal = myGrpSelectBoxEl.options[myGrpSelectBoxEl.selectedIndex].value;
 			status = "2";
 			categoryType = "2";
+			parentGroupId = null;
+			myGrpSelectBoxElVal = myGrpSelectBoxEl.options[myGrpSelectBoxEl.selectedIndex].value; 
 		}
 		var jsObj={
 				groupName: groupNameTextVal,
@@ -637,7 +644,9 @@ var userGrpsObj={
 				staticGroupId: staticGrpSelectBoxElVal,					
 				task:"createNewGroup",
 				statusVal: status,
-				categoryType: categoryType	
+				categoryType: categoryType,
+				parentGroupId: parentGroupId,
+				myGroupId: myGrpSelectBoxElVal	
 			  }
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+rparam;		
