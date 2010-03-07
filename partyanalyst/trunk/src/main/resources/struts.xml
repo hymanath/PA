@@ -540,6 +540,10 @@
 		<action name="partyPageAction" class="partyPageAction">
 			<result name="success">/jsp/partyPage.jsp</result>					
 		</action>
+		<action name="electionVotingTrendzAction" class="electionVotingTrendzAction">
+			<result name="success">/jsp/electionVotingTrendz.jsp</result>					
+		</action>
+		
 	</package>
 </struts>
 

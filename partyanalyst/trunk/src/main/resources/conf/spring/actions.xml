@@ -236,5 +236,8 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp"/>					
 	</bean>
 	<bean id="partyPageAction" class="com.itgrids.partyanalyst.web.action.PartyPageAction" singleton="false">
-	</bean>	
+	</bean>
+	<bean id="electionVotingTrendzAction" class="com.itgrids.partyanalyst.web.action.ElectionVotingTrendzAction" singleton="false">
+	</bean>
+		
 </beans>
