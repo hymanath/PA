@@ -251,7 +251,7 @@
 	<c:forEach var="cInfo" items="${candidateDetailsForConstituency.assemblyCandidateInfo}">	
 	var candidateObj={
 						constituencyId : '${cInfo.constituencyId}',
-						constituencyName : '<a href="constituencyPageAction.action?constituencyId=${cInfo.constituencyId}&electionType=${cInfo.constituencyType}&delimitation=${cInfo.deformDate}"> ${cInfo.constituencyName}</a>',
+						constituencyName : '<a href="constituencyPageAction.action?constituencyId=${cInfo.constituencyId}"> ${cInfo.constituencyName}</a>',
 						constituencyType:'${cInfo.constituencyType}',
 						deformDate:'${cInfo.deformDate}',
 						candidateId : '${cInfo.candidateId}',
@@ -269,7 +269,7 @@
 	*/
 	var pmtObj = {
 					constituencyId : '${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}',
-					constituencyName :  '<a href="constituencyPageAction.action?constituencyId=${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}&electionType=${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}&delimitation=${candidateDetailsForConstituency.parliamentCandidateInfo.deformDate}">${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyName}</a>',									
+					constituencyName :  '<a href="constituencyPageAction.action?constituencyId=${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}">${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyName}</a>',									
 					constituencyType:'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}',
 					deformDate:'${candidateDetailsForConstituency.parliamentCandidateInfo.deformDate}',
 					candidateId : '${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}',

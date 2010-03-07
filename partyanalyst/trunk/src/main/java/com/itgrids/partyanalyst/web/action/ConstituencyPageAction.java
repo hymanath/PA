@@ -41,27 +41,17 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 */
 	 
 	 private Long constituencyId;
-	 private String constituencyName;
-	 private String delimitation;
+	 private String constituencyName;	 
 	 private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
 	 private ConstituencyInfoVO constituencyDetails;
 	 private List<VotersWithDelimitationInfoVO> votersInfo;	 
 	 private CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituency;
 	 private IProblemManagementReportService problemManagementReportService;
-	 private List<ProblemBeanVO> problemBean;
-	 private String electionType;	 
+	 private List<ProblemBeanVO> problemBean;	 	 
 	 private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	 private DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO;	
 	 private static final Logger log = Logger.getLogger(ConstituencyPageAction.class);
 	 
-	 public String getDelimitation() {
-		return delimitation;
-	}
-
-	public void setDelimitation(String delimitation) {
-		this.delimitation = delimitation;
-	}
-
 		
 	 public IProblemManagementReportService getProblemManagementReportService() {
 		return problemManagementReportService;
@@ -97,13 +87,6 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.constituencyName = constituencyName;
 	}
 
-	public String getElectionType() {
-			return electionType;
-	}
-
-	 public void setElectionType(String electionType) {
-			this.electionType = electionType;
-	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
@@ -190,11 +173,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		
 		votersInfo = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
 		
-		System.out.println("delimitation = >"+delimitation+"<");
-		if(delimitation.equalsIgnoreCase(""))
-			candidateDetailsForConstituency = constituencyPageService.getCandidateAndPartyInfoForConstituency(constituencyId, electionType);
-		else
-			candidateDetailsForConstituency  = null;
+		candidateDetailsForConstituency = constituencyPageService.getCandidateAndPartyInfoForConstituency(constituencyId);
 		
 		problemBean = problemManagementReportService.getConstituencyProblemsInfo(constituencyId, 0L,"");
 		if(problemBean != null)

@@ -62,8 +62,6 @@ table.searchresultsTable td {
       	 	<td width="100px" style="padding:5px">
       	 	<c:url value="constituencyPageAction.action" var="displayconstituencyURL">
 			<c:param name="constituencyId"   value="${id}" />
-			<c:param name="electionType"   value="${electionType}" />
-			<c:param name="delimitation"   value="${delemitationInfo}" />
 			</c:url>
 			
       	 	<a href='<c:out value="${displayconstituencyURL}" />'><s:property value="name" /></a></td>
