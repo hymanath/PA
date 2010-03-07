@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class BoothTotalVotesVO implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7624183188745715882L;
 	private Long boothID;
 	private Long partNo;
 	private String villagesCovered;
