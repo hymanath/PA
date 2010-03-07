@@ -20,8 +20,8 @@ public interface IUserGroupService {
 
 	public List<SelectOptionVO> getAllStaticGroupNames();
 	public List<SelectOptionVO> getAllMyGroupsCreatedByUser(Long userId);
-    public List<UserGroupDetailsVO> getAllSubGroupNames();
-    public List<UserGroupMembersVO> getMembersNames();
+    
+    
     public UserGroupMembersVO addMemberToGroup(Long groupId, UserGroupMembersVO userGroupMembersToSave);
     public UserGroupDetailsVO createGroupForUser(UserGroupDetailsVO userGroupDetailsToSave);
     
