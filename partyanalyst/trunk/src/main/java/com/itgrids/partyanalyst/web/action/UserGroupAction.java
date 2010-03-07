@@ -205,33 +205,56 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		if(jObj.getString("task").equalsIgnoreCase("createNewGroup"))
 		{
 			String staticGroupId = jObj.getString("staticGroupId");
+			String parentGroupId = jObj.getString("parentGroupId");
+			System.out.println("parentGroupId in action" + parentGroupId);
 			String status = jObj.getString("statusVal");
+			System.out.println("status in action" + status);
 			String categoryType = jObj.getString("categoryType");
+			System.out.println("categoryType in action" + categoryType);
+			String myGroupId = jObj.getString("myGroupId");
+			System.out.println("myGroupId in action" + myGroupId);
 			userGroupDetailsVO = new UserGroupDetailsVO();
 			userGroupDetailsVO.setCreatedUserId(user.getRegistrationID());
 			userGroupDetailsVO.setGroupName(jObj.getString("groupName"));
 			userGroupDetailsVO.setGroupDesc(jObj.getString("groupdDesc"));
 			if(status.equals("1")){
 				userGroupDetailsVO.setStatus(IConstants.MAIN_GROUP);
-			}else if(status=="2"){
+			}else if(status.equals("2")){
 				userGroupDetailsVO.setStatus(IConstants.SUB_GROUP);
 			}	
-			if(categoryType=="1")
+			if(categoryType.equals("1"))
 			{
+				System.out.println("If category 1");
 				userGroupDetailsVO.setCategoryType(IConstants.STATIC_GROUP);
-			} else if(categoryType=="2");
+				System.out.println("If category 1 in VO:-----" + userGroupDetailsVO.getCategoryType());
+			} else if(categoryType.equals("2"))
 			{
+				System.out.println("If category 2");
 				userGroupDetailsVO.setCategoryType(IConstants.MY_GROUP);
 			}
-			if(staticGroupId == "null")
+			if(staticGroupId.equals("null"))
 			{
 				userGroupDetailsVO.setStaticGroupId(null);
-			} else if(staticGroupId != "null")
+			} else if(!staticGroupId.equals("null"))
 			{
 				userGroupDetailsVO.setStaticGroupId(new Long(staticGroupId));	
 			}
-			
-			userGroupService.createGroupForUser(userGroupDetailsVO);			
+			if(parentGroupId.equals("null"))
+			{
+				userGroupDetailsVO.setParentGroupId(null);
+			} else if(!parentGroupId.equals("null"))
+			{
+				userGroupDetailsVO.setParentGroupId(new Long(parentGroupId));	
+			}
+			if(myGroupId.equals("null"))
+			{
+				userGroupDetailsVO.setMyGroupId(null);
+			} else if(!myGroupId.equals("null"))
+			{
+				userGroupDetailsVO.setMyGroupId(new Long(myGroupId));	
+			}
+			userGroupService.createGroupForUser(userGroupDetailsVO);
+			System.out.println("From VO after Service call: Category:===="+userGroupDetailsVO.getCategoryType());
 		}
 		return Action.SUCCESS;
 	}
