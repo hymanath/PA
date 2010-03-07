@@ -332,6 +332,7 @@ var allBoothElecInfo = new Array();
 		revenueInfo += '<tr>';
 		revenueInfo += '<td><div id="electionIdSelectDivLabel"></div></td>';
 		revenueInfo += '<td><div id="electionIdSelectDivData"></div></td>';
+        revenueInfo += '<td><div id="AjaxImgDiv" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
 		revenueInfo += '</tr>';
 		revenueInfo += '</table>';
 		revenueInfo += '<br>';
@@ -356,6 +357,12 @@ var allBoothElecInfo = new Array();
 
 	var electionId;
 	function getRevenueVillagesInfo(id){
+         var imgElmt = document.getElementById('AjaxImgDiv');
+		 if(imgElmt.style.display == "none")
+		{
+           imgElmt.style.display = "block";
+		}
+
 		electionId = id;
 		var jsObj=
 			{
@@ -502,7 +509,7 @@ var allBoothElecInfo = new Array();
 		for(var i in resultVO.revenueVillagesInfo)
 		{			
 			rvStr += '<tr>';
-			rvStr += '<td>'+resultVO.revenueVillagesInfo[i].locationName+'</td>';
+			rvStr += '<td><a href="townshipPageAction.action?TOWNSHIP_ID='+resultVO.revenueVillagesInfo[i].locationId+'" >'+resultVO.revenueVillagesInfo[i].locationName+'</a></td>';
 			rvStr += '<td>'+resultVO.revenueVillagesInfo[i].population+'</td>';
 			rvStr += '<td>'+resultVO.revenueVillagesInfo[i].votesPolled+'</td>';
 			rvStr += '<td>';
@@ -596,8 +603,12 @@ var allBoothElecInfo = new Array();
 			 
 			var myDataTable = new YAHOO.widget.DataTable("revenueVillageDiv",myColumnDefs, myDataSource);
 		//}
+          var imgElmt = document.getElementById('AjaxImgDiv');
+		 if(imgElmt.style.display == "block")
+		{
+           imgElmt.style.display = "none";
+		}
 
-		
 	}
 	
 	function buildTabNavigator(){
@@ -643,17 +654,13 @@ var allBoothElecInfo = new Array();
 		{			
 			var divChild = document.createElement("div");
 			var electionInfo = '';
-			electionInfo += '<fieldset>';
-			electionInfo += '<legend>'+allBoothElecInfo[i].electionType+' '+allBoothElecInfo[i].year+'</legend>';
 			for(var j in allBoothElecInfo[i].constituencyInfo){
 				electionInfo += '<fieldset>';
-				electionInfo += '<legend>'+allBoothElecInfo[i].constituencyInfo[j].constituencyName+'</legend>';
+				electionInfo += '<legend>'+allBoothElecInfo[i].constituencyInfo[j].constituencyName+' '+allBoothElecInfo[i].electionType+' '+allBoothElecInfo[i].year+'</legend>';
 				electionInfo += '<div id = "div_'+i+'_'+j+'" class="dataTableSize">';
 				electionInfo += '</div>';
-				electionInfo += '</legend>';
 				electionInfo += '</fieldset>';				
 			}		
-			electionInfo += '</fieldset>';
 			divChild.innerHTML = electionInfo;
 				
 			if(elmt)

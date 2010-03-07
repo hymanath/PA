@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
-import com.itgrids.partyanalyst.dto.MandalTownshipWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -171,7 +170,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 			log.error("exception raised while retrieving mandal details ", ex);
 		}
 		
-		electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(new Long(mandalID));
+		electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(new Long(mandalID), "Mandal");
 				
 		return SUCCESS;
 	}

@@ -532,6 +532,9 @@
 			<result name="success">/jsp/userGroups.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=userGroupAction</result>		
 		</action>
+		<action name="townshipPageAction" class="townshipPageAction">
+			<result name="success">/jsp/revenueVillagePage.jsp</result>		
+		</action>
 		<action name="userGroupAjaxAction" class="userGroupAction" method="ajaxCallHandler">
 			<result type="json" name="success">
 				<param name="root">userGroupsVO</param>				

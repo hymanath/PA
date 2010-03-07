@@ -235,6 +235,9 @@
 		<property name="staticDataService" ref="staticDataService"/>
 		<property name="regionServiceDataImp" ref="regionServiceDataImp"/>					
 	</bean>
+	<bean id="townshipPageAction" class="com.itgrids.partyanalyst.web.action.TownshipPageAction" singleton="false">			
+		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService"></property>
+	</bean>
 	<bean id="partyPageAction" class="com.itgrids.partyanalyst.web.action.PartyPageAction" singleton="false">
 	</bean>
 	<bean id="electionVotingTrendzAction" class="com.itgrids.partyanalyst.web.action.ElectionVotingTrendzAction" singleton="false">
