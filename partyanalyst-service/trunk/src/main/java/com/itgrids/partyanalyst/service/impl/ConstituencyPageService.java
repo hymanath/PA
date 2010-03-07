@@ -90,6 +90,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;	
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO; 
+	 
 	
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
@@ -646,9 +647,29 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return candidateInfoList;
 	}
 	
-	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId,String electionType)
-	{
+	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId)
+	{	
+		String electionType = "";
+		String deformDate = "";
+		
 		CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituencyTypesVO = new CandidateDetailsForConstituencyTypesVO ();
+		
+		/**
+		 * DAO method call to get the election type and delimitation info.If delimitation info is null returning null.
+		 */
+		List constituencyTypeDetails = constituencyDAO.getConstituencyTypeAndDelimitationInfoByConstituencyId(constituencyId);
+		if(constituencyTypeDetails != null && constituencyTypeDetails.size()>0)
+		{
+			Object[] obj = (Object[])constituencyTypeDetails.get(0);
+			electionType = (String)obj[0];
+			if(obj[1]!=null)
+			 deformDate = (String)obj[1].toString();
+		}
+		
+		if(!deformDate.equalsIgnoreCase("") || deformDate == null)
+			return null;
+		
+		//---------------
 		
 		
 		List candidateList = nominationDAO.getCandidateNPartyInfo(constituencyId.toString(), electionType, 1L);
