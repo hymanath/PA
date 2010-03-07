@@ -219,8 +219,7 @@ function insertData(param,results)
 	var str='';
 	str+='<table id="elecResultsTab">';
 	for(var item in results)
-	{		
-		console.log(results[item].partyFlag);
+	{			
 		str+='<tr>';
 		str+='<td><a href="partyPageAction.action?partyId='+results[item].partyId+'">'+results[item].partyName+'</a></td>';
 		if(results[item].partyFlag)
