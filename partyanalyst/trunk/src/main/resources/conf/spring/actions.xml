@@ -235,4 +235,6 @@
 		<property name="staticDataService" ref="staticDataService"/>
 		<property name="regionServiceDataImp" ref="regionServiceDataImp"/>					
 	</bean>
+	<bean id="partyPageAction" class="com.itgrids.partyanalyst.web.action.PartyPageAction" singleton="false">
+	</bean>	
 </beans>
