@@ -214,11 +214,14 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		return new ResultWithExceptionVO(boothPageInfo, resultStatus);
 	}
 	
-	public ElectionWiseMandalPartyResultListVO getPartyGenderWiseBoothVotesForMandal(Long tehsilID){
+	public ElectionWiseMandalPartyResultListVO getPartyGenderWiseBoothVotesForMandal(Long locationId, String locationType){
 		ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO = new ElectionWiseMandalPartyResultListVO();
 		List<ElectionWiseMandalPartyResultVO> electionWiseMandalPartyResultVOList = new ArrayList<ElectionWiseMandalPartyResultVO>();
-		
-		List list = candidateBoothResultDAO.getPartyGenderWiseBoothVotesForMandal(tehsilID);
+		List list = null;
+		if(locationType.equalsIgnoreCase("Mandal"))
+			list = candidateBoothResultDAO.getPartyGenderWiseBoothVotesForMandal(locationId);
+		else
+			list = candidateBoothResultDAO.findAllElectionsInfoInRevenueVillage(locationId);
 		
 		// 0- partyID, 1- partyName, 2-candidateID, 3- candidateName, 4-rank, 5-electionYear, 6-electionType
 		//7-validVotes, 8-boothId, 9-partNo, 10-villageCovered, 11-maleVoters, 12-femaleVoters, 13-totalVoters,

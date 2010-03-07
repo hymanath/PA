@@ -160,4 +160,61 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.boothConstituencyElectionId in ("+boothConstituencyElectionIds+")" +
 						" group by model.nomination.party.partyId order by sum(model.votesEarned) desc");
 	}
+	
+	public List findAllElectionsInfoInRevenueVillage(Long townshipId){
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.nomination.party.partyId, model.nomination.party.shortName, ")
+			.append("model.nomination.candidate.candidateId, model.nomination.candidate.lastname, model.nomination.candidateResult.rank, ")
+			.append("model.boothConstituencyElection.constituencyElection.election.electionYear, ")
+			.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType, ")
+			.append("model.boothConstituencyElection.boothResult.validVotes, model.boothConstituencyElection.booth.boothId, ")
+			.append("model.boothConstituencyElection.booth.partNo, model.boothConstituencyElection.booth.villagesCovered, ")
+			.append("model.boothConstituencyElection.booth.maleVoters,model.boothConstituencyElection.booth.femaleVoters, ")
+			.append("model.boothConstituencyElection.booth.totalVoters, model.votesEarned, ")
+			.append("model.nomination.constituencyElection.constituency.constituencyId, ")
+			.append(" model.nomination.constituencyElection.constituency.name ");
+		hqlQuery.append("from CandidateBoothResult model ");
+		hqlQuery.append("where model.boothConstituencyElection.villageBoothElection.township.townshipId=? ");
+		hqlQuery.append("group by model.boothConstituencyElection.constituencyElection.election.electionYear,")
+			.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
+			.append("model.nomination.party.shortName, ")
+			.append("model.nomination.constituencyElection.constituency.constituencyId, ")
+			.append("model.boothConstituencyElection.booth.boothId ");
+		hqlQuery.append("order by model.boothConstituencyElection.constituencyElection.election.electionYear desc,")
+		.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
+		.append("model.nomination.constituencyElection.constituency.constituencyId, ")
+		.append("model.nomination.party.shortName, ")
+		.append("model.boothConstituencyElection.booth.boothId ");
+		
+		return getHibernateTemplate().find(hqlQuery.toString(), townshipId);
+	}
+	
+	public List findAllElectionsInfoOfRevenueVillagesInTehsil(Long tehsilId, Long electionId){
+		Object[] params = {tehsilId, electionId};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.nomination.party.partyId, model.nomination.party.shortName, ")
+			.append("model.nomination.candidate.candidateId, model.nomination.candidate.lastname, model.nomination.candidateResult.rank, ")
+			.append("sum(model.boothConstituencyElection.boothResult.validVotes), ")
+			.append("sum(model.boothConstituencyElection.booth.totalVoters), sum(model.votesEarned), ")
+			.append("model.nomination.constituencyElection.constituency.constituencyId, ")
+			.append(" model.nomination.constituencyElection.constituency.name, ")
+			.append("model.boothConstituencyElection.villageBoothElection.township.townshipId, ")
+			.append("model.boothConstituencyElection.villageBoothElection.township.townshipName ");
+		hqlQuery.append("from CandidateBoothResult model ");
+		hqlQuery.append("where model.boothConstituencyElection.villageBoothElection.township.tehsil.tehsilId=? ")
+				.append("and model.boothConstituencyElection.constituencyElection.election.electionId = ?");
+		hqlQuery.append("group by model.boothConstituencyElection.constituencyElection.election.electionYear,")
+			.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
+			.append("model.boothConstituencyElection.villageBoothElection.township.townshipId,")
+			.append("model.nomination.nominationId, ")
+			.append("model.nomination.constituencyElection.constituency.constituencyId ");
+		hqlQuery.append("order by model.boothConstituencyElection.constituencyElection.election.electionYear desc,")
+		.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
+		.append("model.nomination.constituencyElection.constituency.constituencyId, ")
+		.append("model.boothConstituencyElection.villageBoothElection.township.townshipId,")
+		.append("sum(model.votesEarned) desc ");
+		
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
 }

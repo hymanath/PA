@@ -22,6 +22,7 @@ public class VillageBoothElectionDAO extends GenericDaoHibernate<VillageBoothEle
 				"model.boothConstituencyElection.booth.partNo, model.hamlet.hamletName order by " +
 				"model.hamlet.township.townshipName, model.boothConstituencyElection.booth.partNo",tehsilId);
 	}
+	
 }
 
 		

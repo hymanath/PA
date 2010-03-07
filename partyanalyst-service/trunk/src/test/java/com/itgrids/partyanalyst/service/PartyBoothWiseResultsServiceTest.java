@@ -85,7 +85,7 @@ public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
 	
 	//@Test
 	public void test(){
-		ElectionWiseMandalPartyResultListVO firstList = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(867l);
+		ElectionWiseMandalPartyResultListVO firstList = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(21816l, "Town");
 		System.out.println(firstList.getElectionWiseMandalPartyResultVOList().size());
 		for(ElectionWiseMandalPartyResultVO eleTypeObj : firstList.getElectionWiseMandalPartyResultVOList()){
 			System.out.println(eleTypeObj.getElectionType()+eleTypeObj.getElectionYear()+":"+eleTypeObj.getConstituencyWiseDataForMandalVOs().size());

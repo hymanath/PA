@@ -12,5 +12,5 @@ public interface IPartyBoothWiseResultsService {
 	
 	public ResultWithExceptionVO getBoothPageInfo(Long boothId);
 	
-	public ElectionWiseMandalPartyResultListVO getPartyGenderWiseBoothVotesForMandal(Long tehsilID);
+	public ElectionWiseMandalPartyResultListVO getPartyGenderWiseBoothVotesForMandal(Long tehsilID, String locationType);
 }

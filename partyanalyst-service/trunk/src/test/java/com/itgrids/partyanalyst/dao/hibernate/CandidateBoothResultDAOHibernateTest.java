@@ -47,8 +47,40 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]+"\t"+((Object[])list.get(i))[12]+"\t"+((Object[])list.get(i))[13]+"\t"+((Object[])list.get(i))[14]+"\t"+((Object[])list.get(i))[15]+"\t"+((Object[])list.get(i))[16]);
 	}*/
 	
-	public void testFindMandalWisePartiesResultsForElection(){
+	/*public void testFindMandalWisePartiesResultsForElection(){
 		List list = candidateBoothResultDAO.findMandalWisePartiesResultsForElection(844l, 2l);
 		assertEquals(list.size(), 2);
+	}*/
+	
+	/*public void testFindTownshipElectionResult(){
+		long start = System.nanoTime();
+		List list = candidateBoothResultDAO.findTownshipElectionResult(21817l, 2l);
+		long end = System.nanoTime();
+		System.out.println((end-start)/1000000000);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]);
+	}*/
+	
+	/*public void testGetBoothsResultsForBooths(){
+		List list = candidateBoothResultDAO.findPartyResultsForBooths("221,222");
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testFindAllElectionsInfoInRevenueVillage(){
+		long start = System.nanoTime();
+		List list = candidateBoothResultDAO.findAllElectionsInfoInRevenueVillage(21816l);
+		long end = System.nanoTime();
+		System.out.println((end-start)/1000000000);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]+"\t"+((Object[])list.get(i))[12]+"\t"+((Object[])list.get(i))[13]+"\t"+((Object[])list.get(i))[14]+"\t"+((Object[])list.get(i))[15]+"\t"+((Object[])list.get(i))[16]);
+	}*/
+	
+	public void testFindAllElectionsInfoOfRevenueVillagesInTehsil(){
+		long start = System.nanoTime();
+		List list = candidateBoothResultDAO.findAllElectionsInfoOfRevenueVillagesInTehsil(844l, 4l);
+		long end = System.nanoTime();
+		System.out.println((end-start)/1000000000);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]);
 	}
 }

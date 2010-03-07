@@ -462,8 +462,9 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		List booths = boothConstituencyElectionVoterDAO.getBoothsForTownship(townshipId);
 		String boothIds = "";
 		for(int i=0; i<booths.size(); i++)
-			boothIds = boothIds + "," + ((Long)((Object[])booths.get(i))[0]).toString();
-		List mandalWiseInfo = candidateBoothResultDAO.findPartyResultsForBooths(boothIds.substring(0,(boothIds.length()-2)));
+			boothIds = boothIds + "," + ((Long)((Object)booths.get(i))).toString();
+		System.out.println(boothIds.substring(1));
+		List mandalWiseInfo = candidateBoothResultDAO.findPartyResultsForBooths(boothIds.substring(1));
 		List<PartyVotesEarnedVO> partyResults = new ArrayList<PartyVotesEarnedVO>();
 		PartyVotesEarnedVO partyVotesEarnedVO = null;
 		for(int i=0; i<mandalWiseInfo.size(); i++){

@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -44,7 +45,7 @@ public class VillageBoothElection extends BaseModel{
 		this.villageBoothElectionId = villageBoothElectionId;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "booth_constituency_election_id")
 	public BoothConstituencyElection getBoothConstituencyElection() {
 		return boothConstituencyElection;

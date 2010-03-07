@@ -198,7 +198,7 @@ public class BoothConstituencyElectionVoterDAO extends GenericDaoHibernate<Booth
 	}
 	
 	public List getBoothsForTownship(Long townshipId){
-		return getHibernateTemplate().find("select distinct model.boothConstituencyElection.boothConstituencyElectionId from " +
+		return getHibernateTemplate().find("select distinct model.boothConstituencyElection.booth.boothId from " +
 				"BoothConstituencyElectionVoter model where model.voter.hamlet.township.townshipId = ?", townshipId);
 	}
 	

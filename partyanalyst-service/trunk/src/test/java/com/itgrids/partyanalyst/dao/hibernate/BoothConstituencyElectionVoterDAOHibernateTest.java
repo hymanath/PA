@@ -128,10 +128,16 @@ public class BoothConstituencyElectionVoterDAOHibernateTest extends BaseDaoTestC
 		System.out.println(list.size());
 	}*/
 	
-	public void testFindTownshipWiseBoothDetailsForTehsil(){
+	/*public void testFindTownshipWiseBoothDetailsForTehsil(){
 		List list = boothConstituencyElectionVoterDAO.findTownshipWiseBoothDetailsForTehsil(844l, 2l);
 		for(int i=0; i<list.size(); i++){
 			System.out.println(((Object[])list.get(i))[0]+"--"+((Object[])list.get(i))[1]+"--"+((Object[])list.get(i))[2]+"--"+((Object[])list.get(i))[3]+"--"+((Object[])list.get(i))[4]+"--"+((Object[])list.get(i))[5]);
 		}
+	}*/
+	
+	public void testGetBoothsForTownship(){
+		List list = boothConstituencyElectionVoterDAO.getBoothsForTownship(21815l);
+		for(int i=0; i<list.size(); i++)
+			System.out.print(list.get(i)+",");
 	}
 }
