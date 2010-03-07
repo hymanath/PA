@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.model.MyGroup;
 import com.itgrids.partyanalyst.model.PersonalUserGroup;
 
 public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Long> {
@@ -25,4 +26,6 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	
 	@SuppressWarnings("unchecked")
 	public List findSubGroupsCountInSystemGroupsByUserId(Long userId);	
+	
+	public List<MyGroup> getMyGroupObjFromPersonalUserGroup(Long personalUserGroupId);
 }
