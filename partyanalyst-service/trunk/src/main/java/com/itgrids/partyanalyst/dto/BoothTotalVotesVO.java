@@ -65,14 +65,5 @@ public class BoothTotalVotesVO implements Serializable {
 	public void setValidVotes(Long validVotes) {
 		this.validVotes = validVotes;
 	}
-	@Override
-	public boolean equals(Object obj){
-		BoothTotalVotesVO voObj = (BoothTotalVotesVO) obj;
-		return this.boothID.equals(voObj.getBoothID());
-	}
 	
-	@Override
-	public int hashCode(){
-		return this.boothID.hashCode();
-	}
 }
