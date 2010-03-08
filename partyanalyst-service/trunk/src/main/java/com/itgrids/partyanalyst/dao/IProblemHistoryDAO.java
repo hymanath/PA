@@ -21,4 +21,6 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	public List findProblemsByStatusForALocationsByConstituencyId(String constituencyIds,String status);
 	
 	public List<ProblemHistory> findProblemLocationsByUserId(Long registrationId, Long statusId);
+	
+	public List findCompleteProblems(Long problemLocationId);
 }
