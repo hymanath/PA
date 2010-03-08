@@ -135,7 +135,11 @@
 			function showTree(cType)
 			{
 				//'${userCadresInfoVO.userAccessType}'
-				var myLabel='${userCadresInfoVO.userAccessDisplayValue}-${userCadresInfoVO.totalCadres}';
+				region = '${userCadresInfoVO.userAccessType}';
+				
+					if(region=='MLA' || region=='MP')
+						region ='CONSTITUENCY';
+				var myLabel='${userCadresInfoVO.userAccessDisplayValue}('+ region+')-${userCadresInfoVO.totalCadres}';
 				
 				var tree;
 				var myobj;
@@ -417,9 +421,12 @@
 			function buildTextNode(results,node)
 			{
 				for (var i in results.cadreRegionInfo)
-				{ 
+				{
+					var region = results.cadreRegionInfo[i].region;
+					if(region=='V')
+						region ='VILLAGE';
 					var myobj = { 
-									label				: results.cadreRegionInfo[i].regionName+"-"+results.cadreRegionInfo[i].cadreCount,
+									label				: results.cadreRegionInfo[i].regionName+"("+region+")-"+results.cadreRegionInfo[i].cadreCount,
 									labelAccessValue	: results.cadreRegionInfo[i].region,
 									id					: results.cadreRegionInfo[i].regionId ,
 									type				: results.cadreType
