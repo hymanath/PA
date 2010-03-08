@@ -29,6 +29,7 @@ public class PartyElectionResultVO implements Serializable {
 	private Long femaleVoters;
 	private String votesPercentage;
 	private Long rank;
+	private Long totalBooths;
 	
 	//getters and setters
 	public Long getPartyId() {
@@ -108,5 +109,11 @@ public class PartyElectionResultVO implements Serializable {
 	}
 	public void setFemaleVoters(Long femaleVoters) {
 		this.femaleVoters = femaleVoters;
+	}
+	public Long getTotalBooths() {
+		return totalBooths;
+	}
+	public void setTotalBooths(Long totalBooths) {
+		this.totalBooths = totalBooths;
 	}
 }
