@@ -6,12 +6,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.ProblemHistory;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;  
-import java.util.Date;  
+import com.itgrids.partyanalyst.model.ProblemHistory;  
 public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 
 	private IProblemHistoryDAO problemHistoryDAO;
@@ -44,12 +39,22 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	}
 	
 	public void testGetByUserId(){
-		List<ProblemHistory> list = problemHistoryDAO.findProblemLocationsByUserId(new Long(5), new Long(2));
-		assertEquals(1, list.size());
+		List<ProblemHistory> list = problemHistoryDAO.findProblemLocationsByUserId(new Long(3), new Long(1));
+		assertEquals(1,list.size());
 	}
 	
 	public void testByHamletLocationId(){			
-		List result = problemHistoryDAO.findProblemsForALocationsByHamletId(new Long(66));
+		List result = problemHistoryDAO.findProblemsForALocationsByTehsilId(836l);
 		assertEquals(1, result.size());				
+	}
+	
+	public void testByLocationId(){
+		List result = problemHistoryDAO.findCompleteProblems(153l);
+		assertEquals(1, result.size());	
+	}
+	
+	public void testByStatus(){
+		List result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId("836","new");
+		assertEquals(1, result.size());
 	}
 }
