@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementDataVO;
 import com.itgrids.partyanalyst.dto.ProblemsOfUserVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -31,6 +32,5 @@ public interface IProblemManagementService {
 	public List<ProblemBeanVO> updateAndGetProblemsUnderFixed(List<ProblemBeanVO> problemsFixed);
 	public List<ProblemBeanVO> getFixedProblemsForUser(Long registrationId, Long statusId);
 	public List<ProblemBeanVO> updateAndGetProblemsUnderPending(List<ProblemBeanVO> pendingProblems);
-	
-	
+		
 }
