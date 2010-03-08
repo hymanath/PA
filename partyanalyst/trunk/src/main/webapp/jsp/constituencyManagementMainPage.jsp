@@ -3953,9 +3953,7 @@
 		createGroupContentStr+='<tr>';
 		createGroupContentStr+='<td><input type="radio" id="createNewGrpRadio" name="createGroup" value="Create New Group" onClick="hideGroupSelectionListBoxes()"/><%=createNewGrp%></td>';
 		createGroupContentStr+='</tr>';
-<<<<<<< .mine
 		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group"/><%=addToGrpAsSubGrpRadio%></td>';
-=======
 		createGroupContentStr+='<tr>';
 		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Static Group As Sub Group" onClick="showStaticGroupSelectionBox()"/><%=addToStaticGrpAsSubGrpRadio%></td>';
 		createGroupContentStr+='<td><select class="selectWidth" id="staticGrpSelectBox" name="systemGroups" style="display:none;">';
@@ -3964,11 +3962,11 @@
 			createGroupContentStr+='<option value='+userGrpsObj.systemGroupsListBoxArr[i].id+'>'+userGrpsObj.systemGroupsListBoxArr[i].value+'</option>';
 		}
 		createGroupContentStr+='</select></td>';
->>>>>>> .r1809
+
 		createGroupContentStr+='</tr>';
-<<<<<<< .mine
+
 		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group"/><%=addToStaticGrpAsSubGrpRadio%></td>';
-=======
+
 		createGroupContentStr+='<tr>';
 		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To My Group As Sub Group" onClick="showMyGroupSelectionBox()"/><%=addToGrpAsSubGrpRadio%></td>';
 		createGroupContentStr+='<td><select class="selectWidth" id="myGrpSelectBox" name="myGroups" style="display:none;">';
@@ -3977,7 +3975,7 @@
 			createGroupContentStr+='<option value='+userGrpsObj.myGroupsListBoxArr[j].id+'>'+userGrpsObj.myGroupsListBoxArr[j].value+'</option>';
 		}
 		createGroupContentStr+='</select></td>';
->>>>>>> .r1809
+
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='</table>';
 		createGroupContentStr+='</fieldset>';		
