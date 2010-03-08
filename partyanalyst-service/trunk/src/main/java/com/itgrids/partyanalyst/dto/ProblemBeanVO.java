@@ -1,8 +1,14 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ProblemBeanVO {
+public class ProblemBeanVO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private Long problemId;
 	private Long problemLocationId;
 	private Long problemHistoryId;
@@ -46,7 +52,16 @@ public class ProblemBeanVO {
 	private String comments;
 	private String updatedDate;
 	private String status;
-	
+	private List<ProblemHistoryVO> problemHistory;
+
+	public List<ProblemHistoryVO> getProblemHistory() {
+		return problemHistory;
+	}
+
+	public void setProblemHistory(List<ProblemHistoryVO> problemHistory) {
+		this.problemHistory = problemHistory;
+	}
+
 	public Long getTehsilId() {
 		return tehsilId;
 	}
