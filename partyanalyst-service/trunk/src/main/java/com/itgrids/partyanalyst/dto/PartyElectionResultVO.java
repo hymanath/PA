@@ -25,6 +25,8 @@ public class PartyElectionResultVO implements Serializable {
 	private Long votesEarned;
 	private Long validVotes;
 	private Long totalVoters;
+	private Long maleVoters;
+	private Long femaleVoters;
 	private String votesPercentage;
 	private Long rank;
 	
@@ -94,5 +96,17 @@ public class PartyElectionResultVO implements Serializable {
 	}
 	public void setPartyFlag(String partyFlag) {
 		this.partyFlag = partyFlag;
+	}
+	public Long getMaleVoters() {
+		return maleVoters;
+	}
+	public void setMaleVoters(Long maleVoters) {
+		this.maleVoters = maleVoters;
+	}
+	public Long getFemaleVoters() {
+		return femaleVoters;
+	}
+	public void setFemaleVoters(Long femaleVoters) {
+		this.femaleVoters = femaleVoters;
 	}
 }
