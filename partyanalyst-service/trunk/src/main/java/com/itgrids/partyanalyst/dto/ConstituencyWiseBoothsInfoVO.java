@@ -18,7 +18,7 @@ public class ConstituencyWiseBoothsInfoVO implements Serializable {
 	private static final long serialVersionUID = -8573509938318844597L;
 	
 	private Long constituencyId;
-	private Long constiName;
+	private String constiName;
 	private List<BoothTotalVotesVO> boothsDetails;
 	
 	//getters and setters
@@ -28,10 +28,10 @@ public class ConstituencyWiseBoothsInfoVO implements Serializable {
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
 	}
-	public Long getConstiName() {
+	public String getConstiName() {
 		return constiName;
 	}
-	public void setConstiName(Long constiName) {
+	public void setConstiName(String constiName) {
 		this.constiName = constiName;
 	}
 	public List<BoothTotalVotesVO> getBoothsDetails() {
