@@ -28,6 +28,11 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "problem_history")
 public class ProblemHistory extends BaseModel implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private Long problemHistoryId;
 	private ProblemLocation problemLocation;
 	private ProblemStatus problemStatus;
@@ -36,6 +41,7 @@ public class ProblemHistory extends BaseModel implements Serializable{
 	private String previousContent;
 	private ProblemSourceScope problemSourceScope;
 	private Date dateUpdated;
+	private String isDelete;
 	private Set<AssignedProblemProgress> assignedProblemProgresses = new HashSet<AssignedProblemProgress>(0); 
 	private Set<ProblemFundSource> problemFundSources = new HashSet<ProblemFundSource>(0);
 	
@@ -51,7 +57,8 @@ public class ProblemHistory extends BaseModel implements Serializable{
 			ProblemStatus problemStatus, String comments,
 			ProblemSourceScope problemSourceScope, Date dateUpdated,
 			Set<AssignedProblemProgress> assignedProblemProgresses,
-			Set<ProblemFundSource> problemFundSources) {
+			Set<ProblemFundSource> problemFundSources,String isDelete) {
+		this.isDelete = isDelete;
 		this.problemHistoryId = problemHistoryId;
 		this.problemLocation = problemLocation;
 		this.problemStatus = problemStatus;
@@ -62,6 +69,7 @@ public class ProblemHistory extends BaseModel implements Serializable{
 		this.problemFundSources = problemFundSources;
 	}
 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "problem_history_id", unique = true, nullable = false)
@@ -73,6 +81,15 @@ public class ProblemHistory extends BaseModel implements Serializable{
 		this.problemHistoryId = problemHistoryId;
 	}
 
+	@Column(name = "is_delete", length = 250)
+	public String getIsDelete() {
+		return isDelete;
+	}
+
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "problem_location_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -118,7 +135,6 @@ public class ProblemHistory extends BaseModel implements Serializable{
 		this.problemSourceScope = problemSourceScope;
 	}
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "updated_date", length = 10)
 	public Date getDateUpdated() {
 		return dateUpdated;
@@ -164,5 +180,5 @@ public class ProblemHistory extends BaseModel implements Serializable{
 	public void setPreviousContent(String previousContent) {
 		this.previousContent = previousContent;
 	}
-	
+		
 }
