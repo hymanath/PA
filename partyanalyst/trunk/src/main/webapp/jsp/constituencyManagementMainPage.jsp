@@ -40,12 +40,12 @@
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/calendar/assets/skins/sam/calendar.css">    
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/button/assets/skins/sam/button.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 	
 	<!-- Required CSS -->
-	  <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/treeview/assets/skins/sam/treeview.css">  
+	  <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">  
 	<!--  <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/yui-styles-2.8/tree.css"> -->
 	<!-- TreeView source file --> 
 	<script src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
@@ -326,7 +326,7 @@
 		}
 	</style>
 
-	<script type="text/javascript">
+	<script type="text/javascript"><!--
 	
 	var Localization = { <%
 			
@@ -426,7 +426,7 @@
 			String addToStaticGrpAsSubGrpRadio = rb.getString("addToStaticGrpAsSubGrpRadio");
 		  %> }
 	
-	var outerTab,problemMgmtTabs,newProbDataTable, classifiedDataTable,assignedIssDataTable, progessIssuesDataTable, classifyDTRecord, deptCellEditor,pendingIssuesDataTable, fixedIssuesDataTable, ePapersDataTable;
+	var outerTab,problemMgmtTabs,newProbDataTable, classifiedDataTable,assignedIssDataTable, progessIssuesDataTable, classifyDTRecord,deptCellEditor,pendingIssuesDataTable, fixedIssuesDataTable, ePapersDataTable;
 	var newProblemDialog,createGroupDialog, showGrpMbrsDialog, addGrpMbrsDialog,elCheckbox,elCheckboxInClassifyDT,elCheckboxInAssignDT,elCheckboxInProgressDT,elCheckboxInPendingDT,EditClassifyProbsDialog ;
 	var classifyButton, assignButton, progressButton,pFixedButton,pPendingButton,progressButtonInPending,userGrpsTree;
 	var recordsArray = new Array();
@@ -626,19 +626,27 @@
  		var callback = {			
  		               success : function( o ) {
 							try {												
-									myResults = YAHOO.lang.JSON.parse(o.responseText);												
+									myResults = YAHOO.lang.JSON.parse(o.responseText);					
+
+							
 									var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
 									ajaxImgSpanElmt.style.display = 'none';		
 									if(jsObj.task == "findVoters")
 									{										
-										showVotersData(myResults)										
+										showVotersData(myResults)							
+
+			
 									}
 									else if(jsObj.task == "addNewProblem")
 									{										
-										updateNewProblemData(myResults)										
+										updateNewProblemData(myResults)							
+
+			
 									} else if(jsObj.task == "newProblemsByUserID")
 									{
-										showNewProblemsForUser(myResults);																					
+										showNewProblemsForUser(myResults);						
+
+															
 									} else if (jsObj.task == "classifyProblem")
 									{
 										updateClassifyDataTable(myResults);
@@ -698,7 +706,7 @@
 									}		
 									 else
 									{
-										buildSelectOption(myResults,jsObj);									
+										buildSelectOption(myResults,jsObj);										
 									}
 							}catch (e) {   
 								var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
@@ -1468,7 +1476,8 @@
 				scope: '',
 				problemType: '',
 				problemHistoryId: '',
-				department: ''
+				department: '',
+				probLocationId:''
 			};
 			clsfdProObj.title = clsfdProblems[i].problem;
 			clsfdProObj.identifiedDate = clsfdProblems[i].reportedDate;
@@ -1476,6 +1485,7 @@
 			clsfdProObj.scope = clsfdProblems[i].problemSourceScope;
 			clsfdProObj.problemType = clsfdProblems[i].problemType;
 			clsfdProObj.problemHistoryId = clsfdProblems[i].problemHistoryId;
+			clsfdProObj.probLocationId = clsfdProblems[i].problemLocationId;
 			clsfdProObj.department = "<input type=button value=SelectDepartment id=showdepts>";			
 			assignToClsfdDtArr.push(clsfdProObj);			
 			problemsMainObj.classifiedProblemsArr = assignToClsfdDtArr;	
@@ -1534,7 +1544,8 @@
 				scope: '',
 				problemType: '',
 				problemHistoryId: '',
-				department:	''			 								
+				department:	'',
+				probLocationId: ''			 								
 			};					
 			classifiedProblemsObj.title = classifiedProblems[i].problem;
 			classifiedProblemsObj.identifiedDate = classifiedProblems[i].reportedDate;
@@ -1542,9 +1553,12 @@
 			classifiedProblemsObj.scope = classifiedProblems[i].problemSourceScope;
 			classifiedProblemsObj.problemType = classifiedProblems[i].problemType;
 			classifiedProblemsObj.problemHistoryId = classifiedProblems[i].problemHistoryId;
+			classifiedProblemsObj.probLocationId = classifiedProblems[i].probLocationId;
 			classifiedProblemsObj.department = "<input type=button value=SelectDepartment id=showdepts>";			
 			if(!hasRecordInClassifiedArray(classifiedProblems[i].problemHistoryId))	
-				assignToClassifiedArray.push(classifiedProblemsObj);													 			
+				assignToClassifiedArray.push(classifiedProblemsObj);										
+
+			 			
 		}
 		
 		buildClassifiedDataTable();
@@ -1577,8 +1591,8 @@
 			var asignedProbObj ={
 					title: assignedProblems[i].problem,
 					concernedDepartment: assignedProblems[i].department,
-					assignedProblemProgressId: assignedProblems[i].assignedProblemProgressId
-										  
+					assignedProblemProgressId: assignedProblems[i].assignedProblemProgressId,
+					problemLocationId:assignedProblems[i].problemLocationId					  
 					};
 			assignToAssignedArr.push(asignedProbObj);
 			problemsMainObj.assignedProblemsArr = assignToAssignedArr;
@@ -1622,9 +1636,10 @@
 			var assignedProbObj = {
 					title: assignedProbsForUser[i].problem ,
 					concernedDepartment: assignedProbsForUser[i].department,
-					assignedProblemProgressId: assignedProbsForUser[i].assignedProblemProgressId
+					assignedProblemProgressId: assignedProbsForUser[i].assignedProblemProgressId,
+					problemLocationId: assignedProbsForUser[i].problemLocationId	
 					};
-			if(!hasRecordInAssignedDTArray(assignedProbsForUser[i].assignedProblemProgressId))		
+			if(!hasRecordInAssignedDTArray(assignedProbsForUser[i].problemLocationId))		
 				assignToAssignedProbsForUserArr.push(assignedProbObj);
 			}
 		
@@ -1636,14 +1651,14 @@
 	}
 
 	function hasRecordInAssignedDTArray(id)
-	{
-		
+	{		
 		var status = false;
 		if(problemsMainObj.assignedProblemsArr.length == 0)
 			return status;
+		
 		for(var i=0;i<problemsMainObj.assignedProblemsArr.length;i++)
 		{
-			if(problemsMainObj.assignedProblemsArr[i].assignedProblemProgressId == id)
+			if(problemsMainObj.assignedProblemsArr[i].problemLocationId == id)
 				status=true; 
 		}
 		return status;		
@@ -1663,7 +1678,8 @@
 					assignedOfficial: progressedProblems[i].designation,
 					name: progressedProblems[i].departmentConcernedPersonName,
 					contactNumber: progressedProblems[i].departmentConcernedPersonPhoneNumber,
-					assignedProblemProgressId: progressedProblems[i].assignedProblemProgressId					 
+					assignedProblemProgressId: progressedProblems[i].assignedProblemProgressId,
+					problemLocationId:progressedProblems[i].problemLocationId					 
 					};
 			assignToProgressArray.push(progressedProblemsObj);
 			problemsMainObj.progressedProblemsArr = assignToProgressArray;
@@ -1713,9 +1729,10 @@
 					assignedOfficial: progressedProblems[i].designation,
 					name: progressedProblems[i].departmentConcernedPersonName,
 					contactNumber: progressedProblems[i].contactNo,
-					assignedProblemProgressId: progressedProblems[i].assignedProblemProgressId					 
+					assignedProblemProgressId: progressedProblems[i].assignedProblemProgressId,
+					problemLocationId:progressedProblems[i].problemLocationId					 
 					};
-			if(!hasRecordInProgressedDTArray(progressedProblems[i].assignedProblemProgressId))	
+			if(!hasRecordInProgressedDTArray(progressedProblems[i].problemLocationId))	
 				assignToProgressedProbsArr.push(progressedProblemsObj);	
 			//problemsMainObj.progressedProblemsArr = assignToProgressedProbsArr;		
 			}
@@ -1735,7 +1752,7 @@
 			return status;
 		for(var i=0;i<problemsMainObj.progressedProblemsArr.length;i++)
 		{
-			if(problemsMainObj.progressedProblemsArr[i].assignedProblemProgressId == id)
+			if(problemsMainObj.progressedProblemsArr[i].problemLocationId == id)
 				status=true; 
 		}
 		return status;
@@ -1784,7 +1801,8 @@
 					 contactNumber: pendingProblems[i].contactNo,
 					 pendingFrom: pendingProblems[i].updatedDate,
 					 reason: pendingProblems[i].reasonForPending,
-					 assignedProblemProgressId: pendingProblems[i].assignedProblemProgressId
+					 assignedProblemProgressId: pendingProblems[i].assignedProblemProgressId,
+					 problemLocationId:pendingProblems[i].problemLocationId
 					};
 			assignToPendingProblemsArr.push(pendingProblemsObj);
 			problemsMainObj.pendingProblemArr = assignToPendingProblemsArr;			
@@ -1809,9 +1827,10 @@
 					 contactNumber: pendingProblems[i].contactNo,
 					 pendingFrom: pendingProblems[i].updatedDate,
 					 reason: pendingProblems[i].reasonForPending,
-					 assignedProblemProgressId: pendingProblems[i].assignedProblemProgressId
+					 assignedProblemProgressId: pendingProblems[i].assignedProblemProgressId,
+					 problemLocationId:pendingProblems[i].problemLocationId
 					};
-			if(!hasRecordInPendingDTArray(pendingProblems[i].assignedProblemProgressId))
+			if(!hasRecordInPendingDTArray(pendingProblems[i].problemLocationId))
 				assignToPendingProblemsArr.push(pendingProblemsObj);
 			//problemsMainObj.pendingProblemArr = assignToPendingProblemsArr;			
 		}
@@ -1829,7 +1848,7 @@
 			return status;
 		for(var i=0;i<problemsMainObj.pendingProblemArr.length;i++)
 		{
-			if(problemsMainObj.pendingProblemArr[i].assignedProblemProgressId == id)
+			if(problemsMainObj.pendingProblemArr[i].problemLocationId == id)
 				status=true; 
 		}
 		return status;
@@ -1877,7 +1896,8 @@
 					 concernedDepartment: fixedProblems[i].department,
 					 fixedDate: fixedProblems[i].updatedDate,
 					 comments: fixedProblems[i].comments,
-					 assignedProblemProgressId: fixedProblems[i].assignedProblemProgressId
+					 assignedProblemProgressId: fixedProblems[i].assignedProblemProgressId,
+					 problemLocationId:fixedProblems[i].problemLocationId
 					};
 			assignToFixedProblemsArr.push(fixedProblemsObj);
 			problemsMainObj.fixedProblemsArr = assignToFixedProblemsArr;			
@@ -1898,9 +1918,10 @@
 					 concernedDepartment: fixedProblems[i].department,
 					 fixedDate: fixedProblems[i].updatedDate,
 					 comments: fixedProblems[i].comments,
-					 assignedProblemProgressId: fixedProblems[i].assignedProblemProgressId
+					 assignedProblemProgressId: fixedProblems[i].assignedProblemProgressId,
+					 problemLocationId:fixedProblems[i].problemLocationId
 					};
-			if(!hasRecordInFixedDTArray(fixedProblems[i].assignedProblemProgressId))
+			if(!hasRecordInFixedDTArray(fixedProblems[i].problemLocationId))
 				assignToFixedProblemsArr.push(fixedProblemsObj);
 			//problemsMainObj.fixedProblemsArr = assignToFixedProblemsArr;			
 		}
@@ -1919,7 +1940,7 @@
 			return status;
 		for(var i=0;i<problemsMainObj.fixedProblemsArr.length;i++)
 		{
-			if(problemsMainObj.fixedProblemsArr[i].assignedProblemProgressId == id)
+			if(problemsMainObj.fixedProblemsArr[i].problemLocationId == id)
 				status=true; 
 		}
 		return status;
@@ -1939,14 +1960,13 @@
 					assignedOfficial: progressedProblems[i].designation,
 					name: progressedProblems[i].departmentConcernedPersonName,
 					contactNumber: progressedProblems[i].departmentConcernedPersonPhoneNumber,
-					assignedProblemProgressId: progressedProblems[i].assignedProblemProgressId					 
+					assignedProblemProgressId: progressedProblems[i].assignedProblemProgressId,
+					problemLocationId: progressedProblems[i].problemLocationId					 
 					};
 			assignToProgressArray.push(progressedProblemsObj);
 			problemsMainObj.progressedProblemsArr = assignToProgressArray;
-			}
-		 
-		progessIssuesDataTable.addRows(problemsMainObj.progressedProblemsArr);
-		
+			}		 
+		progessIssuesDataTable.addRows(problemsMainObj.progressedProblemsArr);		
 	}
 	
 	function buildOuterTabView()
@@ -2033,7 +2053,9 @@
 		userGroupsContent+='<p id="systemGroups" class="link"><a href="#" onclick="getSystemGroupsForUser()"><b>System Groups</b></a></p>';
 		userGroupsContent+='<div id="myGroupsLinksDiv"></div>';		
 		userGroupsContent+='<p id="myGroups" class="link"><a href="#" onclick="getGroupsCreatedByUser()"><b>My Groups</b></a></p>';		
-		userGroupsContent+='<p id="createNewGrpDiv" class="link"><a href="#" onclick="buildCreateGroupPopup()"><b>Create New Group</b></a></p>';		
+		userGroupsContent+='<p id="createNewGrpDiv" class="link"><a href="#" onclick="buildCreateGroupPopup()"><b>Create New Group</b></a></p>';	
+
+	
 		userGroupsContent+='</div>'; 
 		userGroupsContent+='<div id="centerLayoutMain">';
 		userGroupsContent+='<div id="userGroupsTabContent_body" align="left">';
@@ -2517,7 +2539,7 @@
 		
 	function buildNewProblemsDataTable()
 	{	
-		var scopeCellEd = new YAHOO.widget.DropdownCellEditor({multiple:false, LABEL_SAVE:"Select", dropdownOptions: problemsMainObj.problemRegionScopeArr});
+		var scopeCellEd = new YAHOO.widget.DropdownCellEditor({multiple:false, LABEL_SAVE:"Select", dropdownOptions:problemsMainObj.problemRegionScopeArr});
 		var probtype = new YAHOO.widget.DropdownCellEditor({multiple:false,  LABEL_SAVE:"Select", dropdownOptions:problemsMainObj.probTypesArr});
 		 	
 		var myColumnDefs = [ 
@@ -2525,8 +2547,8 @@
 	            {key:"probId", hidden: true}, 
 	            {key:"title", label: "<%=problemLabel%>", sortable:true, maxAutoWidth:150}, 
 	            {key:"description", label: "<%=description%>", sortable:true, maxAutoWidth:250}, 
-				{key:"identifiedDate", label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
-				{key:"existingFrom", label: "<%=existingFrom%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+				{key:"identifiedDate", label: "<%=identifiedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true,sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+				{key:"existingFrom", label: "<%=existingFrom%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true,sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
 				{key:"location", label: "<%=location%>", sortable:true},
 				{key:"probLocationId", hidden: true},
 				{key:"hamletID", hidden: true},	
@@ -2539,7 +2561,7 @@
 	        var myDataSource = new YAHOO.util.DataSource(problemsMainObj.newProblemsArr); 
 	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        myDataSource.responseSchema = { 
-	            fields: ["probId","title","description","identifiedDate","existingFrom","location","probLocationId","hamletID","source","probHistoryId"] 
+	            fields:["probId","title","description","identifiedDate","existingFrom","location","probLocationId","hamletID","source","probHistoryId"] 
 	        }; 
 			
 			var myConfigs = { 
@@ -2676,13 +2698,14 @@
 				{key:"problemType", label: "<%=problemType%>", sortable:true},
 				{key:"department", label: "<%=department%>", sortable:true},
 				{key:"problemHistoryId", hidden: true},
-				{key:"departmentId", hidden: true}				
+				{key:"departmentId", hidden: true},
+				{key:"probLocationId", hidden: true}				
 	        ];	 
 	   	 
 	        var classifiedDataTableDataSource = new YAHOO.util.DataSource(problemsMainObj.classifiedProblemsArr); 
 	        classifiedDataTableDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        classifiedDataTableDataSource.responseSchema = { 
-	            fields: ["title","identifiedDate","location","scope","problemType","problemHistoryId","department"] 
+	            fields: ["title","identifiedDate","location","scope","problemType","problemHistoryId","department","probLocationId"] 
 	        }; 
 			
 			var myConfigs = { 
@@ -2691,7 +2714,7 @@
 		    }) 
 			}; 
 
-			classifiedDataTable = new YAHOO.widget.DataTable("classifiedTabContentDiv_body", classifiedDataTableColumnDefs, classifiedDataTableDataSource,myConfigs); 
+			classifiedDataTable = new YAHOO.widget.DataTable("classifiedTabContentDiv_body", classifiedDataTableColumnDefs,classifiedDataTableDataSource,myConfigs); 
 	                 
 	       problemMgmtTabs.getTab(1).addListener("click", function() {myDataTable.onShow()});     
 
@@ -2743,7 +2766,9 @@
 						} else
 						{
 							deleteRecordFromClasifyArray(clasifyDtRecord);							
-						}			  	  					  	  					  	  				  	  	
+						}			  	  					  	  				
+
+	  	  				  	  	
 					  	});	
 	 		
 	        return { 
@@ -2894,6 +2919,7 @@
 					contactNumber: assignDtRecordsArray[j]._oData.contactNumber,
 					comments: assignDtRecordsArray[j]._oData.comments,					 
 					assignedProblemProgressId: assignDtRecordsArray[j]._oData.assignedProblemProgressId,
+					problemLocationId: assignDtRecordsArray[j]._oData.problemLocationId,
 					status: "4"
 					};
 			progressProbArray.push(assignedProbObj);
@@ -2923,7 +2949,8 @@
 				{key:"name", label: "<%=name%>", sortable:true, editor: new YAHOO.widget.TextboxCellEditor(),sortable:true},
 				{key:"contactNumber", label: "<%=telephoneNo%>", editor: new YAHOO.widget.TextboxCellEditor()},
 				{key:"comments", label: "<%=comments%>",editor: new YAHOO.widget.TextareaCellEditor({defaultValue:""})},
-				{key:"assignedProblemProgressId", hidden: true}
+				{key:"assignedProblemProgressId", hidden: true},
+				{key:"problemLocationId", hidden: true}
 				//{key:"departmentId", hidden: true}
 				
 				
@@ -2932,7 +2959,7 @@
 			var assignedIssDataTableDataSource = new YAHOO.util.DataSource(problemsMainObj.assignedProblemsArr); 
 			assignedIssDataTableDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 			assignedIssDataTableDataSource.responseSchema = { 
-	            fields: ["title","concernedDepartment","assignedProblemProgressId"] 
+	            fields: ["title","concernedDepartment","assignedProblemProgressId","problemLocationId"] 
 	        }; 
 			
 			var myConfigs = { 
@@ -2942,7 +2969,7 @@
 			}; 
 
 			assignedIssDataTable =  
-	            new YAHOO.widget.DataTable("assignedIssuesTabContentDiv_body", assignedIssDataTableColumnDefs, assignedIssDataTableDataSource,myConfigs); 
+	            new YAHOO.widget.DataTable("assignedIssuesTabContentDiv_body", assignedIssDataTableColumnDefs,assignedIssDataTableDataSource,myConfigs); 
 	                 
 	       
 	       problemMgmtTabs.getTab(2).addListener("click", function() {assignedIssDataTable.onShow()});
@@ -2975,7 +3002,9 @@
 					  	 		problemMgmtTabs.getTab(1).set("disabled", true);
 					  	 		problemMgmtTabs.getTab(3).set("disabled", true);
 						  		
-						  		progressButton.set("disabled", false );						  							  							  			  			
+						  		progressButton.set("disabled", false );						  		
+
+					  							  			  			
 						  	}
 					  		else
 					  		{	
@@ -3031,6 +3060,7 @@
 				{key:"name", label: "<%=name%>", sortable:true},	
 				{key:"contactNumber", label: "<%=telephoneNo%>"},
 				{key:"assignedProblemProgressId", hidden: true},
+				{key:"problemLocationId", hidden: true},
 				{key:"comments", label: "<%=comments%>",editor: new YAHOO.widget.TextareaCellEditor({defaultValue:" "})}
 				//{key:"fix" ,Fix}
 	        ]; 
@@ -3038,7 +3068,7 @@
 	        var progessIssuesDataSource = new YAHOO.util.DataSource(problemsMainObj.progressedProblemsArr); 
 	        progessIssuesDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        progessIssuesDataSource.responseSchema = { 
-	            fields: ["title","identifiedDate","concernedDepartment","assignedOfficial","name","contactNumber","assignedProblemProgressId","comments"] 
+	            fields:["title","identifiedDate","concernedDepartment","assignedOfficial","name","contactNumber","assignedProblemProgressId","problemLocationId","comments"] 
 	        }; 
 			
 			var myConfigs = { 
@@ -3047,7 +3077,7 @@
 		    }) 
 			}; 
 
-			progessIssuesDataTable = new YAHOO.widget.DataTable("progressTabContentDiv_body", progessIssuesColumnDefs, progessIssuesDataSource,myConfigs); 
+			progessIssuesDataTable = new YAHOO.widget.DataTable("progressTabContentDiv_body", progessIssuesColumnDefs,progessIssuesDataSource,myConfigs); 
 	                 
 	       
 	       problemMgmtTabs.getTab(3).addListener("click", function() {progessIssuesDataTable.onShow()});         
@@ -3134,7 +3164,6 @@
 		}
 		for(var j in progressDtRecordsArray)
 		{
-			
 		
 			var pendingProbObj = {
 					title: progressDtRecordsArray[j]._oData.title,
@@ -3227,13 +3256,14 @@
 				{key:"pendingFrom", label: "<%=pendingFrom%>"},				
 				{key:"reason", label: "<%=reason%>"},
 				{key:"comments", label: "<%=comments%>",editor: new YAHOO.widget.TextareaCellEditor({defaultValue:""})},
-				{key:"assignedProblemProgressId", hidden: true}				
+				{key:"assignedProblemProgressId", hidden: true},
+				{key:"problemLocationId", hidden: true}				
 	        ]; 
 	 
 	        var pendingIssuesDataTableDataSource = new YAHOO.util.DataSource(problemsMainObj.pendingProblemArr); 
 	        pendingIssuesDataTableDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        pendingIssuesDataTableDataSource.responseSchema = { 
-	            fields: ["title","identifiedDate","concernedDepartment","assignedOfficial","name","contactNumber","pendingFrom","reason","assignedProblemProgressId"] 
+	            fields: ["title","identifiedDate","concernedDepartment","assignedOfficial","name","contactNumber","pendingFrom","reason","assignedProblemProgressId","problemLocationId"] 
 	        }; 
 			
 			var myConfigs = { 
@@ -3242,7 +3272,7 @@
 		    }) 
 			}; 
 
-			pendingIssuesDataTable = new YAHOO.widget.DataTable("pendingTabContentDiv_body", pendingIssuesDataTableColumnDefs, pendingIssuesDataTableDataSource,myConfigs); 
+			pendingIssuesDataTable = new YAHOO.widget.DataTable("pendingTabContentDiv_body", pendingIssuesDataTableColumnDefs,pendingIssuesDataTableDataSource,myConfigs); 
 	                 
 	       
 	       problemMgmtTabs.getTab(3).addListener("click", function() {pendingIssuesDataTable.onShow()});
@@ -3370,14 +3400,14 @@
 	            {key:"concernedDepartment", label:"<%=concernedDept%>", sortable:true},
 	            {key:"fixedDate", label: "<%=fixedDate%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
 	            {key:"comments", label:"<%=reason%>",editor: new YAHOO.widget.TextareaCellEditor({defaultValue:""})},
-	            {key:"assignedProblemProgressId", hidden: true}
-	            				
+	            {key:"assignedProblemProgressId", hidden: true},
+	            {key:"problemLocationId", hidden: true}				
 	        ]; 
 	 
 	        var fixedIssuesDataTableDataSource = new YAHOO.util.DataSource(problemsMainObj.fixedProblemsArr); 
 	        fixedIssuesDataTableDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        fixedIssuesDataTableDataSource.responseSchema = { 
-	            fields: ["title","identifiedDate","concernedDepartment","fixedDate","comments","assignedProblemProgressId"] 
+	            fields: ["title","identifiedDate","concernedDepartment","fixedDate","comments","assignedProblemProgressId","problemLocationId"] 
 	        }; 
 			
 			var myConfigs = { 
@@ -3386,7 +3416,7 @@
 		    }) 
 			}; 
 
-			fixedIssuesDataTable =new YAHOO.widget.DataTable("fixedIssuesContentDiv_body", fixedIssuesDataTableColumnDefs, fixedIssuesDataTableDataSource,myConfigs); 
+			fixedIssuesDataTable =new YAHOO.widget.DataTable("fixedIssuesContentDiv_body", fixedIssuesDataTableColumnDefs,fixedIssuesDataTableDataSource,myConfigs); 
 	                 
 	       
 	       problemMgmtTabs.getTab(3).addListener("click", function() {fixedIssuesDataTable.onShow()});
@@ -3429,7 +3459,7 @@
 			    }) 
 				};
 
-		var localLeadersDataTable =  new YAHOO.widget.DataTable("localLeadersTabContent", localLeadersColumnDefs, localLeadersDataSource, myConfigs);
+		var localLeadersDataTable =  new YAHOO.widget.DataTable("localLeadersTabContent", localLeadersColumnDefs, localLeadersDataSource,myConfigs);
 		constMgmtTabs.getTab(0).addListener("click", function() {localLeadersDataTable.onShow()});
 
 			return {
@@ -3443,7 +3473,7 @@
 		var localProbColumnDefs = [ 
 		    	            {key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true}, 
 		    	            {key:"description", label: "<%=description%>", sortable:true},
-		    				{key:"identifiedDate", label: "<%=identifiedDate%>",formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+		    				{key:"identifiedDate", label: "<%=identifiedDate%>",formatter:YAHOO.widget.DataTable.formatDate,sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
 		    				{key:"source", label: "<%=scope%>", sortable:true},
 		    				{key:"status", label: "<%=status%>", sortable:true}
 		    						    				
@@ -3476,7 +3506,7 @@
 		    	            
 		    	            {key:"caste", label: "<%=cast%>", sortable: true}, 
 		    	           	{key:"castePopulation", label: "<%=castPopulation%>", formatter:"number", sortable: true},
-		    				{key:"castePercentage", label: "<%=castPercentage%>", formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}	
+		    				{key:"castePercentage", label: "<%=castPercentage%>", formatter:YAHOO.widget.DataTable.formatFloat,sortable:true}	
 		    					    			    				
 		    	        ]; 
 		var localCastStatsDataSource = new YAHOO.util.DataSource(constMgmtMainObj.castStatsArray); 
@@ -3492,7 +3522,7 @@
 			    }) 
 				};
 
-		var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs, localCastStatsDataSource, myConfigs);
+		var localCastStatsDataTable =  new YAHOO.widget.DataTable("localCastStatsTabContent_body", localCastStatsColumnDefs,localCastStatsDataSource, myConfigs);
 		constMgmtTabs.getTab(2).addListener("click", function() {localCastStatsDataTable.onShow()});
 
 			return {
@@ -3507,7 +3537,7 @@
 		var localPolChangesColumnDefs = [
 		                                 //{key: "sNo", label: "SNo", formatter:"number", sortable:true},
 		                                 {key: "description", label: "<%=description%>", sortable:true},
-		                                 {key: "date", label: "<%=date%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
+		                                 {key: "date", label: "<%=date%>", formatter:YAHOO.widget.DataTable.formatDate, sortable:true,sortOptions:{defaultDir:YAHOO.widget.DataTable.CLASS_DESC}},
 		                                 {key: "impact", label: "<%=impact%>", sortable:true}
 
 		                                 ];
@@ -3565,7 +3595,7 @@
 			    }) 
 				};
 
-		var votersByLocBoothDataTable =  new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body", votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+		var votersByLocBoothDataTable =  new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body", votersByLocBoothColumnDefs,votersByLocBoothDataSource, myConfigs);
 		constMgmtTabs.getTab(4).addListener("click", function() {votersByLocBoothDataTable.onShow()});
 
 			return {
@@ -3707,7 +3737,7 @@
 		contentStr+='</tr>';
 		contentStr+='<tr>';
 		contentStr+='<td><%=DISTRICT%></td>';
-		contentStr+='<td style="padding-left: 15px;"><select id="pdistrictField" class="selectWidth" name="district"  onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
+		contentStr+='<td style="padding-left: 15px;"><select id="pdistrictField" class="selectWidth" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
 		for(var i in locationDetails.districtArr)
 		{
 			contentStr+='<option value='+locationDetails.districtArr[i].id+'>'+locationDetails.districtArr[i].value+'</option>';
@@ -3716,7 +3746,7 @@
 		contentStr+='</tr>';
 		contentStr+='<tr>';
 		contentStr+='<td><%=CONSTITUENCY%></td>';
-		contentStr+='<td style="padding-left: 15px;"><select id="pconstituencyField" class="selectWidth" name="constituency"  onchange="getMandalList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
+		contentStr+='<td style="padding-left: 15px;"><select id="pconstituencyField" class="selectWidth" name="constituency" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
 		for(var i in locationDetails.constituencyArr)
 		{
 			contentStr+='<option value='+locationDetails.constituencyArr[i].id+'>'+locationDetails.constituencyArr[i].value+'</option>';
@@ -3923,6 +3953,9 @@
 		createGroupContentStr+='<tr>';
 		createGroupContentStr+='<td><input type="radio" id="createNewGrpRadio" name="createGroup" value="Create New Group" onClick="hideGroupSelectionListBoxes()"/><%=createNewGrp%></td>';
 		createGroupContentStr+='</tr>';
+<<<<<<< .mine
+		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group"/><%=addToGrpAsSubGrpRadio%></td>';
+=======
 		createGroupContentStr+='<tr>';
 		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Static Group As Sub Group" onClick="showStaticGroupSelectionBox()"/><%=addToStaticGrpAsSubGrpRadio%></td>';
 		createGroupContentStr+='<td><select class="selectWidth" id="staticGrpSelectBox" name="systemGroups" style="display:none;">';
@@ -3931,7 +3964,11 @@
 			createGroupContentStr+='<option value='+userGrpsObj.systemGroupsListBoxArr[i].id+'>'+userGrpsObj.systemGroupsListBoxArr[i].value+'</option>';
 		}
 		createGroupContentStr+='</select></td>';
+>>>>>>> .r1809
 		createGroupContentStr+='</tr>';
+<<<<<<< .mine
+		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group"/><%=addToStaticGrpAsSubGrpRadio%></td>';
+=======
 		createGroupContentStr+='<tr>';
 		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To My Group As Sub Group" onClick="showMyGroupSelectionBox()"/><%=addToGrpAsSubGrpRadio%></td>';
 		createGroupContentStr+='<td><select class="selectWidth" id="myGrpSelectBox" name="myGroups" style="display:none;">';
@@ -3940,6 +3977,7 @@
 			createGroupContentStr+='<option value='+userGrpsObj.myGroupsListBoxArr[j].id+'>'+userGrpsObj.myGroupsListBoxArr[j].value+'</option>';
 		}
 		createGroupContentStr+='</select></td>';
+>>>>>>> .r1809
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='</table>';
 		createGroupContentStr+='</fieldset>';		
@@ -4190,7 +4228,7 @@
 	{
 		this.cancel();
 	}	
-</script>
+--></script>
 </head>
 <body>
 
