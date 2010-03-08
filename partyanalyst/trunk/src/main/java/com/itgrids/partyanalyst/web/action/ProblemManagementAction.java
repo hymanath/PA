@@ -300,7 +300,6 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 				for(int i = 0;i< pendingProblems.length(); i++)
 				{
 					JSONObject pendingProblemsObj = pendingProblems.getJSONObject(i);
-									 
 					
 					problemBeanVO = new ProblemBeanVO();
 					
@@ -314,7 +313,7 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 					problemBeanVO.setProblemStatusId(new Long(pendingProblemsObj.getString("status")));	
 					problemBeanVO.setReportedDate(pendingProblemsObj.getString("identifiedDate"));
 					problemBeanVO.setUpdatedDate(pendingProblemsObj.getString("updatedDate"));
-					
+					problemBeanVO.setComments(pendingProblemsObj.getString("comments"));
 					pendingProblemsList.add(problemBeanVO);
 				}
 				List<ProblemBeanVO> obj = problemManagementService.updateAndGetProblemsUnderPending(pendingProblemsList);
@@ -393,7 +392,7 @@ public class ProblemManagementAction extends ActionSupport implements ServletReq
 					problemBeanVO.setDepartmentConcernedPersonName(name);
 					problemBeanVO.setDepartmentConcernedPersonPhoneNumber(contactNumber);
 					problemBeanVO.setComments(comments);
-					problemBeanVO.setAssignedProblemProgressId(new Long(assignedProblemProgressId));
+					problemBeanVO.setAssignedProblemProgressId(new Long(assignedProblemProgressId)); //check this line......
 					problemBeanVO.setProblemStatusId(new Long(status));	
 					
 					progressProblemsList.add(problemBeanVO);

@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.HamletsAndBoothsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
@@ -43,8 +44,23 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	private HamletsAndBoothsVO hamletsAndBoothsVO; 
 	private IRegionServiceData regionServiceDataImp;
 	private Long locationId = null;
+	private Long problemlocationId = null;
 	private String status=null;
 	private String taskType=null;
+	private List<ProblemHistoryVO> problemHistory;	
+		
+	public Long getProblemlocationId() {
+		return problemlocationId;
+	}
+	public void setProblemlocationId(Long problemlocationId) {
+		this.problemlocationId = problemlocationId;
+	}
+	public List<ProblemHistoryVO> getProblemHistory() {
+		return problemHistory;
+	}
+	public void setProblemHistory(List<ProblemHistoryVO> problemHistory) {
+		this.problemHistory = problemHistory;
+	}
 	public String getTaskType() {
 		return taskType;
 	}
@@ -140,7 +156,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			if(jObj.getString("task").equals("getStates")){
 				result = new ArrayList<SelectOptionVO>(2);
 				result.add(0,new SelectOptionVO(0l,"Select State"));
-				result.add(1,new SelectOptionVO(1l,"Andra Pradesh"));
+				result.add(1,new SelectOptionVO(1l,"Andhra Pradesh"));
 			}
 			if(jObj.getString("task").equals("getDistricts")){
 				result = staticDataService.getDistricts(new Long(jObj.getString("locationId")));
@@ -179,7 +195,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				locationId = new Long(jObj.getLong("locationId"));
 				status = findTaskType(taskType);
 				problemBean = problemManagementReportService.getConstituencyProblemsInfo(new Long(locationId), user.getRegistrationID(),status);
-			}
+			}	
 		}
 		return SUCCESS;    
 	}	
@@ -218,6 +234,20 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		else{
 		return "";
 		}
+	}
+	
+	public String getProblemHistoryData(){
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+				problemlocationId = new Long(jObj.getLong("locationId"));
+				problemHistory = problemManagementReportService.getCompleteDetailsForAProblem(problemlocationId);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}			
+		return SUCCESS;
 	}
 }	
 		
