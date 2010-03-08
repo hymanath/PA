@@ -10,6 +10,7 @@ public class BoothTotalVotesVO implements Serializable {
 	private static final long serialVersionUID = -7624183188745715882L;
 	private Long boothID;
 	private Long partNo;
+	private String location;
 	private String villagesCovered;
 	private Long maleVotes;
 	private Long femaleVotes;
@@ -27,6 +28,12 @@ public class BoothTotalVotesVO implements Serializable {
 	}
 	public void setPartNo(Long partNo) {
 		this.partNo = partNo;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	public String getVillagesCovered() {
 		return villagesCovered;
