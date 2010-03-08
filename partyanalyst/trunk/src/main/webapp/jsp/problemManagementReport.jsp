@@ -9,46 +9,69 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Problem Management Report</title>
 
 
 
-<!-- YUI files dependencies (start) -->
+<!-- YUI Dependency files (Start) -->
 
-<!--CSS files (default YUI Sam Skin) -->
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
- 
-<!--JS files Dependencies -->
-<script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/json/json-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/get/get-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 
-<!-- YUI files dependencies (end) -->
-<!-- Sam Skin CSS -->
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css">
- 
-<!-- Dependencies -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
- 
-<!-- OPTIONAL: Animation (only required if using ContainerEffect) -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script>
- 
-<!-- OPTIONAL: Drag & Drop (only required if enabling Drag & Drop) -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script>
- 
-<!-- Source file -->
-<script src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script>
- 
+
+
+<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+
+<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+
+<!-- YUI Skin Sam -->
+
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+
+<!-- YUI Dependency files (End) -->
 
 <style type="text/css">
+		.yui-skin-sam .yui-panel 
+		{
+			background:#FFFFFF none repeat scroll 0 0;
+			border-color:#808080;
+			border-style:solid;
+			border-width:1px 0;
+			left:0;
+			position:relative;
+			top:0;
+			z-index:1;
+		}
 		.detailsDiv
 		{
 			margin-top:10px;
@@ -79,22 +102,25 @@
 		{
 			color:#1C4B7A;
 		}	
-		.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
+		/*.yui-skin-sam .yui-dt th
 		{
-			background:none;
+			
+			background:#D8D8DA url(../../../../assets/skins/sam/sprite.png) repeat-x scroll 0 0;
+		}*/
+
+		
+		.problemHeader
+		{
+		font-size:20px;
+		color:salmon;
+		text-align:center;
 		}
 
-		.yui-skin-sam thead .yui-dt-sortable {
-
-			background-color:#C4DEFF;
-			color:#3F546F;
-		}
-		#problemHeader
+		#problemHeading
 		{
 		margin-left:45px;
 		text-align:left;
 		}
-
 		#radioLocationHeader
 		{
 		margin-left:1cm;
@@ -125,7 +151,47 @@
 		margin-left:1cm;
 		text-align:left;
 		}
-	</style>	
+		.popUpDataStyle
+		{
+			align:left;
+			margin-left:0.6cm;
+			color:blue;
+		}
+		legend {
+		background-color:#9696C0;
+		color:#FFFFFF;
+		font-family:status-bar;
+		font-size:11px;
+		font-weight:bold;
+		padding:5px;
+	    }
+	    }
+		fieldset {
+			border:4px solid #F6DFC9;
+			margin-bottom:10px;
+		}
+		#postedPersonTable
+		{
+		  color:highlight;
+		  font-family:verdana;
+		  text-align:center;
+		  width:100%;
+		}
+		#probDetailsTable
+		{
+		  color:Gray;
+		  font-family:verdana;
+		  text-align:center;
+		  width:100%;		  
+		}
+		#assignedDepartmentTable showProblems
+		{
+		  color:Navy;
+		  font-family:verdana;
+		  text-align:center;
+		  width:100%;
+		}
+	</style>   	
 
 </head>
 <script type="text/javascript">  
@@ -153,10 +219,13 @@ var locationDetails={
 
 //problemDetails.problemArray
 var problemDetails={
-		problemArray:[]
+		problemArray:[],
+		record:[],
+		problemHistoryArray:[]
 	};
 
-var type="";
+
+var type="",createGroupDialog,problemLocationId; 
 
 function initializeResultsTable() {
 
@@ -183,8 +252,24 @@ resultsDataSource.responseSchema = {
 		key : "updatedDate"
 	},{
 		key : "comments"
-	}]
-};
+	},{
+		key : "MoreDetails"
+	},{
+		key : "email"
+	},{
+		key : "phone"
+	},{
+		key : "mobile"
+	},{
+		key : "address"
+	},{
+		key : "contactNo"
+	},{
+		key : "designation"
+	},{
+		key : "problemLocationId"
+	}]   
+};	
 
 var resultsColumnDefs = [ {
 	key : "name",
@@ -193,7 +278,8 @@ var resultsColumnDefs = [ {
 }, {
 	key : "description",
 	label : "Description",
-	sortable : true
+	sortable : true,
+	resizable:true
 },{
 	key : "postedPersonName",
 	label : "Source",
@@ -207,36 +293,282 @@ var resultsColumnDefs = [ {
 	label : "Identified Date",
 	sortable : true
 }, {
-	key : "status",
-	label : "Status",
-	sortable : true
-}, {
 	key : "department",
 	label : "Department",
 	sortable : true
 }, {
+	key : "status",
+	label : "Status",
+	sortable : true
+}, {
+	key : "MoreDetails",
+	label : "View Details",
+	sortable : true
+}, {
 	key : "departmentConcernedPersonName",
 	label : "Official",
-	sortable : true
+	sortable : true,
+	hidden:true	
 }, {
 	key : "updatedDate",
 	label : "Updated Date",
-	sortable : true
+	sortable : true,
+	hidden:true		
 }, {
 	key : "comments",
 	label : "Comments",
-	sortable : true
-} ];
+	sortable : true,
+	hidden:true		
+}, {
+	key : "email",
+	label : "Email",
+	sortable : true,
+	hidden:true		
+}, {
+	key : "phone",
+	label : "Phone",
+	sortable : true,
+	hidden:true		
+}, {
+	key : "mobile",
+	label : "Mobile",
+	sortable : true,
+	hidden:true		
+}, {
+	key : "address",
+	label : "Address",
+	sortable : true,
+	hidden:true		
+}, {
+	key : "contactNo",
+	label : "ContactNo",
+	sortable : true,
+	hidden:true		
+}, {
+	key : "designation",
+	label : "Designation",
+	sortable : true,
+	hidden:true		
+}, {
+	key : "problemLocationId",
+	label : "LocationId",
+	sortable : true,
+	hidden:true		
+} ];	
 
-var myConfigs = {
+var myConfigs = {		
 paginator : new YAHOO.widget.Paginator({
-    rowsPerPage: 10
-})
+    rowsPerPage: 5,
+    template: "{PageLinks} Show {RowsPerPageDropdown} per page",
+    rowsPerPageOptions: [5,10,15,20], 
+    pageLinks: 5 
+    }),   
 };
 
 
 var myDataTable = new YAHOO.widget.DataTable("problemInfoDivBody",resultsColumnDefs, resultsDataSource,myConfigs);
+myDataTable.subscribe("linkClickEvent" ,function(oArgs){
+	elLinkInDataTable = oArgs.target;
+	record = this.getRecord(elLinkInDataTable);
+	column = this.getColumn(elLinkInDataTable);
+	record.setData(column);
+	//buildMoreDetailsPopUp();	
+	problemLocationId = record._oData.problemLocationId;
+	var jsObj=
+	{
+			locationId:problemLocationId,
+			task:"getProblemDetails"						
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/problemManagementHistoryResults.action?"+rparam;						
+	callAjax(rparam,jsObj,url);
+});
+
 }
+
+function buildProblemHistoryDataTable() {
+
+	var resultsDataSource = new YAHOO.util.DataSource(problemDetails.problemHistoryArray);
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "status"
+		}, {
+			key : "movedDate"
+		},{
+			key : "comments"
+		},{
+			key : "problemHistoryId"
+		},{
+			key : "isDelete"
+		}]   
+	};	
+
+		
+
+	var resultsColumnDefs = [ {
+		key : "status",
+		label : "Status",
+		sortable : true,
+		resizable:true
+	}, {
+		key : "movedDate",
+		label : "Date",
+		sortable : true,
+		resizable:true
+	},{
+		key : "comments",
+		label : "Comments If Any",
+		sortable : true,
+		resizable:true
+	},{
+		key : "problemHistoryId",
+		label : "problemHistoryId",
+		sortable : true,
+		resizable:true,
+		hidden:true	
+	},{
+		key : "isDelete",
+		label : "isDelete",
+		sortable : true,
+		resizable:true,
+		hidden:true	
+	} ];	
+
+	var myConfigs = {
+		    paginator : new YAHOO.widget.Paginator({
+		        rowsPerPage: 10
+		    })
+		};
+
+	var myDataTable = new YAHOO.widget.DataTable("showProblems",resultsColumnDefs, resultsDataSource,myConfigs);
+}
+
+function showProblemsHistoryReport(results){
+	assignToProblemsArray = new Array();
+
+			for(var i in results)
+			{
+				var problemObj= {
+						problemHistoryId:results[i].problemHistoryId,
+						isDelete:results[i].isDelete,
+						comments:results[i].comments,
+						movedDate:results[i].movedDate,						
+						status:results[i].status					
+					};
+				
+				assignToProblemsArray.push(problemObj);
+				problemDetails.problemHistoryArray=assignToProblemsArray;	
+			}
+			var emptyArr = new Array();
+		    if(results.length == 0)
+			{	
+		    	problemDetails.problemHistoryArray = emptyArr;				
+			}
+		    buildMoreDetailsPopUp();
+		    buildProblemHistoryDataTable();	
+}
+
+
+function  buildMoreDetailsPopUp()
+{ 
+		var elmt = document.getElementById('constituencyMgmtBodyDiv');
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','createGroupmDiv');
+		var problemName = record._oData.name;
+		record._oData.name = problemName[0].toUpperCase();
+		for(var i=1;i<problemName.length;i++){
+			record._oData.name = record._oData.name+problemName[i];
+		}
+		var createGroupContentStr='';		
+		createGroupContentStr+='<div align="center"><h3>Complete Report of <span style="color:green">'+record._oData.name+'</span> at<span style="color:blue"> '+record._oData.hamlet+'<span></h3></div>';
+		createGroupContentStr+='<fieldset>';  		
+		createGroupContentStr+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Details of the Problem</legend>';
+		createGroupContentStr+='<table id="probDetailsTable">';
+		createGroupContentStr+='<tr><th>Problem</th>';		
+		createGroupContentStr+='<th>Description</th>';
+		createGroupContentStr+='<th>IdentifiedDate</th></tr>';
+		createGroupContentStr+='<tr><td>'+record._oData.name+'</td>';
+		createGroupContentStr+='<td>'+record._oData.description+'</td>';
+		createGroupContentStr+='<td>'+record._oData.existingFrom+'</td></tr></table>';
+		createGroupContentStr+='</fieldset>';
+
+		createGroupContentStr+='<fieldset>';
+		createGroupContentStr+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Complained Person</legend>';		
+		createGroupContentStr+='<table id="postedPersonTable">';
+		createGroupContentStr+='<tr><th>Name</th>';
+		createGroupContentStr+='<th>Mobile </th>';					
+		createGroupContentStr+='<th>Phone </th>';	
+		createGroupContentStr+='<th>Address  </th>';
+		createGroupContentStr+='<th>Email</th></tr>';		
+		createGroupContentStr+='<tr><td>'+record._oData.postedPersonName+'</td>';
+		createGroupContentStr+='<td>'+record._oData.mobile+'</td>';		
+		createGroupContentStr+='<td>'+record._oData.phone+'</td>';
+		createGroupContentStr+='<td>'+record._oData.address+'</td>';					
+		createGroupContentStr+='<td>'+record._oData.email+'</td></tr></table>';			
+		createGroupContentStr+='</fieldset>';
+
+		
+		createGroupContentStr+='<fieldset>';
+		createGroupContentStr+='<legend style="font-family:arial,helvetica,clean,sans-serif;">Assigned Department</legend>';		
+		createGroupContentStr+='<table id="assignedDepartmentTable">';
+		createGroupContentStr+='<tr><th>Department </th>';
+		createGroupContentStr+='<th>Concerned Person</th>';					
+		createGroupContentStr+='<th>Designation </th>';	
+		createGroupContentStr+='<th>ContactNumber </th>';			
+		createGroupContentStr+='<tr><td>'+record._oData.department+'</td>';
+		createGroupContentStr+='<td>'+record._oData.departmentConcernedPersonName+'</td>';			
+		createGroupContentStr+='<td>'+record._oData.designation+'</td>';				
+		createGroupContentStr+='<td>'+record._oData.contactNo+'</td></tr></table>';			
+		createGroupContentStr+='</fieldset>';
+		
+		createGroupContentStr+='<div id="showProblems" class="yui-skin-sam" align="center"></div>';
+		
+		divChild.innerHTML=createGroupContentStr;
+		elmt.appendChild(divChild);	
+		if(createGroupDialog)
+			createGroupDialog.destroy();
+		createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
+				{ width : "600px", 		
+	              fixedcenter : false, 
+	              visible : true,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  hideaftersubmit:true,
+				  close:true,
+				  x:400,
+				  y:300,				  
+				  buttons : [ { text:"Ok", handler: handleCreateGroupSubmit, isDefault:true}, 
+	                          { text:"Cancel", handler: handleCreateGroupCancel}]
+	             } );
+		createGroupDialog.render();
+}
+
+function getProblemDataForSelectedProblem(id)
+{
+	var jsObj=
+		{
+				locationId:id,
+				task:"getProblemData"						
+		};
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/problemManagementReportResults.action?"+rparam;						
+		callAjax(rparam,jsObj,url);
+}
+
+function handleCreateGroupSubmit()
+{
+	createGroupDialog.hide();			
+}
+
+function handleCreateGroupCancel()
+{
+	this.cancel();
+}
+
 function callAjax(param,jsObj,url){
 var myResults;	
 var callback = {			
@@ -283,7 +615,12 @@ var callback = {
 				{
 					showProblemsReport(myResults);			
 				}
-		}catch (e) {   
+				if(jsObj.task == "getProblemDetails")
+				{
+					console.log(myResults);
+					showProblemsHistoryReport(myResults);			
+				}
+		}catch (e) {   		
 		   	alert("Invalid JSON result" + e);   
 		}  
     },
@@ -310,7 +647,16 @@ function showProblemsReport(results){
 						 department:results[i].department,
 						 departmentConcernedPersonName:results[i].departmentConcernedPersonName,
 						 updatedDate:results[i].updatedDate,
-						 comments:results[i].comments
+						 comments:results[i].comments,
+						 email:results[i].email,
+						 phone:results[i].phone,
+						 mobile:results[i].mobile,
+						 address:results[i].address,
+						 contactNo:results[i].contactNo,
+						 designation:results[i].designation,
+						 designation:results[i].designation,
+						 problemLocationId:results[i].problemLocationId,
+						 MoreDetails:'<a href="#">More Details..</a>'						
 					};
 				
 				assignToProblemsArray.push(problemObj);
@@ -321,12 +667,14 @@ function showProblemsReport(results){
 			{	
 		    	problemDetails.problemArray = emptyArr;				
 			}
-			initializeResultsTable();
+			initializeResultsTable();		
 }
+		
+
+
 
 function getStateList(id)
-{
-	
+{	
 	var jsObj=
 		{
 				locationId:id,
@@ -453,7 +801,7 @@ function getHamlet(id)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/problemManagementReportResults.action?"+rparam;						
 		callAjax(rparam,jsObj,url);
-} 
+} 		
 
 function showStatesInSelectOption(results) 
 {
@@ -858,21 +1206,23 @@ function populateConstituencyLocations()
 <body >
 
 <div id="mainDIV" class="yui-skin-sam">
-<div style="font-size:20px;">Problem Management Report</div><br/>
-<div id="problemHeader">Find Problems By </div>
+<div class="problemHeader">Problem Management Report</div><br/><br/>
+<div id="problemHeading">Find Problems By </div>
 <div id="radioLocationHeader">
 <table><tr>
 <td><input  type="radio" name="location" value="location" onclick="areaType()"> Location</input></td>		
 <td><input  type="radio" name="location" value="status" onclick="statusType()"> Status </input></td>
 <td><input  type="radio" name="location" value="department" onclick="departmentType()"> Department</input></td>
 </tr></table>
-
+<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"></div>
 </div>
 <div id="areaTypes"></div>
 <div id="areaTypess"></div>
 <div id="buildId"></div>
 </div>
-<div id="problemInfoDivBody" class="yui-skin-sam">
+<div class="yui-skin-sam">
+<div id="problemInfoDivBody" >
+</div>
 </div>
 </body>
 
