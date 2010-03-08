@@ -23,12 +23,12 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	@SuppressWarnings("unchecked")
 	public List findProblemsForALocationsByHamletId(Long hamletId){
 		return getHibernateTemplate().find(" Select model.problemStatus.status," +
-				" model.problemLocation.hamlet.hamletName," +
+				" model.problemLocation.hamlet.hamletName" +
 				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
 				" model.problemLocation.problemAndProblemSource.problem.problem," +
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated" +
-				" from ProblemHistory model where model.problemLocation.hamlet.hamletId = ?",hamletId);
+				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
+				" from ProblemHistory model where model.problemLocation.hamlet.hamletId = ? and model.isDelete is null",hamletId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -38,8 +38,8 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
 				" model.problemLocation.problemAndProblemSource.problem.problem," +
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated" +
-				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId = ?",tehsilId);
+				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
+				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId = ? and model.isDelete is null)",tehsilId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -49,47 +49,51 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
 				" model.problemLocation.problemAndProblemSource.problem.problem," +
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated" +
+				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
 				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +
-				") order by model.problemLocation.hamlet.hamletName");
+				") and model.isDelete is null");
 	}
 
 	@SuppressWarnings("unchecked")
-	public List findProblemsByStatusForALocationsByHamletId(Long hamletId,
-			String status) {
+	public List findProblemsByStatusForALocationsByHamletId(Long hamletId,String status) {
 		Object[] params = {hamletId,status};
 		return getHibernateTemplate().find(" Select model.problemStatus.status," +
 				" model.problemLocation.hamlet.hamletName," +
 				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
 				" model.problemLocation.problemAndProblemSource.problem.problem," +
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated" +
-				" from ProblemHistory model where model.problemLocation.hamlet.hamletId = ? and model.problemStatus.status = ?",params);
+				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
+				" from ProblemHistory model where model.problemLocation.hamlet.hamletId = ? and model.problemStatus.status = ? ",params);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List findProblemsByStatusForALocationsByTehsilId(Long tehsilId,
-			String status) {
+	public List findProblemsByStatusForALocationsByTehsilId(Long tehsilId,String status) {
 		Object[] params = {tehsilId,status};
 		return getHibernateTemplate().find(" Select model.problemStatus.status," +
 				" model.problemLocation.hamlet.hamletName," +
 				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
 				" model.problemLocation.problemAndProblemSource.problem.problem," +
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated" +
-				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId = ? and model.problemStatus.status = ?",params);
+				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
+				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId = ? and model.problemStatus.status = ? ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List findProblemsByStatusForALocationsByConstituencyId(
-			String constituencyIds, String status) {
+	public List findProblemsByStatusForALocationsByConstituencyId(String constituencyIds, String status) {
 		return getHibernateTemplate().find(" Select model.problemStatus.status," +
 				" model.problemLocation.hamlet.hamletName," +
 				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
 				" model.problemLocation.problemAndProblemSource.problem.problem," +
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
-				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated" +
+				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
 				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +
-				") and model.problemStatus.status = ?",status);
+				") and model.problemStatus.status = ? ",status);
 	}	
+	
+	@SuppressWarnings("unchecked")
+	public List findCompleteProblems(Long problemLocationId) {
+		return getHibernateTemplate().find(" Select model.problemHistoryId,model.comments,model.dateUpdated,model.isDelete," +
+				" model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId,model.problemStatus.status" +
+				" from ProblemHistory model where model.problemLocation.problemLocationId =? order by model.problemHistoryId",problemLocationId);
+	}
 }

@@ -30,13 +30,23 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 	public List<AssignedProblemProgress> findByRegistrationIdAndStatusId(Long registrationId, Long statusId){
 		Object[] params = {registrationId, statusId};
 		return getHibernateTemplate().find("from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?" +
-				" and model.problemHistory.problemStatus.problemStatusId = ?",params );
+				" and model.problemHistory.problemStatus.problemStatusId = ? and model.problemHistory.isDelete is null",params );
 	}
 
+
+	
 	@SuppressWarnings("unchecked")
 	public List findProblemsForAHamletByHistoryId(Long historyId) {
 		return getHibernateTemplate().find("select model.problemSourceScopeConcernedDepartment.department," +
-				" model.concernedPersonName,model.problemHistory.dateUpdated" +
+				" model.concernedPersonName,model.problemHistory.dateUpdated,model.contactNo,model.designation" +
 				" from AssignedProblemProgress model where model.problemHistory.problemHistoryId = ?", historyId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<AssignedProblemProgress> getLatestProblemsByRegistrationIdAndStatusId(
+			Long registrationId, Long statusId, String status) {
+		Object[] params = {registrationId, statusId,status};
+		return getHibernateTemplate().find("from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?" +
+				" and  model.problemHistory.problemStatus.problemStatusId = ? and model.problemHistory.isDelete = ? ",params );
 	}
 }
