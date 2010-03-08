@@ -17,9 +17,8 @@ import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
-import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -250,23 +249,37 @@ public class ProblemManagementReportService implements
 							problemBean.setDepartment(problemData[0].toString());
 							problemBean.setDepartmentConcernedPersonName("Not Assigned.");
 							problemBean.setUpdatedDate("Not Assigned.");
+							problemBean.setContactNo("Not Assigned.");
+							problemBean.setDesignation("Not Assigned.");
 							}
 					}
 					else{
 						if(log.isDebugEnabled())
 							log.debug("Setting data into ProblemBeanVO......");
 						for(int j=0;j<result.size();j++){
-						Object[] problemData = (Object[]) result.get(j);
-						departmentName = problemData[0].toString();
-						problemBean.setDepartment(problemData[0].toString());
-						problemBean.setDepartmentConcernedPersonName(problemData[1].toString());
-						problemBean.setUpdatedDate(problemData[1].toString());
+							Object[] problemData = (Object[]) result.get(j);
+							departmentName = problemData[0].toString();
+							problemBean.setDepartment(problemData[0].toString());
+							problemBean.setDepartmentConcernedPersonName(problemData[1].toString());
+							problemBean.setUpdatedDate(problemData[1].toString());
+							if(!(problemData[3]==null && problemData[4]==null)){
+								problemBean.setContactNo(problemData[3].toString());
+								problemBean.setDesignation(problemData[4].toString());
+							}
+							else{
+								problemBean.setContactNo(problemData[3].toString());
+								problemBean.setDesignation(problemData[4].toString());
+							}
 						}
 					}
 				}else{
+
+					problemBean.setContactNo("Not Assigned.");
+					problemBean.setDesignation("Not Assigned.");
 					problemBean.setDepartment("Not Assigned.");
 					problemBean.setDepartmentConcernedPersonName("Not Assigned.");
 				}
+				
 				if(log.isDebugEnabled())
 					log.debug("Setting data into ProblemBeanVO......");
 				problemBean.setStatus(parms[0].toString());
@@ -302,9 +315,35 @@ public class ProblemManagementReportService implements
 						}
 					}
 				}
-				else{					
+				else{
 				}
 				problemBean.setDescription(parms[7].toString());
+				problemBean.setProblemLocationId(Long.parseLong(parms[9].toString()));				
+				
+				System.out.println("====================================");
+				System.out.println("Problem Location Id"+Long.parseLong(parms[9].toString()));
+				System.out.println("Problem Location Id"+problemBean.getProblemLocationId());
+				System.out.println("====================================");
+				
+				// To get all the problem history details...
+				
+				/*
+				List result = problemHistoryDAO.findCompleteProblems(Long.parseLong(parms[9].toString()));
+				 List<ProblemHistoryVO> problemHistory = new ArrayList<ProblemHistoryVO>(0);
+				for(int j=0;j<result.size();j++){
+					Object[] problemData = (Object[])result.get(j);
+					ProblemHistoryVO problemHistoryVO = new ProblemHistoryVO();
+					problemHistoryVO.setProblemHistoryId(Long.parseLong(problemData[0].toString()));					
+					if(!(problemData[1]!= "null")){
+						problemHistoryVO.setComments(problemData[1].toString());
+					}					
+					problemHistoryVO.setMovedDate(problemData[2].toString());					
+					if(!(problemData[3]!= "null")){
+						problemHistoryVO.setIsDelete(problemData[3].toString());
+					}
+					problemHistory.add(problemHistoryVO);
+				}
+				problemBean.setProblemHistory(problemHistory);*/				
 				
 				if(parms[8]==null)
 					problemBean.setUpdatedDate("No Updations..");
@@ -321,7 +360,7 @@ public class ProblemManagementReportService implements
 				}
 				else{
 					problemBeanVO.add(problemBean);	
-				}
+				}				
 			}	
 			}catch(Exception e){
 				e.printStackTrace();
@@ -329,9 +368,12 @@ public class ProblemManagementReportService implements
 					log.debug("Exception Raised--->"+e);
 				return null;
 			}
+			
 			return problemBeanVO;
 		}
-				
+		/*
+		 * To convert date which is in yyyy-MM-dd format to dd-MM-yyyy format	
+		 */
 		public String dateConversion(String idate){
 			String convertedDated=null;
 			SimpleDateFormat sdfInput =  
@@ -348,5 +390,58 @@ public class ProblemManagementReportService implements
 			}
 			return convertedDated; 			
 		}
+
+		/*
+		 * Retrives all the history regarding the selected problem and sets them in to ProblemHistoryVO.
+		 */
+		public List<ProblemHistoryVO> getCompleteDetailsForAProblem(Long problemLocationId) {
+			List<ProblemHistoryVO> problemHistory = new ArrayList<ProblemHistoryVO>(0);
+			try {
+			List result = problemHistoryDAO.findCompleteProblems(problemLocationId);
+			for(int j=0;j<result.size();j++){
+				Object[] problemData = (Object[])result.get(j);
+				ProblemHistoryVO problemHistoryVO = new ProblemHistoryVO();
+				problemHistoryVO.setProblemHistoryId(Long.parseLong(problemData[0].toString()));
+				if(problemData[1] != null){
+					problemHistoryVO.setComments(problemData[1].toString());
+				}	
+				else{
+					problemHistoryVO.setComments("--");
+				}
+				problemHistoryVO.setMovedDate(timeStampConversion(problemData[2].toString()));
+				if(!(problemData[3] == null)){
+					problemHistoryVO.setIsDelete(problemData[3].toString());
+				}
+				else{
+					problemHistoryVO.setIsDelete("--");
+				}
+				problemHistoryVO.setStatus(problemData[5].toString());
+				problemHistory.add(problemHistoryVO);
+			}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return problemHistory;
+		}
 		
+		/*
+		 * To convert timestamp which is in yyyy-MM-dd hh:mm:ss format to dd-MM-yyyy hh:mm:ss format.
+		 */
+		public String timeStampConversion(String idate){
+			String convertedDated=null;
+			SimpleDateFormat sdfInput =  
+		        new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss") ;  
+		     SimpleDateFormat sdfOutput =  
+		        new SimpleDateFormat  ("dd-MM-yyyy hh:mm:ss") ;  		  
+		  
+		     Date date;
+			try {
+				date = sdfInput.parse (idate);
+				convertedDated = sdfOutput.format(date).toString(); 
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			return convertedDated;	
+		}
+	
 }

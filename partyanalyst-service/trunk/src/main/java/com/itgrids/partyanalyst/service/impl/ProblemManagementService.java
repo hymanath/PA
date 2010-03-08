@@ -8,8 +8,10 @@
 package com.itgrids.partyanalyst.service.impl;
 
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -59,25 +61,26 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ProblemManagementService implements IProblemManagementService {
 
-	private IProblemLocationDAO problemLocationDAO;
+	private IProblemLocationDAO problemLocationDAO = null;
 	private static final Logger log = Logger.getLogger("ProblemManagementService.class");
-	private IRegistrationDAO registrationDAO;
-	private IHamletDAO hamletDAO;
-	private ITownshipDAO townshipDAO;
-	private ProblemExternalSourceDAO problemExternalSourceDAO;
-	private TransactionTemplate transactionTemplate;
-	private IProblemSourceScopeDAO problemSourceScopeDAO;
-	private IProblemAndProblemSourceDAO problemAndProblemSourceDAO;
-	private IProblemClassificationDAO problemClassificationDAO;
-	private IProblemDAO problemDAO;
-	private IProblemHistoryDAO problemHistoryDAO;
-	private IProblemStatusDAO problemStatusDAO;
-	private IProblemSourceDAO problemSourceDAO;
-	private IProblemSourceScopeConcernedDepartmentDAO problemSourceScopeConcernedDepartmentDAO;
-	private IAssignedProblemProgressDAO assignedProblemProgressDAO;
-	private ProblemBeanVO problemBeanVO;
-	private List<ProblemBeanVO> problemBeanVOs;
+	private IRegistrationDAO registrationDAO = null;
+	private IHamletDAO hamletDAO = null;
+	private ITownshipDAO townshipDAO = null;
+	private ProblemExternalSourceDAO problemExternalSourceDAO = null;
+	private TransactionTemplate transactionTemplate = null;
+	private IProblemSourceScopeDAO problemSourceScopeDAO = null;
+	private IProblemAndProblemSourceDAO problemAndProblemSourceDAO = null;
+	private IProblemClassificationDAO problemClassificationDAO = null;
+	private IProblemDAO problemDAO = null;
+	private IProblemHistoryDAO problemHistoryDAO = null;
+	private IProblemStatusDAO problemStatusDAO = null;
+	private IProblemSourceDAO problemSourceDAO = null;
+	private IProblemSourceScopeConcernedDepartmentDAO problemSourceScopeConcernedDepartmentDAO = null;
+	private IAssignedProblemProgressDAO assignedProblemProgressDAO = null;
+	private ProblemBeanVO problemBeanVO = null;
+	private List<ProblemBeanVO> problemBeanVOs = null;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+	
 	
 	public IAssignedProblemProgressDAO getAssignedProblemProgressDAO() {
 		return assignedProblemProgressDAO;
@@ -338,8 +341,9 @@ public class ProblemManagementService implements IProblemManagementService {
 					problemHistory = new ProblemHistory();
 					problemHistory.setProblemLocation(problemLocationDAO.save(problemLocation));
 					problemHistory.setProblemStatus(problemStatusDAO.get(problemBeanVO.getProblemStatusId()));
-					problemHistory = problemHistoryDAO.save(problemHistory);
-				
+					problemHistory.setDateUpdated(getCurrentDateAndTime());
+					problemHistory = problemHistoryDAO.save(problemHistory);				
+					
 					System.out.println("problemHistory.getProblemHistoryId()----"+problemHistory.getProblemHistoryId());
 					problemBeanFromDB.setProblemHistoryId(problemHistory.getProblemHistoryId());
 					problemBeanFromDB.setProblemLocationId(problemHistory.getProblemLocation().getProblemLocationId());
@@ -424,24 +428,26 @@ public class ProblemManagementService implements IProblemManagementService {
 			
 			Date iDate,eDate;					
 			for(ProblemHistory problemHistory:problemHistories){
-				problemLocation = problemHistory.getProblemLocation();
-				problem = problemLocation.getProblemAndProblemSource().getProblem();
-				problemAndProblemSource = problemLocation.getProblemAndProblemSource();
-				ProblemBeanVO problemBeanVO = new ProblemBeanVO();				
-				problemBeanVO.setProblemId(problem.getProblemId());
-				problemBeanVO.setProblemLocationId(problemLocation.getProblemLocationId());
-				problemBeanVO.setHamletId(problemLocation.getHamlet().getHamletId());
-				problemBeanVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
-				problemBeanVO.setProblem(problem.getProblem());
-				problemBeanVO.setDescription(problem.getDescription());				
-				iDate = problem.getIdentifiedOn();
-				eDate = problem.getExistingFrom();
-				problemBeanVO.setReportedDate(sdf.format(iDate));
-				problemBeanVO.setExistingFrom(sdf.format(eDate));
-				problemBeanVO.setHamlet(problemLocation.getHamlet().getHamletName());
-				problemBeanVO.setProbSource(problemAndProblemSource.getProblemSource().getProblemSource());
+				if(!(problemHistory.getIsDelete()!=null && problemHistory.getIsDelete().toString().equalsIgnoreCase("true"))){
+					problemLocation = problemHistory.getProblemLocation();
+					problem = problemLocation.getProblemAndProblemSource().getProblem();
+					problemAndProblemSource = problemLocation.getProblemAndProblemSource();
+					ProblemBeanVO problemBeanVO = new ProblemBeanVO();				
+					problemBeanVO.setProblemId(problem.getProblemId());
+					problemBeanVO.setProblemLocationId(problemLocation.getProblemLocationId());
+					problemBeanVO.setHamletId(problemLocation.getHamlet().getHamletId());
+					problemBeanVO.setProblemHistoryId(problemHistory.getProblemHistoryId());
+					problemBeanVO.setProblem(problem.getProblem());
+					problemBeanVO.setDescription(problem.getDescription());				
+					iDate = problem.getIdentifiedOn();
+					eDate = problem.getExistingFrom();
+					problemBeanVO.setReportedDate(sdf.format(iDate));
+					problemBeanVO.setExistingFrom(sdf.format(eDate));
+					problemBeanVO.setHamlet(problemLocation.getHamlet().getHamletName());
+					problemBeanVO.setProbSource(problemAndProblemSource.getProblemSource().getProblemSource());	
+					problemBean.add(problemBeanVO);
+				}
 				
-				problemBean.add(problemBeanVO);				
 			}
 		}
 		return problemBean;
@@ -457,15 +463,18 @@ public class ProblemManagementService implements IProblemManagementService {
 		List<SelectOptionVO> departmentVOs = null;
 		Date iDate;
 		for(ProblemHistory problemHistory:problemHistories){
-			problemFromDB = new ProblemBeanVO();
-			problemFromDB.setProblemHistoryId(problemHistory.getProblemHistoryId());
-			problemFromDB.setProblem(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
-			iDate = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
-			problemFromDB.setReportedDate(sdf.format(iDate));
-			problemFromDB.setAddress(problemHistory.getProblemLocation().getHamlet().getHamletName());
-			problemFromDB.setProblemSourceScope(problemHistory.getProblemSourceScope().getScope());
-			problemFromDB.setProblemType(problemHistory.getProblemLocation().getProblemClassification().getClassification());
-			problemsFromDB.add(problemFromDB);
+			if(!(problemHistory.getIsDelete()!=null && problemHistory.getIsDelete().toString().equalsIgnoreCase("true"))){
+				problemFromDB = new ProblemBeanVO();
+				problemFromDB.setProblemHistoryId(problemHistory.getProblemHistoryId());
+				problemFromDB.setProblem(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
+				iDate = problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
+				problemFromDB.setReportedDate(sdf.format(iDate));
+				problemFromDB.setAddress(problemHistory.getProblemLocation().getHamlet().getHamletName());
+				problemFromDB.setProblemSourceScope(problemHistory.getProblemSourceScope().getScope());
+				problemFromDB.setProblemType(problemHistory.getProblemLocation().getProblemClassification().getClassification());
+				problemFromDB.setProblemLocationId(problemHistory.getProblemLocation().getProblemLocationId());
+				problemsFromDB.add(problemFromDB);
+			}
 		}	
 		return problemsFromDB;
 	}
@@ -482,12 +491,13 @@ public class ProblemManagementService implements IProblemManagementService {
 				 ProblemLocation problemLocation;
 				 ProblemClassification problemClassification;
 				 ProblemHistory problemHistory;
+				 ProblemHistory classifiedProblemData = null;
 				 ProblemSourceScope problemSourceScope;
 				 ProblemStatus problemStatus;
-				 ProblemBeanVO problemBeanFromDB;		
+				 ProblemBeanVO problemBeanFromDB;   
 				 ResultStatus resultStatus = new ResultStatus();
 				 List<ProblemBeanVO> updatedProblems = new ArrayList<ProblemBeanVO>();
-				 List<SelectOptionVO> departmentVOs = null;				 
+				 List<SelectOptionVO> departmentVOs = null;	
 				try{
 					 for(ProblemBeanVO problemBeanVO:problemBeanVOs){ 
 						 departmentVOs = new ArrayList<SelectOptionVO>();
@@ -497,20 +507,23 @@ public class ProblemManagementService implements IProblemManagementService {
 						 problemSourceScope = problemSourceScopeDAO.findBySourceScope(problemBeanVO.getProblemSourceScope()).get(0);
 						 problemClassification = problemClassificationDAO.findByClassification(problemBeanVO.getProblemClassification()).get(0);
 						 
-						 problem = problemLocation.getProblemAndProblemSource().getProblem();
-						 
-						 
+						 problem = problemLocation.getProblemAndProblemSource().getProblem();						 
 						 problem.setDescription(problemBeanVO.getDescription());
 						 problem.setProblem(problemBeanVO.getProblem());
 						 
 						 problemLocation.getProblemAndProblemSource().setProblem(problem);
-						 problemLocation.setProblemClassification(problemClassification);
-						 
+						 problemLocation.setProblemClassification(problemClassification);	 				
+						
 						 problemHistory = problemHistoryDAO.get(problemBeanVO.getProblemHistoryId());
-						 problemHistory.setProblemLocation(problemLocation);
-						 problemHistory.setProblemSourceScope(problemSourceScope);
-						 problemHistory.setProblemStatus(problemStatus);
-						 problemHistory = problemHistoryDAO.save(problemHistory);	 
+						 problemHistory.setIsDelete("true");						 
+						 problemHistory = problemHistoryDAO.save(problemHistory);
+						 
+						 classifiedProblemData = new ProblemHistory();
+						 classifiedProblemData.setProblemLocation(problemLocation);
+						 classifiedProblemData.setProblemStatus(problemStatus);
+						 classifiedProblemData.setProblemSourceScope(problemSourceScope);
+						 classifiedProblemData.setDateUpdated(getCurrentDateAndTime());
+						 problemHistory = problemHistoryDAO.save(classifiedProblemData);
 						 
 						 problemBeanFromDB.setProblemHistoryId(problemHistory.getProblemHistoryId());
 						 problemBeanFromDB.setProblem(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
@@ -518,10 +531,12 @@ public class ProblemManagementService implements IProblemManagementService {
 						 problemBeanFromDB.setReportedDate(sdf.format(iDateOfAddNewProb));
 						 problemBeanFromDB.setAddress(problemHistory.getProblemLocation().getHamlet().getHamletName());
 						 problemBeanFromDB.setProblemSourceScope(problemHistory.getProblemSourceScope().getScope());
-						 problemBeanFromDB.setProblemType(problemHistory.getProblemLocation().getProblemClassification().getClassification());
-						 
-						 updatedProblems.add(problemBeanFromDB);	 
+						 problemBeanFromDB.setProblemType(problemHistory.getProblemLocation().getProblemClassification().getClassification());					 
+						 problemBeanFromDB.setProblemLocationId(problemHistory.getProblemLocation().getProblemLocationId());
+						 updatedProblems.add(problemBeanFromDB);						
 					 }
+					
+					
 				}catch(Exception e){
 					status.setRollbackOnly();
 					if(log.isDebugEnabled()){
@@ -564,21 +579,33 @@ public class ProblemManagementService implements IProblemManagementService {
 				ProblemHistory problemHistory = null;
 				ProblemStatus problemStatus = null;
 				AssignedProblemProgress assignedProblemProgress = null;
+				ProblemHistory assignedProblemData = null;
 				try{
 					for(ProblemBeanVO problemBeanVO:problemBeanVOs){
 						problemSourceScopeConcernedDepartment = problemSourceScopeConcernedDepartmentDAO.findByDepartmentAndScope(problemBeanVO.getDepartment(), problemBeanVO.getProblemSourceScope()).get(0);
 						problemStatus = problemStatusDAO.get(problemBeanVO.getProblemStatusId());
 						problemHistory = problemHistoryDAO.get(problemBeanVO.getProblemHistoryId());
-						problemHistory.setProblemStatus(problemStatus);
+					
+						assignedProblemData = new ProblemHistory();
+						assignedProblemData.setProblemLocation(problemHistory.getProblemLocation());
+						assignedProblemData.setProblemStatus(problemStatus);
+						assignedProblemData.setProblemSourceScope(problemHistory.getProblemSourceScope());
+						assignedProblemData.setDateUpdated(getCurrentDateAndTime());
+						assignedProblemData = problemHistoryDAO.save(assignedProblemData);
+						
+						problemHistory.setIsDelete("true");
+						problemHistory = problemHistoryDAO.save(problemHistory);
+
 						assignedProblemProgress = new AssignedProblemProgress();
-						assignedProblemProgress.setProblemHistory(problemHistory);
+						assignedProblemProgress.setProblemHistory(assignedProblemData);
 						assignedProblemProgress.setProblemSourceScopeConcernedDepartment(problemSourceScopeConcernedDepartment);
+						assignedProblemProgress.setDescription(problemBeanVO.getComments());
 						assignedProblemProgress = assignedProblemProgressDAO.save(assignedProblemProgress);
 						
 						problemBeanVO.setAssignedProblemProgressId(assignedProblemProgress.getAssignedProblemProgressId());
 						problemBeanVO.setProblem(assignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
 						problemBeanVO.setDepartment(assignedProblemProgress.getProblemSourceScopeConcernedDepartment().getDepartment());
-						
+						problemBeanVO.setProblemLocationId(assignedProblemProgress.getProblemHistory().getProblemLocation().getProblemLocationId());
 						assignedProblems.add(problemBeanVO);
 					}
 				}catch(Exception e){
@@ -606,28 +633,47 @@ public class ProblemManagementService implements IProblemManagementService {
 				ResultStatus resultStatus = new ResultStatus();
 				AssignedProblemProgress assignedProblemProgress = null;
 				ProblemStatus problemStatus = null;
+				ProblemHistory progressProblemData = null;
+				AssignedProblemProgress newAssignedProblemProgress = null;
 				try{
 					for(ProblemBeanVO problemBeanVO:problemBeanVOs){
 						problemStatus = problemStatusDAO.get(problemBeanVO.getProblemStatusId());
 						assignedProblemProgress = assignedProblemProgressDAO.get(problemBeanVO.getAssignedProblemProgressId());
-						assignedProblemProgress.getProblemHistory().setProblemStatus(problemStatus);
-						assignedProblemProgress.setConcernedPersonName(problemBeanVO.getDepartmentConcernedPersonName());
-						assignedProblemProgress.setDesignation(problemBeanVO.getDesignation());
-						assignedProblemProgress.setContactNo(problemBeanVO.getDepartmentConcernedPersonPhoneNumber());
-						assignedProblemProgress.setDescription(problemBeanVO.getComments());
-						assignedProblemProgress = assignedProblemProgressDAO.save(assignedProblemProgress);
+																							
+						assignedProblemProgress.getProblemHistory().setIsDelete("true");
+						assignedProblemProgress = assignedProblemProgressDAO.save(assignedProblemProgress);				
 						
-						problemBeanVO.setAssignedProblemProgressId(assignedProblemProgress.getAssignedProblemProgressId());
-						problemBeanVO.setProblem(assignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
+						progressProblemData = new ProblemHistory();
+						progressProblemData.setProblemLocation(assignedProblemProgress.getProblemHistory().getProblemLocation());
+						progressProblemData.setProblemStatus(problemStatus);
+						progressProblemData.setProblemSourceScope(assignedProblemProgress.getProblemHistory().getProblemSourceScope());
+						progressProblemData.setDateUpdated(getCurrentDateAndTime());
+						progressProblemData.setComments(problemBeanVO.getComments());
+						progressProblemData = problemHistoryDAO.save(progressProblemData);
 						
-						Date iDate = assignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
+						newAssignedProblemProgress = new AssignedProblemProgress();
+						newAssignedProblemProgress.setConcernedPersonName(problemBeanVO.getDepartmentConcernedPersonName());
+						newAssignedProblemProgress.setDesignation(problemBeanVO.getDesignation());
+						newAssignedProblemProgress.setContactNo(problemBeanVO.getDepartmentConcernedPersonPhoneNumber());
+						newAssignedProblemProgress.setDescription(problemBeanVO.getComments());
+						newAssignedProblemProgress.setProblemHistory(progressProblemData);
+						newAssignedProblemProgress.setProblemSourceScopeConcernedDepartment(assignedProblemProgress.getProblemSourceScopeConcernedDepartment());
+						assignedProblemProgressDAO.save(newAssignedProblemProgress);
+						
+						problemBeanVO.setAssignedProblemProgressId(newAssignedProblemProgress.getAssignedProblemProgressId());
+						problemBeanVO.setProblem(newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());						
+						Date iDate = newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
 						problemBeanVO.setReportedDate(sdf.format(iDate));						
-						problemBeanVO.setDepartmentConcernedPersonName(assignedProblemProgress.getConcernedPersonName());
-						problemBeanVO.setDesignation(assignedProblemProgress.getDesignation());
-						problemBeanVO.setContactNo(assignedProblemProgress.getContactNo());
-						
+						problemBeanVO.setDepartmentConcernedPersonName(newAssignedProblemProgress.getConcernedPersonName());
+						problemBeanVO.setDesignation(newAssignedProblemProgress.getDesignation());
+						problemBeanVO.setContactNo(newAssignedProblemProgress.getContactNo());
+						problemBeanVO.setComments(problemBeanVO.getComments());
+						problemBeanVO.setReasonForPending(problemBeanVO.getComments());
+						problemBeanVO.setProblemLocationId(newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemLocationId());
 						progressInProblems.add(problemBeanVO);
+						
 					}
+					
 				}catch(Exception e){
 					status.setRollbackOnly();
 					resultStatus.setExceptionEncountered(e);
@@ -645,20 +691,18 @@ public class ProblemManagementService implements IProblemManagementService {
 	
 	public List<ProblemBeanVO> getProblemsUnderProgress(Long registrationId, Long statusId){
 		List<AssignedProblemProgress> problemsUnderProgress = assignedProblemProgressDAO.findByRegistrationIdAndStatusId(registrationId, statusId);
-		
 		List<ProblemBeanVO> problemsUnderProgressFromDB = new ArrayList<ProblemBeanVO>();
 		for(AssignedProblemProgress problemProgerss:problemsUnderProgress){
 			ProblemBeanVO problemBeanVO = new ProblemBeanVO();
 			problemBeanVO.setAssignedProblemProgressId(problemProgerss.getAssignedProblemProgressId());
 			problemBeanVO.setProblem(problemProgerss.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
-			
 			Date iDate = problemProgerss.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
 			problemBeanVO.setReportedDate(sdf.format(iDate));			
 			problemBeanVO.setDepartment(problemProgerss.getProblemSourceScopeConcernedDepartment().getDepartment());
 			problemBeanVO.setDepartmentConcernedPersonName(problemProgerss.getConcernedPersonName());
 			problemBeanVO.setDesignation(problemProgerss.getDesignation());
 			problemBeanVO.setContactNo(problemProgerss.getContactNo());
-			
+			problemBeanVO.setProblemLocationId(problemProgerss.getProblemHistory().getProblemLocation().getProblemLocationId());
 			problemsUnderProgressFromDB.add(problemBeanVO);
 		}
 		return problemsUnderProgressFromDB;
@@ -677,26 +721,44 @@ public class ProblemManagementService implements IProblemManagementService {
 				List<ProblemBeanVO> pendingProblems = new ArrayList<ProblemBeanVO>();
 				ProblemStatus problemStatus = null;
 				AssignedProblemProgress assignedProblemProgress = null;
+				ProblemHistory pendingProblemData = null;
+				AssignedProblemProgress newAssignedProblemProgress = null;
 				try{
 					for(ProblemBeanVO problemBeanVO : problemBeanVOs) {
 						problemStatus = problemStatusDAO.get(problemBeanVO.getProblemStatusId());
-						assignedProblemProgress = assignedProblemProgressDAO.get(problemBeanVO.getAssignedProblemProgressId());
-						assignedProblemProgress.getProblemHistory().setProblemStatus(problemStatus);
-						Date problemPendingDate = sdf.parse(problemBeanVO.getUpdatedDate());
-						assignedProblemProgress.getProblemHistory().setDateUpdated(problemPendingDate);
-						assignedProblemProgress.getProblemHistory().setComments(problemBeanVO.getReasonForPending());
+						assignedProblemProgress = assignedProblemProgressDAO.get(problemBeanVO.getAssignedProblemProgressId());	
+						assignedProblemProgress.getProblemHistory().setIsDelete("true");
 						assignedProblemProgress = assignedProblemProgressDAO.save(assignedProblemProgress);
+						pendingProblemData = new ProblemHistory();
+						pendingProblemData.setProblemLocation(assignedProblemProgress.getProblemHistory().getProblemLocation());
+						pendingProblemData.setProblemStatus(problemStatus);
+						pendingProblemData.setProblemSourceScope(assignedProblemProgress.getProblemHistory().getProblemSourceScope());
+						pendingProblemData.setDateUpdated(getCurrentDateAndTime());
+						pendingProblemData.setComments(problemBeanVO.getReasonForPending());
+						pendingProblemData = problemHistoryDAO.save(pendingProblemData);
 						
-						problemBeanVO.setAssignedProblemProgressId(assignedProblemProgress.getAssignedProblemProgressId());
-						problemBeanVO.setProblem(assignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
-						Date iDate = assignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
+						
+						newAssignedProblemProgress = new AssignedProblemProgress();
+						newAssignedProblemProgress.setConcernedPersonName(problemBeanVO.getDepartmentConcernedPersonName());
+						newAssignedProblemProgress.setDesignation(problemBeanVO.getDesignation());
+						newAssignedProblemProgress.setContactNo(problemBeanVO.getDepartmentConcernedPersonPhoneNumber());
+						newAssignedProblemProgress.setDescription(problemBeanVO.getReasonForPending());
+						newAssignedProblemProgress.setProblemHistory(pendingProblemData);
+						newAssignedProblemProgress.setProblemSourceScopeConcernedDepartment(assignedProblemProgress.getProblemSourceScopeConcernedDepartment());
+						assignedProblemProgressDAO.save(newAssignedProblemProgress);
+						
+						problemBeanVO.setAssignedProblemProgressId(newAssignedProblemProgress.getAssignedProblemProgressId());
+						problemBeanVO.setProblem(newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
+						Date iDate = newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
 						problemBeanVO.setReportedDate(sdf.format(iDate));
-						problemBeanVO.setDepartmentConcernedPersonName(assignedProblemProgress.getConcernedPersonName());
-						problemBeanVO.setDesignation(assignedProblemProgress.getDesignation());
-						problemBeanVO.setContactNo(assignedProblemProgress.getContactNo());
-						Date pDate = assignedProblemProgress.getProblemHistory().getDateUpdated();						
+						problemBeanVO.setDepartmentConcernedPersonName(newAssignedProblemProgress.getConcernedPersonName());
+						problemBeanVO.setDesignation(newAssignedProblemProgress.getDesignation());
+						problemBeanVO.setContactNo(newAssignedProblemProgress.getContactNo());
+						Date pDate = newAssignedProblemProgress.getProblemHistory().getDateUpdated();						
 						problemBeanVO.setUpdatedDate(sdf.format(pDate)); 
-						problemBeanVO.setReasonForPending(assignedProblemProgress.getProblemHistory().getComments());
+						problemBeanVO.setComments(problemBeanVO.getComments());
+						problemBeanVO.setReasonForPending(problemBeanVO.getComments());
+						problemBeanVO.setProblemLocationId(newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemLocationId());
 						pendingProblems.add(problemBeanVO);
 					}
 				}catch(Exception e){
@@ -734,7 +796,7 @@ public class ProblemManagementService implements IProblemManagementService {
 			Date pDate = pendingProblem.getProblemHistory().getDateUpdated();
 			problemBeanVO.setUpdatedDate(sdf.format(pDate));
 			problemBeanVO.setReasonForPending(pendingProblem.getProblemHistory().getComments());
-			
+			problemBeanVO.setProblemLocationId(pendingProblem.getProblemHistory().getProblemLocation().getProblemLocationId());
 			pendingProblemsFromDB.add(problemBeanVO);
 		}
 		return pendingProblemsFromDB;
@@ -744,15 +806,18 @@ public class ProblemManagementService implements IProblemManagementService {
 	 * 
 	 */
 	public List<ProblemBeanVO> getAssignedProblems(Long registrationId, Long statusId){
-		List<ProblemBeanVO> assignedProblemsFromDB = new ArrayList<ProblemBeanVO>();
+		List<ProblemBeanVO> assignedProblemsFromDB = new ArrayList<ProblemBeanVO>();   
 		List<AssignedProblemProgress> assignedProblems = assignedProblemProgressDAO.findByRegistrationIdAndStatusId(registrationId, statusId);
 		ProblemBeanVO problemBeanVO = null;
 		for (AssignedProblemProgress assignedProblem : assignedProblems) {
-			problemBeanVO = new ProblemBeanVO();
-			problemBeanVO.setAssignedProblemProgressId(assignedProblem.getAssignedProblemProgressId());
-			problemBeanVO.setProblem(assignedProblem.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
-			problemBeanVO.setDepartment(assignedProblem.getProblemSourceScopeConcernedDepartment().getDepartment());
-			assignedProblemsFromDB.add(problemBeanVO);
+			if(!(assignedProblem.getProblemHistory().getIsDelete()!=null && assignedProblem.getProblemHistory().getIsDelete().equalsIgnoreCase("true"))){
+				problemBeanVO = new ProblemBeanVO();
+				problemBeanVO.setAssignedProblemProgressId(assignedProblem.getAssignedProblemProgressId());
+				problemBeanVO.setProblem(assignedProblem.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
+				problemBeanVO.setDepartment(assignedProblem.getProblemSourceScopeConcernedDepartment().getDepartment());
+				problemBeanVO.setProblemLocationId(assignedProblem.getProblemHistory().getProblemLocation().getProblemLocationId());
+				assignedProblemsFromDB.add(problemBeanVO);
+			}
 		}
 		return assignedProblemsFromDB;
 	}
@@ -770,23 +835,42 @@ public class ProblemManagementService implements IProblemManagementService {
 				List<ProblemBeanVO> fixedProblems = new ArrayList<ProblemBeanVO>();
 				ProblemStatus problemStatus = null;
 				AssignedProblemProgress assignedProblemProgress = null;
-				
+				ProblemHistory fixedProblemData = null;
 				try{
 					for(ProblemBeanVO problemBeanVO: problemBeanVOs){
 						problemStatus = problemStatusDAO.get(problemBeanVO.getProblemStatusId());
 						assignedProblemProgress = assignedProblemProgressDAO.get(problemBeanVO.getAssignedProblemProgressId());
-						assignedProblemProgress.getProblemHistory().setProblemStatus(problemStatus);
+												
+						assignedProblemProgress.getProblemHistory().setIsDelete("true");
 						assignedProblemProgress.getProblemHistory().setComments(problemBeanVO.getComments());
 						Date problemFixedDate = sdf.parse(problemBeanVO.getUpdatedDate());
 						assignedProblemProgress.getProblemHistory().setDateUpdated(problemFixedDate);
-						assignedProblemProgress = assignedProblemProgressDAO.save(assignedProblemProgress);
+						assignedProblemProgress = assignedProblemProgressDAO.save(assignedProblemProgress);					
+
+						fixedProblemData = new ProblemHistory();
+						fixedProblemData.setProblemLocation(assignedProblemProgress.getProblemHistory().getProblemLocation());
+						fixedProblemData.setProblemStatus(problemStatus);
+						fixedProblemData.setProblemSourceScope(assignedProblemProgress.getProblemHistory().getProblemSourceScope());
+						fixedProblemData.setDateUpdated(getCurrentDateAndTime());
+						fixedProblemData.setComments(problemBeanVO.getComments());
+						fixedProblemData = problemHistoryDAO.save(fixedProblemData);						
 						
-						problemBeanVO.setAssignedProblemProgressId(assignedProblemProgress.getAssignedProblemProgressId());
-						problemBeanVO.setProblem(assignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
-						Date iDate = assignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
+						AssignedProblemProgress newAssignedProblemProgress = new AssignedProblemProgress();
+						newAssignedProblemProgress.setConcernedPersonName(problemBeanVO.getDepartmentConcernedPersonName());
+						newAssignedProblemProgress.setDesignation(problemBeanVO.getDesignation());
+						newAssignedProblemProgress.setContactNo(problemBeanVO.getDepartmentConcernedPersonPhoneNumber());
+						newAssignedProblemProgress.setDescription(problemBeanVO.getComments());
+						newAssignedProblemProgress.setProblemHistory(fixedProblemData);
+						newAssignedProblemProgress.setProblemSourceScopeConcernedDepartment(assignedProblemProgress.getProblemSourceScopeConcernedDepartment());
+						assignedProblemProgressDAO.save(newAssignedProblemProgress);		
+						
+						problemBeanVO.setAssignedProblemProgressId(newAssignedProblemProgress.getAssignedProblemProgressId());
+						problemBeanVO.setProblem(newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
+						Date iDate = newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn();
 						problemBeanVO.setReportedDate(sdf.format(iDate));
 						Date fDate = assignedProblemProgress.getProblemHistory().getDateUpdated();
 						problemBeanVO.setUpdatedDate(sdf.format(fDate));
+						problemBeanVO.setProblemLocationId(newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemLocationId());
 						fixedProblems.add(problemBeanVO);
 					}
 				}catch(Exception e){
@@ -808,9 +892,8 @@ public class ProblemManagementService implements IProblemManagementService {
 	 */
 	public List<ProblemBeanVO> getFixedProblemsForUser(Long registrationId, Long statusId){
 		List<ProblemBeanVO> fixedProblemsFromDB = new ArrayList<ProblemBeanVO>();
-		List<AssignedProblemProgress> problemsUnderFixed = assignedProblemProgressDAO.findByRegistrationIdAndStatusId(registrationId, statusId);
-		
-		for (AssignedProblemProgress problemsFixed :problemsUnderFixed ) {
+		List<AssignedProblemProgress> problemsUnderFixed = assignedProblemProgressDAO.findByRegistrationIdAndStatusId(registrationId, statusId);	
+		for (AssignedProblemProgress problemsFixed :problemsUnderFixed ) {			
 			ProblemBeanVO problemBeanVO = new ProblemBeanVO();
 			problemBeanVO.setAssignedProblemProgressId(problemsFixed.getAssignedProblemProgressId());
 			problemBeanVO.setProblem(problemsFixed.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
@@ -819,10 +902,28 @@ public class ProblemManagementService implements IProblemManagementService {
 			problemBeanVO.setDepartment(problemsFixed.getProblemSourceScopeConcernedDepartment().getDepartment());
 			Date fDate = problemsFixed.getProblemHistory().getDateUpdated();
 			problemBeanVO.setUpdatedDate(sdf.format(fDate));
-			problemBeanVO.setComments(problemsFixed.getProblemHistory().getComments());
-			
+			problemBeanVO.setComments(problemsFixed.getProblemHistory().getComments());	
+			problemBeanVO.setProblemLocationId(problemsFixed.getProblemHistory().getProblemLocation().getProblemLocationId());
 			fixedProblemsFromDB.add(problemBeanVO);
 		}
 		return fixedProblemsFromDB;		
 	}
+	
+	/*
+	 * To convert the date that is retrived from DB to dd/MM/yyyy HH:mm:ss
+	 */
+	public Date getCurrentDateAndTime(){
+		try {
+		java.util.Date now = new java.util.Date();
+        String DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        String strDateNew = sdf.format(now);        
+			now = sdf.parse(strDateNew);
+			return now;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
+
