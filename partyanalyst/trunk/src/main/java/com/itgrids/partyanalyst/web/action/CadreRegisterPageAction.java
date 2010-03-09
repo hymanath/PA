@@ -112,6 +112,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		session = request.getSession();
 		
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO==null)
+			return ERROR;
 		String accessType =regVO.getAccessType();
 		Long accessValue= new Long(regVO.getAccessValue());
 

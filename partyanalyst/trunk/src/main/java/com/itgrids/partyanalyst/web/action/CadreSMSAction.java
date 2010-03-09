@@ -166,12 +166,13 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		Long userID = user.getRegistrationID();
 		String type = jsonObject.getString("SMS_LEVEL_TYPE");
-		Long value = value = new Long(jsonObject.getString("SMS_LEVEL_VALUE"));
+		Long value = new Long(jsonObject.getString("SMS_LEVEL_VALUE"));
 		String message = jsonObject.getString("SMS_MESSAGE");
+		String includeCadreName = jsonObject.getString("SMS_INCLUDE_CADRE_NAME");
 
 		if(log.isDebugEnabled())
 			log.debug("cadre type:"+type);
-		totalCadres = cadreManagementService.sendSMSMessage(userID,type,value, message);
+		totalCadres = cadreManagementService.sendSMSMessage(userID,type,value, message, includeCadreName);
 		return SUCCESS;
 	}
 	

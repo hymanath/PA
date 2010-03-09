@@ -30,6 +30,7 @@
 			<result type="redirect" name="constituencyManagementAction">constituencyManagementAction.action</result>
 			<result type="redirect" name="problemManagementReportAction">problemManagementReportAction.action</result>
 			<result type="redirect" name="userGroupAction">userGroupAction.action</result>
+			<result type="redirect" name="cadreRegisterPageAction">cadreRegisterPageAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 		</action>
 		
@@ -218,6 +219,7 @@
 		</action>
 		<action name="cadreRegisterPageAction" class="cadreRegisterPageAction">
 			<result name="success">/jsp/newCadrePage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=cadreRegisterPageAction</result>
 		</action>
 		 
         <action name="cadreRegisterAjaxAction" class="cadreRegisterAjaxAction">

@@ -687,7 +687,6 @@
  		               success : function( o ) {
 							try {
 								myResults = YAHOO.lang.JSON.parse(o.responseText);	
-								
 								if(jsObj.task == "getUserLocation")
 									fillDataOptions(myResults,jsObj);	
 								else if(jsObj.task == "fillSelectElements")
@@ -1145,6 +1144,35 @@
 			return;
 		}
 		//-------------
+		
+		var smsCadreNameIncludeLabel = document.getElementById("sms_cadre_name_include_label");
+		var smsCadreNameIncludeValue = document.getElementById("sms_cadre_name_include_value");
+
+		if(smsCadreNameIncludeLabel)
+			smsCadreNameIncludeLabel.innerHTML="Include Cadre Name";
+		
+		var smsCadreIncludeStr='<input type="radio" id="include_cadre_name" name="include_cadre_name" value="YES" /> Yes';
+		   smsCadreIncludeStr+='<input type="radio" id="no_cadre_name" name="include_cadre_name" value="NO" checked="checked" /> No    ';
+		   smsCadreIncludeStr+='.       with cadre names performance degrades';
+		if(smsCadreNameIncludeValue)
+			smsCadreNameIncludeValue.innerHTML=smsCadreIncludeStr;
+
+		//------
+		
+		
+		var smsUserNameIncludeLabel = document.getElementById("sms_user_name_include_label");
+		var smsUserNameIncludeValue = document.getElementById("sms_user_name_include_value");
+
+		if(smsUserNameIncludeLabel)
+			smsUserNameIncludeLabel.innerHTML="Include User Name";
+		
+		var smsUserIncludeStr='<input type="radio" id="include_user_name" name="include_cadre_name" value="YES" onclick="enableTextBox();" /> Yes';
+		smsUserIncludeStr+='<input type="radio" id="no_user_name" name="include_cadre_name" value="NO" checked="checked" onclick="disableTextBox();" /> No    ';
+		smsUserIncludeStr+='.                    <input type="text" id ="user_name" name="user_name" disabled/>';
+		if(smsUserNameIncludeValue)
+			smsUserNameIncludeValue.innerHTML=smsUserIncludeStr;
+
+		//-------------------------------------
 		var smsTextElmtLabel = document.getElementById("sms_text_Label");
 		var smsTextElmtData = document.getElementById("sms_text_Data");
 		
@@ -1174,6 +1202,14 @@
 		
 	}
 
+	function enableTextBox(){
+		var textBoxElmt = document.getElementById("user_name");
+		textBoxElmt.disabled =false;
+	}
+	function disableTextBox(){
+		var textBoxElmt = document.getElementById("user_name");
+		textBoxElmt.disabled =true;
+	}
 	function getCadresLevelForEvent(regTask)
 	{
 		var region;
@@ -1217,7 +1253,6 @@
 	{			
 		//Setting values for region type..
 		var regTask = jsObj.taskType;
-		
 		if(jsObj.taskType == 'sms')
 		{
 			var regionTypeElmtLabel = document.getElementById("region_type_Label");
@@ -1225,6 +1260,33 @@
 
 			var regionTypeSelectElmtLabel = document.getElementById("region_select_Label");
 			var regionTypeSelectElmtData = document.getElementById("region_select_Data");
+
+			var smsCadreNameIncludeLabel = document.getElementById("sms_cadre_name_include_label");
+			var smsCadreNameIncludeValue = document.getElementById("sms_cadre_name_include_value");
+
+			if(smsCadreNameIncludeLabel)
+				smsCadreNameIncludeLabel.innerHTML="Include Cadre Name";
+			
+			var smsCadreIncludeStr='<input type="radio" id="include_cadre_name" name="include_cadre_name" value="YES" /> Yes';
+			   smsCadreIncludeStr+='<input type="radio" id="no_cadre_name" name="include_cadre_name" value="NO" checked="checked" /> No    ';
+			   smsCadreIncludeStr+='.       with cadre names performance degrades';
+			if(smsCadreNameIncludeValue)
+				smsCadreNameIncludeValue.innerHTML=smsCadreIncludeStr;
+
+			//------
+			
+			
+			var smsUserNameIncludeLabel = document.getElementById("sms_user_name_include_label");
+			var smsUserNameIncludeValue = document.getElementById("sms_user_name_include_value");
+
+			if(smsUserNameIncludeLabel)
+				smsUserNameIncludeLabel.innerHTML="Include User Name";
+			
+			var smsUserIncludeStr='<input type="radio" id="include_user_name" name="include_user_name" value="YES" onclick="enableTextBox();" /> Yes';
+			smsUserIncludeStr+='<input type="radio" id="no_user_name" name="include_user_name" value="NO" checked="checked" onclick="disableTextBox();" /> No    ';
+			smsUserIncludeStr+='.                    <input type="text" id ="user_name" name="user_name" value="${sessionScope.UserName}" disabled/>';
+			if(smsUserNameIncludeValue)
+				smsUserNameIncludeValue.innerHTML=smsUserIncludeStr;
 
 		}
 		else if(jsObj.taskType == 'event' || jsObj.taskType == 'action' || jsObj.taskType == 'Editevent')
@@ -1496,14 +1558,33 @@
 		
 		var valSelect = document.getElementById("sms_"+val+"Select");
 		var textAreaElmt = document.getElementById("smsTextArea");
+		
+		var include_cadre ="NO";
+		var include_user ="NO";
+		//var user_name ='Thx ${sessionScope.UserName}';
+		var elements = document.getElementsByTagName('input'); 
+		for(var i=0;i<elements.length;i++)
+		{
+			if(elements[i].type=="radio" && elements[i].name=="include_user_name" && elements[i].checked==true)
+				include_user = elements[i].value;
+			else if(elements[i].type=="radio" && elements[i].name=="include_cadre_name" && elements[i].checked==true)
+				include_cadre = elements[i].value;
+		}
+		
 
 		textAreaElmtValue = textAreaElmt.value
+		
+		if(include_user=='YES'){
+			if(document.getElementById('user_name')!=null && document.getElementById('user_name').value!='' )
+				textAreaElmtValue = textAreaElmtValue + ' Thx ' + document.smsForm.user_name.value;
+		}
 		var valSelectValue = valSelect.options[valSelect.selectedIndex].value;
 		val=val.toUpperCase();
 		var jsObj={
 					SMS_LEVEL_TYPE:val,
 					SMS_LEVEL_VALUE:valSelectValue,
 					SMS_MESSAGE:textAreaElmtValue,
+					SMS_INCLUDE_CADRE_NAME:include_cadre,
 					task:"sendSMS"
 				  };
 		
@@ -4005,8 +4086,16 @@
 							</td>
 						</tr>
 						<tr>
+							<th align="left"><div id="sms_cadre_name_include_label"></div></th>
+							<td align="left"><div id="sms_cadre_name_include_value"></div></td>				
+						</tr>
+						<tr>
 							<th align="left"><div id="sms_text_Label"></div></th>
 							<td align="left"><div id="sms_text_Data"></div></td>				
+						</tr>
+						<tr>
+							<th align="left"><div id="sms_user_name_include_label"></div></th>
+							<td align="left"><div id="sms_user_name_include_value"></div></td>				
 						</tr>
 						<tr>
 							<td align="center" colspan="2"><div id="button_div"></div></td>				
