@@ -209,58 +209,58 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getMobileNosByState(Long userID, Long stateID) {
+	public List getMobileNosByState(Long userID, Long stateID) {
 		Long[] ids = {userID, stateID};
-		List<String> results = getHibernateTemplate().find("select  model.mobile from Cadre model " +
+		List results = getHibernateTemplate().find("select  model.mobile, model.firstName, model.lastName from Cadre model " +
 				"where model.registration.registrationId = ? and model.state.stateId=?", ids);
 		return results;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<String> getMobileNosByDistrict(Long userID, Long districtID) {
+	public List getMobileNosByDistrict(Long userID, Long districtID) {
 		Long[] ids = {userID, districtID};
-		List<String> results = getHibernateTemplate().find("select  model.mobile from Cadre model " +
+		List results = getHibernateTemplate().find("select  model.mobile, model.firstName, model.lastName from Cadre model " +
 				"where model.registration.registrationId = ? and model.district.districtId=?", ids);
 		return results;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getMobileNosByConstituency(Long userID, Long constituencyId) {
+	public List getMobileNosByConstituency(Long userID, Long constituencyId) {
 		Long[] ids = {userID, constituencyId};
-		List<String> results = getHibernateTemplate().find("select  model.mobile from Cadre model " +
+		List results = getHibernateTemplate().find("select  model.mobile, model.firstName, model.lastName from Cadre model " +
 				"where model.registration.registrationId = ? and model.constituency.constituencyId=?", ids);
 		return results;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getMobileNosByMandal(Long userID, Long mandalID) {
+	public List getMobileNosByMandal(Long userID, Long mandalID) {
 		Long[] ids = {userID, mandalID};
-		List<String> results = getHibernateTemplate().find("select  model.mobile from Cadre model " +
+		List results = getHibernateTemplate().find("select  model.mobile, model.firstName, model.lastName from Cadre model " +
 				"where model.registration.registrationId = ? and model.tehsil.tehsilId=?", ids);
 		return results;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getMobileNosByVillage(Long userID, Long villageID) {
+	public List getMobileNosByVillage(Long userID, Long villageID) {
 		Object[] ids = {userID, villageID};
-		List<String> results = getHibernateTemplate().find("select  model.mobile from Cadre model " +
+		List results = getHibernateTemplate().find("select  model.mobile, model.firstName, model.lastName from Cadre model " +
 				"where model.registration.registrationId = ? and model.village.townshipId=?", ids);
 		return results;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<String> getMobileNosByHamlet(Long userID, Long hamletID) {
+	public List getMobileNosByHamlet(Long userID, Long hamletID) {
 		Long[] ids = {userID, hamletID};
-		List<String> results = getHibernateTemplate().find("select  model.mobile from Cadre model " +
+		List results = getHibernateTemplate().find("select  model.mobile, model.firstName, model.lastName from Cadre model " +
 				"where model.registration.registrationId = ? and model.hamlet.hamletId=?", ids);
 		return results;
 	}
 
 
 	@SuppressWarnings("unchecked")
-	public List<String> getMobileNosByCadreLevel(Long userID, Long level) {
+	public List getMobileNosByCadreLevel(Long userID, Long level) {
 		Long[] ids = {userID, level};
-		List<String> results = getHibernateTemplate().find("select  model.mobile from Cadre model " +
+		List results = getHibernateTemplate().find("select  model.mobile, model.firstName, model.lastName from Cadre model " +
 				"where model.registration.registrationId = ? and model.cadreLevel.cadreLevelID=?", ids);
 		return results;
 	}

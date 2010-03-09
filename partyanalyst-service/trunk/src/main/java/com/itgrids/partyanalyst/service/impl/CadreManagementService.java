@@ -789,10 +789,10 @@ public class CadreManagementService {
 	}
 	
 	
-	public Integer sendSMSMessage(Long userID,String type, Long value, String message){
+	public Integer sendSMSMessage(Long userID,String type, Long value, String message, String includeCadreName){
 		if(log.isDebugEnabled())
 			log.debug("CadreManagementService.sendSMSMEssage():userID:"+userID+":type:"+type+":value:"+value+":message:"+message);
-		List<String> list = new ArrayList<String>();
+		List<Object> list = new ArrayList<Object>();
 		if("STATE".equals(type)){
 			list = cadreDAO.getMobileNosByState(userID, value); 
 		}else if("DISTRICT".equals(type)){
@@ -814,17 +814,32 @@ public class CadreManagementService {
 		}else if("CADRE_LEVEL".equals(type)){
 			list = cadreDAO.getMobileNosByCadreLevel(userID, value);
 		}
-		String[] cadreMobileNos = new String[list.size()];
-		int i=-1;
-		for (String mobile : list) {
-			cadreMobileNos[++i] = mobile;
-		}
 		Integer mobileNos = 0;
-		if(cadreMobileNos!=null && cadreMobileNos.length>0)
-			mobileNos = cadreMobileNos.length;
+		
 		//PartyAnalystPropertyService propertyService = new PartyAnalystPropertyService();
 		//smsCountrySmsService.setPropertyService(propertyService);
-		smsCountrySmsService.sendSms(message, true, cadreMobileNos);
+		if("NO".equals(includeCadreName)){
+			String[] cadreMobileNos = new String[list.size()];
+			int i=-1;
+			for (Object mobileInfo : list) {
+				Object[] mobile = (Object[]) mobileInfo;
+				cadreMobileNos[++i] = mobile[0].toString();
+			}
+			if(cadreMobileNos!=null && cadreMobileNos.length>0)
+				mobileNos = cadreMobileNos.length;
+			smsCountrySmsService.sendSms(message, true, cadreMobileNos);
+		}else{
+			// to do ICONSTANTS.SMS_DEAR
+			for (Object mobiles : list) {
+				Object[] mobileInfo = (Object[]) mobiles;
+				String mobile =  mobileInfo[0].toString();
+				StringBuilder cadreMessage =  new StringBuilder(IConstants.SMS_DEAR);
+				cadreMessage.append(mobileInfo[1].toString()).append(IConstants.SPACE).append(mobileInfo[2].toString()).append(IConstants.SPACE).append(message);
+
+				smsCountrySmsService.sendSms(cadreMessage.toString(), true, mobile);
+				mobileNos = mobileNos + 1;
+			}
+		}
 
 		return mobileNos;
 	}

@@ -43,14 +43,14 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	public List getUserAccessMandals(Long userID);
 	
 
-	public List<String> getMobileNosByState(Long userID, Long stateID);
-	public List<String> getMobileNosByDistrict(Long userID, Long districtID);
-	public List<String> getMobileNosByConstituency(Long userID, Long constituencyId);
-	public List<String> getMobileNosByMandal(Long userID, Long mandalID);
-	public List<String> getMobileNosByVillage(Long userID, Long villageID); 
-	public List<String> getMobileNosByHamlet(Long userID, Long hamletID);
+	public List getMobileNosByState(Long userID, Long stateID);
+	public List getMobileNosByDistrict(Long userID, Long districtID);
+	public List getMobileNosByConstituency(Long userID, Long constituencyId);
+	public List getMobileNosByMandal(Long userID, Long mandalID);
+	public List getMobileNosByVillage(Long userID, Long villageID); 
+	public List getMobileNosByHamlet(Long userID, Long hamletID);
 	
-	public List<String> getMobileNosByCadreLevel(Long userID, Long level);
+	public List getMobileNosByCadreLevel(Long userID, Long level);
 	
 	public List<Cadre> findByCadreIDs(String cadreIDs);
 
