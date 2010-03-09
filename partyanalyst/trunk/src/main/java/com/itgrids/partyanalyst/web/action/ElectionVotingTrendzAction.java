@@ -14,7 +14,6 @@ public class ElectionVotingTrendzAction extends ActionSupport implements Servlet
 	
 	
 	
-	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		
