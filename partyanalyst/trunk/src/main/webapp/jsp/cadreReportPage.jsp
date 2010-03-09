@@ -425,6 +425,8 @@
 					var region = results.cadreRegionInfo[i].region;
 					if(region=='V')
 						region ='VILLAGE';
+					else if(region=='T')
+						region ='TOWN';
 					var myobj = { 
 									label				: results.cadreRegionInfo[i].regionName+"("+region+")-"+results.cadreRegionInfo[i].cadreCount,
 									labelAccessValue	: results.cadreRegionInfo[i].region,
