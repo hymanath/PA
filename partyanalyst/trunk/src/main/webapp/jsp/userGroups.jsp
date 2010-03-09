@@ -108,7 +108,7 @@ function buildLayout()
 }
 </script>
 <style>
-	.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
+.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
 		border-style:none;
 		text-align:left;
 		background:white;		
@@ -141,7 +141,7 @@ function buildLayout()
 			line-height:100%;
 	}
 	.uLEleStyle {
-			font-family:verdana,arial,helvetica,sans-serif;
+			font-family:arial,helvetica,sans-serif;
 			font-size:74%;
 			font-size-adjust:none;
 			font-style:normal;
@@ -155,18 +155,13 @@ function buildLayout()
 			border:1px solid #96B4D3;
 			padding:10px;
 			width:96%;
-			color:#628C2A;
-			font-family:verdana;
+			color:#628C2A;			
 			font-weight:bold;	
 			border-width:1px 3px 3px 1px;
 	}
 	#userGroupsLeftDiv, #userGroupsCenterDiv {
 		background-color:white;	
-	}
-	#UserGrpsMainDiv
-	{
-		
-	}
+	}	
 	#myGroups
 		{		
 			margin-left:20px;		
@@ -191,8 +186,7 @@ function buildLayout()
 			color:#247CD4;
 			text-decoration:none;
 			margin-left:21px;
-			font-size:15px;
-			font-family:verdana;			
+			font-size:15px;						
 		}
 	#leftNavLinksDiv {
 		border-top:1px solid #96B4D3;
@@ -217,7 +211,6 @@ function buildLayout()
 	}
 	.searchBoxLabels
 	{
-		font-family:verdana;
 		color:#96B4D3;
 	}
 	#myProfile{
@@ -227,14 +220,12 @@ function buildLayout()
 		border-right:3px solid #96B4D3;
 		border-bottom:3px solid #96B4D3;
 		padding:10px;
-		color:#628C2A;
-		font-family:verdana;
+		color:#628C2A;		
 		font-weight:bold;				
 	}
 	legend {
 		background-color:#9696C0;
 		color:#FFFFFF;
-		font-family:verdana;
 		font-size:12px;
 		font-weight:bold;
 		padding:5px;
@@ -245,7 +236,8 @@ function buildLayout()
 		border-left:1px solid #96B4D3;
 		border-right:3px solid #96B4D3;
 		border-bottom:3px solid #96B4D3;
-		margin-bottom:5px;		
+		margin-bottom:5px;
+		color:#404040;				
 	}
 	#userGroupsCenterDiv
 	{
@@ -254,7 +246,7 @@ function buildLayout()
 		border-right:3px solid #96B4D3;
 		border-bottom:3px solid #96B4D3;
 		min-height:580px;
-		height:580px;
+		height:570px;
 	}
 	h4{
 		align:left;	
@@ -271,8 +263,7 @@ function buildLayout()
 		margin:0 0 0.5em;
 		padding:0.4em;
 		color:#247CD4;
-		text-decoration:bold;
-		font-family:verdana;				
+		text-decoration:bold;						
 	}
 	#centerNavLinksDiv {			
 		background-color:#EBE4F2;
@@ -285,7 +276,6 @@ function buildLayout()
 		color:#247CD4;
 		text-decoration:none;
 		font-weight:bold;
-		font-family:verdana;
 		padding: 0 6px;		
 	}
 	#summaryTextDiv {
@@ -298,27 +288,30 @@ function buildLayout()
 		color:#606060;
 		font-family:veradana;
 		font-size:14px;
-		margin-left:5px;
-		
+		margin-left:5px;		
 		}
 	#groupsCountDiv
 	{
 		background-image:url(images/usergroups/group2.jpg);
 		width:260px;
-		height:200px;		
+		height:200px;	
+		overflow-y:auto;
+		/*height:expression(document.body.clientWidth > 200? "200px": "auto" );
+		min-height:1000px;
+	min-width:250px;
+	max-width:260px;
+	width:expression(document.body.clientWidth > 260? "260px": "auto" );*/	
 	}
 	.link  {
 			color:#247CD4;
 			text-decoration:none;
 			font-size:15px;
-			font-family:verdana;
 			font-weight:bold;			
 		}
 	.link1  {
 			color:#115C06;
 			text-decoration:none;
-			font-size:15px;
-			font-family:verdana;
+			font-size:15px;			
 			font-weight:bold;			
 		}
 		#groupDetailsHead {
@@ -329,6 +322,8 @@ function buildLayout()
 			border:1px solid;
 			color:CadetBlue;
 			font-weight:normal;
+			margin-right:3px;
+			margin-top:4px;
 			text-align:left;
 			}
 		#groupDetailsHead h4
@@ -342,22 +337,78 @@ function buildLayout()
 			width:40px;
 		}
 		.promoNumber {
-		color:#888888;
-		float:left;
-		font-size:2em;
-		font-weight:bold;
-		height:40px;
-		line-height:40px;
-		width:50px;
+			color:#888888;
+			float:left;
+			font-size:2em;
+			font-weight:bold;
+			height:40px;
+			line-height:40px;
+			width:50px;
 		}
 		.promoText {
-		clear:left;
-		color:#555555;
-		font-size:1.3em;
-		margin-left:40px;
-		margin-top:0;
-		text-transform:lowercase;
-}							
+			clear:left;
+			color:#555555;
+			font-size:1.3em;
+			margin-left:40px;
+			margin-top:0;
+			text-transform:lowercase;
+		}
+		#sendSmsDiv
+		{
+			background-color:#EBE4F2;
+			border:1px dotted #DEDEDE;
+		}
+		#smsTextArea
+		{
+			border-color:#7C7C7C #C3C3C3 #DDDDDD;
+			border-style:solid;
+			border-width:1px;
+			color:#414141;
+			font-family:Verdana,Arial,Helvetica,sans-serif;
+			font-size:12px;
+			height:60px;
+			overflow:auto;
+			padding:4px;
+			width:200px;
+		}
+		.button {
+			background:#9696C0 none repeat scroll 0 0;
+			border:2px solid #008BD1;
+			color:#FFFFFF;
+			font-family:Arial,Helvetica,sans-serif;
+			font-weight:bold;
+			height:29px;
+			padding:5px;
+			width:74px;
+		}
+		#smsDiv
+		{
+			background:#EBE4F2 none repeat scroll 0 0;
+			border:2px solid #008BD1;
+			height:200px;
+			margin-left:0;
+			margin-top:1px;
+			padding-left:5px;
+			padding-right:5px;	
+		}
+		#subGroupsListDiv
+		{
+			background:#EBE4F2 none repeat scroll 0 0;
+			border:2px solid #008BD1;
+			height:200px;
+			margin-left:0;
+			padding-left:5px;
+			padding-right:5px;
+		}
+		#headingDiv{
+			background:#9696C0 none repeat scroll 0 0;
+			border:1px solid #9696C0;
+			color:#FFFFFF;
+			font-size:12px;
+			margin-top:0;
+			padding:6px;
+			font-weight:bold;
+			}								
 </style>
 <script type="text/javascript">
 var Localization = { <%
@@ -368,8 +419,13 @@ var Localization = { <%
 		String createNewGrp = rb.getString("createNewGrp");
 		String addToStaticGrpAsSubGrpRadio = rb.getString("addToStaticGrpAsSubGrpRadio");
 		String addToGrpAsSubGrpRadio = rb.getString("addToGrpAsSubGrpRadio");
+		String name  = rb.getString("name");
+		String mobile  = rb.getString("mobile");
+		String address  = rb.getString("address");
+		String location  = rb.getString("location");
+		String designation  = rb.getString("designation");
 %> }
-var createGroupDialog;
+var createGroupDialog,addGrpMbrsDialog;
 var userGrpsObj={
 		showGrpMembersArr:[],
 		systemGroupsListBoxArr:[],
@@ -379,6 +435,11 @@ var userGrpsObj={
 	{	
 		var subGrpsCountInSystemGrps = results.groupsDetailsForUser;
 		var groupDetailsDivEl = document.getElementById("groupsCountDiv");
+
+		var groupDetailsLegendEl = document.getElementById("groupDetailsLegend");
+		groupDetailsLegendEl.innerHTML = "Sub Groups Details Of System Groups";
+		
+		
 		var myGroupsLinksDivContent = '';
 		myGroupsLinksDivContent+='<ul id="myGroupsList">';
 		for(var i in subGrpsCountInSystemGrps)
@@ -397,6 +458,10 @@ var userGrpsObj={
 	{
 		var subGrpsCountInMyGrps = results.groupsDetailsForUser;
 		var groupDetailsDivEl = document.getElementById("groupsCountDiv");
+
+		var groupDetailsLegendEl = document.getElementById("groupDetailsLegend");
+		groupDetailsLegendEl.innerHTML = "Sub Groups Details Of My Groups";
+		
 		var myGroupsLinksDivContent = '';
 		myGroupsLinksDivContent+='<ul id="myGroupsList">';
 		for(var i in subGrpsCountInMyGrps)
@@ -411,37 +476,35 @@ var userGrpsObj={
 		groupDetailsDivEl.innerHTML =  myGroupsLinksDivContent;
 	}
 
-	function showUserGroupsDetails(id)
+	function showUserGroupsDetails()
 	{
-		var divEl = document.getElementById("moreDetailsDiv");
+		var divEl = document.getElementById("summaryTextDiv");
 		divEl.style.display='block';
 		var linksEl = document.getElementById("centerNavLinksDiv");
+		var tableEl = document.getElementById("subGroupsListSendSMSTable");
+		tableEl.style.display='block';
+		
 
 		var linksStr='';
 		linksStr+='<a href="#" onclick="showMoreDescription()">View Members</a>';
-		linksStr+='<a href="#" onclick="showMoreDescription()">Add Memebers</a>';
-		linksStr+='<a href="#" onclick="showMoreDescription()">Send SMS</a>';
-		linksStr+='<a href="#" onclick="showMoreDescription()">View SubGroups</a>';
+		linksStr+='<a href="#" onclick="addGrpMembersDialog()">Add Memebers</a>';
+		//linksStr+='<a href="#" onclick="showMoreDescription()">Send SMS</a>';
+		//linksStr+='<a href="#" onclick="showMoreDescription()">View SubGroups</a>';
 
 		linksEl.innerHTML = linksStr;
 		
 		var str='';
 		str+='<div id="groupDetailsHead">';
-		str+='<table>';
-		str+='<tr><td rowspan="2">';
+		str+='<table width="100%">';
+		str+='<tr><td rowspan="2" width="25%">';
 		str+='<img src="images/usergroups/group-default.png" border="none" />';
 		str+='</td>';
-		str+='<td>';
-		str+='<h4>Sponsors Group</h4>';
-		str+='<p>This group contains sub groups which contain my sponsors by region level.</p>';
+		str+='<td width="50%">';
+		str+='<h4>Group Name</h4>';
+		str+='<p>Group Description</p>';
 		str+='<p>Created Date:06/March/2009</p>';
-		str+='<p>Members In Group:5</p>';
-		str+='<Sub Group>';
-		str+='<ul>';
-		str+='<li type="square"><b>Districtwise Sponsors:</b>&nbsp;this group contains district level sponsors</li>';
-		str+='</ul>';
 		str+='</td>';
-		str+='<td>';
+		str+='<td width="25%">';
 		str+='<div class="promoImage">';
 		str+='<img src="images/usergroups/profile-default.png" border="none" class="promoImage" border="0">';
 		str+='</div>';
@@ -658,6 +721,76 @@ var userGrpsObj={
 	function handleCreateGroupCancel()
 	{
 		this.cancel();
+	}
+
+	function addGrpMembersDialog()
+	{
+		var elmt = document.getElementById('userGroupsMainDiv');
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','addGroupMbrsDiv');
+		var addGrpMbrsContent = '';
+		addGrpMbrsContent+='<div class="hd" align="left">Add Members To A Group</div>';
+		addGrpMbrsContent+='<div class="bd" align="left">';
+		addGrpMbrsContent+='<div id="addGroupMbrsDivBody">';
+		addGrpMbrsContent+='<table>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=name%></td>';
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="grpMbrNameText" name="grpMbrNameText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=mobile%></td>';
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrMobileText" name="groupMbrMobileText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=address%></td>'
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrAdrsText" name="groupMbrAdrsText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=location%></td>'
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=groupName%></td>'
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='<tr>';
+		addGrpMbrsContent+='<td><%=designation%></td>'
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='</table>';
+		addGrpMbrsContent+='</div>';
+		addGrpMbrsContent+='</div>';
+		addGrpMbrsContent+='</div>';
+		divChild.innerHTML=addGrpMbrsContent;
+		elmt.appendChild(divChild);	
+		if(addGrpMbrsDialog)
+			addGrpMbrsDialog.destroy();
+		addGrpMbrsDialog = new YAHOO.widget.Dialog("addGroupMbrsDiv",
+				{ width : "600px", 
+	              fixedcenter : false, 
+	              visible : true,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  hideaftersubmit:true,
+				  close:true,
+				  x:400,
+				  y:400,				  
+				  buttons : [ { text:"Add", handler: handleAddGrpMbrSubmit, isDefault:true}, 
+	                          { text:"Cancel", handler: handleAddGrpMbrCancel}]
+	             } ); 
+		addGrpMbrsDialog.render();		
+		
+	}
+	
+	function handleAddGrpMbrSubmit()
+	{
+		addGrpMbrsDialog.hide();
+	}
+
+	function handleAddGrpMbrCancel()
+	{
+		this.cancel();
 	}		
 </script>
 </head>
@@ -710,15 +843,15 @@ var userGrpsObj={
 	</div>
 	<div id="userGroupsLeftDiv">
 		<div id="leftNavLinksDiv">
-		<p id="systemGroups" class="link"><a href="#" onclick="getSubGroupsCountInSystemGrpsForUser()"><b>System Groups</b></a></p>
-		<p id="myGroups" class="link"><a href="#" onclick="getSubGroupsCountInMyGroupsForUser()"><b>My Groups</b></a></p>		
+		<p id="systemGroups" class="link"><a href="#groupDetails" onclick="getSubGroupsCountInSystemGrpsForUser()"><b>System Groups</b></a></p>
+		<p id="myGroups" class="link"><a href="#groupDetails" onclick="getSubGroupsCountInMyGroupsForUser()"><b>My Groups</b></a></p>		
 		<p id="createNewGrpDiv" class="link"><a href="#" onclick="buildCreateGroupPopup()"><b>Create New Group</b></a></p>
 		<p id="manageGrpDiv" class="link"><a href="#" onclick=""><b>Manage Groups</b></a></p>
 		</div>
 		
-		<div id="groupsList">
+		<div id="groupsList"><a name="groupDetails"></a>
 		<fieldset>
-			<legend>Group Details</legend>
+			<legend id="groupDetailsLegend">Group Details</legend>
 			<div id="groupsCountDiv"></div>						
 		</fieldset>
 		</div>
@@ -730,10 +863,10 @@ var userGrpsObj={
 			<td><div id="profileHeader">Raghav</div></td></tr></table>	
 		</div>
 	</div>
-	<div id="userGroupsCenterDiv">
+	<div id="userGroupsCenterDiv"><a name="userGroupsCenterDiv"></a>
+	<div id="navigationLink"></div>
 	<div id="centerNavLinksDiv">
-	
-	<a href="#" onclick="showMoreDescription()">About</a>
+	<a href="#moreDetails" onclick="showMoreDescription()">About</a>
 	</div>
 	<div id="summaryTextDiv">
 	<p>User Groups feature is mainly used to group your important people in a group according to a category.This application has two types of User Groups.They are</p> 
@@ -743,8 +876,7 @@ var userGrpsObj={
 	</ul>
 	<p>You can create any number of sub groups in User Groups</p>
 	<p>User Groups SMS feature allows you to send SMS to the members in the groups</p>
-	</div>
-	<div id="moreDetailsDiv" style="display:none;">
+	<div id="moreDetailsDiv" style="display:none;"><a name="moreDetails"></a>
 	<h4>System Groups</h4>
 	<p>This application provides some default categories under System Groups.They are</p>
 	<ul>
@@ -754,10 +886,33 @@ var userGrpsObj={
 	</ul>
 	<h4>My Groups</h4>
 	<p>You can create your own categories in MyGroups.For Example your sponseror's group, local leaders group etc. </p> 
-	</div>	
-	<div id="userGroupsFooter">
 	</div>
+	</div>	
+	<div id="subGroupsListSendSMSDiv">
+		<table id="subGroupsListSendSMSTable" width="100%" style="display:none;">
+		<tr>
+		<td width="75%"><div id="subGroupsListDiv">
+		<div id="headingDiv">Sub Group Details</div>
+		<ul>
+			<li type="square"><a href="" class="link">Sub Group1</a></li>
+			<li type="square"><a href="" class="link">Sub Group2</a></li>
+			<li type="square"><a href="" class="link">Sub Group3</a></li>
+			<li type="square"><a href="" class="link">Sub Group4</a></li>
+			<li type="square"><a href="" class="link">Sub Group5</a></li>
+		</ul>
+		</div></td>
+		<td width="25%">	
+		<div id="smsDiv">
+		<div id="headingDiv">Send SMS</div>
+		<p><img src="images/usergroups/icon_mail.png" boder="none"/style="margin-right:2px;">Message:</p>
+		<p><textarea id="smsTextArea" cols="10" rows="5"></textarea></p>
+		<p align="right"><input type="submit" class="button" value="Send Sms" name="Submit" /></p>
+		</div>
+		</td>
+		</tr></table>
+		</div>	
 </div>
+<div id="userGroupsFooter"></div>
 </div>
 <script type="text/javascript">
 function showMoreDescription(){
