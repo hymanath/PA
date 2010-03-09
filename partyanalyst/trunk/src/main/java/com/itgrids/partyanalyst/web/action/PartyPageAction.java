@@ -12,8 +12,6 @@ public class PartyPageAction extends ActionSupport implements ServletRequestAwar
 
 	private HttpServletRequest request;
 	
-	
-	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}
