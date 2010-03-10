@@ -60,4 +60,9 @@ public interface IStaticDataService {
 	
 	public CandidateDetailsVO getCompleteElectionResultsForAConstituency(Long constituencyId,Long electionId,Long partyId);
 	
+	public CandidateDetailsVO getElectionResultsForAConstituencyForAllYears(Long constituencyId);
+	
+	public CandidateDetailsVO getLatestConstituenciesForAssemblyAndParliamentForAllElectionYears(Long electionType,Long stateId);
+	
+	public CandidateDetailsVO getAllStatesInCountry();
 }
