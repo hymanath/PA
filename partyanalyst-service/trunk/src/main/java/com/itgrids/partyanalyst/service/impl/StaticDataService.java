@@ -388,7 +388,7 @@ public class StaticDataService implements IStaticDataService {
 		return partyVOs;
 	}
 	
-	//Ravi kiran code started from here on wards
+	//Ravi Kiran code started from here on wards
 	
 
 	
@@ -1180,4 +1180,98 @@ public class StaticDataService implements IStaticDataService {
 	return oppCandidates;
 	}
 
+
+	@SuppressWarnings("unchecked")
+	public CandidateDetailsVO getElectionResultsForAConstituencyForAllYears(Long constituencyId) {
+		CandidateDetailsVO candidateResults =null;
+		List<CandidateDetailsVO> candidateDetails = new ArrayList<CandidateDetailsVO>(0);
+		try{
+			candidateResults = new CandidateDetailsVO();
+			List result = nominationDAO.findAllCandidatesForAnElectionByElectionYear(constituencyId);
+			for(int i=0;i<result.size();i++){
+				CandidateDetailsVO candidateResultsVo = new CandidateDetailsVO();
+				Object[] parms = (Object[])result.get(i);
+				candidateResultsVo.setCandidateName(parms[0].toString());
+				candidateResultsVo.setConstituencyName(parms[1].toString());
+				candidateResultsVo.setVotesEarned(parms[2].toString());
+				if(Long.parseLong(parms[3].toString())==1l)
+					candidateResultsVo.setResult("Win");
+				else
+					candidateResultsVo.setResult("Loose");
+				candidateResultsVo.setPartyName(parms[4].toString());
+				candidateResultsVo.setElectionYear(parms[5].toString());
+				candidateDetails.add(candidateResultsVo);
+			}
+			candidateResults.setCandidateDetails(candidateDetails);
+			return candidateResults;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			candidateResults = new CandidateDetailsVO();
+			candidateResults.setDataAvailabilityFlag(0L);
+			return candidateResults;
+		}
+	}
+
+	public CandidateDetailsVO getLatestConstituenciesForAssemblyAndParliamentForAllElectionYears(Long electionType,Long stateId){
+		Long electionID=0l;
+		CandidateDetailsVO constituencies =null;
+		List<SelectOptionVO> selectOptionVO = new ArrayList<SelectOptionVO>(0);
+		SelectOptionVO selectOptionvo = new SelectOptionVO();
+		try{
+			constituencies = new CandidateDetailsVO();
+			selectOptionvo.setId(0l);
+			selectOptionvo.setName("Select Constituency");
+			List result = electionDAO.findElectionIdAndYear(electionType,stateId);
+			selectOptionVO.add(0, selectOptionvo);
+			for(int i=0;i<result.size();i++){
+				Object[] parms = (Object[])result.get(i);
+				electionID = Long.parseLong(parms[0].toString());
+			}
+			List list = constituencyElectionDAO.findTotalAssemblyConstituencies(electionID,stateId);
+			for(int i=0;i<list.size();i++){
+				Object[] parms = (Object[])list.get(i);
+				SelectOptionVO selectOption = new SelectOptionVO();
+				selectOption.setId(Long.parseLong(parms[0].toString()));
+				selectOption.setName(parms[1].toString());
+				selectOptionVO.add(selectOption);
+			}
+			constituencies.setLatestConstituencies(selectOptionVO);
+			return constituencies;		
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			constituencies= new CandidateDetailsVO();
+			constituencies.setDataAvailabilityFlag(0L);
+			return constituencies;
+		}
+	}
+	
+	public CandidateDetailsVO getAllStatesInCountry(){
+		List<SelectOptionVO> selectOptionVo;
+		CandidateDetailsVO states =null;
+		try{	
+			states= new CandidateDetailsVO();
+			selectOptionVo = new ArrayList<SelectOptionVO>(0);
+			List<State> result = stateDAO.findByCountryId(1l);
+			SelectOptionVO selectOption = new SelectOptionVO();
+			selectOption.setId(0l);
+			selectOption.setName("Select State");
+			selectOptionVo.add(0, selectOption);
+			for(State list:result){
+				SelectOptionVO selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId(list.getStateId());
+				selectOptionVO.setName(list.getStateName());
+				selectOptionVo.add(selectOptionVO);
+			}
+			states.setGetAllStates(selectOptionVo);
+			return states;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			states= new CandidateDetailsVO();
+			states.setDataAvailabilityFlag(0L);
+			return states;
+		}			
+	}
 }
