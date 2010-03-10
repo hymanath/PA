@@ -279,6 +279,7 @@ function getDetails(id)
 
 function getAssemblyConstituencies()
 {
+	
 	getStatesForCountry();
 	var dataTable;
 	dataTable = document.getElementById("constituenciesDiv");
@@ -305,12 +306,22 @@ function getParliament()
 {
 	type = "";
 	type = "parliament";
+	var constituenciesDiv;
+	constituenciesDiv = document.getElementById("candidateInfoDiv");
+	constituenciesDiv.innerHTML = "";
+	var hr='';
+	constituenciesDiv.innerHTML = hr;
 	getAssemblyConstituencies();
 } 
 function getAssembly()
 {
 	type = "";
 	type = "assembly";
+	var constituenciesDiv;
+	constituenciesDiv = document.getElementById("candidateInfoDiv");
+	constituenciesDiv.innerHTML = "";
+	var hr='';
+	constituenciesDiv.innerHTML = hr;
 	getAssemblyConstituencies();
 } 
 </script>
