@@ -113,4 +113,9 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		return getHibernateTemplate().find("select count(model.constituency) from ConstituencyElection model where model.election.electionId = ? and model.constituency.district.districtId = ?",params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List findTotalAssemblyConstituencies(Long electionId,Long stateId){
+		Object[] params = {electionId , stateId};
+		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name from ConstituencyElection model where model.election.electionId = ? and model.constituency.state.stateId = ? order by model.constituency.name", params);
+	}
 }
