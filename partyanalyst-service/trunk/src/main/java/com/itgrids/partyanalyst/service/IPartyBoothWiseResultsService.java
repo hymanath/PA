@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
+import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 
@@ -13,4 +14,6 @@ public interface IPartyBoothWiseResultsService {
 	public ResultWithExceptionVO getBoothPageInfo(Long boothId);
 	
 	public ElectionWiseMandalPartyResultListVO getPartyGenderWiseBoothVotesForMandal(Long tehsilID, String locationType);
+	
+	public List<ElectionWiseMandalPartyResultVO> getAllMPTCAndZPTCElectionsInfoInTehsil(Long tehsilId);
 }

@@ -10,12 +10,16 @@ package com.itgrids.partyanalyst.dto;
 import java.util.Date;
 import java.util.List;
 
-public class ConstituencyElectionResultsVO {
+public class ConstituencyElectionResultsVO extends ResultStatus{
 
 	private Long electionId;
 	private String electionType;
 	private String electionYear;
 	private Date electionDate;
+	private String constituencyName;
+	private Long constituencyId;
+	private Long totalVoters;
+	private Long validVotes;
 	private List<PartyResultsVO> partyResultsVO;
 	private CandidateWonVO candidateResultsVO;
 	private List<CandidateOppositionVO> candidateOppositionList;
@@ -63,6 +67,30 @@ public class ConstituencyElectionResultsVO {
 	public void setCandidateOppositionList(
 			List<CandidateOppositionVO> candidateOppositionList) {
 		this.candidateOppositionList = candidateOppositionList;
+	}
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
+	}
+	public Long getValidVotes() {
+		return validVotes;
+	}
+	public void setValidVotes(Long validVotes) {
+		this.validVotes = validVotes;
 	}
 	
 }

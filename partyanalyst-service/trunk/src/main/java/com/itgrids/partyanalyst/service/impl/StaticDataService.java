@@ -1179,6 +1179,16 @@ public class StaticDataService implements IStaticDataService {
 		}
 	return oppCandidates;
 	}
+	
+	public List<SelectOptionVO> getAllPartiesOfMPTCInMandal(Long tehsilId){
+		List partiesAndIds = nominationDAO.getAllPartiesOfElectionTypeInMandal(tehsilId, IConstants.MPTC_ELECTION_TYPE);
+		List<SelectOptionVO> partiesAndIdsInMandal = new ArrayList<SelectOptionVO>();
+		for(int i=0; i<partiesAndIds.size(); i++){
+			Object[] values = (Object[])partiesAndIds.get(i);
+			partiesAndIdsInMandal.add(new SelectOptionVO((Long)values[0], values[1].toString()));
+		}
+		return partiesAndIdsInMandal;
+	}
 
 
 	@SuppressWarnings("unchecked")

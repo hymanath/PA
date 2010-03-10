@@ -62,7 +62,7 @@ public class StateElectionResultsService implements
 			PartyResultsVO partyResults = new PartyResultsVO();
 			partyResults.setPartyId(partyId);
 			partyResults.setPartyName(partyName);
-			partyResults.setTotalSeatsWon(seatsWon);
+			partyResults.setTotalSeatsWon(seatsWon.intValue());
 			partyResults.setPartyFlag(partyFlag);
 			
 			partyResultsVO.add(partyResults);

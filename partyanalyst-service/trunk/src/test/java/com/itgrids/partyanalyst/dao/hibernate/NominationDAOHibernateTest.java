@@ -154,7 +154,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testGetParliamentCandidateNPartyInfo()
+	/*public void testGetParliamentCandidateNPartyInfo()
 	{		
 		List list = nominationDAO.getParliamentCandidateNPartyInfo(404l,IConstants.PARLIAMENT_ELECTION_TYPE,1L);
 		if(list !=null)
@@ -177,6 +177,34 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			Assert.assertEquals("INC", partyName);
 			
 		}	
-	}
+	}*/
 	
+	/*public void testGetAllPartiesOfElectionTypeInTehsil(){
+		List parties = nominationDAO.getAllPartiesOfElectionTypeInMandal(844l, IConstants.MPTC_ELECTION_TYPE);
+		System.out.println(parties.size());
+		for(int i=0; i < parties.size(); i++){
+			Object[] params = (Object[])parties.get(i);
+			System.out.println(params[0]+"--"+params[1]);
+			Long partyId = (Long)params[0];
+			String name = params[1].toString();
+			if(partyId == 24)
+				assertEquals(name, "INC");
+		}
+	}*/
+	
+	/*public void testGetAllConstiteunciesInfoForPartyInTehsil(){
+		List list = nominationDAO.getAllConstiteunciesInfoForPartyInTehsil(844l, 24l, 5l);
+		System.out.println(list.size());
+		for(int i=0; i < list.size(); i++){
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]);
+		}
+	}*/
+	
+	public void testFindAllMptcAndZptcElectionsInfoInMandal(){
+		List list = nominationDAO.findAllMptcAndZptcElectionsInfoInMandal(844l);
+		for(int i=0; i<list.size(); i++){
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]+"\t"+((Object[])list.get(i))[12]+"\t"+((Object[])list.get(i))[13]);
+		}
+			
+	}
 }

@@ -1,14 +1,24 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
-import java.util.Set;
 
 public class ConstituencyWiseDataForMandalVO {
 	private Long constituencyId;
 	private String constituencyName;
-	private Long commonVotersInMandalAndConstituency;
+	
+	private Long commonMaleVotersInMandalAndConstituency;
+	private Long commonFemaleVotersInMandalAndConstituency;
+	private Long commonMaleOrFemaleVoters;
+	private Long commonTotalVotersInMandalAndConstituency;
+	
+	private Long malePolledVotes;
+	private Long femalePolledVotes;
+	private Long maleOrFemaleValidVotes;
+	private Long totalPolledVotes;
+	
 	private String percentage;
 	private List<PartyGenderWiseVotesVO> partyVotes;
+	private List<MandalLocalElectionPartyResultsVO> localElectionsVOs;
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -24,15 +34,6 @@ public class ConstituencyWiseDataForMandalVO {
 	
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
-	}
-	
-	public Long getCommonVotersInMandalAndConstituency() {
-		return commonVotersInMandalAndConstituency;
-	}
-	
-	public void setCommonVotersInMandalAndConstituency(
-			Long commonVotersInMandalAndConstituency) {
-		this.commonVotersInMandalAndConstituency = commonVotersInMandalAndConstituency;
 	}
 	
 	public String getPercentage() {
@@ -51,13 +52,89 @@ public class ConstituencyWiseDataForMandalVO {
 	public void setPartyVotes(List<PartyGenderWiseVotesVO> partyVotes) {
 		this.partyVotes = partyVotes;
 	}
+	
+	public List<MandalLocalElectionPartyResultsVO> getLocalElectionsVOs() {
+		return localElectionsVOs;
+	}
+
+	public void setLocalElectionsVOs(
+			List<MandalLocalElectionPartyResultsVO> localElectionsVOs) {
+		this.localElectionsVOs = localElectionsVOs;
+	}
+
+	public Long getCommonMaleVotersInMandalAndConstituency() {
+		return commonMaleVotersInMandalAndConstituency;
+	}
+
+	public void setCommonMaleVotersInMandalAndConstituency(
+			Long commonMaleVotersInMandalAndConstituency) {
+		this.commonMaleVotersInMandalAndConstituency = commonMaleVotersInMandalAndConstituency;
+	}
+
+	public Long getCommonFemaleVotersInMandalAndConstituency() {
+		return commonFemaleVotersInMandalAndConstituency;
+	}
+
+	public void setCommonFemaleVotersInMandalAndConstituency(
+			Long commonFemaleVotersInMandalAndConstituency) {
+		this.commonFemaleVotersInMandalAndConstituency = commonFemaleVotersInMandalAndConstituency;
+	}
+
+	public Long getCommonTotalVotersInMandalAndConstituency() {
+		return commonTotalVotersInMandalAndConstituency;
+	}
+
+	public void setCommonTotalVotersInMandalAndConstituency(
+			Long commonTotalVotersInMandalAndConstituency) {
+		this.commonTotalVotersInMandalAndConstituency = commonTotalVotersInMandalAndConstituency;
+	}
+
+	public Long getMalePolledVotes() {
+		return malePolledVotes;
+	}
+
+	public void setMalePolledVotes(Long malePolledVotes) {
+		this.malePolledVotes = malePolledVotes;
+	}
+
+	public Long getFemalePolledVotes() {
+		return femalePolledVotes;
+	}
+
+	public void setFemalePolledVotes(Long femalePolledVotes) {
+		this.femalePolledVotes = femalePolledVotes;
+	}
+
+	public Long getTotalPolledVotes() {
+		return totalPolledVotes;
+	}
+
+	public void setTotalPolledVotes(Long totalPolledVotes) {
+		this.totalPolledVotes = totalPolledVotes;
+	}
+
+	public Long getMaleOrFemaleValidVotes() {
+		return maleOrFemaleValidVotes;
+	}
+
+	public void setMaleOrFemaleValidVotes(Long maleOrFemaleValidVotes) {
+		this.maleOrFemaleValidVotes = maleOrFemaleValidVotes;
+	}
+
+	public Long getCommonMaleOrFemaleVoters() {
+		return commonMaleOrFemaleVoters;
+	}
+
+	public void setCommonMaleOrFemaleVoters(Long commonMaleOrFemaleVoters) {
+		this.commonMaleOrFemaleVoters = commonMaleOrFemaleVoters;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
 		ConstituencyWiseDataForMandalVO voObj = (ConstituencyWiseDataForMandalVO)obj;
 		return this.constituencyId.equals(voObj.getConstituencyId());
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return this.constituencyId.hashCode();

@@ -3,12 +3,12 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dto.ConstituencyWiseDataForMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyGenderWiseVotesVO;
+
 
 public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
 	
@@ -100,4 +100,21 @@ public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
 			}
 		}
 	}
+	
+	/*public void testGetAllMPTCAndZPTCElectionsInfoInTehsil(){
+		List<ElectionWiseMandalPartyResultVO> list = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(853l);
+		System.out.println(list.size());
+		for(ElectionWiseMandalPartyResultVO eleObj:list){
+			System.out.println(eleObj.getElectionType()+"--"+eleObj.getElectionYear());
+			System.out.println("Total Parties::"+eleObj.getPartyResultsVO().size());
+			List<PartyResultsVO> partyElections = eleObj.getPartyResultsVO();
+			for(PartyResultsVO partyObj:partyElections){
+				System.out.println(partyObj.getPartyName() +"\t"+partyObj.getSeatsParticipated()+"\t"+partyObj.getTotalSeatsWon()+"\t"+partyObj.getPercentage());
+				List<ConstituencyWisePartyInfoVO> consties = partyObj.getConstituencyWisePatiesInfoVOs();
+				for(ConstituencyWisePartyInfoVO constiObj:consties){
+					System.out.println(constiObj.getConstituencyName()+"\t"+constiObj.getCandidateName()+"\t"+constiObj.getRank()+"\t"+constiObj.getPercentage()+"\t"+constiObj.getVotesEarned());
+				}
+			}
+		}
+	}*/
 }

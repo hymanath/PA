@@ -4,8 +4,8 @@ import java.util.List;
 
 public class ElectionWiseMandalPartyResultListVO extends ResultStatus {
 
-	List<ElectionWiseMandalPartyResultVO> electionWiseMandalPartyResultVOList;
-
+	private List<ElectionWiseMandalPartyResultVO> electionWiseMandalPartyResultVOList;
+	
 	public List<ElectionWiseMandalPartyResultVO> getElectionWiseMandalPartyResultVOList() {
 		return electionWiseMandalPartyResultVOList;
 	}

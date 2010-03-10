@@ -7,12 +7,18 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class PartyResultsVO {
 
-	Long partyId;
-	String partyName;
-	String partyFlag;
-	Long totalSeatsWon;
+	private Long partyId;
+	private String partyName;
+	private String partyFlag;
+	private int seatsParticipated;
+	private Long votesEarned;
+	private String percentage;
+	private int totalSeatsWon;
+	private List<ConstituencyWisePartyInfoVO> constituencyWisePatiesInfoVOs;
 	
 	// getters and setters
 	
@@ -35,12 +41,46 @@ public class PartyResultsVO {
 	public void setPartyFlag(String partyFlag) {
 		this.partyFlag = partyFlag;
 	}
-
-	public Long getTotalSeatsWon() {
+	public int getTotalSeatsWon() {
 		return totalSeatsWon;
 	}
-	public void setTotalSeatsWon(Long totalSeatsWon) {
+	public void setTotalSeatsWon(int totalSeatsWon) {
 		this.totalSeatsWon = totalSeatsWon;
 	}
+	public List<ConstituencyWisePartyInfoVO> getConstituencyWisePatiesInfoVOs() {
+		return constituencyWisePatiesInfoVOs;
+	}
+	public void setConstituencyWisePatiesInfoVOs(
+			List<ConstituencyWisePartyInfoVO> constituencyWisePatiesInfoVOs) {
+		this.constituencyWisePatiesInfoVOs = constituencyWisePatiesInfoVOs;
+	}
+	public int getSeatsParticipated() {
+		return seatsParticipated;
+	}
+	public void setSeatsParticipated(int seatsParticipated) {
+		this.seatsParticipated = seatsParticipated;
+	}
+	public Long getVotesEarned() {
+		return votesEarned;
+	}
+	public void setVotesEarned(Long votesEarned) {
+		this.votesEarned = votesEarned;
+	}
+	public String getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
 	
+	@Override
+	public boolean equals(Object obj){
+		PartyResultsVO voObj = (PartyResultsVO) obj;
+		return this.partyId.equals(voObj.getPartyId());
+	}
+	
+	@Override
+	public int hashCode(){
+		return this.partyId.hashCode();
+	}
 }

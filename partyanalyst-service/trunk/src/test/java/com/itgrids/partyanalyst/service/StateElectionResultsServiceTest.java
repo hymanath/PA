@@ -60,7 +60,7 @@ public class StateElectionResultsServiceTest {
 		    		   
 		    		   Assert.assertEquals(new Long(10), Results.getPartyId());
 		    		   Assert.assertEquals("Telangana Rashtra Samithi", Results.getPartyName());
-		    		   Assert.assertEquals(new Long(1), Results.getTotalSeatsWon());
+		    		   Assert.assertEquals(1, Results.getTotalSeatsWon());
 		    		   
 		    	   }
 		    }

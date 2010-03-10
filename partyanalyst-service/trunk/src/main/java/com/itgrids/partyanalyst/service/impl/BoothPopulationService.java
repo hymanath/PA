@@ -365,7 +365,7 @@ public class BoothPopulationService implements IBoothPopulationService{
 				validVotes = (Double)values[3];
 				votesGainedByParty = (Double)values[4];
 				if(validVotes == null || validVotes == 0){
-					List votes = nominationDAO.findValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear("MPTC", "2001", new Long(844));
+					List votes = nominationDAO.findValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear(IConstants.MPTC_ELECTION_TYPE, electionYear, tehsilID);
 					validVotes = (Double)votes.get(0);
 				}
 				if(totalVoters == null)
@@ -417,5 +417,7 @@ public class BoothPopulationService implements IBoothPopulationService{
 		} 
 		return sb.toString().substring(1);
 	}
+	
+	
 	
 }
