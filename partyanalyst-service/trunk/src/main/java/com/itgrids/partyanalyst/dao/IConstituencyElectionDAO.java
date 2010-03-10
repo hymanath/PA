@@ -56,4 +56,6 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	
     @SuppressWarnings("unchecked")
 	public List findTotalConstituenciesCountInADistrictForAnElection(Long electionId,Long districtId);
+    
+    public List findTotalAssemblyConstituencies(Long electionId,Long stateId);
 }
