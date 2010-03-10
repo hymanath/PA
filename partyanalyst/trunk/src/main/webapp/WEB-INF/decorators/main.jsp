@@ -102,7 +102,8 @@
 	        id: "constituenceyManagement", 
 	        itemdata: [
 		    { text: "Problem Management Report", url: "problemManagementReportAction.action" },
-		    { text: "User Groups", url: "userGroupAction.action" }
+		    { text: "User Groups", url: "userGroupAction.action" },
+		    { text: "Constituency Election Report", url: "constituencyElectionReportAction.action" }
 	        ] 
 	    },   
 	    { 
