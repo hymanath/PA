@@ -95,5 +95,10 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		List<Election> election = electionDAO.findByElectionTypeYearAndState(new Long(2), "2009", new Long(1), new Long(1));
 		System.out.println("Election ::"  + election.get(0).getElectionId());
 	}
+	@Test
+	public void testFindElectionType(){
+		List result = electionDAO.findElectionIdAndYear(1l,1l);
+		Assert.assertEquals(8, result.size());
+	}
 }
 

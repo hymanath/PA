@@ -63,4 +63,14 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println("Total ValidVotes For Assembly 2009(A.P) Nellore Dist ::" + validVotes.longValue());
 	}
 	
+	@Test
+	public void testByElectionType(){
+		List list = constituencyElectionDAO.findTotalAssemblyConstituencies(9l,1l);
+		for(int i=0;i<list.size();i++){
+			Object[] parms = (Object[])list.get(i);
+			System.out.println(parms[1]);
+		}
+		System.out.println(list.size());
+		
+	}
 }

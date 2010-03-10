@@ -25,4 +25,9 @@ public class ElectionScopeDAOHibernateTest extends BaseDaoTestCase {
 		Assert.assertEquals(new Long(2), actualResult.get(0).getElectionScopeId());
 	}
 
+	@Test
+	public void testStates(){
+		List<ElectionScope> electionScopes = electionScopeDAO.findByPropertyElectionTypeId(2l);
+		assertEquals(2l,electionScopes.size());
+	}
 }
