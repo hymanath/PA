@@ -199,6 +199,27 @@ width:100%;
 {
 	width:100%;
 }
+.commonVotersTableClass th
+{
+	padding:5px;
+	background-color:#728194;
+	color:#FFFFFF;
+}
+.commonVotersTableClass td
+{
+	padding:5px;
+	background-color:#FFFFFF;
+	color:#728194;
+
+}
+.commonVotersHeadDiv
+{
+	color:#323E4E;
+	font-weight:bold;
+	margin-bottom:5px;
+	padding:5px;
+	text-decoration:underline;
+}
 </style>
 
 
@@ -211,6 +232,7 @@ var allBoothElecInfo = new Array();
 		var electionInfo = {
 				year:'${electionResult.electionYear}',
 				electionType:'${electionResult.electionType}',
+				
 				constituencyInfo:[]
 				/*constituencyId:'',
 				partyVotes:[],
@@ -222,6 +244,14 @@ var allBoothElecInfo = new Array();
 			var eachConstiInfo = {
 					constituencyId:'${constituencyInfo.constituencyId}',
 					constituencyName:'${constituencyInfo.constituencyName}',
+					maleVoters:'${constituencyInfo.commonMaleVotersInMandalAndConstituency}',
+					femaleVoters:'${constituencyInfo.commonFemaleVotersInMandalAndConstituency}',
+					maleRfemaleVoters:'${constituencyInfo.commonMaleOrFemaleVoters}',
+					totalVoters:'${constituencyInfo.commonTotalVotersInMandalAndConstituency}',
+					polledVotes:'${constituencyInfo.totalPolledVotes}',
+					malePolledVotes:'${constituencyInfo.malePolledVotes}',
+					femalePolledVotes:'${constituencyInfo.femalePolledVotes}',
+					maleOrFemalePolledVotes:'${constituencyInfo.maleOrFemaleValidVotes}',
 					paritesinfo:[]
 			}
 			<c:forEach var="partyInfo" items="${constituencyInfo.partyVotes}">
@@ -692,6 +722,61 @@ var allBoothElecInfo = new Array();
 			for(var j in allBoothElecInfo[i].constituencyInfo){
 				electionInfo += '<fieldset>';
 				electionInfo += '<legend>'+allBoothElecInfo[i].constituencyInfo[j].constituencyName+' '+allBoothElecInfo[i].electionType+' '+allBoothElecInfo[i].year+'</legend>';
+				electionInfo += '<div id = "data_div_'+i+'_'+j+'" class="">';
+				electionInfo += '<div id = "data_head_div_'+i+'_'+j+'" class="commonVotersHeadDiv">Voters Info In ${mandalInfoVO.mandalName} Mandal For '+allBoothElecInfo[i].constituencyInfo[j].constituencyName+' '+allBoothElecInfo[i].electionType+'</div>';
+				electionInfo += '<div id = "data_body_div_'+i+'_'+j+'" class="commonVotersBodyDiv">';
+				electionInfo += '<table class="commonVotersTableClass"><tr>';				
+
+				electionInfo += '&nbsp;<th> Total Voters</th>';	
+				if(allBoothElecInfo[i].constituencyInfo[j].totalVoters || allBoothElecInfo[i].constituencyInfo[j].totalVoters == 0)				
+					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].totalVoters+'</td>';
+				else
+					electionInfo += '<td> - </td>';
+
+				electionInfo += '&nbsp;<th> Male Voters</th>';				
+				if(allBoothElecInfo[i].constituencyInfo[j].maleVoters || allBoothElecInfo[i].constituencyInfo[j].maleVoters == 0)				
+					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].maleVoters+'</td>';
+				else
+					electionInfo += '<td> - </td>';
+
+				electionInfo += '&nbsp;<th> Female Voters</th>';
+				if(allBoothElecInfo[i].constituencyInfo[j].femaleVoters || allBoothElecInfo[i].constituencyInfo[j].femaleVoters == 0)				
+					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].femaleVoters+'</td>';
+				else
+					electionInfo += '<td> - </td>';
+
+				electionInfo += '&nbsp;<th> Male / Female Voters</th>';
+				if(allBoothElecInfo[i].constituencyInfo[j].maleRfemaleVoters || allBoothElecInfo[i].constituencyInfo[j].maleRfemaleVoters == 0)				
+					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].maleRfemaleVoters+'</td>';
+				else
+					electionInfo += '<td> - </td>';
+
+				electionInfo += '</tr><tr>';
+				electionInfo += '&nbsp;<th> Polled Votes</th>';	
+				if(allBoothElecInfo[i].constituencyInfo[j].polledVotes || allBoothElecInfo[i].constituencyInfo[j].polledVotes == 0)				
+					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].polledVotes+'</td>';
+				else
+					electionInfo += '<td> - </td>';
+				electionInfo += '&nbsp;<th> Male Polled Votes</th>';	
+				if(allBoothElecInfo[i].constituencyInfo[j].malePolledVotes || allBoothElecInfo[i].constituencyInfo[j].malePolledVotes == 0)				
+					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].malePolledVotes+'</td>';
+				else
+					electionInfo += '<td> - </td>';
+
+				electionInfo += '&nbsp;<th> Female Polled Votes</th>';	
+				if(allBoothElecInfo[i].constituencyInfo[j].femalePolledVotes || allBoothElecInfo[i].constituencyInfo[j].femalePolledVotes == 0)				
+					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].femalePolledVotes+'</td>';
+				else
+					electionInfo += '<td> - </td>';
+
+				electionInfo += '&nbsp;<th> Male / Female Polled Votes</th>';	
+				if(allBoothElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes || allBoothElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes == 0)				
+					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes+'</td>';
+				else
+					electionInfo += '<td> - </td>';		
+				electionInfo += '</tr></table>';
+				electionInfo += '</div>';
+				electionInfo += '<br>';
 				electionInfo += '<div id = "div_'+i+'_'+j+'" class="dataTableSize">';
 				electionInfo += '</div>';
 				electionInfo += '</fieldset>';				
@@ -839,13 +924,19 @@ var allBoothElecInfo = new Array();
 			</display:table>
 		</div>
 	</div>
+	<div>
+		<s:iterator var="maptcZptcElection" value="mptcZptcElectionResultsVO">
+			<s:property value="maptcZptcElection.electionType"/>
+			<s:property value="maptcZptcElection.electionYear"/>
+		</s:iterator>
+	</div>
+	
 	<div id="mandalPageTab" class="yui-skin-sam"></div>
 	<div class="yui-skin-sam"><div id="boothPagePanel" ></div></div>
 	<div class="yui-skin-sam"><div id="townshipPartyResultsPanel" ></div></div>	
 </div>
 
 <script type="text/javascript">
-
 
 	buildTabNavigator();
 	showElectionResultsInPopup();

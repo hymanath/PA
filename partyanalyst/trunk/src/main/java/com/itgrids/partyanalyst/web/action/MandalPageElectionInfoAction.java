@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
+import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
@@ -28,6 +29,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private HttpSession session;
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	private ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO;
+	private List<ElectionWiseMandalPartyResultVO> mptcZptcElectionResultsVO;
 	private VillageDetailsVO villageDetailsVO;
 	private MandalInfoVO mandalInfoVO;
 	private List<SelectOptionVO> electionSelectVO;
@@ -146,6 +148,15 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		this.townshipResults = townshipResults;
 	}
 
+	public List<ElectionWiseMandalPartyResultVO> getMptcZptcElectionResultsVO() {
+		return mptcZptcElectionResultsVO;
+	}
+
+	public void setMptcZptcElectionResultsVO(
+			List<ElectionWiseMandalPartyResultVO> mptcZptcElectionResultsVO) {
+		this.mptcZptcElectionResultsVO = mptcZptcElectionResultsVO;
+	}
+
 	public String execute(){
 		
 		mandalId = request.getParameter("MANDAL_ID");
@@ -169,7 +180,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		if(ex!=null){
 			log.error("exception raised while retrieving mandal details ", ex);
 		}
-		
+		mptcZptcElectionResultsVO = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(new Long(mandalID));
 		electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(new Long(mandalID), "Mandal");
 				
 		return SUCCESS;
