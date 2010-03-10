@@ -242,5 +242,7 @@
 	</bean>
 	<bean id="electionVotingTrendzAction" class="com.itgrids.partyanalyst.web.action.ElectionVotingTrendzAction" singleton="false">
 	</bean>
-		
-</beans>
+	<bean id="constituencyElectionReportAction" class="com.itgrids.partyanalyst.web.action.ConstituencyElectionReportAction" singleton="false">
+			<property name="staticDataService" ref="staticDataService" />
+	</bean>	
+</beans>		
