@@ -26,10 +26,45 @@ public class CandidateDetailsVO {
 	private String votesPercentage;
 	private Boolean status;
 	private String image;
+	private String result;
 	private List<CandidateOppositionVO> oppositionCandidates;
-	
-	
+	private List<SelectOptionVO> latestConstituencies ;
+	private List<SelectOptionVO> getAllStates ;
+	private List<CandidateDetailsVO> candidateDetails ;
+	private Long dataAvailabilityFlag;
 	//getters and setters
+
+	public Long getDataAvailabilityFlag() {
+		return dataAvailabilityFlag;
+	}
+	public void setDataAvailabilityFlag(Long dataAvailabilityFlag) {
+		this.dataAvailabilityFlag = dataAvailabilityFlag;
+	}
+	public List<CandidateDetailsVO> getCandidateDetails() {
+		return candidateDetails;
+	}
+	public void setCandidateDetails(List<CandidateDetailsVO> candidateDetails) {
+		this.candidateDetails = candidateDetails;
+	}
+	public String getResult() {
+		return result;
+	}
+	public List<SelectOptionVO> getLatestConstituencies() {
+		return latestConstituencies;
+	}
+	public void setLatestConstituencies(List<SelectOptionVO> latestConstituencies) {
+		this.latestConstituencies = latestConstituencies;
+	}
+	public List<SelectOptionVO> getGetAllStates() {
+		return getAllStates;
+	}
+	public void setGetAllStates(List<SelectOptionVO> getAllStates) {
+		this.getAllStates = getAllStates;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
+	
 	public Long getCandidateId() {
 		return candidateId;
 	}
