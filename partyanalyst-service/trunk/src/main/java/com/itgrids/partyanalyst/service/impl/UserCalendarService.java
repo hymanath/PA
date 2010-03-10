@@ -158,13 +158,13 @@ public class UserCalendarService implements IUserCalendarService {
 		importantDatesVO.setEndDate(impDate.getTillDate());
 		importantDatesVO.setFrequency(impDate.getRecFreqType());
 		
-		/*Date iDate=(Date)(impDate.getEffectiveDate()).clone();
+		Date iDate=(Date)(impDate.getEffectiveDate()).clone();
 		iDate.setYear(calendar.get(Calendar.YEAR) - 1900);
 		iDate.setMonth(calendar.get(Calendar.MONTH));
 		iDate.setDate(calendar.get(Calendar.DAY_OF_MONTH));
-		importantDatesVO.setImpDate(iDate);*/
+		importantDatesVO.setImpDate(iDate);
 
-		importantDatesVO.setImpDate(calendar.getTime());
+		//importantDatesVO.setImpDate(calendar.getTime());
 		
 		return importantDatesVO;
 	}
@@ -257,7 +257,7 @@ public class UserCalendarService implements IUserCalendarService {
 				cal.set(currentYear,currentMonth,calDay);
 				if(cal.before(startCalendar) || cal.after(endCalendar)
 						|| cal.before(dbStartDate) || cal.after(dbEndDate)){
-					break;
+					continue;
 				}
 				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(cal,impDate);
 				importantDatesVOs.add(importantDatesVO);				
