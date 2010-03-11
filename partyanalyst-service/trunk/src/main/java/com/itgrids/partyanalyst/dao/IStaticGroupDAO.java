@@ -16,5 +16,11 @@ import com.itgrids.partyanalyst.model.StaticGroup;
 
 public interface IStaticGroupDAO extends GenericDao<StaticGroup, Long> {
 
-	public List<StaticGroup>findByGroupDescription(String groupDescription);
+	public List<StaticGroup> findByGroupDescription(String groupDescription);
+	
+	@SuppressWarnings("unchecked")
+	public List findAllStaticGroupDetails();
+	
+	
+	
 }
