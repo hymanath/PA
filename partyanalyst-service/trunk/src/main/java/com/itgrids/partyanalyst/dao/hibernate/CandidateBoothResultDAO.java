@@ -135,6 +135,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		return getHibernateTemplate().find(hqlQuery.toString(), params);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List findMandalWisePartiesResultsForElection(Long tehsilId, Long electionId) {
 		Object[] params = {electionId, tehsilId};
 		StringBuilder hqlQuery =new StringBuilder();
@@ -145,6 +146,153 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" order by model.votesEarned desc");
 		return getHibernateTemplate().find(hqlQuery.toString(), params);
 	}
+
+	
+	@SuppressWarnings("unchecked")
+	public List findMandalWisePartiesResultForMaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long trendValue){
+		Object[] params = {electionId,tehsilId,trendValue};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.boothConstituencyElection.constituencyElection.constituency.constituencyId,")
+		        .append("model.boothConstituencyElection.constituencyElection.constituency.name,")
+		        .append("model.nomination.party.partyId,model.nomination.party.shortName,")
+		        .append("model.nomination.party.partyLogo,model.nomination.party.partyFlag,")
+		        .append("model.nomination.candidate.candidateId,model.nomination.candidate.lastname,")
+		        .append("sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),")
+		        .append("sum(model.boothConstituencyElection.booth.maleVoters),sum(model.boothConstituencyElection.booth.femaleVoters),sum(model.boothConstituencyElection.booth.totalVoters),count(model.boothConstituencyElection.booth.boothId)")
+		        .append(" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
+		        .append(" and model.boothConstituencyElection.booth.tehsil.tehsilId = ? and model.boothConstituencyElection.booth.femaleVoters <= ?")
+		        .append(" group by model.nomination.nominationId")
+		        .append(" order by model.nomination.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+		
+	@SuppressWarnings("unchecked")
+	public List findMandalWisePartiesResultForFemaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long trendValue){
+		Object[] params = {electionId,tehsilId,trendValue};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.boothConstituencyElection.constituencyElection.constituency.constituencyId,")
+		        .append("model.boothConstituencyElection.constituencyElection.constituency.name,")
+		        .append("model.nomination.party.partyId,model.nomination.party.shortName,")
+		        .append("model.nomination.party.partyLogo,model.nomination.party.partyFlag,")
+		        .append("model.nomination.candidate.candidateId,model.nomination.candidate.lastname,")
+		        .append("sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),")
+		        .append("sum(model.boothConstituencyElection.booth.maleVoters),sum(model.boothConstituencyElection.booth.femaleVoters),sum(model.boothConstituencyElection.booth.totalVoters),count(model.boothConstituencyElection.booth.boothId)")
+		        .append(" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
+		        .append(" and model.boothConstituencyElection.booth.tehsil.tehsilId = ? and model.boothConstituencyElection.booth.maleVoters <= ?")
+		        .append(" group by model.nomination.nominationId")
+		        .append(" order by model.nomination.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+		
+	@SuppressWarnings("unchecked")
+	public List findMandalWisePartiesResultForMaleAndFemaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long maleTrend,Long femaleTrend){
+		Object[] params = {electionId,tehsilId,maleTrend,femaleTrend};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.boothConstituencyElection.constituencyElection.constituency.constituencyId,")
+		        .append("model.boothConstituencyElection.constituencyElection.constituency.name,")
+		        .append("model.nomination.party.partyId,model.nomination.party.shortName,")
+		        .append("model.nomination.party.partyLogo,model.nomination.party.partyFlag,")
+		        .append("model.nomination.candidate.candidateId,model.nomination.candidate.lastname,")
+		        .append("sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),")
+		        .append("sum(model.boothConstituencyElection.booth.maleVoters),sum(model.boothConstituencyElection.booth.femaleVoters),sum(model.boothConstituencyElection.booth.totalVoters),count(model.boothConstituencyElection.booth.boothId)")
+		        .append(" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
+		        .append(" and model.boothConstituencyElection.booth.tehsil.tehsilId = ? and model.boothConstituencyElection.booth.maleVoters > ? and model.boothConstituencyElection.booth.femaleVoters > ?")
+		        .append(" group by model.nomination.nominationId")
+		        .append(" order by model.nomination.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findMandalWisePartiesResultForAllBoothsInAnElection(Long electionId,Long tehsilId){
+		Object[] params = {electionId,tehsilId};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.boothConstituencyElection.constituencyElection.constituency.constituencyId,")
+		        .append("model.boothConstituencyElection.constituencyElection.constituency.name,")
+		        .append("model.nomination.party.partyId,model.nomination.party.shortName,")
+		        .append("model.nomination.party.partyLogo,model.nomination.party.partyFlag,")
+		        .append("model.nomination.candidate.candidateId,model.nomination.candidate.lastname,")
+		        .append("sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),")
+		        .append("sum(model.boothConstituencyElection.booth.maleVoters),sum(model.boothConstituencyElection.booth.femaleVoters),sum(model.boothConstituencyElection.booth.totalVoters),count(model.boothConstituencyElection.booth.boothId)")
+		        .append(" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
+		        .append(" and model.boothConstituencyElection.booth.tehsil.tehsilId = ?")
+		        .append(" group by model.nomination.nominationId")
+		        .append(" order by model.nomination.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseVotingTrendz(Long electionId,Long constituencyId){
+		Object[] params = {electionId,constituencyId};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.nomination.party.partyId,model.nomination.party.shortName,")
+                .append("model.nomination.party.partyFlag,")
+                .append("model.nomination.candidate.candidateId,model.nomination.candidate.lastname,")
+                .append("sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),")
+                .append("sum(model.boothConstituencyElection.booth.maleVoters),sum(model.boothConstituencyElection.booth.femaleVoters),sum(model.boothConstituencyElection.booth.totalVoters),count(model.boothConstituencyElection.booth.boothId),")
+                .append("model.nomination.candidateResult.rank")
+                .append(" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
+                .append(" and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ?")
+                .append(" group by model.nomination.nominationId")
+                .append(" order by model.nomination.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseMaleVotingTrendz(Long electionId,Long constituencyId,Long trendzValue){
+		System.out.println("Inside 4 (ElecId) :" + electionId + "ConstitID :" + constituencyId);
+		Object[] params = {electionId,constituencyId,trendzValue};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.nomination.party.partyId,model.nomination.party.shortName,")
+                .append("model.nomination.party.partyFlag,")
+                .append("model.nomination.candidate.candidateId,model.nomination.candidate.lastname,")
+                .append("sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),")
+                .append("sum(model.boothConstituencyElection.booth.maleVoters),sum(model.boothConstituencyElection.booth.femaleVoters),sum(model.boothConstituencyElection.booth.totalVoters),count(model.boothConstituencyElection.booth.boothId),")
+                .append("model.nomination.candidateResult.rank")
+                .append(" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
+                .append(" and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? and model.boothConstituencyElection.booth.femaleVoters <= ?")
+                .append(" group by model.nomination.nominationId")
+                .append(" order by model.nomination.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseFemaleVotingTrendz(Long electionId,Long constituencyId,Long trendzValue){
+		System.out.println("Inside 4 (ElecId) :" + electionId + "ConstitID :" + constituencyId);
+		Object[] params = {electionId,constituencyId,trendzValue};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.nomination.party.partyId,model.nomination.party.shortName,")
+                .append("model.nomination.party.partyFlag,")
+                .append("model.nomination.candidate.candidateId,model.nomination.candidate.lastname,")
+                .append("sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),")
+                .append("sum(model.boothConstituencyElection.booth.maleVoters),sum(model.boothConstituencyElection.booth.femaleVoters),sum(model.boothConstituencyElection.booth.totalVoters),count(model.boothConstituencyElection.booth.boothId),")
+                .append("model.nomination.candidateResult.rank")
+                .append(" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
+                .append(" and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? and model.boothConstituencyElection.booth.maleVoters <= ?")
+                .append(" group by model.nomination.nominationId")
+                .append(" order by model.nomination.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseMaleAndFemaleVotingTrendz(Long electionId,Long constituencyId,Long maleTrendz,Long femaleTrendz){
+		System.out.println("Inside 4 (ElecId) :" + electionId + "ConstitID :" + constituencyId);
+		Object[] params = {electionId,constituencyId,maleTrendz,femaleTrendz};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.nomination.party.partyId,model.nomination.party.shortName,")
+                .append("model.nomination.party.partyFlag,")
+                .append("model.nomination.candidate.candidateId,model.nomination.candidate.lastname,")
+                .append("sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),")
+                .append("sum(model.boothConstituencyElection.booth.maleVoters),sum(model.boothConstituencyElection.booth.femaleVoters),sum(model.boothConstituencyElection.booth.totalVoters),count(model.boothConstituencyElection.booth.boothId),")
+                .append("model.nomination.candidateResult.rank")
+                .append(" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
+                .append(" and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? and model.boothConstituencyElection.booth.maleVoters > ? and model.boothConstituencyElection.booth.femaleVoters > ?")
+                .append(" group by model.nomination.nominationId")
+                .append(" order by model.nomination.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+
 	
 	public List findTownshipElectionResult(Long townshipId, Long electionId){
 		Object[] params = {townshipId, electionId};
@@ -217,4 +365,5 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		return getHibernateTemplate().find(hqlQuery.toString(), params);
 	}
 	
+
 }
