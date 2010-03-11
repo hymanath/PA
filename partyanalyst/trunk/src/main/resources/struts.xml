@@ -558,6 +558,11 @@
 		<action name="constituencyElectionReportAction" class="constituencyElectionReportAction">
 			<result name="success">/jsp/constituencyReportPage.jsp</result>					
 		</action>
+		<action name="userGroupBasicInfoAction" class="userGroupAction" method="getUserGroupsBasicInfo">
+			<result type="json" name="success">
+				<param name="root">userGroupBasicDetails</param>				
+			</result>		
+		</action>
 		<action name="constituencyElectionReportAjaxAction" class="constituencyElectionReportAction" >
 			<result type="json" name="success">
 				<param name="root">candidateResults</param>				
