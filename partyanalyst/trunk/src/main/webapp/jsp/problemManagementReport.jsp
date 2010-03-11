@@ -617,7 +617,6 @@ var callback = {
 				}
 				if(jsObj.task == "getProblemDetails")
 				{
-					console.log(myResults);
 					showProblemsHistoryReport(myResults);			
 				}
 		}catch (e) {   		
