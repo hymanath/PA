@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserGroupBasicDetails;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 
@@ -26,5 +27,10 @@ public interface IUserGroupService {
     public UserGroupDetailsVO createGroupForUser(UserGroupDetailsVO userGroupDetailsToSave);
     
     public List <GroupsDetailsForUserVO> subGrpsCountInSystemGrpsForUser(Long userId);
-   public List<GroupsDetailsForUserVO> subGroupsCountInMyGroupsForUser(Long userId);
+    public List<GroupsDetailsForUserVO> subGroupsCountInMyGroupsForUser(Long userId);
+    
+    public UserGroupBasicDetails getUserGroupDetailsForAUserForSystemGroups(String categoryType,Long groupId,Long userId);
+    
+    public UserGroupBasicDetails getUserGroupDetailsForAUserForMyGroups(String categoryType,Long groupId,Long userId);
+    
 }
