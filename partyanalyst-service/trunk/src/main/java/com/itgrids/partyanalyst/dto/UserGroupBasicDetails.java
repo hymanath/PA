@@ -19,6 +19,7 @@ public class UserGroupBasicDetails implements Serializable {
 	
 	private GroupsBasicInfoVO groupBasicDetails;
 	private List<GroupsBasicInfoVO> subGroupDetails;
+	private ResultStatus resultStatus;
 	
     //getters and setters
 	public GroupsBasicInfoVO getGroupBasicDetails() {
@@ -35,6 +36,14 @@ public class UserGroupBasicDetails implements Serializable {
 
 	public void setSubGroupDetails(List<GroupsBasicInfoVO> subGroupDetails) {
 		this.subGroupDetails = subGroupDetails;
+	}
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
 	}
 
 }
