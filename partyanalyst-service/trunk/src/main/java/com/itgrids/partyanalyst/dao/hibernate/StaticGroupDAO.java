@@ -16,8 +16,14 @@ public class StaticGroupDAO extends GenericDaoHibernate<StaticGroup, Long> imple
 
 	@SuppressWarnings("unchecked")
 	public List<StaticGroup> findByGroupDescription(String groupDescription) {
-		List<StaticGroup>staticGroup= getHibernateTemplate().find("from  StaticGroup model where model.groupDescription = ?",groupDescription);
+		List<StaticGroup> staticGroup= getHibernateTemplate().find("from  StaticGroup model where model.groupDescription = ?",groupDescription);
 	return staticGroup;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findAllStaticGroupDetails(){
+		System.out.println("Entered Into DAO . . .");
+		return getHibernateTemplate().find("select model.staticGroupId from StaticGroup model");
 	}
 
 }
