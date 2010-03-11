@@ -84,7 +84,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println("Constituency Name ::" + constituency.getName());
 	}
 	*/
-	public void testGetConstituencyTypeAndDelimitationInfoByConstituencyId(){
+/*	public void testGetConstituencyTypeAndDelimitationInfoByConstituencyId(){
 		List constituencyTypeDetails = constituencyDAO.getConstituencyTypeAndDelimitationInfoByConstituencyId(new Long (340));
 		
 		String deformDate = "";
@@ -104,5 +104,27 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("Constituency not equal");
 		}
 		
+	}*/
+	
+	public void testGetConstituenciesByElectionTypeAndStateId()
+	{
+		List constituenciesList  = constituencyDAO.getConstituenciesByElectionTypeAndStateId(new Long(2), new Long(1));
+		
+		if(constituenciesList!=null && constituenciesList.size()>0)
+		{			
+			for(int i=0;i<constituenciesList.size();i++)
+			{
+				Object[] obj = (Object[])constituenciesList.get(i);
+				Long constituencyId = (Long) obj[0];
+				String constituencyName = (String) obj[1];			
+				
+				if(constituencyId.equals(new Long(340))){
+					Assert.assertEquals("Nellore City", constituencyName);
+				}
+					
+			}
+			
+			
+		}
 	}
 }
