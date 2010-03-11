@@ -118,4 +118,10 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 		return getHibernateTemplate().find("select model.populationSC, model.populationST " +
 				"from Census model where model.year in ("+IConstants.CENSUS_YEAR+") and model.tehsilId=? and model.tru=?", params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findCensusDetailsForAMandal(Long stateId,Long districtId,Long tehsilId,int year,String level){
+		Object[] params = {stateId,districtId,tehsilId,year,level};
+		return getHibernateTemplate().find("select model.tru,model.level,model.year,model.totalMalePopulation,model.totalFemalePopulation,model.totalPopulation from Census model where model.stateId = ? and model.districtId = ? and model.tehsilId = ?  and model.year = ? and model.level = ?",params);
+	}
 }
