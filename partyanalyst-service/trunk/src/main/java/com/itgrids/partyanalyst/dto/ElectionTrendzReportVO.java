@@ -22,7 +22,7 @@ public class ElectionTrendzReportVO implements Serializable {
 	private String electionYear;
 	private Long constituencyId;
 	private String constituencyName;
-	private List<String> otherElectionYears;
+	private List<SelectOptionVO> otherElectionYears;
 	private List<SelectOptionVO> mandalsInfo;
 	
 	private ElectionTrendzInfoVO completeTrendz;
@@ -73,11 +73,11 @@ public class ElectionTrendzReportVO implements Serializable {
 		this.constituencyName = constituencyName;
 	}
 
-	public List<String> getOtherElectionYears() {
+	public List<SelectOptionVO> getOtherElectionYears() {
 		return otherElectionYears;
 	}
 
-	public void setOtherElectionYears(List<String> otherElectionYears) {
+	public void setOtherElectionYears(List<SelectOptionVO> otherElectionYears) {
 		this.otherElectionYears = otherElectionYears;
 	}
 
