@@ -64,6 +64,12 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	public List<Constituency> findByElectionScopeState(Long scopeID, Long stateID);
 
 	public List getAllConstituencyNamesAndIds();
+
+	
+	@SuppressWarnings("unchecked")
+	public List basicElecDetailsForAConstituency(Long constituencyId);
+
 	
 	public List getConstituencyTypeAndDelimitationInfoByConstituencyId(Long constituencyId);
+
 }
