@@ -56,6 +56,17 @@ public interface IConstants {
 	public final static String REVENUE_VILLAGE ="RV";
 	
 	public final static String CANDIDATE_STATIC_PAGE_URL = "candidate_static_page/Andhra_Pradesh/";
+
+	
+	public final static String COMPLETE_MANDAL = "COMPLETE_MANDAL";
+	public final static String MALE_TRENDZ = "MALE_TRENDZ";
+	public final static String FEMALE_TRENDZ = "FEMALE_TRENDZ";
+	public final static String MALE_FEMALE_TRENDZ = "MALE_FEMALE_TRENDZ";
+	public final static String TEHSIL = "TEHSIL";
+	public static final int LATEST_CENSUS_YEAR = 2001;
+	public final static String USER_GROUP_CATEGORY_PARENT = "USER_GROUP_CATEGORY_PARENT";
+	public final static String USER_GROUP_CATEGORY_CHILD = "USER_GROUP_CATEGORY_CHILD";
+	
 	public final static String SMS_DEAR = "DEAR ";
 	
 	public final static String ALL_GROUPS = "ALL_GROUPS";  
@@ -65,4 +76,5 @@ public interface IConstants {
 	public final static String SUB_GROUP = "SUB_GROUP";
 	public final static String STATIC_GROUP = "STATIC_GROUP";
 	public final static String MY_GROUP = "MY_GROUP";
+
 }
