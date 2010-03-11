@@ -31,6 +31,31 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 
 	public List findMandalWisePartiesResultsForElection(Long tehsilId, Long electionId);
 	
+	@SuppressWarnings("unchecked")
+	public List findMandalWisePartiesResultForMaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long trendValue);
+	
+	@SuppressWarnings("unchecked")
+	public List findMandalWisePartiesResultForFemaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long trendValue);
+	
+	@SuppressWarnings("unchecked")
+	public List findMandalWisePartiesResultForMaleAndFemaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long maleTrend,Long femaleTrend);
+	
+	@SuppressWarnings("unchecked")
+	public List findMandalWisePartiesResultForAllBoothsInAnElection(Long electionId,Long tehsilId);
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseVotingTrendz(Long electionId,Long constituencyId);
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseMaleVotingTrendz(Long electionId,Long constituencyId,Long trendzValue);
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseFemaleVotingTrendz(Long electionId,Long constituencyId,Long trendzValue);
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseMaleAndFemaleVotingTrendz(Long electionId,Long constituencyId,Long maleTrendz,Long femaleTrendz);
+	
+
 	public List findTownshipElectionResult(Long townshipId, Long electionId);
 	
 	public List findPartyResultsForBooths(String boothConstituencyElectionIds);
