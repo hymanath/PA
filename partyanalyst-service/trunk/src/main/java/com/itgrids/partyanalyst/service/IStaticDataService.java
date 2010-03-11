@@ -67,4 +67,6 @@ public interface IStaticDataService {
 	public CandidateDetailsVO getLatestConstituenciesForAssemblyAndParliamentForAllElectionYears(Long electionType,Long stateId);
 	
 	public CandidateDetailsVO getAllStatesInCountry();
+	
+	public List<SelectOptionVO> getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);
 }
