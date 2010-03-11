@@ -220,25 +220,68 @@ width:100%;
 	padding:5px;
 	text-decoration:underline;
 }
+.infoDivMainClass
+{
+	margin-top:10px;
+}
+.partyInfoClass
+{
+	font-weight:bold;
+	
+}
+.partyInfoHead
+{
+	padding:5px;
+	cursor:pointer;
+}
+.partyInfoBody
+{
+	padding:5px;
+}
 </style>
 
 
 
 <script type="text/javascript">
-	
+var partyDetailsTable = '';
 var candidateElectionResultPanel;
-var allBoothElecInfo = new Array();
+var allACPCElecInfo = new Array();
+var allZPTCMPTCElecInfo = new Array();
+	<c:forEach var="zptcMptcElection" items="${mptcZptcElectionResultsVO}" >
+		var zptcMptcElec = {
+				year:'${zptcMptcElection.electionYear}',
+				type:'${zptcMptcElection.electionType}',
+				parties:[]		
+		};	
+		<c:forEach var="party" items="${zptcMptcElection.partyResultsVO}">
+			var party = {
+					partyName:'${party.partyName}',
+					participated:'${party.seatsParticipated}',
+					seatsWon:'${party.totalSeatsWon}',
+					votesEarned:'${party.votesEarned}',
+					percentage:'${party.percentage}',
+					constituencies:[]
+			};
+			<c:forEach var="constituency" items="${party.constituencyWisePatiesInfoVOs}">
+				var constituency = {
+						name:'${constituency.constituencyName}',
+						candidate:'${constituency.candidateName}',
+						rank:'${constituency.rank}',
+						votesEarned:'${constituency.votesEarned}',
+						percentage:'${constituency.percentage}'
+				};
+				party.constituencies.push(constituency); 
+			</c:forEach>	
+			zptcMptcElec.parties.push(party);	
+		</c:forEach>
+		allZPTCMPTCElecInfo.push(zptcMptcElec);
+	</c:forEach>
+
 <c:forEach var="electionResult" items="${electionWiseMandalPartyResultListVO.electionWiseMandalPartyResultVOList}" >
 		var electionInfo = {
 				year:'${electionResult.electionYear}',
 				electionType:'${electionResult.electionType}',
-				
 				constituencyInfo:[]
-				/*constituencyId:'',
-				partyVotes:[],
-				maleBooths:[],
-				femaleBooths:[],
-				mfBooths:[]*/
 		};
 		<c:forEach var="constituencyInfo" items="${electionResult.constituencyWiseDataForMandalVOs}">
 			var eachConstiInfo = {
@@ -273,41 +316,7 @@ var allBoothElecInfo = new Array();
 			</c:forEach>
 			electionInfo.constituencyInfo.push(eachConstiInfo);
 		</c:forEach>
-				
-		/*<c:forEach var="maleBooth" items="${electionResult.boothTypeDetailsVO.maleBoothVotes}">
-			var maleBooth = {
-					partNo:'${maleBooth.partNo}',
-					villagesCovered:'${maleBooth.villagesCovered}',
-					maleVotes:'${maleBooth.maleVotes}',
-					femaleVotes:'${maleBooth.femaleVotes}',
-					totalVotes:'${maleBooth.totalVotes}',
-					validVotes:'${maleBooth.validVotes}'
-			}
-			electionInfo.maleBooths.push(maleBooth);
-		</c:forEach> 
-		<c:forEach var="femaleBooth" items="${electionResult.boothTypeDetailsVO.femaleBoothVotes}">
-			var femaleBooth = {
-					partNo:'${femaleBooth.partNo}',
-					villagesCovered:'${femaleBooth.villagesCovered}',
-					maleVotes:'${femaleBooth.maleVotes}',
-					femaleVotes:'${femaleBooth.femaleVotes}',
-					totalVotes:'${femaleBooth.totalVotes}',
-					validVotes:'${femaleBooth.validVotes}'
-			}
-			electionInfo.femaleBooths.push(femaleBooth);
-		</c:forEach> 
-		<c:forEach var="mfBooth" items="${electionResult.boothTypeDetailsVO.maleFemailBoothVotes}">
-			var mfBooth = {
-					partNo:'${mfBooth.partNo}',
-					villagesCovered:'${mfBooth.villagesCovered}',
-					maleVotes:'${mfBooth.maleVotes}',
-					femaleVotes:'${mfBooth.femaleVotes}',
-					totalVotes:'${mfBooth.totalVotes}',
-					validVotes:'${mfBooth.validVotes}'
-			}
-			electionInfo.mfBooths.push(mfBooth);
-		</c:forEach> */
-		allBoothElecInfo.push(electionInfo);
+		allACPCElecInfo.push(electionInfo);
 </c:forEach>
 
 
@@ -603,39 +612,6 @@ var allBoothElecInfo = new Array();
 
 		if(rvStrDiv)
 			rvStrDiv.innerHTML = rvStr;
-		
-		/*if(resultVO.revenueVillagesInfo.userPartyVotes.length>0){
-			
-			var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-					.get("revillageInfoTable")); 
-			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
-			  myDataSource.responseSchema = { 
-			            fields: [
-									{
-										key : "townshipName"
-									},{
-										key : "totalVoters",parser:"number"
-									},{
-										key : "votesEarned",parser:"number"
-									},{
-										key : "booths"
-									},{
-										key : "hamlets"
-									}
-								]    
-			        }; 
-			
-			 var myColumnDefs = [ 
-			            {key:"townshipName",label:'Township Name', sortable:true, resizeable:true}, 
-			            {key:"totalVoters", label:'Total Voters', sortable:true, resizeable:true}, 
-			            {key:"validVoters", label:'Valid Voters',sortable:true, resizeable:true}, 
-			            {key:"votesEarned",label:'Votes Earned By'+resultVO.userPartyVotesTownshipWise[0].partyName, sortable:true, resizeable:true}, 
-			            {key:"booths",label:'Total Booths', resizeable:true}, 
-			            {key:"hamlets",label:'Total Hamlets', resizeable:true}
-			        ]; 
-			 
-			var myDataTable = new YAHOO.widget.DataTable("revenueVillageDiv",myColumnDefs, myDataSource);	
-		}else{	*/	
 			var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 					.get("revillageInfoTable")); 
 			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
@@ -667,7 +643,6 @@ var allBoothElecInfo = new Array();
 			        ]; 
 			 
 			var myDataTable = new YAHOO.widget.DataTable("revenueVillageDiv",myColumnDefs, myDataSource);
-		//}
           var imgElmt = document.getElementById('AjaxImgDiv');
 		 if(imgElmt.style.display == "block")
 		{
@@ -680,7 +655,8 @@ var allBoothElecInfo = new Array();
 		var myTabs = new YAHOO.widget.TabView();
 		var mandalElections = '';
 		mandalElections+='<div id="div1" >';
-		mandalElections+='<div id="electionsInfoMainDiv"></div>';
+		mandalElections+='<div id="allzptcmptcElectionsInfoMainDiv"></div>';
+		mandalElections+='<div id="allACPCelectionsInfoMainDiv"></div>';
 		mandalElections+='</div>';
 		
 		var cencusInfo = '';
@@ -713,65 +689,65 @@ var allBoothElecInfo = new Array();
 	function showElectionResultsInPopup()
 	{
 
-		var elmt = document.getElementById("electionsInfoMainDiv");
+		var elmt = document.getElementById("allACPCelectionsInfoMainDiv");
 		
-		for(var i in allBoothElecInfo)
+		for(var i in allACPCElecInfo)
 		{			
 			var divChild = document.createElement("div");
 			var electionInfo = '';
-			for(var j in allBoothElecInfo[i].constituencyInfo){
+			for(var j in allACPCElecInfo[i].constituencyInfo){
 				electionInfo += '<fieldset>';
-				electionInfo += '<legend>'+allBoothElecInfo[i].constituencyInfo[j].constituencyName+' '+allBoothElecInfo[i].electionType+' '+allBoothElecInfo[i].year+'</legend>';
+				electionInfo += '<legend>'+allACPCElecInfo[i].constituencyInfo[j].constituencyName+' '+allACPCElecInfo[i].electionType+' '+allACPCElecInfo[i].year+'</legend>';
 				electionInfo += '<div id = "data_div_'+i+'_'+j+'" class="">';
-				electionInfo += '<div id = "data_head_div_'+i+'_'+j+'" class="commonVotersHeadDiv">Voters Info In ${mandalInfoVO.mandalName} Mandal For '+allBoothElecInfo[i].constituencyInfo[j].constituencyName+' '+allBoothElecInfo[i].electionType+'</div>';
+				electionInfo += '<div id = "data_head_div_'+i+'_'+j+'" class="commonVotersHeadDiv">Voters Info In ${mandalInfoVO.mandalName} Mandal For '+allACPCElecInfo[i].constituencyInfo[j].constituencyName+' '+allACPCElecInfo[i].electionType+'</div>';
 				electionInfo += '<div id = "data_body_div_'+i+'_'+j+'" class="commonVotersBodyDiv">';
 				electionInfo += '<table class="commonVotersTableClass"><tr>';				
 
 				electionInfo += '&nbsp;<th> Total Voters</th>';	
-				if(allBoothElecInfo[i].constituencyInfo[j].totalVoters || allBoothElecInfo[i].constituencyInfo[j].totalVoters == 0)				
-					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].totalVoters+'</td>';
+				if(allACPCElecInfo[i].constituencyInfo[j].totalVoters || allACPCElecInfo[i].constituencyInfo[j].totalVoters == 0)				
+					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].totalVoters+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
 				electionInfo += '&nbsp;<th> Male Voters</th>';				
-				if(allBoothElecInfo[i].constituencyInfo[j].maleVoters || allBoothElecInfo[i].constituencyInfo[j].maleVoters == 0)				
-					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].maleVoters+'</td>';
+				if(allACPCElecInfo[i].constituencyInfo[j].maleVoters || allACPCElecInfo[i].constituencyInfo[j].maleVoters == 0)				
+					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].maleVoters+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
 				electionInfo += '&nbsp;<th> Female Voters</th>';
-				if(allBoothElecInfo[i].constituencyInfo[j].femaleVoters || allBoothElecInfo[i].constituencyInfo[j].femaleVoters == 0)				
-					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].femaleVoters+'</td>';
+				if(allACPCElecInfo[i].constituencyInfo[j].femaleVoters || allACPCElecInfo[i].constituencyInfo[j].femaleVoters == 0)				
+					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].femaleVoters+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
 				electionInfo += '&nbsp;<th> Male / Female Voters</th>';
-				if(allBoothElecInfo[i].constituencyInfo[j].maleRfemaleVoters || allBoothElecInfo[i].constituencyInfo[j].maleRfemaleVoters == 0)				
-					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].maleRfemaleVoters+'</td>';
+				if(allACPCElecInfo[i].constituencyInfo[j].maleRfemaleVoters || allACPCElecInfo[i].constituencyInfo[j].maleRfemaleVoters == 0)				
+					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].maleRfemaleVoters+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
 				electionInfo += '</tr><tr>';
 				electionInfo += '&nbsp;<th> Polled Votes</th>';	
-				if(allBoothElecInfo[i].constituencyInfo[j].polledVotes || allBoothElecInfo[i].constituencyInfo[j].polledVotes == 0)				
-					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].polledVotes+'</td>';
+				if(allACPCElecInfo[i].constituencyInfo[j].polledVotes || allACPCElecInfo[i].constituencyInfo[j].polledVotes == 0)				
+					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].polledVotes+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 				electionInfo += '&nbsp;<th> Male Polled Votes</th>';	
-				if(allBoothElecInfo[i].constituencyInfo[j].malePolledVotes || allBoothElecInfo[i].constituencyInfo[j].malePolledVotes == 0)				
-					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].malePolledVotes+'</td>';
+				if(allACPCElecInfo[i].constituencyInfo[j].malePolledVotes || allACPCElecInfo[i].constituencyInfo[j].malePolledVotes == 0)				
+					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].malePolledVotes+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
 				electionInfo += '&nbsp;<th> Female Polled Votes</th>';	
-				if(allBoothElecInfo[i].constituencyInfo[j].femalePolledVotes || allBoothElecInfo[i].constituencyInfo[j].femalePolledVotes == 0)				
-					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].femalePolledVotes+'</td>';
+				if(allACPCElecInfo[i].constituencyInfo[j].femalePolledVotes || allACPCElecInfo[i].constituencyInfo[j].femalePolledVotes == 0)				
+					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].femalePolledVotes+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
 				electionInfo += '&nbsp;<th> Male / Female Polled Votes</th>';	
-				if(allBoothElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes || allBoothElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes == 0)				
-					electionInfo += '<td>'+allBoothElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes+'</td>';
+				if(allACPCElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes || allACPCElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes == 0)				
+					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes+'</td>';
 				else
 					electionInfo += '<td> - </td>';		
 				electionInfo += '</tr></table>';
@@ -787,9 +763,9 @@ var allBoothElecInfo = new Array();
 				elmt.appendChild(divChild);			
 		}		
 
-		for(var i in allBoothElecInfo){
-			for(var j in allBoothElecInfo[i].constituencyInfo){
-				var myDataSource = new YAHOO.util.DataSource(allBoothElecInfo[i].constituencyInfo[j].paritesinfo); 
+		for(var i in allACPCElecInfo){
+			for(var j in allACPCElecInfo[i].constituencyInfo){
+				var myDataSource = new YAHOO.util.DataSource(allACPCElecInfo[i].constituencyInfo[j].paritesinfo); 
 				 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 				 myDataSource.responseSchema = { 
 				            fields: [
@@ -836,6 +812,105 @@ var allBoothElecInfo = new Array();
 		
 	}
 
+	function showMPTCZPTCResults(){
+
+		var allZMElmt = document.getElementById("allzptcmptcElectionsInfoMainDiv");
+		var str = '';
+		for(var i in allZPTCMPTCElecInfo){
+			str += '<div id="infoDivMain_'+i+'" class="infoDivMainClass">';			
+			str += '<div>'+allZPTCMPTCElecInfo[i].type+' '+allZPTCMPTCElecInfo[i].year+'</div>';			
+			for(var j in allZPTCMPTCElecInfo[i].parties){
+				str += '<div id="partyInfo_main" class="partyInfoClass">';    
+				str += '<div id="'+allZPTCMPTCElecInfo[i].type+'_'+allZPTCMPTCElecInfo[i].year+'_'+allZPTCMPTCElecInfo[i].parties[j].partyName+'_head" onclick="showPartyDetailsInfo(this.id,'+0+')" class="partyInfoHead">';
+				str += '<table>';
+				str += '<th>Party:</th><td>'+allZPTCMPTCElecInfo[i].parties[j].partyName+'</td>';
+				str += '<th>Participated:</th><td>'+allZPTCMPTCElecInfo[i].parties[j].participated+'</td>';
+				str += '<th>Seats Won:</th><td>'+allZPTCMPTCElecInfo[i].parties[j].seatsWon+'</td>';
+				str += '<th>Votes Earned:</th><td>'+allZPTCMPTCElecInfo[i].parties[j].votesEarned+'</td>';
+				str += '<th>Percentage:</th><td>'+allZPTCMPTCElecInfo[i].parties[j].percentage+'</td>';
+				str += '</table>';
+				str += '</div>';
+				str += '<div id="'+allZPTCMPTCElecInfo[i].type+'_'+allZPTCMPTCElecInfo[i].year+'_'+allZPTCMPTCElecInfo[i].parties[j].partyName+'_body" class="partyInfoBody" style="display:none;">';				
+				str += '<table id="'+allZPTCMPTCElecInfo[i].type+'_'+allZPTCMPTCElecInfo[i].year+'_'+allZPTCMPTCElecInfo[i].parties[j].partyName+'_table">';
+				for(var k in allZPTCMPTCElecInfo[i].parties[j].constituencies){					
+					str += '<tr>';				
+					str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].constituencies[k].name+'</td>';
+					str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].constituencies[k].candidate+'</td>';
+					str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].constituencies[k].rank+'</td>';
+					str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].constituencies[k].votesEarned+'</td>';
+					str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].constituencies[k].percentage+'</td>';
+					str += '</div>';
+					str += '</tr>';
+				}
+				str += '</table>';
+				str += '</div></div>';
+			}
+			str += '</div>';
+		}
+
+		if(allZMElmt)
+			allZMElmt.innerHTML = str;
+
+		for(var a in allZPTCMPTCElecInfo)
+		{
+			for(var b in allZPTCMPTCElecInfo[a].parties)
+			{
+				var id = allZPTCMPTCElecInfo[a].type+'_'+allZPTCMPTCElecInfo[a].year+'_'+allZPTCMPTCElecInfo[a].parties[b].partyName+'_table';
+				var divId = allZPTCMPTCElecInfo[a].type+'_'+allZPTCMPTCElecInfo[a].year+'_'+allZPTCMPTCElecInfo[a].parties[b].partyName+'_body';
+				console.log(id,divId);
+				var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+						.get(id)); 
+				 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+				  myDataSource.responseSchema = { 
+				            fields: [
+										{
+											key : "name"
+										},{
+											key : "candidate"
+										},{
+											key : "rank",parser:"number"
+										},{
+											key : "votesEarned",parser:"number"
+										},{
+											key : "percentage",parser:"float"
+										}
+									]    
+				        }; 
+				
+				 var myColumnDefs = [ 
+								{key:"name",label:'Constituency', sortable:true, resizeable:true}, 
+								{key:"candidate", label:'Candidate Name', sortable:true, resizeable:true}, 
+								{key:"rank", label:'Rank',sortable:true, resizeable:true}, 
+								{key:"votesEarned",label:'Votes Earned', sortable:true, resizeable:true}, 
+								{key:"percentage",label:'%', sortable:true, resizeable:true}
+				        ]; 
+				 
+				partyDetailsTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource);
+			}
+			
+		}
+		
+	}
+
+	function showPartyDetailsInfo(id)
+	{
+
+		var bodyDivId = id.substring(0,id.lastIndexOf('_'))+'_body';
+		var tableDivId = id.substring(0,id.lastIndexOf('_'))+'_table';
+		var divElmt = document.getElementById(bodyDivId);
+
+		
+			
+		
+		if(!divElmt)
+			return;
+	
+		if(divElmt.style.display == "none")
+			divElmt.style.display = "block";
+		else 
+			divElmt.style.display = "none";
+		
+	}
 	function getBoothPageInfo(id){
 		var jsObj=
 			{
@@ -924,12 +999,7 @@ var allBoothElecInfo = new Array();
 			</display:table>
 		</div>
 	</div>
-	<div>
-		<s:iterator var="maptcZptcElection" value="mptcZptcElectionResultsVO">
-			<s:property value="maptcZptcElection.electionType"/>
-			<s:property value="maptcZptcElection.electionYear"/>
-		</s:iterator>
-	</div>
+	
 	
 	<div id="mandalPageTab" class="yui-skin-sam"></div>
 	<div class="yui-skin-sam"><div id="boothPagePanel" ></div></div>
@@ -939,6 +1009,7 @@ var allBoothElecInfo = new Array();
 <script type="text/javascript">
 
 	buildTabNavigator();
+	showMPTCZPTCResults();
 	showElectionResultsInPopup();
 	buildCensusDataTable();
 	
