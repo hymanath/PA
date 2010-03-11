@@ -150,6 +150,7 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 				" group by model.booth.partNo",params);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List findVoterInformationByMandalIdsAndDelimitationYear (String mandalsIds,String year, Long constituencyId)
 	{
 		Object[] params = {year, constituencyId};
@@ -159,4 +160,145 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 						"group by model.booth.tehsil.tehsilId order by model.booth.tehsil.tehsilId",params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List findMandalWiseMaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long trendValue){
+		Object[] params = {electionId,tehsilId,trendValue};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
+		        .append("model.booth.location,model.booth.villagesCovered,")
+		        .append("model.booth.maleVoters,model.booth.femaleVoters,model.booth.totalVoters,")
+		        .append("model.constituencyElection.constituency.constituencyId,")
+		        .append("model.constituencyElection.constituency.name")
+		        .append(" from BoothConstituencyElection model where model.constituencyElection.election.electionId = ?")
+		        .append(" and model.booth.tehsil.tehsilId = ? and model.booth.femaleVoters <= ?")
+		        .append(" group by model.booth.boothId,model.constituencyElection.constituency.constituencyId")
+		        .append(" order by model.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findMandalWiseFemaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long trendValue){
+		Object[] params = {electionId,tehsilId,trendValue};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
+		        .append("model.booth.location,model.booth.villagesCovered,")
+		        .append("model.booth.maleVoters,model.booth.femaleVoters,model.booth.totalVoters,")
+		        .append("model.constituencyElection.constituency.constituencyId,")
+		        .append("model.constituencyElection.constituency.name")
+		        .append(" from BoothConstituencyElection model where model.constituencyElection.election.electionId = ?")
+		        .append(" and model.booth.tehsil.tehsilId = ? and model.booth.maleVoters <= ?")
+		        .append(" group by model.booth.boothId,model.constituencyElection.constituency.constituencyId")
+		        .append(" order by model.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findMandalWiseMaleAndFemaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long maleTrend,Long femaleTrend){
+		Object[] params = {electionId,tehsilId,maleTrend,femaleTrend};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
+		        .append("model.booth.location,model.booth.villagesCovered,")
+		        .append("model.booth.maleVoters,model.booth.femaleVoters,model.booth.totalVoters,")
+		        .append("model.constituencyElection.constituency.constituencyId,")
+		        .append("model.constituencyElection.constituency.name")
+		        .append(" from BoothConstituencyElection model where model.constituencyElection.election.electionId = ?")
+		        .append(" and model.booth.tehsil.tehsilId = ? and model.booth.maleVoters > ? and model.booth.femaleVoters > ?")
+		        .append(" group by model.booth.boothId,model.constituencyElection.constituency.constituencyId")
+		        .append(" order by model.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findMandalWiseAllBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId){
+		Object[] params = {electionId,tehsilId};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
+		        .append("model.booth.location,model.booth.villagesCovered,")
+		        .append("model.booth.maleVoters,model.booth.femaleVoters,model.booth.totalVoters,")
+		        .append("model.constituencyElection.constituency.constituencyId,")
+		        .append("model.constituencyElection.constituency.name")
+		        .append(" from BoothConstituencyElection model where model.constituencyElection.election.electionId = ?")
+		        .append(" and model.booth.tehsil.tehsilId = ?")
+		        .append(" group by model.booth.boothId,model.constituencyElection.constituency.constituencyId")
+		        .append(" order by model.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseAllBoothsVotingTrendsInAnElection(Long electionId,Long constituencyId){
+		System.out.println("Inside 1 (ElecId) :" + electionId + "ConstitID :" + constituencyId);
+		Object[] params = {electionId,constituencyId};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
+		        .append("model.booth.location,model.booth.villagesCovered,")
+		        .append("model.booth.maleVoters,model.booth.femaleVoters,model.booth.totalVoters")
+		        .append(" from BoothConstituencyElection model where model.constituencyElection.election.electionId = ?")
+		        .append(" and model.constituencyElection.constituency.constituencyId = ?")
+		        .append(" order by model.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseMaleBoothsVotingTrendsInAnElection(Long electionId,Long constituencyId,Long trendValue){
+		System.out.println("Inside 2 (ElecId) :" + electionId + "ConstitID :" + constituencyId);
+		Object[] params = {electionId,constituencyId,trendValue};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
+		        .append("model.booth.location,model.booth.villagesCovered,")
+		        .append("model.booth.maleVoters,model.booth.femaleVoters,model.booth.totalVoters")
+		        .append(" from BoothConstituencyElection model where model.constituencyElection.election.electionId = ?")
+		        .append(" and model.constituencyElection.constituency.constituencyId = ? and model.booth.femaleVoters <= ?")
+		        .append(" group by model.booth.boothId,model.constituencyElection.constituency.constituencyId")
+		        .append(" order by model.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseFemaleBoothsVotingTrendsInAnElection(Long electionId,Long constituencyId,Long trendValue){
+		System.out.println("Inside 3 (ElecId) :" + electionId + "ConstitID :" + constituencyId);
+		Object[] params = {electionId,constituencyId,trendValue};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
+		        .append("model.booth.location,model.booth.villagesCovered,")
+		        .append("model.booth.maleVoters,model.booth.femaleVoters,model.booth.totalVoters")
+		        .append(" from BoothConstituencyElection model where model.constituencyElection.election.electionId = ?")
+		        .append(" and model.constituencyElection.constituency.constituencyId = ? and model.booth.maleVoters <= ?")
+		        .append(" group by model.booth.boothId,model.constituencyElection.constituency.constituencyId")
+		        .append(" order by model.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+		
+	@SuppressWarnings("unchecked")
+	public List findConstituencyWiseMaleAndFemaleBoothsVotingTrendsInAnElection(Long electionId,Long constituencyId,Long maleTrend,Long femaleTrend){
+		System.out.println("Inside 4 (ElecId) :" + electionId + "ConstitID :" + constituencyId);
+		Object[] params = {electionId,constituencyId,maleTrend,femaleTrend};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
+		        .append("model.booth.location,model.booth.villagesCovered,")
+		        .append("model.booth.maleVoters,model.booth.femaleVoters,model.booth.totalVoters")
+		        .append(" from BoothConstituencyElection model where model.constituencyElection.election.electionId = ?")
+		        .append(" and model.constituencyElection.constituency.constituencyId = ? and model.booth.maleVoters > ? and model.booth.femaleVoters > ?")
+		        .append(" group by model.booth.boothId,model.constituencyElection.constituency.constituencyId")
+		        .append(" order by model.constituencyElection.constituency.constituencyId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findMandalDetailsForAParticularElectionYearForAParticularConstituency(Long constituencyId,Long electionId){
+		Object[] params = {constituencyId,electionId};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select distinct model.booth.tehsil.tehsilId,model.booth.tehsil.tehsilName")
+		        .append(" from BoothConstituencyElection model where model.constituencyElection.constituency.constituencyId = ?")
+		        .append(" and model.constituencyElection.election.electionId = ?");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findAllElectionsForAConstituency(Long constituencyId){
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select distinct model.constituencyElection.election.electionId,model.constituencyElection.election.electionYear")
+		        .append(" from BoothConstituencyElection model where model.constituencyElection.constituency.constituencyId = ?");
+		return getHibernateTemplate().find(hqlQuery.toString(), constituencyId);
+		
+	}
 }
