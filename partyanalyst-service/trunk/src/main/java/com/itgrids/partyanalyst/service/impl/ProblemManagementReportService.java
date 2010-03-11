@@ -319,12 +319,7 @@ public class ProblemManagementReportService implements
 				}
 				problemBean.setDescription(parms[7].toString());
 				problemBean.setProblemLocationId(Long.parseLong(parms[9].toString()));				
-				
-				System.out.println("====================================");
-				System.out.println("Problem Location Id"+Long.parseLong(parms[9].toString()));
-				System.out.println("Problem Location Id"+problemBean.getProblemLocationId());
-				System.out.println("====================================");
-				
+								
 				// To get all the problem history details...
 				
 				/*
