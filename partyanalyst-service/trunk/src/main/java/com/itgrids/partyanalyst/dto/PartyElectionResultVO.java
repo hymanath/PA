@@ -22,6 +22,8 @@ public class PartyElectionResultVO implements Serializable {
 	private String partyFlag;
 	private Long candidateId;
 	private String candidateName;
+	private Long constiId;
+	private String constiName;
 	private Long votesEarned;
 	private Long validVotes;
 	private Long totalVoters;
@@ -30,6 +32,8 @@ public class PartyElectionResultVO implements Serializable {
 	private String votesPercentage;
 	private Long rank;
 	private Long totalBooths;
+	private String status;
+	
 	
 	//getters and setters
 	public Long getPartyId() {
@@ -55,6 +59,18 @@ public class PartyElectionResultVO implements Serializable {
 	}
 	public void setCandidateName(String candidateName) {
 		this.candidateName = candidateName;
+	}
+	public Long getConstiId() {
+		return constiId;
+	}
+	public void setConstiId(Long constiId) {
+		this.constiId = constiId;
+	}
+	public String getConstiName() {
+		return constiName;
+	}
+	public void setConstiName(String constiName) {
+		this.constiName = constiName;
 	}
 	public Long getVotesEarned() {
 		return votesEarned;
@@ -115,5 +131,11 @@ public class PartyElectionResultVO implements Serializable {
 	}
 	public void setTotalBooths(Long totalBooths) {
 		this.totalBooths = totalBooths;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }
