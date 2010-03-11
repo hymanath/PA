@@ -114,6 +114,15 @@
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 	</bean>
+	
+	<bean name="electionTrendzService" class="com.itgrids.partyanalyst.service.impl.ElectionTrendzService" >
+		<property name="censusDAO" ref="censusDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+	</bean>
 
 	<bean name="excelToDBService" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService" >
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
