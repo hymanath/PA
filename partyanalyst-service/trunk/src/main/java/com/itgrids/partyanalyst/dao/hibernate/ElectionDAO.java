@@ -184,6 +184,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionYear = ? and model.electionScope.state.stateId = ? and model.electionScope.country.countryId = ?", params);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List findLatestElectionYear(String electionType){
 		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.electionType.electionType = ?", electionType);
 	}
@@ -193,10 +194,18 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		Object[] params = {electionType,stateId};
 		return getHibernateTemplate().find("select max(model.electionId),max(model.electionYear) from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ?",params);
 	}
+
+	
+	@SuppressWarnings("unchecked")
+	public List findLatestElectionIdAndYear(Long electionType){
+		return getHibernateTemplate().find("select model.electionId,model.electionYear from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionYear = (select max(model.electionYear) from model)", electionType);
+	}
+
 	
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionIdAndYear(Long electionType,Long stateId){
 		Object[] params = {electionType,stateId};
 		return getHibernateTemplate().find("select max(model.electionId),max(model.electionYear) from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ?",params);
 	}
+
 }
