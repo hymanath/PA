@@ -63,7 +63,8 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemLocation.problemAndProblemSource.problem.problem," +
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
 				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
-				" from ProblemHistory model where model.problemLocation.hamlet.hamletId = ? and model.problemStatus.status = ? ",params);
+				" from ProblemHistory model where model.problemLocation.hamlet.hamletId = ? and model.problemStatus.status = ? " +
+				" and model.isDelete is null",params);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -75,7 +76,8 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemLocation.problemAndProblemSource.problem.problem," +
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
 				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
-				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId = ? and model.problemStatus.status = ? ",params);
+				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId = ? and model.problemStatus.status = ? " +
+				" and model.isDelete is null",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -87,7 +89,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
 				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
 				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +
-				") and model.problemStatus.status = ? ",status);
+				") and model.problemStatus.status = ? and model.isDelete is null",status);
 	}	
 	
 	@SuppressWarnings("unchecked")
