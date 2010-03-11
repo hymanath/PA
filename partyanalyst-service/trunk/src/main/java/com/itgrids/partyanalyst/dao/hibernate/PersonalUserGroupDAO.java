@@ -51,4 +51,30 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		return getHibernateTemplate().find("select model.myGroup from PersonalUserGroup model where model.personalUserGroupId = ?", personalUserGroupId );
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCountForASystemGroup(Long groupId,Long userId){
+        System.out.println("Inside getSubGroupsCountForASystemGroup DAO ..");
+		Object[] params = {groupId,userId};
+		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where model.staticGroup is not null and model.myGroup is null and model.parentGroupId is null and model.staticGroup.staticGroupId = ? and model.createdUserId.registrationId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCompleteDetailsForASystemGroup(Long groupId,Long userId){
+		System.out.println("Inside getSubGroupsCompleteDetailsForASystemGroup DAO ..");
+		Object[] params = {groupId,userId};
+		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate from PersonalUserGroup model where model.staticGroup is not null and model.myGroup is null and model.parentGroupId is null and model.staticGroup.staticGroupId = ? and model.createdUserId.registrationId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCountForASystemGroupFromPersonalUserGroup(Long groupId,Long userId){
+		Object[] params = {groupId,userId};
+		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where model.staticGroup is not null and model.myGroup is null and model.parentGroupId.personalUserGroupId = ? and model.createdUserId.registrationId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCompleteDetailsForASystemGroupFromPersonalUserGroup(Long groupId,Long userId){
+		Object[] params = {groupId,userId};
+		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate from PersonalUserGroup model where model.staticGroup is not null and model.myGroup is null and model.parentGroupId.personalUserGroupId = ? and model.createdUserId.registrationId = ?",params);
+	}
 }
