@@ -76,7 +76,5 @@ public interface IConstants {
 	public final static String SUB_GROUP = "SUB_GROUP";
 	public final static String STATIC_GROUP = "STATIC_GROUP";
 	public final static String MY_GROUP = "MY_GROUP";
-	public final static String USER_GROUP_CATEGORY_PARENT = "USER_GROUP_CATEGORY_PARENT";
-	public final static String USER_GROUP_CATEGORY_CHILD = "USER_GROUP_CATEGORY_CHILD";
 	
 }
