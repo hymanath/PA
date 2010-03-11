@@ -1284,4 +1284,28 @@ public class StaticDataService implements IStaticDataService {
 			return states;
 		}			
 	}
+	
+	
+	public List<SelectOptionVO> getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID)
+	{
+		List<SelectOptionVO> constituenciesList = new ArrayList<SelectOptionVO>();
+		
+		List constiList = constituencyDAO.getConstituenciesByElectionTypeAndStateId(electionTypeId, stateID);
+		if(constiList!=null && constiList.size()>0)
+		{
+			for(int i=0;i<constiList.size();i++)
+			{
+				Object[] obj = (Object[])constiList.get(i);
+				SelectOptionVO constituencyData = new SelectOptionVO();
+				constituencyData.setId((Long) obj[0]);
+				constituencyData.setName((String) obj[1]);
+				
+				constituenciesList.add(constituencyData);
+			}
+		}
+		
+		return constituenciesList;
+		
+	}
+	
 }
