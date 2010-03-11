@@ -23,10 +23,15 @@ import com.itgrids.partyanalyst.dao.IMyGroupDAO;
 import com.itgrids.partyanalyst.dao.IPersonalUserGroupDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStaticGroupDAO;
+import com.itgrids.partyanalyst.dao.IStaticUserGroupDAO;
 import com.itgrids.partyanalyst.dao.IStaticUsersDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupPrivilegesDAO;
+import com.itgrids.partyanalyst.dto.GroupsBasicInfoVO;
 import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.UserGroupBasicDetails;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.model.MyGroup;
@@ -39,11 +44,12 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserGroupService implements IUserGroupService {
 
-	private IStaticGroupDAO staticGroupDAO;
 	private IMyGroupDAO myGroupDAO;
 	private IPersonalUserGroupDAO personalUserGroupDAO;
 	private IStaticUsersDAO staticUsersDAO;
 	private IRegistrationDAO registrationDAO;	
+	private IStaticUserGroupDAO staticUserGroupDAO;
+	private IStaticGroupDAO staticGroupDAO;
 	private TransactionTemplate transactionTemplate;
 	private UserGroupDetailsVO userGroupDetailsVo;
 	private UserGroupMembersVO userGroupMembersVo;
@@ -54,14 +60,6 @@ public class UserGroupService implements IUserGroupService {
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	
 	
-	public IStaticGroupDAO getStaticGroupDAO() {
-		return staticGroupDAO;
-	}
-
-	public void setStaticGroupDAO(IStaticGroupDAO staticGroupDAO) {
-		this.staticGroupDAO = staticGroupDAO;
-	}
-
 	public IPersonalUserGroupDAO getPersonalUserGroupDAO() {
 		return personalUserGroupDAO;
 	}
@@ -70,6 +68,22 @@ public class UserGroupService implements IUserGroupService {
 		this.personalUserGroupDAO = personalUserGroupDAO;
 	}
 	
+	public IStaticUserGroupDAO getStaticUserGroupDAO() {
+		return staticUserGroupDAO;
+	}
+
+	public void setStaticUserGroupDAO(IStaticUserGroupDAO staticUserGroupDAO) {
+		this.staticUserGroupDAO = staticUserGroupDAO;
+	}
+
+	public IStaticGroupDAO getStaticGroupDAO() {
+		return staticGroupDAO;
+	}
+
+	public void setStaticGroupDAO(IStaticGroupDAO staticGroupDAO) {
+		this.staticGroupDAO = staticGroupDAO;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -430,6 +444,234 @@ public class UserGroupService implements IUserGroupService {
 		return this.userGroupMembersVo;
 		}	
 	
+	//sai
+	/*
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public UserGroupBasicDetails getUserGroupDetailsForAUserForSystemGroups(String categoryType,Long groupId,Long userId){
+		
+		UserGroupBasicDetails userGroupBasicDetails = new UserGroupBasicDetails();
+		ResultStatus resultStatus = new ResultStatus();
+		if(log.isDebugEnabled())
+		log.debug("Entered Into getUserGroupDetailsForAUserForSystemGroups method ....");
+		System.out.println("Entered Into getUserGroupDetailsForAUserForSystemGroups method ....");
+		
+		if(categoryType != null && groupId != null && userId != null){
+		try{
+			List<Long> staticGrpIds = null;
+			StaticGroup staticGrpObj = null;
+			PersonalUserGroup persnlUserGrp = null;
+			List staticGroups = null;
+			System.out.println("before DAO ....");
+			staticGroups = staticGroupDAO.findAllStaticGroupDetails();
+			//List<StaticGroup> grpsList = staticGroupDAO.getAll();
+			System.out.println("after DAO ....");
+			if(staticGroups != null && staticGroups.size() > 0){
+				staticGrpIds = new ArrayList<Long>();
+				System.out.println("Entered Into basic static group block ....");
+				for(int i=0;i<staticGroups.size();i++){
+				Object groupDetails = (Object)staticGroups.get(i);
+				Long grpId = (Long)groupDetails;
+				staticGrpIds.add(grpId);
+				}
+				if(staticGrpIds.contains(groupId) && categoryType.equals(IConstants.USER_GROUP_CATEGORY_PARENT)){
+				System.out.println("Entered Into basic static group block 1 ....(groupId :)" + groupId);
+				staticGrpObj = staticGroupDAO.get(groupId);
+				userGroupBasicDetails.setGroupBasicDetails(getCompleteDetailsOfAStaticCategoryGroup(staticGrpObj,userId));
+				userGroupBasicDetails.setSubGroupDetails(getSubGroupsOfAStaticCategoryGroup(staticGrpObj,userId));
+				}
+			}
+			if(staticGrpObj == null || categoryType.equals(IConstants.USER_GROUP_CATEGORY_CHILD)){
+				System.out.println("Inside Other Block ...");
+			persnlUserGrp = personalUserGroupDAO.get(groupId);
+			userGroupBasicDetails.setGroupBasicDetails(getCompleteDetailsOfAPersonalUserGroup(persnlUserGrp,userId));
+			userGroupBasicDetails.setSubGroupDetails(getSubGroupsOfAPersonalUserGroup(persnlUserGrp,userId));
+			}
+				
+		}catch(Exception ex){
+			System.out.println("Exception Raised ....");
+			resultStatus.setExceptionEncountered(ex);
+			System.out.println("Exception Raised .... :" + ex);
+			resultStatus.setResultPartial(true);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			userGroupBasicDetails.setResultStatus(resultStatus);
+		}
+		
+		}
+		
+		System.out.println("End :()" + userGroupBasicDetails.getGroupBasicDetails().getGroupName());
+		System.out.println("End :()" + userGroupBasicDetails.getSubGroupDetails().size());
+		return userGroupBasicDetails;
+	}
 	
-
+	/*
+	 * Returns Basic Details For A System Group
+	 */
+	@SuppressWarnings("unchecked")
+	public GroupsBasicInfoVO getCompleteDetailsOfAStaticCategoryGroup(StaticGroup staticGrp,Long userId) throws Exception{
+		System.out.println("Inside  getCompleteDetailsOfAStaticCategoryGroup method....");
+		
+		GroupsBasicInfoVO groupsBasicInfo = null;
+		if(staticGrp != null){
+			Long staticGroupId = staticGrp.getStaticGroupId();
+			Long subGroupsCount = null;
+			Long membersCount = new Long(0);
+			
+			groupsBasicInfo = new GroupsBasicInfoVO();
+			groupsBasicInfo.setGroupId(staticGroupId);
+			groupsBasicInfo.setMembersCount(membersCount);
+			groupsBasicInfo.setGroupName(staticGrp.getGroupName());
+			groupsBasicInfo.setDesc(staticGrp.getGroupDescription());
+			groupsBasicInfo.setCreatedDate(staticGrp.getCreatedDate().toString());
+			
+			System.out.println("Before DAO ..(1)");
+			List subGrpsCount = personalUserGroupDAO.getSubGroupsCountForASystemGroup(staticGroupId,userId);
+			System.out.println("After DAO ..(1)");
+			if(subGrpsCount != null && subGrpsCount.size() > 0){
+				Object params = (Object)subGrpsCount.get(0);
+				subGroupsCount = (Long)params;
+				System.out.println("Before DAO ..(1) ..subgroups count : " + subGroupsCount);
+				groupsBasicInfo.setSubGroupsCount(subGroupsCount);
+			}
+		}
+		return groupsBasicInfo;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GroupsBasicInfoVO> getSubGroupsOfAStaticCategoryGroup(StaticGroup staticGrp,Long userId) throws Exception{
+		
+		log.debug(" Inside getSubGroupsOfAStaticCategoryGroup Method ......");
+		System.out.println("Inside  getSubGroupsOfAStaticCategoryGroup ...........");
+		
+		List<GroupsBasicInfoVO> subGroupsList = null;
+		if(staticGrp != null){
+			subGroupsList = new ArrayList<GroupsBasicInfoVO>();
+			Long staticGroupId = staticGrp.getStaticGroupId();
+			System.out.println(" Before DAO(2) ...");
+			List subGrpsDetails  = personalUserGroupDAO.getSubGroupsCompleteDetailsForASystemGroup(staticGroupId,userId);
+			System.out.println(" After DAO(2) ... size :" + subGrpsDetails.size());
+			if(subGrpsDetails != null && subGrpsDetails.size() > 0){
+				for(int i=0;i<subGrpsDetails.size();i++){
+					Object[] params = (Object[])subGrpsDetails.get(i);
+					Long grpId = (Long)params[0];
+					String gname = (String)params[1];
+					String desc = (String)params[2];
+					Date createdDate = (Date)params[3];
+					
+					GroupsBasicInfoVO groupBasicInfo = new GroupsBasicInfoVO();
+					groupBasicInfo.setGroupId(grpId);
+					groupBasicInfo.setGroupName(gname);
+					groupBasicInfo.setDesc(desc);
+					if(createdDate != null)
+					groupBasicInfo.setCreatedDate(createdDate.toString());
+					groupBasicInfo.setMembersCount(getGroupMembersCount(grpId,userId));
+					groupBasicInfo.setSubGroupsCount(getSubGroupsCount(grpId,userId));
+					
+					subGroupsList.add(groupBasicInfo);
+				}
+			}
+		}
+		System.out.println("Processed List size :" + subGroupsList.size());
+		return subGroupsList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public GroupsBasicInfoVO getCompleteDetailsOfAPersonalUserGroup(PersonalUserGroup personalUserGrp,Long userId) throws Exception{
+		
+		log.debug(" Inside getCompleteDetailsOfAPersonalUserGroup Method ......");
+		
+		GroupsBasicInfoVO groupsBasicInfo = null;
+		if(personalUserGrp != null){
+			Long persnlGroupId = personalUserGrp.getPersonalUserGroupId();
+						
+			groupsBasicInfo = new GroupsBasicInfoVO();
+			groupsBasicInfo.setGroupId(persnlGroupId);
+			groupsBasicInfo.setGroupName(personalUserGrp.getGroupName());
+			groupsBasicInfo.setDesc(personalUserGrp.getDescription());
+			if(personalUserGrp.getCreatedDate() != null)
+			groupsBasicInfo.setCreatedDate(personalUserGrp.getCreatedDate().toString());
+			groupsBasicInfo.setSubGroupsCount(getSubGroupsCount(persnlGroupId,userId));
+			groupsBasicInfo.setMembersCount(getGroupMembersCount(persnlGroupId,userId));
+		}
+		return groupsBasicInfo;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<GroupsBasicInfoVO> getSubGroupsOfAPersonalUserGroup(PersonalUserGroup personalUserGrp,Long userId) throws Exception{
+		
+		log.debug(" Inside getSubGroupsOfAPersonalUserGroup Method ......");
+		List<GroupsBasicInfoVO> subGroupsList = null;
+		if(personalUserGrp != null){
+			subGroupsList = new ArrayList<GroupsBasicInfoVO>();
+			Long groupId = personalUserGrp.getPersonalUserGroupId();
+			List subGrpsDetails  = personalUserGroupDAO.getSubGroupsCompleteDetailsForASystemGroupFromPersonalUserGroup(groupId,userId);
+			if(subGrpsDetails != null && subGrpsDetails.size() > 0){
+				for(int i=0;i<subGrpsDetails.size();i++){
+					Object[] params = (Object[])subGrpsDetails.get(i);
+					Long grpId = (Long)params[0];
+					String gname = (String)params[1];
+					String desc = (String)params[2];
+					Date createdDate = (Date)params[3];
+					
+					GroupsBasicInfoVO groupBasicInfo = new GroupsBasicInfoVO();
+					groupBasicInfo.setGroupId(grpId);
+					groupBasicInfo.setGroupName(gname);
+					groupBasicInfo.setDesc(desc);
+					if(createdDate != null)
+					groupBasicInfo.setCreatedDate(createdDate.toString());
+					groupBasicInfo.setMembersCount(getGroupMembersCount(grpId,userId));
+					groupBasicInfo.setSubGroupsCount(getSubGroupsCount(grpId,userId));
+					
+					subGroupsList.add(groupBasicInfo);
+				}
+			}
+		}
+			
+		return subGroupsList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Long getSubGroupsCount(Long groupId,Long userId) throws Exception{
+		System.out.println("Inside getSubGroupsCount method ....");
+		Long subGroupsCount = null;
+		System.out.println("Befor DAO(3)");
+		List persnlGrpsCount = personalUserGroupDAO.getSubGroupsCountForASystemGroupFromPersonalUserGroup(groupId,userId);
+		System.out.println("After DAO(3)");
+		if(persnlGrpsCount != null && persnlGrpsCount.size() > 0){
+			Object params = (Object)persnlGrpsCount.get(0);
+			subGroupsCount = (Long)params;
+		}
+		System.out.println("subGrpsCount:" + subGroupsCount);
+		return subGroupsCount;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Long getGroupMembersCount(Long groupId,Long userId) throws Exception{
+		System.out.println("Inside getGroupMembersCount method ....");
+		Long membersCount = null;
+		System.out.println("Befor DAO(4)");
+		List grpMembrsCount = staticUserGroupDAO.getGroupMembersCountForAGroup(groupId, userId);
+		System.out.println("After DAO(4)");
+		if(grpMembrsCount != null && grpMembrsCount.size() >0){
+			Object memParams = (Object)grpMembrsCount.get(0);
+			membersCount = (Long)memParams;
+		}
+		System.out.println("memCount:" + membersCount);
+		return membersCount;
+	}
+	
+	
+	 /*
+	  * (non-Javadoc)
+	  * @see com.itgrids.partyanalyst.service.IUserGroupService#getUserGroupDetailsForAUserForMyGroups(java.lang.String, java.lang.Long, java.lang.Long)
+	  * Returns Complete UserGroup Details For MyGroups.
+	  */
+	 public UserGroupBasicDetails getUserGroupDetailsForAUserForMyGroups(String categoryType,Long groupId,Long userId){
+		 UserGroupBasicDetails userGroupBasicDetails = null;
+		 
+		 return userGroupBasicDetails;
+	 }
+	 
+	 
 }
