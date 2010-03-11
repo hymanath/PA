@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class MandalCompleteElectionTrendzVO implements Serializable {
 
@@ -17,11 +18,14 @@ public class MandalCompleteElectionTrendzVO implements Serializable {
 	private static final long serialVersionUID = -5350602384578144548L;
 	
 	private Long mandalId;
+	private String stateName;
 	private String mandalName;
+	private String districtName;
 	private MandalElectionTrendzVO maleVotingTrendz;
 	private MandalElectionTrendzVO femaleVotingTrendz;
 	private MandalElectionTrendzVO maleAndFemaleVotingTrendz;
 	private MandalElectionTrendzVO completeVotingTrendz;
+	private List<CensusVO> censusInfo;
 	private ResultStatus resultStatus;
 	
 	//getters and setters
@@ -36,6 +40,18 @@ public class MandalCompleteElectionTrendzVO implements Serializable {
 	}
 	public void setMandalName(String mandalName) {
 		this.mandalName = mandalName;
+	}
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
 	}
 	public MandalElectionTrendzVO getMaleVotingTrendz() {
 		return maleVotingTrendz;
@@ -61,6 +77,12 @@ public class MandalCompleteElectionTrendzVO implements Serializable {
 	}
 	public void setCompleteVotingTrendz(MandalElectionTrendzVO completeVotingTrendz) {
 		this.completeVotingTrendz = completeVotingTrendz;
+	}
+	public List<CensusVO> getCensusInfo() {
+		return censusInfo;
+	}
+	public void setCensusInfo(List<CensusVO> censusInfo) {
+		this.censusInfo = censusInfo;
 	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
