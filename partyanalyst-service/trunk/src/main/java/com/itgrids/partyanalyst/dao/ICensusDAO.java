@@ -30,4 +30,7 @@ public interface ICensusDAO extends GenericDao<Census, Long> {
 	
 	public List findCastWiseVotersForMandal(Long mandalID);
 	
+	@SuppressWarnings("unchecked")
+	public List findCensusDetailsForAMandal(Long stateId,Long districtId,Long tehsilId,int year,String Level);
+	
 }
