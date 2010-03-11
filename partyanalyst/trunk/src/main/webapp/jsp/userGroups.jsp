@@ -43,7 +43,16 @@ function callAjax(param,jsObj,url){
 									} else if(jsObj.task == "subGrpsCountInMyGrpsForUser")
 									{										
 										showSubGrpsCountInMyGrps(myResults)										
-									}
+									} else if(jsObj.task == "subGrpsCountInMyGrpsForUser")
+									{										
+										showSubGrpsCountInMyGrps(myResults)										
+									} else if(jsObj.task == "getSelectedMyGroupCompleteDetails")
+									{										
+																			
+									} else if(jsObj.task == "getSelectedStaticGroupCompleteDetails")
+									{										
+										showUserGroupCompleteDetails(myResults)											
+									}									
 									
 							}catch (e) {   
 								   	alert("Invalid JSON result" + e);   
@@ -132,7 +141,8 @@ function buildLayout()
 			border-width:1px 3px 3px 1px;
 			color:#628C2A;
 			font-weight:bold;
-			text-align:left;		
+			text-align:left;
+			font-family:Verdana;
 	}
 	.hdTable h3{
 			color:#628C2A;
@@ -393,7 +403,7 @@ function buildLayout()
 		}
 		#subGroupsListDiv
 		{
-			background:#EBE4F2 none repeat scroll 0 0;
+			background:#FFFFFF none repeat scroll 0 0;
 			border:2px solid #008BD1;
 			height:200px;
 			margin-left:0;
@@ -408,7 +418,32 @@ function buildLayout()
 			margin-top:0;
 			padding:6px;
 			font-weight:bold;
-			}								
+			}
+		.subGroupLink{
+			color:#247CD4;
+			text-decoration:none;
+			font-size:12px;
+			font-weight:bold;	
+		}
+		.smalltype {
+		-x-system-font:none;
+		font-family:verdana,arial,helvetica,sans-serif;
+		font-size:74%;
+		font-size-adjust:none;
+		font-stretch:normal;
+		font-style:normal;
+		font-variant:normal;
+		font-weight:normal;
+		line-height:normal;
+		}
+		.subGroupsTable td {
+		
+		border-bottom:1px dotted #9696C0;
+		padding:5px;
+		text-align:left;
+		}
+			
+											
 </style>
 <script type="text/javascript">
 var Localization = { <%
@@ -435,7 +470,7 @@ var userGrpsObj={
 	{	
 		var subGrpsCountInSystemGrps = results.groupsDetailsForUser;
 		var groupDetailsDivEl = document.getElementById("groupsCountDiv");
-
+        var type = "USER_GROUP_CATEGORY_PARENT";
 		var groupDetailsLegendEl = document.getElementById("groupDetailsLegend");
 		groupDetailsLegendEl.innerHTML = "Sub Groups Details Of System Groups";
 		
@@ -445,7 +480,7 @@ var userGrpsObj={
 		for(var i in subGrpsCountInSystemGrps)
 		{
 		myGroupsLinksDivContent+='<li>';	
-		myGroupsLinksDivContent+='<a href="#" class="link1" onclick="showUserGroupsDetails()">'+subGrpsCountInSystemGrps[i].staticGroupName+' - '+subGrpsCountInSystemGrps[i].numberOfGroups+'</a>';
+		myGroupsLinksDivContent+='<a href="#" class="link1" onclick="getSystemGroupsDetails('+subGrpsCountInSystemGrps[i].staticGroupId+',\''+type+'\')">'+subGrpsCountInSystemGrps[i].staticGroupName+'</a><font color="red">Category contains <b>'+subGrpsCountInSystemGrps[i].numberOfGroups+'</b> SubGroups</font>';
 		myGroupsLinksDivContent+='</li>';
 		myGroupsLinksDivContent+='<div id="'+subGrpsCountInSystemGrps[i].staticGroupId+'"></div>';
 		
@@ -467,7 +502,7 @@ var userGrpsObj={
 		for(var i in subGrpsCountInMyGrps)
 		{
 		myGroupsLinksDivContent+='<li type="square">';	
-		myGroupsLinksDivContent+='<a href="#" class="link1" onclick="showUserGroupsDetails()">'+subGrpsCountInMyGrps[i].staticGroupName+' - '+subGrpsCountInMyGrps[i].numberOfGroups+'</a>';
+		myGroupsLinksDivContent+='<a href="#" class="link1" onclick="getMyGroupsDetails('+subGrpsCountInMyGrps[i].myGroupId+')">'+subGrpsCountInMyGrps[i].staticGroupName+' - '+subGrpsCountInMyGrps[i].numberOfGroups+'</a>';
 		myGroupsLinksDivContent+='</li>';
 		myGroupsLinksDivContent+='<div id="'+subGrpsCountInMyGrps[i].staticGroupId+'"></div>';
 		
@@ -476,41 +511,111 @@ var userGrpsObj={
 		groupDetailsDivEl.innerHTML =  myGroupsLinksDivContent;
 	}
 
-	function showUserGroupsDetails()
+
+	function getSystemGroupsDetails(id,type){
+       
+	  	var jsObj= 
+		{
+			task:"getSelectedStaticGroupCompleteDetails",
+			categoryType:"1",
+			mainType:type,
+			id:id	
+		}
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/userGroupBasicInfoAction.action?"+param;
+		callAjax(param,jsObj,url);
+		
+		}
+
+	function getMyGroupsDetails(id)
 	{
+		
+		var jsObj= 
+		{
+			task:"getSelectedMyGroupCompleteDetails",
+			categoryType:"2",
+			id:id
+		}
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/userGroupBasicInfoAction.action?"+param;
+		callAjax(param,jsObj,url);
+		}
+	
+	function showUserGroupCompleteDetails(results)
+	{
+			
+		var myGroupBasicInfo = results.groupBasicDetails;
+		var desc = myGroupBasicInfo.desc;
+		var groupName = myGroupBasicInfo.groupName;
+		var createdDate = myGroupBasicInfo.createdDate;
+		var membersCount = myGroupBasicInfo.membersCount;
+		var category = myGroupBasicInfo.category;
+		var subGroupsList = results.subGroupDetails;
 		var divEl = document.getElementById("summaryTextDiv");
 		divEl.style.display='block';
 		var linksEl = document.getElementById("centerNavLinksDiv");
 		var tableEl = document.getElementById("subGroupsListSendSMSTable");
 		tableEl.style.display='block';
 		
-
 		var linksStr='';
-		linksStr+='<a href="#" onclick="showMoreDescription()">View Members</a>';
-		linksStr+='<a href="#" onclick="addGrpMembersDialog()">Add Memebers</a>';
+		linksStr+='<a id="viewMembersAnchor" href="#" onclick="showMoreDescription()">View Members</a>';
+		linksStr+='<a id="addMembersAnchor" href="#" onclick="addGrpMembersDialog()">Add Memebers</a>';
 		//linksStr+='<a href="#" onclick="showMoreDescription()">Send SMS</a>';
 		//linksStr+='<a href="#" onclick="showMoreDescription()">View SubGroups</a>';
-
 		linksEl.innerHTML = linksStr;
+
+		if(category == "STATIC_PARENT"){
+
+			smsDivEl = document.getElementById("smsDiv");
+			smsDivEl.style.display='none';			
+			}
+		
+		var subGroupsListDivEl = document.getElementById("subGroupsListDiv");
+		var subGroupsListContentStr = '';
+		subGroupsListContentStr+='<div id="headingDiv">Sub Group Details</div>';
+		subGroupsListContentStr+='<table width="100%" class="subGroupsTable">';
+		 var type = "USER_GROUP_CATEGORY_CHILD";
+		for(var i in subGroupsList)
+		{
+			subGroupsListContentStr+='<tr>';
+			
+			subGroupsListContentStr+='<td>';
+			subGroupsListContentStr+='<a href="#" class="subGroupLink" onclick="getSystemGroupsDetails('+subGroupsList[i].groupId+',\''+type+'\')">'+subGroupsList[i].groupName+'</a>';
+			subGroupsListContentStr+='<div class="smalltype">'+subGroupsList[i].membersCount+' members, '+subGroupsList[i].subGroupsCount+' sub groups</div>';
+			subGroupsListContentStr+='</td>';
+			//subGroupsListContentStr+='<td align="center" style="color:cadetBlue;">'+subGroupsList[i].subGroupsCount+'</td>';
+			//subGroupsListContentStr+='<td align="center" style="color:cadetBlue;">'+subGroupsList[i].membersCount+'</td>';
+			subGroupsListContentStr+='</tr>';
+		}
+		//subGroupsListContentStr+='</ul>';
+		
+		subGroupsListContentStr+='</table>';
+		
+		subGroupsListDivEl.innerHTML = subGroupsListContentStr;
 		
 		var str='';
 		str+='<div id="groupDetailsHead">';
 		str+='<table width="100%">';
-		str+='<tr><td rowspan="2" width="25%">';
+		str+='<tr><td rowspan="2" width="15%">';
 		str+='<img src="images/usergroups/group-default.png" border="none" />';
 		str+='</td>';
 		str+='<td width="50%">';
-		str+='<h4>Group Name</h4>';
-		str+='<p>Group Description</p>';
-		str+='<p>Created Date:06/March/2009</p>';
+		str+='<h4>'+groupName+'</h4>';
+		str+='<p>'+desc+'</p>';
+		str+='<p>Created Date:'+createdDate+'</p>';
 		str+='</td>';
-		str+='<td width="25%">';
-		str+='<div class="promoImage">';
-		str+='<img src="images/usergroups/profile-default.png" border="none" class="promoImage" border="0">';
-		str+='</div>';
-		str+='<div class="promoNumber">5</div>';
-		str+='<div class="promoText">Members</div>';		
-		str+='</td>';
+		if(membersCount != null)
+		{
+			str+='<td width="25%">';
+			str+='<div class="promoImage">';
+			str+='<img src="images/usergroups/profile-default.png" border="none" class="promoImage" border="0">';
+			str+='</div>';
+			str+='<div class="promoNumber">5</div>';
+			str+='<div class="promoText">Members</div>';		
+			str+='</td>';		
+		} else{
+			str+='<td width="25%">You can not add members in to System Groups.</td>';				
+			}				
 		str+='</tr>';
 		str+='</table>';			
 		str+='</div>';
@@ -633,6 +738,7 @@ var userGrpsObj={
 	}
 	function getSubGroupsCountInSystemGrpsForUser()
 	{
+		
 		var jsObj= 
 		{
 			task:"subGrpsCountInSystemGrpsForUser"
@@ -842,8 +948,7 @@ var userGrpsObj={
 	</table>
 	</div>
 	<div id="userGroupsLeftDiv">
-		<div id="leftNavLinksDiv">
-		<p id="systemGroups" class="link"><a href="#groupDetails" onclick="getSubGroupsCountInSystemGrpsForUser()"><b>System Groups</b></a></p>
+		<div id="leftNavLinksDiv"><p id="systemGroups" class="link"><a href="#groupDetails" onclick="getSubGroupsCountInSystemGrpsForUser()"><b>System Groups</b></a></p>
 		<p id="myGroups" class="link"><a href="#groupDetails" onclick="getSubGroupsCountInMyGroupsForUser()"><b>My Groups</b></a></p>		
 		<p id="createNewGrpDiv" class="link"><a href="#" onclick="buildCreateGroupPopup()"><b>Create New Group</b></a></p>
 		<p id="manageGrpDiv" class="link"><a href="#" onclick=""><b>Manage Groups</b></a></p>
@@ -892,7 +997,7 @@ var userGrpsObj={
 		<table id="subGroupsListSendSMSTable" width="100%" style="display:none;">
 		<tr>
 		<td width="75%"><div id="subGroupsListDiv">
-		<div id="headingDiv">Sub Group Details</div>
+		<!--<div id="headingDiv">Sub Group Details</div>
 		<ul>
 			<li type="square"><a href="" class="link">Sub Group1</a></li>
 			<li type="square"><a href="" class="link">Sub Group2</a></li>
@@ -900,7 +1005,7 @@ var userGrpsObj={
 			<li type="square"><a href="" class="link">Sub Group4</a></li>
 			<li type="square"><a href="" class="link">Sub Group5</a></li>
 		</ul>
-		</div></td>
+		--></div></td>
 		<td width="25%">	
 		<div id="smsDiv">
 		<div id="headingDiv">Send SMS</div>
