@@ -28,4 +28,16 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	public List findSubGroupsCountInSystemGroupsByUserId(Long userId);	
 	
 	public List<MyGroup> getMyGroupObjFromPersonalUserGroup(Long personalUserGroupId);
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCountForASystemGroup(Long groupId,Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCountForASystemGroupFromPersonalUserGroup(Long groupId,Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCompleteDetailsForASystemGroup(Long groupId,Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCompleteDetailsForASystemGroupFromPersonalUserGroup(Long groupId,Long userId);
 }
