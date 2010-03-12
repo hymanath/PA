@@ -567,7 +567,7 @@
 			<result type="json" name="success">
 				<param name="root">candidateResults</param>				
 			</result> 
-		</action>
+		</action>		
 	</package>
 </struts>
 
