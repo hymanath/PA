@@ -19,8 +19,9 @@ public class UserGroupBasicDetails implements Serializable {
 	
 	private GroupsBasicInfoVO groupBasicDetails;
 	private List<GroupsBasicInfoVO> subGroupDetails;
-	private List<String> membersMobileNos;
 	private ResultStatus resultStatus;
+	private List<String> membersMobileNos;
+
 	
     //getters and setters
 	public GroupsBasicInfoVO getGroupBasicDetails() {
