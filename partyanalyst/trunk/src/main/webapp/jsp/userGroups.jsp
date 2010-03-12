@@ -24,11 +24,20 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+
+
+
 <!-- YUI Skin Sam -->
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/paginator.css">
 <script type="text/javascript">
+
 function callAjax(param,jsObj,url){
 		var myResults;
  					
@@ -43,16 +52,18 @@ function callAjax(param,jsObj,url){
 									} else if(jsObj.task == "subGrpsCountInMyGrpsForUser")
 									{										
 										showSubGrpsCountInMyGrps(myResults)										
-									} else if(jsObj.task == "subGrpsCountInMyGrpsForUser")
-									{										
-										showSubGrpsCountInMyGrps(myResults)										
 									} else if(jsObj.task == "getSelectedMyGroupCompleteDetails")
 									{										
-																			
+										showMyGroupCompleteDetails(myResults)									
 									} else if(jsObj.task == "getSelectedStaticGroupCompleteDetails")
 									{										
 										showUserGroupCompleteDetails(myResults)											
-									}									
+									}else if(jsObj.task == "getSelectedGroupMembersDetails")
+									{
+										showGroupMembersList(myResults);
+										//sendSMS(myResults);
+									}
+																		
 									
 							}catch (e) {   
 								   	alert("Invalid JSON result" + e);   
@@ -70,7 +81,7 @@ function callAjax(param,jsObj,url){
 function buildLayout()
 {	
 		var layoutEl = new YAHOO.widget.Layout('userGroupsMainDiv', { 
-		height:975,
+		height:1100,
 		units: [	 
 				{ 
 					position: 'top',
@@ -141,8 +152,7 @@ function buildLayout()
 			border-width:1px 3px 3px 1px;
 			color:#628C2A;
 			font-weight:bold;
-			text-align:left;
-			font-family:Verdana;
+			text-align:left;		
 	}
 	.hdTable h3{
 			color:#628C2A;
@@ -234,11 +244,11 @@ function buildLayout()
 		font-weight:bold;				
 	}
 	legend {
-		background-color:#9696C0;
-		color:#FFFFFF;
-		font-size:12px;
-		font-weight:bold;
-		padding:5px;
+		background-color:#EBE4F2;
+	color:#115C06;
+	font-size:12px;
+	font-weight:bold;
+	padding:5px;
     }
     
 	fieldset {
@@ -247,7 +257,8 @@ function buildLayout()
 		border-right:3px solid #96B4D3;
 		border-bottom:3px solid #96B4D3;
 		margin-bottom:5px;
-		color:#404040;				
+		color:#404040;
+		background:#EFF3F7;				
 	}
 	#userGroupsCenterDiv
 	{
@@ -302,7 +313,7 @@ function buildLayout()
 		}
 	#groupsCountDiv
 	{
-		background-image:url(images/usergroups/group2.jpg);
+		background-image:url(images/usergroups/group_blur.png);
 		width:260px;
 		height:200px;	
 		overflow-y:auto;
@@ -409,6 +420,7 @@ function buildLayout()
 			margin-left:0;
 			padding-left:5px;
 			padding-right:5px;
+			overflow-y: auto;
 		}
 		#headingDiv{
 			background:#9696C0 none repeat scroll 0 0;
@@ -442,10 +454,59 @@ function buildLayout()
 		padding:5px;
 		text-align:left;
 		}
+		.selectedLink a
+		{
+			color:#115c06;
+			text-decoration:none;
+			margin-left:21px;
+			font-size:15px;		
+		}
+		.navLinksButton
+		{
+			background:none;
+			border-color:#247CD4;
+			border-style:none solid none none;
+			border-width:medium 1px medium medium;
+			color:#247CD4;
+			font-weight:bold;
+			padding:0 6px;
+		}
+		.groupsCountTable
+		{
+			width:100%;
+			margin-top:10px;
+		}
+		.head
+		{
+			font-size:11px;
+			color:#404040;
+		}
+		.width
+		{
+			width:70%;
+			color:#247CD4;	
+		}
+		.width1
+		{
+			color:#247CD4;
+			text-align:center;
+			width:30%;	
+		}
+		#centerNavHeadingDiv
+		{
+		background:#FFFFFF none repeat scroll 0 0;
+		color:Red;
+		font-family:verdana;
+		font-weight:bold;
+		margin-bottom:5px;
+		margin-top:5px;
+		text-align:center;
+		}
+		
 			
 											
 </style>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 var Localization = { <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -454,13 +515,16 @@ var Localization = { <%
 		String createNewGrp = rb.getString("createNewGrp");
 		String addToStaticGrpAsSubGrpRadio = rb.getString("addToStaticGrpAsSubGrpRadio");
 		String addToGrpAsSubGrpRadio = rb.getString("addToGrpAsSubGrpRadio");
-		String name  = rb.getString("name");
 		String mobile  = rb.getString("mobile");
 		String address  = rb.getString("address");
 		String location  = rb.getString("location");
-		String designation  = rb.getString("designation");
+		String name = rb.getString("name");
+		String email = rb.getString("email");
+		String telephoneNo = rb.getString("telephoneNo");
+		String designation = rb.getString("designation"); 
+		
 %> }
-var createGroupDialog,addGrpMbrsDialog;
+var createGroupDialog,addGrpMbrsDialog, grpMbrsDetailsDataTable,numbersArray;
 var userGrpsObj={
 		showGrpMembersArr:[],
 		systemGroupsListBoxArr:[],
@@ -470,22 +534,29 @@ var userGrpsObj={
 	{	
 		var subGrpsCountInSystemGrps = results.groupsDetailsForUser;
 		var groupDetailsDivEl = document.getElementById("groupsCountDiv");
-        var type = "USER_GROUP_CATEGORY_PARENT";
+		var type = "USER_GROUP_CATEGORY_PARENT";
+
 		var groupDetailsLegendEl = document.getElementById("groupDetailsLegend");
-		groupDetailsLegendEl.innerHTML = "Sub Groups Details Of System Groups";
+		groupDetailsLegendEl.innerHTML = 'Sub Groups Details Of <font color="#247CD4">-*System Groups*-</font>';
 		
 		
 		var myGroupsLinksDivContent = '';
-		myGroupsLinksDivContent+='<ul id="myGroupsList">';
+		myGroupsLinksDivContent+='<table class="groupsCountTable" cellpadding="3">';
+		myGroupsLinksDivContent+='<tr class="head">';
+		myGroupsLinksDivContent+='<th class="width">Category </th>';
+		myGroupsLinksDivContent+='<th class="width1">Sub Groups</th>';
+		myGroupsLinksDivContent+='</tr>';
 		for(var i in subGrpsCountInSystemGrps)
 		{
-		myGroupsLinksDivContent+='<li>';	
-		myGroupsLinksDivContent+='<a href="#" class="link1" onclick="getSystemGroupsDetails('+subGrpsCountInSystemGrps[i].staticGroupId+',\''+type+'\')">'+subGrpsCountInSystemGrps[i].staticGroupName+'</a><font color="red">Category contains <b>'+subGrpsCountInSystemGrps[i].numberOfGroups+'</b> SubGroups</font>';
-		myGroupsLinksDivContent+='</li>';
-		myGroupsLinksDivContent+='<div id="'+subGrpsCountInSystemGrps[i].staticGroupId+'"></div>';
+			myGroupsLinksDivContent+='<tr class="data">';
+			
+			myGroupsLinksDivContent+='<td class="width"><a href="#" class="link1" onclick="getSystemGroupsDetails('+subGrpsCountInSystemGrps[i].staticGroupId+',\''+type+'\')">'+subGrpsCountInSystemGrps[i].staticGroupName+ '</a>';
+			myGroupsLinksDivContent+='<td class="width1">'+subGrpsCountInSystemGrps[i].numberOfGroups+'<td>';
+			myGroupsLinksDivContent+='</tr>';
 		
+		//myGroupsLinksDivContent+='<div id="'+subGrpsCountInSystemGrps[i].staticGroupId+'"></div>';		
 		}
-		myGroupsLinksDivContent+='</ul>';
+		myGroupsLinksDivContent+='<table>';
 		groupDetailsDivEl.innerHTML =  myGroupsLinksDivContent;
 	}
 
@@ -495,26 +566,39 @@ var userGrpsObj={
 		var groupDetailsDivEl = document.getElementById("groupsCountDiv");
 
 		var groupDetailsLegendEl = document.getElementById("groupDetailsLegend");
-		groupDetailsLegendEl.innerHTML = "Sub Groups Details Of My Groups";
+		groupDetailsLegendEl.innerHTML = 'Sub Groups Details Of <font color="#115C06">-*My Groups*-</font>';
 		
 		var myGroupsLinksDivContent = '';
-		myGroupsLinksDivContent+='<ul id="myGroupsList">';
+		myGroupsLinksDivContent+='<table class="groupsCountTable">';
+		myGroupsLinksDivContent+='<tr class="head">';
+		myGroupsLinksDivContent+='<th class="width">Group</th>';
+		myGroupsLinksDivContent+='<th class="width1">Sub Groups</th>';
+		myGroupsLinksDivContent+='</tr>';
 		for(var i in subGrpsCountInMyGrps)
 		{
-		myGroupsLinksDivContent+='<li type="square">';	
-		myGroupsLinksDivContent+='<a href="#" class="link1" onclick="getMyGroupsDetails('+subGrpsCountInMyGrps[i].myGroupId+')">'+subGrpsCountInMyGrps[i].staticGroupName+' - '+subGrpsCountInMyGrps[i].numberOfGroups+'</a>';
-		myGroupsLinksDivContent+='</li>';
+			myGroupsLinksDivContent+='<tr>';
+			myGroupsLinksDivContent+='<td class="width"><a href="#" class="link1" onclick="getMyGroupsDetails('+subGrpsCountInMyGrps[i].staticGroupId+')">'+subGrpsCountInMyGrps[i].staticGroupName+'</a></td>';
+			myGroupsLinksDivContent+='<td class="width1">'+subGrpsCountInMyGrps[i].numberOfGroups+'</td>';
+			myGroupsLinksDivContent+='</tr>'
+			
 		myGroupsLinksDivContent+='<div id="'+subGrpsCountInMyGrps[i].staticGroupId+'"></div>';
 		
 		}
-		myGroupsLinksDivContent+='</ul>';
+		myGroupsLinksDivContent+='</table>';
+		
 		groupDetailsDivEl.innerHTML =  myGroupsLinksDivContent;
 	}
 
 
 	function getSystemGroupsDetails(id,type){
-       
-	  	var jsObj= 
+
+
+		if(grpMbrsDetailsDataTable)
+		{
+			grpMbrsDetailsDataTable.destroy();
+		}
+		
+		var jsObj= 
 		{
 			task:"getSelectedStaticGroupCompleteDetails",
 			categoryType:"1",
@@ -529,7 +613,7 @@ var userGrpsObj={
 
 	function getMyGroupsDetails(id)
 	{
-		
+	//	alert(id);
 		var jsObj= 
 		{
 			task:"getSelectedMyGroupCompleteDetails",
@@ -543,59 +627,86 @@ var userGrpsObj={
 	
 	function showUserGroupCompleteDetails(results)
 	{
-			
+	
 		var myGroupBasicInfo = results.groupBasicDetails;
 		var desc = myGroupBasicInfo.desc;
 		var groupName = myGroupBasicInfo.groupName;
+		var groupId = myGroupBasicInfo.groupId;
 		var createdDate = myGroupBasicInfo.createdDate;
 		var membersCount = myGroupBasicInfo.membersCount;
 		var category = myGroupBasicInfo.category;
 		var subGroupsList = results.subGroupDetails;
+		var type = "USER_GROUP_CATEGORY_CHILD";
+		var membersCount = myGroupBasicInfo.membersCount;
 		var divEl = document.getElementById("summaryTextDiv");
 		divEl.style.display='block';
 		var linksEl = document.getElementById("centerNavLinksDiv");
 		var tableEl = document.getElementById("subGroupsListSendSMSTable");
 		tableEl.style.display='block';
-		
+		var headingEl = document.getElementById("centerNavHeadingDiv");
+		numbersArray = results.membersMobileNos;
+
+		var sendSMSButEl = document.getElementById("sendSMSBut");
+		//sendSMSButEl.onclick="sendSMS()";
+			sendSMSButEl.setAttribute("onclick","sendSMS()")
+
+		/*
+		var navigationEl = document.getElementById("navigationLink");
+		//navigationEl.innerHTML = '<a href=#>'+myGroupBasicInfo.groupName+'</a>';
+		//navigationEl.innerHTML = '<a href=#>'+myGroupBasicInfo.groupName+'</a>';
+		anchorEl = document.createElement("A");
+		anchorEl.href="#";
+		anchorEl.onclick="getSystemGroupsDetails('+subGroupsList[i].groupId+',\''+type+'\')"
+		anchorEl.innerHTML=myGroupBasicInfo.groupName;
+		divEl.style.display='block';
+		navigationEl.appendChild(anchorEl);*/		
+
 		var linksStr='';
-		linksStr+='<a id="viewMembersAnchor" href="#" onclick="showMoreDescription()">View Members</a>';
-		linksStr+='<a id="addMembersAnchor" href="#" onclick="addGrpMembersDialog()">Add Memebers</a>';
-		//linksStr+='<a href="#" onclick="showMoreDescription()">Send SMS</a>';
-		//linksStr+='<a href="#" onclick="showMoreDescription()">View SubGroups</a>';
-		linksEl.innerHTML = linksStr;
+		linksStr+='<input type="button" class="navLinksButton" id="viewMembersButton" onclick="showGroupMembers('+groupId+')" value="View Members">';
+		linksStr+='<input type="button" class="navLinksButton" id="addMembersButton" onclick="addGrpMembersDialog('+groupId+')" value="Add Memebers">';
+		
 
-		if(category == "STATIC_PARENT"){
+		var viewMbrsBtn = document.getElementById("viewMembersButton");
 
-			smsDivEl = document.getElementById("smsDiv");
-			smsDivEl.style.display='none';			
+		if(groupName == 'Media' || groupName == 'Officials' ||groupName == 'NGOs')
+		{
+			linksEl.innerHTML = '<font color="#247CD4"><b>You Cannot Add Members In To The Category</b></font>';
+			headingEl.innerHTML = myGroupBasicInfo.groupName + ' Category Details';
+			
+			//viewMbrsBtn.disabled = "true";
+			//viewMbrsBtn.title = "You Can Not Add Members In To A Category";
+			
+		} else {
+			headingEl.innerHTML = myGroupBasicInfo.groupName + 'Group Details';
+			linksEl.innerHTML = linksStr;			
 			}
 		
+				
 		var subGroupsListDivEl = document.getElementById("subGroupsListDiv");
 		var subGroupsListContentStr = '';
 		subGroupsListContentStr+='<div id="headingDiv">Sub Group Details</div>';
 		subGroupsListContentStr+='<table width="100%" class="subGroupsTable">';
-		 var type = "USER_GROUP_CATEGORY_CHILD";
+		
 		for(var i in subGroupsList)
 		{
 			subGroupsListContentStr+='<tr>';
-			
+			//rag
 			subGroupsListContentStr+='<td>';
-			subGroupsListContentStr+='<a href="#" class="subGroupLink" onclick="getSystemGroupsDetails('+subGroupsList[i].groupId+',\''+type+'\')">'+subGroupsList[i].groupName+'</a>';
-			subGroupsListContentStr+='<div class="smalltype">'+subGroupsList[i].membersCount+' members, '+subGroupsList[i].subGroupsCount+' sub groups</div>';
+			subGroupsListContentStr+='<a href="#centerLayoutTop" class="subGroupLink" onclick="getSystemGroupsDetails('+subGroupsList[i].groupId+',\''+type+'\')">'+subGroupsList[i].groupName+'</a><span class="smalltype" style="margin-left:5px;">'+subGroupsList[i].membersCount+' members, '+subGroupsList[i].subGroupsCount+' sub groups</span>';
+			subGroupsListContentStr+='<div class="smalltype">'+subGroupsList[i].desc+'</div>';
+			//subGroupsListContentStr+='<div class="smalltype">'+subGroupsList[i].membersCount+' members, '+subGroupsList[i].subGroupsCount+' sub groups</div>';
 			subGroupsListContentStr+='</td>';
-			//subGroupsListContentStr+='<td align="center" style="color:cadetBlue;">'+subGroupsList[i].subGroupsCount+'</td>';
-			//subGroupsListContentStr+='<td align="center" style="color:cadetBlue;">'+subGroupsList[i].membersCount+'</td>';
 			subGroupsListContentStr+='</tr>';
-		}
-		//subGroupsListContentStr+='</ul>';
-		
+		}		
 		subGroupsListContentStr+='</table>';
 		
 		subGroupsListDivEl.innerHTML = subGroupsListContentStr;
 		
 		var str='';
 		str+='<div id="groupDetailsHead">';
+		//str+='<h3>'+groupName+' category details </h3>';
 		str+='<table width="100%">';
+		//str+='<thead colspan="3" align="center">'+groupName+' category details</thead>';
 		str+='<tr><td rowspan="2" width="15%">';
 		str+='<img src="images/usergroups/group-default.png" border="none" />';
 		str+='</td>';
@@ -610,7 +721,7 @@ var userGrpsObj={
 			str+='<div class="promoImage">';
 			str+='<img src="images/usergroups/profile-default.png" border="none" class="promoImage" border="0">';
 			str+='</div>';
-			str+='<div class="promoNumber">5</div>';
+			str+='<div class="promoNumber">'+membersCount+'</div>';
 			str+='<div class="promoText">Members</div>';		
 			str+='</td>';		
 		} else{
@@ -619,10 +730,200 @@ var userGrpsObj={
 		str+='</tr>';
 		str+='</table>';			
 		str+='</div>';
+		divEl.innerHTML=str;				
+	}
 
-		divEl.innerHTML=str;
+	function showMyGroupCompleteDetails(results)
+	{
+		var myGroupBasicInfo = results.groupBasicDetails;
+		var desc = myGroupBasicInfo.desc;
+		var groupName = myGroupBasicInfo.groupName;
+		var groupId = myGroupBasicInfo.groupId;
+		var createdDate = myGroupBasicInfo.createdDate;
+		var membersCount = myGroupBasicInfo.membersCount;
+		var category = myGroupBasicInfo.category;
+		var subGroupsList = results.subGroupDetails;
+		var type = "USER_GROUP_CATEGORY_CHILD";
+		var membersCount = myGroupBasicInfo.membersCount;
+		var divEl = document.getElementById("summaryTextDiv");
+		divEl.style.display='block';
+		var linksEl = document.getElementById("centerNavLinksDiv");
+		var tableEl = document.getElementById("subGroupsListSendSMSTable");
+		tableEl.style.display='block';
+		var headingEl = document.getElementById("centerNavHeadingDiv");
+		numbersArray = results.membersMobileNos;
+
+		var sendSMSButEl = document.getElementById("sendSMSBut");
+		//sendSMSButEl.onclick="sendSMS()";
+			sendSMSButEl.setAttribute("onclick","sendSMS()")
+
+		/*
+		var navigationEl = document.getElementById("navigationLink");
+		//navigationEl.innerHTML = '<a href=#>'+myGroupBasicInfo.groupName+'</a>';
+		//navigationEl.innerHTML = '<a href=#>'+myGroupBasicInfo.groupName+'</a>';
+		anchorEl = document.createElement("A");
+		anchorEl.href="#";
+		anchorEl.onclick="getSystemGroupsDetails('+subGroupsList[i].groupId+',\''+type+'\')"
+		anchorEl.innerHTML=myGroupBasicInfo.groupName;
+		divEl.style.display='block';
+		navigationEl.appendChild(anchorEl);*/		
+
+		var linksStr='';
+		linksStr+='<input type="button" class="navLinksButton" id="viewMembersButton" onclick="showGroupMembers('+groupId+')" value="View Members">';
+		linksStr+='<input type="button" class="navLinksButton" id="addMembersButton" onclick="addGrpMembersDialog('+groupId+')" value="Add Memebers">';
+		
+
+		var viewMbrsBtn = document.getElementById("viewMembersButton");
+
+		if(groupName == 'Media' || groupName == 'Officials' ||groupName == 'NGOs')
+		{
+			linksEl.innerHTML = '<font color="#247CD4"><b>You Cannot Add Members In To The Category</b></font>';
+			headingEl.innerHTML = myGroupBasicInfo.groupName + ' Category Details';		
+			
+		} else {
+			headingEl.innerHTML = myGroupBasicInfo.groupName + 'Group Details';
+			linksEl.innerHTML = linksStr;			
+			}
 		
 				
+		var subGroupsListDivEl = document.getElementById("subGroupsListDiv");
+		var subGroupsListContentStr = '';
+		subGroupsListContentStr+='<div id="headingDiv">Sub Group Details</div>';
+		subGroupsListContentStr+='<table width="100%" class="subGroupsTable">';
+		
+		for(var i in subGroupsList)
+		{
+			subGroupsListContentStr+='<tr>';
+			//rag
+			subGroupsListContentStr+='<td>';
+			subGroupsListContentStr+='<a href="#centerLayoutTop" class="subGroupLink" onclick="getSystemGroupsDetails('+subGroupsList[i].groupId+',\''+type+'\')">'+subGroupsList[i].groupName+'</a><span class="smalltype" style="margin-left:5px;">'+subGroupsList[i].membersCount+' members, '+subGroupsList[i].subGroupsCount+' sub groups</span>';
+			subGroupsListContentStr+='<div class="smalltype">'+subGroupsList[i].desc+'</div>';
+			//subGroupsListContentStr+='<div class="smalltype">'+subGroupsList[i].membersCount+' members, '+subGroupsList[i].subGroupsCount+' sub groups</div>';
+			subGroupsListContentStr+='</td>';
+			subGroupsListContentStr+='</tr>';
+		}		
+		subGroupsListContentStr+='</table>';
+		
+		subGroupsListDivEl.innerHTML = subGroupsListContentStr;
+		
+		var str='';
+		str+='<div id="groupDetailsHead">';
+		//str+='<h3>'+groupName+' category details </h3>';
+		str+='<table width="100%">';
+		//str+='<thead colspan="3" align="center">'+groupName+' category details</thead>';
+		str+='<tr><td rowspan="2" width="15%">';
+		str+='<img src="images/usergroups/group-default.png" border="none" />';
+		str+='</td>';
+		str+='<td width="50%">';
+		str+='<h4>'+groupName+'</h4>';
+		str+='<p>'+desc+'</p>';
+		str+='<p>Created Date:'+createdDate+'</p>';
+		str+='</td>';
+		if(membersCount != null)
+		{
+			str+='<td width="25%">';
+			str+='<div class="promoImage">';
+			str+='<img src="images/usergroups/profile-default.png" border="none" class="promoImage" border="0">';
+			str+='</div>';
+			str+='<div class="promoNumber">'+membersCount+'</div>';
+			str+='<div class="promoText">Members</div>';		
+			str+='</td>';		
+		} else{
+			str+='<td width="25%">You can not add members in to System Groups.</td>';				
+			}				
+		str+='</tr>';
+		str+='</table>';			
+		str+='</div>';
+		divEl.innerHTML=str;
+	}
+	
+	function showGroupMembersList(results)
+	{
+		assignToGroupMembersArray = new Array();
+		var groupMbrsList = results.userGroupMembersList;
+
+		for(var i in groupMbrsList)
+		{
+			var memberDetailsObj = { 
+			 name: groupMbrsList[i].name, 
+			 designation: groupMbrsList[i].designation, 
+			 address: groupMbrsList[i].address, 
+			 mobile: groupMbrsList[i].mobileNumber,
+			 telephoneNo: groupMbrsList[i].phoneNumber, 
+			 email: groupMbrsList[i].emailId, 
+			 location: groupMbrsList[i].location 
+		};
+			assignToGroupMembersArray.push(memberDetailsObj);
+			userGrpsObj.showGrpMembersArr = assignToGroupMembersArray;
+		}
+		showGrpMembersDataTable();	
+	}
+
+	function sendSMS()
+	{
+		var msgTextElmt = document.getElementById("smsTextArea");
+		var message = msgTextElmt.value;
+		var jsObj= 
+		{
+			numbers: numbersArray,
+			message:message,	
+			task:"sendSMS"
+			
+		}
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
+		callAjax(param,jsObj,url);
+	}
+	
+	function showGrpMembersDataTable()
+	{	
+		var grpMbrsDetailsColumnDefs = [
+									{key: "name", label: "<%=name%>", sortable:true},		
+									{key: "designation", label: "<%=designation%>", sortable:true},	
+			              	 	    {key: "mobile", label: "<%=mobile%>"},
+			              	 	 	{key: "telephoneNo", label: "<%=telephoneNo%>"},
+			              	 	 	{key: "address", label: "<%=address%>", sortable:true},
+			              	 	 	{key: "location", label:"<%=location%>", sortable: true},
+			              	 	 	{key: "email", label:"<%=email%>", sortable: true}
+			              	 	    ];                	 	    
+
+			var grpMbrsDetailsDataSource = new YAHOO.util.DataSource(userGrpsObj.showGrpMembersArr); 
+			grpMbrsDetailsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+			grpMbrsDetailsDataSource.responseSchema = {
+	                fields: ["name", "designation", "address", "mobile","telephoneNo", "email", "location" ] 
+	        		};
+
+			var myConfigs = { 
+				    paginator : new YAHOO.widget.Paginator({ 
+			        rowsPerPage    : 10, 
+			        template: "{PageLinks} Show {RowsPerPageDropdown} Members Per page",
+			        rowsPerPageOptions: [5,10,15,20], 
+			        pageLinks: 5
+				    }) 
+					};
+    		
+			grpMbrsDetailsDataTable = new YAHOO.widget.DataTable("showGrpMembers", grpMbrsDetailsColumnDefs, grpMbrsDetailsDataSource,myConfigs);
+			//outerTab.getTab(2).addListener("click", function() {grpMbrsDetailsDataTable.onShow()});
+			
+	        return { 
+	            oDS: grpMbrsDetailsDataSource, 
+	            oDT: grpMbrsDetailsDataTable 
+	           
+	      };	     	
+		
+	}
+	
+	function showGroupMembers(id)
+	{
+		
+		var jsObj= 
+		{
+			task:"getSelectedGroupMembersDetails",
+			id:id
+		}
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
+		callAjax(param,jsObj,url);
 	}
 	
 	function showSearchOptions()
@@ -738,7 +1039,25 @@ var userGrpsObj={
 	}
 	function getSubGroupsCountInSystemGrpsForUser()
 	{
+
+		var systemGroupsLinkEl = document.getElementById("systemGroups");
+		var systemGroupsLinkStyle = systemGroupsLinkEl.getAttribute("class");
+
+		var myGroupsLinkEl = document.getElementById("myGroups");
+		var myGroupsLinkStyle = myGroupsLinkEl.getAttribute("class"); 
+
+		if(systemGroupsLinkStyle == "link")
+		{
+			systemGroupsLinkEl.setAttribute("class","selectedLink");
+		}
+		if(myGroupsLinkStyle =="selectedLink")
+		{
+			myGroupsLinkEl.setAttribute("class","link");
+		}
 		
+		//alert(style);
+		//selectedLinkEl.style.background-color='blue';
+		//selectedLinkEl.style.color='white';
 		var jsObj= 
 		{
 			task:"subGrpsCountInSystemGrpsForUser"
@@ -750,6 +1069,23 @@ var userGrpsObj={
 
 	function getSubGroupsCountInMyGroupsForUser()
 	{
+
+		var systemGroupsLinkEl = document.getElementById("systemGroups");
+		var systemGroupsLinkStyle = systemGroupsLinkEl.getAttribute("class");
+
+		var myGroupsLinkEl = document.getElementById("myGroups");
+		var myGroupsLinkStyle = myGroupsLinkEl.getAttribute("class"); 
+
+		if(systemGroupsLinkStyle == "selectedLink")
+		{
+			systemGroupsLinkEl.setAttribute("class","link");
+		}
+		if(myGroupsLinkStyle =="link")
+		{
+			myGroupsLinkEl.setAttribute("class","selectedLink");
+		}
+		
+		
 		var jsObj= 
 		{
 			task:"subGrpsCountInMyGrpsForUser"
@@ -829,8 +1165,9 @@ var userGrpsObj={
 		this.cancel();
 	}
 
-	function addGrpMembersDialog()
+	function addGrpMembersDialog(id,groupName)
 	{
+		
 		var elmt = document.getElementById('userGroupsMainDiv');
 		var divChild = document.createElement('div');
 		divChild.setAttribute('id','addGroupMbrsDiv');
@@ -856,12 +1193,16 @@ var userGrpsObj={
 		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
 		addGrpMbrsContent+='</tr>';
 		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=groupName%></td>'
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
+		addGrpMbrsContent+='<td><%=email%></td>'
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupNameText" name="groupMbrLocText" /></td>';
 		addGrpMbrsContent+='</tr>';
 		addGrpMbrsContent+='<tr>';
 		addGrpMbrsContent+='<td><%=designation%></td>'
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrDesignationText" name="groupMbrLocText"/></td>';
+		addGrpMbrsContent+='</tr>';
+		addGrpMbrsContent+='<tr>';
+		//addGrpMbrsContent+='<td></td>'
+		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="hidden" size="53" id="groupIdText" name="groupMbrLocText" value="'+id+'"/></td>';
 		addGrpMbrsContent+='</tr>';
 		addGrpMbrsContent+='</table>';
 		addGrpMbrsContent+='</div>';
@@ -886,19 +1227,41 @@ var userGrpsObj={
 	                          { text:"Cancel", handler: handleAddGrpMbrCancel}]
 	             } ); 
 		addGrpMbrsDialog.render();		
-		
 	}
 	
 	function handleAddGrpMbrSubmit()
 	{
+		var name = document.getElementById("grpMbrNameText").value;
+		var mobile = document.getElementById("groupMbrMobileText").value;
+		var address = document.getElementById("groupMbrAdrsText").value;
+		var location = document.getElementById("groupMbrLocText").value;
+		var groupName = document.getElementById("groupNameText").value;
+		var designation = document.getElementById("groupMbrDesignationText").value;
+		var groupId = document.getElementById("groupIdText").value;
+		var jsObj=
+		{
+				name :name,
+				mobile :mobile,
+				address :address,
+				location :location,
+				groupName :groupName,
+				designation :designation,
+				task:"storeMembersDataIntoDB",
+				groupId:groupId						
+		};
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+rparam;						
+		callAjax(rparam,jsObj,url);
 		addGrpMbrsDialog.hide();
+		
 	}
 
 	function handleAddGrpMbrCancel()
 	{
 		this.cancel();
 	}		
-</script>
+--></script>
 </head>
 <body class="yui-skin-sam">
 <div id="UserGrpsMainDiv" class="yui-skin-sam">
@@ -957,7 +1320,7 @@ var userGrpsObj={
 		<div id="groupsList"><a name="groupDetails"></a>
 		<fieldset>
 			<legend id="groupDetailsLegend">Group Details</legend>
-			<div id="groupsCountDiv"></div>						
+			<div id="groupsCountDiv"><img src="images/usergroups/group2.jpg" height="200px" width="250px" border="none"></div>						
 		</fieldset>
 		</div>
 		
@@ -968,11 +1331,10 @@ var userGrpsObj={
 			<td><div id="profileHeader">Raghav</div></td></tr></table>	
 		</div>
 	</div>
-	<div id="userGroupsCenterDiv"><a name="userGroupsCenterDiv"></a>
+	<div id="userGroupsCenterDiv"><a name="userGroupsCenterDiv" class="yui-skin-sam"></a>
 	<div id="navigationLink"></div>
-	<div id="centerNavLinksDiv">
-	<a href="#moreDetails" onclick="showMoreDescription()">About</a>
-	</div>
+	<div id="centerNavLinksDiv"><a href="#moreDetails" onclick="showMoreDescription()">About</a></div>
+	<div id="centerNavHeadingDiv"></div><a name="centerLayoutTop"></a>
 	<div id="summaryTextDiv">
 	<p>User Groups feature is mainly used to group your important people in a group according to a category.This application has two types of User Groups.They are</p> 
 	<ul>
@@ -996,26 +1358,18 @@ var userGrpsObj={
 	<div id="subGroupsListSendSMSDiv">
 		<table id="subGroupsListSendSMSTable" width="100%" style="display:none;">
 		<tr>
-		<td width="75%"><div id="subGroupsListDiv">
-		<!--<div id="headingDiv">Sub Group Details</div>
-		<ul>
-			<li type="square"><a href="" class="link">Sub Group1</a></li>
-			<li type="square"><a href="" class="link">Sub Group2</a></li>
-			<li type="square"><a href="" class="link">Sub Group3</a></li>
-			<li type="square"><a href="" class="link">Sub Group4</a></li>
-			<li type="square"><a href="" class="link">Sub Group5</a></li>
-		</ul>
-		--></div></td>
+		<td width="75%"><div id="subGroupsListDiv"></div></td>
 		<td width="25%">	
 		<div id="smsDiv">
 		<div id="headingDiv">Send SMS</div>
 		<p><img src="images/usergroups/icon_mail.png" boder="none"/style="margin-right:2px;">Message:</p>
 		<p><textarea id="smsTextArea" cols="10" rows="5"></textarea></p>
-		<p align="right"><input type="submit" class="button" value="Send Sms" name="Submit" /></p>
+		<p align="right"><input id="sendSMSBut" type="submit" class="button" value="Send Sms" name="Submit"/></p>
 		</div>
 		</td>
 		</tr></table>
-		</div>	
+	</div>
+	<div id="showGrpMembers"></div>	
 </div>
 <div id="userGroupsFooter"></div>
 </div>
