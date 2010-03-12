@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.GroupsBasicInfoVO;
@@ -43,7 +44,9 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	private IUserGroupService userGroupService;
 	private List<SelectOptionVO> staticGroupsListboxOptions;
 	private List<SelectOptionVO> myGroupsListboxOptions;
-	private UserGroupBasicDetails userGroupBasicDetails; 
+	private UserGroupBasicDetails userGroupBasicDetails;
+	private UserGroupMembersVO userGroupMembersVO = null;
+	
 		
 	public HttpServletRequest getRequest() {
 		return request;
@@ -124,7 +127,14 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	public void setUserGroupBasicDetails(UserGroupBasicDetails userGroupBasicDetails) {
 		this.userGroupBasicDetails = userGroupBasicDetails;
 	}
+	public UserGroupMembersVO getUserGroupMembersVO() {
+		return userGroupMembersVO;
+	}
 
+	public void setUserGroupMembersVO(UserGroupMembersVO userGroupMembersVO) {
+		this.userGroupMembersVO = userGroupMembersVO;
+	}	
+	
 	public String execute() throws Exception
 	{	
 		
@@ -141,7 +151,26 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		myGroupsListboxOptions = userGroupService.getAllMyGroupsCreatedByUser(user.getRegistrationID());
 		myGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select A Group"));  
 		
+		String param = null;
+		param = getTask();
+		
+		/*try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("getSelectedGroupMembersDetails"))
+		{
+			userGroupsVO = new UserGroupsVO();
+			Long groupId=new Long(jObj.getString("id"));
+			userGroupsVO.setUserGroupMembersList(userGroupService.getAllMembersIntheGroup(user.getRegistrationID(), groupId));
+		}
+		*/
 		return Action.SUCCESS;
+		
 		
 	}
 	
@@ -224,12 +253,43 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			{
 				userGroupDetailsVO.setMyGroupId(null);
 			} else if(!myGroupId.equals("null"))
-			{
-				userGroupDetailsVO.setMyGroupId(new Long(myGroupId));	
+				{
+					userGroupDetailsVO.setMyGroupId(new Long(myGroupId));	
+				}
+				userGroupService.createGroupForUser(userGroupDetailsVO);
+				System.out.println("From VO after Service call: Category:===="+userGroupDetailsVO.getCategoryType());
+		} 
+		if(jObj.getString("task").equalsIgnoreCase("storeMembersDataIntoDB"))
+		{
+			Long groupId=new Long(jObj.getString("groupId"));
+			userGroupMembersVO = new UserGroupMembersVO();
+			userGroupMembersVO.setAddress(jObj.getString("address"));
+			userGroupMembersVO.setDesignation(jObj.getString("designation"));
+			userGroupMembersVO.setMobileNumber(jObj.getString("mobile"));
+			userGroupMembersVO.setName(jObj.getString("name"));
+			userGroupMembersVO.setLocation(jObj.getString("location"));
+			userGroupMembersVO.setGroupName(jObj.getString("groupName"));
+			
+			userGroupService.addMemberToGroup(groupId,userGroupMembersVO);			
+		}
+		if(jObj.getString("task").equalsIgnoreCase("getSelectedGroupMembersDetails"))
+		{
+			userGroupsVO = new UserGroupsVO();
+			Long groupId=new Long(jObj.getString("id"));
+			userGroupsVO.setUserGroupMembersList(userGroupService.getAllMembersIntheGroup(user.getRegistrationID(), groupId));
+		}if(jObj.getString("task").equalsIgnoreCase("sendSMS"))
+		{
+			
+			String message = jObj.getString("message");
+			JSONArray cellNumbers = jObj.getJSONArray("numbers");
+			String smsMsgs[] = new String[cellNumbers.length()];
+			for(int i=0; i<cellNumbers.length(); i++){
+				smsMsgs[i] = (String)cellNumbers.get(i);
+			/*	System.out.println("String " + no);
+				smsMsgs[i] = no;*/
 			}
-			userGroupService.createGroupForUser(userGroupDetailsVO);
-			System.out.println("From VO after Service call: Category:===="+userGroupDetailsVO.getCategoryType());
-		}		
+			userGroupService.sendSMStoGroup(message,smsMsgs);			
+		}
 		return Action.SUCCESS;
 	}
 	
@@ -265,9 +325,14 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			
 		}else if(jObj.getString("task").equalsIgnoreCase("getSelectedMyGroupCompleteDetails"))
 		{
-				
+			userGroupBasicDetails = new UserGroupBasicDetails();
+			String categoryType = jObj.getString("categoryType");
+			Long id=new Long(jObj.getString("id"));
+			userGroupBasicDetails = userGroupService.getUserGroupDetailsForAUserForMyGroups(categoryType, id, user.getRegistrationID());
 		}		
 		return Action.SUCCESS;
-	}	
+	}
+	
+	
 }
 
