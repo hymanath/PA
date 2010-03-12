@@ -42,12 +42,22 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 	private String constituencySelectName;
 	private String partySelectName;
 	private String reportLevel;
+	private String selectedLocationName;
 	private String electionType;
 	private PartyResultService partyResultService;
 	private List<PartyResultInfoVO> partyResultInfoVOs;
 	private String selectedElectionTypeName;
 	private ServletContext context;
 	
+
+	public String getSelectedLocationName() {
+		return selectedLocationName;
+	}
+
+	public void setSelectedLocationName(String selectedLocationName) {
+		this.selectedLocationName = selectedLocationName;
+	}
+
 	private enum ChartType {yearVsSeats, yearVsVotesPerc };
 	
 	public List<PartyResultInfoVO> getPartyResultInfoVOs() {
