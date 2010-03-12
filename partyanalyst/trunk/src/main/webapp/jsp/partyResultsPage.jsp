@@ -34,11 +34,12 @@
 <body>
 <center>
 	<H3>
-		<u>  <c:out value="${selectedPartyShortName}"/>  Party Result for the   <c:out value="${selectedElectionTypeName}"/> Election</u>
+		<u align="centre"> <c:out value="${selectedPartyShortName}"/>  Party Result for <br/></u>
+		<u align="centre"> <c:out value="${selectedLocationName}"/>   <c:out value="${reportLevel}"/> <c:out value="${selectedElectionTypeName}"/> Elections</u>
     </H3>
-</center>
+</center>  
 
-<IMG id="chartImg" SRC="charts/<%= request.getAttribute("chartName")%>" WIDTH="450" HEIGHT="400">
+<IMG id="chartImg" SRC="charts/<%= request.getAttribute("chartName")%>" WIDTH="450" HEIGHT="400">   
 
 <div id="partyResultsDiv" style="padding:5px;">
 	

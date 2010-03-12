@@ -24,6 +24,7 @@
   var DISTRICTLIST;
   var CONSTITUENCYLIST;
   var STATELIST=false;
+  var selectionType="";
   var RURL="<%=request.getContextPath()%>/partyResultScopeAction.action"
 
 		/*	Function to display the level of report  based on Election type selected	*/
@@ -35,7 +36,6 @@
 
 			if(ELECTIONTYPE=="2" || ELECTIONTYPE=="3" || ELECTIONTYPE=="4" || ELECTIONTYPE=="5" || ELECTIONTYPE=="6")
 			{
-				
 				var radioElmt=document.getElementById("reportLevelRadio");
 				var str="";
 				str+='<input type="radio" name="reportLevel" value="State" onclick="displaySelectBox(this.value)"/>State';
@@ -57,7 +57,7 @@
 		/* Function which passes the values to the ajaxCall() function which makes an ajax call to get
 		 the list of values based on the selected values like:state,district,constituencies etc.,*/
 		function getList(value,svalue)
-		{			
+		{	
 			var jsObj=
 			{
 					reportLevel:value,
@@ -72,7 +72,7 @@
 		/*Function which makes an ajax call to get the list 
 		*/
 		function ResultsajaxCall(rparam)
-		{			
+		{	
 			var xmlHttp=getXmlHttpObj();			
 			xmlHttp.open("post",RURL,false);
 			xmlHttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
@@ -85,7 +85,7 @@
 		/*	Function to display the selectbox with values(State/District/Constituency) based on
 			 level of report selected	*/
 		function displaySelectBox(value)
-		{				
+		{	
 			REPORTLEVEL=value;		
 			
 			var labelDivElmt=document.getElementById("selectLabel");
@@ -137,7 +137,7 @@
 				var stateSelectElmt = document.getElementById("stateNameSelect");				
 				var stateValue = stateSelectElmt.options[stateSelectElmt.selectedIndex].text;				
 				var str='';
-				str+='<select class="nameSelect" name="districtSelectName" id="DistrictNameSelect">';
+				str+='<select class="nameSelect" name="districtSelectName" id="DistrictNameSelect" onchange="locationName(this.id)">';
 				if(stateValue=="Select State")					
 					str+='	<option>Select District</option>';		
 				else
@@ -174,7 +174,7 @@
                 }
 				var stateValue = stateSelectElmt.options[stateSelectElmt.selectedIndex].text;	
 				var str='';							
-				str+='<select class="nameSelect" name="constituencySelectName" id="ConstituencyNameSelect">';
+				str+='<select class="nameSelect" name="constituencySelectName" id="ConstituencyNameSelect" onchange="locationName(this.id)">';
 				if(stateValue=="Select State")	
 					str+='	<option>Select Constituency</option>';
 				else
@@ -186,7 +186,6 @@
 				str+='</select>';
 				distNConstSelectDivElmt.innerHTML=str;
 			}
-						
 			var bstr='';		
 			bstr+='<input type="submit" name="submitButton" value="Submit"/>';		
 			buttonDivElmt.innerHTML=bstr;
@@ -311,6 +310,13 @@
 			}
 		}		
 
+		function locationName(id){
+			var selectObj = document.getElementById(id);
+			val = selectObj.options[selectObj.selectedIndex].text;
+			document.getElementById("selectedLocationName").value=val;
+			return true;
+		}
+		
 		function setPartyName(){
 		var selObj = document.getElementById("partyList");
 		val = selObj.options[selObj.selectedIndex].text;
@@ -319,12 +325,10 @@
 		}
 
 		function setElectionType(electionType){
-			document.getElementById("selectedElectionTypeName").value=electionType;
-			
+			document.getElementById("selectedElectionTypeName").value=electionType;			
 			var selObj = document.getElementById("partyList");
 			val = selObj.options[selObj.selectedIndex].text;
 			document.getElementById("selectedPartyShortName").value=val;
-
 			return true;
 		}
   </script>
@@ -345,6 +349,7 @@
  <s:form name="partyResultsForm" action="partyResultsAction" onsubmit="return validateData()" method="post">
  <input type="hidden" id="selectedPartyShortName" name="selectedPartyShortName">
  <input type="hidden" id="selectedElectionTypeName" name="selectedElectionTypeName">
+ <input type="hidden" id="selectedLocationName" name="selectedLocationName">
 <table width="800px" style="font-family: sans-serif;">
  <tr>
  	<th width="250px">
