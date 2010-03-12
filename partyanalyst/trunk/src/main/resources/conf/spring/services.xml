@@ -346,6 +346,7 @@
 		<property name="personalUserGroupDAO" ref="personalUserGroupDAO" />
 		<property name="staticUsersDAO" ref="staticUsersDAO" />
 		<property name="registrationDAO" ref="registrationDAO" />
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 </beans>		
