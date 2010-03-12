@@ -38,7 +38,9 @@ import com.itgrids.partyanalyst.model.MyGroup;
 import com.itgrids.partyanalyst.model.PersonalUserGroup;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.StaticGroup;
+import com.itgrids.partyanalyst.model.StaticUserGroup;
 import com.itgrids.partyanalyst.model.StaticUsers;
+import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IUserGroupService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -58,6 +60,9 @@ public class UserGroupService implements IUserGroupService {
 	private Long userMemberId;
 	private static final Logger log = Logger.getLogger("UserGroupService.class");
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+	//private SmsCountrySmsService smsCountrySmsService;
+	private ISmsService smsCountrySmsService;
+	
 	
 	
 	public IPersonalUserGroupDAO getPersonalUserGroupDAO() {
@@ -135,6 +140,15 @@ public class UserGroupService implements IUserGroupService {
 
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
+	}
+
+	
+	public ISmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
 	}
 
 	public IMyGroupDAO getMyGroupDAO() {
@@ -399,8 +413,7 @@ public class UserGroupService implements IUserGroupService {
 	 * These details are saved in to the data base.The same value object is returned.
 	 */
 	
-	public UserGroupMembersVO addMemberToGroup(Long groupId,
-			UserGroupMembersVO userGroupMembersToSave) {
+	public void addMemberToGroup(final Long groupId, UserGroupMembersVO userGroupMembersToSave) {
 		this.userGroupMembersVo=userGroupMembersToSave;
 		if(log.isDebugEnabled()){
 			log.debug("Entered UserGroup members Details....");
@@ -410,18 +423,28 @@ public class UserGroupService implements IUserGroupService {
 				{
                 UserGroupMembersVO userGroupMembersFromDb = new UserGroupMembersVO();
                 PersonalUserGroup personalUserGroup=null;
-                StaticUsers staticUsers=null;
+                StaticUsers staticUsers = null;
+                 
                 try{
-                personalUserGroup= personalUserGroupDAO.get(UserGroupService.this.userGroupMembersVo.getGroupMemberId());
-                staticUsers=new StaticUsers();
+                personalUserGroup= personalUserGroupDAO.get(groupId);
+                
+                staticUsers = new StaticUsers();          
                // staticUsers.setPersonalUserGroup(personalUserGroup);
-                staticUsers.setName(UserGroupService.this.userGroupMembersVo.getGroupName());
+                staticUsers.setName(UserGroupService.this.userGroupMembersVo.getName());
                 staticUsers.setAddress(UserGroupService.this.userGroupMembersVo.getAddress());
                 staticUsers.setEmailId(UserGroupService.this.userGroupMembersVo.getEmailId());
                 staticUsers.setMobileNumber(UserGroupService.this.userGroupMembersVo.getMobileNumber());
                 staticUsers.setDesignation(UserGroupService.this.userGroupMembersVo.getDesignation());
                 staticUsers.setLocation(UserGroupService.this.userGroupMembersVo.getLocation());
-                staticUsersDAO.save(staticUsers);
+              //  staticUsersDAO.save(staticUsers);
+               
+                
+                StaticUserGroup staticUserGroup = new StaticUserGroup();
+                staticUserGroup.setStaticUser(staticUsers);
+                staticUserGroup.setPersonalUserGroup(personalUserGroup);
+                staticUserGroup = staticUserGroupDAO.save(staticUserGroup);
+                
+                           
                 //userGroupMembersFromDb.setPersonalUserId(staticUsers.getPersonalUserGroupId().getPersonalUserGroupId());
                 userGroupMembersFromDb.setGroupName(staticUsers.getName());
                 userGroupMembersFromDb.setAddress(staticUsers.getAddress());
@@ -430,19 +453,21 @@ public class UserGroupService implements IUserGroupService {
                 userGroupMembersFromDb.setDesignation(staticUsers.getDesignation());
                 userGroupMembersFromDb.setLocation(staticUsers.getLocation());
                 
+          	//	return this.userGroupMembersVo;        
 				}
                 catch(Exception e){
 					status.setRollbackOnly();
 					if(log.isDebugEnabled()){
-						log.debug("Exception Raised while Update And Get Problems Under Pending::", e);
+						log.debug("Exception Raised while Update And Getting Groups::", e);
 					}
+			//		return null;
 				}
 				UserGroupService.this.userGroupMembersVo = userGroupMembersFromDb ;	
 
 				}
 			});				
-		return this.userGroupMembersVo;
-		}	
+
+		}
 	
 	//sai
 	/*
@@ -687,6 +712,57 @@ public class UserGroupService implements IUserGroupService {
 		 return userGroupBasicDetails;
 	 }
 	 
+
+	 /*
+		 * This method is used for sending SMS to the members.
+		 */
+		public void sendSMStoGroup(String message,String[] groupMembersMobileNos){
+			
+			
+			for(int i=0;i<groupMembersMobileNos.length;i++){
+				smsCountrySmsService.sendSms(message, true, groupMembersMobileNos[i]);
+			}
+		}
+		
+		/*
+		 * This method is used for retrieving all the group members in the group. 
+		 */
+		public List<UserGroupMembersVO> getAllMembersIntheGroup(Long registrationId, Long groupId){
+			List result = null;
+			List<UserGroupMembersVO> userGroupMembersVO = null;
+			try{
+				userGroupMembersVO = new ArrayList<UserGroupMembersVO>(0);
+				result =  staticUserGroupDAO.findMembersByUserId(registrationId,groupId);
+				for(int i=0;i<result.size();i++){
+					UserGroupMembersVO userGroupMembers= new  UserGroupMembersVO();
+					Object[] parms = (Object[])result.get(i);
+						userGroupMembers.setName(parms[0].toString());
+						userGroupMembers.setMobileNumber(parms[1].toString());
+						userGroupMembers.setAddress(parms[3].toString());
+						if(parms[2] != null){	
+						userGroupMembers.setEmailId(parms[2].toString());
+						}else {}
+						if(parms[4] != null){
+						userGroupMembers.setLocation(parms[4].toString());
+						}else{}				
+						if(parms[5] != null){
+							userGroupMembers.setDesignation(parms[5].toString());
+						}else{}	
+						if(parms[6] != null){
+							userGroupMembers.setPhoneNumber(parms[6].toString());
+						}else{}
+					userGroupMembersVO.add(userGroupMembers);
+				}
+				return userGroupMembersVO;
+			}catch(Exception e){
+				e.printStackTrace();
+				if(log.isDebugEnabled()){
+					log.debug("Exception Raised while Retriving members from the group::", e);
+				}
+				return null;
+			}
+		}
+
 	 @SuppressWarnings("unchecked")
 	public GroupsBasicInfoVO getBasicInfoForAGroupForList(List basicList,Long userId){
 		 
@@ -725,7 +801,6 @@ public class UserGroupService implements IUserGroupService {
 		 
 		 return groupsBasicInfo;
 	 }
-	 
 	 @SuppressWarnings("unchecked")
 	public List<GroupsBasicInfoVO> getSubGroupsOfAPersonalUserGroupFromMyGroup(Long userGrpId,Long userId) throws Exception{
 		 
@@ -789,4 +864,5 @@ public class UserGroupService implements IUserGroupService {
 	}
 	 
 	 
+
 }
