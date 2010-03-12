@@ -255,6 +255,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
         final String series1 =  IConstants.ASSEMBLY_ELECTION_TYPE;
         final String series2 = IConstants.PARLIAMENT_ELECTION_TYPE;
         final String series3 = IConstants.MPTC_ELECTION_TYPE;
+        final String series4 = IConstants.ZPTC_ELECTION_TYPE;
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for(MandalAllElectionDetailsVO result: mandalAllElectionDetailsVO){
         	if(result.getElectionType().equals(series1))
@@ -263,6 +264,8 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
         		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), result.getElectionYear(), series2);
         	else if(result.getElectionType().equals(series3))
         		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), result.getElectionYear(), series3);
+        	else if(result.getElectionType().equals(series4))
+        		dataset.addValue(new BigDecimal(result.getPartyVotesPercentage()), result.getElectionYear(), series4);
         }
         return dataset;
     }
