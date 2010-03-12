@@ -40,4 +40,13 @@ public interface IPersonalUserGroupDAO extends GenericDao<PersonalUserGroup, Lon
 	
 	@SuppressWarnings("unchecked")
 	public List getSubGroupsCompleteDetailsForASystemGroupFromPersonalUserGroup(Long groupId,Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsDetailsForMyGroupFromPersonalUserGroup(Long groupId,Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCountForMyGroupFromPersonalUserGroup(Long groupId,Long userId);
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCompleteDetailsForMyGroup(Long groupId,Long userId);
 }
