@@ -783,6 +783,7 @@ public class UserGroupService implements IUserGroupService {
 				groupsBasicInfo.setGroupId(grpId);
 				groupsBasicInfo.setGroupName(gname);
 				groupsBasicInfo.setDesc(desc);
+				if(createdDate != null)
 				groupsBasicInfo.setCreatedDate(createdDate.toString());
 				List subGrpsCount = personalUserGroupDAO.getSubGroupsCountForMyGroupFromPersonalUserGroup(grpId,userId);
 				if(subGrpsCount != null && subGrpsCount.size() > 0){
