@@ -23,7 +23,7 @@ public interface IUserGroupService {
 	public List<SelectOptionVO> getAllMyGroupsCreatedByUser(Long userId);
     
     
-    public UserGroupMembersVO addMemberToGroup(Long groupId, UserGroupMembersVO userGroupMembersToSave);
+	public void addMemberToGroup(Long groupId, UserGroupMembersVO userGroupMembersToSave);
     public UserGroupDetailsVO createGroupForUser(UserGroupDetailsVO userGroupDetailsToSave);
     
     public List <GroupsDetailsForUserVO> subGrpsCountInSystemGrpsForUser(Long userId);
@@ -32,5 +32,9 @@ public interface IUserGroupService {
     public UserGroupBasicDetails getUserGroupDetailsForAUserForSystemGroups(String categoryType,Long groupId,Long userId);
     
     public UserGroupBasicDetails getUserGroupDetailsForAUserForMyGroups(String categoryType,Long groupId,Long userId);
+    
+    public void sendSMStoGroup(String message,String[] groupMembersMobileNos);
+    
+    public List<UserGroupMembersVO> getAllMembersIntheGroup(Long registrationId, Long groupId);
     
 }
