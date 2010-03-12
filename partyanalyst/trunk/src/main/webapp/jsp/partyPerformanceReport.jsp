@@ -415,7 +415,7 @@ function buildPartyPositionDataTable(info,rank)
 		           };
 
 		 var str='';
-		 str+='<table border="1" id="partyPositionDetailsTable">';
+		 str+='<table border="1" id="partyPositionDetailsTable" width="100%">';
 	     str+='<tr>';
 	     str+='<th></th>';
 	     str+='<th align="center">'+obj.year+'</th>';
@@ -447,7 +447,7 @@ function buildPartyPositionDataTable(info,rank)
          str+='</table>';
 
 	   myPanel = new YAHOO.widget.Panel("party", {
-                 width: "300px", 
+                 width: "375px", 
                  fixedcenter: false, 
                  constraintoviewport: false, 
                  underlay: "none", 
@@ -545,7 +545,7 @@ function buildPartyPositionDataTable(info,rank)
        });
        myPanel.setHeader("Party Positions ...");
        myPanel.setBody(str);
-	   myPanel.setFooter(icon);
+	  // myPanel.setFooter(icon);
        myPanel.render();
 
    }
@@ -948,6 +948,16 @@ function reportTitleDivFunc()
 		padding:6px;		
 	}
 
+	.yui-skin-sam .yui-panel .bd
+	{
+		border:1px solid #adadad;
+	}
+	
+	.yui-skin-sam .yui-panel .hd 
+	{
+		border:1px solid #CCCCCC;
+		background-color:#EFEFEF;
+	}
 </style>
 </head> 
 <body>
@@ -999,7 +1009,7 @@ function reportTitleDivFunc()
 	</tr>
 	<tr>
 		<td>
-			<div id="seatsDetailsDiv" class="yui-skin-sam" style="width:40%height:210px;">
+			<div id="seatsDetailsDiv" class="yui-skin-sam" style="width:40%height:210px;margin-top:25px;">
 				<div id="party" class="yui-skin-sam"></div>
 			</div>
 		</td>
