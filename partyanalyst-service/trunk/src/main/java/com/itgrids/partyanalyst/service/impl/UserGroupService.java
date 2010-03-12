@@ -480,6 +480,7 @@ public class UserGroupService implements IUserGroupService {
 			persnlUserGrp = personalUserGroupDAO.get(groupId);
 			userGroupBasicDetails.setGroupBasicDetails(getCompleteDetailsOfAPersonalUserGroup(persnlUserGrp,userId));
 			userGroupBasicDetails.setSubGroupDetails(getSubGroupsOfAPersonalUserGroup(persnlUserGrp,userId));
+			userGroupBasicDetails.setMembersMobileNos(getUserGroupMobileNos(persnlUserGrp.getPersonalUserGroupId(),userId));
 			}
 				
 		}catch(Exception ex){
@@ -672,6 +673,7 @@ public class UserGroupService implements IUserGroupService {
 			 
 			 userGroupBasicDetails.setGroupBasicDetails(groupsBasicInfo);
 			 userGroupBasicDetails.setSubGroupDetails(subGroupDetails);
+			 userGroupBasicDetails.setMembersMobileNos(getUserGroupMobileNos(userGroupId,userId));
 			 
 		 }
 		 }catch(Exception ex){
@@ -768,6 +770,23 @@ public class UserGroupService implements IUserGroupService {
 		 }
 		 return subGrpsCount;
 	 }
+	
+	@SuppressWarnings("unchecked")
+	public List<String> getUserGroupMobileNos(Long groupId,Long userId){
+		List<String> mobileNos = null;
+		if(groupId!= null && userId != null){
+			List mobNos = staticUserGroupDAO.getGroupMembersMobileNoForAGroup(groupId, userId);
+			if(mobNos != null){
+				mobileNos = new ArrayList<String>();
+				for(int i=0;i<mobNos.size();i++){
+					Object params = (Object)mobNos.get(i);
+					String mobile = (String)params;
+					mobileNos.add(mobile);
+				}
+			}
+		}
+		return mobileNos;
+	}
 	 
 	 
 }
