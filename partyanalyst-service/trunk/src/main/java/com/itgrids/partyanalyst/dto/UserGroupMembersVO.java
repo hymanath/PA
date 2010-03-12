@@ -8,7 +8,7 @@ public class UserGroupMembersVO implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String userName;
+	private String name;
 	private Long userId;
 	private String address;
 	private String phoneNumber;
@@ -20,9 +20,7 @@ public class UserGroupMembersVO implements Serializable {
 	private String emailId;
 	
 	
-	public String getUserName() {
-		return userName;
-	}
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -34,10 +32,7 @@ public class UserGroupMembersVO implements Serializable {
 	}
 	public String getMobileNumber() {
 		return mobileNumber;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+	}	
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
@@ -80,6 +75,13 @@ public class UserGroupMembersVO implements Serializable {
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	
 	
 	
