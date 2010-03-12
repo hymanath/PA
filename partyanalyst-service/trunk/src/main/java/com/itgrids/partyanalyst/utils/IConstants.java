@@ -36,6 +36,7 @@ public interface IConstants {
 //MPTC  data upload column names in excel sheet - end
 
 	public final static String ZPTC_NAME = "ZPTC_NAME";
+	public static final String ZPTC = "ZPTC";
 	public final static String ELECTION_UPLOAD_DISTRICT_COLUMN = "DISTRICT";
 	
 	public static final String MPTC = "MPTC";
@@ -44,6 +45,7 @@ public interface IConstants {
 	public static final String EXTERNAL_PERSON = "EXTERNAL PERSON"; 
 	public static final String PRESENT_YEAR = "2010";	
 	
+	public final static String ZPTC_ELECTION_TYPE = "ZPTC";
 	public final static String MPTC_ELECTION_TYPE = "MPTC";
 	public final static String ASSEMBLY_ELECTION_TYPE = "Assembly";
 	public final static String PARLIAMENT_ELECTION_TYPE = "Parliament";
