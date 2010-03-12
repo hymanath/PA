@@ -28,6 +28,7 @@ public interface ICensusDAO extends GenericDao<Census, Long> {
 	
 	public List<Census> findByYearAndTownshipIDs(Long year, String townshipIDs);
 	
+	@SuppressWarnings("unchecked")
 	public List findCastWiseVotersForMandal(Long mandalID);
 	
 	@SuppressWarnings("unchecked")
