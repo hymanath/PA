@@ -347,7 +347,7 @@ public class BoothPopulationService implements IBoothPopulationService{
 	public void getMPTCDetailsForMandal(Long tehsilID, Long partyId, List<MandalAllElectionDetailsVO> mandalAllElectionDetails){
 		ResultStatus resultVO = new ResultStatus();
 		try{
-			List mptcInfo = nominationDAO.findMPTCInfoByElectionTypeTehsilAndParty(IConstants.MPTC_ELECTION_TYPE, tehsilID, partyId);
+			List mptcInfo = nominationDAO.findMPTCInfoByElectionTypeTehsilAndParty(tehsilID, partyId);
 			MandalAllElectionDetailsVO mandalAllElectionDetailsVO = null;
 			String partyName = "";
 			String electionYear = "";
@@ -355,7 +355,8 @@ public class BoothPopulationService implements IBoothPopulationService{
 			Double validVotes = null;
 			Double votesGainedByParty = null;
 			String partyVotesPercentage = "";
-			
+			String candidateName = "";
+			String electionType = "";
 			for(int i=0; i < mptcInfo.size(); i++){
 				mandalAllElectionDetailsVO = new MandalAllElectionDetailsVO();
 				Object[] values = (Object[]) mptcInfo.get(i);
@@ -364,16 +365,29 @@ public class BoothPopulationService implements IBoothPopulationService{
 				totalVoters = (Double)values[2];
 				validVotes = (Double)values[3];
 				votesGainedByParty = (Double)values[4];
+				candidateName = (String)values[5];
+				electionType = (String)values[6];
+				
 				if(validVotes == null || validVotes == 0){
 					List votes = nominationDAO.findValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear(IConstants.MPTC_ELECTION_TYPE, electionYear, tehsilID);
 					validVotes = (Double)votes.get(0);
 				}
 				if(totalVoters == null)
 					totalVoters = 0D;
+				if(validVotes == null)
+					validVotes = 0D;
+				if(validVotes == null)
+					validVotes = 0D;
 				partyVotesPercentage = calculateVotesPercengate(validVotes.longValue(), votesGainedByParty.longValue());
 				
-				mandalAllElectionDetailsVO.setCandidateName(IConstants.MPTC_ELECTION_TYPE);
-				mandalAllElectionDetailsVO.setElectionType(IConstants.MPTC_ELECTION_TYPE);
+				if(electionType.equalsIgnoreCase(IConstants.ZPTC)){
+					mandalAllElectionDetailsVO.setCandidateName(candidateName);
+					mandalAllElectionDetailsVO.setElectionType(IConstants.ZPTC_ELECTION_TYPE);
+				}
+				else{
+					mandalAllElectionDetailsVO.setCandidateName(IConstants.MPTC_ELECTION_TYPE);
+					mandalAllElectionDetailsVO.setElectionType(IConstants.MPTC_ELECTION_TYPE);
+				}				
 				mandalAllElectionDetailsVO.setPartyShortName(partyName);
 				mandalAllElectionDetailsVO.setElectionYear(electionYear);
 				mandalAllElectionDetailsVO.setTotalVoters(totalVoters.longValue());
@@ -392,6 +406,7 @@ public class BoothPopulationService implements IBoothPopulationService{
 		}
 				
 	}
+	
 	
 	public String calculateVotesPercengate(Long validVotes, Long votesEarned){
 		BigDecimal percentage = new BigDecimal(0.0);
