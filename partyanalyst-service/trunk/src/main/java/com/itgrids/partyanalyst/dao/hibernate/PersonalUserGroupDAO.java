@@ -77,4 +77,22 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		Object[] params = {groupId,userId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate from PersonalUserGroup model where model.staticGroup is not null and model.myGroup is null and model.parentGroupId.personalUserGroupId = ? and model.createdUserId.registrationId = ?",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsDetailsForMyGroupFromPersonalUserGroup(Long groupId,Long userId){
+		Object[] params = {groupId,userId};
+		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate from PersonalUserGroup model where model.staticGroup is null and model.myGroup is not null and model.parentGroupId.personalUserGroupId = ? and model.createdUserId.registrationId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCountForMyGroupFromPersonalUserGroup(Long groupId,Long userId){
+		Object[] params = {groupId,userId};
+		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where model.staticGroup is null and model.myGroup is not null and model.parentGroupId.personalUserGroupId = ? and model.createdUserId.registrationId = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getSubGroupsCompleteDetailsForMyGroup(Long groupId,Long userId){
+		Object[] params = {groupId,userId};
+		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate from PersonalUserGroup model where model.staticGroup is null and model.myGroup is not null and model.parentGroupId.personalUserGroupId = ? and model.createdUserId.registrationId = ?",params);
+	}
 }
