@@ -110,11 +110,25 @@ public class ElectionTrendzService implements IElectionTrendzService {
 	 * @see com.itgrids.partyanalyst.service.IElectionTrendzService#getBasicElectionInfoFromConstituencyId(java.lang.Long)
 	 * Returns basic Info like electionId,year,type ... for a Particular Election.
 	 */
+	@SuppressWarnings("unchecked")
 	public ElectionBasicInfoVO getBasicElectionInfoFromConstituencyId(Long constituencyId){
 		
 		ElectionBasicInfoVO electionBasicInfoVO = null;
 		if(constituencyId != null){
+			List election = boothConstituencyElectionDAO.findBoothwiseResultsConstituency(constituencyId);
+			if(election != null){
+			electionBasicInfoVO = new ElectionBasicInfoVO();
+			Object[] params = (Object[])election.get(0);
+			String elecYear = (String)params[0];
+			Long elecId = (Long)params[1];
+			Long elecTypeId = (Long)params[2];
+			String electionType = (String)params[3];
 			
+			electionBasicInfoVO.setElectionId(elecId);
+			electionBasicInfoVO.setElectionYear(elecYear);
+			electionBasicInfoVO.setElectionTypeId(elecTypeId);
+			electionBasicInfoVO.setElectionType(electionType);
+			}
 		}
 		return electionBasicInfoVO;
 	}
@@ -745,6 +759,8 @@ public class ElectionTrendzService implements IElectionTrendzService {
 				log.debug("Votes Earned :" + votesEarned);
 				log.debug("Valid Votes  :" + validVotes);
 				
+				Long votesErn = votesEarned;
+				
 				Double votesPercent = new BigDecimal((new Double(votesEarned)/validVotes)*100.0).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
 				PartyElectionResultVO  elecResults = new PartyElectionResultVO();
 				elecResults.setCandidateId(candId);
@@ -752,7 +768,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 				elecResults.setPartyId(partyId);
 				elecResults.setPartyName(partyName);
 				elecResults.setPartyFlag(partyFlag);
-				elecResults.setVotesEarned(votesEarned);
+				elecResults.setVotesEarned(votesErn);
 				elecResults.setValidVotes(validVotes);
 				elecResults.setVotesPercentage(votesPercent.toString());
 				elecResults.setRank(rank);
