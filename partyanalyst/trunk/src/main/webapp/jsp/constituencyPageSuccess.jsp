@@ -173,6 +173,10 @@
 					<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass">
 						<div id="constituencyVotersInfoDiv_Head" class="layoutHeadersClass">${constituencyDetails.constituencyName} Constituency Voting Trendz :</div>
 						<div id="constituencyVotersInfoDiv_Body_voters" class="layoutBodyClass yui-skin-sam"></div>
+						<div id="constituencyVotersInfoDiv_Body_votingTrendzGraph" class="layoutBodyClass yui-skin-sam"></div>
+						<div id="constituencyVotersInfoDiv_Body_candidateTrendzGraph" class="layoutBodyClass yui-skin-sam">
+							<IMG id="chartImg" SRC="charts/<%=request.getAttribute("barChartName")%>">
+						</div>
 						<div id="constituencyVotersInfoDiv_Body_candidate" class="layoutBodyClass yui-skin-sam"></div>
 					</div>
 				</div>
@@ -200,6 +204,7 @@
 	*/
 	constituencyPageMainObj.constituencyAddress="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";
 	constituencyPageMainObj.contextPath = "<%=request.getContextPath()%>";
+	
 
 	constituencyPageMainObj.constituencyInfo.constituencyName = "${constituencyDetails.constituencyName}";
 	constituencyPageMainObj.constituencyInfo.districtName = "${constituencyDetails.districtName}";
