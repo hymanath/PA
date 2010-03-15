@@ -29,10 +29,12 @@ import com.itgrids.partyanalyst.dto.ComparedConstituencyElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWiseBoothsInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWisePartyResultsForMandal;
 import com.itgrids.partyanalyst.dto.ElectionTrendzInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalCompleteElectionTrendzVO;
 import com.itgrids.partyanalyst.dto.MandalElectionTrendzVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultsTrendzVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -579,28 +581,28 @@ public class ElectionTrendzService implements IElectionTrendzService {
 		log.debug(" ConstituencyId :" + constituencyId);
 		try{
 			//complete voting trendz
-			List completeBoothDetails = boothConstituencyElectionDAO.findConstituencyWiseAllBoothsVotingTrendsInAnElection(electionId, constituencyId);
+			//List completeBoothDetails = boothConstituencyElectionDAO.findConstituencyWiseAllBoothsVotingTrendsInAnElection(electionId, constituencyId);
 			List completeElecResults  = candidateBoothResultDAO.findConstituencyWiseVotingTrendz(electionId, constituencyId);
-			if(completeBoothDetails != null && completeElecResults != null)
-			completeTrendzVO = getProcessedResultsForVotingTrendz(completeBoothDetails,completeElecResults);
+			if(completeElecResults != null)
+			completeTrendzVO = getProcessedResultsForVotingTrendz(null,completeElecResults);
 			
 			//male voting trendz
-			List maleBoothDetails = boothConstituencyElectionDAO.findConstituencyWiseMaleBoothsVotingTrendsInAnElection(electionId, constituencyId, femaleTrendz);
+			//List maleBoothDetails = boothConstituencyElectionDAO.findConstituencyWiseMaleBoothsVotingTrendsInAnElection(electionId, constituencyId, femaleTrendz);
 			List maleElecResults  = candidateBoothResultDAO.findConstituencyWiseMaleVotingTrendz(electionId, constituencyId, femaleTrendz);
-			if(maleBoothDetails != null && maleElecResults != null)
-			maleTrendzVO = getProcessedResultsForVotingTrendz(maleBoothDetails,maleElecResults);
+			if(maleElecResults != null)
+			maleTrendzVO = getProcessedResultsForVotingTrendz(null,maleElecResults);
 			
 			//female voting trendz
-			List femaleBoothDetails = boothConstituencyElectionDAO.findConstituencyWiseFemaleBoothsVotingTrendsInAnElection(electionId, constituencyId, maleTrendz);
+			//List femaleBoothDetails = boothConstituencyElectionDAO.findConstituencyWiseFemaleBoothsVotingTrendsInAnElection(electionId, constituencyId, maleTrendz);
 			List femaleElecResults  = candidateBoothResultDAO.findConstituencyWiseFemaleVotingTrendz(electionId, constituencyId, maleTrendz);
-			if(femaleBoothDetails != null && femaleElecResults != null)
-			femaleTrendzVO = getProcessedResultsForVotingTrendz(femaleBoothDetails,femaleElecResults);
+			if(femaleElecResults != null)
+			femaleTrendzVO = getProcessedResultsForVotingTrendz(null,femaleElecResults);
 			
 			//male&female voting trendz
-			List maleAndFemaleBoothDetails = boothConstituencyElectionDAO.findConstituencyWiseMaleAndFemaleBoothsVotingTrendsInAnElection(electionId, constituencyId, maleTrendz, femaleTrendz);
+			//List maleAndFemaleBoothDetails = boothConstituencyElectionDAO.findConstituencyWiseMaleAndFemaleBoothsVotingTrendsInAnElection(electionId, constituencyId, maleTrendz, femaleTrendz);
 			List maleAndFemaleElecResults  = candidateBoothResultDAO.findConstituencyWiseMaleAndFemaleVotingTrendz(electionId, constituencyId, maleTrendz, femaleTrendz);
-			if(maleAndFemaleBoothDetails != null && maleAndFemaleElecResults != null)
-			maleAndFemaleTrendzVO = getProcessedResultsForVotingTrendz(maleAndFemaleBoothDetails,maleAndFemaleElecResults);
+			if(maleAndFemaleElecResults != null)
+			maleAndFemaleTrendzVO = getProcessedResultsForVotingTrendz(null,maleAndFemaleElecResults);
 			
 			electionTrendzReportVO = new ElectionTrendzReportVO();
 			
@@ -621,7 +623,11 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			electionTrendzReportVO.setMaleTrendz(maleTrendzVO);
 			electionTrendzReportVO.setFemaleTrendz(femaleTrendzVO);
 			electionTrendzReportVO.setMaleAndFemaleTrendz(maleAndFemaleTrendzVO);
-				
+			
+			//getting partywise complete trendz ..
+			ElectionTrendzOverviewVO electionTrendzOverviewVO = getConstituencyVotingTrendzForAnElection(constituencyId,electionTrendzReportVO.getConstituencyName(),elecType,elecYear,completeTrendzVO,maleTrendzVO,femaleTrendzVO,maleAndFemaleTrendzVO);
+			if(electionTrendzOverviewVO != null)
+			electionTrendzReportVO.setElectionTrendzOverviewVO(electionTrendzOverviewVO);
 			
 		}catch(Exception ex){
 			log.debug("Exception Raised ... : " + ex);
@@ -638,20 +644,20 @@ public class ElectionTrendzService implements IElectionTrendzService {
 	public ElectionTrendzInfoVO getProcessedResultsForVotingTrendz(List completeBoothDetails,List completeElecResults) throws Exception{
 		
 		log.debug("Inside getProcessedResultsForVotingTrendz Method ....");
-		log.debug("BoothDetails Size :" + completeBoothDetails.size());
+		//log.debug("BoothDetails Size :" + completeBoothDetails.size());
 		log.debug("ElecResults Size :" + completeElecResults.size());
 		
 		ElectionTrendzInfoVO electionTrendzInfoVO = null;
-		if(completeBoothDetails != null && completeBoothDetails.size() > 0 && completeElecResults != null && completeElecResults.size() > 0){
+		if(completeElecResults != null && completeElecResults.size() > 0){
 			log.debug(" Inside (2) ...");
 		electionTrendzInfoVO = new ElectionTrendzInfoVO();
-		electionTrendzInfoVO.setBoothsDetails(getBoothDetails(completeBoothDetails));
+		//electionTrendzInfoVO.setBoothsDetails(getBoothDetails(completeBoothDetails));
 		electionTrendzInfoVO.setConstituencyWiseResults(getElectionResultsForAllParties(completeElecResults));
 		}
 		return electionTrendzInfoVO;
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<BoothTotalVotesVO> getBoothDetails(List completeBoothDetails) throws Exception{
 		
 		log.debug("Inside getBoothDetails Method ...");
@@ -683,7 +689,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			}
 		}
 		return boothTotalVotesVO;
-	}
+	}*/
 	
 	/*
 	 * Method Returns Complete Election Results For All Parties.
@@ -704,6 +710,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			Long femaleVoters = null;
 			Long totalVoters = null;
 			Long noOfBooths = null;
+			Long totValidVotes = null;
 			 
 			for(int i=0;i<completeElecResults.size();i++){
 				Object[] params = (Object[])completeElecResults.get(i);
@@ -746,6 +753,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 				femaleVoters = femaleVotersCount;
 				totalVoters  = totalVotersCount;
 				noOfBooths   = boothsCount;
+				totValidVotes = validVotes;
 				}
 				partyElecResults.add(elecResults);			
 			}
@@ -753,10 +761,116 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			constituencyWisePartyResults.setFemaleVoters(femaleVoters);
 			constituencyWisePartyResults.setNoOfVoters(totalVoters);
 			constituencyWisePartyResults.setNoOfBooths(noOfBooths);
+			constituencyWisePartyResults.setPolledVotes(totValidVotes);
 			constituencyWisePartyResults.setPartyElecResults(partyElecResults);
 		}
 		
 		return constituencyWisePartyResults;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IElectionTrendzService#getConstituencyVotingTrendzForAnElection(java.lang.Long, java.lang.String, java.lang.Long, java.lang.String, com.itgrids.partyanalyst.dto.ElectionTrendzReportVO, com.itgrids.partyanalyst.dto.ElectionTrendzReportVO, com.itgrids.partyanalyst.dto.ElectionTrendzReportVO, com.itgrids.partyanalyst.dto.ElectionTrendzReportVO)
+	 * Returns Voting trendz for a constituency for an election for all parties.
+	 */
+	public ElectionTrendzOverviewVO getConstituencyVotingTrendzForAnElection(Long constituencyId,String constituencyName,Long elecType,String elecYear,ElectionTrendzInfoVO completeTrendz,ElectionTrendzInfoVO maleTrendz,ElectionTrendzInfoVO femaleTrendz,ElectionTrendzInfoVO maleAFemaleTrendz) throws Exception{
+		
+		ElectionTrendzOverviewVO electionTrendzOverviewVO = null;
+		List<PartyResultsTrendzVO> partyResultsTrendzVO = null;
+		
+		if(completeTrendz != null && maleTrendz != null && femaleTrendz != null && maleAFemaleTrendz != null){
+			
+			electionTrendzOverviewVO = new ElectionTrendzOverviewVO();
+			partyResultsTrendzVO = new ArrayList<PartyResultsTrendzVO>();
+			
+			electionTrendzOverviewVO.setTotalVoters(completeTrendz.getConstituencyWiseResults().getNoOfVoters());
+			electionTrendzOverviewVO.setTotalPolledVotes(completeTrendz.getConstituencyWiseResults().getPolledVotes());
+			
+			electionTrendzOverviewVO.setMaleVoters(maleTrendz.getConstituencyWiseResults().getNoOfVoters());
+			electionTrendzOverviewVO.setMalePolledVotes(maleTrendz.getConstituencyWiseResults().getPolledVotes());
+			
+			electionTrendzOverviewVO.setFemaleVoters(femaleTrendz.getConstituencyWiseResults().getNoOfVoters());
+			electionTrendzOverviewVO.setFemalePolledVotes(femaleTrendz.getConstituencyWiseResults().getPolledVotes());
+			
+			electionTrendzOverviewVO.setMAndFVoters(maleAFemaleTrendz.getConstituencyWiseResults().getNoOfVoters());
+			electionTrendzOverviewVO.setMAFPolledVotes(maleAFemaleTrendz.getConstituencyWiseResults().getPolledVotes());
+			
+			electionTrendzOverviewVO.setPollingPercent(getPollingPercent(completeTrendz.getConstituencyWiseResults().getPolledVotes(),completeTrendz.getConstituencyWiseResults().getNoOfVoters()).toString());
+			electionTrendzOverviewVO.setMalePollingPercent(getPollingPercent(maleTrendz.getConstituencyWiseResults().getPolledVotes(),maleTrendz.getConstituencyWiseResults().getNoOfVoters()).toString());
+			electionTrendzOverviewVO.setFemalePollingPercent(getPollingPercent(femaleTrendz.getConstituencyWiseResults().getPolledVotes(),femaleTrendz.getConstituencyWiseResults().getNoOfVoters()).toString());
+			electionTrendzOverviewVO.setMAFPollingPercent(getPollingPercent(maleAFemaleTrendz.getConstituencyWiseResults().getPolledVotes(),maleAFemaleTrendz.getConstituencyWiseResults().getNoOfVoters()).toString());
+			
+			for(PartyElectionResultVO partyTrendz:completeTrendz.getConstituencyWiseResults().getPartyElecResults()){
+				Long candId = partyTrendz.getCandidateId();
+				PartyElectionResultVO maleTrendzResult   = getPartyResultTrendzForACandidate(maleTrendz.getConstituencyWiseResults().getPartyElecResults(),candId);
+				PartyElectionResultVO femaleTrendzResult = getPartyResultTrendzForACandidate(femaleTrendz.getConstituencyWiseResults().getPartyElecResults(),candId);
+				PartyElectionResultVO maleAFemaleResult  = getPartyResultTrendzForACandidate(maleAFemaleTrendz.getConstituencyWiseResults().getPartyElecResults(),candId);
+				
+				PartyResultsTrendzVO partyResultsTrendz = getVotingTrendzForACandidate(partyTrendz,maleTrendzResult,femaleTrendzResult,maleAFemaleResult);
+								
+				if(partyResultsTrendz != null){
+				partyResultsTrendzVO.add(partyResultsTrendz);
+				if(partyResultsTrendz.getRank().equals(new Long(1)))
+				electionTrendzOverviewVO.setWonCandidateResultTrendz(partyResultsTrendz);
+				}
+			}
+			electionTrendzOverviewVO.setPartyElectionTrendzVO(partyResultsTrendzVO);
+		}
+				
+		return electionTrendzOverviewVO;
+	}
+	/*
+	 * Calculates Percentage
+	 */
+	public Double getPollingPercent(Long polledVotes,Long totalVoters) throws Exception{
+		Double pollingPercent = new BigDecimal((new Double(polledVotes)/totalVoters)*100.0).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
+		return pollingPercent;
+	}
+	
+	/*
+	 * Selects a Candidate Result From List Of Candidates
+	 */
+	public PartyElectionResultVO getPartyResultTrendzForACandidate(List<PartyElectionResultVO> partyElecResults,Long candidateId) throws Exception{
+		PartyElectionResultVO partyElecResultVO = null;
+		if(partyElecResults != null && partyElecResults.size() > 0){
+			for(PartyElectionResultVO partyTrendz:partyElecResults){
+				if(partyTrendz.getCandidateId().equals(candidateId))
+				return partyTrendz;
+			}
+		}
+	   return partyElecResultVO;
+	}
+	
+	/*
+	 * Populating the results to VO
+	 */
+	public PartyResultsTrendzVO getVotingTrendzForACandidate(PartyElectionResultVO completeTrendz,PartyElectionResultVO maleTrendz,PartyElectionResultVO femaleTrendz,PartyElectionResultVO mAFTrendz) throws Exception{
+		PartyResultsTrendzVO partyResultsTrendzVO = null;
+		if(completeTrendz != null && maleTrendz != null && femaleTrendz != null && mAFTrendz != null){
+			partyResultsTrendzVO = new PartyResultsTrendzVO();
+			partyResultsTrendzVO.setPartyId(completeTrendz.getPartyId());
+			partyResultsTrendzVO.setPartyName(completeTrendz.getPartyName());
+			partyResultsTrendzVO.setPartyFlag(completeTrendz.getPartyFlag());
+			partyResultsTrendzVO.setRank(completeTrendz.getRank());
+			if(completeTrendz.getRank().equals(new Long(1)))
+			partyResultsTrendzVO.setStatus("Won");
+			else if(completeTrendz.getRank().equals(new Long(2)))
+			partyResultsTrendzVO.setStatus("RunnerUp");
+			else
+			partyResultsTrendzVO.setStatus("Lost");	
+			partyResultsTrendzVO.setCandidateId(completeTrendz.getCandidateId());
+			partyResultsTrendzVO.setCandidateName(completeTrendz.getCandidateName());
+			partyResultsTrendzVO.setTotalVotes(completeTrendz.getVotesEarned());
+			partyResultsTrendzVO.setMaleVotes(maleTrendz.getVotesEarned());
+			partyResultsTrendzVO.setFemaleVotes(femaleTrendz.getVotesEarned());
+			partyResultsTrendzVO.setMaleAFemaleVotes(mAFTrendz.getVotesEarned());
+			partyResultsTrendzVO.setTotalVotesPercent(getPollingPercent(completeTrendz.getVotesEarned(),completeTrendz.getValidVotes()).toString());
+			partyResultsTrendzVO.setMaleVotesPercent(getPollingPercent(maleTrendz.getVotesEarned(),maleTrendz.getValidVotes()).toString());
+			partyResultsTrendzVO.setFemaleVotesPercent(getPollingPercent(femaleTrendz.getVotesEarned(),femaleTrendz.getValidVotes()).toString());
+			partyResultsTrendzVO.setMAFVotesPercent(getPollingPercent(mAFTrendz.getVotesEarned(),mAFTrendz.getValidVotes()).toString());
+		}
+		
+		return partyResultsTrendzVO;
 	}
 
 }
