@@ -20,7 +20,7 @@ public interface IStaticDataService {
 	public List<SelectOptionVO> getStates(Long electionType);
 	public List<ElectionScope> getElectionScope(Long electionType);
 	public List<SelectOptionVO> getElectionIdsAndYears(Long electionType);
-	public List<SelectOptionVO> getElectionIdsAndYears(Long elecType,Long stateId);
+	public List<SelectOptionVO> getElectionIdsAndYearsInfo(Long elecType,Long stateId);
 	public List<String> getElectionYears(Long electionType);
 	//public List<SelectOptionVO> getParties();
 	public List<SelectOptionVO> getDistricts(Long stateId);
