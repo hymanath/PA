@@ -759,8 +759,6 @@ public class ElectionTrendzService implements IElectionTrendzService {
 				log.debug("Votes Earned :" + votesEarned);
 				log.debug("Valid Votes  :" + validVotes);
 				
-				Long votesErn = votesEarned;
-				
 				Double votesPercent = new BigDecimal((new Double(votesEarned)/validVotes)*100.0).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
 				PartyElectionResultVO  elecResults = new PartyElectionResultVO();
 				elecResults.setCandidateId(candId);
@@ -768,7 +766,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 				elecResults.setPartyId(partyId);
 				elecResults.setPartyName(partyName);
 				elecResults.setPartyFlag(partyFlag);
-				elecResults.setVotesEarned(votesErn);
+				elecResults.setVotesEarned(votesEarned);
 				elecResults.setValidVotes(validVotes);
 				elecResults.setVotesPercentage(votesPercent.toString());
 				elecResults.setRank(rank);
