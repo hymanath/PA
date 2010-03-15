@@ -7,12 +7,15 @@
  */
 package com.itgrids.partyanalyst.service;
 
+import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalCompleteElectionTrendzVO;
 
 public interface IElectionTrendzService {
+	
+	public ElectionBasicInfoVO getBasicElectionInfoFromConstituencyId(Long constituencyId);
 
 	public MandalCompleteElectionTrendzVO getCompleteVotingTrendzForAMandal(Long electionType,String electionYear,Long stateId,Long districtId,Long countryId,Long mandalId,Long maleTrendz,Long femaleTrendz);
 	
