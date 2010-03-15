@@ -30,6 +30,7 @@ public class ElectionTrendzOverviewVO implements Serializable {
 	private String femalePollingPercent;
 	private String mAFPollingPercent;
 	
+	private PartyResultsTrendzVO wonCandidateResultTrendz;
     private List<PartyResultsTrendzVO> partyElectionTrendzVO;
     
     
@@ -128,6 +129,15 @@ public class ElectionTrendzOverviewVO implements Serializable {
 
 	public void setMAFPollingPercent(String pollingPercent) {
 		mAFPollingPercent = pollingPercent;
+	}
+
+	public PartyResultsTrendzVO getWonCandidateResultTrendz() {
+		return wonCandidateResultTrendz;
+	}
+
+	public void setWonCandidateResultTrendz(
+			PartyResultsTrendzVO wonCandidateResultTrendz) {
+		this.wonCandidateResultTrendz = wonCandidateResultTrendz;
 	}
 
 	public List<PartyResultsTrendzVO> getPartyElectionTrendzVO() {
