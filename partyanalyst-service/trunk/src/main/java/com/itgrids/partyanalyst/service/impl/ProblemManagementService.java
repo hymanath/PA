@@ -601,7 +601,6 @@ public class ProblemManagementService implements IProblemManagementService {
 						assignedProblemProgress.setProblemSourceScopeConcernedDepartment(problemSourceScopeConcernedDepartment);
 						assignedProblemProgress.setDescription(problemBeanVO.getComments());
 						assignedProblemProgress = assignedProblemProgressDAO.save(assignedProblemProgress);
-						
 						problemBeanVO.setAssignedProblemProgressId(assignedProblemProgress.getAssignedProblemProgressId());
 						problemBeanVO.setProblem(assignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
 						problemBeanVO.setDepartment(assignedProblemProgress.getProblemSourceScopeConcernedDepartment().getDepartment());
@@ -658,7 +657,7 @@ public class ProblemManagementService implements IProblemManagementService {
 						newAssignedProblemProgress.setDescription(problemBeanVO.getComments());
 						newAssignedProblemProgress.setProblemHistory(progressProblemData);
 						newAssignedProblemProgress.setProblemSourceScopeConcernedDepartment(assignedProblemProgress.getProblemSourceScopeConcernedDepartment());
-						assignedProblemProgressDAO.save(newAssignedProblemProgress);
+						newAssignedProblemProgress = assignedProblemProgressDAO.save(newAssignedProblemProgress);
 						
 						problemBeanVO.setAssignedProblemProgressId(newAssignedProblemProgress.getAssignedProblemProgressId());
 						problemBeanVO.setProblem(newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());						
@@ -745,7 +744,7 @@ public class ProblemManagementService implements IProblemManagementService {
 						newAssignedProblemProgress.setDescription(problemBeanVO.getReasonForPending());
 						newAssignedProblemProgress.setProblemHistory(pendingProblemData);
 						newAssignedProblemProgress.setProblemSourceScopeConcernedDepartment(assignedProblemProgress.getProblemSourceScopeConcernedDepartment());
-						assignedProblemProgressDAO.save(newAssignedProblemProgress);
+						newAssignedProblemProgress = assignedProblemProgressDAO.save(newAssignedProblemProgress);
 						
 						problemBeanVO.setAssignedProblemProgressId(newAssignedProblemProgress.getAssignedProblemProgressId());
 						problemBeanVO.setProblem(newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
@@ -862,7 +861,7 @@ public class ProblemManagementService implements IProblemManagementService {
 						newAssignedProblemProgress.setDescription(problemBeanVO.getComments());
 						newAssignedProblemProgress.setProblemHistory(fixedProblemData);
 						newAssignedProblemProgress.setProblemSourceScopeConcernedDepartment(assignedProblemProgress.getProblemSourceScopeConcernedDepartment());
-						assignedProblemProgressDAO.save(newAssignedProblemProgress);		
+						newAssignedProblemProgress = assignedProblemProgressDAO.save(newAssignedProblemProgress);		
 						
 						problemBeanVO.setAssignedProblemProgressId(newAssignedProblemProgress.getAssignedProblemProgressId());
 						problemBeanVO.setProblem(newAssignedProblemProgress.getProblemHistory().getProblemLocation().getProblemAndProblemSource().getProblem().getProblem());
