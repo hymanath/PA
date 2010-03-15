@@ -857,7 +857,6 @@ var allZPTCMPTCElecInfo = new Array();
 			{
 				var id = allZPTCMPTCElecInfo[a].type+'_'+allZPTCMPTCElecInfo[a].year+'_'+allZPTCMPTCElecInfo[a].parties[b].partyName+'_table';
 				var divId = allZPTCMPTCElecInfo[a].type+'_'+allZPTCMPTCElecInfo[a].year+'_'+allZPTCMPTCElecInfo[a].parties[b].partyName+'_body';
-				console.log(id,divId);
 				var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 						.get(id)); 
 				 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
