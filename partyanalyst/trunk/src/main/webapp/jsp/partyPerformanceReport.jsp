@@ -186,7 +186,7 @@ function displayPartyPositions(jsObj,data)
 {	
 	var imgElmt = document.getElementById("partyPosImg");
 	imgElmt.style.display='none';
-
+	
 	if(data[0]==null)
 	{
 		alert("No results found");
@@ -455,7 +455,7 @@ function buildPartyPositionDataTable(info,rank)
                  visible: true, 
                  draggable: false
        });
-	   myPanel.setHeader("");
+	   myPanel.setHeader("Party Complete Results ...");
        myPanel.setBody(str);
        myPanel.render();
 
@@ -465,7 +465,7 @@ function buildPartyPositionDataTable(info,rank)
 	{
 		var arr = new Array();
 		var icon='';
-			icon+='<table><tr><td id="partyPosImg" align="left" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/partypositions.gif" /></img></td></tr></table>';
+			icon+='<table><tr><td align="right">Party Positions ... </td><td id="partyPosImg" align="right" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></td></tr></table>';
 		<c:forEach var="results" items="${stateData.partyPositionsVO}">
 			var obj = {
 			            partyId:'${results.partyId}',
@@ -543,7 +543,7 @@ function buildPartyPositionDataTable(info,rank)
                  visible: true, 
                  draggable: false
        });
-       myPanel.setHeader("Party Positions ...");
+       myPanel.setHeader(icon);
        myPanel.setBody(str);
 	  // myPanel.setFooter(icon);
        myPanel.render();
@@ -957,6 +957,14 @@ function reportTitleDivFunc()
 	{
 		border:1px solid #CCCCCC;
 		background-color:#EFEFEF;
+	}
+	.yui-skin-sam .yui-dt table
+	{
+		border:2px solid #DFDFDF;
+		border-collapse:separate;
+		border-spacing:0;
+		font-family:Verdana;
+		color:background;
 	}
 </style>
 </head> 
