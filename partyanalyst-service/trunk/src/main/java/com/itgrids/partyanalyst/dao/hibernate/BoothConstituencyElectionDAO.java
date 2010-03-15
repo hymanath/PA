@@ -305,7 +305,7 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	@SuppressWarnings("unchecked")
 	public List findBoothwiseResultsConstituency(Long constituencyId)
 	{
-		return   getHibernateTemplate().find("select max(Model.constituencyElection.election.electionYear),Model.constituencyElection.election.electionId from BoothConstituencyElection Model where  Model.constituencyElection.constituency.constituencyId= ?" , constituencyId);
+		return getHibernateTemplate().find("select max(model.constituencyElection.election.electionYear),model.constituencyElection.election.electionId,model.constituencyElection.election.electionScope.electionType.electionTypeId,model.constituencyElection.election.electionScope.electionType.electionType from BoothConstituencyElection model where model.constituencyElection.constituency.constituencyId= ?" , constituencyId);
 		
 	}
 	
