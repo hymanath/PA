@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.ComparedConstituencyElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWiseBoothsInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWisePartyResultsForMandal;
+import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
@@ -104,6 +105,20 @@ public class ElectionTrendzService implements IElectionTrendzService {
 		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IElectionTrendzService#getBasicElectionInfoFromConstituencyId(java.lang.Long)
+	 * Returns basic Info like electionId,year,type ... for a Particular Election.
+	 */
+	public ElectionBasicInfoVO getBasicElectionInfoFromConstituencyId(Long constituencyId){
+		
+		ElectionBasicInfoVO electionBasicInfoVO = null;
+		if(constituencyId != null){
+			
+		}
+		return electionBasicInfoVO;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IElectionTrendzService#getCompleteVotingTrendzForAMandal(java.lang.Long, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long)
@@ -792,13 +807,13 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			electionTrendzOverviewVO.setFemaleVoters(femaleTrendz.getConstituencyWiseResults().getNoOfVoters());
 			electionTrendzOverviewVO.setFemalePolledVotes(femaleTrendz.getConstituencyWiseResults().getPolledVotes());
 			
-			electionTrendzOverviewVO.setMAndFVoters(maleAFemaleTrendz.getConstituencyWiseResults().getNoOfVoters());
-			electionTrendzOverviewVO.setMAFPolledVotes(maleAFemaleTrendz.getConstituencyWiseResults().getPolledVotes());
+			electionTrendzOverviewVO.setMaleAndFemaleVoters(maleAFemaleTrendz.getConstituencyWiseResults().getNoOfVoters());
+			electionTrendzOverviewVO.setMaleAndFemalePolledVotes(maleAFemaleTrendz.getConstituencyWiseResults().getPolledVotes());
 			
 			electionTrendzOverviewVO.setPollingPercent(getPollingPercent(completeTrendz.getConstituencyWiseResults().getPolledVotes(),completeTrendz.getConstituencyWiseResults().getNoOfVoters()).toString());
 			electionTrendzOverviewVO.setMalePollingPercent(getPollingPercent(maleTrendz.getConstituencyWiseResults().getPolledVotes(),maleTrendz.getConstituencyWiseResults().getNoOfVoters()).toString());
 			electionTrendzOverviewVO.setFemalePollingPercent(getPollingPercent(femaleTrendz.getConstituencyWiseResults().getPolledVotes(),femaleTrendz.getConstituencyWiseResults().getNoOfVoters()).toString());
-			electionTrendzOverviewVO.setMAFPollingPercent(getPollingPercent(maleAFemaleTrendz.getConstituencyWiseResults().getPolledVotes(),maleAFemaleTrendz.getConstituencyWiseResults().getNoOfVoters()).toString());
+			electionTrendzOverviewVO.setMaleAndFemalePollingPercent(getPollingPercent(maleAFemaleTrendz.getConstituencyWiseResults().getPolledVotes(),maleAFemaleTrendz.getConstituencyWiseResults().getNoOfVoters()).toString());
 			
 			for(PartyElectionResultVO partyTrendz:completeTrendz.getConstituencyWiseResults().getPartyElecResults()){
 				Long candId = partyTrendz.getCandidateId();
@@ -863,11 +878,11 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			partyResultsTrendzVO.setTotalVotes(completeTrendz.getVotesEarned());
 			partyResultsTrendzVO.setMaleVotes(maleTrendz.getVotesEarned());
 			partyResultsTrendzVO.setFemaleVotes(femaleTrendz.getVotesEarned());
-			partyResultsTrendzVO.setMaleAFemaleVotes(mAFTrendz.getVotesEarned());
+			partyResultsTrendzVO.setMaleAndFemaleVotes(mAFTrendz.getVotesEarned());
 			partyResultsTrendzVO.setTotalVotesPercent(getPollingPercent(completeTrendz.getVotesEarned(),completeTrendz.getValidVotes()).toString());
 			partyResultsTrendzVO.setMaleVotesPercent(getPollingPercent(maleTrendz.getVotesEarned(),maleTrendz.getValidVotes()).toString());
 			partyResultsTrendzVO.setFemaleVotesPercent(getPollingPercent(femaleTrendz.getVotesEarned(),femaleTrendz.getValidVotes()).toString());
-			partyResultsTrendzVO.setMAFVotesPercent(getPollingPercent(mAFTrendz.getVotesEarned(),mAFTrendz.getValidVotes()).toString());
+			partyResultsTrendzVO.setMaleAndFemaleVotesPercent(getPollingPercent(mAFTrendz.getVotesEarned(),mAFTrendz.getValidVotes()).toString());
 		}
 		
 		return partyResultsTrendzVO;
