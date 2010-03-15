@@ -119,8 +119,10 @@
 }
 fieldset
 {
-border:4px solid #CFD6DF;
-margin-bottom:10px;
+	background-color:#F3F6F7;
+	border:4px solid #CFD6DF;
+	margin-bottom:10px;
+	margin-top:20px;
 }
 
 legend
@@ -222,21 +224,57 @@ width:100%;
 }
 .infoDivMainClass
 {
+	color:#5B6872;
 	margin-top:10px;
+	
 }
 .partyInfoClass
 {
+	/*font-weight:bold;*/	
+	background-color:#F3F6F7;
+	margin-top:10px;
+	max-width:700px;
+	width:expression(document.body.clientWidth > 700? "700px": "auto" );
+}
+.infoDivHeadClass
+{
 	font-weight:bold;
-	
+	text-decoration:underline;
 }
 .partyInfoHead
 {
-	padding:5px;
-	cursor:pointer;
+	/*padding:5px;*/
 }
 .partyInfoBody
+{	
+	margin-left:30px;
+}
+
+
+.partyInfoHead table th
 {
-	padding:5px;
+	color:#94A3AC;
+	padding-right:5px;
+	
+	text-align:left;
+}
+
+.partyInfoHead table td
+{
+	color:#275D81;R
+	padding-right:5px;
+	
+	text-align:left;
+}
+
+.partyInfoBody table
+{
+	width:100%;
+}
+
+#boothResultsDiv .yui-skin-sam .yui-navset .yui-content
+{
+	background:none;
 }
 </style>
 
@@ -818,16 +856,21 @@ var allZPTCMPTCElecInfo = new Array();
 		var str = '';
 		for(var i in allZPTCMPTCElecInfo){
 			str += '<div id="infoDivMain_'+i+'" class="infoDivMainClass">';			
-			str += '<div>'+allZPTCMPTCElecInfo[i].type+' '+allZPTCMPTCElecInfo[i].year+'</div>';			
+			str += '<div id="infoDivMain_'+i+'_head" class="infoDivHeadClass">'+allZPTCMPTCElecInfo[i].type+' '+allZPTCMPTCElecInfo[i].year+'</div>';			
 			for(var j in allZPTCMPTCElecInfo[i].parties){
 				str += '<div id="partyInfo_main" class="partyInfoClass">';    
-				str += '<div id="'+allZPTCMPTCElecInfo[i].type+'_'+allZPTCMPTCElecInfo[i].year+'_'+allZPTCMPTCElecInfo[i].parties[j].partyName+'_head" onclick="showPartyDetailsInfo(this.id,'+0+')" class="partyInfoHead">';
-				str += '<table>';
-				str += '<th>Party:</th><td>'+allZPTCMPTCElecInfo[i].parties[j].partyName+'</td>';
-				str += '<th>Participated:</th><td>'+allZPTCMPTCElecInfo[i].parties[j].participated+'</td>';
-				str += '<th>Seats Won:</th><td>'+allZPTCMPTCElecInfo[i].parties[j].seatsWon+'</td>';
-				str += '<th>Votes Earned:</th><td>'+allZPTCMPTCElecInfo[i].parties[j].votesEarned+'</td>';
-				str += '<th>Percentage:</th><td>'+allZPTCMPTCElecInfo[i].parties[j].percentage+'</td>';
+				str += '<div id="'+allZPTCMPTCElecInfo[i].type+'_'+allZPTCMPTCElecInfo[i].year+'_'+allZPTCMPTCElecInfo[i].parties[j].partyName+'_head" class="partyInfoHead">';
+				str += '<table width="100%">';
+				str += '<td>';
+				str += '<a id="'+allZPTCMPTCElecInfo[i].type+'_'+allZPTCMPTCElecInfo[i].year+'_'+allZPTCMPTCElecInfo[i].parties[j].partyName+'_anc" href="javascript:{showPartyDetailsInfo(\''+allZPTCMPTCElecInfo[i].type+'_'+allZPTCMPTCElecInfo[i].year+'_'+allZPTCMPTCElecInfo[i].parties[j].partyName+'_anc\')}">';
+				str+='		<img id="'+allZPTCMPTCElecInfo[i].type+'_'+allZPTCMPTCElecInfo[i].year+'_'+allZPTCMPTCElecInfo[i].parties[j].partyName+'_img" border="none" src="images/icons/plusNew.png" />';
+				str += '</a>';
+				str +='</td>';
+				str += '<th width="50px">Party:</th><td width="50px">'+allZPTCMPTCElecInfo[i].parties[j].partyName+'</td>';
+				str += '<th width="100px">Participated:</th><td width="50px">'+allZPTCMPTCElecInfo[i].parties[j].participated+'</td>';
+				str += '<th width="100px">Seats Won:</th><td width="50px">'+allZPTCMPTCElecInfo[i].parties[j].seatsWon+'</td>';
+				str += '<th width="100px">Votes Earned:</th><td width="50px">'+allZPTCMPTCElecInfo[i].parties[j].votesEarned+'</td>';
+				str += '<th width="100px">Percentage:</th><td width="50px">'+allZPTCMPTCElecInfo[i].parties[j].percentage+'</td>';
 				str += '</table>';
 				str += '</div>';
 				str += '<div id="'+allZPTCMPTCElecInfo[i].type+'_'+allZPTCMPTCElecInfo[i].year+'_'+allZPTCMPTCElecInfo[i].parties[j].partyName+'_body" class="partyInfoBody" style="display:none;">';				
@@ -857,6 +900,7 @@ var allZPTCMPTCElecInfo = new Array();
 			{
 				var id = allZPTCMPTCElecInfo[a].type+'_'+allZPTCMPTCElecInfo[a].year+'_'+allZPTCMPTCElecInfo[a].parties[b].partyName+'_table';
 				var divId = allZPTCMPTCElecInfo[a].type+'_'+allZPTCMPTCElecInfo[a].year+'_'+allZPTCMPTCElecInfo[a].parties[b].partyName+'_body';
+			
 				var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
 						.get(id)); 
 				 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
@@ -892,22 +936,43 @@ var allZPTCMPTCElecInfo = new Array();
 	}
 
 	function showPartyDetailsInfo(id)
-	{
-
+	{		
 		var bodyDivId = id.substring(0,id.lastIndexOf('_'))+'_body';
 		var tableDivId = id.substring(0,id.lastIndexOf('_'))+'_table';
+		var imgElmt = document.getElementById(id.substring(0,id.lastIndexOf('_'))+'_img');
 		var divElmt = document.getElementById(bodyDivId);
-
-		
-			
 		
 		if(!divElmt)
 			return;
 	
 		if(divElmt.style.display == "none")
+		{
+			/*cadreAnim = new YAHOO.util.Anim(bodyDivId, {
+				height: {
+					to: 50 
+				} 
+			}, 1, YAHOO.util.Easing.easeOut);
+
+			cadreAnim.animate();
+			
+			if(divElmt)
+				divElmt.style.height = '100px';*/
+			
 			divElmt.style.display = "block";
-		else 
+			imgElmt.src = "images/icons/minusNew.png";
+		}
+		else if(divElmt.style.display == "block")
+		{
+			/*cadreAnim = new YAHOO.util.Anim(bodyDivId, {
+				height: {
+					to: 0 
+				} 
+			}, 1, YAHOO.util.Easing.easeIn);
+
+			cadreAnim.animate();*/
 			divElmt.style.display = "none";
+			imgElmt.src = "images/icons/plusNew.png";
+		}
 		
 	}
 	function getBoothPageInfo(id){
