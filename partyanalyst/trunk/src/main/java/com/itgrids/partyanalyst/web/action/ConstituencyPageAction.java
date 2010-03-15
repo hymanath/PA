@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,24 +17,29 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
+import org.apache.struts2.util.ServletContextAware;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 
-import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
+import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
+import com.itgrids.partyanalyst.dto.PartyResultsTrendzVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
-import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IElectionTrendzService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ConstituencyPageAction extends ActionSupport implements
-		ServletRequestAware, ServletResponseAware {
+		ServletRequestAware, ServletResponseAware,ServletContextAware {
 
 	private static final long serialVersionUID = 1L;
 
@@ -53,26 +59,12 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 
 	 private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	 private DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO;	
+	 
+	 private ElectionBasicInfoVO electionBasicInfoVO;
 	 private IElectionTrendzService electionTrendzService;
 	 private static final Logger log = Logger.getLogger(ConstituencyPageAction.class);
 	 
 	
-	public ElectionTrendzReportVO getElectionTrendzReportVO() {
-		return electionTrendzReportVO;
-	}
-
-	public void setElectionTrendzReportVO(
-			ElectionTrendzReportVO electionTrendzReportVO) {
-		this.electionTrendzReportVO = electionTrendzReportVO;
-	}
-	public IElectionTrendzService getElectionTrendzService() {
-		return electionTrendzService;
-	}
-
-	public void setElectionTrendzService(
-			IElectionTrendzService electionTrendzService) {
-		this.electionTrendzService = electionTrendzService;
-	}
 	 public IProblemManagementReportService getProblemManagementReportService() {
 		return problemManagementReportService;
 	}
@@ -143,7 +135,12 @@ public class ConstituencyPageAction extends ActionSupport implements
 	HttpServletRequest request;
 	HttpServletResponse response;
 	HttpSession session;
+	private ServletContext context;
 	IConstituencyPageService constituencyPageService;
+	
+    public void setServletContext(ServletContext context) {
+	   this.context = context;
+	}
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -174,8 +171,35 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.delimitationConstituencyMandalResultVO = delimitationConstituencyMandalResultVO;
 	}
 
+	public IElectionTrendzService getElectionTrendzService() {
+		return electionTrendzService;
+	}
+
+	public void setElectionTrendzService(
+			IElectionTrendzService electionTrendzService) {
+		this.electionTrendzService = electionTrendzService;
+	}
+
+	public ElectionTrendzReportVO getElectionTrendzReportVO() {
+		return electionTrendzReportVO;
+	}
+
+	public void setElectionTrendzReportVO(
+			ElectionTrendzReportVO electionTrendzReportVO) {
+		this.electionTrendzReportVO = electionTrendzReportVO;
+	}
+
+	public ElectionBasicInfoVO getElectionBasicInfoVO() {
+		return electionBasicInfoVO;
+	}
+
+	public void setElectionBasicInfoVO(ElectionBasicInfoVO electionBasicInfoVO) {
+		this.electionBasicInfoVO = electionBasicInfoVO;
+	}
+
 	public String execute() throws Exception{
 		
+				
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId);
 				
 		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
@@ -198,11 +222,39 @@ public class ConstituencyPageAction extends ActionSupport implements
 		problemBean = problemManagementReportService.getConstituencyProblemsInfo(constituencyId, 0L,"");
 		
 	
-		electionTrendzReportVO = electionTrendzService.getVotingTrendzForAnElection(new Long(0), new Long(2), "0", new Long(1), new Long(1), new Long(232), new Long(0), new Long(0));
+		//electionTrendzReportVO = electionTrendzService.getVotingTrendzForAnElection(new Long(0), new Long(2), "0", new Long(1), new Long(1), new Long(232), new Long(0), new Long(0));
 		System.out.println("electionTrendzReportVO ============ "+electionTrendzReportVO);
 		
 		if(problemBean != null)
 			System.out.println("problemBean === "+problemBean.size());
+		
+		electionBasicInfoVO = electionTrendzService.getBasicElectionInfoFromConstituencyId(constituencyId);
+		if(electionBasicInfoVO.getElectionId() != null){
+			
+			System.out.println("Inside trendz service call ....");
+			electionTrendzReportVO = electionTrendzService.getVotingTrendzForAConstituency(electionBasicInfoVO.getElectionId(),electionBasicInfoVO.getElectionTypeId(),electionBasicInfoVO.getElectionYear(),constituencyId,IConstants.MALETRENDZ,IConstants.FEMALETRENDZ);
+		    if(electionTrendzReportVO.getElectionTrendzOverviewVO() != null){
+		    	 try{
+		    		 
+		    		String constituencyName = electionTrendzReportVO.getConstituencyName();
+		    		String stateName = electionTrendzReportVO.getState();
+		 			session = request.getSession();
+		 			String chartId = constituencyName.concat(stateName).concat("BarChart");
+		 			String barChartName = "constituencyTrendzChart_" + chartId + session.getId()+".png";
+		 	        String chartPath = context.getRealPath("/") + "charts\\" + barChartName;
+		 	       
+		 			  	ChartProducer.createALineChartforVotingTrendzNew(constituencyName + " Voting Trendz" ,createDataset2(electionTrendzReportVO.getElectionTrendzOverviewVO().getPartyElectionTrendzVO()),createDataset1(electionTrendzReportVO.getElectionTrendzOverviewVO().getPartyElectionTrendzVO()), chartPath);
+		 	        	request.setAttribute("barChartName", barChartName);
+		 				session.setAttribute("barChartName", barChartName);
+		 	         
+		    	 }
+		    	 catch(Exception exc){
+		    		 exc.printStackTrace();
+		    	 }
+		    }
+		
+		
+		}
 		
 		if(constituencyElectionResultsVO != null || constituencyDetails != null){
 			//electionType = constituencyElectionResultsVO.get(0).getElectionType();
@@ -212,4 +264,34 @@ public class ConstituencyPageAction extends ActionSupport implements
 			return ERROR;
 		
 	}
+	
+	private CategoryDataset createDataset1(List<PartyResultsTrendzVO> partyResultsTrendzVO) {
+		
+	     final String category2 = "Male %";
+	     final String category3 = "Female %";
+	     final String category4 = "MaleOrFemale %";
+       final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+       for(PartyResultsTrendzVO result: partyResultsTrendzVO){
+       	final String series =  result.getPartyName();
+       	dataset.addValue(new Double(result.getMaleVotesPercent()), category2, series);
+       	dataset.addValue(new Double(result.getFemaleVotesPercent()), category3, series);
+    	dataset.addValue(new Double(result.getMaleAndFemaleVotesPercent()), category4, series);
+       }
+       return dataset;
+       
+   }
+	
+	private CategoryDataset createDataset2(List<PartyResultsTrendzVO> partyResultsTrendzVO) {
+		 final String category1 =  "Total %";
+	     
+      final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+      for(PartyResultsTrendzVO result: partyResultsTrendzVO){
+      	final String series =  result.getPartyName();
+      	dataset.addValue(new Double(result.getTotalVotesPercent()), category1,series );
+       }
+      return dataset;
+      
+  }
+
+	
 }
