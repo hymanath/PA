@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -16,6 +17,7 @@ import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICandidateResultObjectsDAO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.dto.PartyWiseResultVO;
 import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.service.impl.StateElectionResultsService;
@@ -54,9 +56,9 @@ public class StateElectionResultsServiceTest {
 		    	 Assert.assertEquals("2009",electionResults.getElectionYear());
 		    	 Assert.assertEquals(new Long(10), electionResults.getElectionId());
 		    	 
-		    	 List<PartyResultsVO> partyResults = electionResults.getPartyResultsVO();
+		    	 List<PartyWiseResultVO> partyResults = electionResults.getPartyResultsVO();
 		    	 
-		    	   for(PartyResultsVO Results:partyResults){
+		    	   for(PartyWiseResultVO Results:partyResults){
 		    		   
 		    		   Assert.assertEquals(new Long(10), Results.getPartyId());
 		    		   Assert.assertEquals("Telangana Rashtra Samithi", Results.getPartyName());
