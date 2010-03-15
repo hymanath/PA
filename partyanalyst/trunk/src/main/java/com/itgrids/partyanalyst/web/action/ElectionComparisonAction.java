@@ -87,7 +87,7 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 	public String execute() throws Exception {
 		
 		partyList = staticDataService.getStaticParties();
-		yearsList = staticDataService.getElectionIdsAndYears(new Long(2),new Long(1));
+		yearsList = staticDataService.getElectionIdsAndYearsInfo(new Long(2),new Long(1));
 		
 		List<SelectOptionVO> eList = new ArrayList<SelectOptionVO>();
 		
