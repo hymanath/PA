@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.service;
 
+import com.itgrids.partyanalyst.dto.ElectionTrendzInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalCompleteElectionTrendzVO;
 
@@ -17,4 +19,6 @@ public interface IElectionTrendzService {
 	public ElectionTrendzReportVO getVotingTrendzForAnElection(Long electionId,Long elecType,String elecYear,Long stateId,Long countryId,Long constituencyId,Long maleTrendz,Long femaleTrendz);
 	
 	public ElectionTrendzReportVO getVotingTrendzForAConstituency(Long electionId,Long elecType,String elecYear,Long constituencyId,Long maleTrendz,Long femaleTrendz) throws Exception;
+	
+	public ElectionTrendzOverviewVO getConstituencyVotingTrendzForAnElection(Long constituencyId,String constituencyName,Long elecType,String elecYear,ElectionTrendzInfoVO completeTrendz,ElectionTrendzInfoVO maleTrendz,ElectionTrendzInfoVO femaleTrendz,ElectionTrendzInfoVO maleAFemaleTrendz) throws Exception;
 }
