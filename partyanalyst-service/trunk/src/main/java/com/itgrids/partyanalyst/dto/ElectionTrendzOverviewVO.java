@@ -20,21 +20,22 @@ public class ElectionTrendzOverviewVO implements Serializable {
 	private Long totalVoters;
 	private Long maleVoters;
 	private Long femaleVoters;
-	private Long mAndFVoters;
+	private Long maleAndFemaleVoters;
 	private Long totalPolledVotes;
 	private Long malePolledVotes;
 	private Long femalePolledVotes;
-	private Long mAFPolledVotes;
+	private Long maleAndFemalePolledVotes;
 	private String pollingPercent;
 	private String malePollingPercent;
 	private String femalePollingPercent;
-	private String mAFPollingPercent;
+	private String maleAndFemalePollingPercent;
 	
 	private PartyResultsTrendzVO wonCandidateResultTrendz;
     private List<PartyResultsTrendzVO> partyElectionTrendzVO;
     
     
     //getters and setters
+    
 	public Long getTotalVoters() {
 		return totalVoters;
 	}
@@ -57,14 +58,6 @@ public class ElectionTrendzOverviewVO implements Serializable {
 
 	public void setFemaleVoters(Long femaleVoters) {
 		this.femaleVoters = femaleVoters;
-	}
-
-	public Long getMAndFVoters() {
-		return mAndFVoters;
-	}
-
-	public void setMAndFVoters(Long andFVoters) {
-		mAndFVoters = andFVoters;
 	}
 
 	public Long getTotalPolledVotes() {
@@ -91,14 +84,6 @@ public class ElectionTrendzOverviewVO implements Serializable {
 		this.femalePolledVotes = femalePolledVotes;
 	}
 
-	public Long getMAFPolledVotes() {
-		return mAFPolledVotes;
-	}
-
-	public void setMAFPolledVotes(Long polledVotes) {
-		mAFPolledVotes = polledVotes;
-	}
-
 	public String getPollingPercent() {
 		return pollingPercent;
 	}
@@ -123,14 +108,7 @@ public class ElectionTrendzOverviewVO implements Serializable {
 		this.femalePollingPercent = femalePollingPercent;
 	}
 
-	public String getMAFPollingPercent() {
-		return mAFPollingPercent;
-	}
-
-	public void setMAFPollingPercent(String pollingPercent) {
-		mAFPollingPercent = pollingPercent;
-	}
-
+	
 	public PartyResultsTrendzVO getWonCandidateResultTrendz() {
 		return wonCandidateResultTrendz;
 	}
@@ -148,4 +126,29 @@ public class ElectionTrendzOverviewVO implements Serializable {
 			List<PartyResultsTrendzVO> partyElectionTrendzVO) {
 		this.partyElectionTrendzVO = partyElectionTrendzVO;
 	}
+	
+	public Long getMaleAndFemaleVoters() {
+		return maleAndFemaleVoters;
+	}
+
+	public void setMaleAndFemaleVoters(Long maleAndFemaleVoters) {
+		this.maleAndFemaleVoters = maleAndFemaleVoters;
+	}
+
+	public Long getMaleAndFemalePolledVotes() {
+		return maleAndFemalePolledVotes;
+	}
+
+	public void setMaleAndFemalePolledVotes(Long maleAndFemalePolledVotes) {
+		this.maleAndFemalePolledVotes = maleAndFemalePolledVotes;
+	}
+
+	public String getMaleAndFemalePollingPercent() {
+		return maleAndFemalePollingPercent;
+	}
+
+	public void setMaleAndFemalePollingPercent(String maleAndFemalePollingPercent) {
+		this.maleAndFemalePollingPercent = maleAndFemalePollingPercent;
+	}
+
 }

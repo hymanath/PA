@@ -10,7 +10,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 
 public class PartyResultsTrendzVO implements Serializable {
-
+	
 	/**
 	 * 
 	 */
@@ -27,11 +27,11 @@ public class PartyResultsTrendzVO implements Serializable {
 	private Long totalVotes;
 	private Long maleVotes;
 	private Long femaleVotes;
-	private Long maleAFemaleVotes;
+	private Long maleAndFemaleVotes;
 	private String totalVotesPercent;
 	private String maleVotesPercent;
 	private String femaleVotesPercent;
-	private String mAFVotesPercent;
+	private String maleAndFemaleVotesPercent;
 	private Long rank;
 	private String status;
 	
@@ -102,12 +102,7 @@ public class PartyResultsTrendzVO implements Serializable {
 	public void setFemaleVotes(Long femaleVotes) {
 		this.femaleVotes = femaleVotes;
 	}
-	public Long getMaleAFemaleVotes() {
-		return maleAFemaleVotes;
-	}
-	public void setMaleAFemaleVotes(Long maleAFemaleVotes) {
-		this.maleAFemaleVotes = maleAFemaleVotes;
-	}
+	
 	public String getTotalVotesPercent() {
 		return totalVotesPercent;
 	}
@@ -126,12 +121,7 @@ public class PartyResultsTrendzVO implements Serializable {
 	public void setFemaleVotesPercent(String femaleVotesPercent) {
 		this.femaleVotesPercent = femaleVotesPercent;
 	}
-	public String getMAFVotesPercent() {
-		return mAFVotesPercent;
-	}
-	public void setMAFVotesPercent(String votesPercent) {
-		mAFVotesPercent = votesPercent;
-	}
+	
 	public Long getRank() {
 		return rank;
 	}
@@ -144,5 +134,17 @@ public class PartyResultsTrendzVO implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
+	
+	public Long getMaleAndFemaleVotes() {
+		return maleAndFemaleVotes;
+	}
+	public void setMaleAndFemaleVotes(Long maleAndFemaleVotes) {
+		this.maleAndFemaleVotes = maleAndFemaleVotes;
+	}
+	public String getMaleAndFemaleVotesPercent() {
+		return maleAndFemaleVotesPercent;
+	}
+	public void setMaleAndFemaleVotesPercent(String maleAndFemaleVotesPercent) {
+		this.maleAndFemaleVotesPercent = maleAndFemaleVotesPercent;
+	}
 }
