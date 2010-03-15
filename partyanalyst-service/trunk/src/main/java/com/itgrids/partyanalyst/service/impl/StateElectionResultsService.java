@@ -8,11 +8,14 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dao.ICandidateResultObjectsDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.dto.PartyWiseResultVO;
 import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Election;
@@ -42,7 +45,7 @@ public class StateElectionResultsService implements
     @SuppressWarnings("unchecked")
 	public StateElectionResultsVO getStateElectionResults(Long electionId){
 		
-		List<PartyResultsVO> partyResultsVO = null;
+		List<PartyWiseResultVO> partyResultsVO = null;
 		StateElectionResultsVO stateElectionResults = new StateElectionResultsVO();
 		Long partyId = new Long(0);
 		String partyName = "";
@@ -51,7 +54,7 @@ public class StateElectionResultsService implements
 		
 		List elecResults = nominationDAO.findElectionDataByElectionId(electionId);
 		if(elecResults != null){
-		partyResultsVO = new ArrayList<PartyResultsVO>(0);
+		partyResultsVO = new ArrayList<PartyWiseResultVO>(0);
 		for(int i=0; i<elecResults.size(); i++){
 			Object[] params = (Object[])elecResults.get(i);
 			partyId  = (Long)params[0];
@@ -59,7 +62,7 @@ public class StateElectionResultsService implements
 			seatsWon = (Long)params[2];
 			partyFlag = (String)params[3];
 			
-			PartyResultsVO partyResults = new PartyResultsVO();
+			PartyWiseResultVO partyResults = new PartyWiseResultVO();
 			partyResults.setPartyId(partyId);
 			partyResults.setPartyName(partyName);
 			partyResults.setTotalSeatsWon(seatsWon.intValue());
