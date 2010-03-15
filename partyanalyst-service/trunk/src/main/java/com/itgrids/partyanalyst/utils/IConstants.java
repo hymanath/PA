@@ -63,6 +63,8 @@ public interface IConstants {
 	public final static String COMPLETE_MANDAL = "COMPLETE_MANDAL";
 	public final static String MALE_TRENDZ = "MALE_TRENDZ";
 	public final static String FEMALE_TRENDZ = "FEMALE_TRENDZ";
+	public final static Long MALETRENDZ = new Long(0);
+	public final static Long FEMALETRENDZ = new Long(0);
 	public final static String MALE_FEMALE_TRENDZ = "MALE_FEMALE_TRENDZ";
 	public final static String TEHSIL = "TEHSIL";
 	public static final int LATEST_CENSUS_YEAR = 2001;
