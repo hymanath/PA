@@ -30,6 +30,8 @@ public class ElectionTrendzReportVO implements Serializable {
 	private ElectionTrendzInfoVO femaleTrendz;
 	private ElectionTrendzInfoVO maleAndFemaleTrendz;
 	
+	private ElectionTrendzOverviewVO electionTrendzOverviewVO;
+	
 	private ResultStatus resultStatus;
 	
     //getters and setters
@@ -127,6 +129,15 @@ public class ElectionTrendzReportVO implements Serializable {
 
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+
+	public ElectionTrendzOverviewVO getElectionTrendzOverviewVO() {
+		return electionTrendzOverviewVO;
+	}
+
+	public void setElectionTrendzOverviewVO(
+			ElectionTrendzOverviewVO electionTrendzOverviewVO) {
+		this.electionTrendzOverviewVO = electionTrendzOverviewVO;
 	}
 	
 
