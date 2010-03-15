@@ -567,6 +567,26 @@
 			<result type="json" name="success">
 				<param name="root">candidateResults</param>				
 			</result> 
+		</action>
+		<action name="getDistrictsAjaxAction" class="electionVotingTrendzAction" method="getDistrictsByStateId">
+			<result type="json" name="success">
+				<param name="root">districtList</param>				
+			</result>		
+		</action>
+		<action name="getMandalsAjaxAction" class="electionVotingTrendzAction" method="getMandalsByDistrictId">
+			<result type="json" name="success">
+				<param name="root">mandalVO</param>				
+			</result>		
+		</action>
+		<action name="getConstituenciesAjaxAction" class="electionVotingTrendzAction" method="getConstituenciesByElectionTypeIdAndStateId">
+			<result type="json" name="success">
+				<param name="root">constituenciesList</param>				
+			</result>		
+		</action>
+		<action name="getVotingTrendzAction" class="electionVotingTrendzAction" method="getVotingTrendz">
+			<result type="json" name="success">
+				<param name="root">electionTrendzReportVO</param>				
+			</result>		
 		</action>		
 	</package>
 </struts>
