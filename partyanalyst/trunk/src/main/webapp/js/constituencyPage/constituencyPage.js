@@ -627,8 +627,7 @@ function buildConstituencyConnectPeopleWindow()
 
 function buildCenterConstituencyVotersInfoContent()
 {
-	var  votersElmt = document.getElementById('constituencyVotersInfoDiv_Body_voters');	
-	var  candidateElmt = document.getElementById('constituencyVotersInfoDiv_Body_candidate');	
+	var  votersElmt = document.getElementById('constituencyVotersInfoDiv_Body_voters');		
 
 	var str = '';
 	str+='<table class="constituencyInfoTable" width="60%">';
@@ -715,10 +714,22 @@ function buildCenterConstituencyVotersInfoContent()
 	var myDataTable = new YAHOO.widget.DataTable("constituencyVotersInfoDiv_Body_candidate",myColumnDefs, myDataSource,{caption:captionStr}); 
 
 	
-	
-
+	buildVotingTrendzGraph();
+	buildCandidateVotingTrendzGraph();
 }
 
+function buildVotingTrendzGraph()
+{
+	var votingTrendzelmt = document.getElementById('constituencyVotersInfoDiv_Body_votingTrendzGraph');
+	
+	
+}
+
+function buildCandidateVotingTrendzGraph()
+{
+	var candidateTrendzelmt = document.getElementById('constituencyVotersInfoDiv_Body_candidateTrendzGraph');
+	
+}
 
 function initializeConstituencyPage()
 {		
