@@ -235,9 +235,9 @@ public class StaticDataService implements IStaticDataService {
 	
 
 	@SuppressWarnings("unchecked")
-	public List<SelectOptionVO> getElectionIdsAndYears(Long elecType,Long stateId){
+	public List<SelectOptionVO> getElectionIdsAndYearsInfo(Long elecType,Long stateId){
 		List<SelectOptionVO> electionYears = new ArrayList<SelectOptionVO>();
-		List elections = electionDAO.findElectionIdAndYear(elecType,stateId);
+		List elections = electionDAO.findElectionAndYearForElectionTypeAndState(elecType,stateId);
 		if(elections != null){
 		 for(int i=0;i<elections.size();i++){
 			 Object[] params = (Object[])elections.get(i);
