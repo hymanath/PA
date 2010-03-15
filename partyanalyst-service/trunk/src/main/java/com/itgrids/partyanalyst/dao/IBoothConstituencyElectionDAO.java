@@ -79,5 +79,8 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	 
 	@SuppressWarnings("unchecked")
 	public List findBoothwiseResultsConstituency(Long constituencyId);
-
+    
+	@SuppressWarnings("unchecked")
+    public List getPreviousYearElectionDetails(Long electionId,Long constituencyId);
+	
 }
