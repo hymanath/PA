@@ -113,16 +113,17 @@
 							<div id="constituencyPageElectionInfoDiv_Body" class="layoutBodyClass"></div>
 						</div>		
 					</div>
-					
+				
+
 					<div id="constituencyCenterContentOuter" class="rounded"> 						
 						<div class="corner topLeft"></div>
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>
 
-						<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass">
-							<div id="constituencyVotersInfoDiv_Head" class="layoutHeadersClass">${constituencyDetails.constituencyName} Constituency Voters Details :</div>
-							<div id="constituencyVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
+						<div id="mandalsVotersInfoDiv_Main" class="innerLayoutDivClass">
+							<div id="mandalsVotersInfoDiv_Head" class="layoutHeadersClass">${constituencyDetails.constituencyName} Mandals Voters Details :</div>
+							<div id="mandalsVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
 						</div>
 					</div>
 				
@@ -160,6 +161,22 @@
 				</div>
 			</td>
 			
+		</tr>
+		<tr>
+			<td colspan="2">
+				<div id="constituencyCenterContentOuter" class="rounded"> 						
+					<div class="corner topLeft"></div>
+					<div class="corner topRight"></div>
+					<div class="corner bottomLeft"></div>
+					<div class="corner bottomRight"></div>
+
+					<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass">
+						<div id="constituencyVotersInfoDiv_Head" class="layoutHeadersClass">${constituencyDetails.constituencyName} Constituency Voting Trendz :</div>
+						<div id="constituencyVotersInfoDiv_Body_voters" class="layoutBodyClass yui-skin-sam"></div>
+						<div id="constituencyVotersInfoDiv_Body_candidate" class="layoutBodyClass yui-skin-sam"></div>
+					</div>
+				</div>
+			</td>
 		</tr>
 	</table>
 	<!--<div id="constituencyPageLayoutDiv">
@@ -309,6 +326,48 @@
 		
 	constituencyPageMainObj.problemsInfo.push(problemObj);
 	</c:forEach>
+
+	/*
+		Voting Trendz Info 
+		------------------
+	*/
+		
+		constituencyPageMainObj.votingTrendzInfo.totalVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.totalVoters}';
+		constituencyPageMainObj.votingTrendzInfo.maleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.maleVoters}';
+		constituencyPageMainObj.votingTrendzInfo.femaleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.femaleVoters}';
+		constituencyPageMainObj.votingTrendzInfo.maleAndFemaleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemaleVoters}';		
+		constituencyPageMainObj.votingTrendzInfo.totalPolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.totalPolledVotes}';
+		constituencyPageMainObj.votingTrendzInfo.malePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.malePolledVotes}';
+		constituencyPageMainObj.votingTrendzInfo.femalePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.femalePolledVotes}';
+		constituencyPageMainObj.votingTrendzInfo.maleAndFemalePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemalePolledVotes}';
+		constituencyPageMainObj.votingTrendzInfo.pollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.pollingPercent}';
+		constituencyPageMainObj.votingTrendzInfo.malePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.malePollingPercent}';
+		constituencyPageMainObj.votingTrendzInfo.femalePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.femalePollingPercent}';
+		constituencyPageMainObj.votingTrendzInfo.maleAndFemalePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemalePollingPercent}';
+		
+		<c:forEach var="candidate" items="${electionTrendzReportVO.electionTrendzOverviewVO.partyElectionTrendzVO}">	
+			var cObj = {
+							partyId:'${candidate.partyId}',
+							partyName:'${candidate.partyName}',
+							partyLogo:'${candidate.partyLogo}',
+							partyFlag:'${candidate.partyFlag}',
+							candidateId:'${candidate.candidateId}',
+							candidateName:'${candidate.candidateName}',							
+							validVotes:'${candidate.validVotes}',
+							totalVotes:'${candidate.totalVotes}',
+							maleVotes:'${candidate.maleVotes}',
+							femaleVotes:'${candidate.femaleVotes}',
+							maleAndFemaleVotes:'${candidate.maleAndFemaleVotes}',
+							totalVotesPercent:'${candidate.totalVotesPercent}',
+							maleVotesPercent:'${candidate.maleVotesPercent}',
+							femaleVotesPercent:'${candidate.femaleVotesPercent}',
+							maleAndFemaleVotesPercent:'${candidate.maleAndFemaleVotesPercent}',
+							rank:'${candidate.rank}',
+							status:'${candidate.status}'
+					   };
+					  constituencyPageMainObj.votingTrendzInfo.votingTrendzTable.push(cObj);
+		</c:forEach>
+		console.log(constituencyPageMainObj.votingTrendzInfo);
 
 	initializeConstituencyPage();
 </script>

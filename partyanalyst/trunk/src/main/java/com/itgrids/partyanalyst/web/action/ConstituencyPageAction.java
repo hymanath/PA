@@ -22,18 +22,19 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
+import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
+import com.itgrids.partyanalyst.service.IElectionTrendzService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ConstituencyPageAction extends ActionSupport implements
 		ServletRequestAware, ServletResponseAware {
 
-	
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -47,12 +48,31 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private List<VotersWithDelimitationInfoVO> votersInfo;	 
 	 private CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituency;
 	 private IProblemManagementReportService problemManagementReportService;
-	 private List<ProblemBeanVO> problemBean;	 	 
+	 private List<ProblemBeanVO> problemBean;
+	 private ElectionTrendzReportVO electionTrendzReportVO;
+	 
 	 private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	 private DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO;	
+	 private IElectionTrendzService electionTrendzService;
 	 private static final Logger log = Logger.getLogger(ConstituencyPageAction.class);
 	 
-		
+	
+	public ElectionTrendzReportVO getElectionTrendzReportVO() {
+		return electionTrendzReportVO;
+	}
+
+	public void setElectionTrendzReportVO(
+			ElectionTrendzReportVO electionTrendzReportVO) {
+		this.electionTrendzReportVO = electionTrendzReportVO;
+	}
+	public IElectionTrendzService getElectionTrendzService() {
+		return electionTrendzService;
+	}
+
+	public void setElectionTrendzService(
+			IElectionTrendzService electionTrendzService) {
+		this.electionTrendzService = electionTrendzService;
+	}
 	 public IProblemManagementReportService getProblemManagementReportService() {
 		return problemManagementReportService;
 	}
@@ -176,6 +196,11 @@ public class ConstituencyPageAction extends ActionSupport implements
 		candidateDetailsForConstituency = constituencyPageService.getCandidateAndPartyInfoForConstituency(constituencyId);
 		
 		problemBean = problemManagementReportService.getConstituencyProblemsInfo(constituencyId, 0L,"");
+		
+	
+		electionTrendzReportVO = electionTrendzService.getVotingTrendzForAnElection(new Long(0), new Long(2), "0", new Long(1), new Long(1), new Long(232), new Long(0), new Long(0));
+		System.out.println("electionTrendzReportVO ============ "+electionTrendzReportVO);
+		
 		if(problemBean != null)
 			System.out.println("problemBean === "+problemBean.size());
 		

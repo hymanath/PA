@@ -368,3 +368,31 @@ legend
 	font-weight:bold;
 	text-decoration:none;
 }
+
+#dataTableHead
+{
+	float:right;
+	font-size:11px;
+	margin-right:20px;
+}
+
+#dataTableTitle
+{
+	float:left;
+	font-weight:bold;
+	text-decoration:underline;
+}
+
+.constituencyInfoTable th
+{
+	background-color:#4A6A86;
+	color:#FFFFFF;
+	padding:5px;
+	text-align:left;
+}
+.constituencyInfoTable td
+{
+	background-color:#E3E8EC;
+	padding:5px 10px 5px 5px;
+	text-align:left;
+}

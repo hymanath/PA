@@ -14,7 +14,22 @@ var constituencyPageMainObj={
 								constituencyVotersInfo:[],
 								presentAssemblyCandidate:[],
 								presentParliamentCandidate:[],
-								problemsInfo:[]
+								problemsInfo:[],
+								votingTrendzInfo:{
+													totalVoters:'',
+													maleVoters:'',
+													femaleVoters:'',
+													maleAndFemaleVoters:'',
+													totalPolledVotes:'',
+													malePolledVotes:'',
+													femalePolledVotes:'',
+													maleAndFemalePolledVotes:'',
+													pollingPercent:'',
+													malePollingPercent:'',
+													femalePollingPercent:'',
+													maleAndFemaleVotesPercent:'',
+													votingTrendzTable:[]
+												 }
 							};
 
 /*var address="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";		
@@ -332,7 +347,7 @@ function buildConstituencyLayout()
 
 function buildCenterVotersCandidateInfoContent()
 {
-	var elmt = document.getElementById("constituencyVotersInfoDiv_Body");
+	var elmt = document.getElementById("mandalsVotersInfoDiv_Body");
 	
 	if(constituencyPageMainObj.constituencyVotersInfo.length == 0)
 	{
@@ -609,6 +624,102 @@ function buildConstituencyConnectPeopleWindow()
 	var connectButton = new YAHOO.widget.Button("connectButton");
 
 }
+
+function buildCenterConstituencyVotersInfoContent()
+{
+	var  votersElmt = document.getElementById('constituencyVotersInfoDiv_Body_voters');	
+	var  candidateElmt = document.getElementById('constituencyVotersInfoDiv_Body_candidate');	
+
+	var str = '';
+	str+='<table class="constituencyInfoTable" width="60%">';
+	str+='<tr>';
+	str+='<th></th>';
+	str+='<th>Voters</th>';
+	str+='<th>Polled Votes</th>';
+	str+='<th>Polling % </th>';
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th>Male</th>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleVoters+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.malePolledVotes+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.malePollingPercent+'</td>';
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th>Female</th>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.femaleVoters+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.femalePolledVotes+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.femalePollingPercent+'</td>';
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th>Male/Female</th>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleAndFemaleVoters+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleAndFemalePolledVotes+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleAndFemalePollingPercent+'</td>';
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th>Total</th>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.totalVoters+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.totalPolledVotes+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.pollingPercent+'</td>';
+	str+='</tr>';
+
+	str+='</table>';
+
+	if(votersElmt)
+		votersElmt.innerHTML=str;
+	
+
+
+	 var myDataSource = new YAHOO.util.DataSource(constituencyPageMainObj.votingTrendzInfo.votingTrendzTable); 
+	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	 myDataSource.responseSchema = { 
+				fields: [
+							{	key : "candidateName"},							
+							{	key : "partyName"},																		
+							{	key : "totalVotes",parser:"number"},							
+							{	key : "maleVotes",parser:"number"},
+							{	key : "femaleVotes",parser:"number"},
+							{	key : "maleAndFemaleVotes",parser:"number"},
+							{	key : "totalVotesPercent",parser:"number"},
+							{	key : "maleVotesPercent",parser:"number"},
+							{	key : "femaleVotesPercent",parser:"number"},
+							{	key : "maleAndFemaleVotesPercent",parser:"number"},
+							{	key : "status"}
+						]
+			}; 
+	
+	 var myColumnDefs = [ 
+				{key:"candidateName",label:'Name', sortable:true}, 
+				{key:"partyName", label:'Party', sortable:true}, 							
+				{key:"totalVotes", label:'Total Votes', sortable:true},
+				{key:"maleVotes", label:'Votes(M)', sortable:true},
+				{key:"femaleVotes", label:'Votes(F)', sortable:true},
+				{key:"maleAndFemaleVotes", label:'Votes(M/F )', sortable:true},
+				{key:"totalVotesPercent", label:'Votes %', sortable:true},
+				{key:"maleVotesPercent", label:'M %', sortable:true},
+				{key:"femaleVotesPercent", label:'F %', sortable:true},
+				{key:"maleAndFemaleVotesPercent", label:'M/F %', sortable:true},
+				{key:"status", label:'status', sortable:true}
+			]; 
+		 
+
+	var captionStr = '';
+	captionStr += '<div width="100%">';
+	captionStr += '<span id="dataTableTitle">Candidate Voting Trendz</span>';
+	captionStr += '<span id="dataTableHead"> <Font color="Red">* </Font>M - Male , <Font color="Red">* </Font> F - Female </span>';
+	captionStr += '</div>';
+	var myDataTable = new YAHOO.widget.DataTable("constituencyVotersInfoDiv_Body_candidate",myColumnDefs, myDataSource,{caption:captionStr}); 
+
+	
+	
+
+}
+
+
 function initializeConstituencyPage()
 {		
 	buildRightlayoutMap();
@@ -617,6 +728,7 @@ function initializeConstituencyPage()
 	buildProblemPostingWindow();
 	buildProblemViewingWindow();
 	buildElectionResults();
+	buildCenterConstituencyVotersInfoContent();
 	buildCenterVotersCandidateInfoContent();
 	showCurrentlyElectedCandidate();
 }
