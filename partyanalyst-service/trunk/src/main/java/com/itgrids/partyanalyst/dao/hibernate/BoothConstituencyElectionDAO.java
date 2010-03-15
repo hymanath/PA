@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Election;
 
 public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConstituencyElection, Long> implements IBoothConstituencyElectionDAO{
 
@@ -301,4 +302,11 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		return getHibernateTemplate().find(hqlQuery.toString(), constituencyId);
 		
 	}
+	@SuppressWarnings("unchecked")
+	public List findBoothwiseResultsConstituency(Long constituencyId)
+	{
+		return   getHibernateTemplate().find("select max(Model.constituencyElection.election.electionYear),Model.constituencyElection.election.electionId from BoothConstituencyElection Model where  Model.constituencyElection.constituency.constituencyId= ?" , constituencyId);
+		
+	}
+	
 }
