@@ -27,7 +27,7 @@ var constituencyPageMainObj={
 													pollingPercent:'',
 													malePollingPercent:'',
 													femalePollingPercent:'',
-													maleAndFemaleVotesPercent:'',
+													maleAndFemalePollingPercent:'',
 													votingTrendzTable:[]
 												 }
 							};
@@ -636,6 +636,7 @@ function buildCenterConstituencyVotersInfoContent()
 	str+='<th>Voters</th>';
 	str+='<th>Polled Votes</th>';
 	str+='<th>Polling % </th>';
+	str+='<th>% in Total Polling </th>';
 	str+='</tr>';
 
 	str+='<tr>';
@@ -643,6 +644,7 @@ function buildCenterConstituencyVotersInfoContent()
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleVoters+'</td>';
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.malePolledVotes+'</td>';
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.malePollingPercent+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.overallMalePollPercent+'</td>';
 	str+='</tr>';
 
 	str+='<tr>';
@@ -650,6 +652,7 @@ function buildCenterConstituencyVotersInfoContent()
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.femaleVoters+'</td>';
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.femalePolledVotes+'</td>';
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.femalePollingPercent+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.overallFemalePollPercent+'</td>';
 	str+='</tr>';
 
 	str+='<tr>';
@@ -657,12 +660,14 @@ function buildCenterConstituencyVotersInfoContent()
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleAndFemaleVoters+'</td>';
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleAndFemalePolledVotes+'</td>';
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleAndFemalePollingPercent+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.overallMaleOrFemalePollPercent+'</td>';
 	str+='</tr>';
 
 	str+='<tr>';
 	str+='<th>Total</th>';
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.totalVoters+'</td>';
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.totalPolledVotes+'</td>';
+	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.pollingPercent+'</td>';
 	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.pollingPercent+'</td>';
 	str+='</tr>';
 
