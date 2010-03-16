@@ -172,12 +172,32 @@
 
 					<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass">
 						<div id="constituencyVotersInfoDiv_Head" class="layoutHeadersClass">${constituencyDetails.constituencyName} Constituency Voting Trendz :</div>
-						<div id="constituencyVotersInfoDiv_Body_voters" class="layoutBodyClass yui-skin-sam"></div>
-						<div id="constituencyVotersInfoDiv_Body_votingTrendzGraph" class="layoutBodyClass yui-skin-sam"></div>
-						<div id="constituencyVotersInfoDiv_Body_candidateTrendzGraph" class="layoutBodyClass yui-skin-sam">
-							<IMG id="chartImg" SRC="charts/<%=request.getAttribute("barChartName")%>">
-						</div>
-						<div id="constituencyVotersInfoDiv_Body_candidate" class="layoutBodyClass yui-skin-sam"></div>
+						
+						<table>
+						<tr>
+							<td width="60%"><div id="constituencyVotersInfoDiv_Body_voters" class="layoutBodyClass yui-skin-sam"></div></td>
+							<td width="40%"><div id="constituencyVotersInfoDiv_Body_votersGraph"></div></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="constituencyVotersInfoDiv_Body_votingTrendzGraph" class="layoutBodyClass yui-skin-sam">
+									<IMG id="chartImg" SRC="charts/<%=request.getAttribute("barChartName")%>">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="constituencyVotersInfoDiv_Body_candidateTrendzGraph" class="layoutBodyClass yui-skin-sam">
+								
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<div id="constituencyVotersInfoDiv_Body_candidate" class="layoutBodyClass yui-skin-sam"></div>
+							</td>
+						</tr>
+						</table>
 					</div>
 				</div>
 			</td>
