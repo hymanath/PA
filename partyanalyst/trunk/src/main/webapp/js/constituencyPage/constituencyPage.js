@@ -630,7 +630,7 @@ function buildCenterConstituencyVotersInfoContent()
 	var  votersElmt = document.getElementById('constituencyVotersInfoDiv_Body_voters');		
 
 	var str = '';
-	str+='<table class="constituencyInfoTable" width="60%">';
+	str+='<table class="constituencyInfoTable" width="90%">';
 	str+='<tr>';
 	str+='<th></th>';
 	str+='<th>Voters</th>';
