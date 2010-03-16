@@ -425,7 +425,9 @@ public class StaticDataService implements IStaticDataService {
 			constituencyWinnerInfoVO.setCandidateId(obj[4].toString());
 			constituencyWinnerInfoVO.setConstituencyId(obj[3].toString());
 			constituencyWinnerInfoVO.setPartyName(obj[2].toString());
-			constituencyWinnerInfoVO.setPartyFlag(obj[5].toString());
+			if(obj[5] != null){
+				constituencyWinnerInfoVO.setPartyFlag(obj[5].toString());
+			}
 			constituencyWinnerInfoVOList.add(constituencyWinnerInfoVO);
 		}
 		constituenciesStatusVO.setConstituencyWinnerInfoVO(constituencyWinnerInfoVOList);
