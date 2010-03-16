@@ -30,8 +30,11 @@ public class PartyResultsTrendzVO implements Serializable {
 	private Long maleAndFemaleVotes;
 	private String totalVotesPercent;
 	private String maleVotesPercent;
+	private String overallMaleVotesPercent;
 	private String femaleVotesPercent;
+	private String overallFemaleVotesPercent;
 	private String maleAndFemaleVotesPercent;
+	private String overallMaleOrFemaleVotesPercent;
 	private Long rank;
 	private String status;
 	
@@ -146,5 +149,24 @@ public class PartyResultsTrendzVO implements Serializable {
 	}
 	public void setMaleAndFemaleVotesPercent(String maleAndFemaleVotesPercent) {
 		this.maleAndFemaleVotesPercent = maleAndFemaleVotesPercent;
+	}
+	public String getOverallMaleVotesPercent() {
+		return overallMaleVotesPercent;
+	}
+	public void setOverallMaleVotesPercent(String overallMaleVotesPercent) {
+		this.overallMaleVotesPercent = overallMaleVotesPercent;
+	}
+	public String getOverallFemaleVotesPercent() {
+		return overallFemaleVotesPercent;
+	}
+	public void setOverallFemaleVotesPercent(String overallFemaleVotesPercent) {
+		this.overallFemaleVotesPercent = overallFemaleVotesPercent;
+	}
+	public String getOverallMaleOrFemaleVotesPercent() {
+		return overallMaleOrFemaleVotesPercent;
+	}
+	public void setOverallMaleOrFemaleVotesPercent(
+			String overallMaleOrFemaleVotesPercent) {
+		this.overallMaleOrFemaleVotesPercent = overallMaleOrFemaleVotesPercent;
 	}
 }
