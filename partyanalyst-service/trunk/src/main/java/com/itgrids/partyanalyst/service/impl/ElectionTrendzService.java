@@ -898,8 +898,11 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			partyResultsTrendzVO.setMaleAndFemaleVotes(mAFTrendz.getVotesEarned());
 			partyResultsTrendzVO.setTotalVotesPercent(getPollingPercent(completeTrendz.getVotesEarned(),completeTrendz.getValidVotes()).toString());
 			partyResultsTrendzVO.setMaleVotesPercent(getPollingPercent(maleTrendz.getVotesEarned(),maleTrendz.getValidVotes()).toString());
+			partyResultsTrendzVO.setOverallMaleVotesPercent(getPollingPercent(maleTrendz.getVotesEarned(),completeTrendz.getValidVotes()).toString());
 			partyResultsTrendzVO.setFemaleVotesPercent(getPollingPercent(femaleTrendz.getVotesEarned(),femaleTrendz.getValidVotes()).toString());
+			partyResultsTrendzVO.setOverallFemaleVotesPercent(getPollingPercent(femaleTrendz.getVotesEarned(),completeTrendz.getValidVotes()).toString());
 			partyResultsTrendzVO.setMaleAndFemaleVotesPercent(getPollingPercent(mAFTrendz.getVotesEarned(),mAFTrendz.getValidVotes()).toString());
+			partyResultsTrendzVO.setOverallMaleOrFemaleVotesPercent(getPollingPercent(mAFTrendz.getVotesEarned(),completeTrendz.getValidVotes()).toString());
 		}
 		
 		return partyResultsTrendzVO;
