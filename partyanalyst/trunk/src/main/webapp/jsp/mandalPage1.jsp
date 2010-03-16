@@ -224,7 +224,7 @@ width:100%;
 }
 .infoDivMainClass
 {
-	color:#5B6872;
+	color:#3B4B58;
 	margin-top:10px;
 	
 }
@@ -276,6 +276,28 @@ width:100%;
 {
 	background:none;
 }
+
+.reportAnchors
+{
+	color:#3B4B58;
+	font-weight:bold;
+}
+
+#townshipPartyResultsPanel
+{
+	border:2px solid #3B4B58;
+}
+
+#townshipPartyResultsPanel .hd
+{
+	background-image:url(images/icons/contHeading.png);
+	background-repeat:repeat;
+}
+#townshipPartyResultsPanel .bd table
+{
+	width:100%;
+}
+
 </style>
 
 
@@ -567,14 +589,15 @@ var allZPTCMPTCElecInfo = new Array();
 
 		
 		 var rvEleStr = '';
+		 rvEleStr += '<div class="commonVotersHeadDiv"> Voting Trendz Of Different Parties In '+jsObj.villageName+' Revenue Village </div>';
 		 rvEleStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;">';
 		 rvEleStr += '<tr>';
-		 rvEleStr += '<th>Party</th>';
+		 rvEleStr += '<th style="background-color:#8D7463">Party</th>';
 		 for(var i in resultVO){
 		 rvEleStr += '<td>'+resultVO[i].partyName+'</td>';
 		 }
 		 rvEleStr += '</tr><tr>';
-		 rvEleStr += '<th>Votes Earned</th>';
+		 rvEleStr += '<th style="background-color:#8D7463">Votes Earned</th>';
 		 for(var i in resultVO){
 		 rvEleStr += '<td>'+resultVO[i].votesEarned+'</td>';
 		 }
@@ -583,13 +606,13 @@ var allZPTCMPTCElecInfo = new Array();
 
 		 myPanel = new YAHOO.widget.Panel("townshipPartyResultsPanel", {
 		 width: "550px",
-		 x:150,
-		 y:750,
-		 constraintoviewport: false,
+		 x:210,
+		 y:760,
+		 constraintoviewport: true,
 		 underlay: "none",
 		 close: true,
 		 visible: true,
-		 draggable: true
+		 draggable: false
 		 });
 		 
 		 myPanel.setHeader(" Revenue Village : "+jsObj.villageName);
@@ -599,8 +622,17 @@ var allZPTCMPTCElecInfo = new Array();
 	
 	function showRevenueVillagesInfo(resultVO){
 		
-		var rvStr = '';
+		var typeSelectElmt = document.getElementById("electionTypeSelect");
+		var yearSelectElmt = document.getElementById("electionYearSelect");		
+
+		var typeVal = ""+typeSelectElmt.options[typeSelectElmt.selectedIndex].text;
+		var yearVal = ""+yearSelectElmt.options[yearSelectElmt.selectedIndex].text;
+		
 		var rvStrDiv = document.getElementById('revenueVillagesInfo');
+
+		var rvStr = '';		
+		rvStr += '<a name="votersDiv"></a>';
+		rvStr += '<div class="commonVotersHeadDiv">Voting Trendz Of Different Parties for ${mandalInfoVO.mandalName} Mandal in  '+yearVal+' '+typeVal+' Election </div>';
 		rvStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;">';
 		rvStr += '<tr>';
 		rvStr += '<th>Party</th>';
@@ -615,7 +647,10 @@ var allZPTCMPTCElecInfo = new Array();
 		rvStr += '</tr>';
 		rvStr += '</table>';
 		rvStr += '<br/>';
-		rvStr += '<div id="revenueVillageDiv">';
+		rvStr += '<div id="revenueVillageDiv_head" class="commonVotersHeadDiv">';
+		rvStr += 'Voting Trendz In Revenue Villages / Township for ${mandalInfoVO.mandalName} Mandal in  '+yearVal+' '+typeVal+' Election ';
+		rvStr += '</div>';
+		rvStr += '<div id="revenueVillageDiv">';		
 		rvStr += '<table id="revillageInfoTable" >';
 				
 		for(var i in resultVO.revenueVillagesInfo)
@@ -629,7 +664,7 @@ var allZPTCMPTCElecInfo = new Array();
 			{
 				if(j%3 == 0 && j!=0)
 					rvStr += '<br>';
-				rvStr += '<a href="#" onclick="getBoothPageInfo('+resultVO.revenueVillagesInfo[i].booths[j].id+')">'+resultVO.revenueVillagesInfo[i].booths[j].name+',';
+				rvStr += '<a href="javascript:{}" onclick="getBoothPageInfo('+resultVO.revenueVillagesInfo[i].booths[j].id+')">'+resultVO.revenueVillagesInfo[i].booths[j].name+',';
 			}
 			rvStr += '</td>';
 			rvStr += '<td>';
@@ -639,9 +674,9 @@ var allZPTCMPTCElecInfo = new Array();
 			}
 			rvStr += '</td>';
 			rvStr += '<td>';
-			rvStr += '<a href = "#">Census Info</a><br>';
-			rvStr += '<a href = "#" onclick = "getTownshipElectionsInfo(\''+resultVO.revenueVillagesInfo[i].locationName+'\','+resultVO.revenueVillagesInfo[i].locationId+','+electionId+')">All Elections</a><br>';
-			rvStr += '<a href = "#">Cast Details</a><br>';
+			rvStr += '<a href = "javascript:{}" class="reportAnchors">Census Info</a><br>';
+			rvStr += '<a href = "#votersDiv" class="reportAnchors" onclick = "getTownshipElectionsInfo(\''+resultVO.revenueVillagesInfo[i].locationName+'\','+resultVO.revenueVillagesInfo[i].locationId+','+electionId+')"> View Voting Trendz </a><br>';
+			rvStr += '<a href = "javascript:{}" class="reportAnchors">Cast Details</a><br>';
 			rvStr += '</td>';
 			rvStr += '</tr>';
 		}
@@ -741,49 +776,49 @@ var allZPTCMPTCElecInfo = new Array();
 				electionInfo += '<div id = "data_body_div_'+i+'_'+j+'" class="commonVotersBodyDiv">';
 				electionInfo += '<table class="commonVotersTableClass"><tr>';				
 
-				electionInfo += '&nbsp;<th> Total Voters</th>';	
+				electionInfo += '<th> Total Voters</th>';	
 				if(allACPCElecInfo[i].constituencyInfo[j].totalVoters || allACPCElecInfo[i].constituencyInfo[j].totalVoters == 0)				
 					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].totalVoters+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
-				electionInfo += '&nbsp;<th> Male Voters</th>';				
+				electionInfo += '<th> Male Voters</th>';				
 				if(allACPCElecInfo[i].constituencyInfo[j].maleVoters || allACPCElecInfo[i].constituencyInfo[j].maleVoters == 0)				
 					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].maleVoters+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
-				electionInfo += '&nbsp;<th> Female Voters</th>';
+				electionInfo += '<th> Female Voters</th>';
 				if(allACPCElecInfo[i].constituencyInfo[j].femaleVoters || allACPCElecInfo[i].constituencyInfo[j].femaleVoters == 0)				
 					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].femaleVoters+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
-				electionInfo += '&nbsp;<th> Male / Female Voters</th>';
+				electionInfo += '<th> Male / Female Voters</th>';
 				if(allACPCElecInfo[i].constituencyInfo[j].maleRfemaleVoters || allACPCElecInfo[i].constituencyInfo[j].maleRfemaleVoters == 0)				
 					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].maleRfemaleVoters+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
 				electionInfo += '</tr><tr>';
-				electionInfo += '&nbsp;<th> Polled Votes</th>';	
+				electionInfo += '<th> Polled Votes</th>';	
 				if(allACPCElecInfo[i].constituencyInfo[j].polledVotes || allACPCElecInfo[i].constituencyInfo[j].polledVotes == 0)				
 					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].polledVotes+'</td>';
 				else
 					electionInfo += '<td> - </td>';
-				electionInfo += '&nbsp;<th> Male Polled Votes</th>';	
+				electionInfo += '<th> Male Polled Votes</th>';	
 				if(allACPCElecInfo[i].constituencyInfo[j].malePolledVotes || allACPCElecInfo[i].constituencyInfo[j].malePolledVotes == 0)				
 					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].malePolledVotes+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
-				electionInfo += '&nbsp;<th> Female Polled Votes</th>';	
+				electionInfo += '<th> Female Polled Votes</th>';	
 				if(allACPCElecInfo[i].constituencyInfo[j].femalePolledVotes || allACPCElecInfo[i].constituencyInfo[j].femalePolledVotes == 0)				
 					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].femalePolledVotes+'</td>';
 				else
 					electionInfo += '<td> - </td>';
 
-				electionInfo += '&nbsp;<th> Male / Female Polled Votes</th>';	
+				electionInfo += '<th> Male / Female Polled Votes</th>';	
 				if(allACPCElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes || allACPCElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes == 0)				
 					electionInfo += '<td>'+allACPCElecInfo[i].constituencyInfo[j].maleOrFemalePolledVotes+'</td>';
 				else
@@ -840,7 +875,7 @@ var allZPTCMPTCElecInfo = new Array();
 				            {key:"malepercentage",label:'%', sortable:true, resizeable:true}, 
 				            {key:"femaleVotes",label:'Female Votes', sortable:true, resizeable:true},
 				            {key:"femalepercentage",label:'%', sortable:true, resizeable:true}, 
-				            {key:"bothVotes",label:'Male&Female Votes', sortable:true, resizeable:true},
+				            {key:"bothVotes",label:'Male / Female Votes', sortable:true, resizeable:true},
 				            {key:"bothpercentage",label:'%', sortable:true, resizeable:true} 
 				        ]; 
 				 
