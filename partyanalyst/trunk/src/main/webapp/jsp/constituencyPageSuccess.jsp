@@ -392,7 +392,7 @@
 					   };
 					  constituencyPageMainObj.votingTrendzInfo.votingTrendzTable.push(cObj);
 		</c:forEach>
-		console.log(constituencyPageMainObj.votingTrendzInfo);
+		
 
 	initializeConstituencyPage();
 </script>
