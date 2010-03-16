@@ -176,7 +176,9 @@
 						<table>
 						<tr>
 							<td width="60%"><div id="constituencyVotersInfoDiv_Body_voters" class="layoutBodyClass yui-skin-sam"></div></td>
-							<td width="40%"><div id="constituencyVotersInfoDiv_Body_votersGraph"></div></td>
+							<td width="40%"><div id="constituencyVotersInfoDiv_Body_votersGraph">
+							<IMG id="pollingChartImg" SRC="charts/<%=request.getAttribute("pollingChartName")%>">
+							</div></td>
 						</tr>
 						<tr>
 							<td colspan="2">
@@ -369,6 +371,9 @@
 		constituencyPageMainObj.votingTrendzInfo.malePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.malePollingPercent}';
 		constituencyPageMainObj.votingTrendzInfo.femalePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.femalePollingPercent}';
 		constituencyPageMainObj.votingTrendzInfo.maleAndFemalePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemalePollingPercent}';
+		constituencyPageMainObj.votingTrendzInfo.overallMalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallMalePollPercent}';
+		constituencyPageMainObj.votingTrendzInfo.overallFemalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallFemalePollPercent}';
+		constituencyPageMainObj.votingTrendzInfo.overallMaleOrFemalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallMaleOrFemalePollPercent}';
 		
 		<c:forEach var="candidate" items="${electionTrendzReportVO.electionTrendzOverviewVO.partyElectionTrendzVO}">	
 			var cObj = {
