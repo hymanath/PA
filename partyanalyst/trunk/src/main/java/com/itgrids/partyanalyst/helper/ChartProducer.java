@@ -15,6 +15,7 @@ import java.util.SortedMap;
 
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartRenderingInfo;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -34,6 +35,7 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 import org.jfree.util.SortOrder;
 
 /**
@@ -136,6 +138,53 @@ public class ChartProducer {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File image = new File(fileName);
 			ChartUtilities.saveChartAsPNG(image, chart, 450, 400, info);
+		}
+		catch (java.io.IOException exc)
+		{
+		log.error("Error writing image to file");
+		}
+	}
+	
+	
+	public static void createLineChartForPolling(String title, final List<CategoryDataset> dataset, String categoryAxisLabel, 
+			String valueAxisLabel, String fileName) {
+		log.debug("creating Line chart....");
+		
+			
+        final NumberAxis seatsRangeAxis = new NumberAxis("Polling Trendz");
+        seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        //final LineAndShapeRenderer seatsRenderer = new LineAndShapeRenderer();
+        final BarRenderer seatsRenderer = new BarRenderer();
+        seatsRenderer.setDrawBarOutline(true);
+        seatsRenderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
+        final CategoryPlot seatsPlot = new CategoryPlot(dataset.get(0), null, seatsRangeAxis, seatsRenderer);
+        seatsPlot.setDomainGridlinesVisible(true);
+        seatsPlot.setForegroundAlpha(0.5f);
+        
+        final NumberAxis votesRangeAxis = new NumberAxis("% of Polling");
+        votesRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        final BarRenderer votesRenderer = new BarRenderer();
+        votesRenderer.setDrawBarOutline(true);
+        votesRenderer.setAutoPopulateSeriesFillPaint(true);
+        final BarPainter painter = votesRenderer.getBarPainter();
+        votesRenderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
+        final CategoryPlot votesPlot = new CategoryPlot(dataset.get(1), null, votesRangeAxis, votesRenderer);
+        votesPlot.setDomainGridlinesVisible(true);
+        votesPlot.setBackgroundPaint(Color.WHITE);
+        votesPlot.setForegroundAlpha(0.5f);
+        
+        final CategoryAxis domainAxis = new CategoryAxis("Category");
+        CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
+        plot.setRowRenderingOrder(SortOrder.ASCENDING);
+        plot.add(seatsPlot, 2);
+        plot.add(votesPlot, 1);
+        
+        final JFreeChart chart = new JFreeChart("Polling Trendz & Poll % ",  plot);
+   
+		try	 {
+			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+			final File image = new File(fileName);
+			ChartUtilities.saveChartAsPNG(image, chart, 380, 230, info);
 		}
 		catch (java.io.IOException exc)
 		{
@@ -270,20 +319,17 @@ public class ChartProducer {
 	
 	public static void createALineChartforVotingTrendzNew(String title, final CategoryDataset dataset1,final CategoryDataset dataset2,String fileName){
 		
-		//CategoryDataset dataset1 = createDataset1();
 		CategoryAxis domainAxis1 = new CategoryAxis("Party");
 		domainAxis1.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 		domainAxis1.setMaximumCategoryLabelWidthRatio(5.0f);
 		BarRenderer renderer1 = new BarRenderer();
-		//LineAndShapeRenderer renderer1 = new LineAndShapeRenderer();
 		renderer1.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
 		CategoryPlot subplot1 = new CategoryPlot(dataset2, domainAxis1, null, renderer1);
 		subplot1.setDomainGridlinesVisible(true);
-		//CategoryDataset dataset2 = createDataset2();
+		
 		CategoryAxis domainAxis2 = new CategoryAxis("Party");
 		domainAxis2.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 		domainAxis2.setMaximumCategoryLabelWidthRatio(5.0f);
-		//BarRenderer renderer2 = new BarRenderer();
 		LineAndShapeRenderer renderer2 = new LineAndShapeRenderer();
 		renderer2.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
 		CategoryPlot subplot2 = new CategoryPlot(dataset1, domainAxis2, null, renderer2);
@@ -293,12 +339,33 @@ public class ChartProducer {
 		CombinedRangeCategoryPlot plot = new CombinedRangeCategoryPlot(rangeAxis);
 		plot.add(subplot1, 3);
 		plot.add(subplot2, 2);
-		JFreeChart chart = new JFreeChart("Constituency Voting Trendz ",	plot);
+		JFreeChart chart = new JFreeChart("Constituency Voting Trendz ",plot);
 		
 		try	 {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File image = new File(fileName);
 			ChartUtilities.saveChartAsPNG(image, chart, 900, 270, info);
+		}
+		catch (java.io.IOException exc)
+		{
+		log.error("Error writing image to file");
+		}
+	}
+	
+	public static void createPieChart(String title,final PieDataset dataset,String fileName){
+		
+		
+		JFreeChart chart = ChartFactory.createPieChart(title,dataset,
+				true, // legend?
+				true, // tooltips?
+				false // URLs?
+				);
+		
+				
+		try	 {
+			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+			final File image = new File(fileName);
+			ChartUtilities.saveChartAsPNG(image, chart,350, 250, info);
 		}
 		catch (java.io.IOException exc)
 		{
