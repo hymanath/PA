@@ -841,7 +841,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 				PartyElectionResultVO femaleTrendzResult = getPartyResultTrendzForACandidate(femaleTrendz.getConstituencyWiseResults().getPartyElecResults(),candId);
 				PartyElectionResultVO maleAFemaleResult  = getPartyResultTrendzForACandidate(maleAFemaleTrendz.getConstituencyWiseResults().getPartyElecResults(),candId);
 				
-				PartyResultsTrendzVO partyResultsTrendz = getVotingTrendzForACandidate(partyTrendz,maleTrendzResult,femaleTrendzResult,maleAFemaleResult);
+				PartyResultsTrendzVO partyResultsTrendz = getVotingTrendzForACandidate(partyTrendz,maleTrendzResult,femaleTrendzResult,maleAFemaleResult,completeTrendz.getConstituencyWiseResults().getPolledVotes());
 								
 				if(partyResultsTrendz != null){
 				partyResultsTrendzVO.add(partyResultsTrendz);
@@ -879,7 +879,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 	/*
 	 * Populating the results to VO
 	 */
-	public PartyResultsTrendzVO getVotingTrendzForACandidate(PartyElectionResultVO completeTrendz,PartyElectionResultVO maleTrendz,PartyElectionResultVO femaleTrendz,PartyElectionResultVO mAFTrendz) throws Exception{
+	public PartyResultsTrendzVO getVotingTrendzForACandidate(PartyElectionResultVO completeTrendz,PartyElectionResultVO maleTrendz,PartyElectionResultVO femaleTrendz,PartyElectionResultVO mAFTrendz,Long constiTotalPolledVotes) throws Exception{
 		PartyResultsTrendzVO partyResultsTrendzVO = null;
 		if(completeTrendz != null && maleTrendz != null && femaleTrendz != null && mAFTrendz != null){
 			partyResultsTrendzVO = new PartyResultsTrendzVO();
@@ -899,6 +899,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			partyResultsTrendzVO.setMaleVotes(maleTrendz.getVotesEarned());
 			partyResultsTrendzVO.setFemaleVotes(femaleTrendz.getVotesEarned());
 			partyResultsTrendzVO.setMaleAndFemaleVotes(mAFTrendz.getVotesEarned());
+			partyResultsTrendzVO.setConstiTotalVotes(constiTotalPolledVotes);
 			partyResultsTrendzVO.setTotalVotesPercent(getPollingPercent(completeTrendz.getVotesEarned(),completeTrendz.getValidVotes()).toString());
 			partyResultsTrendzVO.setMaleVotesPercent(getPollingPercent(maleTrendz.getVotesEarned(),maleTrendz.getValidVotes()).toString());
 			partyResultsTrendzVO.setOverallMaleVotesPercent(getPollingPercent(maleTrendz.getVotesEarned(),completeTrendz.getValidVotes()).toString());
@@ -906,6 +907,9 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			partyResultsTrendzVO.setOverallFemaleVotesPercent(getPollingPercent(femaleTrendz.getVotesEarned(),completeTrendz.getValidVotes()).toString());
 			partyResultsTrendzVO.setMaleAndFemaleVotesPercent(getPollingPercent(mAFTrendz.getVotesEarned(),mAFTrendz.getValidVotes()).toString());
 			partyResultsTrendzVO.setOverallMaleOrFemaleVotesPercent(getPollingPercent(mAFTrendz.getVotesEarned(),completeTrendz.getValidVotes()).toString());
+			partyResultsTrendzVO.setMaleVotesPercentInConstiVotes(getPollingPercent(maleTrendz.getVotesEarned(),constiTotalPolledVotes).toString());
+			partyResultsTrendzVO.setFemaleVotesPercentInConstiVotes(getPollingPercent(femaleTrendz.getVotesEarned(),constiTotalPolledVotes).toString());
+			partyResultsTrendzVO.setMaleOrFemaleVotesPercentInConstiVotes(getPollingPercent(mAFTrendz.getVotesEarned(),constiTotalPolledVotes).toString());
 		}
 		
 		return partyResultsTrendzVO;
