@@ -16,27 +16,33 @@ public class PartyResultsTrendzVO implements Serializable {
 	 */
 	private static final long serialVersionUID = 2707064198259860479L;
 	
-	private Long partyId;
+	private Long   rank;
+	private Long   partyId;
+	private Long   maleVotes;
+	private Long   validVotes;
+	private Long   totalVotes;
+	private Long   femaleVotes;
+	private Long   votesEarned;
+	private Long   candidateId;
+	private Long   constiTotalVotes;
+	private Long   maleAndFemaleVotes;
+	
+	private String status;
 	private String partyName;
 	private String partyLogo;
 	private String partyFlag;
-	private Long candidateId;
 	private String candidateName;
-	private Long votesEarned;
-	private Long validVotes;
-	private Long totalVotes;
-	private Long maleVotes;
-	private Long femaleVotes;
-	private Long maleAndFemaleVotes;
-	private String totalVotesPercent;
 	private String maleVotesPercent;
-	private String overallMaleVotesPercent;
+	private String totalVotesPercent;
 	private String femaleVotesPercent;
+	private String overallMaleVotesPercent;
 	private String overallFemaleVotesPercent;
 	private String maleAndFemaleVotesPercent;
 	private String overallMaleOrFemaleVotesPercent;
-	private Long rank;
-	private String status;
+	private String maleVotesPercentInConstiVotes;
+	private String femaleVotesPercentInConstiVotes;
+	private String maleOrFemaleVotesPercentInConstiVotes;
+	
 	
 	//getters and setters
 	public Long getPartyId() {
@@ -168,5 +174,32 @@ public class PartyResultsTrendzVO implements Serializable {
 	public void setOverallMaleOrFemaleVotesPercent(
 			String overallMaleOrFemaleVotesPercent) {
 		this.overallMaleOrFemaleVotesPercent = overallMaleOrFemaleVotesPercent;
+	}
+	public String getMaleVotesPercentInConstiVotes() {
+		return maleVotesPercentInConstiVotes;
+	}
+	public void setMaleVotesPercentInConstiVotes(
+			String maleVotesPercentInConstiVotes) {
+		this.maleVotesPercentInConstiVotes = maleVotesPercentInConstiVotes;
+	}
+	public String getFemaleVotesPercentInConstiVotes() {
+		return femaleVotesPercentInConstiVotes;
+	}
+	public void setFemaleVotesPercentInConstiVotes(
+			String femaleVotesPercentInConstiVotes) {
+		this.femaleVotesPercentInConstiVotes = femaleVotesPercentInConstiVotes;
+	}
+	public String getMaleOrFemaleVotesPercentInConstiVotes() {
+		return maleOrFemaleVotesPercentInConstiVotes;
+	}
+	public void setMaleOrFemaleVotesPercentInConstiVotes(
+			String maleOrFemaleVotesPercentInConstiVotes) {
+		this.maleOrFemaleVotesPercentInConstiVotes = maleOrFemaleVotesPercentInConstiVotes;
+	}
+	public Long getConstiTotalVotes() {
+		return constiTotalVotes;
+	}
+	public void setConstiTotalVotes(Long constiTotalVotes) {
+		this.constiTotalVotes = constiTotalVotes;
 	}
 }
