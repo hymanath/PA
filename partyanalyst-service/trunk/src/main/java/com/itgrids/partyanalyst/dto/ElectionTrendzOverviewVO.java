@@ -20,16 +20,19 @@ public class ElectionTrendzOverviewVO implements Serializable {
 	private Long totalVoters;
 	private Long maleVoters;
 	private Long femaleVoters;
-	private Long maleAndFemaleVoters;
-	private Long totalPolledVotes;
 	private Long malePolledVotes;
-	private Long femalePolledVotes;
-	private Long maleAndFemalePolledVotes;
+	private Long totalPolledVotes;
 	private String pollingPercent;
+	private Long femalePolledVotes;
+	private String maleVotersPercent;
+	private Long maleAndFemaleVoters;
 	private String malePollingPercent;
-	private String overallMalePollPercent;
+	private String femaleVotersPercent;
 	private String femalePollingPercent;
+	private Long maleAndFemalePolledVotes;
+	private String overallMalePollPercent;
 	private String overallFemalePollPercent;
+	private String maleOrFemaleVotersPercent;
 	private String maleAndFemalePollingPercent;
 	private String overallMaleOrFemalePollPercent;
 	
@@ -177,6 +180,30 @@ public class ElectionTrendzOverviewVO implements Serializable {
 	public void setOverallMaleOrFemalePollPercent(
 			String overallMaleOrFemalePollPercent) {
 		this.overallMaleOrFemalePollPercent = overallMaleOrFemalePollPercent;
+	}
+
+	public String getMaleVotersPercent() {
+		return maleVotersPercent;
+	}
+
+	public void setMaleVotersPercent(String maleVotersPercent) {
+		this.maleVotersPercent = maleVotersPercent;
+	}
+
+	public String getFemaleVotersPercent() {
+		return femaleVotersPercent;
+	}
+
+	public void setFemaleVotersPercent(String femaleVotersPercent) {
+		this.femaleVotersPercent = femaleVotersPercent;
+	}
+
+	public String getMaleOrFemaleVotersPercent() {
+		return maleOrFemaleVotersPercent;
+	}
+
+	public void setMaleOrFemaleVotersPercent(String maleOrFemaleVotersPercent) {
+		this.maleOrFemaleVotersPercent = maleOrFemaleVotersPercent;
 	}
 
 }
