@@ -365,7 +365,7 @@ public class ChartProducer {
 		try	 {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File image = new File(fileName);
-			ChartUtilities.saveChartAsPNG(image, chart,350, 250, info);
+			ChartUtilities.saveChartAsPNG(image, chart,300, 200, info);
 		}
 		catch (java.io.IOException exc)
 		{
