@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
@@ -42,6 +44,7 @@ import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IElectionTrendzService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ConstituencyPageAction extends ActionSupport implements
@@ -69,6 +72,8 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private ElectionBasicInfoVO electionBasicInfoVO;
 	 private IElectionTrendzService electionTrendzService;
 	 private static final Logger log = Logger.getLogger(ConstituencyPageAction.class);
+	 
+	 JSONObject jObj = null;
 	 
 	 private enum ChartType {pollingTrendz, pollingPercent};
 	 
@@ -259,15 +264,6 @@ public class ConstituencyPageAction extends ActionSupport implements
 		 			String pollingChartName = "pollingPercentChart_" + pollingChartId + session.getId()+".png";
 		 			String pollingChartPath = context.getRealPath("/") + "charts\\" + pollingChartName;
 		 			
-		 			/*String totPollPercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getPollingPercent();
-		 			String malePollPercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getOverallMalePollPercent();
-		 			String femalePollPercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getOverallFemalePollPercent();
-		 			String maleOrFemalePollPercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getOverallMaleOrFemalePollPercent();
-		 			
-		 			String maleLabelForPolling = "Male Polling %";
-		 			String femaleLabelForPollingPercent = "Female Polling %";
-		 			String maleOrFemaleLabelForPollingPercent = "Male/Female Polling %";	*/
-		 			
 		 			List<CategoryDataset> dataset = new ArrayList<CategoryDataset>();
 		 	        
 		 	        dataset.add(createDatasetForPollingInfo1(electionTrendzReportVO.getElectionTrendzOverviewVO(),ChartType.pollingTrendz));
@@ -278,24 +274,35 @@ public class ConstituencyPageAction extends ActionSupport implements
 		 				session.setAttribute("pollingChartName", pollingChartName);
 		 				
 		 			String wonCandChartId = constituencyName.concat(stateName).concat("PieChart");
-			 		String wonCandChartName = "wonCandVotesPercentChart_" + wonCandChartId + session.getId()+".png";
+			 		String wonCandChartName = "wonCandOverallVotesPercentChart_" + wonCandChartId + session.getId()+".png";
 			 		String wonCandChartPath = context.getRealPath("/") + "charts\\" + wonCandChartName;
 		 				
 		 		    String wonCandTotPercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getWonCandidateResultTrendz().getTotalVotesPercent();
 		 		    String wonCandMalePercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getWonCandidateResultTrendz().getOverallMaleVotesPercent();
 		 		    String wonCandFemalePercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getWonCandidateResultTrendz().getOverallFemaleVotesPercent();
 		 		    String wonCandMaleOrFemalePercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getWonCandidateResultTrendz().getOverallMaleOrFemaleVotesPercent();
-		 		    String wonCandNameLabel = electionTrendzReportVO.getElectionTrendzOverviewVO().getWonCandidateResultTrendz().getCandidateName() + " Voting Trendz ..";
-		 		    
-		 		   String maleLabelForVoting = "Male Voting %";
-		 		   String femaleLabelForVotingPercent = "Female Voting %";
-		 		   String maleOrFemaleLabelForVotingPercent = "Male/Female Voting %";	
+		 		    		 		    
+		 		    String maleLabelForVoting = "Male";
+		 		    String femaleLabelForVotingPercent = "Female";
+		 		    String maleOrFemaleLabelForVotingPercent = "Male/Female";	
 		 		   
-		 		        ChartProducer.createPieChart(wonCandNameLabel, createPieDataSet(maleLabelForVoting,femaleLabelForVotingPercent,maleOrFemaleLabelForVotingPercent,wonCandTotPercent,wonCandMalePercent,wonCandFemalePercent,wonCandMaleOrFemalePercent), wonCandChartPath);
+		 		        ChartProducer.createPieChart("", createPieDataSet(maleLabelForVoting,femaleLabelForVotingPercent,maleOrFemaleLabelForVotingPercent,wonCandTotPercent,wonCandMalePercent,wonCandFemalePercent,wonCandMaleOrFemalePercent), wonCandChartPath);
 	 			        request.setAttribute("wonCandChartName", wonCandChartName);
 	 				    session.setAttribute("wonCandChartName", wonCandChartName);
 		 		    
-		 	         
+	 			    String wonCandVotesChartId = constituencyName.concat(stateName).concat("PieChart");
+				 	String wonCandVotesChartName = "wonCandVotesPercentChart_" + wonCandVotesChartId + session.getId()+".png";
+				 	String wonCandVotesChartPath = context.getRealPath("/") + "charts\\" + wonCandVotesChartName;
+				 	
+				 	String wonCandTotVotesPercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getWonCandidateResultTrendz().getTotalVotesPercent();
+		 		    String wonCandMaleVotesPercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getWonCandidateResultTrendz().getMaleVotesPercent();
+		 		    String wonCandFemaleVotesPercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getWonCandidateResultTrendz().getFemaleVotesPercent();
+		 		    String wonCandMaleOrFemaleVotesPercent = electionTrendzReportVO.getElectionTrendzOverviewVO().getWonCandidateResultTrendz().getMaleAndFemaleVotesPercent();
+
+		 		       ChartProducer.createPieChart("", createPieDataSet(maleLabelForVoting,femaleLabelForVotingPercent,maleOrFemaleLabelForVotingPercent,wonCandTotVotesPercent,wonCandMaleVotesPercent,wonCandFemaleVotesPercent,wonCandMaleOrFemaleVotesPercent), wonCandVotesChartPath);
+			           request.setAttribute("wonCandVotesChartName", wonCandVotesChartName);
+				       session.setAttribute("wonCandVotesChartName", wonCandVotesChartName);
+	 		  		 	         
 		    	 }
 		    	 catch(Exception exc){
 		    		 exc.printStackTrace();
@@ -393,5 +400,22 @@ public class ConstituencyPageAction extends ActionSupport implements
       return dataset;
   }
 
+  public String getCandidateVotingTrendz(){
+	  
+	    String param=null;		
+		param=request.getParameter("task");
+		log.debug("param:"+param);
+		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		return Action.SUCCESS;
+  }
 	
 }
