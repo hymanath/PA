@@ -31,7 +31,7 @@
 									if(jsObj.task == "getElectionYears")
 									{								
 										clearOptionsListForSelectElmtId("electionYear");
-										createOptionsForSelectElmtId("electionYear",results);		
+										createOptionsForSelectElmtId("electionYear",resultVO);		
 									}				
 							}catch (e)  {   
 							   	alert("Invalid JSON result" + e);   
