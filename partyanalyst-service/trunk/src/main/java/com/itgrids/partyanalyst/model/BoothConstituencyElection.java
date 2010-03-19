@@ -32,6 +32,7 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 	private BoothResult boothResult;
 	private Set<CandidateBoothResult> candidateBoothResults = new HashSet<CandidateBoothResult>(0);
 	private VillageBoothElection villageBoothElection;
+	private Set<HamletBoothElection> hamletBoothElections = new HashSet<HamletBoothElection>(0);
  	
 	public BoothConstituencyElection(){
 		
@@ -110,6 +111,16 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 
 	public void setVillageBoothElection(VillageBoothElection villageBoothElection) {
 		this.villageBoothElection = villageBoothElection;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "boothConstituencyElection")
+	public Set<HamletBoothElection> getHamletBoothElections() {
+		return hamletBoothElections;
+	}
+
+	public void setHamletBoothElections(
+			Set<HamletBoothElection> hamletBoothElections) {
+		this.hamletBoothElections = hamletBoothElections;
 	}
 	
 	

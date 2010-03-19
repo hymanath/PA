@@ -41,16 +41,17 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		assertEquals("INC", list.get(0).getShortName());
 	}*/
 	
-	public void testGetPartyGenderWiseBoothVotesForMandal(){
-		List list = candidateBoothResultDAO.getPartyGenderWiseBoothVotesForMandal(834l);
+	/*public void testGetPartyGenderWiseBoothVotesForMandal(){
+		List list = candidateBoothResultDAO.getPartyGenderWiseBoothVotesForMandal(844l);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]+"\t"+((Object[])list.get(i))[12]+"\t"+((Object[])list.get(i))[13]+"\t"+((Object[])list.get(i))[14]+"\t"+((Object[])list.get(i))[15]+"\t"+((Object[])list.get(i))[16]);
-	}
-	
-	/*public void testFindMandalWisePartiesResultsForElection(){
-		List list = candidateBoothResultDAO.findMandalWisePartiesResultsForElection(844l, 2l);
-		assertEquals(list.size(), 2);
 	}*/
+	
+	public void testFindMandalWisePartiesResultsForElection(){
+		List list = candidateBoothResultDAO.findMandalWisePartiesResultsForElection(843l, 1l);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]);
+	}
 	
 	/*public void testFindTownshipElectionResult(){
 		long start = System.nanoTime();
@@ -82,5 +83,10 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println((end-start)/1000000000);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]);
+	}*/
+	
+/*	public void testFindBoothResultsForTownshipAndElection(){
+		List list = candidateBoothResultDAO.findBoothResultsForTownshipAndElection(21794l, 2l);
+		System.out.println(list.size());
 	}*/
 }

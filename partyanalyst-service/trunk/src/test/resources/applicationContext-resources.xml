@@ -101,6 +101,7 @@
 				<value>com.itgrids.partyanalyst.model.UserGroupPrivileges</value>
 				<value>com.itgrids.partyanalyst.model.StaticUserGroup</value>
 				<value>com.itgrids.partyanalyst.model.MyGroup</value>
+				<value>com.itgrids.partyanalyst.model.HamletBoothElection</value>
 		 </list>
 		</property>
 	</bean>
@@ -254,7 +255,7 @@
     	<property name="nominationDAO" ref="nominationDAO" />
     	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
     </bean>
-     <bean id="delimitationConstituencyAssemblyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyAssemblyDetailsDAO" >
+    <bean id="delimitationConstituencyAssemblyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyAssemblyDetailsDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="candidateBoothResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateBoothResultDAO" >
@@ -388,6 +389,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="myGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.MyGroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="hamletBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

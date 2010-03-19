@@ -87,10 +87,10 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		assertEquals(1, list.size());
 	}
 	*/
-	public void testConstituencyElection(){
+	/*public void testConstituencyElection(){
 		List result = nominationDAO.findAllCandidatesForAnElectionByElectionYear(3382l);
 		assertEquals(1, result.size());
-	}
+	}*/
 	/*
 	public void testFindByConstituencyPartyAndElectionYear(){
 		

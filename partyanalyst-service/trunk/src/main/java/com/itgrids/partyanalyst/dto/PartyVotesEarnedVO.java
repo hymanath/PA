@@ -5,6 +5,7 @@ public class PartyVotesEarnedVO {
 	private Long partyId;
 	private String partyName;
 	private Long votesEarned;
+	private String percentages;
 	
 	public Long getPartyId() {
 		return partyId;
@@ -28,6 +29,14 @@ public class PartyVotesEarnedVO {
 	
 	public void setVotesEarned(Long votesEarned) {
 		this.votesEarned = votesEarned;
+	}
+
+	public String getPercentages() {
+		return percentages;
+	}
+
+	public void setPercentages(String percentages) {
+		this.percentages = percentages;
 	}
 	
 	

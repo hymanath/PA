@@ -138,12 +138,15 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 	@SuppressWarnings("unchecked")
 	public List findMandalWisePartiesResultsForElection(Long tehsilId, Long electionId) {
 		Object[] params = {electionId, tehsilId};
-		StringBuilder hqlQuery =new StringBuilder();
-		hqlQuery.append("select model.nomination.party.partyId, model.nomination.party.shortName,")
-		.append("sum(model.votesEarned) from CandidateBoothResult model")
+		StringBuilder hqlQuery = new StringBuilder();
+		hqlQuery.append("select model.boothConstituencyElection.villageBoothElection.township.townshipId, " +
+				"model.boothConstituencyElection.villageBoothElection.township.townshipName, " +
+				"model.nomination.party.partyId, model.nomination.party.shortName,")
+		.append("sum(model.votesEarned), model.boothConstituencyElection.constituencyElection.constituency.name from CandidateBoothResult model")
 		.append(" where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
-		.append(" and model.boothConstituencyElection.booth.tehsil.tehsilId = ? group by model.nomination.party.partyId" +
-				" order by model.votesEarned desc");
+		.append(" and model.boothConstituencyElection.villageBoothElection.township.tehsil.tehsilId = ? group by model.nomination.party.partyId," +
+				"model.boothConstituencyElection.villageBoothElection.township.townshipId " +
+				"order by model.boothConstituencyElection.villageBoothElection.township.townshipId");
 		return getHibernateTemplate().find(hqlQuery.toString(), params);
 	}
 
@@ -364,6 +367,28 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		
 		return getHibernateTemplate().find(hqlQuery.toString(), params);
 	}
+	
+	public List findBoothResultsForTownshipAndElection(Long townshipId, Long electionId){
+		Object[] params = {townshipId, electionId};
+		return getHibernateTemplate().find("select model.nomination.party.partyId, model.nomination.party.shortName,"+
+				"sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.villageBoothElection.township.townshipId = ? and " +
+				" model.boothConstituencyElection.constituencyElection.election.electionId = ?" +
+						" group by model.nomination.party.partyId order by sum(model.votesEarned) desc", params);
+	}
+	
+	public List findRevenueVillagesWisePartyResultsForElectionInMandal(Long tehsilId, Long electionId, Long partyId) {
+		Object[] params = {electionId, tehsilId, partyId};
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.boothConstituencyElection.villageBoothElection.township.townshipId, " +
+				"model.boothConstituencyElection.villageBoothElection.township.townshipName, sum(m)")
+		.append("sum(model.votesEarned) from CandidateBoothResult model")
+		.append(" where model.boothConstituencyElection.constituencyElection.election.electionId = ?")
+		.append(" and model.boothConstituencyElection.villageBoothElection.township.tehsil.tehsilId = ? group by model.nomination.party.partyId," +
+				"model.boothConstituencyElection.villageBoothElection.township.townshipId " +
+				"order by model.boothConstituencyElection.villageBoothElection.township.townshipId");
+		return getHibernateTemplate().find(hqlQuery.toString(), params);
+	}
+	
 	
 
 }

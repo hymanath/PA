@@ -27,8 +27,7 @@ public class VillageBoothElection extends BaseModel{
 		this.villageBoothElectionId = villageBoothElectionId;
 	}
 	
-	public VillageBoothElection(BoothConstituencyElection boothConstituencyElection,
-			Township township){
+	public VillageBoothElection(Township township, BoothConstituencyElection boothConstituencyElection){
 		this.boothConstituencyElection = boothConstituencyElection;
 		this.township = township;
 	}

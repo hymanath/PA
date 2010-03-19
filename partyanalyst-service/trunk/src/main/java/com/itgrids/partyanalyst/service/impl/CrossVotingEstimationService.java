@@ -97,12 +97,12 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 	public List<SelectOptionVO> getAssembliesForParliament(Long parliamentId, Long electionYear){
 		List<Constituency> constituencies = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(parliamentId, electionYear);
 		List<SelectOptionVO> constituencyVOs = new ArrayList<SelectOptionVO>();
-		List<BoothConstituencyElection> boothConstituencyElections = null;
+		List boothConstituencyElections = null;
 		Long constituencyId;
 		for(Constituency constituency:constituencies){
 			constituencyId = constituency.getConstituencyId();
 			boothConstituencyElections = boothConstituencyElectionDAO.findByConstituencyIdAndElectionYear(constituencyId, electionYear.toString());
-			if(boothConstituencyElections == null || boothConstituencyElections.size() == 0)
+			if(boothConstituencyElections == null || boothConstituencyElections.get(0).toString().equalsIgnoreCase("0"))
 				continue;
 			SelectOptionVO constituencyVO = new SelectOptionVO(constituencyId, constituency.getName().toUpperCase());
 			constituencyVOs.add(constituencyVO);
@@ -147,7 +147,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 			pcNominations = nominationDAO.findByConstituencyPartyAndElectionYear(partyId, pcId, electionYear);
 		}		
 		
-		if(((acNominations.size() != 1)||(pcNominations.size() != 1))&& includeAliance.equals("false")){
+		if(acNominations.size() != 1 || pcNominations.size() != 1){
 			if(pcNominations.size() == 0){
 				crossVotingConsolidateVO.setPartyPartisipated(false);
 				return crossVotingConsolidateVO;

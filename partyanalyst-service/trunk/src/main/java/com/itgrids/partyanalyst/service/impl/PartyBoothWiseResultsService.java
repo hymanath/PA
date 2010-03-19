@@ -20,9 +20,11 @@ import com.itgrids.partyanalyst.dto.BoothPanelVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWiseDataForMandalVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWisePartyInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyGenderWiseVotesVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -115,6 +117,9 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		return percengate.toString();
 	}
 	
+	/** 
+	 * Provides Election Results Of A Booth To Display in A Pop Up Panel
+	 */
 	public ResultWithExceptionVO getBoothPageInfo(Long boothId){
 		ResultStatus resultStatus = new ResultStatus();
 		List<ElectionInfoVO> electionsInBooth = new ArrayList<ElectionInfoVO>();
@@ -209,9 +214,14 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		return new ResultWithExceptionVO(boothPageInfo, resultStatus);
 	}
 	
+	/**
+	 * Returns All Tehsil wise or Revenue Village wise Assembly and Parliament Elections Results
+	 */
+	
 	public ElectionWiseMandalPartyResultListVO getPartyGenderWiseBoothVotesForMandal(Long locationId, String locationType){
 		ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO = new ElectionWiseMandalPartyResultListVO();
 		List<ElectionWiseMandalPartyResultVO> electionWiseMandalPartyResultVOList = new ArrayList<ElectionWiseMandalPartyResultVO>();
+		List<ElectionWiseMandalPartyResultVO> partyWiseElectionResultVOList = new ArrayList<ElectionWiseMandalPartyResultVO>();
 		List list = null;
 		if(locationType.equalsIgnoreCase("Mandal"))
 			list = candidateBoothResultDAO.getPartyGenderWiseBoothVotesForMandal(locationId);
@@ -231,14 +241,121 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		while(iterator.hasNext()){
 			Map.Entry<ElectionWiseMandalPartyResultVO, List<Object[]>> entry = iterator.next();
 			ElectionWiseMandalPartyResultVO electionWiseMandalPartyResultVO = entry.getKey();
+			ElectionWiseMandalPartyResultVO partyWiseElectionResultsVO = entry.getKey();
 			List<Object[]> results = entry.getValue();
+			
+			//Grouped By Election Type, Year And Party 
+			partyWiseElectionResultsVO = getPartyWiseElectionResults(partyWiseElectionResultsVO, results);
+			//Grouped By Election Type, Year And Constituency
 			electionWiseMandalPartyResultVO = getConstituencyWiseElectionResultInMandal(electionWiseMandalPartyResultVO, results);
+			
 			electionWiseMandalPartyResultVOList.add(electionWiseMandalPartyResultVO);
+			partyWiseElectionResultVOList.add(partyWiseElectionResultsVO);
 		}
 		electionWiseMandalPartyResultListVO.setElectionWiseMandalPartyResultVOList(electionWiseMandalPartyResultVOList);
-		
+		electionWiseMandalPartyResultListVO.setPartyWiseElectionResultsVOList(partyWiseElectionResultVOList);
+		//Parties Wise Results In All AC PC Elections Data Provider For Chart 
+		List<PartyResultVO> partyResultsForChart = generatingPartyWiseResultsFromVO(partyWiseElectionResultVOList);
+		electionWiseMandalPartyResultListVO.setAllPartiesAllElectionResults(partyResultsForChart);
 		return electionWiseMandalPartyResultListVO;
 	}
+	
+	/**
+	 * Provides Parties wise consolidated Information about One Election 
+	 * @param electionWiseMandalPartyResultVO
+	 * @param results
+	 * @return
+	 */
+	
+	private ElectionWiseMandalPartyResultVO getPartyWiseElectionResults(
+			ElectionWiseMandalPartyResultVO electionWiseMandalPartyResultVO,
+			List<Object[]> results) {
+		Map<PartyResultsVO, List<Object[]>> partyWiseResultsMap = new LinkedHashMap<PartyResultsVO, List<Object[]>>();
+		List<PartyResultsVO> allParitesInElection = new ArrayList<PartyResultsVO>();
+		PartyResultsVO partyResultsVO = null;
+		List<Object[]> partyResult = null;
+		Long partyEarnedVotes = null;
+		Long allPartiesEarnedVotes = 0l;
+		for(Object[] values:results){
+			partyResultsVO = new PartyResultsVO();
+			partyResultsVO.setPartyId((Long)values[0]);
+			partyResultsVO.setPartyName(values[1].toString());
+			partyResult = partyWiseResultsMap.get(partyResultsVO);
+			if(partyResult == null)
+				partyResult = new ArrayList<Object[]>();
+			partyResult.add(values);
+			partyWiseResultsMap.put(partyResultsVO, partyResult);
+		}
+		
+		for(Map.Entry<PartyResultsVO, List<Object[]>> partyInElection:partyWiseResultsMap.entrySet()){
+			partyResultsVO = partyInElection.getKey();
+			partyResult = partyInElection.getValue();
+			partyEarnedVotes = 0l;
+			for(Object[] values:partyResult){
+				partyEarnedVotes += (Long)values[14];
+				allPartiesEarnedVotes += (Long)values[14];
+			}
+			partyResultsVO.setVotesEarned(partyEarnedVotes);
+			allParitesInElection.add(partyResultsVO);
+		}
+		
+		for(PartyResultsVO percentCalcVO:allParitesInElection){
+			String percentage = new BigDecimal((percentCalcVO.getVotesEarned()*100.0)/
+					allPartiesEarnedVotes).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			percentCalcVO.setPercentage(percentage);
+		}
+		electionWiseMandalPartyResultVO.setPartyResultsVO(allParitesInElection);
+		return electionWiseMandalPartyResultVO;
+	}
+	
+	/**
+	 * Converts Data Grouped By Election Type and Year To Data Grouped By Parties
+	 * for all Elections
+	 * @param partyWiseElectionResultVOList
+	 * @return
+	 */
+	
+	public List<PartyResultVO> generatingPartyWiseResultsFromVO(List<ElectionWiseMandalPartyResultVO> 
+		   partyWiseElectionResultVOList){
+		Map<PartyResultVO, List<ElectionResultVO>>  allPartiesInElecsMap = 
+			new LinkedHashMap<PartyResultVO, List<ElectionResultVO>>(); 
+		List<PartyResultVO> partyResults = new ArrayList<PartyResultVO>();
+		PartyResultVO eachPartyInfo = null;
+		List<ElectionResultVO> electionsOfParty = null;
+		ElectionResultVO partyElecReuslt = null;
+		for(ElectionWiseMandalPartyResultVO eachElec:partyWiseElectionResultVOList){
+			for(PartyResultsVO party:eachElec.getPartyResultsVO()){
+				eachPartyInfo = new PartyResultVO();
+				eachPartyInfo.setPartyId(party.getPartyId());
+				eachPartyInfo.setPartyName(party.getPartyName());
+				electionsOfParty = allPartiesInElecsMap.get(eachPartyInfo);
+				if(electionsOfParty == null)
+					electionsOfParty = new ArrayList<ElectionResultVO>();
+				partyElecReuslt = new ElectionResultVO();
+				partyElecReuslt.setElectionType(eachElec.getElectionType());
+				partyElecReuslt.setElectionYear(eachElec.getElectionYear().toString());
+				partyElecReuslt.setVotesEarned(party.getVotesEarned());
+				partyElecReuslt.setPercentage(party.getPercentage());
+				electionsOfParty.add(partyElecReuslt);
+				allPartiesInElecsMap.put(eachPartyInfo, electionsOfParty);
+			}		
+		}
+		
+		for(Map.Entry<PartyResultVO, List<ElectionResultVO>> entry:allPartiesInElecsMap.entrySet()){
+			eachPartyInfo = entry.getKey();
+			eachPartyInfo.setElectionWiseResults(entry.getValue());
+			partyResults.add(eachPartyInfo);
+		}
+		
+		return partyResults;
+	}
+	
+	/**
+	 * Groups one Election Data By Constituencies Wise In a Mandal/Township 
+	 * @param electionWiseMandalPartyResultVO
+	 * @param value
+	 * @return
+	 */
 	
 	private ElectionWiseMandalPartyResultVO getConstituencyWiseElectionResultInMandal(
 			ElectionWiseMandalPartyResultVO electionWiseMandalPartyResultVO, List<Object[]> value) {
@@ -466,7 +583,8 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	 * @param tehsilId
 	 * @return
 	 */
-	public List<ElectionWiseMandalPartyResultVO> getAllMPTCAndZPTCElectionsInfoInTehsil(Long tehsilId){
+	public ElectionWiseMandalPartyResultListVO getAllMPTCAndZPTCElectionsInfoInTehsil(Long tehsilId){
+		ElectionWiseMandalPartyResultListVO mptcZptcElectionResultListVO = new ElectionWiseMandalPartyResultListVO();
 		List<ElectionWiseMandalPartyResultVO> allElectionsInfo = new ArrayList<ElectionWiseMandalPartyResultVO>();
 		List list = nominationDAO.findAllMptcAndZptcElectionsInfoInMandal(tehsilId);
 		Map<ElectionWiseMandalPartyResultVO, List<Object[]>> mandalElectionsMap = getElectionWiseMandalPartyResults(list);
@@ -491,7 +609,10 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			electionWiseMandalPartyResultVO.setPartyResultsVO(allPartiesResults);
 			allElectionsInfo.add(electionWiseMandalPartyResultVO);
 		}
-		return allElectionsInfo;
+		List<PartyResultVO> partiesWiseInfo = generatingPartyWiseResultsFromVO(allElectionsInfo);
+		mptcZptcElectionResultListVO.setAllPartiesAllElectionResults(partiesWiseInfo);
+		mptcZptcElectionResultListVO.setPartyWiseElectionResultsVOList(allElectionsInfo);
+		return mptcZptcElectionResultListVO;
 	}
 	
 	private List<PartyResultsVO> getAllPartiesResultsInMandal(Map<PartyResultsVO, List<Object[]>> partiesInElectionMap) {
@@ -534,6 +655,5 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		
 		return allPartyResults;
 	}
-	
 	
 }

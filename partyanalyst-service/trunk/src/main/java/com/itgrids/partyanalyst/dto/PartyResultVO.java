@@ -25,7 +25,7 @@ public class PartyResultVO {
 	private String votesPercent;
 	private Long electors;
 	private CandidateOppositionVO oppositionCandidates;
-	
+	private List<ElectionResultVO> electionWiseResults;
 	
 	public Long getPartyId() {
 		return partyId;
@@ -99,7 +99,22 @@ public class PartyResultVO {
 	public void setOppositionCandidates(CandidateOppositionVO oppositionCandidates) {
 		this.oppositionCandidates = oppositionCandidates;
 	}
+	public List<ElectionResultVO> getElectionWiseResults() {
+		return electionWiseResults;
+	}
+	public void setElectionWiseResults(List<ElectionResultVO> electionWiseResults) {
+		this.electionWiseResults = electionWiseResults;
+	}
 	
+	@Override
+	public boolean equals(Object obj){
+		PartyResultVO voObj = (PartyResultVO) obj;
+		return this.partyId.equals(voObj.getPartyId());
+	}
 	
+	@Override
+	public int hashCode(){
+		return this.partyId.hashCode();
+	}
 	
 }

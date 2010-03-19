@@ -13,15 +13,26 @@ public class VillageBoothElectionDAO extends GenericDaoHibernate<VillageBoothEle
 		super(VillageBoothElection.class);
 	}
 	
-	public List findTownshipWiseBoothDetailsForTehsil(Long tehsilId){
-		return getHibernateTemplate().find("select model.township.townshipName, " +
-				"model.boothConstituencyElection.booth.partNo, model.boothConstituencyElection.booth.totalVoters, " +
-				"model.boothConstituencyElection.constituencyElection.election.electionYear, model.hamlet.hamletName," +
-				"model.hamlet.township.townshipId from VillageBoothElection model " +
-				"where model.boothConstituencyElection.booth.tehsil.tehsilId = ? group by " +
-				"model.boothConstituencyElection.booth.partNo, model.hamlet.hamletName order by " +
-				"model.hamlet.township.townshipName, model.boothConstituencyElection.booth.partNo",tehsilId);
+	public List findTownshipWiseBoothDetailsForTehsil(Long tehsilId, Long electionId){
+		Object[] params = {tehsilId, electionId};
+		return getHibernateTemplate().find("select model.township.townshipId, model.township.townshipName, " +
+				"model.boothConstituencyElection.booth.boothId, model.boothConstituencyElection.booth.partNo, " +
+				"model.boothConstituencyElection.booth.totalVoters, model.boothConstituencyElection.boothResult.validVotes " +
+				"from VillageBoothElection model where model.boothConstituencyElection.booth.tehsil.tehsilId = ? " +
+				"and model.boothConstituencyElection.constituencyElection.election.electionId = ? group by " +
+				"model.boothConstituencyElection.booth.boothId order by " +
+				"model.township.townshipName, model.boothConstituencyElection.booth.boothId",params);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<Long> findByTownshipAndBoothConstituencyElection(Long townshipId,
+			Long boothConstituencyElectionId) {
+		Object[] params = {townshipId, boothConstituencyElectionId};	
+		return getHibernateTemplate().find("select model.villageBoothElectionId from VillageBoothElection model where " +
+				"model.township.townshipId = ? and model.boothConstituencyElection.boothConstituencyElectionId = ?",params);
+	}
+	
+	
 	
 }
 

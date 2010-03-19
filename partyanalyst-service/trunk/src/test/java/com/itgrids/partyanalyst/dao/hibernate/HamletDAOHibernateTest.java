@@ -22,4 +22,9 @@ public class HamletDAOHibernateTest extends BaseDaoTestCase{
 		List<Hamlet> list = hamletDAO.findByTehsilTownshipAndHamletName(new Long(844), "Isakapalle", "Juvvagulakshmipuram");
 		assertEquals(2, list.size());
 	}
+	
+	public void testFindByHamletNameAndTownshipId(){
+		List list = hamletDAO.findByHamletNameAndTownshipId(21818l, "GOGULAPALLI");
+		assertEquals(list.size(), 1);
+	}
 }

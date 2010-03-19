@@ -22,10 +22,10 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	}
 	
 	
-	public void testFindConstituency(){
+	/*public void testFindConstituency(){
 		Constituency constituency = constituencyElectionDAO.get(new Long(1)).getConstituency();
 		Assert.assertEquals("nellore", constituency.getName());
-	}
+	}*/
 	
 	
 	/*public void testFindByConstituencyElectionAndDistrict(){
@@ -47,7 +47,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testFindValidVotedForAnElectionForAState(){
 		List list = constituencyElectionDAO.findTotalValidVotesForAnElectionForAState(new Long(12));
 		Object params = (Object)list.get(0);
@@ -72,5 +72,11 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 		System.out.println(list.size());
 		
+	}*/
+	
+	public void testFindByDistrictElectionConstituency(){
+		List list = constituencyElectionDAO.findByDistrictElectionConstituency(2l, 19l, "Kavali");
+		assertEquals(1, list.size());
 	}
+	
 }

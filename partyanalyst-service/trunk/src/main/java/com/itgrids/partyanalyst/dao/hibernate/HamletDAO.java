@@ -63,4 +63,11 @@ public class HamletDAO extends GenericDaoHibernate<Hamlet, Long> implements IHam
 				" from Hamlet model where model.hamletId in("+hamletIDs+") ");
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Hamlet> findByHamletNameAndTownshipId(Long townshipId, String hamlet) {
+		Object[] params = {townshipId, hamlet};
+		return getHibernateTemplate().find("from Hamlet model where model.township.townshipId = ?" +
+				" and model.hamletName = ?", params);
+	}
+
 }

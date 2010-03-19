@@ -124,9 +124,9 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<BoothConstituencyElection> findByConstituencyIdAndElectionYear(Long constituencyId, String electionYear){
+	public List findByConstituencyIdAndElectionYear(Long constituencyId, String electionYear){
 		Object[] params = {constituencyId, electionYear};
-		return getHibernateTemplate().find("from BoothConstituencyElection model " +
+		return getHibernateTemplate().find("select count(model.boothResult.boothResultId) from BoothConstituencyElection model " +
 				"where model.constituencyElection.constituency.constituencyId= ? and model.constituencyElection.election.electionYear = ?",params);
 	}
 	
@@ -160,6 +160,28 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 				"where model.booth.tehsil.tehsilId in (" +mandalsIds+") and model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId =? " +
 						"group by model.booth.tehsil.tehsilId order by model.booth.tehsil.tehsilId",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<BoothConstituencyElection> findByConstituencyDistrictAndPartNo(String constituencyName, Long districtId, String partNo, String year){
+		Object[] params = {constituencyName, districtId, partNo, year};
+		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.boothId = (" +
+				"select distinct model.booth.boothId from BoothConstituencyElection model1 where model1.constituencyElection.constituency.name = ?" +
+				" and model.constituencyElection.constituency.district.districtId = ? and model.booth.partNo = ? and " +
+				"model1.constituencyElection.election.electionYear = ?)", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<BoothConstituencyElection> findByBoothIds(String boothIds){
+		return getHibernateTemplate().find("from BoothConstituencyElection model where model.booth.boothId in("+boothIds+")");
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Long> findByConstituencyElectionAndPartNo(
+			Long constituencyElectionId, String partNos) {
+		return getHibernateTemplate().find("select model.booth.boothId from BoothConstituencyElection model where " +
+				"model.booth.partNo in ( "+ partNos + ") and model.constituencyElection.constiElecId =?",constituencyElectionId);
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List findMandalWiseMaleBoothsVotingTrendsInAnElection(Long electionId,Long tehsilId,Long trendValue){
