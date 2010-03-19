@@ -1,31 +1,45 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.util.ServletContextAware;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
+import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
+import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class MandalPageElectionInfoAction extends ActionSupport implements ServletRequestAware{
+public class MandalPageElectionInfoAction extends ActionSupport implements ServletRequestAware, ServletContextAware{
 
 	private HttpServletRequest request;
+	private ServletContext context;
 	private HttpSession session;
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	private ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO;
@@ -41,7 +55,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private String mandalId;
 	private MandalAndRevenueVillagesInfoVO mandalAndRevenueVillagesInfoVO;
 	private List<PartyVotesEarnedVO> townshipResults;
-	private static final Logger log = Logger.getLogger(MandalPageAction.class);
+	private static final Logger log = Logger.getLogger(MandalPageElectionInfoAction.class);
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -157,7 +171,15 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		this.mptcZptcElectionResultsVO = mptcZptcElectionResultsVO;
 	}
 
-	public String execute(){
+	public String getMandalId() {
+		return mandalId;
+	}
+
+	public void setMandalId(String mandalId) {
+		this.mandalId = mandalId;
+	}
+
+	public String execute()throws Exception{
 		
 		mandalId = request.getParameter("MANDAL_ID");
 		String mandalID = request.getParameter("MANDAL_ID");
@@ -180,10 +202,44 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		if(ex!=null){
 			log.error("exception raised while retrieving mandal details ", ex);
 		}
-		mptcZptcElectionResultsVO = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(new Long(mandalID));
+		
+		ElectionWiseMandalPartyResultListVO mptcZptcResultListVO = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(new Long(mandalID));
+		mptcZptcElectionResultsVO = mptcZptcResultListVO.getPartyWiseElectionResultsVOList();
 		electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(new Long(mandalID), "Mandal");
+		List<PartyResultVO> acPcElectionResultsForParties = electionWiseMandalPartyResultListVO.getAllPartiesAllElectionResults();
+		List<PartyResultVO> mptcZptcElectionResultsForParties = mptcZptcResultListVO.getAllPartiesAllElectionResults();
+		
+		Map<PartyResultVO, List<ElectionResultVO>> resultMap = new HashMap<PartyResultVO, List<ElectionResultVO>>();
+		
+		for(PartyResultVO partyResultVO:acPcElectionResultsForParties){
+			resultMap.put(partyResultVO, partyResultVO.getElectionWiseResults());
+		}
+		
+		List<ElectionResultVO> elections = null;
+		for(PartyResultVO partyResultVO:mptcZptcElectionResultsForParties){
+			elections = resultMap.get(partyResultVO);
+			if(elections == null)
+				resultMap.put(partyResultVO, elections);
+			else
+				elections.addAll(partyResultVO.getElectionWiseResults());
+		}
+		System.out.println(resultMap.size());
+		
+		List<PartyResultVO> allElectionResults = new ArrayList<PartyResultVO>();
+		
+		for(Map.Entry<PartyResultVO, List<ElectionResultVO>> entry:resultMap.entrySet()){
+			allElectionResults.add(entry.getKey());
+		}
+		
+		for(PartyResultVO partyResultVO:allElectionResults){
+			String chartName = "partyPerformanceInAllElections_"+mandalId+"_"+partyResultVO.getPartyId()+".png";
+	        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+	        //String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName
+			ChartProducer.createBarChart(partyResultVO.getPartyName()+" Performance In Diff Elections Of "+mandalName+" Mandal", "Election Years", "Percentages", createDataset(partyResultVO), chartPath);
+		}
 				
 		return SUCCESS;
+		
 	}
 	
 	public String getElectionIdsAndYears(){
@@ -221,7 +277,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 				partyId = user.getParty();
 			
 			if(jObj.getString("task").equals("getRevenueVillagesInfo")){
-				mandalAndRevenueVillagesInfoVO = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(844l, jObj.getLong("electionId"));
+				mandalAndRevenueVillagesInfoVO = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(jObj.getLong("mandalId"), jObj.getLong("electionId"));
 			}
 		}
 		return SUCCESS;
@@ -242,4 +298,28 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		}
 		return SUCCESS;
 	}
+	
+	private CategoryDataset createDataset(PartyResultVO partyResultVO) {
+        final String series1 = IConstants.ASSEMBLY_ELECTION_TYPE;
+        final String series2 = IConstants.PARLIAMENT_ELECTION_TYPE;
+        final String series3 = IConstants.MPTC_ELECTION_TYPE;
+        final String series4 = IConstants.ZPTC_ELECTION_TYPE;
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
+        	if(result.getElectionType().equals(series1))
+        		dataset.addValue(new BigDecimal(result.getPercentage()), series1, result.getElectionYear());
+        	else if(result.getElectionType().equals(series2))
+        		dataset.addValue(new BigDecimal(result.getPercentage()), series2, result.getElectionYear());
+        	else if(result.getElectionType().equals(series3))
+        		dataset.addValue(new BigDecimal(result.getPercentage()), series3, result.getElectionYear());
+        	else if(result.getElectionType().equals(series4))
+        		dataset.addValue(new BigDecimal(result.getPercentage()), series4, result.getElectionYear());
+        }
+        return dataset;
+    }
+
+	public void setServletContext(ServletContext context) {
+		this.context = context;
+	}
+	
 }

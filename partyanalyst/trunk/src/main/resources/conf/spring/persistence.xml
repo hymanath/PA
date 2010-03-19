@@ -80,6 +80,7 @@
 				<value>com.itgrids.partyanalyst.model.UserImpDate</value>
 				<value>com.itgrids.partyanalyst.model.ProblemAndProblemSource</value>
 				<value>com.itgrids.partyanalyst.model.VillageBoothElection</value>
+				<value>com.itgrids.partyanalyst.model.HamletBoothElection</value>
 				<value>com.itgrids.partyanalyst.model.EPaper</value>
 				<value>com.itgrids.partyanalyst.model.EPaperUrl</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResult</value>
