@@ -501,6 +501,7 @@ var allZPTCMPTCElecInfo = new Array();
 		var jsObj=
 			{
 					electionId:id,
+					mandalId:${mandalId},
 					task:"getRevenueVillagesInfo"						
 			};
 		
@@ -635,15 +636,30 @@ var allZPTCMPTCElecInfo = new Array();
 		rvStr += '<div class="commonVotersHeadDiv">Voting Trendz Of Different Parties for ${mandalInfoVO.mandalName} Mandal in  '+yearVal+' '+typeVal+' Election </div>';
 		rvStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;">';
 		rvStr += '<tr>';
-		rvStr += '<th>Party</th>';
-		for(var i in resultVO.mandalWisePartyVotes){
-			rvStr += '<td>'+resultVO.mandalWisePartyVotes[i].partyName+'</td>';	
-		}
-		rvStr += '</tr><tr>'
-		rvStr += '<th>Votes Earned</th>';
-		for(var i in resultVO.mandalWisePartyVotes){
-			rvStr += '<td>'+resultVO.mandalWisePartyVotes[i].votesEarned+'</td>';	
-		}
+		rvStr += '<th>Revenue Village</th>';
+		rvStr += '<th colspan="8" align="center">Parties Info</th>';
+		rvStr += '<th>Constituency</th>';
+		rvStr += '</tr>';
+		rvStr += '<tr>';
+		 for(var i in resultVO.partiesResultsInVillages){
+			rvStr += '<tr>';
+		 	rvStr += '<td rowspan="3">'+resultVO.partiesResultsInVillages[i].villageName+'</td>';
+		 	rvStr += '<th>Party</th>';
+		 	for(var j in resultVO.partiesResultsInVillages[i].mandalWisePartyVotes)
+				rvStr += '<td>'+resultVO.partiesResultsInVillages[i].mandalWisePartyVotes[j].partyName+'</td>';
+			rvStr += '<td rowspan="3">'+resultVO.partiesResultsInVillages[i].constituencyName+'</td>';
+			rvStr += '</tr>';
+			rvStr += '<tr>';
+		 	rvStr += '<th>Votes Earned</th>';
+		 	for(var j in resultVO.partiesResultsInVillages[i].mandalWisePartyVotes)
+		 		rvStr += '<td>'+resultVO.partiesResultsInVillages[i].mandalWisePartyVotes[j].votesEarned+'</td>';
+			rvStr += '</tr>';
+			rvStr += '<tr>';
+		 	rvStr += '<th>Percentage</th>';
+		 	for(var j in resultVO.partiesResultsInVillages[i].mandalWisePartyVotes)
+		 		rvStr += '<td>'+resultVO.partiesResultsInVillages[i].mandalWisePartyVotes[j].percentages+'</td>';		 	
+			rvStr += '</tr>';
+		 }
 		rvStr += '</tr>';
 		rvStr += '</table>';
 		rvStr += '<br/>';
