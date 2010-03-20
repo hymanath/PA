@@ -42,6 +42,8 @@ public class ElectionTrendzOverviewVO implements Serializable {
 	
 	private PartyResultsTrendzVO wonCandidateResultTrendz;
     private List<PartyResultsTrendzVO> partyElectionTrendzVO;
+    private CandidateVotingTrendzCharts electionTrendzCharts;
+    
     
     
     //getters and setters
@@ -240,6 +242,15 @@ public class ElectionTrendzOverviewVO implements Serializable {
 
 	public void setFemaleVotersPercentInConsti(String femaleVotersPercentInConsti) {
 		this.femaleVotersPercentInConsti = femaleVotersPercentInConsti;
+	}
+
+	public CandidateVotingTrendzCharts getElectionTrendzCharts() {
+		return electionTrendzCharts;
+	}
+
+	public void setElectionTrendzCharts(
+			CandidateVotingTrendzCharts electionTrendzCharts) {
+		this.electionTrendzCharts = electionTrendzCharts;
 	}
 
 }
