@@ -288,9 +288,10 @@ public class UserGroupService implements IUserGroupService {
 		if(parentGroupId != null)
 		{
 			System.out.println("Inside sub group method in if");
-			personalUserGroup = personalUserGroupDAO.get(parentGroupId);
-			personalUserGroup.setParentGroupId(personalUserGroup);
-			personalUserGroup.setParentGroupName(personalUserGroup.getGroupName());
+			PersonalUserGroup parentGroup = personalUserGroupDAO.get(parentGroupId); 
+			
+			personalUserGroup.setParentGroupId(parentGroup);
+			personalUserGroup.setParentGroupName(parentGroup.getGroupName());
 		}else
 		{
 			personalUserGroup.setParentGroupId(null);
@@ -334,9 +335,10 @@ public class UserGroupService implements IUserGroupService {
 		if(parentGroupId != null)
 		{
 			System.out.println("Inside sub group method in if");
-			personalUserGroup = personalUserGroupDAO.get(parentGroupId);
-			personalUserGroup.setParentGroupId(personalUserGroup);
-			personalUserGroup.setParentGroupName(personalUserGroup.getGroupName());
+			PersonalUserGroup parentGroup = personalUserGroupDAO.get(parentGroupId); 
+			
+			personalUserGroup.setParentGroupId(parentGroup);
+			personalUserGroup.setParentGroupName(parentGroup.getGroupName());
 		}else
 		{
 			parentGroupObj = personalUserGroupDAO.get(userGroupDetailsToSave.getMyGroupId());
@@ -863,6 +865,72 @@ public class UserGroupService implements IUserGroupService {
 		}
 		return mobileNos;
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getSubGroupsListInSystemGroups(Long groupId ,Long userId) {
+		List<SelectOptionVO> subGroupsList = new ArrayList<SelectOptionVO>();
+		List list = personalUserGroupDAO.getSubGroupsCompleteDetailsForASystemGroup(groupId, userId);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(int i = 0; i< list.size(); i++)
+			{
+			SelectOptionVO  subGroupDetails = new SelectOptionVO();	
+			Object[] params =(Object[])list.get(i);
+			subGroupDetails.setId(Long.parseLong(params[0].toString()));
+			subGroupDetails.setName(params[1].toString());
+			
+			subGroupsList.add(subGroupDetails);
+			}
+		}
+		
+		return subGroupsList;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getSubGroupsListInMyGroups(Long groupId ,Long userId) {
+		List<SelectOptionVO> subGroupsList = new ArrayList<SelectOptionVO>();
+		List list = personalUserGroupDAO.getSubGroupsCompleteDetailsForMyGroup(groupId, userId);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(int i = 0; i< list.size(); i++)
+			{
+			SelectOptionVO  subGroupDetails = new SelectOptionVO();	
+			Object[] params =(Object[])list.get(i);
+			subGroupDetails.setId(Long.parseLong(params[0].toString()));
+			subGroupDetails.setName(params[1].toString());
+			
+			subGroupsList.add(subGroupDetails);
+			}
+		}
+		
+		return subGroupsList;		
+			}
+
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getSubGroupsOfStaticGroupParents(Long groupId,
+			Long userId) {
+		List<SelectOptionVO> subGroupsList = new ArrayList<SelectOptionVO>();
+		List list = personalUserGroupDAO.getSubGroupsCompleteDetailsForASystemGroupFromPersonalUserGroup(groupId, userId);
+		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			for(int i = 0; i< list.size(); i++)
+			{
+			SelectOptionVO  subGroupDetails = new SelectOptionVO();	
+			Object[] params =(Object[])list.get(i);
+			subGroupDetails.setId(Long.parseLong(params[0].toString()));
+			subGroupDetails.setName(params[1].toString());
+			
+			subGroupsList.add(subGroupDetails);
+			}
+		}
+		
+		return subGroupsList;
+	}
+	
+	
 	 
 	 
 
