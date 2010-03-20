@@ -38,15 +38,15 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		}	
 		//assertEquals(1,result.size());		
 	}*/
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public void testGetSubGroupsCountInMyGroupsByUserId()
 	{
 		List result=personalUserGroupDAO.getSubGroupsCountInMyGroupsByUserId(1L,2L);
-		/*for(PersonalUserGroup personalUserGroup:result){
+		for(PersonalUserGroup personalUserGroup:result){
 			System.out.println(personalUserGroup.getPersonalUserGroupId());
 			System.out.println(personalUserGroup.getGroupName());	
-		}*/
+		}
 			Object[] parms = (Object[])result.get(0);
 			System.out.println(Long.parseLong(parms[0].toString()));
 			System.out.println(parms[1].toString());
@@ -54,6 +54,18 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		
        
 		//System.out.println(result.size());
-	}
+	}*/
 
+	public void testGetSubGroupsCompleteDetailsForASystemGroup()
+	{
+		List result=personalUserGroupDAO.getSubGroupsCompleteDetailsForASystemGroup(1L, 1L);
+		System.out.println(result.size());
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(Long.parseLong(parms[0].toString()));
+			System.out.println(parms[1].toString());
+			
+		}	
+		
+	}
 }
