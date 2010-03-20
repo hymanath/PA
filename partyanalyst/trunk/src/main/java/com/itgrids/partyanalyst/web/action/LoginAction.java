@@ -86,7 +86,6 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			if(log.isDebugEnabled()){
 				log.debug("src value: " + src);
 			}
-			
 			if(src != null)
 				return src;
 			else
@@ -95,5 +94,4 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		}
 
 	}
-
 }
