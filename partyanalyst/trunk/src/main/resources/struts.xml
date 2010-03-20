@@ -581,7 +581,7 @@
 				<param name="root">mandalVO</param>				
 			</result>		
 		</action>
-		<action name="getConstituenciesAjaxAction" class="electionVotingTrendzAction" method="getConstituenciesByElectionTypeIdAndStateId">
+		<action name="candidateVotingTrendzAjaxAction" class="constituencyPageAction" method="getCandidateVotingTrendz">
 			<result type="json" name="success">
 				<param name="root">constituenciesList</param>				
 			</result>		
@@ -590,7 +590,12 @@
 			<result type="json" name="success">
 				<param name="root">electionTrendzReportVO</param>				
 			</result>		
-		</action>		
+		</action>	
+		<action name="getNextPrevCandidateVotingTrendz" class="constituencyPageAction" method="getNextPrevCandidateVotingTrendz">
+			<result type="json" name="success">
+				<param name="root">candidateVotingTrendzCharts</param>				
+			</result>		
+		</action>
 	</package>
 </struts>
 
