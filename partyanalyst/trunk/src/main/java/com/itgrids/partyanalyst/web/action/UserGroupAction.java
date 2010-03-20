@@ -5,7 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,6 +53,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO> myGroupsListboxOptions;
 	private UserGroupBasicDetails userGroupBasicDetails;
 	private UserGroupMembersVO userGroupMembersVO = null;
+	
 	
 		
 	public HttpServletRequest getRequest() {
@@ -133,15 +141,13 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 
 	public void setUserGroupMembersVO(UserGroupMembersVO userGroupMembersVO) {
 		this.userGroupMembersVO = userGroupMembersVO;
-	}	
+	}
 	
 	public String execute() throws Exception
 	{	
-		
 		staticGroupsListboxOptions = userGroupService.getAllStaticGroupNames();
 		staticGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select System Group"));
-		
-		
+				
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
@@ -150,30 +156,11 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		
 		myGroupsListboxOptions = userGroupService.getAllMyGroupsCreatedByUser(user.getRegistrationID());
 		myGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select A Group"));  
-		
-		String param = null;
-		param = getTask();
-		
-		/*try {
-			jObj = new JSONObject(param);
-			System.out.println(jObj);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if(jObj.getString("task").equalsIgnoreCase("getSelectedGroupMembersDetails"))
-		{
-			userGroupsVO = new UserGroupsVO();
-			Long groupId=new Long(jObj.getString("id"));
-			userGroupsVO.setUserGroupMembersList(userGroupService.getAllMembersIntheGroup(user.getRegistrationID(), groupId));
-		}
-		*/
-		return Action.SUCCESS;
-		
-		
+				
+		return Action.SUCCESS;		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String ajaxCallHandler()
 	{
 		session = request.getSession();
@@ -289,10 +276,81 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 				smsMsgs[i] = no;*/
 			}
 			userGroupService.sendSMStoGroup(message,smsMsgs);			
-		}
+		}if(jObj.getString("task").equalsIgnoreCase("getSubGroupsListInSystemGroups"))
+		{
+			userGroupsVO = new UserGroupsVO();
+			//Map<Long, String> tm = new LinkedHashMap<Long, String>();
+			Set<SelectOptionVO> breadCrumbList = new HashSet<SelectOptionVO>();
+			SelectOptionVO breadCrumb = new SelectOptionVO();
+			Long groupId=new Long(jObj.getString("categoryId"));
+			String groupName = jObj.getString("name");
+			breadCrumb.setId(0L);
+			breadCrumb.setName(groupName);
+			breadCrumbList.add(breadCrumb);
+			session.removeAttribute("breadCrumb");
+			session.setAttribute("breadCrumb",breadCrumbList);
+			
+			/*tm.put(0L, groupName);
+			System.out.println("Before Session");
+			session.removeAttribute("breadCrumb");
+			session.setAttribute("breadCrumb", tm);*/
+			
+			/*Map<Long, String> map =(Map<Long, String>) session.getAttribute("breadCrumb");
+			
+			Set<Entry<Long, String>> set = map.entrySet();
+			Iterator<Entry<Long, String>> it = set.iterator();
+			while(it.hasNext()){
+				Entry<Long, String> entry = it.next();
+				String name= entry.getValue();
+			//	System.out.println(" ID:"+" value:"+vo.getName());
+			}*/
+			System.out.println("after Session");
+			
+			userGroupsVO.setSystemGroupsList(userGroupService.getSubGroupsListInSystemGroups(groupId, user.getRegistrationID()));
+			//userGroupsVO.setBreadCrumb(breadCrumbList);
+			//userGroupsVO.setBMap(tm);
+			userGroupsVO.setBreadCrumbList(breadCrumbList);
+			
+		}if(jObj.getString("task").equalsIgnoreCase("getSubGroupsListInMyGroups"))
+		{
+			userGroupsVO = new UserGroupsVO();
+			Long groupId=new Long(jObj.getString("id"));
+			userGroupsVO.setMyGroupsList(userGroupService.getSubGroupsListInMyGroups(groupId, user.getRegistrationID()));			
+		} if(jObj.getString("task").equalsIgnoreCase("getSubGroupsOfStaticGroupParents"))
+		{
+			//List<SelectOptionVO> breadCrumbList = (List<SelectOptionVO>) session.getAttribute("breadCrumb");
+			Set<SelectOptionVO> breadCrumbList = (Set<SelectOptionVO>) session.getAttribute("breadCrumb");
+			//Map<Long, String> map =(Map) session.getAttribute("breadCrumb");
+			userGroupsVO = new UserGroupsVO();
+			Long groupId=new Long(jObj.getString("id"));
+			String groupName = jObj.getString("subGrpname");
+			String flag = jObj.getString("flag");
+			SelectOptionVO breadcrumb = new SelectOptionVO();  
+			breadcrumb.setId(groupId);
+			breadcrumb.setName(groupName);
+			if ("Add".equals(flag)) {
+				//map.put(groupId, groupName);
+				breadCrumbList.add(breadcrumb);
+			} else if ("remove".equals(flag)) {
+				boolean flag1 = false;
+				//List<SelectOptionVO> requiredList  = new ArrayList<SelectOptionVO>();
+				Set<SelectOptionVO> requiredList = new HashSet<SelectOptionVO>();
+				for(SelectOptionVO vo : breadCrumbList){
+					requiredList.add(vo);
+					if(vo.getId().equals(groupId))
+						break;
+				}
+				breadCrumbList = requiredList;
+			}
+			//userGroupsVO.setBreadCrumb(breadCrumbList);
+			userGroupsVO.setBreadCrumbList(breadCrumbList);
+			userGroupsVO.setSystemGroupsList(userGroupService.getSubGroupsOfStaticGroupParents(groupId, user.getRegistrationID()));
+			
+			
+		}		
 		return Action.SUCCESS;
-	}
-	
+	}	
+		
 	public String getUserGroupsBasicInfo(){
 		
 		session = request.getSession();
