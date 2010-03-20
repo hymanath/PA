@@ -345,6 +345,8 @@ public class ConstituencyPageAction extends ActionSupport implements
 				       candidateVotingTrendzCharts.setVotingTrendzMainChart(barChartName);
 				       candidateVotingTrendzCharts.setCandOverallVotesPercent(wonCandVotesChartName);
 				       candidateVotingTrendzCharts.setCandVotingTrendz(wonCandChartName);
+				       
+				       electionTrendzReportVO.getElectionTrendzOverviewVO().setElectionTrendzCharts(candidateVotingTrendzCharts);
 	 		  		 	         
 		    	 }
 		    	 catch(Exception exc){
