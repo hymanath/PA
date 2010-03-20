@@ -37,4 +37,8 @@ public interface IUserGroupService {
     
     public List<UserGroupMembersVO> getAllMembersIntheGroup(Long registrationId, Long groupId);
     
+    public List<SelectOptionVO> getSubGroupsListInSystemGroups(Long groupId ,Long userId);
+    public List<SelectOptionVO> getSubGroupsListInMyGroups(Long groupId ,Long userId);
+    public List<SelectOptionVO> getSubGroupsOfStaticGroupParents(Long groupId ,Long userId);
+    
 }
