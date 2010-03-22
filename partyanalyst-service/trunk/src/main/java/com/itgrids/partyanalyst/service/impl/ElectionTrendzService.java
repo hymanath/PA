@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.ComparedConstituencyElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWiseBoothsInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWisePartyResultsForMandal;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
@@ -42,6 +43,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IElectionTrendzService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionTrendzService implements IElectionTrendzService {
@@ -52,6 +54,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 	private ITehsilDAO tehsilDAO;
 	private IElectionDAO electionDAO;
 	private IConstituencyDAO constituencyDAO;
+	private IStaticDataService staticDataService;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 
@@ -69,6 +72,14 @@ public class ElectionTrendzService implements IElectionTrendzService {
 
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
 	}
 
 	public ICensusDAO getCensusDAO() {
@@ -878,6 +889,39 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			}
 		}
 	   return partyElecResultVO;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IElectionTrendzService#getPreviousElectionsInfoForAConstituency(java.lang.String, java.lang.Long)
+	 */
+	public ElectionDetailsVO getPreviousElectionsInfoForAConstituency(String electionYear,Long constituencyId){
+		ElectionDetailsVO electionDetailsVO = null;
+		if(electionYear != null && constituencyId != null){
+			electionDetailsVO = new ElectionDetailsVO();
+			List<ElectionBasicInfoVO> electionsInfoForAssembly = staticDataService.getAssemblyElectionsInfoForAConstituency(electionYear,constituencyId);
+			List<ElectionBasicInfoVO> electionsInfoForParliament = staticDataService.getParliamentElectionsInfoForAConstituency(constituencyId);
+			
+			if(electionsInfoForAssembly != null)
+			electionDetailsVO.setAssemblyElections(electionsInfoForAssembly);
+			if(electionsInfoForParliament != null)
+			electionDetailsVO.setParliamentElections(electionsInfoForParliament);
+			
+			log.debug("Assembly ..");
+			for(ElectionBasicInfoVO info:electionsInfoForAssembly){
+				log.debug("Prev ElecId:" + info.getElectionId());
+				log.debug("Prev ElecTypeId:" + info.getElectionTypeId());
+				log.debug("Prev Elec Year:" + info.getElectionYear());
+			}
+			log.debug("Parliament ..");
+			for(ElectionBasicInfoVO info1:electionsInfoForParliament){
+				log.debug("Prev ElecId:" + info1.getElectionId());
+				log.debug("Prev ElecTypeId:" + info1.getElectionTypeId());
+				log.debug("Prev Elec Year:" + info1.getElectionYear());
+			}
+			
+		}
+		return electionDetailsVO;
 	}
 	
 	/*
