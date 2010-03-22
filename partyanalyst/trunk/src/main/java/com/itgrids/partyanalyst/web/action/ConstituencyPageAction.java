@@ -268,6 +268,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 			electionTrendzReportVO = electionTrendzService.getVotingTrendzForAConstituency(electionBasicInfoVO.getElectionId(),electionBasicInfoVO.getElectionTypeId(),electionBasicInfoVO.getElectionYear(),constituencyId,IConstants.MALETRENDZ,IConstants.FEMALETRENDZ);
 			if(electionTrendzReportVO != null)
 			getMapsForVotingTrendz(electionTrendzReportVO);
+			electionTrendzReportVO.setPrevElectionYearsInfo(electionTrendzService.getPreviousElectionsInfoForAConstituency(electionBasicInfoVO.getElectionYear(), constituencyId));
            }
 		
 		
@@ -536,6 +537,31 @@ public class ConstituencyPageAction extends ActionSupport implements
 	       candidateVotingTrendzCharts.setCandOverallVotesPercent(wonCandVotesChartName);
 	       candidateVotingTrendzCharts.setCandVotingTrendz(wonCandChartNameNew);
 		
+		return Action.SUCCESS;
+  }
+  
+  public String getVotingTrendzForElectionYears() throws Exception{
+	  
+	    String param=null;		
+	    String districtId = "";
+		param = getTask();
+		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		electionBasicInfoVO = electionTrendzService.getBasicElectionInfoFromConstituencyId(new Long(232));
+		if(electionBasicInfoVO.getElectionId() != null){
+			
+			System.out.println("Inside trendz service call ....");
+			electionTrendzReportVO = electionTrendzService.getVotingTrendzForAConstituency(electionBasicInfoVO.getElectionId(),electionBasicInfoVO.getElectionTypeId(),electionBasicInfoVO.getElectionYear(),new Long(232),IConstants.MALETRENDZ,IConstants.FEMALETRENDZ);
+			
+			if(electionTrendzReportVO != null)
+				getMapsForVotingTrendz(electionTrendzReportVO);
+		}
 		return Action.SUCCESS;
   }
 
