@@ -334,6 +334,18 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	@SuppressWarnings("unchecked")
     public List getPreviousYearElectionDetails(Long electionId, Long constituencyId)
 	{   Object[] params = {electionId,constituencyId};
-		return  getHibernateTemplate().find("select max(Model.constituencyElection.election.electionYear),Model.constituencyElection.election.electionId from BoothConstituencyElection Model where Model.constituencyElection.election.electionId != ? and Model.constituencyElection.constituency.constituencyId= ?", params);
+		return  getHibernateTemplate().find("select distinct Model.constituencyElection.election.electionYear,Model.constituencyElection.election.electionId from BoothConstituencyElection Model where Model.constituencyElection.election.electionId != ? and Model.constituencyElection.constituency.constituencyId= ?", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getPreviousElectionYearsDetails(String presentYear,Long constituencyId){
+		Object[] params = {presentYear,constituencyId};
+		return  getHibernateTemplate().find("select distinct Model.constituencyElection.election.electionYear,Model.constituencyElection.election.electionId,Model.constituencyElection.election.electionScope.electionType.electionTypeId from BoothConstituencyElection Model where Model.constituencyElection.election.electionYear != ? and Model.constituencyElection.constituency.constituencyId= ?", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getElectionIdForAElectionTypeAndYear(Long elecTypeId,String elecYear){
+		Object[] params = {elecTypeId,elecYear};
+		return  getHibernateTemplate().find("select distinct Model.constituencyElection.election.electionId from BoothConstituencyElection Model where Model.constituencyElection.election.electionScope.electionType.electionTypeId = ? and Model.constituencyElection.election.electionYear = ?", params);
 	}
 }
