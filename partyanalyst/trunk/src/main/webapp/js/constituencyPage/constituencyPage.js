@@ -1,7 +1,7 @@
 
 var constituencyPageMainObj={
 								constituencyAddress:'',
-								contextPath:'',
+								contextPath:'',								
 								constituencyInfo:{
 													constituencyName:'',
 													districtName:'',
@@ -15,22 +15,82 @@ var constituencyPageMainObj={
 								presentAssemblyCandidate:[],
 								presentParliamentCandidate:[],
 								problemsInfo:[],
-								votingTrendzInfo:{
-													totalVoters:'',
-													maleVoters:'',
-													femaleVoters:'',
-													maleAndFemaleVoters:'',
-													totalPolledVotes:'',
-													malePolledVotes:'',
-													femalePolledVotes:'',
-													maleAndFemalePolledVotes:'',
-													pollingPercent:'',
-													malePollingPercent:'',
-													femalePollingPercent:'',
-													maleAndFemalePollingPercent:'',
-													votingTrendzTable:[]
-												 }
+								electionTrendzReportVO:{
+															state:'',
+															electionType:'',
+															electionYear:'',
+															constituencyId:'',
+															constituencyName:'',
+															otherElectionYears:[],
+															electionTrendzOverviewVO:{
+																						totalVoters:'',
+																						maleVoters:'',
+																						femaleVoters:'',
+																						maleAndFemaleVoters:'',
+
+																						totalPolledVotes:'',
+																						malePolledVotes:'',
+																						femalePolledVotes:'',
+																						maleAndFemalePolledVotes:'',
+
+																						pollingPercent:'',
+																						malePollingPercent:'',
+																						femalePollingPercent:'',
+																						maleAndFemalePollingPercent:'',
+
+																						maleVotersPercent:'',
+																						femaleVotersPercent:'',
+																						maleOrFemaleVotersPercent:'',	
+
+																						overallMalePollPercent:'',
+																						overallFemalePollPercent:'',
+																						overallMaleOrFemalePollPercent:'',
+																						
+																						maleVotersInConstituency:'',
+																						femaleVotersInConstituency:'',
+
+																						maleVotersPercentInConsti:'',
+																						femaleVotersPercentInConsti:'',
+																						
+																						electionTrendzCharts:	{
+																									pollingDetailsChart:'',
+																									votingTrendzMainChart:'',
+																									candOverallVotesPercent:'',
+																									candVotingTrendz:''
+																								},
+																																			
+																						wonCandidateResultTrendz:
+																												{
+																													candidateName:'',	
+																													partyName:'',
+																													totalVotes:'',
+																													maleVotes:'',
+																													femaleVotes:'',
+																													maleAndFemaleVotes:'',
+																													totalVotesPercent:'',
+																													maleVotesPercent:'',
+																													femaleVotesPercent:'',
+																													maleAndFemaleVotesPercent:'',
+																													overallMaleVotesPercent:'',
+																													overallFemaleVotesPercent:'',
+																													overallMaleOrFemaleVotesPercent:'',
+																													maleVotesPercentInConstiVotes:'',
+																													femaleVotesPercentInConstiVotes:'',
+																													maleOrFemaleVotesPercentInConstiVotes:'',
+																													status:''	
+																												},
+																						partyElectionTrendzVO:[]
+													
+																					
+																					 },
+															previousElectionYears:{
+																					assemblyElections:[],
+																					parliamentElections:[]
+																				  }
+														}
 							};
+
+var candidateIndex = 1,candidateListSize,prevButtonElmt,nextButtonElmt;
 
 /*var address="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";		
 		var map = new GMap2(document.getElementById("map_canvas"));
@@ -625,12 +685,241 @@ function buildConstituencyConnectPeopleWindow()
 
 }
 
-function buildCenterConstituencyVotersInfoContent()
+
+function buildVotingTrendzLayout(divId,obj)
+{	
+	var elmt = document.getElementById(divId);
+
+	var str = '';	
+	str+='	<div id="constituencyVotersInfoDiv_Body">';
+	str+='	<table>';
+	str+='		<tr>';
+	str+='			<td><div id="constituencyVotersInfoDiv_Head" class="layoutHeadersClass"></div></td>';
+	str+='			<td><div id="constituencyVotersInfoDiv_Navigation"></div></td>';
+	str+='		</tr>';
+	str+='		<tr>';
+	str+='			<td width="60%"><div id="constituencyVotersInfoDiv_Body_voters" class="layoutBodyClass yui-skin-sam"></div></td>';
+	str+='			<td width="40%"><div id="constituencyVotersInfoDiv_Body_votersGraph"> </div></td>';
+	str+='		</tr>';
+	str+='		<tr>';
+	str+='			<td colspan="2">';
+	str+='				<div id="constituencyVotersInfoDiv_Body_votingTrendzGraph" class="layoutBodyClass yui-skin-sam"></div></td>';
+	str+='		</tr>';
+	str+='		<tr>';
+	str+='			<td colspan="2">';
+	str+='				<div id="constituencyVotersInfoDiv_Body_candidateTrendzGraph" class="layoutBodyClass yui-skin-sam">';
+	str+='					<div id="candidateTrendzGraph_head"></div>';
+	str+='					<div id="candidateTrendzGraph_body">';
+	str+='					<table>';
+	str+='						<tr>';
+	str+='							<td style="vertical-align:top;width:30%;"> <div id="candidateVotingGraph1" class="graphHeadingDivClass"></div></td>';
+	str+='							<td style="vertical-align:center"> <div id="candidateTrendzGraphDataDiv" class="graphHeadingDivClass"></div> </td>';
+	str+='							<td style="vertical-align:top;width:30%;"> <div id="candidateVotingGraph2" class="graphHeadingDivClass"></div></td>';
+	str+='						</tr>';
+	str+='					</table>';
+	str+='				</div>';
+	str+='				<div id="candidateTrendzGraph_footer"></div>';
+	str+='				</div>';
+	str+='			</td>';
+	str+='		</tr>';
+	str+='		<tr>';
+	str+='			<td colspan="2">';
+	str+='				<div id="constituencyVotersInfoDiv_Body_candidate" class="layoutBodyClass yui-skin-sam"></div>';
+	str+='			</td>';
+	str+='		</tr>';
+	str+='	</table>';
+	str+='	</div>';
+	str+='<div id="constituencyVotersInfoDiv_Footer"></div>';
+
+	if(elmt)
+		elmt.innerHTML = str;
+	
+	buildVotingTrendzData(obj);
+}
+
+function buildVotingTrendzData(obj)
 {
-	var  votersElmt = document.getElementById('constituencyVotersInfoDiv_Body_voters');		
+	console.log("main Vo = ",obj);
+	//constituencyPageMainObj.electionTrendzReportVO.electionTrendzOverviewVO = obj.electionTrendzVO;
+
+
+	buildConstituencyVotingTrendzHeader(obj);
+	buildCenterConstituencyVotersInfoContent(obj.electionTrendzOverviewVO);	
+	buildConstituencyVotingTrendzGraph(obj.electionTrendzOverviewVO);	
+	buildCandidateVotingTrendzGraphData(obj.electionTrendzOverviewVO,"");
+	candidateVotingTrendzDatatable(obj.electionTrendzOverviewVO);
+}
+
+function buildCandidateVotingTrendzGraphData(obj,results)
+{	
+	console.log(obj);
+
+	var candidateTrendzGraphelmt_head = document.getElementById('candidateTrendzGraph_head');
+	var candidateTrendzGraphelmt_footer = document.getElementById('candidateTrendzGraph_footer');
+	var candidateTrendzGraphelmt = document.getElementById('candidateTrendzGraphDataDiv');
+
+	var data;
+	var localObj = constituencyPageMainObj.electionTrendzReportVO.electionTrendzOverviewVO;
+	
+	
+	if(candidateTrendzGraphelmt_head && candidateTrendzGraphelmt_footer && candidateTrendzGraphelmt)
+	{
+		candidateTrendzGraphelmt_head.innerHTML = '';
+		candidateTrendzGraphelmt_footer.innerHTML = '';
+		candidateTrendzGraphelmt.innerHTML = '';
+	}
+	
+	if(results)
+		data = obj;
+	else
+		data = obj.wonCandidateResultTrendz;
+
+	candidateListSize = localObj.partyElectionTrendzVO.length;
+
+	var hStr = '';
+	hStr += data.candidateName+' Voting Trendz';
+
+	if(candidateTrendzGraphelmt_head)
+		candidateTrendzGraphelmt_head.innerHTML=hStr;
+
+	var fStr = '';
+	fStr += '<table width="100%">';
+	fStr += '<tr>';
+	fStr += '<td align="left"><input type="button"  id="prevButton" value="Previous" onclick="showNextPreviousCandidateVotingTrendz(candidateIndex,\'previous\')"></td>';
+	fStr += '<td></td>';
+	fStr += '<td align="right"><input type="button" id="nextButton" value="Next" onclick="showNextPreviousCandidateVotingTrendz(candidateIndex,\'next\')"></td>';
+	fStr += '</tr>';
+	fStr += '</table>';
+
+
+	if(candidateTrendzGraphelmt_footer)
+		candidateTrendzGraphelmt_footer.innerHTML=fStr;
+
+	prevButtonElmt = document.getElementById("prevButton");
+	nextButtonElmt = document.getElementById("nextButton");
+	
+	if(candidateIndex!=1)
+		prevButtonElmt.disabled = false;
+	else
+		prevButtonElmt.disabled = true;
+
+	if(candidateListSize>1 && candidateIndex!=candidateListSize)
+		nextButtonElmt.disabled = false;
+	else
+		nextButtonElmt.disabled = true;
+	
+	
 
 	var str = '';
-	str+='<table class="constituencyInfoTable" width="90%">';
+	str+='<div class="CandidateResultsInfoHeading_head">MALE</div>';
+	str+='<div class="CandidateResultsInfoHeading_body">';
+	str+='<div>Total Male Polled Votes : <font style="color:#CA6666">'+localObj.malePolledVotes+ '</font></div>';
+	str+='<div>Male Votes Earned : <font style="color:#CA6666">'+data.maleVotes+' ('+data.maleVotesPercent+ ' %)</font> </div>';
+    str+='<div>Total Male Votes %  In Constituency : <font style="color:#CA6666">'+data.maleVotesPercentInConstiVotes+ ' % </font></div>';
+
+	str+='<div class="CandidateResultsInfoHeading_head">FEMALE</div>';
+	str+=' <div class="CandidateResultsInfoHeading_body">';
+	str+=' <div>Total Female Polled Votes : <font style="color:#CA6666">'+localObj.femalePolledVotes+ '</font></div>';
+	str+=' <div>Female Votes Earned : <font style="color:#CA6666">'+data.femaleVotes+' ('+data.femaleVotesPercent+ ' %)</font> </div>';
+	str+='<div>Total Female Votes %  In Constituency : <font style="color:#CA6666">'+data.femaleVotesPercentInConstiVotes+ ' % </font></div>';
+
+	str+='<div class="CandidateResultsInfoHeading_head">MALE/FEMALE</div>';
+	str+=' <div class="CandidateResultsInfoHeading_body">';
+	str+=' <div>Total Male/Female Polled Votes : <font style="color:#CA6666">'+localObj.maleAndFemalePolledVotes+ '</font></div>';
+	str+=' <div>Male/Female Votes Earned : <font style="color:#CA6666">'+data.maleAndFemaleVotes+' ('+data.maleAndFemaleVotesPercent+ ' %) </font></div>';
+	str+='<div>Total Male/Female Votes %  In Constituency : <font style="color:#CA6666">'+data.maleOrFemaleVotesPercentInConstiVotes+ ' % </font></div>';
+
+
+	/*var str = '';
+	str+='<table class="constituencyInfoTable" width="100%">';
+
+	str+='<tr>';
+	str+='<th></th>';
+	str+='<th>Votes</th>';
+	str+='<th>Votes % </th>';
+	str+='<th>Total Polled Votes </th>';	
+	str+='<th>Votes % In Constituency Votes</th>';		
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th> Male </th>';
+	str+='<td>'+data.maleVotes+' ('+data.overallMaleVotesPercent+' % )</td>';
+	str+='<td>'+data.maleVotesPercent+'</td>';
+	str+='<td>'+localObj.malePolledVotes+'</td>';
+	str+='<td>'+data.maleVotesPercentInConstiVotes+'</td>';	
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th> Female </th>';
+	str+='<td>'+data.femaleVotes+' ('+data.overallFemaleVotesPercent+' % )</td>';
+	str+='<td>'+data.femaleVotesPercent +'</td>';
+	str+='<td>'+localObj.femalePolledVotes+'</td>';
+	str+='<td>'+data.femaleVotesPercentInConstiVotes+'</td>';	
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th> Male / Female </th>';
+	str+='<td>'+data.maleAndFemaleVotes+' ('+data.overallMaleOrFemaleVotesPercent+' % )</td>';
+	str+='<td>'+data.maleAndFemaleVotesPercent +'</td>';
+	str+='<td>'+localObj.maleAndFemalePolledVotes+'</td>';
+	str+='<td>'+data.maleOrFemaleVotesPercentInConstiVotes+'</td>';	
+	str+='</tr>';
+
+	str+='<tr>';
+	str+='<th> Total Votes</th>';
+	str+='<td>'+data.totalVotes +' (100 %)</td>';
+	str+='<td>'+data.totalVotesPercent +'</td>';
+	str+='<td>'+localObj.totalPolledVotes+'</td>';
+	str+='<td> '+data.totalVotesPercent+' </td>';	
+	str+='</tr>';
+
+	str+='</table>';*/
+
+	if(candidateTrendzGraphelmt )
+		candidateTrendzGraphelmt .innerHTML = str;
+	
+	if(results)
+	{		
+		var imgChart1 = document.getElementById("candVotingTrendz");
+		var imgChart2 = document.getElementById("candOverallVotesPercent");
+		
+		imgChart1.src = 'charts/'+results.candOverallVotesPercent;
+		imgChart2.src = 'charts/'+results.candVotingTrendz;
+	}
+	else
+	{
+		var graph1Elmt = document.getElementById("candidateVotingGraph1");
+		var graph2Elmt = document.getElementById("candidateVotingGraph2");
+
+		
+		graph2Elmt.innerHTML='<div >% Votes Earned By Candidate In Total Constituency Votes </div><IMG id="candVotingTrendz" SRC="charts/'+obj.electionTrendzCharts.candOverallVotesPercent+'"/>';
+		graph1Elmt.innerHTML='<div > Male,Female,M/F Voting % In Candidate Earned Votes </div><IMG id="candOverallVotesPercent" SRC="charts/'+obj.electionTrendzCharts.candVotingTrendz+'"/>';
+	}
+}
+
+function buildConstituencyVotingTrendzHeader(obj)
+{
+	var headElmt = document.getElementById("constituencyVotersInfoDiv_Head");
+	
+	var str = '';
+	str += '<div id="constituencyTrendzHead">'+obj.constituencyName +' Voting Trendz For The Year '+obj.electionYear+'</div>';
+
+	if(headElmt)
+		headElmt.innerHTML = str;
+}	
+
+function buildCenterConstituencyVotersInfoContent(obj)
+{	
+	var  votersElmt = document.getElementById('constituencyVotersInfoDiv_Body_voters');		
+	var  votersGraphElmt = document.getElementById('constituencyVotersInfoDiv_Body_votersGraph');		
+
+	var str = '';
+	str+='<table class="constituencyInfoTable" width="100%">';
+	
+	str+='<tr>';
+	str+='<th colspan="5"> Male Voters In constituency : '+obj.maleVotersInConstituency+' ,  Female Voters In constituency : '+obj.femaleVotersInConstituency+'</th>';
+	str+='</tr>';
+	
 	str+='<tr>';
 	str+='<th></th>';
 	str+='<th>Voters</th>';
@@ -641,44 +930,79 @@ function buildCenterConstituencyVotersInfoContent()
 
 	str+='<tr>';
 	str+='<th>Male</th>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleVoters+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.malePolledVotes+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.malePollingPercent+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.overallMalePollPercent+'</td>';
+	str+='<td>'+obj.maleVoters+'('+obj.maleVotersPercentInConsti+')</td>';
+	str+='<td>'+obj.malePolledVotes+'</td>';
+	str+='<td>'+obj.malePollingPercent+'</td>';
+	str+='<td>'+obj.overallMalePollPercent+'</td>';
 	str+='</tr>';
 
 	str+='<tr>';
 	str+='<th>Female</th>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.femaleVoters+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.femalePolledVotes+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.femalePollingPercent+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.overallFemalePollPercent+'</td>';
+	str+='<td>'+obj.femaleVoters+'('+obj.femaleVotersPercentInConsti+')</td>';
+	str+='<td>'+obj.femalePolledVotes+'</td>';
+	str+='<td>'+obj.femalePollingPercent+'</td>';
+	str+='<td>'+obj.overallFemalePollPercent+'</td>';
 	str+='</tr>';
 
 	str+='<tr>';
 	str+='<th>Male/Female</th>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleAndFemaleVoters+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleAndFemalePolledVotes+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.maleAndFemalePollingPercent+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.overallMaleOrFemalePollPercent+'</td>';
+	str+='<td>'+obj.maleAndFemaleVoters+'</td>';
+	str+='<td>'+obj.maleAndFemalePolledVotes+'</td>';
+	str+='<td>'+obj.maleAndFemalePollingPercent+'</td>';
+	str+='<td>'+obj.overallMaleOrFemalePollPercent+'</td>';
 	str+='</tr>';
 
 	str+='<tr>';
 	str+='<th>Total</th>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.totalVoters+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.totalPolledVotes+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.pollingPercent+'</td>';
-	str+='<td>'+constituencyPageMainObj.votingTrendzInfo.pollingPercent+'</td>';
+	str+='<td>'+obj.totalVoters+'</td>';
+	str+='<td>'+obj.totalPolledVotes+'</td>';
+	str+='<td>'+obj.pollingPercent+'</td>';
+	str+='<td>'+obj.pollingPercent+'</td>';
 	str+='</tr>';
 
 	str+='</table>';
 
+	str+='<div class="commentsDiv"> * Known classified male voters percentage in total male voters is : <font style="color:#FF0000;">'+obj.maleVotersPercentInConsti+' % </font> </div>';
+	str+='<div class="commentsDiv"> * Known classified female voters percentage in total female voters is : <font style="color:#FF0000;">'+obj.femaleVotersPercentInConsti+' % </font> </div>';
+
 	if(votersElmt)
 		votersElmt.innerHTML=str;
+
+
+	var gStr = '';
+	gStr+='<IMG id="pollingDetailsChartImg" SRC="charts/'+obj.electionTrendzCharts.pollingDetailsChart+'"/>';
 	
+	if(votersGraphElmt)
+		votersGraphElmt.innerHTML = gStr;
+}	
+
+function buildConstituencyVotingTrendzGraph(obj)
+{	
+	var elmt = document.getElementById('constituencyVotersInfoDiv_Body_votingTrendzGraph');
+	
+	
+	if(elmt)
+	{	
+		//console.log(obj.electionTrendzCharts.votingTrendzMainChart);
+		if(elmt.innerHTML)
+		{			
+			var imgElmt = document.getElementById("votingTrendzChartImg");
+			imgElmt.src = '';
+			imgElmt.src = 'charts/'+obj.electionTrendzCharts.votingTrendzMainChart;
+		}
+		else
+		{
+			elmt.innerHTML = '<IMG id="votingTrendzChartImg" SRC="charts/'+obj.electionTrendzCharts.votingTrendzMainChart+'"/>';
+		}
+	}
+}
 
 
-	 var myDataSource = new YAHOO.util.DataSource(constituencyPageMainObj.votingTrendzInfo.votingTrendzTable); 
+function candidateVotingTrendzDatatable(obj)
+{
+	
+	var candidateTrendzArr = obj.partyElectionTrendzVO;
+	 var myDataSource = new YAHOO.util.DataSource(candidateTrendzArr); 
 	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	 myDataSource.responseSchema = { 
 				fields: [
@@ -718,22 +1042,59 @@ function buildCenterConstituencyVotersInfoContent()
 	captionStr += '</div>';
 	var myDataTable = new YAHOO.widget.DataTable("constituencyVotersInfoDiv_Body_candidate",myColumnDefs, myDataSource,{caption:captionStr}); 
 
-	
-	buildVotingTrendzGraph();
-	buildCandidateVotingTrendzGraph();
 }
 
-function buildVotingTrendzGraph()
+
+function buildelectionYearsForVotingTrendz(obj)
 {
-	var votingTrendzelmt = document.getElementById('constituencyVotersInfoDiv_Body_votingTrendzGraph');
 	
-	
+
+	var elmt = document.getElementById('constituencyVotersInfoDiv_Navigation');
+
+	var str = '';
+	str+='<span>View Voting Trendz : </span>';
+	str+='<span>';
+	str+='<input type="radio" name="electionType" value="assembly" onclick="enableElectionYearSelect(this.value)">';
+	str+='<select id="assembly_YearSelect" disabled="disabled">';
+	str+='<option value="0">Assembly</option>';
+	for(var i in obj.assemblyElections)
+		str+='<option value="'+obj.assemblyElections[i].electionId+'_'+obj.assemblyElections[i].electionTypeId+'">'+obj.assemblyElections[i].electionYear+'</option>';
+	str+='</select>';
+	str+='</input>';
+	str+='</span>';
+
+	str+='<span>';
+	str+='<input type="radio" name="electionType" value="parliament" onclick="enableElectionYearSelect(this.value)"/>';
+	str+='<select id="parliament_YearSelect" disabled="disabled">';
+	str+='<option value="0">Parliament</option>';
+	for(var i in obj.parliamentElections)
+		str+='<option value="'+obj.parliamentElections[i].electionId+'_'+obj.parliamentElections[i].electionTypeId+'">'+obj.parliamentElections[i].electionYear+'</option>';
+	str+='</select>';
+	str+='</span>';
+
+	str+='<span>';
+	str+='<input type="button" value="View" onclick="getVotingTrendzForyear()">';
+	str+='</span>';
+	if(elmt)
+		elmt.innerHTML = str;
+				  
 }
 
-function buildCandidateVotingTrendzGraph()
+function enableElectionYearSelect(value)
 {
-	var candidateTrendzelmt = document.getElementById('constituencyVotersInfoDiv_Body_candidateTrendzGraph');
-	
+	var asmbSelectElmt = document.getElementById("assembly_YearSelect");
+	var parSelectElmt = document.getElementById("parliament_YearSelect");
+
+	if(value=="assembly")
+	{
+		asmbSelectElmt.disabled = false;
+		parSelectElmt.disabled = true;
+	}
+	else if(value=="parliament")
+	{
+		asmbSelectElmt.disabled = true;
+		parSelectElmt.disabled = false;
+	}
 }
 
 function initializeConstituencyPage()
@@ -743,8 +1104,12 @@ function initializeConstituencyPage()
 	buildConstituencyConnectPeopleWindow();
 	buildProblemPostingWindow();
 	buildProblemViewingWindow();
-	buildElectionResults();
-	buildCenterConstituencyVotersInfoContent();
+	buildElectionResults();	
 	buildCenterVotersCandidateInfoContent();
 	showCurrentlyElectedCandidate();
+
+	buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
+	
+	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);
+	
 }
