@@ -596,6 +596,11 @@
 				<param name="root">candidateVotingTrendzCharts</param>				
 			</result>		
 		</action>
+		<action name="getVotingTrendzForElectionYears" class="com.itgrids.partyanalyst.web.action.ConstituencyPageAction" method="getVotingTrendzForElectionYears">
+           <result type="json" name="success">
+           		<param name="root">electionTrendzReportVO</param>
+        	</result>
+        </action>  
 	</package>
 </struts>
 
