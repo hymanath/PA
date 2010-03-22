@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
@@ -35,6 +36,8 @@ import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWinnerInfoVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
+import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -76,6 +79,7 @@ public class StaticDataService implements IStaticDataService {
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IPartyElectionResultDAO partyElectionResultDAO;
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private final static Logger log = Logger.getLogger(StaticDataService.class);
 	
 
@@ -196,6 +200,16 @@ public class StaticDataService implements IStaticDataService {
 
 	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
+	}
+	
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
 
@@ -1309,5 +1323,66 @@ public class StaticDataService implements IStaticDataService {
 		return constituenciesList;
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ElectionBasicInfoVO> getAssemblyElectionsInfoForAConstituency(String presentYear,Long constituencyId){
+		
+		List<ElectionBasicInfoVO> electionInfo  =null;
+		
+		if(presentYear != null && constituencyId != null){
+			electionInfo = new ArrayList<ElectionBasicInfoVO>();
+			List prevElec = boothConstituencyElectionDAO.getPreviousElectionYearsDetails(presentYear, constituencyId);
+			log.debug("Elections Size :" + prevElec.size());
+			if(prevElec != null){
+				for(int i=0;i<prevElec.size();i++){
+				Object[] params = (Object[])prevElec.get(i);
+				String elecYear = (String)params[0];
+				Long elecId     = (Long)params[1];
+				Long elecTypeId = (Long)params[2];
+				
+				ElectionBasicInfoVO electionDetailsVO = new ElectionBasicInfoVO();
+				electionDetailsVO.setElectionId(elecId);
+				electionDetailsVO.setElectionTypeId(elecTypeId);
+				electionDetailsVO.setElectionYear(elecYear);
+				
+				electionInfo.add(electionDetailsVO);
+				}
+			}
+		}
+		return electionInfo;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ElectionBasicInfoVO> getParliamentElectionsInfoForAConstituency(Long constituencyId){
+		List<ElectionBasicInfoVO> electionInfo  =null;
+		if(constituencyId != null){
+			electionInfo = new ArrayList<ElectionBasicInfoVO>();
+			List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesForAAssemblyConstituency(new Long(232));
+			for(int i=0;i<list.size();i++){
+				Object[] params = (Object[])list.get(i);
+				Long constiId = (Long)params[0];
+				Long elecTypeId = (Long)params[1];
+				String constName = (String)params[2];
+				Long year = (Long)params[3];
+				Long elecId = null;
+				
+				List election = boothConstituencyElectionDAO.getElectionIdForAElectionTypeAndYear(elecTypeId,year.toString());
+				if(election != null && election.size() > 0){
+					Object electnId = (Object)election.get(0);
+					elecId = (Long)electnId;
+				}
+				ElectionBasicInfoVO electionBasicInfoVO = new ElectionBasicInfoVO();
+				electionBasicInfoVO.setElectionId(elecId);
+				electionBasicInfoVO.setElectionTypeId(elecTypeId);
+				electionBasicInfoVO.setElectionYear(year.toString());
+				
+				electionInfo.add(electionBasicInfoVO);
+			}
+		}
+		return electionInfo;
+	}
+
+
+	
 	
 }
