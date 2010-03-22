@@ -63,6 +63,149 @@
 
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRSqcWSqDo-rwCiW8VjO_0U_k7HAuxQBSweyAZ1v5ozDSPMDKAFtPwSrGw&sensor=true"
             type="text/javascript"></script>
+
+<script type="text/javascript">
+	function callAjax(jsObj,url)
+	{					
+ 		var callback = {			
+ 		               success : function( o ) {
+							try {
+								myResults = YAHOO.lang.JSON.parse(o.responseText);	
+								
+								
+								if(jsObj.task == "getNextPrevCandidateTrendz")
+								{
+									buildCandidateVotingTrendzGraphData(jsObj,myResults);
+								}										
+								else if(jsObj.task == "getVotingTrendzForElectionYears")
+								{									
+									buildVotingTrendzData(myResults);
+								}	
+										
+							}catch (e) {   
+							   	alert("Invalid JSON result" + e);   
+							}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+
+	
+function showNextPreviousCandidateVotingTrendz(index,type)
+{
+	if(type == 'previous')
+		candidateIndex-=1;
+	else if(type == 'next')
+		candidateIndex+=1;
+
+	if(candidateIndex!=1)
+		prevButtonElmt.disabled = false;
+	else
+		prevButtonElmt.disabled = true;
+
+	if(candidateListSize>1 && candidateIndex!=candidateListSize)
+		nextButtonElmt.disabled = false;
+	else
+		nextButtonElmt.disabled = true;
+
+	for(var i =0;i<constituencyPageMainObj.electionTrendzReportVO.electionTrendzOverviewVO.partyElectionTrendzVO.length;i++)
+	{		
+		var data = constituencyPageMainObj.electionTrendzReportVO.electionTrendzOverviewVO.partyElectionTrendzVO[i];
+		if(data.rank == candidateIndex)
+		{
+			var jsObj=	{
+							partyId:data.partyId,
+							partyName:data.partyName,
+							partyLogo:data.partyLogo,
+							partyFlag:data.partyFlag,
+							candidateId:data.candidateId,
+							candidateName:data.candidateName,							
+							validVotes:data.validVotes,
+							totalVotes:data.totalVotes,
+							maleVotes:data.maleVotes,
+							femaleVotes:data.femaleVotes,
+							maleAndFemaleVotes:data.maleAndFemaleVotes,
+							totalVotesPercent:data.totalVotesPercent,
+							maleVotesPercent:data.maleVotesPercent,
+							femaleVotesPercent:data.femaleVotesPercent,
+							maleAndFemaleVotesPercent:data.maleAndFemaleVotesPercent,
+							rank:data.rank,
+							overallMaleVotesPercent : data.overallMaleVotesPercent,
+							overallFemaleVotesPercent : data.overallFemaleVotesPercent,
+							overallMaleOrFemaleVotesPercent : data.overallMaleOrFemaleVotesPercent,						
+							status:data.status,
+							maleVotesPercentInConstiVotes : data.maleVotesPercentInConstiVotes,
+							femaleVotesPercentInConstiVotes :data.femaleVotesPercentInConstiVotes,
+							maleOrFemaleVotesPercentInConstiVotes : data.maleOrFemaleVotesPercentInConstiVotes, 
+							task:'getNextPrevCandidateTrendz'
+						}
+
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/getNextPrevCandidateVotingTrendz.action?"+rparam;
+			
+			callAjax(jsObj, url);			
+			return;
+		}
+	}
+}
+
+function getVotingTrendzForElectionYears()
+{
+	var jsObj=	{					
+					task:'getVotingTrendzForElectionYears'
+				}
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "<%=request.getContextPath()%>/getVotingTrendzForElectionYears.action?"+rparam;
+	callAjax(jsObj, url);	
+}
+
+function getVotingTrendzForyear()
+{
+
+	var elements = document.getElementsByTagName('input'); 
+	var electionType;
+	for(var i=0;i<elements.length;i++)
+	{
+		if(elements[i].type=="radio" && elements[i].name=="electionType" && elements[i].checked==true)
+			electionType = elements[i].value;
+	}
+	if(!electionType)
+		return;
+	
+	var selectElmt = document.getElementById(electionType+"_YearSelect");
+	if(!selectElmt)
+		return;
+	selectElmt.disabled = false;
+
+	var year = selectElmt.options[selectElmt.selectedIndex].text;
+	if(year == "Assembly" || year == "Parliament")
+		return;
+
+	var value = selectElmt.options[selectElmt.selectedIndex].value;	
+	var electionId = value.substring(0,(value.indexOf('_')));
+	var electionTypeId = value.substring((value.indexOf('_')+1),value.length);
+
+	
+
+	var jsObj = {
+					constituencyId:constituencyPageMainObj.electionTrendzReportVO.constituencyId,
+					electionId:electionId,
+					electionTypeId:electionTypeId,
+					electionYear:year,
+					task:'getVotingTrendzForElectionYears'
+				};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "<%=request.getContextPath()%>/getVotingTrendzForElectionYears.action?"+rparam;
+	callAjax(jsObj, url);	
+	
+}
+</script>
 </head>
 <body onLoad="getString()">
 <div id="constituencyPageMain">
@@ -170,37 +313,9 @@
 					<div class="corner bottomLeft"></div>
 					<div class="corner bottomRight"></div>
 
-					<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass">
-						<div id="constituencyVotersInfoDiv_Head" class="layoutHeadersClass">${constituencyDetails.constituencyName} Constituency Voting Trendz :</div>
-						
-						<table>
-						<tr>
-							<td width="60%"><div id="constituencyVotersInfoDiv_Body_voters" class="layoutBodyClass yui-skin-sam"></div></td>
-							<td width="40%"><div id="constituencyVotersInfoDiv_Body_votersGraph">
-							<IMG id="pollingChartImg" SRC="charts/<%=request.getAttribute("pollingChartName")%>">
-							</div></td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div id="constituencyVotersInfoDiv_Body_votingTrendzGraph" class="layoutBodyClass yui-skin-sam">
-									<IMG id="chartImg" SRC="charts/<%=request.getAttribute("barChartName")%>">
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div id="constituencyVotersInfoDiv_Body_candidateTrendzGraph" class="layoutBodyClass yui-skin-sam">
-								
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div id="constituencyVotersInfoDiv_Body_candidate" class="layoutBodyClass yui-skin-sam"></div>
-							</td>
-						</tr>
-						</table>
-					</div>
+					<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass">	</div>
+					<div id="constituencyVotersInfoDiv_electionYears" class="innerLayoutDivClass">	</div>
+
 				</div>
 			</td>
 		</tr>
@@ -225,9 +340,8 @@
 		-----------------------------
 	*/
 	constituencyPageMainObj.constituencyAddress="${constituencyDetails.constituencyName},${constituencyDetails.districtName},${constituencyDetails.stateName}";
-	constituencyPageMainObj.contextPath = "<%=request.getContextPath()%>";
+	constituencyPageMainObj.contextPath = "<%=request.getContextPath()%>";	
 	
-
 	constituencyPageMainObj.constituencyInfo.constituencyName = "${constituencyDetails.constituencyName}";
 	constituencyPageMainObj.constituencyInfo.districtName = "${constituencyDetails.districtName}";
 	constituencyPageMainObj.constituencyInfo.stateName = "${constituencyDetails.stateName}";
@@ -357,24 +471,53 @@
 	/*
 		Voting Trendz Info 
 		------------------
-	*/
+	*/	
+
+		var vTObj = constituencyPageMainObj.electionTrendzReportVO;
+
+		vTObj.state = '${electionTrendzReportVO.state}';
+		vTObj.electionType = '${electionTrendzReportVO.electionType}';
+		vTObj.electionYear = '${electionTrendzReportVO.electionYear}';
+		vTObj.constituencyId = '${electionTrendzReportVO.constituencyId}';
+		vTObj.constituencyName = '${electionTrendzReportVO.constituencyName}';
+				
+
+		vTObj.electionTrendzOverviewVO.totalVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.totalVoters}';
+		vTObj.electionTrendzOverviewVO.maleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.maleVoters}';
+		vTObj.electionTrendzOverviewVO.femaleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.femaleVoters}';
+		vTObj.electionTrendzOverviewVO.maleAndFemaleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemaleVoters}';	
 		
-		constituencyPageMainObj.votingTrendzInfo.totalVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.totalVoters}';
-		constituencyPageMainObj.votingTrendzInfo.maleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.maleVoters}';
-		constituencyPageMainObj.votingTrendzInfo.femaleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.femaleVoters}';
-		constituencyPageMainObj.votingTrendzInfo.maleAndFemaleVoters = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemaleVoters}';		
-		constituencyPageMainObj.votingTrendzInfo.totalPolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.totalPolledVotes}';
-		constituencyPageMainObj.votingTrendzInfo.malePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.malePolledVotes}';
-		constituencyPageMainObj.votingTrendzInfo.femalePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.femalePolledVotes}';
-		constituencyPageMainObj.votingTrendzInfo.maleAndFemalePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemalePolledVotes}';
-		constituencyPageMainObj.votingTrendzInfo.pollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.pollingPercent}';
-		constituencyPageMainObj.votingTrendzInfo.malePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.malePollingPercent}';
-		constituencyPageMainObj.votingTrendzInfo.femalePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.femalePollingPercent}';
-		constituencyPageMainObj.votingTrendzInfo.maleAndFemalePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemalePollingPercent}';
-		constituencyPageMainObj.votingTrendzInfo.overallMalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallMalePollPercent}';
-		constituencyPageMainObj.votingTrendzInfo.overallFemalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallFemalePollPercent}';
-		constituencyPageMainObj.votingTrendzInfo.overallMaleOrFemalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallMaleOrFemalePollPercent}';
+		vTObj.electionTrendzOverviewVO.totalPolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.totalPolledVotes}';
+		vTObj.electionTrendzOverviewVO.malePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.malePolledVotes}';
+		vTObj.electionTrendzOverviewVO.femalePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.femalePolledVotes}';
+		vTObj.electionTrendzOverviewVO.maleAndFemalePolledVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemalePolledVotes}';
+
+		vTObj.electionTrendzOverviewVO.pollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.pollingPercent}';
+		vTObj.electionTrendzOverviewVO.malePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.malePollingPercent}';
+		vTObj.electionTrendzOverviewVO.femalePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.femalePollingPercent}';
+		vTObj.electionTrendzOverviewVO.maleAndFemalePollingPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.maleAndFemalePollingPercent}';
 		
+		vTObj.electionTrendzOverviewVO.maleVotersPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.maleVotersPercent}';
+		vTObj.electionTrendzOverviewVO.femaleVotersPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.femaleVotersPercent}';
+		vTObj.electionTrendzOverviewVO.maleOrFemaleVotersPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.maleOrFemaleVotersPercent}';
+
+		vTObj.electionTrendzOverviewVO.overallMalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallMalePollPercent}';
+		vTObj.electionTrendzOverviewVO.overallFemalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallFemalePollPercent}';
+		vTObj.electionTrendzOverviewVO.overallMaleOrFemalePollPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.overallMaleOrFemalePollPercent}';
+				
+		vTObj.electionTrendzOverviewVO.maleVotersInConstituency = '${electionTrendzReportVO.electionTrendzOverviewVO.maleVotersInConstituency}';
+		vTObj.electionTrendzOverviewVO.femaleVotersInConstituency = '${electionTrendzReportVO.electionTrendzOverviewVO.femaleVotersInConstituency}';
+
+		vTObj.electionTrendzOverviewVO.maleVotersPercentInConsti = '${electionTrendzReportVO.electionTrendzOverviewVO.maleVotersPercentInConsti}';
+		vTObj.electionTrendzOverviewVO.femaleVotersPercentInConsti = '${electionTrendzReportVO.electionTrendzOverviewVO.femaleVotersPercentInConsti}';
+	
+		
+		vTObj.electionTrendzOverviewVO.electionTrendzCharts.pollingDetailsChart = '${electionTrendzReportVO.electionTrendzOverviewVO.electionTrendzCharts.pollingDetailsChart}';
+		vTObj.electionTrendzOverviewVO.electionTrendzCharts.votingTrendzMainChart = '${electionTrendzReportVO.electionTrendzOverviewVO.electionTrendzCharts.votingTrendzMainChart}';
+		vTObj.electionTrendzOverviewVO.electionTrendzCharts.candOverallVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.electionTrendzCharts.candOverallVotesPercent}';
+		vTObj.electionTrendzOverviewVO.electionTrendzCharts.candVotingTrendz = '${electionTrendzReportVO.electionTrendzOverviewVO.electionTrendzCharts.candVotingTrendz}';
+
+
 		<c:forEach var="candidate" items="${electionTrendzReportVO.electionTrendzOverviewVO.partyElectionTrendzVO}">	
 			var cObj = {
 							partyId:'${candidate.partyId}',
@@ -393,10 +536,63 @@
 							femaleVotesPercent:'${candidate.femaleVotesPercent}',
 							maleAndFemaleVotesPercent:'${candidate.maleAndFemaleVotesPercent}',
 							rank:'${candidate.rank}',
+							overallMaleVotesPercent : '${candidate.overallMaleVotesPercent}',
+							overallFemaleVotesPercent : '${candidate.overallFemaleVotesPercent}',
+							overallMaleOrFemaleVotesPercent : '${candidate.overallMaleOrFemaleVotesPercent}',						
+							maleVotesPercentInConstiVotes:'${candidate.maleVotesPercentInConstiVotes}',
+							femaleVotesPercentInConstiVotes:'${candidate.femaleVotesPercentInConstiVotes}',
+							maleOrFemaleVotesPercentInConstiVotes:'${candidate.maleOrFemaleVotesPercentInConstiVotes}',
 							status:'${candidate.status}'
 					   };
-					  constituencyPageMainObj.votingTrendzInfo.votingTrendzTable.push(cObj);
+					  vTObj.electionTrendzOverviewVO.partyElectionTrendzVO.push(cObj);
 		</c:forEach>
+		
+		
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.candidateName = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.candidateName}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.partyName = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.partyName}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.totalVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.totalVotes}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotes}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotes}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleAndFemaleVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleAndFemaleVotes}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.totalVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.totalVotesPercent}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotesPercent}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotesPercent}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleAndFemaleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleAndFemaleVotesPercent}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.overallMaleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.overallMaleVotesPercent}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.overallFemaleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.overallFemaleVotesPercent}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.overallMaleOrFemaleVotesPercent = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.overallMaleOrFemaleVotesPercent}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.status = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.status}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotesPercentInConstiVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleVotesPercentInConstiVotes}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotesPercentInConstiVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.femaleVotesPercentInConstiVotes}';
+		vTObj.electionTrendzOverviewVO.wonCandidateResultTrendz.maleOrFemaleVotesPercentInConstiVotes = '${electionTrendzReportVO.electionTrendzOverviewVO.wonCandidateResultTrendz.maleOrFemaleVotesPercentInConstiVotes}';
+
+		
+		<c:forEach var="asmElection" items="${electionTrendzReportVO.prevElectionYearsInfo.assemblyElections}">	
+			var assemblyElecObj={
+									electionId:'${asmElection.electionId}',
+									electionTypeId:'${asmElection.electionTypeId}',
+									electionType:'${asmElection.electionType}',
+									stateId:'${asmElection.stateId}',
+									state:'${asmElection.state}',
+									electionYear:'${asmElection.electionYear}'
+								};
+
+			vTObj.previousElectionYears.assemblyElections.push(assemblyElecObj);
+		</c:forEach>
+
+		<c:forEach var="parElection" items="${electionTrendzReportVO.prevElectionYearsInfo.parliamentElections}">	
+			var parElecObj={
+									electionId:'${parElection.electionId}',
+									electionTypeId:'${parElection.electionTypeId}',
+									electionType:'${parElection.electionType}',
+									stateId:'${parElection.stateId}',
+									state:'${parElection.state}',
+									electionYear:'${parElection.electionYear}'
+								};
+
+			vTObj.previousElectionYears.parliamentElections.push(parElecObj);
+		</c:forEach>
+
 		
 
 	initializeConstituencyPage();
