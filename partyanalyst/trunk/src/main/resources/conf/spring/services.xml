@@ -23,6 +23,7 @@
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
@@ -122,6 +123,7 @@
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 
 	<bean name="excelToDBService" class="com.itgrids.partyanalyst.service.impl.ExcelToDBService" >
