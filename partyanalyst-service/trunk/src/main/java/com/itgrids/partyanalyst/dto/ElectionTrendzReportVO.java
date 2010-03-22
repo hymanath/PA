@@ -31,6 +31,7 @@ public class ElectionTrendzReportVO implements Serializable {
 	private ElectionTrendzInfoVO maleAndFemaleTrendz;
 	
 	private ElectionTrendzOverviewVO electionTrendzOverviewVO;
+	private ElectionDetailsVO prevElectionYearsInfo;
 	
 	private ResultStatus resultStatus;
 	
@@ -138,6 +139,14 @@ public class ElectionTrendzReportVO implements Serializable {
 	public void setElectionTrendzOverviewVO(
 			ElectionTrendzOverviewVO electionTrendzOverviewVO) {
 		this.electionTrendzOverviewVO = electionTrendzOverviewVO;
+	}
+
+	public ElectionDetailsVO getPrevElectionYearsInfo() {
+		return prevElectionYearsInfo;
+	}
+
+	public void setPrevElectionYearsInfo(ElectionDetailsVO prevElectionYearsInfo) {
+		this.prevElectionYearsInfo = prevElectionYearsInfo;
 	}
 	
 
