@@ -397,3 +397,51 @@ legend
 	padding:5px 10px 5px 5px;
 	text-align:center;
 }
+
+#constituencyVotersInfoDiv_Body_candidateTrendzGraph
+{
+	background-color:#E4EDF0;
+}
+
+#candidateTrendzGraph_head
+{
+	font-weight:bold;
+	margin-bottom:10px;
+	padding:5px;
+	text-decoration:underline;
+}
+#candidateTrendzGraph_body
+{
+	background-color:#FFFFFF;
+}
+#candidateTrendzGraph_footer
+{
+	padding:5px;
+}
+
+.commentsDiv
+{
+	color:#243D51;
+	font-size:12px;
+	margin-top:5px;
+	padding:5px;
+}
+
+.graphHeadingDivClass
+{
+	color:#8D6685;
+	font-size:12px;
+	font-weight:bold;
+}
+
+.CandidateResultsInfoHeading_head
+{
+	color:#3E3F41;
+	padding:5px 5px 5px 0;
+	text-decoration:underline;
+}
+
+.CandidateResultsInfoHeading_body
+{
+	color:#7489AE;
+}
