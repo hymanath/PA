@@ -6,6 +6,8 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
@@ -69,4 +71,8 @@ public interface IStaticDataService {
 	public CandidateDetailsVO getAllStatesInCountry();
 	
 	public List<SelectOptionVO> getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);
+	
+	public List<ElectionBasicInfoVO> getAssemblyElectionsInfoForAConstituency(String presentYear,Long constituencyId);
+	
+	public List<ElectionBasicInfoVO> getParliamentElectionsInfoForAConstituency(Long constituencyId);
 }
