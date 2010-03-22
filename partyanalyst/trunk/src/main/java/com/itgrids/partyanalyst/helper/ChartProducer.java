@@ -24,11 +24,13 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.StandardEntityCollection;
+import org.jfree.chart.labels.PieToolTipGenerator;
 import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.CombinedDomainCategoryPlot;
 import org.jfree.chart.plot.CombinedRangeCategoryPlot;
 import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarPainter;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -54,8 +56,7 @@ public class ChartProducer {
 	    for(String entry : positions.keySet()) {
 	        dataSet.setValue(entry, positions.get(entry));
 	    }
-	    
-	    
+	    	    
 		PiePlot3D plot = new PiePlot3D(dataSet);
 		plot.setForegroundAlpha(0.5f);
 
@@ -84,28 +85,7 @@ public class ChartProducer {
 			String valueAxisLabel, String fileName) {
 		log.debug("creating Line chart....");
 		
-		/*final JFreeChart chart = ChartFactory.createLineChart(title,
-										categoryAxisLabel, 
-										valueAxisLabel, 
-										dataset, 
-										PlotOrientation.VERTICAL, 
-										true, true, false);
-		
-		
-	        final CategoryPlot plot = chart.getCategoryPlot();
-	        chart.setBackgroundPaint(Color.WHITE);
-		
-		final LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
-		renderer.setDrawOutlines(true);
-		
-		NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        rangeAxis.setAutoRangeIncludesZero(false);
-		rangeAxis.setPlot(plot);
-       */
-		
-	
-        final NumberAxis seatsRangeAxis = new NumberAxis("No. of Seats");
+		final NumberAxis seatsRangeAxis = new NumberAxis("No. of Seats");
         seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         final LineAndShapeRenderer seatsRenderer = new LineAndShapeRenderer();
         seatsRenderer.setDrawOutlines(true);
@@ -153,7 +133,6 @@ public class ChartProducer {
 			
         final NumberAxis seatsRangeAxis = new NumberAxis("Polling Trendz");
         seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        //final LineAndShapeRenderer seatsRenderer = new LineAndShapeRenderer();
         final BarRenderer seatsRenderer = new BarRenderer();
         seatsRenderer.setDrawBarOutline(true);
         seatsRenderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
@@ -225,7 +204,6 @@ public class ChartProducer {
 	
 	public static void createBarChartForCandidateVotingTrendz(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
 		JFreeChart chart = ChartFactory.createBarChart(title, domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, true, true, false );
-		//chart.setBackgroundPaint(new Color(0xBBBBDD));
 		chart.setBackgroundPaint(Color.WHITE);
 		CategoryPlot plot = chart.getCategoryPlot();
 		CategoryAxis axis = plot.getDomainAxis();
@@ -385,7 +363,12 @@ public class ChartProducer {
 	
 	public static void createPieChart(String title,final PieDataset dataset,String fileName){
 		
-		
+		/*
+		PiePlot piePlot = new PiePlot();
+	    PieToolTipGenerator toolTip = piePlot.getToolTipGenerator();
+	    toolTip.generateToolTip(dataset,dataset.getIndex(0));*/
+	    
+	    
 		JFreeChart chart = ChartFactory.createPieChart(title,dataset,
 				true, // legend?
 				true, // tooltips?
@@ -403,4 +386,5 @@ public class ChartProducer {
 		log.error("Error writing image to file");
 		}
 	}
+	
 }
