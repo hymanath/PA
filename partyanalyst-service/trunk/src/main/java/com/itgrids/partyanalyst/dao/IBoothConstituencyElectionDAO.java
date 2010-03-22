@@ -91,4 +91,10 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	@SuppressWarnings("unchecked")
     public List getPreviousYearElectionDetails(Long electionId,Long constituencyId);
 	
+	@SuppressWarnings("unchecked")
+	public List getPreviousElectionYearsDetails(String presentYear,Long constituencyId);
+	
+	@SuppressWarnings("unchecked")
+	public List getElectionIdForAElectionTypeAndYear(Long elecTypeId,String elecYear);
+	
 }
