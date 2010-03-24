@@ -39,6 +39,9 @@ public class ElectionTrendzOverviewVO implements Serializable {
 	private String maleOrFemaleVotersPercent;
 	private String maleAndFemalePollingPercent;
 	private String overallMaleOrFemalePollPercent;
+	private String malePollingPercentInTotalPolledVotes;
+	private String femalePollingPercentInTotalPolledVotes;
+	private String maleOrFemalePollingPercentInTotalPolledVotes;
 	
 	private PartyResultsTrendzVO wonCandidateResultTrendz;
     private List<PartyResultsTrendzVO> partyElectionTrendzVO;
@@ -251,6 +254,33 @@ public class ElectionTrendzOverviewVO implements Serializable {
 	public void setElectionTrendzCharts(
 			CandidateVotingTrendzCharts electionTrendzCharts) {
 		this.electionTrendzCharts = electionTrendzCharts;
+	}
+
+	public String getMalePollingPercentInTotalPolledVotes() {
+		return malePollingPercentInTotalPolledVotes;
+	}
+
+	public void setMalePollingPercentInTotalPolledVotes(
+			String malePollingPercentInTotalPolledVotes) {
+		this.malePollingPercentInTotalPolledVotes = malePollingPercentInTotalPolledVotes;
+	}
+
+	public String getFemalePollingPercentInTotalPolledVotes() {
+		return femalePollingPercentInTotalPolledVotes;
+	}
+
+	public void setFemalePollingPercentInTotalPolledVotes(
+			String femalePollingPercentInTotalPolledVotes) {
+		this.femalePollingPercentInTotalPolledVotes = femalePollingPercentInTotalPolledVotes;
+	}
+
+	public String getMaleOrFemalePollingPercentInTotalPolledVotes() {
+		return maleOrFemalePollingPercentInTotalPolledVotes;
+	}
+
+	public void setMaleOrFemalePollingPercentInTotalPolledVotes(
+			String maleOrFemalePollingPercentInTotalPolledVotes) {
+		this.maleOrFemalePollingPercentInTotalPolledVotes = maleOrFemalePollingPercentInTotalPolledVotes;
 	}
 
 }
