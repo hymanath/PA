@@ -84,7 +84,7 @@
 
 function getConstituencyElecResultsWindow(constiId)
 {
-   var browser1 = window.open("","http://localhost:8080/PartyAnalyst/constituencyElectionResultsAction.action?constituencyId="+constiId,"browser1");
+   var browser1 = window.open("http://localhost:8080/PartyAnalyst/constituencyElectionResultsAction.action?constituencyId="+constiId,"browser1");
    browser1.focus();
 }
 </script>
