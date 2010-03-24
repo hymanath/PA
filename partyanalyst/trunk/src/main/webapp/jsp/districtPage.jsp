@@ -229,7 +229,7 @@ function getConstituencyElecResultsWindow(constiId)
 					 &nbsp </td>
 					<td><c:out value="${candidate.partyName}"/></td>
 					<td><img src="<%=request.getContextPath()%>/images/party_flags/${candidate.partyFlag}" height="30" width="40"/></td>
-					<td><a href="" onclick="getConstituencyElecResultsWindow(${candidate.constituencyId})">view results</a></td>
+					<td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(${candidate.constituencyId})">view results</a></td>
 				</tr>  
 			</c:forEach>
 		</table>		
