@@ -123,4 +123,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List findAllCandidatesForAnElectionByElectionYear(Long constituencyId);
 	
+    @SuppressWarnings("unchecked")
+	public List getCandidatesInfoForTheGivenConstituency(Long constituencyId,String electionYear,String electionType);
+	
 }
