@@ -71,7 +71,7 @@ var constituencyElecMainObj=	{
 								     electionYear:'',
 								     totalVoters:'',
 									 validVotes:''
-							      },
+								  },
 		wonCandidateInfo: {
 						     candidateId:'',
 							 candidateName:'',
@@ -80,7 +80,9 @@ var constituencyElecMainObj=	{
 							 partyFlag:'',
 							 votesEarned:'',
 							 votesPercent:'',
-							 rank:''
+							 rank:'',
+							 votesMargin:'',
+							 votesPercentMargin:''
 						  },
 		oppCandidateElecResults:[]
 };
@@ -113,6 +115,9 @@ function buildDataForConstituencyResults()
 		constituencyElecMainObj.wonCandidateInfo.votesEarned='${constituencyElectionResultsVO.candidateResultsVO.votesEarned}',
 		constituencyElecMainObj.wonCandidateInfo.votesPercent='${constituencyElectionResultsVO.candidateResultsVO.votesPercentage}';
 		constituencyElecMainObj.wonCandidateInfo.rank='${constituencyElectionResultsVO.candidateResultsVO.rank}';
+		constituencyElecMainObj.wonCandidateInfo.votesMargin='${constituencyElectionResultsVO.candidateResultsVO.votesMargin}';
+		constituencyElecMainObj.wonCandidateInfo.votesPercentMargin='${constituencyElectionResultsVO.candidateResultsVO.votesPercentMargin}';
+
 		
 	 <c:forEach var="oppCandResults" items="${constituencyElectionResultsVO.candidateOppositionList}">
 
@@ -132,7 +137,9 @@ function buildDataForConstituencyResults()
 					 partyFlag:partyFlg,
 			         votesEarned:'${oppCandResults.votesEarned}',
 			         votesPercent:'${oppCandResults.votesPercentage}',
-			         rank:'${oppCandResults.rank}'
+			         rank:'${oppCandResults.rank}',
+					 votesMargin:'${oppCandResults.votesMargin}',
+					 votesPercentMargin:'${oppCandResults.votesPercentMargin}'
 	                 }
 	 constituencyElecMainObj.oppCandidateElecResults.push(oppCandInfo);
 	 </c:forEach>
@@ -161,6 +168,12 @@ function displayConstituencyElectionResults()
 		str+='<th>State </th>';
 		str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.stateName+'</td>';	
 		str+='</tr>';	
+		str+='<tr>';
+		str+='<td></td>';
+		str+='<td></td>';
+		str+='<th>Year</th>';
+		str+='<td>'+constituencyElecMainObj.constituencyElectionInfo.electionYear+'</td>';
+		str+='</tr>';	
 		str+='</table>';
 		str+='</div>';
 		str+='</fieldset>';
@@ -170,25 +183,33 @@ function displayConstituencyElectionResults()
 		str+='<div id="WinningCandidateDiv">';
 		str+='<table id="WinningCandidateTableClass" class="legendTable" width="100%">';
 		str+='<tr>';
-		str+='<th>Name</th>';
-		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.candidateName+'</td>';
-		str+='<th>Year</th>';
-		str+='<td>'+constituencyElecMainObj.constituencyElectionInfo.electionYear+'</td>';
-		str+='</tr>';
-
-		str+='<tr>';
-		str+='<th>Party</th>';
-		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.partyName+'</td>';	
+		str+='<th></th>';
+		str+='<td></td>';
 		str+='<th>Votes Earned</th>';
 		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.votesEarned+'</td>';
 		str+='</tr>';
 
 		str+='<tr>';
+		str+='<th>Name</th>';
+		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.candidateName+'</td>';
+		str+='<th>Votes Percentage</th>';
+		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.votesPercent+' %</td>'
+		str+='</tr>';
+
+		str+='<tr>';
+		str+='<th>Party</th>';
+		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.partyName+'</td>';	
+		str+='<th>Votes Margin Gained</th>';
+		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.votesMargin+'</td>'
+		str+='</tr>';
+
+		str+='<tr>';
 		str+='<th>Party Flag</th>';
 		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.partyFlag+'</td>';
-		str+='<th>Votes Percentage</th>';
-		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.votesPercent+'</td>'
+		str+='<th>Votes Margin % Gained</th>';
+		str+='<td>'+constituencyElecMainObj.wonCandidateInfo.votesPercentMargin+' %</td>'
 		str+='</tr>';
+
 		str+='</table>';
 		str+='</div>';	
 		str+='</fieldset>';
@@ -240,7 +261,7 @@ function displayConstituencyElectionResults()
 				{key:"partyFlag", label:'Party Flag',sortable:true, resizeable:true}, 
 				{key:"votesEarned",label:'Votes Earned',formatter:YAHOO.widget.DataTable.formatNumber, sortable:true, resizeable:true}, 
 				{key:"votesPercent",label:'Votes %', sortable:true, resizeable:true}, 
-				{key:"rank",label:'Rank', sortable:true, resizeable:true} 
+	            {key:"rank",label:'Rank', sortable:true, resizeable:true} 
 			]; 
 
 		var myDataTable = new YAHOO.widget.DataTable("oppCandResultsDiv",myColumnDefs, myDataSource);
