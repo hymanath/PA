@@ -250,4 +250,7 @@
 	<bean id="villageBoothElectionMapAction" class="com.itgrids.partyanalyst.web.action.VillageBoothElectionMapAction" singleton="false">
 			<property name="villageBoothDataPopulationService" ref="villageBoothDataPopulationService" />
 	</bean>	
+	<bean id="constituencyElectionResultsAction" class="com.itgrids.partyanalyst.web.action.ConstituencyElectionResultsAction" singleton="false">
+			<property name="staticDataService" ref="staticDataService" />
+	</bean>
 </beans>		
