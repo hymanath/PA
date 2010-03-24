@@ -850,6 +850,11 @@ public class ElectionTrendzService implements IElectionTrendzService {
 			electionTrendzOverviewVO.setOverallFemalePollPercent(getPollingPercent(femaleTrendz.getConstituencyWiseResults().getPolledVotes(),completeTrendz.getConstituencyWiseResults().getNoOfVoters()).toString());
 			electionTrendzOverviewVO.setOverallMaleOrFemalePollPercent(getPollingPercent(maleAFemaleTrendz.getConstituencyWiseResults().getPolledVotes(),completeTrendz.getConstituencyWiseResults().getNoOfVoters()).toString());
 			
+			electionTrendzOverviewVO.setMalePollingPercentInTotalPolledVotes(getPollingPercent(maleTrendz.getConstituencyWiseResults().getPolledVotes(),completeTrendz.getConstituencyWiseResults().getPolledVotes()).toString());
+			electionTrendzOverviewVO.setFemalePollingPercentInTotalPolledVotes(getPollingPercent(femaleTrendz.getConstituencyWiseResults().getPolledVotes(),completeTrendz.getConstituencyWiseResults().getPolledVotes()).toString());
+			electionTrendzOverviewVO.setMaleOrFemalePollingPercentInTotalPolledVotes(getPollingPercent(maleAFemaleTrendz.getConstituencyWiseResults().getPolledVotes(),completeTrendz.getConstituencyWiseResults().getPolledVotes()).toString());
+
+			
 			for(PartyElectionResultVO partyTrendz:completeTrendz.getConstituencyWiseResults().getPartyElecResults()){
 				Long candId = partyTrendz.getCandidateId();
 				PartyElectionResultVO maleTrendzResult   = getPartyResultTrendzForACandidate(maleTrendz.getConstituencyWiseResults().getPartyElecResults(),candId);
