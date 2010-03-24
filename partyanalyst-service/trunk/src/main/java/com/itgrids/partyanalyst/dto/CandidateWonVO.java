@@ -22,6 +22,8 @@ public class CandidateWonVO {
 	private Long rank;
 	private String partyFlag;	
 	private String partyLongName;
+	private String votesMargin;
+	private String votesPercentMargin;
 
 	//getters and setters
 	public String getPartyLongName() {
@@ -77,5 +79,17 @@ public class CandidateWonVO {
 	}
 	public void setRank(Long rank) {
 		this.rank = rank;
+	}
+	public String getVotesMargin() {
+		return votesMargin;
+	}
+	public void setVotesMargin(String votesMargin) {
+		this.votesMargin = votesMargin;
+	}
+	public String getVotesPercentMargin() {
+		return votesPercentMargin;
+	}
+	public void setVotesPercentMargin(String votesPercentMargin) {
+		this.votesPercentMargin = votesPercentMargin;
 	}
 }
