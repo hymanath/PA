@@ -20,8 +20,22 @@ public class CandidateWonVO {
 	private String votesEarned;
 	private String votesPercentage;
 	private Long rank;
-	
+	private String partyFlag;	
+	private String partyLongName;
+
 	//getters and setters
+	public String getPartyLongName() {
+		return partyLongName;
+	}
+	public void setPartyLongName(String partyLongName) {
+		this.partyLongName = partyLongName;
+	}
+	public String getPartyFlag() {
+		return partyFlag;
+	}
+	public void setPartyFlag(String partyFlag) {
+		this.partyFlag = partyFlag;
+	}
 	public Long getPartyId() {
 		return partyId;
 	}
