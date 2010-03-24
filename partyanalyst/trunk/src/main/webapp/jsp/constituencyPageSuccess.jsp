@@ -227,7 +227,12 @@ function getVotingTrendzForyear()
 
 							<div id="constituencyPageProfileInfoDiv_Main" class="innerLayoutDivClass">
 								<div id="constituencyPageProfileInfoDiv_Head" class="layoutHeadersClass"> ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType}  Constituency Details : </div>
-								<div id="constituencyPageProfileInfoDiv_Body" class="layoutBodyClass"></div>
+								<div id="constituencyPageProfileInfoDiv_Body" class="layoutBodyClass">
+									<div id="constituencyInfoDiv">
+										<div id="constituencyInfoDiv_Head"></div>
+										<div id="constituencyInfoDiv_Body"></div>
+									</div>	
+								</div>
 							</div>
 					</div>	
 					
@@ -283,10 +288,7 @@ function getVotingTrendzForyear()
 
 						<div id="constituencyPageRightMapDiv" class="contentDivClass">
 							<div id="map_canvas"></div>
-							<div id="constituencyInfoDiv">
-								<div id="constituencyInfoDiv_Head"></div>
-								<div id="constituencyInfoDiv_Body"></div>
-							</div>					
+											
 							<div id="constituencyPeopleConnectDiv">
 								<div id="constituencyPeopleConnectDiv_Head"></div>
 								<div id="constituencyPeopleConnectDiv_Body"></div>
@@ -510,6 +512,10 @@ function getVotingTrendzForyear()
 
 		vTObj.electionTrendzOverviewVO.maleVotersPercentInConsti = '${electionTrendzReportVO.electionTrendzOverviewVO.maleVotersPercentInConsti}';
 		vTObj.electionTrendzOverviewVO.femaleVotersPercentInConsti = '${electionTrendzReportVO.electionTrendzOverviewVO.femaleVotersPercentInConsti}';
+
+		vTObj.electionTrendzOverviewVO.malePolledPercentInTotalPolled = '${electionTrendzReportVO.electionTrendzOverviewVO.malePollingPercentInTotalPolledVotes}';
+		vTObj.electionTrendzOverviewVO.femalePolledPercentInTotalPolled = '${electionTrendzReportVO.electionTrendzOverviewVO.femalePollingPercentInTotalPolledVotes}';
+		vTObj.electionTrendzOverviewVO.maleOrFemalePolledPercentInTotalPolled = '${electionTrendzReportVO.electionTrendzOverviewVO.maleOrFemalePollingPercentInTotalPolledVotes}';
 	
 		
 		vTObj.electionTrendzOverviewVO.electionTrendzCharts.pollingDetailsChart = '${electionTrendzReportVO.electionTrendzOverviewVO.electionTrendzCharts.pollingDetailsChart}';
