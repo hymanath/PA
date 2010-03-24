@@ -120,7 +120,7 @@ background-color:#E4EDF0;
 
 #constituencyInfoDiv
 {
-	margin-top:20px;
+	/*margin-top:20px;*/
 	padding:5px;
 }
 
@@ -405,9 +405,11 @@ legend
 
 #candidateTrendzGraph_head
 {
+	color:appworkspace;
 	font-weight:bold;
 	margin-bottom:10px;
 	padding:5px;
+	text-align:center;
 	text-decoration:underline;
 }
 #candidateTrendzGraph_body
@@ -429,9 +431,21 @@ legend
 
 .graphHeadingDivClass
 {
-	color:#8D6685;
+	color:DarkGoldenRod;
 	font-size:12px;
 	font-weight:bold;
+	margin-top:15px;
+	margin-bottom:15px;
+	font-family:verdana;
+}
+.graphHeadingNewDivClass
+{
+    color:MediumPurple;
+	font-size:12px;
+	font-weight:bold;
+	margin-top:15px;
+	margin-bottom:15px;
+	font-family:verdana;
 }
 
 .CandidateResultsInfoHeading_head
@@ -443,5 +457,8 @@ legend
 
 .CandidateResultsInfoHeading_body
 {
-	color:#7489AE;
+	color:SlateGray;
+	font-family:inherit;
+    font-size:12px;
+	border-top:medium outset;
 }
