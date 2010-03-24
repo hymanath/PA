@@ -23,6 +23,8 @@ public class CandidateOppositionVO {
 	private Boolean status;
 	private String partyFlag;
 	private String partyLongName;
+	private String votesMargin;
+	private String votesPercentMargin;
 
 	//getters and setters
 
@@ -85,6 +87,18 @@ public class CandidateOppositionVO {
 	}
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+	public String getVotesMargin() {
+		return votesMargin;
+	}
+	public void setVotesMargin(String votesMargin) {
+		this.votesMargin = votesMargin;
+	}
+	public String getVotesPercentMargin() {
+		return votesPercentMargin;
+	}
+	public void setVotesPercentMargin(String votesPercentMargin) {
+		this.votesPercentMargin = votesPercentMargin;
 	}
 	
 }
