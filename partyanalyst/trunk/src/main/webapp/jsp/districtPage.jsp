@@ -46,8 +46,9 @@
 			key : "partyName"
 		}, {
 			key : "partyFlag"
-		}		
-		]
+		}, {
+			key : ""
+		}]
 	};
 
 	var resultsColumnDefs = [ {
@@ -65,7 +66,10 @@
 	}, {
 		key : "partyFlag",
 		label : "Party Flag"	
-	} ];
+	}, {
+		key : "",
+		label : "Complete Results"	
+	}];
 
 	var myConfigs = {
     paginator : new YAHOO.widget.Paginator({
@@ -76,6 +80,12 @@
 
 	var myDataTable = new YAHOO.widget.DataTable("mlaInfoDivBody",resultsColumnDefs, resultsDataSource,myConfigs);  
 
+}
+
+function getConstituencyElecResultsWindow(constiId)
+{
+   var browser1 = window.open("","http://localhost:8080/PartyAnalyst/constituencyElectionResultsAction.action?constituencyId="+constiId,"browser1");
+   browser1.focus();
 }
 </script>
 
@@ -219,6 +229,7 @@
 					 &nbsp </td>
 					<td><c:out value="${candidate.partyName}"/></td>
 					<td><img src="<%=request.getContextPath()%>/images/party_flags/${candidate.partyFlag}" height="30" width="40"/></td>
+					<td><a href="" onclick="getConstituencyElecResultsWindow(${candidate.constituencyId})">view results</a></td>
 				</tr>  
 			</c:forEach>
 		</table>		
