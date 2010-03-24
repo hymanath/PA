@@ -51,6 +51,10 @@ var constituencyPageMainObj={
 
 																						maleVotersPercentInConsti:'',
 																						femaleVotersPercentInConsti:'',
+
+																						malePolledPercentInTotalPolled:'',
+																						femalePolledPercentInTotalPolled:'',
+																						maleOrFemalePolledPercentInTotalPolled:'',
 																						
 																						electionTrendzCharts:	{
 																									pollingDetailsChart:'',
@@ -195,9 +199,9 @@ function buildConstituencyInfo()
 	var divElmtHead = document.getElementById("constituencyInfoDiv_Head");
 	var divElmtBody = document.getElementById("constituencyInfoDiv_Body");
 
-	var heading='<h3>Constituency Info </h3>';
+	/*var heading='<h3>Constituency Info </h3>';
 	if(divElmtHead)
-		divElmtHead.innerHTML=heading;
+		divElmtHead.innerHTML=heading;*/
 	
 	var str = '';
 	str+='<table id="constituencyInfoTable">';
@@ -292,7 +296,7 @@ function showDetailedElectionResult(id)
 	str+='<tr>';	
 	str+='<th>District</th>';
 	str+='<td>'+info.districtName+'</td>';
-	str+='<th>District</th>';
+	str+='<th>State</th>';
 	str+='<td>'+info.stateName+'</td>';	
 	str+='</tr>';	
 	str+='</table>';
@@ -698,12 +702,20 @@ function buildVotingTrendzLayout(divId,obj)
 	str+='			<td><div id="constituencyVotersInfoDiv_Navigation"></div></td>';
 	str+='		</tr>';
 	str+='		<tr>';
-	str+='			<td width="60%"><div id="constituencyVotersInfoDiv_Body_voters" class="layoutBodyClass yui-skin-sam"></div></td>';
-	str+='			<td width="40%"><div id="constituencyVotersInfoDiv_Body_votersGraph"> </div></td>';
+	str+='			<td colspan="2">';
+	str+='				<div id="constituencyVotersInfoDiv_Body_votingTrendzGraph" class="layoutBodyClass yui-skin-sam"></div>';
+	str+='			</td>';
 	str+='		</tr>';
 	str+='		<tr>';
-	str+='			<td colspan="2">';
-	str+='				<div id="constituencyVotersInfoDiv_Body_votingTrendzGraph" class="layoutBodyClass yui-skin-sam"></div></td>';
+	str+='			<td width="50%"><div id="constituencyVotersInfoDiv_Body_voters" class="layoutBodyClass yui-skin-sam"></div></td>';
+	str+='          <td width="50%"><div class="commentsDiv"> ';
+	str+='				* Total Male Voters In Constituency   : <font style="color:#FF0000;">'+obj.electionTrendzOverviewVO.maleVotersInConstituency+' 							</font> </div>';
+	str+='              <div class="commentsDiv"> * Total Female Voters In Constituency : <font 																				style="color:#FF0000;">'+obj.electionTrendzOverviewVO.femaleVotersInConstituency+' </font> </div>';
+    str+='              <div class="commentsDiv"> ';
+	str+='				 * Known Classified Male Voters % In Total Male Voters :<font style="color:#FF0000;"> '+obj.electionTrendzOverviewVO.maleVoters+' </font><font style="color:#0000FF;"> ( '+obj.electionTrendzOverviewVO.maleVotersPercentInConsti+' % )</font> </div>';
+	str+='              <div class="commentsDiv"> ';
+	str+='				 * Known Classified Female Voters % In Total Female Voters   :<font     			   style="color:#FF0000;">'+obj.electionTrendzOverviewVO.femaleVoters+'</font><font style="color:#0000FF;"> ( '+obj.electionTrendzOverviewVO.femaleVotersPercentInConsti+' % )</font> </div>';
+	str+='           </td>';
 	str+='		</tr>';
 	str+='		<tr>';
 	str+='			<td colspan="2">';
@@ -714,7 +726,7 @@ function buildVotingTrendzLayout(divId,obj)
 	str+='						<tr>';
 	str+='							<td style="vertical-align:top;width:30%;"> <div id="candidateVotingGraph1" class="graphHeadingDivClass"></div></td>';
 	str+='							<td style="vertical-align:center"> <div id="candidateTrendzGraphDataDiv" class="graphHeadingDivClass"></div> </td>';
-	str+='							<td style="vertical-align:top;width:30%;"> <div id="candidateVotingGraph2" class="graphHeadingDivClass"></div></td>';
+	str+='							<td style="vertical-align:top;width:30%;"> <div id="candidateVotingGraph2" class="graphHeadingNewDivClass"></div></td>';
 	str+='						</tr>';
 	str+='					</table>';
 	str+='				</div>';
@@ -738,10 +750,8 @@ function buildVotingTrendzLayout(divId,obj)
 }
 
 function buildVotingTrendzData(obj)
-{
-	console.log("main Vo = ",obj);
-	//constituencyPageMainObj.electionTrendzReportVO.electionTrendzOverviewVO = obj.electionTrendzVO;
-
+{	
+	constituencyPageMainObj.electionTrendzReportVO.electionTrendzOverviewVO = obj.electionTrendzOverviewVO;
 
 	buildConstituencyVotingTrendzHeader(obj);
 	buildCenterConstituencyVotersInfoContent(obj.electionTrendzOverviewVO);	
@@ -752,8 +762,6 @@ function buildVotingTrendzData(obj)
 
 function buildCandidateVotingTrendzGraphData(obj,results)
 {	
-	console.log(obj);
-
 	var candidateTrendzGraphelmt_head = document.getElementById('candidateTrendzGraph_head');
 	var candidateTrendzGraphelmt_footer = document.getElementById('candidateTrendzGraph_footer');
 	var candidateTrendzGraphelmt = document.getElementById('candidateTrendzGraphDataDiv');
@@ -777,8 +785,14 @@ function buildCandidateVotingTrendzGraphData(obj,results)
 	candidateListSize = localObj.partyElectionTrendzVO.length;
 
 	var hStr = '';
-	hStr += data.candidateName+' Voting Trendz';
-
+	hStr += '<font style="color:Tomato">'+data.candidateName+'</font> Voting Trendz';
+	hStr += ' ... ';
+	hStr += ' Total Votes Earned : <font style="color:Tomato">' +data.totalVotes + '</font>';
+	hStr += ' ... ';
+	hStr += ' Total Votes % : <font style="color:Tomato">' +data.totalVotesPercent+' %</font>';
+	hStr += ' ... ';
+	hStr += ' Result Status : <font style="color:Tomato">' +data.status + '</font>';
+	
 	if(candidateTrendzGraphelmt_head)
 		candidateTrendzGraphelmt_head.innerHTML=hStr;
 
@@ -813,70 +827,25 @@ function buildCandidateVotingTrendzGraphData(obj,results)
 	var str = '';
 	str+='<div class="CandidateResultsInfoHeading_head">MALE</div>';
 	str+='<div class="CandidateResultsInfoHeading_body">';
-	str+='<div>Total Male Polled Votes : <font style="color:#CA6666">'+localObj.malePolledVotes+ '</font></div>';
-	str+='<div>Male Votes Earned : <font style="color:#CA6666">'+data.maleVotes+' ('+data.maleVotesPercent+ ' %)</font> </div>';
-    str+='<div>Total Male Votes %  In Constituency : <font style="color:#CA6666">'+data.maleVotesPercentInConstiVotes+ ' % </font></div>';
+	str+='<div>M Votes Earned                      : <font style="color:#CA6666">'+data.maleVotes+' ('+data.maleVotesPercent+ ' %)</font> </div>';
+	str+='<div>M Votes % In Candidate Gained Votes : <font style="color:DarkGoldenRod">'+data.overallMaleVotesPercent+'%</font> </div>';
+    str+='<div>Total M Votes %  In Constituency    : <font style="color:MediumPurple">'+data.maleVotesPercentInConstiVotes+ ' % </font></div>';
 
 	str+='<div class="CandidateResultsInfoHeading_head">FEMALE</div>';
 	str+=' <div class="CandidateResultsInfoHeading_body">';
-	str+=' <div>Total Female Polled Votes : <font style="color:#CA6666">'+localObj.femalePolledVotes+ '</font></div>';
-	str+=' <div>Female Votes Earned : <font style="color:#CA6666">'+data.femaleVotes+' ('+data.femaleVotesPercent+ ' %)</font> </div>';
-	str+='<div>Total Female Votes %  In Constituency : <font style="color:#CA6666">'+data.femaleVotesPercentInConstiVotes+ ' % </font></div>';
+	str+=' <div>F Votes Earned                     : <font style="color:#CA6666">'+data.femaleVotes+' ('+data.femaleVotesPercent+ ' %)</font> </div>';
+	str+='<div>F Votes % In Candidate Gained Votes : <font style="color:DarkGoldenRod">'+data.overallFemaleVotesPercent+'%</font> </div>';
+	str+='<div>Total F Votes %  In Constituency    : <font style="color:MediumPurple">'+data.femaleVotesPercentInConstiVotes+ ' % </font></div>';
 
 	str+='<div class="CandidateResultsInfoHeading_head">MALE/FEMALE</div>';
 	str+=' <div class="CandidateResultsInfoHeading_body">';
-	str+=' <div>Total Male/Female Polled Votes : <font style="color:#CA6666">'+localObj.maleAndFemalePolledVotes+ '</font></div>';
-	str+=' <div>Male/Female Votes Earned : <font style="color:#CA6666">'+data.maleAndFemaleVotes+' ('+data.maleAndFemaleVotesPercent+ ' %) </font></div>';
-	str+='<div>Total Male/Female Votes %  In Constituency : <font style="color:#CA6666">'+data.maleOrFemaleVotesPercentInConstiVotes+ ' % </font></div>';
+	str+=' <div>M/F Votes Earned                     : <font style="color:#CA6666">'+data.maleAndFemaleVotes+' ('+data.maleAndFemaleVotesPercent+ ' %) </font></div>';
+	str+='<div>M/F Votes % In Candidate Gained Votes : <font style="color:DarkGoldenRod">'+data.overallMaleOrFemaleVotesPercent+'%</font> </div>';
+	str+='<div>Total M/F Votes %  In Constituency    : <font style="color:MediumPurple">'+data.maleOrFemaleVotesPercentInConstiVotes+ ' % </font></div>';
 
 
-	/*var str = '';
-	str+='<table class="constituencyInfoTable" width="100%">';
-
-	str+='<tr>';
-	str+='<th></th>';
-	str+='<th>Votes</th>';
-	str+='<th>Votes % </th>';
-	str+='<th>Total Polled Votes </th>';	
-	str+='<th>Votes % In Constituency Votes</th>';		
-	str+='</tr>';
-
-	str+='<tr>';
-	str+='<th> Male </th>';
-	str+='<td>'+data.maleVotes+' ('+data.overallMaleVotesPercent+' % )</td>';
-	str+='<td>'+data.maleVotesPercent+'</td>';
-	str+='<td>'+localObj.malePolledVotes+'</td>';
-	str+='<td>'+data.maleVotesPercentInConstiVotes+'</td>';	
-	str+='</tr>';
-
-	str+='<tr>';
-	str+='<th> Female </th>';
-	str+='<td>'+data.femaleVotes+' ('+data.overallFemaleVotesPercent+' % )</td>';
-	str+='<td>'+data.femaleVotesPercent +'</td>';
-	str+='<td>'+localObj.femalePolledVotes+'</td>';
-	str+='<td>'+data.femaleVotesPercentInConstiVotes+'</td>';	
-	str+='</tr>';
-
-	str+='<tr>';
-	str+='<th> Male / Female </th>';
-	str+='<td>'+data.maleAndFemaleVotes+' ('+data.overallMaleOrFemaleVotesPercent+' % )</td>';
-	str+='<td>'+data.maleAndFemaleVotesPercent +'</td>';
-	str+='<td>'+localObj.maleAndFemalePolledVotes+'</td>';
-	str+='<td>'+data.maleOrFemaleVotesPercentInConstiVotes+'</td>';	
-	str+='</tr>';
-
-	str+='<tr>';
-	str+='<th> Total Votes</th>';
-	str+='<td>'+data.totalVotes +' (100 %)</td>';
-	str+='<td>'+data.totalVotesPercent +'</td>';
-	str+='<td>'+localObj.totalPolledVotes+'</td>';
-	str+='<td> '+data.totalVotesPercent+' </td>';	
-	str+='</tr>';
-
-	str+='</table>';*/
-
-	if(candidateTrendzGraphelmt )
-		candidateTrendzGraphelmt .innerHTML = str;
+	if(candidateTrendzGraphelmt)
+		candidateTrendzGraphelmt.innerHTML = str;
 	
 	if(results)
 	{		
@@ -885,15 +854,17 @@ function buildCandidateVotingTrendzGraphData(obj,results)
 		
 		imgChart1.src = 'charts/'+results.candOverallVotesPercent;
 		imgChart2.src = 'charts/'+results.candVotingTrendz;
+
+		
 	}
 	else
-	{
+	{		
 		var graph1Elmt = document.getElementById("candidateVotingGraph1");
 		var graph2Elmt = document.getElementById("candidateVotingGraph2");
 
 		
-		graph2Elmt.innerHTML='<div >% Votes Earned By Candidate In Total Constituency Votes </div><IMG id="candVotingTrendz" SRC="charts/'+obj.electionTrendzCharts.candOverallVotesPercent+'"/>';
-		graph1Elmt.innerHTML='<div > Male,Female,M/F Voting % In Candidate Earned Votes </div><IMG id="candOverallVotesPercent" SRC="charts/'+obj.electionTrendzCharts.candVotingTrendz+'"/>';
+		graph2Elmt.innerHTML='<div >% Votes Gained By Candidate In Total Constituency ...</div><IMG id="candVotingTrendz" SRC="charts/'+obj.electionTrendzCharts.candOverallVotesPercent+'"/>';
+		graph1Elmt.innerHTML='<div > Male,Female,M/F Votes % In Candidate Gained Votes ... </div><IMG id="candOverallVotesPercent" SRC="charts/'+obj.electionTrendzCharts.candVotingTrendz+'"/>';
 	}
 }
 
@@ -909,7 +880,7 @@ function buildConstituencyVotingTrendzHeader(obj)
 }	
 
 function buildCenterConstituencyVotersInfoContent(obj)
-{	
+{		
 	var  votersElmt = document.getElementById('constituencyVotersInfoDiv_Body_voters');		
 	var  votersGraphElmt = document.getElementById('constituencyVotersInfoDiv_Body_votersGraph');		
 
@@ -917,7 +888,7 @@ function buildCenterConstituencyVotersInfoContent(obj)
 	str+='<table class="constituencyInfoTable" width="100%">';
 	
 	str+='<tr>';
-	str+='<th colspan="5"> Male Voters In constituency : '+obj.maleVotersInConstituency+' ,  Female Voters In constituency : '+obj.femaleVotersInConstituency+'</th>';
+	str+='<th colspan="5"> Constituency Voting Info</th>';
 	str+='</tr>';
 	
 	str+='<tr>';
@@ -925,76 +896,59 @@ function buildCenterConstituencyVotersInfoContent(obj)
 	str+='<th>Voters</th>';
 	str+='<th>Polled Votes</th>';
 	str+='<th>Polling % </th>';
-	str+='<th>% in Total Polling </th>';
 	str+='</tr>';
 
 	str+='<tr>';
 	str+='<th>Male</th>';
-	str+='<td>'+obj.maleVoters+'('+obj.maleVotersPercentInConsti+')</td>';
-	str+='<td>'+obj.malePolledVotes+'</td>';
+	str+='<td>'+obj.maleVoters+'</td>';
+	str+='<td>'+obj.malePolledVotes+'<font style="color:Tomato"> ( '+obj.malePolledPercentInTotalPolled+' % )</font></td>';
 	str+='<td>'+obj.malePollingPercent+'</td>';
-	str+='<td>'+obj.overallMalePollPercent+'</td>';
 	str+='</tr>';
 
 	str+='<tr>';
 	str+='<th>Female</th>';
-	str+='<td>'+obj.femaleVoters+'('+obj.femaleVotersPercentInConsti+')</td>';
-	str+='<td>'+obj.femalePolledVotes+'</td>';
+	str+='<td>'+obj.femaleVoters+'</td>';
+	str+='<td>'+obj.femalePolledVotes+'<font style="color:Tomato"> ( '+obj.femalePolledPercentInTotalPolled+' % )</font></td>';
 	str+='<td>'+obj.femalePollingPercent+'</td>';
-	str+='<td>'+obj.overallFemalePollPercent+'</td>';
 	str+='</tr>';
 
 	str+='<tr>';
 	str+='<th>Male/Female</th>';
 	str+='<td>'+obj.maleAndFemaleVoters+'</td>';
-	str+='<td>'+obj.maleAndFemalePolledVotes+'</td>';
+	str+='<td>'+obj.maleAndFemalePolledVotes+'<font style="color:Tomato"> ( '+obj.maleOrFemalePolledPercentInTotalPolled+' % )</font></td>';
 	str+='<td>'+obj.maleAndFemalePollingPercent+'</td>';
-	str+='<td>'+obj.overallMaleOrFemalePollPercent+'</td>';
 	str+='</tr>';
 
 	str+='<tr>';
 	str+='<th>Total</th>';
 	str+='<td>'+obj.totalVoters+'</td>';
-	str+='<td>'+obj.totalPolledVotes+'</td>';
-	str+='<td>'+obj.pollingPercent+'</td>';
+	str+='<td>'+obj.totalPolledVotes+'<font style="color:Tomato"> ( 100 % )</font></td>';
 	str+='<td>'+obj.pollingPercent+'</td>';
 	str+='</tr>';
 
 	str+='</table>';
 
-	str+='<div class="commentsDiv"> * Known classified male voters percentage in total male voters is : <font style="color:#FF0000;">'+obj.maleVotersPercentInConsti+' % </font> </div>';
-	str+='<div class="commentsDiv"> * Known classified female voters percentage in total female voters is : <font style="color:#FF0000;">'+obj.femaleVotersPercentInConsti+' % </font> </div>';
-
 	if(votersElmt)
 		votersElmt.innerHTML=str;
 
 
-	var gStr = '';
+	/*var gStr = '';
 	gStr+='<IMG id="pollingDetailsChartImg" SRC="charts/'+obj.electionTrendzCharts.pollingDetailsChart+'"/>';
 	
 	if(votersGraphElmt)
-		votersGraphElmt.innerHTML = gStr;
+		votersGraphElmt.innerHTML = gStr;*/
 }	
 
 function buildConstituencyVotingTrendzGraph(obj)
 {	
+	
 	var elmt = document.getElementById('constituencyVotersInfoDiv_Body_votingTrendzGraph');
 	
-	
 	if(elmt)
-	{	
-		//console.log(obj.electionTrendzCharts.votingTrendzMainChart);
-		if(elmt.innerHTML)
-		{			
-			var imgElmt = document.getElementById("votingTrendzChartImg");
-			imgElmt.src = '';
-			imgElmt.src = 'charts/'+obj.electionTrendzCharts.votingTrendzMainChart;
-		}
-		else
-		{
-			elmt.innerHTML = '<IMG id="votingTrendzChartImg" SRC="charts/'+obj.electionTrendzCharts.votingTrendzMainChart+'"/>';
-		}
-	}
+		elmt.innerHTML = '<IMG id="votingTrendzChartImg" SRC="charts/'+obj.electionTrendzCharts.votingTrendzMainChart+'"/>';
+
+	/*var imgElmt = document.getElementById("votingTrendzChartImg");
+	imgElmt.src = 'charts/'+obj.electionTrendzCharts.votingTrendzMainChart;	*/
 }
 
 
@@ -1099,7 +1053,7 @@ function enableElectionYearSelect(value)
 
 function initializeConstituencyPage()
 {		
-	buildRightlayoutMap();
+	//buildRightlayoutMap();
 	buildConstituencyInfo();
 	buildConstituencyConnectPeopleWindow();
 	buildProblemPostingWindow();
