@@ -26,6 +26,7 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.StandardEntityCollection;
 import org.jfree.chart.labels.PieToolTipGenerator;
 import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
+import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.CombinedDomainCategoryPlot;
 import org.jfree.chart.plot.CombinedRangeCategoryPlot;
@@ -34,6 +35,8 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarPainter;
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.BarRenderer3D;
+import org.jfree.chart.renderer.category.MinMaxCategoryRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -339,7 +342,7 @@ public class ChartProducer {
 		CategoryAxis domainAxis2 = new CategoryAxis("Party");
 		domainAxis2.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 		domainAxis2.setMaximumCategoryLabelWidthRatio(5.0f);
-		LineAndShapeRenderer renderer2 = new LineAndShapeRenderer();
+		BarRenderer3D renderer2 = new BarRenderer3D();
 		renderer2.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
 		CategoryPlot subplot2 = new CategoryPlot(dataset1, domainAxis2, null, renderer2);
 		subplot2.setDomainGridlinesVisible(true);
@@ -363,23 +366,18 @@ public class ChartProducer {
 	
 	public static void createPieChart(String title,final PieDataset dataset,String fileName){
 		
-		/*
-		PiePlot piePlot = new PiePlot();
-	    PieToolTipGenerator toolTip = piePlot.getToolTipGenerator();
-	    toolTip.generateToolTip(dataset,dataset.getIndex(0));*/
-	    
-	    
+		
+			    
 		JFreeChart chart = ChartFactory.createPieChart(title,dataset,
 				true, // legend?
 				true, // tooltips?
 				false // URLs?
 				);
-		
-				
+	   				
 		try	 {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File image = new File(fileName);
-			ChartUtilities.saveChartAsPNG(image, chart,250, 180, info);
+			ChartUtilities.saveChartAsPNG(image, chart,250, 250, info);
 		}
 		catch (java.io.IOException exc)
 		{
