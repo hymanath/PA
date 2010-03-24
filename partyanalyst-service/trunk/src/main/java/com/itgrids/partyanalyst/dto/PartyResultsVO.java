@@ -75,6 +75,8 @@ public class PartyResultsVO {
 	
 	@Override
 	public boolean equals(Object obj){
+		if(!(obj instanceof PartyResultsVO))
+			return false;
 		PartyResultsVO voObj = (PartyResultsVO) obj;
 		return this.partyId.equals(voObj.getPartyId());
 	}
