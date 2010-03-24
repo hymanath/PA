@@ -601,6 +601,11 @@
            		<param name="root">electionTrendzReportVO</param>
         	</result>
         </action>  
+        <action name="constituencyElectionResultsAction" class="constituencyElectionResultsAction">
+           <result name="success">/jsp/constituencyElectionResultsPage.jsp</result>
+            <result name="error">/jsp/districtPageFail.jsp</result>			
+        </action>
+        
 	</package>
 </struts>
 
