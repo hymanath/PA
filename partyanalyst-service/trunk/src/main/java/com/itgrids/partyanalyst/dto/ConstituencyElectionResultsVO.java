@@ -12,6 +12,10 @@ import java.util.List;
 
 public class ConstituencyElectionResultsVO extends ResultStatus{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5903894658175665595L;
 	private Long electionId;
 	private String electionType;
 	private String electionYear;
@@ -20,9 +24,14 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private Long constituencyId;
 	private Long totalVoters;
 	private Long validVotes;
+	private Long districtId;
+	private String districtName;
+	private Long stateId;
+	private String stateName;
 	private List<PartyResultsVO> partyResultsVO;
 	private CandidateWonVO candidateResultsVO;
 	private List<CandidateOppositionVO> candidateOppositionList;
+	
 	
 	//getters and setters
 	public Long getElectionId() {
@@ -91,6 +100,30 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	}
 	public void setValidVotes(Long validVotes) {
 		this.validVotes = validVotes;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
 	}
 	
 }
