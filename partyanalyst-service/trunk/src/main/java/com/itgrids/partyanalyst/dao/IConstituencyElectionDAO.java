@@ -58,6 +58,10 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	public List findTotalConstituenciesCountInADistrictForAnElection(Long electionId,Long districtId);
     
     public List findTotalAssemblyConstituencies(Long electionId,Long stateId);
+    
+    public List getTotalValidVotesParticularElectionYear(String electionType,String electionYear,Long districtId);
+
 	public List findByDistrictElectionConstituency(Long electionId,
 			Long districtId, String constituencyName);
+
 }

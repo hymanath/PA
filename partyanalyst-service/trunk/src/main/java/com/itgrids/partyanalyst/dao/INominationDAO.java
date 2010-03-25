@@ -123,6 +123,24 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List findAllCandidatesForAnElectionByElectionYear(Long constituencyId);
 	
+
+	public List findAllZPTCsInaDistrict(Long districtId,String electionTypes,String electionTypess,Long rank);
+	
+	public List findAllMPTCsInaDistrict(Long districtId,String electionType,String electionTypes,Long rank);
+		
+	public List findAllCandidatesForAnElectionBytheElectionYear(String electionYear,Long stateId,String electionType);
+	
+	public List findAllCandidatesForAnElectionByElectionYearByDistrictId(Long districtId,String electionType);
+		
+	public List getMptcCountInADistrict(Long districtId,String electionType,String electionTypes,Long rank);
+	
+	public List getZptcCountInADistrict(Long districtId,String electionType,String electionTypes,Long rank);
+	
+	public List getPartysInfoForAParticularElectionYear(String electionType,String electionYear,Long districtId);
+	
+	public List getPartysWinningCandidateInfoForAParticularElectionYear(String electionType,String electionYear,Long rank,Long districtId);
+	
+
     @SuppressWarnings("unchecked")
 	public List getCandidatesInfoForTheGivenConstituency(Long constituencyId,String electionYear,String electionType);
 	
