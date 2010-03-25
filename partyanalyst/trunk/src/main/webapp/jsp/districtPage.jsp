@@ -812,7 +812,6 @@ function getConstituencyElecResultsWindow(constiId)
 							</a>
 						</span>
 					</td>
-					<td><a href="" onclick="getConstituencyElecResultsWindow(${candidate.constituencyId})">view results</a></td>
 					<td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(${candidate.constituencyId})">view results</a></td>
 				</tr>  
 			</c:forEach>
