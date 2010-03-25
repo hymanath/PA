@@ -12,7 +12,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -34,6 +37,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserGroupBasicDetails;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
+import com.itgrids.partyanalyst.dto.UserGroupsVO;
 import com.itgrids.partyanalyst.model.MyGroup;
 import com.itgrids.partyanalyst.model.PersonalUserGroup;
 import com.itgrids.partyanalyst.model.Registration;
@@ -55,15 +59,9 @@ public class UserGroupService implements IUserGroupService {
 	private TransactionTemplate transactionTemplate;
 	private UserGroupDetailsVO userGroupDetailsVo;
 	private UserGroupMembersVO userGroupMembersVo;
-	private Long userId;
-	private Long groupId;
-	private Long userMemberId;
-	private static final Logger log = Logger.getLogger("UserGroupService.class");
+	private static final Logger log = Logger.getLogger(UserGroupService.class);
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
-	//private SmsCountrySmsService smsCountrySmsService;
-	private ISmsService smsCountrySmsService;
-	
-	
+	private ISmsService smsCountrySmsService;	
 	
 	public IPersonalUserGroupDAO getPersonalUserGroupDAO() {
 		return personalUserGroupDAO;
@@ -88,23 +86,7 @@ public class UserGroupService implements IUserGroupService {
 	public void setStaticGroupDAO(IStaticGroupDAO staticGroupDAO) {
 		this.staticGroupDAO = staticGroupDAO;
 	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public Long getGroupId() {
-		return groupId;
-	}
-
-	public void setGroupId(Long groupId) {
-		this.groupId = groupId;
-	}
-
+	
 	public IRegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
 	}
@@ -116,16 +98,8 @@ public class UserGroupService implements IUserGroupService {
 	public List<UserGroupMembersVO> addMembersToGroup() {
 		// TODO Auto-generated method stub
 		return null;
-	}	
-
-	public Long getUserMemberId() {
-		return userMemberId;
 	}
-
-	public void setUserMemberId(Long userMemberId) {
-		this.userMemberId = userMemberId;
-	}
-
+	
 	public IStaticUsersDAO getStaticUsersDAO() {
 		return staticUsersDAO;
 	}
@@ -160,10 +134,13 @@ public class UserGroupService implements IUserGroupService {
 	}
 
 	/**
-	 * To Get The List Of All Static groups From DB Into SelectOptionVO
-	 * @return
+	 * To Get The List Of All Static groups From DB Into SelectOptionVO.These results are displayed in the drop down option in create a user group panel.
+	 * @return staticGroups
 	 */	
 	public List<SelectOptionVO> getAllStaticGroupNames() {
+		if(log.isDebugEnabled()){
+			log.debug("Entered getAllStaticGroupNames() method....");
+		}
 		List<SelectOptionVO> staticGroups = new ArrayList<SelectOptionVO>();
 		List<StaticGroup> list= staticGroupDAO.getAll();
 		for(StaticGroup staticGroup:list)
@@ -171,31 +148,35 @@ public class UserGroupService implements IUserGroupService {
 		return staticGroups;		
 	}
 	/**
-	 * To Get The List Of All My groups From DB Into SelectOptionVO
-	 * @return
+	 * To Get The List Of All My groups From DB Into SelectOptionVO. These results are displayed in the drop down option in create a user group panel. 
+	 * @return myGroupsList
 	 */
 	public List<SelectOptionVO> getAllMyGroupsCreatedByUser(Long userId) {
+		if(log.isDebugEnabled()){
+			log.debug("Entered  getAllMyGroupsCreatedByUser() method....");
+		}
 		List<SelectOptionVO> myGroupsList = new ArrayList<SelectOptionVO>();
 		List<PersonalUserGroup> list= personalUserGroupDAO.getAllMyGroupsByUserId(userId);
 		for(PersonalUserGroup myGroups:list)
 			myGroupsList.add(new SelectOptionVO(myGroups.getPersonalUserGroupId(), myGroups.getGroupName()));
 		return myGroupsList;		
 	}	
-		/*
+	
+	/*
 	 * This method takes the UserGroupDetailsVO object which contains the details entered by the user while creating a group.
 	 * These details are saved in to the data base.The same value object is returned.
 	 */
 	public UserGroupDetailsVO createGroupForUser( UserGroupDetailsVO userGroupDetailsToSave) {
 		this.userGroupDetailsVo = userGroupDetailsToSave;
 		if(log.isDebugEnabled()){
-			log.debug("Entered in service method....");
+			log.debug("Entered createGroupForUser method....");
 		}
+		 final UserGroupDetailsVO userGroupDetailsFromDb =new UserGroupDetailsVO();
 		transactionTemplate.execute(new TransactionCallbackWithoutResult(){
 			public void doInTransactionWithoutResult(TransactionStatus status)
 			{
-				UserGroupDetailsVO userGroupDetailsFromDb =new UserGroupDetailsVO();
 				Registration reg = null;
-				PersonalUserGroup personalUserGroup=null;
+				PersonalUserGroup personalUserGroup=null;				
 				
 				MyGroup myGroupObj = null;				
 				try{
@@ -206,20 +187,20 @@ public class UserGroupService implements IUserGroupService {
 					String strDateNew = sdf.format(now) ;
 				    now = sdf.parse(strDateNew);
 				String groupStatus = UserGroupService.this.userGroupDetailsVo.getStatus();
-				System.out.println("groupStatus:======" + groupStatus);
 				String categoryType = UserGroupService.this.userGroupDetailsVo.getCategoryType();
-				System.out.println("categoryType:=====" + categoryType);
+				
 				if(groupStatus.equals(IConstants.MAIN_GROUP))					
 				{	
-					System.out.println("If Main Group");
+					if(log.isDebugEnabled()){
+						log.debug("If Main Group");
+					}
 					myGroupObj = new MyGroup();
 					reg = registrationDAO.get(UserGroupService.this.userGroupDetailsVo.getCreatedUserId());
-					//createMainGroupInMyGroup(userGroupDetailsToSave);
+					
 					myGroupObj.setGroupName(UserGroupService.this.userGroupDetailsVo.getGroupName());
 					myGroupObj.setGroupDescription(UserGroupService.this.userGroupDetailsVo.getGroupDesc());
 					myGroupObj.setCreatedDate(now);
-					//myGroupObj = myGroupDAO.save(myGroupObj);
-					
+										
 					personalUserGroup = new PersonalUserGroup();
 					personalUserGroup.setGroupName(UserGroupService.this.userGroupDetailsVo.getGroupName());
 					personalUserGroup.setDescription(UserGroupService.this.userGroupDetailsVo.getGroupDesc());
@@ -227,49 +208,45 @@ public class UserGroupService implements IUserGroupService {
 					personalUserGroup.setCreatedDate(now);
 					personalUserGroup.setMyGroup(myGroupObj);
 					
-					personalUserGroupDAO.save(personalUserGroup);
-					
-					
+					personalUserGroup = personalUserGroupDAO.save(personalUserGroup);
+										
 				} else if(groupStatus.equals(IConstants.SUB_GROUP) && categoryType.equals(IConstants.STATIC_GROUP))
 				{	
-					System.out.println("If sub group in static Group");
-					System.out.println("Inside if condition");
-					createSubGroupUnderStaticGroups(userGroupDetailsVo);
+					if(log.isDebugEnabled()){
+						log.debug("If sub group in static Group");
+					}
+					personalUserGroup = createSubGroupUnderStaticGroups(userGroupDetailsVo);
 				} else if(groupStatus.equals(IConstants.SUB_GROUP) && categoryType.equals(IConstants.MY_GROUP))
 				{
-					System.out.println("If sub group in My Group");
-					createSubGroupUnderMyGroups(userGroupDetailsVo);
+					if(log.isDebugEnabled()){
+						log.debug("If sub group in My Group");
+					}
+					personalUserGroup = createSubGroupUnderMyGroups(userGroupDetailsVo);
 				}
-				/*				
+								
 				userGroupDetailsFromDb.setGroupId(personalUserGroup.getPersonalUserGroupId());
-				userGroupDetailsFromDb.setGroupName(personalUserGroup.getGroupName());
-				userGroupDetailsFromDb.setGroupDesc(personalUserGroup.getDescription());
-				System.out.println(personalUserGroup.getStaticGroup().getStaticGroupId());
-				if(personalUserGroup.getStaticGroup().getStaticGroupId()!= null)
-				{
-					userGroupDetailsFromDb.setStaticGroupId(personalUserGroup.getStaticGroup().getStaticGroupId());
-				}
-				else
-				{
-					userGroupDetailsFromDb.setStaticGroupId(null);
-				}*/
+				userGroupDetailsFromDb.setGroupName(personalUserGroup.getGroupName());	
 				
 				}catch(Exception e){
-					
 					e.printStackTrace();
 					status.setRollbackOnly();
 					if(log.isDebugEnabled()){
-						log.debug("Exception Raised while Update And Get Problems Under Pending::", e);
-					}
-			}
-				UserGroupService.this.userGroupDetailsVo = userGroupDetailsFromDb;	
+						log.debug("Exception Raised while saving a group::", e);					}
+			}					
 		}
 		});	
-		return null;
+		return userGroupDetailsFromDb;
 	}
-	
-	public UserGroupDetailsVO createSubGroupUnderStaticGroups(UserGroupDetailsVO userGroupDetailsToSave) throws Exception
+	/**
+	 * This method is invoked by the createGroupForUser() from the if block , where the groupStatus is SUB_GROUP categoryType is STATIC_GROUP  
+	 * @param userGroupDetailsToSave
+	 * @throws Exception
+	 */
+	public PersonalUserGroup createSubGroupUnderStaticGroups(UserGroupDetailsVO userGroupDetailsToSave) throws Exception
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Entered createSubGroupUnderStaticGroups() method....");
+		}
 		StaticGroup staticGroupObj = null;
 		PersonalUserGroup personalUserGroup= new PersonalUserGroup();
 		Registration reg = null;
@@ -279,36 +256,48 @@ public class UserGroupService implements IUserGroupService {
 		String strDateNew = sdf.format(now) ;
 	    now = sdf.parse(strDateNew);
 	    Long parentGroupId = userGroupDetailsToSave.getParentGroupId();
-	    System.out.println("parentGroupId:======" + parentGroupId);
-		reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
+	    reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
 		staticGroupObj = staticGroupDAO.get(new Long(userGroupDetailsToSave.getStaticGroupId()));
 		personalUserGroup.setGroupName(userGroupDetailsToSave.getGroupName());
 		personalUserGroup.setDescription(userGroupDetailsToSave.getGroupDesc());
 		personalUserGroup.setStaticGroup(staticGroupObj);
 		if(parentGroupId != null)
 		{
-			System.out.println("Inside sub group method in if");
+			if(log.isDebugEnabled()){
+				log.debug("Inside Parent Group Id is not null" + parentGroupId);
+			}			
 			PersonalUserGroup parentGroup = personalUserGroupDAO.get(parentGroupId); 
 			
 			personalUserGroup.setParentGroupId(parentGroup);
 			personalUserGroup.setParentGroupName(parentGroup.getGroupName());
 		}else
 		{
+			if(log.isDebugEnabled()){
+				log.debug("Inside Parent Group Id is null");
+			}
 			personalUserGroup.setParentGroupId(null);
 			personalUserGroup.setParentGroupName(null);
 		}		
 		personalUserGroup.setCreatedUserId(reg);
 		personalUserGroup.setCreatedDate(now);
 		
-		personalUserGroupDAO.save(personalUserGroup);
-		System.out.println("After Save");
-		return null;
+		personalUserGroup = personalUserGroupDAO.save(personalUserGroup);
+		if(log.isDebugEnabled()){
+			log.debug("After Execution of Save Method");
+		}
+		return personalUserGroup;
 	}
-	
+	/**
+	 * This method is invoked by the createGroupForUser() from the if block , where the groupStatus is SUB_GROUP  categoryType is MY_GROUP  
+	 * @param userGroupDetailsToSave
+	 * @throws Exception
+	 */
 	@SuppressWarnings("unchecked")
-	public UserGroupDetailsVO createSubGroupUnderMyGroups(UserGroupDetailsVO userGroupDetailsToSave) throws Exception
+	public PersonalUserGroup createSubGroupUnderMyGroups(UserGroupDetailsVO userGroupDetailsToSave) throws Exception
 	{
-		
+		if(log.isDebugEnabled()){
+			log.debug("Inside createSubGroupUnderMyGroups()");
+		}
 		PersonalUserGroup personalUserGroup= new PersonalUserGroup();
 		PersonalUserGroup parentGroupObj= new PersonalUserGroup();
 		Registration reg = null;
@@ -319,22 +308,19 @@ public class UserGroupService implements IUserGroupService {
 		String strDateNew = sdf.format(now) ;
 	    now = sdf.parse(strDateNew);
 	    Long parentGroupId = userGroupDetailsToSave.getParentGroupId();
-	    System.out.println("parentGroupId:======" + parentGroupId);
-		reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
+	    reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
 		myGroupObj = personalUserGroupDAO.getMyGroupObjFromPersonalUserGroup(userGroupDetailsToSave.getMyGroupId());
 		personalUserGroup.setGroupName(userGroupDetailsToSave.getGroupName());
 		personalUserGroup.setDescription(userGroupDetailsToSave.getGroupDesc());
 		if(myGroupObj.size()>0 && myGroupObj != null )
-		{
-						
-				personalUserGroup.setMyGroup(myGroupObj.get(0));			
+		{	
+			personalUserGroup.setMyGroup(myGroupObj.get(0));			
 		} else {
 			personalUserGroup.setMyGroup(null);
 		}
 		personalUserGroup.setCreatedDate(now);
 		if(parentGroupId != null)
 		{
-			System.out.println("Inside sub group method in if");
 			PersonalUserGroup parentGroup = personalUserGroupDAO.get(parentGroupId); 
 			
 			personalUserGroup.setParentGroupId(parentGroup);
@@ -348,19 +334,25 @@ public class UserGroupService implements IUserGroupService {
 		personalUserGroup.setCreatedUserId(reg);
 		personalUserGroup.setCreatedDate(now);
 		
-		personalUserGroupDAO.save(personalUserGroup);
-		System.out.println("After Save");
-		return null;
-		
+		personalUserGroup = personalUserGroupDAO.save(personalUserGroup);
+		if(log.isDebugEnabled()){
+			log.debug("After Execution of Save Method");
+		}
+		return personalUserGroup;		
 	}
 	
 	/*
 	 * 
 	 * @see com.itgrids.partyanalyst.service.IUserGroupService#systemGroupsDetailsForUser(java.lang.Long)
 	 * this method returns the sub groups count under static groups for a user
+	 * The results retrieved from this method is displayed in left navigation side of user groups home page 
 	 */
+	@SuppressWarnings("unchecked")
 	public List <GroupsDetailsForUserVO> subGrpsCountInSystemGrpsForUser(Long userId)
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Entered in to subGrpsCountInSystemGrpsForUser Method");
+		}
 		List subGroupsinSystemGroups = null;
 		List <GroupsDetailsForUserVO> systemGroupsDetailsForUserList = new ArrayList<GroupsDetailsForUserVO>(0);
 		subGroupsinSystemGroups = personalUserGroupDAO.findSubGroupsCountInSystemGroupsByUserId(userId);
@@ -371,19 +363,22 @@ public class UserGroupService implements IUserGroupService {
 			groupsDetailsForUser.setStaticGroupId(Long.parseLong(parms[0].toString()));
 			groupsDetailsForUser.setStaticGroupName(parms[1].toString());
 			groupsDetailsForUser.setNumberOfGroups(Long.parseLong(parms[2].toString()));
-			systemGroupsDetailsForUserList.add(groupsDetailsForUser);
-	//		systemGroupsDetailsForUserList.add(new GroupsDetailsForUserVO(Long.parseLong(parms[0].toString()),parms[1].toString(),Long.parseLong(parms[2].toString())));
+			systemGroupsDetailsForUserList.add(groupsDetailsForUser);	
 		}		
 		return systemGroupsDetailsForUserList;
 	}
 	/*
-	 * this method returns the MyGroups(created by user other than system groups) and the number of sub groups(if any) in the top level group. 
+	 * this method returns the MyGroups(created by user other than system groups) and the number of sub groups(if any) in the top level group.
+	 * The results retrieved from this method is displayed in left navigation side of user groups home page 
 	 * @see com.itgrids.partyanalyst.service.IUserGroupService#myGroupsDetailsForUser(java.lang.Long)
 	 */
 	
 	@SuppressWarnings("unchecked")
 	public List<GroupsDetailsForUserVO> subGroupsCountInMyGroupsForUser(Long userId)
 	{
+		if(log.isDebugEnabled()){
+			log.debug("Inside subGroupsCountInMyGroupsForUser()");
+		}
 		List<GroupsDetailsForUserVO> groupsList = new ArrayList<GroupsDetailsForUserVO>();
 		List<PersonalUserGroup> myGroupsCategoryList= personalUserGroupDAO.getAllMyGroupsByUserId(userId);
 		for(PersonalUserGroup myGroups:myGroupsCategoryList)
@@ -401,10 +396,10 @@ public class UserGroupService implements IUserGroupService {
 			String grpName = (String)params[1];
 			Long count = (Long)params[2];
 			groupVO.setNumberOfGroups(count);
-			System.out.println("SubGroups ... in VO" + groupVO.getNumberOfGroups());
+			log.debug("SubGroups ... in VO" + groupVO.getNumberOfGroups());
 			} else			
 			groupVO.setNumberOfGroups(new Long(0));
-			System.out.println("SubGroups ... in VO" + groupVO.getNumberOfGroups());
+			log.debug("SubGroups ... in VO" + groupVO.getNumberOfGroups());
 			groupsList.add(groupVO);
 		}		
 		return groupsList;
@@ -415,73 +410,64 @@ public class UserGroupService implements IUserGroupService {
 	 * These details are saved in to the data base.The same value object is returned.
 	 */
 	
-	public void addMemberToGroup(final Long groupId, UserGroupMembersVO userGroupMembersToSave) {
+	public UserGroupMembersVO addMemberToGroup(final Long groupId, UserGroupMembersVO userGroupMembersToSave) {
 		this.userGroupMembersVo=userGroupMembersToSave;
 		if(log.isDebugEnabled()){
-			log.debug("Entered UserGroup members Details....");
+			log.debug("Entered addMemberToGroup method....");
 		}
+		final UserGroupMembersVO userGroupMembersFromDb = new UserGroupMembersVO();
 			transactionTemplate.execute(new TransactionCallbackWithoutResult(){
 				public void doInTransactionWithoutResult(TransactionStatus status)
 				{
-                UserGroupMembersVO userGroupMembersFromDb = new UserGroupMembersVO();
+                
                 PersonalUserGroup personalUserGroup=null;
                 StaticUsers staticUsers = null;
                  
                 try{
                 personalUserGroup= personalUserGroupDAO.get(groupId);
-                
                 staticUsers = new StaticUsers();          
-               // staticUsers.setPersonalUserGroup(personalUserGroup);
                 staticUsers.setName(UserGroupService.this.userGroupMembersVo.getName());
                 staticUsers.setAddress(UserGroupService.this.userGroupMembersVo.getAddress());
                 staticUsers.setEmailId(UserGroupService.this.userGroupMembersVo.getEmailId());
                 staticUsers.setMobileNumber(UserGroupService.this.userGroupMembersVo.getMobileNumber());
                 staticUsers.setDesignation(UserGroupService.this.userGroupMembersVo.getDesignation());
                 staticUsers.setLocation(UserGroupService.this.userGroupMembersVo.getLocation());
-              //  staticUsersDAO.save(staticUsers);
-               
-                
+                             
                 StaticUserGroup staticUserGroup = new StaticUserGroup();
                 staticUserGroup.setStaticUser(staticUsers);
                 staticUserGroup.setPersonalUserGroup(personalUserGroup);
-                staticUserGroup = staticUserGroupDAO.save(staticUserGroup);
-                
-                           
-                //userGroupMembersFromDb.setPersonalUserId(staticUsers.getPersonalUserGroupId().getPersonalUserGroupId());
-                userGroupMembersFromDb.setGroupName(staticUsers.getName());
-                userGroupMembersFromDb.setAddress(staticUsers.getAddress());
-                userGroupMembersFromDb.setEmailId(staticUsers.getEmailId());
-                userGroupMembersFromDb.setMobileNumber(staticUsers.getMobileNumber());
-                userGroupMembersFromDb.setDesignation(staticUsers.getDesignation());
-                userGroupMembersFromDb.setLocation(staticUsers.getLocation());
-                
-          	//	return this.userGroupMembersVo;        
+                staticUserGroup = staticUserGroupDAO.save(staticUserGroup);                          
+              
+                userGroupMembersFromDb.setName(staticUserGroup.getStaticUser().getName());
+                userGroupMembersFromDb.setGroupName(staticUserGroup.getPersonalUserGroup().getGroupName());
+                System.out.println("Group Name::::::" + userGroupMembersFromDb.getGroupName());
+                System.out.println("Member Name:::::::" + userGroupMembersFromDb.getName());
 				}
                 catch(Exception e){
+                	e.printStackTrace();
 					status.setRollbackOnly();
 					if(log.isDebugEnabled()){
-						log.debug("Exception Raised while Update And Getting Groups::", e);
-					}
-			//		return null;
+						log.debug("Exception Raised while Adding a member in to the Group::", e);
+					}			
 				}
-				UserGroupService.this.userGroupMembersVo = userGroupMembersFromDb ;	
-
 				}
-			});				
+			});	
+			return userGroupMembersFromDb;
 
 		}
 	
-	//sai
+
 	/*
-	 * Method Returns Complete Group Details For a Particular Group and userId
+	 * This Method Returns Complete Group Details For a System Group or my group based on userId.The complete details incudes the group name,description,
+	 * Sub groups outer details like name,description, members count and sub groups count!
 	 */
 	@SuppressWarnings("unchecked")
 	public UserGroupBasicDetails getUserGroupDetailsForAUserForSystemGroups(String categoryType,Long groupId,Long userId){
 		
 		UserGroupBasicDetails userGroupBasicDetails = new UserGroupBasicDetails();
-		ResultStatus resultStatus = new ResultStatus();
+		ResultStatus resultStatus = new ResultStatus();		
 		if(log.isDebugEnabled())
-		log.debug("Entered Into getUserGroupDetailsForAUserForSystemGroups method ....");
+			log.debug("Entered Into getUserGroupDetailsForAUserForSystemGroups method ....");
 				
 		if(categoryType != null && groupId != null && userId != null){
 		try{
@@ -511,7 +497,8 @@ public class UserGroupService implements IUserGroupService {
 			}
 				
 		}catch(Exception ex){
-			log.debug("Exception Raised --->" + ex);
+			if(log.isDebugEnabled())
+				log.debug("Exception Raised --->" + ex);
 			resultStatus.setExceptionEncountered(ex);
 			resultStatus.setResultPartial(true);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
@@ -524,12 +511,13 @@ public class UserGroupService implements IUserGroupService {
 	}
 	
 	/*
-	 * Returns Basic Details For A System Group
+	 * Returns Basic Details For A System Group.This method is invoked by the getUserGroupDetailsForAUserForSystemGroups() and the results retrieved from this method 
+	 * is sent to the calling method 
 	 */
 	@SuppressWarnings("unchecked")
 	public GroupsBasicInfoVO getCompleteDetailsOfAStaticCategoryGroup(StaticGroup staticGrp,Long userId) throws Exception{
-		
-		log.debug("Inside  getCompleteDetailsOfAStaticCategoryGroup method....");
+		if(log.isDebugEnabled())
+			log.debug("Inside  getCompleteDetailsOfAStaticCategoryGroup method....");
 		
 		GroupsBasicInfoVO groupsBasicInfo = null;
 		if(staticGrp != null){
@@ -553,11 +541,14 @@ public class UserGroupService implements IUserGroupService {
 		}
 		return groupsBasicInfo;
 	}
-	
+	/*
+	 * This method is invoked by the getUserGroupDetailsForAUserForSystemGroups() and the results retrieved from this method 
+	 * is sent to the calling method 
+	 */
 	@SuppressWarnings("unchecked")
 	public List<GroupsBasicInfoVO> getSubGroupsOfAStaticCategoryGroup(StaticGroup staticGrp,Long userId) throws Exception{
-		
-		log.debug(" Inside getSubGroupsOfAStaticCategoryGroup Method ......");
+		if(log.isDebugEnabled())
+			log.debug(" Inside getSubGroupsOfAStaticCategoryGroup Method ......");
 				
 		List<GroupsBasicInfoVO> subGroupsList = null;
 		if(staticGrp != null){
@@ -588,11 +579,14 @@ public class UserGroupService implements IUserGroupService {
 		}
 		return subGroupsList;
 	}
-	
+	/*
+	 * This method is invoked by the getUserGroupDetailsForAUserForSystemGroups() and the results retrieved from this method 
+	 * is sent to the calling method 
+	 */
 	@SuppressWarnings("unchecked")
 	public GroupsBasicInfoVO getCompleteDetailsOfAPersonalUserGroup(PersonalUserGroup personalUserGrp,Long userId) throws Exception{
-		
-		log.debug(" Inside getCompleteDetailsOfAPersonalUserGroup Method ......");
+		if(log.isDebugEnabled())
+			log.debug(" Inside getCompleteDetailsOfAPersonalUserGroup Method ......");
 		
 		GroupsBasicInfoVO groupsBasicInfo = null;
 		if(personalUserGrp != null){
@@ -610,10 +604,14 @@ public class UserGroupService implements IUserGroupService {
 		return groupsBasicInfo;
 	}
 	
+	/*
+	 * This method is invoked by the getUserGroupDetailsForAUserForSystemGroups() and the results retrieved from this method 
+	 * is sent to the calling method 
+	 */
 	@SuppressWarnings("unchecked")
 	public List<GroupsBasicInfoVO> getSubGroupsOfAPersonalUserGroup(PersonalUserGroup personalUserGrp,Long userId) throws Exception{
-		
-		log.debug(" Inside getSubGroupsOfAPersonalUserGroup Method ......");
+		if(log.isDebugEnabled())
+			log.debug(" Inside getSubGroupsOfAPersonalUserGroup Method ......");
 		List<GroupsBasicInfoVO> subGroupsList = null;
 		if(personalUserGrp != null){
 			subGroupsList = new ArrayList<GroupsBasicInfoVO>();
@@ -643,11 +641,14 @@ public class UserGroupService implements IUserGroupService {
 			
 		return subGroupsList;
 	}
-	
+	/*
+	 * This method is invoked by getCompleteDetailsOfAPersonalUserGroup() and getSubGroupsOfAPersonalUserGroup() and the results retrieved from this method 
+	 * is sent to the calling method.This method will return the sub groups count in a group. 
+	 */
 	@SuppressWarnings("unchecked")
 	public Long getSubGroupsCount(Long groupId,Long userId) throws Exception{
-		
-		log.debug("Inside getSubGroupsCount Method ..");
+		if(log.isDebugEnabled())
+			log.debug("Inside getSubGroupsCount Method ..");
 		
 		Long subGroupsCount = null;
 		List persnlGrpsCount = personalUserGroupDAO.getSubGroupsCountForASystemGroupFromPersonalUserGroup(groupId,userId);
@@ -659,10 +660,15 @@ public class UserGroupService implements IUserGroupService {
 		return subGroupsCount;
 	}
 	
+	/*
+	 * This method is invoked by getCompleteDetailsOfAPersonalUserGroup() and getSubGroupsOfAPersonalUserGroup() and the results retrieved from this method 
+	 * is sent to the calling method.This method will return the members count in a group. 
+	 */
+	
 	@SuppressWarnings("unchecked")
 	public Long getGroupMembersCount(Long groupId,Long userId) throws Exception{
-		
-		log.debug("Inside getGroupMembersCount Method ..");
+		if(log.isDebugEnabled())
+			log.debug("Inside getGroupMembersCount Method ..");
 		Long membersCount = null;
 		
 		List grpMembrsCount = staticUserGroupDAO.getGroupMembersCountForAGroup(groupId, userId);
@@ -682,7 +688,8 @@ public class UserGroupService implements IUserGroupService {
 	@SuppressWarnings("unchecked")
 	public UserGroupBasicDetails getUserGroupDetailsForAUserForMyGroups(String categoryType,Long userGroupId,Long userId){
 		
-		 log.debug("Inside getUserGroupDetailsForAUserForMyGroups Method ...");
+		if(log.isDebugEnabled())
+			log.debug("Inside getUserGroupDetailsForAUserForMyGroups Method ...");
 		 
 		 UserGroupBasicDetails userGroupBasicDetails = null;
 		 GroupsBasicInfoVO groupsBasicInfo = null;
@@ -704,7 +711,8 @@ public class UserGroupService implements IUserGroupService {
 			 
 		 }
 		 }catch(Exception ex){
-			log.debug("Exception Raised ---->" + ex);
+			if(log.isDebugEnabled())
+				log.debug("Exception Raised ---->" + ex);
 			resultStatus.setExceptionEncountered(ex);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setResultPartial(true);
@@ -715,21 +723,24 @@ public class UserGroupService implements IUserGroupService {
 	 }
 	 
 
-	 /*
-		 * This method is used for sending SMS to the members.
+		/*
+		 * This method is used for sending SMS to all members in a group.
 		 */
 		public void sendSMStoGroup(String message,String[] groupMembersMobileNos){
 			
-			
+			if(log.isDebugEnabled())
+				log.debug(" Inside sendSMStoGroup() Method ......");
 			for(int i=0;i<groupMembersMobileNos.length;i++){
 				smsCountrySmsService.sendSms(message, true, groupMembersMobileNos[i]);
 			}
 		}
 		
 		/*
-		 * This method is used for retrieving all the group members in the group. 
+		 * This method is used for retrieving all the group members in the group.This info is used when displaying the group members details list in a data table  
 		 */
 		public List<UserGroupMembersVO> getAllMembersIntheGroup(Long registrationId, Long groupId){
+			if(log.isDebugEnabled())
+				log.debug(" Inside getAllMembersIntheGroup() Method ......");
 			List result = null;
 			List<UserGroupMembersVO> userGroupMembersVO = null;
 			try{
@@ -765,10 +776,14 @@ public class UserGroupService implements IUserGroupService {
 			}
 		}
 
+	/*
+	 * this method is invoked by the getUserGroupDetailsForAUserForMyGroups 
+	 */
+			
 	 @SuppressWarnings("unchecked")
 	public GroupsBasicInfoVO getBasicInfoForAGroupForList(List basicList,Long userId){
-		 
-		 log.debug("Inside getBasicInfoForAGroupForList Method ...");
+		 if(log.isDebugEnabled())
+			 log.debug("Inside getBasicInfoForAGroupForList Method ...");
 		 
 		 GroupsBasicInfoVO groupsBasicInfo = null;
 		 Long subGrpsCnt = new Long(0);
@@ -804,9 +819,13 @@ public class UserGroupService implements IUserGroupService {
 		 
 		 return groupsBasicInfo;
 	 }
+	 /*
+	 * this method is invoked by the getUserGroupDetailsForAUserForMyGroups 
+	 */
 	 @SuppressWarnings("unchecked")
 	public List<GroupsBasicInfoVO> getSubGroupsOfAPersonalUserGroupFromMyGroup(Long userGrpId,Long userId) throws Exception{
-		 
+		 if(log.isDebugEnabled())
+				log.debug(" Inside getSubGroupsOfAPersonalUserGroupFromMyGroup() Method ......");
 		 List<GroupsBasicInfoVO> subGroupsList = null;
 		 if(userGrpId != null && userId != null){
 			 subGroupsList = new ArrayList<GroupsBasicInfoVO>();
@@ -835,9 +854,13 @@ public class UserGroupService implements IUserGroupService {
 		 
 		 return subGroupsList;
 	 }
-	 
+	 /*
+	 * this method is invoked by the  getSubGroupsOfAPersonalUserGroupFromMyGroup
+	 */
 	@SuppressWarnings("unchecked")
 	public Long getSubGrpsCountForMyGroups(Long grpId,Long userId) throws Exception{
+		if(log.isDebugEnabled())
+			log.debug(" Inside getSubGrpsCountForMyGroups() Method ......");
 		 Long subGrpsCount = new Long(0);
 		 if(grpId != null && userId != null){
 			 List subGrpsCnt = personalUserGroupDAO.getSubGroupsCountForMyGroupFromPersonalUserGroup(grpId,userId);
@@ -848,9 +871,16 @@ public class UserGroupService implements IUserGroupService {
 		 }
 		 return subGrpsCount;
 	 }
-	
+	/*
+	 * This method is invoked by the getUserGroupDetailsForAUserForSystemGroups() and  getUserGroupDetailsForAUserForMyGroups() methods to fetch tbe mobile numbers of all
+	 * the members of a group whild showing the complete details
+	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getUserGroupMobileNos(Long groupId,Long userId){
+		if(log.isDebugEnabled())
+		{
+			log.debug("Entered in to getUserGroupMobileNos() method");
+		}
 		List<String> mobileNos = null;
 		if(groupId!= null && userId != null){
 			List mobNos = staticUserGroupDAO.getGroupMembersMobileNoForAGroup(groupId, userId);
@@ -865,12 +895,24 @@ public class UserGroupService implements IUserGroupService {
 		}
 		return mobileNos;
 	}
-
+	/*
+	 * @see com.itgrids.partyanalyst.service.IUserGroupService#getSubGroupsListInSystemGroups(java.lang.Long, java.lang.Long)
+	 * This method is will return all the subgroups list in a stem group based on user id.This method will return the parent groups only.
+	 * These results are displayed in create new group panel when a user selects a system group from the drop down  
+	 * 
+	 */
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getSubGroupsListInSystemGroups(Long groupId ,Long userId) {
+		if(log.isDebugEnabled())
+		{
+			log.debug("Entered in to getSubGroupsListInSystemGroups() method");
+		}
 		List<SelectOptionVO> subGroupsList = new ArrayList<SelectOptionVO>();
 		List list = personalUserGroupDAO.getSubGroupsCompleteDetailsForASystemGroup(groupId, userId);
-		System.out.println(list.size());
+		if(log.isDebugEnabled())
+		{
+			log.debug("Number of Sub groups in System Groups:" + list.size());
+		}
 		if(list != null && list.size() > 0)
 		{
 			for(int i = 0; i< list.size(); i++)
@@ -886,12 +928,24 @@ public class UserGroupService implements IUserGroupService {
 		
 		return subGroupsList;
 	}
-
+	/*
+	 * @see com.itgrids.partyanalyst.service.IUserGroupService#getSubGroupsListInSystemGroups(java.lang.Long, java.lang.Long)
+	 * This method is will return all the subgroups list in my groups based on user id.
+	 * These results are displayed in create new group panel when a user selects a system group from the drop down  
+	 * 
+	 */
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getSubGroupsListInMyGroups(Long groupId ,Long userId) {
+		if(log.isDebugEnabled())
+		{
+			log.debug("Entered in to getSubGroupsListInMyGroups() method");
+		}
 		List<SelectOptionVO> subGroupsList = new ArrayList<SelectOptionVO>();
 		List list = personalUserGroupDAO.getSubGroupsCompleteDetailsForMyGroup(groupId, userId);
-		System.out.println(list.size());
+		if(log.isDebugEnabled())
+		{
+			log.debug("Number of Sub groups in My Groups:" + list.size());
+		}		
 		if(list != null && list.size() > 0)
 		{
 			for(int i = 0; i< list.size(); i++)
@@ -907,13 +961,25 @@ public class UserGroupService implements IUserGroupService {
 		
 		return subGroupsList;		
 			}
-
+	/*
+	 * @see com.itgrids.partyanalyst.service.IUserGroupService#getSubGroupsListInSystemGroups(java.lang.Long, java.lang.Long)
+	 * This method is will return all the subgroups list in my groups based on static group id.
+	 * These results are displayed in create new group panel when a user selects a system group from the drop down  
+	 * 
+	 */
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getSubGroupsOfStaticGroupParents(Long groupId,
 			Long userId) {
+		if(log.isDebugEnabled())
+		{
+			log.debug("Entered in to getSubGroupsOfStaticGroupParents() method");
+		}
 		List<SelectOptionVO> subGroupsList = new ArrayList<SelectOptionVO>();
 		List list = personalUserGroupDAO.getSubGroupsCompleteDetailsForASystemGroupFromPersonalUserGroup(groupId, userId);
-		System.out.println(list.size());
+		if(log.isDebugEnabled())
+		{
+			log.debug("Number of Sub groups of Static Group Parents:" + list.size());
+		}	
 		if(list != null && list.size() > 0)
 		{
 			for(int i = 0; i< list.size(); i++)
@@ -922,16 +988,33 @@ public class UserGroupService implements IUserGroupService {
 			Object[] params =(Object[])list.get(i);
 			subGroupDetails.setId(Long.parseLong(params[0].toString()));
 			subGroupDetails.setName(params[1].toString());
-			
+		
 			subGroupsList.add(subGroupDetails);
 			}
 		}
 		
 		return subGroupsList;
 	}
-	
-	
-	 
-	 
-
+	/*
+	 * this method is used by the user to check the availability of the group name while creation.
+	 * if there is no group with the specified name this method returns false, else returns true
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IUserGroupService#checkForAvailability(java.lang.Long, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean checkForAvailability(Long userId, String groupName) {
+		if(log.isDebugEnabled())
+		{
+			log.debug("Entered In to checkForAvailability!");
+		}
+		boolean flag;
+		List result = personalUserGroupDAO.getGroupsByName(userId, groupName);
+		if(Long.parseLong(result.get(0).toString())== 0L)
+		{
+			flag= false;
+		} else {
+			flag = true;	
+		}		
+		return flag;
+	}	
 }
