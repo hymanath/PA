@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -46,8 +47,8 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("Constituency ::" + con.getName());
 		}
 	}*/
-	
 	/*@SuppressWarnings("unchecked")
+
 	public void testFindValidVotedForAnElectionForAState(){
 		List list = constituencyElectionDAO.findTotalValidVotesForAnElectionForAState(new Long(12));
 		Object params = (Object)list.get(0);
@@ -70,13 +71,18 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			Object[] parms = (Object[])list.get(i);
 			System.out.println(parms[1]);
 		}
-		System.out.println(list.size());
-		
+		System.out.println(list.size());		
 	}*/
 	
 	public void testFindByDistrictElectionConstituency(){
 		List list = constituencyElectionDAO.findByDistrictElectionConstituency(2l, 19l, "Kavali");
 		assertEquals(1, list.size());
 	}
-	
+
+	@Test
+	public void testTotalValidVotesForMandal(){
+		List list = constituencyElectionDAO.getTotalValidVotesParticularElectionYear(IConstants.ZPTC_ELECTION_TYPE,"2001",19l);
+		assertEquals(1, list.size());
+	}
+
 }

@@ -44,7 +44,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	}
 	
 	public void testByHamletLocationId(){			
-		List result = problemHistoryDAO.findProblemsForALocationsByTehsilId(836l);
+		List result = problemHistoryDAO.findProblemsForALocationsByHamletId(836l);
 		assertEquals(1, result.size());				
 	}
 	
@@ -55,6 +55,10 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	
 	public void testByStatus(){
 		List result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId("836","new");
+		assertEquals(1, result.size());
+	}
+	public void testByLocation(){
+		List result = problemHistoryDAO.findProblemsForALocationsByHamletId(66l);
 		assertEquals(1, result.size());
 	}
 }

@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.sql.Date;
+import java.util.Iterator;
 import java.util.List;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.model.Election;
@@ -55,6 +56,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void test(){
 		Assert.assertEquals(1, 1);
 	}*/
+	
 	@Test
 	public void testFindByPropertyTypeIdCountry_StateId(){
 		List<Election> list = electionDAO.findByPropertyTypeId_CountryId_StateId(new Long(1), new Long(1), new Long(1));
@@ -99,6 +101,11 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testFindElectionType(){
 		List result = electionDAO.findElectionIdAndYear(1l,1l);
 		Assert.assertEquals(8, result.size());
+	}
+	@Test
+	public void testFindAllElectionYearsForAnElectionType(){
+		List result = electionDAO.findElectionAndYearForElectionTypeAndState(3l,1l);
+		Assert.assertEquals(2, result.size());
 	}
 }
 

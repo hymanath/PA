@@ -1,8 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -86,7 +90,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		List<Nomination> list = nominationDAO.findByConstituencyPartyAndElectionYearIncludingAliance(partyIds, new Long(408), "2009");
 		assertEquals(1, list.size());
 	}
-	*/
+	
 	/*public void testConstituencyElection(){
 		List result = nominationDAO.findAllCandidatesForAnElectionByElectionYear(3382l);
 		assertEquals(1, result.size());
@@ -178,7 +182,6 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			
 		}	
 	}*/
-	
 	/*public void testGetAllPartiesOfElectionTypeInTehsil(){
 		List parties = nominationDAO.getAllPartiesOfElectionTypeInMandal(844l, IConstants.MPTC_ELECTION_TYPE);
 		System.out.println(parties.size());
@@ -192,19 +195,52 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	/*public void testGetAllConstiteunciesInfoForPartyInTehsil(){
+	
+	public void testGetAllConstiteunciesInfoForPartyInTehsil(){
 		List list = nominationDAO.getAllConstiteunciesInfoForPartyInTehsil(844l, 24l, 5l);
 		System.out.println(list.size());
 		for(int i=0; i < list.size(); i++){
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]);
 		}
-	}*/
+	}
 	
 	public void testFindAllMptcAndZptcElectionsInfoInMandal(){
 		List list = nominationDAO.findAllMptcAndZptcElectionsInfoInMandal(844l);
 		for(int i=0; i<list.size(); i++){
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]+"\t"+((Object[])list.get(i))[12]+"\t"+((Object[])list.get(i))[13]);
 		}
-			
 	}
-}
+	
+	public void testConstituencyCandidatesInfo(){
+		List result = nominationDAO.getCandidatesInfoForTheGivenConstituency(3358l,"2004",IConstants.ASSEMBLY_ELECTION_TYPE);
+		Assert.assertEquals(1, result.size());	
+	}	
+	
+	public void testFindTotalMPtc(){
+		List zptcCount = nominationDAO.getZptcCountInADistrict(19l,IConstants.ZPTC_ELECTION_TYPE,IConstants.ZPTC_ELECTION_TYPE,1L);
+		Assert.assertEquals(1, zptcCount.size());	
+		List mptcCount = nominationDAO.getMptcCountInADistrict(19l,IConstants.MPTC_ELECTION_TYPE,IConstants.MPTC_ELECTION_TYPE,1L);
+		Assert.assertEquals(1, mptcCount.size());	
+	}
+	
+	public void testFindCandidatesByDistrictId(){
+		List result = nominationDAO.findAllCandidatesForAnElectionByElectionYearByDistrictId(19l,IConstants.ASSEMBLY_ELECTION_TYPE);
+		Assert.assertEquals(1, result.size());	
+	}
+	
+	public void testAllZPTCsInaDistrict(){
+		List result = nominationDAO.findAllMPTCsInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,IConstants.ZPTC_ELECTION_TYPE,1l);
+		Assert.assertEquals(1, result.size());	
+	}
+	
+	public void testPartyStatusInAZptc(){
+		List result1 = nominationDAO.getPartysWinningCandidateInfoForAParticularElectionYear(IConstants.ZPTC_ELECTION_TYPE,"2001",1l,19l);
+		Assert.assertEquals(1, result1.size());	
+		List result = nominationDAO.getPartysInfoForAParticularElectionYear(IConstants.ZPTC_ELECTION_TYPE,"2001",19l);
+		Assert.assertEquals(1, result.size());	
+	}
+	public void testPartyWinningStatusInAZptc(){
+		List result = nominationDAO.getPartysWinningCandidateInfoForAParticularElectionYear(IConstants.ZPTC_ELECTION_TYPE,"2006",1l,19l);
+		Assert.assertEquals(1, result.size());	
+	}
+} 

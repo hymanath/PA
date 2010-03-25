@@ -122,9 +122,13 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 					Assert.assertEquals("Nellore City", constituencyName);
 				}
 					
-			}
-			
+			}		
 			
 		}
 	}
+	
+	public void testConstituencyDetails(){
+		 List result =  constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType(3358l);
+		 Assert.assertEquals(1, result.size());	
+		}
 }
