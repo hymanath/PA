@@ -2430,7 +2430,7 @@
 			
 			var myColumnDefs = [ 
 					{key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true},
-		            {key:"electionYear", label: "<%=electionYear%>"}, 
+		            {key:"electionYear", label: "<%=electionYear%>", sortable:true}, 
 		            {key:"rank", label: "<%=rank%>", sortable:true}, 
 		            {key:"mptcName", label: "<%=mptcName%>", sortable:true}, 
 					{key:"party", label: "<%=party%>",  sortable:true},
