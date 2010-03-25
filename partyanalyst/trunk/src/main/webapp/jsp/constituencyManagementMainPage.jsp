@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
-<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -42,25 +41,10 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
+	<!-- YUI Dependency files (End) -->
 	
-	<!-- Required CSS -->
-	  <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">  
-	<!--  <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/yui-styles-2.8/tree.css"> -->
-	<!-- TreeView source file --> 
-	<script src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
-	<!--  yui panel dependency-->
-
-<!-- 	
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/container/assets/skins/sam/container.css">
-<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-<script src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script>
-<script src="http://yui.yahooapis.com/2.8.0r4/build/dragdrop/dragdrop-min.js"></script>
-<script src="http://yui.yahooapis.com/2.8.0r4/build/container/container-min.js"></script>
-  -->
- 	<!-- YUI Dependency files (End) -->
-	
-		<style type="text/css">
+	<style type="text/css">
 		#constituencyMgmtHeaderDiv
 		{
 			color:#1C487A;
@@ -72,15 +56,13 @@
 					
 		#constituencyMgmtBodyDiv
 		{
-			height:900px;
-			
+			height:900px;			
 		}
 			
 		.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav 
 		{
 			text-align:left;
 			font-weight:bold;
-
 		}
 		.yui-skin-sam .yui-dt th
 		{
@@ -109,7 +91,7 @@
 		{
 			padding:5px;
 		}
-		#newProblemTabContentDiv_footer,#newProblemTabContentDiv_head,#classifiedTabContentDiv_footer,#assignedIssuesTabContentDiv_footer,#pendingTabContentDiv_footer,#progressTabContentDiv_footer
+		#newProblemTabContentDiv_footer, #newProblemTabContentDiv_head, #classifiedTabContentDiv_footer, #assignedIssuesTabContentDiv_footer, #pendingTabContentDiv_footer, #progressTabContentDiv_footer
 		{
 			margin-right:20px;
 			text-align:right;
@@ -156,21 +138,6 @@
 			width:100px;
 		}
 		
-		#groupDetails
-		{
-			padding:10px;
-			background-color:#D3DEE8;
-			margin-top:10px;
-		}
-		.groupMembersLinks
-		{
-			padding:5px;
-			
-		}
-		#userGroupsTabContent_footer
-		{
-			margin-top:10px;
-		}
 		#distEPapersTabContent_body
 		{
 			width:50%;
@@ -182,17 +149,10 @@
 		}
 		
 		.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd 
-		{
-			
+		{			
 			border:none;
 		}
-		#UGIntro #systemGroups #myGroups #createNewGrpDiv .link a {
-			color:#6597AF;
-			text-decoration:none;
-			margin-left:21px;
-			padding:2px 0 0 25px;
-			font-size:12px;			
-		}
+		
 		a:hover {
 			text-decoration:underline;
 		}
@@ -200,58 +160,12 @@
 			color:#0D5CAB;
 			text-decoration:none;
 		} 	
-		#myGroupsList li a {
-			color:#F47D31;
-			text-decoration:none;
-			align: left;
-			
-		}
-		#myGroupsList li {
-			font-weight: bold;
-			list-style-type: none;
-			
-		}
-		/*
-		h1 {
-			color:#0D5CAB;
-			font-size:1.6em;
-			margin:0 0 0.5em;
-			text-align: center;
-		}*/
-		#groupDetailsHead {
-			color:#0D5CAB;
-			font-weight:bold;			
-			text-align: center;
-		}
-		#myGroups
-		{
-			background:transparent url(images/icons/icon_groups.png) no-repeat scroll left bottom;
-		}
-		#systemGroups
-		{
-			background:transparent url(images/icons/system_grps.png) no-repeat scroll left bottom;
-		}
-		#UGIntro
-		{
-			background:transparent url(images/icons/intro.png) no-repeat scroll left bottom;
-		}
-		#createNewGrpDiv
-		{
-			background:transparent url(images/icons/plus.png) no-repeat scroll left bottom;
-		}
+		
 		#leftLayoutMain a
 		{
 			margin-left:21px;			
 		}
-		#groupDetails a
-		{
-			margin-left:21px;
-			padding:5px;
-		}
-		#groupDetailsDiv td 
-		{
-			color:#404040;
-		}			
+					
 		.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover {
 			color:#808080;
 			cursor:pointer;
@@ -274,25 +188,8 @@
 			padding:5px 0;
 			text-transform:uppercase;
 		}
-		#userGroupsDialogText 
-		{
-			color:#404040;
-		}
-		.createGroupTable  th {
-			color:#404040;
-			font-weight:bold;
-			text-align:left;
-		}
-		.createGroupTable th td fieldset legend {
-			padding:5px;
-			vertical-align:top;
-			padding-left: 15px;
-		}
-		#userGroupDetailsDivBody legend
-		{
-				font-weight:bold;
-				color:#404040;			
-		}
+		
+		
 		.yui-skin-sam .yui-panel {
 				background:#EFF3F7 none repeat scroll 0 0;
 				border:1px solid #96B4D3;
@@ -315,18 +212,10 @@
 				padding:0 10px;
 				text-align:center;
 		}
-		#usergroupsHead {
-				background-color:#EBF4BF;
-				border:1px solid #A3B381;
-				color:#547212;
-				font-weight:bold;
-				margin-bottom:10px;
-				padding:5px;
-				text-align:center;
-		}
+		
 	</style>
 
-	<script type="text/javascript"><!--
+<script type="text/javascript">
 	
 	var Localization = { <%
 			
@@ -334,7 +223,6 @@
 			String problemLabel = rb.getString("problem");
 			String constituencyMgmt = rb.getString("constMgmt");
 			String probMgmt = rb.getString("probMgmt");
-			String userGroups = rb.getString("userGrps");
 			String recommLetters = rb.getString("recommLetters");
 			String distEPapers = rb.getString("distEPapers");
 			String localLeaders = rb.getString("localLeaders");
@@ -413,22 +301,18 @@
 			String fixedDate= rb.getString("fixedDate");
 			String pending=rb.getString("pending");
 			String fixed=rb.getString("fixed");
-			String groupName=rb.getString("groupName");
-			String createNewGrp= rb.getString("createNewGrp");
-			String addToGrpAsSubGrpRadio=rb.getString("addToGrpAsSubGrpRadio");
 			String mainEdition = rb.getString("mainEdition");
 			String subEdition = rb.getString("subEdition");
 			String language = rb.getString("language");
 			String designation = rb.getString("designation"); 
 			String newIssuesAlertMessage = rb.getString("newIssuesAlertMessage");
 			String pendingFrom = rb.getString("pendingFrom");
-			String comments = rb.getString("comments");
-			String addToStaticGrpAsSubGrpRadio = rb.getString("addToStaticGrpAsSubGrpRadio");
+			String comments = rb.getString("comments");			
 		  %> }
 	
 	var outerTab,problemMgmtTabs,newProbDataTable, classifiedDataTable,assignedIssDataTable, progessIssuesDataTable, classifyDTRecord,deptCellEditor,pendingIssuesDataTable, fixedIssuesDataTable, ePapersDataTable;
-	var newProblemDialog,createGroupDialog, showGrpMbrsDialog, addGrpMbrsDialog,elCheckbox,elCheckboxInClassifyDT,elCheckboxInAssignDT,elCheckboxInProgressDT,elCheckboxInPendingDT,EditClassifyProbsDialog ;
-	var classifyButton, assignButton, progressButton,pFixedButton,pPendingButton,progressButtonInPending,userGrpsTree;
+	var newProblemDialog,elCheckbox,elCheckboxInClassifyDT,elCheckboxInAssignDT,elCheckboxInProgressDT,elCheckboxInPendingDT,EditClassifyProbsDialog ;
+	var classifyButton, assignButton, progressButton,pFixedButton,pPendingButton,progressButtonInPending;
 	var recordsArray = new Array();
 	var clasifyDtRecordsArray = new Array();
 	var assignDtRecordsArray = new Array();
@@ -469,13 +353,7 @@
 						};
 	var distPapersObj={
 							ePapersArray:[]
-						};
-	
-	var userGrpsObj={
-							showGrpMembersArr:[],
-							systemGroupsListBoxArr:[],
-							myGroupsListBoxArr:[]
-	};
+						};	
 	
 	function buildConstituencyLayout()
 	{	
@@ -500,36 +378,6 @@
 						animate: false,		
 						height: '150'
 					}
-	    ] 
-		}); 
-		layoutEl.render(); 
-	}
-
-	function buildUserGroupsTabLayout()
-	{	
-		var layoutEl = new YAHOO.widget.Layout('layoutMain', { 
-			height:500,
-			units: [ 	        
-					{
-						position: 'left',						
-						width: 300,
-						height:200,						
-						body: 'leftLayoutMain',
-						resize: false, 
-						gutter: '0px',
-						collapse: false,
-						scroll: false,						
-						animate: false  
-					}, 
-					{ 
-						position: 'center',						
-						body: 'centerLayoutMain',
-						resize: false,
-						gutter: '0px',
-						collapse: false,
-						scroll: false,						
-						animate: false
-					} 
 	    ] 
 		}); 
 		layoutEl.render(); 
@@ -633,20 +481,14 @@
 									ajaxImgSpanElmt.style.display = 'none';		
 									if(jsObj.task == "findVoters")
 									{										
-										showVotersData(myResults)							
-
-			
+										showVotersData(myResults)			
 									}
 									else if(jsObj.task == "addNewProblem")
 									{										
-										updateNewProblemData(myResults)							
-
-			
+										updateNewProblemData(myResults)			
 									} else if(jsObj.task == "newProblemsByUserID")
 									{
-										showNewProblemsForUser(myResults);						
-
-															
+										showNewProblemsForUser(myResults);															
 									} else if (jsObj.task == "classifyProblem")
 									{
 										updateClassifyDataTable(myResults);
@@ -690,21 +532,7 @@
 									} else if(jsObj.task == "getSelectedDistPaper")
 									{
 										updateSelectedDistUrls(myResults)
-									} else if(jsObj.task == "getSystemGroupsForUser")
-									{
-										showGroupsCreatedByUsers(myResults);
-																				
-									} else if(jsObj.task == "grpMbrsByGrpId")
-									{
-										showGrpMembers(myResults);
-									} else if(jsObj.task == "grpDetailsByStaticGrpId")
-									{
-										showSubGroupsUnderStaticGroups(myResults,jsObj);										
-									} else if(jsObj.task == "getCompleteGroupDescription")
-									{
-										showGroupdDetailsInCenterLayout(myResults,jsObj);										
-									}		
-									 else
+									} else
 									{
 										buildSelectOption(myResults,jsObj);										
 									}
@@ -767,24 +595,19 @@
 							};
 			
 			assignToVotersArray.push(voterObj);
-			constMgmtMainObj.votersArray=assignToVotersArray;
-
-			
+			constMgmtMainObj.votersArray=assignToVotersArray;			
 		}
 		
 		for(var i in cast)
 		{	
 			var castStats= { 
-
 								caste: cast[i].castName,
 								castePopulation: cast[i].castCount,
 								castePercentage: cast[i].castPercentage				
-				
 							};
 			assignToVotersCastStats.push(castStats);
 			constMgmtMainObj.castStatsArray = assignToVotersCastStats;
 		}
-
 		for(var i in votersByHouseNo)
 		{
 			votersByHouseNoCount = votersByHouseNoCount + 1;		
@@ -798,8 +621,7 @@
 					}; 
 			assignToVotersByHouseNo.push(totalVotersByHouseNos);
 			constMgmtMainObj.votersByHouseNoArray=assignToVotersByHouseNo;
-		}
-		
+		}		
 		for(var i in localLeaders)
 		{
 			var localLeadersDetails = {
@@ -811,13 +633,10 @@
 					contactNumber: localLeaders[i].contactNumber
 					};
 			assignToLocalLeaders.push(localLeadersDetails);
-			constMgmtMainObj.localLeadersArray=assignToLocalLeaders;
-				
+			constMgmtMainObj.localLeadersArray=assignToLocalLeaders;				
 		}
-
 		for(var i in politicalChanges)
 		{
-
 			var localPoliticalChanges = {
 					 
 					description: politicalChanges[i].description,
@@ -825,10 +644,8 @@
 					impact: politicalChanges[i].impact
 			};
 			assignToPoliticalChanges.push(localPoliticalChanges);
-			constMgmtMainObj.localPoliticalChangesArray=assignToPoliticalChanges;
-			
-		}
-		
+			constMgmtMainObj.localPoliticalChangesArray=assignToPoliticalChanges;			
+		}		
 		for(var i in localProblems)
 		{
 			localProbCount = localProbCount + 1;
@@ -840,8 +657,7 @@
 					status: localProblems[i].problemStatus
 			};
 			assignToLocalProblems.push(localProblemsObj);
-			constMgmtMainObj.localProblemsArr=assignToLocalProblems;
-			
+			constMgmtMainObj.localProblemsArr=assignToLocalProblems;			
 		}
 		for(var i in totalLeaders)
 		{	
@@ -858,7 +674,6 @@
 			};
 			assignToTotalLeaders.push(totalLeadersObj);
 			constMgmtMainObj.totalLeadersArr=assignToTotalLeaders;
-
 		}
 		for(var i in electedLeaders )
 		{	
@@ -875,7 +690,6 @@
 			
 			assignToElectedLeaders.push(electedLeadersObj);
 			constMgmtMainObj.electedMandalLeadersArr = assignToElectedLeaders;
-
 		}
 		var localCastStatsTabContent_headerEl = document.getElementById("localCastStatsTabContent_header");
 		var localCastStatsTabContent = '<table width="80%">';
@@ -989,7 +803,7 @@
 					changed:choice
 			}
 		
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
 		var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;
 		callAjax(rparam,jsObj,url);
 	}
@@ -1147,28 +961,7 @@
 		buildNewProblemsDataTable();		
 		}
 	
-	function handleUserGrpsTabClick ()
-	{
-		var elmt = document.getElementById("alertMessage");
-		elmt.style.display = 'none';
-		buildUserGroupsTabLayout();	
-		buildLeftPanelInUserGrps();	
-		buildCenterPanelInUserGrps();			
-	}
-
-	function buildLeftPanelInUserGrps()
-	{
-	var	leftPanelInUserGrps = new YAHOO.widget.Panel("leftLayoutMain", { width:"280px", height:"480px", visible:true, draggable:false, close:false} ); 
-	leftPanelInUserGrps.render();
-	leftPanelInUserGrps.setHeader("Manage Groups");
-	}
-
-	function buildCenterPanelInUserGrps()
-	{
-		var	centerPanelInUserGrps = new YAHOO.widget.Panel("centerLayoutMain", { width:"620px", height:"480px", visible:true, draggable:false, close:false} ); 
-		centerPanelInUserGrps.render();
-		centerPanelInUserGrps.setHeader("User Groups");
-	}
+	
 	function handleRecommLetrsTabClick()
 	{
 		var elmt = document.getElementById("alertMessage");
@@ -1249,220 +1042,7 @@
 			ePapersDataTable.destroy();
 		buildEPapersURLDataTable();
 	}
-	//rag
-	function showGroupsCreatedByUsers(results)
-	{
-		//buildUserGroupsTabLayout();
-
-		var groupsByUser = results.groupsDetailsForUser;
-		/*
-		var userGrpsDivEle = document.getElementById("userGroupsTabContent_body");
-		var userGrpsTableContent ='';
-		userGrpsTableContent+='<div>';
-		userGrpsTableContent+='<div id="groupDetailsHead"> Group Details </div>';
-		for(var i in groupsByUser )
-		{
-		userGrpsTableContent+='<div id="groupDetails">';	
-		userGrpsTableContent+='<table width="100%">';
-		userGrpsTableContent+='<tr>';
-		userGrpsTableContent+='<th>Group Name : </th>';
-		userGrpsTableContent+='<th align="left">'+groupsByUser[i].groupName+'</th>';
-		userGrpsTableContent+='</tr>';
-		userGrpsTableContent+='<tr>';
-		userGrpsTableContent+='<th>Group Description : </th>';
-		userGrpsTableContent+='<td>'+groupsByUser[i].groupDesc+'</td>';
-		userGrpsTableContent+='</tr>';
-		userGrpsTableContent+='<tr>';
-		userGrpsTableContent+='<td align="right" colspan="2"><span class="groupMembersLinks"><a href="#" onclick="showGroupMbrsInGroup('+groupsByUser[i].groupId+')" >View Members</a></span>';
-		userGrpsTableContent+='<span class="groupMembersLinks"><a href="#" onclick="addGrpMembersDialog()" >Add Members</a></span></td>';
-		userGrpsTableContent+='</tr>';
-		userGrpsTableContent+='</table></div>';
-		}		
 		
-		userGrpsDivEle.innerHTML = userGrpsTableContent;
-		*/
-
-		var userGroupsDivEl = document.getElementById("myGroupsLinksDiv");
-		var myGroupsLinksDivContent = '';
-		myGroupsLinksDivContent+='<ul id="myGroupsList">';
-		for(var i in groupsByUser)
-		{
-		myGroupsLinksDivContent+='<li>';	
-		myGroupsLinksDivContent+='<a href="#" style="margin-left:0px;" onclick="showUserGroupsDetails('+groupsByUser[i].staticGroupId+')">'+groupsByUser[i].staticGroupName+' - '+groupsByUser[i].numberOfGroups+'</a>';
-		myGroupsLinksDivContent+='</li>';
-		myGroupsLinksDivContent+='<div id="'+groupsByUser[i].staticGroupId+'"></div>';
-		
-		}
-		myGroupsLinksDivContent+='</ul>';
-		userGroupsDivEl.innerHTML =  myGroupsLinksDivContent; 		
-		/*
-		var userGrpsTree;
-		userGrpsTree = new YAHOO.widget.TreeView("GrpsTreeDiv");
-	    var root = userGrpsTree.getRoot();
-		
-		for(var j in groupsByUser)
-		{			
-			var mainGroupsObj = {
-					label: groupsByUser[i].groupName,
-					myNodeId: groupsByUser[i].groupId
-					};
-			var tmpNode = new YAHOO.widget.TextNode(mainGroupsObj, root);
-			for(var j in groupsByUser[i].userSubGroups)
-			{
-				var subGroupsObj = {
-						label: groupsByUser[i].userSubGroups[j].groupName,
-						myNodeId: groupsByUser[i].userSubGroups[j].groupId
-						};
-				var tempNode1 = new YAHOO.widget.TextNode(subGroupsObj, tmpNode, false); 
-				
-			}
-		}
-
-		userGrpsTree.subscribe("labelClick", function(node) {
-	        alert(node.data.myNodeId + " label was clicked");
-	        
-	    });
-		
-		userGrpsTree.render();
-		*/
-				
-	}	
-
-	function showUserGroupsDetails(id)
-	{
-		var jsObj=
-		{		staticGrpId: id,
-				task: "grpDetailsByStaticGrpId"
-		}
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-	var url = "<%=request.getContextPath()%>/subGroupsInaStaticGroupForUserAction.action?"+rparam;
-	callAjax(rparam,jsObj,url);	
-	}
-
-	function showSubGroupsUnderStaticGroups(results,jsObj)
-	{	
-			var staticGrpId = jsObj.staticGrpId;
-			
-			var MyGroupsDivEl = document.getElementById(staticGrpId);
-			
-			var subGroupsOfStaticGroupsForUser = results.subGroupsCreatedByUser;
-			
-			userGrpsTree = new YAHOO.widget.TreeView(MyGroupsDivEl);
-			var root = userGrpsTree.getRoot();
-			for(var i in subGroupsOfStaticGroupsForUser)
-			{
-				var mainSubGroupsObj = {
-						label: subGroupsOfStaticGroupsForUser[i].groupName,
-						myNodeId: subGroupsOfStaticGroupsForUser[i].groupId,
-						myStaticGrpId: subGroupsOfStaticGroupsForUser[i].staticGroupId,
-						parentGrpId: subGroupsOfStaticGroupsForUser[i].parentGroupId
-						};
-				var tmpNode = new YAHOO.widget.TextNode(mainSubGroupsObj, root);				
-			}
-
-			userGrpsTree.subscribe("labelClick", function(node){
-
-		        var jsObj=
-				{		staticGrpId: node.data.myStaticGrpId,
-				   		myNodeId: node.data.myNodeId,
-				   		parentGrpId: node.data.parentGrpId,
-						task: "getCompleteGroupDescription"
-				}
-			
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-			var url = "<%=request.getContextPath()%>/subGroupsDescriptionForUserAction.action?"+rparam;
-			callAjax(rparam,jsObj,url);
-		        
-		    });
-			
-			userGrpsTree.render();
-	}
-	/*
-	function loadNodeData(node, onCompleteCallback,results)
-	{
-		
-		for(var i in results.userSubGroups)
-		{
-			var subGroupsObj = {
-					label: results.userSubGroups[i].groupName,
-					myNodeId: results.userSubGroups[i].groupId
-					};
-			var tempNode = new YAHOO.widget.TextNode(subGroupsObj, node, false);		
-		}
-		onCompleteCallback();
-			
-	}*/
-	//wkg 
-	function showGroupdDetailsInCenterLayout(results,jsObj)
-	{
-		var userGrpsDivEle = document.getElementById("userGroupsTabContent_body");
-		var node = jsObj.myNodeId;
-		var nodeToAppend = userGrpsTree.getNodeByIndex(node);
-		//var nodebyid = YAHOO.widget.TreeView.getNode( userGrpsTree , nodeIndex)
-		
-		var userGrpsTableContent ='';
-		userGrpsTableContent+='<div>';
-		userGrpsTableContent+='<div id="groupDetailsHead"> Group Details </div>';
-		
-		userGrpsTableContent+='<div id="groupDetails">';	
-		userGrpsTableContent+='<table width="100%" cellspacing="0" cellpadding="0" id="groupDetailsDiv">';
-		userGrpsTableContent+='<tr>';
-		userGrpsTableContent+='<td rowspan="4"><img alt="No Group Logo" src="images/icons/group-default.png"/></td>';		
-		userGrpsTableContent+='<td align="left"><b>'+results.groupName+'</b></td>';
-		userGrpsTableContent+='</tr>';
-		userGrpsTableContent+='<tr>';		
-		userGrpsTableContent+='<td>'+results.groupDesc+'</td>';
-		userGrpsTableContent+='</tr>';
-		userGrpsTableContent+='<tr>';		
-		userGrpsTableContent+='<td>Created On: '+results.createdDate+'</td>';
-		userGrpsTableContent+='</tr>';
-		userGrpsTableContent+='<tr>';		
-		userGrpsTableContent+='<td>No of Persons: '+results.noOfPersons+'</td>';
-		userGrpsTableContent+='</tr>';
-		userGrpsTableContent+='<tr>';
-		userGrpsTableContent+='<td align="right" colspan="2"><a href="#" onclick="showGroupMbrsInGroup('+results.groupId+','+results.staticGroupId+','+results.parentGroupId+')" class="link">View Members</a>';
-		userGrpsTableContent+='<span class="groupMembersLinks"><a href="#" onclick="addGrpMembersDialog()" >Add Members</a></span></td>';
-		userGrpsTableContent+='</tr>';
-		userGrpsTableContent+='</table></div>';		
-		userGrpsDivEle.innerHTML = userGrpsTableContent;
-		for(var i in results.userSubGroups)
-		{
-			
-			var subGroupsObj = {
-					label: results.userSubGroups[i].groupName,
-					myNodeId: results.userSubGroups[i].groupId,
-					myStaticGrpId: results.userSubGroups[i].staticGroupId,
-					parentGrpId: results.userSubGroups[i].parentGroupId
-					};
-			var tempNode = new YAHOO.widget.TextNode(subGroupsObj,false); 
-			tempNode.appendTo(nodeToAppend);
-			nodeToAppend.refresh();
-		}
-		//tempNode.appendTo(nodeToAppend);
-		//nodeToAppend.refresh();
-		
-		
-	}
-	function showUserGroupsDetails(id)
-	{
-		var elmt = document.getElementById(id);
-		if(elmt.innerHTML)
-		{
-			elmt.innerHTML='';
-			return;
-		}
-		
-		var jsObj=
-		{		staticGrpId: id,
-				task: "grpDetailsByStaticGrpId"
-		}
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-	var url = "<%=request.getContextPath()%>/subGroupsInaStaticGroupForUserAction.action?"+rparam;
-	callAjax(rparam,jsObj,url);	
-	}	
-	
 	function updateClassifyDataTable(results)
 	{	
 		var assignToClsfdDtArr = new Array();
@@ -1813,7 +1393,6 @@
 
 	function showPendingProblemsForUser(results)
 	{
-
 		var assignToPendingProblemsArr = new Array();
 		var pendingProblems =results.pendingProblems;
 		for (var i in pendingProblems)
@@ -1839,7 +1418,7 @@
 		{
 			pendingIssuesDataTable.addRows(assignToPendingProblemsArr);
 		}			
-	}	
+	}
 
 	function hasRecordInPendingDTArray(id)
 	{
@@ -1998,7 +1577,6 @@
 		} 
 		constTabContent+='</select></td>';
 		constTabContent+='</tr>';
-		
 		constTabContent+='<tr>';
 		constTabContent+='<td><%=MANDAL%></td>';
 		constTabContent+='<td><select id="mandalField" class="selectWidth" name="mandal" onchange="getTownshipsForMandal(this.name,this.options[this.selectedIndex].value,false)">';
@@ -2045,45 +1623,7 @@
 		distEPapersTabContent+='<div id="distEPapersTabContent_body"></div>';
 		distEPapersTabContent+='<div id="distEPapersTabContent_footer"></div>';
 		distEPapersTabContent+='</div>';
-
-		var userGroupsContent='<div id="userGroupsTabContent">';
-		userGroupsContent+='<div id="layoutMain"></div>';
-		userGroupsContent+='<div id="leftLayoutMain" class="yui-skin-sam">';
-		//userGroupsContent+='<p id="UGIntro" class="link"><a href="#" onclick="showUGIntro()"><b>Introduction</b></a></p>';
-		userGroupsContent+='<p id="systemGroups" class="link"><a href="#" onclick="getSystemGroupsForUser()"><b>System Groups</b></a></p>';
-		userGroupsContent+='<div id="myGroupsLinksDiv"></div>';		
-		userGroupsContent+='<p id="myGroups" class="link"><a href="#" onclick="getGroupsCreatedByUser()"><b>My Groups</b></a></p>';		
-		userGroupsContent+='<p id="createNewGrpDiv" class="link"><a href="#" onclick="buildCreateGroupPopup()"><b>Create New Group</b></a></p>';	
-
-	
-		userGroupsContent+='</div>'; 
-		userGroupsContent+='<div id="centerLayoutMain">';
-		userGroupsContent+='<div id="userGroupsTabContent_body" align="left">';
-		//userGroupsContent+='<div id="usergroupsHead">User Groups</div>';
-		userGroupsContent+='<br>';
-		userGroupsContent+='<br>';
-		userGroupsContent+='<table style="margin-left:1cm;">';
-		userGroupsContent+='<tr><td style="color:#404040;"><p>User Groups is a consistent interaction for creating, managing groups';
-		userGroupsContent+=' and it helps the users for maintaining relationship with people</p><br/>';
-		userGroupsContent+='<p>The User Groups Solves the problem of...</p>';
-		userGroupsContent+='&nbsp Identifying and gathering sets of people within the system to:';
-		userGroupsContent+='<ul><li>&nbsp Collaborate </li>'; 
-		userGroupsContent+='<li>&nbsp Communicate</li>';
-		userGroupsContent+='<li>&nbsp Define what activities the group can do together</li></ul>';
-		userGroupsContent+='<td ><img src="images/icons/people3.jpg" height="250" width="250" border="1" style="border-color:#404040;"/></td></tr>';
-		userGroupsContent+='</table>';
-		//userGroupsContent+='<tr><td> 
-		/*
-		userGroupsContent+='<ul><li>&nbsp collaborate with</li>'; 
-		userGroupsContent+='<li>&nbsp communicate with</li></ul></td></tr>';
-		userGroupsContent+='<tr><td>&nbsp To define what activities the group can do together.</td></tr>';*/
-		//userGroupsContent+='<tr><td></td></tr></table>';
-		userGroupsContent+='</div>';
-		userGroupsContent+='</div>'; 
-		userGroupsContent+='<div id="userGroupsTabContent_head" align="left"></div>';		
-		userGroupsContent+='<div id="userGroupsTabContent_footer" align="right"></div>';	
-		userGroupsContent+='</div>';
-				
+						
 		outerTab.addTab( new YAHOO.widget.Tab({			
 		label: '<%=constituencyMgmt%>', 
 	    content:constTabContent, 
@@ -2093,12 +1633,7 @@
 		outerTab.addTab( new YAHOO.widget.Tab({ 
 	    label: '<%=probMgmt%>', 
 	    content: '<div id="problemMgmtTabContentDiv"></div>'	   
-		})); 
-		
-		outerTab.addTab( new YAHOO.widget.Tab({ 
-			label: '<%=userGroups%>', 
-			content: userGroupsContent		 
-		})); 
+		}));		 
 		 
 		outerTab.addTab( new YAHOO.widget.Tab({ 
 			label: '<%=recommLetters%>', 
@@ -2112,49 +1647,10 @@
 
 		outerTab.appendTo('problemMgmtMainDiv');
 		outerTab.getTab(1).addListener('click',getNewProblemsForUser);
-		outerTab.getTab(2).addListener('click',handleUserGrpsTabClick);
-		outerTab.getTab(3).addListener('click',handleRecommLetrsTabClick);
-		outerTab.getTab(4).addListener('click',handleDistPapersTabClick);
-		/*
-		var addUserGroupButton = new YAHOO.widget.Button({ 
-            id: "addUserGroupButton",  
-            type: "link",  
-            label: "Create Group",  
-            container: "userGroupsTabContent_footer" 
-		});
-		addUserGroupButton.on("click", buildCreateGroupPopup); 
-		 */
+		outerTab.getTab(2).addListener('click',handleRecommLetrsTabClick);
+		outerTab.getTab(3).addListener('click',handleDistPapersTabClick);		
 	}
 
-	function getSystemGroupsForUser()
-	{
-		var jsObj= 
-		{
-			task:"getSystemGroupsForUser"
-		}
-		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/userGroupAction.action?"+param;
-		callAjax(param,jsObj,url);
-	}
-	/*
-	function showUGIntro()
-	{
-		var userGrpsCenterDivElement = document.getElementById("userGroupsTabContent_body");
-		var userGrpsCenterContent="";
-		userGrpsCenterContent+='<div id="groupDetailsHead"><h2>Introduction</h2></div>';
-		userGrpsCenterContent+='<div id="introductionId"> <table><tr><td>The User Groups is a Consistent interaction for creating, managing & engaging groups<br/></td></tr>';
-		userGrpsCenterContent+='<tr><td>and it helps the users for maintaining clean relationship with people even  the users<br/></td></tr> ';
-		userGrpsCenterContent+='<tr><td>get feedback about what is happening in his/her Constituency/Location.<br/></td></tr><br/><br/>';
-		userGrpsCenterContent+='<tr><td>The User Groups Solves the problem of...</td></tr>';
-		userGrpsCenterContent+='<tr><td>&nbsp identifying and gathering sets of people within the system to:'; 
-		userGrpsCenterContent+='<ul><li>&nbsp collaborate with</li>'; 
-		userGrpsCenterContent+='<li>&nbsp communicate with</li></ul></td></tr>';
-		userGrpsCenterContent+='<tr><td>&nbsp To define what activities the group will do together.</td></tr></div>';
-
-		userGrpsCenterDivElement.innerHTML = userGrpsCenterContent;
-		
-	}*/		
-	
 	function buildProblemMgmtTabView()
 	{	
 		problemMgmtTabs = new YAHOO.widget.TabView(); 
@@ -2416,7 +1912,7 @@
         		};
 		ePapersDataTable = new YAHOO.widget.DataTable("distEPapersTabContent_body", ePapersUrlColumnDefs, ePapersDataSource);
 		ePapersDataTable.setColumnWidth(ePapersUrlColumnDefs[0],1000);
-		constMgmtTabs.getTab(4).addListener("click", function() {ePapersDataTable.onShow()});
+		constMgmtTabs.getTab(3).addListener("click", function() {ePapersDataTable.onShow()});
 		
         return { 
             oDS: ePapersDataSource, 
@@ -2430,7 +1926,7 @@
 			
 			var myColumnDefs = [ 
 					{key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true},
-		            {key:"electionYear", label: "<%=electionYear%>", sortable:true}, 
+		            {key:"electionYear", label: "<%=electionYear%>"}, 
 		            {key:"rank", label: "<%=rank%>", sortable:true}, 
 		            {key:"mptcName", label: "<%=mptcName%>", sortable:true}, 
 					{key:"party", label: "<%=party%>",  sortable:true},
@@ -2455,22 +1951,7 @@
 		            new YAHOO.widget.DataTable("mandalLeadersAll", myColumnDefs, myDataSource,myConfigs); 
 		                 
 		        
-				problemMgmtTabs.getTab(0).addListener("click", function() {myDataTable.onShow()});         
-							
-				var highlightEditableCell = function(oArgs) {   
-	             var elCell = oArgs.target;   
-	             if(YAHOO.util.Dom.hasClass(elCell, "yui-dt-editable")) {   
-	                 this.highlightCell(elCell);   
-	             } 
-				  }; 
-
-				
-
-				myDataTable.subscribe("cellMouseoverEvent", highlightEditableCell);  			
-				myDataTable.subscribe("cellMouseoutEvent", myDataTable.onEventUnhighlightCell);
-				myDataTable.subscribe("cellClickEvent", myDataTable.onEventShowCellEditor);
-				
-		        return { 
+				return { 
 		            oDS: myDataSource, 
 		            oDT: myDataTable 		           
 		      }; 		    
@@ -3921,317 +3402,11 @@
 	function handleDialogCancel()
 	{
 		this.cancel();
-	}
-	
-	function buildCreateGroupPopup()
-	{
-		
-		var elmt = document.getElementById('constituencyMgmtBodyDiv');
-		var divChild = document.createElement('div');
-		divChild.setAttribute('id','createGroupmDiv');
-		var createGroupContentStr='';
-		createGroupContentStr+='<div class="hd" align="left">Create New User Group</div>';
-		createGroupContentStr+='<div class="bd" align="left">';
-		createGroupContentStr+='<div id="userGroupDetailsDivBody">';
-		createGroupContentStr+='<div class="section_title">Group Info</div><br>';
-		createGroupContentStr+='<div id="userGroupsDialogText">To create a new community group, complete the fields below. Be sure to include a description that will let other community members know just what your group is about!</div><br>';
-		createGroupContentStr+='<table class="createGroupTable">';
-		//createGroupContentStr+='<tr></tr>';
-		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<th><%=groupName%></th>'; 
-		createGroupContentStr+='<td style="padding-left: 15px;"><input type="text" style="width:400px;" id="groupNameText"/></td>';
-		createGroupContentStr+='</tr>';
-		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<th><%=description%></th>';
-		createGroupContentStr+='<td style="padding-left: 15px;"><textarea style="width:400px;" id="descTextArea"></textarea></td>';
-		createGroupContentStr+='</tr>';
-		createGroupContentStr+='</table>';
-		createGroupContentStr+='<br>';
-		createGroupContentStr+='<fieldset>';
-		createGroupContentStr+='<legend>Create Group As</legend>';
-		createGroupContentStr+='<table class="createGroupTable">';
-		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<td><input type="radio" id="createNewGrpRadio" name="createGroup" value="Create New Group" onClick="hideGroupSelectionListBoxes()"/><%=createNewGrp%></td>';
-		createGroupContentStr+='</tr>';
-		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group"/><%=addToGrpAsSubGrpRadio%></td>';
-		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Static Group As Sub Group" onClick="showStaticGroupSelectionBox()"/><%=addToStaticGrpAsSubGrpRadio%></td>';
-		createGroupContentStr+='<td><select class="selectWidth" id="staticGrpSelectBox" name="systemGroups" style="display:none;">';
-		for(var i in userGrpsObj.systemGroupsListBoxArr)
-		{
-			createGroupContentStr+='<option value='+userGrpsObj.systemGroupsListBoxArr[i].id+'>'+userGrpsObj.systemGroupsListBoxArr[i].value+'</option>';
-		}
-		createGroupContentStr+='</select></td>';
-
-		createGroupContentStr+='</tr>';
-
-		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Other Group As Sub Group"/><%=addToStaticGrpAsSubGrpRadio%></td>';
-
-		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To My Group As Sub Group" onClick="showMyGroupSelectionBox()"/><%=addToGrpAsSubGrpRadio%></td>';
-		createGroupContentStr+='<td><select class="selectWidth" id="myGrpSelectBox" name="myGroups" style="display:none;">';
-		for(var j in userGrpsObj.myGroupsListBoxArr)
-		{
-			createGroupContentStr+='<option value='+userGrpsObj.myGroupsListBoxArr[j].id+'>'+userGrpsObj.myGroupsListBoxArr[j].value+'</option>';
-		}
-		createGroupContentStr+='</select></td>';
-
-		createGroupContentStr+='</tr>';
-		createGroupContentStr+='</table>';
-		createGroupContentStr+='</fieldset>';		
-		createGroupContentStr+='</div>';
-		createGroupContentStr+='</div>';
-		createGroupContentStr+='</div>'; 
-		divChild.innerHTML=createGroupContentStr;
-		
-		elmt.appendChild(divChild);	
-		if(createGroupDialog)
-			createGroupDialog.destroy();
-		createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
-				{ width : "600px", 
-	              fixedcenter : false, 
-	              visible : true,  
-	              constraintoviewport : true, 
-				  iframe :true,
-				  modal :true,
-				  hideaftersubmit:true,
-				  close:true,
-				  x:400,
-				  y:300,				  
-				  buttons : [ { text:"Create", handler: handleCreateGroupSubmit, isDefault:true}, 
-	                          { text:"Cancel", handler: handleCreateGroupCancel}]
-	             }); 
-		createGroupDialog.render();
-	}
-	
-	function hideGroupSelectionListBoxes()
-	{
-		var staticGrpSelectEl = document.getElementById("staticGrpSelectBox");
-		staticGrpSelectEl.style.display = 'none';
-
-		var myGrpSelectEl = document.getElementById("myGrpSelectBox");
-		myGrpSelectEl.style.display = 'none';
-		
-
-		
-	}
-	function showStaticGroupSelectionBox()
-	{
-		var staticGrpSelectEl = document.getElementById("staticGrpSelectBox");
-		staticGrpSelectEl.style.display = 'block';
-
-		var myGrpSelectEl = document.getElementById("myGrpSelectBox");
-		myGrpSelectEl.style.display = 'none';	
-	
-	}
-	
-	function showMyGroupSelectionBox()
-	{
-		var staticGrpSelectEl = document.getElementById("staticGrpSelectBox");
-		staticGrpSelectEl.style.display = 'none';
-
-		var myGrpSelectEl = document.getElementById("myGrpSelectBox");
-		myGrpSelectEl.style.display = 'block';
-		
-		
-	}
-	function handleCreateGroupSubmit()
-	{
-		var groupNameTextVal = document.getElementById("groupNameText").value;
-		var descTextAreaVal = document.getElementById("descTextArea").value;
-		var groupCreationOption;
-		var staticGrpSelectBoxEl = document.getElementById("staticGrpSelectBox");
-		var	staticGrpSelectBoxElVal;
-		var myGrpSelectBoxEl = document.getElementById("staticGrpSelectBox");
-		var	myGrpSelectBoxElVal;  
-		var elements = document.getElementsByTagName('input');
-		for(var i=0;i<elements.length;i++)
-		{
-			if(elements[i].type=="radio" && elements[i].name=="createGroup" && elements[i].checked==true)
-				groupCreationOption = elements[i].value;
-		}
-		if(groupCreationOption == null)
-		{
-		alert("Please Select Group Creation Option!");
-		return;
-		} else if(groupCreationOption == "Create New Group")
-		{
-			staticGrpSelectBoxElVal = null;
-			myGrpSelectBoxElVal = null;
-		} else if(groupCreationOption == "Add To Static Group As Sub Group")
-		{
-			staticGrpSelectBoxElVal = staticGrpSelectBoxEl.options[staticGrpSelectBoxEl.selectedIndex].value; 
-			myGrpSelectBoxElVal = null;
-		} else if(groupCreationOption == "Add To My Group As Sub Group")
-		{
-			staticGrpSelectBoxElVal = null; 
-			myGrpSelectBoxElVal = myGrpSelectBoxEl.options[myGrpSelectBoxEl.selectedIndex].value;
-		}
-		var jsObj={
-				groupName: groupNameTextVal,
-				groupdDesc: descTextAreaVal,
-				staticGroupId: staticGrpSelectBoxElVal,					
-				task:"createNewGroup"
-			  }
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/userGroupAction.action?"+rparam;		
-	callAjax(rparam,jsObj,url);
-		
-		createGroupDialog.hide();			
-	}
-	
-	function handleCreateGroupCancel()
-	{
-		this.cancel();
-	}
-	
-	function showGroupMbrsPopup()
-	{
-		var elmt = document.getElementById('constituencyMgmtBodyDiv');
-		var divChild = document.createElement('div');
-		divChild.setAttribute('id','showGroupMbrsDiv');
-		var showGrpMbrsContent='';
-		showGrpMbrsContent+='<div class="hd" align="left">Group Members</div>';
-		showGrpMbrsContent+='<div class="bd">';
-		showGrpMbrsContent+='<div id="showGrpMbrsDataTableDiv"></div>';
-		divChild.innerHTML = showGrpMbrsContent; 
-		elmt.appendChild(divChild);
-		
-		if(showGrpMbrsDialog)
-			showGrpMbrsDialog.destroy();
-		showGrpMbrsDialog = new YAHOO.widget.Dialog("showGroupMbrsDiv",
-				{ width : "800px", 
-	              fixedcenter : false, 
-	              visible : true,  
-	              constraintoviewport : true, 
-				  iframe :true,
-				  modal :true,
-				  hideaftersubmit:true,
-				  close:true,
-				  x:300,
-				  y:200,				  
-				  buttons : [ { text:"Close", handler: handleshowGroupMbrsSubmit, isDefault:true}]
-	             } ); 
-		showGrpMbrsDialog.render();
-		showGrpMembersDataTable();
-	}
-
-
-	function showGrpMembersDataTable()
-	{	
-		var grpMbrsDetailsColumnDefs = [
-									{key: "name", label: "<%=name%>", sortable:true},		
-									{key: "designation", label: "<%=designation%>", sortable:true},	
-			              	 	    {key: "mobile", label: "<%=mobile%>"},
-			              	 	 	{key: "telephoneNo", label: "<%=telephoneNo%>"},
-			              	 	 	{key: "address", label: "<%=address%>", sortable:true},
-			              	 	 	{key: "location", label:"<%=location%>", sortable: true},
-			              	 	 	{key: "grpName", label:"<%=groupName%>", sortable: true}
-			              	 	    ];                	 	    
-
-			var grpMbrsDetailsDataSource = new YAHOO.util.DataSource(userGrpsObj.showGrpMembersArr); 
-			grpMbrsDetailsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-			grpMbrsDetailsDataSource.responseSchema = {
-	                fields: ["name", "designation", "address", "mobile","telephoneNo", "grpName", "location" ] 
-	        		};
-			grpMbrsDetailsDataTable = new YAHOO.widget.DataTable("showGrpMbrsDataTableDiv", grpMbrsDetailsColumnDefs, grpMbrsDetailsDataSource);
-			outerTab.getTab(2).addListener("click", function() {grpMbrsDetailsDataTable.onShow()});
-			
-	        return { 
-	            oDS: grpMbrsDetailsDataSource, 
-	            oDT: grpMbrsDetailsDataTable 
-	           
-	      };	     	
-		
-	}
-	
-	function handleshowGroupMbrsSubmit()
-	{
-		showGrpMbrsDialog.hide();
-	}
-	/*
-	function getSystemGroups()
-	{
-		
-		var selectEl = document.getElementById("selectInCreateGrpDialogDiv");
-		selectEl.style.display = 'block';
-			
-	}*/
-	function addGrpMembersDialog()
-	{
-		var elmt = document.getElementById('constituencyMgmtBodyDiv');
-		var divChild = document.createElement('div');
-		divChild.setAttribute('id','addGroupMbrsDiv');
-		var addGrpMbrsContent = '';
-		addGrpMbrsContent+='<div class="hd" align="left">Add Members To A Group</div>';
-		addGrpMbrsContent+='<div class="bd" align="left">';
-		addGrpMbrsContent+='<div id="addGroupMbrsDivBody">';
-		addGrpMbrsContent+='<table>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=name%></td>';
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="grpMbrNameText" name="grpMbrNameText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=mobile%></td>';
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrMobileText" name="groupMbrMobileText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=address%></td>'
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrAdrsText" name="groupMbrAdrsText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=location%></td>'
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=groupName%></td>'
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='<tr>';
-		addGrpMbrsContent+='<td><%=designation%></td>'
-		addGrpMbrsContent+='<td style="padding-left: 15px;"><input type="text" size="53" id="groupMbrLocText" name="groupMbrLocText"/></td>';
-		addGrpMbrsContent+='</tr>';
-		addGrpMbrsContent+='</table>';
-		addGrpMbrsContent+='</div>';
-		addGrpMbrsContent+='</div>';
-		addGrpMbrsContent+='</div>';
-		divChild.innerHTML=addGrpMbrsContent;
-		elmt.appendChild(divChild);	
-		if(addGrpMbrsDialog)
-			addGrpMbrsDialog.destroy();
-		addGrpMbrsDialog = new YAHOO.widget.Dialog("addGroupMbrsDiv",
-				{ width : "600px", 
-	              fixedcenter : false, 
-	              visible : true,  
-	              constraintoviewport : true, 
-				  iframe :true,
-				  modal :true,
-				  hideaftersubmit:true,
-				  close:true,
-				  x:400,
-				  y:400,				  
-				  buttons : [ { text:"Add", handler: handleAddGrpMbrSubmit, isDefault:true}, 
-	                          { text:"Cancel", handler: handleAddGrpMbrCancel}]
-	             } ); 
-		addGrpMbrsDialog.render();		
-		
-	}
-	
-	function handleAddGrpMbrSubmit()
-	{
-		addGrpMbrsDialog.hide();
-	}
-
-	function handleAddGrpMbrCancel()
-	{
-		this.cancel();
 	}	
---></script>
+</script>
 </head>
 <body>
-
 <div id="constituencyMgmtHeaderDiv">Constituency Management</div>
-
 <div id="constituencyMgmtMainDiv">	
 	<div id="alertMessage" style="display: none;"><%=constMgmtAlertMessage%></div>
 	<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"></div>
@@ -4241,9 +3416,6 @@
 	</div>
 	<div id="problemMgmtMainDiv"></div>
 </div>
-
-
-
 <script type="text/javascript">
 
 <c:forEach var="state"  items="${stateList}" >
@@ -4253,7 +3425,6 @@
 			};
 	locationDetails.stateArr.push(ob);	
 </c:forEach>
-
 <c:forEach var="district"  items="${districtList}" >
 	var ob={
 				id:'${district.id}',
@@ -4261,7 +3432,6 @@
 			};
 	locationDetails.districtArr.push(ob);	
 </c:forEach>
-
 <c:forEach var="constituency"  items="${constituencyList}" >
 	var ob={
 				id:'${constituency.id}',
@@ -4269,7 +3439,6 @@
 			};
 	locationDetails.constituencyArr.push(ob);	
 </c:forEach>
-
 <c:forEach var="mandal"  items="${mandalList}" >
 	var ob={
 				id:'${mandal.id}',
@@ -4277,7 +3446,6 @@
 			};
 	locationDetails.mandalArr.push(ob);	
 </c:forEach>
-
 <c:forEach var="village"  items="${villageList}" >
 	var ob={
 				id:'${village.id}',
@@ -4285,7 +3453,6 @@
 			};
 	locationDetails.villageArr.push(ob);	
 </c:forEach>
-
 <c:forEach var="hamlet"  items="${hamletList}" >
 	var ob={
 				id:'${hamlet.id}',
@@ -4299,20 +3466,6 @@ var ob={
 			value:'${probSources.name}'
 		};
 problemsMainObj.problemSourcesArr.push(ob);	
-</c:forEach>
-<c:forEach var="systemGroups"  items="${staticGroupsListboxOptions}" >
-var ob={
-			id:'${systemGroups.id}',
-			value:'${systemGroups.name}'
-		};
-userGrpsObj.systemGroupsListBoxArr.push(ob);	
-</c:forEach>
-<c:forEach var="myGroups"  items="${myGroupsListboxOptions}">
-var ob={
-			id:'${myGroups.id}',
-			value:'${myGroups.name}'
-		};
-userGrpsObj.myGroupsListBoxArr.push(ob);	
 </c:forEach>
 getTodayDateTime();
 buildConstituencyLayout();
