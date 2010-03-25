@@ -135,13 +135,7 @@ var resultsColumnDefs = [ {
 	label : "Election Year",
 	sortable : true	
 } ];
-
-var myConfigs = {
-paginator : new YAHOO.widget.Paginator({
-    rowsPerPage: 100
-})
-};
-var myDataTable = new YAHOO.widget.DataTable("candidateInfoDiv",resultsColumnDefs, resultsDataSource,myConfigs);  
+var myDataTable = new YAHOO.widget.DataTable("candidateInfoDiv",resultsColumnDefs, resultsDataSource);  
 }
 
 function callAjax(param,jsObj,url){
@@ -154,6 +148,10 @@ function callAjax(param,jsObj,url){
 					{
 						showStatesInSelectOption(myResults)
 					}	
+					if(jsObj.task == "getDistricts")
+					{
+						showDistrictsInSelectOption(myResults)
+					}
 					if(jsObj.task == "getConstituencies")
 					{
 						showConstituenciesInSelectOption(myResults)
@@ -182,6 +180,26 @@ function showStatesInSelectOption(results)
 		var opElmt=document.createElement('option');
 		opElmt.value=results.getAllStates[i].id;
 		opElmt.text=results.getAllStates[i].name;
+	
+	try
+	{
+		selectedElmt.add(opElmt,null); // standards compliant
+	}
+	catch(ex)
+	{
+		selectedElmt.add(opElmt); // IE only
+	}			
+	}
+}
+
+function showDistrictsInSelectOption(results)
+{
+	var selectedElmt = document.getElementById("districtField");
+	for(var i in results)
+	{			
+		var opElmt=document.createElement('option');
+		opElmt.value=results[i].id;
+		opElmt.text=results[i].name;
 	
 	try
 	{
@@ -252,6 +270,17 @@ function getConstituency(id)
 			callAjax(rparam,jsObj,url);
 }
 
+function getDistricts(id)
+{	
+	var jsObj=
+			{
+					locationId:id,
+					task:"getDistricts"				
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getDistrictsAndConstituenciesAjaxAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+}
 function getStatesForCountry()
 {
 	var jsObj=
@@ -277,7 +306,7 @@ function getDetails(id)
 	callAjax(rparam,jsObj,url);
 }
 
-function getAssemblyConstituencies()
+function getParliamentConstituencies()
 {
 	
 	getStatesForCountry();
@@ -301,7 +330,30 @@ function getAssemblyConstituencies()
 	hr+='<br/><br/>';
 	assembly.innerHTML = hr;
 }
-
+function getAssemblyConstituencies()
+{
+	
+	getStatesForCountry();
+	var dataTable;
+	dataTable = document.getElementById("constituenciesDiv");
+	dataTable.innerHTML = "";
+	var assembly;
+	assembly = document.getElementById("buildId");
+	var hr='';
+	hr+='<br/><br/>';
+	hr+='<table><tr>';
+	hr+='<td>';
+	hr+='<select id="stateId" class="selectWidth" list="result" theme="simple" listKey="id" listValue="name" onchange="getDistricts(this.value)"/>';
+	hr+='</select>';
+	hr+='</td>';	
+	hr+='<td>';
+	hr+='<select class="selectWidth" id="districtField" list="result.getDistricts" theme="simple" listKey="id" listValue="name" onchange="getDetails(this.value)"/>';
+	hr+='</select>';
+	hr+='</td>';
+	hr+='</tr></table>';
+	hr+='<br/><br/>';
+	assembly.innerHTML = hr;
+}
 function getParliament()
 {
 	type = "";
@@ -311,7 +363,7 @@ function getParliament()
 	constituenciesDiv.innerHTML = "";
 	var hr='';
 	constituenciesDiv.innerHTML = hr;
-	getAssemblyConstituencies();
+	getParliamentConstituencies();
 } 
 function getAssembly()
 {
@@ -333,8 +385,8 @@ function getAssembly()
 	<br/><br/>
 	<table align="left" style="margin-left:1.5cm">
 		<tr>
-			<td><input  type="radio" id="aa" name="electionType" value="parliament" onClick="getParliament()"/>Parliament</td>		
-			<td><input  type="radio" id="qaa" name="electionType" value="assembly" onClick="getAssembly()"/>Assembly</td>
+			<td><input  type="radio" id="assemblyElection" name="electionType" value="parliament" onClick="getParliament()"/>Parliament</td>		
+			<td><input  type="radio" id="parliamentElection" name="electionType" value="assembly" onClick="getAssembly()"/>Assembly</td>
 		</tr>
 	</table>
 	<br/>
