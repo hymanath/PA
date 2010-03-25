@@ -568,6 +568,13 @@
 				<param name="root">candidateResults</param>				
 			</result> 
 		</action>
+
+		<action name="getDistrictsAndConstituenciesAjaxAction" class="constituencyElectionReportAction" method="getDistrictAndConstituencyDetailsAction">
+			<result type="json" name="success">
+				<param name="root">result</param>				
+			</result>		
+		</action>
+
 		<action name="villageBoothElectionMapAction" class="villageBoothElectionMapAction">
 			<result name="success">/jsp/villageBoothElectionMapper.jsp</result>					
 		</action>
@@ -591,6 +598,37 @@
 				<param name="root">electionTrendzReportVO</param>				
 			</result>		
 		</action>	
+		<action name="districtPageMptcAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+			<result type="json" name="success">
+				<param name="root">mptcElectionDetails</param>				
+			</result>		
+		</action>	
+		<action name="districtPageZptcAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+			<result type="json" name="success">
+				<param name="root">zptcElectionDetails</param>				
+			</result>		
+		</action>	
+		<action name="districtPageTehsilElectionYearsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+			<result type="json" name="success">
+				<param name="root">electionYears</param>				
+			</result>		
+		</action>	
+		<action name="districtPageMptcElectionYearsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+			<result type="json" name="success">
+				<param name="root">mptcElectionYears</param>				
+			</result>		
+		</action>	
+		<action name="districtPagePartyDetailsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+			<result type="json" name="success">
+				<param name="root">partyDetails</param>				
+			</result>		
+		</action>
+		<action name="districtPageMptcPartyDetailsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+			<result type="json" name="success">
+				<param name="root">getMptcPartyDetails</param>				
+			</result>		
+		</action>	
+	
 		<action name="getNextPrevCandidateVotingTrendz" class="constituencyPageAction" method="getNextPrevCandidateVotingTrendz">
 			<result type="json" name="success">
 				<param name="root">candidateVotingTrendzCharts</param>				
