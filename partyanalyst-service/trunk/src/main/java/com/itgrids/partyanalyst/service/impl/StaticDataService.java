@@ -485,6 +485,8 @@ public class StaticDataService implements IStaticDataService {
 		constituenciesStatusVO.setMptcCount(Long.parseLong(mptcCount.get(0).toString()));	
 		constituenciesStatusVO.setConstituencyWinnerInfoVO(constituencyWinnerInfoVOList);
 		constituenciesStatusVO.setDelimitationYear(electionYear);
+		constituenciesStatusVO.setElectionYear(electionYear.toString());
+		constituenciesStatusVO.setElectionType(IConstants.ASSEMBLY_ELECTION_TYPE);
 		return constituenciesStatusVO;
 		}catch(Exception e){
 			log.debug("Exception raised--->");
