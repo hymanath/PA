@@ -349,7 +349,8 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		return  getHibernateTemplate().find("select distinct Model.constituencyElection.election.electionId from BoothConstituencyElection Model where Model.constituencyElection.election.electionScope.electionType.electionTypeId = ? and Model.constituencyElection.election.electionYear = ?", params);
 	}
 
-	@Override
+	
+	@SuppressWarnings("unchecked")
 	public List getBoothsInRevenueVillageForElection(Long townshipId, Long electionId) {
 		Object[] params = {townshipId, electionId};
 		return getHibernateTemplate().find("select model.booth.boothId, model.booth.partNo from BoothConstituencyElection model " +
