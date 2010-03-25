@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
+import com.itgrids.partyanalyst.dto.CandidateWonVO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementVO;
@@ -2148,4 +2151,59 @@ public class MockData {
 		return list;		
 	}
 	
+	/*public static ConstituencyElectionResultsVO getAllCandidatesDetailsForConstituency(Long constituencyId,String electionYear,String electionType){
+				 
+		 List<CandidateOppositionVO> candidateOppositionVO = new ArrayList<CandidateOppositionVO>(0);	 
+			 CandidateOppositionVO  candidateOppositionVo = new CandidateOppositionVO();
+				 candidateOppositionVo.setCandidateId(13268L);
+				 candidateOppositionVo.setCandidateName("GOTTIPATI LAKSHMI NARAYANA");
+				 candidateOppositionVo.setVotesEarned("565.0");
+				 candidateOppositionVo.setVotesPercentage("0.39");
+				 candidateOppositionVo.setRank(4L); 
+				 candidateOppositionVo.setPartyFlag("Independent"); 
+				 candidateOppositionVo.setPartyId(24L); 
+				 candidateOppositionVo.setPartyLongName("Independent");
+				 candidateOppositionVo.setPartyName("IND");
+			  candidateOppositionVO.add(candidateOppositionVo);
+			 
+			  CandidateOppositionVO  candidateOppositionvo = new CandidateOppositionVO();
+				 candidateOppositionvo.setCandidateId(11614L);
+				 candidateOppositionvo.setCandidateName("Kodela Siva Prasada Rao");
+				 candidateOppositionvo.setVotesEarned("64073.0");
+				 candidateOppositionvo.setVotesPercentage("44.01");
+				 candidateOppositionvo.setRank(3L); 
+				 candidateOppositionvo.setPartyFlag("TDP.PNG"); 
+				 candidateOppositionvo.setPartyId(62L); 
+				 candidateOppositionvo.setPartyLongName("Telugu Desam");
+				 candidateOppositionvo.setPartyName("TDP");
+			  candidateOppositionVO.add(candidateOppositionVo);
+		 
+			 CandidateWonVO candidateWonVO = new CandidateWonVO(); 
+				 candidateWonVO.setCandidateId(13266L);
+				 candidateWonVO.setCandidateName("KASU  VENKATA KRISHNA REDDY");
+				 candidateWonVO.setVotesEarned("79568.0");
+				 candidateWonVO.setVotesPercentage("54.66");
+				 candidateWonVO.setRank(1L); 
+				 candidateWonVO.setPartyFlag("INC.png"); 
+				 candidateWonVO.setPartyId(24L); 
+				 candidateWonVO.setPartyLongName("Indian National Congress");
+				 candidateWonVO.setPartyName("INC");
+				
+				 constituencyElectionResults.setCandidateOppositionList(candidateOppositionVO);
+				 constituencyElectionResults.setCandidateResultsVO(candidateWonVO);
+		return null;		
+	}*/
+	
+	public static List getConstituenciesByConstituencyId(Long constituencyId,String electionYear,String electionType){
+			 List result = new ArrayList(0);
+			 result.add(3382l);
+			 result.add("Kavali");
+			 result.add(electionType);
+			 result.add(19L);
+			 result.add("Nellore");
+			 result.add(1L);
+			 result.add("Andhra Pradesh");
+			 result.add(electionYear);
+		 return null;
+	}
 }
