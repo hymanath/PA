@@ -12,11 +12,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.District;
@@ -26,6 +29,7 @@ import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.impl.StaticDataService;
 import com.itgrids.partyanalyst.util.MockData;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class StaticDataServiceTest {
 
@@ -34,6 +38,8 @@ public class StaticDataServiceTest {
 	IPartyDAO partyDAO;
 	IDistrictDAO districtDAO;
 	IElectionAllianceDAO electionAllianceDAO;
+	IConstituencyDAO constituencyDAO;
+	INominationDAO nominationDAO;
 	
 	@Before
 	public void init(){
@@ -43,6 +49,8 @@ public class StaticDataServiceTest {
 		partyDAO = EasyMock.createMock(IPartyDAO.class);
 		districtDAO = EasyMock.createMock(IDistrictDAO.class);
 		electionAllianceDAO = EasyMock.createMock(IElectionAllianceDAO.class);
+		constituencyDAO = EasyMock.createMock(IConstituencyDAO.class);
+		nominationDAO = EasyMock.createMock(INominationDAO.class);
 	}
 	
 	@Test
@@ -84,10 +92,8 @@ public class StaticDataServiceTest {
 	@Test
 	public void testGetDistrictsForStateId(){
 		System.out.println("called testGetDistrictsForStateId() method..........");
-		StaticDataService service = new StaticDataService();
-		
-		List<District> districts = MockData.getDistricts(new Long(1));
-		
+		StaticDataService service = new StaticDataService();		
+		List<District> districts = MockData.getDistricts(new Long(1));		
 		service.setDistrictDAO(districtDAO);
 		EasyMock.expect(districtDAO.findByStateId(new Long(1))).andReturn(districts);
 		EasyMock.replay(districtDAO);
@@ -96,7 +102,8 @@ public class StaticDataServiceTest {
 		Assert.assertEquals(23, actual.size());
 		
 	}
-		@Test
+	
+	@Test
 	public void testGetAllianceParties(){
 			System.out.println("called test...GetAllianceParties");
 		StaticDataService service = new StaticDataService();
@@ -104,10 +111,17 @@ public class StaticDataServiceTest {
 		List<ElectionAlliance> list = new ArrayList<ElectionAlliance>(0);
 		EasyMock.expect(electionAllianceDAO.findByElectionYearAndType("2009", new Long(2))).andReturn(list);
 		EasyMock.replay(electionAllianceDAO);
-
 		List<Party> allianceParties = service.getAllianceParties("2009", new Long(2), new Long(1));
 		Assert.assertEquals(0, allianceParties.size());
 	}
-		
 	
+	@Test
+	public void getAllCandidatesDetailsForConstituency(){
+		StaticDataService service = new StaticDataService();
+		service.setConstituencyDAO(constituencyDAO);
+		 List result = MockData.getConstituenciesByConstituencyId(3382l,"2009",IConstants.ASSEMBLY_ELECTION_TYPE);
+		 EasyMock.expect(constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType(3382l)).andReturn(result);
+		 EasyMock.replay(constituencyDAO);			 
+		 ConstituencyElectionResultsVO actual = service.getAllCandidatesDetailsForConstituency(3382l,"2009",IConstants.ASSEMBLY_ELECTION_TYPE);
+	}	
 }
