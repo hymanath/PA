@@ -48,12 +48,8 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> villageList;
 	private List<SelectOptionVO> hamletList;
 	private IRegionServiceData regionServiceData;
-	private List<SelectOptionVO> problemSources;
-	private List<SelectOptionVO> staticGroupsListboxOptions;
-	private List<SelectOptionVO> myGroupsListboxOptions;
-	private String accessType;
-	private IUserGroupService userGroupService;
-	
+	private List<SelectOptionVO> problemSources;	
+	private String accessType;	
 	
 	public IProblemManagementService getProblemManagementService() {
 		return problemManagementService;
@@ -176,33 +172,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		this.accessType = accessType;
 	}	
 
-	public List<SelectOptionVO> getStaticGroupsListboxOptions() {
-		return staticGroupsListboxOptions;
-	}
-
-	public void setStaticGroupsListboxOptions(
-			List<SelectOptionVO> staticGroupsListboxOptions) {
-		this.staticGroupsListboxOptions = staticGroupsListboxOptions;
-	}	
-	
-	public IUserGroupService getUserGroupService() {
-		return userGroupService;
-	}
-
-	public void setUserGroupService(IUserGroupService userGroupService) {
-		this.userGroupService = userGroupService;
-	}
-	
-	public List<SelectOptionVO> getMyGroupsListboxOptions() {
-		return myGroupsListboxOptions;
-	}
-
-	public void setMyGroupsListboxOptions(
-			List<SelectOptionVO> myGroupsListboxOptions) {
-		this.myGroupsListboxOptions = myGroupsListboxOptions;
-	}
-
-	@SuppressWarnings("deprecation")
 	public String execute() throws Exception{
 		
 		log.debug("In execute of Constituency Management Action ********");
@@ -215,51 +184,17 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		problemSources.add(probSource2);
 		problemSources.add(probSource3);
 		
-		problemSources = problemManagementService.getAllTypesOfProblemSources();
-		staticGroupsListboxOptions = userGroupService.getAllStaticGroupNames();
-		staticGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select System Group"));
-		
-		
-		//problemSources.add(new SelectOptionVO(0L,"Select Source"));
-		
-		/*	
-		constituencyManagementVO = new ConstituencyManagementVO();
-		ProblemManagementVO problemManagementVO = new ProblemManagementVO();
-		problemDetailsList = new ArrayList<ProblemDetailsVO>();		
-		
-		ProblemDetailsVO problemDetailsVO = new ProblemDetailsVO(); 
-		problemDetailsVO.setDefinition("Impurity water");
-		problemDetailsVO.setDescription("Polluted water is beign supplied");
-		problemDetailsVO.setIdentifiedDate("03/04/2009");
-		problemDetailsVO.setLocation("Madanapalle");
-		problemDetailsVO.setSource("Party Analyst");
-		
-		ProblemDetailsVO problemDetailsVO1 = new ProblemDetailsVO();
-		problemDetailsVO1.setDefinition("No Bus Service");
-		problemDetailsVO1.setDescription("Bus service cancelled to village");
-		problemDetailsVO1.setIdentifiedDate("01/03/2009");
-		problemDetailsVO1.setLocation("Nagavaram");
-		problemDetailsVO1.setSource("VIctim");
-		
-		problemDetailsList.add(problemDetailsVO);
-		problemDetailsList.add(problemDetailsVO1);
-		
-		problemManagementVO.setProblemDetails(problemDetailsList);
-		constituencyManagementVO.setProblemManagementVO(problemManagementVO);*/
-		
+		problemSources = problemManagementService.getAllTypesOfProblemSources();	
+				
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
-		//String result = SUCCESS;
+		
 		if(user == null)
-			//result =  "NO_USER";
 			return ERROR;
-		log.debug("test");
-		
+				
 		accessType =user.getAccessType();
-		Long accessValue= new Long(user.getAccessValue());
-		
-		/*myGroupsListboxOptions = userGroupService.getMyGroupsCreatedByUser(user.getRegistrationID());
-		myGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select A Group"));*/  
+		Long accessValue= new Long(user.getAccessValue());		
+		  
 		stateList = new ArrayList<SelectOptionVO>();
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
