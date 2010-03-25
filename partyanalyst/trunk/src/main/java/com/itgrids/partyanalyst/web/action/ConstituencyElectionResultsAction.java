@@ -93,7 +93,11 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 		
 		log.info("Inside Execute Method ..");
 		
-		constituencyElectionResultsVO = staticDataService.getAllCandidatesDetailsForConstituency(new Long(constituencyId), "2009", "Assembly");
+		log.debug("Constituency Id:" + constituencyId);
+		log.debug("Election Type  :" + electionType);
+		log.debug("Election Year  :" + electionYear);
+		
+		constituencyElectionResultsVO = staticDataService.getAllCandidatesDetailsForConstituency(new Long(constituencyId), electionYear, electionType);
 		
 		if(constituencyElectionResultsVO == null)
 			return Action.ERROR;
