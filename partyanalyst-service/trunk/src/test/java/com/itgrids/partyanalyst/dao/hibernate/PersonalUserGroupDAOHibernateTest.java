@@ -56,7 +56,7 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		//System.out.println(result.size());
 	}*/
 
-	public void testGetSubGroupsCompleteDetailsForASystemGroup()
+	/*public void testGetSubGroupsCompleteDetailsForASystemGroup()
 	{
 		List result=personalUserGroupDAO.getSubGroupsCompleteDetailsForASystemGroup(1L, 1L);
 		System.out.println(result.size());
@@ -66,6 +66,19 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(parms[1].toString());
 			
 		}	
+		
+	}*/
+	public void testGetGroupsByName()
+	{
+		List result = personalUserGroupDAO.getGroupsByName(1L, "aaa");
+		if(Long.parseLong(result.get(0).toString())==0L){
+			System.out.println("fale");
+		}else{
+			System.out.println("true");
+		}
+		System.out.println(result.get(0).toString());
+		System.out.println(result.size());			
+		
 		
 	}
 }
