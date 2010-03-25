@@ -23,7 +23,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	@SuppressWarnings("unchecked")
 	public List findProblemsForALocationsByHamletId(Long hamletId){
 		return getHibernateTemplate().find(" Select model.problemStatus.status," +
-				" model.problemLocation.hamlet.hamletName" +
+				" model.problemLocation.hamlet.hamletName," +
 				" model.problemLocation.problemAndProblemSource.problem.identifiedOn," +
 				" model.problemLocation.problemAndProblemSource.problem.problem," +
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
