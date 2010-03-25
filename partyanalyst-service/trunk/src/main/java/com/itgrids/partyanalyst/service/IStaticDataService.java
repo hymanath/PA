@@ -7,10 +7,12 @@ import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
+import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Party;
@@ -40,7 +42,7 @@ public interface IStaticDataService {
 	public List<SelectOptionVO> getStaticParties();
 	public List<SelectOptionVO> getPartiesForConstituency(Long constituencyId, String electionYear);
 	public List<SelectOptionVO> findTownshipsByTehsilID(Long mandalID);
-
+	
 	public List<SelectOptionVO> getHamletsForTownship(Long townshipId);
 	
 	public ConstituenciesStatusVO getConstituenciesForDistrict(Long districtId,Long electionYear, String electionType);
@@ -72,11 +74,25 @@ public interface IStaticDataService {
 	public CandidateDetailsVO getAllStatesInCountry();
 	
 	public List<SelectOptionVO> getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);
+
+	
+	public MandalAllElectionDetailsVO getAllZptcsForADistrictForLatestYear(Long districtId);
+	
+	public MandalAllElectionDetailsVO getAllMptcsForADistrictForLatestYear(Long districtId);
+	
+	public ConstituencyElectionResultsVO getAllCandidatesDetailsForConstituency(Long constituencyId,String electionYear,String electionType);
+	
+	public CandidateDetailsVO getAllParliamentWinningCandidatesForADistrict(Long districtId);
+	
+	public CandidateDetailsVO getElectionResultsForADistrictForAllYears(Long districtId);
+	
+	public List<SelectOptionVO> getAllElectionYearsForATeshil(Long electionType);
+	
+	public List<TeshilPartyInfoVO> getMandalWisePartyReport(String electionType,String electionYear,Long districtId);
+
 	
 	public List<ElectionBasicInfoVO> getAssemblyElectionsInfoForAConstituency(String presentYear,Long constituencyId);
 	
 	public List<ElectionBasicInfoVO> getParliamentElectionsInfoForAConstituency(Long constituencyId);
-	
-	public ConstituencyElectionResultsVO getAllCandidatesDetailsForConstituency(Long constituencyId,String electionYear,String electionType);
-	
+
 }
