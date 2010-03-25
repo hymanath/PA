@@ -1718,9 +1718,26 @@ public class StaticDataService implements IStaticDataService {
 		 List<CandidateOppositionVO> candidateOppositionVO = new ArrayList<CandidateOppositionVO>(0);
 		try{
 			log.info("Making constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType() DAO call");
+			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
+				List result =  constituencyDAO.getParliamentConstituencyInfoByConstituencyIdElectionYearAndElectionType(constituencyId);
+				java.util.ListIterator li = result.listIterator();
+				 while(li.hasNext()){
+					 log.info(" Has Parliament Constituency Details ...");
+					 constituencyElectionResults = new ConstituencyElectionResultsVO();
+					 Object[] parms = (Object[])li.next();
+					 constituencyElectionResults.setConstituencyId(Long.parseLong(parms[0].toString()));
+					 constituencyElectionResults.setConstituencyName(parms[1].toString());
+					 constituencyElectionResults.setElectionType(electionType);
+					 constituencyElectionResults.setStateId(Long.parseLong(parms[2].toString()));
+					 constituencyElectionResults.setStateName(parms[3].toString());
+					 constituencyElectionResults.setElectionYear(electionYear);
+				 }
+			}
+			else{
 			 List result =  constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType(constituencyId);
 			 java.util.ListIterator li = result.listIterator();
 			 while(li.hasNext()){
+				 log.info(" Has Constituency Details ...");
 				 constituencyElectionResults = new ConstituencyElectionResultsVO();
 				 Object[] parms = (Object[])li.next();
 				 constituencyElectionResults.setConstituencyId(Long.parseLong(parms[0].toString()));
@@ -1732,11 +1749,12 @@ public class StaticDataService implements IStaticDataService {
 				 constituencyElectionResults.setStateName(parms[5].toString());
 				 constituencyElectionResults.setElectionYear(electionYear);
 			 }
-			 
+			}
 			 log.info("Making nominationDAO.getCandidatesInfoForTheGivenConstituency() DAO call");
 			 List nominationResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(constituencyId,electionYear,electionType);
 			 java.util.ListIterator resultIterator = nominationResult.listIterator();
 			 while(resultIterator.hasNext()){
+				 log.info(" Has Constituency Results ...");
 				 Object[] parms = (Object[])resultIterator.next();
 				 if(Long.parseLong(parms[4].toString())==1l){
 					 CandidateWonVO candidateWonVO = new CandidateWonVO(); 
@@ -1776,8 +1794,8 @@ public class StaticDataService implements IStaticDataService {
 					 candidateOppositionVo.setPartyName(parms[8].toString());
 					 candidateOppositionVO.add(candidateOppositionVo);
 				 }
-				 constituencyElectionResults.setCandidateOppositionList(candidateOppositionVO);
 			 }
+			 constituencyElectionResults.setCandidateOppositionList(candidateOppositionVO);
 			 
 			 if(constituencyElectionResults != null){
 				 for(CandidateOppositionVO oppositionCand:constituencyElectionResults.getCandidateOppositionList()){
