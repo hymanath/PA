@@ -1053,7 +1053,7 @@ function enableElectionYearSelect(value)
 
 function initializeConstituencyPage()
 {		
-	//buildRightlayoutMap();
+	buildRightlayoutMap();
 	buildConstituencyInfo();
 	buildConstituencyConnectPeopleWindow();
 	buildProblemPostingWindow();
