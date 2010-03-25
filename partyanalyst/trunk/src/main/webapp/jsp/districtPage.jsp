@@ -234,6 +234,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				key : "constituencyName"
 			}, {
 				key : "partyFlag"
+			}, {
+				key : ""
 			}]
 		};
 
@@ -249,6 +251,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			key : "partyFlag",
 			label : "Party Flag",
 			sortable : true	
+		} , {
+			key : "",
+			label : "Complete Results"
 		} ];
 
 		
@@ -844,6 +849,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					</td>
 					<td>	
 						<img src="<%=request.getContextPath()%>/images/party_flags/${mpsDetails.partyFlag}" height="30" width="40"/>
+					</td>
+					<td> <a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${mpsDetails.constituencyId}','Parliament','2009')">view results</a>
 					</td>
 				</tr>  
 			</c:forEach>
