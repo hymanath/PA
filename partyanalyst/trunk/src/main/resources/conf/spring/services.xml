@@ -22,6 +22,7 @@
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
+		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	</bean>
@@ -86,7 +87,6 @@
 		<property name="townshipDAO" ref="townshipDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />				
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
-		<property name="townshipElectionPartyResultDAO" ref="townshipElectionPartyResultDAO" />
 	</bean>
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
 		<property name="candidateResultObjectsDAO" ref="candidateResultObjectsDAO" />

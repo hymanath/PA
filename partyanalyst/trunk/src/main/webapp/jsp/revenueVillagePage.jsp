@@ -111,6 +111,52 @@ function boothDatatable()
 		</c:forEach>			
 	</c:forEach>
 }
+
+		function getGraph(value)
+		{	
+			var str = '';
+			var township = ${townshipId};
+					
+			var elmt = document.getElementById("townshipGraphDiv");	
+			if(value=="0")
+			{
+				elmt.innerHTML='';
+				return;
+			}	
+		
+			str+='<img src="charts/partyPerformanceInAllRVElections_'+township+'_'+value+'.png"/>'; 
+			if(elmt)
+				elmt.innerHTML=str;
+			
+		}
+		
+		function showACPCResults(){
+		
+			var allZMElmt = document.getElementById("partyElectionsGraph");
+			var str = '';
+			str+='<div>';
+			str+='<table>';
+			str+='<tr>';
+			str+='<td> View Graph For:</td>';		
+			str+='<td>';
+			str+='<select onchange="getGraph(this.value)">';
+			str+='<option value="0">Select Party</option>';
+			<c:forEach var="party" items="${partiesInTownship}">
+				str+='<option value="${party.id}">${party.name}</option>';
+			</c:forEach>		
+			str+='</select>';
+			str+='</td>';
+			str+='<td><div id="townshipGraphDiv"></div></td>';
+			str+='</tr>';
+			str+='</table>';		
+			str+='</div>';
+
+			if(allZMElmt)
+				allZMElmt.innerHTML = str;
+			
+		}	
+
+
 </script>
 
 <style type="text/css">
@@ -142,6 +188,7 @@ legend
 </head>
 <body>
  <div id="revenuePageHeading"><s:property value="townshipName"/> &nbsp;Revenue Village Page</div>
+ <div id="partyElectionsGraph"></div>
 	<c:choose>
 		<c:when test="${ empty electionWiseMandalPartyResultListVO.electionWiseMandalPartyResultVOList}">
 			No Records Found
@@ -179,8 +226,8 @@ legend
 	</c:choose>	
 	
 	<script type="text/javascript">
-		
-			boothDatatable();
+		boothDatatable();
+		showACPCResults();
 	</script>
 </body>
 </html>

@@ -35,6 +35,7 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarPainter;
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.chart.renderer.category.MinMaxCategoryRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
@@ -188,6 +189,10 @@ public class ChartProducer {
 		GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, Color.lightGray);
 		GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.pink, 0.0f, 0.0f, Color.lightGray);	
 		GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.yellow, 0.0f, 0.0f, Color.lightGray);
+		
+		CategoryItemRenderer itemRenderer = plot.getRenderer();
+		itemRenderer.setItemLabelsVisible(true);
+		
 		renderer.setSeriesPaint(0, gp0);
 		renderer.setSeriesPaint(1, gp1);
 		renderer.setSeriesPaint(2, gp2);
@@ -196,7 +201,10 @@ public class ChartProducer {
 		try	 {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File image = new File(fileName);
-			ChartUtilities.saveChartAsPNG(image, chart, 400, 350, info);
+			if(title.contains("By Revenue Villages")){
+				ChartUtilities.saveChartAsPNG(image, chart, 1200, 400, info);
+			}else
+				ChartUtilities.saveChartAsPNG(image, chart, 400, 350, info);
 		}
 		catch (java.io.IOException exc)
 		{
@@ -384,5 +392,31 @@ public class ChartProducer {
 		log.error("Error writing image to file");
 		}
 	}
-	
+
+	public static void createLineChart(String title, String xAxis, String yAxis, CategoryDataset dataset, String path){
+		final NumberAxis seatsRangeAxis = new NumberAxis(yAxis);
+        seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        final LineAndShapeRenderer seatsRenderer = new LineAndShapeRenderer();
+        seatsRenderer.setDrawOutlines(true);
+        seatsRenderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
+        final CategoryPlot seatsPlot = new CategoryPlot(dataset, null, seatsRangeAxis, seatsRenderer);
+        seatsPlot.setDomainGridlinesVisible(true);
+        seatsPlot.setForegroundAlpha(0.5f);
+        
+        final CategoryAxis domainAxis = new CategoryAxis(xAxis);
+        CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
+        plot.add(seatsPlot, 2);
+       	        
+        final JFreeChart chart = new JFreeChart(title,  plot);
+        
+		try	 {
+			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+			final File image = new File(path);
+			ChartUtilities.saveChartAsPNG(image, chart, 700, 260, info);
+		}
+		catch (java.io.IOException exc)
+		{
+		log.error("Error writing image to file");
+		}
+	}
 }

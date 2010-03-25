@@ -221,9 +221,6 @@
 	<bean id="hamletBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="townshipElectionPartyResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.TownshipElectionPartyResultDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
 	<bean id="staticGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.StaticGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

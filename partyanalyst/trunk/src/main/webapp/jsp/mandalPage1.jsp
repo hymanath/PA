@@ -233,7 +233,7 @@ width:100%;
 	/*font-weight:bold;*/	
 	background-color:#F3F6F7;
 	margin-top:10px;
-	max-width:700px;
+	
 	width:expression(document.body.clientWidth > 700? "700px": "auto" );
 }
 .infoDivHeadClass
@@ -243,7 +243,7 @@ width:100%;
 }
 .partyInfoHead
 {
-	/*padding:5px;*/
+	width:800px;
 }
 .partyInfoBody
 {	
@@ -298,6 +298,11 @@ width:100%;
 	width:100%;
 }
 
+.graphLabelTd
+{
+	font-weight:bold;
+	
+}
 </style>
 
 
@@ -319,6 +324,7 @@ var allZPTCMPTCElecInfo = new Array();
 					participated:'${party.seatsParticipated}',
 					seatsWon:'${party.totalSeatsWon}',
 					votesEarned:'${party.votesEarned}',
+					polledVotes:'${party.totalPolledVotes}',
 					percentage:'${party.percentage}',
 					constituencies:[]
 			};
@@ -490,6 +496,7 @@ var allZPTCMPTCElecInfo = new Array();
 	}
 
 	var electionId;
+	var mandalId;
 	function getRevenueVillagesInfo(id){
          var imgElmt = document.getElementById('AjaxImgDiv');
 		 if(imgElmt.style.display == "none")
@@ -498,6 +505,7 @@ var allZPTCMPTCElecInfo = new Array();
 		}
 
 		electionId = id;
+		mandalId = ${mandalId};
 		var jsObj=
 			{
 					electionId:id,
@@ -523,7 +531,21 @@ var allZPTCMPTCElecInfo = new Array();
 		var url = "<%=request.getContextPath()%>/getRevenueVillagesElectionsAjaxAction.action?"+rparam;						
 		callAjax(rparam,jsObj,url);
 	}
+
+	function getConsolidatedRevenueVillagesElecInfo(){
+		var jsObj=
+		{
+				mandalId:${mandalId},
+				electionId:electionId,
+				task:"getAllRevenueVillagesElectionResults"						
+		};
 	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllRevenueVillagesElectionAjaxAction.action?"+rparam;						
+		callAjax(rparam,jsObj,url);
+	}
+
+	var townshipsResults;
 	function callAjax(rparam, jsObj, url){
 		var resultVO;			
 		var callback = {			
@@ -546,6 +568,11 @@ var allZPTCMPTCElecInfo = new Array();
 								else if(jsObj.task == "getRevenueVillagesElectionInfo")
 								{								
 									showRevenueVillageElectionInfo(resultVO,jsObj);			
+								}
+								else if(jsObj.task == "getAllRevenueVillagesElectionResults")
+								{								
+									townshipsResults = resultVO;
+									showElectionResultsInAllRevenueVillages();			
 								}					
 						}catch (e)  {   
 						   	alert("Invalid JSON result" + e);   
@@ -621,10 +648,21 @@ var allZPTCMPTCElecInfo = new Array();
 		 myPanel.render(); 
 	}
 	
+	function openwin(){
+		
+		var typeVal = ""+typeSelectElmt.options[typeSelectElmt.selectedIndex].text;
+		var yearVal = ""+yearSelectElmt.options[yearSelectElmt.selectedIndex].text;
+		
+		var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName=${mandalInfoVO.mandalName}&electionType="+typeVal+"&electionYear="+yearVal,"brow1","width=500,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		brow1.focus();
+	}
+	
+	var typeSelectElmt;
+	var yearSelectElmt;
 	function showRevenueVillagesInfo(resultVO){
 		
-		var typeSelectElmt = document.getElementById("electionTypeSelect");
-		var yearSelectElmt = document.getElementById("electionYearSelect");		
+		typeSelectElmt = document.getElementById("electionTypeSelect");
+		yearSelectElmt = document.getElementById("electionYearSelect");		
 
 		var typeVal = ""+typeSelectElmt.options[typeSelectElmt.selectedIndex].text;
 		var yearVal = ""+yearSelectElmt.options[yearSelectElmt.selectedIndex].text;
@@ -633,35 +671,10 @@ var allZPTCMPTCElecInfo = new Array();
 
 		var rvStr = '';		
 		rvStr += '<a name="votersDiv"></a>';
-		rvStr += '<div class="commonVotersHeadDiv">Voting Trendz Of Different Parties for ${mandalInfoVO.mandalName} Mandal in  '+yearVal+' '+typeVal+' Election </div>';
-		rvStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;">';
-		rvStr += '<tr>';
-		rvStr += '<th>Revenue Village</th>';
-		rvStr += '<th colspan="8" align="center">Parties Info</th>';
-		rvStr += '<th>Constituency</th>';
-		rvStr += '</tr>';
-		rvStr += '<tr>';
-		 for(var i in resultVO.partiesResultsInVillages){
-			rvStr += '<tr>';
-		 	rvStr += '<td rowspan="3">'+resultVO.partiesResultsInVillages[i].villageName+'</td>';
-		 	rvStr += '<th>Party</th>';
-		 	for(var j in resultVO.partiesResultsInVillages[i].mandalWisePartyVotes)
-				rvStr += '<td>'+resultVO.partiesResultsInVillages[i].mandalWisePartyVotes[j].partyName+'</td>';
-			rvStr += '<td rowspan="3">'+resultVO.partiesResultsInVillages[i].constituencyName+'</td>';
-			rvStr += '</tr>';
-			rvStr += '<tr>';
-		 	rvStr += '<th>Votes Earned</th>';
-		 	for(var j in resultVO.partiesResultsInVillages[i].mandalWisePartyVotes)
-		 		rvStr += '<td>'+resultVO.partiesResultsInVillages[i].mandalWisePartyVotes[j].votesEarned+'</td>';
-			rvStr += '</tr>';
-			rvStr += '<tr>';
-		 	rvStr += '<th>Percentage</th>';
-		 	for(var j in resultVO.partiesResultsInVillages[i].mandalWisePartyVotes)
-		 		rvStr += '<td>'+resultVO.partiesResultsInVillages[i].mandalWisePartyVotes[j].percentages+'</td>';		 	
-			rvStr += '</tr>';
-		 }
-		rvStr += '</tr>';
-		rvStr += '</table>';
+		rvStr += '<a href="#" onclick="openwin()" >Click Here For Revenue Village Results </a>'
+		rvStr += '<div id="radioRevenueVillagesResultsDiv" class="commonVotersHeadDiv" style="text-decoration:none;"></div>';
+		rvStr += '<br/>';
+		rvStr += '<div id="revenueVillagesResultsDiv" class="commonVotersHeadDiv">';
 		rvStr += '<br/>';
 		rvStr += '<div id="revenueVillageDiv_head" class="commonVotersHeadDiv">';
 		rvStr += 'Voting Trendz In Revenue Villages / Township for ${mandalInfoVO.mandalName} Mandal in  '+yearVal+' '+typeVal+' Election ';
@@ -738,6 +751,15 @@ var allZPTCMPTCElecInfo = new Array();
            imgElmt.style.display = "none";
 		}
 
+	}
+	
+	function showElectionResultsInAllRevenueVillages(){
+		var typeSelectElmt = document.getElementById("radioRevenueVillagesResultsDiv");
+		rvStr = '';
+		rvStr +='<input type="radio" name="display" value="VotesEarned" onclick="displayByVotesPercentage(this.value)"/> Votes Earned'; 
+		rvStr +='<input type="radio" name="display" value="VotesPercentages" onclick="displayByVotesPercentage(this.value)"/> Votes Percentages';
+		rvStr +='<div id="completeRVResultsDiv" />';
+		typeSelectElmt.innerHTML = rvStr;
 	}
 	
 	function buildTabNavigator(){
@@ -901,10 +923,45 @@ var allZPTCMPTCElecInfo = new Array();
 		
 	}
 
+	function getGraph(value)
+	{	
+		var str = '';
+		var mandal = ${mandalId};
+				
+		var elmt = document.getElementById("mandalGraphDiv");	
+		if(value=="0")
+		{
+			elmt.innerHTML='';
+			return;
+		}	
+
+		str+='<img src="charts/partyPerformanceInAllMandalElections_'+mandal+'_'+value+'.png"/>'; 
+		if(elmt)
+			elmt.innerHTML=str;
+		
+	}
+	
 	function showMPTCZPTCResults(){
 
 		var allZMElmt = document.getElementById("allzptcmptcElectionsInfoMainDiv");
 		var str = '';
+		str+='<div>';
+		str+='<table>';
+		str+='<tr>';
+		str+='<td class="graphLabelTd"> Select Party To View Performance Graph In All Elections:</td>';
+		
+		str+='<td class="graphLabelTd">';
+		str+='<select onchange="getGraph(this.value)">';
+		str+='<option value="0">Select Party</option>';
+		<c:forEach var="party" items="${partiesInMandalWiseElections}">
+			str+='<option value="${party.id}">${party.name}</option>';
+		</c:forEach>		
+		str+='</select>';
+		str+='</td>';
+		str+='<td><div id="mandalGraphDiv"></div></td>';
+		str+='</tr>';
+		str+='</table>';		
+		str+='</div>';
 		for(var i in allZPTCMPTCElecInfo){
 			str += '<div id="infoDivMain_'+i+'" class="infoDivMainClass">';			
 			str += '<div id="infoDivMain_'+i+'_head" class="infoDivHeadClass">'+allZPTCMPTCElecInfo[i].type+' '+allZPTCMPTCElecInfo[i].year+'</div>';			
@@ -921,6 +978,7 @@ var allZPTCMPTCElecInfo = new Array();
 				str += '<th width="100px">Participated:</th><td width="50px">'+allZPTCMPTCElecInfo[i].parties[j].participated+'</td>';
 				str += '<th width="100px">Seats Won:</th><td width="50px">'+allZPTCMPTCElecInfo[i].parties[j].seatsWon+'</td>';
 				str += '<th width="100px">Votes Earned:</th><td width="50px">'+allZPTCMPTCElecInfo[i].parties[j].votesEarned+'</td>';
+				str += '<th width="100px">Votes Polled:</th><td width="50px">'+allZPTCMPTCElecInfo[i].parties[j].polledVotes+'</td>';
 				str += '<th width="100px">Percentage:</th><td width="50px">'+allZPTCMPTCElecInfo[i].parties[j].percentage+'</td>';
 				str += '</table>';
 				str += '</div>';
@@ -998,29 +1056,11 @@ var allZPTCMPTCElecInfo = new Array();
 	
 		if(divElmt.style.display == "none")
 		{
-			/*cadreAnim = new YAHOO.util.Anim(bodyDivId, {
-				height: {
-					to: 50 
-				} 
-			}, 1, YAHOO.util.Easing.easeOut);
-
-			cadreAnim.animate();
-			
-			if(divElmt)
-				divElmt.style.height = '100px';*/
-			
 			divElmt.style.display = "block";
 			imgElmt.src = "images/icons/minusNew.png";
 		}
 		else if(divElmt.style.display == "block")
 		{
-			/*cadreAnim = new YAHOO.util.Anim(bodyDivId, {
-				height: {
-					to: 0 
-				} 
-			}, 1, YAHOO.util.Easing.easeIn);
-
-			cadreAnim.animate();*/
 			divElmt.style.display = "none";
 			imgElmt.src = "images/icons/plusNew.png";
 		}
@@ -1037,6 +1077,8 @@ var allZPTCMPTCElecInfo = new Array();
 			var url = "<%=request.getContextPath()%>/boothPageAjaxAction.action?"+rparam;						
 			callAjax(rparam,jsObj,url);
 	}	
+
+	
 	
 	</script>
 </head>
@@ -1114,7 +1156,6 @@ var allZPTCMPTCElecInfo = new Array();
 			</display:table>
 		</div>
 	</div>
-	
 	
 	<div id="mandalPageTab" class="yui-skin-sam"></div>
 	<div class="yui-skin-sam"><div id="boothPagePanel" ></div></div>

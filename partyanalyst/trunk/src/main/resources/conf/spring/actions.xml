@@ -237,6 +237,7 @@
 	</bean>
 	<bean id="townshipPageAction" class="com.itgrids.partyanalyst.web.action.TownshipPageAction" singleton="false">			
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService"></property>
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	<bean id="partyPageAction" class="com.itgrids.partyanalyst.web.action.PartyPageAction" singleton="false">
 	</bean>
@@ -251,6 +252,9 @@
 	<bean id="villageBoothElectionMapAction" class="com.itgrids.partyanalyst.web.action.VillageBoothElectionMapAction" singleton="false">
 			<property name="villageBoothDataPopulationService" ref="villageBoothDataPopulationService" />
 	</bean>	
+	<bean id="townshipElectionResultsAction" class="com.itgrids.partyanalyst.web.action.TownshipElectionResultsAction" singleton="false">
+		<property name="constituencyPageService" ref="constituencyPageService" />
+	</bean>
 	<bean id="constituencyElectionResultsAction" class="com.itgrids.partyanalyst.web.action.ConstituencyElectionResultsAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
 	</bean>

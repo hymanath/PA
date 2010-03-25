@@ -85,7 +85,6 @@
 				<value>com.itgrids.partyanalyst.model.EPaperUrl</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionResult</value>
 				<value>com.itgrids.partyanalyst.model.PartyElectionDistrictResult</value>
-				<value>com.itgrids.partyanalyst.model.TownshipElectionPartyResult</value>
 				<value>com.itgrids.partyanalyst.model.PersonalUserGroup</value>
 				<value>com.itgrids.partyanalyst.model.StaticGroup</value>
 				<value>com.itgrids.partyanalyst.model.StaticUsers</value>

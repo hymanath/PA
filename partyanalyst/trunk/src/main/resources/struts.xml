@@ -279,6 +279,12 @@
         	</result>
 		</action>
 		
+		<action name="getAllRevenueVillagesElectionAjaxAction" class="mandalPageElectionInfoAction" method="getConsolidatedTownshipWiseElectionInfo">
+			<result type="json" name="success">
+           		<param name="root">townshipWiseElectionResults</param>
+        	</result>
+		</action>
+		
 		<action name="getRevenueVillagesElectionsAjaxAction" class="mandalPageElectionInfoAction" method="getTownshipElectionResults">
 			<result type="json" name="success">
            		<param name="root">townshipResults</param>
@@ -597,6 +603,10 @@
 			<result type="json" name="success">
 				<param name="root">electionTrendzReportVO</param>				
 			</result>		
+		</action>		
+		<action name="townshipElectionResultsAction" class="townshipElectionResultsAction">
+			<result name="success">/jsp/revenueVillageElectionResults.jsp</result>	
+		</action>
 		</action>	
 		<action name="districtPageMptcAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
 			<result type="json" name="success">

@@ -9,6 +9,7 @@
         <pattern>/images/*</pattern>
         <pattern>/dojo/*</pattern>
         <pattern>/struts/*</pattern>
+        <pattern>/townshipElectionResultsAction.action*</pattern>
         <pattern>/constituencyElectionResultsAction.action*</pattern>
     </excludes>
 
