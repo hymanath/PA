@@ -19,6 +19,8 @@ public class ConstituenciesStatusVO extends ResultStatus{
 	private int totalDeletedConstituencies;
 	private Long zptcCount;
 	private Long mptcCount;
+	private String electionType;
+	private String electionYear;
 	
 	
 	public Long getZptcCount() {
@@ -76,5 +78,18 @@ public class ConstituenciesStatusVO extends ResultStatus{
 	public void setTotalConstituenciesAfterDelimitation(
 			int totalConstituenciesAfterDelimitation) {
 		this.totalConstituenciesAfterDelimitation = totalConstituenciesAfterDelimitation;
-	}		
+	}
+		
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+	public String getElectionYear() {
+		return electionYear;
+	}
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
 }
