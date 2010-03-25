@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public class UserGroupBasicDetails implements Serializable {
 
@@ -21,6 +22,8 @@ public class UserGroupBasicDetails implements Serializable {
 	private List<GroupsBasicInfoVO> subGroupDetails;
 	private ResultStatus resultStatus;
 	private List<String> membersMobileNos;
+	private Set<SelectOptionVO> systemGroupsBCList;
+	private Set<SelectOptionVO> myGroupsBCList;
 
 	
     //getters and setters
@@ -55,5 +58,22 @@ public class UserGroupBasicDetails implements Serializable {
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
+
+	public Set<SelectOptionVO> getSystemGroupsBCList() {
+		return systemGroupsBCList;
+	}
+
+	public void setSystemGroupsBCList(Set<SelectOptionVO> systemGroupsBCList) {
+		this.systemGroupsBCList = systemGroupsBCList;
+	}
+
+	public Set<SelectOptionVO> getMyGroupsBCList() {
+		return myGroupsBCList;
+	}
+
+	public void setMyGroupsBCList(Set<SelectOptionVO> myGroupsBCList) {
+		this.myGroupsBCList = myGroupsBCList;
+	}
+	
 
 }
