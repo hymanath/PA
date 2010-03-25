@@ -282,8 +282,8 @@ function buildLayout()
 		border-left:1px solid #96B4D3;
 		border-right:3px solid #96B4D3;
 		border-bottom:3px solid #96B4D3;
-		min-height:600px;
-		height:600px;
+		min-height:700px;
+		height:700px;
 		background-color:white;	
 	}
 	h4{
