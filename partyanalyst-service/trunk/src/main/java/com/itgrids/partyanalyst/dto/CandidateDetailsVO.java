@@ -19,6 +19,7 @@ public class CandidateDetailsVO {
 	private String electionType;
 	private String electionYear;
 	private String constituencyName;
+	private Long constituencyId;
 	private String districtName;
 	private String stateName;
 	private Long rank;
@@ -27,13 +28,21 @@ public class CandidateDetailsVO {
 	private Boolean status;
 	private String image;
 	private String result;
+	private String partyFlag;
 	private List<CandidateOppositionVO> oppositionCandidates;
 	private List<SelectOptionVO> latestConstituencies ;
 	private List<SelectOptionVO> getAllStates ;
+	private List<SelectOptionVO> getDistricts ;
 	private List<CandidateDetailsVO> candidateDetails ;
 	private Long dataAvailabilityFlag;
+	
 	//getters and setters
-
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
 	public Long getDataAvailabilityFlag() {
 		return dataAvailabilityFlag;
 	}
@@ -101,8 +110,20 @@ public class CandidateDetailsVO {
 	public void setElectionYear(String electionYear) {
 		this.electionYear = electionYear;
 	}
+	public String getPartyFlag() {
+		return partyFlag;
+	}
+	public void setPartyFlag(String partyFlag) {
+		this.partyFlag = partyFlag;
+	}
 	public String getConstituencyName() {
 		return constituencyName;
+	}
+	public List<SelectOptionVO> getGetDistricts() {
+		return getDistricts;
+	}
+	public void setGetDistricts(List<SelectOptionVO> getDistricts) {
+		this.getDistricts = getDistricts;
 	}
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;

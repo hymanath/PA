@@ -14,7 +14,21 @@ public class ConstituencyWinnerInfoVO implements Serializable{
 	private String candidateId;
 	private String partyName;
 	private String partyFlag;
+	private Long parliamentConstituencyId;
+	private String parliamentConstituencyName;
 	
+	public Long getParliamentConstituencyId() {
+		return parliamentConstituencyId;
+	}
+	public void setParliamentConstituencyId(Long parliamentConstituencyId) {
+		this.parliamentConstituencyId = parliamentConstituencyId;
+	}
+	public String getParliamentConstituencyName() {
+		return parliamentConstituencyName;
+	}
+	public void setParliamentConstituencyName(String parliamentConstituencyName) {
+		this.parliamentConstituencyName = parliamentConstituencyName;
+	}
 	public String getCandidateId() {
 		return candidateId;
 	}

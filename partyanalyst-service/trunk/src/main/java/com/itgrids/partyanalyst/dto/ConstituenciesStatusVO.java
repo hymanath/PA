@@ -5,12 +5,40 @@ import java.util.List;
 
 public class ConstituenciesStatusVO extends ResultStatus{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private List<ConstituencyWinnerInfoVO> constituencyWinnerInfoVO = new ArrayList<ConstituencyWinnerInfoVO>();
 	private List<SelectOptionVO> existConstituencies = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> newConstituencies = new ArrayList<SelectOptionVO>();
 	private List<SelectOptionVO> deletedConstituencies = new ArrayList<SelectOptionVO>();
 	private Long delimitationYear;
+	private int totalConstituenciesAfterDelimitation;
+	private int totalDeletedConstituencies;
+	private Long zptcCount;
+	private Long mptcCount;
 	
+	
+	public Long getZptcCount() {
+		return zptcCount;
+	}
+	public void setZptcCount(Long zptcCount) {
+		this.zptcCount = zptcCount;
+	}
+	public Long getMptcCount() {
+		return mptcCount;
+	}
+	public void setMptcCount(Long mptcCount) {
+		this.mptcCount = mptcCount;
+	}
+	public int getTotalDeletedConstituencies() {
+		return totalDeletedConstituencies;
+	}
+	public void setTotalDeletedConstituencies(int totalDeletedConstituencies) {
+		this.totalDeletedConstituencies = totalDeletedConstituencies;
+	}
 	public Long getDelimitationYear() {
 		return delimitationYear;
 	}
@@ -41,7 +69,12 @@ public class ConstituenciesStatusVO extends ResultStatus{
 	public void setConstituencyWinnerInfoVO(
 			List<ConstituencyWinnerInfoVO> constituencyWinnerInfoVO) {
 		this.constituencyWinnerInfoVO = constituencyWinnerInfoVO;
-	}	
-	
-	
+	}
+	public int getTotalConstituenciesAfterDelimitation() {
+		return totalConstituenciesAfterDelimitation;
+	}
+	public void setTotalConstituenciesAfterDelimitation(
+			int totalConstituenciesAfterDelimitation) {
+		this.totalConstituenciesAfterDelimitation = totalConstituenciesAfterDelimitation;
+	}		
 }

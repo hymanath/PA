@@ -1,9 +1,16 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class MandalAllElectionDetailsVO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String tehsilName;
+	private Long tehsilId;
 	private String electionType;
 	private String electionYear;
 	private Long totalVoters;
@@ -12,11 +19,62 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private Long tenderedVoters;
 	private String candidateName;
 	private String partyVotesPercentage;
+	private Long earnedVotes;
 	private Long electionScopeID;
 	private String partyShortName;
 	private Long electionID;
 	private Long electionTypeID;
+	private String partyFlag;
+	private int zptcCount;
+	private int mptcCount;
+	private List<MandalAllElectionDetailsVO> zptcMandalAllElectionDetailsVO;
+	private List<MandalAllElectionDetailsVO> mptcMandalAllElectionDetailsVO;
 	
+
+	public Long getEarnedVotes() {
+		return earnedVotes;
+	}
+	public void setEarnedVotes(Long earnedVotes) {
+		this.earnedVotes = earnedVotes;
+	}
+	public int getZptcCount() {
+		return zptcCount;
+	}
+	public void setZptcCount(int zptcCount) {
+		this.zptcCount = zptcCount;
+	}
+	public int getMptcCount() {
+		return mptcCount;
+	}
+	public void setMptcCount(int mptcCount) {
+		this.mptcCount = mptcCount;
+	}
+	public List<MandalAllElectionDetailsVO> getZptcMandalAllElectionDetailsVO() {
+		return zptcMandalAllElectionDetailsVO;
+	}
+	public void setZptcMandalAllElectionDetailsVO(
+			List<MandalAllElectionDetailsVO> zptcMandalAllElectionDetailsVO) {
+		this.zptcMandalAllElectionDetailsVO = zptcMandalAllElectionDetailsVO;
+	}
+	public List<MandalAllElectionDetailsVO> getMptcMandalAllElectionDetailsVO() {
+		return mptcMandalAllElectionDetailsVO;
+	}
+	public void setMptcMandalAllElectionDetailsVO(
+			List<MandalAllElectionDetailsVO> mptcMandalAllElectionDetailsVO) {
+		this.mptcMandalAllElectionDetailsVO = mptcMandalAllElectionDetailsVO;
+	}
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+	public String getPartyFlag() {
+		return partyFlag;
+	}
+	public void setPartyFlag(String partyFlag) {
+		this.partyFlag = partyFlag;
+	}
 	public String getTehsilName() {
 		return tehsilName;
 	}
