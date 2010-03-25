@@ -17,6 +17,7 @@ public class ConstituencyWiseDataForMandalVO {
 	private Long totalPolledVotes;
 	
 	private String percentage;
+	private List<SelectOptionVO> revenueVillages;
 	private List<PartyGenderWiseVotesVO> partyVotes;
 	private List<MandalLocalElectionPartyResultsVO> localElectionsVOs;
 	
@@ -127,6 +128,14 @@ public class ConstituencyWiseDataForMandalVO {
 
 	public void setCommonMaleOrFemaleVoters(Long commonMaleOrFemaleVoters) {
 		this.commonMaleOrFemaleVoters = commonMaleOrFemaleVoters;
+	}
+
+	public List<SelectOptionVO> getRevenueVillages() {
+		return revenueVillages;
+	}
+
+	public void setRevenueVillages(List<SelectOptionVO> revenueVillages) {
+		this.revenueVillages = revenueVillages;
 	}
 
 	@Override

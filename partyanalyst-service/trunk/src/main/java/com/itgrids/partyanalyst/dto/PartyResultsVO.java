@@ -18,6 +18,7 @@ public class PartyResultsVO {
 	private Long votesEarned;
 	private String percentage;
 	private int totalSeatsWon;
+	private Long totalPolledVotes;
 	private List<ConstituencyWisePartyInfoVO> constituencyWisePatiesInfoVOs;
 	
 	// getters and setters
@@ -71,6 +72,14 @@ public class PartyResultsVO {
 	}
 	public void setPercentage(String percentage) {
 		this.percentage = percentage;
+	}
+	
+	public Long getTotalPolledVotes() {
+		return totalPolledVotes;
+	}
+	
+	public void setTotalPolledVotes(Long totalPolledVotes) {
+		this.totalPolledVotes = totalPolledVotes;
 	}
 	
 	@Override

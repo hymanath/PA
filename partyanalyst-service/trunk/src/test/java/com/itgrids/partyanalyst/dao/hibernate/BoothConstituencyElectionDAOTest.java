@@ -70,10 +70,10 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		assertEquals(list.get(0), "2004");
 	}*/
 	
-	public void testFindByElectionConstituencyAndBooth(){
+	/*public void testFindByElectionConstituencyAndBooth(){
 		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByElectionConstituencyAndBooth(new Long(2123), "2009", new Long(404));
 		assertEquals(1, list.size());
-	}
+	}*/
 	
 	/*public void testFindByConstituencyIdAndElectionYear(){
 		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByConstituencyIdAndElectionYear(new Long(241), "2009");
@@ -116,15 +116,22 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testFind(){
+	/*public void testFind(){
 		List<BoothConstituencyElection> list = boothConstituencyElectionDAO.findByBoothIds("2344, 2355, 2365");
 		System.out.println(list.size());
-	}
+	}*/
 	
 	/*public void testFindByConstituencyElectionAndPartNo(){
 		List list = boothConstituencyElectionDAO.findByConstituencyElectionAndPartNo(519l, "243, 233, 222");
 		System.out.println(list);
 	}*/
+	
+	public void testGetBoothsInRevenueVillageForElection(){
+		List booths = boothConstituencyElectionDAO.getBoothsInRevenueVillageForElection(21806l, 1l);
+		for(int i=0; i<booths.size(); i++)
+			System.out.println(((Object[])booths.get(i))[0]+" "+((Object[])booths.get(i))[1]);
+		
+	}
 	
 	
 }

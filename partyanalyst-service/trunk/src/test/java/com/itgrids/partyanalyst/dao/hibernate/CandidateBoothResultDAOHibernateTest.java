@@ -47,11 +47,11 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]+"\t"+((Object[])list.get(i))[12]+"\t"+((Object[])list.get(i))[13]+"\t"+((Object[])list.get(i))[14]+"\t"+((Object[])list.get(i))[15]+"\t"+((Object[])list.get(i))[16]);
 	}*/
 	
-	public void testFindMandalWisePartiesResultsForElection(){
+	/*public void testFindMandalWisePartiesResultsForElection(){
 		List list = candidateBoothResultDAO.findMandalWisePartiesResultsForElection(843l, 1l);
 		for(int i=0; i<list.size(); i++)
-			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]);
-	}
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]);
+	}*/
 	
 	/*public void testFindTownshipElectionResult(){
 		long start = System.nanoTime();
@@ -89,4 +89,11 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		List list = candidateBoothResultDAO.findBoothResultsForTownshipAndElection(21794l, 2l);
 		System.out.println(list.size());
 	}*/
+	
+	public void testGetAllACPCPartiesInMandal(){
+		List list = candidateBoothResultDAO.getAllACPCPartiesInMandal(843l);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]);
+	}
+	
 }

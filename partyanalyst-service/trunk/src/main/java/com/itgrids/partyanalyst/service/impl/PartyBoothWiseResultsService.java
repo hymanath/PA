@@ -627,6 +627,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			constituencyWisePatiesInfoVOs = new ArrayList<ConstituencyWisePartyInfoVO>();
 			int seatsWon = 0;
 			Long partyVotesInMandal = 0l;
+			Long totalPolledVotes = 0l;
 			for(Object[] values:valuesList){
 				constituencyWisePartyInfoVO = new ConstituencyWisePartyInfoVO();
 				constituencyWisePartyInfoVO.setConstituencyId((Long)values[13]);
@@ -638,12 +639,14 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					seatsWon++;
 				constituencyWisePartyInfoVO.setVotesEarned(((Double)values[4]).longValue());
 				partyVotesInMandal = partyVotesInMandal + ((Double)values[4]).longValue();
+				totalPolledVotes += ((Double)values[7]).longValue();
 				constituencyWisePartyInfoVO.setPercentage(values[12].toString());
 				constituencyWisePatiesInfoVOs.add(constituencyWisePartyInfoVO);
 			}
 			allPartiesVotesInMandal = allPartiesVotesInMandal + partyVotesInMandal;
 			partyResultsVO.setTotalSeatsWon(seatsWon);
 			partyResultsVO.setVotesEarned(partyVotesInMandal);
+			partyResultsVO.setTotalPolledVotes(totalPolledVotes);
 			partyResultsVO.setConstituencyWisePatiesInfoVOs(constituencyWisePatiesInfoVOs);
 			allPartyResults.add(partyResultsVO);
 		}

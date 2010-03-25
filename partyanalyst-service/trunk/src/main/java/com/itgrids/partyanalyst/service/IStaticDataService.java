@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
@@ -65,7 +66,9 @@ public interface IStaticDataService {
 	
 	public CandidateDetailsVO getCompleteElectionResultsForAConstituency(Long constituencyId,Long electionId,Long partyId);
 	
-	public List<SelectOptionVO> getAllPartiesOfMPTCInMandal(Long tehsilId);
+	public Set<SelectOptionVO> getAllPartiesParticipatedInMandal(Long tehsilId);
+	
+	public Set<SelectOptionVO> getAllPartiesParticipatedInRevenueVillage(Long townshipId);
 	
 	public CandidateDetailsVO getElectionResultsForAConstituencyForAllYears(Long constituencyId);
 	

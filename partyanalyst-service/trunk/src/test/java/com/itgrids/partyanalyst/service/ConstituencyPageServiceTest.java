@@ -4,9 +4,14 @@ import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
+import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
+import com.itgrids.partyanalyst.dto.MandalWiseConstituencyElectionVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
+import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public class ConstituencyPageServiceTest extends BaseDaoTestCase{
 	
@@ -37,6 +42,24 @@ public class ConstituencyPageServiceTest extends BaseDaoTestCase{
 	}*/
 	
 	public void test(){
+		/*MandalWiseConstituencyElectionVO obj = constituencyPageService.getTownshipWiseBoothDetailsForTehsil(843l,1l);
+		System.out.println(obj.getConstituencyRevenueVillagesVOs().size());
+		for(ConstituencyRevenueVillagesVO obj1:obj.getConstituencyRevenueVillagesVOs()){
+			System.out.println(obj1.getConstituencyName()+" "+obj1.getCandidateNamePartyAndStatus());
+			for(RevenueVillageElectionVO obj2:obj1.getRevenueVillageElectionVO()){
+				System.out.println(obj2.getTownshipName());
+				System.out.println("------------------");
+				for(SelectOptionVO booth:obj2.getBooths())
+					System.out.println(booth.getName()+" "+booth.getId());
+				System.out.println("------------------");
+				for(PartyElectionResultVO obj3:obj2.getPartyElectionResultVOs())
+					System.out.println(obj3.getVotesEarned()+" "+obj3.getVotesPercentage());
+			}
+				
+		}*/
+	}
+	
+	public void testGetTownshipWiseElectionsForTehsil(){
 		constituencyPageService.getTownshipWiseElectionsForTehsil(21827l, 844l);
 	}
 

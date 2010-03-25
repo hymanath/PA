@@ -58,7 +58,7 @@ public class HamletBoothElection extends BaseModel{
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "booth_constituency_election_d")
+	@JoinColumn(name = "booth_constituency_election_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	public BoothConstituencyElection getBoothConstituencyElection() {
 		return boothConstituencyElection;

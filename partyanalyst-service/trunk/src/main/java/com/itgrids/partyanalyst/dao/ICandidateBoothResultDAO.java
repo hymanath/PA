@@ -65,4 +65,8 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List findAllElectionsInfoOfRevenueVillagesInTehsil(Long tehsilId, Long electionId);
 	
 	public List findBoothResultsForTownshipAndElection(Long townshipId, Long electionId);
+
+	public List getAllACPCPartiesInMandal(Long tehsilId);
+
+	public List getAllACPCPartiesInRevenueVillage(Long townshipId);
 }

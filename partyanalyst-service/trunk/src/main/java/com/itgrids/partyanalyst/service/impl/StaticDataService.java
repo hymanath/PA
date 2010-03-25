@@ -17,6 +17,7 @@ import org.aspectj.apache.bcel.generic.ICONST;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -82,6 +83,7 @@ public class StaticDataService implements IStaticDataService {
 	private ITownshipDAO townshipDAO;
 	private ITehsilDAO tehsilDAO;
 	private IHamletDAO hamletDAO;
+	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IPartyElectionResultDAO partyElectionResultDAO;
@@ -137,6 +139,17 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 	
+	public ICandidateBoothResultDAO getCandidateBoothResultDAO() {
+		return candidateBoothResultDAO;
+	}
+
+
+	public void setCandidateBoothResultDAO(
+			ICandidateBoothResultDAO candidateBoothResultDAO) {
+		this.candidateBoothResultDAO = candidateBoothResultDAO;
+	}
+
+
 	public IHamletDAO getHamletDAO() {
 		return hamletDAO;
 	}
@@ -1242,14 +1255,31 @@ public class StaticDataService implements IStaticDataService {
 	return oppCandidates;
 	}
 	
-	public List<SelectOptionVO> getAllPartiesOfMPTCInMandal(Long tehsilId){
-		List partiesAndIds = nominationDAO.getAllPartiesOfElectionTypeInMandal(tehsilId, IConstants.MPTC_ELECTION_TYPE);
-		List<SelectOptionVO> partiesAndIdsInMandal = new ArrayList<SelectOptionVO>();
+	public Set<SelectOptionVO> getAllPartiesParticipatedInMandal(Long tehsilId){
+		Set<SelectOptionVO> partiesAndIdsInMandal = new HashSet<SelectOptionVO>();
+		List partiesAndIds = nominationDAO.getAllPartiesOfElectionTypeInMandal(tehsilId);
 		for(int i=0; i<partiesAndIds.size(); i++){
 			Object[] values = (Object[])partiesAndIds.get(i);
 			partiesAndIdsInMandal.add(new SelectOptionVO((Long)values[0], values[1].toString()));
 		}
+		
+		List parties = candidateBoothResultDAO.getAllACPCPartiesInMandal(tehsilId);
+		for(int i=0; i<parties.size(); i++){
+			Object[] values = (Object[])parties.get(i);
+			partiesAndIdsInMandal.add(new SelectOptionVO((Long)values[0], values[1].toString()));
+		}
+		
 		return partiesAndIdsInMandal;
+	}
+	
+	public Set<SelectOptionVO> getAllPartiesParticipatedInRevenueVillage(Long townshipId){
+		Set<SelectOptionVO> partiesAndIdsInVillage = new HashSet<SelectOptionVO>();
+		List parties = candidateBoothResultDAO.getAllACPCPartiesInRevenueVillage(townshipId);
+		for(int i=0; i<parties.size(); i++){
+			Object[] values = (Object[])parties.get(i);
+			partiesAndIdsInVillage.add(new SelectOptionVO((Long)values[0], values[1].toString()));
+		}
+		return partiesAndIdsInVillage;
 	}
 
 	/*

@@ -386,10 +386,10 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 
 	}
 	
-	public List getAllPartiesOfElectionTypeInMandal(Long tehsilId,	String electionType) {
-		Object[] params = {tehsilId, electionType};
+	public List getAllPartiesOfElectionTypeInMandal(Long tehsilId) {
+		Object[] params = {tehsilId};
 		return getHibernateTemplate().find("select distinct model.party.partyId, model.party.shortName from Nomination model " +
-				"where model.constituencyElection.constituency.tehsil.tehsilId = ? and model.constituencyElection.constituency.electionScope.electionType.electionType = ?", params);
+				"where model.constituencyElection.constituency.tehsil.tehsilId = ? ", params);
 	}
 
 	public List getAllConstiteunciesInfoForPartyInTehsil(Long tehsilId,	Long partyId, Long electionId) {
