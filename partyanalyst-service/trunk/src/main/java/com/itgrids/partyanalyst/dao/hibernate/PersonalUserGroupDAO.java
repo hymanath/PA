@@ -95,4 +95,10 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 		Object[] params = {groupId,userId};
 		return getHibernateTemplate().find("select model.personalUserGroupId,model.groupName,model.description,model.createdDate from PersonalUserGroup model where model.staticGroup is null and model.myGroup is not null and model.parentGroupId.personalUserGroupId = ? and model.createdUserId.registrationId = ?",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getGroupsByName(Long userId, String groupName) {
+		Object[] params = {userId,groupName};
+		return getHibernateTemplate().find("select count(model.personalUserGroupId) from PersonalUserGroup model where model.createdUserId.registrationId = ? and  model.groupName = ?",params);
+	}
 }
