@@ -10,10 +10,12 @@ public class UserGroupsVO {
 	private List<UserGroupMembersVO> userGroupMembersList;
 	private List<SelectOptionVO> systemGroupsList;
 	private List<SelectOptionVO> myGroupsList;
-	private List<SelectOptionVO> breadCrumb;
-	private Map<Long, String> BMap;
-	private Set<SelectOptionVO> breadCrumbList;
-	 
+	private Set<SelectOptionVO> systemGroupsBCList;
+	private Set<SelectOptionVO> myGroupsBCList; 
+	private UserGroupDetailsVO userGroupDetailsVO;
+	private boolean groupAlreadyExists;
+	private UserGroupMembersVO userGroupMembersVO;
+	
 	public List<GroupsDetailsForUserVO> getGroupsDetailsForUser() {
 		return groupsDetailsForUser;
 	}
@@ -48,29 +50,53 @@ public class UserGroupsVO {
 		this.myGroupsList = myGroupsList;
 	}
 
-	public List<SelectOptionVO> getBreadCrumb() {
-		return breadCrumb;
+	public Set<SelectOptionVO> getSystemGroupsBCList() {
+		return systemGroupsBCList;
 	}
 
-	public void setBreadCrumb(List<SelectOptionVO> breadCrumb) {
-		this.breadCrumb = breadCrumb;
+	public void setSystemGroupsBCList(Set<SelectOptionVO> systemGroupsBCList) {
+		this.systemGroupsBCList = systemGroupsBCList;
+	}
+	
+	public Set<SelectOptionVO> getMyGroupsBCList() {
+		return myGroupsBCList;
 	}
 
-	public Map<Long, String> getBMap() {
-		return BMap;
+	public void setMyGroupsBCList(Set<SelectOptionVO> myGroupsBCList) {
+		this.myGroupsBCList = myGroupsBCList;
 	}
 
-	public void setBMap(Map<Long, String> map) {
-		BMap = map;
+	public UserGroupDetailsVO getUserGroupDetailsVO() {
+		return userGroupDetailsVO;
 	}
 
-	public Set<SelectOptionVO> getBreadCrumbList() {
-		return breadCrumbList;
+	public void setUserGroupDetailsVO(UserGroupDetailsVO userGroupDetailsVO) {
+		this.userGroupDetailsVO = userGroupDetailsVO;
 	}
 
-	public void setBreadCrumbList(Set<SelectOptionVO> breadCrumbList) {
-		this.breadCrumbList = breadCrumbList;
-	} 
+	public boolean isGroupAlreadyExists() {
+		return groupAlreadyExists;
+	}
+
+	public void setGroupAlreadyExists(boolean groupAlreadyExists) {
+		this.groupAlreadyExists = groupAlreadyExists;
+	}
+
+	public UserGroupMembersVO getUserGroupMembersVO() {
+		return userGroupMembersVO;
+	}
+
+	public void setUserGroupMembersVO(UserGroupMembersVO userGroupMembersVO) {
+		this.userGroupMembersVO = userGroupMembersVO;
+	}
+	
+	
+	
+	
+	
+
+		
+
 	
 	
 	
