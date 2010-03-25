@@ -10,6 +10,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -23,7 +24,7 @@ public interface IUserGroupService {
 	public List<SelectOptionVO> getAllMyGroupsCreatedByUser(Long userId);
     
     
-	public void addMemberToGroup(Long groupId, UserGroupMembersVO userGroupMembersToSave);
+	public UserGroupMembersVO addMemberToGroup(Long groupId, UserGroupMembersVO userGroupMembersToSave);
     public UserGroupDetailsVO createGroupForUser(UserGroupDetailsVO userGroupDetailsToSave);
     
     public List <GroupsDetailsForUserVO> subGrpsCountInSystemGrpsForUser(Long userId);
@@ -40,5 +41,7 @@ public interface IUserGroupService {
     public List<SelectOptionVO> getSubGroupsListInSystemGroups(Long groupId ,Long userId);
     public List<SelectOptionVO> getSubGroupsListInMyGroups(Long groupId ,Long userId);
     public List<SelectOptionVO> getSubGroupsOfStaticGroupParents(Long groupId ,Long userId);
+    public boolean checkForAvailability(Long userId, String groupName);
+   
     
-}
+ }
