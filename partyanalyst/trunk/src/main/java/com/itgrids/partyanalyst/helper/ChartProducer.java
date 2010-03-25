@@ -404,11 +404,12 @@ public class ChartProducer {
         seatsPlot.setForegroundAlpha(0.5f);
         
         final CategoryAxis domainAxis = new CategoryAxis(xAxis);
+        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
         CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
         plot.add(seatsPlot, 2);
        	        
         final JFreeChart chart = new JFreeChart(title,  plot);
-        
+        chart.setBackgroundPaint(Color.WHITE);
 		try	 {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File image = new File(path);
