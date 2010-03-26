@@ -11,6 +11,7 @@
         <pattern>/struts/*</pattern>
         <pattern>/townshipElectionResultsAction.action*</pattern>
         <pattern>/constituencyElectionResultsAction.action*</pattern>
+        <pattern>/districtPageCandidateDetailsAjaxAction.action*</pattern>
     </excludes>
 
     <decorator name="main" page="main.jsp">
