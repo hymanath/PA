@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
 public class PartyResultService extends BasePartyResultsServiceImpl{
 
 	private final static Logger log = Logger.getLogger(PartyResultService.class);
+	
 	public List<Election> getElections(ElectionScope scope){
 		List<Election> list = getElectionDAO().findByElectionScope(scope.getElectionScopeId());
 		return list;

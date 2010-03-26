@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.PartyRebelCandidate;
 import com.itgrids.partyanalyst.service.ICandidateSearchService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CandidateSearchService implements ICandidateSearchService{
 
@@ -42,12 +43,19 @@ public class CandidateSearchService implements ICandidateSearchService{
 		System.out.println("======Start===============getCandidateNamesAndIds===============================");
 		if(candidateNamesAndIdsList == null){
 			List<SelectOptionVO> candidateNamesAndIds = new ArrayList<SelectOptionVO>();
-			List<Candidate> candidates = candidateDAO.getAll();
-			for(Candidate candidate:candidates){
-				SelectOptionVO candidateNameAndId = new SelectOptionVO();
-				candidateNameAndId.setId(candidate.getCandidateId());
-				candidateNameAndId.setName(getCandidateFullName(candidate));			
-				candidateNamesAndIds.add(candidateNameAndId);
+			StringBuilder candidateName = null;
+			List candidates = nominationDAO.getAllCandidatesByElectionTypes("'"+IConstants.ASSEMBLY_ELECTION_TYPE+"','" 
+					+IConstants.PARLIAMENT_ELECTION_TYPE+"'");
+			for(int i=0; i<candidates.size(); i++){
+				Object[] values = (Object[])candidates.get(i);
+				candidateName = new StringBuilder();
+				if(values[1] != null)
+					candidateName.append(values[1]).append(" ");
+				if(values[2] != null)
+					candidateName.append(values[2]).append(" ");
+				if(values[3] != null)
+					candidateName.append(values[3]);
+				candidateNamesAndIds.add(new SelectOptionVO((Long)values[0], candidateName.toString().trim()));
 			}
 			candidateNamesAndIdsList = candidateNamesAndIds;
 		}else

@@ -197,7 +197,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	
 
 	
-	public void testGetAllConstiteunciesInfoForPartyInTehsil(){
+	/*public void testGetAllConstiteunciesInfoForPartyInTehsil(){
 		List list = nominationDAO.getAllConstiteunciesInfoForPartyInTehsil(844l, 24l, 5l);
 		System.out.println(list.size());
 		for(int i=0; i < list.size(); i++){
@@ -247,7 +247,17 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	public void testPartyWinningStatusInAZptc(){
 		List result = nominationDAO.getPartysWinningCandidateInfoForAParticularElectionYear(IConstants.ZPTC_ELECTION_TYPE,"2006",1l,19l);
 		Assert.assertEquals(1, result.size());	
+	}*/
+	
+	public void testGetAllCandidatesByElectionTypes(){
+		long startTime = System.currentTimeMillis();
+		List values = nominationDAO.getAllCandidatesByElectionTypes(" 'Assembly' , 'Parliament' ");
+		long endTime = System.currentTimeMillis();
+		System.out.println((endTime-startTime)/1000);
+		System.out.println(values.size());
 	}
+	
+} 
 	
 	public void testByAllZptcCandidatesForAnElectionYear(){
 		List result = nominationDAO.findAllZptcCandidatesInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,"2006");

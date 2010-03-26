@@ -9,7 +9,6 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.HibernateException;
@@ -512,6 +511,12 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" and model.constituencyElection.election.electionYear = ? and model.candidateResult.rank = ? " +
 				" and model.constituencyElection.constituency.district.districtId = ? group by model.party.shortName ",params);
 	}
+	
+	public List getAllCandidatesByElectionTypes(String electionTypes){
+		return getHibernateTemplate().find("select distinct model.candidate.candidateId, model.candidate.firstname, model.candidate.middlename, model.candidate.lastname from " +
+				"Nomination model where model.constituencyElection.election.electionScope.electionType.electionType in ( "+electionTypes+" )");
+	}
+
 	
 	
 	

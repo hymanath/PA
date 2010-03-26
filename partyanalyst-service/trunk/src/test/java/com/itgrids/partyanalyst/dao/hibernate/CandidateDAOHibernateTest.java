@@ -41,7 +41,10 @@ public class CandidateDAOHibernateTest extends BaseDaoTestCase {
 	
 	@Test
 	public void test(){
-		Assert.assertEquals(1, 1);
+		long startTime = System.currentTimeMillis();
+		List<Candidate> candis = candidateDAO.getAll();
+		long endTime = System.currentTimeMillis();
+		System.out.println((endTime-startTime)/1000);
 	}
 	
 }

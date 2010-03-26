@@ -136,6 +136,9 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getPartysWinningCandidateInfoForAParticularElectionYear(String electionType,String electionYear,Long rank,Long districtId);
 	
 	public List getCandidatesInfoForTheGivenConstituency(Long constituencyId,String electionYear,String electionType);
+    
+    public List getAllCandidatesByElectionTypes(String electionTypes);
+    
 	
 		
 	public List findAllZPTCsInaDistrict(Long districtId,String electionTypes,Long rank,String electionYear);
