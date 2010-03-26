@@ -121,12 +121,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 
 	public List findAllMptcAndZptcElectionsInfoInMandal(Long tehsilId);
 	
-	public List findAllCandidatesForAnElectionByElectionYear(Long constituencyId);
-	
-
-	public List findAllZPTCsInaDistrict(Long districtId,String electionTypes,String electionTypess,Long rank);
-	
-	public List findAllMPTCsInaDistrict(Long districtId,String electionType,String electionTypes,Long rank);
+	public List findAllCandidatesForAnElectionByElectionYear(Long constituencyId);	
 		
 	public List findAllCandidatesForAnElectionBytheElectionYear(String electionYear,Long stateId,String electionType);
 	
@@ -140,8 +135,24 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List getPartysWinningCandidateInfoForAParticularElectionYear(String electionType,String electionYear,Long rank,Long districtId);
 	
-
-    @SuppressWarnings("unchecked")
 	public List getCandidatesInfoForTheGivenConstituency(Long constituencyId,String electionYear,String electionType);
 	
+		
+	public List findAllZPTCsInaDistrict(Long districtId,String electionTypes,Long rank,String electionYear);
+	
+	public List findAllMPTCsInaDistrict(Long districtId,String electionType,Long rank,String electionYear);
+	
+	public List findAllZptcCandidatesInaDistrict(Long districtId,String electionTypes,String electionYear);
+	
+	public List findAllMptcCandidatesInaDistrict(Long districtId,String electionType,String electionYear);
+	
+	public List findAllZptcPartysInaDistrict(Long districtId,String electionTypes,String electionYear,Long partyId,Long rank);
+	
+	public List findAllMptcPartysInaDistrict(Long districtId,String electionType,String electionYear,Long partyId,Long rank);
+	
+	public List findAllZptcPartysWinnerInaDistrict(Long districtId,String electionTypes, String electionYear,Long partyId,Long rank);
+	
+	public List findAllMptcPartysWinnerInaDistrict(Long districtId,String electionType, String electionYear,Long partyId,Long rank);
+	
+	public List getAllPartysForAParticularElectionYear(Long districtId,String electionType,String electionYear);
 }
