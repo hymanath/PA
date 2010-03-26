@@ -175,11 +175,6 @@ var electionTypeId,myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,
 }
 
 
-	function getConstituencyElecResultsWindow(constiId)
-	{	
-	   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
-	   browser1.focus();
-	}
 function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 {
    var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
@@ -764,7 +759,6 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 							</a>
 						</span>
 					</td>
-					<td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(${candidate.constituencyId})">view results</a></td>
 					<td>
 	                <a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${candidate.constituencyId}','${constituenciesStatusVO.electionType}','${constituenciesStatusVO.electionYear}')">view results</a>
 				</td>
