@@ -654,7 +654,7 @@ var allZPTCMPTCElecInfo = new Array();
 		var typeVal = ""+typeSelectElmt.options[typeSelectElmt.selectedIndex].text;
 		var yearVal = ""+yearSelectElmt.options[yearSelectElmt.selectedIndex].text;
 		
-		var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName=${mandalInfoVO.mandalName}&electionType="+typeVal+"&electionYear="+yearVal,"brow1","width=500,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName=${mandalInfoVO.mandalName}&electionType="+typeVal+"&electionYear="+yearVal,"brow1","height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 		brow1.focus();
 	}
 	
