@@ -53,7 +53,39 @@
 <!-- YUI Dependency files (End) -->
 
 <link rel="stylesheet" type="text/css" href="styles/constituencyPage/constituencyPage.css">	
+<style type="text/css">
+.legendTable td 
+{
+color:Black;
+text-align:left;
+font-style:italic;
+}
 
+.legendTable th 
+{
+color:DarkSeaGreen;
+text-align:left;
+}
+
+#constituencyPageMain 
+{
+background-color:#FFFFFF;
+font-family:verdana;
+font-size:14px;
+padding:10px;
+}
+
+.yui-skin-sam .yui-dt table 
+{
+border-collapse:separate;
+border-spacing:0;
+color:background;
+font-family:verdana;
+font-size:inherit;
+margin:0;
+padding:0;
+}
+</style>
 <script type="text/javascript">
 
 var constituencyElecMainObj=	{
@@ -222,26 +254,7 @@ function displayConstituencyElectionResults()
 			
 		if(elmt)
 			elmt.innerHTML = str;
-		/*ElectionResultPanel = new YAHOO.widget.Panel("electionResults_Panel", 
-				{
-					width:"800px", 
-					fixedcenter : false, 
-					visible : true,  
-					constraintoviewport : true,
-					x:200,
-					y:400,
-					iframe :true,
-					modal :true,
-					visible:true,						
-					draggable:true, 
-					close:true
-				} ); 
-
-
-		ElectionResultPanel.render();
-		ElectionResultPanel.setHeader('Election Results');
-		ElectionResultPanel.setBody(str);*/
-
+	
 		var myDataSource = new YAHOO.util.DataSource(constituencyElecMainObj.oppCandidateElecResults); 
 		myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		myDataSource.responseSchema = { 
@@ -271,7 +284,7 @@ function displayConstituencyElectionResults()
 </head>
 
 <body>
-<div id="constituencyPageMain">
+<div id="constituencyPageMain" style="background-color:none;">
 	<div id="electionResults_Panel_Main" class="yui-skin-sam">
 			<div id="electionResults_Panel"></div>
 	</div>
