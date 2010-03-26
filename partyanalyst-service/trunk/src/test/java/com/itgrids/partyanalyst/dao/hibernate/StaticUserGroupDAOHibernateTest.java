@@ -18,10 +18,17 @@ public class StaticUserGroupDAOHibernateTest extends BaseDaoTestCase  {
 	public void setStaticUserGroupDAO(IStaticUserGroupDAO staticUserGroupDAO) {
 		this.staticUserGroupDAO = staticUserGroupDAO;
 	}
-	
+	/*
 	public void testGetAll(){
 		List<StaticUserGroup> list = staticUserGroupDAO.getAll();
 		System.out.println(list.size());
+	}*/
+	@SuppressWarnings("unchecked")
+	public void testGetGroupMembersCountForAGroup()
+	{
+		List list = staticUserGroupDAO.getGroupMembersCountForAGroup(7L);
+		System.out.println(list.size());
+		System.out.println(Long.parseLong(list.get(0).toString()));
+		
 	}
-	
 }
