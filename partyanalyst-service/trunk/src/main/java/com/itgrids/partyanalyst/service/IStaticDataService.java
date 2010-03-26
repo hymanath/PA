@@ -76,12 +76,7 @@ public interface IStaticDataService {
 	
 	public CandidateDetailsVO getAllStatesInCountry();
 	
-	public List<SelectOptionVO> getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);
-
-	
-	public MandalAllElectionDetailsVO getAllZptcsForADistrictForLatestYear(Long districtId);
-	
-	public MandalAllElectionDetailsVO getAllMptcsForADistrictForLatestYear(Long districtId);
+	public List<SelectOptionVO> getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);	
 	
 	public ConstituencyElectionResultsVO getAllCandidatesDetailsForConstituency(Long constituencyId,String electionYear,String electionType);
 	
@@ -92,10 +87,24 @@ public interface IStaticDataService {
 	public List<SelectOptionVO> getAllElectionYearsForATeshil(Long electionType);
 	
 	public List<TeshilPartyInfoVO> getMandalWisePartyReport(String electionType,String electionYear,Long districtId);
-
 	
 	public List<ElectionBasicInfoVO> getAssemblyElectionsInfoForAConstituency(String presentYear,Long constituencyId);
 	
 	public List<ElectionBasicInfoVO> getParliamentElectionsInfoForAConstituency(Long constituencyId);
+	
+	
+	public MandalAllElectionDetailsVO getAllZptcWinnerForADistrictForLatestYear(Long districtId,String electionYear);
+	
+	public MandalAllElectionDetailsVO getAllMptcWinnerForADistrictForLatestYear(Long districtId,String electionYear);
+	
+	public MandalAllElectionDetailsVO getAllMptcsForADistrictForAPartyForSelectedYear(Long districtId,String electionYear,Long partyId);
+	
+	public MandalAllElectionDetailsVO getAllZptcsForADistrictForAPartyForSelectedYear(Long districtId,String electionYear,Long partyId);
+	
+	public MandalAllElectionDetailsVO getAllMptcsCandidatesForADistrictForSelectedYear(Long districtId,String electionYear);
+	
+	public MandalAllElectionDetailsVO getAllZptcsCandidatesForADistrictForSelectedYear(Long districtId,String electionYear);
+	
+	public MandalAllElectionDetailsVO getAllPartiesForAParticularElection(Long districtId,String electionType,String electionYear);
 
 }
