@@ -176,7 +176,7 @@ public class ChartProducer {
 	}
 		
 	public static void createBarChart(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
-		JFreeChart chart = ChartFactory.createBarChart(title, domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, true, true, false );
+		JFreeChart chart = ChartFactory.createBarChart("", domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, true, true, false );
 		//chart.setBackgroundPaint(new Color(0xBBBBDD));
 		chart.setBackgroundPaint(Color.WHITE);
 		CategoryPlot plot = chart.getCategoryPlot();
@@ -201,10 +201,14 @@ public class ChartProducer {
 		try	 {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File image = new File(fileName);
+
+			ChartUtilities.saveChartAsPNG(image, chart, 350, 250, info);
+
 			if(title.contains("By Revenue Villages")){
 				ChartUtilities.saveChartAsPNG(image, chart, 1200, 400, info);
 			}else
 				ChartUtilities.saveChartAsPNG(image, chart, 400, 350, info);
+
 		}
 		catch (java.io.IOException exc)
 		{
@@ -260,8 +264,9 @@ public class ChartProducer {
 	        CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
 	        plot.setRowRenderingOrder(SortOrder.ASCENDING);
 	        plot.add(seatsPlot, 2);
-	       	        
-	        final JFreeChart chart = new JFreeChart("Year Vs Seats",  plot);
+	       	       	        
+	        final JFreeChart chart = new JFreeChart("",  plot);
+	        chart.setBackgroundPaint(Color.WHITE);
 	        
 			try	 {
 				final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());

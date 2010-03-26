@@ -464,6 +464,8 @@ function buildPartyPositionDataTable(info,rank)
 	function viewResizeablePanel()
 	{
 		var arr = new Array();
+		var elmt = document.getElementById("resizablepanel");
+
 		var icon='';
 			icon+='<table><tr><td align="right">Party Positions ... </td><td id="partyPosImg" align="right" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></td></tr></table>';
 		<c:forEach var="results" items="${stateData.partyPositionsVO}">
@@ -530,20 +532,23 @@ function buildPartyPositionDataTable(info,rank)
 			str+='</tr>';
 			}
 			str+='<tr>';
-			str+='<b><th colspan="8" style="color:#FF0000">* Main Party</b></th>';
+			str+='<th colspan="8" style="color:#FF0000">';
+			str+='<b>* Main Party</b>';
+			str+='<span id="partyPosImg" align="right" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/partypositions.gif" /></img></span>';
+			str+='</th>';
 			str+='</tr>';
 			str+='</table>';
 
-       myPanel = new YAHOO.widget.Panel("resizablepanel", {
-                 width: "450px", 
-                 fixedcenter: false, 
-                 constraintoviewport: false, 
-                 underlay: "none", 
-                 close: false, 
-                 visible: true, 
-                 draggable: false
-       });
-       myPanel.setHeader(icon);
+		 myPanel = new YAHOO.widget.Panel("resizablepanel", {
+					 width: "800px", 
+					 fixedcenter: false, 
+					 constraintoviewport: false, 
+					 underlay: "none", 
+					 close: false, 
+					 visible: true, 
+					 draggable: false
+		   });
+      // myPanel.setHeader(icon);
        myPanel.setBody(str);
 	  // myPanel.setFooter(icon);
        myPanel.render();
@@ -891,7 +896,9 @@ function reportTitleDivFunc()
 	}
 	.yui-skin-sam .yui-dt-paginator 
 	{
-		margin-left:20px;
+		margin-right:20px;
+		text-align:right;
+		padding:10px 0;
 	}
 	#tabView
 	{
@@ -939,13 +946,14 @@ function reportTitleDivFunc()
 	} 
 	#titleDiv
 	{
-		background-color:#8FAFD0;
-		color:#FFFFFF;
+		background-image:url(images/icons/partyPerformance/partyPerformanceReportHeading.png);
+		color:#FBAD2B;
 		font-size:15px;
 		font-weight:bold;
 		margin-left:15px;
 		margin-right:100px;
-		padding:6px;		
+		padding:8px;
+		width:792px;		
 	}
 
 	.yui-skin-sam .yui-panel .bd
@@ -966,6 +974,89 @@ function reportTitleDivFunc()
 		font-family:Verdana;
 		color:background;
 	}
+	#VotersInfoTable th
+	{
+		background-color:#7992A5;
+		color:#FFFFFF;
+		padding:5px;
+	}
+	#VotersInfoTable td
+	{
+		background-color:#E0E8EE;
+		padding:5px;
+	}
+
+	.partyInfoHeading
+	{
+		font-size:14px;
+		font-weight:bold;
+		height:25px;
+		padding-right:10px;
+		padding-top:10px;
+		text-decoration:underline;
+		background-image:url(images/icons/partyPerformance/reportHeaders.png);
+		width:790px;
+		padding-left:10px;
+	}
+	.detailReportHeader
+	{
+		padding: 5px 5px 6px 15px;
+		font-family: Trebuchet MS;
+		font-weight: bold;
+		font-size: 14px;
+		background-image:url(images/icons/partyPerformance/detailReportHeading.png);
+		width:500px;
+		margin-top:5px;
+		color:#FBAD2B;
+	}
+	#electionSummary_head
+	{
+		font-size:15px;
+		font-weight:bold;
+		height:20px;
+		padding-right:10px;
+		padding-top:5px;
+		padding-left:4px;
+		background-image:url(images/icons/partyPerformance/electionSummary.png);
+		width:126px;
+		margin-bottom:10px;
+	}
+	#resizablepanel table
+	{
+		width:100%;
+	}
+	#electionSummary_body
+	{
+		padding-left:20px;
+	}
+	.yearHeaders
+	{
+		text-decoration:underline;
+		font-weight:bold;
+		font-size:13px;
+
+	}
+	.seatsDataTable th 
+	{		
+		padding:5px;
+		color:#6C5846;
+	}
+	.seatsDataTable td 
+	{		
+		padding:5px;
+		color:#A97F6A;
+		font-weight:bold;
+	}
+	.typeTable table
+	{
+		width:100%;
+	}
+
+	/*.reportHeaders
+	{
+		background-image:url(images/icons/partyPerformance/reportHeaders.png);
+		width:800px;
+	}*/
 </style>
 </head> 
 <body>
@@ -976,58 +1067,97 @@ function reportTitleDivFunc()
 </div>
 </center>
 <br/><br/><br/>
- 
+ <!--383a3c-->
 <div style="margin-left: 15px;">
-
-    <table>
-	<tr>
-		<th style="background-color: #E9E9E9;font-weight:bold;font-size:12px;"><u>State : </u></th>
-		<td><b><s:property value="stateData.state" /></b></td>
-		<td></td>
-		<th style="background-color: #E9E9E9;font-weight:bold;font-size:12px;"><u>Party :</u></th>
-		<td><b><s:property value="stateData.party" /></b></td>
-	</tr>
-	<tr id="district"
-	  <% java.lang.String district = (java.lang.String) request.getAttribute("stateData.district");
-		if(district == null) { %> 
-			style="display:none"
-		<% } %>
-		>
-		<th>District</th>
-		<td style="background-color: #ccb"><s:property value="stateData.district" /></td>
-	</tr>
-	</table>
+<div id="electionSummary">
+	<div id="electionSummary_head">Election Summary</div>
+	<div id="electionSummary_body">
+		<table width="100%">		
+			<tr>
+				<td>
+					<div class="yearHeaders">In year ${stateData.year}</div>
+					<div>
+						<table class="seatsDataTable">
+							<tr>
+								<th>Total Number Of Seats Won </th>
+								<td>:</td>
+								<td>${stateData.totalSeatsWon}</td>
+							</tr>
+							<tr>
+								<th>Votes percentage Gained By Party </th>
+								<td>:</td>
+								<td>${stateData.totalPercentageOfVotesWon}</td>
+							</tr>
+							<tr>
+								<th>Votes % Difference (${stateData.year} - ${stateData.prevYear} ) </th>
+								<td>:</td>
+								<td>${stateData.diffOfTotalPercentageWinWithPrevElection}</td>
+							</tr> 
+						</table>
+					</div>					
+				</td>
+				<td style="vertical-align: top;">
+					<div class="yearHeaders">In year  ${stateData.prevYear}</div> 
+					<div>
+						<table class="seatsDataTable">
+							<tr>
+								<th>Total Number Of Seats Won</th>
+								<td>:</td>
+								<td>${stateData.prevYearTotalSeatsWon}</td>
+							</tr>
+							<tr>
+								<th>Votes percentage Gained By Party</th>
+								<td>:</td>
+								<td>${stateData.prevYeartotalPercentageOfVotesWon}</td>
+							</tr>
+						</table>
+					</div>							
+				</td>
+			</tr>
+			
+		</table>	
+	</div>
+</div>
 
 <table>
 	<tr>
-		<td>
+		<td colspan="2">
+			<div class="partyInfoHeading"> 					
+					<span style="float:right;margin-right:250px;">Year Vs Seats</span>
+					<span style="float:left">Party Positions Graph </span>				
+			</div>
+		</td>		
+	</tr>
+	<tr>
+		<td style="vertical-align:top">
+			<div id="partyResultsChartOuter" >
+				<div id="partyResultsChart" style="width:100%">
+					 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="350" HEIGHT="250">
+				</div>
+			</div>		
+		</td>
+		<td style="vertical-align:top">
 			<div id="partyPosChartOuter"  style="width:400px;">
 				<div id="partyPosChart" style="width:100%">
 					 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("lineChartName")%>" WIDTH="350" HEIGHT="250">
 				</div>
 			</div>
 		</td>
-		<td>
-			<div id="partyResultsChartOuter"  style="margin-top:40px;">
-				<div id="partyResultsChart" style="width:100%">
-					 <IMG id="chartImg" SRC="charts/<%=request.getAttribute("chartName")%>" WIDTH="400" HEIGHT="350">
-				</div>
-			</div>		
-		</td>
 	</tr>
 	<tr>
-		<td>
-			<div id="seatsDetailsDiv" class="yui-skin-sam" style="width:40%height:210px;margin-top:25px;">
-				<div id="party" class="yui-skin-sam"></div>
+		<td colspan="2">
+			<div class="partyInfoHeading"> 
+				Party Positions					
 			</div>
-		</td>
-		<td>
-			<div id="resizablepanelMain" class="yui-skin-sam" style="margin-top:25px;">
+		</td>		
+	</tr>
+	<tr>
+		<td style="vertical-align:top" colspan="2">
+			<div id="resizablepanelMain" class="yui-skin-sam" style="margin-top:10px;">
 				<div id="resizablepanel" class="yui-skin-sam"></div>
 			</div>
-		</td>
-	</tr>
-	
+		</td>	
+	</tr>	
 
 </table>
 
@@ -1046,7 +1176,7 @@ function reportTitleDivFunc()
 </div>
 <br/><br/>
 
-<div>
+<div class="partyInfoHeading">
 	<B><U>Detailed Report...</U></B>
 </div>
 <br/>
@@ -1055,88 +1185,108 @@ function reportTitleDivFunc()
 <c:forEach var="constPositions" items="${stateData.constituencyPositions}" >
 	<c:choose>
 		<c:when test="${constPositions.type=='POSITIONS_WON_MINOR_BAND'}">			
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Winning Positions with lower % margin: <c:out value="${constPositions.positionsWon}" />
+			<div class="detailReportHeader">	
+				<table width="100%">
+				<tr>
+				<td>Winning Positions with lower % margin: <c:out value="${constPositions.positionsWon}" /></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>	
+					<td style="text-align:right;">
+					<span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>	
+					</td>
 				</c:if>
+				</tr></table>
 			</div>
 		</c:when>
 		<c:when test="${constPositions.type=='POSITIONS_WON_MAJOR_BAND'}">		
-			<div style="padding: 5px 5px 10px 0px;font-family: Trebuchet MS;font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Winning Positions with highest % margin: <c:out value="${constPositions.positionsWon}" /> 
+			<div class="detailReportHeader">
+				<table width="100%">
+				<tr>
+				<td>Winning Positions with highest % margin: <c:out value="${constPositions.positionsWon}"/></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
+				</tr></table>
 			</div>
 		</c:when>		
 		<c:when test="${constPositions.type=='POSITIONS_LOST_MINOR_BAND'}">			
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Losing Positions with lower % margin: <c:out value="${constPositions.positionsWon}" />
+			<div class="detailReportHeader">
+				<table width="100%">
+				<tr>
+				<td>Losing Positions with lower % margin: <c:out value="${constPositions.positionsWon}" /></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
+				</tr></table>
 			</div>
 		</c:when>
 		<c:when test="${constPositions.type=='POSITIONS_LOST_MAJOR_BAND'}">			
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Losing Positions with highest % margin: <c:out value="${constPositions.positionsWon}" />
+			<div class="detailReportHeader">			
+				<table width="100%">
+				<tr>
+				<td>Losing Positions with highest % margin: <c:out value="${constPositions.positionsWon}" /></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span></td>
 				</c:if>
+				</tr></table>
 			</div>
 		</c:when>	
 		<c:when test="${constPositions.type=='POSITIONS_WON_WITH_POSITIVE_SWING'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Winning Positions with Positive Swing: <c:out value="${constPositions.positionsWon}" />
+			<div class="detailReportHeader">	
+				<table width="100%">
+				<tr>
+				<td>Winning Positions with Positive Swing: <c:out value="${constPositions.positionsWon}" /></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
+				</tr></table>
 			</div>
 		</c:when>		
 		<c:when test="${constPositions.type=='POSITIONS_LOST_WITH_POSITIVE_SWING'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Loosing Positions with Positive Swing: <c:out value="${constPositions.positionsWon}" />
+			<div class="detailReportHeader">		
+				<table width="100%">
+				<tr>
+				<td>Loosing Positions with Positive Swing: <c:out value="${constPositions.positionsWon}" /></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
+				</tr></table>
 			</div>
 		</c:when>		
 		<c:when test="${constPositions.type=='POSITIONS_WON_WITH_NEGATIVE_SWING'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Winning Positions with Negative Swing: <c:out value="${constPositions.positionsWon}" />
+			<div class="detailReportHeader">	
+				<table width="100%">
+				<tr>
+				<td>Winning Positions with Negative Swing: <c:out value="${constPositions.positionsWon}" /></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
+				</tr></table>
 			</div>
 		</c:when>
 		<c:when test="${constPositions.type=='POSITIONS_LOST_WITH_NEGATIVE_SWING'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Loosing Positions with Negative Swing: <c:out value="${constPositions.positionsWon}" /> 
+			<div class="detailReportHeader">
+				<table width="100%">
+				<tr>
+				<td>Loosing Positions with Negative Swing: <c:out value="${constPositions.positionsWon}" /></td> 
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
+				</tr></table>
 			</div>
 		</c:when>	
 		<c:when test="${constPositions.type=='POSITIONS_LOST_BY_DROPPING_VOTES'}">
-			<div style="padding: 5px 5px 10px 0px; font-family: Trebuchet MS; font-weight: bold; font-size: 14px;">
-				<img height="10" width="10" src="<%=request.getContextPath()%><s:property value="getText('iconURL')" />arrow.png"/> 
-				Losing Positions with droping voting percentage: <c:out value="${constPositions.positionsWon}" />
+			<div class="detailReportHeader">	
+				<table width="100%">
+				<tr>
+				<td>Losing Positions with droping voting percentage: <c:out value="${constPositions.positionsWon}" /></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<span id="${constPositions.type}span" style="color: blue; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
+				</tr></table>
 			</div>
 		</c:when>
 </c:choose>
-<div id="${constPositions.type}" style="display:none;" class="yui-skin-sam">
+<div id="${constPositions.type}" style="display:none;background-color:#EAEAEA;margin-right:20px;" class="yui-skin-sam typeTable">
 <center>
 </center>
 <!--<a href="#" onclick="closeSection('${constPositions.type}');">close</a><BR>-->
@@ -1208,7 +1358,10 @@ function reportTitleDivFunc()
 </div>
 <br/><br/>
 
+<div class="partyInfoHeading">
  <s:label labelposition="left"><b><U>Your votes are flown to any one of the below parties:</U></b></s:label>
+</div>
+
 <div style="margin-left: 15px;"> 
 <table class="partyPerformanceReportTable" border="1">
 	<c:forEach var="p" items="${stateData.toPartySwing}" >

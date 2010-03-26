@@ -54,3 +54,19 @@ function clearOptionsListForSelectElmtId(elmtId)
 		elmt.remove(i);
 	}	
 }
+
+
+/**
+ * Function to remove /n or enter stroke and change to single string.
+ * @method removeEnterStrokeForString
+ * @param {String} str .The string from wich the enter stroke should be removed. 
+ */
+
+function removeEnterStrokeForString(str)
+{
+	if(str.length==0 || !str)
+		return str;
+	
+	var strSingleLine = str.replace( new RegExp( "\\n", "g" ), " " );		
+	return strSingleLine;
+}

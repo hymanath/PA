@@ -12,471 +12,64 @@
 <title>Cadre Management </title>
 
 	
-	<!-- YUI Dependency files (Start) -->
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/dragdrop-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/button-min.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/resize-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/layout-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/connection-min.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/dom-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script> 
-	<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
 	
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/yui-min.js"></script>
-	
-	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+<!-- YUI Dependency files (Start) -->
 
-	<script type="text/javascript" src="js/json/json-min.js"></script> 
-	<script type="text/javascript" src="js/json/json.js"></script> 
-	<script type="text/javascript" src="js/json/json-debug.js"></script> 
-	
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/layout.css">	
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/button.css">	
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/calendar.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 
-	<!-- YUI Dependency files (End) -->
 
-	<!--<script type="text/javascript" src="js/cadreManagement/cadreSMSPageJs.js"></script>
-	<script type="text/javascript" src="js/cadreManagement/cadreLocation.js"></script>-->
+<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
-	
-	<style type="text/css">
+<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
 
-	/*
-		Overriding YUI images ---Start
-	*/
-	.yui-skin-sam .yui-calendar .calnavright
-	{
-		background:transparent url(images/YUI-images/yui-images-2.8/sprite.png) no-repeat scroll 0 -500px;
-	}
-	.yui-skin-sam .yui-calendar .calnavleft 
-	{
-		background:transparent url(images/YUI-images/yui-images-2.8/sprite.png) no-repeat scroll 0 -450px;
-	}
-	.yui-skin-sam .yui-panel .hd
-	{
-		background:transparent url(images/YUI-images/yui-images-2.8/sprite.png) repeat-x scroll 0 -200px;
-	}
-	.yui-skin-sam .container-close
-	{
-		background:transparent url(images/YUI-images/yui-images-2.8/sprite.png) no-repeat scroll 0 -300px
-	}
-	.yui-skin-sam .yui-button 
-	{
-		background:transparent url(images/YUI-images/yui-images-2.8/sprite.png) repeat-x scroll 0 0
-	}
+<!-- YUI Skin Sam -->
 
-	/* ------ Styles for Accordian Container -------*/
+<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
-	.yui-skin-sam .yui-accordion-item .yui-widget-hd 
-	{
-		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
-		background-position:0 0;
-	}
- 	.yui-skin-sam .yui-accordion-item-icon
-	{
-		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
-		background-position:center -25px;
-	}
-	.yui-skin-sam .yui-accordion-item-iconalwaysvisible-on 
-	{
-		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
-		background-position:0 -55px;
-	}
-	.yui-skin-sam .yui-accordion-item-iconclose
-	{
-		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
-		background-position:0 -235px;
-	}
-	.yui-skin-sam .yui-accordion-item-iconalwaysvisible, .yui-skin-sam .yui-accordion-item-iconalwaysvisible-off 
-	{
-		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
-		background-position:0 -86px;
-	}
-	.yui-skin-sam .yui-accordion-item-iconexpanded-on 
-	{
-		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
-		background-position:0 -115px;
-	}
-	.yui-skin-sam .yui-accordion-item-iconexpanded, .yui-skin-sam .yui-accordion-item-iconexpanded-off
-	{
-		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
-		background-position:0 -175px;
-	}
-	.yui-skin-sam .yui-accordion-item-iconexpanded-off:hover
-	{
-		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
-		background-position:0 -205px;
-	}
-	.yui-skin-sam .yui-accordion-item-iconexpanded-on:hover
-	{
-		background-image:url(images/YUI-images/yui-images-gallery/accordion_sprite.png);
-		background-position:0 -145px;
-	}
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2010.03.02-18/build/gallery-accordion/assets/skins/sam/gallery-accordion.css">
+<!-- YUI Dependency files (End) -->
 
-	/*
-		Overriding YUI images ---End
-	*/
+<!-- Local script and css files (Start)-->
+<script type="text/javascript" src="js/cadreManagement/cadreManagement.js"></script>
+<!--<script type="text/javascript" src="js/cadreManagement/cadreSMSPageJs.js"></script>
+<script type="text/javascript" src="js/cadreManagement/cadreLocation.js"></script>-->
 
-	#CadreManagementHeaderMain
-	{
-		color:#1C487A;
-		font-size:20px;
-		font-weight:bold;
-		text-decoration:underline;
-		margin-bottom:20px;
-		font-family:Georgia;
-	}
-	#cadreManagementMainDiv
-	{
-		/*background-color:#EFEFEF;*/
-		height:920px;
-		margin-left:25px;
-		margin-right:25px;
-		text-align:left;
-	}
-
-	#cadreSMSGroupsMainDiv
-	{
-		height:97%;
-		width:auto;
-		background-color:#CBDCE8;		
-	}
-	
-	#cadreDetailsMainDiv
-	{
-		height:100%;
-		width:100%;
-		background-color:#F9FCFF;
-	}	
-
-	#cadreTeamsMainDiv
-	{
-		height:99%;		
-		width:99%;
-	}
-
-	#cadreEventsCalMainDiv
-	{
-		height:100%;
-		width:100%;
-		/*background-color:#CBDCE8;*/
-	}
-
-	#cadreDatesYUICalDiv
-	{
-		width:97%;
-	}
-
-	#cadreImpDatesDiv
-	{
-		float:left;
-		height:200px;
-		width:99%;
-		/*background-color:#F9FCFF;*/
-		overflow:auto;
-		border:2px solid #839DB7;
-	}
-	#cadreImpEventsDiv
-	{
-		float:right;
-		height:200px;
-		width:99%;
-		/*background-color:#F9FCFF;*/
-		border:2px solid #839DB7;
-	}
-
-	#cadreImpDatesHeadDiv, #cadreImpEventsHeadDiv, #cadreSMSHeadDiv, #cadreGroupsHeadDiv
-	{
-		padding:5px;
-		color:#1E4864;
-		font-weight:bold;
-		background-color:#839DB7;
-		height:20px;
-		background-image:url(images/icons/contHeading.png);
-		background-repeat:repeat-x;
-	}
-	
-	#cadreImpDatesBodyDiv, #cadreImpEventsBodyDiv
-	{
-		height:170px;
-		overflow:auto;		
-	}
-	
-	#cadreSMSMainDiv
-	{
-		height:38%;		
-		margin-top:5px;
-		background-color:#F9FCFF;		
-		border:2px solid #95A6B7;
-	}
-	#cadreGroupsMainDiv
-	{
-		height:100%;
-		background-color:#F9FCFF;				
-		border:2px solid #95A6B7;
-	}
+<link rel="stylesheet" type="text/css" href="styles/cadreManagement/cadreManagement.css">
+<!-- Local script and css files (End)-->
 
 	
-	#cadreSMSBodyDiv
-	{
-		height:65px;
-	}
-	#cadreSMSFooterDiv
-	{
-		padding:5px;
-		text-align:right;		
-	}
-	
-	.yui-skin-sam .yui-calendar
-	{
-		width:100%;
-	}
-	#cadreEventsCalMainDiv .yui-calcontainer 
-	{
-		float:none;
-	}
-	
-	.yui-skin-sam .yui-panel .bd, .yui-skin-sam .yui-panel .ft
-	{
-		background-color:#FFFFFF;
-	}
-	.cadreInfoDiv
-	{
-		padding:5px;
-		font-size:12px;
-	}
-
-	#regionLevelCadreDiv
-	{		
-		border:2px solid #95A6B7;
-		height:58%;
-	}
-	#cadreStrengthAreasDiv
-	{
-		text-align:right;
-		margin-right:10px;
-	}
-	#regionLevelCadreDivHead
-	{
-		background-color:#839DB7;
-		color:#1E4864;
-		padding:7px;
-		font-weight:bold;
-		text-align:left;
-		background-image:url(images/icons/contHeading.png);
-		background-repeat:repeat-x;
-	}
-	#regionLevelCadreDivBody
-	{
-		height:130px;
-	}
-	#sendSMSAnc
-	{
-		background-color:#80B4E8;
-		color:#244565;		
-		text-decoration:none;
-	}
-	#newEventSpan
-	{
-		float:right;
-		margin-right:5px;
-
-	}
-	#cadreEventsDetailsDivMain
-	{
-		margin-right:10px;
-		text-align:right;
-		padding:7px;
-	}
-	.impInfoSpan
-	{
-		font-size:12px;
-		padding:5px;
-	}
-
-	.yui-skin-sam .yui-calendar td.calcell.highlight1 
-	{
-		background-color:#39e7de;
-	}
-	.yui-skin-sam .yui-calendar td.calcell.highlight2 
-	{
-		background-color:#4b83e3;
-	}
-	.yui-skin-sam .yui-calendar td.calcell.highlight3 
-	{
-		background-color:#c88033;
-	}
-
-	.tinyDateCal
-	{
-		position:absolute;
-	}
-	.timeSelect
-	{
-		margin-right:5px;
-		padding:2px;
-	}
-	#actionDetailsDiv
-	{
-		background-color:#EEF4FF;
-	}
-
-	.yui-layout-hd
-	{
-		color:#1E4864;
-		font-size:12px;
-		text-decoration:underline;
-	}
-	.yui-skin-sam .yui-accordion-item-label
-	{
-		color:#1E4864;
-	}
-
-	.yui-accordion-item .yui-widget-bd 
-	{
-		background-color:#FFFFFF;
-	}
-
-	.yui-layout .yui-layout-unit div.yui-layout-hd h2 
-	{
-		font-family:georgia;
-		font-size:20px;
-	}
-	
-	.yui-skin-sam .yui-calendar td.calcell.today 
-	{
-		background-color:none;
-	}
-	.yui-skin-sam .yui-calendar td.calcell.today a 
-	{
-		background-color:none;
-	}
-	.yui-skin-sam .yui-calendar td.calcellhover a
-	{
-		background-color:none;
-	}
-	.eventSummaryDiv
-	{
-		cursor:pointer;
-		font-size:12px;
-		padding:2px;
-		color:#44505C;
-	}
-	.selectedCadresDateEvent th
-	{
-		color:#2B4E70;
-		width:150px;
-	}
-	.selectedCadresDateEvent td
-	{
-		color:#4F5051;
-	}
-
-	.selectedDateEvent th
-	{
-		padding:5px;
-		color:#2B4E70;
-		width:150px;
-	}
-	.selectedDateEvent td
-	{
-		padding:5px;
-		color:#4F5051;
-	}
-	.eventActionPlanDiv
-	{
-		padding:2px;
-	}
-	.ImpDateDetailDiv
-	{
-		background-color:#EAECF0;
-		border:2px solid #DBE2F0;
-		cursor:pointer;
-		font-size:12px;
-		margin-top:5px;
-		padding:5px;
-	}
-	.ImpDateDetailDivHead
-	{
-
-	}
-	.ImpDateDetailDivBody
-	{
-		position:absolute;
-		width:585px;
-		margin-top:5px;
-		border:2px solid #DBE2F0;
-		background-color:#FAFAFA;
-		display:none;
-	}
-	
-	.cadreLevelSelect
-	{
-		width:150px;
-		padding:2px;
-	}
-	.cadreLevelDivClass
-	{
-		position:relative;
-		overflow:hidden;
-		z-index:99;
-		background-color:#FFFFFF;
-		display:none;		
-		height:30px;
-		border:1px solid #EFEFEF;
-		margin-top:10px;
-	}	
-	.actioncadreLevelDivClass
-	{
-		position:relative;
-		overflow:hidden;
-		z-index:1;
-		background-color:#FFFFFF;
-		display:none;		
-		height:30px;
-		border:1px solid #EFEFEF;
-		margin-top:10px;
-	}
-	.cadreLevelDivId_Head
-	{
-		text-align:right;
-		padding:5px;
-		/*background:transparent url(images/YUI-images/yui-images-2.8/sprite.png) repeat-x scroll 0 -200px;*/
-	}
-	.cadresDivForPanel
-	{
-		padding:5px;
-		background-color:#EBF5FF;
-		margin-bottom:5px;
-	}
-	.cadresCloseSpan
-	{
-		float:right;
-		margin-right:10px;
-		cursor:pointer;		
-		font-weight:bold;
-		padding:4px;
-	}
-	.buttonSpan
-	{
-		background-color:#DBE4E9;
-		cursor:pointer;
-		padding:5px;	
-	}
-</style>
 
 <script type="text/javascript">
 	var smsDialog, newEventDialog, newDateDialog,eventDateDialog,mainEventCalendar,dateCalendar,cadreDataTable,cadreAnim,jsonStr;
@@ -531,132 +124,10 @@
 	var eventDateRenderArr = new Array();	
 	var emptyArray = new Array();
 
+	
 
-	function buildLayout()
-	{
-		var layoutEl = new YAHOO.widget.Layout('cadreManagementMainDiv', { 
-			units: [ 	        
-					{ 
-						position: 'right',
-						header:false,
-						width: 300,	
-						height:525,						
-						resize: false,
-						gutter: '5px',
-						collapse: false,
-						scroll: true,
-						body: 'cadreTeamsMainDiv',
-						animate: true
-					},
-					{ 
-						position: 'bottom', 
-						height: 525,
-						header: 'Important Dates And Event Management', 
-						body: 'cadreEventsCalMainDiv',
-						resize: false,
-						gutter: '5px',
-						collapse: true,
-						scroll: true,						
-						animate: true }, 
-					{
-						position: 'left',
-						header:false,
-						width: 270,
-						height:525,						
-						body: 'cadreSMSGroupsMainDiv',
-						resize: false, 
-						gutter: '5px',
-						collapse: false,
-						scroll: true,						
-						animate: true  
-					}, 
-					{ 
-						position: 'center',						
-						body: 'cadreDetailsMainDiv',
-						resize: false,
-						gutter: '5px',
-						collapse: true,
-						scroll: true,						
-						animate: true
-					} 
-	    ] 
-		}); 
-		layoutEl.render(); 
-	}
-
-	function buildAssociateGroupsAccrodian()
-	{
-
-	}
-	function buildCadreTeamsAccrodian()
-	{
-		//----------------------
-		 YUI().use( 'gallery-accordion', function(Y) {
-		
-		var accordion = new Y.Accordion( {
-		contentBox: "#cadreTeamsAccordianDiv",
-		useAnimation: true,
-		collapseOthersOnExpand: true
-		});
-	 
-		accordion.render();
-
-		var item1, item2, item3;
-		 
-		item1 = new Y.AccordionItem( 
-		{
-			label: " Campaign Teams",
-			expanded: true,
-			contentBox: "dynamicContentBox1",
-			contentHeight: 
-			{
-				method: "fixed",
-				height: 305
-			},
-			closable: false
-		} );
-	 		
-		item1.set( "bodyContent","Campaign Teams");
-
-		accordion.addItem( item1 );
-
-
-		item2 = new Y.AccordionItem( 
-		{
-			label: " Booth Level Teams",
-			expanded: false,
-			contentBox: "dynamicContentBox1",
-			contentHeight: 
-			{
-				method: "fixed",
-				height: 305
-			},
-			closable: false
-		} );
-	 		
-		item2.set( "bodyContent","Booth Level Teams");
-
-		accordion.addItem( item2 );
-
-
-		item3 = new Y.AccordionItem( 
-		{
-			label: " Feed Back Teams",
-			expanded: false,
-			contentBox: "dynamicContentBox1",
-			contentHeight: 
-			{
-				method: "fixed",
-				height: 305
-			},
-			closable: false
-		} );
-	 		
-		item3.set( "bodyContent","Feed Back Teams");
-
-		accordion.addItem( item3 );
-		 });
-	}
+	
+	
 	
 	function buildSMSPopup()
 	{
@@ -712,11 +183,15 @@
 									addCreatedEvent(myResults,jsObj);																		
 								}
 								else if(jsObj.task=="subscribe")
-								{
+								{									
 									var elmt = document.getElementById('subscribePartyDates');
-									
 									if(!elmt)
 										alert("No subscribe Element");
+									if(elmt.innerHTML == "Subscribe Party Imp Dates")
+										elmt.innerHTML == "Unsubscribe Party Imp Dates";
+									else if(elmt.innerHTML == "Subscribe Party Imp Dates")
+										elmt.innerHTML == "Unsubscribe Party Imp Dates";
+
 									elmt.innerHTML=myResults.subscribeTitle;
 									showInitialImpEventsAndDates(myResults.userImpDates,"impDates","subscribe");
 								}
@@ -3860,18 +3335,11 @@
 				divElmt.setAttribute('style','background-color:#EBF5FF;');
 			else
 				divElmt.setAttribute('style','background-color:#F9FCFF;');
-
-			/*eventStr+='<div id="'+results.organizers[cadre].id+'_div" class="cadresDivForPanel" onmouseover="javascript:{document.getElementById(\'cadreSpan_\'+id.substring(0,id.indexOf(\'_\'))).style.display=\'block\';}" onmouseout="javascript:{document.getElementById(\'cadreSpan_\'+id.substring(0,id.indexOf(\'_\'))).style.display=\'none\';}">';
-			eventStr+='<span id="cadreSpan_'+results.organizers[cadre].id+'" class="cadresCloseSpan" onclick="deleteEventCadrePanelDiv(this.id,\'event\')"> X </span>';	
-			eventStr+=results.organizers[cadre].name;
-			eventStr+='</div>';	*/
-			//onclick="showSelectedDateEvent(this.id,\''+eventsarr[i].eventType+'\',\'impDate\')">';	
+		
 			var str='';
 			if(type == "impEvents")
 			{
-				str+='<div id="ImpEvent_'+eventsarr[i].userEventsId+'" class="eventSummaryDiv">';
-				//str+='onmouseover="displayEditCloseIcons(this.id)" ';
-				//str+='onmouseout="hideEditCloseIcons(this.id)">';
+				str+='<div id="ImpEvent_'+eventsarr[i].userEventsId+'" class="eventSummaryDiv">';				
 				str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impEvent\','+eventsarr[i].userEventsId+')"> X </span>';
 				str+='<span id="cadreSpan_'+eventsarr[i].userEventsId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpEvent_'+eventsarr[i].userEventsId+'\',\'\',\'impEvent\')">';
 				str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
@@ -3879,8 +3347,6 @@
 			else if(type == "impDates")
 			{
 				str+='<div id="ImpDate_'+eventsarr[i].importantDateId+'" class="eventSummaryDiv">';	
-				//str+='onmouseover="displayEditCloseIcons(this.id)" ';
-				//str+='onmouseout="hideEditCloseIcons(this.id)">';
 				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_cross" class="cadresCloseSpan" onclick="deleteSelectedEvent(\'impDate\','+eventsarr[i].importantDateId+')"> X </span>';
 				str+='<span id="cadreSpan_'+eventsarr[i].importantDateId+'_edit" class="cadresCloseSpan" onclick="showSelectedDateEvent(\'ImpDate_'+eventsarr[i].importantDateId+'\',\''+eventsarr[i].eventType+'\',\'impDate\')">';
 				str+='<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/pencil.png"/> </span>';
@@ -3898,7 +3364,7 @@
 			str+='<td> - </td>';	
 			str+='<td>'+startDayStr+'-'+startMonStr+'-'+startYearStr+'</td>';
 
-			if(eventsarr[i].endDate)
+			if(type == "impEvents" && eventsarr[i].endDate)
 			{
 				str+='<td> to </td>';	
 				str+='<td>'+endDayStr+'-'+endMonStr+'-'+endYearStr+'</td>';
@@ -3915,7 +3381,7 @@
 
 			
 			
-			if(eventsarr[i].endDate)
+			if(type == "impEvents" && eventsarr[i].endDate)
 			{	
 				var startDate = new Date(startMonStr+"/"+startDayStr+"/"+startYearStr);
 				var endDate = new Date(endMonStr+"/"+endDayStr+"/"+endYearStr);
@@ -3935,29 +3401,7 @@
 					}				
 					startDate=new Date(startDate.getTime()+86400000);
 				}	
-				
-				/*for(var x=startYearStr;x<=endYearStr;x++)
-				{
-					for(var y=startMonStr;y<=endMonStr;y++)
-					{
-						for(var z=startDayStr;z<=endDayStr;z++)
-						{
-							var eventColorRender = y+"/"+z+"/"+x;
-							
-							if(existingDataCheck(eventColorRender,type))
-							{
-								eventsRenderArr.push(eventColorRender);
-							}
-							else
-							{
-								removeByElement(datesRenderArr,eventColorRender);
-								eventDateRenderArr.push(eventColorRender);
-							}
-						}
-					}
-				}*/
-				
-				//var renderValue=startMonStr+"/"+startDayStr+"/"+startYearStr+"-"+endMonStr+"/"+endDayStr+"/"+endYearStr;
+								
 			}
 			else
 			{	
@@ -3973,13 +3417,8 @@
 				}
 			}
 			
-			if(task=="subscribe")
-				renderStack();
-			/*var renderObj = {
-								renderDate:renderValue,
-								renderType:type
-							}
-			renderDatesArr.push(renderObj);*/
+		
+			renderStack();	
 						
 		}
 	}
@@ -4017,15 +3456,7 @@
 
 
 	function renderStack()
-	{			
-		/*for(var i in renderDatesArr)
-		{
-			if(renderDatesArr[i].renderType == "impEvents" || renderDatesArr[i].renderType == "createEvent")			
-				mainEventCalendar.addRenderer(renderDatesArr[i].renderDate, mainEventCalendar.renderCellStyleHighlight1);			
-			else if(renderDatesArr[i].renderType == "impDates" || renderDatesArr[i].renderType == "createImpDateEvent")
-				mainEventCalendar.addRenderer(renderDatesArr[i].renderDate, mainEventCalendar.renderCellStyleHighlight2); 
-		}*/
-
+	{	
 		for(var i in eventsRenderArr)
 		{
 			mainEventCalendar.addRenderer(eventsRenderArr[i], mainEventCalendar.renderCellStyleHighlight1);			
@@ -4043,8 +3474,8 @@
 		mainEventCalendar.render(); 
 	}
 	
-	function subscribe(){
-		
+	function subscribe()
+	{		
 		var url = "<%=request.getContextPath()%>/userSubscribePartyImpDates.action?";
 		var jsObj={
 				task:"subscribe"
@@ -4194,9 +3625,7 @@
 	
 
 	<script type="text/javascript">
-		buildLayout();
-		buildAssociateGroupsAccrodian();
-		buildCadreTeamsAccrodian();
+		
 		buildCalendarControl();	
 		buildSMSPopup();
 		//buildNewEventPopup();
@@ -4248,6 +3677,8 @@
 		
 		showInitialImpEventsAndDates(impDates,'impDates',"");
 		renderStack();
+
+		initializeCadreManagement();
 		
 	</script>
 

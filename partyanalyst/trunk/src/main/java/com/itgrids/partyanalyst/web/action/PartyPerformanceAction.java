@@ -344,6 +344,11 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 			log.debug("Report Level -->" + reportLevelLiteral);
 		}
 		
+	/*	if("2".equals(reportLevel))
+			reportTitle =  partyNameLiteral +" Party Performance Report for "+ electionTypeLiteral +" " + year + " in  " + district;
+		else
+			reportTitle =  partyNameLiteral +" Party Performance Report for "+ electionTypeLiteral +" " + year + " in  " + state;*/
+		
 		reportTitle =  partyNameLiteral +" " + electionTypeLiteral + "(" + reportLevelLiteral + ")" + "  Performance Report for the year " + year;
 		
 		if(log.isDebugEnabled())
