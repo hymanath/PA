@@ -27,7 +27,7 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		assertEquals(1,result.size());
 	}*/
 	
-	/*public void testFindSubGroupsCountInSystemGroupsByUserId()
+	public void testFindSubGroupsCountInSystemGroupsByUserId()
 	{
 		List result=personalUserGroupDAO.findSubGroupsCountInSystemGroupsByUserId(1L);
 		for(int i=0;i<result.size();i++){
@@ -37,7 +37,7 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 			System.out.print(Long.parseLong(parms[2].toString()));
 		}	
 		//assertEquals(1,result.size());		
-	}*/
+	}
 	/*
 	@SuppressWarnings("unchecked")
 	public void testGetSubGroupsCountInMyGroupsByUserId()
@@ -68,7 +68,7 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		}	
 		
 	}*/
-	public void testGetGroupsByName()
+	/*public void testGetGroupsByName()
 	{
 		List result = personalUserGroupDAO.getGroupsByName(1L, "aaa");
 		if(Long.parseLong(result.get(0).toString())==0L){
@@ -80,5 +80,5 @@ public class PersonalUserGroupDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(result.size());			
 		
 		
-	}
+	}*/
 }
