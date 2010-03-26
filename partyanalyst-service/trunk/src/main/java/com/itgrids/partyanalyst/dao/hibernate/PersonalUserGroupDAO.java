@@ -34,7 +34,7 @@ public class PersonalUserGroupDAO extends GenericDaoHibernate<PersonalUserGroup,
 	@SuppressWarnings("unchecked")
 	public List findSubGroupsCountInSystemGroupsByUserId(Long userId)
 	{
-		return getHibernateTemplate().find("select model.staticGroup.staticGroupId, model.staticGroup.groupName, count(model.personalUserGroupId) from PersonalUserGroup model where model.createdUserId.registrationId = ? and model.staticGroup.staticGroupId != null group by model.staticGroup.staticGroupId", userId);
+		return getHibernateTemplate().find("select model.staticGroup.staticGroupId, model.staticGroup.groupName, count(model.personalUserGroupId) from PersonalUserGroup model where model.createdUserId.registrationId = ? and model.staticGroup.staticGroupId != null and model.myGroup.myGroupId is null and model.parentGroupId.personalUserGroupId is null group by model.staticGroup.staticGroupId", userId);
 	}
 	
 	@SuppressWarnings("unchecked")
