@@ -18,6 +18,9 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private Long rejectedVoters;
 	private Long tenderedVoters;
 	private String candidateName;
+	private String polledVotes;
+	private String votesDifference;
+	private String rank;
 	private String partyVotesPercentage;
 	private Long earnedVotes;
 	private Long electionScopeID;
@@ -27,10 +30,26 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private String partyFlag;
 	private int zptcCount;
 	private int mptcCount;
+	private Float votesEarned;
 	private List<MandalAllElectionDetailsVO> zptcMandalAllElectionDetailsVO;
 	private List<MandalAllElectionDetailsVO> mptcMandalAllElectionDetailsVO;
+	private List<MandalAllElectionDetailsVO> allVotersDetails;
+	private List<SelectOptionVO> partyInfo;
 	
 
+	public List<SelectOptionVO> getPartyInfo() {
+		return partyInfo;
+	}
+	public void setPartyInfo(List<SelectOptionVO> partyInfo) {
+		this.partyInfo = partyInfo;
+	}
+	public List<MandalAllElectionDetailsVO> getAllVotersDetails() {
+		return allVotersDetails;
+	}
+	public void setAllVotersDetails(
+			List<MandalAllElectionDetailsVO> allVotersDetails) {
+		this.allVotersDetails = allVotersDetails;
+	}
 	public Long getEarnedVotes() {
 		return earnedVotes;
 	}
@@ -72,11 +91,35 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	public String getPartyFlag() {
 		return partyFlag;
 	}
+	public String getPolledVotes() {
+		return polledVotes;
+	}
+	public void setPolledVotes(String polledVotes) {
+		this.polledVotes = polledVotes;
+	}
 	public void setPartyFlag(String partyFlag) {
 		this.partyFlag = partyFlag;
 	}
 	public String getTehsilName() {
 		return tehsilName;
+	}
+	public String getVotesDifference() {
+		return votesDifference;
+	}
+	public String getRank() {
+		return rank;
+	}
+	public void setRank(String rank) {
+		this.rank = rank;
+	}
+	public Float getVotesEarned() {
+		return votesEarned;
+	}
+	public void setVotesEarned(Float votesEarned) {
+		this.votesEarned = votesEarned;
+	}
+	public void setVotesDifference(String votesDifference) {
+		this.votesDifference = votesDifference;
 	}
 	public void setTehsilName(String tehsilName) {
 		this.tehsilName = tehsilName;
