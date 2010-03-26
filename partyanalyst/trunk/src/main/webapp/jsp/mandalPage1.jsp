@@ -301,6 +301,7 @@ width:100%;
 .graphLabelTd
 {
 	font-weight:bold;
+	vertical-align:top;
 	
 }
 </style>
@@ -926,14 +927,40 @@ var allZPTCMPTCElecInfo = new Array();
 	function getGraph(value)
 	{	
 		var str = '';
+		var estr = '';
 		var mandal = ${mandalId};
 				
-		var elmt = document.getElementById("mandalGraphDiv");	
+		var elmt = document.getElementById("mandalGraphDiv");
+		var elmtData = document.getElementById("graphDataDiv");
+			
 		if(value=="0")
 		{
 			elmt.innerHTML='';
+			elmtData.innerHTML='';
 			return;
 		}	
+		
+		<c:forEach var="party" items="${allElectionResults}">
+			if('${party.partyId}' == value){
+				estr+='<table id="boothInfoTable">';	
+				estr+='<tr>';					
+				estr+='<th>Election Type</th>';
+				estr+='<th>Election Year</th>';
+				estr+='<th>Votes %</th>';
+				estr+='</tr>';
+				<c:forEach var="result" items="${party.electionWiseResults}">
+					estr+='<tr>';					
+					estr+='<td>${result.electionType}</td>';
+					estr+='<td>${result.electionYear}</td>';
+					estr+='<td>${result.percentage}</td>';
+					estr+='</tr>';
+				</c:forEach>
+				estr+='</table>';
+			}			
+		</c:forEach>
+		
+		if(elmtData)
+			elmtData.innerHTML = estr;
 
 		str+='<img src="charts/partyPerformanceInAllMandalElections_'+mandal+'_'+value+'.png"/>'; 
 		if(elmt)
@@ -958,7 +985,10 @@ var allZPTCMPTCElecInfo = new Array();
 		</c:forEach>		
 		str+='</select>';
 		str+='</td>';
-		str+='<td><div id="mandalGraphDiv"></div></td>';
+		str+='<td rowspan="2" style="vertical-align:top"><div id="mandalGraphDiv"></div></td>';		
+		str+='</tr>';
+		str+='<tr>';
+		str+='<td colspan="2" style="vertical-align:top"><div id="graphDataDiv"></div></td>';
 		str+='</tr>';
 		str+='</table>';		
 		str+='</div>';
@@ -1084,7 +1114,6 @@ var allZPTCMPTCElecInfo = new Array();
 </head>
 <body> 
 <h3><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
-
 <div id="boothResultsDiv">
 	<div id="mandalCensusDiv">
 		<div id="mandalCensusDivHead"><h4><u>Mandal Details..</u></h4></div>

@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -59,7 +61,16 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private List<PartyVotesEarnedVO> townshipResults;
 	private static final Logger log = Logger.getLogger(MandalPageElectionInfoAction.class);
 	private List<ConstituencyRevenueVillagesVO> townshipWiseElectionResults;
+	private List<PartyResultVO> allElectionResults;
 	
+	public List<PartyResultVO> getAllElectionResults() {
+		return allElectionResults;
+	}
+
+	public void setAllElectionResults(List<PartyResultVO> allElectionResults) {
+		this.allElectionResults = allElectionResults;
+	}
+
 	public List<ConstituencyRevenueVillagesVO> getTownshipWiseElectionResults() {
 		return townshipWiseElectionResults;
 	}
@@ -248,7 +259,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		}
 		System.out.println(resultMap.size());
 		
-		List<PartyResultVO> allElectionResults = new ArrayList<PartyResultVO>();
+		allElectionResults = new ArrayList<PartyResultVO>();
 		
 		for(Map.Entry<PartyResultVO, List<ElectionResultVO>> entry:resultMap.entrySet()){
 			allElectionResults.add(entry.getKey());
@@ -328,6 +339,8 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
         final String series3 = IConstants.MPTC_ELECTION_TYPE;
         final String series4 = IConstants.ZPTC_ELECTION_TYPE;
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        List<ElectionResultVO> electionResults = partyResultVO.getElectionWiseResults();
+        Collections.sort(electionResults, new ElectionResultComparator()); 
         for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
         	if(result.getElectionType().equals(series1))
         		dataset.addValue(new BigDecimal(result.getPercentage()), series1, result.getElectionYear());
