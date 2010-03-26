@@ -257,7 +257,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(values.size());
 	}
 	
-} 
+ 
 	
 	public void testByAllZptcCandidatesForAnElectionYear(){
 		List result = nominationDAO.findAllZptcCandidatesInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,"2006");
