@@ -703,6 +703,9 @@ var userGrpsObj={
 
 	function getMyGroupsDetails(id,flag,name)
 	{
+		var showGrpMembersEl = document.getElementById("showGrpMembers");
+		showGrpMembersEl.innerHTML = '';
+		
 		var jsObj= 
 		{
 			task:"getSelectedMyGroupCompleteDetails",
