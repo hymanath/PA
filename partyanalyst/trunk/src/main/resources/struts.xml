@@ -637,7 +637,10 @@
 				<param name="root">getMptcPartyDetails</param>				
 			</result>		
 		</action>	
-	
+		<action name="districtPageCandidateDetailsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+			 <result name="success">/jsp/candidateDistrictPageResultsPage.jsp</result>
+            <result name="error">/jsp/districtPageFail.jsp</result>	
+		</action>	
 		<action name="getNextPrevCandidateVotingTrendz" class="constituencyPageAction" method="getNextPrevCandidateVotingTrendz">
 			<result type="json" name="success">
 				<param name="root">candidateVotingTrendzCharts</param>				
@@ -651,8 +654,12 @@
         <action name="constituencyElectionResultsAction" class="constituencyElectionResultsAction">
            <result name="success">/jsp/constituencyElectionResultsPage.jsp</result>
             <result name="error">/jsp/districtPageFail.jsp</result>			
-        </action>
-        
+        </action>    
+          <action name="tehsilPageAjaxAction" class="districtPageAction" method="getCandidateTrendzForDistrict">
+              <result type="json" name="success">
+           		<param name="root">candidateTrendzReportVO</param>
+        	</result>		
+        </action>     
 	</package>
 </struts>
 
