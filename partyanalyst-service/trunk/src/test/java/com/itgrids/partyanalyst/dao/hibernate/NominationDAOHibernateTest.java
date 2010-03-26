@@ -195,6 +195,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
+
 	
 	public void testGetAllConstiteunciesInfoForPartyInTehsil(){
 		List list = nominationDAO.getAllConstiteunciesInfoForPartyInTehsil(844l, 24l, 5l);
@@ -229,8 +230,12 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	}
 	
 	public void testAllZPTCsInaDistrict(){
-		List result = nominationDAO.findAllMPTCsInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,IConstants.ZPTC_ELECTION_TYPE,1l);
-		Assert.assertEquals(1, result.size());	
+		List result = nominationDAO.findAllZPTCsInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,1l,"2006");
+		Assert.assertEquals(46, result.size());	
+	}
+	public void testAllMPTCsInaDistrict(){
+		List result = nominationDAO.findAllMPTCsInaDistrict(19l,IConstants.MPTC_ELECTION_TYPE,1l,"2006");
+		Assert.assertEquals(598, result.size());	
 	}
 	
 	public void testPartyStatusInAZptc(){
@@ -243,4 +248,38 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		List result = nominationDAO.getPartysWinningCandidateInfoForAParticularElectionYear(IConstants.ZPTC_ELECTION_TYPE,"2006",1l,19l);
 		Assert.assertEquals(1, result.size());	
 	}
-} 
+	
+	public void testByAllZptcCandidatesForAnElectionYear(){
+		List result = nominationDAO.findAllZptcCandidatesInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,"2006");
+		Assert.assertEquals(1, result.size());	
+	}
+	public void testByAllMptcCandidatesForAnElectionYear(){
+		List result = nominationDAO.findAllZptcCandidatesInaDistrict(19l,IConstants.MPTC_ELECTION_TYPE,"2006");
+		Assert.assertEquals(1, result.size());	
+	}
+	public void testByAllMptcPartysParticipatedForAnElectionYear(){		
+		List result2 = nominationDAO.findAllZPTCsInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,2l,"2006");
+		Assert.assertEquals(1, result2.size());	
+		List result = nominationDAO.findAllZPTCsInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,1l,"2006");
+		Assert.assertEquals(1, result.size());	
+	}	
+	
+	public void testFindAllZptcCandidatesInaDistrict(){
+		List result = nominationDAO.findAllZPTCsInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,1l,"2001");
+		List result2 = nominationDAO.findAllZptcPartysInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,"2006",24l,1l);
+		List result3 = nominationDAO.findAllZPTCsInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,2l,"2001");
+		Assert.assertEquals(1, result.size());	
+		Assert.assertEquals(1, result2.size());
+		Assert.assertEquals(1, result3.size());
+	}
+	
+	public void testFindAllZptcPartysInaDistrict(){
+		List result = nominationDAO.findAllZPTCsInaDistrict(19l,IConstants.ZPTC_ELECTION_TYPE,1l,"2001");
+		Assert.assertEquals(1, result.size());		
+	}
+	
+	public void testParties(){
+			 List result = nominationDAO.getAllPartysForAParticularElectionYear(19l,IConstants.MPTC_ELECTION_TYPE,"2001");
+			 Assert.assertEquals(1, result.size());	
+	}
+}
