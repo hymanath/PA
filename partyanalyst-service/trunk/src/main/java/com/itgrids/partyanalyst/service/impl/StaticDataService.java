@@ -373,7 +373,6 @@ public class StaticDataService implements IStaticDataService {
 
 	public Long getGroupIdIfPartyHasAlliances(
 			List<ElectionAlliance> allianceList, Long partyId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -441,7 +440,6 @@ public class StaticDataService implements IStaticDataService {
 		getAllParliamentWinningCandidatesForADistrict(districtId);
 		log.debug("DistrictPageService.getConstituenciesWinnerInfo() delimitationYear:"+electionYear);
 		ConstituenciesStatusVO constituenciesStatusVO = getConstituenciesForDistrict(districtId, electionYear, IConstants.ASSEMBLY_ELECTION_TYPE);
-		
 		List<SelectOptionVO> constituencies = (constituenciesStatusVO.getExistConstituencies());
 		constituencies.addAll(constituenciesStatusVO.getNewConstituencies());
 		
@@ -485,6 +483,8 @@ public class StaticDataService implements IStaticDataService {
 		constituenciesStatusVO.setMptcCount(Long.parseLong(mptcCount.get(0).toString()));	
 		constituenciesStatusVO.setConstituencyWinnerInfoVO(constituencyWinnerInfoVOList);
 		constituenciesStatusVO.setDelimitationYear(electionYear);
+		constituenciesStatusVO.setElectionType(electionYear.toString());
+		constituenciesStatusVO.setElectionType(IConstants.ASSEMBLY_ELECTION_TYPE);
 		constituenciesStatusVO.setElectionYear(electionYear.toString());
 		constituenciesStatusVO.setElectionType(IConstants.ASSEMBLY_ELECTION_TYPE);
 		return constituenciesStatusVO;
@@ -1452,85 +1452,6 @@ public class StaticDataService implements IStaticDataService {
 		return constituenciesList;
 		
 	}
-	
-	/*
-	 * This method retrieves all the ZPTC's winner candidates present in that particular district
-	 */
-	public MandalAllElectionDetailsVO getAllZptcsForADistrictForLatestYear(Long districtId) {
-		List<MandalAllElectionDetailsVO> zptcElections = new ArrayList<MandalAllElectionDetailsVO>(0);
-		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
-		Long rank =1l;
-		try{
-			log.info("Making nominationDAO.findAllZPTCsandMPTCsInaDistrict DAO call");
-			List zptcResult = nominationDAO.findAllZPTCsInaDistrict(districtId,IConstants.ZPTC_ELECTION_TYPE,IConstants.ZPTC_ELECTION_TYPE,rank);
-			log.info("Calling populateElectionsData() method..");
-			zptcElections = populateElectionsData(zptcResult);			
-			
-			mandalAllElectionDetailsVo.setZptcMandalAllElectionDetailsVO(zptcElections);
-			mandalAllElectionDetailsVo.setZptcCount(zptcResult.size());
-			
-			return mandalAllElectionDetailsVo;
-		}catch(Exception e){
-			log.error("Exception raised please check the log for details"+e);
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	/*
-	 * This method retrieves all the MPTC's winner candidates present in that particular district
-	 */
-	public MandalAllElectionDetailsVO getAllMptcsForADistrictForLatestYear(Long districtId) {
-		List<MandalAllElectionDetailsVO> mptcElections = new ArrayList<MandalAllElectionDetailsVO>(0);
-		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
-		Long rank =1l;
-		try{	
-			
-			log.info("Making nominationDAO.findAllZPTCsandMPTCsInaDistrict DAO call");
-			List mptcResult = nominationDAO.findAllMPTCsInaDistrict(districtId,IConstants.MPTC_ELECTION_TYPE,IConstants.MPTC_ELECTION_TYPE,rank);
-			log.info("Calling populateElectionsData() method..");
-			mptcElections = populateElectionsData(mptcResult);
-			mandalAllElectionDetailsVo.setMptcMandalAllElectionDetailsVO(mptcElections);
-			mandalAllElectionDetailsVo.setMptcCount(mptcResult.size());
-			
-			return mandalAllElectionDetailsVo;
-		}catch(Exception e){
-			log.error("Exception raised please check the log for details"+e);
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	/*
-	 * This method sets all the ZPTC's and MPT's winner candidates present in that particular district
-	 */	
-	public List<MandalAllElectionDetailsVO> populateElectionsData(List result){
-		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = new ArrayList<MandalAllElectionDetailsVO>(0);
-		try{
-			Iterator it = result.iterator();
-			while(it.hasNext()){
-				MandalAllElectionDetailsVO mandalAllElectionDetails = new MandalAllElectionDetailsVO();
-				Object[] parms = (Object[])it.next();
-				if(parms[0] != null){
-					mandalAllElectionDetails.setPartyFlag(parms[0].toString());
-				}
-				else{
-					mandalAllElectionDetails.setPartyFlag("");
-				}
-				mandalAllElectionDetails.setElectionYear(parms[1].toString());
-				mandalAllElectionDetails.setCandidateName(parms[2].toString());
-				mandalAllElectionDetails.setTehsilName(parms[3].toString());
-				mandalAllElectionDetails.setElectionType(parms[4].toString());
-				mandalAllElectionDetails.setTehsilId(Long.parseLong(parms[5].toString()));
-				mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
-			}		
-		return mandalAllElectionDetailsVO;
-		}catch(Exception e){
-			log.error("Exception raised please check the log for details"+e);
-			e.printStackTrace();
-			return null;
-		}
-	}
 
 	/**
 	 * @param districtId
@@ -1557,12 +1478,13 @@ public class StaticDataService implements IStaticDataService {
 					 candidateDetailsVO.setPartyFlag(parms[10].toString()); 
 				 }		
 				 else{
-					 candidateDetailsVO.setPartyFlag("");
+					 candidateDetailsVO.setPartyFlag("no_Image.png");
 					}
 				 candidateDetailsVO.setPartyName(parms[7].toString()); 
 				 candidateDetailsVo.add(candidateDetailsVO);
 			}
-		}
+		}		
+		
 		candidateVo.setCandidateDetails(candidateDetailsVo);
 			 parliamentConstituencies.clear();				
 			return candidateVo;
@@ -1638,7 +1560,7 @@ public class StaticDataService implements IStaticDataService {
 					teshilPartyInfoVo.setSeatsWonByParty(0L);
 				}					
 				teshilPartyInfoVO.add(teshilPartyInfoVo);
-			}
+			}			
 			return teshilPartyInfoVO;
 		}catch(Exception e){
 			log.error("Exception raised please check the log for details"+e);
@@ -1822,4 +1744,363 @@ public class StaticDataService implements IStaticDataService {
 		}
 	}
 	
+	//ZPTC's And MPTC's related code.
+	
+	
+	/*
+	 * This method retrieves all the ZPTC's winner candidates present in that particular district
+	 */
+	public MandalAllElectionDetailsVO getAllZptcWinnerForADistrictForLatestYear(Long districtId,String electionYear) {
+		List<MandalAllElectionDetailsVO> allVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
+		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
+		Long winnerRank =1l,successorRank=2l;
+		try{
+			log.info("Making nominationDAO.findAllZPTCsInaDistrict DAO call");
+			List successorCandidate = nominationDAO.findAllZPTCsInaDistrict(districtId,IConstants.ZPTC_ELECTION_TYPE,successorRank,electionYear);
+			
+			log.info("Making nominationDAO.findAllZPTCsInaDistrict DAO call");
+			List winningCandidate = nominationDAO.findAllZPTCsInaDistrict(districtId,IConstants.ZPTC_ELECTION_TYPE,winnerRank,electionYear);
+			
+			log.info("Calling populateElectionsData() method..");
+			allVotersDetails = populateElectionsData(winningCandidate,successorCandidate);			
+			
+			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);
+			
+			return mandalAllElectionDetailsVo;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	/*
+	 * This method retrieves all the MPTC's winner candidates present in that particular district
+	 */
+	public MandalAllElectionDetailsVO getAllMptcWinnerForADistrictForLatestYear(Long districtId,String electionYear) {
+		List<MandalAllElectionDetailsVO> allVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
+		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
+		Long winnerRank =1l,successorRank=2l;
+		try{	
+			log.info("Making nominationDAO.findAllMPTCsInaDistrict DAO call");
+			List successorCandidate = nominationDAO.findAllMPTCsInaDistrict(districtId,IConstants.MPTC_ELECTION_TYPE,successorRank,electionYear);
+			
+			log.info("Making nominationDAO.findAllMPTCsInaDistrict DAO call");
+			List winningCandidate = nominationDAO.findAllMPTCsInaDistrict(districtId,IConstants.MPTC_ELECTION_TYPE,winnerRank,electionYear);
+			
+			log.info("Calling populateElectionsData() method..");
+			allVotersDetails = populateElectionsData(winningCandidate,successorCandidate);	
+			
+			log.info("Calling populateElectionsData() method..");
+		
+			return mandalAllElectionDetailsVo;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	
+	/*
+	 * This method retrieves all the MPTC's Party candidates present in that particular district.
+	 */
+	public MandalAllElectionDetailsVO getAllMptcsForADistrictForAPartyForSelectedYear(Long districtId,String electionYear,Long partyId) {
+
+		List<MandalAllElectionDetailsVO> winningCandidates = new ArrayList<MandalAllElectionDetailsVO>(0);
+		List<MandalAllElectionDetailsVO> successorCandidates = new ArrayList<MandalAllElectionDetailsVO>(0);
+		List<MandalAllElectionDetailsVO> allVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
+		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
+		
+		Long winnerRank =1l,successorRank=2l;
+		try{
+			log.info("Making nominationDAO.findAllZptcPartysInaDistrict DAO call");					
+			List partySuccessorsResult = nominationDAO.findAllZptcPartysInaDistrict(districtId,IConstants.MPTC_ELECTION_TYPE,electionYear,partyId,winnerRank);
+			
+			log.info("Making nominationDAO.findAllZptcPartysWinnerInaDistrict DAO call");		
+			List partyWinningCandidate = nominationDAO.findAllZptcPartysWinnerInaDistrict(districtId,IConstants.MPTC_ELECTION_TYPE,electionYear,partyId,winnerRank);
+			
+			log.info("Making nominationDAO.findAllZPTCsInaDistrict DAO call");		
+			List winningCandidate = nominationDAO.findAllZPTCsInaDistrict(districtId,IConstants.MPTC_ELECTION_TYPE,winnerRank,electionYear);
+			
+			log.info("Making nominationDAO.findAllZPTCsInaDistrict DAO call");		
+			List successorCandidate = nominationDAO.findAllZPTCsInaDistrict(districtId,IConstants.MPTC_ELECTION_TYPE,successorRank,electionYear);
+			
+			log.info("Calling populateElectionsDataForAllCandidates() method..");
+			successorCandidates = populateElectionsDataForAllCandidates(winningCandidate,partySuccessorsResult);
+			
+			log.info("Calling populateElectionsData() method..");
+			winningCandidates = populateElectionsData(partyWinningCandidate,successorCandidate);
+			if(winningCandidates!=null){
+				allVotersDetails.addAll(winningCandidates);
+			}
+			if(successorCandidates!=null){
+				allVotersDetails.addAll(allVotersDetails.size(),successorCandidates);
+			}
+			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);	
+			
+			return mandalAllElectionDetailsVo;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	/*
+	 * This method retrieves all the ZPTC's Party candidates present in that particular district
+	 */
+	public MandalAllElectionDetailsVO getAllZptcsForADistrictForAPartyForSelectedYear(Long districtId,String electionYear,Long partyId) {
+		
+		List<MandalAllElectionDetailsVO> winningCandidates = new ArrayList<MandalAllElectionDetailsVO>(0);
+		List<MandalAllElectionDetailsVO> successorCandidates = new ArrayList<MandalAllElectionDetailsVO>(0);
+		List<MandalAllElectionDetailsVO> allVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
+		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
+		Long winnerRank =1l,successorRank=2l;
+		try{
+			log.info("Making nominationDAO.findAllZptcPartysInaDistrict DAO call");					
+			List partySuccessorsResult = nominationDAO.findAllZptcPartysInaDistrict(districtId,IConstants.ZPTC_ELECTION_TYPE,electionYear,partyId,winnerRank);
+			
+			log.info("Making nominationDAO.findAllZptcPartysWinnerInaDistrict DAO call");	
+			List partyWinningCandidate = nominationDAO.findAllZptcPartysWinnerInaDistrict(districtId,IConstants.ZPTC_ELECTION_TYPE,electionYear,partyId,winnerRank);
+			
+			log.info("Making nominationDAO.findAllZPTCsInaDistrict DAO call");	
+			List winningCandidate = nominationDAO.findAllZPTCsInaDistrict(districtId,IConstants.ZPTC_ELECTION_TYPE,winnerRank,electionYear);
+			
+			log.info("Making nominationDAO.findAllZPTCsInaDistrict DAO call");	
+			List successorCandidate = nominationDAO.findAllZPTCsInaDistrict(districtId,IConstants.ZPTC_ELECTION_TYPE,successorRank,electionYear);
+			
+			log.info("Calling populateElectionsDataForAllCandidates() method..");
+			successorCandidates = populateElectionsDataForAllCandidates(winningCandidate,partySuccessorsResult);	
+			log.info("Calling populateElectionsData() method..");
+			winningCandidates = populateElectionsData(partyWinningCandidate,successorCandidate);
+			if(winningCandidates!=null){
+				allVotersDetails.addAll(winningCandidates);
+			}
+			if(successorCandidates!=null){
+				allVotersDetails.addAll(allVotersDetails.size(),successorCandidates);
+			}
+			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);		
+			
+			return mandalAllElectionDetailsVo;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	
+	/*
+	 * This method retrieves all the candidates participated in that particular Mptc for a particular election year.
+	 */
+	public MandalAllElectionDetailsVO getAllMptcsCandidatesForADistrictForSelectedYear(Long districtId,String electionYear) {
+		
+		List<MandalAllElectionDetailsVO> winningCandidateVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
+		List<MandalAllElectionDetailsVO> allVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
+		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
+		Long winnerRank =1l,successorRank=2l;
+		try{	
+			log.info("Making nominationDAO.findAllMPTCsInaDistrict DAO call");			
+			List successorCandidate = nominationDAO.findAllMPTCsInaDistrict(districtId,IConstants.MPTC_ELECTION_TYPE,successorRank,electionYear);
+			
+			log.info("Making nominationDAO.findAllMPTCsInaDistrict DAO call");		
+			List winningCandidate = nominationDAO.findAllMPTCsInaDistrict(districtId,IConstants.MPTC_ELECTION_TYPE,winnerRank,electionYear);
+			
+			log.info("Making nominationDAO.findAllMptcCandidatesInaDistrict DAO call");		
+			List allCandidates = nominationDAO.findAllMptcCandidatesInaDistrict(districtId,IConstants.MPTC_ELECTION_TYPE,electionYear);
+			
+			log.info("Calling populateElectionsData() method..");
+			winningCandidateVotersDetails = populateElectionsData(winningCandidate,successorCandidate);	
+			
+			log.info("Calling populateElectionsDataForAllCandidates() method..");
+			allVotersDetails = populateElectionsDataForAllCandidates(winningCandidate,allCandidates);
+			if(winningCandidateVotersDetails!=null){
+				allVotersDetails.addAll(allVotersDetails.size(),winningCandidateVotersDetails);
+			}
+			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);
+			return mandalAllElectionDetailsVo;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return null;
+		}		
+	}
+	
+	/*
+	 * This method retrieves all the winning candidates participated in that particular Zptc for a particular election year.
+	 */
+	public MandalAllElectionDetailsVO getAllZptcsCandidatesForADistrictForSelectedYear(Long districtId,String electionYear) {
+		
+		List<MandalAllElectionDetailsVO> winningCandidateVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
+		List<MandalAllElectionDetailsVO> allVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
+	
+		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
+		Long winnerRank =1l,successorRank=2l;
+		try{	
+			log.info("Making nominationDAO.findAllZPTCsInaDistrictDAO call");			
+			List successorCandidate = nominationDAO.findAllZPTCsInaDistrict(districtId,IConstants.ZPTC_ELECTION_TYPE,successorRank,electionYear);
+			
+			log.info("Making nominationDAO.findAllZPTCsInaDistrict DAO call");
+			List winningCandidate = nominationDAO.findAllZPTCsInaDistrict(districtId,IConstants.ZPTC_ELECTION_TYPE,winnerRank,electionYear);
+			
+			log.info("Making nominationDAO.findAllZptcCandidatesInaDistrict DAO call");
+			List allCandidates = nominationDAO.findAllZptcCandidatesInaDistrict(districtId,IConstants.ZPTC_ELECTION_TYPE,electionYear);
+			
+			log.info("Calling populateElectionsData() method..");
+			winningCandidateVotersDetails = populateElectionsData(winningCandidate,successorCandidate);
+			
+			log.info("Calling populateElectionsDataForAllCandidates() method..");
+			allVotersDetails = populateElectionsDataForAllCandidates(winningCandidate,allCandidates);
+			if(winningCandidateVotersDetails!=null){
+				allVotersDetails.addAll(allVotersDetails.size(),winningCandidateVotersDetails);
+			}
+			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);
+			
+			return mandalAllElectionDetailsVo;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return null;
+		}		
+	}
+	
+	
+	
+	/*
+	 * This method calculates all the voting difference between the winning and the looser candidates and winner sets a VO 
+	 * containing all the information.
+	 */	
+	public List<MandalAllElectionDetailsVO> populateElectionsDataForAllCandidates(List winningCandidate,List allCandidates){
+		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO= new ArrayList<MandalAllElectionDetailsVO>(0);
+		Map<Long,Float> winner = new HashMap<Long,Float>(0);
+		Float differenceVotes;
+		Long constituencyId;
+		try{
+		for(int i=0;i<winningCandidate.size();i++){
+			Object[] parms = (Object[])winningCandidate.get(i);
+			winner.put(Long.parseLong(parms[9].toString()), Float.parseFloat(parms[6].toString()));
+		}
+		log.info("Inside populateElectionsDataForAllCandidates() method..");
+		for(int i=0;i<allCandidates.size();i++){
+			Object[] parms = (Object[])allCandidates.get(i);
+			MandalAllElectionDetailsVO mandalAllElectionDetails = new MandalAllElectionDetailsVO();
+			constituencyId=Long.parseLong(parms[9].toString());
+			if(parms[0]!=null){
+				mandalAllElectionDetails.setPartyFlag(parms[0].toString());
+			}else{
+				mandalAllElectionDetails.setPartyFlag("no_Image.png");
+			}
+			mandalAllElectionDetails.setElectionYear(parms[1].toString());
+			mandalAllElectionDetails.setCandidateName(parms[2].toString());
+			mandalAllElectionDetails.setTehsilName(parms[3].toString());
+			mandalAllElectionDetails.setElectionType(parms[4].toString());
+			mandalAllElectionDetails.setTehsilId(Long.parseLong(parms[5].toString()));
+			mandalAllElectionDetails.setVotesEarned(Float.parseFloat(parms[6].toString()));
+			mandalAllElectionDetails.setPolledVotes(parms[7].toString());
+			mandalAllElectionDetails.setRank(parms[8].toString());
+			if(winner.containsKey(constituencyId)){
+				differenceVotes = winner.get(constituencyId)-Float.parseFloat(parms[6].toString());
+				mandalAllElectionDetails.setVotesDifference(differenceVotes.toString());	
+			}
+			else{
+				differenceVotes = 0f;
+				mandalAllElectionDetails.setVotesDifference("--");
+			}
+			if(Long.parseLong(parms[8].toString())!=1){
+				mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
+			}
+		}
+		return mandalAllElectionDetailsVO;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	
+	/*
+	 *This method calculates all the voting difference between the winning and the successor candidates and winner sets a VO 
+	 *containing all the information
+	 */	
+	public List<MandalAllElectionDetailsVO> populateElectionsData(List winningCandidate,List successorCandidate){
+		List<MandalAllElectionDetailsVO> mandalAllElectionDetailsVO = new ArrayList<MandalAllElectionDetailsVO>(0);
+		Long constituencyId;
+		Float differenceVotes;
+		Map<Long,Float> winner = new HashMap<Long,Float>(0);
+		Map<Long,Float> successor = new HashMap<Long,Float>(0);
+		try{
+			for(int i=0;i<successorCandidate.size();i++){
+				Object[] parms = (Object[])successorCandidate.get(i);
+				successor.put(Long.parseLong(parms[9].toString()), Float.parseFloat(parms[6].toString()));
+			}
+			log.info("Inside populateElectionsData() method..");
+			for(int i=0;i<winningCandidate.size();i++){
+				MandalAllElectionDetailsVO mandalAllElectionDetails = new MandalAllElectionDetailsVO();
+				Object[] parms = (Object[])winningCandidate.get(i);
+				constituencyId = Long.parseLong(parms[9].toString());
+				if(parms[0]==null){
+					mandalAllElectionDetails.setPartyFlag("no_Image.png");
+				}else{
+					mandalAllElectionDetails.setPartyFlag(parms[0].toString());
+				}				
+				mandalAllElectionDetails.setElectionYear(parms[1].toString());
+				mandalAllElectionDetails.setCandidateName(parms[2].toString());
+				mandalAllElectionDetails.setTehsilName(parms[3].toString());
+				mandalAllElectionDetails.setElectionType(parms[4].toString());
+				mandalAllElectionDetails.setTehsilId(Long.parseLong(parms[5].toString()));
+				mandalAllElectionDetails.setVotesEarned(Float.parseFloat(parms[6].toString()));
+				mandalAllElectionDetails.setPolledVotes(parms[7].toString());
+				mandalAllElectionDetails.setRank(parms[8].toString());
+				if(successor.containsKey(constituencyId)){
+					differenceVotes = (Float.parseFloat(parms[6].toString())-successor.get(constituencyId));
+					mandalAllElectionDetails.setVotesDifference(differenceVotes.toString());
+				}else{
+					differenceVotes = 0f;
+					mandalAllElectionDetails.setVotesDifference("--");
+				}
+				mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
+			}		
+		return mandalAllElectionDetailsVO;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/*
+	 * This method takes districtId,electionType and electionYear and generates a list of VO that contains partyId and partyName
+	 */
+	public MandalAllElectionDetailsVO getAllPartiesForAParticularElection(Long districtId,String electionType,String electionYear){
+		MandalAllElectionDetailsVO mandalAllElectionDetailsVO = new MandalAllElectionDetailsVO();
+		 List<SelectOptionVO>  SelectOptionVo = new ArrayList<SelectOptionVO>(0);
+		 try{
+			 List result = nominationDAO.getAllPartysForAParticularElectionYear(districtId,electionType,electionYear);
+			 SelectOptionVO selectOption = new SelectOptionVO();
+			 selectOption.setId(0l);
+			 selectOption.setName("Select");
+				SelectOptionVo.add(selectOption);
+			 for(int i=0;i<result.size();i++){
+				 SelectOptionVO selectOptionVO = new SelectOptionVO();
+				Object[] parms = (Object[])result.get(i);
+				selectOptionVO.setId(Long.parseLong(parms[0].toString()));
+				selectOptionVO.setName(parms[1].toString());
+				SelectOptionVo.add(selectOptionVO);
+			 }
+			 mandalAllElectionDetailsVO.setPartyInfo(SelectOptionVo);
+			return mandalAllElectionDetailsVO;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 }
+
