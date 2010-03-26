@@ -671,7 +671,7 @@ public class UserGroupService implements IUserGroupService {
 			log.debug("Inside getGroupMembersCount Method ..");
 		Long membersCount = null;
 		
-		List grpMembrsCount = staticUserGroupDAO.getGroupMembersCountForAGroup(groupId, userId);
+		List grpMembrsCount = staticUserGroupDAO.getGroupMembersCountForAGroup(groupId);
 		if(grpMembrsCount != null && grpMembrsCount.size() >0){
 			Object memParams = (Object)grpMembrsCount.get(0);
 			membersCount = (Long)memParams;
@@ -808,7 +808,7 @@ public class UserGroupService implements IUserGroupService {
 				subGrpsCnt = (Long)subCnt;
 				groupsBasicInfo.setSubGroupsCount(subGrpsCnt);
 				}
-				List membrsCnt = staticUserGroupDAO.getGroupMembersCountForAGroup(grpId, userId);
+				List membrsCnt = staticUserGroupDAO.getGroupMembersCountForAGroup(grpId);
 				if(membrsCnt != null && membrsCnt.size() >0){
 				Object memParams = (Object)membrsCnt.get(0);
 				membersCount = (Long)memParams;
