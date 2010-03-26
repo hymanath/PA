@@ -85,7 +85,7 @@ var tehsilDetails={
 			partyMptcArray:[]
 		};
 var districtId = ${districtId};
-var electionTypeId,myDataTableForParty,myDataTableForMptcParty;
+var electionTypeId,myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear,mptcElectionType,zptcElectionType;
 
 	function initializeResultsTable() {
 
@@ -175,6 +175,11 @@ var electionTypeId,myDataTableForParty,myDataTableForMptcParty;
 }
 
 
+	function getConstituencyElecResultsWindow(constiId)
+	{	
+	   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
+	   browser1.focus();
+	}
 function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 {
    var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
@@ -182,45 +187,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 }
 
 
-
-	function initializeResultsTableForMptc() {
-
-		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.mptcArray);
-		resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-		resultsDataSourceForTehsil.responseSchema = {
-			fields : [ {
-				key : "candidateName"
-			}, {
-				key : "tehsilName"
-			}, {
-				key : "partyFlag"
-			}]
-		};
-
-		var resultsColumnDefsForTehsil = [ {
-			key : "candidateName",
-			label : "Candidate Name",
-			sortable : true
-		}, {
-			key : "tehsilName",
-			label : "Mandal Name",
-			sortable : true
-		}, {
-			key : "partyFlag",
-			label : "Party Flag",
-			sortable : true
-		} ];
-
-		var myConfigsForTehsil = {
-	    paginator : new YAHOO.widget.Paginator({
-	        rowsPerPage: 5,
-	        template: "{PageLinks} Show {RowsPerPageDropdown} per page",
-	        rowsPerPageOptions: [5,10,15,20], 
-	        pageLinks: 10 
-	    })
-	};
-		var myDataTableForTehsil = new YAHOO.widget.DataTable("mptcInfoDivBody",resultsColumnDefsForTehsil, resultsDataSourceForTehsil,myConfigsForTehsil);  
-}
+	
 
 	function initializeResultsTableForMp() {
 
@@ -399,8 +366,21 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
+	function redirectCandidateLink()
+	{
+		 var browser1 = window.open("<s:url action="districtPageCandidateDetailsAjaxAction.action"/>?disId="+districtId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear,"browser1","scrollbars=yes,height=600,width=1000,left=200,top=200");
+		 browser1.focus();
+	}
+	function redirectMptcCandidateLink()
+	{
+		 var browser2 = window.open("<s:url action="districtPageCandidateDetailsAjaxAction.action"/>?disId="+districtId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear,"browser2","scrollbars=yes,height=600,width=1000,left=200,top=200");
+		 browser2.focus();
+	}
 	function showAllPartyDetails(results)
 	{
+		var candLink = document.getElementById("candidateLink");
+		var linkRef = '<a href="javascript:{}" onclick="redirectCandidateLink()">view candidate details..</a>';
+		candLink.innerHTML = linkRef;
 		assignToPartyDataArray = new Array();
 		for(var i in results)
 		{		
@@ -426,10 +406,13 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 
 	function showAllMptcPartyDetails(results)
 	{
+		var candLink = document.getElementById("mptcCandidateLink");
+		var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink() ">view candidate details..</a>';
+		candLink.innerHTML = linkRef;
 		assignToPartyDataArray = new Array();
 		for(var i in results)
 		{		
-			var problemObj=
+			var problemObj=		
 			 {		
 					partyName:results[i].partyName,
 					participatedSeats:results[i].participatedSeats,
@@ -527,50 +510,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 
 	
-	function showMptcData(results)
-	{
-		
-        var imgElmt = document.getElementById("mptcInfoDivBody");
-        var spanElmt=document.getElementById("mptcDetails");	
-        
-        if(imgElmt.style.display == 'block'){
-			 imgElmt.style.display = 'none';
-			 spanElmt.innerHTML=" view more details.."; 
-		}
-	
-		else{
-			imgElmt.style.display = 'block';
-			spanElmt.innerHTML=" (close)"; 
-		}		
-		
-		assignToMptcDataArray = new Array();
-		for(var i in results.mptcMandalAllElectionDetailsVO)
-		{		
-			var partyFlag = results.mptcMandalAllElectionDetailsVO[i].partyFlag;
-			var tehsilName = results.mptcMandalAllElectionDetailsVO[i].tehsilName;	
-			var tehsilId = results.mptcMandalAllElectionDetailsVO[i].tehsilId;	
-			var problemObj=
-			 {				 
-					partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>',
-					electionYear:results.mptcMandalAllElectionDetailsVO[i].electionYear,
-					candidateName:results.mptcMandalAllElectionDetailsVO[i].candidateName,
-					tehsilName:results.mptcMandalAllElectionDetailsVO[i].tehsilName,
-					tehsilId:results.mptcMandalAllElectionDetailsVO[i].tehsilId,						
-					electionType:results.mptcMandalAllElectionDetailsVO[i].electionType						
-			 };
-			
-			assignToMptcDataArray.push(problemObj);
-			tehsilDetails.mptcArray=assignToMptcDataArray;	
-		}
-	
-		var emptyArr = new Array();
-	    if(results.length == 0)
-		{	
-	    	tehsilDetails.mptcArray = emptyArr;				
-		}
-	    initializeResultsTableForMptc();  
-	      
-	}
+
 
 	function getZptcData()
 	{	
@@ -624,6 +564,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 	function getPartyDetails(id)
 	{
+		zptcElectionYear = id;
+		zptcElectionType = electionType;
 		var jsObj=
 		{		
 				districtId:districtId,
@@ -639,6 +581,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 
 	function getMptcPartyDetails(id)
 	{
+		mptcElectionYear = id;	
+		mptcElectionType = electionType;	
 		var jsObj=
 		{		
 				districtId:districtId,
@@ -670,7 +614,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
         if(imgElmt.style.display == 'block'){
 			 imgElmt.style.display = 'none';
 			 spanElmt.innerHTML=" view more details.."; 
-				if(myDataTableForParty){
+			 var hideDiv=document.getElementById("candidateLink");
+			 hideDiv.innerHTML = ""; 
+			 if(myDataTableForParty){
 					myDataTableForParty.destroy();
 				}
 		}	
@@ -697,7 +643,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
         if(imgElmt.style.display == 'block'){
 			 imgElmt.style.display = 'none';
 			 spanElmt.innerHTML=" view more details.."; 
-				if(myDataTableForMptcParty){
+			 var hideDiv=document.getElementById("mptcCandidateLink");
+			 hideDiv.innerHTML = ""; 
+			 if(myDataTableForMptcParty){
 					myDataTableForMptcParty.destroy();
 				}
 		}	
@@ -816,6 +764,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 							</a>
 						</span>
 					</td>
+					<td><a href="javascript:{}" onclick="getConstituencyElecResultsWindow(${candidate.constituencyId})">view results</a></td>
 					<td>
 	                <a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${candidate.constituencyId}','${constituenciesStatusVO.electionType}','${constituenciesStatusVO.electionYear}')">view results</a>
 				</td>
@@ -867,7 +816,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		</tr>
 		<tr><td>
 			<div class="yui-skin-sam"><div id="zptcInfoDivBody"></div></div>
-			<div class="yui-skin-sam"><div id="partyDetails"></div></div>			
+			<div class="yui-skin-sam"><div id="partyDetails"></div><div id="candidateLink"></div></div>			
 		</td></tr>
 		<tr>
 			<td><b> Total Number of MPTC's : </b><c:out value="${constituenciesStatusVO.mptcCount}"/>
@@ -875,7 +824,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		</tr>
 		<tr><td>
 			<div class="yui-skin-sam"><div id="mptcInfoDivBody"></div></div>
-			<div class="yui-skin-sam"><div id="mptcPartyDetails"></div></div>
+			<div class="yui-skin-sam"><div id="mptcPartyDetails"></div><div id="mptcCandidateLink"></div></div>
 		</td></tr>
 	</table>
 </div>	
@@ -892,7 +841,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				<span id="mandalAncSpan">
 					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
 					<a href="mandalPageElectionInfoAction.action?MANDAL_ID=${mandalsBeforeDelimitationConstituency.id}&MANDAL_NAME=${mandalsBeforeDelimitationConstituency.name}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mandalsBeforeDelimitationConstituency.name}
-					</a>&nbsp 
+					</a>&nbsp; 
 				</span>
 			</td>	
 			<c:if test="${stat.count % 4==0}">
