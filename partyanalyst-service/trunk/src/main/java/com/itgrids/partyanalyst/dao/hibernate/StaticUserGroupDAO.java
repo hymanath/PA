@@ -14,9 +14,9 @@ public class StaticUserGroupDAO extends GenericDaoHibernate<StaticUserGroup, Lon
 	}
 
 	@SuppressWarnings("unchecked")
-	public List getGroupMembersCountForAGroup(Long groupId,Long userId){
-		Object[] params = {groupId,userId};
-		return getHibernateTemplate().find("select count(model.staticUserGroupId) from StaticUserGroup model where model.personalUserGroup.personalUserGroupId = ? and model.staticUser.staticUserId = ?",params);
+	public List getGroupMembersCountForAGroup(Long groupId){
+		//Object[] params = {groupId,userId};
+		return getHibernateTemplate().find("select count(model.staticUserGroupId) from StaticUserGroup model where model.personalUserGroup.personalUserGroupId = ? ",groupId);
 	}
 	
 
