@@ -9,7 +9,7 @@ import com.itgrids.partyanalyst.model.StaticUserGroup;
 public interface IStaticUserGroupDAO extends GenericDao<StaticUserGroup ,Long> {
 
 	@SuppressWarnings("unchecked")
-	public List getGroupMembersCountForAGroup(Long groupId,Long userId);
+	public List getGroupMembersCountForAGroup(Long groupId);
 
 	
 	@SuppressWarnings("unchecked")
