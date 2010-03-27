@@ -22,13 +22,16 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		this.villageBoothElectionDAO = villageBoothElectionDAO;
 	}
 
-	public void testFindTownshipWiseBoothDetailsForTehsil(){
+	/*public void testFindTownshipWiseBoothDetailsForTehsil(){
 		List list = villageBoothElectionDAO.findTownshipWiseBoothDetailsForTehsil(835l, 1l);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]);
+	}*/
+	
+	public void testFindElectionsForElectionType(){
+		List list = villageBoothElectionDAO.findElectionsForElectionType(1l);
+		System.out.println(list.size());
 	}
-	
-	
 	/*public void testGetAll(){
 		List<VillageBoothElection> list = villageBoothElectionDAO.getAll();
 		assertEquals(list.size() >= 0, true);

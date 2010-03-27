@@ -34,6 +34,8 @@ import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
+import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.dao.hibernate.VillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateWonVO;
@@ -91,6 +93,7 @@ public class StaticDataService implements IStaticDataService {
 	private final static Logger log = Logger.getLogger(StaticDataService.class);
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private Set parliamentConstituencies = new HashSet(0);
+	private IVillageBoothElectionDAO villageBoothElectionDAO;
 	
 
 	/**
@@ -219,6 +222,17 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 
+	public IVillageBoothElectionDAO getVillageBoothElectionDAO() {
+		return villageBoothElectionDAO;
+	}
+
+
+	public void setVillageBoothElectionDAO(
+			IVillageBoothElectionDAO villageBoothElectionDAO) {
+		this.villageBoothElectionDAO = villageBoothElectionDAO;
+	}
+
+
 	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
@@ -260,10 +274,10 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 	public List<SelectOptionVO> getElectionIdsAndYears(Long electionTypeId) {
-		List<Election> elections = electionDAO.findByPropertyTypeId(electionTypeId);
+		List elections = villageBoothElectionDAO.findElectionsForElectionType(electionTypeId);
 		List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
-		for(Election election: elections){
-			years.add(new SelectOptionVO(election.getElectionId(), election.getElectionYear()));
+		for(Object[] election: (List<Object[]>)elections){
+			years.add(new SelectOptionVO((Long)election[0], election[1].toString()));
 		}
 		return years;
 	}

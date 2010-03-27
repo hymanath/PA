@@ -13,4 +13,6 @@ public interface IVillageBoothElectionDAO extends GenericDao<VillageBoothElectio
 	public List<Long> findByTownshipAndBoothConstituencyElection(Long townshipId,
 			Long boothConstituencyElectionId);
 	
+	public List findElectionsForElectionType(Long electionTypeId);
+	
 }
