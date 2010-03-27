@@ -25,6 +25,7 @@
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
