@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Candidate Results</title>
+<title>Candidate Election Result Page</title>
 
 
 <!-- YUI files dependencies (start) -->
@@ -26,7 +26,33 @@
 <script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 
 <!-- YUI files dependencies (end) -->
-
+<style type="text/css">
+.detailsHead
+		{
+			color:#247CD4;
+			font-size:19px;
+			font-weight:bold;
+			padding:10px;
+			text-align:center;
+		}
+		
+.yui-skin-sam .yui-dt table
+ {
+		border-collapse:separate;
+		border-spacing:0;
+		color:highlight;
+		font-family:arial;
+		font-size:14px;
+		margin:0;
+		padding:0;
+}
+.yui-skin-sam .yui-dt th, .yui-skin-sam .yui-dt th a {
+			color:SlateGray;
+			font-weight:bold;
+			text-decoration:none;
+			vertical-align:bottom;
+}
+</style>
 
 <script type="text/javascript">
 var districtId = '${disId}';
@@ -73,23 +99,6 @@ function callAjax(param,jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
-function showPartys(results)
-{	
-	 if(myDataTableForTehsil){
-		 myDataTableForTehsil.destroy();
-		}
-	var showParties = document.getElementById("showParties");
-	var populateParties='';
-	populateParties+="<b>Select Party</b> :";
-	populateParties+='<select id="tehsilParties" style="width:80px;" onchange="partyWise(this.options[this.selectedIndex].value)">';
-	for(var i in results.partyInfo)
-	{
-		populateParties+='<option value="'+results.partyInfo[i].id+'">'+results.partyInfo[i].name+'</option>';
-	}
-	populateParties+='</select>';
-	showParties.innerHTML = populateParties;
-}
-
 function initializeResultsTableForWinners() {
 
 	var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.winnersArray);
@@ -100,7 +109,7 @@ function initializeResultsTableForWinners() {
 		}, {
 			key : "tehsilName"
 		}, {
-			key : "polledVotes"
+			key : "votesPolled"
 		}, {
 			key : "votesEarned"
 		}, {
@@ -121,7 +130,7 @@ function initializeResultsTableForWinners() {
 		label : "Mandal Name",
 		sortable : true
 	}, {
-		key : "polledVotes",
+		key : "votesPolled",
 		label : "Polled Votes",
 		sortable : true
 	}, {
@@ -147,7 +156,30 @@ function initializeResultsTableForWinners() {
         rowsPerPage: 10
     })
 };
-	 myDataTableForTehsil = new YAHOO.widget.DataTable("winnersInfoDiv",resultsColumnDefsForTehsil, resultsDataSourceForTehsil,myConfigsForTehsil);  
+	 myDataTableForTehsil = new YAHOO.widget.DataTable("winnersInfoDiv",resultsColumnDefsForTehsil, resultsDataSourceForTehsil,myConfigsForTehsil);
+
+	 var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+	 ajaxImgElmt.style.display = "none";  
+}
+
+
+function showPartys(results)
+{	
+	 var imgElmt = document.getElementById("showParties");
+	 imgElmt.innerHTML="";
+	 
+	 if(myDataTableForTehsil){
+		 myDataTableForTehsil.destroy();
+		}
+	var showParties = document.getElementById("showParties");
+	var populateParties='';
+	populateParties+='<select id="tehsilParties" style="width:80px;" onchange="partyWise(this.options[this.selectedIndex].value)">';
+	for(var i in results.partyInfo)
+	{
+		populateParties+='<option value="'+results.partyInfo[i].id+'">'+results.partyInfo[i].name+'</option>';
+	}
+	populateParties+='</select>';
+	showParties.innerHTML = populateParties;
 }
 
 function showAllCandidates(results)
@@ -163,7 +195,7 @@ function showAllCandidates(results)
 			 {				 
 					candidateName:results.allVotersDetails[i].candidateName,
 					tehsilName:results.allVotersDetails[i].tehsilName,
-					polledVotes:results.allVotersDetails[i].polledVotes,
+					votesPolled:results.allVotersDetails[i].votesPolled,
 					votesEarned:results.allVotersDetails[i].votesEarned, 	
 					votesDifference:results.allVotersDetails[i].votesDifference,	
 					rank:results.allVotersDetails[i].rank,			
@@ -184,6 +216,7 @@ function showAllCandidates(results)
 
 function showWinners(results)
 {
+	
 	 var imgElmt = document.getElementById("showParties");
 	 imgElmt.innerHTML="";
 	 
@@ -195,7 +228,7 @@ function showWinners(results)
 		 {				 
 				candidateName:results.allVotersDetails[i].candidateName,
 				tehsilName:results.allVotersDetails[i].tehsilName,
-				polledVotes:results.allVotersDetails[i].polledVotes,
+				votesPolled:results.allVotersDetails[i].votesPolled,
 				votesEarned:results.allVotersDetails[i].votesEarned, 	
 				votesDifference:results.allVotersDetails[i].votesDifference,	
 				rank:results.allVotersDetails[i].rank,			
@@ -216,6 +249,8 @@ function showWinners(results)
 
 function showPartyWise(results)
 {
+	var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+	ajaxImgElmt.style.display = "block";
 	assignToMptcDataArray = new Array();
 	for(var i in results.allVotersDetails)
 	{		
@@ -224,7 +259,7 @@ function showPartyWise(results)
 		 {				 
 				candidateName:results.allVotersDetails[i].candidateName,
 				tehsilName:results.allVotersDetails[i].tehsilName,
-				polledVotes:results.allVotersDetails[i].polledVotes,
+				votesPolled:results.allVotersDetails[i].votesPolled,
 				votesEarned:results.allVotersDetails[i].votesEarned, 	
 				votesDifference:results.allVotersDetails[i].votesDifference,	
 				rank:results.allVotersDetails[i].rank,			
@@ -244,6 +279,8 @@ function showPartyWise(results)
 }
 function allCandidates()
 {
+	var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+	ajaxImgElmt.style.display = "block";
 	var jsObj=
 	{
 			districtId:districtId,
@@ -258,6 +295,8 @@ function allCandidates()
 
 function winners()
 {
+	var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+	ajaxImgElmt.style.display = "block";
 	var jsObj=
 	{	
 			districtId:districtId,
@@ -268,10 +307,13 @@ function winners()
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/tehsilPageAjaxAction.action?"+rparam;						
 	callAjax(rparam,jsObj,url);
+	
 }
 
 function partyWise(id)
 {
+	var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
+	ajaxImgElmt.style.display = "block";
 	var jsObj=
 	{
 			partyId:id,
@@ -301,17 +343,25 @@ function getParties()
 </script>
 </head>
 <body onload="allCandidates()">
+<div class="detailsHead">
+		Candidate Elections Result Page<br/><br/>
+</div>
 	<table>
 		<tr>
-			<td>View By</td>
+			<td style="color:#247CD4;font-weight:bold;">View By</td>
 		</tr>
 		<tr>
-			<td><input  type="radio" name="location" value="candidates" onclick="allCandidates()" checked="checked"> All Candidates</td>		
-			<td><input  type="radio" name="location" value="winners" onclick="winners()"> Winners</td>
-			<td><input  type="radio" name="location" value="partyWise" onclick="getParties()"> PartyWise</td>
-			<td><div id="showParties"></div>
+			<td style="font-weight:bold;"><input type="radio" name="location" value="candidates" onclick="allCandidates()" checked="checked"> All Candidates</td>		
+			<td style="font-weight:bold;"><input style="font-weight:bold;" type="radio" name="location" value="winners" onclick="winners()"> Winners</td>
+			<td style="font-weight:bold;"><input style="font-weight:bold;" type="radio" name="location" value="partyWise" onclick="getParties()"> PartyWise</td>
+			<td><div id="showParties"></div></td>
 		</tr>
 	</table>
+	<div id="ajaxLoadDiv" style="display:none;padding-top:20px;">
+							<span><b>Processing Request</b> </span>
+							<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/barloader.gif"/>
+	</div>
+	
 	<div class="yui-skin-sam"><div id="winnersInfoDiv"></div></div>
 </body>
 </html>
