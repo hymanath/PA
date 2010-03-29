@@ -19,7 +19,7 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private Long tenderedVoters;
 	private String candidateName;
 	private String polledVotes;
-	private String votesDifference;
+	private Float votesDifference;
 	private String rank;
 	private String partyVotesPercentage;
 	private Long earnedVotes;
@@ -30,13 +30,19 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private String partyFlag;
 	private int zptcCount;
 	private int mptcCount;
+	private Float votesPolled;
 	private Float votesEarned;
 	private List<MandalAllElectionDetailsVO> zptcMandalAllElectionDetailsVO;
 	private List<MandalAllElectionDetailsVO> mptcMandalAllElectionDetailsVO;
 	private List<MandalAllElectionDetailsVO> allVotersDetails;
 	private List<SelectOptionVO> partyInfo;
 	
-
+	public void setVotesDifference(Float votesDifference) {
+		this.votesDifference = votesDifference;
+	}
+	public Float getVotesDifference() {
+		return votesDifference;
+	}
 	public List<SelectOptionVO> getPartyInfo() {
 		return partyInfo;
 	}
@@ -103,9 +109,6 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	public String getTehsilName() {
 		return tehsilName;
 	}
-	public String getVotesDifference() {
-		return votesDifference;
-	}
 	public String getRank() {
 		return rank;
 	}
@@ -117,9 +120,6 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	}
 	public void setVotesEarned(Float votesEarned) {
 		this.votesEarned = votesEarned;
-	}
-	public void setVotesDifference(String votesDifference) {
-		this.votesDifference = votesDifference;
 	}
 	public void setTehsilName(String tehsilName) {
 		this.tehsilName = tehsilName;
@@ -193,6 +193,12 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	}
 	public Long getElectionTypeID() {
 		return electionTypeID;
+	}
+	public Float getVotesPolled() {
+		return votesPolled;
+	}
+	public void setVotesPolled(Float votesPolled) {
+		this.votesPolled = votesPolled;
 	}
 	public void setElectionTypeID(Long electionTypeID) {
 		this.electionTypeID = electionTypeID;
