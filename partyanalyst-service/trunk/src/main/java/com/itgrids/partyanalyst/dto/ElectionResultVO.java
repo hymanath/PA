@@ -6,7 +6,16 @@ public class ElectionResultVO {
 	private String electionYear;
 	private Long votesEarned;
 	private String percentage;
+	private String partyName;
 	
+	public String getPartyName() {
+		return partyName;
+	}
+
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+
 	public String getElectionType() {
 		return electionType;
 	}

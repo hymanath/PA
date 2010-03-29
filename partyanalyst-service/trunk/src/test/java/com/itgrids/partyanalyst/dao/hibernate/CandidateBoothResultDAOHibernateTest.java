@@ -90,10 +90,19 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetAllACPCPartiesInMandal(){
+	/*public void testGetAllACPCPartiesInMandal(){
 		List list = candidateBoothResultDAO.getAllACPCPartiesInMandal(843l);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]);
+	}*/
+	
+	public void testFindAssemblyWiseParliamentResultsForParties(){
+		long start = System.nanoTime();
+		List list = candidateBoothResultDAO.findAssemblyWiseParliamentResultsForParties(232l, 404l, "2009");
+		long end = System.nanoTime();
+		System.out.println((end-start)/1000000000);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 	}
 	
 }
