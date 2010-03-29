@@ -469,12 +469,12 @@ var allZPTCMPTCElecInfo = new Array();
 		revenueInfo += '<option value="0">Select </option>';
 		revenueInfo += '<option value="1">Parliament</option>';
 		revenueInfo += '<option value="2">Assembly</option>';
-		revenueInfo += '</select></td></tr>';
-		revenueInfo += '<tr>';
+		revenueInfo += '</select></td>';
 		revenueInfo += '<td><div id="electionIdSelectDivLabel"></div></td>';
 		revenueInfo += '<td><div id="electionIdSelectDivData"></div></td>';
         revenueInfo += '<td><div id="AjaxImgDiv" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
-		revenueInfo += '</tr>';
+        revenueInfo += '<td width="20px" height="10px"><div id="revenueVillagesResultsLinkDiv"></div></td>';
+        revenueInfo += '</tr>';
 		revenueInfo += '</table>';
 		revenueInfo += '<br>';
 		revenueInfo += '<div id="revenueVillagesInfo"></div>';
@@ -670,13 +670,12 @@ var allZPTCMPTCElecInfo = new Array();
 		
 		var rvStrDiv = document.getElementById('revenueVillagesInfo');
 
+		var revenueResult = document.getElementById('revenueVillagesResultsLinkDiv');
+		revenueResultStr = '<a href="#" onclick="openwin()" ><img style="border:medium none;"src="images/icons/mandalPage/click.png" width="420px" height="30px"/></a>';
+		revenueResult.innerHTML = revenueResultStr;
+		
 		var rvStr = '';		
 		rvStr += '<a name="votersDiv"></a>';
-		rvStr += '<a href="#" onclick="openwin()" >Click Here For Revenue Village Results </a>'
-		rvStr += '<div id="radioRevenueVillagesResultsDiv" class="commonVotersHeadDiv" style="text-decoration:none;"></div>';
-		rvStr += '<br/>';
-		rvStr += '<div id="revenueVillagesResultsDiv" class="commonVotersHeadDiv">';
-		rvStr += '<br/>';
 		rvStr += '<div id="revenueVillageDiv_head" class="commonVotersHeadDiv">';
 		rvStr += 'Voting Trendz In Revenue Villages / Township for ${mandalInfoVO.mandalName} Mandal in  '+yearVal+' '+typeVal+' Election ';
 		rvStr += '</div>';
@@ -929,8 +928,6 @@ var allZPTCMPTCElecInfo = new Array();
 		var str = '';
 		var estr = '';
 		var mandal = ${mandalId};
-				
-		var elmt = document.getElementById("mandalGraphDiv");
 		var elmtData = document.getElementById("graphDataDiv");
 			
 		if(value=="0")
@@ -962,7 +959,7 @@ var allZPTCMPTCElecInfo = new Array();
 		if(elmtData)
 			elmtData.innerHTML = estr;
 
-		str+='<img src="charts/partyPerformanceInAllMandalElections_'+mandal+'_'+value+'.png"/>'; 
+		str+=''; 
 		if(elmt)
 			elmt.innerHTML=str;
 		
@@ -975,20 +972,10 @@ var allZPTCMPTCElecInfo = new Array();
 		str+='<div>';
 		str+='<table>';
 		str+='<tr>';
-		str+='<td class="graphLabelTd"> Select Party To View Performance Graph In All Elections:</td>';
-		
-		str+='<td class="graphLabelTd">';
-		str+='<select onchange="getGraph(this.value)">';
-		str+='<option value="0">Select Party</option>';
-		<c:forEach var="party" items="${partiesInMandalWiseElections}">
-			str+='<option value="${party.id}">${party.name}</option>';
-		</c:forEach>		
-		str+='</select>';
-		str+='</td>';
-		str+='<td rowspan="2" style="vertical-align:top"><div id="mandalGraphDiv"></div></td>';		
+		str+='<td style="vertical-align:top"><div id="mandalGraphDiv"></div></td>';		
 		str+='</tr>';
 		str+='<tr>';
-		str+='<td colspan="2" style="vertical-align:top"><div id="graphDataDiv"></div></td>';
+		str+='<td style="vertical-align:top"><div id="graphDataDiv" align="center"><img src="charts/allPartiesMandalWisePerformanceInAllElections_${mandalId}.png"/></div></td>';
 		str+='</tr>';
 		str+='</table>';		
 		str+='</div>';
