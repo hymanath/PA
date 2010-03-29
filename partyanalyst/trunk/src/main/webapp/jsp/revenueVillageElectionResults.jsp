@@ -158,7 +158,8 @@ legend
 										sortable:true
 									}
 							var obj2 = {
-										key:"${candidateInfo.party} [${candidateInfo.rank}]"
+										key:"${candidateInfo.party} [${candidateInfo.rank}]",
+										parser:"number"
 									}
 							myColumnDefs.push(obj1);
 							myFields.push(obj2);
