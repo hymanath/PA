@@ -309,6 +309,16 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			{
 				getMptcPartyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),jObj.getString("electionYear"),new Long(jObj.getString("districtId")));
 			}
+			else if(jObj.getString("task").equalsIgnoreCase("getAllZptcParties"))
+			{
+				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("electionTypeId")));
+				partyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),electionYears.get(0).getId().toString(),new Long(jObj.getString("districtId")));
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getAllMptcParties"))
+			{
+				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("electionTypeId")));
+				getMptcPartyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),electionYears.get(0).getId().toString(),new Long(jObj.getString("districtId")));
+			}
 		
 		}		
 		return SUCCESS;  
