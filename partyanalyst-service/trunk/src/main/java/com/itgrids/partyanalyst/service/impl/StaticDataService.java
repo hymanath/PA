@@ -1516,10 +1516,10 @@ public class StaticDataService implements IStaticDataService {
 		List<SelectOptionVO> SelectOptionVO = new ArrayList<SelectOptionVO>(0);
 		Long stateId = 1l;
 		try{
-			SelectOptionVO selectOption = new SelectOptionVO();
+		/*	SelectOptionVO selectOption = new SelectOptionVO();
 			selectOption.setId(0l);
 			selectOption.setName("Select");
-			SelectOptionVO.add(selectOption);
+			SelectOptionVO.add(selectOption);*/
 			List result = electionDAO.findElectionAndYearForElectionTypeAndState(electionType,stateId);
 			for(int i=result.size()-1;i>=0;i--){
 				SelectOptionVO selectOptionVo = new SelectOptionVO();
@@ -2015,15 +2015,15 @@ public class StaticDataService implements IStaticDataService {
 			mandalAllElectionDetails.setElectionType(parms[4].toString());
 			mandalAllElectionDetails.setTehsilId(Long.parseLong(parms[5].toString()));
 			mandalAllElectionDetails.setVotesEarned(Float.parseFloat(parms[6].toString()));
-			mandalAllElectionDetails.setPolledVotes(parms[7].toString());
+			mandalAllElectionDetails.setVotesPolled(Float.parseFloat(parms[7].toString()));
 			mandalAllElectionDetails.setRank(parms[8].toString());
 			if(winner.containsKey(constituencyId)){
 				differenceVotes = winner.get(constituencyId)-Float.parseFloat(parms[6].toString());
-				mandalAllElectionDetails.setVotesDifference(differenceVotes.toString());	
+				mandalAllElectionDetails.setVotesDifference(Float.parseFloat(differenceVotes.toString()));	
 			}
 			else{
 				differenceVotes = 0f;
-				mandalAllElectionDetails.setVotesDifference("--");
+				mandalAllElectionDetails.setVotesDifference(differenceVotes);
 			}
 			if(Long.parseLong(parms[8].toString())!=1){
 				mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
@@ -2069,14 +2069,14 @@ public class StaticDataService implements IStaticDataService {
 				mandalAllElectionDetails.setElectionType(parms[4].toString());
 				mandalAllElectionDetails.setTehsilId(Long.parseLong(parms[5].toString()));
 				mandalAllElectionDetails.setVotesEarned(Float.parseFloat(parms[6].toString()));
-				mandalAllElectionDetails.setPolledVotes(parms[7].toString());
+				mandalAllElectionDetails.setVotesPolled(Float.parseFloat(parms[7].toString()));
 				mandalAllElectionDetails.setRank(parms[8].toString());
 				if(successor.containsKey(constituencyId)){
 					differenceVotes = (Float.parseFloat(parms[6].toString())-successor.get(constituencyId));
-					mandalAllElectionDetails.setVotesDifference(differenceVotes.toString());
+					mandalAllElectionDetails.setVotesDifference(Float.parseFloat(differenceVotes.toString()));
 				}else{
 					differenceVotes = 0f;
-					mandalAllElectionDetails.setVotesDifference("--");
+					mandalAllElectionDetails.setVotesDifference(differenceVotes);
 				}
 				mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
 			}		
