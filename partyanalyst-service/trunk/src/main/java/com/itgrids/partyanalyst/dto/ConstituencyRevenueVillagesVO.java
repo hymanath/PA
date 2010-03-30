@@ -9,6 +9,17 @@ public class ConstituencyRevenueVillagesVO {
 	private String constituencyName;
 	private List<CandidatePartyInfoVO> candidateNamePartyAndStatus;
 	private List<RevenueVillageElectionVO> revenueVillageElectionVO;
+	private List<ConstituencyOrMandalWiseElectionVO> constituencyOrMandalWiseElectionVO;
+	 
+	
+	public List<ConstituencyOrMandalWiseElectionVO> getConstituencyOrMandalWiseElectionVO() {
+		return constituencyOrMandalWiseElectionVO;
+	}
+
+	public void setConstituencyOrMandalWiseElectionVO(
+			List<ConstituencyOrMandalWiseElectionVO> constituencyOrMandalWiseElectionVO) {
+		this.constituencyOrMandalWiseElectionVO = constituencyOrMandalWiseElectionVO;
+	}
 
 	public Long getTotalVoters() {
 		return totalVoters;

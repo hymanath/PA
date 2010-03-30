@@ -33,9 +33,15 @@ public class PartyElectionResultVO implements Serializable {
 	private Long rank;
 	private Long totalBooths;
 	private String status;
-	
+	private Long totalVotes;
 	
 	//getters and setters
+	public Long getTotalVotes() {
+		return totalVotes;
+	}
+	public void setTotalVotes(Long totalVotes) {
+		this.totalVotes = totalVotes;
+	}
 	public Long getPartyId() {
 		return partyId;
 	}
