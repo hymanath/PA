@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dto.PartyInfoVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.ConstituencyElectionResult;
 import com.itgrids.partyanalyst.model.Election;
@@ -99,7 +100,7 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 	 */
 	
 	public List<PartyInfoVO> getPartyAndCompetetorsInfo(Election election, 
-			String requiredPartyShortName, Long stateID, Long districtID, Long constituencyID, int competetorSize,ElectionScopeLevelEnum level) {
+			String requiredPartyShortName, Long stateID, Long districtID, Long constituencyID, int competetorSize,ElectionScopeLevelEnum level,Boolean hasAlliance,List<SelectOptionVO> allianceParties) {
 		log.debug("BasePartyResultsServiceImpl.getPartyAndCompetetorsInfo() Start");
 		String electionYear = election.getElectionYear();
 		StringBuilder constituencyElectionIDs = new StringBuilder();
@@ -130,6 +131,18 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 		Map<String, PartyInfoVO> partyAndCompetetorsInfo = getConstituencyPartyResults(ConstituencyElectionList, electionYear);
 		
 		PartyInfoVO requiredPartyInfoVO = partyAndCompetetorsInfo.get(requiredPartyShortName);
+		List<PartyInfoVO> alliancePartysInfoVO = null;
+		
+		if(hasAlliance && allianceParties != null && allianceParties.size() > 0){
+			alliancePartysInfoVO = new ArrayList<PartyInfoVO>();
+			for(SelectOptionVO alliancParty:allianceParties){
+				PartyInfoVO alliancPartyInfo = partyAndCompetetorsInfo.get(alliancParty.getName());
+				if(alliancPartyInfo != null){
+				partyAndCompetetorsInfo.remove(alliancParty.getName());
+				alliancePartysInfoVO.add(alliancPartyInfo);
+				}
+			}
+		}
 		if(requiredPartyInfoVO==null){
 			return new ArrayList<PartyInfoVO>();
 		}
@@ -137,8 +150,13 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 		if(requiredPartyInfoVO!=null)
 			requiredPartyInfoVO.setPercentageOfVotes(getPercentage(requiredPartyInfoVO,constituencyGrandTotalValidVotes));
 		
+		if(alliancePartysInfoVO != null)
+		for(PartyInfoVO alliancePartysInfo:alliancePartysInfoVO){
+		alliancePartysInfo.setPercentageOfVotes(getPercentage(alliancePartysInfo,constituencyGrandTotalValidVotes));
+		}
+		
 		List<PartyInfoVO> partyAndCompetetorsInfoListResult = calculatePartyDetails(partyAndCompetetorsInfo, 
-					competetorSize, constituencyGrandTotalValidVotes, requiredPartyInfoVO);
+					competetorSize, constituencyGrandTotalValidVotes, requiredPartyInfoVO,hasAlliance,alliancePartysInfoVO);
 		//partyAndCompetetorsInfoListResult.add(0,requiredPartyInfoVO);
 		
 		return partyAndCompetetorsInfoListResult;
@@ -156,7 +174,7 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 	 */
 	public List<PartyInfoVO> calculatePartyDetails(Map<String, PartyInfoVO> partyAndCompetetorsInfo, 
 			int competetorSize, Long constituencyGrandTotalValidVotes,
-			PartyInfoVO requiredPartyInfoVO){
+			PartyInfoVO requiredPartyInfoVO,Boolean hasAlliance,List<PartyInfoVO> alliancePartysInfoVO){
 		System.out.println("BasePartyResultService sart competetorSize competetorSize competetorSize competetorSize competetorSize :"+competetorSize);
 		
 		List<PartyInfoVO> partyAndCompetetorsInfoList = new ArrayList<PartyInfoVO>();
@@ -175,10 +193,28 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 
 		List<PartyInfoVO> partyAndCompetetorsInfoListResult;
 		if(requiredPartyInfoVO==null){// this condition is for winning party
-			partyAndCompetetorsInfoListResult = partyAndCompetetorsInfoList;
+			int i=0;
+			partyAndCompetetorsInfoListResult = new ArrayList<PartyInfoVO>();
+			if(hasAlliance && alliancePartysInfoVO != null && alliancePartysInfoVO.size() > 0){
+				for(PartyInfoVO alliancInfo:alliancePartysInfoVO){
+				partyAndCompetetorsInfoListResult.add(i++, alliancInfo);
+				}
+			}
+			if(competetorSize >partyAndCompetetorsInfoList.size())
+				competetorSize = partyAndCompetetorsInfoList.size();
+			for(int j=0;j<competetorSize;j++){
+			partyAndCompetetorsInfoListResult.add(i++, partyAndCompetetorsInfoList.get(j));
+			}
+			//partyAndCompetetorsInfoListResult = partyAndCompetetorsInfoList;
 		} else { // this condition is for the specific party result report
 			partyAndCompetetorsInfoListResult = new ArrayList<PartyInfoVO>();
 			partyAndCompetetorsInfoListResult.add(0, requiredPartyInfoVO);
+			if(hasAlliance && alliancePartysInfoVO != null && alliancePartysInfoVO.size() > 0){
+			int i=1;
+			 for(PartyInfoVO alliancInfo:alliancePartysInfoVO){
+			 partyAndCompetetorsInfoListResult.add(i++, alliancInfo);
+			 }
+			}
 			if(competetorSize >partyAndCompetetorsInfoList.size())
 				competetorSize = partyAndCompetetorsInfoList.size();
 			for(int i=0;i<competetorSize;i++){
