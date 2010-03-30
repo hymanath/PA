@@ -10,13 +10,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Results</title>
 <script type="text/javascript">
-	function showOppostionDeatils(year)
+
+    function showOppostionDeatils(year)
 	{	
+		var id = year+"_opposition";
+
 		tr=document.getElementsByTagName('tr')
 
 		for (i=0;i<tr.length;i++)
 		{			
-			if (tr[i].id && tr[i].id==year)
+			if (tr[i].id && tr[i].id==id)
 			{				
 				if ( tr[i].style.display=='none' )
 				{
@@ -43,38 +46,60 @@
 
 <div id="partyResultsDiv" style="padding:5px;">
 	
-		<table class="searchresultsTable" border="1">
+		<table class="searchresultsTable" border="1" style="width:580px;">
 	<tr>
 		<th>Year</th>
         <th>Party</th>
 		<th>Participated In</th>
 		<th>Seats Win</th>
 		<th>% of Votes</th>
-		<th></th>
-
+		<th> View </th>
+		
 	</tr>
-	<c:forEach var="partyResultInfoVO" items="${partyResultInfoVOs}" >		
+	<c:forEach var="partyResultInfoVO" items="${partyResultInfoVOs}" >	
+	<c:if test="${partyResultInfoVO.partyInfoVO != null}">	
 	<tr>
-		<td><c:out value="${partyResultInfoVO.partyInfoVO.electionYear}"/></td>
-		<td><c:out value="${partyResultInfoVO.partyInfoVO.partyShortName}"/></td>
-		<td><c:out value="${partyResultInfoVO.partyInfoVO.seatsParticipated}"/></td>
-		<td><c:out value="${partyResultInfoVO.partyInfoVO.seatsWin}"/></td>
-		<td><c:out value="${partyResultInfoVO.partyInfoVO.percentageOfVotes}"/></td>
-		<td><a href="javascript:showOppostionDeatils(${partyResultInfoVO.partyInfoVO.electionYear})">Opposition Details</a></td>
+		<td align="center"><c:out value="${partyResultInfoVO.partyInfoVO.electionYear}"/></td>
+		<td align="center"><font color="red"><c:out value="${partyResultInfoVO.partyInfoVO.partyShortName}"/></font></td>
+		<td align="center"><font color="red"><c:out value="${partyResultInfoVO.partyInfoVO.seatsParticipated}"/></td>
+		<td align="center" ><font color="red"><c:out value="${partyResultInfoVO.partyInfoVO.seatsWin}"/></td>
+		<td align="center"><font color="red"><c:out value="${partyResultInfoVO.partyInfoVO.percentageOfVotes}"/></td>
+		<td><a href="javascript:showOppostionDeatils(${partyResultInfoVO.partyInfoVO.electionYear})">   View Opposition Details   </a></td>
 	</tr>
+	</c:if>	
 	
+	<c:if test="${partyResultInfoVO.alliancePartysInfo != null}">
+	<c:forEach var="alliancParty" items="${partyResultInfoVO.alliancePartysInfo}" >
+	<tr id="${partyResultInfoVO.partyInfoVO.electionYear}_alliance">
+		<td>&nbsp;</td>
+		<td align="center"><font color="#896ADE"><c:out value="${alliancParty.partyShortName}"/></font></td>
+		<td align="center"><font color="#896ADE"><c:out value="${alliancParty.seatsParticipated}"/></td>
+		<td align="center"><font color="#896ADE"><c:out value="${alliancParty.seatsWin}"/></td>
+		<td align="center"><font color="#896ADE"><c:out value="${alliancParty.percentageOfVotes}"/></td>
+	</tr>
+	</c:forEach>
+	</c:if>	
 	<c:forEach var="oppParty" items="${partyResultInfoVO.oppositionPartyInfo}" >
-	<tr id="${partyResultInfoVO.partyInfoVO.electionYear}" style="display:none;">
+	<tr id="${partyResultInfoVO.partyInfoVO.electionYear}_opposition" style="display:none;">
 		<td>&nbsp;</td>
-		<td><c:out value="${oppParty.partyShortName}"/></td>
-		<td><c:out value="${oppParty.seatsParticipated}"/></td>
-		<td><c:out value="${oppParty.seatsWin}"/></td>
-		<td><c:out value="${oppParty.percentageOfVotes}"/></td>
-		<td>&nbsp;</td>
+		<td align="center"><c:out value="${oppParty.partyShortName}"/></td>
+		<td align="center"><c:out value="${oppParty.seatsParticipated}"/></td>
+		<td align="center"><c:out value="${oppParty.seatsWin}"/></td>
+		<td align="center"><c:out value="${oppParty.percentageOfVotes}"/></td>
+		
 	</tr>
 	</c:forEach>
-	
+	<tr>
+		<th colspan="6"> </th>
+	</tr>
 	</c:forEach>
+	<tr>
+	<td colspan="6">
+		<font color="red">*  Main Party  </font>
+		<font color="#896ADE">  *  Alliance  Party</font>
+		<font color="#000000">  *  Opposition Party</font>
+	</td>
+	</tr>
 </table><br>
 </div>
 
