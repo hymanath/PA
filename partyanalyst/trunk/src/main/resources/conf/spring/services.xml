@@ -61,7 +61,10 @@
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 	</bean>
-	<bean name="partyResultService" class="com.itgrids.partyanalyst.service.impl.PartyResultService" parent="basePartyResultsServiceImpl"/>
+	<bean name="partyResultService" class="com.itgrids.partyanalyst.service.impl.PartyResultService" parent="basePartyResultsServiceImpl">
+	    <property name="staticDataService" ref="staticDataService" />
+	    <property name="partyDAO" ref="partyDAO" />
+	</bean>
 
 	
 	<bean name="statePageService" class="com.itgrids.partyanalyst.service.impl.StatePageService" >
