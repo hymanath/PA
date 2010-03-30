@@ -109,7 +109,7 @@ public class BasePartyResultTest {
 		partyAndCompetetorsInfo.put(shortNames[i], party5);
 		
 		partyAndCompetetorsInfo.remove(party1.getPartyShortName());
-		List<PartyInfoVO> actualResult = service.calculatePartyDetails(partyAndCompetetorsInfo, 1, 2765L, party1);
+		List<PartyInfoVO> actualResult = service.calculatePartyDetails(partyAndCompetetorsInfo, 1, 2765L, party1,true,null);
 		System.out.println("actualResult.get(0).getPartyShortName():"+actualResult.get(0).getPartyShortName());
 		System.out.println("actualResult.get(1).getPartyShortName():"+actualResult.get(1).getPartyShortName());
 		Assert.assertEquals("INC", actualResult.get(0).getPartyShortName());
@@ -208,7 +208,7 @@ public class BasePartyResultTest {
 		EasyMock.replay(constituencyElectionResultDAO);
 		service.setConstituencyElectionDAO(constituencyElectionDAO);
 		service.setConstituencyElectionResultDAO(constituencyElectionResultDAO);
-		List<PartyInfoVO> actual = service.getPartyAndCompetetorsInfo(election,"TDP",null,null,null,3,ElectionScopeLevelEnum.STATE_LEVEL);
+		List<PartyInfoVO> actual = service.getPartyAndCompetetorsInfo(election,"TDP",null,null,null,3,ElectionScopeLevelEnum.STATE_LEVEL,true,null);
 		Assert.assertEquals("INC", actual.get(1).getPartyShortName());	
 	}
 	
