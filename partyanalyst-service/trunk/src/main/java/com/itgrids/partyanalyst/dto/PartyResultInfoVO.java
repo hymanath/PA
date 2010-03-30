@@ -13,6 +13,10 @@ import java.util.Map;
  */
 //2
 public class PartyResultInfoVO implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2071095192981333534L;
 	// key consists of required party info and value consists of list of opposition party info.
 	/*private Map<PartyInfoVO, List<PartyInfoVO>> partyData = new LinkedHashMap<PartyInfoVO, List<PartyInfoVO>>();
 
@@ -25,7 +29,10 @@ public class PartyResultInfoVO implements Serializable {
 	}*/
 
 	private PartyInfoVO partyInfoVO;
-	private List<PartyInfoVO> oppositionPartyInfo = new ArrayList<PartyInfoVO>();
+	private List<PartyInfoVO> alliancePartysInfo;
+	private List<PartyInfoVO> oppositionPartyInfo;
+	
+	
 	public PartyInfoVO getPartyInfoVO() {
 		return partyInfoVO;
 	}
@@ -37,5 +44,11 @@ public class PartyResultInfoVO implements Serializable {
 	}
 	public void setOppositionPartyInfo(List<PartyInfoVO> oppositionPartyInfo) {
 		this.oppositionPartyInfo = oppositionPartyInfo;
+	}
+	public List<PartyInfoVO> getAlliancePartysInfo() {
+		return alliancePartysInfo;
+	}
+	public void setAlliancePartysInfo(List<PartyInfoVO> alliancePartysInfo) {
+		this.alliancePartysInfo = alliancePartysInfo;
 	}
 }
