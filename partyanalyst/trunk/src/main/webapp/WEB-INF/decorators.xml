@@ -12,6 +12,7 @@
         <pattern>/townshipElectionResultsAction.action*</pattern>
         <pattern>/constituencyElectionResultsAction.action*</pattern>
         <pattern>/districtPageCandidateDetailsAjaxAction.action*</pattern>
+        <pattern>/landing.action* </pattern>
     </excludes>
 
     <decorator name="main" page="main.jsp">

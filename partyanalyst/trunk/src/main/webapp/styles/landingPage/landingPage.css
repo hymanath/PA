@@ -1,0 +1,189 @@
+
+body
+{
+	font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	font-size:11px;
+	margin:0px;
+	padding:0px;
+	direction:ltr;
+	background-color:#EAEDEF;
+}
+
+#mainContainer
+{
+	width:960px;
+	background-color:#FFFFFF;
+	margin:auto;
+	overflow:hidden;
+	padding:0px;
+}
+
+.pageContentDivs
+{
+	background-color:#FFFFFF;
+	/*margin-top:10px;*/
+}
+
+#navMenu_main
+{
+	height:300px;
+	margin-top:0px;
+	background-image:url(../../images/icons/homePage/header_main.jpg);
+}
+
+.contentSeperatorDiv
+{
+	border-color:#EDEDED;
+	border-style:solid;
+	border-width:1px;
+	margin:0px 20px 0px 20px;
+}
+
+#navMenu_links
+{
+	height:40px;
+}
+
+#analyzeButtonBar_main
+{
+	height:50px;
+	padding:0 20px;
+}
+
+#featuresList_main
+{
+	height:240px;
+	padding:20px;
+	color:#73787E;
+}
+#resources_main
+{
+	height:200px;
+	padding:20px;
+}
+#analyzeButtonTable
+{	
+	width:100%;
+}
+
+.homePageHeaders
+{
+	font-size:14px;
+	font-weight:bold;
+}
+
+.descriptionDiv
+{	
+	line-height:1.5em;
+	word-spacing:2px;
+	text-align:justify;
+	padding-right:10px;
+}
+#homePagefooter
+{
+	color:#73787E;
+	height:50px;
+}
+
+#copyrightLinksTable 
+{
+	width:100%;	
+}
+#navMenu_links
+{
+	color:#E3E5E8;
+	float:right;
+	font-weight:bold;
+	height:40px;
+	margin-top:10px;
+}
+
+#topLinksNav
+{
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+}
+
+#topLinksNav li
+{
+	float:left;
+}
+
+.navLinksAnc
+{
+	text-decoration:none;
+	color:#E3E5E8;
+	padding:10px;
+}
+
+#topLinksNav a:hover
+{
+	text-decoration:underline;
+}
+
+#currentNewsDiv
+{
+	padding-right:10px;
+}
+
+.newsData_main
+{
+	margin-top:15px;
+	text-align:justify;
+}
+.news_resources_head
+{
+	color:#73787E;
+	font-weight:bold;
+	text-decoration:underline;
+}
+
+.newsDataHead
+{
+	color:#4B74C6;
+	font-weight:bold;
+}
+
+.newsDataFooter
+{
+	float:right;
+}
+
+#other_news_list
+{
+	list-style-type:square;
+	padding-left:10px;
+	margin-left:10px;
+}
+
+#other_news_list li
+{
+	color:#4B74C6;
+	padding:5px;
+	font-weight:bold;
+}
+
+#popularResources_list
+{
+	list-style-type:none;
+	padding-left:5px;
+	margin-left:5px;
+}
+
+#popularResources_list li
+{
+	color:#4B74C6;
+	font-weight:bold;
+	padding:5px;
+}
+
+#homePagefooter 
+{
+	background-image:url(../../images/icons/homePage/homePageFooter.png);
+	background-repeat:no-repeat;
+	color:#FFFFFF;
+	height:15px;
+	margin:0 10px;
+	padding:10px;
+}
