@@ -595,21 +595,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		 imgElmt.innerHTML = electionDetails;
 		 
         var spanElmt=document.getElementById("zptcDetails");	
-  
-        if(imgElmt.style.display == 'block'){
-			 imgElmt.style.display = 'none';
-			 spanElmt.innerHTML=" view more details.."; 
-			 var hideDiv=document.getElementById("candidateLink");
-			 hideDiv.innerHTML = ""; 
-			 if(myDataTableForParty){
-					myDataTableForParty.destroy();
-				}
-		}	
-		else{
-			imgElmt.style.display = 'block';
-			spanElmt.innerHTML=" (close)"; 
-			getAllYearsForTeshil();
-		}			 
+ 
+		getAllYearsForTeshil();		 
 	}
 	function getAllMptcYears()
 	{	 
@@ -623,20 +610,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		 
         var spanElmt=document.getElementById("mptcDetails");	
   
-        if(imgElmt.style.display == 'block'){
-			 imgElmt.style.display = 'none';
-			 spanElmt.innerHTML=" view more details.."; 
-			 var hideDiv=document.getElementById("mptcCandidateLink");
-			 hideDiv.innerHTML = ""; 
-			 if(myDataTableForMptcParty){
-					myDataTableForMptcParty.destroy();
-				}
-		}	
-		else{
-			imgElmt.style.display = 'block';
-			spanElmt.innerHTML=" (close)"; 
-			getAllMptcYearsForTeshil();
-		}	 				 
+		getAllMptcYearsForTeshil();				 
 	}
 </script>
  
@@ -796,7 +770,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	<table>
 		<tr>
 			<td><div id="zptcInfoDivHead" class="detailsHead"> Total Number of ZPTC's : </div></td><td><b><c:out value="${constituenciesStatusVO.zptcCount}"/></b>
-			<a href="javascript:{}" onclick="getAllZptcYears()" id="zptcDetails" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">view more details..</a></td>
+			
 		</tr>		
 	</table>
 	
@@ -816,7 +790,6 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	<table>
 		<tr>
 			<td><div id="mptcInfoDivHead" class="detailsHead"> Total Number of MPTC's : </div></td><td><b><c:out value="${constituenciesStatusVO.mptcCount}"/></b>
-			<a href="javascript:{}" onclick="getAllMptcYears()" id="mptcDetails" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">view more details..</a></td>
 		</tr>
 	</table>
 	
@@ -867,6 +840,8 @@ getAllMptcParties();
 ZptcElectionTypeId = 3;
 electionType="ZPTC";
 getAllZptcParties();
+getAllZptcYears();
+getAllMptcYears();
 </script>
 </body>
 </html>
