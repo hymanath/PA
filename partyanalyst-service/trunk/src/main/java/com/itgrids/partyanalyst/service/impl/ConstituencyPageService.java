@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -40,6 +41,7 @@ import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateWonVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
@@ -789,6 +791,98 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		
 		return candidateDetailsForConstituencyTypesVO;
 	}
+	
+	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,Long electionId){		
+		List list = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandal(constituencyId,electionId);
+		ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO = new ConstituencyRevenueVillagesVO();
+		List<CandidatePartyInfoVO> candidateNamePartyAndStatus = new ArrayList<CandidatePartyInfoVO>(0);
+		List<ConstituencyOrMandalWiseElectionVO> constituencyOrMandalWiseElectionVO = new ArrayList<ConstituencyOrMandalWiseElectionVO>(0);
+		Long tehsilId = -1l,mainTehsilId=0l,totalVotes=0l;
+		Map<Long,Long> totalVotesForAMandal = new HashMap<Long,Long>(0);
+		Map<Long,String> partyNameAndRank = new HashMap<Long,String>(0);
+		List<PartyElectionResultVO> partyElectionResultVOs = new ArrayList<PartyElectionResultVO>(0);
+		List<PartyElectionResultVO> partyVotes = new ArrayList<PartyElectionResultVO>(0);
+		List<Long> tehsilIds = new ArrayList<Long>(0);
+		Map<Long,String> tehsilNameAndIds = new HashMap<Long,String>(0);
+			for(int i=0; i<list.size(); i++){
+				Object[] parms = (Object[])list.get(i);
+				if(tehsilId == -1){
+					tehsilId = (Long)parms[1];
+					totalVotes += (Long)parms[5];
+					mainTehsilId = tehsilId;
+				}else{
+					PartyElectionResultVO partyElectionResultVo = new PartyElectionResultVO();
+					if(tehsilId==Long.parseLong(parms[1].toString())){					
+						totalVotes += (Long)parms[5];
+						partyElectionResultVo.setTotalVotes((Long)parms[5]);
+					}else{
+						tehsilIds.add(tehsilId);
+						partyElectionResultVOs.add(partyElectionResultVo);
+						totalVotesForAMandal.put(tehsilId, totalVotes);
+						tehsilId = (Long)parms[1];
+						totalVotes = 0l;
+					}
+				}
+				partyNameAndRank.put((Long)parms[2],parms[4].toString());
+				tehsilNameAndIds.put((Long)parms[1],parms[0].toString());
+			}
+			
+			for(int i=0; i<tehsilIds.size(); i++){
+				ConstituencyOrMandalWiseElectionVO constituencyOrMandalWiseElectionVo = new ConstituencyOrMandalWiseElectionVO();
+				partyVotes = caluculatePercentage(tehsilIds.get(i),list,totalVotesForAMandal.get(tehsilIds.get(i)));	
+				constituencyOrMandalWiseElectionVo.setLocationId(tehsilIds.get(i));
+				constituencyOrMandalWiseElectionVo.setLocationName(tehsilNameAndIds.get(tehsilIds.get(i)));
+				constituencyOrMandalWiseElectionVo.setTotalPolledVotes(totalVotesForAMandal.get(tehsilIds.get(i)));
+				constituencyOrMandalWiseElectionVo.setPartyElectionResultVOs(partyVotes);
+				candidateNamePartyAndStatus = getCandidateAndPartyDetails(mainTehsilId,list);
+				constituencyOrMandalWiseElectionVO.add(constituencyOrMandalWiseElectionVo);
+			}
+			constituencyRevenueVillagesVO.setConstituencyOrMandalWiseElectionVO(constituencyOrMandalWiseElectionVO);		
+			constituencyRevenueVillagesVO.setCandidateNamePartyAndStatus(candidateNamePartyAndStatus);
+			return constituencyRevenueVillagesVO;
+	}
+	
 
+	private List<CandidatePartyInfoVO> getCandidateAndPartyDetails(Long tehsilId,List result) {
+		List<CandidatePartyInfoVO> candidatePartyInfoVO = new ArrayList<CandidatePartyInfoVO>(0);
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			if(tehsilId==Long.parseLong(parms[1]+"")){
+				CandidatePartyInfoVO candidatePartyInfoVo = new CandidatePartyInfoVO();
+				candidatePartyInfoVo.setCandidateId((Long)parms[6]);
+				candidatePartyInfoVo.setCandidateName(parms[3].toString());
+				candidatePartyInfoVo.setPartyId((Long)parms[7]);
+				candidatePartyInfoVo.setParty(parms[4].toString());
+				candidatePartyInfoVo.setRank((Long)parms[2]);
+				candidatePartyInfoVO.add(candidatePartyInfoVo);
+				}else{	
+					return candidatePartyInfoVO;
+				}
+			}
+		return candidatePartyInfoVO;
+	}
 
+	public List<PartyElectionResultVO> caluculatePercentage(Long tehsilId,List result,Long totalVotes){
+		List<PartyElectionResultVO> partyVotes = new ArrayList<PartyElectionResultVO>(0); 
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			if(tehsilId==Long.parseLong(parms[1]+"")){
+				PartyElectionResultVO partyElectionResultVO =new PartyElectionResultVO();
+				partyElectionResultVO.setTotalVotes((Long)parms[5]);
+				partyElectionResultVO.setVotesPercentage(new BigDecimal(((Long)parms[5]*100.0)/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP).toString());		
+				partyVotes.add(partyElectionResultVO);				
+			}else{			
+			}
+		}		
+		return partyVotes;		
+	}
+	
 }
+
+
+
+
+
+
+
+
