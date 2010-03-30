@@ -6,6 +6,7 @@ import java.util.Set;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
@@ -107,4 +108,5 @@ public interface IStaticDataService {
 	
 	public MandalAllElectionDetailsVO getAllPartiesForAParticularElection(Long districtId,String electionType,String electionYear);
 
+	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,Long electionId);
 }
