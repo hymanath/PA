@@ -410,11 +410,18 @@
 		<div id="resultsPageErrorDiv"></div>
 	</td>
  </tr>
+  <tr id="allianceRow">
+		<th>Alliance Parties</th>
+		<td>
+			<s:checkbox theme="simple" id="alliances" disabled="false" name="alliances" value="hasAllianceParties"></s:checkbox> Include in the Report
+		</td>
+	</tr>
  <tr>
 	<td colspan="3" align="center">
 		<div id="resultsPageButtonDiv"></div>
 	</td>
  </tr>
+
  </table>
  </s:form>
 	</div>
