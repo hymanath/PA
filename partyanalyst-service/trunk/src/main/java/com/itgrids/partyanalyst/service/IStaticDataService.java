@@ -108,5 +108,4 @@ public interface IStaticDataService {
 	
 	public MandalAllElectionDetailsVO getAllPartiesForAParticularElection(Long districtId,String electionType,String electionYear);
 
-	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,Long electionId);
 }
