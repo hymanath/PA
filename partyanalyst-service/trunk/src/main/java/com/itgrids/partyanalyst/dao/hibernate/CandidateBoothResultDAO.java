@@ -407,13 +407,13 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 	
 
 	@SuppressWarnings("unchecked")
-	public List getCandidatesResultsForElectionAndConstituencyByMandal(Long constituencyId, Long electionId){
-		Object[] params = {constituencyId, electionId};
+	public List getCandidatesResultsForElectionAndConstituencyByMandal(Long constituencyId, String electionYear){
+		Object[] params = {constituencyId, electionYear};
 		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.tehsil.tehsilName,model.boothConstituencyElection.booth.tehsil.tehsilId, " +
 				" model.nomination.candidateResult.rank, model.nomination.candidate.lastname, model.nomination.party.shortName," +
 				" sum(model.votesEarned),model.nomination.candidate.candidateId, model.nomination.party.partyId from CandidateBoothResult model " +
 				"where model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? and " +
-				"model.boothConstituencyElection.constituencyElection.election.electionId = ? group by " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear = ? group by " +
 				"model.boothConstituencyElection.booth.tehsil.tehsilId, " +
 				"model.nomination.nominationId",params);
 	}
