@@ -189,12 +189,14 @@ public class PartyResultsAction extends ActionSupport implements ServletRequestA
 			chartId.append("C" + constituencyId.toString());
 		}
 		
-	
+		Boolean alliances = new Boolean(request.getParameter("alliances"));
+		System.out.println("Alliances :" + alliances);
+		//Boolean hasAlliances = true;
 		//List<PartyResultInfoVO> partyResultInfoVOList = partyResultService.getPartyResultsInfo(partySelectName, electionType, "1", stateSelectName, 
 		//		districtSelectName, constituencySelectName, level);
 		
 		List<PartyResultInfoVO> partyResultInfoVOList = partyResultService.getPartyResultsInfo(selectedPartyShortName, electionId, countryId, stateId, 
-				districtId,constituencyId ,level);
+				districtId,constituencyId ,level,alliances);
 		//PartyResultInfoVO getPartyResultsInfo();
 	
 		setPartyResultInfoVOs(partyResultInfoVOList);
