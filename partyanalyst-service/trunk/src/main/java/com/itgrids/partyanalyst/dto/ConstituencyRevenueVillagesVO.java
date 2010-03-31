@@ -7,10 +7,12 @@ public class ConstituencyRevenueVillagesVO {
 	private Long totalVoters;
 	private Long constituencyId;
 	private String constituencyName;
+	private String electionType;
 	private List<CandidatePartyInfoVO> candidateNamePartyAndStatus;
 	private List<RevenueVillageElectionVO> revenueVillageElectionVO;
 	private List<ConstituencyOrMandalWiseElectionVO> constituencyOrMandalWiseElectionVO;
-	 
+	private String chartPath;
+	private List<SelectOptionVO> elections;
 	
 	public List<ConstituencyOrMandalWiseElectionVO> getConstituencyOrMandalWiseElectionVO() {
 		return constituencyOrMandalWiseElectionVO;
@@ -61,6 +63,30 @@ public class ConstituencyRevenueVillagesVO {
 
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
+	}
+
+	public String getChartPath() {
+		return chartPath;
+	}
+
+	public void setChartPath(String chartPath) {
+		this.chartPath = chartPath;
+	}
+
+	public List<SelectOptionVO> getElections() {
+		return elections;
+	}
+
+	public void setElections(List<SelectOptionVO> elections) {
+		this.elections = elections;
+	}
+
+	public String getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
 	}
 
 	@Override

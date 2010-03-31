@@ -39,10 +39,17 @@ public class CandidateDAOHibernateTest extends BaseDaoTestCase {
 		setComplete();
 	}*/
 	
-	@Test
+	
 	public void test(){
 		long startTime = System.currentTimeMillis();
 		List<Candidate> candis = candidateDAO.getAll();
+		for(Candidate can:candis){
+			if(can.getLastname().contains("\n")){
+				can.setLastname(can.getLastname().replace("\n", " "));
+				candidateDAO.save(can);
+			}
+		}
+		setComplete();
 		long endTime = System.currentTimeMillis();
 		System.out.println((endTime-startTime)/1000);
 	}

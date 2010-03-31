@@ -1,10 +1,21 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
+import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Party;
 
@@ -98,11 +109,15 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testFindAssemblyWiseParliamentResultsForParties(){
 		long start = System.nanoTime();
-		List list = candidateBoothResultDAO.findAssemblyWiseParliamentResultsForParties(232l, 404l, "2009");
+		List list = candidateBoothResultDAO.findAssemblyWiseParliamentResultsForParties(231l, 404l, "2004");
 		long end = System.nanoTime();
 		System.out.println((end-start)/1000000000);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 	}
 	
+	/*public void testAssemblies(){
+		List list = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandal(232l,"2009");
+		assertEquals(1, list.size());
+	}*/
 }

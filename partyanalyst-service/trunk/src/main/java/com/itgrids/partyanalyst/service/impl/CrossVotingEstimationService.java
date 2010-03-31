@@ -101,11 +101,10 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		Long constituencyId;
 		for(Constituency constituency:constituencies){
 			constituencyId = constituency.getConstituencyId();
-			boothConstituencyElections = boothConstituencyElectionDAO.findByConstituencyIdAndElectionYear(constituencyId, electionYear.toString());
+			boothConstituencyElections = boothConstituencyElectionDAO.findByConstituencyIdAndElectionYear(constituencyId, parliamentId, electionYear.toString());
 			if(boothConstituencyElections == null || boothConstituencyElections.get(0).toString().equalsIgnoreCase("0"))
 				continue;
-			SelectOptionVO constituencyVO = new SelectOptionVO(constituencyId, constituency.getName().toUpperCase());
-			constituencyVOs.add(constituencyVO);
+			constituencyVOs.add(new SelectOptionVO(constituencyId, constituency.getName().toUpperCase()));
 		}
 		return constituencyVOs;
 	}

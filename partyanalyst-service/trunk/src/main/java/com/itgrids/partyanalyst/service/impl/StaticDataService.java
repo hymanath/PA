@@ -8,12 +8,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.aspectj.apache.bcel.generic.ICONST;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -35,7 +33,6 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
-import com.itgrids.partyanalyst.dao.hibernate.VillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateWonVO;
@@ -44,9 +41,8 @@ import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWinnerInfoVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
-import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
-import com.itgrids.partyanalyst.dto.ElectionDetailsVO;
+import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -282,6 +278,14 @@ public class StaticDataService implements IStaticDataService {
 		return years;
 	}
 	
+	public List<SelectOptionVO> getElectionIdsAndYearsForConstituency(Long constituencyId) {
+		List elections = boothConstituencyElectionDAO.findElectionsHappendInConstituency(constituencyId);
+		List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
+		for(Object[] election: (List<Object[]>)elections){
+			years.add(new SelectOptionVO((Long)election[0], election[1].toString()));
+		}
+		return years;
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<SelectOptionVO> getElectionIdsAndYearsInfo(Long elecType,Long stateId){

@@ -74,7 +74,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());		
 	}*/
 	
-	public void testFindByDistrictElectionConstituency(){
+	/*public void testFindByDistrictElectionConstituency(){
 		List list = constituencyElectionDAO.findByDistrictElectionConstituency(2l, 19l, "Kavali");
 		assertEquals(1, list.size());
 	}
@@ -83,6 +83,8 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testTotalValidVotesForMandal(){
 		List list = constituencyElectionDAO.getTotalValidVotesParticularElectionYear(IConstants.ZPTC_ELECTION_TYPE,"2001",19l);
 		assertEquals(1, list.size());
-	}
+	}*/
+	
+	
 
 }

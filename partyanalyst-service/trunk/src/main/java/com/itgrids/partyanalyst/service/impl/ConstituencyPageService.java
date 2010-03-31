@@ -15,7 +15,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -503,13 +502,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 						candidatePartyInfoVO.setCandidateId((Long)values[2]);
 						candidatePartyInfoVO.setCandidateName(values[3].toString());
 						candidatePartyInfoVO.setPartyId((Long)values[4]);
-						if((Long)values[10] == 1)
-							candidatePartyInfoVO.setParty(values[5].toString());
-						else
-						if((Long)values[10] == 2)
-							candidatePartyInfoVO.setParty(values[5].toString());
-						else
-							candidatePartyInfoVO.setParty(values[5].toString());
+						candidatePartyInfoVO.setParty(values[5].toString());
 						candidatePartyInfoVO.setRank((Long)values[10]);
 						
 						candidates.add(candidatePartyInfoVO);
@@ -791,6 +784,83 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		
 		return candidateDetailsForConstituencyTypesVO;
 	}
+
+	/**
+	 * This Method Returns Election Results Of a Parliament Constituency (Assembly Constituencies Wise)
+	 * And Assembly Constituency Election Results (Mandal Wise)
+	 */
+	public ConstituencyRevenueVillagesVO getConstituencyElecResults(Long constituencyId, String electionYear){
+		ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO = null;
+		List<ConstituencyOrMandalWiseElectionVO> constituencyElectionResults = new ArrayList<ConstituencyOrMandalWiseElectionVO>();
+		ConstituencyOrMandalWiseElectionVO assemblyConstiElecVO = null;
+		List<PartyElectionResultVO> partyElectionResultVOs = null;
+		PartyElectionResultVO partyElectionResultVO = null;
+		List<CandidatePartyInfoVO> candidateNamePartyAndStatus = new ArrayList<CandidatePartyInfoVO>();
+		CandidatePartyInfoVO candidatePartyInfoVO = null;
+		
+		Constituency constituency = constituencyDAO.get(constituencyId);
+		if(constituency.getElectionScope().getElectionType().getElectionType().
+				equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			constituencyRevenueVillagesVO = getMandalElectionInfoForAConstituency(constituencyId, electionYear);
+			constituencyRevenueVillagesVO.setConstituencyId(constituencyId);
+			constituencyRevenueVillagesVO.setConstituencyName(constituency.getName());
+			constituencyRevenueVillagesVO.setElectionType(constituency.getElectionScope().
+					getElectionType().getElectionType());
+			return constituencyRevenueVillagesVO;
+		}
+		if(constituency.getElectionScope().getElectionType().getElectionType().
+				equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+			constituencyRevenueVillagesVO = new ConstituencyRevenueVillagesVO();
+			constituencyRevenueVillagesVO.setConstituencyId(constituencyId);
+			constituencyRevenueVillagesVO.setConstituencyName(constituency.getName());
+			constituencyRevenueVillagesVO.setElectionType(constituency.getElectionScope().
+					getElectionType().getElectionType());
+			List<SelectOptionVO> assemblies = getAssembliesForParliament(constituencyId, new Long(electionYear));
+			int i=0;
+			for(SelectOptionVO assembly:assemblies){	
+				List partiesResults = candidateBoothResultDAO.findAssemblyWiseParliamentResultsForParties(assembly.getId(), constituencyId, electionYear);
+				assemblyConstiElecVO = new ConstituencyOrMandalWiseElectionVO();
+				partyElectionResultVOs = new ArrayList<PartyElectionResultVO>();
+				assemblyConstiElecVO.setLocationId(assembly.getId());
+				assemblyConstiElecVO.setLocationName(assembly.getName());
+				for(Object[] values:(List<Object[]>)partiesResults){
+					if(i == 0){
+						candidatePartyInfoVO = new CandidatePartyInfoVO();
+						candidatePartyInfoVO.setPartyId((Long)values[0]);
+						candidatePartyInfoVO.setParty(values[1].toString());
+						candidatePartyInfoVO.setRank((Long)values[2]);
+						candidateNamePartyAndStatus.add(candidatePartyInfoVO);
+					}
+					partyElectionResultVO = new PartyElectionResultVO();
+					partyElectionResultVO.setVotesEarned((Long)values[3]);
+					partyElectionResultVO.setVotesPercentage(new BigDecimal(((Long)values[3])*100.0/(Long)values[4])
+																	.setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+					partyElectionResultVOs.add(partyElectionResultVO);
+				}
+				assemblyConstiElecVO.setPartyElectionResultVOs(partyElectionResultVOs);
+				constituencyElectionResults.add(assemblyConstiElecVO);
+				i++;
+			}
+		}
+		constituencyRevenueVillagesVO.setCandidateNamePartyAndStatus(candidateNamePartyAndStatus);
+		constituencyRevenueVillagesVO.setConstituencyOrMandalWiseElectionVO(constituencyElectionResults);
+		return constituencyRevenueVillagesVO;
+	}
+	
+	private List<SelectOptionVO> getAssembliesForParliament(Long parliamentId, Long electionYear){
+		List<Constituency> constituencies = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(parliamentId, electionYear);
+		List<SelectOptionVO> constituencyVOs = new ArrayList<SelectOptionVO>();
+		List boothConstituencyElections = null;
+		Long constituencyId;
+		for(Constituency constituency:constituencies){
+			constituencyId = constituency.getConstituencyId();
+			boothConstituencyElections = boothConstituencyElectionDAO.findByConstituencyIdAndElectionYear(constituencyId, parliamentId, electionYear.toString());
+			if(boothConstituencyElections == null || boothConstituencyElections.get(0).toString().equalsIgnoreCase("0"))
+				continue;
+			constituencyVOs.add(new SelectOptionVO(constituencyId, constituency.getName().toUpperCase()));
+		}
+		return constituencyVOs;
+	}
 	
 	/** 
 	 *This method returns a VO containing all the information regarding the
@@ -893,7 +963,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				tehsilNameAndIds.put((Long)parms[1],parms[0].toString());
 			}
 			
-			for(int i=0; i<tehsilIds.size(); i++){
+			for(int i=0; i<tehsilIds.size(); i++){				
 				ConstituencyOrMandalWiseElectionVO constituencyOrMandalWiseElectionVo = new ConstituencyOrMandalWiseElectionVO();
 				if(log.isDebugEnabled()){
 					log.debug("Calling caluculatePercentage()");
@@ -920,6 +990,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}
 			return constituencyRevenueVillagesVO;
 	}
+	
 	public List<CandidatePartyInfoVO> getCandidateAndPartyDetails(Long tehsilId,List result) {
 		List<CandidatePartyInfoVO> candidatePartyInfoVO = new ArrayList<CandidatePartyInfoVO>(0);
 		try{
@@ -948,7 +1019,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	}
 
 	public List<PartyElectionResultVO> caluculatePercentage(Long tehsilId,List result,Long totalVotes){
-		List<PartyElectionResultVO> partyVotes = new ArrayList<PartyElectionResultVO>(0); 
+		List<PartyElectionResultVO> partyVotes = new ArrayList<PartyElectionResultVO>(0); 		
 		try{
 			for(int i=0;i<result.size();i++){
 				Object[] parms = (Object[])result.get(i);

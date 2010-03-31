@@ -124,10 +124,12 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List findByConstituencyIdAndElectionYear(Long constituencyId, String electionYear){
-		Object[] params = {constituencyId, electionYear};
+	public List findByConstituencyIdAndElectionYear(Long constituencyId, Long parliamentId, String electionYear){
+		Object[] params = {constituencyId, parliamentId, electionYear};
 		return getHibernateTemplate().find("select count(model.boothResult.boothResultId) from BoothConstituencyElection model " +
-				"where model.constituencyElection.constituency.constituencyId= ? and model.constituencyElection.election.electionYear = ?",params);
+				"where model.booth.boothId in(select distinct model1.booth.boothId from BoothConstituencyElection model1 where " +
+				"model1.constituencyElection.constituency.constituencyId= ? ) and model.constituencyElection.constituency.constituencyId= ? " +
+				"and model.constituencyElection.election.electionYear = ?",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -356,4 +358,10 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		return getHibernateTemplate().find("select model.booth.boothId, model.booth.partNo from BoothConstituencyElection model " +
 				"where model.villageBoothElection.township.townshipId = ? and model.constituencyElection.election.electionId = ?", params) ;
 	}
+	
+	public List findElectionsHappendInConstituency(Long constituencyId){
+		return getHibernateTemplate().find("select distinct model.constituencyElection.election.electionId, model.constituencyElection.election.electionYear from " +
+				"BoothConstituencyElection model where model.constituencyElection.constituency.constituencyId = ? order by model.constituencyElection.election.electionYear desc",constituencyId);
+	}
+	
 }
