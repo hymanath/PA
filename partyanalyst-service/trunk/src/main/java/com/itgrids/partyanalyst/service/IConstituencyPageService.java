@@ -42,4 +42,6 @@ public interface IConstituencyPageService {
 	public List<ConstituencyRevenueVillagesVO> getPartiesResultsInVillagesGroupByMandal(Long tehsilId, Long electionId);
 	
 	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,String electionYear);
+	
+	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAParliamentConstituency(Long constituencyId,String electionYear);
 }
