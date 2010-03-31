@@ -1695,7 +1695,12 @@ public class StaticDataService implements IStaticDataService {
 				 if(Long.parseLong(parms[4].toString())==1l){
 					 CandidateWonVO candidateWonVO = new CandidateWonVO(); 
 						 candidateWonVO.setCandidateId(Long.parseLong(parms[0].toString()));
-						 candidateWonVO.setCandidateName(parms[1].toString());
+						 String candidateName = parms[1].toString();
+							if(candidateName.contains("\n")){
+								candidateName = candidateName.replace("\n"," ");
+								candidateWonVO.setCandidateName(candidateName);
+							}else
+								candidateWonVO.setCandidateName(parms[1].toString());
 						 Double votesEarned = (Double)parms[2];
 						 Long votesEarn = votesEarned.longValue();
 						 candidateWonVO.setVotesEarned(votesEarn.toString());
@@ -1714,7 +1719,12 @@ public class StaticDataService implements IStaticDataService {
 				 else{
 					 CandidateOppositionVO  candidateOppositionVo = new CandidateOppositionVO();
 					 candidateOppositionVo.setCandidateId(Long.parseLong(parms[0].toString()));
-					 candidateOppositionVo.setCandidateName(parms[1].toString());
+					 String candidateName = parms[1].toString();
+						if(candidateName.contains("\n")){
+							candidateName = candidateName.replace("\n"," ");
+							candidateOppositionVo.setCandidateName(candidateName);
+						}else
+							candidateOppositionVo.setCandidateName(parms[1].toString());
 					 Double votesEarned = (Double)parms[2];
 					 Long votesEarn = votesEarned.longValue();
 					 candidateOppositionVo.setVotesEarned(votesEarn.toString());
