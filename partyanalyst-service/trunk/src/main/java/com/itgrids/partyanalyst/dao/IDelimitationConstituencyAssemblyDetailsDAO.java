@@ -20,4 +20,7 @@ public interface IDelimitationConstituencyAssemblyDetailsDAO extends GenericDao<
 	@SuppressWarnings("unchecked")
 	public List findParliamentConstituenciesForAAssemblyConstituency(Long constituencyId);
 	
+	@SuppressWarnings("unchecked")
+	public List findParliamentForAssemblyForTheGivenYear(Long assemblyId,Long electionYear);
+	
 }
