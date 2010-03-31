@@ -48,6 +48,12 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		return getHibernateTemplate().find("select model.delimitationConstituency.constituency.constituencyId,model.delimitationConstituency.constituency.electionScope.electionType.electionTypeId," +
 				"model.delimitationConstituency.constituency.name,model.delimitationConstituency.year from DelimitationConstituencyAssemblyDetails model where " +
 				"model.constituency.constituencyId = ?)",constituencyId);
-
 	}
+	
+	public List findParliamentForAssemblyForTheGivenYear(Long assemblyId,Long electionYear){
+		Object[] params = {assemblyId,electionYear};
+		return getHibernateTemplate().find("select model.delimitationConstituency.constituency.constituencyId," +
+				" model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model where model.constituency.constituencyId = ? and" +
+				" model.delimitationConstituency.year = ?",params);
+	} 
 }
