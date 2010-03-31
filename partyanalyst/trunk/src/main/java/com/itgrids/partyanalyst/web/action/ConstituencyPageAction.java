@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,23 +28,27 @@ import org.jfree.data.general.PieDataset;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateVotingTrendzCharts;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
+import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
-import com.itgrids.partyanalyst.dto.PartyInfoVO;
-import com.itgrids.partyanalyst.dto.PartyResultInfoVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsTrendzVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IElectionTrendzService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -67,12 +72,13 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private List<ProblemBeanVO> problemBean;
 	 private ElectionTrendzReportVO electionTrendzReportVO;
 	 private CandidateVotingTrendzCharts candidateVotingTrendzCharts;
-	 
+	 private IStaticDataService staticDataService;
 	 private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	 private DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO;	
-	 
+	 private ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO;
 	 private ElectionBasicInfoVO electionBasicInfoVO;
 	 private IElectionTrendzService electionTrendzService;
+	 private List<SelectOptionVO> electionIdsAndYears;
 	 private static final Logger log = Logger.getLogger(ConstituencyPageAction.class);
 	 
 	 JSONObject jObj = null;
@@ -156,6 +162,14 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.votersInfo = votersInfo;
 	}
 
+	public List<SelectOptionVO> getElectionIdsAndYears() {
+		return electionIdsAndYears;
+	}
+
+	public void setElectionIdsAndYears(List<SelectOptionVO> electionIdsAndYears) {
+		this.electionIdsAndYears = electionIdsAndYears;
+	}
+
 	HttpServletRequest request;
 	HttpServletResponse response;
 	HttpSession session;
@@ -228,6 +242,23 @@ public class ConstituencyPageAction extends ActionSupport implements
 	public void setCandidateVotingTrendzCharts(
 			CandidateVotingTrendzCharts candidateVotingTrendzCharts) {
 		this.candidateVotingTrendzCharts = candidateVotingTrendzCharts;
+	}
+
+	public ConstituencyRevenueVillagesVO getConstituencyRevenueVillagesVO() {
+		return constituencyRevenueVillagesVO;
+	}
+
+	public void setConstituencyRevenueVillagesVO(
+			ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO) {
+		this.constituencyRevenueVillagesVO = constituencyRevenueVillagesVO;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
 	}
 
 	public String execute() throws Exception{
@@ -565,5 +596,67 @@ public class ConstituencyPageAction extends ActionSupport implements
 		return Action.SUCCESS;
   }
 
+  public String getConstituencyElectionYears(){
+	  
+	  	String param=null;		
+	    param = getTask();
+		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	  
+	  electionIdsAndYears = staticDataService.getElectionIdsAndYearsForConstituency(jObj.getLong("constituencyId"));
+	  return SUCCESS;
+  }
+  
+  public String getParliamentConstituencyAssemblyWiseResults(){
+	  
+	  String param = getTask();
+	  
+	  try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		String chartTitle = null;
+		String chartName = null;
+		String domainAxisName = null;
+		
+		constituencyRevenueVillagesVO = constituencyPageService.getConstituencyElecResults(jObj.getLong("constituencyId")
+				, jObj.getString("electionYear"));
+		if(constituencyRevenueVillagesVO.getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			chartName = "partyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
+			chartTitle = "Mandal Wise Electon Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
+			domainAxisName = "Mandals";
+		}else{
+			chartName = "partyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
+			chartTitle = "Assembly Constituencies Wise Electon Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
+			domainAxisName = "Assembly Constituencies";
+		}
+		
+        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+        constituencyRevenueVillagesVO.setChartPath(chartName);
+        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath);
+	  
+	  return SUCCESS;
+  }
+  
+  private CategoryDataset createDataset(ConstituencyRevenueVillagesVO constituencyObj) {
+      final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+      List<PartyElectionResultVO> pariesInfo = null;
+      List<CandidatePartyInfoVO> candidatesInfo = constituencyObj.getCandidateNamePartyAndStatus();
+  	  for(ConstituencyOrMandalWiseElectionVO constiInfoVO:constituencyObj.getConstituencyOrMandalWiseElectionVO()){
+  		pariesInfo = constiInfoVO.getPartyElectionResultVOs();
+  		for(int i=0; i<pariesInfo.size(); i++){
+  			dataset.addValue(new BigDecimal(pariesInfo.get(i).getVotesPercentage()), candidatesInfo.get(i).getParty()+"["+candidatesInfo.get(i).getRank()+"]", constiInfoVO.getLocationName());	
+  		}        		
+      }
+      return dataset;
+  }
 	
 }

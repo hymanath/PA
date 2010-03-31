@@ -664,6 +664,19 @@
            		<param name="root">candidateTrendzReportVO</param>
         	</result>		
         </action>     
+        
+        <action name="assemblyWiseParliamentResultAction" class="constituencyPageAction" method="getParliamentConstituencyAssemblyWiseResults">
+              <result type="json" name="success">
+           		<param name="root">constituencyRevenueVillagesVO</param>
+        	</result>		
+        </action>
+         
+        <action name="getElectionYearsAction" class="constituencyPageAction" method="getConstituencyElectionYears">
+              <result type="json" name="success">
+           		<param name="root">electionIdsAndYears</param>
+        	</result>		
+        </action>
+        
 	</package>
 </struts>
 

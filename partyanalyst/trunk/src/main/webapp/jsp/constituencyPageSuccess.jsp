@@ -65,6 +65,7 @@
             type="text/javascript"></script>
 
 <script type="text/javascript">
+	var constituencyResults;
 	function callAjax(jsObj,url)
 	{					
  		var callback = {			
@@ -80,6 +81,13 @@
 								else if(jsObj.task == "getVotingTrendzForElectionYears")
 								{									
 									buildVotingTrendzData(myResults);
+								}else if(jsObj.task == "getConstituencyResultsBySubLocations")
+								{		
+									constituencyResults = myResults;							
+									buildConstituencyElecResultsDataTable("number");									
+								}else if(jsObj.task == "getConstituencyElections")
+								{		
+									buildElectionsSelectBox(myResults);									
 								}	
 										
 							}catch (e) {   
@@ -205,9 +213,143 @@ function getVotingTrendzForyear()
 	callAjax(jsObj, url);	
 	
 }
+		function getConstituencyResults(elecYear){
+			var imgElmt = document.getElementById('AjaxImgDiv');
+			if(imgElmt.style.display == "none")
+			{
+	           imgElmt.style.display = "block";
+			}
+			var jsObj = {
+					constituencyId:${constituencyId},
+					electionYear:elecYear,
+					task:"getConstituencyResultsBySubLocations"
+				};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/assemblyWiseParliamentResultAction.action?"+rparam;
+			callAjax(jsObj, url);
+		}
+
+		function getConstituencyElections(){
+			var jsObj = {
+					constituencyId:${constituencyId},
+					task:"getConstituencyElections"
+				};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/getElectionYearsAction.action?"+rparam;
+			callAjax(jsObj, url);
+		}
+		
+		function buildConstituencyElecResultsDataTable(value){
+			
+			var resultDiv = document.getElementById("electionResultsInConstituencyDiv");
+			var str = '';
+			str += '<div><img src="charts/'+constituencyResults.chartPath+'" /></div>';
+			str += '<div id="elecResDiv">';
+			str += '<table id = "elecResTable">';
+			for(var i in constituencyResults.constituencyOrMandalWiseElectionVO){
+				str += '<tr>';
+				str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</td>';
+				for(var j in constituencyResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs){
+					if(value == 'number')
+						str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs[j].votesEarned+'</td>';
+					else
+						str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs[j].votesPercentage+'</td>';
+				}
+				str += '</tr>';
+			}			
+			str += '</table>';
+			str += '</div>';
+			resultDiv.innerHTML = str;
+
+			 var myColumnDefs = new Array();
+			 var myFields = new Array();
+			 
+			 if(constituencyResults.electionType == 'Assembly'){
+				 var villageHead = {
+				 			key:"Mandal",
+				 			lable: "Mandal",
+				 			sortable:true
+					   }
+
+				 var villageValue = {key:"Mandal"}
+			
+				 myColumnDefs.push(villageHead);
+				 myFields.push(villageValue);
+			 }else{
+				 var villageHead = {
+				 			key:"Assembly Constituency",
+				 			lable: "Assembly Constituency",
+				 			sortable:true
+					   }
+
+				 var villageValue = {key:"Assembly Constituency"}
+			
+				 myColumnDefs.push(villageHead);
+				 myFields.push(villageValue);
+			 }
+			 
+
+			 for(var i in constituencyResults.candidateNamePartyAndStatus){
+				var obj1 = {
+							key:constituencyResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
+							label:constituencyResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
+							sortable:true
+						}
+				var obj2 = {
+							key:constituencyResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
+							parser:"number"
+						}
+				myColumnDefs.push(obj1);
+				myFields.push(obj2);
+			 }
+
+			 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+						.get("elecResTable")); 
+			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+			 myDataSource.responseSchema = { 
+									            fields:myFields    
+									        };
+			        
+			var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource);
+			var imgElmt = document.getElementById('AjaxImgDiv');
+			if(imgElmt.style.display == "block")
+			{
+	           imgElmt.style.display = "none";
+			}
+		}
+
+		function buildElectionsSelectBox(myResults){
+			var selectDiv = document.getElementById("electionIdsSelectDiv");
+			var electionYearSelect = '';
+			
+			if(myResults.length == 0){
+				electionYearSelect +='<b>Sorry, Constituency/Mandal Data Not Available For This Constituency</b>';
+				var resultDiv = document.getElementById("mandalOrConstiElecResultDiv");
+				resultDiv.style.display = "none";
+				selectDiv.innerHTML = electionYearSelect; 
+				return;
+			}
+				
+			electionYearSelect += '<table>';
+			electionYearSelect += '<th>Select Election Year :</th>';
+			electionYearSelect += '<th>';
+			electionYearSelect += '<select id="electionYearSelect" class = "selectWidth" onchange = "getConstituencyResults(this.options[this.selectedIndex].text)">';
+			for(var i in myResults)
+			{			
+				electionYearSelect += '<option value='+myResults[i].id+'>'+myResults[i].name+'</option>';
+			}
+			electionYearSelect += '</select>';
+			electionYearSelect += '</th>';
+			electionYearSelect += '<td><div id="AjaxImgDiv" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
+			electionYearSelect += '</table>';
+			selectDiv.innerHTML = electionYearSelect; 
+			getConstituencyResults(myResults[0].name);
+		}
+
 </script>
 </head>
 <body onLoad="getString()">
+
 <div id="constituencyPageMain">
 
 	<div id="electionResults_Panel_Main" class="yui-skin-sam">
@@ -306,6 +448,27 @@ function getVotingTrendzForyear()
 				</div>
 			</td>
 			
+		</tr>
+		<tr>
+		<td colspan="2">
+		<div class="rounded">
+			<div class="corner topLeft"></div>
+			<div class="corner topRight"></div>
+			<div class="corner bottomLeft"></div>
+			<div class="corner bottomRight"></div>
+			<div id="electionIdsSelectDiv"></div>
+			<div id="mandalOrConstiElecResultDiv">
+			<table>
+				<tr>
+					<td id="labelRadio">Select The Format You Want::</td>
+					<td><input type="radio" name="dispaly" value="number" checked="checked" onclick="buildConstituencyElecResultsDataTable(this.value)">By Votes</td>
+					<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElecResultsDataTable(this.value)">By Percentage</td>
+				</tr>
+			</table>
+			<div id="electionResultsInConstituencyDiv"></div>
+			</div>
+		</div>
+		</td>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -602,6 +765,9 @@ function getVotingTrendzForyear()
 		
 
 	initializeConstituencyPage();
+
+	  getConstituencyElections();
+
 </script>
 </body>
 </html>

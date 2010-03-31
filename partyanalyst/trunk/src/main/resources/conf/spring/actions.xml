@@ -53,6 +53,7 @@
 	
 	<bean id="constituencyPageAction" class="com.itgrids.partyanalyst.web.action.ConstituencyPageAction" singleton="false">
 		<property name="constituencyPageService" ref="constituencyPageService" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 
