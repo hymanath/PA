@@ -13,6 +13,7 @@
         <pattern>/constituencyElectionResultsAction.action*</pattern>
         <pattern>/districtPageCandidateDetailsAjaxAction.action*</pattern>
         <pattern>/landing.action* </pattern>
+		<pattern>/jsp/votingTrendzPopup.jsp* </pattern>
     </excludes>
 
     <decorator name="main" page="main.jsp">

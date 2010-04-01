@@ -269,7 +269,7 @@ legend
 }
 
 
-#problemPostingDiv legend , #problemViewingDiv legend
+#problemPostingDiv legend , #problemViewingDiv legend 
 {
 	background-color:none;
 	/*background:transparent url(../../images/YUI-images/yui-images-2.8/sprite.png) repeat-x scroll 0 -200px;
@@ -364,7 +364,7 @@ legend
 .yui-skin-sam .yui-dt td a
 {
 	color:#89745D;
-	font-size:13px;
+	font-size:12px;
 	font-weight:bold;
 	text-decoration:none;
 }
@@ -461,4 +461,58 @@ legend
 	font-family:inherit;
     font-size:12px;
 	border-top:medium outset;
+}
+
+#mandalOrConstiElecResultDiv
+{
+	padding:10px;
+}
+
+#MandalVotingTrendz_head
+{
+	padding:10px;
+}
+
+.swasthik_left_span
+{
+	background-image:url(../../images/icons/constituencyPage/swasthic_left.png);
+	padding:18px 15px 14px 16px;
+}
+
+.swasthik_body_span
+{
+	background-image:url(../../images/icons/constituencyPage/swasthic_body.png);
+	padding:18px 18px 14px;
+}
+
+.swasthik_right_span
+{
+	background-image:url(../../images/icons/constituencyPage/swasthic_right.png);
+	padding:18px 13px 14px;
+}
+
+#votingTrendzFieldSet legend
+{
+	background-image:url(../../images/icons/constituencyPage/swasthic_body.png);
+	color:#000000;
+	font-weight:bold;
+}
+
+#votingTrendzDiv
+{
+	margin-top:30px;
+}
+
+#votingTrendzContentDiv
+{
+	color:#344049;
+	font-size:13px;
+	font-weight:bold;
+	padding-bottom:10px;
+	padding-top:10px;
+}
+
+#votingTrendzButtonDiv
+{
+	float:right;
 }

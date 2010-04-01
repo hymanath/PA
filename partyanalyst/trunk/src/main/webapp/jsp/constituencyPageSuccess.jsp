@@ -244,7 +244,7 @@ function getVotingTrendzForyear()
 			var resultDiv = document.getElementById("electionResultsInConstituencyDiv");
 			var str = '';
 			str += '<div><img src="charts/'+constituencyResults.chartPath+'" /></div>';
-			str += '<div id="elecResDiv">';
+			str += '<div id="elecResDiv" style="width=900px;overflow-x:auto;margin-top:20px;">';
 			str += '<table id = "elecResTable">';
 			for(var i in constituencyResults.constituencyOrMandalWiseElectionVO){
 				str += '<tr>';
@@ -442,7 +442,11 @@ function getVotingTrendzForyear()
 							<div id="problemPostingDiv">
 								<div id="problemPostingDiv_Head"></div>
 								<div id="problemPostingDiv_Body"></div>
-							</div>					
+							</div>
+							<div id="votingTrendzDiv">
+								<div id="votingTrendzDiv_Head"></div>
+								<div id="votingTrendzDiv_Body"></div>
+							</div>							
 						</div>	
 					</div>
 				</div>
@@ -451,52 +455,27 @@ function getVotingTrendzForyear()
 		</tr>
 		<tr>
 		<td colspan="2">
-		<div class="rounded">
+		<div class="rounded" style="width: 910px;">
 			<div class="corner topLeft"></div>
 			<div class="corner topRight"></div>
 			<div class="corner bottomLeft"></div>
 			<div class="corner bottomRight"></div>
-			<div id="electionIdsSelectDiv"></div>
+			<div id="MandalVotingTrendz_head" class="layoutHeadersClass"> Mandal Wise Voting Trendz </div>
+			<div id="electionIdsSelectDiv" style="padding-left:10px;"></div>
 			<div id="mandalOrConstiElecResultDiv">
 			<table>
 				<tr>
-					<td id="labelRadio">Select The Format You Want::</td>
-					<td><input type="radio" name="dispaly" value="number" checked="checked" onclick="buildConstituencyElecResultsDataTable(this.value)">By Votes</td>
-					<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElecResultsDataTable(this.value)">By Percentage</td>
+					<td id="labelRadio"><b>Select The Format You Want :</b></td>
+					<td><input type="radio" name="dispaly" value="number" checked="checked" onclick="buildConstituencyElecResultsDataTable(this.value)">By Votes </td>
+					<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElecResultsDataTable(this.value)">By Percentage </td>
 				</tr>
 			</table>
 			<div id="electionResultsInConstituencyDiv"></div>
 			</div>
 		</div>
 		</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<div id="constituencyCenterContentOuter" class="rounded"> 						
-					<div class="corner topLeft"></div>
-					<div class="corner topRight"></div>
-					<div class="corner bottomLeft"></div>
-					<div class="corner bottomRight"></div>
-
-					<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass">	</div>
-					<div id="constituencyVotersInfoDiv_electionYears" class="innerLayoutDivClass">	</div>
-
-				</div>
-			</td>
-		</tr>
-	</table>
-	<!--<div id="constituencyPageLayoutDiv">
-		<div id="electionResults_Panel_Main" class="yui-skin-sam">
-			<div id="electionResults_Panel">
-		</div>
-	</div>	
-	<div id="constituencyRightmapOuter" class="rounded"> 						
-						<div class="corner topLeft"></div>
-						<div class="corner topRight"></div>
-						<div class="corner bottomLeft"></div>
-						<div class="corner bottomRight"></div>
-	-->
-	
+		</tr>		
+	</table>	
 </div>
 
 <script type="text/javascript">

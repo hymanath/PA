@@ -48,7 +48,7 @@
 	 </script>
  </HEAD>
  <BODY onLoad="getAutoComplete()">
- <div style="float: right; margin-top: 18px;border:2px solid #7C7979;height:auto;">
+ <div style="margin-top: 18px;height:auto;">
 <s:form name="SearchNameFormName" action="cncSearchResultsAction" onsubmit="return validateTextField()" method="post">
 
 
@@ -57,7 +57,7 @@
 		<td width="80px" style="padding-top: 3px;color:#FBAD2B;">
 			Search Criteria
 		</td>
-		<td width="160px" align="left">		
+		<td width="160px" align="left" style="color:#FFFFFF;">		
 			<input id="candidateRadio" type="radio"  name="searchName" value="Candidate" onclick="getParser(this.value)"/>Candidate
 			<input id="constituencyRadio" type="radio"  name="searchName" value="Constituency" onclick="getParser(this.value)"/>Constituency	
 		</td>

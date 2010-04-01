@@ -1,0 +1,112 @@
+body
+{
+	font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	font-size:11px;
+	margin:0px;
+	padding:0px;
+	direction:ltr;
+	background-color:#EAEDEF;
+}
+
+a:hover
+{
+	text-decoration:underline;
+}
+
+.indexLayoutContainer
+{
+	width:960px;
+	background-color:#FFFFFF;
+	margin:auto;
+	overflow:hidden;
+	padding:0px;
+}
+
+#indexheader
+{
+	height:110px;
+	background-image:url(../../images/icons/indexPage/index_header_main.png);
+}
+
+#headerTable
+{
+	width:100%;
+}
+
+/*#loginarea, #searchBox
+{
+	float:right;
+}*/
+
+#loginarea
+{
+	color:#FFFFFF;
+}
+.loginStatusAnc
+{
+	color:#FFFFFF;
+	text-decoration:none;
+}
+
+#indexContent
+{
+	min-height:600px;
+	height:expression(document.body.clientWidth < 600 ? "600px": "auto" );
+}
+
+#indexNavContainer
+{
+	height:35px;
+}
+
+#indexNavContainer .yuimenubar
+{
+	line-height:3;
+	border:none;
+}
+
+#indexNavContainer .yuimenu
+{
+	line-height:2;
+}
+
+#indexNavContainer .yuimenubaritemlabel
+{
+	border:none;
+	font-weight:bold;
+}
+
+#indexNavContainer .yuimenuitemlabel  
+{
+	padding:2px 20px;
+}
+
+#indexNavContainer .yuimenubaritem-selected
+{	
+	background:none;
+	background-image:url(../../images/icons/indexPage/nav_button.gif);	
+}
+
+#indexNavContainer .yuimenubarnav .yuimenubaritemlabel-selected
+{
+	color:#FFFFFF;
+}
+
+#indexNavContainer .yuimenubarnav .yuimenubaritemlabel-hassubmenu 
+{
+	background:none;
+}
+#index_footer
+{
+	height:40px;
+}
+
+#index_inner_footer
+{
+	background-image:url(../../images/icons/homePage/homePageFooter.png);
+	background-repeat:no-repeat;
+	color:#FFFFFF;
+	height:40px;
+	margin-left:10px;
+	padding:10px 15px;
+}

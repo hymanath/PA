@@ -1051,6 +1051,40 @@ function enableElectionYearSelect(value)
 	}
 }
 
+function buildVotingTrendzInPopUp()
+{
+	var headElmt = document.getElementById('votingTrendzDiv_Head');
+	var bodyElmt = document.getElementById('votingTrendzDiv_Body');
+	
+	if(constituencyPageMainObj.presentAssemblyCandidate.length == 0 || constituencyPageMainObj.presentParliamentCandidate == 0)
+	{		
+		//bodyElmt.innerHTML = 'This constituency has been delimitated ';
+		return;
+	}
+
+	var str='';
+	str+='<fieldset id="votingTrendzFieldSet">';
+	str+='<legend> View Voting Trendz </legend>';
+	str+='<div id="votingTrendzContentDiv_main" class="votingTrendzContentDivClass">';	
+	str+='<div id="votingTrendzContentDiv">View '+constituencyPageMainObj.constituencyInfo.constituencyName+' complete male and female voting trendz.</div>';
+	str+='<div id="votingTrendzButtonDiv"><input type="button" id="votingTrendzButton" value = "View" onclick="viewVotingTrendzPopup()"/></div>';
+	str+='</div>';
+	str+='</fieldset>';
+	
+	if(bodyElmt)
+		bodyElmt.innerHTML=str;
+
+	var postButton = new YAHOO.widget.Button("votingTrendzButton");
+	postButton.on("click", viewVotingTrendzPopup); 
+}
+
+function viewVotingTrendzPopup()
+{	
+	var popup1 = window.open("jsp/votingTrendzPopup.jsp","popup1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+	popup1.focus();
+	popup1.electionTrendzReportVO = constituencyPageMainObj.electionTrendzReportVO;
+}
+
 function initializeConstituencyPage()
 {		
 	buildRightlayoutMap();
@@ -1058,12 +1092,12 @@ function initializeConstituencyPage()
 	buildConstituencyConnectPeopleWindow();
 	buildProblemPostingWindow();
 	buildProblemViewingWindow();
+	buildVotingTrendzInPopUp();
 	buildElectionResults();	
 	buildCenterVotersCandidateInfoContent();
 	showCurrentlyElectedCandidate();
 
-	buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
-	
-	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);
+	/*buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",constituencyPageMainObj.electionTrendzReportVO);
+	buildelectionYearsForVotingTrendz(constituencyPageMainObj.electionTrendzReportVO.previousElectionYears);*/
 	
 }
