@@ -158,4 +158,8 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List findAllMptcPartysWinnerInaDistrict(Long districtId,String electionType, String electionYear,Long partyId,Long rank);
 	
 	public List getAllPartysForAParticularElectionYear(Long districtId,String electionType,String electionYear);
+	
+	@SuppressWarnings("unchecked")
+	public List getPartyIdAndShortNameForThatParticipatedInAElection(Long electionId);
+	
 }

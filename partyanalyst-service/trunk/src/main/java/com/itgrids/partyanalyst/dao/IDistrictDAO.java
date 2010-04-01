@@ -54,4 +54,7 @@ public interface IDistrictDAO extends GenericDao<District, Long>{
 	public List<District> getDistrictIDByStateIDAndDistrictName(Long stateID, String districtName);
 	
 	public List getStateToDistrictByDistrict(String districtIDs);
+	
+	@SuppressWarnings("unchecked")
+	public List getDistrictIdAndNameByState(Long stateId);
 }
