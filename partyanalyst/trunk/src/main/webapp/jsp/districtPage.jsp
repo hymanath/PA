@@ -522,13 +522,12 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	{	
 		var ajaxImgElmt = document.getElementById("zptcAjaxLoadDiv");
 		ajaxImgElmt.style.display = "block";
-				
 		zptcElectionYear = id;
-		zptcElectionType = electionType;
+		zptcElectionType = "ZPTC";
 		var jsObj=
 		{		
 				districtId:districtId,
-				electionType:electionType,
+				electionType:zptcElectionType,
 				electionYear:id,
 				task:"getPartyDetails"						
 		};
@@ -541,13 +540,12 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	{
 		var ajaxImgElmt = document.getElementById("mptcAjaxLoadDiv");
 		ajaxImgElmt.style.display = "block";
-		
 		mptcElectionYear = id;	
-		mptcElectionType = electionType;	
+		mptcElectionType = "MPTC";	
 		var jsObj=
 		{		
 				districtId:districtId,
-				electionType:electionType,
+				electionType:mptcElectionType,
 				electionYear:id,
 				task:"getMptcPartyDetails"						
 		};
