@@ -1,0 +1,121 @@
+@CHARSET "ISO-8859-1";
+.mainHeading {
+	background-image:url(../../images/icons/electionResultsReport/heading.png);
+	border:0px solid #AEE2FF;
+	color:#000000;
+	font-family:MS Sans-serif;
+	font-size:17px;
+	font-weight:bold;
+	margin-bottom:15px;
+	margin-top:0;
+	padding:10px;
+	width:450px;		
+	height:25px;
+	text-align:center;
+}
+
+.basicDetailsTable
+{
+	border: none;
+	color: #006221;	
+}
+.basicDetailsTable th
+{
+	text-align:left;
+	color: #006221;
+}
+.basicDetailsDiv
+{
+	margin-bottom:10px;
+	width:900px;
+}
+.basicDetailsHeadingDiv
+{
+	background-image:url(../../images/icons/electionResultsReport/overview_Image.png);
+	color:#FFFFFF;
+	font-family:MS Sans-serif;
+	font-size:15px;
+	font-weight:bold;
+	height:26px;
+	margin-bottom:10px;
+	padding-top:4px;
+	text-align:center;
+	width:150px;
+}
+.graphTop
+{
+	background-image:url(../../images/icons/electionResultsReport/top_image.png);
+	color:#FFFFFF;
+	font-family:Ms sans-serif;
+	font-size:18px;
+	font-weight:lighter;
+	height:30px;
+	width:900px;	
+}
+#statewiseGraph
+{
+	background:#EBE4F2 none repeat scroll 0 0;
+	border-left:1px solid #008DCF;
+	border-right:1px solid #008DCF;	
+	width:898px;
+	overflow-y:auto;	
+}
+.graphBottom
+{
+	background-image:url(../../images/icons/electionResultsReport/bottom_image.png);
+	height:15px;	
+	width:900px;
+	border-bottom:0px none none;
+	margin-bottom:10px;	
+}
+#distwiseGraph
+{
+	border-left:1px solid #008DCF;
+	border-right:1px solid #008DCF;
+	height:200px;
+	width:898px;
+}
+#candidateDetails
+{
+	border-left:1px solid #008DCF;
+	border-right:1px solid #008DCF;
+	height:200px;
+	width:898px;
+}
+#toolsDiv
+{
+	border-left:1px solid #008DCF;
+	border-right:1px solid #008DCF;
+	height:220px;
+	width:898px;
+	
+}
+.toolsTable
+{
+	border-collapse:collapse;
+	width:100%;
+	cell-spacing:0;
+	cell-padding:0;	
+}
+.td
+{
+	valign:top;
+}
+.toolsDisplay
+{
+	background:#EBE4F2 none repeat scroll 0 0;
+	border-color:#B7D3FC;
+	border-style:solid;
+	border-width:1px 1px 1px 10px;
+	color:#006221;
+	font-family:Ms sans-serif;
+	height:205px;
+	padding:5px;
+	width:200px;
+}	
+h3{
+	border-bottom:1px dotted #006221;
+	font-family:Trebuchet MS;
+	font-size:15px;
+	margin-top:0;
+}	
