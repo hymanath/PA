@@ -17,5 +17,10 @@ public class AllianceGroupDAO extends GenericDaoHibernate<AllianceGroup, Long> i
 	public List<AllianceGroup> findByGroupId(final Long groupId) {
 		return getHibernateTemplate().find("from AllianceGroup as model where model.group.groupId=?",groupId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findPartysByGroupId(Long groupId){
+		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName from AllianceGroup as model where model.group.groupId=?",groupId);
+	}
 
 }

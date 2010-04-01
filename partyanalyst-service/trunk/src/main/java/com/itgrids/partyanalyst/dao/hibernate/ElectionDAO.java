@@ -212,5 +212,18 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		Object[] params = {electionType,stateId};
 		return getHibernateTemplate().find("select max(model.electionId),max(model.electionYear) from Election model where model.electionScope.electionType.electionTypeId = ? and model.electionScope.state.stateId = ?",params);
 	}
+	
+		
+	@SuppressWarnings("unchecked")
+	public List findParliamentElectionIdByElectionTypeAndYear(String electionType,String year){
+		Object[] params = {electionType,year};
+		return getHibernateTemplate().find("select model.electionId from Election model where model.electionScope.electionType.electionType = ? and model.electionYear = ?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findElectionIdByElectionTypeAndYear(String electionType,String year,Long stateId){
+		Object[] params = {electionType,year,stateId};
+		return getHibernateTemplate().find("select model.electionId from Election model where model.electionScope.electionType.electionType = ? and model.electionYear = ? and model.electionScope.state.stateId = ?",params);
+	}
 
 }

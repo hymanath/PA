@@ -25,5 +25,11 @@ IElectionAllianceDAO {
 		return getHibernateTemplate().find("from ElectionAlliance as model where model.election.electionYear=? " +
 				"and model.election.electionScope.electionType.electionTypeId=? ",params); 
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List findGroupIdByElection(Long electionId){
+		return getHibernateTemplate().find("select model.group.groupId,model.group.groupName from ElectionAlliance as model"+
+				" where model.election.electionId = ?",electionId);
+	}
 
 }

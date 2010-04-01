@@ -644,4 +644,10 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" model.constituencyElection.constituency.electionScope.electionType.electionType = ?" +
 				" and model.constituencyElection.election.electionYear = ? order by model.party.shortName",params);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List getPartyIdAndShortNameForThatParticipatedInAElection(Long electionId){
+		return getHibernateTemplate().find("select distinct model.party.partyId,model.party.shortName from Nomination model"+
+				" where model.constituencyElection.election.electionId = ?",electionId);
+	}
 }

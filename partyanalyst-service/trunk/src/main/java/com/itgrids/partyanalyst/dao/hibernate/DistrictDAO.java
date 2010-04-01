@@ -66,9 +66,15 @@ IDistrictDAO {
 		Object[] params = {stateID, districtName};
 		return getHibernateTemplate().find("from District model where model.state.stateId=? and model.districtName=? ", params);
 	}
+	@SuppressWarnings("unchecked")
 	public List getStateToDistrictByDistrict(String districtIDs){
 		return getHibernateTemplate().find("select model.state.stateId, model.state.stateName, " +
 				"model.districtId, model.districtName " +
 				" from District model where model.districtId in("+districtIDs+") ");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getDistrictIdAndNameByState(Long stateId){
+		return getHibernateTemplate().find("select model.districtId,model.districtName from District model where model.state.stateId = ?",stateId);
 	}
 }
