@@ -676,6 +676,15 @@
            		<param name="root">electionIdsAndYears</param>
         	</result>		
         </action>
+         <action name="electionDetailsReportAction" class="electionDetailsReportAction">
+			<result name="success">/jsp/electionDetails.jsp</result>		
+		</action>
+		<action name="electionDetailsReportAjaxAction" class="electionDetailsReportAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">electionCompleteDetailsVO</param>				
+			</result>		
+		</action>
+        
         
 	</package>
 </struts>
