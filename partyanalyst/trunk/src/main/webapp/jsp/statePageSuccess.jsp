@@ -116,6 +116,13 @@
 			padding:0;
 			text-align:center;
 		}
+		.detailedAnalysisAnc
+		{
+			color:green;
+			font-family:Trebuchet MS;
+			font-size:13px;
+			font-weight:bold;
+		}	
 		
   </style>
 
@@ -344,9 +351,11 @@ function insertData(param,results)
 <c:forEach var="state" items="${stateElections}">
 <table border="0" >     
 	<tr>
-		<td><img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/> </td>
+		<td><img  src="<%=request.getContextPath()%>/images/icons/elections_logo.png"/> </td>
 		<td align="center">
-			<c:out value="${state.electionType}" /> Election In	<c:out value="${state.year}" /><span id="span${state.electionId}" style="color:#4F6177;cursor:pointer;" onclick="doAjax(${state.electionId});"style="cursor:pointer;"> <c:out value="(view results)" /></span> 
+			<c:out value="${state.electionType}" /> Election In	<c:out value="${state.year}" /><span id="span${state.electionId}" style="color:#4F6177;cursor:pointer;" onclick="doAjax(${state.electionId});"style="cursor:pointer;"> <c:out value="(view results)" /></span>
+			<a href="electionDetailsReportAction.action?electionId=${state.electionId}&stateID=${statePage.stateId}&stateName=${statePage.stateName}&electionType=${state.electionType}&year=${state.year}"  class="detailedAnalysisAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">Detailed Analysis
+			</a> 
 		</td>
 		<td id="search${state.electionId}" align="left" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/arrows.gif" /></img></td>		
 	</tr>
