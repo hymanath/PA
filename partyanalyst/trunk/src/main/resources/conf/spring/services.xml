@@ -355,6 +355,16 @@
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
+	
+	<bean name="electionReportService" class="com.itgrids.partyanalyst.service.impl.ElectionReportService"> 
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />	
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="electionAllianceDAO" ref="electionAllianceDAO" />	
+		<property name="allianceGroupDAO" ref="allianceGroupDAO" />	
+		<property name="districtDAO" ref="districtDAO" />	
+	</bean>
+	
 	<bean id="villageBoothDataPopulationService" class="com.itgrids.partyanalyst.service.impl.VillageBoothDataPopulationService" >
     	<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
     	<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
