@@ -256,6 +256,9 @@
 		<property name="constituencyPageService" ref="constituencyPageService" />
 	</bean>
 	<bean id="constituencyElectionResultsAction" class="com.itgrids.partyanalyst.web.action.ConstituencyElectionResultsAction" singleton="false">
-			<property name="staticDataService" ref="staticDataService" />
+			<property name="staticDataService" ref="staticDataService" />			
+	</bean>
+	<bean id="electionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.ElectionDetailsReportAction" singleton="false">
+			<property name="electionReportService" ref="electionReportService" />
 	</bean>
 </beans>		
