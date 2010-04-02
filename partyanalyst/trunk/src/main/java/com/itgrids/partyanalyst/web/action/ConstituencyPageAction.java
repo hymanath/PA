@@ -76,6 +76,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private IDelimitationConstituencyMandalService delimitationConstituencyMandalService;
 	 private DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO;	
 	 private ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO;
+	 private List<ConstituencyRevenueVillagesVO> parliamentMandals;
 	 private ElectionBasicInfoVO electionBasicInfoVO;
 	 private IElectionTrendzService electionTrendzService;
 	 private List<SelectOptionVO> electionIdsAndYears;
@@ -259,6 +260,15 @@ public class ConstituencyPageAction extends ActionSupport implements
 
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
+	}
+
+	public List<ConstituencyRevenueVillagesVO> getParliamentMandals() {
+		return parliamentMandals;
+	}
+
+	public void setParliamentMandals(
+			List<ConstituencyRevenueVillagesVO> parliamentMandals) {
+		this.parliamentMandals = parliamentMandals;
 	}
 
 	public String execute() throws Exception{
@@ -659,4 +669,28 @@ public class ConstituencyPageAction extends ActionSupport implements
       return dataset;
   }
 	
+  public String getAssemblyRelatedParliamentsMandalResults(){
+	  try{
+		  jObj = new JSONObject(getTask());
+		  System.out.println("jObj = "+jObj);
+	  }catch (ParseException e) {
+		e.printStackTrace();
+	  }
+	  String chartTitle = "";
+	  String chartPath = "";
+	  String chartName = "";
+	  String domainAxisName = "Mandals";
+	  parliamentMandals = constituencyPageService.getMandalElectionInfoForAParliamentConstituency(jObj.getLong("constituencyId"), jObj.getString("electionYear"));
+	  
+	  for(ConstituencyRevenueVillagesVO obj:parliamentMandals){
+		  chartTitle = "Mandal Wise Election Results For "+obj.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
+		  chartName = "mandalWiseParliamentElectionsResults_"+obj.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
+		  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj), chartPath);
+		  obj.setChartPath(chartName);
+	  }
+	  
+	  return SUCCESS;
+  }
+  
 }

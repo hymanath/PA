@@ -686,6 +686,12 @@
 		</action>
         
         
+        <action name="getParliamentMandalResultsAction" class="constituencyPageAction" method="getAssemblyRelatedParliamentsMandalResults">
+              <result type="json" name="success">
+           		<param name="root">parliamentMandals</param>
+        	</result>		
+        </action>
+        
 	</package>
 </struts>
 

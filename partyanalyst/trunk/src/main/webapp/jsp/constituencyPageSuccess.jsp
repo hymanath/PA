@@ -66,6 +66,7 @@
 
 <script type="text/javascript">
 	var constituencyResults;
+	var parliamentResult;
 	function callAjax(jsObj,url)
 	{					
  		var callback = {			
@@ -84,11 +85,15 @@
 								}else if(jsObj.task == "getConstituencyResultsBySubLocations")
 								{		
 									constituencyResults = myResults;							
-									buildConstituencyElecResultsDataTable("number");									
+									buildConstituencyElecResultsDataTable("number");
 								}else if(jsObj.task == "getConstituencyElections")
 								{		
 									buildElectionsSelectBox(myResults);									
-								}	
+								}else if(jsObj.task == "getParliamentConstituencyElectionResults")
+								{		
+									parliamentResult = myResults;
+									buildParliamentResults(myResults);			
+								}
 										
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -103,6 +108,87 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
+	function buildParliamentResults(){
+		var parliamentDiv = document.getElementById("parliamentElectionResultsDiv");
+		if(parliamentDiv.style.display == "none")
+		{
+			parliamentDiv.style.display = "block";
+		}
+		var str = '';
+		str += '<table>';
+		str += '<th>Select Format You Want:</th>';
+		str += '<td><input type="radio" name="parliament" value="number" checked="checked" onclick="buildParliamentResultDT(this.value)">By Votes</td>';
+		str += '<td><input type="radio" name="parliament" value="percentage" onclick="buildParliamentResultDT(this.value)">By Percentage</td>';
+		str += '</table>';
+		str += '<div id="resultDataTableDiv"></div>';
+		parliamentDiv.innerHTML = str;
+		buildParliamentResultDT("number");
+	}
+
+	function buildParliamentResultDT(checked){
+		var parliamentDiv = document.getElementById("resultDataTableDiv");
+		var str = '';
+		for(var i in parliamentResult){
+			str += '<div><img src="charts/'+parliamentResult[i].chartPath+'"></div>';
+			str += '<div id="parliamentElecResDiv_'+i+'">';
+			str += '<table id = "parliamentElecResTable_'+i+'">';
+			for(var j in parliamentResult[i].constituencyOrMandalWiseElectionVO){
+				str += '<tr>';
+				str += '<td>'+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].locationName+'</td>';
+				for(var k in parliamentResult[i].constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs){
+					if(checked == 'number')
+						str += '<td>'+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesEarned+'</td>';
+					else
+						str += '<td>'+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesPercentage+'</td>';
+				}
+				str += '</tr>';
+			}			
+			str += '</table>';
+			str += '</div>';
+		}
+		parliamentDiv.innerHTML = str;
+	
+		for(var i in parliamentResult){
+			 var myColumnDefs = new Array();
+			 var myFields = new Array();
+			 
+			 var villageHead = {
+			 			key:"Mandal",
+			 			lable: "Mandal",
+			 			sortable:true
+				   }
+
+			 var villageValue = {key:"Mandal"}
+		
+			 myColumnDefs.push(villageHead);
+			 myFields.push(villageValue);
+			 
+
+			 for(var j in parliamentResult[i].candidateNamePartyAndStatus){
+				var obj1 = {
+							key:parliamentResult[i].candidateNamePartyAndStatus[j].party +'['+parliamentResult[i].candidateNamePartyAndStatus[j].rank+']',
+							label:parliamentResult[i].candidateNamePartyAndStatus[j].party +'['+parliamentResult[i].candidateNamePartyAndStatus[j].rank+']',
+							sortable:true
+						}
+				var obj2 = {
+							key:parliamentResult[i].candidateNamePartyAndStatus[j].party +'['+parliamentResult[i].candidateNamePartyAndStatus[j].rank+']',
+							parser:"number"
+						}
+				myColumnDefs.push(obj1);
+				myFields.push(obj2);
+			 }
+
+			 var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+						.get("parliamentElecResTable_"+i)); 
+			 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+			 myDataSource.responseSchema = { 
+									            fields:myFields    
+									        };
+			        
+			var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv_"+i,myColumnDefs, myDataSource);
+		}
+		
+	}
 	
 function showNextPreviousCandidateVotingTrendz(index,type)
 {
@@ -215,6 +301,9 @@ function getVotingTrendzForyear()
 }
 		function getConstituencyResults(elecYear){
 			var imgElmt = document.getElementById('AjaxImgDiv');
+			var parliamentDiv = document.getElementById('parliamentElectionResultsDiv');
+			parliamentDiv.style.display = "none";
+
 			if(imgElmt.style.display == "none")
 			{
 	           imgElmt.style.display = "block";
@@ -240,7 +329,16 @@ function getVotingTrendzForyear()
 		}
 		
 		function buildConstituencyElecResultsDataTable(value){
-			
+	
+			if(constituencyResults.electionType == 'Assembly'){		
+				var parliamentButtonDiv = document.getElementById("parliamentResultsButtonDiv");
+				var str = '';
+				var electionSelect = document.getElementById("electionYearSelect");
+				var elecYear = electionSelect.options[electionSelect.selectedIndex].text; 
+				str += '<input type="button" value="Know About Parliament(s)" onclick="getParliamentResults('+elecYear+')"/>';
+				parliamentButtonDiv.innerHTML = str;				
+			}
+
 			var resultDiv = document.getElementById("electionResultsInConstituencyDiv");
 			var str = '';
 			str += '<div><img src="charts/'+constituencyResults.chartPath+'" /></div>';
@@ -291,12 +389,12 @@ function getVotingTrendzForyear()
 
 			 for(var i in constituencyResults.candidateNamePartyAndStatus){
 				var obj1 = {
-							key:constituencyResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
-							label:constituencyResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
+							key:constituencyResults.candidateNamePartyAndStatus[i].party +'['+constituencyResults.candidateNamePartyAndStatus[i].rank+']',
+							label:constituencyResults.candidateNamePartyAndStatus[i].party +'['+constituencyResults.candidateNamePartyAndStatus[i].rank+']',
 							sortable:true
 						}
 				var obj2 = {
-							key:constituencyResults.candidateNamePartyAndStatus[i].party +'['+myResults.candidateNamePartyAndStatus[i].rank+']',
+							key:constituencyResults.candidateNamePartyAndStatus[i].party +'['+constituencyResults.candidateNamePartyAndStatus[i].rank+']',
 							parser:"number"
 						}
 				myColumnDefs.push(obj1);
@@ -318,6 +416,17 @@ function getVotingTrendzForyear()
 			}
 		}
 
+		function getParliamentResults(elecYear){
+			var jsObj = {
+					constituencyId:${constituencyId},
+					electionYear:elecYear,
+					task:"getParliamentConstituencyElectionResults"
+				};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/getParliamentMandalResultsAction.action?"+rparam;
+			callAjax(jsObj, url);
+		}
+		
 		function buildElectionsSelectBox(myResults){
 			var selectDiv = document.getElementById("electionIdsSelectDiv");
 			var electionYearSelect = '';
@@ -341,6 +450,7 @@ function getVotingTrendzForyear()
 			electionYearSelect += '</select>';
 			electionYearSelect += '</th>';
 			electionYearSelect += '<td><div id="AjaxImgDiv" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></div></td>';
+			electionYearSelect += '<td><div id="parliamentResultsButtonDiv"></td>';
 			electionYearSelect += '</table>';
 			selectDiv.innerHTML = electionYearSelect; 
 			getConstituencyResults(myResults[0].name);
@@ -463,7 +573,8 @@ function getVotingTrendzForyear()
 			<div id="MandalVotingTrendz_head" class="layoutHeadersClass"> Mandal Wise Voting Trendz </div>
 			<div id="electionIdsSelectDiv" style="padding-left:10px;"></div>
 			<div id="mandalOrConstiElecResultDiv">
-			<table>
+				<div id="parliamentElectionResultsDiv"></div>
+				<table>
 				<tr>
 					<td id="labelRadio"><b>Select The Format You Want :</b></td>
 					<td><input type="radio" name="dispaly" value="number" checked="checked" onclick="buildConstituencyElecResultsDataTable(this.value)">By Votes </td>
