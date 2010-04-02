@@ -96,7 +96,7 @@ tbody .yui-dt-editable{cursor:pointer;}.yui-dt-editor{text-align:left;background
 	font-weight:bold;
 	margin:6px 5px;
 	padding:0;
-	text-align:center;
+	text-align:left;
 	white-space:nowrap;	
 }
 .yui-skin-sam .yui-dt-paginator .yui-dt-first,.yui-skin-sam .yui-dt-paginator .yui-dt-last,.yui-skin-sam .yui-dt-paginator .yui-dt-selected{padding:2px 6px;}.yui-skin-sam .yui-dt-paginator a.yui-dt-first,.yui-skin-sam .yui-dt-paginator a.yui-dt-last{text-decoration:none;}.yui-skin-sam .yui-dt-paginator .yui-dt-previous,.yui-skin-sam .yui-dt-paginator .yui-dt-next{display:none;}.yui-skin-sam a.yui-dt-page{border:1px solid #CBCBCB;padding:2px 6px;text-decoration:none;background-color:#fff;}.yui-skin-sam .yui-dt-selected{border:1px solid #fff;background-color:#fff;}
