@@ -19,7 +19,7 @@ public class ElectionResultsReportVO implements Serializable {
 	private String state;
 	private String electionType;
 	private String electionYear;
-	
+	private String statewiseElectionResultsChartName;	
 	private ResultStatus resultStatus;
 	
 	private ElectionResultsVO electionBasicResultsVO;
@@ -64,6 +64,16 @@ public class ElectionResultsReportVO implements Serializable {
 	public void setElectionBasicResultsVO(ElectionResultsVO electionBasicResultsVO) {
 		this.electionBasicResultsVO = electionBasicResultsVO;
 	}
+
+	public String getStatewiseElectionResultsChartName() {
+		return statewiseElectionResultsChartName;
+	}
+
+	public void setStatewiseElectionResultsChartName(
+			String statewiseElectionResultsChartName) {
+		this.statewiseElectionResultsChartName = statewiseElectionResultsChartName;
+	}
+	
 	
 	
 
