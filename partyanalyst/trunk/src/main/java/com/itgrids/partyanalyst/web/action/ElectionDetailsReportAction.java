@@ -203,7 +203,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 		 		ChartProducer.create3DBarChart("Party","Seats",createDatasetForPartyResults(electionCompleteDetailsVO.getElectionBasicResultsVO().getAllPartiesResults()), partyResultsChartPath);
 			    request.setAttribute("partyResultsChartName", partyResultsChartName);
 				session.setAttribute("partyResultsChartName", partyResultsChartName);
-			
+				electionCompleteDetailsVO.setStatewiseElectionResultsChartName(partyResultsChartName);	
 			}	
 		}	
 			return Action.SUCCESS;
