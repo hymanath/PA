@@ -24,9 +24,11 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/fonts/fonts-min.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/menu/assets/skins/sam/menu.css">
 	
-	<link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
-	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
 	<link href="styles/pa.css" rel="stylesheet" type="text/css" />
+	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
+	<link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
+	
+
 	
 
 	
@@ -111,9 +113,9 @@
 	<div id="indexheader" class="indexLayoutContainer">
 		<table  width="100%" id="headerTable">
 			<tr>
-				<td style="vertical-align:top;width:100px;"><div id="pa_Logo"><img src="images/icons/homePage/pa_logo.png"></img></div></td>
+				<td style="vertical-align:top;width:600px;"><div id="pa_Logo"><img src="images/icons/homePage/pa_logo.png"></img></div></td>
 				<td style="vertical-align:top;">
-					<div style="float: right;">
+					<div >
 						<div id="loginarea">
 							<c:if test="${sessionScope.loginStatus == 'out'}">        		
 								<c:out value="Welcome, ${sessionScope.UserName} | "/>

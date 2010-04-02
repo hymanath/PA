@@ -1082,7 +1082,7 @@ function viewVotingTrendzPopup()
 {	
 	var popup1 = window.open("jsp/votingTrendzPopup.jsp","popup1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 	popup1.focus();
-	popup1.electionTrendzReportVO = constituencyPageMainObj.electionTrendzReportVO;
+	//popup1.electionTrendzReportVO = constituencyPageMainObj.electionTrendzReportVO;
 }
 
 function initializeConstituencyPage()

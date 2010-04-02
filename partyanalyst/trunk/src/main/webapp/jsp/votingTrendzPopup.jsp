@@ -53,6 +53,7 @@
 
 <script type="text/javascript" src="../js/constituencyPage/constituencyPage.js"></script>
 <link rel="stylesheet" type="text/css" href="../styles/constituencyPage/constituencyPage.css">	
+<link href="styles/indexPage/indexPage.css" rel="stylesheet" type="text/css" />
 
   <script>
 
@@ -61,8 +62,7 @@
  		var callback = {			
  		               success : function( o ) {
 							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText);	
-								console.log("myResults = ",myResults);
+								myResults = YAHOO.lang.JSON.parse(o.responseText);									
 								
 								if(jsObj.task == "getNextPrevCandidateTrendz")
 								{
@@ -260,8 +260,7 @@ function getVotingTrendzForyear()
 	}
 
 function buildVotingTrendzData(obj)
-{	
-	console.log("obj = ",obj);
+{		
 	electionTrendzReportVO.electionTrendzOverviewVO = obj.electionTrendzOverviewVO;
 
 	buildConstituencyVotingTrendzHeader(obj);
@@ -451,8 +450,7 @@ function buildCenterConstituencyVotersInfoContent(obj)
 }	
 
 function buildConstituencyVotingTrendzGraph(obj)
-{	
-	console.log(obj);
+{		
 	var elmt = document.getElementById('constituencyVotersInfoDiv_Body_votingTrendzGraph');
 	
 	if(elmt)
@@ -465,10 +463,34 @@ function buildConstituencyVotingTrendzGraph(obj)
 
 function candidateVotingTrendzDatatable(obj)
 {
+	var elmt = document.getElementById("constituencyVotersInfoDiv_Body_candidate");
 	
-	var candidateTrendzArr = obj.partyElectionTrendzVO;
-	 var myDataSource = new YAHOO.util.DataSource(candidateTrendzArr); 
-	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	var str = '';
+	str+='<table id="maleFemaleVotingTrendzTable">';
+	for(var i in obj.partyElectionTrendzVO)
+	{
+		str+='<tr>';
+		str+='<td>'+obj.partyElectionTrendzVO[i].candidateName+'</td>';
+		str+='<td>'+obj.partyElectionTrendzVO[i].partyName+'</td>';
+		str+='<td>'+obj.partyElectionTrendzVO[i].totalVotes+'</td>';
+		str+='<td>'+obj.partyElectionTrendzVO[i].maleVotes+'</td>';
+		str+='<td>'+obj.partyElectionTrendzVO[i].femaleVotes+'</td>';
+		str+='<td>'+obj.partyElectionTrendzVO[i].maleAndFemaleVotes+'</td>';
+		str+='<td>'+obj.partyElectionTrendzVO[i].totalVotesPercent+'</td>';
+		str+='<td>'+obj.partyElectionTrendzVO[i].maleVotesPercent+'</td>';
+		str+='<td>'+obj.partyElectionTrendzVO[i].femaleVotesPercent+'</td>';
+		str+='<td>'+obj.partyElectionTrendzVO[i].maleAndFemaleVotesPercent+'</td>';
+		str+='<td>'+obj.partyElectionTrendzVO[i].status+'</td>';	
+		str+='</tr>';
+	}
+	str+='</table>';
+
+	if(elmt)
+		elmt.innerHTML=str;
+
+var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("maleFemaleVotingTrendzTable"));
+	myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
 	 myDataSource.responseSchema = { 
 				fields: [
 							{	key : "candidateName"},							
@@ -499,13 +521,13 @@ function candidateVotingTrendzDatatable(obj)
 				{key:"status", label:'status', sortable:true}
 			]; 
 		 
-
 	var captionStr = '';
 	captionStr += '<div width="100%">';
 	captionStr += '<span id="dataTableTitle">Candidate Voting Trendz</span>';
 	captionStr += '<span id="dataTableHead"> <Font color="Red">* </Font>M - Male , <Font color="Red">* </Font> F - Female </span>';
 	captionStr += '</div>';
-	var myDataTable = new YAHOO.widget.DataTable("constituencyVotersInfoDiv_Body_candidate",myColumnDefs, myDataSource,{caption:captionStr}); 
+	
+	var myDataTable = new YAHOO.widget.DataTable("constituencyVotersInfoDiv_Body_candidate",myColumnDefs, myDataSource); 
 
 }
 
@@ -567,6 +589,8 @@ function enableElectionYearSelect(value)
  <BODY>
 	<div id="constituencyVotersInfoDiv_Main" class="innerLayoutDivClass yui-skin-sam">	</div>
 	<script type="text/javascript">
+		var parent = window.opener;
+		electionTrendzReportVO = parent.constituencyPageMainObj.electionTrendzReportVO;		
 		buildVotingTrendzLayout("constituencyVotersInfoDiv_Main",electionTrendzReportVO);
 		//buildelectionYearsForVotingTrendz(electionTrendzReportVO.previousElectionYears);
 	</script>
