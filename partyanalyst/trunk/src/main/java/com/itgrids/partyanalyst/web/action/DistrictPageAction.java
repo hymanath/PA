@@ -47,7 +47,6 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private List<SelectOptionVO> electionYears,mptcElectionYears;
 	private String task = null,electionYear=null,electionType=null;
 	JSONObject jObj = null;
-	private Long zptcCount,mptcCount;
 	private CandidateDetailsVO  parliamentCandidateDetailsVo;
 	private List<TeshilPartyInfoVO> partyDetails,getMptcPartyDetails;
 	private String disId,eleType,eleYear;
@@ -114,22 +113,6 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	public void setParliamentCandidateDetailsVo(
 			CandidateDetailsVO parliamentCandidateDetailsVo) {
 		this.parliamentCandidateDetailsVo = parliamentCandidateDetailsVo;
-	}
-
-	public Long getZptcCount() {
-		return zptcCount;
-	}
-
-	public void setZptcCount(Long zptcCount) {
-		this.zptcCount = zptcCount;
-	}
-
-	public Long getMptcCount() {
-		return mptcCount;
-	}
-
-	public void setMptcCount(Long mptcCount) {
-		this.mptcCount = mptcCount;
 	}
 
 	public MandalAllElectionDetailsVO getMptcElectionDetails() {
@@ -255,8 +238,6 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		districtName = request.getParameter("districtName");
 			
 		constituenciesStatusVO = staticDataService.getConstituenciesWinnerInfo(Long.parseLong(districtId));	
-		zptcCount = Long.parseLong(constituenciesStatusVO.getZptcCount().toString());
-		mptcCount = Long.parseLong(constituenciesStatusVO.getMptcCount().toString());
 		electionYear = constituenciesStatusVO.getElectionYear();
 		electionType = constituenciesStatusVO.getElectionType();
 		mandals = staticDataService.getMandalsForDistrict(Long.parseLong(districtId));	
@@ -268,8 +249,6 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		}
 
 		log.debug("District Id = "+districtId+" & District Name = "+districtName);
-		System.out.println("===============");
-		System.out.println("===============");
 		return Action.SUCCESS;
 	
 	}
@@ -283,17 +262,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 				e.printStackTrace();
 			}	
 			log.debug("Task::"+jObj.getString("task"));
-			if(jObj.getString("task").equalsIgnoreCase("getZptcData"))
-			{
-				String districtID = jObj.getString("id"); 
-		//		zptcElectionDetails = staticDataService.getAllZptcsForADistrictForLatestYear(Long.parseLong(districtID));
-			}
-			else if(jObj.getString("task").equalsIgnoreCase("getMptcData"))
-			{
-				String districtID = jObj.getString("id"); 
-		//		mptcElectionDetails = staticDataService.getAllMptcsForADistrictForLatestYear(Long.parseLong(districtID));
-			}
-			else if(jObj.getString("task").equalsIgnoreCase("getAllElectionYears"))
+		
+			if(jObj.getString("task").equalsIgnoreCase("getAllElectionYears"))
 			{
 				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("eleType")));
 			}

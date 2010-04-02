@@ -160,6 +160,7 @@ function initializeResultsTableForWinners() {
 
 	 var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
 	 ajaxImgElmt.style.display = "none";  
+
 }
 
 
@@ -279,6 +280,16 @@ function showPartyWise(results)
 }
 function allCandidates()
 {
+	var elecYEARDiv = document.getElementById("elecYEAR");	
+	var elecYEARStr='';
+	elecYEARStr += '<b>'+electionYear+'</b>';
+	elecYEARDiv.innerHTML = elecYEARStr;	
+
+	var eleTYPEDiv = document.getElementById("eleTYPE");
+	var elecTYPEStr='';
+	elecTYPEStr += '<b>'+electionType+'</b>';
+	eleTYPEDiv.innerHTML = elecTYPEStr;	
+	
 	var ajaxImgElmt = document.getElementById("ajaxLoadDiv");
 	ajaxImgElmt.style.display = "block";
 	var jsObj=
@@ -344,7 +355,11 @@ function getParties()
 </head>
 <body onload="allCandidates()">
 <div class="detailsHead">
-		Candidate Elections Result Page<br/><br/>
+		<table align="center"><tr>
+				<td><div id="eleTYPE"></div></td>
+				<td><div id="elecYEAR"></div></td>
+				<td>Candidate Elections Results </td>
+		</tr></table><br/>
 </div>
 	<table>
 		<tr>

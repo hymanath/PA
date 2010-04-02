@@ -89,6 +89,10 @@
 			text-decoration:none;
 			vertical-align:bottom;
 		}
+		.counterSize{
+			color:red;
+			font-size:14px;
+		}
 	</style>
 	
 
@@ -102,7 +106,7 @@ var tehsilDetails={
 		};
 var districtId = ${districtId};
 var electionTypeId,myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear,mptcElectionType,zptcElectionType,ZptcElectionTypeId;
-
+var totalZptcs = 0,totalMptcs = 0;
 	function initializeResultsTable() {
 
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
@@ -403,6 +407,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var linkRef = '<a href="javascript:{}" onclick="redirectCandidateLink()"  style="text-decoration:none;" class="candidateDetailsStyle">Show Candidate Details</a>';
 		candLink.innerHTML = linkRef;
 		assignToPartyDataArray = new Array();
+		totalZptcs = 0;
 		for(var i in results)
 		{		
 			var problemObj=
@@ -412,11 +417,16 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					seatsWonByParty:results[i].seatsWonByParty,
 					percentageOfVotesWonByParty:results[i].percentageOfVotesWonByParty				
 			 };
-			
+			totalZptcs = totalZptcs + results[i].seatsWonByParty;
 			assignToPartyDataArray.push(problemObj);
 			tehsilDetails.partyArray=assignToPartyDataArray;	
 		}
-	
+		
+		var totalZptcCountDiv = document.getElementById("totalZptcCountResultDiv");
+		var totalStr='';
+		totalStr += '<b class="counterSize">'+totalZptcs+'</b>';
+		totalZptcCountDiv.innerHTML = totalStr;	
+		
 		var emptyArr = new Array();
 	    if(results.length == 0)
 		{	
@@ -431,6 +441,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Details</a>';
 		candLink.innerHTML = linkRef;
 		assignToPartyDataArray = new Array();
+		totalMptcs = 0;
 		for(var i in results)
 		{		
 			var problemObj=		
@@ -440,11 +451,16 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					seatsWonByParty:results[i].seatsWonByParty,
 					percentageOfVotesWonByParty:results[i].percentageOfVotesWonByParty				
 			 };
-			
+			totalMptcs = totalMptcs + results[i].seatsWonByParty;
 			assignToPartyDataArray.push(problemObj);
 			tehsilDetails.partyMptcArray=assignToPartyDataArray;	
 		}
-	
+
+		var totalMptcCountDiv = document.getElementById("totalMptcCountResultDiv");
+		var totalStr='';
+		totalStr += '<b class="counterSize">'+totalMptcs+'</b>';
+		totalMptcCountDiv.innerHTML = totalStr;	
+			 
 		var emptyArr = new Array();
 	    if(results.length == 0)
 		{	
@@ -621,7 +637,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	<table>
 		<tr>
 			<td id="districtInfoDivHead" class="detailsHead"> Constituencies after Delimitation ${constituenciesStatusVO.delimitationYear}</td>
-			<td> : <b> ${constituenciesStatusVO.totalConstituenciesAfterDelimitation} </b></td>
+			<td> : <b  class="counterSize"> ${constituenciesStatusVO.totalConstituenciesAfterDelimitation} </b></td>
 		</tr>
 	</table>
 		<div id="districtInfoDivBody" class="detailsBody">
@@ -665,7 +681,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	<table>
 		<tr>
 			<td id="districtInfoDivHead" class="detailsHead"> Dissolved Constituencies in Delimitation ${constituenciesStatusVO.delimitationYear}</td>
-			<td> :<b> ${constituenciesStatusVO.totalDeletedConstituencies}</b> </td>
+			<td> :<b  class="counterSize"> ${constituenciesStatusVO.totalDeletedConstituencies}</b> </td>
 		</tr>
 	</table>
 
@@ -699,13 +715,14 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				<tr>
 					<td>
 					<span id="districtAncSpan">
-							<a href="candidateElectionResultsAction.action?candidateId=${mpsDetails.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.candidateName}
+							<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${mpsDetails.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.constituencyName}
 							</a>
 						</span>
 					</td>
 					<td>
 						<span id="districtAncSpan">
-								<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${mpsDetails.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.constituencyName}
+						<a href="candidateElectionResultsAction.action?candidateId=${mpsDetails.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.candidateName}
+								
 								</a>
 						</span>
 					</td>
@@ -767,8 +784,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 <div id="mandalInfoDiv" style="margin-left:0.7cm; text-align:left;">
 	<table>
 		<tr>
-			<td><div id="zptcInfoDivHead" class="detailsHead"> Total Number of ZPTC's : </div></td><td><b><c:out value="${constituenciesStatusVO.zptcCount}"/></b>
-			
+			<td><div id="zptcInfoDivHead" class="detailsHead"> Total Number of ZPTC's : </div></td><b><td><div id="totalZptcCountResultDiv"></div></b></td>			
 		</tr>		
 	</table>
 	
@@ -787,7 +803,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						
 	<table>
 		<tr>
-			<td><div id="mptcInfoDivHead" class="detailsHead"> Total Number of MPTC's : </div></td><td><b><c:out value="${constituenciesStatusVO.mptcCount}"/></b>
+			<td><div id="mptcInfoDivHead" class="detailsHead"> Total Number of MPTC's : </div></td><td><b><td><div id="totalMptcCountResultDiv"></div></b></td>	
 		</tr>
 	</table>
 	
