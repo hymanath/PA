@@ -428,7 +428,7 @@ public class ChartProducer {
 	
 	public static void create3DBarChart(String category,String value,CategoryDataset dataset,String fileName){
 		JFreeChart chart = ChartFactory.createBarChart3D(
-				"Party Election Results", // chart title
+				"", // chart title
 				category, // domain axis label
 				value, // range axis label
 				dataset, // data
@@ -439,7 +439,7 @@ public class ChartProducer {
 				);
 				// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 				// set the background color for the chart...
-				chart.setBackgroundPaint(Color.WHITE);
+				chart.setBackgroundPaint(new Color(0xEBE4F2));
 				// get a reference to the plot for further customisation...
 				CategoryPlot plot = chart.getCategoryPlot();
 				// set the range axis to display integers only...
@@ -457,7 +457,7 @@ public class ChartProducer {
 				try	 {
 					final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 					final File image = new File(fileName);
-					ChartUtilities.saveChartAsPNG(image, chart, 900, 300, info);
+					ChartUtilities.saveChartAsPNG(image, chart, 880, 300, info);
 				}
 				catch (java.io.IOException exc)
 				{
