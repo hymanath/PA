@@ -444,26 +444,6 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List getMptcCountInADistrict(Long districtId,String electionType,String electionTypes,Long rank) {
-		Object[] params = {districtId,electionType,electionTypes,rank};
-			return getHibernateTemplate().find("select count(*)" +
-					" from Nomination model where model.constituencyElection.constituency.tehsil.district.districtId = ? and " +
-					" model.constituencyElection.constituency.electionScope.electionType.electionType = ? and " +
-					" model.constituencyElection.election.electionYear = (select max(nModel.electionYear) from Election nModel where nModel.electionScope.electionType.electionType = ? )" +
-					" and model.candidateResult.rank  = ?",params);
-		}
-	
-	@SuppressWarnings("unchecked")
-	public List getZptcCountInADistrict(Long districtId,String electionType,String electionTypes,Long rank) {
-		Object[] params = {districtId,electionType,electionTypes,rank};
-			return getHibernateTemplate().find("select count(*)" +
-					" from Nomination model where model.constituencyElection.constituency.district.districtId = ? and " +
-					" model.constituencyElection.constituency.electionScope.electionType.electionType = ? and " +
-					" model.constituencyElection.election.electionYear = (select max(nModel.electionYear) from Election nModel where nModel.electionScope.electionType.electionType = ? )" +
-					" and model.candidateResult.rank  = ?",params);
-		}
-	
-	@SuppressWarnings("unchecked")
 	public List getCandidatesInfoForTheGivenConstituency(Long constituencyId,String electionYear,String electionType)	{
 		Object[] params = {constituencyId, electionYear,electionType};		
 	return getHibernateTemplate().find("select model.candidate.candidateId," +
@@ -650,4 +630,5 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find("select distinct model.party.partyId,model.party.shortName from Nomination model"+
 				" where model.constituencyElection.election.electionId = ?",electionId);
 	}
+
 }

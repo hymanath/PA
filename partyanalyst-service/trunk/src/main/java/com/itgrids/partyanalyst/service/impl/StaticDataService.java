@@ -494,11 +494,7 @@ public class StaticDataService implements IStaticDataService {
 				constituencyWinnerInfoVO.setPartyFlag(obj[5].toString());
 			}
 			constituencyWinnerInfoVOList.add(constituencyWinnerInfoVO);
-		}
-		List zptcCount = nominationDAO.getZptcCountInADistrict(districtId,IConstants.ZPTC_ELECTION_TYPE,IConstants.ZPTC_ELECTION_TYPE,rank);
-		constituenciesStatusVO.setZptcCount(Long.parseLong(zptcCount.get(0).toString()));
-		List mptcCount = nominationDAO.getMptcCountInADistrict(districtId,IConstants.MPTC_ELECTION_TYPE,IConstants.MPTC_ELECTION_TYPE,rank);
-		constituenciesStatusVO.setMptcCount(Long.parseLong(mptcCount.get(0).toString()));	
+		}	
 		constituenciesStatusVO.setConstituencyWinnerInfoVO(constituencyWinnerInfoVOList);
 		constituenciesStatusVO.setDelimitationYear(electionYear);
 		constituenciesStatusVO.setElectionType(electionYear.toString());

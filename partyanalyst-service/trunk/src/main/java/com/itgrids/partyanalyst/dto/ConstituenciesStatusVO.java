@@ -17,24 +17,9 @@ public class ConstituenciesStatusVO extends ResultStatus{
 	private Long delimitationYear;
 	private int totalConstituenciesAfterDelimitation;
 	private int totalDeletedConstituencies;
-	private Long zptcCount;
-	private Long mptcCount;
 	private String electionType;
 	private String electionYear;
 	
-	
-	public Long getZptcCount() {
-		return zptcCount;
-	}
-	public void setZptcCount(Long zptcCount) {
-		this.zptcCount = zptcCount;
-	}
-	public Long getMptcCount() {
-		return mptcCount;
-	}
-	public void setMptcCount(Long mptcCount) {
-		this.mptcCount = mptcCount;
-	}
 	public int getTotalDeletedConstituencies() {
 		return totalDeletedConstituencies;
 	}
