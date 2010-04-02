@@ -12,6 +12,11 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></SCRIPT>
+<SCRIPT src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
+<SCRIPT src="js/yahoo/yui-js-2.8/build/button/button-min.js"></SCRIPT>
+
+<LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+<LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
@@ -26,8 +31,6 @@ var electionResultsObj = {
 	partyWiseResultsArr:[],
 	allianceResultsArr:[]
 };
-
-
 var Localization = { <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -45,7 +48,7 @@ var Localization = { <%
 		//String designation = rb.getString("designation"); 
 		
 %> }
-var partywiseResultsDataTable,allianceResultsDataTable;         
+var partywiseResultsDataTable,allianceResultsDataTable,candidateDetailsDialog;         
 function callAjax(param,jsObj,url){
 		var myResults;
  					
@@ -57,14 +60,9 @@ function callAjax(param,jsObj,url){
 									if(jsObj.task == "elctionsBasicInfo")
 									{										
 										showElectionBasicInfo(myResults);											
-									} else if(jsObj.task == "stateLevelGraph")
-									{										
-										 											
-									} else if(jsObj.task == "districtLevelGraph")
-									{										
-																				
 									} else if(jsObj.task == "getResultForAnElection")
-									{										
+									{	
+										showStatewiseResultsBarChart(myResults);									
 										showPartywiseDetailsDataTable(myResults);
 										showAllianceDetails(myResults);										
 									} 
@@ -93,16 +91,6 @@ function getElctionsBasicInfo(electionType){
 	var url = "<%=request.getContextPath()%>/electionDetailsReportAjaxAction.action?"+param;
 	callAjax(param,jsObj,url);
 }
-function buildStateLevelGraph(electionType){
-	var jsObj= 
-	{
-		electionType: electionType,		
-		task:"stateLevelGraph"		
-	}
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/electionDetailsReportAjaxAction.action?"+param;
-	callAjax(param,jsObj,url);
-}
 function getResultsForAnElection(stateID,electionType,year)
 {
 	var jsObj= 
@@ -116,80 +104,15 @@ function getResultsForAnElection(stateID,electionType,year)
 	var url = "<%=request.getContextPath()%>/electionDetailsReportAjaxAction.action?"+param;
 	callAjax(param,jsObj,url);
 }
-function buildDistrictLevelGraph(electionType){
-	var jsObj= 
-	{
-		electionType: electionType,		
-		task:"districtLevelGraph"		
-	}
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/electionDetailsReportAjaxAction.action?"+param;
-	callAjax(param,jsObj,url);
-}
-function getPartywiseResults(electionType){
-	var jsObj= 
-	{
-		electionType: electionType,		
-		task:"partywiseResults"		
-	}
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/electionDetailsReportAjaxAction.action?"+param;
-	callAjax(param,jsObj,url);
-}
-function getAllianceDetails(electionType){
-	var jsObj= 
-	{
-		electionType: electionType,	
-		task:"getAllianceDetails"		
-	}
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/electionDetailsReportAjaxAction.action?"+param;
-	callAjax(param,jsObj,url);
-}
-function ajaxCall6(){
-	var jsObj= 
-	{
-		task:"task6"		
-	}
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/electionDetailsReportAjaxAction.action?"+param;
-	callAjax(param,jsObj,url);
-}
-function ajaxCall7(){
-	var jsObj= 
-	{
-		task:"task7"		
-	}
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/electionDetailsReportAjaxAction.action?"+param;
-	callAjax(param,jsObj,url);
-}
-function ajaxCall8(){
-	var jsObj= 
-	{
-		task:"task8"		
-	}
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/electionDetailsReportAjaxAction.action?"+param;
-	callAjax(param,jsObj,url);
-}
-function ajaxCall9(){
-	var jsObj= 
-	{
-		task:"task9"		
-	}
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/electionDetailsReportAjaxAction.action?"+param;
-	callAjax(param,jsObj,url);
-}
-function ajaxCall10(){
-	var jsObj= 
-	{
-		task:"task10"		
-	}
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/electionDetailsReportAjaxAction.action?"+param;
-	callAjax(param,jsObj,url);
+
+function showStatewiseResultsBarChart(results)
+{
+	var chartName = results.statewiseElectionResultsChartName;
+	var statewiseGraphEl = document.getElementById("graphImage");
+
+	var contentStr = '';
+	contentStr+='<IMG src="charts/'+chartName+'"></IMG>';
+	statewiseGraphEl.innerHTML = contentStr;	 
 }
 
 function showElectionBasicInfo(results)
@@ -208,33 +131,6 @@ function showElectionBasicInfo(results)
 	
 }
 
-function showTask2(results)
-{
-	
-	var task2El = document.getElementById("task2");
-	var task2Content = '';
-	task2Content+='<TABLE border="1" width="100%">';
-	task2Content+='<caption><b>Task 2 Details</b></caption>';
-	task2Content+='<TR><TH>Election</TH><TH>Year</TH><TH>Details</TH><TH>Task</TH></TR>';
-	task2Content+='<TR><TD>'+results.electionType+'</TD><TD>'+results.electionYear+'</TD><TD>'+results.details+'</TD><TD>'+results.task+'</TD></TR>';
-	task2Content+='</TABLE>';
-	task2El.innerHTML = task2Content;
-		
-}
-function showTask3(results)
-{
-	
-	var task3El = document.getElementById("task3");
-	var task3Content = '';
-	task3Content+='<TABLE border="1" width="100%">';
-	task3Content+='<caption><b>Task 3 Details</b></caption>';
-	task3Content+='<TR><TH>Election</TH><TH>Year</TH><TH>Details</TH><TH>Task</TH></TR>';
-	task3Content+='<TR><TD>'+results.electionType+'</TD><TD>'+results.electionYear+'</TD><TD>'+results.details+'</TD><TD>'+results.task+'</TD></TR>';
-	task3Content+='</TABLE>';
-	task3El.innerHTML = task3Content;
-	
-	
-}
 function showPartywiseDetailsDataTable(results)
 {   
 	var partywiseResultsArr = results.electionBasicResultsVO.allPartiesResults;
@@ -275,7 +171,14 @@ function buildPartywiseResultsDataTable()
 		var partywiseResultsDataSource = new YAHOO.util.DataSource(electionResultsObj.partyWiseResultsArr); 
 		partywiseResultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		partywiseResultsDataSource.responseSchema = {
-                fields: ["party", "totalParticipated", "seatsWon", "second", "third", "fourth","nth","pc","overall" ] 
+                fields: ["party", {key: "totalParticipated", parser:"number"},
+                         		  {key: "seatsWon", parser:"number"},
+                         		  {key: "second", parser:"number"},
+                         		  {key:  "third", parser:"number"},
+                         		  {key:  "fourth", parser:"number"},
+                         		  {key: "nth", parser:"number"},
+                         		  {key: "pc", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber} ] 
         		};
 
 		var myConfigs = { 
@@ -303,7 +206,8 @@ function showAllianceDetails(results)
 	for(var i in  allianceResultsArr){
 		var createDiv = document.createElement("div");
 		createDiv.setAttribute("id","allianceResults_"+i);
-		createDiv.setAttribute("style","margin-top:26px;");
+		//createDiv.setAttribute("style","margin-top:26px;");
+		createDiv.style.cssText = 'margin-top:26px;';
 		allianceResultsDataTableEl.appendChild(createDiv);
 	
 		buildAllianceResultsDataTable("allianceResults_"+i,allianceResultsArr[i].partiesInAlliance,allianceResultsArr[i].allianceGroupName+" Alliance Details");	
@@ -328,7 +232,14 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 		var allianceResultsDataSource = new YAHOO.util.DataSource(dtSource); 
 		allianceResultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		allianceResultsDataSource.responseSchema = {
-                fields: ["partyName", "totalConstiParticipated", "totalSeatsWon", "secondPosWon", "thirdPosWon", "fourthPosWon","nthPosWon","votesPercentage","completeVotesPercent"] 
+                fields: ["partyName", {key: "totalConstiParticipated", parser:"number"},
+                					  {key:  "totalSeatsWon", parser:"number"},
+                					  {key:  "secondPosWon", parser:"number"},
+                					  {key:  "thirdPosWon", parser:"number"},
+                					  {key:  "fourthPosWon", parser:"number"},
+                					  {key: "nthPosWon", parser:"number"},
+                					  {key: "votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},
+                					  {key: "completeVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber}] 
         		};
 
 		var myConfigs = { 
@@ -346,10 +257,93 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
       };	
 	
 }
+function showCandidateDetailsWindow(stateName,electionType,year)
+{
+	var windowLabel;
+	if(electionType == 'Parliament')
+	{
+		windowLabel = electionType + ' ' +  year + ' ' + 'Candidates Details';
+		
+	} else if(electionType == 'Assembly')
+	{
+		windowLabel = stateName + ' ' + electionType + ' ' +  year + ' ' + 'Candidates Details';
+	}		
+
+	var urlStr = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAction.action";
+	var browser1 = window.open(urlStr,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
+	
+	browser1.focus();
+	
+	/*var elmt = document.getElementById('viewCandidate');
+	var divChild = document.createElement('div');
+	divChild.setAttribute('id','viewCandidateDialog');
+	
+	var candidateDetailsContentStr='';
+	candidateDetailsContentStr+='<DIV class="hd" align="left">${stateName} ${electionType} ${year} Winning Candidates</DIV>';
+	candidateDetailsContentStr+='<DIV class="bd" align="left">';
+	candidateDetailsContentStr+='<TABLE cellspacing="0" cellpadding="0" border="1">';
+	candidateDetailsContentStr+='<TR>';
+	candidateDetailsContentStr+='<TD>Party:</TD>';
+	candidateDetailsContentStr+='<TD colspan="2"><SELECT name="selectParty" id="selectParty" style="width: 100px; margin-top: 3px;" ><OPTION value="0">Select Party</OPTION><OPTION value="1">BJP</OPTION><OPTION value="2">TDP</OPTION><OPTION value="3">TRS</OPTION></SELECT></TD>';
+	candidateDetailsContentStr+='</TR>';
+	if(electionType == 'Parliament')
+	{		
+		candidateDetailsContentStr+='<TR>';
+		candidateDetailsContentStr+='<TD>';
+		candidateDetailsContentStr+='<INPUT type="radio" name="countryLevel" id="countryLevel" value="Country Level" onClick=""/>All Winners';
+		candidateDetailsContentStr+='</TD>';
+		candidateDetailsContentStr+='<TD>';
+		candidateDetailsContentStr+='<INPUT type="radio" name="stateLevelP" id="stateLevelP" value="State Level" onClick="showStatesDropDown()"/>State Wise';
+		candidateDetailsContentStr+='</TD>';
+		candidateDetailsContentStr+='<TD>';
+		candidateDetailsContentStr+='<SELECT name="selectState" id="selectState" style="width: 100px; margin-top: 3px;" ><OPTION value="0">Select State</OPTION><OPTION value="1">Andhra Pradesh</OPTION><OPTION value="2">Karnataka</OPTION><OPTION value="3">Tamil Nadu</OPTION></SELECT>';
+		candidateDetailsContentStr+='</TD>';
+		candidateDetailsContentStr+='</TR>';
+	} else if(electionType == 'Assembly')
+	{	
+	candidateDetailsContentStr+='<TR>';
+	candidateDetailsContentStr+='<TD>';
+	candidateDetailsContentStr+='<INPUT type="radio" name="stateLevelA" id="stateLevelA" value="State Level" onClick=""/>State Wise';
+	candidateDetailsContentStr+='</TD>';
+	candidateDetailsContentStr+='<TD>';
+	candidateDetailsContentStr+='<INPUT type="radio" name="distLevel" id="distLevel" value="District Level" onClick=""/>District Wise';
+	candidateDetailsContentStr+='</TD>';
+	candidateDetailsContentStr+='</TR>';
+	}
+	candidateDetailsContentStr+='</TABLE>';
+	candidateDetailsContentStr+='</DIV>';
+	candidateDetailsContentStr+='';
+	candidateDetailsContentStr+='';
+	candidateDetailsContentStr+='';
+	candidateDetailsContentStr+=''; 
+	divChild.innerHTML=candidateDetailsContentStr;		
+	elmt.appendChild(divChild);	
+	if(candidateDetailsDialog)
+		candidateDetailsDialog.destroy();
+	candidateDetailsDialog = new YAHOO.widget.Dialog("viewCandidateDialog",
+			{ width : "750px", 
+              fixedcenter : false, 
+              visible : true,  
+              constraintoviewport : true, 
+			  iframe :true,
+			  modal :false,
+			  hideaftersubmit:true,
+			  close:true,
+			  x:400,
+			  y:300,
+			  buttons : [ { text:"Exit"}]				 
+             }); 
+	candidateDetailsDialog.render();*/
+}
+function showStatesDropDown()
+{
+	alert("hi");
+		
+}
 </SCRIPT>
 </HEAD>
 <BODY>
-<TABLE cellspacing="0px" border="0px" >
+<TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
 <TD  valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></TD><TD  valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/></TD>
 </TR>
@@ -357,27 +351,26 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 <DIV id="task1"></DIV>
 <DIV class="graphTop">State Level Overview</DIV>
 <DIV id="statewiseGraph">
-<IMG id="chartImg" SRC="charts/${sessionScope.partyResultsChartName}" WIDTH="900" HEIGHT="300"></IMG>
-<DIV class="yui-skin-sam" style="width:890px;overflow-x:auto;">
+<DIV id="graphImage"></DIV>
+<DIV class="yui-skin-sam" style="width:890px;overflow-x:auto;border-top:2px solid #008DCF;">
 	<TABLE border="0" width="95%">
 		<TR>
 			<TD valign="top"><DIV id="partywiseResultsDataTable"></DIV></TD>
 			<TD valign="top"><DIV id="allianceResultsDataTable"></DIV></TD>
 		</TR>
 		<TR>
-			<TD colspan="2"><SPAN style="color:#006221;font-size:13px;font-weight:bold;">TP* -Total Participation, PC* %-Participated Constituencies Percentage </SPAN></TD>
+			<TD colspan="2" align="left"><SPAN style="color:#006221;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
+		</TR>
+		<TR>
+			<TD colspan="2" align="right"><A href="javascript:{}" class="link" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates</A></TD>
 		</TR>
 	</TABLE>
 </DIV>
 </DIV>
+<DIV id="viewCandidate" class="yui-skin-sam"></DIV>
 <DIV class="graphBottom"></DIV>
-<DIV id="task3"></DIV>
-
 <DIV class="graphTop">District Level Overview</DIV>
 <DIV id="distwiseGraph"><IMG src="images/icons/temp_graph.png" height="200" width="850"/></DIV>
-<DIV class="graphBottom"></DIV>
-<DIV class="graphTop">Candidate Details</DIV>
-<DIV id="candidateDetails"></DIV>
 <DIV class="graphBottom"></DIV>
 <DIV class="graphTop">Analysis Tools</DIV>
 <DIV id="toolsDiv" align="left">
@@ -414,14 +407,14 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 					<TABLE width="100%">
 						<TR>
 							<TD>Election Type:</TD>
-							<TD><select name="electionType" id="electionType" style="width:100px;" ><option value="0">Assembly</option><option value="1">Parliament</option></select></TD>
+							<TD><SELECT name="electionType" id="electionType" style="width:100px;" ><OPTION value="0">Assembly</OPTION><OPTION value="1">Parliament</OPTION></SELECT></TD>
 						</TR>	
 						<TR>	
 							<TD>Year:</TD>
-							<TD><select name="selectParty" id="selectParty" style="width: 100px; margin-top: 3px;" ><option value="0">2009</option><option value="1">2004</option></select></TD>
+							<TD><SELECT name="selectParty" id="selectParty" style="width: 100px; margin-top: 3px;" ><OPTION value="0">2009</OPTION><OPTION value="1">2004</OPTION></SELECT></TD>
 						</TR>	
 						<TR>	
-							<TD colspan="2"><input type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
+							<TD colspan="2"><INPUT type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
 						</TR>
 						<TR>	
 							<TD colspan="2"><DIV align="right"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV></TD>
@@ -438,14 +431,14 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 					<TABLE width="100%">
 						<TR>
 							<TD>Party Name:</TD>
-							<TD><select name="electionType" id="electionType" style="width:100px;" ><option value="0">TDP</option><option value="1">BJP</option></select></TD>
+							<TD><SELECT name="electionType" id="electionType" style="width:100px;" ><OPTION value="0">TDP</OPTION><OPTION value="1">BJP</OPTION></SELECT></TD>
 						</TR>	
 						<TR>	
 							<TD>Year:</TD>
-							<TD><select name="selectParty" id="selectParty" style="width: 100px; margin-top: 3px;" ><option value="0">2009</option><option value="1">2004</option></select></TD>
+							<TD><SELECT name="selectParty" id="selectParty" style="width: 100px; margin-top: 3px;" ><OPTION value="0">2009</OPTION><OPTION value="1">2004</OPTION></SELECT></TD>
 						</TR>	
 						<TR>	
-							<TD colspan="2"><input type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
+							<TD colspan="2"><INPUT type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
 						</TR>
 						<TR>	
 							<TD colspan="2"><DIV align="right"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV></TD>
@@ -462,14 +455,14 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 					<TABLE width="100%">
 						<TR>
 							<TD>Election Type:</TD>
-							<TD><select name="electionType" id="electionType" style="width:100px;" ><option value="0">Assembly</option><option value="1">Parliament</option></select></TD>
+							<TD><SELECT name="electionType" id="electionType" style="width:100px;" ><OPTION value="0">Assembly</OPTION><OPTION value="1">Parliament</OPTION></SELECT></TD>
 						</TR>	
 						<TR>	
 							<TD>Year:</TD>
-							<TD><select name="selectParty" id="selectParty" style="width: 100px; margin-top: 3px;" ><option value="0">2009</option><option value="1">2004</option></select></TD>
+							<TD><SELECT name="selectParty" id="selectParty" style="width: 100px; margin-top: 3px;" ><OPTION value="0">2009</OPTION><OPTION value="1">2004</OPTION></SELECT></TD>
 						</TR>	
 						<TR>	
-							<TD colspan="2"><input type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
+							<TD colspan="2"><INPUT type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
 						</TR>
 						<TR>	
 							<TD colspan="2"><DIV align="right"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV></TD>
@@ -487,10 +480,7 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 getResultsForAnElection(stateID,electionType,year);
-//getPartywiseResults(electionType);
-//getAllianceDetails(electionType);
-//buildStateLevelGraph(electionType);
-//buildDistrictLevelGraph(electionType);
+
 </SCRIPT>
 </BODY>
 
