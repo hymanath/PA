@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +23,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -98,25 +101,32 @@ public class TownshipPageAction extends ActionSupport implements ServletRequestA
 		
 		partiesInTownship = staticDataService.getAllPartiesParticipatedInRevenueVillage(townshipId);
 		log.debug("Total Parties In Revenue Village::"+partiesInTownship.size());
-		for(PartyResultVO partyResultVO:acPcElectionResultsForParties){
-			String chartName = "partyPerformanceInAllRVElections_"+townshipId+"_"+partyResultVO.getPartyId()+".png";
-	        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-	    	ChartProducer.createBarChart(partyResultVO.getPartyName()+" Performance In Diff Elections Of "+townshipName+" Revenue Village", "Election Years", "Percentages", createDataset(partyResultVO), chartPath);
-		}
+		String chartName = "allPartiesPerformanceInAllRVElections_"+townshipId+"_"+townshipName+".png";
+        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+    	ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+townshipName+" Revenue Village", "Elections", "Percentages", createDataset(acPcElectionResultsForParties), chartPath);
 		
 		return SUCCESS;
 	}
 
-	private CategoryDataset createDataset(PartyResultVO partyResultVO) {
-        final String series1 = IConstants.ASSEMBLY_ELECTION_TYPE;
-        final String series2 = IConstants.PARLIAMENT_ELECTION_TYPE;
+	private CategoryDataset createDataset(List<PartyResultVO> allElectionResults) {
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
-        	if(result.getElectionType().equals(series1))
-        		dataset.addValue(new BigDecimal(result.getPercentage()), series1, result.getElectionYear());
-        	else if(result.getElectionType().equals(series2))
-        		dataset.addValue(new BigDecimal(result.getPercentage()), series2, result.getElectionYear());
-        }
+        List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
+        ElectionResultVO partiesElecResultForGraph = null;
+        
+        for(PartyResultVO partyResultVO:allElectionResults)
+        	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
+        		partiesElecResultForGraph = new ElectionResultVO();
+        		partiesElecResultForGraph.setPercentage(result.getPercentage());
+        		partiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
+        		partiesElecResultForGraph.setPartyName(partyResultVO.getPartyName());
+        		partiesElectionResults.add(partiesElecResultForGraph);
+        	}
+        
+        Collections.sort(partiesElectionResults, new ElectionResultComparator());
+        
+        for(ElectionResultVO graphInfo:partiesElectionResults)
+           	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
+           			graphInfo.getElectionYear());
         return dataset;
     }
 	

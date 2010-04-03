@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
+import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
@@ -66,7 +67,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private String constituencyName;	 
 	 private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
 	 private ConstituencyInfoVO constituencyDetails;
-	 private List<VotersWithDelimitationInfoVO> votersInfo;	 
+	 private ConstituencyVO constituencyVO;	 
 	 private CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituency;
 	 private IProblemManagementReportService problemManagementReportService;
 	 private List<ProblemBeanVO> problemBean;
@@ -155,12 +156,13 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.constituencyDetails = constituencyDetails;
 	}
 
-	public List<VotersWithDelimitationInfoVO> getVotersInfo() {
-		return votersInfo;
+	
+	public ConstituencyVO getConstituencyVO() {
+		return constituencyVO;
 	}
 
-	public void setVotersInfo(List<VotersWithDelimitationInfoVO> votersInfo) {
-		this.votersInfo = votersInfo;
+	public void setConstituencyVO(ConstituencyVO constituencyVO) {
+		this.constituencyVO = constituencyVO;
 	}
 
 	public List<SelectOptionVO> getElectionIdsAndYears() {
@@ -289,7 +291,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		log.info("delimitationConstituencyMandalResultVO..getConstituencyType()::::"+delimitationConstituencyMandalResultVO.getConstituencyType());
 		setDelimitationConstituencyMandalResultVO(delimitationConstituencyMandalResultVO);
 		
-		votersInfo = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
 		
 		candidateDetailsForConstituency = constituencyPageService.getCandidateAndPartyInfoForConstituency(constituencyId);
 		

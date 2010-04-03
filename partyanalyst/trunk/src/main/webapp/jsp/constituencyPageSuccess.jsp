@@ -637,16 +637,21 @@ function getVotingTrendzForyear()
 		-------------------------
 	*/
 
-	<c:forEach var="vInfo" items="${votersInfo}" >	
+	<c:forEach var="vInfo" items="${constituencyVO.assembliesOfParliamentInfo}" >	
 		var obj ={
 					year:'${vInfo.year}',
 					info:[]
 				};
 		<c:forEach var="info" items="${vInfo.votersInfoForMandalVO}" >	
+		var urlStr = '';
+		if('${constituencyVO.electionType}' == 'Parliament')
+			urlStr += 'constituencyPageAction.action?constituencyId=${info.mandalId}';
+		else
+			urlStr += 'mandalPageElectionInfoAction.action?MANDAL_ID=${info.mandalId}&MANDAL_NAME=${info.mandalName}';
 		var vObj=
 				{
 					mandalId:'${info.mandalId}',
-					mandalName:'<a href="mandalPageElectionInfoAction.action?MANDAL_ID=${info.mandalId}&MANDAL_NAME=${info.mandalName}"> ${info.mandalName}</a>',
+					mandalName:'<a href="'+urlStr+'"> ${info.mandalName}</a>',
 					mandalMaleVoters:'${info.totalMaleVoters}',
 					mandalFemaleVoters:'${info.totalFemaleVoters}',
 					mandalTotalVoters:'${info.totalVoters}',
