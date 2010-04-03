@@ -727,7 +727,7 @@ public class StaticDataService implements IStaticDataService {
 				totalVotesPercentage = new BigDecimal((totalVotesEarned*100)/totalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				completeVotesPercent = new BigDecimal((totalVotesEarned*100)/completeValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				
-				partyElectionResult = savePartyElectionResult(election,party,totalSeatsWon,totalSecondPositions,totalThirdPositions,totalFourthPositions,totalNthPositions,totalConstiParticipated,totalVotesPercentage,completeVotesPercent);
+				partyElectionResult = savePartyElectionResult(election,party,totalSeatsWon,totalSecondPositions,totalThirdPositions,totalFourthPositions,totalNthPositions,totalConstiParticipated,totalVotesPercentage,completeVotesPercent,totalVotesEarned,totalValidVotes,completeValidVotes.doubleValue());
 			}
 		 }		
 		}catch(Exception ex){
@@ -749,7 +749,7 @@ public class StaticDataService implements IStaticDataService {
 	return completeValidVotes;
 	}
 	
-	public PartyElectionResult savePartyElectionResult(Election election,Party party,Long totalSeatsWon,Long secPos,Long thirdPos,Long fourthPos,Long nthPos,Long totConstiParticipated,Double totalVotesPercentage,Double completeVotesPercent) throws Exception{
+	public PartyElectionResult savePartyElectionResult(Election election,Party party,Long totalSeatsWon,Long secPos,Long thirdPos,Long fourthPos,Long nthPos,Long totConstiParticipated,Double totalVotesPercentage,Double completeVotesPercent,Double totalVotesEarned,Double totalValidVotes,Double completeConstiValidVotes) throws Exception{
 		PartyElectionResult partyElectionResult = null;
 		java.util.Date updatedDate = new java.util.Date();
 		String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
@@ -769,6 +769,9 @@ public class StaticDataService implements IStaticDataService {
 			partyElectionResult.setVotesPercentage(totalVotesPercentage.toString());
 			partyElectionResult.setCompleteVotesPercent(completeVotesPercent.toString());
 			partyElectionResult.setLastUpdated(updatedDate);
+			partyElectionResult.setTotalVotesGained(totalVotesEarned);
+			partyElectionResult.setTotalValidVotes(totalValidVotes);
+			partyElectionResult.setCompleteConstiValidVotes(completeConstiValidVotes);
 			partyElectionResult = partyElectionResultDAO.save(partyElectionResult);
 		}
 		
