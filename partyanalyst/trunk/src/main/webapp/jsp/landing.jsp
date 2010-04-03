@@ -31,7 +31,7 @@
 					</ul>
 				</div>
 				<div id="pa_logo" class="pa_logo_class">
-					<img src="images/icons/homePage/pa_logo.png"></img>
+					<img src="images/icons/homePage/pa_logo.jpg"></img>
 				</div>
 			</div>			
 			<div id="analyzeButtonBar_main" class="pageContentDivs">

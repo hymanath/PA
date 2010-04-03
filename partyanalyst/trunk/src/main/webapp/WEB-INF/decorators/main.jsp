@@ -113,7 +113,7 @@
 	<div id="indexheader" class="indexLayoutContainer">
 		<table  width="100%" id="headerTable">
 			<tr>
-				<td style="vertical-align:top;width:600px;"><div id="pa_Logo"><img src="images/icons/homePage/pa_logo.png"></img></div></td>
+				<td style="vertical-align:top;width:600px;"><div id="pa_Logo"><img src="images/icons/homePage/pa_logo.jpg"></img></div></td>
 				<td style="vertical-align:top;">
 					<div >
 						<div id="loginarea">
