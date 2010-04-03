@@ -105,7 +105,7 @@ var tehsilDetails={
 			partyMptcArray:[]
 		};
 var districtId = ${districtId};
-var electionTypeId,myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear,mptcElectionType,zptcElectionType,ZptcElectionTypeId;
+var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear,mptcElectionTypeId=3,zptcElectionTypeId=4,mptcElectionType="MPTC",zptcElectionType="ZPTC";
 var totalZptcs = 0,totalMptcs = 0;
 	function initializeResultsTable() {
 
@@ -421,7 +421,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			assignToPartyDataArray.push(problemObj);
 			tehsilDetails.partyArray=assignToPartyDataArray;	
 		}
-		
+	
 		var totalZptcCountDiv = document.getElementById("totalZptcCountResultDiv");
 		var totalStr='';
 		totalStr += '<b class="counterSize">'+totalZptcs+'</b>';
@@ -455,7 +455,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			assignToPartyDataArray.push(problemObj);
 			tehsilDetails.partyMptcArray=assignToPartyDataArray;	
 		}
-
+	  	
 		var totalMptcCountDiv = document.getElementById("totalMptcCountResultDiv");
 		var totalStr='';
 		totalStr += '<b class="counterSize">'+totalMptcs+'</b>';
@@ -513,7 +513,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	{
 		var jsObj=
 		{		
-				eleType:electionTypeId,
+				eleType:zptcElectionTypeId,
 				task:"getAllElectionYears"						
 		};
 	
@@ -526,7 +526,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	{
 		var jsObj=
 		{		
-				eleType:electionTypeId,
+				eleType:mptcElectionTypeId,
 				task:"getAllMptcElectionYears"						
 		};
 	
@@ -539,7 +539,6 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var ajaxImgElmt = document.getElementById("zptcAjaxLoadDiv");
 		ajaxImgElmt.style.display = "block";
 		zptcElectionYear = id;
-		zptcElectionType = "ZPTC";
 		var jsObj=
 		{		
 				districtId:districtId,
@@ -556,8 +555,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	{
 		var ajaxImgElmt = document.getElementById("mptcAjaxLoadDiv");
 		ajaxImgElmt.style.display = "block";
-		mptcElectionYear = id;	
-		mptcElectionType = "MPTC";	
+		mptcElectionYear = id;		
 		var jsObj=
 		{		
 				districtId:districtId,
@@ -571,11 +569,12 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		callAjax(rparam,jsObj,url);
 	}
 	function getAllZptcParties(){
+		
 		var jsObj=
 		{		
-				electionTypeId:ZptcElectionTypeId,
+				electionTypeId:zptcElectionTypeId,
 				districtId:districtId,
-				electionType:electionType,
+				electionType:zptcElectionType,
 				task:"getAllZptcParties"						
 		};
 	
@@ -587,9 +586,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	function getAllMptcParties(){
 		var jsObj=
 		{		
-				electionTypeId:electionTypeId,
+				electionTypeId:mptcElectionTypeId,
 				districtId:districtId,
-				electionType:electionType,
+				electionType:mptcElectionType,
 				task:"getAllMptcParties"						
 		};
 	
@@ -599,9 +598,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 	
 	function getAllZptcYears()
-	{	 
-		 electionTypeId = 3;
-		 electionType="ZPTC";	 
+	{	 	 
 		 var imgElmt = document.getElementById("zptcInfoDivBody");
 		 var electionDetails="";
 		 electionDetails+="Select a Election Year :";
@@ -614,16 +611,13 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 	function getAllMptcYears()
 	{	 
-		 electionTypeId = 4;
-		 electionType="MPTC";
 		 var imgElmt = document.getElementById("mptcInfoDivBody");
 		 var electionDetails="";
 		 electionDetails+="Select a Election Year :";
 		 electionDetails+='<select id="mptcElectionYears" class="selectWidth" list="result" theme="simple" onchange="getMptcPartyDetails(this.value)"/>';
 		 imgElmt.innerHTML = electionDetails;
 		 
-        var spanElmt=document.getElementById("mptcDetails");	
-  
+        var spanElmt=document.getElementById("mptcDetails");  
 		getAllMptcYearsForTeshil();				 
 	}
 </script>
@@ -637,7 +631,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	<table>
 		<tr>
 			<td id="districtInfoDivHead" class="detailsHead"> Constituencies after Delimitation ${constituenciesStatusVO.delimitationYear}</td>
-			<td> : <b  class="counterSize"> ${constituenciesStatusVO.totalConstituenciesAfterDelimitation} </b></td>
+		<td> : <b  class="counterSize"> ${constituenciesStatusVO.totalConstituenciesAfterDelimitation} </b></td>
 		</tr>
 	</table>
 		<div id="districtInfoDivBody" class="detailsBody">
@@ -715,14 +709,13 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				<tr>
 					<td>
 					<span id="districtAncSpan">
-							<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${mpsDetails.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.constituencyName}
+									<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${mpsDetails.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.constituencyName}
 							</a>
 						</span>
 					</td>
 					<td>
 						<span id="districtAncSpan">
-						<a href="candidateElectionResultsAction.action?candidateId=${mpsDetails.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.candidateName}
-								
+								<a href="candidateElectionResultsAction.action?candidateId=${mpsDetails.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.candidateName}
 								</a>
 						</span>
 					</td>
@@ -848,11 +841,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 <script language="javascript">
 initializeResultsTableForMp();
 initializeResultsTable();
-electionTypeId = 4;
-electionType="MPTC";
 getAllMptcParties();
-ZptcElectionTypeId = 3;
-electionType="ZPTC";
 getAllZptcParties();
 getAllZptcYears();
 getAllMptcYears();
