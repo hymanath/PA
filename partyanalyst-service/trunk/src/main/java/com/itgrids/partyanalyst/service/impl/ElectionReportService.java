@@ -296,6 +296,9 @@ public class ElectionReportService implements IElectionReportService {
 			partyResults.setTotalSeatsWon(new Long(partyElectionResult.getTotalSeatsWon()));
 			partyResults.setCompleteVotesPercent(partyElectionResult.getCompleteVotesPercent());
 			partyResults.setTotalConstiParticipated(new Long(partyElectionResult.getTotalConstiParticipated()));
+			partyResults.setTotalVotesEarned(partyElectionResult.getTotalVotesGained().longValue());
+			partyResults.setTotalValidVotes(partyElectionResult.getTotalValidVotes().longValue());
+			partyResults.setTotalConstiValidVotes(partyElectionResult.getCompleteConstiValidVotes().longValue());
 		}
 	 return partyResults;
 	}
@@ -313,6 +316,9 @@ public class ElectionReportService implements IElectionReportService {
 		Long nthPosAgg = new Long(0);
 		Double votesPercent = new Double(0);
 		Double overallVotesPercent = new Double(0);
+		Long totalVotesEarned = new Long(0);
+		Long totalValidVotes = new Long(0);
+		Long totalConstiValidVotes = new Long(0);
 					
 		if(alliancePartyResultsVO != null){
 			partyResults = new PartyPositionsVO();
@@ -326,6 +332,10 @@ public class ElectionReportService implements IElectionReportService {
 				nthPosAgg+=partyPos.getNthPosWon();
 				votesPercent+=new Double(partyPos.getVotesPercentage());
 				overallVotesPercent+=new Double(partyPos.getCompleteVotesPercent());
+				totalVotesEarned+=partyPos.getTotalVotesEarned();
+				totalValidVotes+=partyPos.getTotalValidVotes();
+				
+				totalConstiValidVotes = partyPos.getTotalConstiValidVotes();
 			}
 			partyResults.setPartyName(alliancePartyResultsVO.getAllianceGroupName());
 			partyResults.setTotalSeatsWon(seatsWonAgg);
@@ -334,9 +344,10 @@ public class ElectionReportService implements IElectionReportService {
 			partyResults.setFourthPosWon(fourthPosAgg);
 			partyResults.setNthPosWon(nthPosAgg);
 			
-			Double votesPercnt = new BigDecimal(votesPercent/alliancPartiesSize).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			Double completVotesPercnt = new BigDecimal(overallVotesPercent/alliancPartiesSize).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			Double votesPercnt = new BigDecimal((totalVotesEarned.doubleValue()/totalValidVotes.doubleValue())*100.0).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			Double completVotesPercnt = new BigDecimal((totalVotesEarned.doubleValue()/totalConstiValidVotes.doubleValue())*100.0).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			partyResults.setVotesPercentage(votesPercnt.toString());
+			//partyResults.setCompleteVotesPercent( new BigDecimal(overallVotesPercent).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			partyResults.setCompleteVotesPercent(completVotesPercnt.toString());
 		}
 	 return partyResults;
