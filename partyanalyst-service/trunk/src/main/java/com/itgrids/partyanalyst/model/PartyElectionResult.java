@@ -48,6 +48,9 @@ public class PartyElectionResult extends BaseModel implements Serializable {
 	private String votesPercentage;
 	private String completeVotesPercent;
 	private Date lastUpdated;
+	private Double totalVotesGained;
+	private Double totalValidVotes;
+	private Double completeConstiValidVotes;
 	
 	//default constructor
 	public PartyElectionResult(){
@@ -58,7 +61,8 @@ public class PartyElectionResult extends BaseModel implements Serializable {
 	public PartyElectionResult(Party party, Election election,
 			String totalConstiParticipated, String totalSeatsWon,
 			String secondPosWon, String thirdPosWon, String fourthPosWon,
-			String nthPosWon, String votesPercentage,String completeVotesPercent,Date lastUpdated){
+			String nthPosWon, String votesPercentage,String completeVotesPercent,
+			Date lastUpdated,Double totalVotesGained,Double totalValidVotes,Double completeConstiValidVotes){
 		super();
 		this.party = party;
 		this.election = election;
@@ -71,6 +75,9 @@ public class PartyElectionResult extends BaseModel implements Serializable {
 		this.votesPercentage = votesPercentage;
 		this.completeVotesPercent = completeVotesPercent;
 		this.lastUpdated = lastUpdated;
+		this.totalVotesGained = totalVotesGained;
+		this.totalValidVotes = totalValidVotes;
+		this.completeConstiValidVotes = completeConstiValidVotes;
 	}
 
 	@Id
@@ -190,6 +197,33 @@ public class PartyElectionResult extends BaseModel implements Serializable {
 
 	public void setLastUpdated(Date lastUpdated) {
 		this.lastUpdated = lastUpdated;
+	}
+
+	@Column(name = "total_votes_gained", precision = 10, scale = 0)
+	public Double getTotalVotesGained() {
+		return totalVotesGained;
+	}
+
+	public void setTotalVotesGained(Double totalVotesGained) {
+		this.totalVotesGained = totalVotesGained;
+	}
+
+	@Column(name = "total_valid_votes", precision = 10, scale = 0)
+	public Double getTotalValidVotes() {
+		return totalValidVotes;
+	}
+
+	public void setTotalValidVotes(Double totalValidVotes) {
+		this.totalValidVotes = totalValidVotes;
+	}
+
+	@Column(name = "complete_consti_valid_votes", precision = 10, scale = 0)
+	public Double getCompleteConstiValidVotes() {
+		return completeConstiValidVotes;
+	}
+
+	public void setCompleteConstiValidVotes(Double completeConstiValidVotes) {
+		this.completeConstiValidVotes = completeConstiValidVotes;
 	}
 	
 	
