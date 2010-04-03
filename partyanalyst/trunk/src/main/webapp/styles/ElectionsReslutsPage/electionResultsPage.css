@@ -54,11 +54,10 @@
 }
 #statewiseGraph
 {
-	background:#EBE4F2 none repeat scroll 0 0;
+	background:#EFF3F7 none repeat scroll 0 0;
 	border-left:1px solid #008DCF;
 	border-right:1px solid #008DCF;	
-	width:898px;
-	overflow-y:auto;	
+	width:898px;		
 }
 .graphBottom
 {
@@ -70,10 +69,15 @@
 }
 #distwiseGraph
 {
+	background:#EFF3F7 none repeat scroll 0 0;
 	border-left:1px solid #008DCF;
 	border-right:1px solid #008DCF;
-	height:200px;
+	color:#606060;
+	min-height:200px;
+	padding-top:5px;
+	text-align:left;
 	width:898px;
+
 }
 #toolsDiv
 {
@@ -117,4 +121,11 @@ color:#247CD4;
 font-size:15px;
 font-weight:bold;
 text-decoration:none;
-}	
+}
+.p
+{
+	font-family:Trebuchet MS;
+	font-size:15px;	
+	text-align:left;
+}
+	
