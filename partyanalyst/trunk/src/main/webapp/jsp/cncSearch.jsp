@@ -48,7 +48,7 @@
 	 </script>
  </HEAD>
  <BODY onLoad="getAutoComplete()">
- <div style="margin-top: 18px;height:auto;">
+ <div style="margin-top: 10px;height:auto;">
 <s:form name="SearchNameFormName" action="cncSearchResultsAction" onsubmit="return validateTextField()" method="post">
 
 

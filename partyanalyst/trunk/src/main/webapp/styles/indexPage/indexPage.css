@@ -41,12 +41,22 @@ a:hover
 #loginarea
 {
 	color:#FFFFFF;
+	padding-top:10px;
+	padding-left:180px;
 }
+
+#searchBox
+{
+	padding-left:25px;
+}
+
 .loginStatusAnc
 {
 	color:#FFFFFF;
 	text-decoration:none;
 }
+
+
 
 #indexContent
 {
@@ -91,6 +101,12 @@ a:hover
 {
 	color:#FFFFFF;
 }
+
+/*#indexNavContainer .yuimenuitem-selected
+{
+	background-color:#FFFFFF;
+	background:transparent url(../../../../assets/skins/sam/sprite.png) repeat-x scroll 0 0;
+}*/
 
 #indexNavContainer .yuimenubarnav .yuimenubaritemlabel-hassubmenu 
 {
