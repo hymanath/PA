@@ -27,6 +27,9 @@ public class PartyPositionsVO implements Serializable{
 	private Long nthPosWon;
 	private String votesPercentage;
 	private String completeVotesPercent;
+	private Long totalVotesEarned;
+	private Long totalValidVotes;
+	private Long totalConstiValidVotes;
 	
 	
 	public Long getPartyId() {
@@ -94,5 +97,23 @@ public class PartyPositionsVO implements Serializable{
 	}
 	public void setCompleteVotesPercent(String completeVotesPercent) {
 		this.completeVotesPercent = completeVotesPercent;
+	}
+	public Long getTotalVotesEarned() {
+		return totalVotesEarned;
+	}
+	public void setTotalVotesEarned(Long totalVotesEarned) {
+		this.totalVotesEarned = totalVotesEarned;
+	}
+	public Long getTotalValidVotes() {
+		return totalValidVotes;
+	}
+	public void setTotalValidVotes(Long totalValidVotes) {
+		this.totalValidVotes = totalValidVotes;
+	}
+	public Long getTotalConstiValidVotes() {
+		return totalConstiValidVotes;
+	}
+	public void setTotalConstiValidVotes(Long totalConstiValidVotes) {
+		this.totalConstiValidVotes = totalConstiValidVotes;
 	}
 }
