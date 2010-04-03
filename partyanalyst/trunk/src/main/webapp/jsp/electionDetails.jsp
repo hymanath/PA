@@ -259,17 +259,7 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 }
 function showCandidateDetailsWindow(stateName,electionType,year)
 {
-	var windowLabel;
-	if(electionType == 'Parliament')
-	{
-		windowLabel = electionType + ' ' +  year + ' ' + 'Candidates Details';
-		
-	} else if(electionType == 'Assembly')
-	{
-		windowLabel = stateName + ' ' + electionType + ' ' +  year + ' ' + 'Candidates Details';
-	}		
-
-	var urlStr = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAction.action";
+	var urlStr = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&year=${year}";
 	var browser1 = window.open(urlStr,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
 	
 	browser1.focus();
@@ -352,8 +342,8 @@ function showStatesDropDown()
 <DIV class="graphTop">State Level Overview</DIV>
 <DIV id="statewiseGraph">
 <DIV id="graphImage"></DIV>
-<DIV class="yui-skin-sam" style="width:890px;overflow-x:auto;border-top:2px solid #008DCF;">
-	<TABLE border="0" width="95%">
+<DIV class="yui-skin-sam" style="width:880px;border-top:2px solid #008DCF;">
+	<TABLE border="0" width="95%" >
 		<TR>
 			<TD valign="top"><DIV id="partywiseResultsDataTable"></DIV></TD>
 			<TD valign="top"><DIV id="allianceResultsDataTable"></DIV></TD>
@@ -362,7 +352,7 @@ function showStatesDropDown()
 			<TD colspan="2" align="left"><SPAN style="color:#006221;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
 		</TR>
 		<TR>
-			<TD colspan="2" align="right"><A href="javascript:{}" class="link" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates</A></TD>
+			<TD colspan="2" align="right"><SPAN style="background:#EBE4F2;border:3px solid #96B4D3;padding:2px;"><A href="javascript:{}" class="link" onclick="showCandidateDetailsWindow(stateName,electionType,year)">Participated Candidates Results</A></SPAN></TD>
 		</TR>
 	</TABLE>
 </DIV>
@@ -370,7 +360,19 @@ function showStatesDropDown()
 <DIV id="viewCandidate" class="yui-skin-sam"></DIV>
 <DIV class="graphBottom"></DIV>
 <DIV class="graphTop">District Level Overview</DIV>
-<DIV id="distwiseGraph"><IMG src="images/icons/temp_graph.png" height="200" width="850"/></DIV>
+<DIV id="distwiseGraph"><P class="p">District level overview shows positions secured by each party in all districts of a state in graphical representation and as well as tabular form
+District Level Details contains detailed information like:</P>
+<UL >
+	<LI><B>Won Seats</B></LI>
+	<LI><B>1st Position</B></LI>
+	<LI><B>2 nd Position</B></LI>
+	<LI><B>3 rd Position</B></LI>
+	<LI><B>4 rd Position</B></LI> 
+	<LI><B>Nth Position</B></LI>
+	<LI><B>Percentage gained in Participated Constituencies</B></LI>
+	<LI><B>Overall Percentage</B></LI>
+</UL>
+</DIV>
 <DIV class="graphBottom"></DIV>
 <DIV class="graphTop">Analysis Tools</DIV>
 <DIV id="toolsDiv" align="left">
