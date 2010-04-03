@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Candidate Details</title>
+<title>${year} ${electionType} Election Participated Candidates Details</title>
 </head>
 <body>
-
+<H3>${year} ${electionType} Election Participated Candidates Details</H3>
 </body>
 </html>
