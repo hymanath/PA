@@ -101,4 +101,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	
 	public List findElectionsHappendInConstituency(Long constituencyId);
 	
+	public List findAssemblyConstituenciesDetailsForParliament(String assemblyIds, String electionYear);
+	
 }

@@ -75,10 +75,10 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		assertEquals(1, list.size());
 	}*/
 	
-	public void testFindByConstituencyIdAndElectionYear(){
+	/*public void testFindByConstituencyIdAndElectionYear(){
 		List list = boothConstituencyElectionDAO.findByConstituencyIdAndElectionYear(240l, 404l, "2009");
 		System.out.println("List Size:"+list);
-	}
+	}*/
 	
 	/*public void testFindPartNoConstituencyNameForTehsil(){
 		List list = boothConstituencyElectionDAO.findPartNoConstituencyNameForTehsil(new Long(844), "Assembly", "2009");
@@ -139,5 +139,10 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 			System.out.println(values[0]+" "+values[1]);
 	}*/
 	
+	public void testFindAssemblyConstituenciesDetailsForParliament(){
+		List list = boothConstituencyElectionDAO.findAssemblyConstituenciesDetailsForParliament("223,241,232,233,340,341,238", "2009");
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]);
+	}
 	
 }

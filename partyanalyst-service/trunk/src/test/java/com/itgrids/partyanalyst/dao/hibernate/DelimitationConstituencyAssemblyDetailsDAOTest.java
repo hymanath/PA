@@ -37,11 +37,17 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		assertEquals(404l, ((Object[])list.get(0))[1]);
 	}*/
 	
-	public void testFindAssembliesConstituencies(){
+	/*public void testFindAssembliesConstituencies(){
 		List list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(404l);
 		for(int i=0; i<list.size(); i++){
 			Object[] params = (Object[])list.get(i);
 			System.out.println(params[0] + "--" + params[1]);
 		}	
+	}*/
+	
+	public void testGetAllAssembliesOfParliament(){
+		List list = delimitationConstituencyAssemblyDetailsDAO.getAllAssembliesOfParliament(404l);
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]);
 	}
 }

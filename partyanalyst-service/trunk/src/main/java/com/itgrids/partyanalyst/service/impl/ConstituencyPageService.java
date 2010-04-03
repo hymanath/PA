@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
+import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
@@ -614,8 +615,19 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return result;
 	}
 	
-	public List<VotersWithDelimitationInfoVO> getVotersInfoInMandalsForConstituency(Long constituencyId)
+	public ConstituencyVO getVotersInfoInMandalsForConstituency(Long constituencyId)
 	{
+		ConstituencyVO constituencyVO = new ConstituencyVO();
+		Constituency constituency = constituencyDAO.get(constituencyId);
+		constituencyVO.setId(constituencyId);
+		constituencyVO.setName(constituency.getName());
+		constituencyVO.setElectionType(constituency.getElectionScope().getElectionType().getElectionType());
+		
+		if(constituencyVO.getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+			getAssembliesVotersInfoOfParliament(constituencyVO);
+			return constituencyVO;
+		}
+		
 		List mandalsList = delimitationConstituencyMandalDAO.getMandalsOfConstituency(constituencyId);
 		List<VotersWithDelimitationInfoVO> votersWithDelimitationInfoVOList = new ArrayList<VotersWithDelimitationInfoVO>();
 		List<VotersInfoForMandalVO> votersInfoForMandalList = null;
@@ -686,7 +698,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			votersWithDelimitationInfoVOList.add(votersWithDelimitationInfoVO);
 		}
 		
-		return votersWithDelimitationInfoVOList;
+		constituencyVO.setAssembliesOfParliamentInfo(votersWithDelimitationInfoVOList);
+		return constituencyVO;
 		
 	}
 		
@@ -1077,4 +1090,47 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return partyVotes;		
 	}
 	
+	public void getAssembliesVotersInfoOfParliament(ConstituencyVO constituencyVO){
+		List list = delimitationConstituencyAssemblyDetailsDAO.getAllAssembliesOfParliament(constituencyVO.getId());
+		Map<String, String> yearAndIdsMap = new HashMap<String,String>();
+		String acId = null;
+		String year = "";
+		List<VotersWithDelimitationInfoVO> votersWithDelimitationInfoVOs = new ArrayList<VotersWithDelimitationInfoVO>();
+		List<VotersInfoForMandalVO> votersInfoForAcVOs = null;
+		VotersWithDelimitationInfoVO votersWithDelimitationInfoVO = null;
+		VotersInfoForMandalVO votersInfoForAcVO = null;
+		
+		for(Object[] values:(List<Object[]>)list){
+			acId = values[0].toString();
+			year = values[2].toString();
+			String value = yearAndIdsMap.get(year);
+			StringBuilder ids = new StringBuilder();
+			if(value==null){
+				ids .append(acId);
+			}else{
+				ids.append(value).append(IConstants.COMMA).append(acId);
+			}
+			yearAndIdsMap.put(year, ids.toString());
+		}
+		
+		for(Map.Entry<String, String> entry:yearAndIdsMap.entrySet()){
+			List acVotersInfo = boothConstituencyElectionDAO.findAssemblyConstituenciesDetailsForParliament(entry.getValue(), entry.getKey());
+			votersWithDelimitationInfoVO = new VotersWithDelimitationInfoVO();
+			votersInfoForAcVOs = new ArrayList<VotersInfoForMandalVO>();
+			votersWithDelimitationInfoVO.setYear(entry.getKey());
+			for(Object[] values:(List<Object[]>)acVotersInfo){
+				votersInfoForAcVO = new VotersInfoForMandalVO();
+				votersInfoForAcVO.setMandalId(values[0].toString());
+				votersInfoForAcVO.setMandalName(values[1].toString());
+				votersInfoForAcVO.setTotalMaleVoters(values[2].toString());
+				votersInfoForAcVO.setTotalFemaleVoters(values[3].toString());
+				votersInfoForAcVO.setTotalVoters(values[4].toString());
+				votersInfoForAcVOs.add(votersInfoForAcVO);
+			}
+			votersWithDelimitationInfoVO.setVotersInfoForMandalVO(votersInfoForAcVOs);
+			votersWithDelimitationInfoVOs.add(votersWithDelimitationInfoVO);
+		}
+		constituencyVO.setAssembliesOfParliamentInfo(votersWithDelimitationInfoVOs);
+	}
+
 }

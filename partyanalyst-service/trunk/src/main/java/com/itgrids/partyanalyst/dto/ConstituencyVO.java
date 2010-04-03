@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.Date;
+import java.util.List;
 
 
 public class ConstituencyVO {
@@ -11,6 +12,7 @@ public class ConstituencyVO {
 	private String districtName;
 	private String electionType;
 	private Date delemitationInfo;
+	private List<VotersWithDelimitationInfoVO> assembliesOfParliamentInfo;
 	
 	public ConstituencyVO(){
 		
@@ -60,6 +62,13 @@ public class ConstituencyVO {
 	}
 	public void setDelemitationInfo(Date delemitationInfo) {
 		this.delemitationInfo = delemitationInfo;
+	}
+	public List<VotersWithDelimitationInfoVO> getAssembliesOfParliamentInfo() {
+		return assembliesOfParliamentInfo;
+	}
+	public void setAssembliesOfParliamentInfo(
+			List<VotersWithDelimitationInfoVO> assembliesOfParliamentInfo) {
+		this.assembliesOfParliamentInfo = assembliesOfParliamentInfo;
 	}
 	
 }

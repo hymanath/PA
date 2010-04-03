@@ -13,11 +13,11 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
+import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
-import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 
 public interface IConstituencyPageService {
 
@@ -29,7 +29,7 @@ public interface IConstituencyPageService {
 	
 	public MandalAndRevenueVillagesInfoVO getTownshipWiseBoothDetailsForTehsil(Long tehsilId, Long electionId);
 	
-	public List<VotersWithDelimitationInfoVO> getVotersInfoInMandalsForConstituency(Long constituencyId);
+	public ConstituencyVO getVotersInfoInMandalsForConstituency(Long constituencyId);
 	
 	public ResultWithExceptionVO saveAndUpdateHamletAndBoothInfo(HamletAndBoothVO hamletWithBoothIds);
 	
@@ -46,4 +46,6 @@ public interface IConstituencyPageService {
 	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,String electionYear);
 		
 	public List<ConstituencyRevenueVillagesVO> getMandalElectionInfoForAParliamentConstituency(Long constituencyId,String electionYear);
+	
+	public void getAssembliesVotersInfoOfParliament(ConstituencyVO constituencyVO);
 }
