@@ -6,8 +6,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVillageBoothDataPopulationService;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -18,6 +20,9 @@ public class VillageBoothElectionMapAction extends ActionSupport implements Serv
 	private List<SelectOptionVO> electionSelectVO;
 	private File filePath;
 	private Long electionId;
+	private IStaticDataService staticDataService;
+	private String task = null;
+	JSONObject jObj = null;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -56,8 +61,49 @@ public class VillageBoothElectionMapAction extends ActionSupport implements Serv
 		this.electionId = electionId;
 	}
 
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public JSONObject getJObj() {
+		return jObj;
+	}
+
+	public void setJObj(JSONObject obj) {
+		jObj = obj;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public String execute(){
 		villageBoothDataPopulationService.readExcelAndInsertData(filePath, electionId);
+		return SUCCESS;
+	}
+	
+	public String getElectionIdsAndYears(){
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			if(jObj.getString("task").equals("getElectionYears")){
+				System.out.println("For Districts Of State");
+				electionSelectVO = staticDataService.getElectionIdsAndYearsInfo(jObj.getLong("electionTypeId"), 1l);
+			}
+		}
 		return SUCCESS;
 	}
 

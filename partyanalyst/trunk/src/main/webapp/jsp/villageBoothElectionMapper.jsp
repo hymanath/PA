@@ -17,7 +17,7 @@
 				};
 			
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-				var url = "<%=request.getContextPath()%>/getElectionYearsAjaxAction.action?"+rparam;						
+				var url = "<%=request.getContextPath()%>/getElectionYearsForMappingAjaxAction.action?"+rparam;						
 				callAjax(rparam,jsObj,url);
 		}
 		
@@ -63,7 +63,7 @@
 				<td>Election Year:</td>
 				<td>
 					<select id="electionYear" name="electionId">
-						<option>Select </option>
+						<option value="0">Select </option>
 					</select>
 				</td>
 				<td><s:file name="filePath" label="File Path"/></td>

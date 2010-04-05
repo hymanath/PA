@@ -251,6 +251,7 @@
 	</bean>	
 	<bean id="villageBoothElectionMapAction" class="com.itgrids.partyanalyst.web.action.VillageBoothElectionMapAction" singleton="false">
 			<property name="villageBoothDataPopulationService" ref="villageBoothDataPopulationService" />
+			<property name="staticDataService" ref="staticDataService" />
 	</bean>	
 	<bean id="townshipElectionResultsAction" class="com.itgrids.partyanalyst.web.action.TownshipElectionResultsAction" singleton="false">
 		<property name="constituencyPageService" ref="constituencyPageService" />
