@@ -342,9 +342,9 @@ function buildPartyPositionDataTable(info,rank)
 	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
 				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
 				{key:"percentageOfVotes",label : "Votes %", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes %", sortable:true, resizeable:true}, 
-	            {key:"oppositionParty",label : "Opposition Party",sortable:true, resizeable:true}, 
-	            {key:"oppositionPartyCandidate",label : "Opposition Party Candidate", sortable:true, resizeable:true}    
+				{key:"oppositionPartyPercentageOfVotes",label : "Opp Party Votes %", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "Opp Party",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "Opp Candidate", sortable:true, resizeable:true}    
 				
 	        ]; 
 			var myDataSource = new YAHOO.util.LocalDataSource(data.partyPerformanceArray); 		
@@ -364,9 +364,9 @@ function buildPartyPositionDataTable(info,rank)
 				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
 				{key:"percentageOfVotes",label : "Votes % ", sortable:true, resizeable:true},
 				{key:"previousElectionPercentageOfVotesGained",label : "Votes % in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes %", sortable:true, resizeable:true}, 
-	            {key:"oppositionParty",label : "Opposition Party",sortable:true, resizeable:true}, 
-	            {key:"oppositionPartyCandidate",label : "Opposition Party Candidate", sortable:true, resizeable:true}    
+				{key:"oppositionPartyPercentageOfVotes",label : "Opp Party Votes %", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "Opp Party",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "Opp&nbsp;Candidate", sortable:true, resizeable:true}    
 				
 	        ]; 
 
@@ -385,11 +385,11 @@ function buildPartyPositionDataTable(info,rank)
 				{key:"percentageOfVotes",label : "Votes %", sortable:true, resizeable:true},
 				{key:"previousElectionPercentageOfVotesGained",label : "Votes % in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
 				{key:"percentageOfVotesPolled",label : "Votes Polled %", sortable:true, resizeable:true},
-				{key:"previousElectionPercentageOfVotesPolled",label : "Votes Polled % in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesPolled",label : "Votes&nbsp;Polled % in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
 				{key:"previousElectionCandidate",label : "<s:property value="stateData.prevYear" />  Election Candidate", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "Opposition Party Votes %", sortable:true, resizeable:true}, 
-	            {key:"oppositionParty",label : "Opposition Party",sortable:true, resizeable:true}, 
-	            {key:"oppositionPartyCandidate",label : "Opposition Party Candidate", sortable:true, resizeable:true}    
+				{key:"oppositionPartyPercentageOfVotes",label : "Opp Party Votes %", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "Opp Party",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "Opp&nbsp;Candidate", sortable:true, resizeable:true}    
 				
 	        ]; 
 
@@ -478,7 +478,8 @@ function buildPartyPositionDataTable(info,rank)
 						thirdPos:'${results.thirdPosWon}',
 						fourthPos:'${results.fourthPosWon}',
 						nthPos:'${results.nthPosWon}',
-						votesPercent:'${results.votesPercentage}'
+						votesPercent:'${results.votesPercentage}',
+						overallVotesPercent:'${results.completeVotesPercent}',
 					  };
 					arr.push(obj);
 		</c:forEach>
@@ -486,13 +487,14 @@ function buildPartyPositionDataTable(info,rank)
 			str+='<table border="1" id="partyPositionDetailsTable">';
 			str+='<tr>';
 			str+='<th align="center">Party Name</th>';
+			str+='<th align="center">PC*</th>';
 			str+='<th align="center">Seats Won</th>';
 			str+='<th align="center">2nd Pos</th>';
 			str+='<th align="center">3rd Pos</th>';
 			str+='<th align="center">4th Pos</th>';
 			str+='<th align="center">Nth Pos</th>';
-			str+='<th align="center">Participated Constituencies</th>';
 			str+='<th align="center">Votes %</th>';
+			str+='<th align="center">Overall Votes %</th>';
 			str+='</tr>';
 			for(var i in arr)
 		    {
@@ -502,7 +504,7 @@ function buildPartyPositionDataTable(info,rank)
 				str+='<td align="center" style="color:#FF0000">'+arr[i].partyName+'*</td>';
 			else
 			    str+='<td align="center">'+arr[i].partyName+'</td>';
-
+			str+='<td align="center">'+arr[i].constituency+'</td>';
 			if(arr[i].seats == 0)
 				str+='<td align="center" style="color:#539E41;font-weight:bold;">'+arr[i].seats+'</td>';
 			else
@@ -527,13 +529,13 @@ function buildPartyPositionDataTable(info,rank)
                 str+='<td align="center" style="color:#FF1515;font-weight:bold;">'+arr[i].nthPos+'</td>';
 			else
 		    	str+='<td align="center"><a href="javascript:{}" style="color:#FF1515;font-weight:bold;" onclick="getPartyPositionDetails(-1,\''+arr[i].partyId+'\')">'+arr[i].nthPos+'</td>';
-			str+='<td align="center">'+arr[i].constituency+'</td>';
-            str+='<td align="center">'+arr[i].votesPercent+'</td>';
+		    str+='<td align="center">'+arr[i].votesPercent+'</td>';
+			str+='<td align="center">'+arr[i].overallVotesPercent+'</td>';
 			str+='</tr>';
 			}
 			str+='<tr>';
 			str+='<th colspan="8" style="color:#FF0000">';
-			str+='<b>* Main Party</b>';
+			str+='<b>* Main Party , PC* - Participated Constituencies</b>';
 			str+='<span id="partyPosImg" align="right" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/partypositions.gif" /></img></span>';
 			str+='</th>';
 			str+='</tr>';
@@ -653,7 +655,8 @@ function buildPartyPositionDataTable(info,rank)
 						thirdPos:'${results.thirdPosWon}',
 						fourthPos:'${results.fourthPosWon}',
 						nthPos:'${results.nthPosWon}',
-						votesPercent:'${results.votesPercentage}'
+						votesPercent:'${results.votesPercentage}',
+						overallVotesPercent:'${results.completeVotesPercent}'
 					  };
 					arr.push(obj);
 		</c:forEach>
@@ -1188,7 +1191,8 @@ function reportTitleDivFunc()
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td>Winning Positions with lower % margin: <c:out value="${constPositions.positionsWon}" /></td>
+				<td style="width:340px;">Winning Positions with lower  %  margin </td>
+				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;">
 					<span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>	
@@ -1201,7 +1205,8 @@ function reportTitleDivFunc()
 			<div class="detailReportHeader">
 				<table width="100%">
 				<tr>
-				<td>Winning Positions with highest % margin: <c:out value="${constPositions.positionsWon}"/></td>
+				<td style="width:340px;">Winning Positions with highest % margin </td>
+				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}"/> )</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
@@ -1212,7 +1217,8 @@ function reportTitleDivFunc()
 			<div class="detailReportHeader">
 				<table width="100%">
 				<tr>
-				<td>Losing Positions with lower % margin: <c:out value="${constPositions.positionsWon}" /></td>
+				<td style="width:340px;">Losing Positions with lower  %  margin </td> 
+				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
@@ -1223,7 +1229,8 @@ function reportTitleDivFunc()
 			<div class="detailReportHeader">			
 				<table width="100%">
 				<tr>
-				<td>Losing Positions with highest % margin: <c:out value="${constPositions.positionsWon}" /></td>
+				<td style="width:340px;">Losing Positions with highest % margin</td>
+				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span></td>
 				</c:if>
@@ -1234,7 +1241,8 @@ function reportTitleDivFunc()
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td>Winning Positions with Positive Swing: <c:out value="${constPositions.positionsWon}" /></td>
+				<td style="width:340px;">Winning Positions with Positive Swing </td>
+				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
@@ -1245,7 +1253,8 @@ function reportTitleDivFunc()
 			<div class="detailReportHeader">		
 				<table width="100%">
 				<tr>
-				<td>Loosing Positions with Positive Swing: <c:out value="${constPositions.positionsWon}" /></td>
+				<td style="width:340px;">Loosing Positions with Positive Swing </td>
+				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
@@ -1256,7 +1265,8 @@ function reportTitleDivFunc()
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td>Winning Positions with Negative Swing: <c:out value="${constPositions.positionsWon}" /></td>
+				<td style="width:340px;">Winning Positions with Negative Swing </td>
+				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
@@ -1267,7 +1277,8 @@ function reportTitleDivFunc()
 			<div class="detailReportHeader">
 				<table width="100%">
 				<tr>
-				<td>Loosing Positions with Negative Swing: <c:out value="${constPositions.positionsWon}" /></td> 
+				<td style="width:340px;">Loosing Positions with Negative Swing  </td>
+				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td> 
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
@@ -1278,7 +1289,8 @@ function reportTitleDivFunc()
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td>Losing Positions with droping voting percentage: <c:out value="${constPositions.positionsWon}" /></td>
+				<td style="width:340px;">Losing Positions with droping voting percentage  </td>
+				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
 				</c:if>
