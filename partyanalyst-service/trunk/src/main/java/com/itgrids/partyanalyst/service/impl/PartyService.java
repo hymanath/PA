@@ -344,6 +344,7 @@ public class PartyService implements IPartyService {
 		partyPositionVO.setFourthPosWon(new Long(partyElectionResult.getFourthPosWon()));
 		partyPositionVO.setNthPosWon(new Long(partyElectionResult.getNthPosWon()));
 		partyPositionVO.setTotalConstiParticipated(new Long(partyElectionResult.getTotalConstiParticipated()));
+		partyPositionVO.setCompleteVotesPercent(partyElectionResult.getCompleteVotesPercent());
 		partyPositionVO.setVotesPercentage(partyElectionResult.getVotesPercentage());
 		
 	return partyPositionVO;
@@ -359,6 +360,7 @@ public class PartyService implements IPartyService {
 		partyPositionVO.setFourthPosWon(new Long(partyElectionDistrictResult.getFourthPosWon()));
 		partyPositionVO.setNthPosWon(new Long(partyElectionDistrictResult.getNthPosWon()));
 		partyPositionVO.setTotalConstiParticipated(new Long(partyElectionDistrictResult.getTotalConstiParticipated()));
+		partyPositionVO.setCompleteVotesPercent(partyElectionDistrictResult.getCompleteVotesPercent());
 		partyPositionVO.setVotesPercentage(partyElectionDistrictResult.getVotesPercentage());
 		
 	return partyPositionVO;
