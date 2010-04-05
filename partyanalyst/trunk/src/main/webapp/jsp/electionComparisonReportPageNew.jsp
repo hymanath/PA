@@ -283,6 +283,12 @@
 		color:Olive;
 		border:medium double;
 	}
+	.greenColorClass{
+		color:green;
+	}
+	.redColorClass{
+		color:red;
+	}
 </style>
 <script type="text/javascript">	
 
@@ -1194,6 +1200,12 @@ function callAjax(param,jsObj){
 
 function buildDataTable(divId,arr,yearOne,yearTwo)
 {
+    var colorClass = '';
+	if(divId == "votesPercentageIncDiv")
+	colorClass = "greenColorClass";
+    if(divId == "votesPercentageDecDiv")
+	colorClass = "redColorClass";
+
 	var resultsDataSource = new YAHOO.util.DataSource(arr);
 	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	resultsDataSource.responseSchema = {
@@ -1250,6 +1262,7 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 					{
 						key : "votesPercentDiff",
 						label : "% Diff",
+						className:colorClass,
 						sortable : true
 					}
 				]
