@@ -110,12 +110,12 @@
 </head>
 
 <body>
-	<div id="indexheader" class="indexLayoutContainer">
+	<div id="indexheader" class="indexLayoutContainer" style="overflow:visible">
 		<table  width="100%" id="headerTable">
 			<tr>
 				<td style="vertical-align:top;width:600px;"><div id="pa_Logo"><img src="images/icons/homePage/pa_logo.jpg"></img></div></td>
 				<td style="vertical-align:top;">
-					<div >
+					<div>
 						<div id="loginarea">
 							<c:if test="${sessionScope.loginStatus == 'out'}">        		
 								<c:out value="Welcome, ${sessionScope.UserName} | "/>

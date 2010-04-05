@@ -26,6 +26,7 @@ a:hover
 {
 	height:110px;
 	background-image:url(../../images/icons/indexPage/index_header_main.png);
+
 }
 
 #headerTable
@@ -40,15 +41,15 @@ a:hover
 
 #loginarea
 {
-	color:#FFFFFF;
+	color:#FFFFFF;		
 	padding-top:10px;
-	padding-left:180px;
 }
 
+/*
 #searchBox
 {
 	padding-left:25px;
-}
+}*/
 
 .loginStatusAnc
 {
@@ -125,4 +126,27 @@ a:hover
 	height:40px;
 	margin-left:10px;
 	padding:10px 15px;
+}
+
+/*********************
+	Dashboard Styles
+**********************/
+
+#dashboard_main
+{
+	background-color:#FFFFFF;
+	margin:auto;
+	overflow:hidden;
+	padding:0;
+	width:960px;
+}
+
+#dashboard_main_table
+{
+	width:100%;
+}
+
+#dashboard_leftNav
+{
+	background-color:#e5f1dd;
 }
