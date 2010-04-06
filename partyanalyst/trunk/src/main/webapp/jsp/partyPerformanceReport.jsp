@@ -211,6 +211,7 @@ function displayPartyPositions(jsObj,data)
 		str+='<tr>';
 		str+='<td>'+data[i].constituencyName+'</td>';
 		str+='<td>'+data[i].candidateName+'</td>';
+		str+='<td>'+data[i].partyName+'</td>';
 		str+='<td align="right">'+data[i].votePercentage+'</td>';
 		for (var d in data[i].oppPartyPositionInfoList)
 		{
@@ -246,18 +247,20 @@ function buildPartyPositionDataTable(info,rank)
 	
 	var key1={key : "constituencyName"};
 	var key2={key:"candidateName"};
-	var key3={key : "votePercentage",parser:"number"};
+	var key3={key:"partyName"};
+	var key4={key : "votePercentage",parser:"number"};
 	resultsDataSource.responseSchema.fields.push(key1);
 	resultsDataSource.responseSchema.fields.push(key2);
 	resultsDataSource.responseSchema.fields.push(key3);
+	resultsDataSource.responseSchema.fields.push(key4);
 
 	for (var k in  info[0].oppPartyPositionInfoList)
 	{		
-		var key4={key : "cName"+k};
-		var key5={key : "pName"+k};		
+		var key5={key : "cName"+k};
+		var key6={key : "pName"+k};		
 		var key7={key : "vPercentage"+k,parser:"number"};
-		resultsDataSource.responseSchema.fields.push(key4);
 		resultsDataSource.responseSchema.fields.push(key5);
+		resultsDataSource.responseSchema.fields.push(key6);
 		resultsDataSource.responseSchema.fields.push(key7);
 	}	
 	//--------
@@ -274,6 +277,11 @@ function buildPartyPositionDataTable(info,rank)
 						{
 							key : "candidateName",		
 							label : "Candidate Name",
+							sortable : true
+						},
+						{
+							key : "partyName",		
+							label : "Party",
 							sortable : true
 						},
 						{
@@ -479,7 +487,7 @@ function buildPartyPositionDataTable(info,rank)
 						fourthPos:'${results.fourthPosWon}',
 						nthPos:'${results.nthPosWon}',
 						votesPercent:'${results.votesPercentage}',
-						overallVotesPercent:'${results.completeVotesPercent}',
+						overallVotesPercent:'${results.completeVotesPercent}'
 					  };
 					arr.push(obj);
 		</c:forEach>
