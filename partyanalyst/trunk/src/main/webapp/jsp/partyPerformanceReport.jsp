@@ -34,12 +34,6 @@
 	<script type="text/javascript" src="js/json/json-min.js"></script> 
 	<script type="text/javascript" src="js/json/json.js"></script> 
 	<script type="text/javascript" src="js/json/json-debug.js"></script> 
-	<!-- Dependencies -->
-	<script src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-	<script src="http://yui.yahooapis.com/2.8.0r4/build/element/element-min.js"></script>
-	<script src="http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource-min.js"></script>
-	<script src="http://yui.yahooapis.com/2.8.0r4/build/json/json-min.js"></script>
-	<script src="http://yui.yahooapis.com/2.8.0r4/build/swf/swf-min.js"></script>
 	
     <!-- YUI Skin Sam -->
    
@@ -75,7 +69,7 @@ function showBand(divtag)
 	else
 	{
 		divElmt.style.display = 'none';
-		spanElmt.innerHTML="Display Details";
+		spanElmt.innerHTML="View Details";
 	}
 }
 
@@ -1022,14 +1016,14 @@ function reportTitleDivFunc()
 	}
 	#electionSummary_head
 	{
-		font-size:15px;
+		font-size:14px;
 		font-weight:bold;
 		height:20px;
 		padding-right:10px;
 		padding-top:5px;
 		padding-left:4px;
 		background-image:url(images/icons/partyPerformance/electionSummary.png);
-		width:126px;
+		width:127px;
 		margin-bottom:10px;
 	}
 	#resizablepanel table
@@ -1200,10 +1194,10 @@ function reportTitleDivFunc()
 				<table width="100%">
 				<tr>
 				<td style="width:340px;">Winning Positions with lower  %  margin </td>
-				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
+				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;">
-					<span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span>	
+					<span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span>	
 					</td>
 				</c:if>
 				</tr></table>
@@ -1214,9 +1208,9 @@ function reportTitleDivFunc()
 				<table width="100%">
 				<tr>
 				<td style="width:340px;">Winning Positions with highest % margin </td>
-				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}"/> )</font></td>
+				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}"/> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
 				</c:if>
 				</tr></table>
 			</div>
@@ -1226,9 +1220,9 @@ function reportTitleDivFunc()
 				<table width="100%">
 				<tr>
 				<td style="width:340px;">Losing Positions with lower  %  margin </td> 
-				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
+				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
 				</c:if>
 				</tr></table>
 			</div>
@@ -1238,9 +1232,9 @@ function reportTitleDivFunc()
 				<table width="100%">
 				<tr>
 				<td style="width:340px;">Losing Positions with highest % margin</td>
-				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
+				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display details</span></td>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View details</span></td>
 				</c:if>
 				</tr></table>
 			</div>
@@ -1250,9 +1244,9 @@ function reportTitleDivFunc()
 				<table width="100%">
 				<tr>
 				<td style="width:340px;">Winning Positions with Positive Swing </td>
-				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
+				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
 				</c:if>
 				</tr></table>
 			</div>
@@ -1262,9 +1256,9 @@ function reportTitleDivFunc()
 				<table width="100%">
 				<tr>
 				<td style="width:340px;">Loosing Positions with Positive Swing </td>
-				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
+				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
 				</c:if>
 				</tr></table>
 			</div>
@@ -1274,9 +1268,9 @@ function reportTitleDivFunc()
 				<table width="100%">
 				<tr>
 				<td style="width:340px;">Winning Positions with Negative Swing </td>
-				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
+				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
 				</c:if>
 				</tr></table>
 			</div>
@@ -1286,9 +1280,9 @@ function reportTitleDivFunc()
 				<table width="100%">
 				<tr>
 				<td style="width:340px;">Loosing Positions with Negative Swing  </td>
-				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td> 
+				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td> 
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
 				</c:if>
 				</tr></table>
 			</div>
@@ -1298,9 +1292,9 @@ function reportTitleDivFunc()
 				<table width="100%">
 				<tr>
 				<td style="width:340px;">Losing Positions with droping voting percentage  </td>
-				<td align="left"><font color="white">( <c:out value="${constPositions.positionsWon}" /> )</font></td>
+				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
-					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">Display Details</span></td>
+					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
 				</c:if>
 				</tr></table>
 			</div>
@@ -1379,7 +1373,7 @@ function reportTitleDivFunc()
 <br/><br/>
 
 <div class="partyInfoHeading">
- <s:label labelposition="left"><b><U>Your votes are flown to any one of the below parties:</U></b></s:label>
+ <s:label labelposition="left"><b><U>Your votes are flown to any one of the below parties</U></b></s:label>
 </div>
 
 <div style="margin-left: 15px;"> 
@@ -1395,8 +1389,8 @@ function reportTitleDivFunc()
 <br>
 
 <s:if test="stateData.rebelPartyCandidates.size > 0">
-<s:label labelposition="left"><b><U>Rebel Candidates::</U></b></s:label>
-<div id="rebelsDiv" class="yui-skin-sam">
+<div class="partyInfoHeading"><s:label labelposition="left"><b><U>Rebel Candidates </U></b></s:label></div>
+<div id="rebelsDiv" class="yui-skin-sam" style="display: block; background-color: rgb(234, 234, 234); margin-right: 20px;">
 <display:table class="partyPerformanceReportTable" name="${stateData.rebelPartyCandidates}" id="rebelsTable" style="margin-top:0px;"> 
 							<display:column title="Constiuency Name" property="constiuencyName" />
 							<display:column title="Candidate Name" property="candidateName" />
