@@ -6,10 +6,15 @@ import java.util.List;
 
 public class PartyPositionDisplayVO implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4170436723087708081L;
 	private Long constituencyId;
 	private String constituencyName;
 	private String candidateName;
 	private Long partyId;
+	private String partyName;
 	private Long electionId;
 	private Long rank;
 	private String votePercentage;
@@ -63,5 +68,11 @@ public class PartyPositionDisplayVO implements Serializable{
 	public void setOppPartyPositionInfoList(
 			List<PartyPostionInfoVO> oppPartyPositionInfoList) {
 		this.oppPartyPositionInfoList = oppPartyPositionInfoList;
+	}
+	public String getPartyName() {
+		return partyName;
+	}
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
 	}
 }
