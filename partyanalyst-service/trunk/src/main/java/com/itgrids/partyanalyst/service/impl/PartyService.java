@@ -616,6 +616,7 @@ public class PartyService implements IPartyService {
 		
 		positionDetail.setCandidateName(partyNominationWhoWonOrLost.getCandidate().getLastname());
 		positionDetail.setConstiuencyName(constituencyName);
+		positionDetail.setPartyName(partyNominationWhoWonOrLost.getParty().getShortName());
 		positionDetail.setPercentageOfVotes(new BigDecimal(percentWonByPartyWinner).setScale(2, BigDecimal.ROUND_HALF_UP));
 		positionDetail.setOppositePartyPercentageOfVotes(new BigDecimal(percentWonBySecondRank).setScale(2, BigDecimal.ROUND_HALF_UP));
 		positionDetail.setOppositeParty(oppositePartyShortNameWhichLostOrWon);
