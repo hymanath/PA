@@ -1103,6 +1103,10 @@ public class PartyService implements IPartyService {
 				if(nominationForAParty.getParty().getPartyId().equals(partyId)){
 					partyPositionDisplayVO.setConstituencyId(nominationForAParty.getConstituencyElection().getConstituency().getConstituencyId());
 					partyPositionDisplayVO.setPartyId(partyId);
+					if(nominationForAParty.getParty().getShortName() != null)
+					partyPositionDisplayVO.setPartyName(nominationForAParty.getParty().getShortName());
+					else
+					partyPositionDisplayVO.setPartyName(nominationForAParty.getParty().getLongName());
 					partyPositionDisplayVO.setElectionId(nominationForAParty.getConstituencyElection().getElection().getElectionId());
 					partyPositionDisplayVO.setCandidateName(nominationForAParty.getCandidate().getLastname().trim());
 					partyPositionDisplayVO.setConstituencyName(nominationForAParty.getConstituencyElection().getConstituency().getName());
