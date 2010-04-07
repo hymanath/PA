@@ -48,16 +48,16 @@
 	 </script>
  </HEAD>
  <BODY onLoad="getAutoComplete()">
- <div style="margin-top: 10px;height:auto;">
+ <div style="height:auto;">
 <s:form name="SearchNameFormName" action="cncSearchResultsAction" onsubmit="return validateTextField()" method="post">
 
 
-	<table class="yui-skin-sam" style="width:310px;" border="0">
+	<table class="yui-skin-sam" style="width:100%;" border="0" width="100%">
 	<tr>
 		<td width="80px" style="padding-top: 3px;color:#FBAD2B;">
 			Search Criteria
 		</td>
-		<td width="160px" align="left" style="color:#FFFFFF;">		
+		<td width="200px" align="left" style="color:#FFFFFF;">		
 			<input id="candidateRadio" type="radio"  name="searchName" value="Candidate" onclick="getParser(this.value)"/>Candidate
 			<input id="constituencyRadio" type="radio"  name="searchName" value="Constituency" onclick="getParser(this.value)"/>Constituency	
 		</td>
@@ -74,7 +74,7 @@
 		<td width="80px">
 			<div id="labelDiv" style="padding-top: 2px;color:#FBAD2B;">Search Text</div>
 		</td>
-		<td width="160px" style="padding-bottom:23px;padding-left:10px;color:black;position:relative;z-index:1;">		
+		<td width="200px" style="padding-bottom:23px;padding-left:10px;color:black;position:relative;z-index:1;">		
 			<div id="textFldDiv"></div>				
 		</td>
 		<td width="40px">

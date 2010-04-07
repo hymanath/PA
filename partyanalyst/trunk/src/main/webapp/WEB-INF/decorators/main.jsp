@@ -16,13 +16,13 @@
 
 	<script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 	<script src="js/yahoo/yui-js-2.8/build/container/container_core-min.js"></script>
-	<script src="js/yahoo/yui-js-2.8/build/menu/menu-min.js"></script>
- 
-	<script type="text/javascript" src="js/partyPerformance.js" ></script>
-	<script type="text/javascript" src="js/partyPerformanceReport.js" ></script>	
-	
+	<script src="js/yahoo/yui-js-2.8/build/menu/menu-min.js"></script>	
+
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/fonts/fonts-min.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/menu/assets/skins/sam/menu.css">
+
+	<script type="text/javascript" src="js/partyPerformance.js" ></script>
+	<script type="text/javascript" src="js/partyPerformanceReport.js" ></script>	
 	
 	<link href="styles/pa.css" rel="stylesheet" type="text/css" />
 	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
@@ -45,13 +45,13 @@
 		 
 		oMenuBar.subscribe("beforeRender", function () { 
 	 
-	    if (this.getRoot() == this) { 
-	 
+	    if (this.getRoot() == this) { 	 
 		this.getItem(0).cfg.setProperty("submenu", aSubmenuData[0]); 
-	        this.getItem(1).cfg.setProperty("submenu", aSubmenuData[1]); 
-	        this.getItem(2).cfg.setProperty("submenu", aSubmenuData[2]); 
+		this.getItem(1).cfg.setProperty("submenu", aSubmenuData[1]); 
+		this.getItem(2).cfg.setProperty("submenu", aSubmenuData[2]); 
 		this.getItem(3).cfg.setProperty("submenu", aSubmenuData[3]); 
 		this.getItem(4).cfg.setProperty("submenu", aSubmenuData[4]); 
+		this.getItem(5).cfg.setProperty("submenu", aSubmenuData[5]); 
 	    } 
 	 
 	}); 
@@ -61,7 +61,13 @@
 	}); 
 
 	var aSubmenuData = [ 
-	 
+		{
+			 id: "home", 
+	        itemdata: [ 				
+	   	          
+
+	        ] 
+		},	 
 	    { 
 	        id: "partyanalysis",  
 	        itemdata: [  
@@ -113,28 +119,31 @@
 	<div id="indexheader" class="indexLayoutContainer" style="overflow:visible">
 		<table  width="100%" id="headerTable">
 			<tr>
-				<td style="vertical-align:top;width:600px;"><div id="pa_Logo"><img src="images/icons/homePage/pa_logo.jpg"></img></div></td>
+				<td style="vertical-align:top;width:580px;"><div id="pa_Logo"><img src="images/icons/homePage/pa_logo.jpg"></img></div></td>
 				<td style="vertical-align:top;">
-					<div>
-						<div id="loginarea">
-							<c:if test="${sessionScope.loginStatus == 'out'}">        		
-								<c:out value="Welcome, ${sessionScope.UserName} | "/>
-								<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | 
-								<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />" >Home</a> | 
-								<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
-							</c:if>		
-							<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
-								<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />" >Home</a> |
-								<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/loginForm.jsp" >Login</a> | 
-								<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/userRegPageAction.action" >Register</a> | 
-								<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
-							</c:if>		
-						</div>
-
-						<div id="searchBox">
-							<jsp:include page="../../jsp/cncSearch.jsp"/>
-						</div>
-					</div>
+					<table width="100%" style="width:100%">
+						<tr>
+							<td id="loginarea">
+								<c:if test="${sessionScope.loginStatus == 'out'}">        		
+									<c:out value="Welcome, ${sessionScope.UserName} | "/>
+									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/logOut.jsp">LogOut</a> | 
+									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> | 
+									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>         		
+								</c:if>		
+								<c:if test="${sessionScope.loginStatus == null || sessionScope.loginStatus == 'in'}">
+									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >Home</a> |
+									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/loginForm.jsp" >Login</a> | 
+									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}" />/userRegPageAction.action" >Register</a> | 
+									<a class="loginStatusAnc" href="<c:out value="${pageContext.request.contextPath}/adminUpload.action" />" >Admin</a>
+								</c:if>		
+							</td>
+						</tr>
+						<tr>
+							<td id="searchBox">
+								<jsp:include page="../../jsp/cncSearch.jsp"/>
+							</td>
+						</tr>
+					</table>
 				</td>
 			</tr>
 		</table>		
@@ -143,6 +152,11 @@
 		<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
 				<div class="bd"> 
 					<ul class="first-of-type"> 
+						<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
+							<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" ">
+								<img src="images/icons/indexPage/pa_home.png" title="home" style="border:0px;cursor:pointer;" height="30px">
+							</a> 
+						</li> 
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="javascript:{}">PARTY ANALYSIS</a> 
 						</li> 
