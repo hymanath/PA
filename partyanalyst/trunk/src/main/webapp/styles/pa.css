@@ -39,15 +39,6 @@ div#contenttable a:hover {
 	background-repeat: no-repeat;
 }
 
-#loginarea{
-	
-	float:right;
-	font-family:Verdana;
-	font-size:11px;
-	padding-right:40px;
-	color:#00BF00;
-	padding-top:5px;
-}
 #loginarea a
 {
 	color:#F5A2A2;
@@ -61,8 +52,6 @@ div#contenttable a:hover {
 	width:100%;
 	float:left;
 	background:#FFFFFF;
-	padding-top:30px;
-	padding-bottom:20px;
 }
 
 #contentimage{

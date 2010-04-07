@@ -119,7 +119,9 @@
 	<div id="indexheader" class="indexLayoutContainer" style="overflow:visible">
 		<table  width="100%" id="headerTable">
 			<tr>
-				<td style="vertical-align:top;width:580px;"><div id="pa_Logo"><img src="images/icons/homePage/pa_logo.jpg"></img></div></td>
+				<td style="vertical-align:top;width:580px;">
+					<div id="pa_Logo"><img src="images/icons/homePage/pa_logo.jpg" style="padding-left: 10px; padding-top: 5px;"></img></div>
+				</td>
 				<td style="vertical-align:top;">
 					<table width="100%" style="width:100%">
 						<tr>
@@ -153,8 +155,9 @@
 				<div class="bd"> 
 					<ul class="first-of-type"> 
 						<li class="yuimenubaritem" style="background:none;cursor:pointer;"> 
-							<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" ">
-								<img src="images/icons/indexPage/pa_home.png" title="home" style="border:0px;cursor:pointer;" height="30px">
+							<a class="yuimenubaritemlabel" href="<c:out value="${pageContext.request.contextPath}" />/index.action" >
+								<img id="indexHomeImg" src="images/icons/indexPage/pa_home.png" title="home"/>								
+								HOME
 							</a> 
 						</li> 
 						<li class="yuimenubaritem"> 

@@ -181,9 +181,8 @@ body
 #homePagefooter 
 {
 	background-image:url(../../images/icons/homePage/homePageFooter.png);
-	background-repeat:no-repeat;
+	background-repeat:repeat-x;
 	color:#FFFFFF;
 	height:15px;
-	margin:0 10px;
 	padding:10px;
 }

@@ -1,238 +1,222 @@
-	<html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<script type="text/javascript">
-			function setBackground(id)
-			{
-				var elmt= document.getElementById(id);
-				var parent = elmt.parentNode;
-				parent.style.backgroundColor = '#BDE1F9';
-			}
-			function removeBackground(id)
-			{
-				var elmt= document.getElementById(id);
-				var parent = elmt.parentNode;
-				parent.style.backgroundColor = '#F5F9FD';
-			}
-		</script>
+
+<!-- YUI Dependency files (Start) -->
+
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
+
+
+
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+
+	<!-- YUI Skin Sam -->
+
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+
+<!-- YUI Dependency files (End) -->
+	
+
+	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript" src="js/indexPage/indexPage.js" ></script>
+	
 	</head>
 	<body>
-			
-			<table width="810" border="0" cellspacing="0" cellpadding="0">
-			  <tr>
-				<td width="250" height="128" valign="top">
-					<div style="overflow: hidden;" id="candidateTagDiv" style="height:200px;width:250px;">
-						<span style="font-size: 14px;" class="tagSpan">
-							<a href="javascript:{}" id="ysrAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)" >RAJASEKHARA REDDY .Y.S</a>
-						</span>	
-						<span style="font-size: 15px;top:5px;" class="tagSpan">
-							<a id="seetaramAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">N.CHANDRA BABU NAIDU</a>
-						</span>
-						<span style="font-size: 11px;top:5px;" class="tagSpan">
-							<a id="angatiAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">ANGATI APPARAO</a>
-						</span>
-						<span style="font-size: 11px;top:10px;" class="tagSpan">
-							<a id="muraliAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">MURALI MOHAN ALLURI</a>
-						</span>
-						<span style="font-size: 15px;top:10px;" class="tagSpan">
-							<a id="pallamAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">PALLAM RAJU</a>
-						</span>
-						<span style="font-size: 14px;top:10px;" class="tagSpan">
-							<a id="appalaswamyAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">CHANDRASHEKAR RAO</a>
-						</span>
-						<span style="font-size: 10px;top:5px;" class="tagSpan">
-							<a id="potluriAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">POTLURI BALAIAH</a>
-						</span>
-						<span style="font-size: 15px;top:10px;" class="tagSpan">
-							<a id="sambasivaAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">K.CHIRANJEEVI</a>
-						</span>
-						<span style="font-size: 12px;top:10px;" class="tagSpan">
-							<a id="marriRajasekarAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">MARRI RAJASEKHAR</a>
-						</span>
-						<span style="font-size: 10px;top:5px;" class="tagSpan">
-							<a id="GADDAMSUDHAKARAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">GADDAM SUDHAKAR</a>
-						</span>
-						<span style="font-size: 12px;top:10px;" class="tagSpan">
-							<a id="HARIBABUAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">HARI BABU</a>
-						</span>
-						<span style="font-size: 10px;top:10px;" class="tagSpan">
-							<a id="RAGHAVAIAHAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">RAGHAVAIAH</a>
-						</span>
-						<span style="font-size: 12px;top:10px;" class="tagSpan">
-							<a id="BOPPUDIBAPUJIAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">BOPPUDI BAPUJI</a>
-						</span>
-						<span style="font-size: 12px;top:10px;" class="tagSpan">
-							<a id="ANJIREDDYAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">ANJI REDDY </a>
-						</span>
-						<span style="font-size: 15px;top:10px;" class="tagSpan">
-							<a id="ANJAIAHAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">ANJAIAH R</a>
-						</span>
-						<span style="font-size: 10px;top:10px;" class="tagSpan">
-							<a id="RAMIREDDYYERUVAAnc" href="javascript:{}" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">RAMI REDDY YERUVA</a>
-						</span>
-					</div>				
-					<!--<img src="images/site/homeleftimage.jpg" width="250" height="200" />-->				
-				</td>
-				<td>&nbsp;</td>
-				<td width="250" valign="top"><table width="250" border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td class="heading1">Political Parties:</td>
-                  </tr>
-                  <tr>
-                    <td class="bodytext">Political party needs like cadre management, measuring party performance, analyzing the bottle necks in the elections can be solved this tool.  This also enhances good communication channels with the public, media, cadre about various party developments and programs.  It also facilitates the candidates to perform better throughout his political career.</td>
-                  </tr>
-                  <tr>
-                    <td class="more"><img src="images/site/imgmore.gif" />MORE</td>
-                  </tr>
-                </table></td>
-				<td>&nbsp;</td>
-				<td width="250" valign="top">									
-					<div style="overflow: hidden;" id="constituencyTagDiv" style="height:200px;width:250px;">					
-						<span style="font-size: 16px;" class="tagSpan">
-							<a href="javascript:{}" id="kavaliAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">KAVALI</a>
-						</span>	
-						<span style="font-size: 14px;" class="tagSpan">
-							<a href="javascript:{}" id="nelloreAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">NELLORE</a>
-						</span>
-						<span style="font-size: 16px;" class="tagSpan">
-							<a href="javascript:{}" id="allurAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">ALLUR</a>
-						</span>					
-						<span style="font-size: 12px;top:5px;" class="tagSpan">
-							<a href="javascript:{}" id="nizamabadAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">NIZAMABAD</a>
-						</span>						
-						<span style="font-size: 10px top:1px;;" class="tagSpan">
-							<a href="javascript:{}" id="medakAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">MEDAK</a>
-						</span>		
-						<span style="font-size: 9px;top:5px;" class="tagSpan">
-							<a href="javascript:{}" id="narsapurAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">NARSAPUR</a>
-						</span>
-						<span style="font-size: 12px;top:10px;" class="tagSpan">
-							<a href="javascript:{}" id="tadepalligudemAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">TADEPALLIGUDEM</a>
-						</span>							
-						<span style="font-size: 10px;" class="tagSpan">
-							<a href="javascript:{}" id="kaikalurAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)" >KAIKALUR</a>
-						</span>
-						<span style="font-size: 11px;" class="tagSpan">
-							<a href="javascript:{}" id="gudurAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">GUDUR</a>
-						</span>
-						<span style="font-size: 17px;top:10px;" class="tagSpan">
-							<a href="javascript:{}" id="malkajgiriAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">MALKAJGIRI</a>
-						</span>	
-						<span style="font-size: 12px;" class="tagSpan">
-							<a href="javascript:{}" id="anatapurAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">ANANTAPUR</a>
-						</span>
-						<span style="font-size: 12px;top:10px;" class="tagSpan">
-							<a href="javascript:{}" id="chittorAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">CHITTOOR</a>
-						</span>
-						<span style="font-size: 11px;left:25px;" class="tagSpan">
-							<a href="javascript:{}" id="kuppamAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">KUPPAM</a>
-						</span>						
-						<span style="font-size: 12px; left: 35px; top: 5px;" class="tagSpan">
-							<a href="javascript:{}" id="tirupatiAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">TIRUPATI</a>
-						</span>						
-						<span style="font-size: 13px;top:15px;" class="tagSpan">
-							<a href="javascript:{}" id="madanpalleAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">MADANPALLE</a>
-						</span>
-						<span style="font-size: 11px;" class="tagSpan">
-							<a href="javascript:{}" id="mancherialAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">MANCHERIAL</a>
-						</span>						
-						<span style="font-size: 9px;top:20px;" class="tagSpan">
-							<a href="javascript:{}" id="machilipatnamAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">Machilipatnam</a>
-						</span>					
-						<span style="font-size: 15px;top:20px;" class="tagSpan">
-							<a href="javascript:{}" id="EluruAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">Eluru</a>
-						</span>	
-						<span style="font-size: 15px;top:10px;" class="tagSpan">
-							<a href="javascript:{}" id="OngoleAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">Ongole</a>
-						</span>	
-						<span style="font-size: 15px;top:30px;" class="tagSpan">
-							<a href="javascript:{}" id="KadapaAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">Kadapa</a>
-						</span>	
-						<span style="font-size: 15px;top: 20px; left: 10px;" class="tagSpan">
-							<a href="javascript:{}" id="TenaliAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">Tenali</a>
-						</span>	
-						<span style="font-size: 15px;top: 30px; left: 10px;" class="tagSpan">
-							<a href="javascript:{}" id="BobbiliAnc" class="cloudTagAnc" onmouseover="setBackground(this.id)" onmouseout="removeBackground(this.id)">Bobbili</a>
-						</span>	
-					</div>
-				
-						<!--<img src="images/site/homerightimage.jpg" width="250" height="200" /> 		 -->
-				</td>
-			  </tr>
-			  <tr>
-				<td colspan="5" background="images/site/divider1.gif" height="21">&nbsp;</td>
-			  </tr>
+		<div id="dashboard_main">
 
-			  <tr>
-				<td colspan="5"></td>
-			  </tr>
-			  
-			  <tr>
-				<td colspan="5">
-					<table width="810" border="0" cellspacing="0" cellpadding="0">
-					  <tr>
-						<td width="98" class="tablemargin1"><img src="images/site/imgpartyperf.jpg" width="96" height="117" /></td>
-						<td width="302" valign="top" class="tablemargin2"><table width="300" border="0" cellspacing="0" cellpadding="0">
-                          <tr>
-                            <td class="heading2">Party/Cadiddate Performance</td>
-                          </tr>
-                          <tr>
-                            <td class="bodytext1">Political Parties see party performance through out country, state, district, constituency, mandal, village based preferences for any particular election. This identifies the bottle neck areas in terms of votes loose when compared to previous election. </td>
-                          </tr>
-                          <tr>
-                            <td class="more"><img src="images/site/imgmore.gif" /><a href="partyPerformanceMain.action" class="more">MORE</a></td>
-                          </tr>
-                        </table></td>
-						<td width="10">&nbsp;</td>
-						<td width="98" class="tablemargin1"><img src="images/site/imgvotesperc.jpg" width="96" height="117" /></td>
-						<td width="302" valign="top" class="tablemargin2"><table width="300" border="0" cellspacing="0" cellpadding="0">
-                          <tr>
-                            <td class="heading2">Votes Percentage </td>
-                          </tr>
-                          <tr>
-                            <td class="bodytext1">Political parties see how people have voted in their favour. A complete voter analysis is presented giving a clear picture showing percentages with which a Party or Candidates have won or lost.</td>
-                          </tr>
-                          <tr>
-                            <td class="more"><img src="images/site/imgmore.gif" /><a href="partyResultsCriteriaAction.action" class="more"> MORE</a> </td>
-                          </tr>
-                        </table></td>
-					  </tr>
-					</table>				</td>
-			  </tr>
-			  <tr>
-			    <td colspan="5" background="images/site/divider1.gif" height="21">&nbsp;</td>
-		      </tr>
-			  <tr>
-			    <td colspan="5"><table width="810" border="0" cellspacing="0" cellpadding="0">
-				  <tr>
-					<td width="256" class="heading3">Voters Flow </td>
-					<td width="20">&nbsp;</td>
-					<td width="258" class="heading3">party position </td>
-					<td width="20">&nbsp;</td>
-					<td width="256" class="heading3">party analysis </td>
-				  </tr>
-				  <tr>
-					<td class="bodytext">This feature allows the parties to know how the votes have been favored to their party. It act as a tool to read the voters mindset.  Also helps the candidates to take necessary actions to win their Vote favours</td>
-					<td>&nbsp;</td>
-					<td class="bodytext">Party may assess their own political performance as well as performance of a certain politician. The tool enables them to clearly judge their positions through out all the election years.</td>
-					<td>&nbsp;</td>
-					<td class="bodytext">Party analysis highlights on overall analysis of their party. They would be able to generate various reports which will enable to analyze their party performance.</td>
-				  </tr>
-				  <tr>
-				    <td class="more"><img src="images/site/imgmore.gif" /><a href="partyPerformanceMain.action" class="more"> more </a></td>
-				    <td>&nbsp;</td>
-				    <td class="more"><img src="images/site/imgmore.gif" /><a href="electionComparisonAction.action" class="more">more</a></td>
-				    <td>&nbsp;</td>
-				    <td class="more"><img src="images/site/imgmore.gif" /><a href="partyPerformanceMain.action" class="more"> more </a></td>
-			      </tr>
+			<div id="dashboard_layout_main">						
+			</div>
+			
+			<div id="dashBoardLeftlayoutDiv">
+			
+			</div>
+			<div id="dashBoardCenterlayoutDiv">
+				<div id="dashBoardCenterlayout_header">		
+					<table width="100%" style="width:100%;" cellspacing="0" cellpadding="0" border="0">
+					<tr>
+					<td style="width:35px;"><img src="images/icons/indexPage/swasthic_left.png"/></td>
+					<td class="centerSwasthicImage" style="vertical-align: middle;">	
+						<table width="100%" style="width:100%;">
+							<tr>
+								<td align="left"><font class="welcomeUserFont">Welcome </font> <font class="welcomeUserFont" style="color:#4B74C6">User </font></td>
+								<td align="right"><font id="todayDateFont">  Today's Date - 06-April-2010,Tuesday</font></td>
+							</tr>
+						</table>						
+
+					</td>
+					<td style="width:35px;"><img src="images/icons/indexPage/swasthic_right.png"/></td>					
+					</table>
+				</div>
+				<div id="dashBoardCenterlayout_body">
+					<table width="100%" style="width:100%">
+						<tr>
+							<td style="vertical-align:top">
+								<table>
+									<!-- Imp Event Details-->
+									<tr>
+										<td><img src="images/icons/indexPage/cal.png"/></span></td>
+										<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Today's Event</span></td>
+									</tr>
+									<tr>
+										<td colspan="2"><span class="dashBoardCenterContentBody" style="color:#4B74C6">You have 2 event(s) scheduled today</span></td>
+									</tr>
+									<tr>
+										<td><span class="dashBoardCenterContentBody"></span></td>
+										<td><span class="dashBoardCenterContentBody">Meeting with cadres at 11.00 AM at party office </span></td>
+									</tr>
+									<tr>
+										<td><span class="dashBoardCenterContentBody"></span></td>
+										<td><span class="dashBoardCenterContentBody">Meeting with party president at 4.00PM </span></td>
+									</tr>
+									
+									<!-- Imp Dates Details-->
+									<tr>
+										<td><img src="images/icons/indexPage/cal.png"/></span></td>
+										<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Imp Date's</span></td>
+									</tr>
+									<tr>
+										<td colspan="2"><span class="dashBoardCenterContentBody" style="color:#4B74C6">You have 1 Imp date(s) scheduled today</span></td>
+									</tr>
+									<tr>
+										<td><span class="dashBoardCenterContentBody"></span></td>
+										<td><span class="dashBoardCenterContentBody">Party President Birthday </span></td>
+									</tr>									
+								</table>
+							</td>
+							<td style="vertical-align:top">
+								<!--<div class="contentSeparatorDiv"> </div>-->
+							</td>
+							<td style="vertical-align:top;border-left:1px solid #cdcdcd;">
+								<ul id="dashboardRightLayoutList">
+									<li>View Your Constituency</li>
+									<li>View Your Mandal</li>
+									<li>View Your District</li>
+								</ul>
+							</td>
+
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div id="dashboard_reportsNav_main">
+				<table id="dashboard_main_table" width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td style="vertical-align:top;width:250px;">
+							<div id="dashboard_leftNav" style="margin-top: 35px;">								
+								<ul id="pa_reportsList_main">
+									<li id="partyAnalysisListItem">
+										<div class="reportGroupClass">Party Analysis</div>
+									</li>
+									<li id="politicianAnalysisListItem">
+										<div class="reportGroupClass">Politician Analysis</div>
+									</li>
+								</ul>
+							</div>
+						</td>
+						<td style="vertical-align:top;">
+							<div id="dashboard_centerContent">
+								<div id="pa_reports_carousel" class="yui-skin-sam" style="width:100%">
+									<ul>
+										<li> 
+											<div class="reports_carousel_div_class">
+												<div class="pa_reports_head">Party Performance Report</div>
+												<div class="pa_reports_body">													
+													Party Performance Report gives a detailed election results analysis for a party on its performance in an election.
+													This report mainly focus on complete party election results of won/lost details in different positions, which include first,second,third upto Nth position dtails and election results in those positions.
+													
+													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report1.png"/></div>
+													<div style="float:right;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
+												</div>											
+											</div>
+										</li>
+										<li>
+											<div class="reports_carousel_div_class">
+												<div class="pa_reports_head">Election Comparison Report</div>
+												<div class="pa_reports_body">
+													Elections Comparison Report gives a glance of compared election results for a party participated any two elections in a detailed view.This report mainly provides a overview  for a user to know wheather the party improved/lost its performance in selected present year when compared to selected previous year.
+
+													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report2.png"/></div>
+
+													<div style="float:right;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
+												</div>											
+											</div> 
+										</li>
+										<li>
+											<div class="reports_carousel_div_class">
+												<div class="pa_reports_head">Party Results Report</div>
+												<div class="pa_reports_body">
+													 Party Results Report gives overall picture for a party in different types of elections like assembly/parliament/zptc/mptc/municipality in different party participated years in a single glance.The results can be classified and viewed in three different views like statewise or districtwise or constituencywise.
+
+													 <div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report3.png"/></div>
+
+													 <div style="float:right;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
+												</div>											
+											</div> 
+										</li>
+										<li> 
+											<div class="reports_carousel_div_class">
+												<div class="pa_reports_head"> Party Influence Report</div>
+												<div class="pa_reports_body"> 
+													Party Influence Report compares the election results among one party and newly establish party.The resuilts are compared among all the districts wise and the mandals wise.
+
+													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report4.png"/></div>
+
+													<div style="float:right;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
+												</div>									
+											</div> 
+										</li>
+									</ul>
+								</div> 
+							</div>
+						</td>
+					</tr>
 				</table>
-				</td>
-		      </tr>
-			  <tr>
-			    <td>&nbsp;</td>
-			    <td>&nbsp;</td>
-			    <td>&nbsp;</td>
-			    <td>&nbsp;</td>
-			    <td>&nbsp;</td>
-		      </tr>
-			</table>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+				initializeIndexPage();
+		</script>
+			
 </body>
