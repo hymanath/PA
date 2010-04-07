@@ -331,13 +331,15 @@ function buildPartyPositionDataTable(info,rank)
 	{
 		if(data.partyPerformanceArray == "")
 			return;
-
-		var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10
-			    }) 
-				};	
 		
+		var partyColor='';
+		var partyName = "${stateData.party}";
+		if(partyName.indexOf('&') != -1)
+		{
+			partyName = partyName.substring(0,partyName.indexOf('&')-1);		
+		}		
+			
+				
 		if(divId == "POSITIONS_WON_MAJOR_BAND" || divId == "POSITIONS_WON_MINOR_BAND" || divId == "POSITIONS_LOST_MINOR_BAND" || divId == "POSITIONS_LOST_MAJOR_BAND")
 		{	
 			var myColumnDefs = [ 	           
@@ -358,7 +360,26 @@ function buildPartyPositionDataTable(info,rank)
 						{key :"oppositionPartyPercentageOfVotes",parser:"number"},{key : "oppositionParty"}, {key : "oppositionPartyCandidate"}
 					 ]
 	        };
-			var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource,myConfigs); 			
+			
+			
+			var myRowFormatter = function(elTr, oRecord) { 
+				var mainParty = oRecord.getData('mainParty');
+				if ( mainParty== partyName) { 					
+					YAHOO.util.Dom.addClass(elTr, 'mainPartyColor'); 
+				} 
+				else
+				{
+					YAHOO.util.Dom.addClass(elTr, 'oppositionPartColor'); 
+				}
+				return true; 
+			};  
+			var myDataTable = new YAHOO.widget.DataTable(
+						divId,myColumnDefs, myDataSource,
+						{
+							formatRow : myRowFormatter,
+							caption : "<font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font>",
+							paginator : new YAHOO.widget.Paginator({ rowsPerPage    : 10 })
+						}); 			
 		}
 		else if(divId == "POSITIONS_WON_WITH_POSITIVE_SWING" || divId == "POSITIONS_WON_WITH_NEGATIVE_SWING" || divId == "POSITIONS_LOST_WITH_POSITIVE_SWING" || divId == "POSITIONS_LOST_WITH_NEGATIVE_SWING")
 		{			
@@ -379,7 +400,26 @@ function buildPartyPositionDataTable(info,rank)
 	        myDataSource.responseSchema = { 
 	            fields: ["constituencyName","candidateName","mainParty","percentageOfVotes","previousElectionPercentageOfVotesGained","oppositionPartyPercentageOfVotes","oppositionParty","oppositionPartyCandidate"] 
 	        };
-			 var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource,myConfigs); 
+
+			var myRowFormatter = function(elTr, oRecord) { 
+				var mainParty = oRecord.getData('mainParty');
+				if ( mainParty== partyName) { 					
+					YAHOO.util.Dom.addClass(elTr, 'mainPartyColor'); 
+				} 
+				else
+				{
+					YAHOO.util.Dom.addClass(elTr, 'oppositionPartColor'); 
+				}
+				return true; 
+			};  
+
+			var myDataTable = new YAHOO.widget.DataTable(
+						divId,myColumnDefs, myDataSource,
+						{
+							formatRow : myRowFormatter,
+							caption : "<font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font>",
+							paginator : new YAHOO.widget.Paginator({ rowsPerPage    : 10 })
+						}); 	
 		}		  
 		else if(divId == "POSITIONS_LOST_BY_DROPPING_VOTES")
 		{
@@ -403,7 +443,26 @@ function buildPartyPositionDataTable(info,rank)
 	        myDataSource.responseSchema = { 
 	            fields: ["constituencyName","candidateName","mainParty","percentageOfVotes","previousElectionPercentageOfVotesGained","percentageOfVotesPolled","previousElectionPercentageOfVotesPolled","previousElectionCandidate","oppositionPartyPercentageOfVotes","oppositionParty","oppositionPartyCandidate"] 
 	        };
-			var myDataTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource,myConfigs); 
+
+			var myRowFormatter = function(elTr, oRecord) { 
+				var mainParty = oRecord.getData('mainParty');
+				if ( mainParty== partyName) { 					
+					YAHOO.util.Dom.addClass(elTr, 'mainPartyColor'); 
+				} 
+				else
+				{
+					YAHOO.util.Dom.addClass(elTr, 'oppositionPartColor'); 
+				}
+				return true; 
+			};  
+
+			var myDataTable = new YAHOO.widget.DataTable(
+						divId,myColumnDefs, myDataSource,
+						{
+							formatRow : myRowFormatter,
+							caption : "<font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font>",
+							paginator : new YAHOO.widget.Paginator({ rowsPerPage    : 10 })
+						}); 	
 		}	
 	}
 
@@ -1065,6 +1124,18 @@ function reportTitleDivFunc()
 		background-image:url(images/icons/partyPerformance/reportHeaders.png);
 		width:800px;
 	}*/
+	.mainPartyColor
+	{
+		color:#2B5181;
+		font-weight:bold;
+	}
+	.oppositionPartColor
+	{
+		color:#7EADBC;
+		font-weight:bold;
+	}
+
+	
 </style>
 </head> 
 <body>
@@ -1314,12 +1385,14 @@ function reportTitleDivFunc()
 					partyPerformanceArray:[]
 				 };
 	
+	
 
 	<c:if test="${constPositions.type == 'POSITIONS_WON_MAJOR_BAND' ||
 							  constPositions.type == 'POSITIONS_WON_MINOR_BAND' ||
 							  constPositions.type == 'POSITIONS_LOST_MINOR_BAND' ||
 							  constPositions.type == 'POSITIONS_LOST_MAJOR_BAND'}">
-		<c:forEach var="performance" items="${constPositions.constituencyPositionDetails}" >
+		<c:forEach var="performance" items="${constPositions.constituencyPositionDetails}" >			
+			
 			var performanceObj={
 									constituencyName:"${performance.constiuencyName}",
 									candidateName:"${performance.candidateName}",
@@ -1337,7 +1410,8 @@ function reportTitleDivFunc()
 					  constPositions.type == 'POSITIONS_LOST_WITH_POSITIVE_SWING' ||
 					  constPositions.type == 'POSITIONS_WON_WITH_NEGATIVE_SWING' ||
 					  constPositions.type == 'POSITIONS_LOST_WITH_NEGATIVE_SWING'}">	
-		<c:forEach var="performance" items="${constPositions.constituencyPositionDetails}" >
+		<c:forEach var="performance" items="${constPositions.constituencyPositionDetails}" >			
+			
 			var performanceObj={
 									constituencyName:"${performance.constiuencyName}",
 									candidateName:"${performance.candidateName}",
@@ -1353,6 +1427,7 @@ function reportTitleDivFunc()
 	</c:if>				
 	<c:if test="${constPositions.type == 'POSITIONS_LOST_BY_DROPPING_VOTES'}">
 		<c:forEach var="performance" items="${constPositions.constituencyPositionDetails}" >
+			
 			var performanceObj={
 								constituencyName:"${performance.constiuencyName}",
 								candidateName:"${performance.candidateName}",
