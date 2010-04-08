@@ -38,6 +38,7 @@ public class CandidateDetailsVO implements Serializable{
 	private Long dataAvailabilityFlag;
 	private String moreDetails;
 	private Float votesDifference;
+	private String marginVotesPercentage;
 	
 	//getters and setters
 	public Long getConstituencyId() {
@@ -121,6 +122,12 @@ public class CandidateDetailsVO implements Serializable{
 	}
 	public String getConstituencyName() {
 		return constituencyName;
+	}
+	public String getMarginVotesPercentage() {
+		return marginVotesPercentage;
+	}
+	public void setMarginVotesPercentage(String marginVotesPercentage) {
+		this.marginVotesPercentage = marginVotesPercentage;
 	}
 	public String getMoreDetails() {
 		return moreDetails;
