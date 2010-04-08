@@ -722,6 +722,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			if(values[10] != null){
 				candidateInfo1.setPartyFlag(values[10].toString());
 			}
+			candidateInfo1.setLatestElecYear(values[11].toString());
 			candidateInfoList.add(candidateInfo1);
 		}
 		

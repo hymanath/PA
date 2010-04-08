@@ -249,6 +249,8 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		Assert.assertEquals(1, result.size());	
 	}*/
 	
+	// remove comments from here
+	/*
 	public void testGetAllCandidatesByElectionTypes(){
 		long startTime = System.currentTimeMillis();
 		List values = nominationDAO.getAllCandidatesByElectionTypes(" 'Assembly' , 'Parliament' ");
@@ -291,5 +293,13 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	public void testParties(){
 			 List result = nominationDAO.getAllPartysForAParticularElectionYear(19l,IConstants.MPTC_ELECTION_TYPE,"2001");
 			 Assert.assertEquals(1, result.size());	
+	}*/
+	
+	public void testDistrictWiseElectionReport(){
+		List  result = nominationDAO.getAllPartyDetailsForAllElectionYearsInADistrict(19l);
+		for(int i=0;i<result.size();i++){
+			Object[] parms =(Object[])result.get(i);
+			System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]+"\t"+parms[3]+"\t"+parms[4]+"\t"+parms[5]);
+		}
 	}
 }

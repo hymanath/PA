@@ -11,7 +11,14 @@ public class CandidateInfoForConstituencyVO {
 	private String partyFlag;
 	private String constituencyType;
 	private String deformDate;	
+	private String latestElecYear;
 	
+	public String getLatestElecYear() {
+		return latestElecYear;
+	}
+	public void setLatestElecYear(String latestElecYear) {
+		this.latestElecYear = latestElecYear;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}

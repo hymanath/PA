@@ -151,7 +151,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List getPartyIdAndShortNameForThatParticipatedInAElection(Long electionId);
-	
+		
 	public List getCandidatesInfoForTheGivenConstituencyBasedOnRank(String constituencyId,String electionYear,String electionType,Long rank);
 	
 	public List getCandidatesInfoForTheGivenConstituency(String constituencyId,String electionYear,String electionType);
