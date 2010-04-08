@@ -630,7 +630,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 <div id="districtInfoDiv" class="detailsDiv">
 	<table>
 		<tr>
-			<td id="districtInfoDivHead" class="detailsHead"> Constituencies after Delimitation ${constituenciesStatusVO.delimitationYear}</td>
+			<td id="districtInfoDivHead" class="detailsHead"> MLA Constituencies for ${constituenciesStatusVO.delimitationYear}</td>
 		<td> : <b  class="counterSize"> ${constituenciesStatusVO.totalConstituenciesAfterDelimitation} </b></td>
 		</tr>
 	</table>
@@ -700,7 +700,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 
 <div id="tehsilInfoDiv" class="detailsDiv">
 <div id="tehsilInfoDivHead" class="detailsHead">
-		MP's in the District
+		Member of Parliament (MP) in the District
 	</div>
 	<div class="yui-skin-sam">
 	<div id="mpsInfoDivBody">
@@ -733,7 +733,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 
 <div id="districtInfoDiv" class="detailsDiv">
 <div id="districtInfoDivHead" class="detailsHead">
-		MLA's in the District
+		Member of Legislative Assembly (MLA) in the District
 	</div>
 	<div class="yui-skin-sam">
 	<div id="mlaInfoDivBody">
