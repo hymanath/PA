@@ -26,6 +26,7 @@ th.yui-dt-hidden .yui-dt-liner,td.yui-dt-hidden .yui-dt-liner,th.yui-dt-hidden .
 	font-size:inherit;
 	margin:0;
 	padding:0;
+	width:100%;
 	}
 .yui-skin-sam .yui-dt thead{border-spacing:0;}
 .yui-skin-sam .yui-dt caption{
