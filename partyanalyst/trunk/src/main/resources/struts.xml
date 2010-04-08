@@ -693,13 +693,21 @@
         <action name="candidateDetailsForElectionDetailsReportAction" class="candidateDetailsForElectionDetailsReportAction">
 			<result name="success">/jsp/candidateDetailsForElectionReport.jsp</result>		
 		</action>
+		
+		<action name="candidateDetailsForElectionDetailsReportAjaxAction" class="candidateDetailsForElectionDetailsReportAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">candidateDetailsVO</param>				
+			</result>		
+		</action>
         
         <action name="getParliamentMandalResultsAction" class="constituencyPageAction" method="getAssemblyRelatedParliamentsMandalResults">
               <result type="json" name="success">
            		<param name="root">parliamentMandals</param>
         	</result>		
         </action>
-        
+        <action name="districtwiseElectionResultsAnalysysForElectionReportAction" class="districtwiseElectionResultsAnalysysForElectionReportAction">
+			<result name="success">/jsp/districtwiseElectionResultsComparision.jsp</result>		
+		</action>        
 	</package>
 </struts>
 
