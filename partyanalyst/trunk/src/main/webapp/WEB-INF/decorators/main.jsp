@@ -190,7 +190,7 @@
 		<div id="index_inner_footer">
 		<table width="100%" id="copyrightLinksTable">
 			<tr>
-				<td align="left"> © Copyright 2010. All rights reserved | ITGRIDS (India) Pvt. Ltd.</td>
+				<td align="left"> © Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
 				<td align="right"> About Us | Contact Us | API | Terms Of Use | Privacy Policy </td>
 			</tr>
 		</table>

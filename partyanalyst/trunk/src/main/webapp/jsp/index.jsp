@@ -59,6 +59,7 @@
 	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
 
 	<script type="text/javascript" src="js/indexPage/indexPage.js" ></script>
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js" ></script>
 	
 	</head>
 	<body>
@@ -68,8 +69,12 @@
 			</div>
 			
 			<div id="dashBoardLeftlayoutDiv">
-			
+				<div id="humanImgDiv">
+					<img src="images/icons/indexPage/human.jpg"/>
+				</div>		
+				
 			</div>
+
 			<div id="dashBoardCenterlayoutDiv">
 				<div id="dashBoardCenterlayout_header">		
 					<table width="100%" style="width:100%;" cellspacing="0" cellpadding="0" border="0">
@@ -79,7 +84,10 @@
 						<table width="100%" style="width:100%;">
 							<tr>
 								<td align="left"><font class="welcomeUserFont">Welcome </font> <font class="welcomeUserFont" style="color:#4B74C6">User </font></td>
-								<td align="right"><font id="todayDateFont">  Today's Date - 06-April-2010,Tuesday</font></td>
+								<td align="right">
+									<!--<img src="images/icons/indexPage/clock.png" height="25px"/>-->
+									<div id="todayDate"></div>
+								</td>
 							</tr>
 						</table>						
 
@@ -90,48 +98,94 @@
 				<div id="dashBoardCenterlayout_body">
 					<table width="100%" style="width:100%">
 						<tr>
-							<td style="vertical-align:top">
-								<table>
-									<!-- Imp Event Details-->
+							<td style="vertical-align:top;width:70%;">
+								<table width="100%" style="width:100%;">
 									<tr>
-										<td><img src="images/icons/indexPage/cal.png"/></span></td>
-										<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Today's Event</span></td>
+										<td>
+											<div id="impEventsDiv_main">
+												<div id="impEventsDiv_head">
+													<table><tr>
+														<td><img src="images/icons/indexPage/cal.png"/></span></td>
+														<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Today's Event</span></td>
+													</tr></table>
+												</div>
+												<div id="impEventsDiv_body">
+													<span class="dashBoardCenterContentBody" style="color:#4B74C6">You have 2 event(s) scheduled today</span>
+													<ul class="dashBoardContentList">
+														<li>Meeting with cadres at 11.00 AM at party office </li>
+														<li>Meeting with party president at 4.00PM</li>														
+													</ul>
+												</div>
+												<div id="impEventsDiv_footer" style="text-align:right">
+													<span class="dashBoardLinks">View All</span>
+													<span class="dashBoardLinks">Create</span>
+												</div>
+											</div>
+										</td>
 									</tr>
 									<tr>
-										<td colspan="2"><span class="dashBoardCenterContentBody" style="color:#4B74C6">You have 2 event(s) scheduled today</span></td>
-									</tr>
+										<td>
+											<div id="impDatesDiv_main">
+												<div id="impDatesDiv_head">
+													<table><tr>
+														<td><img src="images/icons/indexPage/cal.png"/></span></td>
+														<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Imp Dates</span></td>
+													</tr></table>
+												</div>
+												<div id="impDatesDiv_body">
+													<span class="dashBoardCenterContentBody" style="color:#4B74C6">You have 1 Imp date(s) scheduled today</span>
+													<ul class="dashBoardContentList">
+														<li>Party President's Birthday</li>														
+													</ul>
+												</div>
+												<div id="impDatesDiv_footer" style="text-align:right">
+													<span class="dashBoardLinks">View All</span>
+													<span class="dashBoardLinks">Create</span>
+												</div>
+											</div>
+										</td>
+									</tr>	
 									<tr>
-										<td><span class="dashBoardCenterContentBody"></span></td>
-										<td><span class="dashBoardCenterContentBody">Meeting with cadres at 11.00 AM at party office </span></td>
+										<td>
+											<div id="cadresDiv_main">
+												<div id="cadresDiv_head">
+													<table><tr>
+														<td><img src="images/icons/indexPage/group_icon.png"/></span></td>
+														<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Cadres Info</span></td>
+													</tr></table>
+												</div>
+												<div id="cadresDiv_body">
+													<span class="dashBoardCenterContentBody" style="color:#4B74C6"></span>
+													<ul class="dashBoardContentList">
+														<li>STATE Level Cadres - 1 </li>
+														<li>DISTRICT Level Cadres - 1 </li>
+														<li>CONSTITUENCY Level Cadres - 1</li>														
+													</ul>
+												</div>
+												<div id="cadresDiv_footer" style="text-align:right">
+													<span class="dashBoardLinks">View All</span>
+													<span class="dashBoardLinks"><img src="images/icons/indexPage/sms_cell.png"/>Send SMS</span>
+												</div>
+											</div>
+										</td>
 									</tr>
-									<tr>
-										<td><span class="dashBoardCenterContentBody"></span></td>
-										<td><span class="dashBoardCenterContentBody">Meeting with party president at 4.00PM </span></td>
-									</tr>
-									
-									<!-- Imp Dates Details-->
-									<tr>
-										<td><img src="images/icons/indexPage/cal.png"/></span></td>
-										<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Imp Date's</span></td>
-									</tr>
-									<tr>
-										<td colspan="2"><span class="dashBoardCenterContentBody" style="color:#4B74C6">You have 1 Imp date(s) scheduled today</span></td>
-									</tr>
-									<tr>
-										<td><span class="dashBoardCenterContentBody"></span></td>
-										<td><span class="dashBoardCenterContentBody">Party President Birthday </span></td>
-									</tr>									
 								</table>
 							</td>
-							<td style="vertical-align:top">
-								<!--<div class="contentSeparatorDiv"> </div>-->
-							</td>
+							
 							<td style="vertical-align:top;border-left:1px solid #cdcdcd;">
-								<ul id="dashboardRightLayoutList">
-									<li>View Your Constituency</li>
-									<li>View Your Mandal</li>
-									<li>View Your District</li>
-								</ul>
+								<div>
+									<ul id="dashboardRightLayoutList">
+										<li>View Your Constituency</li>
+										<li>View Your Mandal</li>
+										<li>View Your District</li>
+									</ul>
+								</div>
+								<!--<div id="usergroups_main">
+									<div id="usergroups_head"><img src="images/icons/indexPage/group_icon.png"/> User Groups</div>
+									<div id="usergroups_body">asd</div>
+								</div>-->
+
+								<div id="noticeBoard"><u>Announcements</u></div>
 							</td>
 
 						</tr>
@@ -146,10 +200,10 @@
 							<div id="dashboard_leftNav" style="margin-top: 35px;">								
 								<ul id="pa_reportsList_main">
 									<li id="partyAnalysisListItem">
-										<div class="reportGroupClass">Party Analysis</div>
+										<div class="reportGroupClass" onclick="showReportsInCarousel('partyAnalysis')">Party Analysis</div>
 									</li>
 									<li id="politicianAnalysisListItem">
-										<div class="reportGroupClass">Politician Analysis</div>
+										<div class="reportGroupClass" onclick="showReportsInCarousel('politicianAnalysis')">Politician Analysis</div>
 									</li>
 								</ul>
 							</div>
@@ -162,11 +216,12 @@
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head">Party Performance Report</div>
 												<div class="pa_reports_body">													
-													Party Performance Report gives a detailed election results analysis for a party on its performance in an election.
-													This report mainly focus on complete party election results of won/lost details in different positions, which include first,second,third upto Nth position dtails and election results in those positions.
-													
+													<div style="height:120px">
+														Party Performance Report gives a detailed election results analysis for a party on its performance in an election.
+														This report mainly focus on complete party election results of won/lost details in different positions, which include first,second,third upto Nth position dtails and election results in those positions.
+													</div>													
 													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report1.png"/></div>
-													<div style="float:right;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
+													<div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
 												</div>											
 											</div>
 										</li>
@@ -174,11 +229,12 @@
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head">Election Comparison Report</div>
 												<div class="pa_reports_body">
+													<div style="height:120px">
 													Elections Comparison Report gives a glance of compared election results for a party participated any two elections in a detailed view.This report mainly provides a overview  for a user to know wheather the party improved/lost its performance in selected present year when compared to selected previous year.
-
+													</div>
 													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report2.png"/></div>
 
-													<div style="float:right;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
+													<div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
 												</div>											
 											</div> 
 										</li>
@@ -186,11 +242,12 @@
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head">Party Results Report</div>
 												<div class="pa_reports_body">
+													<div style="height:120px">
 													 Party Results Report gives overall picture for a party in different types of elections like assembly/parliament/zptc/mptc/municipality in different party participated years in a single glance.The results can be classified and viewed in three different views like statewise or districtwise or constituencywise.
-
+													</div>
 													 <div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report3.png"/></div>
 
-													 <div style="float:right;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
+													 <div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
 												</div>											
 											</div> 
 										</li>
@@ -198,11 +255,12 @@
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head"> Party Influence Report</div>
 												<div class="pa_reports_body"> 
+													<div style="height:120px">
 													Party Influence Report compares the election results among one party and newly establish party.The resuilts are compared among all the districts wise and the mandals wise.
-
+													</div>
 													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report4.png"/></div>
 
-													<div style="float:right;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
+													<div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
 												</div>									
 											</div> 
 										</li>

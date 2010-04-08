@@ -222,13 +222,15 @@ a:hover
 {
 	font-size:14px;
 	font-weight:bold;
-	color:#73787E;
+	color:#355A7A;
 	padding:3px;
 }
 
-#todayDateFont
+#todayDate
 {
-	color:#73787E;
+	color:#355A7A;
+	font-size:10px;
+	font-weight:bold
 }
 
 .pa_reports_head
@@ -294,7 +296,8 @@ text-decoration:none;
 
 #dashBoardCenterlayout_body
 {
-	height:360px;
+	height:390px;
+	padding:10px;
 }
 
 .contentSeparatorDiv
@@ -306,8 +309,7 @@ text-decoration:none;
 #dashboardRightLayoutList
 {
 	list-style-type:none;
-	margin:0;
-	padding:0;
+	list-style-image:url("../../images/icons/indexPage/listIcon.png");
 }
 
 #dashboardRightLayoutList li
@@ -315,4 +317,44 @@ text-decoration:none;
 	padding:5px;
 	font-weight:bold;
 	color:#4B74C6;
+}
+
+#humanImgDiv
+{
+	padding-left:35px;
+	padding-top:10px;
+}
+
+.dashBoardContentList
+{
+	list-style-type:none;
+	list-style-image:url("../../images/icons/indexPage/listIcon.png");
+}
+
+.dashBoardContentList li
+{
+	color:#73787E;
+	padding:2px;
+}
+
+.dashBoardLinks
+{
+	color:#73787E;
+	padding-left:5px;
+	padding-right:5px;
+}
+
+#noticeBoard
+{
+	background-image:url("../../images/icons/indexPage/notice_board.png");
+	background-repeat:no-repeat;
+	color:#2B374E;
+	font-size:14px;
+	font-weight:bold;
+	height:230px;
+	margin-left:10px;
+	margin-top:20px;
+	padding-left:60px;
+	padding-top:26px;
+	width:140px;
 }
