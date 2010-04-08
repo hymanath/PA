@@ -81,4 +81,11 @@ public interface IConstants {
 	public final static String STATIC_GROUP = "STATIC_GROUP";
 	public final static String MY_GROUP = "MY_GROUP";
 	
+	public final static String COUNTRY_LEVEL="COUNTRY";
+	public final static String STATE_LEVEL="STATE";
+	public final static String DISTRICT_LEVEL="DISTRICT";
+	public final static String CONSTITUENCY_LEVEL="CONSTITUENCY";
+	public final static String WINNER_CANDIDATES="WINNER";
+	public final static String ALL_CANDIDATES="ALL_CANDIDATES";
+	
 }
