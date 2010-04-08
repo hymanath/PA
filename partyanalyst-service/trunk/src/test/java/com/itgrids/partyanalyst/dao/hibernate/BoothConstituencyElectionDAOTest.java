@@ -139,10 +139,10 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 			System.out.println(values[0]+" "+values[1]);
 	}*/
 	
-	public void testFindAssemblyConstituenciesDetailsForParliament(){
+	/*public void testFindAssemblyConstituenciesDetailsForParliament(){
 		List list = boothConstituencyElectionDAO.findAssemblyConstituenciesDetailsForParliament("223,241,232,233,340,341,238", "2009");
 		for(Object[] values:(List<Object[]>)list)
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]);
-	}
+	}*/
 	
 }

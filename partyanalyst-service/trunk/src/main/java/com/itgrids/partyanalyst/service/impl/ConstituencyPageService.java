@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +24,6 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
-import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultObjectsDAO;
@@ -81,7 +81,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private ITownshipDAO townshipDAO;
 	private IHamletDAO hamletDAO;
 	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
-	private IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO;
 	private IVillageBoothElectionDAO villageBoothElectionDAO;
 	private HamletAndBoothVO hamletAndBoothVO;
 	private TransactionTemplate transactionTemplate;
@@ -156,15 +155,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 
 	public void setTownshipDAO(ITownshipDAO townshipDAO) {
 		this.townshipDAO = townshipDAO;
-	}
-
-	public IBoothConstituencyElectionVoterDAO getBoothConstituencyElectionVoterDAO() {
-		return boothConstituencyElectionVoterDAO;
-	}
-
-	public void setBoothConstituencyElectionVoterDAO(
-			IBoothConstituencyElectionVoterDAO boothConstituencyElectionVoterDAO) {
-		this.boothConstituencyElectionVoterDAO = boothConstituencyElectionVoterDAO;
 	}
 
 	public INominationDAO getNominationDAO() {
@@ -372,10 +362,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		Long totalVotesPolled = 0l;
 		try{
 						
-			List boothDetails = boothConstituencyElectionVoterDAO.findTownshipWiseBoothDetailsForTehsil(tehsilId, electionId);
-			if(boothDetails==null || boothDetails.size()==0){
-				boothDetails = villageBoothElectionDAO.findTownshipWiseBoothDetailsForTehsil(tehsilId, electionId);
-			}
+			List boothDetails = villageBoothElectionDAO.findTownshipWiseBoothDetailsForTehsil(tehsilId, electionId);
+
 			for(int i=0; i<boothDetails.size(); i++){
 				locationWiseBoothDetailsVO = new LocationWiseBoothDetailsVO();
 				Object[] values = (Object[])boothDetails.get(i);
@@ -394,7 +382,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					locationWiseBoothDetailsVO.setHamletsOfTownship(createSelectOptionVoForRawList(hamletDAO.findHamletNamesByTownshipId(townshipId)));
 					boothDataFromDB.add(locationWiseBoothDetailsVO);
 					
-					boothNos = new HashSet<SelectOptionVO>(0);
+					boothNos = new LinkedHashSet<SelectOptionVO>(0);
 					townshipName = (String)values[1];
 					boothNos.add(new SelectOptionVO((Long)values[2], values[3].toString()));
 					totalVoters = (Long)values[4];
