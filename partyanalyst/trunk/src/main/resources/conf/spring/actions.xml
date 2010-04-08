@@ -262,5 +262,8 @@
 	<bean id="electionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.ElectionDetailsReportAction" singleton="false">
 			<property name="electionReportService" ref="electionReportService" />
 	</bean>
-	<bean id="candidateDetailsForElectionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.CandidateDetailsForElectionDetailsReportAction" singleton="false"></bean>
+	<bean id="candidateDetailsForElectionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.CandidateDetailsForElectionDetailsReportAction" singleton="false">
+			<property name="staticDataService" ref="staticDataService" />
+	</bean>
+	<bean id="districtwiseElectionResultsAnalysysForElectionReportAction" class="com.itgrids.partyanalyst.web.action.DistrictwiseElectionResultsAnalysysForElectionReportAction" singleton="false"></bean>
 </beans>		
