@@ -671,7 +671,7 @@ var allZPTCMPTCElecInfo = new Array();
 		var rvStrDiv = document.getElementById('revenueVillagesInfo');
 
 		var revenueResult = document.getElementById('revenueVillagesResultsLinkDiv');
-		revenueResultStr = '<a href="#" onclick="openwin()" ><img style="border:medium none;"src="images/icons/mandalPage/click.png" width="420px" height="30px"/></a>';
+		revenueResultStr = '<a href="#" onclick="openwin()" ><img style="border:medium none;"src="images/icons/mandalPage/clickHere.png" width="420px" height="30px"/></a>';
 		revenueResult.innerHTML = revenueResultStr;
 		
 		var rvStr = '';		
