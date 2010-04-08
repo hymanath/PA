@@ -85,6 +85,8 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		assertEquals(1, list.size());
 	}*/
 	
-	
-
+	public void testConstituenciesForADistrictForAnElectionYear(){
+		List  list = constituencyElectionDAO.findConstituencyByDistrictAndStateIds(19l,1l,"2009");
+		assertEquals(1, list.size());	
+	}
 }

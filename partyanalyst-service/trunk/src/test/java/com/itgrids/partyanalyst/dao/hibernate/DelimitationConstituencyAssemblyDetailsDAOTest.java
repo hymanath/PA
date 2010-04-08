@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Assert;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -49,5 +50,10 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		List list = delimitationConstituencyAssemblyDetailsDAO.getAllAssembliesOfParliament(404l);
 		for(Object[] values:(List<Object[]>)list)
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]);
+	}
+	
+	public void testParliamentIdByAssemblyId(){
+		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(3382l,2004l);
+		Assert.assertEquals(2, list.size());
 	}
 }
