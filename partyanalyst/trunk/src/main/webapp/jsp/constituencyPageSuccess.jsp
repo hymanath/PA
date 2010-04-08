@@ -438,7 +438,13 @@ function getVotingTrendzForyear()
 				selectDiv.innerHTML = electionYearSelect; 
 				return;
 			}
-				
+
+			var headingDiv = document.getElementById("MandalVotingTrendz_head");
+			if('${constituencyDetails.constituencyType}' == 'Assembly')
+				headingDiv.innerHTML = ' Mandal Wise Voting Trendz ';
+			if('${constituencyDetails.constituencyType}' == 'Parliament')
+				headingDiv.innerHTML = ' Assembly Wise Voting Trendz '; 
+			
 			electionYearSelect += '<table>';
 			electionYearSelect += '<th>Select Election Year :</th>';
 			electionYearSelect += '<th>';
@@ -570,7 +576,7 @@ function getVotingTrendzForyear()
 			<div class="corner topRight"></div>
 			<div class="corner bottomLeft"></div>
 			<div class="corner bottomRight"></div>
-			<div id="MandalVotingTrendz_head" class="layoutHeadersClass"> Mandal Wise Voting Trendz </div>
+			<div id="MandalVotingTrendz_head" class="layoutHeadersClass"></div>
 			<div id="electionIdsSelectDiv" style="padding-left:10px;"></div>
 			<div id="mandalOrConstiElecResultDiv">
 				<div id="parliamentElectionResultsDiv"></div>
@@ -637,6 +643,12 @@ function getVotingTrendzForyear()
 		-------------------------
 	*/
 
+	function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
+	{
+	   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
+	   browser1.focus();
+	}
+
 	<c:forEach var="vInfo" items="${constituencyVO.assembliesOfParliamentInfo}" >	
 		var obj ={
 					year:'${vInfo.year}',
@@ -676,7 +688,8 @@ function getVotingTrendzForyear()
 						candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${cInfo.candidateId}"> ${cInfo.candidateName}</a>',	
 						partyId:' ${cInfo.partyId}',
 						party : '${cInfo.party}',
-						partyFlag : '<img src="<%=request.getContextPath()%>/images/party_flags/${cInfo.partyFlag}" height="30" width="40"/>'
+						partyFlag : '<img src="<%=request.getContextPath()%>/images/party_flags/${cInfo.partyFlag}" height="30" width="40"/>',
+						knowMore:'<a href="javascript:{}" onclick="getConstituencyElecResultsWindow(\'${cInfo.constituencyId}\',\'${cInfo.constituencyType}\',\'${cInfo.latestElecYear}\')">view results</a>'
 					 };		
 	
 	constituencyPageMainObj.presentAssemblyCandidate.push(candidateObj);
@@ -694,7 +707,8 @@ function getVotingTrendzForyear()
 					candidateName:'<a href="candidateElectionResultsAction.action?candidateId=${candidateDetailsForConstituency.parliamentCandidateInfo.candidateId}"> ${candidateDetailsForConstituency.parliamentCandidateInfo.candidateName}</a>',		
 					partyId:' ${candidateDetailsForConstituency.parliamentCandidateInfo.partyId}',
 					party : '${candidateDetailsForConstituency.parliamentCandidateInfo.party}',
-					partyFlag : '<img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.parliamentCandidateInfo.partyFlag}" height="30" width="40"/>'
+					partyFlag : '<img src="<%=request.getContextPath()%>/images/party_flags/${candidateDetailsForConstituency.parliamentCandidateInfo.partyFlag}" height="30" width="40"/>',
+					knowMore:'<a href="javascript:{}" onclick="getConstituencyElecResultsWindow(\'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyId}\',\'${candidateDetailsForConstituency.parliamentCandidateInfo.constituencyType}\',\'${candidateDetailsForConstituency.parliamentCandidateInfo.latestElecYear}\')">view results</a>'
 				 };		
 	constituencyPageMainObj.presentParliamentCandidate.push(pmtObj);
 

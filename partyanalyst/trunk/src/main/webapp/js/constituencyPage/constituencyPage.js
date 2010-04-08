@@ -522,7 +522,8 @@ function showCurrentlyElectedCandidate()
 							{	key : "candidateName"},
 							{	key : "constituencyName"},
 							{	key : "party"},
-							{	key : "partyFlag"}
+							{	key : "partyFlag"},
+							{	key : "knowMore"}
 						]
 			}; 
 	
@@ -530,7 +531,8 @@ function showCurrentlyElectedCandidate()
 				{key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true}, 
 				{key:"constituencyName", label:'Constituency Name', sortable:true, resizeable:true}, 
 				{key:"party", label:'Party',sortable:true, resizeable:true},
-				{key:"partyFlag", label:'Party Flag', resizeable:true}
+				{key:"partyFlag", label:'Party Flag',sortable:true, resizeable:true},
+				{key : "knowMore", label:'Complete Results', resizeable:true}
 			]; 
 		 
 	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
@@ -548,7 +550,8 @@ function showCurrentlyElectedCandidate()
 							{	key : "candidateName"},
 							{	key : "constituencyName"},
 							{	key : "party"},
-							{	key : "partyFlag"}
+							{	key : "partyFlag"},
+							{	key : "knowMore"}
 						]
 			}; 
 	
@@ -556,7 +559,8 @@ function showCurrentlyElectedCandidate()
 				{key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true}, 
 				{key:"constituencyName", label:'Constituency Name', sortable:true, resizeable:true}, 
 				{key:"party", label:'Party',sortable:true, resizeable:true},
-				{key:"partyFlag", label:'Party Flag', resizeable:true}
+				{key:"partyFlag", label:'Party Flag',sortable:true, resizeable:true},
+				{key : "knowMore", label:'Complete Results', resizeable:true}
 			]; 
 	
 	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
