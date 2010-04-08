@@ -1,4 +1,6 @@
 
+
+
 var constituencyPageMainObj={
 								constituencyAddress:'',
 								contextPath:'',								
@@ -218,11 +220,14 @@ function buildConstituencyInfo()
 		str+='<td> '+constituencyPageMainObj.constituencyInfo.constituencyType+' </td>';
 		str+='</tr>';
 	}
-	str+='<tr>';
-	str+='<th> District Name </th>';
-	str+='<th> : </th>';
-	str+='<td> '+constituencyPageMainObj.constituencyInfo.districtName+' </td>';
-	str+='</tr>';
+	if(constituencyPageMainObj.constituencyInfo.constituencyType != 'Parliament')
+	{
+		str+='<tr>';
+		str+='<th> District Name </th>';
+		str+='<th> : </th>';
+		str+='<td> '+constituencyPageMainObj.constituencyInfo.districtName+' </td>';
+		str+='</tr>';
+	}
 	str+='<tr>';
 	str+='<th> State Name </th>';
 	str+='<th> : </th>';
@@ -411,6 +416,11 @@ function buildConstituencyLayout()
 
 function buildCenterVotersCandidateInfoContent()
 {
+	var elmtHead = document.getElementById("mandalsVotersInfoDiv_Head");
+	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+		elmtHead.innerHTML = 'Mandals Voters Details Of '+constituencyPageMainObj.constituencyInfo.constituencyName+' Assembly:';
+	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
+		elmtHead.innerHTML = 'Assemblies Voters Details Of '+constituencyPageMainObj.constituencyInfo.constituencyName+' Parliament:';
 	var elmt = document.getElementById("mandalsVotersInfoDiv_Body");
 	
 	if(constituencyPageMainObj.constituencyVotersInfo.length == 0)
@@ -429,14 +439,35 @@ function buildCenterVotersCandidateInfoContent()
 
 		var str = '';
 		str+='<div id="divChild_Head_'+i+'" class="voterInfoHead">';
-		if(data.year == "2009")
-			str+='Mandals After Delimitation';
-		else
-			str+='Mandals Before Delimitation';
+		if(data.year == "2009"){
+			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+				str+='Mandals After Delimitation';
+			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
+				str+='Assemblies After Delimitation';
+		}
+		else{
+			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+				str+='Mandals Before Delimitation';
+			if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament')
+				str+='Assemblies Before Delimitation';
+		}
+			
 		str+='</div>';
 		str+='<div id="divChild_Body_'+i+'" class="voterInfoBody"></div>';
 		divChild.innerHTML=str;
 
+		var field,column;
+		
+		if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Parliament'){
+			field = {key:"mandalName"};
+			column = {key:"mandalName", label:'Assembly Name', sortable:true, resizeable:true};
+		}
+		
+		if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly'){
+			field = {key:"mandalName"};
+			column = {key:"mandalName", label:'Mandal Name', sortable:true, resizeable:true};
+		}
+		
 		if(elmt)
 			elmt.appendChild(divChild);
 		
@@ -444,7 +475,7 @@ function buildCenterVotersCandidateInfoContent()
 		 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		 myDataSource.responseSchema = { 
 					fields: [
-								{	key : "mandalName"},
+					         	field,
 								{	key : "mandalMaleVoters",parser:"number"},
 								{	key : "mandalFemaleVoters",parser:"number"},
 								{	key : "mandalTotalVoters",parser:"number"},
@@ -453,7 +484,7 @@ function buildCenterVotersCandidateInfoContent()
 				}; 
 		
 		 var myColumnDefs = [ 
-					{key:"mandalName",label:'Mandal Name', sortable:true, resizeable:true}, 
+		             column,
 					{key:"mandalMaleVoters", label:'Male Voters', sortable:true, resizeable:true}, 
 					{key:"mandalFemaleVoters", label:'Female Voters',sortable:true, resizeable:true}, 
 					{key:"mandalTotalVoters",label:'Total Voters', sortable:true, resizeable:true},
@@ -502,7 +533,10 @@ function showCurrentlyElectedCandidate()
 				{key:"partyFlag", label:'Party Flag', resizeable:true}
 			]; 
 		 
-	var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Assembly",myColumnDefs, myDataSource,{caption:"Assembly Candidate : "}); 
+	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Top",myColumnDefs, myDataSource,{caption:"Assembly Candidate : "});
+	else
+		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Bottom",myColumnDefs, myDataSource,{caption:"Assembly Candidate : "});
 
 	
 	/* ---- Building Parliament candidate Info datatable ---- */
@@ -524,8 +558,11 @@ function showCurrentlyElectedCandidate()
 				{key:"party", label:'Party',sortable:true, resizeable:true},
 				{key:"partyFlag", label:'Party Flag', resizeable:true}
 			]; 
-		 
-	var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Parliament",myColumnDefs, myDataSource,{caption:"Parliament Candidate : "}); 
+	
+	if(constituencyPageMainObj.constituencyInfo.constituencyType == 'Assembly')
+		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Bottom",myColumnDefs, myDataSource,{caption:"Parliament Candidate : "});
+	else
+		var myDataTable = new YAHOO.widget.DataTable("constituencyPageCandidateInfo_Top",myColumnDefs, myDataSource,{caption:"Parliament Candidate : "});
 }
 
 function buildProblemViewingWindow()

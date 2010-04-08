@@ -82,7 +82,6 @@
 		<property name="constituencyElectionResultObjectsDAO" ref="constituencyElectionResultObjectsDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
-		<property name="boothConstituencyElectionVoterDAO" ref="boothConstituencyElectionVoterDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />		

@@ -497,8 +497,8 @@ function getVotingTrendzForyear()
 						<div id="constituencyPageCandidateInfo_Main" class="innerLayoutDivClass">
 							<div id="constituencyPageCandidateInfo_Head" class="layoutHeadersClass"></div>
 							<div id="constituencyPageCandidateInfo_Body" class="layoutBodyClass yui-skin-sam">
-								<div id="constituencyPageCandidateInfo_Assembly"></div>
-								<div id="constituencyPageCandidateInfo_Parliament"></div>
+								<div id="constituencyPageCandidateInfo_Top"></div>
+								<div id="constituencyPageCandidateInfo_Bottom"></div>
 							</div>
 						</div>		
 					</div>
@@ -522,7 +522,7 @@ function getVotingTrendzForyear()
 						<div class="corner bottomRight"></div>
 
 						<div id="mandalsVotersInfoDiv_Main" class="innerLayoutDivClass">
-							<div id="mandalsVotersInfoDiv_Head" class="layoutHeadersClass">${constituencyDetails.constituencyName} Mandals Voters Details :</div>
+							<div id="mandalsVotersInfoDiv_Head" class="layoutHeadersClass"></div>
 							<div id="mandalsVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
 						</div>
 					</div>
