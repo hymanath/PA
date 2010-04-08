@@ -122,17 +122,13 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List findAllMptcAndZptcElectionsInfoInMandal(Long tehsilId);
 	
 	public List findAllCandidatesForAnElectionByElectionYear(Long constituencyId);	
-		
-	public List findAllCandidatesForAnElectionBytheElectionYear(String electionYear,Long stateId,String electionType);
-	
+			
 	public List findAllCandidatesForAnElectionByElectionYearByDistrictId(Long districtId,String electionType);
 		
 	public List getPartysInfoForAParticularElectionYear(String electionType,String electionYear,Long districtId);
 	
 	public List getPartysWinningCandidateInfoForAParticularElectionYear(String electionType,String electionYear,Long rank,Long districtId);
-	
-	public List getCandidatesInfoForTheGivenConstituency(Long constituencyId,String electionYear,String electionType);
-    
+	    
     public List getAllCandidatesByElectionTypes(String electionTypes);
     	
 	public List findAllZPTCsInaDistrict(Long districtId,String electionTypes,Long rank,String electionYear);
@@ -155,5 +151,39 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List getPartyIdAndShortNameForThatParticipatedInAElection(Long electionId);
+	
+	public List getCandidatesInfoForTheGivenConstituencyBasedOnRank(String constituencyId,String electionYear,String electionType,Long rank);
+	
+	public List getCandidatesInfoForTheGivenConstituency(String constituencyId,String electionYear,String electionType);
+	
+	public List getCandidatesInfoForTheGivenConstituencyBasedOnRankAndPartyId(String constituencyId,String electionYear,String electionType,Long rank,Long partyId);
+	
+	public List getCandidatesInfoForTheGivenConstituencyByPartyId(String constituencyId,String electionYear,String electionType,Long partyId);
+	
+	public List findAllCandidatesForAnElectionBytheElectionYearByRank(String electionYear,Long stateId,String electionType,Long rank);
+	
+	public List findAllCandidatesForAnElectionBytheElectionYear(String electionYear,Long stateId,String electionType);
+	
+	public List findAllCandidatesForAnElectionBytheElectionYearByRankForAParty(String electionYear,Long stateId,String electionType,Long rank,Long partyId);
+	
+	public List findAllAssemblyCandidatesForAnElectionBytheElectionYear(String electionYear,Long stateId,String electionType,Long partyId);
+
+	public List findAllCandidatesForAnElectionBytheElectionYearByCountryId(String electionYear,Long countryId,String electionType);
+	
+	public List findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRank(String electionYear,Long countryId,String electionType,Long rank);
+	
+	public List findAllCandidatesForAnElectionBytheElectionYearByCountryIdForAParty(String electionYear,Long countryId,String electionType,Long partyId);
+
+	public List findAllCandidatesForAnElectionBytheElectionYearByCountryIdByRankForAParty(String electionYear,Long countryId,String electionType,Long rank,Long partyId);
+
+	public List getAllPartiesForAnElectionYear(String electionYear,String electionType);
+	
+	public List findAllZPTCsOrMPTCsInaState(Long stateId,String electionType,String electionYear);
+	
+	public List findAllZPTCsOrMPTCsInaStateForAParty(Long stateId,String electionType,String electionYear,Long partyId);
+	
+	public List findAllZPTCsOrMPTCsInaStateForAPartyByRank(Long stateId,String electionType,String electionYear,Long partyId,Long rank);
+	
+	public List findAllZPTCsOrMPTCsInaStateByRank(Long stateId,String electionType,String electionYear,Long rank);
 	
 }
