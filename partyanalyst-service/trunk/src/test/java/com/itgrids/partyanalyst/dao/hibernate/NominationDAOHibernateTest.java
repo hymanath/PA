@@ -295,11 +295,5 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			 Assert.assertEquals(1, result.size());	
 	}*/
 	
-	public void testDistrictWiseElectionReport(){
-		List  result = nominationDAO.getAllPartyDetailsForAllElectionYearsInADistrict(19l);
-		for(int i=0;i<result.size();i++){
-			Object[] parms =(Object[])result.get(i);
-			System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]+"\t"+parms[3]+"\t"+parms[4]+"\t"+parms[5]);
-		}
-	}
+	
 }
