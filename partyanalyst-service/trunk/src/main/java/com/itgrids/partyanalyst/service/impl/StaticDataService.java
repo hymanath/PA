@@ -2483,12 +2483,12 @@ public class StaticDataService implements IStaticDataService {
 					}		
 					votesPercentage =  differenceVotes/(Float.parseFloat(parms[2].toString()))*100;
 					candidateDetailsVo.setVotesDifference(Float.parseFloat(differenceVotes.toString()));
-					candidateDetailsVo.setVotesPercentage(new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());		
+					candidateDetailsVo.setMarginVotesPercentage(new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());		
 				}else{
 					differenceVotes = 0f;
 					votesPercentage = 0f;
 					candidateDetailsVo.setVotesDifference(differenceVotes);
-					candidateDetailsVo.setVotesPercentage(votesPercentage.toString());
+					candidateDetailsVo.setMarginVotesPercentage(votesPercentage.toString());
 				}
 				
 				candidatepartyID = new Long(parms[5].toString());
@@ -2570,12 +2570,12 @@ public class StaticDataService implements IStaticDataService {
 						votesPercentage = 0f;
 					}	
 					candidateDetailsVo.setVotesDifference(Float.parseFloat(differenceVotes.toString()));
-					candidateDetailsVo.setVotesPercentage(new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					candidateDetailsVo.setMarginVotesPercentage(new BigDecimal(votesPercentage.floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				}else{
 					differenceVotes = 0f;
 					votesPercentage = 0f;
 					candidateDetailsVo.setVotesDifference(differenceVotes);
-					candidateDetailsVo.setVotesPercentage(votesPercentage.toString());
+					candidateDetailsVo.setMarginVotesPercentage(votesPercentage.toString());
 				}
 				rank = Long.parseLong(parms[4].toString());
 				if(rank!=1l){
