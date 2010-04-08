@@ -7,10 +7,11 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class CandidateDetailsVO {
+public class CandidateDetailsVO implements Serializable{
 
 	private Long candidateId;
 	private String candidateName;
@@ -35,6 +36,8 @@ public class CandidateDetailsVO {
 	private List<SelectOptionVO> getDistricts ;
 	private List<CandidateDetailsVO> candidateDetails ;
 	private Long dataAvailabilityFlag;
+	private String moreDetails;
+	private Float votesDifference;
 	
 	//getters and setters
 	public Long getConstituencyId() {
@@ -118,6 +121,18 @@ public class CandidateDetailsVO {
 	}
 	public String getConstituencyName() {
 		return constituencyName;
+	}
+	public String getMoreDetails() {
+		return moreDetails;
+	}
+	public void setMoreDetails(String moreDetails) {
+		this.moreDetails = moreDetails;
+	}
+	public Float getVotesDifference() {
+		return votesDifference;
+	}
+	public void setVotesDifference(Float votesDifference) {
+		this.votesDifference = votesDifference;
 	}
 	public List<SelectOptionVO> getGetDistricts() {
 		return getDistricts;
