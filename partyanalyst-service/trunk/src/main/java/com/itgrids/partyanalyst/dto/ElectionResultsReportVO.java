@@ -20,6 +20,7 @@ public class ElectionResultsReportVO implements Serializable {
 	private String electionType;
 	private String electionYear;
 	private String statewiseElectionResultsChartName;	
+	private String districtWiseElecResultsChartName;
 	private ResultStatus resultStatus;
 	
 	private ElectionResultsVO electionBasicResultsVO;
@@ -83,6 +84,15 @@ public class ElectionResultsReportVO implements Serializable {
 	public void setElectionResultsInDistricts(
 			ElectionResultsInAllDistrictsVO electionResultsInDistricts) {
 		this.electionResultsInDistricts = electionResultsInDistricts;
+	}
+
+	public String getDistrictWiseElecResultsChartName() {
+		return districtWiseElecResultsChartName;
+	}
+
+	public void setDistrictWiseElecResultsChartName(
+			String districtWiseElecResultsChartName) {
+		this.districtWiseElecResultsChartName = districtWiseElecResultsChartName;
 	}
 	
 	
