@@ -7,7 +7,6 @@
  */
 package com.itgrids.partyanalyst.dto;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class DistrictWisePartyResultVO {
@@ -21,6 +20,7 @@ public class DistrictWisePartyResultVO {
 	private Long constiParticipated;
 	private Long seatsWon;
 	private Double votesPercent;
+	private String chartPath;
 	private List<PartyResultVO> partyElectionResultsList;
 	
 	
@@ -84,6 +84,12 @@ public class DistrictWisePartyResultVO {
 	public void setPartyElectionResultsList(
 			List<PartyResultVO> partyElectionResultsList) {
 		this.partyElectionResultsList = partyElectionResultsList;
+	}
+	public String getChartPath() {
+		return chartPath;
+	}
+	public void setChartPath(String chartPath) {
+		this.chartPath = chartPath;
 	}
 	
 	
