@@ -13,6 +13,16 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></SCRIPT>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+
+
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
@@ -218,15 +228,38 @@ function showAllianceDetails(results)
 	var allianceResultsDataTableEl = document.getElementById("allianceResultsDataTable");
 	
 	for(var i in  allianceResultsArr){
-		var createDiv = document.createElement("div");
-		createDiv.setAttribute("id","allianceResults_"+i);		
+		var createDiv = document.createElement("div");		
+		createDiv.setAttribute("id","allianceResults_"+i+"_main");		
 		createDiv.style.cssText = 'margin-top:32px;';
+		var str = '';
+		str+='<div id="allianceResults_'+i+'_datatable"></div>';
+		str+='<div id="allianceResults_'+i+'_allianceGraph"></div>';
+		str+='<div id="allianceResults_'+i+'_footer"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_'+i+'_allianceGraph\',\''+allianceResultsArr[i].chartForPartyResults+'\')">View Graph<a></div>';
+		createDiv.innerHTML = str;
 		allianceResultsDataTableEl.appendChild(createDiv);
 	
-		buildAllianceResultsDataTable("allianceResults_"+i,allianceResultsArr[i].partiesInAlliance,allianceResultsArr[i].allianceGroupName+" Alliance Details");	
+		buildAllianceResultsDataTable("allianceResults_"+i+"_datatable",allianceResultsArr[i].partiesInAlliance,allianceResultsArr[i].allianceGroupName+" Alliance Details");	
 	}		
 }
 
+
+function showAllianceGraph(divId,chartId)
+{
+	var contentStr='<IMG src="charts/'+chartId+'"></IMG>';
+
+	 var myPanel = new YAHOO.widget.Panel(divId, {
+                 width: "375px", 
+                 fixedcenter: false, 
+                 constraintoviewport: true, 
+                 underlay: "none", 
+                 close: true, 
+                 visible: true, 
+                 draggable: true
+       });
+	   myPanel.setHeader("Alliance Party Graph...");
+       myPanel.setBody(contentStr);
+       myPanel.render();
+}
 function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 {	
 	
@@ -348,6 +381,7 @@ function buildAllDistrictResultsDataTable(results)
 }
 function buildAllianceDistrictResultsDataTable(results)
 {	
+	//showAllianceGraph
 	var parentElmt = document.getElementById("allianceDistResults");
 
 	var innerObj = results.alliancePartiesList;
@@ -355,6 +389,13 @@ function buildAllianceDistrictResultsDataTable(results)
 	{		
 		var childElmt = document.createElement("div");
 		childElmt.setAttribute('id','allianceChildDiv'+i);
+
+		var str = '';
+		str+='<div id="allianceResults_district_'+i+'_datatable"></div>';
+		str+='<div id="allianceResults_district_'+i+'_allianceGraph"></div>';
+		str+='<div id="allianceResults_district_'+i+'_footer"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_district_'+i+'_allianceGraph\',\''+innerObj[i].allianceResultsArr[i].chartForPartyResults+'\')">View Graph<a></div>';
+		createDiv.innerHTML = str;
+
 		parentElmt.appendChild(childElmt);
 		
 		var dtSourceArr = new Array();
@@ -409,7 +450,7 @@ function buildAllianceDistrictResultsDataTable(results)
 				caption:innerObj[i].allianceGroupName+" Alliance Details"
 				};
 		
-		var allianceDistrictResultsDataTable = new YAHOO.widget.DataTable('allianceChildDiv'+i, allianceDistrictResultsColumnDefs, allianceDistrictResultsDataSource,myConfigs);
+		var allianceDistrictResultsDataTable = new YAHOO.widget.DataTable('allianceResults_district_'+i+'_datatable', allianceDistrictResultsColumnDefs, allianceDistrictResultsDataSource,myConfigs);
 					
        	
 
