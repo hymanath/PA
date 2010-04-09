@@ -27,6 +27,21 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 		return getHibernateTemplate().find("from PartyElectionDistrictResult model where model.election.electionId = ? and model.party.partyId = ? and model.state.stateId = ? and model.district.districtId = ?", params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getParticipatedPartysCountForAnElection(Long electionId){
+		return getHibernateTemplate().find("select count(distinct model.party.partyId) from PartyElectionDistrictResult model where model.election.electionId = ?", electionId);
+	}
 	
+	@SuppressWarnings("unchecked")
+	public List<PartyElectionDistrictResult> getDistrictWiseAllPartiesResults(Long electionId,String votesPercentMargin){
+		Object[] params = {votesPercentMargin,electionId};
+		return getHibernateTemplate().find("from PartyElectionDistrictResult model where model.completeVotesPercent > ? and model.election.electionId = ? order by model.party.partyId",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PartyElectionDistrictResult> getPartyElecResultsInAllDistsForAParty(Long electionId,Long partyId){
+		Object[] params = {electionId,partyId};
+		return getHibernateTemplate().find("from PartyElectionDistrictResult model where model.election.electionId = ? and model.party.partyId = ?",params);
+	}
 
 }
