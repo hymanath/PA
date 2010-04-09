@@ -652,7 +652,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 
 	function showAllElectionsInDistrict(results){
 		var allElecDiv = document.getElementById("districtInfoDiv");
-		allElecDiv.innerHTML = results.districtName;
+		//allElecDiv.innerHTML = results.districtName;
 	}
 </script>
  
