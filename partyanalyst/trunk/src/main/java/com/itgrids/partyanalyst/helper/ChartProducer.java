@@ -398,7 +398,7 @@ public class ChartProducer {
 		}
 	}
 
-	public static void createLineChart(String title, String xAxis, String yAxis, CategoryDataset dataset, String path){
+	public static void createLineChart(String title, String xAxis, String yAxis, CategoryDataset dataset, String path,int height,int width){
 		final NumberAxis seatsRangeAxis = new NumberAxis(yAxis);
         seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         final LineAndShapeRenderer seatsRenderer = new LineAndShapeRenderer();
@@ -418,7 +418,7 @@ public class ChartProducer {
 		try	 {
 			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
 			final File image = new File(path);
-			ChartUtilities.saveChartAsPNG(image, chart, 700, 260, info);
+			ChartUtilities.saveChartAsPNG(image, chart, width, height, info);
 		}
 		catch (java.io.IOException exc)
 		{
