@@ -268,7 +268,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		String chartName = "allPartiesMandalWisePerformanceInAllElections_"+mandalId+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         //String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName
-		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", createDataset(allElectionResults), chartPath);
+		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", createDataset(allElectionResults), chartPath,260,700);
 				
 		return SUCCESS;
 		

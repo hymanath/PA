@@ -653,7 +653,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         constituencyRevenueVillagesVO.setChartPath(chartName);
-        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath);
+        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,260,700);
 	  
 	  return SUCCESS;
   }
@@ -688,7 +688,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		  chartTitle = "Mandal Wise Election Results For "+obj.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
 		  chartName = "mandalWiseParliamentElectionsResults_"+obj.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 		  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj), chartPath);
+		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj), chartPath,260,700);
 		  obj.setChartPath(chartName);
 	  }
 	  

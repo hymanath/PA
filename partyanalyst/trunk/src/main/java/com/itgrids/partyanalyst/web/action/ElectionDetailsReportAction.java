@@ -15,12 +15,15 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
+import com.itgrids.partyanalyst.dto.PartyPositionsInDistrictVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyWiseResultVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IElectionReportService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -179,7 +182,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(jObj.getString("task").equalsIgnoreCase("elctionsBasicInfo"))
+		if(jObj.getString("task").equalsIgnoreCase("electionsBasicInfo"))
 		{
 			electionCompleteDetailsVO = new ElectionResultsReportVO();
 			String electionType = jObj.getString("electionType");			
@@ -190,26 +193,38 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 			Long stateId = new Long(jObj.getString("stateID"));
 			String electionType = jObj.getString("electionType");
 			String year = jObj.getString("year");
-			electionCompleteDetailsVO = electionReportService.getBasicResultsForAnElection(electionType, year,stateId);
+			electionCompleteDetailsVO = electionReportService.getBasicResultsForAnElection(electionType, year,stateId,IConstants.VOTES_PERCENT_MARGIN);
 			if(electionCompleteDetailsVO != null){
 				if(electionCompleteDetailsVO.getResultStatus().getResultCode() == ResultCodeMapper.FAILURE)
 					return Action.ERROR;
 				
+				//state level chart
 				String partyResultsChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat("Election_Results").concat("BarChart");
 		 		String partyResultsChartName = "partyElectionResults_" + partyResultsChartId + session.getId() +".png";
-		        //String partyResultsChartPath = context.getRealPath("/") + "charts\\" + partyResultsChartName;
-		 		String partyResultsChartPath = context.getRealPath("/") + "charts\\" + partyResultsChartName;
+		        String partyResultsChartPath = context.getRealPath("/") + "charts\\" + partyResultsChartName;
 		 		
 		 		ChartProducer.create3DBarChart("Party","Seats",createDatasetForPartyResults(electionCompleteDetailsVO.getElectionBasicResultsVO().getAllPartiesResults()), partyResultsChartPath);
 			    request.setAttribute("partyResultsChartName", partyResultsChartName);
 				session.setAttribute("partyResultsChartName", partyResultsChartName);
 				electionCompleteDetailsVO.setStatewiseElectionResultsChartName(partyResultsChartName);	
+				
+				//district level results chart
+				String partyDistrictResultsChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat("Election_Results_Districtwise").concat("LineChart");
+		 		String partyDistrictResultsChartName = "partyElectionResults_" + partyDistrictResultsChartId + session.getId() +".png";
+		        String partyDistrictResultsChartPath = context.getRealPath("/") + "charts\\" + partyDistrictResultsChartName;
+		 		
+		 		ChartProducer.createLineChart("","","Percentages", createDataSetForPartyDistrictwiseResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults()), partyDistrictResultsChartPath,300,880);
+		        request.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
+				session.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 			}	
 		}	
 			return Action.SUCCESS;
 		
 	}
 		
+	    /*
+	     * creating dataset for complete results
+	     */
 		private CategoryDataset createDatasetForPartyResults(List<PartyPositionsVO> allPartiesResults) {
 			
 			  int i=0;
@@ -229,8 +244,25 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 		      	i++;
 		      }
 		      return dataset;
-		    }
-
+	    }
+		
+		/*
+		 * creating dataset for districtwise results
+		 */
+		private CategoryDataset createDataSetForPartyDistrictwiseResults(List<DistrictWisePartyPositionsVO> allPartiesResults){
+			int i=0;
+			final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+			for(DistrictWisePartyPositionsVO parties:allPartiesResults){
+				if(i==10)
+				break;
+				final String category = parties.getPartyName();
+				for(PartyPositionsInDistrictVO districtResults:parties.getPartyResultsInDistricts()){
+					dataset.addValue(new Double(districtResults.getCompleteVotesPercent()), category, districtResults.getDistrictName());
+				}
+				i++;
+			}
+			return dataset;
+		}
 		
 
 }
