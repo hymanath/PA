@@ -60,7 +60,11 @@ function callAjax(param,jsObj,url){
 									{	
 										showStatewiseResultsBarChart(myResults);									
 										showPartywiseDetailsDataTable(myResults);
-										showAllianceDetails(myResults);										
+										showAllianceDetails(myResults);		
+
+										showDistrictWiseResultsLineGraph(myResults);
+										buildAllDistrictResultsDataTable(myResults.electionResultsInDistricts);
+										buildAllianceDistrictResultsDataTable(myResults.electionResultsInDistricts);
 									} 
  									
 								}
@@ -76,6 +80,20 @@ function callAjax(param,jsObj,url){
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
+
+function showDistrictWiseResultsLineGraph(results)
+{
+	//districtWiseGraph
+
+	var chartName = results.statewiseElectionResultsChartName;
+	var statewiseGraphEl = document.getElementById("districtWiseGraph");
+
+	var contentStr = '';
+	contentStr+='<IMG src="charts/'+chartName+'"></IMG>';
+	//statewiseGraphEl.innerHTML = contentStr;	
+}
+
 function getElctionsBasicInfo(electionType){
 	var jsObj= 
 	{	
@@ -259,32 +277,57 @@ function showCandidateDetailsWindow(stateName,electionType,year)
 	
 	browser1.focus();	
 }
-function buildAllDistrictResultsDataTable()
+
+function buildAllDistrictResultsDataTable(results)
 {	
+	var innerObj = results.allPartiesResults;
+	var dtSource = new Array();
 	
+	for(var i in innerObj)
+	{
+		for(var j in innerObj[i].partyResultsInDistricts)
+		{
+			var obj = {
+						district:innerObj[i].partyResultsInDistricts[j].districtName,
+						party:innerObj[i].partyName,
+						seatsWon:innerObj[i].partyResultsInDistricts[j].seatsWon,
+						second:innerObj[i].partyResultsInDistricts[j].secondPos,
+						third:innerObj[i].partyResultsInDistricts[j].thirdPos,
+						fourth:innerObj[i].partyResultsInDistricts[j].fourthPos,
+						nth:innerObj[i].partyResultsInDistricts[j].nthPos,
+						pc:innerObj[i].partyResultsInDistricts[j].votesPercentage,
+						overall:innerObj[i].partyResultsInDistricts[j].completeVotesPercent
+					  }
+			dtSource.push(obj);
+		}
+	}
+
+	
+
 	var allDistrictResultsColumnDefs = [
-								{key: "distName", label: "District", sortable:true},		
-								{key: "inc", label: "INC",formatter:"number", sortable:true},	
-		              	 	    {key: "mahakutami", label: "Maha Kutami", formatter:"number", sortable:true},
-		              	 	 	{key: "prpManaParty", label: "PRP ManaParty",formatter:"number", sortable:true},
-		              	 	 	{key: "aimim", label: "aimim",formatter:"number", sortable:true},
-		              	 	 	{key: "ind", label: "IND",formatter:"number", sortable:true},
-		              	 	 	{key: "bjp", label: "BJP",formatter:"number", sortable:true},   	
-		              	 	 	{key: "lsp", label:"LSP", formatter:"number",sortable: true}
+								{key: "district", label: "District", sortable:true},		
+								{key: "party", label: "<%=party%>", sortable:true},										
+		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
+		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
+		              	 	 	{key: "third", label: "3rd",formatter:"number", sortable:true},
+		              	 	 	{key: "fourth", label: "4th",formatter:"number", sortable:true},
+		              	 	 	{key: "nth", label: "Nth",formatter:"number", sortable:true},   	
+		              	 	 	{key: "pc", label:"PC* %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true},
+		              	 	 	{key: "overall", label:"Overall %",formatter:YAHOO.widget.DataTable.formatFloat, sortable: true}		              	 	 	
 		              	 	 			              	 	 	
 		              	 	    ];                	 	    
 
-		var allDistrictResultsDataSource = new YAHOO.util.DataSource(); 
+		var allDistrictResultsDataSource = new YAHOO.util.DataSource(dtSource); 
 		allDistrictResultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		allDistrictResultsDataSource.responseSchema = {
-                fields: ["partyName", {key: "distName", parser:"number"},
-                					  {key:  "inc", parser:"number"},
-                					  {key:  "mahakutami", parser:"number"},
-                					  {key:  "prpManaParty", parser:"number"},
-                					  {key:  "aimim", parser:"number"},
-                					  {key: "ind", parser:"number"},
-                					  {key: "bjp", parser:"number"},
-                					  {key: "lsp", parser:"number"}]
+                fields: ["district","party", {key: "totalParticipated", parser:"number"},
+                         		  {key: "seatsWon", parser:"number"},
+                         		  {key: "second", parser:"number"},
+                         		  {key:  "third", parser:"number"},
+                         		  {key:  "fourth", parser:"number"},
+                         		  {key: "nth", parser:"number"},
+                         		  {key: "pc", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber} ] 
                 					   
         		};
 
@@ -292,10 +335,10 @@ function buildAllDistrictResultsDataTable()
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 10			        
 			    }),
-			    caption:"All Districts Results"
+			    caption:"Districts Wise Election Results"
 				};
 		
-		var allDistrictResultsDataTable = new YAHOO.widget.DataTable("districtResults", allDistrictResultsColumnDefs, allDistrictResultsDataSource,{caption:"All Districts Results"});
+		var allDistrictResultsDataTable = new YAHOO.widget.DataTable("districtResults", allDistrictResultsColumnDefs, allDistrictResultsDataSource,myConfigs);
 					
         return { 
             oDS: allDistrictResultsDataSource, 
@@ -303,47 +346,76 @@ function buildAllDistrictResultsDataTable()
       };	
 	
 }
-function buildAllianceDistrictResultsDataTable()
+function buildAllianceDistrictResultsDataTable(results)
 {	
-	
-	var allianceDistrictResultsColumnDefs = [
-								{key: "partyName", label: "<%=party%>", sortable:true},		
-								{key: "totalConstiParticipated", label: "TP*",formatter:"number", sortable:true},	
-		              	 	    {key: "totalSeatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
-		              	 	 	{key: "secondPosWon", label: "2nd",formatter:"number", sortable:true},
-		              	 	 	{key: "thirdPosWon", label: "3rd",formatter:"number", sortable:true},
-		              	 	 	{key: "fourthPosWon", label: "4th",formatter:"number", sortable:true},
-		              	 	 	{key: "nthPosWon", label: "Nth",formatter:"number", sortable:true},   	
-		              	 	 	{key: "votesPercentage", label:"PC* %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true},
-		              	 	 	{key: "completeVotesPercent", label:"Overall %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true}		              	 	 	
+	var parentElmt = document.getElementById("allianceDistResults");
+
+	var innerObj = results.alliancePartiesList;
+	for(var i in innerObj)
+	{		
+		var childElmt = document.createElement("div");
+		childElmt.setAttribute('id','allianceChildDiv'+i);
+		parentElmt.appendChild(childElmt);
+		
+		var dtSourceArr = new Array();
+
+		for(var j in innerObj[i].partiesInAlliance)
+		{
+			for(var k in innerObj[i].partiesInAlliance[j].partyResultsInDistricts)
+			{
+				var obj = {
+							district:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].districtName,
+							party:innerObj[i].partiesInAlliance[j].partyName,
+							seatsWon:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].seatsWon,
+							second:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].secondPos,
+							third:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].thirdPos,
+							fourth:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].fourthPos,
+							nth:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].nthPos,
+							pc:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].votesPercentage,
+							overall:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].completeVotesPercent
+						  }
+				dtSourceArr.push(obj);
+			}
+		}
+		
+		var allianceDistrictResultsColumnDefs = [
+								{key: "district", label: "District", sortable:true},		
+								{key: "party", label: "<%=party%>", sortable:true},										
+		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
+		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
+		              	 	 	{key: "third", label: "3rd",formatter:"number", sortable:true},
+		              	 	 	{key: "fourth", label: "4th",formatter:"number", sortable:true},
+		              	 	 	{key: "nth", label: "Nth",formatter:"number", sortable:true},   	
+		              	 	 	{key: "pc", label:"PC* %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true},
+		              	 	 	{key: "overall", label:"Overall %",formatter:YAHOO.widget.DataTable.formatFloat, sortable: true}		              	 	 	
+		              	 	 			              	 	 	
 		              	 	    ];                	 	    
 
-		var allianceDistrictResultsDataSource = new YAHOO.util.DataSource(); 
+		var allianceDistrictResultsDataSource = new YAHOO.util.DataSource(dtSourceArr); 
 		allianceDistrictResultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		allianceDistrictResultsDataSource.responseSchema = {
-                fields: ["partyName", {key: "totalConstiParticipated", parser:"number"},
-                					  {key:  "totalSeatsWon", parser:"number"},
-                					  {key:  "secondPosWon", parser:"number"},
-                					  {key:  "thirdPosWon", parser:"number"},
-                					  {key:  "fourthPosWon", parser:"number"},
-                					  {key: "nthPosWon", parser:"number"},
-                					  {key: "votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},
-                					  {key: "completeVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber}] 
+                fields: ["district","party", {key: "totalParticipated", parser:"number"},
+                         		  {key: "seatsWon", parser:"number"},
+                         		  {key: "second", parser:"number"},
+                         		  {key:  "third", parser:"number"},
+                         		  {key:  "fourth", parser:"number"},
+                         		  {key: "nth", parser:"number"},
+                         		  {key: "pc", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber} ] 
+                					   
         		};
-
 		var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10			        
-			    })			    
+			    paginator : new YAHOO.widget.Paginator({rowsPerPage    : 10}) ,
+				caption:innerObj[i].allianceGroupName+" Alliance Details"
 				};
 		
-		var allianceDistrictResultsDataTable = new YAHOO.widget.DataTable("allianceDistResults", allianceDistrictResultsColumnDefs, allianceDistrictResultsDataSource,{caption:"Alliance Results"});
+		var allianceDistrictResultsDataTable = new YAHOO.widget.DataTable('allianceChildDiv'+i, allianceDistrictResultsColumnDefs, allianceDistrictResultsDataSource,myConfigs);
 					
-        return { 
-            oDS: allianceDistrictResultsDataSource, 
-            oDT: allianceDistrictResultsDataTable            
-      };	
-	
+       	
+
+	}
+
+		
 }
 function openPreYearDistAnalysisWindow()
 {
@@ -389,6 +461,7 @@ function openPreYearDistAnalysisWindow()
 <DIV class="graphBottom"></DIV>
 <DIV class="graphTop">District Level Overview</DIV>
 <DIV id="distwiseGraph">
+<div id="districtWiseGraph"></div>
 <DIV class="yui-skin-sam">
 	<TABLE border="0" width="95%" >
 		<TR>
@@ -511,8 +584,6 @@ function openPreYearDistAnalysisWindow()
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 getResultsForAnElection(stateID,electionType,year);
-buildAllDistrictResultsDataTable();
-buildAllianceDistrictResultsDataTable();
 
 </SCRIPT>
 </BODY>
