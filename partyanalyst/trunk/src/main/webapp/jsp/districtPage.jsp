@@ -309,27 +309,39 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					results = YAHOO.lang.JSON.parse(o.responseText);		
 					if(jsObj.task == "getAllElectionYears")
 					{
-						showAllYearsForZptc(results);
+						if(results!= null &&  results.length>0){
+							showAllYearsForZptc(results);
+						}
 					}	
 					if(jsObj.task == "getAllMptcElectionYears")
 					{
-						showAllYearsForMptc(results);
+						if(results!= null &&  results.length>0){
+							showAllYearsForMptc(results);
+						}
 					}
 					if(jsObj.task == "getPartyDetails") 
 					{
-						showAllPartyDetails(results);
+						if(results!= null &&  results.length>0){
+							showAllPartyDetails(results);
+						}
 					}
 					if(jsObj.task == "getMptcPartyDetails") 
 					{
-						showAllMptcPartyDetails(results);
+						if(results!= null &&  results.length>0){
+							showAllMptcPartyDetails(results);
+						}
 					}	
 					if(jsObj.task == "getAllMptcParties") 
 					{
-						showAllMptcParties(results);
+						if(results!= null &&  results.length>0){
+							showAllMptcParties(results);
+						}
 					}
 					if(jsObj.task == "getAllZptcParties") 
 					{
-						showAllZptcParties(results);
+						if(results!= null &&  results.length>0){
+							showAllZptcParties(results);
+						}
 					}
 					
 			}catch (e) {   		
