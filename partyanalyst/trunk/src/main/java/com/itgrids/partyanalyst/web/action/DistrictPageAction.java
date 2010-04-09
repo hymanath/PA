@@ -265,19 +265,35 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		
 			if(jObj.getString("task").equalsIgnoreCase("getAllElectionYears"))
 			{
+			try{
 				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("eleType")));
+			}catch(Exception e){
+				log.debug("No data is available...");
+			}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getAllMptcElectionYears"))
 			{
+				try{
 				mptcElectionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("eleType")));
+			}catch(Exception e){
+				log.debug("No data is available...");
+			}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getPartyDetails"))
 			{
+				try{
 				partyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),jObj.getString("electionYear"),new Long(jObj.getString("districtId")));
+				}catch(Exception e){
+					log.debug("No data is available...");
+				}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getMptcPartyDetails"))
 			{
-				getMptcPartyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),jObj.getString("electionYear"),new Long(jObj.getString("districtId")));
+				try{
+					getMptcPartyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),jObj.getString("electionYear"),new Long(jObj.getString("districtId")));
+				}catch(Exception e){
+					log.debug("No data is available...");
+				}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getAllZptcParties"))
 			{
@@ -285,7 +301,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 				try{
 					partyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),electionYears.get(0).getId().toString(),new Long(jObj.getString("districtId")));
 				}catch(Exception e){
-					e.printStackTrace();
+					log.debug("No data is available...");
 				}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getAllMptcParties"))
@@ -294,7 +310,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 				try{
 					getMptcPartyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),electionYears.get(0).getId().toString(),new Long(jObj.getString("districtId")));
 				}catch(Exception e){
-					e.printStackTrace();
+					log.debug("No data is available...");															
 				}
 			}
 		
@@ -313,31 +329,47 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			log.debug("Task::"+jObj.getString("task"));
 			if(jObj.getString("task").equalsIgnoreCase("getAllCandidates"))
 			{
-				if(jObj.getString("electionType").equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
-					candidateTrendzReportVO = staticDataService.getAllZptcsCandidatesForADistrictForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"));
-				}else{
-					candidateTrendzReportVO = staticDataService.getAllMptcsCandidatesForADistrictForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"));
+				try{
+					if(jObj.getString("electionType").equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
+						candidateTrendzReportVO = staticDataService.getAllZptcsCandidatesForADistrictForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"));
+					}else{
+						candidateTrendzReportVO = staticDataService.getAllMptcsCandidatesForADistrictForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"));
+					}
+				}catch(Exception e){
+					log.debug("No data is available...");															
 				}
 				
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getWinners"))
 			{
-				if(jObj.getString("electionType").equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
-					candidateTrendzReportVO = staticDataService.getAllZptcWinnerForADistrictForLatestYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"));
-				}else{
-					candidateTrendzReportVO = staticDataService.getAllMptcWinnerForADistrictForLatestYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"));
+				try{
+					if(jObj.getString("electionType").equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
+						candidateTrendzReportVO = staticDataService.getAllZptcWinnerForADistrictForLatestYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"));
+					}else{
+						candidateTrendzReportVO = staticDataService.getAllMptcWinnerForADistrictForLatestYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"));
+					}
+				}catch(Exception e){
+					log.debug("No data is available...");															
 				}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getPartyWise"))
 			{
-				if(jObj.getString("electionType").equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
-					candidateTrendzReportVO = staticDataService.getAllZptcsForADistrictForAPartyForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),new Long(jObj.getString("partyId")));
-				}else{
-					candidateTrendzReportVO = staticDataService.getAllMptcsForADistrictForAPartyForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),new Long(jObj.getString("partyId")));
+				try{
+					if(jObj.getString("electionType").equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
+						candidateTrendzReportVO = staticDataService.getAllZptcsForADistrictForAPartyForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),new Long(jObj.getString("partyId")));
+					}else{
+						candidateTrendzReportVO = staticDataService.getAllMptcsForADistrictForAPartyForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),new Long(jObj.getString("partyId")));
+					}
+				}catch(Exception e){
+					log.debug("No data is available...");															
 				}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getParties")){
-				candidateTrendzReportVO = staticDataService.getAllPartiesForAParticularElection(new Long(jObj.getString("districtId")),jObj.getString("electionType"),jObj.getString("electionYear"));
+				try{
+					candidateTrendzReportVO = staticDataService.getAllPartiesForAParticularElection(new Long(jObj.getString("districtId")),jObj.getString("electionType"),jObj.getString("electionYear"));
+				}catch(Exception e){
+					log.debug("No data is available...");															
+				}
 			}
 		}
 		return SUCCESS; 
