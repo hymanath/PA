@@ -282,12 +282,20 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			else if(jObj.getString("task").equalsIgnoreCase("getAllZptcParties"))
 			{
 				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("electionTypeId")));
-				partyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),electionYears.get(0).getId().toString(),new Long(jObj.getString("districtId")));
+				try{
+					partyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),electionYears.get(0).getId().toString(),new Long(jObj.getString("districtId")));
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getAllMptcParties"))
 			{
 				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("electionTypeId")));
-				getMptcPartyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),electionYears.get(0).getId().toString(),new Long(jObj.getString("districtId")));
+				try{
+					getMptcPartyDetails = staticDataService.getMandalWisePartyReport(jObj.getString("electionType"),electionYears.get(0).getId().toString(),new Long(jObj.getString("districtId")));
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			}
 		
 		}		
