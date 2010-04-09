@@ -234,7 +234,7 @@ function showAllianceDetails(results)
 		var str = '';
 		str+='<div id="allianceResults_'+i+'_datatable"></div>';
 		str+='<div id="allianceResults_'+i+'_allianceGraph"></div>';
-		str+='<div id="allianceResults_'+i+'_footer"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_'+i+'_allianceGraph\',\''+allianceResultsArr[i].chartForPartyResults+'\')">View Graph<a></div>';
+		str+='<div id="allianceResults_'+i+'_footer" style="text-align:left;"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_'+i+'_allianceGraph\',\''+allianceResultsArr[i].chartForPartyResults+'\')">View Graph<a></div>';
 		createDiv.innerHTML = str;
 		allianceResultsDataTableEl.appendChild(createDiv);
 	
@@ -248,8 +248,8 @@ function showAllianceGraph(divId,chartId)
 	var contentStr='<IMG src="charts/'+chartId+'"></IMG>';
 
 	 var myPanel = new YAHOO.widget.Panel(divId, {
-                 width: "375px", 
-                 fixedcenter: false, 
+                 
+                 fixedcenter: true, 
                  constraintoviewport: true, 
                  underlay: "none", 
                  close: true, 
@@ -381,7 +381,6 @@ function buildAllDistrictResultsDataTable(results)
 }
 function buildAllianceDistrictResultsDataTable(results)
 {	
-	//showAllianceGraph
 	var parentElmt = document.getElementById("allianceDistResults");
 
 	var innerObj = results.alliancePartiesList;
@@ -393,8 +392,8 @@ function buildAllianceDistrictResultsDataTable(results)
 		var str = '';
 		str+='<div id="allianceResults_district_'+i+'_datatable"></div>';
 		str+='<div id="allianceResults_district_'+i+'_allianceGraph"></div>';
-		str+='<div id="allianceResults_district_'+i+'_footer"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_district_'+i+'_allianceGraph\',\''+innerObj[i].allianceResultsArr[i].chartForPartyResults+'\')">View Graph<a></div>';
-		createDiv.innerHTML = str;
+		str+='<div id="allianceResults_district_'+i+'_footer"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_district_'+i+'_allianceGraph\',\''+innerObj[i].alliancePartiesChart+'\')">View Graph<a></div>';
+		childElmt.innerHTML = str;
 
 		parentElmt.appendChild(childElmt);
 		
