@@ -15,6 +15,7 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AlliancePartyDistrictResultsVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
@@ -228,6 +229,15 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 		        request.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 				session.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 				electionCompleteDetailsVO.setDistrictWiseElecResultsChartName(partyDistrictResultsChartName);
+				
+				//charts for alliance parties district level
+				if(electionCompleteDetailsVO.getElectionResultsInDistricts().getAlliancePartiesList() != null && electionCompleteDetailsVO.getElectionResultsInDistricts().getAlliancePartiesList().size() > 0){
+					for(AlliancePartyDistrictResultsVO alliancParties:electionCompleteDetailsVO.getElectionResultsInDistricts().getAlliancePartiesList()){
+						String chartName = createLineChartForAlliancPartiesForDistrictLevel(alliancParties);
+						if(chartName != null)
+						alliancParties.setAlliancePartiesChart(chartName);
+					}
+				}
 			}	
 		}	
 			return Action.SUCCESS;
@@ -245,6 +255,25 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
         String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
  		
         ChartProducer.createLineChart("","","Votes Percentage", createDataSetForAlliancPartyOverallResults(alliancParties.getPartiesInAlliance()), alliancePartiesChartPath,300,600);
+	    request.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
+		session.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return chartName;
+	}
+	
+	/*
+	 * method to create line chart for alliancParties for district level
+	 */
+	public String createLineChartForAlliancPartiesForDistrictLevel(AlliancePartyDistrictResultsVO alliancParties){
+		String chartName = null;
+		try{
+		String alliancePartiesChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat(alliancParties.getAllianceGroupName()).concat("Election_Results").concat("LineChart");
+ 		String alliancePartiesChartName = "alliancPartyElectionResultsDistrictWise_" + alliancePartiesChartId + session.getId() +".png";
+        String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
+ 		
+        ChartProducer.createLineChart("","","Votes Percentage", createDataSetForPartyDistrictwiseResults(alliancParties.getPartiesInAlliance()), alliancePartiesChartPath,300,800);
 	    request.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		session.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		}catch(Exception ex){
