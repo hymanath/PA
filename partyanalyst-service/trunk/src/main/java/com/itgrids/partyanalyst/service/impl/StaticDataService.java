@@ -13,8 +13,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.aspectj.apache.bcel.generic.ICONST;
-
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
@@ -47,6 +49,7 @@ import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -94,6 +97,7 @@ public class StaticDataService implements IStaticDataService {
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private Set parliamentConstituencies = new HashSet(0);
 	private IVillageBoothElectionDAO villageBoothElectionDAO;
+	private TransactionTemplate transactionTemplate;
 	private ConstituencyElectionResultsVO constituencyElectionResultsVO ;
 
 	/**
@@ -383,6 +387,16 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+
 	public List<String> getElectionYears(Long electionType) {
 		List<Election> elections = electionDAO.findByPropertyTypeId(electionType);
 		List<String> years = new ArrayList<String>();
@@ -654,18 +668,14 @@ public class StaticDataService implements IStaticDataService {
 	 * Input for this method is election_id and party_id
 	 */
 	public PartyElectionResult getPartyElectionResultsForAParty(Long electionId,Long partyId){
-		
-		PartyElectionResult partyElectionResult = null;
+		log.debug("Inside getPartyElectionResultsForAParty()");
 		if(electionId != null && partyId != null){
 		 List<PartyElectionResult> partyElectionResultsList = partyElectionResultDAO.getByElectionAndParty(electionId, partyId);
 		 if(partyElectionResultsList != null && partyElectionResultsList.size() > 0){
-		 partyElectionResult = new PartyElectionResult();
-		 for(PartyElectionResult partyElecResult:partyElectionResultsList){
-			 partyElectionResult = partyElecResult;
-		 }
+		  return partyElectionResultsList.get(0);
 		 }
 		}
-	return partyElectionResult;
+	return null;
 	}
 	
 	/*
@@ -675,6 +685,7 @@ public class StaticDataService implements IStaticDataService {
 	 *Input for this method is election_id and party_id
 	 */
 	public PartyElectionResult savePartyElectionResultForAPartyForAElection(Long electionId,Long partyId){
+		log.debug("Inside savePartyElectionResultForAPartyForAElection()");
 		PartyElectionResult partyElectionResult = null;
 		List<Nomination> nominations = null;
 		Election election = null;
@@ -693,10 +704,10 @@ public class StaticDataService implements IStaticDataService {
 		try{
 		 if(electionId != null && partyId != null){
 			nominations = nominationDAO.findByElectionIdAndPartyId(electionId, partyId);
-			completeValidVotes = getCompleteValidVotes(electionId);
 			election = electionDAO.get(electionId);
 			party = partyDAO.get(partyId);
 			if(nominations != null && nominations.size() > 0 && election != null && party != null){
+				completeValidVotes = getCompleteValidVotes(electionId);
 				for(Nomination nominationForParty:nominations){
 					if(nominationForParty.getParty().getPartyId().equals(partyId)){
 						Long candidRank = nominationForParty.getCandidateResult().getRank();
@@ -743,14 +754,18 @@ public class StaticDataService implements IStaticDataService {
 	return completeValidVotes;
 	}
 	
-	public PartyElectionResult savePartyElectionResult(Election election,Party party,Long totalSeatsWon,Long secPos,Long thirdPos,Long fourthPos,Long nthPos,Long totConstiParticipated,Double totalVotesPercentage,Double completeVotesPercent,Double totalVotesEarned,Double totalValidVotes,Double completeConstiValidVotes) throws Exception{
-		PartyElectionResult partyElectionResult = null;
-		java.util.Date updatedDate = new java.util.Date();
+	public PartyElectionResult savePartyElectionResult(final Election election,final Party party,final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesEarned,final Double totalValidVotes,final Double completeConstiValidVotes) throws Exception{
+        log.debug("Inside savePartyElectionResult()");
+        PartyElectionResult partyElectionResultFinal = (PartyElectionResult) transactionTemplate.execute(new TransactionCallback() {
+        public Object doInTransaction(TransactionStatus status) {
+        PartyElectionResult partyElectionResult = null;
+        try{
+        java.util.Date updatedDate = new java.util.Date();
 		String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		String strDateNew = sdf.format(updatedDate) ;
 		updatedDate = sdf.parse(strDateNew);
-		if(election != null && party != null){
+		  if(election != null && party != null){
 			partyElectionResult = new PartyElectionResult();
 			partyElectionResult.setElection(election);
 			partyElectionResult.setParty(party);
@@ -767,22 +782,28 @@ public class StaticDataService implements IStaticDataService {
 			partyElectionResult.setTotalValidVotes(totalValidVotes);
 			partyElectionResult.setCompleteConstiValidVotes(completeConstiValidVotes);
 			partyElectionResult = partyElectionResultDAO.save(partyElectionResult);
-		}
+		  }
+         }catch(Exception ex){
+        	ex.printStackTrace();
+        	log.debug("Exception Raised : " + ex);
+        	status.setRollbackOnly();
+         }
+        return partyElectionResult;
+        }
+        });
 		
-	return partyElectionResult;
+	return partyElectionResultFinal;
 	}
 	
 	public PartyElectionDistrictResult getPartyElectionResultsForAPartyDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId){
-		PartyElectionDistrictResult partyElectionDistrictResult = null;
+		 log.debug("Inside getPartyElectionResultsForAPartyDistrictLevel()");
 		if(electionId != null && partyId != null && stateId != null && districtId != null){
 			List<PartyElectionDistrictResult> partyElecDistrictResultList = partyElectionDistrictResultDAO.getByPartyIdElectionIdAndDistrict(electionId, partyId, stateId, districtId);
 			if(partyElecDistrictResultList != null && partyElecDistrictResultList.size() > 0){
-				partyElectionDistrictResult = new PartyElectionDistrictResult();
-				for(PartyElectionDistrictResult resultList:partyElecDistrictResultList)
-					partyElectionDistrictResult = resultList;
+				return partyElecDistrictResultList.get(0);
 			}
 		}
-	return partyElectionDistrictResult;
+	return null;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -798,6 +819,7 @@ public class StaticDataService implements IStaticDataService {
 	}
 	
 	public PartyElectionDistrictResult savePartyElectionResultForAPartyForAElectionDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId){
+		log.debug("Inside savePartyElectionResultForAPartyForAElectionDistrictLevel()");
 		PartyElectionDistrictResult partyElectionDistrictResult = null;
 		List<Nomination> nominations = null;
 		Election election = null;
@@ -825,8 +847,8 @@ public class StaticDataService implements IStaticDataService {
 				state = stateDAO.get(stateId);
 				district = districtDAO.get(districtId);
 				
-				completeValidVotes = getCompleteValidVotesForADistrict(electionId,districtId);
 				if(nominations != null && nominations.size() > 0 && election != null && party != null && state != null && district != null){
+					completeValidVotes = getCompleteValidVotesForADistrict(electionId,districtId);
 					for(Nomination nominationForParty:nominations){
 						if(nominationForParty.getParty().getPartyId().equals(partyId)){
 							Long candidRank = nominationForParty.getCandidateResult().getRank();
@@ -850,7 +872,7 @@ public class StaticDataService implements IStaticDataService {
 					}
 					totalVotesPercentage = new BigDecimal((totalVotesEarned*100)/totalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 					completeVotesPercent = new BigDecimal((totalVotesEarned*100)/completeValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-					partyElectionDistrictResult = savePartyElectionDistrictResult(election,party,state,district,totalSeatsWon,totalSecondPositions,totalThirdPositions,totalFourthPositions,totalNthPositions,totalConstiParticipated,totalVotesPercentage,completeVotesPercent);
+					partyElectionDistrictResult = savePartyElectionDistrictResult(election,party,state,district,totalSeatsWon,totalSecondPositions,totalThirdPositions,totalFourthPositions,totalNthPositions,totalConstiParticipated,totalVotesPercentage,completeVotesPercent,totalVotesEarned,totalValidVotes,completeValidVotes.doubleValue());
 				}	
 			}
 		}catch(Exception ex){
@@ -859,8 +881,13 @@ public class StaticDataService implements IStaticDataService {
 	return partyElectionDistrictResult;
 	}
 	
-	public PartyElectionDistrictResult savePartyElectionDistrictResult(Election election,Party party,State state,District district,Long totalSeatsWon,Long secPos,Long thirdPos,Long fourthPos,Long nthPos,Long totConstiParticipated,Double totalVotesPercentage,Double completeVotesPercent) throws Exception{
+	public PartyElectionDistrictResult savePartyElectionDistrictResult(final Election election,final Party party,final State state,final District district,final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesGained,final Double totalValidVotes,final Double completeConstiValidVotes) throws Exception{
+		log.debug("Inside savePartyElectionResultForAPartyForAElectionDistrictLevel()");
+		
+		PartyElectionDistrictResult partyElectionDistrictResultFinal = (PartyElectionDistrictResult)transactionTemplate.execute(new TransactionCallback() {
+		public Object doInTransaction(TransactionStatus status) {
 		PartyElectionDistrictResult partyElectionDistrictResult = null;
+		try{
 		java.util.Date updatedDate = new java.util.Date();
 		String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
@@ -881,10 +908,20 @@ public class StaticDataService implements IStaticDataService {
 			partyElectionDistrictResult.setVotesPercentage(totalVotesPercentage.toString());
 			partyElectionDistrictResult.setCompleteVotesPercent(completeVotesPercent.toString());
 			partyElectionDistrictResult.setLastUpdated(updatedDate);
+			partyElectionDistrictResult.setTotalVotesGained(totalVotesGained);
+			partyElectionDistrictResult.setTotalValidVotes(totalValidVotes);
+			partyElectionDistrictResult.setCompleteConstiValidVotes(completeConstiValidVotes);
 			partyElectionDistrictResult = partyElectionDistrictResultDAO.save(partyElectionDistrictResult);
 		}
-		
-	return partyElectionDistrictResult;
+		}catch(Exception ex){
+			ex.printStackTrace();
+        	log.debug("Exception Raised : " + ex);
+        	status.setRollbackOnly();
+		}
+		return partyElectionDistrictResult;
+	   }
+	 });
+	return partyElectionDistrictResultFinal;
 	}
 
 	
