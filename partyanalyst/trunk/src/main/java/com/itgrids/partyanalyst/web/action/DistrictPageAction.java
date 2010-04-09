@@ -1,28 +1,40 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.util.ServletContextAware;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
+import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
+import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
+import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.log4j.Logger;
-import org.json.JSONObject;
 
-public class DistrictPageAction extends ActionSupport implements ServletRequestAware{
+public class DistrictPageAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 
 	/**
 	 * 
@@ -32,6 +44,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private String districtId;
 	private String districtName;
 	private HttpServletRequest request;
+	private ServletContext context;
 	private IStaticDataService staticDataService;	
 	private IRegionServiceData regionServiceDataImp;
 	private ConstituenciesStatusVO constituenciesStatusVO;
@@ -50,6 +63,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private CandidateDetailsVO  parliamentCandidateDetailsVo;
 	private List<TeshilPartyInfoVO> partyDetails,getMptcPartyDetails;
 	private String disId,eleType,eleYear;
+	private DistrictWisePartyResultVO districtWisePartyResultVO; 
 
 	public String getDisId() {
 		return disId;
@@ -232,6 +246,13 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		this.staticDataService = staticDataService;
 	}
 
+	public DistrictWisePartyResultVO getDistrictWisePartyResultVO() {
+		return districtWisePartyResultVO;
+	}
+	public void setDistrictWisePartyResultVO(
+			DistrictWisePartyResultVO districtWisePartyResultVO) {
+		this.districtWisePartyResultVO = districtWisePartyResultVO;
+	}
 	public String execute() throws Exception
 	{
 		districtId = request.getParameter("districtId");
@@ -373,6 +394,52 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			}
 		}
 		return SUCCESS; 
+	}
+	
+	public String getDistrictWiseAllElectionResultsForAllParties(){
+		try {
+			jObj = new JSONObject(getTask());
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		districtWisePartyResultVO = new DistrictWisePartyResultVO();
+		districtWisePartyResultVO.setDistrictName("Chittoor");
+		List<PartyResultVO> allElectionResults = districtWisePartyResultVO.getPartyElectionResultsList();
+		String chartName = "allPartiesDistrictWisePerformanceInAllElections_"+jObj.getLong("districtId")+".png";
+        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+        districtWisePartyResultVO.setChartPath(chartName);
+       // ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+jObj.getString("districtName")
+        		//+" District", "Elections", "Percentages", createDataset(allElectionResults), chartPath);
+		
+		return SUCCESS;
+	}
+	
+	private CategoryDataset createDataset(List<PartyResultVO> allElectionResults) {
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
+        ElectionResultVO partiesElecResultForGraph = null;
+        
+        for(PartyResultVO partyResultVO:allElectionResults)
+        	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
+        		partiesElecResultForGraph = new ElectionResultVO();
+        		partiesElecResultForGraph.setPercentage(result.getPercentage());
+        		partiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
+        		partiesElecResultForGraph.setPartyName(partyResultVO.getPartyName());
+        		partiesElectionResults.add(partiesElecResultForGraph);
+        	}
+        
+        Collections.sort(partiesElectionResults, new ElectionResultComparator());
+        
+        for(ElectionResultVO graphInfo:partiesElectionResults)
+           	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
+           			graphInfo.getElectionYear());
+        return dataset;
+    }
+	
+	public void setServletContext(ServletContext context) {
+		this.context = context;
+		
 	}
 	
 	

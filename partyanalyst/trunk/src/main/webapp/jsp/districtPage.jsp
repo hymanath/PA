@@ -342,6 +342,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						if(results!= null &&  results.length>0){
 							showAllZptcParties(results);
 						}
+					}else
+					if(jsObj.task == "getAllElectionsInDistrict"){
+						
+						showAllElectionsInDistrict(results);
 					}
 					
 			}catch (e) {   		
@@ -632,6 +636,24 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
         var spanElmt=document.getElementById("mptcDetails");  
 		getAllMptcYearsForTeshil();				 
 	}
+
+	function getAllElections(){
+		var jsObj=
+		{		
+				districtId:districtId,
+				districtName:"${districtName}",
+				task:"getAllElectionsInDistrict"						
+		};
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllElectionsInDistrictAction.action?"+rparam;					
+		callAjax(rparam,jsObj,url);
+	}
+
+	function showAllElectionsInDistrict(results){
+		var allElecDiv = document.getElementById("districtInfoDiv");
+		allElecDiv.innerHTML = results.districtName;
+	}
 </script>
  
 </head>
@@ -639,6 +661,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 <div class="detailsHead">
 		Welcome to <c:out value="${districtName}"></c:out> District Page <br/><br/>
 </div>
+<div id="allElectionResultsInDT"></div>
 <div id="districtInfoDiv" class="detailsDiv">
 	<table>
 		<tr>
@@ -853,6 +876,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 <script language="javascript">
 initializeResultsTableForMp();
 initializeResultsTable();
+getAllElections();
 getAllMptcParties();
 getAllZptcParties();
 getAllZptcYears();

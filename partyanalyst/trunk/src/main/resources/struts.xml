@@ -707,7 +707,13 @@
         </action>
         <action name="districtwiseElectionResultsAnalysysForElectionReportAction" class="districtwiseElectionResultsAnalysysForElectionReportAction">
 			<result name="success">/jsp/districtwiseElectionResultsComparision.jsp</result>		
-		</action>        
+		</action>
+		<action name="getAllElectionsInDistrictAction" class="districtPageAction" method="getDistrictWiseAllElectionResultsForAllParties">
+              <result type="json" name="success">
+           		<param name="root">districtWisePartyResultVO</param>
+        	</result>		
+        </action>
+		        
 	</package>
 </struts>
 
