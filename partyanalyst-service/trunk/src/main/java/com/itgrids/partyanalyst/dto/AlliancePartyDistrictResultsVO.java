@@ -21,6 +21,7 @@ public class AlliancePartyDistrictResultsVO implements Serializable {
 	private String state;
 	private String electionType;
 	private String allianceGroupName;
+	private String alliancePartiesChart;
 	
 	private List<DistrictWisePartyPositionsVO> partiesInAlliance;
 	
@@ -55,6 +56,12 @@ public class AlliancePartyDistrictResultsVO implements Serializable {
 	public void setPartiesInAlliance(
 			List<DistrictWisePartyPositionsVO> partiesInAlliance) {
 		this.partiesInAlliance = partiesInAlliance;
+	}
+	public String getAlliancePartiesChart() {
+		return alliancePartiesChart;
+	}
+	public void setAlliancePartiesChart(String alliancePartiesChart) {
+		this.alliancePartiesChart = alliancePartiesChart;
 	}
 	
 
