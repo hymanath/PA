@@ -23,6 +23,8 @@ public class ElectionResultsReportVO implements Serializable {
 	private ResultStatus resultStatus;
 	
 	private ElectionResultsVO electionBasicResultsVO;
+	private ElectionResultsInAllDistrictsVO electionResultsInDistricts;
+	
 	
     //getters and setters
 	public String getState() {
@@ -72,6 +74,15 @@ public class ElectionResultsReportVO implements Serializable {
 	public void setStatewiseElectionResultsChartName(
 			String statewiseElectionResultsChartName) {
 		this.statewiseElectionResultsChartName = statewiseElectionResultsChartName;
+	}
+
+	public ElectionResultsInAllDistrictsVO getElectionResultsInDistricts() {
+		return electionResultsInDistricts;
+	}
+
+	public void setElectionResultsInDistricts(
+			ElectionResultsInAllDistrictsVO electionResultsInDistricts) {
+		this.electionResultsInDistricts = electionResultsInDistricts;
 	}
 	
 	
