@@ -19,6 +19,7 @@ public class DistrictWisePartyPositionsVO implements Serializable {
 	
 	private Long partyId;
 	private String partyName;
+	private Long totSeatsWonInAllPartiDistricts;
 	
 	private List<PartyPositionsInDistrictVO> partyResultsInDistricts;
 	
@@ -34,6 +35,13 @@ public class DistrictWisePartyPositionsVO implements Serializable {
 	}
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
+	}
+	public Long getTotSeatsWonInAllPartiDistricts() {
+		return totSeatsWonInAllPartiDistricts;
+	}
+	public void setTotSeatsWonInAllPartiDistricts(
+			Long totSeatsWonInAllPartiDistricts) {
+		this.totSeatsWonInAllPartiDistricts = totSeatsWonInAllPartiDistricts;
 	}
 	public List<PartyPositionsInDistrictVO> getPartyResultsInDistricts() {
 		return partyResultsInDistricts;
