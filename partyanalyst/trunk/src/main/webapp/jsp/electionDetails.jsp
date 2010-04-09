@@ -86,12 +86,12 @@ function showDistrictWiseResultsLineGraph(results)
 {
 	//districtWiseGraph
 
-	var chartName = results.statewiseElectionResultsChartName;
-	var statewiseGraphEl = document.getElementById("districtWiseGraph");
+	var chartName = results.districtWiseElecResultsChartName;
+	var districtWiseGraphEl = document.getElementById("districtWiseGraph");
 
 	var contentStr = '';
 	contentStr+='<IMG src="charts/'+chartName+'"></IMG>';
-	//statewiseGraphEl.innerHTML = contentStr;	
+	districtWiseGraphEl.innerHTML = contentStr;	
 }
 
 function getElctionsBasicInfo(electionType){
@@ -333,7 +333,7 @@ function buildAllDistrictResultsDataTable(results)
 
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10			        
+		        rowsPerPage    : 23			        
 			    }),
 			    caption:"Districts Wise Election Results"
 				};
