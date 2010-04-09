@@ -26,6 +26,7 @@
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />	
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
@@ -362,6 +363,8 @@
 		<property name="electionAllianceDAO" ref="electionAllianceDAO" />	
 		<property name="allianceGroupDAO" ref="allianceGroupDAO" />	
 		<property name="districtDAO" ref="districtDAO" />	
+		<property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
+		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 	</bean>
 	
 	<bean id="villageBoothDataPopulationService" class="com.itgrids.partyanalyst.service.impl.VillageBoothDataPopulationService" >
