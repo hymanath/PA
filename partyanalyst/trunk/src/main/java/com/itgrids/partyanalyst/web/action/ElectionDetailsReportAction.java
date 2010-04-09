@@ -209,7 +209,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 					}
 					
 				}
-				
+								
 				//state level chart
 				String partyResultsChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat("Election_Results").concat("BarChart");
 		 		String partyResultsChartName = "partyElectionResults_" + partyResultsChartId + session.getId() +".png";
@@ -257,6 +257,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
         ChartProducer.createLineChart("","","Votes Percentage", createDataSetForAlliancPartyOverallResults(alliancParties.getPartiesInAlliance()), alliancePartiesChartPath,300,600);
 	    request.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		session.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
+		chartName = alliancePartiesChartName;
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
@@ -269,13 +270,14 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	public String createLineChartForAlliancPartiesForDistrictLevel(AlliancePartyDistrictResultsVO alliancParties){
 		String chartName = null;
 		try{
-		String alliancePartiesChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat(alliancParties.getAllianceGroupName()).concat("Election_Results").concat("LineChart");
+		String alliancePartiesChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat(alliancParties.getAllianceGroupName()).concat("Election_Results_DistrictWise").concat("LineChart");
  		String alliancePartiesChartName = "alliancPartyElectionResultsDistrictWise_" + alliancePartiesChartId + session.getId() +".png";
         String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
  		
         ChartProducer.createLineChart("","","Votes Percentage", createDataSetForPartyDistrictwiseResults(alliancParties.getPartiesInAlliance()), alliancePartiesChartPath,300,800);
 	    request.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		session.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
+		chartName = alliancePartiesChartName;
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
