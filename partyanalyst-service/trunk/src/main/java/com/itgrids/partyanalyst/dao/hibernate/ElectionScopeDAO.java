@@ -52,8 +52,8 @@ public class ElectionScopeDAO extends GenericDaoHibernate<ElectionScope, Long> i
 
 	@SuppressWarnings("unchecked")
 	public List<ElectionScope> findByTypeIdCountryIdStateId(Long typeId, Long countryID, Long stateID){
-		Long[] params = {typeId, stateID};
-		List<ElectionScope> list = getHibernateTemplate().find("from ElectionScope as model where model.electionType.electionTypeId=? and model.country.countryId= null and model.state.stateId=?",params);
+		Long[] params = {typeId, countryID, stateID};
+		List<ElectionScope> list = getHibernateTemplate().find("from ElectionScope as model where model.electionType.electionTypeId=? and model.country.countryId= ? and model.state.stateId=?",params);
 		return list;
 	}
 
