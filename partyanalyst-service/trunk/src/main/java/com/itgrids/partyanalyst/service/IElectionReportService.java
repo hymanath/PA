@@ -11,5 +11,6 @@ import com.itgrids.partyanalyst.dto.ElectionResultsReportVO;
 
 public interface IElectionReportService {
 
-	public ElectionResultsReportVO getBasicResultsForAnElection(String electionType,String electionYear,Long stateId);
+	public ElectionResultsReportVO getBasicResultsForAnElection(String electionType,String electionYear,Long stateId,String votesPercentMargin);
+	
 }
