@@ -19,8 +19,11 @@ public class ElectionResultsReportVO implements Serializable {
 	private String state;
 	private String electionType;
 	private String electionYear;
-	private String statewiseElectionResultsChartName;	
+	private String statewiseElectionResultsChartName;
+	private String stateLevelLineChartWithoutAllianc;
+	private String statewiseResultsLineChartName;
 	private String districtWiseElecResultsChartName;
+	private String partyResultsDistrictLevelChartWithoutAllianc;
 	private ResultStatus resultStatus;
 	
 	private ElectionResultsVO electionBasicResultsVO;
@@ -93,6 +96,33 @@ public class ElectionResultsReportVO implements Serializable {
 	public void setDistrictWiseElecResultsChartName(
 			String districtWiseElecResultsChartName) {
 		this.districtWiseElecResultsChartName = districtWiseElecResultsChartName;
+	}
+
+	public String getStatewiseResultsLineChartName() {
+		return statewiseResultsLineChartName;
+	}
+
+	public void setStatewiseResultsLineChartName(
+			String statewiseResultsLineChartName) {
+		this.statewiseResultsLineChartName = statewiseResultsLineChartName;
+	}
+
+	public String getStateLevelLineChartWithoutAllianc() {
+		return stateLevelLineChartWithoutAllianc;
+	}
+
+	public void setStateLevelLineChartWithoutAllianc(
+			String stateLevelLineChartWithoutAllianc) {
+		this.stateLevelLineChartWithoutAllianc = stateLevelLineChartWithoutAllianc;
+	}
+
+	public String getPartyResultsDistrictLevelChartWithoutAllianc() {
+		return partyResultsDistrictLevelChartWithoutAllianc;
+	}
+
+	public void setPartyResultsDistrictLevelChartWithoutAllianc(
+			String partyResultsDistrictLevelChartWithoutAllianc) {
+		this.partyResultsDistrictLevelChartWithoutAllianc = partyResultsDistrictLevelChartWithoutAllianc;
 	}
 	
 	

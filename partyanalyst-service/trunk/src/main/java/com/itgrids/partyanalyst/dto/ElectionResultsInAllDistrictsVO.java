@@ -22,6 +22,7 @@ public class ElectionResultsInAllDistrictsVO implements Serializable {
 	
 	private List<AlliancePartyDistrictResultsVO> alliancePartiesList;
 	private List<DistrictWisePartyPositionsVO> allPartiesResults;
+	private List<DistrictWisePartyPositionsVO> allPartiesResultsWithoutGroupingOfAllianc;
 	
 	//getters and setters
 	public String getElectionType() {
@@ -49,6 +50,13 @@ public class ElectionResultsInAllDistrictsVO implements Serializable {
 	public void setAllPartiesResults(
 			List<DistrictWisePartyPositionsVO> allPartiesResults) {
 		this.allPartiesResults = allPartiesResults;
+	}
+	public List<DistrictWisePartyPositionsVO> getAllPartiesResultsWithoutGroupingOfAllianc() {
+		return allPartiesResultsWithoutGroupingOfAllianc;
+	}
+	public void setAllPartiesResultsWithoutGroupingOfAllianc(
+			List<DistrictWisePartyPositionsVO> allPartiesResultsWithoutGroupingOfAllianc) {
+		this.allPartiesResultsWithoutGroupingOfAllianc = allPartiesResultsWithoutGroupingOfAllianc;
 	}
 
 }
