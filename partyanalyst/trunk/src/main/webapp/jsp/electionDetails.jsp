@@ -33,6 +33,8 @@ var electionType = '${electionType}';
 var stateID =  '${stateID}' ;
 var stateName = '${stateName}';
 var year = '${year}';
+var loadingPanel = '';
+
 var electionResultsObj = {
 	partyWiseResultsArr:[],
 	allianceResultsArr:[]
@@ -67,7 +69,15 @@ function callAjax(param,jsObj,url){
 									{										
 										showElectionBasicInfo(myResults);											
 									} else if(jsObj.task == "getResultForAnElection")
-									{	
+									{											 
+										var maskElmt = document.getElementById("maskDiv_main");
+										if(maskElmt)
+											maskElmt.style.display = 'none';
+										
+										if(loadingPanel)
+											loadingPanel.hide();
+
+
 										showStatewiseResultsBarChart(myResults);									
 										showPartywiseDetailsDataTable(myResults);
 										showAllianceDetails(myResults);		
@@ -468,9 +478,43 @@ function openPreYearDistAnalysisWindow()
 	browser1.focus();
 }
 
+function buildLoadingPanel()
+{ 
+	// Initialize the temporary Panel to display while waiting for external content to load
+	loadingPanel = 
+			new YAHOO.widget.Panel("loadingPanelDiv",  
+				{ width:"240px", 
+				  fixedcenter:true, 
+				  close:false, 
+				  draggable:false, 
+				  zindex:4,
+				  modal:true,
+				  visible:true
+				} 
+			);
+
+	loadingPanel.setHeader("Loading, please wait...");
+	loadingPanel.setBody('<img width="150px"  height="20px" src="<%=request.getContextPath()%>/images/icons/barloader.gif" /></img>');
+	loadingPanel.render();
+}
+
 </SCRIPT>
+
+<style>
+	#loadingPanelDiv_main .yui-panel .bd
+	{
+		background-color:#FFFFFF;
+	}
+</style>
 </HEAD>
 <BODY>
+
+<div id="maskDiv_main" class="maskDiv" style="background-color:#cacaca;opacity:0.5;height:700px;width:960px;overflow:hidden;position:absolute;"></div>
+<div id="loadingPanelDiv_main" class="yui-skin-sam">
+<div id="loadingPanelDiv" ></div>
+</div>
+
+
 <TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
 <TD  valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></TD><TD  valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/></TD>
@@ -624,6 +668,8 @@ function openPreYearDistAnalysisWindow()
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 getResultsForAnElection(stateID,electionType,year);
+
+buildLoadingPanel();
 
 </SCRIPT>
 </BODY>
