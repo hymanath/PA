@@ -343,8 +343,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 							showAllZptcParties(results);
 						}
 					}else
-					if(jsObj.task == "getAllElectionsInDistrict"){
-						
+					if(jsObj.task == "getAllElectionsInDistrict")
+					{										
 						showAllElectionsInDistrict(results);
 					}
 					
@@ -651,6 +651,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 
 	function showAllElectionsInDistrict(results){
+		var imgElmt = document.getElementById("AjaxImgDiv");
+
+		if(imgElmt)
+			imgElmt.style.display = 'none';		
+		
 		var allElecDiv = document.getElementById("allElectionResultsInDT");
 		var str = '';
 		str += '<table>';
@@ -671,7 +676,15 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 <div class="detailsHead">
 		Welcome to <c:out value="${districtName}"></c:out> District Page <br/><br/>
 </div>
+<div>
+
+<div id="AjaxImgDiv" align="center" style="display:block;">
+	<span style="font-size:14px;font-weight:bold;">All Parties Performance In Diff Elections Of ${districtName} District</span>
+	<img width="100px"  height="20px" src="<%=request.getContextPath()%>/images/icons/barloader.gif" /></img>
+</div>
+
 <div id="allElectionResultsInDT"></div>
+</div>
 <div id="districtInfoDiv" class="detailsDiv">
 	<table>
 		<tr>
