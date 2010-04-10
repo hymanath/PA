@@ -144,8 +144,14 @@ public class ElectionReportService implements IElectionReportService {
 		List<DistrictWisePartyPositionsVO> allPartiesResultsInDistricts = null;
 		ElectionResultsReportVO electionResultsReportVO = null;
 		Map<Long,PartyElectionResult> participatedPartysResults = new HashMap<Long,PartyElectionResult>();
+		Map<Long,PartyElectionResult> participatedPartysTotalResults = new HashMap<Long,PartyElectionResult>();
+		
 		Map<Long,List<PartyElectionDistrictResult>> participatedDistrictWiseResults = new HashMap<Long,List<PartyElectionDistrictResult>>();
+		Map<Long,List<PartyElectionDistrictResult>> participatedDistrictWiseTotalResults = new HashMap<Long,List<PartyElectionDistrictResult>>();
 		List<PartyElectionDistrictResult> districtWiseResultsForParty = null;
+		List<PartyPositionsVO> overallPartyResultsWithoutAllianc = null;
+		List<DistrictWisePartyPositionsVO> overallPartyResultsDistrictwiseWithoutAllianc = null;
+		
 		
 		try{
 			allPartiesResults = new ArrayList<PartyPositionsVO>();
@@ -205,12 +211,15 @@ public class ElectionReportService implements IElectionReportService {
 			List<PartyElectionResult> partyElectionResultsForParties = partyElectionResultDAO.getByElectionIdAndVotesPercentMargin(electionID, votesPercentMargin);
 			List<PartyElectionDistrictResult> partyElectionDistrictResultsForParties = partyElectionDistrictResultDAO.getDistrictWiseAllPartiesResults(electionID, votesPercentMargin);
 			
-			if(partyElectionResultsForParties != null && partyElectionResultsForParties.size() > 0)
+			if(partyElectionResultsForParties != null && partyElectionResultsForParties.size() > 0){
 			participatedPartysResults = getPartyElectionResultsProcessedToMap(partyElectionResultsForParties);
+			participatedPartysTotalResults.putAll(participatedPartysResults);
+			}
 			
-			if(partyElectionDistrictResultsForParties != null && partyElectionDistrictResultsForParties.size() > 0)
+			if(partyElectionDistrictResultsForParties != null && partyElectionDistrictResultsForParties.size() > 0){
 			participatedDistrictWiseResults = getPartyElectionDistrictResultsProcessedToMap(partyElectionDistrictResultsForParties);
-			
+			participatedDistrictWiseTotalResults.putAll(participatedDistrictWiseResults);
+			}
 						
 			//get allianc Parties Details and results
 			List<AlliancePartyResultsVO> partiesInAlliancResults = new ArrayList<AlliancePartyResultsVO>();
@@ -283,8 +292,16 @@ public class ElectionReportService implements IElectionReportService {
 						allPartiesResultsInDistricts.add(getDistrictWiseElectionResultsGrandTotalForAlliancParty(alliancePartyDistrictwiseResults));
 					}
 				}
+				//Overall Results Processing into List<PartyPositionsVO> without grouping of alliance
+			    overallPartyResultsWithoutAllianc = getProcessedMapForAllPartiesResults(participatedPartysTotalResults);
+			    if(overallPartyResultsWithoutAllianc != null)
+			    Collections.sort(overallPartyResultsWithoutAllianc, new PartyElectionResultsComparator());
+				overallPartyResultsDistrictwiseWithoutAllianc = getProcessedMapForAllPartiesDistrictwiseResults(participatedDistrictWiseTotalResults);
+                if(overallPartyResultsDistrictwiseWithoutAllianc != null)
+                Collections.sort(overallPartyResultsDistrictwiseWithoutAllianc, new PartyElecDistrictResultsComparator());
 			}
 			//overall Results
+			/*
 			if(!participatedPartysResults.isEmpty()){
 				Set entries = participatedPartysResults.entrySet();
 				Iterator iterator = entries.iterator();
@@ -307,9 +324,25 @@ public class ElectionReportService implements IElectionReportService {
 				log.debug("Back :" + distWisePartyResults.getTotSeatsWonInAllPartiDistricts());
 				allPartiesResultsInDistricts.add(distWisePartyResults);
 				} 
+			}*/
+			
+			//Overall Results Processing into List<PartyPositionsVO> by grouping of alliance 
+			List<PartyPositionsVO> overallPartyResults = getProcessedMapForAllPartiesResults(participatedPartysResults);
+			if(overallPartyResults != null && overallPartyResults.size() > 0){
+				for(PartyPositionsVO results:overallPartyResults){
+				allPartiesResults.add(results);
+				}
 			}
 			
+			//Overall District wise Results Processing into List<PartyPositionsVO> by grouping of alliance
+			List<DistrictWisePartyPositionsVO> overallPartyResultsDistrictwise = getProcessedMapForAllPartiesDistrictwiseResults(participatedDistrictWiseResults);
+			if(overallPartyResultsDistrictwise != null && overallPartyResultsDistrictwise.size() > 0){
+				for(DistrictWisePartyPositionsVO results:overallPartyResultsDistrictwise){
+				allPartiesResultsInDistricts.add(results);
+				}
+			}
 			
+						
 			electionResultsReportVO = new ElectionResultsReportVO();
 			ElectionResultsVO electionBasicResultsVO = new ElectionResultsVO();
 			
@@ -318,13 +351,16 @@ public class ElectionReportService implements IElectionReportService {
 			electionBasicResultsVO.setElectionYear(electionYear);
 			electionBasicResultsVO.setAllPartiesResults(allPartiesResults);
 			electionBasicResultsVO.setAlliancePartiesList(partiesInAlliancResults);
+			electionBasicResultsVO.setAllPartiesResultsWithoutGroupingOfAllianc(overallPartyResultsWithoutAllianc);
 			
+						
 			//////////////////////////////////////////////////////////////////////////////////////////
 			log.debug("District Wise Results List Size :" + allPartiesResultsInDistricts.size());
 			Collections.sort(allPartiesResultsInDistricts, new PartyElecDistrictResultsComparator());
 			ElectionResultsInAllDistrictsVO electionResultsInAllDistrictsVO = new ElectionResultsInAllDistrictsVO();
 			electionResultsInAllDistrictsVO.setAllPartiesResults(allPartiesResultsInDistricts);
 			electionResultsInAllDistrictsVO.setAlliancePartiesList(districtwisePartiesInAlliancResults);
+			electionResultsInAllDistrictsVO.setAllPartiesResultsWithoutGroupingOfAllianc(overallPartyResultsDistrictwiseWithoutAllianc);
 						
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			electionResultsReportVO.setElectionType(electionType);
@@ -354,6 +390,51 @@ public class ElectionReportService implements IElectionReportService {
 			count = (Long)params;
 		}
 		return count;
+	}
+	
+	/*
+	 * All Parties Results are Processed and set to PartyPositionsVO
+	 */
+	@SuppressWarnings("unchecked")
+	public List<PartyPositionsVO> getProcessedMapForAllPartiesResults(Map<Long,PartyElectionResult> participatedPartysResults){
+		List<PartyPositionsVO> allPartiesOverallResults = null;
+		
+		if(!participatedPartysResults.isEmpty()){
+			allPartiesOverallResults = new ArrayList<PartyPositionsVO>();
+			Set entries = participatedPartysResults.entrySet();
+			Iterator iterator = entries.iterator();
+			while(iterator.hasNext()){
+			Map.Entry entry = (Map.Entry)iterator.next();
+			PartyElectionResult partyElectionResult = (PartyElectionResult)entry.getValue();
+			PartyPositionsVO partyPositions = getElectionResultsForAParty(partyElectionResult);
+			allPartiesOverallResults.add(partyPositions);
+			}
+		}
+		return allPartiesOverallResults;
+	}
+	
+	/*
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public List<DistrictWisePartyPositionsVO> getProcessedMapForAllPartiesDistrictwiseResults(Map<Long,List<PartyElectionDistrictResult>> participatedDistrictWiseResults){
+		List<DistrictWisePartyPositionsVO> allPartiesResultsInDistricts = null;
+		
+		if(!participatedDistrictWiseResults.isEmpty()){
+			allPartiesResultsInDistricts = new ArrayList<DistrictWisePartyPositionsVO>();
+			Set entries = participatedDistrictWiseResults.entrySet();
+			Iterator iterator = entries.iterator();
+			while(iterator.hasNext()){
+			Map.Entry entry = (Map.Entry)iterator.next();
+			List<PartyElectionDistrictResult> partyElecDistResult = (List<PartyElectionDistrictResult>)entry.getValue();
+			DistrictWisePartyPositionsVO distWisePartyResults = getDistrictWiseProcessedResultsForAParty(partyElecDistResult);
+			log.debug("Back :" + distWisePartyResults.getTotSeatsWonInAllPartiDistricts());
+			allPartiesResultsInDistricts.add(distWisePartyResults);
+			} 
+		}
+		
+		
+		return allPartiesResultsInDistricts;
 	}
 	
 	/*
