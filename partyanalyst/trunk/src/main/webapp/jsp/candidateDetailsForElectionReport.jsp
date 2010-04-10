@@ -40,7 +40,7 @@ function callAjax(param,jsObj,url){
 									
 								if(jsObj.task == "getAllCandidates")
 								{																
-									showCandidates(myResults);											
+									showCandidates(myResults,jsObj);											
 								}
 							}
 						catch (e) {   
@@ -54,15 +54,46 @@ function callAjax(param,jsObj,url){
 	               };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}		
+}
+
 function partywiseClickHandler()
 {
+	
+	var allCandidatesRadio = document.getElementById("allCandidates");
+	var wonCandidatesRadio = document.getElementById("wonCandidates");
+	var regionalRadioBtns = document.getElementsByName("regionalRadio");
 	var regionSelect = document.getElementsByName("regionSelect");
+	var regionalOptionsRow = document.getElementById("regionalOptionsRow");
+	
+	if(regionalOptionsRow)
+	{
+		regionalOptionsRow.style.display = 'none';
+	}	 		
+	if(allCandidatesRadio.checked == true)
+	{
+		allCandidatesRadio.checked = false;
+	}
+	if(wonCandidatesRadio.checked == true)
+	{
+		wonCandidatesRadio.checked = false;
+	}	
 	for (i=0; i< regionSelect.length; i++)
 	{
 		if(regionSelect[i].style.display == "block")			
 		{
 			regionSelect[i].style.display = 'none';}
+	}
+	var selectPartyEl = document.getElementById("selectParty");
+	if(selectPartyEl.style.display == 'none')
+	{
+		selectPartyEl.style.display = 'block';
+	} else 	selectPartyEl.style.display = 'none';
+	var regionSelect = document.getElementsByName("regionSelect");
+	for (k=0; k< regionSelect.length; k++)
+	{
+		if(regionSelect[k].style.display == "block")			
+		{
+			regionSelect[k].style.display = 'none';}
 	}
 }
 
@@ -70,7 +101,12 @@ function selectPartyOnchangeHandler(value)
 {
 	var allCandidatesRadio = document.getElementById("allCandidates");
 	var wonCandidatesRadio = document.getElementById("wonCandidates");
-	var regionalRadioBtns = document.getElementsByName("regionalRadio");
+	var regionalOptionsRow = document.getElementById("regionalOptionsRow");
+	
+	if(regionalOptionsRow)
+	{
+		regionalOptionsRow.style.display = 'none';
+	}
 	var regionSelect = document.getElementsByName("regionSelect");
 			
 	if(allCandidatesRadio.checked == true)
@@ -81,11 +117,7 @@ function selectPartyOnchangeHandler(value)
 	{
 		wonCandidatesRadio.checked = false;
 	}
-	for (i=0; i< regionalRadioBtns.length; i++)
-	{
-		if(regionalRadioBtns[i].checked == true)
-		{regionalRadioBtns[i].checked = false;}
-	}
+	
 	for (i=0; i< regionSelect.length; i++)
 	{
 		if(regionSelect[i].style.display == "block")			
@@ -99,17 +131,37 @@ function allCandidatesClickHandler()
 {
 	var regionalRadioBtns = document.getElementsByName("regionalRadio");
 	var regionSelect = document.getElementsByName("regionSelect");
-
+	var regionalOptionsRow = document.getElementById("regionalOptionsRow");
+	var partywiseCheckBoxEl = document.getElementById("partywiseCheckBox");
+	if(regionalOptionsRow && regionalOptionsRow.style.display == 'none')
+	{
+		//regionalOptionsRow.style.display = 'tableRow';
+		regionalOptionsRow.style.display = 'block';
+	}
+	
 	for (i=0; i< regionalRadioBtns.length; i++)
 	{
 		if(regionalRadioBtns[i].checked == true)
 		{regionalRadioBtns[i].checked = false;}
-	}
-	for (i=0; i< regionSelect.length; i++)
-	{
-		if(regionSelect[i].style.display == "block")			
+		if(regionalRadioBtns[i].id == 'stateLevelA' && partywiseCheckBoxEl.checked == false) 
+			{regionalRadioBtns[i].disabled = true;}
+		else if(regionalRadioBtns[i].id == 'stateLevelA' && partywiseCheckBoxEl.checked == true)
 		{
-			regionSelect[i].style.display = 'none';}
+				regionalRadioBtns[i].disabled = false;
+		}
+		if(regionalRadioBtns[i].id == 'countryLevelP' && partywiseCheckBoxEl.checked == 'false')
+		{
+			regionalRadioBtns[i].disabled = true;
+		}else if(regionalRadioBtns[i].id == 'countryLevelP' && partywiseCheckBoxEl.checked == true)
+		{
+			regionalRadioBtns[i].disabled = false;
+		}
+	}
+	for (j=0; j< regionSelect.length; j++)
+	{
+		if(regionSelect[j].style.display == "block")			
+		{
+			regionSelect[j].style.display = 'none';}
 	}	
 }
 
@@ -117,17 +169,27 @@ function wonCandidatesClickHandler()
 {
 	var regionalRadioBtns = document.getElementsByName("regionalRadio");
 	var regionSelect = document.getElementsByName("regionSelect");
-
+	var regionalOptionsRow = document.getElementById("regionalOptionsRow");
+	
+	if(regionalOptionsRow && regionalOptionsRow.style.display == 'none')
+	{
+		//regionalOptionsRow.style.display = 'tableRow';
+		regionalOptionsRow.style.display = 'block';
+	}	
 	for (i=0; i< regionalRadioBtns.length; i++)
 	{
 		if(regionalRadioBtns[i].checked == true)
 		{regionalRadioBtns[i].checked = false;}
+		if(regionalRadioBtns[i].id == 'stateLevelA')
+		{regionalRadioBtns[i].disabled = false;}
+		if(regionalRadioBtns[i].id == 'countryLevelP')
+		{regionalRadioBtns[i].disabled = false;}
 	}
-	for (i=0; i< regionSelect.length; i++)
+	for (k=0; k< regionSelect.length; k++)
 	{
-		if(regionSelect[i].style.display == "block")			
+		if(regionSelect[k].style.display == "block")			
 		{
-			regionSelect[i].style.display = 'none';}
+			regionSelect[k].style.display = 'none';}
 	}		
 }
 
@@ -151,14 +213,17 @@ function stateLevelPClickHandler()
 
 function stateLevelAClickHandler()
 {
+	//var wonCandidatesRadioEl = document.getElementById("wonCandidates");
+	//var allCandidatesRadioEl = document.getElementById("allCandidates");
 	var regionSelect = document.getElementsByName("regionSelect");
+	
 	for (i=0; i< regionSelect.length; i++)
 	{
 		if(regionSelect[i].style.display == "block")			
 		{
 			regionSelect[i].style.display = 'none';}
 	}
-	
+	allCandidates();
 }
 function distLevelAClickHandler()
 {
@@ -166,8 +231,18 @@ function distLevelAClickHandler()
 	if(selectdistrictAEl.style.display == "none")
 	{		
 		selectdistrictAEl.style.display = 'block';
+		selectdistrictAEl.selectedIndex='0';
 	}	
 }
+/*
+function selectDistDropDownOnchangeHandler()
+{
+	alert("hi");
+	var updateBtnEl = document.getElementById("updateBtn");
+	if(updateBtnEl.disabled == true)
+	{updateBtnEl.disabled = false}
+	
+}*/
 
 function buildParticipatedCandidatesDetailsDataTable(data)
 {
@@ -180,7 +255,7 @@ function buildParticipatedCandidatesDetailsDataTable(data)
 								{key: "partyFlag", label: "Party Flag"},
 								{key: "votesEarned", label: "Votes Earned",formatter:"number", sortable:true},
 								{key: "votesPercentage", label: "Votes %", formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},		
-								{key: "status", label: "Status", formatter:"number", sortable:true},	
+								{key: "rank", label: "Rank", formatter:"number", sortable:true},	
 		              	 	    {key: "marginVotes", label: "Margin Votes",formatter:"number", sortable:true},
 		              	 	 	{key: "marginVotesPercentage", label: "Margin Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}		              	 	 			              	 	 	
 		              	 	    ];                	 	    
@@ -191,7 +266,7 @@ function buildParticipatedCandidatesDetailsDataTable(data)
                 fields: [ {key: "count", parser:"number"},"name", "constituency", "party", "partyFlag",
                          {key:  "votesEarned", parser:"number"},
                 		  {key: "votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},
-                		  {key: "status", parser:"number"},
+                		  {key: "rank", parser:"number"},
                 		  {key: "marginVotes", parser:YAHOO.util.DataSourceBase.parseNumber},
                 		  {key: "marginVotesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber} ]    
                          		   
@@ -199,7 +274,10 @@ function buildParticipatedCandidatesDetailsDataTable(data)
 
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
-				rowsPerPage    : 50			        
+				rowsPerPage    : 50,
+				template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+				rowsPerPageOptions: [50,100,150,200], 
+			    pageLinks: 50			        
 			    }),
 			    caption:"All Participated Candidates Details" 
 				};
@@ -213,7 +291,7 @@ function allCandidates()
 {
 	
 	var electionLevel;
-	var partywiseRadioEl = document.getElementById("partywise");
+	var partywiseCheckBoxEl = document.getElementById("partywiseCheckBox");
 	var allCandidatesRadioEl = document.getElementById("allCandidates");
 	var wonCandidatesRadioEl = document.getElementById("wonCandidates");
 	var stateLevelAEl = document.getElementById("stateLevelA");
@@ -228,7 +306,7 @@ function allCandidates()
 	var locationId;
 	var resultsCategory;   
 
-	if(partywiseRadioEl.checked == true)
+	if(partywiseCheckBoxEl.checked == true)
 	{
 		partyId = selectPartyEl.value;
 	} else{
@@ -290,33 +368,41 @@ function allCandidates()
 			
 	callAjax(rparam,jsObj,url);
 }
-function showCandidates(results)
+function showCandidates(results,jsObj)
 {
+	var emptyArray = new Array();
 	var assignTocandidateDetailsArr = new Array();
 	var candidateDetails = results.candidateDetails;
 	var count=0;
-	for(var i in candidateDetails)
-	{		
-		var partyFlag = results.candidateDetails[i].partyFlag;
-		count = count + 1;
-		var candidateDetailsObj = {
-				
-				count: count, 
-				name: candidateDetails[i].candidateName,
-				constituency: candidateDetails[i].constituencyName,
-				party: candidateDetails[i].partyName,
-				partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>',
-				votesEarned: candidateDetails[i].votesEarned,
-				votesPercentage: candidateDetails[i].votesPercentage,
-				status: candidateDetails[i].rank,
-				marginVotes: candidateDetails[i].votesDifference,
-				marginVotesPercentage:0
-		};
-		assignTocandidateDetailsArr.push(candidateDetailsObj);		
-	}
-	candidateDetailsObj.candidateDetailsArr = assignTocandidateDetailsArr;
 	
-	buildParticipatedCandidatesDetailsDataTable(candidateDetailsObj.candidateDetailsArr);
+	if(candidateDetails.length != 0)
+	{
+		for(var i in candidateDetails)
+		{		
+			var partyFlag = results.candidateDetails[i].partyFlag;
+			count = count + 1;
+			var candidateDetailsObj1 = {
+					
+					count: count, 
+					name: candidateDetails[i].candidateName,
+					constituency: candidateDetails[i].constituencyName,
+					party: candidateDetails[i].partyName,
+					partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>',
+					votesEarned: candidateDetails[i].votesEarned,
+					votesPercentage: candidateDetails[i].votesPercentage,
+					rank: candidateDetails[i].rank,
+					marginVotes: candidateDetails[i].votesDifference,
+					marginVotesPercentage: candidateDetails[i].marginVotesPercentage
+			};
+			assignTocandidateDetailsArr.push(candidateDetailsObj1);		
+		}
+		candidateDetailsObj.candidateDetailsArr = assignTocandidateDetailsArr;
+		buildParticipatedCandidatesDetailsDataTable(candidateDetailsObj.candidateDetailsArr);
+	} 
+	else 	{
+		candidateDetailsObj.candidateDetailsArr = emptyArray;
+		buildParticipatedCandidatesDetailsDataTable(emptyArray);
+	}
 	
 	
 }
@@ -326,43 +412,41 @@ function showCandidates(results)
 <CENTER>
 <H3>${year} ${electionType} Election All Winning Candidates Details</H3>
 <DIV id="optionsDiv" class="optionsDiv">
+	<P class="paraText">To View Candidates Details for a particular party, please select the "Partywise Candidate Details" check box and select a party from drop down list and select the options provided below. </P>
 	<TABLE  class="optionsTable">
 	<TR>
-	<TD align="left" class="td"><INPUT type="radio" name="partiesOption" id="partywise" value="Partywise" onClick="partywiseClickHandler()" />Partywise Candidates Details</TD>
-	<TD align="left"><s:select id="selectParty" theme="simple"  name="selectParty" cssClass="selectBoxStyle" list="partiesList" listKey="id" listValue="name" onchange="selectPartyOnchangeHandler()" /></TD>
-	<!--<SELECT name="selectParty" id="selectParty" class="selectBoxStyle" onchange="selectPartyOnchangeHandler(this.options[this.selectedIndex].value)"><OPTION value="0">Select Party</OPTION><OPTION value="1">INC</OPTION><OPTION value="2">TDP</OPTION><OPTION value="3">TRS</OPTION></SELECT>
-	--></TR>	
+	<TD align="left" class="td"><INPUT type="checkbox" name="partywiseCheckBox" id="partywiseCheckBox" onclick="partywiseClickHandler()" />Partywise Candidates Details</TD>
+	<TD align="left"><s:select id="selectParty" theme="simple"  name="selectParty" cssClass="selectBoxStyle" style="display:none;" list="partiesList" listKey="id" listValue="name" onchange="selectPartyOnchangeHandler()" /></TD>
+	</TR>	
 	<TR>
-	<TD align="left" class="td"><INPUT type="radio" name="candidatesOption" id="allCandidates" value="allCandidates" onClick="allCandidatesClickHandler()" />All Participated Candidates Details</TD>
 	<TD align="left" class="td"><INPUT type="radio" name="candidatesOption" id="wonCandidates" value="wonCandidatesOnly" onClick="wonCandidatesClickHandler()" checked="true"/>Won Candidates Details</TD>
+	<TD align="left" class="td"><INPUT type="radio" name="candidatesOption" id="allCandidates" value="allCandidates" onClick="allCandidatesClickHandler()" />All Participated Candidates Details</TD>	
 	</TR>	
 	<c:if test="${electionType == 'Parliament'}">
-		<TR>
-		<TD class="td"><INPUT type="radio" name="regionalRadio" id="countryLevelP" value="countrywiseParliament" onClick="countryLevelPClickHandler()" checked="true"/>Countrywise</TD>		
-		<TD class="td"><INPUT type="radio" name="regionalRadio" id="stateLevelP" value="statewiseParliament" onClick="stateLevelPClickHandler()"/>Statewise</TD>
+		<TR id="regionalOptionsRow">
+		<TD class="td" width="50%" style="width:50%;"><INPUT type="radio" name="regionalRadio" id="countryLevelP" value="countrywiseParliament" onClick="countryLevelPClickHandler()" checked="true"/>Countrywise</TD>		
+		<TD class="td" width="50%" style="width:50%;"><INPUT type="radio" name="regionalRadio" id="stateLevelP" value="statewiseParliament" onClick="stateLevelPClickHandler()"/>Statewise</TD>
 		</TR>
 		<TR>
-		<TD colspan="2" align="right"><s:select id="selectStateP" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="statesListObj.getAllStates" listKey="id"  listValue="name" /></TD>
-		<!--<SELECT name="regionSelect"  id="selectStateP" class="selectBoxStyle" style="display:none;margin-right:25px;"><OPTION value="0">Select State</OPTION><OPTION value="1">Andhra Pradesh</OPTION><OPTION value="2">Karnataka</OPTION><OPTION value="3">Tamil Nadu</OPTION></SELECT>
-		--></TR>
+		<TD colspan="2" align="right"><s:select id="selectStateP" name="regionSelect" cssClass="selectBoxStyle" style="display:none" theme="simple" list="statesListObj.getAllStates" listKey="id"  listValue="name" /></TD>
+		</TR>		
 	</c:if>	
 	 <c:if test="${electionType == 'Assembly'}">  
-		<TR>
-		<TD class="td"><INPUT type="radio" name="regionalRadio" id="stateLevelA" value="statewiseAssembly" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
-		<TD class="td"><INPUT type="radio" name="regionalRadio" id="distLevelA" value="districtwiseAssembly" onClick="distLevelAClickHandler()"/>Districtwise</TD>
+		<TR id="regionalOptionsRow">
+		<TD class="td" name="RegionalOptionsA" width="50%" style="width:50%;"><INPUT type="radio" name="regionalRadio" id="stateLevelA" value="statewiseAssembly" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
+		<TD class="td" name="RegionalOptionsA" width="50%" style="width:50%;"><INPUT type="radio" name="regionalRadio" id="distLevelA" value="districtwiseAssembly" onClick="distLevelAClickHandler()"/>Districtwise</TD>
 		</TR>
 		<TR>
-		<TD align="right" colspan="2" ><s:select id="selectdistrictA" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="margin-right:30px;display:none" /></TD>
-		<!--<SELECT name="regionSelect" id="selectdistrictA" class="selectBoxStyle" style="display:none;" ><OPTION value="0">Select District</OPTION><OPTION value="1">Kurnool</OPTION><OPTION value="2">Mahaboob Nagar</OPTION><OPTION value="3">Nellore</OPTION></SELECT>
-		--></TR>		
+		<TD align="right" colspan="2" ><s:select id="selectdistrictA" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="margin-right:85px;display:none" onChange="allCandidates()"  /></TD>
+		</TR>		
 	</c:if>
-	<TR>
-		<TD><INPUT type="button" onclick="allCandidates()" value="UPDATE RESULTS"></TD>
+	<!--<TR>
+		<TD><INPUT type="button" id="updateBtn" onclick="allCandidates()" value="UPDATE RESULTS" disabled="true"></TD>
 	</TR>
-	</TABLE>
+	--></TABLE>
 </DIV>
-
-<DIV id="participatedCandidatesDetailsDataTable" align="left"></DIV>
+<!--<DIV id="error" class="errorMessage" style="display:none;">Please Select Candidate Details(Won or Participated) Options </DIV>
+--><DIV id="participatedCandidatesDetailsDataTable" align="left"></DIV>
 
 </CENTER>
 <SCRIPT type="text/javascript">
