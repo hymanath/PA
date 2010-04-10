@@ -509,7 +509,7 @@ function buildLoadingPanel()
 </HEAD>
 <BODY>
 
-<div id="maskDiv_main" class="maskDiv" style="background-color:#cacaca;opacity:0.5;height:700px;width:960px;overflow:hidden;position:absolute;"></div>
+<!--<div id="maskDiv_main" class="maskDiv" style="background-color:#cacaca;opacity:0.5;height:700px;width:960px;overflow:hidden;position:absolute;"></div>-->
 <div id="loadingPanelDiv_main" class="yui-skin-sam">
 <div id="loadingPanelDiv" ></div>
 </div>
@@ -669,7 +669,7 @@ function buildLoadingPanel()
 //getElctionsBasicInfo(electionType);
 getResultsForAnElection(stateID,electionType,year);
 
-buildLoadingPanel();
+//buildLoadingPanel();
 
 </SCRIPT>
 </BODY>
