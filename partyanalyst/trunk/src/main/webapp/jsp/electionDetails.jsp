@@ -33,12 +33,13 @@ var electionType = '${electionType}';
 var stateID =  '${stateID}' ;
 var stateName = '${stateName}';
 var year = '${year}';
-var loadingPanel = '';
-
 var electionResultsObj = {
 	partyWiseResultsArr:[],
-	allianceResultsArr:[]
+	allianceResultsArr:[],
+	partyWiseResultsWithoutAllianceArr:[],
+    districtWiseResultsWithoutAllianceArr:[]
 };
+	
 var Localization = { <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -69,21 +70,17 @@ function callAjax(param,jsObj,url){
 									{										
 										showElectionBasicInfo(myResults);											
 									} else if(jsObj.task == "getResultForAnElection")
-									{											 
-										var maskElmt = document.getElementById("maskDiv_main");
-										if(maskElmt)
-											maskElmt.style.display = 'none';
-										
-										if(loadingPanel)
-											loadingPanel.hide();
-
+									{	
+										var elmt = document.getElementById("electionPageAjaxImgDiv");
+										if(elmt)
+											elmt.style.display = 'none';
 
 										showStatewiseResultsBarChart(myResults);									
 										showPartywiseDetailsDataTable(myResults);
 										showAllianceDetails(myResults);		
 
 										showDistrictWiseResultsLineGraph(myResults);
-										buildAllDistrictResultsDataTable(myResults.electionResultsInDistricts);
+										buildAllDistrictResultsDataTable(myResults);
 										buildAllianceDistrictResultsDataTable(myResults.electionResultsInDistricts);
 									} 
  									
@@ -168,7 +165,12 @@ function showElectionBasicInfo(results)
 function showPartywiseDetailsDataTable(results)
 {   
 	var partywiseResultsArr = results.electionBasicResultsVO.allPartiesResults;
+	var partywiseResultsWithoutAlliance = results.electionBasicResultsVO.allPartiesResultsWithoutGroupingOfAllianc;
+
+
+
 	var assignToPartywiseResultsArr = new Array();
+	
 	for(var i in  partywiseResultsArr){
 		var partywiseResultsObj = { 
 				party: partywiseResultsArr[i].partyName, 
@@ -184,11 +186,63 @@ function showPartywiseDetailsDataTable(results)
 		assignToPartywiseResultsArr.push(partywiseResultsObj);	
 	} 
 	electionResultsObj.partyWiseResultsArr = assignToPartywiseResultsArr;
-	buildPartywiseResultsDataTable();
+	buildPartywiseResultsDataTable("partywiseResultsDataTable",electionResultsObj.partyWiseResultsArr);
+
+	var assignToPartywiseResultsArrWithoutAlliance = new Array();
 	
+	for(var j in  partywiseResultsWithoutAlliance){
+		var partywiseResultsObj = { 
+				party: partywiseResultsWithoutAlliance[j].partyName, 
+				totalParticipated: partywiseResultsWithoutAlliance[j].totalConstiParticipated, 
+				seatsWon: partywiseResultsWithoutAlliance[j].totalSeatsWon,
+				second: partywiseResultsWithoutAlliance[j].secondPosWon,
+				third: partywiseResultsWithoutAlliance[j].thirdPosWon,
+				fourth: partywiseResultsWithoutAlliance[j].fourthPosWon,
+				nth: partywiseResultsWithoutAlliance[j].nthPosWon,
+				pc: partywiseResultsWithoutAlliance[j].votesPercentage,
+				overall: partywiseResultsWithoutAlliance[j].completeVotesPercent						 
+				};
+		assignToPartywiseResultsArrWithoutAlliance.push(partywiseResultsObj);	
+	} 
+		electionResultsObj.partyWiseResultsWithoutAllianceArr = assignToPartywiseResultsArrWithoutAlliance;
+
+	var chartpartywiseImgChartElmt = document.getElementById("partywiseResults_img_anc");
+	var imgStr = '';
+	imgStr+='<div style="margin-top:10px;margin-bottom:10px;">';
+	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'partywiseImgChart\',\''+results.statewiseResultsLineChartName+'\',\'View Party Results Line Chart\')">View Party Results Line Charts</a>';
+	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showPartyResultsWithoutAlliance(\''+results.stateLevelLineChartWithoutAllianc+'\')">View Party Results Without Alliance </a></div>';
+
+	chartpartywiseImgChartElmt.innerHTML = imgStr;
 }
 
-function buildPartywiseResultsDataTable()
+
+function showPartyResultsWithoutAlliance(chartId)
+{	
+	//partywiseResultsWithoutAlliance
+
+	var contentStr ='<div id="withoutAllianceDiv_main">';
+	contentStr +='<div id="withoutAllianceDiv_graph"><IMG src="charts/'+chartId+'"></IMG></div>';
+	contentStr +='<div id="withoutAllianceDiv_Datatable"></div>';
+	contentStr +='</div>';
+
+	 var myPanel = new YAHOO.widget.Panel("partywiseResultsWithoutAlliance", {
+                 
+                 fixedcenter: true, 
+                 constraintoviewport: true, 
+                 underlay: "none", 
+                 close: true, 
+                 visible: true, 
+                 draggable: true
+       });
+	  // myPanel.setHeader("Party Results Without Alliance");
+       myPanel.setBody(contentStr);
+       myPanel.render();
+		
+	
+		buildPartywiseResultsDataTable("withoutAllianceDiv_Datatable",electionResultsObj.partyWiseResultsWithoutAllianceArr);
+}	
+
+function buildPartywiseResultsDataTable(divId,dtSourceArray)
 {	
 	var partywiseResultsColumnDefs = [
 								{key: "party", label: "<%=party%>", sortable:true},		
@@ -202,7 +256,7 @@ function buildPartywiseResultsDataTable()
 		              	 	 	{key: "overall", label:"Overall %",formatter:YAHOO.widget.DataTable.formatFloat, sortable: true}		              	 	 	
 		              	 	    ];                	 	    
 
-		var partywiseResultsDataSource = new YAHOO.util.DataSource(electionResultsObj.partyWiseResultsArr); 
+		var partywiseResultsDataSource = new YAHOO.util.DataSource(dtSourceArray); 
 		partywiseResultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		partywiseResultsDataSource.responseSchema = {
                 fields: ["party", {key: "totalParticipated", parser:"number"},
@@ -222,7 +276,7 @@ function buildPartywiseResultsDataTable()
 			    caption:"Partywise Results" 
 				};
 		
-		partywiseResultsDataTable = new YAHOO.widget.DataTable("partywiseResultsDataTable", partywiseResultsColumnDefs, partywiseResultsDataSource,myConfigs);
+		partywiseResultsDataTable = new YAHOO.widget.DataTable(divId, partywiseResultsColumnDefs, partywiseResultsDataSource,myConfigs);
 					
         return { 
             oDS: partywiseResultsDataSource, 
@@ -238,13 +292,17 @@ function showAllianceDetails(results)
 	var allianceResultsDataTableEl = document.getElementById("allianceResultsDataTable");
 	
 	for(var i in  allianceResultsArr){
+		var header = allianceResultsArr[i].allianceGroupName +"AllianceGraph";
+		
 		var createDiv = document.createElement("div");		
 		createDiv.setAttribute("id","allianceResults_"+i+"_main");		
 		createDiv.style.cssText = 'margin-top:32px;';
 		var str = '';
 		str+='<div id="allianceResults_'+i+'_datatable"></div>';
 		str+='<div id="allianceResults_'+i+'_allianceGraph"></div>';
-		str+='<div id="allianceResults_'+i+'_footer" style="text-align:left;"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_'+i+'_allianceGraph\',\''+allianceResultsArr[i].chartForPartyResults+'\',\''+allianceResultsArr[i].allianceGroupName+'\')">View '+allianceResultsArr[i].allianceGroupName+' Alliance Graph<a></div>';
+		str+='<div id="allianceResults_'+i+'_footer" style="text-align:left;margin-top:10px;margin-bottom:10px;">';
+		str+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'allianceResults_'+i+'_allianceGraph\',\''+allianceResultsArr[i].chartForPartyResults+'\',\''+header+'\')">View '+allianceResultsArr[i].allianceGroupName+' Alliance Graph<a>';
+		str+='</div>';
 		createDiv.innerHTML = str;
 		allianceResultsDataTableEl.appendChild(createDiv);
 	
@@ -255,6 +313,11 @@ function showAllianceDetails(results)
 
 function showAllianceGraph(divId,chartId, chartName)
 {
+	if(myPanel)
+		myPanel.destroy();
+	//var contentStr='';
+	//contentStr+='<DIV>'+chartName+'</DIV>';
+	var contentStr ='<IMG src="charts/'+chartId+'"></IMG>';
 	
 	var contentStr='<IMG src="charts/'+chartId+'"></IMG>';
 
@@ -271,6 +334,7 @@ function showAllianceGraph(divId,chartId, chartName)
 		  
 
        });
+	   myPanel.setHeader(chartName);
 	   myPanel.setHeader(chartName + " Alliance Graph");
        myPanel.setBody(contentStr);
        myPanel.render();
@@ -326,9 +390,10 @@ function showCandidateDetailsWindow(stateName,electionType,year)
 	browser1.focus();	
 }
 
-function buildAllDistrictResultsDataTable(results)
-{	
-	var innerObj = results.allPartiesResults;
+
+function buildAllDistrictDatatable(innerObj,divID)
+{
+	
 	var dtSource = new Array();
 	
 	for(var i in innerObj)
@@ -386,28 +451,75 @@ function buildAllDistrictResultsDataTable(results)
 			    caption:"Districts Wise Election Results"
 				};
 		
-		var allDistrictResultsDataTable = new YAHOO.widget.DataTable("districtResults", allDistrictResultsColumnDefs, allDistrictResultsDataSource,myConfigs);
+		var allDistrictResultsDataTable = new YAHOO.widget.DataTable(divID, allDistrictResultsColumnDefs, allDistrictResultsDataSource,myConfigs);
 					
         return { 
             oDS: allDistrictResultsDataSource, 
             oDT: allDistrictResultsDataTable            
       };	
-	
 }
+
+function buildAllDistrictResultsDataTable(results)
+{	
+	//districtResults_withoutAllianceDiv
+	var innerObj = results.electionResultsInDistricts.allPartiesResults;
+	electionResultsObj.districtWiseResultsWithoutAllianceArr = results.electionResultsInDistricts.allPartiesResultsWithoutGroupingOfAllianc;
+
+	buildAllDistrictDatatable(innerObj,"districtResults");
+
+	var elmt = document.getElementById("districtResults_withoutAllianceDiv");
+	var str = '<div style="margin-top:10px;margin-bottom:10px;">';
+	str += '<a href="javascript:{}" class="viewChartsForResults" onclick="showDistrictWisePartyResultsWithoutAlliance(\''+results.partyResultsDistrictLevelChartWithoutAllianc+'\')">';
+	str += 'View Party Results Without Alliance';
+	str += '</a></div>';
+	str += '<div id="districtWiseWithoutAlliancePopupDiv"></div>';
+	elmt.innerHTML = str;
+}
+
+function showDistrictWisePartyResultsWithoutAlliance(chartId)
+{
+	//partywiseResultsWithoutAlliance
+
+	var contentStr ='<div id="districtWiseWithoutAllianceDiv_main">';
+	contentStr +='<div id="districtWiseWithoutAllianceDiv_graph"><IMG src="charts/'+chartId+'"></IMG></div>';
+	contentStr +='<div id="districtWiseWithoutAllianceDiv_Datatable"></div>';
+	contentStr +='</div>';
+
+	 var myPanel = new YAHOO.widget.Panel("districtWiseWithoutAlliancePopupDiv", {
+                 
+                 fixedcenter: true, 
+                 constraintoviewport: true, 
+                 underlay: "none", 
+                 close: true, 
+                 visible: true, 
+                 draggable: true
+       });
+	  // myPanel.setHeader("District Wise Party Results Without Alliance");
+       myPanel.setBody(contentStr);
+		
+	   myPanel.render();
+		
+	
+	   buildAllDistrictDatatable(electionResultsObj.districtWiseResultsWithoutAllianceArr,"districtWiseWithoutAllianceDiv_Datatable");
+}	
+
 function buildAllianceDistrictResultsDataTable(results)
 {	
 	var parentElmt = document.getElementById("allianceDistResults");
 
 	var innerObj = results.alliancePartiesList;
 	for(var i in innerObj)
-	{		
+	{	
+		var header = innerObj[i].allianceGroupName + "Alliance Graph";	
 		var childElmt = document.createElement("div");
 		childElmt.setAttribute('id','allianceChildDiv'+i);
 		
 		var str = '';
 		str+='<div id="allianceResults_district_'+i+'_datatable"></div>';
 		str+='<div id="allianceResults_district_'+i+'_allianceGraph"></div>';
-		str+='<div id="allianceResults_district_'+i+'_footer"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_district_'+i+'_allianceGraph\',\''+innerObj[i].alliancePartiesChart+'\',\''+innerObj[i].allianceGroupName+'\')">View '+innerObj[i].allianceGroupName+' Alliance Graph<a></div>';
+		str+='<div id="allianceResults_district_'+i+'_footer" style="margin-top:10px;margin-bottom:10px;">';
+		str+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'allianceResults_district_'+i+'_allianceGraph\',\''+innerObj[i].alliancePartiesChart+'\',\''+innerObj[i].allianceGroupName+'\')">View '+header+' Alliance Graph<a>';
+		str+='</div>';
 		childElmt.innerHTML = str;
 
 		parentElmt.appendChild(childElmt);
@@ -483,48 +595,18 @@ function openPreYearDistAnalysisWindow()
 	browser1.focus();
 }
 
-function buildLoadingPanel()
-{ 
-	// Initialize the temporary Panel to display while waiting for external content to load
-	loadingPanel = 
-			new YAHOO.widget.Panel("loadingPanelDiv",  
-				{ width:"240px", 
-				  fixedcenter:true, 
-				  close:false, 
-				  draggable:false, 
-				  zindex:4,
-				  modal:true,
-				  visible:true
-				} 
-			);
-
-	loadingPanel.setHeader("Loading, please wait...");
-	loadingPanel.setBody('<img width="150px"  height="20px" src="<%=request.getContextPath()%>/images/icons/barloader.gif" /></img>');
-	loadingPanel.render();
-}
-
 </SCRIPT>
-
-<style>
-	#loadingPanelDiv_main .yui-panel .bd
-	{
-		background-color:#FFFFFF;
-	}
-</style>
 </HEAD>
 <BODY>
-
-<!--<div id="maskDiv_main" class="maskDiv" style="background-color:#cacaca;opacity:0.5;height:700px;width:960px;overflow:hidden;position:absolute;"></div>-->
-<div id="loadingPanelDiv_main" class="yui-skin-sam">
-<div id="loadingPanelDiv" ></div>
-</div>
-
-
 <TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
 <TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/></TD>
 </TR>
 </TABLE>
+<div id="electionPageAjaxImgDiv">
+	<div> Loading Election Results Please Wait..</div>
+	<img src="images/icons/barloader.gif"/>
+</div>
 <DIV id="task1"></DIV>
 <DIV class="graphTop">State Level Overview</DIV>
 <DIV id="statewiseGraph">
@@ -532,7 +614,14 @@ function buildLoadingPanel()
 <DIV class="yui-skin-sam" style="width:880px;border-top:2px solid #008DCF;">
 	<TABLE border="0" width="95%" >
 		<TR>
-			<TD valign="top" align="left"><DIV id="partywiseResultsDataTable"></DIV></TD>
+			<TD valign="top" align="left">
+				<DIV id="partywiseResultsDataTable_main">
+					<div id="partywiseResultsDataTable"></div>					
+					<div id="partywiseImgChart"></div>
+					<div id="partywiseResults_img_anc"></div>
+					<div id="partywiseResultsWithoutAlliance"></div>
+				</DIV>
+			</TD>
 			<c:if test="${electionType == 'Assembly'}"> 
 			<TD valign="top"><DIV id="allianceResultsDataTable"></DIV></TD>
 			</c:if>
@@ -554,7 +643,10 @@ function buildLoadingPanel()
 <DIV class="yui-skin-sam">
 	<TABLE border="0" width="95%" >
 		<TR>
-			<TD valign="top" align="left"><DIV id="districtResults"></DIV></TD>
+			<TD valign="top" align="left">
+				<DIV id="districtResults"></DIV>
+				<DIV id="districtResults_withoutAllianceDiv"></DIV>
+			</TD>
 			
 			<TD valign="top"><DIV id="allianceDistResults"></DIV></TD>
 		</TR>
@@ -673,8 +765,6 @@ function buildLoadingPanel()
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 getResultsForAnElection(stateID,electionType,year);
-
-//buildLoadingPanel();
 
 </SCRIPT>
 </BODY>
