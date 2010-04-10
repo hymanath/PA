@@ -22,7 +22,6 @@ import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
-import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
@@ -403,14 +402,13 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		districtWisePartyResultVO = new DistrictWisePartyResultVO();
-		districtWisePartyResultVO.setDistrictName("Chittoor");
+		districtWisePartyResultVO = staticDataService.getDistrictWiseElectionReport(jObj.getLong("districtId"));
 		List<PartyResultVO> allElectionResults = districtWisePartyResultVO.getPartyElectionResultsList();
 		String chartName = "allPartiesDistrictWisePerformanceInAllElections_"+jObj.getLong("districtId")+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         districtWisePartyResultVO.setChartPath(chartName);
-       // ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+jObj.getString("districtName")
-        		//+" District", "Elections", "Percentages", createDataset(allElectionResults), chartPath);
+        ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+jObj.getString("districtName")
+        		+" District", "Elections", "Percentages", createDataset(allElectionResults), chartPath, 260, 700);
 		
 		return SUCCESS;
 	}
@@ -420,7 +418,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
         ElectionResultVO partiesElecResultForGraph = null;
         
-        for(PartyResultVO partyResultVO:allElectionResults)
+        int i=0;
+        for(PartyResultVO partyResultVO:allElectionResults){
         	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
         		partiesElecResultForGraph = new ElectionResultVO();
         		partiesElecResultForGraph.setPercentage(result.getPercentage());
@@ -428,12 +427,18 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         		partiesElecResultForGraph.setPartyName(partyResultVO.getPartyName());
         		partiesElectionResults.add(partiesElecResultForGraph);
         	}
+        	if(++i == 10)
+        		break; 
+        }
+        	
         
         Collections.sort(partiesElectionResults, new ElectionResultComparator());
         
-        for(ElectionResultVO graphInfo:partiesElectionResults)
-           	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
+        for(ElectionResultVO graphInfo:partiesElectionResults){
+        	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
            			graphInfo.getElectionYear());
+        }
+           	
         return dataset;
     }
 	

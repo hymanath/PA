@@ -651,8 +651,18 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 
 	function showAllElectionsInDistrict(results){
-		var allElecDiv = document.getElementById("districtInfoDiv");
-		//allElecDiv.innerHTML = results.districtName;
+		var allElecDiv = document.getElementById("allElectionResultsInDT");
+		var str = '';
+		str += '<table>';
+		str += '<tr>';
+		str += '<th>Election</th>';
+		for(var i in results.partyElectionResultsList){
+			str += '<th>'+results.partyElectionResultsList[i].partyName+'</th>';
+		}
+		str += '</tr>';
+		
+		allElecDiv.innerHTML = '<img src="charts/'+results.chartPath+'" />';
+		
 	}
 </script>
  
