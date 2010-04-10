@@ -160,13 +160,16 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 		statesListObj = staticDataService.getAllStatesInCountry();
 		districtsList = new ArrayList<SelectOptionVO>();
 		districtsList = staticDataService.getDistricts(new Long(stateID));
+		districtsList.add(0, new SelectOptionVO(0l,"Select A District"));
 		partiesList = new ArrayList<SelectOptionVO>();
 		if(electionType.equals(IConstants.ZPTC) || electionType.equals(IConstants.MPTC))
 		{
-			partiesList = staticDataService.getAllPartiesForAnElectionYear(year, electionType);			
+			partiesList = staticDataService.getAllPartiesForAnElectionYear(year, electionType);	
+			partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
 		} else if (electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
 		{
 			partiesList = staticDataService.getStaticParties();
+			partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
 		}
 		
 		return Action.SUCCESS;
