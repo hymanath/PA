@@ -42,3 +42,16 @@ H3
 	text-align:center;
 	width:450px;
 }
+.paraText
+{
+	color:#505050;
+	font-family:Lucida Grande;
+	font-size:15px;
+	padding:5px;
+}
+.errorMessage
+{
+	color:red;
+	font-weight:bold;
+	font-size:15px;
+}
