@@ -110,7 +110,7 @@ function showDistrictWiseResultsLineGraph(results)
 	var districtWiseGraphEl = document.getElementById("districtWiseGraph");
 
 	var contentStr = '';
-	contentStr+='<IMG src="charts/'+chartName+'"></IMG>';
+	contentStr+='<IMG src="charts/'+chartName+'" style="margin-left:10px;"></IMG>';
 	districtWiseGraphEl.innerHTML = contentStr;	
 }
 
@@ -244,7 +244,7 @@ function showAllianceDetails(results)
 		var str = '';
 		str+='<div id="allianceResults_'+i+'_datatable"></div>';
 		str+='<div id="allianceResults_'+i+'_allianceGraph"></div>';
-		str+='<div id="allianceResults_'+i+'_footer" style="text-align:left;"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_'+i+'_allianceGraph\',\''+allianceResultsArr[i].chartForPartyResults+'\')">View Graph<a></div>';
+		str+='<div id="allianceResults_'+i+'_footer" style="text-align:left;"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_'+i+'_allianceGraph\',\''+allianceResultsArr[i].chartForPartyResults+'\',\''+allianceResultsArr[i].allianceGroupName+'\')">View '+allianceResultsArr[i].allianceGroupName+' Alliance Graph<a></div>';
 		createDiv.innerHTML = str;
 		allianceResultsDataTableEl.appendChild(createDiv);
 	
@@ -253,20 +253,25 @@ function showAllianceDetails(results)
 }
 
 
-function showAllianceGraph(divId,chartId)
+function showAllianceGraph(divId,chartId, chartName)
 {
+	
 	var contentStr='<IMG src="charts/'+chartId+'"></IMG>';
 
-	 var myPanel = new YAHOO.widget.Panel(divId, {
+	 var myPanel = new YAHOO.widget.Dialog("panel", {
                  
-                 fixedcenter: true, 
-                 constraintoviewport: true, 
-                 underlay: "none", 
-                 close: true, 
-                 visible: true, 
-                 draggable: true
+		 width : "820px", 
+         fixedcenter : true, 
+         visible : true,  
+         constraintoviewport : true, 
+		  iframe :true,
+		  modal :true,
+		  hideaftersubmit:true,
+		  close:true
+		  
+
        });
-	   myPanel.setHeader("Alliance Party Graph...");
+	   myPanel.setHeader(chartName + " Alliance Graph");
        myPanel.setBody(contentStr);
        myPanel.render();
 }
@@ -398,11 +403,11 @@ function buildAllianceDistrictResultsDataTable(results)
 	{		
 		var childElmt = document.createElement("div");
 		childElmt.setAttribute('id','allianceChildDiv'+i);
-
+		
 		var str = '';
 		str+='<div id="allianceResults_district_'+i+'_datatable"></div>';
 		str+='<div id="allianceResults_district_'+i+'_allianceGraph"></div>';
-		str+='<div id="allianceResults_district_'+i+'_footer"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_district_'+i+'_allianceGraph\',\''+innerObj[i].alliancePartiesChart+'\')">View Graph<a></div>';
+		str+='<div id="allianceResults_district_'+i+'_footer"><a href="javascript:{}" onclick="showAllianceGraph(\'allianceResults_district_'+i+'_allianceGraph\',\''+innerObj[i].alliancePartiesChart+'\',\''+innerObj[i].allianceGroupName+'\')">View '+innerObj[i].allianceGroupName+' Alliance Graph<a></div>';
 		childElmt.innerHTML = str;
 
 		parentElmt.appendChild(childElmt);
@@ -517,7 +522,7 @@ function buildLoadingPanel()
 
 <TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
-<TD  valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></TD><TD  valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/></TD>
+<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/></TD>
 </TR>
 </TABLE>
 <DIV id="task1"></DIV>
@@ -662,7 +667,7 @@ function buildLoadingPanel()
 	</TABLE>
 </DIV>
 <DIV class="graphBottom"></DIV>
-<div id="task9"></DIV>
+<DIV class = "yui-skin-sam"><div id="panel"></DIV></DIV>
 <DIV id="task10"></DIV>
 
 <SCRIPT type="text/javascript">
