@@ -1,16 +1,17 @@
 @CHARSET "ISO-8859-1";
 .mainHeading {
 	background-image:url(../../images/icons/electionResultsReport/heading.png);
-	border:0 solid #AEE2FF;
+	border:0px solid #AEE2FF;
 	color:#000000;
 	font-family:MS Sans-serif;
 	font-size:17px;
 	font-weight:bold;
-	height:25px;
-	margin-bottom:15px;	
+	margin-bottom:15px;
+	margin-top:0;
 	padding:10px;
+	width:450px;		
+	height:25px;
 	text-align:center;
-	width:450px;
 }
 
 .basicDetailsTable
@@ -127,8 +128,31 @@ text-decoration:none;
 	font-size:15px;	
 	text-align:left;
 }
-.yui-skin-sam .yui-panel .hd
-	{
-		text-align:left;
-	}
-	
+
+.viewChartsForResults
+{
+	padding:5px;
+	text-decoration:none;
+	background-image:url(../../images/icons/indexPage/swasthic_body.png);
+	color:#000000;
+	border:1px solid #ADADAD;
+	margin-left:10px;
+}
+
+#withoutAllianceDiv_Datatable table
+{
+	width:100%;
+}
+#districtWiseWithoutAllianceDiv_Datatable table
+{
+	width:100%;
+}
+
+#electionPageAjaxImgDiv
+{
+	border:1px solid #ADADAD;
+	font-size:12px;
+	font-weight:bold;
+	width:300px;
+	margin-bottom:10px;
+}
