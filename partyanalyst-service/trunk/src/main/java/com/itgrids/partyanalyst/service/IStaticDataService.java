@@ -113,4 +113,6 @@ public interface IStaticDataService {
 	public List<SelectOptionVO> getAllPartiesForAnElectionYear(String electionYear,String electionType);
 	
 	public CandidateDetailsVO getCandidatesPartyInfoForAnElectionType(String electionType,String electionYear,String resultsCategory,String electionLevel,Long locationId,Long partyId,Long stateId);
+	
+	public DistrictWisePartyResultVO getDistrictWiseElectionReport(Long districtId);
 }

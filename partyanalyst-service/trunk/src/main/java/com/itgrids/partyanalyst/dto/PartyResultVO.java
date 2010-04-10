@@ -26,6 +26,7 @@ public class PartyResultVO {
 	private Long electors;
 	private CandidateOppositionVO oppositionCandidates;
 	private List<ElectionResultVO> electionWiseResults;
+	private Long seatsWonCountToSort;
 	
 	public Long getPartyId() {
 		return partyId;
@@ -104,6 +105,13 @@ public class PartyResultVO {
 	}
 	public void setElectionWiseResults(List<ElectionResultVO> electionWiseResults) {
 		this.electionWiseResults = electionWiseResults;
+	}
+
+	public Long getSeatsWonCountToSort() {
+		return seatsWonCountToSort;
+	}
+	public void setSeatsWonCountToSort(Long seatsWonCountToSort) {
+		this.seatsWonCountToSort = seatsWonCountToSort;
 	}
 	
 	@Override

@@ -32,6 +32,7 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private int mptcCount;
 	private Float votesPolled;
 	private Float votesEarned;
+	private String marginVotesPercentage;
 	private List<MandalAllElectionDetailsVO> zptcMandalAllElectionDetailsVO;
 	private List<MandalAllElectionDetailsVO> mptcMandalAllElectionDetailsVO;
 	private List<MandalAllElectionDetailsVO> allVotersDetails;
@@ -108,6 +109,12 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	}
 	public String getTehsilName() {
 		return tehsilName;
+	}
+	public String getMarginVotesPercentage() {
+		return marginVotesPercentage;
+	}
+	public void setMarginVotesPercentage(String marginVotesPercentage) {
+		this.marginVotesPercentage = marginVotesPercentage;
 	}
 	public String getRank() {
 		return rank;

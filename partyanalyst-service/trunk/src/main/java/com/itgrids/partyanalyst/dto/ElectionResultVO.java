@@ -7,7 +7,16 @@ public class ElectionResultVO {
 	private Long votesEarned;
 	private String percentage;
 	private String partyName;
+	private Long noOfSeatsWon;
 	
+	public Long getNoOfSeatsWon() {
+		return noOfSeatsWon;
+	}
+
+	public void setNoOfSeatsWon(Long noOfSeatsWon) {
+		this.noOfSeatsWon = noOfSeatsWon;
+	}
+
 	public String getPartyName() {
 		return partyName;
 	}

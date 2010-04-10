@@ -31,7 +31,18 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 	public List getParticipatedPartysCountForAnElection(Long electionId){
 		return getHibernateTemplate().find("select count(distinct model.party.partyId) from PartyElectionDistrictResult model where model.election.electionId = ?", electionId);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	public List getAllParyDetailsForAllElectionYearsForADistrict(String electionIds, String partyIds, Long stateId, Long districtId){
+		Object[] params = {stateId,districtId};
+		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName,model.election.electionYear," +
+				" model.election.electionScope.electionType.electionType,model.totalVotesGained,model.completeVotesPercent," +
+				" model.totalSeatsWon from PartyElectionDistrictResult model where model.election.electionId in ("+electionIds+
+				" ) and model.party.partyId in ("+partyIds+
+				" ) and model.state.stateId = ? " +
+				" and model.district.districtId = ? order by model.party.partyId", params);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<PartyElectionDistrictResult> getDistrictWiseAllPartiesResults(Long electionId,String votesPercentMargin){
 		Object[] params = {votesPercentMargin,electionId};
@@ -43,5 +54,6 @@ public class PartyElectionDistrictResultDAO extends GenericDaoHibernate<PartyEle
 		Object[] params = {electionId,partyId};
 		return getHibernateTemplate().find("from PartyElectionDistrictResult model where model.election.electionId = ? and model.party.partyId = ?",params);
 	}
+
 
 }

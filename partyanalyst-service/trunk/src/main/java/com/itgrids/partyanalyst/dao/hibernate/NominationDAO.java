@@ -995,5 +995,28 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" from Nomination model where model.constituencyElection.constituency.state.stateId = ? and " +
 				" model.constituencyElection.constituency.electionScope.electionType.electionType = ?" +
 				" and model.constituencyElection.election.electionYear = ? and model.candidateResult.rank =?",params);
+		}
+	
+	public List getAllPartyDetailsForAllElectionYearsInADistrict(Long districtId){
+		return getHibernateTemplate().find("select model.constituencyElection.election.electionYear," +
+				" model.party.shortName,model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				" model.constituencyElection.election.electionId,model.party.partyId," +
+				" model.constituencyElection.constituency.state.stateId from " +
+				" Nomination model where model.constituencyElection.constituency.district.districtId = ? group by" +
+				" model.party.partyId,model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				" model.constituencyElection.election.electionYear order by " +
+				" model.constituencyElection.constituency.electionScope.electionType.electionType",districtId);
 	}
+	
+	public List getTotalVotesPolledInADistrictForAllElectionYears(Long districtId){
+			return getHibernateTemplate().find("select model.constituencyElection.election.electionYear," +				
+					" model.constituencyElection.constituency.electionScope.electionType.electionType," +
+					" sum(model.constituencyElection.constituencyElectionResult.validVotes) from" +
+					" Nomination model where model.constituencyElection.constituency.district.districtId = ? group by" +
+					" model.constituencyElection.constituency.electionScope.electionType.electionType," +
+					" model.constituencyElection.election.electionYear order by " +
+					" model.constituencyElection.constituency.electionScope.electionType.electionType",districtId);
+
+	}
+
 }

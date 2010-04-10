@@ -186,4 +186,8 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List findAllZPTCsOrMPTCsInaStateByRank(Long stateId,String electionType,String electionYear,Long rank);
 	
+	public List getAllPartyDetailsForAllElectionYearsInADistrict(Long districtId);
+	
+	public List getTotalVotesPolledInADistrictForAllElectionYears(Long districtId);
+	
 }
