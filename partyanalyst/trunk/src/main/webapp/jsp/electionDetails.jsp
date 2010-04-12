@@ -19,11 +19,11 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script>
 
 
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+<LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+<LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 
 
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
 <TITLE>${stateName} ${electionType} Election Results Page ${year}</TITLE>
@@ -142,7 +142,7 @@ function showStatewiseResultsBarChart(results)
 	var statewiseGraphEl = document.getElementById("graphImage");
 
 	var contentStr = '';
-	contentStr+='<IMG src="charts/'+chartName+'"></IMG>';
+	contentStr+='<IMG src="charts/'+chartName+'"  border="1" style="border-color:#EFF3F7;"></IMG>';
 	statewiseGraphEl.innerHTML = contentStr;	 
 }
 
@@ -611,7 +611,7 @@ function openPreYearDistAnalysisWindow()
 <DIV class="graphTop">State Level Overview</DIV>
 <DIV id="statewiseGraph">
 <DIV id="graphImage"></DIV>
-<DIV class="yui-skin-sam" style="width:880px;border-top:2px solid #008DCF;">
+<DIV class="yui-skin-sam" style="width:880px;">
 	<TABLE border="0" width="95%" >
 		<TR>
 			<TD valign="top" align="left">
@@ -627,13 +627,11 @@ function openPreYearDistAnalysisWindow()
 			</c:if>
 		</TR>
 		<TR>
-			<TD colspan="2" align="left"><SPAN style="color:#006221;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
-		</TR>
-		<TR>
-			<TD colspan="2" align="right"><SPAN style="background:#EBE4F2;border:3px solid #96B4D3;padding:2px;"><A href="javascript:{}" class="link" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></SPAN></TD>
-		</TR>
+			<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
+		</TR>		
 	</TABLE>
 </DIV>
+<DIV style="padding:10px;text-align:right;"><A href="javascript:{}" class="viewChartsForResults" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></DIV>
 </DIV>
 <DIV id="viewCandidate" class="yui-skin-sam"></DIV>
 <DIV class="graphBottom"></DIV>
@@ -651,7 +649,7 @@ function openPreYearDistAnalysisWindow()
 			<TD valign="top"><DIV id="allianceDistResults"></DIV></TD>
 		</TR>
 		<TR>
-			<TD colspan="2" align="left"><SPAN style="color:#006221;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
+			<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
 		</TR>		
 	</TABLE>
 </DIV>
