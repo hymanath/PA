@@ -2231,7 +2231,7 @@ public class StaticDataService implements IStaticDataService {
 				}
 			}
 			else if(electionType.equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){				
-				if(locationId!=null){
+				if(locationId!=0){
 					if(resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES)){
 						if(partyId!=0){
 							flag = 0;
@@ -2253,7 +2253,7 @@ public class StaticDataService implements IStaticDataService {
 				}
 			}
 			else if(electionType.equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE)){
-				if(locationId!=null){
+				if(locationId!=0){
 					if(resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES)){
 						if(partyId!=0){
 							flag = 0;
