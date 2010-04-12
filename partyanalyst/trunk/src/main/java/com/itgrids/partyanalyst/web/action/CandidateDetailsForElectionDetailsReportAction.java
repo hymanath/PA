@@ -185,7 +185,6 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 			if(log.isDebugEnabled())
 				log.debug(jObj);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getAllCandidates"))
@@ -222,6 +221,14 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 			if(electionLevel.equals("districtwiseAssembly"))
 			{
 				electionLevelVal = IConstants.DISTRICT_LEVEL; 
+			}
+			if(electionLevel.equals("stateWiseMptc"))
+			{
+				electionLevelVal = electionLevel; 
+			}
+			if(electionLevel.equals("stateWiseZptc"))
+			{
+				electionLevelVal = electionLevel; 
 			}
 			log.debug(electionType);
 			log.debug(year);
