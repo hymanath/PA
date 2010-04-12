@@ -63,6 +63,7 @@
 
 <!-- Local script and css files (Start)-->
 <script type="text/javascript" src="js/cadreManagement/cadreManagement.js"></script>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <!--<script type="text/javascript" src="js/cadreManagement/cadreSMSPageJs.js"></script>
 <script type="text/javascript" src="js/cadreManagement/cadreLocation.js"></script>-->
 
@@ -131,14 +132,64 @@
 	
 	function buildSMSPopup()
 	{
+		var str = '';	
+		str +='	<form action="cadreRegisterAction" method="POST" name="smsForm">';
+		str +='	<table>';
+		str +='	<tr>';
+		str +='		<th align="left">SMS Type</th>';
+		str +='		<td align="left">';
+		str +='			<input type="radio" name="sms_type" value="locationWise" onclick="getUserLocationData(this.value,\'sms\')"/> Location Wise	';			
+		str +='			<input type="radio" name="sms_type" value="cadreLevelWise" onclick="getUsersCadreLevelData(this.value,\'sms\')"/> Cadre Level Wise';
+		str +=' 	</td>';		
+		str +='	</tr>';
+		str +='	<tr>';
+		str +='		<th align="left"><div id="region_type_Label"></div></th>';
+		str +='		<td align="left"><div id="region_type_Data"></div></td>	';			
+		str +='	</tr>';
+		str +='	<tr>';
+		str +='		<th align="left">';
+		str +='			<div id="region_select_Label">	</div>';
+		str +='		</th>';
+		str +='		<td align="left">';
+		str +='			<div id="region_select_Data">  </div>';					
+		str +='		</td>';
+		str +='	</tr>';
+		str +='	<tr>';
+		str +='		<th align="left"><div id="sms_cadre_name_include_label"></div></th>';
+		str +='		<td align="left"><div id="sms_cadre_name_include_value"></div></td>';				
+		str +='	</tr>';
+		str +=' <tr>';
+		str +='		<th align="left"><div id="sms_text_Label"></div></th>';
+		str +='		<td align="left"><div id="sms_text_Data"></div></td>';				
+		str +='	</tr>';
+		str +='	<tr>';
+		str +='		<th align="left"><div id="sms_user_name_include_label"></div></th>';
+		str +='		<td align="left"><div id="sms_user_name_include_value"></div></td>';				
+		str +='	</tr>';
+		str +='	<tr>';
+		str +='		<td align="center" colspan="2"><div id="button_div"></div></td>	';			
+		str +='	</tr>';
+		str +='	<tr>';
+		str +='		<td align="left" colspan="2">';
+		str +='		<div id="successDiv" ></div>';
+		str +='		</td>';
+		str +='	</tr>';
+		str +='	</table>';
+		str +='	<form>';
+		
+
 		smsDialog = new YAHOO.widget.Dialog("myDialog",
 				{ width : "600px", 
 	              fixedcenter : true, 
-	              visible : false,  
+	              visible : true,  
 	              constraintoviewport : true, 
 				  iframe :true,
 				  modal :true	              
 	             } ); 
+
+		smsDialog.setHeader("Cadre SMS...");
+		smsDialog.setBody(str);
+
 		smsDialog.render(); 
 		
 	}
@@ -573,6 +624,55 @@
 
 	}
 
+	function enableTextBox(){
+		var textBoxElmt = document.getElementById("user_name");
+		textBoxElmt.disabled =false;
+	}
+	function disableTextBox(){
+		var textBoxElmt = document.getElementById("user_name");
+		textBoxElmt.disabled =true;
+	}
+
+	function getCadresLevelForEvent(regTask)
+	{
+		var region;
+		var elmtId = "cadreLevelDivId_"+regTask;
+
+		animateExpandDiv(elmtId,350);
+		
+		var elements = document.getElementsByTagName('input'); 
+		for(var i=0;i<elements.length;i++)
+		{
+			if(elements[i].type=="radio" && elements[i].name=="region_type_radio" && elements[i].checked==true)
+				region = elements[i].value.toUpperCase();
+		}
+
+		if(region == '1')
+			region = 'COUNTRY';
+		else if(region == '2')
+			region = 'STATE';
+		else if(region == '3')
+			region = 'DISTRICT';
+		else if(region == '4')
+			region = 'CONSTITUENCY';
+		else if(region == '5')
+			region = 'MANDAL';
+		else if(region == '6')
+			region = 'VILLAGE';
+
+		var jsObj={	
+					regionVal:region,
+					regionSelectVal:"",
+					displayType:regTask,
+					cadreLevel:"cadreLevel",
+					task:"getEventCadres"
+					};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
+		var url = "<%=request.getContextPath()%>/getCadresForEvent.action?"+rparam;
+		
+		callAjax(jsObj, url);
+	}
+
 	function fillDataForCadreLevel(results,jsObj)
 	{
 		var successDivElmt=	 document.getElementById("successDiv");
@@ -641,9 +741,9 @@
 		if(smsUserNameIncludeLabel)
 			smsUserNameIncludeLabel.innerHTML="Include User Name";
 		
-		var smsUserIncludeStr='<input type="radio" id="include_user_name" name="include_cadre_name" value="YES" onclick="enableTextBox();" /> Yes';
-		smsUserIncludeStr+='<input type="radio" id="no_user_name" name="include_cadre_name" value="NO" checked="checked" onclick="disableTextBox();" /> No    ';
-		smsUserIncludeStr+='.                    <input type="text" id ="user_name" name="user_name" disabled/>';
+		var smsUserIncludeStr='<input type="radio" id="include_user_name" name="include_user_name" value="YES" onclick="enableTextBox();" /> Yes';
+		smsUserIncludeStr+='<input type="radio" id="no_user_name" name="include_user_name" value="NO" checked="checked" onclick="disableTextBox();" /> No    ';
+		smsUserIncludeStr+='. <input type="text" id ="user_name" value="${sessionScope.UserName}" name="user_name" disabled/>';
 		if(smsUserNameIncludeValue)
 			smsUserNameIncludeValue.innerHTML=smsUserIncludeStr;
 
@@ -677,53 +777,6 @@
 		
 	}
 
-	function enableTextBox(){
-		var textBoxElmt = document.getElementById("user_name");
-		textBoxElmt.disabled =false;
-	}
-	function disableTextBox(){
-		var textBoxElmt = document.getElementById("user_name");
-		textBoxElmt.disabled =true;
-	}
-	function getCadresLevelForEvent(regTask)
-	{
-		var region;
-		var elmtId = "cadreLevelDivId_"+regTask;
-
-		animateExpandDiv(elmtId,350);
-		
-		var elements = document.getElementsByTagName('input'); 
-		for(var i=0;i<elements.length;i++)
-		{
-			if(elements[i].type=="radio" && elements[i].name=="region_type_radio" && elements[i].checked==true)
-				region = elements[i].value.toUpperCase();
-		}
-
-		if(region == '1')
-			region = 'COUNTRY';
-		else if(region == '2')
-			region = 'STATE';
-		else if(region == '3')
-			region = 'DISTRICT';
-		else if(region == '4')
-			region = 'CONSTITUENCY';
-		else if(region == '5')
-			region = 'MANDAL';
-		else if(region == '6')
-			region = 'VILLAGE';
-
-		var jsObj={	
-					regionVal:region,
-					regionSelectVal:"",
-					displayType:regTask,
-					cadreLevel:"cadreLevel",
-					task:"getEventCadres"
-					};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
-		var url = "<%=request.getContextPath()%>/getCadresForEvent.action?"+rparam;
-		
-		callAjax(jsObj, url);
-	}
 	function fillDataOptions(results,jsObj)
 	{			
 		//Setting values for region type..
@@ -1011,10 +1064,31 @@
 
 		textAreaElmtValue = textAreaElmt.value
 		val=val.toUpperCase();
+
+		//---
+		var include_cadre ="NO";
+		var include_user ="NO";
+
+		var elements = document.getElementsByTagName('input'); 
+		for(var i=0;i<elements.length;i++)
+		{
+			if(elements[i].type=="radio" && elements[i].name=="include_user_name" && elements[i].checked==true)
+				include_user = elements[i].value;
+			else if(elements[i].type=="radio" && elements[i].name=="include_cadre_name" && elements[i].checked==true)
+				include_cadre = elements[i].value;
+		}
+		
+		if(include_user=='YES'){
+			if(document.getElementById('user_name')!=null && document.getElementById('user_name').value!='' )
+				textAreaElmtValue = textAreaElmtValue + ' Thx ' + document.smsForm.user_name.value;
+		}
+		//---
+		
 		var jsObj={
 					SMS_LEVEL_TYPE:'CADRE_LEVEL',
 					SMS_LEVEL_VALUE:val,
 					SMS_MESSAGE:textAreaElmtValue,
+					SMS_INCLUDE_CADRE_NAME:include_cadre,
 					task:"sendSMS"
 				  };
 		
@@ -3102,6 +3176,7 @@
 		var endTimeMinVal = endTimeMin.options[endTimeMin.selectedIndex].text;
 
 		var descVal = document.getElementById("descTextArea").value;
+		descVal = removeEnterStrokeForString(descVal);
 
 		var loctionLevelFieldElmt = document.getElementById("cadreLevelField");
 		locationLevelFieldval = loctionLevelFieldElmt.options[loctionLevelFieldElmt.selectedIndex].text.toUpperCase();		
@@ -3245,6 +3320,7 @@
 		var ImpstartDateVal = document.getElementById("ImpStartDateText_new").value;		
 		var ImpendDateVal = document.getElementById("ImpEndDateText_new").value;		
 		var ImpDescVal = document.getElementById("ImpdescTextArea").value;
+		ImpDescVal = removeEnterStrokeForString(ImpDescVal);
 
 		var repeatFreqElmt = document.getElementById("repeatFreqSelect");
 		repeatFreqVal =  repeatFreqElmt.options[repeatFreqElmt.selectedIndex].value;
@@ -3490,55 +3566,7 @@
 		Cadre Management
 	</div>
 	<div id="cadreManagementMainDiv" class="yui-skin-sam">		
-		<div id="myDialog" class="yui-skin-sam"> 
-			<div class="hd">Cadre SMS Page</div> 
-			<div class="bd"> 
-				 <s:form action="cadreRegisterAction" method="POST" theme="simple" name="smsForm">
-					<table>
-						<tr>
-							<th align="left">SMS Type</th>
-							<td align="left">
-								<input type="radio" name="sms_type" value="locationWise" onclick="getUserLocationData(this.value,'sms')"/> Location Wise				
-								<input type="radio" name="sms_type" value="cadreLevelWise" onclick="getUsersCadreLevelData(this.value,'sms')"/> Cadre Level Wise
-							</td>		
-						</tr>
-						<tr>
-							<th align="left"><div id="region_type_Label"></div></th>
-							<td align="left"><div id="region_type_Data"></div></td>				
-						</tr>
-						<tr>
-							<th align="left">
-								<div id="region_select_Label">
-								</div>
-							</th>
-							<td align="left">
-								<div id="region_select_Data">
-								</div>					
-							</td>
-						</tr>
-						<tr>
-							<th align="left"><div id="sms_cadre_name_include_label"></div></th>
-							<td align="left"><div id="sms_cadre_name_include_value"></div></td>				
-						</tr>
-						<tr>
-							<th align="left"><div id="sms_text_Label"></div></th>
-							<td align="left"><div id="sms_text_Data"></div></td>				
-						</tr>
-						<tr>
-							<th align="left"><div id="sms_user_name_include_label"></div></th>
-							<td align="left"><div id="sms_user_name_include_value"></div></td>				
-						</tr>
-						<tr>
-							<td align="center" colspan="2"><div id="button_div"></div></td>				
-						</tr>
-						<tr>
-							<td align="left" colspan="2">
-								<div id="successDiv" ></div>
-							</td>
-						</tr>
-					</table>
-				  </s:form>
-			</div> 
+		<div id="myDialog" class="yui-skin-sam"> 			
 		</div> 
 	</div>
 	
@@ -3561,7 +3589,7 @@
 			<div id="cadreSMSHeadDiv">Cadre SMS</div>
 			<div id="cadreSMSBodyDiv">Cadre SMS feature enables the user to send SMS to the cadres, based on the location and cadre level.</div>
 			<div id="cadreSMSFooterDiv">				
-				<a href="javascript:{}" id="sendSMSAnc" onclick="showSendSMSPopup()">Send SMS</a>				
+				<a href="javascript:{}" id="sendSMSAnc" onclick="buildSMSPopup()">Send SMS</a>				
 				<!--<a href="cadreSMSAction.action" id="sendSMSAnc">Send SMS</a>-->
 			</div>
 		</div>
@@ -3627,11 +3655,11 @@
 	<script type="text/javascript">
 		
 		buildCalendarControl();	
-		buildSMSPopup();
+		//buildSMSPopup();
 		//buildNewEventPopup();
 		//buildNewImpDatePopup();
-		var sendSMSButton = new YAHOO.widget.Button("sendSMSAnc"); 
-		sendSMSButton.on("click", showSendSMSPopup);
+		//var sendSMSButton = new YAHOO.widget.Button("sendSMSAnc"); 
+		//sendSMSButton.on("click", showSendSMSPopup);
 
 		
 		var regionLevelCadres = new Array();

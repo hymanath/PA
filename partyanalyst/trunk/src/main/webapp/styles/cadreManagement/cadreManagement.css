@@ -156,7 +156,12 @@
 	#sendSMSAnc
 	{
 		background-color:#80B4E8;
-		color:#244565;		
+		background-image:url("../../images/icons/indexPage/swasthic_body.png");
+		background-repeat:repeat-x;
+		border:1px solid #ADADAD;
+		color:#244565;
+		font-weight:bold;
+		padding:5px;
 		text-decoration:none;
 	}
 	#newEventSpan
