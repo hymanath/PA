@@ -44,7 +44,7 @@
 }
 .graphTop
 {
-	background-image:url(../../images/icons/electionResultsReport/top_image.png);
+	background-image:url(../../images/icons/electionResultsReport/top.png);
 	color:#FFFFFF;
 	font-family:Ms sans-serif;
 	font-size:18px;
@@ -54,14 +54,14 @@
 }
 #statewiseGraph
 {
-	background:#EFF3F7 none repeat scroll 0 0;
-	border-left:1px solid #008DCF;
-	border-right:1px solid #008DCF;	
+	background:#EFF3F7 none repeat scroll 0 0;	
+	border-left:1px solid #102D66;
+	border-right:1px solid #102D66;	
 	width:898px;		
 }
 .graphBottom
 {
-	background-image:url(../../images/icons/electionResultsReport/bottom_image.png);
+	background-image:url(../../images/icons/electionResultsReport/bottom.png);
 	height:15px;	
 	width:900px;
 	border-bottom:0px none none;
@@ -69,10 +69,10 @@
 }
 #distwiseGraph
 {
-	background:#EFF3F7 none repeat scroll 0 0;
-	border-left:1px solid #008DCF;
-	border-right:1px solid #008DCF;
-	color:#606060;
+	background:#EFF3F7 none repeat scroll 0 0;	
+	border-left:1px solid #102D66;
+	border-right:1px solid #102D66;
+	color:#606060;	
 	min-height:200px;
 	padding-top:5px;
 	text-align:left;

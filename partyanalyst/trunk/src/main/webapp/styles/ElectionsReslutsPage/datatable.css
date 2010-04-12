@@ -31,7 +31,7 @@ th.yui-dt-hidden .yui-dt-liner,td.yui-dt-hidden .yui-dt-liner,th.yui-dt-hidden .
 .yui-skin-sam .yui-dt thead{border-spacing:0;}
 .yui-skin-sam .yui-dt caption{
 	background-image:url(../../images/icons/electionResultsReport/table_head.png);
-	color:#006221;
+	color:#000000;
 	font-family:MS Sans-serif;
 	font-size:14px;
 	font-weight:bold;
@@ -44,7 +44,7 @@ th.yui-dt-hidden .yui-dt-liner,td.yui-dt-hidden .yui-dt-liner,th.yui-dt-hidden .
 	background:#B7D3FC;
 	}
 .yui-skin-sam .yui-dt th,.yui-skin-sam .yui-dt th a{
-	color:#006221;
+	color:#909090;
 	font-weight:bold;
 	text-decoration:none;
 	vertical-align:bottom;
