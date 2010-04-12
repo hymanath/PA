@@ -39,7 +39,7 @@ function callAjax(param,jsObj,url){
 									myResults = YAHOO.lang.JSON.parse(o.responseText);
 									
 								if(jsObj.task == "getAllCandidates")
-								{																
+								{											
 									showCandidates(myResults,jsObj);											
 								}
 							}
@@ -149,7 +149,7 @@ function allCandidatesClickHandler()
 		{
 				regionalRadioBtns[i].disabled = false;
 		}
-		if(regionalRadioBtns[i].id == 'countryLevelP' && partywiseCheckBoxEl.checked == 'false')
+		if(regionalRadioBtns[i].id == 'countryLevelP' && partywiseCheckBoxEl.checked == false)
 		{
 			regionalRadioBtns[i].disabled = true;
 		}else if(regionalRadioBtns[i].id == 'countryLevelP' && partywiseCheckBoxEl.checked == true)
@@ -199,7 +199,8 @@ function countryLevelPClickHandler()
 	if(selectStatePEl.style.display == "block")
 	{		
 		selectStatePEl.style.display = 'none';
-	}	
+	}
+	allCandidates();	
 }
 
 function stateLevelPClickHandler()
@@ -208,6 +209,7 @@ function stateLevelPClickHandler()
 	if(selectStatePEl.style.display == "none")
 	{		
 		selectStatePEl.style.display = 'block';
+		selectStatePEl.selectedIndex = '0';
 	}
 }
 
@@ -237,7 +239,7 @@ function distLevelAClickHandler()
 /*
 function selectDistDropDownOnchangeHandler()
 {
-	alert("hi");
+	
 	var updateBtnEl = document.getElementById("updateBtn");
 	if(updateBtnEl.disabled == true)
 	{updateBtnEl.disabled = false}
@@ -252,7 +254,7 @@ function buildParticipatedCandidatesDetailsDataTable(data)
 								{key: "name", label: "Name", sortable:true},		
 								{key: "constituency", label: "Constituency", sortable:true},	
 								{key: "party", label: "Party", sortable:true},
-								{key: "partyFlag", label: "Party Flag"},
+								{key: "partyFlag", label: "Party Flag", sortable:true},
 								{key: "votesEarned", label: "Votes Earned",formatter:"number", sortable:true},
 								{key: "votesPercentage", label: "Votes %", formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},		
 								{key: "rank", label: "Rank", formatter:"number", sortable:true},	
@@ -301,7 +303,7 @@ function allCandidates()
 	var selectdistrictAEl = document.getElementById("selectdistrictA"); 
 	var selectStatePEl = document.getElementById("selectStateP");
 	var selectPartyEl = document.getElementById("selectParty");
-	
+	var stateId;
 	var partyId;
 	var locationId;
 	var resultsCategory;   
@@ -325,37 +327,49 @@ function allCandidates()
 		if(stateLevelAEl.checked == true)
 		{
 			electionLevel = stateLevelAEl.value;
+			stateId = stateID;
 			locationId = 0;
 		} 
 		if(distLevelAEl.checked == true)
 		{   
 			electionLevel =distLevelAEl.value;
 			locationId=selectdistrictAEl.value;
+			stateId = stateID;
 		}		
 	}
 	if(electionType == 'Parliament')
 	{
 		if(countryLevelPEl.checked == true)
 		{
+			
 			electionLevel = countryLevelPEl.value;
-			locationId = 0;
+			locationId = "1";
+			stateId = 0;
 		} 
 		if(stateLevelPEl.checked == true)
 		{   
+			
 			electionLevel =stateLevelPEl.value;
-			locationId=selectStatePEl.value;
+			stateId=selectStatePEl.value;
+			locationId = "0";
 		}		
 	}
 	if(electionType == 'ZPTC')
 	{
-			electionLevel = null;
-			locationId = 0;				
+			electionLevel = "stateWiseZptc";
+			locationId = 0;
+			stateId = stateID;				
 	}
-	
+	if(electionType == 'MPTC')
+	{
+			electionLevel = "stateWiseMptc";
+			locationId = 0;
+			stateId = stateID;				
+	}
 	var jsObj=		
 	{		
 			electionType:electionType,
-			stateID:stateID,
+			stateID: stateId,
 			year : year,
 			partyId: partyId,
 			electionLevel: electionLevel,
@@ -428,7 +442,7 @@ function showCandidates(results,jsObj)
 		<TD class="td" width="50%" style="width:50%;"><INPUT type="radio" name="regionalRadio" id="stateLevelP" value="statewiseParliament" onClick="stateLevelPClickHandler()"/>Statewise</TD>
 		</TR>
 		<TR>
-		<TD colspan="2" align="right"><s:select id="selectStateP" name="regionSelect" cssClass="selectBoxStyle" style="display:none" theme="simple" list="statesListObj.getAllStates" listKey="id"  listValue="name" /></TD>
+		<TD colspan="2" align="right"><s:select id="selectStateP" name="regionSelect" cssClass="selectBoxStyle" style="display:none" theme="simple" list="statesListObj.getAllStates" listKey="id"  listValue="name" onChange="allCandidates()" /></TD>
 		</TR>		
 	</c:if>	
 	 <c:if test="${electionType == 'Assembly'}">  
@@ -440,10 +454,17 @@ function showCandidates(results,jsObj)
 		<TD align="right" colspan="2" ><s:select id="selectdistrictA" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="margin-right:85px;display:none" onChange="allCandidates()"  /></TD>
 		</TR>		
 	</c:if>
-	<!--<TR>
-		<TD><INPUT type="button" id="updateBtn" onclick="allCandidates()" value="UPDATE RESULTS" disabled="true"></TD>
+	 <c:if test="${electionType == 'ZPTC'}">  
+	<TR>
+		<TD><INPUT type="button" id="updateBtn" onclick="allCandidates()" value="UPDATE RESULTS" ></TD>
 	</TR>
-	--></TABLE>
+	</c:if>
+	<c:if test="${electionType == 'MPTC'}">  
+	<TR>
+		<TD><INPUT type="button" id="updateBtn" onclick="allCandidates()" value="UPDATE RESULTS" ></TD>
+	</TR>
+	</c:if>
+	</TABLE>
 </DIV>
 <!--<DIV id="error" class="errorMessage" style="display:none;">Please Select Candidate Details(Won or Participated) Options </DIV>
 --><DIV id="participatedCandidatesDetailsDataTable" align="left"></DIV>

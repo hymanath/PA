@@ -409,12 +409,12 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 	function redirectCandidateLink()
 	{
-		 var browser1 = window.open("<s:url action="districtPageCandidateDetailsAjaxAction.action"/>?disId="+districtId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear,"browser1","scrollbars=yes,height=630,width=970,left=200,top=200");
+		 var browser1 = window.open("<s:url action="districtPageCandidateDetailsAjaxAction.action"/>?disId="+districtId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
 		 browser1.focus();
 	}
 	function redirectMptcCandidateLink()
 	{
-		 var browser2 = window.open("<s:url action="districtPageCandidateDetailsAjaxAction.action"/>?disId="+districtId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear,"browser2","scrollbars=yes,height=630,width=970,left=200,top=200");
+		 var browser2 = window.open("<s:url action="districtPageCandidateDetailsAjaxAction.action"/>?disId="+districtId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
 		 browser2.focus();
 	}
 	function showAllPartyDetails(results)

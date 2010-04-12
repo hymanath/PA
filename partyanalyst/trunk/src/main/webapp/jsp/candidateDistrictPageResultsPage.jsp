@@ -42,7 +42,7 @@
 		border-spacing:0;
 		color:highlight;
 		font-family:arial;
-		font-size:14px;
+		font-size:12px;
 		margin:0;
 		padding:0;
 }
@@ -115,9 +115,13 @@ function initializeResultsTableForWinners() {
 		}, {
 			key : "votesDifference"
 		}, {
+			key : "votesPercentage"
+		}, {
+			key : "marginVotesPercentage"
+		}, {
 			key : "rank"
 		}, {
-			key : "partyFlag"
+			key : "partyFlag"			
 		}]
 	};
 
@@ -142,13 +146,21 @@ function initializeResultsTableForWinners() {
 		label : "Votes Difference",
 		sortable : true
 	}, {
+		key : "votesPercentage",
+		label : "Votes %",
+		sortable : true
+	}, {
+		key : "marginVotesPercentage",	
+		label : "Margin Votes %",
+		sortable : true
+	}, {
 		key : "rank",
 		label : "Rank",
 		sortable : true
 	}, {
 		key : "partyFlag",
 		label : "Party Flag",
-		sortable : true
+		sortable : true			
 	} ];
 
 	var myConfigsForTehsil = {
@@ -187,7 +199,7 @@ function showAllCandidates(results)
 {
 	 var imgElmt = document.getElementById("showParties");
 	 imgElmt.innerHTML="";
-
+	console.log(results);
 		assignToMptcDataArray = new Array();
 		for(var i in results.allVotersDetails)
 		{		
@@ -199,6 +211,8 @@ function showAllCandidates(results)
 					votesPolled:results.allVotersDetails[i].votesPolled,
 					votesEarned:results.allVotersDetails[i].votesEarned, 	
 					votesDifference:results.allVotersDetails[i].votesDifference,	
+					votesPercentage:results.allVotersDetails[i].votesPercentage,
+					marginVotesPercentage:results.allVotersDetails[i].marginVotesPercentage,
 					rank:results.allVotersDetails[i].rank,			
 					partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>'					
 			 };
@@ -232,6 +246,8 @@ function showWinners(results)
 				votesPolled:results.allVotersDetails[i].votesPolled,
 				votesEarned:results.allVotersDetails[i].votesEarned, 	
 				votesDifference:results.allVotersDetails[i].votesDifference,	
+				votesPercentage:results.allVotersDetails[i].votesPercentage,
+				marginVotesPercentage:results.allVotersDetails[i].marginVotesPercentage,
 				rank:results.allVotersDetails[i].rank,			
 				partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>'					
 		 };
@@ -262,7 +278,9 @@ function showPartyWise(results)
 				tehsilName:results.allVotersDetails[i].tehsilName,
 				votesPolled:results.allVotersDetails[i].votesPolled,
 				votesEarned:results.allVotersDetails[i].votesEarned, 	
-				votesDifference:results.allVotersDetails[i].votesDifference,	
+				votesDifference:results.allVotersDetails[i].votesDifference,
+				votesPercentage:results.allVotersDetails[i].votesPercentage,
+				marginVotesPercentage:results.allVotersDetails[i].marginVotesPercentage,	
 				rank:results.allVotersDetails[i].rank,			
 				partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>'					
 		 };
