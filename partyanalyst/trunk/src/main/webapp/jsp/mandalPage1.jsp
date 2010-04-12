@@ -304,6 +304,18 @@ width:100%;
 	vertical-align:top;
 	
 }
+
+.yui-skin-sam .yui-dt table {
+	border:1px solid #7F7F7F;
+	border-collapse:separate;
+	border-spacing:0;
+	font-family:arial;
+	font-size:inherit;
+	margin:0;
+	padding:0;
+	width:100%;
+}
+
 </style>
 
 
@@ -398,6 +410,10 @@ var allZPTCMPTCElecInfo = new Array();
 		}, {
 			key : "totalPersons",parser:"number"
 		}, {
+			key : "male",parser:"number"
+		}, {
+			key : "female",parser:"number"
+		}, {
 			key : "totalSCPersons",parser:"number"
 		}, {
 			key : "totalSTPersons",parser:"number"
@@ -417,32 +433,42 @@ var allZPTCMPTCElecInfo = new Array();
 	}, {
 		key : "totalPersons",
 		parser:"number",
-		label : "Total Populations",
+		label : "Total Population",
+		sortable : true
+	}, {
+		key : "male",
+		parser:"number",
+		label : "Male",
+		sortable : true
+	}, {
+		key : "female",
+		parser:"number",
+		label : "Female",
 		sortable : true
 	}, {
 		key : "totalSCPersons",
 		parser:"number",
-		label : "SC Populations",
+		label : "SCs",
 		sortable : true
 	}, {
 		key : "totalSTPersons",
 		parser:"number",
-		label : "ST Populations",
+		label : "STs",
 		sortable : true
 	}, {
 		key : "totalLiteratePersons",
 		parser:"number",
-		label : "Literate Populations",
+		label : "Literates",
 		sortable : true
 	}, {
 		key : "totalIlliteratePersons",
 		parser:"number",
-		label : "Illiterate Populations",
+		label : "Illiterates",
 		sortable : true
 	}, {
 		key : "totalWorkingPersons",
 		parser:"number",
-		label : "Working Populations",
+		label : "Working People",
 		sortable : true
 	} ];
 
@@ -1159,9 +1185,13 @@ var allZPTCMPTCElecInfo = new Array();
 					property="townshipNameURL" sortable="true" />
 				<display:column style="text-align: left;" title="Total Populations"
 					property="totalPersons" sortable="true" />
-				<display:column style="text-align: left;" title="SC Population"
+				<display:column style="text-align: left;" title="Male Populations"
+					property="totalMalePersons" sortable="true" />
+				<display:column style="text-align: left;" title="Female Populations"
+					property="totalFemalePersons" sortable="true" />
+				<display:column style="text-align: left;" title=" Total SCs"
 					property="totalSCPersons" sortable="true" />
-				<display:column style="text-align: center;" title="ST Population"
+				<display:column style="text-align: center;" title="Total STs"
 					property="totalSTPersons" sortable="true" />
 				<display:column style="text-align: center;" title="Literate Population"
 					property="totalLiteratePersons" sortable="true" />

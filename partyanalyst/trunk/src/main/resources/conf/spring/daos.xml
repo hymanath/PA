@@ -239,5 +239,8 @@
 	<bean id="myGroupDAO" class="com.itgrids.partyanalyst.dao.hibernate.MyGroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-		
+	<bean id="groupDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		

@@ -27,6 +27,8 @@
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />	
+		<property name="boothResultDAO" ref="boothResultDAO" />
+		<property name="groupDAO" ref="groupDAO" />
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
