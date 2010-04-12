@@ -2063,6 +2063,8 @@ public class StaticDataService implements IStaticDataService {
 			mandalAllElectionDetails.setVotesEarned(Float.parseFloat(parms[6].toString()));
 			mandalAllElectionDetails.setVotesPolled(Float.parseFloat(parms[7].toString()));
 			mandalAllElectionDetails.setRank(parms[8].toString());
+			mandalAllElectionDetails.setVotesPercentage(parms[10].toString());
+			mandalAllElectionDetails.setPartyShortName(parms[11].toString());
 			if(winner.containsKey(constituencyId)){
 				differenceVotes = winner.get(constituencyId)-Float.parseFloat(parms[6].toString());
 				if(winner.get(constituencyId)!=0){
@@ -2083,6 +2085,7 @@ public class StaticDataService implements IStaticDataService {
 			}else{
 				mandalAllElectionDetails.setCandidateName(parms[2].toString()+" * ");
 			}
+			
 			if(Long.parseLong(parms[8].toString())!=1){
 				mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
 			}
@@ -2128,6 +2131,8 @@ public class StaticDataService implements IStaticDataService {
 				mandalAllElectionDetails.setVotesEarned(Float.parseFloat(parms[6].toString()));
 				mandalAllElectionDetails.setVotesPolled(Float.parseFloat(parms[7].toString()));
 				mandalAllElectionDetails.setRank(parms[8].toString());
+				mandalAllElectionDetails.setVotesPercentage(parms[10].toString());
+				mandalAllElectionDetails.setPartyShortName(parms[11].toString());
 				if(successor.containsKey(constituencyId)){
 					differenceVotes = (Float.parseFloat(parms[6].toString())-successor.get(constituencyId));
 					if(Float.parseFloat(parms[6].toString())!=0f){
@@ -2270,7 +2275,7 @@ public class StaticDataService implements IStaticDataService {
 				 successorCandidateResult = nominationDAO.findAllZPTCsOrMPTCsInaStateByRank(stateId,electionType,electionYear,successorCandidateRank);
 				 winnerCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,0l);
 				 candidateDetailsVO.setCandidateDetails(winnerCandidate);
-			}if(partyId!=0l && resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES)){
+			}else if(partyId!=0l && resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES)){
 				allCandidateResult = nominationDAO.findAllZPTCsOrMPTCsInaStateForAParty( stateId, electionType, electionYear, partyId);	
 				winnerCandidateResult = nominationDAO.findAllZPTCsOrMPTCsInaStateByRank(stateId,electionType,electionYear,winnerCandidateRank);
 				successorCandidateResult = nominationDAO.findAllZPTCsOrMPTCsInaStateByRank(stateId,electionType,electionYear,successorCandidateRank);
@@ -2286,7 +2291,7 @@ public class StaticDataService implements IStaticDataService {
 				 winnerCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,partyId);
 				 candidateDetailsVO.setCandidateDetails(winnerCandidate);
 			}
-			return null;
+			return candidateDetailsVO;
 		}catch(Exception e){
 			e.printStackTrace();
 			if(log.isDebugEnabled()){
@@ -2423,7 +2428,7 @@ public class StaticDataService implements IStaticDataService {
 						if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){							
 							StringBuilder listOfConstituencies  = new StringBuilder();	
 							listOfConstituencies = getAssemblyConstituenciesForDistrict(locationId,stateId,electionYear);
-							winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
+							winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRankAndPartyId(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank,partyId);
 							successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
 						}else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
 							StringBuilder listOfParliamentConstituencies  = new StringBuilder();	
@@ -2452,7 +2457,7 @@ public class StaticDataService implements IStaticDataService {
 							listOfConstituencies = getAssemblyConstituenciesForDistrict(locationId,stateId,electionYear);
 							winnerCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,winnerCandidateRank);
 							successorCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyBasedOnRank(listOfConstituencies.substring(1),electionYear,electionType,successorCandidateRank);
-							allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(listOfConstituencies.substring(1),electionYear,electionType);
+							allCandidateResult = nominationDAO.getCandidatesInfoForTheGivenConstituencyByPartyId(listOfConstituencies.substring(1),electionYear,electionType,partyId);
 						}else if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
 							StringBuilder listOfParliamentConstituencies  = new StringBuilder();	
 							listOfParliamentConstituencies = getParliamentConstituenciesForDistrict(locationId,stateId,electionYear);
@@ -2510,9 +2515,9 @@ public class StaticDataService implements IStaticDataService {
 				String candidateName = parms[1].toString();
 				if(candidateName.contains("\n")){
 					candidateName = candidateName.replace("\n"," ");
-					candidateDetailsVo.setCandidateName(candidateName);
+					candidateDetailsVo.setCandidateName(candidateName.toUpperCase());
 				}else{
-					candidateDetailsVo.setCandidateName(candidateName);
+					candidateDetailsVo.setCandidateName(candidateName.toUpperCase());
 				}
 				if(parms[2]!= null){
 					candidateDetailsVo.setVotesEarned(parms[2].toString());
@@ -2563,7 +2568,7 @@ public class StaticDataService implements IStaticDataService {
 				//	System.out.println(candidateDetailsVo.getCandidateName()+"\t\t"+parms[4]+"\t\t"+candidateDetailsVo.getPartyName()+"\t"+candidateDetailsVo.getConstituencyName()+"\t"+candidateDetailsVo.getVotesEarned()+"\t"+Float.parseFloat(parms[2].toString())+"\t"+candidateDetailsVo.getVotesDifference()+"\t"+candidateDetailsVo.getVotesPercentage());
 				}else{}								
 			}
-		return candidateDetails;
+		return candidateDetails;		
 		}catch(Exception e){
 			log.error("Exception raised please check the log for details"+e);
 			e.printStackTrace();
@@ -2597,9 +2602,9 @@ public class StaticDataService implements IStaticDataService {
 				String candidateName = parms[1].toString();
 				if(candidateName.contains("\n")){
 					candidateName = candidateName.replace("\n"," ");
-					candidateDetailsVo.setCandidateName(candidateName);
+					candidateDetailsVo.setCandidateName(candidateName.toUpperCase());
 				}else{
-					candidateDetailsVo.setCandidateName(candidateName);
+					candidateDetailsVo.setCandidateName(candidateName.toUpperCase());
 				}
 				if(parms[2]!= null){
 					candidateDetailsVo.setVotesEarned(parms[2].toString());
@@ -2642,8 +2647,7 @@ public class StaticDataService implements IStaticDataService {
 				if(rank!=1l){
 					candidateDetails.add(candidateDetailsVo);
 				//	System.out.println(candidateDetailsVo.getCandidateName()+"\t\t"+parms[4]+"\t\t"+candidateDetailsVo.getPartyName()+"\t"+candidateDetailsVo.getConstituencyName()+"\t"+candidateDetailsVo.getVotesEarned()+"\t"+Float.parseFloat(parms[2].toString())+"\t"+candidateDetailsVo.getVotesDifference()+"\t"+candidateDetailsVo.getVotesPercentage());
-				}else{}
-					
+				}else{}					
 			}
 			return candidateDetails;	
 		}catch(Exception e){
