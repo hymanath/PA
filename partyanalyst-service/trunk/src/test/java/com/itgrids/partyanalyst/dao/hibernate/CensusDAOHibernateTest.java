@@ -1,13 +1,11 @@
-/*package com.itgrids.partyanalyst.dao.hibernate;
+package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.Set;
-import junit.framework.Assert;
-
-import com.itgrids.partyanalyst.dao.ICensusDAO;
-import com.itgrids.partyanalyst.model.Census;
-
+import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+
+import com.itgrids.partyanalyst.dao.ICensusDAO;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CensusDAOHibernateTest extends BaseDaoTestCase {
 	private ICensusDAO censusDAO;
@@ -16,7 +14,7 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 		this.censusDAO = censusDao;
 	}
 	
-	public void testFindByStateIdAndYear(){
+	/*public void testFindByStateIdAndYear(){
 		Set<Census> stateCensus = censusDAO.findByStateIdAndYear(new Long(1), 2001);
 		
 		for(Census census: stateCensus){
@@ -86,6 +84,17 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 				Assert.assertEquals(new Long(2315), census.getNonWorkingPopulation());
 			} 
 		}
+	}*/
+	
+	public void testFindAllRevenueVillagesInfoInMandal(){
+		List list = censusDAO.findAllRevenueVillagesInfoInMandal(2001l, 861l, "'"+IConstants.CENSUS_VILLAGE_LEVEL+"','"+IConstants.CENSUS_WARD_LEVEL+"'");
+		for(Object[] values:(List<Object[]>)list){
+			for(int i=0; i<values.length; i++)
+				System.out.print(values[i]+"\t");
+			System.out.println();
+		}
+			
 	}
+	
+	
 }
-*/

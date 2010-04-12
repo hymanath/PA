@@ -189,5 +189,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getAllPartyDetailsForAllElectionYearsInADistrict(Long districtId);
 	
 	public List getTotalVotesPolledInADistrictForAllElectionYears(Long districtId);
+
+	public List getAllElectionsInDistrict(Long districtId);
 	
 }

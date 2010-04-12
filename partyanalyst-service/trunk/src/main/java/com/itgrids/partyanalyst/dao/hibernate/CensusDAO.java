@@ -31,7 +31,7 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 
                 Criteria criteria = session.createCriteria( Census.class )
                 	.add( Expression.eq( "districtId" , districtId  ))
-                	.add( Expression.eq( "year" , year  )); 
+                	.add( Expression.eq( "year" , new Long(year)  )); 
                 
                 return new HashSet( criteria.list() );
             }
@@ -47,7 +47,7 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 
                 Criteria criteria = session.createCriteria( Census.class )
                 	.add( Expression.eq( "stateId" , stateId  ))
-                	.add( Expression.eq( "year" , year  ))
+                	.add( Expression.eq( "year" , new Long(year)  ))
             	    .add( Expression.eq( "level" , "STATE"  ));
                 
                 return new HashSet( criteria.list() );
@@ -64,7 +64,7 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 
                 Criteria criteria = session.createCriteria( Census.class )
                 	.add( Expression.eq( "tehsilId" , tehsilId  ))
-                	.add( Expression.eq( "year" , year  )); 
+                	.add( Expression.eq( "year" , new Long(year)  )); 
                 
                 return new HashSet( criteria.list() );
             }
@@ -80,7 +80,7 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 
                 Criteria criteria = session.createCriteria( Census.class )
                 	.add( Expression.eq( "townshipId" , townshipId  ))
-                	.add( Expression.eq( "year" , year  )); 
+                	.add( Expression.eq( "year" , new Long(year)  )); 
                 
                 return new HashSet( criteria.list() );
             }
@@ -96,7 +96,7 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 
                 Criteria criteria = session.createCriteria( Census.class )
                 	.add( Expression.eq( "wardId" , wardId  ))
-                	.add( Expression.eq( "year" , year  )); 
+                	.add( Expression.eq( "year" , new Long(year)  )); 
                 
                 return new HashSet( criteria.list() );
             }
@@ -121,7 +121,18 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 	
 	@SuppressWarnings("unchecked")
 	public List findCensusDetailsForAMandal(Long stateId,Long districtId,Long tehsilId,int year,String level){
-		Object[] params = {stateId,districtId,tehsilId,year,level};
+		Object[] params = {stateId,districtId,tehsilId,new Long(year),level};
 		return getHibernateTemplate().find("select model.tru,model.level,model.year,model.totalMalePopulation,model.totalFemalePopulation,model.totalPopulation from Census model where model.stateId = ? and model.districtId = ? and model.tehsilId = ?  and model.year = ? and model.level = ?",params);
 	}
+
+	public List findAllRevenueVillagesInfoInMandal(Long year, Long mandalId, String levels){
+		Object[] params = {mandalId, year};
+		return getHibernateTemplate().find("select model.township.townshipId, model.township.townshipName, " +
+				"sum(model.totalPopulation), sum(model.totalMalePopulation), sum(model.totalFemalePopulation), " +
+				"sum(model.populationSC), sum(model.populationST), sum(model.populationLiterates)" +
+				", sum(model.populationIlliterates), sum(model.workingPopulation) from Census model " +
+				"where model.township.tehsil.tehsilId = ? and model.year = ? and " +
+				" model.level in ("+levels+") group by model.township.townshipId", params);
+	}
+	
 }

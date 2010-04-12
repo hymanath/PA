@@ -1,5 +1,10 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 public class ElectionResultVO {
 
 	private String electionType;
@@ -8,6 +13,7 @@ public class ElectionResultVO {
 	private String percentage;
 	private String partyName;
 	private Long noOfSeatsWon;
+	private List<AlliancePartyResultsVO> partiesAlliances;
 	
 	public Long getNoOfSeatsWon() {
 		return noOfSeatsWon;
@@ -56,7 +62,27 @@ public class ElectionResultVO {
 	public void setPercentage(String percentage) {
 		this.percentage = percentage;
 	}
+
+	public List<AlliancePartyResultsVO> getPartiesAlliances() {
+		return partiesAlliances;
+	}
+
+	public void setPartiesAlliances(List<AlliancePartyResultsVO> partiesAlliances) {
+		this.partiesAlliances = partiesAlliances;
+	}
 	
+	@Override
+	public boolean equals(Object obj){
+		if(!(obj instanceof ElectionResultVO))
+			return false;
+		ElectionResultVO voObj = (ElectionResultVO) obj;
+		return new EqualsBuilder().append(electionType, voObj.getElectionType()).
+		append(electionYear, voObj.getElectionYear()).isEquals();
+	}
 	
+	@Override
+	public int hashCode(){
+		return new HashCodeBuilder(17, 37).append(electionType).append(electionYear).toHashCode();
+	}
 	
 }

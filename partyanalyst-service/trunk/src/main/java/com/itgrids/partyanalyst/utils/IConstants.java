@@ -88,6 +88,8 @@ public interface IConstants {
 	public final static String CONSTITUENCY_LEVEL="CONSTITUENCY";
 	public final static String WINNER_CANDIDATES="WINNER";
 	public final static String ALL_CANDIDATES="ALL_CANDIDATES";
+	public final static String CENSUS_VILLAGE_LEVEL = "VILLAGE";
+	public final static String CENSUS_WARD_LEVEL = "WARD";
 	
 
 }

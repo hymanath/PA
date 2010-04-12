@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,10 +28,10 @@ public class Census extends BaseModel implements java.io.Serializable {
 	private Long stateId;
 	private Long districtId;
 	private Long tehsilId;
-	private Long townshipId;
+	private Township township;
 	private Long wardId;
 	private String level;
-	private int year;
+	private Long year;
 	private String tru;
 	private Long houseHolds;
 	private Long totalPopulation;
@@ -179,13 +180,14 @@ public class Census extends BaseModel implements java.io.Serializable {
 		this.tehsilId = tehsilId;
 	}
 
-	@Column(name = "township_id")
-	public Long getTownshipId() {
-		return townshipId;
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "township_id")
+	public Township getTownship() {
+		return township;
 	}
 
-	public void setTownshipId(Long townshipId) {
-		this.townshipId = townshipId;
+	public void setTownship(Township township) {
+		this.township = township;
 	}
 
 	@Column(name = "ward_id")
@@ -206,10 +208,10 @@ public class Census extends BaseModel implements java.io.Serializable {
 	}
 	
 	@Column(name = "year")
-	public int getYear() {
+	public Long getYear() {
 		return year;
 	}
-	public void setYear(int year) {
+	public void setYear(Long year) {
 		this.year = year;
 	}
 	

@@ -19,6 +19,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
+import com.itgrids.partyanalyst.dao.IGroupDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
@@ -37,6 +39,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateWonVO;
@@ -50,6 +53,7 @@ import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -63,6 +67,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionAlliance;
 import com.itgrids.partyanalyst.model.ElectionScope;
+import com.itgrids.partyanalyst.model.Group;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
@@ -102,6 +107,8 @@ public class StaticDataService implements IStaticDataService {
 	private IVillageBoothElectionDAO villageBoothElectionDAO;
 	private TransactionTemplate transactionTemplate;
 	private ConstituencyElectionResultsVO constituencyElectionResultsVO ;
+	private IGroupDAO groupDAO;
+	private IBoothResultDAO boothResultDAO;
 
 	/**
 	 * @param partyDAO the partyDAO to set
@@ -149,6 +156,16 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 	
+	public IBoothResultDAO getBoothResultDAO() {
+		return boothResultDAO;
+	}
+
+
+	public void setBoothResultDAO(IBoothResultDAO boothResultDAO) {
+		this.boothResultDAO = boothResultDAO;
+	}
+
+
 	public ICandidateBoothResultDAO getCandidateBoothResultDAO() {
 		return candidateBoothResultDAO;
 	}
@@ -167,6 +184,16 @@ public class StaticDataService implements IStaticDataService {
 
 	public void setHamletDAO(IHamletDAO hamletDAO) {
 		this.hamletDAO = hamletDAO;
+	}
+
+
+	public IGroupDAO getGroupDAO() {
+		return groupDAO;
+	}
+
+
+	public void setGroupDAO(IGroupDAO groupDAO) {
+		this.groupDAO = groupDAO;
 	}
 
 
@@ -2841,6 +2868,8 @@ public class StaticDataService implements IStaticDataService {
 				partyId.append(",").append((Long)listResult[4]);			
 			}	
 			
+			getAllianceGroupsForElections(electionId.substring(1), districtWisePartyResultVO);
+			
 			List list = partyElectionDistrictResultDAO.getAllParyDetailsForAllElectionYearsForADistrict(electionId.substring(1),partyId.substring(1),stateId,districtId);
 			Map<PartyResultVO, List<ElectionResultVO>>  allPartiesInElecsMap = 
 				new LinkedHashMap<PartyResultVO, List<ElectionResultVO>>(); 
@@ -2854,7 +2883,8 @@ public class StaticDataService implements IStaticDataService {
 				eachPartyInfo = new PartyResultVO();
 				eachPartyInfo.setPartyId((Long)values[0]);
 				eachPartyInfo.setPartyName(values[1].toString());
-				if(allPartiesInElecsMap.get(eachPartyInfo) == null)
+				electionsOfParty = allPartiesInElecsMap.get(eachPartyInfo);
+				if(electionsOfParty == null)
 					electionsOfParty = new ArrayList<ElectionResultVO>();
 				partyElecReuslt = new ElectionResultVO();
 				partyElecReuslt.setElectionType(values[3].toString());
@@ -2862,6 +2892,33 @@ public class StaticDataService implements IStaticDataService {
 				partyElecReuslt.setVotesEarned(((Double)values[4]).longValue());
 				partyElecReuslt.setPercentage(values[5].toString());
 				partyElecReuslt.setNoOfSeatsWon(new Long(values[6].toString()));
+				electionsOfParty.add(partyElecReuslt);
+				allPartiesInElecsMap.put(eachPartyInfo, electionsOfParty);
+			}
+			
+			//Booth Wise Calculation For Parliament Parties Performance
+			Map<String, Long> yearWithPolledVotes = new HashMap<String, Long>(); 
+			List parliamentValidVotes = boothResultDAO.getAllPolledVotesByElectionsInDistrict(districtId, IConstants.PARLIAMENT_ELECTION_TYPE);
+
+			for(Object[] values:(List<Object[]>)parliamentValidVotes)
+				yearWithPolledVotes.put(values[0].toString(), (Long)values[1]);
+			
+			List partiesResultsInParliament = candidateBoothResultDAO.findAllPartiesElectionResultsInDistrictForElectionType(districtId, IConstants.PARLIAMENT_ELECTION_TYPE);
+			
+			for(Object[] values:(List<Object[]>)partiesResultsInParliament){
+				eachPartyInfo = new PartyResultVO();
+				eachPartyInfo.setPartyId((Long)values[1]);
+				eachPartyInfo.setPartyName(values[2].toString());
+				electionsOfParty = allPartiesInElecsMap.get(eachPartyInfo);
+				if(electionsOfParty == null)
+					electionsOfParty = new ArrayList<ElectionResultVO>();
+				partyElecReuslt = new ElectionResultVO();
+				partyElecReuslt.setElectionType(IConstants.PARLIAMENT_ELECTION_TYPE);
+				partyElecReuslt.setElectionYear(values[0].toString());
+				partyElecReuslt.setVotesEarned((Long)values[3]);
+				partyElecReuslt.setPercentage(new BigDecimal(((Long)values[3])*100.0/yearWithPolledVotes.
+						get(values[0].toString())).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+				partyElecReuslt.setNoOfSeatsWon(0l);
 				electionsOfParty.add(partyElecReuslt);
 				allPartiesInElecsMap.put(eachPartyInfo, electionsOfParty);
 			}
@@ -2876,6 +2933,7 @@ public class StaticDataService implements IStaticDataService {
 				eachPartyInfo.setSeatsWonCountToSort(partySeatsWon);
 				partyResults.add(eachPartyInfo);
 			}
+			
 			Collections.sort(partyResults, new PartyResultVOComparator());
 			districtWisePartyResultVO.setPartyElectionResultsList(partyResults);
 			
@@ -2883,6 +2941,53 @@ public class StaticDataService implements IStaticDataService {
 			e.printStackTrace();
 		}
 		return districtWisePartyResultVO;
+	}
+	
+	public void getAllianceGroupsForElections(String electionIds, DistrictWisePartyResultVO districtWisePartyResultVO){
+		List<ElectionResultVO> alliancePartiesInElection = new ArrayList<ElectionResultVO>();
+		ElectionResultVO electionResultVO = null;
+		List<AlliancePartyResultsVO> partiesAlliances = null;
+		AlliancePartyResultsVO alliancePartyResultsVO = null;
+		List<PartyPositionsVO> partiesInAlliance = null;
+		PartyPositionsVO partyPositionsVO = null;
+		List<AllianceGroup> alliances = null;
+		Group group = null;
+		Map<ElectionResultVO, List<AlliancePartyResultsVO>> allianceByElections = new HashMap<ElectionResultVO, List<AlliancePartyResultsVO>>();
+		
+		List groupsByElections = electionAllianceDAO.findAllianceGroupsInElections(electionIds);  
+		for(Object[] values:(List<Object[]>)groupsByElections){
+			electionResultVO = new ElectionResultVO();
+			electionResultVO.setElectionType(values[0].toString());
+			electionResultVO.setElectionYear(values[1].toString());
+			partiesAlliances = allianceByElections.get(electionResultVO);
+			if(partiesAlliances == null)
+				partiesAlliances = new ArrayList<AlliancePartyResultsVO>();
+			alliancePartyResultsVO = new AlliancePartyResultsVO();
+			alliancePartyResultsVO.setAllianceGroupName(values[2].toString());
+			alliancePartyResultsVO.setGroupId((Long)values[3]);
+			partiesAlliances.add(alliancePartyResultsVO);
+			allianceByElections.put(electionResultVO, partiesAlliances);
+		}
+		
+		for(Map.Entry<ElectionResultVO, List<AlliancePartyResultsVO>> entry:allianceByElections.entrySet()){
+			electionResultVO = entry.getKey();
+			partiesAlliances = entry.getValue();
+			partiesInAlliance = new ArrayList<PartyPositionsVO>();
+			for(AlliancePartyResultsVO pariesInGroup:partiesAlliances){
+				group = groupDAO.get(pariesInGroup.getGroupId());
+				alliances = group.getAllianceGroups();
+				for(AllianceGroup partyInAlliance:alliances){
+					partyPositionsVO = new PartyPositionsVO();
+					partyPositionsVO.setPartyName(partyInAlliance.getParty().getShortName());
+					partiesInAlliance.add(partyPositionsVO);
+				}
+				pariesInGroup.setPartiesInAlliance(partiesInAlliance);
+			}
+			electionResultVO.setPartiesAlliances(partiesAlliances);	
+			alliancePartiesInElection.add(electionResultVO);
+		}
+		
+		districtWisePartyResultVO.setAlliancePartiesInElection(alliancePartiesInElection);
 	}
 
 }

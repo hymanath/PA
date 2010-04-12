@@ -34,4 +34,6 @@ public interface ICensusDAO extends GenericDao<Census, Long> {
 	@SuppressWarnings("unchecked")
 	public List findCensusDetailsForAMandal(Long stateId,Long districtId,Long tehsilId,int year,String Level);
 	
+	public List findAllRevenueVillagesInfoInMandal(Long year, Long mandalId, String levels);
+	
 }

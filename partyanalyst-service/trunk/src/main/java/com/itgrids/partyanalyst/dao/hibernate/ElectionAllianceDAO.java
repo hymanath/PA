@@ -11,6 +11,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.model.ElectionAlliance;
+import com.itgrids.partyanalyst.model.Group;
 
 public class ElectionAllianceDAO extends GenericDaoHibernate<ElectionAlliance, Long> implements
 IElectionAllianceDAO {
@@ -32,4 +33,11 @@ IElectionAllianceDAO {
 				" where model.election.electionId = ?",electionId);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List findAllianceGroupsInElections(String electionIds){
+		return getHibernateTemplate().find("select model.election.electionScope.electionType.electionType, " +
+				"model.election.electionYear, model.group.groupName, model.group.groupId from ElectionAlliance model where " +
+				"model.election.electionId in ("+electionIds+")");
+	}
+	
 }

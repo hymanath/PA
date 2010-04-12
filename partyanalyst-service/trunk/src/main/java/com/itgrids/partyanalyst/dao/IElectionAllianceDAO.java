@@ -10,4 +10,7 @@ public interface IElectionAllianceDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List findGroupIdByElection(Long electionId);
+	
+	public List findAllianceGroupsInElections(String electionIds);
+	
 }

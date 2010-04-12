@@ -238,36 +238,30 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 	public VillageDetailsVO getVillagesFormMandal(Long mandalID){
 		VillageDetailsVO villageDetailsVO = new VillageDetailsVO();
 		List<VillageCensusInfoVO> villageCensusList = new ArrayList<VillageCensusInfoVO>();
+		VillageCensusInfoVO villageCensusInfoVO = null;
 		try{
-			List<Township> villages = townshipDAO.findByTehsilID(mandalID);
-			if(log.isDebugEnabled()){
-				log.debug("total villages available for the mandalID:"+mandalID+" is ::"+villages.size());
-			}
-			StringBuilder villageIDs = new StringBuilder();
-			Map<Long,String> villageMap = new HashMap<Long, String>();
-			for(Township township : villages){
-				villageMap.put(township.getTownshipId(), township.getTownshipName());
-				villageIDs.append(",").append(township.getTownshipId());
-			}
-			if(log.isDebugEnabled()){
-				log.debug("total villages villageIDs ::"+villageIDs.toString());
+			List villagesInfo = censusDAO.findAllRevenueVillagesInfoInMandal(IConstants.CENSUS_YEAR, mandalID, 
+										"'"+IConstants.CENSUS_VILLAGE_LEVEL+"','"+IConstants.CENSUS_WARD_LEVEL+"'");
+			
+			for(Object[] values:(List<Object[]>)villagesInfo){
+				
+				villageCensusInfoVO = new VillageCensusInfoVO();
+				villageCensusInfoVO.setTownshipID((Long)values[0]);
+				villageCensusInfoVO.setTownshipName(values[1].toString());			
+				villageCensusInfoVO.setTotalPersons((Long)values[2]);
+				villageCensusInfoVO.setTotalMalePersons((Long)values[3]);
+				villageCensusInfoVO.setTotalFemalePersons((Long)values[4]);				
+				villageCensusInfoVO.setTotalSCPersons((Long)values[5]);
+				villageCensusInfoVO.setTotalSTPersons((Long)values[6]);
+				villageCensusInfoVO.setTotalLiteratePersons((Long)values[7]);				
+				villageCensusInfoVO.setTotalIlliteratePersons((Long)values[8]);
+				villageCensusInfoVO.setTotalWorkingPersons((Long)values[9]);
+				villageCensusList.add(villageCensusInfoVO);
+				villageCensusInfoVO.setTownshipNameURL("<a href='revenueVillageReport.action?revenueVillageName=" +
+						""+villageCensusInfoVO.getTownshipName()+"&revenueVillageID="
+						+villageCensusInfoVO.getTownshipID()+"'>"+villageCensusInfoVO.getTownshipName()+"</a>");
 			}
 			
-			List<Census> censusList = censusDAO.findByYearAndTownshipIDs(IConstants.CENSUS_YEAR,villageIDs.substring(1));
-			if(log.isDebugEnabled()){
-				log.debug("censusList villages available for the censusList ::"+censusList.size());
-			}
-			for(Census villageCensus : censusList){
-				VillageCensusInfoVO villageInfo = new VillageCensusInfoVO();
-				villageInfo.setTownshipName(villageMap.get(villageCensus.getTownshipId()));
-				
-				villageInfo.setTownshipNameURL("<a href='revenueVillageReport.action?revenueVillageName="+villageInfo.getTownshipName()+"&revenueVillageID="+villageCensus.getTownshipId()+"'>"+villageInfo.getTownshipName()+"</a>");
-				convertCencesToVillageInfo(villageCensus, villageInfo);
-				villageCensusList.add(villageInfo);
-				if(log.isDebugEnabled()){
-					log.debug("List Village Name ::"+villageMap.get(villageCensus.getTownshipId()));
-				}
-			}
 			villageDetailsVO.setVillageCensusList(villageCensusList);
 		}catch(Exception ex){
 			villageDetailsVO.setExceptionEncountered(ex);
@@ -277,37 +271,7 @@ public class DelimitationConstituencyMandalService implements IDelimitationConst
 		
 		return villageDetailsVO;
 	}
-	public void convertCencesToVillageInfo(Census villageCensus, VillageCensusInfoVO obj){
-		Long villageID = villageCensus.getTownshipId();
-		
-		obj.setTownshipID(villageID);
-		
-		obj.setTotalPersons(villageCensus.getTotalPopulation());
-		obj.setTotalMalePersons(villageCensus.getTotalMalePopulation());
-		obj.setTotalFemalePersons(villageCensus.getTotalFemalePopulation());
-		
-		obj.setTotalSCPersons(villageCensus.getPopulationSC());
-		obj.setTotalSCFemalePersons(villageCensus.getFemaleSC());
-		obj.setTotalSCMalePersons(villageCensus.getMaleSC());
-
-		obj.setTotalSTPersons(villageCensus.getPopulationST());
-		obj.setTotalSTFemalePersons(villageCensus.getFemaleST());
-		obj.setTotalSTMalePersons(villageCensus.getMaleST());
-
-		obj.setTotalLiteratePersons(villageCensus.getPopulationLiterates());
-		obj.setTotalLiterateFemalePersons(villageCensus.getFemaleLiterates());
-		obj.setTotalLiterateMalePersons(villageCensus.getMaleLiterates());
-
-		obj.setTotalIlliteratePersons(villageCensus.getPopulationIlliterates());
-		obj.setTotalIlliterateFemalePersons(villageCensus.getFemaleIlliterates());
-		obj.setTotalIlliterateMalePersons(villageCensus.getMaleIlliterates());
-
-
-		obj.setTotalWorkingPersons(villageCensus.getWorkingPopulation());
-		obj.setTotalWorkingFemalePersons(villageCensus.getWorkingFemale());
-		obj.setTotalWorkingMalePersons(villageCensus.getWorkingMale());
-	}
-
+	
 	/**
 	 * to retrieves party, election wise voters for a mandal/revenue village
 	 * @param mandalID

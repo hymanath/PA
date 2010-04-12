@@ -205,7 +205,7 @@ public class StatePageService implements IStatePageService {
 				 censusVO.setMalePopulation(censusData.getTotalMalePopulation());
 				 censusVO.setFemalePopulation(censusData.getTotalFemalePopulation());
 				 censusVO.setTru(censusData.getTru());
-				 censusVO.setYear(censusData.getYear());
+				 censusVO.setYear(censusData.getYear().intValue());
 				 
 				 censusDataVO.add(censusVO);
 			 }

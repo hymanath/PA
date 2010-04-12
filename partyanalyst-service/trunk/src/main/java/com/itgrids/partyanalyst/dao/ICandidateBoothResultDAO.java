@@ -77,4 +77,7 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List getCandidatesResultsForElectionAndConstituencyByMandalByPaliamentWise(Long constituencyId,String mandalIds,String electionYear);
 	
 	public List getMandalsForAConstituencyForAGivenYear(Long constituencyId, String electionYear);
+	
+	public List findAllPartiesElectionResultsInDistrictForElectionType(Long districtId, String electionType);
+	
 }

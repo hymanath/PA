@@ -20,6 +20,7 @@ public class AlliancePartyResultsVO implements Serializable {
 	private String year;
 	private String state;
 	private String electionType;
+	private Long groupId;
 	private String allianceGroupName;
 	private String chartForPartyResults;
 	
@@ -72,6 +73,14 @@ public class AlliancePartyResultsVO implements Serializable {
 
 	public void setPartiesInAlliance(List<PartyPositionsVO> partiesInAlliance) {
 		this.partiesInAlliance = partiesInAlliance;
+	}
+
+	public Long getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(Long groupId) {
+		this.groupId = groupId;
 	}
 
 }
