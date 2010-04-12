@@ -13,6 +13,11 @@ import java.util.List;
 
 public class CandidateDetailsVO implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private Long candidateId;
 	private String candidateName;
 	private String partyName;
@@ -39,6 +44,8 @@ public class CandidateDetailsVO implements Serializable{
 	private String moreDetails;
 	private Float votesDifference;
 	private String marginVotesPercentage;
+	private MandalAllElectionDetailsVO mandalAllElectionDetailsVO;
+	
 	
 	//getters and setters
 	public Long getConstituencyId() {
@@ -128,6 +135,13 @@ public class CandidateDetailsVO implements Serializable{
 	}
 	public void setMarginVotesPercentage(String marginVotesPercentage) {
 		this.marginVotesPercentage = marginVotesPercentage;
+	}
+	public MandalAllElectionDetailsVO getMandalAllElectionDetailsVO() {
+		return mandalAllElectionDetailsVO;
+	}
+	public void setMandalAllElectionDetailsVO(
+			MandalAllElectionDetailsVO mandalAllElectionDetailsVO) {
+		this.mandalAllElectionDetailsVO = mandalAllElectionDetailsVO;
 	}
 	public String getMoreDetails() {
 		return moreDetails;
