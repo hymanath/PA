@@ -70,8 +70,23 @@
 			
 			<div id="dashBoardLeftlayoutDiv">
 				<div id="humanImgDiv">
-					<img src="images/icons/indexPage/human.jpg"/>
+					<table>
+						<tr><td colspan="4"><div><img src="images/icons/indexPage/human.jpg"/></div></td></tr>	
+						<tr>	
+							<td width="25%" id="uploadPhotoImage"></td>
+							<td><a href="javascript:{}" class="profileAnc">Upload Photo</a></td>
+						</tr>
+						<tr>
+							<td id=""><img src="images/usergroups/search.gif" style="padding-left:10px;"/></td>
+							<td><a href="javascript:{}" class="profileAnc">View Profile</a></td> 
+						</tr>
+					</table>					
 				</div>		
+				<div id="noticeBoard">
+					<div id="noticeBoard_head">Announcements</div>
+					<div id="noticeBoard_body"></div>
+					<div id="noticeBoard_footer"></div>
+				</div>
 				
 			</div>
 
@@ -96,7 +111,7 @@
 					</table>
 				</div>
 				<div id="dashBoardCenterlayout_body">
-					<table width="100%" style="width:100%">
+					<table width="100%" style="width:100%;height:100%">
 						<tr>
 							<td style="vertical-align:top;width:70%;">
 								<table width="100%" style="width:100%;">
@@ -122,6 +137,9 @@
 												</div>
 											</div>
 										</td>
+									</tr>
+									<tr>
+										<td><div></div></td>
 									</tr>
 									<tr>
 										<td>
@@ -164,7 +182,10 @@
 												</div>
 												<div id="cadresDiv_footer" style="text-align:right">
 													<span class="dashBoardLinks">View All</span>
-													<span class="dashBoardLinks"><img src="images/icons/indexPage/sms_cell.png"/>Send SMS</span>
+													<span class="dashBoardLinks">
+														<span><img src="images/icons/indexPage/sms_cell.png"/></span>
+														<span>Send SMS</span>
+													</span>
 												</div>
 											</div>
 										</td>
@@ -173,21 +194,39 @@
 							</td>
 							
 							<td style="vertical-align:top;border-left:1px solid #cdcdcd;">
-								<div>
-									<ul id="dashboardRightLayoutList">
-										<li>View Your Constituency</li>
-										<li>View Your Mandal</li>
-										<li>View Your District</li>
-									</ul>
+
+								<div id="staticDataView_main">
+									<div id="staticDataView_head"></div>
+									<div id="staticDataView_body">
+										<ul id="dashboardRightLayoutList">
+											<li>View Your Constituency</li>
+											<li>View Your Mandal</li>
+											<li>View Your District</li>
+										</ul>
+									</div>
+									<div id="staticDataView_footer"></div>
 								</div>
-								<!--<div id="usergroups_main">
-									<div id="usergroups_head"><img src="images/icons/indexPage/group_icon.png"/> User Groups</div>
-									<div id="usergroups_body">asd</div>
-								</div>-->
 
-								<div id="noticeBoard"><u>Announcements</u></div>
+								<div id="usergroups_main">
+									<div id="usergroups_head">
+										<table><tr>
+											<td><img src="images/icons/indexPage/group_icon.png"/></span></td>
+											<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">User Groups</span></td>
+										</tr></table>
+									</div>
+									<div id="usergroups_body">
+										<font style="color:#4B74C6;padding-left:22px;">Total Groups Created : 24</font>
+										<ul class="dashBoardContentList">
+											<li> System Groups - 10 </li>
+											<li> User Groups - 14</li>
+										</ul>
+									</div>
+									<div id="usergroups_footer" style="text-align:right">
+										<span class="dashBoardLinks">View All</span>
+										<span class="dashBoardLinks">Create</span>
+									</div>
+								</div>
 							</td>
-
 						</tr>
 					</table>
 				</div>
@@ -199,7 +238,7 @@
 						<td style="vertical-align:top;width:250px;">
 							<div id="dashboard_leftNav" style="margin-top: 35px;">								
 								<ul id="pa_reportsList_main">
-									<li id="partyAnalysisListItem">
+									<li id="partyAnalysisListItem">										
 										<div class="reportGroupClass" onclick="showReportsInCarousel('partyAnalysis')">Party Analysis</div>
 									</li>
 									<li id="politicianAnalysisListItem">
@@ -216,11 +255,11 @@
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head">Party Performance Report</div>
 												<div class="pa_reports_body">													
+													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report1.png"/></div>
 													<div style="height:120px">
 														Party Performance Report gives a detailed election results analysis for a party on its performance in an election.
 														This report mainly focus on complete party election results of won/lost details in different positions, which include first,second,third upto Nth position dtails and election results in those positions.
-													</div>													
-													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report1.png"/></div>
+													</div>
 													<div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
 												</div>											
 											</div>
@@ -229,11 +268,10 @@
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head">Election Comparison Report</div>
 												<div class="pa_reports_body">
+													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report2.png"/></div>
 													<div style="height:120px">
 													Elections Comparison Report gives a glance of compared election results for a party participated any two elections in a detailed view.This report mainly provides a overview  for a user to know wheather the party improved/lost its performance in selected present year when compared to selected previous year.
 													</div>
-													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report2.png"/></div>
-
 													<div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
 												</div>											
 											</div> 
@@ -242,11 +280,10 @@
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head">Party Results Report</div>
 												<div class="pa_reports_body">
+													 <div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report3.png"/></div>
 													<div style="height:120px">
 													 Party Results Report gives overall picture for a party in different types of elections like assembly/parliament/zptc/mptc/municipality in different party participated years in a single glance.The results can be classified and viewed in three different views like statewise or districtwise or constituencywise.
 													</div>
-													 <div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report3.png"/></div>
-
 													 <div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
 												</div>											
 											</div> 
@@ -255,11 +292,10 @@
 											<div class="reports_carousel_div_class">
 												<div class="pa_reports_head"> Party Influence Report</div>
 												<div class="pa_reports_body"> 
+													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report4.png"/></div>
 													<div style="height:120px">
 													Party Influence Report compares the election results among one party and newly establish party.The resuilts are compared among all the districts wise and the mandals wise.
 													</div>
-													<div style="margin-top:10px"><img src="images/icons/indexPage/partyanalysis/report4.png"/></div>
-
 													<div style="float:right;padding-top:4px;"><a href="javascript:{}" class="viewReportAnc">View</a></div>
 												</div>									
 											</div> 

@@ -53,7 +53,7 @@ var indexPageMain = {
 function buildIndexPageLayout()
 { 	 
 	var candidatePageLayout = new YAHOO.widget.Layout('dashboard_layout_main', { 
-	height:450,
+	height:480,
 	units: [			
 			{ 
 				position: 'left', 
@@ -104,7 +104,7 @@ function showCurrentDateTime()
 	var today=new Date();
 
 	var str = "";
-	str+="Today's Date : ";
+	str+="Today : ";
 	str+=getDayOfWeek(today.getDay())+",";
 	str+=today.getDate()+"-";
 	str+=getMonth(today.getMonth())+"-";	
@@ -155,9 +155,9 @@ function showReportsInCarousel(type)
 		var str = '';
 		str+='<div class="reports_carousel_div_class">';
 		str+='<div class="pa_reports_head">'+arr[i].header+'</div>';
-		str+='	<div class="pa_reports_body">';
-		str+='		<div style="height:120px">'+arr[i].body+'</div>';
+		str+='	<div class="pa_reports_body">';		
 		str+='		<div style="margin-top:10px">'+arr[i].img+'</div>';
+		str+='		<div style="height:120px">'+arr[i].body+'</div>';
 		str+='		<div style="float:right;padding-top:4px;">'+arr[i].viewAnc+'</div>';
 		str+='	</div>';									
 		str+='</div> ';
