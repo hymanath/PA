@@ -40,7 +40,10 @@ function callAjax(param,jsObj,url){
 									myResults = YAHOO.lang.JSON.parse(o.responseText);
 									
 								if(jsObj.task == "getAllCandidates")
-								{																
+								{	
+									var elmt = document.getElementById("electionPageAjaxImgDiv");
+									if(elmt)
+										elmt.style.display = 'none';															
 									showCandidates(myResults,jsObj);											
 								}
 							}
@@ -144,7 +147,7 @@ function allCandidatesClickHandler()
 		}else if(regionalRadioBtns[i].id == 'countryLevelP' && partywiseCheckBoxEl.checked == true)
 		{
 			regionalRadioBtns[i].disabled = false;
-		}//wkg
+		}
 		if(regionalRadioBtns[i].id == 'stateLevelZ' && partywiseCheckBoxEl.checked == false)
 		{
 			regionalRadioBtns[i].disabled = true;
@@ -263,7 +266,8 @@ function buildParticipatedCandidatesDetailsDataTable(data)
 								{key: "votesPercentage", label: "Votes %", formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},		
 								{key: "rank", label: "Rank", formatter:"number", sortable:true},	
 		              	 	    {key: "marginVotes", label: "Margin Votes",formatter:"number", sortable:true},
-		              	 	 	{key: "marginVotesPercentage", label: "Margin Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true}		              	 	 			              	 	 	
+		              	 	 	{key: "marginVotesPercentage", label: "Margin Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+		              	 	 	{key: "moreDetails", label: "More Details"}	              	 	 				              	 	 		              	 	 			              	 	 	
 		              	 	    ];                	 	    
 
 		var participatedCandidatesDetailsDataSource = new YAHOO.util.DataSource(data); 
@@ -274,10 +278,8 @@ function buildParticipatedCandidatesDetailsDataTable(data)
                 		  {key: "votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},
                 		  {key: "rank", parser:"number"},
                 		  {key: "marginVotes", parser:YAHOO.util.DataSourceBase.parseNumber},
-                		  {key: "marginVotesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber} ]    
-                         		   
-        		};
-
+                		  {key: "marginVotesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},"moreDetails"]     
+		};
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
 				rowsPerPage    : 50,
@@ -288,8 +290,7 @@ function buildParticipatedCandidatesDetailsDataTable(data)
 			    caption:"Candidates Details" 
 				};
 		
-		participatedCandidatesDetailsDataTable = new YAHOO.widget.DataTable("participatedCandidatesDetailsDataTable", participatedCandidatesDetailsColumnDefs, participatedCandidatesDetailsDataSource,myConfigs);				
-            	
+		participatedCandidatesDetailsDataTable = new YAHOO.widget.DataTable("participatedCandidatesDetailsDataTable", participatedCandidatesDetailsColumnDefs, participatedCandidatesDetailsDataSource,myConfigs);		            	
 	
 }
 function allCandidates()
@@ -399,7 +400,7 @@ function allCandidates()
 	callAjax(rparam,jsObj,url);
 }
 function showCandidates(results,jsObj)
-{
+{	
 	var emptyArray = new Array();
 	var assignTocandidateDetailsArr = new Array();
 	var candidateDetails = results.candidateDetails;	
@@ -424,7 +425,11 @@ function showCandidates(results,jsObj)
 					votesPercentage: candidateDetails[i].votesPercentage,
 					rank: candidateDetails[i].rank,
 					marginVotes: candidateDetails[i].votesDifference,
-					marginVotesPercentage: candidateDetails[i].marginVotesPercentage
+					marginVotesPercentage: candidateDetails[i].marginVotesPercentage,
+					constituencyId: candidateDetails[i].constituencyId,
+					electionType: candidateDetails[i].electionType,
+					electionYear: candidateDetails[i].electionYear,
+					moreDetails: '<A href="javascript:{}" onclick="getMoreDetails('+candidateDetails[i].constituencyId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>'
 			};
 			assignTocandidateDetailsArr.push(candidateDetailsObj1);		
 		}
@@ -440,29 +445,39 @@ function showCandidates(results,jsObj)
 		//buildParticipatedCandidatesDetailsDataTable(emptyArray);
 	}	
 }
+function getMoreDetails(constiId,elecType,elecYear)
+{	
+	 var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser2","scrollbars=yes,height=600,width=750,left=200,top=200");
+	   browser1.focus();
+}
 </SCRIPT>
 </HEAD>
 <BODY class="yui-skin-sam">
 <CENTER>
 <H3>${year} ${electionType} Election Candidates Details</H3>
+<DIV id="electionPageAjaxImgDiv">
+	<DIV> Loading Candidate Details! Please Wait..</DIV>
+	<IMG src="images/icons/barloader.gif"/>
+</DIV>
+
 <DIV id="optionsDiv" class="optionsDiv">
 	<P class="paraText">To View Candidates Details for a particular party, please select the "Partywise Candidate Details" check box and select a party from drop down list and select the options provided below. </P>
 	<TABLE  class="optionsTable" width="75%">
 	<TR>
-	<TD align="left" class="td" style="width:25%;"><INPUT type="checkbox" name="partywiseCheckBox" id="partywiseCheckBox" onclick="partywiseClickHandler()" />Partywise Candidates</TD>
-	<TD align="left" colspan="1" style="width:25%;"><s:select id="selectParty" theme="simple"  name="selectParty" cssClass="selectBoxStyle" list="partiesList" listKey="id" style="display:none;" listValue="name" onchange="selectPartyOnchangeHandler()" /></TD>
-	<TD align="left" colspan="1" style="width:25%;"></TD>
+		<TD align="left" class="td" style="width:25%;"><INPUT type="checkbox" name="partywiseCheckBox" id="partywiseCheckBox" onclick="partywiseClickHandler()" />Partywise Candidates</TD>
+		<TD align="left" colspan="1" style="width:25%;"><s:select id="selectParty" theme="simple"  name="selectParty" cssClass="selectBoxStyle" list="partiesList" listKey="id" style="display:none;" listValue="name" onchange="selectPartyOnchangeHandler()" /></TD>
+		<TD align="left" colspan="1" style="width:25%;"></TD>
 	</TR>	
 	<TR>
-	<TD align="left" class="td" style="width:25%;"><INPUT type="radio" name="candidatesOption" id="wonCandidates" value="wonCandidatesOnly" onClick="wonCandidatesClickHandler()" checked="true"/>Won Candidates</TD>
-	<TD align="left" class="td" style="width:25%;"><INPUT type="radio" name="candidatesOption" id="allCandidates" value="allCandidates" onClick="allCandidatesClickHandler()" />All Participated Candidates</TD>	
-	<TD align="left" colspan="1" style="width:25%;"></TD>
+		<TD align="left" class="td" style="width:25%;"><INPUT type="radio" name="candidatesOption" id="wonCandidates" value="wonCandidatesOnly" onClick="wonCandidatesClickHandler()" checked="true"/>Won Candidates</TD>
+		<TD align="left" class="td" style="width:25%;"><INPUT type="radio" name="candidatesOption" id="allCandidates" value="allCandidates" onClick="allCandidatesClickHandler()" />All Participated Candidates</TD>	
+		<TD align="left" colspan="1" style="width:25%;"></TD>
 	</TR>	
 	<c:if test="${electionType == 'Parliament'}">
 		<TR id="regionalOptionsRow">
-		<TD class="td" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="countryLevelP" value="countrywiseParliament" onClick="countryLevelPClickHandler()" checked="true"/>Countrywise</TD>		
-		<TD class="td" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="stateLevelP" value="statewiseParliament" onClick="stateLevelPClickHandler()"/>Statewise</TD>
-		<TD style="width:25%;"><s:select id="selectStateP" name="regionSelect" cssClass="selectBoxStyle" style="display:none;" theme="simple" list="statesListObj.getAllStates" listKey="id"  listValue="name" onChange="allCandidates()"  /></TD>
+			<TD class="td" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="countryLevelP" value="countrywiseParliament" onClick="countryLevelPClickHandler()" checked="true"/>Countrywise</TD>		
+			<TD class="td" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="stateLevelP" value="statewiseParliament" onClick="stateLevelPClickHandler()"/>Statewise</TD>
+			<TD style="width:25%;"><s:select id="selectStateP" name="regionSelect" cssClass="selectBoxStyle" style="display:none;" theme="simple" list="statesListObj.getAllStates" listKey="id"  listValue="name" onChange="allCandidates()"  /></TD>
 		</TR>
 	</c:if>	
 	 <c:if test="${electionType == 'Assembly'}" >  
@@ -484,18 +499,15 @@ function showCandidates(results,jsObj)
 		<TD class="td" name="RegionalOptionsA" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="stateLevelM" value="stateWiseMptc" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
 		<TD class="td" name="RegionalOptionsA" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="distLevelM" value="districtwiseMptc" onClick="distLevelMClickHandler()"/>Districtwise</TD>
 		<TD style="width:25%;"><s:select id="selectdistrictM" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
-		</TR>
-	</TR>
+	</TR>	
 	</c:if>
 	</TABLE>
 </DIV>
 <DIV id="error" class="errorMessage" style="display:none;">No candidates matched by this selection criteria </DIV>
 <DIV id="participatedCandidatesDetailsDataTable" align="left"></DIV>
-
 </CENTER>
 <SCRIPT type="text/javascript">
 allCandidates();
 </SCRIPT>
-
 </BODY>
 </HTML>

@@ -37,7 +37,8 @@ var electionResultsObj = {
 	partyWiseResultsArr:[],
 	allianceResultsArr:[],
 	partyWiseResultsWithoutAllianceArr:[],
-    districtWiseResultsWithoutAllianceArr:[]
+    districtWiseResultsWithoutAllianceArr:[],
+    allianceGroupNamesArray:[]
 };
 	
 var Localization = { <%
@@ -74,16 +75,13 @@ function callAjax(param,jsObj,url){
 										var elmt = document.getElementById("electionPageAjaxImgDiv");
 										if(elmt)
 											elmt.style.display = 'none';
-
+										showAllianceDetails(myResults);
 										showStatewiseResultsBarChart(myResults);									
-										showPartywiseDetailsDataTable(myResults);
-										showAllianceDetails(myResults);		
-
+										showPartywiseDetailsDataTable(myResults);												
 										showDistrictWiseResultsLineGraph(myResults);
 										buildAllDistrictResultsDataTable(myResults);
 										buildAllianceDistrictResultsDataTable(myResults.electionResultsInDistricts);
-									} 
- 									
+									}  									
 								}
 							catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -101,8 +99,6 @@ function callAjax(param,jsObj,url){
 
 function showDistrictWiseResultsLineGraph(results)
 {
-	//districtWiseGraph
-
 	var chartName = results.districtWiseElecResultsChartName;
 	var districtWiseGraphEl = document.getElementById("districtWiseGraph");
 
@@ -113,8 +109,7 @@ function showDistrictWiseResultsLineGraph(results)
 
 function getElctionsBasicInfo(electionType){
 	var jsObj= 
-	{	
-			
+	{			
 		electionType: electionType,			
 		task: "elctionsBasicInfo"		
 	}
@@ -148,7 +143,6 @@ function showStatewiseResultsBarChart(results)
 
 function showElectionBasicInfo(results)
 {
-	
 	var task1El = document.getElementById("task1");
 	var task1Content = '';
 	task1Content = '<DIV class="basicDetailsDiv">';
@@ -158,8 +152,7 @@ function showElectionBasicInfo(results)
 	task1Content+='<tr><TH>Total Constituencies:</TH><TD>'+results.totalConstituencies+'</TD><TH>Total Polled Votes:</TH><TD>1,05,34343</TD></TR>';
 	task1Content+='</TABLE>';
 	task1Content+='</DIV>';
-	task1El.innerHTML = task1Content;
-	
+	task1El.innerHTML = task1Content;	
 }
 
 function showPartywiseDetailsDataTable(results)
@@ -167,10 +160,7 @@ function showPartywiseDetailsDataTable(results)
 	var partywiseResultsArr = results.electionBasicResultsVO.allPartiesResults;
 	var partywiseResultsWithoutAlliance = results.electionBasicResultsVO.allPartiesResultsWithoutGroupingOfAllianc;
 
-
-
-	var assignToPartywiseResultsArr = new Array();
-	
+	var assignToPartywiseResultsArr = new Array();	
 	for(var i in  partywiseResultsArr){
 		var partywiseResultsObj = { 
 				party: partywiseResultsArr[i].partyName, 
@@ -183,6 +173,15 @@ function showPartywiseDetailsDataTable(results)
 				pc: partywiseResultsArr[i].votesPercentage,
 				overall: partywiseResultsArr[i].completeVotesPercent						 
 				};
+		//wkg
+		if(electionResultsObj.allianceGroupNamesArray.length > 0 )
+				for(k in electionResultsObj.allianceGroupNamesArray)
+				{
+					if(electionResultsObj.allianceGroupNamesArray[k] == partywiseResultsArr[i].partyName)
+					{
+						partywiseResultsObj.pc = '';
+					}
+				}
 		assignToPartywiseResultsArr.push(partywiseResultsObj);	
 	} 
 	electionResultsObj.partyWiseResultsArr = assignToPartywiseResultsArr;
@@ -213,6 +212,16 @@ function showPartywiseDetailsDataTable(results)
 	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showPartyResultsWithoutAlliance(\''+results.stateLevelLineChartWithoutAllianc+'\')">View Party Results Without Alliance </a></div>';
 
 	chartpartywiseImgChartElmt.innerHTML = imgStr;
+	var noteDivEl = document.getElementsByName("note");
+	if(electionResultsObj.allianceGroupNamesArray.length>0)
+	{
+		for (k=0; k< noteDivEl.length; k++)
+		{
+			if(noteDivEl[k].style.display == "none")			
+			{
+				noteDivEl[k].style.display = '';}
+		}
+	}	
 }
 
 
@@ -290,10 +299,12 @@ function showAllianceDetails(results)
 	var allianceResultsArr = results.electionBasicResultsVO.alliancePartiesList;
 	var assignToAllianceResultsArr = new Array();
 	var allianceResultsDataTableEl = document.getElementById("allianceResultsDataTable");
+	var allianceGrpName;
 	
 	for(var i in  allianceResultsArr){
 		var header = allianceResultsArr[i].allianceGroupName +"AllianceGraph";
-		
+		allianceGrpName =  allianceResultsArr[i].allianceGroupName;
+		electionResultsObj.allianceGroupNamesArray.push(allianceGrpName);		
 		var createDiv = document.createElement("div");		
 		createDiv.setAttribute("id","allianceResults_"+i+"_main");		
 		createDiv.style.cssText = 'margin-top:32px;';
@@ -306,9 +317,11 @@ function showAllianceDetails(results)
 		createDiv.innerHTML = str;
 		allianceResultsDataTableEl.appendChild(createDiv);
 	
-		buildAllianceResultsDataTable("allianceResults_"+i+"_datatable",allianceResultsArr[i].partiesInAlliance,allianceResultsArr[i].allianceGroupName+" Alliance Details");	
-	}		
+		buildAllianceResultsDataTable("allianceResults_"+i+"_datatable",allianceResultsArr[i].partiesInAlliance,allianceResultsArr[i].allianceGroupName+" Alliance Details");
+			
+	}			
 }
+
 
 
 function showAllianceGraph(divId,chartId, chartName)
@@ -331,8 +344,6 @@ function showAllianceGraph(divId,chartId, chartName)
 		  modal :true,
 		  hideaftersubmit:true,
 		  close:true
-		  
-
        });
 	   myPanel.setHeader(chartName);
 	   myPanel.setHeader(chartName + " Alliance Graph");
@@ -385,7 +396,7 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 function showCandidateDetailsWindow(stateName,electionType,year)
 {
 	var urlStr = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&year=${year}";
-	var browser1 = window.open(urlStr,"browser1","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	var browser1 = window.open(urlStr,"browser1","scrollbars=yes,height=600,width=1150,left=200,top=200");
 	
 	browser1.focus();	
 }
@@ -395,11 +406,12 @@ function buildAllDistrictDatatable(innerObj,divID)
 {
 	
 	var dtSource = new Array();
-	
+	var allianceSubstitue = '<img src="images/icons/edit-icon.gif">';
 	for(var i in innerObj)
 	{
 		for(var j in innerObj[i].partyResultsInDistricts)
 		{
+			
 			var obj = {
 						district:innerObj[i].partyResultsInDistricts[j].districtName,
 						party:innerObj[i].partyName,
@@ -411,12 +423,20 @@ function buildAllDistrictDatatable(innerObj,divID)
 						pc:innerObj[i].partyResultsInDistricts[j].votesPercentage,
 						overall:innerObj[i].partyResultsInDistricts[j].completeVotesPercent
 					  }
+			if(electionResultsObj.allianceGroupNamesArray.length > 0 )
+				for(k in electionResultsObj.allianceGroupNamesArray)
+				{
+					if(electionResultsObj.allianceGroupNamesArray[k] == innerObj[i].partyName)
+					{
+						obj.pc = '';
+					}
+				}
 			dtSource.push(obj);
 		}
 	}
 
 	
-
+//allianceSubstitue=,  formatter:YAHOO.widget.DataTable.formatFloat, parser:YAHOO.util.DataSourceBase.parseNumber
 	var allDistrictResultsColumnDefs = [
 								{key: "district", label: "District", sortable:true},		
 								{key: "party", label: "<%=party%>", sortable:true},										
@@ -425,7 +445,7 @@ function buildAllDistrictDatatable(innerObj,divID)
 		              	 	 	{key: "third", label: "3rd",formatter:"number", sortable:true},
 		              	 	 	{key: "fourth", label: "4th",formatter:"number", sortable:true},
 		              	 	 	{key: "nth", label: "Nth",formatter:"number", sortable:true},   	
-		              	 	 	{key: "pc", label:"PC* %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true},
+		              	 	 	{key: "pc", label:"PC* %", formatter:YAHOO.widget.DataTable.formatFloat, sortable: true},
 		              	 	 	{key: "overall", label:"Overall %",formatter:YAHOO.widget.DataTable.formatFloat, sortable: true}		              	 	 	
 		              	 	 			              	 	 	
 		              	 	    ];                	 	    
@@ -439,7 +459,7 @@ function buildAllDistrictDatatable(innerObj,divID)
                          		  {key:  "third", parser:"number"},
                          		  {key:  "fourth", parser:"number"},
                          		  {key: "nth", parser:"number"},
-                         		  {key: "pc", parser:YAHOO.util.DataSourceBase.parseNumber},
+                         		  {key: "pc",parser:YAHOO.util.DataSourceBase.parseNumber},
                          		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber} ] 
                 					   
         		};
@@ -518,7 +538,7 @@ function buildAllianceDistrictResultsDataTable(results)
 		str+='<div id="allianceResults_district_'+i+'_datatable"></div>';
 		str+='<div id="allianceResults_district_'+i+'_allianceGraph"></div>';
 		str+='<div id="allianceResults_district_'+i+'_footer" style="margin-top:10px;margin-bottom:10px;">';
-		str+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'allianceResults_district_'+i+'_allianceGraph\',\''+innerObj[i].alliancePartiesChart+'\',\''+innerObj[i].allianceGroupName+'\')">View '+header+' Alliance Graph<a>';
+		str+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'allianceResults_district_'+i+'_allianceGraph\',\''+innerObj[i].alliancePartiesChart+'\',\''+innerObj[i].allianceGroupName+'\')">View '+header+'<a>';
 		str+='</div>';
 		childElmt.innerHTML = str;
 
@@ -630,6 +650,7 @@ function openPreYearDistAnalysisWindow()
 			<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
 		</TR>		
 	</TABLE>
+	<DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;PC% column is empty for alliance parties in Partywise Results table, to find PC% for alliance parties kindly refer to the PC% column of the Alliance Details Table</P></DIV>
 </DIV>
 <DIV style="padding:10px;text-align:right;"><A href="javascript:{}" class="viewChartsForResults" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></DIV>
 </DIV>
@@ -650,8 +671,12 @@ function openPreYearDistAnalysisWindow()
 		</TR>
 		<TR>
 			<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
+		</TR>
+		<TR>
+			<TD colspan="2" align="left"><DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;PC% column is empty for alliance parties in Partywise Results table, to find PC% for alliance parties kindly refer to the PC% column of the Alliance Details Table</P></DIV></TD>
 		</TR>		
 	</TABLE>
+	
 </DIV>
 </DIV>
 <DIV class="graphBottom"></DIV>
@@ -664,10 +689,6 @@ function openPreYearDistAnalysisWindow()
 					<P style="font-size:15px;font-family:Trebuchet MS;">By this tool you can compare previous elections results district wise.</P>
 				<DIV style="font-weight:bold">
 					<TABLE width="100%">
-						<TR>
-							<TD>Election Type:</TD>
-							<TD><SELECT name="electionType" id="electionType" style="width:100px;" ><OPTION value="0">Assembly</OPTION><OPTION value="1">Parliament</OPTION></SELECT></TD>
-						</TR>	
 						<TR>	
 							<TD>Year:</TD>
 							<TD><SELECT name="selectParty" id="selectYearDistrictwise" style="width: 100px; margin-top: 3px;" ><OPTION value="0">2009</OPTION><OPTION value="1">2004</OPTION></SELECT></TD>
