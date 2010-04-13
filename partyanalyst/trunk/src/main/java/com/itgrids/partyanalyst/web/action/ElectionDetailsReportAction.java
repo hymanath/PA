@@ -43,6 +43,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	private String electionId;
 	private String stateID;
 	private String electionType;
+	private Long electionTypeId;
 	private String stateName;
 	private String year;
 	private ServletContext context;
@@ -151,6 +152,14 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 
 	public void setSession(HttpSession session) {
 		this.session = session;
+	}
+
+	public void setElectionTypeId(Long electionTypeId) {
+		this.electionTypeId = electionTypeId;
+	}
+
+	public Long getElectionTypeId() {
+		return electionTypeId;
 	}
 
 	public String execute () throws Exception 
