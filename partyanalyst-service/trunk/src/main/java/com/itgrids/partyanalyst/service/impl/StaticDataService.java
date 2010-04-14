@@ -2093,6 +2093,7 @@ public class StaticDataService implements IStaticDataService {
 			mandalAllElectionDetails.setRank(parms[8].toString());
 			mandalAllElectionDetails.setVotesPercentage(parms[10].toString());
 			mandalAllElectionDetails.setPartyShortName(parms[11].toString());
+			mandalAllElectionDetails.setConstituencyId(Long.parseLong(parms[9].toString()));
 			if(winner.containsKey(constituencyId)){
 				differenceVotes = winner.get(constituencyId)-Float.parseFloat(parms[6].toString());
 				if(winner.get(constituencyId)!=0){
@@ -2161,6 +2162,7 @@ public class StaticDataService implements IStaticDataService {
 				mandalAllElectionDetails.setRank(parms[8].toString());
 				mandalAllElectionDetails.setVotesPercentage(parms[10].toString());
 				mandalAllElectionDetails.setPartyShortName(parms[11].toString());
+				mandalAllElectionDetails.setConstituencyId(Long.parseLong(parms[9].toString()));
 				if(successor.containsKey(constituencyId)){
 					differenceVotes = (Float.parseFloat(parms[6].toString())-successor.get(constituencyId));
 					if(Float.parseFloat(parms[6].toString())!=0f){
