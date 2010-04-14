@@ -8,12 +8,10 @@
 	font-weight:bold;
 	margin-bottom:15px;
 	margin-top:0;
-	padding:10px;
-	width:450px;		
+	padding:10px;			
 	height:25px;
 	text-align:center;
 }
-
 .basicDetailsTable
 {
 	border: none;
@@ -136,6 +134,7 @@ text-decoration:none;
 	color:#000000;
 	border:1px solid #ADADAD;
 	margin-left:10px;
+	font-size:12px;
 }
 
 #withoutAllianceDiv_Datatable table
