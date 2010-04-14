@@ -708,12 +708,24 @@
         <action name="districtwiseElectionResultsAnalysysForElectionReportAction" class="districtwiseElectionResultsAnalysysForElectionReportAction">
 			<result name="success">/jsp/districtwiseElectionResultsComparision.jsp</result>		
 		</action>
+		<action name="districtwiseElectionResultsAnalysysForElectionReportAjaxAction" class="districtwiseElectionResultsAnalysysForElectionReportAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">electionCompleteDetailsVO</param>				
+			</result>		
+		</action>
+		<action name="statewiseElectionResultsComparisionToolAction" class="statewiseElectionResultsComparisionToolAction">
+			<result name="success">/jsp/statewiseElectionResultsPopup.jsp</result>		
+		</action>
+		<action name="statewiseElectionResultsComparisionToolAjaxAction" class="statewiseElectionResultsComparisionToolAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+				<param name="root">electionCompleteDetailsVO</param>				
+			</result>		
+		</action>
 		<action name="getAllElectionsInDistrictAction" class="districtPageAction" method="getDistrictWiseAllElectionResultsForAllParties">
               <result type="json" name="success">
            		<param name="root">districtWisePartyResultVO</param>
         	</result>		
-        </action>
-		        
+        </action>	        
 	</package>
 </struts>
 
