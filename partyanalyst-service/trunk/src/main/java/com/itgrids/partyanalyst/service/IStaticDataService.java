@@ -94,6 +94,10 @@ public interface IStaticDataService {
 	public List<ElectionBasicInfoVO> getParliamentElectionsInfoForAConstituency(Long constituencyId);
 	
 	
+	
+	
+	
+	
 	public MandalAllElectionDetailsVO getAllZptcWinnerForADistrictForLatestYear(Long districtId,String electionYear);
 	
 	public MandalAllElectionDetailsVO getAllMptcWinnerForADistrictForLatestYear(Long districtId,String electionYear);
@@ -108,6 +112,18 @@ public interface IStaticDataService {
 	
 	public MandalAllElectionDetailsVO getAllPartiesForAParticularElection(Long districtId,String electionType,String electionYear);
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public List<SelectOptionVO> getElectionIdsAndYearsForConstituency(Long constituencyId);
 	
 	public List<SelectOptionVO> getAllPartiesForAnElectionYear(String electionYear,String electionType);
