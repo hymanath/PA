@@ -18,7 +18,7 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></SCRIPT>
-<SCRIPT type="text/javascript">
+<SCRIPT type="text/javascript"><!--
 var electionType = '${electionType}';
 var stateID =  '${stateID}' ;
 var stateName = '${stateName}';
@@ -43,8 +43,12 @@ function callAjax(param,jsObj,url){
 								{	
 									var elmt = document.getElementById("electionPageAjaxImgDiv");
 									if(elmt)
-										elmt.style.display = 'none';															
-									showCandidates(myResults,jsObj);											
+										elmt.style.display = 'none';	
+									if(myResults.candidateDetails!=null){
+										showCandidates(myResults,jsObj);
+									}else if(myResults.mandalAllElectionDetailsVO.allVotersDetails!=null){
+										showTehsilCandidatesByDistrictWise(myResults,jsObj);
+									}																
 								}
 							}
 						catch (e) {   
@@ -310,6 +314,10 @@ function allCandidates()
 	var stateLevelZEl = document.getElementById("stateLevelZ");
 	var distLevelZEl = document.getElementById("distLevelZ");
 	var selectdistrictZEl = document.getElementById("selectdistrictZ");
+	var stateLevelMEl = document.getElementById("stateLevelM");
+	var distLevelMEl = document.getElementById("distLevelM");
+	var selectdistrictMEl = document.getElementById("selectdistrictM");
+	
 	var stateId;
 	var partyId;
 	var locationId;
@@ -378,11 +386,21 @@ function allCandidates()
 	}
 	if(electionType == 'MPTC')
 	{
-		
+		if(stateLevelMEl.checked == true)
+		{
 			electionLevel = "stateWiseMptc";
 			locationId = 0;
-			stateId = stateID;				
+			stateId = stateID;
+		}
+		if(distLevelMEl.checked == true)
+		{
+			electionLevel = "districtWiseMptc";
+			locationId = selectdistrictMEl.value;
+			stateId = stateID;
+		}	
+							
 	}
+	
 	var jsObj=		
 	{		
 			electionType:electionType,
@@ -400,7 +418,7 @@ function allCandidates()
 	callAjax(rparam,jsObj,url);
 }
 function showCandidates(results,jsObj)
-{	
+{
 	var emptyArray = new Array();
 	var assignTocandidateDetailsArr = new Array();
 	var candidateDetails = results.candidateDetails;	
@@ -445,12 +463,61 @@ function showCandidates(results,jsObj)
 		//buildParticipatedCandidatesDetailsDataTable(emptyArray);
 	}	
 }
+
+function showTehsilCandidatesByDistrictWise(results,jsObj){
+	
+	var emptyArray = new Array();
+	var assignTocandidateDetailsArr = new Array();
+	var candidateDetails = results.mandalAllElectionDetailsVO.allVotersDetails;	
+	var count=0;
+	var errorEl = document.getElementById("error");
+	if(candidateDetails.length != 0)
+	{
+		if(errorEl.style.display == 'block')
+		{errorEl.style.display = 'none'}
+		for(var i in candidateDetails)
+		{		
+			var partyFlag = results.mandalAllElectionDetailsVO.allVotersDetails[i].partyFlag;
+			count = count + 1;
+			var candidateDetailsObj1 = {
+					
+					count: count, 
+					name: candidateDetails[i].candidateName,
+					constituency: candidateDetails[i].tehsilName,
+					party: candidateDetails[i].partyShortName,
+					partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>',
+					votesEarned: candidateDetails[i].votesEarned,
+					votesPercentage: candidateDetails[i].votesPercentage,
+					rank: candidateDetails[i].rank,
+					marginVotes: candidateDetails[i].votesDifference,
+					marginVotesPercentage: candidateDetails[i].marginVotesPercentage,
+					constituencyId: candidateDetails[i].constituencyId,
+					electionType: candidateDetails[i].electionType,
+					electionYear: candidateDetails[i].electionYear,
+					moreDetails: '<A href="javascript:{}" onclick="getMoreDetails('+candidateDetails[i].tehsilId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>'
+			};
+			assignTocandidateDetailsArr.push(candidateDetailsObj1);		
+		}
+		candidateDetailsObj.candidateDetailsArr = assignTocandidateDetailsArr;
+		buildParticipatedCandidatesDetailsDataTable(candidateDetailsObj.candidateDetailsArr);
+	} 
+	else 	{
+		candidateDetailsObj.candidateDetailsArr = emptyArray;
+		if(participatedCandidatesDetailsDataTable)
+		{participatedCandidatesDetailsDataTable.destroy();}
+		if(errorEl.style.display == 'none')
+		{errorEl.style.display = 'block'}
+		//buildParticipatedCandidatesDetailsDataTable(emptyArray);
+	}	
+}
+
+
 function getMoreDetails(constiId,elecType,elecYear)
 {	
 	 var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser2","scrollbars=yes,height=600,width=750,left=200,top=200");
-	   browser1.focus();
+	 browser1.focus();
 }
-</SCRIPT>
+--></SCRIPT>
 </HEAD>
 <BODY class="yui-skin-sam">
 <CENTER>

@@ -38,9 +38,7 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 	private CandidateDetailsVO statesListObj;
 	private IStaticDataService staticDataService; 
 	private List<SelectOptionVO> partiesList;
-	private List<SelectOptionVO> districtsList;
-	
-	
+	private List<SelectOptionVO> districtsList;	
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -164,12 +162,22 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 		partiesList = new ArrayList<SelectOptionVO>();
 		if(electionType.equals(IConstants.ZPTC) || electionType.equals(IConstants.MPTC))
 		{
-			partiesList = staticDataService.getAllPartiesForAnElectionYear(year, electionType);	
-			partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
+			try{
+				partiesList = staticDataService.getAllPartiesForAnElectionYear(year, electionType);	
+				partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
+			}catch(Exception e){
+				partiesList = null;
+				log.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
+			}
 		} else if (electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
 		{
-			partiesList = staticDataService.getStaticParties();
-			partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
+			try{
+				partiesList = staticDataService.getStaticParties();
+				partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
+			}catch(Exception e){
+				partiesList = null;
+				log.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
+			}
 		}
 		
 		return Action.SUCCESS;
@@ -237,8 +245,12 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 			log.debug(locationId);
 			log.debug(partyId);
 			log.debug(stateID);
-			
-			candidateDetailsVO = staticDataService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,new Long(stateID));
+			try{
+				candidateDetailsVO = staticDataService.getCandidatesPartyInfoForAnElectionType(electionType,year,resultsCategoryVal,electionLevelVal,locationId,partyId,new Long(stateID));
+			}catch(Exception e){
+				log.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
+				candidateDetailsVO = null;
+			}
 			}	
 		return Action.SUCCESS;
 	}
