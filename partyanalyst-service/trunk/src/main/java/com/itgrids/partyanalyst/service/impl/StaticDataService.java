@@ -849,7 +849,7 @@ public class StaticDataService implements IStaticDataService {
 	}
 	
 	public PartyElectionDistrictResult savePartyElectionResultForAPartyForAElectionDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId){
-		System.out.println("Inside savePartyElectionResultForAPartyForAElectionDistrictLevel()");
+	
 		PartyElectionDistrictResult partyElectionDistrictResult = null;
 		List<Nomination> nominations = null;
 		Election election = null;
@@ -913,8 +913,7 @@ public class StaticDataService implements IStaticDataService {
 	}
 	
 	public PartyElectionDistrictResult savePartyElectionDistrictResult(final Election election,final Party party,final State state,final District district,final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesGained,final Double totalValidVotes,final Double completeConstiValidVotes) throws Exception{
-		System.out.println("Inside savePartyElectionResultForAPartyForAElectionDistrictLevel()");
-		
+			
 		PartyElectionDistrictResult partyElectionDistrictResultFinal = (PartyElectionDistrictResult)transactionTemplate.execute(new TransactionCallback() {
 		public Object doInTransaction(TransactionStatus status) {
 		PartyElectionDistrictResult partyElectionDistrictResult = null;
@@ -1879,7 +1878,8 @@ public class StaticDataService implements IStaticDataService {
 			
 			log.info("Calling populateElectionsData() method..");
 			allVotersDetails = populateElectionsData(winningCandidate,successorCandidate,0);	
-			
+				
+			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);
 			log.info("Calling populateElectionsData() method..");
 		
 			return mandalAllElectionDetailsVo;
@@ -1924,7 +1924,7 @@ public class StaticDataService implements IStaticDataService {
 			if(winningCandidates!=null){
 				allVotersDetails.addAll(winningCandidates);
 			}
-			if(successorCandidates!=null){
+			if(successorCandidates!=null && flag!=1){
 				allVotersDetails.addAll(allVotersDetails.size(),successorCandidates);
 			}
 			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);	
@@ -1965,10 +1965,11 @@ public class StaticDataService implements IStaticDataService {
 			successorCandidates = populateElectionsDataForAllCandidates(winningCandidate,partySuccessorsResult);	
 			log.info("Calling populateElectionsData() method..");
 			winningCandidates = populateElectionsData(partyWinningCandidate,successorCandidate,flag);
+						
 			if(winningCandidates!=null){
 				allVotersDetails.addAll(winningCandidates);
 			}
-			if(successorCandidates!=null){
+			if(successorCandidates!=null && flag!=1){
 				allVotersDetails.addAll(allVotersDetails.size(),successorCandidates);
 			}
 			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);		
@@ -2111,8 +2112,8 @@ public class StaticDataService implements IStaticDataService {
 				mandalAllElectionDetails.setCandidateName(parms[2].toString());
 			}else{
 				mandalAllElectionDetails.setCandidateName(parms[2].toString()+" * ");
+				mandalAllElectionDetails.setMarginVotesPercentage("0");
 			}
-			
 			if(Long.parseLong(parms[8].toString())!=1){
 				mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
 			}
@@ -2178,11 +2179,12 @@ public class StaticDataService implements IStaticDataService {
 					mandalAllElectionDetails.setCandidateName(parms[2].toString());
 				}else{
 					mandalAllElectionDetails.setCandidateName(parms[2].toString()+" * ");
+					mandalAllElectionDetails.setMarginVotesPercentage("0");
 				}
 				if(flag==1){
 					if(new Long(parms[8].toString())==1){
 						mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
-					}
+					}else{}
 				}else{
 					mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
 				}
@@ -2297,6 +2299,7 @@ public class StaticDataService implements IStaticDataService {
 						}	
 					}
 					candidateDetailsVO.setMandalAllElectionDetailsVO(mandalAllElectionDetailsVo);
+					
 				}else{
 					candidateDetailsVO = getZptcOrMptcCandidatesInfoForAnElectionType(electionType,electionYear,resultsCategory,electionLevel,stateId,partyId);
 				}
@@ -2334,8 +2337,9 @@ public class StaticDataService implements IStaticDataService {
 			
 			if(partyId==0l && resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES)){
 				allCandidateResult = nominationDAO.findAllZPTCsOrMPTCsInaState(stateId,electionType,electionYear);	
-				winnerCandidateResult = nominationDAO.findAllZPTCsOrMPTCsInaStateByRank(stateId,electionType,electionYear,winnerCandidateRank);
+				winnerCandidateResult = nominationDAO.findAllZPTCsOrMPTCsInaStateByRank(stateId,electionType,electionYear,winnerCandidateRank);		
 				successorCandidateResult = nominationDAO.findAllZPTCsOrMPTCsInaStateByRank(stateId,electionType,electionYear,successorCandidateRank);
+			
 				successorCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,0l);
 				allCandidates = setAllCandidateDetailsIntoVo(winnerCandidateResult,allCandidateResult);
 				if(successorCandidate!=null){
