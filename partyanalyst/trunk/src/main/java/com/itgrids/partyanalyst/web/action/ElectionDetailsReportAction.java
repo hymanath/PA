@@ -23,8 +23,10 @@ import com.itgrids.partyanalyst.dto.PartyPositionsInDistrictVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyWiseResultVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IElectionReportService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -48,8 +50,9 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	private String year;
 	private ServletContext context;
 	private IElectionReportService electionReportService;
+	private IStaticDataService staticDataService; 
 	private HttpSession session;
-	
+	private List<SelectOptionVO> electionYears;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -162,6 +165,22 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 		return electionTypeId;
 	}
 
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setElectionYears(List<SelectOptionVO> electionYears) {
+		this.electionYears = electionYears;
+	}
+
+	public List<SelectOptionVO> getElectionYears() {
+		return electionYears;
+	}
+
 	public String execute () throws Exception 
 	{
 	
@@ -173,10 +192,24 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 		
 		if(log.isDebugEnabled())
 			log.debug("elctionId:" + electionId);		
-		
-		
+				
 		if(log.isDebugEnabled())
 			log.debug("electionType:" + electionType);
+		
+		if(log.isDebugEnabled())
+			log.debug("electionTypeId:" + electionTypeId);
+		electionYears = new ArrayList<SelectOptionVO>();
+		if(electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+		{
+			electionYears = staticDataService.getElectionIdsAndYearsInfo(electionTypeId,new Long(stateID));
+			System.out.println("After Service method:" + electionYears.size());
+			electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
+		} else 	if(electionType.equals(IConstants.ZPTC) || electionType.equals(IConstants.MPTC))
+		{
+			electionYears = staticDataService.getAllElectionYearsForATeshil(electionTypeId);
+			System.out.println("After Service method:" + electionYears.size());
+			electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
+		}
 		
 		return Action.SUCCESS;		
 	}
@@ -204,6 +237,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 			Long stateId = new Long(jObj.getString("stateID"));
 			String electionType = jObj.getString("electionType");
 			String year = jObj.getString("year");
+			
 			electionCompleteDetailsVO = electionReportService.getBasicResultsForAnElection(electionType, year,stateId,IConstants.VOTES_PERCENT_MARGIN);
 			if(electionCompleteDetailsVO != null){
 				if(electionCompleteDetailsVO.getResultStatus().getResultCode() == ResultCodeMapper.FAILURE)
