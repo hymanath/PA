@@ -503,8 +503,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 					" upper(model.candidate.lastname),upper(model.constituencyElection.constituency.tehsil.tehsilName)," +
 					" model.constituencyElection.constituency.electionScope.electionType.electionType," +
 					" model.constituencyElection.constituency.tehsil.tehsilId," +
-					" model.candidateResult.votesPercengate,model.party.longName" +
-					" model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.rank,model.constituencyElection.constituency.constituencyId, " +
+					" model.candidateResult.votesEarned," +
+					" model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.rank,model.constituencyElection.constituency.constituencyId," +
 					" model.candidateResult.votesPercengate,model.party.longName" +
 					" from Nomination model where model.constituencyElection.constituency.tehsil.district.districtId = ? and " +
 					" model.constituencyElection.constituency.electionScope.electionType.electionType = ?" +
@@ -921,26 +921,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	
 	//ZPTCOrMPTCs code starts here
 	
-	@SuppressWarnings("unchecked")
-	public List findAllZPTCsOrMPTCsInaState(Long stateId,String electionType,String electionYear) {
-		Object[] params = {stateId,electionType,electionYear};
-		return getHibernateTemplate().find("select model.candidate.candidateId," +
-				" model.candidate.lastname," +
-				" model.candidateResult.votesEarned," +
-				" model.candidateResult.votesPercengate," +
-				" model.candidateResult.rank," +
-				" model.party.partyId," +  
-				" model.party.partyFlag," +
-				" model.party.longName," +
-				" model.party.shortName," +
-				" model.constituencyElection.constituency.tehsil.tehsilId," +
-				" model.constituencyElection.constituency.tehsil.tehsilName," +		
-				" model.constituencyElection.election.electionYear," +
-				" model.constituencyElection.constituency.electionScope.electionType.electionType" +	
-				" from Nomination model where model.constituencyElection.constituency.state.stateId = ? and " +
-				" model.constituencyElection.constituency.electionScope.electionType.electionType = ?" +
-				" and model.constituencyElection.election.electionYear = ? ",params);
-	}
+
 	
 	@SuppressWarnings("unchecked")
 	public List findAllZPTCsOrMPTCsInaStateForAParty(Long stateId,String electionType,String electionYear,Long partyId) {
@@ -953,11 +934,12 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" model.party.partyId," +  
 				" model.party.partyFlag," +
 				" model.party.longName," +
-				" model.party.shortName," +
-				" model.constituencyElection.constituency.tehsil.tehsilId," +
+				" model.party.shortName," +		
+				" model.constituencyElection.constituency.constituencyId," +
 				" model.constituencyElection.constituency.tehsil.tehsilName," +	
 				" model.constituencyElection.election.electionYear," +
-				" model.constituencyElection.constituency.electionScope.electionType.electionType" +	
+				" model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				" model.constituencyElection.constituency.tehsil.tehsilId" +
 				" from Nomination model where model.constituencyElection.constituency.state.stateId = ? and " +
 				" model.constituencyElection.constituency.electionScope.electionType.electionType = ?" +
 				" and model.constituencyElection.election.electionYear = ? and model.party.partyId = ? ",params);
@@ -975,13 +957,36 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" model.party.partyFlag," +
 				" model.party.longName," +
 				" model.party.shortName," +
-				" model.constituencyElection.constituency.tehsil.tehsilId," +
+				" model.constituencyElection.constituency.constituencyId," +
 				" model.constituencyElection.constituency.tehsil.tehsilName," +	
 				" model.constituencyElection.election.electionYear," +
-				" model.constituencyElection.constituency.electionScope.electionType.electionType" +	
+				" model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				" model.constituencyElection.constituency.tehsil.tehsilId" +
 				" from Nomination model where model.constituencyElection.constituency.state.stateId = ? and " +
 				" model.constituencyElection.constituency.electionScope.electionType.electionType = ?" +
 				" and model.constituencyElection.election.electionYear = ? and model.party.partyId = ?  and model.candidateResult.rank =?",params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List findAllZPTCsOrMPTCsInaState(Long stateId,String electionType,String electionYear) {
+		Object[] params = {stateId,electionType,electionYear};
+		return getHibernateTemplate().find("select model.candidate.candidateId," +
+				" model.candidate.lastname," +
+				" model.candidateResult.votesEarned," +
+				" model.candidateResult.votesPercengate," +
+				" model.candidateResult.rank," +
+				" model.party.partyId," +  
+				" model.party.partyFlag," +
+				" model.party.longName," +
+				" model.party.shortName," +
+				" model.constituencyElection.constituency.constituencyId," +
+				" model.constituencyElection.constituency.tehsil.tehsilName," +		
+				" model.constituencyElection.election.electionYear," +
+				" model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				" model.constituencyElection.constituency.tehsil.tehsilId" +
+				" from Nomination model where model.constituencyElection.constituency.state.stateId = ? and " +
+				" model.constituencyElection.constituency.electionScope.electionType.electionType = ?" +
+				" and model.constituencyElection.election.electionYear = ? ",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -996,10 +1001,11 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" model.party.partyFlag," +
 				" model.party.longName," +
 				" model.party.shortName," +
-				" model.constituencyElection.constituency.tehsil.tehsilId," +
+				" model.constituencyElection.constituency.constituencyId," +
 				" model.constituencyElection.constituency.tehsil.tehsilName," +	
 				" model.constituencyElection.election.electionYear," +
-				" model.constituencyElection.constituency.electionScope.electionType.electionType" +	
+				" model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				" model.constituencyElection.constituency.tehsil.tehsilId" +
 				" from Nomination model where model.constituencyElection.constituency.state.stateId = ? and " +
 				" model.constituencyElection.constituency.electionScope.electionType.electionType = ?" +
 				" and model.constituencyElection.election.electionYear = ? and model.candidateResult.rank =?",params);
