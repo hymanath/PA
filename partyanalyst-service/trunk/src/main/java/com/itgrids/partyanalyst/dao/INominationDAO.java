@@ -130,24 +130,44 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getPartysWinningCandidateInfoForAParticularElectionYear(String electionType,String electionYear,Long rank,Long districtId);
 	    
     public List getAllCandidatesByElectionTypes(String electionTypes);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     	
 	public List findAllZPTCsInaDistrict(Long districtId,String electionTypes,Long rank,String electionYear);
 	
 	public List findAllMPTCsInaDistrict(Long districtId,String electionType,Long rank,String electionYear);
 	
+	
 	public List findAllZptcCandidatesInaDistrict(Long districtId,String electionTypes,String electionYear);
 	
 	public List findAllMptcCandidatesInaDistrict(Long districtId,String electionType,String electionYear);
+	
 	
 	public List findAllZptcPartysInaDistrict(Long districtId,String electionTypes,String electionYear,Long partyId,Long rank);
 	
 	public List findAllMptcPartysInaDistrict(Long districtId,String electionType,String electionYear,Long partyId,Long rank);
 	
+	
 	public List findAllZptcPartysWinnerInaDistrict(Long districtId,String electionTypes, String electionYear,Long partyId,Long rank);
 	
 	public List findAllMptcPartysWinnerInaDistrict(Long districtId,String electionType, String electionYear,Long partyId,Long rank);
 	
-	public List getAllPartysForAParticularElectionYear(Long districtId,String electionType,String electionYear);
+	
+	
+	
+	
+	
+	
+	public List getAllPartysForAParticularElectionYear(Long districtId,String electionType,String electionYear);	
 	
 	@SuppressWarnings("unchecked")
 	public List getPartyIdAndShortNameForThatParticipatedInAElection(Long electionId);
