@@ -46,7 +46,7 @@ function callAjax(param,jsObj,url){
 										elmt.style.display = 'none';	
 									if(myResults.candidateDetails!=null){
 										showCandidates(myResults,jsObj);
-									}else if(myResults.mandalAllElectionDetailsVO.allVotersDetails!=null){
+									}else{
 										showTehsilCandidatesByDistrictWise(myResults,jsObj);
 									}																
 								}
@@ -494,7 +494,7 @@ function showTehsilCandidatesByDistrictWise(results,jsObj){
 					constituencyId: candidateDetails[i].constituencyId,
 					electionType: candidateDetails[i].electionType,
 					electionYear: candidateDetails[i].electionYear,
-					moreDetails: '<A href="javascript:{}" onclick="getMoreDetails('+candidateDetails[i].tehsilId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>'
+					moreDetails: '<A href="javascript:{}" onclick="getMoreDetails('+candidateDetails[i].constituencyId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>'
 			};
 			assignTocandidateDetailsArr.push(candidateDetailsObj1);		
 		}
