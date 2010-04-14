@@ -354,7 +354,7 @@ function insertData(param,results)
 		<td><img  src="<%=request.getContextPath()%>/images/icons/elections_logo.png"/> </td>
 		<td align="center">
 			<c:out value="${state.electionType}" /> Election In	<c:out value="${state.year}" /><span id="span${state.electionId}" style="color:#4F6177;cursor:pointer;" onclick="doAjax(${state.electionId});"style="cursor:pointer;"> <c:out value="(view results)" /></span>
-			<a href="electionDetailsReportAction.action?electionId=${state.electionId}&stateID=${statePage.stateId}&stateName=${statePage.stateName}&electionType=${state.electionType}&year=${state.year}"  class="detailedAnalysisAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">Detailed Analysis
+			<a href="electionDetailsReportAction.action?electionId=${state.electionId}&stateID=${statePage.stateId}&stateName=${statePage.stateName}&electionType=${state.electionType}&electionTypeId=${state.electionTypeId}&year=${state.year}"  class="detailedAnalysisAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">Detailed Analysis
 			</a> 
 		</td>
 		<td id="search${state.electionId}" align="left" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/arrows.gif" /></img></td>		

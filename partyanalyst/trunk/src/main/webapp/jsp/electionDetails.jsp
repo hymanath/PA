@@ -3,6 +3,7 @@
     <%@ page import="java.util.ResourceBundle;" %>   
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -173,7 +174,6 @@ function showPartywiseDetailsDataTable(results)
 				pc: partywiseResultsArr[i].votesPercentage,
 				overall: partywiseResultsArr[i].completeVotesPercent						 
 				};
-		//wkg
 		if(electionResultsObj.allianceGroupNamesArray.length > 0 )
 				for(k in electionResultsObj.allianceGroupNamesArray)
 				{
@@ -223,7 +223,6 @@ function showPartywiseDetailsDataTable(results)
 		}
 	}	
 }
-
 
 function showPartyResultsWithoutAlliance(chartId)
 {	
@@ -435,8 +434,6 @@ function buildAllDistrictDatatable(innerObj,divID)
 		}
 	}
 
-	
-//allianceSubstitue=,  formatter:YAHOO.widget.DataTable.formatFloat, parser:YAHOO.util.DataSourceBase.parseNumber
 	var allDistrictResultsColumnDefs = [
 								{key: "district", label: "District", sortable:true},		
 								{key: "party", label: "<%=party%>", sortable:true},										
@@ -606,13 +603,55 @@ function buildAllianceDistrictResultsDataTable(results)
 }
 function openPreYearDistAnalysisWindow()
 {
+
+	var currentElectionyear=${year};	
 	var selectYearEl = document.getElementById("selectYearDistrictwise");
 	var selectedElectionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
-	alert(selectedElectionYear);
-	var urlStr = "<%=request.getContextPath()%>/districtwiseElectionResultsAnalysysForElectionReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&currentElectionyear=${year}&selectedElectionYear=${selectedElectionYear}";
-	var browser1 = window.open(urlStr,"browser1","scrollbars=yes,height=600,width=1200,left=200,top=200");
+	var yearAlertEl = document.getElementById("yearAlert");
+	var browser1;
+	var urlStr = "<%=request.getContextPath()%>/districtwiseElectionResultsAnalysysForElectionReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&currentElectionyear=${year}&selectedElectionYear="+selectedElectionYear+"";
+	if(selectedElectionYear == 'Select Year') 
+	{
+		yearAlertEl.style.display ='block';
+		yearAlertEl.innerHTML = "Please Select A Year!";
+		return;
+	}else {yearAlertEl.style.display ='none';} 
 	
+	if (selectedElectionYear == currentElectionyear)
+	{
+		yearAlertEl.style.display ='block';
+		yearAlertEl.innerHTML = "Yoy have selected same election year!";
+		return;
+	}else {yearAlertEl.style.display ='none';} 
+	
+	browser1 = window.open(urlStr,"distcomparisioinElectioneport","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	browser1.focus();
+}
+function openPreYearStatewiseAnalysisWindow()
+{
+	var currentElectionyear=${year};	
+	var selectYearEl = document.getElementById("selectYearStateWise");
+	var selectedElectionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
+	var yearAlertSEl = document.getElementById("yearAlertS");
+	var browser1;
+	var urlStr = "<%=request.getContextPath()%>/statewiseElectionResultsComparisionToolAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&currentElectionyear=${year}&selectedElectionYear="+selectedElectionYear+"";
+	if(selectedElectionYear == 'Select Year') 
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Please Select A Year!";
+		return;
+	}else {yearAlertSEl.style.display ='none';} 
+	
+	if (selectedElectionYear == currentElectionyear)
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Yoy have selected same election year!";
+		return;
+	}else {yearAlertSEl.style.display ='none';} 
+	
+	browser1 = window.open(urlStr,"stateComparisioinElectioneport","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	browser1.focus();
+	
 }
 
 </SCRIPT>
@@ -659,7 +698,7 @@ function openPreYearDistAnalysisWindow()
 <DIV class="graphTop">District Level Overview</DIV>
 <DIV id="distwiseGraph">
 <div id="districtWiseGraph"></div>
-<DIV class="yui-skin-sam">
+<DIV class="yui-skin-sam" >
 	<TABLE border="0" width="95%" >
 		<TR>
 			<TD valign="top" align="left">
@@ -689,12 +728,17 @@ function openPreYearDistAnalysisWindow()
 					<P style="font-size:15px;font-family:Trebuchet MS;">By this tool you can compare previous elections results district wise.</P>
 				<DIV style="font-weight:bold">
 					<TABLE width="100%">
-						<TR>	
+						<TR>
+							<TD colspan="2"><DIV id="yearAlert" style="display:none;color:red;text-align:left;" ></DIV></TD>
+							
+						</TR>
+						<TR>
 							<TD>Year:</TD>
-							<TD><SELECT name="selectParty" id="selectYearDistrictwise" style="width: 100px; margin-top: 3px;" ><OPTION value="0">2009</OPTION><OPTION value="1">2004</OPTION></SELECT></TD>
-						</TR>	
-						<TR>	
-							<TD colspan="2"><INPUT type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
+							<TD><s:select id="selectYearDistrictwise" name="selectYearDistrictwise" style="width: 100px; margin-top: 3px;" theme="simple" list="electionYears" listKey="id"  listValue="name"/></TD>							
+						</TR>						
+						<TR>
+							<TD>&nbsp;</TD>
+							<TD>&nbsp;</TD>
 						</TR>
 						<TR>	
 							<TD colspan="2"><DIV align="right"><A href="javascript:{}" onclick="openPreYearDistAnalysisWindow()" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV></TD>
@@ -710,18 +754,19 @@ function openPreYearDistAnalysisWindow()
 				<DIV style="font-weight:bold">
 					<TABLE width="100%">
 						<TR>
-							<TD>Election Type:</TD>
-							<TD><SELECT name="electionType" id="electionType" style="width:100px;" ><OPTION value="0">Assembly</OPTION><OPTION value="1">Parliament</OPTION></SELECT></TD>
+							<TD colspan="2"><DIV id="yearAlertS" style="display:none;color:red;text-align:left;" ></DIV></TD>
 						</TR>	
 						<TR>	
 							<TD>Year:</TD>
-							<TD><SELECT name="selectParty" id="selectParty" style="width: 100px; margin-top: 3px;" ><OPTION value="0">2009</OPTION><OPTION value="1">2004</OPTION></SELECT></TD>
+							<TD><s:select id="selectYearStateWise" name="selectYearStateWise" style="width: 100px; margin-top: 3px;" theme="simple" list="electionYears" listKey="id"  listValue="name"/>
+							</TD>
 						</TR>	
 						<TR>	
-							<TD colspan="2"><INPUT type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
+							<TD>&nbsp;</TD>
+							<TD>&nbsp;</TD>
 						</TR>
 						<TR>	
-							<TD colspan="2"><DIV align="right"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV></TD>
+							<TD colspan="2"><DIV align="right"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openPreYearStatewiseAnalysisWindow()" /></A></DIV></TD>
 						</TR>	
 					</TABLE>		 
 				</DIV>
@@ -739,7 +784,8 @@ function openPreYearDistAnalysisWindow()
 						</TR>	
 						<TR>	
 							<TD>Year:</TD>
-							<TD><SELECT name="selectParty" id="selectParty" style="width: 100px; margin-top: 3px;" ><OPTION value="0">2009</OPTION><OPTION value="1">2004</OPTION></SELECT></TD>
+							<TD><s:select id="selectYearPPR" name="selectYearPPR" style="width: 100px; margin-top: 3px;" theme="simple" list="electionYears" listKey="id"  listValue="name"/>
+							</TD>
 						</TR>	
 						<TR>	
 							<TD colspan="2"><INPUT type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
@@ -763,7 +809,8 @@ function openPreYearDistAnalysisWindow()
 						</TR>	
 						<TR>	
 							<TD>Year:</TD>
-							<TD><SELECT name="selectParty" id="selectParty" style="width: 100px; margin-top: 3px;" ><OPTION value="0">2009</OPTION><OPTION value="1">2004</OPTION></SELECT></TD>
+							<TD><s:select id="selectYearECR" name="selectYearECR" style="width: 100px; margin-top: 3px;" theme="simple" list="electionYears" listKey="id"  listValue="name"/>							
+							</TD>
 						</TR>	
 						<TR>	
 							<TD colspan="2"><INPUT type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
@@ -784,8 +831,6 @@ function openPreYearDistAnalysisWindow()
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 getResultsForAnElection(stateID,electionType,year);
-
 </SCRIPT>
 </BODY>
-
 </HTML>
