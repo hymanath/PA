@@ -347,6 +347,7 @@ public class ElectionReportService implements IElectionReportService {
 				SelectOptionVO partyOption = new SelectOptionVO();
 				partyOption.setId(resultData.getPartyId());
 				partyOption.setName(resultData.getPartyName());
+				partiesList.add(partyOption);
 			}
 			
 			//set participated parties and districts list to mainVO
