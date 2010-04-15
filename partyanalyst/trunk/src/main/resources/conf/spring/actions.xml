@@ -266,6 +266,10 @@
 	<bean id="candidateDetailsForElectionDetailsReportAction" class="com.itgrids.partyanalyst.web.action.CandidateDetailsForElectionDetailsReportAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />
 	</bean>
+	<bean id="alliancePartiesPageAction" class="com.itgrids.partyanalyst.web.action.AlliancePartiesPageAction" singleton="false">
+			<property name="staticDataService" ref="staticDataService" />
+	</bean>
+
 	<bean id="districtwiseElectionResultsAnalysysForElectionReportAction" class="com.itgrids.partyanalyst.web.action.DistrictwiseElectionResultsAnalysysForElectionReportAction" singleton="false">
 			<property name="electionReportService" ref="electionReportService" />
 	</bean>

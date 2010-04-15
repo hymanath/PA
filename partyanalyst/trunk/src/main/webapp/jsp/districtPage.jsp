@@ -305,7 +305,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	var results;	
 	var callback = {			
 	    success : function( o ) {
-			try {												
+			try {							
+				"",					
 					results = YAHOO.lang.JSON.parse(o.responseText);		
 					if(jsObj.task == "getAllElectionYears")
 					{
@@ -346,6 +347,14 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					if(jsObj.task == "getAllElectionsInDistrict")
 					{										
 						showAllElectionsInDistrict(results);
+					}else
+					if(jsObj.task == "getElectionTypesAndYears")
+					{										
+						buildElectionTypesAndYears(results);
+					}else
+					if(jsObj.task == "getPartiesPositions")
+					{										
+						buildElectionTypesAndYearsGraph(results);
 					}
 					
 			}catch (e) {   		
@@ -361,6 +370,45 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
+	function buildElectionTypesAndYearsGraph(results)
+	{
+		var elmt = document.getElementById("partyPositionsDiv");
+		if(!elmt)
+			return;
+
+		var str = '';
+		str+='<img width="400px"  src="charts/'+results.pasitionsChart+'"/>';
+		elmt.innerHTML=str;
+	}
+	function buildElectionTypesAndYears(results)
+	{
+		var elmt = document.getElementById("electionHirarchiDiv");
+		if(!elmt)
+			return;
+		
+		var str = '';
+		str +='<span style="font-weight:bold;margin-right:10px;">Selection Election</span>';
+		str += '<select id="electionTypesSelect" onchange = "getPartiesPositions(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
+		for(var i in results)
+		{
+			var localArr = results[i];
+			if(localArr.length == 3)
+				str += '<option value="'+localArr[0]+'">'+localArr[1]+'-'+localArr[2]+'</option>';
+			
+		}
+		str += '</select>';
+
+		elmt.innerHTML = str;
+	
+		var elmt = document.getElementById("electionTypesSelect");
+		if(elmt)
+		{
+			var id = elmt.options[elmt.selectedIndex].value;
+			var name = elmt.options[elmt.selectedIndex].text;
+			getPartiesPositions(id,name);
+		}
+	}
+	
 	function showAllMptcParties(results){
 		assignToPartyDataArray = new Array();
 		for(var i in results)
@@ -665,10 +713,45 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			str += '<th>'+results.partyElectionResultsList[i].partyName+'</th>';
 		}
 		str += '</tr>';
-		
-		allElecDiv.innerHTML = '<img src="charts/'+results.chartPath+'" />';
+
+		var graphDivStr = '<div style="margin-left:20px;"><input type="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div>';
+		graphDivStr += '<img width="500px" height="250px" src="charts/'+results.chartPath+'" />';
+		 allElecDiv.innerHTML = graphDivStr;
 		
 	}
+	
+	function getElectionTypesAndYears(){
+		var jsObj=
+		{		
+				districtId:districtId,
+				task:"getElectionTypesAndYears"						
+		};
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllElectionsSelectInDistrictAction.action?"+rparam;					
+		callAjax(rparam,jsObj,url);
+	}
+	
+	function getPartiesPositions(id,value){
+		
+		var jsObj=
+		{		electionId:id,
+				electionTypeYear:value,
+				districtId:districtId,
+				districtName:"${districtName}",
+				task:"getPartiesPositions"						
+		};
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllPartiesPositionsInDistrictAction.action?"+rparam;					
+		callAjax(rparam,jsObj,url);
+	}
+
+	function showAlliancePartiesWindow(){
+		var brow1 = window.open("<s:url action="alliancePartiesPageAction"/>?districtId=${districtId}&districtName=${districtName}","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		brow1.focus();
+	}
+	
 </script>
  
 </head>
@@ -676,14 +759,29 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 <div class="detailsHead">
 		Welcome to <c:out value="${districtName}"></c:out> District Page <br/><br/>
 </div>
-<div>
-
-<div id="AjaxImgDiv" align="center" style="display:block;">
-	<span style="font-size:14px;font-weight:bold;">All Parties Performance In Diff Elections Of ${districtName} District</span>
-	<img width="100px"  height="20px" src="<%=request.getContextPath()%>/images/icons/barloader.gif" /></img>
-</div>
-
-<div id="allElectionResultsInDT"></div>
+<div id="alliancePartiesGraph_main">
+	<table>
+		<tr>
+			<td colspan="2">
+				<div id="AjaxImgDiv" align="center" style="display:block;">
+					<span style="font-size:14px;font-weight:bold;">All Parties Performance In Diff Elections Of ${districtName} District</span>
+					<img width="100px"  height="20px" src="<%=request.getContextPath()%>/images/icons/barloader.gif" /></img>
+				</div>
+			</td>
+		</tr>	
+		<tr>
+			<td style="vertical-align:top;width:55%;" width="55%">
+				<div id="allElectionResultsInDT"></div>
+			</td>
+			<td style="vertical-align:top">
+				<div>
+					<div id="electionHirarchiDiv"></div>
+					<div id="partyPositionsDiv"></div>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
 </div>
 <div id="districtInfoDiv" class="detailsDiv">
 	<table>
@@ -903,6 +1001,7 @@ getAllElections();
 getAllMptcParties();
 getAllZptcParties();
 getAllZptcYears();
+getElectionTypesAndYears();
 getAllMptcYears();
 </script>
 </body>

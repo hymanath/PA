@@ -16,6 +16,7 @@
 		<pattern>/jsp/votingTrendzPopup.jsp* </pattern>
 		<pattern>/candidateDetailsForElectionDetailsReportAction.action*</pattern>
 		<pattern>/districtwiseElectionResultsAnalysysForElectionReportAction.action*</pattern>
+		<pattern>/alliancePartiesPageAction.action*</pattern>
 		<pattern>/statewiseElectionResultsComparisionToolAction.action*</pattern>
     </excludes>
 

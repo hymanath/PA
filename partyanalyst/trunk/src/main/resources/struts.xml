@@ -725,7 +725,24 @@
               <result type="json" name="success">
            		<param name="root">districtWisePartyResultVO</param>
         	</result>		
-        </action>	        
+        </action>
+        
+        <action name="alliancePartiesPageAction" class="alliancePartiesPageAction">
+            <result name="success">/jsp/alliancePartiesPage.jsp</result>	
+        </action>
+        
+        <action name="getAllElectionsSelectInDistrictAction" class="districtPageAction" method="getAllElectionsInDistrict">
+              <result type="json" name="success">
+           		<param name="root">electionsInDistrict</param>
+        	</result>		
+        </action>
+        
+        <action name="getAllPartiesPositionsInDistrictAction" class="districtPageAction" method="getAllPartiesPositionsInDistrictElection">
+              <result type="json" name="success">
+           		<param name="root">allPartiesPositionsInElection</param>
+        	</result>		
+        </action>
+              
 	</package>
 </struts>
 

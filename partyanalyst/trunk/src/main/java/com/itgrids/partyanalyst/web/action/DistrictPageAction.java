@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
@@ -63,6 +64,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private List<TeshilPartyInfoVO> partyDetails,getMptcPartyDetails;
 	private String disId,eleType,eleYear;
 	private DistrictWisePartyResultVO districtWisePartyResultVO; 
+	private List<SelectOptionVO> electionsInDistrict;
+	private DistrictWisePartyResultVO allPartiesPositionsInElection;
 
 	public String getDisId() {
 		return disId;
@@ -251,6 +254,21 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	public void setDistrictWisePartyResultVO(
 			DistrictWisePartyResultVO districtWisePartyResultVO) {
 		this.districtWisePartyResultVO = districtWisePartyResultVO;
+	}
+	
+	public List<SelectOptionVO> getElectionsInDistrict() {
+		return electionsInDistrict;
+	}
+	public void setElectionsInDistrict(List<SelectOptionVO> electionsInDistrict) {
+		this.electionsInDistrict = electionsInDistrict;
+	}
+	
+	public DistrictWisePartyResultVO getAllPartiesPositionsInElection() {
+		return allPartiesPositionsInElection;
+	}
+	public void setAllPartiesPositionsInElection(
+			DistrictWisePartyResultVO allPartiesPositionsInElection) {
+		this.allPartiesPositionsInElection = allPartiesPositionsInElection;
 	}
 	public String execute() throws Exception
 	{
@@ -442,9 +460,50 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         return dataset;
     }
 	
+	public String getAllElectionsInDistrict(){
+		try {
+			jObj = new JSONObject(getTask());
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		electionsInDistrict = staticDataService.getAllElectionsInDistrict(jObj.getLong("districtId"));
+		return SUCCESS;
+	}
+	
+	public String getAllPartiesPositionsInDistrictElection(){
+		try {
+			jObj = new JSONObject(getTask());
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		allPartiesPositionsInElection = staticDataService.getAllPartiesPositionsInDistrictElection(jObj.getLong("electionId"), jObj.getLong("districtId"));
+		List<PartyPositionsVO> partyPositions = allPartiesPositionsInElection.getPartiesPositionsInElection();
+		String chartName = "allPartiesDistrictWisePositionsInElection_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionId")+".png";
+        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+        allPartiesPositionsInElection.setPasitionsChart(chartName);
+        ChartProducer.createLineChart("All Parties Positions In "+jObj.getString("electionTypeYear")+" Of "+jObj.getString("districtName")
+        		+" District", "Positions", "No. Of Seats", createDatasetForPartyPositions(partyPositions), chartPath, 260, 400);
+		return SUCCESS;
+	}
+
+	private CategoryDataset createDatasetForPartyPositions(List<PartyPositionsVO> PartyPositionsVO) {
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();       
+        int i=0;
+        for(PartyPositionsVO partyPositionsVO:PartyPositionsVO){
+        	dataset.addValue(partyPositionsVO.getTotalSeatsWon(), partyPositionsVO.getPartyName(),"Seats Won");
+        	dataset.addValue(partyPositionsVO.getSecondPosWon(), partyPositionsVO.getPartyName(),"2nd Pos");
+        	dataset.addValue(partyPositionsVO.getThirdPosWon(), partyPositionsVO.getPartyName(),"3rd Pos");
+        	dataset.addValue(partyPositionsVO.getFourthPosWon(), partyPositionsVO.getPartyName(),"4th Pos");
+        	if(++i == 10)
+        		break; 
+        }
+        return dataset;
+    }
+	
 	public void setServletContext(ServletContext context) {
-		this.context = context;
-		
+		this.context = context;		
 	}
 	
 	
