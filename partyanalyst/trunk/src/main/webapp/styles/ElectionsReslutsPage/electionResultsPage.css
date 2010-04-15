@@ -165,3 +165,18 @@ text-decoration:none;
 	font-size:13px;	
 	color:#606060;
 }
+#distResultsViewOptionsDiv
+{
+	margin:10px;	
+	padding:5px;
+	border:1px solid #B7D3FC;
+	width:600px;
+	background:#EBE4F2;
+		
+}
+.selectBoxStyle
+{
+	color:#808080;	
+	width:150px;
+		 
+}
