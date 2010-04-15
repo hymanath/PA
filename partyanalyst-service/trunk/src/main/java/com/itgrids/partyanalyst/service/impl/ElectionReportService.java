@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.model.PartyElectionResult;
 import com.itgrids.partyanalyst.service.IElectionReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.PartyElecDistrictNamesComparator;
 import com.itgrids.partyanalyst.utils.PartyElecDistrictResultsComparator;
 import com.itgrids.partyanalyst.utils.PartyElectionResultsComparator;
 
@@ -264,12 +265,14 @@ public class ElectionReportService implements IElectionReportService {
 								if(participatedDistrictWiseResults.containsKey(alliancParty.getId())){
 								List<PartyElectionDistrictResult> partyElecDistResultList = participatedDistrictWiseResults.get(alliancParty.getId());
 								DistrictWisePartyPositionsVO distWisePartyResults = getDistrictWiseProcessedResultsForAParty(partyElecDistResultList);
+								Collections.sort(distWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
 								districtWiseAlliancPartysResults.add(distWisePartyResults);
 								participatedDistrictWiseResults.remove(alliancParty.getId());
 								}
 								else{
 								List<PartyElectionDistrictResult> partyElecDistResultList = partyElectionDistrictResultDAO.getPartyElecResultsInAllDistsForAParty(electionID,alliancParty.getId());
 								DistrictWisePartyPositionsVO distWisePartyResults = getDistrictWiseProcessedResultsForAParty(partyElecDistResultList);
+								Collections.sort(distWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
 								districtWiseAlliancPartysResults.add(distWisePartyResults);
 								}
 							}
@@ -287,7 +290,6 @@ public class ElectionReportService implements IElectionReportService {
 						alliancePartyDistrictwiseResults.setAllianceGroupName(groupName);
 						alliancePartyDistrictwiseResults.setPartiesInAlliance(districtWiseAlliancPartysResults);
 						districtwisePartiesInAlliancResults.add(alliancePartyDistrictwiseResults);
-						
 						allPartiesResults.add(getElectionResultsGrandTotalForAlliancParty(alliancePartyResults));
 						allPartiesResultsInDistricts.add(getDistrictWiseElectionResultsGrandTotalForAlliancParty(alliancePartyDistrictwiseResults));
 					}
@@ -300,36 +302,13 @@ public class ElectionReportService implements IElectionReportService {
                 if(overallPartyResultsDistrictwiseWithoutAllianc != null)
                 Collections.sort(overallPartyResultsDistrictwiseWithoutAllianc, new PartyElecDistrictResultsComparator());
 			}
-			//overall Results
-			/*
-			if(!participatedPartysResults.isEmpty()){
-				Set entries = participatedPartysResults.entrySet();
-				Iterator iterator = entries.iterator();
-				while(iterator.hasNext()){
-				Map.Entry entry = (Map.Entry)iterator.next();
-				PartyElectionResult partyElectionResult = (PartyElectionResult)entry.getValue();
-				PartyPositionsVO partyPositions = getElectionResultsForAParty(partyElectionResult);
-				allPartiesResults.add(partyPositions);
-				}
-			}
-			
-			//DistrictWise Results
-			if(!participatedDistrictWiseResults.isEmpty()){
-				Set entries = participatedDistrictWiseResults.entrySet();
-				Iterator iterator = entries.iterator();
-				while(iterator.hasNext()){
-				Map.Entry entry = (Map.Entry)iterator.next();
-				List<PartyElectionDistrictResult> partyElecDistResult = (List<PartyElectionDistrictResult>)entry.getValue();
-				DistrictWisePartyPositionsVO distWisePartyResults = getDistrictWiseProcessedResultsForAParty(partyElecDistResult);
-				log.debug("Back :" + distWisePartyResults.getTotSeatsWonInAllPartiDistricts());
-				allPartiesResultsInDistricts.add(distWisePartyResults);
-				} 
-			}*/
 			
 			//Overall Results Processing into List<PartyPositionsVO> by grouping of alliance 
 			List<PartyPositionsVO> overallPartyResults = getProcessedMapForAllPartiesResults(participatedPartysResults);
 			if(overallPartyResults != null && overallPartyResults.size() > 0){
 				for(PartyPositionsVO results:overallPartyResults){
+				if(results.getPartyName().equals("IND"))
+				results.setVotesPercentage("--");
 				allPartiesResults.add(results);
 				}
 			}
@@ -338,6 +317,11 @@ public class ElectionReportService implements IElectionReportService {
 			List<DistrictWisePartyPositionsVO> overallPartyResultsDistrictwise = getProcessedMapForAllPartiesDistrictwiseResults(participatedDistrictWiseResults);
 			if(overallPartyResultsDistrictwise != null && overallPartyResultsDistrictwise.size() > 0){
 				for(DistrictWisePartyPositionsVO results:overallPartyResultsDistrictwise){
+				//Collections.sort(results.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
+				for(PartyPositionsInDistrictVO result:results.getPartyResultsInDistricts()){
+				if(results.getPartyName().equals("IND"))
+				result.setVotesPercentage("--");
+				}
 				allPartiesResultsInDistricts.add(results);
 				}
 			}
@@ -428,7 +412,7 @@ public class ElectionReportService implements IElectionReportService {
 			Map.Entry entry = (Map.Entry)iterator.next();
 			List<PartyElectionDistrictResult> partyElecDistResult = (List<PartyElectionDistrictResult>)entry.getValue();
 			DistrictWisePartyPositionsVO distWisePartyResults = getDistrictWiseProcessedResultsForAParty(partyElecDistResult);
-			log.debug("Back :" + distWisePartyResults.getTotSeatsWonInAllPartiDistricts());
+			Collections.sort(distWisePartyResults.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
 			allPartiesResultsInDistricts.add(distWisePartyResults);
 			} 
 		}
@@ -645,7 +629,10 @@ public class ElectionReportService implements IElectionReportService {
 				}
 			}
 			if(!partyPosInDistrict.isEmpty()){
-			partyPositionsVO.setPartyResultsInDistricts(getDistrictWiseResultsList(partyPosInDistrict));
+			List<PartyPositionsInDistrictVO> partyPosInDis = getDistrictWiseResultsList(partyPosInDistrict);
+			Collections.sort(partyPosInDis, new PartyElecDistrictNamesComparator());
+			//partyPositionsVO.setPartyResultsInDistricts(getDistrictWiseResultsList(partyPosInDistrict));
+			partyPositionsVO.setPartyResultsInDistricts(partyPosInDis);
 			partyPositionsVO.setTotSeatsWonInAllPartiDistricts(new Long(100));
 			}
 		}
@@ -773,9 +760,8 @@ public class ElectionReportService implements IElectionReportService {
 			districtWisePartyPositionsForAParty.setPartyId(partyId);
 			districtWisePartyPositionsForAParty.setPartyName(partyName);
 			districtWisePartyPositionsForAParty.setPartyResultsInDistricts(partyResultsInDistricts);
-			log.debug("SeatsWon Districtwise:" + totalseatsWonInDistrict);
 			districtWisePartyPositionsForAParty.setTotSeatsWonInAllPartiDistricts(totalseatsWonInDistrict);
-			log.debug("Inside VO :" + districtWisePartyPositionsForAParty.getTotSeatsWonInAllPartiDistricts());
+			
 		}
 		
 	  return districtWisePartyPositionsForAParty;
