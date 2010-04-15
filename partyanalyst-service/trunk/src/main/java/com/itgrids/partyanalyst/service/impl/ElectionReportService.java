@@ -168,8 +168,11 @@ public class ElectionReportService implements IElectionReportService {
 			Long countVal = getRawListCount(partysCountInPartyElecResultTable);
 			List partysCountInPartyElecDistrictResultTable = partyElectionDistrictResultDAO.getParticipatedPartysCountForAnElection(electionID);
 			Long countDistrictVal = getRawListCount(partysCountInPartyElecDistrictResultTable);
+			List<SelectOptionVO> districtsInfo = null;
 			
-			List<SelectOptionVO> districtsInfo = getDistrictsInfoInAState(stateId);
+			if(!electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
+			districtsInfo = getDistrictsInfoInAState(stateId);
+			}
 			log.debug("PartyElectionResults Count    :" + countVal);
 			log.debug("PartyDistElectionResults Count:" + countDistrictVal);
 			
@@ -317,7 +320,6 @@ public class ElectionReportService implements IElectionReportService {
 			List<DistrictWisePartyPositionsVO> overallPartyResultsDistrictwise = getProcessedMapForAllPartiesDistrictwiseResults(participatedDistrictWiseResults);
 			if(overallPartyResultsDistrictwise != null && overallPartyResultsDistrictwise.size() > 0){
 				for(DistrictWisePartyPositionsVO results:overallPartyResultsDistrictwise){
-				//Collections.sort(results.getPartyResultsInDistricts(), new PartyElecDistrictNamesComparator());
 				for(PartyPositionsInDistrictVO result:results.getPartyResultsInDistricts()){
 				if(results.getPartyName().equals("IND"))
 				result.setVotesPercentage("--");
@@ -340,6 +342,19 @@ public class ElectionReportService implements IElectionReportService {
 						
 			//////////////////////////////////////////////////////////////////////////////////////////
 			log.debug("District Wise Results List Size :" + allPartiesResultsInDistricts.size());
+			List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>();
+			for(DistrictWisePartyPositionsVO resultData:allPartiesResultsInDistricts){
+				SelectOptionVO partyOption = new SelectOptionVO();
+				partyOption.setId(resultData.getPartyId());
+				partyOption.setName(resultData.getPartyName());
+			}
+			
+			//set participated parties and districts list to mainVO
+			if(!electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
+			electionResultsReportVO.setPartiDistList(districtsInfo);
+			electionResultsReportVO.setPartiPartiesList(partiesList);
+			}
+			
 			Collections.sort(allPartiesResultsInDistricts, new PartyElecDistrictResultsComparator());
 			ElectionResultsInAllDistrictsVO electionResultsInAllDistrictsVO = new ElectionResultsInAllDistrictsVO();
 			electionResultsInAllDistrictsVO.setAllPartiesResults(allPartiesResultsInDistricts);
@@ -631,7 +646,6 @@ public class ElectionReportService implements IElectionReportService {
 			if(!partyPosInDistrict.isEmpty()){
 			List<PartyPositionsInDistrictVO> partyPosInDis = getDistrictWiseResultsList(partyPosInDistrict);
 			Collections.sort(partyPosInDis, new PartyElecDistrictNamesComparator());
-			//partyPositionsVO.setPartyResultsInDistricts(getDistrictWiseResultsList(partyPosInDistrict));
 			partyPositionsVO.setPartyResultsInDistricts(partyPosInDis);
 			partyPositionsVO.setTotSeatsWonInAllPartiDistricts(new Long(100));
 			}
