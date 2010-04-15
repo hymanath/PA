@@ -15,9 +15,10 @@
   <META NAME="Author" CONTENT="">
   <META NAME="Keywords" CONTENT="Andhra Pradesh State, Election">
   <META NAME="Description" CONTENT="">
+	
+	<!-- YUI Dependency files (Start) -->
 
-  
- <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
@@ -36,9 +37,13 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
-	<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 
-	
+
+
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
@@ -47,332 +52,157 @@
 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+
+	<!-- YUI Dependency files (End) -->
+	
+
+	<!-- Local Files-->
+	<script type="text/javascript" src="js/statePage/statePage.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/statePage/statePage.css">	
 
   <style type="text/css">
-		table.stateResultsTable{
-			font-family: verdana,arial,sans-serif;
-			font-size:11px;
-			color:#333333;
-			border-width: 1px;
-			border-color: #666666;
-			border-collapse: collapse;
-		}
-		table.stateResultsTable th {
-			border-width: 1px;
-			padding: 8px;
-			border-style: solid;
-			border-color: #666666;
-			background-color: #CFDCE4;
-		}
-		table.stateResultsTable td {
-			border-width: 1px;
-			padding: 8px;
-			border-style: solid;
-			border-color: #666666;
-			background-color: #ffffff;
-		}
-		#districtInfoDiv
-		{
-			margin-top:10px;
-			margin-bottom:10px;
-			margin-right:30px;
-		}
-		#districtInfoDivHead
-		{
-			font-weight:bold;
-			color:#1C4B7A;
-			text-decoration:underline;
-			font-size:15px;
-			padding:5px 5px 5px 0px;
-		}
-		#districtInfoDivBody
-		{
-			padding:5px;
-			background-color:#F1F5F7;
-		}				
-		#districtAncSpan
-		{
-			padding:10px;
-		}
-		.districtAnc
-		{
-			color:#1C4B7A;
-		}	
-		
-		.yui-skin-sam .yui-dt table
-		{
-			border:medium none LemonChiffon;
-			border-collapse:separate;
-			color:DarkOliveGreen;
-			font-family:verdana;
-			font-size:inherit;
-			font-weight:bold;
-			margin:0;
-			padding:0;
-			text-align:center;
-		}
-		.detailedAnalysisAnc
-		{
-			color:green;
-			font-family:Trebuchet MS;
-			font-size:13px;
-			font-weight:bold;
-		}	
+	
 		
   </style>
 
-	
 	<script type="text/javascript">
-	function callAjax(param){
-		var myResults;
-		var url = "<%=request.getContextPath()%>/stateElectionResultsAjax.action?"+param;
-		var callback = {			
-					   success : function( o ) {
-							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText);	
-								//buildDataTable(param,myResults.stateElectionResults.partyResultsVO);
-								insertData(param,myResults.stateElectionResults.partyResultsVO);								
-							}catch (e) {   
-								alert("Invalid JSON result" + e);   
-							}  
-					   },
-					   scope : this,
-					   failure : function( o ) {
-									alert( "Failed to load result" + o.status + " " + o.statusText);
-								 }
-					   };
+		function callAjax(param)
+		{
+			var myResults;
+			var url = "<%=request.getContextPath()%>/stateElectionResultsAjax.action?"+param;
+			var callback = {			
+						   success : function( o ) {
+								try {
+									myResults = YAHOO.lang.JSON.parse(o.responseText);									
+									showElectionResults(param,myResults.stateElectionResults.partyResultsVO);								
+								}catch (e) {   
+									alert("Invalid JSON result" + e);   
+								}  
+						   },
+						   scope : this,
+						   failure : function( o ) {
+										alert( "Failed to load result" + o.status + " " + o.statusText);
+									 }
+						   };
 
-		YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}
- 	
-  
-function doAjax(param){
-
-	var tableElmt=document.getElementById("table"+param);
-	var spanElmt=document.getElementById("span"+param);
-	var searchElmt=document.getElementById("search"+param);
-    searchElmt.style.display="block"
-	if(tableElmt.style.display=="block")
-	{
-		tableElmt.style.display="none";
-		searchElmt.style.display="none";
-		spanElmt.innerHTML=" (view results)";
-		return;
-	}
-	
- 	callAjax("electionId="+param);
- }
-
-
-function buildDataTable(param,results)
-{
-	var index=param.indexOf("=");
-	var subStr=param.substr(index+1)
-	var tableDivElmt=document.getElementById("table"+subStr);
-	var spanElmt=document.getElementById("span"+subStr);	
-	var searchElmt=document.getElementById("search"+subStr);
-
-	tableDivElmt.style.display="block";
-
-	exData = { 
-	    partys: [ 
-	         
-	    ] 
-	}
-
-	for (var i in results)
-	{
-		exData.partys[i]=
-			{
-				name:results[i].partyName,
-				seats:results[i].totalSeatsWon	
-			}
-	}
-
-	var myColumnDefs = [ 
-	            {key:"Party Name", sortable:true, resizeable:true}, 
-	            {key:"Seats Won", sortable:true,resizeable:true}
-	        ]; 
-	
-	
-	var myDataSource = new YAHOO.util.DataSource(exData.partys); 
-	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-	myDataSource.responseSchema = { 
-	     fields: ["Party Name","Seats Won"] 
-	}; 
-	
-	var myDataTable = new YAHOO.widget.DataTable("table"+subStr,myColumnDefs, myDataSource); 
-		
-	spanElmt.innerHTML=" (close)";
-	searchElmt.style.display="none";
-
-}
-function insertData(param,results)
-{
-
-	var index=param.indexOf("=");
-	var subStr=param.substr(index+1)
-	var tableDivElmt=document.getElementById("table"+subStr);
-	var spanElmt=document.getElementById("span"+subStr);	
-	var searchElmt=document.getElementById("search"+subStr);
-		
-	tableDivElmt.style.display="block";
-	
-	var str='';
-	str+='<table id="elecResultsTab">';
-	for(var item in results)
-	{			
-		str+='<tr>';
-		str+='<td><a href="partyPageAction.action?partyId='+results[item].partyId+'">'+results[item].partyName+'</a></td>';
-		if(results[item].partyFlag)
-			str+='<td><img src="<%=request.getContextPath()%>/images/party_flags/'+results[item].partyFlag+'" height="30" width="40"/></td>';
-		else	
-			str+='<td><img src="<%=request.getContextPath()%>/images/party_flags/no_Image.png" height="30" width="40"/></td>';
-		str+='<td align="center">'+results[item].totalSeatsWon+'</td>';
-		str+='</tr>';
-	}
-	str+='</table>';
-	
-	tableDivElmt.innerHTML=str;	
-
-	spanElmt.innerHTML=" (close)";
-	searchElmt.style.display="none";
-	
-	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-			.get("elecResultsTab"));
-	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
-	resultsDataSource.responseSchema = {
-		fields : [ {
-			key : "partyName"
-		},{
-			key : "partyFlag"
-		}, {
-			key : "totalSeatsWon",parser:"number"
-		}]
-	};
-
-	var resultsColumnDefs = [ {
-		key : "partyName",
-		label : "PARTY NAME",
-		sortable : true
-	},{
-		key : "partyFlag",
-		label : "PARTY Flag"
-	}, {
-		key : "totalSeatsWon",
-		label : "SEATS WON",
-		sortable : true
-	}];
-
-	
-	var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10
-			    }) 
-				};	
-
-   	var myDataTable = new YAHOO.widget.DataTable(tableDivElmt,resultsColumnDefs, resultsDataSource,myConfigs);  
-
-}
+			YAHOO.util.Connect.asyncRequest('GET', url, callback);
+		}
   </script>
  </HEAD>
 
- <BODY>
- <h2><u style="color:#1C4B7A;"><c:out value="${statePage.stateName}" /> State Details</u></h2>
-<div id="stateOuterDiv" style="text-align:left;margin-left:50px;">
+<BODY>
+<div id="statePage_main">
+	<!--<div id="maskDiv"></div>-->
+	<div id="electionResultsPopupDiv" class="yui-skin-sam"><div id="electionResultsPopupDiv_inner"></div></div>
+	<div id="statePage_header">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td><img border="none" src="images/icons/statePage/header_left.png"></td>
+				<td><div id="statePageHeading"><span id="stateNameSpan"><c:out value="${statePage.stateName}" /> State Details</div></span></td>
+				<td><img border="none" src="images/icons/statePage/header_right.png"></td>
+			</tr>
+		</table>
+	</div>
+	<div id="statePage_body">
+			<div id="statePage_layout_main" class="yui-skin-sam"> </div>
+			<div id="statePage_layout_right">
+				<div id="stateInformation_main">					
+					<div id="stateInformation_body">
+						<div class="stateInformation_head">${statePage.stateName} At A Glance : </div>
+						<div>
+						 <table border="0" cellpadding="0" cellspacing="0" class="stateDetailsTable" width="100%" style="width:100%">
+							 <tr>
+								 <th align="left" style="color:#1C4B7A;"><c:out value="State Capital "/> </th>
+								 <td  align="left" style="color:#18325A;"> : <c:out value="${statePage.adminCapital}" /></td>
+							 </tr>
+							 <tr>
+								 <th  align="left" style="color:#1C4B7A;"><c:out value="Total Districts"/></th>
+								 <td align="left" style="color:#18325A;"> : <c:out value="${districtNumber}" /></td>	
+							 </tr>
+							 <tr>
+								<th  align="left" style="color:#1C4B7A;"><c:out value="State Language"/> </th>
+								<td  align="left" style="color:#18325A;"> : <c:out value="${statePage.stateLanguage}" /></td>
+							 </tr>
+							 <tr>
+								<th  align="left" style="color:#1C4B7A;"><c:out value="State Song"/></th>
+								<td align="left" style="color:#18325A;"> : <c:out value="${statePage.stateSong}" /></td>	
+							</tr>
+						</table>
+						</div>
+						<div class="stateInformation_head">${statePage.stateName} Census Info : </div>
+						<div>
+							<table border="0" cellpadding="0" cellspacing="0" width="100%" class="stateDetailsTable">
+								<tr>
+									<th>Type</th>
+									<th align="center">Total </th>
+									<th align="center">Male </th>
+									<th align="center">Female </th>
+								</tr>
+								<c:forEach var="census" items="${censusVO}">
+								<tr>
+									<td align="left" style="font-weight:bold;"><c:out value="${census.tru }" /></td>
+									<td align="center"><c:out value="${census.totalPopulation }" /></td>
+									<td align="center"><c:out value="${census.malePopulation }" /></td>
+									<td align="center"><c:out value="${census.femalePopulation }" /></td>
+								</tr>
+								</c:forEach>
+							</table>
+						</div>
+					</div>
+				</div>			
+			</div>
+			<div id="statePage_layout_center">
+				<object width="550" height="400">
+					<param name="movie" value="images/icons/statePage/stateMap.swf">
+					<embed src="images/icons/statePage/stateMap.swf" width="550" height="400">
+					</embed>
+				</object>
+			</div>
+
+			<div id="statePage_electinoResults_nav_div">
+				<table width = "100%" style="width:100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td style="vertical-align:top;width:250px;">
+							<div id="electionTypesList_head"><u>Election Type : </u></div>
+							<div id="electionTypesList"></div>
+						</td>
+						<td style="vertical-align:top;"><div id="electionTypesNYearsList" class="yui-skin-sam"></div></td>
+					</tr>
+				</table>
+			</div>
+	</div>	
+</div>
 	
+	<script type="text/javascript">
 
- <table border="0" cellpadding="0" cellspacing="0" class="stateDetailsTable">
- <tr>
-	 <td align="left" style="color:#1C4B7A;"><c:out value="State Capital "/> </td>
-	 <td  align="left" style="color:#18325A;font-weight:bold;"> : <c:out value="${statePage.adminCapital}" /></td>
+		statePageObj.stateDetails.stateId = '${statePage.stateId}';
+		statePageObj.stateDetails.stateName = '${statePage.stateName}';
+		statePageObj.stateDetails.stateLanguage = '${statePage.stateLanguage}';
+		statePageObj.stateDetails.stateSong = '${statePage.stateSong}';
+		statePageObj.stateDetails.adminCapital = '${statePage.adminCapital}';
 
-	 <td  align="left" style="color:#1C4B7A;padding-left:20px;"><c:out value="Total Districts"/></td>
-	 <td align="left" style="color:#18325A;font-weight:bold;"> : <c:out value="${districtNumber}" /></td>	
- </tr>
- <tr>
-	<td  align="left" style="color:#1C4B7A;"><c:out value="State Language"/> </td>
-    <td  align="left" style="color:#18325A;font-weight:bold;"> : <c:out value="${statePage.stateLanguage}" /></td>
- </tr>
- <tr>
-	<td  align="left" style="color:#1C4B7A;"><c:out value="State Song"/></td>
-    <td align="left" style="color:#18325A;font-weight:bold;"> : <c:out value="${statePage.stateSong}" /></td>	
-</tr>
-
-</table>
-
-<div id="districtInfoDiv">
-	<div id="districtInfoDivHead">
-		District's Info
-	</div>
-	<div id="districtInfoDivBody">
-		<table><tr>
-		<c:forEach var="district" varStatus="stat" items="${districtData}">				
-			<td>
-				<span id="districtAncSpan">
-					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
-					<a href="districtPageAction.action?districtId=${district.id}&districtName=${district.name }" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${district.name}
-					</a>
-				</span>
-			</td>	
-			<c:if test="${stat.count % 7==0}">
-				</tr><tr><td colspan="7"> </td></tr><tr>
-			</c:if>			
-		</c:forEach>			
-		</tr></table>		
-	</div>
-</div>
-
-<h3><u style="color:#1C4B7A;">Census Info *</u></h3>
-
-<table border="1" width="70%" class="stateResultsTable">
-	<tr>
-		<th>Type</th>
-		<th align="center">Total Population</th>
-		<th align="center">Male Population</th>
-		<th align="center">Female Population</th>
-	</tr>
-	<c:forEach var="census" items="${censusVO}">
-	<tr>
-		<td align="left" style="font-weight:bold;"><c:out value="${census.tru }" /></td>
-		<td align="center"><c:out value="${census.totalPopulation }" /></td>
-		<td align="center"><c:out value="${census.malePopulation }" /></td>
-		<td align="center"><c:out value="${census.femalePopulation }" /></td>
-	</tr>
-	</c:forEach>
-</table>
-<H3><u  style="color:#1C4B7A;"><c:out value="${statePage.stateName}" />  Previous Elections Results:</u></H3>
-<c:if test="${stateElections != null }">
-<c:forEach var="state" items="${stateElections}">
-<table border="0" >     
-	<tr>
-		<td><img  src="<%=request.getContextPath()%>/images/icons/elections_logo.png"/> </td>
-		<td align="center">
-			<c:out value="${state.electionType}" /> Election In	<c:out value="${state.year}" /><span id="span${state.electionId}" style="color:#4F6177;cursor:pointer;" onclick="doAjax(${state.electionId});"style="cursor:pointer;"> <c:out value="(view results)" /></span>
-			<a href="electionDetailsReportAction.action?electionId=${state.electionId}&stateID=${statePage.stateId}&stateName=${statePage.stateName}&electionType=${state.electionType}&electionTypeId=${state.electionTypeId}&year=${state.year}"  class="detailedAnalysisAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">Detailed Analysis
-			</a> 
-		</td>
-		<td id="search${state.electionId}" align="left" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/arrows.gif" /></img></td>		
-	</tr>
-</table>
-<div id="electionResultsDiv" class="yui-skin-sam">
-<div style="display:none;" id="table${state.electionId}">
-</div>
-</div>
-<br/><br/>
-</c:forEach>
-</c:if>
-
-</div>
+		<c:if test="${stateElections != null }">			
+			<c:forEach var="state" varStatus="stat" items="${stateElections}">
+					var obj = {
+								electionId:'${state.electionId}',
+								electionTypeId:'${state.electionTypeId}',
+								electionType:'${state.electionType}',
+								year:'${state.year}'
+							  };
+					statePageObj.electionResults.push(obj);
+			</c:forEach>
+		</c:if>
+		initializeStatePage();		
+	</script>
 
  </BODY>
-</HTML>
-
-
-    
+</HTML>    
 

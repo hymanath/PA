@@ -1,0 +1,239 @@
+
+
+var statePageObj =	{
+						stateDetails:{
+										stateId:'',
+										stateName:'',
+										stateLanguage:'',
+										stateSong:'',
+										adminCapital:''
+									 },
+						electionResults:[],
+						electionTypes:[],
+						electionResultsByType:[]
+					};
+
+var globalElectionType = '';
+var results = new Array();
+
+
+function buildStatePageLayout()
+{
+	var statePageLayout = new YAHOO.widget.Layout('statePage_layout_main', { 
+	height:500,
+	units: [			
+			{ 
+				position: 'right', 
+				width: 250,
+				header:false,
+				body: 'statePage_layout_right',
+				resize: false,
+				gutter: '2px',
+				collapse: false,
+				scroll: true,						
+				animate: true 
+			}, 					 
+			{ 
+				position: 'center',						
+				body: 'statePage_layout_center',
+				resize: false,
+				gutter: '2px',
+				collapse: true,
+				scroll: true,						
+				animate: true
+			} 
+		 ] 
+		
+	});
+	statePageLayout.render(); 
+}
+
+function differentiateElectionTypes()
+{
+	var lObj = statePageObj.electionResults;
+	
+	if(lObj.length == 0)
+		return;
+	
+	statePageObj.electionTypes.push(lObj[0].electionType);
+	globalElectionType = lObj[0].electionType;
+	for(var i in lObj)
+	{
+		if(lObj[i].electionType != globalElectionType)
+		{
+			globalElectionType = lObj[i].electionType;
+			statePageObj.electionTypes.push(lObj[i].electionType);		
+		}
+	}
+	
+	globalElectionType = lObj[0].electionType;
+	
+	var eArr = new Array();
+	
+	for(var j in lObj)
+	{		
+		if(lObj[j].electionType == globalElectionType)
+		{	
+			var eObj = {
+							electionId : lObj[j].electionId,
+							electionTypeId : lObj[j].electionTypeId,
+							electionType : lObj[j].electionType,
+							year : lObj[j].year
+					   };
+			eArr.push(eObj);
+		}
+		else
+		{
+			globalElectionType = lObj[j].electionType;
+			statePageObj.electionResultsByType.push(eArr);
+			eArr = new Array();
+			var eObj = {
+							electionId : lObj[j].electionId,
+							electionTypeId : lObj[j].electionTypeId,
+							electionType : lObj[j].electionType,
+							year : lObj[j].year
+					   };
+			eArr.push(eObj);
+		}				
+	}
+	statePageObj.electionResultsByType.push(eArr);	
+}
+
+function buildelectionTypeList()
+{
+	var elmt = document.getElementById("electionTypesList");
+
+	if(!elmt && statePageObj.electionTypes.length == 0)
+		return;
+
+	var str = '';
+	str+='<ul id="stateElectionTypesList">';
+	for(var i in statePageObj.electionTypes)
+	{
+		str+='<li onclick="changeElectionTypecarousel(\''+i+'\')"><div>'+statePageObj.electionTypes[i]+'</div></li>';
+	}
+	str+='</ul>';
+
+	elmt.innerHTML = str;
+}
+
+function changeElectionTypecarousel(index)
+{
+	buildElectionTypesAndYearsCarousel("electionTypesNYearsList",statePageObj.electionResultsByType[index]);
+}
+
+function buildElectionTypesAndYearsCarousel(divId,arr)
+{
+	var elmt = document.getElementById(divId);
+	if(!elmt && arr.length == 0)
+		return;
+
+	var str = '';
+	str+='<ul>';
+	for(var i in arr)
+	{
+		str+='<li>';
+		str+='<div class="electionResultsDiv">';
+		str+='	<div class="electionResultsDiv_head">'+arr[i].electionType+' - '+arr[i].year+'</div>';
+		str+='	<div class="electionResultsDiv_body"> </div>';
+		str+='	<div class="electionResultsDiv_footer">';
+		str+='	<a class="viewAncs" href="javascript:{}" onclick="callAjax(\'electionId='+arr[i].electionId+'\')">View Results</a> | ';
+		//str+='	| <a class="viewAncs" href="javascript:{}" onclick="showElectionResults(\''+arr[i].electionId+'\')">Analyze</a>';
+		str+='	<a href="electionDetailsReportAction.action?electionId='+arr[i].electionId+'&stateID='+statePageObj.stateDetails.stateId+'&stateName='+statePageObj.stateDetails.stateName+'&electionType='+arr[i].electionType+'&electionTypeId='+arr[i].electionTypeId+'&year='+arr[i].year+'"  class="viewAncs">Analyze</a> ';
+		str+='	</div>';
+		str+='</div>';
+		str+='</li>';
+	}
+	str+='</ul>';
+
+	elmt.innerHTML = str;
+
+	electionTypesAndYearsCarousel = new YAHOO.widget.Carousel(divId,
+			{
+				carouselEl: "UL",
+				isCircular: true,
+				isVertical: false,
+				numVisible: 3,
+				animation: { speed: 1.0 },
+				autoPlayInterval: 2000
+			});
+
+	electionTypesAndYearsCarousel.render(); 
+	electionTypesAndYearsCarousel.show();
+}
+
+function showElectionResults(param,results)
+{	
+	var str='';
+	str+='<div id="elecResultsDiv" class="yui-skin-sam">';
+	str+='<table id="elecResultsTab">';
+	for(var item in results)
+	{			
+		str+='<tr>';
+		str+='<td><a href="partyPageAction.action?partyId='+results[item].partyId+'">'+results[item].partyName+'</a></td>';
+		if(results[item].partyFlag)
+			str+='<td><img src="images/party_flags/'+results[item].partyFlag+'" height="30" width="40"/></td>';
+		else	
+			str+='<td><img src="images/party_flags/no_Image.png" height="30" width="40"/></td>';
+		str+='<td align="center">'+results[item].totalSeatsWon+'</td>';
+		str+='</tr>';
+	}
+	str+='</table>';
+	str+='</div>';
+	
+	var myPanel = new YAHOO.widget.Panel("electionResultsPopupDiv_inner", {			
+			 width:"500px",
+			 fixedcenter: true, 
+			 constraintoviewport: true, 
+			 underlay: "none", 
+			 close: true, 
+			 visible: true, 
+			 draggable: true
+   });
+   myPanel.setHeader("Election Results ..");
+   myPanel.setBody(str);
+   myPanel.render();
+	   
+
+	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+			.get("elecResultsTab"));
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	resultsDataSource.responseSchema = {
+		fields : [ {
+			key : "partyName"
+		},{
+			key : "partyFlag"
+		}, {
+			key : "totalSeatsWon",parser:"number"
+		}]
+	};
+
+	var resultsColumnDefs = [ {
+		key : "partyName",
+		label : "PARTY NAME",
+		sortable : true
+	},{
+		key : "partyFlag",
+		label : "PARTY Flag"
+	}, {
+		key : "totalSeatsWon",
+		label : "SEATS WON",
+		sortable : true
+	}];
+
+	
+	var myConfigs = { 
+			    paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10
+			    }) 
+				};	
+
+   	var myDataTable = new YAHOO.widget.DataTable("elecResultsDiv",resultsColumnDefs, resultsDataSource,myConfigs);  
+}
+function initializeStatePage()
+{
+	buildStatePageLayout();
+	differentiateElectionTypes();
+	buildelectionTypeList();
+	buildElectionTypesAndYearsCarousel("electionTypesNYearsList",statePageObj.electionResultsByType[0]);
+}
