@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ElectionResultsReportVO implements Serializable {
 
@@ -26,6 +27,8 @@ public class ElectionResultsReportVO implements Serializable {
 	private String partyResultsDistrictLevelChartWithoutAllianc;
 	private ResultStatus resultStatus;
 	
+	private List<SelectOptionVO> partiDistList;
+	private List<SelectOptionVO> partiPartiesList;
 	private ElectionResultsVO electionBasicResultsVO;
 	private ElectionResultsInAllDistrictsVO electionResultsInDistricts;
 	
@@ -123,6 +126,22 @@ public class ElectionResultsReportVO implements Serializable {
 	public void setPartyResultsDistrictLevelChartWithoutAllianc(
 			String partyResultsDistrictLevelChartWithoutAllianc) {
 		this.partyResultsDistrictLevelChartWithoutAllianc = partyResultsDistrictLevelChartWithoutAllianc;
+	}
+
+	public List<SelectOptionVO> getPartiDistList() {
+		return partiDistList;
+	}
+
+	public void setPartiDistList(List<SelectOptionVO> partiDistList) {
+		this.partiDistList = partiDistList;
+	}
+
+	public List<SelectOptionVO> getPartiPartiesList() {
+		return partiPartiesList;
+	}
+
+	public void setPartiPartiesList(List<SelectOptionVO> partiPartiesList) {
+		this.partiPartiesList = partiPartiesList;
 	}
 	
 	
