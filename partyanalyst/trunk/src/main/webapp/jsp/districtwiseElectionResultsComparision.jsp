@@ -47,10 +47,9 @@ function callAjax(param,jsObj,url){
 									var elmt = document.getElementById("electionPageAjaxImgDiv");
 									if(elmt)
 										elmt.style.display = 'none';
-									//console.log(myResults);
-									showDistrictWiseResultsLineGraph(myResults);
-									buildAllDistrictResultsDataTable(myResults);
+									showDistrictWiseResultsLineGraph(myResults);									
 									buildAllianceDistrictResultsDataTable(myResults.electionResultsInDistricts);
+									buildAllDistrictResultsDataTable(myResults);
 																					
 								}   									
 							}
@@ -109,7 +108,6 @@ function showDistrictWiseResultsLineGraph(results)
 
 function buildAllDistrictDatatable(innerObj,divID)
 {
-	
 	var dtSource = new Array();
 	var allianceSubstitue = '<img src="images/icons/edit-icon.gif">';
 	for(var i in innerObj)
@@ -186,7 +184,6 @@ function buildAllDistrictResultsDataTable(results)
 	//districtResults_withoutAllianceDiv
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
 	electionResultsObj.districtWiseResultsWithoutAllianceArr = results.electionResultsInDistricts.allPartiesResultsWithoutGroupingOfAllianc;
-
 	buildAllDistrictDatatable(innerObj,"districtResults");
 
 	var elmt = document.getElementById("districtResults_withoutAllianceDiv");
@@ -201,21 +198,23 @@ function showDistrictWisePartyResultsWithoutAlliance(chartId)
 {
 	//partywiseResultsWithoutAlliance
 
-	var contentStr ='<div id="districtWiseWithoutAllianceDiv_main">';
+	var contentStr ='<div id="districtWiseWithoutAllianceDiv_main" style="height:500px;overflow-y:auto">';
 	contentStr +='<div id="districtWiseWithoutAllianceDiv_graph"><IMG src="charts/'+chartId+'"></IMG></div>';
 	contentStr +='<div id="districtWiseWithoutAllianceDiv_Datatable"></div>';
 	contentStr +='</div>';
 
 	 var myPanel = new YAHOO.widget.Panel("panel", {
                  
-                 fixedcenter: true, 
-                 constraintoviewport: true, 
-                 underlay: "none", 
-                 close: true, 
-                 visible: true, 
-                 draggable: true
+		 width : "950px", 
+         fixedcenter : true, 
+         visible : true,  
+         constraintoviewport : true, 
+		  iframe :true,
+		  modal :true,
+		  hideaftersubmit:true,
+		  close:true
        });
-	  // myPanel.setHeader("District Wise Party Results Without Alliance");
+	   myPanel.setHeader("District Wise Party Results Without Alliance");
        myPanel.setBody(contentStr);
 		
 	   myPanel.render();
@@ -262,6 +261,7 @@ function buildAllianceDistrictResultsDataTable(results)
 							overall:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].completeVotesPercent
 						  }
 				dtSourceArr.push(obj);
+				electionResultsObj.allianceGroupNamesArray.push(innerObj[i].allianceGroupName);
 			}
 		}
 		
@@ -360,7 +360,7 @@ function showAllianceGraph(divId,chartId, chartName)
 			<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
 		</TR>
 		<TR>
-			<TD colspan="2" align="left"><DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;PC% column is empty for alliance parties in Partywise Results table, to find PC% for alliance parties kindly refer to the PC% column of the Alliance Details Table</P></DIV></TD>
+			<TD colspan="2" align="left"><DIV id="note" name="note"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;PC% column is empty for alliance parties in Partywise Results table, to find PC% for alliance parties kindly refer to the PC% column of the Alliance Details Table.PC% is Not Applicable for Independent Candidates(IND).</P></DIV></TD>
 		</TR>		
 	</TABLE>
 	

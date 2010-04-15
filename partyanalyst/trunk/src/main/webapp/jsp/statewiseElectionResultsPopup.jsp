@@ -104,7 +104,7 @@ function showAllianceDetails(results)
 	for(var i in  allianceResultsArr){
 		var header = allianceResultsArr[i].allianceGroupName +"AllianceGraph";
 		allianceGrpName =  allianceResultsArr[i].allianceGroupName;
-		electionResultsObj.allianceGroupNamesArray.push(allianceGrpName);		
+		electionResultsObj.allianceGroupNamesArray.push(allianceGrpName);				
 		var createDiv = document.createElement("div");		
 		createDiv.setAttribute("id","allianceResults_"+i+"_main");		
 		createDiv.style.cssText = 'margin-top:32px;';
@@ -369,7 +369,7 @@ function showPartyResultsWithoutAlliance(chartId)
 			<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
 		</TR>
 		<TR>
-			<TD colspan="2"><DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;PC% column is empty for alliance parties in Partywise Results table, to find PC% for alliance parties kindly refer to the PC% column of the Alliance Details Table</P></DIV></TD>
+			<TD colspan="2"><DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;PC% column is empty for alliance parties in Partywise Results table, to find PC% for alliance parties kindly refer to the PC% column of the Alliance Details Table.PC% is Not Applicable for Independent Candidates(IND).</P></DIV></TD>
 		</TR>		
 	</TABLE>
 	
