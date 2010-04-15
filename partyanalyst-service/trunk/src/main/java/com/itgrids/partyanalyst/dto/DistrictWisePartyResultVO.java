@@ -21,8 +21,10 @@ public class DistrictWisePartyResultVO {
 	private Long seatsWon;
 	private Double votesPercent;
 	private String chartPath;
+	private String pasitionsChart;
 	private List<PartyResultVO> partyElectionResultsList;
 	private List<ElectionResultVO> alliancePartiesInElection;
+	private List<PartyPositionsVO> partiesPositionsInElection;
 	
 	public Long getDistrictId() {
 		return districtId;
@@ -97,6 +99,19 @@ public class DistrictWisePartyResultVO {
 	public void setAlliancePartiesInElection(
 			List<ElectionResultVO> alliancePartiesInElection) {
 		this.alliancePartiesInElection = alliancePartiesInElection;
+	}
+	public List<PartyPositionsVO> getPartiesPositionsInElection() {
+		return partiesPositionsInElection;
+	}
+	public void setPartiesPositionsInElection(
+			List<PartyPositionsVO> partiesPositionsInElection) {
+		this.partiesPositionsInElection = partiesPositionsInElection;
+	}
+	public String getPasitionsChart() {
+		return pasitionsChart;
+	}
+	public void setPasitionsChart(String pasitionsChart) {
+		this.pasitionsChart = pasitionsChart;
 	}
 	
 }

@@ -1034,7 +1034,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	public List getAllElectionsInDistrict(Long districtId) {
-		return getHibernateTemplate().find("select distinct model.constituencyElection.election.electionId from Nomination model " +
+		return getHibernateTemplate().find("select distinct model.constituencyElection.election.electionId," +
+				"model.constituencyElection.election.electionScope.electionType.electionType, model.constituencyElection.election.electionYear from Nomination model " +
 				"where model.constituencyElection.constituency.district.districtId = ?", districtId);
 	}
 

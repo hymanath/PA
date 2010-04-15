@@ -11,4 +11,8 @@ public interface IHamletBoothElectionDAO extends GenericDao<HamletBoothElection,
 	public List<Long> findByHamletAndBoothConstituencyElection(Long hamletId,
 			Long boothConstituencyElectionId) ;
 	
+	public List findPanchayathsWiseBoothsAndHamletsDataInTehsilForElection(Long tehsilId, Long electionId);
+	
+	public List findPachayathBoothIdsInTehsilForElection(Long tehsilId, Long electionId);
+	
 }

@@ -21,4 +21,24 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 				"model.hamlet.hamletId = ? and model.boothConstituencyElection.boothConstituencyElectionId = ?",params);
 	}
 	
+	public List findPanchayathsWiseBoothsAndHamletsDataInTehsilForElection(Long tehsilId, Long electionId){
+		Object[] params = {tehsilId, electionId};
+		return getHibernateTemplate().find("select model.hamlet.panchayatName, model.boothConstituencyElection.booth.boothId, " +
+				"model.boothConstituencyElection.booth.partNo, model.hamlet.hamletName, " +
+				"model.boothConstituencyElection.boothResult.validVotes, model.boothConstituencyElection.booth.totalVoters " +
+				"from HamletBoothElection model where model.hamlet.township.tehsil.tehsilId = ? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionId = ? " +
+				"order by model.hamlet.panchayatName",params); 
+	}
+	
+	
+	public List findPachayathBoothIdsInTehsilForElection(Long tehsilId, Long electionId){
+		Object[] params = {tehsilId, electionId};
+		return getHibernateTemplate().find("select model.hamlet.panchayatName, model.boothConstituencyElection.booth.boothId " +
+				"from HamletBoothElection model where model.hamlet.township.tehsil.tehsilId = ? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionId = ? group by " +
+				"model.boothConstituencyElection.booth.boothId",params);
+	}
+	
+	
 }

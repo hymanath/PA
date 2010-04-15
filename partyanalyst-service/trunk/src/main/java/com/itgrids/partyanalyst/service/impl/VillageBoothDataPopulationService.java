@@ -132,13 +132,17 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 		Township township = null;
 		Hamlet hamlet = null;
 		Long constituencyElectionId = null;
+		List constituencyInfo = null;
+		List<Township> townships = null;
+		List<Hamlet> hamlets = null;
+		boolean isHamletExists;
 		for(Sheet sheet:sheets){
 			districtId = new Long(sheet.getCell(0,0).getContents().trim());
 			for (int row = 2; row < sheet.getRows(); row++) {
-			
+				isHamletExists = true;
 				if(!constituencyName.equalsIgnoreCase(sheet.getCell(0, row).getContents().trim())){
 					constituencyName = sheet.getCell(0, row).getContents().trim();
-					List constituencyInfo = constituencyElectionDAO.findByDistrictElectionConstituency(electionId, districtId, constituencyName);
+					constituencyInfo = constituencyElectionDAO.findByDistrictElectionConstituency(electionId, districtId, constituencyName);
 					if(constituencyInfo.size() != 1)
 						throw new Exception(constituencyInfo.size() + "No. Of Constituencies Exists With Name \'"+constituencyName+"\' At Row No::"+(row+1));
 					constituencyElectionId = (Long)((Object[])constituencyInfo.get(0))[0];
@@ -147,7 +151,7 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 				mandalName = sheet.getCell(1, row).getContents().trim();
 				if(!revenueVillage.equalsIgnoreCase(sheet.getCell(2, row).getContents().trim())){
 					revenueVillage = sheet.getCell(2, row).getContents().trim();
-					List<Township> townships = townshipDAO.findByTownshipNameTehsilNameDistrictId(districtId, mandalName, revenueVillage);
+					townships = townshipDAO.findByTownshipNameTehsilNameDistrictId(districtId, mandalName, revenueVillage);
 					if(townships.size() != 1)
 						throw new Exception(townships.size() + "No. of Townships Exists With Name \'"+revenueVillage+"\' At Row No::"+(row+1));
 					township = townships.get(0);
@@ -155,22 +159,25 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 				
 				if(!hamletName.equalsIgnoreCase(sheet.getCell(3, row).getContents().trim())){
 					hamletName = sheet.getCell(3, row).getContents().trim();
-					List<Hamlet> hamlets = hamletDAO.findByHamletNameAndTownshipId(township.getTownshipId(), hamletName);
-					if(hamlets.size() != 1)
-						throw new Exception(hamlets.size() + " No. Of Hamlets Exists With Name \'"+hamletName+"\' At Row No::"+(row+1));
-					hamlet = hamlets.get(0);
+					if(hamletName.length() == 0)
+						isHamletExists = false;		
+					else{
+						hamlets = hamletDAO.findByHamletNameAndTownshipId(township.getTownshipId(), hamletName);
+						if(hamlets.size() != 1)
+							throw new Exception(hamlets.size() + " No. Of Hamlets Exists With Name \'"+hamletName+"\' At Row No::"+(row+1));
+						hamlet = hamlets.get(0);
+					}					
 				}
-				
 				partNos = sheet.getCell(4, row).getContents().trim();
 				if(partNos.length() > 0){	
-					insertDataIntoDB(constituencyElectionId, township, hamlet, partNos);		
+					insertDataIntoDB(constituencyElectionId, township, hamlet, partNos, isHamletExists);		
 				}
 			}
 		}		
 	}
 	
 	private void insertDataIntoDB(Long constituencyElectionId, Township township,
-			Hamlet hamlet, String partNos)throws Exception {
+			Hamlet hamlet, String partNos, boolean isHamletExists)throws Exception {
 		List<Long> boothIdsFromDB = boothConstituencyElectionDAO.findByConstituencyElectionAndPartNo(constituencyElectionId, partNos);
 		if(boothIdsFromDB.size() == 0){
 			throw new Exception(" No boothIds Exists for "+partNos +" and ConstituencyElectionId:"+ constituencyElectionId);
@@ -180,7 +187,8 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 			boothIds.append(IConstants.COMMA).append(boothId);
 		List<BoothConstituencyElection> boothConstituencyElections = boothConstituencyElectionDAO.findByBoothIds(boothIds.toString().substring(1));
 		for(BoothConstituencyElection boothConstituencyElection:boothConstituencyElections){
-			checkAndInsertHamletBooth(hamlet, boothConstituencyElection);
+			if(isHamletExists)
+				checkAndInsertHamletBooth(hamlet, boothConstituencyElection);
 			checkAndInsertTownshipBooth(township, boothConstituencyElection);			
 		}
 	}

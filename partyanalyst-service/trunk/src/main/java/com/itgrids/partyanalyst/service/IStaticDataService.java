@@ -5,13 +5,11 @@ import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
-import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
-import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
-import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
-import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
-import com.itgrids.partyanalyst.dto.ElectionDetailsVO;
+import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
@@ -131,4 +129,11 @@ public interface IStaticDataService {
 	public CandidateDetailsVO getCandidatesPartyInfoForAnElectionType(String electionType,String electionYear,String resultsCategory,String electionLevel,Long locationId,Long partyId,Long stateId);
 	
 	public DistrictWisePartyResultVO getDistrictWiseElectionReport(Long districtId);
+	
+	public List<SelectOptionVO> getAllElectionsInDistrict(Long districtId);
+	
+	public DistrictWisePartyResultVO getAllPartiesPositionsInDistrictElection(Long electionId, Long districtId);
+	
+	public DistrictWisePartyResultVO getAllianceGroupsForElections(Long districtId);
+	
 }
