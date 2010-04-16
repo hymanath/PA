@@ -20,7 +20,7 @@ public class PartyWiseResultVO implements java.io.Serializable{
 	private int seatsParticipated;
 	private Long votesEarned;
 	private String percentage;
-	private int totalSeatsWon;
+	private Long totalSeatsWon;
 	
 	//getters and setters
 	public Long getPartyId() {
@@ -59,10 +59,10 @@ public class PartyWiseResultVO implements java.io.Serializable{
 	public void setPercentage(String percentage) {
 		this.percentage = percentage;
 	}
-	public int getTotalSeatsWon() {
+	public Long getTotalSeatsWon() {
 		return totalSeatsWon;
 	}
-	public void setTotalSeatsWon(int totalSeatsWon) {
+	public void setTotalSeatsWon(Long totalSeatsWon) {
 		this.totalSeatsWon = totalSeatsWon;
 	}
 }
