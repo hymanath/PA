@@ -53,6 +53,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	private IStaticDataService staticDataService; 
 	private HttpSession session;
 	private List<SelectOptionVO> electionYears;
+	private List<SelectOptionVO> partiesList;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -181,6 +182,14 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 		return electionYears;
 	}
 
+	public void setPartiesList(List<SelectOptionVO> partiesList) {
+		this.partiesList = partiesList;
+	}
+
+	public List<SelectOptionVO> getPartiesList() {
+		return partiesList;
+	}
+
 	public String execute () throws Exception 
 	{
 	
@@ -199,17 +208,32 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 		if(log.isDebugEnabled())
 			log.debug("electionTypeId:" + electionTypeId);
 		electionYears = new ArrayList<SelectOptionVO>();
+		partiesList = new ArrayList<SelectOptionVO>();
 		if(electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
 		{
-			electionYears = staticDataService.getElectionIdsAndYearsInfo(electionTypeId,new Long(stateID));
-			System.out.println("After Service method:" + electionYears.size());
-			electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
+			try{
+				electionYears = staticDataService.getElectionIdsAndYearsInfo(electionTypeId,new Long(stateID));
+				electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
+				partiesList = staticDataService.getStaticParties();
+				partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
+			}catch(Exception e){
+				partiesList = null;
+				electionYears = null;
+				log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
+			}	
 		} else 	if(electionType.equals(IConstants.ZPTC) || electionType.equals(IConstants.MPTC))
 		{
-			electionYears = staticDataService.getAllElectionYearsForATeshil(electionTypeId);
-			System.out.println("After Service method:" + electionYears.size());
-			electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
-		}
+			try{
+				electionYears = staticDataService.getAllElectionYearsForATeshil(electionTypeId);
+				electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
+				partiesList = staticDataService.getAllPartiesForAnElectionYear(year, electionType);	
+				partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
+			}catch(Exception e){
+				partiesList = null;
+				electionYears = null;
+				log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
+			}
+		}		
 		
 		return Action.SUCCESS;		
 	}
