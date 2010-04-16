@@ -13,6 +13,6 @@ public interface IHamletBoothElectionDAO extends GenericDao<HamletBoothElection,
 	
 	public List findPanchayathsWiseBoothsAndHamletsDataInTehsilForElection(Long tehsilId, Long electionId);
 	
-	public List findPachayathBoothIdsInTehsilForElection(Long tehsilId, Long electionId);
+	public List findPanchayathBoothIdsInTehsilForElection(Long tehsilId, Long electionId);
 	
 }

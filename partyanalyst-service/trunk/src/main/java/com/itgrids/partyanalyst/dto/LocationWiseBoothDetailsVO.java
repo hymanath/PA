@@ -3,13 +3,16 @@ package com.itgrids.partyanalyst.dto;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 public class LocationWiseBoothDetailsVO {
 
 	private Long locationId;
 	private String locationName;
 	private Set<SelectOptionVO> booths;
 	private Set<SelectOptionVO> subLocations;
-	private List<SelectOptionVO> hamletsOfTownship;
+	private Set<SelectOptionVO> hamletsOfTownship;
 	private Long population;
 	private Long votesPolled;
 	private String electionYear;
@@ -62,11 +65,11 @@ public class LocationWiseBoothDetailsVO {
 		this.subLocations = subLocations;
 	}
 
-	public List<SelectOptionVO> getHamletsOfTownship() {
+	public Set<SelectOptionVO> getHamletsOfTownship() {
 		return hamletsOfTownship;
 	}
 
-	public void setHamletsOfTownship(List<SelectOptionVO> hamletsOfTownship) {
+	public void setHamletsOfTownship(Set<SelectOptionVO> hamletsOfTownship) {
 		this.hamletsOfTownship = hamletsOfTownship;
 	}
 
@@ -76,6 +79,20 @@ public class LocationWiseBoothDetailsVO {
 
 	public void setVotesPolled(Long votesPolled) {
 		this.votesPolled = votesPolled;
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if(obj instanceof LocationWiseBoothDetailsVO){
+			LocationWiseBoothDetailsVO vo = (LocationWiseBoothDetailsVO) obj;
+			return new EqualsBuilder().append(locationName, vo.getLocationName()).isEquals();
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return new HashCodeBuilder(17, 37).append(locationName).toHashCode();
 	}
 
 	

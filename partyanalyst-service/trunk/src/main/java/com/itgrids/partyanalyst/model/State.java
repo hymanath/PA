@@ -404,6 +404,7 @@ public class State implements java.io.Serializable {
 	 
 	@Override
 	public int hashCode() {
+	
 		return new HashCodeBuilder(17, 37).append(stateId)//.append(country)
 				.append(stateName).append(adminCapital).append(legisCapital)
 				.append(judiciaryCapital).append(yearEstablished).append(

@@ -22,11 +22,11 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		this.villageBoothElectionDAO = villageBoothElectionDAO;
 	}
 
-	public void testFindTownshipWiseBoothDetailsForTehsil(){
+	/*public void testFindTownshipWiseBoothDetailsForTehsil(){
 		List list = villageBoothElectionDAO.findTownshipWiseBoothDetailsForTehsil(844l, 2l);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]);
-	}
+	}*/
 	
 	/*public void testFindElectionsForElectionType(){
 		List list = villageBoothElectionDAO.findElectionsForElectionType(1l);
@@ -53,4 +53,15 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		List list = villageBoothElectionDAO.findByTownshipAndBoothConstituencyElection(23232l, 2458l);
 		System.out.println(list.size());
 	}*/
+	
+	/*public void testFindTownsBoothIdsInTehsilForElection(){
+		List list = villageBoothElectionDAO.findTownsBoothIdsInTehsilForElection("21815,21816", 2l);
+		System.out.println(list.size());
+	}*/
+	
+	public void testFindTownshipAndBoothConstiElecIds(){
+		List list = villageBoothElectionDAO.findTownshipAndBoothConstiElecIds("21815,21816", 2l);
+		System.out.println(list.size());
+	}
+	
 }

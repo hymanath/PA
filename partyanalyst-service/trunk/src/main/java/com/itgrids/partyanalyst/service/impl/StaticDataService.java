@@ -2981,11 +2981,11 @@ public class StaticDataService implements IStaticDataService {
 		
 		for(Map.Entry<ElectionResultVO, List<AlliancePartyResultsVO>> entry:allianceByElections.entrySet()){
 			electionResultVO = entry.getKey();
-			partiesAlliances = entry.getValue();
-			partiesInAlliance = new ArrayList<PartyPositionsVO>();
+			partiesAlliances = entry.getValue();		
 			for(AlliancePartyResultsVO pariesInGroup:partiesAlliances){
 				group = groupDAO.get(pariesInGroup.getGroupId());
 				alliances = group.getAllianceGroups();
+				partiesInAlliance = new ArrayList<PartyPositionsVO>();
 				for(AllianceGroup partyInAlliance:alliances){
 					partyPositionsVO = new PartyPositionsVO();
 					partyPositionsVO.setPartyName(partyInAlliance.getParty().getShortName());

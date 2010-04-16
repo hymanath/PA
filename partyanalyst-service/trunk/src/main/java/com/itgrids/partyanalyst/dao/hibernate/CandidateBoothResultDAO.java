@@ -465,6 +465,21 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"group by model.boothConstituencyElection.constituencyElection.election.electionId, " +
 				"model.nomination.party.partyId ", params);
 	}
+
+	@Override
+	public List getcandidatesResultsByBoothConstiIds(String boothConstiElecIds) {
+		StringBuilder hqlQuery = new StringBuilder();
+		hqlQuery.append("select  model.boothConstituencyElection.constituencyElection.constituency.constituencyId,")
+		.append("model.boothConstituencyElection.constituencyElection.constituency.name,")
+		.append("model.nomination.candidate.candidateId, model.nomination.candidate.lastname,")
+		.append("model.nomination.party.partyId, model.nomination.party.shortName,")
+		.append("sum(model.votesEarned), sum(model.boothConstituencyElection.boothResult.validVotes), ")
+		.append("model.nomination.candidateResult.rank from CandidateBoothResult model")
+		.append(" where model.boothConstituencyElection.boothConstituencyElectionId in ("+boothConstiElecIds+")")
+		.append("group by model.boothConstituencyElection.constituencyElection.constituency.constituencyId," +
+				"model.nomination.nominationId");
+		return getHibernateTemplate().find(hqlQuery.toString());
+	}
 	
 
 }

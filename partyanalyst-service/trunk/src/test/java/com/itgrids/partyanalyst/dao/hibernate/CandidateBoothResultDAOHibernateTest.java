@@ -121,11 +121,16 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		assertEquals(1, list.size());
 	}*/
 	
-	public void testAssemblies(){
+	/*public void testAssemblies(){
 		List list = candidateBoothResultDAO.findAllPartiesElectionResultsInDistrictForElectionType(19l,"Parliament");
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
-	}
+	}*/
 	
-	
+
+	public void testGetcandidatesResultsByBoothConstiIds(){
+		List list = candidateBoothResultDAO.getcandidatesResultsByBoothConstiIds("2323,2324,2325,2326,2327,2328,2329,2330,2331,	2332,2333,				2334,				2335,				2336,				2337,				2338,				2339,				2340,				2341");
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]);
+	}	
 }

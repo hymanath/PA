@@ -23,22 +23,20 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 	
 	public List findPanchayathsWiseBoothsAndHamletsDataInTehsilForElection(Long tehsilId, Long electionId){
 		Object[] params = {tehsilId, electionId};
-		return getHibernateTemplate().find("select model.hamlet.panchayatName, model.boothConstituencyElection.booth.boothId, " +
-				"model.boothConstituencyElection.booth.partNo, model.hamlet.hamletName, " +
-				"model.boothConstituencyElection.boothResult.validVotes, model.boothConstituencyElection.booth.totalVoters " +
+		return getHibernateTemplate().find("select model.hamlet.panchayatName, model.boothConstituencyElection.booth.totalVoters," +
+				"model.boothConstituencyElection.boothResult.validVotes,  model.boothConstituencyElection.booth.boothId, " +
+				"model.boothConstituencyElection.booth.partNo, model.hamlet.hamletId, model.hamlet.hamletName " +
 				"from HamletBoothElection model where model.hamlet.township.tehsil.tehsilId = ? and " +
 				"model.boothConstituencyElection.constituencyElection.election.electionId = ? " +
-				"order by model.hamlet.panchayatName",params); 
+				"order by model.hamlet.panchayatName, model.boothConstituencyElection.booth.partNo",params); 
 	}
 	
-	
-	public List findPachayathBoothIdsInTehsilForElection(Long tehsilId, Long electionId){
+	public List findPanchayathBoothIdsInTehsilForElection(Long tehsilId, Long electionId){
 		Object[] params = {tehsilId, electionId};
-		return getHibernateTemplate().find("select model.hamlet.panchayatName, model.boothConstituencyElection.booth.boothId " +
+		return getHibernateTemplate().find("select model.hamlet.panchayatName, model.boothConstituencyElection.boothConstituencyElectionId " +
 				"from HamletBoothElection model where model.hamlet.township.tehsil.tehsilId = ? and " +
 				"model.boothConstituencyElection.constituencyElection.election.electionId = ? group by " +
 				"model.boothConstituencyElection.booth.boothId",params);
 	}
-	
 	
 }
