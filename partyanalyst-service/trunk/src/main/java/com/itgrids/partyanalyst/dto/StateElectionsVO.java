@@ -7,12 +7,15 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class StateElectionsVO {
 
 	private Long electionId;
 	private Long electionTypeId;
 	private String electionType;
 	private String year;
+	List<PartyWiseResultVO> partyResultsVO;
 	
 	//getters and setters
 	public Long getElectionId() {
@@ -38,6 +41,13 @@ public class StateElectionsVO {
 	}
 	public void setElectionTypeId(Long electionTypeId) {
 		this.electionTypeId = electionTypeId;
+	}
+	
+	public List<PartyWiseResultVO> getPartyResultsVO() {
+		return partyResultsVO;
+	}
+	public void setPartyResultsVO(List<PartyWiseResultVO> partyResultsVO) {
+		this.partyResultsVO = partyResultsVO;
 	}
 	
 }
