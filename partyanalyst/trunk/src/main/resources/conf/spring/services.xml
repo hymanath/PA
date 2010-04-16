@@ -70,15 +70,16 @@
 	</bean>
 
 	
+	<bean name="stateElectionResultsService" class="com.itgrids.partyanalyst.service.impl.StateElectionResultsService" >
+	     <property name="candidateResultObjectsDAO" ref="candidateResultObjectsDAO" />
+	     <property name="nominationDAO" ref="nominationDAO" />
+	</bean>
+	
 	<bean name="statePageService" class="com.itgrids.partyanalyst.service.impl.StatePageService" >
 		<property name="stateDAO" ref="stateDAO" />		
 		<property name="electionObjectsDAO" ref="electionObjectsDAO" />	
 		<property name="censusDAO" ref="censusDAO" />	
-	</bean>
-	
-	<bean name="stateElectionResultsService" class="com.itgrids.partyanalyst.service.impl.StateElectionResultsService" >
-	     <property name="candidateResultObjectsDAO" ref="candidateResultObjectsDAO" />
-	     <property name="nominationDAO" ref="nominationDAO" />
+		<property name="stateElectionResultsService" ref="stateElectionResultsService" />
 	</bean>
 	
 	<bean name="constituencyPageService" class="com.itgrids.partyanalyst.service.impl.ConstituencyPageService" >
