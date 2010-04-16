@@ -108,6 +108,7 @@ table.stateResultsTable td {
 	font-weight:bold;
 	height:15px;
 	padding:10px;
+	text-align:left;
 }
 
 #stateElectionTypesList
@@ -126,13 +127,18 @@ table.stateResultsTable td {
 	font-weight:bold;	
 	background-image:url("../../images/icons/indexPage/reportGroupHeader.png");
 	cursor:pointer;
+	text-align:left;
 }
 
 #electionTypesNYearsList .yui-carousel-element li
 {
-	height:200px;
+	height:210px;
 }
 
+#electionTypesNYearsList .yui-carousel-item-selected 
+{
+border:1px solid #CCCCCC;
+}
 
 .electionResultsDiv
 {
@@ -152,7 +158,7 @@ table.stateResultsTable td {
 
 .electionResultsDiv_body
 {
-	height:140px;
+	height:155px;
 }
 
 .electionResultsDiv_footer
@@ -210,4 +216,24 @@ table.stateResultsTable td {
 {
 	color:#1C4B7A;
 	padding:5px;
+}
+
+#stateMap_main
+{
+	padding-top:30px;
+}
+
+.partyResultsTable th
+{
+	background-color:#CEDCE4;
+	color:#25495E;
+	padding:5px;
+	text-align:left;
+}
+
+.partyResultsTable td
+{
+	background-color:#F1F4F6;
+	color:#474B51;
+	text-align:left;
 }

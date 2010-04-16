@@ -24,7 +24,7 @@ function buildStatePageLayout()
 	units: [			
 			{ 
 				position: 'right', 
-				width: 250,
+				width: 280,
 				header:false,
 				body: 'statePage_layout_right',
 				resize: false,
@@ -78,7 +78,8 @@ function differentiateElectionTypes()
 							electionId : lObj[j].electionId,
 							electionTypeId : lObj[j].electionTypeId,
 							electionType : lObj[j].electionType,
-							year : lObj[j].year
+							year : lObj[j].year,
+							partyResultsVO : lObj[j].partyResultsVO
 					   };
 			eArr.push(eObj);
 		}
@@ -91,7 +92,8 @@ function differentiateElectionTypes()
 							electionId : lObj[j].electionId,
 							electionTypeId : lObj[j].electionTypeId,
 							electionType : lObj[j].electionType,
-							year : lObj[j].year
+							year : lObj[j].year,
+							partyResultsVO : lObj[j].partyResultsVO
 					   };
 			eArr.push(eObj);
 		}				
@@ -131,13 +133,36 @@ function buildElectionTypesAndYearsCarousel(divId,arr)
 	var str = '';
 	str+='<ul>';
 	for(var i in arr)
-	{
+	{	
 		str+='<li>';
 		str+='<div class="electionResultsDiv">';
 		str+='	<div class="electionResultsDiv_head">'+arr[i].electionType+' - '+arr[i].year+'</div>';
-		str+='	<div class="electionResultsDiv_body"> </div>';
+		str+='	<div class="electionResultsDiv_body">';
+		str+='  <table width="100%" style="width:100%" class="partyResultsTable">';
+		str+='	<tr>';
+		str+='	<th>Party</th>';
+		str+='	<th style="text-align:center;">Won</th>';
+		str+='	<th style="text-align:center;">Flag</th>';
+		str+='	</tr>';
+		for(var k=0;k<arr[i].partyResultsVO.length;k++)
+		{
+			if(k == 3)
+				break;
+			var dt = arr[i].partyResultsVO[k];
+			str+='  <tr>';
+			str+='  <td width="70%" style="width:70%;">'+dt.partyName+'</td>';
+			str+='  <td width="10%" style="width:10%;text-align:center;">'+dt.totalSeatsWon+'</td>';
+			if(dt.partyFlag)
+				str+='  <td style="text-align:center;"><img src="images/party_flags/'+dt.partyFlag+'" height="30" width="40"/></td>';
+			else
+				str+='  <td style="text-align:center;"><img src="images/party_flags/no_Image.png" height="30" width="40"/></td>';		
+			str+='  </tr>';
+		}
+		str+='  </table>';
+
+		str+='	</div>';
 		str+='	<div class="electionResultsDiv_footer">';
-		str+='	<a class="viewAncs" href="javascript:{}" onclick="callAjax(\'electionId='+arr[i].electionId+'\')">View Results</a> | ';
+		str+='	<a class="viewAncs" href="javascript:{}" onclick="callAjax(\'electionId='+arr[i].electionId+'\')">View All Party Results</a> | ';
 		//str+='	| <a class="viewAncs" href="javascript:{}" onclick="showElectionResults(\''+arr[i].electionId+'\')">Analyze</a>';
 		str+='	<a href="electionDetailsReportAction.action?electionId='+arr[i].electionId+'&stateID='+statePageObj.stateDetails.stateId+'&stateName='+statePageObj.stateDetails.stateName+'&electionType='+arr[i].electionType+'&electionTypeId='+arr[i].electionTypeId+'&year='+arr[i].year+'"  class="viewAncs">Analyze</a> ';
 		str+='	</div>';

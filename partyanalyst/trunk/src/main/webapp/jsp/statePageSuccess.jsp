@@ -160,11 +160,14 @@
 				</div>			
 			</div>
 			<div id="statePage_layout_center">
-				<object width="550" height="400">
+				<div id="stateMap_main">
+				<object width="550" height="430">
 					<param name="movie" value="images/icons/statePage/stateMap.swf">
-					<embed src="images/icons/statePage/stateMap.swf" width="550" height="400">
+					 <param name="wmode" value="transparent"> 
+					<embed wmode="transparent" src="images/icons/statePage/stateMap.swf" width="550" height="430">
 					</embed>
 				</object>
+				</div>
 			</div>
 
 			<div id="statePage_electinoResults_nav_div">
@@ -195,14 +198,30 @@
 								electionId:'${state.electionId}',
 								electionTypeId:'${state.electionTypeId}',
 								electionType:'${state.electionType}',
-								year:'${state.year}'
+								year:'${state.year}',
+								partyResultsVO:[]
 							  };
+					<c:forEach var="party" varStatus="stat" items="${state.partyResultsVO}">
+						var partyObj = {
+											partyId:'${party.partyId}',
+											partyName:'${party.partyName}',
+											partyFlag:'${party.partyFlag}',
+											seatsParticipated:'${party.seatsParticipated}',
+											votesEarned:'${party.votesEarned}',
+											percentage:'${party.percentage}',
+											totalSeatsWon:'${party.totalSeatsWon}'
+									   };
+							obj.partyResultsVO.push(partyObj);
+					</c:forEach>				
 					statePageObj.electionResults.push(obj);
-			</c:forEach>
+			</c:forEach>			
 		</c:if>
 		initializeStatePage();		
 	</script>
 
  </BODY>
-</HTML>    
+</HTML>
+
+
+    
 
