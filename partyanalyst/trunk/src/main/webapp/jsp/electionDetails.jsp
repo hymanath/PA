@@ -18,10 +18,14 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></SCRIPT>
 
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+
+<LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
 <TITLE>${stateName} ${electionType} Election Results Page ${year}</TITLE>
@@ -39,7 +43,7 @@ var electionResultsObj = {
     districtWiseResultsWithoutAllianceArr:[],
     allianceGroupNamesArray:[]
 };
-var resultsGlobal;	
+var resultsGlobal, graphImagesCarousel;	
 var Localization = { <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -132,12 +136,13 @@ function getResultsForAnElection(stateID,electionType,year)
 
 function showStatewiseResultsBarChart(results)
 {
+	var graphNamesArray = new Array();
 	var chartName = results.statewiseElectionResultsChartName;
-	var statewiseGraphEl = document.getElementById("graphImage");
-
-	var contentStr = '';
-	contentStr+='<IMG src="charts/'+chartName+'"  border="1" style="border-color:#EFF3F7;"></IMG>';
-	statewiseGraphEl.innerHTML = contentStr;	 
+	var chartName1 = results.statewiseResultsLineChartName;
+	graphNamesArray.push(chartName);
+	graphNamesArray.push(chartName1);
+	
+	buildGraphsCarousel("graphImage",graphNamesArray);	 
 }
 
 function showElectionBasicInfo(results)
@@ -873,6 +878,37 @@ function openElectionComparisionReportWindow()
 	browser1 = window.open(urlStr,"electionComparisionReport","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	browser1.focus();
 }
+
+function buildGraphsCarousel(divId,arr)
+{
+	var elmt = document.getElementById(divId);
+	if(!elmt && arr.length == 0)
+		return;
+
+	var contentStr = '';
+	contentStr+='<ul>';
+	for(var i in arr)
+	{				
+		contentStr+='<LI style="width:880px;height:300px;"><IMG src="charts/'+arr[i]+'"></IMG></LI>';		
+	}
+	contentStr+='</ul>';
+
+	elmt.innerHTML = contentStr;
+
+	graphImagesCarousel = new YAHOO.widget.Carousel(divId,
+			{
+				carouselEl: "UL",
+				isCircular: true,
+				isVertical: false,
+				numVisible: 1,
+				animation: { speed: 1.0 },
+				autoPlayInterval: 2000
+			});
+
+	graphImagesCarousel.render(); 
+	graphImagesCarousel.show();
+}
+
 </SCRIPT>
 </HEAD>
 <BODY>
@@ -888,7 +924,7 @@ function openElectionComparisionReportWindow()
 <DIV id="task1"></DIV>
 <DIV class="graphTop">State Level Overview</DIV>
 <DIV id="statewiseGraph">
-<DIV id="graphImage"></DIV>
+<DIV id="graphImage" class="yui-skin-sam"></DIV>
 <DIV class="yui-skin-sam" style="width:880px;">
 	<TABLE border="0" width="95%" >
 		<TR>
