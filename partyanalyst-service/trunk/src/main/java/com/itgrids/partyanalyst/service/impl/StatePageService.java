@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +30,7 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IStateElectionResultsService;
 import com.itgrids.partyanalyst.service.IStatePageService;
+import com.itgrids.partyanalyst.utils.ElectionResultsForPartiesBySeats;
 
 public class StatePageService implements IStatePageService {
 
@@ -190,8 +192,10 @@ public class StatePageService implements IStatePageService {
 			 for(int i=0;i<electionTypeArrayList.size();i++){
 				 
 				 for(StateElectionsVO elections:stateElectionsList){
-					 if(elections.getElectionTypeId().equals(electionTypeArrayList.get(i)))
+					 if(elections.getElectionTypeId().equals(electionTypeArrayList.get(i))){
+						 Collections.sort(elections.getPartyResultsVO(), new ElectionResultsForPartiesBySeats());
 						 stateElectionsVO.add(elections);
+					 }
 				 }
 				 
 			 }
