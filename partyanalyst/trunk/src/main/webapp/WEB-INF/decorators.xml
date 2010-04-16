@@ -18,6 +18,9 @@
 		<pattern>/districtwiseElectionResultsAnalysysForElectionReportAction.action*</pattern>
 		<pattern>/alliancePartiesPageAction.action*</pattern>
 		<pattern>/statewiseElectionResultsComparisionToolAction.action*</pattern>
+		<pattern>/partyPerformanceReportPopup.action*</pattern>
+		<pattern>/electionComparisonReportPopUp.action*</pattern>
+		
     </excludes>
 
     <decorator name="main" page="main.jsp">
