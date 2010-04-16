@@ -367,7 +367,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 			}
 	
 			if(jObj.getString("task").equals("getAllRevenueVillagesElectionResults")){
-				townshipWiseElectionResults = constituencyPageService.getPartiesResultsInVillagesGroupByMandal(jObj.getLong("mandalId"), jObj.getLong("electionId"));
+				townshipWiseElectionResults = constituencyPageService.getEelctionResultsInPanchayathsAndTownsInMandal(jObj.getLong("mandalId"), jObj.getLong("electionId"));
 				log.debug("Revenue Villages Parties::"+townshipWiseElectionResults.size());
 			}
 		}

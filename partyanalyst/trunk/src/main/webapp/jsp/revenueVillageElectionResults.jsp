@@ -49,7 +49,7 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Revenue Village Wise Election Results</title>
+<title>Muncipalities And Panchayaths Wise Election Results</title>
 
 <style type="text/css">
 	#revenueVillageHeading
@@ -141,12 +141,12 @@ legend
 					 var myFields = new Array();
 			
 					 var villageHead = {
-								 			key:"Revenue Village",
+								 			key:"Panchayaths",
 								 			lable: "Village",
 								 			sortable:true
 									   }
 			
-					 var villageValue = {key:"Revenue Village"}
+					 var villageValue = {key:"Panchayaths"}
 			
 					 myColumnDefs.push(villageHead);
 					 myFields.push(villageValue);
@@ -204,7 +204,7 @@ legend
 </script>
 </head>
 <body>
-		<center><div id="revenueVillageHeading"><h4>Revenue Villages Wise ${electionType} ${electionYear } Election Results In ${mandalName} Mandal</h4></div></center> 
+		<center><div id="revenueVillageHeading"><h4>Muncipalities And Panchayaths Wise ${electionType} ${electionYear } Election Results In ${mandalName} Mandal</h4></div></center> 
 		<div>
 		<table>
 		<tr>

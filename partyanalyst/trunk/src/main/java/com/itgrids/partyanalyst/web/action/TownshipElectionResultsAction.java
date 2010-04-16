@@ -93,14 +93,14 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		mandalName = request.getParameter("mandalName");
 		
 		log.debug("Result::mandalId="+mandalId+" electionId="+electionId);		
-		townshipWiseElectionResults = constituencyPageService.getPartiesResultsInVillagesGroupByMandal(mandalId, electionId);
+		townshipWiseElectionResults = constituencyPageService.getEelctionResultsInPanchayathsAndTownsInMandal(mandalId, electionId);
 		
 		for(ConstituencyRevenueVillagesVO constituencyObj:townshipWiseElectionResults){
 			String chartName = "partyPerformanceInAllMandalElectionsByRevenueVillages_"+constituencyObj.getConstituencyId()+".png";
 	        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 	        ChartProducer.createLineChart("All Parties Performance In "+electionType+" "+electionYear + 
-	        		" In "+constituencyObj.getConstituencyName()+" Constituency By Revenue Villages In "+mandalName+" Mandal" , 
-	        		"Revenue Villages", "Percentages", createDataset(constituencyObj), chartPath,260,700);	
+	        		" In "+constituencyObj.getConstituencyName()+" Constituency By Muncipalities And Panchayaths In "+mandalName+" Mandal" , 
+	        		"Muncipalities And Panchayaths", "Percentages", createDataset(constituencyObj), chartPath,260,700);	
 		}
 		
 		return SUCCESS;

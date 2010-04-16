@@ -94,6 +94,8 @@
 		<property name="townshipDAO" ref="townshipDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />				
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+		<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
+		<property name="censusDAO" ref="censusDAO" />
 	</bean>
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
 		<property name="candidateResultObjectsDAO" ref="candidateResultObjectsDAO" />
