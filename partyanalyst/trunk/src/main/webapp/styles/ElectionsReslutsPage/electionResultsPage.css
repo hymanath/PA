@@ -177,6 +177,13 @@ text-decoration:none;
 .selectBoxStyle
 {
 	color:#808080;	
-	width:150px;
-		 
+	width:150px;		 
+}
+#graphImage .yui-carousel-item-selected {
+border:0px none;
+margin:1px;
+}
+#graphImage .yui-carousel-element li
+{
+	height:200px;
 }
