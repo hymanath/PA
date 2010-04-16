@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.service.IStateElectionResultsService;
 import com.itgrids.partyanalyst.service.IStatePageService;
 
 public class StatePageService implements IStatePageService {
@@ -35,6 +36,7 @@ public class StatePageService implements IStatePageService {
 	private IStateDAO stateDAO;
 	private IElectionObjectsDAO electionObjectsDAO;
 	private ICensusDAO censusDAO;
+	private IStateElectionResultsService stateElectionResultsService;
 		
 	
 	public void setStateDAO(IStateDAO stateDAO) {
@@ -51,6 +53,15 @@ public class StatePageService implements IStatePageService {
 		this.censusDAO = censusDAO;
 	}
 
+	public IStateElectionResultsService getStateElectionResultsService() {
+		return stateElectionResultsService;
+	}
+
+
+	public void setStateElectionResultsService(
+			IStateElectionResultsService stateElectionResultsService) {
+		this.stateElectionResultsService = stateElectionResultsService;
+	}
 	
 	//method that returns election years and election type for a particular state
 	public List<StateElectionsVO> getStateElections(Long stateId) {
@@ -78,7 +89,9 @@ public class StatePageService implements IStatePageService {
     	    	  stateElections.setElectionType(electionType.getElectionType());
     	    	  stateElections.setYear(election.getElectionYear());
     	    	  
-    	    	    	    	
+    	    	  StateElectionResultsVO stateElecResults = stateElectionResultsService.getStateElectionResults(election.getElectionId());
+    	    	  if(stateElecResults != null)
+    	    	  stateElections.setPartyResultsVO(stateElecResults.getPartyResultsVO());     	    	
     	    	  stateElectionsList.add(stateElections);
     	        }
     	  
