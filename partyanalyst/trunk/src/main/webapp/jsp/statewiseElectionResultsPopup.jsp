@@ -225,8 +225,8 @@ function showPartywiseDetailsDataTable(results)
 	var chartpartywiseImgChartElmt = document.getElementById("partywiseResults_img_anc");
 	var imgStr = '';
 	imgStr+='<div style="margin-top:10px;margin-bottom:10px;">';
-	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'partywiseImgChart\',\''+results.statewiseResultsLineChartName+'\',\'View Party Results Line Chart\')">View Party Results Line Charts</a>';
-	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showPartyResultsWithoutAlliance(\''+results.stateLevelLineChartWithoutAllianc+'\')">View Party Results Without Alliance </a></div>';
+	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'partywiseImgChart\',\''+results.statewiseResultsLineChartName+'\',\'Party Results Line Chart\')">View Party Results Line Charts</a>';
+	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showPartyResultsWithoutAlliance(\''+results.stateLevelLineChartWithoutAllianc+'\')">Party Results Without Alliance </a></div>';
 
 	chartpartywiseImgChartElmt.innerHTML = imgStr;
 	var noteDivEl = document.getElementsByName("note");
@@ -305,7 +305,7 @@ function showAllianceGraph(divId,chartId, chartName)
 		  close:true
        });
 	   myPanel.setHeader(chartName);
-	   myPanel.setHeader(chartName + " Alliance Graph");
+	   myPanel.setHeader(chartName);
        myPanel.setBody(contentStr);
        myPanel.render();
 }
@@ -313,25 +313,25 @@ function showPartyResultsWithoutAlliance(chartId)
 {	
 	//partywiseResultsWithoutAlliance
 
-	var contentStr ='<div id="withoutAllianceDiv_main">';
+	var contentStr ='<div id="withoutAllianceDiv_main" style="height:250px;overflow-y:auto">';
 	contentStr +='<div id="withoutAllianceDiv_graph"><IMG src="charts/'+chartId+'"></IMG></div>';
 	contentStr +='<div id="withoutAllianceDiv_Datatable"></div>';
 	contentStr +='</div>';
 
-	 var myPanel = new YAHOO.widget.Panel("panel", {
+	 var myPanel = new YAHOO.widget.Dialog("panel", {
                  
-                 fixedcenter: true, 
-                 constraintoviewport: true, 
-                 underlay: "none", 
-                 close: true, 
-                 visible: true, 
-                 draggable: true
+                 width : "820px", 
+                 fixedcenter : true, 
+                 visible : true,  
+                 constraintoviewport : true, 
+        		 iframe :true,
+        		 modal :true,
+        		 hideaftersubmit:true,
+        		 close:true
        });
-	  // myPanel.setHeader("Party Results Without Alliance");
+	   myPanel.setHeader("Party Results Without Alliance");
        myPanel.setBody(contentStr);
-       myPanel.render();
-		
-	
+       myPanel.render();	
 		buildPartywiseResultsDataTable("withoutAllianceDiv_Datatable",electionResultsObj.partyWiseResultsWithoutAllianceArr);
 }
 </SCRIPT>

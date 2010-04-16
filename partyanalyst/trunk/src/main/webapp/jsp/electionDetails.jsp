@@ -14,16 +14,13 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></SCRIPT>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script>
-
+<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
 
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-
-
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
@@ -34,6 +31,7 @@ var electionType = '${electionType}';
 var stateID =  '${stateID}' ;
 var stateName = '${stateName}';
 var year = '${year}';
+var electionTypeId = '${electionTypeId}';
 var electionResultsObj = {
 	partyWiseResultsArr:[],
 	allianceResultsArr:[],
@@ -235,21 +233,14 @@ function showPartyResultsWithoutAlliance(chartId)
 
 	 var myPanel = new YAHOO.widget.Dialog("panel", {
                  
-                 /*fixedcenter: true, 
-                 constraintoviewport: true, 
-                 underlay: "none", 
-                 close: true, 
-                 visible: true, 
-                 draggable: true
-                 */
                  width : "820px", 
                  fixedcenter : true, 
                  visible : true,  
                  constraintoviewport : true, 
-        		  iframe :true,
-        		  modal :true,
-        		  hideaftersubmit:true,
-        		  close:true
+        		 iframe :true,
+        		 modal :true,
+        		 hideaftersubmit:true,
+        		 close:true
        });
 	   myPanel.setHeader("Party Results Without Alliance");
        myPanel.setBody(contentStr);
@@ -795,21 +786,93 @@ function districtwiseRadioClickHandler()
 		distSelectBoxEl.selectedIndex = '0';
 	} 
 	
-}
+}	
 function updateDistResultsPartywise(partyName,results)
 {
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
-	buildAllDistrictDatatable(innerObj,"districtResults","party",partyName,"null")
+	if(partyName != 'Select Party')
+		{buildAllDistrictDatatable(innerObj,"districtResults","party",partyName,"null");}
+	else return;
 }
 
 function updateDistResultsDistwise(distName,results)
 {
 	
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
-	buildAllDistrictDatatable(innerObj,"districtResults","district","null",distName)
+	if(distName != 'Select District')
+		{buildAllDistrictDatatable(innerObj,"districtResults","district","null",distName);}
+		else return;	
 	
 }
-
+function openPartyPerformanceReportWindow()
+{
+	var selectYearEl = document.getElementById("selectYearPPR");
+	var year =  selectYearEl.options[selectYearEl.selectedIndex].text;
+	var selectPartyEl = document.getElementById("selectPartyPPR");
+	var party =  selectPartyEl.options[selectPartyEl.selectedIndex].value;
+	var allianceCheckboxEl = document.getElementById("pprCheckBox");
+	var alliances = allianceCheckboxEl.checked;
+	var yearAlertSEl = document.getElementById("yearAlertPPR");
+	var reportLevel = "1";
+	var browser1;
+	var urlStr = "<%=request.getContextPath()%>/partyPerformanceReportPopup.action?state=${stateID}&country=1&district=0&1="+reportLevel+"&electionType=${electionTypeId}&year="+year+"&party="+party+"&alliances="+alliances;
+	if(year == 'Select Year' && party == '0') 
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Please Select Year and Party!";
+		return;
+	}else {yearAlertSEl.style.display ='none';}
+	if(year == 'Select Year') 
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Please Select A Year!";
+		return;
+	}else {yearAlertSEl.style.display ='none';}
+	if(party == '0') 
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Please Select A Party!";
+		return;
+	}else {yearAlertSEl.style.display ='none';} 
+		
+	browser1 = window.open(urlStr,"partyPerformanceReport","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	browser1.focus();
+}
+function openElectionComparisionReportWindow()
+{
+	
+	var selectYearEl = document.getElementById("selectYearECR");
+	var electionYears2 =  selectYearEl.options[selectYearEl.selectedIndex].text;	
+	var selectPartyEl = document.getElementById("selectPartyECR");
+	var party =  selectPartyEl.options[selectPartyEl.selectedIndex].value;
+	var allianceCheckboxEl = document.getElementById("ecrCheckBox");
+	var alliances = allianceCheckboxEl.checked;
+	var yearAlertSEl = document.getElementById("yearAlertECR");
+	var reportLevel = "1";
+	var browser1;
+	var urlStr = "<%=request.getContextPath()%>/electionComparisonReportPopUp.action?state=${stateID}&electionType=${electionTypeId}&electionYears2="+electionYears2+"&electionYears1=${year}&party="+party+"&allianceCheck="+alliances;
+	if(electionYears2 == 'Select Year' && party == '0') 
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Please Select Year and Party!";
+		return;
+	}else {yearAlertSEl.style.display ='none';}
+	if(electionYears2 == 'Select Year') 
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Please Select A Year!";
+		return;
+	}else {yearAlertSEl.style.display ='none';}
+	if(party == '0') 
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Please Select A Party!";
+		return;
+	}else {yearAlertSEl.style.display ='none';} 
+		
+	browser1 = window.open(urlStr,"electionComparisionReport","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	browser1.focus();
+}
 </SCRIPT>
 </HEAD>
 <BODY>
@@ -857,7 +920,7 @@ function updateDistResultsDistwise(distName,results)
 <c:if test="${electionType != 'Parliament'}">
 <DIV id="distResultsViewOptionsDiv">
 
-	<TABLE width="100%">		
+	<TABLE width="100%">	
 		<TR>
 			<TD style="width:10%;"><INPUT type="radio" name="distResultsOption" id="allDistResultsRadio" value="all" onClick="allDistResultsRadioClickHandler(resultsGlobal)" checked="true"/>All</TD>
 			<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="partywiseRadio" value="partywise" onClick="partywiseRadioClickHandler()"/>Partywise</TD>
@@ -872,8 +935,7 @@ function updateDistResultsDistwise(distName,results)
 					</SELECT>				
 				</TD>			
 		</TR>
-	</TABLE>
-	
+	</TABLE>	
 </DIV>
 </c:if>
 <DIV class="yui-skin-sam" >
@@ -901,46 +963,14 @@ function updateDistResultsDistwise(distName,results)
 <DIV id="toolsDiv" align="left">
 	<TABLE class="toolsTable"><TR>
 		<TD class="td">
-			<DIV id="viewPPR" class="toolsDisplay">
-					<h3>District wise Analysis</h3>
-					<P style="font-size:15px;font-family:Trebuchet MS;">By this tool you can compare previous elections results district wise.</P>
+			<DIV class="toolsDisplay">
+				<h3>Statewise Analysis</h3>
+				<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Statewise.</P>
 				<DIV style="font-weight:bold">
 					<TABLE width="100%">
 						<TR>
-							<TD colspan="2"><DIV id="yearAlert" style="display:none;color:red;text-align:left;" ></DIV></TD>
-							
-						</TR>
-						<TR>
-							<TD>Year:</TD>
-							<TD><SELECT id="selectYearDistrictwise" name="selectYearDistrictwise" style="width: 100px; margin-top: 3px;">
-							<c:forEach var="years"  items="${electionYears}">
-								<c:if test="${year != years.name}">
-									<OPTION value="years.id">${years.name}</OPTION>
-								</c:if>
-							</c:forEach>
-						</SELECT>
-						</TD>							
+							<TD colspan="2"><DIV id="yearAlertS" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
 						</TR>						
-						<TR>
-							<TD>&nbsp;</TD>
-							<TD>&nbsp;</TD>
-						</TR>
-						<TR>	
-							<TD colspan="2"><DIV align="right"><A href="javascript:{}" onclick="openPreYearDistAnalysisWindow()" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV></TD>
-						</TR>	
-					</TABLE>		 
-				</DIV>				
-			</DIV>
-		</TD>
-		<TD class="td">
-			<DIV id="viewPPR" class="toolsDisplay">
-				<h3>Compare Votes% & Seats %</h3>
-				<P style="font-size:15px;font-family:Trebuchet MS;">By this tool you can compare previous elections by votes % and seats %.</P>
-				<DIV style="font-weight:bold">
-					<TABLE width="100%">
-						<TR>
-							<TD colspan="2"><DIV id="yearAlertS" style="display:none;color:red;text-align:left;" ></DIV></TD>
-						</TR>	
 						<TR>	
 							<TD>Year:</TD>
 							<TD><SELECT id="selectYearStateWise" name="selectYearStateWise" style="width: 100px; margin-top: 3px;">
@@ -951,80 +981,103 @@ function updateDistResultsDistwise(distName,results)
 							</c:forEach>
 							</SELECT>	
 							</TD>
-						</TR>	
-						<TR>	
-							<TD>&nbsp;</TD>
-							<TD>&nbsp;</TD>
-						</TR>
-						<TR>	
-							<TD colspan="2"><DIV align="right"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openPreYearStatewiseAnalysisWindow()" /></A></DIV></TD>
-						</TR>	
-					</TABLE>		 
+						</TR>							
+					</TABLE>
+					<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openPreYearStatewiseAnalysisWindow()" /></A></DIV>		 
 				</DIV>
 			</DIV>	
-		</TD>
-		<TD class="td">
-			<DIV class="toolsDisplay">
-				<h3>Party Performance</h3>
-				<P style="font-size:15px;font-family:Trebuchet MS;">By this tool you can analysis a party's performance for an election in previous years. </P>
+		</TD>		
+			<TD class="td">
+				<DIV class="toolsDisplay">
+					<h3>District wise Analysis</h3>
+					<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Districtwise.</P>
 				<DIV style="font-weight:bold">
 					<TABLE width="100%">
 						<TR>
-							<TD>Party Name:</TD>
-							<TD><SELECT name="electionType" id="electionType" style="width:100px;" ><OPTION value="0">TDP</OPTION><OPTION value="1">BJP</OPTION></SELECT></TD>
-						</TR>	
-						<TR>	
-							<TD>Year:</TD>
-							<TD><SELECT id="selectYearPPR" name="selectYearPPR" style="width: 100px; margin-top: 3px;">
-								<c:forEach var="years"  items="${electionYears}">
-								<c:if test="${year != years.name}">
-									<OPTION value="years.id">${years.name}</OPTION>
-								</c:if>
-							</c:forEach>
-							</SELECT>
-							</TD>
-						</TR>	
-						<TR>	
-							<TD colspan="2"><INPUT type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
-						</TR>
-						<TR>	
-							<TD colspan="2"><DIV align="right"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV></TD>
-						</TR>	
-					</TABLE>		 
-				</DIV>
-			</DIV>
-		</TD>
-		<TD class="td">
-			<DIV id="comparePrevElection" class="toolsDisplay">
-				<h3>Elections Comparison</h3>
-				<P style="font-size:15px;font-family:Trebuchet MS;">By this tool you can compare current election results with previous election results</P>
-				<DIV style="font-weight:bold">
-					<TABLE width="100%">
+							<TD colspan="2"><DIV id="yearAlert" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>							
+						</TR>						
 						<TR>
-							<TD>Election Type:</TD>
-							<TD><SELECT name="electionType" id="electionType" style="width:100px;" ><OPTION value="0">Assembly</OPTION><OPTION value="1">Parliament</OPTION></SELECT></TD>
-						</TR>	
-						<TR>	
 							<TD>Year:</TD>
-							<TD><SELECT id="selectYearPPR" name="selectYearPPR" style="width: 100px; margin-top: 3px;">
+							<TD><SELECT id="selectYearDistrictwise" name="selectYearDistrictwise" style="width: 100px; margin-top: 3px;">
 								<c:forEach var="years"  items="${electionYears}">
-								<c:if test="${year != years.name}">
-									<OPTION value="years.id">${years.name}</OPTION>
-								</c:if>
-							</c:forEach>
+									<c:if test="${year != years.name}">
+										<OPTION value="years.id">${years.name}</OPTION>
+									</c:if>
+								</c:forEach>
 							</SELECT>
-							</TD>
-						</TR>	
-						<TR>	
-							<TD colspan="2"><INPUT type="checkbox" value="true" name="alliances"/>Include Alliances</TD>
-						</TR>
-						<TR>	
-							<TD colspan="2"><DIV align="right"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV></TD>
-						</TR>	
-					</TABLE>		 
-				</DIV>
-			</DIV>
-		</TD>
+							</TD>							
+						</TR>							
+					</TABLE>
+					<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" onclick="openPreYearDistAnalysisWindow()" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV>		 
+				</DIV>				
+				</DIV>				
+			</TD>			
+			<TD class="td">
+				<DIV class="toolsDisplay">
+					<h3>Party Performance</h3>
+					<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare a party's performance for selected election year.</P>
+					<DIV style="font-weight:bold">
+						<TABLE width="100%">
+							<TR>
+								<TD colspan="2"><DIV id="yearAlertPPR" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
+							</TR>
+							<TR>
+								<TD>Party Name:</TD>
+								<TD>
+								<s:select id="selectPartyPPR" theme="simple"  name="selectParty" list="partiesList" listKey="id" listValue="name"/>							
+								</TD>
+							</TR>	
+							<TR>	
+								<TD>Year:</TD>
+								<TD><SELECT id="selectYearPPR" name="selectYearPPR" style="width: 100px; margin-top: 3px;">
+									<c:forEach var="years"  items="${electionYears}">
+										<OPTION value="years.id">${years.name}</OPTION>								
+									</c:forEach>
+								</SELECT>
+								</TD>
+							</TR>	
+							<TR>	
+								<TD colspan="2"><INPUT type="checkbox" id="pprCheckBox" value="hasAllianceParties" name="alliances"/>Include Alliances</TD>
+							</TR>							
+						</TABLE>
+						<DIV align="right"><A href="javascript:{}" onclick="openPartyPerformanceReportWindow()"><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV>		 
+					</DIV>
+				</DIV>				
+			</TD>		
+			<TD class="td">
+				<DIV id="comparePrevElection" class="toolsDisplay">
+					<h3>Elections Comparison</h3>
+					<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare current election results with selected election results for a party.</P>
+					<DIV style="font-weight:bold">
+						<TABLE width="100%">
+							<TR>
+								<TD colspan="2"><DIV id="yearAlertECR" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
+							</TR>	
+							<TR>
+								<TD>Party Name:</TD>
+								<TD>
+									<s:select id="selectPartyECR" theme="simple"  name="selectParty" list="partiesList" listKey="id" listValue="name"/>							
+								</TD>
+							</TR>
+							<TR>	
+								<TD>Year:</TD>
+								<TD><SELECT id="selectYearECR" name="selectYearECR" style="width: 100px; margin-top: 3px;">
+									<c:forEach var="years"  items="${electionYears}">
+										<c:if test="${year != years.name}">
+											<OPTION value="years.id">${years.name}</OPTION>
+										</c:if>									
+								</c:forEach>
+								</SELECT>
+								</TD>
+							</TR>	
+							<TR>	
+								<TD colspan="2"><INPUT type="checkbox" id="ecrCheckBox" value="hasAllianceParties" name="alliances"/>Include Alliances</TD>
+							</TR>							
+						</TABLE>
+						<DIV align="right"><A href="javascript:{}" onclick="openElectionComparisionReportWindow()"><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV>		 
+					</DIV>
+				</DIV>				
+			</TD>			
 		</TR>
 	</TABLE>
 </DIV>
