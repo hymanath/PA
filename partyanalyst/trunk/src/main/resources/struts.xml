@@ -81,6 +81,9 @@
 		<action name="partyPerformanceReport" class="partyPerformanceAction" method="getReport">
 			<result name="success">/jsp/partyPerformanceReport.jsp</result>
 		</action>
+		<action name="partyPerformanceReportPopup" class="partyPerformanceAction" method="getReport">
+			<result name="success">/jsp/partyPerformanceReport.jsp</result>
+		</action>
 		<action name="partyPerformanceJasper" class="partyPerformanceAction" method="getJasper">
 			<result name="success" type="stream">
 			<param name="contentType">application/pdf</param>
@@ -330,6 +333,10 @@
 		</action>											
 			
 		<action name="electionComparisonReportAction" class="electionComparisonReportAction">
+			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
+			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
+		</action>
+		<action name="electionComparisonReportPopUp" class="electionComparisonReportAction">
 			<result name="success">/jsp/electionComparisonReportPageNew.jsp</result>
 			<result name="error">/jsp/ElectionComparisonReportError.jsp</result>
 		</action>
