@@ -405,7 +405,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	 		String allPartiesChartName = "alliancPartyElectionResults_" + allPartiesChartId + session.getId() +".png";
 	        String allPartiesChartPath = context.getRealPath("/") + "charts\\" + allPartiesChartName;
 	 		
-	        ChartProducer.createLineChart(title,"","Seats", createDataSetForAlliancPartyOverallResults(allPartiesResults,"LineChart"), allPartiesChartPath,300,600);
+	        ChartProducer.createLineChart(title,"","Seats", createDataSetForAlliancPartyOverallResults(allPartiesResults,"LineChart"), allPartiesChartPath,300,800);
 		    request.setAttribute("allPartiesChartName", allPartiesChartName);
 			session.setAttribute("allPartiesChartName", allPartiesChartName);
 			chartName = allPartiesChartName;
