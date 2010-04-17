@@ -112,11 +112,32 @@ function buildelectionTypeList()
 	str+='<ul id="stateElectionTypesList">';
 	for(var i in statePageObj.electionTypes)
 	{
-		str+='<li onclick="changeElectionTypecarousel(\''+i+'\')"><div>'+statePageObj.electionTypes[i]+'</div></li>';
+
+		str+='<li onclick="changeElectionTypecarousel(\''+i+'\')">';
+		if(i==0)
+			str+='<div id="electionType_'+i+'" class="electionTypeListDiv  electionTypeListDivSelected" onclick="displayheaderArrow(\''+i+'\')">';		
+		else
+			str+='<div id="electionType_'+i+'" class="electionTypeListDiv" onclick="displayheaderArrow(\''+i+'\')">';		
+		str+=	statePageObj.electionTypes[i];		
+		str+='</div>';
+		str+='</li>';
 	}
 	str+='</ul>';
 
 	elmt.innerHTML = str;
+}
+
+function displayheaderArrow(index)
+{
+	var divElmt = document.getElementById("electionType_"+index);
+	var elements = YAHOO.util.Dom.getElementsByClassName('electionTypeListDivSelected');
+	for(var i in elements)
+	{
+		var id = elements[i].id;		
+		YAHOO.util.Dom.removeClass(id, 'electionTypeListDivSelected'); 
+	}
+	
+	YAHOO.util.Dom.addClass('electionType_'+index, 'electionTypeListDivSelected'); 
 }
 
 function changeElectionTypecarousel(index)

@@ -118,7 +118,7 @@ table.stateResultsTable td {
 	padding:0;
 }
 
-#stateElectionTypesList li
+.electionTypeListDiv
 {
 	background-color:#4B74C6;
 	margin-top:2px;
@@ -126,6 +126,18 @@ table.stateResultsTable td {
 	padding:13px;
 	font-weight:bold;	
 	background-image:url("../../images/icons/indexPage/reportGroupHeader.png");
+	cursor:pointer;
+	text-align:left;
+}
+
+.electionTypeListDivSelected
+{
+	background-color:#4B74C6;
+	margin-top:2px;
+	color:#E3E5E8;
+	padding:13px;
+	font-weight:bold;	
+	background-image:url("../../images/icons/indexPage/reportGroupHeader_selected.png");
 	cursor:pointer;
 	text-align:left;
 }
