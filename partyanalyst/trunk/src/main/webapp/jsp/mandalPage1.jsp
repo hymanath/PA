@@ -703,7 +703,7 @@ var allZPTCMPTCElecInfo = new Array();
 		var rvStr = '';		
 		rvStr += '<a name="votersDiv"></a>';
 		rvStr += '<div id="revenueVillageDiv_head" class="commonVotersHeadDiv">';
-		rvStr += 'Voting Trendz In Muncipalities And Panchayaths for ${mandalInfoVO.mandalName} Mandal in  '+yearVal+' '+typeVal+' Election ';
+		rvStr += 'Voting Trendz In Revenue Villages for ${mandalInfoVO.mandalName} Mandal in  '+yearVal+' '+typeVal+' Election ';
 		rvStr += '</div>';
 		rvStr += '<div id="revenueVillageDiv">';		
 		rvStr += '<table id="revillageInfoTable" >';
@@ -762,7 +762,7 @@ var allZPTCMPTCElecInfo = new Array();
 			        }; 
 			
 			 var myColumnDefs = [ 
-			            {key:"townshipName",label:'Panchayath', sortable:true, resizeable:true}, 
+			            {key:"townshipName",label:'Revenue Village', sortable:true, resizeable:true}, 
 			            {key:"totalVoters", label:'Total Voters', sortable:true, resizeable:true}, 
 			            {key:"votesPolled", label:'Votes Polled', sortable:true, resizeable:true},
 			            {key:"booths",label:'Total Booths', resizeable:true}, 
@@ -814,7 +814,7 @@ var allZPTCMPTCElecInfo = new Array();
 		}));
 		
 		myTabs.addTab( new YAHOO.widget.Tab({
-		    label: 'Muncipalities And Panchayaths Info',
+		    label: 'Revenue Villages Wise Election Info',
 		    content: buildRevenueVillagesInfoTab()
 		    
 		}));
