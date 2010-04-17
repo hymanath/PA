@@ -39,7 +39,7 @@ public interface IConstituencyPageService {
 
 	public List<PartyVotesEarnedVO> getTownshipWiseElectionsForTehsil(Long townshipId, Long electionId);
 	
-	public List<ConstituencyRevenueVillagesVO> getEelctionResultsInPanchayathsAndTownsInMandal(Long tehsilId, Long electionId);
+	public List<ConstituencyRevenueVillagesVO> getPartiesResultsInVillagesGroupByMandal(Long tehsilId, Long electionId);
 	
 	public ConstituencyRevenueVillagesVO getConstituencyElecResults(Long constituencyId, String electionYear);
 	

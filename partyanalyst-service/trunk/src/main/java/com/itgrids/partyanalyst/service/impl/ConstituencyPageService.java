@@ -24,12 +24,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
-import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultObjectsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
-import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -48,7 +46,6 @@ import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
-import com.itgrids.partyanalyst.dto.PanchayathOrTownInfoVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -89,18 +86,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;	
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO; 
-	private IHamletBoothElectionDAO hamletBoothElectionDAO;
-	private ICensusDAO censusDAO;
 	 
 	
-	public ICensusDAO getCensusDAO() {
-		return censusDAO;
-	}
-
-	public void setCensusDAO(ICensusDAO censusDAO) {
-		this.censusDAO = censusDAO;
-	}
-
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -189,15 +176,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	public void setCandidateBoothResultDAO(
 			ICandidateBoothResultDAO candidateBoothResultDAO) {
 		this.candidateBoothResultDAO = candidateBoothResultDAO;
-	}
-
-	public IHamletBoothElectionDAO getHamletBoothElectionDAO() {
-		return hamletBoothElectionDAO;
-	}
-
-	public void setHamletBoothElectionDAO(
-			IHamletBoothElectionDAO hamletBoothElectionDAO) {
-		this.hamletBoothElectionDAO = hamletBoothElectionDAO;
 	}
 
 	public List<ConstituencyElectionResultsVO> getConstituencyElectionResults(Long constituencyId) {
@@ -375,17 +353,54 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	public MandalAndRevenueVillagesInfoVO getTownshipWiseBoothDetailsForTehsil(Long tehsilId, Long electionId){
 		MandalAndRevenueVillagesInfoVO mandalWiseResult = new MandalAndRevenueVillagesInfoVO();
 		List<LocationWiseBoothDetailsVO> boothDataFromDB = new ArrayList<LocationWiseBoothDetailsVO>();
-		try{		
-			List panchayathBoothData = hamletBoothElectionDAO.findPanchayathsWiseBoothsAndHamletsDataInTehsilForElection(tehsilId, electionId);
-			groupPanchayathOrTownWiseRawBoothData(panchayathBoothData, true, boothDataFromDB);
-			List townsInTehsil = censusDAO.findAllRevenueVillagesInfoInMandal(IConstants.CENSUS_YEAR, tehsilId, "'"+IConstants.CENSUS_WARD_LEVEL+"'");
-			StringBuilder townshipIds = new StringBuilder();
-			for(Object[] towns:(List<Object[]>)townsInTehsil)
-				townshipIds.append(IConstants.COMMA).append(towns[0]);
-			if(townsInTehsil.size() != 0){
-				List townsBoothData = villageBoothElectionDAO.findTownsBoothIdsInTehsilForElection(townshipIds.toString().substring(1), electionId);
-				groupPanchayathOrTownWiseRawBoothData(townsBoothData, false, boothDataFromDB);
+		LocationWiseBoothDetailsVO locationWiseBoothDetailsVO = null;
+		Set<SelectOptionVO> boothNos = null;
+		String townshipName = "";
+		Long townshipId = null;
+		Long totalVoters = new Long(0);
+		Long totalVotesPolled = 0l;
+		try{
+						
+			List boothDetails = villageBoothElectionDAO.findTownshipWiseBoothDetailsForTehsil(tehsilId, electionId);
+
+			for(int i=0; i<boothDetails.size(); i++){
+				locationWiseBoothDetailsVO = new LocationWiseBoothDetailsVO();
+				Object[] values = (Object[])boothDetails.get(i);
+				
+				if((townshipName).equals(values[1])){
+					if(boothNos.add(new SelectOptionVO((Long)values[2], values[3].toString()))){
+						totalVoters = totalVoters + (Long)values[4];
+						totalVotesPolled = totalVotesPolled + (Long)values[5];
+					}			
+				}else{
+					locationWiseBoothDetailsVO.setLocationId(townshipId);
+					locationWiseBoothDetailsVO.setLocationName(townshipName);
+					locationWiseBoothDetailsVO.setBooths(boothNos);
+					locationWiseBoothDetailsVO.setPopulation(totalVoters);
+					locationWiseBoothDetailsVO.setVotesPolled(totalVotesPolled);
+					locationWiseBoothDetailsVO.setHamletsOfTownship(createSelectOptionVoForRawList(hamletDAO.findHamletNamesByTownshipId(townshipId)));
+					boothDataFromDB.add(locationWiseBoothDetailsVO);
+					
+					boothNos = new LinkedHashSet<SelectOptionVO>(0);
+					townshipName = (String)values[1];
+					boothNos.add(new SelectOptionVO((Long)values[2], values[3].toString()));
+					totalVoters = (Long)values[4];
+					totalVotesPolled = (Long)values[5];
+					townshipId = (Long)values[0];
+				}
+				
+				if(i == boothDetails.size()-1){
+					locationWiseBoothDetailsVO.setLocationId(townshipId);
+					locationWiseBoothDetailsVO.setLocationName(townshipName);
+					locationWiseBoothDetailsVO.setBooths(boothNos);
+					locationWiseBoothDetailsVO.setPopulation(totalVoters);
+					locationWiseBoothDetailsVO.setVotesPolled(totalVotesPolled);
+					locationWiseBoothDetailsVO.setHamletsOfTownship(createSelectOptionVoForRawList(hamletDAO.findHamletNamesByTownshipId(townshipId)));
+					boothDataFromDB.add(locationWiseBoothDetailsVO);
+				}
+					
 			}
+			boothDataFromDB.remove(0);			
 			
 		}catch(Exception e){
 			mandalWiseResult.setExceptionEncountered(e);
@@ -398,214 +413,119 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return mandalWiseResult;
 	}
 	
-	private void groupPanchayathOrTownWiseRawBoothData(List rawData, boolean isVillage,
-			List<LocationWiseBoothDetailsVO> boothDataFromDB){
-		Map<LocationWiseBoothDetailsVO, List<Object[]>> panchayathsMap = 
-			new LinkedHashMap<LocationWiseBoothDetailsVO, List<Object[]>>();
-		List<Object[]> boothsAndHamlets = null;
-		LocationWiseBoothDetailsVO locationWiseBoothDetailsVO = null;
-		Set<SelectOptionVO> boothNos = null;
-		Set<SelectOptionVO> hamlets = null;
-		Long totalVoters = null;
-		Long totalVotesPolled = null;
-		String townOrVillageName = "";
+	public List<ConstituencyRevenueVillagesVO> getPartiesResultsInVillagesGroupByMandal(Long tehsilId, Long electionId) {
+
+		List mandalWiseInfo = candidateBoothResultDAO.findMandalWisePartiesResultsForElection(tehsilId, electionId);
 		
-		for(Object[] values:(List<Object[]>)rawData){
-			locationWiseBoothDetailsVO = new LocationWiseBoothDetailsVO();
-			
-			if(isVillage)
-				townOrVillageName = values[0].toString()+" (P)";
-			else
-				townOrVillageName = values[0].toString()+" (M/C)";
-			
-			locationWiseBoothDetailsVO.setLocationName(townOrVillageName);
-			boothsAndHamlets = panchayathsMap.get(locationWiseBoothDetailsVO);
-			if(boothsAndHamlets == null)
-				boothsAndHamlets = new ArrayList<Object[]>();
-			boothsAndHamlets.add(values);
-			panchayathsMap.put(locationWiseBoothDetailsVO, boothsAndHamlets);
-		}
+		log.debug("Total Revenue Villages::"+mandalWiseInfo.size());
 		
-		for(Map.Entry<LocationWiseBoothDetailsVO, List<Object[]>> entry:panchayathsMap.entrySet()){
-			locationWiseBoothDetailsVO = entry.getKey();
-			boothsAndHamlets = entry.getValue();
-			boothNos = new LinkedHashSet<SelectOptionVO>();
-			hamlets = new LinkedHashSet<SelectOptionVO>();
-			totalVoters = 0l;
-			totalVotesPolled = 0l;
-			for(Object[] booths:boothsAndHamlets){
-				if(boothNos.add(new SelectOptionVO((Long)booths[3],booths[4].toString()))){
-					totalVoters += (Long)booths[1];
-					totalVotesPolled += (Long)booths[2];
-				}
-				if(isVillage)
-					hamlets.add(new SelectOptionVO((Long)booths[5],booths[6].toString()));
-			}
-			locationWiseBoothDetailsVO.setBooths(boothNos);
-			locationWiseBoothDetailsVO.setVotesPolled(totalVotesPolled);
-			locationWiseBoothDetailsVO.setPopulation(totalVoters);
-			if(isVillage)
-				locationWiseBoothDetailsVO.setHamletsOfTownship(hamlets);
-			
-			boothDataFromDB.add(locationWiseBoothDetailsVO);
-			
-		}
-	}
-	
-	public List<ConstituencyRevenueVillagesVO> getEelctionResultsInPanchayathsAndTownsInMandal(Long tehsilId, Long electionId){
-		List<ConstituencyRevenueVillagesVO> constituencyRevenueVillagesVOs = 
-														new ArrayList<ConstituencyRevenueVillagesVO>();
-		Map<ConstituencyRevenueVillagesVO, List<PanchayathOrTownInfoVO>> constituencyWithRevenueVillagesMap = 
-			new LinkedHashMap<ConstituencyRevenueVillagesVO, List<PanchayathOrTownInfoVO>>();
-		Map<LocationWiseBoothDetailsVO, List<Object[]>> panchayathResultsMap = null;
-		LocationWiseBoothDetailsVO locationWiseBoothDetailsVO = null;
-		ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO = null;
-		List<PanchayathOrTownInfoVO> panchayaths = null;
-		PanchayathOrTownInfoVO panchayathOrTownInfoVO = null;
-		List<Object[]> panchayathResults = null;
+		//Group By Constituency		
 		
-		//return Vo Declarations
-		
-		List<RevenueVillageElectionVO> revenueVillageElectionVOs = null;
+		Map<ConstituencyRevenueVillagesVO, List<Object[]>> constituencyWithRevenueVillagesMap = 
+			new LinkedHashMap<ConstituencyRevenueVillagesVO, List<Object[]>>();
+		Map<RevenueVillageElectionVO, List<Object[]>> revenueVillagesWithResults = null;
+		List<ConstituencyRevenueVillagesVO> constituencyRevenueVillagesVOs = new ArrayList<ConstituencyRevenueVillagesVO>();
+		List<RevenueVillageElectionVO> revenueVillageElectionVOs = null;	
 		RevenueVillageElectionVO revenueVillageElectionVO = null;
-		List<CandidatePartyInfoVO> candidateNamePartyAndStatus = null;
-		CandidatePartyInfoVO candidatePartyInfoVO = null;
-		List<PartyElectionResultVO> partyElectionResultVOs = null;
-		PartyElectionResultVO partyElectionResultVO = null;
+		List<PartyElectionResultVO> revenueVillageParties = null;
+		PartyElectionResultVO revenueVillageParty = null;
+		List<Object[]> partyInfo = null;
+		List<Object[]> revenueVillageInfo = null;
+		ConstituencyRevenueVillagesVO constituencyRevenueVillagesVO = null;
 		
-		List boothConstiIds = hamletBoothElectionDAO.findPanchayathBoothIdsInTehsilForElection(tehsilId, electionId);		
-		Map<String, String> panchayathsAndBoothConstiIds = new HashMap<String, String>();
-		String panchayath = "";
-		for (int i = 0; i < boothConstiIds.size(); i++) 
-		{
-			Object[] obj = (Object[]) boothConstiIds.get(i);
-			panchayath = obj[0].toString();
-			String value = panchayathsAndBoothConstiIds.get(panchayath);
-			StringBuilder ids = new StringBuilder();
-			if(value==null){
-				ids .append(obj[1].toString());
-			}else{
-				ids.append(value).append(IConstants.COMMA).append(obj[1].toString());
-			}
-			panchayathsAndBoothConstiIds.put(panchayath, ids.toString());
-		}
+		Long votesEarned = null;
+		Long polledVotes = null;
+		List<CandidatePartyInfoVO> candidates = null;
 		
-		for(Map.Entry<String, String> entry:panchayathsAndBoothConstiIds.entrySet()){
-			List list = candidateBoothResultDAO.getcandidatesResultsByBoothConstiIds(entry.getValue());
-			for(Object[] rawData:(List<Object[]>)list){
-				constituencyRevenueVillagesVO = new ConstituencyRevenueVillagesVO();
-				constituencyRevenueVillagesVO.setConstituencyId((Long)rawData[0]);
-				constituencyRevenueVillagesVO.setConstituencyName(rawData[1].toString());
-				panchayaths = constituencyWithRevenueVillagesMap.get(constituencyRevenueVillagesVO);
-				if(panchayaths == null)
-					panchayaths = new ArrayList<PanchayathOrTownInfoVO>();
-				panchayathOrTownInfoVO = new PanchayathOrTownInfoVO();
-				panchayathOrTownInfoVO.setLocationName(entry.getKey()+" (P)");
-				panchayathOrTownInfoVO.setRawData(rawData);
-				panchayaths.add(panchayathOrTownInfoVO);
-				constituencyWithRevenueVillagesMap.put(constituencyRevenueVillagesVO, panchayaths);
-			}
-		}
-		
-		List townsInTehsil = censusDAO.findAllRevenueVillagesInfoInMandal(IConstants.CENSUS_YEAR, tehsilId, "'"+IConstants.CENSUS_WARD_LEVEL+"'");
-		StringBuilder townshipIds = new StringBuilder();
-		for(Object[] towns:(List<Object[]>)townsInTehsil)
-			townshipIds.append(IConstants.COMMA).append(towns[0]);
-		if(townsInTehsil.size() != 0){
-			List towns = villageBoothElectionDAO.findTownshipAndBoothConstiElecIds(townshipIds.toString().substring(1), electionId);
-			panchayathsAndBoothConstiIds = new LinkedHashMap<String, String>();
-			for (int i = 0; i < boothConstiIds.size(); i++) 
-			{
-				Object[] obj = (Object[]) boothConstiIds.get(i);
-				panchayath = obj[0].toString();
-				String value = panchayathsAndBoothConstiIds.get(panchayath);
-				StringBuilder ids = new StringBuilder();
-				if(value==null){
-					ids .append(obj[1].toString());
-				}else{
-					ids.append(value).append(IConstants.COMMA).append(obj[1].toString());
-				}
-				panchayathsAndBoothConstiIds.put(panchayath, ids.toString());
-			}
+		for(int i=0; i<mandalWiseInfo.size(); i++){
+			Object[] values = (Object[])mandalWiseInfo.get(i);
+			constituencyRevenueVillagesVO = new ConstituencyRevenueVillagesVO();
+			constituencyRevenueVillagesVO.setConstituencyId((Long)values[0]);
+			constituencyRevenueVillagesVO.setConstituencyName(values[1].toString());
+			revenueVillageInfo = constituencyWithRevenueVillagesMap.get(constituencyRevenueVillagesVO);
 			
-			for(Map.Entry<String, String> entry:panchayathsAndBoothConstiIds.entrySet()){
-				List list = candidateBoothResultDAO.getcandidatesResultsByBoothConstiIds(entry.getValue());
-				for(Object[] rawData:(List<Object[]>)list){
-					constituencyRevenueVillagesVO = new ConstituencyRevenueVillagesVO();
-					constituencyRevenueVillagesVO.setConstituencyId((Long)rawData[0]);
-					constituencyRevenueVillagesVO.setConstituencyName(rawData[1].toString());
-					panchayaths = constituencyWithRevenueVillagesMap.get(constituencyRevenueVillagesVO);
-					if(panchayaths == null)
-						panchayaths = new ArrayList<PanchayathOrTownInfoVO>();
-					panchayathOrTownInfoVO = new PanchayathOrTownInfoVO();
-					panchayathOrTownInfoVO.setLocationName(entry.getKey()+" (M/C)");
-					panchayathOrTownInfoVO.setRawData(rawData);
-					panchayaths.add(panchayathOrTownInfoVO);
-					constituencyWithRevenueVillagesMap.put(constituencyRevenueVillagesVO, panchayaths);
-				}
-			}
+			if(revenueVillageInfo == null)
+				revenueVillageInfo = new ArrayList<Object[]>();
+				
+			revenueVillageInfo.add(values);
+			constituencyWithRevenueVillagesMap.put(constituencyRevenueVillagesVO, revenueVillageInfo);
 		}
 		
-		for(Map.Entry<ConstituencyRevenueVillagesVO, List<PanchayathOrTownInfoVO>> entry:
+		//Group By Revenue Villages
+		
+		for(Map.Entry<ConstituencyRevenueVillagesVO, List<Object[]>> entry:
 			constituencyWithRevenueVillagesMap.entrySet()){
 			
+			constituencyRevenueVillagesVO = entry.getKey();
+			
+			revenueVillagesWithResults = new LinkedHashMap<RevenueVillageElectionVO, List<Object[]>>();
+			candidates = new ArrayList<CandidatePartyInfoVO>();
 			revenueVillageElectionVOs = new ArrayList<RevenueVillageElectionVO>();
 			
-			constituencyRevenueVillagesVO = entry.getKey();
-			panchayaths = entry.getValue();
-			candidateNamePartyAndStatus = new ArrayList<CandidatePartyInfoVO>();
-			panchayathResultsMap = new LinkedHashMap<LocationWiseBoothDetailsVO, List<Object[]>>();
-			for(PanchayathOrTownInfoVO panchayathObj:panchayaths){
-				locationWiseBoothDetailsVO = new LocationWiseBoothDetailsVO();
-				locationWiseBoothDetailsVO.setLocationName(panchayathObj.getLocationName());
-				panchayathResults = panchayathResultsMap.get(locationWiseBoothDetailsVO);
-				if(panchayathResults == null)
-					panchayathResults = new ArrayList<Object[]>();
-				panchayathResults.add(panchayathObj.getRawData());
-				panchayathResultsMap.put(locationWiseBoothDetailsVO, panchayathResults);				
+			for(Object[] values:entry.getValue()){
+				revenueVillageElectionVO = new RevenueVillageElectionVO();
+				revenueVillageElectionVO.setTownshipId((Long)values[6]);
+				revenueVillageElectionVO.setTownshipName(values[7].toString());
+				partyInfo = revenueVillagesWithResults.get(revenueVillageElectionVO);
+				
+				if(partyInfo == null)
+					partyInfo = new ArrayList<Object[]>();
+				
+					partyInfo.add(values);
+				
+				revenueVillagesWithResults.put(revenueVillageElectionVO, partyInfo);
 			}
 			
-			int i=0;
-			for(Map.Entry<LocationWiseBoothDetailsVO, List<Object[]>> finalResults:panchayathResultsMap.entrySet()){
-				locationWiseBoothDetailsVO = finalResults.getKey();
+			int i = 0;	
+			for(Map.Entry<RevenueVillageElectionVO, List<Object[]>> revenueVillage:
+				revenueVillagesWithResults.entrySet()){
 				
-				revenueVillageElectionVO = new RevenueVillageElectionVO();
-				revenueVillageElectionVO.setTownshipName(locationWiseBoothDetailsVO.getLocationName());
-				partyElectionResultVOs = new ArrayList<PartyElectionResultVO>();
+				revenueVillageElectionVO = revenueVillage.getKey();
 				
-				for(Object[] finalRaw:finalResults.getValue()){
-					if(i == 0){
+				revenueVillageParties = new ArrayList<PartyElectionResultVO>(); 
+				CandidatePartyInfoVO candidatePartyInfoVO = null;
+				if(i == 0){
+					for(Object[] values:revenueVillage.getValue()){
 						candidatePartyInfoVO = new CandidatePartyInfoVO();
-						candidatePartyInfoVO.setCandidateId((Long)finalRaw[2]);
-						candidatePartyInfoVO.setCandidateName(finalRaw[3].toString());
-						candidatePartyInfoVO.setParty(finalRaw[5].toString());
-						candidatePartyInfoVO.setPartyId((Long)finalRaw[4]);
-						candidatePartyInfoVO.setRank((Long)finalRaw[8]);
-						candidateNamePartyAndStatus.add(candidatePartyInfoVO);
+						candidatePartyInfoVO.setCandidateId((Long)values[2]);
+						candidatePartyInfoVO.setCandidateName(values[3].toString());
+						candidatePartyInfoVO.setPartyId((Long)values[4]);
+						candidatePartyInfoVO.setParty(values[5].toString());
+						candidatePartyInfoVO.setRank((Long)values[10]);
+						
+						candidates.add(candidatePartyInfoVO);
 					}
+					i++;
 				}
-				i++;
 				
-				for(Object[] finalRaw:finalResults.getValue()){
-					partyElectionResultVO = new PartyElectionResultVO();
-					partyElectionResultVO.setPartyId((Long)finalRaw[4]);
-					partyElectionResultVO.setPartyName(finalRaw[5].toString());
-					partyElectionResultVO.setVotesEarned((Long)finalRaw[6]);
-					partyElectionResultVO.setVotesPercentage(new BigDecimal((((Long)finalRaw[6])*100.0)/((Long)finalRaw[7]))
-					.setScale(2,BigDecimal.ROUND_HALF_UP).toString());
-					partyElectionResultVOs.add(partyElectionResultVO);
-				}		
+				for(Object[] values:revenueVillage.getValue()){
+					revenueVillageParty = new PartyElectionResultVO();
+					votesEarned = (Long)values[8];
+					polledVotes = (Long)values[9];
+					revenueVillageParty.setVotesEarned(votesEarned);
+					revenueVillageParty.setVotesPercentage(new BigDecimal((votesEarned*100.0)/polledVotes)
+												.setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+					revenueVillageParties.add(revenueVillageParty);
+				}
 				
-				revenueVillageElectionVO.setPartyElectionResultVOs(partyElectionResultVOs);
+				revenueVillageElectionVO.setPartyElectionResultVOs(revenueVillageParties);
 				revenueVillageElectionVOs.add(revenueVillageElectionVO);
 			}
 			constituencyRevenueVillagesVO.setRevenueVillageElectionVO(revenueVillageElectionVOs);
-			constituencyRevenueVillagesVO.setCandidateNamePartyAndStatus(candidateNamePartyAndStatus);
-			constituencyRevenueVillagesVOs.add(constituencyRevenueVillagesVO);
-		}
-		
+			constituencyRevenueVillagesVO.setCandidateNamePartyAndStatus(candidates);
+			constituencyRevenueVillagesVOs.add(constituencyRevenueVillagesVO);	
+		}		
 		
 		return constituencyRevenueVillagesVOs;
+	}
+
+	public List<SelectOptionVO> createSelectOptionVoForRawList(List objects){
+		List<SelectOptionVO> namesAndIds = new ArrayList<SelectOptionVO>();
+		for(int i=0; i<objects.size(); i++){
+			Object[] values = (Object[])objects.get(i);
+			namesAndIds.add(new SelectOptionVO((Long)values[0], values[1].toString()));
+		}
+		return namesAndIds;
 	}
 	
 	public List<PartyVotesEarnedVO> getTownshipWiseElectionsForTehsil(Long townshipId, Long electionId){

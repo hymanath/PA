@@ -12,7 +12,7 @@ public class LocationWiseBoothDetailsVO {
 	private String locationName;
 	private Set<SelectOptionVO> booths;
 	private Set<SelectOptionVO> subLocations;
-	private Set<SelectOptionVO> hamletsOfTownship;
+	private List<SelectOptionVO> hamletsOfTownship;
 	private Long population;
 	private Long votesPolled;
 	private String electionYear;
@@ -65,11 +65,11 @@ public class LocationWiseBoothDetailsVO {
 		this.subLocations = subLocations;
 	}
 
-	public Set<SelectOptionVO> getHamletsOfTownship() {
+	public List<SelectOptionVO> getHamletsOfTownship() {
 		return hamletsOfTownship;
 	}
 
-	public void setHamletsOfTownship(Set<SelectOptionVO> hamletsOfTownship) {
+	public void setHamletsOfTownship(List<SelectOptionVO> hamletsOfTownship) {
 		this.hamletsOfTownship = hamletsOfTownship;
 	}
 
