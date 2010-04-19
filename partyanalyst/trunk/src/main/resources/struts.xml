@@ -676,7 +676,17 @@
               <result type="json" name="success">
            		<param name="root">candidateTrendzReportVO</param>
         	</result>		
-        </action>     
+        </action>
+             
+        <action name="constituencyPageCandidateDetailsAjaxAction" class="constituencyPageAction" method="getCandidateWiseConstituencyZptcOrMptcElectionTrends">
+			 <result name="success">/jsp/candidateResultReportForAConstituency.jsp</result>
+		</action>
+		
+		<action name="constituencyWiseCandidateResultAction" class="constituencyPageAction" method="getCandidateWiseConstituencyZptcOrMptcElectionTrends">
+              <result type="json" name="success">
+           		<param name="root">mandalAllElectionDetailsVO</param>
+        	</result>		
+        </action>
         
         <action name="assemblyWiseParliamentResultAction" class="constituencyPageAction" method="getParliamentConstituencyAssemblyWiseResults">
               <result type="json" name="success">
@@ -684,6 +694,14 @@
         	</result>		
         </action>
          
+         <action name="constituencyWiseMandalElectionsResultAction" class="constituencyPageAction" method="getPartyWiseConstituencyZptcOrMptcElectionTrends">
+              <result type="json" name="success">
+           		<param name="root">constituencyWiseAllPartyTrends</param>
+        	</result>		
+        </action>
+        
+         
+        
         <action name="getElectionYearsAction" class="constituencyPageAction" method="getConstituencyElectionYears">
               <result type="json" name="success">
            		<param name="root">electionIdsAndYears</param>
