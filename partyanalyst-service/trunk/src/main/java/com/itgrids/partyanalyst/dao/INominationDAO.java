@@ -212,4 +212,9 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 
 	public List getAllElectionsInDistrict(Long districtId);
 	
+	public List<Nomination> getNominationOfACandidateInAnElection(String electionType,String electionYear,Long constituencyId,Long candidateId);
+	
+	public List<Nomination> getNominationOfACandidateInAnElection(Long electionId,Long constituencyId,Long candidateId);
+	
+	
 }
