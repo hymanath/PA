@@ -1038,5 +1038,22 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"model.constituencyElection.election.electionScope.electionType.electionType, model.constituencyElection.election.electionYear from Nomination model " +
 				"where model.constituencyElection.constituency.district.districtId = ?", districtId);
 	}
+	@SuppressWarnings("unchecked")
+	public List<Nomination> getNominationOfACandidateInAnElection(
+			String electionType, String electionYear, Long constituencyId,
+			Long candidateId) {
+	    Object[] params = {electionType,electionYear,constituencyId,candidateId};
+		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionScope.electionType.electionType = ?"+
+				" and model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId = ?"+
+				" and model.candidate.candidateId = ?",params);
+	}
+	@SuppressWarnings("unchecked")
+	public List<Nomination> getNominationOfACandidateInAnElection(
+			Long electionId, Long constituencyId, Long candidateId) {
+		Object[] params = {electionId,constituencyId,candidateId};
+		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionId = ?"+
+				" and model.constituencyElection.constituency.constituencyId = ?"+
+				" and model.candidate.candidateId = ?",params);
+	}
 
 }

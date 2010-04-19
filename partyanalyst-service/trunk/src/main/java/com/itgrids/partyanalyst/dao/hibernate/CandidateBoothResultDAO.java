@@ -466,7 +466,6 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"model.nomination.party.partyId ", params);
 	}
 
-	@Override
 	public List getcandidatesResultsByBoothConstiIds(String boothConstiElecIds) {
 		StringBuilder hqlQuery = new StringBuilder();
 		hqlQuery.append("select  model.boothConstituencyElection.constituencyElection.constituency.constituencyId,")
