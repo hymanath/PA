@@ -327,11 +327,6 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	}
 */
 	
-	public void testDynamicQuery(){		
-		StringBuilder tehsilIds = new StringBuilder();
-		tehsilIds.append(",").append(835l).append(",").append(836l).append(",").append(843l).append(",").append(844l);
-		List result =getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),"partyWise",1l,62l,IConstants.ZPTC_ELECTION_TYPE,"2006");
-	}
 	
 }
 
