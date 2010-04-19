@@ -1080,6 +1080,27 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" and model.candidate.candidateId = ?",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndPartyIdStateId(final Long electionId,final Long partyId,final Long stateId){
+		 return ( List<Nomination> ) getHibernateTemplate().execute( new HibernateCallback() {
+             public Object doInHibernate( Session session ) throws HibernateException, SQLException {
+             		List<Nomination> constElectionResults = session.createCriteria(Nomination.class)
+             							.createAlias("constituencyElection", "constElec")
+             							.createAlias("party", "p")
+             							.createAlias("constElec.election", "elec")
+             							.createAlias("constElec.constituency", "const")
+             							.createAlias("const.state", "state")
+             							.createAlias("candidate", "cand")
+             							.add(Expression.eq("state.stateId", stateId))
+             							.add(Expression.eq("elec.electionId", electionId))
+             							.add(Expression.eq("p.partyId", partyId))
+             							.addOrder(Order.asc("cand.lastname"))
+             							.list();
+             		 return constElectionResults;
+             }
+         });
+	}
+
 	public List getTehsilLevelElectionDetailsForAGivenConstituency(String query,Object[] parms){
 		return getHibernateTemplate().find(query,parms);		
 	}
