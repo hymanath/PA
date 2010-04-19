@@ -10,25 +10,52 @@
 <title>District Page</title>
 
 
-<!-- YUI files dependencies (start) -->
+<!-- YUI Dependency files (Start) -->
 
-<!--CSS files (default YUI Sam Skin) -->
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
- 
-<!--JS files Dependencies -->
-<script src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/json/json-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/get/get-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js"></script>
-<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 
-<!-- YUI files dependencies (end) -->
+
+
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+
+	<!-- YUI Skin Sam -->
+
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+
+	<!-- YUI Dependency files (End) -->
 
 <style type="text/css">
 		.detailsDiv
@@ -92,6 +119,22 @@
 		.counterSize{
 			color:red;
 			font-size:14px;
+		}
+
+		#alliancePartiesCarousel .yui-carousel-element li
+		{
+			height:350px;
+			width:700px;
+		}
+
+		#alliancePartiesCarousel .yui-carousel-item-selected 
+		{
+			border:1px solid #CCCCCC;
+		}
+
+		.allianceListDiv
+		{
+			padding-top:20px;
 		}
 	</style>
 	
@@ -377,7 +420,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			return;
 
 		var str = '';
-		str+='<img width="400px"  src="charts/'+results.pasitionsChart+'"/>';
+		str+='<img	src="charts/'+results.pasitionsChart+'"/>';
 		elmt.innerHTML=str;
 	}
 	function buildElectionTypesAndYears(results)
@@ -387,7 +430,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			return;
 		
 		var str = '';
-		str +='<span style="font-weight:bold;margin-right:10px;">Selection Election</span>';
+		str +='<span style="font-weight:bold;margin-right:10px;">Select Election</span>';
 		str += '<select id="electionTypesSelect" onchange = "getPartiesPositions(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
 		for(var i in results)
 		{
@@ -699,11 +742,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 
 	function showAllElectionsInDistrict(results){
-		var imgElmt = document.getElementById("AjaxImgDiv");
-
-		if(imgElmt)
-			imgElmt.style.display = 'none';		
-		
+				
 		var allElecDiv = document.getElementById("allElectionResultsInDT");
 		var str = '';
 		str += '<table>';
@@ -715,7 +754,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		str += '</tr>';
 
 		var graphDivStr = '<div style="margin-left:20px;"><input type="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div>';
-		graphDivStr += '<img width="500px" height="250px" src="charts/'+results.chartPath+'" />';
+		graphDivStr += '<img src="charts/'+results.chartPath+'" />';
 		 allElecDiv.innerHTML = graphDivStr;
 		
 	}
@@ -751,6 +790,36 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var brow1 = window.open("<s:url action="alliancePartiesPageAction"/>?districtId=${districtId}&districtName=${districtName}","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 		brow1.focus();
 	}
+
+	function buildGraphsCarousel(divId,arr)
+	{
+		var elmt = document.getElementById(divId);
+		if(!elmt && arr.length == 0)
+			return;
+
+		var contentStr = '';
+		contentStr+='<ul>';
+		for(var i in arr)
+		{				
+			contentStr+='<LI style="width:880px;height:300px;"><IMG src="charts/'+arr[i]+'"></IMG></LI>';		
+		}
+		contentStr+='</ul>';
+
+		elmt.innerHTML = contentStr;
+
+		graphImagesCarousel = new YAHOO.widget.Carousel(divId,
+				{
+					carouselEl: "UL",
+					isCircular: true,
+					isVertical: false,
+					numVisible: 1,
+					animation: { speed: 1.0 },
+					autoPlayInterval: 2000
+				});
+
+		graphImagesCarousel.render(); 
+		graphImagesCarousel.show();
+	}
 	
 </script>
  
@@ -760,27 +829,21 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		Welcome to <c:out value="${districtName}"></c:out> District Page <br/><br/>
 </div>
 <div id="alliancePartiesGraph_main">
-	<table>
-		<tr>
-			<td colspan="2">
-				<div id="AjaxImgDiv" align="center" style="display:block;">
-					<span style="font-size:14px;font-weight:bold;">All Parties Performance In Diff Elections Of ${districtName} District</span>
-					<img width="100px"  height="20px" src="<%=request.getContextPath()%>/images/icons/barloader.gif" /></img>
-				</div>
-			</td>
-		</tr>	
-		<tr>
-			<td style="vertical-align:top;width:55%;" width="55%">
-				<div id="allElectionResultsInDT"></div>
-			</td>
-			<td style="vertical-align:top">
-				<div>
-					<div id="electionHirarchiDiv"></div>
+	
+		<div id="alliancePartiesCarousel" class="yui-skin-sam">
+			<ul>
+			<li>
+				<div id="allElectionResultsInDT"  class="allianceListDiv"></div>
+			</li>
+			<li>
+				<div id="positionsGraphDiv" class="allianceListDiv">
+					<div id="electionHirarchiDiv" ></div>
 					<div id="partyPositionsDiv"></div>
 				</div>
-			</td>
-		</tr>
-	</table>
+			</li>
+			</ul>
+		</div>
+	
 	
 </div>
 <div id="districtInfoDiv" class="detailsDiv">
@@ -1003,6 +1066,20 @@ getAllZptcParties();
 getAllZptcYears();
 getElectionTypesAndYears();
 getAllMptcYears();
+
+var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
+			{
+				carouselEl: "UL",
+				isCircular: true,
+				isVertical: false,
+				numVisible: 1,
+				animation: { speed: 1.0 },
+				autoPlayInterval: 2000
+			});
+
+	allianceCarousel.render(); 
+	allianceCarousel.show();
+ 
 </script>
 </body>
 </html>
