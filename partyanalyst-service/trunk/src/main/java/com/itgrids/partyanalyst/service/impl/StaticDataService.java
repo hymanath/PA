@@ -1601,13 +1601,12 @@ public class StaticDataService implements IStaticDataService {
 	}
 	
 	/**
-	 * This method generates a report to find out the results for all the parties participated in that zptc/mptc.
+	 * This method generates a report to find out the results for all the parties participated in that zptc/mptc for a district.
 	 */
 	
 	public List<TeshilPartyInfoVO> getMandalWisePartyReport(String electionType,String electionYear,Long districtId){
 		BigDecimal percentage = new BigDecimal(0.0);
 		List<TeshilPartyInfoVO> teshilPartyInfoVO = new ArrayList<TeshilPartyInfoVO>(0);
-		Long participatedSeats,seatsWon;
 		Float totalVotes=null;
 		Long winningCandidateRank=1l;
 		Map<String,Long> winningSeats =  new HashMap<String,Long>(0);
@@ -2093,6 +2092,7 @@ public class StaticDataService implements IStaticDataService {
 			mandalAllElectionDetails.setVotesPercentage(parms[10].toString());
 			mandalAllElectionDetails.setPartyShortName(parms[11].toString());
 			mandalAllElectionDetails.setConstituencyId(Long.parseLong(parms[9].toString()));
+			mandalAllElectionDetails.setPartyId(Long.parseLong(parms[12].toString()));
 			if(winner.containsKey(constituencyId)){
 				differenceVotes = winner.get(constituencyId)-Float.parseFloat(parms[6].toString());
 				if(winner.get(constituencyId)!=0){
@@ -2111,12 +2111,13 @@ public class StaticDataService implements IStaticDataService {
 			if(differenceVotes!=0f){
 				mandalAllElectionDetails.setCandidateName(parms[2].toString());
 			}else{
-				mandalAllElectionDetails.setCandidateName(parms[2].toString()+" * ");
+				mandalAllElectionDetails.setCandidateName(parms[2].toString());
 				mandalAllElectionDetails.setMarginVotesPercentage("0");
 			}
 			if(Long.parseLong(parms[8].toString())!=1){
 				mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
 			}
+		//	System.out.println(mandalAllElectionDetails.getCandidateName()+"\t\t"+mandalAllElectionDetails.getTehsilName()+"\t\t"+mandalAllElectionDetails.getVotesPercentage());
 		}
 		return mandalAllElectionDetailsVO;
 		}catch(Exception e){
@@ -2162,6 +2163,7 @@ public class StaticDataService implements IStaticDataService {
 				mandalAllElectionDetails.setVotesPercentage(parms[10].toString());
 				mandalAllElectionDetails.setPartyShortName(parms[11].toString());
 				mandalAllElectionDetails.setConstituencyId(Long.parseLong(parms[9].toString()));
+				mandalAllElectionDetails.setPartyId(Long.parseLong(parms[12].toString()));
 				if(successor.containsKey(constituencyId)){
 					differenceVotes = (Float.parseFloat(parms[6].toString())-successor.get(constituencyId));
 					if(Float.parseFloat(parms[6].toString())!=0f){
@@ -2179,7 +2181,7 @@ public class StaticDataService implements IStaticDataService {
 				if(differenceVotes!=0f){
 					mandalAllElectionDetails.setCandidateName(parms[2].toString());
 				}else{
-					mandalAllElectionDetails.setCandidateName(parms[2].toString()+" * ");
+					mandalAllElectionDetails.setCandidateName(parms[2].toString());
 					mandalAllElectionDetails.setMarginVotesPercentage("0");
 				}
 				if(flag==1){
@@ -2189,6 +2191,7 @@ public class StaticDataService implements IStaticDataService {
 				}else{
 					mandalAllElectionDetailsVO.add(mandalAllElectionDetails);
 				}
+		//		System.out.println(mandalAllElectionDetails.getCandidateName()+"\t\t"+mandalAllElectionDetails.getTehsilName()+"\t\t"+mandalAllElectionDetails.getVotesPercentage());
 			}		
 		return mandalAllElectionDetailsVO;
 		}catch(Exception e){
