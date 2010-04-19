@@ -91,6 +91,10 @@
 				<value>com.itgrids.partyanalyst.model.UserGroupPrivileges</value>
 				<value>com.itgrids.partyanalyst.model.StaticUserGroup</value>
 				<value>com.itgrids.partyanalyst.model.MyGroup</value>
+				<value>com.itgrids.partyanalyst.model.CommentData</value>
+				<value>com.itgrids.partyanalyst.model.CommentCategoryCandidate</value>
+				<value>com.itgrids.partyanalyst.model.CommentCategoryParty</value>
+				<value>com.itgrids.partyanalyst.model.CommentCategoryConstituency</value>
 				</list>
 		</property>
 	</bean>
