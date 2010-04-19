@@ -212,9 +212,14 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 
 	public List getAllElectionsInDistrict(Long districtId);
 	
+	public List findSeatsWonByAPartyInMandalForAnElectionYear(String tehsilId,String electionYear,String electionType,Long rank);
+	
+	public List getPartysInfoForATehsilForAParticularElectionYear(String electionType,String tehsilIds,String electionYear);
+	
+	public List getTehsilLevelElectionDetailsForAGivenConstituency(String query,Object[] parms);
+	
 	public List<Nomination> getNominationOfACandidateInAnElection(String electionType,String electionYear,Long constituencyId,Long candidateId);
 	
 	public List<Nomination> getNominationOfACandidateInAnElection(Long electionId,Long constituencyId,Long candidateId);
-	
 	
 }
