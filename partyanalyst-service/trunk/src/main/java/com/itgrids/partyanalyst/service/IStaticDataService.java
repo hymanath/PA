@@ -91,11 +91,6 @@ public interface IStaticDataService {
 	
 	public List<ElectionBasicInfoVO> getParliamentElectionsInfoForAConstituency(Long constituencyId);
 	
-	
-	
-	
-	
-	
 	public MandalAllElectionDetailsVO getAllZptcWinnerForADistrictForLatestYear(Long districtId,String electionYear);
 	
 	public MandalAllElectionDetailsVO getAllMptcWinnerForADistrictForLatestYear(Long districtId,String electionYear);
@@ -109,19 +104,6 @@ public interface IStaticDataService {
 	public MandalAllElectionDetailsVO getAllZptcsCandidatesForADistrictForSelectedYear(Long districtId,String electionYear);
 	
 	public MandalAllElectionDetailsVO getAllPartiesForAParticularElection(Long districtId,String electionType,String electionYear);
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public List<SelectOptionVO> getElectionIdsAndYearsForConstituency(Long constituencyId);
 	
 	public List<SelectOptionVO> getAllPartiesForAnElectionYear(String electionYear,String electionType);
@@ -129,6 +111,10 @@ public interface IStaticDataService {
 	public CandidateDetailsVO getCandidatesPartyInfoForAnElectionType(String electionType,String electionYear,String resultsCategory,String electionLevel,Long locationId,Long partyId,Long stateId);
 	
 	public DistrictWisePartyResultVO getDistrictWiseElectionReport(Long districtId);
+	
+	public List<MandalAllElectionDetailsVO> populateElectionsData(List winningCandidate,List successorCandidate,int flag);
+	
+	public List<MandalAllElectionDetailsVO> populateElectionsDataForAllCandidates(List winningCandidate,List allCandidates);
 	
 	public List<SelectOptionVO> getAllElectionsInDistrict(Long districtId);
 	
