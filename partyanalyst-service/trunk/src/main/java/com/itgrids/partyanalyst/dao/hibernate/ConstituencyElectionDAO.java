@@ -118,7 +118,15 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		Object[] params = {electionId , stateId};
 		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name from ConstituencyElection model where model.election.electionId = ? and model.constituency.state.stateId = ? order by model.constituency.name", params);
 	}
-
+	 
+	@SuppressWarnings("unchecked")
+	public List getTotalValidVotesForATehsilForAParticularElectionYear(String electionType,String tehsilIds,String electionYear){
+		Object[] params = {electionType,electionYear};
+		return getHibernateTemplate().find("select sum(model.constituencyElectionResult.validVotes)" +
+				" from ConstituencyElection model where model.constituency.electionScope.electionType.electionType = ?" +
+				" and model.constituency.tehsil.tehsilId  in (  " + tehsilIds +
+				" ) and model.election.electionYear = ?  ",params);
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List getTotalValidVotesParticularElectionYear(String electionType,String electionYear,Long districtId){
