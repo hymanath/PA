@@ -54,6 +54,7 @@ public class Nomination extends BaseModel implements java.io.Serializable {
 	private CandidateResult candidateResult;
 	private Set<CandidateBoothResult> candidateBoothResults = new HashSet<CandidateBoothResult>(0);
 	private Set<NominationHistory> nominationHistories = new HashSet<NominationHistory>(0);
+	private Set<CommentCategoryCandidate> commentCategoryCandidate = new HashSet<CommentCategoryCandidate>(0);
 	
 	// Constructors
 
@@ -72,7 +73,7 @@ public class Nomination extends BaseModel implements java.io.Serializable {
 			Candidate candidate, String nominationStatus, Double assets,
 			Double liabilities, String criminalCharges,
 			CandidateResult candidateResult, Set<CandidateBoothResult> candidateBoothResults,
-			Set<NominationHistory> nominationHistories) {
+			Set<NominationHistory> nominationHistories,Set<CommentCategoryCandidate> commentCategoryCandidate) {
 		this.nominationId = nominationId;
 		this.constituencyElection = constituencyElection;
 		this.party = party;
@@ -84,6 +85,7 @@ public class Nomination extends BaseModel implements java.io.Serializable {
 		this.candidateResult = candidateResult;
 		this.candidateBoothResults = candidateBoothResults;
 		this.nominationHistories = nominationHistories;
+		this.commentCategoryCandidate = commentCategoryCandidate;
 	}
 
 	// Property accessors
@@ -197,6 +199,17 @@ public class Nomination extends BaseModel implements java.io.Serializable {
 
 	public void setNominationHistories(Set<NominationHistory> nominationHistories) {
 		this.nominationHistories = nominationHistories;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "nomination")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CommentCategoryCandidate> getCommentCategoryCandidate() {
+		return commentCategoryCandidate;
+	}
+
+	public void setCommentCategoryCandidate(
+			Set<CommentCategoryCandidate> commentCategoryCandidate) {
+		this.commentCategoryCandidate = commentCategoryCandidate;
 	}
 	
 }

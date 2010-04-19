@@ -54,6 +54,8 @@ public class Election extends BaseModel implements java.io.Serializable {
 	private Set<ConstituencyElection> constituencyElections = new HashSet<ConstituencyElection>(0);
 	private Set<PartyElectionResult> partyElectionResult = new HashSet<PartyElectionResult>(0);
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
+	private Set<CommentCategoryParty> commentCategoryParty = new HashSet<CommentCategoryParty>(0);
+	private Set<CommentCategoryConstituency> commentCategoryConstituency = new HashSet<CommentCategoryConstituency>(0);
 
 	// Constructors
 
@@ -69,7 +71,9 @@ public class Election extends BaseModel implements java.io.Serializable {
 	/** full constructor */
 	public Election(Long electionId, ElectionScope electionScope,
 			Date notificationDate, Date startDate, String endDate,
-			String electionYear, Set<ConstituencyElection> constituencyElections,Set<PartyElectionResult> partyElectionResult,Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
+			String electionYear, Set<ConstituencyElection> constituencyElections,Set<PartyElectionResult> partyElectionResult,Set<PartyElectionDistrictResult> partyElectionDistrictResult,
+			Set<CommentCategoryParty> commentCategoryParty,
+			Set<CommentCategoryConstituency> commentCategoryConstituency) {
 		this.electionId = electionId;
 		this.electionScope = electionScope;
 		this.notificationDate = notificationDate;
@@ -79,6 +83,8 @@ public class Election extends BaseModel implements java.io.Serializable {
 		this.constituencyElections = constituencyElections;
 		this.partyElectionResult = partyElectionResult;
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
+		this.commentCategoryParty = commentCategoryParty;
+		this.commentCategoryConstituency = commentCategoryConstituency;
 	}
 
 	// Property accessors
@@ -172,6 +178,28 @@ public class Election extends BaseModel implements java.io.Serializable {
 	public void setPartyElectionDistrictResult(
 			Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "election")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CommentCategoryParty> getCommentCategoryParty() {
+		return commentCategoryParty;
+	}
+
+	public void setCommentCategoryParty(
+			Set<CommentCategoryParty> commentCategoryParty) {
+		this.commentCategoryParty = commentCategoryParty;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "election")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CommentCategoryConstituency> getCommentCategoryConstituency() {
+		return commentCategoryConstituency;
+	}
+
+	public void setCommentCategoryConstituency(
+			Set<CommentCategoryConstituency> commentCategoryConstituency) {
+		this.commentCategoryConstituency = commentCategoryConstituency;
 	}
 	
 }

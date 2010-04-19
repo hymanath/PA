@@ -53,6 +53,7 @@ public class Party implements java.io.Serializable {
 	private Set<PartyImportantDates> partyImportantDates = new HashSet<PartyImportantDates>(0);
 	private Set<PartyElectionResult> partyElectionResult = new HashSet<PartyElectionResult>(0);
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
+	private Set<CommentCategoryParty> commentCategoryParty = new HashSet<CommentCategoryParty>(0);
 	
 	// Constructors
 	
@@ -68,7 +69,8 @@ public class Party implements java.io.Serializable {
 	/** full constructor */
 	public Party(Long partyId, String longName, String shortName,
 			String symbol, String address, String comments,
-			String partyRecognization, Set<Nomination> nominations) {
+			String partyRecognization, Set<Nomination> nominations,
+			Set<CommentCategoryParty> commentCategoryParty) {
 		this.partyId = partyId;
 		this.longName = longName;
 		this.shortName = shortName;
@@ -77,13 +79,15 @@ public class Party implements java.io.Serializable {
 		this.comments = comments;
 		this.partyRecognization = partyRecognization;
 		this.nominations = nominations;
+		this.commentCategoryParty = commentCategoryParty;
 	}
 	
 	public Party(Long partyId, String longName, String shortName,
 			String symbol, String address, String comments,
 			String partyRecognization,
 			Set<Nomination> nominations,
-			Set<Registration> registrations, Set<PartyImportantDates> partyImportantDates,Set<PartyElectionResult> partyElectionResult,Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
+			Set<Registration> registrations, Set<PartyImportantDates> partyImportantDates,Set<PartyElectionResult> partyElectionResult,Set<PartyElectionDistrictResult> partyElectionDistrictResult,
+			Set<CommentCategoryParty> commentCategoryParty) {
 		this.partyId = partyId;
 		this.longName = longName;
 		this.shortName = shortName;
@@ -96,6 +100,7 @@ public class Party implements java.io.Serializable {
 		this.partyImportantDates = partyImportantDates;
 		this.partyElectionResult = partyElectionResult;
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
+		this.commentCategoryParty = commentCategoryParty;
 	}
 
 	// Property accessors
@@ -230,6 +235,17 @@ public class Party implements java.io.Serializable {
 	public void setPartyElectionDistrictResult(
 			Set<PartyElectionDistrictResult> partyElectionDistrictResult) {
 		this.partyElectionDistrictResult = partyElectionDistrictResult;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CommentCategoryParty> getCommentCategoryParty() {
+		return commentCategoryParty;
+	}
+
+	public void setCommentCategoryParty(
+			Set<CommentCategoryParty> commentCategoryParty) {
+		this.commentCategoryParty = commentCategoryParty;
 	}
 
 

@@ -56,6 +56,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Long countryId;
 	private Set<ConstituencyElection> constituencyElections = new HashSet<ConstituencyElection>(0);
 	private Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses = new HashSet<DelimitationConstituencyAssemblyDetails>(0);
+	private Set<CommentCategoryConstituency> commentCategoryConstituency = new HashSet<CommentCategoryConstituency>(0);
 
 	// Constructors
 
@@ -73,7 +74,8 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 			ElectionScope electionScope, State state, String name,
 			Date startDate, Date deformDate, Long countryId,
 			Set<ConstituencyElection> constituencyElections,
-			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses, Tehsil tehsil) {
+			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses, Tehsil tehsil,
+			Set<CommentCategoryConstituency> commentCategoryConstituency) {
 		this.constituencyId = constituencyId;
 		this.district = district;
 		this.electionScope = electionScope;
@@ -85,13 +87,15 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 		this.constituencyElections = constituencyElections;
 		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
 		this.tehsil = tehsil;
+		this.commentCategoryConstituency = commentCategoryConstituency;
 	}
 	
 	public Constituency(Long constituencyId, District district,
 			ElectionScope electionScope, State state, String name,
 			Date startDate, Date deformDate, Long countryId,
 			Set<ConstituencyElection> constituencyElections,
-			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses) {
+			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses,
+			Set<CommentCategoryConstituency> commentCategoryConstituency) {
 		this.constituencyId = constituencyId;
 		this.district = district;
 		this.electionScope = electionScope;
@@ -102,6 +106,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 		this.countryId = countryId;
 		this.constituencyElections = constituencyElections;
 		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
+		this.commentCategoryConstituency = commentCategoryConstituency;
 	}
 
 	// Property accessors
@@ -224,6 +229,17 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setDelimitationConstituencyAssemblyDetailses(
 			Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses) {
 		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<CommentCategoryConstituency> getCommentCategoryConstituency() {
+		return commentCategoryConstituency;
+	}
+
+	public void setCommentCategoryConstituency(
+			Set<CommentCategoryConstituency> commentCategoryConstituency) {
+		this.commentCategoryConstituency = commentCategoryConstituency;
 	}
 
 
