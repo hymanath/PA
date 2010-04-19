@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
+import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -72,6 +73,7 @@ import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
+import com.itgrids.partyanalyst.model.PartyElectionStateResult;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -100,6 +102,7 @@ public class StaticDataService implements IStaticDataService {
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IPartyElectionResultDAO partyElectionResultDAO;
 	private IPartyElectionDistrictResultDAO partyElectionDistrictResultDAO;
+	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
 	private final static Logger log = Logger.getLogger(StaticDataService.class);
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private Set parliamentConstituencies = new HashSet(0);
@@ -243,6 +246,17 @@ public class StaticDataService implements IStaticDataService {
 	}
 
 	
+
+	public IPartyElectionStateResultDAO getPartyElectionStateResultDAO() {
+		return partyElectionStateResultDAO;
+	}
+
+
+	public void setPartyElectionStateResultDAO(
+			IPartyElectionStateResultDAO partyElectionStateResultDAO) {
+		this.partyElectionStateResultDAO = partyElectionStateResultDAO;
+	}
+
 
 	public IBoothConstituencyElectionDAO getBoothConstituencyElectionDAO() {
 		return boothConstituencyElectionDAO;
@@ -3029,6 +3043,127 @@ public class StaticDataService implements IStaticDataService {
 		}
 		districtWisePartyResultVO.setPartiesPositionsInElection(partyPositionsVOs);
 		return districtWisePartyResultVO;
+	}
+	
+	public PartyElectionStateResult getPartyElectionResultsForAPartyStateLevelInParliamentElection(
+			Long electionId, Long partyId, Long stateId) {
+		log.debug("Inside getPartyElectionResultsForAPartyStateLevelInParliamentElection()......");
+		if(electionId != null && partyId != null && stateId != null){
+    	 List<PartyElectionStateResult> partyElectionResultsList = partyElectionStateResultDAO.getByPartyIdElectionIdAndStateId(partyId, electionId, stateId);
+		 if(partyElectionResultsList != null && partyElectionResultsList.size() > 0){
+		  return partyElectionResultsList.get(0);
+		 }
+		}
+		return null;
+	}
+
+
+	public PartyElectionStateResult savePartyElectionResultForAPartyForAParliamentElectionStateLevel(
+			Long electionId, Long partyId, Long stateId) {
+		log.debug("Inside savePartyElectionResultForAPartyForAElectionDistrictLevel()");
+		PartyElectionStateResult partyElectionStateResult = null;
+		List<Nomination> nominations = null;
+		Election election = null;
+		Party party = null;
+		State state = null;
+		Long totalSeatsWon = new Long(0);
+		Long totalSecondPositions = new Long(0);
+		Long totalThirdPositions = new Long(0);
+		Long totalFourthPositions = new Long(0);
+		Long totalNthPositions = new Long(0);
+		Long totalConstiParticipated = new Long(0);
+		Double totalVotesEarned = new Double(0);
+		Double totalValidVotes = new Double(0);
+		Double totalVotesPercentage = new Double(0);
+		Long completeValidVotes = new Long(0);
+		Double completeVotesPercent = new Double(0);
+		
+		try{
+			if(electionId != null && partyId != null && stateId != null){
+				nominations = nominationDAO.findByElectionIdAndPartyIdStateId(electionId, partyId, stateId);
+				election = electionDAO.get(electionId);
+				party = partyDAO.get(partyId);
+				state = stateDAO.get(stateId);
+								
+				if(nominations != null && nominations.size() > 0 && election != null && party != null && state != null){
+					completeValidVotes = getCompleteValidVotes(electionId);
+					for(Nomination nominationForParty:nominations){
+						if(nominationForParty.getParty().getPartyId().equals(partyId)){
+							Long candidRank = nominationForParty.getCandidateResult().getRank();
+							Double votesEarned = nominationForParty.getCandidateResult().getVotesEarned();
+							Double validVotes = nominationForParty.getConstituencyElection().getConstituencyElectionResult().getValidVotes();
+							totalVotesEarned+=votesEarned;
+							totalValidVotes+=validVotes;
+							
+							totalConstiParticipated++;
+							if(candidRank.equals(new Long(1)))
+							totalSeatsWon++;
+							else if(candidRank.equals(new Long(2)))
+							totalSecondPositions++;
+							else if(candidRank.equals(new Long(3)))
+							totalThirdPositions++;	
+							else if(candidRank.equals(new Long(4)))
+							totalFourthPositions++;
+							else if(candidRank > new Long(4))
+							totalNthPositions++;
+						}
+					}
+					totalVotesPercentage = new BigDecimal((totalVotesEarned*100)/totalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					completeVotesPercent = new BigDecimal((totalVotesEarned*100)/completeValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					partyElectionStateResult = savePartyElectionStateResult(election,party,state,totalSeatsWon,totalSecondPositions,totalThirdPositions,totalFourthPositions,totalNthPositions,totalConstiParticipated,totalVotesPercentage,completeVotesPercent,totalVotesEarned,totalValidVotes,completeValidVotes.doubleValue());
+				}	
+			}
+		}catch(Exception ex){
+			log.debug("Exception raised ::" + ex);
+		}
+	return partyElectionStateResult;
+	}
+	
+	/*
+	 * 
+	 */
+	public PartyElectionStateResult savePartyElectionStateResult(final Election election,final Party party,final State state,final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesGained,final Double totalValidVotes,final Double completeConstiValidVotes){
+		
+		PartyElectionStateResult partyElectionStateResultFinal = (PartyElectionStateResult)transactionTemplate.execute(new TransactionCallback() {
+
+			public Object doInTransaction(TransactionStatus status) {
+				PartyElectionStateResult partyElectionStateResult = null;
+				try{
+					java.util.Date updatedDate = new java.util.Date();
+					String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+					SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+					String strDateNew = sdf.format(updatedDate) ;
+					updatedDate = sdf.parse(strDateNew);
+					
+					partyElectionStateResult = new PartyElectionStateResult();
+					partyElectionStateResult.setParty(party);
+					partyElectionStateResult.setElection(election);
+					partyElectionStateResult.setState(state);
+					partyElectionStateResult.setTotalSeatsWon(totalSeatsWon.toString());
+					partyElectionStateResult.setSecondPosWon(secPos.toString());
+					partyElectionStateResult.setThirdPosWon(thirdPos.toString());
+					partyElectionStateResult.setFourthPosWon(fourthPos.toString());
+					partyElectionStateResult.setNthPosWon(nthPos.toString());
+					partyElectionStateResult.setTotalVotesGained(totalVotesGained);
+					partyElectionStateResult.setTotalValidVotes(totalValidVotes);
+					partyElectionStateResult.setCompleteConstiValidVotes(completeConstiValidVotes);
+					partyElectionStateResult.setCompleteVotesPercent(completeVotesPercent.toString());
+					partyElectionStateResult.setVotesPercentage(totalVotesPercentage.toString());
+					partyElectionStateResult.setTotalConstiParticipated(totConstiParticipated.toString());
+					partyElectionStateResult.setLastUpdated(updatedDate);
+					
+					partyElectionStateResult = partyElectionStateResultDAO.save(partyElectionStateResult);
+					
+				}catch(Exception ex){
+					ex.printStackTrace();
+		        	log.debug("Exception Raised : " + ex);
+		        	status.setRollbackOnly();
+				}
+			 return partyElectionStateResult;
+			}
+			
+		});
+	  return partyElectionStateResultFinal;
 	}
 	
 }
