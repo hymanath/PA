@@ -91,5 +91,13 @@ public interface IConstants {
 	public final static String CENSUS_VILLAGE_LEVEL = "VILLAGE";
 	public final static String CENSUS_WARD_LEVEL = "WARD";
 	
+	//comments data constants
+	public final static String CANDIDATE_COMMENTS_ALL="CANDIDATE_COMMENTS_ALL";
+	public final static String CANDIDATE_COMMENTS_CONSTITUENCY="CANDIDATE_COMMENTS_CONSTITUENCY";
+	public final static String CANDIDATE_COMMENTS_ALL_CONSTITUENCY="CANDIDATE_COMMENTS_ALL_CONSTITUENCY";
+	public final static String PARTY_COMMENTS_ALL="PARTY_COMMENTS_ALL";
+	public final static String PARTY_COMMENTS_ELECTION="PARTY_COMMENTS_ELECTION";
+	public final static String CONSTITUENCY_COMMENTS_ALL="CONSTITUENCY_COMMENTS_ALL";
+	public final static String CONSTITUENCY_COMMENTS_ELECTION="CONSTITUENCY_COMMENTS_ELECTION";
 
 }
