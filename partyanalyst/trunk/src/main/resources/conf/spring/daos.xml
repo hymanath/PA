@@ -79,6 +79,10 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean name="partyElectionStateResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyElectionStateResultDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean name="partyDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
