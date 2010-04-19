@@ -28,6 +28,7 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private Long electionID;
 	private Long electionTypeID;
 	private String partyFlag;
+	private Long partyId;
 	private int zptcCount;
 	private int mptcCount;
 	private Float votesPolled;
@@ -54,6 +55,13 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	}
 	public List<SelectOptionVO> getPartyInfo() {
 		return partyInfo;
+	}
+	
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
 	}
 	public void setPartyInfo(List<SelectOptionVO> partyInfo) {
 		this.partyInfo = partyInfo;
