@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
@@ -83,10 +84,24 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testTotalValidVotesForMandal(){
 		List list = constituencyElectionDAO.getTotalValidVotesParticularElectionYear(IConstants.ZPTC_ELECTION_TYPE,"2001",19l);
 		assertEquals(1, list.size());
-	}*/
+	}
 	
 	public void testConstituenciesForADistrictForAnElectionYear(){
 		List  list = constituencyElectionDAO.findConstituencyByDistrictAndStateIds(19l,1l,"2009");
 		assertEquals(1, list.size());	
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testFindElection(){
+		List election = constituencyElectionDAO.findElectionIdForAParticularElectionTypeAndYearAndConstituency("Assembly", "2009", new Long(232));
+		if(election != null){
+			Object params = (Object)election.get(0);
+			Election elec = (Election)params;
+			
+			System.out.println("Election Id   :" + elec.getElectionId());
+			System.out.println("Election Scope:" + elec.getElectionScope().getElectionType().getElectionType());
+			System.out.println("Election Year :" + elec.getElectionYear());
+		}
 	}
 }

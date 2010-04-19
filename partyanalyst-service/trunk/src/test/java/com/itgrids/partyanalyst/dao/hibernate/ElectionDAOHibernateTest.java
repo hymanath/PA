@@ -17,7 +17,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	private IElectionDAO electionDAO; 
 	
 	//mock data for add and remove test cases
-	Election election1 = new Election(4L,null,new Date(27-8-2009),new Date(27-8-2010),"27-08-2009","2010",null,null,null);
+	Election election1 = new Election(4L,null,new Date(27-8-2009),new Date(27-8-2010),"27-08-2009","2010",null,null,null,null,null);
 	
 	
 	public void setElectionDAO(IElectionDAO electionDAO){
