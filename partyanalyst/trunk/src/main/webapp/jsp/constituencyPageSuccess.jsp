@@ -63,10 +63,36 @@
 
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAmy8d-PXO6ktmh6sCNFXdwRSqcWSqDo-rwCiW8VjO_0U_k7HAuxQBSweyAZ1v5ozDSPMDKAFtPwSrGw&sensor=true"
             type="text/javascript"></script>
-
-<script type="text/javascript">
+<style type="text/css">
+	.candidateDetailsStyle{
+			background-color:#EFF3F7;
+			border-color:#96B4D3;
+			border-style:solid;
+			border-width:1px 1px 1px 1px;
+			margin-bottom:5px;margin-left:0;
+			margin-top:0;
+			padding:4px;
+			color:#247CD4;
+			font-size:13px;
+			font-weight:bold;
+		}
+</style>
+<script type="text/javascript"><!--
 	var constituencyResults;
 	var parliamentResult;
+	var tehsilElections={
+			zptcElectionYears:[],
+			mptcElectionYears:[]
+	};
+	var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear,mptcElectionTypeId=3,zptcElectionTypeId=4,mptcElectionType="MPTC",zptcElectionType="ZPTC";
+	var tehsilDetails={
+			zptcArray:[],
+			mptcArray:[],
+			partyArray:[],
+			partyMptcArray:[]
+	};
+	var constituencyId = ${constituencyId};
+	
 	function callAjax(jsObj,url)
 	{					
  		var callback = {			
@@ -93,8 +119,13 @@
 								{		
 									parliamentResult = myResults;
 									buildParliamentResults(myResults);			
-								}
-										
+								}else if(jsObj.task == "getZptcElectionResults")
+								{		
+										buildZptcResults(myResults);		
+								}else if(jsObj.task == "getMptcElectionResults")
+								{		
+									buildMptcResults(myResults);	
+								}		
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
 							}  
@@ -108,6 +139,166 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
+	function initializeResultsTableForParty(){
+		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.partyArray);
+		resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		resultsDataSourceForTehsil.responseSchema = {
+			fields : [ {
+				key : "partyName"
+			}, {
+				key : "participatedSeats"
+			}, {
+				key : "seatsWonByParty"
+			}, {
+				key : "percentageOfVotesWonByParty"
+			}]
+		};
+	
+		var resultsColumnDefsForTehsil = [ {
+			key : "partyName",
+			label : "Party Name",
+			sortable : true
+		}, {
+			key : "participatedSeats",
+			label : "Participated Seats",
+			sortable : true
+		}, {
+			key : "seatsWonByParty",
+			label : "Seats Won",
+			sortable : true
+		}, {
+			key : "percentageOfVotesWonByParty",
+			label : "Percentage Of Votes Won",
+			sortable : true
+		} ];
+
+		var myConfigsForTehsil = {
+	    paginator : new YAHOO.widget.Paginator({
+	        rowsPerPage: 10 
+	    })
+	};
+				
+		myDataTableForParty = new YAHOO.widget.DataTable("zptcPartyTrendsDetailsDiv",resultsColumnDefsForTehsil, resultsDataSourceForTehsil,myConfigsForTehsil);
+		 
+		return {
+			oDS:resultsDataSourceForTehsil, 
+			oDT:myDataTableForParty			
+		};  		
+	}
+	function initializeMptcResultsTableForParty(){
+		
+		var resultsDataSourceForTehsil = new YAHOO.util.DataSource(tehsilDetails.partyMptcArray);
+		resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		resultsDataSourceForTehsil.responseSchema = {
+			fields : [ {
+				key : "partyName"
+			}, {
+				key : "participatedSeats"
+			}, {
+				key : "seatsWonByParty"
+			}, {
+				key : "percentageOfVotesWonByParty"
+			}]
+		};
+	
+		var resultsColumnDefsForTehsil = [ {
+			key : "partyName",
+			label : "Party Name",
+			sortable : true
+		}, {
+			key : "participatedSeats",
+			label : "Participated Seats",
+			sortable : true
+		}, {
+			key : "seatsWonByParty",
+			label : "Seats Won",
+			sortable : true
+		}, {
+			key : "percentageOfVotesWonByParty",
+			label : "Percentage Of Votes Won",
+			sortable : true
+		} ];
+
+		var myConfigsForTehsil = {
+	    paginator : new YAHOO.widget.Paginator({
+	        rowsPerPage: 10 
+	    })
+	};
+				
+		myDataTableForMptcParty = new YAHOO.widget.DataTable("mptcPartyTrendsDetailsDiv",resultsColumnDefsForTehsil, resultsDataSourceForTehsil,myConfigsForTehsil);
+
+		return {
+			oDS:resultsDataSourceForTehsil, 
+			oDT:myDataTableForMptcParty			
+		}; 		
+	}
+	
+	function redirectZptcCandidateLink(){
+		 var browser1 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
+		 browser1.focus();
+	}
+
+	function redirectMptcCandidateLink(){
+		 var browser2 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
+		 browser2.focus();
+	}
+	function buildZptcResults(results){
+		assignToPartyDataArray = new Array();
+		
+		var candLink = document.getElementById("zptcCandidateLink");
+		var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Details</a>';
+		candLink.innerHTML = linkRef;
+		
+		for(var i in results)
+		{		
+			var problemObj=		
+			 {		
+					partyName:results[i].partyName,
+					participatedSeats:results[i].participatedSeats,
+					seatsWonByParty:results[i].seatsWonByParty,
+					percentageOfVotesWonByParty:results[i].percentageOfVotesWonByParty				
+			 };
+			
+			assignToPartyDataArray.push(problemObj);
+			tehsilDetails.partyArray=assignToPartyDataArray;	
+		}
+	
+		var emptyArr = new Array();
+	    if(results.length == 0)
+		{	tehsilDetails.partyArray = emptyArr;				
+		}
+	    initializeResultsTableForParty();
+	}
+
+	function buildMptcResults(results){
+		assignToPartyDataArray = new Array();
+
+		var candLink = document.getElementById("mptcCandidateLink");
+		var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Details</a>';
+		candLink.innerHTML = linkRef;
+		
+		for(var i in results)
+		{		
+			var problemObj=		
+			 {		
+					partyName:results[i].partyName,
+					participatedSeats:results[i].participatedSeats,
+					seatsWonByParty:results[i].seatsWonByParty,
+					percentageOfVotesWonByParty:results[i].percentageOfVotesWonByParty				
+			 };
+			
+			assignToPartyDataArray.push(problemObj);
+			tehsilDetails.partyMptcArray=assignToPartyDataArray;	
+		}
+	
+		var emptyArr = new Array();
+	    if(results.length == 0)
+		{	
+	    	tehsilDetails.partyMptcArray = emptyArr;				
+		}
+	    initializeMptcResultsTableForParty(); 
+	}	
+		
 	function buildParliamentResults(){
 		var parliamentDiv = document.getElementById("parliamentElectionResultsDiv");
 		if(parliamentDiv.style.display == "none")
@@ -426,6 +617,72 @@ function getVotingTrendzForyear()
 			var url = "<%=request.getContextPath()%>/getParliamentMandalResultsAction.action?"+rparam;
 			callAjax(jsObj, url);
 		}
+
+
+		function getZptcPartyDetails(elecYear){
+			zptcElectionYear = elecYear;
+			var jsObj = {
+					constituencyId:${constituencyId},
+					electionYear:elecYear,
+					task:"getZptcElectionResults"
+				};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/constituencyWiseMandalElectionsResultAction.action?"+rparam;
+			callAjax(jsObj, url);
+		}
+
+		function getMptcPartyDetails(elecYear){
+			mptcElectionYear = elecYear;
+			var jsObj = {
+					constituencyId:${constituencyId},
+					electionYear:elecYear,
+					task:"getMptcElectionResults"
+				};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/constituencyWiseMandalElectionsResultAction.action?"+rparam;
+			callAjax(jsObj, url);
+		}
+		
+		function getAllZptcYears()
+		{	 			
+			var imgElmt = document.getElementById("zptcPartyVotingTrendz_head");
+			var electionDetails="";
+			electionDetails +="ConstituencyWise Zptc Partys Voting Trends";
+			electionDetails +="<br/><br/>";
+			imgElmt.innerHTML = electionDetails;
+
+
+			var selectDiv = document.getElementById("zptcElectionIdsSelectDiv");
+			var electionYearSelect="";
+			electionYearSelect+="<b>Select a Election Year :</b>";
+			electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="systemGroups" onchange="getZptcPartyDetails(this.options[this.selectedIndex].value)">';
+			for(var i in tehsilElections.zptcElectionYears)
+			{
+				electionYearSelect+='<option value='+tehsilElections.zptcElectionYears[i].id+'>'+tehsilElections.zptcElectionYears[i].value+'</option>';
+			}
+			electionYearSelect+='</select>';
+			selectDiv.innerHTML = electionYearSelect;
+
+
+			var imgElmt = document.getElementById("mptcPartyVotingTrendz_head");
+			var electionDetails="";
+			electionDetails +="ConstituencyWise Mptc Partys Voting Trends";
+			electionDetails +="<br/><br/>";
+			imgElmt.innerHTML = electionDetails;
+
+
+			var selectDiv = document.getElementById("mptcElectionIdsSelectDiv");
+			var electionYearSelect="";
+			electionYearSelect+="<b>Select a Election Year :</b>";
+			electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="systemGroups" onchange="getMptcPartyDetails(this.options[this.selectedIndex].value)">';
+			for(var i in tehsilElections.zptcElectionYears)
+			{
+				electionYearSelect+='<option value='+tehsilElections.mptcElectionYears[i].id+'>'+tehsilElections.mptcElectionYears[i].value+'</option>';
+			}
+			electionYearSelect+='</select>';
+			selectDiv.innerHTML = electionYearSelect;
+		
+		}
 		
 		function buildElectionsSelectBox(myResults){
 			var selectDiv = document.getElementById("electionIdsSelectDiv");
@@ -462,7 +719,7 @@ function getVotingTrendzForyear()
 			getConstituencyResults(myResults[0].name);
 		}
 
-</script>
+--></script>
 </head>
 <body onLoad="getString()">
 
@@ -566,10 +823,11 @@ function getVotingTrendzForyear()
 						</div>	
 					</div>
 				</div>
-			</td>
-			
+			</td>			
 		</tr>
-		<tr>
+		
+		
+		<tr>		
 		<td colspan="2">
 		<div class="rounded" style="width: 910px;">
 			<div class="corner topLeft"></div>
@@ -591,6 +849,40 @@ function getVotingTrendzForyear()
 			</div>
 		</div>
 		</td>
+		</tr>
+		
+		
+		<tr>
+			<td colspan="2">
+			<div class="rounded" style="width: 910px;">
+			<div class="corner topLeft"></div>
+			<div class="corner topRight"></div>
+			<div class="corner bottomLeft"></div>
+			<div class="corner bottomRight"></div>
+			<table><tr>				
+				<td><div id="zptcPartyVotingTrendz_head" class="layoutHeadersClass"></div>
+					<table><tr>
+						   <td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
+						   <td><div id="zptcCandidateLink"></div></td>
+					</tr></table>
+					<tr><td><div id="zptcPartyTrendsDetailsDiv"></div></td></tr>
+				</td></tr></table>	
+				<table>
+						<tr>
+							<td><div id="mptcPartyVotingTrendz_head" class="layoutHeadersClass"></div></td>
+						</tr>
+						<table><tr>
+							<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
+							<td><div id="mptcCandidateLink"></div></td>
+						</tr></table>
+						<table><tr>
+							<td><div id="mptcPartyTrendsDetailsDiv"></div></td>
+						</tr>
+						</table>
+					</table>
+				
+			</div>
+			</td>
 		</tr>		
 	</table>	
 </div>
@@ -871,12 +1163,26 @@ function getVotingTrendzForyear()
 			vTObj.previousElectionYears.parliamentElections.push(parElecObj);
 		</c:forEach>
 
-		
+		<c:forEach var="zptcElectionYears"  items="${zptcElectionYears}" >
+		var ob={
+					id:'${zptcElectionYears.id}',
+					value:'${zptcElectionYears.name}'
+				};
+		tehsilElections.zptcElectionYears.push(ob);	
+		</c:forEach>
 
+		<c:forEach var="mptcElectionYears"  items="${mptcElectionYears}" >
+		var ob={
+					id:'${mptcElectionYears.id}',
+					value:'${mptcElectionYears.name}'
+				};
+		tehsilElections.mptcElectionYears.push(ob);	
+		</c:forEach>
+	getAllZptcYears();
 	initializeConstituencyPage();
-
-	  getConstituencyElections();
-
+	getConstituencyElections();
+	getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
+	getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
 </script>
 </body>
 </html>
