@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 import com.itgrids.partyanalyst.model.PartyElectionResult;
+import com.itgrids.partyanalyst.model.PartyElectionStateResult;
 import com.itgrids.partyanalyst.model.State;
 
 public interface IStaticDataService {
@@ -56,6 +57,10 @@ public interface IStaticDataService {
 	public PartyElectionResult getPartyElectionResultsForAParty(Long electionId,Long partyId);
 	
 	public PartyElectionDistrictResult getPartyElectionResultsForAPartyDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId);
+	
+	public PartyElectionStateResult getPartyElectionResultsForAPartyStateLevelInParliamentElection(Long electionId,Long partyId,Long stateId);
+	
+	public PartyElectionStateResult savePartyElectionResultForAPartyForAParliamentElectionStateLevel(Long electionId,Long partyId,Long stateId);
 	
 	public PartyElectionResult savePartyElectionResultForAPartyForAElection(Long electionId,Long partyId);
 	
