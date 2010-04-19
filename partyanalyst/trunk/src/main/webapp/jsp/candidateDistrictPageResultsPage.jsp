@@ -199,7 +199,6 @@ function showAllCandidates(results)
 {
 	 var imgElmt = document.getElementById("showParties");
 	 imgElmt.innerHTML="";
-	console.log(results);
 		assignToMptcDataArray = new Array();
 		for(var i in results.allVotersDetails)
 		{		
