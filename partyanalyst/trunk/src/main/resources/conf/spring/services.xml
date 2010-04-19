@@ -78,8 +78,8 @@
 	<bean name="statePageService" class="com.itgrids.partyanalyst.service.impl.StatePageService" >
 		<property name="stateDAO" ref="stateDAO" />		
 		<property name="electionObjectsDAO" ref="electionObjectsDAO" />	
-		<property name="censusDAO" ref="censusDAO" />	
-		<property name="stateElectionResultsService" ref="stateElectionResultsService" />
+		<property name="censusDAO" ref="censusDAO" />
+		<property name="stateElectionResultsService" ref="stateElectionResultsService" />		
 	</bean>
 	
 	<bean name="constituencyPageService" class="com.itgrids.partyanalyst.service.impl.ConstituencyPageService" >
@@ -370,6 +370,18 @@
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 	</bean>
 	
+	<bean name="commentsDataService" class="com.itgrids.partyanalyst.service.impl.CommentsDataService">
+	    <property name="partyDAO" ref="partyDAO"/>
+	    <property name="electionDAO" ref="electionDAO" />
+	    <property name="nominationDAO" ref="nominationDAO" />	
+	    <property name="constituencyDAO" ref="constituencyDAO" />
+	    <property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+	    <property name="transactionTemplate" ref="transactionTemplate" />
+	    <property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
+	    <property name="commentCategoryConstituencyDAO" ref="commentCategoryConstituencyDAO" />
+	    <property name="commentCategoryPartyDAO" ref="commentCategoryPartyDAO" />
+	</bean>
+	
 	<bean id="villageBoothDataPopulationService" class="com.itgrids.partyanalyst.service.impl.VillageBoothDataPopulationService" >
     	<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
     	<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
@@ -379,5 +391,7 @@
     	<property name="hamletDAO" ref="hamletDAO" />
     	<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
+	
+	
 </beans>		
 		
