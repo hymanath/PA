@@ -242,5 +242,18 @@
 	<bean id="groupDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<!-- Comments DataModel -->
+	<bean id="commentDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentDataDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="commentCategoryCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryCandidateDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="commentCategoryConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryConstituencyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="commentCategoryPartyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryPartyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans>		
