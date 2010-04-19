@@ -39,10 +39,12 @@ import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
+import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsTrendzVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
@@ -82,10 +84,51 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private IElectionTrendzService electionTrendzService;
 	 private List<SelectOptionVO> electionIdsAndYears;
 	 private static final Logger log = Logger.getLogger(ConstituencyPageAction.class);
-	 
+	 private List<SelectOptionVO> zptcElectionYears;
+	 private List<SelectOptionVO> mptcElectionYears;
+	 private Long zptcElectionId=4l; 
+	 private Long mptcElectionId=3l;
+	 private List<TeshilPartyInfoVO> constituencyWiseAllPartyTrends;
 	 JSONObject jObj = null;
 	 private String task;
-	
+	 HttpServletRequest request;
+	 HttpServletResponse response;
+	 private MandalAllElectionDetailsVO mandalAllElectionDetailsVO;
+	 private String constId,eleType,eleYear;
+	 
+	public String getConstId() {
+		return constId;
+	}
+
+	public void setConstId(String constId) {
+		this.constId = constId;
+	}
+
+	public String getEleType() {
+		return eleType;
+	}
+
+	public void setEleType(String eleType) {
+		this.eleType = eleType;
+	}
+
+	public String getEleYear() {
+		return eleYear;
+	}
+
+	public void setEleYear(String eleYear) {
+		this.eleYear = eleYear;
+	}
+
+	public MandalAllElectionDetailsVO getMandalAllElectionDetailsVO() {
+		return mandalAllElectionDetailsVO;
+	}
+
+	public void setMandalAllElectionDetailsVO(
+			MandalAllElectionDetailsVO mandalAllElectionDetailsVO) {
+		this.mandalAllElectionDetailsVO = mandalAllElectionDetailsVO;
+	}
+
 	public String getTask() {
 		return task;
 	}
@@ -131,6 +174,19 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.constituencyName = constituencyName;
 	}
 
+	public List<TeshilPartyInfoVO> getConstituencyWiseAllPartyTrends() {
+		return constituencyWiseAllPartyTrends;
+	}
+
+	public void setConstituencyWiseAllPartyTrends(
+			List<TeshilPartyInfoVO> constituencyWiseAllPartyTrends) {
+		this.constituencyWiseAllPartyTrends = constituencyWiseAllPartyTrends;
+	}
+
+	public static Logger getLog() {
+		return log;
+	}
+
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
@@ -173,8 +229,22 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.electionIdsAndYears = electionIdsAndYears;
 	}
 
-	HttpServletRequest request;
-	HttpServletResponse response;
+	public List<SelectOptionVO> getZptcElectionYears() {
+		return zptcElectionYears;
+	}
+
+	public void setZptcElectionYears(List<SelectOptionVO> zptcElectionYears) {
+		this.zptcElectionYears = zptcElectionYears;
+	}
+
+	public List<SelectOptionVO> getMptcElectionYears() {
+		return mptcElectionYears;
+	}
+
+	public void setMptcElectionYears(List<SelectOptionVO> mptcElectionYears) {
+		this.mptcElectionYears = mptcElectionYears;
+	}
+
 	HttpSession session;
 	private ServletContext context;
 	IConstituencyPageService constituencyPageService;
@@ -276,6 +346,10 @@ public class ConstituencyPageAction extends ActionSupport implements
 	public String execute() throws Exception{
 		
 				
+		zptcElectionYears = staticDataService.getAllElectionYearsForATeshil(zptcElectionId);
+		
+		mptcElectionYears = staticDataService.getAllElectionYearsForATeshil(mptcElectionId);
+		
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId);
 				
 		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
@@ -488,7 +562,11 @@ public class ConstituencyPageAction extends ActionSupport implements
       return dataset;
   }
   
-  private CategoryDataset createDatasetForCandTrendz(String partyName,String completeVotesPercent,String maleVotesPercent,String femaleVotesPercent,String maleOrFemaleVotesPercent) {
+  public IConstituencyPageService getConstituencyPageService() {
+	return constituencyPageService;
+}
+
+private CategoryDataset createDatasetForCandTrendz(String partyName,String completeVotesPercent,String maleVotesPercent,String femaleVotesPercent,String maleOrFemaleVotesPercent) {
 		
 	     final String category1 = "Male %";
 	     final String category2 = "Female %";
@@ -518,6 +596,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		return Action.SUCCESS;
   }
   
+    
   public String getNextPrevCandidateVotingTrendz()
   {
 		String param = null;
@@ -623,6 +702,77 @@ public class ConstituencyPageAction extends ActionSupport implements
 	  electionIdsAndYears = staticDataService.getElectionIdsAndYearsForConstituency(jObj.getLong("constituencyId"));
 	  return SUCCESS;
   }
+  
+  public String getPartyWiseConstituencyZptcOrMptcElectionTrends(){
+	  if(task != null){
+	  	String param=null;		
+	    param = getTask();		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+			
+			if(jObj.getString("task").equalsIgnoreCase("getZptcElectionResults")){
+				try{
+					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.ZPTC_ELECTION_TYPE);
+					}catch(Exception ex){
+					log.debug("No data is available...");
+				}
+			}else if(jObj.getString("task").equalsIgnoreCase("getMptcElectionResults")){
+				try{
+					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.MPTC_ELECTION_TYPE);
+					}catch(Exception ex){
+					log.debug("No data is available...");
+				}
+			}			
+			}catch(ParseException e) {
+			e.printStackTrace();
+			}
+	  }
+	  return SUCCESS;
+}
+  
+  public String getCandidateWiseConstituencyZptcOrMptcElectionTrends(){
+
+	    if(task != null){
+			try {
+				jObj = new JSONObject(getTask());
+				System.out.println(jObj);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}	
+			log.debug("Task::"+jObj.getString("task"));
+
+		if(jObj.getString("task").equalsIgnoreCase("getAllCandidates")){
+			try{
+				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"));
+				}catch(Exception ex){
+				log.debug("No data is available...");
+			}
+		}else if(jObj.getString("task").equalsIgnoreCase("getWinners")){
+			try{
+				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"));
+				}catch(Exception ex){
+				log.debug("No data is available...");
+			}
+		}else if(jObj.getString("task").equalsIgnoreCase("getPartyWise")){
+			try{
+				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"));
+				}catch(Exception ex){
+				log.debug("No data is available...");
+			}
+		}else if(jObj.getString("task").equalsIgnoreCase("getParties")){
+			try{
+				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"));
+				}catch(Exception ex){
+				log.debug("No data is available...");
+			}
+		}	
+	    }
+	  return SUCCESS;
+}
+  
+  
+  
   
   public String getParliamentConstituencyAssemblyWiseResults(){
 	  
