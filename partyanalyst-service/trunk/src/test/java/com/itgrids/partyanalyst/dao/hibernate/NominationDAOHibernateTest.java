@@ -20,14 +20,18 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyRebelCandidateDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
+import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyRebelCandidate;
+import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -39,7 +43,8 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	private IConstituencyDAO constituencyDAO;
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
-
+	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService; 
+	
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -226,7 +231,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	}
 	
 
-	*/
+	
 	public void testGetAllConstiteunciesInfoForPartyInTehsil(){
 		List list = nominationDAO.getAllConstiteunciesInfoForPartyInTehsil(844l, 24l, 5l);
 		System.out.println(list.size());
@@ -242,7 +247,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}
 	
-	/*public void testConstituencyCandidatesInfo(){
+	public void testConstituencyCandidatesInfo(){
 		List result = nominationDAO.getCandidatesInfoForTheGivenConstituency(3358l,"2004",IConstants.ASSEMBLY_ELECTION_TYPE);
 		Assert.assertEquals(1, result.size());	
 	}	
@@ -253,7 +258,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		List mptcCount = nominationDAO.getMptcCountInADistrict(19l,IConstants.MPTC_ELECTION_TYPE,IConstants.MPTC_ELECTION_TYPE,1L);
 		Assert.assertEquals(1, mptcCount.size());	
 	}
-	*/
+	
 	public void testFindCandidatesByDistrictId(){
 		List result = nominationDAO.findAllCandidatesForAnElectionByElectionYearByDistrictId(19l,IConstants.ASSEMBLY_ELECTION_TYPE);
 		Assert.assertEquals(1, result.size());	
@@ -320,8 +325,13 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			 List result = nominationDAO.getAllPartysForAParticularElectionYear(19l,IConstants.MPTC_ELECTION_TYPE,"2001");
 			 Assert.assertEquals(1, result.size());	
 	}
+*/
 	
+	public void testDynamicQuery(){		
+		StringBuilder tehsilIds = new StringBuilder();
+		tehsilIds.append(",").append(835l).append(",").append(836l).append(",").append(843l).append(",").append(844l);
+		List result =getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),"partyWise",1l,62l,IConstants.ZPTC_ELECTION_TYPE,"2006");
+	}
 	
-
-
 }
+
