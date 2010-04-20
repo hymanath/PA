@@ -18,7 +18,7 @@ public class ElectionScopeDAOHibernateTest extends BaseDaoTestCase {
 		this.electionScopeDAO = electionScopeDAO;
 	}
 	
-	@Test
+	/*@Test
 	public void testFindByTypeIdCountryIdStateId(){
 		List<ElectionScope> actualResult =electionScopeDAO.findByTypeIdCountryIdStateId(new Long(2),new Long(1),new Long(1));
 		System.out.println(actualResult.get(0).getElectionScopeId());
@@ -29,5 +29,10 @@ public class ElectionScopeDAOHibernateTest extends BaseDaoTestCase {
 	public void testStates(){
 		List<ElectionScope> electionScopes = electionScopeDAO.findByPropertyElectionTypeId(2l);
 		assertEquals(2l,electionScopes.size());
+	}*/
+	
+	public void testGetElectionTypes(){
+		List list = electionScopeDAO.getElectionScopes();
+		System.out.println(list.size());
 	}
 }

@@ -1,35 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-
-import com.itgrids.partyanalyst.dao.IElectionScopeDAO; 
-import com.itgrids.partyanalyst.model.Country;
-import com.itgrids.partyanalyst.model.ElectionScope;
-import com.itgrids.partyanalyst.model.ElectionType;
-import com.itgrids.partyanalyst.model.State;
-/**
- * 
- * @author Narender Akula
- *
- */
-
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
-import org.hibernate.criterion.Expression;
-import org.springframework.orm.hibernate3.HibernateCallback;
 
-import com.itgrids.partyanalyst.dao.IElectionScopeDAO; 
+import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.model.Country;
-import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.State;
@@ -91,6 +68,10 @@ public class ElectionScopeDAO extends GenericDaoHibernate<ElectionScope, Long> i
 		Long[] params = {electionTypeId,stateId};
 		List<ElectionScope> list = getHibernateTemplate().find("from ElectionScope as model where model.electionType.electionTypeId=? and model.state.stateId = ?",params);
 		return list;
+	}
+
+	public List getElectionScopes() {
+		return getHibernateTemplate().find("select model.electionScopeId, model.electionType.electionType from ElectionScope model");
 	}
 
 }

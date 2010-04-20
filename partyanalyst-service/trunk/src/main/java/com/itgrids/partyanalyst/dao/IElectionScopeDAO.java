@@ -44,4 +44,6 @@ public interface IElectionScopeDAO extends GenericDao<ElectionScope, Long>{
 	public ElectionScope findByElectionTypeCountryState(ElectionType electionType, Country country,State state);
 	public List<ElectionScope> findByPropertyElectionTypeIdandStateId(Long electionTypeId,Long stateId);
 
+	public List getElectionScopes();
+
 }

@@ -25,7 +25,7 @@ public class PartyElectionDistrictResultDAOHibernateTest extends BaseDaoTestCase
 		this.partyElectionDistrictResultDAO = partyElectionDistrictResultDAO;
 	}
 	
-	@Test
+	/*@Test
 	public void testFindPartyElectionDistrictResult(){
 		List<PartyElectionDistrictResult> partyElectionDistrictResult = partyElectionDistrictResultDAO.getByPartyIdElectionIdAndDistrict(new Long(1), new Long(24), new Long(1), new Long(19));
 		if(partyElectionDistrictResult != null){
@@ -34,6 +34,12 @@ public class PartyElectionDistrictResultDAOHibernateTest extends BaseDaoTestCase
 				Assert.assertEquals("5", resultDetails.getTotalSeatsWon());
 			}
 		}
+	}*/
+	
+	public void testGetAllElectionResultsInDistrictForElectionType(){
+		List list = partyElectionDistrictResultDAO.getAllElectionResultsInDistrictForElectionType(2l, 19l);
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]+"\t"+values[6]);
 	}
 	
 }
