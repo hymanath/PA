@@ -300,15 +300,27 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 				session.setAttribute("partyResultsChartName", partyResultsChartName);
 				electionCompleteDetailsVO.setStatewiseElectionResultsChartName(partyResultsChartName);	
 				
+				
+				
 				//district level results chart with alliance parties grouped
+				String titleValue = "";
+				if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+				titleValue = "All Parties State Wise Election Results With Alliance Parties";
+				else
+				titleValue = "All Parties District Wise Election Results With Alliance Parties";
 				if(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults() != null && electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults().size() > 0){
-				String partyResultsDistrictWise = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults(),"With_Alliance","All Parties District Wise Election Results With Alliance Parties");
+				String partyResultsDistrictWise = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults(),"With_Alliance",titleValue);
 				electionCompleteDetailsVO.setDistrictWiseElecResultsChartName(partyResultsDistrictWise);
 				}
 				
 				//district level results line chart for parties without alliance
+				String titleVal = "";
+				if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+				titleVal = "All Parties State Wise Election Results Without Grouping Alliance Parties";
+				else
+				titleVal = "All Parties District Wise Election Results Without Grouping Alliance Parties";
 				if(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc() != null && electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc().size() > 0){
-				String partyResultsDistrictLevelChartWithoutAllianc = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc(),"Without_Alliance","All Parties District Wise Election Results Without Grouping Alliance Parties");
+				String partyResultsDistrictLevelChartWithoutAllianc = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc(),"Without_Alliance",titleVal);
 				electionCompleteDetailsVO.setPartyResultsDistrictLevelChartWithoutAllianc(partyResultsDistrictLevelChartWithoutAllianc);
 				}
 				
@@ -447,6 +459,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 		 */
 		private CategoryDataset createDataSetForPartyDistrictwiseResults(List<DistrictWisePartyPositionsVO> allPartiesResults){
 			int i=0;
+			List<SelectOptionVO> staticParties = staticDataService.getStaticParties();
 			final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 			for(DistrictWisePartyPositionsVO parties:allPartiesResults){
 				if(i==10)
