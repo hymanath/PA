@@ -676,7 +676,7 @@ function getVotingTrendzForyear()
 		{	 			
 			var imgElmt = document.getElementById("zptcPartyVotingTrendz_head");
 			var electionDetails="";
-			electionDetails +="ConstituencyWise Zptc Partys Voting Trends";
+			electionDetails +="ZPTC &nbsp;Election &nbsp;Voting &nbsp;Trendz";
 			electionDetails +="<br/><br/>";
 			imgElmt.innerHTML = electionDetails;
 
@@ -695,7 +695,7 @@ function getVotingTrendzForyear()
 
 			var imgElmt = document.getElementById("mptcPartyVotingTrendz_head");
 			var electionDetails="";
-			electionDetails +="ConstituencyWise Mptc Partys Voting Trends";
+			electionDetails +="MPTC &nbsp;Election &nbsp;Voting &nbsp;Trendz";
 			electionDetails +="<br/><br/>";
 			imgElmt.innerHTML = electionDetails;
 
