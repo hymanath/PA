@@ -7,14 +7,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cadre Report</title>
-	<!-- YUI Dependency Files-->
 	
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+	<!-- YUI Dependency files (Start) -->
 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -35,9 +29,35 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
-	<script src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
 
-	<!-- YUI Dependency Files-->
+
+
+	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
+
+	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
+
+	<!-- YUI Skin Sam -->
+
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+
+<!-- YUI Dependency files (End) -->
+
+	<script type="text/javascript" src="js/cadreReport/cadreReport.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/cadreReport/cadreReport.css"></link>
+	
 
 	<script type="text/javascript">
 			
@@ -76,93 +96,63 @@
 				}
 			}
 
-			function buildZeroCadreTree(id,val)
-			{
-				var myLabel=val+"-"+id;
-				
-				var tree;
-				var myobj;
-				
-				var divElmt = document.getElementById("zeroCadreInfoDivBody");
-				
-				if(!divElmt)
-					alert("No div element present to create tree");
+			function callAjax(jsObj,url)
+			{					
+				var callback = {			
+							   success : function( o ) {
+									try {
+											myResults = YAHOO.lang.JSON.parse(o.responseText);																	
+											
+											if(jsObj.nodeType == "ZeroLevelCadre")	
+											{
+												buildZeroCadreTable(myResults, myResults.zeroCadresRegion1);
+											}
+											else if(jsObj.nodeType == "RegionLevelCadre")
+											{
+												buildCadreLevelTable(jsObj,myResults.cadreInfo);
+											}																							
+									}catch (e) {   
+										alert("Invalid JSON result" + e);   
+									}  
+							   },
+							   scope : this,
+							   failure : function( o ) {
+											alert( "Failed to load result" + o.status + " " + o.statusText);
+										 }
+							   };
 
-				var childDivElmt = document.createElement('div');
-				childDivElmt.setAttribute('id',val+''+id+'ZeroCadreDiv');
-				divElmt.appendChild(childDivElmt);
-				
-
-				tree = new YAHOO.widget.TreeView(childDivElmt.id);					 
-				tree.setDynamicLoad(loadNodeData);				
-				var rootNode = tree.getRoot(); 				
-
-				myobj = { label: myLabel, labelAccessValue: val,id:id ,type:'ZeroLevelCadre'} ;
-				
-				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);
-				
-
-				tree.render();
+				YAHOO.util.Connect.asyncRequest('GET', url, callback);
 			}
 
-			function buildRegionCadreTree(id,val)
+			function showCadreDetails(id,val,type)
 			{
-				var myLabel=val+"-"+id;
 				
-				var tree;
-				var myobj;
-				var divElmt = document.getElementById("cadreLevelInfoDivBody");
-				
-				if(!divElmt)
-					alert("No div element present to create tree");
-
-				var childDivElmt = document.createElement('div');
-				childDivElmt.setAttribute('id',val+''+id+'RegioncadreDiv');
-				divElmt.appendChild(childDivElmt);
+				var jsObj = {
+								nodevalue:id,
+								nodeLabel:val,
+								nodeType:type
+							};
+				var cadreUrl = "<%=request.getContextPath()%>/cadresInfoAjaxAction.action?cadreRegion="+val+"&cadreId="+id+"&cadreType="+type; 
 				
 
-				tree = new YAHOO.widget.TreeView(childDivElmt.id);				 
-				tree.setDynamicLoad(loadNodeData);				
-				var rootNode = tree.getRoot(); 				
-
-				myobj = { label: myLabel, labelAccessValue: val,id:id ,type:'RegionLevelCadre'} ;
-				
-				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);				
-
-				tree.render();
-			}		
+				callAjax(jsObj,cadreUrl);
+			}
 			
-			function showTree(cType)
-			{
-				//'${userCadresInfoVO.userAccessType}'
-				region = '${userCadresInfoVO.userAccessType}';
-				
-					if(region=='MLA' || region=='MP')
-						region ='CONSTITUENCY';
-				var myLabel='${userCadresInfoVO.userAccessDisplayValue}('+ region+')-${userCadresInfoVO.totalCadres}';
-				
-				var tree;
-				var myobj;
-				
-				tree = new YAHOO.widget.TreeView("cadreInfoDivBody");				 
-				tree.setDynamicLoad(loadNodeData);				
-				var rootNode = tree.getRoot(); 				
-
-				myobj = { label: myLabel, labelAccessValue: '${userCadresInfoVO.userAccessType}',id:'${userCadresInfoVO.userAccessValue}',type:cType } ; 
-				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);
-				
-
-				tree.render();
-				
-			}
-
 			function loadNodeData(node, fnLoadComplete)
 			{				
+
 				var nodeLabel = node.label;
 				var index=nodeLabel.indexOf("-");
 				var subString = nodeLabel.substring(0,index);				
 				
+				var jsObj = {
+								nodeLabel:node.label,
+								task:"totalcadres"
+							};
+
 				var cadreUrl = "<%=request.getContextPath()%>/cadresInfoAjaxAction.action?cadreRegion="+node.data.labelAccessValue+"&cadreId="+node.data.id+"&cadreType="+node.data.type; 
+		 		
+
 				var callback = {			
  		               success : function( o )
 									{
@@ -171,11 +161,7 @@
 											myResults = YAHOO.lang.JSON.parse(o.responseText);						
 											
 											if(myResults.cadreInfo[0])											
-											{												
 												buildHtmlNode(myResults.cadreInfo,node);																					
-											}
-											else if(myResults.zeroCadresRegion)	
-												buildZeroCadreTable(myResults, myResults.zeroCadresRegion1,node);
 											else
 												buildTextNode(myResults,node);																			
 											
@@ -203,131 +189,37 @@
 						} 
  		               };
 
- 			YAHOO.util.Connect.asyncRequest('GET', cadreUrl, callback);
+ 				YAHOO.util.Connect.asyncRequest('GET', cadreUrl, callback);
 			}
+
+	
 			
-			function buildZeroCadreTable(myResults, cadreData,node)
+			
+			function showTree(cType)
 			{
-				if(myResults.region=='HAMLET')
-					buildZeroCadreTableHamlet(myResults, cadreData,node);
-				if(myResults.region=='VILLAGE')
-					buildZeroCadreTableVillage(myResults, cadreData,node);
-				if(myResults.region=='MANDAL')
-					buildZeroCadreTableTehsil(myResults, cadreData,node);
-				if(myResults.region=='DISTRICT')
-					buildZeroCadreTableDistrictt(myResults, cadreData,node);
-				if(myResults.region=='STATE')
-					buildZeroCadreTableState(myResults, cadreData,node);
+				//'${userCadresInfoVO.userAccessType}'
+				region = '${userCadresInfoVO.userAccessType}';
+				
+					if(region=='MLA' || region=='MP')
+						region ='CONSTITUENCY';
+				var myLabel='${userCadresInfoVO.userAccessDisplayValue}('+ region+')-${userCadresInfoVO.totalCadres}';
+				
+				var tree;
+				var myobj;
+				
+				tree = new YAHOO.widget.TreeView("cadreInfoDivBody");				 
+				tree.setDynamicLoad(loadNodeData);				
+				var rootNode = tree.getRoot(); 				
+
+				myobj = { label: myLabel, labelAccessValue: '${userCadresInfoVO.userAccessType}',id:'${userCadresInfoVO.userAccessValue}',type:cType } ; 
+				var stateNode = new YAHOO.widget.TextNode(myobj, rootNode);
+				
+
+				tree.render();
+				
 			}
 
-			function buildZeroCadreTableHamlet(myResults, cadreData,node)
-			{
-				var str='';
-				str+='<table class="partyPerformanceCriteriaTable">';
-				str+='<tr>';
-				str+='<th>State</th><th>District</th><th>Tehsil</th><th>Village</th><th>Hamlet</th>';											
-				str+='</tr>';				
-				for(var i in cadreData)
-				{
-					str+='<tr>';					
-					str+='<td>'+cadreData[i].state.name+'</td>';
-					str+='<td>'+cadreData[i].district.name+'</td>';
-					str+='<td>'+cadreData[i].mandal.name+'</td>';
-					str+='<td>'+cadreData[i].revenueVillage.name+'</td>';
-					str+='<td>'+cadreData[i].hamlet.name+'</td>';											
-					str+='</tr>';
-				}
-				str+='</table>';
-
-				//str+='<div id="basic" class="yui-skin-sam"></div>';
-				var tempNode = new YAHOO.widget.HTMLNode(str, node, false); 
-				tempNode.isLeaf = true;
-			}
-			function buildZeroCadreTableVillage(myResults, cadreData,node)
-			{
-				var str='';
-				str+='<table class="partyPerformanceCriteriaTable">';
-				str+='<tr>';
-				str+='<th>State</th><th>District</th><th>Tehsil</th><th>Village</th>';											
-				str+='</tr>';				
-				for(var i in cadreData)
-				{
-					str+='<tr>';					
-					str+='<td>'+cadreData[i].state.name+'</td>';
-					str+='<td>'+cadreData[i].district.name+'</td>';
-					str+='<td>'+cadreData[i].mandal.name+'</td>';
-					str+='<td>'+cadreData[i].revenueVillage.name+'</td>';											
-					str+='</tr>';
-				}
-				str+='</table>';
-
-				//str+='<div id="basic" class="yui-skin-sam"></div>';
-				var tempNode = new YAHOO.widget.HTMLNode(str, node, false); 
-				tempNode.isLeaf = true;
-			}
-			function buildZeroCadreTableTehsil(myResults, cadreData,node)
-			{
-				var str='';
-				str+='<table class="partyPerformanceCriteriaTable">';
-				str+='<tr>';
-				str+='<th>State</th><th>District</th><th>Tehsil</th>';											
-				str+='</tr>';				
-				for(var i in cadreData)
-				{
-					str+='<tr>';					
-					str+='<td>'+cadreData[i].state.name+'</td>';
-					str+='<td>'+cadreData[i].district.name+'</td>';
-					str+='<td>'+cadreData[i].mandal.name+'</td>';											
-					str+='</tr>';
-				}
-				str+='</table>';
-
-				//str+='<div id="basic" class="yui-skin-sam"></div>';
-				var tempNode = new YAHOO.widget.HTMLNode(str, node, false); 
-				tempNode.isLeaf = true;
-			}
-			function buildZeroCadreTableDistrict(myResults, cadreData,node)
-			{
-				var str='';
-				str+='<table class="partyPerformanceCriteriaTable">';
-				str+='<tr>';
-				str+='<th>State</th><th>District</th>';											
-				str+='</tr>';				
-				for(var i in cadreData)
-				{
-					str+='<tr>';					
-					str+='<td>'+cadreData[i].state.name+'</td>';
-					str+='<td>'+cadreData[i].district.name+'</td>';										
-					str+='</tr>';
-				}
-				str+='</table>';
-
-				//str+='<div id="basic" class="yui-skin-sam"></div>';
-				var tempNode = new YAHOO.widget.HTMLNode(str, node, false); 
-				tempNode.isLeaf = true;
-			}
-			function buildZeroCadreTableState(myResults, cadreData,node)
-			{
-				var str='';
-				str+='<table class="partyPerformanceCriteriaTable">';
-				str+='<tr>';
-				str+='<th>State</th><th>District</th>';											
-				str+='</tr>';				
-				for(var i in cadreData)
-				{
-					str+='<tr>';					
-					str+='<td>'+cadreData[i].state.name+'</td>';
-					str+='<td>'+cadreData[i].district.name+'</td>';										
-					str+='</tr>';
-				}
-				str+='</table>';
-
-				//str+='<div id="basic" class="yui-skin-sam"></div>';
-				var tempNode = new YAHOO.widget.HTMLNode(str, node, false); 
-				tempNode.isLeaf = true;
-			}
-
-
+			
 			function buildHtmlNode(cadreData,node)
 			{
 				var obj={
@@ -343,12 +235,10 @@
 
 			function showLink(value)
 			{	
-				var divElmt = document.getElementById("cReportMain");
+				
 				var cadreData = new Array();
 				var cadresArray = new Array();
-
-				if(panel)
-					panel.destroy();
+				
 
 				for(var i in cadreDetailsArr)
 				{
@@ -370,20 +260,8 @@
 							 };
 
 					cadresArray.push(cObj);
-				}
-				
-				
-				var divChild = document.createElement('div');
-				divChild.setAttribute('id','cadreDiv');
-				divChild.setAttribute('class','yui-skin-sam');
-				var str='';
-				str+='<div class="hd">List Of Cadres...</div> ';
-				str+='<div class="bd">'; 
-				str+='<div id="cadresDetailsDiv"></div>';
-				str+='</div>';
-
-				divChild.innerHTML=str;
-				divElmt.appendChild(divChild);
+				}			
+			
 
 				var myColumnDefs = [ 	           
 										{key:"name",label : "Name",sortable:true,resizeable:true}, 
@@ -401,25 +279,18 @@
 						 ]
 				};
 				
-				var myConfigs = {
+				var configs = {
 					paginator : new YAHOO.widget.Paginator({
 						rowsPerPage: 10
 					})
 				};
 
-				var myDataTable = new YAHOO.widget.DataTable("cadresDetailsDiv",myColumnDefs, myDataSource,myConfigs); 			
-		
-				
-
-				panel = new YAHOO.widget.Panel("cadreDiv", {x:300,y:500,visible:true, draggable:true, close:true } ); 
-				panel.render(); 
-								
-			//YAHOO.util.Event.addListener("hide1", "click", YAHOO.example.container.panel1.hide, YAHOO.example.container.panel1, true);
-				
+				getCadrePopup(myColumnDefs,myDataSource,configs);
 			}
 
 			function buildTextNode(results,node)
 			{
+
 				for (var i in results.cadreRegionInfo)
 				{
 					var region = results.cadreRegionInfo[i].region;
@@ -442,56 +313,101 @@
 	</script>
 </head>
 <body>
-	<s:form name="cadrereport" action="cadreRegisterPageAction" method="post">	
-	<h3>Cadre Details Page.</h3>
-	<table>
-		<tr>
-			<td>
-	<div id="cReportMain" class="yui-skin-sam" style="text-align: left; font-size: 12px; font-family: Verdana;">
-		<div id="cadreInfoDiv" style="margin-bottom: 20px;">
-			<div id="cadreInfoDivHead">
-				<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
-				Cadres Availabilty <b>:</b>
-			</div>
-			<div id="cadreInfoDivBody" style="padding-left: 50px;padding-top: 10px">
-				
-			</div>
+	<s:form name="cadrereport" action="cadreRegisterPageAction" method="post" theme="simple">	
+
+	<div id="cadreReportMain">
+		<div id="cadreReportLayout_main"></div>
+		
+		<div  class="yui-skin-sam">
+			<div id="cadreDetailsPopup"></div>
 		</div>
-		<div id="zeroCadreInfoDiv" style="margin-bottom: 20px;">
-			
-				<div id="zeroCadreInfoDivHead">
-					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
-					Non Available Region Cadres <b>:</b>
-				</div>
-			
-			<div id="zeroCadreInfoDivBody" style="padding-left: 50px;padding-top: 10px">				
-				
-			</div>
-		</div>
-		<div id="cadreLevelInfoDiv" style="margin-bottom: 20px;">
-			<div id="cadreLevelInfoDivHead">
-				<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
-				Cadre Details By Cadre Level <b>:</b>
-			</div>
-			<div id="cadreLevelInfoDivBody" style="padding-left: 50px;padding-top: 10px"">
-				
-			</div>
-		</div>	
-		<div id="cadreRegistration" style="margin-left: 50px;">
-			<table align="middle">
+		
+		<!-- Cadre Top Layout Div-->
+		<div id="cadreReportLayout_top">
+			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td>
-						<input type="submit" name="registersubmit" value="Register Cadre"/>
-					</td>
+					<td><img border="none" src="images/icons/statePage/header_left.png"></td>
+					<td><div id="CadreReportHeading"> Cadre Details</div></td>
+					<td><img border="none" src="images/icons/statePage/header_right.png"></td>
 				</tr>
 			</table>
 		</div>
+		
+		<!-- Cadre Top Layout Div-->
+		<div id="cadreReportLayout_right">
+			<div id="cadreRegistration">
+				<div id="cadreRegistration_head">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%">
+						<tr>
+							<td><img border="none" src="images/icons/cadreReport/addCadre.png"></td>
+							<td><div class="registerCadreClass" style="width:200px;"> <u> Register Cadre </u></div></td>						
+						</tr>
+					</table>
+				</div>				
+				<div id="cadreRegistration_body">
+					<div>Add/Register your party cadre to your cadre list in different locations based on their availability.</div>
+					<div style="text-align:right;padding-top:10px;"><input type="submit" id="registerCadreSubmit" name="registersubmit" value="Register Cadre"/></div>					
+				</div>
+			</div>		
+		</div>
+
+		<!-- Cadre Top Layout Div-->
+		<div id="cadreReportLayout_center">				
+			<div id="cReportMain" class="yui-skin-sam">
+				<div id="cadreInfoDiv" style="margin-bottom: 20px;">
+					<div id="cadreInfoDivHead">									
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td><img border="none" src="images/icons/cadreReport/bg_left.png"></td>
+								<td><div class="cadreReportHeader"> <span class="reportHeaderSpan"> Cadre Availability </span></div></td>
+								<td><img border="none" src="images/icons/cadreReport/bg_right.png"></td>
+							</tr>
+						</table>					
+					</div>
+					<div id="cadreInfoDivBody" style="padding-left: 50px;padding-top: 10px">
+						
+					</div>
+				</div>
+
+				<div id="zeroCadreInfoDiv" style="margin-bottom: 20px;">
+					
+						<div id="zeroCadreInfoDivHead">			
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td><img border="none" src="images/icons/cadreReport/bg_left.png"></td>
+									<td><div class="cadreReportHeader"><span class="reportHeaderSpan"> Non Available Region Cadres</span></div></td>
+									<td><img border="none" src="images/icons/cadreReport/bg_right.png"></td>
+								</tr>
+							</table>							
+						</div>
+					
+					<div id="zeroCadreInfoDivBody" style="padding-left: 50px;padding-top: 10px">				
+						
+					</div>
+				</div>
+
+				<div id="cadreLevelInfoDiv" style="margin-bottom: 20px;">
+					<div id="cadreLevelInfoDivHead">
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td><img border="none" src="images/icons/cadreReport/bg_left.png"></td>
+								<td><div class="cadreReportHeader"> <span class="reportHeaderSpan">Cadre Details By Cadre Level </span></div></td>
+								<td><img border="none" src="images/icons/cadreReport/bg_right.png"></td>
+							</tr>
+						</table>						
+					</div>
+					<div id="cadreLevelInfoDivBody" style="padding-left: 50px;padding-top: 10px"">
+						
+					</div>
+				</div>					
+			</div>				
+		</div>
+
 	</div>
-			</td>
-		</tr>
-	</table>
+
 		<script type="text/javascript">
 
+			initializeCadreReport();
 			showTree("TotalCadre");
 
 			<c:forEach var="pd" items="${userCadresInfoVO.regionLevelZeroCadres}" >

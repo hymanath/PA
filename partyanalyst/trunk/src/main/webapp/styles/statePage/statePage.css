@@ -194,6 +194,7 @@ border:1px solid #CCCCCC;
 	position:fixed;
 	width:1000px;
 	opacity:0.6;
+	
 	filter:alpha(opacity=60);
 	background-color:#adadad;
 	z-index:2;
