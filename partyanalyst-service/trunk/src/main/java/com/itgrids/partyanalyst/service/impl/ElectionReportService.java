@@ -439,11 +439,16 @@ public class ElectionReportService implements IElectionReportService {
 				partiesList.add(partyOption);
 			}
 			
-			//set participated parties and districts list to mainVO
+			//set participated districts list to mainVO
 			if(!electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
 			electionResultsReportVO.setPartiDistList(districtsInfo);
-			electionResultsReportVO.setPartiPartiesList(partiesList);
 			}
+			//set participated states list to mainVO
+			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
+			electionResultsReportVO.setPartiDistList(statesInfo);
+			}
+			//set participated parties list to main vo
+			electionResultsReportVO.setPartiPartiesList(partiesList);
 			
 			Collections.sort(allPartiesResultsInDistricts, new PartyElecDistrictResultsComparator());
 			ElectionResultsInAllDistrictsVO electionResultsInAllDistrictsVO = new ElectionResultsInAllDistrictsVO();
