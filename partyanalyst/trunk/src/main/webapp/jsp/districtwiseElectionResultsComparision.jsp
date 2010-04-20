@@ -20,7 +20,8 @@
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-<TITLE>${stateName} ${electionType} ${selectedElectionYear} Election Districtwise Results</TITLE>
+<c:if test="${electionType != 'Parliament'}"><TITLE>${stateName} ${electionType} Election Results Page ${year}</TITLE></c:if>
+<c:if test="${electionType == 'Parliament'}"><TITLE>${electionType} Election ${year} Results Page </TITLE></c:if>
 </HEAD>
 <SCRIPT type="text/javascript">
 var stateId = '${stateID}';
@@ -502,14 +503,18 @@ function updateDistResultsDistwise(distName,results)
 <CENTER>
 <TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
-<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top"><DIV class="mainHeading">${stateName} ${electionType} Election ${selectedElectionYear} Districtwise Results</DIV></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/></TD>
+<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top">
+<c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></c:if>
+<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${electionType} Election Results ${year}</DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/>
+</TD>
 </TR>
 </TABLE>
 <DIV id="electionPageAjaxImgDiv">
 	<DIV> Loading Election Results Please Wait..</DIV>
 	<IMG src="images/icons/barloader.gif"/>
 </DIV>
-<DIV class="graphTop">District Level Overview</DIV>
+<c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
+<c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">Country Level Overview</DIV></c:if>
 <DIV id="distwiseGraph">
 <DIV id="districtWiseGraph"></DIV>
 <c:if test="${electionType != 'Parliament'}">

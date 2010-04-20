@@ -28,7 +28,9 @@
 
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
-<TITLE>${stateName} ${electionType} Election Results Page ${year}</TITLE>
+<c:if test="${electionType != 'Parliament'}"><TITLE>${stateName} ${electionType} Election Results Page ${year}</TITLE></c:if>
+<c:if test="${electionType == 'Parliament'}"><TITLE>${electionType} Election ${year} Results Page </TITLE></c:if>
+
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
 var electionType = '${electionType}';
@@ -43,7 +45,13 @@ var electionResultsObj = {
     districtWiseResultsWithoutAllianceArr:[],
     allianceGroupNamesArray:[]
 };
-var resultsGlobal, graphImagesCarousel;	
+var caption;
+var resultsGlobal, graphImagesCarousel;
+if(electionType != 'Parliament')
+{
+	caption = "Districtwise Results"
+		
+} else caption = "Statewise Results";
 var Localization = { <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -212,8 +220,10 @@ function showPartywiseDetailsDataTable(results)
 	var imgStr = '';
 	imgStr+='<div style="margin-top:10px;margin-bottom:10px;">';
 	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'partywiseImgChart\',\''+results.statewiseResultsLineChartName+'\',\'Party Results Line Chart\')">View Party Results Line Charts</a>';
-	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showPartyResultsWithoutAlliance(\''+results.stateLevelLineChartWithoutAllianc+'\')">View Party Results Without Alliance </a></div>';
-
+	if(electionResultsObj.allianceGroupNamesArray.length > 0 )
+	{
+		imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showPartyResultsWithoutAlliance(\''+results.stateLevelLineChartWithoutAllianc+'\')">View Party Results Without Alliance </a></div>';
+	}
 	chartpartywiseImgChartElmt.innerHTML = imgStr;
 	var noteDivEl = document.getElementsByName("note");
 	if(electionResultsObj.allianceGroupNamesArray.length>0)
@@ -508,7 +518,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 	}	
 
 	var allDistrictResultsColumnDefs = [
-								{key: "district", label: "District", sortable:true},		
+								{key: "district", label: "Location", sortable:true},		
 								{key: "party", label: "<%=party%>", sortable:true},										
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
@@ -537,8 +547,8 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 23			        
-			    }),
-			    caption:"Districts Wise Election Results"
+			    }),  
+			    caption: caption
 				};
 		
 		var allDistrictResultsDataTable = new YAHOO.widget.DataTable(divID, allDistrictResultsColumnDefs, allDistrictResultsDataSource,myConfigs);
@@ -554,8 +564,10 @@ function buildAllDistrictResultsDataTable(results)
 	resultsGlobal = results;
 	//districtResults_withoutAllianceDiv
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
-	var districtsList = results.partiDistList;	
+	var districtsList = results.partiDistList;
+	var stateList = results.partiDistList;	
 	var participatedPartiesList = results.partiPartiesList; 
+	var stateSelectBox = document.getElementById("stateSelectBox");
 	electionResultsObj.districtWiseResultsWithoutAllianceArr = results.electionResultsInDistricts.allPartiesResultsWithoutGroupingOfAllianc;
 	var distSelectElmt = document.getElementById("distSelectBox");
 	var partySelectElmt = document.getElementById("partySelectBox");
@@ -584,21 +596,43 @@ function buildAllDistrictResultsDataTable(results)
 	
 		try
 			{
-				distSelectElmt.add(opElmt,null); // standards compliant
+				if(distSelectElmt)
+					distSelectElmt.add(opElmt,null); // standards compliant
 			}
 		catch(ex)
 			{
-				distSelectElmt.add(opElmt); // IE only
+				if(distSelectElmt)
+					distSelectElmt.add(opElmt); // IE only
 			}			
 	}
+	for(var k in stateList)
+	{			
+		var opElmt=document.createElement('option');
+		opElmt.value=stateList[k].id;
+		opElmt.text=stateList[k].name;
 	
+		try
+			{
+				if(stateSelectBox)
+					stateSelectBox.add(opElmt,null); // standards compliant
+			}
+		catch(ex)
+			{
+				if(stateSelectBox)
+					stateSelectBox.add(opElmt); // IE only
+			}			
+	}	
 	buildAllDistrictDatatable(innerObj,"districtResults","all","null","null");
 
 	var elmt = document.getElementById("districtResults_withoutAllianceDiv");
-	var str = '<div style="margin-top:10px;margin-bottom:10px;">';
-	str += '<a href="javascript:{}" class="viewChartsForResults" onclick="showDistrictWisePartyResultsWithoutAlliance(\''+results.partyResultsDistrictLevelChartWithoutAllianc+'\')">';
-	str += 'View Party Results Without Alliance';
-	str += '</a></div>';
+	var str = '';
+	if(electionResultsObj.allianceGroupNamesArray.length > 0 )
+	{
+		str += '<div style="margin-top:10px;margin-bottom:10px;">';
+		str += '<a href="javascript:{}" class="viewChartsForResults" onclick="showDistrictWisePartyResultsWithoutAlliance(\''+results.partyResultsDistrictLevelChartWithoutAllianc+'\')">';
+		str += 'View Party Results Without Alliance';
+		str += '</a></div>';
+	}	
 	str += '<div id="districtWiseWithoutAlliancePopupDiv"></div>';
 	elmt.innerHTML = str;
 }
@@ -672,7 +706,7 @@ function buildAllianceDistrictResultsDataTable(results)
 		}
 		
 		var allianceDistrictResultsColumnDefs = [
-								{key: "district", label: "District", sortable:true},		
+								{key: "district", label: "Location", sortable:true},		
 								{key: "party", label: "<%=party%>", sortable:true},										
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
@@ -767,15 +801,27 @@ function partywiseRadioClickHandler()
 {
 	var partySelectBoxEl = document.getElementById("partySelectBox");
 	var distSelectBoxEl = document.getElementById("distSelectBox");
+	var stateSelectBoxEl = document.getElementById("stateSelectBox");
+		
 	if(partySelectBoxEl.style.display == "none")			
 	{
 		partySelectBoxEl.style.display = 'block';
 		partySelectBoxEl.selectedIndex = '0';
 	}
-	if(distSelectBoxEl.style.display == "block")			
-	{
-		distSelectBoxEl.style.display = 'none';
-	} 
+	if(distSelectBoxEl)
+	{	
+		if(distSelectBoxEl.style.display == "block")			
+		{
+			distSelectBoxEl.style.display = 'none';
+		}
+	}
+	if(stateSelectBoxEl)
+	{	
+		if(stateSelectBoxEl.style.display == "block")			
+		{
+			stateSelectBoxEl.style.display = 'none';
+		}	
+	}	 
 }
 function districtwiseRadioClickHandler()
 {
@@ -791,7 +837,27 @@ function districtwiseRadioClickHandler()
 		distSelectBoxEl.selectedIndex = '0';
 	} 
 	
-}	
+}
+
+function  statewiseRadioClickHandler()
+{
+	var stateSelectBoxEl = document.getElementById("stateSelectBox");
+	stateSelectBoxEl.style.display = 'block';
+
+	var partySelectBoxEl = document.getElementById("partySelectBox");
+	partySelectBoxEl.style.display = 'none';
+	
+}
+
+function updateResultsStatewise(distName,results)
+{
+	var innerObj = results.electionResultsInDistricts.allPartiesResults;
+	if(distName != 'Select State' )
+		{buildAllDistrictDatatable(innerObj,"districtResults","district","null",distName);}
+		else return;	
+	
+}
+
 function updateDistResultsPartywise(partyName,results)
 {
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
@@ -914,7 +980,10 @@ function buildGraphsCarousel(divId,arr)
 <BODY>
 <TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
-<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/></TD>
+<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top">
+<c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></c:if>
+<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${electionType} Election Results ${year}</DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/>
+</TD>
 </TR>
 </TABLE>
 <div id="electionPageAjaxImgDiv">
@@ -922,7 +991,8 @@ function buildGraphsCarousel(divId,arr)
 	<img src="images/icons/barloader.gif"/>
 </div>
 <DIV id="task1"></DIV>
-<DIV class="graphTop">State Level Overview</DIV>
+<c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
+<c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">Country Level Overview</DIV></c:if>
 <DIV id="statewiseGraph">
 <DIV id="graphImage" class="yui-skin-sam"></DIV>
 <DIV class="yui-skin-sam" style="width:880px;">
@@ -950,12 +1020,11 @@ function buildGraphsCarousel(divId,arr)
 </DIV>
 <DIV id="viewCandidate" class="yui-skin-sam"></DIV>
 <DIV class="graphBottom"></DIV>
-<DIV class="graphTop">District Level Overview</DIV>
+<c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">District Level Overview</DIV></c:if>
+<c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
 <DIV id="distwiseGraph">
 <DIV id="districtWiseGraph"></DIV>
-<c:if test="${electionType != 'Parliament'}">
 <DIV id="distResultsViewOptionsDiv">
-
 	<TABLE width="100%">	
 		<TR>
 			<TD style="width:10%;"><INPUT type="radio" name="distResultsOption" id="allDistResultsRadio" value="all" onClick="allDistResultsRadioClickHandler(resultsGlobal)" checked="true"/>All</TD>
@@ -964,16 +1033,24 @@ function buildGraphsCarousel(divId,arr)
 				<OPTION id="0" >Select Party</OPTION>
 				</SELECT>
 			</TD>
-			
-				<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="districtwiseRadio" value="districtwise" onClick="districtwiseRadioClickHandler()"/>Districtwise</TD>
-				<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="distSelectBox"  name="selectBox"  onchange="updateDistResultsDistwise(this.options[this.selectedIndex].text,resultsGlobal)" style="display:none;">';
-						<OPTION id="0" >Select District</OPTION>					
-					</SELECT>				
-				</TD>			
+				<c:if test="${electionType != 'Parliament'}">
+					<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="districtwiseRadio" value="districtwise" onClick="districtwiseRadioClickHandler()"/>Districtwise</TD>
+					<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="distSelectBox"  name="selectBox"  onchange="updateDistResultsDistwise(this.options[this.selectedIndex].text,resultsGlobal)" style="display:none;">';
+							<OPTION id="0" >Select District</OPTION>					
+						</SELECT>				
+					</TD>
+				</c:if>
+				<c:if test="${electionType == 'Parliament'}">
+					<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="statewiseRadio" value="statewise" onClick="statewiseRadioClickHandler()"/>Statewise</TD>
+					<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="stateSelectBox"  name="selectBox"  onchange="updateResultsStatewise(this.options[this.selectedIndex].text,resultsGlobal)" style="display:none;">';
+							<OPTION id="0" >Select State</OPTION>					
+						</SELECT>				
+					</TD>
+				</c:if>			
 		</TR>
 	</TABLE>	
 </DIV>
-</c:if>
+
 <DIV class="yui-skin-sam" >
 	<TABLE border="0" width="95%" >
 		<TR>
@@ -1000,8 +1077,14 @@ function buildGraphsCarousel(divId,arr)
 	<TABLE class="toolsTable"><TR>
 		<TD class="td">
 			<DIV class="toolsDisplay">
-				<h3>Statewise Analysis</h3>
-				<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Statewise.</P>
+				<c:if test="${electionType != 'Parliament'}">
+					<h3>Statewise Analysis</h3>
+					<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Statewise.</P>
+				</c:if>
+				<c:if test="${electionType == 'Parliament'}">
+					<h3>Countrywise Analysis</h3>
+					<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Countrywise.</P>
+				</c:if>	
 				<DIV style="font-weight:bold">
 					<TABLE width="100%">
 						<TR>
@@ -1025,8 +1108,14 @@ function buildGraphsCarousel(divId,arr)
 		</TD>		
 			<TD class="td">
 				<DIV class="toolsDisplay">
-					<h3>District wise Analysis</h3>
-					<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Districtwise.</P>
+					<c:if test="${electionType != 'Parliament'}">
+						<h3>District wise Analysis</h3>
+						<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Districtwise.</P>
+					</c:if>
+					<c:if test="${electionType == 'Parliament'}">
+						<h3>Statewise Analysis</h3>
+						<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Statewise.</P>
+					</c:if>
 				<DIV style="font-weight:bold">
 					<TABLE width="100%">
 						<TR>
@@ -1079,7 +1168,8 @@ function buildGraphsCarousel(divId,arr)
 						<DIV align="right"><A href="javascript:{}" onclick="openPartyPerformanceReportWindow()"><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV>		 
 					</DIV>
 				</DIV>				
-			</TD>		
+			</TD>
+			<c:if test="${electionType == 'Assembly'}">		
 			<TD class="td">
 				<DIV id="comparePrevElection" class="toolsDisplay">
 					<h3>Elections Comparison</h3>
@@ -1113,7 +1203,8 @@ function buildGraphsCarousel(divId,arr)
 						<DIV align="right"><A href="javascript:{}" onclick="openElectionComparisionReportWindow()"><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV>		 
 					</DIV>
 				</DIV>				
-			</TD>			
+			</TD>
+			</c:if>			
 		</TR>
 	</TABLE>
 </DIV>

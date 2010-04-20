@@ -20,7 +20,9 @@
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/electionResultsPage.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-<TITLE>${stateName} ${electionType} ${selectedElectionYear} Election Results</TITLE>
+<c:if test="${electionType != 'Parliament'}"><TITLE>${stateName} ${electionType} Election Results Page ${year}</TITLE></c:if>
+<c:if test="${electionType == 'Parliament'}"><TITLE>${electionType} Election ${year} Results Page </TITLE></c:if>
+
 <SCRIPT type="text/javascript">
 var stateId = '${stateID}';
 var electionType = '${electionType}';
@@ -226,8 +228,10 @@ function showPartywiseDetailsDataTable(results)
 	var imgStr = '';
 	imgStr+='<div style="margin-top:10px;margin-bottom:10px;">';
 	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\'partywiseImgChart\',\''+results.statewiseResultsLineChartName+'\',\'Party Results Line Chart\')">View Party Results Line Charts</a>';
-	imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showPartyResultsWithoutAlliance(\''+results.stateLevelLineChartWithoutAllianc+'\')">Party Results Without Alliance </a></div>';
-
+	if(electionResultsObj.allianceGroupNamesArray.length > 0 )
+	{
+		imgStr+='<a href="javascript:{}" class="viewChartsForResults" onclick="showPartyResultsWithoutAlliance(\''+results.stateLevelLineChartWithoutAllianc+'\')">View Party Results Without Alliance </a></div>';
+	}
 	chartpartywiseImgChartElmt.innerHTML = imgStr;
 	var noteDivEl = document.getElementsByName("note");
 	if(electionResultsObj.allianceGroupNamesArray.length>0)
@@ -340,14 +344,18 @@ function showPartyResultsWithoutAlliance(chartId)
 <CENTER>
 <TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
-<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top"><DIV class="mainHeading">${stateName} ${selectedElectionYear} ${electionType} Election Results</DIV></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/></TD>
+<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top">
+<c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></c:if>
+<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${electionType} Election Results ${year}</DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/>
+</TD>
 </TR>
 </TABLE>
 <DIV id="electionPageAjaxImgDiv">
 	<DIV> Loading Election Results Please Wait..</DIV>
 	<IMG src="images/icons/barloader.gif"/>
 </DIV>
-<DIV class="graphTop">State Level Overview</DIV>
+<c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
+<c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">Country Level Overview</DIV></c:if>
 <DIV id="statewiseGraph">
 <DIV id="graphImage"></DIV>
 <DIV class="yui-skin-sam" style="width:880px;">
