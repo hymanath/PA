@@ -109,6 +109,7 @@ function showDistrictWiseResultsLineGraph(results)
 
 function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 {
+	
 	var selectPartyName = partyName;
 	var districtName = districtName;
 	var dtSource = new Array();
@@ -252,10 +253,13 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 }
 function buildAllDistrictResultsDataTable(results)
 {	
+	
 	//districtResults_withoutAllianceDiv
 	resultsGlobal = results;
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
-	var districtsList = results.partiDistList;	
+	var districtsList = results.partiDistList;
+	var stateSelectBox = document.getElementById("stateSelectBox");
+	var stateList = results.partiDistList;
 	var participatedPartiesList = results.partiPartiesList;
 	var distSelectElmt = document.getElementById("distSelectBox");
 	var partySelectElmt = document.getElementById("partySelectBox");
@@ -283,22 +287,44 @@ function buildAllDistrictResultsDataTable(results)
 		opElmt.text=districtsList[j].name;
 	
 		try
-			{
-				distSelectElmt.add(opElmt,null); // standards compliant
+			{	if(distSelectElmt)
+					distSelectElmt.add(opElmt,null); // standards compliant
 			}
 		catch(ex)
 			{
+			if(distSelectElmt)
 				distSelectElmt.add(opElmt); // IE only
+			}			
+	}
+	for(var d in stateList)
+	{		
+		var opElmt=document.createElement('option');
+		opElmt.value=stateList[d].id;
+		opElmt.text=stateList[d].name;
+	
+		try
+			{	
+				if(stateSelectBox)
+					stateSelectBox.add(opElmt,null); // standards compliant					
+			}
+		catch(ex)
+			{
+				if(stateSelectBox)
+					stateSelectBox.add(opElmt); // IE only
 			}			
 	}
 	electionResultsObj.districtWiseResultsWithoutAllianceArr = results.electionResultsInDistricts.allPartiesResultsWithoutGroupingOfAllianc;	
 	buildAllDistrictDatatable(innerObj,"districtResults","all","null","null");
 
 	var elmt = document.getElementById("districtResults_withoutAllianceDiv");
-	var str = '<div style="margin-top:10px;margin-bottom:10px;">';
-	str += '<a href="javascript:{}" class="viewChartsForResults" onclick="showDistrictWisePartyResultsWithoutAlliance(\''+results.partyResultsDistrictLevelChartWithoutAllianc+'\')">';
-	str += 'View Party Results Without Alliance';
-	str += '</a></div>';
+	var str = '';
+	if(electionResultsObj.allianceGroupNamesArray.length > 0 )
+	{
+		str = '<div style="margin-top:10px;margin-bottom:10px;">';
+		str += '<a href="javascript:{}" class="viewChartsForResults" onclick="showDistrictWisePartyResultsWithoutAlliance(\''+results.partyResultsDistrictLevelChartWithoutAllianc+'\')">';
+		str += 'View Party Results Without Alliance';
+		str += '</a></div>';
+	}	
 	str += '<div id="districtWiseWithoutAlliancePopupDiv"></div>';
 	elmt.innerHTML = str;
 }
@@ -460,10 +486,13 @@ function partywiseRadioClickHandler()
 		partySelectBoxEl.style.display = 'block';
 		partySelectBoxEl.selectedIndex = '0';
 	}
-	if(distSelectBoxEl.style.display == "block")			
-	{
-		distSelectBoxEl.style.display = 'none';
-	} 
+	if(distSelectBoxEl)
+	{	
+		if(distSelectBoxEl.style.display == "block")			
+		{
+			distSelectBoxEl.style.display = 'none';
+		}
+	}	 
 }
 function districtwiseRadioClickHandler()
 {
@@ -477,7 +506,7 @@ function districtwiseRadioClickHandler()
 	{
 		distSelectBoxEl.style.display = 'block';
 		distSelectBoxEl.selectedIndex = '0';
-	} 
+	}		 
 	
 }
 function updateDistResultsPartywise(partyName,results)
@@ -498,14 +527,30 @@ function updateDistResultsDistwise(distName,results)
 		buildAllDistrictDatatable(innerObj,"districtResults","district","null",distName);
 	}else return;	
 }
+function  statewiseRadioClickHandler()
+{
+	var stateSelectBoxEl = document.getElementById("stateSelectBox");
+	stateSelectBoxEl.style.display = 'block';
+
+	var partySelectBoxEl = document.getElementById("partySelectBox");
+	partySelectBoxEl.style.display = 'none';
+	
+}
+function updateResultsStatewise(distName,results)
+{
+	var innerObj = results.electionResultsInDistricts.allPartiesResults;
+	if(distName != 'Select State' )
+		{buildAllDistrictDatatable(innerObj,"districtResults","district","null",distName);}
+		else return;	
+}
 </SCRIPT>
 <BODY>
 <CENTER>
 <TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
 <TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top">
-<c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></c:if>
-<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${electionType} Election Results ${year}</DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/>
+<c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${selectedYear}</DIV></c:if>
+<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${selectedYear} ${electionType} Election Results </DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/>
 </TD>
 </TR>
 </TABLE>
@@ -517,7 +562,6 @@ function updateDistResultsDistwise(distName,results)
 <c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">Country Level Overview</DIV></c:if>
 <DIV id="distwiseGraph">
 <DIV id="districtWiseGraph"></DIV>
-<c:if test="${electionType != 'Parliament'}">
 <DIV id="distResultsViewOptionsDiv">
 
 	<TABLE width="100%">		
@@ -528,16 +572,24 @@ function updateDistResultsDistwise(distName,results)
 				<OPTION id="0" >Select Party</OPTION>
 				</SELECT>
 			</TD>
-			
-				<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="districtwiseRadio" value="districtwise" onClick="districtwiseRadioClickHandler()"/>Districtwise</TD>
-				<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="distSelectBox"  name="selectBox"  onchange="updateDistResultsDistwise(this.options[this.selectedIndex].text,resultsGlobal)" style="display:none;">';
-						<OPTION id="0" >Select District</OPTION>					
-					</SELECT>				
-				</TD>			
+				<c:if test="${electionType != 'Parliament'}">
+					<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="districtwiseRadio" value="districtwise" onClick="districtwiseRadioClickHandler()"/>Districtwise</TD>
+					<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="distSelectBox"  name="selectBox"  onchange="updateDistResultsDistwise(this.options[this.selectedIndex].text,resultsGlobal)" style="display:none;">';
+							<OPTION id="0" >Select District</OPTION>					
+						</SELECT>				
+					</TD>
+				</c:if>
+				<c:if test="${electionType == 'Parliament'}">
+					<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="statewiseRadio" value="statewise" onClick="statewiseRadioClickHandler()"/>Statewise</TD>
+					<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="stateSelectBox"  name="selectBox"  onchange="updateResultsStatewise(this.options[this.selectedIndex].text,resultsGlobal)" style="display:none;">';
+							<OPTION id="0" >Select State</OPTION>					
+						</SELECT>				
+					</TD>
+				</c:if>				
 		</TR>
 	</TABLE>	
 </DIV>
-</c:if>
+
 <DIV class="yui-skin-sam">
 	<TABLE border="0" width="95%" >
 		<TR>
