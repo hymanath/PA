@@ -797,6 +797,18 @@ public class StaticDataService implements IStaticDataService {
 	return completeValidVotes;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Long getCompleteValidVotesInState(Long electionId,Long stateId) throws Exception{
+		Long completeValidVotes = new Long(0);
+		List list = constituencyElectionDAO.findTotalValidVotesForAnElectionForAnState(electionId,stateId);
+		if(list != null){
+		Object params = (Object)list.get(0);
+		Double validVotes = (Double)params;
+		completeValidVotes = validVotes.longValue();
+		}
+	return completeValidVotes;
+	}
+	
 	public PartyElectionResult savePartyElectionResult(final Election election,final Party party,final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesEarned,final Double totalValidVotes,final Double completeConstiValidVotes) throws Exception{
         log.debug("Inside savePartyElectionResult()");
         PartyElectionResult partyElectionResultFinal = (PartyElectionResult) transactionTemplate.execute(new TransactionCallback() {
@@ -3060,7 +3072,8 @@ public class StaticDataService implements IStaticDataService {
 
 	public PartyElectionStateResult savePartyElectionResultForAPartyForAParliamentElectionStateLevel(
 			Long electionId, Long partyId, Long stateId) {
-		log.debug("Inside savePartyElectionResultForAPartyForAElectionDistrictLevel()");
+		log.debug("Inside savePartyElectionResultForAPartyForAParliamentElectionStateLevel()");
+		log.debug("State Id :" + stateId);
 		PartyElectionStateResult partyElectionStateResult = null;
 		List<Nomination> nominations = null;
 		Election election = null;
@@ -3086,7 +3099,7 @@ public class StaticDataService implements IStaticDataService {
 				state = stateDAO.get(stateId);
 								
 				if(nominations != null && nominations.size() > 0 && election != null && party != null && state != null){
-					completeValidVotes = getCompleteValidVotes(electionId);
+					completeValidVotes = getCompleteValidVotesInState(electionId,stateId);
 					for(Nomination nominationForParty:nominations){
 						if(nominationForParty.getParty().getPartyId().equals(partyId)){
 							Long candidRank = nominationForParty.getCandidateResult().getRank();
