@@ -403,6 +403,9 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					if(jsObj.task == "getPartiesPositions")
 					{										
 						buildElectionTypesAndYearsGraph(results);
+					}if(jsObj.task == "getAllElectionScopes")
+					{										
+						buildElectionTypesSelect(results);
 					}
 					
 			}catch (e) {   		
@@ -416,6 +419,46 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	    };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+	}
+
+	function getAllElections(elecId, type){
+		var jsObj=
+		{		
+				districtId:districtId,
+				districtName:"${districtName}",
+				electionTypeId:elecId,
+				electionType:type,
+				task:"getAllElectionsInDistrict"						
+		};
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllElectionsInDistrictAction.action?"+rparam;					
+		callAjax(rparam,jsObj,url);
+	}
+	
+	function buildElectionTypesSelect(result){
+
+		var selectLabel = document.getElementById("graphElectionTypeLabel");
+		var selectData = document.getElementById("graphElectionTypeSelect");
+
+		var labelStr = '';
+		labelStr += 'Election Type';
+
+		if(selectLabel)
+			selectLabel.innerHTML = labelStr;
+
+		var dataStr = '';
+		dataStr += '<select onchange="getAllElections(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)">';		
+		for(var i in result)
+		{
+			dataStr += '<option value="'+result[i].id+'"> '+result[i].name+' </option>';
+		}
+		dataStr += '</select>';		
+		
+		if(selectData)
+			selectData.innerHTML = 	dataStr;	
+		
+		getAllElections(result[0].id, result[0].name);
 	}
 
 	function buildElectionTypesAndYearsGraph(results)
@@ -776,35 +819,37 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		getAllMptcYearsForTeshil();				 
 	}
 
-	function getAllElections(){
-		var jsObj=
-		{		
-				districtId:districtId,
-				districtName:"${districtName}",
-				task:"getAllElectionsInDistrict"						
-		};
 	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/getAllElectionsInDistrictAction.action?"+rparam;					
-		callAjax(rparam,jsObj,url);
-	}
 
 	function showAllElectionsInDistrict(results){
 				
-		var allElecDiv = document.getElementById("allElectionResultsInDT");
-		var str = '';
-		str += '<table>';
-		str += '<tr>';
-		str += '<th>Election</th>';
-		for(var i in results.partyElectionResultsList){
-			str += '<th>'+results.partyElectionResultsList[i].partyName+'</th>';
-		}
-		str += '</tr>';
+		var allElecDiv = document.getElementById("allElectionResultsInDT_body");
+		var allElecDivImg = document.getElementById("barloaderImage");
 
-		var graphDivStr = '<div style="margin-left:20px;"><input type="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div>';
-		graphDivStr += '<img src="charts/'+results.chartPath+'" />';
-		 allElecDiv.innerHTML = graphDivStr;
+		if(allElecDivImg)
+			allElecDivImg.style.display = 'none';
 		
+		var graphDivStr = '';				
+		graphDivStr += '<img src="charts/'+results.chartPath+'" />';
+		 allElecDiv.innerHTML = graphDivStr;	 
+		
+	}
+
+	function showAllElectionsInDistrictHead(){
+		
+		var allElecDiv = document.getElementById("allElectionResultsInDT_head");
+		var graphDivStr = '';
+		graphDivStr += '<table>';
+		graphDivStr += '<tr>';
+		graphDivStr += '<td><div style="margin-left:20px;"><input type="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div></td>';
+		graphDivStr += '<td><div id="graphElectionTypeLabel"></div></td>';
+		graphDivStr += '<td><div id="graphElectionTypeSelect"></div></td>';
+		graphDivStr += '<td><img id="barloaderImage" src="images/icons/barloader.gif"/></td>';
+		graphDivStr += '</tr>';
+		graphDivStr += '</table>';	
+		 allElecDiv.innerHTML = graphDivStr;
+		 
+		 getAllElectionScopes();
 	}
 	
 	function getElectionTypesAndYears(){
@@ -868,6 +913,17 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		graphImagesCarousel.render(); 
 		graphImagesCarousel.show();
 	}
+
+	function getAllElectionScopes(){
+		var jsObj=
+		{	
+				task:"getAllElectionScopes"						
+		};
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getAllElectionScopesSelectInDistrictAction.action?"+rparam;					
+		callAjax(rparam,jsObj,url);
+	}
 	
 </script>
  
@@ -881,7 +937,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		<div id="alliancePartiesCarousel" class="yui-skin-sam">
 			<ul>
 			<li>
-				<div id="allElectionResultsInDT"  class="allianceListDiv"></div>
+				<div id="allElectionResultsInDT"  class="allianceListDiv">
+					<div id="allElectionResultsInDT_head"></div>
+					<div id="allElectionResultsInDT_body"></div>
+				</div>
 			</li>
 			<li>
 				<div id="positionsGraphDiv" class="allianceListDiv">
@@ -1108,12 +1167,13 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 <script language="javascript">
 initializeResultsTableForMp();
 initializeResultsTable();
-getAllElections();
+showAllElectionsInDistrictHead();
 getAllMptcParties();
 getAllZptcParties();
 getAllZptcYears();
 getElectionTypesAndYears();
 getAllMptcYears();
+
 
 var allianceCarousel = new YAHOO.widget.Carousel("alliancePartiesCarousel",
 			{

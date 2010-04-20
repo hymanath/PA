@@ -420,14 +420,27 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		districtWisePartyResultVO = staticDataService.getDistrictWiseElectionReport(jObj.getLong("districtId"));
+		
+		districtWisePartyResultVO = staticDataService.getDistrictWiseElectionReport(jObj.getLong("electionTypeId"),jObj.getLong("districtId"));
 		List<PartyResultVO> allElectionResults = districtWisePartyResultVO.getPartyElectionResultsList();
-		String chartName = "allPartiesDistrictWisePerformanceInAllElections_"+jObj.getLong("districtId")+".png";
+		String chartName = "allPartiesDistrictWisePerformanceIn"+jObj.getString("electionType")+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         districtWisePartyResultVO.setChartPath(chartName);
-        ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+jObj.getString("districtName")
-        		+" District", "Elections", "Percentages", createDataset(allElectionResults), chartPath, 260, 700);
+        ChartProducer.createLineChart("All Parties Performance In "+jObj.getString("electionType")+" Elections Of "+jObj.getString("districtName")
+        		+" District", "Elections", "Percentages", createDataset(allElectionResults), chartPath, 260, 700);	
 		
+		return SUCCESS;
+	}
+	
+	public String getElectionScopesOfDistrict(){
+		try {
+			jObj = new JSONObject(getTask());
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		electionsInDistrict = staticDataService.getAllElectionScopes();
 		return SUCCESS;
 	}
 	
@@ -501,6 +514,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         }
         return dataset;
     }
+	
+	
 	
 	public void setServletContext(ServletContext context) {
 		this.context = context;		
