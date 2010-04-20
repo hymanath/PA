@@ -187,14 +187,24 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 			
 			electionCompleteDetailsVO = electionReportService.getBasicResultsForAnElection(electionType, year,stateId,IConstants.VOTES_PERCENT_MARGIN);
 			//district level results chart with alliance parties grouped
+			String title1 = "";
+			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+				title1 = "All Parties State Wise Election Results With Alliance Parties";
+				else
+					title1 = "All Parties District Wise Election Results With Alliance Parties";
 			if(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults() != null && electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults().size() > 0){
-			String partyResultsDistrictWise = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults(),"With_Alliance","All Parties District Wise Election Results With Alliance Parties");
+			String partyResultsDistrictWise = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults(),"With_Alliance",title1);
 			electionCompleteDetailsVO.setDistrictWiseElecResultsChartName(partyResultsDistrictWise);
 			}
 			
 			//district level results line chart for parties without alliance
+			String title2 = "";
+			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+				title2 = "All Parties State Wise Election Results Without Grouping Alliance Parties";
+				else
+				title2 = "All Parties District Wise Election Results Without Grouping Alliance Parties";
 			if(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc() != null && electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc().size() > 0){
-			String partyResultsDistrictLevelChartWithoutAllianc = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc(),"Without_Alliance","All Parties District Wise Election Results Without Grouping Alliance Parties");
+			String partyResultsDistrictLevelChartWithoutAllianc = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc(),"Without_Alliance",title2);
 			electionCompleteDetailsVO.setPartyResultsDistrictLevelChartWithoutAllianc(partyResultsDistrictLevelChartWithoutAllianc);
 			}
 			
