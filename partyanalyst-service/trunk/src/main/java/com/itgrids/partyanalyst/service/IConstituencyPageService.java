@@ -53,5 +53,5 @@ public interface IConstituencyPageService {
 	
 	public List<TeshilPartyInfoVO> getPartyWiseZptcOrMptcElectionDataForAConstituency(Long constituencyId,String electionYear,String electionType);
 	
-	public MandalAllElectionDetailsVO getAllTehsilElectionLevelWinnersForAConstituency(String candidateDetailsType,Long partyId,String electionType,String electionYear);
+	public MandalAllElectionDetailsVO getAllTehsilElectionLevelWinnersForAConstituency(Long constituencyId,String candidateDetailsType,Long partyId,String electionType,String electionYear);
 }
