@@ -98,7 +98,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO; 
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService; 
 	private IConstituencyElectionDAO constituencyElectionDAO;
-	private StringBuilder tehsilIds = new StringBuilder();
 	private IStaticDataService staticDataService;		
 
 
@@ -1175,6 +1174,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				log.debug(electionYear);
 				
 			}
+			StringBuilder tehsilIds = new StringBuilder();
 			List<TeshilPartyInfoVO> teshilPartyInfoVO = new ArrayList<TeshilPartyInfoVO>();
 			List<TeshilPartyInfoVO> allteshilPartyInfo = new ArrayList<TeshilPartyInfoVO>();
 			if(log.isDebugEnabled())
@@ -1196,7 +1196,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}
 	}
 	
-	public MandalAllElectionDetailsVO getAllTehsilElectionLevelWinnersForAConstituency(String candidateDetailsType,Long partyId,String electionType,String electionYear){
+	public MandalAllElectionDetailsVO getAllTehsilElectionLevelWinnersForAConstituency(Long constituencyId,String candidateDetailsType,Long partyId,String electionType,String electionYear){
 		List<MandalAllElectionDetailsVO> allVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
 		List<MandalAllElectionDetailsVO> winningCandidateVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
 		List<MandalAllElectionDetailsVO> winningCandidates = new ArrayList<MandalAllElectionDetailsVO>(0);
@@ -1205,15 +1205,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		Long winnerRank =1l,successorRank=2l;
 		List successorCandidate,winningCandidate,allCandidates;
 		int flag=0;
-	/*	System.out.println("===========================");
-		System.out.println("===========================");
-		System.out.println("tehsilIds---->"+tehsilIds);
-		System.out.println("mandalIds---->"+mandalIds);
-		System.out.println("===========================");
-		System.out.println("===========================");*/
-		
-		
-		
+		DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResult = delimitationConstituencyMandalService.getMandalsForDelConstituency(constituencyId);
+		List<MandalInfoVO> mandalInfoList = delimitationConstituencyMandalResult.getPresentMandals();	
+		Set<Long> ids = new HashSet<Long>();
+		StringBuilder tehsilIds = new StringBuilder();
+		for(MandalInfoVO voObject : mandalInfoList){
+			tehsilIds.append(",").append(voObject.getMandalID());
+			ids.add(voObject.getMandalID());
+		}		
 		if(candidateDetailsType.equalsIgnoreCase("winners")){
 			successorCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,successorRank,partyId,electionType,electionYear);
 			winningCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,winnerRank,partyId,electionType,electionYear);
@@ -1248,6 +1247,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			tehsilParties.setName(parms[0].toString());
 			constituencyWiseTehsilParties.add(tehsilParties);
 		}
+	
 		mandalAllElectionDetailsVo.setPartyInfo(constituencyWiseTehsilParties);
 		return mandalAllElectionDetailsVo;	
 	}				
