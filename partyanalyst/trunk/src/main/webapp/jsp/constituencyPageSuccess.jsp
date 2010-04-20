@@ -121,10 +121,18 @@
 									buildParliamentResults(myResults);			
 								}else if(jsObj.task == "getZptcElectionResults")
 								{		
-										buildZptcResults(myResults);		
+									if(myResults!= null &&  myResults.length>0){
+										buildZptcResults(myResults);	
+									}else{
+										hideZptcDiv();			
+									}	
 								}else if(jsObj.task == "getMptcElectionResults")
 								{		
-									buildMptcResults(myResults);	
+									if(myResults!= null &&  myResults.length>0){
+										buildMptcResults(myResults);
+									}else{
+										hideMptcDiv();			
+									}	
 								}		
 							}catch (e) {   
 							   	alert("Invalid JSON result" + e);   
@@ -642,7 +650,28 @@ function getVotingTrendzForyear()
 			var url = "<%=request.getContextPath()%>/constituencyWiseMandalElectionsResultAction.action?"+rparam;
 			callAjax(jsObj, url);
 		}
-		
+		function hideZptcDiv(){
+			var imgElmt = document.getElementById("zptcPartyTrendsDetailsDiv");
+			var electionDetails="";
+			electionDetails +="<br/>";
+			electionDetails +="<b>Zptc Data is not available.</b>";			
+			imgElmt.innerHTML = electionDetails;		
+
+			 var candLink = document.getElementById("zptcCandidateLink");
+			 var candidateLink="";
+			 candLink.innerHTML = candidateLink;
+		}
+		function hideMptcDiv(){
+			var imgElmt = document.getElementById("mptcPartyTrendsDetailsDiv");
+			var electionDetails="";
+			electionDetails +="<br/>";
+			electionDetails +="<b>Mptc Data is not available.</b>";			
+			imgElmt.innerHTML = electionDetails;
+
+			 var candLink = document.getElementById("mptcCandidateLink");
+			 var candidateLink="";
+			 candLink.innerHTML = candidateLink;
+		}
 		function getAllZptcYears()
 		{	 			
 			var imgElmt = document.getElementById("zptcPartyVotingTrendz_head");

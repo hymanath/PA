@@ -150,6 +150,7 @@ var tehsilDetails={
 var districtId = ${districtId};
 var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear,mptcElectionTypeId=3,zptcElectionTypeId=4,mptcElectionType="MPTC",zptcElectionType="ZPTC";
 var totalZptcs = 0,totalMptcs = 0;
+var selectedZptcYear,selectedMptcYear;
 	function initializeResultsTable() {
 
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
@@ -367,12 +368,16 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					{
 						if(results!= null &&  results.length>0){
 							showAllPartyDetails(results);
+						}else{
+							hideZptcDiv();
 						}
 					}
 					if(jsObj.task == "getMptcPartyDetails") 
 					{
 						if(results!= null &&  results.length>0){
 							showAllMptcPartyDetails(results);
+						}else{
+							hideMptcDiv();
 						}
 					}	
 					if(jsObj.task == "getAllMptcParties") 
@@ -386,7 +391,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						if(results!= null &&  results.length>0){
 							showAllZptcParties(results);
 						}
-					}else
+					}
 					if(jsObj.task == "getAllElectionsInDistrict")
 					{										
 						showAllElectionsInDistrict(results);
@@ -643,6 +648,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 	function getPartyDetails(id)
 	{	
+		selectedZptcYear = id;
 		var ajaxImgElmt = document.getElementById("zptcAjaxLoadDiv");
 		ajaxImgElmt.style.display = "block";
 		zptcElectionYear = id;
@@ -660,6 +666,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 	function getMptcPartyDetails(id)
 	{
+		selectedMptcYear = id;
 		var ajaxImgElmt = document.getElementById("mptcAjaxLoadDiv");
 		ajaxImgElmt.style.display = "block";
 		mptcElectionYear = id;		
@@ -702,6 +709,47 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/districtPageMptcPartyDetailsAjaxAction.action?"+rparam;					
 		callAjax(rparam,jsObj,url);
+	}
+	function hideZptcDiv(){
+	     var zptcElmt = document.getElementById("zptcAjaxLoadDiv");
+		 var zptcDiv="";
+		 zptcElmt.innerHTML = zptcDiv;
+		 
+		 var candLink = document.getElementById("candidateLink");
+		 var candidateLink="";
+		 candLink.innerHTML = candidateLink;
+		 
+		 var zptcDetailsElmt = document.getElementById("partyDetails");
+		 var zptcDetailsDiv="";
+		 zptcDetailsDiv+="<br/>";
+		 zptcDetailsDiv+="<b>"+selectedZptcYear+" ZPTC data is not available.</b>";
+		 zptcDetailsElmt.innerHTML = zptcDetailsDiv;
+		 
+		 var totalZptcCountResultDiv = document.getElementById("totalZptcCountResultDiv");
+		 var totalZptcCountResult="";
+		 totalZptcCountResultDiv.innerHTML = totalZptcCountResult;		 		
+
+		 		 
+	}
+	
+	function hideMptcDiv(){	 
+		 var mptcElmt = document.getElementById("mptcAjaxLoadDiv");
+		 var mptcDiv="";
+		 mptcElmt.innerHTML = mptcDiv;
+		 
+		 var candLink = document.getElementById("mptcCandidateLink");
+		 var candidateLink="";
+		 candLink.innerHTML = candidateLink;
+		 
+		 var mptcElmt = document.getElementById("mptcPartyDetails");
+		 var mptcDiv="";
+		 mptcDiv+="<br/>";
+		 mptcDiv+="<b>"+selectedMptcYear+" MPTC data is not available.</b>";
+		 mptcElmt.innerHTML = mptcDiv;
+		 
+		 var totalMptcCountResultDiv = document.getElementById("totalMptcCountResultDiv");
+		 var totalMptcCountResult="";
+		 totalMptcCountResultDiv.innerHTML = totalMptcCountResult;		 
 	}
 	
 	function getAllZptcYears()
@@ -1000,7 +1048,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		</tr>		
 	</table>
 	
-			<div class="yui-skin-sam">
+			<div id="zptcDiv" class="yui-skin-sam">
 			<table><tr></tr>
 					<td><div id="zptcInfoDivBody"></div></td>
 					<td><div id="zptcAjaxLoadDiv" style="display:none;padding-top:20px;">
@@ -1019,7 +1067,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		</tr>
 	</table>
 	
-			<div class="yui-skin-sam">
+			<div id="mptcDiv" class="yui-skin-sam">
 			<table><tr></tr>
 					<td><div id="mptcInfoDivBody"></div></td>
 					<td><div id="mptcAjaxLoadDiv" style="display:none;padding-top:20px;">
