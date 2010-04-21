@@ -259,5 +259,9 @@
 	<bean id="commentCategoryPartyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryPartyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="commentDataCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentDataCategoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	
 </beans>		
