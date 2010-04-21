@@ -102,6 +102,11 @@
 				<value>com.itgrids.partyanalyst.model.StaticUserGroup</value>
 				<value>com.itgrids.partyanalyst.model.MyGroup</value>
 				<value>com.itgrids.partyanalyst.model.HamletBoothElection</value>
+				<value>com.itgrids.partyanalyst.model.CommentData</value>
+				<value>com.itgrids.partyanalyst.model.CommentCategoryCandidate</value>
+				<value>com.itgrids.partyanalyst.model.CommentCategoryParty</value>
+				<value>com.itgrids.partyanalyst.model.CommentCategoryConstituency</value>
+				<value>com.itgrids.partyanalyst.model.CommentDataCategory</value>
 		 </list>
 		</property>
 	</bean>
@@ -394,6 +399,24 @@
 	<bean id="hamletBoothElectionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothElectionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<!-- Comments DataModel -->
+	<bean id="commentDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentDataDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="commentCategoryCandidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryCandidateDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="commentCategoryConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryConstituencyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="commentCategoryPartyDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentCategoryPartyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="commentDataCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentDataCategoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	
 	<bean id="groupDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
