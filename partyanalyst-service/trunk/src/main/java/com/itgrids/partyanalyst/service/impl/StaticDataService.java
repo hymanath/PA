@@ -2887,9 +2887,8 @@ public class StaticDataService implements IStaticDataService {
 	public DistrictWisePartyResultVO getDistrictWiseElectionReport(Long electionScopeId, Long districtId){
 		DistrictWisePartyResultVO districtWisePartyResultVO = new DistrictWisePartyResultVO();
 		try{
-			
-			ElectionScope electionScope = electionScopeDAO.get(electionScopeId);
-			
+			ElectionScope electionScope = null;
+			List partiesResults = null;
 			List  result = nominationDAO.getAllPartyDetailsForAllElectionYearsInADistrict(districtId);
 			PartyResultVO partyResultVO = new PartyResultVO();
 			StringBuilder partyId = new StringBuilder();
@@ -2905,8 +2904,14 @@ public class StaticDataService implements IStaticDataService {
 				partyId.append(",").append((Long)listResult[4]);			
 			}	
 			
-			//List list = partyElectionDistrictResultDAO.getAllParyDetailsForAllElectionYearsForADistrict(electionId.substring(1),partyId.substring(1),stateId,districtId);
-			List list = partyElectionDistrictResultDAO.getAllElectionResultsInDistrictForElectionType(electionScopeId, districtId);
+			if(electionScopeId == 0)
+				partiesResults = partyElectionDistrictResultDAO.getAllParyDetailsForAllElectionYearsForADistrict(electionId.substring(1),partyId.substring(1),stateId,districtId);
+			else{
+				electionScope = electionScopeDAO.get(electionScopeId);
+				partiesResults = partyElectionDistrictResultDAO.getAllElectionResultsInDistrictForElectionType(electionScopeId, districtId);
+			}
+				
+			
 			Map<PartyResultVO, List<ElectionResultVO>>  allPartiesInElecsMap = 
 				new LinkedHashMap<PartyResultVO, List<ElectionResultVO>>(); 
 			List<PartyResultVO> partyResults = new ArrayList<PartyResultVO>();
@@ -2915,7 +2920,7 @@ public class StaticDataService implements IStaticDataService {
 			ElectionResultVO partyElecReuslt = null;
 			Long partySeatsWon = 0l;
 			
-			for(Object[] values:(List<Object[]>)list){
+			for(Object[] values:(List<Object[]>)partiesResults){
 				eachPartyInfo = new PartyResultVO();
 				eachPartyInfo.setPartyId((Long)values[0]);
 				eachPartyInfo.setPartyName(values[1].toString());
@@ -2933,7 +2938,7 @@ public class StaticDataService implements IStaticDataService {
 			}
 			
 			//Booth Wise Calculation For Parliament Parties Performance
-			if(electionScope.getElectionType().getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+			if(electionScopeId == 0 || IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionScope.getElectionType().getElectionType())){
 				Map<String, Long> yearWithPolledVotes = new HashMap<String, Long>(); 
 				List parliamentValidVotes = boothResultDAO.getAllPolledVotesByElectionsInDistrict(districtId, IConstants.PARLIAMENT_ELECTION_TYPE);
 

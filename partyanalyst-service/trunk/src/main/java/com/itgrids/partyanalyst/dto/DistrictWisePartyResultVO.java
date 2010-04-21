@@ -9,8 +9,9 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
 
-public class DistrictWisePartyResultVO {
+public class DistrictWisePartyResultVO extends ResultStatus{
 
+	private static final long serialVersionUID = 1L;
 	private Long districtId;
 	private String districtName;
 	private Long totalConstituencies;
