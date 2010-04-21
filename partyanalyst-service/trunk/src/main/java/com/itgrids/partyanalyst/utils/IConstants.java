@@ -100,5 +100,6 @@ public interface IConstants {
 	public final static String PARTY_COMMENTS_ELECTION="PARTY_COMMENTS_ELECTION";
 	public final static String CONSTITUENCY_COMMENTS_ALL="CONSTITUENCY_COMMENTS_ALL";
 	public final static String CONSTITUENCY_COMMENTS_ELECTION="CONSTITUENCY_COMMENTS_ELECTION";
-
+    public final static String CANDIDATE_COMMENTS_WON="WON";
+    public final static String CANDIDATE_COMMENTS_LOST="LOST";
 }
