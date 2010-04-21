@@ -387,6 +387,7 @@
 	    <property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
 	    <property name="commentCategoryConstituencyDAO" ref="commentCategoryConstituencyDAO" />
 	    <property name="commentCategoryPartyDAO" ref="commentCategoryPartyDAO" />
+	    <property name="commentDataCategoryDAO" ref="commentDataCategoryDAO" />
 	</bean>
 	
 	<bean id="villageBoothDataPopulationService" class="com.itgrids.partyanalyst.service.impl.VillageBoothDataPopulationService" >
