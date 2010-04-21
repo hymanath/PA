@@ -19,11 +19,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
@@ -39,6 +43,7 @@ public class CommentData extends BaseModel implements Serializable {
 	private String commentDesc;
 	private Date commentDate;
 	private String commentBy;
+	private CommentDataCategory commentDataCategory;
 	private Set<CommentCategoryCandidate> commentCategoryCandidate = new HashSet<CommentCategoryCandidate>(0);
 	private Set<CommentCategoryParty> commentCategoryParty = new HashSet<CommentCategoryParty>(0);
 	private Set<CommentCategoryConstituency> commentCategoryConstituency = new HashSet<CommentCategoryConstituency>(0);
@@ -51,6 +56,7 @@ public class CommentData extends BaseModel implements Serializable {
 
 	//parameterized constructor
 	public CommentData(String commentDesc, Date commentDate, String commentBy,
+			CommentDataCategory commentDataCategory,
 			Set<CommentCategoryCandidate> commentCategoryCandidate,
 			Set<CommentCategoryParty> commentCategoryParty,
 			Set<CommentCategoryConstituency> commentCategoryConstituency) {
@@ -58,6 +64,7 @@ public class CommentData extends BaseModel implements Serializable {
 		this.commentDesc = commentDesc;
 		this.commentDate = commentDate;
 		this.commentBy = commentBy;
+		this.commentDataCategory = commentDataCategory;
 		this.commentCategoryCandidate = commentCategoryCandidate;
 		this.commentCategoryParty  = commentCategoryParty;
 		this.commentCategoryConstituency = commentCategoryConstituency;
@@ -97,6 +104,20 @@ public class CommentData extends BaseModel implements Serializable {
 
 	public void setCommentDate(Date commentDate) {
 		this.commentDate = commentDate;
+	}
+
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "comment_data_category_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CommentDataCategory getCommentDataCategory() {
+		return commentDataCategory;
+	}
+
+
+	public void setCommentDataCategory(CommentDataCategory commentDataCategory) {
+		this.commentDataCategory = commentDataCategory;
 	}
 
 
