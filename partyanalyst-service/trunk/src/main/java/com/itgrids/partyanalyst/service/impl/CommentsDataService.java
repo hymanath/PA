@@ -23,6 +23,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryPartyDAO;
+import com.itgrids.partyanalyst.dao.ICommentDataCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -35,10 +36,12 @@ import com.itgrids.partyanalyst.dto.PartyCommentsVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
 import com.itgrids.partyanalyst.model.CommentCategoryConstituency;
 import com.itgrids.partyanalyst.model.CommentCategoryParty;
 import com.itgrids.partyanalyst.model.CommentData;
+import com.itgrids.partyanalyst.model.CommentDataCategory;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
@@ -59,6 +62,7 @@ public class CommentsDataService implements ICommentsDataService {
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO;
 	private ICommentCategoryPartyDAO commentCategoryPartyDAO;
 	private ICommentCategoryConstituencyDAO commentCategoryConstituencyDAO;
+	private ICommentDataCategoryDAO commentDataCategoryDAO;
 		
 	private static final Logger log = Logger.getLogger(CommentsDataService.class);
 	
@@ -136,6 +140,15 @@ public class CommentsDataService implements ICommentsDataService {
 	public void setCommentCategoryConstituencyDAO(
 			ICommentCategoryConstituencyDAO commentCategoryConstituencyDAO) {
 		this.commentCategoryConstituencyDAO = commentCategoryConstituencyDAO;
+	}
+
+	public ICommentDataCategoryDAO getCommentDataCategoryDAO() {
+		return commentDataCategoryDAO;
+	}
+
+	public void setCommentDataCategoryDAO(
+			ICommentDataCategoryDAO commentDataCategoryDAO) {
+		this.commentDataCategoryDAO = commentDataCategoryDAO;
 	}
 
 	/*
@@ -251,6 +264,7 @@ public class CommentsDataService implements ICommentsDataService {
 				candComments.setCommentDesc(comments.getCommentData().getCommentDesc());
 				candComments.setCommentedBy(comments.getCommentData().getCommentBy());
 				candComments.setCommentedOn(comments.getCommentData().getCommentDate().toString());
+				candComments.setCommentCategory(comments.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
 				
 				candidateCommentsVO.add(candComments);
 			}
@@ -369,6 +383,7 @@ public class CommentsDataService implements ICommentsDataService {
 				partyComments.setCommentDesc(comments.getCommentData().getCommentDesc());
 				partyComments.setCommentedBy(comments.getCommentData().getCommentBy());
 				partyComments.setCommentedOn(comments.getCommentData().getCommentDate().toString());
+				partyComments.setCommentCategory(comments.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
 				
 				partyCommentsVO.add(partyComments);
 			}
@@ -485,6 +500,7 @@ public class CommentsDataService implements ICommentsDataService {
 				consComments.setCommentDesc(comments.getCommentData().getCommentDesc());
 				consComments.setCommentedBy(comments.getCommentData().getCommentBy());
 				consComments.setCommentedOn(comments.getCommentData().getCommentDate().toString());
+				consComments.setCommentCategory(comments.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
 				
 				constiCommentsVO.add(consComments);
 			}
@@ -497,13 +513,36 @@ public class CommentsDataService implements ICommentsDataService {
 	}
 
 	/*
+	 * Method to save the comments placed for a candidate to DB
+	 */
+	public CandidateCommentsVO saveCandidateCommentsToDB(String electionType, String electionYear, Long electionId,
+			Long constituencyId, Long candidateId,String commentDesc,String commentedBy,Long commentCategoryId){
+		
+		log.debug("Inside saveCandidateCommentsToDB Method ......");
+		
+		CandidateCommentsVO candidateComments = null;
+		CommentCategoryCandidate commentCategoryCandidate = saveCandidateCommentForAnElection(electionType,electionYear,electionId,constituencyId,candidateId,commentDesc,commentedBy,commentCategoryId);
+		
+		if(commentCategoryCandidate != null){
+			candidateComments = new CandidateCommentsVO();
+			candidateComments.setCandidateId(candidateId);
+			candidateComments.setCommentDesc(commentDesc);
+			candidateComments.setCommentedBy(commentedBy);
+			candidateComments.setCandidate(commentCategoryCandidate.getNomination().getCandidate().getLastname());
+			candidateComments.setCommentedOn(commentCategoryCandidate.getCommentData().getCommentDate().toString());
+			candidateComments.setCommentCategory(commentCategoryCandidate.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
+		}
+		return candidateComments;
+	}
+	
+	/*
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.ICommentsDataService#saveCandidateCommentForAnElection(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long)
 	 * Method to save a comment for a candidate
 	 */
 	public CommentCategoryCandidate saveCandidateCommentForAnElection(
 			String electionType, String electionYear, Long electionId,
-			Long constituencyId, Long candidateId,final String commentDesc,final String commentedBy) {
+			Long constituencyId, Long candidateId,final String commentDesc,final String commentedBy,Long commentCategoryId) {
 		
 		log.debug("Inside saveCandidateCommentForAnElection Method ......");
 		
@@ -520,6 +559,8 @@ public class CommentsDataService implements ICommentsDataService {
 		
 		final Nomination finalNominatn = nomination;
 		
+		final CommentDataCategory commentDataCategory = commentDataCategoryDAO.get(commentCategoryId);
+		
 		CommentCategoryCandidate commentCategoryCandidate = (CommentCategoryCandidate)transactionTemplate.execute(new TransactionCallback() {
 
 			public Object doInTransaction(TransactionStatus status) {
@@ -535,6 +576,7 @@ public class CommentsDataService implements ICommentsDataService {
 					commentData.setCommentDesc(commentDesc);
 					commentData.setCommentBy(commentedBy);
 					commentData.setCommentDate(today);
+					commentData.setCommentDataCategory(commentDataCategory);
 					
 					commentCategoryCandidateSaved = new CommentCategoryCandidate();
 					commentCategoryCandidateSaved.setNomination(finalNominatn);
@@ -558,6 +600,29 @@ public class CommentsDataService implements ICommentsDataService {
 	}
 
 	/*
+	 *  Method to save the comments placed for a constituency to DB
+	 */
+	public ConstituencyCommentsVO saveConstituencyCommentsToDB(String electionType, String electionYear, Long electionId,
+			Long constituencyId,String commentDesc,String commentedBy,Long commentCategoryId){
+		
+		log.debug("Inside saveConstituencyCommentsToDB Method ......");
+		
+		ConstituencyCommentsVO constituencyComments = null;
+		CommentCategoryConstituency commentCategoryConstituency = saveConstituencyCommentForAnElection(electionType,electionYear,electionId,constituencyId,commentDesc,commentedBy,commentCategoryId);
+		
+		if(commentCategoryConstituency != null){
+			constituencyComments = new ConstituencyCommentsVO();
+			constituencyComments.setConstituencyId(constituencyId);
+			constituencyComments.setCommentDesc(commentDesc);
+			constituencyComments.setCommentedBy(commentedBy);
+			constituencyComments.setConstituency(commentCategoryConstituency.getConstituency().getName());
+			constituencyComments.setCommentedOn(commentCategoryConstituency.getCommentData().getCommentDate().toString());
+			constituencyComments.setCommentCategory(commentCategoryConstituency.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
+		}
+		
+	 return constituencyComments;	
+	}
+	/*
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.ICommentsDataService#saveConstituencyCommentForAnElection(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long)
 	 * Method to save a comment for a party
@@ -565,7 +630,7 @@ public class CommentsDataService implements ICommentsDataService {
 	@SuppressWarnings("unchecked")
 	public CommentCategoryConstituency saveConstituencyCommentForAnElection(
 			String electionType, String electionYear, Long electionId,
-			final Long constituencyId,final String commentDesc,final String commentedBy) {
+			final Long constituencyId,final String commentDesc,final String commentedBy,Long commentCategoryId) {
 		
 		log.debug("Inside saveConstituencyCommentForAnElection Method ......");
 		
@@ -582,6 +647,8 @@ public class CommentsDataService implements ICommentsDataService {
 			}
 		}
 		final Election election = electionObj;
+		
+		final CommentDataCategory commentDataCategory = commentDataCategoryDAO.get(commentCategoryId);
 		
 		CommentCategoryConstituency commentCategoryConstituency = (CommentCategoryConstituency)transactionTemplate.execute(new TransactionCallback() {
 
@@ -600,6 +667,7 @@ public class CommentsDataService implements ICommentsDataService {
 					commentData.setCommentDesc(commentDesc);
 					commentData.setCommentBy(commentedBy);
 					commentData.setCommentDate(today);
+					commentData.setCommentDataCategory(commentDataCategory);
 					
 					commentCategoryConstituencySaved = new CommentCategoryConstituency();
 					commentCategoryConstituencySaved.setCommentData(commentData);
@@ -619,6 +687,29 @@ public class CommentsDataService implements ICommentsDataService {
 		});
 	  return commentCategoryConstituency;
 	}
+	
+	/*
+	 * Method to save the comments placed for a party to DB
+	 */
+	public PartyCommentsVO savePartyCommentsToDB(String electionType, String electionYear, Long electionId,
+			Long partyId,String commentDesc,String commentedBy,Long commentCategoryId){
+		
+		log.debug("Inside savePartyCommentsToDB Method ......");
+		
+		PartyCommentsVO partyComments = null;
+		CommentCategoryParty commentCategoryParty = savePartyCommentForAnElection(electionType,electionYear,electionId,partyId,commentDesc,commentedBy,commentCategoryId);
+		
+		if(commentCategoryParty != null){
+			partyComments = new PartyCommentsVO();
+			partyComments.setPartyId(partyId);
+			partyComments.setPartyName(commentCategoryParty.getParty().getShortName());
+			partyComments.setCommentDesc(commentDesc);
+			partyComments.setCommentedBy(commentedBy);
+			partyComments.setCommentedOn(commentCategoryParty.getCommentData().getCommentDate().toString());
+			partyComments.setCommentCategory(commentCategoryParty.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
+		}
+	 return partyComments;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -627,7 +718,7 @@ public class CommentsDataService implements ICommentsDataService {
 	 */
 	public CommentCategoryParty savePartyCommentForAnElection(
 			String electionType, String electionYear, Long electionId,
-			final Long partyId,final String commentDesc,final String commentedBy) {
+			final Long partyId,final String commentDesc,final String commentedBy,Long commentCategoryId) {
 		
 		log.debug("Inside savePartyCommentForAnElection Method ......");
 		
@@ -640,6 +731,8 @@ public class CommentsDataService implements ICommentsDataService {
 		}
 		
 		final Election election = electionObj;
+		
+		final CommentDataCategory commentDataCategory = commentDataCategoryDAO.get(commentCategoryId);
 				
 		CommentCategoryParty commentCategoryParty = (CommentCategoryParty)transactionTemplate.execute(new TransactionCallback() {
 
@@ -658,6 +751,7 @@ public class CommentsDataService implements ICommentsDataService {
 					commentData.setCommentDesc(commentDesc);
 					commentData.setCommentBy(commentedBy);
 					commentData.setCommentDate(today);
+					commentData.setCommentDataCategory(commentDataCategory);
 					
 					commentCategoryPartySaved = new CommentCategoryParty();
 					commentCategoryPartySaved.setCommentData(commentData);
@@ -676,6 +770,40 @@ public class CommentsDataService implements ICommentsDataService {
 			}
 		});
 	  return commentCategoryParty;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getCandidateCommentsCategoryStatics(Long candidateRank) {
+		
+		log.debug("Inside getCandidateCommentsCategoryStatics Method ....");
+		
+		List<SelectOptionVO> candStatics = null;
+		List staticsList = null;
+		if(candidateRank != null && !candidateRank.equals(new Long(0))){
+			if(candidateRank.equals(new Long(1))){
+				staticsList = commentDataCategoryDAO.findCommentDataCategoryByType(IConstants.CANDIDATE_COMMENTS_WON);
+			}
+			else if(!candidateRank.equals(new Long(1))){
+				staticsList = commentDataCategoryDAO.findCommentDataCategoryByType(IConstants.CANDIDATE_COMMENTS_LOST);
+			}
+			
+			if(staticsList != null && staticsList.size() > 0){
+				candStatics = new ArrayList<SelectOptionVO>();
+				for(int i=0;i<staticsList.size();i++){
+					Object[] params = (Object[])staticsList.get(i);
+					Long id = (Long)params[0];
+					String type = (String)params[1];
+					String basicType = (String)params[2];
+					
+					SelectOptionVO selectOption = new SelectOptionVO();
+					selectOption.setId(id);
+					selectOption.setName(type);
+					
+					candStatics.add(selectOption);
+				}
+			}
+		}
+	 return candStatics;
 	}
 
 }
