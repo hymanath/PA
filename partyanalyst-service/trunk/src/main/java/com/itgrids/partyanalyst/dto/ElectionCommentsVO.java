@@ -20,6 +20,10 @@ public class ElectionCommentsVO implements java.io.Serializable{
 	private String electionType;
 	private String electionYear;
 	
+	private PartyCommentsVO partyCommentsSaved;
+	private CandidateCommentsVO candidateCommentsSaved;
+	private ConstituencyCommentsVO constituencyCommentsSaved;
+	
 	private List<PartyCommentsVO> partyCommentsVO;
 	private List<CandidateCommentsVO> candidateCommentsVO;
 	private List<ConstituencyCommentsVO> constituencyCommentsVO;
@@ -53,6 +57,31 @@ public class ElectionCommentsVO implements java.io.Serializable{
 
 	public List<CandidateCommentsVO> getCandidateCommentsVO() {
 		return candidateCommentsVO;
+	}
+
+	public PartyCommentsVO getPartyCommentsSaved() {
+		return partyCommentsSaved;
+	}
+
+	public void setPartyCommentsSaved(PartyCommentsVO partyCommentsSaved) {
+		this.partyCommentsSaved = partyCommentsSaved;
+	}
+
+	public CandidateCommentsVO getCandidateCommentsSaved() {
+		return candidateCommentsSaved;
+	}
+
+	public void setCandidateCommentsSaved(CandidateCommentsVO candidateCommentsSaved) {
+		this.candidateCommentsSaved = candidateCommentsSaved;
+	}
+
+	public ConstituencyCommentsVO getConstituencyCommentsSaved() {
+		return constituencyCommentsSaved;
+	}
+
+	public void setConstituencyCommentsSaved(
+			ConstituencyCommentsVO constituencyCommentsSaved) {
+		this.constituencyCommentsSaved = constituencyCommentsSaved;
 	}
 
 	public void setCandidateCommentsVO(List<CandidateCommentsVO> candidateCommentsVO) {
