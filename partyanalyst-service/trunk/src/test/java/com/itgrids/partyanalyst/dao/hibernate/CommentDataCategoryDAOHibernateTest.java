@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICommentDataCategoryDAO;
 import com.itgrids.partyanalyst.model.CommentDataCategory;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CommentDataCategoryDAOHibernateTest extends BaseDaoTestCase {
 
@@ -28,5 +29,24 @@ public class CommentDataCategoryDAOHibernateTest extends BaseDaoTestCase {
 	public void testGetAllCategories(){
 		List<CommentDataCategory> list = commentDataCategoryDAO.getAll();
 		System.out.println("Size :" + list.size());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void testGetCommentDataCategoryByType(){
+		List listData = commentDataCategoryDAO.findCommentDataCategoryByType(IConstants.CANDIDATE_COMMENTS_LOST);
+		if(listData != null && listData.size() > 0){
+			for(int i=0;i<listData.size();i++){
+			Object[] params = (Object[])listData.get(i);
+			Long id = (Long)params[0];
+			String type = (String)params[1];
+			String basicType = (String)params[2];
+			
+			System.out.print(" ID :" + id);
+			System.out.print(" TYPE :" + type);
+			System.out.print(" BASIC TYPE :" + basicType);	
+			
+			System.out.println("");
+			}
+		}
 	}
 }
