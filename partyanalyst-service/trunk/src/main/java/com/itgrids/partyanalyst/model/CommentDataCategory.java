@@ -39,6 +39,8 @@ public class CommentDataCategory extends BaseModel implements Serializable {
 	private Long commentDataCategoryId;
 	private String commentDataCategoryType;
 	private Date updatedDate;
+	private String commentClassification;
+	private String commentBasicCategory;
 	private Set<CommentData> commentData = new HashSet<CommentData>();
 	
 	//default constructor
@@ -48,11 +50,13 @@ public class CommentDataCategory extends BaseModel implements Serializable {
 	
 	//parameterized constructor
 	public CommentDataCategory(String commentDataCategoryType,
-			Date updatedDate, Set<CommentData> commentData) {
+			Date updatedDate,String commentClassification, String commentBasicCategory, Set<CommentData> commentData) {
 		super();
 		this.commentDataCategoryType = commentDataCategoryType;
 		this.updatedDate = updatedDate;
 		this.commentData = commentData;
+		this.commentClassification = commentClassification;
+		this.commentBasicCategory = commentBasicCategory;
 	}
 
 	@Id
@@ -94,9 +98,23 @@ public class CommentDataCategory extends BaseModel implements Serializable {
 	public void setCommentData(Set<CommentData> commentData) {
 		this.commentData = commentData;
 	}
-	
-	
-	
-	
+
+	@Column(name = "comment_classification", length = 25)
+	public String getCommentClassification() {
+		return commentClassification;
+	}
+
+	public void setCommentClassification(String commentClassification) {
+		this.commentClassification = commentClassification;
+	}
+
+	@Column(name = "comment_basic_category", length = 25)
+	public String getCommentBasicCategory() {
+		return commentBasicCategory;
+	}
+
+	public void setCommentBasicCategory(String commentBasicCategory) {
+		this.commentBasicCategory = commentBasicCategory;
+	}
 
 }
