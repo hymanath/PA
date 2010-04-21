@@ -423,6 +423,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		
 		districtWisePartyResultVO = staticDataService.getDistrictWiseElectionReport(jObj.getLong("electionTypeId"),jObj.getLong("districtId"));
 		List<PartyResultVO> allElectionResults = districtWisePartyResultVO.getPartyElectionResultsList();
+		if(allElectionResults.size() == 0)
+			return SUCCESS;
 		String chartName = "allPartiesDistrictWisePerformanceIn"+jObj.getString("electionType")+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         districtWisePartyResultVO.setChartPath(chartName);
@@ -441,6 +443,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		}
 		
 		electionsInDistrict = staticDataService.getAllElectionScopes();
+		electionsInDistrict.add(0, new SelectOptionVO(0l, "All ELection Types"));
 		return SUCCESS;
 	}
 	

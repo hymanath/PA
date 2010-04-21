@@ -830,7 +830,11 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			allElecDivImg.style.display = 'none';
 		
 		var graphDivStr = '';				
-		graphDivStr += '<img src="charts/'+results.chartPath+'" />';
+		if(results.chartPath == null)
+			graphDivStr += '<b>Sorry, Data Not Available</b>'
+		else
+			graphDivStr += '<img src="charts/'+results.chartPath+'" />';
+		
 		 allElecDiv.innerHTML = graphDivStr;	 
 		
 	}
