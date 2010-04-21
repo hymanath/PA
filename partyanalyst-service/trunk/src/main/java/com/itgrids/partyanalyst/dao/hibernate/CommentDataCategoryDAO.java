@@ -21,4 +21,10 @@ public class CommentDataCategoryDAO extends GenericDaoHibernate<CommentDataCateg
 		super(CommentDataCategory.class);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List findCommentDataCategoryByType(String type) {
+		return getHibernateTemplate().find("select model.commentDataCategoryId,model.commentDataCategoryType,model.commentBasicCategory"+
+				" from CommentDataCategory model where model.commentClassification = ?", type);
+	}
+
 }
