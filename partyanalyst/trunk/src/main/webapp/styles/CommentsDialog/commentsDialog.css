@@ -1,0 +1,42 @@
+.commentsInputTable
+{
+	background-color:#E8EDF4;
+	height:auto;	
+	border-top:1px solid #335291;
+	border-left:1px solid #335291;
+	border-bottom:3px solid #335291;
+	border-right:3px solid #335291;
+	color: #666666;
+	padding:5px;	
+}
+.commentsInputTd
+{
+	border:2px solid white;
+	padding:3px;
+}
+.yui-skin-sam .yui-dt-paginator {
+	color:#505050;
+	display:block;
+	font-weight:bold;
+	margin:6px 5px;
+	padding:0;
+	text-align:center;
+	white-space:nowrap;
+}
+.yui-skin-sam .yui-dt table {
+	border-collapse:separate;
+	border-spacing:0;
+	font-family:Georgia;
+	font-size:13px;
+	width:100%;
+}
+.button
+{
+	background-attachment:scroll;
+	background-color:#335291;
+	background-image:none;
+	background-position:0 0;
+	background-repeat:repeat;
+	color:#FFFFFF;
+	width:50px;
+}	
