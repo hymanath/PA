@@ -276,4 +276,7 @@
 	<bean id="statewiseElectionResultsComparisionToolAction" class="com.itgrids.partyanalyst.web.action.StatewiseElectionResultsComparisionToolAction" singleton="false">
 			<property name="electionReportService" ref="electionReportService" />
 	</bean>
+	<bean id="commentsDataAction" class="com.itgrids.partyanalyst.web.action.CommentsDataAction" singleton="false">
+			<property name="commentsDataService" ref="commentsDataService" />
+	</bean>
 </beans>		
