@@ -773,6 +773,16 @@
            		<param name="root">allPartiesPositionsInElection</param>
         	</result>		
         </action>
+       <action name="commentsDataAction" class="commentsDataAction"> 
+              <result type="json" name="success">
+           		<param name="root">electionCommentsVO</param>
+        	</result>       		
+        </action>
+        <action name="commentsClassificationDataAction" class="commentsDataAction" method="getCommentsClassifications"> 
+              <result type="json" name="success">
+           		<param name="root">commentsClassificationList</param>
+        	</result>       		
+        </action>
               
 	</package>
 </struts>
