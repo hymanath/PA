@@ -648,7 +648,8 @@ public class CommentsDataService implements ICommentsDataService {
 		}
 		final Election election = electionObj;
 		
-		final CommentDataCategory commentDataCategory = commentDataCategoryDAO.get(commentCategoryId);
+		//final CommentDataCategory commentDataCategory = commentDataCategoryDAO.get(commentCategoryId);
+		final CommentDataCategory commentDataCategory = null;
 		
 		CommentCategoryConstituency commentCategoryConstituency = (CommentCategoryConstituency)transactionTemplate.execute(new TransactionCallback() {
 
@@ -732,7 +733,8 @@ public class CommentsDataService implements ICommentsDataService {
 		
 		final Election election = electionObj;
 		
-		final CommentDataCategory commentDataCategory = commentDataCategoryDAO.get(commentCategoryId);
+		//final CommentDataCategory commentDataCategory = commentDataCategoryDAO.get(commentCategoryId);
+		final CommentDataCategory commentDataCategory = null;
 				
 		CommentCategoryParty commentCategoryParty = (CommentCategoryParty)transactionTemplate.execute(new TransactionCallback() {
 
