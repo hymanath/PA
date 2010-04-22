@@ -57,87 +57,8 @@
 
 	<!-- YUI Dependency files (End) -->
 
-<style type="text/css">
-		.detailsDiv
-		{
-			margin-top:10px;
-			margin-bottom:10px;
-			margin-right:30px;
-			margin-left:30px;
-			text-align:left;
-		}
-		.detailsHead
-		{
-			font-weight:bold;
-			color:#1C4B7A;
-			text-decoration:underline;
-			font-size:15px;
-			padding:5px 5px 5px 0px;
-			margin-bottom: 5px;
-		}
-		.detailsBody
-		{
-			padding:5px;
-			background-color:#F1F5F7;
-		}				
-		#districtAncSpan
-		{
-			padding:10px;
-			font-size:12px;
-		}
-		.districtAnc
-		{
-			color:#1C4B7A;
-		}	
-		.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
-		{
-			background:none;
-		}
-
-		.yui-skin-sam thead {
-
-			background-color:#C4DEFF;
-			color:#3F546F;
-		}
-		.candidateDetailsStyle{
-			background-color:#EFF3F7;
-			border-color:#96B4D3;
-			border-style:solid;
-			border-width:1px 1px 1px 1px;
-			margin-bottom:5px;margin-left:0;
-			margin-top:0;
-			padding:4px;
-			color:#247CD4;
-			font-size:13px;
-			font-weight:bold;
-		}
-		.yui-skin-sam .yui-dt th, .yui-skin-sam .yui-dt th a {
-			font-weight:bold;
-			text-decoration:none;
-			vertical-align:bottom;
-		}
-		.counterSize{
-			color:red;
-			font-size:14px;
-		}
-
-		#alliancePartiesCarousel .yui-carousel-element li
-		{
-			height:350px;
-			width:700px;
-		}
-
-		#alliancePartiesCarousel .yui-carousel-item-selected 
-		{
-			border:1px solid #CCCCCC;
-		}
-
-		.allianceListDiv
-		{
-			padding-top:20px;
-		}
-	</style>
-	
+	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
+	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 
 <script type="text/javascript">
 
@@ -151,6 +72,7 @@ var districtId = ${districtId};
 var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear,mptcElectionTypeId=3,zptcElectionTypeId=4,mptcElectionType="MPTC",zptcElectionType="ZPTC";
 var totalZptcs = 0,totalMptcs = 0;
 var selectedZptcYear,selectedMptcYear;
+
 	function initializeResultsTable() {
 
 	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
@@ -274,7 +196,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			sortable : true
 		}, {
 			key : "percentageOfVotesWonByParty",
-			label : "Percentage Of Votes Won",
+			label : "Votes %",
 			sortable : true
 		} ];
 
@@ -324,7 +246,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			sortable : true
 		}, {
 			key : "percentageOfVotesWonByParty",
-			label : "Percentage Of Votes Won",
+			label : "Votes %",
 			sortable : true
 		} ];
 
@@ -933,242 +855,315 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
  
 </head>
 <body>
-<div class="detailsHead">
-		Welcome to <c:out value="${districtName}"></c:out> District Page <br/><br/>
-</div>
-<div id="alliancePartiesGraph_main">
-	
-		<div id="alliancePartiesCarousel" class="yui-skin-sam">
-			<ul>
-			<li>
-				<div id="allElectionResultsInDT"  class="allianceListDiv">
-					<div id="allElectionResultsInDT_head"></div>
-					<div id="allElectionResultsInDT_body"></div>
-				</div>
-			</li>
-			<li>
-				<div id="positionsGraphDiv" class="allianceListDiv">
-					<div id="electionHirarchiDiv" ></div>
-					<div id="partyPositionsDiv"></div>
-				</div>
-			</li>
-			</ul>
-		</div>
-	
-	
-</div>
-<div id="districtInfoDiv" class="detailsDiv">
-	<table>
-		<tr>
-			<td id="districtInfoDivHead" class="detailsHead"> MLA Constituencies for ${constituenciesStatusVO.delimitationYear}</td>
-		<td> : <b  class="counterSize"> ${constituenciesStatusVO.totalConstituenciesAfterDelimitation} </b></td>
-		</tr>
-	</table>
-		<div id="districtInfoDivBody" class="detailsBody">
 
-		<table><tr>
-		<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.existConstituencies}">			
-				<td>
-				<span id="districtAncSpan">
-					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
-					<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${result.name}
-					</a>
-				</span>
-			</td>	
-			<c:if test="${stat.count % 4==0}">
-				</tr><tr><td colspan="4"> </td></tr><tr>
-			</c:if>			
-		</c:forEach>			
-		
-		</tr><tr><td colspan="4"></td></tr><tr>
-		<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.newConstituencies}">
-			<td>
-				<span id="districtAncSpan">
-					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
-					<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">* ${result.name}
-					</a>
-				</span>
-			</td>	
-			<c:if test="${stat.count % 4==0}">
-				</tr><tr><td colspan="4"> </td></tr><tr>
-			</c:if>			
-		</c:forEach>			
-		</tr>
-		</table>		
-	</div>
-	&nbsp &nbsp	* indicates New Constituencies after Delimitation
-</div>
+<div id="districtPageMainDiv">	
 
+	<!--District Page Layout-->
+	<div id="districtPageLayout_main"></div>	
 
+	<!--District Page Right Layout-->
+	<div id="districtPageLayout_right">		
 
-<div id="districtInfoDiv" class="detailsDiv">
-	<table>
-		<tr>
-			<td id="districtInfoDivHead" class="detailsHead"> Dissolved Constituencies in Delimitation ${constituenciesStatusVO.delimitationYear}</td>
-			<td> :<b  class="counterSize"> ${constituenciesStatusVO.totalDeletedConstituencies}</b> </td>
-		</tr>
-	</table>
-
-	<div id="districtInfoDivBody" class="detailsBody">
-		<table><tr>
-		<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.deletedConstituencies}">			
-				<td>
-				<span id="districtAncSpan">
-					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
-					<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${result.name}
-					</a>
-				</span>
-			</td>	
-			<c:if test="${stat.count % 7==0}">
-				</tr><tr><td colspan="7"> </td></tr><tr>
-			</c:if>			
-		</c:forEach>			
-		</tr></table>		
-	</div>
-
-</div>
-
-<div id="tehsilInfoDiv" class="detailsDiv">
-<div id="tehsilInfoDivHead" class="detailsHead">
-		Member of Parliament (MP) in the District
-	</div>
-	<div class="yui-skin-sam">
-	<div id="mpsInfoDivBody">
-		<table id="mpsDataSortingTable">			
-			<c:forEach var="mpsDetails" varStatus="stat" items="${parliamentCandidateDetailsVo.candidateDetails}">			
-				<tr>
-					<td>
-					<span id="districtAncSpan">
-									<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${mpsDetails.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.constituencyName}
-							</a>
-						</span>
-					</td>
-					<td>
-						<span id="districtAncSpan">
-								<a href="candidateElectionResultsAction.action?candidateId=${mpsDetails.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.candidateName}
-								</a>
-						</span>
-					</td>
-					<td>	
-						<img src="<%=request.getContextPath()%>/images/party_flags/${mpsDetails.partyFlag}" height="30" width="40"/>
-					</td>
-					<td> <a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${mpsDetails.constituencyId}','Parliament','2009')">view results</a>
-					</td>
-				</tr>  
-			</c:forEach>
-		</table>		
-	</div>
-	</div>
-</div>
-
-<div id="districtInfoDiv" class="detailsDiv">
-<div id="districtInfoDivHead" class="detailsHead">
-		Member of Legislative Assembly (MLA) in the District
-	</div>
-	<div class="yui-skin-sam">
-	<div id="mlaInfoDivBody">
-		<table  id="mlaDataSortingTable">
-			
-			<c:forEach var="candidate" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">			
-				<tr>
-					<td>
-						<span id="districtAncSpan">
-							<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${candidate.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.constituencyName}
-							</a>
-						</span>
-					</td>
-					<td>
-					<span id="districtAncSpan">
-							<a href="candidateElectionResultsAction.action?candidateId=${candidate.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.candidateName}
-							</a>
-						</span>
-					 &nbsp </td>
-					<td><img src="<%=request.getContextPath()%>/images/party_flags/${candidate.partyFlag}" height="30" width="40"/></td>
-
-
-					<td>
-						<span id="districtAncSpan">
-							<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${candidate.parliamentConstituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.parliamentConstituencyName}
-							</a>
-						</span>
-					</td>
-					<td>
-	                <a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${candidate.constituencyId}','${constituenciesStatusVO.electionType}','${constituenciesStatusVO.electionYear}')">view results</a>
-				</td>
-				</tr>  
-			</c:forEach>
-		</table>		
-	</div>
-	</div>
-</div>
-
-
-
-<div id="mandalInfoDiv" style="margin-left:0.7cm; text-align:left;">
-	<table>
-		<tr>
-			<td><div id="zptcInfoDivHead" class="detailsHead"> Total Number of ZPTC's : </div></td><b><td><div id="totalZptcCountResultDiv"></div></b></td>			
-		</tr>		
-	</table>
-	
-			<div id="zptcDiv" class="yui-skin-sam">
-			<table><tr></tr>
-					<td><div id="zptcInfoDivBody"></div></td>
-					<td><div id="zptcAjaxLoadDiv" style="display:none;padding-top:20px;">
-						<img id="ajaxImg" height="13" width="10" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
-					</div></td><td><div id="candidateLink"></div></td></tr>
-					</table>
-					<table cellpadding="5px">
-					<tr><td><div id="partyDetails"></div></td>
+		<div id="newConstDiv_main">
+			<div id="newConstDiv_head">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+					<tr>
+						<td width="10%"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td><div class="districtPageRoundedHeaders_center" style="padding:4px;"><span>New Constituencies in Delimitation ${constituenciesStatusVO.delimitationYear}</span></div></td>
+						<td><img src="images/icons/districtPage/header_right.gif"/></td>
 					</tr>
-					</table>
-			</div>	
-						
-	<table>
-		<tr>
-			<td><div id="mptcInfoDivHead" class="detailsHead"> Total Number of MPTC's : </div></td><td><b><td><div id="totalMptcCountResultDiv"></div></b></td>	
-		</tr>
-	</table>
-	
-			<div id="mptcDiv" class="yui-skin-sam">
-			<table><tr></tr>
-					<td><div id="mptcInfoDivBody"></div></td>
-					<td><div id="mptcAjaxLoadDiv" style="display:none;padding-top:20px;">
-						<img id="ajaxImg" height="13" width="10" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
-					</div></td><td><div id="mptcCandidateLink"></div></td></tr>
-					</table>
-					<table cellpadding="5px">
-					<tr><td><div id="mptcPartyDetails"></div></td>
-					</tr>
-					</table>
+				</table>
 			</div>
-</div>	
+			<div id="newConstDiv_body">				
+				<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.newConstituencies}">
+					<div id="newConstAncSpan" class="mandalNamesDiv">		
+					<table>
+						<tr>
+						<td> <img src="images/icons/districtPage/listIcon.png"/></td>
+						<td><span class="mandalNameSpan">
+							<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}"> ${result.name}
+							</a>
+						</td>
+						</tr>
+					</table>
+				</div>	
+				</c:forEach>						
+			</div>
+		</div>
 
-<div id="mandalInfoDiv" class="detailsDiv">
-	<div id="mandalInfoDivHead" class="detailsHead">
-		Mandal in <c:out value="${districtName}"/> District 
+
+		
+		<div id="delimitMandalsDiv_main">
+			<div id="delimitMandalsDiv_head">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+					<tr>
+						<td width="10%"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td><div class="districtPageRoundedHeaders_center" style="padding:4px;"><span>Dissolved Constituencies in Delimitation ${constituenciesStatusVO.delimitationYear}</span></div></td>
+						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>
+				</table>
+			</div>
+			<div id="delimitMandalsDiv_body">
+				<c:forEach var="result" varStatus="stat" items="${constituenciesStatusVO.deletedConstituencies}">			
+				<div id="mandalAncSpan" class="mandalNamesDiv">							
+					<table>
+						<tr>
+						<td> <img src="images/icons/districtPage/listIcon.png"/></td>
+						<td><span class="mandalNameSpan">
+							<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${result.id}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${result.name}
+							</a>
+						</td>
+						</tr>
+					</table>
+				</div>			
+				</c:forEach>			
+			</div>
+		</div>
+		
+
+		<div id="mandalsDiv_main">
+			<div id="mandalsDiv_head">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+					<tr>
+						<td width="10%"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td><div class="districtPageRoundedHeaders_center"><span>Mandals</span></div></td>
+						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>
+				</table>
+			</div>
+			<div id="mandalsDiv_body">
+				<c:forEach var="mandalsBeforeDelimitationConstituency" varStatus="stat" items="${mandals}">						
+						<div id="mandalAncSpan" class="mandalNamesDiv">							
+							<table>
+								<tr>
+								<td> <img src="images/icons/districtPage/listIcon.png"/></td>
+								<td><span class="mandalNameSpan">
+									<a href="mandalPageElectionInfoAction.action?MANDAL_ID=${mandalsBeforeDelimitationConstituency.id}&MANDAL_NAME=${mandalsBeforeDelimitationConstituency.name}" class="districtAnc">${mandalsBeforeDelimitationConstituency.name}
+									</a></span>
+								</td>
+								</tr>
+							</table>
+						</div>					
+				</c:forEach>	
+			</div>			
+		</div>
+
 	</div>
 
-	<div id="mandalInfoDivBody" class="detailsBody">
-		<table><tr>
-		<c:forEach var="mandalsBeforeDelimitationConstituency" varStatus="stat" items="${mandals}">				
-			<td>
-				<span id="mandalAncSpan">
-					<img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/arrow.png"/>
-					<a href="mandalPageElectionInfoAction.action?MANDAL_ID=${mandalsBeforeDelimitationConstituency.id}&MANDAL_NAME=${mandalsBeforeDelimitationConstituency.name}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mandalsBeforeDelimitationConstituency.name}
-					</a>&nbsp; 
-				</span>
-			</td>	
-			<c:if test="${stat.count % 4==0}">
-				</tr><tr><td colspan="4"> </td></tr><tr>
-			</c:if>			
-		</c:forEach>			
-		</tr>  </table>		
+	<!--District Page Center Layout-->
+	<div id="districtPageLayout_center">
+		<div id="districtMap">
+			<div id="districtMap_head">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+					<tr>
+						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td><div class="districtPageRoundedHeaders_center" style="width:658px"><span> ${districtName} District Details</span></div></td>
+						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>
+				</table>
+			</div>
+			<div id="districtMap_body">
+				<object width="550" height="430">
+					<param name="movie" value="images/icons/districtPage/districtMaps/nellore.swf">
+					 <param name="wmode" value="transparent"> 
+					<embed wmode="transparent" src="images/icons/districtPage/districtMaps/nellore.swf" width="550" height="430">
+					</embed>
+				</object>
+			</div>
+		</div>
+		<div id="partiesPerformanceGraphDistrict">
+			<div id="alliancePartiesCarousel" class="yui-skin-sam">
+				<ul>
+				<li>
+					<div id="allElectionResultsInDT"  class="allianceListDiv">
+						<div id="allElectionResultsInDT_head"></div>
+						<div id="allElectionResultsInDT_body"></div>
+					</div>
+				</li>
+				<li>
+					<div id="positionsGraphDiv" class="allianceListDiv">
+						<div id="electionHirarchiDiv" ></div>
+						<div id="partyPositionsDiv"></div>
+					</div>
+				</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<!--District Page MP, MLA Div-->
+	<div id="mpMla_main">
+		<div id="mp_main_div">
+			<div id="mp_head">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+					<tr>
+						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td>	
+							<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:793px;">
+								<span>Member of Parliament (MP) in the District</span>
+							</div>
+						</td>
+						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>
+				</table>
+			</div>
+			<div id="mp_body" class="yui-skin-sam">
+				<div id="mpsInfoDivBody">
+					<table id="mpsDataSortingTable">			
+						<c:forEach var="mpsDetails" varStatus="stat" items="${parliamentCandidateDetailsVo.candidateDetails}">			
+							<tr>
+								<td>
+								<span id="districtAncSpan">
+												<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${mpsDetails.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.constituencyName}
+										</a>
+									</span>
+								</td>
+								<td>
+									<span id="districtAncSpan">
+											<a href="candidateElectionResultsAction.action?candidateId=${mpsDetails.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${mpsDetails.candidateName}
+											</a>
+									</span>
+								</td>
+								<td>	
+									<img src="<%=request.getContextPath()%>/images/party_flags/${mpsDetails.partyFlag}" height="30" width="40"/>
+								</td>
+								<td> <a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${mpsDetails.constituencyId}','Parliament','2009')">view results</a>
+								</td>
+							</tr>  
+						</c:forEach>
+					</table>		
+				</div>
+			</div>
+		</div>
+		<div id="mla_main_div">
+			<div id="mla_head">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+					<tr>
+						<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+						<td>	
+							<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:793px;">
+								<span>Member of Legislative Assembly (MLA) in the District</span>
+							</div>
+						</td>
+						<td><img src="images/icons/districtPage/header_right.gif"/></td>
+					</tr>
+				</table>
+			</div>
+			<div id="mla_body" class="yui-skin-sam">
+				<div id="mlaInfoDivBody">
+					<table  id="mlaDataSortingTable">						
+						<c:forEach var="candidate" varStatus="stat" items="${constituenciesStatusVO.constituencyWinnerInfoVO}">			
+							<tr>
+								<td>
+									<span id="districtAncSpan">
+										<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${candidate.constituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.constituencyName}
+										</a>
+									</span>
+								</td>
+								<td>
+								<span id="districtAncSpan">
+										<a href="candidateElectionResultsAction.action?candidateId=${candidate.candidateId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.candidateName}
+										</a>
+									</span>
+								 &nbsp </td>
+								<td><img src="<%=request.getContextPath()%>/images/party_flags/${candidate.partyFlag}" height="30" width="40"/></td>
+
+
+								<td>
+									<span id="districtAncSpan">
+										<a href="constituencyPageAction.action?districtId=${districtId}&constituencyId=${candidate.parliamentConstituencyId}" class="districtAnc" style="text-decoration:none;" onmouseover="javascript:{this.style.textDecoration='underline';}" onmouseout="javascript:{this.style.textDecoration='none';}">${candidate.parliamentConstituencyName}
+										</a>
+									</span>
+								</td>
+								<td>
+								<a href="javascript:{}" onclick="getConstituencyElecResultsWindow('${candidate.constituencyId}','${constituenciesStatusVO.electionType}','${constituenciesStatusVO.electionYear}')">view results</a>
+							</td>
+							</tr>  
+						</c:forEach>
+					</table>		
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--District Page MPTC, ZPTC Div-->
+	<div id="mptc_zptc_div_main">
+		<table>
+			<tr>
+				<td>
+					<div id="zptc_main">
+						<div id="zptc_head">
+							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+								<tr>
+									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td>	
+										<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:400px;padding:9px;height:18px;">
+											<span>Total Number of ZPTC's : </span>
+											<span id="totalZptcCountResultDiv"></span>
+										</div>
+									</td>
+									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+							</table>
+						</div>
+						<div id="zptc_body">
+							<div id="zptcDiv" class="yui-skin-sam">
+								<table><tr></tr>
+										<td><div id="zptcInfoDivBody"></div></td>
+										<td><div id="zptcAjaxLoadDiv" style="display:none;padding-top:20px;">
+											<img id="ajaxImg" height="13" width="10" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
+										</div></td><td><div id="candidateLink"></div></td></tr>
+										</table>
+										<table cellpadding="5px">
+										<tr><td><div id="partyDetails"></div></td>
+										</tr>
+								</table>
+							</div>	
+						</div>
+					</div>
+				</td>
+				<td>
+					<div id="mptc_main">
+						<div id="mptc_head">
+							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+								<tr>
+									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td>	
+										<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:400px;padding:9px;height:18px;">
+											<span>Total Number of MPTC's : </span>
+											<span id="totalMptcCountResultDiv"></span>
+										</div>
+									</td>
+									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+							</table>
+						</div>
+						<div id="mptc_body">
+							<div id="mptcDiv" class="yui-skin-sam">
+									<table><tr></tr>
+										<td><div id="mptcInfoDivBody"></div></td>
+										<td><div id="mptcAjaxLoadDiv" style="display:none;padding-top:20px;">
+											<img id="ajaxImg" height="13" width="10" src="<%=request.getContextPath()%>/images/icons/search.gif"/>			
+										</div></td><td><div id="mptcCandidateLink"></div></td></tr>
+										</table>
+										<table cellpadding="5px">
+										<tr><td><div id="mptcPartyDetails"></div></td>
+										</tr>
+									</table>
+							</div>
+						</div>
+					</div>		
+				</td>
+			</tr>
+		</table>
 	</div>	
+
 </div>
-</div>
-</div>
+
 <script language="javascript">
+
+initializeDistrictPage();
+
 initializeResultsTableForMp();
 initializeResultsTable();
 showAllElectionsInDistrictHead();
