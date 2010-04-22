@@ -53,4 +53,13 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return getHibernateTemplate().find("from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? and model.nomination.candidate.candidateId = ?",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getCommentsCountForACandidate(Long candidateId,
+			Long constituencyId, String electionType, String electionYear) {
+		Object[] params = {candidateId,constituencyId,electionType,electionYear};
+		return getHibernateTemplate().find("select count(model.commentCategoryCandidateId) from CommentCategoryCandidate model"+
+				" where model.nomination.candidate.candidateId = ? and model.nomination.constituencyElection.constituency.constituencyId = ? and"+
+				" model.nomination.constituencyElection.election.electionScope.electionType.electionType = ? and model.nomination.constituencyElection.election.electionYear = ?",params);
+	}
+
 }
