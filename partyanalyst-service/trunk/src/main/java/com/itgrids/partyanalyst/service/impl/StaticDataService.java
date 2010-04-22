@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -111,6 +112,7 @@ public class StaticDataService implements IStaticDataService {
 	private ConstituencyElectionResultsVO constituencyElectionResultsVO ;
 	private IGroupDAO groupDAO;
 	private IBoothResultDAO boothResultDAO;
+	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO;
 
 	/**
 	 * @param partyDAO the partyDAO to set
@@ -266,6 +268,17 @@ public class StaticDataService implements IStaticDataService {
 	public void setBoothConstituencyElectionDAO(
 			IBoothConstituencyElectionDAO boothConstituencyElectionDAO) {
 		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
+	}
+
+
+	public ICommentCategoryCandidateDAO getCommentCategoryCandidateDAO() {
+		return commentCategoryCandidateDAO;
+	}
+
+
+	public void setCommentCategoryCandidateDAO(
+			ICommentCategoryCandidateDAO commentCategoryCandidateDAO) {
+		this.commentCategoryCandidateDAO = commentCategoryCandidateDAO;
 	}
 
 
@@ -2271,6 +2284,7 @@ public class StaticDataService implements IStaticDataService {
 	 * @param stateId
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public CandidateDetailsVO getCandidatesPartyInfoForAnElectionType(String electionType,String electionYear,String resultsCategory,String electionLevel,Long locationId,Long partyId,Long stateId){
 		CandidateDetailsVO candidateDetailsVO = new CandidateDetailsVO();
 		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
@@ -2334,7 +2348,19 @@ public class StaticDataService implements IStaticDataService {
 					candidateDetailsVO = getZptcOrMptcCandidatesInfoForAnElectionType(electionType,electionYear,resultsCategory,electionLevel,stateId,partyId);
 				}
 			}
-			return candidateDetailsVO;		
+			
+			//modified by sai
+			//check and place candidate comments size..
+			for(CandidateDetailsVO results:candidateDetailsVO.getCandidateDetails()){
+			List count = commentCategoryCandidateDAO.getCommentsCountForACandidate(results.getCandidateId(), results.getConstituencyId(), results.getElectionType(), results.getElectionYear());
+			if(count != null && count.size() > 0){
+				Object params = (Object)count.get(0);
+				Long commentsCount = (Long)params;
+				results.setCommentsCount(commentsCount);
+				log.debug("Comments Count:" + commentsCount);
+			}
+			}
+		 return candidateDetailsVO;		
 		}catch(Exception e){
 			e.printStackTrace();
 			if(log.isDebugEnabled()){
