@@ -19,6 +19,8 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></SCRIPT>
+<!-- Local Files-->
+	<script type="text/javascript" src="js/CommentsDialog/commentsDialog.js"></script>
 
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
@@ -183,7 +185,8 @@ function showPartywiseDetailsDataTable(results)
 				fourth: partywiseResultsArr[i].fourthPosWon,
 				nth: partywiseResultsArr[i].nthPosWon,
 				pc: partywiseResultsArr[i].votesPercentage,
-				overall: partywiseResultsArr[i].completeVotesPercent						 
+				overall: partywiseResultsArr[i].completeVotesPercent //electionType,electionId,year
+				//comments: '<A href="javascript:{}" onclick="showCommentsDialog('+partywiseResultsArr[i].partyId+',\'party\',\'null\',\'null\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>'
 				};
 		if(electionResultsObj.allianceGroupNamesArray.length > 0 )
 				for(k in electionResultsObj.allianceGroupNamesArray)
@@ -191,6 +194,7 @@ function showPartywiseDetailsDataTable(results)
 					if(electionResultsObj.allianceGroupNamesArray[k] == partywiseResultsArr[i].partyName)
 					{
 						partywiseResultsObj.pc = '';
+						//partywiseResultsObj.comments='';
 					}
 				}
 		assignToPartywiseResultsArr.push(partywiseResultsObj);	
@@ -276,7 +280,8 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
 		              	 	 	{key: "fourth", label: "4th",formatter:"number", sortable:true},
 		              	 	 	{key: "nth", label: "Nth",formatter:"number", sortable:true},   	
 		              	 	 	{key: "pc", label:"PC* %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true},
-		              	 	 	{key: "overall", label:"Overall %",formatter:YAHOO.widget.DataTable.formatFloat, sortable: true}		              	 	 	
+		              	 	 	{key: "overall", label:"Overall %",formatter:YAHOO.widget.DataTable.formatFloat, sortable: true}
+		              	 	 	//{key: "comments", label:""}			              	 	 		              	 	 	
 		              	 	    ];                	 	    
 
 		var partywiseResultsDataSource = new YAHOO.util.DataSource(dtSourceArray); 
@@ -289,7 +294,7 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
                          		  {key:  "fourth", parser:"number"},
                          		  {key: "nth", parser:"number"},
                          		  {key: "pc", parser:YAHOO.util.DataSourceBase.parseNumber},
-                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber} ] 
+                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber},"comments" ] 
         		};
 
 		var myConfigs = { 
@@ -313,8 +318,8 @@ function showAllianceDetails(results)
 	var allianceResultsArr = results.electionBasicResultsVO.alliancePartiesList;
 	var assignToAllianceResultsArr = new Array();
 	var allianceResultsDataTableEl = document.getElementById("allianceResultsDataTable");
-	var allianceGrpName;
-	
+	var allianceGrpName;	
+	var dtArray =  new Array();
 	for(var i in  allianceResultsArr){
 		var header = allianceResultsArr[i].allianceGroupName+" Alliance Details";
 		allianceGrpName =  allianceResultsArr[i].allianceGroupName;
@@ -322,6 +327,24 @@ function showAllianceDetails(results)
 		var createDiv = document.createElement("div");		
 		createDiv.setAttribute("id","allianceResults_"+i+"_main");		
 		createDiv.style.cssText = 'margin-top:32px;';
+		for(var j in allianceResultsArr[i].partiesInAlliance)
+		{
+			var allianceObj = {
+					partyName: allianceResultsArr[i].partiesInAlliance[j].partyName,
+					totalConstiParticipated: allianceResultsArr[i].partiesInAlliance[j].totalConstiParticipated,
+					totalSeatsWon: allianceResultsArr[i].partiesInAlliance[j].totalSeatsWon,
+					secondPosWon: allianceResultsArr[i].partiesInAlliance[j].secondPosWon,
+					thirdPosWon: allianceResultsArr[i].partiesInAlliance[j].thirdPosWon,
+					fourthPosWon: allianceResultsArr[i].partiesInAlliance[j].fourthPosWon,
+					nthPosWon: allianceResultsArr[i].partiesInAlliance[j].nthPosWon,
+					votesPercentage: allianceResultsArr[i].partiesInAlliance[j].votesPercentage,
+					completeVotesPercent: allianceResultsArr[i].partiesInAlliance[j].completeVotesPercent
+					//comments:'<A href="javascript:{}" onclick="showCommentsDialog('+allianceResultsArr[i].partiesInAlliance[j].partyId+',\'party\',\'null\',\'null\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>' 
+						
+				};
+			dtArray.push(allianceObj);
+			
+		}
 		var str = '';
 		str+='<div id="allianceResults_'+i+'_datatable"></div>';
 		str+='<div id="allianceResults_'+i+'_allianceGraph"></div>';
@@ -331,7 +354,7 @@ function showAllianceDetails(results)
 		createDiv.innerHTML = str;
 		allianceResultsDataTableEl.appendChild(createDiv);
 	
-		buildAllianceResultsDataTable("allianceResults_"+i+"_datatable",allianceResultsArr[i].partiesInAlliance,allianceResultsArr[i].allianceGroupName+" Alliance Details");
+		buildAllianceResultsDataTable("allianceResults_"+i+"_datatable",dtArray,allianceResultsArr[i].allianceGroupName+" Alliance Details");
 			
 	}			
 }
@@ -376,7 +399,8 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 		              	 	 	{key: "fourthPosWon", label: "4th",formatter:"number", sortable:true},
 		              	 	 	{key: "nthPosWon", label: "Nth",formatter:"number", sortable:true},   	
 		              	 	 	{key: "votesPercentage", label:"PC* %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true},
-		              	 	 	{key: "completeVotesPercent", label:"Overall %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true}		              	 	 	
+		              	 	 	{key: "completeVotesPercent", label:"Overall %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true}
+		              	 	 	//{key: "comments", label:""}		              	 	 	
 		              	 	    ];                	 	    
 
 		var allianceResultsDataSource = new YAHOO.util.DataSource(dtSource); 
@@ -389,7 +413,7 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
                 					  {key:  "fourthPosWon", parser:"number"},
                 					  {key: "nthPosWon", parser:"number"},
                 					  {key: "votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},
-                					  {key: "completeVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber}] 
+                					  {key: "completeVotesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},"comments"] 
         		};
 
 		var myConfigs = { 
@@ -407,15 +431,15 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
       };	
 	
 }
-function showCandidateDetailsWindow(stateName,electionType,year)
+function showCandidateDetailsWindow(stateName,electionType,year,electionId)
 {
-	var urlStr = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&year=${year}";
-	var browser1 = window.open(urlStr,"browser1","scrollbars=yes,height=600,width=1150,left=200,top=200");
+	var urlStr = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAction.action?stateID=${stateID}&stateName=${stateName}&electionType=${electionType}&year=${year}&electionId=${electionId}";
+	var browser1 = window.open(urlStr,"browser1","scrollbars=yes,height=600,width=1200,left=200,top=200");
 	
 	browser1.focus();	
 }
 
-//type = "all" "party","district"
+
 function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 {
 	var selectPartyName = partyName;
@@ -802,7 +826,7 @@ function partywiseRadioClickHandler()
 	var partySelectBoxEl = document.getElementById("partySelectBox");
 	var distSelectBoxEl = document.getElementById("distSelectBox");
 	var stateSelectBoxEl = document.getElementById("stateSelectBox");
-		
+	
 	if(partySelectBoxEl.style.display == "none")			
 	{
 		partySelectBoxEl.style.display = 'block';
@@ -973,6 +997,60 @@ function buildGraphsCarousel(divId,arr)
 
 	graphImagesCarousel.render(); 
 	graphImagesCarousel.show();
+}
+
+function handleAddCommentsSubmit(id,category,constituencyId)
+{
+	
+	var commentVal = document.getElementById("commentText").value; 
+	var postedByVal = document.getElementById("commentPostedByText").value;
+	var partyId;
+	var candidateId;
+	var constituencyId;
+	var commentCategoryId; 
+	if(category == "candidate")
+	{
+		var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
+		if(commentCategoryEl)
+		{
+			commentCategoryId = commentCategoryEl.value
+		}	
+		partyId = '0';
+		candidateId = id;
+		constituencyId = constituencyId;
+		
+		
+	}
+	if(category == "party")
+	{
+		partyId = id;
+		candidateId = '0';
+		constituencyId = '0';
+		commentCategoryId = '0';	
+		
+	}
+	var jsObj={
+			electionId: electionId,
+			electionType: electionType,
+			year: year,
+			partyId: partyId,
+			candidateId: candidateId,
+			constituencyId: constituencyId,
+			commentDesc: commentVal,
+			postedBy: postedByVal,
+			category: category,
+			commentCategoryId: commentCategoryId,
+			task:"addNewComment"
+				
+		  }
+	 
+	
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;		
+callAjax(rparam,jsObj,url);
+	
+	addCommentsDialog.hide();
+	
 }
 
 </SCRIPT>
@@ -1204,14 +1282,14 @@ function buildGraphsCarousel(divId,arr)
 					</DIV>
 				</DIV>				
 			</TD>
-			</c:if>			
+			</c:if>	
 		</TR>
 	</TABLE>
 </DIV>
 <DIV class="graphBottom"></DIV>
 <DIV class = "yui-skin-sam"><div id="panel"></DIV></DIV>
+<DIV class = "yui-skin-sam"><div id="commentsDialogDiv"></DIV></DIV>
 <DIV id="task10"></DIV>
-
 <SCRIPT type="text/javascript">
 //getElctionsBasicInfo(electionType);
 getResultsForAnElection(stateID,electionType,year);
