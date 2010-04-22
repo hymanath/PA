@@ -190,6 +190,7 @@ public class CommentsDataService implements ICommentsDataService {
 				electionCommentsVO = getProcessedCandidateCommentResults(candidateComments);
 				resultStatus.setResultPartial(false);
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				if(electionCommentsVO != null && electionCommentsVO.size() > 0)
 				electionCommentsVO.get(0).setResultStatus(resultStatus);
 			}
 		}
