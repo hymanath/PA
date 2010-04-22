@@ -9,7 +9,9 @@
 <TITLE>${year} ${electionType} Election Candidates Details</TITLE>
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionsReslutsPage/candiateDetailsForElectionReport.css">
 <LINK type="text/css" rel="stylesheet" href="styles/ElectionsReslutsPage/datatable1.css">
-<LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css"> 
+<LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
+<LINK rel="stylesheet" type="text/css" href="styles/CommentsDialog/commentsDialog.css">
 <!-- Dependencies -->
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></SCRIPT>
@@ -17,13 +19,16 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></SCRIPT>
+<script type="text/javascript" src="js/CommentsDialog/commentsDialog.js"></script>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></SCRIPT>
-<SCRIPT type="text/javascript"><!--
+<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
+<SCRIPT type="text/javascript">
 var electionType = '${electionType}';
+var electionId = '${electionId}';
 var stateID =  '${stateID}' ;
 var stateName = '${stateName}';
 var year = '${year}';
-var participatedCandidatesDetailsDataTable;
+var participatedCandidatesDetailsDataTable,previousCommentsDataTable;
 var candidateDetailsObj={
 		candidateDetailsArr:[],
 		partiesArr:[],
@@ -50,6 +55,19 @@ function callAjax(param,jsObj,url){
 										showTehsilCandidatesByDistrictWise(myResults,jsObj);
 									}																
 								}
+								if(jsObj.task == "getCommentsClassificationsList")
+								{
+									buildCommentsClassificationsOptions(myResults);
+								}
+								if(jsObj.task == "getPreviousComments")
+								{
+									showPreviousComments(myResults,jsObj);
+								}
+								if(jsObj.task == "addNewComment")
+								{
+									updatePreviousCommentsDataTable(myResults);
+								}
+								
 							}
 						catch (e) {   
 						   	alert("Invalid JSON result" + e);   
@@ -265,13 +283,14 @@ function buildParticipatedCandidatesDetailsDataTable(data)
 								{key: "name", label: "Name", sortable:true},		
 								{key: "constituency", label: "Constituency", sortable:true},	
 								{key: "party", label: "Party", sortable:true},
-								{key: "partyFlag", label: "Party Flag", sortable:true},
+								{key: "partyFlag", label: "Flag", sortable:true},
 								{key: "votesEarned", label: "Votes Earned",formatter:"number", sortable:true},
 								{key: "votesPercentage", label: "Votes %", formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},		
 								{key: "rank", label: "Rank", formatter:"number", sortable:true},	
 		              	 	    {key: "marginVotes", label: "Margin Votes",formatter:"number", sortable:true},
 		              	 	 	{key: "marginVotesPercentage", label: "Margin Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-		              	 	 	{key: "moreDetails", label: "More Details"}	              	 	 				              	 	 		              	 	 			              	 	 	
+		              	 	 	{key: "moreDetails", label: "More Details"},
+		              	 	 	{key: "comments", label: ""}		              	 	 		              	 	 				              	 	 		              	 	 			              	 	 	
 		              	 	    ];                	 	    
 
 		var participatedCandidatesDetailsDataSource = new YAHOO.util.DataSource(data); 
@@ -282,7 +301,7 @@ function buildParticipatedCandidatesDetailsDataTable(data)
                 		  {key: "votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},
                 		  {key: "rank", parser:"number"},
                 		  {key: "marginVotes", parser:YAHOO.util.DataSourceBase.parseNumber},
-                		  {key: "marginVotesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},"moreDetails"]     
+                		  {key: "marginVotesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},"moreDetails","comments"]     
 		};
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
@@ -298,8 +317,7 @@ function buildParticipatedCandidatesDetailsDataTable(data)
 	
 }
 function allCandidates()
-{
-	
+{	
 	var electionLevel;
 	var partywiseCheckBoxEl = document.getElementById("partywiseCheckBox");
 	var allCandidatesRadioEl = document.getElementById("allCandidates");
@@ -316,8 +334,7 @@ function allCandidates()
 	var selectdistrictZEl = document.getElementById("selectdistrictZ");
 	var stateLevelMEl = document.getElementById("stateLevelM");
 	var distLevelMEl = document.getElementById("distLevelM");
-	var selectdistrictMEl = document.getElementById("selectdistrictM");
-	
+	var selectdistrictMEl = document.getElementById("selectdistrictM");	
 	var stateId;
 	var partyId;
 	var locationId;
@@ -419,6 +436,7 @@ function allCandidates()
 }
 function showCandidates(results,jsObj)
 {
+	
 	var emptyArray = new Array();
 	var assignTocandidateDetailsArr = new Array();
 	var candidateDetails = results.candidateDetails;	
@@ -447,7 +465,8 @@ function showCandidates(results,jsObj)
 					constituencyId: candidateDetails[i].constituencyId,
 					electionType: candidateDetails[i].electionType,
 					electionYear: candidateDetails[i].electionYear,
-					moreDetails: '<A href="javascript:{}" onclick="getMoreDetails('+candidateDetails[i].constituencyId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>'
+					moreDetails: '<A href="javascript:{}" onclick="getMoreDetails('+candidateDetails[i].constituencyId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>',					
+					comments: '<A href="javascript:{}" onclick="showCommentsDialog(\''+candidateDetails[i].candidateId+'\',\''+candidateDetails[i].candidateName+'\',\'candidate\',\''+candidateDetails[i].rank+'\',\''+candidateDetails[i].constituencyId+'\',\''+candidateDetails[i].constituencyName+'\',\''+candidateDetails[i].partyName+'\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>'
 			};
 			assignTocandidateDetailsArr.push(candidateDetailsObj1);		
 		}
@@ -517,7 +536,229 @@ function getMoreDetails(constiId,elecType,elecYear)
 	 var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser2","scrollbars=yes,height=600,width=750,left=200,top=200");
 	 browser1.focus();
 }
---></SCRIPT>
+function showExistingComments(id,candidateName,category, constituencyId,constituencyName,partyName)
+{
+	var candidateId;
+	var constituencyId;
+	if(category == "candidate")
+	{
+		candidateId = id;
+		constituencyId = constituencyId;		
+	}
+	var jsObj={
+			
+			candidateId: candidateId,
+			candidateName: candidateName,
+			constituencyId: constituencyId,
+			electionId: electionId,
+			electionType: electionType,
+			year: year,
+			candidateId: candidateId,
+			constituencyId: constituencyId,
+			constituencyName: constituencyName,
+			partyName: partyName,			
+			task:"getPreviousComments"				
+		  }
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;		
+	callAjax(rparam,jsObj,url);	
+}
+function getCommentsClassifications(rank)
+{ 
+	var jsObj={
+			rank: rank,
+			task: "getCommentsClassificationsList"				
+		  }	
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "<%=request.getContextPath()%>/commentsClassificationDataAction.action?"+rparam;		
+callAjax(rparam,jsObj,url);
+}
+function handleAddCommentsSubmit(id,category,constituencyId)
+{
+	var commentVal = document.getElementById("commentText").value; 
+	var postedByVal = document.getElementById("commentPostedByText").value;
+	var partyId;
+	var candidateId;
+	var constituencyId;
+	var commentCategoryId;
+	var alertMessageEl = document.getElementById("alertMessage"); 
+	if(category == "candidate")
+	{
+		var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
+		if(commentCategoryEl)
+		{
+			commentCategoryId = commentCategoryEl.value;
+			
+		}	
+		partyId = '0';
+		candidateId = id;
+		constituencyId = constituencyId;		
+	}
+	if(category == "party")
+	{
+		partyId = id;
+		candidateId = '0';
+		constituencyId = '0';
+		commentCategoryId = '0';	
+		
+	}
+	
+	if(commentCategoryId == '' || commentVal == '' || postedByVal == '' || commentCategoryId == 'Select Classification' )		
+	{
+		alertMessageEl.innerHTML = '<SPAN style="padding:10px;font-weight:bold;color:red;">Please Fill Mandatory Fields!</SPAN>';
+		return;		
+	}	
+	if(commentCategoryId != '' && commentVal != '' && postedByVal != '')		
+	{
+		var jsObj={
+				electionId: electionId,
+				electionType: electionType,
+				year: year,
+				partyId: partyId,
+				candidateId: candidateId,
+				constituencyId: constituencyId,
+				commentDesc: commentVal,
+				postedBy: postedByVal,
+				category: category,
+				commentCategoryId: commentCategoryId,
+				task:"addNewComment"				
+			  }	 
+			
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;		
+		callAjax(rparam,jsObj,url);	
+		alertMessageEl.innerHTML = '';
+	}
+			
+	
+}
+function buildCommentsClassificationsOptions(results)
+{
+	
+	var commentClassifyEl = document.getElementById("commentsClassificaitonSelectBox");
+	for(var i in results)
+	{
+		var opElmt=document.createElement('option');
+		opElmt.value=results[i].id;
+		opElmt.text=results[i].name;
+	
+		try
+			{
+			commentClassifyEl.add(opElmt,null); // standards compliant
+			}
+		catch(ex)
+			{
+			commentClassifyEl.add(opElmt); // IE only
+			}
+	}
+}
+function showPreviousComments(results,jsObj)
+{
+	var previousComments = results.candidateCommentsVO;
+	var previousCommentsEl = document.getElementById("previousComments");
+	var candidateInfoEl = document.getElementById("candidateInfo");
+	var party = jsObj.partyName;
+	var constituencyName = jsObj.constituencyName;
+	var candidateName = jsObj.candidateName;
+	var commentsData = new Array();	 
+	var contentStr = '';	
+		contentStr+='<TABLE width="100%" class="commentsInputTable">';
+		contentStr+='<TR>';
+		contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Candidate:</B></TD>';
+		contentStr+='<TD style="width:30%;" class="commentsInputTd">'+candidateName+'</TD>';
+		contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Election:</B></TD>';
+		contentStr+='<TD style="width:30%;" class="commentsInputTd">'+electionType+''+year+'</TD>';		
+		contentStr+='</TR>';
+		contentStr+='<TR>';
+		contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Party:</B></TD>';
+		contentStr+='<TD style="width:30%;" class="commentsInputTd">'+party+'</TD>';
+		contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Constituency:</B></TD>';
+		contentStr+='<TD style="width:30%;" class="commentsInputTd">'+constituencyName+'</TD>';		
+		contentStr+='</TR>';
+		contentStr+='</TABLE>';
+		candidateInfoEl.innerHTML = contentStr;		
+		if(previousComments != null)
+		{	
+			
+			for(var i in previousComments)
+			{
+				var commentObj = {
+						comment: previousComments[i].commentDesc,
+						classification: previousComments[i].commentCategory,
+						commentedBy: previousComments[i].commentedBy, 
+						date: previousComments[i].commentedOn							
+						};
+				commentsData.push(commentObj);					
+			}			
+			buildPreviousCommentsDataTable(commentsData);
+		} else 
+			{
+			previousCommentsEl.innerHTML='<SPAN style="padding:10px;font-weight:bold;color:#00CC33;">No Previous Comments to this candidate!</SPAN>';
+			}	
+}
+
+function buildPreviousCommentsDataTable(data)
+{
+	//previousComments
+	var previousCommentsColumnDefs = [
+	               								{key: "comment", label: "Comment", sortable:true},	
+	               								{key: "classification", label: "Classification", sortable:true},		
+	               								{key: "commentedBy", label: "CommentedBy", sortable:true},	
+	               								{key: "date", label: "Date", sortable:true}	               								             		              	 	 		              	 	 				              	 	 		              	 	 			              	 	 	
+	               		              	 	    ];                	 	    
+
+	               		var previousCommentsDataSource = new YAHOO.util.DataSource(data); 
+	               		previousCommentsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	               		previousCommentsDataSource.responseSchema = {
+	                              fields: [ "comment", "classification", "commentedBy", "date"]     
+	               		};
+	               		var myConfigs = { 
+	               			    paginator : new YAHOO.widget.Paginator({ 
+	               				rowsPerPage    : 5	               							        
+	               			    }),
+	               			    caption:"Previous Comments" 
+	               				};
+	               		
+	               		previousCommentsDataTable = new YAHOO.widget.DataTable("previousComments", previousCommentsColumnDefs, previousCommentsDataSource,myConfigs);		            	
+	               	
+}
+function updatePreviousCommentsDataTable(results)
+{
+	var dtArray = new Array();
+	var commentVal = document.getElementById("commentText"); 
+	var postedByVal = document.getElementById("commentPostedByText"); 
+	var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");	 
+	
+	if(previousCommentsDataTable)
+	{
+		var newCommentDataObj=
+		{		
+				comment: results.candidateCommentsSaved.commentDesc,
+				classification: results.candidateCommentsSaved.commentCategory,
+				commentedBy: results.candidateCommentsSaved.commentedBy, 
+				date: results.candidateCommentsSaved.commentedOn  		
+		};
+		
+		previousCommentsDataTable.addRow(newCommentDataObj,0);
+	} else
+	{
+		var newCommentDataObj=
+		{		
+				comment: results.candidateCommentsSaved.commentDesc,
+				classification: results.candidateCommentsSaved.commentCategory,
+				commentedBy: results.candidateCommentsSaved.commentedBy, 
+				date: results.candidateCommentsSaved.commentedOn  		
+		};
+
+		dtArray.push(newCommentDataObj);
+		buildPreviousCommentsDataTable(dtArray);
+	}
+	commentVal.value='';
+	postedByVal.value='';
+	commentCategoryEl.selectedIndex='0';		
+}
+
+</SCRIPT>
 </HEAD>
 <BODY class="yui-skin-sam">
 <CENTER>
@@ -572,6 +813,7 @@ function getMoreDetails(constiId,elecType,elecYear)
 </DIV>
 <DIV id="error" class="errorMessage" style="display:none;">No candidates matched by this selection criteria </DIV>
 <DIV id="participatedCandidatesDetailsDataTable" align="left"></DIV>
+<DIV id="commentsDialogDiv"></DIV>
 </CENTER>
 <SCRIPT type="text/javascript">
 allCandidates();
