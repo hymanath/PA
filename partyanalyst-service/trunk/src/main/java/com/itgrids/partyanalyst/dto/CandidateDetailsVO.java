@@ -35,6 +35,7 @@ public class CandidateDetailsVO implements Serializable{
 	private String image;
 	private String result;
 	private String partyFlag;
+	private Long commentsCount;
 	private List<CandidateOppositionVO> oppositionCandidates;
 	private List<SelectOptionVO> latestConstituencies ;
 	private List<SelectOptionVO> getAllStates ;
@@ -212,5 +213,11 @@ public class CandidateDetailsVO implements Serializable{
 	public void setOppositionCandidates(
 			List<CandidateOppositionVO> oppositionCandidates) {
 		this.oppositionCandidates = oppositionCandidates;
+	}
+	public Long getCommentsCount() {
+		return commentsCount;
+	}
+	public void setCommentsCount(Long commentsCount) {
+		this.commentsCount = commentsCount;
 	}
 }
