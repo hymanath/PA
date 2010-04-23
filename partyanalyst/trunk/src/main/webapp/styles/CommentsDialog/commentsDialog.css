@@ -17,7 +17,8 @@
 .yui-skin-sam .yui-dt-paginator {
 	color:#505050;
 	display:block;
-	font-weight:bold;
+	font-weight:normal;
+	font-size:12px;
 	margin:6px 5px;
 	padding:0;
 	text-align:center;
@@ -26,7 +27,7 @@
 .yui-skin-sam .yui-dt table {
 	border-collapse:separate;
 	border-spacing:0;
-	font-family:Georgia;
+	font-family:arial;
 	font-size:13px;
 	width:100%;
 }
@@ -39,4 +40,10 @@
 	background-repeat:repeat;
 	color:#FFFFFF;
 	width:50px;
+}
+#alertMessage
+{
+	padding:10px;
+	font-weight:bold;
+	color:red;
 }
