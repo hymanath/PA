@@ -11,19 +11,19 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 	contentStr+='<FIELDSET align="center">';
 	contentStr+='<LEGEND><B>Comments Details</B></LEGEND>';
 	contentStr+='<div id="candidateInfo" align="left"></div>';
-	contentStr+='<div id="previousComments"></div>';
-	contentStr+='</FIELDSET>';
-	contentStr+='<DIV id="alertMessage" style"margin-top:5px;margin-bottom:5px;">Fields marked with * are Mandatory</DIV>';
+	contentStr+='<div id="previousComments" style="padding:10px;"></div>';
+	contentStr+='</FIELDSET>';	
 	contentStr+='<div id="commentsDetailsDivBody">';
 	contentStr+='<FIELDSET align="center">';
 	contentStr+='<LEGEND><B>Add New Comment</B></LEGEND>';
+	contentStr+='<DIV id="alertMessage" style="padding:10px;">Fields marked with * are Mandatory</DIV>';
 	contentStr+='<DIV>';
 	contentStr+='<TABLE width="100%" class="commentsInputTable" border="1" cellspacing="0" cellpadding="0">';
 	if(rank != 'null' && category == 'candidate')
 	{
 		contentStr+='<TR>';
 		contentStr+='<TD align="left" class="commentsInputTd">Classify Your Comment*</TD>';	
-		contentStr+='<TD class="commentsInputTd" align="left"><SELECT class="selectBoxStyle" id="commentsClassificaitonSelectBox"  name="selectBox" style="display:block;">';
+		contentStr+='<TD class="commentsInputTd" align="left"><SELECT style="width:300px;" id="commentsClassificaitonSelectBox"  name="selectBox" style="display:block;">';
 		contentStr+='<OPTION id="0" >Select Classification</OPTION>';
 		contentStr+='</SELECT></TD>';
 		contentStr+='</TR>';
@@ -70,8 +70,8 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 	
 	//showExistingComments('+id+',\''+category+'\','+constituencyId+');
 }
-
+/*
 function handleAddCommentsCancel()
 {
 	addCommentsDialog.cancel();
-}
+}*/
