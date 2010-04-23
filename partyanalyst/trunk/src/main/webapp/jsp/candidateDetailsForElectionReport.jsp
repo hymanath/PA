@@ -22,6 +22,7 @@
 <script type="text/javascript" src="js/CommentsDialog/commentsDialog.js"></script>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></SCRIPT>
 <SCRIPT type="text/javascript">
 var electionType = '${electionType}';
 var electionId = '${electionId}';
@@ -468,7 +469,7 @@ function showCandidates(results,jsObj)
 					electionYear: candidateDetails[i].electionYear,
 					moreDetails: '<A href="javascript:{}" onclick="getMoreDetails('+candidateDetails[i].constituencyId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>',					
 					comments: '<A href="javascript:{}" onclick="showCommentsDialog(\''+candidateDetails[i].candidateId+'\',\''+candidateDetails[i].candidateName+'\',\'candidate\',\''+candidateDetails[i].rank+'\',\''+candidateDetails[i].constituencyId+'\',\''+candidateDetails[i].constituencyName+'\',\''+candidateDetails[i].partyName+'\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>',
-					commentsCount: candidateDetails[i].commentsCount
+					commentsCount: candidateDetails[i].commentsCount+"Comments"
 			};
 			assignTocandidateDetailsArr.push(candidateDetailsObj1);		
 		}
@@ -607,7 +608,7 @@ function handleAddCommentsSubmit(id,category,constituencyId)
 	
 	if(commentCategoryId == '' || commentVal == '' || postedByVal == '' || commentCategoryId == 'Select Classification' )		
 	{
-		alertMessageEl.innerHTML = '<SPAN style="padding:10px;font-weight:bold;color:red;">Please Fill Mandatory Fields!</SPAN>';
+		alertMessageEl.innerHTML = 'Please Fill Mandatory Fields!';
 		return;		
 	}	
 	if(commentCategoryId != '' && commentVal != '' && postedByVal != '')		
@@ -769,7 +770,7 @@ function updatePreviousCommentsDataTable(results)
 }
 function handleAddCommentsCancel()
 {
-	//allCandidates();
+	allCandidates();
 	addCommentsDialog.hide();
 
 }
@@ -828,7 +829,7 @@ function handleAddCommentsCancel()
 </DIV>
 <DIV id="error" class="errorMessage" style="display:none;">No candidates matched by this selection criteria </DIV>
 <DIV id="participatedCandidatesDetailsDataTable" align="left"></DIV>
-<DIV id="commentsDialogDiv"></DIV>
+<DIV class = "yui-skin-sam"><DIV id="commentsDialogDiv"></DIV></DIV>
 </CENTER>
 <SCRIPT type="text/javascript">
 allCandidates();
