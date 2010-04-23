@@ -290,7 +290,8 @@ function buildParticipatedCandidatesDetailsDataTable(data)
 		              	 	    {key: "marginVotes", label: "Margin Votes",formatter:"number", sortable:true},
 		              	 	 	{key: "marginVotesPercentage", label: "Margin Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
 		              	 	 	{key: "moreDetails", label: "More Details"},
-		              	 	 	{key: "comments", label: ""}		              	 	 		              	 	 				              	 	 		              	 	 			              	 	 	
+							    {key: "commentsCount", label: "No of Comments"},
+		              	 	 	{key: "comments", label: ""}
 		              	 	    ];                	 	    
 
 		var participatedCandidatesDetailsDataSource = new YAHOO.util.DataSource(data); 
@@ -301,7 +302,7 @@ function buildParticipatedCandidatesDetailsDataTable(data)
                 		  {key: "votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},
                 		  {key: "rank", parser:"number"},
                 		  {key: "marginVotes", parser:YAHOO.util.DataSourceBase.parseNumber},
-                		  {key: "marginVotesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},"moreDetails","comments"]     
+                		  {key: "marginVotesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},"moreDetails","commentsCount","comments"]     
 		};
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
@@ -436,7 +437,7 @@ function allCandidates()
 }
 function showCandidates(results,jsObj)
 {
-	
+
 	var emptyArray = new Array();
 	var assignTocandidateDetailsArr = new Array();
 	var candidateDetails = results.candidateDetails;	
@@ -466,7 +467,8 @@ function showCandidates(results,jsObj)
 					electionType: candidateDetails[i].electionType,
 					electionYear: candidateDetails[i].electionYear,
 					moreDetails: '<A href="javascript:{}" onclick="getMoreDetails('+candidateDetails[i].constituencyId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>',					
-					comments: '<A href="javascript:{}" onclick="showCommentsDialog(\''+candidateDetails[i].candidateId+'\',\''+candidateDetails[i].candidateName+'\',\'candidate\',\''+candidateDetails[i].rank+'\',\''+candidateDetails[i].constituencyId+'\',\''+candidateDetails[i].constituencyName+'\',\''+candidateDetails[i].partyName+'\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>'
+					comments: '<A href="javascript:{}" onclick="showCommentsDialog(\''+candidateDetails[i].candidateId+'\',\''+candidateDetails[i].candidateName+'\',\'candidate\',\''+candidateDetails[i].rank+'\',\''+candidateDetails[i].constituencyId+'\',\''+candidateDetails[i].constituencyName+'\',\''+candidateDetails[i].partyName+'\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>',
+					commentsCount: candidateDetails[i].commentsCount
 			};
 			assignTocandidateDetailsArr.push(candidateDetailsObj1);		
 		}
@@ -693,7 +695,7 @@ function showPreviousComments(results,jsObj)
 			buildPreviousCommentsDataTable(commentsData);
 		} else 
 			{
-			previousCommentsEl.innerHTML='<SPAN style="padding:10px;font-weight:bold;color:#00CC33;">No Previous Comments to this candidate!</SPAN>';
+			previousCommentsEl.innerHTML="No Previous Comments";
 			}	
 }
 
@@ -719,7 +721,12 @@ function buildPreviousCommentsDataTable(data)
 	               			    caption:"Previous Comments" 
 	               				};
 	               		
-	               		previousCommentsDataTable = new YAHOO.widget.DataTable("previousComments", previousCommentsColumnDefs, previousCommentsDataSource,myConfigs);		            	
+	               		previousCommentsDataTable = new YAHOO.widget.DataTable("previousComments", previousCommentsColumnDefs, previousCommentsDataSource,myConfigs);
+
+	               		return { 
+	        	            oDS: previousCommentsDataSource, 
+	        	            oDT: previousCommentsDataTable
+	               	 };		            	
 	               	
 }
 function updatePreviousCommentsDataTable(results)
@@ -727,20 +734,11 @@ function updatePreviousCommentsDataTable(results)
 	var dtArray = new Array();
 	var commentVal = document.getElementById("commentText"); 
 	var postedByVal = document.getElementById("commentPostedByText"); 
-	var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");	 
+	var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
+	var previousCommentsEl = document.getElementById("previousComments");
+		 
 	
-	if(previousCommentsDataTable)
-	{
-		var newCommentDataObj=
-		{		
-				comment: results.candidateCommentsSaved.commentDesc,
-				classification: results.candidateCommentsSaved.commentCategory,
-				commentedBy: results.candidateCommentsSaved.commentedBy, 
-				date: results.candidateCommentsSaved.commentedOn  		
-		};
-		
-		previousCommentsDataTable.addRow(newCommentDataObj,0);
-	} else
+	if(previousCommentsEl.innerHTML == 'No Previous Comments')
 	{
 		var newCommentDataObj=
 		{		
@@ -751,13 +749,30 @@ function updatePreviousCommentsDataTable(results)
 		};
 
 		dtArray.push(newCommentDataObj);
-		buildPreviousCommentsDataTable(dtArray);
+		buildPreviousCommentsDataTable(dtArray);		
+		
+	} else
+	{
+		var newCommentDataObj=
+		{		
+				comment: results.candidateCommentsSaved.commentDesc,
+				classification: results.candidateCommentsSaved.commentCategory,
+				commentedBy: results.candidateCommentsSaved.commentedBy, 
+				date: results.candidateCommentsSaved.commentedOn  		
+		};
+		
+		previousCommentsDataTable.addRow(newCommentDataObj,0);
 	}
 	commentVal.value='';
 	postedByVal.value='';
 	commentCategoryEl.selectedIndex='0';		
 }
+function handleAddCommentsCancel()
+{
+	//allCandidates();
+	addCommentsDialog.hide();
 
+}
 </SCRIPT>
 </HEAD>
 <BODY class="yui-skin-sam">
