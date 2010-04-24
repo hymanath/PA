@@ -310,6 +310,9 @@
 				}				
 			}
 
+			function registerInfluencePeople(){
+			
+			}
 	</script>
 </head>
 <body>
@@ -348,7 +351,25 @@
 					<div>Add/Register your party cadre to your cadre list in different locations based on their availability.</div>
 					<div style="text-align:right;padding-top:10px;"><input type="submit" id="registerCadreSubmit" name="registersubmit" value="Register Cadre"/></div>					
 				</div>
-			</div>		
+			</div>	
+			
+			<div id="influencePeopleRegistration">
+				<div id="influencePeopleRegistration_head">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%">
+						<tr>
+							<td><img border="none" src="images/icons/cadreReport/addCadre.png"></td>
+							<td><div class="registerinfluencePeopleClass" style="width:200px;"> <u> Register Most Influence People </u></div></td>						
+						</tr>
+					</table>
+				</div>				
+				<div id="influencePeopleRegistration_body">
+					<div>Add/Register most influence people you know.</div>
+					<div style="text-align:right;padding-top:10px;">
+					<a href="influencingPeopleAction.action">
+						<input type="button" id="influencePeopleCadreSubmit" name="influencePeopleRegistersubmit" onclick="registerInfluencePeople()" value="Register Influence People"/></div>
+					</a>					
+				</div>	
+			</div>
 		</div>
 
 		<!-- Cadre Top Layout Div-->
