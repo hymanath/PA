@@ -102,6 +102,8 @@
 				<value>com.itgrids.partyanalyst.model.StaticUserGroup</value>
 				<value>com.itgrids.partyanalyst.model.MyGroup</value>
 				<value>com.itgrids.partyanalyst.model.HamletBoothElection</value>
+				<value>com.itgrids.partyanalyst.model.InfluencingPeople</value>
+				<value>com.itgrids.partyanalyst.model.InfluencingPeoplePosition</value>
 				<value>com.itgrids.partyanalyst.model.CommentData</value>
 				<value>com.itgrids.partyanalyst.model.CommentCategoryCandidate</value>
 				<value>com.itgrids.partyanalyst.model.CommentCategoryParty</value>
@@ -415,10 +417,17 @@
 	</bean>
 	<bean id="commentDataCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentDataCategoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
+	</bean>	
 	
 	<bean id="groupDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="influencingPeopleDAO" class="com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="influencingPeoplePositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.InfluencingPeoplePositionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
