@@ -26,6 +26,7 @@
 		<action name="landing" class="com.itgrids.partyanalyst.web.action.LandingAction">
 			<result>/jsp/landing.jsp</result>
 		</action>
+		
 	
 		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
 			<result name="error">/jsp/loginForm.jsp</result>
@@ -64,6 +65,15 @@
 			<result type="json" name="success"/>
 		</action>-->
 		
+		
+		<action name="influencingPeopleAction" class="com.itgrids.partyanalyst.web.action.InfluencingPeopleAction">
+			<result>/jsp/influencingPeople.jsp</result>
+		</action>
+		
+		 <action name="influencePeopleAjaxAction" class="influencingPeopleAction" method="saveInfluencePeopleData">
+        </action>
+        
+        
 		<action name="partyPerformanceElectionTypeFilterData" class="partyPerformanceAction" method="getElectionTypeFilterData" >
 			<result type="json" name="success">
 				<param name="root">statesYearList</param>
@@ -234,6 +244,8 @@
            		<param name="root">namesList</param>
         	</result>
         </action>
+        
+       
         
         <action name="hamletBoothMapperAction" class="hamletBoothMapperAction">
            <result name="success">/jsp/mapBoothToHamlet.jsp</result>
