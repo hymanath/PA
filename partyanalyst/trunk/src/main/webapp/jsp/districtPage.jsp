@@ -963,12 +963,14 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				</table>
 			</div>
 			<div id="districtMap_body">
-				<object width="550" height="430">
+
+				<div style="color:#4B74C6;font-size:15px;font-weight:bold;margin-left:30px;margin-top:30px;">  ${districtName} District map will be Updated soon .</div>
+				<!--<object width="550" height="430">
 					<param name="movie" value="images/icons/districtPage/districtMaps/nellore.swf">
 					 <param name="wmode" value="transparent"> 
 					<embed wmode="transparent" src="images/icons/districtPage/districtMaps/nellore.swf" width="550" height="430">
 					</embed>
-				</object>
+				</object>-->
 			</div>
 		</div>
 		<div id="partiesPerformanceGraphDistrict">
