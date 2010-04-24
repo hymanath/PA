@@ -29,7 +29,7 @@
 	text-align:left;
 }
 
-#cReportMain,#cadreRegistration
+#cReportMain,#cadreRegistration,#influencePeopleRegistration
 {
 	padding-top:25px;
 	padding-left:20px;
@@ -58,7 +58,7 @@
 	padding:5px;
 }	
 
-.registerCadreClass
+.registerCadreClass,.registerinfluencePeopleClass
 {
 	color:#4B74C6;
 	font-weight:bold;
@@ -67,7 +67,7 @@
 	text-align:left;
 }
 
-#cadreRegistration_body
+#cadreRegistration_body,#influencePeopleRegistration_body
 {
 	color:#73787E;
 	line-height:20px;
@@ -75,7 +75,8 @@
 	text-align:justify;
 }
 
-#registerCadreSubmit
+
+#registerCadreSubmit,#influencePeopleCadreSubmit
 {
 	background:url("../../images/icons/statePage/header_body.png") repeat scroll 0 0 transparent;
 	border:1px solid #ADADAD;
