@@ -36,4 +36,21 @@ public class VoterDAO extends GenericDaoHibernate<Voter, Long> implements IVoter
 				" model.age<? group by model.gender",params);
 	}
 	
+	public List getCastCatageory(){
+		return getHibernateTemplate().find("select model.castCatagery  from Voter model ");
+	}
+	
+	public List getCastSubatageroryDetails(String castCatageory){
+		return getHibernateTemplate().find("select model.castSubCatagery  from Voter model ");
+	}
+	
+	public List getsubCastCatageoryCastDetails(String castCatageory,String subCastCatageory){
+		Object[] params = {castCatageory, subCastCatageory};
+		return getHibernateTemplate().find("select model.cast from Voter model where model.castCatagery = ? and model.castSubCatagery = ? order by asc");
+	}
+	
+	public List getCastDetails(String castCatageory){
+		return getHibernateTemplate().find("select model.cast from Voter model where model.castCatagery = ? ",castCatageory);
+	}
+	
 }
