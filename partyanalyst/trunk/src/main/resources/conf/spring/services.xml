@@ -41,6 +41,14 @@
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
+	<bean name="influencingPeopleService" class="com.itgrids.partyanalyst.service.impl.InfluencingPeopleService" >
+		<property name="influencingPeopleDAO" ref="influencingPeopleDAO" />
+		<property name="influencingPeoplePositionDAO" ref="influencingPeoplePositionDAO" />		
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="partyDAO" ref="partyDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />	
+	</bean>
+	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
 		<property name="registrationDAO" ref="registrationDAO" />
 	</bean>

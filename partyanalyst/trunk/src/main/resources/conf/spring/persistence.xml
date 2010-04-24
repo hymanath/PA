@@ -96,6 +96,8 @@
 				<value>com.itgrids.partyanalyst.model.CommentCategoryCandidate</value>
 				<value>com.itgrids.partyanalyst.model.CommentCategoryParty</value>
 				<value>com.itgrids.partyanalyst.model.CommentCategoryConstituency</value>
+				<value>com.itgrids.partyanalyst.model.InfluencingPeople</value>
+				<value>com.itgrids.partyanalyst.model.InfluencingPeoplePosition</value>
 				<value>com.itgrids.partyanalyst.model.CommentDataCategory</value>
 				</list>
 		</property>
