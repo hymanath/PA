@@ -19,7 +19,7 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 		this.voterDAO = voterDAO;
 	}
 	
-	public void testGetAll(){
+	/*	public void testGetAll(){
 		List<Voter> voters = voterDAO.getAll();
 		assertEquals(1, voters.size());
 	}
@@ -38,5 +38,10 @@ public class VoterDAOHibernateTest extends BaseDaoTestCase{
 	public void testFindByVoterFirstNameLastNameAndVoterIdCardNo(){
 		List<Voter> voters = voterDAO.findByVoterFirstNameLastNameRelativeFirstNameLastNameAndVoterIdNo("LAKSHMI", "TAMBI", "ENKATESHWARLU", "", "AP191260270275");
 		assertEquals(1, voters.size());
+	}*/
+	
+	public void test(){
+		List voters = voterDAO.getCastCatageory();
+		System.out.println(voters.size());
 	}
 }
