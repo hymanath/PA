@@ -1,21 +1,112 @@
 package com.itgrids.partyanalyst.dto;
 
-public class InfluencingPeopleVO {
+import java.io.Serializable;
 
-	private String personName;
+public class InfluencingPeopleVO implements Serializable{
+
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String designation;
-	private String localArea;
-	private String contactNumber;
 	private String age;
-	private String year;
+	private String year;	
 	private String party;
+	private String localArea;
+	
+	private String personName;
+	private String lastName;
+	private String gender;
+	private String contactNumber;
+	private String email;
+	private Long partyId;
+	private String cast;
+	private String occupation;
+	private String influencingRange;
+	private String position;
+	private Long hamletId;
 	
 	public String getParty() {
 		return party;
 	}
 
+	public void setHamletId(Long hamletId) {
+		this.hamletId = hamletId;
+	}
+
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
 	public void setParty(String party) {
 		this.party = party;
+	}
+	
+	public Long getHamletId() {
+		return hamletId;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getCast() {
+		return cast;
+	}
+
+	public void setCast(String cast) {
+		this.cast = cast;
+	}
+
+	public String getOccupation() {
+		return occupation;
+	}
+
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+
+	public String getInfluencingRange() {
+		return influencingRange;
+	}
+
+	public void setInfluencingRange(String influencingRange) {
+		this.influencingRange = influencingRange;
+	}
+
+	
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 	public String getYear() {

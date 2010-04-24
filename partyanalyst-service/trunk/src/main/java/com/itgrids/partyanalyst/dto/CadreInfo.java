@@ -9,7 +9,6 @@ public class CadreInfo implements Serializable{
 	private String lastName;
 	private String mobile;
 	private String landLineNo;
-
 	private String email;
 	private String gender;
 	private Long cadreLevel;
@@ -19,6 +18,12 @@ public class CadreInfo implements Serializable{
 	private String state;
 	private String district;
 	private Long constituencyID;
+	private String mandal;
+	private String village;
+	private String booth;
+	private Long userID;
+	
+	
 	public Long getConstituencyID() {
 		return constituencyID;
 	}
@@ -28,11 +33,6 @@ public class CadreInfo implements Serializable{
 	public void setUserID(Long userID) {
 		this.userID = userID;
 	}
-	private String mandal;
-	private String village;
-	private String booth;
-	private Long userID;
-	
 	public Long getCadreID() {
 		return cadreID;
 	}
@@ -142,6 +142,5 @@ public class CadreInfo implements Serializable{
 	}
 	public void setuserID(Long userID) {
 		this.userID = userID;
-	}
-	
+	}	
 }

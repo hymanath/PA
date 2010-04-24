@@ -4,6 +4,11 @@ import java.util.List;
 
 public class MandalAndRevenueVillagesInfoVO extends ResultStatus{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private ElectionResultByLocationVO partiesResultsInMandal;
 	private List<ElectionResultByLocationVO> partiesResultsInVillages; 
 	private List<LocationWiseBoothDetailsVO> revenueVillagesInfo;
