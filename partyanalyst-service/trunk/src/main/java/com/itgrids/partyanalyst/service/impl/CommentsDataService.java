@@ -65,6 +65,7 @@ public class CommentsDataService implements ICommentsDataService {
 	private ICommentDataCategoryDAO commentDataCategoryDAO;
 		
 	private static final Logger log = Logger.getLogger(CommentsDataService.class);
+	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	
 	public IPartyDAO getPartyDAO() {
 		return partyDAO;
@@ -264,7 +265,7 @@ public class CommentsDataService implements ICommentsDataService {
 				candComments.setCandidate(comments.getNomination().getCandidate().getLastname());
 				candComments.setCommentDesc(comments.getCommentData().getCommentDesc());
 				candComments.setCommentedBy(comments.getCommentData().getCommentBy());
-				candComments.setCommentedOn(comments.getCommentData().getCommentDate().toString());
+				candComments.setCommentedOn(sdf.format(comments.getCommentData().getCommentDate()).toString());
 				candComments.setCommentCategory(comments.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
 				
 				candidateCommentsVO.add(candComments);
@@ -383,7 +384,7 @@ public class CommentsDataService implements ICommentsDataService {
 				partyComments.setPartyName(comments.getParty().getLongName());
 				partyComments.setCommentDesc(comments.getCommentData().getCommentDesc());
 				partyComments.setCommentedBy(comments.getCommentData().getCommentBy());
-				partyComments.setCommentedOn(comments.getCommentData().getCommentDate().toString());
+				partyComments.setCommentedOn(sdf.format(comments.getCommentData().getCommentDate()).toString());
 				partyComments.setCommentCategory(comments.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
 				
 				partyCommentsVO.add(partyComments);
@@ -500,7 +501,7 @@ public class CommentsDataService implements ICommentsDataService {
 				consComments.setConstituency(comments.getConstituency().getName());
 				consComments.setCommentDesc(comments.getCommentData().getCommentDesc());
 				consComments.setCommentedBy(comments.getCommentData().getCommentBy());
-				consComments.setCommentedOn(comments.getCommentData().getCommentDate().toString());
+				consComments.setCommentedOn(sdf.format(comments.getCommentData().getCommentDate()).toString());
 				consComments.setCommentCategory(comments.getCommentData().getCommentDataCategory().getCommentDataCategoryType());
 				
 				constiCommentsVO.add(consComments);
@@ -568,7 +569,7 @@ public class CommentsDataService implements ICommentsDataService {
 				CommentCategoryCandidate commentCategoryCandidateSaved = null;
 				try{
 					java.util.Date today = new java.util.Date();
-					String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+					String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";
 					SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 					String formatDate = sdf.format(today) ;
 					today = sdf.parse(formatDate);
@@ -660,7 +661,7 @@ public class CommentsDataService implements ICommentsDataService {
 				CommentCategoryConstituency commentCategoryConstituencySaved = null;
 				try{
 					java.util.Date today = new java.util.Date();
-					String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+					String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";
 					SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 					String formatDate = sdf.format(today) ;
 					today = sdf.parse(formatDate);
@@ -745,7 +746,7 @@ public class CommentsDataService implements ICommentsDataService {
 				CommentCategoryParty commentCategoryPartySaved = null;
 				try{
 					java.util.Date today = new java.util.Date();
-					String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+					String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";
 					SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 					String formatDate = sdf.format(today) ;
 					today = sdf.parse(formatDate);
