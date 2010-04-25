@@ -1101,7 +1101,28 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
          });
 	}
 
+	@SuppressWarnings("unchecked")
 	public List getTehsilLevelElectionDetailsForAGivenConstituency(String query,Object[] parms){
 		return getHibernateTemplate().find(query,parms);		
+	}
+	@SuppressWarnings("unchecked")
+	public List findElectionResultsByElectionIdAndPartyIdAndRank(
+			Long electionId, Long partyId, Long rank) {
+	    Object[] params = {electionId,partyId,rank};
+	    return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname,model.constituencyElection.constituency.constituencyId,"+
+	    		"model.constituencyElection.constituency.name,model.constituencyElection.constituencyElectionResult.validVotes,"+
+	    		"model.candidateResult.votesEarned,model.candidateResult.votesPercengate from Nomination model where "+
+	    		"model.constituencyElection.election.electionId = ? and model.party.partyId = ? "+
+	    		"and model.candidateResult.rank = ?",params);
+	}
+	@SuppressWarnings("unchecked")
+	public List findElectionResultsByElectionIdAndPartyIdAndLostRank(
+			Long electionId, Long partyId, Long rank) {
+	    Object[] params = {electionId,partyId,rank};
+	    return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname,model.constituencyElection.constituency.constituencyId,"+
+	    		"model.constituencyElection.constituency.name,model.constituencyElection.constituencyElectionResult.validVotes,"+
+	    		"model.candidateResult.votesEarned,model.candidateResult.votesPercengate,model.candidateResult.rank from Nomination model where "+
+	    		"model.constituencyElection.election.electionId = ? and model.party.partyId = ? "+
+	    		"and model.candidateResult.rank != ?",params);
 	}
 }

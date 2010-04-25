@@ -62,4 +62,24 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				" model.nomination.constituencyElection.election.electionScope.electionType.electionType = ? and model.nomination.constituencyElection.election.electionYear = ?",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getCommentsCountForAPartyInAnElection(Long electionId,Long partyId) {
+		Object[] params = {electionId,partyId};
+		return getHibernateTemplate().find("select count(distinct model.nomination.constituencyElection.constituency.constituencyId) from CommentCategoryCandidate model"+
+				" where model.nomination.constituencyElection.election.electionId = ?"+
+				" and model.nomination.party.partyId = ?",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getCommentsResultsForAPartyInAnElection(Long electionId,
+			Long partyId) {
+		Object[] params = {electionId,partyId};
+		return getHibernateTemplate().find("select model.nomination.constituencyElection.constituency.constituencyId,model.nomination.constituencyElection.constituency.name,"+
+				"model.nomination.candidate.candidateId,model.nomination.candidate.lastname,"+
+				"model.commentData.commentDesc,model.commentData.commentBy,"+
+				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType "+
+				"from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? "+
+				"and model.nomination.party.partyId = ? order by model.nomination.constituencyElection.constituency.constituencyId",params);
+	}
+
 }
