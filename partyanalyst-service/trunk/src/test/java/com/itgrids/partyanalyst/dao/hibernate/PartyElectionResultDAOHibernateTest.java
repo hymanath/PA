@@ -40,4 +40,22 @@ public class PartyElectionResultDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testFindSeatsWonByAPartyInAnElection(){
+	 List resultsList = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(new Long(9), new Long(62));	
+	 if(resultsList != null && resultsList.size() > 0){
+		 Object[] params = (Object[])resultsList.get(0);
+		 Long partyId = (Long)params[0];
+		 String partyName = (String)params[1];
+		 String totSeatsWon = (String)params[2];
+		 
+		 System.out.print(" Party :" + partyName);
+		 System.out.print(" Seats Won :" + totSeatsWon);
+	 }
+	 else if(resultsList == null || resultsList.size() == 0){
+		 System.out.println("No Results Available.....");
+	 }
+	}
+	
 }
