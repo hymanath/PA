@@ -399,6 +399,15 @@
 	    <property name="commentDataCategoryDAO" ref="commentDataCategoryDAO" />
 	</bean>
 	
+	<bean name="analysisReportService" class="com.itgrids.partyanalyst.service.impl.AnalysisReportService">
+	    <property name="partyDAO" ref="partyDAO"/>
+	    <property name="stateDAO" ref="stateDAO"/>
+	    <property name="electionDAO" ref="electionDAO" />
+	    <property name="staticDataService" ref="staticDataService" />
+	    <property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
+	     <property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
+	</bean>
+	
 	<bean id="villageBoothDataPopulationService" class="com.itgrids.partyanalyst.service.impl.VillageBoothDataPopulationService" >
     	<property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
     	<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
