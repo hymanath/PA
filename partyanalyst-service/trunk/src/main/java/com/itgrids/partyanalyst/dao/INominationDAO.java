@@ -224,4 +224,10 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List<Nomination> findByElectionIdAndPartyIdStateId(Long electionId,Long partyId,Long stateId);
 	
+	@SuppressWarnings("unchecked")
+	public List findElectionResultsByElectionIdAndPartyIdAndRank(Long electionId,Long partyId,Long rank);
+	
+	@SuppressWarnings("unchecked")
+	public List findElectionResultsByElectionIdAndPartyIdAndLostRank(Long electionId,Long partyId,Long rank);
+	
 }
