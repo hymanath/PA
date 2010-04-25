@@ -21,5 +21,8 @@ public interface IPartyElectionResultDAO extends GenericDao<PartyElectionResult,
 	public List getParticipatedPartysCountForAnElection(Long electionId);
 	
 	public List<PartyElectionResult> getByElectionIdAndVotesPercentMargin(Long electionId,String votesPercentMargin);
+	
+	@SuppressWarnings("unchecked")
+	public List getBasicPartyElectionResultForAPartyInAnElection(Long electionId,Long partyId);
 
 }
