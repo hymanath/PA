@@ -49,5 +49,33 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 			}
 		}
 	}
-
+    
+	
+	@SuppressWarnings("unchecked")
+	public void testFindCommentsCountInAnElectionForAParty(){
+		List commentCount = commentCategoryCandidateDAO.getCommentsCountForAPartyInAnElection(new Long(9), new Long(62));
+		if(commentCount != null && commentCount.size() > 0){
+			Object params = (Object)commentCount.get(0);
+			Long countVal = (Long)params;
+			System.out.println("Count Val :" + countVal);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void testGetCommentsDetailsForAParty(){
+		List commentsData = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(new Long(9),new Long(62));
+		if(commentsData != null && commentsData.size() > 0){
+			for(int i=0;i<commentsData.size();i++){
+				Object[] params = (Object[])commentsData.get(i);
+				System.out.print(" Constituency  :" + params[1]);
+				System.out.print(" Candidate     :" + params[3]);
+				System.out.print(" Comment Desc  :" + params[4]);
+				System.out.print(" Comment by    :" + params[5]);
+				System.out.print(" Comment Date  :" + params[6]);
+				System.out.print(" Comment Catg  :" + params[7]);
+				
+				System.out.println("..........................");
+			}
+		}
+	}
 }
