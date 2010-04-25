@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateWonVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
@@ -52,6 +53,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWinnerInfoVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
@@ -3223,6 +3225,80 @@ public class StaticDataService implements IStaticDataService {
 			
 		});
 	  return partyElectionStateResultFinal;
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public ElectionResultPartyVO getElectionResultForAPartyInAnElection(
+			Long electionId, Long partyId, Long rank) {
+	
+		log.debug(" Inside getElectionResultForAPartyInAnElection Method.... ");
+		
+		ElectionResultPartyVO electionResultPartyVO = null;
+		List<CandidateElectionResultVO> candidateElectionResultsVO = null;
+		
+		ResultStatus resultStatus = new ResultStatus();
+		
+		try{
+			if(electionId != null && partyId != null && rank != null){
+				
+				electionResultPartyVO = new ElectionResultPartyVO();
+				List electionResultsList = null;
+				
+				if(!rank.equals(new Long(0)))
+				electionResultsList = nominationDAO.findElectionResultsByElectionIdAndPartyIdAndRank(electionId,partyId,rank);
+				else if(rank.equals(new Long(0)))
+				electionResultsList = nominationDAO.findElectionResultsByElectionIdAndPartyIdAndLostRank(electionId,partyId,new Long(1));
+				
+				if(electionResultsList != null && electionResultsList.size() > 0){
+					
+					candidateElectionResultsVO = new ArrayList<CandidateElectionResultVO>();
+					for(int i=0;i<electionResultsList.size();i++){
+						Object[] params = (Object[])electionResultsList.get(i);
+						CandidateElectionResultVO candElecResult = new CandidateElectionResultVO();
+						candElecResult.setCandidateId((Long)params[0]);
+						candElecResult.setCandidateName((String)params[1]);
+						candElecResult.setConstituencyId((Long)params[2]);
+						candElecResult.setConstituencyName((String)params[3]);
+						candElecResult.setTotalValidVotes(((Double)params[4]).longValue());
+						candElecResult.setTotalVotesEarned(((Double)params[5]).longValue());
+						candElecResult.setVotesPercentage((String)params[6]);
+						
+						if(rank.equals(new Long(0))){
+						candElecResult.setRank((Long)params[7]);
+						}
+						candidateElectionResultsVO.add(candElecResult);
+					}
+					
+					Party party = partyDAO.get(partyId);
+					
+					//set basic data
+					electionResultPartyVO.setRank(rank);
+					if(rank.equals(new Long(1)))
+					electionResultPartyVO.setStatus("WON");
+					else
+					electionResultPartyVO.setStatus("LOST");
+					electionResultPartyVO.setPartyId(partyId);
+					electionResultPartyVO.setPartyFlag(party.getPartyFlag());
+					electionResultPartyVO.setPartyLongName(party.getLongName());
+					electionResultPartyVO.setPartyShortName(party.getShortName());
+					
+					electionResultPartyVO.setCandidateElectionResultsVO(candidateElectionResultsVO);
+					
+					resultStatus.setResultPartial(false);
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					electionResultPartyVO.setResultStatus(resultStatus);
+				}
+			}
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			electionResultPartyVO = new ElectionResultPartyVO();
+			electionResultPartyVO.setResultStatus(resultStatus);
+		}
+	 return electionResultPartyVO;
 	}
 	
 }
