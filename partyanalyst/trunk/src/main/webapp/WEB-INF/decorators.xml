@@ -21,6 +21,9 @@
 		<pattern>/statewiseElectionResultsComparisionToolAction.action*</pattern>
 		<pattern>/partyPerformanceReportPopup.action*</pattern>
 		<pattern>/electionComparisonReportPopUp.action*</pattern>
+		<pattern>/partyElectionResultsAction.action*</pattern>
+		<pattern>/partyElectionResultsAnalysisAction.action*</pattern>
+		
 		
     </excludes>
 
