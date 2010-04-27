@@ -284,4 +284,14 @@
 	<bean id="commentsDataAction" class="com.itgrids.partyanalyst.web.action.CommentsDataAction" singleton="false">
 			<property name="commentsDataService" ref="commentsDataService" />
 	</bean>
+	<bean id="electionResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.ElectionResultsAnalysisReportAction" singleton="false">
+		<property name="analysisReportService" ref="analysisReportService" />
+			<property name="staticDataService" ref="staticDataService" />
+	</bean>
+	<bean id="partyElectionResultsAction" class="com.itgrids.partyanalyst.web.action.PartyElectionResultsAction" singleton="false">
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
+	<bean id="partyElectionResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.PartyElectionResultsAnalysisAction" singleton="false">
+		<property name="analysisReportService" ref="analysisReportService" />
+	</bean>
 </beans>		
