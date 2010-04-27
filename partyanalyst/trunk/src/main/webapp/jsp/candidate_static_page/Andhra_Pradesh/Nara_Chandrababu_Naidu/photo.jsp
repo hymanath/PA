@@ -1,4 +1,6 @@
 
+Photo Gallery Will Be Updated Soon.
+<!--
 <style type="text/css">
 	
 	.photoIndexDesc
@@ -14,11 +16,7 @@
 	{
 		border:1px solid #adadad;
 	}
-	#photoTitleDiv
-	{
-		height:150px;
-		margin-bottom:10px;
-	}
+	
 	.indexImgClass
 	{
 		border:2px solid #798FAF;
@@ -67,11 +65,7 @@ var ImagesURL = {
 
 </script>
 
-<div id="photoTitleMainDiv">
-	<div id="photoTitleDiv">
-		<div id="photoTitleDivHead"> ${candidateVO.candidateName}'s Photo Gallery :</div>
-		<div id="photoTitleDivBody"> Welcome to photo gallery.This gallery has a collection of photos divided into different categories.</div>
-	</div>
+<div id="photoTitleMainDiv">	
 	<div id="photoGroupsDiv">
 		<fieldset id="photoGroupsField">
 			<legend> Photo Group's</legend>
@@ -126,3 +120,4 @@ var ImagesURL = {
 	<div id="spotLightDiv"></div>	
 	<div id="caourselDiv" class="yui-skin-sam"></div>
 </div>
+-->
