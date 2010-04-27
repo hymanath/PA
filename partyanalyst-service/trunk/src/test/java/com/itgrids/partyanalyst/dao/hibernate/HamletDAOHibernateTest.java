@@ -27,4 +27,10 @@ public class HamletDAOHibernateTest extends BaseDaoTestCase{
 		List list = hamletDAO.findByHamletNameAndTownshipId(21818l, "GOGULAPALLI");
 		assertEquals(list.size(), 1);
 	}
+	
+	public void testGetHamletId(){
+		List  list = hamletDAO.getHamletIdBasedOnDistrictNameMandalIdAndTownship("Nellore","Allur","Singapeta","Singapeta");
+		System.out.println(list.get(0).toString());
+	}
+	
 }
