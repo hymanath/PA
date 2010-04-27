@@ -1023,6 +1023,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" model.candidateResult.votesPercengate," +
 				" model.candidateResult.rank," +
 				" model.party.partyId," +  
+				" model.party.partyFlag," +
 				" model.party.longName," +
 				" model.party.shortName," +
 				" model.constituencyElection.constituency.constituencyId," +
@@ -1105,6 +1106,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	public List getTehsilLevelElectionDetailsForAGivenConstituency(String query,Object[] parms){
 		return getHibernateTemplate().find(query,parms);		
 	}
+
 	@SuppressWarnings("unchecked")
 	public List findElectionResultsByElectionIdAndPartyIdAndRank(
 			Long electionId, Long partyId, Long rank) {
@@ -1125,4 +1127,5 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	    		"model.constituencyElection.election.electionId = ? and model.party.partyId = ? "+
 	    		"and model.candidateResult.rank != ?",params);
 	}
+
 }
