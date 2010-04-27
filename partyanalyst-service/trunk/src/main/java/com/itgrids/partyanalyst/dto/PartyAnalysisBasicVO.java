@@ -23,6 +23,8 @@ public class PartyAnalysisBasicVO implements Serializable {
 	private Long partiConstituencies;
 	private Long analyzedConsti;
 	private Long notAnalyzedConsti;
+	private String analysisChart;
+	private String resultsChart;
 	
 	
 	public Long getPartyId() {
@@ -66,6 +68,18 @@ public class PartyAnalysisBasicVO implements Serializable {
 	}
 	public void setNotAnalyzedConsti(Long notAnalyzedConsti) {
 		this.notAnalyzedConsti = notAnalyzedConsti;
+	}
+	public String getAnalysisChart() {
+		return analysisChart;
+	}
+	public void setAnalysisChart(String analysisChart) {
+		this.analysisChart = analysisChart;
+	}
+	public String getResultsChart() {
+		return resultsChart;
+	}
+	public void setResultsChart(String resultsChart) {
+		this.resultsChart = resultsChart;
 	}
 	
 	
