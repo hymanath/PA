@@ -464,4 +464,54 @@ public class ChartProducer {
 				log.error("Error writing image to file");
 				}
 	}
+	
+	public static void create3DBarChartWithInputParams(String title,String reportType,String category,String value,String party,CategoryDataset dataset,String fileName,int width,int height){
+		JFreeChart chart = ChartFactory.createBarChart(
+				title, // chart title
+				category, // domain axis label
+				value, // range axis label
+				dataset, // data
+				PlotOrientation.VERTICAL,
+				true, // include legend
+				true, // tool tips?
+				false // URLs?
+				);
+				// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
+				// set the background color for the chart...
+				chart.setBackgroundPaint(new Color(0xFFFFFF));
+				// get a reference to the plot for further customization...
+				CategoryPlot plot = chart.getCategoryPlot();
+				// set the range axis to display integers only...
+				NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+				
+				rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+				
+				CategoryAxis domainAxis = (CategoryAxis) plot.getDomainAxis();
+		       // domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+		        
+				// disable bar outlines...
+				BarRenderer renderer = (BarRenderer) plot.getRenderer();
+				renderer.setDrawBarOutline(false);
+				
+				GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.GREEN, 0.0f, 0.0f, Color.lightGray);
+				GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.RED, 0.0f, 0.0f, Color.lightGray);	
+				GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.cyan, 0.0f, 0.0f, Color.lightGray);
+				renderer.setSeriesPaint(0, gp0);
+				renderer.setSeriesPaint(1, gp1);
+				renderer.setSeriesPaint(2, gp2);
+								
+				renderer.setItemMargin(0.0);
+				renderer.setMaximumBarWidth(0.15);
+					
+				try	 {
+					final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+					final File image = new File(fileName);
+					ChartUtilities.saveChartAsPNG(image, chart, width, height, info);
+				}
+				catch (java.io.IOException exc)
+				{
+				log.error("Error writing image to file");
+				log.debug("Exception Raised :" + exc);
+				}
+	}
 }
