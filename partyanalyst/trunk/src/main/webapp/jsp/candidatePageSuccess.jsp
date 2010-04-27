@@ -69,93 +69,222 @@
 <body class="yui-skin-sam">
 <div id="CandidatePageMainDiv">
 	
-	<div id="CandidatePageLayoutDiv">
-		<div id="cand_elect_div" class="yui-skin-sam">
-			<div id="cand_elec_div_panel">
-		</div>
-	</div>
-	<div id="CandidatePageTopNavLinksDiv" class="topNavLinksClass">
-		<div id="candidateTopLinksMain" class="yui-skin-sam">
-			<div id="navigationHead" class="yuimenubar yuimenubarnav"> 
-				<div class="bd"> 
-					<ul class="first-of-type"> 
-						<li class="yuimenubaritem"> 
-							<a id="profileAnc" class="yuimenubaritemlabel" href="javascript:{}" onclick="showTopMenuContent(this.id)" style="color:#FFFFFF">Profile</a> 
-						</li> 
-						<li class="yuimenubaritem"> 
-							<a id="newsAnc" class="yuimenubaritemlabel" href="javascript:{}" onclick="showTopMenuContent(this.id)">News</a> 
-						</li> 
-						<li class="yuimenubaritem"> 
-							<a id="photoAnc" class="yuimenubaritemlabel" href="javascript:{}" onclick="showTopMenuContent(this.id)">Photo</a> 
-						</li> 
-						<li class="yuimenubaritem"> 
-							<a id="videoAnc" class="yuimenubaritemlabel" href="javascript:{}" onclick="showTopMenuContent(this.id)">Video</a> 
-						</li> 
-						<li class="yuimenubaritem" style="border:none;"> 
-							<a id="developmentsAnc" class="yuimenubaritemlabel" href="javascript:{}" onclick="showTopMenuContent(this.id)">Developments</a> 
-						</li> 
-					</ul> 
-				</div> 
-			</div> 
-		</div>
-	</div>
-	<div id="CandidatePageRightImageDiv">
-		<div id="candidateImageDiv_Main" style="padding:5px;">
-			<img id="candidateImage" height="300" width="225" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />${candidateVO.candidateName}.jpg" >
-		</div>		
-	</div>
-	<div id="CandidatePageBottomLinksDiv">
-		<div id="candidatePageContent_electionPrf">
-			<div id="candidatePageContent_electionPrf_head"></div>
-			<div id="candidatePageContent_electionPrf_body"></div>
-		</div>
-	</div>
-	<div id="CandidatePageCenterContentDiv">
-		<div id="candidatePageContent_header" class="leftAlignText"></div>
-		<div id="candidatePageContent_body" class="leftAlignText">
-			<!-- Profile Info Div-->
-			<div id="candidatePageContent_body_ProfileMain" class="candidateStaticContentDiv" style="display:block;">
-				<div id="candidatePageContent_body_basicPrf">
-					<div id="candidatePageContent_body_basicPrf_head">${candidateVO.candidateName} </div>
-					<div id="candidatePageContent_body_basicPrf_body">
-						<%
-						    java.lang.String staticURL = (java.lang.String) request.getAttribute("candidateURLString");
-							java.lang.String profileURL = staticURL + "/profile.jsp";
-							java.lang.String newsURL = staticURL + "/news.jsp";
-							java.lang.String photosURL = staticURL + "/photo.jsp";
-							java.lang.String videosURL = staticURL + "/video.jsp";
-							java.lang.String developmentsURL = staticURL + "/developments.jsp";							
-						%>
+	<!--<div id="candidateImgFlash">
+		<img src="images/candidates/andhra_pradesh/chandra_babu_naidu.jpg"/>
+	</div> -->
 
-						<jsp:include page="<%= profileURL%>" flush="true" />
-					</div>
-				</div>
-				<div id="candidatePageContent_body_electionPrf">
-					<div id="candidatePageContent_body_electionPrf_head">${candidateVO.candidateName} 's Political Career:</div>
-					<div id="candidatePageContent_body_electionPrf_body"></div>
-				</div>
+	<div id="candidatePageLayoutDiv">
+		<div id="cand_elect_div" class="yui-skin-sam">
+			<div id="cand_elec_div_panel"></div>
+		</div>
+	</div>	
+
+	<div id="candidatePageLeftContentDiv">
+		<div id="candidatePageLeftContentDiv_head"></div>
+		<div id="candidatePageLeftContentDiv_body" class="yui-skin-sam">
+			<div id="candidatePageLeftContentDiv_Image">
+				<img id="candidateImage" height="245" width="240" src="<%=request.getContextPath()%><s:property value="getText('imageURL')" />${candidateVO.candidateName}.jpg" >
 			</div>
-			<!-- News Info Div-->
-			<div id="candidatePageContent_body_NewsMain" class="candidateStaticContentDiv">
-				<jsp:include page="<%= newsURL%>" flush="true"/>
-			</div>
-			<!-- Photo Info Div-->
-			<div id="candidatePageContent_body_PhotoMain" class="candidateStaticContentDiv">
-				<jsp:include page="<%= photosURL%>" flush="true"/>				
-			</div>
-			
-			<!-- Video Info Div-->
-			<div id="candidatePageContent_body_VideoMain" class="candidateStaticContentDiv">
-				<jsp:include page="<%= videosURL%>" flush="true"/>
-			</div>
-			
-			<!-- Developments Info Div-->
-			<div id="candidatePageContent_body_DevelopmentsMain" class="candidateStaticContentDiv">
-				<jsp:include page="<%= developmentsURL%>" flush="true"/>				
-			</div>
+			<div id="candidatePageLeftContentDiv_leftNavLinks"></div>
 		</div>
 	</div>
+
+	<div id="candidatePageCenterContentDiv">
+		<div id="candidatePageContent_header" class="leftAlignText">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+				<tr>
+					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+					<td><div class="candidatePageHeader_center" style="width:651px;"><span>${candidateVO.candidateName}</span></div></td>
+					<td><img src="images/icons/districtPage/header_right.gif"/></td>
+				</tr>
+			</table>			
+		</div>
+		<div id="candidatePageContent_body" class="leftAlignText">
+			<%
+				java.lang.String staticURL = (java.lang.String) request.getAttribute("candidateURLString");
+
+				java.lang.String profileURL = staticURL + "/profile.jsp";
+				java.lang.String constituencyURL = staticURL + "/constituency.jsp";
+				java.lang.String newsURL = staticURL + "/news.jsp";
+				java.lang.String developmentsURL = staticURL + "/developments.jsp";							
+				java.lang.String speechesURL = staticURL + "/speeches.jsp";						
+				
+				java.lang.String photosURL = staticURL + "/photo.jsp";
+				java.lang.String videosURL = staticURL + "/video.jsp";
+				java.lang.String contactURL = staticURL + "/contact.jsp";
+			%>
+			
+			<div id="candidatePoliticalCareer_main">
+				<div id="candidatePoliticalCareer_head" class="centerContentHeader">Election Profile	</div>
+				<div id="candidatePoliticalCareer_body"></div>
+			</div>
+			
+			<div id="candidateStaticInfo_main">
+				<div id="candidateStaticInfo_head" class="centerContentHeader"> ${candidateVO.candidateName}'s Profile Info</div>
+				<!-- Profile Info Div-->
+				<div id="candidatePageContent_body_profileMain">
+					<jsp:include page="<%= profileURL%>" flush="true" />
+				</div>
+				
+				<!-- Constituency Info Div-->
+				<div id="candidatePageContent_body_constituencyMain" class="candidateStaticContentDiv">
+					<jsp:include page="<%= constituencyURL%>" flush="true"/>				
+				</div>
+				
+				<!-- News Info Div-->
+				<div id="candidatePageContent_body_NewsMain" class="candidateStaticContentDiv">
+					<jsp:include page="<%= newsURL%>" flush="true"/>
+				</div>
+
+				<!-- Developments Info Div-->
+				<div id="candidatePageContent_body_DevelopmentsMain" class="candidateStaticContentDiv">
+					<jsp:include page="<%= developmentsURL%>" flush="true"/>				
+				</div>
+
+				<!-- Speeches Info Div-->
+				<div id="candidatePageContent_body_SpeechesMain" class="candidateStaticContentDiv">
+					<jsp:include page="<%= speechesURL%>" flush="true"/>				
+				</div>
+
+				<!-- Photo Info Div-->
+				<div id="candidatePageContent_body_photoMain" class="candidateStaticContentDiv">
+					<jsp:include page="<%= photosURL%>" flush="true"/>				
+				</div>
+
+				<!-- Videos Info Div-->
+				<div id="candidatePageContent_body_videosMain" class="candidateStaticContentDiv">
+					<jsp:include page="<%= videosURL%>" flush="true"/>
+				</div>	
+
+				<!-- Contact Info Div-->
+				<div id="candidatePageContent_body_contactMain" class="candidateStaticContentDiv">
+					<jsp:include page="<%= contactURL%>" flush="true"/>
+				</div>	
+			</div>
+		</div>			
+	</div>
+
+	<!--<div id="candidatePoliticalCareer">
+		<div id="candidatePoliticalCareer_head">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+				<tr>
+					<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+					<td><div class="candidatePageHeader_center" style="width:895px;"><span> ${candidateVO.candidateName}'s Election Profile </span></div></td>
+					<td><img src="images/icons/districtPage/header_right.gif"/></td>
+				</tr>
+			</table>
+		</div>
+		<div id="candidatePoliticalCareer_body">
+			
+		</div>
+	</div>-->
 	
+	<div id="candidatePageBottomContentDiv">
+		<table width="100%">
+			<tr>
+				<td>
+					<div id="candidate_images_div" class="bottomContentDiv">
+						<div id="candidate_images_head">
+							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+								<tr>
+									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td><div class="candidatePageHeader_center" style="width:260px;"><span> Photo Gallery </span></div></td>
+									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+							</table>
+						</div>
+						<div id="candidate_images_body" class="bottomContentDiv_content">
+							<div class="bottomContentDiv_msg">Welcome to photo gallery.This gallery has a collection of photos divided into different categories.</div>
+							<div class="bottomContentDiv_links">
+								<table>
+									<tr>
+									<td><img src="images/icons/candidatePage/camera.png"/></td>
+									<td style="vertical-align:middle;"><span class="bottomContentDiv_links_view" onclick="showLeftMenuContent('photo')">View</span></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div id="candidate_video_div" class="bottomContentDiv">
+						<div id="candidate_video_head">
+							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+								<tr>
+									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td><div class="candidatePageHeader_center" style="width:260px;"><span> Video Gallery </span></div></td>
+									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+							</table>
+						</div>
+						<div id="candidate_video_body" class="bottomContentDiv_content">
+							<div class="bottomContentDiv_msg">Welcome to video gallery.This gallery has a collection of videos divided into different categories.</div>
+							<div class="bottomContentDiv_links">
+								<table>
+									<tr>
+									<td><img src="images/icons/candidatePage/video.png"/></td>
+									<td style="vertical-align:middle;"><span class="bottomContentDiv_links_view"  onclick="showLeftMenuContent('video')">View</span></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</td>
+				<!--<td>
+					<div id="writeTo_candidate_div" class="bottomContentDiv">
+						<div id="writeTo_candidate_head">
+							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+								<tr>
+									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td><div class="candidatePageHeader_center" style="width:180px;"><span> Write To Me</span></div></td>
+									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+							</table>
+						</div>
+						<div id="writeTo_candidate_body" class="bottomContentDiv_content">
+							<div class="bottomContentDiv_msg">
+								
+							</div>
+							<div class="bottomContentDiv_links">
+								<table>
+									<tr>
+									<td><img src="images/icons/candidatePage/note.ico"/></td>
+									<td style="vertical-align:middle;"><span class="bottomContentDiv_links_view">Write</span></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</td>-->
+				<td>
+					<div id="contact_candidate_div" class="bottomContentDiv">
+						<div id="contact_candidate_head">
+							<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+								<tr>
+									<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td><div class="candidatePageHeader_center" style="width:260px;"><span> Contact Me</span></div></td>
+									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+							</table>
+						</div>
+						<div id="contact_candidate_body" class="bottomContentDiv_content">
+							<div class="bottomContentDiv_msg">
+								This feature allows the user to communicate with the person directly via email.This section also provides the address for communication and important telephone numbers.
+							</div>
+							<div class="bottomContentDiv_links">
+								<table>
+									<tr>
+									<td><img src="images/icons/candidatePage/contact.png"/></td>
+									<td style="vertical-align:middle;"><span class="bottomContentDiv_links_view" onclick="showLeftMenuContent('contact')">Contact</span></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
 </div>
 
 <script type="text/javascript">	

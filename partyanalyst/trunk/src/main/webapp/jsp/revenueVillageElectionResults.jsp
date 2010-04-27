@@ -112,7 +112,7 @@ legend
 						rvStr += '</div>';		
 					rvStr += '</td>';
 					rvStr += '<td style="vertical-align:top;">';
-					rvStr += '<img width="700" height="260" src="charts/partyPerformanceInAllMandalElectionsByRevenueVillages_${constiElec.constituencyId}.png"/>';
+					rvStr += '<img width="700" height="260" src="charts/${constiElec.chartPath}"/>';
 					rvStr += '</td>';
 					rvStr += '</tr>';
 					rvStr += '</table>';					

@@ -36,6 +36,11 @@ var candidateDetailsObj={
 		statesArr:[],
 		distArr:[]
 };
+var hidden=1;
+function incrementHidden()
+{
+	hidden++;
+}
 function callAjax(param,jsObj,url){
 	var myResults;
 					
@@ -432,13 +437,15 @@ function allCandidates()
 			task:"getAllCandidates"						
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAjaxAction.action?"+rparam;		
+	incrementHidden();
+	var url = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAjaxAction.action?"+rparam+"&hidden="+hidden;		
 			
 	callAjax(rparam,jsObj,url);
 }
 function showCandidates(results,jsObj)
 {
 
+	
 	var emptyArray = new Array();
 	var assignTocandidateDetailsArr = new Array();
 	var candidateDetails = results.candidateDetails;	
@@ -562,8 +569,9 @@ function showExistingComments(id,candidateName,category, constituencyId,constitu
 			partyName: partyName,			
 			task:"getPreviousComments"				
 		  }
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;		
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);//+rparam+"&hidden="+hidden incrementHidden();
+	incrementHidden();
+	var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam+"&hidden="+hidden;		
 	callAjax(rparam,jsObj,url);	
 }
 function getCommentsClassifications(rank)
