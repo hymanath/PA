@@ -105,6 +105,7 @@
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />				
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />	
 		<property name="staticDataService" ref="staticDataService" />	
 	</bean>	
