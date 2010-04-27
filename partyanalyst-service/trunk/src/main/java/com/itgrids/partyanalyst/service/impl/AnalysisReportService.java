@@ -19,6 +19,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
@@ -29,6 +30,7 @@ import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionCommentsVO;
 import com.itgrids.partyanalyst.dto.PartyAnalysisBasicVO;
 import com.itgrids.partyanalyst.dto.PartyAnalysisReportVO;
+import com.itgrids.partyanalyst.dto.PartyPositionAnalysisResultVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -47,6 +49,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	private IElectionDAO electionDAO;
 	private IStaticDataService staticDataService;
 	private IPartyElectionResultDAO partyElectionResultDAO;
+	private IConstituencyElectionDAO constituencyElectionDAO;
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO; 
 	
 	
@@ -93,6 +96,15 @@ public class AnalysisReportService implements IAnalysisReportService {
 	public void setPartyElectionResultDAO(
 			IPartyElectionResultDAO partyElectionResultDAO) {
 		this.partyElectionResultDAO = partyElectionResultDAO;
+	}
+
+	public IConstituencyElectionDAO getConstituencyElectionDAO() {
+		return constituencyElectionDAO;
+	}
+
+	public void setConstituencyElectionDAO(
+			IConstituencyElectionDAO constituencyElectionDAO) {
+		this.constituencyElectionDAO = constituencyElectionDAO;
 	}
 
 	public ICommentCategoryCandidateDAO getCommentCategoryCandidateDAO() {
@@ -312,6 +324,79 @@ public class AnalysisReportService implements IAnalysisReportService {
 		}
 		
 	 return candidateCommentsVO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getAnalysisCategoryResultForAPartyInAnElection(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.Boolean)
+	 * Method to Process and Provide The Analysis Report In Detail For a Particular party(with/without alliance) election Result Category(won/lost)
+	 */
+	@SuppressWarnings("unchecked")
+	public PartyPositionAnalysisResultVO getAnalysisCategoryResultForAPartyInAnElection(
+			String electionType, String electionYear, Long electionId,
+			Long stateId, Long partyId, String analysisCategory,
+			Boolean includeAllianc) {
+		log.debug("Inside getAnalysisCategoryResultForAPartyInAnElection Method..... ");
+		
+		PartyPositionAnalysisResultVO partyPositionAnalysisResultVO = null;
+		ResultStatus resultStatus = new ResultStatus();
+	
+	    try{
+	    
+	    List basicResults = null;
+	    Long totalConstituenciesCount = new Long(0);
+	    partyPositionAnalysisResultVO = new PartyPositionAnalysisResultVO();
+	    
+	    if(electionId != null){
+	    List totConstiCount = constituencyElectionDAO.findConstituenciesCountInAnElection(electionId);
+	    if(totConstiCount != null && totConstiCount.size() > 0){
+	    	Object params = (Object)totConstiCount.get(0);
+	    	totalConstituenciesCount = (Long)params;
+	    }
+	    }    
+	    
+	    //block for alliance parties
+		if(includeAllianc.equals(true)){
+			
+		}
+		
+		//block without alliance parties
+		else if(includeAllianc.equals(false)){
+			if(partyId != null && electionId != null){
+				basicResults = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(electionId, partyId);
+				if(basicResults == null || basicResults.size() == 0){
+					staticDataService.savePartyElectionResultForAPartyForAElection(electionId, partyId);
+					basicResults = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(electionId, partyId);
+				}
+			}
+		}
+		
+		//process basicResults
+		if(basicResults != null && basicResults.size() > 0){
+			Object[] basicResultParams = (Object[])basicResults.get(0);
+			Long seatsWon = new Long((String)basicResultParams[2]);
+			Long seatsLost = totalConstituenciesCount - seatsWon;
+			
+			if(analysisCategory.equals(IConstants.CANDIDATE_COMMENTS_WON)){
+				partyPositionAnalysisResultVO.setResultType(IConstants.CANDIDATE_COMMENTS_WON);
+				partyPositionAnalysisResultVO.setResultTypeValue(seatsWon);
+			}
+			else if(analysisCategory.equals(IConstants.CANDIDATE_COMMENTS_LOST)){
+				partyPositionAnalysisResultVO.setResultType(IConstants.CANDIDATE_COMMENTS_LOST);
+				partyPositionAnalysisResultVO.setResultTypeValue(seatsLost);
+			}
+		}
+		
+	    }
+	    catch(Exception ex){
+	    	ex.printStackTrace();
+	    	resultStatus.setExceptionEncountered(ex);
+	    	resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	    	partyPositionAnalysisResultVO = new PartyPositionAnalysisResultVO();
+	    	partyPositionAnalysisResultVO.setResultStatus(resultStatus);
+	    }
+		
+	 return partyPositionAnalysisResultVO;
 	}
 	
 }
