@@ -22,7 +22,7 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 	if(rank != 'null' && category == 'candidate')
 	{
 		contentStr+='<TR>';
-		contentStr+='<TD align="left" class="commentsInputTd">Classify Your Comment*</TD>';	
+		contentStr+='<TD align="left" class="commentsInputTd">Reasons*</TD>';	
 		contentStr+='<TD class="commentsInputTd" align="left"><SELECT style="width:300px;" id="commentsClassificaitonSelectBox"  name="selectBox" style="display:block;">';
 		contentStr+='<OPTION id="0" >Select Classification</OPTION>';
 		contentStr+='</SELECT></TD>';
@@ -70,8 +70,3 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 	
 	//showExistingComments('+id+',\''+category+'\','+constituencyId+');
 }
-/*
-function handleAddCommentsCancel()
-{
-	addCommentsDialog.cancel();
-}*/
