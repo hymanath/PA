@@ -18,9 +18,34 @@ var candidatePhotoGalleryURL={
 								photoURL:''		
 							};
 
-var candidateStaticPageDivs=new Array(	'candidatePageContent_body_ProfileMain','candidatePageContent_body_NewsMain','candidatePageContent_body_PhotoMain','candidatePageContent_body_VideoMain','candidatePageContent_body_DevelopmentsMain');
+var candidateStaticPageDivs=new Array(	'candidatePageContent_body_profileMain','candidatePageContent_body_constituencyMain','candidatePageContent_body_NewsMain','candidatePageContent_body_DevelopmentsMain','candidatePageContent_body_SpeechesMain','candidatePageContent_body_photoMain','candidatePageContent_body_videosMain','candidatePageContent_body_contactMain');
 
 var ancArray = new Array('profileAnc','newsAnc','photoAnc','videoAnc','developmentsAnc');
+
+var leftLinksArray = [
+						{
+							"type":"Profile",
+							"innerLinks":["My Profile","My Familiy","My Career","My Achievements"]
+						},
+						{
+							"type":"My Constituency",
+							"innerLinks":[]
+						},
+						{
+							"type":"News/Events",
+							"innerLinks":[]
+						},
+						{
+							"type":"Developments",
+							"innerLinks":["Awards","Initiatives","Schemes"]
+						},
+						{
+							"type":"Speeches",
+							"innerLinks":[]
+						},
+					 ];
+
+new Array('Profile','Political Career','My Constituency','News/Events','Developments','Speeches');
 
 
 var candidateElectionResultPanel;
@@ -48,47 +73,25 @@ function showDetails(id)
 
 function buildCandidatePageLayout()
 {
-	var candidatePageLayout = new YAHOO.widget.Layout('CandidatePageLayoutDiv', { 
-			height:800,
-			units: [
+	var candidatePageLayout = new YAHOO.widget.Layout('candidatePageLayoutDiv', { 
+			height:600,
+			units: [					 	        
 					{ 
-						position: 'top',
-						header:false,							
-						height:50,						
-						resize: false,
-						gutter: '5px',
-						collapse: false,
-						scroll: true,
-						body: 'CandidatePageTopNavLinksDiv',
-						animate: true
-					}, 	        
-					{ 
-						position: 'right',
+						position: 'left',
 						header:false,
 						width: 250,							
 						resize: false,
-						gutter: '5px',
+						gutter: '2px',
 						collapse: false,
 						scroll: true,
-						body: 'CandidatePageRightImageDiv',
+						body: 'candidatePageLeftContentDiv',
 						animate: true
-					},
-					{ 
-						position: 'bottom', 
-						height: 200,
-						header:false,
-						body: 'CandidatePageBottomLinksDiv',
-						resize: false,
-						gutter: '5px',
-						collapse: false,
-						scroll: true,						
-						animate: true 
 					}, 					 
 					{ 
 						position: 'center',						
-						body: 'CandidatePageCenterContentDiv',
+						body: 'candidatePageCenterContentDiv',
 						resize: false,
-						gutter: '5px',
+						gutter: '2px',
 						collapse: true,
 						scroll: true,						
 						animate: true
@@ -98,10 +101,6 @@ function buildCandidatePageLayout()
 		candidatePageLayout.render(); 
 }
 
-function buildTopNavLinks()
-{
-	
-}
 
 
 function buildCandidateInitialProfile()
@@ -127,26 +126,19 @@ function buildCandidateInitialProfile()
 }
 
 function buildCandidateElectionProfile()
-{
-	var electionPrfElmtHead = document.getElementById("candidatePageContent_electionPrf_head");
-	var electionPrfElmtBody = document.getElementById("candidatePageContent_electionPrf_body");
-	
-	var ehStr='';
-	ehStr+='<span>'+candidateInfoObject.name +'\'s Election Profile :</span>';
-	
+{		
+	var electionPrfElmtBody = document.getElementById("candidatePoliticalCareer_body");	
 	
 	var ebStr='';
 	for(var i in candidateInfoObject.candidateInfoArray)
 	{
 		var data = candidateInfoObject.candidateInfoArray[i];
-		ebStr+='<div id="candidateElectionInfo_Prf'+i+'" class="candidateElectionInfoClass" onclick="showElectionResultsInPopup('+i+')">';
-		ebStr+='<span style="margin-right:10px;"> <img height="10" width="10" src="'+candidateInfoObject.contextPath+'/images/icons/arrow.png"/></span>';
-		ebStr+='<span>'+data.status+' in '+data.electionYear+' '+data.electionType+' Election with '+data.votePercentage+'% of votes gain in '+data.constituencyName+' constituency</span>';
+		ebStr+='<div id="candidateElectionInfo_Prf'+i+'" class="electionPrfDiv" onclick="showElectionResultsInPopup('+i+')">';
+		ebStr+='<span style="margin-right:10px;"> <img height="10" width="10" src="'+candidateInfoObject.contextPath+'/images/icons/indexPage/listIcon.png"/></span>';
+		ebStr+='<span>'+data.status+' in '+data.electionYear+' '+data.electionType+' Election with <b>'+data.votePercentage+'% </b>of votes gain in '+data.constituencyName+' constituency</span>';
 		ebStr+='</div>';
 	}
 	
-	if(electionPrfElmtHead)
-		electionPrfElmtHead.innerHTML=ehStr;
 	if(electionPrfElmtBody)
 		electionPrfElmtBody.innerHTML=ebStr;
 	
@@ -270,27 +262,13 @@ function showElectionResultsInPopup(index)
 	var myDataTable = new YAHOO.widget.DataTable("oppCandResultsDiv",myColumnDefs, myDataSource); 
 }
 
-function showTopMenuContent(id)
-{
+function showLeftMenuContent(content)
+{	
+	var linksHeadDivElmt = document.getElementById("candidateStaticInfo_head");
+
+	var str = '';
 	var elmt;
-	var ancElmt = document.getElementById(id);
-	var highlightedItems = new Array();
-
-	for(var j in ancArray)
-	{
-		if(YAHOO.util.Dom.hasClass(ancArray[j], 'highlightmenu'))
-		{
-			highlightedItems = YAHOO.util.Dom.getElementsByClassName('highlightmenu');
-			for(var k in highlightedItems)
-				highlightedItems[k].style.color = '#000000';
-
-			YAHOO.util.Dom.removeClass(ancArray[j], 'highlightmenu');
-
-		}
-	}
-
-	YAHOO.util.Dom.addClass(id, 'highlightmenu');
-
+	
 	for(var i in candidateStaticPageDivs)
 	{
 		var divElmt = document.getElementById(candidateStaticPageDivs[i]);
@@ -298,30 +276,113 @@ function showTopMenuContent(id)
 	}
 
 	
-	if(id=="profileAnc")
-		elmt = document.getElementById('candidatePageContent_body_ProfileMain');
-	if(id=="newsAnc")
+	if(content=="Profile")
+	{
+		str+=candidateInfoObject.name+"'s Profile Info";
+		elmt = document.getElementById('candidatePageContent_body_profileMain');
+	}
+	if(content=="My Constituency")
+	{
+		str+=candidateInfoObject.name+"'s Constituency Info";
+		elmt = document.getElementById('candidatePageContent_body_constituencyMain');
+	}
+	if(content=="News/Events")
+	{
+		str+=candidateInfoObject.name+"'s News/Events Info";
 		elmt = document.getElementById('candidatePageContent_body_NewsMain');
-	if(id=="photoAnc")
-		elmt = document.getElementById('candidatePageContent_body_PhotoMain');
-	if(id=="videoAnc")
-		elmt = document.getElementById('candidatePageContent_body_VideoMain');
-	if(id=="developmentsAnc")
+	}
+	if(content=="Developments")
+	{
+		str+=candidateInfoObject.name+"'s Developments Info";
 		elmt = document.getElementById('candidatePageContent_body_DevelopmentsMain');
+	}
+	if(content=="Speeches")
+	{
+		str+=candidateInfoObject.name+"'s Speeches Info";
+		elmt = document.getElementById('candidatePageContent_body_SpeechesMain');
+	}
+	if(content=="photo")
+	{
+		str+=candidateInfoObject.name+"'s Photo Gallery";
+		elmt = document.getElementById('candidatePageContent_body_photoMain');
+	}
+	if(content=="video")
+	{
+		str+=candidateInfoObject.name+"'s Video Gallery";
+		elmt = document.getElementById('candidatePageContent_body_videosMain');
+	}
+	if(content=="contact")
+	{
+		str+=candidateInfoObject.name+"'s Contact Info";
+		elmt = document.getElementById('candidatePageContent_body_contactMain');
+	}
 	
+	if(linksHeadDivElmt)
+		linksHeadDivElmt.innerHTML = str;
+
 	if(elmt)
-		elmt.style.display = 'block';
-		
-	ancElmt.style.color = '#FFFFFF';
+		elmt.style.display = 'block';	
 }
 
+function expandSubDiv(id,count)
+{
+
+	/*if(leftLinksArray[count].innerLinks.length == 0)
+		return;
+	
+	var bodyStr = id+"_body";
+	listAnim = new YAHOO.util.Anim(bodyStr, {
+		height: {
+			to: 80 
+		} 
+	}, 1, YAHOO.util.Easing.easeOut);
+
+	listAnim.animate();*/
+}
+
+function buildLeftNavLinks()
+{
+	//var tree = new YAHOO.widget.TreeView("candidatePageLeftContentDiv_body"); 
+	var elmt = document.getElementById("candidatePageLeftContentDiv_leftNavLinks");
+	
+	var str = '';
+	for(var i in leftLinksArray)
+	{
+		str+='<div id="'+leftLinksArray[i].type+'" class="leftLinksClass" onclick="expandSubDiv(this.id,'+i+')">';
+		str+='<div id="'+leftLinksArray[i].type+'_head">';
+		str+='	<img src="images/icons/districtPage/listIcon.png"/>';
+		str+='	<span class="leftLinkSpanClass" onclick="showLeftMenuContent(this.innerHTML)">'+leftLinksArray[i].type+'</span>';
+		str+='</div>';
+		str+='<div id="'+leftLinksArray[i].type+'_body" class="leftLinksClass_body">';
+		if(leftLinksArray[i].innerLinks.length > 0)
+		{
+			for(var j in leftLinksArray[i].innerLinks)
+			{
+				var localObj = leftLinksArray[i].innerLinks[j];
+				str+='<div class="innerlistDiv">';
+				str+='	<img src="images/icons/districtPage/listIcon.png"/>';
+				str+='	<span>'+localObj+'</span>';
+				str+='</div>';
+			}
+		}
+		str+='</div>';
+		str+='</div>';
+	}			
+
+	if(elmt)
+		elmt.innerHTML = str;
+}
 
 function initializeCandidatePage()
 {
-	buildCandidatePageLayout();
-	buildTopNavLinks();		
-	buildCandidateInitialProfile();	
+	buildCandidatePageLayout();	
+	buildLeftNavLinks();
+	buildCandidateElectionProfile();
+
+	//buildCandidateInitialProfile();	
 	//buildCandidatePhotoGallery();
 
-	YAHOO.util.Dom.addClass('profileAnc', 'highlightmenu'); 
+	//YAHOO.util.Dom.addClass('profileAnc', 'highlightmenu'); 
+
+
 }

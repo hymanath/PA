@@ -2,11 +2,17 @@ function buildCandidatePhotoGallery(arr)
 {
 	var photoElmt = document.getElementById("photoTitleMainDiv");
 	var divElmt = document.getElementById("galleryDivMain");
+	
+	if(photoElmt && divElmt)
+	{
+		photoElmt.style.display = 'none';
+		divElmt.style.display = 'block';
+	}
+
 	var courselElmt = document.getElementById("caourselDiv");
 	var spotLightElmt = document.getElementById("spotLightDiv");
 
-	photoElmt.style.display = 'none';
-	divElmt.style.display = 'block';
+	
 
 	var str = '';
 	str +='<ul>'; 
@@ -34,7 +40,7 @@ function buildCandidatePhotoGallery(arr)
 		
 		if (item)
 		{ 
-			spotLightElmt.innerHTML = '<img src="' + getImage(item) + '" height="300" width="312">';
+			spotLightElmt.innerHTML = '<img src="' + getImage(item) + '" height="250" width="312">';
 		} 
 	}); 
 
