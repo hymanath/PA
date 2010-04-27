@@ -1,4 +1,6 @@
 
+Photo Gallery Will Be Updated Soon.
+<!--
 <style type="text/css">
 	
 	.photoIndexDesc
@@ -99,3 +101,4 @@ var ImagesURL = {
 	<div id="spotLightDiv"></div>	
 	<div id="caourselDiv" class="yui-skin-sam"></div>
 </div>
+-->
