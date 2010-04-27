@@ -520,23 +520,23 @@ getStateList(this.value);
 		<div id="errorMessageDisplay" style="color:red,font-size:12px"></div>
 				<table class="registrationTable">			
 					<tr>
-						<td><font class="requiredFont"> * </font><s:label for="firstNameField" theme="simple" id="fnameLabel"  value="%{getText('firstName')}" /></td>
+						<td><font class="requiredFont"> * </font><s:label class="selectWidth" for="firstNameField" theme="simple" id="fnameLabel"  value="%{getText('firstName')}" /></td>
 						<td><s:textfield id="firstNameField"  theme="simple" name="firstName"/>  </td>
 					</tr>					
 					<tr>
-						<td> <font class="requiredFont"> * </font> <s:label for="lastNameField" id="lastNameLabel"  theme="simple" value="%{getText('lastName')}" /></td>
+						<td> <font class="requiredFont"> * </font> <s:label class="selectWidth" for="lastNameField" id="lastNameLabel"  theme="simple" value="%{getText('lastName')}" /></td>
 						<td align="left"><s:textfield id="lastNameField" theme="simple" name="lastName"/>  </td>
 					</tr>					
 					<tr>
-						<td style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  theme="simple" value="%{getText('email')}" /></td>
+						<td style="padding-left:15px;"><s:label class="selectWidth" for="emailField" id="emailLabel"  theme="simple" value="%{getText('email')}" /></td>
 						<td><s:textfield id="emailField" theme="simple" name="email"/>  </td>
 					</tr>										
 					<tr>
-						<td> <font class="requiredFont">  </font> <s:label for="mobileField" id="mobileLabel"  theme="simple" value="%{getText('mobile')}" /></td>
+						<td> <font class="requiredFont">  </font> <s:label class="selectWidth" for="mobileField" id="mobileLabel"  theme="simple" value="%{getText('mobile')}" /></td>
 						<td><s:textfield id="mobileField" theme="simple" name="mobile"/>  </td>
 					</tr>
 					<tr>
-						<td><font class="requiredFont"> * </font><s:label for="genderField" id="genderLabel" theme="simple" value="%{getText('gender')}" /></td>
+						<td><font class="requiredFont"> * </font><s:label class="selectWidth" for="genderField" id="genderLabel" theme="simple" value="%{getText('gender')}" /></td>
 						<td align="left">
 							<input id="male" type="radio" name="gender" value="M" checked="checked"/><%=Male%>
 							<input id="feMale" type="radio" name="gender" value="F"/><%=Female%>
@@ -544,11 +544,11 @@ getStateList(this.value);
 					</tr>
 					<tr>
 						<td> <font class="requiredFont">  </font> <%=Occupation%></td>
-						<td><s:textfield id="occupationField" theme="simple" name="cast"/>  </td>
+						<td><s:textfield class="selectWidth" id="occupationField" theme="simple" name="cast"/>  </td>
 					</tr>
 					<tr>
 						<td> <font class="requiredFont">  </font> <%=Cast%></td>
-						<td><s:textfield id="castField" theme="simple" name="cast"/>  </td>
+						<td><s:textfield class="selectWidth" id="castField" theme="simple" name="cast"/>  </td>
 					</tr>		
 					<tr>
 						<td> <font class="requiredFont">  </font><%=STATE%></td>
@@ -576,16 +576,16 @@ getStateList(this.value);
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont">  </font> <%=Party%> </td>
-						<td align="left"> <s:select name="partiesName" class="selectWidth" id="party" theme="simple" list="staticParties" listKey="id" listValue="name" onchange="party(this.options[this.selectedIndex].value,false)"></s:select></td>
+						<td align="left"> <s:select name="partiesName" cssClass="selectWidth" id="party" theme="simple" list="staticParties" listKey="id" listValue="name" onchange="party(this.options[this.selectedIndex].value,false)"></s:select></td>
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font><%=Position%> </td>
-						<td align="left"> <s:select name="posi" id="position" class="selectWidth" theme="simple" list="positionsList" listKey="id" listValue="name" onchange="position(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)"></s:select> </td>
+						<td align="left"> <s:select name="posi" id="position" cssClass="selectWidth" theme="simple" list="positionsList" listKey="id" listValue="name" onchange="position(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)"></s:select> </td>
 						<td><div id="specifyPosition"></div></td>
 					</tr>					
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font><%=InfluenceRange%> </td>
-						<td align="left"> <s:select name="infRange" id="influRange" class="selectWidth" theme="simple" list="influenceRange" listKey="id" listValue="name" onchange="influenceRange(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)"></s:select> </td>
+						<td align="left"> <s:select name="infRange" id="influRange" cssClass="selectWidth" theme="simple" list="influenceRange" listKey="id" listValue="name" onchange="influenceRange(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)"></s:select> </td>
 						<td><div id="specifyInfluenceRange"></div></td>
 					</tr>										
 				</table>
