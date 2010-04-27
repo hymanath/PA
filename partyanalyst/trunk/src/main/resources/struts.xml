@@ -795,7 +795,35 @@
            		<param name="root">commentsClassificationList</param>
         	</result>       		
         </action>
-              
+        <action name="electionResultsAnalysisAction" class="electionResultsAnalysisAction">
+            <result name="success">/jsp/electionResultsAnalysisReport.jsp</result>	
+        </action>
+        <action name="electionTypesAjaxAction" class="electionResultsAnalysisAction" method="getAllElectionTypes"> 
+              <result type="json" name="success">
+           		<param name="root">electionTypes</param>
+        	</result>       		
+        </action>
+        <action name="electionYearsAjaxAction" class="electionResultsAnalysisAction" method="getAllElectionYears"> 
+              <result type="json" name="success">
+           		<param name="root">electionYears</param>
+        	</result>       		
+        </action>
+        <action name="partiesAjaxAction" class="electionResultsAnalysisAction" method="getAllParties"> 
+              <result type="json" name="success">
+           		<param name="root">partiesList</param>
+        	</result>       		
+        </action>
+        <action name="electionResultsAnalysisAjaxAction" class="electionResultsAnalysisAction" method="ajaxCallHandler"> 
+              <result type="json" name="success">
+           		<param name="root">partyAnalysisReportVO</param>
+        	</result>       		
+        </action>
+        <action name="partyElectionResultsAction" class="partyElectionResultsAction">
+            <result name="success">/jsp/partyElectionResultsPopup.jsp</result>	
+        </action>        
+        <action name="partyElectionResultsAnalysisAction" class="partyElectionResultsAnalysisAction">
+            <result name="success">/jsp/partyElectionResultsAnalysisPopup.jsp</result>	
+        </action>      
 	</package>
 </struts>
 
