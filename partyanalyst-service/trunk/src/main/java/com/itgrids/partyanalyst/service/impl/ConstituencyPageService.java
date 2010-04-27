@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionResultObjectsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
@@ -97,7 +99,16 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService; 
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	private IStaticDataService staticDataService;		
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
 
 	public IConstituencyElectionDAO getConstituencyElectionDAO() {
 		return constituencyElectionDAO;
@@ -1176,14 +1187,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			List<TeshilPartyInfoVO> teshilPartyInfoVO = new ArrayList<TeshilPartyInfoVO>();
 			List<TeshilPartyInfoVO> allteshilPartyInfo = new ArrayList<TeshilPartyInfoVO>();
 			if(log.isDebugEnabled())
-				log.debug("Making delimitationConstituencyMandalService.getMandalsForDelConstituency DAO Call...");			
-			DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResult = delimitationConstituencyMandalService.getMandalsForDelConstituency(constituencyId);
-			List<MandalInfoVO> mandalInfoList = delimitationConstituencyMandalResult.getPresentMandals();	
-			Set<Long> ids = new HashSet<Long>();
-			for(MandalInfoVO voObject : mandalInfoList){
-				tehsilIds.append(",").append(voObject.getMandalID());
-				ids.add(voObject.getMandalID());
-			}
+				log.debug("Making delimitationConstituencyMandalService.getMandalsForDelConstituency DAO Call...");		
+			List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
+			List list = candidateBoothResultDAO.getMandalsForAConstituencyForAGivenYear(constituencyId,delimitationYear.get(0).toString());
+			ListIterator it = list.listIterator();
+			while(it.hasNext()){
+				Object[] parms = (Object[])it.next();
+				tehsilIds.append(",").append(new Long(parms[0].toString()));
+			}			
 			teshilPartyInfoVO = getTehsilPartyInfoForAConstituency(tehsilIds,electionYear,electionType);
 			allteshilPartyInfo.addAll(teshilPartyInfoVO); 
 			return allteshilPartyInfo;
@@ -1203,14 +1214,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		Long winnerRank =1l,successorRank=2l;
 		List successorCandidate,winningCandidate,allCandidates;
 		int flag=0;
-		DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResult = delimitationConstituencyMandalService.getMandalsForDelConstituency(constituencyId);
-		List<MandalInfoVO> mandalInfoList = delimitationConstituencyMandalResult.getPresentMandals();	
-		Set<Long> ids = new HashSet<Long>();
 		StringBuilder tehsilIds = new StringBuilder();
-		for(MandalInfoVO voObject : mandalInfoList){
-			tehsilIds.append(",").append(voObject.getMandalID());
-			ids.add(voObject.getMandalID());
-		}		
+		List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
+		List list = candidateBoothResultDAO.getMandalsForAConstituencyForAGivenYear(constituencyId,delimitationYear.get(0).toString());
+		ListIterator it = list.listIterator();
+		while(it.hasNext()){
+			Object[] parms = (Object[])it.next();
+			tehsilIds.append(",").append(new Long(parms[0].toString()));
+		}					
 		if(candidateDetailsType.equalsIgnoreCase("winners")){
 			successorCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,successorRank,partyId,electionType,electionYear);
 			winningCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,winnerRank,partyId,electionType,electionYear);
