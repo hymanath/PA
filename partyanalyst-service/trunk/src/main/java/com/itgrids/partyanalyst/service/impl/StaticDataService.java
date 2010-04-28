@@ -3263,9 +3263,15 @@ public class StaticDataService implements IStaticDataService {
 						candElecResult.setTotalValidVotes(((Double)params[4]).longValue());
 						candElecResult.setTotalVotesEarned(((Double)params[5]).longValue());
 						candElecResult.setVotesPercentage((String)params[6]);
-						
+						candElecResult.setUserComments(new Long(0));
 						if(rank.equals(new Long(0))){
 						candElecResult.setRank((Long)params[7]);
+						}
+						
+						List candComments = commentCategoryCandidateDAO.getCommentsCountForACandidateInAConstituencyInAnELection(electionId, (Long)params[0], (Long)params[2]);
+						if(candComments != null && candComments.size() > 0){
+							Object count = (Object)candComments.get(0);
+							candElecResult.setUserComments((Long)count);
 						}
 						candidateElectionResultsVO.add(candElecResult);
 					}
