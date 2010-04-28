@@ -78,4 +78,13 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 			}
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public void testGetCommentsCountForACandidate(){
+		List commentsCount = commentCategoryCandidateDAO.getCommentsCountForACandidateInAConstituencyInAnELection(new Long(9), new Long(19368), new Long(232));
+		if(commentsCount != null && commentsCount.size() > 0){
+			Object params = (Object)commentsCount.get(0);
+			System.out.println("Comments Count :" + (Long)params);
+		}
+	}
 }
