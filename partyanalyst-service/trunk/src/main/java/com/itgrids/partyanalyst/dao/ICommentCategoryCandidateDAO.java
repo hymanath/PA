@@ -31,5 +31,8 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	
 	@SuppressWarnings("unchecked")
 	public List getCommentsResultsForAPartyInAnElection(Long electionId,Long partyId);
+	
+	@SuppressWarnings("unchecked")
+	public List getCommentsCountForACandidateInAConstituencyInAnELection(Long electionId,Long candidateId,Long constituencyId);
 
 }
