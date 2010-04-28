@@ -27,6 +27,8 @@ public class CandidateElectionResultVO implements Serializable {
 	
 	private Long rank;
 	
+	private Long userComments;
+	
 	public Long getCandidateId() {
 		return candidateId;
 	}
@@ -74,6 +76,12 @@ public class CandidateElectionResultVO implements Serializable {
 	}
 	public void setRank(Long rank) {
 		this.rank = rank;
+	}
+	public Long getUserComments() {
+		return userComments;
+	}
+	public void setUserComments(Long userComments) {
+		this.userComments = userComments;
 	}
 	
 
