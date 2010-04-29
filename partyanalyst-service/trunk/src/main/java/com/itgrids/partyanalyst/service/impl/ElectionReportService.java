@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyElecDistrictNamesComparator;
 import com.itgrids.partyanalyst.utils.PartyElecDistrictResultsComparator;
 import com.itgrids.partyanalyst.utils.PartyElectionResultsComparator;
+import com.itgrids.partyanalyst.utils.SortNameComparator;
 
 public class ElectionReportService implements IElectionReportService {
 	
@@ -441,13 +442,16 @@ public class ElectionReportService implements IElectionReportService {
 			
 			//set participated districts list to mainVO
 			if(!electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
+			Collections.sort(districtsInfo, new SortNameComparator());
 			electionResultsReportVO.setPartiDistList(districtsInfo);
 			}
 			//set participated states list to mainVO
 			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
+			Collections.sort(statesInfo, new SortNameComparator());
 			electionResultsReportVO.setPartiDistList(statesInfo);
 			}
 			//set participated parties list to main vo
+			Collections.sort(partiesList, new SortNameComparator());
 			electionResultsReportVO.setPartiPartiesList(partiesList);
 			
 			Collections.sort(allPartiesResultsInDistricts, new PartyElecDistrictResultsComparator());
