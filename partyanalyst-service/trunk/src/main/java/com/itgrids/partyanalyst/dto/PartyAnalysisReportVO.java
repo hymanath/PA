@@ -19,6 +19,7 @@ public class PartyAnalysisReportVO implements Serializable {
 	
 	private Long partyId;
 	private Long electionId;
+	private Long electionTypeId;
 	private String stateName;
 	private String partyName;
 	private String electionType;
@@ -90,6 +91,12 @@ public class PartyAnalysisReportVO implements Serializable {
 	}
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+	public Long getElectionTypeId() {
+		return electionTypeId;
+	}
+	public void setElectionTypeId(Long electionTypeId) {
+		this.electionTypeId = electionTypeId;
 	}
     
 }
