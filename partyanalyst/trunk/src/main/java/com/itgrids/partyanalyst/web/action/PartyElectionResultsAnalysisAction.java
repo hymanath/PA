@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.service.IAnalysisReportService;
@@ -33,6 +35,8 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	private String status;
 	private String stateName;
 	private String electionYear;
+	private String task = null;
+	JSONObject jObj = null;
 	
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -131,21 +135,57 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 
 	public void setElectionYear(String electionYear) {
 		this.electionYear = electionYear;
+	}	
+	
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public JSONObject getJObj() {
+		return jObj;
+	}
+
+	public void setJObj(JSONObject obj) {
+		jObj = obj;
 	}
 
 	public String execute () throws Exception 
 	{
-		if(log.isInfoEnabled())
-		{
-			log.debug("Entered in to Action");
-			log.debug("electionId::::::::::::"+electionId);
-			log.debug("partyId:::::::::::"+partyId);
-			
-			
+		return Action.SUCCESS;
+	}
+	
+	public String ajaxCallHandler() throws Exception{
+		
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		//electionBasicCommentsVO = new ElectionBasicCommentsVO();
-		electionBasicCommentsVOList = new ArrayList<ElectionBasicCommentsVO>();
-		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId);		
+		
+		if(jObj.getString("task").equalsIgnoreCase("getCandidateComments"))
+		{
+			Long electionId = new Long(jObj.getString("electionId"));
+			Long partyId = new Long(jObj.getString("partyId"));
+			if(log.isDebugEnabled())
+			{
+				log.debug("Entered in to Action");
+				log.debug("electionId::::::::::::"+electionId);
+				log.debug("partyId:::::::::::"+partyId);			
+			}
+			
+			electionBasicCommentsVOList = new ArrayList<ElectionBasicCommentsVO>();
+			electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId);
+		}
+		
 		return Action.SUCCESS;
 	}
 	
