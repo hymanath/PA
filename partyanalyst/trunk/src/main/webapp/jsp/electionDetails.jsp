@@ -273,7 +273,7 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
 {	
 	var partywiseResultsColumnDefs = [
 								{key: "party", label: "<%=party%>", sortable:true},		
-								//{key: "totalParticipated", label: "TP*", formatter:"number", sortable:true},	
+								{key: "totalParticipated", label: "TP*", formatter:"number", sortable:true},	
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
 		              	 	 	{key: "third", label: "3rd",formatter:"number", sortable:true},
@@ -455,6 +455,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 				var obj = {
 							district:innerObj[i].partyResultsInDistricts[j].districtName,
 							party:innerObj[i].partyName,
+							totalParticipated: innerObj[i].partyResultsInDistricts[j].totalConstiParticipated,
 							seatsWon:innerObj[i].partyResultsInDistricts[j].seatsWon,
 							second:innerObj[i].partyResultsInDistricts[j].secondPos,
 							third:innerObj[i].partyResultsInDistricts[j].thirdPos,
@@ -486,6 +487,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 					var obj = {
 								district:innerObj[i].partyResultsInDistricts[j].districtName,
 								party:innerObj[i].partyName,
+								totalParticipated: innerObj[i].totalConstiParticipated,
 								seatsWon:innerObj[i].partyResultsInDistricts[j].seatsWon,
 								second:innerObj[i].partyResultsInDistricts[j].secondPos,
 								third:innerObj[i].partyResultsInDistricts[j].thirdPos,
@@ -519,6 +521,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 					var obj = {
 								district:innerObj[i].partyResultsInDistricts[j].districtName,
 								party:innerObj[i].partyName,
+								totalParticipated: innerObj[i].totalConstiParticipated,
 								seatsWon:innerObj[i].partyResultsInDistricts[j].seatsWon,
 								second:innerObj[i].partyResultsInDistricts[j].secondPos,
 								third:innerObj[i].partyResultsInDistricts[j].thirdPos,
@@ -543,7 +546,8 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 
 	var allDistrictResultsColumnDefs = [
 								{key: "district", label: "Location", sortable:true},		
-								{key: "party", label: "<%=party%>", sortable:true},										
+								{key: "party", label: "<%=party%>", sortable:true},
+								{key: "totalParticipated", label:"TP*",formatter:"number", sortable:true},										
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
 		              	 	 	{key: "third", label: "3rd",formatter:"number", sortable:true},
@@ -558,7 +562,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 		allDistrictResultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		allDistrictResultsDataSource.responseSchema = {
                 fields: ["district","party", {key: "totalParticipated", parser:"number"},
-                         		  {key: "seatsWon", parser:"number"},
+                         		  {key: "seatsWon", parser:"number"},                         		  
                          		  {key: "second", parser:"number"},
                          		  {key:  "third", parser:"number"},
                          		  {key:  "fourth", parser:"number"},
@@ -717,6 +721,7 @@ function buildAllianceDistrictResultsDataTable(results)
 				var obj = {
 							district:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].districtName,
 							party:innerObj[i].partiesInAlliance[j].partyName,
+							totalParticipated: innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].totalConstiParticipated,
 							seatsWon:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].seatsWon,
 							second:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].secondPos,
 							third:innerObj[i].partiesInAlliance[j].partyResultsInDistricts[k].thirdPos,
@@ -731,7 +736,8 @@ function buildAllianceDistrictResultsDataTable(results)
 		
 		var allianceDistrictResultsColumnDefs = [
 								{key: "district", label: "Location", sortable:true},		
-								{key: "party", label: "<%=party%>", sortable:true},										
+								{key: "party", label: "<%=party%>", sortable:true},
+								{key: "totalParticipated", label:"TP*",formatter:"number", sortable:true},										
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
 		              	 	 	{key: "third", label: "3rd",formatter:"number", sortable:true},
@@ -1151,26 +1157,26 @@ callAjax(rparam,jsObj,url);
 </DIV>
 <DIV class="graphBottom"></DIV>
 <DIV class="graphTop">Analysis Tools</DIV>
-<DIV id="toolsDiv" align="left">
+<DIV id="toolsDiv">
 	<TABLE class="toolsTable"><TR>
 		<TD class="td">
 			<DIV class="toolsDisplay">
 				<c:if test="${electionType != 'Parliament'}">
-					<h3>Statewise Analysis</h3>
-					<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Statewise.</P>
+					<h3 align="left">Statewise Analysis</h3>
+					<P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze and Compare different election results Statewise.</P>
 				</c:if>
 				<c:if test="${electionType == 'Parliament'}">
-					<h3>Countrywise Analysis</h3>
-					<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Countrywise.</P>
+					<h3 align="left">Countrywise Analysis</h3>
+					<P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze and Compare different election results Countrywise.</P>
 				</c:if>	
 				<DIV style="font-weight:bold">
 					<TABLE width="100%">
 						<TR>
-							<TD colspan="2"><DIV id="yearAlertS" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
+							<TD colspan="2" align="left"><DIV id="yearAlertS" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
 						</TR>						
 						<TR>	
-							<TD>Year:</TD>
-							<TD><SELECT id="selectYearStateWise" name="selectYearStateWise" style="width: 100px; margin-top: 3px;">
+							<TD align="left">Year:</TD>
+							<TD align="left"><SELECT id="selectYearStateWise" name="selectYearStateWise" style="width: 100px; margin-top: 3px;">
 								<c:forEach var="years"  items="${electionYears}">
 								<c:if test="${year != years.name}">
 									<OPTION value="years.id">${years.name}</OPTION>
@@ -1187,21 +1193,21 @@ callAjax(rparam,jsObj,url);
 			<TD class="td">
 				<DIV class="toolsDisplay">
 					<c:if test="${electionType != 'Parliament'}">
-						<h3>District wise Analysis</h3>
-						<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Districtwise.</P>
+						<h3 align="left">District wise Analysis</h3>
+						<P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze and Compare different election results Districtwise.</P>
 					</c:if>
 					<c:if test="${electionType == 'Parliament'}">
-						<h3>Statewise Analysis</h3>
-						<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare different election results Statewise.</P>
+						<h3 align="left">Statewise Analysis</h3>
+						<P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze and Compare different election results Statewise.</P>
 					</c:if>
 				<DIV style="font-weight:bold">
 					<TABLE width="100%">
 						<TR>
-							<TD colspan="2"><DIV id="yearAlert" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>							
+							<TD colspan="2" align="left"><DIV id="yearAlert" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>							
 						</TR>						
 						<TR>
-							<TD>Year:</TD>
-							<TD><SELECT id="selectYearDistrictwise" name="selectYearDistrictwise" style="width: 100px; margin-top: 3px;">
+							<TD align="left">Year:</TD>
+							<TD align="left"><SELECT id="selectYearDistrictwise" name="selectYearDistrictwise" style="width: 100px; margin-top: 3px;">
 								<c:forEach var="years"  items="${electionYears}">
 									<c:if test="${year != years.name}">
 										<OPTION value="years.id">${years.name}</OPTION>
@@ -1217,22 +1223,22 @@ callAjax(rparam,jsObj,url);
 			</TD>			
 			<TD class="td">
 				<DIV class="toolsDisplay">
-					<h3>Party Performance</h3>
-					<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare a party's performance for selected election year.</P>
+					<h3 align="left">Party Performance</h3>
+					<P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze and Compare a party's performance for selected election year.</P>
 					<DIV style="font-weight:bold">
 						<TABLE width="100%">
 							<TR>
-								<TD colspan="2"><DIV id="yearAlertPPR" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
+								<TD colspan="2" align="left"><DIV id="yearAlertPPR" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
 							</TR>
 							<TR>
-								<TD>Party Name:</TD>
+								<TD align="left">Party Name:</TD>
 								<TD>
 								<s:select id="selectPartyPPR" theme="simple"  name="selectParty" list="partiesList" listKey="id" listValue="name"/>							
 								</TD>
 							</TR>	
 							<TR>	
-								<TD>Year:</TD>
-								<TD><SELECT id="selectYearPPR" name="selectYearPPR" style="width: 100px; margin-top: 3px;">
+								<TD align="left">Year:</TD>
+								<TD align="left"><SELECT id="selectYearPPR" name="selectYearPPR" style="width: 100px; margin-top: 3px;">
 									<c:forEach var="years"  items="${electionYears}">
 										<OPTION value="years.id">${years.name}</OPTION>								
 									</c:forEach>
@@ -1240,7 +1246,7 @@ callAjax(rparam,jsObj,url);
 								</TD>
 							</TR>	
 							<TR>	
-								<TD colspan="2"><INPUT type="checkbox" id="pprCheckBox" value="hasAllianceParties" name="alliances"/>Include Alliances</TD>
+								<TD colspan="2" align="left"><INPUT type="checkbox" id="pprCheckBox" value="hasAllianceParties" name="alliances"/>Include Alliances</TD>
 							</TR>							
 						</TABLE>
 						<DIV align="right"><A href="javascript:{}" onclick="openPartyPerformanceReportWindow()"><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV>		 
@@ -1250,22 +1256,22 @@ callAjax(rparam,jsObj,url);
 			<c:if test="${electionType == 'Assembly'}">		
 			<TD class="td">
 				<DIV id="comparePrevElection" class="toolsDisplay">
-					<h3>Elections Comparison</h3>
-					<P style="font-size:15px;font-family:Trebuchet MS;">Analyze and Compare current election results with selected election results for a party.</P>
+					<h3 align="left">Elections Comparison</h3>
+					<P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze and Compare current election results with selected election results for a party.</P>
 					<DIV style="font-weight:bold">
 						<TABLE width="100%">
 							<TR>
-								<TD colspan="2"><DIV id="yearAlertECR" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
+								<TD colspan="2" align="left"><DIV id="yearAlertECR" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
 							</TR>	
 							<TR>
-								<TD>Party Name:</TD>
+								<TD align="left">Party Name:</TD>
 								<TD>
 									<s:select id="selectPartyECR" theme="simple"  name="selectParty" list="partiesList" listKey="id" listValue="name"/>							
 								</TD>
 							</TR>
 							<TR>	
-								<TD>Year:</TD>
-								<TD><SELECT id="selectYearECR" name="selectYearECR" style="width: 100px; margin-top: 3px;">
+								<TD align="left">Year:</TD>
+								<TD align="left"><SELECT id="selectYearECR" name="selectYearECR" style="width: 100px; margin-top: 3px;">
 									<c:forEach var="years"  items="${electionYears}">
 										<c:if test="${year != years.name}">
 											<OPTION value="years.id">${years.name}</OPTION>
@@ -1275,7 +1281,7 @@ callAjax(rparam,jsObj,url);
 								</TD>
 							</TR>	
 							<TR>	
-								<TD colspan="2"><INPUT type="checkbox" id="ecrCheckBox" value="hasAllianceParties" name="alliances"/>Include Alliances</TD>
+								<TD colspan="2" align="left"><INPUT type="checkbox" id="ecrCheckBox" value="hasAllianceParties" name="alliances"/>Include Alliances</TD>
 							</TR>							
 						</TABLE>
 						<DIV align="right"><A href="javascript:{}" onclick="openElectionComparisionReportWindow()"><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" /></A></DIV>		 
