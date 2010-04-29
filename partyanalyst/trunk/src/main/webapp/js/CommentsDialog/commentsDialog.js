@@ -24,7 +24,7 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 		contentStr+='<TR>';
 		contentStr+='<TD align="left" class="commentsInputTd">Reasons*</TD>';	
 		contentStr+='<TD class="commentsInputTd" align="left"><SELECT style="width:300px;" id="commentsClassificaitonSelectBox"  name="selectBox" style="display:block;">';
-		contentStr+='<OPTION id="0" >Select Classification</OPTION>';
+		contentStr+='<OPTION id="0" >Select Reason</OPTION>';
 		contentStr+='</SELECT></TD>';
 		contentStr+='</TR>';
 		getCommentsClassifications(rank);
