@@ -153,8 +153,6 @@ function getEletionYears(electionType,electionTypeId)
 }
 function getStaticParties()
 {
-	//var partySelectEl = document.getElementById("partySelectEl");
-	//partySelectEl.selectedIndex= '0';
 	var elmt = document.getElementById("electionPageAjaxImgDiv");
 	if(elmt.style.display == 'none')
 	elmt.style.display = 'block';
@@ -195,7 +193,7 @@ function openPartyElectionResultsWindow(electionId,partyId,rank,partyName,electi
 { 
 	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&partyId="+partyId+"&rank="+rank+"&partyName="+partyName+
 		"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear;
-	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1200,left=200,top=200");
+	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	
 	browser1.focus();
 }
@@ -203,9 +201,9 @@ function openPartyElectionResultsAnalysisWindow(electionId, partyId,status,party
 {
 	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?electionId="+electionId+"&partyId="+partyId+"&status="+status+
 	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear;
-	var browser1 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1200,left=200,top=200");
+	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	
-	browser1.focus();
+	browser2.focus();
 	
 	
 }
@@ -336,7 +334,8 @@ function openPartyElectionResultsAnalysisWindow(electionId, partyId,status,party
 						<TD>
 						<SELECT id="electionTypeSelectEl" name="electionTypeSelectEl" class="selectWidth" onchange="getEletionYears(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">							
 						</SELECT>
-						</TD>					
+						</TD>
+					</TR>						
 					<TR>
 						<TH>Year</TH>
 						<TD>
@@ -465,8 +464,7 @@ function openPartyElectionResultsAnalysisWindow(electionId, partyId,status,party
 								<TH width="5%">2</TH>
 								<TH width="5%">3</TH>
 								<TH width="5%">4</TH>
-								<TH width="5%">N</TH>
-								
+								<TH width="5%">N</TH>								
 							</TR>
 							<TR>
 								<TD width="30%"><B>No of Constituencies</B></TD>
