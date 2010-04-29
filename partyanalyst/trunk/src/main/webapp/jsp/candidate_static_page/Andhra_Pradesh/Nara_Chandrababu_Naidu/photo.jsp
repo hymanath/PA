@@ -1,6 +1,6 @@
 
-Photo Gallery Will Be Updated Soon.
-<!--
+
+
 <style type="text/css">
 	
 	.photoIndexDesc
@@ -36,12 +36,34 @@ Photo Gallery Will Be Updated Soon.
 		color:#20425F;
 		text-decoration:none;
 	}
+
+	#photoGroupsMain
+	{
+		height:200px;
+		overflow:auto;
+		padding-left:15px;		
+	}
+	
+	.imgGroupNameSpan
+	{
+		padding-left:10px;
+		text-decoration:underline;
+	}
+
+	.imagesGroupHeader
+	{
+		font-weight:bold;
+		margin-top:10px;
+	}
+
 </style>
 
 <script type="text/javascript">
 
-var ImagesURL = {
-					sampleImagesURL:[
+/*
+	{
+						groupName:'Samples',
+						imagesUrl:[
 										 '<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/sample/Blue_hills.jpg"/>',
 										 '<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/sample/Sunset.jpg"/>',
 										 '<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/sample/Water lilies.jpg"/>',
@@ -50,69 +72,36 @@ var ImagesURL = {
 										 '<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/sample/Sunset.jpg"/>',
 										 '<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/sample/Water lilies.jpg"/>',
 										 '<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/sample/Winter.jpg"/>'
-									],
-					politicalTourImages:[
+								  ]
+					},
+*/
+var imagesList = [					
+					{
+						groupName:'Political Tour',
+						imagesUrl:[
 											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/election_tour/cbn_elec1.jpeg"/>',
 											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/election_tour/cbn_elec2.jpeg"/>',
 											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/election_tour/cbn_elec3.jpeg"/>',
 											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/election_tour/cbn_elec4.jpeg"/>',
 											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/election_tour/cbn_elec5.jpeg"/>',
 											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/election_tour/cbn_elec6.jpeg"/>',
-											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradeshs/Nara_Chandrababu_Naidu/election_tour/cbn_elec7.jpeg"/>',
-										]
-					
-				};
+											'<img height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/election_tour/cbn_elec7.jpeg"/>',
+								  ]
+					}
+
+				 ];
 
 </script>
 
 <div id="photoTitleMainDiv">	
-	<div id="photoGroupsDiv">
-		<fieldset id="photoGroupsField">
-			<legend> Photo Group's</legend>
-			<table width="100%">
-			<tr>
-			<td width="50%">
-				<div id="samplePhotosIndexDiv">
-					<table>
-						<tr>
-							<td>
-								<a href="javascript:{}" onclick="buildCandidatePhotoGallery(ImagesURL.sampleImagesURL)">
-									<img class="indexImgClass" height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/sample/Blue_hills.jpg"/>
-								</a>
-							</td>
-							<td>
-								<div class="photoIndexDesc">
-									<div>Sample photos</div>
-									<div style="padding-left:100px;padding-top:25px;cursor:pointer;"> Click Here </div>
-								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</td>
-			<td width="50%">
-				<div id="electionTourPhotosIndexDiv">
-					<table>
-						<tr>
-							<td>
-								<a href="javascript:{}" onclick="buildCandidatePhotoGallery(ImagesURL.politicalTourImages)">
-									<img class="indexImgClass" height="100" width="100" src="images/photo_gallery/Andhra_Pradesh/Nara_Chandrababu_Naidu/election_tour/cbn_elec1.jpeg"/>
-								</a>
-							</td>
-							<td>
-								<div class="photoIndexDesc">
-									<div>Chandra Babu Naidu's Election <br/>Tour photo's <br/></div>
-									<div style="padding-left:100px;padding-top:25px;cursor:pointer;"> Click Here </div>
-								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</td>
-			</tr>
-			</table>	
-		</fieldset>
-	</div>	
+
+	<div id="photoGroupsMain">
+		
+	</div>
+
+	<script type="text/javascript">
+		buildImagesType("photoGroupsMain",imagesList);
+	</script>
 </div>
 
 <div id="galleryDivMain" style="display:none;">
@@ -120,4 +109,3 @@ var ImagesURL = {
 	<div id="spotLightDiv"></div>	
 	<div id="caourselDiv" class="yui-skin-sam"></div>
 </div>
--->

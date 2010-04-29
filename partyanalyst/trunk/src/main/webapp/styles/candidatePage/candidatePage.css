@@ -55,29 +55,231 @@ table.CandidateElectionResultsTable td {
 }
 #CandidatePageMainDiv
 {
-	background-color:#D5E7F9;
+	background-color:#EFF1F3;
+}
+
+#candidateImgFlash
+{
+	height:200px;
+	background-color:#FFFFFF;
+}
+
+#candidatePageLeftContentDiv,#candidatePageCenterContentDiv
+{
+	background-color:#FFFFFF;
+}
+
+/*#candidatePageLeftContentDiv
+{
+	background-image:url("../../images/icons/candidatePage/left_links_bg.jpg");
+}
+*/
+#candidatePageBottomContentDiv
+{
+	height:225px;	
+}
+
+#candidatePageContent_header
+{
+	
+}
+
+.candidatePageHeader_center
+{
+	background-image:url("../../images/icons/districtPage/header_body.png");
+	color:#4B74C6;
+	font-weight:bold;
+	height:16px;
 	padding:10px;
+	text-align:left;
 }
 
-#CandidatePageTopNavLinksDiv
+.bottomContentDiv
 {
 	background-color:#FFFFFF;
-	border-bottom:6px solid #447EA5;
-	height:34px;
-	clear:both;
-	width:100%;
+	width:315px;
+	height:218px;
 }
-#CandidatePageRightImageDiv,#CandidatePageBottomLinksDiv,#CandidatePageCenterContentDiv
+
+.leftLinksClass
 {
-	background-color:#FFFFFF;
-	height:100%;
+	color:#4B74C6;
+	margin-bottom:10px;
+	padding:10px;
+	text-align:left;
+	font-weight:bold;
+	margin-right:20px;
+	border-bottom:1px solid #D7E2EB;
 }
 
+.leftLinkSpanClass
+{
+	cursor:pointer;
+	padding-left: 5px;
+}
 
-.leftAlignText
+.innerlistDiv
+{
+	padding:2px;
+	margin-left:10px;
+}
+
+.leftLinksClass_body
+{
+	height:0px;
+	overflow:hidden;
+}
+
+#candidatePageLeftContentDiv_leftNavLinks
+{
+	background-image:url("../../images/icons/candidatePage/left_links_bg.jpg");
+	border:1px solid #E0E0D6;
+	height:285px;
+	margin-top:5px;
+	padding-left:50px;
+	padding-top:50px;
+}
+
+#candidatePageLeftContentDiv_Image
+{
+	height:250px;
+}
+
+#candidatePageContent_body
+{
+	color:#6C7076;
+	line-height:18px;
+	padding:12px;
+	text-align:justify;
+	word-spacing:2px;
+	height:535px;
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+}
+
+.bottomContentDiv_content
+{
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	color:#6C7076;
+	height:161px;
+	line-height:18px;
+	overflow:auto;
+	padding:10px;
+	text-align:justify;
+	word-spacing:2px;
+}
+
+.bottomContentDiv_links
+{
+	padding-left:210px;	
+}
+
+.bottomContentDiv_msg
+{
+	height:110px;
+}
+
+.bottomContentDiv_links_view
+{
+	color:#4B74C6;
+	font-weight:bold;
+	cursor:pointer;
+}
+
+#candidatePoliticalCareer
+{
+	margin-top:5px;
+	margin-bottom:5px;
+	padding:5px;
+}
+
+#candidatePoliticalCareer_body
+{	
+	color:#6C7076;
+	height:240px;
+	overflow:auto;
+	padding-left:10px;
+	text-align:left;
+}
+
+.electionPrfDiv
+{
+	padding:5px;
+	/*word-spacing:0.6em;*/
+}
+
+#candidateImage
+{
+	border:1px double #E0E0D6;
+	padding:2px;
+}
+
+.centerContentHeader
+{
+	color:#4B74C6;
+	font-weight:bold;
+	padding:5px;
+	text-decoration:underline;
+}
+
+.imagesULElmt
+{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+.imagesCarouselDiv
+{
+	border:1px solid #adadad;
+}
+.imagesCarouselDiv .yui-carousel-nav
 {
 	text-align:left;
+}
+
+.imagesCarouselDiv .yui-carousel-element li
+{
+	height:100px;
+	width:100px;
+}
+
+.imagesCarouselDiv .yui-carousel-item-selected  
+{
+	border:1px solid #CCCCCC;
+}
+.carouselTitleSpan
+{
+	color:#4B74C6;
+	font-weight:bold;
+	padding-left:10px;
+	position:relative;
+	top:5px;
+}
+
+#cand_image_div_panel_mask
+{
+	background-color:#3C404A;
+	opacity:0.8;
+	filter:alpha(opacity=80);
+}
+
+.imgPanelCloseDiv
+{
+	color:#3C404A;	
+	font-weight:bold;
+	margin-bottom:20px;
 	padding:5px;
+	text-align:right;
+}
+
+/*--------*/
+.leftAlignText
+{
+	text-align:left;	
 }
 
 #candidatePageContent_electionPrf
@@ -211,10 +413,17 @@ legend
 	color:#000000;
 }
 
+
+.imgSpan
+{
+	cursor:pointer;
+}
 /*#photo_gallery_div li
 {
 	float:left;
 	list-style-type:none;
 	margin-right:5px;
 }*/
+
+
 

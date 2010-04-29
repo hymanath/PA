@@ -76,6 +76,7 @@
 	<div id="candidatePageLayoutDiv">
 		<div id="cand_elect_div" class="yui-skin-sam">
 			<div id="cand_elec_div_panel"></div>
+			<div id="cand_image_div_panel"></div>
 		</div>
 	</div>	
 
@@ -116,7 +117,14 @@
 			
 			<div id="candidatePoliticalCareer_main">
 				<div id="candidatePoliticalCareer_head" class="centerContentHeader">Election Profile	</div>
-				<div id="candidatePoliticalCareer_body"></div>
+				<div id="candidatePoliticalCareer_body">
+					<table>
+						<tr>
+							<td style="vertical-align:top;width:500px;"><span id="candidatePoliticalInfo"></span></td>
+							<td style="vertical-align:top;"><span id="candidatePartyFlag"></span></td>
+						</tr>
+					</table>
+				</div>
 			</div>
 			
 			<div id="candidateStaticInfo_main">
@@ -291,6 +299,8 @@
 	candidateInfoObject.name = "${candidateVO.candidateName}";
 	candidateInfoObject.candidateImgURL = "<%=request.getContextPath()%><s:property value="getText('imageURL')" />default.JPG" ;
 	candidateInfoObject.contextPath = "<%=request.getContextPath()%>";
+	candidateInfoObject.candidatePartyFlag = "<%=request.getContextPath()%>/images/party_flags/${partyFlag}";
+
 	<c:forEach var="candidateElectionResults" items="${candidateElectionDetails}" >		
 			var candidateObj={
 								electionId:'${candidateElectionResults.electionId}',
