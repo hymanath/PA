@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dto.AnalysisCategoryBasicVO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionCommentsVO;
@@ -163,6 +164,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 			partyAnalysisReportVO.setElectionType(electionType);
 			partyAnalysisReportVO.setElectionYear(electionYear);
 			partyAnalysisReportVO.setStateName(state.getStateName());
+			partyAnalysisReportVO.setElectionTypeId(electionMain.getElectionScope().getElectionType().getElectionTypeId());
 			partyAnalysisReportVO.setPartyBasicAnalysisVO(basicAnalysisForMainParty);
 			}
 			
@@ -344,8 +346,19 @@ public class AnalysisReportService implements IAnalysisReportService {
 	    try{
 	    
 	    List basicResults = null;
+	    List analysisResults = null;
+	    List<AnalysisCategoryBasicVO> analysisBasicResults = null;
+	    List<SelectOptionVO> multipleCategories = null;
 	    Long totalConstituenciesCount = new Long(0);
 	    partyPositionAnalysisResultVO = new PartyPositionAnalysisResultVO();
+	    
+	    if(electionId == null){
+	    	List election = electionDAO.findElectionIdByElectionTypeAndYear(electionType, electionYear, stateId);
+			if(election != null && election.size() > 0){
+				Object params = (Object)election.get(0);
+				electionId = (Long)params;
+			}
+	    }
 	    
 	    if(electionId != null){
 	    List totConstiCount = constituencyElectionDAO.findConstituenciesCountInAnElection(electionId);
@@ -368,6 +381,18 @@ public class AnalysisReportService implements IAnalysisReportService {
 					staticDataService.savePartyElectionResultForAPartyForAElection(electionId, partyId);
 					basicResults = partyElectionResultDAO.getBasicPartyElectionResultForAPartyInAnElection(electionId, partyId);
 				}
+				
+				//analysis results
+				if(analysisCategory.equals(IConstants.CANDIDATE_COMMENTS_WON)){
+				analysisResults = commentCategoryCandidateDAO.getCommentsCountInAnElectionForAPartyForCommentCategory(electionId,partyId,IConstants.CANDIDATE_COMMENTS_WON);
+				analysisBasicResults = getAnalysisCategoryBasicDetails(electionId,partyId,includeAllianc,IConstants.CANDIDATE_COMMENTS_WON);
+				multipleCategories = getMultipleCategoriesBasicResults(electionId,partyId,includeAllianc,IConstants.CANDIDATE_COMMENTS_WON);
+				}
+				else if(analysisCategory.equals(IConstants.CANDIDATE_COMMENTS_LOST)){
+				analysisResults = commentCategoryCandidateDAO.getCommentsCountInAnElectionForAPartyForCommentCategory(electionId,partyId,IConstants.CANDIDATE_COMMENTS_LOST);
+				analysisBasicResults = getAnalysisCategoryBasicDetails(electionId,partyId,includeAllianc,IConstants.CANDIDATE_COMMENTS_LOST);
+				multipleCategories = getMultipleCategoriesBasicResults(electionId,partyId,includeAllianc,IConstants.CANDIDATE_COMMENTS_LOST);
+				}
 			}
 		}
 		
@@ -387,6 +412,19 @@ public class AnalysisReportService implements IAnalysisReportService {
 			}
 		}
 		
+		//Analysis results
+		if(analysisResults != null && analysisResults.size() > 0){
+			Object analysisCount = (Object)analysisResults.get(0);
+			Long value = (Long)analysisCount;
+			partyPositionAnalysisResultVO.setAnalyzedConsti(value);
+			partyPositionAnalysisResultVO.setNotAnalyzedConsti(partyPositionAnalysisResultVO.getResultTypeValue() - value);
+		}
+		
+		if(analysisBasicResults != null && analysisBasicResults.size() > 0)
+			partyPositionAnalysisResultVO.setAnalysisCategoryBasicResultVO(analysisBasicResults);
+		if(multipleCategories != null && multipleCategories.size() > 0)
+			partyPositionAnalysisResultVO.setMultipleCategories(multipleCategories);
+		
 	    }
 	    catch(Exception ex){
 	    	ex.printStackTrace();
@@ -397,6 +435,71 @@ public class AnalysisReportService implements IAnalysisReportService {
 	    }
 		
 	 return partyPositionAnalysisResultVO;
+	}
+	
+	/*
+	 * Method To Get AnalysisCategoryBasicDetails
+	 */
+	@SuppressWarnings("unchecked")
+	public List<AnalysisCategoryBasicVO> getAnalysisCategoryBasicDetails(Long electionId,Long partyId,Boolean includeAllianc,String analysisCategory){
+		
+		log.debug("Inside getAnalysisCategoryBasicDetails Method..... ");
+		
+		List<AnalysisCategoryBasicVO> analysisCategoryBasicVO = null;
+		if(electionId != null && partyId != null && includeAllianc == false){
+			analysisCategoryBasicVO = new ArrayList<AnalysisCategoryBasicVO>();
+			
+			List analysisResults = commentCategoryCandidateDAO.getCommentsCountGroupedByCommentCategory(electionId, partyId, analysisCategory);
+			if(analysisResults != null && analysisResults.size() > 0){
+				for(int i=0;i<analysisResults.size();i++){
+					Object[] params = (Object[])analysisResults.get(i);
+					
+					AnalysisCategoryBasicVO analysisBasics = new AnalysisCategoryBasicVO();
+					analysisBasics.setCategoryId((Long)params[1]);
+					analysisBasics.setCategoryType((String)params[2]);
+					analysisBasics.setCategoryResultCount((Long)params[0]);
+					
+					analysisCategoryBasicVO.add(analysisBasics);
+				}
+			}
+		}
+	 return analysisCategoryBasicVO;
+	}
+	
+	/*
+	 * Method to get basic results of analysis on multiple categories
+	 */
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getMultipleCategoriesBasicResults(Long electionId,Long partyId,Boolean includeAllianc,String analysisCategory){
+		
+		log.debug("Inside getMultipleCategoriesBasicResults Method..... ");
+		
+		List<SelectOptionVO> multipleCategories = null;
+		Map<Long,Long> multipleCategoryMap = null;
+		if(electionId != null && partyId != null && includeAllianc == false){
+			multipleCategories = new ArrayList<SelectOptionVO>();
+			multipleCategoryMap = new HashMap<Long,Long>();
+			
+			List multipleCategoryComments = commentCategoryCandidateDAO.getCommentsCommentCategoryCountGroupedByConstituencyForAParty(electionId,partyId,analysisCategory);
+			if(multipleCategoryComments != null && multipleCategoryComments.size() > 0){
+				for(int i=0;i<multipleCategoryComments.size();i++){
+					Object[] params = (Object[])multipleCategoryComments.get(i);
+					Long commentsCount = (Long)params[0];
+					if(multipleCategoryMap.isEmpty() || !multipleCategoryMap.containsKey(commentsCount)){
+						multipleCategoryMap.put(commentsCount, new Long(1));
+					}
+					else if(multipleCategoryMap.containsKey(commentsCount)){
+						Long countVal = multipleCategoryMap.get(commentsCount);
+						multipleCategoryMap.put(commentsCount, ++countVal);
+					}
+				}
+				
+				if(!multipleCategoryMap.isEmpty()){
+					
+				}
+			}
+		}
+	 return multipleCategories;
 	}
 	
 }
