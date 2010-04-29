@@ -296,7 +296,7 @@ function buildParticipatedCandidatesDetailsDataTable(data)
 		              	 	    {key: "marginVotes", label: "Margin Votes",formatter:"number", sortable:true},
 		              	 	 	{key: "marginVotesPercentage", label: "Margin Votes %",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
 		              	 	 	{key: "moreDetails", label: "More Details"},
-							    {key: "commentsCount", label: "No of Comments"},
+							    {key: "commentsCount", label: "No of Reasons"},
 		              	 	 	{key: "comments", label: ""}
 		              	 	    ];                	 	    
 
@@ -474,9 +474,9 @@ function showCandidates(results,jsObj)
 					constituencyId: candidateDetails[i].constituencyId,
 					electionType: candidateDetails[i].electionType,
 					electionYear: candidateDetails[i].electionYear,
-					moreDetails: '<A href="javascript:{}" onclick="getMoreDetails('+candidateDetails[i].constituencyId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>',					
-					comments: '<A href="javascript:{}" onclick="showCommentsDialog(\''+candidateDetails[i].candidateId+'\',\''+candidateDetails[i].candidateName+'\',\'candidate\',\''+candidateDetails[i].rank+'\',\''+candidateDetails[i].constituencyId+'\',\''+candidateDetails[i].constituencyName+'\',\''+candidateDetails[i].partyName+'\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>',
-					commentsCount: candidateDetails[i].commentsCount+"Comments"
+					moreDetails: '<A href="javascript:{}" title="Click To View Detailed Election Results" onclick="getMoreDetails('+candidateDetails[i].constituencyId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>',					
+					comments: '<A href="javascript:{}" title="Click To View/Add Reasons" onclick="showCommentsDialog(\''+candidateDetails[i].candidateId+'\',\''+candidateDetails[i].candidateName+'\',\'candidate\',\''+candidateDetails[i].rank+'\',\''+candidateDetails[i].constituencyId+'\',\''+candidateDetails[i].constituencyName+'\',\''+candidateDetails[i].partyName+'\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>',
+					commentsCount: candidateDetails[i].commentsCount+" Reasons"
 			};
 			assignTocandidateDetailsArr.push(candidateDetailsObj1);		
 		}
@@ -713,8 +713,8 @@ function buildPreviousCommentsDataTable(data)
 	//previousComments
 	var previousCommentsColumnDefs = [
 	               								{key: "comment", label: "Comment", sortable:true},	
-	               								{key: "classification", label: "Classification", sortable:true},		
-	               								{key: "commentedBy", label: "CommentedBy", sortable:true},	
+	               								{key: "classification", label: "Reason", sortable:true},		
+	               								{key: "commentedBy", label: "Commented By", sortable:true},	
 	               								{key: "date", label: "Date", sortable:true}	               								             		              	 	 		              	 	 				              	 	 		              	 	 			              	 	 	
 	               		              	 	    ];                	 	    
 
