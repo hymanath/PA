@@ -24,7 +24,7 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		this.commentCategoryCandidateDAO = commentCategoryCandidateDAO;
 	}
 	
-	
+	/*
 	@Test
 	public void testGetAllCandidateComments(){
 		List<CommentCategoryCandidate> candComments = commentCategoryCandidateDAO.getAll();
@@ -78,13 +78,41 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 			}
 		}
 	}
-	
+	*/
 	@SuppressWarnings("unchecked")
 	public void testGetCommentsCountForACandidate(){
-		List commentsCount = commentCategoryCandidateDAO.getCommentsCountForACandidateInAConstituencyInAnELection(new Long(9), new Long(19368), new Long(232));
+		List commentsCount = commentCategoryCandidateDAO.getCommentsCountInAnElectionForAPartyForCommentCategory(new Long(9),new Long(24),"WON");
 		if(commentsCount != null && commentsCount.size() > 0){
 			Object params = (Object)commentsCount.get(0);
 			System.out.println("Comments Count :" + (Long)params);
+		}
+	}
+	/*
+	@SuppressWarnings("unchecked")
+	public void testGetCommentCountGroupedByCategory(){
+		List commentsCount = commentCategoryCandidateDAO.getCommentsCountGroupedByCommentCategory(new Long(9),new Long(24),"WON");
+		if(commentsCount != null && commentsCount.size() > 0){
+			for(int i=0;i<commentsCount.size();i++){
+				Object[] params = (Object[])commentsCount.get(i);
+				System.out.println(" Comment Category Id   :" + (Long)params[1]);
+				System.out.println(" Comment Category Type :" + (String)params[2]);
+				System.out.println(" Comments Count        :" + (Long)params[0]);
+				System.out.println("...........................................");
+			}
+		}
+	}
+	*/
+	@SuppressWarnings("unchecked")
+	public void testGetCommentCategoryGroupedByConstituency(){
+		List commentsCount = commentCategoryCandidateDAO.getCommentsCommentCategoryCountGroupedByConstituencyForAParty(new Long(9),new Long(62),"WON");
+		if(commentsCount != null && commentsCount.size() > 0){
+			for(int i=0;i<commentsCount.size();i++){
+				Object[] params = (Object[])commentsCount.get(i);
+				System.out.println(" Constituency Id   :" + (Long)params[1]);
+				System.out.println(" Constituency      :" + (String)params[2]);
+				System.out.println(" Comments Count        :" + (Long)params[0]);
+				System.out.println("...........................................");
+			}
 		}
 	}
 }
