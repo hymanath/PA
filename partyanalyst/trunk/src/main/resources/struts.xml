@@ -823,7 +823,12 @@
         </action>        
         <action name="partyElectionResultsAnalysisAction" class="partyElectionResultsAnalysisAction">
             <result name="success">/jsp/partyElectionResultsAnalysisPopup.jsp</result>	
-        </action>      
+        </action>    
+        <action name="partyElectionResultsAnalysisAjaxAction" class="partyElectionResultsAnalysisAction" method="ajaxCallHandler"> 
+            <result type="json" name="success">
+           	<param name="root">electionBasicCommentsVOList</param>
+        	</result>       		
+        </action>  
 	</package>
 </struts>
 
