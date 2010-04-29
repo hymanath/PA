@@ -55,7 +55,7 @@ th.yui-dt-hidden .yui-dt-liner,td.yui-dt-hidden .yui-dt-liner,th.yui-dt-hidden .
 .yui-skin-sam .yui-dt-liner
 {
 	margin:0;
-	padding:1px 1px;
+	padding:0px;
 }
 .yui-skin-sam .yui-dt-coltarget{width:5px;background-color:red;}
 .yui-skin-sam .yui-dt td{margin:0;padding:0;border:none;border-right:1px solid #CBCBCB;text-align:left;}
