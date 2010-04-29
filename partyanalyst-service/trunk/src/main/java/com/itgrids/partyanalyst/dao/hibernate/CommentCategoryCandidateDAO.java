@@ -92,4 +92,35 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				" and model.nomination.constituencyElection.constituency.constituencyId = ?",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getCommentsCountInAnElectionForAPartyForCommentCategory(Long electionId,Long partyId,String category) {
+		Object[] params = {electionId,partyId,category};
+		return getHibernateTemplate().find("select count(model.commentData.commentDataId) from CommentCategoryCandidate model"+
+				" where model.nomination.constituencyElection.election.electionId = ?"+
+				" and model.nomination.party.partyId = ?"+
+				" and model.commentData.commentDataCategory.commentClassification = ?",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getCommentsCountGroupedByCommentCategory(Long electionId,
+			Long partyId, String category) {
+		Object[] params = {electionId,partyId,category};
+		return getHibernateTemplate().find("select count(model.commentData.commentDataId),model.commentData.commentDataCategory.commentDataCategoryId,model.commentData.commentDataCategory.commentDataCategoryType from CommentCategoryCandidate model"+
+				" where model.nomination.constituencyElection.election.electionId = ?"+
+				" and model.nomination.party.partyId = ?"+
+				" and model.commentData.commentDataCategory.commentClassification = ?"+
+				" group by model.commentData.commentDataCategory.commentDataCategoryType",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getCommentsCommentCategoryCountGroupedByConstituencyForAParty(
+			Long electionId, Long partyId, String category) {
+		Object[] params = {electionId,partyId,category};
+		return getHibernateTemplate().find("select count(distinct model.commentData.commentDataCategory.commentDataCategoryType),model.nomination.constituencyElection.constituency.constituencyId,"+
+				"model.nomination.constituencyElection.constituency.name from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ?"+
+				" and model.nomination.party.partyId = ?"+
+				" and model.commentData.commentDataCategory.commentClassification = ?"+
+				" group by model.nomination.constituencyElection.constituency.constituencyId",params);
+	}
+
 }
