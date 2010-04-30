@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
@@ -38,6 +39,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IAnalysisReportService;
@@ -49,6 +51,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	private IPartyDAO partyDAO;
 	private IStateDAO stateDAO;
 	private IElectionDAO electionDAO;
+	private INominationDAO nominationDAO;
 	private IStaticDataService staticDataService;
 	private IPartyElectionResultDAO partyElectionResultDAO;
 	private IConstituencyElectionDAO constituencyElectionDAO;
@@ -81,6 +84,14 @@ public class AnalysisReportService implements IAnalysisReportService {
 
 	public void setElectionDAO(IElectionDAO electionDAO) {
 		this.electionDAO = electionDAO;
+	}
+
+	public INominationDAO getNominationDAO() {
+		return nominationDAO;
+	}
+
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
 	}
 
 	public IStaticDataService getStaticDataService() {
@@ -522,30 +533,82 @@ public class AnalysisReportService implements IAnalysisReportService {
 					}
 					}
 					//for nth comments
+					if(nthCount > new Long(0)){
 					SelectOptionVO mulCategory = new SelectOptionVO();
 					mulCategory.setId(new Long(0));
 					mulCategory.setName(nthCount.toString());
 					
 					multipleCategories.add(mulCategory);
+					}
 				}
 			}
 		}
 	 return multipleCategories;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(
-			Long electionId, Long partyId) {
+			Long electionId, Long partyId,Long stateId) {
 		
 		log.debug("Inside getElectionResultsForNotAnalyzedConstituencies Method..... ");
 		
 		List<CandidateElectionResultVO> notAnalyzedResultsList = null;
+		Map<Long,Nomination> partyNominationsMap = null;
 		
-		if(electionId != null && partyId != null){
+		if(electionId != null && partyId != null && stateId != null){
+			//get party participated nominations
+			notAnalyzedResultsList = new ArrayList<CandidateElectionResultVO>();
+			partyNominationsMap = new HashMap<Long,Nomination>();
+			List<Nomination> partyNominations = nominationDAO.findByElectionIdAndPartyIdStateId(electionId,partyId,stateId);
+			if(partyNominations != null && partyNominations.size() > 0){
+				for(Nomination nominations:partyNominations){
+					partyNominationsMap.put(nominations.getNominationId(), nominations);
+				}
+			}
+			
+			//getPartyCommentDetails
+			List commentNominations = commentCategoryCandidateDAO.getNominationsForCandidateHavingComments(electionId,partyId);
+			if(commentNominations != null && commentNominations.size() > 0){
+				for(int i=0;i<commentNominations.size();i++){
+					Object params = commentNominations.get(i);
+					Long nominationId = (Long)params;
+					if(!partyNominationsMap.isEmpty() && partyNominationsMap.containsKey(nominationId))
+						partyNominationsMap.remove(nominationId);
+				}
+			}
+			
+			if(!partyNominationsMap.isEmpty()){
+				Set entries = partyNominationsMap.entrySet();
+				Iterator iterator = entries.iterator();
+				while(iterator.hasNext()){
+				Map.Entry entry = (Map.Entry)iterator.next();
+				Nomination nomination = (Nomination)entry.getValue();
+				CandidateElectionResultVO candidateElectionResultVO = getProcessedResultsForNotanalyzed(nomination);
+				notAnalyzedResultsList.add(candidateElectionResultVO);
+				}
+			}
+		}
+		return notAnalyzedResultsList;
+	}
+	
+	public CandidateElectionResultVO getProcessedResultsForNotanalyzed(Nomination nomination){
+		
+		log.debug("Inside getProcessedResultsForNotanalyzed Method..... ");
+		
+		CandidateElectionResultVO candidateElectionResultVO = null;
+		if(nomination != null){
+			candidateElectionResultVO = new CandidateElectionResultVO();
+			candidateElectionResultVO.setCandidateId(nomination.getCandidate().getCandidateId());
+			candidateElectionResultVO.setCandidateName(nomination.getCandidate().getLastname());
+			candidateElectionResultVO.setConstituencyId(nomination.getConstituencyElection().getConstituency().getConstituencyId());
+			candidateElectionResultVO.setConstituencyName(nomination.getConstituencyElection().getConstituency().getName());
+			candidateElectionResultVO.setTotalVotesEarned(nomination.getCandidateResult().getVotesEarned().longValue());
+			candidateElectionResultVO.setTotalValidVotes(nomination.getConstituencyElection().getConstituencyElectionResult().getValidVotes().longValue());
+			candidateElectionResultVO.setRank(nomination.getCandidateResult().getRank());
+			candidateElectionResultVO.setVotesPercentage(nomination.getCandidateResult().getVotesPercengate());
 			
 		}
-		
-		
-	  return notAnalyzedResultsList;
+	 return candidateElectionResultVO;
 	}
 	
 }
