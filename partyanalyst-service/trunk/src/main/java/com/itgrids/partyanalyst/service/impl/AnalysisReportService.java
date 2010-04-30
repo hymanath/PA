@@ -617,6 +617,11 @@ public class AnalysisReportService implements IAnalysisReportService {
 			candidateElectionResultVO.setCandidateId(nomination.getCandidate().getCandidateId());
 			candidateElectionResultVO.setCandidateName(nomination.getCandidate().getLastname());
 			candidateElectionResultVO.setConstituencyId(nomination.getConstituencyElection().getConstituency().getConstituencyId());
+			candidateElectionResultVO.setPartyId(nomination.getParty().getPartyId());
+			if(nomination.getParty().getShortName() != null)
+			candidateElectionResultVO.setPartyName(nomination.getParty().getShortName());
+			else
+			candidateElectionResultVO.setPartyName(nomination.getParty().getLongName());
 			candidateElectionResultVO.setConstituencyName(nomination.getConstituencyElection().getConstituency().getName());
 			candidateElectionResultVO.setTotalVotesEarned(nomination.getCandidateResult().getVotesEarned().longValue());
 			candidateElectionResultVO.setTotalValidVotes(nomination.getConstituencyElection().getConstituencyElectionResult().getValidVotes().longValue());
