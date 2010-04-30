@@ -15,7 +15,7 @@ function showAnalysisDetails(results)
 		contentStr += '		<td><img  id="'+results[i].constituencyName+'_img" onclick="showBodyDiv(this.id)" src="images/icons/plusNew.png"/></td>';
 		contentStr += '		<td style="vertical-align:center;width:150px;"> - '+results[i].constituencyName+' </td>';
 		contentStr += '     <td style="vertical-align:center"> Constituency Analysis Details - No. Of Reasons '+results[i].candidateComments.length+'</td>';
-		contentStr += '		<input type="button" onclick="getMoreDetails('+results[i].constituencyId+')" value="View Complete Results"/>';
+		contentStr += '		<td><input type="button" onclick="getMoreDetails('+results[i].constituencyId+')" value="View Complete Results"/></td>';
 		contentStr += '		</tr></table>';
 		contentStr += '</div>';
 		contentStr += '	<div id="'+results[i].constituencyName+'_body" class="yui-skin-sam constituencyAnalysisBodyDiv" style="display:none">';
@@ -68,8 +68,6 @@ function showBodyDiv(id)
 	
 	var bodyId = id.substring(0,id.indexOf('_'))+"_body";
 	var bodyElmt = document.getElementById(bodyId);
-
-	console.log(bodyElmt.style);
 
 	if(!bodyElmt)
 		return;
