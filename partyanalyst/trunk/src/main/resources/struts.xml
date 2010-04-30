@@ -828,7 +828,22 @@
             <result type="json" name="success">
            	<param name="root">electionBasicCommentsVOList</param>
         	</result>       		
-        </action>  
+        </action>
+        <action name="partyElectionResultsAjaxAction" class="partyElectionResultsAction" method="ajaxCallHandler"> 
+            <result type="json" name="success">
+           	<param name="root">electionResultPartyVO</param>
+        	</result>       		
+        </action>
+        <action name="electionYearsDialogAjaxAction" class="partyElectionResultsAction" method="getAllElectionYears"> 
+              <result type="json" name="success">
+           		<param name="root">electionYears</param>
+        	</result>       		
+        </action> 
+        <action name="analysisCategoryResultForAPartyInAnElection" class="electionResultsAnalysisAction" method="getAnalysisCategoryResults"> 
+              <result type="json" name="success">
+           		<param name="root">partyPositionAnalysisResultVO</param>
+        	</result>       		
+        </action> 
 	</package>
 </struts>
 
