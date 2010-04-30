@@ -99,7 +99,17 @@ function callAjax(param,jsObj,url){
 									myResults = YAHOO.lang.JSON.parse(o.responseText);
 								if(jsObj.task == "getCandidateComments")
 								{
-									showAnalysisDetails(myResults);
+									var imgElmt = document.getElementById("barloaderGif");
+
+									if(imgElmt.style.display == "block")
+										imgElmt.style.display = "none"
+									else if(imgElmt.style.display == "none")
+										imgElmt.style.display == "block"
+
+									if(jsObj.status == "analyzed")
+										showAnalysisDetails(myResults);
+									else if(jsObj.status == "notAnalyzed")
+										showNotAnalyzedDetails(myResults);
 								}
 								if(jsObj.task == "getCommentsClassificationsList")
 								{
@@ -126,19 +136,30 @@ function callAjax(param,jsObj,url){
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
-function getCandidateComments(){
-
+function getCandidateComments()
+{
+	var status = '${status}';
+	var stateId = '${stateId}';
+	var url = '';
+	
 	var jsObj= 
 	{
 		
 	 	electionId: electionId,
-	 	partyId: partyId,				
+	 	partyId: partyId,		
+		status:status,
+		stateId:stateId,
 		task:"getCandidateComments"		
 	}
 	
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 	incrementHidden();
-	var url = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAjaxAction.action?"+param+"&hidden="+hidden;
+
+	if(status == "analyzed")
+		url = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAjaxAction.action?"+param+"&hidden="+hidden;
+	else if(status == "notAnalyzed")
+		url = "<%=request.getContextPath()%>/partyElectionResultsNotAnalysedAjaxAction.action?"+param+"&hidden="+hidden;
+
 	callAjax(param,jsObj,url);
 }
 
@@ -259,7 +280,8 @@ function getCommentsClassifications(rank)
 </SCRIPT>
 </HEAD>
 <BODY>
-	<CENTER>
+	<CENTER>		
+		
 	<c:if test="${electionType != 'Parliament' && status =='analyzed'}">
 		<TABLE border="0" cellpadding="0" cellspacing="0">
 		<TR>
@@ -296,7 +318,11 @@ function getCommentsClassifications(rank)
 		</TR>
 		</TABLE>	
 	</c:if>
+
+		<img id="barloaderGif" style="display:block;" src="images/icons/barloader.gif "/>
 	</CENTER>
+
+
 	
 	<DIV id="analysisDetails"></DIV>
 	<DIV class = "yui-skin-sam"><DIV id="commentsDialogDiv"></DIV></DIV>

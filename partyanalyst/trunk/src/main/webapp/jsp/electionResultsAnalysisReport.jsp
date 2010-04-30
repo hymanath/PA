@@ -206,7 +206,10 @@ function openPartyElectionResultsWindow(electionId,partyId,rank,partyName,electi
 }
 function openPartyElectionResultsAnalysisWindow(electionId, partyId,status,partyName,electionType,stateName,electionYear)
 {
-	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?electionId="+electionId+"&partyId="+partyId+"&status="+status+
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	var stateId =stateSelectEl.value;	
+
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
 	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear;
 	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	

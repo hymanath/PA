@@ -1,5 +1,6 @@
 var partyElectionResultsAnalysisObj ={
-		candidateCommentsArr:[]
+		candidateCommentsArr:[],
+		notAnalyzedCandidates:[]
 };
 var emptyArray = new Array();
 function showAnalysisDetails(results)
@@ -51,6 +52,91 @@ function showAnalysisDetails(results)
 		
 		buildCandidateCommentsDataTable('dataTable'+i,resultsArr);
 	}
+}
+
+function showNotAnalyzedDetails(results)
+{
+	console.log(results);
+
+	var analysisDetailsEl = document.getElementById("analysisDetails");
+	var str = '';
+	str+='<div id="notAnalyzedDataTableDiv_main" class="yui-skin-sam"><div id="notAnalyzedDataTableDiv"> </div></div>';
+	if(analysisDetailsEl)
+	analysisDetailsEl.innerHTML = str;
+
+	for(var i  in results)
+	{
+		if(results[i].rank == null)
+		{	
+			var ob={
+					candidateName: results[i].candidateName,
+					constituencyName: results[i].constituencyName,
+					totalValidVotes: results[i].totalValidVotes,
+					totalVotesEarned: results[i].totalVotesEarned,
+					votesPercentage: results[i].votesPercentage,
+					rank: '1',
+					completeResults: '<a href="javascript:{}" onclick="getMoreDetails('+results[i].constituencyId+')">  Complete Results</a>',
+					addReason : '<a href="javascript:{}" onclick="showCommentsDialog('+results[i].candidateId+',\''+results[i].candidateName+'\',\'candidate\',\''+results[i].rank+'\','+results[i].constituencyId+',\''+results[i].constituencyName+'\',\''+results[i].partyName+'\')">  Add Reason</a>'
+				};
+			partyElectionResultsAnalysisObj.notAnalyzedCandidates.push(ob);
+		} else if(results[i].rank != null)
+		{
+			var obj={
+					candidateName: results[i].candidateName,
+					constituencyName: results[i].constituencyName,
+					totalValidVotes: results[i].totalValidVotes,
+					totalVotesEarned: results[i].totalVotesEarned,
+					votesPercentage: results[i].votesPercentage,
+					rank: results[i].rank,
+					completeResults: '<a href="javascript:{}" onclick="getMoreDetails('+results[i].constituencyId+')">  Complete Results</a>',
+					addReason : '<a href="javascript:{}" onclick="showCommentsDialog('+results[i].candidateId+',\''+results[i].candidateName+'\',\'candidate\',\''+results[i].rank+'\','+results[i].constituencyId+',\''+results[i].constituencyName+'\',\''+results[i].partyName+'\')">  Add Reason</a>'
+				};
+			partyElectionResultsAnalysisObj.notAnalyzedCandidates.push(obj);
+		}	
+	}
+
+	console.log(partyElectionResultsAnalysisObj.notAnalyzedCandidates);
+	buildCandidateElectionResultsDataTable();		
+}
+
+function buildCandidateElectionResultsDataTable()
+{	
+	var candidateElectionResultsColumnDefs = [
+								{key: "candidateName", label: "Candidate", sortable:true},										
+								{key: "constituencyName", label: "Constituency", sortable:true},								
+								{key: "totalVotesEarned", label: "Votes Earned",formatter:"number", sortable:true},
+								{key: "votesPercentage", label: "Votes Percentage",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+								{key: "rank", label:"Rank", sortable:true},
+								{key: "completeResults", label:"Complete Results"},
+								{key: "addReason", label:"Add Reason"}
+								];                	 	    
+
+		var candidateElectionResultsDataSource = new YAHOO.util.DataSource(partyElectionResultsAnalysisObj.notAnalyzedCandidates); 
+		candidateElectionResultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		candidateElectionResultsDataSource.responseSchema = {
+				fields: [		  {key:"candidateName"},
+								  {key:"constituencyName"},								 
+								  {key:"totalVotesEarned", parser:"number"},
+								  {key:"votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},								  
+								  {key:"rank", parser:"number"},
+								  {key:"completeResults"},
+								  {key:"addReason"}
+								  ] 
+				};
+
+		var myConfigs = { 
+				paginator : new YAHOO.widget.Paginator({ 
+					rowsPerPage    : 50,
+					template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+					rowsPerPageOptions: [50,100,150,200], 
+					pageLinks: 50			        
+				})
+				 
+				};
+		
+		candidateElectionResultsDataTable = new YAHOO.widget.DataTable("notAnalyzedDataTableDiv", candidateElectionResultsColumnDefs, candidateElectionResultsDataSource,myConfigs);						
+					
+	
 }
 
 
