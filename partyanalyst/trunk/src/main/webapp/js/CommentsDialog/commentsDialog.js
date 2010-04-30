@@ -70,3 +70,141 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 	
 	//showExistingComments('+id+',\''+category+'\','+constituencyId+');
 }
+function buildCommentsClassificationsOptions(results)
+{
+	
+	var commentClassifyEl = document.getElementById("commentsClassificaitonSelectBox");
+	for(var i in results)
+	{
+		var opElmt=document.createElement('option');
+		opElmt.value=results[i].id;
+		opElmt.text=results[i].name;
+	
+		try
+			{
+			commentClassifyEl.add(opElmt,null); // standards compliant
+			}
+		catch(ex)
+			{
+			commentClassifyEl.add(opElmt); // IE only
+			}
+	}
+}
+
+function showPreviousComments(results,jsObj)
+{
+	var previousComments = results.candidateCommentsVO;
+	var previousCommentsEl = document.getElementById("previousComments");
+	var candidateInfoEl = document.getElementById("candidateInfo");
+	var party = jsObj.partyName;
+	var constituencyName = jsObj.constituencyName;
+	var candidateName = jsObj.candidateName;
+	var commentsData = new Array();	
+	var year = jsObj.year;
+	var contentStr = '';	
+		contentStr+='<TABLE width="100%" class="commentsInputTable">';
+		contentStr+='<TR>';
+		contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Candidate:</B></TD>';
+		contentStr+='<TD style="width:30%;" class="commentsInputTd">'+candidateName+'</TD>';
+		contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Election:</B></TD>';
+		contentStr+='<TD style="width:30%;" class="commentsInputTd">'+electionType+''+year+'</TD>';		
+		contentStr+='</TR>';
+		contentStr+='<TR>';
+		contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Party:</B></TD>';
+		contentStr+='<TD style="width:30%;" class="commentsInputTd">'+party+'</TD>';
+		contentStr+='<TD style="width:20%;" class="commentsInputTd"><B>Constituency:</B></TD>';
+		contentStr+='<TD style="width:30%;" class="commentsInputTd">'+constituencyName+'</TD>';		
+		contentStr+='</TR>';
+		contentStr+='</TABLE>';
+		candidateInfoEl.innerHTML = contentStr;		
+		if(previousComments != null)
+		{	
+			
+			for(var i in previousComments)
+			{
+				var commentObj = {
+						comment: previousComments[i].commentDesc,
+						classification: previousComments[i].commentCategory,
+						commentedBy: previousComments[i].commentedBy, 
+						date: previousComments[i].commentedOn							
+						};
+				commentsData.push(commentObj);					
+			}			
+			buildPreviousCommentsDataTable(commentsData);
+		} else 
+			{
+			previousCommentsEl.innerHTML="No Previous Comments";
+			}	
+}
+
+function buildPreviousCommentsDataTable(data)
+{
+	//previousComments
+	var previousCommentsColumnDefs = [
+	               								{key: "comment", label: "Comment", sortable:true},	
+	               								{key: "classification", label: "Classification", sortable:true},		
+	               								{key: "commentedBy", label: "CommentedBy", sortable:true},	
+	               								{key: "date", label: "Date", sortable:true}	               								             		              	 	 		              	 	 				              	 	 		              	 	 			              	 	 	
+	               		              	 	    ];                	 	    
+
+	               		var previousCommentsDataSource = new YAHOO.util.DataSource(data); 
+	               		previousCommentsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	               		previousCommentsDataSource.responseSchema = {
+	                              fields: [ "comment", "classification", "commentedBy", "date"]     
+	               		};
+	               		var myConfigs = { 
+	               			    paginator : new YAHOO.widget.Paginator({ 
+	               				rowsPerPage    : 5	               							        
+	               			    }),
+	               			    caption:"Previous Comments" 
+	               				};
+	               		
+	               		previousCommentsDataTable = new YAHOO.widget.DataTable("previousComments", previousCommentsColumnDefs, previousCommentsDataSource,myConfigs);
+
+	               		return { 
+	        	            oDS: previousCommentsDataSource, 
+	        	            oDT: previousCommentsDataTable
+	               	 };		            	
+	               	
+}
+function updatePreviousCommentsDataTable(results)
+{
+	var dtArray = new Array();
+	var commentVal = document.getElementById("commentText"); 
+	var postedByVal = document.getElementById("commentPostedByText"); 
+	var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
+	var previousCommentsEl = document.getElementById("previousComments");
+		 
+	
+	if(previousCommentsEl.innerHTML == 'No Previous Comments')
+	{
+		var newCommentDataObj=
+		{		
+				comment: results.candidateCommentsSaved.commentDesc,
+				classification: results.candidateCommentsSaved.commentCategory,
+				commentedBy: results.candidateCommentsSaved.commentedBy, 
+				date: results.candidateCommentsSaved.commentedOn  		
+		};
+
+		dtArray.push(newCommentDataObj);
+		buildPreviousCommentsDataTable(dtArray);		
+		
+	} else
+	{
+		var newCommentDataObj=
+		{		
+				comment: results.candidateCommentsSaved.commentDesc,
+				classification: results.candidateCommentsSaved.commentCategory,
+				commentedBy: results.candidateCommentsSaved.commentedBy, 
+				date: results.candidateCommentsSaved.commentedOn  		
+		};
+		
+		previousCommentsDataTable.addRow(newCommentDataObj,0);
+	}
+	commentVal.value='';
+	postedByVal.value='';
+	commentCategoryEl.selectedIndex='0';		
+}
+
+
+
