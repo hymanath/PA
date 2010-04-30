@@ -24,14 +24,59 @@
 
 <LINK rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
+
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionResultsAnalysisReport/partyElectionResultsReport.css">
 
 <script type="text/javascript" src="js/ElectionResultsAnalysisReport/partyElectionResultsAnalysisReport.js"></script>
 
-<c:if test="${electionType != 'Parliament' && status =='analyzed'}"><TITLE>${stateName} ${electionType} ${electionYear} Election Results Analyzed Constituencies </TITLE></c:if>
-<c:if test="${electionType != 'Parliament' && status =='notAnalyzed'}"><TITLE>${stateName} ${electionType} ${electionYear} Election Results Yet To Be Analyzed Constituencies</TITLE></c:if>
-<c:if test="${electionType == 'Parliament' && status =='analyzed'}"><TITLE>${electionType} ${electionYear} Election Results Analyzed Constituencies</TITLE></c:if>
-<c:if test="${electionType == 'Parliament' && status =='notAnalyzed'}"><TITLE>${electionType} ${electionYear} Election Results Yet To Be Analyzed Constituencies</TITLE></c:if>
+<c:if test="${electionType != 'Parliament' && status =='analyzed'}">
+	<TITLE>${stateName} ${electionType} ${electionYear} Election Results Analyzed Constituencies </TITLE>
+</c:if>
+<c:if test="${electionType != 'Parliament' && status =='notAnalyzed'}">
+	<TITLE>${stateName} ${electionType} ${electionYear} Election Results Yet To Be Analyzed Constituencies</TITLE>
+</c:if>
+<c:if test="${electionType == 'Parliament' && status =='analyzed'}">
+	<TITLE>${electionType} ${electionYear} Election Results Analyzed Constituencies</TITLE>
+</c:if>
+<c:if test="${electionType == 'Parliament' && status =='notAnalyzed'}">
+	<TITLE>${electionType} ${electionYear} Election Results Yet To Be Analyzed Constituencies</TITLE>
+</c:if>
+
+
+<style>
+	
+	.constituencyAnalysisMainDiv
+	{
+		font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+		font-size:12px;
+		width:830px;
+		margin-top:10px;
+	}
+
+	.constituencyAnalysisHeadDiv
+	{
+		color:#344D6E;
+		font-size:12px;
+		font-weight:bold;
+		padding:5px;
+		word-spacing:6px;
+		cursor:pointer;
+		background-image:url("images/icons/indexPage/swasthic_body.png");
+	}
+
+	.constituencyAnalysisBodyDiv
+	{
+		padding:15px;		
+		background-color:#F5F7F9;
+	}
+
+	.constituencyAnalysisBodyDiv table
+	{
+		width:100%;
+	}
+</style>
+
+
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
 var partyId = '${partyId}';
@@ -73,6 +118,15 @@ function getCandidateComments(){
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAjaxAction.action?"+param;
 	callAjax(param,jsObj,url);
+}
+
+function getMoreDetails(constiId)
+{	
+var electionType = '${electionType}';
+var electionYear = '${electionYear}';
+var urlStr = "<%=request.getContextPath()%>/constituencyElectionResultsAction.action?constituencyId="+constiId+"&electionType="+electionType+"&electionYear="+electionYear;	
+var browser2 = window.open(urlStr,"candidateResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+browser2.focus();
 }
 													
 
