@@ -132,7 +132,6 @@ function callAjax(param,jsObj,url){
 	var candidateElectionResultsDataTable,selectYearDialog;
 	function showConstituencyResults(results)
 	{
-		alert("hi");
 		var candidateElectionResults = results.candidateElectionResultsVO;
 		var showConstituencyResultsEl = document.getElementById("showConstituencyResults");
 		var contentStr='';
