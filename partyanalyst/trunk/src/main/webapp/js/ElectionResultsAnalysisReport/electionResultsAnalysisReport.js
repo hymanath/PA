@@ -103,7 +103,6 @@ function removeSelectElements(elmt)
 
 function showBasicAnalysisDetails(results)
 {
-	
 	var stateName = results.stateName;
 	var electionId = results.electionId;	
 	var electionYear = results.electionYear;
@@ -164,6 +163,7 @@ function showBasicAnalysisDetails(results)
 		buildGraphsCarousel("basicDetails");
 	}	
 	var tablerDataStr = '';
+	tablerDataStr+='<H3>Analysis Details</H3>';
 	tablerDataStr+='<TABLE  cellpadding="0" cellspacing="0" class="analysisDetailsTable">';
 	tablerDataStr+='<TR>';
 	tablerDataStr+='<TH class="head">Party</TH>';
