@@ -16,10 +16,13 @@ public class CandidateElectionResultVO implements Serializable {
 	 */
 	private static final long serialVersionUID = -7640275547715541937L;
 	
+	private Long partyId;
 	private Long candidateId;
 	private Long constituencyId;
+	private String partyName;
 	private String candidateName;
 	private String constituencyName;
+	
 	
 	private Long totalValidVotes;
 	private Long totalVotesEarned;
@@ -82,6 +85,18 @@ public class CandidateElectionResultVO implements Serializable {
 	}
 	public void setUserComments(Long userComments) {
 		this.userComments = userComments;
+	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	public String getPartyName() {
+		return partyName;
+	}
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
 	}
 	
 
