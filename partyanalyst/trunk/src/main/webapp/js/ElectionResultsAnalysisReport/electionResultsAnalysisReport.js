@@ -291,6 +291,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='</DIV>';
 	if(results.analysisCategoryBasicResultVO != null)
 	{
+	contentStr+='<div><br></br></div>';
 	contentStr+='<H3 style="width:510px;">Reasons Analysis</H3>';
     contentStr+='<div id="categoriesClassificationDiv">';
     for(var i in results.analysisCategoryBasicResultVO)
@@ -304,6 +305,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	}
     contentStr+='</div>';
 	}
+	contentStr+='<div><br></br></div>';
 	contentStr+='<div id="multipleCategoriesDiv">';
 	contentStr+='<H3 style="width:510px;">Constituencies with Multiple Reasons</H3>';
 	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="75%"  class="multipleClassificationsTable">';
@@ -391,6 +393,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	contentStr+='</DIV>';
 	if(results.analysisCategoryBasicResultVO != null)
 	{
+	contentStr+='<div><br></br></div>';
 	contentStr+='<H3 style="width:510px;">Reasons Analysis</H3>';
     contentStr+='<div id="categoriesClassificationDiv">';
     for(var i in results.analysisCategoryBasicResultVO)
@@ -404,6 +407,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	}
     contentStr+='</div>';
 	}
+	contentStr+='<div><br></br></div>';
 	contentStr+='<div id="multipleCategoriesDiv">';
 	contentStr+='<H3 style="width:510px;">Constituencies with Multiple Reasons</H3>';
 	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="75%"  class="multipleClassificationsTable">';
