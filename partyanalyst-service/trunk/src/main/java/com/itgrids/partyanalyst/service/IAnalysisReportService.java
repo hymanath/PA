@@ -22,5 +22,5 @@ public interface IAnalysisReportService {
     
  	public PartyPositionAnalysisResultVO getAnalysisCategoryResultForAPartyInAnElection(String electionType,String electionYear,Long electionId,Long stateId,Long partyId,String analysisCategory,Boolean includeAllianc);
  	
- 	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(Long electionId, Long partyId);
+ 	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(Long electionId, Long partyId,Long stateId);
 }
