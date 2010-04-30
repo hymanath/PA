@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.PartyAnalysisBasicVO;
 import com.itgrids.partyanalyst.dto.PartyAnalysisReportVO;
+import com.itgrids.partyanalyst.dto.PartyPositionAnalysisResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -45,6 +46,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	private String task = null;
 	JSONObject jObj = null;
 	private AnalysisReportService analysisReportService;
+	private PartyPositionAnalysisResultVO partyPositionAnalysisResultVO;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.setRequest(request);
@@ -143,6 +145,15 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 
 	public List<SelectOptionVO> getElectionTypes() {
 		return electionTypes;
+	}
+
+	public void setPartyPositionAnalysisResultVO(
+			PartyPositionAnalysisResultVO partyPositionAnalysisResultVO) {
+		this.partyPositionAnalysisResultVO = partyPositionAnalysisResultVO;
+	}
+
+	public PartyPositionAnalysisResultVO getPartyPositionAnalysisResultVO() {
+		return partyPositionAnalysisResultVO;
 	}
 
 	public String execute () throws Exception 
@@ -387,6 +398,42 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
 					
 		return Action.SUCCESS;	
+	}
+	
+	public String getAnalysisCategoryResults() throws Exception
+	{
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(jObj.getString("task").equalsIgnoreCase("getAnalysisDetailsInPartyWonPositions"))
+		{
+			partyPositionAnalysisResultVO = new PartyPositionAnalysisResultVO();
+			String electionType = jObj.getString("electionType");
+			Long electionId = new Long(jObj.getString("electionId"));
+			Long stateId = new Long(jObj.getString("stateId"));
+			String electionYear = jObj.getString("electionYear");
+			Long partyId = new Long(jObj.getString("partyId"));
+			partyPositionAnalysisResultVO = analysisReportService.getAnalysisCategoryResultForAPartyInAnElection(electionType,electionYear,electionId,stateId,partyId,IConstants.CANDIDATE_COMMENTS_WON,false);
+			
+		}
+		if(jObj.getString("task").equalsIgnoreCase("getAnalysisDetailsInPartyLostPositions"))
+		{
+			partyPositionAnalysisResultVO = new PartyPositionAnalysisResultVO();
+			String electionType = jObj.getString("electionType");
+			Long electionId = new Long(jObj.getString("electionId"));
+			Long stateId = new Long(jObj.getString("stateId"));
+			String electionYear = jObj.getString("electionYear");
+			Long partyId = new Long(jObj.getString("partyId"));
+			partyPositionAnalysisResultVO = analysisReportService.getAnalysisCategoryResultForAPartyInAnElection(electionType,electionYear,electionId,stateId,partyId,IConstants.CANDIDATE_COMMENTS_LOST,false);
+		}
+		return Action.SUCCESS;
 	}
 	
 
