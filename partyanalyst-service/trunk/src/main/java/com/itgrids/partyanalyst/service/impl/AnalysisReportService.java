@@ -364,7 +364,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	    Long totalConstituenciesCount = new Long(0);
 	    partyPositionAnalysisResultVO = new PartyPositionAnalysisResultVO();
 	    
-	    if(electionId == null){
+        if(electionId == null){
 	    	List election = electionDAO.findElectionIdByElectionTypeAndYear(electionType, electionYear, stateId);
 			if(election != null && election.size() > 0){
 				Object params = (Object)election.get(0);
@@ -437,13 +437,17 @@ public class AnalysisReportService implements IAnalysisReportService {
 			partyPositionAnalysisResultVO.setAnalysisCategoryBasicResultVO(analysisBasicResults);
 		
 		if(multipleCategories == null || multipleCategories.size() == 0){
-			for(int i=0;i<=4;i++){
+			for(int i=1;i<=4;i++){
 				SelectOptionVO resultVO = new SelectOptionVO();
 				resultVO.setId(new Long(i));
 				resultVO.setName("0");
 				
 				multipleCategories.add(resultVO);
 			}
+			SelectOptionVO resultVO = new SelectOptionVO();
+			resultVO.setId(new Long(0));
+			resultVO.setName("0");
+			multipleCategories.add(resultVO);
 		}
 		
 		if(multipleCategories != null && multipleCategories.size() > 0){
