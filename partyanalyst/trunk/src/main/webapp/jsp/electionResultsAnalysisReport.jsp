@@ -85,7 +85,14 @@ function callAjax(param,jsObj,url){
 									if(elmt)
 										elmt.style.display = 'none';
 									showBasicAnalysisDetails(myResults);
-								}
+								} else if(jsObj.task == "getAnalysisDetailsInPartyLostPositions")
+								{
+									showAnalysisDetailsInPartyLostPositions(myResults);
+								} else if(jsObj.task == "getAnalysisDetailsInPartyWonPositions")
+								{
+									showAnalysisDetailsInPartyWonPositions(myResults);
+								}								 
+								
 						}catch (e) {   
 								   	alert("Invalid JSON result" + e);   
 							}  
@@ -189,11 +196,11 @@ function getBasicAnalysisDetails(id)
 	var url = "<%=request.getContextPath()%>/electionResultsAnalysisAjaxAction.action?"+param;
 	callAjax(param,jsObj,url);
 }
-function openPartyElectionResultsWindow(electionId,partyId,rank,partyName,electionType,stateName,electionYear)
+function openPartyElectionResultsWindow(electionId,partyId,rank,partyName,electionType,stateName,electionYear,electionTypeId)
 { 
 	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&partyId="+partyId+"&rank="+rank+"&partyName="+partyName+
-		"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear;
-	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
+		"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId;
+	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1300,left=200,top=200");
 	
 	browser1.focus();
 }
@@ -203,9 +210,39 @@ function openPartyElectionResultsAnalysisWindow(electionId, partyId,status,party
 	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear;
 	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	
-	browser2.focus();
+	browser2.focus();	
+}
+function getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId){
+
+	var jsObj= 
+	{
+	 	electionYear: electionYear,
+		stateId: '1',
+		electionType: electionType,
+		partyId: partyId,
+		electionId: electionId,		
+		task:"getAnalysisDetailsInPartyWonPositions"		
+	}
 	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/analysisCategoryResultForAPartyInAnElection.action?"+param;
+	callAjax(param,jsObj,url);
 	
+}
+function getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electionId,partyId){
+	var jsObj= 
+	{
+	 	electionYear: electionYear,
+		stateId: '1',
+		electionType: electionType,
+		partyId: partyId,
+		electionId: electionId,		
+		task:"getAnalysisDetailsInPartyLostPositions"		
+	}
+	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/analysisCategoryResultForAPartyInAnElection.action?"+param;
+	callAjax(param,jsObj,url);
 }
 </SCRIPT>
 
@@ -357,125 +394,13 @@ function openPartyElectionResultsAnalysisWindow(electionId, partyId,status,party
 		<DIV id="resultInfoDiv">
 		<DIV id="basicDetailsHead" style="margin-top:10px;"></DIV>
 		<DIV id="basicDetails" class="yui-skin-sam"></DIV>
-		<DIV id="analysisDetails" class="analysisDetails">
-		<H3>Analysis Details</H3>
+		<DIV id="analysisDetails" class="analysisDetails">		
 		<DIV id="tablerDetails"></DIV>
 		</DIV>
 		<DIV id="lostPosAnalisisDetails" class="analysisDetails">
-			<DIV class="wonLostPosHeading">Analysis in Party Lost Positions</DIV>
-			<DIV>
-				<TABLE class="wonLostPosTable" width="80%">
-					<TR>
-						<TH style="width:50%">Seats Lost</TH>
-						<TD style="width:30%">40</TD>
-					</TR>
-					<TR>
-						<TH style="width:50%">Analyzed Constituencies</TH>
-						<TD style="width:30%">10</TD>
-					</TR>
-					<TR>
-						<TH style="width:50%">Yet to be  Analyzed Constituencies</TH>
-						<TD style="width:30%">40</TD>
-					</TR>
-				</TABLE>								
-			</DIV>
-			<DIV>
-				<DIV style="text-decoration:underline;font-size:15px;font-weight:bold;text-align:left;margin-left:70px;margin-top:10px;">Reasons</DIV>
-				<TABLE class="wonLostPosTable" width="80%">
-					<TR>
-						<TH style="width:50%">No Candidate Ifluence</TH>
-						<TD style="width:5%">10</TD>
-						<TD style="width:25%"><A title="Click To View Results" href="javascript:{}">View Results</A></TD>
-					</TR>
-					<TR>
-						<TH style="width:50%">Alliance Impact</TH>
-						<TD style="width:5%">10</TD>
-						<TD style="width:25%"><A title="Click To View Results" href="javascript:{}">View Results</A></TD>
-					</TR>
-					<TR>
-						<TH style="width:50%">Poor Campaign</TH>
-						<TD style="width:5%">20</TD>
-						<TD style="width:25%"><A title="Click To View Results" href="javascript:{}">View Results</A></TD>
-					</TR>
-				</TABLE>
-				<DIV>
-					<H3 style="width:510px;">Constituencies with Multiple Reasons</H3>
-						<TABLE  cellpadding="0" cellspacing="0" width="75%"  class="multipleClassificationsTable">
-							<TR>
-								<TH width="30%">No of Analysis Reasons</TH>
-								<TH width="5%">2</TH>
-								<TH width="5%">3</TH>
-								<TH width="5%">4</TH>
-								<TH width="5%">N</TH>								
-							</TR>
-							<TR>
-								<TD width="30%"><B>No of Constituencies</B></TD>
-								<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">10</A></TD>
-								<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">3</A></TD>
-								<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">5</A></TD>
-								<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">6</A></TD>								
-							</TR>
-						</TABLE>							
-				</DIV>	
-			</DIV>		
-		</DIV>
-		<DIV id="wonPosAnalisisDetails" class="analysisDetails">
-			<DIV class="wonLostPosHeading">Analysis in Party Won Positions</DIV>
-			<DIV>
-				<TABLE class="wonLostPosTable" width="80%">
-					<TR>
-						<TH style="width:50%">Seats Won</TH>
-						<TD style="width:30%">40</TD>
-					</TR>
-					<TR>
-						<TH style="width:50%">Analyzed Constituencies</TH>
-						<TD style="width:30%">10</TD>
-					</TR>
-					<TR>
-						<TH style="width:50%">Yet to be  Analyzed Constituencies</TH>
-						<TD style="width:30%">40</TD>
-					</TR>
-				</TABLE>								
-			</DIV>
-			<DIV>
-				<DIV style="text-decoration:underline;font-size:15px;font-weight:bold;text-align:left;margin-left:70px;margin-top:10px;">Reasons</DIV>
-				<TABLE class="wonLostPosTable" width="80%">
-					<TR>
-						<TH style="width:50%">Candidate Influence</TH>
-						<TD style="width:5%">10</TD>
-						<TD style="width:25%"><A title="Click To View Results" href="javascript:{}">View Results</A></TD>
-					</TR>
-					<TR>
-						<TH style="width:50%">Strong Cadre</TH>
-						<TD style="width:5%">10</TD>
-						<TD style="width:25%"><A title="Click To View Results" href="javascript:{}">View Results</A></TD>
-					</TR>
-					<TR>
-						<TH style="width:50%">Cast Support</TH>
-						<TD style="width:5%">20</TD>
-						<TD style="width:25%"><A title="Click To View Results" href="javascript:{}">View Results</A></TD>
-					</TR>
-				</TABLE>
-				<DIV>
-					<H3 style="width:510px;">Constituencies with Multiple Reasons</H3>
-						<TABLE  cellpadding="0" cellspacing="0" width="75%"  class="multipleClassificationsTable">
-							<TR>
-								<TH width="30%">No of Analysis Reasons</TH>
-								<TH width="5%">2</TH>
-								<TH width="5%">3</TH>
-								<TH width="5%">4</TH>
-								<TH width="5%">N</TH>								
-							</TR>
-							<TR>
-								<TD width="30%"><B>No of Constituencies</B></TD>
-								<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">10</A></TD>
-								<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">3</A></TD>
-								<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">5</A></TD>
-								<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">6</A></TD>								
-							</TR>
-						</TABLE>							
-				</DIV>	
-			</DIV>
+			
+</DIV>
+		<DIV id="wonPosAnalisisDetails" class="analysisDetails">		
 		</DIV>						
 		</DIV>			
 	</DIV>	
