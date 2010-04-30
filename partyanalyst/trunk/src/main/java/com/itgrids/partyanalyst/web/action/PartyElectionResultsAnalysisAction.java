@@ -13,6 +13,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
+import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.service.IAnalysisReportService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -27,7 +28,9 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	private HttpServletRequest request;	
 	private ServletContext context;
 	private IAnalysisReportService analysisReportService; 
-	private List<ElectionBasicCommentsVO> electionBasicCommentsVOList; 
+	private List<ElectionBasicCommentsVO> electionBasicCommentsVOList;
+	private List<CandidateElectionResultVO> candidateElectionResultVO; 
+	private String stateId;
 	private Long electionId;
 	private Long partyId;
 	private String partyName;
@@ -39,6 +42,23 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	JSONObject jObj = null;
 	
 	
+	public List<CandidateElectionResultVO> getCandidateElectionResultVO() {
+		return candidateElectionResultVO;
+	}
+
+	public void setCandidateElectionResultVO(
+			List<CandidateElectionResultVO> candidateElectionResultVO) {
+		this.candidateElectionResultVO = candidateElectionResultVO;
+	}
+
+	public String getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(String stateId) {
+		this.stateId = stateId;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}
@@ -181,14 +201,39 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 				log.debug("electionId::::::::::::"+electionId);
 				log.debug("partyId:::::::::::"+partyId);			
 			}
-			
+		
+		
 			electionBasicCommentsVOList = new ArrayList<ElectionBasicCommentsVO>();
 			electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId);
+				
 		}
 		
 		return Action.SUCCESS;
 	}
 	
+	public String getNotAnalyzedConstituencies() throws Exception
+	{
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		Long stateId = new Long(jObj.getString("stateId"));
+		
+		if(jObj.getString("status").equalsIgnoreCase("notAnalyzed"))
+		{			
+			candidateElectionResultVO = analysisReportService.getElectionResultsForNotAnalyzedConstituencies(electionId, partyId, stateId);
+		}
+		return Action.SUCCESS;
+	}
 	
 
 }
