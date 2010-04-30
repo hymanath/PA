@@ -289,6 +289,21 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='</TR>';
 	contentStr+='</TABLE>';								
 	contentStr+='</DIV>';
+	if(results.analysisCategoryBasicResultVO != null)
+	{
+	contentStr+='<H3 style="width:510px;">Reasons Analysis</H3>';
+    contentStr+='<div id="categoriesClassificationDiv">';
+    for(var i in results.analysisCategoryBasicResultVO)
+	{
+    contentStr+='<TABLE class="wonLostPosTable" width="80%">';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">'+results.analysisCategoryBasicResultVO[i].categoryType+'</TH>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';		
+	}
+    contentStr+='</div>';
+	}
 	contentStr+='<div id="multipleCategoriesDiv">';
 	contentStr+='<H3 style="width:510px;">Constituencies with Multiple Reasons</H3>';
 	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="75%"  class="multipleClassificationsTable">';
@@ -374,6 +389,21 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	contentStr+='</TR>';
 	contentStr+='</TABLE>';								
 	contentStr+='</DIV>';
+	if(results.analysisCategoryBasicResultVO != null)
+	{
+	contentStr+='<H3 style="width:510px;">Reasons Analysis</H3>';
+    contentStr+='<div id="categoriesClassificationDiv">';
+    for(var i in results.analysisCategoryBasicResultVO)
+	{
+    contentStr+='<TABLE class="wonLostPosTable" width="80%">';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">'+results.analysisCategoryBasicResultVO[i].categoryType+'</TH>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';		
+	}
+    contentStr+='</div>';
+	}
 	contentStr+='<div id="multipleCategoriesDiv">';
 	contentStr+='<H3 style="width:510px;">Constituencies with Multiple Reasons</H3>';
 	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="75%"  class="multipleClassificationsTable">';
