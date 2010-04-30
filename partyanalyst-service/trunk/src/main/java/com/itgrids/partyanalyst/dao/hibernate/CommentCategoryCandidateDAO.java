@@ -95,7 +95,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	@SuppressWarnings("unchecked")
 	public List getCommentsCountInAnElectionForAPartyForCommentCategory(Long electionId,Long partyId,String category) {
 		Object[] params = {electionId,partyId,category};
-		return getHibernateTemplate().find("select count(model.commentData.commentDataId) from CommentCategoryCandidate model"+
+		return getHibernateTemplate().find("select count(distinct model.nomination.constituencyElection.constituency.constituencyId) from CommentCategoryCandidate model"+
 				" where model.nomination.constituencyElection.election.electionId = ?"+
 				" and model.nomination.party.partyId = ?"+
 				" and model.commentData.commentDataCategory.commentClassification = ?",params);
@@ -127,7 +127,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	public List getNominationsForCandidateHavingComments(Long electionId,
 			Long partyId) {
 		Object[] params = {electionId,partyId};
-		return getHibernateTemplate().find("select model.nomination.nominationId from CommentCategoryCandidate model"+
+		return getHibernateTemplate().find("select distinct model.nomination.nominationId from CommentCategoryCandidate model"+
 				" where model.nomination.constituencyElection.election.electionId = ?"+
 				" and model.nomination.party.partyId = ?",params);
 	}
