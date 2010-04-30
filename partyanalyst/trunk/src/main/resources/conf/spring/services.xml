@@ -404,6 +404,7 @@
 	    <property name="partyDAO" ref="partyDAO"/>
 	    <property name="stateDAO" ref="stateDAO"/>
 	    <property name="electionDAO" ref="electionDAO" />
+	    <property name="nominationDAO" ref="nominationDAO" />	
 	    <property name="staticDataService" ref="staticDataService" />
 	    <property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
 	    <property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
