@@ -495,7 +495,31 @@ public class AnalysisReportService implements IAnalysisReportService {
 				}
 				
 				if(!multipleCategoryMap.isEmpty()){
+					Long nthCount = new Long(0);
+					Set entries = multipleCategoryMap.entrySet();
+					Iterator iterator = entries.iterator();
+					while(iterator.hasNext()){
+					Map.Entry entry = (Map.Entry)iterator.next();
+					Long constiCount = (Long)entry.getValue();
+					Long commentsCat = (Long)entry.getKey();
 					
+					if(commentsCat > new Long(4)){
+						nthCount+=constiCount;
+					}
+					else{
+						SelectOptionVO mulCategory = new SelectOptionVO();
+						mulCategory.setId(commentsCat);
+						mulCategory.setName(constiCount.toString());
+						
+						multipleCategories.add(mulCategory);
+					}
+					}
+					//for nth comments
+					SelectOptionVO mulCategory = new SelectOptionVO();
+					mulCategory.setId(new Long(0));
+					mulCategory.setName(nthCount.toString());
+					
+					multipleCategories.add(mulCategory);
 				}
 			}
 		}
