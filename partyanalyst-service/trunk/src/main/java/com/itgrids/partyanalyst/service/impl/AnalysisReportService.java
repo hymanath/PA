@@ -435,8 +435,20 @@ public class AnalysisReportService implements IAnalysisReportService {
 		
 		if(analysisBasicResults != null && analysisBasicResults.size() > 0)
 			partyPositionAnalysisResultVO.setAnalysisCategoryBasicResultVO(analysisBasicResults);
-		if(multipleCategories != null && multipleCategories.size() > 0)
+		
+		if(multipleCategories == null || multipleCategories.size() == 0){
+			for(int i=0;i<=4;i++){
+				SelectOptionVO resultVO = new SelectOptionVO();
+				resultVO.setId(new Long(i));
+				resultVO.setName("0");
+				
+				multipleCategories.add(resultVO);
+			}
+		}
+		
+		if(multipleCategories != null && multipleCategories.size() > 0){
 			partyPositionAnalysisResultVO.setMultipleCategories(multipleCategories);
+		}
 		
 	    }
 	    catch(Exception ex){
