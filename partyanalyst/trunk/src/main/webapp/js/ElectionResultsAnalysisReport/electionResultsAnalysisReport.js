@@ -108,6 +108,7 @@ function showBasicAnalysisDetails(results)
 	var electionId = results.electionId;	
 	var electionYear = results.electionYear;
 	var electionType = results.electionType;
+	var electionTypeId = results.electionTypeId;
 	var partyName = results.partyName;
 	var partyId = results.partyId;
 	var basicDetailsDivEl = document.getElementById("basicDetails");
@@ -119,6 +120,7 @@ function showBasicAnalysisDetails(results)
 	var headStr='';
 	if(electionType != "Parliament")
 	{
+		//headStr+='';
 		headStr+='<H3>'+stateName+' '+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</H3>';
 	} if(electionType == "Parliament")
 	{
@@ -176,14 +178,14 @@ function showBasicAnalysisDetails(results)
 	tablerDataStr+='<TD class="middle">'+results.partyBasicAnalysisVO.partiConstituencies+'</TD>';
 	if(results.partyBasicAnalysisVO.seatsWon != '0')
 	{
-		tablerDataStr+='<TD class="middle"><A href="javascript:{}" title="Click To View Constituencies" onclick="openPartyElectionResultsWindow('+electionId+','+partyId+',\'1\',\''+results.partyBasicAnalysisVO.partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+')">'+results.partyBasicAnalysisVO.seatsWon+'</A></TD>';
+		tablerDataStr+='<TD class="middle"><A href="javascript:{}" title="Click To View Constituencies" onclick="openPartyElectionResultsWindow('+electionId+','+partyId+',\'1\',\''+results.partyBasicAnalysisVO.partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+','+electionTypeId+')">'+results.partyBasicAnalysisVO.seatsWon+'</A></TD>';
 	} else 
 	{
 		tablerDataStr+='<TD class="middle">'+results.partyBasicAnalysisVO.seatsWon+'</TD>';	
 	}
 	if(results.partyBasicAnalysisVO.seatsLost != 0)
 	{
-		tablerDataStr+='<TD class="middle"><A href="javascript:{}" title="Click To View Constituencies" onclick="openPartyElectionResultsWindow('+electionId+','+partyId+',\'0\',\''+results.partyBasicAnalysisVO.partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+')">'+results.partyBasicAnalysisVO.seatsLost+'</A></TD>';
+		tablerDataStr+='<TD class="middle"><A href="javascript:{}" title="Click To View Constituencies" onclick="openPartyElectionResultsWindow('+electionId+','+partyId+',\'0\',\''+results.partyBasicAnalysisVO.partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+','+electionTypeId+')">'+results.partyBasicAnalysisVO.seatsLost+'</A></TD>';
 	} else
 	{
 		tablerDataStr+='<TD class="middle">'+results.partyBasicAnalysisVO.seatsLost+'</TD>';
@@ -215,14 +217,14 @@ function showBasicAnalysisDetails(results)
 			tablerDataStr+='<TD class="middle">'+alliancePartiesBasicDetails[j].partiConstituencies+'</TD>';
 			if(alliancePartiesBasicDetails[j].seatsWon != 0)
 			{
-				tablerDataStr+='<TD class="middle"><A href="javascript:{}" title="Click To View Constituencies" onclick="openPartyElectionResultsWindow('+electionId+','+alliancePartiesBasicDetails[j].partyId+',\'1\',\''+alliancePartiesBasicDetails[j].partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+')">'+alliancePartiesBasicDetails[j].seatsWon+'</A></TD>';
+				tablerDataStr+='<TD class="middle"><A href="javascript:{}" title="Click To View Constituencies" onclick="openPartyElectionResultsWindow('+electionId+','+alliancePartiesBasicDetails[j].partyId+',\'1\',\''+alliancePartiesBasicDetails[j].partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+','+electionTypeId+')">'+alliancePartiesBasicDetails[j].seatsWon+'</A></TD>';
 			} else 
 			{
 				tablerDataStr+='<TD class="middle">'+alliancePartiesBasicDetails[j].seatsWon+'</TD>';
 			}
 			if( alliancePartiesBasicDetails[j].seatsLost!= 0)
 			{			
-				tablerDataStr+='<TD class="middle"><A href="javascript:{}" title="Click To View Constituencies" onclick="openPartyElectionResultsWindow('+electionId+','+alliancePartiesBasicDetails[j].partyId+',\'0\',\''+alliancePartiesBasicDetails[j].partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+')">'+alliancePartiesBasicDetails[j].seatsLost+'</A></TD>';
+				tablerDataStr+='<TD class="middle"><A href="javascript:{}" title="Click To View Constituencies" onclick="openPartyElectionResultsWindow('+electionId+','+alliancePartiesBasicDetails[j].partyId+',\'0\',\''+alliancePartiesBasicDetails[j].partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+','+electionTypeId+')">'+alliancePartiesBasicDetails[j].seatsLost+'</A></TD>';
 			} else 
 			{
 				tablerDataStr+='<TD class="middle">'+alliancePartiesBasicDetails[j].seatsLost+'</TD>';
@@ -246,6 +248,8 @@ function showBasicAnalysisDetails(results)
 	}			
 	tablerDataStr+='</TABLE>';
 	tablerDetailsEl.innerHTML =tablerDataStr; 
+	getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId);
+	getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electionId,partyId);
 }
 function buildGraphsCarousel(divId)
 {
@@ -264,8 +268,95 @@ function buildGraphsCarousel(divId)
 	graphImagesCarousel.render(); 
 	graphImagesCarousel.show();
 }
+function showAnalysisDetailsInPartyLostPositions(results)
+{
+	var divEl = document.getElementById("lostPosAnalisisDetails");
+	contentStr='';
+	contentStr+='<DIV class="wonLostPosHeading">Analysis in Party Lost Positions</DIV>';
+	contentStr+='<DIV>';
+	contentStr+='<TABLE class="wonLostPosTable" width="80%">';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">Seats Lost</TH>';
+	contentStr+='<TD style="width:30%">'+results.resultTypeValue+'</TD>';
+	contentStr+='</TR>';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">Analyzed Constituencies</TH>';
+	contentStr+='<TD style="width:30%">'+results.analyzedConsti+'</TD>';
+	contentStr+='</TR>';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">Yet to be  Analyzed Constituencies</TH>';
+	contentStr+='<TD style="width:30%">'+results.notAnalyzedConsti+'</TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';								
+	contentStr+='</DIV>';
+	divEl.innerHTML=contentStr;
+	/*<DIV>
+		<DIV style="text-decoration:underline;font-size:15px;font-weight:bold;text-align:left;margin-left:70px;margin-top:10px;">Reasons</DIV>
+		<TABLE class="wonLostPosTable" width="80%">
+			<TR>
+				<TH style="width:50%">No Candidate Ifluence</TH>
+				<TD style="width:5%">10</TD>
+				<TD style="width:25%"><A title="Click To View Results" href="javascript:{}">View Results</A></TD>
+			</TR>
+			<TR>
+				<TH style="width:50%">Alliance Impact</TH>
+				<TD style="width:5%">10</TD>
+				<TD style="width:25%"><A title="Click To View Results" href="javascript:{}">View Results</A></TD>
+			</TR>
+			<TR>
+				<TH style="width:50%">Poor Campaign</TH>
+				<TD style="width:5%">20</TD>
+				<TD style="width:25%"><A title="Click To View Results" href="javascript:{}">View Results</A></TD>
+			</TR>
+		</TABLE>
+		<DIV>
+			<H3 style="width:510px;">Constituencies with Multiple Reasons</H3>
+				<TABLE  cellpadding="0" cellspacing="0" width="75%"  class="multipleClassificationsTable">
+					<TR>
+						<TH width="30%">No of Analysis Reasons</TH>
+						<TH width="5%">2</TH>
+						<TH width="5%">3</TH>
+						<TH width="5%">4</TH>
+						<TH width="5%">N</TH>								
+					</TR>
+					<TR>
+						<TD width="30%"><B>No of Constituencies</B></TD>
+						<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">10</A></TD>
+						<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">3</A></TD>
+						<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">5</A></TD>
+						<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">6</A></TD>								
+					</TR>
+				</TABLE>							
+		</DIV>	
+	</DIV>
+	*/
+}
+function showAnalysisDetailsInPartyWonPositions(results)
+{
+	var divEl = document.getElementById("wonPosAnalisisDetails");
+	contentStr='';
+	contentStr+='<DIV class="wonLostPosHeading">Analysis in Party Won Positions</DIV>';
+	contentStr+='<DIV>';
+	contentStr+='<TABLE class="wonLostPosTable" width="80%">';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">Seats Won</TH>';
+	contentStr+='<TD style="width:30%">'+results.resultTypeValue+'</TD>';
+	contentStr+='</TR>';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">Analyzed Constituencies</TH>';
+	contentStr+='<TD style="width:30%">'+results.analyzedConsti+'</TD>';
+	contentStr+='</TR>';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">Yet to be  Analyzed Constituencies</TH>';
+	contentStr+='<TD style="width:30%">'+results.notAnalyzedConsti+'</TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';								
+	contentStr+='</DIV>';
+	divEl.innerHTML=contentStr;
+}
 
 function initializePage()
 {
-	buildPageLayout();	
+	buildPageLayout();
+	
 }
