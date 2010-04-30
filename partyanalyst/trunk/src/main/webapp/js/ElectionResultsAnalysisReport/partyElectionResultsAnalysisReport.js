@@ -9,6 +9,12 @@ function showAnalysisDetails(results)
 	analysisDetailsEl.innerHTML = '';
 	for(var i in results)
 	{		
+		var candidateId = results[i].candidateComments[0].candidateId;
+		var candidateName = results[i].candidateComments[0].candidate;
+		var constituencyId = results[i].constituencyId;
+		var constituencyName = results[i].constituencyName;
+		var partyName = results[i].partyName;		
+
 		contentStr += '<div id="'+results[i].constituencyName+'_main" class="constituencyAnalysisMainDiv">';
 		contentStr += '	<div id="'+results[i].constituencyName+'_head" class="constituencyAnalysisHeadDiv" onclick="showBodyDiv(this.id)">';
 		contentStr += '		<table><tr>';
@@ -16,29 +22,14 @@ function showAnalysisDetails(results)
 		contentStr += '		<td style="vertical-align:center;width:150px;"> - '+results[i].constituencyName+' </td>';
 		contentStr += '     <td style="vertical-align:center"> Constituency Analysis Details - No. Of Reasons '+results[i].candidateComments.length+'</td>';
 		contentStr += '		<td><input type="button" onclick="getMoreDetails('+results[i].constituencyId+')" value="View Complete Results"/></td>';
+		contentStr += '		<td><input type="button" onclick="showCommentsDialog('+candidateId+',\''+candidateName+'\',\'candidate\',1,'+constituencyId+',\''+constituencyName+'\',\''+partyName+'\')" value="Add Reason"/></td>';
 		contentStr += '		</tr></table>';
 		contentStr += '</div>';
 		contentStr += '	<div id="'+results[i].constituencyName+'_body" class="yui-skin-sam constituencyAnalysisBodyDiv" style="display:none">';
 		contentStr += '		<div id="dataTable'+i+'"></div>';
 		contentStr += '</div>';
 		contentStr += '</div>';
-
-
-		/*contentStr+='<FIELDSET>';
-		contentStr+='<LEGEND>'+results[i].constituencyName+' Constituency Analysis</LEGEND>';
-		contentStr+='<DIV id="basicDetails'+i+'">';
-		contentStr+='<TABLE width="50%" border="1">';
-		contentStr+='<TR>';
-		contentStr+='<TH>Party:</TH>';
-		contentStr+='<TD>'+results[i].partyName+'</TD>';
-		contentStr+='<TH>Constituency:</TH>';
-		contentStr+='<TD>'+results[i].constituencyName+'</TD>';
-		contentStr+='</TABLE>';
-		contentStr+='<DIV class="yui-skin-sam" style="margin-top:10px;margin-bottom:10px;"><DIV id="dataTable'+i+'"></DIV></DIV>';
-		contentStr+='</DIV>';
-		contentStr+='</FIELDSET>';*/
-	
-	}
+		}
 	
 	analysisDetailsEl.innerHTML = contentStr;
 
@@ -68,6 +59,8 @@ function showBodyDiv(id)
 	
 	var bodyId = id.substring(0,id.indexOf('_'))+"_body";
 	var bodyElmt = document.getElementById(bodyId);
+
+	console.log(bodyElmt.style);
 
 	if(!bodyElmt)
 		return;

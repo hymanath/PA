@@ -26,8 +26,10 @@
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 
 <LINK rel="stylesheet" type="text/css" href="styles/ElectionResultsAnalysisReport/partyElectionResultsReport.css">
+<LINK rel="stylesheet" type="text/css" href="styles/CommentsDialog/commentsDialog.css">
 
 <script type="text/javascript" src="js/ElectionResultsAnalysisReport/partyElectionResultsAnalysisReport.js"></script>
+<script type="text/javascript" src="js/CommentsDialog/commentsDialog.js"></script>
 
 <c:if test="${electionType != 'Parliament' && status =='analyzed'}">
 	<TITLE>${stateName} ${electionType} ${electionYear} Election Results Analyzed Constituencies </TITLE>
@@ -49,7 +51,7 @@
 	{
 		font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
 		font-size:12px;
-		width:830px;
+		width:900px;
 		margin-top:10px;
 	}
 
@@ -80,6 +82,13 @@
 <SCRIPT type="text/javascript">
 var electionId = '${electionId}';
 var partyId = '${partyId}';
+var electionType = '${electionType}';
+var electionYear = '${electionYear}';
+var hidden=1;
+function incrementHidden()
+{
+	hidden++;
+}
 function callAjax(param,jsObj,url){
 	var myResults;
 					
@@ -91,6 +100,18 @@ function callAjax(param,jsObj,url){
 								if(jsObj.task == "getCandidateComments")
 								{
 									showAnalysisDetails(myResults);
+								}
+								if(jsObj.task == "getCommentsClassificationsList")
+								{
+									buildCommentsClassificationsOptions(myResults);
+								}
+								if(jsObj.task == "getPreviousComments")
+								{
+									showPreviousComments(myResults,jsObj);
+								}
+								if(jsObj.task == "addNewComment")
+								{
+									updatePreviousCommentsDataTable(myResults);
 								}
 						}
 						catch (e) {   
@@ -116,18 +137,123 @@ function getCandidateComments(){
 	}
 	
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAjaxAction.action?"+param;
+	incrementHidden();
+	var url = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAjaxAction.action?"+param+"&hidden="+hidden;
 	callAjax(param,jsObj,url);
 }
 
 function getMoreDetails(constiId)
 {	
-var electionType = '${electionType}';
-var electionYear = '${electionYear}';
+
 var urlStr = "<%=request.getContextPath()%>/constituencyElectionResultsAction.action?constituencyId="+constiId+"&electionType="+electionType+"&electionYear="+electionYear;	
 var browser2 = window.open(urlStr,"candidateResults","scrollbars=yes,height=600,width=750,left=200,top=200");
 browser2.focus();
 }
+
+function getCommentsClassifications(rank)
+	{ 
+		var jsObj={
+				rank: rank,
+				task: "getCommentsClassificationsList"				
+			  }	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/commentsClassificationDataAction.action?"+rparam;		
+	callAjax(rparam,jsObj,url);
+	}
+	function showExistingComments(id,candidateName,category, constituencyId,constituencyName,partyName)
+	{
+		var candidateId;
+		var constituencyId;
+		if(category == "candidate")
+		{
+			candidateId = id;
+			constituencyId = constituencyId;		
+		}
+		var jsObj={
+				
+				candidateId: candidateId,
+				candidateName: candidateName,
+				constituencyId: constituencyId,
+				electionId: electionId,
+				electionType: electionType,
+				year: electionYear,
+				candidateId: candidateId,
+				constituencyId: constituencyId,
+				constituencyName: constituencyName,
+				partyName: partyName,			
+				task:"getPreviousComments"				
+			  }
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		incrementHidden();
+		var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam+"&hidden="+hidden;		
+		callAjax(rparam,jsObj,url);	
+	}
+	function handleAddCommentsSubmit(id,category,constituencyId)
+	{
+		var commentVal = document.getElementById("commentText").value; 
+		var postedByVal = document.getElementById("commentPostedByText").value;
+		var partyId;
+		var candidateId;
+		var constituencyId;
+		var commentCategoryId;
+		var alertMessageEl = document.getElementById("alertMessage"); 
+		if(category == "candidate")
+		{
+			var commentCategoryEl = document.getElementById("commentsClassificaitonSelectBox");
+			if(commentCategoryEl)
+			{
+				commentCategoryId = commentCategoryEl.value;
+				
+			}	
+			partyId = '0';
+			candidateId = id;
+			constituencyId = constituencyId;		
+		}
+		if(category == "party")
+		{
+			partyId = id;
+			candidateId = '0';
+			constituencyId = '0';
+			commentCategoryId = '0';	
+			
+		}
+		
+		if(commentCategoryId == '' || commentVal == '' || postedByVal == '' || commentCategoryId == 'Select Classification' )		
+		{
+			alertMessageEl.innerHTML = 'Please Fill Mandatory Fields!';
+			return;		
+		}	
+		if(commentCategoryId != '' && commentVal != '' && postedByVal != '')		
+		{
+			var jsObj={
+					electionId: electionId,
+					electionType: electionType,
+					year: electionYear,
+					partyId: partyId,
+					candidateId: candidateId,
+					constituencyId: constituencyId,
+					commentDesc: commentVal,
+					postedBy: postedByVal,
+					category: category,
+					commentCategoryId: commentCategoryId,
+					task:"addNewComment"				
+				  }	 
+				
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/commentsDataAction.action?"+rparam;		
+			callAjax(rparam,jsObj,url);	
+			alertMessageEl.innerHTML = '';
+		}
+				
+		
+	}
+
+	function handleAddCommentsCancel()
+	{
+		getCandidateComments();
+		addCommentsDialog.hide();
+
+	}
 													
 
 </SCRIPT>
@@ -173,6 +299,7 @@ browser2.focus();
 	</CENTER>
 	
 	<DIV id="analysisDetails"></DIV>
+	<DIV class = "yui-skin-sam"><DIV id="commentsDialogDiv"></DIV></DIV>
 	
 <SCRIPT type="text/javascript"> 
 	getCandidateComments();
