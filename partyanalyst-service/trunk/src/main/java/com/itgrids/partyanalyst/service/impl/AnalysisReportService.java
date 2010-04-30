@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dao.IPartyElectionStateResultDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.AnalysisCategoryBasicVO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
+import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionCommentsVO;
 import com.itgrids.partyanalyst.dto.PartyAnalysisBasicVO;
@@ -400,7 +401,8 @@ public class AnalysisReportService implements IAnalysisReportService {
 		if(basicResults != null && basicResults.size() > 0){
 			Object[] basicResultParams = (Object[])basicResults.get(0);
 			Long seatsWon = new Long((String)basicResultParams[2]);
-			Long seatsLost = totalConstituenciesCount - seatsWon;
+			Long totConstiParticipated = new Long((String)basicResultParams[3]);
+			Long seatsLost = totConstiParticipated - seatsWon;
 			
 			if(analysisCategory.equals(IConstants.CANDIDATE_COMMENTS_WON)){
 				partyPositionAnalysisResultVO.setResultType(IConstants.CANDIDATE_COMMENTS_WON);
@@ -481,6 +483,8 @@ public class AnalysisReportService implements IAnalysisReportService {
 			multipleCategoryMap = new HashMap<Long,Long>();
 			
 			List multipleCategoryComments = commentCategoryCandidateDAO.getCommentsCommentCategoryCountGroupedByConstituencyForAParty(electionId,partyId,analysisCategory);
+			
+			log.debug("MultipleCategoryComments Size :" + multipleCategoryComments.size());
 			if(multipleCategoryComments != null && multipleCategoryComments.size() > 0){
 				for(int i=0;i<multipleCategoryComments.size();i++){
 					Object[] params = (Object[])multipleCategoryComments.get(i);
@@ -503,6 +507,9 @@ public class AnalysisReportService implements IAnalysisReportService {
 					Long constiCount = (Long)entry.getValue();
 					Long commentsCat = (Long)entry.getKey();
 					
+					log.debug("commentsCat :"  + commentsCat);
+					log.debug("constiCount :"  + constiCount);
+					
 					if(commentsCat > new Long(4)){
 						nthCount+=constiCount;
 					}
@@ -524,6 +531,21 @@ public class AnalysisReportService implements IAnalysisReportService {
 			}
 		}
 	 return multipleCategories;
+	}
+
+	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(
+			Long electionId, Long partyId) {
+		
+		log.debug("Inside getElectionResultsForNotAnalyzedConstituencies Method..... ");
+		
+		List<CandidateElectionResultVO> notAnalyzedResultsList = null;
+		
+		if(electionId != null && partyId != null){
+			
+		}
+		
+		
+	  return notAnalyzedResultsList;
 	}
 	
 }
