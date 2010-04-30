@@ -277,18 +277,40 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='<TABLE class="wonLostPosTable" width="80%">';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Seats Lost</TH>';
-	contentStr+='<TD style="width:30%">'+results.resultTypeValue+'</TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.resultTypeValue+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Analyzed Constituencies</TH>';
-	contentStr+='<TD style="width:30%">'+results.analyzedConsti+'</TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.analyzedConsti+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Yet to be  Analyzed Constituencies</TH>';
-	contentStr+='<TD style="width:30%">'+results.notAnalyzedConsti+'</TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.notAnalyzedConsti+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='</TABLE>';								
 	contentStr+='</DIV>';
+	contentStr+='<div id="multipleCategoriesDiv">';
+	contentStr+='<H3 style="width:510px;">Constituencies with Multiple Reasons</H3>';
+	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="75%"  class="multipleClassificationsTable">';
+	contentStr+='	<TR>';
+	contentStr+='		<TH width="30%">No of Analysis Reasons</TH>';
+	for(var i in results.multipleCategories)
+	{
+		if(results.multipleCategories[i].id == 0)
+			contentStr+='		<TH width="5%">N</TH>';
+		else
+			contentStr+='		<TH width="5%">'+results.multipleCategories[i].id+'</TH>';
+	}
+	contentStr+='	</TR>';
+	contentStr+='	<TR>';
+	contentStr+='	<TD width="30%"><B>No of Constituencies</B></TD>';
+	for(var i in results.multipleCategories)
+	{
+		contentStr+='<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">'+results.multipleCategories[i].name+'</A></TD>';
+	}
+	contentStr+='	</TR>';
+	contentStr+='	</table>';					
+	contentStr+='</div>';
 	divEl.innerHTML=contentStr;
 	/*<DIV>
 		<DIV style="text-decoration:underline;font-size:15px;font-weight:bold;text-align:left;margin-left:70px;margin-top:10px;">Reasons</DIV>
@@ -340,18 +362,40 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	contentStr+='<TABLE class="wonLostPosTable" width="80%">';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Seats Won</TH>';
-	contentStr+='<TD style="width:30%">'+results.resultTypeValue+'</TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.resultTypeValue+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Analyzed Constituencies</TH>';
-	contentStr+='<TD style="width:30%">'+results.analyzedConsti+'</TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.analyzedConsti+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Yet to be  Analyzed Constituencies</TH>';
-	contentStr+='<TD style="width:30%">'+results.notAnalyzedConsti+'</TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.notAnalyzedConsti+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='</TABLE>';								
 	contentStr+='</DIV>';
+	contentStr+='<div id="multipleCategoriesDiv">';
+	contentStr+='<H3 style="width:510px;">Constituencies with Multiple Reasons</H3>';
+	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="75%"  class="multipleClassificationsTable">';
+	contentStr+='	<TR>';
+	contentStr+='		<TH width="30%">No of Analysis Reasons</TH>';
+	for(var i in results.multipleCategories)
+	{
+		if(results.multipleCategories[i].id == 0)
+			contentStr+='		<TH width="5%">N</TH>';
+		else
+			contentStr+='		<TH width="5%">'+results.multipleCategories[i].id+'</TH>';
+	}
+	contentStr+='	</TR>';
+	contentStr+='	<TR>';
+	contentStr+='	<TD width="30%"><B>No of Constituencies</B></TD>';
+	for(var i in results.multipleCategories)
+	{
+		contentStr+='<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">'+results.multipleCategories[i].name+'</A></TD>';
+	}
+	contentStr+='	</TR>';
+	contentStr+='	</table>';					
+	contentStr+='</div>';
 	divEl.innerHTML=contentStr;
 }
 
