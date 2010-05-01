@@ -442,8 +442,13 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 			  final String category4 = "4th Pos";
 			  final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		      for(PartyPositionsVO result:allPartiesResults){
-		    	if(i==8)
-		    	break;
+		    			    	
+		    	if(i > 8){
+		    		if(!result.getPartyName().equals("TDP") && !result.getPartyName().equals("TRS") && !result.getPartyName().equals("CPI") && !result.getPartyName().equals("CPM") && !result.getPartyName().equals("BJP") && !result.getPartyName().equals("PRP")){
+		    			i++;
+		    			continue;
+		    		}
+		       	}
 		      	final String series =  result.getPartyName();
 		      	dataset.addValue(new Double(result.getTotalSeatsWon()), category1, series);
 		      	dataset.addValue(new Double(result.getSecondPosWon()), category2, series);
@@ -462,8 +467,12 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 			List<SelectOptionVO> staticParties = staticDataService.getStaticParties();
 			final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 			for(DistrictWisePartyPositionsVO parties:allPartiesResults){
-				if(i==10)
-				break;
+				if(i > 8){
+		    		if(!parties.getPartyName().equals("TDP") && !parties.getPartyName().equals("TRS") && !parties.getPartyName().equals("CPI") && !parties.getPartyName().equals("CPM") && !parties.getPartyName().equals("BJP") && !parties.getPartyName().equals("PRP")){
+		    			i++;
+		    			continue;
+		    		}
+		       	}
 				final String category = parties.getPartyName();
 				for(PartyPositionsInDistrictVO districtResults:parties.getPartyResultsInDistricts()){
 					dataset.addValue(new Double(districtResults.getCompleteVotesPercent()), category, districtResults.getDistrictName());
