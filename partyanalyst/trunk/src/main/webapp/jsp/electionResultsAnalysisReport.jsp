@@ -51,6 +51,28 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
 
 	<!-- YUI Dependency files (End) -->
+
+<style>
+	.votesMarginHead
+	{
+		padding:5px;
+		cursor:pointer;
+		font-size:12px;
+		font-weight:bold;
+	}
+
+	.votesMarginBody
+	{
+		padding-left:30px;
+		font-size:12px;
+	}
+
+	.votesMarginReasonsDiv
+	{
+		padding:5px;
+	}
+
+</style>
 <SCRIPT>
 function callAjax(param,jsObj,url){
 	var myResults;
