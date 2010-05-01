@@ -631,5 +631,127 @@ public class AnalysisReportService implements IAnalysisReportService {
 		}
 	 return candidateElectionResultVO;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getCandidateCommentDetailsInAnElection(java.lang.Long, java.lang.Long, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(
+			Long electionId, Long partyId, String category) {
+		
+        log.debug("Inside getCandidateCommentDetailsInAnElection Method..... ");
+		
+		Map<Long,List<CandidateCommentsVO>> commentsDataMap = null;
+		List<ElectionBasicCommentsVO> electionBasicCommentsVO = null;
+		ResultStatus resultStatus = new ResultStatus();
+		
+		try{
+			if(electionId != null && partyId != null){
+				electionBasicCommentsVO = new ArrayList<ElectionBasicCommentsVO>();
+				commentsDataMap = new HashMap<Long,List<CandidateCommentsVO>>();
+				
+				//List commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId);
+				List commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId,category);
+				Party party = partyDAO.get(partyId);
+				
+				if(commentsDetails != null && commentsDetails.size() > 0){
+					for(int i=0;i<commentsDetails.size();i++){
+					 	Object[] results = (Object[])commentsDetails.get(i);
+						Long constituencyId = (Long)results[0];
+						if(commentsDataMap.isEmpty() || !commentsDataMap.containsKey(constituencyId)){
+							List<CandidateCommentsVO> candidateCommentsList = new ArrayList<CandidateCommentsVO>();
+							CandidateCommentsVO candidComments = getCandidateCommentsProcessedToMap(results);
+							candidateCommentsList.add(candidComments);
+							commentsDataMap.put(constituencyId, candidateCommentsList);
+						}
+						else if(commentsDataMap.containsKey(constituencyId)){
+							List<CandidateCommentsVO> candidateCommentsList = commentsDataMap.get(constituencyId);
+							CandidateCommentsVO candidComments = getCandidateCommentsProcessedToMap(results);
+							candidateCommentsList.add(candidComments);
+							commentsDataMap.put(constituencyId, candidateCommentsList);
+						}
+					}
+				}
+				
+				//Processing the Map and set the Data to VO
+				if(!commentsDataMap.isEmpty()){
+					Set entries = commentsDataMap.entrySet();
+					Iterator iterator = entries.iterator();
+					while(iterator.hasNext()){
+					Map.Entry entry = (Map.Entry)iterator.next();
+					List<CandidateCommentsVO> commentsList = (List<CandidateCommentsVO>)entry.getValue();
+					Long constituencyId = (Long)entry.getKey();
+					ElectionBasicCommentsVO elecBasicComments = new ElectionBasicCommentsVO();
+					elecBasicComments.setConstituencyId(constituencyId);
+					elecBasicComments.setConstituencyName(commentsList.get(0).getConstituencyName());
+					elecBasicComments.setPartyId(partyId);
+					elecBasicComments.setPartyName(party.getShortName());
+					elecBasicComments.setCandidateComments(commentsList);
+					
+					electionBasicCommentsVO.add(elecBasicComments);
+					}
+				}
+			}
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			ElectionBasicCommentsVO electionBasicCommentsErrVO = new ElectionBasicCommentsVO();
+			electionBasicCommentsErrVO.setResultStatus(resultStatus);
+			electionBasicCommentsVO.add(electionBasicCommentsErrVO);
+		}
+	 return electionBasicCommentsVO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getElectionResultsForNotAnalyzedConstituencies(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(
+			Long electionId, Long partyId, Long stateId, String category) {
+        log.debug("Inside getElectionResultsForNotAnalyzedConstituencies Method..... ");
+		
+		List<CandidateElectionResultVO> notAnalyzedResultsList = null;
+		Map<Long,Nomination> partyNominationsMap = null;
+		
+		if(electionId != null && partyId != null && stateId != null){
+			//get party participated nominations
+			notAnalyzedResultsList = new ArrayList<CandidateElectionResultVO>();
+			partyNominationsMap = new HashMap<Long,Nomination>();
+			List<Nomination> partyNominations = nominationDAO.findByElectionIdAndPartyIdStateId(electionId,partyId,stateId);
+			if(partyNominations != null && partyNominations.size() > 0){
+				for(Nomination nominations:partyNominations){
+					partyNominationsMap.put(nominations.getNominationId(), nominations);
+				}
+			}
+			
+			//getPartyCommentDetails
+			//List commentNominations = commentCategoryCandidateDAO.getNominationsForCandidateHavingComments(electionId,partyId);
+			List commentNominations = commentCategoryCandidateDAO.getNominationsForCandidateHavingComments(electionId,partyId,category);
+			if(commentNominations != null && commentNominations.size() > 0){
+				for(int i=0;i<commentNominations.size();i++){
+					Object params = commentNominations.get(i);
+					Long nominationId = (Long)params;
+					if(!partyNominationsMap.isEmpty() && partyNominationsMap.containsKey(nominationId))
+						partyNominationsMap.remove(nominationId);
+				}
+			}
+			
+			if(!partyNominationsMap.isEmpty()){
+				Set entries = partyNominationsMap.entrySet();
+				Iterator iterator = entries.iterator();
+				while(iterator.hasNext()){
+				Map.Entry entry = (Map.Entry)iterator.next();
+				Nomination nomination = (Nomination)entry.getValue();
+				CandidateElectionResultVO candidateElectionResultVO = getProcessedResultsForNotanalyzed(nomination);
+				notAnalyzedResultsList.add(candidateElectionResultVO);
+				}
+			}
+		}
+		return notAnalyzedResultsList;
+	}
 	
 }
