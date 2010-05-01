@@ -717,11 +717,17 @@ public class AnalysisReportService implements IAnalysisReportService {
 		List<CandidateElectionResultVO> notAnalyzedResultsList = null;
 		Map<Long,Nomination> partyNominationsMap = null;
 		
-		if(electionId != null && partyId != null && stateId != null){
+		if(electionId != null && partyId != null && stateId != null && category != null){
 			//get party participated nominations
 			notAnalyzedResultsList = new ArrayList<CandidateElectionResultVO>();
 			partyNominationsMap = new HashMap<Long,Nomination>();
-			List<Nomination> partyNominations = nominationDAO.findByElectionIdAndPartyIdStateId(electionId,partyId,stateId);
+			List<Nomination> partyNominations = null;
+			
+			if(category.equals(IConstants.CANDIDATE_COMMENTS_WON))
+			    partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId,new Long(1));
+			else if(category.equals(IConstants.CANDIDATE_COMMENTS_LOST))
+				partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId,partyId,new Long(1));
+				
 			if(partyNominations != null && partyNominations.size() > 0){
 				for(Nomination nominations:partyNominations){
 					partyNominationsMap.put(nominations.getNominationId(), nominations);
@@ -753,5 +759,6 @@ public class AnalysisReportService implements IAnalysisReportService {
 		}
 		return notAnalyzedResultsList;
 	}
+	
 	
 }
