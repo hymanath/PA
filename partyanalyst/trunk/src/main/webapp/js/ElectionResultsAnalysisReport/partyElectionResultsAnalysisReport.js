@@ -56,8 +56,6 @@ function showAnalysisDetails(results)
 
 function showNotAnalyzedDetails(results)
 {
-	console.log(results);
-
 	var analysisDetailsEl = document.getElementById("analysisDetails");
 	var str = '';
 	str+='<div id="notAnalyzedDataTableDiv_main" class="yui-skin-sam"><div id="notAnalyzedDataTableDiv"> </div></div>';
@@ -94,8 +92,7 @@ function showNotAnalyzedDetails(results)
 			partyElectionResultsAnalysisObj.notAnalyzedCandidates.push(obj);
 		}	
 	}
-
-	console.log(partyElectionResultsAnalysisObj.notAnalyzedCandidates);
+	
 	buildCandidateElectionResultsDataTable();		
 }
 
@@ -146,7 +143,6 @@ function showBodyDiv(id)
 	var bodyId = id.substring(0,id.indexOf('_'))+"_body";
 	var bodyElmt = document.getElementById(bodyId);
 
-	console.log(bodyElmt.style);
 
 	if(!bodyElmt)
 		return;
