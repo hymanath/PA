@@ -319,8 +319,9 @@ function showAllianceDetails(results)
 	var assignToAllianceResultsArr = new Array();
 	var allianceResultsDataTableEl = document.getElementById("allianceResultsDataTable");
 	var allianceGrpName;	
-	var dtArray =  new Array();
+	
 	for(var i in  allianceResultsArr){
+		var dtArray =  new Array();
 		var header = allianceResultsArr[i].allianceGroupName+" Alliance Details";
 		allianceGrpName =  allianceResultsArr[i].allianceGroupName;
 		electionResultsObj.allianceGroupNamesArray.push(allianceGrpName);		
