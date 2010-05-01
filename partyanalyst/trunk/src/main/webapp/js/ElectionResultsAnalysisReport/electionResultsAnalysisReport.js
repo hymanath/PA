@@ -294,11 +294,11 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='</TR>';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Analyzed Constituencies</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.analyzedConsti+'</a></TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')">'+results.analyzedConsti+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Yet to be  Analyzed Constituencies</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.notAnalyzedConsti+'</a></TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'notAnalyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')">'+results.notAnalyzedConsti+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='</TABLE>';								
 	contentStr+='</DIV>';
@@ -459,11 +459,11 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	contentStr+='</TR>';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Analyzed Constituencies</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.analyzedConsti+'</a></TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Won\')">'+results.analyzedConsti+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Yet to be  Analyzed Constituencies</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.notAnalyzedConsti+'</a></TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'notAnalyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Won\')">'+results.notAnalyzedConsti+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='</TABLE>';								
 	contentStr+='</DIV>';

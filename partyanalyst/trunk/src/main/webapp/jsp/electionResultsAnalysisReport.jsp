@@ -239,7 +239,7 @@ function openPartyElectionResultsAnalysisWindow(electionId, partyId,status,party
 	browser2.focus();	
 }
 
-/*function openMainPartyElectionResultsAnalysisWindow(electionId, partyId,status,partyName,electionType,stateName,electionYear,position)
+function openMainPartyElectionResultsAnalysisWindow(electionId, partyId,status,partyName,electionType,stateName,electionYear,position)
 {
 	var stateSelectEl = document.getElementById("stateSelectEl");
 	var stateId =stateSelectEl.value;	
@@ -249,7 +249,7 @@ function openPartyElectionResultsAnalysisWindow(electionId, partyId,status,party
 	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	
 	browser2.focus();	
-}*/
+}
 
 
 function getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId){

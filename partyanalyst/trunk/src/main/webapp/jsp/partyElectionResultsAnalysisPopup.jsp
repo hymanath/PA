@@ -163,6 +163,35 @@ function getCandidateComments()
 	callAjax(param,jsObj,url);
 }
 
+function getMainPartyComments()
+{
+	var status = '${status}';
+	var stateId = '${stateId}';
+	var position = '${position}';
+	var url = '';
+	
+	var jsObj= 
+	{
+		
+	 	electionId: electionId,
+	 	partyId: partyId,		
+		status:status,
+		stateId:stateId,
+		position:position,
+		task:"getCandidateComments"		
+	}
+	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	incrementHidden();
+
+	if(status == "analyzed")
+		url = "<%=request.getContextPath()%>/partyMainPartyElectionResultsAnalysisAjaxAction.action?"+param+"&hidden="+hidden;
+	else if(status == "notAnalyzed")
+		url = "<%=request.getContextPath()%>/partyMainPartyElectionResultsNotAnalysedAjaxAction.action?"+param+"&hidden="+hidden;
+
+	callAjax(param,jsObj,url);
+}
+
 function getMoreDetails(constiId)
 {	
 
@@ -328,7 +357,16 @@ function getCommentsClassifications(rank)
 	<DIV class = "yui-skin-sam"><DIV id="commentsDialogDiv"></DIV></DIV>
 	
 <SCRIPT type="text/javascript"> 
-	getCandidateComments();
+
+	if('${position}' == "")
+	{		
+		getCandidateComments();
+	}
+	else
+	{
+		getMainPartyComments();
+	}
+		
 </SCRIPT>
 </BODY>
 </HTML>
