@@ -59,6 +59,7 @@
 		cursor:pointer;
 		font-size:12px;
 		font-weight:bold;
+		text-align:left;
 	}
 
 	.votesMarginBody
