@@ -1,4 +1,13 @@
 
+	var stateName = '';
+	var electionId = '';
+	var electionYear = '';
+	var electionType = '';
+	var electionTypeId = '';
+	var partyName = '';
+	var partyId = '';
+				
+
 function buildPageLayout()
 {
 	var pageLayout = new YAHOO.widget.Layout('page_layout_main', { 
@@ -102,14 +111,15 @@ function removeSelectElements(elmt)
 }
 
 function showBasicAnalysisDetails(results)
-{
-	var stateName = results.stateName;
-	var electionId = results.electionId;	
-	var electionYear = results.electionYear;
-	var electionType = results.electionType;
-	var electionTypeId = results.electionTypeId;
-	var partyName = results.partyName;
-	var partyId = results.partyId;
+{	
+	stateName = results.stateName;
+	electionId = results.electionId;	
+	electionYear = results.electionYear;
+	electionType = results.electionType;
+	electionTypeId = results.electionTypeId;
+	partyName = results.partyName;
+	partyId = results.partyId;
+
 	var basicDetailsDivEl = document.getElementById("basicDetails");
 	var tablerDetailsEl = document.getElementById("tablerDetails");
 	var alliancePartiesBasicDetails = results.alliancPartiesBasicAnalysisVO;
@@ -268,8 +278,11 @@ function buildGraphsCarousel(divId)
 	graphImagesCarousel.render(); 
 	graphImagesCarousel.show();
 }
+
+//onclick="openPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')"
+//onclick="openPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'notAnalyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')"
 function showAnalysisDetailsInPartyLostPositions(results)
-{
+{		
 	var divEl = document.getElementById("lostPosAnalisisDetails");
 	contentStr='';
 	contentStr+='<DIV class="wonLostPosHeading">Analysis in Party Lost Positions</DIV>';
@@ -277,7 +290,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='<TABLE class="wonLostPosTable" width="80%">';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Seats Lost</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.resultTypeValue+'</a></TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openPartyElectionResultsWindow('+electionId+','+partyId+',\'0\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+','+electionTypeId+')">'+results.resultTypeValue+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Analyzed Constituencies</TH>';
@@ -379,7 +392,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	contentStr+='<TABLE class="wonLostPosTable" width="80%">';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Seats Won</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.resultTypeValue+'</a></TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openPartyElectionResultsWindow('+electionId+','+partyId+',\'1\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+','+electionTypeId+')">'+results.resultTypeValue+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">Analyzed Constituencies</TH>';
