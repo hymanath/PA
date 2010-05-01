@@ -341,6 +341,57 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='	</TR>';
 	contentStr+='	</table>';					
 	contentStr+='</div>';
+	contentStr+='<br/><br/>';
+	contentStr+='<div id="votesMargin_main">';
+	contentStr+='<div id="votesMargin_head">';
+	contentStr+='<H3 style="width:510px;">Analysis Based On Votes Margin</H3>';
+	contentStr+='<div id="votesMargin_body">';
+	contentStr+='<table width="75%" style="width:75%">';
+	contentStr+='<tr>';
+	contentStr+='<td>';
+	contentStr+='<div id="Lost_first_Head" class="votesMarginHead" onclick="showMarginBody(this.id)"><span><img src="images/icons/indexPage/listIcon.png"/></span><span> 0 - 5 %</span><span> - 10 (Analyzed Constituencies)</span></div>';
+	contentStr+='<div id="Lost_first_body" class="votesMarginBody" style="display:none;">';
+	contentStr+='<div class="votesMarginReasonsDiv"> Cadre Support - 2</div>';
+	contentStr+='<div class="votesMarginReasonsDiv"> Poor Campaign - 8</div>';
+	contentStr+='</div>';
+	contentStr+='</td>';
+	contentStr+='</tr>';
+
+	contentStr+='<tr>';
+	contentStr+='<td>';
+	contentStr+='<div id="Lost_second_Head" class="votesMarginHead" onclick="showMarginBody(this.id)"><span><img src="images/icons/indexPage/listIcon.png"/></span><span> 10 - 20 % </span><span> - 15 (Analyzed Constituencies) </span></div>';
+	contentStr+='<div id="Lost_second_body" class="votesMarginBody" style="display:none;">';
+	contentStr+='<div class="votesMarginReasonsDiv"> Candidate Performance - 7</div>';
+	contentStr+='<div class="votesMarginReasonsDiv"> Weak Cadre            - 8</div>';
+	contentStr+='</div>';
+	contentStr+='</td>';
+	contentStr+='</tr>';
+
+	contentStr+='<tr>';
+	contentStr+='<td>';
+	contentStr+='<div id="Lost_third_Head" class="votesMarginHead" onclick="showMarginBody(this.id)"><span><img src="images/icons/indexPage/listIcon.png"/></span><span> 20 - 30 % </span><span> - 20 (Analyzed Constituencies) </span></div>';
+	contentStr+='<div id="Lost_third_body" class="votesMarginBody" style="display:none;">';
+	contentStr+='<div class="votesMarginReasonsDiv"> Weak Cadre    - 12</div>';
+	contentStr+='<div class="votesMarginReasonsDiv"> Poor Campaign - 8</div>';
+	contentStr+='</div>';
+	contentStr+='</td>';
+	contentStr+='</tr>';
+
+	contentStr+='<tr>';
+	contentStr+='<td>';
+	contentStr+='<div id="Lost_fourth_Head" class="votesMarginHead" onclick="showMarginBody(this.id)"><span><img src="images/icons/indexPage/listIcon.png"/></span><span> 30% and above %</span><span> - 10 (Analyzed Constituencies) </span></div>';
+	contentStr+='<div id="Lost_fourth_body" class="votesMarginBody" style="display:none;">';
+	contentStr+='<div class="votesMarginReasonsDiv"> Cadre Support - 2</div>';
+	contentStr+='<div class="votesMarginReasonsDiv"> Poor Campaign - 8</div>';
+	contentStr+='</div>';
+	contentStr+='</td>';
+	contentStr+='</tr>';
+
+	contentStr+='</table>';
+	contentStr+='</div>';
+	contentStr+='</div>';
+
+
 	divEl.innerHTML=contentStr;
 	/*<DIV>
 		<DIV style="text-decoration:underline;font-size:15px;font-weight:bold;text-align:left;margin-left:70px;margin-top:10px;">Reasons</DIV>
@@ -382,6 +433,18 @@ function showAnalysisDetailsInPartyLostPositions(results)
 		</DIV>	
 	</DIV>
 	*/
+}
+
+function showMarginBody(id)
+{
+	var marginBodyId = id.substring(0,id.lastIndexOf('_'))+"_body";
+
+	var marginBodyElmt = document.getElementById(marginBodyId);
+	
+	if(marginBodyElmt.style.display == 'none')
+		marginBodyElmt.style.display = 'block';
+	else if(marginBodyElmt.style.display == 'block')
+		marginBodyElmt.style.display = 'none';
 }
 function showAnalysisDetailsInPartyWonPositions(results)
 {
@@ -443,6 +506,57 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	contentStr+='	</TR>';
 	contentStr+='	</table>';					
 	contentStr+='</div>';
+
+	contentStr+='<br/><br/>';
+	contentStr+='<div id="votesMargin_main">';
+	contentStr+='<div id="votesMargin_head">';
+	contentStr+='<H3 style="width:510px;">Analysis Based On Votes Margin</H3>';
+	contentStr+='<div id="votesMargin_body">';
+	contentStr+='<table width="75%" style="width:75%">';
+	contentStr+='<tr>';
+	contentStr+='<td>';
+	contentStr+='<div id="Won_first_Head" class="votesMarginHead" onclick="showMarginBody(this.id)"><span><img src="images/icons/indexPage/listIcon.png"/></span><span> 0 - 5 %</span><span> - 10 (Analyzed Constituencies) </span></div>';
+	contentStr+='<div id="Won_first_body" class="votesMarginBody" style="display:none;">';
+	contentStr+='<div class="votesMarginReasonsDiv"> Cadre Support - 2</div>';
+	contentStr+='<div class="votesMarginReasonsDiv"> Good Campaign - 8</div>';
+	contentStr+='</div>';
+	contentStr+='</td>';
+	contentStr+='</tr>';
+
+	contentStr+='<tr>';
+	contentStr+='<td>';
+	contentStr+='<div id="Won_second_Head" class="votesMarginHead" onclick="showMarginBody(this.id)"><span><img src="images/icons/indexPage/listIcon.png"/></span><span> 10 - 20 % </span><span> - 15 (Analyzed Constituencies) </span></div>';
+	contentStr+='<div id="Won_second_body" class="votesMarginBody" style="display:none;">';
+	contentStr+='<div class="votesMarginReasonsDiv"> Candidate Performance - 7</div>';
+	contentStr+='<div class="votesMarginReasonsDiv"> Strong Cadre            - 8</div>';
+	contentStr+='</div>';
+	contentStr+='</td>';
+	contentStr+='</tr>';
+
+	contentStr+='<tr>';
+	contentStr+='<td>';
+	contentStr+='<div id="Won_third_Head" class="votesMarginHead" onclick="showMarginBody(this.id)"><span><img src="images/icons/indexPage/listIcon.png"/></span><span> 20 - 30 % </span><span> - 20 (Analyzed Constituencies) </span></div>';
+	contentStr+='<div id="Won_third_body" class="votesMarginBody" style="display:none;">';
+	contentStr+='<div class="votesMarginReasonsDiv"> Strong Cadre    - 12</div>';
+	contentStr+='<div class="votesMarginReasonsDiv"> Good Campaign - 8</div>';
+	contentStr+='</div>';
+	contentStr+='</td>';
+	contentStr+='</tr>';
+
+	contentStr+='<tr>';
+	contentStr+='<td>';
+	contentStr+='<div id="Won_fourth_Head" class="votesMarginHead" onclick="showMarginBody(this.id)"><span><img src="images/icons/indexPage/listIcon.png"/></span><span> 30% and above %</span><span> - 10 (Analyzed Constituencies) </span></div>';
+	contentStr+='<div id="Won_fourth_body" class="votesMarginBody" style="display:none;">';
+	contentStr+='<div class="votesMarginReasonsDiv"> Cadre Support - 2</div>';
+	contentStr+='<div class="votesMarginReasonsDiv"> Good Campaign - 8</div>';
+	contentStr+='</div>';
+	contentStr+='</td>';
+	contentStr+='</tr>';
+
+	contentStr+='</table>';
+	contentStr+='</div>';
+	contentStr+='</div>';
+
 	divEl.innerHTML=contentStr;
 }
 
