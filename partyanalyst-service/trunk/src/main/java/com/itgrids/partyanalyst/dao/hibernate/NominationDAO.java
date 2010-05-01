@@ -1127,5 +1127,19 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	    		"model.constituencyElection.election.electionId = ? and model.party.partyId = ? "+
 	    		"and model.candidateResult.rank != ?",params);
 	}
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndPartyIdStateIdForLost(
+			Long electionId, Long partyId, Long rank) {
+		Object[] params = {electionId,partyId,rank};
+		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionId = ?"+
+				" and model.party.partyId = ? and model.candidateResult.rank != ?",params);
+	}
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndPartyIdStateIdForWon(
+			Long electionId, Long partyId, Long rank) {
+		Object[] params = {electionId,partyId,rank};
+		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionId = ?"+
+				" and model.party.partyId = ? and model.candidateResult.rank = ?",params);
+	}
 
 }
