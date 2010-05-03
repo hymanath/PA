@@ -24,6 +24,7 @@ public class VotesMarginAnalysisVO implements Serializable {
 	private Long analyzedCount;
 	
 	private List<Long> nominationIds;
+	private List<AnalysisCategoryBasicVO> analysisCategoryBasicVO;
 	private ResultStatus resultStatus;
 
 	public Long getMarginValueOne() {
@@ -80,6 +81,15 @@ public class VotesMarginAnalysisVO implements Serializable {
 
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+
+	public List<AnalysisCategoryBasicVO> getAnalysisCategoryBasicVO() {
+		return analysisCategoryBasicVO;
+	}
+
+	public void setAnalysisCategoryBasicVO(
+			List<AnalysisCategoryBasicVO> analysisCategoryBasicVO) {
+		this.analysisCategoryBasicVO = analysisCategoryBasicVO;
 	}
 
 }
