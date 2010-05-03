@@ -25,7 +25,6 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.BoothTotalVotesVO;
 import com.itgrids.partyanalyst.dto.CensusVO;
-import com.itgrids.partyanalyst.dto.ComparedConstituencyElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWiseBoothsInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWisePartyResultsForMandal;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
@@ -127,7 +126,7 @@ public class ElectionTrendzService implements IElectionTrendzService {
 		ElectionBasicInfoVO electionBasicInfoVO = null;
 		if(constituencyId != null){
 			List election = boothConstituencyElectionDAO.findBoothwiseResultsConstituency(constituencyId);
-			if(election != null){
+			if(election != null && election.size() > 0){
 			electionBasicInfoVO = new ElectionBasicInfoVO();
 			Object[] params = (Object[])election.get(0);
 			String elecYear = (String)params[0];

@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.dto;
 
-import java.io.File;
 import java.io.Serializable;
 
 public class MPTCElectionResultVO  extends ResultStatus implements Serializable {
@@ -10,6 +9,8 @@ public class MPTCElectionResultVO  extends ResultStatus implements Serializable 
 	private Integer parties = 0;
 	private Integer candidates = 0;
 	private Integer candidateResults = 0;
+	private Integer currentRow;
+	private String electionType;
 	
 	public Integer getConstituencyElections() {
 		return constituencyElections;
@@ -46,6 +47,18 @@ public class MPTCElectionResultVO  extends ResultStatus implements Serializable 
 	}
 	public void addCandidateResults() {
 		this.candidateResults++;
+	}
+	public Integer getCurrentRow() {
+		return currentRow;
+	}
+	public void setCurrentRow(Integer currentRow) {
+		this.currentRow = currentRow;
+	}
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
 	}
 	
 }

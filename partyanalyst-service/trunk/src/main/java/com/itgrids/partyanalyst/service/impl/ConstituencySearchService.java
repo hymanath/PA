@@ -55,7 +55,7 @@ public class ConstituencySearchService implements IConstituencySearchService{
 		for(Constituency constituency:constituencies){
 			if(constituency.getDistrict() != null)
 				districtName = constituency.getDistrict().getDistrictName();
-			ConstituencyVO constituencyVO =new ConstituencyVO(constituency.getConstituencyId(), constituency.getName(),
+			ConstituencyVO constituencyVO = new ConstituencyVO(constituency.getConstituencyId(), constituency.getName(),
 								constituency.getState().getStateName(), districtName ,
 								constituency.getElectionScope().getElectionType().getElectionType(),constituency.getDeformDate());
 			constituencyVOs.add(constituencyVO);

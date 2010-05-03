@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.model;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,9 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
@@ -57,7 +56,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<ConstituencyElection> constituencyElections = new HashSet<ConstituencyElection>(0);
 	private Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses = new HashSet<DelimitationConstituencyAssemblyDetails>(0);
 	private Set<CommentCategoryConstituency> commentCategoryConstituency = new HashSet<CommentCategoryConstituency>(0);
-
+	private LocalElectionBody localElectionBody;
 	// Constructors
 
 	/** default constructor */
@@ -240,6 +239,18 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setCommentCategoryConstituency(
 			Set<CommentCategoryConstituency> commentCategoryConstituency) {
 		this.commentCategoryConstituency = commentCategoryConstituency;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "local_election_body_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public LocalElectionBody getLocalElectionBody() {
+		return localElectionBody;
+	}
+
+	public void setLocalElectionBody(LocalElectionBody localElectionBody) {
+		this.localElectionBody = localElectionBody;
 	}
 
 

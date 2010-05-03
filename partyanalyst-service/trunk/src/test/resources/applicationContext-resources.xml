@@ -109,6 +109,9 @@
 				<value>com.itgrids.partyanalyst.model.CommentCategoryParty</value>
 				<value>com.itgrids.partyanalyst.model.CommentCategoryConstituency</value>
 				<value>com.itgrids.partyanalyst.model.CommentDataCategory</value>
+				<value>com.itgrids.partyanalyst.model.LocalElectionBody</value>
+				<value>com.itgrids.partyanalyst.model.ElectionGoverningBodyPosition</value>
+				<value>com.itgrids.partyanalyst.model.ElectionGoverningBody</value>
 		 </list>
 		</property>
 	</bean>
@@ -429,6 +432,40 @@
 	
 	<bean id="influencingPeoplePositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.InfluencingPeoplePositionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="localElectionBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="electionGoverningBodyPositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyPositionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="electionGoverningBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean name="muncipleDataUploadService" class="com.itgrids.partyanalyst.service.impl.MuncipleDataUploadService" >		
+		<property name="transactionTemplate" ref="transactionTemplate" />		
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="electionTypeDAO" ref="electionTypeDAO" />		
+		<property name="constituencyDAO" ref="constituencyDAO" />		
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />		
+		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />		
+		<property name="candidateDAO" ref="candidateDAO" />		
+		<property name="nominationDAO" ref="nominationDAO" />		
+		<property name="candidateResultDAO" ref="candidateResultDAO" />			
+		<property name="partyDAO" ref="partyDAO" />			
+		<property name="stateDAO" ref="stateDAO" />	
+		<property name="electionScopeDAO" ref="electionScopeDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager" />
 	</bean>
 	
 </beans>

@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.CandidateColumnNames;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Nomination;
 
 
@@ -123,4 +124,14 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		
 	}
 
+	@SuppressWarnings("unchecked")
+	public Candidate findCandidateByLastName(String lastName){
+		Candidate candidate = null;
+		List<Candidate> list = getHibernateTemplate().find("from Candidate as model where model.lastname=?", lastName);
+		if(list!=null && list.size()>0){
+			candidate = list.get(0);
+		}
+		return candidate;
+	}
+	
 }

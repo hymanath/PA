@@ -19,7 +19,11 @@ public interface IConstants {
 	public final static String CANDIDATE_NAME = "CANDIDATE_NAME";//6
 	public final static String PARTY_NAME = "PARTY_NAME";//7
 	public final static String CANDIDATE_VOTES_EARNED = "CANDIDATE_VOTES_EARNED";//8
+	public final static String DISTRICT_NAME = "DISTRICT_NAME";
 	public final static String MANDAL_NAME = "MANDAL_NAME";//1
+	public final static String LOCAL_ELECTION_BODY = "LOCAL_ELECTION_BODY";//1
+	public final static String MUNCIPLE_WARD = "WARD";//1
+	public final static String MUNCIPLE_WARD_NO = "MUNCIPLE_WARD_NO";
 	
 	public final static String CANDIDATE_VOTES_PERCENTAGE = "CANDIDATE_VOTES_PERCENTAGE";
 	public final static String CANDIDATE_GENDER = "CANDIDATE_GENDER";
@@ -28,12 +32,18 @@ public interface IConstants {
 	public final static String CANDIDATE_MOBILE = "CANDIDATE_MOBILE";
 	public final static String CANDIDATE_PHONE = "CANDIDATE_PHONE";
 	public final static String CANDIDATE_EMAIL = "CANDIDATE_EMAIL";
+	public final static String CANDIDATE_AGE = "CANDIDATE_AGE";
 	public final static String CANDIDATE_DATE_OF_BIRTH = "CANDIDATE_DATE_OF_BIRTH";
 	public final static String CONSTITUENCY_VOTING_PERCENTAGE = "CONSTITUENCY_VOTING_PERCENTAGE";
 	public final static String CONSTITUENCY_TENDERED_VOTES = "CONSTITUENCY_TENDERED_VOTES";
 	public final static String CONSTITUENCY_MISSING_VOTES = "CONSTITUENCY_MISSING_VOTES";
 	public final static String CONSTITUENCY_REJECTED_VOTES = "CONSTITUENCY_REJECTED_VOTES";//ok
 	public final static String CONSTITUENCY_RESERVATION_ZONE = "CONSTITUENCY_RESERVATION_ZONE";
+	public final static String GOVERNING_BODY = "GOVERNING_BODY";
+	public final static String GOVERNING_BODY_PARTY = "GOVERNING_BODY_PARTY";
+	public final static String SUB_GOVERNING_BODY = "SUB_GOVERNING_BODY";
+	public final static String SUB_GOVERNING_BODY_PARTY = "SUB_GOVERNING_BODY_PARTY";
+	
 //MPTC  data upload column names in excel sheet - end
 
 	public final static String ZPTC_NAME = "ZPTC_NAME";
@@ -48,8 +58,16 @@ public interface IConstants {
 	
 	public final static String ZPTC_ELECTION_TYPE = "ZPTC";
 	public final static String MPTC_ELECTION_TYPE = "MPTC";
+	public final static String MUNCIPLE_ELECTION_TYPE = "MUNCIPALITY";
+	public final static String CORPORATION_ELECTION_TYPE = "CORPORATION";
 	public final static String ASSEMBLY_ELECTION_TYPE = "Assembly";
 	public final static String PARLIAMENT_ELECTION_TYPE = "Parliament";
+	
+	//Governing Body Position
+	public final static String MUNCIPALE_CHAIRMAN = "CHAIRPERSON";
+	public final static String MUNCIPALE_VICE_CHAIRMAN = "VICE CHAIRPERSON";
+	public final static String MAYOR = "MAYOR";
+	public final static String DYPUTY_MAYOR = "DEPUTY MAYOR";
 	
 	public final static String NOT_APPLICABLE = "N/A";
 	

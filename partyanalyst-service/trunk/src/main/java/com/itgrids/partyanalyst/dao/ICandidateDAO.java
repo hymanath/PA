@@ -59,6 +59,7 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{
 
 	public List<Candidate> findCandidateDetails(Long candidateId);
 
+	public Candidate findCandidateByLastName(String lastName);
 	
 	
 }

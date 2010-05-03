@@ -106,7 +106,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testGetConstituenciesByElectionTypeAndStateId()
+	/*public void testGetConstituenciesByElectionTypeAndStateId()
 	{
 		List constituenciesList  = constituencyDAO.getConstituenciesByElectionTypeAndStateId(new Long(2), new Long(1));
 		
@@ -130,5 +130,16 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	public void testConstituencyDetails(){
 		 List result =  constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType(3358l);
 		 Assert.assertEquals(1, result.size());	
-		}
+		}*/
+	
+	/*public void testFindByLocalElectionBodyAndElectionScope(){
+		List<Constituency> list = constituencyDAO.findByLocalElectionBodyAndElectionScope(1l, "Ward-1");
+		assertEquals(1, list.size());
+	}*/
+	
+	public void testFindWardsAndIdsInMuncipality(){
+		List list = constituencyDAO.findWardsAndIdsInMuncipality(2l);
+		assertEquals(1, list.size());
+	}
+	
 }

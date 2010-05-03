@@ -20,6 +20,8 @@ public class CandidateDetailsVO implements Serializable{
 	
 	private Long candidateId;
 	private String candidateName;
+	private Long age;
+	private String gender;
 	private String partyName;
 	private Long electionId;
 	private String electionType;
@@ -30,6 +32,7 @@ public class CandidateDetailsVO implements Serializable{
 	private String stateName;
 	private Long rank;
 	private String votesEarned;
+	private Long candidateVotesEarned;
 	private String votesPercentage;
 	private Boolean status;
 	private String image;
@@ -46,6 +49,7 @@ public class CandidateDetailsVO implements Serializable{
 	private Float votesDifference;
 	private String marginVotesPercentage;
 	private MandalAllElectionDetailsVO mandalAllElectionDetailsVO;
+	private Long currentRowNo;
 	
 	
 	//getters and setters
@@ -214,6 +218,31 @@ public class CandidateDetailsVO implements Serializable{
 			List<CandidateOppositionVO> oppositionCandidates) {
 		this.oppositionCandidates = oppositionCandidates;
 	}
+	public Long getAge() {
+		return age;
+	}
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public Long getCandidateVotesEarned() {
+		return candidateVotesEarned;
+	}
+	public void setCandidateVotesEarned(Long candidateVotesEarned) {
+		this.candidateVotesEarned = candidateVotesEarned;
+	}
+	public Long getCurrentRowNo() {
+		return currentRowNo;
+	}
+	public void setCurrentRowNo(Long currentRowNo) {
+		this.currentRowNo = currentRowNo;
+	}
+		
 	public Long getCommentsCount() {
 		return commentsCount;
 	}

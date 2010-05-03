@@ -1106,6 +1106,14 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	public List getTehsilLevelElectionDetailsForAGivenConstituency(String query,Object[] parms){
 		return getHibernateTemplate().find(query,parms);		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findNominationsByConstituencyElectionPartyAndCandidate(Long constiElecId, Long partyId, Long candidateId){
+		Object[] params = {constiElecId, partyId, candidateId};
+		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.constiElecId = ? and " +
+				"model.party.partyId = ? and model.candidate.candidateId = ?", params);
+	}
+	
 
 	@SuppressWarnings("unchecked")
 	public List findElectionResultsByElectionIdAndPartyIdAndRank(

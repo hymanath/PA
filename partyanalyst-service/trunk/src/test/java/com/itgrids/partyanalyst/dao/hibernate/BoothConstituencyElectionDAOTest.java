@@ -145,4 +145,9 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]);
 	}*/
 	
+	public void testFindBoothwiseResultsConstituency(){
+		List list = boothConstituencyElectionDAO.findBoothwiseResultsConstituency(342l);
+		System.out.println(list.size());
+	}
+	
 }

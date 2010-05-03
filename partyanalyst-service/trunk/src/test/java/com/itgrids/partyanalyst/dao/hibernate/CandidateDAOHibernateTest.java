@@ -1,11 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.List;
-
-import junit.framework.Assert;
-
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.model.Candidate;
@@ -40,7 +35,7 @@ public class CandidateDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	
-	public void test(){
+	/*public void test(){
 		long startTime = System.currentTimeMillis();
 		List<Candidate> candis = candidateDAO.getAll();
 		for(Candidate can:candis){
@@ -52,6 +47,11 @@ public class CandidateDAOHibernateTest extends BaseDaoTestCase {
 		setComplete();
 		long endTime = System.currentTimeMillis();
 		System.out.println((endTime-startTime)/1000);
+	}*/
+	
+	public void testfindByCandidateLastName(){
+		Candidate obj = candidateDAO.findCandidateByLastName("Lachigari Venkataramaan");
+		System.out.println(obj);
 	}
 	
 }

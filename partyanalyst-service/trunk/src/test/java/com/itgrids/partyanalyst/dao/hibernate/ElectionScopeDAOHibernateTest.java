@@ -1,11 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.List;
-
-import junit.framework.Assert;
-
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.model.ElectionScope;
@@ -32,7 +27,7 @@ public class ElectionScopeDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	public void testGetElectionTypes(){
-		List list = electionScopeDAO.getElectionScopes();
-		System.out.println(list.size());
+		ElectionScope obj = electionScopeDAO.get(0l);
+		System.out.println(obj);
 	}
 }
