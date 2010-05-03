@@ -24,7 +24,7 @@ public interface IAnalysisReportService {
  	
  	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(Long electionId, Long partyId,Long stateId);
  	
- 	public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(Long electionId,Long partyId,String category);
+ 	public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(Long electionId,Long partyId,String category,Long categoryTypeId);
  	
  	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(Long electionId, Long partyId,Long stateId,String category);
 }
