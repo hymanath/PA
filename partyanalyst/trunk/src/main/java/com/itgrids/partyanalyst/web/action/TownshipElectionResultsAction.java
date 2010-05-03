@@ -101,6 +101,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	        ChartProducer.createLineChart("All Parties Performance In "+electionType+" "+electionYear + 
 	        		" In "+constituencyObj.getConstituencyName()+" Constituency By Revenue Villages In "+mandalName+" Mandal" , 
 	        		"Revenue Villages", "Percentages", createDataset(constituencyObj), chartPath,260,700);	
+	        constituencyObj.setChartPath(chartName);
 		}
 		
 		return SUCCESS;
