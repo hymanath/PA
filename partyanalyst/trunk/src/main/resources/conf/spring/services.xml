@@ -387,6 +387,22 @@
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 	</bean>
 	
+	<bean name="muncipleDataUploadService" class="com.itgrids.partyanalyst.service.impl.MuncipleDataUploadService" >		
+		<property name="transactionTemplate" ref="transactionTemplate" />		
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="electionTypeDAO" ref="electionTypeDAO" />		
+		<property name="constituencyDAO" ref="constituencyDAO" />		
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />		
+		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />		
+		<property name="candidateDAO" ref="candidateDAO" />		
+		<property name="nominationDAO" ref="nominationDAO" />		
+		<property name="candidateResultDAO" ref="candidateResultDAO" />			
+		<property name="partyDAO" ref="partyDAO" />			
+		<property name="stateDAO" ref="stateDAO" />	
+		<property name="electionScopeDAO" ref="electionScopeDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+	</bean>
+	
 	<bean name="commentsDataService" class="com.itgrids.partyanalyst.service.impl.CommentsDataService">
 	    <property name="partyDAO" ref="partyDAO"/>
 	    <property name="electionDAO" ref="electionDAO" />

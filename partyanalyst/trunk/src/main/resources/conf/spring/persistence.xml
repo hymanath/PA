@@ -99,6 +99,9 @@
 				<value>com.itgrids.partyanalyst.model.InfluencingPeople</value>
 				<value>com.itgrids.partyanalyst.model.InfluencingPeoplePosition</value>
 				<value>com.itgrids.partyanalyst.model.CommentDataCategory</value>
+				<value>com.itgrids.partyanalyst.model.LocalElectionBody</value>
+				<value>com.itgrids.partyanalyst.model.ElectionGoverningBodyPosition</value>
+				<value>com.itgrids.partyanalyst.model.ElectionGoverningBody</value>
 				</list>
 		</property>
 	</bean>

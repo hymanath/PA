@@ -269,4 +269,14 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="localElectionBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="electionGoverningBodyPositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyPositionDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="electionGoverningBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		

@@ -4,17 +4,16 @@ import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MPTCElectionResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IMptcElectionService;
+import com.itgrids.partyanalyst.service.IMuncipleDataUploadService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
-import com.itgrids.partyanalyst.service.impl.MptcElectionService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class MPTCElectionAction  extends ActionSupport implements ServletRequestAware{
@@ -26,8 +25,11 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 	private String task;
 	private MPTCElectionResultVO resultVO;
 	private IMptcElectionService mptcElectionService;
+	private IMuncipleDataUploadService muncipleDataUploadService;
 	
 	private Long electionTypeID;
+	private String electionType;
+	
 	public Long getElectionTypeID() {
 		return electionTypeID;
 	}
@@ -66,6 +68,23 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 
 	public void setYear(String year) {
 		this.year = year;
+	}
+
+	public String getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+
+	public IMuncipleDataUploadService getMuncipleDataUploadService() {
+		return muncipleDataUploadService;
+	}
+
+	public void setMuncipleDataUploadService(
+			IMuncipleDataUploadService muncipleDataUploadService) {
+		this.muncipleDataUploadService = muncipleDataUploadService;
 	}
 
 	public File getFile() {
@@ -129,6 +148,7 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 	public String execute() {
 		log.debug("MPTCElectionAction.execute()....Started");
 		log.debug("MPTCElectionAction.execute() countryID:"+countryID);
+		log.debug("MPTCElectionAction.execute() electionType:"+electionType);
 		log.debug("MPTCElectionAction.execute() stateID:"+stateID);
 		log.debug("MPTCElectionAction.execute() districtID:"+districtID);
 		log.debug("MPTCElectionAction.execute() year:"+year);
@@ -136,7 +156,13 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 			log.debug("MPTCElectionAction.execute() File is null null:");
 		else
 			log.debug("MPTCElectionAction.execute() File is not null");
-		resultVO = mptcElectionService
+		
+		if(IConstants.MUNCIPLE_ELECTION_TYPE.equalsIgnoreCase(electionType) ||
+				IConstants.CORPORATION_ELECTION_TYPE.equalsIgnoreCase(electionType)){
+			resultVO = muncipleDataUploadService.readExcelDataForMuncipalities(file, electionTypeID, stateID, year);
+			resultVO.setElectionType(electionType);
+		}else
+			resultVO = mptcElectionService
 				.uploadMPTCElectionData(electionTypeID, countryID, stateID,
 						districtID, year, file);
 		String result =ERROR;

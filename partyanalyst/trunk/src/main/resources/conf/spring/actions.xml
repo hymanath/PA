@@ -218,7 +218,8 @@
 	</bean>
 	<bean id="mptcElectionAction" class="com.itgrids.partyanalyst.web.action.MPTCElectionAction" singleton="false">
 		<property name="regionServiceDataImp" ref="regionServiceDataImp"/>
-		<property name="mptcElectionService" ref="mptcElectionService"/>			
+		<property name="mptcElectionService" ref="mptcElectionService"/>		
+		<property name="muncipleDataUploadService" ref="muncipleDataUploadService"/>	
 	</bean>
 	<bean id="distPapersAction" class="com.itgrids.partyanalyst.web.action.DistPapersAction" singleton="false">
 		<property name="epaperService" ref="epaperService"/>

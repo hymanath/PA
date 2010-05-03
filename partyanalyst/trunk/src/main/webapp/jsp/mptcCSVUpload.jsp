@@ -53,6 +53,12 @@
 				}			
 			}
 		}
+
+		function getElectionType(){
+			var typeEle = document.getElementById("electionTypeID");
+			var hiddenEle = document.getElementById("hiddenEleId");
+			hiddenEle.value = typeEle.options[typeEle.selectedIndex].text
+		}
 	</script>
 </head>
 <body>
@@ -85,10 +91,13 @@
 		</tr>
 		<tr>
 			<td>Election Type</td>
-			<td><select name="electionTypeID" id="electionTypeID">
+			<td><select name="electionTypeID" id="electionTypeID" onchange="getElectionType()">
+				<option value="0">Select</option>
 				<option value="3">MPTC</option>
 				<option value="4">ZPTC</option>
-			</select></td>
+				<option value="5">MUNCIPALITY</option>
+				<option value="6">CORPORATION</option>
+			</select><input id="hiddenEleId" type="hidden" name="electionType"></td>			
 		</tr>
 		<tr>
 			<td>Election Year</td>
