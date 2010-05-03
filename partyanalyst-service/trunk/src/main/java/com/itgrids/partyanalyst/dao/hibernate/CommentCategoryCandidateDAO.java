@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
@@ -164,6 +165,16 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				"from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? "+
 				"and model.nomination.party.partyId = ? and model.commentData.commentDataCategory.commentClassification = ? "+
 				"and model.commentData.commentDataCategory.commentDataCategoryId = ? order by model.nomination.constituencyElection.constituency.constituencyId",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getCommentResultsForCandidateNominations(
+			List<Long> nominationIds) {
+		Query queryObject = getSession().createQuery("select model.commentData.commentDataCategory.commentDataCategoryId,model.commentData.commentDataCategory.commentDataCategoryType,"+
+				"count(distinct model.commentData.commentDataCategory.commentDataCategoryType) from CommentCategoryCandidate model where "+
+				"model.nomination.nominationId in (:nominationIds) group by model.nomination.constituencyElection.constituency.constituencyId");
+		queryObject.setParameterList("nominationIds", nominationIds);
+		return queryObject.list();
 	}
 
 
