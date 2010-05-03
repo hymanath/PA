@@ -656,7 +656,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				if(categoryTypeId == null || categoryTypeId.equals(new Long(0)))
 				    commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId,category);
 				else 
-					commentsDetails = commentCategoryCandidateDAO.getNominationsForCandidateHavingComments(electionId, partyId,category,categoryTypeId);	
+					commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId,category,categoryTypeId);	
 				
 				Party party = partyDAO.get(partyId);
 				
