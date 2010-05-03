@@ -1121,9 +1121,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	    Object[] params = {electionId,partyId,rank};
 	    return getHibernateTemplate().find("select model.candidate.candidateId,model.candidate.lastname,model.constituencyElection.constituency.constituencyId,"+
 	    		"model.constituencyElection.constituency.name,model.constituencyElection.constituencyElectionResult.validVotes,"+
-	    		"model.candidateResult.votesEarned,model.candidateResult.votesPercengate from Nomination model where "+
+	    		"model.candidateResult.votesEarned,model.candidateResult.votesPercengate,model.nominationId from Nomination model where "+
 	    		"model.constituencyElection.election.electionId = ? and model.party.partyId = ? "+
-	    		"and model.candidateResult.rank = ?",params);
+	    		"and model.candidateResult.rank = ? order by model.constituencyElection.constituency.constituencyId",params);
 	}
 	@SuppressWarnings("unchecked")
 	public List findElectionResultsByElectionIdAndPartyIdAndLostRank(
@@ -1148,6 +1148,12 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		Object[] params = {electionId,partyId,rank};
 		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionId = ?"+
 				" and model.party.partyId = ? and model.candidateResult.rank = ?",params);
+	}
+	@SuppressWarnings("unchecked")
+	public List<Nomination> findByElectionIdAndRank(Long electionId, Long rank) {
+		Object[] params = {electionId,rank};
+		return getHibernateTemplate().find("from Nomination model where model.constituencyElection.election.electionId = ? "+
+				"and model.candidateResult.rank = ? order by model.constituencyElection.constituency.constituencyId",params);
 	}
 
 }
