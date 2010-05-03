@@ -837,6 +837,30 @@
         	</result>       		
         </action>
         
+        <action name="partyMainPartyElectionResultsAnalysisAjaxAction" class="partyElectionResultsAnalysisAction" method="getMainPartyAnalyzedConstituencies"> 
+            <result type="json" name="success">
+           	<param name="root">electionBasicCommentsVOList</param>
+        	</result>       		
+        </action>
+        
+        <action name="partyMainPartyElectionResultsNotAnalysedAjaxAction" class="partyElectionResultsAnalysisAction" method="getMainPartyNotAnalyzedConstituencies"> 
+            <result type="json" name="success">
+           	<param name="root">candidateElectionResultVO</param>
+        	</result>       		
+        </action>
+        
+        <action name="partyMainPartyCategoryAnalysisAjaxAction" class="partyElectionResultsAnalysisAction" method="getMainPartyCategoryAnalyzedConstituencies"> 
+            <result type="json" name="success">
+           	<param name="root">electionBasicCommentsVOList</param>
+        	</result>       		
+        </action>
+        
+        <action name="partyMainPartyMultipleReasonsAnalysisAjaxAction" class="partyElectionResultsAnalysisAction" method="getMainPartyMultipleReasonsAnalysis"> 
+            <result type="json" name="success">
+           	<param name="root">electionBasicCommentsVOList</param>
+        	</result>       		
+        </action>
+        
         <action name="partyElectionResultsAjaxAction" class="partyElectionResultsAction" method="ajaxCallHandler"> 
             <result type="json" name="success">
            	<param name="root">electionResultPartyVO</param>

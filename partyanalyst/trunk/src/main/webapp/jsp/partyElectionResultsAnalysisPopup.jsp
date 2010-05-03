@@ -97,7 +97,7 @@ function callAjax(param,jsObj,url){
 						try {												
 								if(o.responseText)
 									myResults = YAHOO.lang.JSON.parse(o.responseText);
-								if(jsObj.task == "getCandidateComments")
+								else if(jsObj.task == "getCandidateComments")
 								{
 									var imgElmt = document.getElementById("barloaderGif");
 
@@ -111,18 +111,40 @@ function callAjax(param,jsObj,url){
 									else if(jsObj.status == "notAnalyzed")
 										showNotAnalyzedDetails(myResults);
 								}
-								if(jsObj.task == "getCommentsClassificationsList")
+								else if(jsObj.task == "getCommentsClassificationsList")
 								{
 									buildCommentsClassificationsOptions(myResults);
 								}
-								if(jsObj.task == "getPreviousComments")
+								else if(jsObj.task == "getPreviousComments")
 								{
 									showPreviousComments(myResults,jsObj);
 								}
-								if(jsObj.task == "addNewComment")
+								else if(jsObj.task == "addNewComment")
 								{
 									updatePreviousCommentsDataTable(myResults);
 								}
+								else if(jsObj.task == "getMainPartyCategoryComments")
+								{
+									var imgElmt = document.getElementById("barloaderGif");
+
+									if(imgElmt.style.display == "block")
+										imgElmt.style.display = "none";
+									else if(imgElmt.style.display == "none")
+										imgElmt.style.display == "block";
+
+									showAnalysisDetails(myResults);
+								}
+								else if(jsObj.task == "getMainPartyMultipleReasonsComments")
+								{
+									var imgElmt = document.getElementById("barloaderGif");
+
+									if(imgElmt.style.display == "block")
+										imgElmt.style.display = "none";
+									else if(imgElmt.style.display == "none")
+										imgElmt.style.display == "block";
+
+									//showAnalysisDetails(myResults);
+								}								
 						}
 						catch (e) {   
 						   	alert("Invalid JSON result" + e);   
@@ -191,6 +213,65 @@ function getMainPartyComments()
 
 	callAjax(param,jsObj,url);
 }
+
+function getMainPartyCategoryComments()
+{
+	var status = '${status}';
+	var stateId = '${stateId}';
+	var position = '${position}';
+	var categoryId = '${categoryId}';
+	var url = '';
+	
+	var jsObj= 
+	{
+		
+	 	electionId: electionId,
+	 	partyId: partyId,		
+		status:status,
+		stateId:stateId,
+		position:position,
+		categoryId:categoryId,
+		task:"getMainPartyCategoryComments"		
+	}
+	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	incrementHidden();	
+	url = "<%=request.getContextPath()%>/partyMainPartyCategoryAnalysisAjaxAction.action?"+param+"&hidden="+hidden;
+
+	callAjax(param,jsObj,url);
+}
+
+
+function getMainPartyMultipleReasonComments()
+{
+	
+	var status = '${status}';
+	var stateId = '${stateId}';
+	var position = '${position}';
+	var reasonCount= '${reasonCount}';
+	var constituencyCount = '${constituencyCount}';
+	var url = '';
+	
+	var jsObj= 
+	{
+		
+	 	electionId: electionId,
+	 	partyId: partyId,		
+		status:status,
+		stateId:stateId,
+		position:position,
+		reasonCount:reasonCount,
+		constituencyCount:constituencyCount,
+		task:"getMainPartyMultipleReasonsComments"		
+	}
+	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	incrementHidden();	
+	url = "<%=request.getContextPath()%>/partyMainPartyMultipleReasonsAnalysisAjaxAction.action?"+param+"&hidden="+hidden;
+
+	callAjax(param,jsObj,url);
+}
+
 
 function getMoreDetails(constiId)
 {	
@@ -362,9 +443,17 @@ function getCommentsClassifications(rank)
 	{		
 		getCandidateComments();
 	}
-	else
+	else if('${windowTask}' == "mainPartyResultsAnalysisPopup")
 	{
 		getMainPartyComments();
+	}
+	else if('${windowTask}' == "mainPartyCategoryAnalysisPopup")
+	{
+		getMainPartyCategoryComments();
+	}
+	else if('${windowTask}' == "multipleReasonAnalysisPopup")
+	{
+		getMainPartyMultipleReasonComments();
 	}
 		
 </SCRIPT>

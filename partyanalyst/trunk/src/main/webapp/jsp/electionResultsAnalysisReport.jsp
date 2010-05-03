@@ -59,7 +59,6 @@
 		cursor:pointer;
 		font-size:12px;
 		font-weight:bold;
-		text-align:left;
 	}
 
 	.votesMarginBody
@@ -245,12 +244,37 @@ function openMainPartyElectionResultsAnalysisWindow(electionId, partyId,status,p
 	var stateId =stateSelectEl.value;	
 
 	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
-	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position;
+	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&windowTask=mainPartyResultsAnalysisPopup";
 	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	
 	browser2.focus();	
 }
 
+function openMainPartyElectionResultsAnalysisCategoryWindow(electionId, partyId,status,partyName,electionType,stateName,electionYear,position,categoryId)
+{
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	var stateId =stateSelectEl.value;	
+
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
+	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&categoryId="+categoryId+"&windowTask=mainPartyCategoryAnalysisPopup";
+	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	
+	browser2.focus();	
+}
+
+
+function openMainPartyMultipleReasonsAnalysisWindow(electionId, partyId,status,partyName,electionType,stateName,electionYear,position,reasonCount,constituencyCount)
+{
+	return;
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	var stateId =stateSelectEl.value;	
+
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
+	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&reasonCount="+reasonCount+"&constituencyCount="+constituencyCount+"&windowTask=multipleReasonAnalysisPopup";
+	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	
+	browser2.focus();
+}
 
 function getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId){
 

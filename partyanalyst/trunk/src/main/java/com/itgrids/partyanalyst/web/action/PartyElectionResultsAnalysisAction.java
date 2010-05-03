@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.service.IAnalysisReportService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -38,10 +39,55 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	private String status;
 	private String stateName;
 	private String electionYear;
+	private String position;
+	private String categoryId;	
+	private String windowTask;
+	private String reasonCount;
+	private String constituencyCount;
 	private String task = null;
 	JSONObject jObj = null;
 	
 	
+	public String getReasonCount() {
+		return reasonCount;
+	}
+
+	public void setReasonCount(String reasonCount) {
+		this.reasonCount = reasonCount;
+	}
+
+	public String getConstituencyCount() {
+		return constituencyCount;
+	}
+
+	public void setConstituencyCount(String constituencyCount) {
+		this.constituencyCount = constituencyCount;
+	}
+
+	public String getWindowTask() {
+		return windowTask;
+	}
+
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+
+	public String getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
 	public List<CandidateElectionResultVO> getCandidateElectionResultVO() {
 		return candidateElectionResultVO;
 	}
@@ -235,5 +281,127 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
+	public String getMainPartyAnalyzedConstituencies() throws Exception
+	{
 
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		String position = jObj.getString("position");
+		
+		String category = null;
+		if(position.equals("Won"))
+			category = IConstants.CANDIDATE_COMMENTS_WON;
+		else if(position.equals("Lost"))
+			category = IConstants.CANDIDATE_COMMENTS_LOST;
+			
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,new Long(0));
+		return Action.SUCCESS;
+	}
+	
+	
+	public String getMainPartyNotAnalyzedConstituencies() throws Exception
+	{
+
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		Long stateId = new Long(jObj.getString("stateId"));
+		String position = jObj.getString("position");
+		
+		String category = null;
+		if(position.equals("Won"))
+			category = IConstants.CANDIDATE_COMMENTS_WON;
+		else if(position.equals("Lost"))
+			category = IConstants.CANDIDATE_COMMENTS_LOST;
+		
+		if(jObj.getString("status").equalsIgnoreCase("notAnalyzed"))
+		{			
+			candidateElectionResultVO = analysisReportService.getElectionResultsForNotAnalyzedConstituencies(electionId, partyId, stateId,category);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMainPartyCategoryAnalyzedConstituencies() throws Exception
+	{
+
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		Long stateId = new Long(jObj.getString("stateId"));
+		String position = jObj.getString("position");
+		Long categoryTypeId = new Long(jObj.getString("categoryId"));
+		
+		String category = null;
+		if(position.equals("Won"))
+			category = IConstants.CANDIDATE_COMMENTS_WON;
+		else if(position.equals("Lost"))
+			category = IConstants.CANDIDATE_COMMENTS_LOST;
+		
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,categoryTypeId);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getMainPartyMultipleReasonsAnalysis() throws Exception
+	{
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		Long stateId = new Long(jObj.getString("stateId"));
+		String position = jObj.getString("position");
+		Long categoryTypeId = new Long(jObj.getString("categoryId"));
+		
+		String category = null;
+		if(position.equals("Won"))
+			category = IConstants.CANDIDATE_COMMENTS_WON;
+		else if(position.equals("Lost"))
+			category = IConstants.CANDIDATE_COMMENTS_LOST;
+		
+		
+		//electionBasicCommentsVOList = analysisReportService.getCandidateCommentDetailsInAnElection(electionId, partyId,category,categoryTypeId);
+		return Action.SUCCESS;
+	
+	}
+	
 }

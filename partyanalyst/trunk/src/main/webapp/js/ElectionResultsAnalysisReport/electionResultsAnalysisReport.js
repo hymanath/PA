@@ -279,10 +279,10 @@ function buildGraphsCarousel(divId)
 	graphImagesCarousel.show();
 }
 
-//onclick="openPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')"
-//onclick="openPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'notAnalyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')"
+
 function showAnalysisDetailsInPartyLostPositions(results)
 {		
+	console.log(results);
 	var divEl = document.getElementById("lostPosAnalisisDetails");
 	contentStr='';
 	contentStr+='<DIV class="wonLostPosHeading">Analysis in Party Lost Positions</DIV>';
@@ -312,7 +312,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
     contentStr+='<TABLE class="wonLostPosTable" width="80%">';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">'+results.analysisCategoryBasicResultVO[i].categoryType+'</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='</TABLE>';		
 	}
@@ -336,7 +336,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='	<TD width="30%"><B>No of Constituencies</B></TD>';
 	for(var i in results.multipleCategories)
 	{
-		contentStr+='<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}">'+results.multipleCategories[i].name+'</A></TD>';
+		contentStr+='<TD width="5%"><A title="Click To View Constituencies" href="javascript:{}" onclick="openMainPartyMultipleReasonsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\','+results.multipleCategories[i].id+','+results.multipleCategories[i].name+')">'+results.multipleCategories[i].name+'</A></TD>';
 	}
 	contentStr+='	</TR>';
 	contentStr+='	</table>';					
@@ -477,7 +477,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
     contentStr+='<TABLE class="wonLostPosTable" width="80%">';
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">'+results.analysisCategoryBasicResultVO[i].categoryType+'</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Won\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
 	contentStr+='</TR>';
 	contentStr+='</TABLE>';		
 	}
