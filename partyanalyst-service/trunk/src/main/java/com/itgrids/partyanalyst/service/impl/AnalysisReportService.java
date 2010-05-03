@@ -638,7 +638,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(
-			Long electionId, Long partyId, String category) {
+			Long electionId, Long partyId, String category,Long categoryTypeId) {
 		
         log.debug("Inside getCandidateCommentDetailsInAnElection Method..... ");
 		
@@ -650,9 +650,14 @@ public class AnalysisReportService implements IAnalysisReportService {
 			if(electionId != null && partyId != null){
 				electionBasicCommentsVO = new ArrayList<ElectionBasicCommentsVO>();
 				commentsDataMap = new HashMap<Long,List<CandidateCommentsVO>>();
+				List commentsDetails = null;
 				
 				//List commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId);
-				List commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId,category);
+				if(categoryTypeId == null || categoryTypeId.equals(new Long(0)))
+				    commentsDetails = commentCategoryCandidateDAO.getCommentsResultsForAPartyInAnElection(electionId, partyId,category);
+				else 
+					commentsDetails = commentCategoryCandidateDAO.getNominationsForCandidateHavingComments(electionId, partyId,category,categoryTypeId);	
+				
 				Party party = partyDAO.get(partyId);
 				
 				if(commentsDetails != null && commentsDetails.size() > 0){
