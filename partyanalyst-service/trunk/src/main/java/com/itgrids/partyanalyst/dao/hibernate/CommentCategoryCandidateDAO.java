@@ -154,13 +154,16 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	}
 
 	@SuppressWarnings("unchecked")
-	public List getNominationsForCandidateHavingComments(Long electionId,
+	public List getCommentsResultsForAPartyInAnElection(Long electionId,
 			Long partyId, String category, Long categoryTypeId) {
 		Object[] params = {electionId,partyId,category,categoryTypeId};
-		return getHibernateTemplate().find("select distinct model.nomination.nominationId from CommentCategoryCandidate model"+
-				" where model.nomination.constituencyElection.election.electionId = ?"+
-				" and model.nomination.party.partyId = ? and model.commentData.commentDataCategory.commentClassification = ?"+
-				" and model.commentData.commentDataCategory.commentDataCategoryId = ?",params);
+		return getHibernateTemplate().find("select model.nomination.constituencyElection.constituency.constituencyId,model.nomination.constituencyElection.constituency.name,"+
+				"model.nomination.candidate.candidateId,model.nomination.candidate.lastname,"+
+				"model.commentData.commentDesc,model.commentData.commentBy,"+
+				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType "+
+				"from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? "+
+				"and model.nomination.party.partyId = ? and model.commentData.commentDataCategory.commentClassification = ? "+
+				"and model.commentData.commentDataCategory.commentDataCategoryId = ? order by model.nomination.constituencyElection.constituency.constituencyId",params);
 	}
 
 
