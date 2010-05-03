@@ -152,7 +152,16 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				" where model.nomination.constituencyElection.election.electionId = ?"+
 				" and model.nomination.party.partyId = ? and model.commentData.commentDataCategory.commentClassification = ?",params);
 	}
-	
-	
+
+	@SuppressWarnings("unchecked")
+	public List getNominationsForCandidateHavingComments(Long electionId,
+			Long partyId, String category, Long categoryTypeId) {
+		Object[] params = {electionId,partyId,category,categoryTypeId};
+		return getHibernateTemplate().find("select distinct model.nomination.nominationId from CommentCategoryCandidate model"+
+				" where model.nomination.constituencyElection.election.electionId = ?"+
+				" and model.nomination.party.partyId = ? and model.commentData.commentDataCategory.commentClassification = ?"+
+				" and model.commentData.commentDataCategory.commentDataCategoryId = ?",params);
+	}
+
 
 }
