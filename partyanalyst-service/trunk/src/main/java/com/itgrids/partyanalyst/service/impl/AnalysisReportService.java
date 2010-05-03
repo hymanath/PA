@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +38,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionAnalysisResultVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
 import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
@@ -764,6 +766,216 @@ public class AnalysisReportService implements IAnalysisReportService {
 		}
 		return notAnalyzedResultsList;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getVotesMarginAnalysisResults(java.lang.Long, java.lang.Long, java.lang.String)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisResults(
+			Long electionId, Long partyId, String category) {
+		
+		 log.debug("Inside getVotesMarginAnalysisResults Method..... ");
+		 
+		 List<VotesMarginAnalysisVO> votesMarginAnalysisVO = null;
+		 ResultStatus resultStatus = new ResultStatus();
+		 
+		 try{
+			 
+			 List<Nomination> partyNominations = null;
+			 List<Nomination> oppPartyNominations = null;
+			 //Map<constituencyId,Nomination> oppositionPartyNominations ..
+			 Map<Long,Nomination> oppPartyNominationsMap = null;
+			 
+			 if(electionId != null && partyId != null && category != null){
+				 
+				 votesMarginAnalysisVO = new ArrayList<VotesMarginAnalysisVO>();
+				 
+				  if(category.equals(IConstants.CANDIDATE_COMMENTS_WON)){
+					  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId,new Long(1));
+					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(2));
+				  }
+				  else if(category.equals(IConstants.CANDIDATE_COMMENTS_LOST)){
+					  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId, partyId, new Long(1));
+					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(1));
+				  }
+				  
+				  if(oppPartyNominations != null && oppPartyNominations.size() > 0)
+					  oppPartyNominationsMap = getOppPartyNominationsMap(oppPartyNominations);
+				  
+				  //creating dummy map with dummy margin values
+				  Map<Long,List<Long>> marginNominationIds = new HashMap<Long,List<Long>>();
+				  for(int i=1;i<5;i++){
+					  List<Long> arrayList = new ArrayList<Long>();
+					  marginNominationIds.put(new Long(i), arrayList);
+				  }
+				  
+				  //process the party result nominations
+				  if(partyNominations != null && partyNominations.size() > 0 && !oppPartyNominationsMap.isEmpty()){
+					  for(Nomination partyNomintn:partyNominations){
+						  Long constituencyId = partyNomintn.getConstituencyElection().getConstituency().getConstituencyId();
+						  Nomination oppPartyNomitn = null;
+						  if(oppPartyNominationsMap.containsKey(constituencyId))
+						  oppPartyNomitn = oppPartyNominationsMap.get(constituencyId);
+						  
+						  if(oppPartyNomitn != null){
+							  Long maginValue = getMarginValueFromPartyAndOppPartyNominations(partyNomintn,oppPartyNomitn);
+							  
+							  if(maginValue != null){
+								  Long marginVal = null;
+								  if(maginValue > new Long(0) && maginValue <= new Long(10))
+									  marginVal = new Long(1);
+								  else if(maginValue > new Long(10) && maginValue <= new Long(20))
+									  marginVal = new Long(2);
+								  else if(maginValue > new Long(20) && maginValue <= new Long(30))
+									  marginVal = new Long(3);
+								  else if(maginValue > new Long(30))
+									  marginVal = new Long(4);
+								  
+								  List<Long> partyNomin = marginNominationIds.get(marginVal);
+								  partyNomin.add(partyNomintn.getNominationId());
+								  marginNominationIds.put(marginVal, partyNomin);
+							  }
+						  }
+							  
+					  }
+				  }
+				  
+				  //get analyzed constituencies
+				  if(!marginNominationIds.isEmpty()){
+					Set entries = marginNominationIds.entrySet();
+					Iterator iterator = entries.iterator();
+					while(iterator.hasNext()){
+					Map.Entry entry = (Map.Entry)iterator.next();
+					List<Long> nominationIds = (List<Long>)entry.getValue();
+					Long id = (Long)entry.getKey();
+					VotesMarginAnalysisVO votesMarginAnalysis = getDetailsOfMarginVotesAnalysis(id,nominationIds);
+					
+					if(votesMarginAnalysis != null)
+						votesMarginAnalysisVO.add(votesMarginAnalysis);
+					}
+				  }
+				  
+			 }
+			 
+			 
+		 }
+		 catch(Exception ex){
+			 ex.printStackTrace();
+			 VotesMarginAnalysisVO votesMarginAnalysis = new VotesMarginAnalysisVO();
+			 resultStatus.setExceptionEncountered(ex);
+			 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			 votesMarginAnalysis.setResultStatus(resultStatus);
+			 votesMarginAnalysisVO = new ArrayList<VotesMarginAnalysisVO>();
+			 votesMarginAnalysisVO.add(votesMarginAnalysis);
+		 }
+		
+		return votesMarginAnalysisVO;
+	}
 	
+	/*
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public VotesMarginAnalysisVO getDetailsOfMarginVotesAnalysis(Long id,List<Long> nominationIds){
+		
+		 log.debug("Inside getDetailsOfMarginVotesAnalysis Method..... ");
+		 
+		 VotesMarginAnalysisVO votesMarginAnalysisVO = null;
+		 
+		 if(nominationIds != null && nominationIds.size() > 0){
+			 votesMarginAnalysisVO = new VotesMarginAnalysisVO();
+			 List<AnalysisCategoryBasicVO> analysisCategoryVosList = new ArrayList<AnalysisCategoryBasicVO>();
+			 List analysisResults = commentCategoryCandidateDAO.getCommentResultsForCandidateNominations(nominationIds);
+			 if(analysisResults != null && analysisResults.size() > 0){
+				 Long reasonsCount = new Long(0);
+				 for(int i=0;i<analysisResults.size();i++){
+					 Object[] params = (Object[])analysisResults.get(i);
+					 Long countVal = (Long)params[2];
+					 reasonsCount+=countVal;
+					 
+					 AnalysisCategoryBasicVO analysisCategory = new AnalysisCategoryBasicVO();
+					 analysisCategory.setCategoryId((Long)params[0]);
+					 analysisCategory.setCategoryType((String)params[1]);
+					 analysisCategory.setCategoryResultCount(countVal);
+					 analysisCategoryVosList.add(analysisCategory);
+				 }
+				 votesMarginAnalysisVO.setNominationIds(nominationIds);
+				 votesMarginAnalysisVO.setCandidatesCount(new Long(nominationIds.size()));
+				 votesMarginAnalysisVO.setAnalyzedCount(reasonsCount);
+				 votesMarginAnalysisVO.setAnalysisCategoryBasicVO(analysisCategoryVosList);
+				 
+				 if(id.equals(new Long(1))){
+					 votesMarginAnalysisVO.setMarginValueOne(new Long(0));
+					 votesMarginAnalysisVO.setMarginValueOne(new Long(10));
+					 votesMarginAnalysisVO.setMarginRange("0 - 10 %");
+				 }
+				 else if(id.equals(new Long(2))){
+					 votesMarginAnalysisVO.setMarginValueOne(new Long(10));
+					 votesMarginAnalysisVO.setMarginValueOne(new Long(20));
+					 votesMarginAnalysisVO.setMarginRange("10 - 20 %");
+				 }
+				 else if(id.equals(new Long(3))){
+					 votesMarginAnalysisVO.setMarginValueOne(new Long(20));
+					 votesMarginAnalysisVO.setMarginValueOne(new Long(30));
+					 votesMarginAnalysisVO.setMarginRange("20 - 30 %");
+				 }
+				 else{
+					 votesMarginAnalysisVO.setMarginValueOne(new Long(30));
+					 votesMarginAnalysisVO.setMarginValueOne(new Long(100));
+					 votesMarginAnalysisVO.setMarginRange("30 % and above %");
+				 }
+				 
+			 }
+		 }
+		 
+	  return votesMarginAnalysisVO;
+	}
+	
+	/*
+	 * 
+	 */
+	public Map<Long,Nomination> getOppPartyNominationsMap(List<Nomination> oppPartyNominations) throws Exception{
+		
+		 log.debug("Inside getOppPartyNominationsMap Method..... ");
+		 
+		 Map<Long,Nomination> oppPartyNominationsMap = null;
+		if(oppPartyNominations != null && oppPartyNominations.size() > 0){
+			oppPartyNominationsMap = new HashMap<Long,Nomination>();
+			for(Nomination nomination:oppPartyNominations){
+				Long constituencyId = nomination.getConstituencyElection().getConstituency().getConstituencyId();
+				oppPartyNominationsMap.put(constituencyId, nomination);
+			}
+		}
+	 return oppPartyNominationsMap;
+	}
+	
+	/*
+	 * 
+	 */
+	public Long getMarginValueFromPartyAndOppPartyNominations(Nomination partyNomination,Nomination oppPartyNomination) throws Exception{
+		
+		log.debug("Inside getMarginValueFromPartyAndOppPartyNominations Method..... ");
+		Long marginValueLong = null;
+		
+		try{
+		String partyVotesPercent = partyNomination.getCandidateResult().getVotesPercengate();
+		Long partyRank = partyNomination.getCandidateResult().getRank();
+		String oppPartyVotesPercent = oppPartyNomination.getCandidateResult().getVotesPercengate();
+		Double marginValue = null;
+		if(partyRank.equals(new Long(1))){
+			marginValue = new BigDecimal(new Double(partyVotesPercent)-new Double(oppPartyVotesPercent)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
+		else{
+			marginValue = new BigDecimal(new Double(oppPartyVotesPercent)-new Double(partyVotesPercent)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
+		marginValueLong = marginValue.longValue();
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			log.debug("Exception Raised :" + ex);
+		}
+		return marginValueLong;
+	}
 	
 }
