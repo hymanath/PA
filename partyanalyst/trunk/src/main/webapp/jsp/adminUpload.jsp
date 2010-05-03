@@ -33,7 +33,7 @@
  <tr><td align = "right"><h4>To Upload Booth Results :<a href="<s:url action="boothResultUpload"/>"> Upload </h4></a><br/></td></tr>
  <tr><td align = "right"><h4>To Upload Voter    Data :<a href="<s:url action="voterDataUpload"/>"> Upload </h4></a><br/></td></tr>
  <tr><td align = "right"><h4>To Upload Problems Data :<a href="<s:url action="problemDataUpload"/>"> Upload </h4></a><br/></td></tr>
- <tr><td align = "right"><h4>To Upload MPTC/ZPTC Election Data :<a href="<s:url action="mptcElectionAction"/>"> Upload </h4></a><br/></td></tr>
+ <tr><td align = "right"><h4>To Upload MPTC/ZPTC/Muncipal Election Data :<a href="<s:url action="mptcElectionAction"/>"> Upload </h4></a><br/></td></tr>
  <tr><td align="right"><h4>Map Booths To Hamlets</h4><a href="<s:url action="hamletBoothMapperAction"/>"> Map </h4></a><br/></td></tr>
  <tr><td align="right"><h4>Upload Booth Village Mapping Data</h4><a href="<s:url action="villageBoothMapperAction"/>"> Upload </h4></a><br/></td></tr>
  </table>
