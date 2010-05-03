@@ -123,11 +123,10 @@ public class ElectionTrendzService implements IElectionTrendzService {
 	@SuppressWarnings("unchecked")
 	public ElectionBasicInfoVO getBasicElectionInfoFromConstituencyId(Long constituencyId){
 		
-		ElectionBasicInfoVO electionBasicInfoVO = null;
+		ElectionBasicInfoVO electionBasicInfoVO = new ElectionBasicInfoVO();
 		if(constituencyId != null){
 			List election = boothConstituencyElectionDAO.findBoothwiseResultsConstituency(constituencyId);
 			if(election != null && election.size() > 0){
-			electionBasicInfoVO = new ElectionBasicInfoVO();
 			Object[] params = (Object[])election.get(0);
 			String elecYear = (String)params[0];
 			Long elecId = (Long)params[1];

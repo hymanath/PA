@@ -326,10 +326,12 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		return getHibernateTemplate().find(hqlQuery.toString(), constituencyId);
 		
 	}
+	
 	@SuppressWarnings("unchecked")
 	public List findBoothwiseResultsConstituency(Long constituencyId)
 	{
-		return getHibernateTemplate().find("select max(model.constituencyElection.election.electionYear),model.constituencyElection.election.electionId,model.constituencyElection.election.electionScope.electionType.electionTypeId,model.constituencyElection.election.electionScope.electionType.electionType from BoothConstituencyElection model where model.constituencyElection.constituency.constituencyId= ?" , constituencyId);
+		return getHibernateTemplate().find("select max(model.constituencyElection.election.electionYear),model.constituencyElection.election.electionId,model.constituencyElection.election.electionScope.electionType.electionTypeId,model.constituencyElection.election.electionScope.electionType.electionType from BoothConstituencyElection model where model.constituencyElection.constituency.constituencyId= ?" +
+				" group by model.constituencyElection.election.electionId" , constituencyId);
 		
 	}
 	
