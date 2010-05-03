@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.dto.PartyAnalysisReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionAnalysisResultVO;
+import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
 
 public interface IAnalysisReportService {
 	
@@ -27,4 +28,6 @@ public interface IAnalysisReportService {
  	public List<ElectionBasicCommentsVO> getCandidateCommentDetailsInAnElection(Long electionId,Long partyId,String category,Long categoryTypeId);
  	
  	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(Long electionId, Long partyId,Long stateId,String category);
+ 	
+ 	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisResults(Long electionId,Long partyId,String category);
 }
