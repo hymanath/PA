@@ -238,6 +238,16 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	@SuppressWarnings("unchecked")
 	public List findElectionResultsByElectionIdAndPartyIdAndLostRank(Long electionId,Long partyId,Long rank);
 	
+	public List getMuncipalityCandidateDetails(String electionType,Long districtId);
 	
+	public List findSeatsWonByAPartyInMuncipalityForAnElectionYear(String muncipalityIds,String electionYear,String electionType,Long rank);
 	
+	public List getPartysInfoForAMuncipalityForAnElectionYear(String electionType,String muncipalityIds,String electionYear);
+	
+	public List getAllPartiesForAMuncipality(String electionType,Long muncipalityId,String electionYear);
+	
+	public List getCandidatesInfoForTheGivenMuncipalityOrCorporationConstituency(String constituencyId,String electionYear,String electionType);
+	
+	public List getAllElectionYearsForAConstituency(Long constituencyId,String electionType);
+
 }

@@ -78,6 +78,7 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List findLatestElectionIdAndYear(Long electionType);
 
 	
+	@SuppressWarnings("unchecked")
 	public List findLatestElectionIdAndYear(Long electionType,Long stateId);
 	
 	@SuppressWarnings("unchecked")
@@ -85,5 +86,5 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List findElectionIdByElectionTypeAndYear(String electionType,String year,Long stateId);
-
+	
 }
