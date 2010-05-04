@@ -138,20 +138,25 @@ function redirectCandidateLink(elecYear)
 }
 function buildDataForConstituencyResults()
 {			
-	var year ='';
-	var allYears = document.getElementById("allYears");
+	var year ='',count=0;
+	
 	var electionYears = '';
 	electionYears+="Also view details for ";
 	<c:forEach var="result" varStatus="stat" items="${constituencyElectionResultsVO.allElectionYears}">
-	year = '${result.name}';
-	electionYears+="<br/> Election Year :";
-	electionYears+='<a href="javascript:{}" onclick="redirectCandidateLink('+year+')">';
-	electionYears+='${result.name}';
-	electionYears+="<br/>";
-	electionYears+='</a>';
+	count++;
 	</c:forEach>
-	allYears.innerHTML = electionYears;
-	
+	if(count>1){
+		var allYears = document.getElementById("allYears");
+		<c:forEach var="result" varStatus="stat" items="${constituencyElectionResultsVO.allElectionYears}">
+		year = '${result.name}';
+		electionYears+="<br/> Election Year :";
+		electionYears+='<a href="javascript:{}" onclick="redirectCandidateLink('+year+')">';
+		electionYears+='${result.name}';
+		electionYears+="<br/>";
+		electionYears+='</a>';
+		</c:forEach>
+		allYears.innerHTML = electionYears;
+	}	
 		 constituencyElecMainObj.constituencyBasicInfo.constituencyId='${constituencyElectionResultsVO.constituencyId}';
 		 constituencyElecMainObj.constituencyBasicInfo.constituencyName='${constituencyElectionResultsVO.constituencyName}';
          constituencyElecMainObj.constituencyBasicInfo.stateName='${constituencyElectionResultsVO.stateName}';
