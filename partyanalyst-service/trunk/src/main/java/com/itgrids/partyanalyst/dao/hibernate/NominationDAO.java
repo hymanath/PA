@@ -1222,5 +1222,12 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find("select distinct model.constituencyElection.election.electionYear" +
 				" from Nomination model where model.constituencyElection.constituency.constituencyId = ?" +
 				" and model.constituencyElection.election.electionScope.electionType.electionType = ?",params);
+	}
+	@SuppressWarnings("unchecked")
+	public List<Nomination> getNominationsForANominationIdsSet(
+			List<Long> nominationIds) {
+		Query queryObject = getSession().createQuery("from Nomination model where model.nominationId in (:nominationIds)");
+		queryObject.setParameterList("nominationIds", nominationIds);
+		return queryObject.list();
 	}	
 }
