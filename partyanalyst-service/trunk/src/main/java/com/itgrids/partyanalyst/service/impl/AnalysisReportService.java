@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionCommentsVO;
+import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.PartyAnalysisBasicVO;
 import com.itgrids.partyanalyst.dto.PartyAnalysisReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionAnalysisResultVO;
@@ -1096,15 +1097,18 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getCandidateResultsInAnElectionFromNominationIds(java.util.List)
 	 * Method to get candidate election results for a votes margin set .. eg:0-10%,10-20% .....
 	 */
-	public List<CandidateElectionResultVO> getCandidateResultsInAnElectionFromNominationIds(
-			List<Long> nominationIds) {
+	public ElectionResultPartyVO getCandidateResultsInAnElectionFromNominationIds(
+			List<Long> nominationIds,Long partyId) {
 		log.debug("Inside getCandidateResultsInAnElectionFromNominationIds Method..... ");
 		
+		ElectionResultPartyVO electionResultPartyVO = null;
 		List<CandidateElectionResultVO> candidateElectionResultVOList = null;
 		if(nominationIds != null && nominationIds.size() > 0){
+			electionResultPartyVO = new ElectionResultPartyVO();
 			candidateElectionResultVOList = new ArrayList<CandidateElectionResultVO>();
 			
 			List<Nomination> nominationsList = nominationDAO.getNominationsForANominationIdsSet(nominationIds);
+			Party party = partyDAO.get(partyId);
 			
 			if(nominationsList != null && nominationsList.size() > 0){
 				for(Nomination nomination:nominationsList){
@@ -1112,8 +1116,14 @@ public class AnalysisReportService implements IAnalysisReportService {
 					candidateElectionResultVOList.add(candidateElectionResultVO);
 				}
 			}
+			electionResultPartyVO.setPartyId(partyId);
+			electionResultPartyVO.setPartyShortName(party.getShortName());
+			electionResultPartyVO.setPartyLongName(party.getLongName());
+			electionResultPartyVO.setPartyFlag(party.getPartyFlag());
+			electionResultPartyVO.setCandidateElectionResultsVO(candidateElectionResultVOList);
+			
 		}
-	 return candidateElectionResultVOList;
+	 return electionResultPartyVO;
 	}
 	
 }
