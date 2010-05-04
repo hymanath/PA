@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.io.File;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
@@ -12,4 +13,6 @@ public interface IInfluencingPeopleService {
 	public List<SelectOptionVO> getAllInfluencePeoplePositions();
 	
 	public List<SelectOptionVO> getInfluenceRange();
+	
+	public void readAndSaveInfluencePeopleDataIntoDB(File file);
 }

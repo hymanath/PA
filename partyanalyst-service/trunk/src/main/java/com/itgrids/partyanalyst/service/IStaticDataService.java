@@ -91,6 +91,8 @@ public interface IStaticDataService {
 	
 	public List<SelectOptionVO> getAllElectionYearsForATeshil(Long electionType);
 	
+	public List<SelectOptionVO> getAllElectionTypes();
+	
 	public List<TeshilPartyInfoVO> getMandalWisePartyReport(String electionType,String electionYear,Long districtId);
 	
 	public List<ElectionBasicInfoVO> getAssemblyElectionsInfoForAConstituency(String presentYear,Long constituencyId);
@@ -119,9 +121,9 @@ public interface IStaticDataService {
 	
 	public DistrictWisePartyResultVO getDistrictWiseElectionReport(Long electionScopeId, Long districtId);
 	
-	public List<MandalAllElectionDetailsVO> populateElectionsData(List winningCandidate,List successorCandidate,int flag);
+	public List<MandalAllElectionDetailsVO> populateElectionsData(List winningCandidate,List successorCandidate,int flag,int reservationZone);
 	
-	public List<MandalAllElectionDetailsVO> populateElectionsDataForAllCandidates(List winningCandidate,List allCandidates);
+	public List<MandalAllElectionDetailsVO> populateElectionsDataForAllCandidates(List winningCandidate,List allCandidates,int reservationZone);
 	
 	public List<SelectOptionVO> getAllElectionsInDistrict(Long districtId);
 	
@@ -133,4 +135,7 @@ public interface IStaticDataService {
 	
 	public ElectionResultPartyVO getElectionResultForAPartyInAnElection(Long electionId,Long partyId,Long rank);
 	
+	public TeshilPartyInfoVO getAllPartyTrendsForAllMuncipalitiesInADistrict(String electionType,Long districtId);
+	
+	public MandalAllElectionDetailsVO getAllMuncipalElectionDetails(Long muncipalityId,String candidateDetailsType,Long partyId,String electionType);
 }
