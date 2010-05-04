@@ -440,19 +440,8 @@
 	<bean id="electionGoverningBodyPositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyPositionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-</beans>
-	
-	<bean id="localElectionBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="electionGoverningBodyPositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyPositionDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<bean id="electionGoverningBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
-	<bean name="muncipleDataUploadService" class="com.itgrids.partyanalyst.service.impl.MuncipleDataUploadService" >		
+
+	<bean name="muncipleDataUploadService" class="com.itgrids.partyanalyst.service.impl.MuncipleDataUploadService">		
 		<property name="transactionTemplate" ref="transactionTemplate" />		
 		<property name="electionDAO" ref="electionDAO" />
 		<property name="electionTypeDAO" ref="electionTypeDAO" />		
