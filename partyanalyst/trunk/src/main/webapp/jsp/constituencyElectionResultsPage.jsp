@@ -85,8 +85,20 @@ font-size:inherit;
 margin:0;
 padding:0;
 }
+
+#detailsHead {
+color:#247CD4;
+font-size:19px;
+font-weight:bold;
+padding:10px;
+margin-left:134px;
+text-align:center;
+}
 </style>
 <script type="text/javascript">
+var constiId = '${constituencyElectionResultsVO.constituencyId}';
+var elecType = '${constituencyElectionResultsVO.electionType}';
+var elecYear = '${constituencyElectionResultsVO.electionYear}';
 
 var constituencyElecMainObj=	{
 		constituencyAddress:'',
@@ -119,9 +131,27 @@ var constituencyElecMainObj=	{
 		oppCandidateElecResults:[]
 };
 
-function buildDataForConstituencyResults()
+function redirectCandidateLink(elecYear)
 {
-
+	   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
+	   browser1.focus();
+}
+function buildDataForConstituencyResults()
+{			
+	var year ='';
+	var allYears = document.getElementById("allYears");
+	var electionYears = '';
+	electionYears+="Also view details for ";
+	<c:forEach var="result" varStatus="stat" items="${constituencyElectionResultsVO.allElectionYears}">
+	year = '${result.name}';
+	electionYears+="<br/> Election Year :";
+	electionYears+='<a href="javascript:{}" onclick="redirectCandidateLink('+year+')">';
+	electionYears+='${result.name}';
+	electionYears+="<br/>";
+	electionYears+='</a>';
+	</c:forEach>
+	allYears.innerHTML = electionYears;
+	
 		 constituencyElecMainObj.constituencyBasicInfo.constituencyId='${constituencyElectionResultsVO.constituencyId}';
 		 constituencyElecMainObj.constituencyBasicInfo.constituencyName='${constituencyElectionResultsVO.constituencyName}';
          constituencyElecMainObj.constituencyBasicInfo.stateName='${constituencyElectionResultsVO.stateName}';
@@ -180,6 +210,23 @@ function buildDataForConstituencyResults()
 
 function displayConstituencyElectionResults()
 {
+		var smallerCase = constituencyElecMainObj.constituencyBasicInfo.constituencyName.toLowerCase();
+		smallerCase=smallerCase.replace(smallerCase[0],smallerCase[0].toUpperCase());
+
+		var smallerCaseElecType = constituencyElecMainObj.constituencyBasicInfo.constituencyType.toLowerCase();
+		smallerCaseElecType=smallerCaseElecType.replace(smallerCaseElecType[0],smallerCaseElecType[0].toUpperCase());
+		
+		var elementHead = document.getElementById("detailsHead");
+		var headDiv = '';
+		headDiv+="<centre><table><tr>";
+		headDiv+="<td>"+smallerCase+"</td>";
+		headDiv+="<td>"+smallerCaseElecType+"</td>";
+		headDiv+="<td> Election Result For - </td>";
+		headDiv+="<td>"+constituencyElecMainObj.constituencyElectionInfo.electionYear+"</td>";
+		headDiv+='</tr></table></centre>';
+		elementHead.innerHTML = headDiv;
+
+		
 		var elmt = document.getElementById("electionResults_Panel");
 
 		var str='';
@@ -285,9 +332,11 @@ function displayConstituencyElectionResults()
 
 <body>
 <div id="constituencyPageMain" style="background-color:none;">
+	<div id="detailsHead"></div>
 	<div id="electionResults_Panel_Main" class="yui-skin-sam">
 			<div id="electionResults_Panel"></div>
 	</div>
+	<div id="allYears"></div>
 </div>
 <script type="text/javascript">
 buildDataForConstituencyResults();
