@@ -229,3 +229,14 @@
 {
 	width:100%;
 }
+
+#mptc_zptc_div_main a
+{
+	color:#4B74C6;
+	text-decoration:none;
+}
+
+#mptc_zptc_div_main a:hover
+{
+	text-decoration:underline;
+}
