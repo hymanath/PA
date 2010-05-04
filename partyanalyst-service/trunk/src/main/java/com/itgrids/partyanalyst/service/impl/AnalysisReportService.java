@@ -793,11 +793,13 @@ public class AnalysisReportService implements IAnalysisReportService {
 				 
 				  if(category.equals(IConstants.CANDIDATE_COMMENTS_WON)){
 					  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId,new Long(1));
-					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(2));
+					  List<Long> constituencyIds = getConstituencyIdsFromNominations(partyNominations);
+					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(2),constituencyIds);
 				  }
 				  else if(category.equals(IConstants.CANDIDATE_COMMENTS_LOST)){
 					  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId, partyId, new Long(1));
-					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(1));
+					  List<Long> constituencyIds = getConstituencyIdsFromNominations(partyNominations);
+					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(1),constituencyIds);
 				  }
 				  
 				  if(oppPartyNominations != null && oppPartyNominations.size() > 0)
@@ -822,7 +824,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 							  Long maginValue = getMarginValueFromPartyAndOppPartyNominations(partyNomintn,oppPartyNomitn);
 							  
 							  if(maginValue != null){
-								  Long marginVal = null;
+								  Long marginVal = new Long(0);
 								  if(maginValue > new Long(0) && maginValue <= new Long(10))
 									  marginVal = new Long(1);
 								  else if(maginValue > new Long(10) && maginValue <= new Long(20))
@@ -848,11 +850,13 @@ public class AnalysisReportService implements IAnalysisReportService {
 					while(iterator.hasNext()){
 					Map.Entry entry = (Map.Entry)iterator.next();
 					List<Long> nominationIds = (List<Long>)entry.getValue();
+					if(nominationIds != null && nominationIds.size() > 0){
 					Long id = (Long)entry.getKey();
 					VotesMarginAnalysisVO votesMarginAnalysis = getDetailsOfMarginVotesAnalysis(id,nominationIds);
 					
 					if(votesMarginAnalysis != null)
 						votesMarginAnalysisVO.add(votesMarginAnalysis);
+					}
 					}
 				  }
 				  
@@ -871,6 +875,25 @@ public class AnalysisReportService implements IAnalysisReportService {
 		 }
 		
 		return votesMarginAnalysisVO;
+	}
+	
+	/*
+	 * 
+	 */
+	public List<Long> getConstituencyIdsFromNominations(List<Nomination> nominations){
+		
+		 log.debug("Inside getConstituencyIdsFromNominations Method..... ");
+		 
+		 List<Long> constituencyIds = null;
+		 
+		 if(nominations != null && nominations.size() > 0){
+			 constituencyIds = new ArrayList<Long>();
+			 for(Nomination nomintn:nominations){
+				 Long constituencyId = nomintn.getConstituencyElection().getConstituency().getConstituencyId();
+				 constituencyIds.add(constituencyId);
+			 }
+		 }
+	 return constituencyIds;
 	}
 	
 	/*
