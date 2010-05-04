@@ -24,6 +24,7 @@ public class ElectionGoverningBody {
 	private LocalElectionBody localElectionBody;
 	private Election election;
 	private ElectionGoverningBodyPosition electionGoverningBodyPosition;
+	private Party party;
 	
 	public ElectionGoverningBody(){
 		
@@ -34,12 +35,13 @@ public class ElectionGoverningBody {
 	}
 
 	public ElectionGoverningBody(Candidate candidate, Long duration, LocalElectionBody localElectionBody, 
-			Election election, ElectionGoverningBodyPosition electionGoverningBodyPosition) {
+			Election election, ElectionGoverningBodyPosition electionGoverningBodyPosition, Party party) {
 		this.candidate = candidate;
 		this.duration = duration;
 		this.localElectionBody = localElectionBody;
 		this.election = election;
 		this.electionGoverningBodyPosition = electionGoverningBodyPosition;
+		this.party = party;
 	}
 
 	@Id
@@ -109,6 +111,18 @@ public class ElectionGoverningBody {
 	public void setElectionGoverningBodyPosition(
 			ElectionGoverningBodyPosition electionGoverningBodyPosition) {
 		this.electionGoverningBodyPosition = electionGoverningBodyPosition;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "party_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Party getParty() {
+		return party;
+	}
+
+	public void setParty(Party party) {
+		this.party = party;
 	}
 	
 	

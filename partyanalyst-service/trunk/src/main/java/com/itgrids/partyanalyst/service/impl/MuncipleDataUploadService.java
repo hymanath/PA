@@ -323,11 +323,11 @@ public class MuncipleDataUploadService implements IMuncipleDataUploadService{
 					
 					if(excelHeaderData.get(IConstants.GOVERNING_BODY) != null)
 						createElectionGoverningBody(election, localElectionBody, sheet, row, IConstants.GOVERNING_BODY, 
-								IConstants.GOVERNING_BODY_PARTY, electionScope.getElectionType().getElectionType(), governingPosition);
+								IConstants.GOVERNING_BODY_PARTY, electionScope.getElectionType().getElectionType(), governingPosition, parties);
 					
 					if(excelHeaderData.get(IConstants.SUB_GOVERNING_BODY) != null)
 						createElectionGoverningBody(election, localElectionBody, sheet, row, IConstants.SUB_GOVERNING_BODY, 
-								IConstants.SUB_GOVERNING_BODY_PARTY, electionScope.getElectionType().getElectionType(), subGoverningPosition);
+								IConstants.SUB_GOVERNING_BODY_PARTY, electionScope.getElectionType().getElectionType(), subGoverningPosition, parties);
 					
 					wardsInMuncipalityMap = createSelectOptionVO(constituencyDAO.findWardsAndIdsInMuncipality(localElectionBody.getLocalElectionBodyId()));
 					
@@ -380,7 +380,7 @@ public class MuncipleDataUploadService implements IMuncipleDataUploadService{
 					throw new Exception("Data All Ready Exists For Ward No::"+wardNo+"At Row::"+row);
 				}
 				
-				row = storeConstituencyAndCandidatesInfo(constituencyElection, sheet, row, wardNo, validVotes, parties);
+				row = storeConstituencyAndCandidatesInfo(constituencyElection, sheet, row, wardNo, validVotes, parties, resultVO);
 				
 			}
 		}
@@ -395,14 +395,14 @@ public class MuncipleDataUploadService implements IMuncipleDataUploadService{
 
 	private void createElectionGoverningBody(Election election,
 			LocalElectionBody localElectionBody, Sheet sheet, int row, String candidateColumn,
-			String partyColumn, String electionType, String position) throws Exception{
+			String partyColumn, String electionType, String position, List<Party> parties) throws Exception{
 		List<ElectionGoverningBodyPosition> electionGoverningBodyPositions = null;
 		String candidateName = checkCellData(sheet, candidateColumn, row);
-		String party = checkCellData(sheet, partyColumn, row);
+		String partyName = checkCellData(sheet, partyColumn, row);
 		
-		if(candidateName.length() == 0 && party.length() == 0)
+		if(candidateName.length() == 0 && partyName.length() == 0)
 			return;
-		if((candidateName.length() == 0 && party.length() > 0)||(candidateName.length() > 0 && party.length() == 0))
+		if((candidateName.length() == 0 && partyName.length() > 0)||(candidateName.length() > 0 && partyName.length() == 0))
 			throw new Exception("Inconsistant Data:: Either "+candidateColumn+" Or "+partyColumn+" Missing at Row::"+row);
 		
 		electionGoverningBodyPositions = electionGoverningBodyPositionDAO.findByPosition(position);
@@ -416,12 +416,13 @@ public class MuncipleDataUploadService implements IMuncipleDataUploadService{
 		candidateInfo.setCandidateName(candidateName);
 		candidateInfo.setGender("");
 		
-		electionGoverningBodyDAO.save(new ElectionGoverningBody(checkAndInsertCandidate(candidateInfo), 0l, localElectionBody, election, electionGoverningBodyPosition));
+		electionGoverningBodyDAO.save(new ElectionGoverningBody(checkAndInsertCandidate(candidateInfo), 0l, localElectionBody, election,
+				electionGoverningBodyPosition, checkAndInsertParty(parties, partyName)));
 		
 	}
 
 	private int storeConstituencyAndCandidatesInfo(ConstituencyElection constituencyElection, Sheet sheet,
-			int row, String wardNo, Long validVotes, List<Party> parties) throws Exception{
+			int row, String wardNo, Long validVotes, List<Party> parties, MPTCElectionResultVO resultVO) throws Exception{
 		String currentWard = "";
 		String candidateName = "";
 		Long age = 0l;

@@ -29,7 +29,7 @@ public class ElectionGoverningBodyPositionDAOHibernateTest extends BaseDaoTestCa
 	}
 	
 	public void testFindByPosition(){
-		List<ElectionGoverningBodyPosition> list = electionGoverningBodyPositionDAO.findByPosition("MAYOR");
+		List<ElectionGoverningBodyPosition> list = electionGoverningBodyPositionDAO.findByPosition("CHAIRPERSON");
 		assertEquals(list.size(), 1);
 	}
 	
