@@ -907,7 +907,12 @@ public class AnalysisReportService implements IAnalysisReportService {
 		 VotesMarginAnalysisVO votesMarginAnalysisVO = null;
 		 
 		 if(nominationIds != null && nominationIds.size() > 0){
+			 
 			 votesMarginAnalysisVO = new VotesMarginAnalysisVO();
+			 votesMarginAnalysisVO.setNominationIds(nominationIds);
+			 votesMarginAnalysisVO.setCandidatesCount(new Long(nominationIds.size()));
+			 votesMarginAnalysisVO.setAnalyzedCount(new Long(0));
+			 
 			 List<AnalysisCategoryBasicVO> analysisCategoryVosList = new ArrayList<AnalysisCategoryBasicVO>();
 			 List analysisResults = commentCategoryCandidateDAO.getCommentResultsForCandidateNominations(nominationIds);
 			 if(analysisResults != null && analysisResults.size() > 0){
@@ -923,8 +928,8 @@ public class AnalysisReportService implements IAnalysisReportService {
 					 analysisCategory.setCategoryResultCount(countVal);
 					 analysisCategoryVosList.add(analysisCategory);
 				 }
-				 votesMarginAnalysisVO.setNominationIds(nominationIds);
-				 votesMarginAnalysisVO.setCandidatesCount(new Long(nominationIds.size()));
+				// votesMarginAnalysisVO.setNominationIds(nominationIds);
+				 //votesMarginAnalysisVO.setCandidatesCount(new Long(nominationIds.size()));
 				 votesMarginAnalysisVO.setAnalyzedCount(reasonsCount);
 				 votesMarginAnalysisVO.setAnalysisCategoryBasicVO(analysisCategoryVosList);
 				 
