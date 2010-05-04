@@ -823,6 +823,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 						  if(oppPartyNomitn != null){
 							  Long maginValue = getMarginValueFromPartyAndOppPartyNominations(partyNomintn,oppPartyNomitn);
 							  
+							  log.debug("Margin Value :" +maginValue );
 							  if(maginValue != null){
 								  Long marginVal = new Long(0);
 								  if(maginValue >= new Long(0) && maginValue <= new Long(10))
@@ -833,10 +834,11 @@ public class AnalysisReportService implements IAnalysisReportService {
 									  marginVal = new Long(3);
 								  else if(maginValue > new Long(30))
 									  marginVal = new Long(4);
-								  
+								  if(!marginNominationIds.isEmpty() && marginNominationIds.containsKey(marginVal)){
 								  List<Long> partyNomin = marginNominationIds.get(marginVal);
 								  partyNomin.add(partyNomintn.getNominationId());
 								  marginNominationIds.put(marginVal, partyNomin);
+								  }
 							  }
 						  }
 							  
