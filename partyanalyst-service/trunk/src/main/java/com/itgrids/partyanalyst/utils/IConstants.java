@@ -101,6 +101,7 @@ public interface IConstants {
 	public final static String MY_GROUP = "MY_GROUP";
 	public final static String VOTES_PERCENT_MARGIN = "0.1";
 	
+	//election data constants
 	public final static String COUNTRY_LEVEL="COUNTRY";
 	public final static String STATE_LEVEL="STATE";
 	public final static String DISTRICT_LEVEL="DISTRICT";
@@ -120,4 +121,5 @@ public interface IConstants {
 	public final static String CONSTITUENCY_COMMENTS_ELECTION="CONSTITUENCY_COMMENTS_ELECTION";
     public final static String CANDIDATE_COMMENTS_WON="WON";
     public final static String CANDIDATE_COMMENTS_LOST="LOST";
+    
 }
