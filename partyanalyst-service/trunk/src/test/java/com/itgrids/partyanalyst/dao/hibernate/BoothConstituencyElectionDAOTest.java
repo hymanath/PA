@@ -133,11 +133,11 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	/*public void testFindElectionsHappendInConstituency(){
-		List list = boothConstituencyElectionDAO.findElectionsHappendInConstituency(232l);
+	public void testFindElectionsHappendInConstituency(){
+		List list = boothConstituencyElectionDAO.findElectionsHappendInConstituency(3492l);
 		for(Object[] values:(List<Object[]>) list)
 			System.out.println(values[0]+" "+values[1]);
-	}*/
+	}
 	
 	/*public void testFindAssemblyConstituenciesDetailsForParliament(){
 		List list = boothConstituencyElectionDAO.findAssemblyConstituenciesDetailsForParliament("223,241,232,233,340,341,238", "2009");
@@ -147,7 +147,7 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 	
 	public void testFindBoothwiseResultsConstituency(){
 		List list = boothConstituencyElectionDAO.findBoothwiseResultsConstituency(342l);
-		System.out.println(list.size());
+		assertEquals(1, list.size());
 	}
 	
 }
