@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
+import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.PartyAnalysisReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionAnalysisResultVO;
 import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
@@ -31,7 +32,7 @@ public interface IAnalysisReportService {
  	
  	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisResults(Long electionId,Long partyId,String category);
  	
- 	public List<CandidateElectionResultVO> getCandidateResultsInAnElectionFromNominationIds(List<Long> nominationIds);
+ 	public ElectionResultPartyVO getCandidateResultsInAnElectionFromNominationIds(List<Long> nominationIds,Long partyId);
  	
  	public List<ElectionBasicCommentsVO> getCandidateCommentsFromNominationIds(Long partyId,List<Long> nominationIds,Long categoryTypeId);
 }
