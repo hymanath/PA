@@ -420,19 +420,27 @@
 	</bean>
 	<bean id="commentDataCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CommentDataCategoryDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>	
-	
+	</bean>		
 	<bean id="groupDAO" class="com.itgrids.partyanalyst.dao.hibernate.GroupDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
+	</bean>	
 	<bean id="influencingPeopleDAO" class="com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
+	</bean>	
 	<bean id="influencingPeoplePositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.InfluencingPeoplePositionDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+
+	<bean id="localElectionBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="electionGoverningBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="electionGoverningBodyPositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyPositionDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+</beans>
 	
 	<bean id="localElectionBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
