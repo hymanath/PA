@@ -97,10 +97,10 @@ function callAjax(param,jsObj,url){
 						try {												
 								if(o.responseText)
 									myResults = YAHOO.lang.JSON.parse(o.responseText);
-								else if(jsObj.task == "getCandidateComments")
+								if(jsObj.task == "getCandidateComments")
 								{
 									var imgElmt = document.getElementById("barloaderGif");
-
+									
 									if(imgElmt.style.display == "block")
 										imgElmt.style.display = "none"
 									else if(imgElmt.style.display == "none")

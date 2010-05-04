@@ -55,8 +55,7 @@ function showAnalysisDetails(results)
 }
 
 function showNotAnalyzedDetails(results)
-{
-	console.log(results);
+{	
 	var analysisDetailsEl = document.getElementById("analysisDetails");
 	var str = '';
 	str+='<div id="notAnalyzedDataTableDiv_main" class="yui-skin-sam"><div id="notAnalyzedDataTableDiv"> </div></div>';

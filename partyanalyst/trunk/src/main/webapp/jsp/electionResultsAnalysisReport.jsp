@@ -71,6 +71,36 @@
 	{
 		padding:5px;
 	}
+	
+	.votesMarginTable 
+	{
+		border-collapse:collapse;
+		border-color:#ADADAD;
+		padding-top:20px;
+	}
+
+	.votesMarginTable th
+	{
+		padding:5px;
+		background-color:#EFEFEF;
+	}
+
+	.marginBodyDivClass
+	{
+		font-weight:bold;
+		padding-left:50px;
+	}
+	
+	.votesMarginDataTable td
+	{
+		padding:3px;
+	}
+
+	.votesMargin_Body_Main
+	{
+		padding-top:20px;
+	}
+
 
 </style>
 <SCRIPT>
@@ -88,32 +118,40 @@ function callAjax(param,jsObj,url){
 									if(elmt)
 										elmt.style.display = 'none';
 									populateElectionTypeDropdown(myResults);
-								} else if(jsObj.task == "getElectionsYears")
+								}
+								else if(jsObj.task == "getElectionsYears")
 								{	
 									var elmt = document.getElementById("electionPageAjaxImgDiv");
 									if(elmt)
 										elmt.style.display = 'none';
 									populateElectionYearDropdown(myResults);
-								}else if(jsObj.task == "getStaticParties")
+								}
+								else if(jsObj.task == "getStaticParties")
 								{										
 									var elmt = document.getElementById("electionPageAjaxImgDiv");
 									if(elmt)
 										elmt.style.display = 'none';
 									populatePartiesDropdown(myResults);
 								}
-								 else if(jsObj.task == "getBasicAnalysisDetails")
+								else if(jsObj.task == "getBasicAnalysisDetails")
 								{										
 									var elmt = document.getElementById("electionPageAjaxImgDiv");
 									if(elmt)
 										elmt.style.display = 'none';
 									showBasicAnalysisDetails(myResults);
-								} else if(jsObj.task == "getAnalysisDetailsInPartyLostPositions")
+								}
+								else if(jsObj.task == "getAnalysisDetailsInPartyLostPositions")
 								{
 									showAnalysisDetailsInPartyLostPositions(myResults);
-								} else if(jsObj.task == "getAnalysisDetailsInPartyWonPositions")
+								}
+								else if(jsObj.task == "getAnalysisDetailsInPartyWonPositions")
 								{
 									showAnalysisDetailsInPartyWonPositions(myResults);
-								}								 
+								}	
+								else if(jsObj.task == "getVotesMarginInfo")
+								{
+									buildVotesMarginInfoContent(jsObj,myResults);
+								}
 								
 						}catch (e) {   
 								   	alert("Invalid JSON result" + e);   
@@ -265,7 +303,6 @@ function openMainPartyElectionResultsAnalysisCategoryWindow(electionId, partyId,
 
 function openMainPartyMultipleReasonsAnalysisWindow(electionId, partyId,status,partyName,electionType,stateName,electionYear,position,reasonCount,constituencyCount)
 {
-	return;
 	var stateSelectEl = document.getElementById("stateSelectEl");
 	var stateId =stateSelectEl.value;	
 
@@ -293,6 +330,22 @@ function getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electio
 	callAjax(param,jsObj,url);
 	
 }
+
+function buildVotesMarginInfo(electionId,partyId,status)
+{	
+	var jsObj= 
+	{
+	 	electionId: electionId,
+		partyId: partyId,
+		status: status,		
+		task:"getVotesMarginInfo"		
+	}
+	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/votesMaringInfoForMainPartyInAnElection.action?"+param;
+	callAjax(param,jsObj,url);
+}
+
 function getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electionId,partyId){
 	var jsObj= 
 	{

@@ -904,6 +904,11 @@
            		<param name="root">partyPositionAnalysisResultVO</param>
         	</result>       		
         </action> 
+        <action name="votesMaringInfoForMainPartyInAnElection" class="electionResultsAnalysisAction" method="getVotesMarginInfoForMainParty"> 
+              <result type="json" name="success">
+           		<param name="root">votesMarginAnalysisVO</param>
+        	</result>       		
+        </action>
 	</package>
 </struts>
 

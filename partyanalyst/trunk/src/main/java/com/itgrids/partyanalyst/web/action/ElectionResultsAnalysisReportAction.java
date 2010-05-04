@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.PartyAnalysisBasicVO;
 import com.itgrids.partyanalyst.dto.PartyAnalysisReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionAnalysisResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.AnalysisReportService;
@@ -43,11 +44,22 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	private List<SelectOptionVO> partiesList;
 	
 	private PartyAnalysisReportVO partyAnalysisReportVO;
+	private List<VotesMarginAnalysisVO> votesMarginAnalysisVO;
+	
 	private String task = null;
 	JSONObject jObj = null;
 	private AnalysisReportService analysisReportService;
 	private PartyPositionAnalysisResultVO partyPositionAnalysisResultVO;
 	
+	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisVO() {
+		return votesMarginAnalysisVO;
+	}
+
+	public void setVotesMarginAnalysisVO(
+			List<VotesMarginAnalysisVO> votesMarginAnalysisVO) {
+		this.votesMarginAnalysisVO = votesMarginAnalysisVO;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.setRequest(request);
 		
@@ -433,6 +445,35 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 			Long partyId = new Long(jObj.getString("partyId"));
 			partyPositionAnalysisResultVO = analysisReportService.getAnalysisCategoryResultForAPartyInAnElection(electionType,electionYear,electionId,stateId,partyId,IConstants.CANDIDATE_COMMENTS_LOST,false);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String getVotesMarginInfoForMainParty() throws Exception
+	{
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		String status = jObj.getString("status");
+		
+		String category = null;
+		if(status.equalsIgnoreCase("WON"))
+			category = IConstants.CANDIDATE_COMMENTS_WON;
+		else if(status.equalsIgnoreCase("LOST"))
+			category = IConstants.CANDIDATE_COMMENTS_LOST;
+		
+		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category) ;
+		
+		
 		return Action.SUCCESS;
 	}
 	
