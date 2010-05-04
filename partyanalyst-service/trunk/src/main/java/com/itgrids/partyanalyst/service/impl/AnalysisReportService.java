@@ -1009,5 +1009,111 @@ public class AnalysisReportService implements IAnalysisReportService {
 		}
 		return marginValueLong;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getCandidateCommentsFromNominationIds(java.util.List)
+	 * Method to get candidate comments for a votes margin set .. eg:0-10%,10-20% .....
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ElectionBasicCommentsVO> getCandidateCommentsFromNominationIds(Long partyId,
+			List<Long> nominationIds,Long categoryTypeId) {
+		
+		log.debug("Inside getCandidateCommentsFromNominationIds Method..... ");
+		
+		List<ElectionBasicCommentsVO>  electionBasicCommentsVOList = null;
+		Map<Long,List<CandidateCommentsVO>> commentsDataMap = null;
+		ResultStatus resultStatus = new ResultStatus();
+				
+		try{
+			
+		if(nominationIds != null && nominationIds.size() > 0){
+			electionBasicCommentsVOList = new ArrayList<ElectionBasicCommentsVO>();
+			commentsDataMap = new HashMap<Long,List<CandidateCommentsVO>>();
+			Party party = partyDAO.get(partyId);
+			List commentsData = null;
+			
+			if(categoryTypeId == null || categoryTypeId.equals(new Long(0)))
+			commentsData = commentCategoryCandidateDAO.getCommentDetailsForSetOfNominations(nominationIds);
+			else if(categoryTypeId != null && !categoryTypeId.equals(new Long(0)))
+			commentsData = commentCategoryCandidateDAO.getCommentDetailsForSetOfNominations(nominationIds,categoryTypeId);
+			
+			if(commentsData != null && commentsData.size() > 0){
+				for(int i=0;i<commentsData.size();i++){
+					Object[] results = (Object[])commentsData.get(i);
+					Long constituencyId = (Long)results[0];
+					if(commentsDataMap.isEmpty() || !commentsDataMap.containsKey(constituencyId)){
+						List<CandidateCommentsVO> candidateCommentsList = new ArrayList<CandidateCommentsVO>();
+						CandidateCommentsVO candidComments = getCandidateCommentsProcessedToMap(results);
+						candidateCommentsList.add(candidComments);
+						commentsDataMap.put(constituencyId, candidateCommentsList);
+					}
+					else if(commentsDataMap.containsKey(constituencyId)){
+						List<CandidateCommentsVO> candidateCommentsList = commentsDataMap.get(constituencyId);
+						CandidateCommentsVO candidComments = getCandidateCommentsProcessedToMap(results);
+						candidateCommentsList.add(candidComments);
+						commentsDataMap.put(constituencyId, candidateCommentsList);
+					}
+				}
+				
+				//Processing the Map and set the Data to VO
+				if(!commentsDataMap.isEmpty()){
+					Set entries = commentsDataMap.entrySet();
+					Iterator iterator = entries.iterator();
+					while(iterator.hasNext()){
+					Map.Entry entry = (Map.Entry)iterator.next();
+					List<CandidateCommentsVO> commentsList = (List<CandidateCommentsVO>)entry.getValue();
+					Long constituencyId = (Long)entry.getKey();
+					ElectionBasicCommentsVO elecBasicComments = new ElectionBasicCommentsVO();
+					elecBasicComments.setConstituencyId(constituencyId);
+					elecBasicComments.setConstituencyName(commentsList.get(0).getConstituencyName());
+					elecBasicComments.setPartyId(partyId);
+					elecBasicComments.setPartyName(party.getShortName());
+					elecBasicComments.setCandidateComments(commentsList);
+					
+					electionBasicCommentsVOList.add(elecBasicComments);
+					}
+				}
+			}
+		}
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			
+			electionBasicCommentsVOList = new ArrayList<ElectionBasicCommentsVO>();
+			ElectionBasicCommentsVO elecBasicComments = new ElectionBasicCommentsVO();
+			elecBasicComments.setResultStatus(resultStatus);
+			electionBasicCommentsVOList.add(elecBasicComments);
+		}
+		
+		return electionBasicCommentsVOList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getCandidateResultsInAnElectionFromNominationIds(java.util.List)
+	 * Method to get candidate election results for a votes margin set .. eg:0-10%,10-20% .....
+	 */
+	public List<CandidateElectionResultVO> getCandidateResultsInAnElectionFromNominationIds(
+			List<Long> nominationIds) {
+		log.debug("Inside getCandidateResultsInAnElectionFromNominationIds Method..... ");
+		
+		List<CandidateElectionResultVO> candidateElectionResultVOList = null;
+		if(nominationIds != null && nominationIds.size() > 0){
+			candidateElectionResultVOList = new ArrayList<CandidateElectionResultVO>();
+			
+			List<Nomination> nominationsList = nominationDAO.getNominationsForANominationIdsSet(nominationIds);
+			
+			if(nominationsList != null && nominationsList.size() > 0){
+				for(Nomination nomination:nominationsList){
+					CandidateElectionResultVO candidateElectionResultVO = getProcessedResultsForNotanalyzed(nomination);
+					candidateElectionResultVOList.add(candidateElectionResultVO);
+				}
+			}
+		}
+	 return candidateElectionResultVOList;
+	}
 	
 }
