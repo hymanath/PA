@@ -64,12 +64,7 @@
 		<!-- <action name="partyPerformanceAjax" class="partyPerformanceAction" method="getJSON" >
 			<result type="json" name="success"/>
 		</action>-->
-		
-		
-		<action name="influencingPeopleAction" class="com.itgrids.partyanalyst.web.action.InfluencingPeopleAction">
-			<result>/jsp/influencingPeople.jsp</result>
-		</action>
-		
+				
 		 <action name="influencePeopleAjaxAction" class="influencingPeopleAction" method="saveInfluencePeopleData">
         </action>
         
@@ -402,6 +397,11 @@
 		<action name="adminUpload"><result>/jsp/adminUpload.jsp</result></action>
 		<action name="villageBoothMapperAction"><result>/jsp/villageBoothElectionMapper.jsp</result></action>
 		
+		<action name="influencePeopleUploadAction" class="influencePeopleUploadAction">
+			<result name="success">/jsp/influencePeopleUpload.jsp</result>
+			<result name="error">/jsp/influencePeopleUploadPageFail.jsp</result>
+		</action>
+		
 		<action name="mandalPageSDetailAction" class="staticDataAction" method="getStatesList" >
 			<result name="success">/jsp/mandalPageDetail.jsp</result>
 		</action>		
@@ -613,6 +613,11 @@
 		<action name="villageBoothElectionMapAction" class="villageBoothElectionMapAction">
 			<result name="success">/jsp/villageBoothElectionMapper.jsp</result>					
 		</action>
+		
+		<action name="influencingPeopleAction" class="influencingPeopleAction">
+			<result>/jsp/influencingPeople.jsp</result>
+		</action>
+		
 		<action name="getDistrictsAjaxAction" class="electionVotingTrendzAction" method="getDistrictsByStateId">
 			<result type="json" name="success">
 				<param name="root">districtList</param>				
@@ -661,6 +666,21 @@
 				<param name="root">partyDetails</param>				
 			</result>		
 		</action>
+		<action name="districtPageMuncipalPartyDetailsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+			<result type="json" name="success">
+				<param name="root">getmuncipalPartyDetails</param>				
+			</result>		
+		</action>		
+		<action name="districtPageCorporationPartyDetailsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+			<result type="json" name="success">
+				<param name="root">getCorporationPartyDetails</param>				
+			</result>		
+		</action>
+		<action name="districtPageMuncipalElectionYearsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
+			<result type="json" name="success">
+				<param name="root">muncipalElectionYears</param>				
+			</result>		
+		</action>		
 		<action name="districtPageMptcPartyDetailsAjaxAction" class="districtPageAction" method="getMptcAndZptcInfoDistrictAction">
 			<result type="json" name="success">
 				<param name="root">getMptcPartyDetails</param>				
@@ -745,6 +765,14 @@
         <action name="districtwiseElectionResultsAnalysysForElectionReportAction" class="districtwiseElectionResultsAnalysysForElectionReportAction">
 			<result name="success">/jsp/districtwiseElectionResultsComparision.jsp</result>		
 		</action>
+		<action name="muncipalElectionReportAction" class="muncipalElectionReportAction">
+			<result name="success">/jsp/muncipalElectionReport.jsp</result>		
+		</action>
+		<action name="muncipalElectionReportAjaxAction" class="muncipalElectionReportAction" method="getCandidateWiseMuncipalitiesElectionTrends">
+              <result type="json" name="success">
+           		<param name="root">mandalAllElectionDetails</param>
+        	</result>		
+        </action>
 		<action name="districtwiseElectionResultsAnalysysForElectionReportAjaxAction" class="districtwiseElectionResultsAnalysysForElectionReportAction" method="ajaxCallHandler">
 			<result type="json" name="success">
 				<param name="root">electionCompleteDetailsVO</param>				
