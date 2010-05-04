@@ -825,7 +825,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 							  
 							  if(maginValue != null){
 								  Long marginVal = new Long(0);
-								  if(maginValue > new Long(0) && maginValue <= new Long(10))
+								  if(maginValue >= new Long(0) && maginValue <= new Long(10))
 									  marginVal = new Long(1);
 								  else if(maginValue > new Long(10) && maginValue <= new Long(20))
 									  marginVal = new Long(2);
@@ -906,12 +906,35 @@ public class AnalysisReportService implements IAnalysisReportService {
 		 
 		 VotesMarginAnalysisVO votesMarginAnalysisVO = null;
 		 
+		 
+		 
 		 if(nominationIds != null && nominationIds.size() > 0){
 			 
 			 votesMarginAnalysisVO = new VotesMarginAnalysisVO();
 			 votesMarginAnalysisVO.setNominationIds(nominationIds);
 			 votesMarginAnalysisVO.setCandidatesCount(new Long(nominationIds.size()));
 			 votesMarginAnalysisVO.setAnalyzedCount(new Long(0));
+			 
+			 if(id.equals(new Long(1))){
+				 votesMarginAnalysisVO.setMarginValueOne(new Long(0));
+				 votesMarginAnalysisVO.setMarginValueTwo(new Long(10));
+				 votesMarginAnalysisVO.setMarginRange("0 - 10 %");
+			 }
+			 else if(id.equals(new Long(2))){
+				 votesMarginAnalysisVO.setMarginValueOne(new Long(10));
+				 votesMarginAnalysisVO.setMarginValueTwo(new Long(20));
+				 votesMarginAnalysisVO.setMarginRange("10 - 20 %");
+			 }
+			 else if(id.equals(new Long(3))){
+				 votesMarginAnalysisVO.setMarginValueOne(new Long(20));
+				 votesMarginAnalysisVO.setMarginValueTwo(new Long(30));
+				 votesMarginAnalysisVO.setMarginRange("20 - 30 %");
+			 }
+			 else{
+				 votesMarginAnalysisVO.setMarginValueOne(new Long(30));
+				 votesMarginAnalysisVO.setMarginValueTwo(new Long(100));
+				 votesMarginAnalysisVO.setMarginRange("30 % and above %");
+			 }
 			 
 			 List<AnalysisCategoryBasicVO> analysisCategoryVosList = new ArrayList<AnalysisCategoryBasicVO>();
 			 List analysisResults = commentCategoryCandidateDAO.getCommentResultsForCandidateNominations(nominationIds);
@@ -932,27 +955,6 @@ public class AnalysisReportService implements IAnalysisReportService {
 				 //votesMarginAnalysisVO.setCandidatesCount(new Long(nominationIds.size()));
 				 votesMarginAnalysisVO.setAnalyzedCount(reasonsCount);
 				 votesMarginAnalysisVO.setAnalysisCategoryBasicVO(analysisCategoryVosList);
-				 
-				 if(id.equals(new Long(1))){
-					 votesMarginAnalysisVO.setMarginValueOne(new Long(0));
-					 votesMarginAnalysisVO.setMarginValueTwo(new Long(10));
-					 votesMarginAnalysisVO.setMarginRange("0 - 10 %");
-				 }
-				 else if(id.equals(new Long(2))){
-					 votesMarginAnalysisVO.setMarginValueOne(new Long(10));
-					 votesMarginAnalysisVO.setMarginValueTwo(new Long(20));
-					 votesMarginAnalysisVO.setMarginRange("10 - 20 %");
-				 }
-				 else if(id.equals(new Long(3))){
-					 votesMarginAnalysisVO.setMarginValueOne(new Long(20));
-					 votesMarginAnalysisVO.setMarginValueTwo(new Long(30));
-					 votesMarginAnalysisVO.setMarginRange("20 - 30 %");
-				 }
-				 else{
-					 votesMarginAnalysisVO.setMarginValueOne(new Long(30));
-					 votesMarginAnalysisVO.setMarginValueTwo(new Long(100));
-					 votesMarginAnalysisVO.setMarginRange("30 % and above %");
-				 }
 				 
 			 }
 		 }
