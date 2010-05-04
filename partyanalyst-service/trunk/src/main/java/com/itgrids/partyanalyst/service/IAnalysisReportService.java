@@ -30,4 +30,8 @@ public interface IAnalysisReportService {
  	public List<CandidateElectionResultVO> getElectionResultsForNotAnalyzedConstituencies(Long electionId, Long partyId,Long stateId,String category);
  	
  	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisResults(Long electionId,Long partyId,String category);
+ 	
+ 	public List<CandidateElectionResultVO> getCandidateResultsInAnElectionFromNominationIds(List<Long> nominationIds);
+ 	
+ 	public List<ElectionBasicCommentsVO> getCandidateCommentsFromNominationIds(Long partyId,List<Long> nominationIds,Long categoryTypeId);
 }
