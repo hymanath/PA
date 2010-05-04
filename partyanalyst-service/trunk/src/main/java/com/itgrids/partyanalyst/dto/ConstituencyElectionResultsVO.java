@@ -31,6 +31,7 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private List<PartyResultsVO> partyResultsVO;
 	private CandidateWonVO candidateResultsVO;
 	private List<CandidateOppositionVO> candidateOppositionList;
+	private List<SelectOptionVO> allElectionYears;
 	
 	
 	//getters and setters
@@ -112,6 +113,12 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	}
 	public void setDistrictName(String districtName) {
 		this.districtName = districtName;
+	}
+	public List<SelectOptionVO> getAllElectionYears() {
+		return allElectionYears;
+	}
+	public void setAllElectionYears(List<SelectOptionVO> allElectionYears) {
+		this.allElectionYears = allElectionYears;
 	}
 	public Long getStateId() {
 		return stateId;

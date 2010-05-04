@@ -36,11 +36,19 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private String votesPercentage;
 	private Long constituencyId;
 	private String marginVotesPercentage;
+	private String reservationZone;
 	private List<MandalAllElectionDetailsVO> zptcMandalAllElectionDetailsVO;
 	private List<MandalAllElectionDetailsVO> mptcMandalAllElectionDetailsVO;
 	private List<MandalAllElectionDetailsVO> allVotersDetails;
 	private List<SelectOptionVO> partyInfo;
+	private ResultStatus resultStatus;
 	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
@@ -93,6 +101,12 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	}
 	public List<MandalAllElectionDetailsVO> getZptcMandalAllElectionDetailsVO() {
 		return zptcMandalAllElectionDetailsVO;
+	}
+	public String getReservationZone() {
+		return reservationZone;
+	}
+	public void setReservationZone(String reservationZone) {
+		this.reservationZone = reservationZone;
 	}
 	public void setZptcMandalAllElectionDetailsVO(
 			List<MandalAllElectionDetailsVO> zptcMandalAllElectionDetailsVO) {

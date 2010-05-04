@@ -10,9 +10,72 @@ public class TeshilPartyInfoVO {
 	private Long totalVotesWonByParty;
 	private Long seatsWonByParty;
 	private Float percentageOfVotesWonByParty;
-
+	private String muncipalityName;
+	private Long muncipalityId;
+	private Double totalVoters;
+	private Float totalPolledVotes;
+	private Long totalWards;	
+	private int totalMuncipalities;
+	private List<TeshilPartyInfoVO> muncipalityVO; 
+	private String latestMuncipalElectionYear;
+	private ResultStatus resultStatus;
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	public String getLatestMuncipalElectionYear() {
+		return latestMuncipalElectionYear;
+	}
+	public void setLatestMuncipalElectionYear(String latestMuncipalElectionYear) {
+		this.latestMuncipalElectionYear = latestMuncipalElectionYear;
+	}
+	public List<TeshilPartyInfoVO> getMuncipalityVO() {
+		return muncipalityVO;
+	}
+	public void setMuncipalityVO(List<TeshilPartyInfoVO> muncipalityVO) {
+		this.muncipalityVO = muncipalityVO;
+	}
 	public Float getPercentageOfVotesWonByParty() {
 		return percentageOfVotesWonByParty;
+	}
+	public String getMuncipalityName() {
+		return muncipalityName;
+	}
+	public void setMuncipalityName(String muncipalityName) {
+		this.muncipalityName = muncipalityName;
+	}
+	public Long getMuncipalityId() {
+		return muncipalityId;
+	}
+	public void setMuncipalityId(Long muncipalityId) {
+		this.muncipalityId = muncipalityId;
+	}
+	public Float getTotalPolledVotes() {
+		return totalPolledVotes;
+	}
+	public void setTotalPolledVotes(Float totalPolledVotes) {
+		this.totalPolledVotes = totalPolledVotes;
+	}
+	public Double getTotalVoters() {
+		return totalVoters;
+	}
+	public void setTotalVoters(Double totalVoters) {
+		this.totalVoters = totalVoters;
+	}
+	public Long getTotalWards() {
+		return totalWards;
+	}
+	public int getTotalMuncipalities() {
+		return totalMuncipalities;
+	}
+	public void setTotalMuncipalities(int totalMuncipalities) {
+		this.totalMuncipalities = totalMuncipalities;
+	}
+	public void setTotalWards(Long totalWards) {
+		this.totalWards = totalWards;
 	}
 	public void setPercentageOfVotesWonByParty(Float percentageOfVotesWonByParty) {
 		this.percentageOfVotesWonByParty = percentageOfVotesWonByParty;
