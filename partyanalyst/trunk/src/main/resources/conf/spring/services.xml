@@ -402,6 +402,8 @@
 		<property name="stateDAO" ref="stateDAO" />	
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="electionGoverningBodyPositionDAO" ref="electionGoverningBodyPositionDAO" />
+		<property name="electionGoverningBodyDAO" ref="electionGoverningBodyDAO" />
 	</bean>
 	
 	<bean name="commentsDataService" class="com.itgrids.partyanalyst.service.impl.CommentsDataService">
