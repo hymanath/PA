@@ -32,7 +32,7 @@ public class ConstituencyElectionReportAction extends ActionSupport implements
 	private HttpServletRequest request;
 	private HttpSession session;
 	private ServletContext context;
-	private final static Logger log = Logger.getLogger(DistPapersAction.class);
+	private final static Logger log = Logger.getLogger(ConstituencyElectionReportAction.class);
 	private CandidateDetailsVO candidateResults = null;
 	private IStaticDataService staticDataService = null;	
 	private Long locationId,electionType;

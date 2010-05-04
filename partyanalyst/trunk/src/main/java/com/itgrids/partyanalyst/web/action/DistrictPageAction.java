@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
@@ -48,7 +50,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private IStaticDataService staticDataService;	
 	private IRegionServiceData regionServiceDataImp;
 	private ConstituenciesStatusVO constituenciesStatusVO;
-	private List<SelectOptionVO> constituencies ;
+	private List<SelectOptionVO> constituencies,electionTypes ;
 	private List<MandalVO> mandals ;
 	private MandalAllElectionDetailsVO mptcElectionDetails;
 	private MandalAllElectionDetailsVO zptcElectionDetails;
@@ -57,24 +59,77 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private final Logger log = Logger.getLogger(DistrictPageAction.class);
 	private List<CandidateDetailsVO> candidateDetailsVO;
 	private List newConstituencies;
-	private List<SelectOptionVO> electionYears,mptcElectionYears;
+	private List<SelectOptionVO> electionYears,mptcElectionYears,muncipalElectionYears;
 	private String task = null,electionYear=null,electionType=null;
 	JSONObject jObj = null;
 	private CandidateDetailsVO  parliamentCandidateDetailsVo;
 	private List<TeshilPartyInfoVO> partyDetails,getMptcPartyDetails;
+	private TeshilPartyInfoVO getmuncipalPartyDetails,getCorporationPartyDetails;
 	private String disId,eleType,eleYear;
 	private DistrictWisePartyResultVO districtWisePartyResultVO; 
 	private List<SelectOptionVO> electionsInDistrict;
 	private DistrictWisePartyResultVO allPartiesPositionsInElection;
-
+	private String muncipalityErrorMsg;
+	private String mptcElectionType,zptcElectionType,muncipalityElectionType,corporationElectionType;
+	private Long mptcElectionTypeId,zptcElectionTypeId,muncipalityElectionTypeId,corporationElectionTypeId;
+	
+	public Long getMptcElectionTypeId() {
+		return mptcElectionTypeId;
+	}
+	public void setMptcElectionTypeId(Long mptcElectionTypeId) {
+		this.mptcElectionTypeId = mptcElectionTypeId;
+	}
+	public Long getZptcElectionTypeId() {
+		return zptcElectionTypeId;
+	}
+	public void setZptcElectionTypeId(Long zptcElectionTypeId) {
+		this.zptcElectionTypeId = zptcElectionTypeId;
+	}
+	public Long getMuncipalityElectionTypeId() {
+		return muncipalityElectionTypeId;
+	}
+	public void setMuncipalityElectionTypeId(Long muncipalityElectionTypeId) {
+		this.muncipalityElectionTypeId = muncipalityElectionTypeId;
+	}
+	public TeshilPartyInfoVO getGetCorporationPartyDetails() {
+		return getCorporationPartyDetails;
+	}
+	public void setGetCorporationPartyDetails(
+			TeshilPartyInfoVO getCorporationPartyDetails) {
+		this.getCorporationPartyDetails = getCorporationPartyDetails;
+	}
+	public Long getCorporationElectionTypeId() {
+		return corporationElectionTypeId;
+	}
+	public void setCorporationElectionTypeId(Long corporationElectionTypeId) {
+		this.corporationElectionTypeId = corporationElectionTypeId;
+	}
+	public String getMuncipalityErrorMsg() {
+		return muncipalityErrorMsg;
+	}
+	public void setMuncipalityErrorMsg(String muncipalityErrorMsg) {
+		this.muncipalityErrorMsg = muncipalityErrorMsg;
+	}
 	public String getDisId() {
 		return disId;
+	}
+	public List<SelectOptionVO> getMuncipalElectionYears() {
+		return muncipalElectionYears;
+	}
+	public void setMuncipalElectionYears(List<SelectOptionVO> muncipalElectionYears) {
+		this.muncipalElectionYears = muncipalElectionYears;
 	}
 	public void setDisId(String disId) {
 		this.disId = disId;
 	}
 	public String getEleType() {
 		return eleType;
+	}
+	public TeshilPartyInfoVO getGetmuncipalPartyDetails() {
+		return getmuncipalPartyDetails;
+	}
+	public void setGetmuncipalPartyDetails(TeshilPartyInfoVO getmuncipalPartyDetails) {
+		this.getmuncipalPartyDetails = getmuncipalPartyDetails;
 	}
 	public void setEleType(String eleType) {
 		this.eleType = eleType;
@@ -116,6 +171,30 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	public void setMptcElectionYears(List<SelectOptionVO> mptcElectionYears) {
 		this.mptcElectionYears = mptcElectionYears;
 	}
+	public String getMptcElectionType() {
+		return mptcElectionType;
+	}
+	public void setMptcElectionType(String mptcElectionType) {
+		this.mptcElectionType = mptcElectionType;
+	}
+	public String getZptcElectionType() {
+		return zptcElectionType;
+	}
+	public void setZptcElectionType(String zptcElectionType) {
+		this.zptcElectionType = zptcElectionType;
+	}
+	public String getMuncipalityElectionType() {
+		return muncipalityElectionType;
+	}
+	public void setMuncipalityElectionType(String muncipalityElectionType) {
+		this.muncipalityElectionType = muncipalityElectionType;
+	}
+	public String getCorporationElectionType() {
+		return corporationElectionType;
+	}
+	public void setCorporationElectionType(String corporationElectionType) {
+		this.corporationElectionType = corporationElectionType;
+	}
 	public List<TeshilPartyInfoVO> getPartyDetails() {
 		return partyDetails;
 	}
@@ -139,7 +218,12 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			MandalAllElectionDetailsVO mptcElectionDetails) {
 		this.mptcElectionDetails = mptcElectionDetails;
 	}
-
+	public List<SelectOptionVO> getElectionTypes() {
+		return electionTypes;
+	}
+	public void setElectionTypes(List<SelectOptionVO> electionTypes) {
+		this.electionTypes = electionTypes;
+	}
 	public MandalAllElectionDetailsVO getZptcElectionDetails() {
 		return zptcElectionDetails;
 	}
@@ -270,11 +354,27 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			DistrictWisePartyResultVO allPartiesPositionsInElection) {
 		this.allPartiesPositionsInElection = allPartiesPositionsInElection;
 	}
+	
 	public String execute() throws Exception
 	{
 		districtId = request.getParameter("districtId");
 		districtName = request.getParameter("districtName");
-			
+		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
+		zptcElectionType = IConstants.ZPTC_ELECTION_TYPE;
+		muncipalityElectionType = IConstants.MUNCIPLE_ELECTION_TYPE;
+		corporationElectionType = IConstants.CORPORATION_ELECTION_TYPE;
+		electionTypes = staticDataService.getAllElectionTypes();
+		for(SelectOptionVO eleTypes : electionTypes){
+			if(eleTypes.getName().equalsIgnoreCase(mptcElectionType)){
+				mptcElectionTypeId = eleTypes.getId();
+			}else if(eleTypes.getName().equalsIgnoreCase(zptcElectionType)){
+				zptcElectionTypeId = eleTypes.getId();
+			}else if(eleTypes.getName().equalsIgnoreCase(muncipalityElectionType)){
+				muncipalityElectionTypeId = eleTypes.getId();
+			}else if(eleTypes.getName().equalsIgnoreCase(corporationElectionType)){
+				corporationElectionTypeId = eleTypes.getId();
+			}
+		}
 		constituenciesStatusVO = staticDataService.getConstituenciesWinnerInfo(Long.parseLong(districtId));	
 		electionYear = constituenciesStatusVO.getElectionYear();
 		electionType = constituenciesStatusVO.getElectionType();
@@ -304,7 +404,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			if(jObj.getString("task").equalsIgnoreCase("getAllElectionYears"))
 			{
 			try{
-				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("eleType")));
+				electionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("eleType")));		
 			}catch(Exception e){
 				log.debug("No data is available...");
 			}
@@ -351,7 +451,40 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 					log.debug("No data is available...");															
 				}
 			}
-		
+			else if(jObj.getString("task").equalsIgnoreCase("getAllMuncipalElectionYears"))
+			{
+				try{
+				muncipalElectionYears = staticDataService.getAllElectionYearsForATeshil(new Long(jObj.getString("eleType")));
+			}catch(Exception e){
+				log.debug("No data is available...");
+			}
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getmuncipalPartyDetails"))
+			{
+				try{
+					getmuncipalPartyDetails = staticDataService.getAllPartyTrendsForAllMuncipalitiesInADistrict(jObj.getString("electionType"),new Long(jObj.getString("districtId")));
+					if(getmuncipalPartyDetails.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+						muncipalityErrorMsg = "Data is Not Available.";
+					}else if(getmuncipalPartyDetails.getResultStatus().getResultCode()==ResultCodeMapper.DATA_NOT_FOUND){
+						muncipalityErrorMsg = "Failed to retrive data.";
+					}
+				}catch(Exception e){
+					log.debug("No data is available...");
+				}		
+			}	
+			else if(jObj.getString("task").equalsIgnoreCase("getCorporationPartyDetails"))
+			{
+				try{
+					getCorporationPartyDetails = staticDataService.getAllPartyTrendsForAllMuncipalitiesInADistrict(jObj.getString("electionType"),new Long(jObj.getString("districtId")));
+					if(getmuncipalPartyDetails.getResultStatus().getResultCode()==ResultCodeMapper.FAILURE){
+						muncipalityErrorMsg = "Data is Not Available.";
+					}else if(getmuncipalPartyDetails.getResultStatus().getResultCode()==ResultCodeMapper.DATA_NOT_FOUND){
+						muncipalityErrorMsg = "Failed to retrive data.";
+					}
+				}catch(Exception e){
+					log.debug("No data is available...");
+				}	
+			}
 		}		
 		return SUCCESS;  
 	}	
@@ -408,7 +541,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 				}catch(Exception e){
 					log.debug("No data is available...");															
 				}
-			}
+			}		
 		}
 		return SUCCESS; 
 	}
@@ -464,8 +597,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         	if(++i == 10)
         		break; 
         }
-        	
         
+                
         Collections.sort(partiesElectionResults, new ElectionResultComparator());
         
         for(ElectionResultVO graphInfo:partiesElectionResults){
@@ -517,9 +650,6 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         }
         return dataset;
     }
-	
-	
-	
 	public void setServletContext(ServletContext context) {
 		this.context = context;		
 	}
