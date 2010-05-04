@@ -30,7 +30,8 @@
 		<property name="transactionTemplate" ref="transactionTemplate" />	
 		<property name="boothResultDAO" ref="boothResultDAO" />
 		<property name="groupDAO" ref="groupDAO" />
-		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
+		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />		
+		<property name="electionTypeDAO" ref="electionTypeDAO" />
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />

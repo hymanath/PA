@@ -279,6 +279,11 @@
 	<bean id="districtwiseElectionResultsAnalysysForElectionReportAction" class="com.itgrids.partyanalyst.web.action.DistrictwiseElectionResultsAnalysysForElectionReportAction" singleton="false">
 			<property name="electionReportService" ref="electionReportService" />
 	</bean>
+	
+	<bean id="muncipalElectionReportAction" class="com.itgrids.partyanalyst.web.action.MuncipalElectionReportAction" singleton="false">
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
+	
 	<bean id="statewiseElectionResultsComparisionToolAction" class="com.itgrids.partyanalyst.web.action.StatewiseElectionResultsComparisionToolAction" singleton="false">
 			<property name="electionReportService" ref="electionReportService" />
 	</bean>
