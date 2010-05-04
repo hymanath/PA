@@ -390,10 +390,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		};
 		
 		var resultsColumnDefsForTehsil = [ 
-				{key:"partyName", sortable:true, resizeable:true}, 
-				{key:"participatedSeats",sortable:true,resizeable:true}, 
-				{key:"seatsWonByParty",sortable:true, resizeable:true}, 
-				{key:"percentageOfVotesWonByParty", sortable:true, resizeable:true}	           
+				{key:"partyName",label : "Party Name",sortable:true, resizeable:true}, 
+				{key:"participatedSeats",label : "Participated Seats",sortable:true,resizeable:true}, 
+				{key:"seatsWonByParty",label : "Seats Won",sortable:true, resizeable:true}, 
+				{key:"percentageOfVotesWonByParty",label : "Votes %", sortable:true, resizeable:true}	           
 		];
 
 		
