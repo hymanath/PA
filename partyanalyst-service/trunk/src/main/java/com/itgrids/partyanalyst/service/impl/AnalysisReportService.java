@@ -911,11 +911,11 @@ public class AnalysisReportService implements IAnalysisReportService {
 			 List<AnalysisCategoryBasicVO> analysisCategoryVosList = new ArrayList<AnalysisCategoryBasicVO>();
 			 List analysisResults = commentCategoryCandidateDAO.getCommentResultsForCandidateNominations(nominationIds);
 			 if(analysisResults != null && analysisResults.size() > 0){
-				 Long reasonsCount = new Long(0);
+				 Long reasonsCount = new Long(analysisResults.size());
 				 for(int i=0;i<analysisResults.size();i++){
 					 Object[] params = (Object[])analysisResults.get(i);
 					 Long countVal = (Long)params[2];
-					 reasonsCount+=countVal;
+					 //reasonsCount+=countVal;
 					 
 					 AnalysisCategoryBasicVO analysisCategory = new AnalysisCategoryBasicVO();
 					 analysisCategory.setCategoryId((Long)params[0]);
@@ -930,22 +930,22 @@ public class AnalysisReportService implements IAnalysisReportService {
 				 
 				 if(id.equals(new Long(1))){
 					 votesMarginAnalysisVO.setMarginValueOne(new Long(0));
-					 votesMarginAnalysisVO.setMarginValueOne(new Long(10));
+					 votesMarginAnalysisVO.setMarginValueTwo(new Long(10));
 					 votesMarginAnalysisVO.setMarginRange("0 - 10 %");
 				 }
 				 else if(id.equals(new Long(2))){
 					 votesMarginAnalysisVO.setMarginValueOne(new Long(10));
-					 votesMarginAnalysisVO.setMarginValueOne(new Long(20));
+					 votesMarginAnalysisVO.setMarginValueTwo(new Long(20));
 					 votesMarginAnalysisVO.setMarginRange("10 - 20 %");
 				 }
 				 else if(id.equals(new Long(3))){
 					 votesMarginAnalysisVO.setMarginValueOne(new Long(20));
-					 votesMarginAnalysisVO.setMarginValueOne(new Long(30));
+					 votesMarginAnalysisVO.setMarginValueTwo(new Long(30));
 					 votesMarginAnalysisVO.setMarginRange("20 - 30 %");
 				 }
 				 else{
 					 votesMarginAnalysisVO.setMarginValueOne(new Long(30));
-					 votesMarginAnalysisVO.setMarginValueOne(new Long(100));
+					 votesMarginAnalysisVO.setMarginValueTwo(new Long(100));
 					 votesMarginAnalysisVO.setMarginRange("30 % and above %");
 				 }
 				 
