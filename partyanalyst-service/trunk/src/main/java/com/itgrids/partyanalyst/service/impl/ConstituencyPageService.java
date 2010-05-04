@@ -1208,8 +1208,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	public MandalAllElectionDetailsVO getAllTehsilElectionLevelWinnersForAConstituency(Long constituencyId,String candidateDetailsType,Long partyId,String electionType,String electionYear){
 		List<MandalAllElectionDetailsVO> allVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
 		List<MandalAllElectionDetailsVO> winningCandidateVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
-		List<MandalAllElectionDetailsVO> winningCandidates = new ArrayList<MandalAllElectionDetailsVO>(0);
-		List<MandalAllElectionDetailsVO> successorCandidates = new ArrayList<MandalAllElectionDetailsVO>(0);
 		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
 		Long winnerRank =1l,successorRank=2l;
 		List successorCandidate,winningCandidate,allCandidates;
@@ -1225,14 +1223,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		if(candidateDetailsType.equalsIgnoreCase("winners")){
 			successorCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,successorRank,partyId,electionType,electionYear);
 			winningCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,winnerRank,partyId,electionType,electionYear);
-			allVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,0);				
+			allVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,0,0);				
 			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);					
 		}else if(candidateDetailsType.equalsIgnoreCase("allCandidates")){
 			allCandidates = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,0l,partyId,electionType,electionYear);
 			successorCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,successorRank,partyId,electionType,electionYear);
 			winningCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,winnerRank,partyId,electionType,electionYear);
-			winningCandidateVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,flag);
-			allVotersDetails = staticDataService.populateElectionsDataForAllCandidates(winningCandidate,allCandidates);
+			winningCandidateVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,flag,0);
+			allVotersDetails = staticDataService.populateElectionsDataForAllCandidates(winningCandidate,allCandidates,0);
 			if(winningCandidateVotersDetails!=null){
 				allVotersDetails.addAll(allVotersDetails.size(),winningCandidateVotersDetails);
 			}
@@ -1240,7 +1238,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}else if(candidateDetailsType.equalsIgnoreCase("partyWise")){	
 			successorCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,successorRank,partyId,electionType,electionYear);
 			winningCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,winnerRank,partyId,electionType,electionYear);
-			allVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,0);				
+			allVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,0,0);				
 			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);		
 		}
 		List result = nominationDAO.getPartysInfoForATehsilForAParticularElectionYear(electionType,tehsilIds.substring(1),electionYear);
