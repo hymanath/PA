@@ -122,8 +122,9 @@ public class CsvReader2004 implements IExcelReader{
 						break;
 					} else if(candidateElectionResults!=null && csvColumnMapperObj.isCandidateDetails){
 						if(methods[i].getName().equals("getExcelColumn2")){
-							String cName=StringUtils.replace(str, ".", "");
-							candidateElectionResult.setCandidateName(StringUtils.trim(cName));
+							//String cName=StringUtils.replace(str, ".", "");
+							//candidateElectionResult.setCandidateName(StringUtils.trim(cName));
+							candidateElectionResult.setCandidateName(StringUtils.trim(str));
 						}else if(methods[i].getName().equals("getExcelColumn6")){
 							candidateElectionResult.setSex(str);
 						}else if(methods[i].getName().equals("getExcelColumn7")){
