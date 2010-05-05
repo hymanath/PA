@@ -195,7 +195,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 				"model.nomination.candidate.candidateId,model.nomination.candidate.lastname,"+
 				"model.commentData.commentDesc,model.commentData.commentBy,"+
 				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType from CommentCategoryCandidate model where "+
-				"model.commentData.commentDataCategory.commentDataCategoryId = ?"+
+				"model.commentData.commentDataCategory.commentDataCategoryId = ? and "+
 				"model.nomination.nominationId in (:nominationIds) order by model.nomination.constituencyElection.constituency.constituencyId");
 		queryObject.setParameter(0, categoryTypeId);
 		queryObject.setParameterList("nominationIds", nominationIds);
