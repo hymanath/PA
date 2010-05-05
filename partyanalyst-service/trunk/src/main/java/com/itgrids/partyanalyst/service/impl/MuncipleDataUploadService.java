@@ -617,9 +617,12 @@ public class MuncipleDataUploadService implements IMuncipleDataUploadService{
 			}
 		}
 		if(partyFlag){
-			lpartyObj = new Party();
-			lpartyObj.setShortName(partyName);
-			lpartyObj = partyDAO.save(lpartyObj);
+			lpartyObj= new Party();
+			lpartyObj.setLongName(partyName);
+			String shortName=(partyName.length()>25)?"":partyName;
+			lpartyObj.setShortName(shortName);
+			lpartyObj=partyDAO.save(lpartyObj);
+			parties.add(lpartyObj);
 		}
 
 		return lpartyObj;
