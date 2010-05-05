@@ -139,7 +139,6 @@ function redirectCandidateLink(elecYear)
 function buildDataForConstituencyResults()
 {			
 	var year ='',count=0;
-	
 	var electionYears = '';
 	electionYears+="Also view details for ";
 	<c:forEach var="result" varStatus="stat" items="${constituencyElectionResultsVO.allElectionYears}">
@@ -149,11 +148,13 @@ function buildDataForConstituencyResults()
 		var allYears = document.getElementById("allYears");
 		<c:forEach var="result" varStatus="stat" items="${constituencyElectionResultsVO.allElectionYears}">
 		year = '${result.name}';
-		electionYears+="<br/> Election Year :";
-		electionYears+='<a href="javascript:{}" onclick="redirectCandidateLink('+year+')">';
-		electionYears+='${result.name}';
-		electionYears+="<br/>";
-		electionYears+='</a>';
+		if(elecYear!=year){
+			electionYears+="<br/> Election Year :";
+			electionYears+='<a href="javascript:{}" onclick="redirectCandidateLink('+year+')">';
+			electionYears+='${result.name}';
+			electionYears+="<br/>";
+			electionYears+='</a>';
+		}		
 		</c:forEach>
 		allYears.innerHTML = electionYears;
 	}	
