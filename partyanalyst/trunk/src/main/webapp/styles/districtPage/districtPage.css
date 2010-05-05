@@ -1,4 +1,15 @@
 
+.yui-skin-sam .yui-dt table{
+	border:2px solid #9696C0;
+	border-collapse:separate;
+	border-spacing:0;
+	font-family:arial;
+	font-size:12px;
+	margin:0;
+	padding:0;
+	width:100%;
+}
+	
 .detailsDiv
 {
 	margin-top:10px;
@@ -239,4 +250,13 @@
 #mptc_zptc_div_main a:hover
 {
 	text-decoration:underline;
+}
+#muncipality_corporation_div_main
+{		
+	width:910px;
+}
+
+.datatableClass table
+{
+	width:100%;
 }
