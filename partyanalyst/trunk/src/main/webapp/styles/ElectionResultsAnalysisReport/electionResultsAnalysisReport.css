@@ -238,3 +238,50 @@ margin:1px;
 	width:300px;
 	margin-bottom:10px;
 }
+.votesMarginHead
+	{
+		padding:5px;
+		cursor:pointer;
+		font-size:12px;
+		font-weight:bold;
+	}
+
+	.votesMarginBody
+	{
+		padding-left:30px;
+		font-size:12px;
+	}
+
+	.votesMarginReasonsDiv
+	{
+		padding:5px;
+	}
+	
+	.votesMarginTable 
+	{
+		border-collapse:collapse;
+		border-color:#ADADAD;
+		padding-top:20px;
+	}
+
+	.votesMarginTable th
+	{
+		padding:5px;
+		background-color:#EFEFEF;
+	}
+
+	.marginBodyDivClass
+	{
+		font-weight:bold;
+		padding-left:50px;
+	}
+	
+	.votesMarginDataTable td
+	{
+		padding:3px;
+	}
+
+	.votesMargin_Body_Main
+	{
+		padding-top:20px;
+	}
