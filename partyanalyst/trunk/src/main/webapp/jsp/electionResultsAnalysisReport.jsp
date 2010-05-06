@@ -138,7 +138,7 @@ function callAjax(param,jsObj,url){
 									var elmt = document.getElementById("electionPageAjaxImgDiv");
 									if(elmt)
 										elmt.style.display = 'none';
-									showBasicAnalysisDetails(myResults);
+									showBasicAnalysisDetails(myResults,"toolsTrue");
 								}
 								else if(jsObj.task == "getAnalysisDetailsInPartyLostPositions")
 								{
@@ -246,12 +246,14 @@ function getBasicAnalysisDetails(id)
 	var stateId =stateSelectEl.value;	
 	var electionType = electionTypesEl.options[electionTypesEl.selectedIndex].text;
 	var electionYear = electionYearsEl.options[electionYearsEl.selectedIndex].text;	
+	var electionTypeId = electionTypesEl.options[electionTypesEl.selectedIndex].value;	
 	
 	var jsObj= 
 	{
 	 	electionYear: electionYear,
 		stateId: stateId,
 		electionType: electionType,
+		electionTypeId: electionTypeId,
 		partyId: id,		
 		task:"getBasicAnalysisDetails"		
 	}
@@ -330,8 +332,7 @@ function getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electio
 	
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/analysisCategoryResultForAPartyInAnElection.action?"+param;
-	callAjax(param,jsObj,url);
-	
+	callAjax(param,jsObj,url);	
 }
 
 function buildVotesMarginInfo(electionId,partyId,status)
@@ -415,110 +416,113 @@ function getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electi
 	var url = "<%=request.getContextPath()%>/analysisCategoryResultForAPartyInAnElection.action?"+param;
 	callAjax(param,jsObj,url);
 }
+
+function openPreYearStatewiseAnalysisWindow(electionType,electionTypeId,electionYear,partyId)
+{
+	var browser1;
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	var stateId =stateSelectEl.options[stateSelectEl.selectedIndex].value;
+	var stateName = stateSelectEl.options[stateSelectEl.selectedIndex].text;
+	var selectYearEl = document.getElementById("selectYearAnalysisTool");
+	var electionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
+	var yearAlertEl = document.getElementById("yearAlertAnalysisReport");//stateName
+	var urlStr = "<%=request.getContextPath()%>/electionResultsAnalysisReportPopupAction.action?stateId="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&partyId="+partyId+"";
+	if(electionYear == 'Select Year') 
+	{
+		yearAlertEl.style.display ='block';
+		yearAlertEl.innerHTML = "Please Select A Year!";
+		return;
+	}
+	else {yearAlertEl.style.display ='none';} 
+	
+	browser1 = window.open(urlStr,"electionResultsAnalysisPopup","scrollbars=yes,height=600,width=700,left=200,top=200");
+	browser1.focus();
+		
+}
+
+function openStatewiseElectionResultsWindow(currentYear,stateName,electionType)
+{	
+	var selectYearEl = document.getElementById("selectYearERR");
+	var selectedElectionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
+	var yearAlertSEl = document.getElementById("yearAlertERR");
+	var browser1;
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	var stateId =stateSelectEl.value;
+	var urlStr = "<%=request.getContextPath()%>/statewiseElectionResultsComparisionToolAction.action?stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&currentElectionyear="+currentYear+"&selectedElectionYear="+selectedElectionYear+"";
+	if(selectedElectionYear == 'Select Year') 
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Please Select A Year!";
+		return;
+	}else {yearAlertSEl.style.display ='none';} 
+	
+	browser1 = window.open(urlStr,"electionResultsReport","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	browser1.focus();
+}
+function openDistwiseElectionResultsWindow(currentYear,stateName,electionType)
+{
+	var selectYearEl = document.getElementById("selectYearERR1");
+	var selectedElectionYear =  selectYearEl.options[selectYearEl.selectedIndex].text;
+	var yearAlertEl = document.getElementById("yearAlertERR1");
+	var browser1;
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	var stateId =stateSelectEl.value;
+	var urlStr = "<%=request.getContextPath()%>/districtwiseElectionResultsAnalysysForElectionReportAction.action?stateID="+stateId+"&stateName="+stateName+"&electionType="+electionType+"&currentElectionyear="+currentYear+"&selectedElectionYear="+selectedElectionYear+"";
+	if(selectedElectionYear == 'Select Year') 
+	{
+		yearAlertEl.style.display ='block';
+		yearAlertEl.innerHTML = "Please Select A Year!";
+		return;
+	}
+	else {yearAlertEl.style.display ='none';} 
+	
+	browser1 = window.open(urlStr,"electionResultsReport1","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	browser1.focus();
+}
+function openPartyPerformanceWindow(electionTypeId)
+{
+	var selectYearEl = document.getElementById("selectYearPPR");
+	var year =  selectYearEl.options[selectYearEl.selectedIndex].text;
+	var selectPartyEl = document.getElementById("selectPartyPPR");
+	var party =  selectPartyEl.options[selectPartyEl.selectedIndex].value;
+	var allianceCheckboxEl = document.getElementById("pprCheckBox");
+	var alliances = allianceCheckboxEl.checked;
+	var yearAlertSEl = document.getElementById("yearAlertPPR");
+	var reportLevel = "1";
+	var browser1;
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	var stateId =stateSelectEl.value;
+	var urlStr = "<%=request.getContextPath()%>/partyPerformanceReportPopup.action?state="+stateId+"&country=1&district=0&1="+reportLevel+"&electionType="+electionTypeId+"&year="+year+"&party="+party+"&alliances="+alliances;
+	if(year == 'Select Year' && party == '0') 
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Please Select Year and Party!";
+		return;
+	}else {yearAlertSEl.style.display ='none';}
+	if(year == 'Select Year') 
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Please Select A Year!";
+		return;
+	}else {yearAlertSEl.style.display ='none';}
+	if(party == '0') 
+	{
+		yearAlertSEl.style.display ='block';
+		yearAlertSEl.innerHTML = "Please Select A Party!";
+		return;
+	}else {yearAlertSEl.style.display ='none';} 
+		
+	browser1 = window.open(urlStr,"partyPerformanceReport","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	browser1.focus();
+}
 </SCRIPT>
 
 </HEAD>
 <BODY>
 	<DIV id="page_layout_main" class="yui-skin-sam"></DIV>
 	<DIV id="page_layout_right">
-		<DIV id="sideHeader"><DIV class="sideHeading">Analysis Tools</DIV></DIV>
-		<DIV class="toolHead">
-			<DIV class="toolHeading">Election Results Analysis</DIV>
-			<DIV class="toolBody"> 
-				<TABLE width="100%">
-						<TR>
-						<TD colspan="2"><P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">View another year's election results analysis.</P></TD>
-						</TR>
-						<TR>
-							<TD colspan="2"><DIV id="yearAlertS" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
-						</TR>						
-						<TR>	
-							<TD>Year:</TD>
-							<TD><SELECT id="selectYearAnalysisTool" name="selectYearAnalysisTool" style="width: 100px; margin-top: 3px;">
-								<OPTION>2009</OPTION>
-								<OPTION>2004</OPTION>								
-							</SELECT>	
-							</TD>
-						</TR>							
-					</TABLE>
-				<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openPreYearStatewiseAnalysisWindow()" /></A></DIV>		 
-			</DIV>
-		</DIV>
-		<DIV class="toolHead">
-			<DIV class="toolHeading">Party Performance Report</DIV>
-			<DIV class="toolBody"> 
-				<TABLE width="100%">
-							<TR>
-								<TD colspan="2"><DIV id="yearAlertPPR" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
-							</TR>
-							<TR>
-								<TD>Party Name:</TD>
-								<TD>
-								<select id="selectPartyPPR" name="selectParty">
-									<OPTION value="years.id">TDP</OPTION>
-									<OPTION value="years.id">INC</OPTION>
-								</select>							
-								</TD>
-							</TR>	
-							<TR>	
-								<TD>Year:</TD>
-								<TD><SELECT id="selectYearPPR" name="selectYearPPR" style="width: 100px; margin-top: 3px;">
-									<OPTION value="years.id">2009</OPTION>
-									<OPTION value="years.id">2004</OPTION>									
-								</SELECT>
-								</TD>
-							</TR>	
-							<TR>	
-								<TD colspan="2"><INPUT type="checkbox" id="pprCheckBox" value="hasAllianceParties" name="alliances"/>Include Alliances</TD>
-							</TR>							
-						</TABLE>
-				<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openPreYearStatewiseAnalysisWindow()" /></A></DIV>		 
-			</DIV>
-		</DIV>
-		<DIV class="toolHead">
-			<DIV class="toolHeading">Statewise Election Results</DIV>
-			<DIV class="toolBody"> 
-				<TABLE width="100%">
-							<TR>
-								<TD colspan="2"><P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze election results Statewise.</P></TD>
-							</TR>
-							<TR>
-								<TD colspan="2"><DIV id="yearAlertPPR" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
-							</TR>
-							<TR>	
-								<TD>Year:</TD>
-								<TD><SELECT id="selectYearPPR" name="selectYearPPR" style="width: 100px; margin-top: 3px;">
-									<OPTION value="years.id">2009</OPTION>
-									<OPTION value="years.id">2004</OPTION>									
-								</SELECT>
-								</TD>
-							</TR>														
-						</TABLE>
-				<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openPreYearStatewiseAnalysisWindow()" /></A></DIV>		 
-			</DIV>
-		</DIV>
-		<DIV class="toolHead">
-			<DIV class="toolHeading">Districtwise Election Results</DIV>
-			<DIV class="toolBody"> 
-				<TABLE width="100%">
-							<TR>
-								<TD colspan="2"><P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze election results Districtwise.</P></TD>
-							</TR>
-							<TR>
-								<TD colspan="2"><DIV id="yearAlertPPR" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>
-							</TR>
-							<TR>	
-								<TD>Year:</TD>
-								<TD><SELECT id="selectYearPPR" name="selectYearPPR" style="width: 100px; margin-top: 3px;">
-									<OPTION value="years.id">2009</OPTION>
-									<OPTION value="years.id">2004</OPTION>									
-								</SELECT>
-								</TD>
-							</TR>														
-						</TABLE>
-				<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openPreYearStatewiseAnalysisWindow()" /></A></DIV>		 
-			</DIV>
-		</DIV>	
+		<DIV id="sideHeader"></DIV>
+		<DIV id="toolsDiv"></DIV>	
 	</DIV>
 	<DIV id="page_layout_center">
 		<DIV id="pageHeading" >
@@ -561,16 +565,13 @@ function getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electi
 			<DIV>Please Wait..</DIV>
 			<IMG src="images/icons/barloader.gif"/>
 		</DIV>
-
 		<DIV id="resultInfoDiv">
 		<DIV id="basicDetailsHead" style="margin-top:10px;"></DIV>
 		<DIV id="basicDetails" class="yui-skin-sam"></DIV>
 		<DIV id="analysisDetails" class="analysisDetails">		
 		<DIV id="tablerDetails"></DIV>
 		</DIV>
-		<DIV id="lostPosAnalisisDetails" class="analysisDetails">
-			
-</DIV>
+		<DIV id="lostPosAnalisisDetails" class="analysisDetails"></DIV>
 		<DIV id="wonPosAnalisisDetails" class="analysisDetails">		
 		</DIV>						
 		</DIV>			

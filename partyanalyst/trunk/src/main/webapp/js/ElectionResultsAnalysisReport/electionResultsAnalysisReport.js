@@ -16,7 +16,7 @@
 function buildPageLayout()
 {
 	var pageLayout = new YAHOO.widget.Layout('page_layout_main', { 
-	height:1500,
+	height:2000,
 	units: [			
 			{ 
 				position: 'right', 
@@ -115,16 +115,15 @@ function removeSelectElements(elmt)
 	}	
 }
 
-function showBasicAnalysisDetails(results)
+function showBasicAnalysisDetails(results,tools)
 {	
 	stateName = results.stateName;
 	electionId = results.electionId;	
 	electionYear = results.electionYear;
-	electionType = results.electionType;
+	electionType = results.electionType;	
 	electionTypeId = results.electionTypeId;
 	partyName = results.partyName;
-	partyId = results.partyId;
-
+	partyId = results.partyId;	
 	var basicDetailsDivEl = document.getElementById("basicDetails");
 	var tablerDetailsEl = document.getElementById("tablerDetails");
 	var alliancePartiesBasicDetails = results.alliancPartiesBasicAnalysisVO;
@@ -134,11 +133,25 @@ function showBasicAnalysisDetails(results)
 	var headStr='';
 	if(electionType != "Parliament")
 	{
-		//headStr+='';
-		headStr+='<H3>'+stateName+' '+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</H3>';
+		headStr+='';
+		headStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+		headStr+='<TR>';
+		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+		headStr+='<TD><H3>'+stateName+' '+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</H3></TD>';
+		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+		headStr+='</TR>';
+		headStr+='</TABLE>';
+		
 	} if(electionType == "Parliament")
 	{
-		headStr+='<H3>'+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</H3>';
+		headStr+='';
+		headStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+		headStr+='<TR>';
+		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+		headStr+='<TD><H3>'+electionYear+' '+electionType+' Elections Analysis for '+partyName+'</H3></TD>';
+		headStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+		headStr+='</TR>';
+		headStr+='</TABLE>';
 	}	
 	basicDetailsHeadDivEl.innerHTML = headStr;
 	var str='';	
@@ -168,8 +181,7 @@ function showBasicAnalysisDetails(results)
 			str+='<TR><TD width="50%" align="center"><IMG src="charts/'+alliancePartiesBasicDetails[i].analysisChart+'" border="none"/></TD>';
 			str+='<TD width="50%" align="center"><IMG src="charts/'+alliancePartiesBasicDetails[i].resultsChart+'" border="none"/></TD></TR>';	
 			str+='</TABLE>';
-			str+='</LI>';	
-				
+			str+='</LI>';				
 			//<IMG src="charts/'+alliancePartiesBasicDetails[i].analysisChart+'" border="none"/></LI>';
 			//<IMG src="charts/'+alliancePartiesBasicDetails[i].resultsChart+'" border="none"/>
 		}
@@ -178,7 +190,13 @@ function showBasicAnalysisDetails(results)
 		buildGraphsCarousel("basicDetails");
 	}	
 	var tablerDataStr = '';
-	tablerDataStr+='<H3>Analysis Details</H3>';
+	tablerDataStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+	tablerDataStr+='<TR>';
+	tablerDataStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+	tablerDataStr+='<TD><H3>Analysis Details</H3></TD>';
+	tablerDataStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+	tablerDataStr+='</TR>';
+	tablerDataStr+='</TABLE>';	
 	tablerDataStr+='<TABLE  cellpadding="0" cellspacing="0" class="analysisDetailsTable">';
 	tablerDataStr+='<TR>';
 	tablerDataStr+='<TH class="head">Party</TH>';
@@ -263,6 +281,199 @@ function showBasicAnalysisDetails(results)
 	}			
 	tablerDataStr+='</TABLE>';
 	tablerDetailsEl.innerHTML =tablerDataStr; 
+	//mycode -raghav
+	if(tools == 'toolsTrue')
+	{	
+		var sideHeaderDivEl = document.getElementById("sideHeader");
+		var sideHeadContentStr='';
+		sideHeadContentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+		sideHeadContentStr+='<TR>';
+		sideHeadContentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/1.png"></TD>';
+		sideHeadContentStr+='<TD><DIV class="sideHeading">Analysis Tools</DIV></TD>';
+		sideHeadContentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/3.png"></TD>';
+		sideHeadContentStr+='</TR>';
+		sideHeadContentStr+='</TABLE>';
+		sideHeaderDivEl.innerHTML = sideHeadContentStr;
+		var toolsDivEl = document.getElementById("toolsDiv");
+		var toolsDivElContent = '';
+		toolsDivElContent+='<DIV class="toolHead">';
+		toolsDivElContent+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+		toolsDivElContent+='<TR>';
+		toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+		toolsDivElContent+='<TD><DIV class="toolHeading">Election Results Analysis</DIV></TD>';
+		toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+		toolsDivElContent+='</TR>';
+		toolsDivElContent+='</TABLE>';		
+		toolsDivElContent+='<DIV class="toolBody">'; 
+		toolsDivElContent+='<TABLE width="100%">';
+		toolsDivElContent+='<TR>';
+		toolsDivElContent+='<TD colspan="2"><P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">View another year election results analysis.</P></TD>';
+		toolsDivElContent+='</TR>';
+		toolsDivElContent+='<TR>';
+		toolsDivElContent+='<TD colspan="2"><DIV id="yearAlertAnalysisReport" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>';
+		toolsDivElContent+='</TR>';						
+		toolsDivElContent+='<TR>';	
+		toolsDivElContent+='<TD>Year:</TD>';
+		toolsDivElContent+='<TD><SELECT id="selectYearAnalysisTool" name="selectYearAnalysisTool" style="width: 100px; margin-top: 3px;">';
+		for(var k in results.electionYearsList)
+		{	
+			if(electionYear != results.electionYearsList[k].name)
+			{	
+				toolsDivElContent+='<OPTION value='+results.electionYearsList[k].id+'>'+results.electionYearsList[k].name+'</OPTION>';
+			}
+		}								
+		toolsDivElContent+='</SELECT>';	
+		toolsDivElContent+='</TD>';
+		toolsDivElContent+='</TR>';							
+		toolsDivElContent+='</TABLE>';
+		toolsDivElContent+='<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openPreYearStatewiseAnalysisWindow(\''+electionType+'\','+electionTypeId+','+electionYear+','+partyId+')" /></A></DIV>';		 
+		toolsDivElContent+='</DIV>';
+		toolsDivElContent+='</DIV>';	
+		toolsDivElContent+='<DIV class="toolHead">';
+		if(electionType != 'Parliament')
+		{	
+			toolsDivElContent+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+			toolsDivElContent+='<TD><DIV class="toolHeading">Statewise Election Results</DIV></TD>';
+			toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+			toolsDivElContent+='</TR>';
+			toolsDivElContent+='</TABLE>';			
+			toolsDivElContent+='<DIV class="toolBody">'; 
+			toolsDivElContent+='<TABLE width="100%">';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD colspan="2"><P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze election results Statewise.</P></TD>';
+			toolsDivElContent+='</TR>';
+		} else if(electionType == 'Parliament')
+		{
+			toolsDivElContent+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+			toolsDivElContent+='<TD><DIV class="toolHeading">Countrywise Election Results</DIV></TD>';
+			toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+			toolsDivElContent+='</TR>';
+			toolsDivElContent+='</TABLE>';			
+			toolsDivElContent+='<DIV class="toolBody">'; 
+			toolsDivElContent+='<TABLE width="100%">';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD colspan="2"><P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze election results Countrywise.</P></TD>';
+			toolsDivElContent+='</TR>';
+		}	
+		toolsDivElContent+='<TR>';
+		toolsDivElContent+='<TD colspan="2"><DIV id="yearAlertERR" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>';
+		toolsDivElContent+='</TR>';
+		toolsDivElContent+='<TR>';	
+		toolsDivElContent+='<TD>Year:</TD>';
+		toolsDivElContent+='<TD><SELECT id="selectYearERR" name="selectYearERR" style="width: 100px; margin-top: 3px;">';
+		for(var k in results.electionYearsList)
+		{		
+			 toolsDivElContent+='<OPTION value='+results.electionYearsList[k].id+'>'+results.electionYearsList[k].name+'</OPTION>';			
+		}										
+		toolsDivElContent+='</SELECT>';
+		toolsDivElContent+='</TD>';
+		toolsDivElContent+='</TR>';														
+		toolsDivElContent+='</TABLE>';
+		toolsDivElContent+='<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openStatewiseElectionResultsWindow('+electionYear+',\''+stateName+'\',\''+electionType+'\')" /></A></DIV>';		 
+		toolsDivElContent+='</DIV>';
+		toolsDivElContent+='</DIV>';
+		toolsDivElContent+='<DIV class="toolHead">';
+		if(electionType != 'Parliament')
+		{
+			toolsDivElContent+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+			toolsDivElContent+='<TD><DIV class="toolHeading">Districtwise Election Results</DIV></TD>';
+			toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+			toolsDivElContent+='</TR>';
+			toolsDivElContent+='</TABLE>';			
+			toolsDivElContent+='<DIV class="toolBody">'; 
+			toolsDivElContent+='<TABLE width="100%">';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD colspan="2"><P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze election results Districtwise.</P></TD>';
+			toolsDivElContent+='</TR>';
+		} else if(electionType == 'Parliament')
+		{
+			toolsDivElContent+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+			toolsDivElContent+='<TD><DIV class="toolHeading">Statewise Election Results</DIV></TD>';
+			toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+			toolsDivElContent+='</TR>';
+			toolsDivElContent+='</TABLE>';			
+			toolsDivElContent+='<DIV class="toolBody">'; 
+			toolsDivElContent+='<TABLE width="100%">';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD colspan="2"><P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze election results Statewise.</P></TD>';
+			toolsDivElContent+='</TR>';
+		}
+		toolsDivElContent+='<TR>';
+		toolsDivElContent+='<TD colspan="2"><DIV id="yearAlertERR1" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>';
+		toolsDivElContent+='</TR>';
+		toolsDivElContent+='<TR>';	
+		toolsDivElContent+='<TD>Year:</TD>';
+		toolsDivElContent+='<TD><SELECT id="selectYearERR1" name="selectYearPPR" style="width: 100px; margin-top: 3px;">';
+		for(var k in results.electionYearsList)
+		{		
+			 toolsDivElContent+='<OPTION value='+results.electionYearsList[k].id+'>'+results.electionYearsList[k].name+'</OPTION>';			
+		}									
+		toolsDivElContent+='</SELECT>';
+		toolsDivElContent+='</TD>';
+		toolsDivElContent+='</TR>';														
+		toolsDivElContent+='</TABLE>';
+		toolsDivElContent+='<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openDistwiseElectionResultsWindow('+electionYear+',\''+stateName+'\',\''+electionType+'\')" /></A></DIV>';		 
+		toolsDivElContent+='</DIV>';
+		toolsDivElContent+='</DIV>';
+		if(electionType == 'Assembly' || electionType == 'Parliament') 
+		{
+			toolsDivElContent+='<DIV class="toolHead">';
+			toolsDivElContent+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+			toolsDivElContent+='<TD><DIV class="toolHeading">Party Performance Report</DIV></TD>';
+			toolsDivElContent+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+			toolsDivElContent+='</TR>';
+			toolsDivElContent+='</TABLE>';			
+			toolsDivElContent+='<DIV class="toolBody">'; 
+			toolsDivElContent+='<TABLE width="100%">';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD colspan="2"><P style="font-size:15px;font-family:Trebuchet MS;text-align:left;">Analyze a party performance for selected election year</P></TD>';
+			toolsDivElContent+='</TR>';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD colspan="2"><DIV id="yearAlertPPR" style="display:none;color:red;text-align:left;" >Error Message</DIV></TD>';
+			toolsDivElContent+='</TR>';
+			toolsDivElContent+='<TR>';
+			toolsDivElContent+='<TD>Party Name:</TD>';
+			toolsDivElContent+='<TD>';
+			toolsDivElContent+='<select id="selectPartyPPR" name="selectParty">';
+			for(var l in results.partiesList)
+			{		
+				 toolsDivElContent+='<OPTION value='+results.partiesList[l].id+'>'+results.partiesList[l].name+'</OPTION>';			
+			}
+			toolsDivElContent+='</select>';							
+			toolsDivElContent+='</TD>';
+			toolsDivElContent+='</TR>';	
+			toolsDivElContent+='<TR>';	
+			toolsDivElContent+='<TD>Year:</TD>';
+			toolsDivElContent+='<TD><SELECT id="selectYearPPR" name="selectYearPPR" style="width: 100px; margin-top: 3px;">';
+			for(var k in results.electionYearsList)
+			{		
+				 toolsDivElContent+='<OPTION value='+results.electionYearsList[k].id+'>'+results.electionYearsList[k].name+'</OPTION>';			
+			}									
+			toolsDivElContent+='</SELECT>';
+			toolsDivElContent+='</TD>';
+			toolsDivElContent+='</TR>';	
+			toolsDivElContent+='<TR>';	
+			toolsDivElContent+='<TD colspan="2"><INPUT type="checkbox" id="pprCheckBox" value="hasAllianceParties" name="alliances"/>Include Alliances</TD>';
+			toolsDivElContent+='</TR>';							
+			toolsDivElContent+='</TABLE>';
+			toolsDivElContent+='<DIV align="right" style="margin-top:50px;"><A href="javascript:{}" ><IMG src="images/icons/electionResultsReport/viewLink.png" border="none" height="23px" onclick="openPartyPerformanceWindow('+electionTypeId+')" /></A></DIV>';		 
+			toolsDivElContent+='</DIV>';
+			toolsDivElContent+='</DIV>';
+		}	
+		toolsDivEl.innerHTML = toolsDivElContent;
+	}	
+	
+	//my code end -raghav
 	getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId);
 	getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electionId,partyId);
 }
@@ -289,6 +500,29 @@ function showAnalysisDetailsInPartyLostPositions(results)
 {		
 	var divEl = document.getElementById("lostPosAnalisisDetails");
 	contentStr='';
+	contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+	contentStr+='<TR>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/1.png"></TD>';
+	contentStr+='<TD><DIV class="wonLostPosHeading">Analysis in Party Lost Positions</DIV></TD>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/3.png"></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';	
+	contentStr+='<DIV>';
+	contentStr+='<TABLE class="wonLostPosTable" width="80%">';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">Seats Lost</TH>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openPartyElectionResultsWindow('+electionId+','+partyId+',\'0\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+','+electionTypeId+')">'+results.resultTypeValue+'</a></TD>';
+	contentStr+='</TR>';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">Analyzed Constituencies</TH>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')">'+results.analyzedConsti+'</a></TD>';
+	contentStr+='</TR>';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">Yet to be  Analyzed Constituencies</TH>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'notAnalyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')">'+results.notAnalyzedConsti+'</a></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';								
+	contentStr+='</DIV>';
 	contentStr+='<DIV class="wonLostPosHeading" id="positionAnalysisDetails_head">Analysis in Party Lost Positions</DIV>';
 	contentStr+='<DIV id="positionAnalysisDetails_head">';
 	contentStr+='	<DIV id="positionAnalysisDetails_data">';
@@ -312,6 +546,26 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='		</TABLE>';								
 	contentStr+='	</DIV>';
 	if(results.analysisCategoryBasicResultVO != null)
+	{
+	contentStr+='<div><br></br></div>';
+	contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+	contentStr+='<TR>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+	contentStr+='<TD><H3 style="width:510px;">Reasons Analysis</H3></TD>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';	
+    contentStr+='<div id="categoriesClassificationDiv">';
+    for(var i in results.analysisCategoryBasicResultVO)
+	{
+    contentStr+='<TABLE class="wonLostPosTable" width="80%">';
+	contentStr+='<TR>';
+	contentStr+='<TH style="width:50%">'+results.analysisCategoryBasicResultVO[i].categoryType+'</TH>';
+	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';		
+	}
+    contentStr+='</div>';
 	{	
 		contentStr+='<H3 style="width:510px;">Reasons Analysis</H3>';
 		contentStr+='<div id="categoriesClassificationDiv">';
@@ -329,7 +583,13 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	}
 	contentStr+='<div><br></br></div>';
 	contentStr+='<div id="multipleCategoriesDiv">';
-	contentStr+='<H3 style="width:510px;">Constituencies with Multiple Reasons</H3>';
+	contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+	contentStr+='<TR>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+	contentStr+='<TD><H3 style="width:510px;">Constituencies with Multiple Reasons</H3></TD>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';
 	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="75%"  class="multipleClassificationsTable">';
 	contentStr+='	<TR>';
 	contentStr+='		<TH width="30%">No of Analysis Reasons</TH>';
@@ -352,7 +612,13 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='</div>';
 	contentStr+='<br/><br/>';
 	contentStr+='<div id="votesMarginLost_main">';
-	contentStr+='<div id="votesMarginLost_Head"><H3 style="width:510px;">Analysis Based On Votes Margin</H3></div>';
+	contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+	contentStr+='<TR>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+	contentStr+='<TD><div id="votesMarginLost_Head"><H3 style="width:510px;">Analysis Based On Votes Margin</H3></div></TD>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';	
 	contentStr+='<div id="votesMarginLost_Body" class="votesMargin_Body_Main"></div>';
 	contentStr+='</div>';
 
@@ -376,7 +642,13 @@ function showAnalysisDetailsInPartyWonPositions(results)
 {
 	var divEl = document.getElementById("wonPosAnalisisDetails");
 	contentStr='';
-	contentStr+='<DIV class="wonLostPosHeading">Analysis in Party Won Positions</DIV>';
+	contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+	contentStr+='<TR>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/1.png"></TD>';
+	contentStr+='<TD><DIV class="wonLostPosHeading">Analysis in Party Won Positions</DIV></TD>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/3.png"></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';	
 	contentStr+='<DIV>';
 	contentStr+='<TABLE class="wonLostPosTable" width="80%">';
 	contentStr+='<TR>';
@@ -395,8 +667,14 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	contentStr+='</DIV>';
 	if(results.analysisCategoryBasicResultVO != null)
 	{
-	contentStr+='<div><br></br></div>';
-	contentStr+='<H3 style="width:510px;">Reasons Analysis</H3>';
+	contentStr+='<div><br></br></div>';	
+	contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+	contentStr+='<TR>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+	contentStr+='<TD><H3 style="width:510px;">Reasons Analysis</H3></TD>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';	
     contentStr+='<div id="categoriesClassificationDiv">';
     for(var i in results.analysisCategoryBasicResultVO)
 	{
@@ -411,7 +689,13 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	}
 	contentStr+='<div><br></br></div>';
 	contentStr+='<div id="multipleCategoriesDiv">';
-	contentStr+='<H3 style="width:510px;">Constituencies with Multiple Reasons</H3>';
+	contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+	contentStr+='<TR>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+	contentStr+='<TD><H3 style="width:510px;">Constituencies with Multiple Reasons</H3></TD>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';	
 	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="75%"  class="multipleClassificationsTable">';
 	contentStr+='	<TR>';
 	contentStr+='		<TH width="30%">No of Analysis Reasons</TH>';
@@ -436,7 +720,14 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	contentStr+='<br/><br/>';
 
 	contentStr+='<div id="votesMarginWon_main">';
-	contentStr+='<div id="votesMarginWon_Head"><H3 style="width:510px;">Analysis Based On Votes Margin</H3></div>';
+	contentStr+='<TABLE border="0" cellpadding="0" cellspacing="0">';
+	contentStr+='<TR>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/first.png"></TD>';
+	contentStr+='<TD><div id="votesMarginWon_Head"><H3 style="width:510px;">Analysis Based On Votes Margin</H3></div></TD>';
+	contentStr+='<TD><IMG src="images/icons/electionResultsAnalysisReport/second.png"></TD>';
+	contentStr+='</TR>';
+	contentStr+='</TABLE>';
+	contentStr+='';
 	contentStr+='<div id="votesMarginWon_Body" class="votesMargin_Body_Main"></div>';
 	contentStr+='</div>';
 
