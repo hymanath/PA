@@ -1760,6 +1760,7 @@ public class StaticDataService implements IStaticDataService {
 		 List<SelectOptionVO> allYears = new ArrayList<SelectOptionVO>();
 		 List result = null;
 		List nominationResult = null;
+		
 		try{
 			log.info("Making constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType() DAO call");
 			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
@@ -1881,6 +1882,8 @@ public class StaticDataService implements IStaticDataService {
 				allYears.add(eleYear);
 			}
 		constituencyElectionResults.setAllElectionYears(allYears);
+		
+		
 		
 		return constituencyElectionResults;
 		}catch(Exception e){
@@ -2393,6 +2396,8 @@ public class StaticDataService implements IStaticDataService {
 				}else{
 					candidateDetailsVO = getZptcOrMptcCandidatesInfoForAnElectionType(electionType,electionYear,resultsCategory,electionLevel,stateId,partyId);
 				}
+			}else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE)){
+							
 			}
 			
 			//modified by sai
@@ -3611,6 +3616,82 @@ public class StaticDataService implements IStaticDataService {
 		return null;
 	}
 	}
+	
+
+	public CandidateDetailsVO getMuncipalAndCorporationCandidateDetails(Long stateId,String electionType,String electionYear,Long rank,Long partyId,Long districtId,String resultsCategory){
+		CandidateDetailsVO candidateDetailsVO = new CandidateDetailsVO();
+		Long winnerCandidateRank = 1l,successorCandidateRank=2l;
+		List allCandidateResult= null;
+		List winnerCandidateResult = null;
+		List successorCandidateResult = null;
+		List<CandidateDetailsVO> allCandidates = new ArrayList<CandidateDetailsVO>(0);
+		List<CandidateDetailsVO> winnerCandidate = new ArrayList<CandidateDetailsVO>(0);
+		List<CandidateDetailsVO> successorCandidate = new ArrayList<CandidateDetailsVO>(0);		
+			
+		if(resultsCategory.equalsIgnoreCase(IConstants.ALL_CANDIDATES)){
+			allCandidateResult = getLocalElectionDetails(stateId,electionType,electionYear,rank,partyId,districtId);	
+			winnerCandidateResult = getLocalElectionDetails(stateId,electionType,electionYear,winnerCandidateRank,partyId,districtId);		
+			successorCandidateResult = getLocalElectionDetails(stateId,electionType,electionYear,successorCandidateRank,partyId,districtId);
+		
+			successorCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,0l);
+			allCandidates = setAllCandidateDetailsIntoVo(winnerCandidateResult,allCandidateResult);
+			if(successorCandidate!=null){
+				allCandidates.addAll(successorCandidate);
+			}	
+			candidateDetailsVO.setCandidateDetails(allCandidates);
+		}else if(resultsCategory.equalsIgnoreCase(IConstants.WINNER_CANDIDATES)){
+			 winnerCandidateResult = getLocalElectionDetails(stateId,electionType,electionYear,winnerCandidateRank,partyId,districtId);
+			 successorCandidateResult = getLocalElectionDetails(stateId,electionType,electionYear,successorCandidateRank,partyId,districtId);
+			 winnerCandidate = setWinnerCandidateDetailsIntoVO(winnerCandidateResult,successorCandidateResult,0l);
+			 candidateDetailsVO.setCandidateDetails(winnerCandidate);
+		}
+		return candidateDetailsVO;
+	}
+	
+	/** This dynamic Query is used to generate data based on the user selection criteria in 
+	 * Election report Page(View Candidate Details Button) for Corporation and Muncipality Election Years.
+	 * 
+	 * @param stateId
+	 * @param electionType
+	 * @param electionYear
+	 * @param rank
+	 * @param partyId
+	 * @param districtId
+	 * @return
+	 */
+	public List getLocalElectionDetails(Long stateId,String electionType,String electionYear,Long rank,Long partyId,Long districtId){		
+		Object[] params = {stateId,electionType,electionYear};
+		StringBuilder sb = new StringBuilder();	
+		sb.append("select model.candidate.candidateId,");
+		sb.append(" model.candidate.lastname,");
+		sb.append(" model.candidateResult.votesEarned,");
+		sb.append(" model.candidateResult.votesPercengate,");
+		sb.append(" model.candidateResult.rank,");
+		sb.append(" model.party.partyId,");
+		sb.append(" model.party.partyFlag,");
+		sb.append(" model.party.longName,");
+		sb.append(" model.party.shortName,");		
+		sb.append(" model.constituencyElection.constituency.constituencyId,");
+		sb.append(" model.constituencyElection.constituency.name,");	
+		sb.append(" model.constituencyElection.election.electionYear,");
+		sb.append(" model.constituencyElection.constituency.localElectionBody.electionType.electionType,");
+		sb.append(" model.constituencyElection.constituency.localElectionBody.localElectionBodyId");
+		sb.append(" from Nomination model where model.constituencyElection.constituency.localElectionBody.district.state.stateId = ? and ");
+		sb.append(" model.constituencyElection.constituency.localElectionBody.electionType.electionType = ?");
+		sb.append(" and model.constituencyElection.election.electionYear = ? ");
+		if(rank !=0l){
+			sb.append(" and model.candidateResult.rank = ").append(rank);
+		}
+		if(partyId!=0l){
+			sb.append(" and model.party.partyId = ").append(partyId);
+		}
+		if(districtId !=0l){
+			sb.append(" and model.constituencyElection.constituency.localElectionBody.district.districtId = ").append(districtId);
+		}
+		List result = nominationDAO.getTehsilLevelElectionDetailsForAGivenConstituency(sb.toString(),params);
+		return result;
+	}
+
 
 }
 
