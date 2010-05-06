@@ -782,70 +782,11 @@ public class AnalysisReportService implements IAnalysisReportService {
 		 ResultStatus resultStatus = new ResultStatus();
 		 
 		 try{
-			 
-			 List<Nomination> partyNominations = null;
-			 List<Nomination> oppPartyNominations = null;
-			 //Map<constituencyId,Nomination> oppositionPartyNominations ..
-			 Map<Long,Nomination> oppPartyNominationsMap = null;
-			 
-			 if(electionId != null && partyId != null && category != null){
+			 votesMarginAnalysisVO = new ArrayList<VotesMarginAnalysisVO>();
+			 Map<Long,List<Long>> marginNominationIds = new HashMap<Long,List<Long>>();
+			 				  
+			 marginNominationIds = getNominationsIdsForAPartyInAnElection(electionId,partyId,category);
 				 
-				 votesMarginAnalysisVO = new ArrayList<VotesMarginAnalysisVO>();
-				 
-				  if(category.equals(IConstants.CANDIDATE_COMMENTS_WON)){
-					  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId,new Long(1));
-					  List<Long> constituencyIds = getConstituencyIdsFromNominations(partyNominations);
-					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(2),constituencyIds);
-				  }
-				  else if(category.equals(IConstants.CANDIDATE_COMMENTS_LOST)){
-					  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId, partyId, new Long(1));
-					  List<Long> constituencyIds = getConstituencyIdsFromNominations(partyNominations);
-					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(1),constituencyIds);
-				  }
-				  
-				  if(oppPartyNominations != null && oppPartyNominations.size() > 0)
-					  oppPartyNominationsMap = getOppPartyNominationsMap(oppPartyNominations);
-				  
-				  //creating dummy map with dummy margin values
-				  Map<Long,List<Long>> marginNominationIds = new HashMap<Long,List<Long>>();
-				  for(int i=1;i<5;i++){
-					  List<Long> arrayList = new ArrayList<Long>();
-					  marginNominationIds.put(new Long(i), arrayList);
-				  }
-				  
-				  //process the party result nominations
-				  if(partyNominations != null && partyNominations.size() > 0 && !oppPartyNominationsMap.isEmpty()){
-					  for(Nomination partyNomintn:partyNominations){
-						  Long constituencyId = partyNomintn.getConstituencyElection().getConstituency().getConstituencyId();
-						  Nomination oppPartyNomitn = null;
-						  if(oppPartyNominationsMap.containsKey(constituencyId))
-						  oppPartyNomitn = oppPartyNominationsMap.get(constituencyId);
-						  
-						  if(oppPartyNomitn != null){
-							  Long maginValue = getMarginValueFromPartyAndOppPartyNominations(partyNomintn,oppPartyNomitn);
-							  
-							  log.debug("Margin Value :" +maginValue );
-							  if(maginValue != null){
-								  Long marginVal = new Long(0);
-								  if(maginValue >= new Long(0) && maginValue <= new Long(10))
-									  marginVal = new Long(1);
-								  else if(maginValue > new Long(10) && maginValue <= new Long(20))
-									  marginVal = new Long(2);
-								  else if(maginValue > new Long(20) && maginValue <= new Long(30))
-									  marginVal = new Long(3);
-								  else if(maginValue > new Long(30))
-									  marginVal = new Long(4);
-								  if(!marginNominationIds.isEmpty() && marginNominationIds.containsKey(marginVal)){
-								  List<Long> partyNomin = marginNominationIds.get(marginVal);
-								  partyNomin.add(partyNomintn.getNominationId());
-								  marginNominationIds.put(marginVal, partyNomin);
-								  }
-							  }
-						  }
-							  
-					  }
-				  }
-				  
 				  //get analyzed constituencies
 				  if(!marginNominationIds.isEmpty()){
 					Set entries = marginNominationIds.entrySet();
@@ -862,10 +803,6 @@ public class AnalysisReportService implements IAnalysisReportService {
 					}
 					}
 				  }
-				  
-			 }
-			 
-			 
 		 }
 		 catch(Exception ex){
 			 ex.printStackTrace();
@@ -1125,5 +1062,145 @@ public class AnalysisReportService implements IAnalysisReportService {
 		}
 	 return electionResultPartyVO;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(java.lang.Long, java.lang.Long, java.lang.String, java.lang.Long)
+	 */
+	public ElectionResultPartyVO getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(
+			Long electionId, Long partyId, String category, Long position) {
+		
+		log.debug("Inside getElectionResultsForAnPartyInAnElectionForParticularVotesMargin Method..... ");
+		
+		ElectionResultPartyVO electionResultPartyVO = null;
+		ResultStatus resultStatus = new ResultStatus();
+		 
+		 try{
+			 List<Long> marginNominationIds = null;
+			 Map<Long,List<Long>> nominationIds = getNominationsIdsForAPartyInAnElection(electionId,partyId,category);
+			 if(!nominationIds.isEmpty())
+				 marginNominationIds = nominationIds.get(position);
+			 
+			 if(marginNominationIds != null && marginNominationIds.size() > 0){
+				 electionResultPartyVO = getCandidateResultsInAnElectionFromNominationIds(marginNominationIds,partyId);
+			 }
+		 }catch(Exception ex){
+			 ex.printStackTrace();
+			 resultStatus.setExceptionEncountered(ex);
+			 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			 electionResultPartyVO = new ElectionResultPartyVO();
+			 electionResultPartyVO.setResultStatus(resultStatus);
+		 }
+		
+		return electionResultPartyVO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getNominationsIdsForAPartyInAnElection(java.lang.Long, java.lang.Long, java.lang.String, java.lang.Long)
+	 */
+	public Map<Long,List<Long>> getNominationsIdsForAPartyInAnElection(Long electionId,
+			Long partyId, String category) {
+		
+		log.debug("Inside getNominationsIdsForAPartyInAnElection Method..... ");
+		
+		//creating dummy map with dummy margin values
+		Map<Long,List<Long>> marginNominationIds = null;
+						 
+		 try{
+			 List<Nomination> partyNominations = null;
+			 List<Nomination> oppPartyNominations = null;
+			 //Map<constituencyId,Nomination> oppositionPartyNominations ..
+			 Map<Long,Nomination> oppPartyNominationsMap = null;
+			 			 
+			 if(electionId != null && partyId != null && category != null){
+				 
+				  if(category.equals(IConstants.CANDIDATE_COMMENTS_WON)){
+					  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForWon(electionId,partyId,new Long(1));
+					  List<Long> constituencyIds = getConstituencyIdsFromNominations(partyNominations);
+					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(2),constituencyIds);
+				  }
+				  else if(category.equals(IConstants.CANDIDATE_COMMENTS_LOST)){
+					  partyNominations = nominationDAO.findByElectionIdAndPartyIdStateIdForLost(electionId, partyId, new Long(1));
+					  List<Long> constituencyIds = getConstituencyIdsFromNominations(partyNominations);
+					  oppPartyNominations = nominationDAO.findByElectionIdAndRank(electionId,new Long(1),constituencyIds);
+				  }
+				  
+				  if(oppPartyNominations != null && oppPartyNominations.size() > 0)
+					  oppPartyNominationsMap = getOppPartyNominationsMap(oppPartyNominations);
+				  
+				  //creating dummy map with dummy margin values
+				  marginNominationIds = new HashMap<Long,List<Long>>();
+				  for(int i=1;i<5;i++){
+					  List<Long> arrayList = new ArrayList<Long>();
+					  marginNominationIds.put(new Long(i), arrayList);
+				  }
+				  
+				  //process the party result nominations
+				  if(partyNominations != null && partyNominations.size() > 0 && !oppPartyNominationsMap.isEmpty()){
+					  for(Nomination partyNomintn:partyNominations){
+						  Long constituencyId = partyNomintn.getConstituencyElection().getConstituency().getConstituencyId();
+						  Nomination oppPartyNomitn = null;
+						  if(oppPartyNominationsMap.containsKey(constituencyId))
+						  oppPartyNomitn = oppPartyNominationsMap.get(constituencyId);
+						  
+						  if(oppPartyNomitn != null){
+							  Long maginValue = getMarginValueFromPartyAndOppPartyNominations(partyNomintn,oppPartyNomitn);
+							  
+							  log.debug("Margin Value :" +maginValue );
+							  if(maginValue != null){
+								  Long marginVal = new Long(0);
+								  if(maginValue >= new Long(0) && maginValue <= new Long(10))
+									  marginVal = new Long(1);
+								  else if(maginValue > new Long(10) && maginValue <= new Long(20))
+									  marginVal = new Long(2);
+								  else if(maginValue > new Long(20) && maginValue <= new Long(30))
+									  marginVal = new Long(3);
+								  else if(maginValue > new Long(30))
+									  marginVal = new Long(4);
+								  if(!marginNominationIds.isEmpty() && marginNominationIds.containsKey(marginVal)){
+								  List<Long> partyNomin = marginNominationIds.get(marginVal);
+								  partyNomin.add(partyNomintn.getNominationId());
+								  marginNominationIds.put(marginVal, partyNomin);
+								  }
+							  }
+						  }
+					  }
+				  }
+					 
+			 }
+		 }
+		 catch(Exception ex){
+			 ex.printStackTrace();
+			 log.debug("Exception Raised :" + ex);
+		 }
+		
+	  return marginNominationIds;
+	}
+
+	public List<ElectionBasicCommentsVO> getCandidateCommentsForAnPartyInAnElectionForParticularVotesMargin(
+			Long electionId, Long partyId, String category, Long position,
+			Long categoryTypeId) {
+		
+		log.debug("Inside getCandidateCommentsForAnPartyInAnElectionForParticularVotesMargin Method..... ");
+		
+		List<ElectionBasicCommentsVO> electionBasicCommentsVOList = null;
+		
+		try{
+			List<Long> marginNominationIds = null;
+			Map<Long,List<Long>> nominationIds = getNominationsIdsForAPartyInAnElection(electionId,partyId,category);
+			 if(!nominationIds.isEmpty())
+				 marginNominationIds = nominationIds.get(position);
+			 
+			 if(marginNominationIds != null && marginNominationIds.size() > 0)
+			 electionBasicCommentsVOList = getCandidateCommentsFromNominationIds(partyId,marginNominationIds,categoryTypeId);
+			 
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			log.debug("Exception Raised :" + ex);
+		}
+	  return electionBasicCommentsVOList;
+	}
+
 }
