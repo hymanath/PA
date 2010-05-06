@@ -44,7 +44,17 @@ public class PartyElectionResultsAction extends ActionSupport implements Servlet
 	private Long electionTypeId;
 	private String windowTask;
 	private Long clickIndex;
-	
+	private String resultStatus;
+		
+
+	public String getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(String resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
 	public Long getClickIndex() {
 		return clickIndex;
 	}

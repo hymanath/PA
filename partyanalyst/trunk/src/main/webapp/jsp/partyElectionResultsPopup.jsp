@@ -38,7 +38,15 @@ function callAjax(param,jsObj,url){
 		               success : function( o ) {
 						try {												
 								if(o.responseText)
-									myResults = YAHOO.lang.JSON.parse(o.responseText);									
+									myResults = YAHOO.lang.JSON.parse(o.responseText);		
+								
+								var imgElmt = document.getElementById("barloaderGif");
+
+								if(imgElmt.style.display == "block")
+										imgElmt.style.display = "none"
+								else if(imgElmt.style.display == "none")
+									imgElmt.style.display == "block"
+
 								if(jsObj.task == "getConstituencyResults")
 								{								
 									showConstituencyResults(myResults);
@@ -116,6 +124,9 @@ function callAjax(param,jsObj,url){
 		</TR>
 		</TABLE>	
 	</c:if>
+
+		<img id="barloaderGif" style="display:block;" src="images/icons/barloader.gif "/>
+
 	</CENTER>
 	<DIV id="showConstituencyResults"></DIV>
 	<DIV class="yui-skin-sam"><DIV id="candidateResults"></DIV></DIV>
@@ -566,24 +577,26 @@ function callAjax(param,jsObj,url){
 			 selectYearDialog.hide();
 	}
 
-	function getMainPartyMarginCountAnalysis(index,rank)
+	function getMainPartyMarginCountAnalysis(index,resultStatus)
 	{
 		var parent = window.opener;
 		var nominationIds1 = new Array();
 		
-		if(rank == 0)
+		/*if(rank == 0)
 			nominationIds1 = parent.electionAnalysisObj.marginVotesInfoLost[index].nominationIds;
 		else if(rank == 1)
-			nominationIds1= parent.electionAnalysisObj.marginVotesInfoWon[index].nominationIds;
+			nominationIds1= parent.electionAnalysisObj.marginVotesInfoWon[index].nominationIds;*/
 		
 		var jsObj= 
-		{
-			nominationIds: [],
-			partyId: partyId,		
+		{			
+			partyId: partyId,
+			electionId:electionId,
+			resultStatus:resultStatus,
+			clickIndex:index,
 			task:"getConstituencyStatusAnalysisForVotesMarginWindow"		
 		}
 		
-		jsObj.nominationIds = nominationIds1;
+		//jsObj.nominationIds = nominationIds1;
 		
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);		
 		var url = "<%=request.getContextPath()%>/constituencyStatusAnalysisForVotesMarginAjaxAction.action?"+param;
@@ -597,7 +610,7 @@ function callAjax(param,jsObj,url){
 	}
 	else if('${windowTask}' == "mainPartyMarginCountAnalysisPopup")
 	{
-		getMainPartyMarginCountAnalysis('${clickIndex}','${rank}');
+		getMainPartyMarginCountAnalysis('${clickIndex}','${resultStatus}');
 	}	
 
 	</SCRIPT>

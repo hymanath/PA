@@ -16,7 +16,7 @@
 function buildPageLayout()
 {
 	var pageLayout = new YAHOO.widget.Layout('page_layout_main', { 
-	height:2000,
+	height:2100,
 	units: [			
 			{ 
 				position: 'right', 
@@ -555,15 +555,15 @@ function showAnalysisDetailsInPartyLostPositions(results)
 		contentStr+='</TR>';
 		contentStr+='</TABLE>';	
 	    contentStr+='<div id="categoriesClassificationDiv">';
+		contentStr+='<TABLE class="wonLostPosTable" width="80%">';
 	    for(var i in results.analysisCategoryBasicResultVO)
-		{
-	    contentStr+='<TABLE class="wonLostPosTable" width="80%">';
+		{	    
 		contentStr+='<TR>';
 		contentStr+='<TH style="width:50%">'+results.analysisCategoryBasicResultVO[i].categoryType+'</TH>';
 		contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
-		contentStr+='</TR>';
-		contentStr+='</TABLE>';		
+		contentStr+='</TR>';		
 		}
+		contentStr+='</TABLE>';		
 	    contentStr+='</div>';
 	/*{	
 		contentStr+='<H3 style="width:510px;">Reasons Analysis</H3>';
@@ -675,16 +675,16 @@ function showAnalysisDetailsInPartyWonPositions(results)
 	contentStr+='</TR>';
 	contentStr+='</TABLE>';	
     contentStr+='<div id="categoriesClassificationDiv">';
+	contentStr+='<TABLE class="wonLostPosTable" width="80%">';
     for(var i in results.analysisCategoryBasicResultVO)
-	{
-    contentStr+='<TABLE class="wonLostPosTable" width="80%">';
+	{    
 	contentStr+='<TR>';
 	contentStr+='<TH style="width:50%">'+results.analysisCategoryBasicResultVO[i].categoryType+'</TH>';
 	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Won\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
-	contentStr+='</TR>';
-	contentStr+='</TABLE>';		
+	contentStr+='</TR>';	
 	}
-    contentStr+='</div>';
+	contentStr+='</TABLE>';		
+	    contentStr+='</div>';
 	}
 	contentStr+='<div><br></br></div>';
 	contentStr+='<div id="multipleCategoriesDiv">';

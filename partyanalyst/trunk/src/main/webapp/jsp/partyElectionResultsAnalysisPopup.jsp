@@ -386,20 +386,14 @@ function getCommentsClassifications(rank)
 
 	}
 													
-	function getMarginCountAnalysisForAnalyzedConstituencies(index)
-	{			
-		var parent = window.opener;
-		var nominationIds = '';
-		
-		if(status == "LOST")
-			nominationIds = parent.electionAnalysisObj.marginVotesInfoLost[index].nominationIds;
-		else if(status == "WON")
-			nominationIds = parent.electionAnalysisObj.marginVotesInfoWon[index].nominationIds;
-
+	function getMarginCountAnalysisForAnalyzedConstituencies(index,resultStatus)
+	{	
 		var jsObj= 
-		{			
-			nominationIds: nominationIds,
-			partyId: partyId,		
+		{				
+			partyId: partyId,
+			electionId:electionId,
+			resultStatus:resultStatus,
+			clickIndex:index,
 			task:"getAnalyzedConstituencyStatusAnalysisForVotesMarginWindow"		
 		}
 
@@ -409,20 +403,14 @@ function getCommentsClassifications(rank)
 	}
 
 	
-	function getMainPartyMarginCountAnalyzedCategoryResults(index,categoryId)
+	function getMainPartyMarginCountAnalyzedCategoryResults(index,resultStatus,categoryId)
 	{		
-		var parent = window.opener;
-		var nominationIds = '';
-		
-		if(status == "LOST")
-			nominationIds = parent.electionAnalysisObj.marginVotesInfoLost[index].nominationIds;
-		else if(status == "WON")
-			nominationIds = parent.electionAnalysisObj.marginVotesInfoWon[index].nominationIds;
-	
 		var jsObj= 
-		{
-			nominationIds: nominationIds,
+		{			
 			partyId: partyId,		
+			electionId:electionId,
+			resultStatus:resultStatus,
+			clickIndex:index,
 			categoryId:categoryId,
 			task:"getConstituencyStatusAnalysisCategoryForVotesMarginWindow"		
 		}
@@ -501,11 +489,11 @@ function getCommentsClassifications(rank)
 	}
 	else if('${windowTask}' == "mainPartyMarginCountAnalyzedConstituenciesPopup")
 	{
-		getMarginCountAnalysisForAnalyzedConstituencies('${clickIndex}');
+		getMarginCountAnalysisForAnalyzedConstituencies('${clickIndex}','${resultStatus}');
 	}
 	else if('${windowTask}' == "mainPartyMarginCountAnalyzedCategoryPopup")
 	{
-		getMainPartyMarginCountAnalyzedCategoryResults('${clickIndex}','${categoryId}');
+		getMainPartyMarginCountAnalyzedCategoryResults('${clickIndex}','${resultStatus}','${categoryId}');
 	}
 	
 </SCRIPT>

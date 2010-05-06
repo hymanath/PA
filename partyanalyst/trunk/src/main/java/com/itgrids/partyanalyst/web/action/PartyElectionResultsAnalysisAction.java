@@ -49,10 +49,19 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	private String constituencyCount;
 	private String clickIndex;
 	private String task = null;
+	private String resultStatus;
 	JSONObject jObj = null;
 	JSONArray jsonArray =null;
 	
 	
+
+	public String getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(String resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 
 	public JSONArray getJsonArray() {
 		return jsonArray;
@@ -441,23 +450,18 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		}
 		
 		Long partyId = new Long(jObj.getString("partyId"));
-		try
-		{
-			jsonArray = jObj.optJSONArray("nominationIds");			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+		Long electionId = new Long(jObj.getString("electionId"));
+		String resultStatus = jObj.getString("resultStatus");
+		Long clickIndex = new Long(jObj.getString("clickIndex"));		
 		
-		int nominationSize = jsonArray.length();
-		List<Long> nominationIdsList = new ArrayList<Long>();
-		for(int i = 0;i<nominationSize;i++)
-		{
-			nominationIdsList.add(new Long(jsonArray.getInt(i)));
-		}		
-		electionResultPartyVO = analysisReportService.getCandidateResultsInAnElectionFromNominationIds(nominationIdsList,partyId);
+		String category = null;
+		if(resultStatus.equalsIgnoreCase("WON"))
+			category = IConstants.CANDIDATE_COMMENTS_WON;
+		else if(resultStatus.equalsIgnoreCase("LOST"))
+			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
+		electionResultPartyVO = analysisReportService.getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(electionId, partyId, category, clickIndex);
+			
 		return Action.SUCCESS;
 	}
 	
@@ -475,15 +479,18 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		}
 		
 		Long partyId = new Long(jObj.getString("partyId"));
-		JSONArray nominationIds = jObj.getJSONArray("nominationIds");
-		int nominationSize = nominationIds.length();
-		List<Long> nominationIdsList = new ArrayList<Long>();
-		for(int i = 0;i<nominationSize;i++)
-		{
-			nominationIdsList.add(new Long(nominationIds.getInt(i)));
-		}
+		Long electionId = new Long(jObj.getString("electionId"));
+		String resultStatus = jObj.getString("resultStatus");
+		Long clickIndex = new Long(jObj.getString("clickIndex"));		
 		
-		electionBasicCommentsVOList = analysisReportService.getCandidateCommentsFromNominationIds(partyId, nominationIdsList, new Long(0));
+		String category = null;
+		if(resultStatus.equalsIgnoreCase("WON"))
+			category = IConstants.CANDIDATE_COMMENTS_WON;
+		else if(resultStatus.equalsIgnoreCase("LOST"))
+			category = IConstants.CANDIDATE_COMMENTS_LOST;
+		
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentsForAnPartyInAnElectionForParticularVotesMargin(electionId, partyId, category, clickIndex, new Long(0));
+		//electionBasicCommentsVOList = analysisReportService.getCandidateCommentsFromNominationIds(partyId, nominationIdsList, new Long(0));
 		return Action.SUCCESS;
 	}
 	
@@ -501,16 +508,19 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 		}
 		
 		Long partyId = new Long(jObj.getString("partyId"));
+		Long electionId = new Long(jObj.getString("electionId"));
+		String resultStatus = jObj.getString("resultStatus");
+		Long clickIndex = new Long(jObj.getString("clickIndex"));		
 		Long categoryId = new Long(jObj.getString("categoryId"));
-		JSONArray nominationIds = jObj.getJSONArray("nominationIds");
-		int nominationSize = nominationIds.length();
-		List<Long> nominationIdsList = new ArrayList<Long>();
-		for(int i = 0;i<nominationSize;i++)
-		{
-			nominationIdsList.add(new Long(nominationIds.getInt(i)));
-		}
 		
-		electionBasicCommentsVOList = analysisReportService.getCandidateCommentsFromNominationIds(partyId, nominationIdsList, categoryId);
+		String category = null;
+		if(resultStatus.equalsIgnoreCase("WON"))
+			category = IConstants.CANDIDATE_COMMENTS_WON;
+		else if(resultStatus.equalsIgnoreCase("LOST"))
+			category = IConstants.CANDIDATE_COMMENTS_LOST;
+		
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentsForAnPartyInAnElectionForParticularVotesMargin(electionId, partyId, category, clickIndex, categoryId);
+		
 		return Action.SUCCESS;
 	}
 }

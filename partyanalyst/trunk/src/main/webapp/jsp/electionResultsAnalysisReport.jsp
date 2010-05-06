@@ -303,13 +303,13 @@ function buildVotesMarginInfo(electionId,partyId,status)
 
 function showMarginCountAnalysisForConstituenciesPopup(index,partyId,status)
 {
-	return;
+	index = index+1;
 	if(status == "WON")
 		rank = 1;
 	else if(status == "LOST")
 		rank = 0;
 
-	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&electionType="+electionType+"&partyId="+partyId+"&rank="+rank+"&clickIndex="+index+"&windowTask=mainPartyMarginCountAnalysisPopup";
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&electionType="+electionType+"&partyId="+partyId+"&rank="+rank+"&clickIndex="+index+"&resultStatus="+status+"&windowTask=mainPartyMarginCountAnalysisPopup";
 	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1300,left=200,top=200");
 	
 	browser1.focus();
@@ -317,7 +317,7 @@ function showMarginCountAnalysisForConstituenciesPopup(index,partyId,status)
 
 function showMarginCountAnalysisForAnalyzedConstituenciesPopup(index,partyId,status)
 {
-	return;
+	index = index+1;
 	var stateSelectEl = document.getElementById("stateSelectEl");
 	var stateId =stateSelectEl.value;	
 	var position = '';
@@ -327,7 +327,7 @@ function showMarginCountAnalysisForAnalyzedConstituenciesPopup(index,partyId,sta
 		position = "Lost";
 
 	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
-	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&clickIndex="+index+"&windowTask=mainPartyMarginCountAnalyzedConstituenciesPopup";
+	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&clickIndex="+index+"&resultStatus="+status+"&windowTask=mainPartyMarginCountAnalyzedConstituenciesPopup";
 	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	
 	browser2.focus();	
@@ -335,7 +335,7 @@ function showMarginCountAnalysisForAnalyzedConstituenciesPopup(index,partyId,sta
 
 function showMarginCountAnalysisForCategory(index,partyId,categoryId,status)
 {	
-	return;
+	index = index+1;
 	var stateSelectEl = document.getElementById("stateSelectEl");
 	var stateId =stateSelectEl.value;	
 	var position = '';
@@ -345,7 +345,7 @@ function showMarginCountAnalysisForCategory(index,partyId,categoryId,status)
 		position = "Lost";
 			
 	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
-	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&clickIndex="+index+"&categoryId="+categoryId+"&windowTask=mainPartyMarginCountAnalyzedCategoryPopup";
+	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&clickIndex="+index+"&categoryId="+categoryId+"&resultStatus="+status+"&windowTask=mainPartyMarginCountAnalyzedCategoryPopup";
 	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	
 	browser2.focus();	
