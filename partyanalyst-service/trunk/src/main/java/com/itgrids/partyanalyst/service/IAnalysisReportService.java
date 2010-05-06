@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
@@ -35,4 +36,10 @@ public interface IAnalysisReportService {
  	public ElectionResultPartyVO getCandidateResultsInAnElectionFromNominationIds(List<Long> nominationIds,Long partyId);
  	
  	public List<ElectionBasicCommentsVO> getCandidateCommentsFromNominationIds(Long partyId,List<Long> nominationIds,Long categoryTypeId);
-}
+ 	
+ 	public ElectionResultPartyVO getElectionResultsForAnPartyInAnElectionForParticularVotesMargin(Long electionId,Long partyId,String category,Long position);
+ 	
+ 	public List<ElectionBasicCommentsVO> getCandidateCommentsForAnPartyInAnElectionForParticularVotesMargin(Long electionId,Long partyId,String category,Long position,Long categoryTypeId);
+ 	
+ 	public Map<Long,List<Long>> getNominationsIdsForAPartyInAnElection(Long electionId,Long partyId,String category);
+} 
