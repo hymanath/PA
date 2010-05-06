@@ -300,4 +300,8 @@
 	<bean id="partyElectionResultsAnalysisAction" class="com.itgrids.partyanalyst.web.action.PartyElectionResultsAnalysisAction" singleton="false">
 		<property name="analysisReportService" ref="analysisReportService" />
 	</bean>
+	<bean id="electionResultsAnalysisReportPopupAction" class="com.itgrids.partyanalyst.web.action.ElectionResultsAnalysisReportPopupAction" singleton="false">
+		<property name="analysisReportService" ref="analysisReportService" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
 </beans>		
