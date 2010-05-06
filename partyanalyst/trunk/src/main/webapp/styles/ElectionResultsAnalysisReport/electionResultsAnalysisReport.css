@@ -28,7 +28,7 @@
 	height:22px;
 	padding:5px;
 	text-align:center;
-	width:240px;
+	width:220px;
 }
 #pageHeading
 { 
@@ -55,7 +55,7 @@
 	font-weight:bold;	
 	text-align: center;
 	text-decoration:underline;
-	width:238px;	
+	width:220px;	
 	padding: 5px;
 	height:21px;		
 }
@@ -91,7 +91,7 @@
 	border-left: 1px solid #DBDCDB;
 	border-right: 1px solid #DBDCDB;
 	border-bottom: 1px solid #DBDCDB;
-	width:240px;
+	width:224px;
 	padding:5px;
 	margin-bottom:10px;
 }
@@ -177,7 +177,7 @@ H3
 	font-size:15px;
 	font-weight:bold;
 	height:22px;
-	width: 630px;
+	width: 620px;
 	padding:5px;
 	text-align:center;
 }
