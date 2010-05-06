@@ -55,7 +55,7 @@
 	font-weight:bold;	
 	text-align: center;
 	text-decoration:underline;
-	width:240px;	
+	width:238px;	
 	padding: 5px;
 	height:21px;		
 }
@@ -110,7 +110,7 @@ H3
 	font-size:15px;
 	font-weight:bold;	
 	text-align: left;	
-	width:636px;	
+	width:630px;	
 	padding: 5px;
 	height:20px;
 	margin:0px;
@@ -177,6 +177,7 @@ H3
 	font-size:15px;
 	font-weight:bold;
 	height:22px;
+	width: 630px;
 	padding:5px;
 	text-align:center;
 }
