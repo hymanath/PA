@@ -27,63 +27,52 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class ElectionResultsAnalysisReportAction extends ActionSupport implements ServletRequestAware,ServletContextAware {
+public class ElectionResultsAnalysisReportPopupAction extends ActionSupport implements ServletRequestAware,ServletContextAware  {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(ElectionResultsAnalysisReportAction.class);
-	private HttpServletRequest request;	
 	private ServletContext context;
+	private static final Logger log = Logger.getLogger(ElectionResultsAnalysisReportPopupAction.class);
+	private HttpServletRequest request;
 	private IStaticDataService staticDataService; 
 	private HttpSession session;
-	private List<SelectOptionVO> statesList;
-	private List<SelectOptionVO> electionTypes;
-	private List<SelectOptionVO> electionYears;
-	private List<SelectOptionVO> partiesList;
-	
-	private PartyAnalysisReportVO partyAnalysisReportVO;
-	private List<VotesMarginAnalysisVO> votesMarginAnalysisVO;
-	
-	private String task = null;
-	JSONObject jObj = null;
 	private AnalysisReportService analysisReportService;
 	private PartyPositionAnalysisResultVO partyPositionAnalysisResultVO;
+	private PartyAnalysisReportVO partyAnalysisReportVO;
+	private String electionType;
+	private String electionYear;
+	private Long stateId;
+	private String stateName; 
+	private Long partyId;
+	private Long electionTypeId;
+	private String task = null;
+	JSONObject jObj = null;
+	private List<VotesMarginAnalysisVO> votesMarginAnalysisVO;
 	
-	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisVO() {
-		return votesMarginAnalysisVO;
-	}
-
-	public void setVotesMarginAnalysisVO(
-			List<VotesMarginAnalysisVO> votesMarginAnalysisVO) {
-		this.votesMarginAnalysisVO = votesMarginAnalysisVO;
-	}
-
 	public void setServletRequest(HttpServletRequest request) {
-		this.setRequest(request);
-		
+		this.request = request;		
 	}
 
 	public void setServletContext(ServletContext context) {
-		this.context = context;
-		
+		this.context = context;		
 	}
 
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-
-	public HttpServletRequest getRequest() {
-		return request;
-	}
-	
 	public ServletContext getContext() {
 		return context;
 	}
 
 	public void setContext(ServletContext context) {
 		this.context = context;
+	}
+
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
 	}
 
 	public IStaticDataService getStaticDataService() {
@@ -102,81 +91,108 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		this.session = session;
 	}
 
-	public List<SelectOptionVO> getElectionYears() {
-		return electionYears;
-	}
-
-	public void setElectionYears(List<SelectOptionVO> electionYears) {
-		this.electionYears = electionYears;
-	}
-
-	public List<SelectOptionVO> getPartiesList() {
-		return partiesList;
-	}
-
-	public void setPartiesList(List<SelectOptionVO> partiesList) {
-		this.partiesList = partiesList;
-	}
-	
-	
-	public PartyAnalysisReportVO getPartyAnalysisReportVO() {
-		return partyAnalysisReportVO;
-	}
-
-	public void setPartyAnalysisReportVO(PartyAnalysisReportVO partyAnalysisReportVO) {
-		this.partyAnalysisReportVO = partyAnalysisReportVO;
-	}
-	
-	public String getTask() {
-		return task;
-	}
-
-	public void setTask(String task) {
-		this.task = task;
-	}	
-
 	public AnalysisReportService getAnalysisReportService() {
 		return analysisReportService;
 	}
 
 	public void setAnalysisReportService(AnalysisReportService analysisReportService) {
 		this.analysisReportService = analysisReportService;
-	}	
-	
-	public List<SelectOptionVO> getStatesList() {
-		return statesList;
-	}
-
-	public void setStatesList(List<SelectOptionVO> statesList) {
-		this.statesList = statesList;
-	}
-
-	public void setElectionTypes(List<SelectOptionVO> electionTypes) {
-		this.electionTypes = electionTypes;
-	}
-
-	public List<SelectOptionVO> getElectionTypes() {
-		return electionTypes;
-	}
-
-	public void setPartyPositionAnalysisResultVO(
-			PartyPositionAnalysisResultVO partyPositionAnalysisResultVO) {
-		this.partyPositionAnalysisResultVO = partyPositionAnalysisResultVO;
 	}
 
 	public PartyPositionAnalysisResultVO getPartyPositionAnalysisResultVO() {
 		return partyPositionAnalysisResultVO;
 	}
 
-	public String execute () throws Exception 
-	{
-		statesList = new ArrayList<SelectOptionVO>();
-		statesList.add(0, new SelectOptionVO(0L,"Select State"));
-		statesList.add(1, new SelectOptionVO(1L,"Andhra Pradesh"));
-		
-		return Action.SUCCESS;
+	public void setPartyPositionAnalysisResultVO(
+			PartyPositionAnalysisResultVO partyPositionAnalysisResultVO) {
+		this.partyPositionAnalysisResultVO = partyPositionAnalysisResultVO;
+	}
+	
+	public void setPartyAnalysisReportVO(PartyAnalysisReportVO partyAnalysisReportVO) {
+		this.partyAnalysisReportVO = partyAnalysisReportVO;
 	}
 
+	public PartyAnalysisReportVO getPartyAnalysisReportVO() {
+		return partyAnalysisReportVO;
+	}	
+
+	public String getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+
+	public String getElectionYear() {
+		return electionYear;
+	}
+
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
+	public Long getElectionTypeId() {
+		return electionTypeId;
+	}
+
+	public void setElectionTypeId(Long electionTypeId) {
+		this.electionTypeId = electionTypeId;
+	}	
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public JSONObject getJObj() {
+		return jObj;
+	}
+
+	public void setJObj(JSONObject obj) {
+		jObj = obj;
+	}
+
+	public void setVotesMarginAnalysisVO(List<VotesMarginAnalysisVO> votesMarginAnalysisVO) {
+		this.votesMarginAnalysisVO = votesMarginAnalysisVO;
+	}
+
+	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisVO() {
+		return votesMarginAnalysisVO;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public String execute () throws Exception 
+	{
+		return Action.SUCCESS;
+	}
+	
 	public String ajaxCallHandler () throws Exception 
 	{
 		String param = null;
@@ -190,34 +206,6 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 			e.printStackTrace();
 		}
 		
-		if(jObj.getString("task").equalsIgnoreCase("getElectionsYears"))
-		{
-			String electionType = jObj.getString("electionType");
-			Long electionTypeId = new Long(jObj.getString("electionTypeId"));
-			Long stateID = new Long(jObj.getString("stateID"));
-			if(electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
-			{
-				try{
-					electionYears = staticDataService.getElectionIdsAndYearsInfo(electionTypeId,new Long(stateID));
-					electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
-					
-				}catch(Exception e){
-					electionYears = null;
-					log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
-				}	
-			} else 	if(electionType.equals(IConstants.ZPTC) || electionType.equals(IConstants.MPTC))
-			{
-				try{
-					electionYears = staticDataService.getAllElectionYearsForATeshil(electionTypeId);
-					electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
-					
-				}catch(Exception e){
-					electionYears = null;
-					log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
-				}
-			}
-		}
-		
 		if(jObj.getString("task").equalsIgnoreCase("getBasicAnalysisDetails"))
 		{
 			partyAnalysisReportVO = new PartyAnalysisReportVO();
@@ -229,40 +217,10 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 			List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
 			List<SelectOptionVO> years = new ArrayList<SelectOptionVO>();
 			partyAnalysisReportVO = analysisReportService.getAnalysisReportForAPartyInAnElection(electionType, electionYear,stateId, partyId);
-			parties = staticDataService.getStaticParties();
-			parties.add(0, new SelectOptionVO(0l,"Select Party"));
-			
-			partyAnalysisReportVO.setPartiesList(parties);
-			
-			if(electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
-			{
-				try{
-					years = staticDataService.getElectionIdsAndYearsInfo(electionTypeId, stateId);
-					years.add(0, new SelectOptionVO(0l,"Select Year"));
-					partyAnalysisReportVO.setElectionYearsList(years);
-					
-				}catch(Exception e){
-					years = null;
-					log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
-				}	
-			} else 	if(electionType.equals(IConstants.ZPTC) || electionType.equals(IConstants.MPTC))
-			{
-				try{
-					years = staticDataService.getAllElectionYearsForATeshil(electionTypeId);
-					years.add(0, new SelectOptionVO(0l,"Select Year"));
-					partyAnalysisReportVO.setElectionYearsList(years);
-					
-				}catch(Exception e){
-					years = null;
-					log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
-				}
-			}			
-			
 			if(partyAnalysisReportVO != null)
 				createChartForAnalysisResults(partyAnalysisReportVO);
 			
 		}
-		
 		return Action.SUCCESS;
 	}
 	
@@ -366,83 +324,6 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	      	      	
 	 return dataset;
  }
-	
-	public String getAllElectionTypes() throws Exception	{
-		String param = null;
-		param = getTask();
-		try {
-			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			electionTypes = new ArrayList<SelectOptionVO>();
-			electionTypes.add(0, new SelectOptionVO(0L, "Select Election Type"));
-			electionTypes.add(1, new SelectOptionVO(1L, "Parliament"));
-			electionTypes.add(2, new SelectOptionVO(2L, "Assembly"));
-			electionTypes.add(3, new SelectOptionVO(3L, "MPTC"));
-			electionTypes.add(4, new SelectOptionVO(4L, "ZPTC"));		
-		return Action.SUCCESS;	
-	}
-	public String getAllElectionYears() throws Exception	{
-		String param = null;
-		param = getTask();
-		try {
-			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			String electionType = jObj.getString("electionType");
-			Long electionTypeId = new Long(jObj.getString("electionTypeId"));
-			Long stateID = new Long(jObj.getString("stateID"));
-			if(electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
-			{
-				try{
-					electionYears = staticDataService.getElectionIdsAndYearsInfo(electionTypeId,new Long(stateID));
-					electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
-					
-				}catch(Exception e){
-					electionYears = null;
-					log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
-				}	
-			} else 	if(electionType.equals(IConstants.ZPTC) || electionType.equals(IConstants.MPTC))
-			{
-				try{
-					electionYears = staticDataService.getAllElectionYearsForATeshil(electionTypeId);
-					electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
-					
-				}catch(Exception e){
-					electionYears = null;
-					log.debug("Error occured in retriving the data in ElectionDetailsReportAction ");
-				}
-			}
-		
-		return Action.SUCCESS;	
-	}
-	
-	public String getAllParties() throws Exception	{
-		String param = null;
-		param = getTask();
-		try {
-			jObj = new JSONObject(param);
-			if(log.isDebugEnabled())
-				log.debug(jObj);			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		partiesList = new ArrayList<SelectOptionVO>();
-		partiesList = staticDataService.getStaticParties();
-		partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
-					
-		return Action.SUCCESS;	
-	}
-	
 	public String getAnalysisCategoryResults() throws Exception
 	{
 		String param = null;
@@ -502,11 +383,10 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		else if(status.equalsIgnoreCase("LOST"))
 			category = IConstants.CANDIDATE_COMMENTS_LOST;
 		
-		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category) ;
+		setVotesMarginAnalysisVO(analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category));
 		
 		
 		return Action.SUCCESS;
 	}
 	
-
 }
