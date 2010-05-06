@@ -927,8 +927,14 @@
            		<param name="root">votesMarginAnalysisVO</param>
         	</result>       		
         </action>
+        <action name="electionResultsAnalysisReportPopupAction" class="electionResultsAnalysisReportPopupAction">
+            <result name="success">/jsp/electionResultsAnalysisPopup.jsp</result>	
+        </action>
+        <action name="electionResultsAnalysisReportPopupAjaxAction" class="electionResultsAnalysisReportPopupAction" method="ajaxCallHandler"> 
+              <result type="json" name="success">
+           		<param name="root">partyAnalysisReportVO</param>
+        	</result>       		
+        </action>        
 	</package>
 </struts>
-
-
 
