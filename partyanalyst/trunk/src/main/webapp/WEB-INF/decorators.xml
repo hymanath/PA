@@ -23,7 +23,9 @@
 		<pattern>/electionComparisonReportPopUp.action*</pattern>
 		<pattern>/partyElectionResultsAction.action*</pattern>
 		<pattern>/partyElectionResultsAnalysisAction.action*</pattern>
-		<pattern>/muncipalElectionReportAction.action*</pattern>		
+		<pattern>/muncipalElectionReportAction.action*</pattern>
+		<pattern>/electionResultsAnalysisReportPopupAction.action*</pattern>
+				
     </excludes>
 
     <decorator name="main" page="main.jsp">
