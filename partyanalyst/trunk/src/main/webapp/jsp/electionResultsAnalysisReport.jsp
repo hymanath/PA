@@ -152,6 +152,10 @@ function callAjax(param,jsObj,url){
 								{
 									buildVotesMarginInfoContent(jsObj,myResults);
 								}
+								else if(jsObj.task == "getConstituencyStatusAnalysisForVotesMarginWindow")
+								{
+									
+								}
 								
 						}catch (e) {   
 								   	alert("Invalid JSON result" + e);   
@@ -258,8 +262,7 @@ function getBasicAnalysisDetails(id)
 }
 function openPartyElectionResultsWindow(electionId,partyId,rank,partyName,electionType,stateName,electionYear,electionTypeId)
 { 
-	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&partyId="+partyId+"&rank="+rank+"&partyName="+partyName+
-		"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId;
+var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&partyId="+partyId+"&rank="+rank+"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&windowTask=partyElectionResultsAnalysisPopup";
 	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1300,left=200,top=200");
 	
 	browser1.focus();
@@ -308,9 +311,9 @@ function openMainPartyMultipleReasonsAnalysisWindow(electionId, partyId,status,p
 
 	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
 	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&reasonCount="+reasonCount+"&constituencyCount="+constituencyCount+"&windowTask=multipleReasonAnalysisPopup";
-	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	/*var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	
-	browser2.focus();
+	browser2.focus();*/
 }
 
 function getAnalysisDetailsInPartyWonPositions(electionType,electionYear,electionId,partyId){
@@ -344,6 +347,57 @@ function buildVotesMarginInfo(electionId,partyId,status)
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/votesMaringInfoForMainPartyInAnElection.action?"+param;
 	callAjax(param,jsObj,url);
+}
+
+
+function showMarginCountAnalysisForConstituenciesPopup(index,partyId,status)
+{
+	return;
+	if(status == "WON")
+		rank = 1;
+	else if(status == "LOST")
+		rank = 0;
+
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&electionType="+electionType+"&partyId="+partyId+"&rank="+rank+"&clickIndex="+index+"&windowTask=mainPartyMarginCountAnalysisPopup";
+	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1300,left=200,top=200");
+	
+	browser1.focus();
+}
+
+function showMarginCountAnalysisForAnalyzedConstituenciesPopup(index,partyId,status)
+{
+	return;
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	var stateId =stateSelectEl.value;	
+	var position = '';
+	if(status == "WON")
+		position = "Won";
+	else if(status == "LOST")
+		position = "Lost";
+
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
+	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&clickIndex="+index+"&windowTask=mainPartyMarginCountAnalyzedConstituenciesPopup";
+	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	
+	browser2.focus();	
+}
+
+function showMarginCountAnalysisForCategory(index,partyId,categoryId,status)
+{	
+	return;
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	var stateId =stateSelectEl.value;	
+	var position = '';
+	if(status == "WON")
+		position = "Won";
+	else if(status == "LOST")
+		position = "Lost";
+			
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
+	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&clickIndex="+index+"&categoryId="+categoryId+"&windowTask=mainPartyMarginCountAnalyzedCategoryPopup";
+	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	
+	browser2.focus();	
 }
 
 function getAnalysisDetailsInPartyLostPositions(electionType,electionYear,electionId,partyId){

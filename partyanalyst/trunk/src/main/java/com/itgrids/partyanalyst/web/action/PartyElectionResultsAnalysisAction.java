@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
+import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.service.IAnalysisReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -31,6 +33,7 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	private IAnalysisReportService analysisReportService; 
 	private List<ElectionBasicCommentsVO> electionBasicCommentsVOList;
 	private List<CandidateElectionResultVO> candidateElectionResultVO; 
+	private ElectionResultPartyVO electionResultPartyVO;
 	private String stateId;
 	private Long electionId;
 	private Long partyId;
@@ -44,10 +47,37 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	private String windowTask;
 	private String reasonCount;
 	private String constituencyCount;
+	private String clickIndex;
 	private String task = null;
 	JSONObject jObj = null;
+	JSONArray jsonArray =null;
 	
 	
+
+	public JSONArray getJsonArray() {
+		return jsonArray;
+	}
+
+	public void setJsonArray(JSONArray jsonArray) {
+		this.jsonArray = jsonArray;
+	}
+
+	public String getClickIndex() {
+		return clickIndex;
+	}
+
+	public void setClickIndex(String clickIndex) {
+		this.clickIndex = clickIndex;
+	}
+
+	public ElectionResultPartyVO getElectionResultPartyVO() {
+		return electionResultPartyVO;
+	}
+
+	public void setElectionResultPartyVO(ElectionResultPartyVO electionResultPartyVO) {
+		this.electionResultPartyVO = electionResultPartyVO;
+	}
+
 	public String getReasonCount() {
 		return reasonCount;
 	}
@@ -233,7 +263,6 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 			if(log.isDebugEnabled())
 				log.debug(jObj);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -266,7 +295,6 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 			if(log.isDebugEnabled())
 				log.debug(jObj);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -291,7 +319,6 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 			if(log.isDebugEnabled())
 				log.debug(jObj);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -320,7 +347,6 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 			if(log.isDebugEnabled())
 				log.debug(jObj);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -352,7 +378,6 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 			if(log.isDebugEnabled())
 				log.debug(jObj);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -382,7 +407,6 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 			if(log.isDebugEnabled())
 				log.debug(jObj);			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -404,4 +428,89 @@ public class PartyElectionResultsAnalysisAction extends ActionSupport implements
 	
 	}
 	
+	public String getConstituencyStatusAnalysisForVotesMarginWindow()
+	{
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Long partyId = new Long(jObj.getString("partyId"));
+		try
+		{
+			jsonArray = jObj.optJSONArray("nominationIds");			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		int nominationSize = jsonArray.length();
+		List<Long> nominationIdsList = new ArrayList<Long>();
+		for(int i = 0;i<nominationSize;i++)
+		{
+			nominationIdsList.add(new Long(jsonArray.getInt(i)));
+		}		
+		electionResultPartyVO = analysisReportService.getCandidateResultsInAnElectionFromNominationIds(nominationIdsList,partyId);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getAnalyzedConstituencyStatusAnalysisForVotesMarginWindow() throws Exception
+	{
+		
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Long partyId = new Long(jObj.getString("partyId"));
+		JSONArray nominationIds = jObj.getJSONArray("nominationIds");
+		int nominationSize = nominationIds.length();
+		List<Long> nominationIdsList = new ArrayList<Long>();
+		for(int i = 0;i<nominationSize;i++)
+		{
+			nominationIdsList.add(new Long(nominationIds.getInt(i)));
+		}
+		
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentsFromNominationIds(partyId, nominationIdsList, new Long(0));
+		return Action.SUCCESS;
+	}
+	
+	public String getAnalyzedConstituencyStatusAnalysisCategoryForVotesMarginWindow() throws Exception
+	{
+		
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Long partyId = new Long(jObj.getString("partyId"));
+		Long categoryId = new Long(jObj.getString("categoryId"));
+		JSONArray nominationIds = jObj.getJSONArray("nominationIds");
+		int nominationSize = nominationIds.length();
+		List<Long> nominationIdsList = new ArrayList<Long>();
+		for(int i = 0;i<nominationSize;i++)
+		{
+			nominationIdsList.add(new Long(nominationIds.getInt(i)));
+		}
+		
+		electionBasicCommentsVOList = analysisReportService.getCandidateCommentsFromNominationIds(partyId, nominationIdsList, categoryId);
+		return Action.SUCCESS;
+	}
 }

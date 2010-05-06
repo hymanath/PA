@@ -84,6 +84,7 @@ var electionId = '${electionId}';
 var partyId = '${partyId}';
 var electionType = '${electionType}';
 var electionYear = '${electionYear}';
+var status = '${status}'
 var hidden=1;
 function incrementHidden()
 {
@@ -97,54 +98,53 @@ function callAjax(param,jsObj,url){
 						try {												
 								if(o.responseText)
 									myResults = YAHOO.lang.JSON.parse(o.responseText);
+								
+								var imgElmt = document.getElementById("barloaderGif");
+
+								if(imgElmt.style.display == "block")
+										imgElmt.style.display = "none"
+								else if(imgElmt.style.display == "none")
+									imgElmt.style.display == "block"
+
 								if(jsObj.task == "getCandidateComments")
 								{
-									var imgElmt = document.getElementById("barloaderGif");
-									
-									if(imgElmt.style.display == "block")
-										imgElmt.style.display = "none"
-									else if(imgElmt.style.display == "none")
-										imgElmt.style.display == "block"
-
 									if(jsObj.status == "analyzed")
+									{										
 										showAnalysisDetails(myResults);
+									}
 									else if(jsObj.status == "notAnalyzed")
+									{										
 										showNotAnalyzedDetails(myResults);
+									}
 								}
 								else if(jsObj.task == "getCommentsClassificationsList")
-								{
+								{									
 									buildCommentsClassificationsOptions(myResults);
 								}
 								else if(jsObj.task == "getPreviousComments")
-								{
+								{									
 									showPreviousComments(myResults,jsObj);
 								}
 								else if(jsObj.task == "addNewComment")
-								{
+								{								
 									updatePreviousCommentsDataTable(myResults);
 								}
 								else if(jsObj.task == "getMainPartyCategoryComments")
-								{
-									var imgElmt = document.getElementById("barloaderGif");
-
-									if(imgElmt.style.display == "block")
-										imgElmt.style.display = "none";
-									else if(imgElmt.style.display == "none")
-										imgElmt.style.display == "block";
-
+								{									
 									showAnalysisDetails(myResults);
 								}
 								else if(jsObj.task == "getMainPartyMultipleReasonsComments")
-								{
-									var imgElmt = document.getElementById("barloaderGif");
-
-									if(imgElmt.style.display == "block")
-										imgElmt.style.display = "none";
-									else if(imgElmt.style.display == "none")
-										imgElmt.style.display == "block";
-
+								{									
 									//showAnalysisDetails(myResults);
-								}								
+								}
+								else if(jsObj.task == "getAnalyzedConstituencyStatusAnalysisForVotesMarginWindow")
+								{
+									showAnalysisDetails(myResults);
+								}
+								else if(jsObj.task == "getConstituencyStatusAnalysisCategoryForVotesMarginWindow")
+								{
+									showAnalysisDetails(myResults);
+								}
 						}
 						catch (e) {   
 						   	alert("Invalid JSON result" + e);   
@@ -386,7 +386,51 @@ function getCommentsClassifications(rank)
 
 	}
 													
+	function getMarginCountAnalysisForAnalyzedConstituencies(index)
+	{			
+		var parent = window.opener;
+		var nominationIds = '';
+		
+		if(status == "LOST")
+			nominationIds = parent.electionAnalysisObj.marginVotesInfoLost[index].nominationIds;
+		else if(status == "WON")
+			nominationIds = parent.electionAnalysisObj.marginVotesInfoWon[index].nominationIds;
 
+		var jsObj= 
+		{			
+			nominationIds: nominationIds,
+			partyId: partyId,		
+			task:"getAnalyzedConstituencyStatusAnalysisForVotesMarginWindow"		
+		}
+
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/analyzedConstituencyStatusAnalysisForVotesMarginAjaxAction.action?"+param;
+		callAjax(param,jsObj,url);
+	}
+
+	
+	function getMainPartyMarginCountAnalyzedCategoryResults(index,categoryId)
+	{		
+		var parent = window.opener;
+		var nominationIds = '';
+		
+		if(status == "LOST")
+			nominationIds = parent.electionAnalysisObj.marginVotesInfoLost[index].nominationIds;
+		else if(status == "WON")
+			nominationIds = parent.electionAnalysisObj.marginVotesInfoWon[index].nominationIds;
+	
+		var jsObj= 
+		{
+			nominationIds: nominationIds,
+			partyId: partyId,		
+			categoryId:categoryId,
+			task:"getConstituencyStatusAnalysisCategoryForVotesMarginWindow"		
+		}
+		
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/constituencyStatusAnalysisCategoryForVotesMarginAjaxAction.action?"+param;
+		callAjax(param,jsObj,url);
+	}
 </SCRIPT>
 </HEAD>
 <BODY>
@@ -440,7 +484,7 @@ function getCommentsClassifications(rank)
 <SCRIPT type="text/javascript"> 
 
 	if('${position}' == "")
-	{		
+	{	
 		getCandidateComments();
 	}
 	else if('${windowTask}' == "mainPartyResultsAnalysisPopup")
@@ -455,7 +499,15 @@ function getCommentsClassifications(rank)
 	{
 		getMainPartyMultipleReasonComments();
 	}
-		
+	else if('${windowTask}' == "mainPartyMarginCountAnalyzedConstituenciesPopup")
+	{
+		getMarginCountAnalysisForAnalyzedConstituencies('${clickIndex}');
+	}
+	else if('${windowTask}' == "mainPartyMarginCountAnalyzedCategoryPopup")
+	{
+		getMainPartyMarginCountAnalyzedCategoryResults('${clickIndex}','${categoryId}');
+	}
+	
 </SCRIPT>
 </BODY>
 </HTML>

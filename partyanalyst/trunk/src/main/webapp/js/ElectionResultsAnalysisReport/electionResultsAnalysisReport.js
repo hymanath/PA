@@ -1,3 +1,8 @@
+		
+	var electionAnalysisObj = {
+								marginVotesInfoWon:'',
+								marginVotesInfoLost:''
+							  };
 
 	var stateName = '';
 	var electionId = '';
@@ -6,7 +11,7 @@
 	var electionTypeId = '';
 	var partyName = '';
 	var partyId = '';
-				
+	
 
 function buildPageLayout()
 {
@@ -282,41 +287,45 @@ function buildGraphsCarousel(divId)
 
 function showAnalysisDetailsInPartyLostPositions(results)
 {		
-	
 	var divEl = document.getElementById("lostPosAnalisisDetails");
 	contentStr='';
-	contentStr+='<DIV class="wonLostPosHeading">Analysis in Party Lost Positions</DIV>';
-	contentStr+='<DIV>';
-	contentStr+='<TABLE class="wonLostPosTable" width="80%">';
-	contentStr+='<TR>';
-	contentStr+='<TH style="width:50%">Seats Lost</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openPartyElectionResultsWindow('+electionId+','+partyId+',\'0\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+','+electionTypeId+')">'+results.resultTypeValue+'</a></TD>';
-	contentStr+='</TR>';
-	contentStr+='<TR>';
-	contentStr+='<TH style="width:50%">Analyzed Constituencies</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')">'+results.analyzedConsti+'</a></TD>';
-	contentStr+='</TR>';
-	contentStr+='<TR>';
-	contentStr+='<TH style="width:50%">Yet to be  Analyzed Constituencies</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'notAnalyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')">'+results.notAnalyzedConsti+'</a></TD>';
-	contentStr+='</TR>';
-	contentStr+='</TABLE>';								
-	contentStr+='</DIV>';
+	contentStr+='<DIV class="wonLostPosHeading" id="positionAnalysisDetails_head">Analysis in Party Lost Positions</DIV>';
+	contentStr+='<DIV id="positionAnalysisDetails_head">';
+	contentStr+='	<DIV id="positionAnalysisDetails_data">';
+	contentStr+='		<TABLE class="wonLostPosTable" width="80%">';
+	contentStr+='			<TR>';
+	contentStr+='				<TH style="width:50%">Seats Lost</TH>';
+	contentStr+='				<TD style="width:30%">';
+	contentStr+='					<a href="javascript:{}" onclick="openPartyElectionResultsWindow('+electionId+','+partyId+',\'0\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+','+electionTypeId+')">'+results.resultTypeValue+'</a>';
+	contentStr+='				</TD>';
+	contentStr+='			</TR>';
+	contentStr+='			<TR>';
+	contentStr+='				<TH style="width:50%">Analyzed Constituencies</TH>';
+	contentStr+='				<TD style="width:30%">';
+	contentStr+='					<a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')">'+results.analyzedConsti+'</a>';
+	contentStr+='				</TD>';
+	contentStr+='			</TR>';
+	contentStr+='			<TR>';
+	contentStr+='				<TH style="width:50%">Yet to be  Analyzed Constituencies</TH>';
+	contentStr+='				<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisWindow('+electionId+','+partyId+',\'notAnalyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\')">'+results.notAnalyzedConsti+'</a></TD>';
+	contentStr+='			</TR>';
+	contentStr+='		</TABLE>';								
+	contentStr+='	</DIV>';
 	if(results.analysisCategoryBasicResultVO != null)
-	{
-	contentStr+='<div><br></br></div>';
-	contentStr+='<H3 style="width:510px;">Reasons Analysis</H3>';
-    contentStr+='<div id="categoriesClassificationDiv">';
-    for(var i in results.analysisCategoryBasicResultVO)
-	{
-    contentStr+='<TABLE class="wonLostPosTable" width="80%">';
-	contentStr+='<TR>';
-	contentStr+='<TH style="width:50%">'+results.analysisCategoryBasicResultVO[i].categoryType+'</TH>';
-	contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
-	contentStr+='</TR>';
-	contentStr+='</TABLE>';		
-	}
-    contentStr+='</div>';
+	{	
+		contentStr+='<H3 style="width:510px;">Reasons Analysis</H3>';
+		contentStr+='<div id="categoriesClassificationDiv">';
+		contentStr+='<TABLE class="wonLostPosTable" width="80%">';
+		for(var i in results.analysisCategoryBasicResultVO)
+		{
+
+		contentStr+='<TR>';
+		contentStr+='<TH style="width:50%">'+results.analysisCategoryBasicResultVO[i].categoryType+'</TH>';
+		contentStr+='<TD style="width:30%"><a href="javascript:{}" onclick="openMainPartyElectionResultsAnalysisCategoryWindow('+electionId+','+partyId+',\'analyzed\',\''+partyName+'\',\''+electionType+'\',\''+stateName+'\','+electionYear+',\'Lost\','+results.analysisCategoryBasicResultVO[i].categoryId+')">'+results.analysisCategoryBasicResultVO[i].categoryResultCount+'</a></TD>';
+		contentStr+='</TR>';	
+		}
+		contentStr+='</TABLE>';		
+		contentStr+='</div>';
 	}
 	contentStr+='<div><br></br></div>';
 	contentStr+='<div id="multipleCategoriesDiv">';
@@ -437,13 +446,17 @@ function showAnalysisDetailsInPartyWonPositions(results)
 }
 
 
-function showMarginAnalysisData(index)
+function showMarginAnalysisData(index,task)
 {
-	/*var elmt = document.getElementById("marginInfo_row_"+index);
+	var elmt = document.getElementById("marginInfo_"+task+"_row_"+index);
+
+	if(!elmt)
+		return;
+
 	if(elmt.style.display == 'none')
-		elmt.style.display = 'block';
-	else if(elmt.style.display == 'block')
-		elmt.style.display = 'none';*/
+		elmt.style.display = '';
+	else if(elmt.style.display == '')
+		elmt.style.display = 'none';
 }
 
 function buildVotesMarginInfoContent(jsObj,results)
@@ -451,9 +464,15 @@ function buildVotesMarginInfoContent(jsObj,results)
 	var elmt,str='';
 
 	if(jsObj.status == 'LOST')
+	{
 		elmt = document.getElementById("votesMarginLost_Body");
+		electionAnalysisObj.marginVotesInfoLost = results;
+	}
 	else if(jsObj.status == 'WON')
+	{
 		elmt = document.getElementById("votesMarginWon_Body");
+		electionAnalysisObj.marginVotesInfoWon = results;
+	}
 	
 	str += '<table width="75%" style="width:75%" class="votesMarginTable" border="1">';
 	str += '<tr>';
@@ -464,24 +483,33 @@ function buildVotesMarginInfoContent(jsObj,results)
 	str += '</tr>';
 	for(var i in results)
 	{
-		str+= '<tr onclick="showMarginAnalysisData('+i+')">';
+		str+= '<tr onclick="showMarginAnalysisData('+i+',\''+jsObj.status+'\')">';
 		str+= '<th style="background-color:#FFFFFF;"><img src="images/icons/indexPage/listIcon.png"/></th>';
 		str+= '<th align="left">'+results[i].marginRange+'</th>';		
-		str+= '<th><a href="javascript:{}">'+results[i].candidatesCount+'</a></th>';
-		str+= '<th><a href="javascript:{}">'+results[i].analyzedCount+'</a></th>';
+		if(results[i].candidatesCount != 0)
+			str+= '<th><a href="javascript:{}" onclick="showMarginCountAnalysisForConstituenciesPopup('+i+','+partyId+',\''+jsObj.status+'\')">'+results[i].candidatesCount+'</a></th>';
+		else
+			str+= '<th>'+results[i].candidatesCount+'</th>';
+		
+		
+		if(results[i].analyzedCount != 0)
+			str+= '<th><a href="javascript:{}" onclick="showMarginCountAnalysisForAnalyzedConstituenciesPopup('+i+','+partyId+',\''+jsObj.status+'\')">'+results[i].analyzedCount+'</a></th>';
+		else
+			str+= '<th>'+results[i].analyzedCount+'</th>';
+
 		str+= '</tr>';
 		if(results[i].analysisCategoryBasicVO != null)
 		{
-			str+= '<tr id="marginInfo_row_'+i+'">';
+			str+= '<tr id="marginInfo_'+jsObj.status+'_row_'+i+'" style="display:none;">';
 			str+= '<td colspan="4">';
 			str+= '<div class="marginBodyDivClass">';
 			str+= '<table width="70%" border="0" class="votesMarginDataTable">';
 			for(var j in results[i].analysisCategoryBasicVO)
 			{
-				var dt = results[i].analysisCategoryBasicVO[j];
+				var dt = results[i].analysisCategoryBasicVO[j];				
 				str+= '<tr>';
-				str+= '<td>'+dt.categoryType+'</td>';
-				str+= '<td><a href="javascript:{}">'+dt.categoryResultCount+'</a></td>';						
+				str+= '<td align="left">'+dt.categoryType+'</td>';
+				str+= '<td><a href="javascript:{}" onclick="showMarginCountAnalysisForCategory('+i+','+partyId+','+dt.categoryId+',\''+jsObj.status+'\')">'+dt.categoryResultCount+'</a></td>';						
 				str+= '</tr>';
 			}
 			str+= '</table>';
@@ -494,7 +522,6 @@ function buildVotesMarginInfoContent(jsObj,results)
 
 	if(elmt)
 		elmt.innerHTML = str;
-
 }
 
 

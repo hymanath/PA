@@ -33,14 +33,14 @@ function incrementHidden()
 }
 function callAjax(param,jsObj,url){
 	var myResults;
-					
+
 		var callback = {			
 		               success : function( o ) {
 						try {												
 								if(o.responseText)
-									myResults = YAHOO.lang.JSON.parse(o.responseText);
+									myResults = YAHOO.lang.JSON.parse(o.responseText);									
 								if(jsObj.task == "getConstituencyResults")
-								{
+								{								
 									showConstituencyResults(myResults);
 								}
 								if(jsObj.task == "getCommentsClassificationsList")
@@ -58,6 +58,10 @@ function callAjax(param,jsObj,url){
 								if(jsObj.task == "getElectionsYears")
 								{
 									populateYearSelectionBox(myResults);
+								}
+								if(jsObj.task == "getConstituencyStatusAnalysisForVotesMarginWindow")
+								{
+									showConstituencyResults(myResults);
 								}
 						}
 						catch (e) {   
@@ -232,7 +236,7 @@ function callAjax(param,jsObj,url){
 		 browser2.focus();
 	}
 	function getConstituencyResults(){
-
+	
 		var jsObj= 
 		{		
 		 	electionId: electionId,
@@ -561,7 +565,41 @@ function callAjax(param,jsObj,url){
 			 browser3.focus();
 			 selectYearDialog.hide();
 	}
+
+	function getMainPartyMarginCountAnalysis(index,rank)
+	{
+		var parent = window.opener;
+		var nominationIds1 = new Array();
+		
+		if(rank == 0)
+			nominationIds1 = parent.electionAnalysisObj.marginVotesInfoLost[index].nominationIds;
+		else if(rank == 1)
+			nominationIds1= parent.electionAnalysisObj.marginVotesInfoWon[index].nominationIds;
+		
+		var jsObj= 
+		{
+			nominationIds: [],
+			partyId: partyId,		
+			task:"getConstituencyStatusAnalysisForVotesMarginWindow"		
+		}
+		
+		jsObj.nominationIds = nominationIds1;
+		
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);		
+		var url = "<%=request.getContextPath()%>/constituencyStatusAnalysisForVotesMarginAjaxAction.action?"+param;
+		callAjax(param,jsObj,url);
+	}
+	
+
+	if('${windowTask}' == "partyElectionResultsAnalysisPopup")
+	{
 		getConstituencyResults();
+	}
+	else if('${windowTask}' == "mainPartyMarginCountAnalysisPopup")
+	{
+		getMainPartyMarginCountAnalysis('${clickIndex}','${rank}');
+	}	
+
 	</SCRIPT>
 </BODY>
 </HTML>

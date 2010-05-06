@@ -42,7 +42,25 @@ public class PartyElectionResultsAction extends ActionSupport implements Servlet
 	JSONObject jObj = null;
 	private List<SelectOptionVO> electionYears;
 	private Long electionTypeId;
+	private String windowTask;
+	private Long clickIndex;
 	
+	public Long getClickIndex() {
+		return clickIndex;
+	}
+
+	public void setClickIndex(Long clickIndex) {
+		this.clickIndex = clickIndex;
+	}
+
+	public String getWindowTask() {
+		return windowTask;
+	}
+
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}
