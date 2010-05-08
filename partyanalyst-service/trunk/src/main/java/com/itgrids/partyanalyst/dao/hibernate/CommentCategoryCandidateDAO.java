@@ -210,4 +210,10 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		queryObject.setParameterList("nominationIds", nominationIds);
 		return queryObject.list();
 	}
+
+	@SuppressWarnings("unchecked")
+	public List getCommentsCountForACandidateFromNominationId(Long nominationId) {
+		return getHibernateTemplate().find("select count(distinct model.commentData.commentDataCategory.commentDataCategoryId) "+
+				"from CommentCategoryCandidate model where model.nomination.nominationId = ? group by model.commentData.commentDataCategory.commentDataCategoryId",nominationId);
+	}
 }
