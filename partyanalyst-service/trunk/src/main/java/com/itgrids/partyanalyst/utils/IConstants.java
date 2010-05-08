@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.utils;
 
+import java.awt.Color;
+
 public interface IConstants {
 	public static final String DATE_PATTERN = "dd/MM/yyyy";
 	public static final Long CENSUS_YEAR = 2001L;
@@ -121,5 +123,20 @@ public interface IConstants {
 	public final static String CONSTITUENCY_COMMENTS_ELECTION="CONSTITUENCY_COMMENTS_ELECTION";
     public final static String CANDIDATE_COMMENTS_WON="WON";
     public final static String CANDIDATE_COMMENTS_LOST="LOST";
+    
+    //Party Names And Color Codes
+    public final static String TDP = "TDP";
+    public final static String INC = "INC";
+    public final static String PRP = "PRP";
+    public final static String BJP = "BJP";
+    public final static String TRS = "TRS";
+    
+    public final static Color TDP_COLOR = Color.RED;
+    public final static Color INC_COLOR = Color.BLUE;
+    public final static Color PRP_COLOR = Color.GREEN;
+    public final static Color BJP_COLOR = Color.ORANGE;
+    public final static Color TRS_COLOR = Color.PINK;
+    
+    
     
 }
