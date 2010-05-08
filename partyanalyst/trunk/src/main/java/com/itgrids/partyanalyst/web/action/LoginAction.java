@@ -81,7 +81,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 			session.setAttribute("UserName", name);
 			session.setAttribute("loginStatus", "out");			
 			if(src != null)
-				return SUCCESS;
+				return src;
 			else
 				return SUCCESS;			
 		}
