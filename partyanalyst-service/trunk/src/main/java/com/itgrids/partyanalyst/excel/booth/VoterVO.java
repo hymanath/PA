@@ -19,7 +19,7 @@ public class VoterVO {
 	private String voterIDCardNo;
 	private String gender;
 	private Long age;
-	
+	private String sNO;
 	public VoterVO(){
 		
 	}
@@ -135,6 +135,14 @@ public class VoterVO {
 
 	public void setCast(String cast) {
 		this.cast = cast;
+	}
+
+	public String getSNO() {
+		return sNO;
+	}
+
+	public void setSNO(String sno) {
+		sNO = sno;
 	}
 
 	public String getCastCatagery() {
