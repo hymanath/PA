@@ -4,13 +4,19 @@ var partyElectionResultsAnalysisObj ={
 };
 var emptyArray = new Array();
 function showAnalysisDetails(jsObj,results)
-{	
-	var rank;
-
-	if((jsObj.position && jsObj.position == "Won") || (jsObj.resultStatus && jsObj.resultStatus == "WON"))
-		rank = 1;
-	else if((jsObj.position && jsObj.position == "Lost") || (jsObj.resultStatus && jsObj.resultStatus == "LOST"))
-		rank = 2;
+{		
+	var rank;	
+	if(results && results.length>0 && results[0].candidateComments && results[0].candidateComments.length>0)
+	{		
+		rank = results[0].candidateComments[0].rank;	
+	}
+	else
+	{
+		if((jsObj.position && jsObj.position == "Won") || (jsObj.resultStatus && jsObj.resultStatus == "WON"))
+			rank = 1;
+		else if((jsObj.position && jsObj.position == "Lost") || (jsObj.resultStatus && jsObj.resultStatus == "LOST"))
+			rank = 2;
+	}
 
 	var contentStr='';
 	var analysisDetailsEl = document.getElementById("analysisDetails");
@@ -37,7 +43,7 @@ function showAnalysisDetails(jsObj,results)
 		contentStr += '		<div id="dataTable'+i+'"></div>';
 		contentStr += '</div>';
 		contentStr += '</div>';
-		}
+	}
 	
 	analysisDetailsEl.innerHTML = contentStr;
 
