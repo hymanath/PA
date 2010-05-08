@@ -23,6 +23,7 @@ public class UserGroupDetailsVO  implements Serializable {
 	private List<UserGroupMembersVO> userGroupMembersVO;
 	private List<UserGroupDetailsVO> userSubGroups;
 	private Long myGroupId;
+	private ResultStatus rs;
 	
 	public Long getGroupId() {
 		return groupId;
@@ -121,11 +122,10 @@ public class UserGroupDetailsVO  implements Serializable {
 	public void setMyGroupId(Long myGroupId) {
 		this.myGroupId = myGroupId;
 	}
-	
-	
-	
-	
-	
-	
-	
+	public void setRs(ResultStatus rs) {
+		this.rs = rs;
+	}
+	public ResultStatus getRs() {
+		return rs;
+	}	
 }

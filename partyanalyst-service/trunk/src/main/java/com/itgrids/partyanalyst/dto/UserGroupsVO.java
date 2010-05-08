@@ -15,6 +15,7 @@ public class UserGroupsVO {
 	private UserGroupDetailsVO userGroupDetailsVO;
 	private boolean groupAlreadyExists;
 	private UserGroupMembersVO userGroupMembersVO;
+	private List<SelectOptionVO> myGroupsListboxOptions;
 	
 	public List<GroupsDetailsForUserVO> getGroupsDetailsForUser() {
 		return groupsDetailsForUser;
@@ -88,6 +89,14 @@ public class UserGroupsVO {
 
 	public void setUserGroupMembersVO(UserGroupMembersVO userGroupMembersVO) {
 		this.userGroupMembersVO = userGroupMembersVO;
+	}
+
+	public void setMyGroupsListboxOptions(List<SelectOptionVO> myGroupsListboxOptions) {
+		this.myGroupsListboxOptions = myGroupsListboxOptions;
+	}
+
+	public List<SelectOptionVO> getMyGroupsListboxOptions() {
+		return myGroupsListboxOptions;
 	}
 	
 	
