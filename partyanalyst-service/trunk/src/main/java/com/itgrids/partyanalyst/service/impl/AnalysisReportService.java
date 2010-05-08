@@ -878,24 +878,27 @@ public class AnalysisReportService implements IAnalysisReportService {
 			 
 			 List<AnalysisCategoryBasicVO> analysisCategoryVosList = new ArrayList<AnalysisCategoryBasicVO>();
 			 List analysisResults = commentCategoryCandidateDAO.getCommentResultsForCandidateNominations(nominationIds);
+			 List analyzedConstituenciesCount = commentCategoryCandidateDAO.getAnalyzedConstituenciesCountFromNominationIds(nominationIds);
 			 if(analysisResults != null && analysisResults.size() > 0){
-				 Long reasonsCount = new Long(analysisResults.size());
+				 Long reasonsCount = new Long(0);
 				 for(int i=0;i<analysisResults.size();i++){
 					 Object[] params = (Object[])analysisResults.get(i);
 					 Long countVal = (Long)params[2];
-					 //reasonsCount+=countVal;
-					 
+					 					 
 					 AnalysisCategoryBasicVO analysisCategory = new AnalysisCategoryBasicVO();
 					 analysisCategory.setCategoryId((Long)params[0]);
 					 analysisCategory.setCategoryType((String)params[1]);
 					 analysisCategory.setCategoryResultCount(countVal);
 					 analysisCategoryVosList.add(analysisCategory);
+					
 				 }
-				// votesMarginAnalysisVO.setNominationIds(nominationIds);
-				 //votesMarginAnalysisVO.setCandidatesCount(new Long(nominationIds.size()));
+								 
+				 if(analyzedConstituenciesCount != null && analyzedConstituenciesCount.size() > 0){
+					 Object params = (Object)analyzedConstituenciesCount.get(0);
+					 reasonsCount = (Long)params;
+				 }
 				 votesMarginAnalysisVO.setAnalyzedCount(reasonsCount);
 				 votesMarginAnalysisVO.setAnalysisCategoryBasicVO(analysisCategoryVosList);
-				 
 			 }
 		 }
 		 
