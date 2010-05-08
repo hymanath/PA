@@ -177,7 +177,7 @@ public class UserGroupService implements IUserGroupService {
 			{
 				Registration reg = null;
 				PersonalUserGroup personalUserGroup=null;				
-				
+				ResultStatus resultStatus;
 				MyGroup myGroupObj = null;				
 				try{
 					/* To get current Date and time */
@@ -188,45 +188,56 @@ public class UserGroupService implements IUserGroupService {
 				    now = sdf.parse(strDateNew);
 				String groupStatus = UserGroupService.this.userGroupDetailsVo.getStatus();
 				String categoryType = UserGroupService.this.userGroupDetailsVo.getCategoryType();
-				
-				if(groupStatus.equals(IConstants.MAIN_GROUP))					
-				{	
-					if(log.isDebugEnabled()){
-						log.debug("If Main Group");
-					}
-					myGroupObj = new MyGroup();
-					reg = registrationDAO.get(UserGroupService.this.userGroupDetailsVo.getCreatedUserId());
-					
-					myGroupObj.setGroupName(UserGroupService.this.userGroupDetailsVo.getGroupName());
-					myGroupObj.setGroupDescription(UserGroupService.this.userGroupDetailsVo.getGroupDesc());
-					myGroupObj.setCreatedDate(now);
-										
-					personalUserGroup = new PersonalUserGroup();
-					personalUserGroup.setGroupName(UserGroupService.this.userGroupDetailsVo.getGroupName());
-					personalUserGroup.setDescription(UserGroupService.this.userGroupDetailsVo.getGroupDesc());
-					personalUserGroup.setCreatedUserId(reg);
-					personalUserGroup.setCreatedDate(now);
-					personalUserGroup.setMyGroup(myGroupObj);
-					
-					personalUserGroup = personalUserGroupDAO.save(personalUserGroup);
-										
-				} else if(groupStatus.equals(IConstants.SUB_GROUP) && categoryType.equals(IConstants.STATIC_GROUP))
-				{	
-					if(log.isDebugEnabled()){
-						log.debug("If sub group in static Group");
-					}
-					personalUserGroup = createSubGroupUnderStaticGroups(userGroupDetailsVo);
-				} else if(groupStatus.equals(IConstants.SUB_GROUP) && categoryType.equals(IConstants.MY_GROUP))
-				{
-					if(log.isDebugEnabled()){
-						log.debug("If sub group in My Group");
-					}
-					personalUserGroup = createSubGroupUnderMyGroups(userGroupDetailsVo);
+				boolean groupAlreadyExists;
+				resultStatus = new ResultStatus();
+				groupAlreadyExists = checkForAvailability(UserGroupService.this.userGroupDetailsVo.getCreatedUserId(), UserGroupService.this.userGroupDetailsVo.getGroupName());
+				if(log.isDebugEnabled()){
+					log.debug("The value of groupAlreadyExists:================"+groupAlreadyExists);
 				}
+					
+				if(groupAlreadyExists == false)
+				{	
+					if(groupStatus.equals(IConstants.MAIN_GROUP))					
+					{	
+						if(log.isDebugEnabled()){
+							log.debug("If Main Group");
+						}
+						myGroupObj = new MyGroup();
+						reg = registrationDAO.get(UserGroupService.this.userGroupDetailsVo.getCreatedUserId());
+						
+						myGroupObj.setGroupName(UserGroupService.this.userGroupDetailsVo.getGroupName());
+						myGroupObj.setGroupDescription(UserGroupService.this.userGroupDetailsVo.getGroupDesc());
+						myGroupObj.setCreatedDate(now);
+						
+						personalUserGroup = new PersonalUserGroup();
+						personalUserGroup.setGroupName(UserGroupService.this.userGroupDetailsVo.getGroupName());
+						personalUserGroup.setDescription(UserGroupService.this.userGroupDetailsVo.getGroupDesc());
+						personalUserGroup.setCreatedUserId(reg);
+						personalUserGroup.setCreatedDate(now);
+						personalUserGroup.setMyGroup(myGroupObj);					
+						personalUserGroup = personalUserGroupDAO.save(personalUserGroup);						
+											
+					} else if(groupStatus.equals(IConstants.SUB_GROUP) && categoryType.equals(IConstants.STATIC_GROUP))
+					{	
+						if(log.isDebugEnabled()){
+							log.debug("If sub group in static Group");
+						}
+						personalUserGroup = createSubGroupUnderStaticGroups(userGroupDetailsVo);
+					} else if(groupStatus.equals(IConstants.SUB_GROUP) && categoryType.equals(IConstants.MY_GROUP))
+					{
+						if(log.isDebugEnabled()){
+							log.debug("If sub group in My Group");
+						}
+						personalUserGroup = createSubGroupUnderMyGroups(userGroupDetailsVo);
+					}
 								
 				userGroupDetailsFromDb.setGroupId(personalUserGroup.getPersonalUserGroupId());
-				userGroupDetailsFromDb.setGroupName(personalUserGroup.getGroupName());	
+				userGroupDetailsFromDb.setGroupName(personalUserGroup.getGroupName());
+				resultStatus.setResultPartial(groupAlreadyExists);
 				
+			} 	
+				userGroupDetailsFromDb.setRs(resultStatus);
+				resultStatus.setResultPartial(groupAlreadyExists);
 				}catch(Exception e){
 					e.printStackTrace();
 					status.setRollbackOnly();
@@ -255,6 +266,7 @@ public class UserGroupService implements IUserGroupService {
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		String strDateNew = sdf.format(now) ;
 	    now = sdf.parse(strDateNew);
+	    boolean groupAlreadyExists;
 	    Long parentGroupId = userGroupDetailsToSave.getParentGroupId();
 	    reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
 		staticGroupObj = staticGroupDAO.get(new Long(userGroupDetailsToSave.getStaticGroupId()));
