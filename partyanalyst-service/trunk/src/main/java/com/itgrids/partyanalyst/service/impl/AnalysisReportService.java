@@ -1038,6 +1038,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	 * @see com.itgrids.partyanalyst.service.IAnalysisReportService#getCandidateResultsInAnElectionFromNominationIds(java.util.List)
 	 * Method to get candidate election results for a votes margin set .. eg:0-10%,10-20% .....
 	 */
+	@SuppressWarnings("unchecked")
 	public ElectionResultPartyVO getCandidateResultsInAnElectionFromNominationIds(
 			List<Long> nominationIds,Long partyId) {
 		log.debug("Inside getCandidateResultsInAnElectionFromNominationIds Method..... ");
@@ -1054,6 +1055,15 @@ public class AnalysisReportService implements IAnalysisReportService {
 			if(nominationsList != null && nominationsList.size() > 0){
 				for(Nomination nomination:nominationsList){
 					CandidateElectionResultVO candidateElectionResultVO = getProcessedResultsForNotanalyzed(nomination);
+					Long commentsCount = new Long(0);
+					List commentCount = commentCategoryCandidateDAO.getCommentsCountForACandidateFromNominationId(nomination.getNominationId());
+					if(commentCount != null && commentCount.size() > 0){
+						Object params = (Object)commentCount.get(0);
+						Long countVal = (Long)params;
+						if(countVal != null)
+							commentsCount = countVal;
+					}
+					candidateElectionResultVO.setUserComments(commentsCount);
 					candidateElectionResultVOList.add(candidateElectionResultVO);
 				}
 			}
