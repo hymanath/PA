@@ -75,23 +75,15 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		if (regVO.getRegistrationID()==null) {
 			session.setAttribute("loginStatus", "in");
 			addActionError("Invalid user name or password! Please try again!");
-			return ERROR;
-			
-			
+			return ERROR;			
 		} else {
-
 			session.setAttribute("USER",regVO);
 			session.setAttribute("UserName", name);
-			session.setAttribute("loginStatus", "out");
-			if(log.isDebugEnabled()){
-				log.debug("src value: " + src);
-			}
+			session.setAttribute("loginStatus", "out");			
 			if(src != null)
-				return src;
-			else
 				return SUCCESS;
-			
+			else
+				return SUCCESS;			
 		}
-
 	}
 }
