@@ -67,5 +67,8 @@ public interface ICommentCategoryCandidateDAO extends GenericDao<CommentCategory
 	
 	@SuppressWarnings("unchecked")
 	public List getAnalyzedConstituenciesCountFromNominationIds(List<Long> nominationIds);
+	
+	@SuppressWarnings("unchecked")
+	public List getCommentsCountForACandidateFromNominationId(Long nominationId);
 
 }
