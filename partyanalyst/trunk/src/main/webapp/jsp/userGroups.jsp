@@ -34,8 +34,14 @@
 <link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/paginator.css">
 
-<script type="text/javascript">
+<link rel="stylesheet" type="text/css" href="styles/userGroups/userGroups.css">
 
+<script type="text/javascript">
+var hidden=1;
+function incrementHidden()
+{
+	hidden++;
+}
 function callAjax(param,jsObj,url){
 		var myResults;
  					
@@ -70,16 +76,18 @@ function callAjax(param,jsObj,url){
 										showSysSubGroupsListInCreateGroupDialog(myResults,jsObj);										
 									} else if(jsObj.task == "createNewGroup")
 									{
-										showGroupCreationConfirmation(myResults);										
+										showGroupCreationConfirmation(myResults,jsObj);										
 									} else if(jsObj.task == "checkAvailability")
 									{
 										showExistingGroupAlert(myResults, jsObj);										
 									}else if(jsObj.task == "addMemberToAGroup")
 									{
 										showAddedMbrConfirm(myResults);										
-									}
-									
-																											
+									} else if(jsObj.task == "getMyGroupsListForAUser")
+									{
+										buildMyGroupsOptions(myResults);										
+									} 
+																																				
 									
 							}catch (e) {   
 								   	alert("Invalid JSON result" + e);   
@@ -136,470 +144,11 @@ function buildLayout()
 					scroll: true,						
 					animate: false,		
 					height: '75'
-				}
-				
+				}				
     ] 
 	}); 
 	layoutEl.render(); 
 }
-</script>
-<style>
-.yui-skin-sam .yui-layout .yui-layout-unit div.yui-layout-bd {
-		border-style:none;
-		text-align:left;
-		background:white;		
-	}
-	.yui-layout-unit .yui-layout-unit-left yui-layout-scroll{
-		background:white;
-		
-	}
-	.yui-skin-sam .yui-layout 
-	{
-		background-color:#FFFFFF;	
-	}	
-	.userGrp-intro {
-			background:#96B1D2  none repeat scroll 0 0;
-			border:1px solid #889D5B;
-			margin-bottom:13px;
-			position:relative;
-	}
-	#grpsDescTdDiv{
-			border:1px solid #96B4D3;
-			border-width:1px 3px 3px 1px;
-			color:#628C2A;
-			font-weight:bold;
-			text-align:left;		
-	}
-	.hdTable h3{
-			color:#628C2A;
-			font-size:182%;
-			font-weight:bold !important;
-			line-height:100%;
-	}
-	.uLEleStyle {
-			font-family:arial,helvetica,sans-serif;
-			font-size:74%;
-			font-size-adjust:none;
-			font-style:normal;
-			font-variant:normal;
-			font-weight:normal;
-			line-height:normal;
-			color:#000000;
-	}
-	#searchBoxDiv{
-			background-color:#EFF3F7;
-			border:1px solid #96B4D3;
-			padding:10px;
-			width:96%;
-			color:#628C2A;			
-			font-weight:bold;	
-			border-width:1px 3px 3px 1px;
-	}
-	#userGroupsLeftDiv {
-		background-color:white;	
-	}	
-	#myGroups
-		{		
-			margin-left:20px;		
-			background:transparent url(images/usergroups/icon_groups.png) no-repeat scroll left bottom;
-		}
-	#systemGroups
-		{
-			margin-left:20px;
-			background:transparent url(images/usergroups/system_grps.png) no-repeat scroll left bottom;
-		}		
-	#createNewGrpDiv
-		{
-			margin-left:20px;
-			background:transparent url(images/usergroups/plus.png) no-repeat scroll left bottom;
-		}
-	#manageGrpDiv
-	{
-		margin-left:20px;
-		background:transparent url(images/usergroups/seetings.jpg) no-repeat scroll left bottom;
-	}	
-	.link a {
-			color:#247CD4;
-			text-decoration:none;
-			margin-left:21px;
-			font-size:15px;						
-		}
-	#leftNavLinksDiv {
-		border-top:1px solid #96B4D3;
-		border-left:1px solid #96B4D3;
-		border-right:3px solid #96B4D3;
-		border-bottom:3px solid #96B4D3;
-		background-color:#EFF3F7;
-		margin-left:0px;
-		margin-top:0px;
-		margin-bottom:5px;
-		padding:4px;
-	}
-	#leftNavLinksDiv .corner-top, .corner-left, .corner-bottom {
-		background-image:url(images/usergroups/cornerimage1.gif);
-	}
-	#searchHelp{
-		width:100%;
-		text-align: center;
-		color:#96B1D2;
-		font-weight:bold;
-		font-size:17px;
-	}
-	.searchBoxLabels
-	{
-		color:#96B4D3;
-	}
-	#myProfile{
-		background-color:#EFF3F7;
-		border-top:1px solid #96B4D3;
-		border-left:1px solid #96B4D3;
-		border-right:3px solid #96B4D3;
-		border-bottom:3px solid #96B4D3;
-		padding:10px;
-		color:#628C2A;		
-		font-weight:bold;				
-	}
-	legend {
-		background-color:#EBE4F2;
-	color:#115C06;
-	font-size:12px;
-	font-weight:bold;
-	padding:5px;
-    }
-    
-	fieldset {
-		border-top:1px solid #96B4D3;
-		border-left:1px solid #96B4D3;
-		border-right:3px solid #96B4D3;
-		border-bottom:3px solid #96B4D3;
-		margin-bottom:5px;
-		color:#404040;
-		background:#EFF3F7;				
-	}
-	#userGroupsCenterDiv
-	{
-		border-top:1px solid #96B4D3;
-		border-left:1px solid #96B4D3;
-		border-right:3px solid #96B4D3;
-		border-bottom:3px solid #96B4D3;
-		min-height:700px;
-		height:700px;
-		background-color:white;	
-	}
-	h4{
-		align:left;	
-	}/*
-	#userGroupsFooter{
-		border-top:1px solid #96B4D3;
-		border-left:1px solid #96B4D3;
-		border-right:3px solid #96B4D3;
-		border-bottom:3px solid #96B4D3;
-		background:#96B1D2;		
-	}*/	
-	#centerNavLinksDiv {			
-		background-color:#EBE4F2;
-		border:1px solid #DEDEDE;
-		color:#247CD4;
-		font-weight:bold;
-		padding:10px;	}	
-	#summaryTextDiv {
-		color:#606060;
-		font-family:veradana;
-		font-size:14px;
-		margin-left:5px;
-	}
-	#moreDetailsDiv {
-		color:#606060;
-		font-family:veradana;
-		font-size:14px;
-		margin-left:5px;		
-		}
-	#groupsCountDiv
-	{
-		background-image:url(images/usergroups/group_blur.png);
-		width:260px;
-		height:200px;	
-		overflow-y:auto;
-		/*height:expression(document.body.clientWidth > 200? "200px": "auto" );
-		min-height:1000px;
-	min-width:250px;
-	max-width:260px;
-	width:expression(document.body.clientWidth > 260? "260px": "auto" );*/	
-	}
-	.link  {
-			color:#247CD4;
-			text-decoration:none;
-			font-size:15px;
-			font-weight:bold;			
-		}
-	.link1  {
-			color:#115C06;
-			text-decoration:none;
-			font-size:15px;			
-			font-weight:bold;			
-		}
-		#groupDetailsHead {
-			background-color:#EFF3F7;
-			background-image:none;
-			background-position:center top;
-			background-repeat:repeat;
-			border:1px solid;
-			color:CadetBlue;
-			font-weight:normal;
-			margin-right:3px;
-			margin-top:4px;
-			text-align:left;
-			}
-		#groupDetailsHead h4
-		{
-			color:#356784;
-			margin-bottom:0;
-			margin-top:0;
-			padding:0;
-			text-align:left;
-			text-decoration:underline;			
-		}
-		.promoImage {
-			float:left;
-			margin-right:10px;
-			width:40px;
-		}
-		.promoNumber {
-			color:#888888;
-			float:left;
-			font-size:2em;
-			font-weight:bold;
-			height:40px;
-			line-height:40px;
-			width:50px;
-		}
-		.promoText {
-			clear:left;
-			color:#555555;
-			font-size:1.3em;
-			margin-left:40px;
-			margin-top:0;
-			text-transform:lowercase;
-		}
-		#sendSmsDiv
-		{
-			background-color:#EBE4F2;
-			border:1px dotted #DEDEDE;
-		}
-		#smsTextArea
-		{
-			border-color:#7C7C7C #C3C3C3 #DDDDDD;
-			border-style:solid;
-			border-width:1px;
-			color:#414141;
-			font-family:Verdana,Arial,Helvetica,sans-serif;
-			font-size:12px;
-			height:60px;
-			overflow:auto;
-			padding:4px;
-			width:200px;
-		}
-		.button {
-			background:#9696C0 none repeat scroll 0 0;
-			border:2px solid #008BD1;
-			color:#FFFFFF;
-			font-family:Arial,Helvetica,sans-serif;
-			font-weight:bold;
-			height:29px;
-			padding:5px;
-			width:74px;
-		}
-		#smsDiv
-		{
-			background:#EBE4F2 none repeat scroll 0 0;
-			border:2px solid #008BD1;
-			height:200px;
-			margin-left:0;
-			margin-top:1px;
-			padding-left:5px;
-			padding-right:5px;	
-		}
-		#subGroupsListDiv
-		{
-			background:#FFFFFF none repeat scroll 0 0;
-			border:2px solid #008BD1;
-			height:200px;
-			margin-left:0;
-			padding-left:5px;
-			padding-right:5px;
-			overflow-y: auto;
-		}
-		#headingDiv{
-			background:#9696C0 none repeat scroll 0 0;
-			border:1px solid #9696C0;
-			color:#FFFFFF;
-			font-size:12px;
-			margin-top:0;
-			padding:6px;
-			font-weight:bold;
-			}
-		.subGroupLink{
-			color:#247CD4;
-			text-decoration:none;
-			font-size:12px;
-			font-weight:bold;	
-		}
-		.smalltype {
-		-x-system-font:none;
-		font-family:verdana,arial,helvetica,sans-serif;
-		font-size:74%;
-		font-size-adjust:none;
-		font-stretch:normal;
-		font-style:normal;
-		font-variant:normal;
-		font-weight:normal;
-		line-height:normal;
-		color:#115C06;
-		}
-		.subGroupsTable td {
-		
-		border-bottom:1px dotted #9696C0;
-		padding:5px;
-		text-align:left;
-		}
-		.selectedLink a
-		{
-			color:#115c06;
-			text-decoration:none;
-			margin-left:21px;
-			font-size:15px;		
-		}
-		.navLinksButton
-		{
-			background:none;
-			border-color:#247CD4;
-			border-style:none solid none none;
-			border-width:medium 1px medium medium;
-			color:#247CD4;
-			font-weight:bold;
-			padding:0 6px;
-		}
-		.groupsCountTable
-		{
-			width:100%;
-			margin-top:10px;
-		}
-		.head
-		{
-			font-size:11px;
-			color:#404040;
-		}
-		.width
-		{
-			width:70%;
-			color:#247CD4;	
-		}
-		.width1
-		{
-			color:#247CD4;
-			text-align:center;
-			width:30%;	
-		}
-		.membersLinks
-		{
-			color:green;
-			font-family:Trebuchet MS;
-			font-size:13px;
-			font-weight:bold;
-			text-decoration:none;
-		}
-		.navLinks
-		{
-			color:green;
-			font-size:13px;
-			font-weight:bold;
-			margin-left:5px;
-			margin-right:5px;
-			margin-top:5px;
-			text-decoration:none;
-		}
-		#subGrpsListInCreateGrpDialog,#subGrpsListInCreateGrpDialog1
-		{
-			background:#FFFFFF none repeat scroll 0 0;
-			border:2px solid #008BD1;
-			height:200px;
-			margin-left:0;
-			padding-left:5px;
-			padding-right:5px;
-			overflow-y: auto;
-		}
-		.button1 {
-			background:#9696C0 none repeat scroll 0 0;
-			border:2px solid #008BD1;
-			color:#FFFFFF;
-			font-family:Arial,Helvetica,sans-serif;
-			font-weight:bold;
-			height:29px;
-			padding:5px;						
-		}				
-		.confirmMsg{
-			width:80%;
-			color:green;
-			font-weight:bold;
-			font-size:13px;			
-		}
-		.exitBtnTd
-		{
-			width:20%;
-		}
-		#groupExistsAlert,#confirmAddMember
-		{
-			font-weight:bold;
-			font-size: 13px;
-			text-align: left;
-		}
-		.yui-skin-sam .yui-dt caption {
-			background:#9696C0 none repeat scroll 0 0;
-			color:#FFFFFF;
-			font-size:12px;
-			font-style:bold;
-			font-weight:bold;
-			line-height:1;
-			padding:6px;
-			text-align:left;
-			font-style:normal;
-		}
-		.yui-skin-sam .yui-pg-container {
-			display:block;
-			margin:6px 0;
-			text-align:center;
-			white-space:nowrap;
-		}
-		.yui-skin-sam .yui-dt table {
-			border-collapse:separate;
-			border-spacing:0;
-			color:#115C06;
-			font-family:arial;
-			font-size:inherit;
-		}
-		.yui-skin-sam .yui-dt th, .yui-skin-sam .yui-dt th a {
-			color:#115C06;
-			font-weight:bold;
-			text-decoration:none;
-		}
-		#showGrpMembers
-		{
-			height:200px;
-			scroll-y:auto;
-		}
-		#navigationLink{
-			background:#EFF3F7 none repeat scroll 0 0;
-			border:1px solid #96B4D3;
-			color:green;
-			font-weight:bold;
-			margin-left:5px;
-			margin-right:3px;
-			margin-top:5px;
-			padding:5px;
-		}
-									
-</style>
-<script type="text/javascript">
 var Localization = { <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -696,7 +245,8 @@ var userGrpsObj={
 			name: name	
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/userGroupBasicInfoAction.action?"+param;
+		incrementHidden();
+		var url = "<%=request.getContextPath()%>/userGroupBasicInfoAction.action?"+param+"&hidden="+hidden;
 		callAjax(param,jsObj,url);
 		
 		}
@@ -715,7 +265,8 @@ var userGrpsObj={
 			name: name
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/userGroupBasicInfoAction.action?"+param;
+		incrementHidden();
+		var url = "<%=request.getContextPath()%>/userGroupBasicInfoAction.action?"+param+"&hidden="+hidden;
 		callAjax(param,jsObj,url);
 		}
 	
@@ -862,15 +413,15 @@ var userGrpsObj={
 			subGroupsListContentStr+='</tr>';
 			
 		} else {
-		for(var i in subGroupsList)
-		{
-			subGroupsListContentStr+='<tr>';
-			subGroupsListContentStr+='<td>';
-			subGroupsListContentStr+='<a href="javascript:{}" class="subGroupLink" onclick="getMyGroupsDetails('+subGroupsList[i].groupId+',\'add\',\''+subGroupsList[i].groupName+'\')">'+subGroupsList[i].groupName+'</a><span class="smalltype" style="margin-left:5px;">'+subGroupsList[i].membersCount+' members, '+subGroupsList[i].subGroupsCount+' sub groups</span>';
-			subGroupsListContentStr+='<div class="smalltype">'+subGroupsList[i].desc+'</div>';
-			subGroupsListContentStr+='</td>';
-			subGroupsListContentStr+='</tr>';
-		}				
+			for(var i in subGroupsList)
+			{
+				subGroupsListContentStr+='<tr>';
+				subGroupsListContentStr+='<td>';
+				subGroupsListContentStr+='<a href="javascript:{}" class="subGroupLink" onclick="getMyGroupsDetails('+subGroupsList[i].groupId+',\'add\',\''+subGroupsList[i].groupName+'\')">'+subGroupsList[i].groupName+'</a><span class="smalltype" style="margin-left:5px;">'+subGroupsList[i].membersCount+' members, '+subGroupsList[i].subGroupsCount+' sub groups</span>';
+				subGroupsListContentStr+='<div class="smalltype">'+subGroupsList[i].desc+'</div>';
+				subGroupsListContentStr+='</td>';
+				subGroupsListContentStr+='</tr>';
+			}				
 		}
 		subGroupsListContentStr+='</table>';
 		subGroupsListDivEl.innerHTML = subGroupsListContentStr;
@@ -1072,8 +623,7 @@ var userGrpsObj={
 		{
 			numbers: numbersArray,
 			message:message,	
-			task:"sendSMS"
-			
+			task:"sendSMS"			
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
@@ -1141,8 +691,7 @@ var userGrpsObj={
 		
 		var elmt = document.getElementById('userGroupsMainDiv');
 		var divChild = document.createElement('div');
-		divChild.setAttribute('id','createGroupmDiv');
-		//var breadcrumbArr = new Array();
+		divChild.setAttribute('id','createGroupmDiv');		
 		var createGroupContentStr='';
 		createGroupContentStr+='<div class="hd" align="left">Create New User Group</div>';
 		createGroupContentStr+='<div class="bd" align="left">';
@@ -1151,7 +700,10 @@ var userGrpsObj={
 		createGroupContentStr+='<div id="userGroupsDialogText">To create a new community group, complete the fields below. Be sure to include a description that will let other community members know just what your group is about!</div><br>';
 		createGroupContentStr+='<table class="createGroupTable">';
 		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<th><%=groupName%></th>'; 
+		createGroupContentStr+='<td colspan="3">Fields marked with * are mandatory</td>';		
+		createGroupContentStr+='</tr>';
+		createGroupContentStr+='<tr>';
+		createGroupContentStr+='<th><%=groupName%>*</th>'; 
 		createGroupContentStr+='<td style="padding-left: 15px;"><input type="text" style="width:400px;" id="groupNameText" onkeypress="showAvailabilityBtn()"/></td>';
 		createGroupContentStr+='<td style="padding-left: 15px;"><input type="button" id="checkAvailabilityBtn" value="Check Availability!" onclick="checkAvailability(document.getElementById(\'groupNameText\').value)" style="display:none;" /></td>';
 		createGroupContentStr+='</tr>';
@@ -1159,21 +711,23 @@ var userGrpsObj={
 		createGroupContentStr+='<td colspan="3"><div id="groupExistsAlert"></div></td>';
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='<tr>';
-		createGroupContentStr+='<th><%=description%></th>';
+		createGroupContentStr+='<th><%=description%>*</th>';
 		createGroupContentStr+='<td style="padding-left: 15px;" colspan="2"><textarea style="width:400px;" id="descTextArea"></textarea></td>';
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='</table>';
 		createGroupContentStr+='<br>';
+		createGroupContentStr+='<div id="confirmMsg" class="confirmMsg"></div>';
+		createGroupContentStr+='<div id="mandatoryFieldsAlert" class="confirmMsg" style="color:red;"></div>';
 		createGroupContentStr+='<fieldset>';
 		createGroupContentStr+='<legend>Create Group As</legend>';
 		createGroupContentStr+='<table class="createGroupTable">';
 		createGroupContentStr+='<tr>';
 		createGroupContentStr+='<td><input type="radio" id="createNewGrpRadio" name="createGroup" value="Create New Group" onClick="hideGroupSelectionListBoxes()"/><%=createNewGrp%></td>';
-		createGroupContentStr+='<td><input type="button" id="addNewGRpButton" value="Add New Group" style="display:none;" disabled="true" onclick="handleCreateGroupSubmit(null)" /></td>';
+		createGroupContentStr+='<td><input type="button" id="addNewGRpButton" value="Add New Group" style="display:none;" onclick="handleCreateGroupSubmit(null)" /></td>';
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='<tr>';
 		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To Static Group As Sub Group" onClick="showStaticGroupSelectionBox()"/><%=addToStaticGrpAsSubGrpRadio%></td>';
-		createGroupContentStr+='<td><select class="selectWidth" id="staticGrpSelectBox"  disabled="true" name="systemGroups" style="display:none;" onchange="getSubGroupsListInSystemGroups(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		createGroupContentStr+='<td><select class="selectWidth" id="staticGrpSelectBox" name="systemGroups" style="display:none;" onchange="getSubGroupsListInSystemGroups(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
 		for(var i in userGrpsObj.systemGroupsListBoxArr)
 		{
 			createGroupContentStr+='<option value='+userGrpsObj.systemGroupsListBoxArr[i].id+'>'+userGrpsObj.systemGroupsListBoxArr[i].value+'</option>';
@@ -1192,11 +746,7 @@ var userGrpsObj={
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='<tr>';
 		createGroupContentStr+='<td><input type="radio" name="createGroup" id="addToGrpAsSubGrpRadio" value="Add To My Group As Sub Group" onClick="showMyGroupSelectionBox()"/><%=addToGrpAsSubGrpRadio%></td>';
-		createGroupContentStr+='<td><select class="selectWidth" id="myGrpSelectBox" name="myGroups" disabled="true" style="display:none;" onchange="getSubGroupsListInMyGroups(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,\'new\')">';
-		for(var j in userGrpsObj.myGroupsListBoxArr)
-		{
-			createGroupContentStr+='<option value='+userGrpsObj.myGroupsListBoxArr[j].id+'>'+userGrpsObj.myGroupsListBoxArr[j].value+'</option>';
-		}
+		createGroupContentStr+='<td><select class="selectWidth" id="myGrpSelectBox" name="myGroups" style="display:none;" onchange="getSubGroupsListInMyGroups(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,\'new\')">';		
 		createGroupContentStr+='</select></td>';
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='<tr>';
@@ -1210,12 +760,11 @@ var userGrpsObj={
 		createGroupContentStr+='</td>';
 		createGroupContentStr+='</tr>';
 		createGroupContentStr+='</table>';
-		createGroupContentStr+='</fieldset>';		
-		createGroupContentStr+='<div id="confirmMsg" class="confirmMsg"></div>';				
+		createGroupContentStr+='</fieldset>';
+		createGroupContentStr+='<div style="text-align:right;"><input type="button" class="button" id="exitButton" value="Exit" onclick="handleCreateGroupCancel()"></div>';								
 		createGroupContentStr+='</div>';
 		createGroupContentStr+='</div>';
-		createGroupContentStr+='</div>';
-		createGroupContentStr+= 
+		createGroupContentStr+='</div>';		
 		divChild.innerHTML=createGroupContentStr;		
 		elmt.appendChild(divChild);	
 		if(createGroupDialog)
@@ -1231,31 +780,74 @@ var userGrpsObj={
 				  close:true,
 				  x:400,
 				  y:300,
-				  buttons : [ { text:"Exit", handler:handleCreateGroupCancel }]				 
+				  buttons : []				 
 	             }); 
 		createGroupDialog.render();
+		var groupNameTextEl = document.getElementById("groupNameText").focus();
+		getMyGroupsListForAUser();
 	}
-	function checkAvailability(groupName)
+
+	function getMyGroupsListForAUser()
 	{
 		var jsObj= 
 		{	
-			groupName: groupName,
-			task: "checkAvailability"
+			task: "getMyGroupsListForAUser"
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
-		callAjax(param,jsObj,url);
+		callAjax(param,jsObj,url);	
+	}
+
+	function buildMyGroupsOptions(results)
+	{
+		var myGrpSelectBoxEl = document.getElementById("myGrpSelectBox");
+		for(var i in results.myGroupsListboxOptions)
+		{
+			var opElmt=document.createElement('option');
+			opElmt.value=results.myGroupsListboxOptions[i].id;
+			opElmt.text=results.myGroupsListboxOptions[i].name;
 		
+			try
+				{
+				myGrpSelectBoxEl.add(opElmt,null); // standards compliant
+				}
+			catch(ex)
+				{
+				myGrpSelectBoxEl.add(opElmt); // IE only
+				}
+		}
+	}
+	
+	function checkAvailability(groupName)
+	{
+		var groupExistsAlertEl = document.getElementById("groupExistsAlert");
+		if(groupName != '')
+		{	
+			var jsObj= 
+			{	
+				groupName: groupName,
+				task: "checkAvailability"
+			}
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
+			callAjax(param,jsObj,url);
+		} else 
+		{
+			groupExistsAlertEl.innerHTML ='';
+			groupExistsAlertEl.innerHTML = 'Please Enter Group Name';
+			groupExistsAlertEl.style.color = "red";	
+		}		
 	}
 	function showAvailabilityBtn()
 	{
 		var checkAvailabilityBtnEl = document.getElementById("checkAvailabilityBtn");
-		checkAvailabilityBtnEl.style.display = 'block';		
-		}
+		var confirmMsgEl = document.getElementById("confirmMsg");
+		checkAvailabilityBtnEl.style.display = 'block';	
+		confirmMsgEl.innerHTML = '';		
+	}
 	
 	function getSubGroupsListInSystemGroups(name,id)
 	{
-		
 		var jsObj= 
 		{	
 			categoryId: id,
@@ -1263,7 +855,8 @@ var userGrpsObj={
 			task: "getSubGroupsListInSystemGroups"
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
+		incrementHidden();
+		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param+"&hidden="+hidden;
 		callAjax(param,jsObj,url);
 	}
 
@@ -1277,7 +870,8 @@ var userGrpsObj={
 			task: "getSubGroupsListInMyGroups"
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
+		incrementHidden();
+		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param+"&hidden="+hidden;
 		callAjax(param,jsObj,url);
 	}
 	function hideGroupSelectionListBoxes()
@@ -1366,7 +960,8 @@ var userGrpsObj={
 			task:"subGrpsCountInSystemGrpsForUser"
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
+		incrementHidden();
+		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param+"&hidden="+hidden;
 		callAjax(param,jsObj,url);
 	}
 
@@ -1393,13 +988,13 @@ var userGrpsObj={
 			task:"subGrpsCountInMyGrpsForUser"
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
+		incrementHidden();
+		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param+"&hidden="+hidden;
 		callAjax(param,jsObj,url);
 	}
 	function handleCreateGroupSubmit(id)
 	{
 		var parentId = id;
-			
 		var groupNameTextVal = document.getElementById("groupNameText").value;
 		var descTextAreaVal = document.getElementById("descTextArea").value;
 		var groupCreationOption;
@@ -1411,12 +1006,30 @@ var userGrpsObj={
 		var categoryType;		
 		var parentGroupId;
 		var elements = document.getElementsByTagName('input');
+		var mandatoryFieldsAlertEl = document.getElementById("mandatoryFieldsAlert");
 		
 		for(var i=0;i<elements.length;i++)
 		{
 			if(elements[i].type=="radio" && elements[i].name=="createGroup" && elements[i].checked==true)
 				groupCreationOption = elements[i].value;
 		}
+		if(groupNameTextVal == '' && descTextAreaVal == '')
+		{
+			mandatoryFieldsAlertEl.innerHTML = '';
+			mandatoryFieldsAlertEl.innerHTML = 'Please Enter Group Name and Description!';
+			return;
+		} else if(groupNameTextVal == '')
+		{
+			mandatoryFieldsAlertEl.innerHTML = '';
+			mandatoryFieldsAlertEl.innerHTML = 'Please Enter Group Name!';
+			return;
+		} else if(descTextAreaVal == '')
+		{
+			mandatoryFieldsAlertEl.innerHTML = '';
+			mandatoryFieldsAlertEl.innerHTML = 'Please Enter Description!';
+			return;
+		}
+		
 		if(groupCreationOption == null)
 		{
 		alert("Please Select Group Creation Option!");
@@ -1470,21 +1083,78 @@ var userGrpsObj={
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+rparam;		
 	callAjax(rparam,jsObj,url);
+	if(groupCreationOption == "Create New Group" || groupCreationOption == "Add To My Group As Sub Group")
+	{
+		getSubGroupsCountInMyGroupsForUser();
 		
-		//createGroupDialog.hide();			
-	}
+	} else if(groupCreationOption == "Add To Static Group As Sub Group")
+	{
+		getSubGroupsCountInSystemGrpsForUser();
+	}		
+				
+	}	
 	
 	function handleCreateGroupCancel()
 	{
 		createGroupDialog.hide();
 	}
-
-	function showGroupCreationConfirmation(results)
+	
+	function showGroupCreationConfirmation(results,jsObj)
 	{
-		
-		var groupName= results.userGroupDetailsVO.groupName;
-		var confirnDivEl = document.getElementById("confirmMsg");
-		confirnDivEl.innerHTML = groupName+"is succesfully created" ; 
+		var groupAlreadyExists = results.userGroupDetailsVO.rs.resultPartial;
+		var confirmDivEl = document.getElementById("confirmMsg");
+		var groupName;
+		var groupNameTextEl = document.getElementById("groupNameText");
+		var descTextAreaEl = document.getElementById("descTextArea");
+		var mandatoryFieldsAlertEl = document.getElementById("mandatoryFieldsAlert");
+		var checkAvailabilityBtnEl = document.getElementById("checkAvailabilityBtn");
+		var groupExistsAlertEl = document.getElementById("groupExistsAlert");
+		var subGroupsListDiv1El = document.getElementById("subGrpsListInCreateGrpDialog1");
+		var subGroupsListDivEl = document.getElementById("subGrpsListInCreateGrpDialog");
+		var navigationDivInDialogEl = document.getElementById("navigationDivInDialog");
+		var navigationDivInDialog1El = document.getElementById("navigationDivInDialog1");
+		var staticGrpSelectBoxEl = document.getElementById("staticGrpSelectBox");
+		var myGrpSelectBoxEl = document.getElementById("myGrpSelectBox");
+		var elements = document.getElementsByTagName('input');
+		var addNewGRpButtonEl = document.getElementById("addNewGRpButton");
+		if(groupAlreadyExists == false)
+		{
+			groupName= results.userGroupDetailsVO.groupName;
+			confirmDivEl.innerHTML = groupName+" is succesfully created" ;
+			confirmDivEl.style.color = "green";
+			mandatoryFieldsAlertEl.innerHTML = '';
+			groupExistsAlertEl.innerHTML = '';
+			groupNameTextEl.value = '';
+			descTextAreaEl.value = '';
+			if(checkAvailabilityBtnEl.style.display == 'block')
+			{
+				checkAvailabilityBtnEl.style.display = 'none';
+			}
+			if(subGroupsListDiv1El.style.display == 'block')
+				{subGroupsListDiv1El.style.display = 'none';}
+			if(subGroupsListDivEl.style.display == 'block')
+			{subGroupsListDivEl.style.display = 'none';}
+			if(staticGrpSelectBoxEl.style.display == 'block')
+			{staticGrpSelectBoxEl.style.display = 'none';}
+			if(myGrpSelectBoxEl.style.display == 'block')
+			{myGrpSelectBoxEl.style.display = 'none';}
+			if(addNewGRpButtonEl.style.display == 'block')
+			{addNewGRpButtonEl.style.display = 'none';}
+			navigationDivInDialogEl.innerHTML = '';
+			navigationDivInDialog1El.innerHTML = '';
+			for(var i=0;i<elements.length;i++)
+			{
+				if(elements[i].type=="radio" && elements[i].name=="createGroup" && elements[i].checked==true)
+					elements[i].checked=false;
+			}
+		} else 
+		{
+			groupName= jsObj.groupName;
+			confirmDivEl.innerHTML = groupName+" already exists!Please give another name." ;
+			confirmDivEl.style.color = "red";
+			mandatoryFieldsAlertEl.innerHTML = '';
+		}
+			
 	}
 
 	function showExistingGroupAlert(results, jsObj)	
@@ -1497,19 +1167,15 @@ var userGrpsObj={
 		var myGrpSelectBoxEl = document.getElementById("myGrpSelectBox");		
 		if(confirmation == true)
 		{
+			groupExistsAlertEl.innerHTML='';
 			groupExistsAlertEl.innerHTML = groupName+" already Exists!Please give another GroupName!";
-			groupExistsAlertEl.style.color = "red";
-			addNewGRpButtonEl.disabled = true;
-			staticGrpSelectBoxEl.disabled = true;
-			myGrpSelectBoxEl.disabled = true;			
+			groupExistsAlertEl.style.color = "red";						
 			
 		} else if (confirmation == false)
 		{
+			groupExistsAlertEl.innerHTML='';
 			groupExistsAlertEl.innerHTML = groupName+" is available!";
-			groupExistsAlertEl.style.color = "green";
-			addNewGRpButtonEl.disabled = false;
-			staticGrpSelectBoxEl.disabled = false;
-			myGrpSelectBoxEl.disabled = false;
+			groupExistsAlertEl.style.color = "green";			
 		}		
 	}
 		
@@ -1630,9 +1296,7 @@ var userGrpsObj={
 		var eMailTextEl = document.getElementById("eMailText");
 		eMailTextEl.value ="";
 		var groupMbrDesignationTextEl = document.getElementById("groupMbrDesignationText");
-		groupMbrDesignationTextEl.value ="";
-		
-				
+		groupMbrDesignationTextEl.value ="";				
 	}		
 </script>
 </head>
@@ -1754,13 +1418,14 @@ var ob={
 		};
 userGrpsObj.systemGroupsListBoxArr.push(ob);	
 </c:forEach>
+/*
 <c:forEach var="myGroups"  items="${myGroupsListboxOptions}">
 var ob={
 			id:'${myGroups.id}',
 			value:'${myGroups.name}'
 		};
 userGrpsObj.myGroupsListBoxArr.push(ob);	
-</c:forEach>
+</c:forEach>*/
 buildLayout();
 
 </script>
