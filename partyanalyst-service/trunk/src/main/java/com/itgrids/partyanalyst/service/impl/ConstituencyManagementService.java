@@ -64,8 +64,10 @@ public class ConstituencyManagementService implements IConstituencyManagementSer
 		List<Voter> voters = boothConstituencyElectionVoterDAO.findVotersByHamletAndElectionYear(hamletId, year);
 		List<VoterVO> voterVOs = new ArrayList<VoterVO>();
 		VoterVO voterVO = null;
+		Long count = 1l;
 		for(Voter voter:voters){
 			voterVO = new VoterVO();
+			voterVO.setSNO((count++)+"");
 			voterVO.setVoterFirstName(voter.getFirstName()+ voter.getLastName());
 			voterVO.setHouseNo(voter.getHouseNo());
 			voterVO.setAge(voter.getAge());
