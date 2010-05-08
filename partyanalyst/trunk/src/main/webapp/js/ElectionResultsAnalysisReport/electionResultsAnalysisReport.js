@@ -554,8 +554,8 @@ function showAnalysisDetailsInPartyLostPositions(results)
 	contentStr+='	<div id="lostPositionAnalysis_multipleReasons_body" class="analysisCategoryBody" style="height:120px;">';
 	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="95%"  class="multipleClassificationsTable">';
 	contentStr+='	<TR>';
-	contentStr+='		<TH width="30%">Analysis Reasons</TH>';
-	contentStr+='		<TH width="30%">Constituencies</TH>';
+	contentStr+='		<TH width="30%" style="background-color:#DFE2E5">Analysis Reasons</TH>';
+	contentStr+='		<TH width="30%" style="background-color:#DFE2E5">Constituencies</TH>';
 	contentStr+='	</TR>';
 	for(var i in results.multipleCategories)
 	{
@@ -695,8 +695,8 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='			<div id="wonPositionAnalysis_multipleReasons_body" class="analysisCategoryBody" style="height:120px;">';
 		contentStr+='				<TABLE  cellpadding="0" cellspacing="0" width="95%"  class="multipleClassificationsTable">';
 		contentStr+='				<TR>';
-		contentStr+='				<TH width="30%">Analysis Reasons</TH>';
-		contentStr+='				<TH width="30%">Constituencies</TH>';
+		contentStr+='				<TH width="30%" style="background-color:#DFE2E5">Analysis Reasons</TH>';
+		contentStr+='				<TH width="30%" style="background-color:#DFE2E5">Constituencies</TH>';
 		contentStr+='				</TR>';
 		for(var i in results.multipleCategories)
 		{
@@ -834,7 +834,7 @@ function buildVotesMarginInfoContent(jsObj,results)
 			str+= '<tr id="marginInfo_'+jsObj.status+'_row_'+i+'" style="display:none;">';
 			str+= '<td colspan="4">';
 			str+= '<div class="marginBodyDivClass">';
-			str+= '<table width="70%" border="0" class="votesMarginDataTable">';
+			str+= '<table width="95%" border="0" class="votesMarginDataTable">';
 			for(var j in results[i].analysisCategoryBasicVO)
 			{
 				var dt = results[i].analysisCategoryBasicVO[j];				

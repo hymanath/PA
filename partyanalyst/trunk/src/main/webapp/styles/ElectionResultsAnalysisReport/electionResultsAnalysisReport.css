@@ -209,13 +209,13 @@ H3
 }
 .multipleClassificationsTable TH
 {
-	text-align:left;
+	text-align:center;
 	padding:5px;
 	color:#73787E;
 }	
 .multipleClassificationsTable TD
 {
-	text-align:left;
+	text-align:center;
 	padding:5px;
 }	
 
@@ -276,7 +276,7 @@ margin:1px;
 
 .votesMarginTable td
 {
-	padding:2px;	
+	padding:5px;	
 	color:#4A515A;
 	text-align:center;
 }
@@ -289,13 +289,15 @@ margin:1px;
 .marginBodyDivClass
 {
 	font-weight:bold;
-	padding-left:30px;
+	padding-left:50px;
 	text-align:left;
 }
 
 .votesMarginDataTable td
 {
 	padding:3px;
+	text-align:left;
+	font-weight:normal;
 }
 
 .votesMargin_Body_Main
