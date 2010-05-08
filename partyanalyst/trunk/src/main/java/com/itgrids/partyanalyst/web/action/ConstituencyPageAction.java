@@ -803,7 +803,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         constituencyRevenueVillagesVO.setChartPath(chartName);
-        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,260,700);
+        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,260,700, null);
 	  
 	  return SUCCESS;
   }
@@ -838,7 +838,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		  chartTitle = "Mandal Wise Election Results For "+obj.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
 		  chartName = "mandalWiseParliamentElectionsResults_"+obj.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 		  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj), chartPath,260,700);
+		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj), chartPath,260,700, null);
 		  obj.setChartPath(chartName);
 	  }
 	  

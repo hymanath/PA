@@ -562,7 +562,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         districtWisePartyResultVO.setChartPath(chartName);
         ChartProducer.createLineChart("All Parties Performance In "+jObj.getString("electionType")+" Elections Of "+jObj.getString("districtName")
-        		+" District", "Elections", "Percentages", createDataset(allElectionResults), chartPath, 260, 700);	
+        		+" District", "Elections", "Percentages", createDataset(allElectionResults), chartPath, 260, 700, null);	
 		
 		return SUCCESS;
 	}
@@ -633,7 +633,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         allPartiesPositionsInElection.setPasitionsChart(chartName);
         ChartProducer.createLineChart("All Parties Positions In "+jObj.getString("electionTypeYear")+" Of "+jObj.getString("districtName")
-        		+" District", "Positions", "No. Of Seats", createDatasetForPartyPositions(partyPositions), chartPath, 260, 400);
+        		+" District", "Positions", "No. Of Seats", createDatasetForPartyPositions(partyPositions), chartPath, 260, 400, null);
 		return SUCCESS;
 	}
 
