@@ -171,8 +171,8 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 	public List getCommentResultsForCandidateNominations(
 			List<Long> nominationIds) {
 		Query queryObject = getSession().createQuery("select model.commentData.commentDataCategory.commentDataCategoryId,model.commentData.commentDataCategory.commentDataCategoryType,"+
-				"count(distinct model.commentData.commentDataCategory.commentDataCategoryType) from CommentCategoryCandidate model where "+
-				"model.nomination.nominationId in (:nominationIds) group by model.nomination.constituencyElection.constituency.constituencyId");
+				"count(distinct model.nomination.constituencyElection.constituency.constituencyId) from CommentCategoryCandidate model where "+
+				"model.nomination.nominationId in (:nominationIds) group by model.commentData.commentDataCategory.commentDataCategoryId");
 		queryObject.setParameterList("nominationIds", nominationIds);
 		return queryObject.list();
 	}
@@ -202,5 +202,12 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return queryObject.list();
 	}
 
-
+	@SuppressWarnings("unchecked")
+	public List getAnalyzedConstituenciesCountFromNominationIds(
+			List<Long> nominationIds) {
+		Query queryObject = getSession().createQuery("select count(distinct model.nomination.constituencyElection.constituency.constituencyId) "+
+				"from CommentCategoryCandidate model where model.nomination.nominationId in (:nominationIds)");
+		queryObject.setParameterList("nominationIds", nominationIds);
+		return queryObject.list();
+	}
 }
