@@ -78,7 +78,7 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		return getHibernateTemplate().find("select model.nomination.constituencyElection.constituency.constituencyId,model.nomination.constituencyElection.constituency.name,"+
 				"model.nomination.candidate.candidateId,model.nomination.candidate.lastname,"+
 				"model.commentData.commentDesc,model.commentData.commentBy,"+
-				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType "+
+				"model.commentData.commentDate,model.commentData.commentDataCategory.commentDataCategoryType,model.nomination.candidateResult.rank "+
 				"from CommentCategoryCandidate model where model.nomination.constituencyElection.election.electionId = ? "+
 				"and model.nomination.party.partyId = ? order by model.nomination.constituencyElection.constituency.constituencyId",params);
 	}
