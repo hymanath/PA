@@ -309,8 +309,10 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 				else
 				titleValue = "All Parties District Wise Election Results With Alliance Parties";
 				if(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults() != null && electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults().size() > 0){
-				String partyResultsDistrictWise = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults(),"With_Alliance",titleValue);
+				String partyResultsDistrictWise = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults(),"With_Alliance_Normal",titleValue,300,880);
 				electionCompleteDetailsVO.setDistrictWiseElecResultsChartName(partyResultsDistrictWise);
+				String partyResultsDistrictWiseChart = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults(),"With_Alliance_Full_View",titleValue,600,1000);
+				electionCompleteDetailsVO.setDistrictWiseElecResultsChartNew(partyResultsDistrictWiseChart);
 				}
 				
 				//district level results line chart for parties without alliance
@@ -320,8 +322,10 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 				else
 				titleVal = "All Parties District Wise Election Results Without Grouping Alliance Parties";
 				if(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc() != null && electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc().size() > 0){
-				String partyResultsDistrictLevelChartWithoutAllianc = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc(),"Without_Alliance",titleVal);
+				String partyResultsDistrictLevelChartWithoutAllianc = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc(),"Without_Alliance_Normal",titleVal,300,880);
+				String partyResultsDistrictLevelChartWithoutAlliancChart = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc(),"Without_Alliance_Full_View",titleVal,600,1000);
 				electionCompleteDetailsVO.setPartyResultsDistrictLevelChartWithoutAllianc(partyResultsDistrictLevelChartWithoutAllianc);
+				electionCompleteDetailsVO.setPartyResultsDistrictLevelChartWithoutAlliancNew(partyResultsDistrictLevelChartWithoutAlliancChart);
 				}
 				
 				//charts for alliance parties district level
@@ -388,14 +392,18 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	/*
 	 * method to create line chart for for district level overall results for parties
 	 */
-	public String createLineChartForPartiesWithDistrictLevelResults(List<DistrictWisePartyPositionsVO> allPartiesResults,String chartType,String title){
+	public String createLineChartForPartiesWithDistrictLevelResults(List<DistrictWisePartyPositionsVO> allPartiesResults,String chartType,String title,int height,int width){
 		String chartName = null;
 		try{
 			String partyDistrictResultsChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat("Election_Results_Districtwise").concat("LineChart").concat(chartType);
 	 		String partyDistrictResultsChartName = "partyDistrictResults_" + partyDistrictResultsChartId + session.getId() +".png";
 	        String partyDistrictResultsChartPath = context.getRealPath("/") + "charts\\" + partyDistrictResultsChartName;
 	 		
+
+	 		ChartProducer.createLineChart(title,"","Votes Percentage", createDataSetForPartyDistrictwiseResults(allPartiesResults), partyDistrictResultsChartPath,height,width,null);
+
 	 		ChartProducer.createLineChart(title,"","Votes Percentage", createDataSetForPartyDistrictwiseResults(allPartiesResults), partyDistrictResultsChartPath,300,880, null);
+
 	        request.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 			session.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 			
