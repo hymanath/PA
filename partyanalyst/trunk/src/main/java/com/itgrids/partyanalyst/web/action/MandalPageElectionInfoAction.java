@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -268,7 +269,8 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		String chartName = "allPartiesMandalWisePerformanceInAllElections_"+mandalId+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         //String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName
-		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", createDataset(allElectionResults), chartPath,260,700);
+        List<Color> colors = new ArrayList<Color>();
+		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", createDataset(allElectionResults, colors), chartPath,260,700, colors );
 				
 		return SUCCESS;
 		
@@ -331,7 +333,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		return SUCCESS;
 	}
 	
-	private CategoryDataset createDataset(List<PartyResultVO> allElectionResults) {
+	private CategoryDataset createDataset(List<PartyResultVO> allElectionResults, List<Color> colors) {
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
         ElectionResultVO partiesElecResultForGraph = null;
@@ -347,9 +349,27 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
         
         Collections.sort(partiesElectionResults, new ElectionResultComparator());
         
-        for(ElectionResultVO graphInfo:partiesElectionResults)
-           	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
-           			graphInfo.getElectionYear());
+        for(ElectionResultVO graphInfo:partiesElectionResults){
+        	if(IConstants.TDP.equalsIgnoreCase(graphInfo.getPartyName()))
+        		colors.add(IConstants.TDP_COLOR);
+        	else
+        		if(IConstants.INC.equalsIgnoreCase(graphInfo.getPartyName()))
+            		colors.add(IConstants.INC_COLOR);
+            	else
+            		if(IConstants.BJP.equalsIgnoreCase(graphInfo.getPartyName()))
+                		colors.add(IConstants.BJP_COLOR);
+                	else
+                		if(IConstants.PRP.equalsIgnoreCase(graphInfo.getPartyName()))
+                    		colors.add(IConstants.PRP_COLOR);
+                    	else
+                    		if(IConstants.TRS.equalsIgnoreCase(graphInfo.getPartyName()))
+                        		colors.add(IConstants.TRS_COLOR);
+                        	else
+                        		colors.add(null);
+        	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
+           			graphInfo.getElectionYear());	
+        }
+           	
         return dataset;
     }
 

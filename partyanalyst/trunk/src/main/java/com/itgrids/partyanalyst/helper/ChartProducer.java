@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.SortedMap;
 
 import org.apache.log4j.Logger;
+import org.aspectj.util.LineReader;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartRenderingInfo;
@@ -398,7 +399,7 @@ public class ChartProducer {
 		}
 	}
 
-	public static void createLineChart(String title, String xAxis, String yAxis, CategoryDataset dataset, String path,int height,int width){
+	public static void createLineChart(String title, String xAxis, String yAxis, CategoryDataset dataset, String path,int height,int width, List<Color> colors){
 		final NumberAxis seatsRangeAxis = new NumberAxis(yAxis);
         seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         final LineAndShapeRenderer seatsRenderer = new LineAndShapeRenderer();
@@ -412,7 +413,21 @@ public class ChartProducer {
         domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
         CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
         plot.add(seatsPlot, 2);
-       	        
+       	    
+        GradientPaint gp;
+        
+        if(colors != null){
+        	log.debug("Colors Size::"+colors.size());
+        	for(int i=0; i<colors.size(); i++){
+            	if(colors.get(i) == null)
+            		continue;
+            	gp = new GradientPaint(0.0f, 0.0f, colors.get(i), 0.0f, 0.0f, Color.lightGray);
+            	seatsRenderer.setSeriesPaint(i, gp);
+            }
+        }
+        	
+        
+          
         final JFreeChart chart = new JFreeChart(title,  plot);
         chart.setBackgroundPaint(Color.WHITE);
 		try	 {
