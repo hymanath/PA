@@ -338,6 +338,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 			
 			candidateCommentsVO.setCommentedOn(sdf.format((Date)results[6]).toString());
 			candidateCommentsVO.setCommentCategory((String)results[7]);
+			candidateCommentsVO.setRank((Long)results[8]);
 		}
 		
 	 return candidateCommentsVO;
