@@ -63,9 +63,11 @@ function showAnalysisDetails(jsObj,results)
 
 function showNotAnalyzedDetails(jsObj,results)
 {	
+	var notAnalyzedCandidatesResults = new Array();
 	var analysisDetailsEl = document.getElementById("analysisDetails");
 	var str = '';
 	str+='<div id="notAnalyzedDataTableDiv_main" class="yui-skin-sam"><div id="notAnalyzedDataTableDiv"> </div></div>';
+
 	if(analysisDetailsEl)
 	analysisDetailsEl.innerHTML = str;
 
@@ -83,7 +85,8 @@ function showNotAnalyzedDetails(jsObj,results)
 					completeResults: '<a href="javascript:{}" onclick="getMoreDetails('+results[i].constituencyId+')">  Complete Results</a>',
 					addReason : '<a href="javascript:{}" onclick="showCommentsDialog('+results[i].candidateId+',\''+results[i].candidateName+'\',\'candidate\',\''+results[i].rank+'\','+results[i].constituencyId+',\''+results[i].constituencyName+'\',\''+results[i].partyName+'\')">  Add Reason</a>'
 				};
-			partyElectionResultsAnalysisObj.notAnalyzedCandidates.push(ob);
+			//partyElectionResultsAnalysisObj.notAnalyzedCandidates.push(ob);
+			notAnalyzedCandidatesResults.push(ob);
 		} else if(results[i].rank != null)
 		{
 			var obj={
@@ -96,14 +99,15 @@ function showNotAnalyzedDetails(jsObj,results)
 					completeResults: '<a href="javascript:{}" onclick="getMoreDetails('+results[i].constituencyId+')">  Complete Results</a>',
 					addReason : '<a href="javascript:{}" onclick="showCommentsDialog('+results[i].candidateId+',\''+results[i].candidateName+'\',\'candidate\',\''+results[i].rank+'\','+results[i].constituencyId+',\''+results[i].constituencyName+'\',\''+results[i].partyName+'\')">  Add Reason</a>'
 				};
-			partyElectionResultsAnalysisObj.notAnalyzedCandidates.push(obj);
+			//partyElectionResultsAnalysisObj.notAnalyzedCandidates.push(obj);
+			notAnalyzedCandidatesResults.push(obj);
 		}	
 	}
 	
-	buildCandidateElectionResultsDataTable();		
+	buildCandidateElectionResultsDataTable(notAnalyzedCandidatesResults);		
 }
 
-function buildCandidateElectionResultsDataTable()
+function buildCandidateElectionResultsDataTable(notAnalyzedCandidatesResults)
 {	
 	var candidateElectionResultsColumnDefs = [
 								{key: "candidateName", label: "Candidate", sortable:true},										
@@ -115,7 +119,7 @@ function buildCandidateElectionResultsDataTable()
 								{key: "addReason", label:"Add Reason"}
 								];                	 	    
 
-		var candidateElectionResultsDataSource = new YAHOO.util.DataSource(partyElectionResultsAnalysisObj.notAnalyzedCandidates); 
+		var candidateElectionResultsDataSource = new YAHOO.util.DataSource(notAnalyzedCandidatesResults); 
 		candidateElectionResultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		candidateElectionResultsDataSource.responseSchema = {
 				fields: [		  {key:"candidateName"},
