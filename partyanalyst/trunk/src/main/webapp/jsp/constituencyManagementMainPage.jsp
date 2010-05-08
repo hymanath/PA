@@ -1926,7 +1926,7 @@
 			
 			var myColumnDefs = [ 
 					{key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true},
-		            {key:"electionYear", label: "<%=electionYear%>"}, 
+		            {key:"electionYear", label: "<%=electionYear%>", sortable:true},
 		            {key:"rank", label: "<%=rank%>", sortable:true}, 
 		            {key:"mptcName", label: "<%=mptcName%>", sortable:true}, 
 					{key:"party", label: "<%=party%>",  sortable:true},
@@ -1971,7 +1971,7 @@
 			
 			var myColumnDefs = [
 					{key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true},
-		            {key:"electionYear", label: "<%=electionYear%>"}, 
+		            {key:"electionYear", label: "<%=electionYear%>", sortable:true}, 
 		            {key:"mptcName", label: "<%=mptcName%>", sortable:true}, 
 					{key:"party", label: "<%=party%>",  sortable:true},
 					{key:"candidateName", label: "<%=candidateName%>", sortable:true},	
@@ -3049,7 +3049,7 @@
 	function buildVotersByLocBoothDataTable()
 	{
 		var votersByLocBoothColumnDefs = [ 
-		    	            {key:"sNo", label: "<%=sNo%>", formatter:"number", sortable:true}, 
+		    	            {key:"sNo", label: "<%=sNo%>",sortable:true}, 
 		    	            {key:"name", label: "<%=name%>", sortable: true}, 
 		    	            {key:"gender", label: "<%=gender%>", sortable: true},
 		    				{key:"age", label: "<%=age%>", sortable:true},
@@ -3057,9 +3057,7 @@
 		    				{key:"guardianName", label: "<%=guardName%>", sortable:true},
 		    				{key:"relationship", label: "<%=relationship%>", sortable:true},	
 		    				{key:"cast", label: "<%=cast%>", sortable:true},
-		    				{key:"castCategory", label: "<%=castCategory%>", sortable:true}
-		    					
-		    					    			    				
+		    				{key:"castCategory", label: "<%=castCategory%>", sortable:true}		
 		    	        ]; 
 		var votersByLocBoothDataSource = new YAHOO.util.DataSource(constMgmtMainObj.votersArray); 
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
