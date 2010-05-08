@@ -105,9 +105,8 @@
 H3
 {
 	background-image:url(../../images/icons/electionResultsAnalysisReport/mid.png);
-	color:#000000;
-	font-family:MS Sans-serif;
-	font-size:15px;
+	color:#4B74C6;
+	font-size:12px;
 	font-weight:bold;	
 	text-align: left;	
 	width:630px;	
@@ -184,9 +183,9 @@ H3
 .wonLostPosTable
 {
 	text-align:left;
-	margin-top: 15px;
-	font-family: MS sans-serif;
-	font-size:15px;
+	margin-top: 10px;	
+	font-size:12px;
+	margin-left:5px;
 }
 .wonLostPosTable TH
 {
@@ -194,32 +193,37 @@ H3
 }
 .wonLostPosTable TD
 {
-	color:#A97F6A;
+	color:#4A515A;
+	padding:4px;
 }
+
+.wonLostPosTable a
+{
+	color:#DF7401;
+}
+
 .multipleClassificationsTable
 {
-	margin-left:15px;
-	margin-right:15px;
-	margin-top:10px;
-	font-family: MS sans-serif;
-	font-size:15px;
-	
-	
+	margin:10px;
+	font-size:12px;
 }
 .multipleClassificationsTable TH
 {
 	text-align:left;
 	padding:5px;
-	border: 1px solid #DBDCDB;
-	
+	color:#73787E;
 }	
 .multipleClassificationsTable TD
 {
 	text-align:left;
 	padding:5px;
-	border: 1px solid #DBDCDB;
-	
 }	
+
+.multipleClassificationsTable a
+{
+	color:#DF7401;
+}
+
 
 #basicDetails .yui-carousel-element li
 {
@@ -238,50 +242,91 @@ margin:1px;
 	width:300px;
 	margin-bottom:10px;
 }
+ 
+
 .votesMarginHead
-	{
-		padding:5px;
-		cursor:pointer;
-		font-size:12px;
-		font-weight:bold;
-	}
+{
+	padding:5px;
+	cursor:pointer;
+	font-size:12px;
+	font-weight:bold;
+}
 
-	.votesMarginBody
-	{
-		padding-left:30px;
-		font-size:12px;
-	}
+.votesMarginBody
+{
+	padding-left:30px;
+	font-size:12px;
+}
 
-	.votesMarginReasonsDiv
-	{
-		padding:5px;
-	}
-	
-	.votesMarginTable 
-	{
-		border-collapse:collapse;
-		border-color:#ADADAD;
-		padding-top:20px;
-	}
+.votesMarginReasonsDiv
+{
+	padding:5px;
+}
 
-	.votesMarginTable th
-	{
-		padding:5px;
-		background-color:#EFEFEF;
-	}
+.votesMarginTable 
+{
+	padding-top:20px;
+}
 
-	.marginBodyDivClass
-	{
-		font-weight:bold;
-		padding-left:50px;
-	}
-	
-	.votesMarginDataTable td
-	{
-		padding:3px;
-	}
+.votesMarginTable th
+{
+	padding:2px;	
+	color:#4A515A;
+}
 
-	.votesMargin_Body_Main
-	{
-		padding-top:20px;
-	}
+.votesMarginTable td
+{
+	padding:2px;	
+	color:#4A515A;
+}
+
+.votesMarginTable a
+{
+	color:#DF7401;
+}
+
+.marginBodyDivClass
+{
+	font-weight:bold;
+	padding-left:30px;
+	text-align:left;
+}
+
+.votesMarginDataTable td
+{
+	padding:3px;
+}
+
+.votesMargin_Body_Main
+{
+	padding-top:20px;
+}
+ /* -- New Styles --*/
+.positionAnalysisBodyClass
+{
+	text-align:left;
+	overflow:hidden;
+	padding-left:10px;
+	padding-top:10px;
+}
+
+.analysisCategoryBody
+{
+	border-bottom:1px solid #D2D6DB;
+	border-left:1px solid #D2D6DB;
+	border-right:1px solid #D2D6DB;
+	width:306px;
+	overflow:hidden;
+	padding-top:5px;
+}
+
+.reasonsAnalysis td
+{
+	padding:5px;
+	color:#4A515A;
+}
+
+.reasonsAnalysis a
+{
+	color:#DF7401;
+}
