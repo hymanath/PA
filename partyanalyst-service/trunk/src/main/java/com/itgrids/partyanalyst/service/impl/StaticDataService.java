@@ -2402,6 +2402,7 @@ public class StaticDataService implements IStaticDataService {
 			
 			//modified by sai
 			//check and place candidate comments size..
+			if(candidateDetailsVO.getCandidateDetails() != null){
 			for(CandidateDetailsVO results:candidateDetailsVO.getCandidateDetails()){
 			List count = commentCategoryCandidateDAO.getCommentsCountForACandidate(results.getCandidateId(), results.getConstituencyId(), results.getElectionType(), results.getElectionYear());
 			if(count != null && count.size() > 0){
@@ -2409,6 +2410,7 @@ public class StaticDataService implements IStaticDataService {
 				Long commentsCount = (Long)params;
 				results.setCommentsCount(commentsCount);
 				log.debug("Comments Count:" + commentsCount);
+			}
 			}
 			}
 		 return candidateDetailsVO;		
