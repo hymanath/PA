@@ -148,6 +148,7 @@ function callAjax(param,jsObj,url){
 	function showConstituencyResults(results)
 	{
 		var candidateElectionResults = results.candidateElectionResultsVO;
+		var constituencyResultsArray = new Array();
 		var showConstituencyResultsEl = document.getElementById("showConstituencyResults");
 		var contentStr='';
 		contentStr+='<TABLE width="50%">';
@@ -173,9 +174,10 @@ function callAjax(param,jsObj,url){
 						rank: '1',						
 						comments: '<A onclick="showCommentsDialog('+candidateElectionResults[i].candidateId+',\''+candidateElectionResults[i].candidateName+'\',\'candidate\',1,'+candidateElectionResults[i].constituencyId+',\''+candidateElectionResults[i].constituencyName+'\',\''+results.partyLongName+'\')" title="Click to View/Add your comments"   href="javascript:{}">'+candidateElectionResults[i].userComments+'</A>',
 						moreDetails: '<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}">More Details</A>',
-						otherResults: '<A onclick="showYearsDialog('+candidateElectionResults[i].constituencyId+','+electionTypeId+',\''+electionType+'\')" title="Click to View Detailed Results" href="javascript:{}">View Other Election Results</A>' 						
+						//otherResults: '<A onclick="showYearsDialog('+candidateElectionResults[i].constituencyId+','+electionTypeId+',\''+electionType+'\')" title="Click to View Detailed Results" href="javascript:{}">View Other Election Results</A>' 						
 					};
-				partyElectionResultsObj.candidateResultsArr.push(ob);
+				//partyElectionResultsObj.candidateResultsArr.push(ob);
+				constituencyResultsArray.push(ob);
 			} else if(candidateElectionResults[i].rank != null)
 			{
 				var obj={
@@ -187,16 +189,17 @@ function callAjax(param,jsObj,url){
 						rank: candidateElectionResults[i].rank,						
 						comments: '<A onclick="showCommentsDialog('+candidateElectionResults[i].candidateId+',\''+candidateElectionResults[i].candidateName+'\',\'candidate\','+candidateElectionResults[i].rank+','+candidateElectionResults[i].constituencyId+',\''+candidateElectionResults[i].constituencyName+'\',\''+results.partyLongName+'\')" title="Click to View/Add your comments"   href="javascript:{}">'+candidateElectionResults[i].userComments+'</A>',					
 						moreDetails:'<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}">More Details</A>',
-						otherResults: '<A onclick="showYearsDialog('+candidateElectionResults[i].constituencyId+','+electionTypeId+',\''+electionType+'\')" title="Click to View Detailed Results" href="javascript:{}">View Other Election Results</A>' 							
+						//otherResults: '<A onclick="showYearsDialog('+candidateElectionResults[i].constituencyId+','+electionTypeId+',\''+electionType+'\')" title="Click to View Detailed Results" href="javascript:{}">View Other Election Results</A>' 							
 					};
-				partyElectionResultsObj.candidateResultsArr.push(obj);
+				//partyElectionResultsObj.candidateResultsArr.push(obj);
+				constituencyResultsArray.push(obj);
 			}	
 		}
-		buildCandidateElectionResultsDataTable();		
+		buildCandidateElectionResultsDataTable(constituencyResultsArray);		
 	}
 		
 		
-	function buildCandidateElectionResultsDataTable()
+	function buildCandidateElectionResultsDataTable(resultsArray)
 	{	
 		var candidateElectionResultsColumnDefs = [
 									{key: "candidateName", label: "Candidate", sortable:true},										
@@ -206,11 +209,10 @@ function callAjax(param,jsObj,url){
 			              	 	 	{key: "votesPercentage", label: "Votes Percentage",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
 			              	 	 	{key: "rank", label:"Rank", sortable:true},
 			              	 	 	{key: "comments", label:"Comments"},
-			              	 	 	{key: "moreDetails", label:"MoreDetails"},
-			              	 	    {key: "otherResults", label:"OtherElectionsResults"}			              	 	 			              	 	 		              	 	 	
+			              	 	 	{key: "moreDetails", label:"MoreDetails"}			              	 	     	 	 	
 			              	 	    ];                	 	    
 
-			var candidateElectionResultsDataSource = new YAHOO.util.DataSource(partyElectionResultsObj.candidateResultsArr); 
+			var candidateElectionResultsDataSource = new YAHOO.util.DataSource(resultsArray); 
 			candidateElectionResultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 			candidateElectionResultsDataSource.responseSchema = {
 	                fields: [		  {key:"candidateName"},
@@ -220,7 +222,7 @@ function callAjax(param,jsObj,url){
 	                         		  {key:"votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},
 	                         		  "comments", 
 	                         		 {key:"rank", parser:"number"},
-	                         		 "moreDetails","otherResults"
+	                         		 "moreDetails"
 	                         		  ] 
 	        		};
 

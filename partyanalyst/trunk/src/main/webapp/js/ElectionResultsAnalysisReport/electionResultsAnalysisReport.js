@@ -762,7 +762,10 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='	</tr>';
 		contentStr+='	</table>';
 	contentStr+='</div>';
-		
+	
+	
+
+	
 	contentStr+='</div>';
 
 	divEl.innerHTML=contentStr;

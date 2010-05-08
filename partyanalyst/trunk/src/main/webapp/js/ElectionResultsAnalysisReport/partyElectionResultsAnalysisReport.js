@@ -3,8 +3,15 @@ var partyElectionResultsAnalysisObj ={
 		notAnalyzedCandidates:[]
 };
 var emptyArray = new Array();
-function showAnalysisDetails(results)
-{
+function showAnalysisDetails(jsObj,results)
+{	
+	var rank;
+
+	if((jsObj.position && jsObj.position == "Won") || (jsObj.resultStatus && jsObj.resultStatus == "WON"))
+		rank = 1;
+	else if((jsObj.position && jsObj.position == "Lost") || (jsObj.resultStatus && jsObj.resultStatus == "LOST"))
+		rank = 2;
+
 	var contentStr='';
 	var analysisDetailsEl = document.getElementById("analysisDetails");
 	analysisDetailsEl.innerHTML = '';
@@ -23,7 +30,7 @@ function showAnalysisDetails(results)
 		contentStr += '		<td style="vertical-align:center;width:150px;"> - '+results[i].constituencyName+' </td>';
 		contentStr += '     <td style="vertical-align:center"> Constituency Analysis Details - No. Of Reasons '+results[i].candidateComments.length+'</td>';
 		contentStr += '		<td><input type="button" onclick="getMoreDetails('+results[i].constituencyId+')" value="View Complete Results"/></td>';
-		contentStr += '		<td><input type="button" onclick="showCommentsDialog('+candidateId+',\''+candidateName+'\',\'candidate\',1,'+constituencyId+',\''+constituencyName+'\',\''+partyName+'\')" value="Add Reason"/></td>';
+		contentStr += '		<td><input type="button" onclick="showCommentsDialog('+candidateId+',\''+candidateName+'\',\'candidate\',\''+rank+'\','+constituencyId+',\''+constituencyName+'\',\''+partyName+'\')" value="Add Reason"/></td>';
 		contentStr += '		</tr></table>';
 		contentStr += '</div>';
 		contentStr += '	<div id="'+results[i].constituencyName+'_body" class="yui-skin-sam constituencyAnalysisBodyDiv" style="display:none">';
@@ -54,7 +61,7 @@ function showAnalysisDetails(results)
 	}
 }
 
-function showNotAnalyzedDetails(results)
+function showNotAnalyzedDetails(jsObj,results)
 {	
 	var analysisDetailsEl = document.getElementById("analysisDetails");
 	var str = '';

@@ -110,11 +110,11 @@ function callAjax(param,jsObj,url){
 								{
 									if(jsObj.status == "analyzed")
 									{										
-										showAnalysisDetails(myResults);
+										showAnalysisDetails(jsObj,myResults);
 									}
 									else if(jsObj.status == "notAnalyzed")
 									{										
-										showNotAnalyzedDetails(myResults);
+										showNotAnalyzedDetails(jsObj,myResults);
 									}
 								}
 								else if(jsObj.task == "getCommentsClassificationsList")
@@ -131,19 +131,19 @@ function callAjax(param,jsObj,url){
 								}
 								else if(jsObj.task == "getMainPartyCategoryComments")
 								{									
-									showAnalysisDetails(myResults);
+									showAnalysisDetails(jsObj,myResults);
 								}
 								else if(jsObj.task == "getMainPartyMultipleReasonsComments")
 								{									
-									//showAnalysisDetails(myResults);
+									//showAnalysisDetails(jsObj,myResults);
 								}
 								else if(jsObj.task == "getAnalyzedConstituencyStatusAnalysisForVotesMarginWindow")
 								{
-									showAnalysisDetails(myResults);
+									showAnalysisDetails(jsObj,myResults);
 								}
 								else if(jsObj.task == "getConstituencyStatusAnalysisCategoryForVotesMarginWindow")
 								{
-									showAnalysisDetails(myResults);
+									showAnalysisDetails(jsObj,myResults);
 								}
 						}
 						catch (e) {   
