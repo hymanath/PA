@@ -166,13 +166,8 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		
 		if(user==null)
-			return ERROR;
-		
-		myGroupsListboxOptions = userGroupService.getAllMyGroupsCreatedByUser(user.getRegistrationID());
-		myGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select A Group"));  
-		if(log.isDebugEnabled()){
-			log.debug("Size: " + myGroupsListboxOptions);
-		}		
+			return ERROR;	
+				
 		return Action.SUCCESS;		
 	}
 	
@@ -195,7 +190,16 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		if(jObj.getString("task").equalsIgnoreCase("getMyGroupsListForAUser"))
+		{
+			userGroupsVO = new UserGroupsVO();
+			myGroupsListboxOptions = userGroupService.getAllMyGroupsCreatedByUser(user.getRegistrationID());
+			myGroupsListboxOptions.add(0, new SelectOptionVO(0l,"Select A Group"));
+			userGroupsVO.setMyGroupsListboxOptions(myGroupsListboxOptions);
+			if(log.isDebugEnabled()){
+				log.debug("Size: " + myGroupsListboxOptions);
+			}
+		}
 		if(jObj.getString("task").equalsIgnoreCase("subGrpsCountInSystemGrpsForUser"))
 		{
 			userGroupsVO = new UserGroupsVO();
