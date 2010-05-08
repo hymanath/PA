@@ -173,7 +173,7 @@ function callAjax(param,jsObj,url){
 						votesPercentage: candidateElectionResults[i].votesPercentage,
 						rank: '1',						
 						comments: '<A onclick="showCommentsDialog('+candidateElectionResults[i].candidateId+',\''+candidateElectionResults[i].candidateName+'\',\'candidate\',1,'+candidateElectionResults[i].constituencyId+',\''+candidateElectionResults[i].constituencyName+'\',\''+results.partyLongName+'\')" title="Click to View/Add your comments"   href="javascript:{}">'+candidateElectionResults[i].userComments+'</A>',
-						moreDetails: '<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}">More Details</A>',
+						moreDetails: '<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}">More Details</A>'
 						//otherResults: '<A onclick="showYearsDialog('+candidateElectionResults[i].constituencyId+','+electionTypeId+',\''+electionType+'\')" title="Click to View Detailed Results" href="javascript:{}">View Other Election Results</A>' 						
 					};
 				//partyElectionResultsObj.candidateResultsArr.push(ob);
@@ -188,7 +188,7 @@ function callAjax(param,jsObj,url){
 						votesPercentage: candidateElectionResults[i].votesPercentage,
 						rank: candidateElectionResults[i].rank,						
 						comments: '<A onclick="showCommentsDialog('+candidateElectionResults[i].candidateId+',\''+candidateElectionResults[i].candidateName+'\',\'candidate\','+candidateElectionResults[i].rank+','+candidateElectionResults[i].constituencyId+',\''+candidateElectionResults[i].constituencyName+'\',\''+results.partyLongName+'\')" title="Click to View/Add your comments"   href="javascript:{}">'+candidateElectionResults[i].userComments+'</A>',					
-						moreDetails:'<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}">More Details</A>',
+						moreDetails:'<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}">More Details</A>'
 						//otherResults: '<A onclick="showYearsDialog('+candidateElectionResults[i].constituencyId+','+electionTypeId+',\''+electionType+'\')" title="Click to View Detailed Results" href="javascript:{}">View Other Election Results</A>' 							
 					};
 				//partyElectionResultsObj.candidateResultsArr.push(obj);
