@@ -22,6 +22,7 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	private String commentCategory;
 	private String constituencyName;
 	private String partyName;
+	private Long rank;
 	
 	//getters and setters
 	public Long getCandidateId() {
@@ -71,6 +72,12 @@ public class CandidateCommentsVO implements java.io.Serializable{
 	}
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
+	}
+	public Long getRank() {
+		return rank;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
 	}
 	
 }
