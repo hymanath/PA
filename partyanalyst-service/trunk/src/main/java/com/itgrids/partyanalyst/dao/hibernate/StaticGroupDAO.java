@@ -27,7 +27,6 @@ public class StaticGroupDAO extends GenericDaoHibernate<StaticGroup, Long> imple
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<StaticGroup> findAllStaticGroups() {
 		return getHibernateTemplate().find("from StaticGroup model");
 	}
