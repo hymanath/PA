@@ -42,7 +42,7 @@ public class StaticGroupDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("static group id" +staticGroup.getStaticGroupId().toString());
 		}
 		assertEquals(1, result.size());
-	}*/
+	}
 	public void testGetAll(){
 		List<StaticGroup> list = staticGroupDAO.getAll();
 		System.out.println(list.size());
@@ -52,5 +52,14 @@ public class StaticGroupDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("static group id" +staticGroup.getStaticGroupId().toString());
 		}
 	//	assertEquals(1, list.size());
+	}*/
+	
+	public void testFindAllStaticGroups(){
+		List<StaticGroup> staticGroups = staticGroupDAO.findAllStaticGroups();
+		if(staticGroups != null && staticGroups.size() > 0){
+			for(StaticGroup result:staticGroups){
+			System.out.println("Static Groups :" + result.getGroupName());
+			}
+		}
 	}
 }
