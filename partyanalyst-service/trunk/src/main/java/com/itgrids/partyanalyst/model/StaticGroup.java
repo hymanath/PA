@@ -41,7 +41,7 @@ public class StaticGroup implements java.io.Serializable {
 	private Long staticGroupId;
 	private String groupName;
 	private String groupDescription;
-	private Set<PersonalUserGroup>personalUserGroup=new HashSet<PersonalUserGroup>(0);
+	private Set<PersonalUserGroup> personalUserGroup=new HashSet<PersonalUserGroup>(0);
 	private Date createdDate;
 	private Date updatedDate;
 	
