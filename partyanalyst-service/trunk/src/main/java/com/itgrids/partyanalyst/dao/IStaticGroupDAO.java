@@ -21,6 +21,6 @@ public interface IStaticGroupDAO extends GenericDao<StaticGroup, Long> {
 	@SuppressWarnings("unchecked")
 	public List findAllStaticGroupDetails();
 	
-	
+	public List<StaticGroup> findAllStaticGroups();
 	
 }
