@@ -360,7 +360,7 @@ public class UserGroupService implements IUserGroupService {
 	 * The results retrieved from this method is displayed in left navigation side of user groups home page 
 	 */
 	@SuppressWarnings("unchecked")
-	public List <GroupsDetailsForUserVO> subGrpsCountInSystemGrpsForUser(Long userId)
+	public List<GroupsDetailsForUserVO> subGrpsCountInSystemGrpsForUser(Long userId)
 	{
 		if(log.isDebugEnabled()){
 			log.debug("Entered in to subGrpsCountInSystemGrpsForUser Method");
@@ -368,15 +368,34 @@ public class UserGroupService implements IUserGroupService {
 		List subGroupsinSystemGroups = null;
 		List <GroupsDetailsForUserVO> systemGroupsDetailsForUserList = new ArrayList<GroupsDetailsForUserVO>(0);
 		subGroupsinSystemGroups = personalUserGroupDAO.findSubGroupsCountInSystemGroupsByUserId(userId);
+		List<Long> staticGroupsHavingSubgroups = new ArrayList<Long>();
 		
 		for(int i=0;i<subGroupsinSystemGroups.size();i++){
+			
 			GroupsDetailsForUserVO groupsDetailsForUser = new GroupsDetailsForUserVO();
 			Object[] parms = (Object[])subGroupsinSystemGroups.get(i);	
+			
+			staticGroupsHavingSubgroups.add((Long)parms[0]);
 			groupsDetailsForUser.setStaticGroupId(Long.parseLong(parms[0].toString()));
 			groupsDetailsForUser.setStaticGroupName(parms[1].toString());
 			groupsDetailsForUser.setNumberOfGroups(Long.parseLong(parms[2].toString()));
 			systemGroupsDetailsForUserList.add(groupsDetailsForUser);	
-		}		
+		}
+		
+		List<StaticGroup> staticGroups = staticGroupDAO.findAllStaticGroups();
+		
+		if(staticGroups!= null && staticGroups.size() > 0){
+			for(StaticGroup result:staticGroups){
+				if(staticGroupsHavingSubgroups.contains(result.getStaticGroupId()))
+					continue;
+				GroupsDetailsForUserVO groupsDetailsForUser = new GroupsDetailsForUserVO();
+				groupsDetailsForUser.setStaticGroupId(result.getStaticGroupId());
+				groupsDetailsForUser.setStaticGroupName(result.getGroupName());
+				groupsDetailsForUser.setNumberOfGroups(new Long(0));
+				
+				systemGroupsDetailsForUserList.add(groupsDetailsForUser);	
+			}
+		}
 		return systemGroupsDetailsForUserList;
 	}
 	/*
