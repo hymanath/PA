@@ -26,4 +26,10 @@ public class StaticGroupDAO extends GenericDaoHibernate<StaticGroup, Long> imple
 		return getHibernateTemplate().find("select model.staticGroupId from StaticGroup model");
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StaticGroup> findAllStaticGroups() {
+		return getHibernateTemplate().find("from StaticGroup model");
+	}
+
 }
