@@ -36,7 +36,7 @@ function showAnalysisDetails(jsObj,results)
 		contentStr += '		<td style="vertical-align:center;width:150px;"> - '+results[i].constituencyName+' </td>';
 		contentStr += '     <td style="vertical-align:center"> Constituency Analysis Details - No. Of Reasons '+results[i].candidateComments.length+'</td>';
 		contentStr += '		<td><input type="button" onclick="getMoreDetails('+results[i].constituencyId+')" value="View Complete Results"/></td>';
-		contentStr += '		<td><input type="button" onclick="showCommentsDialog('+candidateId+',\''+candidateName+'\',\'candidate\',\''+rank+'\','+constituencyId+',\''+constituencyName+'\',\''+partyName+'\')" value="Add Reason"/></td>';
+		contentStr += '		<td><input type="button" onclick="showCommentsDialog('+candidateId+',\''+candidateName+'\',\'candidate\',\''+rank+'\','+constituencyId+',\''+constituencyName+'\',\''+partyName+'\',\''+jsObj.task+'\',\''+jsObj.status+'\')" value="Add Reason"/></td>';
 		contentStr += '		</tr></table>';
 		contentStr += '</div>';
 		contentStr += '	<div id="'+results[i].constituencyName+'_body" class="yui-skin-sam constituencyAnalysisBodyDiv" style="display:none">';
@@ -89,7 +89,7 @@ function showNotAnalyzedDetails(jsObj,results)
 					votesPercentage: results[i].votesPercentage,
 					rank: '1',
 					completeResults: '<a href="javascript:{}" onclick="getMoreDetails('+results[i].constituencyId+')">  Complete Results</a>',
-					addReason : '<a href="javascript:{}" onclick="showCommentsDialog('+results[i].candidateId+',\''+results[i].candidateName+'\',\'candidate\',\''+results[i].rank+'\','+results[i].constituencyId+',\''+results[i].constituencyName+'\',\''+results[i].partyName+'\')">  Add Reason</a>'
+					addReason : '<a href="javascript:{}" onclick="showCommentsDialog('+results[i].candidateId+',\''+results[i].candidateName+'\',\'candidate\',\''+results[i].rank+'\','+results[i].constituencyId+',\''+results[i].constituencyName+'\',\''+results[i].partyName+'\',\''+jsObj.task+'\')">  Add Reason</a>'
 				};
 			//partyElectionResultsAnalysisObj.notAnalyzedCandidates.push(ob);
 			notAnalyzedCandidatesResults.push(ob);
@@ -103,7 +103,7 @@ function showNotAnalyzedDetails(jsObj,results)
 					votesPercentage: results[i].votesPercentage,
 					rank: results[i].rank,
 					completeResults: '<a href="javascript:{}" onclick="getMoreDetails('+results[i].constituencyId+')">  Complete Results</a>',
-					addReason : '<a href="javascript:{}" onclick="showCommentsDialog('+results[i].candidateId+',\''+results[i].candidateName+'\',\'candidate\',\''+results[i].rank+'\','+results[i].constituencyId+',\''+results[i].constituencyName+'\',\''+results[i].partyName+'\')">  Add Reason</a>'
+					addReason : '<a href="javascript:{}" onclick="showCommentsDialog('+results[i].candidateId+',\''+results[i].candidateName+'\',\'candidate\',\''+results[i].rank+'\','+results[i].constituencyId+',\''+results[i].constituencyName+'\',\''+results[i].partyName+'\',\''+jsObj.task+'\')">  Add Reason</a>'
 				};
 			//partyElectionResultsAnalysisObj.notAnalyzedCandidates.push(obj);
 			notAnalyzedCandidatesResults.push(obj);

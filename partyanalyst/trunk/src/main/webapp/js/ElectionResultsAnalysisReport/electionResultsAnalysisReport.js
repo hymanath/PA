@@ -11,6 +11,7 @@
 	var electionTypeId = '';
 	var partyName = '';
 	var partyId = '';
+	var stateId = '';
 	
 
 function buildPageLayout()
@@ -115,7 +116,7 @@ function removeSelectElements(elmt)
 	}	
 }
 
-function showBasicAnalysisDetails(results,tools)
+function showBasicAnalysisDetails(jsObj,results,tools)
 {	
 	stateName = results.stateName;
 	electionId = results.electionId;	
@@ -124,6 +125,8 @@ function showBasicAnalysisDetails(results,tools)
 	electionTypeId = results.electionTypeId;
 	partyName = results.partyName;
 	partyId = results.partyId;	
+	stateId = jsObj.stateId;
+
 	var basicDetailsDivEl = document.getElementById("basicDetails");
 	var tablerDetailsEl = document.getElementById("tablerDetails");
 	var alliancePartiesBasicDetails = results.alliancPartiesBasicAnalysisVO;
@@ -522,7 +525,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 			contentStr+='</TR>';
 			contentStr+='</TABLE>';	
 		contentStr+='</div>';
-		contentStr+='<div class="analysisCategoryBody" style="height:120px;">';
+		contentStr+='<div class="analysisCategoryBody" style="height:180px;">';
 		contentStr+='<TABLE class="wonLostPosTable">';
 		contentStr+='<TR>';
 		contentStr+='<TD style="width:50%">Seats Lost</TD>';
@@ -551,7 +554,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 			contentStr+='</TR>';
 			contentStr+='</TABLE>';
 		contentStr+='</div>';
-	contentStr+='	<div id="lostPositionAnalysis_multipleReasons_body" class="analysisCategoryBody" style="height:120px;">';
+	contentStr+='	<div id="lostPositionAnalysis_multipleReasons_body" class="analysisCategoryBody" style="height:180px;">';
 	contentStr+='	<TABLE  cellpadding="0" cellspacing="0" width="95%"  class="multipleClassificationsTable">';
 	contentStr+='	<TR>';
 	contentStr+='		<TH width="30%" style="background-color:#DFE2E5">Analysis Reasons</TH>';
@@ -586,7 +589,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 			contentStr+='</TR>';
 			contentStr+='</TABLE>';	
 		contentStr+='</div>';
-		contentStr+='	<div id="lostPositionAnalysis_reasonsAnalysis_body" class="analysisCategoryBody" style="height:200px;">';	
+		contentStr+='	<div id="lostPositionAnalysis_reasonsAnalysis_body" class="analysisCategoryBody" style="height:280px;">';	
 		contentStr+='<table width="95%" class="reasonsAnalysis">';
 		for(var i in results.analysisCategoryBasicResultVO)
 		{
@@ -612,7 +615,7 @@ function showAnalysisDetailsInPartyLostPositions(results)
 		contentStr+='</TR>';
 		contentStr+='</TABLE>';	
 	contentStr+='	</div>';
-	contentStr+='	<div id="lostPositionAnalysis_votesMargin_body" class="analysisCategoryBody" style="height:200px;"></div>';
+	contentStr+='	<div id="lostPositionAnalysis_votesMargin_body" class="analysisCategoryBody" style="height:280px;"></div>';
 	contentStr+='</div>';
 	contentStr+='</td>';
 	contentStr+='</tr>';
@@ -662,7 +665,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='			</TR>';
 		contentStr+='			</TABLE>';	
 		contentStr+='			</div>';
-		contentStr+='			<div id="wonPositionAnalysis_BasicData_body" class="analysisCategoryBody" style="height:120px;">';
+		contentStr+='			<div id="wonPositionAnalysis_BasicData_body" class="analysisCategoryBody" style="height:180px;">';
 		contentStr+='				<TABLE class="wonLostPosTable" width="95%">';
 		contentStr+='				<TR>';
 		contentStr+='					<TD style="width:50%">Seats Won</TD>';
@@ -692,7 +695,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='			</TR>';
 		contentStr+='			</TABLE>';	
 		contentStr+='			</div>';
-		contentStr+='			<div id="wonPositionAnalysis_multipleReasons_body" class="analysisCategoryBody" style="height:120px;">';
+		contentStr+='			<div id="wonPositionAnalysis_multipleReasons_body" class="analysisCategoryBody" style="height:180px;">';
 		contentStr+='				<TABLE  cellpadding="0" cellspacing="0" width="95%"  class="multipleClassificationsTable">';
 		contentStr+='				<TR>';
 		contentStr+='				<TH width="30%" style="background-color:#DFE2E5">Analysis Reasons</TH>';
@@ -728,7 +731,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 			contentStr+='				</TR>';
 			contentStr+='				</TABLE>';	
 			contentStr+='			</div>';
-			contentStr+='			<div id="wonPositionAnalysis_reasonsAnalysis_body" class="analysisCategoryBody" style="height:200px;">';
+			contentStr+='			<div id="wonPositionAnalysis_reasonsAnalysis_body" class="analysisCategoryBody" style="height:280px;">';
 			contentStr+='			<TABLE class="wonLostPosTable" width="95%">';
 			for(var i in results.analysisCategoryBasicResultVO)
 			{    
@@ -755,7 +758,7 @@ function showAnalysisDetailsInPartyWonPositions(results)
 		contentStr+='			</TR>';
 		contentStr+='			</TABLE>';
 		contentStr+='			</div>';
-		contentStr+='			<div id="wonPositionAnalysis_votesMargin_body" class="analysisCategoryBody" style="height:200px;">';
+		contentStr+='			<div id="wonPositionAnalysis_votesMargin_body" class="analysisCategoryBody" style="height:280px;">';
 		contentStr+='			</div>';
 		contentStr+='		</div>';
 		contentStr+='	</td>';

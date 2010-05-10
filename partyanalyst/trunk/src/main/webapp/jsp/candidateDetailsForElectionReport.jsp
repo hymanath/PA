@@ -475,7 +475,7 @@ function showCandidates(results,jsObj)
 					electionType: candidateDetails[i].electionType,
 					electionYear: candidateDetails[i].electionYear,
 					moreDetails: '<A href="javascript:{}" title="Click To View Detailed Election Results" onclick="getMoreDetails('+candidateDetails[i].constituencyId+',\''+candidateDetails[i].electionType+'\','+candidateDetails[i].electionYear+')">More Details</A>',					
-					comments: '<A href="javascript:{}" title="Click To View/Add Reasons" onclick="showCommentsDialog(\''+candidateDetails[i].candidateId+'\',\''+candidateDetails[i].candidateName+'\',\'candidate\',\''+candidateDetails[i].rank+'\',\''+candidateDetails[i].constituencyId+'\',\''+candidateDetails[i].constituencyName+'\',\''+candidateDetails[i].partyName+'\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>',
+					comments: '<A href="javascript:{}" title="Click To View/Add Reasons" onclick="showCommentsDialog(\''+candidateDetails[i].candidateId+'\',\''+candidateDetails[i].candidateName+'\',\'candidate\',\''+candidateDetails[i].rank+'\',\''+candidateDetails[i].constituencyId+'\',\''+candidateDetails[i].constituencyName+'\',\''+candidateDetails[i].partyName+'\',\''+jsObj.task+'\',\'0\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>',
 					commentsCount: candidateDetails[i].commentsCount+" Reasons"
 			};
 			assignTocandidateDetailsArr.push(candidateDetailsObj1);		
@@ -644,7 +644,7 @@ function handleAddCommentsSubmit(id,category,constituencyId)
 	
 }
 
-function handleAddCommentsCancel()
+function handleAddCommentsCancel(task,status)
 {
 	allCandidates();
 	addCommentsDialog.hide();

@@ -88,7 +88,7 @@ function callAjax(param,jsObj,url){
 									var elmt = document.getElementById("electionPageAjaxImgDiv");
 									if(elmt)
 										elmt.style.display = 'none';
-									showBasicAnalysisDetails(myResults,"toolsTrue");
+									showBasicAnalysisDetails(jsObj,myResults,"toolsTrue");
 								}
 								else if(jsObj.task == "getAnalysisDetailsInPartyLostPositions")
 								{
@@ -198,6 +198,11 @@ function getBasicAnalysisDetails(id)
 	var electionYear = electionYearsEl.options[electionYearsEl.selectedIndex].text;	
 	var electionTypeId = electionTypesEl.options[electionTypesEl.selectedIndex].value;	
 	
+	ajaxCallForBasicAnalysisDetails(electionYear,stateId,electionType,electionTypeId,id);
+}
+
+function ajaxCallForBasicAnalysisDetails(electionYear,stateId,electionType,electionTypeId,id)
+{
 	var jsObj= 
 	{
 	 	electionYear: electionYear,
@@ -212,9 +217,12 @@ function getBasicAnalysisDetails(id)
 	var url = "<%=request.getContextPath()%>/electionResultsAnalysisAjaxAction.action?"+param;
 	callAjax(param,jsObj,url);
 }
+
 function openPartyElectionResultsWindow(electionId,partyId,rank,partyName,electionType,stateName,electionYear,electionTypeId)
 { 
-var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&partyId="+partyId+"&rank="+rank+"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&windowTask=partyElectionResultsAnalysisPopup";
+	
+var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&partyId="+partyId+"&rank="+rank+"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&windowTask=partyElectionResultsPopup";
+
 	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1300,left=200,top=200");
 	
 	browser1.focus();
@@ -225,7 +233,7 @@ function openPartyElectionResultsAnalysisWindow(electionId, partyId,status,party
 	var stateId =stateSelectEl.value;	
 
 	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
-	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear;
+	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&windowTask=partyElectionResultsAnalysisPopup";
 	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	
 	browser2.focus();	

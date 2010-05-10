@@ -98,7 +98,7 @@ function callAjax(param,jsObj,url){
 						try {												
 								if(o.responseText)
 									myResults = YAHOO.lang.JSON.parse(o.responseText);
-								
+
 								var imgElmt = document.getElementById("barloaderGif");
 
 								if(imgElmt.style.display == "block")
@@ -106,7 +106,7 @@ function callAjax(param,jsObj,url){
 								else if(imgElmt.style.display == "none")
 									imgElmt.style.display == "block"
 
-								if(jsObj.task == "getCandidateComments")
+								if(jsObj.task == "getCandidateComments" || jsObj.task == "getMainPartyCandidateComments")
 								{
 									if(jsObj.status == "analyzed")
 									{										
@@ -200,9 +200,9 @@ function getMainPartyComments()
 		status:status,
 		stateId:stateId,
 		position:position,
-		task:"getCandidateComments"		
+		task:"getMainPartyCandidateComments"		
 	}
-	
+		
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 	incrementHidden();
 
@@ -379,11 +379,23 @@ function getCommentsClassifications(rank)
 		
 	}
 
-	function handleAddCommentsCancel()
+	function handleAddCommentsCancel(task,status)
 	{
-		getCandidateComments();
-		addCommentsDialog.hide();
+		var openerDoc = window.opener;		
 
+		if(task == "getMainPartyCandidateComments")
+			getMainPartyComments();
+		else if(task == "getCandidateComments")
+			getCandidateComments();
+		else if(task == "getMainPartyCategoryComments")
+			getMainPartyCategoryComments();
+		else if(task == "getAnalyzedConstituencyStatusAnalysisForVotesMarginWindow")
+			getMarginCountAnalysisForAnalyzedConstituencies('${clickIndex}','${resultStatus}');
+		else if(task == "getConstituencyStatusAnalysisCategoryForVotesMarginWindow")
+			getMainPartyMarginCountAnalyzedCategoryResults('${clickIndex}','${resultStatus}','${categoryId}');
+
+		addCommentsDialog.hide();
+		openerDoc.ajaxCallForBasicAnalysisDetails(openerDoc.electionYear,openerDoc.stateId,openerDoc.electionType,openerDoc.electionTypeId,openerDoc.partyId);
 	}
 													
 	function getMarginCountAnalysisForAnalyzedConstituencies(index,resultStatus)
@@ -471,8 +483,9 @@ function getCommentsClassifications(rank)
 	
 <SCRIPT type="text/javascript"> 
 
-	if('${position}' == "")
+	if('${windowTask}' == "partyElectionResultsAnalysisPopup")
 	{	
+		
 		getCandidateComments();
 	}
 	else if('${windowTask}' == "mainPartyResultsAnalysisPopup")

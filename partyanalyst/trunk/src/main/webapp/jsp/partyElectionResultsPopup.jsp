@@ -49,7 +49,7 @@ function callAjax(param,jsObj,url){
 
 								if(jsObj.task == "getConstituencyResults")
 								{								
-									showConstituencyResults(myResults);
+									showConstituencyResults(jsObj,myResults);
 								}
 								if(jsObj.task == "getCommentsClassificationsList")
 								{
@@ -69,7 +69,7 @@ function callAjax(param,jsObj,url){
 								}
 								if(jsObj.task == "getConstituencyStatusAnalysisForVotesMarginWindow")
 								{
-									showConstituencyResults(myResults);
+									showConstituencyResults(jsObj,myResults);
 								}
 						}
 						catch (e) {   
@@ -145,8 +145,8 @@ function callAjax(param,jsObj,url){
 		candidateResultsArr:[]
 	};
 	var candidateElectionResultsDataTable,selectYearDialog;
-	function showConstituencyResults(results)
-	{
+	function showConstituencyResults(jsObj,results)
+	{		
 		var candidateElectionResults = results.candidateElectionResultsVO;
 		var constituencyResultsArray = new Array();
 		var showConstituencyResultsEl = document.getElementById("showConstituencyResults");
@@ -172,7 +172,7 @@ function callAjax(param,jsObj,url){
 						totalVotesEarned: candidateElectionResults[i].totalVotesEarned,
 						votesPercentage: candidateElectionResults[i].votesPercentage,
 						rank: '1',						
-						comments: '<A onclick="showCommentsDialog('+candidateElectionResults[i].candidateId+',\''+candidateElectionResults[i].candidateName+'\',\'candidate\',1,'+candidateElectionResults[i].constituencyId+',\''+candidateElectionResults[i].constituencyName+'\',\''+results.partyLongName+'\')" title="Click to View/Add your comments"   href="javascript:{}">'+candidateElectionResults[i].userComments+'</A>',
+						comments: '<A onclick="showCommentsDialog('+candidateElectionResults[i].candidateId+',\''+candidateElectionResults[i].candidateName+'\',\'candidate\',1,'+candidateElectionResults[i].constituencyId+',\''+candidateElectionResults[i].constituencyName+'\',\''+results.partyLongName+'\',\''+jsObj.task+'\')" title="Click to View/Add your comments"   href="javascript:{}">'+candidateElectionResults[i].userComments+'</A>',
 						moreDetails: '<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}">More Details</A>'
 						//otherResults: '<A onclick="showYearsDialog('+candidateElectionResults[i].constituencyId+','+electionTypeId+',\''+electionType+'\')" title="Click to View Detailed Results" href="javascript:{}">View Other Election Results</A>' 						
 					};
@@ -187,7 +187,7 @@ function callAjax(param,jsObj,url){
 						totalVotesEarned: candidateElectionResults[i].totalVotesEarned,
 						votesPercentage: candidateElectionResults[i].votesPercentage,
 						rank: candidateElectionResults[i].rank,						
-						comments: '<A onclick="showCommentsDialog('+candidateElectionResults[i].candidateId+',\''+candidateElectionResults[i].candidateName+'\',\'candidate\','+candidateElectionResults[i].rank+','+candidateElectionResults[i].constituencyId+',\''+candidateElectionResults[i].constituencyName+'\',\''+results.partyLongName+'\')" title="Click to View/Add your comments"   href="javascript:{}">'+candidateElectionResults[i].userComments+'</A>',					
+						comments: '<A onclick="showCommentsDialog('+candidateElectionResults[i].candidateId+',\''+candidateElectionResults[i].candidateName+'\',\'candidate\','+candidateElectionResults[i].rank+','+candidateElectionResults[i].constituencyId+',\''+candidateElectionResults[i].constituencyName+'\',\''+results.partyLongName+'\',\''+jsObj.task+'\')" title="Click to View/Add your comments"   href="javascript:{}">'+candidateElectionResults[i].userComments+'</A>',			
 						moreDetails:'<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}">More Details</A>'
 						//otherResults: '<A onclick="showYearsDialog('+candidateElectionResults[i].constituencyId+','+electionTypeId+',\''+electionType+'\')" title="Click to View Detailed Results" href="javascript:{}">View Other Election Results</A>' 							
 					};
@@ -530,11 +530,15 @@ function callAjax(param,jsObj,url){
 		var url = "<%=request.getContextPath()%>/electionYearsDialogAjaxAction.action?"+param;
 		callAjax(param,jsObj,url);
 	}
-	function handleAddCommentsCancel()
+	function handleAddCommentsCancel(task,status)
 	{
-		getConstituencyResults();
-		addCommentsDialog.hide();
+		if(task == "getConstituencyStatusAnalysisForVotesMarginWindow")
+			getMainPartyMarginCountAnalysis('${clickIndex}','${resultStatus}');
+		else if(task == "getConstituencyResults")
+			getConstituencyResults();
 
+		addCommentsDialog.hide();
+		openerDoc.ajaxCallForBasicAnalysisDetails(openerDoc.electionYear,openerDoc.stateId,openerDoc.electionType,openerDoc.electionTypeId,openerDoc.partyId);
 	}
 	function populateYearSelectionBox(results)
 	{
@@ -580,7 +584,7 @@ function callAjax(param,jsObj,url){
 	}
 
 	function getMainPartyMarginCountAnalysis(index,resultStatus)
-	{
+	{		
 		var parent = window.opener;
 		var nominationIds1 = new Array();
 		
@@ -606,7 +610,7 @@ function callAjax(param,jsObj,url){
 	}
 	
 
-	if('${windowTask}' == "partyElectionResultsAnalysisPopup")
+	if('${windowTask}' == "partyElectionResultsPopup")
 	{
 		getConstituencyResults();
 	}

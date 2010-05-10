@@ -1,7 +1,7 @@
 var addCommentsDialog;
 
-function showCommentsDialog(id,candidateName,category, rank,constituencyId,constituencyName,partyName)
-{
+function showCommentsDialog(id,candidateName,category, rank,constituencyId,constituencyName,partyName,task,status)
+{	
 	var elmt = document.getElementById('commentsDialogDiv');
 	var divChild = document.createElement('div');
 	divChild.setAttribute('id','addCommentDiv');
@@ -42,7 +42,7 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
 	contentStr+='</DIV>';
 	contentStr+='</FIELDSET>';	
 	contentStr+='<DIV style="text-align:right;"><INPUT type="button" class="button" id="addCommentsButton" style="width:50px;" onclick="handleAddCommentsSubmit('+id+',\''+category+'\','+constituencyId+')" value="Save"/>';
-	contentStr+='<INPUT type="button" id="addCommentsButton" style="width:50px;" class="button" onclick="handleAddCommentsCancel()" value="Exit"/></DIV>';
+	contentStr+='<INPUT type="button" id="addCommentsButton" style="width:50px;" class="button" onclick="handleAddCommentsCancel(\''+task+'\',\''+status+'\')" value="Exit"/></DIV>';
 	contentStr+='</div>';
 	contentStr+='</div>';
 	divChild.innerHTML=contentStr;
@@ -66,9 +66,8 @@ function showCommentsDialog(id,candidateName,category, rank,constituencyId,const
              } ); 
 	addCommentsDialog.render();
 	//setFocus();
-	var commentsEl = document.getElementById("commentText").focus();
+	var commentsEl = document.getElementById("commentText").focus();	
 	
-	//showExistingComments('+id+',\''+category+'\','+constituencyId+');
 }
 function buildCommentsClassificationsOptions(results)
 {
