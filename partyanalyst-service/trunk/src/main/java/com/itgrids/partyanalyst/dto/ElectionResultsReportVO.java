@@ -24,7 +24,9 @@ public class ElectionResultsReportVO implements Serializable {
 	private String stateLevelLineChartWithoutAllianc;
 	private String statewiseResultsLineChartName;
 	private String districtWiseElecResultsChartName;
+	private String districtWiseElecDetailedResultsChartName;
 	private String partyResultsDistrictLevelChartWithoutAllianc;
+	private String partyResultsDistrictLevelDetailedResultsChartWithoutAllianc;
 	private ResultStatus resultStatus;
 	
 	private List<SelectOptionVO> partiDistList;
@@ -142,6 +144,24 @@ public class ElectionResultsReportVO implements Serializable {
 
 	public void setPartiPartiesList(List<SelectOptionVO> partiPartiesList) {
 		this.partiPartiesList = partiPartiesList;
+	}
+
+	public String getDistrictWiseElecDetailedResultsChartName() {
+		return districtWiseElecDetailedResultsChartName;
+	}
+
+	public void setDistrictWiseElecDetailedResultsChartName(
+			String districtWiseElecDetailedResultsChartName) {
+		this.districtWiseElecDetailedResultsChartName = districtWiseElecDetailedResultsChartName;
+	}
+
+	public String getPartyResultsDistrictLevelDetailedResultsChartWithoutAllianc() {
+		return partyResultsDistrictLevelDetailedResultsChartWithoutAllianc;
+	}
+
+	public void setPartyResultsDistrictLevelDetailedResultsChartWithoutAllianc(
+			String partyResultsDistrictLevelDetailedResultsChartWithoutAllianc) {
+		this.partyResultsDistrictLevelDetailedResultsChartWithoutAllianc = partyResultsDistrictLevelDetailedResultsChartWithoutAllianc;
 	}
 	
 	
