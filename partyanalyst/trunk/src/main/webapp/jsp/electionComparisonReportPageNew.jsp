@@ -52,6 +52,8 @@
 
 
 <style type="text/css">
+
+	
 	
 	.yui-overlay, .yui-panel-container
 	{
@@ -128,7 +130,9 @@
 		color:highlight;
 		font-size:18px;
 		font-family:verdana;
-		font-weight:bold;
+		font-weight:bold;		
+		background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+		padding:4px;
 	}
 	
 	#tdThr .yui-skin-sam .yui-panel .hd 
@@ -289,6 +293,36 @@
 	.redColorClass{
 		color:red;
 	}
+	
+	.panelOuterDiv
+	{
+		border:1px solid #808080;
+		margin-top:10px;
+	}
+
+	.resultsHeadClass
+	{
+		background:url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat-x scroll 0 -200px transparent;
+		color:highlight;
+		font-size:12px;
+		font-weight:bold;
+		text-align:left;
+		padding:5px;
+	}
+	
+	.resultBodyClass
+	{
+		background-color:floralWhite;
+		color:DarkGreen;
+		font-size:13px;
+		padding:10px;
+	}
+	
+	.resultFooterClass
+	{
+		background-color:#F2F2F2;
+		padding:5px 10px;
+	}
 </style>
 <script type="text/javascript">	
 
@@ -388,12 +422,19 @@ function buildDataForYearTwo()
 
 function buildPanel(id,arr,year)
 {
+		var elmt = document.getElementById(id);
+
+		if(!elmt)
+			return;
+
 	   var lyear='';
 	   lyear="Party Results In ";
 	   lyear+='';
 	   lyear+=year;
-
+	
 	   var str='';
+	   str+='<div id="'+id+'_electionResults_head" class="resultsHeadClass"> '+lyear+' </div>';
+	   str+='<div id="'+id+'_electionResults_body" class="resultBodyClass">';
 	   str+='<table class="partyElecResultTable">';
 	   str+='<tr>';
 	   str+='<th>';
@@ -423,14 +464,18 @@ function buildPanel(id,arr,year)
        }
 	   //str+='</tr>';
 	   str+='</table>';
-
-	   var footer = '';
-	   footer+='<table>';
-       footer+='<tr>';
-	   footer+='<td><input type="button" name="'+id+'_compbutton" value="Compared Results" onclick="getComparedResults(\''+id+'\')"/></td>';
-	   footer+='</tr>';
-	   footer+='</table>';
-	   myPanel = new YAHOO.widget.Panel(id, { 
+	   str+='</div>';
+	   str+='<div id="'+id+'_electionResults_footer" class="resultFooterClass">';
+	   str+='<table>';
+       str+='<tr>';
+	   str+='<td><input type="button" name="'+id+'_compbutton" value="Compared Results" onclick="getComparedResults(\''+id+'\')"/></td>';
+	   str+='</tr>';
+	   str+='</table>';
+	   str+='</div>';
+	   str+='</div>';
+		
+		elmt.innerHTML = str;
+	   /*myPanel = new YAHOO.widget.Panel(id, { 
 				 fixedcenter: false, 
                  constraintoviewport: false, 
                  underlay: "none", 
@@ -441,8 +486,7 @@ function buildPanel(id,arr,year)
 	   myPanel.setHeader(lyear);
        myPanel.setBody(str);
 	   myPanel.setFooter(footer);
-       myPanel.render();
-
+       myPanel.render();*/
 }
 
 function buildPartyElecResultsTable(radioBtnId)
@@ -621,7 +665,14 @@ function displayLabel(year,district)
 
 function overallResultsForYearOne()
 {
+	var elmt = document.getElementById("overallResultsYearOnePanel");	
+	if(!elmt)
+		return;
+
+
    var str='';
+   str+='<div id="yearOneResults_head" class="resultsHeadClass">Complete Results for Year '+electionObject.yearOne+' ...</div>';
+   str+='<div class="resultBodyClass">';
    str+='<table class="partyElecResultTable" style="width:100%;">';
    str+='<tr>';
    str+='<th>Party</th>';
@@ -649,8 +700,11 @@ function overallResultsForYearOne()
    str+='</tr>';
    </c:forEach>
    str+='</table>';
-
-   myPanel = new YAHOO.widget.Panel("overallResultsYearOnePanel", {
+   str+='</div>';
+   str+='</div>';	
+	
+   elmt.innerHTML = str;
+ /*  myPanel = new YAHOO.widget.Panel("overallResultsYearOnePanel", {
                  width: "400", 
                  fixedcenter: false, 
                  constraintoviewport: false, 
@@ -661,13 +715,19 @@ function overallResultsForYearOne()
    });
    myPanel.setHeader("Complete Results for Year "+electionObject.yearOne+" ...");
    myPanel.setBody(str);
-   myPanel.render();
+   myPanel.render();*/
 }
 
 
 function overallResultsForYearTwo()
 {
+	var elmt = document.getElementById("overallResultsYearTwoPanel");	
+	if(!elmt)
+		return;
+
    var str='';
+   str+='<div id="yearTwoResults_head" class="resultsHeadClass">Complete Results for Year '+electionObject.yearTwo+' ...</div>';
+   str+='<div class="resultBodyClass">';
    str+='<table class="partyElecResultTable" style="width:100%;">';
    str+='<tr>';
    str+='<th>Party</th>';
@@ -695,8 +755,12 @@ function overallResultsForYearTwo()
    str+='</tr>';
    </c:forEach>
    str+='</table>';
+   str+='</div>';
+   str+='</div>';	
 
-  
+   elmt.innerHTML = str;
+
+  /*
    myPanel = new YAHOO.widget.Panel("overallResultsYearTwoPanel", {
                  width: "400", 
                  fixedcenter: false, 
@@ -708,24 +772,31 @@ function overallResultsForYearTwo()
    });
    myPanel.setHeader("Complete Results for Year "+electionObject.yearTwo+" ...");
    myPanel.setBody(str);
-   myPanel.render();
+   myPanel.render();*/
 }
 
 function getDiffPercent()
 {
+	var elmt = document.getElementById("diffPercentPanel");	
+	if(!elmt)
+		return;
+
     var diffPercent = '${electionComparisonReportVO.votesPercentDiff}';
 	var str = '';
+	str+='<div class="resultBodyClass">';
 	str+='<table>';
 	str+='<tr>';
-	str+='<td>Complete Votes Percent Difference (  '+electionObject.yearOne+'  --  '+electionObject.yearTwo+'  )  :   </td>';
+	str+='<th>Complete Votes Percent Difference (  '+electionObject.yearOne+'  --  '+electionObject.yearTwo+'  )  :   </th>';
 	if(diffPercent > 0)
 	str+='<td style="color:green;font-size:15px;">'+diffPercent+' % increase</td>';
 	if(diffPercent < 0)
     str+='<td style="color:red;font-size:15px;">'+diffPercent+' % decrease</td>';
     str+='</tr>';
     str+='</table>';
-    
-	myPanel = new YAHOO.widget.Panel("diffPercentPanel", {
+	str+='</div>';
+
+	elmt.innerHTML = str;
+	/*myPanel = new YAHOO.widget.Panel("diffPercentPanel", {
                  width: "400", 
                  fixedcenter: false, 
                  constraintoviewport: false, 
@@ -736,7 +807,7 @@ function getDiffPercent()
    });
    //myPanel.setBody("Complete Voting Percent Difference (  "+electionObject.yearOne+"  --  "+electionObject.yearTwo+"  )  :   " +diffPercent );
    myPanel.setBody(str);
-   myPanel.render();
+   myPanel.render();*/
 }
 
 function getCompleteConstituencyElecResult(constiId,partyId)
@@ -987,7 +1058,7 @@ function showElectionResultsInPopup(data)
 	str+='</fieldset>';
 	
 	
-	candidateElectionResultPanel = new YAHOO.widget.Panel("cand_elec_div_panel", 
+	var candidateElectionResultPanel = new YAHOO.widget.Panel("cand_elec_div_panel", 
 				{
 					width:"800px", 
 					fixedcenter : true, 
@@ -1000,10 +1071,10 @@ function showElectionResultsInPopup(data)
 					close:true
 				} ); 
 	
-
-	candidateElectionResultPanel.render();
+	
 	candidateElectionResultPanel.setHeader(data.electionYear+' '+data.electionType+' Election Details');
 	candidateElectionResultPanel.setBody(str);
+	candidateElectionResultPanel.render();	
 
 	 var myDataSource = new YAHOO.util.DataSource(data.oppositionCandidates); 
 	 myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
@@ -1390,12 +1461,12 @@ function displayComparedResults(jsObj,data)
 	str+='</div>';
 	str+='</div>';
 
-	candidateElectionResultPanel = new YAHOO.widget.Panel("comparedResultsPanel", 
+	var comparedElectionResultPanel = new YAHOO.widget.Panel("comparedResultsPanel", 
 				{ 
-					width:"1000px",
-					fixedcenter : false, 
+					width:"1000",
+					fixedcenter : true, 
 					visible : true,  
-					constraintoviewport : false,
+					constraintoviewport : true,
 					x:50,
 					y:300,
 					iframe :true,
@@ -1405,10 +1476,11 @@ function displayComparedResults(jsObj,data)
 					close:true
 				} ); 
 	
-
-	candidateElectionResultPanel.render();
-	candidateElectionResultPanel.setHeader('Compared Results');
-	candidateElectionResultPanel.setBody(str);
+	
+	comparedElectionResultPanel.setHeader('Compared Results');
+	comparedElectionResultPanel.setBody(str);
+	comparedElectionResultPanel.render();
+	
 
 	buildDataTable("votesPercentageIncDiv",data.votesPercentGainedResults,data.yearOne,data.yearTwo);
 	buildDataTable("votesPercentageDecDiv",data.votesPercentLostResults,data.yearOne,data.yearTwo);
@@ -1473,8 +1545,16 @@ function buildYearDataTable(divId,data)
 
 </script>
 </head>
-<body >
-<div id="mainHeadingDiv"> Election Comparison Report </div>
+<body>
+
+<table cellspacing="0" cellpadding="0" border="0" style="margin-top:30px;">
+	<tbody><tr>
+		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>
+		<td valign="top"><div id="mainHeadingDiv">Election Comparison Report</div></td>
+		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>
+	</tr>
+</tbody></table>
+
 <br/><br/>
 <div>
 <div id = "partyPositions" class="yui-skin-sam">
@@ -1494,16 +1574,16 @@ function buildYearDataTable(divId,data)
 <div id="imageYearOneId" align="center" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/barloader.gif" /></img>
 </div>
 
-<table>
+<table style="margin-left:60px;">
 <tr>
      <td id="tdTwo">
 	     <div id="overallResultsYearTwoDiv" class="yui-skin-sam" style="margin-top:10px">
-		     <div id="overallResultsYearTwoPanel"></div>
+		     <div id="overallResultsYearTwoPanel" class="panelOuterDiv"></div>
 		 </div>
 	 </td>
 	
 	  <td rowspan="2">
-	     <div id="mainGraphDiv" class="yui-skin-sam" style="margin-left:20px">
+	     <div id="mainGraphDiv" class="yui-skin-sam" style="margin-left:35px">
 		     <div id="graphDiv">
 			  <IMG id="chartImg" SRC="charts/<%=request.getAttribute("barChartName")%>" WIDTH="350" HEIGHT="300">
 			 </div>
@@ -1513,7 +1593,7 @@ function buildYearDataTable(divId,data)
 <tr>
 	<td id="tdOne">
 	     <div id="overallResultsYearOneDiv" class="yui-skin-sam">
-		     <div id="overallResultsYearOnePanel"></div>
+		     <div id="overallResultsYearOnePanel" class="panelOuterDiv"></div>
 		 </div>
 	 </td>
     
@@ -1521,7 +1601,7 @@ function buildYearDataTable(divId,data)
 <tr>
 	<td id="tdThr">
 	     <div id="diffPercentDiv" class="yui-skin-sam">
-		     <div id="diffPercentPanel"></div>
+		     <div id="diffPercentPanel" class="panelOuterDiv"></div>
 		 </div>
 	 </td>
 </tr>
@@ -1541,12 +1621,12 @@ function buildYearDataTable(divId,data)
  <tr>
 	  <td id="yearOnePanel">
 		  <div id="panelForYearOne" class="yui-skin-sam">
-				<div id="firstpanel"></div>
+				<div id="firstpanel" class="panelOuterDiv"></div>
 			</div>
 	  </td>	   
 	  <td id="yearTwoPanel">
 			<div id="panelForYearTwo" class="yui-skin-sam">	
-				<div id="secondpanel"></div>
+				<div id="secondpanel" class="panelOuterDiv"></div>
 			</div>
 	  </td>
  </tr>
