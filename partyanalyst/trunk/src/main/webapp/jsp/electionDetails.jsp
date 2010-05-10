@@ -113,12 +113,42 @@ function callAjax(param,jsObj,url){
 function showDistrictWiseResultsLineGraph(results)
 {
 	var chartName = results.districtWiseElecResultsChartName;
+	var detailedResultsChart = results.districtWiseElecDetailedResultsChartName;
 	var districtWiseGraphEl = document.getElementById("districtWiseGraph");
 
 	var contentStr = '';
 	contentStr+='<IMG src="charts/'+chartName+'" style="margin-left:10px;"></IMG>';
 	districtWiseGraphEl.innerHTML = contentStr;	
+
+	var districtWiseDetailedGraphE1 = document.getElementById("detailedGraph"); 
+    var contentStr1 = '';
+	contentStr1+='<a href="javascript:{}" class="viewChartsForResults" title="Click to view Detailed Results Chart" onclick="showDetailedResultsChart(\''+detailedResultsChart+'\')">View Detailed Results Chart</a>';	
+	districtWiseDetailedGraphE1.innerHTML = contentStr1;
+
 }
+
+function showDetailedResultsChart(chartName){
+   
+   var contentStr ='<div id="detailedResultsChart_main">';
+	contentStr +='<div id="detailedResultsChart_graph"><IMG src="charts/'+chartName+'"></IMG></div>';
+	contentStr +='</div>';
+
+	 var myPanel = new YAHOO.widget.Dialog("detailedResultsPanel", {
+                 
+                 width : "950px", 
+                 fixedcenter : true, 
+                 visible : true,  
+                 constraintoviewport : true, 
+        		 iframe :true,
+        		 modal :true,
+        		 hideaftersubmit:true,
+        		 close:true
+       });
+	   myPanel.setHeader("Detailed Election Results Chart");
+       myPanel.setBody(contentStr);
+       myPanel.render();
+}
+
 
 function getElctionsBasicInfo(electionType){
 	var jsObj= 
@@ -658,7 +688,7 @@ function buildAllDistrictResultsDataTable(results)
 	if(electionResultsObj.allianceGroupNamesArray.length > 0 )
 	{
 		str += '<div style="margin-top:10px;margin-bottom:10px;">';
-		str += '<a href="javascript:{}" class="viewChartsForResults" onclick="showDistrictWisePartyResultsWithoutAlliance(\''+results.partyResultsDistrictLevelChartWithoutAllianc+'\')">';
+		str += '<a href="javascript:{}" class="viewChartsForResults" onclick="showDistrictWisePartyResultsWithoutAlliance(\''+results.partyResultsDistrictLevelChartWithoutAllianc+'\',\''+results.partyResultsDistrictLevelDetailedResultsChartWithoutAllianc+'\')">';
 		str += 'View Party Results Without Alliance';
 		str += '</a></div>';
 	}	
@@ -666,12 +696,13 @@ function buildAllDistrictResultsDataTable(results)
 	elmt.innerHTML = str;
 }
 
-function showDistrictWisePartyResultsWithoutAlliance(chartId)
+function showDistrictWisePartyResultsWithoutAlliance(chartId,detailedResultsChart)
 {
 	//partywiseResultsWithoutAlliance
 
 	var contentStr ='<div id="districtWiseWithoutAllianceDiv_main" style="height:500px;overflow-y:auto">';
-	contentStr +='<div id="districtWiseWithoutAllianceDiv_graph"><IMG src="charts/'+chartId+'"></IMG></div>';
+	//contentStr +='<div id="districtWiseWithoutAllianceDiv_graph"><IMG src="charts/'+chartId+'"></IMG></div>';
+	contentStr +='<div id="districtWiseWithoutAllianceDiv_graph"><IMG src="charts/'+detailedResultsChart+'"></IMG></div>';
 	contentStr +='<div id="districtWiseWithoutAllianceDiv_Datatable"></div>';
 	contentStr +='</div>';
 
@@ -1109,6 +1140,7 @@ callAjax(rparam,jsObj,url);
 <c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
 <DIV id="distwiseGraph">
 <DIV id="districtWiseGraph"></DIV>
+<DIV id="detailedGraph" style="text-align:right;padding:15px;"></DIV>
 <DIV id="distResultsViewOptionsDiv">
 	<TABLE width="100%">	
 		<TR>
@@ -1295,6 +1327,7 @@ callAjax(rparam,jsObj,url);
 </DIV>
 <DIV class="graphBottom"></DIV>
 <DIV class = "yui-skin-sam"><div id="panel"></DIV></DIV>
+<DIV class = "yui-skin-sam"><div id="detailedResultsPanel"></DIV></DIV>
 <DIV class = "yui-skin-sam"><div id="commentsDialogDiv"></DIV></DIV>
 <DIV id="task10"></DIV>
 <SCRIPT type="text/javascript">
