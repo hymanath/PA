@@ -982,11 +982,46 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			graphDivStr += '<b>Sorry, Data Not Available</b>'
 		else
 			graphDivStr += '<img src="charts/'+results.chartPath+'" />';
-		
+			graphDivStr += '<div style="text-align:right;padding:15px;"><input type="button" onclick="showDetailedChart(\''+results.detailedChartPath+'\')" value="Detailed Chart"></div>';
+			//graphDivStr += '<div id="detailedChartDiv"></div>';
 		 allElecDiv.innerHTML = graphDivStr;	 
 		
 	}
 
+    function hideComparedResultsDiv()
+    {
+	var elmt = document.getElementById("detailedChartDiv");
+	if(!elmt)
+		return;
+		
+	elmt.style.display = 'none';
+	
+    }
+
+	function showDetailedChart(chartName)
+	{
+			
+	    var elmt = document.getElementById("detailedChartDiv");
+	    if(!elmt)
+		  return;
+
+	    elmt.style.display = 'block';
+
+	    var str='';
+		str+='<div id="detailedResultsChart_main" class="comparedResultsOuter">';
+		str+='<div id="detailedResultsChart_head" class="resultsHeadClass">';
+		str+='Detailed Chart';
+		str+='<span style="float:right;"><a href="javascript:{}" class="yuiCloseImg" onclick="hideComparedResultsDiv()"> </a></span>';
+		str+='</div>';
+		str+='<div id="detailedResultsChart_body" class="comparedResultsBody">';
+		str+='<img src="charts/'+chartName+'" />'
+        str+='</div>';
+		str+='</div>';
+
+	    elmt.innerHTML = str;
+
+      
+	}
 	function showAllElectionsInDistrictHead(){
 		
 		var allElecDiv = document.getElementById("allElectionResultsInDT_head");
@@ -1032,7 +1067,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 
 	function showAlliancePartiesWindow(){
-		var brow1 = window.open("<s:url action="alliancePartiesPageAction"/>?districtId=${districtId}&districtName=${districtName}","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+		var brow1 = window.open("<s:url action="alliancePartiesPageAction"/>?districtId=${districtId}&districtName=${districtName}","brow1","width=600,height=400,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 		brow1.focus();
 	}
 
@@ -1228,6 +1263,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 					<div id="allElectionResultsInDT"  class="allianceListDiv">
 						<div id="allElectionResultsInDT_head"></div>
 						<div id="allElectionResultsInDT_body"></div>
+					
 					</div>
 				</li>
 				<li>
@@ -1240,7 +1276,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			</div>
 		</div>
 	</div>
-	
+	<div id="detailedChartDiv" style="position:absolute;top:750px;left:150px;z-index:1;"></div>
 	<!--District Page MP, MLA Div-->
 	<div id="mpMla_main">
 		<div id="mp_main_div">
