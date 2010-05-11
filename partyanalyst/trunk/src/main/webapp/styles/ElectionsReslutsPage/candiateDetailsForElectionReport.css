@@ -41,6 +41,8 @@ H3
 	padding:10px;
 	text-align:center;
 	width:450px;
+	border-left:1px solid #CCCCCC;
+	border-right:1px solid #CCCCCC;
 }
 .paraText
 {
@@ -55,4 +57,12 @@ H3
 	font-weight:bold;
 	font-size:16px;
 	text-align:left;
+}
+#electionPageAjaxImgDiv
+{
+	border:1px solid #ADADAD;
+	font-size:12px;
+	font-weight:bold;
+	width:300px;
+	margin-bottom:10px;
 }

@@ -7,7 +7,7 @@
 	font-size:17px;
 	font-weight:bold;
 	margin-bottom:15px;
-	margin-top:0;
+	margin-top:15px;
 	padding:10px;			
 	height:25px;
 	text-align:center;
@@ -129,11 +129,15 @@ text-decoration:none;
 {
 	padding:5px;
 	text-decoration:none;
-	background-image:url(../../images/icons/indexPage/swasthic_body.png);
-	color:#000000;
-	border:1px solid #ADADAD;
+	background-image:url(../../images/icons/electionResultsReport/linkBtn.png);
+	color:#FFFFFF;
+	border-left:1px solid #9999CC;
+	border-right:1px solid #9999CC;
 	margin-left:10px;
 	font-size:12px;
+	font-weight: bold;
+	
+	
 }
 
 #withoutAllianceDiv_Datatable table
@@ -185,4 +189,15 @@ margin:1px;
 #graphImage .yui-carousel-element li
 {
 	height:200px;
+}
+.viewChartsForResults1
+{
+	padding:5px;
+	text-decoration:none;
+	background-image:url(../../images/icons/electionResultsReport/linkBtn1.png);
+	color:#FFFFFF;
+	border-left:1px solid #333333;
+	border-right:1px solid #333333;	
+	font-size:12px;
+	font-weight: bold;
 }
