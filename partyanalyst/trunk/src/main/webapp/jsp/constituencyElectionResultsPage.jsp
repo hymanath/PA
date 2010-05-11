@@ -147,7 +147,7 @@ function buildDataForConstituencyResults()
 	var allYears = document.getElementById("allYears");
 	var electionYears = '';
 	electionYears+='<IMG src="images/icons/infoicon.png" border="none" style="margin-right:5px;"/>';
-	electionYears+='<SPAN style="color:#606060;">Please Select an year to view Election Results for another year';
+	electionYears+='<SPAN style="color:#606060;">Select to view Election Results for other year';
 	electionYears+='<select class="selectWidth" id="yearSelectDropDown" style="width: 100px; margin-left: 5px;" onchange="redirectCandidateLink(this.options[this.selectedIndex].text)">';
 	electionYears+='<OPTION value="0">Select Year</OPTION>';		
 	<c:forEach var="years" items="${constituencyElectionResultsVO.allElectionYears}">
