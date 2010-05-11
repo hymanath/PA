@@ -325,6 +325,7 @@ function buildParticipatedCandidatesDetailsDataTable(data)
 }
 function allCandidates()
 {	
+	var elmt = document.getElementById("electionPageAjaxImgDiv");	
 	var electionLevel;
 	var partywiseCheckBoxEl = document.getElementById("partywiseCheckBox");
 	var allCandidatesRadioEl = document.getElementById("allCandidates");
@@ -347,6 +348,9 @@ function allCandidates()
 	var locationId;
 	var resultsCategory;   
 
+	if(elmt.style.display == 'none')
+		elmt.style.display = 'block';
+	
 	if(partywiseCheckBoxEl.checked == true)
 	{
 		partyId = selectPartyEl.value;
