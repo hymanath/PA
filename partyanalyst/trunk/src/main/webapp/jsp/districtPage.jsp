@@ -568,14 +568,14 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var url = "<%=request.getContextPath()%>/getAllElectionsInDistrictAction.action?"+rparam;					
 		callAjax(rparam,jsObj,url);
 	}
-	
+	//wkg
 	function buildElectionTypesSelect(result){
 
 		var selectLabel = document.getElementById("graphElectionTypeLabel");
 		var selectData = document.getElementById("graphElectionTypeSelect");
 
 		var labelStr = '';
-		labelStr += 'Election Type';
+		labelStr += 'Select Election Type';
 
 		if(selectLabel)
 			selectLabel.innerHTML = labelStr;
@@ -968,7 +968,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	}
 
 	
-
+//ref
 	function showAllElectionsInDistrict(results){
 				
 		var allElecDiv = document.getElementById("allElectionResultsInDT_body");
@@ -982,7 +982,19 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			graphDivStr += '<b>Sorry, Data Not Available</b>'
 		else
 			graphDivStr += '<img src="charts/'+results.chartPath+'" />';
-			graphDivStr += '<div style="text-align:right;padding:15px;"><input type="button" onclick="showDetailedChart(\''+results.detailedChartPath+'\')" value="Detailed Chart"></div>';
+			graphDivStr += '<div>';
+			graphDivStr += '<table style="margin-left:200px;margin-right:200px;" width="40%" >';
+			graphDivStr += '<tr>';
+			graphDivStr += '<td>';
+			graphDivStr += '<div ><input type="button" class="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div>';
+			graphDivStr += '</td>';
+			graphDivStr += '<td>';
+			graphDivStr += '<div ><input type="button" class="button" onclick="showDetailedChart(\''+results.detailedChartPath+'\')" value="Detailed Chart"></div>';
+			graphDivStr += '</td>';
+			graphDivStr += '<tr>';
+			graphDivStr += '</table>';
+			graphDivStr += '</div>';
+			
 			//graphDivStr += '<div id="detailedChartDiv"></div>';
 		 allElecDiv.innerHTML = graphDivStr;	 
 		
@@ -1028,7 +1040,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var graphDivStr = '';
 		graphDivStr += '<table>';
 		graphDivStr += '<tr>';
-		graphDivStr += '<td><div style="margin-left:20px;"><input type="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div></td>';
+		//graphDivStr += '<td><div style="margin-left:20px;"><input type="button" onclick="showAlliancePartiesWindow()" value="Know About Alliance Parties"></div></td>';
 		graphDivStr += '<td><div id="graphElectionTypeLabel"></div></td>';
 		graphDivStr += '<td><div id="graphElectionTypeSelect"></div></td>';
 		graphDivStr += '<td><img id="barloaderImage" src="images/icons/barloader.gif"/></td>';
