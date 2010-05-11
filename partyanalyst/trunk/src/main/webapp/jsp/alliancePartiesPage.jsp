@@ -10,14 +10,14 @@
 <style>
 	#alliancePartiesMain fieldset
 	{
-		border:5px solid #9BAAB6;
-		width:50%;
-		margin-top:10px;
+		background-color:Ivory;
+        margin-top:25px;
+        width:75%;
 	}
 	
 	#alliancePartiesMain fieldset legend
 	{
-		background-color:#3073A6;
+		background-color:BurlyWood;
 		color:#FFFFFF;
 		font-weight:bold;
 		padding:3px;
@@ -29,7 +29,7 @@
 	}
 	.allianceName
 	{
-		background-color:#5E6F92;
+		background-color:DarkGray;
 		color:#FFFFFF;
 		font-weight:bold;
 		padding:5px;
@@ -49,21 +49,20 @@
 			<c:forEach var="election"  items="${alliancePartiesInDistrict.alliancePartiesInElection}">			
 				<fieldset>
 					<legend>${election.electionType} - ${election.electionYear}</legend>
-						<table width="100%" style="width:100%">
-						<tr>
+						<table>
 						<c:forEach var="group"  items="${election.partiesAlliances}">
+						<tr>
 							<td>
-								<div class="groupName">
 									<div class="allianceName">${group.allianceGroupName }</div>
 									<div>
 										<c:forEach var="party"  items="${group.partiesInAlliance}">
-											<div class="alliancePartyName">${party.partyName}</div>
+										<td></td>
+										<td>${party.partyName}</td>
 										</c:forEach>
 									</div>
-								</div>
 							</td>
-						</c:forEach>
 						</tr>
+						</c:forEach>
 						</table>		
 				</fieldset>
 			</c:forEach>
