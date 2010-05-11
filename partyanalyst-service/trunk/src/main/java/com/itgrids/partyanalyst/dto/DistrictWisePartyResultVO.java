@@ -22,6 +22,7 @@ public class DistrictWisePartyResultVO extends ResultStatus{
 	private Long seatsWon;
 	private Double votesPercent;
 	private String chartPath;
+	private String detailedChartPath;
 	private String pasitionsChart;
 	private List<PartyResultVO> partyElectionResultsList;
 	private List<ElectionResultVO> alliancePartiesInElection;
@@ -113,6 +114,12 @@ public class DistrictWisePartyResultVO extends ResultStatus{
 	}
 	public void setPasitionsChart(String pasitionsChart) {
 		this.pasitionsChart = pasitionsChart;
+	}
+	public String getDetailedChartPath() {
+		return detailedChartPath;
+	}
+	public void setDetailedChartPath(String detailedChartPath) {
+		this.detailedChartPath = detailedChartPath;
 	}
 	
 }
