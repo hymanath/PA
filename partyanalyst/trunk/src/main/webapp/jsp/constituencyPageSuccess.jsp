@@ -606,7 +606,32 @@ function getVotingTrendzForyear()
 			 myDataSource.responseSchema = { 
 									            fields:myFields    
 									        };
-			        
+
+			 if(constituencyResults.electionType == 'Parliament'){
+				var extraInfoDiv = document.getElementById("missingDataInfoDiv");
+				var str = '';
+				str += '<br>';
+				str += '<table>';
+				str += '<tr>';
+				str += '<td>';
+				str += '<font color="Red"><b>*</b></font>';				
+				str += '</td>';
+				str += '<td><b>';
+					if(constituencyResults.isDataInsufficient){
+						str += ' Others Include Postal Ballet Votes, ';
+						for(var i in constituencyResults.missingConstituencies)
+							str += constituencyResults.missingConstituencies[i].name + ' Assembly,';
+						str = str.substring(0,str.length-1);
+						str += ' Wise ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Election Results';
+					}else{
+						str += ' Others Include Postal Ballet Votes';
+					}
+				str += '</b></td>';
+				str += '</tr>';
+				str += '</table>';		
+				extraInfoDiv.innerHTML = str;		
+			 }
+			 
 			var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource);
 			var imgElmt = document.getElementById('AjaxImgDiv');
 			if(imgElmt.style.display == "block")
@@ -875,6 +900,7 @@ function getVotingTrendzForyear()
 				</tr>
 			</table>
 			<div id="electionResultsInConstituencyDiv"></div>
+			<div id="missingDataInfoDiv"></div>
 			</div>
 		</div>
 		</td>
