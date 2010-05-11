@@ -260,3 +260,30 @@
 {
 	width:100%;
 }
+.comparedResultsOuter
+{
+	border:1px solid #808080;
+	margin-top:10px;
+	background-color:#FFFFFF;
+}
+
+.resultsHeadClass
+{
+	background:transparent url(../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png) repeat-x scroll 0 -200px;
+	color:#4B74C6;
+	font-weight:bold;
+	padding:5px;
+	text-align:left;
+}
+
+.yuiCloseImg
+{
+	background:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") no-repeat scroll 0 -300px transparent;		
+	cursor:pointer;
+	height:15px;
+	position:absolute;
+	right:6px;
+	top:16px;
+	width:25px;
+	background-color:silver;
+}
