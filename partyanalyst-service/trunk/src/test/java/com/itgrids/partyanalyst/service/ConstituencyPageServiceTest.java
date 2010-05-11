@@ -65,5 +65,8 @@ public class ConstituencyPageServiceTest extends BaseDaoTestCase{
 		constituencyPageService.getTownshipWiseElectionsForTehsil(21827l, 844l);
 	}*/
 	
+	public void testGetConstituencyElecResults(){
+		constituencyPageService.getConstituencyElecResults(403l, "2004");
+	}
 
 }

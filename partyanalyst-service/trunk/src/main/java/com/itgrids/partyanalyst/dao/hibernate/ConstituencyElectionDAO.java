@@ -13,8 +13,6 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.appfuse.dao.jpa.GenericDaoJpa;
-import javax.persistence.Query;
 
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -170,5 +168,12 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 	public List findConstituenciesCountInAnElection(Long electionId) {
 		return getHibernateTemplate().find("select count(distinct model.constituency.constituencyId) from ConstituencyElection model"+
 				" where model.election.electionId = ?",electionId);
+	}
+
+	public List findTotalValidVotesInConstituencyElection(Long constituencyId,
+			String electionYear) {
+		Object[] params = {constituencyId, electionYear};
+		return getHibernateTemplate().find("select sum(model.constituencyElectionResult.validVotes) from ConstituencyElection model " +
+				"where model.constituency.constituencyId = ? and model.election.electionYear = ?",params);
 	}
 }

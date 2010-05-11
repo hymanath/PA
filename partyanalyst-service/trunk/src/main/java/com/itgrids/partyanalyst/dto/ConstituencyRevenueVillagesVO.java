@@ -13,6 +13,9 @@ public class ConstituencyRevenueVillagesVO {
 	private List<ConstituencyOrMandalWiseElectionVO> constituencyOrMandalWiseElectionVO;
 	private String chartPath;
 	private List<SelectOptionVO> elections;
+	private Boolean isDataInsufficient;
+	private List<SelectOptionVO> missingConstituencies;
+	private Long postalBaletAndMissingConstiVotes;
 	
 	public List<ConstituencyOrMandalWiseElectionVO> getConstituencyOrMandalWiseElectionVO() {
 		return constituencyOrMandalWiseElectionVO;
@@ -87,6 +90,31 @@ public class ConstituencyRevenueVillagesVO {
 
 	public void setElectionType(String electionType) {
 		this.electionType = electionType;
+	}
+
+	public Boolean getIsDataInsufficient() {
+		return isDataInsufficient;
+	}
+
+	public void setIsDataInsufficient(Boolean isDataInsufficient) {
+		this.isDataInsufficient = isDataInsufficient;
+	}
+
+	public List<SelectOptionVO> getMissingConstituencies() {
+		return missingConstituencies;
+	}
+
+	public void setMissingConstituencies(List<SelectOptionVO> missingConstituencies) {
+		this.missingConstituencies = missingConstituencies;
+	}
+
+	public Long getPostalBaletAndMissingConstiVotes() {
+		return postalBaletAndMissingConstiVotes;
+	}
+
+	public void setPostalBaletAndMissingConstiVotes(
+			Long postalBaletAndMissingConstiVotes) {
+		this.postalBaletAndMissingConstiVotes = postalBaletAndMissingConstiVotes;
 	}
 
 	@Override

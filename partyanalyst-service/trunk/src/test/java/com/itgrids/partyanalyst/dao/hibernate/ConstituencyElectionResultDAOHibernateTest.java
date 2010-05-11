@@ -21,7 +21,7 @@ public class ConstituencyElectionResultDAOHibernateTest extends BaseDaoTestCase 
 		this.constituencyElectionResultDAO = constituencyElectionResultDAO;
 	}
 	
-	public void testFindByConstituencyElections(){
+	/*public void testFindByConstituencyElections(){
 		List<Long> list = new ArrayList<Long>();
 		StringBuilder sb = new StringBuilder("1");
 		for(long i=1;i<11;i++)
@@ -41,7 +41,7 @@ public class ConstituencyElectionResultDAOHibernateTest extends BaseDaoTestCase 
 	public void testFindByElectionTypeAndYear(){
 		List<ConstituencyElectionResult> results = constituencyElectionResultDAO.findByElectionTypeId_Year_StateId(new Long(2), "2009", new Long(1));
 		Assert.assertEquals(279, results.size());
-	}
+	}*/
 
 	//@Test
 	/*public void testFindByMissingVotes(){
@@ -91,4 +91,5 @@ public class ConstituencyElectionResultDAOHibernateTest extends BaseDaoTestCase 
 		constituencyElectionResultDAO.remove(new Long(2));
 		setComplete();
 	}*/
+	
 }

@@ -107,14 +107,14 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]);
 	}*/
 	
-	/*public void testFindAssemblyWiseParliamentResultsForParties(){
+	public void testFindAssemblyWiseParliamentResultsForParties(){
 		long start = System.nanoTime();
-		List list = candidateBoothResultDAO.findAssemblyWiseParliamentResultsForParties(231l, 404l, "2004");
+		List list = candidateBoothResultDAO.findAssemblyWiseParliamentResultsForParties(231l, 403l, "2009");
 		long end = System.nanoTime();
 		System.out.println((end-start)/1000000000);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
-	}*/
+	}
 		
 /*	public void testAssemblies(){
 		List list = candidateBoothResultDAO.findAllPartiesElectionResultsInDistrictForElectionType(19l,"Parliament");
@@ -131,7 +131,7 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 
 	}
 	*/
-	public void testGetcandidatesResultsByBoothConstiIds(){
+	/*public void testGetcandidatesResultsByBoothConstiIds(){
 		List list = candidateBoothResultDAO.getcandidatesResultsByBoothConstiIds("2323,2324,2325,2326,2327,2328,2329,2330,2331,	2332,2333,				2334,				2335,				2336,				2337,				2338,				2339,				2340,				2341");
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]);
@@ -146,5 +146,5 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			
 		}
 		System.out.println(list.size());
-	}
+	}*/
 }

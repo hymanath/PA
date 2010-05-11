@@ -15,7 +15,6 @@ public class ConstituencyOrMandalWiseElectionVO implements Serializable {
 	private Long totalPolledVotes;
 	private List<PartyElectionResultVO> partyElectionResultVOs;
 	
-	
 	public Long getLocationId() {
 		return locationId;
 	}

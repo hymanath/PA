@@ -328,5 +328,14 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 */
 	
 	
+	public void testFindCandidatesInfoByConstituencyAndElectionYear(){
+		List list = nominationDAO.findCandidatesInfoByConstituencyAndElectionYear(403l, "2009");
+		for(Object[] values:(List<Object[]>)list){
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]);
+			System.out.println(((Double)values[2]).longValue() - 100l);
+		}
+	}
+	
+	
 }
 

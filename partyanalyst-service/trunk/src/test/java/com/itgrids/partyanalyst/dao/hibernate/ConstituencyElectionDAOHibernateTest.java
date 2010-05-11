@@ -91,7 +91,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		assertEquals(1, list.size());	
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testFindElection(){
 		List election = constituencyElectionDAO.findElectionIdForAParticularElectionTypeAndYearAndConstituency("Assembly", "2009", new Long(232));
@@ -103,5 +103,13 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("Election Scope:" + elec.getElectionScope().getElectionType().getElectionType());
 			System.out.println("Election Year :" + elec.getElectionYear());
 		}
+	}*/
+	
+	
+	public void testFindTotalValidVotesInConstituencyElection(){
+		List list = constituencyElectionDAO.findTotalValidVotesInConstituencyElection(403l, "2009");
+		System.out.println(list.get(0));
 	}
+	
+	
 }
