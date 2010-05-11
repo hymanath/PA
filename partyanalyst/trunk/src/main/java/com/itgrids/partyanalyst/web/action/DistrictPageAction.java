@@ -561,14 +561,20 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		String chartName = "allPartiesDistrictWisePerformanceIn"+jObj.getString("electionType")+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         districtWisePartyResultVO.setChartPath(chartName);
-        ChartProducer.createLineChart("All Parties Performance In "+jObj.getString("electionType")+" Elections Of "+jObj.getString("districtName")
+        String electionType = jObj.getString("electionType");
+        if(electionType.equalsIgnoreCase("Select Election Type"))
+        	electionType = "All ";
+        ChartProducer.createLineChart("All Parties Performance In "+electionType+" Elections Of "+jObj.getString("districtName")
         		+" District", "Elections", "Percentages", createDataset(allElectionResults), chartPath, 260, 700, null);	
 		
 		//For Detailed Chart
         String detailedChartName = "detailedChartForAllPartiesDistrictWisePerformanceIn"+jObj.getString("electionType")+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
         String detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
         districtWisePartyResultVO.setDetailedChartPath(detailedChartName);
-        ChartProducer.createLineChart("All Parties Performance In "+jObj.getString("electionType")+" Elections Of "+jObj.getString("districtName")
+        String detailedChartElectionType = jObj.getString("electionType");
+        if(detailedChartElectionType.equalsIgnoreCase("Select Election Type"))
+        	detailedChartElectionType = "All ";
+        ChartProducer.createLineChart("All Parties Performance In "+detailedChartElectionType+" Elections Of "+jObj.getString("districtName")
         		+" District", "Elections", "Percentages", createDataset(allElectionResults), detailedChartPath, 600, 800, null);	
 
         
