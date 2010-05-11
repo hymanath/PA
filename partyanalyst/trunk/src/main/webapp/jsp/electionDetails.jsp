@@ -110,6 +110,7 @@ function callAjax(param,jsObj,url){
 }
 
 
+
 function showDistrictWiseResultsLineGraph(results)
 {
 	var chartName = results.districtWiseElecResultsChartName;
@@ -219,15 +220,22 @@ function showPartywiseDetailsDataTable(results)
 				//comments: '<A href="javascript:{}" onclick="showCommentsDialog('+partywiseResultsArr[i].partyId+',\'party\',\'null\',\'null\')"><IMG src="images/icons/electionResultsReport/notes.png" border="none"></IMG></A>'
 				};
 		if(electionResultsObj.allianceGroupNamesArray.length > 0 )
-				for(k in electionResultsObj.allianceGroupNamesArray)
+		{	
+			for(k in electionResultsObj.allianceGroupNamesArray)
 				{
 					if(electionResultsObj.allianceGroupNamesArray[k] == partywiseResultsArr[i].partyName)
 					{
-						partywiseResultsObj.pc = '';
-						//partywiseResultsObj.comments='';
+						partywiseResultsObj.pc = '';					
 					}
 				}
-		assignToPartywiseResultsArr.push(partywiseResultsObj);	
+			
+			if(partywiseResultsArr[i].partyName == "IND")
+			{
+				partywiseResultsObj.totalParticipated = '';				
+			}	
+		
+		}
+			assignToPartywiseResultsArr.push(partywiseResultsObj);		
 	} 
 	electionResultsObj.partyWiseResultsArr = assignToPartywiseResultsArr;
 	buildPartywiseResultsDataTable("partywiseResultsDataTable",electionResultsObj.partyWiseResultsArr);
@@ -303,15 +311,14 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
 {	
 	var partywiseResultsColumnDefs = [
 								{key: "party", label: "<%=party%>", sortable:true},		
-								{key: "totalParticipated", label: "TP*", formatter:"number", sortable:true},	
+								{key: "totalParticipated", label: "TP*", sortable:true},	
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
 		              	 	 	{key: "third", label: "3rd",formatter:"number", sortable:true},
 		              	 	 	{key: "fourth", label: "4th",formatter:"number", sortable:true},
 		              	 	 	{key: "nth", label: "Nth",formatter:"number", sortable:true},   	
 		              	 	 	{key: "pc", label:"PC* %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true},
-		              	 	 	{key: "overall", label:"Overall %",formatter:YAHOO.widget.DataTable.formatFloat, sortable: true}
-		              	 	 	//{key: "comments", label:""}			              	 	 		              	 	 	
+		              	 	 	{key: "overall", label:"Overall %",formatter:YAHOO.widget.DataTable.formatFloat, sortable: true}		              	 	 				              	 	 		              	 	 	
 		              	 	    ];                	 	    
 
 		var partywiseResultsDataSource = new YAHOO.util.DataSource(dtSourceArray); 
@@ -324,7 +331,7 @@ function buildPartywiseResultsDataTable(divId,dtSourceArray)
                          		  {key:  "fourth", parser:"number"},
                          		  {key: "nth", parser:"number"},
                          		  {key: "pc", parser:YAHOO.util.DataSourceBase.parseNumber},
-                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber},"comments" ] 
+                         		  {key: "overall", parser:YAHOO.util.DataSourceBase.parseNumber}] 
         		};
 
 		var myConfigs = { 
@@ -431,7 +438,7 @@ function buildAllianceResultsDataTable(id,dtSource,dtCaption)
 		              	 	 	{key: "nthPosWon", label: "Nth",formatter:"number", sortable:true},   	
 		              	 	 	{key: "votesPercentage", label:"PC* %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true},
 		              	 	 	{key: "completeVotesPercent", label:"Overall %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true}
-		              	 	 	//{key: "comments", label:""}		              	 	 	
+		              	 	 		              	 	 	
 		              	 	    ];                	 	    
 
 		var allianceResultsDataSource = new YAHOO.util.DataSource(dtSource); 
@@ -473,6 +480,7 @@ function showCandidateDetailsWindow(stateName,electionType,year,electionId)
 
 function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 {
+
 	var selectPartyName = partyName;
 	var districtName = districtName;	
 	var dtSource = new Array();
@@ -496,13 +504,20 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 							overall:innerObj[i].partyResultsInDistricts[j].completeVotesPercent
 						  }
 				if(electionResultsObj.allianceGroupNamesArray.length > 0 )
-					for(k in electionResultsObj.allianceGroupNamesArray)
-					{
-						if(electionResultsObj.allianceGroupNamesArray[k] == innerObj[i].partyName)
+				{
+						for(k in electionResultsObj.allianceGroupNamesArray)
 						{
-							obj.pc = '';
+							if(electionResultsObj.allianceGroupNamesArray[k] == innerObj[i].partyName)
+							{
+								obj.pc = '';
+								obj.totalParticipated='';
+							}
 						}
-					}
+				}
+				if(innerObj[i].partyName == 'IND')
+				{
+					obj.totalParticipated='';
+				}
 				dtSource.push(obj);
 			}
 		}
@@ -518,7 +533,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 					var obj = {
 								district:innerObj[i].partyResultsInDistricts[j].districtName,
 								party:innerObj[i].partyName,
-								totalParticipated: innerObj[i].totalConstiParticipated,
+								totalParticipated: innerObj[i].partyResultsInDistricts[j].totalConstiParticipated,
 								seatsWon:innerObj[i].partyResultsInDistricts[j].seatsWon,
 								second:innerObj[i].partyResultsInDistricts[j].secondPos,
 								third:innerObj[i].partyResultsInDistricts[j].thirdPos,
@@ -528,13 +543,20 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 								overall:innerObj[i].partyResultsInDistricts[j].completeVotesPercent
 							  }
 					if(electionResultsObj.allianceGroupNamesArray.length > 0 )
-						for(k in electionResultsObj.allianceGroupNamesArray)
-						{
-							if(electionResultsObj.allianceGroupNamesArray[k] == innerObj[i].partyName)
+					{
+							for(k in electionResultsObj.allianceGroupNamesArray)
 							{
-								obj.pc = '';
+								if(electionResultsObj.allianceGroupNamesArray[k] == innerObj[i].partyName)
+								{
+									obj.pc = '';
+									obj.totalParticipated='';
+								}
 							}
-						}
+					}
+					if(innerObj[i].partyName == 'IND')
+					{
+						obj.totalParticipated='';
+					}
 					dtSource.push(obj);
 				}	
 			}
@@ -552,7 +574,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 					var obj = {
 								district:innerObj[i].partyResultsInDistricts[j].districtName,
 								party:innerObj[i].partyName,
-								totalParticipated: innerObj[i].totalConstiParticipated,
+								totalParticipated: innerObj[i].partyResultsInDistricts[j].totalConstiParticipated,
 								seatsWon:innerObj[i].partyResultsInDistricts[j].seatsWon,
 								second:innerObj[i].partyResultsInDistricts[j].secondPos,
 								third:innerObj[i].partyResultsInDistricts[j].thirdPos,
@@ -562,13 +584,19 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 								overall:innerObj[i].partyResultsInDistricts[j].completeVotesPercent
 							  }
 					if(electionResultsObj.allianceGroupNamesArray.length > 0 )
-						for(k in electionResultsObj.allianceGroupNamesArray)
-						{
-							if(electionResultsObj.allianceGroupNamesArray[k] == innerObj[i].partyName)
+					{
+							for(k in electionResultsObj.allianceGroupNamesArray)
 							{
-								obj.pc = '';
+								if(electionResultsObj.allianceGroupNamesArray[k] == innerObj[i].partyName)
+								{
+									obj.pc = '';
+									obj.totalParticipated='';
+								}
 							}
-						}
+					}if(innerObj[i].partyName == 'IND')
+					{
+						obj.totalParticipated='';
+					}
 					dtSource.push(obj);
 				}	
 			}
@@ -578,7 +606,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 	var allDistrictResultsColumnDefs = [
 								{key: "district", label: "Location", sortable:true},		
 								{key: "party", label: "<%=party%>", sortable:true},
-								{key: "totalParticipated", label:"TP*",formatter:"number", sortable:true},										
+								{key: "totalParticipated", label:"TP*", sortable:true},										
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
 		              	 	 	{key: "third", label: "3rd",formatter:"number", sortable:true},
@@ -732,8 +760,8 @@ function buildAllianceDistrictResultsDataTable(results)
 	{	
 		var header = innerObj[i].allianceGroupName+" Alliance Graph";	
 		var childElmt = document.createElement("div");
-		childElmt.setAttribute('id','allianceChildDiv'+i);
-		
+		childElmt.setAttribute('id',innerObj[i].allianceGroupName);
+		//childElmt.style.display='none';
 		var str = '';
 		str+='<div id="allianceResults_district_'+i+'_datatable"></div>';
 		str+='<div id="allianceResults_district_'+i+'_allianceGraph"></div>';
@@ -851,6 +879,7 @@ function allDistResultsRadioClickHandler(results)
 {
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
 	var selectBoxEl = document.getElementsByName("selectBox");
+	var allianceDistResultsEl = document.getElementById("allianceDistResults");
 	for (i=0; i< selectBoxEl.length; i++)
 	{
 		if(selectBoxEl[i].style.display == "block")			
@@ -858,6 +887,11 @@ function allDistResultsRadioClickHandler(results)
 			selectBoxEl[i].style.display = 'none';}
 	}
 	buildAllDistrictDatatable(innerObj,"districtResults","all","null","null");
+
+	for (j=0; j<allianceDistResultsEl.childNodes.length; j++){
+		allianceDistResultsEl.childNodes[j].style.display='block';								
+	}
+	 
 }
 function partywiseRadioClickHandler()
 {
@@ -923,8 +957,24 @@ function updateResultsStatewise(distName,results)
 function updateDistResultsPartywise(partyName,results)
 {
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
+	var allianceDistResultsEl = document.getElementById("allianceDistResults");
 	if(partyName != 'Select Party')
-		{buildAllDistrictDatatable(innerObj,"districtResults","party",partyName,"null");}
+		{
+		buildAllDistrictDatatable(innerObj,"districtResults","party",partyName,"null");
+		if(electionResultsObj.allianceGroupNamesArray != null && electionResultsObj.allianceGroupNamesArray.length != 0)
+			{
+
+				for (j=0; j<allianceDistResultsEl.childNodes.length; j++){
+					
+					if(allianceDistResultsEl.childNodes[j].id != partyName)
+					{	
+						allianceDistResultsEl.childNodes[j].style.display='none';						
+					}else {allianceDistResultsEl.childNodes[j].style.display='block'}
+				}				
+			}
+		
+		}
+	
 	else return;
 }
 
@@ -932,9 +982,14 @@ function updateDistResultsDistwise(distName,results)
 {
 	
 	var innerObj = results.electionResultsInDistricts.allPartiesResults;
+	var allianceDistResultsEl = document.getElementById("allianceDistResults");
 	if(distName != 'Select District')
 		{buildAllDistrictDatatable(innerObj,"districtResults","district","null",distName);}
-		else return;	
+		else return;
+	for (j=0; j<allianceDistResultsEl.childNodes.length; j++){
+		allianceDistResultsEl.childNodes[j].style.display='block';								
+	}
+		
 	
 }
 function openPartyPerformanceReportWindow()
@@ -1096,9 +1151,9 @@ callAjax(rparam,jsObj,url);
 <BODY>
 <TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
-<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" /></TD><TD valign="top">
+<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" style="margin-top:15px;" /></TD><TD valign="top">
 <c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName} ${electionType} Election Results ${year}</DIV></c:if>
-<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${electionType} Election Results ${year}</DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" border="none"/>
+<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${electionType} Election Results ${year}</DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" style="margin-top:15px;" border="none"/>
 </TD>
 </TR>
 </TABLE>
@@ -1130,10 +1185,20 @@ callAjax(rparam,jsObj,url);
 			<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
 		</TR>		
 	</TABLE>
-	<DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;PC% column is empty for alliance parties in Partywise Results table, to find PC% for alliance parties kindly refer to the PC% column of the Alliance Details Table.PC% is Not Applicable for Independent Candidates(IND).</P></DIV>
+	<DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;TP and PC% columns are empty for alliance parties in Partywise Results table, to find TP and PC% for alliance parties kindly refer TP and PC% columns of Alliance Details Table.TP and PC% are Not Applicable for Independent Candidates(IND).</P></DIV>
 </DIV>
-<DIV style="padding:10px;text-align:right;"><A href="javascript:{}" class="viewChartsForResults" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></DIV>
+<DIV style="padding:10px;">
+	<TABLE width="50%" border="0" cellpadding="0" cellspacing="0">
+		<TR>
+			<TD align="left"><IMG src="images/icons/infoicon.png" border="none" /></TD>
+			<TD align="center" style="color:#606060;font-size:12px;">Click Here To Access Candidates Results</TD>
+			<TD align="left"><DIV><A href="javascript:{}" class="viewChartsForResults1" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></DIV></TD>
+		</TR>
+	</TABLE>
 </DIV>
+
+<!--<DIV style="padding:10px;text-align:right;"><A href="javascript:{}" class="viewChartsForResults" onclick="showCandidateDetailsWindow(stateName,electionType,year)">View Candidates Results</A></DIV>
+--></DIV>
 <DIV id="viewCandidate" class="yui-skin-sam"></DIV>
 <DIV class="graphBottom"></DIV>
 <c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">District Level Overview</DIV></c:if>
@@ -1182,7 +1247,7 @@ callAjax(rparam,jsObj,url);
 			<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
 		</TR>
 		<TR>
-			<TD colspan="2" align="left"><DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;PC% column is empty for alliance parties in Partywise Results table, to find PC% for alliance parties kindly refer to the PC% column of the Alliance Details Table.PC% is Not Applicable for Independent Candidates(IND).</P></DIV></TD>
+			<TD colspan="2" align="left"><DIV id="note" name="note" style="display:none;"><P><FONT style="font-weight:bold;color:red;" >Note:</FONT>&nbsp;TP and PC% columns are empty for alliance parties in Partywise Results table, to find TP and PC% for alliance parties kindly refer TP and PC% column of Alliance Details Table.TP and PC% are Not Applicable for Independent Candidates(IND).</P></DIV></TD>
 		</TR>		
 	</TABLE>
 	
