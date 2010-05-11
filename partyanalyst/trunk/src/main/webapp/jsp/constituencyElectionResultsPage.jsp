@@ -94,8 +94,9 @@ padding:10px;
 margin-left:134px;
 text-align:center;
 }
+
 </style>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 var constiId = '${constituencyElectionResultsVO.constituencyId}';
 var elecType = '${constituencyElectionResultsVO.electionType}';
 var elecYear = '${constituencyElectionResultsVO.electionYear}';
@@ -133,31 +134,31 @@ var constituencyElecMainObj=	{
 
 function redirectCandidateLink(elecYear)
 {
-	   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
-	   browser1.focus();
+	var browser1;	
+		if(elecYear != 'Select Year')
+		{	
+		   browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+		   browser1.focus();
+		} else return;  
 }
 function buildDataForConstituencyResults()
-{			
+{	
 	var year ='',count=0;
+	var allYears = document.getElementById("allYears");
 	var electionYears = '';
-	electionYears+="Also view details for ";
-	<c:forEach var="result" varStatus="stat" items="${constituencyElectionResultsVO.allElectionYears}">
-	count++;
-	</c:forEach>
-	if(count>1){
-		var allYears = document.getElementById("allYears");
-		<c:forEach var="result" varStatus="stat" items="${constituencyElectionResultsVO.allElectionYears}">
-		year = '${result.name}';
-		if(elecYear!=year){
-			electionYears+="<br/> Election Year :";
-			electionYears+='<a href="javascript:{}" onclick="redirectCandidateLink('+year+')">';
-			electionYears+='${result.name}';
-			electionYears+="<br/>";
-			electionYears+='</a>';
-		}		
-		</c:forEach>
+	electionYears+='<IMG src="images/icons/infoicon.png" border="none" style="margin-right:5px;"/>';
+	electionYears+='<SPAN style="color:#606060;">Please Select an year to view Election Results for another year';
+	electionYears+='<select class="selectWidth" id="yearSelectDropDown" style="width: 100px; margin-left: 5px;" onchange="redirectCandidateLink(this.options[this.selectedIndex].text)">';
+	electionYears+='<OPTION value="0">Select Year</OPTION>';		
+	<c:forEach var="years" items="${constituencyElectionResultsVO.allElectionYears}">
+		<c:if test="${constituencyElectionResultsVO.electionYear != years.name}">
+			electionYears+='<OPTION value="years.id">${years.name}</OPTION>';
+		</c:if>		
+	</c:forEach>		
+	electionYears+='</select>';			
+		
 		allYears.innerHTML = electionYears;
-	}	
+		
 		 constituencyElecMainObj.constituencyBasicInfo.constituencyId='${constituencyElectionResultsVO.constituencyId}';
 		 constituencyElecMainObj.constituencyBasicInfo.constituencyName='${constituencyElectionResultsVO.constituencyName}';
          constituencyElecMainObj.constituencyBasicInfo.stateName='${constituencyElectionResultsVO.stateName}';
@@ -216,19 +217,19 @@ function buildDataForConstituencyResults()
 
 function displayConstituencyElectionResults()
 {
-		var smallerCase = constituencyElecMainObj.constituencyBasicInfo.constituencyName.toLowerCase();
-		smallerCase=smallerCase.replace(smallerCase[0],smallerCase[0].toUpperCase());
+		var smallerCase = constituencyElecMainObj.constituencyBasicInfo.constituencyName;
+		//smallerCase=smallerCase.replace(smallerCase[0],smallerCase[0].toUpperCase());
 
-		var smallerCaseElecType = constituencyElecMainObj.constituencyBasicInfo.constituencyType.toLowerCase();
-		smallerCaseElecType=smallerCaseElecType.replace(smallerCaseElecType[0],smallerCaseElecType[0].toUpperCase());
+		var smallerCaseElecType = constituencyElecMainObj.constituencyBasicInfo.constituencyType;
+		//smallerCaseElecType=smallerCaseElecType.replace(smallerCaseElecType[0],smallerCaseElecType[0].toUpperCase());
 		
 		var elementHead = document.getElementById("detailsHead");
 		var headDiv = '';
-		headDiv+="<centre><table><tr>";
-		headDiv+="<td>"+smallerCase+"</td>";
-		headDiv+="<td>"+smallerCaseElecType+"</td>";
-		headDiv+="<td> Election Result For - </td>";
-		headDiv+="<td>"+constituencyElecMainObj.constituencyElectionInfo.electionYear+"</td>";
+		headDiv+='<centre><table><tr>';
+		headDiv+='<td>'+smallerCase+'</td>';
+		headDiv+='<td>'+smallerCaseElecType+'</td>';
+		headDiv+='<td> Election Result For - </td>';
+		headDiv+='<td>'+constituencyElecMainObj.constituencyElectionInfo.electionYear+'</td>';
 		headDiv+='</tr></table></centre>';
 		elementHead.innerHTML = headDiv;
 
@@ -322,12 +323,12 @@ function displayConstituencyElectionResults()
 			}; 
 
 		var myColumnDefs = [ 
-				{key:"candidateName",label:'Candidate Name', sortable:true, resizeable:true}, 
-				{key:"partyName", label:'Party Name', sortable:true, resizeable:true}, 
-				{key:"partyFlag", label:'Party Flag',sortable:true, resizeable:true}, 
-				{key:"votesEarned",label:'Votes Earned',formatter:YAHOO.widget.DataTable.formatNumber, sortable:true, resizeable:true}, 
-				{key:"votesPercent",label:'Votes %', sortable:true, resizeable:true}, 
-	            {key:"rank",label:'Rank', sortable:true, resizeable:true} 
+				{key:"candidateName",label:'Candidate Name', sortable:true}, 
+				{key:"partyName", label:'Party Name', sortable:true}, 
+				{key:"partyFlag", label:'Party Flag',sortable:true}, 
+				{key:"votesEarned",label:'Votes Earned',formatter:YAHOO.widget.DataTable.formatNumber, sortable:true}, 
+				{key:"votesPercent",label:'Votes %', sortable:true}, 
+	            {key:"rank",label:'Rank', sortable:true} 
 			]; 
 
 		var myDataTable = new YAHOO.widget.DataTable("oppCandResultsDiv",myColumnDefs, myDataSource);
@@ -339,10 +340,10 @@ function displayConstituencyElectionResults()
 <body>
 <div id="constituencyPageMain" style="background-color:none;">
 	<div id="detailsHead"></div>
+	<div id="allYears" style="margin:15px;"></div>
 	<div id="electionResults_Panel_Main" class="yui-skin-sam">
 			<div id="electionResults_Panel"></div>
-	</div>
-	<div id="allYears"></div>
+	</div>	
 </div>
 <script type="text/javascript">
 buildDataForConstituencyResults();
