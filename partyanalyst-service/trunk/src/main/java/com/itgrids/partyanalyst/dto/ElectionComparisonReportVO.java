@@ -20,6 +20,7 @@ public class ElectionComparisonReportVO {
 	private ResultStatus resultStatus;
 	private CompleteResultsVO forYearOne;
 	private CompleteResultsVO forYearTwo;
+	private Long seatsDiff;
 	private String votesPercentDiff;
 	private Long electionType;
 	private Long elecIdYearOne;
@@ -133,5 +134,11 @@ public class ElectionComparisonReportVO {
 	}
 	public void setVotesPercentDiff(String votesPercentDiff) {
 		this.votesPercentDiff = votesPercentDiff;
+	}
+	public Long getSeatsDiff() {
+		return seatsDiff;
+	}
+	public void setSeatsDiff(Long seatsDiff) {
+		this.seatsDiff = seatsDiff;
 	}
 }
