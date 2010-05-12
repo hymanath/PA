@@ -920,14 +920,18 @@ function getVotingTrendzForyear()
 			<div class="corner topRight"></div>
 			<div class="corner bottomLeft"></div>
 			<div class="corner bottomRight"></div>
-			<table><tr>				
-				<td><div id="zptcPartyVotingTrendz_head" class="layoutHeadersClass"></div>
-					<table><tr>
-						   <td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
-						   <td><div id="zptcCandidateLink"></div></td>
-					</tr></table>
+			<table><tr><td style="vertical-align:top;">
+			<table><tr><td>
+						<div id="zptcPartyVotingTrendz_head" class="layoutHeadersClass"></div>
+						<table><tr>
+							   <td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
+							   <td><div id="zptcCandidateLink"></div></td>
+						</tr></table>
+					</td></tr>
 					<tr><td><div id="zptcPartyTrendsDetailsDiv"></div></td></tr>
 				</td></tr></table>	
+			</td>
+			<td style="vertical-align:top;">
 				<table>
 						<tr>
 							<td><div id="mptcPartyVotingTrendz_head" class="layoutHeadersClass"></div></td>
@@ -941,7 +945,7 @@ function getVotingTrendzForyear()
 						</tr>
 						</table>
 					</table>
-				
+				</td></tr></table>
 			</div>
 			</td>
 		</tr>		
