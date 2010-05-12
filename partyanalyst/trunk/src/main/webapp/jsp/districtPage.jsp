@@ -583,8 +583,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var selectLabel = document.getElementById("graphElectionTypeLabel");
 		var selectData = document.getElementById("graphElectionTypeSelect");
 
-		var labelStr = '';
-		labelStr += 'Select Election Type';
+		var labelStr = '';				
+		labelStr += 'To view all parties performance in a specific election, please select an Election Type';
 
 		if(selectLabel)
 			selectLabel.innerHTML = labelStr;

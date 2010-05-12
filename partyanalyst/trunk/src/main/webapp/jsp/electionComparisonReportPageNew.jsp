@@ -65,7 +65,7 @@
 	}
 	.yui-skin-sam .yui-dt-liner 
 	{
-		margin:0 0 0 5px;
+		margin:0 0 0 0px;
 		padding:5px;
 	}
 	#partyElectionResultsDivMain
@@ -127,11 +127,12 @@
 	}
 	#mainHeadingDiv
 	{
+		background-image:url(images/icons/statePage/header_body.png);
 		color:highlight;
-		font-size:18px;
 		font-family:verdana;
-		font-weight:bold;		
-		background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+		font-size:16px;
+		font-weight:bold;
+		height:27px;
 		padding:4px;
 	}
 	
@@ -329,6 +330,7 @@
 		border:1px solid #808080;
 		margin-top:10px;
 		background-color:#FFFFFF;
+		width:900px;		
 	}
 
 
@@ -352,6 +354,15 @@
 		padding:5px;
 		text-align:left;
 	}
+	#description {
+		line-height:1.5em;
+		padding:10px;
+		text-align:justify;
+		word-spacing:2px;
+		width:90%;
+		color:#73787E;
+		font-size:12px;
+}
 
 </style>
 <script type="text/javascript">	
@@ -498,7 +509,7 @@ function buildPanel(id,arr,year)
 	   str+='<div id="'+id+'_electionResults_footer" class="resultFooterClass">';
 	   str+='<table>';
        str+='<tr>';
-	   str+='<td><input type="button" name="'+id+'_compbutton" value="Compared Results" onclick="getComparedResults(\''+id+'\')"/></td>';
+	   str+='<td><input type="button" name="'+id+'_compbutton" value="Compare Results" onclick="getComparedResults(\''+id+'\')"/></td>';
 	   str+='</tr>';
 	   str+='</table>';
 	   str+='</div>';
@@ -1309,7 +1320,7 @@ function callAjax(param,jsObj){
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
-
+//wkg table
 function buildDataTable(divId,arr,yearOne,yearTwo)
 {
     var colorClass = '';
@@ -1326,14 +1337,24 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 		}, {
 			key : "candName"
 		}, {
+			key : "partyName"
+		}, {
 			key : "votesEarned",parser:"number"
 		}, {
 			key : "votesPercent",parser:"number"
 		}, {
+			key : "rank",parser:"number"
+		},		 
+		{
 			key : "votesPercentDiff",parser:"number"
 		} ,	{
 			key : "secndCandName"
-		} ,{
+		} , {
+			key : "secndCandPartyName"
+		}, {
+			key : "secndCandRank" ,parser:"number"
+		},
+		{
 			key : "votesEarnedBySecnd",parser:"number"
 		} , {
 			key : "secndVotesPercent",parser:"number"
@@ -1353,6 +1374,16 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 					{
 						key : "candName",
 						label : "Candidate",
+						sortable : true
+					},
+					{
+						key : "partyName",
+						label : "Party",
+						sortable : true
+					},
+					{
+						key : "rank",
+						label : "Rank",
 						sortable : true
 					},
 					{
@@ -1390,6 +1421,16 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 						sortable : true
 					},
 					{
+						key : "secndCandPartyName",
+						label : "Party",
+						sortable : true
+					},
+					{
+						key : "secndCandRank",
+						label : "Rank",
+						sortable : true
+					},
+					{
 						key : "votesEarnedBySecnd",
 						label : "Votes",
 						sortable : true
@@ -1417,7 +1458,7 @@ function hideComparedResultsDiv()
 }
 
 function displayComparedResults(jsObj,data)
-{   	
+{   
 	var elmt = document.getElementById("comparedResultsPanel");
 	if(!elmt)
 		return;
@@ -1612,14 +1653,15 @@ function buildYearDataTable(divId,data)
 
 <table cellspacing="0" cellpadding="0" border="0" style="margin-top:30px;">
 	<tbody><tr>
-		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/first.png"></td>
-		<td valign="top"><div id="mainHeadingDiv">Election Comparison Report</div></td>
-		<td valign="top"><img border="none" src="images/icons/electionResultsAnalysisReport/second.png"></td>
+		<td valign="top"><img border="none" src="images/icons/statePage/header_left.png"></td>
+		<td valign="top"><div id="mainHeadingDiv">Elections Comparison Report</div></td>
+		<td valign="top"><img border="none" src="images/icons/statePage/header_right.png"></td>
 	</tr>
 </tbody></table>
 
 <br/><br/>
-<div>
+<div id="description"><font style="color: rgb(75, 116, 198);font-weight:bold;">Elections Comparison Report</font> gives a glance of compared election results for a party participated in any two elections in detailed view.This report gives an overview for a user to know whether the party has improved or lost its performance in selected present year when compared to selected previous year.
+</div>
 <div id = "partyPositions" class="yui-skin-sam">
 	<div id = "partyPositionsHead"></div>
     <div id = "partyPositionsBody"></div>	
