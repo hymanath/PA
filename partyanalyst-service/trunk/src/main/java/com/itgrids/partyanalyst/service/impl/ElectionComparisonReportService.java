@@ -506,10 +506,14 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		votesPercentResults.setConstiName(selectedNominationYearOne.getConstituencyElection().getConstituency().getName());
 		votesPercentResults.setVotesEarned(selectedNominationYearOne.getCandidateResult().getVotesEarned().longValue());
 		votesPercentResults.setVotesPercent(votesPercentYearOne.toString());
+		votesPercentResults.setPartyName(selectedNominationYearOne.getParty().getShortName());
+		votesPercentResults.setRank(selectedNominationYearOne.getCandidateResult().getRank());
 		votesPercentResults.setSecndCandName(selectedNominationYearTwo.getCandidate().getLastname());
 		votesPercentResults.setSecndConstiName(selectedNominationYearTwo.getConstituencyElection().getConstituency().getName());
 		votesPercentResults.setVotesEarnedBySecnd(selectedNominationYearTwo.getCandidateResult().getVotesEarned().longValue());
 		votesPercentResults.setSecndVotesPercent(votesPercentYearTwo.toString());
+		votesPercentResults.setSecndCandPartyName(selectedNominationYearTwo.getParty().getShortName());
+		votesPercentResults.setSecndCandRank(selectedNominationYearTwo.getCandidateResult().getRank());
 		votesPercentResults.setVotesPercentDiff(votesPercentDiff.toString());
 		
 		return votesPercentResults;

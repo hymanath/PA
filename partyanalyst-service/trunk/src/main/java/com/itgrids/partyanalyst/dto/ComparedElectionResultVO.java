@@ -16,12 +16,16 @@ public class ComparedElectionResultVO implements java.io.Serializable{
     
 	private String candName;
 	private String constiName;
+	private String partyName;
+	private Long rank;
 	private Long votesEarned;
 	private String votesPercent;
 	private String secndCandName;
 	private String secndConstiName;
 	private Long votesEarnedBySecnd;
 	private String secndVotesPercent;
+	private String secndCandPartyName;
+	private Long secndCandRank;
 	private String votesPercentDiff;
 	
 	
@@ -78,5 +82,29 @@ public class ComparedElectionResultVO implements java.io.Serializable{
 	}
 	public void setVotesPercentDiff(String votesPercentDiff) {
 		this.votesPercentDiff = votesPercentDiff;
+	}
+	public String getPartyName() {
+		return partyName;
+	}
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
+	public Long getRank() {
+		return rank;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
+	}
+	public String getSecndCandPartyName() {
+		return secndCandPartyName;
+	}
+	public void setSecndCandPartyName(String secndCandPartyName) {
+		this.secndCandPartyName = secndCandPartyName;
+	}
+	public Long getSecndCandRank() {
+		return secndCandRank;
+	}
+	public void setSecndCandRank(Long secndCandRank) {
+		this.secndCandRank = secndCandRank;
 	}
 }
