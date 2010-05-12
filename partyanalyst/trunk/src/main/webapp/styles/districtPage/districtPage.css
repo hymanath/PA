@@ -288,8 +288,22 @@
 	background-color:silver;
 }
 .button {
-background:#335291 none repeat scroll 0 0;
-color:#FFFFFF;
-padding:5px;
-width:150px;
+	background:#335291 none repeat scroll 0 0;
+	color:#FFFFFF;
+	padding:5px;
+	width:150px;
+	margin-top:5px;
+	margin-bottom:5px;	
+}
+#graphElectionTypeLabel
+{
+	color:#606060;
+	margin-left:10px;
+	font-size:12px;
+	font-weight:bold;
+}
+#allElectionResultsInDT_body
+{
+	margin-top:5px;
+	
 }
