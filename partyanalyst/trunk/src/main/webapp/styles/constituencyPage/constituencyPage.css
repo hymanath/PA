@@ -115,7 +115,7 @@ background-color:#E4EDF0;
 
 #constituencyPageProfileInfoDiv_Body
 {
-	height:100px;
+	height:80px;
 }
 
 #constituencyInfoDiv
@@ -224,8 +224,6 @@ legend
 {
 	background-color:#FFFFFF;
 	height:100%;
-	margin-bottom:20px;
-	padding-bottom:20px;
 }
 
 .yui-skin-sam .yui-dt caption
