@@ -470,13 +470,14 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				rvStr+='</tr>';
 				rvStr+='<tr>';
 			}
+			
 			if(i == listSize)
-				rvStr+='<td colspan="2">';
+				rvStr+='<td colspan="2" style="vertical-align: top;">';
 			else
-				rvStr+='<td>';		
+				rvStr+='<td  style="vertical-align: top;">';		
 			assignToPartyDataArray = new Array();
 						
-			rvStr+='<div id="allMuncipalitiesDetails'+i+'" style="padding:10px;width:100%;" class="datatableClass">';
+			rvStr+='<div id="allMuncipalitiesDetails'+i+'" style="padding:10px;width:100%;vertical-align:top;" class="datatableClass">';
 			rvStr += '<table class="datatableClass" width="90%" style="background-color:#F3F6F7;margin-top:10px;margin-right:10px;">';
 			rvStr += '<tr>';
 			rvStr += '<th align="left">Muncipality Name :</th><td align="left">'+result[i].muncipalityName+'</td>'; 
@@ -498,8 +499,12 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			}			
 			rvStr+='</td>';
 			rvStr +='</tr>';
-			rvStr +='<tr >';
-			rvStr +='<td> <div><div id="dataTable'+i+'"></div></div></td>';
+			rvStr +='<tr>';
+			if(electionType == muncipalityElectionType){
+				rvStr +='<td style="vertical-align: top;"> <div><div id="dataTable'+i+'"></div></div></td>';
+			}else{
+				rvStr +='<td style="vertical-align: top;"> <div><div id="corporationDataTable'+i+'"></div></div></td>';
+			}
 			rvStr +='</tr>';			
 			rvStr +='</table></div>';
 			rvStr+='</td>';
@@ -520,8 +525,12 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 						percentageOfVotesWonByParty:result[i].muncipalityVO[j].percentageOfVotesWonByParty				
 				 };
 				localDataArr.push(muncipalObj);
-			}		
-			initializeMuncipalResultsTableForParty('dataTable'+i,localDataArr,electionType) ;
+			}	
+			if(electionType == muncipalityElectionType){	
+				initializeMuncipalResultsTableForParty('dataTable'+i,localDataArr,electionType) ;
+			}else{
+				initializeMuncipalResultsTableForParty('corporationDataTable'+i,localDataArr,electionType) ;
+			}
 		}
 	}
 	function errorMessageMuncipalitiesDiv(){
@@ -1395,7 +1404,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			<tr>
 				<td align="left">
 					<div id="muncipalitiesDivHead" style="text-align:left;" onclick="hideMuncipalitiesDiv()"></div>
-					<div id="muncipalitiesDiv" style="text-align:left;border-bottom:1px solid #E0E0D6;border-left:1px solid #E0E0D6;border-right:1px solid #E0E0D6;height:auto;overflow:auto;padding:15px;" ></div>
+					<div id="muncipalitiesDiv" style="text-align:left;border-bottom:1px solid #E0E0D6;border-left:1px solid #E0E0D6;border-right:1px solid #E0E0D6;height:auto;overflow:auto;padding:15px;"></div>
 				</td>
 			</tr>
 		</table>
