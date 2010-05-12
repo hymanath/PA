@@ -705,37 +705,43 @@ function getVotingTrendzForyear()
 			electionDetails +="<br/><br/>";
 			imgElmt.innerHTML = electionDetails;
 
-
-			var selectDiv = document.getElementById("zptcElectionIdsSelectDiv");
-			var electionYearSelect="";
-			electionYearSelect+="<b>Select a Election Year :</b>";
-			electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="systemGroups" onchange="getZptcPartyDetails(this.options[this.selectedIndex].value)">';
-			for(var i in tehsilElections.zptcElectionYears)
-			{
-				electionYearSelect+='<option value='+tehsilElections.zptcElectionYears[i].id+'>'+tehsilElections.zptcElectionYears[i].value+'</option>';
+			if(tehsilElections.zptcElectionYears.length!=0){
+				var selectDiv = document.getElementById("zptcElectionIdsSelectDiv");
+				var electionYearSelect="";
+				electionYearSelect+="<b>Select a Election Year :</b>";
+				electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="zptcYears" onchange="getZptcPartyDetails(this.options[this.selectedIndex].value)">';
+				for(var i in tehsilElections.zptcElectionYears)
+				{
+					electionYearSelect+='<option value='+tehsilElections.zptcElectionYears[i].id+'>'+tehsilElections.zptcElectionYears[i].value+'</option>';
+				}
+				electionYearSelect+='</select>';
+				selectDiv.innerHTML = electionYearSelect;
+				getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
 			}
-			electionYearSelect+='</select>';
-			selectDiv.innerHTML = electionYearSelect;
+		}
 
-
+		function getAllMptcYears()
+		{
 			var imgElmt = document.getElementById("mptcPartyVotingTrendz_head");
 			var electionDetails="";
 			electionDetails +="MPTC &nbsp;Election &nbsp;Voting &nbsp;Trendz";
 			electionDetails +="<br/><br/>";
 			imgElmt.innerHTML = electionDetails;
+	
+			if(tehsilElections.mptcElectionYears.length!=0){
+				var selectDiv = document.getElementById("mptcElectionIdsSelectDiv");
+				var electionYearSelect="";
+				electionYearSelect+="<b>Select a Election Year :</b>";
+				electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="mptcYears" onchange="getMptcPartyDetails(this.options[this.selectedIndex].value)">';	   
 
-
-			var selectDiv = document.getElementById("mptcElectionIdsSelectDiv");
-			var electionYearSelect="";
-			electionYearSelect+="<b>Select a Election Year :</b>";
-			electionYearSelect+='<select class="selectWidth" id="staticGrpSelectBox" name="systemGroups" onchange="getMptcPartyDetails(this.options[this.selectedIndex].value)">';
-			for(var i in tehsilElections.zptcElectionYears)
-			{
-				electionYearSelect+='<option value='+tehsilElections.mptcElectionYears[i].id+'>'+tehsilElections.mptcElectionYears[i].value+'</option>';
-			}
-			electionYearSelect+='</select>';
-			selectDiv.innerHTML = electionYearSelect;
-		
+				for(var i in tehsilElections.zptcElectionYears)
+				{			   
+					electionYearSelect+='<option value='+tehsilElections.mptcElectionYears[i].id+'>'+tehsilElections.mptcElectionYears[i].value+'</option>';
+				}
+				electionYearSelect+='</select>';
+				selectDiv.innerHTML = electionYearSelect;
+				getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
+			}			  		
 		}
 		
 		function buildElectionsSelectBox(myResults){
@@ -1233,11 +1239,11 @@ function getVotingTrendzForyear()
 				};
 		tehsilElections.mptcElectionYears.push(ob);	
 		</c:forEach>
-	getAllZptcYears();
+	getAllZptcYears();	  
+	getAllMptcYears();
 	initializeConstituencyPage();
 	getConstituencyElections();
-	getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
-	getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
+	
 </script>
 </body>
 </html>
