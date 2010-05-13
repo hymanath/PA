@@ -124,6 +124,8 @@ table.CandidateElectionResultsTable td {
 </script>
 </head>
 <body>
+
+<div style="margin-top:40px;">
 <s:form action="electionComparisonReportAction.action" onsubmit="return validateInput()">
 
 	<table class="CandidateElectionResultsTable" width="300px" border="1">
@@ -175,5 +177,6 @@ table.CandidateElectionResultsTable td {
    </table>
 
    </s:form>
+   </div>
 </body>
 </html>
