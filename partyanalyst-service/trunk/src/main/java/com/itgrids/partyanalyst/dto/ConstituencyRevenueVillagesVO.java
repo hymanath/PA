@@ -12,6 +12,7 @@ public class ConstituencyRevenueVillagesVO {
 	private List<RevenueVillageElectionVO> revenueVillageElectionVO;
 	private List<ConstituencyOrMandalWiseElectionVO> constituencyOrMandalWiseElectionVO;
 	private String chartPath;
+	private String detailedChartPath;
 	private List<SelectOptionVO> elections;
 	private Boolean isDataInsufficient;
 	private List<SelectOptionVO> missingConstituencies;
@@ -24,6 +25,14 @@ public class ConstituencyRevenueVillagesVO {
 	public void setConstituencyOrMandalWiseElectionVO(
 			List<ConstituencyOrMandalWiseElectionVO> constituencyOrMandalWiseElectionVO) {
 		this.constituencyOrMandalWiseElectionVO = constituencyOrMandalWiseElectionVO;
+	}
+
+	public String getDetailedChartPath() {
+		return detailedChartPath;
+	}
+
+	public void setDetailedChartPath(String detailedChartPath) {
+		this.detailedChartPath = detailedChartPath;
 	}
 
 	public Long getTotalVoters() {
