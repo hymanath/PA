@@ -49,7 +49,9 @@
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-
+	
+	<link type="text/css" rel="stylesheet" href="styles/indexPage/indexPage.css">
+	
 
 <style type="text/css">
 
@@ -89,7 +91,19 @@
 	{
 	font-family:Verdana;
 	width:350px;
+	border-collapse:collapse;
 	}
+
+	.partyElecResultTable th
+	{
+		padding:4px;
+	}
+
+	.partyElecResultTable td
+	{
+		padding:4px;
+	}
+
 	.labelDisplay
 	{
 		color:appworkspace;
@@ -375,6 +389,243 @@ var electionObject=	{
 		yearTwo:${electionComparisonReportVO.yearTwo}
 		
 };
+
+function buildDataForTwoElectionYears()
+{	
+	//Data For Election Year One...
+
+	 <c:forEach var="electionResults" items="${electionComparisonReportVO.districtWisePartyResultsForYearOne}">
+	   var distObjYearOne={
+					   districtId:'${electionResults.districtId}',
+					   stateId:'${electionResults.stateId}',
+					   districtName:'${electionResults.districtName}',
+					   stateName:'${electionResults.stateName}',
+					   constiCount:'${electionResults.totalConstituencies}',
+					   constiParticipated:'${electionResults.constiParticipated}',
+					   totalConsti:'${electionResults.constiCount}',
+					   seatsWon:'${electionResults.seatsWon}',
+					   votesPercent:'${electionResults.votesPercent}',
+					   electionResults:[]
+			          }
+		
+	<c:forEach var="partyResults" items="${electionResults.partyElectionResultsList}">
+		var electionObj={
+							partyId:'${partyResults.partyId}',
+							partyName:'${partyResults.partyName}',
+							candidateId:'${partyResults.candidateId}',
+							candidateName:'${partyResults.candidateName}',
+							constituencyId:'${partyResults.constituencyId}',
+							constituencyName:'${partyResults.constituencyName}',
+							votesEarned:'${partyResults.votesEarned}',
+							rank:'${partyResults.rank}',
+							votesPercentage:'${partyResults.votesPercent}',
+							oppCandidateName:'${partyResults.oppositionCandidates.candidateName}',
+							oppCandVotesEarned:'${partyResults.oppositionCandidates.votesEarned}',
+							oppCandvotesPercentage:'${partyResults.oppositionCandidates.votesPercentage}',
+							oppCandRank:'${partyResults.oppositionCandidates.rank}',
+							oppCandParty:'${partyResults.oppositionCandidates.partyName}',
+							electors:'${partyResults.electors}'
+						}
+		distObjYearOne.electionResults.push(electionObj);
+	</c:forEach>
+	electionObject.resultsForYearOne.push(distObjYearOne);
+ </c:forEach>
+
+//Data For Election Year Two...
+
+ <c:forEach var="electionResults" items="${electionComparisonReportVO.districtWisePartyResultsForYearTwo}">
+	var distObjYearTwo={
+					   districtId:'${electionResults.districtId}',
+					   stateId:'${electionResults.stateId}',
+					   districtName:'${electionResults.districtName}',
+					   stateName:'${electionResults.stateName}',
+					   constiCount:'${electionResults.totalConstituencies}',
+					   constiParticipated:'${electionResults.constiParticipated}',
+					   totalConsti:'${electionResults.constiCount}',
+					   seatsWon:'${electionResults.seatsWon}',
+					   votesPercent:'${electionResults.votesPercent}',
+					   electionResults:[]
+			          }
+		
+	<c:forEach var="partyResults" items="${electionResults.partyElectionResultsList}">
+		var electionObj={
+							partyId:'${partyResults.partyId}',
+							partyName:'${partyResults.partyName}',
+							candidateId:'${partyResults.candidateId}',
+							candidateName:'${partyResults.candidateName}',
+							constituencyId:'${partyResults.constituencyId}',
+							constituencyName:'${partyResults.constituencyName}',
+							votesEarned:'${partyResults.votesEarned}',
+							rank:'${partyResults.rank}',
+							votesPercentage:'${partyResults.votesPercent}',
+							oppCandidateName:'${partyResults.oppositionCandidates.candidateName}',
+							oppCandVotesEarned:'${partyResults.oppositionCandidates.votesEarned}',
+							oppCandvotesPercentage:'${partyResults.oppositionCandidates.votesPercentage}',
+							oppCandRank:'${partyResults.oppositionCandidates.rank}',
+							oppCandParty:'${partyResults.oppositionCandidates.partyName}',
+							electors:'${partyResults.electors}'
+						}
+		distObjYearTwo.electionResults.push(electionObj);
+	</c:forEach>
+	electionObject.resultsForYearTwo.push(distObjYearTwo);
+ </c:forEach>
+
+	buildElectionResultsComparePanel();
+}
+
+
+function districtPresentStatus(district)
+{
+	for(var i in electionObject.resultsForYearTwo)
+	{
+		var localObj = electionObject.resultsForYearTwo[i];
+		if(district == localObj.districtName)
+		{
+			electionObject.resultsForYearTwo.splice(i,1); 
+			return localObj;
+		}
+	}
+
+}
+
+function buildElectionResultsComparePanel()
+{	
+	var elmt = document.getElementById("twoYearpanel");
+	var id = "comparedResults";
+
+	if(!elmt)
+		return;
+
+	var arr = new Array();
+
+	for(var i in electionObject.resultsForYearOne)
+	{
+		var local = electionObject.resultsForYearOne[i];
+		var secondLocal = districtPresentStatus(local.districtName);
+		if(secondLocal)
+		{
+			var obj = {
+						districtId:local.districtId,
+						districtName:local.districtName,
+
+						totalConstiOne:local.totalConsti,
+						constiParticipatedOne:local.constiParticipated,
+						seatsWonOne:local.seatsWon,
+						votesPercentOne:local.votesPercent,
+
+						totalConstiTwo:secondLocal.totalConsti,
+						constiParticipatedTwo:secondLocal.constiParticipated,
+						seatsWonTwo:secondLocal.seatsWon,
+						votesPercentTwo:secondLocal.votesPercent
+					  };
+			arr.push(obj);
+			
+		}
+		else
+		{
+			var obj = {
+						districtId:local.districtId,
+						districtName:local.districtName,
+
+						totalConstiOne:local.totalConsti,
+						constiParticipatedOne:local.constiParticipated,
+						seatsWonOne:local.seatsWon,
+						votesPercentOne:local.votesPercent,
+
+						totalConstiTwo:"*NP",
+						constiParticipatedTwo:"*NP",
+						seatsWonTwo:"*NP",
+						votesPercentTwo:"*NP"
+					  };
+			arr.push(obj);
+		}
+	}
+
+	if(electionObject.resultsForYearTwo.length>0)
+	{
+		for(var i in electionObject.resultsForYearOne)
+		{
+			var local = electionObject.resultsForYearTwo[i];
+			var obj = {
+						districtId:local.districtId,
+						districtName:local.districtName,
+
+						totalConstiOne:"*NP",
+						constiParticipatedOne:"*NP",
+						seatsWonOne:"*NP",
+						votesPercentOne:"*NP",
+
+						totalConstiTwo:local.totalConsti,
+						constiParticipatedTwo:local.constiParticipated,
+						seatsWonTwo:local.seatsWon,
+						votesPercentTwo:local.votesPercent
+					  };
+				arr.push(obj);
+		}
+	}
+	
+	
+	 var lyear='';
+	 lyear="Party Results For "+electionObject.yearOne+" - "+electionObject.yearTwo;	 
+	
+	  var str='';
+	   str+='<div id="'+id+'_electionResults_head" class="resultsHeadClass"> '+lyear+' </div>';
+	   str+='<div id="'+id+'_electionResults_body" class="resultBodyClass">';
+	   str+='<table class="partyElecResultTable" style="width:100%" border="1">';
+	   			
+	   str+='<tr>';
+	   str+='<th rowspan="2"></th>';
+	   str+='<th rowspan="2">District</th>';
+	   str+='<th align="center" colspan="4">'+electionObject.yearOne+'</th>';
+	   str+='<th align="center" colspan="4">'+electionObject.yearTwo+'</th>';
+	   str+='</tr>';
+
+	   str+='<tr>';	   
+       str+='<th>*TC</th>';
+       str+='<th>*PC</th>';
+	   str+='<th>Won</th>';
+	   str+='<th>%</th>';
+	   
+       str+='<th>*TC</th>';
+       str+='<th>*PC</th>';
+	   str+='<th>Won</th>';
+	   str+='<th>%</th>';
+	   str+='</tr>';
+
+	   for(var i in arr)
+	   {		   
+		   str+='<tr>';		   
+		   str+='<td align="center"><input type="radio" name="'+id+'_radio" value="'+arr[i].districtId+'"/></td>';
+		   str+='<td align="left">'+arr[i].districtName+'</td>';
+		   
+		   str+='<td align="center">'+arr[i].totalConstiOne+'</td>';
+		   str+='<td align="center">'+arr[i].constiParticipatedOne+'</td>';
+           str+='<td align="center">'+arr[i].seatsWonOne+'</td>';
+		   str+='<td align="center">'+arr[i].votesPercentOne+'</td>';
+		  	
+		   str+='<td align="center">'+arr[i].totalConstiTwo+'</td>';
+		   str+='<td align="center">'+arr[i].constiParticipatedTwo+'</td>';
+           str+='<td align="center">'+arr[i].seatsWonTwo+'</td>';
+		   str+='<td align="center">'+arr[i].votesPercentTwo+'</td>';
+
+		   str+='</tr>';
+		   //if(++i%2 == 0)
+				//str+='</tr><tr>';
+       }
+	
+	   str+='</table>';
+	   str+='</div>';
+	   str+='<div id="'+id+'_electionResults_footer" class="resultFooterClass">';
+	   str+='<table width="100%">';
+       str+='<tr>';
+	   str+='<td align="right" colspan="2"><input type="button" name="'+id+'_compbutton" value="Compare Results" onclick="getComparedResults(\''+id+'\')"/></td>';
+	   str+='</tr>';
+	   str+='</table>';
+	   str+='</div>';
+	   str+='</div>';
+		
+	   elmt.innerHTML = str;
+}
 
 function buildDataForYearOne()
 {	
@@ -1266,14 +1517,10 @@ function getComparedResults(panelId)
    var elements = document.getElementsByTagName('input'); 
 	  for(var i=0;i<elements.length;i++)
 	  {
-		if(elements[i].type=="radio" && elements[i].name=="firstpanel_radio" && elements[i].checked==true && panelId=="firstpanel")
+		if(elements[i].type=="radio" && elements[i].name=="comparedResults_radio" && elements[i].checked==true)
 		{
 		districtId = elements[i].value;
-		}
-        else if(elements[i].type=="radio" && elements[i].name=="secondpanel_radio" && elements[i].checked==true && panelId=="secondpanel")
-		{
-		districtId = elements[i].value;
-		}
+		}       
 
 	  }
 	  var yearOne=electionObject.yearOne;
@@ -1650,7 +1897,7 @@ function buildYearDataTable(divId,data)
 </script>
 </head>
 <body>
-
+<center>
 <table cellspacing="0" cellpadding="0" border="0" style="margin-top:30px;">
 	<tbody><tr>
 		<td valign="top"><img border="none" src="images/icons/statePage/header_left.png"></td>
@@ -1714,26 +1961,16 @@ function buildYearDataTable(divId,data)
      <td align="left"><div id="commentsDiv">  *PC -- Participated Constituencies |   *TC --Total Constituencies </div></td>
 </tr>
 <tr>
-	 <td align="left"><div id="commentsDiv">  *P -- Party Participated  |   *S --Total State </div></td>
+	 <td align="left"><div id="commentsDiv">  *P -- Party Participated  |   *S --Total State  |   *NP --Not Participated</div></td>
 
 </tr>
-<tr>
-    <td colspan="2">
-		<div id="partyResultsHeading"><h4>Detailed Results .... </h4></div>
-	</td>
-</tr>
+
  <tr>
-	  <td id="yearOnePanel">
-		  <div id="panelForYearOne" class="yui-skin-sam">
-				<div id="firstpanel" class="panelOuterDiv"></div>
+	  <td id="twoYearPanel" colspan="2">
+		  <div id="panelFortwoYear" class="yui-skin-sam">
+				<div id="twoYearpanel" class="panelOuterDiv"></div>
 			</div>
 	  </td>	   
-	  <td id="yearTwoPanel">
-			<div id="panelForYearTwo" class="yui-skin-sam">	
-				<div id="secondpanel" class="panelOuterDiv"></div>
-			</div>
-	  </td>
- </tr>
  <tr>
     <td align="left">
     <div id="displayLabelDiv" class="labelDisplay"></div>
@@ -1742,18 +1979,19 @@ function buildYearDataTable(divId,data)
 </table> 
 </div>
 
-<div id="partyElectionResultsDivMain" class="yui-skin-sam">	
-			<div id="partyElectionResultsDiv"></div>
-</div>
+
   
 
 <script type="text/javascript">	
-		buildDataForYearOne();
-		buildDataForYearTwo();
-		buildPartyElecResultsTable("firstpanel");
+		buildDataForTwoElectionYears();
+		//buildDataForYearOne();
+		//buildDataForYearTwo();
+		
+		//buildPartyElecResultsTable("firstpanel");
 		overallResultsForYearOne();
 		overallResultsForYearTwo();
 		getDiffPercent();
 </script>
+</center>
 </body>
 </html>
