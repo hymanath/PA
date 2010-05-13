@@ -785,9 +785,9 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			e.printStackTrace();
 		}
 		
-		String chartTitle = null;
-		String chartName = null;
-		String domainAxisName = null;
+		String chartTitle = null,detailedChartTitle = null;
+		String chartName = null,detailedChartName = null;
+		String domainAxisName = null,detailedDomainAxisName = null;
 		
 		constituencyRevenueVillagesVO = constituencyPageService.getConstituencyElecResults(jObj.getLong("constituencyId")
 				, jObj.getString("electionYear"));
@@ -795,16 +795,39 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			chartName = "partyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 			chartTitle = "Mandal Wise Electon Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
 			domainAxisName = "Mandals";
+			
+			detailedChartName = "detailedPartyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
+			detailedChartTitle = "Mandal Wise Electon Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
+			detailedDomainAxisName = "Mandals";
 		}else{
 			chartName = "partyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 			chartTitle = "Assembly Constituencies Wise Electon Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
 			domainAxisName = "Assembly Constituencies";
+			
+			detailedChartName = "detailedPartyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
+			detailedChartTitle = "Assembly Constituencies Wise Electon Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
+			detailedDomainAxisName = "Assembly Constituencies";
 		}
 		
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         constituencyRevenueVillagesVO.setChartPath(chartName);
         ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,260,700, null);
-	  
+        
+        String detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
+        constituencyRevenueVillagesVO.setDetailedChartPath(detailedChartName);
+        ChartProducer.createLineChart(chartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), detailedChartPath,600,800, null);
+
+    /*    String detailedChartName = "detailedChartForAllPartiesDistrictWisePerformanceIn"+jObj.getString("electionType")+"Elections_"+jObj.getLong("districtId")+"_"+jObj.getLong("electionTypeId")+".png";
+        String detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
+        districtWisePartyResultVO.setDetailedChartPath(detailedChartName);
+        String detailedChartElectionType = jObj.getString("electionType");
+        if(detailedChartElectionType.equalsIgnoreCase("Select Election Type"))
+        	detailedChartElectionType = "All ";
+        ChartProducer.createLineChart("All Parties Performance In "+detailedChartElectionType+" Elections Of "+jObj.getString("districtName")
+        		+" District", "Elections", "Percentages", createDataset(allElectionResults), detailedChartPath, 600, 800, null);	*/
+
+        
+      
 	  return SUCCESS;
   }
   
@@ -828,10 +851,10 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  }catch (ParseException e) {
 		e.printStackTrace();
 	  }
-	  String chartTitle = "";
-	  String chartPath = "";
-	  String chartName = "";
-	  String domainAxisName = "Mandals";
+	  String chartTitle = "",detailedChartTitle = null;
+	  String chartPath = "",detailedChartPath = null;
+	  String chartName = "",detailedChartName = null;
+	  String domainAxisName = "Mandals",detailedDomainAxisName = null;
 	  parliamentMandals = constituencyPageService.getMandalElectionInfoForAParliamentConstituency(jObj.getLong("constituencyId"), jObj.getString("electionYear"));
 	  
 	  for(ConstituencyRevenueVillagesVO obj:parliamentMandals){
@@ -840,6 +863,12 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj), chartPath,260,700, null);
 		  obj.setChartPath(chartName);
+		  
+		  detailedChartTitle = "Mandal Wise Election Results For "+obj.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
+		  detailedChartName = "detailedMandalWiseParliamentElectionsResults_"+obj.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
+		  detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
+		  ChartProducer.createLineChart(detailedChartTitle, detailedDomainAxisName, "Percentages", createDataset(obj), detailedChartPath,600,800, null);
+		  obj.setDetailedChartPath(detailedChartName);
 	  }
 	  
 	  return SUCCESS;
