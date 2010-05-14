@@ -21,6 +21,8 @@ public class DistrictWisePartyResultVO extends ResultStatus{
 	private Long constiParticipated;
 	private Long seatsWon;
 	private Double votesPercent;
+	private Long seatsWonDiff;
+	private Double votesPercentDiff;
 	private String chartPath;
 	private String detailedChartPath;
 	private String pasitionsChart;
@@ -28,6 +30,18 @@ public class DistrictWisePartyResultVO extends ResultStatus{
 	private List<ElectionResultVO> alliancePartiesInElection;
 	private List<PartyPositionsVO> partiesPositionsInElection;
 	
+	public Long getSeatsWonDiff() {
+		return seatsWonDiff;
+	}
+	public void setSeatsWonDiff(Long seatsWonDiff) {
+		this.seatsWonDiff = seatsWonDiff;
+	}
+	public Double getVotesPercentDiff() {
+		return votesPercentDiff;
+	}
+	public void setVotesPercentDiff(Double votesPercentDiff) {
+		this.votesPercentDiff = votesPercentDiff;
+	}
 	public Long getDistrictId() {
 		return districtId;
 	}

@@ -224,10 +224,25 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			electionCompReportVO.setResultStatus(resultStatus);
 		}
 		
+		//Code for votes % Diff, Seats Diff - Mohan
+		
+		for(DistrictWisePartyResultVO districtVO1:districtWiseElectionResultsForYearOne){
+			for(DistrictWisePartyResultVO districtVO2:districtWiseElectionResultsForYearTwo){
+				if(districtVO2.getDistrictName().equalsIgnoreCase(districtVO1.getDistrictName())){
+					
+					districtVO1.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					districtVO1.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
+					
+					districtVO2.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					districtVO2.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
+					break;
+				}
+			}
+		}
 		
 		return electionCompReportVO;
 	}
-	
+		
 	public PartyPositionsVO getPartyPositions(PartyElectionResult partyElecResults){
 		PartyPositionsVO partyPositions = new PartyPositionsVO();
 		partyPositions.setTotalSeatsWon(new Long(partyElecResults.getTotalSeatsWon()));
