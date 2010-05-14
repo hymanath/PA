@@ -275,7 +275,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 			presentYear = getElectionYears1();
 		}
 			
-		electionComparisonReportVO = electionComparisonReportService.getDistrictWiseElectionResultsForAParty(Long.parseLong(getElectionType()), Long.parseLong(getParty()),Long.parseLong(getState()), previousYear, presentYear, hasAlliances);
+		electionComparisonReportVO = electionComparisonReportService.getDistrictWiseElectionResultsForAParty(Long.parseLong(getElectionType()), Long.parseLong(getParty()),Long.parseLong(getState()), presentYear, previousYear, hasAlliances);
 			
         try{
         	session = request.getSession();
@@ -311,7 +311,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		catch(Exception ex){
 			ex.printStackTrace();
         }
-		
+
 		return Action.SUCCESS;
 	
 	}
