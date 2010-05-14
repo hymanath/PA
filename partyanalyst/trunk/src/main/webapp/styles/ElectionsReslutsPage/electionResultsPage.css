@@ -170,7 +170,8 @@ text-decoration:none;
 }
 #distResultsViewOptionsDiv
 {
-	margin:10px;	
+	margin-left:150px;
+	margin-right:150px;	
 	padding:5px;
 	border:1px solid #B7D3FC;
 	width:600px;
