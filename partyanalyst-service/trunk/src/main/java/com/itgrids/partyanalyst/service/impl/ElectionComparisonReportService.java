@@ -109,8 +109,15 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			
 		electionCompReportVO.setStateId(stateId);
 		electionCompReportVO.setPartyId(partyId);
-		electionCompReportVO.setYearOne(firstYear);
-		electionCompReportVO.setYearTwo(secondYear);
+		
+		if(new Long(firstYear) > new Long(secondYear)){
+			electionCompReportVO.setYearOne(firstYear);
+			electionCompReportVO.setYearTwo(secondYear);	
+		}else{
+			electionCompReportVO.setYearOne(secondYear);
+			electionCompReportVO.setYearTwo(firstYear);	
+		}
+		
 		electionCompReportVO.setElectionType(electionType);
 		electionCompReportVO.setHasAlliances(hasAlliances);
 		partyPosYearOne = new ArrayList<PartyPositionsVO>();
@@ -230,20 +237,6 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 				for(DistrictWisePartyResultVO districtVO2:districtWiseElectionResultsForYearTwo){
 					if(districtVO2.getDistrictName().equalsIgnoreCase(districtVO1.getDistrictName())){
 						
-						districtVO1.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-						districtVO1.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
-						
-						districtVO2.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-						districtVO2.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
-						break;
-					}
-				}
-			}
-		}else{
-			for(DistrictWisePartyResultVO districtVO1:districtWiseElectionResultsForYearOne){
-				for(DistrictWisePartyResultVO districtVO2:districtWiseElectionResultsForYearTwo){
-					if(districtVO2.getDistrictName().equalsIgnoreCase(districtVO1.getDistrictName())){
-						
 						districtVO1.setVotesPercentDiff(new BigDecimal(districtVO2.getVotesPercent() - districtVO1.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 						districtVO1.setSeatsWonDiff(districtVO2.getSeatsWon() - districtVO1.getSeatsWon());
 						
@@ -253,8 +246,29 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 					}
 				}
 			}
+		}else{
+			for(DistrictWisePartyResultVO districtVO1:districtWiseElectionResultsForYearOne){
+				for(DistrictWisePartyResultVO districtVO2:districtWiseElectionResultsForYearTwo){
+					if(districtVO2.getDistrictName().equalsIgnoreCase(districtVO1.getDistrictName())){
+						
+						districtVO1.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						districtVO1.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
+						
+						districtVO2.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						districtVO2.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
+						break;
+					}
+				}
+			}
 		}
-			
+		
+		if(new Long(firstYear) > new Long(secondYear)){
+			electionCompReportVO.setDistrictWisePartyResultsForYearTwo(districtWiseElectionResultsForYearTwo);
+			electionCompReportVO.setDistrictWisePartyResultsForYearOne(districtWiseElectionResultsForYearOne);
+		}else{
+			electionCompReportVO.setDistrictWisePartyResultsForYearOne(districtWiseElectionResultsForYearTwo);
+			electionCompReportVO.setDistrictWisePartyResultsForYearTwo(districtWiseElectionResultsForYearOne);
+		}
 		
 		return electionCompReportVO;
 	}

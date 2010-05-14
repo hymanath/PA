@@ -29,6 +29,8 @@ public class ElectionComparisonReportVO {
 	private Long partyId;
 	private Boolean hasAlliances;
 	private String label;
+	private String percentageChart;
+	private String seatsWonChart;
 	
 	
 	public String getYearOne() {
@@ -140,5 +142,17 @@ public class ElectionComparisonReportVO {
 	}
 	public void setSeatsDiff(Long seatsDiff) {
 		this.seatsDiff = seatsDiff;
+	}
+	public String getPercentageChart() {
+		return percentageChart;
+	}
+	public void setPercentageChart(String percentageChart) {
+		this.percentageChart = percentageChart;
+	}
+	public String getSeatsWonChart() {
+		return seatsWonChart;
+	}
+	public void setSeatsWonChart(String seatsWonChart) {
+		this.seatsWonChart = seatsWonChart;
 	}
 }
