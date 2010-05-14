@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ComparedConstituencyElectionVO;
 import com.itgrids.partyanalyst.dto.ComparedElectionResultVO;
 import com.itgrids.partyanalyst.dto.ComparedReportVO;
@@ -30,7 +29,6 @@ import com.itgrids.partyanalyst.dto.ElectionComparisonReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
@@ -109,15 +107,8 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			
 		electionCompReportVO.setStateId(stateId);
 		electionCompReportVO.setPartyId(partyId);
-		
-		if(new Long(firstYear) > new Long(secondYear)){
-			electionCompReportVO.setYearOne(firstYear);
-			electionCompReportVO.setYearTwo(secondYear);	
-		}else{
-			electionCompReportVO.setYearOne(secondYear);
-			electionCompReportVO.setYearTwo(firstYear);	
-		}
-		
+		electionCompReportVO.setYearOne(firstYear);
+		electionCompReportVO.setYearTwo(secondYear);	
 		electionCompReportVO.setElectionType(electionType);
 		electionCompReportVO.setHasAlliances(hasAlliances);
 		partyPosYearOne = new ArrayList<PartyPositionsVO>();
@@ -126,17 +117,18 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		
 		//For Election yearOne
 		Election electionForYearOne = getElectionFromTypeAndYear(electionType,firstYear,stateId,new Long(1));
+		
 		if(electionForYearOne != null){
 			Long seatsWon = new Long(0);
 			electionCompReportVO.setElecIdYearOne(electionForYearOne.getElectionId());
 		    if(hasAlliances)
-			alliancPartys = staticDataService.getAllianceParties(firstYear,electionType,partyId);
+		    	alliancPartys = staticDataService.getAllianceParties(firstYear,electionType,partyId);
 		    if(alliancPartys == null || !hasAlliances){
 		    	partyElectionResultforSelectedParty = staticDataService.getPartyElectionResultsForAParty(electionForYearOne.getElectionId(),partyId);
 		    	if(partyElectionResultforSelectedParty == null)
-		    	partyElectionResultforSelectedParty = staticDataService.savePartyElectionResultForAPartyForAElection(electionForYearOne.getElectionId(),partyId);
+		    		partyElectionResultforSelectedParty = staticDataService.savePartyElectionResultForAPartyForAElection(electionForYearOne.getElectionId(),partyId);
 		    	if(partyElectionResultforSelectedParty != null){
-		    	seatsWon = new Long(partyElectionResultforSelectedParty.getTotalSeatsWon());
+		    		seatsWon = new Long(partyElectionResultforSelectedParty.getTotalSeatsWon());
 		    	seatsWonByPartyInYearOne = new Long(partyElectionResultforSelectedParty.getTotalSeatsWon());
 		    	PartyPositionsVO partyPositions = getPartyPositions(partyElectionResultforSelectedParty);
 		    	completeVotesPercentYearOne = new Double(partyPositions.getCompleteVotesPercent());
@@ -145,14 +137,14 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		    }
 		    else if(alliancPartys != null && hasAlliances){
 		    	for(Party allincParty:alliancPartys){
-			    partyElectionResultforAllianceParty = staticDataService.getPartyElectionResultsForAParty(electionForYearOne.getElectionId(),allincParty.getPartyId());
+		    		partyElectionResultforAllianceParty = staticDataService.getPartyElectionResultsForAParty(electionForYearOne.getElectionId(),allincParty.getPartyId());
 			    if(partyElectionResultforAllianceParty == null)
-			    partyElectionResultforAllianceParty = staticDataService.savePartyElectionResultForAPartyForAElection(electionForYearOne.getElectionId(),allincParty.getPartyId());
+			    	partyElectionResultforAllianceParty = staticDataService.savePartyElectionResultForAPartyForAElection(electionForYearOne.getElectionId(),allincParty.getPartyId());
 			    if(partyElectionResultforAllianceParty != null){
-			    seatsWon = seatsWon + new Long(partyElectionResultforAllianceParty.getTotalSeatsWon());
+			    	seatsWon = seatsWon + new Long(partyElectionResultforAllianceParty.getTotalSeatsWon());
 			    PartyPositionsVO partyPositions = getPartyPositions(partyElectionResultforAllianceParty);
 			    if(allincParty.getPartyId().equals(partyId)){
-			    seatsWonByPartyInYearOne = new Long(partyPositions.getTotalSeatsWon());
+			    	seatsWonByPartyInYearOne = new Long(partyPositions.getTotalSeatsWon());
 			    completeVotesPercentYearOne = new Double(partyPositions.getCompleteVotesPercent());
 			    }
 		    	partyPosYearOne.add(partyPositions);
@@ -237,11 +229,11 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 				for(DistrictWisePartyResultVO districtVO2:districtWiseElectionResultsForYearTwo){
 					if(districtVO2.getDistrictName().equalsIgnoreCase(districtVO1.getDistrictName())){
 						
-						districtVO1.setVotesPercentDiff(new BigDecimal(districtVO2.getVotesPercent() - districtVO1.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-						districtVO1.setSeatsWonDiff(districtVO2.getSeatsWon() - districtVO1.getSeatsWon());
+						districtVO1.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						districtVO1.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
 						
-						districtVO2.setVotesPercentDiff(new BigDecimal(districtVO2.getVotesPercent() - districtVO1.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-						districtVO2.setSeatsWonDiff(districtVO2.getSeatsWon() - districtVO1.getSeatsWon());
+						districtVO2.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						districtVO2.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
 						break;
 					}
 				}
@@ -251,11 +243,11 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 				for(DistrictWisePartyResultVO districtVO2:districtWiseElectionResultsForYearTwo){
 					if(districtVO2.getDistrictName().equalsIgnoreCase(districtVO1.getDistrictName())){
 						
-						districtVO1.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-						districtVO1.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
+						districtVO1.setVotesPercentDiff(new BigDecimal(districtVO2.getVotesPercent() - districtVO1.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						districtVO1.setSeatsWonDiff(districtVO2.getSeatsWon() - districtVO1.getSeatsWon());
 						
-						districtVO2.setVotesPercentDiff(new BigDecimal(districtVO1.getVotesPercent() - districtVO2.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-						districtVO2.setSeatsWonDiff(districtVO1.getSeatsWon() - districtVO2.getSeatsWon());
+						districtVO2.setVotesPercentDiff(new BigDecimal(districtVO2.getVotesPercent() - districtVO1.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						districtVO2.setSeatsWonDiff(districtVO2.getSeatsWon() - districtVO1.getSeatsWon());
 						break;
 					}
 				}
@@ -520,8 +512,9 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 						
 						Double votesPercentYearOne = new BigDecimal((votesEarnedYearOne/validVotesYearOne)*100).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
 						Double votesPercentYearTwo = new BigDecimal((votesEarnedYearTwo/validVotesYearTwo)*100).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
-						Double votesPercentDiff = new BigDecimal(votesPercentYearTwo - votesPercentYearOne).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
-						
+						//Modified By Siva Start
+						Double votesPercentDiff = new BigDecimal(votesPercentYearOne - votesPercentYearTwo).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
+						//Modified By Siva End
 						log.debug("Votes% One" + votesPercentYearOne);
 						log.debug("Votes% Two" + votesPercentYearTwo);
 						
