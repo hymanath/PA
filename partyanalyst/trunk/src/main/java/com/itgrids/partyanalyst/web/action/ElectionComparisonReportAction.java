@@ -15,13 +15,12 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.googlecode.jsonplugin.annotations.JSON;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ComparedReportVO;
-import com.itgrids.partyanalyst.dto.CompleteResultsVO;
+import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionComparisonReportVO;
 import com.itgrids.partyanalyst.dto.ElectionComparisonResultVO;
 import com.itgrids.partyanalyst.dto.ElectionsComparisonVO;
@@ -45,6 +44,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	private String electionType;
 	private String state;
 	private String party;
+	private String selectedPartyName;
 	private String electionYears1;
 	private String electionYears2;
 	private String allianceCheck;
@@ -62,6 +62,14 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	
 	public static final Logger logger = Logger.getLogger(ElectionComparisonReportAction.class);
 	
+	public String getSelectedPartyName() {
+		return selectedPartyName;
+	}
+
+	public void setSelectedPartyName(String selectedPartyName) {
+		this.selectedPartyName = selectedPartyName;
+	}
+
 	public String getAllianceCheck() {
 		return allianceCheck;
 	}
@@ -258,41 +266,88 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		
 		Boolean hasAlliances = new Boolean(allianceCheck);
 		if(logger.isDebugEnabled())
-			logger.debug("alliance-->" + allianceCheck);
+			logger.debug("alliance-->" + allianceCheck);		
 		
-		
-			String previousYear = getElectionYears1();
-			String presentYear = getElectionYears2();
-			if(Long.parseLong(getElectionYears1()) > Long.parseLong(getElectionYears2())){
-				previousYear = getElectionYears2();
-				presentYear = getElectionYears1();
-			}
+		String previousYear = getElectionYears1();
+		String presentYear = getElectionYears2();
+		if(Long.parseLong(getElectionYears1()) > Long.parseLong(getElectionYears2())){
+			previousYear = getElectionYears2();
+			presentYear = getElectionYears1();
+		}
+			
 		electionComparisonReportVO = electionComparisonReportService.getDistrictWiseElectionResultsForAParty(Long.parseLong(getElectionType()), Long.parseLong(getParty()),Long.parseLong(getState()), previousYear, presentYear, hasAlliances);
 			
-		        try{
-				session = request.getSession();
-				String chartId = state.concat(party).concat(electionType).concat(electionYears1).concat("Comparing with").concat(electionYears2).concat("BarChart");
-				String barChartName = "electionsComparisonChart_" + chartId + session.getId()+".png";
-		        String chartPath = context.getRealPath("/") + "charts\\" + barChartName;
-		       
-		        if(electionComparisonReportVO.getPositionsForYearOne() != null && electionComparisonReportVO.getPositionsForYearTwo() != null){
-		        	
-		        	PartyPositionsVO partyPositionsVOYear1 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearOne(),Long.parseLong(getParty()));
-		        	PartyPositionsVO partyPositionsVOYear2 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearTwo(),Long.parseLong(getParty()));
-		        	String label = partyPositionsVOYear1.getPartyName();
-		        	label = label.concat("  Results").concat("  Graph");
-		        	ChartProducer.createBarChart(label, "Years", "Seats", createDatasetForBarGraph(previousYear,presentYear,partyPositionsVOYear1,partyPositionsVOYear2), chartPath);
-		        	request.setAttribute("barChartName", barChartName);
-					session.setAttribute("barChartName", barChartName);
-		         }		        
-		       	}
-				catch(Exception ex){
-					ex.printStackTrace();
-		        }
+        try{
+        	session = request.getSession();
+    		String chartId = state.concat(party).concat(electionType).concat(electionYears1).concat("Comparing with").concat(electionYears2).concat("BarChart");
+    		String barChartName = "electionsComparisonChart_" + chartId + session.getId()+".png";
+            String chartPath = context.getRealPath("/") + "charts\\" + barChartName;
+            
+            String percentageChartId = state.concat(party).concat(electionType).concat(electionYears1).concat("Comparing with").concat(electionYears2).concat("LineChart");
+            String lineChartName = "electionsComparisonChart_" + percentageChartId + session.getId()+".png";
+            String lineChartPath = context.getRealPath("/") + "charts\\" + lineChartName;
+            
+            String seatsChartId = state.concat(party).concat(electionType).concat(electionYears1).concat("Comparing with").concat(electionYears2).concat("LineChartSeatsWon");
+            String seatsLineChartName = "electionsComparisonChart_" + seatsChartId + session.getId()+".png";
+            String seatsLineChartPath = context.getRealPath("/") + "charts\\" + seatsLineChartName;
+            
+            if(electionComparisonReportVO.getPositionsForYearOne() != null && electionComparisonReportVO.getPositionsForYearTwo() != null){
+            	
+            	PartyPositionsVO partyPositionsVOYear1 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearOne(),Long.parseLong(getParty()));
+            	PartyPositionsVO partyPositionsVOYear2 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearTwo(),Long.parseLong(getParty()));
+            	String label = partyPositionsVOYear1.getPartyName();
+            	label = label.concat("  Results").concat("  Graph");
+            	ChartProducer.createBarChart(label, "Years", "Seats", createDatasetForBarGraph(previousYear,presentYear,partyPositionsVOYear1,partyPositionsVOYear2), chartPath);
+            	request.setAttribute("barChartName", barChartName);
+    			session.setAttribute("barChartName", barChartName);
+            }
+            
+            ChartProducer.createLineChart("", "District", "Votes Percentage", createDatasetForLineChart(electionComparisonReportVO), lineChartPath,300,880, null );
+            ChartProducer.createLineChart("", "District", "Seats Won", createDatasetForSeatsLineChart(electionComparisonReportVO), seatsLineChartPath,300,880, null );
+            electionComparisonReportVO.setPercentageChart(lineChartName);
+            electionComparisonReportVO.setSeatsWonChart(seatsLineChartName);
+            
+        }
+		catch(Exception ex){
+			ex.printStackTrace();
+        }
 		
 		return Action.SUCCESS;
 	
 	}
+	
+	private CategoryDataset createDatasetForSeatsLineChart(
+			ElectionComparisonReportVO electionComparisonReportVO2) {
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		List<DistrictWisePartyResultVO> districtWisePartyResultsForYearOne = electionComparisonReportVO.getDistrictWisePartyResultsForYearOne();
+		List<DistrictWisePartyResultVO> districtWisePartyResultsForYearTwo = electionComparisonReportVO.getDistrictWisePartyResultsForYearTwo();
+		
+		for(DistrictWisePartyResultVO dist1:districtWisePartyResultsForYearOne)
+			dataset.addValue(new BigDecimal(dist1.getSeatsWon()), electionComparisonReportVO.getYearOne(),
+					dist1.getDistrictName());
+		for(DistrictWisePartyResultVO dist2:districtWisePartyResultsForYearTwo)
+			dataset.addValue(new BigDecimal(dist2.getSeatsWon()), electionComparisonReportVO.getYearTwo(), 
+					dist2.getDistrictName());
+		
+		return dataset;
+	}
+
+	private CategoryDataset createDatasetForLineChart(ElectionComparisonReportVO electionComparisonReportVO){
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		List<DistrictWisePartyResultVO> districtWisePartyResultsForYearOne = electionComparisonReportVO.getDistrictWisePartyResultsForYearOne();
+		List<DistrictWisePartyResultVO> districtWisePartyResultsForYearTwo = electionComparisonReportVO.getDistrictWisePartyResultsForYearTwo();
+		
+		for(DistrictWisePartyResultVO dist1:districtWisePartyResultsForYearOne)
+			dataset.addValue(new BigDecimal(dist1.getVotesPercent()), electionComparisonReportVO.getYearOne(),
+					dist1.getDistrictName());
+		for(DistrictWisePartyResultVO dist2:districtWisePartyResultsForYearTwo)
+			dataset.addValue(new BigDecimal(dist2.getVotesPercent()), electionComparisonReportVO.getYearTwo(), 
+					dist2.getDistrictName());
+		
+		return dataset;
+	}
+      		
+	
 	
 	public PartyPositionsVO getMainPartyPositions(List<PartyPositionsVO> positions,Long party){
 		PartyPositionsVO partyPositions = null;

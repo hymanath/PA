@@ -121,6 +121,16 @@ table.CandidateElectionResultsTable td {
 		else
 			return true;
 	}
+
+	function getPartyname(value)
+	{
+		var elmt = document.getElementById("selectedPartyName");
+		if(!elmt)
+			return;
+		
+		elmt.value=value;
+
+	}
 </script>
 </head>
 <body>
@@ -150,7 +160,8 @@ table.CandidateElectionResultsTable td {
 	 <tr >
 	   <th>Party</th>
 	   <td  align="left">
-			<s:select theme="simple" name="party" id="partyList" list="partyList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
+			<s:select theme="simple" name="party" id="partyList" onchange="getPartyname(this.options[this.selectedIndex].text)" list="partyList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
+			<input type="hidden" id="selectedPartyName" name="selectedPartyName">
 		</td>
 	 </tr>
 	 <tr>
