@@ -759,7 +759,7 @@ function buildTwoYearPanelDataTable(arr,divId)
 
 				return true; 
 			};*/
-    myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,{formatRow : myRowFormatter}); 
+    myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,{}); 
 
 }
 
