@@ -79,7 +79,7 @@
 		}
 </style>
 <script type="text/javascript"><!--
-	var constituencyResults;
+	var constituencyResults,createGroupDialog;
 	var parliamentResult;
 	var tehsilElections={
 			zptcElectionYears:[],
@@ -327,24 +327,39 @@
 	}
 
 	function showDetailedChart(chartName)
-	{
-	    var elmt = document.getElementById("detailedChartDiv");
-	    if(!elmt)
-		  return;
-
-	    elmt.style.display = 'block';
+	{		
+		var elmt = document.getElementById('detailedChartDIV');
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','createGroupmDiv');
 
 	    var str='';
-		str+='<div id="detailedResultsChart_main" class="comparedResultsOuter">';
-		str+='<div id="detailedResultsChart_head" class="resultsHeadClass">';
-		str+='Detailed Chart ';
-		str+='<span style="float:right;"><a href="javascript:{}" class="yuiCloseImg" onclick="hideComparedResultsDiv()"> </a></span>';
-		str+='</div>';
-		str+='<div id="detailedResultsChart_body" class="comparedResultsBody">';
-		str+='<img src="charts/'+chartName+'" />'
-        str+='</div>';
-		str+='</div>';
-	    elmt.innerHTML = str;      
+		str+='<img src="charts/'+chartName+'" />';
+		divChild.innerHTML=str;
+		elmt.appendChild(divChild);	
+		if(createGroupDialog)
+			createGroupDialog.destroy();
+		createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
+				{ width : "800px", 		
+	              fixedcenter : false, 
+	              visible : true,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  hideaftersubmit:true,
+				  close:true,
+				  x:600,
+				  y:800
+	             } );
+		createGroupDialog.render();
+	}
+	function handleCreateGroupSubmit()
+	{
+		createGroupDialog.hide();			
+	}
+
+	function handleCreateGroupCancel()
+	{
+		this.cancel();
 	}
 	function hideComparedResultsDiv()
     {
@@ -591,9 +606,13 @@ function buildConstituencyElecResultsDataTable(value){
 		detailsDIV += '<td><div><input type="button" class="button" onclick="showDetailedChart(\''+constituencyResults.detailedChartPath+'\')" value="Detailed Chart For Parliament"></div></td>';
 		details.innerHTML = detailsDIV;
 	}
-	var resultDiv = document.getElementById("electionResultsInConstituencyDiv");
+	var chartResultDiv = document.getElementById("electionResultsInConstituencyDiv");
+	var chart = '';
+	chart += '<div><img src="charts/'+constituencyResults.chartPath+'" /></div>';
+	chartResultDiv.innerHTML = chart;
+	
+	var resultDiv = document.getElementById("resultsDataTableDiv");	
 	var str = '';
-	str += '<div><img src="charts/'+constituencyResults.chartPath+'" /></div>';
 	str += '<div id="elecResDiv" style="width=900px;overflow-x:auto;margin-top:20px;">';
 	str += '<table id = "elecResTable">';
 	for(var i in constituencyResults.constituencyOrMandalWiseElectionVO){
@@ -838,7 +857,7 @@ function buildElectionsSelectBox(myResults){
 --></script>
 </head>
 <body onLoad="getString()">
-
+<div id="detailedChartDIV" class="yui-skin-sam"></div>
 <div id="constituencyPageMain">
 
 	<div id="electionResults_Panel_Main" class="yui-skin-sam">
@@ -953,16 +972,14 @@ function buildElectionsSelectBox(myResults){
 			<div id="MandalVotingTrendz_head" class="layoutHeadersClass"></div>
 			<div id="electionIdsSelectDiv" style="padding-left:10px;"></div>
 			<div id="mandalOrConstiElecResultDiv">
-				<div id="parliamentElectionResultsDiv"></div>
-				<table>
-				<tr>
-					<td id="labelRadio"><b>Select The Format You Want :</b></td>
-					<td><input type="radio" name="dispaly" value="number" checked="checked" onclick="buildConstituencyElecResultsDataTable(this.value)">By Votes </td>
-					<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElecResultsDataTable(this.value)">By Percentage </td>
-					<td><div id="detailedChartDiv" style="position:absolute;top:94px;left:150px;z-index:1;"></div></td>
-				</tr>
-			</table>
+			<div id="parliamentElectionResultsDiv"></div>
 			<div id="electionResultsInConstituencyDiv"></div>
+			<table><tr>
+					<td id="labelRadio"><b>Select The Format You Want :</b></td>
+					<td><input type="radio" name="dispaly" value="number" checked="true" onclick="buildConstituencyElecResultsDataTable(this.value)">By Votes </td>
+					<td><input type="radio" name="dispaly" value="percentage" onclick="buildConstituencyElecResultsDataTable(this.value)"/>By Percentage </td>
+			</tr></table>			
+			<div id="resultsDataTableDiv"></div>
 			<div id="missingDataInfoDiv"></div>
 			</div>
 		</div>
