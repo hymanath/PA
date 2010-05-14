@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -72,6 +73,7 @@ import com.itgrids.partyanalyst.model.VillageBoothElection;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.ElectionDetailsVOComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyPageService implements IConstituencyPageService {
@@ -254,6 +256,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				 
 				 constituencyElectionResultList.add(constElecResultVO);
 			 }
+			 Collections.sort(constituencyElectionResultList,new ElectionDetailsVOComparator());
 		 return constituencyElectionResultList;
 		 }
 	return null;	
