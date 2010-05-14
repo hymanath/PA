@@ -81,7 +81,7 @@ var districtId = ${districtId};
 var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear;
 var mptcElectionTypeId='${mptcElectionTypeId}',zptcElectionTypeId='${zptcElectionTypeId}',muncipalityElectionId='${muncipalityElectionTypeId}',corporationElectionTypeId='${corporationElectionTypeId}';
 var mptcElectionType='${mptcElectionType}',zptcElectionType='${zptcElectionType}',muncipalityElectionType='${muncipalityElectionType}',corporationElectionType='${corporationElectionType}';
-var totalZptcs = 0,totalMptcs = 0,mptcCount=1,zptcCount=1;
+var totalZptcs = 0,totalMptcs = 0,mptcCount=1,zptcCount=1,createGroupDialog;
 var selectedZptcYear,selectedMptcYear,myDataTableForMuncipalParty;
 var totalMuncipalities = "<%=totalMuncipalities%>";
 var totalCorporations = "<%=totalCorporations%>";
@@ -989,7 +989,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 		var graphDivStr = '';				
 		if(results.chartPath == null)
 			graphDivStr += '<b>Sorry, Data Not Available</b>'
-		else
+		else{
 			graphDivStr += '<img src="charts/'+results.chartPath+'" />';
 			graphDivStr += '<div>';
 			graphDivStr += '<table style="margin-left:200px;margin-right:200px;" width="40%" >';
@@ -1003,9 +1003,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			graphDivStr += '<tr>';
 			graphDivStr += '</table>';
 			graphDivStr += '</div>';
-			
-			//graphDivStr += '<div id="detailedChartDiv"></div>';
-		 allElecDiv.innerHTML = graphDivStr;	 
+		}
+			 allElecDiv.innerHTML = graphDivStr;	 
 		
 	}
 
@@ -1020,28 +1019,39 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
     }
 
 	function showDetailedChart(chartName)
-	{
-			
-	    var elmt = document.getElementById("detailedChartDiv");
-	    if(!elmt)
-		  return;
-
-	    elmt.style.display = 'block';
-
+	{			
+		var elmt = document.getElementById('detailedChartDIV');
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','createGroupmDiv');
+	
 	    var str='';
-		str+='<div id="detailedResultsChart_main" class="comparedResultsOuter">';
-		str+='<div id="detailedResultsChart_head" class="resultsHeadClass">';
-		str+='Detailed Chart';
-		str+='<span style="float:right;"><a href="javascript:{}" class="yuiCloseImg" onclick="hideComparedResultsDiv()"> </a></span>';
-		str+='</div>';
-		str+='<div id="detailedResultsChart_body" class="comparedResultsBody">';
-		str+='<img src="charts/'+chartName+'" />'
-        str+='</div>';
-		str+='</div>';
+		str+='<img src="charts/'+chartName+'" />';
+		divChild.innerHTML=str;
+		elmt.appendChild(divChild);	
+		if(createGroupDialog)
+			createGroupDialog.destroy();
+		createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
+				{ width : "800px", 		
+	              fixedcenter : false, 
+	              visible : true,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  hideaftersubmit:true,
+				  close:true,
+				  x:600,
+				  y:800
+	             } );
+		createGroupDialog.render();      
+	}
+	function handleCreateGroupSubmit()
+	{
+		createGroupDialog.hide();			
+	}
 
-	    elmt.innerHTML = str;
-
-      
+	function handleCreateGroupCancel()
+	{
+		this.cancel();
 	}
 	function showAllElectionsInDistrictHead(){
 		
@@ -1161,7 +1171,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
  
 </head>
 <body>
-
+<div id="detailedChartDIV" class="yui-skin-sam"></div>
 <div id="districtPageMainDiv">	
 
 	<!--District Page Layout-->
