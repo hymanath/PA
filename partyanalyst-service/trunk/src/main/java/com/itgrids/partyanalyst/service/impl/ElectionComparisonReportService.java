@@ -293,7 +293,8 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	 return election;
 	}
 	
-	public ComparedReportVO getComparedElectionResults(Long electionType,Long stateId,Long partyId,String yearOne,String yearTwo,Long districtId,Boolean hasAlliances){
+	public ComparedReportVO getComparedElectionResults(Long electionType,Long stateId,Long partyId,String yearOne,
+			String yearTwo,Long districtId,Boolean hasAlliances){
 		
 		log.debug("Inside getComparedElectionResults Method .......");
 		
@@ -356,7 +357,8 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			log.debug("Total Consti In " + yearTwo + " :" + constiElectionsForYearTwo.size());
 			
 			if(constiElectionsForYearOne != null && constiElectionsForYearTwo != null)
-			comparedResultVO = 	getDetailedComparedResults(yearOne,constiElectionsForYearOne,yearTwo,constiElectionsForYearTwo,partyId,partyIdsYearOne,partyIdsYearTwo,hasAlliances);
+			comparedResultVO = 	getDetailedComparedResults(yearOne,constiElectionsForYearOne,yearTwo,constiElectionsForYearTwo,
+					partyId,partyIdsYearOne,partyIdsYearTwo,hasAlliances);
 			comparedResultVO.setPositionsYearOne(posDetailsYearOne);
 			comparedResultVO.setPositionsYearTwo(posDetailsYearTwo);
 		    }
@@ -542,6 +544,9 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		
 		votesPercentResults.setCandName(selectedNominationYearOne.getCandidate().getLastname());
 		votesPercentResults.setConstiName(selectedNominationYearOne.getConstituencyElection().getConstituency().getName());
+		votesPercentResults.setConstituencyId(selectedNominationYearOne.getConstituencyElection().getConstituency().getConstituencyId());
+		votesPercentResults.setElectionType(selectedNominationYearOne.getConstituencyElection().getConstituency().
+				getElectionScope().getElectionType().getElectionType());
 		votesPercentResults.setVotesEarned(selectedNominationYearOne.getCandidateResult().getVotesEarned().longValue());
 		votesPercentResults.setVotesPercent(votesPercentYearOne.toString());
 		votesPercentResults.setPartyName(selectedNominationYearOne.getParty().getShortName());
