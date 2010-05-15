@@ -622,7 +622,7 @@ function buildElectionResultsComparePanel()
 	   fStr+='<div id="'+id+'_electionResults_footer" class="resultFooterClass">';
 	   fStr+='<table width="100%">';
        fStr+='<tr>';
-	   fStr+='<td align="right" colspan="2"><input type="button" name="'+id+'_compbutton" value="Compare Results" onclick="getComparedResults(\''+id+'\')"/></td>';
+	   fStr+='<td align="center" colspan="2"><input type="button" name="'+id+'_compbutton" value="Compare Results" onclick="getComparedResults(\''+id+'\')"/></td>';
 	   fStr+='</tr>';
 	   fStr+='</table>';
 	   fStr+='</div>';
@@ -783,7 +783,7 @@ function buildTwoYearPanelDataTable(arr,divId)
     myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,{}); 
 
 	/*var columnInst = myDataTable.getColumnSet("seatsDiffOne");
-	console.log(columnInst);*/
+	*/
 
 }
 
@@ -1396,10 +1396,25 @@ function callAjax(param,jsObj){
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
+
+function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
+{
+	console.log(constiId,elecType,elecYear);
+   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
+   browser1.focus();
+}
+
 //wkg table
 function buildDataTable(divId,arr,yearOne,yearTwo)
-{
+{	
+
+	for(var i in arr)
+	{
+		arr[i].viewResultsOne = '<a href="javascript:{}" onclick="getConstituencyElecResultsWindow(\''+arr[i].constituencyId+'\',\''+arr[i].electionType+'\',\''+electionObject.yearOne+'\')">View</a>';
+		arr[i].viewResultsTwo = '<a href="javascript:{}" onclick="getConstituencyElecResultsWindow(\''+arr[i].constituencyId+'\',\''+arr[i].electionType+'\',\''+electionObject.yearTwo+'\')">View</a>';
+	}
 	
+
     var colorClass = '';
 	if(divId == "votesPercentageIncDiv")
 	colorClass = "greenColorClass";
@@ -1421,7 +1436,10 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 			key : "votesPercent",parser:"number"
 		}, {
 			key : "rank",parser:"number"
-		},		 
+		},{
+			key : "viewResultsOne"
+		},
+
 		{
 			key : "votesPercentDiff",parser:"number"
 		} ,	{
@@ -1435,6 +1453,8 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 			key : "votesEarnedBySecnd",parser:"number"
 		} , {
 			key : "secndVotesPercent",parser:"number"
+		},{
+			key : "viewResultsTwo"
 		} ]
 	};
 
@@ -1472,7 +1492,12 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 						key : "votesPercent",
 						label : "%",
 						sortable : true
-					}					
+					},
+					{
+						key : "viewResultsOne",
+						label : "Results",
+						sortable : true
+					}
 				]
 	},
 	{
@@ -1515,6 +1540,11 @@ function buildDataTable(divId,arr,yearOne,yearTwo)
 					{
 						key : "secndVotesPercent",
 						label : "%",
+						sortable : true
+					},
+					{
+						key : "viewResultsTwo",
+						label : "Results",
 						sortable : true
 					}									
 				 ]
@@ -1645,9 +1675,9 @@ function displayComparedResults(jsObj,data)
 				{ 					
 					fixedcenter : false, 
 					visible : true,
-					width:"900px",
+					width:"950px",
 					constraintoviewport : false,
-					x:200,
+					x:150,
 					y:650,
 					iframe :true,
 					modal :false,
