@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
@@ -23,6 +24,7 @@ public class VillageBoothElectionMapAction extends ActionSupport implements Serv
 	private IStaticDataService staticDataService;
 	private String task = null;
 	JSONObject jObj = null;
+	private static final Logger log = Logger.getLogger(VillageBoothElectionMapAction.class);
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -100,7 +102,7 @@ public class VillageBoothElectionMapAction extends ActionSupport implements Serv
 			}
 			
 			if(jObj.getString("task").equals("getElectionYears")){
-				System.out.println("For Districts Of State");
+				log.debug("getElectionYears......");
 				electionSelectVO = staticDataService.getElectionIdsAndYearsInfo(jObj.getLong("electionTypeId"), 1l);
 			}
 		}
