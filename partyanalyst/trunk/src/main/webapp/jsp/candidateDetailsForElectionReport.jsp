@@ -23,7 +23,7 @@
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT>
 <SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></SCRIPT>
-<SCRIPT type="text/javascript">
+<SCRIPT type="text/javascript"><!--
 var electionType = '${electionType}';
 var electionId = '${electionId}';
 var stateID =  '${stateID}' ;
@@ -93,6 +93,7 @@ function partywiseClickHandler()
 	
 	var allCandidatesRadio = document.getElementById("allCandidates");
 	var wonCandidatesRadio = document.getElementById("wonCandidates");
+	var lostCandidatesRadio = document.getElementById("lostCandidates");
 	var regionalRadioBtns = document.getElementsByName("regionalRadio");
 	var regionSelect = document.getElementsByName("regionSelect");
 	var regionalOptionsRow = document.getElementById("regionalOptionsRow");
@@ -108,7 +109,10 @@ function partywiseClickHandler()
 	if(wonCandidatesRadio.checked == true)
 	{
 		wonCandidatesRadio.checked = false;
-	}	
+	}if(lostCandidatesRadio.checked == true)
+	{
+		lostCandidatesRadio.checked = false;
+	}		
 	for (i=0; i< regionSelect.length; i++)
 	{
 		if(regionSelect[i].style.display == "block")			
@@ -219,8 +223,62 @@ function wonCandidatesClickHandler()
 		{
 			regionSelect[k].style.display = 'none';}
 	}		
-}
+}//wkg
+function lostCandidatesClickHandler()
+{
+	var regionalRadioBtns = document.getElementsByName("regionalRadio");
+	var regionSelect = document.getElementsByName("regionSelect");
+	var regionalOptionsRow = document.getElementById("regionalOptionsRow");
+	var partywiseCheckBoxEl = document.getElementById("partywiseCheckBox");
+	if(regionalOptionsRow && regionalOptionsRow.style.display == 'none')
+	{
+		regionalOptionsRow.style.display = '';
+	}	
+	/*for (i=0; i< regionalRadioBtns.length; i++)
+	{
+		if(regionalRadioBtns[i].checked == true)
+		{regionalRadioBtns[i].checked = false;}
+		if(regionalRadioBtns[i].id == 'stateLevelA')
+		{regionalRadioBtns[i].disabled = false;}
+		if(regionalRadioBtns[i].id == 'countryLevelP')
+		{regionalRadioBtns[i].disabled = false;}
+		if(regionalRadioBtns[i].id == 'stateLevelZ')
+		{regionalRadioBtns[i].disabled = false;}
+	}*/
 
+	for (i=0; i< regionalRadioBtns.length; i++)
+	{
+		if(regionalRadioBtns[i].checked == true)
+		{regionalRadioBtns[i].checked = false;}
+		if(regionalRadioBtns[i].id == 'stateLevelA' && partywiseCheckBoxEl.checked == false) 
+			{regionalRadioBtns[i].disabled = true;}
+		else if(regionalRadioBtns[i].id == 'stateLevelA' && partywiseCheckBoxEl.checked == true)
+		{
+				regionalRadioBtns[i].disabled = false;
+		}
+		if(regionalRadioBtns[i].id == 'countryLevelP' && partywiseCheckBoxEl.checked == false)
+		{
+			regionalRadioBtns[i].disabled = true;
+		}else if(regionalRadioBtns[i].id == 'countryLevelP' && partywiseCheckBoxEl.checked == true)
+		{
+			regionalRadioBtns[i].disabled = false;
+		}
+		if(regionalRadioBtns[i].id == 'stateLevelZ' && partywiseCheckBoxEl.checked == false)
+		{
+			regionalRadioBtns[i].disabled = true;
+		}else if(regionalRadioBtns[i].id == 'stateLevelZ' && partywiseCheckBoxEl.checked == true)
+		{
+			regionalRadioBtns[i].disabled = false;
+		}
+	}
+	
+	for (k=0; k< regionSelect.length; k++)
+	{
+		if(regionSelect[k].style.display == "block")			
+		{
+			regionSelect[k].style.display = 'none';}
+	}
+}
 function countryLevelPClickHandler()
 {
 	var selectStatePEl = document.getElementById("selectStateP");
@@ -330,6 +388,7 @@ function allCandidates()
 	var partywiseCheckBoxEl = document.getElementById("partywiseCheckBox");
 	var allCandidatesRadioEl = document.getElementById("allCandidates");
 	var wonCandidatesRadioEl = document.getElementById("wonCandidates");
+	var lostCandidatesRadioEl = document.getElementById("lostCandidates");
 	var stateLevelAEl = document.getElementById("stateLevelA");
 	var distLevelAEl = document.getElementById("distLevelA");
 	var countryLevelPEl =  document.getElementById("countryLevelP");
@@ -361,9 +420,12 @@ function allCandidates()
 	if(allCandidatesRadioEl.checked == true)
 	{
 		resultsCategory = allCandidatesRadioEl.value;
-	} else {
+	} else if (lostCandidatesRadioEl.checked == true){
+		resultsCategory = lostCandidatesRadioEl.value;
+	} else if (wonCandidatesRadioEl.checked == true)
+	{
 		resultsCategory = wonCandidatesRadioEl.value;
-		}	
+	}	
 
 	if(electionType == 'Assembly')
 	{
@@ -443,7 +505,6 @@ function allCandidates()
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	incrementHidden();
 	var url = "<%=request.getContextPath()%>/candidateDetailsForElectionDetailsReportAjaxAction.action?"+rparam+"&hidden="+hidden;		
-			
 	callAjax(rparam,jsObj,url);
 }
 function showCandidates(results,jsObj)
@@ -668,43 +729,49 @@ function handleAddCommentsCancel(task,status)
 
 <DIV id="optionsDiv" class="optionsDiv">
 	<P class="paraText">To View Candidates Details for a particular party, please select the "Partywise Candidate Details" check box and select a party from drop down list and select the options provided below. </P>
-	<TABLE  class="optionsTable" width="75%">
+	<TABLE  class="optionsTable" width="80%" border="0">
 	<TR>
-		<TD align="left" class="td" style="width:25%;"><INPUT type="checkbox" name="partywiseCheckBox" id="partywiseCheckBox" onclick="partywiseClickHandler()" />Partywise Candidates</TD>
-		<TD align="left" colspan="1" style="width:25%;"><s:select id="selectParty" theme="simple"  name="selectParty" cssClass="selectBoxStyle" list="partiesList" listKey="id" style="display:none;" listValue="name" onchange="selectPartyOnchangeHandler()" /></TD>
-		<TD align="left" colspan="1" style="width:25%;"></TD>
+		<TD align="left" class="td" style="width:20%;"><INPUT type="checkbox" name="partywiseCheckBox" id="partywiseCheckBox" onclick="partywiseClickHandler()" />Partywise Candidates</TD>
+		<TD align="left" colspan="1" style="width:20%;"><s:select id="selectParty" theme="simple"  name="selectParty" cssClass="selectBoxStyle" list="partiesList" listKey="id" style="display:none;" listValue="name" onchange="selectPartyOnchangeHandler()" /></TD>
+		<TD align="left" colspan="1" style="width:20%;"></TD>
+		<TD align="left" colspan="1" style="width:20%;"></TD>
 	</TR>	
 	<TR>
-		<TD align="left" class="td" style="width:25%;"><INPUT type="radio" name="candidatesOption" id="wonCandidates" value="wonCandidatesOnly" onClick="wonCandidatesClickHandler()" checked="true"/>Won Candidates</TD>
-		<TD align="left" class="td" style="width:25%;"><INPUT type="radio" name="candidatesOption" id="allCandidates" value="allCandidates" onClick="allCandidatesClickHandler()" />All Participated Candidates</TD>	
-		<TD align="left" colspan="1" style="width:25%;"></TD>
+		<TD align="left" class="td" style="width:20%;"><INPUT type="radio" name="candidatesOption" id="wonCandidates" value="wonCandidatesOnly" onClick="wonCandidatesClickHandler()" checked="true"/>Won Candidates</TD>
+		<TD align="left" class="td" style="width:20%;"><INPUT type="radio" name="candidatesOption" id="lostCandidates" value="lostCandidatesOnly" onClick="lostCandidatesClickHandler()"/>Lost Candidates</TD>
+		<TD align="left" class="td" style="width:20%;"><INPUT type="radio" name="candidatesOption" id="allCandidates" value="allCandidates" onClick="allCandidatesClickHandler()" />All Participated Candidates</TD>	
+		<TD align="left" colspan="1" style="width:20%;"></TD>
 	</TR>	
 	<c:if test="${electionType == 'Parliament'}">
 		<TR id="regionalOptionsRow">
-			<TD class="td" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="countryLevelP" value="countrywiseParliament" onClick="countryLevelPClickHandler()" checked="true"/>Countrywise</TD>		
-			<TD class="td" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="stateLevelP" value="statewiseParliament" onClick="stateLevelPClickHandler()"/>Statewise</TD>
-			<TD style="width:25%;"><s:select id="selectStateP" name="regionSelect" cssClass="selectBoxStyle" style="display:none;" theme="simple" list="statesListObj.getAllStates" listKey="id"  listValue="name" onChange="allCandidates()"  /></TD>
+			<TD class="td" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="countryLevelP" value="countrywiseParliament" onClick="countryLevelPClickHandler()" checked="true"/>Countrywise</TD>		
+			<TD class="td" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelP" value="statewiseParliament" onClick="stateLevelPClickHandler()"/>Statewise</TD>
+			<TD style="width:20%;"><s:select id="selectStateP" name="regionSelect" cssClass="selectBoxStyle" style="display:none;" theme="simple" list="statesListObj.getAllStates" listKey="id"  listValue="name" onChange="allCandidates()"  /></TD>
+			<TD align="left" colspan="1" style="width:20%;"></TD>
 		</TR>
 	</c:if>	
 	 <c:if test="${electionType == 'Assembly'}" >  
 		<TR id="regionalOptionsRow">
-		<TD class="td" name="RegionalOptionsA" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="stateLevelA" value="statewiseAssembly" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
-		<TD class="td" name="RegionalOptionsA" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="distLevelA" value="districtwiseAssembly" onClick="distLevelAClickHandler()"/>Districtwise</TD>
-		<TD style="width:25%;"><s:select id="selectdistrictA" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelA" value="statewiseAssembly" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelA" value="districtwiseAssembly" onClick="distLevelAClickHandler()"/>Districtwise</TD>
+		<TD style="width:20%;"><s:select id="selectdistrictA" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
+		<TD align="left" colspan="1" style="width:20%;"></TD>
 		</TR>
 	</c:if>		
 	<c:if test="${electionType == 'ZPTC'}">  
 	<TR id="regionalOptionsRow">
-		<TD class="td" name="RegionalOptionsA" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="stateLevelZ" value="stateWiseZptc" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
-		<TD class="td" name="RegionalOptionsA" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="distLevelZ" value="districtwiseZptc" onClick="distLevelZClickHandler()"/>Districtwise</TD>
-		<TD style="width:25%;"><s:select id="selectdistrictZ" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelZ" value="stateWiseZptc" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelZ" value="districtwiseZptc" onClick="distLevelZClickHandler()"/>Districtwise</TD>
+		<TD style="width:20%;"><s:select id="selectdistrictZ" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
+		<TD align="left" colspan="1" style="width:20%;"></TD>
 		</TR>
 	</c:if>
 	<c:if test="${electionType == 'MPTC'}">  
 	<TR>
-		<TD class="td" name="RegionalOptionsA" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="stateLevelM" value="stateWiseMptc" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
-		<TD class="td" name="RegionalOptionsA" style="width:25%;"><INPUT type="radio" name="regionalRadio" id="distLevelM" value="districtwiseMptc" onClick="distLevelMClickHandler()"/>Districtwise</TD>
-		<TD style="width:25%;"><s:select id="selectdistrictM" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelM" value="stateWiseMptc" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelM" value="districtwiseMptc" onClick="distLevelMClickHandler()"/>Districtwise</TD>
+		<TD style="width:20%;"><s:select id="selectdistrictM" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
+		<TD align="left" colspan="1" style="width:20%;"></TD>
 	</TR>	
 	</c:if>
 	</TABLE>
