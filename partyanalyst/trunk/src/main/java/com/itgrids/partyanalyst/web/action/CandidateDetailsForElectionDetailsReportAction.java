@@ -214,6 +214,10 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 			{
 				resultsCategoryVal = IConstants.WINNER_CANDIDATES; 
 			}
+			if(resultsCategory.equals("lostCandidatesOnly"))
+			{
+				resultsCategoryVal = IConstants.LOST_CANDIDATES; 
+			}
 			if(electionLevel.equals("countrywiseParliament"))
 			{
 				electionLevelVal = IConstants.COUNTRY_LEVEL; 
