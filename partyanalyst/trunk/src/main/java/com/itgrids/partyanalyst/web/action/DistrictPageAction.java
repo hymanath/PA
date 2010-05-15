@@ -502,9 +502,9 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			{
 				try{
 					if(jObj.getString("electionType").equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
-						candidateTrendzReportVO = staticDataService.getAllZptcsCandidatesForADistrictForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"));
+						candidateTrendzReportVO = staticDataService.getAllZptcsCandidatesForADistrictForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),0);
 					}else{
-						candidateTrendzReportVO = staticDataService.getAllMptcsCandidatesForADistrictForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"));
+						candidateTrendzReportVO = staticDataService.getAllMptcsCandidatesForADistrictForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),0);
 					}
 				}catch(Exception e){
 					log.debug("No data is available...");															
@@ -527,9 +527,9 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			{
 				try{
 					if(jObj.getString("electionType").equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
-						candidateTrendzReportVO = staticDataService.getAllZptcsForADistrictForAPartyForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),new Long(jObj.getString("partyId")),0);
+						candidateTrendzReportVO = staticDataService.getAllZptcsForADistrictForAPartyForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),new Long(jObj.getString("partyId")),0,0);
 					}else{
-						candidateTrendzReportVO = staticDataService.getAllMptcsForADistrictForAPartyForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),new Long(jObj.getString("partyId")),0);
+						candidateTrendzReportVO = staticDataService.getAllMptcsForADistrictForAPartyForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),new Long(jObj.getString("partyId")),0,0);
 					}
 				}catch(Exception e){
 					log.debug("No data is available...");															
