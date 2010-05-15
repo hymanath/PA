@@ -3,12 +3,13 @@ package com.itgrids.partyanalyst.service.impl;
 import java.io.File;
 import java.util.List;
 
+import jxl.Sheet;
+import jxl.Workbook;
+
+import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import jxl.Sheet;
-import jxl.Workbook;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
@@ -36,6 +37,7 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 	private File filePath;
 	private Long electionId;
 	private TransactionTemplate transactionTemplate;
+	private static final Logger log = Logger.getLogger(VillageBoothDataPopulationService.class);
 
 	public IHamletBoothElectionDAO getHamletBoothElectionDAO() {
 		return hamletBoothElectionDAO;
@@ -98,6 +100,7 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 	}
 
 	public VillageBoothElectionVO readExcelAndInsertData(File fPath, Long elecId){
+		log.debug("The File Uploaded::"+fPath+" And Election Id ::"+ elecId);
 		this.filePath = fPath;
 		this.electionId = elecId;
 		VillageBoothElectionVO villageBoothElectionVO = (VillageBoothElectionVO)transactionTemplate.execute
@@ -120,7 +123,7 @@ public class VillageBoothDataPopulationService implements IVillageBoothDataPopul
 	}
 	
 	private void readFromExcel(VillageBoothElectionVO villageBoothElectionVO)throws Exception {
-
+		log.debug("Ented Into Uploaded Part...........");
 		Workbook workbook = Workbook.getWorkbook(filePath);	
 		Sheet[] sheets = workbook.getSheets();
 		String constituencyName = "";
