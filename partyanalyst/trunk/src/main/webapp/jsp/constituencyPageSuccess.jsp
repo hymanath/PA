@@ -773,12 +773,6 @@ function hideMptcDiv(){
 }
 function getAllZptcYears()
 {	 			
-	var imgElmt = document.getElementById("zptcPartyVotingTrendz_head");
-	var electionDetails="";
-	electionDetails +="ZPTC &nbsp;Election &nbsp;Voting &nbsp;Trendz";
-	electionDetails +="<br/><br/>";
-	imgElmt.innerHTML = electionDetails;
-
 	if(tehsilElections.zptcElectionYears.length!=0){
 		var selectDiv = document.getElementById("zptcElectionIdsSelectDiv");
 		var electionYearSelect="";
@@ -796,12 +790,6 @@ function getAllZptcYears()
 
 function getAllMptcYears()
 {
-	var imgElmt = document.getElementById("mptcPartyVotingTrendz_head");
-	var electionDetails="";
-	electionDetails +="MPTC &nbsp;Election &nbsp;Voting &nbsp;Trendz";
-	electionDetails +="<br/><br/>";
-	imgElmt.innerHTML = electionDetails;
-
 	if(tehsilElections.mptcElectionYears.length!=0){
 		var selectDiv = document.getElementById("mptcElectionIdsSelectDiv");
 		var electionYearSelect="";
@@ -994,39 +982,83 @@ function buildElectionsSelectBox(myResults){
 			<div class="corner topRight"></div>
 			<div class="corner bottomLeft"></div>
 			<div class="corner bottomRight"></div>
-			<table><tr><td style="vertical-align:top;">
-			<table><tr><td>
-						<div id="zptcPartyVotingTrendz_head" class="layoutHeadersClass"></div>
-						<table><tr>
-							   <td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
-							   <td><div id="zptcCandidateLink"></div></td>
-						</tr></table>
-					</td></tr>
-					<tr><td><div id="zptcPartyTrendsDetailsDiv"></div></td></tr>
-				</td></tr></table>	
-			</td>
-			<td style="vertical-align:top;">
-			
 				<table>
 						<tr>
-							<td><div id="mptcPartyVotingTrendz_head" class="layoutHeadersClass"></div></td>
+							<td style="vertical-align:top;">
+								<div id="zptc_main">
+									<div id="zptc_head">
+										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+											<tr>
+												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+												<td>	
+													<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:400px;padding:9px;height:18px;">
+														<span>ZPTC Voting Trends : </span>
+														<span id="totalZptcCountResultDiv"></span>
+													</div>
+												</td>
+												<td><img src="images/icons/districtPage/header_right.gif"/></td>
+											</tr>
+										</table>
+									</div>
+								<div id="zptc_body">
+										<table>									
+											<tr><td>
+													<table><tr><td>
+																	<table ><tr>
+																   		<td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
+																   		<td><div id="zptcCandidateLink"></div></td>
+															   		</tr></table>
+															   </td></tr>
+														   <tr>
+															   <td> <div id="zptcPartyTrendsDetailsDiv"></div></td>
+													</tr></table>
+											</td></tr>
+										</table>	
+									</div>
+								</div>
+							</td>			
+							
+							<td style="vertical-align:top;">
+								<div id="mptc_main">
+									<div id="mptc_head">
+										<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+											<tr>
+												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
+												<td>	
+													<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:400px;padding:9px;height:18px;">
+														<span>MPTC Voting Trends : </span>
+														<span id="totalMptcCountResultDiv"></span>
+													</div>
+												</td>
+												<td><img src="images/icons/districtPage/header_right.gif"/></td>
+											</tr>
+										</table>
+									</div>
+								<div id="mptc_body">
+										<table>									
+											<tr><td>
+													<table><tr><td>
+																	<table ><tr>
+																   		<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
+																   		<td><div id="mptcCandidateLink"></div></td>
+															   		</tr></table>
+															   </td></tr>
+														   <tr>
+															   <td> <div id="mptcPartyTrendsDetailsDiv"></div></td>
+													</tr></table>
+											</td></tr>
+										</table>	
+									</div>
+								</div>
+							</td>	
 						</tr>
-						<table><tr>
-							<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
-							<td><div id="mptcCandidateLink"></div></td>
-						</tr></table>
-						<table><tr>
-							<td><div id="mptcPartyTrendsDetailsDiv"></div></td>
-						</tr>
-						</table>
-					</table>
-				</td></tr></table>
+				</table>
 			</div>
 			</td>
 		</tr>		
 	</table>	
 </div>
-
+</div>
 <script type="text/javascript">
 
 	/*	Constituency Page basic Info
