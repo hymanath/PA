@@ -213,13 +213,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			sortable : true
 		} ];
 
-		var myConfigsForTehsil = {
-	    paginator : new YAHOO.widget.Paginator({
-	        rowsPerPage: 10 
-	    })
-	};
-				
-		myDataTableForParty = new YAHOO.widget.DataTable("partyDetails",resultsColumnDefsForTehsil, resultsDataSourceForTehsil,myConfigsForTehsil);
+						
+		myDataTableForParty = new YAHOO.widget.DataTable("partyDetails",resultsColumnDefsForTehsil, resultsDataSourceForTehsil);
 
 		 var ajaxImgElmt = document.getElementById("zptcAjaxLoadDiv");
 		 ajaxImgElmt.style.display = "none"; 
@@ -263,13 +258,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			sortable : true
 		} ];
 
-		var myConfigsForTehsil = {
-	    paginator : new YAHOO.widget.Paginator({
-	        rowsPerPage: 10 
-	    })
-	};
-				
-		myDataTableForMptcParty = new YAHOO.widget.DataTable("mptcPartyDetails",resultsColumnDefsForTehsil, resultsDataSourceForTehsil,myConfigsForTehsil);
+						
+		myDataTableForMptcParty = new YAHOO.widget.DataTable("mptcPartyDetails",resultsColumnDefsForTehsil, resultsDataSourceForTehsil);
 
 		var ajaxImgElmt = document.getElementById("mptcAjaxLoadDiv");
 		 ajaxImgElmt.style.display = "none"; 
@@ -396,13 +386,8 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 				{key:"percentageOfVotesWonByParty",label : "Votes %", sortable:true, resizeable:true}	           
 		];
 
-		var myConfigsForTehsil = {
-			paginator : new YAHOO.widget.Paginator({
-				rowsPerPage: 10 
-			})
-		};
-				
-		var myDataTableForMuncipalParty	 = new YAHOO.widget.DataTable(divId,resultsColumnDefsForTehsil, resultsDataSourceForTehsil,myConfigsForTehsil);
+						
+		var myDataTableForMuncipalParty	 = new YAHOO.widget.DataTable(divId,resultsColumnDefsForTehsil, resultsDataSourceForTehsil);
 	}
 
 	function hideMuncipalitiesDiv(){		
