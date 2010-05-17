@@ -306,17 +306,19 @@ function showRegionStaticData()
 		expanded: false,
 		contentHeight: {
 			method: "fixed",
-			height: 100
+			height: 0
 		},
 		closable: false
 		});
 	 
 		var item4Str='';
-		item4Str+='body';
+		item4Str+='';
 		item4.set( "bodyContent",item4Str);
 		accordion.addItem( item4 );
 
 	 });
+
+	 var oButtonGroup1 = new YAHOO.widget.ButtonGroup("constituencyCategoryRadio") ;
 }
 
 
