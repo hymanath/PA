@@ -6,7 +6,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-	<head>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <!-- YUI Dependency files (Start) -->
 
@@ -61,6 +62,8 @@
 	<script type="text/javascript" src="js/indexPage/indexPage.js" ></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js" ></script>
 	
+
+
 	</head>
 	<body>
 		<div id="dashboard_main">
@@ -195,14 +198,16 @@
 							
 							<td style="vertical-align:top;border-left:1px solid #cdcdcd;">
 
-								<div id="staticDataView_main">
+								<div id="staticDataView_main" class="yui-skin-sam">
 									<div id="staticDataView_head"></div>
 									<div id="staticDataView_body">
-										<ul id="dashboardRightLayoutList">
-											<li>View Your Constituency</li>
-											<li>View Your Mandal</li>
+										
+										<!--<ul id="dashboardRightLayoutList">
+											<li>View Your State</li>
 											<li>View Your District</li>
-										</ul>
+											<li>View Your Constituency</li>
+											<li>View Your Mandal</li>											
+										</ul>-->
 									</div>
 									<div id="staticDataView_footer"></div>
 								</div>
@@ -239,10 +244,10 @@
 							<div id="dashboard_leftNav" style="margin-top: 35px;">								
 								<ul id="pa_reportsList_main">
 									<li id="partyAnalysisListItem">										
-										<div class="reportGroupClass" onclick="showReportsInCarousel('partyAnalysis')">Party Analysis</div>
+										<div id="partyAnalysis_div" class="reportGroupClass reportGroupClassSelected" onclick="showReportsInCarousel('partyAnalysis')">Party Analysis</div>
 									</li>
 									<li id="politicianAnalysisListItem">
-										<div class="reportGroupClass" onclick="showReportsInCarousel('politicianAnalysis')">Politician Analysis</div>
+										<div id="politicianAnalysis_div" class="reportGroupClass" onclick="showReportsInCarousel('politicianAnalysis')">Politician Analysis</div>
 									</li>
 								</ul>
 							</div>
@@ -308,9 +313,30 @@
 				</table>
 			</div>
 		</div>
+
+
 		
 		<script type="text/javascript">
-				initializeIndexPage();
+		
+		<c:forEach var="mlaConstituencies"  items="${mlaConstituenciesList}" >
+			var ob={
+						id:'${mlaConstituencies.id}',
+						name:'${mlaConstituencies.name}'
+					};
+			indexPageMainObj.mlaConstituencies.push(ob);	
+		</c:forEach>
+
+		<c:forEach var="mpConstituencies"  items="${mpConstituenciesList}" >
+			var ob={
+						id:'${mpConstituencies.id}',
+						name:'${mpConstituencies.name}'
+					};
+			indexPageMainObj.mpContituencies.push(ob);	
+		</c:forEach>
+		
+		
+		initializeIndexPage();
 		</script>
 			
 </body>
+</html>

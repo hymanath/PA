@@ -264,6 +264,18 @@ a:hover
 	cursor:pointer;
 }
 
+.reportGroupClassSelected
+{
+	background-color:#4B74C6;
+	background-image:url("../../images/icons/indexPage/reportGroupHeader_selected.png");
+	color:#E3E5E8;
+	cursor:pointer;
+	font-weight:bold;
+	margin-top:2px;
+	padding:13px;
+	text-align:left;
+}
+
 #dashboard_centerContent
 {
 	height:350px;
@@ -407,5 +419,60 @@ text-decoration:none;
 
 #staticDataView_main
 {
-	height:100px;
+	height:240px;
+}
+
+
+#staticDataView_main .yui-accordion 
+{
+	border:none;
+	margin-left:20px;	
+	width:190px;
+}
+
+#staticDataView_main .yui-accordion-item-icon 
+{
+	background:none;
+	background-image:url(../../images/icons/indexPage/listIcon.png);
+	background-repeat:no-repeat;
+	margin-top:5px;
+}
+
+#staticDataView_main .yui-accordion-item .yui-widget-hd 
+{
+	border:none;
+	background:none;
+}
+
+#staticDataView_main .yui-accordion-item-label 
+{
+	color:#73787E;
+}
+
+.regionsList
+{
+	list-style-image:url("../../images/icons/districtPage/listIcon.png");
+}
+
+.regionsList li
+{
+	padding:2px;
+}
+
+.regionsList li a
+{
+	color:#3388C1;
+	cursor:pointer;
+	text-decoration:none;
+}
+
+.regionsList li a:hover
+{
+	text-decoration:underline;
+}
+
+.regionsListDiv
+{
+	height:135px;
+	overflow:auto;
 }

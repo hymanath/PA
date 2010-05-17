@@ -15,8 +15,12 @@
  */
 package com.itgrids.partyanalyst;
 
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.Date;
+import java.util.List;
+
 import com.opensymphony.xwork2.conversion.annotations.Conversion;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 
@@ -27,12 +31,46 @@ import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
 public class IndexAction extends ActionSupport {
     
     private Date now = new Date(System.currentTimeMillis());
+    private List<SelectOptionVO> mlaConstituenciesList;
+    private List<SelectOptionVO> mpConstituenciesList;
+    private IStaticDataService staticDataService;
     
-    @TypeConversion(converter = "com.itgrids.partyanalyst.DateConverter")
+    
+    public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+	public List<SelectOptionVO> getMlaConstituenciesList() {
+		return mlaConstituenciesList;
+	}
+
+	public void setMlaConstituenciesList(List<SelectOptionVO> mlaConstituenciesList) {
+		this.mlaConstituenciesList = mlaConstituenciesList;
+	}
+
+	public List<SelectOptionVO> getMpConstituenciesList() {
+		return mpConstituenciesList;
+	}
+
+	public void setMpConstituenciesList(List<SelectOptionVO> mpConstituenciesList) {
+		this.mpConstituenciesList = mpConstituenciesList;
+	}
+
+	@TypeConversion(converter = "com.itgrids.partyanalyst.DateConverter")
     public Date getDateNow() { return now; }
     
-    public String execute() throws Exception {
+    public String execute() throws Exception
+    {
         now = new Date(System.currentTimeMillis());
+       
+        mlaConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(2), new Long(1));
+        
+        mpConstituenciesList = staticDataService.getConstituenciesByElectionTypeAndStateId(new Long(1), new Long(1));
+        
         return SUCCESS;
     }
 }

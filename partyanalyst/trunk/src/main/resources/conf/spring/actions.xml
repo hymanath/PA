@@ -304,4 +304,7 @@
 		<property name="analysisReportService" ref="analysisReportService" />
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
+	<bean id="indexAction" class="com.itgrids.partyanalyst.IndexAction" singleton="false">
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
 </beans>		

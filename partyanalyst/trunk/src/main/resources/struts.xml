@@ -19,7 +19,7 @@
 		-->
 		<!--result type="tiles" name="input">admin.login</result-->
 
-		<action name="index" class="com.itgrids.partyanalyst.IndexAction">
+		<action name="index" class="indexAction">
 			<result>/jsp/index.jsp</result>
 		</action>
 		
