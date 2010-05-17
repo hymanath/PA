@@ -318,7 +318,7 @@ function showRegionStaticData()
 
 	 });
 
-	 var oButtonGroup1 = new YAHOO.widget.ButtonGroup("constituencyCategoryRadio") ;
+	 //var oButtonGroup1 = new YAHOO.widget.ButtonGroup("constituencyCategoryRadio") ;
 }
 
 
