@@ -126,6 +126,8 @@ function initializeResultsTableForWinners() {
 			key : "rank"
 		}, {
 			key : "partyFlag"			
+		}, {
+			key : "completeResults"
 		}]
 	};
 
@@ -165,6 +167,9 @@ function initializeResultsTableForWinners() {
 		key : "partyFlag",
 		label : "Party Flag",
 		sortable : true			
+	} , {
+		key : "completeResults",
+		label : "Complete Results"
 	} ];
 
 	var myConfigsForTehsil = {
@@ -199,6 +204,14 @@ function showPartys(results)
 	showParties.innerHTML = populateParties;
 }
 
+function getMoreDetails(constiId,elecType,elecYear)
+{	
+	var url = "<%=request.getContextPath()%>/constituencyElectionResultsAction.action?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear;
+
+ 	var browser9 = window.open(url,"browser9","scrollbars=yes,height=600,width=750,left=200,top=200");
+ 	browser9.focus();
+}
+
 function showAllCandidates(results)
 {
 	 var imgElmt = document.getElementById("showParties");
@@ -216,7 +229,8 @@ function showAllCandidates(results)
 						votesDifference:results.allVotersDetails[i].votesDifference,	
 						votesPercentage:results.allVotersDetails[i].votesPercentage,
 						marginVotesPercentage:results.allVotersDetails[i].marginVotesPercentage,
-						rank:results.allVotersDetails[i].rank,			
+						rank:results.allVotersDetails[i].rank,		
+						completeResults: '<A href="javascript:{}" onclick="getMoreDetails('+results.allVotersDetails[i].constituencyId+',\''+results.allVotersDetails[i].electionType+'\','+results.allVotersDetails[i].electionYear+')">More Details</A>',	
 						partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>'					
 				 };	
 			assignToMptcDataArray.push(problemObj);
@@ -250,7 +264,8 @@ function showWinners(results)
 				votesDifference:results.allVotersDetails[i].votesDifference,	
 				votesPercentage:results.allVotersDetails[i].votesPercentage,
 				marginVotesPercentage:results.allVotersDetails[i].marginVotesPercentage,
-				rank:results.allVotersDetails[i].rank,			
+				rank:results.allVotersDetails[i].rank,		
+				completeResults: '<A href="javascript:{}" onclick="getMoreDetails('+results.allVotersDetails[i].constituencyId+',\''+results.allVotersDetails[i].electionType+'\','+results.allVotersDetails[i].electionYear+')">More Details</A>',	
 				partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>'					
 		 };
 		
@@ -284,7 +299,8 @@ function showPartyWise(results)
 					votesDifference:results.allVotersDetails[i].votesDifference,
 					votesPercentage:results.allVotersDetails[i].votesPercentage,
 					marginVotesPercentage:results.allVotersDetails[i].marginVotesPercentage,	
-					rank:results.allVotersDetails[i].rank,			
+					rank:results.allVotersDetails[i].rank,		
+					completeResults: '<A href="javascript:{}" onclick="getMoreDetails('+results.allVotersDetails[i].constituencyId+',\''+results.allVotersDetails[i].electionType+'\','+results.allVotersDetails[i].electionYear+')">More Details</A>',	
 					partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>'					
 			 };
 			
