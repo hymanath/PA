@@ -88,8 +88,10 @@ padding:0;
 
 #detailsHead {
 color:#247CD4;
-font-size:15px;
+font-size:19px;
 font-weight:bold;
+padding:10px;
+text-align:center;
 }
 
 </style>
@@ -134,7 +136,7 @@ function redirectCandidateLink(elecYear)
 	var browser1;	
 		if(elecYear != 'Select Year')
 		{	
-		   browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser2","scrollbars=yes,height=600,width=750,left=200,top=200");
+		   browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
 		   browser1.focus();
 		} else return;  
 }
@@ -335,7 +337,6 @@ function displayConstituencyElectionResults()
 </head>
 
 <body>
-<center>
 <div id="constituencyPageMain" style="background-color:none;">
 	<div id="detailsHead"></div>
 	<div id="allYears" style="margin:15px;"></div>
@@ -347,7 +348,6 @@ function displayConstituencyElectionResults()
 buildDataForConstituencyResults();
 displayConstituencyElectionResults();
 </script>
-</center>
 </body>
 
 </html>
