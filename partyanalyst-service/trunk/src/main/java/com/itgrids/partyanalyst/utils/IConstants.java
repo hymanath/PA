@@ -131,12 +131,21 @@ public interface IConstants {
     public final static String PRP = "PRP";
     public final static String BJP = "BJP";
     public final static String TRS = "TRS";
+    public final static String AIMIM = "AIMIM";
+    public final static String CPI = "CPI";
+    public final static String BSP = "BSP";
+    public final static String IND = "IND";
     
     public final static Color TDP_COLOR = Color.RED;
     public final static Color INC_COLOR = Color.BLUE;
     public final static Color PRP_COLOR = Color.GREEN;
     public final static Color BJP_COLOR = Color.ORANGE;
     public final static Color TRS_COLOR = Color.PINK;
+    public final static Color AIMIM_COLOR = Color.CYAN;
+    public final static Color CPI_COLOR = Color.MAGENTA;
+    
+    
+    
     
     
     
