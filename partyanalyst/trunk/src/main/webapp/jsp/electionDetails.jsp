@@ -51,9 +51,9 @@ var caption;
 var resultsGlobal, graphImagesCarousel,allianceResultsGlobal;
 if(electionType != 'Parliament')
 {
-	caption = "Districtwise Results"
+	caption = "Partywise Results In All Districts"
 		
-} else caption = "Statewise Results";
+} else caption = "Partywise Results In All States";
 var Localization = { <%
 		
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -481,8 +481,10 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 	var selectPartyName = partyName;
 	var districtName = districtName;	
 	var dtSource = new Array();
+	var tableCaption = "Partywise Results In All Districts"
 	if(type == "all")
 	{
+		
 		for(var i in innerObj)
 		{
 			for(var j in innerObj[i].partyResultsInDistricts)
@@ -562,6 +564,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 
 	if(type == "district")
 	{
+		tableCaption = "Partywise Results In "+districtName;
 		for(var i in innerObj)
 		{
 			for(var j in innerObj[i].partyResultsInDistricts)
@@ -632,7 +635,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 23			        
 			    }),  
-			    caption: caption
+			    caption: tableCaption
 				};
 		
 		var allDistrictResultsDataTable = new YAHOO.widget.DataTable(divID, allDistrictResultsColumnDefs, allDistrictResultsDataSource,myConfigs);
@@ -754,16 +757,16 @@ function buildAllianceDistrictResultsDataTable(results,type, districtName)
 	var parentElmt = document.getElementById("allianceDistResults");
 	var distName = districtName;
 	var innerObj = results.alliancePartiesList;
+	var caption;
 	parentElmt.innerHTML ='';
 		for(var i in innerObj)
 			{	
-				var header = innerObj[i].allianceGroupName+" Alliance Graph";	
+				var header = innerObj[i].allianceGroupName+" Alliance Graph";
 				var childElmt = document.createElement("div");
 				childElmt.setAttribute('id',innerObj[i].allianceGroupName);	
 				childElmt.innerHTML = '';			
 				var str = '';
 				str+='<div id="allianceResults_district_'+i+'_datatable"></div>';
-				//str+='<div id="allianceResults_district_'+i+'_allianceGraph"></div>';
 				str+='<div id="allianceResults_district_'+i+'_footer" style="margin-top:10px;margin-bottom:10px;">';
 				str+='<a href="javascript:{}" class="viewChartsForResults" onclick="showAllianceGraph(\''+innerObj[i].alliancePartiesChart+'\',\''+header+'\')">View '+header+'<a>';
 				str+='</div>';
@@ -773,6 +776,7 @@ function buildAllianceDistrictResultsDataTable(results,type, districtName)
 
 				if(type == "all")
 				{	
+					caption = innerObj[i].allianceGroupName+" Results in All Districts";
 					var dtSourceArr = new Array();
 					for(var j in innerObj[i].partiesInAlliance)
 						{
@@ -795,6 +799,7 @@ function buildAllianceDistrictResultsDataTable(results,type, districtName)
 						}
 				} else if(type == "district")
 				{
+					caption = innerObj[i].allianceGroupName+" Results in "+distName;					
 					var dtSourceArr = new Array();
 					for(var j in innerObj[i].partiesInAlliance)
 						{
@@ -818,9 +823,7 @@ function buildAllianceDistrictResultsDataTable(results,type, districtName)
 								}									 		
 							}
 						}
-				}	
-
-						
+				}		
 				
 				var allianceDistrictResultsColumnDefs = [
 										{key: "district", label: "Location", sortable:true},		
@@ -851,7 +854,7 @@ function buildAllianceDistrictResultsDataTable(results,type, districtName)
 		        		};
 				var myConfigs = { 
 					    paginator : new YAHOO.widget.Paginator({rowsPerPage    : 10}) ,
-						caption:innerObj[i].allianceGroupName+" Alliance Results"
+						caption: caption
 						};
 				
 				var allianceDistrictResultsDataTable = new YAHOO.widget.DataTable('allianceResults_district_'+i+'_datatable', allianceDistrictResultsColumnDefs, allianceDistrictResultsDataSource,myConfigs);			
@@ -991,6 +994,7 @@ function updateDistResultsPartywise(partyName,results)
 	if(partyName != 'Select Party')
 		{
 		buildAllDistrictDatatable(innerObj,"districtResults","party",partyName,"null");
+		//buildAllianceDistrictResultsDataTable(results1,"district", distName);
 		if(electionResultsObj.allianceGroupNamesArray != null && electionResultsObj.allianceGroupNamesArray.length != 0)
 			{
 
@@ -1007,7 +1011,6 @@ function updateDistResultsPartywise(partyName,results)
 	
 	else return;
 }
-//ref
 function updateDistResultsDistwise(distName,results,results1)
 {
 	
@@ -1250,7 +1253,7 @@ callAjax(rparam,jsObj,url);
 				<OPTION id="0" >Select Party</OPTION>
 				</SELECT>
 			</TD>
-				<c:if test="${electionType == 'Assembly'}">
+				<c:if test="${electionType != 'Parliament'}">
 					<TD style="width:20%;"><INPUT type="radio" name="distResultsOption" id="districtwiseRadio" value="districtwise" onClick="districtwiseRadioClickHandler()"/>Districtwise</TD>
 					<TD style="width:25%;" align="left"><SELECT class="selectBoxStyle" id="distSelectBox"  name="selectBox"  onchange="updateDistResultsDistwise(this.options[this.selectedIndex].text,resultsGlobal,allianceResultsGlobal)" style="display:none;">
 							<OPTION id="0" >Select District</OPTION>					
@@ -1277,6 +1280,14 @@ callAjax(rparam,jsObj,url);
 			</TD>
 			
 			<TD valign="top"><DIV id="allianceDistResults"></DIV></TD>
+		</TR>
+		<TR>
+			<c:if test="${electionType == 'Parliament'}">
+				<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">Location column in above table refers State Name</SPAN></TD>
+			</c:if>	
+			<c:if test="${electionType != 'Parliament'}">
+				<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">Location column in above tables refers District Name</SPAN></TD>
+			</c:if>
 		</TR>
 		<TR>
 			<TD colspan="2" align="left"><SPAN style="color:#909090;font-size:13px;font-weight:bold;">TP* =Total Participation, PC* %=Participated Constituencies Percentage </SPAN></TD>
