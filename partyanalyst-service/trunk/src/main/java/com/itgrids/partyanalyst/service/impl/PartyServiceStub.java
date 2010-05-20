@@ -342,5 +342,12 @@ public class PartyServiceStub implements IPartyService {
 	public List<PartyPositionDisplayVO> getPartyPositionDetailsForAnElection(Long electionTypeID, Long stateID, Long districtID, Long year, Long partyID, boolean alliances, int rank,String reportLevel){
 		return null;
 	}
+
+	@Override
+	public List<PartyPositionDisplayVO> getPartyPositionsDetailsInAnElection(
+			Long electionId, Long partyId, Long rank) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 

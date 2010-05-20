@@ -21,5 +21,7 @@ public interface IPartyService {
 	public List<PartyPositionDisplayVO> getNthPositionPartyDetails(Long electionTypeID, Long stateID, Long districtID, Long year, Long partyID, boolean alliances, int rank,String reportLevel);
 	
 	public List<PartyPositionDisplayVO> getPartyPositionDetailsForAnElection(Long electionTypeID, Long stateID, Long districtID, Long year, Long partyID, boolean alliances, int rank,String reportLevel);
+	
+	public List<PartyPositionDisplayVO> getPartyPositionsDetailsInAnElection(Long electionId, Long partyId, Long rank);
 
 }

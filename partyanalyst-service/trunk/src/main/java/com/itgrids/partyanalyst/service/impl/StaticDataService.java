@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWinnerInfoVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
@@ -734,7 +735,7 @@ public class StaticDataService implements IStaticDataService {
 		if(electionId != null && partyId != null){
 		 List<PartyElectionResult> partyElectionResultsList = partyElectionResultDAO.getByElectionAndParty(electionId, partyId);
 		 if(partyElectionResultsList != null && partyElectionResultsList.size() > 0){
-		  return partyElectionResultsList.get(0);
+			 return partyElectionResultsList.get(0);
 		 }
 		}
 	return null;
@@ -799,6 +800,7 @@ public class StaticDataService implements IStaticDataService {
 		 }		
 		}catch(Exception ex){
 			log.debug("Exception raised ::" + ex);
+			ex.printStackTrace();
 		}
 		
 	return partyElectionResult;
@@ -869,10 +871,10 @@ public class StaticDataService implements IStaticDataService {
 	return partyElectionResultFinal;
 	}
 	
-	public PartyElectionDistrictResult getPartyElectionResultsForAPartyDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId){
+	public PartyElectionDistrictResult getPartyElectionResultsForAPartyDistrictLevel(Long electionId, Long partyId, Long districtId){
 		 System.out.println("Inside getPartyElectionResultsForAPartyDistrictLevel()");
-		if(electionId != null && partyId != null && stateId != null && districtId != null){
-			List<PartyElectionDistrictResult> partyElecDistrictResultList = partyElectionDistrictResultDAO.getByPartyIdElectionIdAndDistrict(electionId, partyId, stateId, districtId);
+		if(electionId != null && partyId != null && districtId != null){
+			List<PartyElectionDistrictResult> partyElecDistrictResultList = partyElectionDistrictResultDAO.getByPartyIdElectionIdAndDistrict(electionId, partyId, districtId);
 			if(partyElecDistrictResultList != null && partyElecDistrictResultList.size() > 0){
 				return partyElecDistrictResultList.get(0);
 			}
@@ -892,13 +894,12 @@ public class StaticDataService implements IStaticDataService {
 	return completeValidVotes;
 	}
 	
-	public PartyElectionDistrictResult savePartyElectionResultForAPartyForAElectionDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId){
+	public PartyElectionDistrictResult savePartyElectionResultForAPartyForAElectionDistrictLevel(Long electionId,Long partyId, Long districtId){
 	
 		PartyElectionDistrictResult partyElectionDistrictResult = null;
 		List<Nomination> nominations = null;
 		Election election = null;
 		Party party = null;
-		State state = null;
 		District district = null;
 		Long totalSeatsWon = new Long(0);
 		Long totalSecondPositions = new Long(0);
@@ -913,15 +914,14 @@ public class StaticDataService implements IStaticDataService {
 		Double completeVotesPercent = new Double(0);
 		
 		try{
-			if(electionId != null && partyId != null && stateId != null && districtId != null){
+			if(electionId != null && partyId != null && districtId != null){
 				//nominations = nominationDAO.findByElectionIdAndPartyId(electionId, partyId);
-				nominations = nominationDAO.findByElectionIdAndPartyIdStateIdAndDistrictId(electionId, partyId,stateId,districtId);
+				nominations = nominationDAO.findByElectionIdAndPartyIdStateIdAndDistrictId(electionId, partyId, districtId);
 				election = electionDAO.get(electionId);
 				party = partyDAO.get(partyId);
-				state = stateDAO.get(stateId);
 				district = districtDAO.get(districtId);
 				
-				if(nominations != null && nominations.size() > 0 && election != null && party != null && state != null && district != null){
+				if(nominations != null && nominations.size() > 0 && election != null && party != null && district != null){
 					completeValidVotes = getCompleteValidVotesForADistrict(electionId,districtId);
 					for(Nomination nominationForParty:nominations){
 						if(nominationForParty.getParty().getPartyId().equals(partyId)){
@@ -946,7 +946,7 @@ public class StaticDataService implements IStaticDataService {
 					}
 					totalVotesPercentage = new BigDecimal((totalVotesEarned*100)/totalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 					completeVotesPercent = new BigDecimal((totalVotesEarned*100)/completeValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-					partyElectionDistrictResult = savePartyElectionDistrictResult(election,party,state,district,totalSeatsWon,totalSecondPositions,totalThirdPositions,totalFourthPositions,totalNthPositions,totalConstiParticipated,totalVotesPercentage,completeVotesPercent,totalVotesEarned,totalValidVotes,completeValidVotes.doubleValue());
+					partyElectionDistrictResult = savePartyElectionDistrictResult(election,party ,district,totalSeatsWon,totalSecondPositions,totalThirdPositions,totalFourthPositions,totalNthPositions,totalConstiParticipated,totalVotesPercentage,completeVotesPercent,totalVotesEarned,totalValidVotes,completeValidVotes.doubleValue());
 				}	
 			}
 		}catch(Exception ex){
@@ -956,7 +956,7 @@ public class StaticDataService implements IStaticDataService {
 	return partyElectionDistrictResult;
 	}
 	
-	public PartyElectionDistrictResult savePartyElectionDistrictResult(final Election election,final Party party,final State state,final District district,final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesGained,final Double totalValidVotes,final Double completeConstiValidVotes) throws Exception{
+	public PartyElectionDistrictResult savePartyElectionDistrictResult(final Election election,final Party party,final District district,final Long totalSeatsWon,final Long secPos,final Long thirdPos,final Long fourthPos,final Long nthPos,final Long totConstiParticipated,final Double totalVotesPercentage,final Double completeVotesPercent,final Double totalVotesGained,final Double totalValidVotes,final Double completeConstiValidVotes) throws Exception{
 			
 		PartyElectionDistrictResult partyElectionDistrictResultFinal = (PartyElectionDistrictResult)transactionTemplate.execute(new TransactionCallback() {
 		public Object doInTransaction(TransactionStatus status) {
@@ -971,7 +971,6 @@ public class StaticDataService implements IStaticDataService {
 			partyElectionDistrictResult = new PartyElectionDistrictResult();
 			partyElectionDistrictResult.setElection(election);
 			partyElectionDistrictResult.setParty(party);
-			partyElectionDistrictResult.setState(state);
 			partyElectionDistrictResult.setDistrict(district);
 			partyElectionDistrictResult.setTotalSeatsWon(totalSeatsWon.toString());
 			partyElectionDistrictResult.setSecondPosWon(secPos.toString());
@@ -998,8 +997,9 @@ public class StaticDataService implements IStaticDataService {
 	return partyElectionDistrictResultFinal;
 	}
 
+	//Modified By Siva For Parliament Implementation Start
 	
-	public List<DistrictWisePartyResultVO> getDistrictWisePartyElectionResults(String electionYear, Long electionType,Long electionId,Long partyId,Boolean hasAlliances){
+	/*public List<DistrictWisePartyResultVO> getDistrictWisePartyElectionResults(String electionYear, Long electionType,Long electionId,Long partyId,Boolean hasAlliances){
 		List<DistrictWisePartyResultVO> districtWisePartyResultVOList = null;
 		Map<Long,List<PartyResultVO>> districtWiseResultsMap = new HashMap<Long,List<PartyResultVO>>();
 	
@@ -1021,8 +1021,84 @@ public class StaticDataService implements IStaticDataService {
 			districtWisePartyResultVOList = getResultsFromMap(districtWiseResultsMap,electionId);
 		}
 		
-	return districtWisePartyResultVOList;
+		return districtWisePartyResultVOList;
+	}*/
+	
+	public List<DistrictWisePartyResultVO> getDistrictWisePartyElectionResults(String electionType,
+			Long electionId,String partyIds){
+		Map<Long, ElectionInfoVO> constituenciesInDistOrState = new LinkedHashMap<Long, ElectionInfoVO>();
+		Map<Long, Long> constituenciesWonInDistOrState = new LinkedHashMap<Long, Long>();
+		List<DistrictWisePartyResultVO> districtWisePartyResultVOList = new ArrayList<DistrictWisePartyResultVO>();
+		DistrictWisePartyResultVO districtWisePartyResultVO = null;
+		ElectionInfoVO electionInfoVO = null;
+		Long stateOrDistrictId;
+		String districtName;
+		List totalConstituenciesList = null;
+		List paricipatedConstituenciesList = null;
+		List wonConstituenciesList = null;
+		Long totalConstituencies;
+		Long totalValidVotes;
+		Long participatedConstituencies;
+		Long seatsWon;
+		Long votesEarned;
+		Double percenatage;
+		Double overallPercent;
+		Long validVotes;
+		
+		/*stateId or DIstrictId - 0, state/District name -1, Participated constituencies - 2, partyId - 3, partyName - 4, validVotes -5, votesEarned - 6*/
+		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType)){
+			totalConstituenciesList = constituencyElectionDAO.findConstituenciesByElectionGroupByDistrict(electionId);
+			paricipatedConstituenciesList = nominationDAO.findPartiesInfoByElectionAndPartyGroupByDistrict(electionId, partyIds);
+			wonConstituenciesList = nominationDAO.findPartyWonConstituenciesInfoByElectionAndPartyGroupByDistrict(electionId, partyIds, 1l);
+		}
+			
+		if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
+			totalConstituenciesList = constituencyElectionDAO.findConstituenciesByElectionGroupByState(electionId);
+			paricipatedConstituenciesList = nominationDAO.findPartiesInfoByElectionAndPartyGroupByState(electionId, partyIds);
+			wonConstituenciesList = nominationDAO.findPartyWonConstituenciesInfoByElectionAndPartyGroupByState(electionId, partyIds, 1l);
+		}
+		
+		for(Object[] values:(List<Object[]>)totalConstituenciesList){
+			electionInfoVO = new ElectionInfoVO();
+			electionInfoVO.setTotalConstituencies((Long)values[1]);
+			electionInfoVO.setTotalValidVotes(((Double)values[2]).longValue());
+			constituenciesInDistOrState.put((Long)values[0], electionInfoVO);
+		}
+		
+		for(Object[] values:(List<Object[]>)wonConstituenciesList)
+			constituenciesWonInDistOrState.put((Long)values[0], (Long)values[2]);
+		
+		for(Object[] values:(List<Object[]>)paricipatedConstituenciesList){
+			districtWisePartyResultVO = new DistrictWisePartyResultVO();
+			stateOrDistrictId = (Long)values[0];
+			districtName = values[1].toString();
+			electionInfoVO = constituenciesInDistOrState.get(stateOrDistrictId);
+			totalConstituencies = electionInfoVO.getTotalConstituencies();
+			totalValidVotes = electionInfoVO.getTotalValidVotes();
+			participatedConstituencies = (Long)values[2];
+			seatsWon = constituenciesWonInDistOrState.get(stateOrDistrictId);
+			if(seatsWon == null)
+				seatsWon = 0l;
+			validVotes = ((Double)values[5]).longValue();
+			votesEarned = ((Double)values[6]).longValue();
+			percenatage = new BigDecimal(votesEarned*100.0/validVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			overallPercent = new BigDecimal(votesEarned*100.0/totalValidVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			districtWisePartyResultVO.setDistrictId(stateOrDistrictId);
+			districtWisePartyResultVO.setDistrictName(districtName);
+			districtWisePartyResultVO.setTotalConstituencies(participatedConstituencies);
+			districtWisePartyResultVO.setConstiCount(totalConstituencies);
+			districtWisePartyResultVO.setConstiParticipated(participatedConstituencies);
+			districtWisePartyResultVO.setSeatsWon(seatsWon);
+			districtWisePartyResultVO.setVotesPercent(percenatage);
+			districtWisePartyResultVO.setTotalPercentage(overallPercent);
+			districtWisePartyResultVOList.add(districtWisePartyResultVO);
+		}
+			
+		return districtWisePartyResultVOList;
 	}
+	
+	//Modified By Siva For Parliament Implementation End
+	
 	
 	public Map<Long,List<PartyResultVO>> getDistrictWisePartyElectionResultWithoutAllianc(String electionYear,Long electionId,Long partyId){
 		
@@ -1292,29 +1368,37 @@ public class StaticDataService implements IStaticDataService {
 		CandidateDetailsVO candidateResults = null;
 		List<CandidateOppositionVO> oppCandidates = null;
 		if(constituencyId != null && electionId != null && partyId != null){
-		candidateResults = new CandidateDetailsVO();
-		oppCandidates = new ArrayList<CandidateOppositionVO>();
+			candidateResults = new CandidateDetailsVO();
+			oppCandidates = new ArrayList<CandidateOppositionVO>();
+			List candidateList = null;
+			List oppCandidateList = null;
+			
+			String electionType = electionDAO.get(electionId).getElectionScope().getElectionType().getElectionType();
 		
-		List candidateList = nominationDAO.findElectionResultsForACandidateForAnElectionInAConstituency(constituencyId,electionId,partyId);
-		if(candidateList != null){
-		candidateResults = getCandidateResultsVO(candidateList);
-		}
-		List oppCandidateList = nominationDAO.findElectionResultsForAnElectionInAConstituencyWithoutSelectedParty(constituencyId,electionId,partyId);
-		if(oppCandidateList != null){
-		oppCandidates = getOppositionCandidateResults(oppCandidateList);
-		candidateResults.setOppositionCandidates(oppCandidates);
-		}
+			if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
+				candidateList = nominationDAO.findPCElectionResultsForACandidateForAnElectionInAConstituency(constituencyId,electionId,partyId);				
+				oppCandidateList = nominationDAO.findPCElectionResultsForAnElectionInAConstituencyWithoutSelectedParty(
+						constituencyId,electionId,partyId);	
+			}else{
+				candidateList = nominationDAO.findElectionResultsForACandidateForAnElectionInAConstituency(constituencyId,electionId,partyId);				
+				oppCandidateList = nominationDAO.findElectionResultsForAnElectionInAConstituencyWithoutSelectedParty(
+						constituencyId,electionId,partyId);				
+			}		
+			
+			candidateResults = getCandidateResultsVO(electionType, candidateList);
+			oppCandidates = getOppositionCandidateResults(oppCandidateList);
+			candidateResults.setOppositionCandidates(oppCandidates);
 		}
 		
-	return candidateResults;
+		return candidateResults;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public CandidateDetailsVO getCandidateResultsVO(List candidateList){
+	public CandidateDetailsVO getCandidateResultsVO(String electionType, List candidateList){
 		CandidateDetailsVO candidateResults = null;
         if(candidateList != null){
         candidateResults = new CandidateDetailsVO();
-        
+        String districtName = "";
         Object[] params = (Object[])candidateList.get(0);
 		
 		String candidateName = (String)params[0];
@@ -1322,7 +1406,8 @@ public class StaticDataService implements IStaticDataService {
 		String partyName = (String)params[2];
 		String constiName = (String)params[3];
 		String stateName = (String)params[4];
-		String districtName = (String)params[5];
+		if(!IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType))
+			districtName = (String)params[5];
 		String elecYear = (String)params[6];
 		String elecType = (String)params[7];
 		Double votesEarned = (Double)params[8];
@@ -3030,9 +3115,9 @@ public class StaticDataService implements IStaticDataService {
 			Long stateId =1l;
 			for(int i=0;i<result.size();i++){
 				Object[] listResult =(Object[])result.get(i);
-				PartyElectionDistrictResult partyElectionDistrictResult = getPartyElectionResultsForAPartyDistrictLevel(new Long(listResult[3].toString()),new Long(listResult[4].toString()),new Long(listResult[5].toString()),districtId);
+				PartyElectionDistrictResult partyElectionDistrictResult = getPartyElectionResultsForAPartyDistrictLevel(new Long(listResult[3].toString()),new Long(listResult[4].toString()),districtId);
 				if(partyElectionDistrictResult == null){
-					savePartyElectionResultForAPartyForAElectionDistrictLevel(new Long(listResult[3].toString()),new Long(listResult[4].toString()),new Long(listResult[5].toString()),districtId);			
+					savePartyElectionResultForAPartyForAElectionDistrictLevel(new Long(listResult[3].toString()),new Long(listResult[4].toString()), districtId);			
 				}else{	}	
 				electionId.append(",").append((Long)listResult[3]);	
 				partyId.append(",").append((Long)listResult[4]);			
@@ -3211,6 +3296,29 @@ public class StaticDataService implements IStaticDataService {
 		return list;
 	}
 	
+	public List<SelectOptionVO> getElectionScopesByElectionType(Long electionTypeId){
+		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
+		ElectionType electionType = electionTypeDAO.get(electionTypeId);
+		List<ElectionScope> electionScopes = electionScopeDAO.findByPropertyElectionTypeId(electionTypeId);
+		if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType.getElectionType()))
+			for(ElectionScope electionScope:electionScopes)
+				list.add(new SelectOptionVO(electionScope.getElectionScopeId(), electionScope.getCountry().getCountryName()));
+		else
+		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType.getElectionType()))
+			for(ElectionScope electionScope:electionScopes)
+				list.add(new SelectOptionVO(electionScope.getElectionScopeId(), electionScope.getState().getStateName()));
+		
+		return list;
+	}
+	
+	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScope(Long electionScopeId){
+		List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
+		List<Election> elections = electionDAO.findByElectionScopeId(electionScopeId);
+		for(Election election:elections)
+			list.add(new SelectOptionVO(election.getElectionId(), election.getElectionYear()));
+		return list;
+	}
+	
 	public PartyElectionStateResult getPartyElectionResultsForAPartyStateLevelInParliamentElection(
 			Long electionId, Long partyId, Long stateId) {
 		log.debug("Inside getPartyElectionResultsForAPartyStateLevelInParliamentElection()......");
@@ -3281,7 +3389,7 @@ public class StaticDataService implements IStaticDataService {
 				}	
 			}
 		}catch(Exception ex){
-			log.debug("Exception raised ::" + ex);
+			ex.printStackTrace();
 		}
 	return partyElectionStateResult;
 	}
@@ -3748,6 +3856,8 @@ public class StaticDataService implements IStaticDataService {
 		List result = nominationDAO.getTehsilLevelElectionDetailsForAGivenConstituency(sb.toString(),params);
 		return result;
 	}
+
+	
 	
 	public List<SelectOptionVO> getStaticPartiesForCandidateDeatailsReport() {
 		try{

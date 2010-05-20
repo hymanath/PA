@@ -106,9 +106,23 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	
-	public void testFindTotalValidVotesInConstituencyElection(){
+	/*public void testFindTotalValidVotesInConstituencyElection(){
 		List list = constituencyElectionDAO.findTotalValidVotesInConstituencyElection(403l, "2009");
 		System.out.println(list.get(0));
+	}*/
+	
+	/*public void testFindConstituenciesByElectionGroupByDistrict(){
+		List list = constituencyElectionDAO.findConstituenciesByElectionGroupByDistrict(10l);
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]);
+		assertEquals(23, list.size());
+	}*/
+	
+	public void testFindConstituenciesByElectionGroupByState(){
+		List list = constituencyElectionDAO.findConstituenciesByElectionGroupByState(11l);
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]);
+		assertEquals(35, list.size());
 	}
 	
 	

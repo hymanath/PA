@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 public class PartyPostionInfoVO implements Serializable, Comparable<PartyPostionInfoVO>{
 	//private String constituencyName;

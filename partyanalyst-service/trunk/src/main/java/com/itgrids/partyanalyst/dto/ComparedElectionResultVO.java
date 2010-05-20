@@ -17,7 +17,6 @@ public class ComparedElectionResultVO implements java.io.Serializable{
 	private String candName;
 	private String constiName;
 	private Long constituencyId;
-	
 	private String electionType;
 	private String partyName;
 	private Long rank;
@@ -130,7 +129,6 @@ public class ComparedElectionResultVO implements java.io.Serializable{
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
 	}
-	
 	public String getElectionType() {
 		return electionType;
 	}

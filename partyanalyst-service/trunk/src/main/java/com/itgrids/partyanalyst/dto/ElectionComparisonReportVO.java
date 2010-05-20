@@ -22,7 +22,8 @@ public class ElectionComparisonReportVO {
 	private CompleteResultsVO forYearTwo;
 	private Long seatsDiff;
 	private String votesPercentDiff;
-	private Long electionType;
+	private Long electionTypeId;
+	private String electionType;
 	private Long elecIdYearOne;
 	private Long elecIdYearTwo;
 	private Long stateId;
@@ -31,6 +32,7 @@ public class ElectionComparisonReportVO {
 	private String label;
 	private String percentageChart;
 	private String seatsWonChart;
+	private String totalPercentChart;
 	
 	
 	public String getYearOne() {
@@ -77,11 +79,12 @@ public class ElectionComparisonReportVO {
 	public void setForYearTwo(CompleteResultsVO forYearTwo) {
 		this.forYearTwo = forYearTwo;
 	}
-	public Long getElectionType() {
-		return electionType;
+	
+	public Long getElectionTypeId() {
+		return electionTypeId;
 	}
-	public void setElectionType(Long electionType) {
-		this.electionType = electionType;
+	public void setElectionTypeId(Long electionTypeId) {
+		this.electionTypeId = electionTypeId;
 	}
 	public Long getElecIdYearOne() {
 		return elecIdYearOne;
@@ -154,5 +157,17 @@ public class ElectionComparisonReportVO {
 	}
 	public void setSeatsWonChart(String seatsWonChart) {
 		this.seatsWonChart = seatsWonChart;
+	}
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+	public String getTotalPercentChart() {
+		return totalPercentChart;
+	}
+	public void setTotalPercentChart(String totalPercentChart) {
+		this.totalPercentChart = totalPercentChart;
 	}
 }

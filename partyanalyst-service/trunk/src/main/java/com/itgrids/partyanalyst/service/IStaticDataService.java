@@ -57,17 +57,25 @@ public interface IStaticDataService {
 	
 	public PartyElectionResult getPartyElectionResultsForAParty(Long electionId,Long partyId);
 	
-	public PartyElectionDistrictResult getPartyElectionResultsForAPartyDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId);
-	
 	public PartyElectionStateResult getPartyElectionResultsForAPartyStateLevelInParliamentElection(Long electionId,Long partyId,Long stateId);
 	
 	public PartyElectionStateResult savePartyElectionResultForAPartyForAParliamentElectionStateLevel(Long electionId,Long partyId,Long stateId);
 	
 	public PartyElectionResult savePartyElectionResultForAPartyForAElection(Long electionId,Long partyId);
 	
-	public PartyElectionDistrictResult savePartyElectionResultForAPartyForAElectionDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId);
 	
-	public List<DistrictWisePartyResultVO> getDistrictWisePartyElectionResults(String electionYear, Long electionType,Long electionId,Long partyId,Boolean hasAlliances);
+	
+	//Modified By Siva Start
+	//public List<DistrictWisePartyResultVO> getDistrictWisePartyElectionResults(String electionYear, Long electionType,Long electionId,Long partyId,Boolean hasAlliances);
+	//public PartyElectionDistrictResult getPartyElectionResultsForAPartyDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId);
+	//public PartyElectionDistrictResult savePartyElectionResultForAPartyForAElectionDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId);
+	
+	public PartyElectionDistrictResult savePartyElectionResultForAPartyForAElectionDistrictLevel(Long electionId,Long partyId, Long districtId);
+	
+	public List<DistrictWisePartyResultVO> getDistrictWisePartyElectionResults(String electionType,	Long electionId, String partyIds);
+	
+	public PartyElectionDistrictResult getPartyElectionResultsForAPartyDistrictLevel(Long electionId, Long partyId, Long districtId);
+	//Modified By Siva End	
 	
 	public CandidateDetailsVO getCompleteElectionResultsForAConstituency(Long constituencyId,Long electionId,Long partyId);
 	
@@ -140,6 +148,11 @@ public interface IStaticDataService {
 	public MandalAllElectionDetailsVO getAllMuncipalElectionDetails(Long muncipalityId,String candidateDetailsType,Long partyId,String electionType);
 	
 	public CandidateDetailsVO getMuncipalAndCorporationCandidateDetails(Long stateId,String electionType,String electionYear,Long rank,Long partyId,Long districtId,String resultsCategory);
+	
+	public List<SelectOptionVO> getElectionScopesByElectionType(Long electionTypeId);
+	
+	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScope(Long electionScopeId);
+	
 	
 	public List<SelectOptionVO> getStaticPartiesForCandidateDeatailsReport();
 }

@@ -8,6 +8,8 @@ public class ElectionInfoVO {
 	private String constituencyName;
 	private String constituencyId;
 	private List<PartyResultsInfoVO> partyResults;
+	private Long totalConstituencies;
+	private Long totalValidVotes;
 	
 	public String getElectionTypeYear() {
 		return electionTypeYear;
@@ -39,6 +41,22 @@ public class ElectionInfoVO {
 	
 	public void setPartyResults(List<PartyResultsInfoVO> partyResults) {
 		this.partyResults = partyResults;
+	}
+
+	public Long getTotalConstituencies() {
+		return totalConstituencies;
+	}
+
+	public void setTotalConstituencies(Long totalConstituencies) {
+		this.totalConstituencies = totalConstituencies;
+	}
+
+	public Long getTotalValidVotes() {
+		return totalValidVotes;
+	}
+
+	public void setTotalValidVotes(Long totalValidVotes) {
+		this.totalValidVotes = totalValidVotes;
 	}
 	
 	

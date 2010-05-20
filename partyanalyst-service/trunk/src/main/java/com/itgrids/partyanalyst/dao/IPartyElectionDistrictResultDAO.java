@@ -15,11 +15,10 @@ import com.itgrids.partyanalyst.model.PartyElectionDistrictResult;
 
 public interface IPartyElectionDistrictResultDAO extends GenericDao<PartyElectionDistrictResult, Long> {
 
-	public List<PartyElectionDistrictResult> getByPartyIdElectionIdAndDistrict(Long electionId,Long partyId,Long stateId,Long districtId);
-
+	//public List<PartyElectionDistrictResult> getByPartyIdElectionIdAndDistrict(Long electionId,Long partyId,Long stateId,Long districtId);
+	public List<PartyElectionDistrictResult> getByPartyIdElectionIdAndDistrict(Long electionId, Long partyId, Long districtId);
 	
 	public List getAllParyDetailsForAllElectionYearsForADistrict(String electionId, String partyId, Long stateId, Long districtId);
-
 	
 	@SuppressWarnings("unchecked")
 	public List getParticipatedPartysCountForAnElection(Long electionId);

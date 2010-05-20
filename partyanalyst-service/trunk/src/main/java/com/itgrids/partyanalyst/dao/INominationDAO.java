@@ -8,7 +8,6 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
-import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -93,7 +92,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List<Nomination> findByElectionIdAndPartyId(Long electionId,Long partyId);
 	
-	public List<Nomination> findByElectionIdAndPartyIdStateIdAndDistrictId(Long electionId,Long partyId,Long stateId,Long districtId);
+	public List<Nomination> findByElectionIdAndPartyIdStateIdAndDistrictId(Long electionId,Long partyId, Long districtId);
 	
 	public List getCandidateNPartyInfo(String constituencyIds,String electionType,Long rank);
 	
@@ -130,18 +129,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getPartysWinningCandidateInfoForAParticularElectionYear(String electionType,String electionYear,Long rank,Long districtId);
 	    
     public List getAllCandidatesByElectionTypes(String electionTypes);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    	
+   	
 	public List findAllZPTCsInaDistrict(Long districtId,String electionTypes,Long rank,String electionYear);
 	
 	public List findAllMPTCsInaDistrict(Long districtId,String electionType,Long rank,String electionYear);
@@ -160,12 +148,6 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List findAllZptcPartysWinnerInaDistrict(Long districtId,String electionTypes, String electionYear,Long partyId,Long rank);
 	
 	public List findAllMptcPartysWinnerInaDistrict(Long districtId,String electionType, String electionYear,Long partyId,Long rank);
-	
-	
-	
-	
-	
-	
 	
 	public List getAllPartysForAParticularElectionYear(Long districtId,String electionType,String electionYear);	
 	
@@ -251,5 +233,23 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getAllElectionYearsForAConstituency(Long constituencyId,String electionType);
 	
 	public List<Nomination> getNominationsForANominationIdsSet(List<Long> nominationIds);
+
+	public List findPartiesInfoByElectionAndPartyGroupByDistrict(Long electionId, String partyIds);
+
+	public List findPartiesInfoByElectionAndPartyGroupByState(Long electionId, String partyIds);
+	
+	public List findPartyWonConstituenciesInfoByElectionAndPartyGroupByState(Long electionId, String partyIds, Long rank);
+	
+	public List findPartyWonConstituenciesInfoByElectionAndPartyGroupByDistrict(Long electionId, String partyIds, Long rank);
+
+	public List<ConstituencyElection> findConstituencyElectionsByElectionPartyAndPosition(Long electionId, Long partyId, Long rank);
+
+	public List<ConstituencyElection> findConstituencyElectionByElectionIdAndStateAndPartys(Long electionId, Long stateId, List<Long> partyIds);
+
+	public List findPCElectionResultsForACandidateForAnElectionInAConstituency(
+			Long constituencyId, Long electionId, Long partyId);
+
+	public List findPCElectionResultsForAnElectionInAConstituencyWithoutSelectedParty(
+			Long constituencyId, Long electionId, Long partyId);
 
 }

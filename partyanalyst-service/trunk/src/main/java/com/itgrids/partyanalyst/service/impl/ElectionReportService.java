@@ -235,9 +235,9 @@ public class ElectionReportService implements IElectionReportService {
 						   if(partiesParticipated.size() != countDistrictVal.intValue()){
 						     if(districtsInfo != null && districtsInfo.size() > 0){
 						     for(SelectOptionVO districtWiseResults:districtsInfo){
-						     PartyElectionDistrictResult partyElecDistrictResult = staticDataService.getPartyElectionResultsForAPartyDistrictLevel(electionID, parties.getId(), stateId, districtWiseResults.getId());
+						     PartyElectionDistrictResult partyElecDistrictResult = staticDataService.getPartyElectionResultsForAPartyDistrictLevel(electionID, parties.getId(), districtWiseResults.getId());
 							 if(partyElecDistrictResult == null)
-						     staticDataService.savePartyElectionResultForAPartyForAElectionDistrictLevel(electionID, parties.getId(), stateId, districtWiseResults.getId());
+						     staticDataService.savePartyElectionResultForAPartyForAElectionDistrictLevel(electionID, parties.getId(), districtWiseResults.getId());
 							 }
 							 }
 						   }

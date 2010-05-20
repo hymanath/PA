@@ -20,7 +20,21 @@ public class DistrictWisePartyPositionsVO implements Serializable {
 	private Long partyId;
 	private String partyName;
 	private Long totSeatsWonInAllPartiDistricts;
+	private Long totalConstituencies;
+	private Long totalValidVotes;
 	
+	public Long getTotalConstituencies() {
+		return totalConstituencies;
+	}
+	public void setTotalConstituencies(Long totalConstituencies) {
+		this.totalConstituencies = totalConstituencies;
+	}
+	public Long getTotalValidVotes() {
+		return totalValidVotes;
+	}
+	public void setTotalValidVotes(Long totalValidVotes) {
+		this.totalValidVotes = totalValidVotes;
+	}
 	private List<PartyPositionsInDistrictVO> partyResultsInDistricts;
 	
 	//getters and setters

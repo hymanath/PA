@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.ConstituencyElection;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyRebelCandidate;
@@ -71,6 +72,11 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		this.nominationDAO = nominationDAO;
 	}
 
+	/*public void testFindByStatePartyAndElectionId() {
+		List<Nomination> nominations = nominationDAO.findByElectionIdAndPartyIdStateIdAndDistrictId(10l, 24l, 23l);
+		System.out.println(nominations.size());
+	}*/
+	
 	/*public void testFindByConstituencyElection(){
 		List<Nomination> actualResult = nominationDAO.findByConstituencyElection(new Long(1));
 		for(Nomination nomination: actualResult)
@@ -328,14 +334,62 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 */
 	
 	
-	public void testFindCandidatesInfoByConstituencyAndElectionYear(){
+/*	public void testFindCandidatesInfoByConstituencyAndElectionYear(){
 		List list = nominationDAO.findCandidatesInfoByConstituencyAndElectionYear(403l, "2009");
 		for(Object[] values:(List<Object[]>)list){
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]);
 			System.out.println(((Double)values[2]).longValue() - 100l);
 		}
-	}
+	}*/
 	
+	/*public void testFindPartiesInfoByElectionAndPartyGroupByState(){
+		long start = System.currentTimeMillis();
+		List list = nominationDAO.findPartiesInfoByElectionAndPartyGroupByState(11l, "24");
+		long end = System.currentTimeMillis();
+		System.out.println((end-start)/1000);
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]);
+		assertEquals(35, list.size());
+	}*/
+	
+	/*public void testFindPartiesInfoByElectionAndPartyGroupByDistrict(){
+		List list = nominationDAO.findPartiesInfoByElectionAndPartyGroupByDistrict(10l, "24,62");
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]+"\t"+values[6]);
+		assertEquals(35, list.size());
+	}*/
+	
+	/*public void testFindPartyWonConstituenciesInfoByElectionAndPartyGroupByState(){
+		List list = nominationDAO.findPartyWonConstituenciesInfoByElectionAndPartyGroupByState(10l, "24,62", 1l);
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]);
+		assertEquals(35, list.size());
+	}*/
+	
+	/*public void testFindPartyWonConstituenciesInfoByElectionAndPartyGroupByDistrict(){
+		List list = nominationDAO.findPartyWonConstituenciesInfoByElectionAndPartyGroupByDistrict(10l, "32", 1l);
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]);
+		assertEquals(35, list.size());
+	}*/
+	
+	/*public void testFindConstituencyElectionsByElectionPartyAndPosition(){
+		List list = nominationDAO.findConstituencyElectionsByElectionPartyAndPosition(11l, 24l, 1l);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testFindConstituencyElectionByElectionIdAndStateAndPartys(){
+		List<Long> partyIds = new ArrayList<Long>();
+		partyIds.add(61l);
+		partyIds.add(62l);
+		List<ConstituencyElection> list = nominationDAO.findConstituencyElectionByElectionIdAndStateAndPartys(17l, 1l, partyIds);
+		System.out.println(list.size());
+	}*/
+	
+	public void testFindElectionResultsForACandidateForAnElectionInAConstituency(){
+		List list = nominationDAO.findElectionResultsForACandidateForAnElectionInAConstituency(380l, 18l, 24l);
+		System.out.println(list.size());
+	}
 	
 }
 

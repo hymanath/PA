@@ -21,6 +21,7 @@ public class DistrictWisePartyResultVO extends ResultStatus{
 	private Long constiParticipated;
 	private Long seatsWon;
 	private Double votesPercent;
+	private Double totalPercentage;
 	private Long seatsWonDiff;
 	private Double votesPercentDiff;
 	private String chartPath;
@@ -59,6 +60,12 @@ public class DistrictWisePartyResultVO extends ResultStatus{
 	}
 	public void setTotalConstituencies(Long totalConstituencies) {
 		this.totalConstituencies = totalConstituencies;
+	}
+	public Double getTotalPercentage() {
+		return totalPercentage;
+	}
+	public void setTotalPercentage(Double totalPercentage) {
+		this.totalPercentage = totalPercentage;
 	}
 	public Long getStateId() {
 		return stateId;

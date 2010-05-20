@@ -7,7 +7,6 @@
  */
 package com.itgrids.partyanalyst.dto;
 
-import java.sql.Date;
 
 public class RegistrationVO extends BaseDTO{
 

@@ -73,7 +73,7 @@ public class ElectionScopeDAO extends GenericDaoHibernate<ElectionScope, Long> i
 	public List getElectionScopes() {
 		return getHibernateTemplate().find("select model.electionScopeId, model.electionType.electionType from ElectionScope model");
 	}
-
+	
 }
  
 
