@@ -140,4 +140,6 @@ public interface IStaticDataService {
 	public MandalAllElectionDetailsVO getAllMuncipalElectionDetails(Long muncipalityId,String candidateDetailsType,Long partyId,String electionType);
 	
 	public CandidateDetailsVO getMuncipalAndCorporationCandidateDetails(Long stateId,String electionType,String electionYear,Long rank,Long partyId,Long districtId,String resultsCategory);
+	
+	public List<SelectOptionVO> getStaticPartiesForCandidateDeatailsReport();
 }

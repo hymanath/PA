@@ -3748,6 +3748,30 @@ public class StaticDataService implements IStaticDataService {
 		List result = nominationDAO.getTehsilLevelElectionDetailsForAGivenConstituency(sb.toString(),params);
 		return result;
 	}
+	
+	public List<SelectOptionVO> getStaticPartiesForCandidateDeatailsReport() {
+		try{
+			log.debug("Entered in to getStaticParties() method..");
+			List<SelectOptionVO> staticParties = getStaticParties();
+			SelectOptionVO bspPartyObj;  
+			SelectOptionVO indPartyObj;  
+			
+			log.debug("Making partyDAO.findByShortNames() DAO call...");
+			List<Party> bspParty = partyDAO.findByShortName(IConstants.BSP);
+			List<Party> indParty = partyDAO.findByShortName(IConstants.IND);
+					
+			staticParties.add(new SelectOptionVO(bspParty.get(0).getPartyId(),bspParty.get(0).getShortName()));
+			staticParties.add(new SelectOptionVO(indParty.get(0).getPartyId(),indParty.get(0).getShortName()));
+			return staticParties;
+		}catch(Exception e){
+			e.printStackTrace();
+			if(log.isDebugEnabled()){
+				log.debug("Exception raised in getStaticPartiesForCandidateDeatailsReport() method of Static Data Service ");
+			}
+			return null;
+		}
+		
+	}
 
 
 }
