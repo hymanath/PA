@@ -403,8 +403,9 @@ var electionObject=	{
 		resultsForYearOne:[],
 		resultsForYearTwo:[],
 		yearOne:${electionComparisonReportVO.yearOne},
-		yearTwo:${electionComparisonReportVO.yearTwo}
-		
+		yearTwo:${electionComparisonReportVO.yearTwo},
+		elecIdYearOne:${electionComparisonReportVO.elecIdYearOne},
+		elecIdYearTwo:${electionComparisonReportVO.elecIdYearTwo}
 };
 
 function buildDataForTwoElectionYears()
@@ -782,9 +783,6 @@ function buildTwoYearPanelDataTable(arr,divId)
 			};*/
     myDataTable = new YAHOO.widget.DataTable(divId,resultsColumnDefs, resultsDataSource,{}); 
 
-	/*var columnInst = myDataTable.getColumnSet("seatsDiffOne");
-	*/
-
 }
 
 
@@ -955,25 +953,21 @@ function getPartyPositions(partyId,id,rankPos)
 	var imgElmt = document.getElementById("imageYearOneId");
     imgElmt.style.display = 'block';
 	
-  var elecYear;
+  var elecId;
   if(id == "overallResultsYearOne")
-  elecYear = electionObject.yearOne;
+  elecId = electionObject.elecIdYearOne;
   else if(id == "overallResultsYearTwo")
-  elecYear = electionObject.yearTwo;
-
+  elecId = electionObject.elecIdYearTwo;
+	
       var elecType='${electionComparisonReportVO.electionType}';
 	  var state='${electionComparisonReportVO.stateId}';
 	  var hasAllianc='${electionComparisonReportVO.hasAlliances}';
-
+	  
 	  var jsObj= 
 	  {
-          electionType:elecType,
-		  electionYear:elecYear,
-		  stateId:state,
+		  electionId:elecId,
 		  party:partyId,
-		  rank:rankPos,
-          hasAlliance:hasAllianc
-		  
+		  rank:rankPos		  
 	  }
 	  var param ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	 callPartyPositionAjax(param,jsObj);
@@ -1256,7 +1250,7 @@ function buildPartyPositionDataTable(info,rank)
 		fields : []
 	};	
 	
-	var key1={key : "constituencyName",formatter:YAHOO.widget.DataTable.formatLink};
+	var key1={key : "constituencyName"};
 	var key2={key:"candidateName"};
 	var key3={key : "votePercentage",parser:"number"};
 	resultsDataSource.responseSchema.fields.push(key1);
@@ -1342,32 +1336,28 @@ function buildPartyPositionDataTable(info,rank)
 function getComparedResults(panelId)
 {
 
-   var districtId;
+   var stateOrdistrictId;
    var elements = document.getElementsByTagName('input'); 
 	  for(var i=0;i<elements.length;i++)
 	  {
 		if(elements[i].type=="radio" && elements[i].name=="comparedResults_radio" && elements[i].checked==true)
 		{
-		districtId = elements[i].value;
+			stateOrdistrictId = elements[i].value;
 		}       
 
 	  }
-	  var yearOne=electionObject.yearOne;
-      var yearTwo=electionObject.yearTwo;
-	  var elecType='${electionComparisonReportVO.electionType}';
-	  var state='${electionComparisonReportVO.stateId}';
+	  var elecId1=electionObject.elecIdYearOne;
+      var elecId2=electionObject.elecIdYearTwo;
 	  var party='${electionComparisonReportVO.partyId}';
 	  var hasAllianc='${electionComparisonReportVO.hasAlliances}';
-
+	 
 	  var jsObj= 
 	  {
-          firstYear:yearOne,
-		  secondYear:yearTwo,
-		  electionType:elecType,
-		  stateId:state,
+		  electionIdOne:elecId1,
+		  electionIdTwo:elecId2,
+		  stateOrDistrictId:stateOrdistrictId,
 		  partyId:party,
-          hasAlliance:hasAllianc,
-		  district:districtId
+          hasAlliance:hasAllianc
 	  }
 	  var param ="task="+YAHOO.lang.JSON.stringify(jsObj);	
 	  callAjax(param,jsObj);

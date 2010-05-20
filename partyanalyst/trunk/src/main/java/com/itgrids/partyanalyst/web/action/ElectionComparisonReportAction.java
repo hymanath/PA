@@ -6,12 +6,10 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -32,29 +30,29 @@ import com.itgrids.partyanalyst.service.IElectionComparisonReportService;
 import com.itgrids.partyanalyst.service.IElectionsComparisonService;
 import com.itgrids.partyanalyst.service.IPartyService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ElectionComparisonReportAction extends ActionSupport implements
-		ServletRequestAware, ServletResponseAware,ServletContextAware {
+		ServletRequestAware, ServletContextAware {
 
 	/**
 	 * 
 	 */
-	private String electionType;
-	private String state;
+
 	private String party;
+	private String electionId1;
+	private String electionId2;
 	private String selectedPartyName;
-	private String electionYears1;
-	private String electionYears2;
 	private String allianceCheck;
-	private HttpSession session;
-	private ServletContext context;
 	private ComparedReportVO comparedResultsVO;
 	private List<PartyPositionDisplayVO> partyPositionDisplayVO;
 	private CandidateDetailsVO constiElecResults;
 	JSONObject jObj = null;
-	
+	private HttpServletRequest request;
+	private HttpSession session;
+	private ServletContext context;
 	private ElectionComparisonReportVO electionComparisonReportVO;
 	private IElectionComparisonReportService electionComparisonReportService;
 	private IPartyService partyService;
@@ -79,23 +77,6 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	}
 
 	private static final long serialVersionUID = 1L;
-	public String getElectionType() {
-		return electionType;
-	}
-
-	public void setElectionType(String electionType) {
-		this.electionType = electionType;
-	}
-
-	
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
 	public String getParty() {
 		return party;
 	}
@@ -104,41 +85,23 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		this.party = party;
 	}
 
-	public String getElectionYears1() {
-		return electionYears1;
+	public String getElectionId1() {
+		return electionId1;
 	}
 
-	public void setElectionYears1(String electionYears1) {
-		this.electionYears1 = electionYears1;
+	public void setElectionId1(String electionId1) {
+		this.electionId1 = electionId1;
 	}
 
-	public String getElectionYears2() {
-		return electionYears2;
+	public String getElectionId2() {
+		return electionId2;
 	}
 
-	public void setElectionYears2(String electionYears2) {
-		this.electionYears2 = electionYears2;
+	public void setElectionId2(String electionId2) {
+		this.electionId2 = electionId2;
 	}
 
-	private HttpServletRequest request;
-	private HttpServletResponse response;
 	
-		
-	@JSON (serialize= false )
-	public ServletContext getContext() {
-		return context;
-	}
-	
-	public void setServletContext(ServletContext context) {
-		this.context = context;
-		
-	}
-
-	@JSON (serialize= false )
-	public HttpSession getSession() {
-		return session;
-	}
-
 	
 	@JSON (serialize= false )
 	public ComparedReportVO getComparedResultsVO() {
@@ -247,11 +210,6 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 
 	}
 
-	public void setServletResponse(HttpServletResponse response) {
-		this.response = response;
-
-	}
-
 	public List<ElectionComparisonResultVO> getElectionComparisonResultVO() {
 		return electionComparisonResultVO;
 	}
@@ -268,28 +226,29 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		if(logger.isDebugEnabled())
 			logger.debug("alliance-->" + allianceCheck);		
 		
-		String previousYear = getElectionYears1();
-		String presentYear = getElectionYears2();
-		if(Long.parseLong(getElectionYears1()) > Long.parseLong(getElectionYears2())){
-			previousYear = getElectionYears2();
-			presentYear = getElectionYears1();
-		}
-			
-		electionComparisonReportVO = electionComparisonReportService.getDistrictWiseElectionResultsForAParty(Long.parseLong(getElectionType()), Long.parseLong(getParty()),Long.parseLong(getState()), presentYear, previousYear, hasAlliances);
-			
+		electionComparisonReportVO = electionComparisonReportService.getDistrictWiseElectionResultsForAParty(Long.parseLong(getParty()), new Long(electionId1), new Long(electionId2), hasAlliances);
+		
+		String yearOne = electionComparisonReportVO.getYearOne();
+		String yearTwo = electionComparisonReportVO.getYearTwo();
+		String electionType = electionComparisonReportVO.getElectionType();
+		
         try{
         	session = request.getSession();
-    		String chartId = state.concat(party).concat(electionType).concat(electionYears1).concat("Comparing with").concat(electionYears2).concat("BarChart");
+    		String chartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("BarChart");
     		String barChartName = "electionsComparisonChart_" + chartId + session.getId()+".png";
             String chartPath = context.getRealPath("/") + "charts\\" + barChartName;
             
-            String percentageChartId = state.concat(party).concat(electionType).concat(electionYears1).concat("Comparing with").concat(electionYears2).concat("LineChart");
+            String percentageChartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("LineChart");
             String lineChartName = "electionsComparisonChart_" + percentageChartId + session.getId()+".png";
             String lineChartPath = context.getRealPath("/") + "charts\\" + lineChartName;
             
-            String seatsChartId = state.concat(party).concat(electionType).concat(electionYears1).concat("Comparing with").concat(electionYears2).concat("LineChartSeatsWon");
+            String seatsChartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("LineChartSeatsWon");
             String seatsLineChartName = "electionsComparisonChart_" + seatsChartId + session.getId()+".png";
             String seatsLineChartPath = context.getRealPath("/") + "charts\\" + seatsLineChartName;
+            
+            String totalPercentChartId = party.concat(electionType).concat(yearOne).concat("Comparing with").concat(yearTwo).concat("LineChartTotalPercent");
+            String totalPercentLineChartName = "electionsComparisonChart_" + totalPercentChartId + session.getId()+".png";
+            String totalPercentLineChartPath = context.getRealPath("/") + "charts\\" + totalPercentLineChartName;
             
             if(electionComparisonReportVO.getPositionsForYearOne() != null && electionComparisonReportVO.getPositionsForYearTwo() != null){
             	
@@ -297,16 +256,23 @@ public class ElectionComparisonReportAction extends ActionSupport implements
             	PartyPositionsVO partyPositionsVOYear2 = getMainPartyPositions(electionComparisonReportVO.getPositionsForYearTwo(),Long.parseLong(getParty()));
             	String label = partyPositionsVOYear1.getPartyName();
             	label = label.concat("  Results").concat("  Graph");
-            	ChartProducer.createBarChart(label, "Years", "Seats", createDatasetForBarGraph(previousYear,presentYear,partyPositionsVOYear1,partyPositionsVOYear2), chartPath);
+            	ChartProducer.createBarChart(label, "Years", "Seats", createDatasetForBarGraph(yearOne, yearTwo, partyPositionsVOYear1,partyPositionsVOYear2), chartPath);
             	request.setAttribute("barChartName", barChartName);
     			session.setAttribute("barChartName", barChartName);
             }
             
-            ChartProducer.createLineChart("", "District", "Votes Percentage", createDatasetForLineChart(electionComparisonReportVO), lineChartPath,300,880, null );
-            ChartProducer.createLineChart("", "District", "Seats Won", createDatasetForSeatsLineChart(electionComparisonReportVO), seatsLineChartPath,300,880, null );
+            String xaxis;
+            if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType))
+            	xaxis = "Districts";
+            else
+            	xaxis = "States";
+            
+            ChartProducer.createLineChart("", xaxis, "Votes Percentage", createDatasetForLineChart(electionComparisonReportVO), lineChartPath,300,880, null );
+            ChartProducer.createLineChart("", xaxis, "Votes Percentage", createDatasetTotalPercentForLineChart(electionComparisonReportVO), totalPercentLineChartPath,300,880, null );
+            ChartProducer.createLineChart("", xaxis, "Seats Won", createDatasetForSeatsLineChart(electionComparisonReportVO), seatsLineChartPath,300,880, null );
             electionComparisonReportVO.setPercentageChart(lineChartName);
             electionComparisonReportVO.setSeatsWonChart(seatsLineChartName);
-            
+            electionComparisonReportVO.setTotalPercentChart(totalPercentLineChartName);
         }
 		catch(Exception ex){
 			ex.printStackTrace();
@@ -346,9 +312,22 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		
 		return dataset;
 	}
-      		
 	
-	
+	private CategoryDataset createDatasetTotalPercentForLineChart(ElectionComparisonReportVO electionComparisonReportVO){
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		List<DistrictWisePartyResultVO> districtWisePartyResultsForYearOne = electionComparisonReportVO.getDistrictWisePartyResultsForYearOne();
+		List<DistrictWisePartyResultVO> districtWisePartyResultsForYearTwo = electionComparisonReportVO.getDistrictWisePartyResultsForYearTwo();
+		
+		for(DistrictWisePartyResultVO dist1:districtWisePartyResultsForYearOne)
+			dataset.addValue(new BigDecimal(dist1.getTotalPercentage()), electionComparisonReportVO.getYearOne(),
+					dist1.getDistrictName());
+		for(DistrictWisePartyResultVO dist2:districtWisePartyResultsForYearTwo)
+			dataset.addValue(new BigDecimal(dist2.getTotalPercentage()), electionComparisonReportVO.getYearTwo(), 
+					dist2.getDistrictName());
+		
+		return dataset;
+	}
+      			
 	public PartyPositionsVO getMainPartyPositions(List<PartyPositionsVO> positions,Long party){
 		PartyPositionsVO partyPositions = null;
 		for(PartyPositionsVO partyPos:positions){
@@ -358,7 +337,7 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 	return partyPositions;
 	}
 	
-	@SuppressWarnings("unused")
+	
 	private CategoryDataset createDatasetForBarGraph(String yearOne,String yearTwo,PartyPositionsVO positionsForYearOne,PartyPositionsVO positionsForYearTwo){
 		  // row keys...
 		 final String category1 =  "Seats Won";
@@ -392,24 +371,19 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 			e.printStackTrace();
 		}		
 		
-		String elecYearOne = jObj.getString("firstYear");
-		String elecYearTwo = jObj.getString("secondYear");
-		String districtId  = jObj.getString("district");
-		String stateId = jObj.getString("stateId");
-		String partyId = jObj.getString("partyId");
-		String electionType = jObj.getString("electionType");
+		Long elecIdOne = jObj.getLong("electionIdOne");
+		Long elecIdTwo = jObj.getLong("electionIdTwo");
+		Long stateOrDistrictId  = jObj.getLong("stateOrDistrictId");
+		Long partyId = jObj.getLong("partyId");
 		String hasAlliances = jObj.getString("hasAlliance");
 		
-		logger.debug("Year One:"+elecYearOne);
-		logger.debug("Year Two:"+elecYearTwo);
-		logger.debug("District Id:"+districtId);
-		logger.debug("State Id:"+stateId);
+		logger.debug("Year One:"+elecIdOne);
+		logger.debug("Year Two:"+elecIdTwo);
+		logger.debug("District Id:"+stateOrDistrictId);
 		logger.debug("PartyId Id:"+partyId);
-		logger.debug("Election Type:"+electionType);
 		logger.debug("Has Alliances:"+hasAlliances);
-		
-		
-		comparedResultsVO = electionComparisonReportService.getComparedElectionResults(new Long(electionType), new Long(stateId), new Long(partyId), elecYearOne, elecYearTwo, new Long(districtId), new Boolean(hasAlliances));
+			
+		comparedResultsVO = electionComparisonReportService.getComparedElectionResults(new Long(partyId), elecIdOne, elecIdTwo, stateOrDistrictId, new Boolean(hasAlliances));
 		
 		return Action.SUCCESS;
 	}
@@ -423,20 +397,16 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		
 		try {
 			jObj=new JSONObject(param);
-			System.out.println("jObj = "+jObj);
+			System.out.println("getPartyPositionDetails ********* jObj = "+jObj);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		String electionType = jObj.getString("electionType");
-		String stateId = jObj.getString("stateId");
-		String partyId = jObj.getString("party");
-		String electionYear = jObj.getString("electionYear");
-		String rank = jObj.getString("rank");
-		String hasAllianc = jObj.getString("hasAlliance");
-		Long districtId = new Long(0);
+		Long electionId = jObj.getLong("electionId");
+		Long partyId = jObj.getLong("party");
+		Long rank = jObj.getLong("rank");
 		
-		partyPositionDisplayVO = partyService.getPartyPositionDetailsForAnElection(new Long(electionType),new Long(stateId),new Long(districtId),new Long(electionYear),new Long(partyId),new Boolean(hasAllianc).booleanValue(),new Integer(rank).intValue(),"State Level");
+		partyPositionDisplayVO = partyService.getPartyPositionsDetailsInAnElection(electionId, partyId, rank);
 		
 		return Action.SUCCESS;
 	}
@@ -465,6 +435,12 @@ public class ElectionComparisonReportAction extends ActionSupport implements
 		constiElecResults  = staticDataService.getCompleteElectionResultsForAConstituency(new Long(constituencyId), new Long(electionId), new Long(partyId));
 		
 		return Action.SUCCESS;
+	}
+
+
+	public void setServletContext(ServletContext context) {
+		this.context = context;
+		
 	}
 
 	

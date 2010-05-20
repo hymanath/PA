@@ -31,163 +31,129 @@ table.CandidateElectionResultsTable td {
 }
 
 </style>
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <script>
-	function displayYearList()
-	{
-		
+		function getElectionScopes(id){
+			var jsObj=
+				{
+						electionTypeId:id,
+						task:"getElectionScopes"						
+				};
+			
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+				var url = "<%=request.getContextPath()%>/getElectionScopesForECAction.action?"+rparam;						
+				callAjax(rparam,jsObj,url);
+		}
 
-		if(electionTypevalue==0 || statesListvalue==0 || partyListvalue==0)
-			return;
-
-		var jsObj=
+		function getElectionYears(id)
 		{
-			electionId:electionTypevalue,
-			stateId:statesListvalue,
-			partyId:partyListvalue
-		}		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-
-		callAjax(rparam);
-	}
-	function callAjax(rparam)
-	{
+			var jsObj=
+			{
+					electionScopeId:id,
+					task:"getElectionYears"						
+			};
 		
-		var url = "<%=request.getContextPath()%>/electionComparisonAjaxAction.action?"+rparam;		
- 		var callback = {			
- 		               success : function( o ) {
-							try {
-								myResults = YAHOO.lang.JSON.parse(o.responseText); 
-								
-								buildYearSelect(myResults.yearsList);								
-							}catch (e) {   
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getElectionYearsForECAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+		}
+		
+		function callAjax(rparam, jsObj, url){
+			var resultVO;			
+			var callback = {			
+		               success : function( o ) {
+							try {								
+									resultVO = YAHOO.lang.JSON.parse(o.responseText);										
+
+									if(jsObj.task == "getElectionScopes")
+									{			
+										clearOptionsListForSelectElmtId("electionScopeSelect");							
+										createOptionsForSelectElmtId("electionScopeSelect",resultVO);
+									}else
+									if(jsObj.task == "getElectionYears")
+									{								
+										clearOptionsListForSelectElmtId("electionYearSelect1");
+										createOptionsForSelectElmtId("electionYearSelect1",resultVO);		
+
+										clearOptionsListForSelectElmtId("electionYearSelect2");
+										createOptionsForSelectElmtId("electionYearSelect2",resultVO);	
+									}				
+							}catch (e)  {   
 							   	alert("Invalid JSON result" + e);   
 							}  
- 		               },
- 		               scope : this,
- 		               failure : function( o ) {
- 		                			alert( "Failed to load result" + o.status + " " + o.statusText);
- 		                         }
- 		               };
-
- 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}
-
-	function buildYearSelect(value)
-	{
-		var rowElmt=document.getElementById("yearRow");
-		var str='';
-		str+='<td><b>Years </b></td>';
-		str+='<td>';
-		str+='<select id="yearStartSelect" name="startYear">';
-		str+='<option value="0">Start</option>';
-		for (var item in value)
-		{
-			str+='<option value='+value[item].id+'>'+value[item].name+'</option>';
-		}
-		str+='</select>';
-	
-		str+='<select id="yearEndSelect" name="endYear" style="margin-left:10px;">';
-		str+='<option value="0">End</option>';
-		for (var item in value)
-		{
-			str+='<option value='+value[item].id+'>'+value[item].name+'</option>';
-		}
-		str+='</select>';
-		str+='</td>';
-		rowElmt.innerHTML=str;
-	}
-
-	function validateInput()
-	{
-       var electionTypeElmt=document.getElementById("electionTypeList");
-		var electionTypevalue=electionTypeElmt.options[electionTypeElmt.selectedIndex].value;
-
-		var statesListElmt=document.getElementById("statesList");
-		var statesListvalue=statesListElmt.options[statesListElmt.selectedIndex].value;
-
-		var partyListElmt=document.getElementById("partyList");
-		var partyListvalue=partyListElmt.options[partyListElmt.selectedIndex].value;
-
-		var years1ListElmt=document.getElementById("yearsList1");
-		var years1Listvalue=years1ListElmt.options[years1ListElmt.selectedIndex].value;
-
-		var years2ListElmt=document.getElementById("yearsList2");
-		var years2Listvalue=years2ListElmt.options[years2ListElmt.selectedIndex].value;
-
-		if(electionTypevalue == 0 || statesListvalue == 0 || partyListvalue == 0 || years1Listvalue == 0 || years2Listvalue == 0){
-			alert("Invalid Selection");
-			return false;
-		}
-		else
-			return true;
-	}
-
-	function getPartyname(value)
-	{
-		var elmt = document.getElementById("selectedPartyName");
-		if(!elmt)
-			return;
+		               },
+		               scope : this,
+		               failure : function( o ) {
+		                			alert( "Failed to load result" + o.status + " " + o.statusText);
+		                         }
+		               };
 		
-		elmt.value=value;
+			YAHOO.util.Connect.asyncRequest('GET', url, callback);			
+		}
 
-	}
+		function getPartyname(value)
+		{
+			var elmt = document.getElementById("selectedPartyName");
+			if(!elmt)
+				return;
+			
+			elmt.value=value;
+
+		}
+		
 </script>
 </head>
 <body>
-
 <div style="margin-top:40px;">
-<s:form action="electionComparisonReportAction.action" onsubmit="return validateInput()">
-
-	<table class="CandidateElectionResultsTable" width="300px" border="1">
-	<tr>
-		<th colspan="2">
-				<span style="margin: 0px; text-align: center;">Elections Comparison Report</span>
-		</th>
-	</tr>
-	<tr>
-	   <th>Election Type</th>
-	   <td align="left">
-			<s:select theme="simple" name="electionType" id="electionTypeList" list="electionType" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
-		</td>
-	 </tr>
-	 <tr>
-	   <th >State</th>
-	   <td  align="left">
-			<s:select theme="simple" name="state" id="statesList" list="statesList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
-		</td>
-	 </tr>
-	
-	 <tr >
-	   <th>Party</th>
-	   <td  align="left">
-			<s:select theme="simple" name="party" id="partyList" onchange="getPartyname(this.options[this.selectedIndex].text)" list="partyList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
-			<input type="hidden" id="selectedPartyName" name="selectedPartyName">
-		</td>
-	 </tr>
-	 <tr>
-	   <th>Elections Years</th>
-	   <td colspan="2"  align="left" >
-			<s:select theme="simple" name="electionYears1" id="yearsList1" list="yearsList" headerKey="0" headerValue="Select" listKey="name" listValue="name" />
-		
-			<s:select theme="simple" name="electionYears2" id="yearsList2" list="yearsList" headerKey="0" headerValue="Select" listKey="name" listValue="name" />
-		</td>
-	 </tr>
-	 <tr>
-		<th>Include Alliances</th>
-		<td><s:checkbox theme="simple" id="allianceCheck" name="allianceCheck" value="hasAllianceParties"></s:checkbox> Include in the Report
-		 </td>
-	 </tr>
-	
-	 <tr>
-		<th colspan="2" align="center">
-			<s:submit theme="simple" value="Display Results"/>
-		</th>
-	 </tr>
-
-	 
-   </table>
-
-   </s:form>
-   </div>
+	<s:form action="electionComparisonReportAction.action">
+		<table class="CandidateElectionResultsTable" width="300px" border="1">
+			<tr>
+				<th>Election Type:</th>
+				<td>
+					<select id="electionTypeSelect" onchange = "getElectionScopes(this.options[this.selectedIndex].value)" class = "selectWidth">
+						<option value="0">Select </option>
+						<option value="1">Parliament</option>
+						<option value="2">Assembly</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>Election Scope:</th>
+				<td>
+					<select id="electionScopeSelect" onchange = "getElectionYears(this.options[this.selectedIndex].value)" class = "selectWidth">
+						<option value="0">Select </option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>Election Years:</th>
+				<td>
+					<select id="electionYearSelect1" class = "selectWidth" name="electionId1">
+						<option value="0">Select </option>
+					</select>
+					<select id="electionYearSelect2" class = "selectWidth" name="electionId2">
+						<option value="0">Select </option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+			   <th>Party</th>
+			   <td  align="left">
+					<s:select theme="simple" name="party" id="partyList" onchange="getPartyname(this.options[this.selectedIndex].text)" list="partyList" headerKey="0" headerValue="Select" listKey="id" listValue="name" />
+					<input type="hidden" id="selectedPartyName" name="selectedPartyName">
+			   </td>
+			</tr>
+			<tr>
+				<th>Include Alliances</th>
+				<td><s:checkbox theme="simple" id="allianceCheck" name="allianceCheck" value="hasAllianceParties"></s:checkbox> Include in the Report</td>
+	 		</tr>
+	 		<tr>
+				<th colspan="2" align="center">
+					<s:submit theme="simple" value="Display Results"/>
+				</th>
+	 		</tr>
+		</table>
+	</s:form>
+</div>
 </body>
 </html>

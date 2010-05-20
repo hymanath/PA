@@ -1,61 +1,40 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.util.ServletContextAware;
+import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.IElectionsComparisonService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
 
-public class ElectionComparisonAction extends ActionSupport implements ServletRequestAware,
-		ServletContextAware {
+public class ElectionComparisonAction extends ActionSupport implements ServletRequestAware {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private List<SelectOptionVO> statesList;
 	private List<SelectOptionVO> partyList;
-	private List<SelectOptionVO> electionType;
+	private List<SelectOptionVO> electionScopes;
 	private List<SelectOptionVO> yearsList;
-	
-	
 	private HttpServletRequest request;
-	private IElectionsComparisonService electionsComparisonService;
 	private IStaticDataService staticDataService;
+	private String task = null;
+	JSONObject jObj = null;
+	private static final Logger log = Logger.getLogger(ElectionComparisonAction.class);
 	
-	public List<SelectOptionVO> getStatesList() {
-		return statesList;
-	}
-
-	public void setStatesList(List<SelectOptionVO> statesList) {
-		this.statesList = statesList;
-	}
-
 	public List<SelectOptionVO> getPartyList() {
 		return partyList;
 	}
 
 	public void setPartyList(List<SelectOptionVO> partyList) {
 		this.partyList = partyList;
-	}
-	
-	public List<SelectOptionVO> getElectionType() {
-		return electionType;
-	}
-
-	public void setElectionType(List<SelectOptionVO> electionType) {
-		this.electionType = electionType;
 	}
 	
 	public List<SelectOptionVO> getYearsList() {
@@ -70,55 +49,29 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 		this.request = request;
 
 	}
-
-	public void setServletContext(ServletContext arg0) {
-		// TODO Auto-generated method stub
-
+	
+	public String getTask() {
+		return task;
 	}
 
-	public IElectionsComparisonService getElectionsComparisonService() {
-		return electionsComparisonService;
+	public void setTask(String task) {
+		this.task = task;
 	}
 
-	public void setElectionsComparisonService(IElectionsComparisonService electionsComparisonService) {
-		this.electionsComparisonService = electionsComparisonService;
+	public JSONObject getJObj() {
+		return jObj;
 	}
 
-	public String execute() throws Exception {
-		
-		partyList = staticDataService.getStaticParties();
-		yearsList = staticDataService.getElectionIdsAndYearsInfo(new Long(2),new Long(1));
-		
-		List<SelectOptionVO> eList = new ArrayList<SelectOptionVO>();
-		
-		SelectOptionVO assembly = new SelectOptionVO();
-		assembly.setId(new Long(2));
-		assembly.setName("Assembly");
-		eList.add(assembly);
-		
-		/*SelectOptionVO mptc = new SelectOptionVO();
-		assembly.setId(new Long(3));
-		assembly.setName("MPTC");
-		eList.add(mptc);*/
-		
-		this.setElectionType(eList);
-		
-		List<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>();
-		
-		SelectOptionVO state1 = new SelectOptionVO();
-		state1.setId(new Long(1));
-		state1.setName("Andhra Pradesh");
-		
-		SelectOptionVO state2 = new SelectOptionVO();
-		state2.setId(new Long(15));
-		state2.setName("Maharastra");
-		
-		statesList.add(state1);
-		statesList.add(state2);
-		
-		this.setStatesList(statesList);
-			
-	return Action.SUCCESS;
+	public void setJObj(JSONObject obj) {
+		jObj = obj;
+	}
+
+	public List<SelectOptionVO> getElectionScopes() {
+		return electionScopes;
+	}
+
+	public void setElectionScopes(List<SelectOptionVO> electionScopes) {
+		this.electionScopes = electionScopes;
 	}
 
 	public IStaticDataService getStaticDataService() {
@@ -128,4 +81,46 @@ public class ElectionComparisonAction extends ActionSupport implements ServletRe
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
 	}
+
+	public String execute() throws Exception {
+		partyList = staticDataService.getStaticParties();
+		return Action.SUCCESS;
+		
+	}
+	
+	public String getElectionScopesForEC(){
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			if(jObj.getString("task").equals("getElectionScopes")){
+				electionScopes = staticDataService.getElectionScopesByElectionType(jObj.getLong("electionTypeId"));
+				log.debug("getElectionScopes......"+electionScopes.size());
+			}
+		}
+		return SUCCESS;
+	}
+	
+	public String getElectionYearsAndElectionIdsForEC(){
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			if(jObj.getString("task").equals("getElectionYears")){
+				yearsList = staticDataService.getElectionIdsAndYearsByElectionScope(jObj.getLong("electionScopeId"));
+				log.debug("getElectionScopes......"+yearsList.size());
+			}
+		}
+		return SUCCESS;
+	}
+
+	
 }

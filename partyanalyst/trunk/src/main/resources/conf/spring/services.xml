@@ -40,6 +40,7 @@
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="nominationDAO" ref="nominationDAO" />
 	</bean>
 	
 	<bean name="influencingPeopleService" class="com.itgrids.partyanalyst.service.impl.InfluencingPeopleService" >
