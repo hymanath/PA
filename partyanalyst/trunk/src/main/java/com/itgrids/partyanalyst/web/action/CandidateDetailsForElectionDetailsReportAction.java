@@ -172,7 +172,7 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 		} else if (electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
 		{
 			try{
-				partiesList = staticDataService.getStaticParties();
+				partiesList = staticDataService.getStaticPartiesForCandidateDeatailsReport();
 				partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
 			}catch(Exception e){
 				partiesList = null;

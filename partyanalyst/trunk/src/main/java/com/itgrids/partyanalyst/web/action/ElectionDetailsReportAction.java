@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.awt.Color;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -191,8 +192,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	}
 
 	public String execute () throws Exception 
-	{
-	
+	{	
 		if(log.isDebugEnabled()){
 			log.debug("Entered in to Election Details Action");			
 		}
@@ -357,7 +357,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
  		String alliancePartiesChartName = "alliancPartyElectionResults_" + alliancePartiesChartId + session.getId() +".png";
         String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
  		
-        ChartProducer.createLineChart("","","Seats", createDataSetForAlliancPartyOverallResults(alliancParties.getPartiesInAlliance(),"BarChart"), alliancePartiesChartPath,300,600, null);
+        ChartProducer.createLineChart("","","Seats", createDataSetForAlliancPartyOverallResults(alliancParties.getPartiesInAlliance(),"BarChart", null), alliancePartiesChartPath,300,600, null);
 	    request.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		session.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		chartName = alliancePartiesChartName;
@@ -373,12 +373,14 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	 */
 	public String createLineChartForAlliancPartiesForDistrictLevel(AlliancePartyDistrictResultsVO alliancParties){
 		String chartName = null;
+		List<Color> colors = new ArrayList<Color>();
 		try{
 		String alliancePartiesChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat(alliancParties.getAllianceGroupName()).concat("Election_Results_DistrictWise").concat("LineChart");
  		String alliancePartiesChartName = "alliancPartyElectionResultsDistrictWise_" + alliancePartiesChartId + session.getId() +".png";
         String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
- 		
-        ChartProducer.createLineChart("","","Seats", createDataSetForPartyDistrictwiseResults(alliancParties.getPartiesInAlliance()), alliancePartiesChartPath,300,800, null);
+ 		CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(alliancParties.getPartiesInAlliance(),colors);
+ 		log.debug("createLineChartForAlliancPartiesForDistrictLevel Colors::"+colors.size());
+        ChartProducer.createLineChart("","","Seats", categoryDataset, alliancePartiesChartPath,300,800, colors);
 	    request.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		session.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		chartName = alliancePartiesChartName;
@@ -394,13 +396,15 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	 */
 	public String createLineChartForPartiesWithDistrictLevelResults(List<DistrictWisePartyPositionsVO> allPartiesResults,String chartType,String title,int height,int width){
 		String chartName = null;
+		List<Color> colors = new ArrayList<Color>();
 		try{
 			String partyDistrictResultsChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat("Election_Results_Districtwise").concat("LineChart").concat(chartType);
 	 		String partyDistrictResultsChartName = "partyDistrictResults_" + partyDistrictResultsChartId + session.getId() +".png";
 	        String partyDistrictResultsChartPath = context.getRealPath("/") + "charts\\" + partyDistrictResultsChartName;
 	 		
-
-	 		ChartProducer.createLineChart(title,"","Votes Percentage", createDataSetForPartyDistrictwiseResults(allPartiesResults), partyDistrictResultsChartPath,height,width,null);
+	        CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(allPartiesResults,colors);
+	        log.debug("createLineChartForPartiesWithDistrictLevelResults Colors::"+colors.size());
+	 		ChartProducer.createLineChart(title,"","Votes Percentage", categoryDataset, partyDistrictResultsChartPath,height,width,colors);
 	 		request.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 			session.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 			
@@ -416,13 +420,16 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	 * creating line chart for overall results
 	 */
 	public String createLineChartForStateLevelResults(List<PartyPositionsVO> allPartiesResults,String chartType,String title){
+		log.debug("in create line graph method");
 		String chartName = null;
+		List<Color> colors = new ArrayList<Color>();		
 		try{
 			String allPartiesChartId = electionCompleteDetailsVO.getElectionType().concat(electionCompleteDetailsVO.getElectionYear()).concat("Overall").concat("Election_Results").concat("All_Parties_LineChart").concat(chartType);
 	 		String allPartiesChartName = "alliancPartyElectionResults_" + allPartiesChartId + session.getId() +".png";
 	        String allPartiesChartPath = context.getRealPath("/") + "charts\\" + allPartiesChartName;
 	 		
-	        ChartProducer.createLineChart(title,"","Seats", createDataSetForAlliancPartyOverallResults(allPartiesResults,"LineChart"), allPartiesChartPath,300,800, null);
+	        ChartProducer.createLineChart(title,"","Seats", createDataSetForAlliancPartyOverallResults(allPartiesResults,"LineChart",colors), allPartiesChartPath,300,800, colors);
+	        log.debug("Line Chart Colors ::::::::::::::::::::::::::::::::::::"+colors.size());
 		    request.setAttribute("allPartiesChartName", allPartiesChartName);
 			session.setAttribute("allPartiesChartName", allPartiesChartName);
 			chartName = allPartiesChartName;
@@ -467,13 +474,16 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 		/*
 		 * creating dataset for districtwise results
 		 */
-		private CategoryDataset createDataSetForPartyDistrictwiseResults(List<DistrictWisePartyPositionsVO> allPartiesResults){
+		private CategoryDataset createDataSetForPartyDistrictwiseResults(List<DistrictWisePartyPositionsVO> allPartiesResults, List<Color> colors){
+			log.debug("in  createDataSetForPartyDistrictwiseResults");
 			int i=0;
-			List<SelectOptionVO> staticParties = staticDataService.getStaticParties();
+			
 			final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 			for(DistrictWisePartyPositionsVO parties:allPartiesResults){
 				if(i > 8){
+					
 		    		if(!parties.getPartyName().equals("TDP") && !parties.getPartyName().equals("TRS") && !parties.getPartyName().equals("CPI") && !parties.getPartyName().equals("CPM") && !parties.getPartyName().equals("BJP") && !parties.getPartyName().equals("PRP")){
+		    			log.debug("In Continue");
 		    			i++;
 		    			continue;
 		    		}
@@ -490,8 +500,8 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 		/*
 		 * creating dataset for alliancParties overall results
 		 */
-		private CategoryDataset createDataSetForAlliancPartyOverallResults(List<PartyPositionsVO> alliancPartiesResults,String chartType){
-		
+		private CategoryDataset createDataSetForAlliancPartyOverallResults(List<PartyPositionsVO> alliancPartiesResults,String chartType,List<Color> colors){
+		log.debug("createDataSetForAlliancPartyOverallResults");
 			final String series1 = "Seats Won";
 			final String series2 = "2nd Pos";
 			final String series3 = "3rd Pos";
@@ -501,13 +511,61 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 			final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 			for(PartyPositionsVO parties:alliancPartiesResults){
 				final String category = parties.getPartyName();
-				if(chartType.equals("LineChart") && category.equals("IND"))
-				continue;
+				if(chartType.equals("LineChart"))
+				{
+					if(category.equals("IND"))
+						continue;
+					if(IConstants.TDP.equalsIgnoreCase(parties.getPartyName()))
+					{	colors.add(IConstants.TDP_COLOR);
+						log.debug("TDP ADDEd");
+					}
+					
+		        	else
+		        		if(IConstants.INC.equalsIgnoreCase(parties.getPartyName()))
+		        		{	colors.add(IConstants.INC_COLOR);
+		        		log.debug("INC ADDEd");
+		        		}
+		            	else
+		            		if(IConstants.BJP.equalsIgnoreCase(parties.getPartyName()))
+		            		{	colors.add(IConstants.BJP_COLOR);
+		            		log.debug("BJP ADDEd");
+		            		}
+		                	else
+		                		if(IConstants.PRP.equalsIgnoreCase(parties.getPartyName()))
+		                    		{colors.add(IConstants.PRP_COLOR);
+		                    		log.debug("PRP ADDEd");
+		                    		}
+		                    	else
+		                    		if(IConstants.TRS.equalsIgnoreCase(parties.getPartyName()))
+		                        		{
+		                    			colors.add(IConstants.TRS_COLOR);
+		                    			log.debug("TRS ADDEd");
+		                    			}
+		                    		else
+			                    		if(IConstants.AIMIM.equalsIgnoreCase(parties.getPartyName()))
+			                        		{
+			                    			colors.add(IConstants.AIMIM_COLOR);
+			                    			log.debug("AIMIM ADDEd");
+			                    			}
+			                    		else
+				                    		if(IConstants.CPI.equalsIgnoreCase(parties.getPartyName()))
+				                        		{
+				                    			colors.add(IConstants.CPI_COLOR);
+				                    			log.debug("CPI ADDEd");
+				                    			}
+		                    		else
+				                    	{colors.add(null);
+				                    	log.debug("Default ADDEd");
+				                    	}
+				}				
+				
 				dataset.addValue(new Long(parties.getTotalSeatsWon()), category, series1);
 				dataset.addValue(new Long(parties.getSecondPosWon()), category, series2);
 				dataset.addValue(new Long(parties.getThirdPosWon()), category, series3);
 				dataset.addValue(new Long(parties.getFourthPosWon()), category, series4);
 				dataset.addValue(new Long(parties.getNthPosWon()), category, series5);
+				
+				
 			}
 			return dataset;
 		}
