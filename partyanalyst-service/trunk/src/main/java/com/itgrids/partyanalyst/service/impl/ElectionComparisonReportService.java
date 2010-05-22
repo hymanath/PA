@@ -358,11 +358,15 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			posDetailsYearTwo = getPartyPositionsForADistrict(electionType, elecYearTwo.getElectionId(),stateOrDistrictId,partyIdsYearTwo);
 			
 			if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType)){				
-				constiElectionsForYearOne = nominationDAO.findConstituencyElectionByElectionIdAndDistrictIdAndPartys(elecYearOne.getElectionId(), stateOrDistrictId, partyIdsYearOne);
-				constiElectionsForYearTwo = nominationDAO.findConstituencyElectionByElectionIdAndDistrictIdAndPartys(elecYearTwo.getElectionId(), stateOrDistrictId, partyIdsYearTwo);
+				constiElectionsForYearOne = nominationDAO.findConstituencyElectionByElectionIdAndDistrictIdAndPartys(
+						elecYearOne.getElectionId(), stateOrDistrictId, partyIdsYearOne);
+				constiElectionsForYearTwo = nominationDAO.findConstituencyElectionByElectionIdAndDistrictIdAndPartys(
+						elecYearTwo.getElectionId(), stateOrDistrictId, partyIdsYearTwo);
 			}else if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
-				constiElectionsForYearOne = nominationDAO.findConstituencyElectionByElectionIdAndStateAndPartys(elecYearOne.getElectionId(), stateOrDistrictId, partyIdsYearOne);
-				constiElectionsForYearTwo = nominationDAO.findConstituencyElectionByElectionIdAndStateAndPartys(elecYearTwo.getElectionId(), stateOrDistrictId, partyIdsYearTwo);
+				constiElectionsForYearOne = nominationDAO.findConstituencyElectionByElectionIdAndStateAndPartys(
+						elecYearOne.getElectionId(), stateOrDistrictId, partyIdsYearOne);
+				constiElectionsForYearTwo = nominationDAO.findConstituencyElectionByElectionIdAndStateAndPartys(
+						elecYearTwo.getElectionId(), stateOrDistrictId, partyIdsYearTwo);
 			}
 			
 			
@@ -482,18 +486,19 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			for(ConstituencyElection constiElecOne:constiElectionsForYearOne){
 				for(ConstituencyElection constiElecTwo:constiElectionsForYearTwo){
 					if(constiElecTwo.getConstituency().getConstituencyId().equals(constiElecOne.getConstituency().getConstituencyId())){
-					comparedConstituencyElectionVO = new ComparedConstituencyElectionVO();
-					comparedConstituencyElectionVO.setConstiElecForYearOne(constiElecOne);
-					comparedConstituencyElectionVO.setConstiElecForYearTwo(constiElecTwo);
-					comparedConstituencyElectionVO.setYearOne(yearOne);
-					comparedConstituencyElectionVO.setYearTwo(yearTwo);
-					
-					if(comparedConstiElecMap.isEmpty() || !comparedConstiElecMap.containsKey(constiElecOne.getConstituency().getConstituencyId()))
-					comparedConstiElecMap.put(constiElecOne.getConstituency().getConstituencyId(), comparedConstituencyElectionVO);
-								
-					log.debug("Constituency ::" + constiElecOne.getConstituency().getName());
-					constituencyIds.add(constiElecOne.getConstituency().getConstituencyId());
-					break;
+						comparedConstituencyElectionVO = new ComparedConstituencyElectionVO();
+						comparedConstituencyElectionVO.setConstiElecForYearOne(constiElecOne);
+						comparedConstituencyElectionVO.setConstiElecForYearTwo(constiElecTwo);
+						comparedConstituencyElectionVO.setYearOne(yearOne);
+						comparedConstituencyElectionVO.setYearTwo(yearTwo);
+						
+						if(comparedConstiElecMap.isEmpty() || !comparedConstiElecMap.containsKey(constiElecOne.getConstituency().
+								getConstituencyId()))
+						comparedConstiElecMap.put(constiElecOne.getConstituency().getConstituencyId(), comparedConstituencyElectionVO);
+									
+						log.debug("Constituency ::" + constiElecOne.getConstituency().getName());
+						constituencyIds.add(constiElecOne.getConstituency().getConstituencyId());
+						break;
 					}
 				}
 			}
@@ -502,16 +507,18 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 				Set entries = comparedConstiElecMap.entrySet();
 				Iterator iterator = entries.iterator();
 				while (iterator.hasNext()){
-				Map.Entry entry = (Map.Entry)iterator.next();
-				ComparedConstituencyElectionVO compConstiElec= (ComparedConstituencyElectionVO)entry.getValue();
-				compConstiElecList.add(compConstiElec);
+					Map.Entry entry = (Map.Entry)iterator.next();
+					ComparedConstituencyElectionVO compConstiElec= (ComparedConstituencyElectionVO)entry.getValue();
+					compConstiElecList.add(compConstiElec);
 			    }
 				comparedReportNewVO = getResultsForVotesGainedOrLost(compConstiElecList,yearOne,yearTwo,partyId,alliancPartyIdsYearOne,alliancPartyIdsYearTwo,hasAlliances);
 				
 			}
 				
-			notConsideredYearOneResults = getNotconsideredConstituencies(constiElectionsForYearOne,yearOne,constituencyIds,partyId,alliancPartyIdsYearOne,hasAlliances);
-			notConsideredYearTwoResults = getNotconsideredConstituencies(constiElectionsForYearTwo,yearTwo,constituencyIds,partyId,alliancPartyIdsYearTwo,hasAlliances);
+			notConsideredYearOneResults = getNotconsideredConstituencies(constiElectionsForYearOne,yearOne,constituencyIds,
+					partyId,alliancPartyIdsYearOne,hasAlliances);
+			notConsideredYearTwoResults = getNotconsideredConstituencies(constiElectionsForYearTwo,yearTwo,constituencyIds,
+					partyId,alliancPartyIdsYearTwo,hasAlliances);
 			
 			comparedReportVO.setVotesPercentGainedResults(comparedReportNewVO.getVotesPercentGainedResults());
 			comparedReportVO.setVotesPercentLostResults(comparedReportNewVO.getVotesPercentLostResults());
@@ -524,7 +531,9 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		return comparedReportVO;
 	}
 	
-	public ComparedReportVO getResultsForVotesGainedOrLost(List<ComparedConstituencyElectionVO> compConstiElecList ,String elecYearOne,String elecYearTwo,Long partyId,List<Long> alliancPartyIdsYearOne,List<Long> alliancPartyIdsYearTwo,Boolean hasAlliances){
+	public ComparedReportVO getResultsForVotesGainedOrLost(List<ComparedConstituencyElectionVO> compConstiElecList ,
+			String elecYearOne,String elecYearTwo,Long partyId,List<Long> alliancPartyIdsYearOne,
+			List<Long> alliancPartyIdsYearTwo,Boolean hasAlliances){
 		ComparedReportVO comparedReportVO = null;
 		
 		log.debug("Inside getResultsForVotesGainedOrLost Method .......");
@@ -546,32 +555,41 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 					selectedNominationYearTwo = getSelectedNominationWithoutAllianc(nominationsForYearTwo,partyId);
 				}
 				else if(hasAlliances){
-				    selectedNominationYearOne = getSelectedNominationWithAllianc(nominationsForYearOne,partyId,alliancPartyIdsYearOne,hasAlliances);
-					selectedNominationYearTwo = getSelectedNominationWithAllianc(nominationsForYearTwo,partyId,alliancPartyIdsYearOne,hasAlliances);
+				    selectedNominationYearOne = getSelectedNominationWithAllianc(nominationsForYearOne,partyId,
+				    		alliancPartyIdsYearOne,hasAlliances);
+					selectedNominationYearTwo = getSelectedNominationWithAllianc(nominationsForYearTwo,partyId,
+							alliancPartyIdsYearTwo,hasAlliances);
 				}	
-					    if(selectedNominationYearOne != null && selectedNominationYearTwo != null){
-						Double votesEarnedYearOne = selectedNominationYearOne.getCandidateResult().getVotesEarned();
-						Double votesEarnedYearTwo = selectedNominationYearTwo.getCandidateResult().getVotesEarned();
-						Double validVotesYearOne = selectedNominationYearOne.getConstituencyElection().getConstituencyElectionResult().getValidVotes();
-						Double validVotesYearTwo = selectedNominationYearTwo.getConstituencyElection().getConstituencyElectionResult().getValidVotes();
-						
-						Double votesPercentYearOne = new BigDecimal((votesEarnedYearOne/validVotesYearOne)*100).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
-						Double votesPercentYearTwo = new BigDecimal((votesEarnedYearTwo/validVotesYearTwo)*100).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
-						//Modified By Siva Start
-						Double votesPercentDiff = new BigDecimal(votesPercentYearOne - votesPercentYearTwo).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
-						//Modified By Siva End
-						log.debug("Votes% One" + votesPercentYearOne);
-						log.debug("Votes% Two" + votesPercentYearTwo);
-						
-						if(votesPercentDiff > 0){
-						ComparedElectionResultVO votesPercentGainedResults = getResultDetailsIntoVO(selectedNominationYearOne,selectedNominationYearTwo,votesPercentYearOne,votesPercentYearTwo,votesPercentDiff);
+			    if(selectedNominationYearOne != null && selectedNominationYearTwo != null){
+					Double votesEarnedYearOne = selectedNominationYearOne.getCandidateResult().getVotesEarned();
+					Double votesEarnedYearTwo = selectedNominationYearTwo.getCandidateResult().getVotesEarned();
+					Double validVotesYearOne = selectedNominationYearOne.getConstituencyElection()
+						.getConstituencyElectionResult().getValidVotes();
+					Double validVotesYearTwo = selectedNominationYearTwo.getConstituencyElection()
+						.getConstituencyElectionResult().getValidVotes();
+					
+					Double votesPercentYearOne = new BigDecimal((votesEarnedYearOne/validVotesYearOne)*100).setScale(
+							2,BigDecimal.ROUND_HALF_UP).doubleValue();
+					Double votesPercentYearTwo = new BigDecimal((votesEarnedYearTwo/validVotesYearTwo)*100).setScale(
+							2,BigDecimal.ROUND_HALF_UP).doubleValue();
+					//Modified By Siva Start
+					Double votesPercentDiff = new BigDecimal(votesPercentYearOne - votesPercentYearTwo).setScale(
+							2,BigDecimal.ROUND_HALF_UP).doubleValue();
+					//Modified By Siva End
+					log.debug("Votes% One" + votesPercentYearOne);
+					log.debug("Votes% Two" + votesPercentYearTwo);
+					
+					if(votesPercentDiff > 0){
+						ComparedElectionResultVO votesPercentGainedResults = getResultDetailsIntoVO(selectedNominationYearOne,
+								selectedNominationYearTwo,votesPercentYearOne,votesPercentYearTwo,votesPercentDiff);
 						votesPercentGainedResultsList.add(votesPercentGainedResults);
-						}
-						else if(votesPercentDiff <= 0){
-						ComparedElectionResultVO votesPercentLostResults = 	getResultDetailsIntoVO(selectedNominationYearOne,selectedNominationYearTwo,votesPercentYearOne,votesPercentYearTwo,votesPercentDiff);
+					}
+					else if(votesPercentDiff <= 0){
+						ComparedElectionResultVO votesPercentLostResults = 	getResultDetailsIntoVO(selectedNominationYearOne,
+								selectedNominationYearTwo,votesPercentYearOne,votesPercentYearTwo,votesPercentDiff);
 						votesPercentLostResultsList.add(votesPercentLostResults);
-						}
-					    }
+					}
+			    }
 			}
 			comparedReportVO.setVotesPercentGainedResults(votesPercentGainedResultsList);
 			comparedReportVO.setVotesPercentLostResults(votesPercentLostResultsList);
@@ -580,7 +598,8 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		return comparedReportVO;
 	}
 	
-	public ComparedElectionResultVO getResultDetailsIntoVO(Nomination selectedNominationYearOne,Nomination selectedNominationYearTwo,Double votesPercentYearOne,Double votesPercentYearTwo,Double votesPercentDiff){
+	public ComparedElectionResultVO getResultDetailsIntoVO(Nomination selectedNominationYearOne,
+			Nomination selectedNominationYearTwo,Double votesPercentYearOne,Double votesPercentYearTwo,Double votesPercentDiff){
 		ComparedElectionResultVO votesPercentResults = new ComparedElectionResultVO();
 		
 		log.debug("Inside getResultDetailsIntoVO Method .......");
@@ -614,21 +633,26 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 	return nomination;
 	}
 	
-	public Nomination getSelectedNominationWithAllianc(Set<Nomination> nominations,Long partyId,List<Long> alliancPartyIds,Boolean hasAlliances){
+	public Nomination getSelectedNominationWithAllianc(Set<Nomination> nominations,Long partyId,List<Long> alliancPartyIds,
+			Boolean hasAlliances){
 		Nomination nomination = null;
-		
+
 		for(Nomination nominatn:nominations){
 			if(nominatn.getParty().getPartyId().equals(partyId))
-			return nominatn;
+				return nominatn;
 			
 			if(alliancPartyIds.contains(nominatn.getParty().getPartyId())){
-			if(nomination == null)
-			nomination = nominatn;
-			else if(nomination != null && nomination.getCandidateResult().getRank() > nominatn.getCandidateResult().getRank())
-			nomination = nominatn;
+				System.out.println(nomination+"::"+nominatn.getConstituencyElection().getConstituency().getName());
+				if(nomination == null){
+					nomination = nominatn;	
+				}
+				else 
+				if(nomination != null && nomination.getCandidateResult().getRank() > nominatn.getCandidateResult().getRank()){
+					nomination = nominatn;	
+				}
 			}
 		}
-		
+
 		return nomination;
 	}
 	
