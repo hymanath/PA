@@ -159,11 +159,14 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		dobMonth.add(octVO);
 		dobMonth.add(novVO);
 		dobMonth.add(decVO);
-		
 		parties = staticDataService.getStaticParties();
-		
+		session = request.getSession();
 		session.setAttribute("type", type);
 		session.setAttribute("gender", gender);
+		session.setAttribute("parties", parties);
+		session.setAttribute("dobDay",dobDay);
+		session.setAttribute("dobYear",dobYear);
+		session.setAttribute("dobMonth", dobMonth);
 		
 		return Action.SUCCESS;
 	}

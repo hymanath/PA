@@ -206,7 +206,7 @@
 
 </head>  
 <body>  
-<s:form action="RegistrationAction" method="POST" theme="simple">  
+<s:form action="RegistrationAction" method="GET" theme="simple">  
     <h2>User Registration Form</h2> 
  <div id="registrationMainDiv">
 		<table class="registrationTable">
@@ -255,19 +255,19 @@
 					
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="partyField" id="partyLabel"  value="%{getText('party')}" /></td>
-						<td align="left"> <s:select name="party" id="party"  list="parties" listKey="id" listValue="name"></s:select> </td>
+						<td align="left"> <s:select name="party" id="party"  list="#session.parties" listKey="id" listValue="name"></s:select> </td>
 					</tr>
 					
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></td>
-						<td><s:radio id="genderField" name="gender" list="gender" value="male"/>  </td>			
+						<td><s:radio id="genderField" name="gender" list="#session.gender" value="male"/>  </td>			
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font><s:label for="dateOfBirthField" id="dateOfBirthLabel"  value="%{getText('dateOfBirth')}" /></td>
 						<td> 
-							<s:select name="dobDay" id="dobDay"  list="dobDay" listKey="id" listValue="name"></s:select>
-							<s:select name="dobMonth" id="dobMonth" list="dobMonth" listKey="id" listValue="name"></s:select>
-							<s:select name="dobYear" id="dobYear" list="dobYear" listKey="id" listValue="name"></s:select>							
+							<s:select name="day" id="dobDay"  list="#session.dobDay" listKey="id" listValue="name"></s:select>
+							<s:select name="month" id="dobMonth" list="#session.dobMonth" listKey="id" listValue="name"></s:select>
+							<s:select name="year" id="dobYear" list="#session.dobYear" listKey="id" listValue="name"></s:select>							
 						 </td>
 					</tr>
 					<tr>

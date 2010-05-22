@@ -14,6 +14,10 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.impl.UserService;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 public class RegistrationAction extends ActionSupport implements
 		ServletRequestAware, ServletResponseAware {
@@ -36,12 +40,14 @@ public class RegistrationAction extends ActionSupport implements
 	 private String accessType;
 	 private String accessValue;
 	 private Long party;
-	 
-	 private UserService userService;
+	 private String day;
+	 private String month;
+	 private String year;
+	private UserService userService;
 	 private List<String> type = new ArrayList<String>();
-	 private List<String> dobDay = new ArrayList<String>();
+/*	 private List<String> dobDay = new ArrayList<String>();
 	 private List<String> dobMonth = new ArrayList<String>();
-	 private List<String> dobYear = new ArrayList<String>();
+	 private List<String> dobYear = new ArrayList<String>();*/
 	 
 	public void setUserService(UserService userService){
 		this.userService  = userService;
@@ -61,7 +67,7 @@ public class RegistrationAction extends ActionSupport implements
 	 HttpSession session;
 	 
 
-	 public List<String> getDobDay() {
+	/* public List<String> getDobDay() {
 		return dobDay;
 	}
 
@@ -85,7 +91,7 @@ public class RegistrationAction extends ActionSupport implements
 
 	public void setDobYear(List<String> dobYear) {		
 		this.dobYear = dobYear;
-	}
+	}*/
 	 
 	 private RegistrationVO regVO = new RegistrationVO();
 	 
@@ -116,13 +122,16 @@ public class RegistrationAction extends ActionSupport implements
 
 	public String execute() throws Exception{
 		
-		String dobDayValue = dobDay.get(0);
-		String dobMonthValue = dobMonth.get(0);
-		String dobYearValue = dobYear.get(0);
+		//String dobDayValue = dobDay.get(0);
+		//String dobMonthValue = dobMonth.get(0);
+		//String dobYearValue = dobYear.get(0);
 		
-		String dob=dobDayValue+"/"+dobMonthValue+"/"+dobYearValue;
+		String dob=day+"/"+month+"/"+year;
+		System.out.println("date of birth is****" +dob);
+		String db1=request.getParameter("day");
+		System.out.println("date is ***" +db1);
 		
-		System.out.println(dob);
+		
 		
 		this.setDateOfBirth(dob);
 		
@@ -146,20 +155,17 @@ public class RegistrationAction extends ActionSupport implements
 		
 		
 	}
-    
-   
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+ 
 	public String getFirstName() {
 		return regVO.getFirstName();
 		
 	}
-
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Firstname is required",shortCircuit=true)
 	public void setFirstName(String firstName) {
 		this.regVO.setFirstName(firstName);
 		
 	}
 
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getMiddleName() {
 		return regVO.getMiddleName();
 	}
@@ -168,43 +174,37 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setMiddleName(middleName);
 	}
 
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getLastName() {
 		return regVO.getLastName();
 	}
-
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Lastname is required",shortCircuit=true)
 	public void setLastName(String lastName) {
 		this.regVO.setLastName(lastName);
 	}
 
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getGender() {
 		return regVO.getGender();
 	}
-
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "please select gender",shortCircuit=true)
 	public void setGender(String gender) {
 		this.regVO.setGender(gender);
 	}
 
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getUserName() {
 		return regVO.getUserName();
 	}
-
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Username is required",shortCircuit=true)	
 	public void setUserName(String userName) {
 		this.regVO.setUserName(userName);
 	}
-
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getPassword() {
 		return regVO.getPassword();
 	}
-
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Password is required",shortCircuit=true)
 	public void setPassword(String password) {
 		this.regVO.setPassword(password);
 	}
 
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getDateOfBirth() {
 		return regVO.getDateOfBirth();
 	}
@@ -215,8 +215,6 @@ public class RegistrationAction extends ActionSupport implements
 		
 	}
 
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
-	//@EmailValidator(key="invalidEmail",shortCircuit=true)
 	public String getEmail() {
 		return regVO.getEmail();
 	}
@@ -225,7 +223,6 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setEmail(email);
 	}
 
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getPhone() {
 		return regVO.getPhone();
 	}
@@ -234,25 +231,22 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setPhone(phone);
 	}
 
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getMobile() {
 		return regVO.getMobile();
 	}
-
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile number is required",shortCircuit=true)
+	@StringLengthFieldValidator(type = ValidatorType.FIELD,message = "mobile number should be 10 digits", shortCircuit = true,  minLength = "10",  maxLength = "10")
+	@RegexFieldValidator( type = ValidatorType.FIELD, expression = "^([9]{1})([02346789]{1})([0-9]{8})$", message="mobile number should contain digits",shortCircuit = true)
 	public void setMobile(String mobile) {
 		this.regVO.setMobile(mobile);
 	}
-
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getAddress() {
 		return regVO.getAddress();
 	}
-
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Address is required",shortCircuit=true)
 	public void setAddress(String address) {
 		this.regVO.setAddress(address);
 	}
-
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getCountry() {
 		return regVO.getCountry();
 	}
@@ -260,8 +254,6 @@ public class RegistrationAction extends ActionSupport implements
 	public void setCountry(String country) {
 		this.regVO.setCountry(country);
 	}
-
-	//@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
 	public String getPincode() {
 		return regVO.getPincode();
 	}
@@ -273,7 +265,7 @@ public class RegistrationAction extends ActionSupport implements
 	 public String getAccessType() {
 		return regVO.getAccessType();//;accessType;
 	}
-
+	 @RequiredStringValidator(type = ValidatorType.FIELD, message = "AccessType is required",shortCircuit=true)
 	public void setAccessType(String accessType) {
 		this.accessType = accessType;
 		this.regVO.setAccessType(accessType);
@@ -283,9 +275,35 @@ public class RegistrationAction extends ActionSupport implements
 		//return accessValue;
 		return regVO.getAccessValue();
 	}
-
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Access value is required",shortCircuit=true)
 	public void setAccessValue(String accessValue) {
 		this.accessValue = accessValue;
 		this.regVO.setAccessValue(accessValue);
 	}
+	
+	 public String getDay() {
+			return day;
+		}
+	 @RequiredStringValidator(type = ValidatorType.FIELD, message = "day is required",shortCircuit=true)
+		public void setDay(String day) {
+			this.day = day;
+		}
+	
+		public String getMonth() {
+			return month;
+		}
+		 @RequiredStringValidator(type = ValidatorType.FIELD, message = "month is required",shortCircuit=true)		
+		public void setMonth(String month) {
+			this.month = month;
+		}
+
+		public String getYear() {
+			return year;
+		}
+		@RequiredStringValidator(type = ValidatorType.FIELD, message = "year is required",shortCircuit=true)	
+		public void setYear(String year) {
+			this.year = year;
+		}
+	
+
 }
