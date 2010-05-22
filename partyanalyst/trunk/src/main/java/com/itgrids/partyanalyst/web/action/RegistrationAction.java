@@ -14,7 +14,6 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.service.impl.UserService;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.validator.annotations.*;
 
 public class RegistrationAction extends ActionSupport implements
 		ServletRequestAware, ServletResponseAware {
@@ -122,6 +121,8 @@ public class RegistrationAction extends ActionSupport implements
 		String dobYearValue = dobYear.get(0);
 		
 		String dob=dobDayValue+"/"+dobMonthValue+"/"+dobYearValue;
+		
+		System.out.println(dob);
 		
 		this.setDateOfBirth(dob);
 		

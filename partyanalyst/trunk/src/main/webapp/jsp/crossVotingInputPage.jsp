@@ -129,7 +129,7 @@
 {
 	padding:5px;
 	background-color:#efefef;
-	margin-top:30px;
+	margin-top:10px;
 	margin-right:10px;
 }
 #constDetailsHead
@@ -322,8 +322,8 @@
 					str+='</tr>';
 					str+='<tr><th>Rank</th><td>'+result.acCandidateData.rank+' &nbsp;&nbsp;&nbsp; <b>Party:</b> '+ result.acCandidateData.party +'</td></tr>';
 					
-					str+='<tr><th>Votes Gained</th><td>'+result.acCandidateData.votesPercentage+' %</td></tr>';
-					str+='<tr><td colspan="3"><table cellpadding="0" cellspacing="0"><tr><th>Total Voters</th><td>'+result.totalVotersInAC+' </td><th>Total Polled Votes</th><td>'+ result.totalACPolledVotesInConstituency +'</td></tr></table></td></tr>';
+					str+='<tr><th>Votes Gained</th><td>'+result.acCandidateData.votesEarned+' ('+result.acCandidateData.votesPercentage+' %)</td></tr>';
+					str+='<tr><td colspan="3"><table cellpadding="0" cellspacing="0"><tr><th>Total Voters (AC<font color="red">*</font>) :</th><td>'+result.totalVotersInAC+' </td><th>Total Polled Votes</th><td>'+ result.acCandidateData.polledVotes +'</td></tr></table></td></tr>';
 					str+='</table>';		
 				str+='</div>';
 				str+='<div id="parliamentCandidateDiv">';
@@ -335,12 +335,11 @@
 					str+='</tr>';
 					str+='<tr><th>Rank</th><td>'+result.pcCandidateData.rank+' &nbsp;&nbsp;&nbsp;<b>Party:</b> '+ result.pcCandidateData.party+'</td></tr>';
 
-					str+='<tr><th>Votes Gained</th><td>'+result.pcCandidateData.votesPercentage+' %</td></tr>';
-					str+='<tr><td colspan="3"><table cellpadding="0" cellspacing="0"><tr><th>Total Voters</th><td>'+result.totalVotersInPC+' </td><th>Total Polled Votes</th><td>'+ result.totalPCPolledVotesInConstituency +'</td></tr></table></td></tr>';
-
-
+					str+='<tr><th>Votes Gained</th><td>'+result.pcCandidateData.votesEarned+' ('+result.pcCandidateData.votesPercentage+' %)</td></tr>';
+					str+='<tr><td colspan="3"><table cellpadding="0" cellspacing="0"><tr><th>Total Voters (PC<font color="red">*</font>) :</th><td>'+result.totalVotersInPC+' </td><th>Total Polled Votes</th><td>'+ result.pcCandidateData.polledVotes +'</td></tr></table></td></tr>';
 					str+='</table>';	
 				str+='</div>';		
+				str+='<div style="margin-top:5px; font-weight:bold;">NOTE: Votes Gained & Total Polled Votes = Boothwise Votes Polled In An Assembly Constituency</div>';
 				str+='<div id="constDetails">';
 					str+='<div id="constDetailsHead">Cross Voting & Impact Details </div>'
 					
@@ -435,13 +434,15 @@
 			}, {
 				key : "villagesCovered"
 			}, {
-				key : "pcPercentage",parser:"number"
+				key : "acValidVotes",parser:"number"
 			}, {
-				key : "pcValidVotes",parser:"number"
+				key : "acVotesEarned",parser:"number"
 			}, {
 				key : "acPercentage",parser:"number"
 			}, {
-				key : "acValidVotes",parser:"number"
+				key : "pcVotesEarned",parser:"number"
+			}, {
+				key : "pcPercentage",parser:"number"
 			}, {
 				key : "percentageDifference",parser:"number"
 			}]
@@ -454,27 +455,32 @@
 			sortable : true
 		}, {
 			key : "villagesCovered",
-			label : "villages Covered",
-			sortable : true
-		}, {
-			key : "pcPercentage",
-			label : "Percentage(P)",
-			parser:"number",
-			sortable : true
-		}, {
-			key : "pcValidVotes",
-			parser:"number",
-			label : "Valid Votes(P)",
-			sortable : true
-		}, {
-			key : "acPercentage",
-			parser:"number",
-			label : "Percentage(A)",
+			label : "Villages Covered",
 			sortable : true
 		}, {
 			key : "acValidVotes",
 			parser:"number",
-			label : "Valid Votes(A)",
+			label : "(A)Valid Votes",
+			sortable : true
+		}, {
+			key : "acVotesEarned",
+			parser:"number",
+			label : "(A)Votes Earned",
+			sortable : true
+		}, {
+			key : "acPercentage",
+			parser:"number",
+			label : "(A) %",
+			sortable : true
+		}, {
+			key : "pcVotesEarned",
+			parser:"number",
+			label : "(P)Votes Earned",
+			sortable : true
+		}, {
+			key : "pcPercentage",
+			label : "(P) %",
+			parser:"number",
 			sortable : true
 		}, {
 			key : "percentageDifference",

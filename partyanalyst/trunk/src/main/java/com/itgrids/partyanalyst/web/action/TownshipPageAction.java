@@ -14,7 +14,6 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
@@ -24,7 +23,6 @@ import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class TownshipPageAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
