@@ -183,8 +183,9 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 			electionCompReportVO.setElecIdYearTwo(electionForYearTwo.getElectionId());
 			Long seatsWon = new Long(0);
 		    if(hasAlliances)
-			alliancPartys = staticDataService.getAllianceParties(secondYear,electionTypeId,partyId);
+		    	alliancPartys = staticDataService.getAllianceParties(secondYear,electionTypeId,partyId);
 		    if(alliancPartys == null || !hasAlliances){
+		    	partyIds = partyId.toString();
 		    	partyElectionResultforSelectedParty = staticDataService.getPartyElectionResultsForAParty(electionForYearTwo.getElectionId(),partyId);
 		    	if(partyElectionResultforSelectedParty == null)
 		    	partyElectionResultforSelectedParty = staticDataService.savePartyElectionResultForAPartyForAElection(electionForYearTwo.getElectionId(),partyId);
@@ -198,6 +199,10 @@ public class ElectionComparisonReportService implements IElectionComparisonRepor
 		    	
 		    }
 		    else if(alliancPartys != null && hasAlliances){
+		    	if(alliancPartys.size() > 1)
+		    		partyIds = getCommaSeperatedPartyIds(alliancPartys);
+		    	else
+		    		partyIds = partyId.toString();
 		    	for(Party allincParty:alliancPartys){
 			    partyElectionResultforAllianceParty = staticDataService.getPartyElectionResultsForAParty(electionForYearTwo.getElectionId(),allincParty.getPartyId());
 			    if(partyElectionResultforAllianceParty == null)
