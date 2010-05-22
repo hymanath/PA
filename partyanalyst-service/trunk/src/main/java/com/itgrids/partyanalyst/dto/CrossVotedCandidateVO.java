@@ -9,7 +9,8 @@ public class CrossVotedCandidateVO {
 	private String party;
 	private Long votesEarned;
 	private String votesPercentage;
-	private Long totalPolledVotesInConstituency;
+	private Long polledVotes;
+	private Long totalVoters;
 	
 	public CrossVotedCandidateVO(){
 		
@@ -81,6 +82,23 @@ public class CrossVotedCandidateVO {
 	public void setImage(String image) {
 		this.image = image;
 	}
+
+	public Long getPolledVotes() {
+		return polledVotes;
+	}
+
+	public void setPolledVotes(Long polledVotes) {
+		this.polledVotes = polledVotes;
+	}
+
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
+	}
+
 	
 	
 }

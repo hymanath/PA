@@ -11,12 +11,14 @@ public class CrossVotedBoothVO {
 	private String pcPercentage;
 	private Long acValidVotes;
 	private Long pcValidVotes;
+	private Long acVotesEarned;
+	private Long pcVotesEarned;
 	private String percentageDifference;
 	
 	public CrossVotedBoothVO(){
 		
 	}
-
+	
 	public CrossVotedBoothVO(Long boothId, String partNO, Long totalVoters,
 			Long polledVotes, String villagesCovered, String acPercentage,
 			String pcPercentage, Long acValidVotes, Long pcValidVotes,
@@ -111,6 +113,22 @@ public class CrossVotedBoothVO {
 
 	public void setPercentageDifference(String percentageDifference) {
 		this.percentageDifference = percentageDifference;
+	}
+
+	public Long getAcVotesEarned() {
+		return acVotesEarned;
+	}
+
+	public void setAcVotesEarned(Long acVotesEarned) {
+		this.acVotesEarned = acVotesEarned;
+	}
+
+	public Long getPcVotesEarned() {
+		return pcVotesEarned;
+	}
+
+	public void setPcVotesEarned(Long pcVotesEarned) {
+		this.pcVotesEarned = pcVotesEarned;
 	}
 	
 	
