@@ -11,7 +11,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Election Comparison Report</title>
+
+<c:if test="${allianceCheck == 'true'}"><title> ${electionComparisonReportVO.electionType} Election Comparison Report For ${selectedPartyName} Including Alliances</title></c:if>
+<c:if test="${allianceCheck == 'false'}"><title>${electionComparisonReportVO.electionType} Election Comparison Report For ${selectedPartyName}</title></c:if>
+
 
 	<!-- YUI Dependency Files-->
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
@@ -1772,7 +1775,8 @@ function buildYearDataTable(divId,data)
 <table cellspacing="0" cellpadding="0" border="0" style="margin-top:30px;">
 	<tbody><tr>
 		<td valign="top"><img border="none" src="images/icons/statePage/header_left.png"></td>
-		<td valign="top"><div id="mainHeadingDiv">Elections Comparison Report</div></td>
+		<c:if test="${allianceCheck == 'true'}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName} Including Alliances</div></td></c:if>
+		<c:if test="${allianceCheck == 'false'}"><td valign="top"><div id="mainHeadingDiv">${electionComparisonReportVO.electionType} Elections Comparison Report For ${selectedPartyName}</div></td></c:if>
 		<td valign="top"><img border="none" src="images/icons/statePage/header_right.png"></td>
 	</tr>
 </tbody></table>
@@ -1837,15 +1841,27 @@ function buildYearDataTable(divId,data)
 			<ul>
 				<li>
 					<div id="percentageChartDiv">	
-						<div id="percentageChartDiv_head" class="graphHeader">Percentage Gained By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections</div>
+						<c:if test="${electionComparisonReportVO.electionType == 'Parliament'}">
+							<div id="percentageChartDiv_head" class="graphHeader">Percentage Gained By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections</div>
+						</c:if>
+						<c:if test="${electionComparisonReportVO.electionType != 'Parliament'}">										
+							<div id="percentageChartDiv_head" class="graphHeader">Percentage Gained By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections</div>
+						</c:if>	
 						<div id="percentageChartDiv_img"><img src="charts/${electionComparisonReportVO.percentageChart}"/></div>
 						
 					</div>
 				</li>
 				<li>
 					<div id="seatsWonChart" >
-						<div id="seatsWonChart_head" class="graphHeader">Seats Won By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections</div>
-						<div id="seatsWonChart_img"><img src="charts/${electionComparisonReportVO.seatsWonChart}"/></div>
+						<c:if test="${electionComparisonReportVO.electionType == 'Parliament'}">
+							<div id="seatsWonChart_head" class="graphHeader">Seats Won By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections</div>
+						</c:if>
+						<c:if test="${electionComparisonReportVO.electionType != 'Parliament'}">
+							<div id="seatsWonChart_head" class="graphHeader">Seats Won By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections</div>
+						</c:if>
+							
+							<div id="seatsWonChart_img"><img src="charts/${electionComparisonReportVO.seatsWonChart}"/></div>
+							
 					</div>
 				</li>
 			</ul>		
