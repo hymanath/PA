@@ -167,7 +167,7 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		pcCandidate.setCandidateId(pcNomination.getCandidate().getCandidateId());
 		pcCandidate.setCandidateName(pcNomination.getCandidate().getLastname());
 		pcCandidate.setImage(pcNomination.getCandidate().getImage());
-		pcCandidate.setRank(acNomination.getCandidateResult().getRank().toString());
+		pcCandidate.setRank(pcNomination.getCandidateResult().getRank().toString());
 		pcCandidate.setParty(pcNomination.getParty().getShortName());
 		
 		crossVotingConsolidateVO.setTotalACPolledVotesInConstituency(acNomination.getConstituencyElection().
