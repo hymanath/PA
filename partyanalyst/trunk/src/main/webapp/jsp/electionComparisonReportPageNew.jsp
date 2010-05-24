@@ -426,6 +426,7 @@ function buildDataForTwoElectionYears()
 						   votesPercent:'${electionResults.votesPercent}',
 						   seatsDiff:'${electionResults.seatsWonDiff}',
 						   votesDiff:'${electionResults.votesPercentDiff}',
+						   totalPercentage:'${electionResults.totalPercentage}',
 						   electionResults:[]
 						  }
 			
@@ -467,6 +468,7 @@ function buildDataForTwoElectionYears()
 							   votesPercent:'${electionResults.votesPercent}',
 							   seatsDiff:'${electionResults.seatsWonDiff}',
 							   votesDiff:'${electionResults.votesPercentDiff}',
+							   totalPercentage:'${electionResults.totalPercentage}',
 							   electionResults:[]
 							  }
 				
@@ -545,13 +547,15 @@ function buildElectionResultsComparePanel()
 						votesPercentOne:local.votesPercent,
 						seatsDiffOne:local.seatsDiff,
 						votesDiffOne:local.votesDiff,
+						totalPercentageOne:local.totalPercentage,
 
 						totalConstiTwo:secondLocal.totalConsti,
 						constiParticipatedTwo:secondLocal.constiParticipated,
 						seatsWonTwo:secondLocal.seatsWon,
 						votesPercentTwo:secondLocal.votesPercent,
 						seatsDiffTwo:secondLocal.votesPercent,
-						votesDiffTwo:secondLocal.votesDiff
+						votesDiffTwo:secondLocal.votesDiff,
+						totalPercentageTwo:secondLocal.totalPercentage,
 					  };
 			arr.push(obj);
 			
@@ -569,13 +573,15 @@ function buildElectionResultsComparePanel()
 						votesPercentOne:local.votesPercent,
 						seatsDiffOne:'0',
 						votesDiffOne:'0',
+						totalPercentageOne:local.totalPercentage,
 
 						totalConstiTwo:"*NP",
 						constiParticipatedTwo:"*NP",
 						seatsWonTwo:"*NP",
 						votesPercentTwo:"*NP",
 						seatsDiffTwo:"0",
-						votesDiffTwo:"0"
+						votesDiffTwo:"0",
+						totalPercentageTwo:"0",
 					  };
 			arr.push(obj);
 		}
@@ -604,7 +610,8 @@ function buildElectionResultsComparePanel()
 						seatsWonTwo:local.seatsWon,
 						votesPercentTwo:local.votesPercent,
 						seatsDiffTwo:"0",
-						votesDiffTwo:"0"
+						votesDiffTwo:"0",
+						totalPercentageTwo:local.totalPercentage
 					  };
 				arr.push(obj);
 		}
@@ -660,6 +667,9 @@ function buildTwoYearPanelDataTable(arr,divId)
 		},
 		{
 			key : "votesPercentOne",parser:"number"
+		},		
+		{
+			key : "totalPercentageOne",parser:"number"
 		},		 
 		
 		{
@@ -680,6 +690,9 @@ function buildTwoYearPanelDataTable(arr,divId)
 		},
 		{
 			key : "votesPercentTwo" ,parser:"number"
+		},
+		{
+			key : "totalPercentageTwo" ,parser:"number"
 		}]
 	};
 
@@ -715,7 +728,12 @@ function buildTwoYearPanelDataTable(arr,divId)
 					},
 					{
 						key : "votesPercentOne",
-						label : "%",
+						label : "*PC%",
+						sortable : true
+					},
+					{
+						key : "totalPercentageOne",
+						label : "*TC %",
 						sortable : true
 					}				
 				]
@@ -726,12 +744,12 @@ function buildTwoYearPanelDataTable(arr,divId)
 		children:[ 
 					{
 						key : "seatsDiffOne",
-						label : "SeatsDiff %",
+						label : "SeatsDiff",
 						sortable : true
 					},
 					{
 						key : "votesDiffOne",
-						label : "Votes Diff %",
+						label : "Votes % Diff",
 						sortable : true
 					}
 				]
@@ -757,7 +775,12 @@ function buildTwoYearPanelDataTable(arr,divId)
 					},
 					{
 						key : "votesPercentTwo",
-						label : "%",
+						label : "*PC %",
+						sortable : true
+					},
+					{
+						key : "totalPercentageTwo",
+						label : "*TC %",
 						sortable : true
 					}				
 				]
