@@ -363,7 +363,9 @@
 		<property name="problemExternalSourceDAO" ref="problemExternalSourceDAO" />	
 		<property name="hamletDAO" ref="hamletDAO" />	
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />	
-		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />	
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+		<property name="influencingPeopleDAO" ref="influencingPeopleDAO" />
+		<property name="problemStatusDAO" ref="problemStatusDAO" />
 	</bean>
 	<bean name="userGroupService" class="com.itgrids.partyanalyst.service.impl.UserGroupService"> 
 		<property name="staticGroupDAO" ref="staticGroupDAO" />

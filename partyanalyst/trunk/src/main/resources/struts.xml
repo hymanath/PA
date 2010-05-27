@@ -479,10 +479,17 @@
 		</action>		
 		
 		<action name="constituencyManagementAction" class="constituencyManagementAction">
-			<result name="success">/jsp/constituencyManagementMainPage.jsp</result>
+			<result name="success">/jsp/constituencyManagementReport.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=constituencyManagementAction</result>		
 		</action>
-
+			
+		<action name="influencingPeopleInConstituencyAction" class="constituencyManagementAction" method="getInfluencingPeopleByLocation">
+			<result type="json" name="success">
+				<param name="root">influencingPeopleVO</param>				
+			</result> 
+		</action>	
+		
+		
 		<action name="voterInfoAction" class="voterInfoAction" method="getVotersByHamlet">
 			<result type="json" name="success">
 				<param name="root">constituencyManagementVO</param>				
@@ -944,6 +951,16 @@
         <action name="electionResultsAnalysisReportPopupAjaxAction" class="electionResultsAnalysisReportPopupAction" method="ajaxCallHandler"> 
               <result type="json" name="success">
            		<param name="root">partyAnalysisReportVO</param>
+        	</result>       		
+        </action>
+        <action name="problemsCountByStatusBasedOnAccessLevelsAction" class="problemManagementReportAction" method="getProblemsCountByStatusBasedOnAccessLevel"> 
+              <result type="json" name="success">
+           		<param name="root">locationwiseProblemStatusInfoVO</param>
+        	</result>       		
+        </action>
+        <action name="problemsByDateBasedOnStatusAction" class="problemManagementReportAction" method="problemsByDateBasedOnStatusAction"> 
+              <result type="json" name="success">
+           		<param name="root">problemBean</param>
         	</result>       		
         </action>        
 	</package>

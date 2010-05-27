@@ -200,6 +200,7 @@
 		<property name="cadreManagementService" ref="cadreManagementService"></property>
 		<property name="regionServiceData" ref="regionServiceDataImp"></property>
 		<property name="problemManagementService" ref="problemManagementService"></property>		
+		<property name="problemManagementReportService" ref="problemManagementReportService"/>
 	</bean>
 	
 	<bean id="hamletBoothMapperAction" class="com.itgrids.partyanalyst.web.action.HamletBoothMapperAction" singleton="false">			

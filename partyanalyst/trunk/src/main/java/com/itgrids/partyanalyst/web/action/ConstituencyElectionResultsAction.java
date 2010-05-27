@@ -101,7 +101,7 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 		
 		if(constituencyElectionResultsVO == null)
 			return Action.ERROR;
-		
+		log.debug("All election years in action"+constituencyElectionResultsVO.getAllElectionYears().size());
 		return Action.SUCCESS;
 	}
 

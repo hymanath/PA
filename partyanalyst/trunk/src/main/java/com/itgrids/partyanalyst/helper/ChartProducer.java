@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.helper;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.io.File;
 import java.util.List;
@@ -27,7 +28,9 @@ import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.CombinedDomainCategoryPlot;
 import org.jfree.chart.plot.CombinedRangeCategoryPlot;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarPainter;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -276,7 +279,7 @@ public class ChartProducer {
 		
 	}
 	
-	public static void createBarChartForVotingTrendz(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
+	public static void ForVotingTrendz(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
 		JFreeChart chart = ChartFactory.createBarChart(title, domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, true, true, false );
 		//chart.setBackgroundPaint(new Color(0xBBBBDD));
 		chart.setBackgroundPaint(Color.WHITE);
@@ -523,4 +526,95 @@ public class ChartProducer {
 				log.debug("Exception Raised :" + exc);
 				}
 	}
+	
+	public static void createProblemsPieChart(String title,final PieDataset dataset,String fileName,Color[] colors){
+		
+		JFreeChart chart = ChartFactory.createPieChart(title,dataset,
+				false, // legend?
+				false, // tooltips?
+				false // URLs?
+				);
+		Plot plot =chart.getPlot();
+		PiePlot plot2 = new PiePlot(dataset);
+		plot.setBackgroundPaint(Color.WHITE);
+		plot.setOutlineVisible(false);
+		
+		PieRenderer renderer = new PieRenderer(colors);
+		if (renderer!=null) {
+			renderer.setColor(plot2, (DefaultPieDataset) plot2.getDataset());
+		}
+		
+		PiePlot plot1 = (PiePlot) chart.getPlot();
+		plot1.setLabelFont(new Font("Arial", Font.BOLD,10));
+	    plot1.setNoDataMessage("No data available");
+	    plot1.setCircular(true);
+	    plot1.setLabelBackgroundPaint(Color.LIGHT_GRAY);
+	    plot1.setLabelPaint(Color.WHITE);
+	    
+	    
+		try	 {
+			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+			final File image = new File(fileName);
+			
+			ChartUtilities.saveChartAsPNG(image, chart,400, 200, info);
+		}
+		catch (java.io.IOException exc)
+		{
+		log.error("Error writing image to file");
+		}
+	}
+	
+	public static void createProblems3DBarChart(String title,String reportType,String category,String value,String party,CategoryDataset dataset,String fileName,int width,int height){
+		JFreeChart chart = ChartFactory.createBarChart(
+				title, // chart title
+				category, // domain axis label
+				value, // range axis label
+				dataset, // data
+				PlotOrientation.VERTICAL,
+				false, // include legend
+				true, // tool tips?
+				false // URLs?
+				);
+				// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
+				// set the background color for the chart...
+				chart.setBackgroundPaint(new Color(0xFFFFFF));
+				// get a reference to the plot for further customization...
+				CategoryPlot plot = chart.getCategoryPlot();
+				//BarRenderer renderer = (BarRenderer) plot.getRenderer();
+				//renderer.setDrawBarOutline(false);
+				// set the range axis to display integers only...
+				NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+				
+				rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+				
+				CategoryAxis domainAxis = (CategoryAxis) plot.getDomainAxis();
+		       // domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+		        
+				// disable bar outlines...
+				BarRenderer renderer = (BarRenderer) plot.getRenderer();
+				renderer.setDrawBarOutline(false);
+				
+				GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.RED, 0.0f, 0.0f, Color.lightGray);
+				GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.GREEN, 0.0f, 0.0f, Color.lightGray);					
+				GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.cyan, 0.0f, 0.0f, Color.lightGray);
+				renderer.setSeriesPaint(0, gp0);
+				renderer.setSeriesPaint(1, gp1);
+				renderer.setSeriesPaint(2, gp2);
+								
+				renderer.setItemMargin(0.0);
+				renderer.setMaximumBarWidth(0.15);
+					
+				try	 {
+					final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+					final File image = new File(fileName);
+					ChartUtilities.saveChartAsPNG(image, chart, width, height, info);
+				}
+				catch (java.io.IOException exc)
+				{
+				log.error("Error writing image to file");
+				log.debug("Exception Raised :" + exc);
+				}
+	}
+	
+	
 }

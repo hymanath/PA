@@ -18,10 +18,12 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IUserGroupService;
@@ -49,7 +51,13 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> hamletList;
 	private IRegionServiceData regionServiceData;
 	private List<SelectOptionVO> problemSources;	
-	private String accessType;	
+	private List<SelectOptionVO> statesList, districtsList, constituenciesList,statusList; 
+	private IProblemManagementReportService problemManagementReportService;
+	private String accessType;
+	private List<InfluencingPeopleVO> influencingPeopleVO;
+	private String task = null;
+	JSONObject jObj = null;
+	
 	
 	public IProblemManagementService getProblemManagementService() {
 		return problemManagementService;
@@ -74,6 +82,15 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 	}
 	
+	public IProblemManagementReportService getProblemManagementReportService() {
+		return problemManagementReportService;
+	}
+
+	public void setProblemManagementReportService(
+			IProblemManagementReportService problemManagementReportService) {
+		this.problemManagementReportService = problemManagementReportService;
+	}
+
 	public List<SelectOptionVO> getStateList() {
 		return stateList;
 	}
@@ -172,9 +189,61 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		this.accessType = accessType;
 	}	
 
+	public List<SelectOptionVO> getStatesList() {
+		return statesList;
+	}
+
+	public void setStatesList(List<SelectOptionVO> statesList) {
+		this.statesList = statesList;
+	}
+
+	public List<SelectOptionVO> getDistrictsList() {
+		return districtsList;
+	}
+
+	public void setDistrictsList(List<SelectOptionVO> districtsList) {
+		this.districtsList = districtsList;
+	}
+
+	public List<SelectOptionVO> getConstituenciesList() {
+		return constituenciesList;
+	}
+
+	public void setConstituenciesList(List<SelectOptionVO> constituenciesList) {
+		this.constituenciesList = constituenciesList;
+	}
+
+	public List<SelectOptionVO> getStatusList() {
+		return statusList;
+	}
+
+	public void setStatusList(List<SelectOptionVO> statusList) {
+		this.statusList = statusList;
+	}	
+	
+	public List<InfluencingPeopleVO> getInfluencingPeopleVO() {
+		return influencingPeopleVO;
+	}
+
+	public void setInfluencingPeopleVO(List<InfluencingPeopleVO> influencingPeopleVO) {
+		this.influencingPeopleVO = influencingPeopleVO;
+	}
+	
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+
 	public String execute() throws Exception{
 		
 		log.debug("In execute of Constituency Management Action ********");
+
+		statusList = problemManagementReportService.getAllProblemStatusInfo();
+		statusList.add(0,new SelectOptionVO(0l, "Select Status"));
 		
 		SelectOptionVO probSource1 = new SelectOptionVO(2L, IConstants.CALL_CENTER);
 		SelectOptionVO probSource2 = new SelectOptionVO(3L, IConstants.USER);
@@ -266,7 +335,24 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	
 		return SUCCESS;
 	}
+	
+	public String getInfluencingPeopleByLocation()
+	{
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		Long locationId = new Long(jObj.getString("locationId"));
+		influencingPeopleVO = problemManagementReportService.findInfluencingPeopleInfoInLocation(locationId);
+		log.debug("influencingPeopleVO.size()::::::::::::::::::"+influencingPeopleVO.size());
+		return SUCCESS;
+		
+	}
 
+	
 }
 
 

@@ -1,37 +1,45 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.SimpleDateFormat;
+import java.awt.Color;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.jfree.util.Log;
+import org.apache.struts2.util.ServletContextAware;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.HamletsAndBoothsVO;
+import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
+import com.itgrids.partyanalyst.dto.ProblemsCountByStatus;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
-import com.opensymphony.xwork2.Action;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 
 public class ProblemManagementReportAction extends ActionSupport implements
-		ServletRequestAware {
+		ServletRequestAware, ServletContextAware {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -500281545950721654L;
+	private static final Logger log = Logger.getLogger(ProblemManagementReportAction.class);
 	private IProblemManagementReportService problemManagementReportService;
 	private HttpServletRequest request;
 	private HttpSession session;
@@ -47,7 +55,12 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	private Long problemlocationId = null;
 	private String status=null;
 	private String taskType=null;
-	private List<ProblemHistoryVO> problemHistory;	
+	private List<ProblemHistoryVO> problemHistory;
+	private LocationwiseProblemStatusInfoVO locationwiseProblemStatusInfoVO;
+	private ServletContext context;
+	private String accessType;
+	private Long accessValue;
+	private List<SelectOptionVO> statesList, districtsList, constituenciesList; 
 		
 	public Long getProblemlocationId() {
 		return problemlocationId;
@@ -138,18 +151,70 @@ public class ProblemManagementReportAction extends ActionSupport implements
 
 	public void setHamletsAndBoothsVO(HamletsAndBoothsVO hamletsAndBoothsVO) {
 		this.hamletsAndBoothsVO = hamletsAndBoothsVO;
+	}	
+	
+	public LocationwiseProblemStatusInfoVO getLocationwiseProblemStatusInfoVO() {
+		return locationwiseProblemStatusInfoVO;
 	}
-
+	public void setLocationwiseProblemStatusInfoVO(
+			LocationwiseProblemStatusInfoVO locationwiseProblemStatusInfoVO) {
+		this.locationwiseProblemStatusInfoVO = locationwiseProblemStatusInfoVO;
+	}
+	
+	public void setServletContext(ServletContext context) {
+		this.context = context;		
+	}	
+	
+	public ServletContext getContext() {
+		return context;
+	}
+	public void setContext(ServletContext context) {
+		this.context = context;
+	}
+	public String getAccessType() {
+		return accessType;
+	}
+	public void setAccessType(String accessType) {
+		this.accessType = accessType;
+	}
+	public Long getAccessValue() {
+		return accessValue;
+	}
+	public void setAccessValue(Long accessValue) {
+		this.accessValue = accessValue;
+	}	
+	
+	public List<SelectOptionVO> getStatesList() {
+		return statesList;
+	}
+	public void setStatesList(List<SelectOptionVO> statesList) {
+		this.statesList = statesList;
+	}
+	public List<SelectOptionVO> getDistrictsList() {
+		return districtsList;
+	}
+	public void setDistrictsList(List<SelectOptionVO> districtsList) {
+		this.districtsList = districtsList;
+	}
+	public List<SelectOptionVO> getConstituenciesList() {
+		return constituenciesList;
+	}
+	public void setConstituenciesList(List<SelectOptionVO> constituenciesList) {
+		this.constituenciesList = constituenciesList;
+	}
 	public String execute() throws Exception
 	{	
+		log.debug("In Action");
 		session=request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
 		if(user==null)
 			return ERROR;
+		
 		if(task != null){
 			try{
 				jObj = new JSONObject(getTask());
-				System.out.println("Result From JSON:"+jObj);
+				log.debug("Result From JSON:"+jObj);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -249,6 +314,113 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		}			
 		return SUCCESS;
 	}
+	
+	public String getProblemsCountByStatusBasedOnAccessLevel(){
+		if(log.isDebugEnabled())
+			log.debug("Entered in to getProblemsCountByStatusBasedOnAccessLevel in problem mgmt report");
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		session=request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		locationwiseProblemStatusInfoVO = new LocationwiseProblemStatusInfoVO();
+		if(user != null)
+		{
+			accessType = user.getAccessType();
+			accessValue = new Long(user.getAccessValue());
+			locationwiseProblemStatusInfoVO = problemManagementReportService.getProblemsStatusCount(accessType, accessValue, user.getRegistrationID());
+			locationwiseProblemStatusInfoVO.setProblemsPostedInLastTenDays("10");
+			locationwiseProblemStatusInfoVO.setProblemsSolvedInLastTenDays("3");
+			locationwiseProblemStatusInfoVO.setProblemsPostedInLastThirtyDays("20");
+			locationwiseProblemStatusInfoVO.setProblemsSolvedInLastThirtyDays("5");
+					
+		}	
+		if(locationwiseProblemStatusInfoVO.getProblemsCountByStatus() != null && locationwiseProblemStatusInfoVO.getProblemsCountByStatus().size()>0)
+		{
+			String problemsStatusPieChartName = createProblemsPieChart(locationwiseProblemStatusInfoVO.getLocationId(),locationwiseProblemStatusInfoVO.getTotalProblemsCount(),locationwiseProblemStatusInfoVO.getProblemsCountByStatus());
+			String lastTenDaysProbsBarChartName = createLastTenDaysBarChart(locationwiseProblemStatusInfoVO);
+				
+			locationwiseProblemStatusInfoVO.setLastTenDaysProblemsDetailsBarChartName(lastTenDaysProbsBarChartName);
+			locationwiseProblemStatusInfoVO.setProblemsStatusChartName(problemsStatusPieChartName);
+		}
+		
+		return SUCCESS;
+	}
+	
+	public String createProblemsPieChart(Long locationId, int totalProblemsCount, List<ProblemsCountByStatus>problemsStatusList)	
+	{
+		log.debug("Entered in to createProblemsPieChart method in ProblemManagementReportAction");
+		String chartName = ""+locationId+"_"+totalProblemsCount+"piechart"+".png";
+		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		final DefaultPieDataset dataset = new DefaultPieDataset();
+		Color[] colors = new Color[10];
+
+		for(int i=0; i<problemsStatusList.size();i++)
+		{
+			if(!IConstants.FIXED.equals(problemsStatusList.get(i).getStatus()))
+				{
+				
+				dataset.setValue(problemsStatusList.get(i).getStatus(), new BigDecimal(problemsStatusList.get(i).getCount()*100.0/totalProblemsCount).setScale(2, BigDecimal.ROUND_HALF_UP) );
+				/*
+				if(problemsStatusList.get(i).getStatus().equals(IConstants.NEW))
+					colors[i]=IConstants.NEW_COLOR;
+				if(problemsStatusList.get(i).getStatus().equals(IConstants.CLASSIFY))
+					colors[i]=IConstants.CLASSIFY_COLOR;
+				if(problemsStatusList.get(i).getStatus().equals(IConstants.ASSIGNED))
+					colors[i]=IConstants.ASSIGNED_COLOR;
+				if(problemsStatusList.get(i).getStatus().equals(IConstants.PROGRESS))
+					colors[i]=IConstants.PROGRESS_COLOR;
+				if(problemsStatusList.get(i).getStatus().equals(IConstants.PENDING))
+					colors[i]=IConstants.PENDING_COLOR;*/
+				}			
+		}
+		log.debug("size::::::::::::::::::::::::::::::::::::"+problemsStatusList.size());
+		ChartProducer.createProblemsPieChart("", dataset, chartPath,colors);
+		return chartName ;
+	}
+	
+	public String createLastTenDaysBarChart(LocationwiseProblemStatusInfoVO lastTenDaysProblemStatusInfoVO)
+	{
+		String chartName = "RecentProblemsDetailsBarChart"+session.getId()+".png";
+		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		dataset.addValue(new BigDecimal(lastTenDaysProblemStatusInfoVO.getProblemsPostedInLastTenDays()),"New","Last 10 Days" );
+		dataset.addValue(new BigDecimal(lastTenDaysProblemStatusInfoVO.getProblemsSolvedInLastTenDays()),"Fixed","Last 10 Days" );
+		
+		dataset.addValue(new BigDecimal(lastTenDaysProblemStatusInfoVO.getProblemsPostedInLastThirtyDays()),"New","Last 30 Days" );
+		dataset.addValue(new BigDecimal(lastTenDaysProblemStatusInfoVO.getProblemsSolvedInLastThirtyDays()),"Fixed","Last 30 Days" );
+				/*String title,String reportType,String category,String value,String party,CategoryDataset 
+				 * dataset,String fileName,int width,int height*/
+		ChartProducer.createProblems3DBarChart("", null,"", "No. Of Problems","", dataset, chartPath, 400, 200);
+		return chartName;
+	}
+	//public List<ProblemBeanVO> getProblemsPostedByStatusAndDates(String fromDate, String toDate, Long statusId, Long constituencyId);
+	public String problemsByDateBasedOnStatusAction()
+	{
+		if(log.isDebugEnabled())
+			log.debug("Entered in to problemsByDateBasedOnStatusAction in problem mgmt report service");
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		String fromDate = jObj.getString("fromDate");
+		String toDate =  jObj.getString("toDate");
+		Long statusId = new Long(jObj.getString("status"));
+		Long ConstituencyId = new Long(jObj.getString("locationId"));
+		
+		problemBean = problemManagementReportService.getProblemsPostedByStatusAndDates(fromDate, toDate, statusId, ConstituencyId);
+		return SUCCESS;
+		
+	}
+	
+	
 }	
 		
 
