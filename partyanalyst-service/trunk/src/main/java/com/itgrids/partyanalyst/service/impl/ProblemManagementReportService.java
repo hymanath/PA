@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 import org.apache.log4j.Logger;
+
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
@@ -16,10 +16,17 @@ import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemHistoryVO;
+import com.itgrids.partyanalyst.dto.ProblemsCountByStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
+import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
@@ -35,6 +42,7 @@ public class ProblemManagementReportService implements
 	private IRegistrationDAO registrationDAO = null;
 	private IProblemExternalSourceDAO problemExternalSourceDAO;
 	private IHamletDAO hamletDAO;
+	private InfluencingPeopleDAO influencingPeopleDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
@@ -118,6 +126,14 @@ public class ProblemManagementReportService implements
 	}
 
 
+	public InfluencingPeopleDAO getInfluencingPeopleDAO() {
+		return influencingPeopleDAO;
+	}
+
+	public void setInfluencingPeopleDAO(InfluencingPeopleDAO influencingPeopleDAO) {
+		this.influencingPeopleDAO = influencingPeopleDAO;
+	}
+
 	/**
 	 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
 	 * selected hamlet by location-wise,department-wise as well as  status-wise.
@@ -192,19 +208,12 @@ public class ProblemManagementReportService implements
 		public List<ProblemBeanVO> getConstituencyProblemsInfo(Long constituencyId,Long registrationId,String taskType) {
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
 			try{
-			List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyId);
-			Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
-				List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
-
-			StringBuilder tehsilIds = new StringBuilder();
-			for(Tehsil tehsil : mandals){
-				tehsilIds.append(",").append(tehsil.getTehsilId());
-			}
+				String tehsilIds = getCommaSeperatedTehsilIdsForAConstituency(constituencyId);
 			if(taskType.equalsIgnoreCase("new") || taskType.equalsIgnoreCase("classify") || taskType.equalsIgnoreCase("assigned") || taskType.equalsIgnoreCase("progress") || taskType.equalsIgnoreCase("pending") || taskType.equalsIgnoreCase("fixed")){
-				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds.substring(1),taskType);
+				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,taskType);
 			}
 			else{
-				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds.substring(1));	
+				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
 			}
 			problemBeanVO = populateProblemInfo(result,registrationId,taskType);
 			}catch(Exception e){
@@ -432,11 +441,149 @@ public class ProblemManagementReportService implements
 		     Date date;
 			try {
 				date = sdfInput.parse (idate);
-				convertedDated = sdfOutput.format(date).toString(); 
-			} catch (ParseException e) {
+				convertedDated = sdfOutput.format(date).toString();
+			} catch (ParseException e){
 				e.printStackTrace();
 			}
 			return convertedDated;	
 		}
+		
+		/*
+		 * To convert timestamp which is in yyyy-MM-dd hh:mm:ss format to dd-MM-yyyy hh:mm:ss format.
+		 */
+		public String timeStampConversionToYYMMDD(String idate){
+			String convertedDated=null;
+			SimpleDateFormat sdfInput =  
+		        new SimpleDateFormat ("yyyy/MM/dd");  
+		     SimpleDateFormat sdfOutput =  
+		        new SimpleDateFormat  ("dd/MM/yyyy");  		  
+		  
+		     Date date;
+			try {
+				date = sdfOutput.parse (idate);
+				convertedDated = sdfInput.format(date).toString();
+			} catch (ParseException e){
+				e.printStackTrace();
+			}
+			return convertedDated;	
+		}
+			
+		public List<ProblemBeanVO> getProblemsPostedByStatusAndDates(String fromDate, String toDate, Long statusId, Long constituencyId){
+			
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
+			List problemsRawData = null;
+			ProblemBeanVO problemBeanVO = null;
+			List<ProblemBeanVO> problems = new ArrayList<ProblemBeanVO>();
+			String tehsilIds = "";
+			try{
+				tehsilIds = getCommaSeperatedTehsilIdsForAConstituency(constituencyId);
+				if(statusId == 0)
+					problemsRawData = problemHistoryDAO.findProblemsByDateAndLocation(tehsilIds, sdf.parse(timeStampConversionToYYMMDD(fromDate)), sdf.parse(timeStampConversionToYYMMDD(toDate)));
+				else
+					problemsRawData = problemHistoryDAO.findProblemsByStatusDateAndLocation(tehsilIds, statusId, sdf.parse(timeStampConversionToYYMMDD(fromDate)), sdf.parse(timeStampConversionToYYMMDD(toDate)));	
+					
+			}catch(Exception ex){
+				log.debug("Exception Raised While Formating Date:"+ex);
+			}
+			
+			for(Object[] values:(List<Object[]>)problemsRawData){
+				problemBeanVO = new ProblemBeanVO();
+				problemBeanVO.setProblemLocationId((Long)values[0]);
+				problemBeanVO.setProblem(values[1].toString());
+				problemBeanVO.setDescription(values[2].toString());
+				problemBeanVO.setHamlet(values[3].toString());
+				problemBeanVO.setProblemSourceScope(values[4].toString());
+				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
+				problemBeanVO.setStatus(values[6].toString());
+				problemBeanVO.setExistingFrom(values[7].toString());
+				problems.add(problemBeanVO);
+			}
+			
+			return problems;
+			
+		}
+		
+		public String getCommaSeperatedTehsilIdsForAConstituency(Long constituencyId){
+			List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(constituencyId);
+			Long delimitationConstituencyID = delimitationConstituency.get(0).getDelimitationConstituencyID();
+				List<Tehsil> mandals = delimitationConstituencyMandalDAO.getTehsilsByDelimitationConstituencyID(delimitationConstituencyID);
+
+			StringBuilder tehsilIds = new StringBuilder();
+			for(Tehsil tehsil : mandals)
+				tehsilIds.append(",").append(tehsil.getTehsilId());
+			
+			return tehsilIds.toString().substring(1); 
+		}
+		
+		public List<InfluencingPeopleVO> findInfluencingPeopleInfoInLocation(Long constituencyId){
+			String tehsilIds = getCommaSeperatedTehsilIdsForAConstituency(constituencyId);
+			List<InfluencingPeople> impPeople = influencingPeopleDAO.findByTehsils(tehsilIds); 
+			List<InfluencingPeopleVO> influencies = new ArrayList<InfluencingPeopleVO>();
+			InfluencingPeopleVO influencingPeopleVO = null;
+			String name = "";
+			for(InfluencingPeople people:impPeople){
+				influencingPeopleVO = new InfluencingPeopleVO();
+				if(people.getFirstName() != null)
+					name += people.getFirstName();
+				if(people.getLastName() != null)
+					name = name+" "+people.getLastName();
+				influencingPeopleVO.setPersonName(name);
+				influencingPeopleVO.setOccupation(people.getOccupation());
+				influencingPeopleVO.setInfluencingRange(people.getInfluencingScope());
+				influencingPeopleVO.setCast(people.getCaste());
+				influencingPeopleVO.setContactNumber(people.getPhoneNo());
+				influencingPeopleVO.setLocalArea(people.getHamlet().getHamletName());
+				influencingPeopleVO.setParty(people.getParty().getShortName());
+				influencies.add(influencingPeopleVO);
+			}
+			return influencies;
+		}
+		
+		public List<SelectOptionVO> getAllProblemStatusInfo(){
+			List<SelectOptionVO> status = new ArrayList<SelectOptionVO>();
+			List<ProblemStatus> list = problemStatusDAO.getAll();
+			for(ProblemStatus problemStatus:list)
+				status.add(new SelectOptionVO(problemStatus.getProblemStatusId(), problemStatus.getStatus()));
+			status.add(status.size(), new SelectOptionVO(0l,"All"));
+			return status;
+		}
+		
+		
+		@SuppressWarnings("unchecked")
+		public LocationwiseProblemStatusInfoVO getProblemsStatusCount(
+				String accessType, Long accessValue, Long registrationId) {
+			System.out.println("In Service**********");
+			log.debug("Entered in to getProblemsStatusCount method in ProblemManagementReportService");
+			LocationwiseProblemStatusInfoVO locationwiseProblemStatusInfoVO = new LocationwiseProblemStatusInfoVO();
+			List<ProblemsCountByStatus> problemsCountByStatusList = new ArrayList<ProblemsCountByStatus>();
+			int totalProbsCount = 0;
+			if("MLA".equals(accessType))
+			{	
+				try{
+					List problemsCountByStatus = problemHistoryDAO.getProblemsCountInAllStatusByLocationForAUser(accessValue,registrationId);
+					System.out.println("In problemsCountByStatus**********"+problemsCountByStatus.size());
+					for(int i=0;i<problemsCountByStatus.size();i++){
+						Object[] parms = (Object[])problemsCountByStatus.get(i);
+						ProblemsCountByStatus problemsCountByStatusObj = new ProblemsCountByStatus();	
+						problemsCountByStatusObj.setStatusId(Long.parseLong(parms[0].toString()));
+						problemsCountByStatusObj.setStatus(parms[1].toString());
+						problemsCountByStatusObj.setCount(Integer.parseInt(parms[2].toString()));
+						problemsCountByStatusList.add(problemsCountByStatusObj);
+						if(!IConstants.FIXED.equals(parms[1].toString()))
+							totalProbsCount += Integer.parseInt(parms[2].toString());
+					}
+					locationwiseProblemStatusInfoVO.setLocationId(accessValue);
+					locationwiseProblemStatusInfoVO.setProblemsCountByStatus(problemsCountByStatusList);
+					locationwiseProblemStatusInfoVO.setTotalProblemsCount(totalProbsCount);
+				} catch(Exception e)
+				{
+					e.printStackTrace();
+					if(log.isDebugEnabled())
+						log.debug("Exception Raised in getProblemsStatusCount method in ProblemManagementReportService MLA Access Level");
+				}
+			}	
+			return locationwiseProblemStatusInfoVO;
+		}
+
 	
 }

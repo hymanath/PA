@@ -1,12 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
-import com.itgrids.partyanalyst.model.ProblemHistory;  
+import com.itgrids.partyanalyst.utils.IConstants;
 public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 
 	private IProblemHistoryDAO problemHistoryDAO;
@@ -26,7 +27,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	public void setProblemHistoryDAO(IProblemHistoryDAO problemHistoryDAO) {
 		this.problemHistoryDAO = problemHistoryDAO;
 	}
-
+	/*
 	public void testSave(){
 		ProblemHistory obj = new ProblemHistory();
 		problemHistoryDAO.save(obj);
@@ -60,5 +61,24 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 	public void testByLocation(){
 		List result = problemHistoryDAO.findProblemsForALocationsByHamletId(66l);
 		assertEquals(1, result.size());
+	}*/
+	/*public void testGetProblemsCountInAllStatusByLocationForAUser(){
+		List result = problemHistoryDAO.getProblemsCountInAllStatusByLocationForAUser(241l,1L);
+		System.out.println(result.size());
+		for(int i=0;i<result.size();i++){
+			Object[] parms = (Object[])result.get(i);
+			System.out.print(Long.parseLong(parms[0].toString())+"\t");
+			System.out.print(parms[1].toString()+"\t");
+			System.out.println(Long.parseLong(parms[2].toString()));
+		}
+	}*/
+	
+	public void testFindProblemsByDateAndLocation()throws Exception{
+		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
+		System.out.println(sdf.parse("2010/15/02"));
+		System.out.println(sdf.parse("2010/15/02"));
+		List list = problemHistoryDAO.findProblemsByDateAndLocation("836,843,844", sdf.parse("1/12/2010"), sdf.parse("1/12/2010"));
+		System.out.println(list.size());
 	}
+	
 }

@@ -18,8 +18,12 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 		this.influencingPeopleDAO = influencingPeopleDAO;
 	}
 	
-	public void test(){
+	/*public void test(){
 		List result = influencingPeopleDAO.findByHamletId(12l);
 		System.out.println(result.size());
+	}*/
+	
+	public void test(){
+		List list = influencingPeopleDAO.findByTehsils("836");
 	}
 }

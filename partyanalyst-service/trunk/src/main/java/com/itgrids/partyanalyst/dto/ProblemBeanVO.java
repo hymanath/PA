@@ -52,6 +52,7 @@ public class ProblemBeanVO implements Serializable{
 	private String comments;
 	private String updatedDate;
 	private String status;
+	private Long problemAndProblemSourceId;
 	private List<ProblemHistoryVO> problemHistory;
 
 	public List<ProblemHistoryVO> getProblemHistory() {
@@ -403,6 +404,14 @@ public class ProblemBeanVO implements Serializable{
 
 	public void setUpdatedDate(String updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	public Long getProblemAndProblemSourceId() {
+		return problemAndProblemSourceId;
+	}
+
+	public void setProblemAndProblemSourceId(Long problemAndProblemSourceId) {
+		this.problemAndProblemSourceId = problemAndProblemSourceId;
 	}
 	
 	

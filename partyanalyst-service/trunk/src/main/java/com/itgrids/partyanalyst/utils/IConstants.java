@@ -4,6 +4,7 @@ import java.awt.Color;
 
 public interface IConstants {
 	public static final String DATE_PATTERN = "dd/MM/yyyy";
+	public static final String DATE_PATTERN_YYYY_MM_DD = "yyyy/MM/dd";
 	public static final Long CENSUS_YEAR = 2001L;
 	public static final Long COUNTRY_INDIA_ID = 1L;
 	public static final String STATIC_PARTIES = "'INC','PRP','TDP','TRS','CPI','CPM','AIMIM','BJP'";
@@ -143,6 +144,22 @@ public interface IConstants {
     public final static Color TRS_COLOR = Color.PINK;
     public final static Color AIMIM_COLOR = Color.CYAN;
     public final static Color CPI_COLOR = Color.MAGENTA;
+    //problem management status constants
+    public final static String NEW = "NEW";
+    public final static String CLASSIFY = "CLASSIFY";
+    public final static String ASSIGNED = "ASSIGNED";
+    public final static String PROGRESS = "PROGRESS";
+    public final static String PENDING = "PENDING";
+    public final static String FIXED = "FIXED";
+    
+    public final static Color NEW_COLOR = new Color(0XFEF200);
+    public final static Color CLASSIFY_COLOR = new Color(0XB2D233);
+    public final static Color ASSIGNED_COLOR = new Color(0XAB499C);
+    public final static Color PROGRESS_COLOR = new Color(0XFFC50C);
+    public final static Color PENDING_COLOR = new Color(0XB29D40);
+    public final static Color FIXED_COLOR = new Color(0XF05922);
+    
+    
     
     
     

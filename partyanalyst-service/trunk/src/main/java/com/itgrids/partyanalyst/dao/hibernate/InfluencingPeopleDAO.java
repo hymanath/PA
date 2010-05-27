@@ -18,4 +18,9 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		return getHibernateTemplate().find("from InfluencingPeople model where model.hamlet.hamletId = ?",hamletId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<InfluencingPeople> findByTehsils(String tehsilIds){
+		return getHibernateTemplate().find("from InfluencingPeople model where model.hamlet.township.tehsil.tehsilId in ("+tehsilIds+")");
+	}
+	
 }

@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -98,4 +99,50 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId,model.problemStatus.status" +
 				" from ProblemHistory model where model.problemLocation.problemLocationId =? order by model.problemHistoryId",problemLocationId);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List getProblemsCountInAllStatusByLocationForAUser(Long locationId,
+			Long registrationId) {
+		Object[] params = {locationId,registrationId};
+		return getHibernateTemplate().find("select model.problemStatus.problemStatusId, model.problemStatus.status," +
+				"count(model.problemHistoryId) " +
+				"from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in " +
+				"(select model1.tehsil.tehsilId from DelimitationConstituencyMandal model1 where " +
+				"model1.delimitationConstituency.delimitationConstituencyID = (" +
+				"select model2.delimitationConstituencyID from DelimitationConstituency model2 where " +
+				"model2.constituency.constituencyId = ? group by model2.constituency.constituencyId " +
+				"order by model2.year desc)) and " +
+				"model.problemLocation.problemAndProblemSource.user.registrationId = ? "+
+				"group by model.problemStatus.problemStatusId",params );
+	}
+	public List findProblemsByStatusDateAndLocation(String tehsilIds, Long statusId, Date fromDate, Date toDate){
+		Object[] params = {fromDate, toDate, statusId};
+		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +
+				"model.problemLocation.problemAndProblemSource.problem.problem,"+
+				"model.problemLocation.problemAndProblemSource.problem.description,"+
+				"model.problemLocation.hamlet.hamletName," +
+				" model.problemLocation.problemAndProblemSource.problemSource.problemSource," +
+				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
+				"model.problemStatus.status," +
+				"model.problemLocation.problemAndProblemSource.problem.identifiedOn"+
+				" from ProblemHistory model where model.dateUpdated >= ? and model.dateUpdated <= ? and " +
+				"model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + tehsilIds +
+				") and model.problemStatus.problemStatusId = ? and model.isDelete is null",params);
+	}
+	
+	public List findProblemsByDateAndLocation(String tehsilIds, Date fromDate, Date toDate){
+		Object[] params = {fromDate, toDate};
+		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +
+				"model.problemLocation.problemAndProblemSource.problem.problem,"+
+				"model.problemLocation.problemAndProblemSource.problem.description,"+
+				"model.problemLocation.hamlet.hamletName," +
+				" model.problemLocation.problemAndProblemSource.problemSource.problemSource," +
+				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
+				"model.problemStatus.status," +
+				"model.problemLocation.problemAndProblemSource.problem.identifiedOn"+
+				" from ProblemHistory model where model.dateUpdated >= ? and model.dateUpdated <= ? and " +
+				"model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + tehsilIds +
+				") and model.isDelete is null",params);
+	}
+	
 }
