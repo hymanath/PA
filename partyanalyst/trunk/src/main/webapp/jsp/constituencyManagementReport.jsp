@@ -321,17 +321,7 @@
 	<div id="constituencyMgmtDiv_main" style="padding:10px;">
 		
 		<DIV id="constituencyMgmt_main_header">
-			<DIV id="constituencyMgmt_head_label">Constituency Management</DIV>
-			<DIV id="constituencyMgmt_head_footer"></DIV>										
-			<DIV id="constMgmtDesc">
-				<UL>
-					<LI>Know the problems and their status in your constituency</LI>
-					<LI>Know about the Local Political Changes and impact in your constituency</LI>
-					<LI>View the people who are having more influence in your constituency</LI>
-					<LI>Access voters details by hamlet level, and group them by Important Families and Cast</LI>
-					<LI>View Mandal Level Leaders Details</LI>
-				</UL>
-			</DIV>
+			
 		</DIV>		
 
 		<div id="constituencyMgmt_layout_main"></div>
@@ -349,7 +339,7 @@
 				</div>
 				<div id="problem_stats_body" class="containerBodyDivClass">
 				<div style="text-align:right;padding:15px;">
-					<a class="linkButton" href="constituencyManagementAction.action">View Detailed Statistics</a>
+					<a class="linkButton" href="constituencyManagementAction.action?cmTask=problemStats">View Detailed Statistics</a>
 				</div>
 				<DIV id="problems_outline_Div"></DIV>
 				<DIV id="problems_Options" ></DIV>
@@ -357,31 +347,57 @@
 				</div>	
 				
 			</div>
-			<div id="influencing_people_main" class="yui-skin-sam" style="margin-bottom:10px;">
-				<div id="influencing_people_head">
-					<table cellspacing="0" cellpadding="0" width="100%">
-						<tr>
-							<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-							<td><div id="influencing_people_head_label" class="containerHeadLabelDivClass" style="width:892px;">Influencing People</div></td>
-							<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
-						</tr>
-					</table>	
-				</div>
-				<div id="influencing_people_body" class="containerBodyDivClass">
-					<DIV style="text-align:right;padding:10px;"><A href="influencingPeopleAction.action" class="linkButton" target="_blank">Add Influencing Persons</A></DIV>
-					<div id="influencing_people_data_body" class="yui-skin-sam"><div id="influencingPeopleDtDiv"></div></div>
-					<div id="influencing_people_footer">
-						<div id="sendSMSBlock" style="border:1px solid;margin:10px;width:500px;">
-							<TABLE>
-								<TR>
-									<TD><TEXTAREA id="smsText" cols="70"></TEXTAREA></TD>
-									<TD valign="bottom"><INPUT type="button" value="Send SMS" onclick="" class="button"/></TD>
-								</TR>	
-							</TABLE>
-						</div>			
+			<div>
+			<table width="100%">
+			<tr>
+				<td style="vertical-align:top">
+					<div id="influencing_people_main" class="yui-skin-sam" style="margin-bottom:10px;width:520px">
+						<div id="influencing_people_head">
+							<table cellspacing="0" cellpadding="0" width="100%">
+								<tr>
+									<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
+									<td><div id="influencing_people_head_label" class="containerHeadLabelDivClass" style="width:472px;">Influencing People</div></td>
+									<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
+								</tr>
+							</table>	
+						</div>
+						<div id="influencing_people_body" class="containerBodyDivClass">
+							<DIV style="text-align:right;padding:10px;"><A href="influencingPeopleAction.action" class="linkButton" target="_blank">Add Influencing Persons</A></DIV>
+							<div id="influencing_people_data_body" class="yui-skin-sam"><div id="influencingPeopleDtDiv"></div></div>
+							<div id="influencing_people_footer">
+								<div id="sendSMSBlock" style="border:1px solid;margin:10px;width:500px;">
+									<TABLE>
+										<TR>
+											<TD><TEXTAREA id="smsText" cols="70"></TEXTAREA></TD>
+											<TD valign="bottom"><INPUT type="button" value="Send SMS" onclick="" class="button"/></TD>
+										</TR>	
+									</TABLE>
+								</div>			
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
+				</td>
+				<td style="vertical-align:top">
+					<div id="voters_stats_main" style="margin-bottom:10px;">
+						<div id="voters_stats_head">
+							<table cellspacing="0" cellpadding="0" width="100%">
+								<tr>
+									<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
+									<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:365px;">Voters Details</div></td>
+									<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
+								</tr>
+							</table>	
+						</div>
+						<div id="voters_stats_body" class="containerBodyDivClass">
+							<div style="text-align:right;padding:15px;">
+								<a class="linkButton" href="constituencyManagementAction.action?cmTask=voterStas">View Voters Details</a>
+							</div>
+						</div>
+					</div>	
+				</td>
+			</tr>
+			</table>
+			
 			<div id="political_changes_main" class="yui-skin-sam" style="margin-bottom:10px;">
 				<div id="political_changes_head">
 					<table cellspacing="0" cellpadding="0" width="100%">
@@ -398,19 +414,7 @@
 					</div>
 					<div id="political_changes_data_body"></div>
 				</div>
-			</div>
-			<div id="voters_stats_main" style="margin-bottom:10px;">
-				<div id="voters_stats_head">
-					<table cellspacing="0" cellpadding="0" width="100%">
-						<tr>
-							<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-							<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:892px;">Voters Details</div></td>
-							<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
-						</tr>
-					</table>	
-				</div>
-				<div id="voters_stats_body" class="containerBodyDivClass"></div>
-			</div>			
+			</div>					
 							
 		</div>
 

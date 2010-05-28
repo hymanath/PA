@@ -481,7 +481,7 @@
 									ajaxImgSpanElmt.style.display = 'none';		
 									if(jsObj.task == "findVoters")
 									{										
-										showVotersData(myResults)			
+										showVotersData(myResults,jsObj)			
 									}
 									else if(jsObj.task == "addNewProblem")
 									{										
@@ -551,7 +551,7 @@
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
 	
-	function showVotersData(results)
+	function showVotersData(results,jsObj)
 	{	
 		assignToVotersArray = new Array();
 		assignToVotersCastStats = new Array();
@@ -739,21 +739,37 @@
 			buildLocalProblemsDataTable();
 			buildAllMandalLeadersDataTable();
 			buildElectedMandalLeadersDataTable();		
-			
-		constMgmtTabs.getTab(0).set("disabled", false);
-		constMgmtTabs.getTab(0).set("active", true);
-		constMgmtTabs.getTab(1).set("active", false);
-		constMgmtTabs.getTab(2).set("active", false);
-		constMgmtTabs.getTab(3).set("active", false);
-		constMgmtTabs.getTab(4).set("active", false);
-		constMgmtTabs.getTab(5).set("active", false);
-		constMgmtTabs.getTab(6).set("active", false);
+		
+		
+		constMgmtTabs.getTab(0).set("disabled", false);		
 		constMgmtTabs.getTab(1).set("disabled", false);
 		constMgmtTabs.getTab(2).set("disabled", false);
 		constMgmtTabs.getTab(3).set("disabled", false);
 		constMgmtTabs.getTab(4).set("disabled", false);
 		constMgmtTabs.getTab(5).set("disabled", false);
-		constMgmtTabs.getTab(6).set("disabled", false);	
+		constMgmtTabs.getTab(6).set("disabled", false);
+		
+		if(jsObj.cmTask == "voterStas")
+		{
+			constMgmtTabs.getTab(0).set("active", false);
+			constMgmtTabs.getTab(1).set("active", false);
+			constMgmtTabs.getTab(2).set("active", false);
+			constMgmtTabs.getTab(3).set("active", false);
+			constMgmtTabs.getTab(4).set("active", true);
+			constMgmtTabs.getTab(5).set("active", false);
+			constMgmtTabs.getTab(6).set("active", false);
+		}
+		else
+		{			
+			constMgmtTabs.getTab(0).set("active", true);
+			constMgmtTabs.getTab(1).set("active", false);
+			constMgmtTabs.getTab(2).set("active", false);
+			constMgmtTabs.getTab(3).set("active", false);
+			constMgmtTabs.getTab(4).set("active", false);
+			constMgmtTabs.getTab(5).set("active", false);
+			constMgmtTabs.getTab(6).set("active", false);
+		}
+
 		elmt.style.display = 'none';			
 	}
 
@@ -835,7 +851,8 @@
 					selectName:name,
 					selected:value,
 					MANDAL:mandalID,
-					task:"findVoters"
+					task:"findVoters",
+					cmTask:"${cmTask}"
 			}
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						

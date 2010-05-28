@@ -109,12 +109,12 @@ function showProblemsStatusCount(results)
 	var barChartName = results.lastTenDaysProblemsDetailsBarChartName;
 	var problems_OptionsEl = document.getElementById("problems_Options");	
 	var problemStats_bodyElContent = '';
-	problemStats_bodyElContent+='<TABLE class="problemsStatsTable" border="0" width="80%">';
+	problemStats_bodyElContent+='<TABLE class="problemsStatsTable" cellspacing="10" cellpadding="10" border="2" width="80%">';
 	problemStats_bodyElContent+='	<TR>';	
 	problemStats_bodyElContent+='		<TD halign="center" valign="top" width="50%">';
 	problemStats_bodyElContent+='			<TABLE border="0">';
 	problemStats_bodyElContent+='				<TR>';
-	problemStats_bodyElContent+='					<TD colspan="2"><DIV style="text-align:center;color:#663300;font-size:12px;font-weight:bold;">Current Problems and their Status</DIV></TD>';
+	problemStats_bodyElContent+='					<TD colspan="2"><DIV style="text-align:left;color:#663300;font-size:12px;font-weight:bold;text-decoration:underline;">Current Problems and their Status</DIV></TD>';
 	problemStats_bodyElContent+='				</TR>';
 	problemStats_bodyElContent+='				<TR>';
 	problemStats_bodyElContent+='					<TD><IMG src="charts/'+chartName+'" border="0"/></TD>';
@@ -137,13 +137,14 @@ function showProblemsStatusCount(results)
 	problemStats_bodyElContent+='				</TR>';
 	problemStats_bodyElContent+='				<TR>';
 	problemStats_bodyElContent+='					<TD>';
-	problemStats_bodyElContent+='						<TABLE>';	
+	problemStats_bodyElContent+='						<TABLE class="probStatsCountTable">';	
 	problemStats_bodyElContent+='							<TR>';
 	problemStats_bodyElContent+='								<TH>Total Problems:</TH>';
 	problemStats_bodyElContent+='								<TD>'+results.totalProblemsCount+'</TD>';
 	problemStats_bodyElContent+='							</TR>';
 	problemStats_bodyElContent+='							<TR>';
 	problemStats_bodyElContent+='								<TH>Fixed Problems:</TH>';
+	problemStats_bodyElContent+='								<TD>'+results.problemsCountByStatus[i].count+'</TD>';
 	problemStats_bodyElContent+='							</TR>';
 	problemStats_bodyElContent+='						</TABLE>';
 	problemStats_bodyElContent+='					</TD>';
@@ -153,7 +154,7 @@ function showProblemsStatusCount(results)
 	problemStats_bodyElContent+='		<TD halign="center" valign="top" width="50%">';
 	problemStats_bodyElContent+='			<TABLE>';
 	problemStats_bodyElContent+='				<TR>';
-	problemStats_bodyElContent+='					<TD><DIV DIV style="text-align:center;color:#663300;font-size:12px;font-weight:bold;">Problems in last 10 Days, last 30 Days and their Status</DIV></TD>';				
+	problemStats_bodyElContent+='					<TD><DIV DIV style="text-align:left;color:#663300;font-size:12px;font-weight:bold;text-decoration:underline;">Problems in last 10 Days, last 30 Days and their Status</DIV></TD>';				
 	problemStats_bodyElContent+='				</TR>';
 	problemStats_bodyElContent+='				<TR>';
 	problemStats_bodyElContent+='					<TD><IMG src="charts/'+barChartName+'" height="200" border="0" /></TD>';				
@@ -168,7 +169,7 @@ function showProblemsStatusCount(results)
 	problemStats_bodyElContent+='						<TD align="left"><DIV class="FIXED"></DIV></TD>';
 	problemStats_bodyElContent+='					</TR>';
 	problemStats_bodyElContent+='				</TABLE></CENTER>';	
-	problemStats_bodyElContent+='			<TABLE>';
+	problemStats_bodyElContent+='			<TABLE class="probStatsCountTable">';
 	problemStats_bodyElContent+='				<TR>';
 	problemStats_bodyElContent+='					<TH>Problems Posted In Last 10 Days:</TH>';
 	problemStats_bodyElContent+='					<TD>'+results.problemsPostedInLastTenDays+'</TD>';
@@ -319,10 +320,8 @@ function buildInfluencingPeopleDT(results)
 {
 	var ipDTColumnDefs = [ 
 	    {key:"select",label:localizationObj.select, formatter:"checkbox"},	    
-		{key:"personName", label:localizationObj.name, sortable:true},
-		{key:"occupation",label:localizationObj.occupation},
-		{key:"contactNumber",label:localizationObj.contactnbr},
-		{key:"cast", label:localizationObj.cast, sortable:true},
+		{key:"personName", label:localizationObj.name, sortable:true},		
+		{key:"contactNumber",label:localizationObj.contactnbr},		
 		{key:"party", label:localizationObj.party, sortable:true},
 		{key:"localArea", label:localizationObj.location, sortable:true},
 		{key:"influencingRange", label:localizationObj.inflScope, sortable:true}				
@@ -331,7 +330,7 @@ function buildInfluencingPeopleDT(results)
 	var ipDTDataSource = new YAHOO.util.DataSource(results); 
 	ipDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	ipDTDataSource.responseSchema = { 
-		fields: ["personName","occupation","contactNumber","cast","party","localArea","influencingRange"] 
+		fields: ["personName","contactNumber","party","localArea","influencingRange"] 
 	};
 	
 	var myConfigs = { 

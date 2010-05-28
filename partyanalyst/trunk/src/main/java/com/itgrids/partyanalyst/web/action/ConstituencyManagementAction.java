@@ -48,8 +48,17 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<InfluencingPeopleVO> influencingPeopleVO;
 	private String task = null;
 	JSONObject jObj = null;
+	private String cmTask;
 	
 	
+	public String getCmTask() {
+		return cmTask;
+	}
+
+	public void setCmTask(String cmTask) {
+		this.cmTask = cmTask;
+	}
+
 	public IProblemManagementService getProblemManagementService() {
 		return problemManagementService;
 	}
