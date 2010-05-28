@@ -321,7 +321,17 @@
 	<div id="constituencyMgmtDiv_main" style="padding:10px;">
 		
 		<DIV id="constituencyMgmt_main_header">
-			
+			<DIV id="constituencyMgmt_head_label">Constituency Management</DIV>
+			<DIV id="constituencyMgmt_head_footer"></DIV>										
+			<DIV id="constMgmtDesc">
+				<UL>
+					<LI>Know the problems and their status in your constituency</LI>
+					<LI>Know about the Local Political Changes and impact in your constituency</LI>
+					<LI>View the people who are having more influence in your constituency</LI>
+					<LI>Access voters details by hamlet level, and group them by Important Families and Cast</LI>
+					<LI>View Mandal Level Leaders Details</LI>
+				</UL>
+			</DIV>
 		</DIV>		
 
 		<div id="constituencyMgmt_layout_main"></div>

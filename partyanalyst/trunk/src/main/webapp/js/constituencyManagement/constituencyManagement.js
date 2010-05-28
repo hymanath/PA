@@ -164,9 +164,9 @@ function showProblemsStatusCount(results)
 	problemStats_bodyElContent+='				<TABLE class="tableBorder" cellpadding="3" cellspacing="3">';
 	problemStats_bodyElContent+='					<TR>';
 	problemStats_bodyElContent+='						<TD align="left">NEW</TD>';
-	problemStats_bodyElContent+='						<TD align="left"><DIV class="NEW"></DIV></TD>';
+	problemStats_bodyElContent+='						<TD align="left"><DIV class="NEW" style="background-color:red"></DIV></TD>';
 	problemStats_bodyElContent+='						<TD align="left">FIXED</TD>';
-	problemStats_bodyElContent+='						<TD align="left"><DIV class="FIXED"></DIV></TD>';
+	problemStats_bodyElContent+='						<TD align="left"><DIV class="FIXED" style="background-color:#7EFF28"></DIV></TD>';
 	problemStats_bodyElContent+='					</TR>';
 	problemStats_bodyElContent+='				</TABLE></CENTER>';	
 	problemStats_bodyElContent+='			<TABLE class="probStatsCountTable">';
