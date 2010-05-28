@@ -527,41 +527,28 @@ public class ChartProducer {
 				}
 	}
 	
-	public static void createProblemsPieChart(String title,final PieDataset dataset,String fileName,Color[] colors){
+	public static void createProblemsPieChart(String title,final DefaultPieDataset dataset,String fileName){
 		
-		JFreeChart chart = ChartFactory.createPieChart(title,dataset,
-				false, // legend?
-				false, // tooltips?
-				false // URLs?
-				);
-		Plot plot =chart.getPlot();
-		PiePlot plot2 = new PiePlot(dataset);
-		plot.setBackgroundPaint(Color.WHITE);
-		plot.setOutlineVisible(false);
+		JFreeChart chart = ChartFactory.createPieChart(title, dataset, false, false, false);
+       
+        PiePlot plot = (PiePlot)chart.getPlot();
+       
+        // Specify the colors here
+        Color[] colors = {Color.blue, Color.yellow, Color.green};
+        PieRenderer renderer = new PieRenderer(colors);
+        renderer.setColor(plot, dataset);
+        plot.setBackgroundPaint(Color.WHITE);
+        plot.setOutlineVisible(false);
+        try
+        {
+            // This will create a PNG image
+            ChartUtilities.saveChartAsPNG(new File(fileName), chart, 400, 220);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Exception while creating the chart");
+        }
 		
-		PieRenderer renderer = new PieRenderer(colors);
-		if (renderer!=null) {
-			renderer.setColor(plot2, (DefaultPieDataset) plot2.getDataset());
-		}
-		
-		PiePlot plot1 = (PiePlot) chart.getPlot();
-		plot1.setLabelFont(new Font("Arial", Font.BOLD,10));
-	    plot1.setNoDataMessage("No data available");
-	    plot1.setCircular(true);
-	    plot1.setLabelBackgroundPaint(Color.LIGHT_GRAY);
-	    plot1.setLabelPaint(Color.WHITE);
-	    
-	    
-		try	 {
-			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
-			final File image = new File(fileName);
-			
-			ChartUtilities.saveChartAsPNG(image, chart,400, 200, info);
-		}
-		catch (java.io.IOException exc)
-		{
-		log.error("Error writing image to file");
-		}
 	}
 	
 	public static void createProblems3DBarChart(String title,String reportType,String category,String value,String party,CategoryDataset dataset,String fileName,int width,int height){

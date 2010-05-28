@@ -33,6 +33,7 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 			<result type="redirect" name="cadreManagementAction">cadreManagementAction.action</result>
 			<result type="redirect" name="constituencyManagementAction">constituencyManagementAction.action</result>
+			<result type="redirect" name="initailConstituencyManagementAction">initailConstituencyManagementAction.action</result>
 			<result type="redirect" name="problemManagementReportAction">problemManagementReportAction.action</result>
 			<result type="redirect" name="userGroupAction">userGroupAction.action</result>
 			<result type="redirect" name="cadreRegisterPageAction">cadreRegisterPageAction.action</result>
@@ -479,8 +480,13 @@
 		</action>		
 		
 		<action name="constituencyManagementAction" class="constituencyManagementAction">
-			<result name="success">/jsp/constituencyManagementReport.jsp</result>
+			<result name="success">/jsp/constituencyManagementMainPage.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=constituencyManagementAction</result>		
+		</action>
+		
+		<action name="initailConstituencyManagementAction" class="initailConstituencyManagementAction">
+			<result name="success">/jsp/constituencyManagementReport.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=initailConstituencyManagementAction</result>		
 		</action>
 			
 		<action name="influencingPeopleInConstituencyAction" class="constituencyManagementAction" method="getInfluencingPeopleByLocation">

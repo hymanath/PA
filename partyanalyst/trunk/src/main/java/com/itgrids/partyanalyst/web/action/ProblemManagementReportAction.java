@@ -332,7 +332,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		{
 			accessType = user.getAccessType();
 			accessValue = new Long(user.getAccessValue());
-			locationwiseProblemStatusInfoVO = problemManagementReportService.getProblemsStatusCount(accessType, accessValue, user.getRegistrationID());
+			locationwiseProblemStatusInfoVO = problemManagementReportService.getProblemsStatusCount(accessType, accessValue);
 			locationwiseProblemStatusInfoVO.setProblemsPostedInLastTenDays("10");
 			locationwiseProblemStatusInfoVO.setProblemsSolvedInLastTenDays("3");
 			locationwiseProblemStatusInfoVO.setProblemsPostedInLastThirtyDays("20");
@@ -379,7 +379,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				}			
 		}
 		log.debug("size::::::::::::::::::::::::::::::::::::"+problemsStatusList.size());
-		ChartProducer.createProblemsPieChart("", dataset, chartPath,colors);
+		ChartProducer.createProblemsPieChart("", dataset, chartPath);
 		return chartName ;
 	}
 	
@@ -398,7 +398,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		ChartProducer.createProblems3DBarChart("", null,"", "No. Of Problems","", dataset, chartPath, 400, 200);
 		return chartName;
 	}
-	//public List<ProblemBeanVO> getProblemsPostedByStatusAndDates(String fromDate, String toDate, Long statusId, Long constituencyId);
+	
 	public String problemsByDateBasedOnStatusAction()
 	{
 		if(log.isDebugEnabled())
@@ -412,10 +412,11 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		}
 		String fromDate = jObj.getString("fromDate");
 		String toDate =  jObj.getString("toDate");
-		Long statusId = new Long(jObj.getString("status"));
-		Long ConstituencyId = new Long(jObj.getString("locationId"));
+		Long statusId = jObj.getLong("status");
+		String accessType = jObj.getString("");
+		Long accessValue = new Long(jObj.getString("locationId"));
 		
-		problemBean = problemManagementReportService.getProblemsPostedByStatusAndDates(fromDate, toDate, statusId, ConstituencyId);
+		problemBean = problemManagementReportService.getProblemsPostedByStatusAndDates(fromDate, toDate, statusId, accessType, accessValue);
 		return SUCCESS;
 		
 	}

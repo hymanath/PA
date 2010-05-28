@@ -271,8 +271,9 @@
 		{
 			var jsObj= 
 			{	
-				locationId: 232,				  			
-				task: "getInfluencingPeopleInAConstituency",
+				accessType:accessType,
+				accessValue:accessValue,			  			
+				task: "getInfluencingPeopleInAConstituency"
 						
 			}
 			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -346,27 +347,11 @@
 						</tr>
 					</table>	
 				</div>
-				<!--<div id="probInputSelection">
-					<c:if test="${accessType == 'COUNTRY'}">
-						<s:select id="selectState" theme="simple"  name="selectState" list="statesList" listKey="id" listValue="name"/>
-						<s:select id="selectDistrict" theme="simple"  name="selectDistrict" list="districtsList" listKey="id" listValue="name"/>
-						<s:select id="selectConstituency" theme="simple"  name="selectConstituency" list="constituenciesList" listKey="id" listValue="name"/>
-					</c:if>
-					<c:if test="${accessType == 'STATE'}">
-						<s:select id="selectDistrict" theme="simple"  name="selectDistrict" list="districtsList" listKey="id" listValue="name"/>
-						<s:select id="selectConstituency1" theme="simple"  name="selectConstituency1" list="constituenciesList" listKey="id" listValue="name"/>
-					</c:if>
-					<c:if test="${accessType == 'DISTRICT'}">
-						<s:select id="selectConstituency2" theme="simple"  name="selectConstituency2" list="constituenciesList" listKey="id" listValue="name"/>
-					</c:if>					
-					<c:if test="${accessType == 'MP'}">
-						<s:select id="selectConstituency3" theme="simple"  name="selectConstituency3" list="constituenciesList" listKey="id" listValue="name"/>
-					</c:if>
-				</div>
-				-->
 				<div id="problem_stats_body" class="containerBodyDivClass">
-				<DIV id="problems_outline_Div">
-				</DIV>
+				<div style="text-align:right;padding:15px;">
+					<a class="linkButton" href="constituencyManagementAction.action">View Detailed Statistics</a>
+				</div>
+				<DIV id="problems_outline_Div"></DIV>
 				<DIV id="problems_Options" ></DIV>
 				<DIV class="yui-skin-sam"><DIV id="problemsDetailsDTDiv"></DIV></DIV>
 				</div>	

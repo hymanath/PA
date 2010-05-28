@@ -1,35 +1,26 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionSupport;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
-import com.itgrids.partyanalyst.dto.HamletsListWithBoothsAndVotersVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
-import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
-import com.itgrids.partyanalyst.dto.ProblemManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
-import com.itgrids.partyanalyst.service.IUserGroupService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.ActionSupport;
 
 public class ConstituencyManagementAction extends ActionSupport implements ServletRequestAware {
 
@@ -51,7 +42,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> hamletList;
 	private IRegionServiceData regionServiceData;
 	private List<SelectOptionVO> problemSources;	
-	private List<SelectOptionVO> statesList, districtsList, constituenciesList,statusList; 
+	private List<SelectOptionVO> statesList, districtsList, constituenciesList; 
 	private IProblemManagementReportService problemManagementReportService;
 	private String accessType;
 	private List<InfluencingPeopleVO> influencingPeopleVO;
@@ -213,14 +204,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		this.constituenciesList = constituenciesList;
 	}
 
-	public List<SelectOptionVO> getStatusList() {
-		return statusList;
-	}
-
-	public void setStatusList(List<SelectOptionVO> statusList) {
-		this.statusList = statusList;
-	}	
-	
 	public List<InfluencingPeopleVO> getInfluencingPeopleVO() {
 		return influencingPeopleVO;
 	}
@@ -242,9 +225,6 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		
 		log.debug("In execute of Constituency Management Action ********");
 
-		statusList = problemManagementReportService.getAllProblemStatusInfo();
-		statusList.add(0,new SelectOptionVO(0l, "Select Status"));
-		
 		SelectOptionVO probSource1 = new SelectOptionVO(2L, IConstants.CALL_CENTER);
 		SelectOptionVO probSource2 = new SelectOptionVO(3L, IConstants.USER);
 		SelectOptionVO probSource3 = new SelectOptionVO(4L, IConstants.EXTERNAL_PERSON);
@@ -345,8 +325,10 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 				e.printStackTrace();
 			}
 		}
-		Long locationId = new Long(jObj.getString("locationId"));
-		influencingPeopleVO = problemManagementReportService.findInfluencingPeopleInfoInLocation(locationId);
+		String accessType = jObj.getString("accessType");
+		Long accessValue = jObj.getLong("accessValue");
+		
+		influencingPeopleVO = problemManagementReportService.findInfluencingPeopleInfoInLocation(accessType, accessValue);
 		log.debug("influencingPeopleVO.size()::::::::::::::::::"+influencingPeopleVO.size());
 		return SUCCESS;
 		

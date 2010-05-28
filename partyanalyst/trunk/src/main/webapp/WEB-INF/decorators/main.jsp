@@ -86,7 +86,7 @@
 	        ] 
 	    },  
 		{ 
-	        id: "constituenceyManagement", 
+	        id: "constituenceyManagement",
 	        itemdata: [
 		    { text: "Problem Management Report", url: "problemManagementReportAction.action" },
 		    { text: "User Groups", url: "userGroupAction.action" },
@@ -168,7 +168,7 @@
 							<a class="yuimenubaritemlabel" href="cadreManagementAction.action">CADRE</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
-							<a class="yuimenubaritemlabel" href="constituencyManagementAction.action">CONSTITUENCEY MANAGEMENT</a> 
+							<a class="yuimenubaritemlabel" href="initailConstituencyManagementAction.action">CONSTITUENCEY MANAGEMENT</a> 
 						</li> 
 						<li class="yuimenubaritem"> 
 							<a class="yuimenubaritemlabel" href="javascript:{}">POLITICIAN ANALYSIS</a> 
