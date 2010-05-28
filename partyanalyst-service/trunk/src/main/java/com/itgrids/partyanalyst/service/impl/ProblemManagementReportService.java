@@ -664,6 +664,24 @@ public class ProblemManagementReportService implements
 			
 			return locationwiseProblemStatusInfoVO;
 		}
+		public List<ProblemBeanVO> getProblemsInfoByStatusInALocation(Long accessValue,String accessType,Long registrationId,String status) {
+			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
+			try{
+				String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
+			if(status.equalsIgnoreCase("new") || status.equalsIgnoreCase("classify") || status.equalsIgnoreCase("assigned") || status.equalsIgnoreCase("progress") || status.equalsIgnoreCase("pending") || status.equalsIgnoreCase("fixed")){
+				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,status);
+			}
+			else{
+				result = problemHistoryDAO.findProblemsForALocationsByConstituencyId(tehsilIds);	
+			}
+			problemBeanVO = populateProblemInfo(result,registrationId,status);
+			}catch(Exception e){
+				e.printStackTrace();
+				System.out.println("Exception Raised--->"+e);
+			return null;			
+		}		
+			return problemBeanVO;
+		}
 
 	
 }
