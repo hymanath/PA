@@ -258,7 +258,8 @@
 			{	
 				fromDate: fromDateEl,
 				toDate: toDateEl,
-				locationId: 232,
+				accessType:accessType,
+				accessValue:accessValue,
 				status: statusId,   			
 				task: "getProblemDetailsInSelectedDates",
 						
