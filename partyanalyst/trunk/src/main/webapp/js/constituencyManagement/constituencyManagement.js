@@ -76,25 +76,26 @@ function buildPoliticalChanges()
 	 
 	var politicalChangesArr = 
 		[ 
-	        {desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress"}, 
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress"}, 
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress"}, 
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress"},
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress"},
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress"},
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress"},
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress"}
+	        {desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"}, 
+			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"}, 
+			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"}, 
+			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"},
+			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"},
+			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"},
+			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"},
+			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"}
 	    ] ;
 	var myColumnDefs = [ 
-		{key:"desc", sortable:true, resizeable:true}, 
+		{key:"desc",label:"Description", sortable:true, resizeable:true}, 
 		{key:"date", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, resizeable:true}, 
-		{key:"impactedParty", sortable:true, resizeable:true}		
+		{key:"impactedParty", sortable:true, resizeable:true},
+		{key:"impactScope",label:"Imapct Scope",sortable:true, resizeable:true},
 	]; 
 
 	var myDataSource = new YAHOO.util.DataSource(politicalChangesArr); 
 	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	myDataSource.responseSchema = { 
-		fields: ["desc","date","impactedParty"] 
+		fields: ["desc","date","impactedParty","impactScope"] 
 	};
 	
 
@@ -336,8 +337,7 @@ function buildInfluencingPeopleDT(results)
 	var myConfigs = { 
 		    paginator : new YAHOO.widget.Paginator({ 
 	        rowsPerPage    : 10			        
-		    }),
-		    caption:"Influencing People" 
+		    })		
 			};
 
 	var ipDataTable = new YAHOO.widget.DataTable("influencingPeopleDtDiv", 
