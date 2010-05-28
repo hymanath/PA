@@ -239,7 +239,23 @@
 							  };
 		  var accessType= '${accessType}';			  
 		  var accessValue= '${accessValue}';
-		  
+
+		  var initialProbs = new Array();
+		 
+		  <c:forEach var="prob" items="${problemsList}">
+			  var problemInfo = {
+					  	problemLocationId:'${prob.problemLocationId}',
+						problem:'${prob.problem}', 
+						description:'${prob.description}',
+						existingFrom:'${prob.existingFrom}',
+						hamlet:'${prob.hamlet}',
+						problemSourceScope:'${prob.problemSourceScope}',
+						problemAndProblemSourceId:'${prob.problemAndProblemSourceId}',
+						status:'${prob.status}'	
+					  };
+			  initialProbs.push(problemInfo);
+		</c:forEach>
+  
 		function getProblemsStatusCountByAccessType()
 		{
 			var jsObj= 
@@ -307,6 +323,7 @@
 											showProblemsStatusCount(myResults);
 										} else if(jsObj.task == "getProblemDetailsInSelectedDates")
 										{
+											
 											buildProblemsDetailsDT(myResults);
 										} else if(jsObj.task == "getInfluencingPeopleInAConstituency")
 										{
@@ -458,6 +475,7 @@
 	problemMgmtObj.problemsStatusArr.push(ob);	
 	</c:forEach>
 		initializeConstituencyManagement();
+		buildProblemsDetailsDT(initialProbs);
 </script>
 </body>
 </html>
