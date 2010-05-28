@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,7 +8,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
@@ -25,6 +28,9 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 	private IProblemManagementReportService problemManagementReportService;
 	private String accessType;
 	private Long accessValue;
+	private String task = null;
+	JSONObject jObj = null;
+	private List<ProblemBeanVO> problemsList;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -61,6 +67,30 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 	public void setProblemManagementReportService(
 			IProblemManagementReportService problemManagementReportService) {
 		this.problemManagementReportService = problemManagementReportService;
+	}	
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
+	public JSONObject getJObj() {
+		return jObj;
+	}
+
+	public void setJObj(JSONObject obj) {
+		jObj = obj;
+	}	
+	
+	public List<ProblemBeanVO> getProblemsList() {
+		return problemsList;
+	}
+
+	public void setProblemsList(List<ProblemBeanVO> problemsList) {
+		this.problemsList = problemsList;
 	}
 
 	public String execute() throws Exception{
@@ -80,6 +110,32 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 		statusList.add(0,new SelectOptionVO(0l, "Select Status"));
 		//String accessType, Long accessValue, Long statusId, int limit
 		System.out.println(problemManagementReportService.getRecentProblemsWithInTheRegion("State", 1l, 6l, 10).getRecentProblems().size());
+		
+		
+		
+		return SUCCESS;
+	}
+	
+	public String getProblemDetailsByStatus()
+	{
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		
+		if(user == null)
+			return ERROR;
+		
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+			String status =  jObj.getString("status");
+			Long locationId = new Long(jObj.getLong("locationId"));//contains access value
+			String accessType = jObj.getString("accessType");	
+			problemsList = new ArrayList<ProblemBeanVO>();
+			problemsList = problemManagementReportService.getProblemsInfoByStatusInALocation(locationId, accessType, user.getRegistrationID(), status);
 		
 		return SUCCESS;
 	}

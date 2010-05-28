@@ -250,6 +250,19 @@
 			var url = "<%=request.getContextPath()%>/problemsCountByStatusBasedOnAccessLevelsAction.action?"+param;
 			callAjax(param,jsObj,url);
 		}
+		function getProblemsByStatusInLocations(status)
+		{			
+			var jsObj=
+				{
+						locationId: accessValue,
+						accessType: accessType,
+						task: "getProblemsByStatusInALocation",
+						status: status						
+				};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+				var url = "<%=request.getContextPath()%>/problemDetailsByStatusAction.action?"+rparam;						
+				callAjax(rparam,jsObj,url);
+		}
 		function getProblemDetailsInSelectedDates(statusId)
 		{
 			var fromDateEl = document.getElementById("existingFromText").value;
@@ -261,7 +274,7 @@
 				accessType:accessType,
 				accessValue:accessValue,
 				status: statusId,   			
-				task: "getProblemDetailsInSelectedDates",
+				task: "getProblemDetailsInSelectedDates"
 						
 			}
 			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -298,6 +311,9 @@
 										} else if(jsObj.task == "getInfluencingPeopleInAConstituency")
 										{
 											buildInfluencingPeopleDT(myResults);
+										} else if(jsObj.task == "getProblemsByStatusInALocation")
+										{
+											buildProblemsByStatusDialog(myResults,jsObj);
 										}
 										
 								}catch (e) {   
@@ -321,6 +337,7 @@
 	
 	<div id="constituencyMgmtDiv_main" style="padding:10px;">
 		
+				
 		<DIV id="constituencyMgmt_main_header">
 			<DIV id="constituencyMgmt_head_label">Constituency Management</DIV>
 			<DIV id="constituencyMgmt_head_footer"></DIV>										
@@ -356,7 +373,7 @@
 				<DIV id="problems_Options" ></DIV>
 				<DIV class="yui-skin-sam"><DIV id="problemsDetailsDTDiv"></DIV></DIV>
 				</div>	
-				
+				<DIV class="yui-skin-sam"><DIV id="problemsByStatusPanelDiv"></DIV></DIV>
 			</div>
 			<div>
 			<table width="100%">
@@ -403,7 +420,6 @@
 							<div style="text-align:right;padding:15px;">
 								<a class="linkButton" href="constituencyManagementAction.action?cmTask=voterStas">View Voters Details</a>
 							</div>
-
 						</div>
 					</div>	
 				</td>
@@ -430,6 +446,7 @@
 							
 		</div>
 
+	</div>
 	</div>
 
 <script type="text/javascript">

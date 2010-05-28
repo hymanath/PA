@@ -128,7 +128,7 @@ function showProblemsStatusCount(results)
 	{					
 	if(results.problemsCountByStatus[i].status == 'FIXED')
 	continue;
-	problemStats_bodyElContent+='								<TD align="left">'+results.problemsCountByStatus[i].status+'</TD><TD align="left"><DIV class="'+results.problemsCountByStatus[i].status+'"></DIV></TD><TD align="left"><A href="javascript:{} onclick="">'+results.problemsCountByStatus[i].count+'</A></TD>';
+	problemStats_bodyElContent+='								<TD align="left">'+results.problemsCountByStatus[i].status+'</TD><TD align="left"><DIV class="'+results.problemsCountByStatus[i].status+'"></DIV></TD><TD align="left"><A href="javascript:{}" onclick="getProblemsByStatusInLocations(\''+results.problemsCountByStatus[i].status+'\')">'+results.problemsCountByStatus[i].count+'</A></TD>';
 	if(i!=0 && i%2 == 0)
 	problemStats_bodyElContent+='</tr><tr>';
 	}
@@ -343,6 +343,71 @@ function buildInfluencingPeopleDT(results)
 	var ipDataTable = new YAHOO.widget.DataTable("influencingPeopleDtDiv", 
 			ipDTColumnDefs, ipDTDataSource,myConfigs);	
 }
+
+function buildProblemsByStatusDialog(results,jsObj)
+{
+	
+	caption = "Problems in " +jsObj.status+" Status";
+	
+	var contentStr ='';
+	contentStr +='<div id="problems_Datatable"></div>';
+	
+
+	 var myPanel = new YAHOO.widget.Dialog("problemsByStatusPanelDiv", {
+                 
+                 width : "620px", 
+                 fixedcenter : true, 
+                 visible : true,  
+                 constraintoviewport : true, 
+        		 iframe :true,
+        		 modal :true,
+        		 hideaftersubmit:true,
+        		 close:true
+       });
+	   myPanel.setHeader("Problems Details");
+       myPanel.setBody(contentStr);
+       myPanel.render();
+		
+	
+		buildProblemsByStatusDataTable("problems_Datatable", results,caption );
+
+}
+
+function buildProblemsByStatusDataTable(divId, results,caption)
+{
+	var elmt = document.getElementById("problemsDetailsDTDiv");
+
+	if(!elmt)
+		return;
+	
+	var probDTColumnDefs = [ 
+		{key:"problemLocationId", hidden:true},
+		{key:"name",label:localizationObj.problemLabel, sortable:true}, 
+		{key:"description",label:localizationObj.description,},
+		{key:"existingFrom", label:localizationObj.existingFrom},
+		{key:"hamlet", label:localizationObj.HAMLET, sortable:true},		
+		{key:"problemAmdProblemSourceId", hidden:true},
+		{key:"status", label:localizationObj.status, sortable:true}		
+	]; 
+
+	var probDTDataSource = new YAHOO.util.DataSource(results); 
+	probDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+	probDTDataSource.responseSchema = { 
+		fields: ["problemLocationId","name","description","existingFrom","hamlet","problemSourceScope","problemAmdProblemSourceId","status"] 
+	};
+	
+	var myConfigs = { 
+		    paginator : new YAHOO.widget.Paginator({ 
+	        rowsPerPage    : 10			        
+		    }),
+		    caption:caption 
+			};
+
+	var probDataTable = new YAHOO.widget.DataTable(divId, 
+			probDTColumnDefs, probDTDataSource,myConfigs);
+	
+}
+
 function initializeConstituencyManagement()
 {
 	getTodayDateTime();	
