@@ -66,7 +66,7 @@ public class TehsilDAO extends GenericDaoHibernate<Tehsil, Long> implements ITeh
 	
 	@SuppressWarnings("unchecked")
 	public List<Tehsil> findByState(Long stateId){
-		return getHibernateTemplate().find("from Tehsil model where model.district.districtId = ?", stateId);
+		return getHibernateTemplate().find("from Tehsil model where model.district.state.stateId = ?", stateId);
 	}
 	
 }

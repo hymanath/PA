@@ -460,6 +460,26 @@ public class ProblemManagementReportService implements
 		}
 		
 		/*
+		 * To convert timestamp which is in yyyy-MM-dd format to dd-MM-yyyy format.
+		 */
+		public String timeStampConversionToDDMMYY(String idate){
+			String convertedDated=null;
+			SimpleDateFormat sdfInput =  
+		        new SimpleDateFormat ("yyyy-MM-dd") ;  
+		     SimpleDateFormat sdfOutput =  
+		        new SimpleDateFormat  ("dd-MM-yyyy") ;  		  
+		  
+		     Date date;
+			try {
+				date = sdfInput.parse (idate);
+				convertedDated = sdfOutput.format(date).toString();
+			} catch (ParseException e){
+				e.printStackTrace();
+			}
+			return convertedDated;	
+		}
+		
+		/*
 		 * To convert timestamp which is in yyyy-MM-dd hh:mm:ss format to dd-MM-yyyy hh:mm:ss format.
 		 */
 		public String timeStampConversionToYYMMDD(String idate){
@@ -506,7 +526,7 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setProblemSourceScope(values[4].toString());
 				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
 				problemBeanVO.setStatus(values[6].toString());
-				problemBeanVO.setExistingFrom(timeStampConversion(values[7].toString()));
+				problemBeanVO.setExistingFrom(timeStampConversionToDDMMYY(values[7].toString()));
 				problems.add(problemBeanVO);
 			}
 			
@@ -593,8 +613,7 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setProbSource(values[4].toString());
 				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
 				problemBeanVO.setStatus(values[6].toString());
-				problemBeanVO.setExistingFrom(timeStampConversion(values[7].toString()));
-				problemBeanVO.setReportedDate(timeStampConversion(values[8].toString()));
+				problemBeanVO.setExistingFrom(timeStampConversionToDDMMYY(values[7].toString()));
 				problems.add(problemBeanVO);
 			}
 			return problems;

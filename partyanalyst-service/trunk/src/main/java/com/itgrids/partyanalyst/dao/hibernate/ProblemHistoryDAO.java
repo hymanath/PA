@@ -123,8 +123,9 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"(select model1.tehsil.tehsilId from DelimitationConstituencyMandal model1 where " +
 				"model1.delimitationConstituency.delimitationConstituencyID in (" +
 				"select model2.delimitationConstituencyID from DelimitationConstituency model2 where " +
-				"model2.constituency.constituencyId in ("+locationIds+") group by model2.constituency.constituencyId " +
-				"order by model2.year desc)) group by model.problemStatus.problemStatusId order by model.problemStatus.problemStatusId");
+				"model2.constituency.constituencyId in ("+locationIds+") and model.isDelete is null group by " +
+				"model2.constituency.constituencyId order by model2.year desc)) group " +
+				"by model.problemStatus.problemStatusId order by model.problemStatus.problemStatusId");
 	}
 	
 	public List findProblemsByStatusDateAndLocation(String tehsilIds, Long statusId, Date fromDate, Date toDate){
