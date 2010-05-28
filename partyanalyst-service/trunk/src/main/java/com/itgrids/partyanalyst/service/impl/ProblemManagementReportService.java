@@ -506,7 +506,7 @@ public class ProblemManagementReportService implements
 				problemBeanVO.setProblemSourceScope(values[4].toString());
 				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
 				problemBeanVO.setStatus(values[6].toString());
-				problemBeanVO.setExistingFrom(values[7].toString());
+				problemBeanVO.setExistingFrom(timeStampConversion(values[7].toString()));
 				problems.add(problemBeanVO);
 			}
 			
@@ -566,6 +566,39 @@ public class ProblemManagementReportService implements
 			return status;
 		}
 		
+		public LocationwiseProblemStatusInfoVO getRecentProblemsWithInTheRegion(String accessType, Long accessValue, Long statusId, int limit){
+			LocationwiseProblemStatusInfoVO locationwiseProblemStatusInfoVO = new LocationwiseProblemStatusInfoVO();
+			try{
+				String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
+				List newProblems = problemHistoryDAO.findLatestProblemsByMandals(tehsilIds, statusId);
+				if(newProblems.size() > limit)
+					locationwiseProblemStatusInfoVO.setRecentProblems(getProblemVOsListFromRawData(newProblems.subList(0, limit-1)));	
+				else
+					locationwiseProblemStatusInfoVO.setRecentProblems(getProblemVOsListFromRawData(newProblems));
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}			
+			return locationwiseProblemStatusInfoVO;
+		}
+		
+		public List<ProblemBeanVO> getProblemVOsListFromRawData(List problemsRawData){
+			ProblemBeanVO problemBeanVO;
+			List<ProblemBeanVO> problems = new ArrayList<ProblemBeanVO>();
+			for(Object[] values:(List<Object[]>)problemsRawData){
+				problemBeanVO = new ProblemBeanVO();
+				problemBeanVO.setProblemLocationId((Long)values[0]);
+				problemBeanVO.setProblem(values[1].toString());
+				problemBeanVO.setDescription(values[2].toString());
+				problemBeanVO.setHamlet(values[3].toString());
+				problemBeanVO.setProbSource(values[4].toString());
+				problemBeanVO.setProblemAndProblemSourceId((Long)values[5]);
+				problemBeanVO.setStatus(values[6].toString());
+				problemBeanVO.setExistingFrom(timeStampConversion(values[7].toString()));
+				problemBeanVO.setReportedDate(timeStampConversion(values[8].toString()));
+				problems.add(problemBeanVO);
+			}
+			return problems;
+		}
 		
 		@SuppressWarnings("unchecked")
 		public LocationwiseProblemStatusInfoVO getProblemsStatusCount(String accessType, Long accessValue) {

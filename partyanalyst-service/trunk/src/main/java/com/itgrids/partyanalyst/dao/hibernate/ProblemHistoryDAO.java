@@ -52,7 +52,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" model.problemHistoryId,model.comments,model.problemLocation.problemAndProblemSource.problemExternalSource.problemExternalSourceId," +
 				" model.problemLocation.problemAndProblemSource.problem.description,model.dateUpdated,model.problemLocation.problemLocationId" +
 				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + constituencyIds +
-				") and model.isDelete is null");
+				") and model.isDelete is null ");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -124,7 +124,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model1.delimitationConstituency.delimitationConstituencyID in (" +
 				"select model2.delimitationConstituencyID from DelimitationConstituency model2 where " +
 				"model2.constituency.constituencyId in ("+locationIds+") group by model2.constituency.constituencyId " +
-				"order by model2.year desc)) group by model.problemStatus.problemStatusId");
+				"order by model2.year desc)) group by model.problemStatus.problemStatusId order by model.problemStatus.problemStatusId");
 	}
 	
 	public List findProblemsByStatusDateAndLocation(String tehsilIds, Long statusId, Date fromDate, Date toDate){
@@ -155,6 +155,20 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				" from ProblemHistory model where model.dateUpdated >= ? and model.dateUpdated <= ? and " +
 				"model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + tehsilIds +
 				") and model.isDelete is null",params);
+	}
+	
+	public List findLatestProblemsByMandals(String tehsilIds, Long statusId){		
+		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +
+				"model.problemLocation.problemAndProblemSource.problem.problem,"+
+				"model.problemLocation.problemAndProblemSource.problem.description,"+
+				"model.problemLocation.hamlet.hamletName," +
+				" model.problemLocation.problemAndProblemSource.problemSource.problemSource," +
+				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
+				"model.problemStatus.status," +
+				"model.problemLocation.problemAndProblemSource.problem.identifiedOn"+
+				" from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in " +
+				"(" + tehsilIds +") and model.problemStatus.problemStatusId = ?" +
+						" and model.isDelete is null order by model.dateUpdated desc", statusId);
 	}
 	
 }

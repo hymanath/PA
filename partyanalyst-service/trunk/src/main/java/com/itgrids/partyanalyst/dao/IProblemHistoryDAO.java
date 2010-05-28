@@ -32,4 +32,6 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	public List findProblemsByDateAndLocation(String tehsilIds, Date fromDate, Date toDate);
 	
 	public List findProblemsByStatusDateAndLocation(String tehsilIds, Long statusId, Date fromDate, Date toDate);
+	
+	public List findLatestProblemsByMandals(String tehsilIds, Long statusId);
 }
