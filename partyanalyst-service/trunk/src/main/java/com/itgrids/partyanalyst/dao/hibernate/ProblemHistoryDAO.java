@@ -101,20 +101,32 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	}
 
 	@SuppressWarnings("unchecked")
-	public List getProblemsCountInAllStatusByLocationForAUser(Long locationId,
+	public List getProblemsCountInAllStatusByLocationForAUser(String locationIds,
 			Long registrationId) {
-		Object[] params = {locationId,registrationId};
+		Object[] params = {registrationId};
 		return getHibernateTemplate().find("select model.problemStatus.problemStatusId, model.problemStatus.status," +
 				"count(model.problemHistoryId) " +
 				"from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in " +
 				"(select model1.tehsil.tehsilId from DelimitationConstituencyMandal model1 where " +
 				"model1.delimitationConstituency.delimitationConstituencyID = (" +
 				"select model2.delimitationConstituencyID from DelimitationConstituency model2 where " +
-				"model2.constituency.constituencyId = ? group by model2.constituency.constituencyId " +
+				"model2.constituency.constituencyId in ("+locationIds+") group by model2.constituency.constituencyId " +
 				"order by model2.year desc)) and " +
 				"model.problemLocation.problemAndProblemSource.user.registrationId = ? "+
 				"group by model.problemStatus.problemStatusId",params );
 	}
+	
+	public List getProblemsCountInAllStatusByLocation(String locationIds) {
+		return getHibernateTemplate().find("select model.problemStatus.problemStatusId, model.problemStatus.status," +
+				"count(model.problemHistoryId) " +
+				"from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in " +
+				"(select model1.tehsil.tehsilId from DelimitationConstituencyMandal model1 where " +
+				"model1.delimitationConstituency.delimitationConstituencyID in (" +
+				"select model2.delimitationConstituencyID from DelimitationConstituency model2 where " +
+				"model2.constituency.constituencyId in ("+locationIds+") group by model2.constituency.constituencyId " +
+				"order by model2.year desc)) group by model.problemStatus.problemStatusId");
+	}
+	
 	public List findProblemsByStatusDateAndLocation(String tehsilIds, Long statusId, Date fromDate, Date toDate){
 		Object[] params = {fromDate, toDate, statusId};
 		return getHibernateTemplate().find("select model.problemLocation.problemLocationId, " +

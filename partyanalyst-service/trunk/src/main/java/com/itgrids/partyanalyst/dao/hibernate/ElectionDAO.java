@@ -137,7 +137,8 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	
 	@SuppressWarnings("unchecked")
 	public List<Election> findByElectionScopeId(Long electionScopeId){
-		return getHibernateTemplate().find("from Election model where model.electionScope.electionScopeId = ?", electionScopeId);
+		return getHibernateTemplate().find("from Election model where model.electionScope.electionScopeId = ? " +
+				"order by model.electionYear desc", electionScopeId);
 	}
 	
 	public String findPreviousElectionYear(final String year, final Long typeId, final Long stateId, final Long countryId) {

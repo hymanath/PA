@@ -39,8 +39,13 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		Assert.assertEquals(1, result.size());
 	}
 	*/
-	public void testGetConstituenciesForDistrict(){
+	/*public void testGetConstituenciesForDistrict(){
 		List list = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(new Long(19));
 		assertEquals(list.size(), 10);
+	}*/
+	
+	public void testGetAssembliesInState(){
+		List list = delimitationConstituencyDAO.getLatestAssemblyConstituenciesInState(1l);
+		System.out.println(list.size());
 	}
 }

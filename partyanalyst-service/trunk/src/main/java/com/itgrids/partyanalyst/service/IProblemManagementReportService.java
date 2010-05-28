@@ -18,11 +18,11 @@ public interface IProblemManagementReportService {
 	
 	public List<ProblemHistoryVO> getCompleteDetailsForAProblem(Long problemLocationId);
 	
-	public LocationwiseProblemStatusInfoVO getProblemsStatusCount(String accessType, Long accessValue, Long registrationId);
+	public LocationwiseProblemStatusInfoVO getProblemsStatusCount(String accessType, Long accessValue);
 	
 	public List<SelectOptionVO> getAllProblemStatusInfo();
 	
-	public List<ProblemBeanVO> getProblemsPostedByStatusAndDates(String fromDate, String toDate, Long statusId, Long constituencyId);
+	public List<ProblemBeanVO> getProblemsPostedByStatusAndDates(String fromDate, String toDate, Long statusId, String accessType, Long accessValue);
 	
-	public List<InfluencingPeopleVO> findInfluencingPeopleInfoInLocation(Long constituencyId);
+	public List<InfluencingPeopleVO> findInfluencingPeopleInfoInLocation(String accessType, Long accessValue);
 }

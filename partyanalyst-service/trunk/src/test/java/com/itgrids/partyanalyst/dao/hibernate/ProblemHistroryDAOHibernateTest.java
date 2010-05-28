@@ -62,8 +62,8 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		List result = problemHistoryDAO.findProblemsForALocationsByHamletId(66l);
 		assertEquals(1, result.size());
 	}*/
-	/*public void testGetProblemsCountInAllStatusByLocationForAUser(){
-		List result = problemHistoryDAO.getProblemsCountInAllStatusByLocationForAUser(241l,1L);
+	public void testGetProblemsCountInAllStatusByLocationForAUser(){
+		List result = problemHistoryDAO.getProblemsCountInAllStatusByLocation("231,232");
 		System.out.println(result.size());
 		for(int i=0;i<result.size();i++){
 			Object[] parms = (Object[])result.get(i);
@@ -71,14 +71,14 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 			System.out.print(parms[1].toString()+"\t");
 			System.out.println(Long.parseLong(parms[2].toString()));
 		}
-	}*/
+	}
 	
-	public void testFindProblemsByDateAndLocation()throws Exception{
+	/*public void testFindProblemsByDateAndLocation()throws Exception{
 		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_YYYY_MM_DD);
 		System.out.println(sdf.parse("2010/15/02"));
 		System.out.println(sdf.parse("2010/15/02"));
 		List list = problemHistoryDAO.findProblemsByDateAndLocation("836,843,844", sdf.parse("1/12/2010"), sdf.parse("1/12/2010"));
 		System.out.println(list.size());
-	}
+	}*/
 	
 }

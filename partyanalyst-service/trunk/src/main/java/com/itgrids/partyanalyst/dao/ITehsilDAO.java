@@ -41,6 +41,10 @@ public interface ITehsilDAO extends GenericDao<Tehsil, Long>{
 	
 	public List<Tehsil> findByTehsilNameAndDistrict(String name, Long districtId);
 	
+	public List<Tehsil> findByState(Long stateId);
+	
+	public List<Tehsil> findByDistrict(Long districtId);
+	
 	public List<Tehsil> findByConstituency(Long constituencyId);
 	
 	public List findTehsilsByDistrict(Long districtId);

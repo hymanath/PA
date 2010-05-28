@@ -160,10 +160,4 @@ public interface IConstants {
     public final static Color FIXED_COLOR = new Color(0XF05922);
     
     
-    
-    
-    
-    
-    
-    
 }

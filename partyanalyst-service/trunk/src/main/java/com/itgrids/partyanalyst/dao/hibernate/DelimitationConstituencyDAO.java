@@ -48,8 +48,7 @@ IDelimitationConstituencyDAO {
 				"and model.year =?",params);
 	}
 
-	public List getLatestDelimitationYear() {
-		
+	public List getLatestDelimitationYear() {		
 		return getHibernateTemplate().find("Select max(model.year) from DelimitationConstituency model ");
 	}
 	
@@ -57,6 +56,12 @@ IDelimitationConstituencyDAO {
 	public List<Constituency> getLatestConstituenciesForDistrict(Long districtId){
 		return getHibernateTemplate().find("select model.constituency from DelimitationConstituency model where " +
 				"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model)",districtId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Constituency> getLatestAssemblyConstituenciesInState(Long stateId){
+		return getHibernateTemplate().find("select model.constituency from DelimitationConstituency model where " +
+				"model.constituency.district.state.stateId =? and model.year =(Select max(model.year) from DelimitationConstituency model)",stateId);
 	}
 	
 }
