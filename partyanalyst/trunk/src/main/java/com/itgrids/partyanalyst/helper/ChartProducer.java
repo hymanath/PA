@@ -8,7 +8,6 @@
 package com.itgrids.partyanalyst.helper;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GradientPaint;
 import java.io.File;
 import java.util.List;
@@ -30,7 +29,6 @@ import org.jfree.chart.plot.CombinedDomainCategoryPlot;
 import org.jfree.chart.plot.CombinedRangeCategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
-import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarPainter;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -527,14 +525,13 @@ public class ChartProducer {
 				}
 	}
 	
-	public static void createProblemsPieChart(String title,final DefaultPieDataset dataset,String fileName){
+	public static void createProblemsPieChart(String title,final DefaultPieDataset dataset,String fileName, Color[] colors){
 		
 		JFreeChart chart = ChartFactory.createPieChart(title, dataset, false, false, false);
        
         PiePlot plot = (PiePlot)chart.getPlot();
        
         // Specify the colors here
-        Color[] colors = {Color.blue, Color.yellow, Color.green};
         PieRenderer renderer = new PieRenderer(colors);
         renderer.setColor(plot, dataset);
         plot.setBackgroundPaint(Color.WHITE);

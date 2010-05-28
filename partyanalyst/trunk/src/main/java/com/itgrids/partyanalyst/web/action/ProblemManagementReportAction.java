@@ -357,29 +357,30 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		String chartName = ""+locationId+"_"+totalProblemsCount+"piechart"+".png";
 		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
 		final DefaultPieDataset dataset = new DefaultPieDataset();
-		Color[] colors = new Color[10];
+		Color[] colors = new Color[problemsStatusList.size()];
 
 		for(int i=0; i<problemsStatusList.size();i++)
 		{
 			if(!IConstants.FIXED.equals(problemsStatusList.get(i).getStatus()))
 				{
 				
-				dataset.setValue(problemsStatusList.get(i).getStatus(), new BigDecimal(problemsStatusList.get(i).getCount()*100.0/totalProblemsCount).setScale(2, BigDecimal.ROUND_HALF_UP) );
-				/*
-				if(problemsStatusList.get(i).getStatus().equals(IConstants.NEW))
-					colors[i]=IConstants.NEW_COLOR;
-				if(problemsStatusList.get(i).getStatus().equals(IConstants.CLASSIFY))
-					colors[i]=IConstants.CLASSIFY_COLOR;
-				if(problemsStatusList.get(i).getStatus().equals(IConstants.ASSIGNED))
-					colors[i]=IConstants.ASSIGNED_COLOR;
-				if(problemsStatusList.get(i).getStatus().equals(IConstants.PROGRESS))
-					colors[i]=IConstants.PROGRESS_COLOR;
-				if(problemsStatusList.get(i).getStatus().equals(IConstants.PENDING))
-					colors[i]=IConstants.PENDING_COLOR;*/
+					dataset.setValue(problemsStatusList.get(i).getStatus(), new BigDecimal(problemsStatusList.get(i).getCount()*100.0/totalProblemsCount).setScale(2, BigDecimal.ROUND_HALF_UP) );
+					
+					if(problemsStatusList.get(i).getStatus().equals(IConstants.NEW))
+						colors[i]=IConstants.NEW_COLOR;
+					if(problemsStatusList.get(i).getStatus().equals(IConstants.CLASSIFY))
+						colors[i]=IConstants.CLASSIFY_COLOR;
+					if(problemsStatusList.get(i).getStatus().equals(IConstants.ASSIGNED))
+						colors[i]=IConstants.ASSIGNED_COLOR;
+					if(problemsStatusList.get(i).getStatus().equals(IConstants.PROGRESS))
+						colors[i]=IConstants.PROGRESS_COLOR;
+					if(problemsStatusList.get(i).getStatus().equals(IConstants.PENDING))
+						colors[i]=IConstants.PENDING_COLOR;
+					
 				}			
 		}
 		log.debug("size::::::::::::::::::::::::::::::::::::"+problemsStatusList.size());
-		ChartProducer.createProblemsPieChart("", dataset, chartPath);
+		ChartProducer.createProblemsPieChart("", dataset, chartPath , colors);
 		return chartName ;
 	}
 	
