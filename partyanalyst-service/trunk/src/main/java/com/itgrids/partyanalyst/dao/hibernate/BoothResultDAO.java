@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.model.BoothResult;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothResultDAO extends GenericDaoHibernate<BoothResult, Long> implements IBoothResultDAO{
 	public BoothResultDAO(){
@@ -30,4 +31,15 @@ public class BoothResultDAO extends GenericDaoHibernate<BoothResult, Long> imple
 				"and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? " +
 				"group by model.boothConstituencyElection.constituencyElection.election.electionId", params);
 	}
+	
+	public List getParliamentResultHappenedInAssembly(String ac, Long districtId, Long electionScopeId, String electionYear){
+		Object[] params = {ac, districtId, electionYear, electionScopeId, electionYear};
+		return getHibernateTemplate().find("select model.boothResultId from BoothResult model where " +
+				"model.boothConstituencyElection.booth.boothId in( select model1.booth.boothId from BoothConstituencyElection model1 " +
+				"where model1.constituencyElection.constituency.name = ? and model1.constituencyElection.constituency.district.districtId = ? " +
+				"and model1.constituencyElection.constituency.electionScope.electionType.electionType = '"+IConstants.ASSEMBLY_ELECTION_TYPE+"' " +
+				"and model1.constituencyElection.election.electionYear = ?) and model.boothConstituencyElection.constituencyElection." +
+				"constituency.electionScope.electionScopeId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?", params);
+	}
+	
 }

@@ -86,10 +86,10 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 			List<ConstituencyBoothBlock> list = excel.getConstituenciesBlocsks();
 			for(ConstituencyBoothBlock constituencyBoothBlock:list){
 				String parliamentConstituencyName = constituencyBoothBlock.getParliamentConstituencyName();
-				if(log.isDebugEnabled()){
+				if(log.isDebugEnabled())
 					log.debug("=======================================In Parliament Constituency::"+parliamentConstituencyName+" And "+"Assembly :"+constituencyBoothBlock.getConstituencyName());
-				}
-				List<BoothResult> boothResults = boothResultDAO.findByConstituencyAndElection(parliamentConstituencyName, electionYear, electionScopeId);
+				
+				List boothResults = boothResultDAO.getParliamentResultHappenedInAssembly(constituencyBoothBlock.getConstituencyName(), constituencyBoothBlock.getDistrictId(), electionScopeId, electionYear);
 				if(boothResults.size() > 0){
 					if(log.isDebugEnabled()){
 						log.debug("Booth Results Already Exists For ElectionYear::"+electionYear+" Constituency Name::"+parliamentConstituencyName);

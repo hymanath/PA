@@ -7,7 +7,6 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.Election;
 
 public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstituencyElection, Long>{
 

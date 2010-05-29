@@ -28,10 +28,16 @@ public class BoothResultDAOHibernateTest extends BaseDaoTestCase{
 		assertEquals(1, list.size());
 	}*/
 	
-	public void testGetAllPolledVotesByElectionsInDistrict(){
+	/*public void testGetAllPolledVotesByElectionsInDistrict(){
 		List list = boothResultDAO.getAllPolledVotesByElectionsInDistrict(19l, "parliament");
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]);
+	}*/
+	
+	public void testGetParliamentResultHappenedInAssembly(){
+		List list = boothResultDAO.getParliamentResultHappenedInAssembly("Kavali", 19l, 1l, "2009");
+		System.out.println(list.size());
 	}
+
 
 }
