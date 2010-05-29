@@ -1711,7 +1711,7 @@ public class StaticDataService implements IStaticDataService {
 			selectOption.setId(0l);
 			selectOption.setName("Select");
 			SelectOptionVO.add(selectOption);*/
-			List result = electionDAO.findElectionAndYearForElectionTypeAndState(electionType,stateId);
+			List result = electionDAO.findElectionYearsForElectionTypeAndState(electionType,stateId);
 			for(int i=result.size()-1;i>=0;i--){
 				SelectOptionVO selectOptionVo = new SelectOptionVO();
 				Object[] parms = (Object[])result.get(i);
