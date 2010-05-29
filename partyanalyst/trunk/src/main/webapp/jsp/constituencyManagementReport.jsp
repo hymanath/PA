@@ -434,11 +434,16 @@
 							</table>	
 						</div>
 						<div id="voters_stats_body" class="containerBodyDivClass">
-							<div id="voterStats_content" class="widgetDescPara" style="height:150px;">
-								
+							<div id="voter_details_subDiv" class="widgetHeaders"></div>
+							    <div id="voters_div">
+							    <table width="90%" align="center"><tr><td>
+									<p class="widgetDescPara" >	
 									<font style="color:#4B74C6"> Voters Details </font> enables the user to view the complete details of voters and their their cast information upto the hamlet level.The user has to select the region according to their access level and can obtain the voter information.
-								
-							</div>
+									</p>
+									</td></tr></table>
+							    								
+								</div>
+							
 							<div style="text-align:right;padding:15px;">
 								<a class="linkButton" href="constituencyManagementAction.action?cmTask=voterStas">View Voters Details</a>
 							</div>
