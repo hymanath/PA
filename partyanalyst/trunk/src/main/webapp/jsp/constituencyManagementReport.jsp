@@ -396,12 +396,12 @@
 			<table width="100%">
 			<tr>
 				<td style="vertical-align:top">
-					<div id="influencing_people_main" class="yui-skin-sam" style="margin-bottom:10px;width:520px">
+					<div id="influencing_people_main" class="yui-skin-sam" style="margin-bottom:10px;width:568px">
 						<div id="influencing_people_head">
 							<table cellspacing="0" cellpadding="0" width="100%">
 								<tr>
 									<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-									<td><div id="influencing_people_head_label" class="containerHeadLabelDivClass" style="width:472px;">Influencing People</div></td>
+									<td><div id="influencing_people_head_label" class="containerHeadLabelDivClass" style="width:520px;">Influencing People</div></td>
 									<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
 								</tr>
 							</table>	
@@ -428,12 +428,17 @@
 							<table cellspacing="0" cellpadding="0" width="100%">
 								<tr>
 									<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-									<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:365px;">Voters Details</div></td>
+									<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:320px;">Voters Details</div></td>
 									<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
 								</tr>
 							</table>	
 						</div>
 						<div id="voters_stats_body" class="containerBodyDivClass">
+							<div id="voterStats_content" class="widgetDescPara" style="height:150px;">
+								
+									<font style="color:#4B74C6"> Voters Details </font> enables the user to view the complete details of voters and their their cast information upto the hamlet level.The user has to select the region according to their access level and can obtain the voter information.
+								
+							</div>
 							<div style="text-align:right;padding:15px;">
 								<a class="linkButton" href="constituencyManagementAction.action?cmTask=voterStas">View Voters Details</a>
 							</div>

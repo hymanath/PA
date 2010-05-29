@@ -173,6 +173,7 @@ a {
 	padding:10px;
 	margin-bottom:10px;
 	background-image:url("../../images/icons/constituencyManagement/pageheader.jpg");
+	background-repeat:no-repeat;
 	height:200px;
 	text-align:left;	
 }
@@ -302,10 +303,8 @@ a {
 }
 #problems_Options
 {
-	text-align:left;
-	border:1px solid #808080;
+	text-align:left;	
 	padding:10px;
-	margin:10px;
 }
 .textBoxStyle
 {
@@ -350,4 +349,17 @@ text-decoration:none;
 .probStatsCountTable th
 {
 	color:#73787E;
+}
+
+.widgetHeaders
+{
+	text-align:left;color:#663300;font-size:12px;font-weight:bold;text-decoration:underline;
+}
+
+.widgetDescPara
+{
+	color:#73787E;
+	line-height:20px;
+	text-align:justify;
+	word-spacing:3px;
 }
