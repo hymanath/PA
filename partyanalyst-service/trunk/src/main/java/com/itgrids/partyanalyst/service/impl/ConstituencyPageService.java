@@ -9,14 +9,18 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -75,6 +79,7 @@ import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionDetailsVOComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.SortByRankOnPartyElectionResultComparator;
 
 public class ConstituencyPageService implements IConstituencyPageService {
 
@@ -988,7 +993,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}
 		if(log.isDebugEnabled())
 			log.debug("Calling candidateBoothResultDAO.getMandalsForAConstituencyForAGivenYear() method..");
-		List list = candidateBoothResultDAO.getMandalsForAConstituencyForAGivenYear(constituencyId,electionYear);
+		List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(constituencyId);  //Check code here
 		for(int i=0;i<list.size();i++){
 			Object[] parms = (Object[])list.get(i);
 			tehsilIds.append(",").append(Long.parseLong(parms[0].toString()));
@@ -998,7 +1003,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		for(int j=0;j<parliamentConstituencies.size();j++){
 			constituencyID = Long.parseLong(parliamentConstituencies.get(j).toString());
 			List candidateResult = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandalByPaliamentWise(constituencyID,tehsilIds.substring(1),electionYear);
-			constituencyRevenueVillagesVO = setDataForVOForCorrespondingAssemblyOrParliament(candidateResult,constituencyID,parliamentConstituenciesNames.get(constituencyID));
+			constituencyRevenueVillagesVO = setDataForVOForCorrespondingAssemblyOrParliament(candidateResult,constituencyID,parliamentConstituenciesNames.get(constituencyID),electionYear);
 			constituencyRevenueVillagesVo.add(constituencyRevenueVillagesVO);
 		}		
 		return constituencyRevenueVillagesVo;
@@ -1013,7 +1018,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	
 	/** 
 	 *This method returns a VO containing all the information regarding the
-	 * assembly candidate voting trends in the assembly constitutency.
+	 * assembly candidate voting trends in the assembly constituency.
 	 */
 	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,String electionYear){	
 		try{
@@ -1022,7 +1027,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		if(log.isDebugEnabled()){
 			log.debug("Calling setDataForVOForCorrespondingAssemblyOrParliament()");
 		}
-		constituencyRevenueVillagesVO = setDataForVOForCorrespondingAssemblyOrParliament(list,null,null);
+		constituencyRevenueVillagesVO = setDataForVOForCorrespondingAssemblyOrParliament(list,constituencyId,null,electionYear);
 		return constituencyRevenueVillagesVO;		
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1039,7 +1044,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 * @param constituencyName
 	 * @return
 	 */
-	public ConstituencyRevenueVillagesVO setDataForVOForCorrespondingAssemblyOrParliament(List list,Long constituencyId,String constituencyName){
+	public ConstituencyRevenueVillagesVO setDataForVOForCorrespondingAssemblyOrParliament(List list,final Long constituencyId,String constituencyName,String electionYear){
 		if(log.isDebugEnabled()){
 			log.debug("Entered into setDataForVOForCorrespondingAssemblyOrParliament() method..");
 		}
@@ -1095,6 +1100,13 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				candidateNamePartyAndStatus = getCandidateAndPartyDetails(mainTehsilId,list);
 				constituencyOrMandalWiseElectionVO.add(constituencyOrMandalWiseElectionVo);
 			}
+			ConstituencyOrMandalWiseElectionVO constituencyOrMandalWiseElectionVo = new ConstituencyOrMandalWiseElectionVO();			
+			constituencyOrMandalWiseElectionVo.setLocationId(tehsilIds.size()+1l);
+			constituencyOrMandalWiseElectionVo.setLocationName("Others *");
+			constituencyOrMandalWiseElectionVo.setTotalPolledVotes(0l);
+			constituencyOrMandalWiseElectionVo.setPartyElectionResultVOs(OtherVotesDataForAConstituency(constituencyId,electionYear,IConstants.ASSEMBLY_ELECTION_TYPE
+			));
+			constituencyOrMandalWiseElectionVO.add(constituencyOrMandalWiseElectionVo);
 			if(constituencyId!=null && constituencyName!=null){
 				constituencyRevenueVillagesVO.setConstituencyId(constituencyId);
 				constituencyRevenueVillagesVO.setConstituencyName(constituencyName);
@@ -1110,6 +1122,55 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			return null;
 		}
 			return constituencyRevenueVillagesVO;
+	}
+	
+	/**
+	 * This method calculates all the Missing Votes For an Assembly.
+	 * @param constituencyId
+	 * @param electionYear
+	 * @param electionType
+	 * @return
+	 */
+	public List<PartyElectionResultVO> OtherVotesDataForAConstituency(Long constituencyId,String electionYear,String electionType){
+		Map<Long,Double> candidateIdAndTheirVotes = new HashMap<Long,Double>(0);
+		SortedMap<Long,Double> otherVotes = new TreeMap<Long,Double>();	
+		SortedMap<Long,Long> candidateIdAndTheirRanks = new TreeMap<Long,Long>();	
+		List<PartyElectionResultVO> partyElectionResultVOs = new ArrayList<PartyElectionResultVO>(0);
+		List list = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandal(constituencyId,electionYear);
+		List nominationResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(constituencyId.toString(),electionYear,electionType);
+		ListIterator it = nominationResult.listIterator();
+		while(it.hasNext()){
+			Object[] parms = (Object[])it.next();
+			candidateIdAndTheirVotes.put(Long.parseLong(parms[0].toString()), (Double)parms[2]);
+			candidateIdAndTheirRanks.put(Long.parseLong(parms[0].toString()), Long.parseLong(parms[4].toString()));
+		}		
+		Long votes=0l;
+		Long candidateId =0l;
+		Double differenceVotes = 0d,totalDifferenceVotes=0d;		
+		for(int i=0;i<list.size();i++){
+			Object[] parms = (Object[])list.get(i);		
+			votes = (Long)parms[5];
+			candidateId = Long.parseLong(parms[6].toString());
+			differenceVotes = (candidateIdAndTheirVotes.get(Long.parseLong(parms[6].toString())))-votes;
+			candidateIdAndTheirVotes.put(candidateId, differenceVotes);	
+			otherVotes.put(candidateId,differenceVotes);
+		}
+		Collection<Double> otherVotersSet = otherVotes.values();
+		Iterator iterate = otherVotersSet.iterator();
+		while(iterate.hasNext()){
+			totalDifferenceVotes += (Double)iterate.next();
+		}	
+		for(Map.Entry<Long,Double> votesPopulate:otherVotes.entrySet()){
+			PartyElectionResultVO partyVotes = new PartyElectionResultVO(); 
+			Long votesEarned =new Double(votesPopulate.getValue()).longValue();
+			partyVotes.setVotesEarned(votesEarned);
+			partyVotes.setVotesPercentage(new BigDecimal((votesEarned*100)/totalDifferenceVotes).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+			partyVotes.setRank(candidateIdAndTheirRanks.get(votesPopulate.getKey()));
+			partyElectionResultVOs.add(partyVotes);
+		}
+		Collections.sort(partyElectionResultVOs, new SortByRankOnPartyElectionResultComparator());
+		Collections.reverse(partyElectionResultVOs);		
+		return partyElectionResultVOs;	
 	}
 	
 	/**
@@ -1244,7 +1305,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			if(log.isDebugEnabled())
 				log.debug("Making delimitationConstituencyMandalService.getMandalsForDelConstituency DAO Call...");		
 			List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
-			List list = candidateBoothResultDAO.getMandalsForAConstituencyForAGivenYear(constituencyId,delimitationYear.get(0).toString());
+			List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(constituencyId); //Check code here
 			ListIterator it = list.listIterator();
 			while(it.hasNext()){
 				Object[] parms = (Object[])it.next();
@@ -1269,7 +1330,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		int flag=0;
 		StringBuilder tehsilIds = new StringBuilder();
 		List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
-		List list = candidateBoothResultDAO.getMandalsForAConstituencyForAGivenYear(constituencyId,delimitationYear.get(0).toString());
+		List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(constituencyId); //Check code here
 		ListIterator it = list.listIterator();
 		while(it.hasNext()){
 			Object[] parms = (Object[])it.next();
