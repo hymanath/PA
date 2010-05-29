@@ -626,10 +626,17 @@ function buildConstituencyElecResultsDataTable(value){
 		}
 		str += '</tr>';
 	}		
-		
 	str += '</table>';
 	str += '</div>';
 	resultDiv.innerHTML = str;
+
+	var resultDiv = document.getElementById("missingDataInfoDiv");	
+	var missingVotesDiv = '';
+	missingVotesDiv+='<b>';
+	missingVotesDiv += '<font color="Red"><b>*</b></font>';		
+	missingVotesDiv += ' Others Include Postal Ballet Votes';
+	missingVotesDiv+='</b>';
+	resultDiv.innerHTML = missingVotesDiv;
 
 	 var myColumnDefs = new Array();
 	 var myFields = new Array();
