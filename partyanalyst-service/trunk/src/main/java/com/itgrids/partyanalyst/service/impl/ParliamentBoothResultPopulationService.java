@@ -134,7 +134,7 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 			return;
 		}
 		for(Booth booth:booths){
-			List<BoothConstituencyElection> boothConstituencyElectionModels = boothConstituencyElectionDAO.findByBoothAndConstiuencyElection(booth.getPartNo(), parliamentConstituencyElections.get(0).getConstiElecId());
+			List<BoothConstituencyElection> boothConstituencyElectionModels = boothConstituencyElectionDAO.findByBoothIdAndConstiuencyElection(booth.getBoothId(), parliamentConstituencyElections.get(0).getConstiElecId());
 			if(boothConstituencyElectionModels.size() > 0){
 				if(log.isDebugEnabled()){
 					log.debug("boothConstituencyElection Already Exists with Id ::"+boothConstituencyElectionModels.get(0).getBoothConstituencyElectionId());

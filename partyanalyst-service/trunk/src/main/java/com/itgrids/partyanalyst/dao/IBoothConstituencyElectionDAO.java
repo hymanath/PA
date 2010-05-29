@@ -105,4 +105,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List findTotalBoothWiseValidVotesForConstituencyElection(
 			Long constituencyId, String electionYear);
 	
+	public List<BoothConstituencyElection> findByBoothIdAndConstiuencyElection(Long boothId, Long constiElecId);
+	
 }
