@@ -901,8 +901,9 @@ function buildElectionsSelectBox(myResults){
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>	
-						<div id="constituencyPageElectionInfoDiv_Main" class="innerLayoutDivClass">
+						<div id="constituencyPageElectionInfoDiv_Main" class="innerLayoutDivClass">							
 							<div id="constituencyPageElectionInfoDiv_Head" class="layoutHeadersClass"></div>
+							<div id="constituencyPageElectionImgDiv" class="layoutHeadersClass"></div>
 							<div id="constituencyPageElectionInfoDiv_Body" class="layoutBodyClass"></div>
 						</div>		
 					</div>
@@ -1116,12 +1117,19 @@ function buildElectionsSelectBox(myResults){
 
 function buildElectionResults()
 {
+		
 	var HeadElmt = document.getElementById('constituencyPageElectionInfoDiv_Head');
+	var chartResultDiv = document.getElementById("constituencyPageElectionImgDiv");
 	var BodyElmt = document.getElementById('constituencyPageElectionInfoDiv_Body');
 	
 	if(HeadElmt)
 		HeadElmt.innerHTML = ' Election Information in '+constituencyPageMainObj.constituencyInfo.constituencyName;
 
+	var chartName = "${chartName}";
+	var chart = '';
+	chart+='<img src="charts/'+chartName+'" style="width:600px"/>';
+	chartResultDiv.innerHTML = chart;
+	
 	var elecStr = '';
 	for(var i in constituencyPageMainObj.constituencyElectionInfo)
 	{
