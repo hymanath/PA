@@ -1114,6 +1114,45 @@ function buildElectionsSelectBox(myResults){
 		-------------------------
 	*/
 
+function buildElectionResults()
+{
+	var HeadElmt = document.getElementById('constituencyPageElectionInfoDiv_Head');
+	var BodyElmt = document.getElementById('constituencyPageElectionInfoDiv_Body');
+	
+	if(HeadElmt)
+		HeadElmt.innerHTML = ' Election Information in '+constituencyPageMainObj.constituencyInfo.constituencyName;
+
+	var elecStr = '';
+	for(var i in constituencyPageMainObj.constituencyElectionInfo)
+	{
+		var data = constituencyPageMainObj.constituencyElectionInfo[i];
+		var info = constituencyPageMainObj.constituencyInfo;
+		elecStr+='<div id="constituencyElectionInfo_'+i+'" class="electionInformationClass" onclick="showDetailedElectionResult(this.id)">';
+		elecStr+='<span id="pointerImg"> <img height="10" width="10" src="'+constituencyPageMainObj.contextPath+'/images/icons/arrow.png"/></span>';
+		elecStr+='<span id=""> '+info.constituencyType+' Election Results in '+data.year+' - '+data.candidateName+' Won with '+data.votesPercentage+' votes %</span>';		
+		elecStr+='</div>';
+	}
+	
+	if(BodyElmt)
+		BodyElmt.innerHTML=elecStr;
+}
+
+function showDetailedElectionResult(id)
+{
+
+	var index = id.substring((id.indexOf('_')+1),id.length);
+	var data = constituencyPageMainObj.constituencyElectionInfo[index];
+	var info = constituencyPageMainObj.constituencyInfo;
+
+	var constiId = ${constituencyId}; 
+	var elecType = constituencyPageMainObj.constituencyInfo.constituencyType; 
+	var elecYear = data.year; 
+
+	
+    var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
+    browser1.focus();	
+}
+
 	function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	{
 	   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"browser1","scrollbars=yes,height=600,width=750,left=200,top=200");
