@@ -46,6 +46,9 @@
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+	
+	<script type="text/javascript" src="js/BoothPage/boothPage.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/mandalPage/mandalPage.css">
 
 <style type="text/css">
 
@@ -230,7 +233,38 @@
 			callAjax(jsObj,bparam);
 		}
 	}
+
+	function getBoothPageInfo(id){
+		var jsObj=
+			{
+					boothId:id,
+					task:"boothPage"						
+			};
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/boothPageAjaxAction.action?"+rparam;						
+			callAjax1(rparam,jsObj,url);
+	}
 	
+	function callAjax1(rparam, jsObj, url){
+		var resultVO;			
+		var callback = {			
+	               success : function( o ) {
+						try {								
+								resultVO = YAHOO.lang.JSON.parse(o.responseText);										
+								showBoothPagePanel(resultVO);								
+						}catch (e)  {   
+						   	alert("Invalid JSON result" + e);   
+						}  
+	               },
+	               scope : this,
+	               failure : function( o ) {
+	                			alert( "Failed to load result" + o.status + " " + o.statusText);
+	                         }
+	               };
+
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);			
+	}
 	
 	function callAjax(jObj,param)
 	{
@@ -425,12 +459,16 @@
 		childNewDivElmt.style.display="none";
 		
 		divElmt.appendChild(childNewDivElmt);
-		   		 
+		
+		for(var i in mandal.crossVotedBooths){
+			mandal.crossVotedBooths[i].partNO = '<a href="javascript:{}" onclick="getBoothPageInfo('+mandal.crossVotedBooths[i].boothId+')">'+mandal.crossVotedBooths[i].partNO+'</a>';
+		}
+		
 		var resultsDataSource = new YAHOO.util.DataSource(mandal.crossVotedBooths);
 		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 		resultsDataSource.responseSchema = {
 			fields : [ {
-				key : "partNO",parser:"number"
+				key : "partNO"
 			}, {
 				key : "villagesCovered"
 			}, {
@@ -438,9 +476,9 @@
 			}, {
 				key : "acVotesEarned",parser:"number"
 			}, {
-				key : "acPercentage",parser:"number"
-			}, {
 				key : "pcVotesEarned",parser:"number"
+			}, {
+				key : "acPercentage",parser:"number"
 			}, {
 				key : "pcPercentage",parser:"number"
 			}, {
@@ -468,14 +506,14 @@
 			label : "(A)Votes Earned",
 			sortable : true
 		}, {
-			key : "acPercentage",
-			parser:"number",
-			label : "(A) %",
-			sortable : true
-		}, {
 			key : "pcVotesEarned",
 			parser:"number",
 			label : "(P)Votes Earned",
+			sortable : true
+		}, {
+			key : "acPercentage",
+			parser:"number",
+			label : "(A) %",
 			sortable : true
 		}, {
 			key : "pcPercentage",
@@ -737,6 +775,8 @@
 				
 			</table>
 		</div>
+		<div class="yui-skin-sam"><div id="boothPagePanel"></div></div>
+		
 		<div id="crossVotingResultDiv" style="display:none;"></div>
         
 			
