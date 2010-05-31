@@ -539,7 +539,7 @@ public class ChartProducer {
         try
         {
             // This will create a PNG image
-            ChartUtilities.saveChartAsPNG(new File(fileName), chart, 400, 220);
+            ChartUtilities.saveChartAsPNG(new File(fileName), chart, 250, 220);
         }
         catch (Exception e)
         {

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.json.JSONObject;
@@ -332,19 +333,20 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		{
 			accessType = user.getAccessType();
 			accessValue = new Long(user.getAccessValue());
-			locationwiseProblemStatusInfoVO = problemManagementReportService.getProblemsStatusCount(accessType, accessValue);
-			locationwiseProblemStatusInfoVO.setProblemsPostedInLastTenDays("10");
-			locationwiseProblemStatusInfoVO.setProblemsSolvedInLastTenDays("3");
-			locationwiseProblemStatusInfoVO.setProblemsPostedInLastThirtyDays("20");
-			locationwiseProblemStatusInfoVO.setProblemsSolvedInLastThirtyDays("5");
+			locationwiseProblemStatusInfoVO = problemManagementReportService.getProblemsStatusCount(accessType, accessValue, 10);
 					
+			List<ProblemsCountByStatus> problemsCountbyStatus = locationwiseProblemStatusInfoVO.getProblemsCountByStatusForChart();
+			
+			String chartName = "allProblemsInfoByStatusAndDate_"+accessType+"_"+accessValue+".png";
+	        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+	       
+			ChartProducer.createLineChart("Problems That Are Fixed And Posted From Last 10 Days", "Days", "No. Of Problems",createDataset(problemsCountbyStatus), chartPath,260,550, null );
+					
+			locationwiseProblemStatusInfoVO.setLineChartPath(chartName);
 		}	
 		if(locationwiseProblemStatusInfoVO.getProblemsCountByStatus() != null && locationwiseProblemStatusInfoVO.getProblemsCountByStatus().size()>0)
 		{
 			String problemsStatusPieChartName = createProblemsPieChart(locationwiseProblemStatusInfoVO.getLocationId(),locationwiseProblemStatusInfoVO.getTotalProblemsCount(),locationwiseProblemStatusInfoVO.getProblemsCountByStatus());
-			String lastTenDaysProbsBarChartName = createLastTenDaysBarChart(locationwiseProblemStatusInfoVO);
-				
-			locationwiseProblemStatusInfoVO.setLastTenDaysProblemsDetailsBarChartName(lastTenDaysProbsBarChartName);
 			locationwiseProblemStatusInfoVO.setProblemsStatusChartName(problemsStatusPieChartName);
 		}
 		
@@ -384,22 +386,6 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		return chartName ;
 	}
 	
-	public String createLastTenDaysBarChart(LocationwiseProblemStatusInfoVO lastTenDaysProblemStatusInfoVO)
-	{
-		String chartName = "RecentProblemsDetailsBarChart"+session.getId()+".png";
-		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		dataset.addValue(new BigDecimal(lastTenDaysProblemStatusInfoVO.getProblemsPostedInLastTenDays()),"New","Last 10 Days" );
-		dataset.addValue(new BigDecimal(lastTenDaysProblemStatusInfoVO.getProblemsSolvedInLastTenDays()),"Fixed","Last 10 Days" );
-		
-		dataset.addValue(new BigDecimal(lastTenDaysProblemStatusInfoVO.getProblemsPostedInLastThirtyDays()),"New","Last 30 Days" );
-		dataset.addValue(new BigDecimal(lastTenDaysProblemStatusInfoVO.getProblemsSolvedInLastThirtyDays()),"Fixed","Last 30 Days" );
-				/*String title,String reportType,String category,String value,String party,CategoryDataset 
-				 * dataset,String fileName,int width,int height*/
-		ChartProducer.createProblems3DBarChart("", null,"", "No. Of Problems","", dataset, chartPath, 400, 200);
-		return chartName;
-	}
-	
 	public String problemsByDateBasedOnStatusAction()
 	{
 		if(log.isDebugEnabled())
@@ -421,8 +407,15 @@ public class ProblemManagementReportAction extends ActionSupport implements
 		return SUCCESS;
 		
 	}
-	
-	
+
+	private CategoryDataset createDataset(List<ProblemsCountByStatus> problemsCountbyStatus) {
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();        
+        for(ProblemsCountByStatus graphInfo:problemsCountbyStatus)
+        	dataset.addValue(new BigDecimal(graphInfo.getCount()), graphInfo.getStatus(),
+           			graphInfo.getDate());	
+           	
+        return dataset;
+    }
 }	
 		
 

@@ -3,13 +3,16 @@ package com.itgrids.partyanalyst.web.action;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -31,7 +34,7 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 	private String task = null;
 	JSONObject jObj = null;
 	private List<ProblemBeanVO> problemsList;
-	
+		
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -109,7 +112,8 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 		statusList = problemManagementReportService.getAllProblemStatusInfo();
 		statusList.add(0,new SelectOptionVO(0l, "Select Status"));
 		//String accessType, Long accessValue, Long statusId, int limit
-		problemsList = problemManagementReportService.getRecentProblemsWithInTheRegion(accessType, accessValue, 1l, 10).getRecentProblems();
+		LocationwiseProblemStatusInfoVO locationwiseProblemStatusInfoVO = problemManagementReportService.getRecentProblemsWithInTheRegion(accessType, accessValue, 1l, 10);
+		problemsList = locationwiseProblemStatusInfoVO.getRecentProblems();		
 		
 		return SUCCESS;
 	}
