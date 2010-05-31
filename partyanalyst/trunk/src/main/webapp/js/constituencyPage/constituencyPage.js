@@ -254,7 +254,7 @@ function buildConstituencyInfo()
 		divElmtBody.innerHTML=str;
 
 }
-
+/*
 function buildElectionResults()
 {
 	var HeadElmt = document.getElementById('constituencyPageElectionInfoDiv_Head');
@@ -382,7 +382,7 @@ function showDetailedElectionResult(id)
 	 
 	var myDataTable = new YAHOO.widget.DataTable("oppCandResultsDiv",myColumnDefs, myDataSource); 
 }
-
+*/
 /*
 function buildConstituencyLayout()
 {
