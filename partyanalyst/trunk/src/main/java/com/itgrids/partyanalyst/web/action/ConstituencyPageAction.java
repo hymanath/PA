@@ -7,9 +7,11 @@
  */
 package com.itgrids.partyanalyst.web.action;
 
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -28,6 +30,7 @@ import org.jfree.data.general.PieDataset;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
 import com.itgrids.partyanalyst.dto.CandidateVotingTrendzCharts;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
@@ -37,10 +40,12 @@ import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsTrendzVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -52,6 +57,7 @@ import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IElectionTrendzService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -65,7 +71,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 * 
 	 */
 	 
-	 private Long constituencyId;
+	 private Long constituencyId;   
 	 private String constituencyName;	 
 	 private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
 	 private ConstituencyInfoVO constituencyDetails;
@@ -95,7 +101,16 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 HttpServletResponse response;
 	 private MandalAllElectionDetailsVO mandalAllElectionDetailsVO;
 	 private String constId,eleType,eleYear;
+	 private String chartName;
 	 
+	public String getChartName() {
+		return chartName;
+	}
+
+	public void setChartName(String chartName) {
+		this.chartName = chartName;
+	}
+
 	public String getConstId() {
 		return constId;
 	}
@@ -351,8 +366,10 @@ public class ConstituencyPageAction extends ActionSupport implements
 		mptcElectionYears = staticDataService.getAllElectionYearsForATeshil(mptcElectionId);
 		
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId);
-				
-		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
+			
+		constituencyName = constituencyDetails.getConstituencyName();
+		
+		constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId); //for building graph use this.
 		
 		DelimitationConstituencyMandalResultVO delimitationConstituencyMandalResultVO = delimitationConstituencyMandalService.getMandalsForDelConstituency(constituencyId);
 		
@@ -387,8 +404,13 @@ public class ConstituencyPageAction extends ActionSupport implements
 			getMapsForVotingTrendz(electionTrendzReportVO);
 			electionTrendzReportVO.setPrevElectionYearsInfo(electionTrendzService.getPreviousElectionsInfoForAConstituency(electionBasicInfoVO.getElectionYear(), constituencyId));
            }
-		
-		
+           	
+        chartName = "allPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
+        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+       
+        List<Color> colors = new ArrayList<Color>();
+   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, colors), chartPath,260,700, colors );
+   		
 		if(constituencyElectionResultsVO != null || constituencyDetails != null){
 			return Action.SUCCESS;
 		}
@@ -397,6 +419,59 @@ public class ConstituencyPageAction extends ActionSupport implements
 		
 	}
 	
+	private CategoryDataset createDataset(List<ConstituencyElectionResultsVO> allElectionResults, List<Color> colors) {
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
+        int i = 0;
+        	for(ConstituencyElectionResultsVO result: allElectionResults){
+        		ElectionResultVO partiesElecResultForGraph = new ElectionResultVO();       		
+        		partiesElecResultForGraph.setPercentage(result.getCandidateResultsVO().getVotesPercentage());
+        		partiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
+        		partiesElecResultForGraph.setPartyName(result.getCandidateResultsVO().getPartyName());        		
+        		partiesElectionResults.add(partiesElecResultForGraph);        		
+        		for(CandidateOppositionVO oppositionResult: allElectionResults.get(i).getCandidateOppositionList()){
+        			ElectionResultVO oppositionPartiesElecResultForGraph = new ElectionResultVO();         			
+        			oppositionPartiesElecResultForGraph.setPercentage(oppositionResult.getVotesPercentage());
+        			oppositionPartiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
+        			oppositionPartiesElecResultForGraph.setPartyName(oppositionResult.getPartyName());           		
+            		partiesElectionResults.add(oppositionPartiesElecResultForGraph);            		
+            	}        		
+        		i++;
+        		partiesElectionResults.add(partiesElecResultForGraph);
+        	}
+       /*
+        	for(ElectionResultVO result: partiesElectionResults){
+        		System.out.println("VotesPercentage-->"+result.getPercentage());
+        		System.out.println("ElectionType--->"+result.getElectionYear());
+        		System.out.println("PartyName----->"+result.getPartyName());
+        	}
+    	System.out.println("===================================");
+        System.out.println("===================================");*/
+        
+       Collections.sort(partiesElectionResults, new ElectionResultComparator());    
+        for(ElectionResultVO graphInfo:partiesElectionResults){
+        	if(IConstants.TDP.equalsIgnoreCase(graphInfo.getPartyName()))
+        		colors.add(IConstants.TDP_COLOR);
+        	else
+        		if(IConstants.INC.equalsIgnoreCase(graphInfo.getPartyName()))
+            		colors.add(IConstants.INC_COLOR);
+            	else
+            		if(IConstants.BJP.equalsIgnoreCase(graphInfo.getPartyName()))
+                		colors.add(IConstants.BJP_COLOR);
+                	else
+                		if(IConstants.PRP.equalsIgnoreCase(graphInfo.getPartyName()))
+                    		colors.add(IConstants.PRP_COLOR);
+                    	else
+                    		if(IConstants.TRS.equalsIgnoreCase(graphInfo.getPartyName()))
+                        		colors.add(IConstants.TRS_COLOR);
+                        	else
+                        		colors.add(null);        	
+        	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
+           			graphInfo.getElectionYear());	
+        }
+        return dataset;
+    }
+
 	public void getMapsForVotingTrendz(ElectionTrendzReportVO electionTrendzReportVO){
         
 		    if(electionTrendzReportVO.getElectionTrendzOverviewVO() != null){
