@@ -6,6 +6,8 @@ public class LocationwiseProblemStatusInfoVO {
 	private Long locationId;
 	private int totalProblemsCount;
 	private List<ProblemsCountByStatus> problemsCountByStatus;
+	private List<ProblemsCountByStatus> problemsCountByStatusForChart;
+	private String lineChartPath;
 	private String problemsStatusChartName;
 	private String problemsPostedInLastTenDays;
 	private String problemsSolvedInLastTenDays;
@@ -14,8 +16,7 @@ public class LocationwiseProblemStatusInfoVO {
 	private String lastTenDaysProblemsDetailsBarChartName;
 	private String lastThirtyDaysProblemsDetailsBarChartName;
 	private List<ProblemBeanVO> recentProblems; 
-	
-	
+		
 	public Long getLocationId() {
 		return locationId;
 	}
@@ -86,5 +87,19 @@ public class LocationwiseProblemStatusInfoVO {
 	}
 	public List<ProblemBeanVO> getRecentProblems() {
 		return recentProblems;
-	}	
+	}
+	public List<ProblemsCountByStatus> getProblemsCountByStatusForChart() {
+		return problemsCountByStatusForChart;
+	}
+	public void setProblemsCountByStatusForChart(
+			List<ProblemsCountByStatus> problemsCountByStatusForChart) {
+		this.problemsCountByStatusForChart = problemsCountByStatusForChart;
+	}
+	public String getLineChartPath() {
+		return lineChartPath;
+	}
+	public void setLineChartPath(String lineChartPath) {
+		this.lineChartPath = lineChartPath;
+	}
+	
 }

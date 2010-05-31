@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 public class ProblemsCountByStatus {
 	private Long statusId;
+	private String date;
 	private String status;
 	private int count;
 	
@@ -22,6 +23,12 @@ public class ProblemsCountByStatus {
 	}
 	public void setCount(int count) {
 		this.count = count;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
 	}
 	
 	

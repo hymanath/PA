@@ -172,4 +172,12 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 						" and model.isDelete is null order by model.dateUpdated desc", statusId);
 	}
 	
+	public List findLatestProblemsGroupByDatePostedByMandalsAndStatus(String tehsilIds, String statusIds){
+		return getHibernateTemplate().find("select count(model.problemHistoryId), model.dateUpdated, model.problemStatus.problemStatusId, " +
+				"model.problemStatus.status from ProblemHistory model where model.problemLocation.hamlet.township.tehsil.tehsilId in " +
+				"(" + tehsilIds +") and model.problemStatus.problemStatusId in("+statusIds+")  " +
+						" group by date(model.dateUpdated),model.problemStatus.problemStatusId order by model.dateUpdated desc");
+	}
+	
+	
 }

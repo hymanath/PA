@@ -18,7 +18,7 @@ public interface IProblemManagementReportService {
 	
 	public List<ProblemHistoryVO> getCompleteDetailsForAProblem(Long problemLocationId);
 	
-	public LocationwiseProblemStatusInfoVO getProblemsStatusCount(String accessType, Long accessValue);
+	public LocationwiseProblemStatusInfoVO getProblemsStatusCount(String accessType, Long accessValue, int limit);
 	
 	public List<SelectOptionVO> getAllProblemStatusInfo();
 	

@@ -3,8 +3,13 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.log4j.Logger;
 
@@ -33,6 +38,7 @@ import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ProblemsCountByStatusComparator;
 
 
 public class ProblemManagementReportService implements
@@ -620,50 +626,109 @@ public class ProblemManagementReportService implements
 		}
 		
 		@SuppressWarnings("unchecked")
-		public LocationwiseProblemStatusInfoVO getProblemsStatusCount(String accessType, Long accessValue) {
-			
-			log.debug("Entered in to getProblemsStatusCount method in ProblemManagementReportService");
+		public LocationwiseProblemStatusInfoVO getProblemsStatusCount(String accessType, Long accessValue, int limit) {
 			LocationwiseProblemStatusInfoVO locationwiseProblemStatusInfoVO = new LocationwiseProblemStatusInfoVO();
 			List<ProblemsCountByStatus> problemsCountByStatusList = new ArrayList<ProblemsCountByStatus>();
-			List problemsCountByStatus = null;
+			ProblemsCountByStatus problemsCountByStatusObj = null;
+			List problemsCountByStatusRawList = null;
+			List problemsByStatusAndDateRawList = null;
 			List <Constituency> constituencies = null;
+			List<ProblemsCountByStatus> problemsCountByStatusAndDate = new ArrayList<ProblemsCountByStatus>();
+			Map<String, Long> probsCountByStatusAndDateMap = new HashMap<String, Long>();
 			int totalProbsCount = 0;
-			StringBuffer str = new StringBuffer();
-			String constituencyIds = "";
-			if("MLA".equals(accessType))
-				constituencyIds = accessValue.toString();
-			else if("DISTRICT".equalsIgnoreCase(accessType)){
-				constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(accessValue);
-				for(Constituency constituency:constituencies)
-					str.append(",").append(constituency.getConstituencyId());
-				constituencyIds = str.toString().substring(1);
+			String date = "";
+			String status = "";
+			Long count;
+			GregorianCalendar calendar = new GregorianCalendar();
+			SimpleDateFormat dateFormater = new SimpleDateFormat("dd/MM/yyyy");
+			
+			try{
+				log.debug("Entered in to getProblemsStatusCount method in ProblemManagementReportService");
 				
-			}else if("STATE".equalsIgnoreCase(accessType)){
-				constituencies = delimitationConstituencyDAO.getLatestAssemblyConstituenciesInState(accessValue);
-				for(Constituency constituency:constituencies)
-					str.append(",").append(constituency.getConstituencyId());
-				constituencyIds = str.toString().substring(1);
+				StringBuffer str = new StringBuffer();
+				String constituencyIds = "";
+				if("MLA".equals(accessType))
+					constituencyIds = accessValue.toString();
+				else if("DISTRICT".equalsIgnoreCase(accessType)){
+					constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict(accessValue);
+					for(Constituency constituency:constituencies)
+						str.append(",").append(constituency.getConstituencyId());
+					constituencyIds = str.toString().substring(1);
+					
+				}else if("STATE".equalsIgnoreCase(accessType)){
+					constituencies = delimitationConstituencyDAO.getLatestAssemblyConstituenciesInState(accessValue);
+					for(Constituency constituency:constituencies)
+						str.append(",").append(constituency.getConstituencyId());
+					constituencyIds = str.toString().substring(1);
+				}
+				if(constituencyIds.length() > 0)
+					problemsCountByStatusRawList = problemHistoryDAO.getProblemsCountInAllStatusByLocation(constituencyIds);
+				
+				for(int i=0;i<problemsCountByStatusRawList.size();i++){
+					Object[] parms = (Object[])problemsCountByStatusRawList.get(i);
+					problemsCountByStatusObj = new ProblemsCountByStatus();	
+					problemsCountByStatusObj.setStatusId(Long.parseLong(parms[0].toString()));
+					problemsCountByStatusObj.setStatus(parms[1].toString());
+					problemsCountByStatusObj.setCount(Integer.parseInt(parms[2].toString()));
+					problemsCountByStatusList.add(problemsCountByStatusObj);
+					if(!IConstants.FIXED.equals(parms[1].toString()))
+						totalProbsCount += Integer.parseInt(parms[2].toString());
+				}
+				
+				String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
+				problemsByStatusAndDateRawList = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus(tehsilIds, "1,6");
+				
+				for(Object[] values:(List<Object[]>)problemsByStatusAndDateRawList){
+					date = dateFormater.format((Date)values[1]);
+					status = values[3].toString();
+					count = (Long)values[0];
+					problemsCountByStatusObj = new ProblemsCountByStatus();
+					problemsCountByStatusObj.setCount(count.intValue());
+					problemsCountByStatusObj.setDate(date);
+					problemsCountByStatusObj.setStatus(values[3].toString());
+					problemsCountByStatusObj.setStatusId((Long)values[2]);
+					probsCountByStatusAndDateMap.put(date+status, count);
+					problemsCountByStatusAndDate.add(problemsCountByStatusObj);
+				}
+				
+				
+				
+				for(int i=0; i<limit; i++){
+					calendar.setTime(new Date());
+					calendar.add(GregorianCalendar.DAY_OF_MONTH, -i);
+					date = dateFormater.format((Date) calendar.getTime());
+					log.debug("Previous Date::"+date);
+					System.out.println("Previous Date::"+date);
+					if(probsCountByStatusAndDateMap.get(date+IConstants.NEW) == null){
+						problemsCountByStatusObj = new ProblemsCountByStatus();
+						problemsCountByStatusObj.setCount(0);
+						problemsCountByStatusObj.setDate(date);
+						problemsCountByStatusObj.setStatus(IConstants.NEW);
+						problemsCountByStatusAndDate.add(problemsCountByStatusObj);
+					}
+						
+					if(probsCountByStatusAndDateMap.get(date+IConstants.FIXED) == null){
+						problemsCountByStatusObj = new ProblemsCountByStatus();
+						problemsCountByStatusObj.setCount(0);
+						problemsCountByStatusObj.setDate(date);
+						problemsCountByStatusObj.setStatus(IConstants.FIXED);
+						problemsCountByStatusAndDate.add(problemsCountByStatusObj);
+					}
+				}
+				
+				Collections.sort(problemsCountByStatusAndDate, new ProblemsCountByStatusComparator());
+				
+				locationwiseProblemStatusInfoVO.setLocationId(accessValue);
+				locationwiseProblemStatusInfoVO.setProblemsCountByStatus(problemsCountByStatusList);
+				locationwiseProblemStatusInfoVO.setTotalProblemsCount(totalProbsCount);
+				locationwiseProblemStatusInfoVO.setProblemsCountByStatusForChart(problemsCountByStatusAndDate);
+				
+			}catch(Exception ex){
+				ex.printStackTrace();
 			}
-			if(constituencyIds.length() > 0)
-				problemsCountByStatus = problemHistoryDAO.getProblemsCountInAllStatusByLocation(constituencyIds);
-			
-			for(int i=0;i<problemsCountByStatus.size();i++){
-				Object[] parms = (Object[])problemsCountByStatus.get(i);
-				ProblemsCountByStatus problemsCountByStatusObj = new ProblemsCountByStatus();	
-				problemsCountByStatusObj.setStatusId(Long.parseLong(parms[0].toString()));
-				problemsCountByStatusObj.setStatus(parms[1].toString());
-				problemsCountByStatusObj.setCount(Integer.parseInt(parms[2].toString()));
-				problemsCountByStatusList.add(problemsCountByStatusObj);
-				if(!IConstants.FIXED.equals(parms[1].toString()))
-					totalProbsCount += Integer.parseInt(parms[2].toString());
-			}
-			
-			locationwiseProblemStatusInfoVO.setLocationId(accessValue);
-			locationwiseProblemStatusInfoVO.setProblemsCountByStatus(problemsCountByStatusList);
-			locationwiseProblemStatusInfoVO.setTotalProblemsCount(totalProbsCount);
-			
 			return locationwiseProblemStatusInfoVO;
 		}
+		
 		public List<ProblemBeanVO> getProblemsInfoByStatusInALocation(Long accessValue,String accessType,Long registrationId,String status) {
 			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
 			try{
@@ -679,9 +744,10 @@ public class ProblemManagementReportService implements
 				e.printStackTrace();
 				System.out.println("Exception Raised--->"+e);
 			return null;			
-		}		
+		}
 			return problemBeanVO;
 		}
 
+		
 	
 }
