@@ -49,12 +49,13 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-
+    <link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
 <!-- YUI Dependency files (End) -->
 	
 
 	<script type="text/javascript" src="js/constituencyManagement/constituencyManagement.js"></script>
-	<link rel="stylesheet" type="text/css" href="styles/constituencyManagement/constituencyManagement.css">
+	<script type="text/javascript" src="js/constituencyManagement/cadreManagement.js"></script>
+	
 	<script type="text/javascript">
 		
 		 <%			
@@ -305,16 +306,19 @@
 				accessValue:accessValue,			  			
 				task: "getInfluencingPeopleInAConstituency"
 						
-			}
+			};
+			
 			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/influencingPeopleInConstituencyAction.action?"+param;
+			
 			callAjax(param,jsObj,url);			
 		}
 		function callAjax(param,jsObj,url){
 			var myResults;
 	 					
 	 		var callback = {			
-	 		               success : function( o ) {
+	 		               success : function( o ) 
+							  {
 								try {												
 										if(o.responseText)
 											myResults = YAHOO.lang.JSON.parse(o.responseText);
@@ -326,17 +330,19 @@
 											
 											buildProblemsDetailsDT(myResults);
 										} else if(jsObj.task == "getInfluencingPeopleInAConstituency")
-										{
+										{									
 											buildInfluencingPeopleDT(myResults);
 										} else if(jsObj.task == "getProblemsByStatusInALocation")
 										{
 											buildProblemsByStatusDialog(myResults,jsObj);
 										}
 										
-								}catch (e) {   
-										   	alert("Invalid JSON result" + e);   
-										}	  
-					               },
+									}
+								catch (e)
+									{   
+									   	alert("Invalid JSON result" + e);   
+									}	  
+					              },
 					               scope : this,
 					               failure : function( o ) {
 					                			alert( "Failed to load result" + o.status + " " + o.statusText);
@@ -353,11 +359,8 @@
 <body>
 	
 	<div id="constituencyMgmtDiv_main" style="padding:10px;">
-		
-				
-		<DIV id="constituencyMgmt_main_header">
-			<DIV id="constituencyMgmt_head_label">Constituency Management</DIV>
-			<DIV id="constituencyMgmt_head_footer"></DIV>										
+		<div id="constituencyMgmt_main_header">
+			<div id="constituencyMgmt_head_label">Constituency Management</div>
 			<DIV id="constMgmtDesc">
 				<UL>
 					<LI>Know the problems and their status in your constituency</LI>
@@ -367,11 +370,8 @@
 					<LI>View Mandal Level Leaders Details</LI>
 				</UL>
 			</DIV>
-		</DIV>		
-
-		<div id="constituencyMgmt_layout_main"></div>
-		<div id="constituencyMgmt_layout_right"></div>
-		<div id="constituencyMgmt_layout_center">
+		</div>
+		<div id="constituencyMgmt_main_content">
 			<div id="problem_stats_main" style="margin-bottom:10px;">
 				<div id="problem_stats_head">
 					<table cellspacing="0" cellpadding="0" width="100%">
@@ -383,14 +383,14 @@
 					</table>	
 				</div>
 				<div id="problem_stats_body" class="containerBodyDivClass">
-				<div style="text-align:right;padding:15px;">
-					<a class="linkButton" href="constituencyManagementAction.action?cmTask=problemStats">View Detailed Statistics</a>
+					<div style="text-align:right;padding:15px;">						
+						<a class="linkButton" href="constituencyManagementAction.action?cmTask=problemStats">View Detailed Statistics</a>
+					</div>
+					<div id="problems_outline_Div"></div>
+					<DIV id="problems_Options" ></DIV>
+					
+					<DIV class="yui-skin-sam"><DIV id="problemsByStatusPanelDiv"></DIV></DIV>
 				</div>
-				<DIV id="problems_outline_Div"></DIV>
-				<DIV id="problems_Options" ></DIV>
-				<DIV class="yui-skin-sam"><DIV id="problemsDetailsDTDiv"></DIV></DIV>
-				</div>	
-				<DIV class="yui-skin-sam"><DIV id="problemsByStatusPanelDiv"></DIV></DIV>
 			</div>
 			<div>
 			<table width="100%">
@@ -433,17 +433,12 @@
 								</tr>
 							</table>	
 						</div>
-						<div id="voters_stats_body" class="containerBodyDivClass">
-							<div id="voter_details_subDiv" class="widgetHeaders"></div>
-							    <div id="voters_div">
-							    <table width="90%" align="center"><tr><td>
-									<p class="widgetDescPara" >	
+						<div id="voters_stats_body" class="containerBodyDivClass" style="padding:10px;">
+							<div id="voterStats_content" class="widgetDescPara" style="height:120px;">
+								
 									<font style="color:#4B74C6"> Voters Details </font> enables the user to view the complete details of voters and their their cast information upto the hamlet level.The user has to select the region according to their access level and can obtain the voter information.
-									</p>
-									</td></tr></table>
-							    								
-								</div>
-							
+								
+							</div>
 							<div style="text-align:right;padding:15px;">
 								<a class="linkButton" href="constituencyManagementAction.action?cmTask=voterStas">View Voters Details</a>
 							</div>
@@ -472,20 +467,21 @@
 			</div>					
 							
 		</div>
-
+		</div>
 	</div>
-	</div>
+	
+	<script type="text/javascript">
+		
+		<c:forEach var="probStatus"  items="${statusList}" >
+		var ob={
+					id:'${probStatus.id}',
+					value:'${probStatus.name}'
+				};
+		problemMgmtObj.problemsStatusArr.push(ob);	
+		</c:forEach>
 
-<script type="text/javascript">
-	<c:forEach var="probStatus"  items="${statusList}" >
-	var ob={
-				id:'${probStatus.id}',
-				value:'${probStatus.name}'
-			};
-	problemMgmtObj.problemsStatusArr.push(ob);	
-	</c:forEach>
 		initializeConstituencyManagement();
-		buildProblemsDetailsDT(initialProbs);
-</script>
+	</script>
+	
 </body>
 </html>

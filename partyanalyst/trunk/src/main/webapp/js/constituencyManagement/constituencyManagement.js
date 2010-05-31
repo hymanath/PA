@@ -3,8 +3,9 @@ var todayDate=new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().
 var problemMgmtObj={
 		problemsStatusArr:[]
 };
+
 function getTodayDateTime()
-{		
+{			
 		now = new Date();
 		hour = now.getHours();
 		min = now.getMinutes();
@@ -35,37 +36,6 @@ function getTodayDateTime()
 }
 
 
-function buildConstituencyLayout()
-{	
-	var constituencyMgmtPageLayout = new YAHOO.widget.Layout('constituencyMgmt_layout_main', { 
-	height:980,
-	units: [			
-			{ 
-				position: 'right', 
-				width: 280,
-				header:false,
-				body: 'constituencyMgmt_layout_right',
-				resize: false,
-				gutter: '2px',
-				collapse: false,
-				scroll: true,						
-				animate: true 
-			}, 					 
-			{ 
-				position: 'center',						
-				body: 'constituencyMgmt_layout_center',
-				resize: false,
-				gutter: '2px',
-				collapse: true,
-				scroll: true,						
-				animate: true
-			} 
-		 ] 
-		
-	});
-	constituencyMgmtPageLayout.render(); 
-}
-
 function buildPoliticalChanges()
 {
 	var elmt = document.getElementById("political_changes_data_body");
@@ -73,34 +43,7 @@ function buildPoliticalChanges()
 	if(!elmt)
 		return;
 
-	 
-	var politicalChangesArr = 
-		[ 
-	        {desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"}, 
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"}, 
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"}, 
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"},
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"},
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"},
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"},
-			{desc:"Ex-Sarpanch Vijaya Bhaskar and his cadre has joined new Party from congress Party!", date:new Date(2009, 9, 12), impactedParty:"Congress",impactScope:"Constituency"}
-	    ] ;
-	var myColumnDefs = [ 
-		{key:"desc",label:"Description", sortable:true, resizeable:true}, 
-		{key:"date", formatter:YAHOO.widget.DataTable.formatDate, sortable:true, resizeable:true}, 
-		{key:"impactedParty", sortable:true, resizeable:true},
-		{key:"impactScope",label:"Imapct Scope",sortable:true, resizeable:true},
-	]; 
 
-	var myDataSource = new YAHOO.util.DataSource(politicalChangesArr); 
-	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-	myDataSource.responseSchema = { 
-		fields: ["desc","date","impactedParty","impactScope"] 
-	};
-	
-
-	var myDataTable = new YAHOO.widget.DataTable("political_changes_data_body", 
-			myColumnDefs, myDataSource); 
 }
 
 function showProblemsStatusCount(results)
@@ -188,7 +131,7 @@ function showProblemsStatusCount(results)
 	problemStats_bodyElContent+='</TR>';
 	problemStats_bodyElContent+='</TABLE>';	
 	problemStats_bodyEl.innerHTML = problemStats_bodyElContent;
-	
+
 	var problems_OptionsContent = '';
 	problems_OptionsContent+='<table cellspacing="10" cellpadding="10" border="1">';
 	problems_OptionsContent+='<tr>';
@@ -206,7 +149,7 @@ function showProblemsStatusCount(results)
 	problems_OptionsContent+='			<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	problems_OptionsContent+='		</TD>';	
 	problems_OptionsContent+='		<TH valign="top">To:</TH>';	
-	problems_OptionsContent+='		<TD><input type="text" id="tillDateText" value="'+todayDate+'" name="tillDateText" size="20" onfocus="showDateCal1() class="textBoxStyle"/>';
+	problems_OptionsContent+='		<TD><input type="text" id="tillDateText" value="'+todayDate+'" name="tillDateText" size="20" onfocus="showDateCal1()" class="textBoxStyle"/>';
 	problems_OptionsContent+='			<DIV class="yui-skin-sam"><DIV id="till_Div" class="tinyDateCal"></DIV></DIV>';
 	problems_OptionsContent+='		</TD>';
 	problems_OptionsContent+='		<TD valign="top">';
@@ -230,13 +173,20 @@ function showProblemsStatusCount(results)
 	problems_OptionsContent+='<div id="problemSearch_advanced_main">';
 	problems_OptionsContent+='<div id="problemSearch_advanced_head" class="widgetHeaders">Advanced Search Selection Criteria</div>';
 	problems_OptionsContent+='<div id="problemSearch_advanced_body">';
-	problems_OptionsContent+='<p class="widgetDescPara" style="height:120px;"> ';
+	problems_OptionsContent+='<p class="widgetDescPara" style="height:90px;"> ';
 	problems_OptionsContent+='<font style="color:#4B74C6"> Advanced Search Criteria</font> enables the user to search for a problem with different options like location, Status or Department.';
 	problems_OptionsContent+='</p>';
 	problems_OptionsContent+='<p style="text-align:right;"> <A href="problemManagementReportAction.action" class="linkButton" target="_blank"> Click For Advanced Search </A></DIV></p>';
 	problems_OptionsContent+='</div>';	
 	problems_OptionsContent+='</div>';
 	problems_OptionsContent+='</td>';
+	problems_OptionsContent+='</tr>';
+	problems_OptionsContent+='<tr>';
+	problems_OptionsContent+='<td colspan="2">';
+	problems_OptionsContent+='<DIV class="yui-skin-sam">';
+	//problems_OptionsContent+='<div class="widgetHeaders">ProblemDetails</div>';
+	problems_OptionsContent+='<DIV id="problemsDetailsDTDiv"></DIV>';
+	problems_OptionsContent+='</DIV></td>';
 	problems_OptionsContent+='</tr>';
 	problems_OptionsContent+='</table>';
 	problems_OptionsEl.innerHTML = problems_OptionsContent; 
@@ -309,7 +259,7 @@ function displayDateText1(type,args,obj)
 }
 
 function buildProblemsDetailsDT(results)
-{
+{	
 	var elmt = document.getElementById("problemsDetailsDTDiv");
 
 	if(!elmt)
@@ -318,7 +268,7 @@ function buildProblemsDetailsDT(results)
 	var probDTColumnDefs = [ 
 		{key:"problemLocationId", hidden:true},
 		{key:"problem",label:localizationObj.problemLabel, sortable:true}, 
-		{key:"description",label:localizationObj.description,},
+		{key:"description",label:localizationObj.description},
 		{key:"existingFrom", label:localizationObj.existingFrom},
 		{key:"hamlet", label:localizationObj.HAMLET, sortable:true},
 		{key:"problemSourceScope", label:localizationObj.source, sortable:true},
@@ -332,12 +282,15 @@ function buildProblemsDetailsDT(results)
 		fields: ["problemLocationId","problem","description","existingFrom","hamlet","problemSourceScope","problemAmdProblemSourceId","status"] 
 	};
 	
-	var myConfigs = { 
-		    paginator : new YAHOO.widget.Paginator({ 
-	        rowsPerPage    : 10			        
-		    }),
-		    caption:"Recent Problems" 
-			};
+	if(results.length > 10)
+	{
+		var myConfigs = { 
+				paginator : new YAHOO.widget.Paginator({ 
+				rowsPerPage    : 10			        
+				}),
+				caption:"Recent Problems" 
+				};
+	}
 
 	var probDataTable = new YAHOO.widget.DataTable("problemsDetailsDTDiv", 
 			probDTColumnDefs, probDTDataSource,myConfigs); 
@@ -360,11 +313,14 @@ function buildInfluencingPeopleDT(results)
 		fields: ["personName","contactNumber","party","localArea","influencingRange"] 
 	};
 	
-	var myConfigs = { 
+	if(results.length > 10)
+	{
+		var myConfigs = { 
 		    paginator : new YAHOO.widget.Paginator({ 
 	        rowsPerPage    : 10			        
 		    })		
 			};
+	}
 
 	var ipDataTable = new YAHOO.widget.DataTable("influencingPeopleDtDiv", 
 			ipDTColumnDefs, ipDTDataSource,myConfigs);	
@@ -409,7 +365,7 @@ function buildProblemsByStatusDataTable(divId, results,caption)
 	var probDTColumnDefs = [ 
 		{key:"problemLocationId", hidden:true},
 		{key:"name",label:localizationObj.problemLabel, sortable:true}, 
-		{key:"description",label:localizationObj.description,},
+		{key:"description",label:localizationObj.description},
 		{key:"existingFrom", label:localizationObj.existingFrom},
 		{key:"hamlet", label:localizationObj.HAMLET, sortable:true},		
 		{key:"problemAmdProblemSourceId", hidden:true},
@@ -422,17 +378,20 @@ function buildProblemsByStatusDataTable(divId, results,caption)
 		fields: ["problemLocationId","name","description","existingFrom","hamlet","problemSourceScope","problemAmdProblemSourceId","status"] 
 	};
 	
-	var myConfigs = { 
+	if(results.length > 10)
+	{
+		var myConfigs = { 
 		    paginator : new YAHOO.widget.Paginator({ 
 	        rowsPerPage    : 10			        
 		    }),
 		    caption:caption 
 			};
-
+	}
 	var probDataTable = new YAHOO.widget.DataTable(divId, 
 			probDTColumnDefs, probDTDataSource,myConfigs);
 	
 }
+
 
 function initializeConstituencyManagement()
 {
@@ -441,3 +400,5 @@ function initializeConstituencyManagement()
 	getProblemsStatusCountByAccessType();	
 	getInfluencingPeopleInAConstituency();
 }
+
+
