@@ -1163,8 +1163,18 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		for(Map.Entry<Long,Double> votesPopulate:otherVotes.entrySet()){
 			PartyElectionResultVO partyVotes = new PartyElectionResultVO(); 
 			Long votesEarned =new Double(votesPopulate.getValue()).longValue();
-			partyVotes.setVotesEarned(votesEarned);
-			partyVotes.setVotesPercentage(new BigDecimal((votesEarned*100)/totalDifferenceVotes).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+			if(votesEarned<0){
+				partyVotes.setVotesEarned(0l);
+				log.fatal("Invalid Data......"); 
+			}else{
+				partyVotes.setVotesEarned(votesEarned);				
+			}
+			if((votesEarned*100)/totalDifferenceVotes<0){
+				partyVotes.setVotesPercentage("0");
+				log.fatal("Invalid Data......");
+			}else{
+				partyVotes.setVotesPercentage(new BigDecimal((votesEarned*100)/totalDifferenceVotes).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+			}			
 			partyVotes.setRank(candidateIdAndTheirRanks.get(votesPopulate.getKey()));
 			partyElectionResultVOs.add(partyVotes);
 		}
