@@ -45,7 +45,7 @@ public interface IConstituencyPageService {
 	
 	public ConstituencyRevenueVillagesVO getConstituencyElecResults(Long constituencyId, String electionYear);
 	
-	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,String electionYear);
+	public ConstituencyRevenueVillagesVO getMandalElectionInfoForAConstituency(Long constituencyId,String electionYear,String electionType);
 		
 	public List<ConstituencyRevenueVillagesVO> getMandalElectionInfoForAParliamentConstituency(Long constituencyId,String electionYear);
 	
