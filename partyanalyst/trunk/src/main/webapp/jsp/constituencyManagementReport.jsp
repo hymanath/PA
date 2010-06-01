@@ -407,7 +407,8 @@
 				</div>
 				<div id="problem_stats_body" class="containerBodyDivClass">
 					<div style="text-align:right;padding:15px;">						
-						<a class="linkButton" href="constituencyManagementAction.action?cmTask=problemStats">View Detailed Statistics</a>
+						 <a class="linkButton" href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT">Manage Problems</a>
+						 <a class="linkButton" href="constituencyManagementAction.action?cmTask=CONSTITUENCY_MANAGEMENT">View Detailed Statistics</a>
 					</div>
 					<div id="problems_outline_Div"></div>
 					<DIV id="problems_Options" ></DIV>
