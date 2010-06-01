@@ -208,7 +208,7 @@ function getMoreDetails(constiId,elecType,elecYear)
 {	
 	var url = "<%=request.getContextPath()%>/constituencyElectionResultsAction.action?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear;
 
- 	var browser9 = window.open(url,"browser9","scrollbars=yes,height=600,width=750,left=200,top=200");
+ 	var browser9 = window.open(url,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
  	browser9.focus();
 }
 
