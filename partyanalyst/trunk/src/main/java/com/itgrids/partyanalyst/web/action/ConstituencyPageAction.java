@@ -427,27 +427,21 @@ public class ConstituencyPageAction extends ActionSupport implements
         		ElectionResultVO partiesElecResultForGraph = new ElectionResultVO();       		
         		partiesElecResultForGraph.setPercentage(result.getCandidateResultsVO().getVotesPercentage());
         		partiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
-        		partiesElecResultForGraph.setPartyName(result.getCandidateResultsVO().getPartyName());        		
+        		partiesElecResultForGraph.setPartyName(result.getCandidateResultsVO().getPartyName());     
+        		partiesElecResultForGraph.setPartyShortName(result.getCandidateResultsVO().getPartyShortName());     
         		partiesElectionResults.add(partiesElecResultForGraph);        		
         		for(CandidateOppositionVO oppositionResult: allElectionResults.get(i).getCandidateOppositionList()){
         			ElectionResultVO oppositionPartiesElecResultForGraph = new ElectionResultVO();         			
         			oppositionPartiesElecResultForGraph.setPercentage(oppositionResult.getVotesPercentage());
         			oppositionPartiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
-        			oppositionPartiesElecResultForGraph.setPartyName(oppositionResult.getPartyName());           		
+        			oppositionPartiesElecResultForGraph.setPartyName(oppositionResult.getPartyName());   
+        			oppositionPartiesElecResultForGraph.setPartyShortName(oppositionResult.getPartyShortName());
             		partiesElectionResults.add(oppositionPartiesElecResultForGraph);            		
             	}        		
         		i++;
         		partiesElectionResults.add(partiesElecResultForGraph);
         	}
-       /*
-        	for(ElectionResultVO result: partiesElectionResults){
-        		System.out.println("VotesPercentage-->"+result.getPercentage());
-        		System.out.println("ElectionType--->"+result.getElectionYear());
-        		System.out.println("PartyName----->"+result.getPartyName());
-        	}
-    	System.out.println("===================================");
-        System.out.println("===================================");*/
-        
+               
        Collections.sort(partiesElectionResults, new ElectionResultComparator());    
         for(ElectionResultVO graphInfo:partiesElectionResults){
         	if(IConstants.TDP.equalsIgnoreCase(graphInfo.getPartyName()))
@@ -466,7 +460,7 @@ public class ConstituencyPageAction extends ActionSupport implements
                         		colors.add(IConstants.TRS_COLOR);
                         	else
                         		colors.add(null);        	
-        	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
+        	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyShortName(),
            			graphInfo.getElectionYear());	
         }
         return dataset;
