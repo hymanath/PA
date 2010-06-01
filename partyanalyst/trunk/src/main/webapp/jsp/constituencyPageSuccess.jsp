@@ -903,6 +903,7 @@ function buildElectionsSelectBox(myResults){
 						<div class="corner bottomRight"></div>	
 						<div id="constituencyPageElectionInfoDiv_Main" class="innerLayoutDivClass">							
 							<div id="constituencyPageElectionInfoDiv_Head" class="layoutHeadersClass"></div>
+							<div id="constituencyPageElectionEnlargedImgDiv" class="layoutHeadersClass"></div>
 							<div id="constituencyPageElectionImgDiv" class="layoutHeadersClass"></div>
 							<div id="constituencyPageElectionInfoDiv_Body" class="layoutBodyClass"></div>
 						</div>		
@@ -1121,6 +1122,8 @@ function buildElectionResults()
 	var HeadElmt = document.getElementById('constituencyPageElectionInfoDiv_Head');
 	var chartResultDiv = document.getElementById("constituencyPageElectionImgDiv");
 	var BodyElmt = document.getElementById('constituencyPageElectionInfoDiv_Body');
+
+	
 	
 	if(HeadElmt)
 		HeadElmt.innerHTML = ' Election Information in '+constituencyPageMainObj.constituencyInfo.constituencyName;
@@ -1129,6 +1132,13 @@ function buildElectionResults()
 	var chart = '';
 	chart+='<img src="charts/'+chartName+'" style="width:600px"/>';
 	chartResultDiv.innerHTML = chart;
+
+	var enlargedChartName = "${enlargedChartName}";
+	var details = document.getElementById("constituencyPageElectionEnlargedImgDiv");
+	var detailsDIV = '';
+	detailsDIV += '<table><tr>';
+	detailsDIV += '<td><div><input type="button" style="background:none repeat scroll 0 0 #335291;color:#FFFFFF;font-size:13px;margin-left:432px;padding:5px;width:113px;" onclick="showDetailedChart(\''+enlargedChartName+'\')" value="Detailed Chart"></div></td>';
+	details.innerHTML = detailsDIV;
 	
 	var elecStr = '';
 	for(var i in constituencyPageMainObj.constituencyElectionInfo)
