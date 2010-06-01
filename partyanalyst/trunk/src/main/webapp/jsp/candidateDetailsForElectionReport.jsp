@@ -739,7 +739,7 @@ function handleAddCommentsCancel(task,status)
 	<TR>
 		<TD align="left" class="td" style="width:20%;"><INPUT type="radio" name="candidatesOption" id="wonCandidates" value="wonCandidatesOnly" onClick="wonCandidatesClickHandler()" checked="true"/>Won Candidates</TD>
 		<TD align="left" class="td" style="width:20%;"><INPUT type="radio" name="candidatesOption" id="lostCandidates" value="lostCandidatesOnly" onClick="lostCandidatesClickHandler()"/>Lost Candidates</TD>
-		<TD align="left" class="td" style="width:20%;"><INPUT type="radio" name="candidatesOption" id="allCandidates" value="allCandidates" onClick="allCandidatesClickHandler()" />All Participated Candidates</TD>	
+		<TD align="left" class="td" style="width:20%;"><INPUT type="radio" name="candidatesOption" id="allCandidates" value="allCandidates" onClick="allCandidatesClickHandler()" />All Contested Candidates</TD>	
 		<TD align="left" colspan="1" style="width:20%;"></TD>
 	</TR>	
 	<c:if test="${electionType == 'Parliament'}">
