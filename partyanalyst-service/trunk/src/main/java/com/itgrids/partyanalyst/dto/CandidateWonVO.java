@@ -22,10 +22,18 @@ public class CandidateWonVO {
 	private Long rank;
 	private String partyFlag;	
 	private String partyLongName;
+	private String partyShortName;
 	private String votesMargin;
 	private String votesPercentMargin;
 
 	//getters and setters
+
+	public String getPartyShortName() {
+		return partyShortName;
+	}
+	public void setPartyShortName(String partyShortName) {
+		this.partyShortName = partyShortName;
+	}
 	public String getPartyLongName() {
 		return partyLongName;
 	}

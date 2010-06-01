@@ -12,11 +12,20 @@ public class ElectionResultVO {
 	private Long votesEarned;
 	private String percentage;
 	private String partyName;
+	private String partyShortName;
 	private Long noOfSeatsWon;
 	private List<AlliancePartyResultsVO> partiesAlliances;
 	
 	public Long getNoOfSeatsWon() {
 		return noOfSeatsWon;
+	}
+
+	public String getPartyShortName() {
+		return partyShortName;
+	}
+
+	public void setPartyShortName(String partyShortName) {
+		this.partyShortName = partyShortName;
 	}
 
 	public void setNoOfSeatsWon(Long noOfSeatsWon) {
