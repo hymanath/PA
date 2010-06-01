@@ -564,8 +564,9 @@ public class ProblemManagementReportService implements
 			List<InfluencingPeople> impPeople = influencingPeopleDAO.findByTehsils(tehsilIds); 
 			List<InfluencingPeopleVO> influencies = new ArrayList<InfluencingPeopleVO>();
 			InfluencingPeopleVO influencingPeopleVO = null;
-			String name = "";
+			
 			for(InfluencingPeople people:impPeople){
+				String name = "";
 				influencingPeopleVO = new InfluencingPeopleVO();
 				if(people.getFirstName() != null)
 					name += people.getFirstName();
