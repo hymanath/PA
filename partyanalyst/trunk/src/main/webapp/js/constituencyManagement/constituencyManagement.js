@@ -1,5 +1,8 @@
-var todayDate = new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/"
-		+ new Date().getFullYear();
+var todayDate = new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear();
+var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear();
+var minDate;
+
+
 
 var problemMgmtObj = {
 	problemsStatusArr : []
@@ -114,12 +117,13 @@ function showProblemsStatusCount(results) {
 	problems_OptionsContent += '<tr>';
 	problems_OptionsContent += '<td style="vertical-align:top;" width="60%">';
 	problems_OptionsContent += '<div id="problemOptionsHeadingDiv" class="widgetHeaders"> Problem Search Selection Criteria</div>';
-	problems_OptionsContent += '<p class="widgetDescPara"> <font style="color:#4B74C6">Problem Search Criteria </font>enables the user to saerah for a problem or set of problems with given date range.Here the user has to provide the start date,end date and also the status of problem to view the set of problems.</p>';
-	problems_OptionsContent += '<P class="widgetDescPara">Select Dates to view problems between any two dates</P>';
+	problems_OptionsContent += '<p class="widgetDescPara"> <font style="color:#4B74C6">Problem Search Criteria </font>enables the user to search problems posted with in selected period. Here the user has to provide the start date,end date and also the status of problem to view the set of problems.</p>';
+	problems_OptionsContent += '<P class="widgetDescPara">Click on the Calendar Icons to select the  Dates.</P>';
+	problems_OptionsContent += '<DIV id="alertMessageDiv" class="errorMessage"></DIV>';
 	problems_OptionsContent += '<TABLE cellspacing="5">';
 	problems_OptionsContent += '	<TR>';
 	problems_OptionsContent += '		<TH valign="top">View Problems From:</TH>';
-	problems_OptionsContent += '		<TD><input type="text" id="existingFromText" style="margin-top:0px;" name="existingFromText" size="20"/>';
+	problems_OptionsContent += '		<TD><input type="text" id="existingFromText" readonly="readonly" style="margin-top:0px;" name="existingFromText" size="20"/>';
 	problems_OptionsContent += '			<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" class="tinyDateCal"></DIV></DIV></TD>';
 	problems_OptionsContent += '		</TD>';
 	problems_OptionsContent += '		<TD valign="top">';
@@ -190,6 +194,7 @@ function showDateCal() {
 
 	var dateCalendar = new YAHOO.widget.Calendar(id, {
 		navigator : navConfig,
+		maxdate: maxDate,
 		title : "Choose a date:",
 		close : true
 	});
@@ -201,12 +206,17 @@ function displayDateText(type, args, obj) {
 	var dates = args[0];
 	var date = dates[0];
 	var year = date[0], month = date[1], day = date[2];
+	var divId = obj.containerId;
+	var divElmt = document.getElementById(divId);
 
 	var txtDate1 = document.getElementById("existingFromText");
 	txtDate1.value = day + "/" + month + "/" + year;
+	minDate = month + "/" + day + "/" + year;
+	divElmt.style.display = 'none';
 }
 
 function showDateCal1() {
+	
 	var id = document.getElementById("till_Div");
 	if (dateCalendar1)
 		dateCalendar1.destroy();
@@ -225,6 +235,8 @@ function showDateCal1() {
 
 	var dateCalendar1 = new YAHOO.widget.Calendar(id, {
 		navigator : navConfig,
+		minDate: minDate,
+		maxdate: maxDate,
 		title : "Choose a date:",
 		close : true
 	});
@@ -236,9 +248,12 @@ function displayDateText1(type, args, obj) {
 	var dates = args[0];
 	var date = dates[0];
 	var year = date[0], month = date[1], day = date[2];
+	var divId = obj.containerId;
+	var divElmt = document.getElementById(divId);
 
 	var txtDate1 = document.getElementById("tillDateText");
 	txtDate1.value = day + "/" + month + "/" + year;
+	divElmt.style.display = 'none';
 }
 
 function buildProblemsDetailsDT(results) {
@@ -420,6 +435,21 @@ function buildProblemsByStatusDataTable(divId, results, caption) {
 	var probDataTable = new YAHOO.widget.DataTable(divId, probDTColumnDefs,
 			probDTDataSource, myConfigs);
 
+}
+
+function limitText(limitField, limitCount, limitNum)
+{		
+	var limitFieldElmt = document.getElementById(limitField);
+	var limitCountElmt = document.getElementById(limitCount);
+
+	if (limitFieldElmt.value.length > limitNum) 
+	{
+		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+	}
+	else
+	{			
+		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+" ";
+	}
 }
 
 function initializeConstituencyManagement() {

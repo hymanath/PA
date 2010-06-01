@@ -281,9 +281,31 @@
 				callAjax(rparam,jsObj,url);
 		}
 		function getProblemDetailsInSelectedDates(statusId)
-		{
+		{alert(statusId);
+			var alertMessageDivEl = document.getElementById("alertMessageDiv");
 			var fromDateEl = document.getElementById("existingFromText").value;
 			var toDateEl = document.getElementById("tillDateText").value;
+			
+			if(statusId == -1 && fromDateEl == '')
+			{
+				alertMessageDivEl.innerHTML ='';
+				alertMessageDivEl.innerHTML ='Please Select FromDate and Problem Status';
+				return;
+			}			
+			if(statusId == -1)
+			{
+				alertMessageDivEl.innerHTML ='';
+				alertMessageDivEl.innerHTML = 'Please Select Problem Staus From The DropDown ';
+				
+				return;
+			} 
+			if(fromDateEl == '')
+			{
+				alertMessageDivEl.innerHTML ='';
+				alertMessageDivEl.innerHTML = 'Please Select From Date';				
+				return;
+			}			
+			
 			var jsObj= 
 			{	
 				fromDate: fromDateEl,
@@ -294,6 +316,7 @@
 				task: "getProblemDetailsInSelectedDates"
 						
 			}
+			
 			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/problemsByDateBasedOnStatusAction.action?"+param;
 			callAjax(param,jsObj,url);
@@ -413,8 +436,15 @@
 								<div id="sendSMSBlock" style="border:1px solid;margin:10px;width:500px;">
 									<TABLE>
 										<TR>
-											<TD><TEXTAREA id="smsText" cols="70"></TEXTAREA></TD>
+											<TD colspan="2" halign="left"><DIV>Should not exceed 200 chars!</DIV></TD>
+										</TR>	
+										<TR>
+											<TD><TEXTAREA id="smsText" cols="70" onkeyup=limitText("smsText","maxcount",200)></TEXTAREA></TD>
 											<TD valign="bottom"><INPUT type="button" value="Send SMS" onclick="" class="button"/></TD>
+										</TR>
+										<TR>
+											<TD colspan="2" halign="left"><DIV id="remainChars"><SPAN id="maxcount">200 </SPAN><SPAN>chars remaining..</SPAN></DIV></TD>
+											
 										</TR>	
 									</TABLE>
 								</div>			

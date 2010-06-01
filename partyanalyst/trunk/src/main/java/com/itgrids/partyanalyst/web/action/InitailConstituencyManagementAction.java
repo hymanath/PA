@@ -110,7 +110,7 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 		accessValue= new Long(user.getAccessValue());
 		
 		statusList = problemManagementReportService.getAllProblemStatusInfo();
-		statusList.add(0,new SelectOptionVO(0l, "Select Status"));
+		statusList.add(0,new SelectOptionVO(-1l, "Select Status"));
 		//String accessType, Long accessValue, Long statusId, int limit
 		LocationwiseProblemStatusInfoVO locationwiseProblemStatusInfoVO = problemManagementReportService.getRecentProblemsWithInTheRegion(accessType, accessValue, 1l, 10);
 		problemsList = locationwiseProblemStatusInfoVO.getRecentProblems();		
