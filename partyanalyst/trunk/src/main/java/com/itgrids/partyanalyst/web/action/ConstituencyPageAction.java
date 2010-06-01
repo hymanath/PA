@@ -101,8 +101,16 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 HttpServletResponse response;
 	 private MandalAllElectionDetailsVO mandalAllElectionDetailsVO;
 	 private String constId,eleType,eleYear;
-	 private String chartName;
+	 private String chartName,enlargedChartName;
 	 
+	public String getEnlargedChartName() {
+		return enlargedChartName;
+	}
+
+	public void setEnlargedChartName(String enlargedChartName) {
+		this.enlargedChartName = enlargedChartName;
+	}
+
 	public String getChartName() {
 		return chartName;
 	}
@@ -411,6 +419,11 @@ public class ConstituencyPageAction extends ActionSupport implements
         List<Color> colors = new ArrayList<Color>();
    		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, colors), chartPath,260,700, colors );
    		
+   		enlargedChartName = "enlargedImgOfAllPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
+        String enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedChartName;
+       
+        List<Color> enlargedChartPathColors = new ArrayList<Color>();
+   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, enlargedChartPathColors), enlargedChartPath,600,800, enlargedChartPathColors );
 		if(constituencyElectionResultsVO != null || constituencyDetails != null){
 			return Action.SUCCESS;
 		}
