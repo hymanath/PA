@@ -49,6 +49,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private String task = null;
 	JSONObject jObj = null;
 	private String cmTask;
+	private String reportResult;
 	
 	
 	public String getCmTask() {
@@ -221,6 +222,14 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		this.influencingPeopleVO = influencingPeopleVO;
 	}
 	
+	public String getReportResult() {
+		return reportResult;
+	}
+
+	public void setReportResult(String reportResult) {
+		this.reportResult = reportResult;
+	}
+
 	public void setTask(String task) {
 		this.task = task;
 	}
@@ -322,6 +331,15 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			log.debug("constituencyList.size():"+constituencyList.size());		
 		}
 	
+		if(cmTask != null){
+		if(cmTask.equalsIgnoreCase(IConstants.PROBLEMS_MANAGEMENT))
+			reportResult = IConstants.PROBLEMS_MANAGEMENT;
+		else if(cmTask.equalsIgnoreCase(IConstants.CONSTITUENCY_MANAGEMENT))
+			reportResult = IConstants.CONSTITUENCY_MANAGEMENT;
+		else
+			reportResult = "ALL";
+		}
+		
 		return SUCCESS;
 	}
 	
