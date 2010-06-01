@@ -744,32 +744,32 @@ function handleAddCommentsCancel(task,status)
 	</TR>	
 	<c:if test="${electionType == 'Parliament'}">
 		<TR id="regionalOptionsRow">
-			<TD class="td" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="countryLevelP" value="countrywiseParliament" onClick="countryLevelPClickHandler()" checked="true"/>Countrywise</TD>		
-			<TD class="td" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelP" value="statewiseParliament" onClick="stateLevelPClickHandler()"/>Statewise</TD>
+			<TD class="td" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="countryLevelP" value="countrywiseParliament" onClick="countryLevelPClickHandler()" checked="true"/>Country Level</TD>		
+			<TD class="td" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelP" value="statewiseParliament" onClick="stateLevelPClickHandler()"/>State Level</TD>
 			<TD style="width:20%;"><s:select id="selectStateP" name="regionSelect" cssClass="selectBoxStyle" style="display:none;" theme="simple" list="statesListObj.getAllStates" listKey="id"  listValue="name" onChange="allCandidates()"  /></TD>
 			<TD align="left" colspan="1" style="width:20%;"></TD>
 		</TR>
 	</c:if>	
 	 <c:if test="${electionType == 'Assembly'}" >  
 		<TR id="regionalOptionsRow">
-		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelA" value="statewiseAssembly" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
-		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelA" value="districtwiseAssembly" onClick="distLevelAClickHandler()"/>Districtwise</TD>
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelA" value="statewiseAssembly" onClick="stateLevelAClickHandler()" checked="true"/>State Level</TD>		
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelA" value="districtwiseAssembly" onClick="distLevelAClickHandler()"/>District Level</TD>
 		<TD style="width:20%;"><s:select id="selectdistrictA" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
 		<TD align="left" colspan="1" style="width:20%;"></TD>
 		</TR>
 	</c:if>		
 	<c:if test="${electionType == 'ZPTC'}">  
 	<TR id="regionalOptionsRow">
-		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelZ" value="stateWiseZptc" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
-		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelZ" value="districtwiseZptc" onClick="distLevelZClickHandler()"/>Districtwise</TD>
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelZ" value="stateWiseZptc" onClick="stateLevelAClickHandler()" checked="true"/>State Level</TD>		
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelZ" value="districtwiseZptc" onClick="distLevelZClickHandler()"/>District Level</TD>
 		<TD style="width:20%;"><s:select id="selectdistrictZ" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
 		<TD align="left" colspan="1" style="width:20%;"></TD>
 		</TR>
 	</c:if>
 	<c:if test="${electionType == 'MPTC'}">  
 	<TR>
-		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelM" value="stateWiseMptc" onClick="stateLevelAClickHandler()" checked="true"/>Statewise</TD>		
-		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelM" value="districtwiseMptc" onClick="distLevelMClickHandler()"/>Districtwise</TD>
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="stateLevelM" value="stateWiseMptc" onClick="stateLevelAClickHandler()" checked="true"/>State Level</TD>		
+		<TD class="td" name="RegionalOptionsA" style="width:20%;"><INPUT type="radio" name="regionalRadio" id="distLevelM" value="districtwiseMptc" onClick="distLevelMClickHandler()"/>District Level</TD>
 		<TD style="width:20%;"><s:select id="selectdistrictM" name="regionSelect" cssClass="selectBoxStyle" theme="simple" list="districtsList" listKey="id"  listValue="name" style="display:none;" onChange="allCandidates()"  /></TD>
 		<TD align="left" colspan="1" style="width:20%;"></TD>
 	</TR>	
