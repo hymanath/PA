@@ -47,11 +47,12 @@
 	<style type="text/css">
 		#constituencyMgmtHeaderDiv
 		{
-			color:#1C487A;
+			color:BurlyWood;
+			font-family:Verdana;
 			font-size:17px;
 			font-weight:bold;
-			text-decoration:underline;
 			margin-bottom:20px;
+			text-decoration:underline;
 		}
 					
 		#constituencyMgmtBodyDiv
@@ -318,6 +319,9 @@
 	var assignDtRecordsArray = new Array();
 	var progressDtRecordsArray = new Array();
 	var pendingDtRecordsArray = new Array();
+	var reportResult ='${reportResult}';
+
+	
 	var problemsMainObj={	
 							probTypesArr:[],
 							problemSourcesArr:[],
@@ -1640,32 +1644,56 @@
 		distEPapersTabContent+='<div id="distEPapersTabContent_body"></div>';
 		distEPapersTabContent+='<div id="distEPapersTabContent_footer"></div>';
 		distEPapersTabContent+='</div>';
-						
-		outerTab.addTab( new YAHOO.widget.Tab({			
-		label: '<%=constituencyMgmt%>', 
-	    content:constTabContent, 
-	    active: true 
-		})); 
+			
+		if(reportResult == "CONSTITUENCY_MANAGEMENT")
+		{
+			outerTab.addTab( new YAHOO.widget.Tab({			
+			label: '<%=constituencyMgmt%>', 
+			content:constTabContent, 
+			active: true 
+			})); 
+		}
 		
-		outerTab.addTab( new YAHOO.widget.Tab({ 
-	    label: '<%=probMgmt%>', 
-	    content: '<div id="problemMgmtTabContentDiv"></div>'	   
-		}));		 
+		if(reportResult == "PROBLEMS_MANAGEMENT")
+		{
+			outerTab.addTab( new YAHOO.widget.Tab({ 
+			label: '<%=probMgmt%>', 
+			content: '<div id="problemMgmtTabContentDiv"></div>',
+			active:true
+			}));	
+			getNewProblemsForUser();
+		}
 		 
-		outerTab.addTab( new YAHOO.widget.Tab({ 
-			label: '<%=recommLetters%>', 
-			content: '<div id="recomLettTabContent">Recommendation Letters Content</div>' 
-		})); 
+        if(reportResult == "CONSTITUENCY_MANAGEMENT")
+		{
+			outerTab.addTab( new YAHOO.widget.Tab({ 
+				label: '<%=recommLetters%>', 
+				content: '<div id="recomLettTabContent">Recommendation Letters Content</div>' 
+			})); 
 
-		outerTab.addTab( new YAHOO.widget.Tab({ 
-			label: '<%=distEPapers%>', 
-			content: distEPapersTabContent 
-		})); 
+			outerTab.addTab( new YAHOO.widget.Tab({ 
+				label: '<%=distEPapers%>', 
+				content: distEPapersTabContent 
+			})); 
+		}
 
-		outerTab.appendTo('problemMgmtMainDiv');
+        outerTab.appendTo('problemMgmtMainDiv');
+
+        if(reportResult == "CONSTITUENCY_MANAGEMENT")
+		{
+		  outerTab.getTab(1).addListener('click',handleRecommLetrsTabClick);
+		  outerTab.getTab(2).addListener('click',handleDistPapersTabClick);	
+		}
+		if(reportResult == "PROBLEMS_MANAGEMENT")
+		{
+           outerTab.getTab(0).addListener('click',getNewProblemsForUser);
+		}
+
+		/*
+		
 		outerTab.getTab(1).addListener('click',getNewProblemsForUser);
 		outerTab.getTab(2).addListener('click',handleRecommLetrsTabClick);
-		outerTab.getTab(3).addListener('click',handleDistPapersTabClick);		
+		outerTab.getTab(3).addListener('click',handleDistPapersTabClick);	*/	
 	}
 
 	function buildProblemMgmtTabView()
@@ -3418,10 +3446,17 @@
 	{
 		this.cancel();
 	}	
+
+	
 </script>
 </head>
 <body>
-<div id="constituencyMgmtHeaderDiv">Constituency Management</div>
+<c:if test="${reportResult == 'PROBLEMS_MANAGEMENT'}">
+<div id="constituencyMgmtHeaderDiv" style="margin-top:15px;">PROBLEM MANAGEMENT</div>
+</c:if>
+<c:if test="${reportResult == 'CONSTITUENCY_MANAGEMENT'}">
+<div id="constituencyMgmtHeaderDiv" style="margin-top:15px;">CONSTITUENCY MANAGEMENT</div>
+</c:if>
 <div id="constituencyMgmtMainDiv">	
 	<div id="alertMessage" style="display: none;"><%=constMgmtAlertMessage%></div>
 	<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"></div>
@@ -3493,5 +3528,6 @@ buildProgressDataTable();
 buildPendingDataTable();
 buildFixedDataTable();
 </script>
+<span id="ajaxImgSpan"><img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/></span>
 </body>
 </html>
