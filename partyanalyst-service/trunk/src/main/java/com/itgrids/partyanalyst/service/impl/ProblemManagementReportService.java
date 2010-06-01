@@ -589,7 +589,7 @@ public class ProblemManagementReportService implements
 			List<ProblemStatus> list = problemStatusDAO.getAll();
 			for(ProblemStatus problemStatus:list)
 				status.add(new SelectOptionVO(problemStatus.getProblemStatusId(), problemStatus.getStatus()));
-			status.add(status.size(), new SelectOptionVO(0l,"All"));
+			status.add(0, new SelectOptionVO(0l,"All"));
 			return status;
 		}
 		
