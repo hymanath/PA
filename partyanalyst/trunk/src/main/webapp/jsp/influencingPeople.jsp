@@ -515,8 +515,8 @@ getStateList(this.value);
 <h2>Influencing People Registration Page</h2>
 <div id="registrationMainDiv">
 <div id="loginDetailsDiv" class="accessDivMain">
-		<div id="loginDetailsDivHead" class="accessDivHead"><u>Influencing People Details...</u></div>
-		<div id="loginDetailsDivBody" class="accessDivBody">
+		<div id="loginDetailsDivHead" align="center" class="accessDivHead"><u>Influencing People Details...</u></div>
+		<div id="loginDetailsDivBody" align="center" class="accessDivBody">
 		<div id="errorMessageDisplay" style="color:red,font-size:12px"></div>
 				<table class="registrationTable">			
 					<tr>
