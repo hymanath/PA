@@ -1,13 +1,13 @@
 var todayDate = new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear();
 var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear();
 var minDate;
-
+var resultsGlobal; 
 
 
 var problemMgmtObj = {
 	problemsStatusArr : []
 };
-
+var mobileNumbersArray = new Array();
 function getTodayDateTime() {
 	now = new Date();
 	hour = now.getHours();
@@ -130,7 +130,7 @@ function showProblemsStatusCount(results) {
 	problems_OptionsContent += '			<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	problems_OptionsContent += '		</TD>';
 	problems_OptionsContent += '		<TH valign="top">To:</TH>';
-	problems_OptionsContent += '		<TD><input type="text" id="tillDateText" value="' + todayDate + '" name="tillDateText" size="20" onfocus="showDateCal1()" class="textBoxStyle"/>';
+	problems_OptionsContent += '		<TD><input type="text" id="tillDateText" value="' + todayDate + '" name="tillDateText" size="20" readonly="readonly" class="textBoxStyle"/>';
 	problems_OptionsContent += '			<DIV class="yui-skin-sam"><DIV id="till_Div" class="tinyDateCal"></DIV></DIV>';
 	problems_OptionsContent += '		</TD>';
 	problems_OptionsContent += '		<TD valign="top">';
@@ -257,64 +257,78 @@ function displayDateText1(type, args, obj) {
 }
 
 function buildProblemsDetailsDT(results) {
+	
 	var elmt = document.getElementById("problemsDetailsDTDiv");
 
 	if (!elmt)
 		return;
 
-	var probDTColumnDefs = [ {
-		key : "problemLocationId",
-		hidden : true
-	}, {
-		key : "problem",
-		label : localizationObj.problemLabel,
-		sortable : true
-	}, {
-		key : "description",
-		label : localizationObj.description
-	}, {
-		key : "existingFrom",
-		label : localizationObj.existingFrom
-	}, {
-		key : "hamlet",
-		label : localizationObj.HAMLET,
-		sortable : true
-	}, {
-		key : "problemSourceScope",
-		label : localizationObj.source,
-		sortable : true
-	}, {
-		key : "problemAmdProblemSourceId",
-		hidden : true
-	}, {
-		key : "status",
-		label : localizationObj.status,
-		sortable : true
-	} ];
-
-	var probDTDataSource = new YAHOO.util.DataSource(results);
-	probDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-	probDTDataSource.responseSchema = {
-		fields : [ "problemLocationId", "problem", "description",
-				"existingFrom", "hamlet", "problemSourceScope",
-				"problemAmdProblemSourceId", "status" ]
-	};
-
-	if (results.length > 10) {
-		var myConfigs = {
-			paginator : new YAHOO.widget.Paginator( {
-				rowsPerPage : 10
-			}),
-			caption : "Recent Problems"
+	if(results.length != 0)
+	{
+		elmt.innerHTML = '';
+		var probDTColumnDefs = [ {
+			key : "problemLocationId",
+			hidden : true
+		}, {
+			key : "problem",
+			label : localizationObj.problemLabel,
+			sortable : true
+		}, {
+			key : "description",
+			label : localizationObj.description
+		}, {
+			key : "existingFrom",
+			label : localizationObj.existingFrom
+		}, {
+			key : "hamlet",
+			label : localizationObj.HAMLET,
+			sortable : true
+		}, {
+			key : "problemSourceScope",
+			label : localizationObj.source,
+			sortable : true
+		}, {
+			key : "problemAmdProblemSourceId",
+			hidden : true
+		}, {
+			key : "status",
+			label : localizationObj.status,
+			sortable : true
+		} ];
+	
+		var probDTDataSource = new YAHOO.util.DataSource(results);
+		probDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+		probDTDataSource.responseSchema = {
+			fields : [ "problemLocationId", "problem", "description",
+					"existingFrom", "hamlet", "problemSourceScope",
+					"problemAmdProblemSourceId", "status" ]
 		};
+	
+		if (results.length > 10) {
+			var myConfigs = {
+				paginator : new YAHOO.widget.Paginator( {
+					rowsPerPage : 10
+				}),
+				caption : "Recent Problems"
+			};
+		}
+	
+		var probDataTable = new YAHOO.widget.DataTable("problemsDetailsDTDiv",
+				probDTColumnDefs, probDTDataSource, myConfigs);
 	}
-
-	var probDataTable = new YAHOO.widget.DataTable("problemsDetailsDTDiv",
-			probDTColumnDefs, probDTDataSource, myConfigs);
+	else{
+		elmt.innerHTML = '';
+		elmt.innerHTML = '<SPAN style="color:green;font-weight:bold;">Zero problems matched this selection criteria</SPAN>';
+		
+	}
 }
 
 function buildInfluencingPeopleDT(results) {
+	resultsGlobal = results;
 	var ipDTColumnDefs = [ {
+		key : "influencingPeopleId",
+		hidden: true
+	},	{
 		key : "select",
 		label : localizationObj.select,
 		formatter : "checkbox"
@@ -342,7 +356,7 @@ function buildInfluencingPeopleDT(results) {
 	var ipDTDataSource = new YAHOO.util.DataSource(results);
 	ipDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	ipDTDataSource.responseSchema = {
-		fields : [ "personName", "contactNumber", "party", "localArea",
+		fields : ["influencingPeopleId","personName", "contactNumber", "party", "localArea",
 				"influencingRange" ]
 	};
 
@@ -356,6 +370,45 @@ function buildInfluencingPeopleDT(results) {
 
 	var ipDataTable = new YAHOO.widget.DataTable("influencingPeopleDtDiv",
 			ipDTColumnDefs, ipDTDataSource, myConfigs);
+	ipDataTable.subscribe("checkboxClickEvent", function(oArgs) { 
+  	    elCheckbox = oArgs.target; 
+  	    var newValue = elCheckbox.checked; 
+  	    var record = this.getRecord(elCheckbox); 
+  	    var column = this.getColumn(elCheckbox); 
+  	  
+  	    record.setData(column.key,newValue);				  	
+  	    
+  	    if(newValue && hasRecordInArray(record))
+  	  		{
+  	    	mobileNumbersArray.push(record);
+  	    	var smsTextEl = document.getElementById("smsText").focus();
+  	  		}
+		else
+			{
+				deleteRecordFromArray(record);
+				elCheckbox.checked = false;
+			} 	   		  	  				  	  	
+	  	});	
+}
+
+function hasRecordInArray(record)
+{	
+	var status = true;
+	for(i=0;i<mobileNumbersArray.length;i++)
+	{	
+		if(mobileNumbersArray[i]._oData.influencingPeopleId == record._oData.influencingPeopleId)
+			status=false;
+	}
+	return status;
+}
+function deleteRecordFromArray(record)
+{
+	for(i=0;i<mobileNumbersArray.length;i++)
+	{	
+		if(mobileNumbersArray[i]._oData.influencingPeopleId == record._oData.influencingPeopleId)
+			mobileNumbersArray.splice(i,1);
+	}
+		
 }
 
 function buildProblemsByStatusDialog(results, jsObj) {
@@ -450,6 +503,19 @@ function limitText(limitField, limitCount, limitNum)
 	{			
 		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+" ";
 	}
+}
+
+function showSentSmsConfirmation(jsObj)
+{
+	var numbersArr = jsObj.numbers;
+	var members = numbersArr.length; 
+	var smsConfirmationEl = document.getElementById("smsConfirmation");
+	var smsBlockAlertEl = document.getElementById("smsBlockAlert");
+	var smsTextEl = document.getElementById("smsText");
+	smsConfirmationEl.innerHTML = "SMS sent succesfully to "+members+" members";
+	smsBlockAlertEl.innerHTML = '';
+	smsTextEl.value = '';
+	buildInfluencingPeopleDT(resultsGlobal);
 }
 
 function initializeConstituencyManagement() {

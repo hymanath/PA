@@ -974,7 +974,8 @@
               <result type="json" name="success">
            		<param name="root">problemBean</param>
         	</result>       		
-        </action>        
+        </action>
+        <action name="sendSMSAction" class="sendSMSAction"></action>        
 	</package>
 </struts>
 

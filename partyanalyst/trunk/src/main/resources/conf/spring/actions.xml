@@ -311,4 +311,7 @@
 	<bean id="indexAction" class="com.itgrids.partyanalyst.IndexAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
+	<bean id="sendSMSAction" class="com.itgrids.partyanalyst.SendSMSAction" singleton="false">
+		<property name="countrySmsService" ref="countrySmsService" />
+	</bean>
 </beans>		

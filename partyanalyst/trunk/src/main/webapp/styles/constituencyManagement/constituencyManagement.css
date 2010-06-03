@@ -197,7 +197,16 @@ text-decoration:none;
 }
 .errorMessage
 {
+		text-align:left;
+		padding: 5px;
 		color: red;
 		font-weight: bold;	
+}
+.confirmationMessage
+{
+	text-align:left;
+	padding: 5px;
+	color: green;
+	font-weight: bold;
 }
 

@@ -281,7 +281,7 @@
 				callAjax(rparam,jsObj,url);
 		}
 		function getProblemDetailsInSelectedDates(statusId)
-		{alert(statusId);
+		{
 			var alertMessageDivEl = document.getElementById("alertMessageDiv");
 			var fromDateEl = document.getElementById("existingFromText").value;
 			var toDateEl = document.getElementById("tillDateText").value;
@@ -336,6 +336,49 @@
 			
 			callAjax(param,jsObj,url);			
 		}
+	
+		function sendSMS()
+		{
+			var message = document.getElementById("smsText").value;
+			var smsBlockAlertEl = document.getElementById("smsBlockAlert");
+			var numbersArr = new Array();
+			
+			if(mobileNumbersArray.length == 0 && message == '')
+			{
+				smsBlockAlertEl.innerHTML = '';
+				smsBlockAlertEl.innerHTML = 'Please select person name and then type your message';
+				return;
+			}
+			if(mobileNumbersArray.length == 0)
+			{
+				smsBlockAlertEl.innerHTML = '';
+				smsBlockAlertEl.innerHTML = 'Please select person name in the above table';
+				return;
+			}
+			if(message == '')
+			{
+				smsBlockAlertEl.innerHTML = '';
+				smsBlockAlertEl.innerHTML = 'Please type your message';
+				return;
+			}
+			for(var i in mobileNumbersArray)
+			{
+				numbersArr.push(mobileNumbersArray[i]._oData.contactNumber);				
+			}
+			var jsObj= 
+				{
+					numbers: numbersArr,
+					message:message,	
+					task:"sendSMS"			
+				}
+				var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+				var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
+				callAjax(param,jsObj,url);
+						
+				
+			
+		}
+		
 		function callAjax(param,jsObj,url){
 			var myResults;
 	 					
@@ -349,8 +392,7 @@
 										{
 											showProblemsStatusCount(myResults);
 										} else if(jsObj.task == "getProblemDetailsInSelectedDates")
-										{
-											
+										{											
 											buildProblemsDetailsDT(myResults);
 										} else if(jsObj.task == "getInfluencingPeopleInAConstituency")
 										{									
@@ -358,7 +400,11 @@
 										} else if(jsObj.task == "getProblemsByStatusInALocation")
 										{
 											buildProblemsByStatusDialog(myResults,jsObj);
+										} else if(jsObj.task == "sendSMS")
+										{
+											showSentSmsConfirmation(jsObj);
 										}
+										
 										
 									}
 								catch (e)
@@ -434,17 +480,19 @@
 							<DIV style="text-align:right;padding:10px;"><A href="influencingPeopleAction.action" class="linkButton" target="_blank">Add Influencing Persons</A></DIV>
 							<div id="influencing_people_data_body" class="yui-skin-sam"><div id="influencingPeopleDtDiv"></div></div>
 							<div id="influencing_people_footer">
+								<DIV id="smsBlockAlert" class="errorMessage"></DIV>
+								<DIV id="smsConfirmation" class="confirmationMessage"></DIV>
 								<div id="sendSMSBlock" style="border:1px solid;margin:10px;width:500px;">
 									<TABLE>
 										<TR>
-											<TD colspan="2" halign="left"><DIV>Should not exceed 200 chars!</DIV></TD>
+											<TD colspan="2"><DIV style="text-align:left;">Should not exceed 200 chars!</DIV></TD>
 										</TR>	
 										<TR>
 											<TD><TEXTAREA id="smsText" cols="70" onkeyup=limitText("smsText","maxcount",200)></TEXTAREA></TD>
-											<TD valign="bottom"><INPUT type="button" value="Send SMS" onclick="" class="button"/></TD>
+											<TD valign="bottom"><INPUT type="button" value="Send SMS" onclick="sendSMS()" class="button"/></TD>
 										</TR>
 										<TR>
-											<TD colspan="2" halign="left"><DIV id="remainChars"><SPAN id="maxcount">200 </SPAN><SPAN>chars remaining..</SPAN></DIV></TD>
+											<TD colspan="2" ><DIV id="remainChars" style="text-align:left;"><SPAN id="maxcount">200 </SPAN><SPAN>chars remaining..</SPAN></DIV></TD>
 											
 										</TR>	
 									</TABLE>
