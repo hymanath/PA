@@ -26,4 +26,7 @@ public interface IDelimitationConstituencyAssemblyDetailsDAO extends GenericDao<
 	public List getAllAssembliesOfParliament(Long parliamentId);
 	
 	public List findParliamentConstituencyForListOfAssemblyConstituency(String assemblyId,Long electionYear);
+	
+	public List<Constituency> findAssemblyConstituenciesIdsAndNames(
+			Long parliamentConstituencyId, Long electionYear);
 }
