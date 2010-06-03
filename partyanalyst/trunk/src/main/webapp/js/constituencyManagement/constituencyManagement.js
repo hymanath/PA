@@ -258,70 +258,86 @@ function displayDateText1(type, args, obj) {
 }
 
 function buildProblemsDetailsDT(results) {
-	
-	var elmt = document.getElementById("problemsDetailsDTDiv");
-
-	if (!elmt)
-		return;
-
-	if(results.length != 0)
-	{
-		elmt.innerHTML = '';
-		var probDTColumnDefs = [ {
-			key : "problemLocationId",
-			hidden : true
-		}, {
-			key : "problem",
-			label : localizationObj.problemLabel,
-			sortable : true
-		}, {
-			key : "description",
-			label : localizationObj.description
-		}, {
-			key : "existingFrom",
-			label : localizationObj.existingFrom
-		}, {
-			key : "hamlet",
-			label : localizationObj.HAMLET,
-			sortable : true
-		}, {
-			key : "problemSourceScope",
-			label : localizationObj.source,
-			sortable : true
-		}, {
-			key : "problemAmdProblemSourceId",
-			hidden : true
-		}, {
-			key : "status",
-			label : localizationObj.status,
-			sortable : true
-		} ];
-	
-		var probDTDataSource = new YAHOO.util.DataSource(results);
-		probDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-		probDTDataSource.responseSchema = {
-			fields : [ "problemLocationId", "problem", "description",
-					"existingFrom", "hamlet", "problemSourceScope",
-					"problemAmdProblemSourceId", "status" ]
-		};
-	
-		if (results.length > 10) {
-			var myConfigs = {
-				paginator : new YAHOO.widget.Paginator( {
-					rowsPerPage : 10
-				}),
-				caption : "Recent Problems"
-			};
-		}
-	
-		var probDataTable = new YAHOO.widget.DataTable("problemsDetailsDTDiv",
-				probDTColumnDefs, probDTDataSource, myConfigs);
-	}
-	else{
-		elmt.innerHTML = '';
-		elmt.innerHTML = '<SPAN style="color:green;font-weight:bold;">Zero problems matched this selection criteria</SPAN>';
+		var problemsArr = new Array();
 		
-	}
+		for(var i in results){
+			var problem = {
+					problem:results[i].problem, 
+				  	description:results[i].description,
+					existingFrom:results[i].existingFrom,
+					hamlet:results[i].hamlet,
+					problemSourceScope:results[i].problemSourceScope,
+					problemAndProblemSourceId:results[i].problemAndProblemSourceId,
+					status:results[i].status,
+					more:'<a href="javascript:{}" onclick="getProblemHistoryInfo('+results[i].problemLocationId+')">More Info</a>'
+			};
+			
+			problemsArr.push(problem);
+		}
+		
+		var elmt = document.getElementById("problemsDetailsDTDiv");
+		
+		if (!elmt)
+			return;
+		if(problemsArr.length != 0){
+			var probDTColumnDefs = [ 
+			        				{
+			        					key : "problem",
+			        					label : localizationObj.problemLabel,
+			        					sortable : true
+			        				}, {
+			        					key : "description",
+			        					label : localizationObj.description
+			        				}, {
+			        					key : "existingFrom",
+			        					label : localizationObj.existingFrom,
+			        					sortable : true
+			        				}, {
+			        					key : "hamlet",
+			        					label : localizationObj.HAMLET,
+			        					sortable : true
+			        				}, {
+			        					key : "problemSourceScope",
+			        					label : localizationObj.source,
+			        					sortable : true
+			        				}, {
+			        					key : "problemAmdProblemSourceId",
+			        					hidden : true
+			        				}, {
+			        					key : "status",
+			        					label : localizationObj.status,
+			        					sortable : true
+			        				} ,{
+			        					key : "more",
+			        					label : "More Info",
+			        					sortable : false
+			        				}
+			        		];
+			        		
+			        		var probDTDataSource = new YAHOO.util.DataSource(problemsArr);
+			        		probDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+			        		probDTDataSource.responseSchema = {
+			        			fields : [ "problem", "description", "existingFrom", 
+			        			           "hamlet", "problemSourceScope", "problemAmdProblemSourceId", 
+			        			           "status" , "more"]
+			        		};
+			        		
+			        		if (problemsArr.length > 10) {
+			        			var myConfigs = {
+			        				paginator : new YAHOO.widget.Paginator( {
+			        					rowsPerPage : 10
+			        				}),
+			        				caption : "Recent Problems"
+			        			};
+			        		}
+			        		
+			        		var probDataTable = new YAHOO.widget.DataTable("problemsDetailsDTDiv",
+			        				probDTColumnDefs, probDTDataSource, myConfigs);
+		}else{
+			elmt.innerHTML = '';
+			elmt.innerHTML = '<SPAN style="color:green;font-weight:bold;">Zero problems matched this selection criteria</SPAN>';
+		}
+		
 }
 
 function buildInfluencingPeopleDT(results) {
