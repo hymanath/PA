@@ -572,6 +572,7 @@ public class ProblemManagementReportService implements
 					name += people.getFirstName();
 				if(people.getLastName() != null)
 					name = name+" "+people.getLastName();
+				influencingPeopleVO.setInfluencingPeopleId(people.getInfluencingPeopleId());
 				influencingPeopleVO.setPersonName(name);
 				influencingPeopleVO.setOccupation(people.getOccupation());
 				influencingPeopleVO.setInfluencingRange(people.getInfluencingScope());
