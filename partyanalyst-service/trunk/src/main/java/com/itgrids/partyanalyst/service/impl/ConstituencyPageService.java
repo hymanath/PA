@@ -944,13 +944,17 @@ public class ConstituencyPageService implements IConstituencyPageService {
 								getPartyElectionResultVOs().get(i).getVotesEarned();
 				
 				partyBaletVotes = ((Double)values[2]).longValue() - totalVotesEarnedForEachPartyBoothWise;
+				if(partyBaletVotes<0){
+					partyBaletVotes = 0l; //extra information need to be added 
+					log.debug("Other votes contains a negative value.");
+				}
 				partyElectionResultVO = new PartyElectionResultVO();
 				partyElectionResultVO.setVotesEarned(partyBaletVotes);
 				if(totalBaletVotes > 0)
 					partyElectionResultVO.setVotesPercentage(new BigDecimal(partyBaletVotes*100.0/totalBaletVotes)
 																.setScale(2,BigDecimal.ROUND_HALF_UP).toString());
 				else
-					partyElectionResultVO.setVotesPercentage("-");
+					partyElectionResultVO.setVotesPercentage("0");
 				partyElectionResultVOs.add(partyElectionResultVO);
 			}
 				
@@ -1303,7 +1307,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	/** 
 	 * This method is used to get all party voting trendz for a zptc or mptc for a particular election year. 
 	 */
-	public List<TeshilPartyInfoVO> getPartyWiseZptcOrMptcElectionDataForAConstituency(Long constituencyId,String electionYear,String electionType){	
+	public List<TeshilPartyInfoVO> getPartyWiseZptcOrMptcElectionDataForAConstituency(Long constituencyId,String electionYear,String electionType,String constituencyType){	
 		try{
 			if(log.isDebugEnabled()){
 				log.debug("Inside getPartyWiseZptcOrMptcElectionDataForAConstituency() method");
@@ -1318,13 +1322,27 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			List<TeshilPartyInfoVO> allteshilPartyInfo = new ArrayList<TeshilPartyInfoVO>();
 			if(log.isDebugEnabled())
 				log.debug("Making delimitationConstituencyMandalService.getMandalsForDelConstituency DAO Call...");		
-			List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
-			List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(constituencyId); //Check code here
-			ListIterator it = list.listIterator();
-			while(it.hasNext()){
-				Object[] parms = (Object[])it.next();
-				tehsilIds.append(",").append(new Long(parms[0].toString()));
-			}			
+			if(constituencyType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+				List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
+				List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(constituencyId); //Check code here
+				ListIterator it = list.listIterator();
+				while(it.hasNext()){
+					Object[] parms = (Object[])it.next();
+					tehsilIds.append(",").append(new Long(parms[0].toString()));
+				}
+			}else{
+				List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
+				List assemblyList = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituenciesIdsAndNames(constituencyId,Long.parseLong(delimitationYear.get(0).toString()));
+				for(int i=0;i<assemblyList.size();i++){
+					Object[] assemblyListParms = (Object[])assemblyList.get(i);
+					List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(Long.parseLong(assemblyListParms[0].toString())); //Check code here
+					ListIterator it = list.listIterator();
+					while(it.hasNext()){
+						Object[] parms = (Object[])it.next();
+						tehsilIds.append(",").append(new Long(parms[0].toString()));
+					}				
+				}				
+			}				
 			teshilPartyInfoVO = getTehsilPartyInfoForAConstituency(tehsilIds,electionYear,electionType);
 			allteshilPartyInfo.addAll(teshilPartyInfoVO); 
 			return allteshilPartyInfo;
@@ -1335,7 +1353,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}
 	}
 	
-	public MandalAllElectionDetailsVO getAllTehsilElectionLevelWinnersForAConstituency(Long constituencyId,String candidateDetailsType,Long partyId,String electionType,String electionYear){
+	public MandalAllElectionDetailsVO getAllTehsilElectionLevelWinnersForAConstituency(Long constituencyId,String candidateDetailsType,Long partyId,String electionType,String electionYear,String constituencyType){
 		List<MandalAllElectionDetailsVO> allVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
 		List<MandalAllElectionDetailsVO> winningCandidateVotersDetails = new ArrayList<MandalAllElectionDetailsVO>(0);
 		MandalAllElectionDetailsVO mandalAllElectionDetailsVo = new MandalAllElectionDetailsVO();
@@ -1343,13 +1361,29 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		List successorCandidate,winningCandidate,allCandidates;
 		int flag=0;
 		StringBuilder tehsilIds = new StringBuilder();
-		List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
-		List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(constituencyId); //Check code here
-		ListIterator it = list.listIterator();
-		while(it.hasNext()){
-			Object[] parms = (Object[])it.next();
-			tehsilIds.append(",").append(new Long(parms[0].toString()));
-		}					
+				
+		if(constituencyType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+			List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
+			List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(constituencyId); //Check code here
+			ListIterator it = list.listIterator();
+			while(it.hasNext()){
+				Object[] parms = (Object[])it.next();
+				tehsilIds.append(",").append(new Long(parms[0].toString()));
+			}
+		}else{
+			List delimitationYear = delimitationConstituencyDAO.getLatestDelimitationYear();
+			List assemblyList = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituenciesIdsAndNames(constituencyId,Long.parseLong(delimitationYear.get(0).toString()));
+			for(int i=0;i<assemblyList.size();i++){
+				Object[] assemblyListParms = (Object[])assemblyList.get(i);
+				List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(Long.parseLong(assemblyListParms[0].toString())); //Check code here
+				ListIterator it = list.listIterator();
+				while(it.hasNext()){
+					Object[] parms = (Object[])it.next();
+					tehsilIds.append(",").append(new Long(parms[0].toString()));
+				}				
+			}				
+		}	
+		
 		if(candidateDetailsType.equalsIgnoreCase("winners")){
 			successorCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,successorRank,partyId,electionType,electionYear);
 			winningCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,winnerRank,partyId,electionType,electionYear);
