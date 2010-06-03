@@ -379,7 +379,7 @@
 		for(var i in parliamentResult){
 			str += '<div><img src="charts/'+parliamentResult[i].chartPath+'"></div>';
 			detailsDIV += '<div><input type="button" class="button" onclick="showDetailedChart(\''+parliamentResult[i].detailedChartPath+'\')" value="Detailed Chart For Paliament"></div>';			
-			str += '<div id="parliamentElecResDiv_'+i+'">';
+			str += '<div id="parliamentElecResDiv_'+i+'" style="margin-top:20px;">';
 			str += '<table id = "parliamentElecResTable_'+i+'">';
 			for(var j in parliamentResult[i].constituencyOrMandalWiseElectionVO){
 				str += '<tr>';
@@ -969,7 +969,7 @@ function buildElectionsSelectBox(myResults){
 			<div id="MandalVotingTrendz_head" class="layoutHeadersClass"></div>
 			<div id="electionIdsSelectDiv" style="padding-left:10px;"></div>
 			<div id="mandalOrConstiElecResultDiv">
-			<div id="parliamentElectionResultsDiv"></div>
+			<div id="parliamentElectionResultsDiv" style="overflow:auto;"></div>
 			<div id="electionResultsInConstituencyDiv"></div>
 			<table><tr>
 					<td id="labelRadio"><b>Select The Format You Want :</b></td>
