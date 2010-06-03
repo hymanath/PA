@@ -57,7 +57,8 @@
 <script type="text/javascript">
 var constituencyId = '${constId}';
 var electionType = '${eleType}';
-var electionYear = '${eleYear}'; 
+var electionYear = '${eleYear}';
+var constTYPE = '${constTYPE}';
 var tehsilDetails={
 		winnersArray:[],
 		partiesList:[]
@@ -338,6 +339,7 @@ function allCandidatesForaConstituency()
 			electionYear:electionYear,
 			partyId:0,
 			candidateDetailsType:"allCandidates",
+			constTYPE : constTYPE,
 			task:"getAllCandidates"						
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -356,6 +358,7 @@ function winnersForaConstituency()
 			constituencyId:constituencyId,
 			electionType:electionType,
 			electionYear:electionYear,
+			constTYPE : constTYPE,
 			task:"getWinners"						
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -375,6 +378,7 @@ function partyWiseCandidateDetails(id)
 			electionType:electionType,
 			electionYear:electionYear,
 			partyId:0,
+			constTYPE : constTYPE,
 			candidateDetailsType:"allCandidates",
 			task:"getPartyWise"				
 	};
@@ -392,6 +396,7 @@ function getParties()
 			constituencyId:constituencyId,
 			electionType:electionType,
 			electionYear:electionYear,
+			constTYPE : constTYPE,
 			task:"getParties"						
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
