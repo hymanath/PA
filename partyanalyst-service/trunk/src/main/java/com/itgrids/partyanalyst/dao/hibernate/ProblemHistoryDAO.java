@@ -139,7 +139,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
 				"model.problemStatus.status," +
 				"model.problemLocation.problemAndProblemSource.problem.identifiedOn"+
-				" from ProblemHistory model where model.dateUpdated >= ? and model.dateUpdated <= ? and " +
+				" from ProblemHistory model where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? and " +
 				"model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + tehsilIds +
 				") and model.problemStatus.problemStatusId = ? and model.isDelete is null",params);
 	}
@@ -154,7 +154,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 				"model.problemLocation.problemAndProblemSource.problemAndProblemSourceId," +
 				"model.problemStatus.status," +
 				"model.problemLocation.problemAndProblemSource.problem.identifiedOn"+
-				" from ProblemHistory model where model.dateUpdated >= ? and model.dateUpdated <= ? and " +
+				" from ProblemHistory model where date(model.dateUpdated) >= ? and date(model.dateUpdated) <= ? and " +
 				"model.problemLocation.hamlet.township.tehsil.tehsilId in (  " + tehsilIds +
 				") and model.isDelete is null",params);
 	}
