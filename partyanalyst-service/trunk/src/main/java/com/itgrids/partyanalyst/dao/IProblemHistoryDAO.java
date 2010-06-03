@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
@@ -36,4 +37,8 @@ public interface IProblemHistoryDAO extends GenericDao<ProblemHistory, Long>{
 	public List findLatestProblemsByMandals(String tehsilIds, Long statusId);
 	
 	public List findLatestProblemsGroupByDatePostedByMandalsAndStatus(String tehsilIds, String statusIds);
+	
+	public List<ProblemHistory> findProblemHistoryByProblemLocation(Long problemLocationId);
+
+	public List<AssignedProblemProgress> getAssignedProblemsProgress(Long problemHistoryId);
 }

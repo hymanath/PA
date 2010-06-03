@@ -20,4 +20,8 @@ public interface IAssignedProblemProgressDAO extends GenericDao<AssignedProblemP
 	public List<AssignedProblemProgress> findByRegistrationIdAndStatusId(Long registrationId, Long statusId);	
 	
 	public List<AssignedProblemProgress> getLatestProblemsByRegistrationIdAndStatusId(Long registrationId, Long statusId,String status);
+
+	public List getAssignedProblemsProgressByLocation(Long problemLocationId);
+
+	
 }

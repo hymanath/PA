@@ -1,13 +1,17 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 
 	private IProblemHistoryDAO problemHistoryDAO;
@@ -62,7 +66,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		List result = problemHistoryDAO.findProblemsForALocationsByHamletId(66l);
 		assertEquals(1, result.size());
 	}*/
-	public void testGetProblemsCountInAllStatusByLocationForAUser(){
+	/*public void testGetProblemsCountInAllStatusByLocationForAUser(){
 		List result = problemHistoryDAO.getProblemsCountInAllStatusByLocation("231,232");
 		System.out.println(result.size());
 		for(int i=0;i<result.size();i++){
@@ -71,7 +75,7 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 			System.out.print(parms[1].toString()+"\t");
 			System.out.println(Long.parseLong(parms[2].toString()));
 		}
-	}
+	}*/
 	
 	/*public void testFindProblemsForALocationsByConstituencyId(){
 		List list = problemHistoryDAO.findLatestProblemsByMandals("835,836,843,844", 2l);
@@ -88,4 +92,35 @@ public class ProblemHistroryDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
+	/*public void testFindLatestProblemsGroupByDatePostedByMandalsAndStatus(){
+		List list = problemHistoryDAO.findLatestProblemsGroupByDatePostedByMandalsAndStatus("835,836,843,844", "1,2,6");
+		System.out.println(list.size());
+		for(int i=0;i<list.size();i++){
+			Object[] parms = (Object[])list.get(i);
+			System.out.println(parms[0]+"\t"+parms[1]+"\t"+parms[2]);
+		}
+	}*/
+	
+	/*public void testDate(){
+		GregorianCalendar calendar = new GregorianCalendar();
+		SimpleDateFormat sdfOutput =  
+	        new SimpleDateFormat  ("dd/MM/yyyy");
+		for(int i=0; i<10; i++){
+			calendar.setTime(new Date());
+			calendar.add(GregorianCalendar.DAY_OF_MONTH, -i);
+			System.out.println("i::"+i+"::"+sdfOutput.format((Date) calendar.getTime()));
+		}	  
+	  
+	}*/
+	
+	/*public void testGetAssignedProblemsProgress(){
+		List list = problemHistoryDAO.getAssignedProblemsProgress(3l);
+		System.out.println(list.size());
+	}
+	*/
+	
+	public void testFindProblemHistoryByProblemLocationAndStatusId(){
+		List list = problemHistoryDAO.findProblemHistoryByProblemLocation(2l);
+		System.out.println(list.size());
+	}
 }

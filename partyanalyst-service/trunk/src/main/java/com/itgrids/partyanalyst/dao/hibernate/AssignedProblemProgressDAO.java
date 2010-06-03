@@ -33,8 +33,6 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 				" and model.problemHistory.problemStatus.problemStatusId = ? and model.problemHistory.isDelete is null",params );
 	}
 
-
-	
 	@SuppressWarnings("unchecked")
 	public List findProblemsForAHamletByHistoryId(Long historyId) {
 		return getHibernateTemplate().find("select model.problemSourceScopeConcernedDepartment.department," +
@@ -49,4 +47,13 @@ public class AssignedProblemProgressDAO extends GenericDaoHibernate<AssignedProb
 		return getHibernateTemplate().find("from AssignedProblemProgress model where model.problemHistory.problemLocation.problemAndProblemSource.user.registrationId = ?" +
 				" and  model.problemHistory.problemStatus.problemStatusId = ? and model.problemHistory.isDelete = ? ",params );
 	}
+
+	public List getAssignedProblemsProgressByLocation(Long problemLocationId) {
+		return getHibernateTemplate().find("select model.problemSourceScopeConcernedDepartment.department, " +
+				"model.concernedPersonName, model.contactNo, model.designation, model.performedDate " +
+				"from AssignedProblemProgress model where " +
+				"model.problemHistory.problemLocation.problemLocationId = ? and model.problemHistory.isDelete is null " +
+				"group by model.problemHistory.problemHistoryId ",problemLocationId);
+	}
+	
 }

@@ -3,7 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 import java.util.List;
 
-public class ProblemBeanVO implements Serializable{
+public class ProblemBeanVO extends ResultStatus implements Serializable{
 	/**
 	 * 
 	 */
@@ -53,14 +53,16 @@ public class ProblemBeanVO implements Serializable{
 	private String updatedDate;
 	private String status;
 	private Long problemAndProblemSourceId;
-	private List<ProblemHistoryVO> problemHistory;
+	private Boolean isAssigned;
+	private List<ProblemHistoryVO> problemHistories;
 
-	public List<ProblemHistoryVO> getProblemHistory() {
-		return problemHistory;
+	
+	public List<ProblemHistoryVO> getProblemHistories() {
+		return problemHistories;
 	}
 
-	public void setProblemHistory(List<ProblemHistoryVO> problemHistory) {
-		this.problemHistory = problemHistory;
+	public void setProblemHistories(List<ProblemHistoryVO> problemHistories) {
+		this.problemHistories = problemHistories;
 	}
 
 	public Long getTehsilId() {
@@ -412,6 +414,14 @@ public class ProblemBeanVO implements Serializable{
 
 	public void setProblemAndProblemSourceId(Long problemAndProblemSourceId) {
 		this.problemAndProblemSourceId = problemAndProblemSourceId;
+	}
+
+	public Boolean getIsAssigned() {
+		return isAssigned;
+	}
+
+	public void setIsAssigned(Boolean isAssigned) {
+		this.isAssigned = isAssigned;
 	}
 	
 	

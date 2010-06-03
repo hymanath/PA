@@ -9,7 +9,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.log4j.Logger;
 
@@ -19,6 +18,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
+import com.itgrids.partyanalyst.dao.IProblemSourceScopeConcernedDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IProblemStatusDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
+import com.itgrids.partyanalyst.model.ProblemHistory;
 import com.itgrids.partyanalyst.model.ProblemStatus;
 import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.Tehsil;
@@ -52,6 +53,7 @@ public class ProblemManagementReportService implements
 	private IHamletDAO hamletDAO;
 	private ITehsilDAO tehsilDAO;
 	private InfluencingPeopleDAO influencingPeopleDAO;
+	private IProblemSourceScopeConcernedDepartmentDAO problemSourceScopeConcernedDepartmentDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
@@ -100,7 +102,14 @@ public class ProblemManagementReportService implements
 		this.problemExternalSourceDAO = problemExternalSourceDAO;
 	}
 
-	
+	public IProblemSourceScopeConcernedDepartmentDAO getProblemSourceScopeConcernedDepartmentDAO() {
+		return problemSourceScopeConcernedDepartmentDAO;
+	}
+
+	public void setProblemSourceScopeConcernedDepartmentDAO(
+			IProblemSourceScopeConcernedDepartmentDAO problemSourceScopeConcernedDepartmentDAO) {
+		this.problemSourceScopeConcernedDepartmentDAO = problemSourceScopeConcernedDepartmentDAO;
+	}
 
 	public IProblemStatusDAO getProblemStatusDAO() {
 		return problemStatusDAO;
@@ -446,6 +455,89 @@ public class ProblemManagementReportService implements
 		}
 		
 		/*
+		 * To View the Complete Life Cycle Of A Problem From Start to Current Status
+		 */
+		
+		public ProblemBeanVO getProblemHistoryInfo(Long problemLocationId) {
+			ProblemBeanVO problemBeanVO = new ProblemBeanVO();
+			ProblemHistory problemHistory = null;
+			List<ProblemHistoryVO> problemHistories = new ArrayList<ProblemHistoryVO>(0);
+			try{
+				List<ProblemHistory> problemsInHistory = problemHistoryDAO.findProblemHistoryByProblemLocation(problemLocationId);
+				if(problemsInHistory.size() > 0){
+					problemHistory = problemsInHistory.get(0);
+					problemBeanVO.setProblem(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getProblem()));
+					problemBeanVO.setDescription(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getDescription()));
+					problemBeanVO.setHamlet(checkForNull(problemHistory.getProblemLocation().getHamlet().getHamletName()));
+					problemBeanVO.setExistingFrom(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getExistingFrom().toString()));
+					problemBeanVO.setReportedDate(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblem().getIdentifiedOn().toString()));
+					
+					if(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemExternalSource() != null){
+						problemBeanVO.setPostedPersonName(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemExternalSource().getName()));
+						problemBeanVO.setPhone(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemExternalSource().getMobile()));
+						problemBeanVO.setAddress(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemExternalSource().getAddress()));
+						problemBeanVO.setEmail(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getProblemExternalSource().getEmail()));	
+					}else{
+						problemBeanVO.setPostedPersonName(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getUser().getFirstName()+" "+problemHistory.getProblemLocation().getProblemAndProblemSource().getUser().getLastName()));
+						problemBeanVO.setPhone(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getUser().getMobile()));
+						problemBeanVO.setAddress(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getUser().getAddress()));
+						problemBeanVO.setEmail(checkForNull(problemHistory.getProblemLocation().getProblemAndProblemSource().getUser().getEmail()));
+					}
+					
+					List assignedProbs = assignedProblemProgressDAO.getAssignedProblemsProgressByLocation(problemLocationId);
+					
+					if(assignedProbs.size() > 0 ){
+						Object[] values = ((List<Object[]>)assignedProbs).get(0);
+						problemBeanVO.setIsAssigned(true);
+						problemBeanVO.setDepartment(checkForNull(values[0]));
+						problemBeanVO.setDepartmentConcernedPersonName(checkForNull(values[1]));
+						problemBeanVO.setDepartmentConcernedPersonPhoneNumber(checkForNull(values[2]));
+						problemBeanVO.setDesignation(checkForNull(values[3]));
+						problemBeanVO.setUpdatedDate(checkForNull(values[4]));
+					}else
+						problemBeanVO.setIsAssigned(false);
+					
+				}else{
+					throw new Exception("No Data Available For Problem ");
+				}
+			}catch(Exception ex){
+				problemBeanVO.setExceptionEncountered(ex);
+				ex.printStackTrace();
+			}
+			
+			List result = problemHistoryDAO.findCompleteProblems(problemLocationId);
+			for(int j=0;j<result.size();j++){
+				Object[] problemData = (Object[])result.get(j);
+				ProblemHistoryVO problemHistoryVO = new ProblemHistoryVO();
+				problemHistoryVO.setProblemHistoryId(Long.parseLong(problemData[0].toString()));
+				if(problemData[1] != null){
+					problemHistoryVO.setComments(problemData[1].toString());
+				}	
+				else{
+					problemHistoryVO.setComments("--");
+				}
+				problemHistoryVO.setMovedDate(timeStampConversion(problemData[2].toString()));
+				if(!(problemData[3] == null)){
+					problemHistoryVO.setIsDelete(problemData[3].toString());
+				}
+				else{
+					problemHistoryVO.setIsDelete("--");
+				}
+				problemHistoryVO.setStatus(problemData[5].toString());
+				problemHistories.add(problemHistoryVO);
+			}
+			
+			problemBeanVO.setProblemHistories(problemHistories);
+			return problemBeanVO;
+		}
+		
+		private String checkForNull(Object value){
+			if(value != null)
+				return value.toString();
+			return "--";			
+		}
+		
+		/*
 		 * To convert timestamp which is in yyyy-MM-dd hh:mm:ss format to dd-MM-yyyy hh:mm:ss format.
 		 */
 		public String timeStampConversion(String idate){
@@ -576,6 +668,9 @@ public class ProblemManagementReportService implements
 				influencingPeopleVO.setPersonName(name);
 				influencingPeopleVO.setOccupation(people.getOccupation());
 				influencingPeopleVO.setInfluencingRange(people.getInfluencingScope());
+				if(IConstants.CONSTITUENCY_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+					
+				}
 				influencingPeopleVO.setCast(people.getCaste());
 				influencingPeopleVO.setContactNumber(people.getPhoneNo());
 				influencingPeopleVO.setLocalArea(people.getHamlet().getHamletName());
@@ -699,8 +794,6 @@ public class ProblemManagementReportService implements
 					calendar.setTime(new Date());
 					calendar.add(GregorianCalendar.DAY_OF_MONTH, -i);
 					date = dateFormater.format((Date) calendar.getTime());
-					log.debug("Previous Date::"+date);
-					System.out.println("Previous Date::"+date);
 					if(probsCountByStatusAndDateMap.get(date+IConstants.NEW) == null){
 						problemsCountByStatusObj = new ProblemsCountByStatus();
 						problemsCountByStatusObj.setCount(0);

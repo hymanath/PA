@@ -29,4 +29,6 @@ public interface IProblemManagementReportService {
 	public List<ProblemBeanVO> getProblemsInfoByStatusInALocation(Long accessValue,String accessType,Long registrationId,String taskType);
 	
 	public LocationwiseProblemStatusInfoVO getRecentProblemsWithInTheRegion(String accessType, Long accessValue, Long statusId, int limit);
+	
+	public ProblemBeanVO getProblemHistoryInfo(Long problemLocationId);
 }

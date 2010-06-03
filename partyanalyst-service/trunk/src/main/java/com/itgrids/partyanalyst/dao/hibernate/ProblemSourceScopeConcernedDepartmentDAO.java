@@ -30,6 +30,6 @@ public class ProblemSourceScopeConcernedDepartmentDAO extends GenericDaoHibernat
 	public List<ProblemSourceScopeConcernedDepartment> findDepartmentsByScope(String problemScope) {
 		
 		return getHibernateTemplate().find("from ProblemSourceScopeConcernedDepartment model where model.problemSourceScope.scope = ?", problemScope);
-
 	}
+	
 }

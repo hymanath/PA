@@ -25,6 +25,7 @@ public class InfluencingPeopleVO implements Serializable{
 	private String cast;
 	private String occupation;
 	private String influencingRange;
+	private String influencingRangeName;
 	private String position;
 	private Long hamletId;
 	
@@ -155,6 +156,14 @@ public class InfluencingPeopleVO implements Serializable{
 	
 	public void setAge(String age) {
 		this.age = age;
+	}
+
+	public String getInfluencingRangeName() {
+		return influencingRangeName;
+	}
+
+	public void setInfluencingRangeName(String influencingRangeName) {
+		this.influencingRangeName = influencingRangeName;
 	}
 
 	public void setInfluencingPeopleId(Long influencingPeopleId) {

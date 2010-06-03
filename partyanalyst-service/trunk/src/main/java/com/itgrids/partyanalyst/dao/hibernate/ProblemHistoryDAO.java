@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IProblemHistoryDAO;
+import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.ProblemHistory;
 
 public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long> implements IProblemHistoryDAO{
@@ -179,5 +180,16 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 						" group by date(model.dateUpdated),model.problemStatus.problemStatusId order by model.dateUpdated desc");
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<ProblemHistory> findProblemHistoryByProblemLocation(Long problemLocationId) {
+		Object [] params = {problemLocationId};
+		return getHibernateTemplate().find("from ProblemHistory model where model.problemLocation.problemLocationId = ?" +
+				" and model.isDelete is null",params );
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<AssignedProblemProgress> getAssignedProblemsProgress(Long problemHistoryId) {		
+		return getHibernateTemplate().find("select model.assignedProblemProgresses from ProblemHistory model where model.problemHistoryId = ?",problemHistoryId) ;
+	}
 	
 }
