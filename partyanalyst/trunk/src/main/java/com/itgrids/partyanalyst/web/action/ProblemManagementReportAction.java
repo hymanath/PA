@@ -57,6 +57,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	private String status=null;
 	private String taskType=null;
 	private List<ProblemHistoryVO> problemHistory;
+	private ProblemBeanVO problemBeanVO;
 	private LocationwiseProblemStatusInfoVO locationwiseProblemStatusInfoVO;
 	private ServletContext context;
 	private String accessType;
@@ -203,6 +204,12 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	public void setConstituenciesList(List<SelectOptionVO> constituenciesList) {
 		this.constituenciesList = constituenciesList;
 	}
+	public ProblemBeanVO getProblemBeanVO() {
+		return problemBeanVO;
+	}
+	public void setProblemBeanVO(ProblemBeanVO problemBeanVO) {
+		this.problemBeanVO = problemBeanVO;
+	}
 	public String execute() throws Exception
 	{	
 		log.debug("In Action");
@@ -309,6 +316,20 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				System.out.println("Result From JSON:"+jObj);
 				problemlocationId = new Long(jObj.getLong("locationId"));
 				problemHistory = problemManagementReportService.getCompleteDetailsForAProblem(problemlocationId);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}			
+		return SUCCESS;
+	}
+	
+	public String getProblemHistoryDataNew(){
+		if(task != null){
+			try{
+				jObj = new JSONObject(getTask());
+				System.out.println("Result From JSON:"+jObj);
+				problemlocationId = new Long(jObj.getLong("locationId"));
+				problemBeanVO = problemManagementReportService.getProblemHistoryInfo(problemlocationId);
 			}catch(Exception e){
 				e.printStackTrace();
 			}

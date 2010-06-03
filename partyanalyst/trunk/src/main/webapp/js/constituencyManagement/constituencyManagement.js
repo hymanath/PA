@@ -3,9 +3,9 @@ var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + n
 var minDate;
 var resultsGlobal; 
 
-
 var problemMgmtObj = {
-	problemsStatusArr : []
+	problemsStatusArr : [],
+	initialProblems:[]
 };
 var mobileNumbersArray = new Array();
 function getTodayDateTime() {
@@ -166,13 +166,14 @@ function showProblemsStatusCount(results) {
 	problems_OptionsContent += '<tr>';
 	problems_OptionsContent += '<td colspan="2">';
 	problems_OptionsContent += '<DIV class="yui-skin-sam">';
-	// problems_OptionsContent+='<div
-	// class="widgetHeaders">ProblemDetails</div>';
+	problems_OptionsContent+='<div id="problemsDetailsDTDiv_head" class="widgetHeaders">Problem Details</div>';
 	problems_OptionsContent += '<DIV id="problemsDetailsDTDiv"></DIV>';
 	problems_OptionsContent += '</DIV></td>';
 	problems_OptionsContent += '</tr>';
 	problems_OptionsContent += '</table>';
 	problems_OptionsEl.innerHTML = problems_OptionsContent;
+
+	buildProblemsDetailsDT(problemMgmtObj.initialProblems);
 }
 
 function showDateCal() {

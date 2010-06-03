@@ -601,6 +601,12 @@
 				<param name="root">problemHistory</param>				
 			</result> 
 		</action>
+		
+		<action name="problemManagementHistoryResultsNew" class="problemManagementReportAction" method="getProblemHistoryDataNew">
+			<result type="json" name="success">
+				<param name="root">problemBeanVO</param>				
+			</result> 
+		</action>
 
 		<action name="userGroupAction" class="userGroupAction">
 			<result name="success">/jsp/userGroups.jsp</result>

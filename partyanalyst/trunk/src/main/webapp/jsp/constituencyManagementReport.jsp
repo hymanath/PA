@@ -55,6 +55,7 @@
 
 	<script type="text/javascript" src="js/constituencyManagement/constituencyManagement.js"></script>
 	<script type="text/javascript" src="js/constituencyManagement/cadreManagement.js"></script>
+	<script type="text/javascript" src="js/problemManagementReport/problemManagementReport.js"></script>
 	
 	<script type="text/javascript">
 		
@@ -247,15 +248,27 @@
 			  var problemInfo = {
 					  	problemLocationId:'${prob.problemLocationId}',
 						problem:'${prob.problem}', 
-						description:'${prob.description}',
+					  	description:'${prob.description}',
 						existingFrom:'${prob.existingFrom}',
 						hamlet:'${prob.hamlet}',
 						problemSourceScope:'${prob.problemSourceScope}',
 						problemAndProblemSourceId:'${prob.problemAndProblemSourceId}',
-						status:'${prob.status}'	
+						status:'${prob.status}'
 					  };
-			  initialProbs.push(problemInfo);
+			  problemMgmtObj.initialProblems.push(problemInfo);
 		</c:forEach>
+
+		function getProblemHistoryInfo(problemLocationId){
+			var jsObj=
+			{
+					locationId:problemLocationId,
+					task:"getProblemDetails"						
+			};
+
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/problemManagementHistoryResultsNew.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+		}
   
 		function getProblemsStatusCountByAccessType()
 		{
@@ -267,6 +280,7 @@
 			var url = "<%=request.getContextPath()%>/problemsCountByStatusBasedOnAccessLevelsAction.action?"+param;
 			callAjax(param,jsObj,url);
 		}
+		
 		function getProblemsByStatusInLocations(status)
 		{			
 			var jsObj=
@@ -280,6 +294,7 @@
 				var url = "<%=request.getContextPath()%>/problemDetailsByStatusAction.action?"+rparam;						
 				callAjax(rparam,jsObj,url);
 		}
+		
 		function getProblemDetailsInSelectedDates(statusId)
 		{
 			var alertMessageDivEl = document.getElementById("alertMessageDiv");
@@ -321,6 +336,7 @@
 			var url = "<%=request.getContextPath()%>/problemsByDateBasedOnStatusAction.action?"+param;
 			callAjax(param,jsObj,url);
 		}
+		
 		function getInfluencingPeopleInAConstituency()
 		{
 			var jsObj= 
@@ -400,6 +416,9 @@
 										} else if(jsObj.task == "getProblemsByStatusInALocation")
 										{
 											buildProblemsByStatusDialog(myResults,jsObj);
+										}else if(jsObj.task == "getProblemDetails")
+										{
+											showProblemsHistoryReport(myResults);			
 										} else if(jsObj.task == "sendSMS")
 										{
 											showSentSmsConfirmation(jsObj);
@@ -420,7 +439,7 @@
 
 					YAHOO.util.Connect.asyncRequest('GET', url, callback);
 			}														
-			
+		
 	</script>
 
 	
@@ -458,6 +477,7 @@
 					</div>
 					<div id="problems_outline_Div"></div>
 					<DIV id="problems_Options" ></DIV>
+					<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>
 					
 					<DIV class="yui-skin-sam"><DIV id="problemsByStatusPanelDiv"></DIV></DIV>
 				</div>
@@ -556,10 +576,10 @@
 					id:'${probStatus.id}',
 					value:'${probStatus.name}'
 				};
-		problemMgmtObj.problemsStatusArr.push(ob);	
+		problemMgmtObj.problemsStatusArr.push(ob);
 		</c:forEach>
-
-		initializeConstituencyManagement();
+		initializeConstituencyManagement();	
+		
 	</script>
 	
 </body>
