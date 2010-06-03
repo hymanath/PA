@@ -94,7 +94,7 @@
 			partyMptcArray:[]
 	};
 	var constituencyId = ${constituencyId};
-	
+	var constituencyTYPE;
 	function callAjax(jsObj,url)
 	{					
  		var callback = {			
@@ -243,13 +243,13 @@
 		}; 		
 	}
 	
-	function redirectZptcCandidateLink(){
-		 var browser1 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
+	function redirectZptcCandidateLink(){												
+		 var browser1 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear+"&constTYPE="+constituencyTYPE,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
 		 browser1.focus();
 	}
 
 	function redirectMptcCandidateLink(){
-		 var browser2 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
+		 var browser2 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyId+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear+"&constTYPE="+constituencyTYPE,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
 		 browser2.focus();
 	}
 	function buildZptcResults(results){
@@ -735,7 +735,9 @@ function getParliamentResults(elecYear){
 
 function getZptcPartyDetails(elecYear){
 	zptcElectionYear = elecYear;
+	constituencyTYPE = constituencyPageMainObj.constituencyInfo.constituencyType;
 	var jsObj = {
+			constituencyType:constituencyPageMainObj.constituencyInfo.constituencyType,
 			constituencyId:${constituencyId},
 			electionYear:elecYear,
 			task:"getZptcElectionResults"
@@ -748,6 +750,7 @@ function getZptcPartyDetails(elecYear){
 function getMptcPartyDetails(elecYear){
 	mptcElectionYear = elecYear;
 	var jsObj = {
+			constituencyType:constituencyPageMainObj.constituencyInfo.constituencyType,
 			constituencyId:${constituencyId},
 			electionYear:elecYear,
 			task:"getMptcElectionResults"
