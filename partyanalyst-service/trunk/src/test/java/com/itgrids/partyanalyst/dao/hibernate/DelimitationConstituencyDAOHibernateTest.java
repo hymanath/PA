@@ -45,7 +45,8 @@ public class DelimitationConstituencyDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	public void testGetAssembliesInState(){
-		List list = delimitationConstituencyDAO.getLatestAssemblyConstituenciesInState(1l);
+		List list = delimitationConstituencyDAO.getLatestDelimitationYear();
+		System.out.println(Long.parseLong(list.get(0).toString()));
 		System.out.println(list.size());
 	}
 }
