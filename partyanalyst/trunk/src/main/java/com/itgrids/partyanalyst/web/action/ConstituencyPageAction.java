@@ -100,9 +100,17 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 HttpServletRequest request;
 	 HttpServletResponse response;
 	 private MandalAllElectionDetailsVO mandalAllElectionDetailsVO;
-	 private String constId,eleType,eleYear;
+	 private String constId,eleType,eleYear,constTYPE;
 	 private String chartName,enlargedChartName;
 	 
+	public String getConstTYPE() {
+		return constTYPE;
+	}
+
+	public void setConstTYPE(String constTYPE) {
+		this.constTYPE = constTYPE;
+	}
+
 	public String getEnlargedChartName() {
 		return enlargedChartName;
 	}
@@ -795,13 +803,13 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			
 			if(jObj.getString("task").equalsIgnoreCase("getZptcElectionResults")){
 				try{
-					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.ZPTC_ELECTION_TYPE);
+					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.ZPTC_ELECTION_TYPE,jObj.getString("constituencyType")); 
 					}catch(Exception ex){
 					log.debug("No data is available...");
 				}
 			}else if(jObj.getString("task").equalsIgnoreCase("getMptcElectionResults")){
 				try{
-					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.MPTC_ELECTION_TYPE);
+					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.MPTC_ELECTION_TYPE,jObj.getString("constituencyType"));
 					}catch(Exception ex){
 					log.debug("No data is available...");
 				}
@@ -825,26 +833,27 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			log.debug("Task::"+jObj.getString("task"));
 
 		if(jObj.getString("task").equalsIgnoreCase("getAllCandidates")){
-			try{
-				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"));
+			try{				
+				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"),jObj.getString("constTYPE"));			
 				}catch(Exception ex){
+				System.out.println("Error.. ");
 				log.debug("No data is available...");
 			}
 		}else if(jObj.getString("task").equalsIgnoreCase("getWinners")){
 			try{
-				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"));
+				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"),jObj.getString("constTYPE"));
 				}catch(Exception ex){
 				log.debug("No data is available...");
 			}
 		}else if(jObj.getString("task").equalsIgnoreCase("getPartyWise")){
 			try{
-				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"));
+				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"),jObj.getString("constTYPE"));
 				}catch(Exception ex){
 				log.debug("No data is available...");
 			}
 		}else if(jObj.getString("task").equalsIgnoreCase("getParties")){
 			try{
-				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"));
+				mandalAllElectionDetailsVO = constituencyPageService.getAllTehsilElectionLevelWinnersForAConstituency(jObj.getLong("constituencyId"),jObj.getString("candidateDetailsType") ,jObj.getLong("partyId"),jObj.getString("electionType"),jObj.getString("electionYear"),jObj.getString("constTYPE"));
 				}catch(Exception ex){
 				log.debug("No data is available...");
 			}
