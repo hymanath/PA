@@ -52,6 +52,15 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]);
 	}
 	
+	public void testGetAllAssembliesIdsAndNamesByParliamentId(){
+		List list = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituenciesIdsAndNames(403l,2009l);
+		for(int i=0;i<list.size();i++){
+			Object[] parms = (Object[])list.get(i);
+			System.out.println(parms[0]+"\t"+parms[1]);
+		}	
+	}
+	
+	
 	public void testParliamentIdByAssemblyId(){
 		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(3382l,2004l);
 		Assert.assertEquals(2, list.size());
