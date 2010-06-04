@@ -538,7 +538,7 @@ function callAjax(param,jsObj,url){
 			getConstituencyResults();
 
 		addCommentsDialog.hide();
-		openerDoc.ajaxCallForBasicAnalysisDetails(openerDoc.electionYear,openerDoc.stateId,openerDoc.electionType,openerDoc.electionTypeId,openerDoc.partyId);
+		//openerDoc.ajaxCallForBasicAnalysisDetails(openerDoc.electionYear,openerDoc.stateId,openerDoc.electionType,openerDoc.electionTypeId,openerDoc.partyId);
 	}
 	function populateYearSelectionBox(results)
 	{
