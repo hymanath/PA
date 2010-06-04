@@ -389,7 +389,7 @@ function buildPartyPositionDataTable(info,rank)
 						divId,myColumnDefs, myDataSource,
 						{
 							formatRow : myRowFormatter,
-							caption : "<font style='color:#2B5181;font-weight:bold;font-size:11px;'> * Main Party</font><font style='color:#7EADBC;font-weight:bold;font-size:11px;'> * Alliance Party</font><font style='font-size:11px;'> V*%=Votes Percentage, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font>",
+							caption : "<div style='text-align:left;'><font style='color:#2B5181;font-weight:bold;font-size:11px;'> * Main Party</font><font style='color:#7EADBC;font-weight:bold;font-size:11px;'> * Alliance Party</font><Br><font style='font-size:11px;'> V*%=Votes Percentage, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font></div>",
 							paginator : new YAHOO.widget.Paginator({ 
 								rowsPerPage    : 10,
 								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
@@ -435,7 +435,7 @@ function buildPartyPositionDataTable(info,rank)
 						divId,myColumnDefs, myDataSource,
 						{
 							formatRow : myRowFormatter,
-							caption : "<font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font><font style='font-size:11px;'> V*%=Votes Percentage, VP*%=Votes Polled Percentage, EC*=Election Candidate, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font>",
+							caption : "<div style='text-align:left;'><font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font><Br><font style='font-size:11px;'> V*%=Votes Percentage, VP*%=Votes Polled Percentage, EC*=Election Candidate, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font></div>",
 							paginator : new YAHOO.widget.Paginator({ 
 								rowsPerPage    : 10,
 								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
@@ -484,7 +484,7 @@ function buildPartyPositionDataTable(info,rank)
 						divId,myColumnDefs, myDataSource,
 						{
 							formatRow : myRowFormatter,
-							caption : "<font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font><font style='font-size:11px;'> V*%=Votes Percentage, VP*%=Votes Polled Percentage, EC*=Election Candidate, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font>",
+							caption : "<div style='text-align:left;'><font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font><Br><font style='font-size:11px;'> V*%=Votes Percentage, VP*%=Votes Polled Percentage, EC*=Election Candidate, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font></div>",
 							paginator : new YAHOO.widget.Paginator({ 
 								rowsPerPage    : 10,
 								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
