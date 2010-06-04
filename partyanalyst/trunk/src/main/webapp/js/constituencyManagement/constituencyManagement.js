@@ -94,7 +94,11 @@ function showProblemsStatusCount(results) {
 	problemStats_bodyElContent += '							</TR>';
 	problemStats_bodyElContent += '							<TR>';
 	problemStats_bodyElContent += '								<TH>Fixed Problems:</TH>';
-	problemStats_bodyElContent += '								<TD>' + results.problemsCountByStatus[i].count + '</TD>';
+	if(results.problemsCountByStatus.length != 0){
+		problemStats_bodyElContent += '								<TD>' + results.problemsCountByStatus[i].count + '</TD>';
+	}else{
+		problemStats_bodyElContent += '								<TD>0</TD>';
+	}		
 	problemStats_bodyElContent += '							</TR>';
 	problemStats_bodyElContent += '						</TABLE>';
 	problemStats_bodyElContent += '					</TD>';

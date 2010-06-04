@@ -364,6 +364,7 @@
 		<property name="hamletDAO" ref="hamletDAO" />	
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />	
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="influencingPeopleDAO" ref="influencingPeopleDAO" />
 		<property name="problemStatusDAO" ref="problemStatusDAO" />
 		 <property name="tehsilDAO" ref="tehsilDAO" />
