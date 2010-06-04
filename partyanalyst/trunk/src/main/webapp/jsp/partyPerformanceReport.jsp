@@ -55,6 +55,8 @@
    
 
 <script type="text/javaScript">
+var electionType = '${electionTypeLiteral}';
+var electionYear = '${reportVO.year}';
 function showBand(divtag)
 { 
 	var divElmt=document.getElementById(divtag);
@@ -103,6 +105,13 @@ function showBand(divtag)
 	callAjax(param,jsObj);
 }
 */
+
+function openConstituencyResultsWindow(constituencyId)
+{
+	var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constituencyId+"&electionType="+electionType+"&electionYear="+electionYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+	browser1.focus();
+}
+
 function getPartyPositionDetails(pos,partyId)
 {		
 	var searchElmt=document.getElementById("partyPosImg");
@@ -346,10 +355,12 @@ function buildPartyPositionDataTable(info,rank)
 	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
 				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
 				{key:"mainParty",label : "Party", sortable:true, resizeable:true}, 
-				{key:"percentageOfVotes",label : "Votes %", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "Opp Party Votes %", sortable:true, resizeable:true}, 
-	            {key:"oppositionParty",label : "Opp Party",sortable:true, resizeable:true}, 
-	            {key:"oppositionPartyCandidate",label : "Opp Candidate", sortable:true, resizeable:true}    
+				{key:"percentageOfVotes",label : "V*%", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "OPV*%", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "OP*",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "OPC*", sortable:true, resizeable:true},
+	            {key:"moreDetails",label : "More Details", sortable:true, resizeable:true}
+	                
 				
 	        ]; 
 			var myDataSource = new YAHOO.util.LocalDataSource(data.partyPerformanceArray); 		
@@ -357,7 +368,8 @@ function buildPartyPositionDataTable(info,rank)
 			myDataSource.responseSchema = { 
 			fields : [
 						{key : "constituencyName"}, {key : "candidateName"}, {key : "mainParty"}, {key : "percentageOfVotes",parser:"number"},
-						{key :"oppositionPartyPercentageOfVotes",parser:"number"},{key : "oppositionParty"}, {key : "oppositionPartyCandidate"}
+						{key :"oppositionPartyPercentageOfVotes",parser:"number"},{key : "oppositionParty"}, {key : "oppositionPartyCandidate"},
+						{key : "moreDetails"}
 					 ]
 	        };
 			
@@ -377,8 +389,13 @@ function buildPartyPositionDataTable(info,rank)
 						divId,myColumnDefs, myDataSource,
 						{
 							formatRow : myRowFormatter,
-							caption : "<font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font>",
-							paginator : new YAHOO.widget.Paginator({ rowsPerPage    : 10 })
+							caption : "<font style='color:#2B5181;font-weight:bold;font-size:11px;'> * Main Party</font><font style='color:#7EADBC;font-weight:bold;font-size:11px;'> * Alliance Party</font><font style='font-size:11px;'> V*%=Votes Percentage, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font>",
+							paginator : new YAHOO.widget.Paginator({ 
+								rowsPerPage    : 10,
+								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+								rowsPerPageOptions: [20,40,60], 
+							    pageLinks: 20 
+								})
 						}); 			
 		}
 		else if(divId == "POSITIONS_WON_WITH_POSITIVE_SWING" || divId == "POSITIONS_WON_WITH_NEGATIVE_SWING" || divId == "POSITIONS_LOST_WITH_POSITIVE_SWING" || divId == "POSITIONS_LOST_WITH_NEGATIVE_SWING")
@@ -387,18 +404,19 @@ function buildPartyPositionDataTable(info,rank)
 	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
 				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
 				{key:"mainParty",label : "Party", sortable:true, resizeable:true}, 
-				{key:"percentageOfVotes",label : "Votes % ", sortable:true, resizeable:true},
-				{key:"previousElectionPercentageOfVotesGained",label : "Votes % in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "Opp Party Votes %", sortable:true, resizeable:true}, 
-	            {key:"oppositionParty",label : "Opp Party",sortable:true, resizeable:true}, 
-	            {key:"oppositionPartyCandidate",label : "Opp&nbsp;Candidate", sortable:true, resizeable:true}    
+				{key:"percentageOfVotes",label : "V*% ", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesGained",label : "V*% in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "OPV*%", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "OP*",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "OPC*", sortable:true, resizeable:true},
+	            {key:"moreDetails",label : "More Details", sortable:true, resizeable:true}    
 				
 	        ]; 
 
 			var myDataSource = new YAHOO.util.DataSource(data.partyPerformanceArray); 
 	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        myDataSource.responseSchema = { 
-	            fields: ["constituencyName","candidateName","mainParty","percentageOfVotes","previousElectionPercentageOfVotesGained","oppositionPartyPercentageOfVotes","oppositionParty","oppositionPartyCandidate"] 
+	            fields: ["constituencyName","candidateName","mainParty","percentageOfVotes","previousElectionPercentageOfVotesGained","oppositionPartyPercentageOfVotes","oppositionParty","oppositionPartyCandidate","moreDetails"] 
 	        };
 
 			var myRowFormatter = function(elTr, oRecord) { 
@@ -417,8 +435,13 @@ function buildPartyPositionDataTable(info,rank)
 						divId,myColumnDefs, myDataSource,
 						{
 							formatRow : myRowFormatter,
-							caption : "<font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font>",
-							paginator : new YAHOO.widget.Paginator({ rowsPerPage    : 10 })
+							caption : "<font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font><font style='font-size:11px;'> V*%=Votes Percentage, VP*%=Votes Polled Percentage, EC*=Election Candidate, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font>",
+							paginator : new YAHOO.widget.Paginator({ 
+								rowsPerPage    : 10,
+								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+								rowsPerPageOptions: [20,40,60], 
+							    pageLinks: 20 
+								})
 						}); 	
 		}		  
 		else if(divId == "POSITIONS_LOST_BY_DROPPING_VOTES")
@@ -427,21 +450,22 @@ function buildPartyPositionDataTable(info,rank)
 	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
 				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
 				{key:"mainParty",label : "Party", sortable:true, resizeable:true}, 
-				{key:"percentageOfVotes",label : "Votes %", sortable:true, resizeable:true},
-				{key:"previousElectionPercentageOfVotesGained",label : "Votes % in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
-				{key:"percentageOfVotesPolled",label : "Votes Polled %", sortable:true, resizeable:true},
-				{key:"previousElectionPercentageOfVotesPolled",label : "Votes&nbsp;Polled % in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
-				{key:"previousElectionCandidate",label : "<s:property value="stateData.prevYear" />  Election Candidate", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "Opp Party Votes %", sortable:true, resizeable:true}, 
-	            {key:"oppositionParty",label : "Opp Party",sortable:true, resizeable:true}, 
-	            {key:"oppositionPartyCandidate",label : "Opp&nbsp;Candidate", sortable:true, resizeable:true}    
+				{key:"percentageOfVotes",label : "V*%", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesGained",label : "V*% in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
+				{key:"percentageOfVotesPolled",label : "VP*%", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesPolled",label : "VP*% in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
+				{key:"previousElectionCandidate",label : "<s:property value="stateData.prevYear" />EC*", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "OPV*%", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "OP*",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "OPC*", sortable:true, resizeable:true},
+	            {key:"moreDetails",label : "More Details", sortable:true, resizeable:true}    
 				
 	        ]; 
 
 			var myDataSource = new YAHOO.util.DataSource(data.partyPerformanceArray); 
 	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	        myDataSource.responseSchema = { 
-	            fields: ["constituencyName","candidateName","mainParty","percentageOfVotes","previousElectionPercentageOfVotesGained","percentageOfVotesPolled","previousElectionPercentageOfVotesPolled","previousElectionCandidate","oppositionPartyPercentageOfVotes","oppositionParty","oppositionPartyCandidate"] 
+	            fields: ["constituencyName","candidateName","mainParty","percentageOfVotes","previousElectionPercentageOfVotesGained","percentageOfVotesPolled","previousElectionPercentageOfVotesPolled","previousElectionCandidate","oppositionPartyPercentageOfVotes","oppositionParty","oppositionPartyCandidate","moreDetails"] 
 	        };
 
 			var myRowFormatter = function(elTr, oRecord) { 
@@ -460,8 +484,13 @@ function buildPartyPositionDataTable(info,rank)
 						divId,myColumnDefs, myDataSource,
 						{
 							formatRow : myRowFormatter,
-							caption : "<font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font>",
-							paginator : new YAHOO.widget.Paginator({ rowsPerPage    : 10 })
+							caption : "<font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font><font style='font-size:11px;'> V*%=Votes Percentage, VP*%=Votes Polled Percentage, EC*=Election Candidate, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font>",
+							paginator : new YAHOO.widget.Paginator({ 
+								rowsPerPage    : 10,
+								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+								rowsPerPageOptions: [20,40,60], 
+							    pageLinks: 20 
+								})
 						}); 	
 		}	
 	}
@@ -787,10 +816,9 @@ function buildPartyPositionDataTable(info,rank)
     }
 
 	function initializeRebelsDataTable() {
-
-	var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-			.get("rebelsTable"));
-	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+	
+	var resultsDataSource = new YAHOO.util.DataSource(partyObj.rebelsPerformanceArray);
+	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	resultsDataSource.responseSchema = {
 		fields : [ {
 			key : "constiuencyName"
@@ -810,7 +838,9 @@ function buildPartyPositionDataTable(info,rank)
 			key : "oppositePartyPercentageOfVotes",parser:"number"
 		} , {
 			key : "oppositePartyRank",parser:"number"
-		} ]
+		},  {
+			key : "moreDetails"
+		}]
 	};
 
 	var resultsColumnDefs = [ {
@@ -827,7 +857,7 @@ function buildPartyPositionDataTable(info,rank)
 		sortable : true
 	}, {
 		key : "percentageOfVotes",
-		label : "% Votes",
+		label : "Votes %",
 		sortable : true
 	}, {
 		key : "rank",
@@ -849,11 +879,19 @@ function buildPartyPositionDataTable(info,rank)
 		key : "oppositePartyRank",
 		label : "Rank",
 		sortable : true
+	} , {
+		key : "moreDetails",
+		label : "More Details",
+		sortable: true
+		
 	} ];
 
     var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10
+		        rowsPerPage    : 10,		        
+				template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+				rowsPerPageOptions: [20,40,60], 
+			    pageLinks: 20
 			    }) 
 				};	
 	var myDataTable = new YAHOO.widget.DataTable("rebelsDiv",resultsColumnDefs, resultsDataSource,myConfigs);  
@@ -934,7 +972,9 @@ function reportTitleDivFunc()
 	.yui-skin-sam thead .yui-dt-sortable
 	{
 		background-color:#B0C7EB;
-		padding:4px;
+		color:#707070;
+		font-size:11px;
+		text-decoration:none;
 	}
 	.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
 	{
@@ -1020,7 +1060,8 @@ function reportTitleDivFunc()
 		margin-left:15px;
 		margin-right:100px;
 		padding:8px;
-		width:792px;		
+		width:792px;
+		margin-top: 15px;		
 	}
 
 	.yui-skin-sam .yui-panel .bd
@@ -1127,12 +1168,12 @@ function reportTitleDivFunc()
 	.mainPartyColor
 	{
 		color:#2B5181;
-		font-weight:bold;
+		font-size:10px;		
 	}
 	.oppositionPartColor
 	{
 		color:#7EADBC;
-		font-weight:bold;
+		font-size:10px;		
 	}
 
 	
@@ -1382,7 +1423,8 @@ function reportTitleDivFunc()
 	<script type="text/javascript">
 	
 	var partyObj={
-					partyPerformanceArray:[]
+					partyPerformanceArray:[],
+					rebelsPerformanceArray:[]
 				 };
 	
 	
@@ -1400,7 +1442,8 @@ function reportTitleDivFunc()
 									percentageOfVotes:"${performance.percentageOfVotes}",
 									oppositionPartyPercentageOfVotes:"${performance.oppositePartyPercentageOfVotes}",
 									oppositionParty:"${performance.oppositeParty}",
-									oppositionPartyCandidate:"${performance.oppositePartyCandidate}"
+									oppositionPartyCandidate:"${performance.oppositePartyCandidate}",
+									moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${performance.constituencyId})">More Details</A>'
 								};
 			partyObj.partyPerformanceArray.push(performanceObj);
 		</c:forEach>
@@ -1420,7 +1463,8 @@ function reportTitleDivFunc()
 									previousElectionPercentageOfVotesGained:"${performance.prevElectionPercentage}",
 									oppositionPartyPercentageOfVotes:"${performance.oppositePartyPercentageOfVotes}",
 									oppositionParty:"${performance.oppositeParty}",
-									oppositionPartyCandidate:"${performance.oppositePartyCandidate}"
+									oppositionPartyCandidate:"${performance.oppositePartyCandidate}",
+									moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${performance.constituencyId})">More Details</A>'
 								};
 			partyObj.partyPerformanceArray.push(performanceObj);
 		</c:forEach>
@@ -1439,13 +1483,14 @@ function reportTitleDivFunc()
 								previousElectionCandidate:"${performance.prevElectionCandidateName}",
 								oppositionPartyPercentageOfVotes:"${performance.oppositePartyPercentageOfVotes}",
 								oppositionParty:"${performance.oppositeParty}",
-								oppositionPartyCandidate:"${performance.oppositePartyCandidate}"
+								oppositionPartyCandidate:"${performance.oppositePartyCandidate}",
+								moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${performance.constituencyId})">More Details</A>'
 							};
 			partyObj.partyPerformanceArray.push(performanceObj);	
 		</c:forEach>
 	</c:if>
 	
-	buildpartyPerformanceDataTable(partyObj,"${constPositions.type}");
+	buildpartyPerformanceDataTable(partyObj,"${constPositions.type}");	
 	
 	</script>
 
@@ -1472,7 +1517,7 @@ function reportTitleDivFunc()
 <s:if test="stateData.rebelPartyCandidates.size > 0">
 <div class="partyInfoHeading"><s:label labelposition="left"><b><U>Rebel Candidates </U></b></s:label></div>
 <div id="rebelsDiv" class="yui-skin-sam" style="display: block; background-color: rgb(234, 234, 234); margin-right: 20px;">
-<display:table class="partyPerformanceReportTable" name="${stateData.rebelPartyCandidates}" id="rebelsTable" style="margin-top:0px;"> 
+<!--<display:table class="partyPerformanceReportTable" name="${stateData.rebelPartyCandidates}" id="rebelsTable" style="margin-top:0px;"> 
 							<display:column title="Constiuency" property="constiuencyName" />
 							<display:column title="Candidate" property="candidateName" />
 							<display:column title="RebelParty" property="partyName" />
@@ -1482,12 +1527,29 @@ function reportTitleDivFunc()
 							<display:column title="Candidate" property="oppositePartyCandidate" />
 							<display:column title="% of Votes" property="oppositePartyPercentageOfVotes" />
 							<display:column title="Position" property="oppositePartyRank" />
+							<display:column title="constituencyId" property="constituencyId" />
 							
 </display:table>	
-</div>
-<script language="javascript">
+--></div>
+<script language="javascript">//wkg
+<c:forEach var="rebelsData" items="${stateData.rebelPartyCandidates}" >			
+
+var rebelPerformanceObj={
+		constiuencyName:"${rebelsData.constiuencyName}",
+		candidateName:"${rebelsData.candidateName}",
+		partyName:"${rebelsData.partyName}",
+		percentageOfVotes:"${rebelsData.percentageOfVotes}",
+		rank:"${rebelsData.rank}",
+		oppositeParty:"${rebelsData.oppositeParty}",
+		oppositePartyCandidate:"${rebelsData.oppositePartyCandidate}",
+		oppositePartyPercentageOfVotes:"${rebelsData.oppositePartyPercentageOfVotes}",
+		oppositePartyRank: "${rebelsData.oppositePartyRank}",						
+		moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${rebelsData.constituencyId})">More Details</A>'
+					};
+partyObj.rebelsPerformanceArray.push(rebelPerformanceObj);
+</c:forEach>
+
 	initializeRebelsDataTable();
-	//initializePartyPositionsDetails();
 	
 </script>
 <br>

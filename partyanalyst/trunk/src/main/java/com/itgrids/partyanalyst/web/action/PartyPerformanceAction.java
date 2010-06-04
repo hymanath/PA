@@ -67,7 +67,8 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	private List<PartyPositionDisplayVO> partyPositionDisplayVO;
 	private Map statesYearList = new HashMap();
 	private String reportTitle;
-
+	private String electionYear;
+	String electionTypeLiteral = "";
 
 	public Map getStatesYearList() {
 		return statesYearList;
@@ -190,8 +191,21 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	public void setPartyPositionDisplayVO(
 			List<PartyPositionDisplayVO> partyPositionDisplayVO) {
 		this.partyPositionDisplayVO = partyPositionDisplayVO;
-	}
+	}	
 	
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
+	public String getElectionYear() {
+		return electionYear;
+	}	
+	
+	public String getElectionTypeLiteral() {
+		return electionTypeLiteral;
+	}
+	public void setElectionTypeLiteral(String electionTypeLiteral) {
+		this.electionTypeLiteral = electionTypeLiteral;
+	}
 	@SuppressWarnings("unchecked")
 	public String execute() throws JRException {
 		
@@ -239,6 +253,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if(params.containsKey("allianceWith")){
 			partyId = new Long(request.getParameter("allianceWith"));
 			year = request.getParameter("year");
+			electionYear = year;
 			electionType = new Long(request.getParameter("elecType"));
 		}
 		
@@ -325,7 +340,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if(district!=null)
 			reportVO.setDistrictId(new Long(district));
 		
-		String electionTypeLiteral = "";
+		
 		String reportLevelLiteral = "";
 		String partyNameLiteral = reportVO.getParty();
 		
@@ -560,4 +575,5 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		 
 	return dataset;
 	}
+	
 }
