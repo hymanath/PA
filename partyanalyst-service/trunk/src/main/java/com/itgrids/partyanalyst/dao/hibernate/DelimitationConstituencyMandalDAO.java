@@ -52,4 +52,12 @@ IDelimitationConstituencyMandalDAO {
 				" (select model1.delimitationConstituencyID from DelimitationConstituency model1 where model1.constituency.constituencyId = ?" +
 				" group by model1.constituency.constituencyId order by model1.year desc) ", constituencyId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Tehsil> getLatestMandalDetailsForAConstituencies(String constituencyIds){
+		return getHibernateTemplate().find("select model.tehsil" +
+				" from DelimitationConstituencyMandal model where model.delimitationConstituency.delimitationConstituencyID in " +
+				" (select model1.delimitationConstituencyID from DelimitationConstituency model1 where model1.constituency.constituencyId in("+constituencyIds+")"+
+				" group by model1.constituency.constituencyId order by model1.year desc) ");
+	}
 }

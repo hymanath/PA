@@ -13,6 +13,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssignedProblemProgressDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -55,6 +56,7 @@ public class ProblemManagementReportService implements
 	private InfluencingPeopleDAO influencingPeopleDAO;
 	private IProblemSourceScopeConcernedDepartmentDAO problemSourceScopeConcernedDepartmentDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private List result = null;
@@ -158,6 +160,15 @@ public class ProblemManagementReportService implements
 
 	public void setInfluencingPeopleDAO(InfluencingPeopleDAO influencingPeopleDAO) {
 		this.influencingPeopleDAO = influencingPeopleDAO;
+	}
+
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
 	/**
@@ -634,6 +645,7 @@ public class ProblemManagementReportService implements
 		
 		public String getCommaSeperatedTehsilIdsForAccessType(String accessType, Long accessValue){
 			StringBuffer tehsilIds = new StringBuffer();
+			StringBuffer assemblyIds = new StringBuffer();
 			List<Tehsil> mandals = null;
 			if("MLA".equalsIgnoreCase(accessType)){
 				List<DelimitationConstituency> delimitationConstituency = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyID(accessValue);
@@ -644,7 +656,14 @@ public class ProblemManagementReportService implements
 				mandals = tehsilDAO.findByState(accessValue);
 				else if("DISTRICT".equalsIgnoreCase(accessType))
 					mandals = tehsilDAO.findByDistrict(accessValue);
-			
+				else if("MP".equalsIgnoreCase(accessType)){
+					List assemblies = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(accessValue);
+					if(assemblies.size() >0){
+						for(Object[] values:(List<Object[]>)assemblies)
+							assemblyIds.append(",").append(values[0].toString());
+						mandals = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituencies(assemblyIds.toString().substring(1));						
+					}
+				}
 
 			for(Tehsil tehsil : mandals)
 				tehsilIds.append(",").append(tehsil.getTehsilId());
@@ -757,6 +776,13 @@ public class ProblemManagementReportService implements
 					for(Constituency constituency:constituencies)
 						str.append(",").append(constituency.getConstituencyId());
 					constituencyIds = str.toString().substring(1);
+				}else if("MP".equalsIgnoreCase(accessType)){
+					List assemblies = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(accessValue);
+					if(assemblies.size() >0){
+						for(Object[] values:(List<Object[]>)assemblies)
+							str.append(",").append(values[0].toString());
+						constituencyIds = str.toString().substring(1);
+					}
 				}
 				if(constituencyIds.length() > 0)
 					problemsCountByStatusRawList = problemHistoryDAO.getProblemsCountInAllStatusByLocation(constituencyIds);
