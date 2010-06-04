@@ -246,17 +246,20 @@ public class PartyService implements IPartyService {
 			Boolean includeAllianceParties, boolean b,String reportLevel){
 		
 		log.debug("getElectionData start.....for year.." + year);
+		PartyPerformanceReportVO partyPerformanceReportVO = new PartyPerformanceReportVO();
 		Election election = null;
 		Party selectedParty = partyDAO.get(partyId); 
 		State stateVO = stateDAO.get(stateId);
 		List<Election> elections = electionDAO.findByElectionTypeYearAndState(electionType,year,stateId,countryId);
-		if(elections != null && elections.size() > 0)
+		if(elections != null && elections.size() > 0){
 		election = elections.get(0);
+		partyPerformanceReportVO.setElectionId(election.getElectionId());
+		}
 		District districtVO = null;
 		List<ConstituencyElectionResult> constElectionResultList = null;
 		List electionResultList = null;
 		List<Party> allianceParties = new ArrayList<Party>();
-		PartyPerformanceReportVO partyPerformanceReportVO = new PartyPerformanceReportVO();
+		
 		List<PartyPositionsVO> partyElectionResultsList = new ArrayList<PartyPositionsVO>();
 		PartyElectionResult partyElectionResultforSelectedParty = null;
 		PartyElectionResult partyElectionResultforAllianceParty = null;
