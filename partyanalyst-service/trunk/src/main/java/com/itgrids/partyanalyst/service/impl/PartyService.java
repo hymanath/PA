@@ -420,6 +420,7 @@ public class PartyService implements IPartyService {
 			//ConstituencyElection constituencyElection = constElectionResult.getConstituencyElection();
 			//String constituencyName = constituencyElection.getConstituency().getName();
 			String constituencyName = constituency.getName();
+			Long constituencyId = constituency.getConstituencyId();
 			nominations = constituencyElection.getNominations();
 			
 			Party rebelAllianceParty = (includeAllianceParties) ? getNominatedPartiesAsRebels(nominations, allianceParties, selectedParty): null;
@@ -489,6 +490,7 @@ public class PartyService implements IPartyService {
 						ConstituencyPositionDetailVO  positionDetail = new ConstituencyPositionDetailVO();
 						positionDetail.setCandidateName(nomination.getCandidate().getLastname());
 						positionDetail.setConstiuencyName(constituencyName);
+						positionDetail.setConstituencyId(constituencyId);
 						double percentageOfVotesEarned = (nomination.getCandidateResult().getVotesEarned() * 100)/validVotes;
 						positionDetail.setPercentageOfVotes(new BigDecimal(percentageOfVotesEarned).setScale(2, BigDecimal.ROUND_HALF_UP));
 						positionDetail.setPresentElectionVotes(totalVotes);
@@ -625,6 +627,7 @@ public class PartyService implements IPartyService {
 		
 		double diffInPercent = percentWonByPartyWinner - percentWonBySecondRank; 
 		
+		positionDetail.setConstituencyId(partyNominationWhoWonOrLost.getConstituencyElection().getConstituency().getConstituencyId());
 		positionDetail.setCandidateName(partyNominationWhoWonOrLost.getCandidate().getLastname());
 		positionDetail.setConstiuencyName(constituencyName);
 		positionDetail.setPartyName(partyNominationWhoWonOrLost.getParty().getShortName());

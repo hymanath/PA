@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class ConstituencyPositionDetailVO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	
+	private Long constituencyId;
 	private String constiuencyName;
 	private String candidateName;
 	private BigDecimal percentageOfVotes; //percentage of votes candidate got in the present election
@@ -172,6 +172,14 @@ public class ConstituencyPositionDetailVO implements Serializable{
 
 	public void setOppositePartyRank(int oppositePartyRank) {
 		this.oppositePartyRank = oppositePartyRank;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
 	}
 
 }
