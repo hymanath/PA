@@ -52,11 +52,17 @@
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 
-   
+   <LINK rel="stylesheet" type="text/css" href="styles/ElectionResultsAnalysisReport/electionResultsAnalysisReport.css">
 
 <script type="text/javaScript">
+
+var partyId = '${party}';
+var stateId = '${state}';
+var electionYear = '${year}';
+var electionTypeId = '${electionType}';
+
 var electionType = '${electionTypeLiteral}';
-var electionYear = '${reportVO.year}';
+
 function showBand(divtag)
 { 
 	var divElmt=document.getElementById(divtag);
@@ -102,7 +108,8 @@ function showBand(divtag)
 			reportLevel:reportLevel
 	}
 	var param ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-	callAjax(param,jsObj);
+	var url = "<%=request.getContextPath()%>/partyPositionAjax.action?"+param;
+	callAjax(param,jsObj,url);
 }
 */
 
@@ -141,15 +148,19 @@ function getPartyPositionDetails(pos,partyId)
 	callPositionAjax(param,jsObj);
 }
 
-function callAjax(param,jsObj){
+function callAjax(param,jsObj,url){
 	var myResults;
-	var url = "<%=request.getContextPath()%>/partyPositionAjax.action?"+param;
+
 	var callback = {			
 				   success : function( o ) {
 						try {
 							myResults = YAHOO.lang.JSON.parse(o.responseText); 
 							
-							displayPartyPositions(jsObj,myResults);							
+							if(jsObj.task == "getVotesMarginInfo")
+							{
+								buildVotesMarginContent(jsObj,myResults);
+							}
+							//displayPartyPositions(jsObj,myResults);							
 						}catch (e) {   
 							alert("Invalid JSON result" + e);   
 						}  
@@ -914,6 +925,207 @@ function reportTitleDivFunc()
 	reportTitle.render();
 
 }
+
+function buildMarginVotes(status)
+{	
+	var jsObj= 
+	{	
+		partyId: '${party}',
+		status:status,
+		task:"getVotesMarginInfo"		
+	}
+	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/votesMaringInfoForElectionInPartyPerformance.action?"+param;
+	callAjax(param,jsObj,url);
+}
+
+function buildVotesMarginContent(jsObj,results)
+{
+	var elmt,str='';
+	var partyId = jsObj.partyId;
+
+	if(jsObj.status == "won")
+		elmt = document.getElementById("votesMarginInfo_won");
+	else if(jsObj.status == "lost")
+		elmt = document.getElementById("votesMarginInfo_lost");
+	
+	if(!elmt)
+		return;
+	
+	str += '<table width="100%" style="width:100%" class="votesMarginTable" border="0">';
+	str += '<tr>';
+	str += '<th style="background-color:#DFE2E5;"></th>';
+	str += '<th align="left" style="background-color:#DFE2E5;">Votes Margin</th>';
+	str += '<th style="background-color:#DFE2E5;">Constituencies '+jsObj.status+'</th>';
+	str += '<th style="background-color:#DFE2E5;">Analyzed</th>';
+	str += '</tr>';
+
+	for(var i in results)
+	{		
+		str+= '<tr onclick="showMarginAnalysisData('+i+',\''+jsObj.status+'\')" style="cursor:pointer;">';
+		str+= '<td style="background-color:#FFFFFF;"><img src="images/icons/indexPage/listIcon.png"/></td>';
+				
+		str+= '<td align="left">'+results[i].marginValueOne+' - '+results[i].marginValueTwo+' % </td>';		
+		str+= '<td>'+results[i].candidatesCount+'</td>';		
+		str+= '<td>'+results[i].analyzedCount+'</td>';
+
+		str+= '</tr>';
+		if(results[i].analysisCategoryBasicVO != null)
+		{
+			str+= '<tr id="marginInfo_'+jsObj.status+'_row_'+i+'" style="display:none;">';
+			str+= '<td colspan="4">';
+			str+= '<div class="marginBodyDivClass">';
+			str+= '<table width="95%" border="0" class="votesMarginDataTable">';
+			for(var j in results[i].analysisCategoryBasicVO)
+			{
+				var dt = results[i].analysisCategoryBasicVO[j];				
+				str+= '<tr>';
+				str+= '<td align="left">'+dt.categoryType+'</td>';
+				str+= '<td>'+dt.categoryResultCount+'</td>';						
+				str+= '</tr>';
+			}
+			str+= '</table>';
+			str+= '</div>';
+			str+= '</td>';
+			str+= '</tr>';
+		}
+	}	
+	str += '</table>';
+
+	if(elmt)
+		elmt.innerHTML = str;
+}
+
+/*function buildVotesMarginContent(jsObj,results)
+{
+	var elmt,str='';
+	var partyId = jsObj.partyId;
+
+	if(jsObj.status == "won")
+		elmt = document.getElementById("votesMarginInfo_won");
+	else if(jsObj.status == "lost")
+		elmt = document.getElementById("votesMarginInfo_lost");
+	
+	if(!elmt)
+		return;
+	
+	str += '<table width="100%" style="width:100%" class="votesMarginTable" border="0">';
+	str += '<tr>';
+	str += '<th style="background-color:#DFE2E5;"></th>';
+	str += '<th align="left" style="background-color:#DFE2E5;">Votes Margin</th>';
+	str += '<th style="background-color:#DFE2E5;">Constituencies '+jsObj.status+'</th>';
+	str += '<th style="background-color:#DFE2E5;">Analyzed</th>';
+	str += '</tr>';
+
+	for(var i in results)
+	{		
+		str+= '<tr onclick="showMarginAnalysisData('+i+',\''+jsObj.status+'\')" style="cursor:pointer;">';
+		str+= '<td style="background-color:#FFFFFF;"><img src="images/icons/indexPage/listIcon.png"/></td>';
+				
+		str+= '<td align="left">'+results[i].marginValueOne+' - '+results[i].marginValueTwo+' % </td>';		
+		
+
+		if(results[i].candidatesCount != 0)
+			str+= '<td><a href="javascript:{}" onclick="showMarginCountAnalysisForConstituenciesPopup('+i+','+partyId+',\''+jsObj.status+'\')">'+results[i].candidatesCount+'</a></td>';
+		else
+			str+= '<td>'+results[i].candidatesCount+'</td>';		
+		
+		if(results[i].analyzedCount != 0)
+			str+= '<td><a href="javascript:{}" onclick="showMarginCountAnalysisForAnalyzedConstituenciesPopup('+i+','+partyId+',\''+jsObj.status+'\')">'+results[i].analyzedCount+'</a></td>';
+		else
+			str+= '<td>'+results[i].analyzedCount+'</td>';
+
+		str+= '</tr>';
+		if(results[i].analysisCategoryBasicVO != null)
+		{
+			str+= '<tr id="marginInfo_'+jsObj.status+'_row_'+i+'" style="display:none;">';
+			str+= '<td colspan="4">';
+			str+= '<div class="marginBodyDivClass">';
+			str+= '<table width="95%" border="0" class="votesMarginDataTable">';
+			for(var j in results[i].analysisCategoryBasicVO)
+			{
+				var dt = results[i].analysisCategoryBasicVO[j];				
+				str+= '<tr>';
+				str+= '<td align="left">'+dt.categoryType+'</td>';
+				str+= '<td><a href="javascript:{}" onclick="showMarginCountAnalysisForCategory('+i+','+partyId+','+dt.categoryId+',\''+jsObj.status+'\')">'+dt.categoryResultCount+'</a></td>';						
+				str+= '</tr>';
+			}
+			str+= '</table>';
+			str+= '</div>';
+			str+= '</td>';
+			str+= '</tr>';
+		}
+	}	
+	str += '</table>';
+
+	if(elmt)
+		elmt.innerHTML = str;
+}*/
+
+function showMarginAnalysisData(index,task)
+{
+	var elmt = document.getElementById("marginInfo_"+task+"_row_"+index);
+
+	if(!elmt)
+		return;
+
+	if(elmt.style.display == 'none')
+		elmt.style.display = '';
+	else if(elmt.style.display == '')
+		elmt.style.display = 'none';
+}
+
+function showMarginCountAnalysisForConstituenciesPopup(index,partyId,status)
+{
+	index = index+1;
+	if(status == "WON")
+		rank = 1;
+	else if(status == "LOST")
+		rank = 0;
+
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAction.action?electionId="+electionId+"&electionYear="+electionYear+"&electionTypeId="+electionTypeId+"&electionType="+electionType+"&partyId="+partyId+"&rank="+rank+"&clickIndex="+index+"&resultStatus="+status+"&windowTask=mainPartyMarginCountAnalysisPopup";
+	var browser1 = window.open(urlStr,"partyElectionResultsPopup","scrollbars=yes,height=600,width=1300,left=200,top=200");
+	
+	browser1.focus();
+}
+
+function showMarginCountAnalysisForAnalyzedConstituenciesPopup(index,partyId,status)
+{
+	index = index+1;
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	var stateId =stateSelectEl.value;	
+	var position = '';
+	if(status == "WON")
+		position = "Won";
+	else if(status == "LOST")
+		position = "Lost";
+
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
+	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&clickIndex="+index+"&resultStatus="+status+"&windowTask=mainPartyMarginCountAnalyzedConstituenciesPopup";
+	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	
+	browser2.focus();	
+}
+
+function showMarginCountAnalysisForCategory(index,partyId,categoryId,status)
+{	
+	index = index+1;
+	var stateSelectEl = document.getElementById("stateSelectEl");
+	var stateId =stateSelectEl.value;	
+	var position = '';
+	if(status == "WON")
+		position = "Won";
+	else if(status == "LOST")
+		position = "Lost";
+			
+	var urlStr = "<%=request.getContextPath()%>/partyElectionResultsAnalysisAction.action?stateId="+stateId+"&electionId="+electionId+"&partyId="+partyId+"&status="+status+
+	"&partyName="+partyName+"&electionType="+electionType+"&stateName="+stateName+"&electionYear="+electionYear+"&position="+position+"&clickIndex="+index+"&categoryId="+categoryId+"&resultStatus="+status+"&windowTask=mainPartyMarginCountAnalyzedCategoryPopup";
+	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	
+	browser2.focus();	
+}
+
 </script>
 
 <style type="text/css">
@@ -925,7 +1137,7 @@ function reportTitleDivFunc()
 	}
 	#partyPositions
 	{
-		background-color:#DCE3E9;
+		background-color:#FFFFFF;
 		border:2px solid #839AB7;
 		display:none;
 		left:300px;
@@ -957,12 +1169,13 @@ function reportTitleDivFunc()
 	#partyPositionsHead
 	{
 		padding:10px;
-		background-color:#A6BAD1;
 		text-decoration:underline;
+		background:url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat-x scroll 0 -200px transparent;
 	}
 	#partyPositionsBody table
 	{
 		width:100%;
+		border:1px solid #5C687D;
 	}
 
 	.yui-skin-sam .yui-dt-liner 
@@ -1294,6 +1507,29 @@ function reportTitleDivFunc()
 	</div>
 	<div id="partyPositionsBody" class="yui-skin-sam"></div>
 </div>
+<br/><br/>
+
+<!--<div id="votesMarginInfo_main">
+	<div id="votesMarginInfo_head"  class="partyInfoHeading"> Analysis Votes Margin </div>
+	<div id="votesMarginInfo_body">
+		<table width="85%">
+			<tr>
+				<td style="vertical-align:top;">
+					<div id="votesMarginInfo_won"></div>
+				</td>
+				<td style="vertical-align:top;">
+					<div id="votesMarginInfo_lost"></div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>-->
+
+<script type="text/javascript">
+	//buildMarginVotes("won");
+	//buildMarginVotes("lost");
+</script>
+
 <br/><br/>
 
 <div class="partyInfoHeading">
