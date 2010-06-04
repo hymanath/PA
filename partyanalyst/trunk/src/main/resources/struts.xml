@@ -982,6 +982,13 @@
         	</result>       		
         </action>
         <action name="sendSMSAction" class="sendSMSAction"></action>        
+        
+         <action name="votesMaringInfoForElectionInPartyPerformance" class="partyPerformanceAction" method="getMarginCount"> 
+              <result type="json" name="success">
+           		<param name="root">votesMarginAnalysisVO</param>
+        	</result>       		
+        </action>
+        
 	</package>
 </struts>
 

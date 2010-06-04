@@ -28,16 +28,19 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
 import com.googlecode.jsonplugin.annotations.JSON;
+import com.itgrids.partyanalyst.dto.AnalysisCategoryBasicVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyPerformanceReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionDisplayVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VotesMarginAnalysisVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.Constants;
 import com.itgrids.partyanalyst.helper.JasperProducer;
 import com.itgrids.partyanalyst.service.IPartyService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.impl.AnalysisReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -67,9 +70,70 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 	private List<PartyPositionDisplayVO> partyPositionDisplayVO;
 	private Map statesYearList = new HashMap();
 	private String reportTitle;
+	private List<VotesMarginAnalysisVO> votesMarginAnalysisVO;
+	private String party;
+	private String state;
+	private String year;
+	private String electionType;
 	private String electionYear;
 	String electionTypeLiteral = "";
+	private AnalysisReportService analysisReportService;
+	private String partyNameHidden;
+	private String stateNameHidden;
 
+	public String getStateNameHidden() {
+		return stateNameHidden;
+	}
+	public void setStateNameHidden(String stateNameHidden) {
+		this.stateNameHidden = stateNameHidden;
+	}
+	
+	public String getPartyNameHidden() {
+		return partyNameHidden;
+	}
+	public void setPartyNameHidden(String partyNameHidden) {
+		this.partyNameHidden = partyNameHidden;
+	}
+	
+	public AnalysisReportService getAnalysisReportService() {
+		return analysisReportService;
+	}
+	public void setAnalysisReportService(AnalysisReportService analysisReportService) {
+		this.analysisReportService = analysisReportService;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+	public String getParty() {
+		return party;
+	}
+	public void setParty(String party) {
+		this.party = party;
+	}
+	
+	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisVO() {
+		return votesMarginAnalysisVO;
+	}
+	public void setVotesMarginAnalysisVO(
+			List<VotesMarginAnalysisVO> votesMarginAnalysisVO) {
+		this.votesMarginAnalysisVO = votesMarginAnalysisVO;
+	}
+	
 	public Map getStatesYearList() {
 		return statesYearList;
 	}
@@ -340,7 +404,6 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		if(district!=null)
 			reportVO.setDistrictId(new Long(district));
 		
-		
 		String reportLevelLiteral = "";
 		String partyNameLiteral = reportVO.getParty();
 		
@@ -574,6 +637,35 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		 dataset.addValue(totalPercentageOfVotesWon, series2, year);
 		 
 	return dataset;
+	}
+	
+	public String getMarginCount() throws Exception
+	{
+		
+		String param = null;
+		param = getTask();
+		try {
+			jObj = new JSONObject(param);
+			if(log.isDebugEnabled())
+				log.debug(jObj);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Long electionId = new Long(jObj.getString("electionId"));
+		Long partyId = new Long(jObj.getString("partyId"));
+		String status = jObj.getString("status");
+		
+		String category = null;
+		if(status.equalsIgnoreCase("WON"))
+			category = IConstants.CANDIDATE_COMMENTS_WON;
+		else if(status.equalsIgnoreCase("LOST"))
+			category = IConstants.CANDIDATE_COMMENTS_LOST;
+		
+		votesMarginAnalysisVO = analysisReportService.getVotesMarginAnalysisResults(electionId, partyId, category) ;
+		
+		return Action.SUCCESS;
 	}
 	
 }

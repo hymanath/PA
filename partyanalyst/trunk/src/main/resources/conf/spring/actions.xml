@@ -22,6 +22,7 @@
 	<bean id="partyPerformanceAction" class="com.itgrids.partyanalyst.web.action.PartyPerformanceAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="partyService" ref="partyService" />
+		<property name="analysisReportService" ref="analysisReportService" />
 	</bean>
 	
 	<bean id="uploadCSVAction" class="com.itgrids.partyanalyst.web.action.UploadCSVAction" singleton="false">

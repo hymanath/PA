@@ -57,10 +57,12 @@
 <script type="text/javaScript">
 
 var partyId = '${party}';
+var partyName = '${partyNameHidden}';
 var stateId = '${state}';
+var stateName = '${stateNameHidden}';
 var electionYear = '${year}';
 var electionTypeId = '${electionType}';
-
+var electionId = '${stateData.electionId}';
 var electionType = '${electionTypeLiteral}';
 
 function showBand(divtag)
@@ -930,7 +932,8 @@ function buildMarginVotes(status)
 {	
 	var jsObj= 
 	{	
-		partyId: '${party}',
+		electionId: electionId,
+		partyId: partyId,		
 		status:status,
 		task:"getVotesMarginInfo"		
 	}
@@ -945,66 +948,9 @@ function buildVotesMarginContent(jsObj,results)
 	var elmt,str='';
 	var partyId = jsObj.partyId;
 
-	if(jsObj.status == "won")
+	if(jsObj.status == "WON")
 		elmt = document.getElementById("votesMarginInfo_won");
-	else if(jsObj.status == "lost")
-		elmt = document.getElementById("votesMarginInfo_lost");
-	
-	if(!elmt)
-		return;
-	
-	str += '<table width="100%" style="width:100%" class="votesMarginTable" border="0">';
-	str += '<tr>';
-	str += '<th style="background-color:#DFE2E5;"></th>';
-	str += '<th align="left" style="background-color:#DFE2E5;">Votes Margin</th>';
-	str += '<th style="background-color:#DFE2E5;">Constituencies '+jsObj.status+'</th>';
-	str += '<th style="background-color:#DFE2E5;">Analyzed</th>';
-	str += '</tr>';
-
-	for(var i in results)
-	{		
-		str+= '<tr onclick="showMarginAnalysisData('+i+',\''+jsObj.status+'\')" style="cursor:pointer;">';
-		str+= '<td style="background-color:#FFFFFF;"><img src="images/icons/indexPage/listIcon.png"/></td>';
-				
-		str+= '<td align="left">'+results[i].marginValueOne+' - '+results[i].marginValueTwo+' % </td>';		
-		str+= '<td>'+results[i].candidatesCount+'</td>';		
-		str+= '<td>'+results[i].analyzedCount+'</td>';
-
-		str+= '</tr>';
-		if(results[i].analysisCategoryBasicVO != null)
-		{
-			str+= '<tr id="marginInfo_'+jsObj.status+'_row_'+i+'" style="display:none;">';
-			str+= '<td colspan="4">';
-			str+= '<div class="marginBodyDivClass">';
-			str+= '<table width="95%" border="0" class="votesMarginDataTable">';
-			for(var j in results[i].analysisCategoryBasicVO)
-			{
-				var dt = results[i].analysisCategoryBasicVO[j];				
-				str+= '<tr>';
-				str+= '<td align="left">'+dt.categoryType+'</td>';
-				str+= '<td>'+dt.categoryResultCount+'</td>';						
-				str+= '</tr>';
-			}
-			str+= '</table>';
-			str+= '</div>';
-			str+= '</td>';
-			str+= '</tr>';
-		}
-	}	
-	str += '</table>';
-
-	if(elmt)
-		elmt.innerHTML = str;
-}
-
-/*function buildVotesMarginContent(jsObj,results)
-{
-	var elmt,str='';
-	var partyId = jsObj.partyId;
-
-	if(jsObj.status == "won")
-		elmt = document.getElementById("votesMarginInfo_won");
-	else if(jsObj.status == "lost")
+	else if(jsObj.status == "LOST")
 		elmt = document.getElementById("votesMarginInfo_lost");
 	
 	if(!elmt)
@@ -1061,7 +1007,7 @@ function buildVotesMarginContent(jsObj,results)
 
 	if(elmt)
 		elmt.innerHTML = str;
-}*/
+}
 
 function showMarginAnalysisData(index,task)
 {
@@ -1093,8 +1039,7 @@ function showMarginCountAnalysisForConstituenciesPopup(index,partyId,status)
 function showMarginCountAnalysisForAnalyzedConstituenciesPopup(index,partyId,status)
 {
 	index = index+1;
-	var stateSelectEl = document.getElementById("stateSelectEl");
-	var stateId =stateSelectEl.value;	
+
 	var position = '';
 	if(status == "WON")
 		position = "Won";
@@ -1111,8 +1056,7 @@ function showMarginCountAnalysisForAnalyzedConstituenciesPopup(index,partyId,sta
 function showMarginCountAnalysisForCategory(index,partyId,categoryId,status)
 {	
 	index = index+1;
-	var stateSelectEl = document.getElementById("stateSelectEl");
-	var stateId =stateSelectEl.value;	
+	
 	var position = '';
 	if(status == "WON")
 		position = "Won";
@@ -1388,7 +1332,13 @@ function showMarginCountAnalysisForCategory(index,partyId,categoryId,status)
 		color:#7EADBC;
 		font-size:10px;		
 	}
-
+	.votesMarginContentHead
+	{
+		color:#4A515A;
+		font-weight:bold;
+		padding:5px;
+		text-decoration:underline;
+	}
 	
 </style>
 </head> 
@@ -1509,25 +1459,29 @@ function showMarginCountAnalysisForCategory(index,partyId,categoryId,status)
 </div>
 <br/><br/>
 
-<!--<div id="votesMarginInfo_main">
+<div id="votesMarginInfo_main">
 	<div id="votesMarginInfo_head"  class="partyInfoHeading"> Analysis Votes Margin </div>
 	<div id="votesMarginInfo_body">
+	<div></div>
+
 		<table width="85%">
 			<tr>
 				<td style="vertical-align:top;">
+					<div class="votesMarginContentHead">Winning Constituencies</div>
 					<div id="votesMarginInfo_won"></div>
 				</td>
 				<td style="vertical-align:top;">
+					<div class="votesMarginContentHead">Lost Constituencies</div>
 					<div id="votesMarginInfo_lost"></div>
 				</td>
 			</tr>
 		</table>
 	</div>
-</div>-->
+</div>
 
 <script type="text/javascript">
-	//buildMarginVotes("won");
-	//buildMarginVotes("lost");
+	buildMarginVotes("WON");
+	buildMarginVotes("LOST");
 </script>
 
 <br/><br/>

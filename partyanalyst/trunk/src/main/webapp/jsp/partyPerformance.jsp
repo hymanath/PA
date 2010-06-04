@@ -124,7 +124,14 @@
 		
  	}
 
- 	function fetchDistricts(){
+ 	function fetchDistricts(val)
+	{
+		var elmt = document.getElementById("stateNameHiddenId");
+		if(!elmt)
+			return;
+
+		elmt.value=val;		
+
  	 	var reportLevels = document.getElementsByName("1");
  	 	for(var i=0; i < reportLevels.length; i++){
  	 	 	if(reportLevels[i].checked){
@@ -152,6 +159,16 @@
  		   }
  		return radiocheckedvalue;
  	}
+
+	function setPartyNameHidden(val)
+	{
+		var elmt = document.getElementById("partyNameHiddenId");
+		if(!elmt)
+			return;
+
+		elmt.value=val;		
+	}
+
 	</script>
 	<link href="styles/partyPerformance.css" rel="stylesheet" type="text/css" /> 
 
@@ -175,7 +192,8 @@
 	<tr>
 		<th> State</th>
 		<td>
-			<s:select theme="simple" label="State" name="state" id="stateList" list="states" listKey="id" listValue="name" onchange="fetchDistricts();"/>
+			<s:select theme="simple" label="State" name="state" id="stateList" list="states" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].text);"/>
+			<input type="hidden" id="stateNameHiddenId" name="stateNameHidden"/>
 		</td>
 	</tr>
 	<tr>
@@ -184,7 +202,10 @@
 	</tr>
 	<tr>
 		<th>Party</th>
-		<td><s:select theme="simple" label="Party" name="party" id="partyList" list="parties" listKey="id" listValue="name" /></td>
+		<td>
+			<s:select theme="simple" label="Party" name="party" onchange="setPartyNameHidden(this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" />
+			<input type="hidden" id="partyNameHiddenId" name="partyNameHidden"/>
+		</td>
 	</tr>
 	
 	<tr>
