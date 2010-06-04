@@ -72,6 +72,7 @@ public class PartyPerformanceReportVO extends BaseObject {
 	private List<ConstituencyPositionDetailVO> partyLosers;
 	private String district;
 	private Long electionTypeId;
+	private Long electionId;
 	private Long stateId;
 	private Long partyId;
 	private Long districtId;
@@ -352,6 +353,14 @@ public class PartyPerformanceReportVO extends BaseObject {
 
 	public void setPartyPositionsVO(List<PartyPositionsVO> partyPositionsVO) {
 		this.partyPositionsVO = partyPositionsVO;
+	}
+
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
 	}
 
 	
