@@ -61,7 +61,7 @@ function callAjax(param,jsObj,url){
 										showMyGroupCompleteDetails(myResults)									
 									} else if(jsObj.task == "getSelectedStaticGroupCompleteDetails")
 									{										
-										showSystemGroupCompleteDetails(myResults)											
+										showSystemGroupCompleteDetails(myResults,jsObj)											
 									}else if(jsObj.task == "getSelectedGroupMembersDetails")
 									{
 										showGroupMembersList(myResults);										
@@ -164,10 +164,21 @@ var Localization = { <%
 		String email = rb.getString("email");
 		String telephoneNo = rb.getString("telephoneNo");
 		String designation = rb.getString("designation"); 
+		String groupCreationSuccess = rb.getString("groupCreationSuccess");
+		String groupAlreadyExists = rb.getString("groupAlreadyExists");
+		String memberCreationSuccess =  rb.getString("memberCreationSuccess");
+		String noMembers = rb.getString("noMembers");
+		String smsSuccess = rb.getString("smsSuccess");
+		String zeroMyGroups = rb.getString("zeroMyGroups");
+		String nameDescError = rb.getString("nameDescError");
+		String descError = rb.getString("descError");
+		String nameError = rb.getString("nameError");
+		String groupNameAvailable = rb.getString("groupNameAvailable");
 		
 %> }
 var createGroupDialog,addGrpMbrsDialog, grpMbrsDetailsDataTable,numbersArray,confirmation;
 var userName= "${sessionScope.UserName}";
+var selectedGroup=0;
 
 var userGrpsObj={
 		showGrpMembersArr:[],
@@ -197,6 +208,8 @@ var userGrpsObj={
 		}
 		myGroupsLinksDivContent+='<table>';
 		groupDetailsDivEl.innerHTML =  myGroupsLinksDivContent;
+
+		selectedGroup = 1;
 	}
 
 	function showSubGrpsCountInMyGrps(results)
@@ -221,8 +234,19 @@ var userGrpsObj={
 			
 		myGroupsLinksDivContent+='<div id="'+subGrpsCountInMyGrps[i].staticGroupId+'"></div>';		
 		}
-		myGroupsLinksDivContent+='</table>';		
-		groupDetailsDivEl.innerHTML =  myGroupsLinksDivContent;
+		myGroupsLinksDivContent+='</table>';
+
+		var noSubGroupsContent = '';
+		noSubGroupsContent+='<P><%=zeroMyGroups%></P>';
+				
+		if(subGrpsCountInMyGrps.length > 0)
+		{
+			groupDetailsDivEl.innerHTML =  myGroupsLinksDivContent;
+		} else {
+			groupDetailsDivEl.innerHTML = noSubGroupsContent;
+			}	
+
+		selectedGroup = 2;
 	}
 
 	function getSystemGroupsDetails(id,type,flag,name){
@@ -270,7 +294,7 @@ var userGrpsObj={
 		callAjax(param,jsObj,url);
 		}
 	
-	function showSystemGroupCompleteDetails(results)
+	function showSystemGroupCompleteDetails(results,jsObj)
 	{
 		var myGroupBasicInfo = results.groupBasicDetails;
 		var desc = myGroupBasicInfo.desc;
@@ -290,8 +314,8 @@ var userGrpsObj={
 		numbersArray = results.membersMobileNos;
 		var navigationEl = document.getElementById("navigationLink");
 		navigationEl.style.display='block';
-		var sendSMSButEl = document.getElementById("sendSMSBut");
-		sendSMSButEl.setAttribute("onclick","sendSMS()")
+		var smsDivEl = document.getElementById("smsDiv");
+		var smsTextAreaEl = document.getElementById("smsTextArea");
 		var breadCrumb = results.systemGroupsBCList; 
 		var BCString = '';
 		for (var i in breadCrumb)
@@ -366,7 +390,16 @@ var userGrpsObj={
 			}		
 		str+='</table>';			
 		str+='</div>';
-		divEl.innerHTML=str;						
+		divEl.innerHTML=str;
+		if(jsObj.mainType != 'USER_GROUP_CATEGORY_PARENT')
+		{
+			if(smsDivEl.style.display == 'none')
+				{
+				smsDivEl.style.display ='block';
+				}
+			smsTextAreaEl.focus();
+		}
+								
 	}
 
 	function showMyGroupCompleteDetails(results)
@@ -391,7 +424,7 @@ var userGrpsObj={
 		numbersArray = results.membersMobileNos;
 
 		var sendSMSButEl = document.getElementById("sendSMSBut");
-		sendSMSButEl.setAttribute("onclick","sendSMS()")
+		//sendSMSButEl.setAttribute("onclick","sendSMS()")
 		
 		linksEl.innerHTML = myGroupBasicInfo.groupName + ' Group Details';
 		var breadCrumb = results.myGroupsBCList; 
@@ -834,7 +867,7 @@ var userGrpsObj={
 		} else 
 		{
 			groupExistsAlertEl.innerHTML ='';
-			groupExistsAlertEl.innerHTML = 'Please Enter Group Name';
+			groupExistsAlertEl.innerHTML = '<%=nameError%>';
 			groupExistsAlertEl.style.color = "red";	
 		}		
 	}
@@ -848,6 +881,10 @@ var userGrpsObj={
 	
 	function getSubGroupsListInSystemGroups(name,id)
 	{
+		if(id == 0)
+		{
+			return;
+		}
 		var jsObj= 
 		{	
 			categoryId: id,
@@ -862,6 +899,10 @@ var userGrpsObj={
 
 	function getSubGroupsListInMyGroups(name,id,flag)
 	{
+	if(id == 0)
+	{
+		return;
+	}	
 		var jsObj=			
 		{	
 			name: name,
@@ -963,6 +1004,7 @@ var userGrpsObj={
 		incrementHidden();
 		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param+"&hidden="+hidden;
 		callAjax(param,jsObj,url);
+		
 	}
 
 	function getSubGroupsCountInMyGroupsForUser()
@@ -990,6 +1032,7 @@ var userGrpsObj={
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 		incrementHidden();
 		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param+"&hidden="+hidden;
+		
 		callAjax(param,jsObj,url);
 	}
 	function handleCreateGroupSubmit(id)
@@ -1016,17 +1059,17 @@ var userGrpsObj={
 		if(groupNameTextVal == '' && descTextAreaVal == '')
 		{
 			mandatoryFieldsAlertEl.innerHTML = '';
-			mandatoryFieldsAlertEl.innerHTML = 'Please Enter Group Name and Description!';
+			mandatoryFieldsAlertEl.innerHTML = '<%=nameDescError%>';
 			return;
 		} else if(groupNameTextVal == '')
 		{
 			mandatoryFieldsAlertEl.innerHTML = '';
-			mandatoryFieldsAlertEl.innerHTML = 'Please Enter Group Name!';
+			mandatoryFieldsAlertEl.innerHTML = '<%=nameError%>';
 			return;
 		} else if(descTextAreaVal == '')
 		{
 			mandatoryFieldsAlertEl.innerHTML = '';
-			mandatoryFieldsAlertEl.innerHTML = 'Please Enter Description!';
+			mandatoryFieldsAlertEl.innerHTML = '<%=descError%>';
 			return;
 		}
 		
@@ -1083,19 +1126,29 @@ var userGrpsObj={
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+rparam;		
 	callAjax(rparam,jsObj,url);
-	if(groupCreationOption == "Create New Group" || groupCreationOption == "Add To My Group As Sub Group")
+	staticGrpSelectBoxEl.selectedIndex='0';
+	myGrpSelectBoxEl.selectedIndex='0';
+	if(groupCreationOption == "Create New Group")
 	{
 		getSubGroupsCountInMyGroupsForUser();
 		
 	} else if(groupCreationOption == "Add To Static Group As Sub Group")
 	{
-		getSubGroupsCountInSystemGrpsForUser();
+		getSubGroupsCountInSystemGrpsForUser();		
 	}		
 				
 	}	
 	
 	function handleCreateGroupCancel()
 	{
+		if(selectedGroup == 1)
+		{
+			getSubGroupsCountInSystemGrpsForUser();	
+		}
+		else if(selectedGroup == 2)
+		{
+			getSubGroupsCountInMyGroupsForUser();
+		}	
 		createGroupDialog.hide();
 	}
 	
@@ -1150,7 +1203,7 @@ var userGrpsObj={
 		} else 
 		{
 			groupName= jsObj.groupName;
-			confirmDivEl.innerHTML = groupName+" already exists!Please give another name." ;
+			confirmDivEl.innerHTML = groupName+" <%=groupAlreadyExists%>" ;
 			confirmDivEl.style.color = "red";
 			mandatoryFieldsAlertEl.innerHTML = '';
 		}
@@ -1168,13 +1221,13 @@ var userGrpsObj={
 		if(confirmation == true)
 		{
 			groupExistsAlertEl.innerHTML='';
-			groupExistsAlertEl.innerHTML = groupName+" already Exists!Please give another GroupName!";
+			groupExistsAlertEl.innerHTML = groupName+" <%=groupAlreadyExists%>";
 			groupExistsAlertEl.style.color = "red";						
 			
 		} else if (confirmation == false)
 		{
 			groupExistsAlertEl.innerHTML='';
-			groupExistsAlertEl.innerHTML = groupName+" is available!";
+			groupExistsAlertEl.innerHTML = groupName+" <%=groupNameAvailable%>";
 			groupExistsAlertEl.style.color = "green";			
 		}		
 	}
@@ -1297,7 +1350,22 @@ var userGrpsObj={
 		eMailTextEl.value ="";
 		var groupMbrDesignationTextEl = document.getElementById("groupMbrDesignationText");
 		groupMbrDesignationTextEl.value ="";				
-	}		
+	}	
+
+	function limitText(limitField, limitCount, limitNum)
+	{		
+		var limitFieldElmt = document.getElementById(limitField);
+		var limitCountElmt = document.getElementById(limitCount);
+
+		if (limitFieldElmt.value.length > limitNum) 
+		{
+			limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+		}
+		else
+		{			
+			limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+" ";
+		}
+	}	
 </script>
 </head>
 <body class="yui-skin-sam">
@@ -1348,7 +1416,7 @@ var userGrpsObj={
 	</table>
 	</div>
 	<div id="userGroupsLeftDiv">
-		<div id="leftNavLinksDiv"><p id="systemGroups" class="link"><a href="#groupDetails" onclick="getSubGroupsCountInSystemGrpsForUser()"><b>System Groups</b></a></p>
+		<div id="leftNavLinksDiv"><p id="systemGroups" class="link"><a href="javascript:{}" onclick="getSubGroupsCountInSystemGrpsForUser()"><b>System Groups</b></a></p>
 		<p id="myGroups" class="link"><a href="#groupDetails" onclick="getSubGroupsCountInMyGroupsForUser()"><b>My Groups</b></a></p>		
 		<p id="createNewGrpDiv" class="link"><a href="javascript:{}" onclick="buildCreateGroupPopup()"><b>Create New Group</b></a></p>
 		<p id="manageGrpDiv" class="link"><a href="javascript:{}" onclick=""><b>Manage Groups</b></a></p>
@@ -1396,11 +1464,35 @@ var userGrpsObj={
 		<tr>
 		<td width="75%"><div id="subGroupsListDiv"></div></td>
 		<td width="25%">	
-		<div id="smsDiv">
-		<div id="headingDiv">Send SMS</div>
-		<p><img src="images/usergroups/icon_mail.png" boder="none"/style="margin-right:2px;">Message:</p>
-		<p><textarea id="smsTextArea" cols="10" rows="5"></textarea></p>
-		<p align="right"><input id="sendSMSBut" type="submit" class="button" value="Send Sms" name="Submit"/></p>
+		<div id="smsDiv" style="display:none;">
+			<table>
+				<tr>
+					<td><div id="headingDiv">Send SMS</div></td>
+				</tr>
+				<tr>
+					<td>Message should not exceed 200 characters</td>
+				</tr>
+				<tr>
+					<td><img src="images/usergroups/icon_mail.png" boder="none"/style="margin-right:2px;">Message:</td>
+				</tr>
+				<tr>
+					<td><textarea id="smsTextArea" cols="10" rows="5" onkeyup=limitText("smsTextArea","maxcount",200)></textarea></td>
+				</tr>
+				<tr>
+					<td><span id="maxcount">200 </span> <span>chars remaining..</span></td>
+				</tr>
+				<tr>
+					<td><p align="right"><input id="sendSMSBut" type="submit" class="button" value="Send Sms" name="Submit" onclick="sendSMS()"/></p></td>
+				</tr>
+			</table>
+			
+			<!--<p>Message should not exceed 200 characters</p>
+			<p><img src="images/usergroups/icon_mail.png" boder="none"/style="margin-right:2px;">Message:</p>		
+			<p><textarea id="smsTextArea" cols="10" rows="5" onkeyup=limitText("smsTextArea","maxcount",200)></textarea></p>
+			<span id="maxcount">200 </span> <span>chars remaining..</span>
+			<p></p>		
+			<p align="right"><input id="sendSMSBut" type="submit" class="button" value="Send Sms" name="Submit" onclick="sendSMS()"/></p>
+		-->
 		</div>
 		</td>
 		</tr></table>
