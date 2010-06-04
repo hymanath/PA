@@ -498,23 +498,23 @@ function openPartyPerformanceWindow(electionTypeId)
 					<TR>	
 						<TH >State</TH>
 						<TD >
-						<s:select id="stateSelectEl" theme="simple" name="stateSelectEl" cssClass="selectWidth" list="statesList" listKey="id" listValue="name" onchange="getEletionTypesInState(this.options[this.selectedIndex].value)"/>												
+						<s:select id="stateSelectEl" theme="simple" name="stateSelectEl" cssClass="selectWidth" list="statesList" listKey="id" listValue="name" onchange="getEletionTypesInState(this.options[this.selectedIndex].value)" value="1"/>												
 						</TD>
 						<TH>Election Type</TH>
 						<TD>
-						<SELECT id="electionTypeSelectEl" name="electionTypeSelectEl" class="selectWidth" onchange="getEletionYears(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">							
-						</SELECT>
+						<s:select id="electionTypeSelectEl" theme="simple" name="electionTypeSelectEl" cssClass="selectWidth" list="electionTypes" listKey="id" listValue="name" onchange="getEletionYears(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)" value="2"/>		
 						</TD>
 					</TR>						
 					<TR>
 						<TH>Year</TH>
 						<TD>
-						<SELECT id="electionYearSelectEl" name="electionYearSelectEl" class="selectWidth" onchange="getStaticParties()">							
-						</SELECT>
+						<s:select id="electionYearSelectEl" theme="simple" name="electionYearSelectEl" cssClass="selectWidth" list="electionYears" listKey="id" listValue="name" onchange="getStaticParties()" value="1"/>	
+
+						
 						</TD>
 						<TH >Party</TH>
-						<TD >
-						<select id="partySelectEl" name="partySelectEl" class="selectWidth" onchange="getBasicAnalysisDetails(this.options[this.selectedIndex].value)"/>						
+						<TD>
+						<s:select id="partySelectEl" theme="simple" name="partySelectEl" cssClass="selectWidth" list="partiesList" listKey="id" listValue="name" onchange="getBasicAnalysisDetails(this.options[this.selectedIndex].value)" />								
 						</TD>
 					</TR>					
 				</TABLE>			

@@ -174,6 +174,20 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		statesList.add(0, new SelectOptionVO(0L,"Select State"));
 		statesList.add(1, new SelectOptionVO(1L,"Andhra Pradesh"));
 		
+		electionTypes = new ArrayList<SelectOptionVO>();
+		electionTypes.add(0, new SelectOptionVO(0L, "Select Election Type"));
+		electionTypes.add(1, new SelectOptionVO(1L, "Parliament"));
+		electionTypes.add(2, new SelectOptionVO(2L, "Assembly"));
+		electionTypes.add(3, new SelectOptionVO(3L, "MPTC"));
+		electionTypes.add(4, new SelectOptionVO(4L, "ZPTC"));		
+		
+		electionYears = staticDataService.getElectionIdsAndYearsInfo(2L,new Long(1));
+		electionYears.add(0, new SelectOptionVO(0l,"Select Year"));
+		
+		partiesList = new ArrayList<SelectOptionVO>();
+		partiesList = staticDataService.getStaticParties();
+		partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
+		
 		return Action.SUCCESS;
 	}
 
