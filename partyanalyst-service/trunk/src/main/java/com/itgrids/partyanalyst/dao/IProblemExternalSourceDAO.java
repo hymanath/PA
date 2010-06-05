@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.model.PoliticalChangesInformationSource;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 
 public interface IProblemExternalSourceDAO extends GenericDao<ProblemExternalSource, Long> {
@@ -18,4 +19,6 @@ public interface IProblemExternalSourceDAO extends GenericDao<ProblemExternalSou
 	public List<ProblemExternalSource> findByProblemExternalSourceName(String name);
 	
 	public List<ProblemExternalSource> findByProblemExternalSourceId(Long sourceId);
+	
+	public List<ProblemExternalSource> getExternalPersonDetails(Long politicalChangesId);
 }
