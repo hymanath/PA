@@ -160,6 +160,9 @@ public interface IConstants {
     public final static Color PENDING_COLOR = new Color(0XB29D40);
     public final static Color FIXED_COLOR = new Color(0XF05922);
     
+    public final static String TRUE = "true";
+    public final static String FALSE = "false";
+    public final static String EDIT = "edit";
     public final static String 	PROBLEMS_MANAGEMENT = "PROBLEMS_MANAGEMENT";
     public final static String 	CONSTITUENCY_MANAGEMENT = "CONSTITUENCY_MANAGEMENT";
 }
