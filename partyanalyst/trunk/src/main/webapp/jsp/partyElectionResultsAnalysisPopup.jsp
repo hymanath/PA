@@ -395,7 +395,7 @@ function getCommentsClassifications(rank)
 			getMainPartyMarginCountAnalyzedCategoryResults('${clickIndex}','${resultStatus}','${categoryId}');
 
 		addCommentsDialog.hide();
-		openerDoc.ajaxCallForBasicAnalysisDetails(openerDoc.electionYear,openerDoc.stateId,openerDoc.electionType,openerDoc.electionTypeId,openerDoc.partyId);
+		//openerDoc.ajaxCallForBasicAnalysisDetails(openerDoc.electionYear,openerDoc.stateId,openerDoc.electionType,openerDoc.electionTypeId,openerDoc.partyId);
 	}
 													
 	function getMarginCountAnalysisForAnalyzedConstituencies(index,resultStatus)
