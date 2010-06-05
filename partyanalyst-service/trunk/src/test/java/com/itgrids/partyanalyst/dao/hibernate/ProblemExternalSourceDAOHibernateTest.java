@@ -5,6 +5,8 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IProblemExternalSourceDAO;
+import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
+import com.itgrids.partyanalyst.model.PoliticalChangesInformationSource;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
 
 public class ProblemExternalSourceDAOHibernateTest extends BaseDaoTestCase{
@@ -30,4 +32,21 @@ public class ProblemExternalSourceDAOHibernateTest extends BaseDaoTestCase{
 		assertEquals(1, regUser.size());
 	}
 	
+	public void testGetExternalPersonDetails(){
+		List<ProblemExternalSource> result = problemExternalSourceDAO.getExternalPersonDetails(24l);
+		PoliticalChangesVO politicalChangesVO = new PoliticalChangesVO();
+		for(ProblemExternalSource resultIterator : result){
+			politicalChangesVO.setName(resultIterator.getName());
+			System.out.println("a"+resultIterator.getName());
+			System.out.println("b"+resultIterator.getMobile());
+			System.out.println("c"+resultIterator.getTelePhone());
+			System.out.println("d"+resultIterator.getAddress());
+			System.out.println("e"+resultIterator.getEmail());
+			politicalChangesVO.setMobile(resultIterator.getMobile());
+			politicalChangesVO.setTelephoneNo(resultIterator.getTelePhone());
+			politicalChangesVO.setAddress(resultIterator.getAddress());
+			politicalChangesVO.setEmail(resultIterator.getEmail());
+		}
+		
+	}
 }
