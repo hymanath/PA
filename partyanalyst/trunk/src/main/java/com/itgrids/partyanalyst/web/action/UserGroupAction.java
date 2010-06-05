@@ -261,7 +261,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 					userGroupDetailsVO.setMyGroupId(new Long(myGroupId));	
 				}
 			userGroupsVO.setUserGroupDetailsVO(userGroupService.createGroupForUser(userGroupDetailsVO)) ;
-			System.out.println(userGroupsVO.getUserGroupDetailsVO().getGroupName());
+			
 			
 		} 
 		if(jObj.getString("task").equalsIgnoreCase("addMemberToAGroup"))
@@ -275,6 +275,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			userGroupMembersVO.setName(jObj.getString("name"));
 			userGroupMembersVO.setLocation(jObj.getString("location"));			
 			userGroupMembersVO.setEmailId(jObj.getString("eMailText"));
+			userGroupMembersVO.setConfirmation(new Boolean(jObj.getString("confirmation")));
 			userGroupsVO.setUserGroupMembersVO(userGroupService.addMemberToGroup(groupId,userGroupMembersVO));
 						
 		}
@@ -384,6 +385,12 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			userGroupsVO = new UserGroupsVO();
 			String groupName =  jObj.getString("groupName");
 			userGroupsVO.setGroupAlreadyExists(userGroupService.checkForAvailability(user.getRegistrationID(), groupName));
+		} if(jObj.getString("task").equalsIgnoreCase("checkGroupMemberName"))
+		{
+			userGroupsVO = new UserGroupsVO();
+			String memberName =  jObj.getString("name");
+			Long groupId = new Long(jObj.getString("groupId"));
+			userGroupsVO.setGroupMemberAlreadyExists(userGroupService.checkForExistingGroupMemeberByName( groupId, memberName));			
 		}
 		return Action.SUCCESS;
 	}	

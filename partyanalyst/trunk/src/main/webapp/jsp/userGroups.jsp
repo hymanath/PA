@@ -385,7 +385,7 @@ var userGrpsObj={
 			str+='</tr>';	
 			str+='<tr>';
 			str+='<td align="right" colspan="3"><a href="javascript:{}" class="membersLinks" style="" id="viewMembersAnchor" onclick="showGroupMembers('+groupId+')">View Members</a>';
-			str+='&nbsp;&nbsp;<a href="#" class="membersLinks" style="" id="addMembersAnchor" onclick="addGrpMembersDialog('+groupId+')">Add Members</a></td>';
+			str+='&nbsp;&nbsp;<a href="javascript:{}" class="membersLinks" style="" id="addMembersAnchor" onclick="addGrpMembersDialog('+groupId+')">Add Members</a></td>';
 			str+='</tr>';							
 			}		
 		str+='</table>';			
@@ -1154,6 +1154,7 @@ var userGrpsObj={
 	
 	function showGroupCreationConfirmation(results,jsObj)
 	{
+		
 		var groupAlreadyExists = results.userGroupDetailsVO.rs.resultPartial;
 		var confirmDivEl = document.getElementById("confirmMsg");
 		var groupName;
@@ -1271,9 +1272,11 @@ var userGrpsObj={
 		addGrpMbrsContent+='</tr>';
 		addGrpMbrsContent+='<tr>';
 		addGrpMbrsContent+='<td colspan="2"><div id="confirmAddMember"></div></td>';
-		addGrpMbrsContent+='</tr>';
-		
+		addGrpMbrsContent+='</tr>';		
 		addGrpMbrsContent+='</table>';
+		addGrpMbrsContent+='</div>';
+		addGrpMbrsContent+='<DIV style="text-align:right;"><INPUT type="button" class="button" id="addMemberButton" style="width:50px;" onclick="handleAddGrpMbrSubmit(false)" value="Save"/>';
+		addGrpMbrsContent+='<INPUT type="button" id="addCommentsButton" style="width:50px;" class="button" onclick="handleAddGrpMbrCancel()" value="Exit"/></DIV>';
 		addGrpMbrsContent+='</div>';
 		addGrpMbrsContent+='</div>';
 		addGrpMbrsContent+='</div>';
@@ -1291,14 +1294,13 @@ var userGrpsObj={
 				  hideaftersubmit:true,
 				  close:true,
 				  x:400,
-				  y:400,				  
-				  buttons : [ { text:"Add", handler: handleAddGrpMbrSubmit, isDefault:true}, 
-	                          { text:"Cancel", handler: handleAddGrpMbrCancel}]
+				  y:400				  
+				  
 	             } ); 
 		addGrpMbrsDialog.render();		
 	}
 	
-	function handleAddGrpMbrSubmit()
+	function handleAddGrpMbrSubmit(confirmation)
 	{
 		var name = document.getElementById("grpMbrNameText").value;
 		var mobile = document.getElementById("groupMbrMobileText").value;
@@ -1316,7 +1318,8 @@ var userGrpsObj={
 				eMailText :eMailText,
 				designation :designation,
 				task:"addMemberToAGroup",
-				groupId:groupId						
+				groupId:groupId,
+				confirmation: confirmation						
 		};
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1328,28 +1331,42 @@ var userGrpsObj={
 
 	function handleAddGrpMbrCancel()
 	{
-		this.cancel();
+		addGrpMbrsDialog.cancel();
 	}
 	function showAddedMbrConfirm(results)
 	{
+		var memberAlreadyExists = results.userGroupMembersVO.rs.resultPartial;
 		var groupName = results.userGroupMembersVO.groupName;
 		var memberName = results.userGroupMembersVO.name;
 		var confirmAddMemberEl = document.getElementById("confirmAddMember");
-		confirmAddMemberEl.innerHTML = memberName+" is succesfully added in to "+groupName;
-		confirmAddMemberEl.style.color='green';
-
-		var grpMbrNameTextEl = document.getElementById("grpMbrNameText");
-		grpMbrNameTextEl.value ="";
-		var groupMbrMobileTextEl = document.getElementById("groupMbrMobileText");
-		groupMbrMobileTextEl.value ="";
-		var groupMbrAdrsTextEl = document.getElementById("groupMbrAdrsText");
-		groupMbrAdrsTextEl.value ="";
-		var groupMbrLocTextEl = document.getElementById("groupMbrLocText");
-		groupMbrLocTextEl.value ="";
-		var eMailTextEl = document.getElementById("eMailText");
-		eMailTextEl.value ="";
-		var groupMbrDesignationTextEl = document.getElementById("groupMbrDesignationText");
-		groupMbrDesignationTextEl.value ="";				
+		if(memberAlreadyExists == false)
+		{	
+			confirmAddMemberEl.innerHTML = memberName+" is succesfully added in to "+groupName;
+			confirmAddMemberEl.style.color='green';
+			
+			var grpMbrNameTextEl = document.getElementById("grpMbrNameText");
+			grpMbrNameTextEl.value ="";
+			var groupMbrMobileTextEl = document.getElementById("groupMbrMobileText");
+			groupMbrMobileTextEl.value ="";
+			var groupMbrAdrsTextEl = document.getElementById("groupMbrAdrsText");
+			groupMbrAdrsTextEl.value ="";
+			var groupMbrLocTextEl = document.getElementById("groupMbrLocText");
+			groupMbrLocTextEl.value ="";
+			var eMailTextEl = document.getElementById("eMailText");
+			eMailTextEl.value ="";
+			var groupMbrDesignationTextEl = document.getElementById("groupMbrDesignationText");
+			groupMbrDesignationTextEl.value ="";
+		} else  if(memberAlreadyExists == true)
+		{
+			var answer = confirm(memberName+"Already Exists.Do you want to proceed?");
+			if (answer){
+				handleAddGrpMbrSubmit("true");				
+			}
+			else{
+				return;
+			}
+ 
+		}					
 	}	
 
 	function limitText(limitField, limitCount, limitNum)
