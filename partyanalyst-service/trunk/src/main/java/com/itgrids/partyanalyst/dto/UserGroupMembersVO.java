@@ -18,6 +18,8 @@ public class UserGroupMembersVO implements Serializable {
 	private String designation;
 	private Long groupMemberId;
 	private String emailId;
+	private ResultStatus rs;
+	private Boolean confirmation;
 	
 	
 	
@@ -81,12 +83,18 @@ public class UserGroupMembersVO implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
-	
-	
-	
-	
+	public ResultStatus getRs() {
+		return rs;
+	}
+	public void setRs(ResultStatus rs) {
+		this.rs = rs;
+	}
+	public void setConfirmation(Boolean confirmation) {
+		this.confirmation = confirmation;
+	}
+	public Boolean getConfirmation() {
+		return confirmation;
+	}
 
 
 }

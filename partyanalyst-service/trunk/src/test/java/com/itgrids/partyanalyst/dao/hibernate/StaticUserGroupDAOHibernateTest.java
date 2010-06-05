@@ -24,11 +24,19 @@ public class StaticUserGroupDAOHibernateTest extends BaseDaoTestCase  {
 		System.out.println(list.size());
 	}*/
 	@SuppressWarnings("unchecked")
-	public void testGetGroupMembersCountForAGroup()
+	/*public void testGetGroupMembersCountForAGroup()
 	{
 		List list = staticUserGroupDAO.getGroupMembersCountForAGroup(7L);
 		System.out.println(list.size());
 		System.out.println(Long.parseLong(list.get(0).toString()));
+		
+	}*/
+	
+	public void testGetGroupMembersByName()
+	{
+		List list = staticUserGroupDAO.getGroupMembersByName(10L, "Siva Reddivari");
+		System.out.println("List Size"+list.size());
+		System.out.println("Count"+Long.parseLong(list.get(0).toString()));
 		
 	}
 }

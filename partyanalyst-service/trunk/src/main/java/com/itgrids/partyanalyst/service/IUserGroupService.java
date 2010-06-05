@@ -42,6 +42,7 @@ public interface IUserGroupService {
     public List<SelectOptionVO> getSubGroupsListInMyGroups(Long groupId ,Long userId);
     public List<SelectOptionVO> getSubGroupsOfStaticGroupParents(Long groupId ,Long userId);
     public boolean checkForAvailability(Long userId, String groupName);
+    public boolean checkForExistingGroupMemeberByName(Long groupId, String memberName);
    
     
  }

@@ -266,7 +266,6 @@ public class UserGroupService implements IUserGroupService {
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		String strDateNew = sdf.format(now) ;
 	    now = sdf.parse(strDateNew);
-	    boolean groupAlreadyExists;
 	    Long parentGroupId = userGroupDetailsToSave.getParentGroupId();
 	    reg = registrationDAO.get(userGroupDetailsToSave.getCreatedUserId());
 		staticGroupObj = staticGroupDAO.get(new Long(userGroupDetailsToSave.getStaticGroupId()));
@@ -416,11 +415,11 @@ public class UserGroupService implements IUserGroupService {
 		{
 			GroupsDetailsForUserVO groupVO = new GroupsDetailsForUserVO();
 			Long myGroupId =myGroups.getPersonalUserGroupId();
-			System.out.println("myGroupId :" + myGroupId);
+			log.debug("myGroupId :" + myGroupId);
 			groupVO.setStaticGroupId(myGroupId);
 			groupVO.setStaticGroupName(myGroups.getGroupName());
 			List subGrpCount = personalUserGroupDAO.getSubGroupsCountInMyGroupsByUserId(userId, myGroupId);
-			System.out.println("SubGroups ..." + subGrpCount.size());
+			log.debug("SubGroups ..." + subGrpCount.size());
 			if(subGrpCount != null && subGrpCount.size() > 0){
 			Object[] params = (Object[])subGrpCount.get(0);
 			Long grpId = (Long)params[0];
@@ -453,26 +452,50 @@ public class UserGroupService implements IUserGroupService {
                 
                 PersonalUserGroup personalUserGroup=null;
                 StaticUsers staticUsers = null;
-                 
+                boolean memberAlreadyExists;
+                ResultStatus resultStatus; 
+                boolean confirmation;
                 try{
-                personalUserGroup= personalUserGroupDAO.get(groupId);
-                staticUsers = new StaticUsers();          
-                staticUsers.setName(UserGroupService.this.userGroupMembersVo.getName());
-                staticUsers.setAddress(UserGroupService.this.userGroupMembersVo.getAddress());
-                staticUsers.setEmailId(UserGroupService.this.userGroupMembersVo.getEmailId());
-                staticUsers.setMobileNumber(UserGroupService.this.userGroupMembersVo.getMobileNumber());
-                staticUsers.setDesignation(UserGroupService.this.userGroupMembersVo.getDesignation());
-                staticUsers.setLocation(UserGroupService.this.userGroupMembersVo.getLocation());
-                             
-                StaticUserGroup staticUserGroup = new StaticUserGroup();
-                staticUserGroup.setStaticUser(staticUsers);
-                staticUserGroup.setPersonalUserGroup(personalUserGroup);
-                staticUserGroup = staticUserGroupDAO.save(staticUserGroup);                          
-              
-                userGroupMembersFromDb.setName(staticUserGroup.getStaticUser().getName());
-                userGroupMembersFromDb.setGroupName(staticUserGroup.getPersonalUserGroup().getGroupName());
-                System.out.println("Group Name::::::" + userGroupMembersFromDb.getGroupName());
-                System.out.println("Member Name:::::::" + userGroupMembersFromDb.getName());
+                	memberAlreadyExists =  checkForExistingGroupMemeberByName(groupId, UserGroupService.this.userGroupMembersVo.getName());
+                	resultStatus = new ResultStatus();
+                	confirmation = UserGroupService.this.userGroupMembersVo.getConfirmation();
+                    if(log.isDebugEnabled()){
+    					log.debug("The value of memberAlreadyExists:================"+memberAlreadyExists);
+    					log.debug("The value of confirmation:================"+confirmation);
+    				}
+                    resultStatus.setResultPartial(memberAlreadyExists);
+                    if((memberAlreadyExists == false) || (confirmation == true))
+                    {	
+		                personalUserGroup= personalUserGroupDAO.get(groupId);
+		                staticUsers = new StaticUsers();          
+		                staticUsers.setName(UserGroupService.this.userGroupMembersVo.getName());
+		                staticUsers.setAddress(UserGroupService.this.userGroupMembersVo.getAddress());
+		                staticUsers.setEmailId(UserGroupService.this.userGroupMembersVo.getEmailId());
+		                staticUsers.setMobileNumber(UserGroupService.this.userGroupMembersVo.getMobileNumber());
+		                staticUsers.setDesignation(UserGroupService.this.userGroupMembersVo.getDesignation());
+		                staticUsers.setLocation(UserGroupService.this.userGroupMembersVo.getLocation());
+		                             
+		                StaticUserGroup staticUserGroup = new StaticUserGroup();
+		                staticUserGroup.setStaticUser(staticUsers);
+		                staticUserGroup.setPersonalUserGroup(personalUserGroup);
+		                staticUserGroup = staticUserGroupDAO.save(staticUserGroup);                          
+		              
+		                userGroupMembersFromDb.setName(staticUserGroup.getStaticUser().getName());
+		                userGroupMembersFromDb.setGroupName(staticUserGroup.getPersonalUserGroup().getGroupName());
+		                if(confirmation == true)
+		                {
+		                	System.out.println("confirmation == true");
+		                	resultStatus.setResultPartial(false);
+		                } else
+		                {
+		                	System.out.println("confirmation == false");
+		                	resultStatus.setResultPartial(memberAlreadyExists);
+		                }	
+                    }
+                    
+                    userGroupMembersFromDb.setRs(resultStatus);
+                    
+	                
 				}
                 catch(Exception e){
                 	e.printStackTrace();
@@ -1045,6 +1068,27 @@ public class UserGroupService implements IUserGroupService {
 			flag= false;
 		} else {
 			flag = true;	
+		}		
+		return flag;
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean checkForExistingGroupMemeberByName(Long groupId, String memberName) {
+		if(log.isDebugEnabled())
+		{
+			log.debug("Entered In to checkForExistingGroupMemeberByName method");
+			log.debug("groupId:::::"+groupId);
+		}
+		boolean flag;
+		List result = staticUserGroupDAO.getGroupMembersByName(groupId, memberName);
+		log.debug("Count::::::::::::::::::::::::::"+Long.parseLong(result.get(0).toString()));
+		if(Long.parseLong(result.get(0).toString())== 0L)
+		{
+			flag= false;
+			log.debug("FLAG::::::::::::::::::::"+flag);
+		} else {
+			flag = true;
+			log.debug("FLAG::::::::::::::::::::"+flag);
 		}		
 		return flag;
 	}	

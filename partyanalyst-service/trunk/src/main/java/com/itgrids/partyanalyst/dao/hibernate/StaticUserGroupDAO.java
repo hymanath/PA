@@ -35,6 +35,14 @@ public class StaticUserGroupDAO extends GenericDaoHibernate<StaticUserGroup, Lon
 		Object[] params = {groupId,userId};
 		return getHibernateTemplate().find("select model.staticUser.mobileNumber from StaticUserGroup model where model.personalUserGroup.personalUserGroupId = ? and model.staticUser.staticUserId = ?",params);
 	}
+
+
+	@SuppressWarnings("unchecked")
+	public List getGroupMembersByName(Long groupId,
+			String memberName) {
+		Object[] params = {groupId, memberName};
+		return getHibernateTemplate().find("select count(model.staticUser.staticUserId) from StaticUserGroup model where model.personalUserGroup.personalUserGroupId = ? and model.staticUser.name = ?", params);
+	}
 	
 
 }

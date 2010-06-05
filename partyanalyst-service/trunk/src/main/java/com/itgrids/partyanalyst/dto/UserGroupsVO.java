@@ -16,6 +16,7 @@ public class UserGroupsVO {
 	private boolean groupAlreadyExists;
 	private UserGroupMembersVO userGroupMembersVO;
 	private List<SelectOptionVO> myGroupsListboxOptions;
+	private boolean groupMemberAlreadyExists; 
 	
 	public List<GroupsDetailsForUserVO> getGroupsDetailsForUser() {
 		return groupsDetailsForUser;
@@ -97,6 +98,14 @@ public class UserGroupsVO {
 
 	public List<SelectOptionVO> getMyGroupsListboxOptions() {
 		return myGroupsListboxOptions;
+	}
+
+	public void setGroupMemberAlreadyExists(boolean groupMemberAlreadyExists) {
+		this.groupMemberAlreadyExists = groupMemberAlreadyExists;
+	}
+
+	public boolean isGroupMemberAlreadyExists() {
+		return groupMemberAlreadyExists;
 	}
 	
 	
