@@ -56,7 +56,7 @@
 
 <script type="text/javaScript">
 
-var partyId = '${party}';
+var partyId = '';
 var partyName = '${partyNameHidden}';
 var stateId = '${state}';
 var stateName = '${stateNameHidden}';
@@ -928,8 +928,9 @@ function reportTitleDivFunc()
 
 }
 
-function buildMarginVotes(status)
+function buildMarginVotes(localPartyId,status)
 {	
+	partyId = localPartyId;
 	var jsObj= 
 	{	
 		electionId: electionId,
@@ -963,7 +964,18 @@ function buildVotesMarginContent(jsObj,results)
 	str += '<th style="background-color:#DFE2E5;">Constituencies '+jsObj.status+'</th>';
 	str += '<th style="background-color:#DFE2E5;">Analyzed</th>';
 	str += '</tr>';
-
+	if(results[0].resultStatus)
+	{
+		str+= '<tr>';
+		str+= '<td colspan="4">No Results To Display</td>';
+		str+= '</tr>';	
+		str += '</table>';
+	
+		if(elmt)
+		elmt.innerHTML = str;
+		
+		return;
+	}
 	for(var i in results)
 	{		
 		str+= '<tr onclick="showMarginAnalysisData('+i+',\''+jsObj.status+'\')" style="cursor:pointer;">';
@@ -1068,6 +1080,12 @@ function showMarginCountAnalysisForCategory(index,partyId,categoryId,status)
 	var browser2 = window.open(urlStr,"partyElectionResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	
 	browser2.focus();	
+}
+
+function callMarginVotes(partyId)
+{
+	buildMarginVotes(partyId,"WON");
+	buildMarginVotes(partyId,"LOST");
 }
 
 </script>
@@ -1462,9 +1480,16 @@ function showMarginCountAnalysisForCategory(index,partyId,categoryId,status)
 <div id="votesMarginInfo_main">
 	<div id="votesMarginInfo_head"  class="partyInfoHeading"> Analysis Votes Margin </div>
 	<div id="votesMarginInfo_body">
-	<div></div>
-
 		<table width="85%">
+			<tr>
+				<td colspan="2" align="right">
+					Votes Margin Analysis for : 
+					<input type="radio" name="alliance" value="${party}" onclick="callMarginVotes(this.value)" checked="checked"><font style="color:red">${partyNameHidden}	</font>							
+					<c:forEach var="alliance" items="${stateData.allianceParties}">
+						<input type="radio" name="alliance" onclick="callMarginVotes(this.value)" value="${alliance.partyId}"><font style="color:#B77643">${alliance.shortName}	</font>							
+					</c:forEach>					
+				</td>
+			</tr>
 			<tr>
 				<td style="vertical-align:top;">
 					<div class="votesMarginContentHead">Winning Constituencies</div>
@@ -1480,8 +1505,7 @@ function showMarginCountAnalysisForCategory(index,partyId,categoryId,status)
 </div>
 
 <script type="text/javascript">
-	buildMarginVotes("WON");
-	buildMarginVotes("LOST");
+	callMarginVotes('${party}');	
 </script>
 
 <br/><br/>
