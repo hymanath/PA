@@ -5,6 +5,14 @@
 
 <beans>
   
+  	<bean id="politicalChangesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+  
+ 	<bean id="politicalChangesInformationSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesInformationSourceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+  
 	<bean id="electionScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionScopeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

@@ -102,6 +102,8 @@
 				<value>com.itgrids.partyanalyst.model.LocalElectionBody</value>
 				<value>com.itgrids.partyanalyst.model.ElectionGoverningBodyPosition</value>
 				<value>com.itgrids.partyanalyst.model.ElectionGoverningBody</value>
+				<value>com.itgrids.partyanalyst.model.PoliticalChanges</value>
+				<value>com.itgrids.partyanalyst.model.PoliticalChangesInformationSource</value>
 				</list>
 		</property>
 	</bean>

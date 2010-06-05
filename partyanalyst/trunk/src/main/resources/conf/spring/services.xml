@@ -445,6 +445,14 @@
     	<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 	
+	<bean name="politicalChangesService" class="com.itgrids.partyanalyst.service.impl.PoliticalChangesService" >
+		<property name="politicalChangesInformationSourceDAO" ref="politicalChangesInformationSourceDAO" />
+		<property name="partyDAO" ref="partyDAO"/>
+		<property name="politicalChangesDAO" ref="politicalChangesDAO"/>
+		<property name="problemExternalSourceDAO" ref="problemExternalSourceDAO"/>
+		<property name="registrationDAO" ref="registrationDAO" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>  
 	
 </beans>		
 		

@@ -9,6 +9,11 @@
 	<bean id="influencingPeopleAction" class="com.itgrids.partyanalyst.web.action.InfluencingPeopleAction" singleton="false">
 		<property name="influencingPeopleService" ref="influencingPeopleService" />
 		<property name="staticDataService" ref="staticDataService" />
+	</bean>			
+	
+	<bean id="politicalChangesAction" class="com.itgrids.partyanalyst.web.action.PoliticalChangesAction" singleton="false">
+		<property name="politicalChangesService" ref="politicalChangesService" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>	
 	
 	<bean id="partyPerformanceReportAction" class="com.itgrids.partyanalyst.web.action.PartyPerformanceReportAction"

@@ -601,12 +601,6 @@
 				<param name="root">problemHistory</param>				
 			</result> 
 		</action>
-		
-		<action name="problemManagementHistoryResultsNew" class="problemManagementReportAction" method="getProblemHistoryDataNew">
-			<result type="json" name="success">
-				<param name="root">problemBeanVO</param>				
-			</result> 
-		</action>
 
 		<action name="userGroupAction" class="userGroupAction">
 			<result name="success">/jsp/userGroups.jsp</result>
@@ -981,6 +975,37 @@
            		<param name="root">problemBean</param>
         	</result>       		
         </action>
+        
+        <action name="getInformationSources" class="politicalChangesAction" method="getAllInformationSources" >
+			<result type="json" name="success">
+				<param name="root">informationSources</param>
+			</result> 
+		</action>
+		   
+		<action name="saveDataForLocalPoliticalChangesAjaxAction" class="politicalChangesAction" method="saveDataForLocalPoliticalChanges" >
+		</action>
+		
+		<action name="getAllStaticPartiesAjaxAction" class="politicalChangesAction" method="getAllStaticParties" >
+			<result type="json" name="success">
+					<param name="root">staticParties</param>
+			</result> 
+		</action> 
+		
+		<action name="getAllPoliticalChangesForTheUserAjaxAction" class="politicalChangesAction" method="getAllPoliticalChangesForTheUser" >
+			<result type="json" name="success">
+					<param name="root">politicalChangesData</param>
+			</result> 
+		</action> 
+		
+		<action name="deltePoliticalChangeAjaxAction" class="politicalChangesAction" method="deltePoliticalChange" >
+		</action> 
+		
+		<action name="getExternalPersonDetailsAjaxAction" class="politicalChangesAction" method="getExternalPersonDetails" >
+			<result type="json" name="success">
+					<param name="root">externalPersonInfo</param>
+			</result> 
+		</action> 
+	
         <action name="sendSMSAction" class="sendSMSAction"></action>        
         
          <action name="votesMaringInfoForElectionInPartyPerformance" class="partyPerformanceAction" method="getMarginCount"> 
