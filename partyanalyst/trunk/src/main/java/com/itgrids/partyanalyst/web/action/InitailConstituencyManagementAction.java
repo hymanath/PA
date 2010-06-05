@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class InitailConstituencyManagementAction extends ActionSupport implements ServletRequestAware{
@@ -34,7 +35,16 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 	private String task = null;
 	JSONObject jObj = null;
 	private List<ProblemBeanVO> problemsList;
-		
+	private String EXTERNAL_PERSON;
+	
+	public String getEXTERNAL_PERSON() {
+		return EXTERNAL_PERSON;
+	}
+
+	public void setEXTERNAL_PERSON(String external_person) {
+		EXTERNAL_PERSON = external_person;
+	}
+	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -108,6 +118,8 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 				
 		accessType = user.getAccessType();
 		accessValue= new Long(user.getAccessValue());
+		
+		EXTERNAL_PERSON = IConstants.EXTERNAL_PERSON;
 		
 		statusList = problemManagementReportService.getAllProblemStatusInfo();
 		statusList.add(0,new SelectOptionVO(-1l, "Select Status"));
