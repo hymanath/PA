@@ -112,6 +112,8 @@
 				<value>com.itgrids.partyanalyst.model.LocalElectionBody</value>
 				<value>com.itgrids.partyanalyst.model.ElectionGoverningBodyPosition</value>
 				<value>com.itgrids.partyanalyst.model.ElectionGoverningBody</value>
+				<value>com.itgrids.partyanalyst.model.PoliticalChanges</value>
+				<value>com.itgrids.partyanalyst.model.PoliticalChangesInformationSource</value>
 		 </list>
 		</property>
 	</bean>
@@ -440,6 +442,15 @@
 	<bean id="electionGoverningBodyPositionDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyPositionDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+					
+	<bean id="politicalChangesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="politicalChangesInformationSourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesInformationSourceDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 
 	<bean name="muncipleDataUploadService" class="com.itgrids.partyanalyst.service.impl.MuncipleDataUploadService">		
 		<property name="transactionTemplate" ref="transactionTemplate" />		
