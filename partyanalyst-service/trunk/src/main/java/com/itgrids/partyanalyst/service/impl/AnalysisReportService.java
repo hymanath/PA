@@ -858,23 +858,28 @@ public class AnalysisReportService implements IAnalysisReportService {
 			 
 			 if(id.equals(new Long(1))){
 				 votesMarginAnalysisVO.setMarginValueOne(new Long(0));
-				 votesMarginAnalysisVO.setMarginValueTwo(new Long(10));
-				 votesMarginAnalysisVO.setMarginRange("0 - 10 %");
+				 votesMarginAnalysisVO.setMarginValueTwo(new Long(2));
+				 votesMarginAnalysisVO.setMarginRange("0 - 2 %");
 			 }
 			 else if(id.equals(new Long(2))){
+				 votesMarginAnalysisVO.setMarginValueOne(new Long(2));
+				 votesMarginAnalysisVO.setMarginValueTwo(new Long(5));
+				 votesMarginAnalysisVO.setMarginRange("2 - 5 %");
+			 }
+			 else if(id.equals(new Long(3))){
+				 votesMarginAnalysisVO.setMarginValueOne(new Long(5));
+				 votesMarginAnalysisVO.setMarginValueTwo(new Long(10));
+				 votesMarginAnalysisVO.setMarginRange("5 - 10 %");
+			 }
+			 else if(id.equals(new Long(4))){
 				 votesMarginAnalysisVO.setMarginValueOne(new Long(10));
 				 votesMarginAnalysisVO.setMarginValueTwo(new Long(20));
 				 votesMarginAnalysisVO.setMarginRange("10 - 20 %");
 			 }
-			 else if(id.equals(new Long(3))){
-				 votesMarginAnalysisVO.setMarginValueOne(new Long(20));
-				 votesMarginAnalysisVO.setMarginValueTwo(new Long(30));
-				 votesMarginAnalysisVO.setMarginRange("20 - 30 %");
-			 }
 			 else{
-				 votesMarginAnalysisVO.setMarginValueOne(new Long(30));
+				 votesMarginAnalysisVO.setMarginValueOne(new Long(20));
 				 votesMarginAnalysisVO.setMarginValueTwo(new Long(100));
-				 votesMarginAnalysisVO.setMarginRange("30 % and above %");
+				 votesMarginAnalysisVO.setMarginRange("20 % and above %");
 			 }
 			 
 			 List<AnalysisCategoryBasicVO> analysisCategoryVosList = new ArrayList<AnalysisCategoryBasicVO>();
@@ -927,16 +932,16 @@ public class AnalysisReportService implements IAnalysisReportService {
 	/*
 	 * 
 	 */
-	public Long getMarginValueFromPartyAndOppPartyNominations(Nomination partyNomination,Nomination oppPartyNomination) throws Exception{
+	public Double getMarginValueFromPartyAndOppPartyNominations(Nomination partyNomination,Nomination oppPartyNomination) throws Exception{
 		
 		log.debug("Inside getMarginValueFromPartyAndOppPartyNominations Method..... ");
 		Long marginValueLong = null;
-		
+		Double marginValue = null;
 		try{
 		String partyVotesPercent = partyNomination.getCandidateResult().getVotesPercengate();
 		Long partyRank = partyNomination.getCandidateResult().getRank();
 		String oppPartyVotesPercent = oppPartyNomination.getCandidateResult().getVotesPercengate();
-		Double marginValue = null;
+		
 		if(partyRank.equals(new Long(1))){
 			marginValue = new BigDecimal(new Double(partyVotesPercent)-new Double(oppPartyVotesPercent)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
@@ -949,7 +954,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 			ex.printStackTrace();
 			log.debug("Exception Raised :" + ex);
 		}
-		return marginValueLong;
+		return marginValue;
 	}
 
 	/*
@@ -1145,7 +1150,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				  
 				  //creating dummy map with dummy margin values
 				  marginNominationIds = new HashMap<Long,List<Long>>();
-				  for(int i=1;i<5;i++){
+				  for(int i=1;i<=5;i++){
 					  List<Long> arrayList = new ArrayList<Long>();
 					  marginNominationIds.put(new Long(i), arrayList);
 				  }
@@ -1159,19 +1164,26 @@ public class AnalysisReportService implements IAnalysisReportService {
 						  oppPartyNomitn = oppPartyNominationsMap.get(constituencyId);
 						  
 						  if(oppPartyNomitn != null){
-							  Long maginValue = getMarginValueFromPartyAndOppPartyNominations(partyNomintn,oppPartyNomitn);
+							  //Long maginValue = getMarginValueFromPartyAndOppPartyNominations(partyNomintn,oppPartyNomitn);
+							  Double maginValue = getMarginValueFromPartyAndOppPartyNominations(partyNomintn,oppPartyNomitn);
 							  
 							  log.debug("Margin Value :" +maginValue );
 							  if(maginValue != null){
 								  Long marginVal = new Long(0);
-								  if(maginValue >= new Long(0) && maginValue <= new Long(10))
+								  //if(maginValue >= new Long(0) && maginValue <= new Long(10))
+								  if(maginValue >= new Double(0) && maginValue <= new Double(2))
 									  marginVal = new Long(1);
-								  else if(maginValue > new Long(10) && maginValue <= new Long(20))
+								  //else if(maginValue > new Long(10) && maginValue <= new Long(20))
+								  else if(maginValue > new Double(2) && maginValue <= new Double(5))
 									  marginVal = new Long(2);
-								  else if(maginValue > new Long(20) && maginValue <= new Long(30))
+								  //else if(maginValue > new Long(20) && maginValue <= new Long(30))
+								  else if(maginValue > new Double(5) && maginValue <= new Double(10))
 									  marginVal = new Long(3);
-								  else if(maginValue > new Long(30))
+								  //else if(maginValue > new Long(30))
+								  else if(maginValue > new Double(10) && maginValue <= new Double(20))
 									  marginVal = new Long(4);
+								  else if(maginValue > new Double(20))
+									  marginVal = new Long(5);
 								  if(!marginNominationIds.isEmpty() && marginNominationIds.containsKey(marginVal)){
 								  List<Long> partyNomin = marginNominationIds.get(marginVal);
 								  partyNomin.add(partyNomintn.getNominationId());
