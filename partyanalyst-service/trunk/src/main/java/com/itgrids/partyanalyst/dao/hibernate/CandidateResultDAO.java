@@ -100,5 +100,16 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 				"cr.nomination.constituencyElection.constituency.name," +
 				"cr.rank", params);
 	}
+
+
+	@SuppressWarnings("unchecked")
+	public List getVotesPercentOfACandidateInAnElection(Long electionId,Long constituencyId,
+			Long rank) {
+		Object[] params = {electionId,constituencyId,rank};
+		return getHibernateTemplate().find("select model.votesPercengate from CandidateResult model"+
+				" where model.nomination.constituencyElection.election.electionId = ?"+
+				" and model.nomination.constituencyElection.constituency.constituencyId = ?"+
+				" and model.rank = ?",params);
+	}
 	
 }
