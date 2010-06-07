@@ -171,6 +171,7 @@ function callAjax(param,jsObj,url){
 						totalValidVotes: candidateElectionResults[i].totalValidVotes,
 						totalVotesEarned: candidateElectionResults[i].totalVotesEarned,
 						votesPercentage: candidateElectionResults[i].votesPercentage,
+						votesMargin: candidateElectionResults[i].votesMargin,
 						rank: '1',						
 						comments: '<A onclick="showCommentsDialog('+candidateElectionResults[i].candidateId+',\''+candidateElectionResults[i].candidateName+'\',\'candidate\',1,'+candidateElectionResults[i].constituencyId+',\''+candidateElectionResults[i].constituencyName+'\',\''+results.partyLongName+'\',\''+jsObj.task+'\')" title="Click to View/Add your comments"   href="javascript:{}">'+candidateElectionResults[i].userComments+'</A>',
 						moreDetails: '<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}">More Details</A>'
@@ -186,6 +187,7 @@ function callAjax(param,jsObj,url){
 						totalValidVotes: candidateElectionResults[i].totalValidVotes,
 						totalVotesEarned: candidateElectionResults[i].totalVotesEarned,
 						votesPercentage: candidateElectionResults[i].votesPercentage,
+						votesMargin: candidateElectionResults[i].votesMargin,
 						rank: candidateElectionResults[i].rank,						
 						comments: '<A onclick="showCommentsDialog('+candidateElectionResults[i].candidateId+',\''+candidateElectionResults[i].candidateName+'\',\'candidate\','+candidateElectionResults[i].rank+','+candidateElectionResults[i].constituencyId+',\''+candidateElectionResults[i].constituencyName+'\',\''+results.partyLongName+'\',\''+jsObj.task+'\')" title="Click to View/Add your comments"   href="javascript:{}">'+candidateElectionResults[i].userComments+'</A>',			
 						moreDetails:'<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}">More Details</A>'
@@ -207,6 +209,7 @@ function callAjax(param,jsObj,url){
 			              	 	 	{key: "totalValidVotes", label: "Valid Votes",formatter:"number", sortable:true},
 			              	 	 	{key: "totalVotesEarned", label: "Votes Earned",formatter:"number", sortable:true},
 			              	 	 	{key: "votesPercentage", label: "Votes Percentage",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+			              	 	    {key: "votesMargin", label: "Votes Margin",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
 			              	 	 	{key: "rank", label:"Rank", sortable:true},
 			              	 	 	{key: "comments", label:"Comments"},
 			              	 	 	{key: "moreDetails", label:"MoreDetails"}			              	 	     	 	 	
@@ -220,6 +223,7 @@ function callAjax(param,jsObj,url){
 	                         		  {key:"totalValidVotes", parser:"number"},
 	                         		  {key:"totalVotesEarned", parser:"number"},
 	                         		  {key:"votesPercentage", parser:YAHOO.util.DataSourceBase.parseNumber},
+	                         		  {key:"votesMargin", parser:YAHOO.util.DataSourceBase.parseNumber},
 	                         		  "comments", 
 	                         		 {key:"rank", parser:"number"},
 	                         		 "moreDetails"
