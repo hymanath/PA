@@ -27,6 +27,7 @@ public class CandidateElectionResultVO implements Serializable {
 	private Long totalValidVotes;
 	private Long totalVotesEarned;
 	private String votesPercentage;
+	private String votesMargin;
 	
 	private Long rank;
 	
@@ -97,6 +98,12 @@ public class CandidateElectionResultVO implements Serializable {
 	}
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
+	}
+	public String getVotesMargin() {
+		return votesMargin;
+	}
+	public void setVotesMargin(String votesMargin) {
+		this.votesMargin = votesMargin;
 	}
 	
 
