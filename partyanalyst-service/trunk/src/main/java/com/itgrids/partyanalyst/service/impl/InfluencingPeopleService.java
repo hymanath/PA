@@ -4,24 +4,30 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeoplePositionDAO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class InfluencingPeopleService implements IInfluencingPeopleService{
 	
@@ -32,6 +38,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	private static final Logger log = Logger.getLogger(InfluencingPeopleService.class);
 	private TransactionTemplate transactionTemplate = null;
 	private InfluencingPeopleVO influencingPeopleVO;
+	private InfluencingPeopleBeanVO influencingPeopleBeanVO;
 
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -140,7 +147,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			List<InfluencingPeoplePosition>  result = influencingPeoplePositionDAO.getAll();
 			SelectOptionVO selectOptionVo = new SelectOptionVO();
 			selectOptionVo.setId(0l);
-			selectOptionVo.setName("select");
+			selectOptionVo.setName("Select Position");
 			selectOptionVO.add(selectOptionVo);
 			for(InfluencingPeoplePosition influencingPeoplePosition : result){
 				SelectOptionVO selectOption = new SelectOptionVO();
@@ -148,10 +155,6 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				selectOption.setName(influencingPeoplePosition.getPosition());
 				selectOptionVO.add(selectOption);
 			}
-			SelectOptionVO selectOptionvo = new SelectOptionVO();
-			selectOptionvo.setId(selectOptionVO.size()+1l);
-			selectOptionvo.setName("other");
-			selectOptionVO.add(selectOptionvo);
 			return selectOptionVO;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -161,15 +164,15 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	
 	public List<SelectOptionVO> getInfluenceRange(){
 		try{
-			List<SelectOptionVO> selectOptionVO = new ArrayList<SelectOptionVO>();			
-			String[] range = {"select","Country","State","District","Constituency","Mandal","Muncipality","Town","Revenue Village","Hamlet","Other"};
-			for(int i=0;i<range.length;i++){
-				SelectOptionVO selectOptionVo = new SelectOptionVO();
-				selectOptionVo.setId(new Long(i));
-				selectOptionVo.setName(range[i]);
-				selectOptionVO.add(selectOptionVo);
-			}			
-			return selectOptionVO;
+			List<SelectOptionVO> selectOptionVOs = new ArrayList<SelectOptionVO>();
+			selectOptionVOs.add(new SelectOptionVO(0l,"Select Range"));
+			selectOptionVOs.add(new SelectOptionVO(1l,IConstants.STATE_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(2l,IConstants.DISTRICT_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(3l,IConstants.CONSTITUENCY_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(4l,IConstants.TEHSIL_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(5l,IConstants.REVENUE_VILLAGE_LEVEL));
+			selectOptionVOs.add(new SelectOptionVO(6l,IConstants.HAMLET_LEVEL));
+			return selectOptionVOs;
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
@@ -220,5 +223,43 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				}
 			}
 			});		
+	}
+
+	private Map<String, Long> influRangeAndValueMap;
+	public InfluencingPeopleBeanVO saveInfluencePeopleInfo(
+			InfluencingPeopleBeanVO influencingPeopleBeanVO1,
+			Map<String, Long> influRangeAndValueMap1) {
+		this.influencingPeopleBeanVO = influencingPeopleBeanVO1;
+		this.influRangeAndValueMap = influRangeAndValueMap1;
+		InfluencingPeopleBeanVO obj = (InfluencingPeopleBeanVO)transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+				InfluencingPeople influencingPeople = new InfluencingPeople();
+				InfluencingPeopleBeanVO influencingPeopleVO = new InfluencingPeopleBeanVO();
+				try{
+					influencingPeople.setFirstName(influencingPeopleBeanVO.getFirstName());
+					influencingPeople.setLastName(influencingPeopleBeanVO.getLastName());
+					influencingPeople.setInfluencingScope(influencingPeopleBeanVO.getInfluencingRange());
+					influencingPeople.setInfluencingScopeValue(influRangeAndValueMap.get(influencingPeopleBeanVO.getInfluencingRange()).toString());
+					influencingPeople.setParty(partyDAO.get(new Long(influencingPeopleBeanVO.getParty())));
+					influencingPeople.setCaste(influencingPeopleBeanVO.getCast());
+					influencingPeople.setOccupation(influencingPeopleBeanVO.getOccupation());
+					influencingPeople.setPhoneNo(influencingPeopleBeanVO.getMobile());
+					influencingPeople.setGender(influencingPeopleBeanVO.getGender());
+					influencingPeople.setEmail(influencingPeopleBeanVO.getEmail());
+					influencingPeople.setInfluencingPeoplePosition(influencingPeoplePositionDAO.get(new Long(influencingPeopleBeanVO.getPosition())));
+					influencingPeople.setHamlet(hamletDAO.get(new Long(influencingPeopleBeanVO.getHamlet())));
+					
+					influencingPeople = influencingPeopleDAO.save(influencingPeople);
+					influencingPeopleVO.setFirstName(influencingPeople.getFirstName());
+					influencingPeopleVO.setLastName(influencingPeople.getLastName());
+				}catch(Exception ex){
+					influencingPeopleVO.setExceptionEncountered(ex);
+					ex.printStackTrace();
+				}
+					return influencingPeopleVO;		
+			}
+		});
+		
+		return obj;
 	}		
 }

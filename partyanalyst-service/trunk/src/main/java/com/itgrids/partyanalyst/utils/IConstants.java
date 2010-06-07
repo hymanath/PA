@@ -109,7 +109,9 @@ public interface IConstants {
 	public final static String STATE_LEVEL="STATE";
 	public final static String DISTRICT_LEVEL="DISTRICT";
 	public final static String CONSTITUENCY_LEVEL="CONSTITUENCY";
-	public final static String TEHSIL_LEVEL="TEHSIL";	
+	public final static String TEHSIL_LEVEL="TEHSIL";
+	public final static String REVENUE_VILLAGE_LEVEL="REVENUE VILLAGE";
+	public final static String HAMLET_LEVEL="HAMLET";
 	public final static String WINNER_CANDIDATES="WINNER";
 	public final static String ALL_CANDIDATES="ALL_CANDIDATES";
 	public final static String LOST_CANDIDATES="LOST_CANDIDATES";

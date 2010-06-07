@@ -27,6 +27,7 @@ public class InfluencingPeople extends BaseModel{
 	private String firstName;
 	private String lastName;
 	private String influencingScope;
+	private String influencingScopeValue;
 	private Party party;
 	private String caste;
 	private String occupation;
@@ -178,5 +179,14 @@ public class InfluencingPeople extends BaseModel{
 	public void setHamlet(Hamlet hamlet) {
 		this.hamlet = hamlet;
 	}
-		
+
+	@Column(name = "influencing_scope_value", length = 250)
+	public String getInfluencingScopeValue() {
+		return influencingScopeValue;
+	}
+
+	public void setInfluencingScopeValue(String influencingScopeValue) {
+		this.influencingScopeValue = influencingScopeValue;
+	}
+
 }
