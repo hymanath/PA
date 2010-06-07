@@ -32,6 +32,7 @@
 		<property name="groupDAO" ref="groupDAO" />
 		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />		
 		<property name="electionTypeDAO" ref="electionTypeDAO" />
+		<property name="candidateResultDAO" ref="candidateResultDAO" />
 	</bean>
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
 		<property name="stateDAO" ref="stateDAO" />
@@ -434,6 +435,7 @@
 	    <property name="electionDAO" ref="electionDAO" />
 	    <property name="nominationDAO" ref="nominationDAO" />	
 	    <property name="staticDataService" ref="staticDataService" />
+	    <property name="candidateResultDAO" ref="candidateResultDAO" />
 	    <property name="partyElectionResultDAO" ref="partyElectionResultDAO" />
 	    <property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 	    <property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
