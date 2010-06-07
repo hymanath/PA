@@ -179,7 +179,6 @@ function validateDataForPoliticalChange()
 	}else{
 		errorFlag = 0;
 	}
-	alert(errorFlag);
 	errors+='</table>';
 	errorMsg.innerHTML = errors; 
 }
