@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
@@ -118,6 +119,7 @@ public class StaticDataService implements IStaticDataService {
 	private IBoothResultDAO boothResultDAO;
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO;
 	private IElectionTypeDAO electionTypeDAO;
+	private ICandidateResultDAO candidateResultDAO;
 	
 	/**
 	 * @param partyDAO the partyDAO to set
@@ -320,6 +322,16 @@ public class StaticDataService implements IStaticDataService {
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+
+	public ICandidateResultDAO getCandidateResultDAO() {
+		return candidateResultDAO;
+	}
+
+
+	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
+		this.candidateResultDAO = candidateResultDAO;
 	}
 
 
@@ -3478,10 +3490,22 @@ public class StaticDataService implements IStaticDataService {
 						candElecResult.setTotalVotesEarned(((Double)params[5]).longValue());
 						candElecResult.setVotesPercentage((String)params[6]);
 						candElecResult.setUserComments(new Long(0));
+						
+						List oppCandVotesPercent = null;
 						if(rank.equals(new Long(0))){
 						candElecResult.setRank((Long)params[7]);
+						oppCandVotesPercent = candidateResultDAO.getVotesPercentOfACandidateInAnElection(electionId, (Long)params[2], new Long(1));
 						}
-						
+						else{
+						oppCandVotesPercent = candidateResultDAO.getVotesPercentOfACandidateInAnElection(electionId, (Long)params[2], new Long(2));	
+						}
+						if(oppCandVotesPercent != null && oppCandVotesPercent.size() > 0){
+							Object votesParams = (Object)oppCandVotesPercent.get(0);
+							String oppCandVotesPercnt = (String)votesParams;
+							Double votesMargin = new BigDecimal(Double.parseDouble((String)params[6]) - Double.parseDouble(oppCandVotesPercnt)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+							candElecResult.setVotesMargin(votesMargin.toString());
+						}
+							
 						List candComments = commentCategoryCandidateDAO.getCommentsCountForACandidateInAConstituencyInAnELection(electionId, (Long)params[0], (Long)params[2]);
 						if(candComments != null && candComments.size() > 0){
 							Object count = (Object)candComments.get(0);
