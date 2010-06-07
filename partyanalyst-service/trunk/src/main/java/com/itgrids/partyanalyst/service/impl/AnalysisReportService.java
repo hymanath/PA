@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -56,6 +57,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 	private IElectionDAO electionDAO;
 	private INominationDAO nominationDAO;
 	private IStaticDataService staticDataService;
+	private ICandidateResultDAO candidateResultDAO;
 	private IPartyElectionResultDAO partyElectionResultDAO;
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO; 
@@ -1060,6 +1062,22 @@ public class AnalysisReportService implements IAnalysisReportService {
 			if(nominationsList != null && nominationsList.size() > 0){
 				for(Nomination nomination:nominationsList){
 					CandidateElectionResultVO candidateElectionResultVO = getProcessedResultsForNotanalyzed(nomination);
+					
+					//To get votes margin
+					List oppCandVotesMargin = null;
+					Long electionId = nomination.getConstituencyElection().getElection().getElectionId();
+					if(candidateElectionResultVO.getRank() != null && candidateElectionResultVO.getRank().equals(new Long(1)))
+					oppCandVotesMargin = candidateResultDAO.getVotesPercentOfACandidateInAnElection(electionId,candidateElectionResultVO.getConstituencyId(),new Long(2));
+					else if(candidateElectionResultVO.getRank() != null && !candidateElectionResultVO.getRank().equals(new Long(1)))
+					oppCandVotesMargin = candidateResultDAO.getVotesPercentOfACandidateInAnElection(electionId,candidateElectionResultVO.getConstituencyId(),new Long(1));
+
+                    if(oppCandVotesMargin != null && oppCandVotesMargin.size() > 0){
+                    	Object votesParams = (Object)oppCandVotesMargin.get(0);
+                    	String oppCandVotesPercnt = (String)votesParams;
+						Double votesMargin = new BigDecimal(Double.parseDouble(candidateElectionResultVO.getVotesPercentage()) - Double.parseDouble(oppCandVotesPercnt)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+						candidateElectionResultVO.setVotesMargin(votesMargin.toString());
+                    }
+					
 					Long commentsCount = new Long(0);
 					List commentCount = commentCategoryCandidateDAO.getCommentsCountForACandidateFromNominationId(nomination.getNominationId());
 					if(commentCount != null && commentCount.size() > 0){
@@ -1227,6 +1245,14 @@ public class AnalysisReportService implements IAnalysisReportService {
 			log.debug("Exception Raised :" + ex);
 		}
 	  return electionBasicCommentsVOList;
+	}
+
+	public ICandidateResultDAO getCandidateResultDAO() {
+		return candidateResultDAO;
+	}
+
+	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
+		this.candidateResultDAO = candidateResultDAO;
 	}
 
 }
