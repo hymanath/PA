@@ -628,7 +628,7 @@ function buildInfluencingPeopleDT(results) {
 		sortable : true
 	}, {
 		key : "contactNumber",
-		label : localizationObj.contactnbr
+		label : "mobile"
 	}, {
 		key : "party",
 		label : localizationObj.party,
@@ -639,7 +639,11 @@ function buildInfluencingPeopleDT(results) {
 		sortable : true
 	}, {
 		key : "influencingRange",
-		label : localizationObj.inflScope,
+		label : "Influencing Area",
+		sortable : true
+	}, {
+		key : "influencingRangeName",
+		label : "Area Name",
 		sortable : true
 	} ];
 
@@ -647,7 +651,7 @@ function buildInfluencingPeopleDT(results) {
 	ipDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	ipDTDataSource.responseSchema = {
 		fields : ["influencingPeopleId","personName", "contactNumber", "party", "localArea",
-				"influencingRange" ]
+				"influencingRange", "influencingRangeName" ]
 	};
 
 	if (results.length > 10) {

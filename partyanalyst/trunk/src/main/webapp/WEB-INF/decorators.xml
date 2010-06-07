@@ -25,7 +25,7 @@
 		<pattern>/partyElectionResultsAnalysisAction.action*</pattern>
 		<pattern>/muncipalElectionReportAction.action*</pattern>
 		<pattern>/electionResultsAnalysisReportPopupAction.action*</pattern>
-				
+		<pattern>/influencingPeopleSaveAction.action*</pattern>		
     </excludes>
 
     <decorator name="main" page="main.jsp">

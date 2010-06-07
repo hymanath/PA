@@ -56,6 +56,8 @@
 	<script type="text/javascript" src="js/constituencyManagement/constituencyManagement.js"></script>
 	<script type="text/javascript" src="js/constituencyManagement/cadreManagement.js"></script>
 	<script type="text/javascript" src="js/problemManagementReport/problemManagementReport.js"></script>
+	<script type="text/javascript" src="js/influencingPeople/influencingPeople.js"></script>
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 	
 	<script type="text/javascript">
 		
@@ -408,6 +410,7 @@
 								try {												
 										if(o.responseText)
 											myResults = YAHOO.lang.JSON.parse(o.responseText);
+									
 										if(jsObj.task == "getProblemsStatusCount")
 										{
 											showProblemsStatusCount(myResults);
@@ -520,8 +523,9 @@
 							</table>	
 						</div>
 						<div id="influencing_people_body" class="containerBodyDivClass">
-							<DIV style="text-align:right;padding:10px;"><A href="influencingPeopleAction.action" class="linkButton" target="_blank">Add Influencing Persons</A></DIV>
+							<DIV style="text-align:right;padding:10px;"><A href="#" onclick="getInfluencingPeoplePopUp('influencingPeoplePopUpDiv')" class="linkButton" >Add Influencing Persons</A></DIV>
 							<div id="influencing_people_data_body" class="yui-skin-sam"><div id="influencingPeopleDtDiv"></div></div>
+							<div id="influencingPeoplePopUpDiv"></div>
 							<div id="influencing_people_footer">
 								<DIV id="smsBlockAlert" class="errorMessage"></DIV>
 								<DIV id="smsConfirmation" class="confirmationMessage"></DIV>
@@ -550,7 +554,7 @@
 							<table cellspacing="0" cellpadding="0" width="100%">
 								<tr>
 									<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-									<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:320px;">Voters Details</div></td>
+									<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:315px;">Voters Details</div></td>
 									<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
 								</tr>
 							</table>	

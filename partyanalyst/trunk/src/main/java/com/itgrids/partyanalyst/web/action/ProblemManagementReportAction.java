@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.ProblemsCountByStatus;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -63,6 +64,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	private String accessType;
 	private Long accessValue;
 	private List<SelectOptionVO> statesList, districtsList, constituenciesList; 
+	private IInfluencingPeopleService influencingPeopleService;
 		
 	public Long getProblemlocationId() {
 		return problemlocationId;
@@ -210,6 +212,13 @@ public class ProblemManagementReportAction extends ActionSupport implements
 	public void setProblemBeanVO(ProblemBeanVO problemBeanVO) {
 		this.problemBeanVO = problemBeanVO;
 	}
+	public IInfluencingPeopleService getInfluencingPeopleService() {
+		return influencingPeopleService;
+	}
+	public void setInfluencingPeopleService(
+			IInfluencingPeopleService influencingPeopleService) {
+		this.influencingPeopleService = influencingPeopleService;
+	}
 	public String execute() throws Exception
 	{	
 		log.debug("In Action");
@@ -268,8 +277,15 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				locationId = new Long(jObj.getLong("locationId"));
 				status = findTaskType(taskType);
 				problemBean = problemManagementReportService.getConstituencyProblemsInfo(new Long(locationId), user.getRegistrationID(),status);
-			}	
+			}else if(jObj.getString("task").equals("getParties")){
+				result = staticDataService.getStaticParties();
+			}else if(jObj.getString("task").equals("getPositions")){
+				result = influencingPeopleService.getAllInfluencePeoplePositions();
+			}else if(jObj.getString("task").equals("getInfluencingRange")){
+				result = influencingPeopleService.getInfluenceRange();
+			}
 		}
+				
 		return SUCCESS;    
 	}	
 	

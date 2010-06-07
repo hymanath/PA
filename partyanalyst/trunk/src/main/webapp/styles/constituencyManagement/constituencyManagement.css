@@ -244,6 +244,10 @@ fieldset {
   text-align:center;
   width:100%;
 }
+.selectWidth
+		{
+			width:140px;
+		}
 
 .politicalChangesFieldBoxesWidth
 {

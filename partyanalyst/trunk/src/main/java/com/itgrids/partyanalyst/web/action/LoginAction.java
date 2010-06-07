@@ -10,7 +10,6 @@ import org.apache.struts2.util.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.ILoginService;
-import com.itgrids.partyanalyst.service.impl.DelimitationConstituencyMandalService;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 

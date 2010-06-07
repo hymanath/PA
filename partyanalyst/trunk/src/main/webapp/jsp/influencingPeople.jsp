@@ -17,7 +17,7 @@
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
 
 	<link href="../styles/styles.css" rel="stylesheet" type="text/css" />
-
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <style type="text/css">
 	.selectWidth
 		{
@@ -31,8 +31,7 @@
 </style>
 </head>
 <script type="text/javascript"><!--  
-var influenceRangeId,occupationId,positionId,partyId,errorMessage,flag = 0,posSize,newPos;
-var fName,lName,eMail,mobile,genderType,castType,hamletName,partyName,influenceType,positionType,occupationType,influenceRangeType;
+
 var Localization = { <%
 			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
 			String STATE = rb.getString("STATE");
@@ -61,31 +60,34 @@ function callAjax(param,jsObj,url){
 					}						
 					if(jsObj.task == "getStates")
 					{
-						showStatesInSelectOption(myResults)
+						clearOptionsListForSelectElmtId("stateId");
+						createOptionsForSelectElmtId("stateId",myResults);
 					}
 					if(jsObj.task == "getDistricts")
 					{
-						showDistrictsInSelectOption(myResults)
+						clearOptionsListForSelectElmtId("districtField");
+						createOptionsForSelectElmtId("districtField",myResults);	
 					}	
 					if(jsObj.task == "getConstituencies")
 					{
-						showConstituenciesInSelectOption(myResults)
+						clearOptionsListForSelectElmtId("constituencyField");
+						createOptionsForSelectElmtId("constituencyField",myResults);
 					}		
 					if(jsObj.task == "getMandals")
 					{
-						showMandalsInSelectOption(myResults)
+						clearOptionsListForSelectElmtId("mandalField");
+						createOptionsForSelectElmtId("mandalField",myResults);
 					}		
 					if(jsObj.task == "getTowhships")
 					{
-						showTowhshipsInSelectOption(myResults)
+						clearOptionsListForSelectElmtId("villageField");
+						createOptionsForSelectElmtId("villageField",myResults);
 					}
 					if(jsObj.task == "getVillages")
 					{
-						showVillagesInSelectOption(myResults);
-					}	
-					if(jsObj.task == "saveDetails")
-					{
-					}			
+						clearOptionsListForSelectElmtId("hamletField");
+						createOptionsForSelectElmtId("hamletField",myResults);
+					}				
 			}catch (e) {   		
 			   	alert("Invalid JSON result" + e);   
 			}  
@@ -99,49 +101,15 @@ function callAjax(param,jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
-function getStateList(id)
+function getSelectOptionVOList(id, task, influenceRange)
 {	
-	var jsObj=
-		{
-				locationId:id,
-				task:"getStates"						
-		};
-	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
-}
-
-function removeSelectElements(elmt)
-{
-	if(!elmt)
+	if(id == 0)
 		return;
-
-	var len=elmt.length;			
-	for(i=len-1;i>=0;i--)
-	{
-		elmt.remove(i);
-	}	
-}
-
-function getDistrictsList(id)
-{	
-	var jsObj=
-		{
-				locationId:id,
-				task:"getDistricts"						
-		};
 	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
-}
-function getConstituencyList(id)
-{
 	var jsObj=
 		{
 				locationId:id,
-				task:"getConstituencies"					
+				task:task						
 		};
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -149,375 +117,25 @@ function getConstituencyList(id)
 		callAjax(rparam,jsObj,url);
 }
 
-function getMandalList(id)
-{	
-	var jsObj=
-		{
-				locationId:id,
-				task:"getMandals"						
-		};
-	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
+function influenceRangeFunction(id,text){
+		var specifyBox = document.getElementById("influenceRangeInputId");
+		specifyBox.value = text;
 }
 
-function getTownshipsForMandal(id)
-{
-	var jsObj=
-		{
-				locationId:id,
-				task:"getTowhships"					
-		};
-	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
-}
-
-function getVillagesForMandal(id)
-{
-	var jsObj=
-		{
-				locationId:id,
-				task:"getVillages"					
-		};
-	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementReportAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
-}
-
-function getHamletForTownship(id)
-{
-	var jsObj=
-		{
-				locationId:id,
-				task:"getHamlets"					
-		};
-	
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/cadreRegisterAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);
-} 	
-
-
-function showStatesInSelectOption(results) 
-{
-	var selectedElmt = document.getElementById("stateId");
-	removeSelectElements(selectedElmt);
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
-	
-	try
-	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
-	var constituency = document.getElementById("constituencyField");
-	var mandal = document.getElementById("mandalField");
-	var village = document.getElementById("villageField");
-	var hamlet = document.getElementById("hamletField");
-	constituency.selectedIndex = '0';
-	mandal.selectedIndex = '0';
-	village.selectedIndex = '0';
-	hamlet.selectedIndex = '0';
-}
-
-
-function showDistrictsInSelectOption(results) 
-{
-	var selectedElmt = document.getElementById("districtField");	
-	removeSelectElements(selectedElmt);
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
-	
-	try
-	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
-	
-	var mandal = document.getElementById("mandalField");
-	var village = document.getElementById("villageField");
-	var hamlet = document.getElementById("hamletField");
-	
-	mandal.selectedIndex = '0';
-	village.selectedIndex = '0';
-	hamlet.selectedIndex = '0';
-}
-function showConstituenciesInSelectOption(results)
-{
-	var selectedElmt = document.getElementById("constituencyField");
-	removeSelectElements(selectedElmt);	
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
-	
-	try
-	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
-
-	var village = document.getElementById("villageField");
-	var hamlet = document.getElementById("hamletField");
-	
-	village.selectedIndex = '0';
-	hamlet.selectedIndex = '0';
-}
-
-
-function showMandalsInSelectOption(results)
-{
-	var selectedElmt = document.getElementById("mandalField");
-	removeSelectElements(selectedElmt);	
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
-	
-	try
-	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
-
-	var hamlet = document.getElementById("hamletField");
-	
-	hamlet.selectedIndex = '0';
-}
-function showTowhshipsInSelectOption(results)
-{
-	var selectedElmt = document.getElementById("villageField");
-	removeSelectElements(selectedElmt);	
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
-	
-	try
-	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
-}
-
-function showVillagesInSelectOption(results)
-{
-	var selectedElmt = document.getElementById("hamletField");
-	removeSelectElements(selectedElmt);
-	for(var i in results)
-	{			
-		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
-	
-	try
-	{
-		selectedElmt.add(opElmt,null); // standards compliant
-	}
-	catch(ex)
-	{
-		selectedElmt.add(opElmt); // IE only
-	}			
-	}
-}
-
-function occupation(id){
-	if(id=="other"){
-		var specifyBox = document.getElementById("specifyOccupation");
-		var specifyOccupation='';
-		specifyOccupation+='If Other Occupation Please Specify  &nbsp; &nbsp;';
-		specifyOccupation+='&nbsp; <s:textfield id="specifyOccupationField"  theme="simple" name="specifyOccupationName"/> ';
-		specifyBox.innerHTML = specifyOccupation;		
-	}else{
-		var specifyBox = document.getElementById("specifyOccupation");
-		var specifyOccupation='';
-		specifyBox.innerHTML = specifyOccupation;	
-	}
-	occupationId = id;
-}
-
-function position(ids,id){
-	if(id=="other"){
-		var specifyBox = document.getElementById("specifyPosition");
-		var specifyPosition='';
-		specifyPosition+='If Other Position Please Specify &nbsp; &nbsp; &nbsp;';
-		specifyPosition+=' &nbsp; &nbsp; <s:textfield id="specifyPositionField"  theme="simple" name="specifyPositionName"/> ';
-		specifyBox.innerHTML = specifyPosition;		
-	}else{
-		var specifyBox = document.getElementById("specifyPosition");
-		var specifyPosition='';
-		specifyBox.innerHTML = specifyPosition;	
-	}
-	positionId = ids;
-	
-}
-
-function influenceRange(ids,id){
-	if(id=="Other"){
-		var specifyBox = document.getElementById("specifyInfluenceRange");
-		var specifyInfluenceRange='';
-		specifyInfluenceRange+='If Other Range Please Specify  &nbsp; &nbsp; &nbsp;';
-		specifyInfluenceRange+=' &nbsp; &nbsp; <s:textfield id="specifyInfluenceRangeField"  theme="simple" name="specifyInfluenceRangeName"/> ';
-		specifyBox.innerHTML = specifyInfluenceRange;		
-	}else{
-		var specifyBox = document.getElementById("specifyInfluenceRange");
-		var specifyInfluenceRange='';
-		specifyBox.innerHTML = specifyInfluenceRange;	
-	}
-	influenceRangeId = id; 
-}
-
-function party(id){
-	partyId = id;
-}
-
-function saveInfluencePeopleRegistrationData(){
-	var firstName = document.getElementById("firstNameField");
-	var lastName = document.getElementById("lastNameField");
-	var email = document.getElementById("emailField");
-	var mobile = document.getElementById("mobileField");
-	var male = document.getElementById("male");
-	var cast =   document.getElementById("castField");
-	var hamletId =   document.getElementById("hamletField");
-	var occupationId =   document.getElementById("occupationField");
-	var newPosition = document.getElementById("specifyPositionField");
-	if(newPosition!=null){
-		newPos = newPosition.value;
-	}
-	var newRange = document.getElementById("specifyInfluenceRangeField");
-	if(newRange!=null){
-		influenceRangeType = newRange.value;
-		influenceType = 0;
-	}
-	
-	if(partyId==null){
-		partyId = 5;
-	}
-	fName = firstName.value;
-	lName = lastName.value;
-	eMail = email.value;
-	mobile = mobile.value;
-	castType = cast.value;
-	hamletName = hamletId.value;
-	partyName = partyId;
-	occupId = occupationId.value;
-	
-	if(male.checked==true){
-		genderType = "male";	
-	}else{
-		genderType =  "female";	
-	}	
-	var specifyInfluenceRange = document.getElementById("specifyInfluenceRangeField");
-	if(specifyInfluenceRange!=null){
-		influenceRangeType = specifyInfluenceRange.value;
-		influenceType = 0;
-	}else{
-		influenceRangeType = influenceRangeId;
-		influenceType = 0;
-	}
-	var specifyPosition = document.getElementById("specifyPositionField");
-	if(specifyPosition!=null){
-		positionType = specifyPosition.value;
-	}else{
-		positionType = positionId;
-	}
-		
-	if(fName==""){
-		errorMessage ="Please Enter First Name";
-		flag = 1;
-	}else if(lName==""){
-		errorMessage ="Please Enter Last Name";
-		flag = 1;
-	}else if(genderType==""){
-		errorMessage ="Please Select a Gender";
-		flag = 1;
-	}else if(hamletName==""){
-		errorMessage ="Please Select a Hamlet";
-		flag = 1;
-	}else if(positionType==null){
-		errorMessage ="Please Select a Position";
-		flag = 1;
-	}else if(influenceRangeType==null){
-		errorMessage ="Please Select Range";
-		flag = 1;
-	}else{
-		flag = 0;
-	}
-	var errorMsg = document.getElementById("errorMessageDisplay");
-	var msg='';
-	if(flag==1){
-		msg+=errorMessage;
-	}else{
-		msg+='';
-	}	
-	errorMsg.innerHTML = msg;
-
-	if(flag==0){
-		var jsObj=
-		{
-				firstName:fName,
-				lastName:lName,
-				email:eMail,
-				mobileNumber:mobile,
-				cast:castType,
-				hamletId:hamletName,
-				partyId:partyName,
-				gender:genderType,
-				range:influenceRangeType,
-				position:positionType,
-				occupation:occupId,
-				task:"saveDetails"					
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/influencePeopleAjaxAction.action?"+rparam;						
-		callAjax(rparam,jsObj,url);	
-	}
-	positionType = "";
-	newPos = "";
-}
-posSize = ${positionSize};
-getStateList(this.value);
+getSelectOptionVOList(this.value,"getStates","COUNTRY");
 --></script>
 <body>
 <h2>Influencing People Registration Page</h2>
 <div id="registrationMainDiv">
+		<table>
+			<tr>
+				<td colspan="2"><s:actionerror /></td>
+			</tr>
+		</table>
 <div id="loginDetailsDiv" class="accessDivMain">
-		<div id="loginDetailsDivHead" align="center" class="accessDivHead"><u>Influencing People Details...</u></div>
 		<div id="loginDetailsDivBody" align="center" class="accessDivBody">
 		<div id="errorMessageDisplay" style="color:red,font-size:12px"></div>
+		<form action="influencingPeopleSaveAction.action" method="GET" theme="simple">
 				<table class="registrationTable">			
 					<tr>
 						<td><font class="requiredFont"> * </font><s:label class="selectWidth" for="firstNameField" theme="simple" id="fnameLabel"  value="%{getText('firstName')}" /></td>
@@ -544,7 +162,7 @@ getStateList(this.value);
 					</tr>
 					<tr>
 						<td> <font class="requiredFont">  </font> <%=Occupation%></td>
-						<td><s:textfield class="selectWidth" id="occupationField" theme="simple" name="cast"/>  </td>
+						<td><s:textfield class="selectWidth" id="occupationField" theme="simple" name="occupation"/>  </td>
 					</tr>
 					<tr>
 						<td> <font class="requiredFont">  </font> <%=Cast%></td>
@@ -552,49 +170,48 @@ getStateList(this.value);
 					</tr>		
 					<tr>
 						<td> <font class="requiredFont">  </font><%=STATE%></td>
-						<td><select id="stateId" class="selectWidth" list="result" theme="simple" listKey="id" listValue="name" onchange="getDistrictsList(this.value)"/></select></td>
+						<td><select id="stateId" name="state" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getDistricts','STATE')" /></td>
 					</tr>
 					<tr>
 						<td> <font class="requiredFont">  </font><%=DISTRICT%></td>
-						<td><select id="districtField" class="selectWidth" name="district"  onchange="getConstituencyList(this.options[this.selectedIndex].value,false)"/></select></td>
+						<td><select id="districtField" name="district" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getConstituencies','DISTRICT')" /></td>
 					</tr>	
 					<tr>
 						<td> <font class="requiredFont">  </font><%=CONSTITUENCY%></td>
-						<td><select id="constituencyField" class="selectWidth" name="constituency"  onchange="getMandalList(this.options[this.selectedIndex].value,false)"/></select></td>
+						<td><select id="constituencyField" name="constituency" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getMandals','CONSTIUENCY')" /></td>
 					</tr>
 					<tr>
 						<td> <font class="requiredFont">  </font><%=MANDAL%></td>
-						<td><select id="mandalField" class="selectWidth" name="mandal" onchange="getTownshipsForMandal(this.options[this.selectedIndex].value,false)"/></select></td>
+						<td><select id="mandalField" name="mandal" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getTowhships','TEHSIL')" /></td>
 					</tr>
 					<tr>
 						<td> <font class="requiredFont">  </font><%=VILLAGE%></td>
-						<td><select class="selectWidth" id="villageField" name="village" onchange="getVillagesForMandal(this.options[this.selectedIndex].value,false)"/></select></td>
+						<td><select id="villageField" name="village" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getVillages','REVENUE VILLAGE / TOWN')" /></td>
 					</tr>
 					<tr>
 						<td> <font class="requiredFont"> * </font><s:label for="hamlet" theme="simple" id="hamletLabel"  value="%{getText('hamlet')}" /></td>
-						<td><select class="selectWidth" theme="simple" id="hamletField" name="hamlet"/></select></td>
+						<td><select id="hamletField" name="hamlet" class="selectWidth" onchange="getSelectOptionVOList(this.options[this.selectedIndex].value,'getHamletIdAndRange','HAMLET')"/></td>
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont">  </font> <%=Party%> </td>
-						<td align="left"> <s:select name="partiesName" cssClass="selectWidth" id="party" theme="simple" list="staticParties" listKey="id" listValue="name" onchange="party(this.options[this.selectedIndex].value,false)"></s:select></td>
+						<td align="left"> <s:select name="party" cssClass="selectWidth" id="party" theme="simple" list="staticParties" listKey="id" listValue="name"></s:select></td>
 					</tr>
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font><%=Position%> </td>
-						<td align="left"> <s:select name="posi" id="position" cssClass="selectWidth" theme="simple" list="positionsList" listKey="id" listValue="name" onchange="position(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)"></s:select> </td>
+						<td align="left"> <s:select name="position" id="position" cssClass="selectWidth" theme="simple" list="positionsList" listKey="id" listValue="name"></s:select> </td>
 						<td><div id="specifyPosition"></div></td>
 					</tr>					
 					<tr>
 						<td width="100px;"> <font class="requiredFont"> * </font><%=InfluenceRange%> </td>
-						<td align="left"> <s:select name="infRange" id="influRange" cssClass="selectWidth" theme="simple" list="influenceRange" listKey="id" listValue="name" onchange="influenceRange(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)"></s:select> </td>
+						<td align="left"> <s:select name="influenceRange" id="influRange" cssClass="selectWidth" theme="simple" list="influenceRange" listKey="id" listValue="name" onchange="influenceRangeFunction(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)"></s:select> </td>
+						<td><input type="hidden" id="influenceRangeInputId" name="influencingRange"></td>
 						<td><div id="specifyInfluenceRange"></div></td>
-					</tr>										
+					</tr>	
+					<tr><td><input type="submit" value="Save"/></td></tr>									
 				</table>
+			</form>
 			</div>	
 		 </div>
-	
-		<div style="text-align: center;">
-			<s:submit name="Save" onclick="saveInfluencePeopleRegistrationData()"></s:submit> 
-		</div>			
 </div>		
 </body>
 </html>

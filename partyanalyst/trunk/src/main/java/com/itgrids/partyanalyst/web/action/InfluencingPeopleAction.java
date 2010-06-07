@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -13,10 +12,6 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.Hamlet;
-import com.itgrids.partyanalyst.model.InfluencingPeople;
-import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
-import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
@@ -141,7 +136,7 @@ public class InfluencingPeopleAction extends ActionSupport implements
 			influencingPeople.setCast(jObj.getString("cast"));
 			influencingPeople.setHamletId(jObj.getLong("hamletId"));
 			influencingPeople.setOccupation(jObj.getString("occupation"));
-			influencingPeople.setPartyId(jObj.getLong("partyId"));  
+			influencingPeople.setPartyId(jObj.getLong("partyId"));
 			influencingPeople.setPosition(jObj.getString("position"));
 			influencingPeople.setInfluencingRange(jObj.getString("range"));	
 			Long id;
