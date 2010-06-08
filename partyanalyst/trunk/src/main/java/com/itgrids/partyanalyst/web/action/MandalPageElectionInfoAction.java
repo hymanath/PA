@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -63,6 +64,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 	private static final Logger log = Logger.getLogger(MandalPageElectionInfoAction.class);
 	private List<ConstituencyRevenueVillagesVO> townshipWiseElectionResults;
 	private List<PartyResultVO> allElectionResults;
+	private NavigationVO navigationVO;
 	
 	public List<PartyResultVO> getAllElectionResults() {
 		return allElectionResults;
@@ -212,6 +214,14 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		this.partiesInMandalWiseElections = partiesInMandalWiseElections;
 	}
 
+	public NavigationVO getNavigationVO() {
+		return navigationVO;
+	}
+
+	public void setNavigationVO(NavigationVO navigationVO) {
+		this.navigationVO = navigationVO;
+	}
+
 	public String execute()throws Exception{
 		
 		mandalId = request.getParameter("MANDAL_ID");
@@ -272,6 +282,8 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
         List<Color> colors = new ArrayList<Color>();
 		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", createDataset(allElectionResults, colors), chartPath,260,700, colors );
 				
+		navigationVO = staticDataService.findHirarchiForNavigation(new Long(mandalId), IConstants.TEHSIL_LEVEL);
+		
 		return SUCCESS;
 		
 	}

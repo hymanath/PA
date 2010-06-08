@@ -11,12 +11,10 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
@@ -27,6 +25,7 @@ import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -76,6 +75,7 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 	private String muncipalityErrorMsg;
 	private String mptcElectionType,zptcElectionType,muncipalityElectionType,corporationElectionType;
 	private Long mptcElectionTypeId,zptcElectionTypeId,muncipalityElectionTypeId,corporationElectionTypeId;
+	private NavigationVO navigationVO;
 	
 	public Long getMptcElectionTypeId() {
 		return mptcElectionTypeId;
@@ -359,6 +359,12 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		this.allPartiesPositionsInElection = allPartiesPositionsInElection;
 	}
 	
+	public NavigationVO getNavigationVO() {
+		return navigationVO;
+	}
+	public void setNavigationVO(NavigationVO navigationVO) {
+		this.navigationVO = navigationVO;
+	}
 	public String execute() throws Exception
 	{
 		districtId = request.getParameter("districtId");
@@ -391,6 +397,9 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		}
 
 		log.debug("District Id = "+districtId+" & District Name = "+districtName);
+		
+		navigationVO = staticDataService.findHirarchiForNavigation(new Long(districtId), IConstants.DISTRICT_LEVEL);
+		
 		return Action.SUCCESS;
 	
 	}

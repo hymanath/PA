@@ -44,13 +44,12 @@ import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
-import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsTrendzVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
-import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
@@ -102,6 +101,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 	 private MandalAllElectionDetailsVO mandalAllElectionDetailsVO;
 	 private String constId,eleType,eleYear,constTYPE;
 	 private String chartName,enlargedChartName;
+	 private NavigationVO navigationVO;
 	 
 	public String getConstTYPE() {
 		return constTYPE;
@@ -374,6 +374,14 @@ public class ConstituencyPageAction extends ActionSupport implements
 		this.parliamentMandals = parliamentMandals;
 	}
 
+	public NavigationVO getNavigationVO() {
+		return navigationVO;
+	}
+
+	public void setNavigationVO(NavigationVO navigationVO) {
+		this.navigationVO = navigationVO;
+	}
+
 	public String execute() throws Exception{
 		
 				
@@ -432,7 +440,10 @@ public class ConstituencyPageAction extends ActionSupport implements
        
         List<Color> enlargedChartPathColors = new ArrayList<Color>();
    		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, enlargedChartPathColors), enlargedChartPath,600,800, enlargedChartPathColors );
-		if(constituencyElectionResultsVO != null || constituencyDetails != null){
+		
+   		navigationVO = staticDataService.findHirarchiForNavigation(constituencyId, IConstants.CONSTITUENCY_LEVEL);
+   		
+   		if(constituencyElectionResultsVO != null || constituencyDetails != null){
 			return Action.SUCCESS;
 		}
 		else

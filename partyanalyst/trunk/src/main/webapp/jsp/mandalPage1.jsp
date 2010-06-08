@@ -1130,6 +1130,7 @@ var allZPTCMPTCElecInfo = new Array();
 <div id="boothResultsDiv">
 	<div id="mandalCensusDiv">
 		<div id="mandalCensusDivHead"><h4><u>Mandal Details..</u></h4></div>
+		<%@ include file="navigator.jsp" %>				
 		<div id="mandalCensusDivBody" align="center" class="yui-skin-sam">
 		<table class="censusInfoTable" style="border:1px solid #ADADAD;">		
 				<tr>

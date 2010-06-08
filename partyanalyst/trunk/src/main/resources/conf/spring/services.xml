@@ -26,6 +26,7 @@
 		<property name="partyElectionDistrictResultDAO" ref="partyElectionDistrictResultDAO" />
 		<property name="partyElectionStateResultDAO" ref="partyElectionStateResultDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 		<property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />	
 		<property name="boothResultDAO" ref="boothResultDAO" />

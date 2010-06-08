@@ -861,7 +861,7 @@ function buildElectionsSelectBox(myResults){
 	<div id="electionResults_Panel_Main" class="yui-skin-sam">
 			<div id="electionResults_Panel">
 	</div>
-
+	
 	<table width="100%">
 		<tr>
 			<td class="alignTD">
@@ -872,7 +872,7 @@ function buildElectionsSelectBox(myResults){
 						<div class="corner topRight"></div>
 						<div class="corner bottomLeft"></div>
 						<div class="corner bottomRight"></div>
-
+						<%@ include file="navigator.jsp" %>
 							<div id="constituencyPageProfileInfoDiv_Main" class="innerLayoutDivClass">
 								<div id="constituencyPageProfileInfoDiv_Head" class="layoutHeadersClass"> ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType}  Constituency Details : </div>
 								<div id="constituencyPageProfileInfoDiv_Body" class="layoutBodyClass">
