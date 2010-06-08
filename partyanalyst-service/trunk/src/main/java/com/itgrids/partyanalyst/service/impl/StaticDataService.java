@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionAllianceDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -58,6 +59,7 @@ import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -111,6 +113,7 @@ public class StaticDataService implements IStaticDataService {
 	private IPartyElectionStateResultDAO partyElectionStateResultDAO;
 	private final static Logger log = Logger.getLogger(StaticDataService.class);
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private Set parliamentConstituencies = new HashSet(0);
 	private IVillageBoothElectionDAO villageBoothElectionDAO;
 	private TransactionTemplate transactionTemplate;
@@ -274,6 +277,17 @@ public class StaticDataService implements IStaticDataService {
 	public void setPartyElectionStateResultDAO(
 			IPartyElectionStateResultDAO partyElectionStateResultDAO) {
 		this.partyElectionStateResultDAO = partyElectionStateResultDAO;
+	}
+
+
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+
+
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
 	}
 
 
@@ -3907,6 +3921,54 @@ public class StaticDataService implements IStaticDataService {
 		
 	}
 
+	public NavigationVO findHirarchiForNavigation(Long locationId, String locationType){
+		NavigationVO navigationVO = new NavigationVO();
+		SelectOptionVO state = null;
+		List<SelectOptionVO> districts = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> acs = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> pcs = new ArrayList<SelectOptionVO>();
+		if(locationType.equalsIgnoreCase(IConstants.TEHSIL_LEVEL)){
+			List list = delimitationConstituencyMandalDAO.getLatestAssemblyConstitueciesOfTehsil(locationId);
+			StringBuilder acIds = new StringBuilder();
+			Object[] stateDistrict = (Object[])list.get(0);
+			state = new SelectOptionVO((Long)stateDistrict[0], stateDistrict[1].toString());
+			districts.add(new SelectOptionVO((Long)stateDistrict[2], stateDistrict[3].toString()));
+			for(Object[] values:(List<Object[]>)list){
+				acIds.append(IConstants.COMMA).append(stateDistrict[4]);
+				acs.add(new SelectOptionVO((Long)values[4], values[5].toString()));
+			}
+			
+			List pcsInfo = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituencyForListOfAssemblyConstituency
+																	(acIds.toString().substring(1), IConstants.DELIMITATION_YEAR);
+			
+			for(Object[] values:(List<Object[]>)pcsInfo)
+				pcs.add(new SelectOptionVO((Long)values[0], values[1].toString()));
+			
+		}if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+			State stateObj = districtDAO.get(locationId).getState();
+			state = new SelectOptionVO(stateObj.getStateId(), stateObj.getStateName());
+		}if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+			Constituency constituency = constituencyDAO.get(locationId);
+			state = new SelectOptionVO(constituency.getState().getStateId(), constituency.getState().getStateName());
+			if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(constituency.getElectionScope().getElectionType().getElectionType())){
+				districts.add(new SelectOptionVO(constituency.getDistrict().getDistrictId(), constituency.getDistrict().getDistrictName()));
+				List pcsInfo = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(locationId);
+				for(Object[] values:(List<Object[]>)pcsInfo)
+					pcs.add(new SelectOptionVO((Long)values[0], values[1].toString()));
+			}else{
+				List districtsInfo = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituency(locationId);
+				for(Object[] values:(List<Object[]>)districtsInfo)
+					districts.add(new SelectOptionVO((Long)values[0], values[1].toString()));
+			}
+		}
+		
+		navigationVO.setStateInfo(state);
+		navigationVO.setDistrictInfo(districts);
+		navigationVO.setAcsInfo(acs);
+		navigationVO.setPcsInfo(pcs);
+		
+		return navigationVO;
+	}
 
 }
 

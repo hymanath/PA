@@ -60,4 +60,12 @@ IDelimitationConstituencyMandalDAO {
 				" (select model1.delimitationConstituencyID from DelimitationConstituency model1 where model1.constituency.constituencyId in("+constituencyIds+")"+
 				" group by model1.constituency.constituencyId order by model1.year desc) ");
 	}
+	
+	public List getLatestAssemblyConstitueciesOfTehsil(Long tehsilId){
+		return getHibernateTemplate().find("Select model.tehsil.district.state.stateId, model.tehsil.district.state.stateName," +
+				" model.tehsil.district.districtId, model.tehsil.district.districtName," +
+				" model.delimitationConstituency.constituency.constituencyId, model.delimitationConstituency.constituency.name" +
+				" from DelimitationConstituencyMandal model where model.tehsil.tehsilId = ? and model.delimitationConstituency.year = " +
+				" (select max(model1.year) from DelimitationConstituency model1)",tehsilId);
+	}
 }

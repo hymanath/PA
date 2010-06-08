@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
@@ -153,6 +154,7 @@ public interface IStaticDataService {
 	
 	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScope(Long electionScopeId);
 	
-	
 	public List<SelectOptionVO> getStaticPartiesForCandidateDeatailsReport();
+	
+	public NavigationVO findHirarchiForNavigation(Long locationId, String locationType);
 }
