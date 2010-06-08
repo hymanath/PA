@@ -39,10 +39,15 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 			System.out.println(((Object[])tehsil.get(i))[0]+"--"+((Object[])tehsil.get(i))[1]+"--"+((Object[])tehsil.get(i))[2]+"--"+((Object[])tehsil.get(i))[3]);
 	}*/
 	
-	public void testGetLatestMandalDetailsForAConstituencies(){
+	/*public void testGetLatestMandalDetailsForAConstituencies(){
 		List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituencies("231,232");
 		System.out.println(list.size());
 		//System.out.println(((Object[])list.get(3))[1]);
+	}*/
+	
+	public void testGetLatestAssemblyConstitueciesOfTehsil(){
+		List list = delimitationConstituencyMandalDAO.getLatestAssemblyConstitueciesOfTehsil(836l);
+		System.out.println(list.size());
 	}
 	
 }
