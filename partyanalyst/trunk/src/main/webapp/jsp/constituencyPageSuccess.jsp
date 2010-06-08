@@ -383,7 +383,7 @@
 			str += '<table id = "parliamentElecResTable_'+i+'">';
 			for(var j in parliamentResult[i].constituencyOrMandalWiseElectionVO){
 				str += '<tr>';
-				str += '<td>'+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].locationName+'</td>';
+				str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].locationId+'&MANDAL_NAME='+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].locationName+'">'+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].locationName+'</a></td>';
 				for(var k in parliamentResult[i].constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs){
 					if(checked == 'number')
 						str += '<td>'+parliamentResult[i].constituencyOrMandalWiseElectionVO[j].partyElectionResultVOs[k].votesEarned+'</td>';
@@ -617,7 +617,13 @@ function buildConstituencyElecResultsDataTable(value){
 	str += '<table id = "elecResTable">';
 	for(var i in constituencyResults.constituencyOrMandalWiseElectionVO){
 		str += '<tr>';
-		str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</td>';
+		if(constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName == 'Others *')
+			str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</td>';
+		else
+		if(constituencyResults.electionType == 'Assembly')
+			str += '<td><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationId+'&MANDAL_NAME='+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'">'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</a></td>';
+		else
+			str += '<td><a href="constituencyPageAction.action?constituencyId='+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationId+'">'+constituencyResults.constituencyOrMandalWiseElectionVO[i].locationName+'</a></td>';
 		for(var j in constituencyResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs){
 			if(value == 'number')
 				str += '<td>'+constituencyResults.constituencyOrMandalWiseElectionVO[i].partyElectionResultVOs[j].votesEarned+'</td>';
