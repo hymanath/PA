@@ -706,7 +706,7 @@ function buildConstituencyElecResultsDataTable(value){
 			if(constituencyResults.isDataInsufficient){
 				str += ' Others Include Postal Ballet Votes, ';
 				for(var i in constituencyResults.missingConstituencies)
-					str += constituencyResults.missingConstituencies[i].name + ' Assembly,';
+					str += '<a href="constituencyPageAction.action?constituencyId='+constituencyResults.missingConstituencies[i].id+'">'+constituencyResults.missingConstituencies[i].name + '</a> Assembly ,';
 				str = str.substring(0,str.length-1);
 				str += ' Wise ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Election Results';
 			}else{
