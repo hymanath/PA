@@ -929,7 +929,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			
 			partyElectionResultVOs = new ArrayList<PartyElectionResultVO>();
 			assemblyConstiElecVO = new ConstituencyOrMandalWiseElectionVO();
-			assemblyConstiElecVO.setLocationName("Others*");
+			assemblyConstiElecVO.setLocationName(IConstants.OTHERS);
 			
 			if(partiesInfoInPC.size() != candidateNamePartyAndStatus.size()){
 				//Exception
@@ -1109,7 +1109,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 				ConstituencyOrMandalWiseElectionVO constituencyOrMandalWiseElectionVo = new ConstituencyOrMandalWiseElectionVO();			
 				constituencyOrMandalWiseElectionVo.setLocationId(tehsilIds.size()+1l);
-				constituencyOrMandalWiseElectionVo.setLocationName("Others *");
+				constituencyOrMandalWiseElectionVo.setLocationName(IConstants.OTHERS);
 				constituencyOrMandalWiseElectionVo.setTotalPolledVotes(0l);
 				constituencyOrMandalWiseElectionVo.setPartyElectionResultVOs(OtherVotesDataForAConstituency(constituencyId,electionYear,electionType
 				));

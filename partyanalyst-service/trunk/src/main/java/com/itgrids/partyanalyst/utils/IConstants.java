@@ -168,4 +168,6 @@ public interface IConstants {
     public final static String EDIT = "edit";
     public final static String 	PROBLEMS_MANAGEMENT = "PROBLEMS_MANAGEMENT";
     public final static String 	CONSTITUENCY_MANAGEMENT = "CONSTITUENCY_MANAGEMENT";
+    
+    public final static String 	OTHERS = "Others *";//For Ballet votes In constituency Page
 }
