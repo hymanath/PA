@@ -1126,11 +1126,17 @@ var allZPTCMPTCElecInfo = new Array();
 	</script>
 </head>
 <body> 
+
+<table width="100%" border="0">
+<tr><td><%@ include file="navigator.jsp" %></td></tr>
+<tr><td align="center"><br>
 <h3><u><c:out value="${mandalInfoVO.mandalName}"/> Tehsil / Mandal Details</u></h3>
+</td></tr></table>
 <div id="boothResultsDiv">
+
 	<div id="mandalCensusDiv">
 		<div id="mandalCensusDivHead"><h4><u>Mandal Details..</u></h4></div>
-		<%@ include file="navigator.jsp" %>				
+						
 		<div id="mandalCensusDivBody" align="center" class="yui-skin-sam">
 		<table class="censusInfoTable" style="border:1px solid #ADADAD;">		
 				<tr>
@@ -1141,7 +1147,6 @@ var allZPTCMPTCElecInfo = new Array();
 					<th>Literate Populations</th>
 					<th>Illiterate Population</th>
 					<th>Working Population</th>
-					
 				</tr>
 				<tr>
 					<th>Male</th>
@@ -1170,7 +1175,6 @@ var allZPTCMPTCElecInfo = new Array();
 					<td><c:out value="${mandalInfoVO.totalIlliteratePersons}"/></td>
 					<td><c:out value="${mandalInfoVO.totalWorkingPersons}"/></td>
 				</tr>
-				
 			</table>
 		</div>
 	</div>

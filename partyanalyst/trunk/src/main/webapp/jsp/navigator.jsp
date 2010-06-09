@@ -1,7 +1,7 @@
-<div style="margin-top:10px;margin-bottom:10px;">
-	<table>
+
+	<table align="left" border="0">
 		<tr>
-			<th>State:</th><td><a href="statePageAction.action?stateId=${navigationVO.stateInfo.id}">${navigationVO.stateInfo.name}</a></td>
+			<th> State:</th><td><a href="statePageAction.action?stateId=${navigationVO.stateInfo.id}">${navigationVO.stateInfo.name}</a></td>
 			<c:if test='${! empty navigationVO.districtInfo }'>
 				<th>></th>
 				<th>District:</th>
@@ -25,4 +25,4 @@
 			</c:if>
 		</tr>
 	</table>
-</div>
+	

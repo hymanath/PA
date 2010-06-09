@@ -1157,6 +1157,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 </head>
 <body>
 <div id="detailedChartDIV" class="yui-skin-sam"></div>
+<%@ include file="navigator.jsp" %>
 <div id="districtPageMainDiv">	
 
 	<!--District Page Layout-->
@@ -1164,7 +1165,6 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 
 	<!--District Page Right Layout-->
 	<div id="districtPageLayout_right">		
-		<%@ include file="navigator.jsp" %>
 		<div id="newConstDiv_main">
 			<div id="newConstDiv_head">
 				<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
