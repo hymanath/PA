@@ -26,7 +26,28 @@ public class PoliticalChangesVO implements java.io.Serializable {
 	private Long selectedPersonId;
 	private Long politicalChangeId;
 	private String saveType;
+	private String range;
+	private Long rangeId;
+	private String locationName;
 	
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public String getRange() {
+		return range;
+	}
+	public void setRange(String range) {
+		this.range = range;
+	}
+	public Long getRangeId() {
+		return rangeId;
+	}
+	public void setRangeId(Long rangeId) {
+		this.rangeId = rangeId;
+	}
 	public String getSaveType() {
 		return saveType;
 	}
