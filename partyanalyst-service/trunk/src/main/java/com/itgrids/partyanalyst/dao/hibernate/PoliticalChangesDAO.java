@@ -67,8 +67,18 @@ public class PoliticalChangesDAO extends GenericDaoHibernate<PoliticalChanges, L
 		return getHibernateTemplate().find("select model.title,model.description,model.occuredDate," +
 				" model.registration.firstName,model.registration.lastName," +
 				" model.registration.registrationId,model.politicalChangesInformationSource.sourceId," +
-				" model.politicalChangesInformationSource.sourceName,model.politicalChangesId,model.identifiedDate,model.party.shortName from PoliticalChanges model " +
+				" model.politicalChangesInformationSource.sourceName,model.politicalChangesId,model.identifiedDate," +
+				" model.party.shortName,model.effectedRange,model.effectedLocation from PoliticalChanges model " +
 				" where model.registration.registrationId = ? and model.isDelete is null order by model.updatedDate", userId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List getAllPoliticalChangesByPoliticalChangeId(Long politicalChangeId) {
+		return getHibernateTemplate().find("select model.title,model.description,model.occuredDate," +
+				" model.identifiedDate,model.politicalChangesInformationSource.sourceName," +
+				" model.party.shortName,model.effectedRange,model.effectedLocation," +
+				" model.politicalChangesInformationSource.sourceId from PoliticalChanges model " +
+				" where model.politicalChangesId = ?", politicalChangeId);
 	}
 		
 }
