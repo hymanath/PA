@@ -164,8 +164,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	
 	public List<SelectOptionVO> getInfluenceRange(){
 		try{
-			List<SelectOptionVO> selectOptionVOs = new ArrayList<SelectOptionVO>();
-			selectOptionVOs.add(new SelectOptionVO(0l,"Select Range"));
+			List<SelectOptionVO> selectOptionVOs = new ArrayList<SelectOptionVO>();			
 			selectOptionVOs.add(new SelectOptionVO(1l,IConstants.STATE_LEVEL));
 			selectOptionVOs.add(new SelectOptionVO(2l,IConstants.DISTRICT_LEVEL));
 			selectOptionVOs.add(new SelectOptionVO(3l,IConstants.CONSTITUENCY_LEVEL));
