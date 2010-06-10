@@ -41,6 +41,8 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 	private Date updatedDate;	
 	private String sourceOfInformation;
 	private String isDelete;
+	private String effectedRange;
+	private Long effectedLocation;
 	
 	// Constructors
 
@@ -58,7 +60,7 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 			                     Party party,Registration registration,ProblemExternalSource externalSource,
 			                     Date identifiedDate,Date occuredDate,
 			                     Date updatedDate,String description,PoliticalChangesInformationSource politicalChangesInformationSource
-								 ,String title,String isDelete) {
+								 ,String title,String isDelete,String effectedRange,Long effectedLocation) {
 		this.politicalChangesId = politicalChangesId;
 		this.party = party;
 		this.registration = registration;
@@ -71,9 +73,12 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 		this.updatedDate = updatedDate;
 		this.description = description;
 		this.isDelete = isDelete;
+		this.effectedRange = effectedRange;
+		this.effectedLocation = effectedLocation;
 	}
 
 
+	
 	// Property accessors
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -198,5 +203,22 @@ public class PoliticalChanges extends BaseModel implements Serializable {
 		this.isDelete = isDelete;
 	}		
 	
+	@Column(name = "effected_range", length = 25)
+	public String getEffectedRange() {
+		return effectedRange;
+	}
+
+	public void setEffectedRange(String effectedRange) {
+		this.effectedRange = effectedRange;
+	}
+
+	@Column(name = "effected_location", length = 25)
+	public Long getEffectedLocation() {
+		return effectedLocation;
+	}
+
+	public void setEffectedLocation(Long effectedLocation) {
+		this.effectedLocation = effectedLocation;
+	}
 	
 }
