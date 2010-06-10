@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
@@ -153,8 +154,11 @@ public interface IStaticDataService {
 	public List<SelectOptionVO> getElectionScopesByElectionType(Long electionTypeId);
 	
 	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScope(Long electionScopeId);
-	
+		
 	public List<SelectOptionVO> getStaticPartiesForCandidateDeatailsReport();
 	
+	public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(Long parliamentConstituencyId);
+	  
 	public NavigationVO findHirarchiForNavigation(Long locationId, String locationType);
+
 }
