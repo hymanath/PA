@@ -274,11 +274,17 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 				if(parms[2]!=null){
 			        SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 			        String strDateNew = sdf.format((Date)parms[2]);
-			        politicalChangesVO.setDate(strDateNew);		
+			        politicalChangesVO.setDate(strDateNew);	
+			        
+				}else{
+					politicalChangesVO.setDate("");
+				}
+				if(parms[9]!=null){
+			        SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
 			        String identifiedDate = sdf.format((Date)parms[9]);
 			        politicalChangesVO.setIdentifiedDate(identifiedDate);
 				}else{
-					politicalChangesVO.setDate("");
+					politicalChangesVO.setIdentifiedDate("");
 				}
 				politicalChangesVO.setPartyName(parms[10].toString());				
 				politicalChangesVO.setRange(parms[11]!=null?parms[11].toString():"");
