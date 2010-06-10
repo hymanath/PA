@@ -1,6 +1,3 @@
-var todayDate = new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/"
-		+ new Date().getFullYear();
-var addPoliticalChangesPanel,elementId='',externalPersonDetailsPanel;
 var todayDate = new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear();
 var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear();
 var minDate;
@@ -11,270 +8,12 @@ var problemMgmtObj = {
 	initialProblems:[]
 };
 var mobileNumbersArray = new Array();
-var informationSourcesObj = {
-		sourceArr : []
-};
-var staticParties = {
-		  staticPartiesDataList : []
-}		
-var requestType,localPoliticalChangeId,localPoliticalChanges,errorFlag=0;
-var externalPersonname,externalPersonmobile,externalPersontelephoneno,externalPersonemail,externalPersonaddress;
-var otherDetailsForPoliticalChanges;
 
 
-	function getExternalPersonDetailsForEdit(politicalChangeId){
-		var jsObj= 
-		{			
-			politicalChangeId : politicalChangeId,	  			
-			task: "getExternalPersonDetailsForEdit"		
-		};
-		
-		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getExternalPersonDetailsAjaxAction.action?"+param;
-		
-		callAjax(param,jsObj,url);	
-	}
-
-	 function getExternalPersonDetails(politicalChangeId){
-  var jsObj= 
-	{			
-		politicalChangeId : politicalChangeId,	  			
-		task: "getExternalPersonDetails"		
-	};
-	
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getExternalPersonDetailsAjaxAction.action?"+param;
-	
-	callAjax(param,jsObj,url);	
-	 }
-	 
-	 
-function getAllPoliticalChangesForTheUser()
-{						
-	var jsObj= 
-	{				  			
-		task: "getAllPoliticalChangesForTheUser"		
-	};
-	
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllPoliticalChangesForTheUserAjaxAction.action?"+param;
-	
-	callAjax(param,jsObj,url);			
-}
+var assignTolocalPoliticalChangesDataArray,localPoliticalChanges,externalPersonDetailsPanel;
+var hidden=1;
 
 
-function getAllStaticParties()
-{
-				
-	var jsObj= 
-	{				  			
-		task: "getAllStaticParties"		
-	};
-	
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllStaticPartiesAjaxAction.action?"+param;
-	
-	callAjax(param,jsObj,url);			
-}
-
-function deleteDetails(politicalChangeId){
-	var jsObj= 
-	{		
-		politicalChangeId :politicalChangeId,		  			
-		task: "deltePoliticalChange"		
-	};
-	
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "deltePoliticalChangeAjaxAction.action?"+param;
-	
-	callAjax(param,jsObj,url);
-}
-
-function editDetails(politicalChangeId,title,description,date,identifiedDate,partyName,sourceOfInformation){
-
-	buildLocalPoliticalChangesRegistration("edit");
-	localPoliticalChangeId = politicalChangeId;		
-	document.getElementById("titleTextField").value = title;
-	document.getElementById("descriptionTextBox").value = description;
-	document.getElementById("reportedFromText").value = date;			
-	document.getElementById("identifiedFromText").value = identifiedDate;
-	var partySelect = document.getElementById("selectedPartyBox");
-	for (var i=0; i<partySelect.options.length; ++i){ 
-		if (staticParties.staticPartiesDataList[i].value==partyName) 
-			partySelect.options[i].selected = true;				
-	}
-
-	var userSelect = document.getElementById("userTypeSelectBox");
-	for (var i=0; i<userSelect.options.length; ++i){ 
-		if (informationSourcesObj.sourceArr[i].value==sourceOfInformation) 
-			userSelect.options[i].selected = true;				
-	}
-	
-	if(externalPerson==sourceOfInformation){
-		getExternalPersonDetailsForEdit(politicalChangeId);
-		getOtherPersonDetails(sourceOfInformation);
-		document.getElementById("externalPersonName").value = externalPersonname;
-		document.getElementById("externalPersonMobile").value = externalPersonmobile;
-		document.getElementById("externalPersonTelephoneNo").value = externalPersontelephoneno;
-		document.getElementById("externalPersonEmail").value = externalPersonemail;
-		document.getElementById("externalPersonAddress").value = externalPersonaddress;				
-	}			
-}
-
-function validateDataForPoliticalChange()
-{
-	var titleTextFieldData,descriptionTextBoxData,reportedFromTextData,identifiedFromTextData;
-	var externalPersonNameData,externalPersonMobileData;
-	
-	titleTextFieldData	= document.getElementById("titleTextField").value;
-	reportedFromTextData = document.getElementById("reportedFromText").value;
-	identifiedFromTextData = document.getElementById("identifiedFromText").value;
-	
-	var errorMsg = document.getElementById("errorMsgDiv");
-	var errors = '';
-	errors+='<table style="color:red">';
-	if(titleTextFieldData==""){
-		errors+='	<tr>';
-		errors+='		<td> Please Enter Title	</td>';
-		errors+='	<tr>';
-		errorFlag = 1;
-	}	
-	if(reportedFromTextData==""){
-		errors+='	<tr>';
-		errors+='		<td> Please Select Reported Date	</td>';
-		errors+='	<tr>';
-		errorFlag = 1;
-	}
-	if(identifiedFromTextData==""){
-		errors+='	<tr>';
-		errors+='		<td> Please Select Identified Date </td>';
-		errors+='	<tr>';
-		errorFlag = 1;
-	}
-	if(otherDetailsForPoliticalChanges==1){
-		externalPersonNameData = document.getElementById("externalPersonName").value;
-		externalPersonMobileData = document.getElementById("externalPersonMobile").value;
-		
-		if(externalPersonNameData==""){
-			errors+='	<tr>';
-			errors+='		<td> Please Enter Name</td>';
-			errors+='	<tr>';
-			errorFlag = 1;
-		}
-		if(externalPersonMobileData==""){
-			errors+='	<tr>';
-			errors+='		<td> Please Enter Mobile Number</td>';
-			errors+='	<tr>';
-			errorFlag = 1;
-		}
-	}
-	var titleTextFieldData,descriptionTextBoxData,reportedFromTextData,identifiedFromTextData;
-	var externalPersonNameData,externalPersonMobileData;
-	if((titleTextFieldData=="")||(descriptionTextBoxData=="")||(reportedFromTextData=="")||(identifiedFromTextData=="")){
-		if(otherDetailsForPoliticalChanges==1){
-			if((externalPersonNameData=="")||(externalPersonMobileData=="")){
-				errorFlag = 1;
-			}
-		}		
-	}else{
-		errorFlag = 0;
-	}
-	errors+='</table>';
-	errorMsg.innerHTML = errors; 
-}
-function handleCreateGroupSubmit()
-{		
-	validateDataForPoliticalChange();
-	if(errorFlag==0){
-		var titleTextFieldData	= document.getElementById("titleTextField").value;
-		var descriptionTextBoxData	= document.getElementById("descriptionTextBox").value;
-		var reportedFromTextData = document.getElementById("reportedFromText").value;
-		var identifiedFromTextData = document.getElementById("identifiedFromText").value;
-		var userTypeSelectBoxData = document.getElementById("userTypeSelectBox").value;
-		var selectedPartyBoxData = document.getElementById("selectedPartyBox").value;
-		
-		var externalPersonNameData="",externalPersonMobileData="", externalPersonTelephoneNoData="";
-		var externalPersonEmailData="",externalPersonAddressData="";
-		
-		if(otherDetailsForPoliticalChanges==1){
-			externalPersonNameData = document.getElementById("externalPersonName").value;
-			externalPersonMobileData = document.getElementById("externalPersonMobile").value;
-			externalPersonTelephoneNoData = document.getElementById("externalPersonTelephoneNo").value;
-			externalPersonEmailData = document.getElementById("externalPersonEmail").value;
-			externalPersonAddressData = document.getElementById("externalPersonAddress").value;
-		}	
-		addPoliticalChangesPanel.hide();
-		var jsObj= 
-		{	
-			saveType:requestType,	
-			localPoliticalChangeId : localPoliticalChangeId,
-			titleTextFieldData : titleTextFieldData,		
-			descriptionTextBoxData   : descriptionTextBoxData,		
-			identifiedFromTextData : identifiedFromTextData,
-			reportedFromTextData : reportedFromTextData,
-			selectedPartyBoxData : selectedPartyBoxData, 
-			userTypeSelectBoxData	: userTypeSelectBoxData,
-			externalPersonNameData : externalPersonNameData,
-			externalPersonMobileData : externalPersonMobileData,
-			externalPersonTelephoneNoData : externalPersonTelephoneNoData,
-			externalPersonEmailData : externalPersonEmailData,
-			externalPersonAddressData : externalPersonAddressData,
-			task: "saveDataForLocalPoliticalChanges"		
-		};	
-		
-		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "saveDataForLocalPoliticalChangesAjaxAction.action?"+param;	
-		callAjax(param,jsObj,url);	
-	}else{
-		
-	}		
-}
-
-function getPoliticalChangesInformationSources()
-{
-	var jsObj= 
-	{			
-		task: "getPoliticalChangesInformationSources"		
-	}
-	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getInformationSources.action?"+param;
-	callAjax(param,jsObj,url);
-}
-
-function setDataToInformationSourcesObject(results)
-{
-	
-	for(var i in results){
-		var ob={
-				id:results[i].id,
-				value:results[i].name
-			};
-		informationSourcesObj.sourceArr.push(ob);	
-	}	
-	getAllStaticParties();
-}
-
-function setAllStaticParties(results)
-{
-	for(var i in results){
-		var ob={
-				id:results[i].id,
-				value:results[i].name
-			};
-		staticParties.staticPartiesDataList.push(ob);	
-	}	
-}
-
-function getExternalPersonDetailsToSetData(results){
-
-	externalPersonname = results.name ;
-	externalPersonmobile = results.mobile ;
-	externalPersontelephoneno = results.telephoneNo ;
-	externalPersonemail = results.email ;
-	externalPersonaddress = results.address ;
-	
-}
-var mobileNumbersArray = new Array();
 
 function getTodayDateTime() {
 	now = new Date();
@@ -307,6 +46,8 @@ function getTodayDateTime() {
 			+ (new Date().getMonth() + 1) + "/" + new Date().getFullYear()
 			+ " " + currentTime;
 }
+
+
 
 function buildPoliticalChanges() {
 	var elmt = document.getElementById("political_changes_data_body");
@@ -389,20 +130,20 @@ function showProblemsStatusCount(results) {
 	problems_OptionsContent += '<tr>';
 	problems_OptionsContent += '<td style="vertical-align:top;" width="60%">';
 	problems_OptionsContent += '<div id="problemOptionsHeadingDiv" class="widgetHeaders"> Problem Search Selection Criteria</div>';
-	problems_OptionsContent += '<p class="widgetDescPara"> <font style="color:#4B74C6">Problem Search Criteria </font>enables the user to saerah for a problem or set of problems with given date range.Here the user has to provide the start date,end date and also the status of problem to view the set of problems.</p>';
-	problems_OptionsContent += '<P class="widgetDescPara">Select Dates to view problems between any two dates</P>';
+	problems_OptionsContent += '<p class="widgetDescPara"> <font style="color:#4B74C6">Problem Search Criteria </font>enables the user to search problems posted with in selected period. Here the user has to provide the start date,end date and also the status of problem to view the set of problems.</p>';
+	problems_OptionsContent += '<P class="widgetDescPara">Click on the Calendar Icons to select the  Dates.</P>';
 	problems_OptionsContent += '<DIV id="alertMessageDiv" class="errorMessage"></DIV>';
 	problems_OptionsContent += '<TABLE cellspacing="5">';
 	problems_OptionsContent += '	<TR>';
 	problems_OptionsContent += '		<TH valign="top">View Problems From:</TH>';
-	problems_OptionsContent += '		<TD><input type="text" id="existingFromText" style="margin-top:0px;" name="existingFromText" size="20"/>';
+	problems_OptionsContent += '		<TD><input type="text" id="existingFromText" readonly="readonly" style="margin-top:0px;" name="existingFromText" size="20"/>';
 	problems_OptionsContent += '			<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" class="tinyDateCal"></DIV></DIV></TD>';
 	problems_OptionsContent += '		</TD>';
 	problems_OptionsContent += '		<TD valign="top">';
 	problems_OptionsContent += '			<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
 	problems_OptionsContent += '		</TD>';
 	problems_OptionsContent += '		<TH valign="top">To:</TH>';
-	problems_OptionsContent += '		<TD><input type="text" id="tillDateText" value="' + todayDate + '" name="tillDateText" size="20" onfocus="showDateCal1()" class="textBoxStyle"/>';
+	problems_OptionsContent += '		<TD><input type="text" id="tillDateText" value="' + todayDate + '" name="tillDateText" size="20" readonly="readonly" class="textBoxStyle"/>';
 	problems_OptionsContent += '			<DIV class="yui-skin-sam"><DIV id="till_Div" class="tinyDateCal"></DIV></DIV>';
 	problems_OptionsContent += '		</TD>';
 	problems_OptionsContent += '		<TD valign="top">';
@@ -444,8 +185,8 @@ function showProblemsStatusCount(results) {
 	problems_OptionsContent += '</tr>';
 	problems_OptionsContent += '</table>';
 	problems_OptionsEl.innerHTML = problems_OptionsContent;
-	
-		buildProblemsDetailsDT(problemMgmtObj.initialProblems);
+
+	buildProblemsDetailsDT(problemMgmtObj.initialProblems);
 }
 
 function showDateCal() {
@@ -489,7 +230,7 @@ function displayDateText(type, args, obj) {
 }
 
 function showDateCal1() {
-
+	
 	var id = document.getElementById("till_Div");
 	if (dateCalendar1)
 		dateCalendar1.destroy();
@@ -523,12 +264,11 @@ function displayDateText1(type, args, obj) {
 	var year = date[0], month = date[1], day = date[2];
 	var divId = obj.containerId;
 	var divElmt = document.getElementById(divId);
-	
+
 	var txtDate1 = document.getElementById("tillDateText");
 	txtDate1.value = day + "/" + month + "/" + year;
 	divElmt.style.display = 'none';
 }
-
 
 function buildProblemsDetailsDT(results) {
 		var problemsArr = new Array();
@@ -628,7 +368,7 @@ function buildInfluencingPeopleDT(results) {
 		sortable : true
 	}, {
 		key : "contactNumber",
-		label : "mobile"
+		label : localizationObj.contactnbr
 	}, {
 		key : "party",
 		label : localizationObj.party,
@@ -639,11 +379,7 @@ function buildInfluencingPeopleDT(results) {
 		sortable : true
 	}, {
 		key : "influencingRange",
-		label : "Influencing Area",
-		sortable : true
-	}, {
-		key : "influencingRangeName",
-		label : "Area Name",
+		label : localizationObj.inflScope,
 		sortable : true
 	} ];
 
@@ -651,7 +387,7 @@ function buildInfluencingPeopleDT(results) {
 	ipDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	ipDTDataSource.responseSchema = {
 		fields : ["influencingPeopleId","personName", "contactNumber", "party", "localArea",
-				"influencingRange", "influencingRangeName" ]
+				"influencingRange" ]
 	};
 
 	if (results.length > 10) {
@@ -731,7 +467,6 @@ function buildProblemsByStatusDialog(results, jsObj) {
 
 }
 
-
 function buildProblemsByStatusDataTable(divId, results, caption) {
 	var elmt = document.getElementById("problemsDetailsDTDiv");
 
@@ -785,251 +520,69 @@ function buildProblemsByStatusDataTable(divId, results, caption) {
 
 }
 
+function limitText(limitField, limitCount, limitNum)
+{		
+	var limitFieldElmt = document.getElementById(limitField);
+	var limitCountElmt = document.getElementById(limitCount);
 
-function showDateCalendar(eleId) {
-	var id ;
-	elementId = eleId;
-	
-	if(eleId==1){		
-		id = document.getElementById("identifiedFromText_Div");
-	}else if(eleId==2){
-		id = document.getElementById("reportedFromText_Div");
+	if (limitFieldElmt.value.length > limitNum) 
+	{
+		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
 	}
-	
-	if (dateCalendar)
-		dateCalendar.destroy();
+	else
+	{			
+		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+" ";
+	}
+}
 
-	var navConfig = {
-		strings : {
-			month : "Choose Month",
-			year : "Enter Year",
-			submit : "OK",
-			cancel : "Cancel",
-			invalidYear : "Please enter a valid year"
-		},
-		monthFormat : YAHOO.widget.Calendar.SHORT,
-		initialFocus : "year"
+function showSentSmsConfirmation(jsObj)
+{
+	var numbersArr = jsObj.numbers;
+	var members = numbersArr.length; 
+	var smsConfirmationEl = document.getElementById("smsConfirmation");
+	var smsBlockAlertEl = document.getElementById("smsBlockAlert");
+	var smsTextEl = document.getElementById("smsText");
+	smsConfirmationEl.innerHTML = "SMS sent succesfully to "+members+" members";
+	smsBlockAlertEl.innerHTML = '';
+	smsTextEl.value = '';
+	buildInfluencingPeopleDT(resultsGlobal);
+}
+
+function initializeConstituencyManagement() {
+	getTodayDateTime();
+	buildPoliticalChanges();
+	getProblemsStatusCountByAccessType();
+	getInfluencingPeopleInAConstituency();
+
+			getAllPoliticalChangesForTheUser();
+}
+
+
+function redirectToNewWindowForAddingPoliticalChanges(type)
+{
+	var politicalChangesWindow = window.open("politicalChangesAction.action?type="+type,"politicalChangesWindow","scrollbars=yes,height=600,width=450,left=200,top=200");
+    politicalChangesWindow.focus();
+} 
+
+function getAllPoliticalChangesForTheUser()
+{						
+	var jsObj= 
+	{				  			
+		task: "getAllPoliticalChangesForTheUser"		
 	};
-
-	var dateCalendar = new YAHOO.widget.Calendar(id, {
-		navigator : navConfig,
-		title : "Choose a date:",
-		close : true
-	});
-	dateCalendar.selectEvent.subscribe(displayDateTextBox, dateCalendar, true,elementId);
-	dateCalendar.render();
-	dateCalendar.show();
+	incrementHidden();
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAllPoliticalChangesForTheUserAjaxAction.action?"+param+"&hidden="+hidden;
+	
+	callAjax(param,jsObj,url);			
 }
 
-function displayDateTextBox(type, args, obj) {
 
-	var dates = args[0];
-	var date = dates[0];
-	var year = date[0], month = date[1], day = date[2];
-	var txtDate1;
-	if(elementId==1){
-		txtDate1 = document.getElementById("identifiedFromText");	
-	}else if(elementId==2){
-		txtDate1 = document.getElementById("reportedFromText");
-	}
-	
-	txtDate1.value = day + "/" + month + "/" + year;
-}
-
-function getOtherPersonDetails(name){
-	if(name==externalPerson){
-		otherDetailsForPoliticalChanges = 1;
-		var externalPersonsDiv = document.getElementById("otherSourcesInformationDiv");
-		var detailsDiv = '';
-		detailsDiv+='<table>';	
-		detailsDiv+='	<tr>';	
-		detailsDiv+='		<td> * Name</td>';
-		detailsDiv+='		<td><input type="text" id="externalPersonName" class="politicalChangesFieldBoxesWidth"></input></td>';
-		detailsDiv+='	</tr>';		
-		detailsDiv+='	<tr>';
-		detailsDiv+='		<td> * Mobile</td>';
-		detailsDiv+='		<td><input type="text" id="externalPersonMobile" class="politicalChangesFieldBoxesWidth"></input></td>';
-		detailsDiv+='	</tr>';		
-		detailsDiv+='	<tr>';
-		detailsDiv+='		<td>TelephoneNo</td>';
-		detailsDiv+='		<td><input type="text" id="externalPersonTelephoneNo" class="politicalChangesFieldBoxesWidth"></input></td>';
-		detailsDiv+='	</tr>';
-		detailsDiv+='	<tr>';
-		detailsDiv+='		<td>Email</td>';
-		detailsDiv+='		<td><input type="text" id="externalPersonEmail" class="politicalChangesFieldBoxesWidth"></input></td>';
-		detailsDiv+='	</tr>';		
-		detailsDiv+='	<tr>';
-		detailsDiv+='		<td>Address</td>';
-		detailsDiv+='		<td><input type="text" id="externalPersonAddress" class="politicalChangesFieldBoxesWidth"></input></td>';
-		detailsDiv+='	</tr>';		
-		detailsDiv+='	</tr>';
-		detailsDiv+='</table>';
-		detailsDiv+='';
-		externalPersonsDiv.innerHTML = detailsDiv;
-	}else{
-		otherDetailsForPoliticalChanges = 0;
-		var externalPersonsDiv = document.getElementById("otherSourcesInformationDiv");
-		var detailsDiv = '';
-		externalPersonsDiv.innerHTML = detailsDiv;
-	}
-}
-function buildLocalPoliticalChangesRegistration(type){
-	requestType = type;
-	if(type="new"){
-		localPoliticalChangeId = 0;
-	}
-	var identifyDate = 1;
-	var reportedDate = 2;
-	var registrationDivContent='';
-	registrationDivContent+='<div id="mainPoliticalDiv" align="left">';
-	registrationDivContent+='<table>';	
-	registrationDivContent+='	<tr>';
-	registrationDivContent+='		<td><DIV id="errorMsgDiv"></div></td>';
-	registrationDivContent+='	</tr>';
-	registrationDivContent+='	<tr>';
-	registrationDivContent+='		<td><DIV id="politicalChangeTitleData">* Title : </div></td>';
-	registrationDivContent+='		<td><input class="politicalChangesFieldBoxesWidth" id="titleTextField" type="text" width="300px"></input></td>';
-	registrationDivContent+='	</tr>';
-	registrationDivContent+='	<tr>';
-	registrationDivContent+='		<td><DIV id="politicalChangeDescripionData">Description : </div></td>';
-	registrationDivContent+='		<td><textarea id="descriptionTextBox" rows="2" cols="20"></textarea></td>';
-	registrationDivContent+='	</tr>';
-	registrationDivContent+='	<tr>';
-	registrationDivContent+='		<td>* Identified Date</td>';
-	registrationDivContent+='		<td><input type="text"  DISABLED class="politicalChangesFieldBoxesWidth" id="identifiedFromText" style="margin-top:0px;" name="identifiedFromText" size="20"/>';
-	registrationDivContent+='			<div class="yui-skin-sam"><div id="identifiedFromText_Div" class="tinyDateCal"></div></div></td>';
-	registrationDivContent+='		</td>';
-	registrationDivContent+='		<td valign="top">';
-	registrationDivContent+='			<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCalendar(\''+identifyDate+'\')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>';
-	registrationDivContent+='		</td>';
-	registrationDivContent+='	</tr>';
-	registrationDivContent+='	<tr>';		
-	registrationDivContent+='		<td>* Reported Date</td>';
-	registrationDivContent+='		<td><input type="text" DISABLED class="politicalChangesFieldBoxesWidth" id="reportedFromText" style="margin-top:0px;" name="reportedFromText" size="20"/>';
-	registrationDivContent+='			<div class="yui-skin-sam"><div id="reportedFromText_Div" class="tinyDateCal"></div></div></td>';
-	registrationDivContent+='		</td>';
-	registrationDivContent+='		<td valign="top">';
-	registrationDivContent+='			<a href="javascript:{}" title="Click To Select A Date" onclick="showDateCalendar(\''+reportedDate+'\')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" class="politicalChangesCalendarImage" border="0"/></a>';
-	registrationDivContent+='		</td>';
-	registrationDivContent+='	</tr>';	
-	
-	registrationDivContent+='	<tr>';
-	registrationDivContent+='		<td>';
-	registrationDivContent+='			Effected Party';
-	registrationDivContent+='		</td>';
-	registrationDivContent+='		<td>';
-	registrationDivContent+='			<select name="parties" id="selectedPartyBox">';
-	for ( var i in staticParties.staticPartiesDataList) {
-		registrationDivContent += '<option value='
-				+ staticParties.staticPartiesDataList[i].id + '>'
-				+ staticParties.staticPartiesDataList[i].value + '</option>';
-	}	
-	registrationDivContent+='			</select>';
-	registrationDivContent+='		</td>';
-	registrationDivContent+='	</tr>';
-	registrationDivContent+='	<tr>';
-	registrationDivContent+='		<td>Select Source</td>';
-	registrationDivContent+='		<td>';
-	registrationDivContent+='			<select id="userTypeSelectBox" class="politicalChangesFieldBoxesWidth" onchange="getOtherPersonDetails(this.options[this.selectedIndex].text)">';	
-	for ( var i in informationSourcesObj.sourceArr) {
-		registrationDivContent += '<option value='
-				+ informationSourcesObj.sourceArr[i].id + '>'
-				+ informationSourcesObj.sourceArr[i].value + '</option>';
-	}	
-	registrationDivContent+='			</select>';
-	registrationDivContent+='		</td>';
-	registrationDivContent+='	</tr>';
-	registrationDivContent+='</table>';	
-	
-	registrationDivContent+='<div id="otherDetailsMainDiv" align="left">';
-	registrationDivContent+='<table>';
-	registrationDivContent+='		<tr>';
-	registrationDivContent+='			<td>';
-	registrationDivContent+='					<div id="otherSourcesInformationDiv"></div>';
-	registrationDivContent+='			</td>';
-	registrationDivContent+='		</tr>';
-	registrationDivContent+='</table>';
-	registrationDivContent+='</div>';
-	
-	registrationDivContent+='<table>';
-	registrationDivContent+='		<tr>';
-	registrationDivContent+='			<td>';
-	registrationDivContent+='					* Fields are Manditory';
-	registrationDivContent+='			</td>';
-	registrationDivContent+='		</tr>';
-	registrationDivContent+='</table>';
-	registrationDivContent+='<div id="otherDetailsMainDiv" align="left">';
-	registrationDivContent+='</div>';
-	
-	addPoliticalChangesPanel = new YAHOO.widget.Dialog("localPoliticalChangesRegistration",
-			{ 
-			  width : "400px", 		
-              fixedcenter : false, 
-              visible : true,  
-              constraintoviewport : true, 
-			  iframe :true,
-			  modal :true,
-			  hideaftersubmit:true,
-			  close:true,
-			  x:400,
-			  y:300,				  
-			  buttons : [ { text:"Save", handler: handleCreateGroupSubmit, isDefault:true}, 
-                          { text:"Cancel", handler: handleCreateGroupCancel}]
-             } );
-	addPoliticalChangesPanel.setHeader("Add Political Changes");
-	addPoliticalChangesPanel.setBody(registrationDivContent);
-	addPoliticalChangesPanel.render();
-}
-
-function buildExternalPersonDetailsPopUp(results){
-
-	var externalPersonDataDiv = '';
-	externalPersonDataDiv+='<div id="extenalPersonsDetailsDiv" align="left">';
-	externalPersonDataDiv+='<table>';
-	externalPersonDataDiv+='	<tr>';
-	externalPersonDataDiv+='		<td><b> Name :</b> &nbsp;&nbsp;'+results.name+ '</td>';
-	externalPersonDataDiv+='	</tr>';
-	externalPersonDataDiv+='	<tr>';
-	externalPersonDataDiv+='		<td><b> Mobile :</b> &nbsp;&nbsp;'+results.mobile+ '</td>';
-	externalPersonDataDiv+='	</tr>';
-	externalPersonDataDiv+='	<tr>';
-	externalPersonDataDiv+='		<td><b> Telephone No :</b> &nbsp;&nbsp;'+results.telephoneNo+ '</td>';
-	externalPersonDataDiv+='	</tr>';
-	externalPersonDataDiv+='	<tr>';
-	externalPersonDataDiv+='		<td><b> Email :</b> &nbsp;&nbsp;'+results.email+ '</td>';
-	externalPersonDataDiv+='	</tr>';
-	externalPersonDataDiv+='	<tr>';
-	externalPersonDataDiv+='		<td><b> Address :</b> &nbsp;&nbsp;'+results.address+ '</td>';
-	externalPersonDataDiv+='	</tr>';
-	externalPersonDataDiv+='</table>';
-	externalPersonDataDiv+='</div>';
-
-	externalPersonDetailsPanel = new YAHOO.widget.Dialog("localPoliticalChangesRegistration",
-			{ 
-			  width : "300px", 		
-              fixedcenter : false, 
-              visible : true,  
-              constraintoviewport : true, 
-			  iframe :true,
-			  modal :true,
-			  hideaftersubmit:true,
-			  close:true,
-			  x:400,
-			  y:300,				  
-			  buttons : [ { text:"Ok", handler: externalPersonCreateGroupSubmit, isDefault:true}, 
-                          { text:"Cancel", handler: handleCreateGroupCancel}]
-             } );
-	externalPersonDetailsPanel.setHeader("External Person Details");
-	externalPersonDetailsPanel.setBody(externalPersonDataDiv);
-	externalPersonDetailsPanel.render();
-	
-}
-function externalPersonCreateGroupSubmit(){
-	externalPersonDetailsPanel.hide();
-}
 function buildDataTableForLocalPoliticalChanges(results)
 {
+		
 	assignTolocalPoliticalChangesDataArray = new Array();
+
 	for(var i in results)
 	{		
 		var sourceOfInformation;
@@ -1038,19 +591,25 @@ function buildDataTableForLocalPoliticalChanges(results)
 		}else{	
 		    sourceOfInformation = results[i].sourceOfInformation;
 		}
-		var localPoliticalChangesObj=		
-		 {		
-				title:results[i].title,
-				description:results[i].description,
-				occuredDate:results[i].date,
-				sourceOfInformation : sourceOfInformation,
-				editDetails: '<A href="javascript:{}" title="Click To Edit Political change" onclick="editDetails('+results[i].politicalChangeId+',\''+results[i].title+'\',\''+results[i].description+'\',\''+results[i].date+'\',\''+results[i].identifiedDate+'\',\''+results[i].partyName+'\',\''+results[i].sourceOfInformation+'\')">Edit</A>',
-				deleteDetails: '<A href="javascript:{}" title="Click To Delte Political change" onclick="deleteDetails('+results[i].politicalChangeId+')">Delete</A>',  
-		 };
-		assignTolocalPoliticalChangesDataArray.push(localPoliticalChangesObj);
-		localPoliticalChanges = assignTolocalPoliticalChangesDataArray;
+		
+			var localPoliticalChangesObj=		
+			 {		
+					title:results[i].title,
+					description:results[i].description,
+					occuredDate:results[i].date,
+					party:results[i].partyName,
+					effectedRange :results[i].range,
+					effectedLocation : results[i].locationName,
+					sourceOfInformation : sourceOfInformation,
+					editDetails: '<A href="javascript:{}" title="Click To Edit Political change" onclick="redirectToNewWindowForEditingPoliticalChanges('+results[i].politicalChangeId+')">Edit</A>',
+					deleteDetails: '<A href="javascript:{}" title="Click To Delte Political change" onclick="deleteDetails('+results[i].politicalChangeId+')">Delete</A>'  
+			 };
+		
+			assignTolocalPoliticalChangesDataArray.push(localPoliticalChangesObj);
+			localPoliticalChanges = assignTolocalPoliticalChangesDataArray;
 	}
 
+	
 	var resultsDataSourceForPoliticalChanges = new YAHOO.util.DataSource(localPoliticalChanges);
 	resultsDataSourceForPoliticalChanges.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	resultsDataSourceForPoliticalChanges.responseSchema = {
@@ -1061,8 +620,14 @@ function buildDataTableForLocalPoliticalChanges(results)
 		}, {
 			key : "occuredDate"
 		}, {
-			key : "sourceOfInformation"
+			key : "party"
 		}, {
+			key : "effectedRange"
+		}, {
+			key : "effectedLocation"
+		}, {
+			key : "sourceOfInformation"
+		}, {   
 			key : "editDetails"
 		}, {
 			key : "deleteDetails"
@@ -1080,6 +645,18 @@ function buildDataTableForLocalPoliticalChanges(results)
 	}, {
 		key : "occuredDate",
 		label : "Occured Date",
+		sortable : true
+	}, {
+		key : "party",
+		label : "Party",
+		sortable : true
+	}, {
+		key : "effectedRange",
+		label : "Effected Range",
+		sortable : true
+	}, {
+		key : "effectedLocation",
+		label : "Effected Location",
 		sortable : true
 	}, {
 		key : "sourceOfInformation",
@@ -1100,72 +677,118 @@ function buildDataTableForLocalPoliticalChanges(results)
 
 }
 
+function getExternalPersonDetails(politicalChangeId)
+{
+		 var jsObj= 
+		 {			
+				 politicalChangeId : politicalChangeId,	  			
+				 task: "getExternalPersonDetails"		
+		 };
+		 
+		 var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "getExternalPersonDetailsAjaxAction.action?"+param;
+	
+		 callAjax(param,jsObj,url);	
+}
 
+
+function buildExternalPersonDetailsPopUp(results)
+{
+	
+	var externalPersonDataDiv = '';
+	externalPersonDataDiv+='<div id="extenalPersonsDetailsDiv" align="left">';
+	externalPersonDataDiv+='<table>';
+	externalPersonDataDiv+='	<tr>';
+	externalPersonDataDiv+='		<td><b> Name :</b></td>';
+	externalPersonDataDiv+='		<td>'+results.name+ '</td>';
+	externalPersonDataDiv+='	</tr>';
+	externalPersonDataDiv+='	<tr>';
+	externalPersonDataDiv+='		<td><b> Mobile :</b></td>';
+	externalPersonDataDiv+='		<td>'+results.mobile+ '</td>';
+	externalPersonDataDiv+='	</tr>';
+	externalPersonDataDiv+='	<tr>';
+	externalPersonDataDiv+='		<td><b> Telephone No :</b></td>';
+	externalPersonDataDiv+='		<td>'+results.telephoneNo+ '</td>';
+	externalPersonDataDiv+='	</tr>';
+	externalPersonDataDiv+='	<tr>';
+	externalPersonDataDiv+='		<td><b> Email :</b></td>';
+	externalPersonDataDiv+='		<td>'+results.email+ '</td>';
+	externalPersonDataDiv+='	</tr>';
+	externalPersonDataDiv+='	<tr>';
+	externalPersonDataDiv+='		<td><b> Address :</b></td>';
+	externalPersonDataDiv+='		<td>'+results.address+ '</td>';
+	externalPersonDataDiv+='	</tr>';
+	externalPersonDataDiv+='</table>';
+	externalPersonDataDiv+='</div>';
+
+	externalPersonDetailsPanel = new YAHOO.widget.Dialog("localPoliticalChangesRegistration",
+			{ 
+			  width : "300px", 		
+              fixedcenter : false, 
+              visible : true,  
+              constraintoviewport : true, 
+			  iframe :true,
+			  modal :true,
+			  hideaftersubmit:true,
+			  close:true,
+			  x:400,
+			  y:300,
+			   buttons : [ { text:"Ok", handler: externalPersonCreateGroupSubmit, isDefault:true}, 
+					  { text:"Cancel", handler: handleCreateGroupCancel}]			 
+             } );
+	externalPersonDetailsPanel.setHeader("External Person Details");
+	externalPersonDetailsPanel.setBody(externalPersonDataDiv);
+	externalPersonDetailsPanel.render();	
+}
+
+function externalPersonCreateGroupSubmit(){
+	externalPersonDetailsPanel.hide();
+}
 
 function handleCreateGroupCancel()
 {
 	this.hide();
 }
 
-function limitText(limitField, limitCount, limitNum)
-{		
-	var limitFieldElmt = document.getElementById(limitField);
-	var limitCountElmt = document.getElementById(limitCount);
-
-	if (limitFieldElmt.value.length > limitNum) 
-	{
-		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
-	}
-	else
-	{			
-		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+" ";
-	}
-}
-
-function showSentSmsConfirmation(jsObj)
+function redirectToNewWindowForEditingPoliticalChanges(localPoliticalChangeId)
 {
-	var numbersArr = jsObj.numbers;
-	var members = numbersArr.length; 
-	var smsConfirmationEl = document.getElementById("smsConfirmation");
-	var smsBlockAlertEl = document.getElementById("smsBlockAlert");
-	var smsTextEl = document.getElementById("smsText");
-	smsConfirmationEl.innerHTML = "SMS sent succesfully to "+members+" members";
-	smsBlockAlertEl.innerHTML = '';
-	smsTextEl.value = '';
-	buildInfluencingPeopleDT(resultsGlobal);
-}
-function limitText(limitField, limitCount, limitNum)
-{		
-	var limitFieldElmt = document.getElementById(limitField);
-	var limitCountElmt = document.getElementById(limitCount);
-
-	if (limitFieldElmt.value.length > limitNum) 
-	{
-		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
-	}
-	else
-	{			
-		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+" ";
-	}
+	type = "Edit";
+	var politicalChangesWindow = window.open("politicalChangesAction.action?type="+type+"&localPoliticalChangeId="+localPoliticalChangeId,"politicalChangesWindow","scrollbars=yes,height=600,width=450,left=200,top=200");
+    politicalChangesWindow.focus();	
 }
 
-function showSentSmsConfirmation(jsObj)
+function incrementHidden()
 {
-	var numbersArr = jsObj.numbers;
-	var members = numbersArr.length; 
-	var smsConfirmationEl = document.getElementById("smsConfirmation");
-	var smsBlockAlertEl = document.getElementById("smsBlockAlert");
-	var smsTextEl = document.getElementById("smsText");
-	smsConfirmationEl.innerHTML = "SMS sent succesfully to "+members+" members";
-	smsBlockAlertEl.innerHTML = '';
-	smsTextEl.value = '';
-	buildInfluencingPeopleDT(resultsGlobal);
+	hidden++;
 }
-function initializeConstituencyManagement() {
-	getTodayDateTime();
-	buildPoliticalChanges();
-	getProblemsStatusCountByAccessType();
-	getInfluencingPeopleInAConstituency();
-	getPoliticalChangesInformationSources();
-	getAllPoliticalChangesForTheUser();
+
+function deleteDetails(politicalChangeId){
+	var jsObj= 
+	{		
+		politicalChangeId :politicalChangeId,		  			
+		task: "deltePoliticalChange"		
+	};
+	
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+
+	incrementHidden();
+
+	var url = "deltePoliticalChangeAjaxAction.action?"+param+"&hidden="+hidden;
+	
+	callAjax(param,jsObj,url);
+}
+
+function displayDateTextBox(type, args, obj,elementId) {
+
+	var dates = args[0];
+	var date = dates[0];
+	var year = date[0], month = date[1], day = date[2];
+	var txtDate1;
+	if(elementId==1){
+		txtDate1 = document.getElementById("identifiedFromText");	
+	}else if(elementId==2){
+		txtDate1 = document.getElementById("reportedFromText");
+	}
+	
+	txtDate1.value = day + "/" + month + "/" + year;
 }
