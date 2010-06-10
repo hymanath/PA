@@ -12,8 +12,15 @@
 	
 	<bean id="politicalChangesAction" class="com.itgrids.partyanalyst.web.action.PoliticalChangesAction" singleton="false">
 		<property name="politicalChangesService" ref="politicalChangesService" />
+		<property name="influencingPeopleService" ref="influencingPeopleService" />
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>	
+	
+	<bean id="politicalChangesRegistrationAction" class="com.itgrids.partyanalyst.web.action.PoliticalChangesRegistrationAction" singleton="false">
+		<property name="politicalChangesService" ref="politicalChangesService" />
+		<property name="influencingPeopleService" ref="influencingPeopleService" />
+		<property name="staticDataService" ref="staticDataService" />
+	</bean>
 	
 	<bean id="influencingPeopleSaveAction" class="com.itgrids.partyanalyst.web.action.InfluencingPeopleSaveAction" singleton="false">
 		<property name="influencingPeopleService" ref="influencingPeopleService" />
