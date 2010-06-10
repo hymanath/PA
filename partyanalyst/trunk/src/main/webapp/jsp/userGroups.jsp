@@ -82,7 +82,7 @@ function callAjax(param,jsObj,url){
 										showExistingGroupAlert(myResults, jsObj);										
 									}else if(jsObj.task == "addMemberToAGroup")
 									{
-										showAddedMbrConfirm(myResults);										
+										showAddedMbrConfirm(myResults, jsObj);										
 									} else if(jsObj.task == "getMyGroupsListForAUser")
 									{
 										buildMyGroupsOptions(myResults);										
@@ -105,7 +105,7 @@ function callAjax(param,jsObj,url){
 function buildLayout()
 {	
 		var layoutEl = new YAHOO.widget.Layout('userGroupsMainDiv', { 
-		height:1100,
+		height:1200,
 		units: [	 
 				{ 
 					position: 'top',
@@ -422,7 +422,8 @@ var userGrpsObj={
 		var navigationEl = document.getElementById("navigationLink");
 		navigationEl.style.display='block';
 		numbersArray = results.membersMobileNos;
-
+		var smsDivEl = document.getElementById("smsDiv");
+		var smsTextAreaEl = document.getElementById("smsTextArea");
 		var sendSMSButEl = document.getElementById("sendSMSBut");
 		//sendSMSButEl.setAttribute("onclick","sendSMS()")
 		
@@ -484,6 +485,8 @@ var userGrpsObj={
 		str+='</table>';			
 		str+='</div>';
 		divEl.innerHTML=str;
+		smsDivEl.style.display ='block';
+		smsTextAreaEl.focus();
 	}
 	
 	function showGroupMembersList(results)
@@ -509,7 +512,8 @@ var userGrpsObj={
 		{	
 			userGrpsObj.showGrpMembersArr = emptyArray;				
 		}
-		showGrpMembersDataTable();	
+		showGrpMembersDataTable();
+		smsTextAreaEl.focus();	
 	}
 
 	
@@ -1333,11 +1337,13 @@ var userGrpsObj={
 	{
 		addGrpMbrsDialog.cancel();
 	}
-	function showAddedMbrConfirm(results)
+	function showAddedMbrConfirm(results, jsObj)
 	{
 		var memberAlreadyExists = results.userGroupMembersVO.rs.resultPartial;
 		var groupName = results.userGroupMembersVO.groupName;
 		var memberName = results.userGroupMembersVO.name;
+		var name = jsObj.name;
+		
 		var confirmAddMemberEl = document.getElementById("confirmAddMember");
 		if(memberAlreadyExists == false)
 		{	
@@ -1358,7 +1364,7 @@ var userGrpsObj={
 			groupMbrDesignationTextEl.value ="";
 		} else  if(memberAlreadyExists == true)
 		{
-			var answer = confirm(memberName+"Already Exists.Do you want to proceed?");
+			var answer = confirm(name+" Already Exists.Do you want to proceed?");
 			if (answer){
 				handleAddGrpMbrSubmit("true");				
 			}
@@ -1493,7 +1499,7 @@ var userGrpsObj={
 					<td><img src="images/usergroups/icon_mail.png" boder="none"/style="margin-right:2px;">Message:</td>
 				</tr>
 				<tr>
-					<td><textarea id="smsTextArea" cols="10" rows="5" onkeyup=limitText("smsTextArea","maxcount",200)></textarea></td>
+					<td><textarea id="smsTextArea" cols="10" rows="5" onkeyup='limitText("smsTextArea","maxcount",200)'></textarea></td>
 				</tr>
 				<tr>
 					<td><span id="maxcount">200 </span> <span>chars remaining..</span></td>
