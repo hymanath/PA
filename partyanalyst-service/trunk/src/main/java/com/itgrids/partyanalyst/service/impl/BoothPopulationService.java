@@ -3,7 +3,6 @@ package com.itgrids.partyanalyst.service.impl;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;

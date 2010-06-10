@@ -725,7 +725,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				
 				Object[] obj = (Object[]) mandalsList.get(j);
 				
-				
 				if(partailData.get(j).equalsIgnoreCase("1"))
 					votersInfo.setIsPartial("NO");
 				else if(partailData.get(j).equalsIgnoreCase("0"))
@@ -950,11 +949,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				}
 				partyElectionResultVO = new PartyElectionResultVO();
 				partyElectionResultVO.setVotesEarned(partyBaletVotes);
-				if(totalBaletVotes > 0)
+				if(totalBaletVotes > 0 && (partyBaletVotes < totalBaletVotes))
 					partyElectionResultVO.setVotesPercentage(new BigDecimal(partyBaletVotes*100.0/totalBaletVotes)
 																.setScale(2,BigDecimal.ROUND_HALF_UP).toString());
-				else
-					partyElectionResultVO.setVotesPercentage("0");
+				else{
+					log.error("Valid Votes Are Less Than Candidate Votes:totalBaletVotes-"+totalBaletVotes+" Party Votes-"+partyBaletVotes+" Party Name-"+values[1]);
+					partyElectionResultVO.setVotesPercentage("0");	
+				}
+				
 				partyElectionResultVOs.add(partyElectionResultVO);
 			}
 				

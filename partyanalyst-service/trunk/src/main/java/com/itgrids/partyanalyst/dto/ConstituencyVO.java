@@ -13,6 +13,7 @@ public class ConstituencyVO {
 	private String electionType;
 	private Date delemitationInfo;
 	private List<VotersWithDelimitationInfoVO> assembliesOfParliamentInfo;
+	private String[] pieChartNames;
 	
 	public ConstituencyVO(){
 		
@@ -69,6 +70,12 @@ public class ConstituencyVO {
 	public void setAssembliesOfParliamentInfo(
 			List<VotersWithDelimitationInfoVO> assembliesOfParliamentInfo) {
 		this.assembliesOfParliamentInfo = assembliesOfParliamentInfo;
+	}
+	public String[] getPieChartNames() {
+		return pieChartNames;
+	}
+	public void setPieChartNames(String[] pieChartNames) {
+		this.pieChartNames = pieChartNames;
 	}
 	
 }
