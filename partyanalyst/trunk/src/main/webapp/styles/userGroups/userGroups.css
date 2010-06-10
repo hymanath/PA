@@ -134,8 +134,8 @@
 		border-left:1px solid #96B4D3;
 		border-right:3px solid #96B4D3;
 		border-bottom:3px solid #96B4D3;
-		min-height:700px;
-		height:700px;
+		padding: 10px;
+		height:800px;
 		background-color:white;	
 	}
 	h4{
