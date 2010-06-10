@@ -245,10 +245,10 @@ function showRegionStaticData()
 		item2Str+='<li><a href="districtPageAction.action?districtId=1&districtName=Adilabad">Adilabad</a></li>';
 		item2Str+='<li><a href="districtPageAction.action?districtId=22&districtName=Anantapur">Anantapur</a></li>';
 		item2Str+='<li><a href="districtPageAction.action?districtId=23&districtName=Chittoor">Chittoor</a></li>';
+		item2Str+='<li><a href="districtPageAction.action?districtId=20&districtName=Cuddapah">Cuddapah</a></li>';
 		item2Str+='<li><a href="districtPageAction.action?districtId=14&districtName=Adilabad">East Godavari</a></li>';
 		item2Str+='<li><a href="districtPageAction.action?districtId=17&districtName=Guntur">Guntur</a></li>';
 		item2Str+='<li><a href="districtPageAction.action?districtId=5&districtName=Hyderabad">Hyderabad</a></li>';
-		item2Str+='<li><a href="districtPageAction.action?districtId=20&districtName=Cuddapah">Cuddapah</a></li>';
 		item2Str+='<li><a href="districtPageAction.action?districtId=3&districtName=Karimnagar">Karimnagar</a></li>';
 		item2Str+='<li><a href="districtPageAction.action?districtId=10&districtName=Khammam">Khammam</a></li>';
 		item2Str+='<li><a href="districtPageAction.action?districtId=16&districtName=Krishna">Krishna</a></li>';
