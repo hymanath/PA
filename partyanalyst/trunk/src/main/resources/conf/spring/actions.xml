@@ -328,7 +328,16 @@
 	<bean id="indexAction" class="com.itgrids.partyanalyst.IndexAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
-	<bean id="sendSMSAction" class="com.itgrids.partyanalyst.SendSMSAction" singleton="false">
+	<bean id="sendSMSAction" class="com.itgrids.partyanalyst.web.action.SendSMSAction" singleton="false">
 		<property name="countrySmsService" ref="countrySmsService" />
+	</bean>
+	<bean id="addNewProblemAction" class="com.itgrids.partyanalyst.web.action.AddNewProblemAction" singleton="false">
+		<property name="problemManagementService" ref="problemManagementService" />
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="staticDataService" ref="staticDataService" />		
+	</bean>
+	<bean id="addNewProblemSubmitAction" class="com.itgrids.partyanalyst.web.action.AddNewProblemSubmitAction" singleton="false">
+		<property name="problemManagementService" ref="problemManagementService" />				
 	</bean>
 </beans>		
