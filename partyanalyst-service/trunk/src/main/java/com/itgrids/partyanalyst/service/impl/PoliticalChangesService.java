@@ -11,7 +11,13 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesInformationSourceDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ProblemExternalSourceDAO;
@@ -23,6 +29,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.PoliticalChanges;
 import com.itgrids.partyanalyst.model.PoliticalChangesInformationSource;
 import com.itgrids.partyanalyst.model.ProblemExternalSource;
+import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IPoliticalChangesService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -37,9 +44,62 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 	private IPartyDAO partyDAO;
 	private PoliticalChangesDAO politicalChangesDAO;
 	private ProblemExternalSourceDAO problemExternalSourceDAO;
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITehsilDAO tehsilDAO;
+	private ITownshipDAO townshipDAO;
+	private IHamletDAO hamletDAO;
 	
+	
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public ITownshipDAO getTownshipDAO() {
+		return townshipDAO;
+	}
+
+	public void setTownshipDAO(ITownshipDAO townshipDAO) {
+		this.townshipDAO = townshipDAO;
+	}
+
+	public IHamletDAO getHamletDAO() {
+		return hamletDAO;
+	}
+
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
-	
 	
 	public RegistrationDAO getRegistrationDAO() {
 		return registrationDAO;
@@ -119,8 +179,9 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 	 * This method get the Data from the User and saves the data into database.
 	 * 
 	 */
-	public void savePoliticalChangeDataReceivedFromUser(PoliticalChangesVO politicalChangesVo){
+	public ResultStatus savePoliticalChangeDataReceivedFromUser(PoliticalChangesVO politicalChangesVo){
 		politicalChangesVO = politicalChangesVo;
+		ResultStatus resultStatus = new ResultStatus();
 		try{
 			if(log.isDebugEnabled()){
 				log.debug("Entered in to savePoliticalChangeDataReceivedFromUser() method..");
@@ -129,10 +190,19 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 					PoliticalChanges politicalChanges = new PoliticalChanges();
 					politicalChanges.setTitle(politicalChangesVO.getTitle());
-					politicalChanges.setDescription(politicalChangesVO.getDescription());
-					try {						
-						politicalChanges.setIdentifiedDate(sdf.parse(politicalChangesVO.getReportedDate()));
-						politicalChanges.setOccuredDate(sdf.parse(politicalChangesVO.getDate()));
+					if(politicalChangesVO.getDescription()!=null){
+						politicalChanges.setDescription(politicalChangesVO.getDescription());	
+					}									
+					politicalChanges.setEffectedRange(politicalChangesVO.getRange());
+					politicalChanges.setEffectedLocation(politicalChangesVO.getRangeId());				
+					
+					try {	
+						if(!(politicalChangesVO.getReportedDate().equalsIgnoreCase(""))){
+							politicalChanges.setIdentifiedDate(sdf.parse(politicalChangesVO.getReportedDate()));
+						}
+						if(!(politicalChangesVO.getDate().equalsIgnoreCase(""))){
+							politicalChanges.setOccuredDate(sdf.parse(politicalChangesVO.getDate()));
+						}						
 						java.util.Date now = new java.util.Date();
 				        String DATE_FORMAT = "dd/MM/yyyy";
 				        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
@@ -153,9 +223,15 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 						ProblemExternalSource problemExternalSource = new ProblemExternalSource();
 						problemExternalSource.setName(politicalChangesVO.getName());
 						problemExternalSource.setMobile(politicalChangesVO.getMobile());
-						problemExternalSource.setTelePhone(politicalChangesVO.getTelephoneNo());
-						problemExternalSource.setEmail(politicalChangesVO.getEmail());
-						problemExternalSource.setAddress(politicalChangesVO.getAddress());
+						if(politicalChangesVO.getTelephoneNo()!=null){
+							problemExternalSource.setTelePhone(politicalChangesVO.getTelephoneNo());
+						}
+						if(politicalChangesVO.getEmail()!=null){
+							problemExternalSource.setEmail(politicalChangesVO.getEmail());
+						}
+						if(politicalChangesVO.getAddress()!=null){
+							problemExternalSource.setAddress(politicalChangesVO.getAddress());
+						}						
 						politicalChanges.setExternalSource(problemExternalSource);
 					}		
 					politicalChanges = politicalChangesDAO.save(politicalChanges);
@@ -167,10 +243,15 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 						editPoliticalChanges = politicalChangesDAO.save(editPoliticalChanges);
 					}
 			}});
+			resultStatus.setResultPartial(false);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		}catch(Exception e){
 			e.printStackTrace();
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			log.debug("Exception raised.");
 		}
+		return resultStatus;
 	}
 	
 	/**
@@ -181,6 +262,8 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 	public List<PoliticalChangesVO> getAllPoliticalChanges(Long userId){
 		List<PoliticalChangesVO> allPoliticalChanges = new ArrayList<PoliticalChangesVO>();		
 		List localPoliticalChanges = politicalChangesDAO.getAllPoliticalChangesByUserId(userId);
+		String locationName = null;
+		Long locationId;
 		try{			
 			for(int i=0;i<localPoliticalChanges.size();i++){
 				Object[] parms = (Object[])localPoliticalChanges.get(i);
@@ -197,7 +280,26 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 				}else{
 					politicalChangesVO.setDate("");
 				}
-				politicalChangesVO.setPartyName(parms[10].toString());
+				politicalChangesVO.setPartyName(parms[10].toString());				
+				politicalChangesVO.setRange(parms[11]!=null?parms[11].toString():"");
+				locationId = Long.parseLong(parms[12].toString());
+				if(parms[11]!=null){
+					if(parms[11].toString().equalsIgnoreCase(IConstants.STATE_LEVEL)){
+						locationName = stateDAO.get(locationId).getStateName();
+					}else if(parms[11].toString().equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
+						locationName = districtDAO.get(locationId).getDistrictName();
+					}else if(parms[11].toString().equalsIgnoreCase(IConstants.CONSTITUENCY_LEVEL)){
+						locationName = constituencyDAO.get(locationId).getName();
+					}else if(parms[11].toString().equalsIgnoreCase(IConstants.TEHSIL)){
+						locationName = tehsilDAO.get(locationId).getTehsilName();
+					}else if(parms[11].toString().equalsIgnoreCase(IConstants.VILLAGE)){
+						locationName = townshipDAO.get(locationId).getTownshipName();
+					}else if(parms[11].toString().equalsIgnoreCase(IConstants.HAMLET_LEVEL)){
+						locationName = hamletDAO.get(locationId).getHamletName();
+					}
+				}
+				politicalChangesVO.setLocationName(locationName);
+				politicalChangesVO.setRangeId(parms[12]!=null?Long.parseLong(parms[12].toString()):0l);				
 				politicalChangesVO.setName(parms[3]!=null?parms[3].toString():"");
 				politicalChangesVO.setSelectedPersonId(parms[5]!=null?Long.parseLong(parms[5].toString()):0l);
 				politicalChangesVO.setSourceOfInformation(parms[7]!=null?parms[7].toString():"");
@@ -257,5 +359,58 @@ public class PoliticalChangesService implements IPoliticalChangesService {
 			return null;	
 		}			
 	}
-
+	
+	/**
+	 * This method retrives all the data by politicalChangeId and sets them in PoliticalChangesVO.
+	 * @param politicalChangeId
+	 * @return
+	 */
+	public PoliticalChangesVO getDetailsBylocalPoliticalChangeId(Long politicalChangeId){
+		try{
+			PoliticalChangesVO politicalChangesVO = new PoliticalChangesVO();
+			List localPoliticalChanges = politicalChangesDAO.getAllPoliticalChangesByPoliticalChangeId(politicalChangeId);
+			for(int i=0;i<localPoliticalChanges.size();i++){
+				Object[] parms = (Object[])localPoliticalChanges.get(i);
+				politicalChangesVO.setTitle(parms[0]!=null?parms[0].toString():"");
+				politicalChangesVO.setDescription(parms[1]!=null?parms[1].toString():"");
+				if(parms[2]!=null){
+			        SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);			       	
+			        String identifiedDate = sdf.format((Date)parms[2]);
+			        politicalChangesVO.setIdentifiedDate(identifiedDate);
+				}else{
+					politicalChangesVO.setIdentifiedDate("");
+				}
+				if(parms[3]!=null){
+			        SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+			        String strDateNew = sdf.format((Date)parms[3]);
+			        politicalChangesVO.setDate(strDateNew);		
+				}else{
+					politicalChangesVO.setDate("");
+				}
+				politicalChangesVO.setPoliticalChangeId(politicalChangeId);
+				politicalChangesVO.setPartyName(parms[5]!=null?parms[5].toString():"");
+				politicalChangesVO.setRange(parms[6]!=null?parms[6].toString():"");
+				politicalChangesVO.setRangeId(parms[7]!=null?Long.parseLong(parms[7].toString()):0l);				
+				if(parms[4]!=null){
+					politicalChangesVO.setSourceOfInformation(parms[4].toString());
+					if(parms[4].toString().equalsIgnoreCase(IConstants.EXTERNAL_PERSON)){
+						List<ProblemExternalSource> result = problemExternalSourceDAO.getExternalPersonDetails(politicalChangeId);
+						for(ProblemExternalSource resultIterator : result){
+							politicalChangesVO.setName(resultIterator.getName());
+							politicalChangesVO.setMobile(resultIterator.getMobile());
+							politicalChangesVO.setTelephoneNo(resultIterator.getTelePhone());
+							politicalChangesVO.setAddress(resultIterator.getAddress());
+							politicalChangesVO.setEmail(resultIterator.getEmail());
+						}
+					}
+					
+				}
+			}	
+			return politicalChangesVO;
+		}catch(Exception e){
+			e.printStackTrace();
+			log.debug("Exception raised.");
+			return null;	
+		}	
+	}
 }
