@@ -2,13 +2,29 @@
 
 	#CadreManagementHeaderMain
 	{
-		color:#1C487A;
-		font-size:20px;
-		font-weight:bold;
-		text-decoration:underline;
-		margin-bottom:20px;
-		font-family:Georgia;
+		background-image:url("../../images/icons/cadreReport/cadrePageHeader.JPG");
+		background-repeat:no-repeat;		
+		height:229px;
+		margin-bottom:10px;
+		margin-top:10px;		
+		width:910px;
+		padding: 10px;
 	}
+	#cadreMgmtDesc
+	{		
+		font-size: 14px;
+		text-align: left;
+		color: #000000;
+		margin-top: 45px;
+		margin-left: 390px;		
+	}
+	#cadreMgmtDesc LI
+	{
+		list-style-type:none;	
+		list-style-image:url('../../images/icons/constituencyManagement/listIcon.jpg');
+		padding:2px;
+	}
+	
 	#cadreManagementMainDiv
 	{
 		/*background-color:#EFEFEF;*/
