@@ -38,7 +38,7 @@ public class TownshipDAO extends GenericDaoHibernate<Township, Long> implements 
 	
 	@SuppressWarnings("unchecked")
 	public List<Township> findByTehsilID(Long mandalID){
-		return getHibernateTemplate().find("from Township model where model.tehsil.tehsilId=?", mandalID);
+		return getHibernateTemplate().find("from Township model where model.tehsil.tehsilId=? order by model.townshipName", mandalID);
 		
 	}
 

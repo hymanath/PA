@@ -108,7 +108,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		Object[] params = {districtId, electionType};
 		return getHibernateTemplate().find("select model.constituencyId, upper(model.name), " +
 				"YEAR(model.startDate),YEAR(model.deformDate) from Constituency model where " +
-				"model.district.districtId = ? and model.electionScope.electionType.electionType=?",params);
+				"model.district.districtId = ? and model.electionScope.electionType.electionType=? order by model.name",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -158,7 +158,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		Object[] params = {electionTypeId, stateID};
 		return getHibernateTemplate().find("select model.constituencyId , model.name from Constituency model" +
 				" where model.electionScope.electionType.electionTypeId = ?" +
-				" and model.state.stateId=? ",params);
+				" and model.state.stateId=? order by model.name",params);
 	}
 	
 	@SuppressWarnings("unchecked")

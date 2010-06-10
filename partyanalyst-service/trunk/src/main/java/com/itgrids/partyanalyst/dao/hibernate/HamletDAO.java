@@ -41,7 +41,7 @@ public class HamletDAO extends GenericDaoHibernate<Hamlet, Long> implements IHam
 
 	@SuppressWarnings("unchecked")
 	public List<Hamlet> findByTownshipId(Long townshipId) {		
-		return getHibernateTemplate().find("from Hamlet model where model.township.townshipId = ?",townshipId);
+		return getHibernateTemplate().find("from Hamlet model where model.township.townshipId = ? order by model.hamletName",townshipId);
 	}
 
 	@SuppressWarnings("unchecked")
