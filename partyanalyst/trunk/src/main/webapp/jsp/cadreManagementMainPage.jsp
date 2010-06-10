@@ -3563,7 +3563,16 @@
 <body>
 	
 	<div id="CadreManagementHeaderMain">
-		Cadre Management
+		<DIV id="cadreMgmtDesc">
+			<UL>
+				<LI>Add cadre and manage cadre efficiently</LI>
+				<LI>Identify the locations having less cadre and strong cadre</LI>
+				<LI>Communicate with your cadre efficiently</LI>
+				<LI>Maintain Associate Groups(Mahila, Youth, Trade Unions)</LI>
+				<LI>Plan and organize events with Event Planning Tool</LI>
+				<LI>Plan booth level teams, feedback teams and campaign teams</LI>
+			</UL>
+		</DIV>		
 	</div>
 	<div id="cadreManagementMainDiv" class="yui-skin-sam">		
 		<div id="myDialog" class="yui-skin-sam"> 			

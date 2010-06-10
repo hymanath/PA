@@ -454,7 +454,13 @@
 					               };
 
 					YAHOO.util.Connect.asyncRequest('GET', url, callback);
-			}														
+			}
+		function openAddNewProblemWindow()
+		{	
+	var browser1 = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+							 
+			 browser1.focus();
+		}														
 		
 	</script>
 
@@ -487,7 +493,8 @@
 					</table>	
 				</div>
 				<div id="problem_stats_body" class="containerBodyDivClass">
-					<div style="text-align:right;padding:15px;">						
+					<div style="text-align:right;padding:15px;">
+						<a class="linkButton" href="javascript:{}" onclick="openAddNewProblemWindow()">Add New Problem</a>						
 						 <a class="linkButton" href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT">Manage Problems</a>
 						 <a class="linkButton" href="constituencyManagementAction.action?cmTask=CONSTITUENCY_MANAGEMENT">View Detailed Statistics</a>
 					</div>
