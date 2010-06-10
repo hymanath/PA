@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -59,7 +60,7 @@ public class CadreManagementService {
 	private IRegistrationDAO registrationDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
-	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;	 
 	private SmsCountrySmsService smsCountrySmsService;
 	private IHamletDAO hamletDAO;
 	
@@ -117,7 +118,6 @@ public class CadreManagementService {
 	public void setHamletDAO(IHamletDAO hamletDAO) {
 		this.hamletDAO = hamletDAO;
 	}
-
 
 	public Long saveCader(CadreInfo cadreInfo){
 		if(log.isDebugEnabled()){
@@ -179,6 +179,7 @@ public class CadreManagementService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			resultStatus.setResultPartial(true);
 			resultStatus.setExceptionEncountered(e);
+			e.printStackTrace();
 		}
 		
 		return userCadreInfo;
@@ -243,8 +244,7 @@ public class CadreManagementService {
 			SelectOptionVO voObject = new SelectOptionVO(mandalLevelZeroCadres,"MANDAL");
 			if(mandalLevelZeroCadres > 0)
 				regionLevelZeroCadres.add(voObject);
-		}
-		 
+		}		 
 		if("COUNTRY".equals(userAccessType)){
 			if(log.isDebugEnabled()){
 				log.debug("CadreManagementService.getUserAccessRegions() if COUNTRY started");

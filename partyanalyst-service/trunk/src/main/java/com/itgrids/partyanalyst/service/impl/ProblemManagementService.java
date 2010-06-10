@@ -305,13 +305,14 @@ public class ProblemManagementService implements IProblemManagementService {
 				ProblemAndProblemSource problemAndProblemSource = null;
 				ProblemLocation problemLocation = null;
 				ProblemHistory problemHistory = null;
+				
 				try{					
 					ProblemSource problemSource = problemSourceDAO.get(ProblemManagementService.this.problemBeanVO.getProbSourceId());
 					ProblemExternalSource problemExternalSource = null;
 					Registration reg = null;
 					Hamlet hamlet = null;
 					problem = new Problem();
-					problemAndProblemSource = new ProblemAndProblemSource();
+					problemAndProblemSource = new ProblemAndProblemSource();					
 					problem.setProblem(ProblemManagementService.this.problemBeanVO.getProblem());
 					problem.setDescription(ProblemManagementService.this.problemBeanVO.getDescription());
 					problem.setYear(ProblemManagementService.this.problemBeanVO.getYear());					
@@ -361,6 +362,8 @@ public class ProblemManagementService implements IProblemManagementService {
 					if(log.isDebugEnabled()){
 						log.debug("Exception Raised while Update And Get Problems Under Pending::", e);
 					}
+					problemBeanFromDB.setExceptionEncountered(e);
+					e.printStackTrace();
 				}
 				ProblemManagementService.this.problemBeanVO = problemBeanFromDB;
 			}

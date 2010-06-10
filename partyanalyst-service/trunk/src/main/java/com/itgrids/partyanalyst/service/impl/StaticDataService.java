@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dto.CandidateWonVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWinnerInfoVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
@@ -661,6 +662,7 @@ public class StaticDataService implements IStaticDataService {
 							deleteList.add(selectOptionVO);								
 				}		
 			}	
+			
 			return constituencyVO;
 		}catch(Exception e){
 			log.debug("Exception raised--->");
@@ -3920,6 +3922,25 @@ public class StaticDataService implements IStaticDataService {
 		}
 		
 	}
+
+	public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(
+			Long parliamentConstituencyId) {
+		log.debug("Entered in to getLatestAssemblyConstituenciesForParliament in Static Data Service");
+		ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+		Constituency parliamentConstituencyObj = new Constituency();
+		List list = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(parliamentConstituencyId);
+		parliamentConstituencyObj = constituencyDAO.get(parliamentConstituencyId);
+		List<SelectOptionVO> assemblyConstList = new ArrayList<SelectOptionVO>();
+		for(Object[] values:(List<Object[]>)list)
+			assemblyConstList.add(new SelectOptionVO((Long)values[0], values[1].toString()));
+		constituencyInfoVO.setAssembyConstituencies(assemblyConstList);
+		constituencyInfoVO.setConstituencyId(parliamentConstituencyObj.getConstituencyId());
+		constituencyInfoVO.setConstituencyName(parliamentConstituencyObj.getName());
+		log.debug("No of Assembly Constituencies:::::"+assemblyConstList.size());
+		return constituencyInfoVO;
+	}
+
+
 
 	public NavigationVO findHirarchiForNavigation(Long locationId, String locationType){
 		NavigationVO navigationVO = new NavigationVO();

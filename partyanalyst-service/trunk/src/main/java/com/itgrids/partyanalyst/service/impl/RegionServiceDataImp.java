@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +115,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			objVO.setName(tehsil.getTehsilName());
 			mandalNames.add(objVO);
 		}
+		
 		System.out.println("RegionservicedataImpl.......... mandalNames.size()-----"+mandalNames.size());
 		
 		return mandalNames;
