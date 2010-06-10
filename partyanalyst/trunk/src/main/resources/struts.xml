@@ -25,9 +25,9 @@
 		
 		<action name="landing" class="com.itgrids.partyanalyst.web.action.LandingAction">
 			<result>/jsp/landing.jsp</result>
-		</action>
+		</action>   
 		
-	
+		
 		<action name="loginAction" class="com.itgrids.partyanalyst.web.action.LoginAction">
 			<result name="error">/jsp/loginForm.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
@@ -1016,8 +1016,20 @@
 			<result type="json" name="success">
 					<param name="root">externalPersonInfo</param>
 			</result> 
-		</action> 
+		</action>   
 	
+		<action name="getEffectedRangeForAUserAjaxAction" class="politicalChangesAction" method="getEffectedRangeForAUser" >
+			<result type="json" name="success">
+					<param name="root">effectedRange</param>
+			</result> 
+		</action>
+		
+		<action name="getDetailsByPoliticalChangeIdAjaxAction" class="politicalChangesAction" method="getDetailsByPoliticalChangeId" >
+			<result type="json" name="success">
+					<param name="root">editPoliticalChangeData</param>
+			</result> 
+		</action>
+		
         <action name="sendSMSAction" class="sendSMSAction"></action>        
         
          <action name="votesMaringInfoForElectionInPartyPerformance" class="partyPerformanceAction" method="getMarginCount"> 
@@ -1026,6 +1038,18 @@
         	</result>       		
         </action>
         
+        
+        <action name="politicalChangesAction" class="politicalChangesAction">
+			 <result name="success">/jsp/politicalChangesRegistration.jsp</result>
+		</action>
+		
+		<action name="politicalChangesRegistrationAction" class="politicalChangesRegistrationAction">
+			 <result name="input">/jsp/politicalChangesRegistration.jsp</result>			
+			 <result name="error">/jsp/politicalChangesRegistration.jsp</result>
+             <result name="success">/jsp/politicalChangesRegistration.jsp</result>
+		</action>
+		
 	</package>
 </struts>
+
 
