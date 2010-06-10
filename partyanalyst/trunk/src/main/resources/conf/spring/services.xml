@@ -459,6 +459,12 @@
 		<property name="problemExternalSourceDAO" ref="problemExternalSourceDAO"/>
 		<property name="registrationDAO" ref="registrationDAO" />
 		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="townshipDAO" ref="townshipDAO" />
+    	<property name="hamletDAO" ref="hamletDAO" />
 	</bean>  
 	
 </beans>		
