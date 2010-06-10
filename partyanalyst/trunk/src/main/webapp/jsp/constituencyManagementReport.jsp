@@ -58,7 +58,7 @@
 	<script type="text/javascript" src="js/problemManagementReport/problemManagementReport.js"></script>
 	<script type="text/javascript" src="js/influencingPeople/influencingPeople.js"></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
-	
+
 	<script type="text/javascript">
 		
 		 <%			
@@ -243,25 +243,26 @@
 							  };
 		  var accessType= '${accessType}';			  
 		  var accessValue= '${accessValue}';
-		  var externalPerson = '${EXTERNAL_PERSON}';
-		  
+
 		  var initialProbs = new Array();
-		  									
+
+		  var externalPerson = '${EXTERNAL_PERSON}';
+
 		  <c:forEach var="prob" items="${problemsList}">
 			  var problemInfo = {
 					  	problemLocationId:'${prob.problemLocationId}',
 						problem:'${prob.problem}', 
-						description:'${prob.description}',
+					  	description:'${prob.description}',
 						existingFrom:'${prob.existingFrom}',
 						hamlet:'${prob.hamlet}',
 						problemSourceScope:'${prob.problemSourceScope}',
 						problemAndProblemSourceId:'${prob.problemAndProblemSourceId}',
-						status:'${prob.status}'	
+						status:'${prob.status}' 
 					  };
 			  problemMgmtObj.initialProblems.push(problemInfo);
 		</c:forEach>
 
-	
+		
 		function getProblemHistoryInfo(problemLocationId){
 			var jsObj=
 			{
@@ -273,7 +274,7 @@
 			var url = "<%=request.getContextPath()%>/problemManagementHistoryResultsNew.action?"+rparam;						
 			callAjax(rparam,jsObj,url);
 		}
-		
+  
 		function getProblemsStatusCountByAccessType()
 		{
 			var jsObj= 
@@ -298,6 +299,7 @@
 				var url = "<%=request.getContextPath()%>/problemDetailsByStatusAction.action?"+rparam;						
 				callAjax(rparam,jsObj,url);
 		}
+		
 		function getProblemDetailsInSelectedDates(statusId)
 		{
 			var alertMessageDivEl = document.getElementById("alertMessageDiv");
@@ -410,7 +412,7 @@
 								try {												
 										if(o.responseText)
 											myResults = YAHOO.lang.JSON.parse(o.responseText);
-									
+											
 										if(jsObj.task == "getProblemsStatusCount")
 										{
 											showProblemsStatusCount(myResults);
@@ -430,29 +432,16 @@
 										{
 											showSentSmsConfirmation(jsObj);
 										}
-										if(jsObj.task == "getPoliticalChangesInformationSources"){									
-											setDataToInformationSourcesObject(myResults);											
-										}
-										if(jsObj.task == "saveDataForLocalPoliticalChanges"){	
-											getAllPoliticalChangesForTheUser();	
-										}
-										if(jsObj.task == "getAllStaticParties"){
-											setAllStaticParties(myResults);
-										}	
 										if(jsObj.task == "getAllPoliticalChangesForTheUser"){
 											buildDataTableForLocalPoliticalChanges(myResults);
-										} 
-										if(jsObj.task == "deltePoliticalChange"){
-											getAllPoliticalChangesForTheUser();
 										}
 										if(jsObj.task == "getExternalPersonDetails"){
 											buildExternalPersonDetailsPopUp(myResults);
 										}
-										if(jsObj.task == "getExternalPersonDetailsForEdit"){ 
-											getExternalPersonDetailsToSetData(myResults);
+										if(jsObj.task == "deltePoliticalChange"){
+											getAllPoliticalChangesForTheUser();
 										}
-																			
-									}  
+									}
 								catch (e)
 									{   
 									   	alert("Invalid JSON result" + e);   
@@ -466,7 +455,7 @@
 
 					YAHOO.util.Connect.asyncRequest('GET', url, callback);
 			}														
-			
+		
 	</script>
 
 	
@@ -499,12 +488,13 @@
 				</div>
 				<div id="problem_stats_body" class="containerBodyDivClass">
 					<div style="text-align:right;padding:15px;">						
-						<a class="linkButton" href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT">Manage Problems</a>
-						<a class="linkButton" href="constituencyManagementAction.action?cmTask=problemStats">View Detailed Statistics</a>
+						 <a class="linkButton" href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT">Manage Problems</a>
+						 <a class="linkButton" href="constituencyManagementAction.action?cmTask=CONSTITUENCY_MANAGEMENT">View Detailed Statistics</a>
 					</div>
 					<div id="problems_outline_Div"></div>
 					<DIV id="problems_Options" ></DIV>
 					<div id="constituencyMgmtBodyDiv" class="yui-skin-sam"><div id="moreDetailsPanelDiv"></div></div>
+					
 					<DIV class="yui-skin-sam"><DIV id="problemsByStatusPanelDiv"></DIV></DIV>
 				</div>
 			</div>
@@ -523,7 +513,7 @@
 							</table>	
 						</div>
 						<div id="influencing_people_body" class="containerBodyDivClass">
-							<DIV style="text-align:right;padding:10px;"><A href="#" onclick="getInfluencingPeoplePopUp('influencingPeoplePopUpDiv')" class="linkButton" >Add Influencing Persons</A></DIV>
+							<DIV style="text-align:right;padding:10px;"><A href="javascript:{}" onclick="getInfluencingPeoplePopUp('influencingPeoplePopUpDiv')" class="linkButton" >Add Influencing Persons</A></DIV>
 							<div id="influencing_people_data_body" class="yui-skin-sam"><div id="influencingPeopleDtDiv"></div></div>
 							<div id="influencingPeoplePopUpDiv"></div>
 							<div id="influencing_people_footer">
@@ -535,13 +525,13 @@
 											<TD colspan="2"><DIV style="text-align:left;">Should not exceed 200 chars!</DIV></TD>
 										</TR>	
 										<TR>
-											<TD><TEXTAREA id="smsText" cols="70"></TEXTAREA></TD>
-											<TD valign="bottom"><INPUT type="button" value="Send SMS" onclick="" class="button"/></TD>
-										</TR>	
+											<TD><TEXTAREA id="smsText" cols="70" onkeyup=limitText("smsText","maxcount",200)></TEXTAREA></TD>
+											<TD valign="bottom"><INPUT type="button" value="Send SMS" onclick="sendSMS()" class="button"/></TD>
+										</TR>
 										<TR>
 											<TD colspan="2" ><DIV id="remainChars" style="text-align:left;"><SPAN id="maxcount">200 </SPAN><SPAN>chars remaining..</SPAN></DIV></TD>
 											
-										</TR>
+										</TR>	
 									</TABLE>
 								</div>			
 							</div>
@@ -554,7 +544,7 @@
 							<table cellspacing="0" cellpadding="0" width="100%">
 								<tr>
 									<td width="1px"><img src="images/icons/constituencyManagement/header_left_blue.png"/></td>
-									<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:315px;">Voters Details</div></td>
+									<td><div id="voters_stats_head_label" class="containerHeadLabelDivClass" style="width:320px;">Voters Details</div></td>
 									<td><img src="images/icons/constituencyManagement/header_right_blue.png"/></td>
 								</tr>
 							</table>	
@@ -587,10 +577,9 @@
 					</table>	
 				</div>
 				<div id="political_changes_body" class="containerBodyDivClass">
-				<DIV class="yui-skin-sam"><div id="localPoliticalChangesRegistration"></DIV>
-						<input type="button"  onclick=buildLocalPoliticalChangesRegistration("new") value="Add Local Political Changes" class="linkButton" style="margin-left:584px;
-margin-top:11px;"> </input>
-				</div>
+					<DIV class="yui-skin-sam"><div id="localPoliticalChangesRegistration"></DIV>
+							<input type="button"  onclick='redirectToNewWindowForAddingPoliticalChanges("new")' value="Add Local Political Changes" class="linkButton" style="margin-left:584px;margin-top:11px;"/>
+					</div>
 					<div id="political_changes_data_head">
 						<font style="color:#4B74C6;font-weight:bold;"> Political Changes </font> gives glance of total changes that occur in that constituency and helps the user to analyze the changes and act accordingly.
 					</div>
@@ -603,17 +592,18 @@ margin-top:11px;"> </input>
 		</div>
 	</div>
 	
-	<script type="text/javascript">
 
+	<script type="text/javascript">
+		
 		<c:forEach var="probStatus"  items="${statusList}" >
 		var ob={
 					id:'${probStatus.id}',
 					value:'${probStatus.name}'
 				};
-		problemMgmtObj.problemsStatusArr.push(ob);	
+		problemMgmtObj.problemsStatusArr.push(ob);
 		</c:forEach>
-
-		initializeConstituencyManagement();
+		initializeConstituencyManagement();	
+		
 	</script>
 	
 </body>
