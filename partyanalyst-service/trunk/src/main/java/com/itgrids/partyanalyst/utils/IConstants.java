@@ -166,6 +166,7 @@ public interface IConstants {
     public final static String TRUE = "true";
     public final static String FALSE = "false";
     public final static String EDIT = "edit";
+    public final static String VILLAGE = "village";
     public final static String 	PROBLEMS_MANAGEMENT = "PROBLEMS_MANAGEMENT";
     public final static String 	CONSTITUENCY_MANAGEMENT = "CONSTITUENCY_MANAGEMENT";
     
