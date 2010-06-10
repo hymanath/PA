@@ -13,10 +13,14 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.PoliticalChangesVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.IPoliticalChangesService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 public class PoliticalChangesAction extends ActionSupport implements
 		ServletContextAware, ServletRequestAware {
@@ -33,30 +37,109 @@ public class PoliticalChangesAction extends ActionSupport implements
 	private String task = null;
 	JSONObject jObj = null;
 	
+	private String type,externalPerson;
+	private Long localPoliticalChangeId;
 	private IPoliticalChangesService politicalChangesService;
+	private IInfluencingPeopleService influencingPeopleService;
 	private IStaticDataService staticDataService;
 	
 	private List<PoliticalChangesVO> politicalChangesData;   
-	private List<SelectOptionVO> informationSources,staticParties;
-	private PoliticalChangesVO externalPersonInfo;
+	private List<SelectOptionVO> informationSources,staticParties,effectedRange;
+	private List<SelectOptionVO> informationSourcesList,staticPartiesList,effectedRangeList;
+	private PoliticalChangesVO externalPersonInfo,editPoliticalChangeData;
+	private String name,description;
 	
-	/*//jsp fields
-	
-	private String titleTextField;
-	private String descriptionTextBox;
-	private String identifiedFromText;
-	private String reportedFromText;
-	private String selectedPartyBox;
-	private String userTypeSelectBox;
-	private String ;
-	private String ;
-	private String ;
-	private String ;
-	//
-	
-*/	
-	
-	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public PoliticalChangesVO getEditPoliticalChangeData() {
+		return editPoliticalChangeData;
+	}
+
+	public void setEditPoliticalChangeData(
+			PoliticalChangesVO editPoliticalChangeData) {
+		this.editPoliticalChangeData = editPoliticalChangeData;
+	}
+
+	public Long getLocalPoliticalChangeId() {
+		return localPoliticalChangeId;
+	}
+
+	public void setLocalPoliticalChangeId(Long localPoliticalChangeId) {
+		this.localPoliticalChangeId = localPoliticalChangeId;
+	}
+
+	public List<SelectOptionVO> getInformationSourcesList() {
+		return informationSourcesList;
+	}
+
+	public void setInformationSourcesList(
+			List<SelectOptionVO> informationSourcesList) {
+		this.informationSourcesList = informationSourcesList;
+	}
+
+	public List<SelectOptionVO> getStaticPartiesList() {
+		return staticPartiesList;
+	}
+
+	public void setStaticPartiesList(List<SelectOptionVO> staticPartiesList) {
+		this.staticPartiesList = staticPartiesList;
+	}
+
+	public List<SelectOptionVO> getEffectedRangeList() {
+		return effectedRangeList;
+	}
+
+	public void setEffectedRangeList(List<SelectOptionVO> effectedRangeList) {
+		this.effectedRangeList = effectedRangeList;
+	}
+
+	public String getExternalPerson() {
+		return externalPerson;
+	}
+
+	public void setExternalPerson(String externalPerson) {
+		this.externalPerson = externalPerson;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public IInfluencingPeopleService getInfluencingPeopleService() {
+		return influencingPeopleService;
+	}
+
+	public void setInfluencingPeopleService(
+			IInfluencingPeopleService influencingPeopleService) {
+		this.influencingPeopleService = influencingPeopleService;
+	}
+
+	public List<SelectOptionVO> getEffectedRange() {
+		return effectedRange;
+	}
+
+	public void setEffectedRange(List<SelectOptionVO> effectedRange) {
+		this.effectedRange = effectedRange;
+	}
+
 	public PoliticalChangesVO getExternalPersonInfo() {
 		return externalPersonInfo;
 	}
@@ -154,7 +237,32 @@ public class PoliticalChangesAction extends ActionSupport implements
 	}
 	
 	public String execute() throws Exception {		
+		externalPerson = IConstants.EXTERNAL_PERSON;
+		effectedRangeList = influencingPeopleService.getInfluenceRange();
+		informationSourcesList = politicalChangesService.getAllPoliticalInformationSources();
+		staticPartiesList = staticDataService.getStaticParties();
+		
+		session = request.getSession();
+		session.setAttribute("effectedRangeList", effectedRangeList);
+		session.setAttribute("informationSourcesList",informationSourcesList);
+		session.setAttribute("staticPartiesList",staticPartiesList);
+		
 		return Action.SUCCESS;
+	}
+	
+	public String getEffectedRangeForAUser(){
+		String param = null;
+		param = getTask();
+		try {
+				jObj = new JSONObject(param);			
+				if(jObj.getString("task").equalsIgnoreCase("effectedRange"))
+				{				
+					effectedRange = influencingPeopleService.getInfluenceRange();
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;	
 	}
 	
 	public String getAllInformationSources(){
@@ -183,8 +291,12 @@ public class PoliticalChangesAction extends ActionSupport implements
 		try {
 				jObj = new JSONObject(param);			
 				if(jObj.getString("task").equalsIgnoreCase("saveDataForLocalPoliticalChanges"))
-				{				
+				{			
+					name = jObj.getString("titleTextFieldData");
+					
 					PoliticalChangesVO politicalChangesVO = new PoliticalChangesVO();
+					politicalChangesVO.setRange(jObj.getString("range"));
+					politicalChangesVO.setRangeId(jObj.getLong("rangeId"));
 					politicalChangesVO.setSaveType(jObj.getString("saveType"));
 					politicalChangesVO.setPoliticalChangeId(jObj.getLong("localPoliticalChangeId"));  
 					politicalChangesVO.setTitle(jObj.getString("titleTextFieldData"));
@@ -269,4 +381,19 @@ public class PoliticalChangesAction extends ActionSupport implements
 			}
 		return Action.SUCCESS;	
 	} 
+	
+	public String getDetailsByPoliticalChangeId(){
+		String param = null;
+		param = getTask();
+		try {			
+				jObj = new JSONObject(param);				
+				if(jObj.getString("task").equalsIgnoreCase("getDetailsBylocalPoliticalChangeId")) 
+				{					
+					editPoliticalChangeData = politicalChangesService.getDetailsBylocalPoliticalChangeId(jObj.getLong("localPoliticalChangeId"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return Action.SUCCESS;	
+	}
 }
