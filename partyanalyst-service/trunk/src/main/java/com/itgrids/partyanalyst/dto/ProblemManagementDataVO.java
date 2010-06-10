@@ -9,10 +9,15 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
 
-public class ProblemManagementDataVO {
+public class ProblemManagementDataVO extends ResultStatus {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private List<HamletProblemVO> hamletProblems;
-	private ResultStatus resultStatus;
+	
 	private ProblemsOfUserVO problemsOfUserVO;
 	private ProblemBeanVO problemBeanVO;
 	private List<ProblemBeanVO> classifiedProblems; 
@@ -21,6 +26,7 @@ public class ProblemManagementDataVO {
 	private List<ProblemBeanVO> progressedProblems;
 	private List<ProblemBeanVO> pendingProblems;
 	private List<ProblemBeanVO> fixedProblems;
+	private ResultStatus resultStatus;
 	
 	public ProblemsOfUserVO getProblemsOfUserVO() {
 		return problemsOfUserVO;
@@ -44,15 +50,7 @@ public class ProblemManagementDataVO {
 	
 	public void setHamletProblems(List<HamletProblemVO> hamletProblems) {
 		this.hamletProblems = hamletProblems;
-	}
-	
-	public ResultStatus getResultStatus() {
-		return resultStatus;
-	}
-	
-	public void setResultStatus(ResultStatus resultStatus) {
-		this.resultStatus = resultStatus;
-	}
+	}	
 
 	public List<ProblemBeanVO> getClassifiedProblems() {
 		return classifiedProblems;
@@ -100,5 +98,13 @@ public class ProblemManagementDataVO {
 
 	public void setFixedProblems(List<ProblemBeanVO> fixedProblems) {
 		this.fixedProblems = fixedProblems;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
 	}	
 }

@@ -14,8 +14,8 @@ public class ResultStatus implements Serializable{
 	
 	private int resultCode;
     private Throwable exceptionEncountered;
-    private boolean isResultPartial;
-	public int getResultCode() {
+    private boolean isResultPartial;	
+    public int getResultCode() {
 		return resultCode;
 	}
 	public void setResultCode(int resultCode) {

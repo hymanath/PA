@@ -8,19 +8,21 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class ConstituencyInfoVO {
 
 	/*
 	 * 
 	 */
-	
+	private Long constituencyId;
 	private String constituencyName;
 	private String districtName;
 	private String stateName;
 	private Date startDate;
 	private Date deformDate;
 	private String constituencyType;
+	private List<SelectOptionVO> assembyConstituencies;
 	
 	public String getConstituencyType() {
 		return constituencyType;
@@ -59,4 +61,17 @@ public class ConstituencyInfoVO {
 	public void setDeformDate(Date deformDate) {
 		this.deformDate = deformDate;
 	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	public List<SelectOptionVO> getAssembyConstituencies() {
+		return assembyConstituencies;
+	}
+	public void setAssembyConstituencies(List<SelectOptionVO> assembyConstituencies) {
+		this.assembyConstituencies = assembyConstituencies;
+	}
+	
 }
