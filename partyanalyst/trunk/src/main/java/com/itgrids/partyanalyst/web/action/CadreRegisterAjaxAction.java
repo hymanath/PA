@@ -219,6 +219,7 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		{
 			String mandalId = jObj.getString("selected");
 			namesList = staticDataService.findTownshipsByTehsilID(new Long(mandalId));
+			namesList.add(0,new SelectOptionVO(0L,"Select Village"));
 		}
 		return SUCCESS;
 	}
