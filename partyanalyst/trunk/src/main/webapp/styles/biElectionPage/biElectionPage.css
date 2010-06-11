@@ -1,0 +1,158 @@
+
+
+#pageHeading
+{
+background-image:url(../../images/icons/statePage/header_body.png);
+background-repeat:repeat-x;
+color:#1C4B7A;
+font-size:15px;
+font-weight:bold;
+height:35px;
+}
+
+#telanganaMap_body 
+{
+border-bottom:1px solid #E0E0D6;
+border-left:1px solid #E0E0D6;
+border-right:1px solid #E0E0D6;	
+text-align:center;
+padding:10px;
+}
+
+#partiesPerformanceGraphDistrict 
+{	
+	margin:35px 15px 15px 15px;
+	border:1px solid #E0E0D6;
+}
+
+.districtAnc 
+{
+color:#73787E;
+text-decoration:none;
+}
+.districtAncNew 
+{
+color:GoldenRod;
+margin-left:40px;
+}
+#biElectionPageLayout_center
+{
+	margin:5px;
+	width:700px;
+}
+#biElectionPageLayout_right
+{
+	margin:5px;
+}
+.regionsList li a
+{
+	color:#3388C1;
+	cursor:pointer;
+	text-decoration:none;
+}
+
+.frameBody
+{
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	overflow:auto;
+}
+
+#biElectionDistricts_main, #mandalsDiv_main
+{
+	text-align:left;
+	width:230px;
+}
+
+#presentMandalsDiv_main
+{
+	margin-top:35px;
+	width:230px;
+}
+
+#biElectionDistricts_body
+{
+	height:325px;	
+	width:228px;
+}
+
+#biElectionDistricts_body a
+{
+	text-decoration:none;
+}
+
+#biElectionDistricts_body a:hover
+{
+	text-decoration:underline;
+}
+
+#distConstTable td
+{
+	padding:2px;
+}
+
+#presentMandalsDiv_body
+{
+	height:325px;	
+	width:228px;
+}
+
+#partiesPerformanceCarousel .yui-carousel-element li 
+{
+	height:320px;
+	width:920px;
+}
+
+#partiesPerformanceCarousel .yui-carousel-item-selected  
+{
+	border:none;	
+}
+
+.dataAnc
+{
+	color:#4B74C6;
+	text-decoration:none;
+}
+
+#mp_body table 
+{
+	border:1px solid #adadad;
+}
+
+#mandalVotingTrendzDataDiv
+{
+	margin-top:25px;
+}
+
+#mandalVotingTrendzDataDiv_head
+{
+	color:#4B74C6;
+	font-weight:bold;
+	padding:10px;
+	text-decoration:underline;
+}
+
+#mandalVotingTrendzDataDiv_body
+{
+	overflow:auto;
+}
+
+#mandalVotingTrendzDataDiv fieldset
+{
+	border:2px solid #ADADAD;
+}
+
+#mandalVotingTrendzDataDiv legend
+{
+	background-color:#4B74C6;
+	color:#FFFFFF;
+	font-weight:bold;
+	padding:5px;
+}
+
+.elecTypeMandalsVoting_table th
+{
+	padding:5px;
+	color:GoldenRod;
+}
