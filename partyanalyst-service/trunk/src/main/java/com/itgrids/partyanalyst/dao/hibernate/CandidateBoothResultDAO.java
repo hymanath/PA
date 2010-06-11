@@ -494,6 +494,27 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"group by model.nomination.nominationId",params);
 				
 	}
+		
+	@SuppressWarnings("unchecked")
+	public List getResultsForElectionAndConstituencyByMandal(String mandalIds, String electionYear,String electionType){
+		Object[] parms = {electionYear,electionType};
+		return getHibernateTemplate().find("select model.nomination.party.shortName," +
+				" sum(model.votesEarned), model.nomination.party.partyId from CandidateBoothResult model " +
+				" where model.boothConstituencyElection.booth.tehsil.tehsilId in (" + mandalIds +
+				" ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
+				" and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? group by " +
+				" model.nomination.party.partyId order by sum(model.votesEarned) desc ",parms);
+	}
 	
-
+	@SuppressWarnings("unchecked")
+	public List getResultsForElectionAndConstituencyByMandalByPaliamentWise(Long constituencyId,String mandalIds,String electionYear){
+		Object[] params = {constituencyId, electionYear};
+		return getHibernateTemplate().find("select model.nomination.candidateResult.rank, model.nomination.candidate.lastname, model.nomination.party.shortName," +
+				" sum(model.votesEarned),model.nomination.candidate.candidateId, model.nomination.party.partyId from CandidateBoothResult model " +
+				" where model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? and " +
+				" model.boothConstituencyElection.booth.tehsil.tehsilId in (" + mandalIds +
+				" ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? group by " +
+				" model.nomination.nominationId,model.boothConstituencyElection.constituencyElection.constituency.constituencyId",params);
+	}
+	
 }
