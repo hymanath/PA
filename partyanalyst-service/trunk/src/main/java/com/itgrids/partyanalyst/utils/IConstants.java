@@ -171,4 +171,11 @@ public interface IConstants {
     public final static String 	CONSTITUENCY_MANAGEMENT = "CONSTITUENCY_MANAGEMENT";
     
     public final static String 	OTHERS = "Others *";//For Ballet votes In constituency Page
+    
+    public final static String PRESENT_ELECTION_YEAR = "2009";
+    public final static String PREVIOUS_ELECTION_YEAR = "2004";
+    
+    public final static String LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR = "2006";
+    public final static String LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR = "2001";
+    
 }
