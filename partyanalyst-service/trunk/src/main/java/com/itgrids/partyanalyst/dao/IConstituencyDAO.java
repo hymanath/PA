@@ -88,4 +88,7 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 			Long localElectionBodyId, String wardNo);
 
 	public List<Constituency> findWardsAndIdsInMuncipality(Long localElectionBodyId);
+	
+	@SuppressWarnings("unchecked")
+	public List findConstituenciesForBiElectionInADistrict(String query);
 }

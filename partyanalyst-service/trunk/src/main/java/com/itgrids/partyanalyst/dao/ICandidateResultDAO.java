@@ -49,4 +49,7 @@ public interface ICandidateResultDAO extends GenericDao<CandidateResult, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List getVotesPercentOfACandidateInAnElection(Long electionId,Long constituencyId,Long rank);
+	
+	@SuppressWarnings("unchecked")
+	public List getElectionResultsForAllPartiesInAMandal(Long mandalId,String electionType,String electionYear);
 }
