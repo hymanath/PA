@@ -935,6 +935,11 @@ function buildElectionsSelectBox(myResults){
 										<td align="center"><img src="charts/${chart}" border="0"></td>
 									</c:forEach>	
 								</tr>
+								<tr>
+									<c:forEach var="extra" items="${constituencyVO.extraInfo}">
+										<td align="left" style="border: 0px;color:#707070;"><b>${extra}</b></td>
+									</c:forEach>
+								</tr>
 							</table>
 							<div id="mandalsVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
 						</div>

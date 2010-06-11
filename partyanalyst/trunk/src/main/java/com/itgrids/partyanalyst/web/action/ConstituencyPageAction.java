@@ -413,21 +413,33 @@ public class ConstituencyPageAction extends ActionSupport implements
 		String pieChartPath = "";
 		String title = "";
 		String[] chartNames = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
+		String[] extraInfo = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
 		int i=0;
 		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
 			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+".png";
 			pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
-			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString()))
-				title = "Voters% After Delimitation";
-			else
-				title = "Voters% Before Delimitation";
+			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
+				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+					title = "Each Mandal Voters Share* After Delimitation";
+				else
+					title = "Each Assembly Voters Share* After Delimitation";
+				extraInfo[i] = "* Based On 2009 Elections Data";
+			}
+			else{
+				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+					title = "Each Mandal Voters Share** Before Delimitation";
+				else
+					title = "Each Assembly Voters Share** Before Delimitation";
+				extraInfo[i] = "** Based On 2004 Elections Data";
+			}
+				
 			if(votersInMandalOrAC.getVotersInfoForMandalVO().size() > 0)
 				ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(votersInMandalOrAC.getVotersInfoForMandalVO()), pieChartPath, null,true,260,270);
 			chartNames[i++] = pieChart;
 		}
 		
 		constituencyVO.setPieChartNames(chartNames);
-		
+		constituencyVO.setExtraInfo(extraInfo);
 		candidateDetailsForConstituency = constituencyPageService.getCandidateAndPartyInfoForConstituency(constituencyId);
 		
 		problemBean = problemManagementReportService.getConstituencyProblemsInfo(constituencyId, 0L,"");
