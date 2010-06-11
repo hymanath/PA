@@ -161,4 +161,6 @@ public interface IStaticDataService {
 	  
 	public NavigationVO findHirarchiForNavigation(Long locationId, String locationType);
 
+	public List<ElectionResultPartyVO> getAllMandalElectionInformationForAConstituency(Long constituencyId);
+
 }
