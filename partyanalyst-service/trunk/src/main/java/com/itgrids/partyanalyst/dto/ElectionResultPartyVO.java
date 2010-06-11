@@ -26,6 +26,21 @@ public class ElectionResultPartyVO implements Serializable {
 	private String status;
 	private List<CandidateElectionResultVO> candidateElectionResultsVO;
 	
+	private String electionType;
+	private String electionYear;
+	
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+	public String getElectionYear() {
+		return electionYear;
+	}
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
 	private ResultStatus resultStatus;
 	
 	public Long getPartyId() {

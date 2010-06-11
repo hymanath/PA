@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CandidateElectionResultVO implements Serializable {
 
@@ -28,6 +29,7 @@ public class CandidateElectionResultVO implements Serializable {
 	private Long totalVotesEarned;
 	private String votesPercentage;
 	private String votesMargin;
+	
 	
 	private Long rank;
 	
