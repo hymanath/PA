@@ -343,7 +343,7 @@ public class PartyServiceStub implements IPartyService {
 		return null;
 	}
 
-	@Override
+	
 	public List<PartyPositionDisplayVO> getPartyPositionsDetailsInAnElection(
 			Long electionId, Long partyId, Long rank) {
 		// TODO Auto-generated method stub
