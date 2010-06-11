@@ -386,9 +386,33 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testFindElectionResultsForACandidateForAnElectionInAConstituency(){
+	/*public void testFindElectionResultsForACandidateForAnElectionInAConstituency(){
 		List list = nominationDAO.findElectionResultsForACandidateForAnElectionInAConstituency(380l, 18l, 24l);
 		System.out.println(list.size());
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public void testFindElectionResultsForAllPartiesInAssemblyConstituencies()
+	{
+		/*
+		StringBuilder sb = new StringBuilder();
+		sb.append(4l).append(",").append(8l).append(",").append(362l);
+		System.out.println(sb.substring(1));
+		*/
+		List<Long> constituencyIds = new ArrayList<Long>();
+		constituencyIds.add(4L);
+		constituencyIds.add(8L);
+		constituencyIds.add(362L);
+		
+		List list1 = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies("2004",constituencyIds);
+		for(Object[] values:(List<Object[]>)list1)
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]);
+			System.out.println("____________________________________________________________________________");
+		List list2 = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies("2009",constituencyIds);
+		for(Object[] values1:(List<Object[]>)list2)
+			System.out.println(values1[0]+"\t"+values1[1]+"\t"+values1[2]+"\t"+values1[3]+"\t"+values1[4]+"\t"+values1[5]);
+
+		
 	}
 	
 }

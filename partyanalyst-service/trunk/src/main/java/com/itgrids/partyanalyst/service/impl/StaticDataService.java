@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.dao.hibernate.NominationDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
@@ -63,6 +64,7 @@ import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -130,7 +132,6 @@ public class StaticDataService implements IStaticDataService {
 	/**
 	 * @param partyDAO the partyDAO to set
 	 */
-	
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
 	}
@@ -4005,6 +4006,55 @@ public class StaticDataService implements IStaticDataService {
 		return navigationVO;
 	}
 
+
+	public List<ConstituencyElectionResultsVO> findAssemblyConstituenciesResultsByConstituencyIds(
+			String electionYear, List<Long> constituencyIds) {
+		List<ConstituencyElectionResultsVO> assemblyElectionResults = new ArrayList<ConstituencyElectionResultsVO>();
+		ConstituencyElectionResultsVO constituencyElectionResultsVO;
+		PartyResultsVO PartyResultsVO = new PartyResultsVO(); 
+		Map<ConstituencyElectionResultsVO, List<Object[]>> constuencywisePartyResultsMap = new LinkedHashMap<ConstituencyElectionResultsVO, List<Object[]>>();
+		ConstituencyElectionResultsVO constituencyElectionResults = null;
+		List<Object[]> partyResults = null;
+		PartyResultsVO partyResultsVO = null;
+		List<PartyResultsVO> partyResultsInConstituency = null;
+		List resultsList= nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds);	
+		
+		for(int i=0; i<resultsList.size();i++)
+		{
+			Object[] obj = (Object[]) resultsList.get(i);
+			constituencyElectionResults = new ConstituencyElectionResultsVO();
+			constituencyElectionResults.setConstituencyId(new Long(obj[5].toString()));
+			constituencyElectionResults.setConstituencyName(obj[4].toString());
+			partyResults = constuencywisePartyResultsMap.get(constituencyElectionResults);
+			if(partyResults==null){
+				partyResults = new ArrayList<Object[]>();
+			}
+			partyResults.add(obj);
+			constuencywisePartyResultsMap.put(constituencyElectionResults,partyResults);			
+		}
+		for(Map.Entry<ConstituencyElectionResultsVO, List<Object[]>> entry:constuencywisePartyResultsMap.entrySet()){
+			
+			partyResultsInConstituency= new ArrayList<PartyResultsVO>();
+			constituencyElectionResults = entry.getKey();
+			partyResults = entry.getValue();
+			for(Object[] values:partyResults)
+			{
+				partyResultsVO = new PartyResultsVO();
+				partyResultsVO.setPartyId(new Long(values[3].toString()));
+				partyResultsVO.setPartyName(values[2].toString());
+				partyResultsVO.setPercentage(values[0].toString());
+				partyResultsVO.setTotalPolledVotes(((Double)values[1]).longValue());
+				partyResultsInConstituency.add(partyResultsVO);
+			}
+			constituencyElectionResults.setPartyResultsVO(partyResultsInConstituency);
+			assemblyElectionResults.add(constituencyElectionResults);
+		}
+		return assemblyElectionResults;
+	}
+	
+	
+	
+	
 	/**
 	 * This method populates all party's and their votes percentages in a mandal for all the elections(namely Assembly,
 	 * Parliament) for the given election year.

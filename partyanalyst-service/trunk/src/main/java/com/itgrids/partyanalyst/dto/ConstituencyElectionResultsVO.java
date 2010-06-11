@@ -133,4 +133,17 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 		this.stateName = stateName;
 	}
 	
+	@Override
+	public boolean equals(Object obj){
+		if(!(obj instanceof ConstituencyElectionResultsVO))
+			return false;
+		ConstituencyElectionResultsVO voObj = (ConstituencyElectionResultsVO) obj;
+		return this.constituencyId.equals(voObj.getConstituencyId());
+	}
+	
+	@Override
+	public int hashCode(){
+		return this.constituencyId.hashCode();
+	}
+	
 }

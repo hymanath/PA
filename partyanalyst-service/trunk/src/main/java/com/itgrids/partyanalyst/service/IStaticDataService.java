@@ -160,6 +160,8 @@ public interface IStaticDataService {
 	public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(Long parliamentConstituencyId);
 	  
 	public NavigationVO findHirarchiForNavigation(Long locationId, String locationType);
+	
+	public List<ConstituencyElectionResultsVO> findAssemblyConstituenciesResultsByConstituencyIds(String electionYear, List<Long> constituencyIds); 
 
 	public List<ElectionResultPartyVO> getAllMandalElectionInformationForAConstituency(Long constituencyId);
 
