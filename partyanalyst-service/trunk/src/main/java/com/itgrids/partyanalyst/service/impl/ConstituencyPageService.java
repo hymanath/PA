@@ -1000,8 +1000,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			parliamentConstituenciesNames.put(Long.parseLong(parms[0].toString()), parms[1].toString());
 		}
 		if(log.isDebugEnabled())
-			log.debug("Calling candidateBoothResultDAO.getMandalsForAConstituencyForAGivenYear() method..");
-		List list = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(constituencyId);  //Check code here
+			log.debug("Calling candidateBoothResultDAO.getMandalsForAConstituencyForAGivenYear() method..");		
+		List list = delimitationConstituencyMandalDAO.getMandalDetailsForAConstituency(constituencyId,Long.parseLong(electionYear));  //Check code here
 		for(int i=0;i<list.size();i++){
 			Object[] parms = (Object[])list.get(i);
 			tehsilIds.append(",").append(Long.parseLong(parms[0].toString()));
@@ -1091,7 +1091,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				partyNameAndRank.put((Long)parms[2],parms[4].toString());
 				tehsilNameAndIds.put((Long)parms[1],parms[0].toString());
 			}
-			
+		
 			for(int i=0; i<tehsilIds.size(); i++){				
 				ConstituencyOrMandalWiseElectionVO constituencyOrMandalWiseElectionVo = new ConstituencyOrMandalWiseElectionVO();
 				if(log.isDebugEnabled()){
@@ -1175,13 +1175,21 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			Long votesEarned =new Double(votesPopulate.getValue()).longValue();
 			if(votesEarned<0){
 				partyVotes.setVotesEarned(0l);
+				log.fatal("========================");
+				log.fatal("========================");
 				log.fatal("Invalid Data......"); 
+				log.fatal("========================");
+				log.fatal("========================");
 			}else{
 				partyVotes.setVotesEarned(votesEarned);				
 			}
 			if((votesEarned*100)/totalDifferenceVotes<0){
 				partyVotes.setVotesPercentage("0");
+				log.fatal("========================");
+				log.fatal("========================");
 				log.fatal("Invalid Data......");
+				log.fatal("========================");
+				log.fatal("========================");
 			}else{
 				partyVotes.setVotesPercentage(new BigDecimal((votesEarned*100)/totalDifferenceVotes).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
 			}			
