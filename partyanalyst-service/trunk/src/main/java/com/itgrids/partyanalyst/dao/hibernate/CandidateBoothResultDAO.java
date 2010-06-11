@@ -479,6 +479,21 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"model.nomination.nominationId");
 		return getHibernateTemplate().find(hqlQuery.toString());
 	}
+
+	@SuppressWarnings("unchecked")
+	public List getElectionResultsInAMandalForAllParties(Long mandalId,String electionType,String electionYear) {
+		
+		Object[] params = {mandalId,electionType,electionYear};
+		return getHibernateTemplate().find("select model.nomination.party.partyId,model.nomination.party.shortName,"+
+				"sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),model.nomination.candidateResult.rank,"+
+				"model.boothConstituencyElection.constituencyElection.constituency.constituencyId,"+
+				"model.boothConstituencyElection.constituencyElection.constituency.name,model.nomination.candidate.lastname from CandidateBoothResult model "+
+				"where model.boothConstituencyElection.booth.tehsil.tehsilId = ? "+
+				"and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? "+
+				"and model.boothConstituencyElection.constituencyElection.election.electionYear = ? "+
+				"group by model.nomination.nominationId",params);
+				
+	}
 	
 
 }

@@ -30,6 +30,7 @@ IDelimitationConstituencyMandalDAO {
 				delimitationConstituencyID);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List getStateDistConstituencyMandalByMandalID(Long mandalID){
 		return getHibernateTemplate().find("Select model.tehsil.district.state.stateId, model.tehsil.district.state.stateName," +
 				" model.tehsil.district.districtId, model.tehsil.district.districtName," +
@@ -46,6 +47,7 @@ IDelimitationConstituencyMandalDAO {
 				"order by model.delimitationConstituency.year desc,model.tehsil.tehsilId ", constituencyId);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List getLatestMandalDetailsForAConstituency(Long constituencyId){
 		return getHibernateTemplate().find("select model.tehsil.tehsilId, model.tehsil.tehsilName" +
 				" from DelimitationConstituencyMandal model where model.delimitationConstituency.delimitationConstituencyID = " +

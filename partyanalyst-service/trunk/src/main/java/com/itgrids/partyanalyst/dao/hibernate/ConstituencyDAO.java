@@ -220,5 +220,10 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	public List<Constituency> findWardsAndIdsInMuncipality(Long localElectionBodyId) {
 		return getHibernateTemplate().find("from Constituency model where model.localElectionBody.localElectionBodyId = ?", localElectionBodyId);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List findConstituenciesForBiElectionInADistrict(String query) {
+		return getHibernateTemplate().find(query);
+	}
 	
 }

@@ -111,5 +111,18 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 				" and model.nomination.constituencyElection.constituency.constituencyId = ?"+
 				" and model.rank = ?",params);
 	}
+
+
+	@SuppressWarnings("unchecked")
+	public List getElectionResultsForAllPartiesInAMandal(Long mandalId,
+			String electionType, String electionYear) {
+		Object[] params = {mandalId,electionType,electionYear};
+		return getHibernateTemplate().find("select model.nomination.party.partyId,model.nomination.party.shortName,"+
+				"sum(model.votesEarned),sum(model.nomination.constituencyElection.constituencyElectionResult.validVotes) "+
+				"from CandidateResult model where model.nomination.constituencyElection.constituency.tehsil.tehsilId = ? and "+
+				"model.nomination.constituencyElection.election.electionScope.electionType.electionType = ? and "+
+				"model.nomination.constituencyElection.election.electionYear = ?"+
+				"group by model.nomination.party.partyId",params);
+	}
 	
 }
