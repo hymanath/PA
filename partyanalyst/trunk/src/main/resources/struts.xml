@@ -1061,7 +1061,16 @@
               <result name="error">/jsp/addNewProblem.jsp</result>
               <result name="success">/jsp/addNewProblem.jsp</result>                                   		
         </action>
+		 <action name="biElectionAction" class="biElectionAction">
+			<result name="success">/jsp/biElectionResultPage.jsp</result>
+			<result name="error">/jsp/biElectionResultErrorPage.jsp</result>
+		</action>
 		
+		<action name="getMandalsVotingTrendzForBiElection" class="biElectionAction" method="getMandalsVotingTrendz"> 
+              <result type="json" name="success">
+           		<param name="root">mandalAllElectionResultsVO</param>
+        	</result>       		
+        </action>
 	</package>
 </struts>
 

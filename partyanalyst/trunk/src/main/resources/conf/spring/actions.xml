@@ -342,5 +342,5 @@
 	</bean>
 	<bean id="addNewProblemSubmitAction" class="com.itgrids.partyanalyst.web.action.AddNewProblemSubmitAction" singleton="false">
 		<property name="problemManagementService" ref="problemManagementService" />				
-	</bean>
+	</bean>	
 </beans>		

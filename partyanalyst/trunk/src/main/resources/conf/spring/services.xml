@@ -474,6 +474,6 @@
 	    <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
 	    <property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService"/>
 	</bean>
-	
+    
 </beans>		
 		
