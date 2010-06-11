@@ -13,12 +13,16 @@ public class PartyResultsVO {
 
 	private Long partyId;
 	private String partyName;
+	private Long candidateId;
+	private String candidateName;
 	private String partyFlag;
 	private int seatsParticipated;
 	private Long votesEarned;
+	private Long validVotes;
 	private String percentage;
 	private int totalSeatsWon;
 	private Long totalPolledVotes;
+	private Long rank;
 	private List<ConstituencyWisePartyInfoVO> constituencyWisePatiesInfoVOs;
 	
 	// getters and setters
@@ -93,5 +97,29 @@ public class PartyResultsVO {
 	@Override
 	public int hashCode(){
 		return this.partyId.hashCode();
+	}
+	public Long getRank() {
+		return rank;
+	}
+	public Long getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+	public String getCandidateName() {
+		return candidateName;
+	}
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
+	}
+	public Long getValidVotes() {
+		return validVotes;
+	}
+	public void setValidVotes(Long validVotes) {
+		this.validVotes = validVotes;
 	}
 }

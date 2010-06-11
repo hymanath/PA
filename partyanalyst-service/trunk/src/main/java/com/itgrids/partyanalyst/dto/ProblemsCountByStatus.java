@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.Date;
+
 public class ProblemsCountByStatus {
 	private Long statusId;
 	private String date;
+	private Date dateVal;
 	private String status;
 	private int count;
 	
@@ -29,6 +32,12 @@ public class ProblemsCountByStatus {
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}
+	public Date getDateVal() {
+		return dateVal;
+	}
+	public void setDateVal(Date dateVal) {
+		this.dateVal = dateVal;
 	}
 	
 	
