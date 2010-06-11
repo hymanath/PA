@@ -53,6 +53,15 @@ IDelimitationConstituencyMandalDAO {
 				" group by model1.constituency.constituencyId order by model1.year desc) ", constituencyId);
 	}
 	
+	public List getMandalDetailsForAConstituency(Long constituencyId,Long electionYear){
+		Object[] parms = {constituencyId,electionYear};
+		return getHibernateTemplate().find("select model.tehsil.tehsilId, model.tehsil.tehsilName" +
+				" from DelimitationConstituencyMandal model where model.delimitationConstituency.constituency.constituencyId = ? " +
+				" and model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1 where model1.year <= ?)" +
+				" ", parms);
+	}
+	
+
 	@SuppressWarnings("unchecked")
 	public List<Tehsil> getLatestMandalDetailsForAConstituencies(String constituencyIds){
 		return getHibernateTemplate().find("select model.tehsil" +
