@@ -84,6 +84,7 @@ import com.itgrids.partyanalyst.model.PartyElectionResult;
 import com.itgrids.partyanalyst.model.PartyElectionStateResult;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Township;
+import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionYearsComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -124,12 +125,25 @@ public class StaticDataService implements IStaticDataService {
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO;
 	private IElectionTypeDAO electionTypeDAO;
 	private ICandidateResultDAO candidateResultDAO;
+	private IConstituencyPageService constituencyPageService;
 	
 	/**
 	 * @param partyDAO the partyDAO to set
 	 */
+	
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
+	}
+
+
+	public IConstituencyPageService getConstituencyPageService() {
+		return constituencyPageService;
+	}
+
+
+	public void setConstituencyPageService(
+			IConstituencyPageService constituencyPageService) {
+		this.constituencyPageService = constituencyPageService;
 	}
 
 
@@ -3991,5 +4005,96 @@ public class StaticDataService implements IStaticDataService {
 		return navigationVO;
 	}
 
+	/**
+	 * This method populates all party's and their votes percentages in a mandal for all the elections(namely Assembly,
+	 * Parliament) for the given election year.
+	 * 
+	 * @param constituencyId
+	 * @param electionYear
+	 * @return
+	 */
+	public List<ElectionResultPartyVO> getAllMandalElectionInformationForAConstituency(Long constituencyId){
+		StringBuilder tehsilIds = new StringBuilder();		
+		List<ElectionResultPartyVO> electionResults = null;		
+		List list = null;		
+		try{	
+			electionResults = new ArrayList<ElectionResultPartyVO>(0);
+			
+			// This below DAO call retrieves all the latest mandal's for a constituency.
+			list = delimitationConstituencyMandalDAO.getMandalDetailsForAConstituency(constituencyId,Long.parseLong(IConstants.PRESENT_ELECTION_YEAR));
+			for(int i=0;i<list.size();i++){
+				Object[] parms = (Object[])list.get(i);
+				tehsilIds.append(",").append(Long.parseLong(parms[0].toString()));
+			}
+			electionResults.add(getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE));
+			electionResults.add(getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PREVIOUS_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE));
+			
+			electionResults.add(getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.PARLIAMENT_ELECTION_TYPE));
+			electionResults.add(getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PREVIOUS_ELECTION_YEAR,IConstants.PARLIAMENT_ELECTION_TYPE));
+			
+			electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE)));
+			electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE)));
+			
+			electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE)));
+			electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE)));
+			
+		}catch(Exception e){
+				e.printStackTrace();
+				log.debug("Exception raised ");
+		}
+		return electionResults;
+	}
+	
+	public ElectionResultPartyVO populateDataForLocalElections(List<TeshilPartyInfoVO> result){
+		ElectionResultPartyVO candidateElectionResult = new ElectionResultPartyVO();
+		List<CandidateElectionResultVO> candidateElectionResultsVO = null;
+		try{
+			for(TeshilPartyInfoVO resultIterator : result){
+				CandidateElectionResultVO partyInfo = new CandidateElectionResultVO();
+				partyInfo.setPartyName(resultIterator.getPartyName());
+				partyInfo.setVotesPercentage(resultIterator.getPercentageOfVotesWonByParty().toString());
+				candidateElectionResultsVO.add(partyInfo);
+			}
+			candidateElectionResult.setCandidateElectionResultsVO(candidateElectionResultsVO);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.debug("Exception raised ");
+		}
+		return null;		
+	}
+	
+	public ElectionResultPartyVO getPartyDetailsForTheGivenElectionYearInAConstituency(StringBuilder tehsilIds,String electionYear,String electionType){
+		BigDecimal percentage = new BigDecimal(0.0);
+		Long totalVotes=0l;
+		ElectionResultPartyVO candidateElectionResult = new ElectionResultPartyVO();
+		List<CandidateElectionResultVO> candidateElectionResultsVO = null;
+		List list2 = null;
+		try{
+			//The below DAO call retrieves all the party's and their votes in the mandal's for the given election year.
+			list2 = candidateBoothResultDAO.getResultsForElectionAndConstituencyByMandal(tehsilIds.substring(1),electionYear,IConstants.ASSEMBLY_ELECTION_TYPE);
+			ListIterator it = list2.listIterator();
+			while(it.hasNext()){
+				Object[] parms = (Object[])it.next();
+				totalVotes+=Long.parseLong(parms[1].toString());				
+			}
+			candidateElectionResultsVO = new ArrayList<CandidateElectionResultVO>(0);
+			ListIterator resultIterator = list2.listIterator();
+			while(resultIterator.hasNext()){
+				Object[] parms = (Object[])resultIterator.next();
+				percentage= new BigDecimal((Float.parseFloat(parms[1].toString())/totalVotes)*100).setScale(2,BigDecimal.ROUND_HALF_UP);
+				CandidateElectionResultVO partyInfo = new CandidateElectionResultVO();
+				partyInfo.setPartyName(parms[0].toString());
+				partyInfo.setVotesPercentage(percentage.toString());
+				candidateElectionResultsVO.add(partyInfo);
+			}
+			candidateElectionResult.setCandidateElectionResultsVO(candidateElectionResultsVO);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.debug("Exception raised ");
+		}
+		return candidateElectionResult;		
+	}
+	
+	
 }
 

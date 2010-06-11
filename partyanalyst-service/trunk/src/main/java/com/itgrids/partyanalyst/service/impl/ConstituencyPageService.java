@@ -1488,7 +1488,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	}
 	
 	/**
-	 * This method is caluculates all the party details and return the information back to the calling method.
+	 * This method  calculates all the party details and return the information back to the calling method.
 	 * @param tehsilIds
 	 * @param electionYear
 	 * @param electionType
