@@ -467,5 +467,13 @@
     	<property name="hamletDAO" ref="hamletDAO" />
 	</bean>  
 	
+	<bean name="biElectionPageService" class="com.itgrids.partyanalyst.service.impl.BiElectionPageService" >
+	    <property name="tehsilDAO" ref="tehsilDAO"/>
+	    <property name="constituencyDAO" ref="constituencyDAO"/>
+	    <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO"/>
+	    <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
+	    <property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService"/>
+	</bean>
+	
 </beans>		
 		
