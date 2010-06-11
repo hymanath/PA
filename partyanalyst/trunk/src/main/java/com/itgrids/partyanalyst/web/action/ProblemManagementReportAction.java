@@ -419,7 +419,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				}			
 		}
 		log.debug("size::::::::::::::::::::::::::::::::::::"+problemsStatusList.size());
-		ChartProducer.createProblemsPieChart("", dataset, chartPath , colors);
+		ChartProducer.createProblemsPieChart("", dataset, chartPath , colors,false,250,220);
 		return chartName ;
 	}
 	

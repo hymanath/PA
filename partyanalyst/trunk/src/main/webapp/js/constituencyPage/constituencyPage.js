@@ -1128,7 +1128,7 @@ function viewVotingTrendzPopup()
 
 function initializeConstituencyPage()
 {		
-	buildRightlayoutMap();
+    buildRightlayoutMap();
 	buildConstituencyInfo();
 	buildConstituencyConnectPeopleWindow();
 	buildProblemPostingWindow();

@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.helper;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.io.File;
 import java.util.List;
@@ -525,21 +526,31 @@ public class ChartProducer {
 				}
 	}
 	
-	public static void createProblemsPieChart(String title,final DefaultPieDataset dataset,String fileName, Color[] colors){
+	
+	public static void createProblemsPieChart(String title,final DefaultPieDataset dataset,String fileName, Color[] colors, boolean legend, int height, int width){
 		
-		JFreeChart chart = ChartFactory.createPieChart(title, dataset, false, false, false);
-       
+		JFreeChart chart = ChartFactory.createPieChart(title, dataset, legend, false, false);
+		//To modify the title generated 
+		chart.getTitle().setFont(new Font("SansSerif", Font.BOLD, 11));
+		chart.getTitle().setPaint(new Color(0X89745D));
         PiePlot plot = (PiePlot)chart.getPlot();
-       
+        plot.setLabelGenerator(null);
         // Specify the colors here
-        PieRenderer renderer = new PieRenderer(colors);
-        renderer.setColor(plot, dataset);
+        if(colors != null){
+        	PieRenderer renderer = new PieRenderer(colors);
+            renderer.setColor(plot, dataset);
+            
+        }                
         plot.setBackgroundPaint(Color.WHITE);
-        plot.setOutlineVisible(false);
+        
+        // To disable to category labels in the graph plot
+         
+        plot.setOutlineVisible(false);       
+               
         try
         {
             // This will create a PNG image
-            ChartUtilities.saveChartAsPNG(new File(fileName), chart, 250, 220);
+            ChartUtilities.saveChartAsPNG(new File(fileName), chart, height, width);
         }
         catch (Exception e)
         {

@@ -929,6 +929,13 @@ function buildElectionsSelectBox(myResults){
 
 						<div id="mandalsVotersInfoDiv_Main" class="innerLayoutDivClass">
 							<div id="mandalsVotersInfoDiv_Head" class="layoutHeadersClass"></div>
+							<table width="100%" border="1" cellspacing="3">
+								<tr>
+									<c:forEach var="chart" items="${constituencyVO.pieChartNames}">
+										<td align="center"><img src="charts/${chart}" border="0"></td>
+									</c:forEach>	
+								</tr>
+							</table>
 							<div id="mandalsVotersInfoDiv_Body" class="layoutBodyClass yui-skin-sam"></div>
 						</div>
 					</div>

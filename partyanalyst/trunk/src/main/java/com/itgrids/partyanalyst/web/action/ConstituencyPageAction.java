@@ -50,6 +50,8 @@ import com.itgrids.partyanalyst.dto.PartyResultsTrendzVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
+import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
@@ -407,6 +409,24 @@ public class ConstituencyPageAction extends ActionSupport implements
 		setDelimitationConstituencyMandalResultVO(delimitationConstituencyMandalResultVO);
 		
 		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		String pieChart = "";
+		String pieChartPath = "";
+		String title = "";
+		String[] chartNames = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
+		int i=0;
+		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
+			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+".png";
+			pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
+			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString()))
+				title = "Voters% After Delimitation";
+			else
+				title = "Voters% Before Delimitation";
+			if(votersInMandalOrAC.getVotersInfoForMandalVO().size() > 0)
+				ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(votersInMandalOrAC.getVotersInfoForMandalVO()), pieChartPath, null,true,260,270);
+			chartNames[i++] = pieChart;
+		}
+		
+		constituencyVO.setPieChartNames(chartNames);
 		
 		candidateDetailsForConstituency = constituencyPageService.getCandidateAndPartyInfoForConstituency(constituencyId);
 		
@@ -449,6 +469,21 @@ public class ConstituencyPageAction extends ActionSupport implements
 		else
 			return Action.ERROR;
 		
+	}
+	
+	private DefaultPieDataset createPieDatasetForVoters(List<VotersInfoForMandalVO> votersInfoForMandalVO) {
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		Long totalVotes = 0l;
+		BigDecimal percentage;
+		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO)
+			totalVotes += new Long(votersInMandalOrAC.getTotalVoters());
+
+		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO){
+			percentage = new BigDecimal(new Long(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
+			dataset.setValue(votersInMandalOrAC.getMandalName()+" ["+percentage.toString()+"%]",percentage);
+		}
+			
+		return dataset;
 	}
 	
 	private CategoryDataset createDataset(List<ConstituencyElectionResultsVO> allElectionResults, List<Color> colors) {
