@@ -124,6 +124,11 @@ public class BiElectionPageService implements IBiElectionPageService {
 					}
 				}
 			}
+			
+			log.debug("Final VO Size :" + mandalAllElectionResultsVOList.size());
+			for(MandalAllElectionResultsVO result:mandalAllElectionResultsVOList){
+				log.debug(" Mandals Size :" + result.getElectionResultsForAllPartiesVO().size());
+			}
 		}
 		
 		return mandalAllElectionResultsVOList;
@@ -186,12 +191,11 @@ public class BiElectionPageService implements IBiElectionPageService {
 						}
 					}
 				}
-				
+								
 				if(constiElecResultAllPartyAssembly != null && constiElecResultAllPartyAssembly.size() > 0){
 					allPartyResultsForAssembly.setConstituencyElectionResultsVO(constiElecResultAllPartyAssembly);
 					electionResultsForAllPartiesVO.add(allPartyResultsForAssembly);
 				}
-				
 				
 				//Parliament results
 				AllPartyElectionResultsForElectionTypeVO allPartyResultsForParliament = new AllPartyElectionResultsForElectionTypeVO();
@@ -231,6 +235,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 					allPartyResultsForParliament.setConstituencyElectionResultsVO(constiElecResultAllPartyParliament);
 					electionResultsForAllPartiesVO.add(allPartyResultsForParliament);
 				}
+				mandalAllElectionResultsVO.setElectionResultsForAllPartiesVO(electionResultsForAllPartiesVO);
 								
 			}
 			catch(Exception ex){
