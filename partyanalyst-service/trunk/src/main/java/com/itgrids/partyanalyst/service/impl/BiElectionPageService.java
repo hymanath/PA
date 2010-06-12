@@ -591,6 +591,43 @@ public class BiElectionPageService implements IBiElectionPageService {
 				  electionResultsForMandalVO.setElectionYear(electionYear);
 				  electionResultsForMandalVO.setElectionResultsForMandal(electionResultsForMandal);
 			  }
+			  
+			  //for parties
+			  Map<Long,String> partyIdAndName = new HashMap<Long,String>();
+			  List<SelectOptionVO> partysIdsAndName = new ArrayList<SelectOptionVO>();
+			  if(electionResultsForMandal != null && electionResultsForMandal.size() > 0){
+				  for(MandalElectionResultVO manElecRes:electionResultsForMandal){
+					  
+					  List<PartyElectionResultsInConstituencyVO> partyConstiRes = manElecRes.getPartyElecResultsInConstituency();
+					  
+					  for(PartyElectionResultsInConstituencyVO partyResInConsti:partyConstiRes){
+						  
+						  List<PartyResultsVO> partyElecResults = partyResInConsti.getPartyElecResults();
+						  
+						  for(PartyResultsVO partyRes:partyElecResults){
+							  
+							  if(partyIdAndName.isEmpty() || !partyIdAndName.containsKey(partyRes.getPartyId())){
+								  partyIdAndName.put(partyRes.getPartyId(), partyRes.getPartyName()); 
+							  }
+						  }
+					  }
+					  
+				  }
+				  if(!partyIdAndName.isEmpty()){
+					Set entries = partyIdAndName.entrySet();
+					Iterator iterator = entries.iterator();
+					while(iterator.hasNext()){
+					Map.Entry entry = (Map.Entry)iterator.next();
+					
+					SelectOptionVO party = new SelectOptionVO();
+					party.setId((Long)entry.getKey());
+					party.setName((String)entry.getValue());
+					
+					partysIdsAndName.add(party);
+					}
+				  }
+				  electionResultsForMandalVO.setPartysList(partysIdsAndName);
+			  }
 			
 			}
 			catch(Exception ex){
