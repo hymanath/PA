@@ -4086,7 +4086,7 @@ public class StaticDataService implements IStaticDataService {
 			tehsilVO =  constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE);	
 			electionResults.add(populateDataForLocalElections(tehsilVO,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE));
 			tehsilVO =  constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE);	
-			electionResults.add(populateDataForLocalElections(tehsilVO,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE));
+			electionResults.add(populateDataForLocalElections(tehsilVO,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE));
 
 			
 		}catch(Exception e){
