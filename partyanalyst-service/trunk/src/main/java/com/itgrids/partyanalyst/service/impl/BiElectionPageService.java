@@ -505,7 +505,12 @@ public class BiElectionPageService implements IBiElectionPageService {
 						PartyElectionResultsInConstituencyVO partyResultsInMap = partyResultsMap.get(constituencyId);
 						if(partyResultsInMap != null){
 							List<PartyResultsVO> partyElecResults = partyResultsInMap.getPartyElecResults();
-							partyElecResults.add(partyResults);
+							
+							if(partyResults.getPartyName().equalsIgnoreCase("IND")){
+								partyElecResults = getIndependentCandidatesGrouped(partyElecResults,partyResults);
+							}
+							//partyElecResults.add(partyResults);
+														
 							partyResultsInMap.setPartyElecResults(partyElecResults);
 							partyResultsMap.put(constituencyId, partyResultsInMap);
 						}
@@ -738,5 +743,39 @@ public class BiElectionPageService implements IBiElectionPageService {
 		}
 		
 	 return partyResults;		
+	}
+	
+	/*
+	 * Processing independent candidate results
+	 */
+	public List<PartyResultsVO> getIndependentCandidatesGrouped(List<PartyResultsVO> totalResults,PartyResultsVO partyResult){
+		
+		log.debug(" Inside getIndependentCandidatesGrouped method ...");
+		List<PartyResultsVO> partyResultsVOList = null;
+		
+		if(totalResults != null && partyResult != null){
+			
+		partyResultsVOList = new ArrayList<PartyResultsVO>();
+		Long votesEarned = new Long(0);
+		
+		for(PartyResultsVO partyReslt:totalResults){
+			if(!partyReslt.getPartyName().equalsIgnoreCase("IND"))
+				partyResultsVOList.add(partyReslt);
+			
+			if(partyReslt.getPartyName().equalsIgnoreCase("IND")){
+				votesEarned+=partyReslt.getVotesEarned();
+			}
+		}
+		votesEarned+=partyResult.getVotesEarned();
+		PartyResultsVO resultVO = new PartyResultsVO();
+		resultVO.setPartyId(partyResult.getPartyId());
+		resultVO.setPartyName(partyResult.getPartyName());
+		resultVO.setVotesEarned(votesEarned);
+		resultVO.setPercentage("--");
+		
+		partyResultsVOList.add(resultVO);
+				
+		}
+	 return partyResultsVOList;
 	}
 }
