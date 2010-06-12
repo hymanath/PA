@@ -105,7 +105,8 @@
 	        id: "staticData",  
 	        itemdata: [ 
 	            { text: "Andhra Pradesh", url: "statePageAction.action?stateId=1" },
-				{ text: "Maharashtra", url: "statePageAction.action?stateId=15" }
+				{ text: "Maharashtra", url: "statePageAction.action?stateId=15" },
+				{ text: "Telangana Political War 2010", url: "biElectionAction.action" }
 	        ]     
 	    }
 	     
