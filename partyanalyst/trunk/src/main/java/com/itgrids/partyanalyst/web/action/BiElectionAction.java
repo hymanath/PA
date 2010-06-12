@@ -24,6 +24,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
+import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
@@ -66,8 +67,17 @@ public class BiElectionAction extends ActionSupport implements
 	private String task;
 	org.json.JSONObject jObj;
 	List<MandalAllElectionResultsVO> mandalAllElectionResultsVO;
+	List<BiElectionResultsVO> biElectionResultsVO;
 	List<CandidateElectionResultVO> winningCandidatesList;
 	
+
+	public List<BiElectionResultsVO> getBiElectionResultsVO() {
+		return biElectionResultsVO;
+	}
+
+	public void setBiElectionResultsVO(List<BiElectionResultsVO> biElectionResultsVO) {
+		this.biElectionResultsVO = biElectionResultsVO;
+	}
 
 	public void setServletContext(ServletContext context) {
 		this.context = context;		
@@ -293,7 +303,8 @@ public class BiElectionAction extends ActionSupport implements
 		Long districtId = new Long(jObj.getString("districtId"));
 		Long constiId =  new Long(jObj.getString("constituencyId"));
 		
-		mandalAllElectionResultsVO = biElectionPageService.getAllPartysElectionResultsInAConstituencyMandalWise(constiId);
+		
+		biElectionResultsVO = biElectionPageService.getMandalWiseResultsForAConstituency(constiId);
 		
 		return Action.SUCCESS;
 	}

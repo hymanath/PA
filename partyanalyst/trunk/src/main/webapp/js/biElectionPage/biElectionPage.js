@@ -289,7 +289,7 @@ function getConstituenciesInfo(distId,index)
 		return;
 
 	var str = '';
-	str += '<select>';
+	str += '<select onchange="setValuesForMandalVotingTrendz(this.options[this.selectedIndex].value)">';
 	str += '<option value="0">Select</option>';
 	for(var j in obj.constituencies)
 	{
@@ -346,9 +346,94 @@ function buildMandalVotingTrendzData(jsObj,results)
 	headElmt.innerHTML = hstr;
 
 	var str = '';
+	str += '<table width="100%">';
+	for(var i in results)
+	{		
+		str += '<tr>';
+		for(var j in results[i].biElectionResultsVO)
+		{
+			var electionHeaderLength = (results[i].biElectionResultsVO[j].partysList.length*2)+2;
+			var partyHeaderLength = results[i].biElectionResultsVO[j].partysList.length*2;
+
+			str += '<td style="vertical-align:top">';
+			str += '<table width="100%" class="mandalResultsTable" border="1">';
+			str += '<tr>';
+			str += '<th colspan="'+electionHeaderLength+'" align="center">'+results[i].biElectionResultsVO[j].electionType+' - '+results[i].biElectionResultsVO[j].electionYear+'</th>';
+			str += '</tr>';
+			str += '<tr>';
+			str += '<th rowspan="3">Mandal</th>';
+			str += '<th rowspan="3">Constituency</th>';
+			str += '<th colspan="'+partyHeaderLength+'" align="center">Party</th>';
+			str += '</tr>';
+			str += '<tr>';
+			for(var p in results[i].biElectionResultsVO[j].partysList)
+			{
+				str += '<th colspan="2">'+results[i].biElectionResultsVO[j].partysList[p].name+'</th>';
+			}
+			str += '</tr>';
+			str += '<tr>';
+			for(var q in results[i].biElectionResultsVO[j].partysList)
+			{
+				str += '<th>V*</th><th>%</th>';
+			}
+			str += '</tr>';
+			for(var k in results[i].biElectionResultsVO[j].electionResultsForMandal)
+			{
+				var info = results[i].biElectionResultsVO[j].electionResultsForMandal[k];
+				str += '<tr>';
+				str += '<th rowspan="'+info.partyElecResultsInConstituency.length+'">'+info.mandalName+'</th>';
+				for(var l in info.partyElecResultsInConstituency)
+				{
+					str += '<th>'+info.partyElecResultsInConstituency[l].constituencyName+'</th>';
+									
+					for(var m in info.partyElecResultsInConstituency[l].partyElecResults)
+					{
+						var data = info.partyElecResultsInConstituency[l].partyElecResults[m];						
+						str += '<td>'+data.votesEarned+'</td><td>'+data.percentage+'</td>';					
+					}
+					
+					str+='</tr><tr>';
+				}
+				str += '</tr>';
+			}
+			
+			str += '</table>';
+			str += '</td>';
+		}
+		str += '</tr>';
+	}
+	str += '</table>';
+
+	bodyElmt.innerHTML = str;
+
 	for(var i in results)
 	{
-		str += '<fieldset>';
+		for(var j in results[i].electionResultsForAllPartiesVO)
+		{
+			buildVotingTrendzDataTable("electionResults_"+i+"_electionType_"+j+"_body",results[i].electionResultsForAllPartiesVO[j].constituencyElectionResultsVO,results[i].electionResultsForAllPartiesVO[j].electionType);
+		}
+	}
+}
+
+/*
+	for(var l in info.partyElecResultsInConstituency)
+				{
+					str += '<th>'+info.partyElecResultsInConstituency[l].constituencyName+'</th>';
+					str += '<td>';
+					str += '<table width="100%" class="mandalResultsTable">';
+					for(var m in info.partyElecResultsInConstituency[l].partyElecResults)
+					{
+						var data = info.partyElecResultsInConstituency[l].partyElecResults[m];
+						str += '<td>'+data.votesEarned+'</td><td>'+data.percentage+'</td>';
+					}
+					str += '</table>';
+					str += '</td>'
+
+					str+='</tr><tr>';
+				}
+
+
+	str += '<fieldset>';
 		str += '<legend>'+results[i].mandalName+'</legend>';
 		for(var j in results[i].electionResultsForAllPartiesVO)
 		{
@@ -366,18 +451,7 @@ function buildMandalVotingTrendzData(jsObj,results)
 			str += '<div>';
 		}
 		str += '</fieldset>';
-	}
-
-	bodyElmt.innerHTML = str;
-
-	for(var i in results)
-	{
-		for(var j in results[i].electionResultsForAllPartiesVO)
-		{
-			buildVotingTrendzDataTable("electionResults_"+i+"_electionType_"+j+"_body",results[i].electionResultsForAllPartiesVO[j].constituencyElectionResultsVO,results[i].electionResultsForAllPartiesVO[j].electionType);
-		}
-	}
-}
+*/
 
 function buildVotingTrendzDataTable(divID,arr,electionType)
 {
@@ -390,7 +464,7 @@ function buildVotingTrendzDataTable(divID,arr,electionType)
 	str += '<tr>';
 	for(var i in arr)
 	{
-		str += '<td><div id="'+electionType+'_'+i+'"></div></td>';
+		str += '<td style="vertical-align:top;"><div id="'+electionType+'_'+i+'"></div></td>';
 		
 	}
 	str += '</tr>';
