@@ -333,6 +333,7 @@
 	</bean>
 	<bean id="biElectionAction" class="com.itgrids.partyanalyst.web.action.BiElectionAction" singleton="false">
 	    <property name="biElectionPageService" ref="biElectionPageService" />
+	    <property name="staticDataService" ref="staticDataService" />
 	</bean>
 	<bean id="addNewProblemAction" class="com.itgrids.partyanalyst.web.action.AddNewProblemAction" singleton="false">
 		<property name="problemManagementService" ref="problemManagementService" />
