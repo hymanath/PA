@@ -12,12 +12,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
@@ -2011,7 +2009,6 @@ public class StaticDataService implements IStaticDataService {
 				allYears.add(eleYear);
 			}
 		constituencyElectionResults.setAllElectionYears(allYears);
-		
 		return constituencyElectionResults;
 		}catch(Exception e){
 			log.error("Exception raised please check the log for details"+e);
@@ -4005,7 +4002,6 @@ public class StaticDataService implements IStaticDataService {
 		return navigationVO;
 	}
 
-
 	public List<ConstituencyElectionResultsVO> findAssemblyConstituenciesResultsByConstituencyIds(
 			String electionYear, List<Long> constituencyIds) {
 		List<ConstituencyElectionResultsVO> assemblyElectionResults = new ArrayList<ConstituencyElectionResultsVO>();
@@ -4016,38 +4012,45 @@ public class StaticDataService implements IStaticDataService {
 		List<Object[]> partyResults = null;
 		PartyResultsVO partyResultsVO = null;
 		List<PartyResultsVO> partyResultsInConstituency = null;
-		List resultsList= nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds);	
 		
-		for(int i=0; i<resultsList.size();i++)
-		{
-			Object[] obj = (Object[]) resultsList.get(i);
-			constituencyElectionResults = new ConstituencyElectionResultsVO();
-			constituencyElectionResults.setConstituencyId(new Long(obj[5].toString()));
-			constituencyElectionResults.setConstituencyName(obj[4].toString());
-			partyResults = constuencywisePartyResultsMap.get(constituencyElectionResults);
-			if(partyResults==null){
-				partyResults = new ArrayList<Object[]>();
-			}
-			partyResults.add(obj);
-			constuencywisePartyResultsMap.put(constituencyElectionResults,partyResults);			
-		}
-		for(Map.Entry<ConstituencyElectionResultsVO, List<Object[]>> entry:constuencywisePartyResultsMap.entrySet()){
+		try{
+			List resultsList= nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies(electionYear,constituencyIds);	
 			
-			partyResultsInConstituency= new ArrayList<PartyResultsVO>();
-			constituencyElectionResults = entry.getKey();
-			partyResults = entry.getValue();
-			for(Object[] values:partyResults)
+			for(int i=0; i<resultsList.size();i++)
 			{
-				partyResultsVO = new PartyResultsVO();
-				partyResultsVO.setPartyId(new Long(values[3].toString()));
-				partyResultsVO.setPartyName(values[2].toString());
-				partyResultsVO.setPercentage(values[0].toString());
-				partyResultsVO.setTotalPolledVotes(((Double)values[1]).longValue());
-				partyResultsInConstituency.add(partyResultsVO);
+				Object[] obj = (Object[]) resultsList.get(i);
+				constituencyElectionResults = new ConstituencyElectionResultsVO();
+				constituencyElectionResults.setConstituencyId(new Long(obj[5].toString()));
+				constituencyElectionResults.setConstituencyName(obj[4].toString());
+				partyResults = constuencywisePartyResultsMap.get(constituencyElectionResults);
+				if(partyResults==null){
+					partyResults = new ArrayList<Object[]>();
+				}
+				partyResults.add(obj);
+				constuencywisePartyResultsMap.put(constituencyElectionResults,partyResults);			
 			}
-			constituencyElectionResults.setPartyResultsVO(partyResultsInConstituency);
-			assemblyElectionResults.add(constituencyElectionResults);
-		}
+			for(Map.Entry<ConstituencyElectionResultsVO, List<Object[]>> entry:constuencywisePartyResultsMap.entrySet()){
+				
+				partyResultsInConstituency= new ArrayList<PartyResultsVO>();
+				constituencyElectionResults = entry.getKey();
+				partyResults = entry.getValue();
+				for(Object[] values:partyResults)
+				{
+					partyResultsVO = new PartyResultsVO();
+					partyResultsVO.setPartyId(new Long(values[3].toString()));
+					partyResultsVO.setPartyName(values[2].toString());
+					partyResultsVO.setPercentage(values[0].toString());
+					partyResultsVO.setTotalPolledVotes(((Double)values[1]).longValue());
+					partyResultsInConstituency.add(partyResultsVO);
+				}
+				constituencyElectionResults.setPartyResultsVO(partyResultsInConstituency);
+				assemblyElectionResults.add(constituencyElectionResults);
+			}
+	}catch(Exception e){
+		e.printStackTrace();
+		log.debug("Exception raised ");
+	}
+		
 		return assemblyElectionResults;
 	}
 	
@@ -4185,7 +4188,64 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return candidateElectionResult;		
 	}
-	
-	
+
+	/**
+	 * This method retrieves the details of winning candidates in the constituency list passed 
+	 */
+	public List<CandidateElectionResultVO> getWinningCandidatesInConstituencies(
+			String electionYear, List<Long> constituencyIds) {
+		List<CandidateElectionResultVO> winningCandidatesInBiElectionConst = new ArrayList<CandidateElectionResultVO>();
+		CandidateElectionResultVO candidateElectionResultVO;
+		Long rank;
+		Double votesPercentage;
+		Long constituencyId;
+		Double votesMarginPercentage;
+		Map<Long, CandidateElectionResultVO> constuencywiseResultsMap = new LinkedHashMap<Long, CandidateElectionResultVO>();
+		try{
+			//this dao call retrieves the details of all winning candidates in the passed constituencies
+			List resultsList= nominationDAO.findWinningCandidatesDetailsInContituencies(electionYear, constituencyIds);	
+			//this dao call retrieves the votes margin percentage of all opposition candidates in the passed constituencies, this is used to calculate votes margin % 
+			List oppositionCandidatesList = nominationDAO.findOppositionCandidateVotesPercentageInConstituencies(electionYear, constituencyIds);
+			
+			for(int i=0; i<resultsList.size();i++)
+			{
+				Object[] obj = (Object[]) resultsList.get(i);
+				
+				candidateElectionResultVO = new CandidateElectionResultVO();
+					candidateElectionResultVO.setDistrictId(new Long(obj[0].toString()));
+					candidateElectionResultVO.setDistrictName(obj[1].toString());
+					candidateElectionResultVO.setConstituencyId(new Long(obj[2].toString()));
+					candidateElectionResultVO.setConstituencyName(obj[3].toString());
+					candidateElectionResultVO.setCandidateName(obj[4].toString());
+					candidateElectionResultVO.setPartyName(obj[5].toString());
+					candidateElectionResultVO.setPartyId(new Long(obj[6].toString()));
+					candidateElectionResultVO.setVotesPercentage(obj[7].toString());
+					
+					constuencywiseResultsMap.put(new Long(obj[2].toString()), candidateElectionResultVO);
+								
+			}
+			for(int j=0; j<oppositionCandidatesList.size();j++)
+			{
+				Object[] oppostionObj = (Object[]) oppositionCandidatesList.get(j);
+				constituencyId = new Long(oppostionObj[1].toString());
+				if(constuencywiseResultsMap.containsKey(constituencyId))
+				{
+					candidateElectionResultVO = constuencywiseResultsMap.get(constituencyId);
+					if(candidateElectionResultVO.getConstituencyId() == constituencyId)
+					{
+						votesPercentage = new Double(candidateElectionResultVO.getVotesPercentage());
+						votesMarginPercentage = votesPercentage - new Double((String)oppostionObj[0]);
+						candidateElectionResultVO.setVotesMargin(new BigDecimal(votesMarginPercentage).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}
+					winningCandidatesInBiElectionConst.add(candidateElectionResultVO);
+				}								
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.debug("Exception raised ");
+	}
+		return winningCandidatesInBiElectionConst;
+	}	
 }
 

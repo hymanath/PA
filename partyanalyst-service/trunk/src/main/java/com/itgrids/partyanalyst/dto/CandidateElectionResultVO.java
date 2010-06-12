@@ -23,17 +23,14 @@ public class CandidateElectionResultVO implements Serializable {
 	private String partyName;
 	private String candidateName;
 	private String constituencyName;
-	
-	
 	private Long totalValidVotes;
 	private Long totalVotesEarned;
 	private String votesPercentage;
 	private String votesMargin;
-	
-	
 	private Long rank;
-	
 	private Long userComments;
+	private Long districtId;
+	private String districtName;
 	
 	public Long getCandidateId() {
 		return candidateId;
@@ -107,6 +104,20 @@ public class CandidateElectionResultVO implements Serializable {
 	public void setVotesMargin(String votesMargin) {
 		this.votesMargin = votesMargin;
 	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	
+	
 	
 
 }

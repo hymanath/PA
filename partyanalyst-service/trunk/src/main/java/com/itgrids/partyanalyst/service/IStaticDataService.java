@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
@@ -164,5 +165,7 @@ public interface IStaticDataService {
 	public List<ConstituencyElectionResultsVO> findAssemblyConstituenciesResultsByConstituencyIds(String electionYear, List<Long> constituencyIds); 
 
 	public List<ElectionResultPartyVO> getAllMandalElectionInformationForAConstituency(Long constituencyId);
+	
+	public List<CandidateElectionResultVO> getWinningCandidatesInConstituencies(String electionYear, List<Long> constituencyIds);
 
 }
