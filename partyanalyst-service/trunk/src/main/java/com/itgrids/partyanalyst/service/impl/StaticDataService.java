@@ -12,10 +12,12 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
@@ -43,7 +45,6 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
-import com.itgrids.partyanalyst.dao.hibernate.NominationDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
@@ -4077,16 +4078,17 @@ public class StaticDataService implements IStaticDataService {
 				tehsilIds.append(",").append(Long.parseLong(parms[0].toString()));
 			}
 			electionResults.add(getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE));
-			electionResults.add(getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PREVIOUS_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE));
+			System.out.println();
+		//	electionResults.add(getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PREVIOUS_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE));
 			
-			electionResults.add(getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.PARLIAMENT_ELECTION_TYPE));
-			electionResults.add(getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PREVIOUS_ELECTION_YEAR,IConstants.PARLIAMENT_ELECTION_TYPE));
+		//	electionResults.add(getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.PARLIAMENT_ELECTION_TYPE));
+		//	electionResults.add(getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PREVIOUS_ELECTION_YEAR,IConstants.PARLIAMENT_ELECTION_TYPE));
 			
-			electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE)));
-			electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE)));
-			
-			electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE)));
-			electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE)));
+		//	electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE),IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE));
+		//	electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE),IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE));
+		//	
+		//	electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE),IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE));
+		//	electionResults.add(populateDataForLocalElections(constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE),IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE));
 			
 		}catch(Exception e){
 				e.printStackTrace();
@@ -4095,10 +4097,13 @@ public class StaticDataService implements IStaticDataService {
 		return electionResults;
 	}
 	
-	public ElectionResultPartyVO populateDataForLocalElections(List<TeshilPartyInfoVO> result){
+	public ElectionResultPartyVO populateDataForLocalElections(List<TeshilPartyInfoVO> result,String electionYear,String electionType){
 		ElectionResultPartyVO candidateElectionResult = new ElectionResultPartyVO();
 		List<CandidateElectionResultVO> candidateElectionResultsVO = null;
 		try{
+			candidateElectionResult.setElectionType(electionType);
+			candidateElectionResult.setElectionYear(electionYear);
+			candidateElectionResultsVO = new ArrayList<CandidateElectionResultVO>(0);
 			for(TeshilPartyInfoVO resultIterator : result){
 				CandidateElectionResultVO partyInfo = new CandidateElectionResultVO();
 				partyInfo.setPartyName(resultIterator.getPartyName());
@@ -4120,6 +4125,8 @@ public class StaticDataService implements IStaticDataService {
 		List<CandidateElectionResultVO> candidateElectionResultsVO = null;
 		List list2 = null;
 		try{
+			candidateElectionResult.setElectionType(electionType);
+			candidateElectionResult.setElectionYear(electionYear);
 			//The below DAO call retrieves all the party's and their votes in the mandal's for the given election year.
 			list2 = candidateBoothResultDAO.getResultsForElectionAndConstituencyByMandal(tehsilIds.substring(1),electionYear,IConstants.ASSEMBLY_ELECTION_TYPE);
 			ListIterator it = list2.listIterator();
@@ -4138,6 +4145,7 @@ public class StaticDataService implements IStaticDataService {
 				candidateElectionResultsVO.add(partyInfo);
 			}
 			candidateElectionResult.setCandidateElectionResultsVO(candidateElectionResultsVO);
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			log.debug("Exception raised ");
