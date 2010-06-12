@@ -85,22 +85,6 @@ public class PartyResultsVO {
 	public void setTotalPolledVotes(Long totalPolledVotes) {
 		this.totalPolledVotes = totalPolledVotes;
 	}
-	
-	@Override
-	public boolean equals(Object obj){
-		if(!(obj instanceof PartyResultsVO))
-			return false;
-		PartyResultsVO voObj = (PartyResultsVO) obj;
-		return this.partyId.equals(voObj.getPartyId());
-	}
-	
-	@Override
-	public int hashCode(){
-		return this.partyId.hashCode();
-	}
-	public Long getRank() {
-		return rank;
-	}
 	public Long getCandidateId() {
 		return candidateId;
 	}
@@ -113,13 +97,19 @@ public class PartyResultsVO {
 	public void setCandidateName(String candidateName) {
 		this.candidateName = candidateName;
 	}
-	public void setRank(Long rank) {
-		this.rank = rank;
-	}
 	public Long getValidVotes() {
 		return validVotes;
 	}
 	public void setValidVotes(Long validVotes) {
 		this.validVotes = validVotes;
 	}
+	public Long getRank() {
+		return rank;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
+	}
+	
+	
+	
 }
