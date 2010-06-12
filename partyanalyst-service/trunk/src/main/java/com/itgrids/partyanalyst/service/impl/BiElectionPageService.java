@@ -648,6 +648,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 						electionResultsOne.add(elecResultParli2009);
 					biElectionResultOne.setConstituencyId(constituencyId);
 					biElectionResultOne.setBiElectionResultsVO(electionResultsOne);
+					biElectionResultOne.setParticipatedParties(partiesList);
 					
 					//for assembly 2004 and parliament 2004
 					ElectionResultsForMandalVO  elecResultAssembly2004 = getElectionResultsForMandalsInAConstituencyForAElection(mandalIds,IConstants.ASSEMBLY_ELECTION_TYPE,"2004",partiesList);
@@ -662,6 +663,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 						electionResultsTwo.add(elecResultParli2004);
 					biElectionResultTwo.setConstituencyId(constituencyId);
 					biElectionResultTwo.setBiElectionResultsVO(electionResultsTwo);
+					biElectionResultTwo.setParticipatedParties(partiesList);
 					
 					biElectionResultsVOList.add(biElectionResultOne);
 					biElectionResultsVOList.add(biElectionResultTwo);
