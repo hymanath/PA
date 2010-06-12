@@ -20,7 +20,9 @@ public class MandalElectionResultVO implements Serializable {
 	private Long mandalId;
 	private String mandalName;
 	
-	private List<PartyElectionResultsInConstituencyVO> partyElecResultsInCosntituency;
+	private List<PartyElectionResultsInConstituencyVO> partyElecResultsInConstituency;
+	
+	ResultStatus resultStatus;
 
 	public Long getMandalId() {
 		return mandalId;
@@ -38,13 +40,21 @@ public class MandalElectionResultVO implements Serializable {
 		this.mandalName = mandalName;
 	}
 
-	public List<PartyElectionResultsInConstituencyVO> getPartyElecResultsInCosntituency() {
-		return partyElecResultsInCosntituency;
+	public ResultStatus getResultStatus() {
+		return resultStatus;
 	}
 
-	public void setPartyElecResultsInCosntituency(
-			List<PartyElectionResultsInConstituencyVO> partyElecResultsInCosntituency) {
-		this.partyElecResultsInCosntituency = partyElecResultsInCosntituency;
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+	public List<PartyElectionResultsInConstituencyVO> getPartyElecResultsInConstituency() {
+		return partyElecResultsInConstituency;
+	}
+
+	public void setPartyElecResultsInConstituency(
+			List<PartyElectionResultsInConstituencyVO> partyElecResultsInConstituency) {
+		this.partyElecResultsInConstituency = partyElecResultsInConstituency;
 	}
 
 }
