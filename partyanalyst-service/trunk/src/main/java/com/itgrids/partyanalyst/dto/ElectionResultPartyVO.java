@@ -21,7 +21,7 @@ public class ElectionResultPartyVO implements Serializable {
 	private String partyFlag;
 	private String partyLongName;
 	private String partyShortName;
-	
+	private ResultStatus resultVO;
 	private Long rank;
 	private String status;
 	private List<CandidateElectionResultVO> candidateElectionResultsVO;
@@ -29,6 +29,12 @@ public class ElectionResultPartyVO implements Serializable {
 	private String electionType;
 	private String electionYear;
 	
+	public ResultStatus getResultVO() {
+		return resultVO;
+	}
+	public void setResultVO(ResultStatus resultVO) {
+		this.resultVO = resultVO;
+	}
 	public String getElectionType() {
 		return electionType;
 	}
