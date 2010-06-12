@@ -18,12 +18,15 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
-import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
+import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
+import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
+import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionResultsVO;
@@ -43,17 +46,20 @@ public class BiElectionAction extends ActionSupport implements
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger log = Logger.getLogger(BiElectionAction.class);
 	private IBiElectionPageService biElectionPageService;
 	private List<BiElectionDistrictVO> districtsAndConsts;
+
+	private ServletContext context;
 	private IStaticDataService staticDataService;
 	private List<ConstituencyElectionResultsVO> biElectionAssemblyConstPresentYearResults;
 	private List<ConstituencyElectionResultsVO> biElectionAssemblyConstPreviousYearResults;
 	private String presentYearResultsChartName;
 	private String previousYearResultsChartName;
-	private ServletContext context;
+	private String chartPath;
 	HttpServletRequest request;
 	HttpServletResponse response;
 	HttpSession session;
@@ -61,6 +67,27 @@ public class BiElectionAction extends ActionSupport implements
 	org.json.JSONObject jObj;
 	List<MandalAllElectionResultsVO> mandalAllElectionResultsVO;
 	
+
+	public void setServletContext(ServletContext context) {
+		this.context = context;		
+	}
+	
+	public String getChartPath() {
+		return chartPath;
+	}
+
+	public void setChartPath(String chartPath) {
+		this.chartPath = chartPath;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}		
+
 	
 	public List<MandalAllElectionResultsVO> getMandalAllElectionResultsVO() {
 		return mandalAllElectionResultsVO;
@@ -104,15 +131,6 @@ public class BiElectionAction extends ActionSupport implements
 		this.biElectionPageService = biElectionPageService;
 	}	
 	
-
-	public IStaticDataService getStaticDataService() {
-		return staticDataService;
-	}
-
-	public void setStaticDataService(IStaticDataService staticDataService) {
-		this.staticDataService = staticDataService;
-	}	
-
 	public List<ConstituencyElectionResultsVO> getBiElectionAssemblyConstPresentYearResults() {
 		return biElectionAssemblyConstPresentYearResults;
 	}
@@ -146,10 +164,6 @@ public class BiElectionAction extends ActionSupport implements
 	public void setPreviousYearResultsChartName(String previousYearResultsChartName) {
 		this.previousYearResultsChartName = previousYearResultsChartName;
 	}
-	
-	public void setServletContext(ServletContext context) {
-		this.context = context;
-	}	
 	
 	public ServletContext getContext() {
 		return context;
@@ -271,6 +285,34 @@ public class BiElectionAction extends ActionSupport implements
 		
 		return Action.SUCCESS;
 	}
+	
+	  public void getMandalResults(Long constituencyId,String constituencyName){
+		 
+		  List<ElectionResultPartyVO> list = staticDataService.getAllMandalElectionInformationForAConstituency(constituencyId);
 
+		  String chartTitle = "AllPartiesAllElectionYearsForAllElectiontypesConstituencyLatestMandalDetails";		  
+		  String chartName = "ElectionDetails for"+constituencyName+"_"+list.get(0).getElectionYear()+"_"+constituencyId;
+		  String domainAxisName = "Mandals";
+		  		 
+			  chartTitle = "All Mandal Wise Election Results For Parliament Constituency In ";
+			  chartName = "mandalWiseParliamentElectionsResults"+".png";
+			  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(list), chartPath,320,920, null);
+	  }
+	  
+	  
 
+	private CategoryDataset createDataset(List<ElectionResultPartyVO> list) {
+	       final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	       try {
+			       for(ElectionResultPartyVO electionResultPartyVO:list){
+			    	   if(electionResultPartyVO != null)	    		
+			    		   for(CandidateElectionResultVO value:electionResultPartyVO.getCandidateElectionResultsVO())
+			    		    dataset.addValue(new BigDecimal(value.getVotesPercentage()), value.getPartyName(), electionResultPartyVO.getElectionType()+" "+electionResultPartyVO.getElectionYear());
+			       }		       
+		       } catch (Exception e) {
+					e.printStackTrace();
+				}
+	       return dataset;
+		}
 }
