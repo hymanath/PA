@@ -66,6 +66,7 @@ public class BiElectionAction extends ActionSupport implements
 	private String task;
 	org.json.JSONObject jObj;
 	List<MandalAllElectionResultsVO> mandalAllElectionResultsVO;
+	List<CandidateElectionResultVO> winningCandidatesList;
 	
 
 	public void setServletContext(ServletContext context) {
@@ -168,6 +169,15 @@ public class BiElectionAction extends ActionSupport implements
 	public ServletContext getContext() {
 		return context;
 	}
+	
+	public List<CandidateElectionResultVO> getWinningCandidatesList() {
+		return winningCandidatesList;
+	}
+
+	public void setWinningCandidatesList(
+			List<CandidateElectionResultVO> winningCandidatesList) {
+		this.winningCandidatesList = winningCandidatesList;
+	}
 
 	public String execute(){
 		log.debug(" Inside Action ..");
@@ -188,6 +198,7 @@ public class BiElectionAction extends ActionSupport implements
 		if(biElectionAssemblyConstPreviousYearResults !=null && biElectionAssemblyConstPreviousYearResults.size()>0)
 			previousYearResultsChartName = createResultsLineChart(biElectionAssemblyConstPreviousYearResults,sb, IConstants.PREVIOUS_ELECTION_YEAR);
 		biElectionAssemblyConstPreviousYearResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
+		winningCandidatesList = staticDataService.getWinningCandidatesInConstituencies(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
 		return Action.SUCCESS;
 	}
 	
