@@ -7,7 +7,9 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -22,18 +24,26 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.AllPartyElectionResultsForElectionTypeVO;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
+import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultAllPartyVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
+import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionResultsVO;
+import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.PartyResultsComparator;
+import com.itgrids.partyanalyst.utils.PartyResultsVOComparator;
 
 public class BiElectionPageService implements IBiElectionPageService {
 	
@@ -401,7 +411,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 					PartyResultsVO partyResult = new PartyResultsVO();
 					partyResult.setPartyId((Long)params[0]);
 					partyResult.setPartyName((String)params[1]);
-					partyResult.setCandidateName((String)params[7]);
+					//partyResult.setCandidateName((String)params[7]);
 					partyResult.setVotesEarned((Long)params[2]);
 					partyResult.setValidVotes((Long)params[3]);
 					partyResult.setRank((Long)params[4]);
@@ -438,6 +448,293 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 return constituencyElectionResultAllPartyVOList;	
 	}
 
-	
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#getElectionResultForPartyInMandal(java.lang.Long)
+	 */
+	@SuppressWarnings("unchecked")
+	public MandalElectionResultVO getElectionResultForPartyInMandal(Long mandalId,
+			String electionType,String electionYear,List<SelectOptionVO> parties) {
+		
+		if(log.isDebugEnabled())
+			log.debug(" Inside getElectionResultForPartyInMandal Method ...");
+		
+		ResultStatus resultStatus = new ResultStatus();
+		MandalElectionResultVO mandalElectionResultVO = new MandalElectionResultVO();
+		List<PartyElectionResultsInConstituencyVO> partyElecResultsInConstituency = null;
+		Map<Long,PartyElectionResultsInConstituencyVO> partyResultsMap = null;
+		
+		if(mandalId != null && !mandalId.equals(new Long(0))){
+			
+			partyElecResultsInConstituency = new ArrayList<PartyElectionResultsInConstituencyVO>();
+			partyResultsMap = new HashMap<Long,PartyElectionResultsInConstituencyVO>();
+			
+			try{
+			List electionResultsList = candidateBoothResultDAO.getElectionResultsInAMandalForAllParties(mandalId, electionType, electionYear);
+			if(electionResultsList != null && electionResultsList.size() > 0){
+				
+				for(int i=0;i<electionResultsList.size();i++){
+					Object[] params = (Object[])electionResultsList.get(i);
+					Long constituencyId = (Long)params[5];
+					String constiName = (String)params[6];
+					
+					if(log.isDebugEnabled())
+						log.debug(" Mandal In Constituency :"+constiName);
+					
+					if(partyResultsMap.isEmpty() || !partyResultsMap.containsKey(constituencyId)){
+						PartyElectionResultsInConstituencyVO partyResultsInMap = new PartyElectionResultsInConstituencyVO();
+						List<PartyResultsVO> partyElecResults = new ArrayList<PartyResultsVO>();
+						partyResultsInMap.setConstituencyId(constituencyId);
+						partyResultsInMap.setConstituencyName(constiName);
+						partyResultsInMap.setPartyElecResults(partyElecResults);
+						partyResultsMap.put(constituencyId, partyResultsInMap);
+					}
+					
+					//assign party results to vo
+					PartyResultsVO partyResults = new PartyResultsVO();
+					partyResults.setPartyId((Long)params[0]);
+					partyResults.setPartyName((String)params[1]);
+					partyResults.setVotesEarned((Long)params[2]);
+					partyResults.setValidVotes((Long)params[3]);
+					partyResults.setRank((Long)params[4]);
+					
+					Double votesPercent = new BigDecimal(((Long)params[2]).doubleValue()/((Long)params[3]).doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					partyResults.setPercentage(votesPercent.toString());
+					
+					if(partyResultsMap.containsKey(constituencyId)){
+						PartyElectionResultsInConstituencyVO partyResultsInMap = partyResultsMap.get(constituencyId);
+						if(partyResultsInMap != null){
+							List<PartyResultsVO> partyElecResults = partyResultsInMap.getPartyElecResults();
+							partyElecResults.add(partyResults);
+							partyResultsInMap.setPartyElecResults(partyElecResults);
+							partyResultsMap.put(constituencyId, partyResultsInMap);
+						}
+					}
+				}
+				
+				//processing the map
+				if(!partyResultsMap.isEmpty()){
+					Set entries = partyResultsMap.entrySet();
+					Iterator iterator = entries.iterator();
+					while(iterator.hasNext()){
+					Map.Entry entry = (Map.Entry)iterator.next();
+					PartyElectionResultsInConstituencyVO partyResultsInMap = (PartyElectionResultsInConstituencyVO)entry.getValue();
+					
+					partyResultsInMap = getPartiesSorted(partyResultsInMap,parties);
+					Collections.sort(partyResultsInMap.getPartyElecResults(), new PartyResultsVOComparator());
+					
+					partyElecResultsInConstituency.add(partyResultsInMap);
+					}
+				}
+			}
+			//set to final vo
+			Tehsil tehsil = tehsilDAO.get(mandalId);
+			mandalElectionResultVO.setMandalId(mandalId);
+			mandalElectionResultVO.setMandalName(tehsil.getTehsilName());
+			mandalElectionResultVO.setPartyElecResultsInConstituency(partyElecResultsInConstituency);
+			
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+				if(log.isDebugEnabled())
+					log.debug("Exception Raised :" + ex);
+				resultStatus.setExceptionEncountered(ex);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setResultPartial(true);
+			}
+			finally{
+				mandalElectionResultVO.setResultStatus(resultStatus);
+			}
+			
+		}
+		
+	 return mandalElectionResultVO;
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#getElectionResultsForMandalsInAConstituencyForAElection(java.util.List, java.lang.String, java.lang.String)
+	 */
+	public ElectionResultsForMandalVO getElectionResultsForMandalsInAConstituencyForAElection(
+			List<Long> mandalIds, String electionType, String electionYear,List<SelectOptionVO> parties){
+		
+		if(log.isDebugEnabled())
+			log.debug(" Inside getElectionResultsForMandalsInAConstituencyForAElection method ..");
+		
+		ElectionResultsForMandalVO electionResultsForMandalVO = new ElectionResultsForMandalVO();
+		List<MandalElectionResultVO> electionResultsForMandal = null;
+		ResultStatus resultStatus = new ResultStatus();
+		
+		if(mandalIds != null && mandalIds.size() > 0 && electionType != null && electionYear != null){
+			
+			electionResultsForMandal = new ArrayList<MandalElectionResultVO>();
+			
+			try{
+				
+			  //election results for mandals in a constituency	
+			  for(Long mandal:mandalIds){
+				MandalElectionResultVO mandalResult = getElectionResultForPartyInMandal(mandal,electionType,electionYear,parties);
+				if(mandalResult != null)
+					electionResultsForMandal.add(mandalResult);
+			  }
+			  
+			  //set to VO
+			  if(electionResultsForMandal != null && electionResultsForMandal.size() > 0){
+				  electionResultsForMandalVO.setElectionType(electionType);
+				  electionResultsForMandalVO.setElectionYear(electionYear);
+				  electionResultsForMandalVO.setElectionResultsForMandal(electionResultsForMandal);
+			  }
+			
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+				if(log.isDebugEnabled())
+					log.debug("Exception Raised :" + ex);
+				resultStatus.setExceptionEncountered(ex);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				resultStatus.setResultPartial(true);
+			}
+			finally{
+				electionResultsForMandalVO.setResultStatus(resultStatus);
+			}
+		}
+	 return electionResultsForMandalVO;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#getMandalWiseResultsForAConstituency(java.lang.Long)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<BiElectionResultsVO> getMandalWiseResultsForAConstituency(
+			Long constituencyId) {
+		
+		if(log.isDebugEnabled())
+			log.debug(" Inside getMandalWiseResultsForAConstituency method ..");
+		
+		List<BiElectionResultsVO> biElectionResultsVOList = null;
+		
+		if(constituencyId != null){
+			biElectionResultsVOList = new ArrayList<BiElectionResultsVO>();
+			ResultStatus result = new ResultStatus();
+			
+			try{
+				
+			List<SelectOptionVO> partiesList = getParticipatedPartiesInfo(constituencyId);
+			
+			 List latestMandals = delimitationConstituencyMandalDAO.getLatestMandalDetailsForAConstituency(constituencyId);
+			 List<Long> mandalIds = new ArrayList<Long>();
+			 if(latestMandals != null && latestMandals.size() > 0){
+				for(int i=0;i<latestMandals.size();i++){
+					Object[] params = (Object[])latestMandals.get(i);
+					Long mandalId = (Long)params[0];
+					String mandalName = (String)params[1];
+					
+					mandalIds.add(mandalId);
+				}
+				
+				if(mandalIds != null && mandalIds.size() > 0){
+					
+					//for asembly 2009 & parliament 2009
+					ElectionResultsForMandalVO  elecResultAssembly2009 = getElectionResultsForMandalsInAConstituencyForAElection(mandalIds,IConstants.ASSEMBLY_ELECTION_TYPE,"2009",partiesList);
+					ElectionResultsForMandalVO  elecResultParli2009 = getElectionResultsForMandalsInAConstituencyForAElection(mandalIds,IConstants.PARLIAMENT_ELECTION_TYPE,"2009",partiesList);
+					
+					BiElectionResultsVO biElectionResultOne = new BiElectionResultsVO();
+					List<ElectionResultsForMandalVO> electionResultsOne = new ArrayList<ElectionResultsForMandalVO>();
+					
+					if(elecResultAssembly2009 != null)
+						electionResultsOne.add(elecResultAssembly2009);
+					if(elecResultParli2009 != null)
+						electionResultsOne.add(elecResultParli2009);
+					biElectionResultOne.setConstituencyId(constituencyId);
+					biElectionResultOne.setBiElectionResultsVO(electionResultsOne);
+					
+					//for assembly 2004 and parliament 2004
+					ElectionResultsForMandalVO  elecResultAssembly2004 = getElectionResultsForMandalsInAConstituencyForAElection(mandalIds,IConstants.ASSEMBLY_ELECTION_TYPE,"2004",partiesList);
+					ElectionResultsForMandalVO  elecResultParli2004 = getElectionResultsForMandalsInAConstituencyForAElection(mandalIds,IConstants.PARLIAMENT_ELECTION_TYPE,"2004",partiesList);
+
+					BiElectionResultsVO biElectionResultTwo = new BiElectionResultsVO();
+					List<ElectionResultsForMandalVO> electionResultsTwo = new ArrayList<ElectionResultsForMandalVO>();
+					
+					if(elecResultAssembly2004 != null)
+						electionResultsTwo.add(elecResultAssembly2004);
+					if(elecResultParli2004 != null)
+						electionResultsTwo.add(elecResultParli2004);
+					biElectionResultTwo.setConstituencyId(constituencyId);
+					biElectionResultTwo.setBiElectionResultsVO(electionResultsTwo);
+					
+					biElectionResultsVOList.add(biElectionResultOne);
+					biElectionResultsVOList.add(biElectionResultTwo);
+				}
+			 }
+			
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+				if(log.isDebugEnabled())
+					log.debug("Exception Raised :" + ex);
+				result.setExceptionEncountered(ex);
+				result.setResultCode(ResultCodeMapper.FAILURE);
+				result.setResultPartial(true);
+			}
+			
+		}
+	  return biElectionResultsVOList;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<SelectOptionVO> getParticipatedPartiesInfo(Long constituencyId){
+		log.debug(" Inside getParticipatedPartiesInfo method ...");
+		
+		List<SelectOptionVO> parties = null;
+		
+		List partiesList = candidateBoothResultDAO.getAllPartiesPariticipatedInAConstituencyElection(constituencyId);
+		
+		if(partiesList != null && partiesList.size() > 0){
+			
+			parties = new ArrayList<SelectOptionVO>();
+			for(int i=0;i<partiesList.size();i++){
+			Object params = (Object)partiesList.get(i);
+			
+			Party party = (Party)params;
+			SelectOptionVO partyOption = new SelectOptionVO();
+			partyOption.setId(party.getPartyId());
+			partyOption.setName(party.getShortName());
+			
+			parties.add(partyOption);
+			}
+			
+			Collections.sort(parties, new PartyResultsComparator());
+		}
+		
+	 return parties;
+	}
+
+	public PartyElectionResultsInConstituencyVO getPartiesSorted(PartyElectionResultsInConstituencyVO partyResults,List<SelectOptionVO> parties){
+		
+		log.debug(" Inside getPartiesSorted Method ..");
+		
+		Map<Long,String> partiesList = new HashMap<Long,String>();
+		for(PartyResultsVO partyResult:partyResults.getPartyElecResults()){
+			partiesList.put(partyResult.getPartyId(), partyResult.getPartyName());
+		}
+		
+		for(SelectOptionVO result:parties){
+			if(!partiesList.isEmpty() && partiesList.containsKey(result.getId())){
+				log.debug(" Party Result Availble ...");
+			}
+			else{
+				PartyResultsVO partyRslt = new PartyResultsVO();
+				partyRslt.setPartyId(result.getId());
+				partyRslt.setPartyName(result.getName());
+				partyRslt.setVotesEarned(new Long(0));
+				partyRslt.setPercentage("--");
+				
+				partyResults.getPartyElecResults().add(partyRslt);
+				
+			}
+		}
+		
+	 return partyResults;		
+	}
 }
