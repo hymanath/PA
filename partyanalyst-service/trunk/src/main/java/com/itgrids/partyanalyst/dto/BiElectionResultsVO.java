@@ -21,6 +21,8 @@ public class BiElectionResultsVO implements Serializable {
 	private String constituencyName;
 	
 	private List<ElectionResultsForMandalVO> biElectionResultsVO;
+    private ResultStatus resultStatus; 
+		
 	private List<SelectOptionVO> participatedParties;	
 	
 
@@ -47,6 +49,14 @@ public class BiElectionResultsVO implements Serializable {
 	public void setBiElectionResultsVO(
 			List<ElectionResultsForMandalVO> biElectionResultsVO) {
 		this.biElectionResultsVO = biElectionResultsVO;
+	}
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
 	}
 
 	public List<SelectOptionVO> getParticipatedParties() {
