@@ -171,6 +171,7 @@ public class BiElectionAction extends ActionSupport implements
 
 	public String execute(){
 		log.debug(" Inside Action ..");
+		
 		List<Long> constituencyIdsList = new ArrayList<Long>();
 		StringBuilder sb = new StringBuilder();
 		districtsAndConsts = biElectionPageService.getBiElectionConstituenciesDistrictWise();
@@ -294,25 +295,74 @@ public class BiElectionAction extends ActionSupport implements
 		  String chartName = "ElectionDetails for"+constituencyName+"_"+list.get(0).getElectionYear()+"_"+constituencyId;
 		  String domainAxisName = "Mandals";
 		  		 
-			  chartTitle = "All Mandal Wise Election Results For Parliament Constituency In ";
-			  chartName = "mandalWiseParliamentElectionsResults"+".png";
+			  chartTitle = "All Election Results for "+constituencyName;
+			  chartName = "mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+"constituencyId"+".png";
 			  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-			  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(list), chartPath,320,920, null);
+			  ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataset(list);
+			  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,320,920,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()));
 	  }
 	  
 	  
 
-	private CategoryDataset createDataset(List<ElectionResultPartyVO> list) {
+	private ChartColorsAndDataSetVO createDataset(List<ElectionResultPartyVO> list) {
 	       final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	       ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
+		   Set<Color> colorsSet = new LinkedHashSet<Color>();
 	       try {
 			       for(ElectionResultPartyVO electionResultPartyVO:list){
-			    	   if(electionResultPartyVO != null)	    		
-			    		   for(CandidateElectionResultVO value:electionResultPartyVO.getCandidateElectionResultsVO())
+			    		   for(CandidateElectionResultVO value:electionResultPartyVO.getCandidateElectionResultsVO()){
+			    			  
+			    					if(IConstants.TDP.equalsIgnoreCase(value.getPartyName()))
+			    						{	colorsSet.add(IConstants.TDP_COLOR);
+			    							log.debug("TDP ADDED");
+			    						}
+			    						
+			    			        	else
+			    			        		if(IConstants.INC.equalsIgnoreCase(value.getPartyName()))
+			    			        		{	colorsSet.add(IConstants.INC_COLOR);
+			    			        		log.debug("INC ADDEd");
+			    			        		}
+			    			            	else
+			    			            		if(IConstants.BJP.equalsIgnoreCase(value.getPartyName()))
+			    			            		{	colorsSet.add(IConstants.BJP_COLOR);
+			    			            			log.debug("BJP ADDEd");
+			    			            		}
+			    			                	else
+			    			                		if(IConstants.PRP.equalsIgnoreCase(value.getPartyName()))
+			    			                    		{colorsSet.add(IConstants.PRP_COLOR);
+			    			                    		log.debug("PRP ADDEd");
+			    			                    		}
+			    			                    	else
+			    			                    		if(IConstants.TRS.equalsIgnoreCase(value.getPartyName()))
+			    			                        		{
+			    			                    			colorsSet.add(IConstants.TRS_COLOR);
+			    			                    			log.debug("TRS ADDEd");
+			    			                    			}
+			    			                    		else
+			    				                    		if(IConstants.AIMIM.equalsIgnoreCase(value.getPartyName()))
+			    				                        		{
+			    				                    			colorsSet.add(IConstants.AIMIM_COLOR);
+			    				                    			log.debug("AIMIM ADDEd");
+			    				                    			}
+			    				                    		else
+			    					                    		if(IConstants.CPI.equalsIgnoreCase(value.getPartyName()))
+			    					                        		{
+			    					                    			colorsSet.add(IConstants.CPI_COLOR);
+			    					                    			log.debug("CPI ADDEd");
+			    					                    			}
+			    			                    		else
+			    					                    	{colorsSet.add(null);
+			    					                    	log.debug("Default ADDEd");
+			    					                    	}   
+			    		   
 			    		    dataset.addValue(new BigDecimal(value.getVotesPercentage()), value.getPartyName(), electionResultPartyVO.getElectionType()+" "+electionResultPartyVO.getElectionYear());
-			       }		       
+			    		   }			    	   
+			       }		
+			       chartColorsAndDataSetVO.setDataSet(dataset);
+		           chartColorsAndDataSetVO.setColorsSet(colorsSet);	
 		       } catch (Exception e) {
 					e.printStackTrace();
 				}
-	       return dataset;
+	       return chartColorsAndDataSetVO;
 		}
 }
