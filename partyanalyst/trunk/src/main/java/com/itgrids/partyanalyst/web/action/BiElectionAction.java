@@ -108,7 +108,7 @@ public class BiElectionAction extends ActionSupport implements
 		Long districtId = new Long(jObj.getString("districtId"));
 		Long constiId =  new Long(jObj.getString("constituencyId"));
 		
-		mandalAllElectionResultsVO = biElectionPageService.getAllPartysElectionResultsInAConstituencyMandalWise(new Long(232));
+		mandalAllElectionResultsVO = biElectionPageService.getAllPartysElectionResultsInAConstituencyMandalWise(constiId);
 		
 		return Action.SUCCESS;
 	}
