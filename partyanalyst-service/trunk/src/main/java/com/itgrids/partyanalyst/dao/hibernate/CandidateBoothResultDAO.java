@@ -487,7 +487,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		return getHibernateTemplate().find("select model.nomination.party.partyId,model.nomination.party.shortName,"+
 				"sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),model.nomination.candidateResult.rank,"+
 				"model.boothConstituencyElection.constituencyElection.constituency.constituencyId,"+
-				"model.boothConstituencyElection.constituencyElection.constituency.name,model.nomination.candidate.lastname from CandidateBoothResult model "+
+				"model.boothConstituencyElection.constituencyElection.constituency.name from CandidateBoothResult model "+
 				"where model.boothConstituencyElection.booth.tehsil.tehsilId = ? "+
 				"and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? "+
 				"and model.boothConstituencyElection.constituencyElection.election.electionYear = ? "+
@@ -515,6 +515,16 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" model.boothConstituencyElection.booth.tehsil.tehsilId in (" + mandalIds +
 				" ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? group by " +
 				" model.nomination.nominationId,model.boothConstituencyElection.constituencyElection.constituency.constituencyId",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getAllPartiesPariticipatedInAConstituencyElection(
+			Long constituencyId) {
+		
+		return getHibernateTemplate().find("select distinct model.nomination.party"+
+				" from CandidateBoothResult model where model.nomination.constituencyElection.constituency.constituencyId = ? and"+
+				" model.nomination.constituencyElection.election.electionYear in(2009,2004)"+
+				"group by model.nomination.nominationId",constituencyId);
 	}
 	
 }
