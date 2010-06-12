@@ -562,6 +562,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#getElectionResultsForMandalsInAConstituencyForAElection(java.util.List, java.lang.String, java.lang.String)
 	 */
+	@SuppressWarnings("unchecked")
 	public ElectionResultsForMandalVO getElectionResultsForMandalsInAConstituencyForAElection(
 			List<Long> mandalIds, String electionType, String electionYear,List<SelectOptionVO> parties){
 		
@@ -626,6 +627,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 					partysIdsAndName.add(party);
 					}
 				  }
+				  Collections.sort(partysIdsAndName, new PartyResultsComparator());
 				  electionResultsForMandalVO.setPartysList(partysIdsAndName);
 			  }
 			
