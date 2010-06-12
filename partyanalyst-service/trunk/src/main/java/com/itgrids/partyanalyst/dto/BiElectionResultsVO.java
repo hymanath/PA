@@ -17,25 +17,27 @@ public class BiElectionResultsVO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Long districtId;
-	private String districtName;
+	private Long constituencyId;
+	private String constituencyName;
 	
 	private List<ElectionResultsForMandalVO> biElectionResultsVO;
+	private List<SelectOptionVO> participatedParties;	
+	
 
-	public Long getDistrictId() {
-		return districtId;
+	public Long getConstituencyId() {
+		return constituencyId;
 	}
 
-	public void setDistrictId(Long districtId) {
-		this.districtId = districtId;
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 
-	public String getDistrictName() {
-		return districtName;
+	public String getConstituencyName() {
+		return constituencyName;
 	}
 
-	public void setDistrictName(String districtName) {
-		this.districtName = districtName;
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
 	}
 
 	public List<ElectionResultsForMandalVO> getBiElectionResultsVO() {
@@ -45,6 +47,14 @@ public class BiElectionResultsVO implements Serializable {
 	public void setBiElectionResultsVO(
 			List<ElectionResultsForMandalVO> biElectionResultsVO) {
 		this.biElectionResultsVO = biElectionResultsVO;
+	}
+
+	public List<SelectOptionVO> getParticipatedParties() {
+		return participatedParties;
+	}
+
+	public void setParticipatedParties(List<SelectOptionVO> participatedParties) {
+		this.participatedParties = participatedParties;
 	}
 
 }
