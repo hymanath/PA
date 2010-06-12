@@ -345,7 +345,7 @@
 		<tr>
 			<td><font class="requiredFont"> * </font><s:label for="stateField" id="stateLabel"  value="%{getText('STATE')}" /></td>
 			<td align="left">
-				<s:select id="stateField" cssClass="regionSelect" name="state" list="stateList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>
+				<s:select id="stateField" cssClass="regionSelect" name="state" list="#session.stateList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')"></s:select>
 
 				
 			</td>
@@ -364,19 +364,19 @@
 		<tr>
 			<td><font class="requiredFont"> * </font><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/></td>
 			<td align="left">
-				<s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="constituencyList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Constituency"></s:select> 
+				<s:select id="constituencyField" cssClass="regionSelect" name="constituency" list="#session.constituencyList" listKey="id" listValue="name" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Constituency"></s:select> 
 			</td>
 		</tr>
 		<tr>
 			<td><font class="requiredFont"> * </font><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /></td>
 			<td align="left">
-				<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="mandalList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
+				<s:select id="mandalField" cssClass="regionSelect" name="mandal" list="#session.mandalList" listKey="id" listValue="name" onchange="getnextList(this.name,this.options[this.selectedIndex].value,'false')" headerKey="-1" headerValue="Select Mandal"></s:select>				 
 			</td>
 		</tr>
 		<tr>
 			<td><font class="requiredFont"> * </font><s:label for="villageField" id="villageLabel"  value="%{getText('VILLAGE')}" /></td>
 			<td align="left">
-				<s:select id="villageField" cssClass="regionSelect" name="village" list="villageList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
+				<s:select id="villageField" cssClass="regionSelect" name="village" list="#session.villageList" listKey="id" listValue="name" headerKey="-1" headerValue="Select Village"></s:select>				
 			</td>
 		</tr>
 		</table>

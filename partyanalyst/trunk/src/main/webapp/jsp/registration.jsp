@@ -206,7 +206,7 @@
 
 </head>  
 <body>  
-<s:form action="RegistrationAction" method="GET" theme="simple">  
+<s:form action="RegistrationAction" method="POST" theme="simple">  
     <h2>User Registration Form</h2> 
  <div id="registrationMainDiv">
 		<table class="registrationTable">
@@ -297,7 +297,7 @@
 				<table class="registrationTable">		
 					<tr>
 						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="accessTypeField" id="accessTypeLabel"  value="%{getText('accessType')}" /></td>
-						<td style="padding-left: 10px;"><s:radio id="accessTypeField" name="accessType" list="type" onclick="getAccessValue(this.value);" required="true"></s:radio> </td>
+						<td style="padding-left: 10px;"><s:radio id="accessTypeField" name="accessType" list="#session.type" onclick="getAccessValue(this.value);" required="true"></s:radio> </td>
 					</tr>
 					<tr>
 						<td width="100px;" id="thId"> </td>
