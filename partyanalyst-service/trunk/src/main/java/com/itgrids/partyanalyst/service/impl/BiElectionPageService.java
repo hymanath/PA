@@ -509,7 +509,9 @@ public class BiElectionPageService implements IBiElectionPageService {
 							if(partyResults.getPartyName().equalsIgnoreCase("IND")){
 								partyElecResults = getIndependentCandidatesGrouped(partyElecResults,partyResults);
 							}
-							//partyElecResults.add(partyResults);
+							else{
+							partyElecResults.add(partyResults);
+							}
 														
 							partyResultsInMap.setPartyElecResults(partyElecResults);
 							partyResultsMap.put(constituencyId, partyResultsInMap);
