@@ -87,6 +87,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.DistrictNamesComparator;
 import com.itgrids.partyanalyst.utils.ElectionYearsComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyResultVOComparator;
@@ -4231,20 +4232,23 @@ public class StaticDataService implements IStaticDataService {
 				if(constuencywiseResultsMap.containsKey(constituencyId))
 				{
 					candidateElectionResultVO = constuencywiseResultsMap.get(constituencyId);
-					if(candidateElectionResultVO.getConstituencyId() == constituencyId)
+					if(candidateElectionResultVO.getConstituencyId().equals(constituencyId))
 					{
 						votesPercentage = new Double(candidateElectionResultVO.getVotesPercentage());
 						votesMarginPercentage = votesPercentage - new Double((String)oppostionObj[0]);
+						log.debug("votes Margin %::::::::::::" + votesMarginPercentage);
 						candidateElectionResultVO.setVotesMargin(new BigDecimal(votesMarginPercentage).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+						log.debug("votes Margin % from VO::::::::::::"+candidateElectionResultVO.getVotesMargin());
 					}
 					winningCandidatesInBiElectionConst.add(candidateElectionResultVO);
-				}								
+				}				
 			}
 			
 		}catch(Exception e){
 			e.printStackTrace();
 			log.debug("Exception raised ");
 	}
+		Collections.sort(winningCandidatesInBiElectionConst, new DistrictNamesComparator());
 		return winningCandidatesInBiElectionConst;
 	}	
 }

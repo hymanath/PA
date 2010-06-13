@@ -410,7 +410,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 		
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public void testFindWinningCandidatesDetailsInBiElectionContituencies()
 	{
 		List<Long> constituencyIds = new ArrayList<Long>();
@@ -422,9 +422,9 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		for(Object[] values:(List<Object[]>)list1)
 			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]+"\t"+values[6]+"\t"+values[7]);
 			System.out.println("____________________________________________________________________________");		
-	}*/
+	}
 	
-	public void testFindOppositionCandidateVotesPercentageInConstituencies()
+	/*public void testFindOppositionCandidateVotesPercentageInConstituencies()
 	{
 		List<Long> constituencyIds = new ArrayList<Long>();
 		constituencyIds.add(4L);
@@ -435,7 +435,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		for(Object[] values:(List<Object[]>)list1)
 			System.out.println(values[0]+"\t"+values[1]);
 			System.out.println("____________________________________________________________________________");		
-	}
+	}*/
 	
 
 }

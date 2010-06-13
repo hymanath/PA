@@ -1335,7 +1335,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"model.constituencyElection.constituency.constituencyId, model.constituencyElection.constituency.name, " +
 				"model.candidate.lastname, " +
 				"model.party.shortName, model.party.partyId, model.candidateResult.votesPercengate " +  
-				"from Nomination model where model.constituencyElection.election.electionYear =? and model.candidateResult.rank = 1 and model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
+				"from Nomination model where model.constituencyElection.election.electionYear =? and model.candidateResult.rank = 1 and model.constituencyElection.constituency.constituencyId in (:constituencyIds)" +
+				"order by model.constituencyElection.constituency.district.districtName")  ;
 		queryObject.setParameter(0,electionYear);
 		queryObject.setParameterList("constituencyIds",constituencyIds);
 		return queryObject.list();
