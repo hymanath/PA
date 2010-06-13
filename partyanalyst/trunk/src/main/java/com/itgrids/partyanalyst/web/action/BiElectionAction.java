@@ -69,6 +69,8 @@ public class BiElectionAction extends ActionSupport implements
 	List<MandalAllElectionResultsVO> mandalAllElectionResultsVO;
 	List<BiElectionResultsVO> biElectionResultsVO;
 	List<CandidateElectionResultVO> winningCandidatesList;
+	private String electionYear;
+	private String electionType;
 	
 
 	public List<BiElectionResultsVO> getBiElectionResultsVO() {
@@ -187,6 +189,22 @@ public class BiElectionAction extends ActionSupport implements
 	public void setWinningCandidatesList(
 			List<CandidateElectionResultVO> winningCandidatesList) {
 		this.winningCandidatesList = winningCandidatesList;
+	}	
+
+	public String getElectionYear() {
+		return electionYear;
+	}
+
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
+
+	public String getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
 	}
 
 	public String execute(){
@@ -209,6 +227,8 @@ public class BiElectionAction extends ActionSupport implements
 			previousYearResultsChartName = createResultsLineChart(biElectionAssemblyConstPreviousYearResults,sb, IConstants.PREVIOUS_ELECTION_YEAR);
 		biElectionAssemblyConstPreviousYearResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
 		winningCandidatesList = staticDataService.getWinningCandidatesInConstituencies(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
+		electionYear = IConstants.PRESENT_ELECTION_YEAR;
+		electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
 		return Action.SUCCESS;
 	}
 	

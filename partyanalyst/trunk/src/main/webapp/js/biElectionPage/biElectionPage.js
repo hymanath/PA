@@ -7,159 +7,17 @@ var districtsInfo = new Array();
 
 function getMlaDetails()
 {
-//Karimnagar
-var mlaDetails1 = {
-				  distName:'Karimnagar',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=322">Dharmapuri</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=16806">Eshwar Koppula</a>',
-				  partyName:'TRS',
-				  votesPercent:'35.89',
-				  marginPercent:'1.69',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(322)">view</a>'
-
-};
-dtArray.push(mlaDetails1);
-var mlaDetails2 = {
-				  distName:'Karimnagar',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=21">Huzurabad</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=16899">Eatala Rajender</a>',
-				  partyName:'TRS',
-				  votesPercent:'38.82',
-				  marginPercent:'10.28',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(21)">view</a>'
-
-};
-dtArray.push(mlaDetails2);
-var mlaDetails3 = {
-				  distName:'Karimnagar',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=321">Koratla</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=16788">Kalvakuntla Vidyasagar Rao</a>',
-				  partyName:'TRS',
-				  votesPercent:'32.38',
-				  marginPercent:'12.03',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(321)">view</a>'
-
-};
-dtArray.push(mlaDetails3);
-var mlaDetails4 = {
-				  distName:'Karimnagar',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=31">Sircilla</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=16871">Kalvakuntala Taraka Ramarao</a>',
-				  partyName:'TRS',
-				  votesPercent:'26.92',
-				  marginPercent:'0.92',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(31)">view</a>'
-
-};
-dtArray.push(mlaDetails4);
-var mlaDetails5 = {
-				  distName:'Karimnagar',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=323">Vemulawada</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=16863">Ramesh Chennamaneni</a>',
-				  partyName:'TDP',
-				  votesPercent:'29.98',
-				  marginPercent:'1.49',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(323)">view</a>'
-
-};
-dtArray.push(mlaDetails5);
-
-//Adilabad
-var mlaDetails6 = {
-				  distName:'Adilabad',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=8">Sirpur</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=16609">Kaveti Sammaiah</a>',
-				  partyName:'TRS',
-				  votesPercent:'38.71',
-				  marginPercent:'5.98',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(8)">view</a>'
-
-};
-dtArray.push(mlaDetails6);
-var mlaDetails7 = {
-				  distName:'Adilabad',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=4">Chennur</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=16617">Nallala Odelu</a>',
-				  partyName:'TRS',
-				  votesPercent:'39.98',
-				  marginPercent:'10.26',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(4)">view</a>'
-
-};
-dtArray.push(mlaDetails7);
-var mlaDetails8 = {
-				  distName:'Adilabad',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=296">Mancherial</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=16633">Aravinda Reddy Gaddam</a>',
-				  partyName:'TRS',
-				  votesPercent:'44.13',
-				  marginPercent:'10.46',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(296)">view</a>'
-
-};
-dtArray.push(mlaDetails8);
-
-//Nizamabad
-var mlaDetails9 = {
-				  distName:'Nizamabad',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=18">Yellareddy</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=16739">Eanugu Ravinder Reddy</a>',
-				  partyName:'TRS',
-				  votesPercent:'52.41',
-				  marginPercent:'25.04',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(18)">view</a>'
-
-};
-dtArray.push(mlaDetails9);
-var mlaDetails10 = {
-				  distName:'Nizamabad',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=342">Nizamabad Urban</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=16759">Endala Lakshmi Narayana</a>',
-				  partyName:'BJP',
-				  votesPercent:'42.52',
-				  marginPercent:'11.57',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(342)">view</a>'
-
-};
-dtArray.push(mlaDetails10);
-
-//Medak
-var mlaDetails11 = {
-				  distName:'Medak',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=40">Siddipet</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=16928">Thaneeru Harish Rao</a>',
-				  partyName:'TRS',
-				  votesPercent:'65.02',
-				  marginPercent:'48.99',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(40)">view</a>'
-
-};
-dtArray.push(mlaDetails11);
-
-//Warangal
-var mlaDetails12 = {
-				  distName:'Warangal',
-				  consName:'<a class="dataAnc" href="constituencyPageAction.action?constituencyId=363">Warangal West</a>',
-				  name:'<a class="dataAnc" href="candidateElectionResultsAction.action?candidateId=17820">Dasyam Vinaya Bhasker</a>',
-				  partyName:'TRS',
-				  votesPercent:'39.64',
-				  marginPercent:'5.78',
-				  completeResults:'<a class="dataAnc" href=javascript:{} onclick="getConstituencyElectionResults(363)">view</a>'
-
-};
-dtArray.push(mlaDetails12);
 
 buildResultsDataTable("mpsInfoDivBody",dtArray);
 
 }
-
 
 function buildResultsDataTable(id,dtSource)
 {	
 
  var allianceResultsColumnDefs = [
 							{key: "distName", label: "District", sortable:true},
-							{key: "consName", label: "Constituency", sortable:true},		
+							{key: "constName", label: "Constituency", sortable:true},		
 							{key: "name", label: "Candidate", sortable:true},
 							{key: "partyName", label: "Party", sortable:true},
 							{key: "votesPercent", label:"Votes %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true},
@@ -170,17 +28,11 @@ function buildResultsDataTable(id,dtSource)
 	var allianceResultsDataSource = new YAHOO.util.DataSource(dtSource); 
 	allianceResultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	allianceResultsDataSource.responseSchema = {
-			fields: ["distName","consName", "name", "partyName",{key: "votesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+			fields: ["distName","constName", "name", "partyName",{key: "votesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
 								  {key: "marginPercent", parser:YAHOO.util.DataSourceBase.parseNumber},"completeResults"] 
 			};
 
-	var myConfigs = { 
-			paginator : new YAHOO.widget.Paginator({ 
-			rowsPerPage    : 12			        
-			})
-			};
-
-	allianceResultsDataTable = new YAHOO.widget.DataTable(id, allianceResultsColumnDefs, allianceResultsDataSource,myConfigs);
+	allianceResultsDataTable = new YAHOO.widget.DataTable(id, allianceResultsColumnDefs, allianceResultsDataSource,null);
 				
 }
 

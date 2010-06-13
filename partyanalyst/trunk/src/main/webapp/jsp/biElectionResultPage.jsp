@@ -65,7 +65,16 @@
 	<link rel="stylesheet" type="text/css" href="styles/biElectionPage/biElectionPage.css">
 
 	<script type="text/javascript">
+		var electionYear = '${electionYear}';
+		var electionType = '${electionType}';
+		var presentYearResultsChartName = '${presentYearResultsChartName}';
+		var previousYearResultsChartName = '${previousYearResultsChartName}';
 
+		function getMoreDetails(constiId,elecType,elecYear)
+		{	
+			 var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+			 browser1.focus();
+		}
 		function getConstituencyElectionResults(id)
 		{
 		  var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+id+"&electionType="+assemblyElectionType+"&electionYear="+presentElectionYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
@@ -124,7 +133,7 @@
 		<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td><img border="none" src="images/icons/statePage/header_left.png"></td>
-				<td><div id="pageHeading"><span id="stateNameSpan"> Telangana Bi-Elections War - 2010 </div></span></td>
+				<td><div id="pageHeading"><span id="stateNameSpan"> Telangana Bi-Elections War - 2010</span></div></td>
 				<td><img border="none" src="images/icons/statePage/header_right.png"></td>
 			</tr>
 		</table>
@@ -301,7 +310,20 @@
 		</c:forEach>
 		districtsInfo.push(districtObj);	
 	</c:forEach>
-	
+	<c:forEach var="winningCandidates" items="${winningCandidatesList}">
+	var winCandidatesObj =	{
+			distName:"${winningCandidates.districtName}",
+			constName:"${winningCandidates.constituencyName}",
+			name: "${winningCandidates.candidateName}",
+			partyName: "${winningCandidates.partyName}",
+			votesPercent: "${winningCandidates.votesPercentage}",
+			marginPercent: "${winningCandidates.votesMargin}",
+			completeResults: '<A href="javascript:{}" onclick="getMoreDetails(${winningCandidates.constituencyId},electionType,electionYear)">More Results</A>'
+					
+				};
+	dtArray.push(winCandidatesObj);
+				
+</c:forEach>
 	initializeBiElectionPage();
 	
     var allianceCarousel = new YAHOO.widget.Carousel("partiesPerformanceCarousel",
