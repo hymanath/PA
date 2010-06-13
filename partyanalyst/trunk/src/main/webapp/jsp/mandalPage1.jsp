@@ -313,7 +313,12 @@ width:100%;
 	font-size:inherit;
 	margin:0;
 	padding:0;
-	width:100%;
+	width:90%;
+}
+.anchorStyle{
+   color:#3B4B58;
+   font-weight:bold;
+   text-decoration:none;
 }
 
 </style>
@@ -347,7 +352,8 @@ var allZPTCMPTCElecInfo = new Array();
 						candidate:'${constituency.candidateName}',
 						rank:'${constituency.rank}',
 						votesEarned:'${constituency.votesEarned}',
-						percentage:'${constituency.percentage}'
+						percentage:'${constituency.percentage}',
+						results:'<a href="javascript:{}" class="anchorStyle" title="Click to view more results"  onclick=getMoreResults('+zptcMptcElec.year+',\''+zptcMptcElec.type+'\','+${constituency.constituencyId}+')> More Results </a>'
 				};
 				party.constituencies.push(constituency); 
 			</c:forEach>	
@@ -398,7 +404,12 @@ var allZPTCMPTCElecInfo = new Array();
 		allACPCElecInfo.push(electionInfo);
 </c:forEach>
 
+function getMoreResults(elecYear,elecType,constiId)
+{
+   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+   browser1.focus();
 
+}
 	function buildCensusDataTable()
 	{
 		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
@@ -1034,6 +1045,7 @@ var allZPTCMPTCElecInfo = new Array();
 					str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].constituencies[k].rank+'</td>';
 					str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].constituencies[k].votesEarned+'</td>';
 					str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].constituencies[k].percentage+'</td>';
+					str += '<td>'+allZPTCMPTCElecInfo[i].parties[j].constituencies[k].results+'</td>';
 					str += '</div>';
 					str += '</tr>';
 				}
@@ -1068,6 +1080,8 @@ var allZPTCMPTCElecInfo = new Array();
 											key : "votesEarned",parser:"number"
 										},{
 											key : "percentage",parser:"float"
+										},{
+											key : "results"
 										}
 									]    
 				        }; 
@@ -1077,7 +1091,8 @@ var allZPTCMPTCElecInfo = new Array();
 								{key:"candidate", label:'Candidate Name', sortable:true, resizeable:true}, 
 								{key:"rank", label:'Rank',sortable:true, resizeable:true}, 
 								{key:"votesEarned",label:'Votes Earned', sortable:true, resizeable:true}, 
-								{key:"percentage",label:'%', sortable:true, resizeable:true}
+								{key:"percentage",label:'%', sortable:true, resizeable:true},
+					            {key:"results",label:'Results'}
 				        ]; 
 				 
 				partyDetailsTable = new YAHOO.widget.DataTable(divId,myColumnDefs, myDataSource);
