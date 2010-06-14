@@ -118,6 +118,11 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		positionSize =  positionsList.size();
 		staticParties = staticDataService.getStaticParties();
 		influenceRange = influencingPeopleService.getInfluenceRange();
+		
+		session = request.getSession();
+		session.setAttribute("staticParties", staticParties);
+		session.setAttribute("influenceRange",influenceRange);
+		
 		return Action.SUCCESS;
 	}
 
