@@ -87,6 +87,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.ConstituencyNamesComparator;
 import com.itgrids.partyanalyst.utils.DistrictNamesComparator;
 import com.itgrids.partyanalyst.utils.ElectionYearsComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -4051,7 +4052,7 @@ public class StaticDataService implements IStaticDataService {
 		e.printStackTrace();
 		log.debug("Exception raised ");
 	}
-		
+		Collections.sort(assemblyElectionResults, new ConstituencyNamesComparator());
 		return assemblyElectionResults;
 	}
 	
