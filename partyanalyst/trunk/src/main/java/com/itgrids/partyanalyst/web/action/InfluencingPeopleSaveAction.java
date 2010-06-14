@@ -11,17 +11,41 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import com.opensymphony.xwork2.validator.annotations.StringLengthFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.ValidatorType;
 
 public class InfluencingPeopleSaveAction extends ActionSupport implements ServletRequestAware{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private HttpServletRequest request;
 	private IInfluencingPeopleService influencingPeopleService;
 	private String firstName,lastName,email,mobile,gender,cast,occupation,state,district,
 						constituency,mandal,village,hamlet,party,position,influencingRange;
+	private int resultStatus = 3;
 	
+	public int getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(int resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
+		this.setRequest(request);
+	}
+	
+	public void setRequest(HttpServletRequest request) {
 		this.request = request;
+	}
+
+	public HttpServletRequest getRequest() {
+		return request;
 	}
 
 	public IInfluencingPeopleService getInfluencingPeopleService() {
@@ -33,7 +57,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.influencingPeopleService = influencingPeopleService;
 	}
 	
-	@RequiredStringValidator(key="requiredstring" ,shortCircuit=true)
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Enter First Name",shortCircuit=true)
 	public String getFirstName() {
 		return firstName;
 	}
@@ -42,6 +66,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.firstName = firstName;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Enter Last Name",shortCircuit=true)
 	public String getLastName() {
 		return lastName;
 	}
@@ -66,6 +91,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.mobile = mobile;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Gender",shortCircuit=true)
 	public String getGender() {
 		return gender;
 	}
@@ -90,6 +116,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.occupation = occupation;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select State",shortCircuit=true)
 	public String getState() {
 		return state;
 	}
@@ -98,6 +125,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.state = state;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select District",shortCircuit=true)
 	public String getDistrict() {
 		return district;
 	}
@@ -106,6 +134,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.district = district;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Constituency",shortCircuit=true)
 	public String getConstituency() {
 		return constituency;
 	}
@@ -114,6 +143,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.constituency = constituency;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Mandal",shortCircuit=true)
 	public String getMandal() {
 		return mandal;
 	}
@@ -122,6 +152,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.mandal = mandal;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Village",shortCircuit=true)
 	public String getVillage() {
 		return village;
 	}
@@ -130,6 +161,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.village = village;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Hamlet",shortCircuit=true)
 	public String getHamlet() {
 		return hamlet;
 	}
@@ -146,6 +178,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.party = party;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Position",shortCircuit=true)
 	public String getPosition() {
 		return position;
 	}
@@ -154,6 +187,7 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		this.position = position;
 	}
 
+	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Please Select Influencing Range",shortCircuit=true)
 	public String getInfluencingRange() {
 		return influencingRange;
 	}
@@ -163,7 +197,6 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 	}
 
 	public String execute() throws Exception{
-		
 		InfluencingPeopleBeanVO influencingPeopleBeanVO = new InfluencingPeopleBeanVO();
 		influencingPeopleBeanVO.setFirstName(firstName);
 		influencingPeopleBeanVO.setLastName(lastName);
@@ -176,7 +209,6 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		influencingPeopleBeanVO.setInfluencingRange(influencingRange);
 		influencingPeopleBeanVO.setPosition(position);
 		influencingPeopleBeanVO.setHamlet(hamlet);
-		
 		Map<String, Long> influRangeAndValueMap = new HashMap<String, Long>();
 		try{
 			influRangeAndValueMap.put(IConstants.STATE_LEVEL, new Long(state));
@@ -193,12 +225,14 @@ public class InfluencingPeopleSaveAction extends ActionSupport implements Servle
 		
 		InfluencingPeopleBeanVO result = influencingPeopleService.saveInfluencePeopleInfo(influencingPeopleBeanVO, influRangeAndValueMap);
 		
-		if(result.getExceptionEncountered() != null){
+		if(result.getExceptionEncountered() != null){			
 			return ERROR;
 		}
-		
+		resultStatus = result.getResultCode();
 		return SUCCESS;
 	}
+
+	
 	
 	
 }
