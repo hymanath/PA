@@ -152,9 +152,6 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 	}
 
 		
-	@RequiredStringValidator(type = ValidatorType.FIELD, message = "Mobile number is required",shortCircuit=true)
-	@StringLengthFieldValidator(type = ValidatorType.FIELD,message = "mobile number should be 10 digits", shortCircuit = true,  minLength = "10",  maxLength = "10")
-	@RegexFieldValidator( type = ValidatorType.FIELD, expression = "^([9]{1})([02346789]{1})([0-9]{8})$", message="mobile number should contain digits",shortCircuit = true)
 	public String getMobile() {
 		return mobile;
 	}
@@ -301,16 +298,9 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 	
 	public String execute() throws Exception
 	{
-		externalPerson = IConstants.EXTERNAL_PERSON;
-		
-		effectedRangeList = influencingPeopleService.getInfluenceRange();
-		informationSourcesList = politicalChangesService.getAllPoliticalInformationSources();
-		staticPartiesList = staticDataService.getStaticParties();
 		session = request.getSession();
-		session.setAttribute("effectedRangeList", effectedRangeList);
-		session.setAttribute("informationSourcesList",informationSourcesList);
-		session.setAttribute("staticPartiesList",staticPartiesList);
-		
+		externalPerson = IConstants.EXTERNAL_PERSON;
+				
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		Long userID = user.getRegistrationID();
 		
@@ -334,12 +324,7 @@ public class PoliticalChangesRegistrationAction extends ActionSupport implements
 		politicalChangesVO.setUserId(userID);
 		ResultStatus result = politicalChangesService.savePoliticalChangeDataReceivedFromUser(politicalChangesVO);
 		resultStatus = result.getResultCode();
-		/*
-		session.removeAttribute("effectedRangeList");
-		session.removeAttribute("informationSourcesList");
-		session.removeAttribute("staticPartiesList");
-		*/
-		
+				
 		return Action.SUCCESS;	
 	}
 }
