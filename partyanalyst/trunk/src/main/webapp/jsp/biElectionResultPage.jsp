@@ -272,8 +272,8 @@
 	</c:forEach>
 	<c:forEach var="winningCandidates" items="${winningCandidatesList}">
 	var winCandidatesObj =	{
-			distName:"${winningCandidates.districtName}",
-			constName:"${winningCandidates.constituencyName}",
+			distName:'<a href="districtPageAction.action?districtId=${winningCandidates.districtId}&districtName=${winningCandidates.districtName}">${winningCandidates.districtName}</a>',
+			constName:'<a href="constituencyPageAction.action?districtId=${winningCandidates.districtId}&constituencyId=${winningCandidates.constituencyId}">${winningCandidates.constituencyName}',
 			name: "${winningCandidates.candidateName}",
 			partyName: "${winningCandidates.partyName}",
 			votesPercent: "${winningCandidates.votesPercentage}",
