@@ -70,9 +70,9 @@
         </action>
         
         <action name="influencingPeopleSaveAction" class="influencingPeopleSaveAction" >
-        	<result name="input">/jsp/loginForm.jsp</result>
-         	<result name="success">/jsp/influencingPeoplePageSuccess.jsp</result>
-         	<result name="error">/jsp/influencingPeopleErrorPage.jsp</result>
+        	<result name="input">/jsp/influencingPeople.jsp</result>
+         	<result name="success">/jsp/influencingPeople.jsp</result>
+         	<result name="error">/jsp/influencingPeople.jsp</result>
         </action>
         
         
@@ -1064,6 +1064,10 @@
 		 <action name="biElectionAction" class="biElectionAction">
 			<result name="success">/jsp/biElectionResultPage.jsp</result>
 			<result name="error">/jsp/biElectionResultErrorPage.jsp</result>
+		</action>
+		
+		<action name="influencingPeopleRegistration" class="influencingPeopleRegistration">
+			 <result name="success">/jsp/influencingPeople.jsp</result>			
 		</action>
 		
 		<action name="getMandalsVotingTrendzForBiElection" class="biElectionAction" method="getMandalsVotingTrendz"> 
