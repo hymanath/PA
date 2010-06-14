@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -82,31 +83,6 @@ public class PoliticalChangesAction extends ActionSupport implements
 		this.localPoliticalChangeId = localPoliticalChangeId;
 	}
 
-	public List<SelectOptionVO> getInformationSourcesList() {
-		return informationSourcesList;
-	}
-
-	public void setInformationSourcesList(
-			List<SelectOptionVO> informationSourcesList) {
-		this.informationSourcesList = informationSourcesList;
-	}
-
-	public List<SelectOptionVO> getStaticPartiesList() {
-		return staticPartiesList;
-	}
-
-	public void setStaticPartiesList(List<SelectOptionVO> staticPartiesList) {
-		this.staticPartiesList = staticPartiesList;
-	}
-
-	public List<SelectOptionVO> getEffectedRangeList() {
-		return effectedRangeList;
-	}
-
-	public void setEffectedRangeList(List<SelectOptionVO> effectedRangeList) {
-		this.effectedRangeList = effectedRangeList;
-	}
-
 	public String getExternalPerson() {
 		return externalPerson;
 	}
@@ -178,19 +154,22 @@ public class PoliticalChangesAction extends ActionSupport implements
 		this.setContext(context);
 	}
 
-	public void setServletRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-
+	
 	public HttpSession getSession() {
 		return session;
 	}
 	public void setSession(HttpSession session) {
 		this.session = session;
 	}
+	
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;		
+	}	
+	
 	public HttpServletRequest getRequest() {
 		return request;
 	}
+
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -237,6 +216,12 @@ public class PoliticalChangesAction extends ActionSupport implements
 	}
 	
 	public String execute() throws Exception {		
+		
+		effectedRangeList = new ArrayList<SelectOptionVO>();
+		informationSourcesList = new ArrayList<SelectOptionVO>();
+		staticPartiesList = new ArrayList<SelectOptionVO>();
+		HttpSession session = request.getSession();
+		
 		externalPerson = IConstants.EXTERNAL_PERSON;
 		effectedRangeList = influencingPeopleService.getInfluenceRange();
 		informationSourcesList = politicalChangesService.getAllPoliticalInformationSources();
