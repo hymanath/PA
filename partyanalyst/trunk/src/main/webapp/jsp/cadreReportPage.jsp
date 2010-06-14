@@ -353,7 +353,7 @@
 				</div>
 			</div>	
 			
-			<div id="influencePeopleRegistration">
+			<!--<div id="influencePeopleRegistration">
 				<div id="influencePeopleRegistration_head">
 					<table border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%">
 						<tr>
@@ -362,6 +362,7 @@
 						</tr>
 					</table>
 				</div>				
+				
 				<div id="influencePeopleRegistration_body">
 					<div>Add/Register most influence people you know.</div>
 					<div style="text-align:right;padding-top:10px;">
@@ -369,7 +370,8 @@
 						<input type="button" id="influencePeopleCadreSubmit" name="influencePeopleRegistersubmit" onclick="registerInfluencePeople()" value="Register Influence People"/></div>
 					</a>					
 				</div>	
-			</div>
+				
+			--></div>
 		</div>
 
 		<!-- Cadre Top Layout Div-->
