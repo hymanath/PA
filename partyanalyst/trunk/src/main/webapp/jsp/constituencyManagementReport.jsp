@@ -401,6 +401,10 @@
 				
 			
 		}
+		function redirectToNewWindowForAddingInfluencingPeople(){
+			var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>","influencingPeopleRegistration","scrollbars=yes,height=600,width=450,left=200,top=200");
+			browser1.focus();
+		}
 		
 		
 		function callAjax(param,jsObj,url){
@@ -520,7 +524,12 @@
 							</table>	
 						</div>
 						<div id="influencing_people_body" class="containerBodyDivClass">
-							<DIV style="text-align:right;padding:10px;"><A href="javascript:{}" onclick="getInfluencingPeoplePopUp('influencingPeoplePopUpDiv')" class="linkButton" >Add Influencing Persons</A></DIV>
+
+							
+							<DIV class="yui-skin-sam"><div id="localPoliticalChangesRegistration"></DIV>
+								<input type="button" style="margin-left:330px;margin-top:10px;" onclick="redirectToNewWindowForAddingInfluencingPeople()" value="Add Influencing Persons" class="linkButton" />
+							</DIV>
+					
 							<div id="influencing_people_data_body" class="yui-skin-sam"><div id="influencingPeopleDtDiv"></div></div>
 							<div id="influencingPeoplePopUpDiv"></div>
 							<div id="influencing_people_footer">
@@ -532,7 +541,7 @@
 											<TD colspan="2"><DIV style="text-align:left;">Should not exceed 200 chars!</DIV></TD>
 										</TR>	
 										<TR>
-											<TD><TEXTAREA id="smsText" cols="70" onkeyup=limitText("smsText","maxcount",200)></TEXTAREA></TD>
+											<TD><TEXTAREA id="smsText" cols="70" onkeyup='limitText("smsText","maxcount",200)'></TEXTAREA></TD>
 											<TD valign="bottom"><INPUT type="button" value="Send SMS" onclick="sendSMS()" class="button"/></TD>
 										</TR>
 										<TR>
