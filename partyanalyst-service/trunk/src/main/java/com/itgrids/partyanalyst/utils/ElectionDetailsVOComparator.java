@@ -8,7 +8,6 @@ public class ElectionDetailsVOComparator implements Comparator<ConstituencyElect
 
 	
 
-	@Override
 	public int compare(ConstituencyElectionResultsVO a,ConstituencyElectionResultsVO b) {
 		return b.getElectionYear().compareTo(a.getElectionYear());
 	}
