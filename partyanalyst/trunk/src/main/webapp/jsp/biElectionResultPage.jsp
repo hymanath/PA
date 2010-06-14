@@ -214,7 +214,7 @@
 							<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 							<td>	
 								<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:793px;">
-									<span>Bi-Election Constituencie Details</span>
+									<span>Bi-Election Constituency Details</span>
 								</div>
 							</td>
 							<td><img src="images/icons/districtPage/header_right.gif"/></td>
