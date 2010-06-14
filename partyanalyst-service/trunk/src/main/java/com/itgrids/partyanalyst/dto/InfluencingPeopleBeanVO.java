@@ -1,8 +1,22 @@
 package com.itgrids.partyanalyst.dto;
 
 public class InfluencingPeopleBeanVO extends ResultStatus{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String firstName,lastName,email,mobile,gender,cast,occupation,state,district,
 	constituency,mandal,village,hamlet,party,position,influencingRange;
+	private ResultStatus resultStatus;
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 
 	public String getFirstName() {
 		return firstName;
