@@ -23,6 +23,8 @@ import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.hibernate.InfluencingPeoplePositionDAO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
@@ -234,6 +236,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			public Object doInTransaction(TransactionStatus status) {
 				InfluencingPeople influencingPeople = new InfluencingPeople();
 				InfluencingPeopleBeanVO influencingPeopleVO = new InfluencingPeopleBeanVO();
+				ResultStatus resultStatus = new ResultStatus();
 				try{
 					influencingPeople.setFirstName(influencingPeopleBeanVO.getFirstName());
 					influencingPeople.setLastName(influencingPeopleBeanVO.getLastName());
@@ -251,9 +254,14 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 					influencingPeople = influencingPeopleDAO.save(influencingPeople);
 					influencingPeopleVO.setFirstName(influencingPeople.getFirstName());
 					influencingPeopleVO.setLastName(influencingPeople.getLastName());
+					
+					resultStatus.setResultPartial(false);
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				}catch(Exception ex){
 					influencingPeopleVO.setExceptionEncountered(ex);
 					ex.printStackTrace();
+					resultStatus.setExceptionEncountered(ex);
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				}
 					return influencingPeopleVO;		
 			}
