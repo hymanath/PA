@@ -330,6 +330,10 @@
 	</bean>
 	<bean id="sendSMSAction" class="com.itgrids.partyanalyst.web.action.SendSMSAction" singleton="false">
 		<property name="countrySmsService" ref="countrySmsService" />
+	</bean>   
+	<bean id="influencingPeopleRegistration" class="com.itgrids.partyanalyst.web.action.InfluencingPeopleRegistration" singleton="false">
+		<property name="influencingPeopleService" ref="influencingPeopleService" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	<bean id="biElectionAction" class="com.itgrids.partyanalyst.web.action.BiElectionAction" singleton="false">
 	    <property name="biElectionPageService" ref="biElectionPageService" />
