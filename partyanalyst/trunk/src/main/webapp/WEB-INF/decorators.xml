@@ -28,6 +28,7 @@
 		<pattern>/influencingPeopleSaveAction.action*</pattern>	
 		<pattern>/politicalChangesAction.action*</pattern>	 	
 		<pattern>/politicalChangesRegistrationAction.action*</pattern>
+		<pattern>/influencingPeopleRegistration.action*</pattern>
 		<pattern>/addNewProblemAction.action*</pattern>
 		<pattern>/addNewProblemSubmitAction.action*</pattern>
     </excludes>
