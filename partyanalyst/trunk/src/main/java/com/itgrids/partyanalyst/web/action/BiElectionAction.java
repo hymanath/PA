@@ -24,6 +24,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
+import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
@@ -69,8 +70,11 @@ public class BiElectionAction extends ActionSupport implements
 	List<MandalAllElectionResultsVO> mandalAllElectionResultsVO;
 	List<BiElectionResultsVO> biElectionResultsVO;
 	List<CandidateElectionResultVO> winningCandidatesList;
+	private BiElectionResultsMainVO biElectionResultsMainVO;
 	private String electionYear;
 	private String electionType;
+	
+	private String mandalWiseResultsChart;
 	
 
 	public List<BiElectionResultsVO> getBiElectionResultsVO() {
@@ -85,6 +89,15 @@ public class BiElectionAction extends ActionSupport implements
 		this.context = context;		
 	}
 	
+	public BiElectionResultsMainVO getBiElectionResultsMainVO() {
+		return biElectionResultsMainVO;
+	}
+
+	public void setBiElectionResultsMainVO(
+			BiElectionResultsMainVO biElectionResultsMainVO) {
+		this.biElectionResultsMainVO = biElectionResultsMainVO;
+	}
+
 	public String getChartPath() {
 		return chartPath;
 	}
@@ -322,14 +335,21 @@ public class BiElectionAction extends ActionSupport implements
 		
 		Long districtId = new Long(jObj.getString("districtId"));
 		Long constiId =  new Long(jObj.getString("constituencyId"));
+		String constiName = jObj.getString("constiName");
 		
 		
 		biElectionResultsVO = biElectionPageService.getMandalWiseResultsForAConstituency(constiId);
 		
+		biElectionResultsMainVO = new BiElectionResultsMainVO();
+		biElectionResultsMainVO.setBiElectionResultsMainVO(biElectionResultsVO);
+		biElectionResultsMainVO.setMandalWiseResultsChart(getMandalResults(constiId,constiName));
+		biElectionResultsMainVO.setAssemblyResultsChartForPresentYear(presentYearResultsChartName);
+		biElectionResultsMainVO.setAssemblyResultsChartForPreviousYear(previousYearResultsChartName);
+		
 		return Action.SUCCESS;
 	}
 	
-	  public void getMandalResults(Long constituencyId,String constituencyName){
+	  public String getMandalResults(Long constituencyId,String constituencyName){
 		 
 		  List<ElectionResultPartyVO> list = staticDataService.getAllMandalElectionInformationForAConstituency(constituencyId);
 
@@ -342,6 +362,10 @@ public class BiElectionAction extends ActionSupport implements
 			  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			  ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataset(list);
 			  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,320,920,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()));
+			  
+			  mandalWiseResultsChart = chartName;
+			  
+			 return chartName;
 	  }
 	  
 	  
@@ -407,4 +431,12 @@ public class BiElectionAction extends ActionSupport implements
 				}
 	       return chartColorsAndDataSetVO;
 		}
+
+	public String getMandalWiseResultsChart() {
+		return mandalWiseResultsChart;
+	}
+
+	public void setMandalWiseResultsChart(String mandalWiseResultsChart) {
+		this.mandalWiseResultsChart = mandalWiseResultsChart;
+	}
 }

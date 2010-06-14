@@ -82,12 +82,13 @@
 		
 		}
 
-		function getMandalVotingTrendz(distId,constId)
+		function getMandalVotingTrendz(distId,constId,constName)
 		{
 			var jsObj=
 			{
 					districtId:distId,
 					constituencyId:constId, 
+					constiName:constName,
 					task:"getMandalVotingTrendz"
 			}
 		
@@ -189,14 +190,14 @@
 					<li>
 						<div id="allElectionResultsInDT"  class="allianceListDiv">
 							<div id="allElectionResultsInDT_head"></div>
-							<div id="allElectionResultsInDT_body"></div>
+							<div id="allElectionResultsInDT_body"><img src="charts/${presentYearResultsChartName}"/></div>
 						
 						</div>
 					</li>
 					<li>
 						<div id="positionsGraphDiv" class="allianceListDiv">
 							<div id="electionHirarchiDiv" ></div>
-							<div id="partyPositionsDiv"></div>
+							<div id="partyPositionsDiv"><img src="charts/${previousYearResultsChartName}"/></div>
 						</div>
 					</li>
 					</ul>
@@ -225,6 +226,9 @@
 					</div>
 				</div>
 			</div>
+
+		
+
 			<div id="mla_main_div">
 				<div id="mla_head">
 					<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
@@ -240,51 +244,7 @@
 					</table>
 				</div>
 				<div id="mla_body" class="yui-skin-sam">
-					<div id="mlaInfoDivBody">
-						<table>
-						<tr><td align="center"><b><u>Karimnagar</u></b></td></tr>
-						 <tr>
-						      <td>
-							     <ul class="dashBoardContentList"><li><b>Dharmapuri</b></li></ul>
-								 <ul class="regionsList"><li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Dharmapuri" title="click to view Dharmapuri mandal details">Dharmapuri</a></li>
-								     <li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Velgatoor" title="click to view Velgatoor mandal details">Velgatoor</a></li>
-								     <li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Dharmaram"  title="click to view Dharmaram mandal details">Dharmaram</a></li>
-								     <li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Gollapalle"  title="click to view Gollapalle mandal details">Gollapalle</a></li>
-								     <li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Pegadapalle"  title="click to view Pegadapalle mandal details">Pegadapalle</a></li></ul>
-							  </td>
-							  <td>
-							     <ul class="dashBoardContentList"><li><b>Huzurabad</b></li></ul>
-                                  <ul class="regionsList"><li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Veenavanka" title="click to view Veenavanka mandal details">Veenavanka</a></li>
-								      <li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Jammikunta" title="click to view Jammikunta mandal details">Jammikunta</a></li>
-								      <li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Huzurabad" title="click to view Huzurabad mandal details">Huzurabad</a></li>
-								      <li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Kamalapur" title="click to view Kamalapur mandal details">Kamalapur</a></li></ul>
-								      
-							  </td>
-							  <td>
-							     <ul class="dashBoardContentList"><li><b>Koratla</b></li></ul>
-								  <ul class="regionsList"><li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Ibrahimpatnam" title="click to view Ibrahimpatnam mandal details">Ibrahimpatnam</a></li>
-								      <li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Mallapur" title="click to view Mallapur mandal details">Mallapur</a></li>
-								      <li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Koratla" title="click to view Koratla mandal details">Koratla</a></li>
-								      <li><a href="mandalPageElectionInfoAction.action?MANDAL_ID=110&MANDAL_NAME=Metpalle" title="click to view Metpalle mandal details">Metpalle</a></li></ul>
-							  </td>
-							  <td>
-							     <ul class="dashBoardContentList"><li><b>Sircilla</b></li></ul>
-								  <ul class="regionsList"><li>Yellareddipet</li>
-								      <li>Gambhiraopet</li>
-								      <li>Mustabad</li>
-								      <li>Sircilla</li></ul>
-							  </td>
-							  <td><ul class="dashBoardContentList"><li><b>Vemulawada</b></li></ul>
-							      <ul class="regionsList"><li>Medipalle</li>
-								      <li>Kathlapur</li>
-								      <li>Chandurthi</li>
-								      <li>Vemulawada</li>
-									  <li>Konaraopeta</li></ul>
-							  </td>
-                         </tr>
-  
-						</table>
-					</div>
+					
 				</div>
 			</div>
 		</div>

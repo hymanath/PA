@@ -102,25 +102,40 @@ function buildMandalsVotingTrendz()
 	str += 'Select Constituency : ';
 	str += '</th>';
 	str += '<td>';
-	str += '<div id="constSelectElmt"><select onchange="setValuesForMandalVotingTrendz(this.options[this.selectedIndex].value)">';
+	str += '<div id="constSelectElmt"><select onchange="setValuesForMandalVotingTrendz(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
 	for(var j in districtsInfo[0].constituencies)
 	{
 		str += '<option value="'+districtsInfo[0].constituencies[j].constId+'"> '+districtsInfo[0].constituencies[j].constName+' </option>';
 	}	
 	str += '</select></div>';
-	str += '</td></table>';
+	str += '</td>';
+	str += '<td><img id="cursorImg" style="display:none;" src="images/icons/search.gif"/></td>';	
+	str += '</table>';
 	str += '<div id="mandalVotingTrendzDataDiv">';
-	str += '<div id="mandalVotingTrendzDataDiv_head"></div>';
-	str += '<div id="mandalVotingTrendzDataDiv_body"></div>';
+	str += '<div id="mandalVotingTrendzDataDiv_head">Mandal Voting Trendz</div>';
+	str += '<div id="mandalVotingTrendzDataDiv_body">';
+	str += '	<div id="mandalDetailsChart_body">';
+	str += '	<div style="margin-top:5px;margin-left:300px;">';
+	str += '		<div style="color:#ADADAD"> Loading ...</div>';
+	str += '		<div> <img src="images/icons/barloader.gif"></img> </div>';
+	str += '	</div>';
+	str += '	</div>';
+	str += '	<div id="mandalVotingTrendzData"></div>';	
+	
+	str += '</div>';
 	str += '</div>';
 	elmt.innerHTML = str;
 
-	getMandalVotingTrendz(districtsInfo[0].districtId,districtsInfo[0].constituencies[0].constId);
+	getMandalVotingTrendz(districtsInfo[0].districtId,districtsInfo[0].constituencies[0].constId,districtsInfo[0].constituencies[0].constName);
 }
-
-function setValuesForMandalVotingTrendz(value)
+	
+function setValuesForMandalVotingTrendz(value,text)
 {
 	var radioValue = '';
+	var cursorImgElmt = document.getElementById('cursorImg');
+	if(cursorImgElmt)
+		cursorImgElmt.style.display = 'block';
+
 	var elements = document.getElementsByTagName('input'); 
 
 	for(var i=0;i<elements.length;i++)
@@ -129,7 +144,7 @@ function setValuesForMandalVotingTrendz(value)
 			radioValue = elements[i].value;
 	}
 	
-	getMandalVotingTrendz(radioValue,value);
+	getMandalVotingTrendz(radioValue,value,text);
 }
 
 function getConstituenciesInfo(distId,index)
@@ -141,7 +156,7 @@ function getConstituenciesInfo(distId,index)
 		return;
 
 	var str = '';
-	str += '<select onchange="setValuesForMandalVotingTrendz(this.options[this.selectedIndex].value)">';
+	str += '<select onchange="setValuesForMandalVotingTrendz(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
 	str += '<option value="0">Select</option>';
 	for(var j in obj.constituencies)
 	{
@@ -184,13 +199,25 @@ function buildBiElectionDistricts()
 	elmt.innerHTML = str;
 }
 
-function buildMandalVotingTrendzData(jsObj,results)
+function buildMandalVotingTrendzData(jsObj,resultsData)
 {
+	
 	var headElmt = document.getElementById("mandalVotingTrendzDataDiv_head");
-	var bodyElmt = document.getElementById("mandalVotingTrendzDataDiv_body");
+	var bodyElmt = document.getElementById("mandalVotingTrendzData");
+	var graphElmt = document.getElementById("mandalDetailsChart_body");
+	var results = resultsData.biElectionResultsMainVO;
 
-	if(!headElmt || !bodyElmt)
+	if(!headElmt || !bodyElmt || !resultsData || !graphElmt)
 		return;
+	
+	var cursorImgElmt = document.getElementById('cursorImg');
+	if(cursorImgElmt)
+		cursorImgElmt.style.display = 'none';
+
+	var graphStr = '';
+	graphStr += '<img height="300" width="820" src="charts/'+resultsData.mandalWiseResultsChart+'"/>';
+
+	graphElmt.innerHTML = graphStr;
 
 	var hstr = '';
 	hstr = 'Mandal Voting Trendz';
@@ -200,17 +227,17 @@ function buildMandalVotingTrendzData(jsObj,results)
 	var str = '';
 	str += '<table width="100%">';
 	for(var i in results)
-	{		
-		str += '<tr>';
+	{	
 		for(var j in results[i].biElectionResultsVO)
 		{
+			
 			var electionHeaderLength = (results[i].biElectionResultsVO[j].partysList.length*2)+2;
 			var partyHeaderLength = results[i].biElectionResultsVO[j].partysList.length*2;
-
-			str += '<td style="vertical-align:top">';
+			str += '<tr>';
+			str += '<td style="vertical-align:top;padding-bottom:20px;">';
 			str += '<table width="100%" class="mandalResultsTable" border="1">';
 			str += '<tr>';
-			str += '<th colspan="'+electionHeaderLength+'" align="center">'+results[i].biElectionResultsVO[j].electionType+' - '+results[i].biElectionResultsVO[j].electionYear+'</th>';
+			str += '<th colspan="'+electionHeaderLength+'" align="left">'+results[i].biElectionResultsVO[j].electionType+' - '+results[i].biElectionResultsVO[j].electionYear+'</th>';
 			str += '</tr>';
 			str += '<tr>';
 			str += '<th rowspan="3">Mandal</th>';
@@ -233,77 +260,54 @@ function buildMandalVotingTrendzData(jsObj,results)
 			{
 				var info = results[i].biElectionResultsVO[j].electionResultsForMandal[k];
 				str += '<tr>';
-				str += '<th rowspan="'+info.partyElecResultsInConstituency.length+'">'+info.mandalName+'</th>';
-				for(var l in info.partyElecResultsInConstituency)
+				if(info.partyElecResultsInConstituency.length == 0)
 				{
-					str += '<th>'+info.partyElecResultsInConstituency[l].constituencyName+'</th>';
-									
-					for(var m in info.partyElecResultsInConstituency[l].partyElecResults)
+					var cols = partyHeaderLength+1;
+					str += '<th>'+info.mandalName+'</th>';
+					for(var colsno = 0;colsno < cols; colsno++)
+						str += '<th> -- </th>';	
+				}
+				else
+				{
+					str += '<th rowspan="'+info.partyElecResultsInConstituency.length+'">'+info.mandalName+'</th>';				
+					for(var l in info.partyElecResultsInConstituency)
 					{
-						var data = info.partyElecResultsInConstituency[l].partyElecResults[m];						
-						str += '<td>'+data.votesEarned+'</td><td>'+data.percentage+'</td>';					
+						str += '<th>'+info.partyElecResultsInConstituency[l].constituencyName+'</th>';
+										
+						for(var m in info.partyElecResultsInConstituency[l].partyElecResults)
+						{
+							var data = info.partyElecResultsInConstituency[l].partyElecResults[m];						
+							str += '<td>'+data.votesEarned+'</td><td>'+data.percentage+'</td>';					
+						}
+						
+						str+='</tr><tr>';
 					}
-					
-					str+='</tr><tr>';
 				}
 				str += '</tr>';
 			}
 			
 			str += '</table>';
 			str += '</td>';
+			str += '</tr>';
+		
 		}
-		str += '</tr>';
+		
 	}
 	str += '</table>';
 
 	bodyElmt.innerHTML = str;
 
-	for(var i in results)
+	
+	
+	/*for(var i in results)
 	{
 		for(var j in results[i].electionResultsForAllPartiesVO)
 		{
 			buildVotingTrendzDataTable("electionResults_"+i+"_electionType_"+j+"_body",results[i].electionResultsForAllPartiesVO[j].constituencyElectionResultsVO,results[i].electionResultsForAllPartiesVO[j].electionType);
 		}
-	}
+	}*/
 }
 
-/*
-	for(var l in info.partyElecResultsInConstituency)
-				{
-					str += '<th>'+info.partyElecResultsInConstituency[l].constituencyName+'</th>';
-					str += '<td>';
-					str += '<table width="100%" class="mandalResultsTable">';
-					for(var m in info.partyElecResultsInConstituency[l].partyElecResults)
-					{
-						var data = info.partyElecResultsInConstituency[l].partyElecResults[m];
-						str += '<td>'+data.votesEarned+'</td><td>'+data.percentage+'</td>';
-					}
-					str += '</table>';
-					str += '</td>'
-
-					str+='</tr><tr>';
-				}
-
-
-	str += '<fieldset>';
-		str += '<legend>'+results[i].mandalName+'</legend>';
-		for(var j in results[i].electionResultsForAllPartiesVO)
-		{
-			str += '<div id="electionResults_'+i+'_electionType_'+j+'">';
-			str += '<div id="electionResults_'+i+'_electionType_'+j+'_head" class="elecTypeMandalsVoting_head">';
-			str += '<table class="elecTypeMandalsVoting_table">';
-			str += '<tr>';
-			str += '<th>Election Type : </th>';
-			str += '<th>'+results[i].electionResultsForAllPartiesVO[j].electionType+'</th>';
-			str += '</tr>';
-			str += '</table>';
-			str += '</div>';
-			str += '<div id="electionResults_'+i+'_electionType_'+j+'_body">'; 
-			str += '</div>';
-			str += '<div>';
-		}
-		str += '</fieldset>';
-*/
 
 function buildVotingTrendzDataTable(divID,arr,electionType)
 {

@@ -100,7 +100,7 @@ margin-left:40px;
 
 #partiesPerformanceCarousel .yui-carousel-element li 
 {
-	height:320px;
+	height:350px;
 	width:920px;
 }
 
@@ -172,4 +172,17 @@ margin-left:40px;
 .mandalResultsTable td
 {
 	padding:8px;
+}
+
+#mandalDetailsChart_main
+{
+	margin-bottom:30px;
+}
+
+#mandalDetailsChart_body
+{
+	width:848px;
+	height:320px;
+	padding-bottom:20px;
+	padding-top:20px;
 }

@@ -1072,7 +1072,7 @@
 		
 		<action name="getMandalsVotingTrendzForBiElection" class="biElectionAction" method="getMandalsVotingTrendz"> 
               <result type="json" name="success">
-           		<param name="root">biElectionResultsVO</param>
+           		<param name="root">biElectionResultsMainVO</param>
         	</result>       		
         </action>
 	</package>
