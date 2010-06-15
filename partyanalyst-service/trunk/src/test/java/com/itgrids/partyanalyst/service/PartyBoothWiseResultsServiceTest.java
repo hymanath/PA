@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.easymock.EasyMock;
@@ -98,7 +101,7 @@ public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
 		EasyMock.verify(nominationDAO);
 	}
 	*/
-	
+	/*
 	//@Test
 	public void test(){
 		ElectionWiseMandalPartyResultListVO firstList = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(844l, "Mandal");
@@ -133,10 +136,10 @@ public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
 			}
 		}
 	}
-	
+	*/
 	public void testGetAllMPTCAndZPTCElectionsInfoInTehsil(){
 		ElectionWiseMandalPartyResultListVO obj
-		 = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(853l);
+		 = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(844l);
 		for(PartyResultVO partyResultVO:obj.getAllPartiesAllElectionResults()){
 			System.out.println(partyResultVO.getPartyName());
 			for(ElectionResultVO electionResultVO:partyResultVO.getElectionWiseResults()){
@@ -159,6 +162,62 @@ public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
 		}
 		
 		
+	}
+	
+	
+	public void testGetAllMPTCAndZPTCElectionsInfoInTehsilMapTest(){
+		
+		Map<PartyResultsVO, List<Object[]>> partiesInElectionMap = new LinkedHashMap<PartyResultsVO, List<Object[]>>();
+		PartyResultsVO partyResultsVO = new PartyResultsVO();
+		partyResultsVO.setPartyId(new Long(2));
+		partyResultsVO.setPartyName("INC");
+		
+		Object[] objectArray = new Object[2];
+		objectArray[0]="One";
+		objectArray[1]="Two";
+		
+		Object[] objectArray2 = new Object[2];
+		objectArray[0]="Threee";
+		objectArray[1]="Four";
+
+		
+		List<Object[]> testObjects = new ArrayList<Object[]>();
+		testObjects.add(objectArray);
+		testObjects.add(objectArray2);
+
+		PartyResultsVO partyResultsVO1 = new PartyResultsVO();
+		partyResultsVO1.setPartyId(new Long(2));
+		partyResultsVO1.setPartyName("INC");
+		
+		Object[] objectArray3 = new Object[2];
+		objectArray[0]="Five";
+		objectArray[1]="Six";
+		
+
+		
+		List<Object[]> testObjects1 = new ArrayList<Object[]>();
+		testObjects.add(objectArray3);
+				
+		
+		partiesInElectionMap.put(partyResultsVO, testObjects);
+		partiesInElectionMap.put(partyResultsVO1, testObjects1);
+		
+		
+		PartyResultsVO partyResultsVO3 = new PartyResultsVO();
+		partyResultsVO3.setPartyId(new Long(2));
+		partyResultsVO3.setPartyName("INC");
+		
+		List<Object[]> list = partiesInElectionMap.get(partyResultsVO);
+		
+		System.out.println("List Size: "+list.size());
+		
+		List<Object[]> list1 = partiesInElectionMap.get(partyResultsVO1);
+		
+		System.out.println("List2 Size: "+list1.size());
+		
+		List<Object[]> list3 = partiesInElectionMap.get(partyResultsVO3);
+		
+		System.out.println("List3 Size: "+list3);
 	}
 	
 	
