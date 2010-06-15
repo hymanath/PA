@@ -453,10 +453,14 @@ public class BiElectionPageService implements IBiElectionPageService {
 				  }
 			  }
 			  
-			  //for parties
+			  //For parties participated info
 			  Map<Long,String> partyIdAndName = new HashMap<Long,String>();
 			  List<SelectOptionVO> partysIdsAndName = new ArrayList<SelectOptionVO>();
 			  if(electionResultsForMandal != null && electionResultsForMandal.size() > 0){
+				  
+				  partyIdAndName = getPartiesParticipatedDetails(electionResultsForMandal);
+				  
+				  /*
 				  for(MandalElectionResultVO manElecRes:electionResultsForMandal){
 					  
 					  List<PartyElectionResultsInConstituencyVO> partyConstiRes = manElecRes.getPartyElecResultsInConstituency();
@@ -473,7 +477,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 						  }
 					  }
 					  
-				  }
+				  }*/
 				  if(!partyIdAndName.isEmpty()){
 					Set entries = partyIdAndName.entrySet();
 					Iterator iterator = entries.iterator();
@@ -490,6 +494,33 @@ public class BiElectionPageService implements IBiElectionPageService {
 				  }
 				  Collections.sort(partysIdsAndName, new PartyResultsComparator());
 				  electionResultsForMandalVO.setPartysList(partysIdsAndName);
+				  
+				  //assign party's not participated mandal results empty in VO
+                  for(MandalElectionResultVO manElecRes:electionResultsForMandal){
+					  
+					  List<PartyElectionResultsInConstituencyVO> partyConstiRes = manElecRes.getPartyElecResultsInConstituency();
+					  
+					  for(PartyElectionResultsInConstituencyVO partyResInConsti:partyConstiRes){
+						  
+						  List<PartyResultsVO> partyElecResults = partyResInConsti.getPartyElecResults();
+						  
+						  for(SelectOptionVO partiPartys:partysIdsAndName){
+							  boolean flag = checkForParty(partyElecResults,partiPartys);
+							  if(flag == false){
+								  PartyResultsVO partyRes = new PartyResultsVO();
+								  partyRes.setPartyId(partiPartys.getId());
+								  partyRes.setPartyName(partiPartys.getName());
+								  partyRes.setVotesEarned(new Long(0));
+								  partyRes.setTotalSeatsWon(0);
+								  partyRes.setPercentage("N/A");
+								  partyResInConsti.getPartyElecResults().add(partyRes);
+							  }
+						  }
+						  Collections.sort(partyResInConsti.getPartyElecResults(), new PartyResultsVOComparator());
+					  }
+				
+				  }
+				  
 			  }
 			
 			}
@@ -507,7 +538,48 @@ public class BiElectionPageService implements IBiElectionPageService {
 		}
 	 return electionResultsForMandalVO;
 	}
+	
+	public boolean checkForParty(List<PartyResultsVO> partyElecRes,SelectOptionVO partiParty){
+		
+		if(partyElecRes != null && partiParty != null){
+		for(PartyResultsVO results:partyElecRes){
+			if(partiParty.getId().equals(results.getPartyId()))
+				return true;
+		}
+		}
+		return false;
+	}
 
+	/*
+	 * Method returns parties that has been participated in a particular election in set of mandals in a constituency
+	 */
+	public Map<Long,String> getPartiesParticipatedDetails(List<MandalElectionResultVO> electionResultsForMandal){
+		
+		log.debug(" Inside getPartiesParticipatedDetails Method ...");
+		 Map<Long,String> partyIdAndName = null;
+		 if(electionResultsForMandal != null){
+			 
+			 partyIdAndName = new HashMap<Long,String>();
+			 for(MandalElectionResultVO manElecRes:electionResultsForMandal){
+				 List<PartyElectionResultsInConstituencyVO> partyConstiRes = manElecRes.getPartyElecResultsInConstituency();
+				  
+				  for(PartyElectionResultsInConstituencyVO partyResInConsti:partyConstiRes){
+					  
+					  List<PartyResultsVO> partyElecResults = partyResInConsti.getPartyElecResults();
+					  
+					  for(PartyResultsVO partyRes:partyElecResults){
+						  
+						  if(partyIdAndName.isEmpty() || !partyIdAndName.containsKey(partyRes.getPartyId())){
+							  partyIdAndName.put(partyRes.getPartyId(), partyRes.getPartyName()); 
+						  }
+					  }
+				  }
+			 }
+		 }
+		 
+	 return partyIdAndName;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#getMandalWiseResultsForAConstituency(java.lang.Long)
@@ -637,7 +709,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				partyRslt.setPartyId(result.getId());
 				partyRslt.setPartyName(result.getName());
 				partyRslt.setVotesEarned(new Long(0));
-				partyRslt.setPercentage("--");
+				partyRslt.setPercentage("N/A");
 				
 				partyResults.getPartyElecResults().add(partyRslt);
 				
@@ -673,7 +745,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		resultVO.setPartyId(partyResult.getPartyId());
 		resultVO.setPartyName(partyResult.getPartyName());
 		resultVO.setVotesEarned(votesEarned);
-		resultVO.setPercentage("--");
+		resultVO.setPercentage("N/A");
 		
 		partyResultsVOList.add(resultVO);
 				
