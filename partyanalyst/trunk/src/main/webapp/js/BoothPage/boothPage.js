@@ -33,7 +33,7 @@ function showBoothPagePanel(resultVO){
 	for(var i in resultVO.elections)
 	{
 		yearStr+=resultVO.elections[i].electionTypeYear+", ";
-		str += '<td>';
+		str += '<td valign="top">';
 		str += '<fieldset>';
 		str += '<legend>'+resultVO.elections[i].constituencyName+' '+resultVO.elections[i].electionTypeYear+'</legend>';
 		str += '<div id="'+resultVO.elections[i].constituencyId+'_div" class="boothDatatable"></div>';
@@ -42,6 +42,7 @@ function showBoothPagePanel(resultVO){
 	}
 	str += '</tr>';
 	str += '</table>';
+	str += '</div>';
 	
 	yearStr = yearStr.substring(0,yearStr.length-2);
 	
