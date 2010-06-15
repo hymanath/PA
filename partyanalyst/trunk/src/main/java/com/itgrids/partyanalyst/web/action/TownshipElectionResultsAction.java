@@ -33,6 +33,9 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	private String electionYear;
 	private String mandalName;
 	private ServletContext context;
+	private String windowTask;
+	private Long tehsilId;
+	private Long electId;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
@@ -83,6 +86,32 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	public void setMandalName(String mandalName) {
 		this.mandalName = mandalName;
 	}
+	
+	public void setWindowTask(String windowTask) {
+		this.windowTask = windowTask;
+	}
+
+	public String getWindowTask() {
+		return windowTask;
+	}
+	
+
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+
+
+	public void setElectId(Long electId) {
+		this.electId = electId;
+	}
+
+	public Long getElectId() {
+		return electId;
+	}
 
 	public String execute() {
 		
@@ -91,7 +120,8 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		electionType = request.getParameter("electionType");
 		electionYear = request.getParameter("electionYear");
 		mandalName = request.getParameter("mandalName");
-		
+		tehsilId = mandalId;
+		electId = electionId;
 		log.debug("Result::mandalId="+mandalId+" electionId="+electionId);		
 		townshipWiseElectionResults = constituencyPageService.getPartiesResultsInVillagesGroupByMandal(mandalId, electionId);
 		
@@ -120,5 +150,6 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
         return dataset;
     }
 
+	
 	
 }
