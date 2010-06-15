@@ -15,12 +15,20 @@ public class BiElectionResultsMainVO implements Serializable {
 	private String mandalWiseResultsChart;
 	private String assemblyResultsChartForPresentYear;
 	private String assemblyResultsChartForPreviousYear;
+	private ConstituencyVO constituencyVO;
+	
 	public List<BiElectionResultsVO> getBiElectionResultsMainVO() {
 		return biElectionResultsMainVO;
 	}
 	public void setBiElectionResultsMainVO(
 			List<BiElectionResultsVO> biElectionResultsMainVO) {
 		this.biElectionResultsMainVO = biElectionResultsMainVO;
+	}
+	public ConstituencyVO getConstituencyVO() {
+		return constituencyVO;
+	}
+	public void setConstituencyVO(ConstituencyVO constituencyVO) {
+		this.constituencyVO = constituencyVO;
 	}
 	public String getMandalWiseResultsChart() {
 		return mandalWiseResultsChart;
