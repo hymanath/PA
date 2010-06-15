@@ -18,15 +18,11 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IBiElectionPageService {
 
-	public MandalAllElectionResultsVO getAllPartiesElectionResultsInAMandal(Long mandalId);
-	
 	public List<BiElectionDistrictVO> getBiElectionConstituenciesDistrictWise();
 	
-	public List<MandalAllElectionResultsVO> getAllPartysElectionResultsInAConstituencyMandalWise(Long constituencyId);
+	public MandalElectionResultVO getElectionResultForPartyInMandal(Long mandalId,String electionType,String electionYear);
 	
-	public MandalElectionResultVO getElectionResultForPartyInMandal(Long mandalId,String electionType,String electionYear,List<SelectOptionVO> parties);
-	
-	public ElectionResultsForMandalVO getElectionResultsForMandalsInAConstituencyForAElection(List<Long> mandalIds,String electionType,String electionYear,List<SelectOptionVO> parties);
+	public ElectionResultsForMandalVO getElectionResultsForMandalsInAConstituencyForAElection(List<Long> mandalIds,String electionType,String electionYear);
 	
 	public List<BiElectionResultsVO> getMandalWiseResultsForAConstituency(Long constituencyId);
 }
