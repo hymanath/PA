@@ -114,12 +114,13 @@ function buildMandalsVotingTrendz()
 	str += '<div id="mandalVotingTrendzDataDiv">';
 	str += '<div id="mandalVotingTrendzDataDiv_head">Mandal Voting Trendz</div>';
 	str += '<div id="mandalVotingTrendzDataDiv_body">';
+	str += '	<div id="mandalsListInConstituency"></div>';	
 	str += '	<div id="mandalDetailsChart_body">';
 	str += '	<div style="margin-top:5px;margin-left:300px;">';
 	str += '		<div style="color:#ADADAD"> Loading ...</div>';
 	str += '		<div> <img src="images/icons/barloader.gif"></img> </div>';
 	str += '	</div>';
-	str += '	</div>';
+	str += '	</div>';	
 	str += '	<div id="mandalVotingTrendzData"></div>';	
 	
 	str += '</div>';
@@ -205,25 +206,43 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 	var headElmt = document.getElementById("mandalVotingTrendzDataDiv_head");
 	var bodyElmt = document.getElementById("mandalVotingTrendzData");
 	var graphElmt = document.getElementById("mandalDetailsChart_body");
+	var mandalsListElmt = document.getElementById("mandalsListInConstituency");
+
 	var results = resultsData.biElectionResultsMainVO;
 
-	if(!headElmt || !bodyElmt || !resultsData || !graphElmt)
+	if(!headElmt || !bodyElmt || !resultsData || !graphElmt || !mandalsListElmt)
 		return;
 	
+	//Hiding busy cursor Image
 	var cursorImgElmt = document.getElementById('cursorImg');
 	if(cursorImgElmt)
 		cursorImgElmt.style.display = 'none';
 
+	// Rendering Graph Elmt in the respective div
 	var graphStr = '';
 	graphStr += '<img height="300" width="820" src="charts/'+resultsData.mandalWiseResultsChart+'"/>';
 
 	graphElmt.innerHTML = graphStr;
 
-	var hstr = '';
-	hstr = 'Mandal Voting Trendz';
+	//Rendering  mandals list in the constituency
+	mandalStr = '';
+	mandalStr += '<fieldset>';
+	mandalStr += '<legend> Mandals In '+jsObj.constiName+' Constituency </legend>';
+	mandalStr += '<table>';
+	mandalStr += '<tr>';
+	for(var mandal in results[0].biElectionResultsVO[0].electionResultsForMandal)
+	{
+		var mandalData = results[0].biElectionResultsVO[0].electionResultsForMandal[mandal];
+		mandalStr += '<td><div class="mandalNameDivClass"><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+mandalData.mandalId+'&MANDAL_NAME='+mandalData.mandalName+'"> '+mandalData.mandalName+'</a></div></td>';
+	}
+	mandalStr += '</tr>';
+	mandalStr += '</table>';
+	mandalStr += '</fieldset>';
 	
-	headElmt.innerHTML = hstr;
+	mandalsListElmt.innerHTML = mandalStr;
 
+
+	//Rendering Mandal voting trendz data
 	var str = '';
 	str += '<table width="100%">';
 	for(var i in results)
@@ -265,7 +284,7 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 					var cols = partyHeaderLength+1;
 					str += '<th><A href="javascript:{}" onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';
 					for(var colsno = 0;colsno < cols; colsno++)
-						str += '<th> -- </th>';	
+						str += '<th> N/A </th>';	
 				}
 				else
 				{
@@ -276,8 +295,13 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 										
 						for(var m in info.partyElecResultsInConstituency[l].partyElecResults)
 						{
-							var data = info.partyElecResultsInConstituency[l].partyElecResults[m];						
-							str += '<td>'+data.votesEarned+'</td><td>'+data.percentage+'</td>';					
+							var data = info.partyElecResultsInConstituency[l].partyElecResults[m];	
+							if(data.votesEarned == 0)
+								str += '<td> N/A </td>';
+							else
+								str += '<td>'+data.votesEarned+'</td>';
+
+							str += '<td>'+data.percentage+'</td>';					
 						}
 						
 						str+='</tr><tr>';
