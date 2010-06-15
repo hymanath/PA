@@ -34,7 +34,7 @@
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
 <script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
+<script type="text/javascript" src="js/BoothPage/boothPage.js"></script>
 <!-- YUI Skin Sam -->
 
 <link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
@@ -87,6 +87,83 @@ legend
 {
 	width:95%;
 }
+#townshipPartyResultsPanel .hd
+{
+	background-image:url(images/icons/contHeading.png);
+	background-repeat:repeat;
+}
+#townshipPartyResultsPanel .bd table
+{
+	width:100%;
+}
+.commonVotersHeadDiv  {
+	color:#323E4E;
+	font-weight:bold;
+	margin-bottom:5px;
+	padding:5px;
+	text-decoration:underline;
+}
+.reportAnchors {
+	color:#3B4B58;
+	font-weight:bold;
+}
+.yui-skin-sam .yui-dt table {
+	border:1px solid #7F7F7F;
+	border-collapse:separate;
+	border-spacing:0;
+	font-family:arial;
+	font-size:12px;
+	margin:0;
+	padding:0;
+	width:100%;
+}
+#boothInfoTable {
+	border:2px solid #EFEFEF;
+}
+#boothInfoTable th {
+	background-color:#567AAF;
+	color:#FFFFFF;
+	padding:5px;
+	width:20%;
+	text-align:left;
+}
+.yui-skin-sam .yui-panel .bd {
+	background-color:#FFFFFF;
+}
+#townshipPartyResultsPanel .bd table {
+	width:100%;
+	font-size:12px;
+}
+.censusInfoTable td {
+	background-color:#FFFFFF;
+	border:1px solid #D2D9DF;
+	padding:8px;
+}
+.censusInfoTable th {
+	background-color:#567AAF;
+	border:1px solid white;
+	color:#FFFFFF;
+	padding:8px;
+	text-align:left
+}
+#boothInfoDiv_head {
+	color:#747E84;
+	font-weight:bold;
+	padding:5px;
+	text-decoration:underline;
+}
+#boothInfoTable td {
+	background-color:#F2F6F9;
+	font-weight:bold;
+	padding:5px;
+}
+
+#boothPagePanel .bd
+{
+	height:450px;
+	overflow:auto;
+}
+
 </style>
 <script type="text/javascript">
 			function displayVillageElecResults(value){
@@ -199,8 +276,203 @@ legend
 				</c:forEach>
 			}
 
+			function callAjax(rparam, jsObj, url){
+				var resultVO;			
+				var callback = {			
+			               success : function( o ) {
+								try {								
+										resultVO = YAHOO.lang.JSON.parse(o.responseText);										
+										
+										if(jsObj.task == "getRevenueVillagesInfo")
+										{								
+											showRevenueVillagesInfo(resultVO);				
+										} else if(jsObj.task == "boothPage")
+										{								
+											showBoothPagePanel(resultVO);			
+										} else if(jsObj.task == "getRevenueVillagesElectionInfo")
+										{								
+											showRevenueVillageElectionInfo(resultVO,jsObj);			
+										} 			
+															
+								}catch (e)  {   
+								   	alert("Invalid JSON result" + e);   
+								}  
+			               },
+			               scope : this,
+			               failure : function( o ) {
+			                			alert( "Failed to load result" + o.status + " " + o.statusText);
+			                         }
+			               };
 
+				YAHOO.util.Connect.asyncRequest('GET', url, callback);			
+			}
+			//var electionType = '${electionType}';
+			//var electionYear = '${electionYear}';
+			var tehsilId = '${tehsilId}';
+			var electId = '${electId}';	
+			function getRevenueVillagesInfo(){
+		         
+				
+				
+				var jsObj=
+					{
+							electionId: electId,
+							mandalId: tehsilId,
+							task:"getRevenueVillagesInfo"						
+					};
+				
+					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+					var url = "<%=request.getContextPath()%>/getRevenueVillagesInfoAjaxAction.action?"+rparam;						
+					callAjax(rparam,jsObj,url);
+			}
 
+			function getBoothPageInfo(id){
+				var jsObj=
+					{
+							boothId:id,
+							task:"boothPage"						
+					};
+				
+					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+					var url = "<%=request.getContextPath()%>/boothPageAjaxAction.action?"+rparam;						
+					callAjax(rparam,jsObj,url);
+			}
+			function showRevenueVillagesInfo(resultVO){
+				
+				//typeSelectElmt = document.getElementById("electionTypeSelect");
+				//yearSelectElmt = document.getElementById("electionYearSelect");		
+
+				//var typeVal = ""+typeSelectElmt.options[typeSelectElmt.selectedIndex].text;
+				//var yearVal = ""+yearSelectElmt.options[yearSelectElmt.selectedIndex].text;
+				
+				var rvStrDiv = document.getElementById('revenueVillagesInfo');
+				
+				var rvStr = '';		
+				rvStr += '<a name="votersDiv"></a>';
+				rvStr += '<div id="revenueVillageDiv_head" class="commonVotersHeadDiv">';
+				rvStr += 'Voting Trendz In Revenue Villages for ${mandalName} Mandal in ${electionYear} ${electionType}  Election ';
+				rvStr += '</div>';
+				rvStr += '<div class="yui-skin-sam"><div id="revenueVillageDiv">';		
+				rvStr += '<table id="revillageInfoTable" >';
+						
+				for(var i in resultVO.revenueVillagesInfo)
+				{			
+					rvStr += '<tr>';
+					rvStr += '<td><a href="townshipPageAction.action?TOWNSHIP_ID='+resultVO.revenueVillagesInfo[i].locationId+'&TOWNSHIP_NAME='+resultVO.revenueVillagesInfo[i].locationName+'" >'+resultVO.revenueVillagesInfo[i].locationName+'</a></td>';
+					rvStr += '<td>'+resultVO.revenueVillagesInfo[i].population+'</td>';
+					rvStr += '<td>'+resultVO.revenueVillagesInfo[i].votesPolled+'</td>';
+					rvStr += '<td>';
+					for(var j in resultVO.revenueVillagesInfo[i].booths)
+					{
+						if(j%3 == 0 && j!=0)
+							rvStr += '<br>';
+						rvStr += '<a href="javascript:{}" onclick="getBoothPageInfo('+resultVO.revenueVillagesInfo[i].booths[j].id+')">'+resultVO.revenueVillagesInfo[i].booths[j].name+',';
+					}
+					rvStr += '</td>';
+					rvStr += '<td>';
+					for(var k in resultVO.revenueVillagesInfo[i].hamletsOfTownship)
+					{
+						rvStr += resultVO.revenueVillagesInfo[i].hamletsOfTownship[k].name+'<br>';
+					}
+					rvStr += '</td>';
+					rvStr += '<td>';
+					//rvStr += '<a href = "javascript:{}" class="reportAnchors">Census Info</a><br>';
+					rvStr += '<a href = "#votersDiv" class="reportAnchors" onclick = "getTownshipElectionsInfo(\''+resultVO.revenueVillagesInfo[i].locationName+'\','+resultVO.revenueVillagesInfo[i].locationId+','+electId+')"> View Voting Trendz </a><br>';
+					//rvStr += '<a href = "javascript:{}" class="reportAnchors">Cast Details</a><br>';
+					rvStr += '</td>';
+					rvStr += '</tr>';
+				}
+				rvStr += '</table>';
+				rvStr += '</div>';
+				rvStr += '</div>';
+
+				if(rvStrDiv)
+					rvStrDiv.innerHTML = rvStr;
+					var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
+							.get("revillageInfoTable")); 
+					 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
+					  myDataSource.responseSchema = { 
+					            fields: [
+											{
+												key : "townshipName"
+											},{
+												key : "totalVoters",parser:"number"
+											},{
+												key : "votesPolled",parser:"number"
+											},{
+												key : "booths"
+											},{
+												key : "hamlets"
+											},{
+												key : "links"
+											}
+										]    
+					        }; 
+					
+					 var myColumnDefs = [ 
+					            {key:"townshipName",label:'Revenue Village', sortable:true, resizeable:true}, 
+					            {key:"totalVoters", label:'Total Voters', sortable:true, resizeable:true}, 
+					            {key:"votesPolled", label:'Votes Polled', sortable:true, resizeable:true},
+					            {key:"booths",label:'Total Booths', resizeable:true}, 
+					            {key:"hamlets",label:'Total Hamlets', resizeable:true},
+					            {key:"links",label:'Links', resizeable:true}
+					        ]; 
+					 
+					var myDataTable = new YAHOO.widget.DataTable("revenueVillageDiv",myColumnDefs, myDataSource);
+					/*      var imgElmt = document.getElementById('AjaxImgDiv');
+			 if(imgElmt.style.display == "block")
+				{
+		           imgElmt.style.display = "none";
+				}*/
+
+			}
+			function getTownshipElectionsInfo(name,townshipId, electionId){
+				var jsObj=
+				{
+						villageName:name,
+						townshipId:townshipId,
+						electionId:electionId,
+						task:"getRevenueVillagesElectionInfo"						
+				};
+			
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+				var url = "<%=request.getContextPath()%>/getRevenueVillagesElectionsAjaxAction.action?"+rparam;						
+				callAjax(rparam,jsObj,url);
+			}
+			function showRevenueVillageElectionInfo(resultVO,jsObj){
+
+				 var rvEleStr = '';
+				 rvEleStr += '<div class="commonVotersHeadDiv"> Voting Trendz Of Different Parties In '+jsObj.villageName+' Revenue Village </div>';
+				 rvEleStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;">';
+				 rvEleStr += '<tr>';
+				 rvEleStr += '<th style="background-color:#8D7463">Party</th>';
+				 for(var i in resultVO){
+				 rvEleStr += '<td>'+resultVO[i].partyName+'</td>';
+				 }
+				 rvEleStr += '</tr><tr>';
+				 rvEleStr += '<th style="background-color:#8D7463">Votes Earned</th>';
+				 for(var i in resultVO){
+				 rvEleStr += '<td>'+resultVO[i].votesEarned+'</td>';
+				 }
+				 rvEleStr += '</tr>';
+				 rvEleStr += '</table>';
+
+				 myPanel = new YAHOO.widget.Panel("townshipPartyResultsPanel", {
+				 width: "750px",
+				 x:210,
+				 y:760,
+				 constraintoviewport: true,
+				 underlay: "none",
+				 close: true,
+				 visible: true,
+				 draggable: false
+				 });
+				 
+				 myPanel.setHeader(" Revenue Village : "+jsObj.villageName);
+				 myPanel.setBody(rvEleStr);
+				 myPanel.render(); 
+			}
+					
 </script>
 </head>
 <body>
@@ -208,17 +480,25 @@ legend
 		<div>
 		<table>
 		<tr>
-			<td id="labelRadio">Select The Format You Want::</td>
-			<td><input type="radio" name="dispaly" value="number" checked="checked" onclick="displayVillageElecResults(this.value)">By Votes</td>
-			<td><input type="radio" name="dispaly" value="percentage" onclick="displayVillageElecResults(this.value)">By Percentage</td>
+			<td id="labelRadio">View Results By:</td>
+			<td><input type="radio" name="dispaly" value="number" checked="checked" onclick="displayVillageElecResults(this.value)">Votes Gained</td>
+			<td><input type="radio" name="dispaly" value="percentage" onclick="displayVillageElecResults(this.value)">Votes Percentage</td>
 		</tr>
 		</table>
-			<div id="villageElectionResults" class="yui-skin-sam"></div>
+		<div id="villageElectionResults" class="yui-skin-sam"></div>			
 		</div>
+		<HR>
+		<div id="revenueVillagesInfo"></div>
+		<div class="yui-skin-sam"><div id="boothPagePanel" ></div></div>
+		<div class="yui-skin-sam"><div id="townshipPartyResultsPanel" ></div></div>
 
 
 <script type="text/javascript">
 	displayVillageElecResults("number");
+	if('${windowTask}' == "includeVotingTrendz" )
+	{
+		getRevenueVillagesInfo();
+	}
 </script>
 </body>
 </html>
