@@ -745,7 +745,10 @@ public class BiElectionPageService implements IBiElectionPageService {
 		resultVO.setPartyId(partyResult.getPartyId());
 		resultVO.setPartyName(partyResult.getPartyName());
 		resultVO.setVotesEarned(votesEarned);
-		resultVO.setPercentage("N/A");
+		
+		Long validVotes = partyResult.getValidVotes();
+		Double votesPercent = new BigDecimal(votesEarned.doubleValue()/validVotes.doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		resultVO.setPercentage(votesPercent.toString());
 		
 		partyResultsVOList.add(resultVO);
 				
