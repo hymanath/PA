@@ -186,6 +186,13 @@ margin-left:40px;
 	padding-bottom:20px;
 	padding-top:20px;
 }
+
+.mandalNameDivClass a
+{
+	padding:2px 15px 2px 15px;
+	text-decoration:none;
+	font-weight:bold;
+}
 .viewAncs {
 	color:#73787E;
 	font-weight:bold;

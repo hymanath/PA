@@ -190,7 +190,7 @@ function buildBiElectionDistricts()
 			var info = districtsInfo[i].constituencies[j];
 			str += '<tr>';
 			str += '<td colspan="2">';
-			str += '	<a href="constituencyPageAction.action?constituencyId='+info.constId+ '" class="districtAncNew"> '+info.constName+ '</a>';
+			str += '	<a href="constituencyPageAction.action?constituencyId='+info.constId+ '" class="districtAncNew"> '+info.constName.toUpperCase()+ '</a>';
 			str += '</td>';
 			str += '</tr>';
 		}
@@ -284,14 +284,14 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 					var cols = partyHeaderLength+1;
 					str += '<th><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs"  onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';
 					for(var colsno = 0;colsno < cols; colsno++)
-						str += '<th> N/A </th>';	
+						str += '<td> N/A </td>';	
 				}
 				else
 				{
 					str += '<th rowspan="'+info.partyElecResultsInConstituency.length+'"><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs" onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';				
 					for(var l in info.partyElecResultsInConstituency)
 					{
-						str += '<th>'+info.partyElecResultsInConstituency[l].constituencyName+'</th>';
+						str += '<th>'+info.partyElecResultsInConstituency[l].constituencyName.toUpperCase()+'</th>';
 										
 						for(var m in info.partyElecResultsInConstituency[l].partyElecResults)
 						{
