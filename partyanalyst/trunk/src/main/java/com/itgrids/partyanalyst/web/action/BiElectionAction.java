@@ -20,6 +20,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
@@ -27,15 +28,20 @@ import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
+import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
+import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
+import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -53,6 +59,7 @@ public class BiElectionAction extends ActionSupport implements
 
 	private static final Logger log = Logger.getLogger(BiElectionAction.class);
 	private IBiElectionPageService biElectionPageService;
+	private IConstituencyPageService constituencyPageService;
 	private List<BiElectionDistrictVO> districtsAndConsts;
 
 	private ServletContext context;
@@ -73,6 +80,8 @@ public class BiElectionAction extends ActionSupport implements
 	private BiElectionResultsMainVO biElectionResultsMainVO;
 	private String electionYear;
 	private String electionType;
+	private ConstituencyInfoVO constituencyDetails;
+	private ConstituencyVO constituencyVO;	 
 	
 	private String mandalWiseResultsChart;
 	
@@ -83,6 +92,23 @@ public class BiElectionAction extends ActionSupport implements
 
 	public void setBiElectionResultsVO(List<BiElectionResultsVO> biElectionResultsVO) {
 		this.biElectionResultsVO = biElectionResultsVO;
+	}
+
+	public IConstituencyPageService getConstituencyPageService() {
+		return constituencyPageService;
+	}
+
+	public void setConstituencyPageService(
+			IConstituencyPageService constituencyPageService) {
+		this.constituencyPageService = constituencyPageService;
+	}
+
+	public ConstituencyInfoVO getConstituencyDetails() {
+		return constituencyDetails;
+	}
+
+	public void setConstituencyDetails(ConstituencyInfoVO constituencyDetails) {
+		this.constituencyDetails = constituencyDetails;
 	}
 
 	public void setServletContext(ServletContext context) {
@@ -122,6 +148,14 @@ public class BiElectionAction extends ActionSupport implements
 	public void setMandalAllElectionResultsVO(
 			List<MandalAllElectionResultsVO> mandalAllElectionResultsVO) {
 		this.mandalAllElectionResultsVO = mandalAllElectionResultsVO;
+	}
+
+	public ConstituencyVO getConstituencyVO() {
+		return constituencyVO;
+	}
+
+	public void setConstituencyVO(ConstituencyVO constituencyVO) {
+		this.constituencyVO = constituencyVO;
 	}
 
 	public String getTask() {
@@ -346,6 +380,9 @@ public class BiElectionAction extends ActionSupport implements
 		biElectionResultsMainVO.setAssemblyResultsChartForPresentYear(presentYearResultsChartName);
 		biElectionResultsMainVO.setAssemblyResultsChartForPreviousYear(previousYearResultsChartName);
 		
+		if(constiId != null && constiId != new Long(0))
+			biElectionResultsMainVO.setConstituencyVO(getVotersShareInMandalsPieChart(constiId));
+		
 		return Action.SUCCESS;
 	}
 	
@@ -438,5 +475,59 @@ public class BiElectionAction extends ActionSupport implements
 
 	public void setMandalWiseResultsChart(String mandalWiseResultsChart) {
 		this.mandalWiseResultsChart = mandalWiseResultsChart;
+	}
+	
+	public ConstituencyVO getVotersShareInMandalsPieChart(Long constituencyId){
+		
+		constituencyDetails = new ConstituencyInfoVO();
+		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId); 
+		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		String pieChart = "";
+		String pieChartPath = "";
+		String title = "";
+		String[] chartNames = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
+		String[] extraInfo = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
+		int i=0;
+		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
+			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+"In Bi-Elections"+".png";
+			pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
+			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
+				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+					title = "Each Mandal Voters Share* After Delimitation";
+				else
+					title = "Each Assembly Voters Share* After Delimitation";
+				extraInfo[i] = "* Based On 2009 Elections Data";
+			}
+			else{
+				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+					title = "Each Mandal Voters Share** Before Delimitation";
+				else
+					title = "Each Assembly Voters Share** Before Delimitation";
+				extraInfo[i] = "** Based On 2004 Elections Data";
+			}
+				
+			if(votersInMandalOrAC.getVotersInfoForMandalVO().size() > 0)
+				ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(votersInMandalOrAC.getVotersInfoForMandalVO()), pieChartPath, null,true,260,270);
+			chartNames[i++] = pieChart;
+		}
+		
+		constituencyVO.setPieChartNames(chartNames);
+		
+	 return constituencyVO;
+	}
+	
+	private DefaultPieDataset createPieDatasetForVoters(List<VotersInfoForMandalVO> votersInfoForMandalVO) {
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		Long totalVotes = 0l;
+		BigDecimal percentage;
+		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO)
+			totalVotes += new Long(votersInMandalOrAC.getTotalVoters());
+
+		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO){
+			percentage = new BigDecimal(new Long(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
+			dataset.setValue(votersInMandalOrAC.getMandalName()+" ["+percentage.toString()+"%]",percentage);
+		}
+			
+		return dataset;
 	}
 }
