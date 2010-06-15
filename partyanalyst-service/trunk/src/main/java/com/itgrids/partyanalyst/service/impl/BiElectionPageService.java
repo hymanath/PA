@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.AllPartyElectionResultsForElectionTypeVO;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
@@ -48,6 +49,7 @@ import com.itgrids.partyanalyst.utils.PartyResultsVOComparator;
 public class BiElectionPageService implements IBiElectionPageService {
 	
 	private ITehsilDAO tehsilDAO;
+	private IElectionDAO electionDAO;
 	private IConstituencyDAO constituencyDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
@@ -80,6 +82,14 @@ public class BiElectionPageService implements IBiElectionPageService {
 	public void setCandidateBoothResultDAO(
 			ICandidateBoothResultDAO candidateBoothResultDAO) {
 		this.candidateBoothResultDAO = candidateBoothResultDAO;
+	}
+
+	public IElectionDAO getElectionDAO() {
+		return electionDAO;
+	}
+
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
 	}
 
 	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
@@ -435,6 +445,12 @@ public class BiElectionPageService implements IBiElectionPageService {
 				  electionResultsForMandalVO.setElectionType(electionType);
 				  electionResultsForMandalVO.setElectionYear(electionYear);
 				  electionResultsForMandalVO.setElectionResultsForMandal(electionResultsForMandal);
+				  
+				  List election = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,new Long(1));
+				  if(election != null && election.size() > 0){
+					  Object params = (Object)election.get(0);
+					  electionResultsForMandalVO.setElectionId((Long)params);
+				  }
 			  }
 			  
 			  //for parties
