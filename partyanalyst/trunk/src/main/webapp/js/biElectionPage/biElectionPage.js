@@ -1,4 +1,3 @@
-
 var dtArray =  new Array();
 var assemblyElectionType='Assembly';
 var presentElectionYear='2009';
@@ -221,7 +220,7 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 	// Rendering Graph Elmt in the respective div
 	var graphStr = '';
 	graphStr += '<img height="300" width="820" src="charts/'+resultsData.mandalWiseResultsChart+'"/>';
-
+	graphStr += '<P style="font-family:verdana;font-size:12px;margin-top:25px;">'+localizationObj.desc1+' <font style="font-weight:bold;color:#4B74C6;">'+jsObj.constiName+'</font> '+localizationObj.desc2+'</P>';
 	graphElmt.innerHTML = graphStr;
 
 	//Rendering  mandals list in the constituency
@@ -233,14 +232,13 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 	for(var mandal in results[0].biElectionResultsVO[0].electionResultsForMandal)
 	{
 		var mandalData = results[0].biElectionResultsVO[0].electionResultsForMandal[mandal];
-		mandalStr += '<td><div class="mandalNameDivClass"><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+mandalData.mandalId+'&MANDAL_NAME='+mandalData.mandalName+'"> '+mandalData.mandalName+'</a></div></td>';
+		mandalStr += '<td><div class="mandalNameDivClass"><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+mandalData.mandalId+'&MANDAL_NAME='+mandalData.mandalName+'"> '+mandalData.mandalName+'</a></div></td>';		
 	}
 	mandalStr += '</tr>';
 	mandalStr += '</table>';
 	mandalStr += '</fieldset>';
 	
-	mandalsListElmt.innerHTML = mandalStr;
-
+	mandalsListElmt.innerHTML = mandalStr;	
 
 	//Rendering Mandal voting trendz data
 	var str = '';

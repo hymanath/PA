@@ -1,5 +1,3 @@
-
-
 #pageHeading
 {
 background-image:url(../../images/icons/statePage/header_body.png);
@@ -197,4 +195,8 @@ margin-left:40px;
 	color:#73787E;
 	font-weight:bold;
 	text-decoration:none;
+}
+#tableHead{
+	color:#73787E;
+	font-family:verdana;
 }

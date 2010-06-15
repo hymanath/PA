@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -6,7 +5,6 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <html>
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Telangana Bi-Elections War - 2010</title>
@@ -66,6 +64,15 @@
 	<link rel="stylesheet" type="text/css" href="styles/biElectionPage/biElectionPage.css">
 
 	<script type="text/javascript">
+	 <%			
+		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
+		String desc1 = rb.getString("resultsDescritpion1");
+		String desc2 = rb.getString("resultsDescritpion2");
+	%>
+	var localizationObj = {
+			desc1 : '<%=desc1%>',
+			desc2 : '<%=desc2%>'								
+	};
 		var electionYear = '${electionYear}';
 		var electionType = '${electionType}';
 		var presentYearResultsChartName = '${presentYearResultsChartName}';
@@ -284,13 +291,13 @@
 	</c:forEach>
 	<c:forEach var="winningCandidates" items="${winningCandidatesList}">
 	var winCandidatesObj =	{
-			distName:'<a href="districtPageAction.action?districtId=${winningCandidates.districtId}&districtName=${winningCandidates.districtName}">${winningCandidates.districtName}</a>',
-			constName:'<a href="constituencyPageAction.action?districtId=${winningCandidates.districtId}&constituencyId=${winningCandidates.constituencyId}">${winningCandidates.constituencyName}',
+			distName:'<a class="viewAncs" title="Click to view ${winningCandidates.districtName} District Page" href="districtPageAction.action?districtId=${winningCandidates.districtId}&districtName=${winningCandidates.districtName}">${winningCandidates.districtName}</a>',
+			constName:'<a class="viewAncs" title="Click to view ${winningCandidates.constituencyName} Constituency Page" href="constituencyPageAction.action?districtId=${winningCandidates.districtId}&constituencyId=${winningCandidates.constituencyId}">${winningCandidates.constituencyName}',
 			name: "${winningCandidates.candidateName}",
 			partyName: "${winningCandidates.partyName}",
 			votesPercent: "${winningCandidates.votesPercentage}",
 			marginPercent: "${winningCandidates.votesMargin}",
-			completeResults: '<A href="javascript:{}" onclick="getMoreDetails(${winningCandidates.constituencyId},electionType,electionYear)">More Results</A>'
+			completeResults: '<A href="javascript:{}" class="viewAncs" title="Click to view detailed election results" onclick="getMoreDetails(${winningCandidates.constituencyId},electionType,electionYear)">More Results</A>'
 					
 				};
 	dtArray.push(winCandidatesObj);
