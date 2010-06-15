@@ -278,13 +278,13 @@
 	</c:forEach>
 	<c:forEach var="winningCandidates" items="${winningCandidatesList}">
 	var winCandidatesObj =	{
-			distName:'<a href="districtPageAction.action?districtId=${winningCandidates.districtId}&districtName=${winningCandidates.districtName}">${winningCandidates.districtName}</a>',
-			constName:'<a href="constituencyPageAction.action?districtId=${winningCandidates.districtId}&constituencyId=${winningCandidates.constituencyId}">${winningCandidates.constituencyName}',
+			distName:'<a class="viewAncs" title="Click to view ${winningCandidates.districtName} District Page" href="districtPageAction.action?districtId=${winningCandidates.districtId}&districtName=${winningCandidates.districtName}">${winningCandidates.districtName}</a>',
+			constName:'<a class="viewAncs" title="Click to view ${winningCandidates.constituencyName} Constituency Page" href="constituencyPageAction.action?districtId=${winningCandidates.districtId}&constituencyId=${winningCandidates.constituencyId}">${winningCandidates.constituencyName}',
 			name: "${winningCandidates.candidateName}",
 			partyName: "${winningCandidates.partyName}",
 			votesPercent: "${winningCandidates.votesPercentage}",
 			marginPercent: "${winningCandidates.votesMargin}",
-			completeResults: '<A href="javascript:{}" onclick="getMoreDetails(${winningCandidates.constituencyId},electionType,electionYear)">More Results</A>'
+			completeResults: '<A href="javascript:{}" class="viewAncs" title="Click to view detailed election results" onclick="getMoreDetails(${winningCandidates.constituencyId},electionType,electionYear)">More Results</A>'
 					
 				};
 	dtArray.push(winCandidatesObj);

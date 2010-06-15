@@ -282,13 +282,13 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 				if(info.partyElecResultsInConstituency.length == 0)
 				{
 					var cols = partyHeaderLength+1;
-					str += '<th><A href="javascript:{}" onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';
+					str += '<th><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs"  onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';
 					for(var colsno = 0;colsno < cols; colsno++)
 						str += '<th> N/A </th>';	
 				}
 				else
 				{
-					str += '<th rowspan="'+info.partyElecResultsInConstituency.length+'"><A href="javascript:{}" onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';				
+					str += '<th rowspan="'+info.partyElecResultsInConstituency.length+'"><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs" onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';				
 					for(var l in info.partyElecResultsInConstituency)
 					{
 						str += '<th>'+info.partyElecResultsInConstituency[l].constituencyName+'</th>';

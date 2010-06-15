@@ -126,6 +126,7 @@ legend
 	padding:5px;
 	width:20%;
 	text-align:left;
+	font-size:12px;
 }
 .yui-skin-sam .yui-panel .bd {
 	background-color:#FFFFFF;
@@ -144,7 +145,8 @@ legend
 	border:1px solid white;
 	color:#FFFFFF;
 	padding:8px;
-	text-align:left
+	text-align:left;
+	
 }
 #boothInfoDiv_head {
 	color:#747E84;
@@ -154,8 +156,9 @@ legend
 }
 #boothInfoTable td {
 	background-color:#F2F6F9;
-	font-weight:bold;
+	font-weight:normal;
 	padding:5px;
+	font-size:12px;
 }
 
 #boothPagePanel .bd
@@ -163,7 +166,6 @@ legend
 	height:450px;
 	overflow:auto;
 }
-
 </style>
 <script type="text/javascript">
 			function displayVillageElecResults(value){
