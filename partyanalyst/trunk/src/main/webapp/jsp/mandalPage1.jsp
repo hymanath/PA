@@ -154,11 +154,6 @@ width:100%;
 padding:2px;
 width:120px;
 }
-
-#boothPagePanel fieldset
-{
-height:300px;
-}
 .yui-skin-sam .yui-panel .bd
 {
 background-color:#FFFFFF;
@@ -319,6 +314,11 @@ width:100%;
    color:#3B4B58;
    font-weight:bold;
    text-decoration:none;
+}
+#boothPagePanel .bd
+{
+	height:450px;
+	overflow:auto;
 }
 
 </style>
@@ -740,9 +740,9 @@ function getMoreResults(elecYear,elecType,constiId)
 			}
 			rvStr += '</td>';
 			rvStr += '<td>';
-			rvStr += '<a href = "javascript:{}" class="reportAnchors">Census Info</a><br>';
+			//rvStr += '<a href = "javascript:{}" class="reportAnchors">Census Info</a><br>';
 			rvStr += '<a href = "#votersDiv" class="reportAnchors" onclick = "getTownshipElectionsInfo(\''+resultVO.revenueVillagesInfo[i].locationName+'\','+resultVO.revenueVillagesInfo[i].locationId+','+electionId+')"> View Voting Trendz </a><br>';
-			rvStr += '<a href = "javascript:{}" class="reportAnchors">Cast Details</a><br>';
+			//rvStr += '<a href = "javascript:{}" class="reportAnchors">Cast Details</a><br>';
 			rvStr += '</td>';
 			rvStr += '</tr>';
 		}
