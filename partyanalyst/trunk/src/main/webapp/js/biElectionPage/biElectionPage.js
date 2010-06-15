@@ -208,7 +208,7 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 	var mandalsListElmt = document.getElementById("mandalsListInConstituency");
 
 	var results = resultsData.biElectionResultsMainVO;
-
+	
 	if(!headElmt || !bodyElmt || !resultsData || !graphElmt || !mandalsListElmt)
 		return;
 	
@@ -229,6 +229,7 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 	mandalStr += '<legend> Mandals In '+jsObj.constiName+' Constituency </legend>';
 	mandalStr += '<table>';
 	mandalStr += '<tr>';
+	mandalStr += '<th> <u>Mandals </u>: </th>';
 	for(var mandal in results[0].biElectionResultsVO[0].electionResultsForMandal)
 	{
 		var mandalData = results[0].biElectionResultsVO[0].electionResultsForMandal[mandal];
@@ -236,6 +237,15 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 	}
 	mandalStr += '</tr>';
 	mandalStr += '</table>';
+	mandalStr += '<div id="constiVotersDetails" style="margin-top:20px;">';
+	mandalStr += '<div style="padding:10px;margin-bottom:20px;"> <u><b> Votes Share In Mandals :</b> </u> </div>';
+	mandalStr += '<table width="90%" border="1" cellspacing="3">';
+	mandalStr += '	<tr>';
+	for(var chart in resultsData.constituencyVO.pieChartNames)
+		mandalStr += '		<td align="center"><img src="charts/'+resultsData.constituencyVO.pieChartNames[chart]+'" border="0"></td>';	
+	mandalStr += '	</tr>';
+	mandalStr += '</table>';
+	mandalStr += '</div>';
 	mandalStr += '</fieldset>';
 	
 	mandalsListElmt.innerHTML = mandalStr;	
@@ -289,7 +299,7 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 					str += '<th rowspan="'+info.partyElecResultsInConstituency.length+'"><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs" onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';				
 					for(var l in info.partyElecResultsInConstituency)
 					{
-						str += '<th>'+info.partyElecResultsInConstituency[l].constituencyName.toUpperCase()+'</th>';
+						str += '<th style="color:#73787E;width:150px;font-size:10px;">'+info.partyElecResultsInConstituency[l].constituencyName.toUpperCase()+'</th>';
 										
 						for(var m in info.partyElecResultsInConstituency[l].partyElecResults)
 						{
