@@ -1070,11 +1070,15 @@
 			 <result name="success">/jsp/influencingPeople.jsp</result>			
 		</action>
 		
-		<action name="getMandalsVotingTrendzForBiElection" class="biElectionAction" method="getMandalsVotingTrendz"> 
+		<action name="getMandalsVotingTrendzForBiElection" class="mandalVotingTrendzForBiElectionAction" method="getMandalsVotingTrendz"> 
               <result type="json" name="success">
            		<param name="root">biElectionResultsMainVO</param>
         	</result>       		
         </action>
+        
+        <action name="mandalVotingTrendzForBiElectionAction" class="mandalVotingTrendzForBiElectionAction">
+			 <result name="success">/jsp/partyTrendzForBiElectionConstituencies.jsp</result>			
+		</action>
 	</package>
 </struts>
 

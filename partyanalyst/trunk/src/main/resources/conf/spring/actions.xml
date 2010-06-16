@@ -348,5 +348,11 @@
 	</bean>
 	<bean id="addNewProblemSubmitAction" class="com.itgrids.partyanalyst.web.action.AddNewProblemSubmitAction" singleton="false">
 		<property name="problemManagementService" ref="problemManagementService" />				
+	</bean>
+	
+	<bean id="mandalVotingTrendzForBiElectionAction" class="com.itgrids.partyanalyst.web.action.MandalVotingTrendzForBiElectionAction" singleton="false">
+		<property name="biElectionPageService" ref="biElectionPageService" />
+	    <property name="staticDataService" ref="staticDataService" />
+	    <property name="constituencyPageService" ref="constituencyPageService"/>				
 	</bean>	
 </beans>		
