@@ -41,7 +41,6 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
 	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-	<script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 
 	<!-- YUI Skin Sam -->
 
@@ -82,17 +81,7 @@
 		var electionType = '${electionType}';
 		var presentYearResultsChartName = '${presentYearResultsChartName}';
 		var previousYearResultsChartName = '${previousYearResultsChartName}';
-		var tehsilDetails={
-				zptcArray:[],
-				mptcArray:[],
-				partyArray:[],
-				partyMptcArray:[]
-		};
-		var tehsilElections={
-				zptcElectionYears:[],
-				mptcElectionYears:[]
-		};
-		var mptcElectionType="${mptcElectionType}",zptcElectionType="${zptcElectionType}";
+
 		function getMoreDetails(constiId,elecType,elecYear)
 		{	
 			 var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
@@ -104,8 +93,16 @@
 		  browser1.focus();		
 		}
 
+		function openVotingTrendzWindow(distId,constId,constName)
+		{			
+			var browser1 = window.open("<s:url action="mandalVotingTrendzForBiElectionAction.action"/>?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults","scrollbars=yes,height=800,width=950,left=200,top=200");
+
+			browser1.focus();
+		}
+
 		function getMandalVotingTrendz(distId,constId,constName)
 		{
+			return;
 			var jsObj=
 			{
 					districtId:distId,
@@ -130,20 +127,6 @@
 										if(jsObj.task == "getMandalVotingTrendz")
 										{
 											buildMandalVotingTrendzData(jsObj,myResults);
-										}else if(jsObj.task == "getZptcElectionResults")
-										{		
-											if(myResults!= null &&  myResults.length>0){
-												buildZptcResults(myResults);	
-											}else{
-												hideZptcDiv();			
-											}	
-										}else if(jsObj.task == "getMptcElectionResults")
-										{		
-											if(myResults!= null &&  myResults.length>0){
-												buildMptcResults(myResults);
-											}else{
-												hideMptcDiv();			
-											}	
 										}										
 										
 									}
@@ -156,7 +139,7 @@
 										alert( "Failed to load result" + o.status + " " + o.statusText);
 									 }
 						   };
- 
+
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 		}
 
@@ -165,42 +148,6 @@
 			var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+name+"&electionType="+electionType+"&electionYear="+electionYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 			brow1.focus();
 		}
-		function getZptcPartyDetails(elecYear){
-			zptcElectionYear = elecYear;
-			constituencyTYPE = assemblyElectionType;
-			var jsObj = {
-					constituencyType: assemblyElectionType,
-					constituencyId:constituencyIdGlobal,
-					electionYear:elecYear,
-					task:"getZptcElectionResults"
-				};
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-			var url = "<%=request.getContextPath()%>/constituencyWiseMandalElectionsResultAction.action?"+rparam;
-			callAjax(jsObj, url);
-		}
-
-		function getMptcPartyDetails(elecYear){
-			mptcElectionYear = elecYear;
-			var jsObj = {
-					constituencyType: assemblyElectionType,
-					constituencyId: constituencyIdGlobal,
-					electionYear:elecYear,
-					task:"getMptcElectionResults"
-				};
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-			var url = "<%=request.getContextPath()%>/constituencyWiseMandalElectionsResultAction.action?"+rparam;
-			callAjax(jsObj, url);
-		}
-		function redirectZptcCandidateLink(){												
-			 var browser1 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyIdGlobal+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear+"&constTYPE="+constituencyTYPE,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
-			 browser1.focus();
-		}
-
-		function redirectMptcCandidateLink(){
-			 var browser2 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyIdGlobal+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear+"&constTYPE="+constituencyTYPE,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
-			 browser2.focus();
-		}
-		
 
     </script>
   
@@ -320,7 +267,7 @@
 
 		
 
-			<div id="mla_main_div">
+			<!--<div id="mla_main_div">
 				<div id="mla_head">
 					<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 						<tr>
@@ -337,81 +284,8 @@
 				<div id="mla_body" class="yui-skin-sam">
 					
 				</div>
-			</div>
+			</div>-->
 		</div>
-		<div class="rounded" style="width:910px;">
-		<table>
-			<tr>
-				<td style="vertical-align:top;">
-					<div id="zptc_main">
-						<div id="zptc_head">
-							<table border="0" cellpadding="0" cellspacing="0">
-							<tr>
-								<td><img src="images/icons/districtPage/header_left.gif"/></td>
-								<td>	
-									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:401px;height:18px;padding:9px;">
-										<span>ZPTC Voting Trends : </span>														
-									</div>
-								</td>
-								<td><img src="images/icons/districtPage/header_right.gif"/></td>
-							</tr>
-							</table>
-						</div>
-						<div id="zptc_body" style="width:452px;">
-							<table>									
-								<tr><td>
-										<table><tr><td>
-														<table ><tr>
-													   		<td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;">
-													   		</div></td>
-													   		<td><div id="zptcCandidateLink"></div></td>
-												   		</tr></table>
-												   </td></tr>
-											   <tr>
-												   <td class="yui-skin-sam"><div id="zptcPartyTrendsDetailsDiv"></div></td>
-										</tr></table>
-								</td></tr>
-							</table>	
-							</div>
-						</div>
-					</td>			
-					
-					<td style="vertical-align:top;">
-						<div id="mptc_main">
-							<div id="mptc_head">
-								<table border="0" cellpadding="0" cellspacing="0" >
-									<tr>
-										<td><img src="images/icons/districtPage/header_left.gif"/></td>
-										<td>	
-											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:401px;padding:9px;height:18px;">
-												<span>MPTC Voting Trends : </span>
-												<span id="totalMptcCountResultDiv"></span>
-											</div>
-										</td>
-										<td><img src="images/icons/districtPage/header_right.gif"/></td>
-									</tr>
-								</table>
-							</div>
-						<div id="mptc_body" style="width:452px;">
-								<table>									
-									<tr><td>
-											<table><tr><td>
-															<table ><tr>
-														   		<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
-														   		<td><div id="mptcCandidateLink"></div></td>
-													   		</tr></table>
-													   </td></tr>
-												   <tr>
-													   <td class="yui-skin-sam"><div id="mptcPartyTrendsDetailsDiv"></div></td>
-											</tr></table>
-									</td></tr>
-								</table>	
-							</div>
-						</div>
-					</td>	
-				</tr>
-				</table>
-				</div>
 		
 	</div>
 	
@@ -449,24 +323,8 @@
 	dtArray.push(winCandidatesObj);
 				
 </c:forEach>
-<c:forEach var="zptcElectionYears"  items="${zptcElectionYears}" >
-var ob={
-			id:'${zptcElectionYears.id}',
-			value:'${zptcElectionYears.name}'
-		};
-tehsilElections.zptcElectionYears.push(ob);	
-</c:forEach>
-
-<c:forEach var="mptcElectionYears"  items="${mptcElectionYears}" >
-var ob={
-			id:'${mptcElectionYears.id}',
-			value:'${mptcElectionYears.name}'
-		};
-tehsilElections.mptcElectionYears.push(ob);	
-</c:forEach>
 	initializeBiElectionPage();
-	getAllZptcYears();	  
-	getAllMptcYears();
+	
     var allianceCarousel = new YAHOO.widget.Carousel("partiesPerformanceCarousel",
 			{
 				carouselEl: "UL",

@@ -31,6 +31,7 @@
 		<pattern>/influencingPeopleRegistration.action*</pattern>
 		<pattern>/addNewProblemAction.action*</pattern>
 		<pattern>/addNewProblemSubmitAction.action*</pattern>
+		<pattern>/mandalVotingTrendzForBiElectionAction.action*</pattern>
     </excludes>
 
     <decorator name="main" page="main.jsp">

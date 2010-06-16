@@ -15,7 +15,7 @@ border-left:1px solid #E0E0D6;
 border-right:1px solid #E0E0D6;	
 text-align:center;
 padding:10px;
-height:340px;
+height:360px;
 }
 
 #partiesPerformanceGraphDistrict 
@@ -72,7 +72,7 @@ margin-left:40px;
 
 #biElectionDistricts_body
 {
-	height:360px;	
+	height:380px;	
 	width:228px;
 }
 
@@ -180,7 +180,6 @@ margin-left:40px;
 
 #mandalDetailsChart_body
 {
-	width:848px;
 	height:320px;
 	padding-bottom:20px;
 	padding-top:20px;
@@ -214,6 +213,12 @@ margin-left:40px;
 #mp_main_div, #mla_main_div
 {
 	width:920px;
+}
+
+#votingTrendzInfoMain
+{
+	background-color:#FFFFFF;
+}
 }
 #zptcPartyTrendsDetailsDiv table
 {

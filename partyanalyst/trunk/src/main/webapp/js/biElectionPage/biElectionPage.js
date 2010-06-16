@@ -1,7 +1,7 @@
 var dtArray =  new Array();
 var assemblyElectionType='Assembly';
 var presentElectionYear='2009';
-var constituencyIdGlobal;
+
 var districtsInfo = new Array();
 var createGroupDialog;
 function getMlaDetails()
@@ -40,7 +40,7 @@ function buildResultsDataTable(id,dtSource)
 function buildBiElectionPageLayout()
 {
 	var biElectionPageLayout = new YAHOO.widget.Layout('biElectionPageLayout_main', { 
-	height:420,
+	height:440,
 	units: [
 			{ 
 				position: 'right', 
@@ -128,8 +128,6 @@ function buildMandalsVotingTrendz()
 	elmt.innerHTML = str;
 
 	getMandalVotingTrendz(districtsInfo[0].districtId,districtsInfo[0].constituencies[0].constId,districtsInfo[0].constituencies[0].constName);
-	constituencyIdGlobal = districtsInfo[0].constituencies[0].constId;
-	
 }
 	
 function setValuesForMandalVotingTrendz(value,text)
@@ -148,10 +146,6 @@ function setValuesForMandalVotingTrendz(value,text)
 	}
 	
 	getMandalVotingTrendz(radioValue,value,text);
-	constituencyIdGlobal = value;
-	getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
-	getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
-	
 }
 
 function getConstituenciesInfo(distId,index)
@@ -181,7 +175,7 @@ function buildBiElectionDistricts()
 		return;
 
 	var str = '';
-	str += '<div style="color:#62662B;font-size:11px;margin:6px;">Click to view Party Trendz in a Constituency </div>';
+	str += '<div style="color:#62662B;font-size:11px;margin:8px;font-weight:bold;">Click the below constituencies to view Party Trendz</div>';
 	str += '<table border="0" id="distConstTable">';
 	for(var i in districtsInfo)
 	{
@@ -197,7 +191,7 @@ function buildBiElectionDistricts()
 			var info = districtsInfo[i].constituencies[j];
 			str += '<tr>';
 			str += '<td colspan="2">';
-			str += '	<a href="constituencyPageAction.action?constituencyId='+info.constId+ '" class="districtAncNew"> '+info.constName.toUpperCase()+ '</a>';
+			str += '	<a href="javascript:{}" onclick="openVotingTrendzWindow(\''+districtsInfo[i].districtId+'\',\''+info.constId+'\',\''+info.constName+'\')" class="districtAncNew"> '+info.constName.toUpperCase()+ '</a>';
 			str += '</td>';
 			str += '</tr>';
 		}
@@ -206,6 +200,7 @@ function buildBiElectionDistricts()
 
 	elmt.innerHTML = str;
 }
+
 
 function showDetailedEnlargedChart(chartName)
 {		
@@ -507,7 +502,5 @@ function initializeBiElectionPage()
 	buildBiElectionPageLayout();
 	buildBiElectionDistricts();
 	getMlaDetails();	
-	buildMandalsVotingTrendz();
-	getAllZptcYears();	  
-	getAllMptcYears();
+	//buildMandalsVotingTrendz();
 }
