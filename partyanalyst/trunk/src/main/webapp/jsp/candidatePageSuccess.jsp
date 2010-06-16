@@ -313,6 +313,7 @@
 								stateName:'${candidateElectionResults.stateName}',
 								votesEarned:'${candidateElectionResults.votesEarned}',
 								votePercentage:'${candidateElectionResults.votesPercentage}',
+								constituencyId:'${candidateElectionResults.constituencyId}',
 								status:'',
 								oppositionCandidates:[]
 							};
