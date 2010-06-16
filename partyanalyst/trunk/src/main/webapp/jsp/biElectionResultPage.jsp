@@ -296,6 +296,7 @@
 			name: "${winningCandidates.candidateName}",
 			partyName: "${winningCandidates.partyName}",
 			votesPercent: "${winningCandidates.votesPercentage}",
+			marginVotes: "${winningCandidates.marginVotes}",
 			marginPercent: "${winningCandidates.votesMargin}",
 			completeResults: '<A href="javascript:{}" class="viewAncs" title="Click to view detailed election results" onclick="getMoreDetails(${winningCandidates.constituencyId},electionType,electionYear)">More Results</A>'
 					
