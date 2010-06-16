@@ -86,7 +86,10 @@
 			mptcElectionYears:[]
 	};
 	var counter = 0;
-	var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear,mptcElectionTypeId=3,zptcElectionTypeId=4,mptcElectionType="MPTC",zptcElectionType="ZPTC";
+	var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear;
+	var mptcElectionTypeId=${mptcElectionId},zptcElectionTypeId=${zptcElectionId};
+	var mptcElectionType="${mptcElectionType}",zptcElectionType="${zptcElectionType}";
+
 	var tehsilDetails={
 			zptcArray:[],
 			mptcArray:[],
