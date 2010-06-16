@@ -13,10 +13,18 @@ public class BiElectionResultsMainVO implements Serializable {
 	private List<BiElectionResultsVO> biElectionResultsMainVO;
 	
 	private String mandalWiseResultsChart;
+	private String enlargedMandalWiseResultsChart;
 	private String assemblyResultsChartForPresentYear;
 	private String assemblyResultsChartForPreviousYear;
 	private ConstituencyVO constituencyVO;
 	
+	public String getEnlargedMandalWiseResultsChart() {
+		return enlargedMandalWiseResultsChart;
+	}
+	public void setEnlargedMandalWiseResultsChart(
+			String enlargedMandalWiseResultsChart) {
+		this.enlargedMandalWiseResultsChart = enlargedMandalWiseResultsChart;
+	}
 	public List<BiElectionResultsVO> getBiElectionResultsMainVO() {
 		return biElectionResultsMainVO;
 	}
