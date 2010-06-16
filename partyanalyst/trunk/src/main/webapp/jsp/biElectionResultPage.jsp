@@ -75,6 +75,9 @@
 			desc1 : '<%=desc1%>',
 			desc2 : '<%=desc2%>'								
 	};
+		var enlargedPresentYearResultsChartName = "${enlargedPresentYearResultsChartName}"; 
+		var enlargedPreviousYearResultsChartName = "${enlargedPreviousYearResultsChartName}";
+
 		var electionYear = '${electionYear}';
 		var electionType = '${electionType}';
 		var presentYearResultsChartName = '${presentYearResultsChartName}';
@@ -263,11 +266,16 @@
 				</div>
 			</div>			
 		</div>
-		
+		<div id="enlargedDIVForMandals" class="yui-skin-sam">
+			<div id="enlargedDIV"></div>
+		</div>
 		<div id="partiesPerformanceGraphDistrict">
 				<div id="partiesPerformanceCarousel" class="yui-skin-sam">
 					<ul>
 					<li>
+						<div id="presentYearResultsEnlargedChartName"> 
+							<input type="button" class="button" style="margin-bottom:-6px;margin-left:673px;margin-top:11px;" onclick="showDetailedEnlargedChart(enlargedPresentYearResultsChartName)" value="Detailed Chart">
+						</div>
 						<div id="allElectionResultsInDT"  class="allianceListDiv">
 							<div id="allElectionResultsInDT_head"></div>
 							<div id="allElectionResultsInDT_body"><img src="charts/${presentYearResultsChartName}"/></div>
@@ -275,6 +283,9 @@
 						</div>
 					</li>
 					<li>
+						<div id="previousYearResultsEnlargedChartName">
+							<input type="button" style="margin-bottom:-6px;margin-left:673px;margin-top:11px;" class="button" onclick="showDetailedEnlargedChart(enlargedPreviousYearResultsChartName)" value="Detailed Chart">
+						</div> 
 						<div id="positionsGraphDiv" class="allianceListDiv">
 							<div id="electionHirarchiDiv" ></div>
 							<div id="partyPositionsDiv"><img src="charts/${previousYearResultsChartName}"/></div>
