@@ -68,7 +68,9 @@ public class BiElectionAction extends ActionSupport implements
 	private List<ConstituencyElectionResultsVO> biElectionAssemblyConstPreviousYearResults;
 	private String presentYearResultsChartName;
 	private String previousYearResultsChartName;
-	private String chartPath;
+	private String enlargedPresentYearResultsChartName;
+	private String enlargedPreviousYearResultsChartName;
+	private String chartPath,enlargedChartPath;
 	HttpServletRequest request;
 	HttpServletResponse response;
 	HttpSession session;
@@ -84,12 +86,40 @@ public class BiElectionAction extends ActionSupport implements
 	private ConstituencyVO constituencyVO; 
 	
 	private String mandalWiseResultsChart;
+	private String enlargedLineChartNameForMandalResult;
 	private List<SelectOptionVO> zptcElectionYears;
 	private List<SelectOptionVO> mptcElectionYears;  
 	private List<SelectOptionVO> electionTypes;
 	private Long zptcElectionId; 
 	private Long mptcElectionId;
 	private String mptcElectionType,zptcElectionType;
+
+	public String getEnlargedPresentYearResultsChartName() {
+		return enlargedPresentYearResultsChartName;
+	}
+
+	public void setEnlargedPresentYearResultsChartName(
+			String enlargedPresentYearResultsChartName) {
+		this.enlargedPresentYearResultsChartName = enlargedPresentYearResultsChartName;
+	}
+
+	public String getEnlargedPreviousYearResultsChartName() {
+		return enlargedPreviousYearResultsChartName;
+	}
+
+	public void setEnlargedPreviousYearResultsChartName(
+			String enlargedPreviousYearResultsChartName) {
+		this.enlargedPreviousYearResultsChartName = enlargedPreviousYearResultsChartName;
+	}
+
+	public String getEnlargedLineChartNameForMandalResult() {
+		return enlargedLineChartNameForMandalResult;
+	}
+
+	public void setEnlargedLineChartNameForMandalResult(
+			String enlargedLineChartNameForMandalResult) {
+		this.enlargedLineChartNameForMandalResult = enlargedLineChartNameForMandalResult;
+	}
 
 	public List<BiElectionResultsVO> getBiElectionResultsVO() {
 		return biElectionResultsVO;
@@ -135,6 +165,14 @@ public class BiElectionAction extends ActionSupport implements
 
 	public void setChartPath(String chartPath) {
 		this.chartPath = chartPath;
+	}
+
+	public String getEnlargedChartPath() {
+		return enlargedChartPath;
+	}
+
+	public void setEnlargedChartPath(String enlargedChartPath) {
+		this.enlargedChartPath = enlargedChartPath;
 	}
 
 	public IStaticDataService getStaticDataService() {
@@ -343,10 +381,17 @@ public class BiElectionAction extends ActionSupport implements
 		}
 		biElectionAssemblyConstPresentYearResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
 		biElectionAssemblyConstPreviousYearResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(IConstants.PREVIOUS_ELECTION_YEAR, constituencyIdsList);
-		if(biElectionAssemblyConstPresentYearResults != null && biElectionAssemblyConstPresentYearResults.size()>0)
+		
+		if(biElectionAssemblyConstPresentYearResults != null && biElectionAssemblyConstPresentYearResults.size()>0){
 			presentYearResultsChartName = createResultsLineChart(biElectionAssemblyConstPresentYearResults,sb, IConstants.PRESENT_ELECTION_YEAR);
-		if(biElectionAssemblyConstPreviousYearResults !=null && biElectionAssemblyConstPreviousYearResults.size()>0)
+			enlargedPresentYearResultsChartName = enlargedCreateResultsLineChart(biElectionAssemblyConstPresentYearResults,sb, IConstants.PRESENT_ELECTION_YEAR);
+		}
+			
+		if(biElectionAssemblyConstPreviousYearResults !=null && biElectionAssemblyConstPreviousYearResults.size()>0){
 			previousYearResultsChartName = createResultsLineChart(biElectionAssemblyConstPreviousYearResults,sb, IConstants.PREVIOUS_ELECTION_YEAR);
+			enlargedPreviousYearResultsChartName = enlargedCreateResultsLineChart(biElectionAssemblyConstPreviousYearResults,sb, IConstants.PREVIOUS_ELECTION_YEAR);
+		}
+			
 		biElectionAssemblyConstPreviousYearResults = staticDataService.findAssemblyConstituenciesResultsByConstituencyIds(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
 		winningCandidatesList = staticDataService.getWinningCandidatesInConstituencies(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
 		electionYear = IConstants.PRESENT_ELECTION_YEAR;
@@ -365,11 +410,31 @@ public class BiElectionAction extends ActionSupport implements
         ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataSetForGraph(asseblyDetails);
 		ChartProducer.createLineChart(title,"Constituencies","Votes Percentage", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(),chartPath,320,920, new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()));
 		chartName = lineChartName;
+	
 		}catch(Exception ex){
 			ex.printStackTrace();
 			log.debug("Exception Raised :" + ex);
 		}
 		return chartName;
+		
+	}
+	
+	public String enlargedCreateResultsLineChart(List<ConstituencyElectionResultsVO> asseblyDetails, StringBuilder partialChartName, String year)
+	{
+		String enlargedLineChartName = null;
+		try{
+		
+		enlargedLineChartName = "enlarged_bielections in _" +partialChartName+"_forYear_"+year+".png";
+        String enlargedChartPath = context.getRealPath("/") + "charts\\" + enlargedLineChartName;
+        String enlargedTitle = year+" Assembly Election Results in Bi-Election Constituencies";
+		ChartColorsAndDataSetVO enlargedChartColorsAndDataSetVO = createDataSetForGraph(asseblyDetails);
+		ChartProducer.createLineChart(enlargedTitle,"Constituencies","Votes Percentage", (DefaultCategoryDataset)enlargedChartColorsAndDataSetVO.getDataSet(),enlargedChartPath,600,920, new ArrayList<Color>(enlargedChartColorsAndDataSetVO.getColorsSet()));
+
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.debug("Exception Raised :" + ex);
+		}
+		return enlargedLineChartName;
 		
 	}
 	
@@ -452,6 +517,7 @@ public class BiElectionAction extends ActionSupport implements
 		biElectionResultsMainVO = new BiElectionResultsMainVO();
 		biElectionResultsMainVO.setBiElectionResultsMainVO(biElectionResultsVO);
 		biElectionResultsMainVO.setMandalWiseResultsChart(getMandalResults(constiId,constiName));
+		biElectionResultsMainVO.setEnlargedMandalWiseResultsChart(getEnlargedGraphForMandalResults(constiId,constiName));
 		biElectionResultsMainVO.setAssemblyResultsChartForPresentYear(presentYearResultsChartName);
 		biElectionResultsMainVO.setAssemblyResultsChartForPreviousYear(previousYearResultsChartName);
 		
@@ -461,23 +527,38 @@ public class BiElectionAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
-	  public String getMandalResults(Long constituencyId,String constituencyName){
-		 
+	public String  getEnlargedGraphForMandalResults(Long constituencyId,String constituencyName){
+			String domainAxisName = "Mandals";
+			String enlargedLineChartName = null;
+			
+			List<ElectionResultPartyVO> list = staticDataService.getAllMandalElectionInformationForAConstituency(constituencyId);
+		    String enlargedTitle =  "All Election Results for "+constituencyName;         
+		    enlargedLineChartName = "enlarged_mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+constituencyId+".png";
+		    enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedLineChartName;
+		    
+		    ChartColorsAndDataSetVO enlargedChartColorsAndDataSetVO = createDataset(list);
+		    ChartProducer.createLineChart(enlargedTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)enlargedChartColorsAndDataSetVO.getDataSet(), enlargedChartPath,600,920,new ArrayList<Color>(enlargedChartColorsAndDataSetVO.getColorsSet()));
+		    enlargedLineChartNameForMandalResult = enlargedLineChartName;
+		    
+			return enlargedLineChartNameForMandalResult;
+	}
+	
+	public String getMandalResults(Long constituencyId,String constituencyName){		 
 		  List<ElectionResultPartyVO> list = staticDataService.getAllMandalElectionInformationForAConstituency(constituencyId);
 
 		  String chartTitle = "AllPartiesAllElectionYearsForAllElectiontypesConstituencyLatestMandalDetails";		  
 		  String chartName = "ElectionDetails for"+constituencyName+"_"+list.get(0).getElectionYear()+"_"+constituencyId;
 		  String domainAxisName = "Mandals";
 		  		 
-			  chartTitle = "All Election Results for "+constituencyName;
-			  chartName = "mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+"constituencyId"+".png";
-			  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-			  ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataset(list);
-			  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,320,920,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()));
+		  chartTitle = "All Election Results for "+constituencyName;
+		  chartName = "mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+constituencyId+".png";
+		  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		  ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataset(list);
+		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,300,820,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()));
 			  
-			  mandalWiseResultsChart = chartName;
+		  mandalWiseResultsChart = chartName;
 			  
-			 return chartName;
+		  return chartName;
 	  }
 	  
 	  
