@@ -39,7 +39,7 @@ function buildResultsDataTable(id,dtSource)
 function buildBiElectionPageLayout()
 {
 	var biElectionPageLayout = new YAHOO.widget.Layout('biElectionPageLayout_main', { 
-	height:380,
+	height:420,
 	units: [
 			{ 
 				position: 'right', 
@@ -174,6 +174,7 @@ function buildBiElectionDistricts()
 		return;
 
 	var str = '';
+	str += '<div style="color:#62662B;font-size:11px;margin:6px;">Click to view Party Trendz in a Constituency </div>';
 	str += '<table border="0" id="distConstTable">';
 	for(var i in districtsInfo)
 	{
@@ -238,13 +239,13 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 	mandalStr += '</tr>';
 	mandalStr += '</table>';
 	mandalStr += '<div id="constiVotersDetails" style="margin-top:20px;">';
-	mandalStr += '<div style="padding:10px;margin-bottom:20px;"> <u><b> Votes Share In Mandals :</b> </u> </div>';
-	mandalStr += '<table width="90%" border="1" cellspacing="3">';
+	mandalStr += '<div style="padding:10px;margin-bottom:20px;"> <u><b> Mandals Votes Share In Constituency :</b> </u> </div>';
+	mandalStr += '<center><table width="85%" border="1" cellspacing="3">';
 	mandalStr += '	<tr>';
 	for(var chart in resultsData.constituencyVO.pieChartNames)
 		mandalStr += '		<td align="center"><img src="charts/'+resultsData.constituencyVO.pieChartNames[chart]+'" border="0"></td>';	
 	mandalStr += '	</tr>';
-	mandalStr += '</table>';
+	mandalStr += '</table></center>';
 	mandalStr += '</div>';
 	mandalStr += '</fieldset>';
 	

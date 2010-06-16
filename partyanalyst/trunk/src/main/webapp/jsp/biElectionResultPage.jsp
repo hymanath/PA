@@ -232,7 +232,7 @@
 						<tr>
 							<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 							<td>	
-								<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:793px;">
+								<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:863px;">
 									<span>Bi-Election Constituency Details</span>
 								</div>
 							</td>
@@ -254,7 +254,7 @@
 						<tr>
 							<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 							<td>	
-								<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:793px;">
+								<div id="mlaInfoDivHead" class="districtPageRoundedHeaders_center" style="width:863px;">
 									<span>Mandal Details</span>
 								</div>
 							</td>
@@ -314,7 +314,7 @@
 				animation: { speed: 1.0 },
 				autoPlayInterval: 2000
 			});
-
+	allianceCarousel.registerPagination('<span class="carouselTitleSpan">Partys Performance In Bi-Election Constituencies</span>'); 
 	allianceCarousel.render(); 
 	allianceCarousel.show();
 	</script>
