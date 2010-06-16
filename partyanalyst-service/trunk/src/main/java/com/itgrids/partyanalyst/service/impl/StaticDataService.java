@@ -1882,6 +1882,7 @@ public class StaticDataService implements IStaticDataService {
 	 * belongs for the given election year and election type(i.e.,parliament or assembly)
 	 * 
 	 * */
+	//More Details Method...
 	@SuppressWarnings("unchecked")
 	public ConstituencyElectionResultsVO getAllCandidatesDetailsForConstituency(final Long constituencyId,final String electionYear,final String electionType){
 		 ConstituencyElectionResultsVO constituencyElectionResults = null;
@@ -4204,6 +4205,7 @@ public class StaticDataService implements IStaticDataService {
 		Double votesMarginPercentage;
 		Map<Long, CandidateElectionResultVO> constuencywiseResultsMap = new LinkedHashMap<Long, CandidateElectionResultVO>();
 		try{
+			candidateElectionResultVO = new CandidateElectionResultVO();
 			//this dao call retrieves the details of all winning candidates in the passed constituencies
 			List resultsList= nominationDAO.findWinningCandidatesDetailsInContituencies(electionYear, constituencyIds);	
 			//this dao call retrieves the votes margin percentage of all opposition candidates in the passed constituencies, this is used to calculate votes margin % 
@@ -4222,19 +4224,22 @@ public class StaticDataService implements IStaticDataService {
 					candidateElectionResultVO.setPartyName(obj[5].toString());
 					candidateElectionResultVO.setPartyId(new Long(obj[6].toString()));
 					candidateElectionResultVO.setVotesPercentage(obj[7].toString());
-					
+					candidateElectionResultVO.setMarginVotes(obj[8].toString());
 					constuencywiseResultsMap.put(new Long(obj[2].toString()), candidateElectionResultVO);
 								
 			}
+			
 			for(int j=0; j<oppositionCandidatesList.size();j++)
 			{
 				Object[] oppostionObj = (Object[]) oppositionCandidatesList.get(j);
 				constituencyId = new Long(oppostionObj[1].toString());
+				
 				if(constuencywiseResultsMap.containsKey(constituencyId))
 				{
 					candidateElectionResultVO = constuencywiseResultsMap.get(constituencyId);
 					if(candidateElectionResultVO.getConstituencyId().equals(constituencyId))
 					{
+						candidateElectionResultVO.setMarginVotes(new BigDecimal((Double.parseDouble(candidateElectionResultVO.getMarginVotes()))-Double.parseDouble(oppostionObj[2].toString())).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
 						votesPercentage = new Double(candidateElectionResultVO.getVotesPercentage());
 						votesMarginPercentage = votesPercentage - new Double((String)oppostionObj[0]);
 						log.debug("votes Margin %::::::::::::" + votesMarginPercentage);
@@ -4251,6 +4256,10 @@ public class StaticDataService implements IStaticDataService {
 	}
 		Collections.sort(winningCandidatesInBiElectionConst, new DistrictNamesComparator());
 		return winningCandidatesInBiElectionConst;
-	}	
+	}
+	
+	public static void main(String[] args){
+		System.out.println(new BigDecimal(259.0).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+	}
 }
 
