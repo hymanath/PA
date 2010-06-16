@@ -3,7 +3,7 @@ var assemblyElectionType='Assembly';
 var presentElectionYear='2009';
 var constituencyIdGlobal;
 var districtsInfo = new Array();
-
+var createGroupDialog;
 function getMlaDetails()
 {
 
@@ -114,15 +114,15 @@ function buildMandalsVotingTrendz()
 	str += '<div id="mandalVotingTrendzDataDiv">';
 	str += '<div id="mandalVotingTrendzDataDiv_head">Mandal Voting Trendz</div>';
 	str += '<div id="mandalVotingTrendzDataDiv_body">';
-	str += '	<div id="mandalsListInConstituency"></div>';	
-	str += '	<div id="mandalDetailsChart_body">';
+	str += '	<div id="mandalsListInConstituency"></div>';
+	str += '	<div id="mandalVotingDetailedGraph"></div>';
+	str += '	<div id="mandalDetailsChart_body">';	
 	str += '	<div style="margin-top:5px;margin-left:300px;">';
 	str += '		<div style="color:#ADADAD"> Loading ...</div>';
 	str += '		<div> <img src="images/icons/barloader.gif"></img> </div>';
 	str += '	</div>';
 	str += '	</div>';	
-	str += '	<div id="mandalVotingTrendzData"></div>';	
-	
+	str += '	<div id="mandalVotingTrendzData" align="center" ></div>';	
 	str += '</div>';
 	str += '</div>';
 	elmt.innerHTML = str;
@@ -207,6 +207,69 @@ function buildBiElectionDistricts()
 	elmt.innerHTML = str;
 }
 
+function showDetailedEnlargedChart(chartName)
+{		
+	var elmt = document.getElementById('enlargedDIV');
+	var divChild = document.createElement('div');
+	divChild.setAttribute('id','createGroupmDiv');
+
+    var str='';
+	str+='<img src="charts/'+chartName+'" />';
+	divChild.innerHTML=str;
+	elmt.appendChild(divChild);	
+	if(createGroupDialog)
+		createGroupDialog.destroy();
+	createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
+			{ width : "920px", 		
+              fixedcenter : false, 
+              visible : true,  
+              constraintoviewport : true, 
+			  iframe :true,
+			  modal :true,
+			  hideaftersubmit:true,
+			  close:true,
+			  x:600,
+			  y:800
+             } );
+	createGroupDialog.render();
+}
+
+function showDetailedChart(chartName)
+{		
+	var elmt = document.getElementById('enlargedGraphDIV');
+	var divChild = document.createElement('div');
+	divChild.setAttribute('id','createGroupmDiv');
+
+    var str='';
+	str+='<img src="charts/'+chartName+'" />';
+	divChild.innerHTML=str;
+	elmt.appendChild(divChild);	
+	if(createGroupDialog)
+		createGroupDialog.destroy();
+	createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
+			{ width : "920px", 		
+              fixedcenter : false, 
+              visible : true,  
+              constraintoviewport : true, 
+			  iframe :true,
+			  modal :true,
+			  hideaftersubmit:true,
+			  close:true,
+			  x:600,
+			  y:800
+             } );
+	createGroupDialog.render();
+}
+function handleCreateGroupSubmit()
+{
+	createGroupDialog.hide();			
+}
+
+function handleCreateGroupCancel()
+{
+	this.cancel();
+}
+
 function buildMandalVotingTrendzData(jsObj,resultsData)
 {
 	
@@ -214,6 +277,13 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 	var bodyElmt = document.getElementById("mandalVotingTrendzData");
 	var graphElmt = document.getElementById("mandalDetailsChart_body");
 	var mandalsListElmt = document.getElementById("mandalsListInConstituency");
+
+	var enlargedGraph = document.getElementById("mandalVotingDetailedGraph");
+	
+	var enlargedElmt='';
+	enlargedElmt += '<input type="button" style="margin-bottom:-22px;margin-left:663px;margin-top:15px;"class="button" onclick="showDetailedChart(\''+resultsData.enlargedMandalWiseResultsChart+'\')" value="Detailed Chart">';
+	enlargedElmt += '<div id="enlargedGraphDIV"></div>';
+	enlargedGraph.innerHTML = enlargedElmt;
 
 	var results = resultsData.biElectionResultsMainVO;
 	
