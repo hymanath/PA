@@ -101,6 +101,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					name = candidate.getFirstname();
 				candidateDetails.setCandidateName(name);
 				candidateDetails.setConstituencyName(constituency.getName());
+				candidateDetails.setConstituencyId(constituency.getConstituencyId());
 				candidateDetails.setElectionId(election.getElectionId());
 				candidateDetails.setElectionType(election.getElectionScope().getElectionType().getElectionType());
 				candidateDetails.setElectionYear(election.getElectionYear());
