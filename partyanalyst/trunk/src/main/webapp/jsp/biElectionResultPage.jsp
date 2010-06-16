@@ -338,7 +338,7 @@
 							<tr>
 								<td><img src="images/icons/districtPage/header_left.gif"/></td>
 								<td>	
-									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:401px;">
+									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:401px;height:18px;padding:9px;">
 										<span>ZPTC Voting Trends : </span>														
 									</div>
 								</td>
