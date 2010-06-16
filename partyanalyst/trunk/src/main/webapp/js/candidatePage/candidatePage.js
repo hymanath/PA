@@ -135,7 +135,7 @@ function buildCandidateElectionProfile()
 	for(var i in candidateInfoObject.candidateInfoArray)
 	{
 		var data = candidateInfoObject.candidateInfoArray[i];
-		ebStr+='<div id="candidateElectionInfo_Prf'+i+'" class="electionPrfDiv" onclick="showElectionResultsInPopup('+i+')">';
+		ebStr+='<div id="candidateElectionInfo_Prf'+i+'" class="electionPrfDiv" onclick="showElectionResultsInNewWindow('+i+')">';
 		ebStr+='<span style="margin-right:10px;"> <img height="10" width="10" src="'+candidateInfoObject.contextPath+'/images/icons/indexPage/listIcon.png"/></span>';
 		ebStr+='<span>'+data.status+' in '+data.electionYear+' '+data.electionType+' Election with <b>'+data.votePercentage+'% </b>of votes gain in '+data.constituencyName+' constituency</span>';
 		ebStr+='</div>';
@@ -150,12 +150,19 @@ function buildCandidateElectionProfile()
 		candidateFlag.innerHTML = flag;
 }
 
+
+function showElectionResultsInNewWindow(index){
+	var data = candidateInfoObject.candidateInfoArray[index];
+	
+	var politicalChangesWindow = window.open("constituencyElectionResultsAction.action?constituencyId="+data.constituencyId+"&electionType="+data.electionType+"&electionYear="+data.electionYear,"politicalChangesWindow","scrollbars=yes,height=600,width=850,left=200,top=200");
+    politicalChangesWindow.focus();
+}
+
 function showElectionResultsInPopup(index)
 {
 	var data = candidateInfoObject.candidateInfoArray[index];
 	//var mainDivElmt = document.getElementById("CandidatePageMainDiv");
-	
-	
+		
 	//var divElmt = document.createElement('div');
 	//divElmt.setAttribute('id','newImpDateDiv');
 		
