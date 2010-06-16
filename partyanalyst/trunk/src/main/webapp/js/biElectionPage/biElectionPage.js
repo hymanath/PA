@@ -20,14 +20,15 @@ function buildResultsDataTable(id,dtSource)
 							{key: "name", label: "Candidate", sortable:true},
 							{key: "partyName", label: "Party", sortable:true},
 							{key: "votesPercent", label:"Votes %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true},
+							{key: "marginVotes", label: "Margin Votes", sortable:true},
 							{key: "marginPercent", label:"Votes Margin %", formatter:YAHOO.widget.DataTable.formatFloat,sortable: true},
 							{key: "completeResults", label: "Results"}
 							];                	 	    
 
 	var allianceResultsDataSource = new YAHOO.util.DataSource(dtSource); 
 	allianceResultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-	allianceResultsDataSource.responseSchema = {
-			fields: ["distName","constName", "name", "partyName",{key: "votesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},
+	allianceResultsDataSource.responseSchema = {		
+			fields: ["distName","constName", "name", "partyName",{key: "votesPercent", parser:YAHOO.util.DataSourceBase.parseNumber},"marginVotes",
 								  {key: "marginPercent", parser:YAHOO.util.DataSourceBase.parseNumber},"completeResults"] 
 			};
 
