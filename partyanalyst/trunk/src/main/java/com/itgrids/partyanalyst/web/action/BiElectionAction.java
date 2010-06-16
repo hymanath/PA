@@ -286,7 +286,7 @@ public class BiElectionAction extends ActionSupport implements
 		
  		String lineChartName = "bielections in _" +partialChartName+"_forYear_"+year+".png";
         String chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
-        String title = year+"Assembly Election Results in Bi-Election Constituencies";
+        String title = year+" Assembly Election Results in Bi-Election Constituencies";
         ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataSetForGraph(asseblyDetails);
 		ChartProducer.createLineChart(title,"Constituencies","Votes Percentage", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(),chartPath,320,920, new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()));
 		chartName = lineChartName;
