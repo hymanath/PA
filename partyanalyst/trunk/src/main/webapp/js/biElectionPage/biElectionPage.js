@@ -1,7 +1,7 @@
 var dtArray =  new Array();
 var assemblyElectionType='Assembly';
 var presentElectionYear='2009';
-
+var constituencyIdGlobal;
 var districtsInfo = new Array();
 
 function getMlaDetails()
@@ -128,6 +128,8 @@ function buildMandalsVotingTrendz()
 	elmt.innerHTML = str;
 
 	getMandalVotingTrendz(districtsInfo[0].districtId,districtsInfo[0].constituencies[0].constId,districtsInfo[0].constituencies[0].constName);
+	constituencyIdGlobal = districtsInfo[0].constituencies[0].constId;
+	
 }
 	
 function setValuesForMandalVotingTrendz(value,text)
@@ -146,6 +148,10 @@ function setValuesForMandalVotingTrendz(value,text)
 	}
 	
 	getMandalVotingTrendz(radioValue,value,text);
+	constituencyIdGlobal = value;
+	getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
+	getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
+	
 }
 
 function getConstituenciesInfo(distId,index)
@@ -432,4 +438,6 @@ function initializeBiElectionPage()
 	buildBiElectionDistricts();
 	getMlaDetails();	
 	buildMandalsVotingTrendz();
+	getAllZptcYears();	  
+	getAllMptcYears();
 }

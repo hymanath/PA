@@ -81,10 +81,15 @@ public class BiElectionAction extends ActionSupport implements
 	private String electionYear;
 	private String electionType;
 	private ConstituencyInfoVO constituencyDetails;
-	private ConstituencyVO constituencyVO;	 
+	private ConstituencyVO constituencyVO; 
 	
 	private String mandalWiseResultsChart;
-	
+	private List<SelectOptionVO> zptcElectionYears;
+	private List<SelectOptionVO> mptcElectionYears;  
+	private List<SelectOptionVO> electionTypes;
+	private Long zptcElectionId; 
+	private Long mptcElectionId;
+	private String mptcElectionType,zptcElectionType;
 
 	public List<BiElectionResultsVO> getBiElectionResultsVO() {
 		return biElectionResultsVO;
@@ -252,11 +257,81 @@ public class BiElectionAction extends ActionSupport implements
 
 	public void setElectionType(String electionType) {
 		this.electionType = electionType;
+	}	
+
+	public List<SelectOptionVO> getZptcElectionYears() {
+		return zptcElectionYears;
+	}
+
+	public void setZptcElectionYears(List<SelectOptionVO> zptcElectionYears) {
+		this.zptcElectionYears = zptcElectionYears;
+	}
+
+	public List<SelectOptionVO> getMptcElectionYears() {
+		return mptcElectionYears;
+	}
+
+	public void setMptcElectionYears(List<SelectOptionVO> mptcElectionYears) {
+		this.mptcElectionYears = mptcElectionYears;
+	}
+
+	public List<SelectOptionVO> getElectionTypes() {
+		return electionTypes;
+	}
+
+	public void setElectionTypes(List<SelectOptionVO> electionTypes) {
+		this.electionTypes = electionTypes;
+	}
+
+	public Long getZptcElectionId() {
+		return zptcElectionId;
+	}
+
+	public void setZptcElectionId(Long zptcElectionId) {
+		this.zptcElectionId = zptcElectionId;
+	}
+
+	public Long getMptcElectionId() {
+		return mptcElectionId;
+	}
+
+	public void setMptcElectionId(Long mptcElectionId) {
+		this.mptcElectionId = mptcElectionId;
+	}
+	
+	
+
+	public String getMptcElectionType() {
+		return mptcElectionType;
+	}
+
+	public void setMptcElectionType(String mptcElectionType) {
+		this.mptcElectionType = mptcElectionType;
+	}
+
+	public String getZptcElectionType() {
+		return zptcElectionType;
+	}
+
+	public void setZptcElectionType(String zptcElectionType) {
+		this.zptcElectionType = zptcElectionType;
 	}
 
 	public String execute(){
 		log.debug(" Inside Action ..");
+		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
+		zptcElectionType = IConstants.ZPTC_ELECTION_TYPE;
+		electionTypes = staticDataService.getAllElectionTypes();
+		for(SelectOptionVO eleTypes : electionTypes){
+			if(eleTypes.getName().equalsIgnoreCase(mptcElectionType)){
+				mptcElectionId = eleTypes.getId();
+			}else if(eleTypes.getName().equalsIgnoreCase(zptcElectionType)){
+				zptcElectionId = eleTypes.getId();
+			}
+		}
+		zptcElectionYears = staticDataService.getAllElectionYearsForATeshil(zptcElectionId);
 		
+		mptcElectionYears = staticDataService.getAllElectionYearsForATeshil(mptcElectionId);
 		List<Long> constituencyIdsList = new ArrayList<Long>();
 		StringBuilder sb = new StringBuilder();
 		districtsAndConsts = biElectionPageService.getBiElectionConstituenciesDistrictWise();

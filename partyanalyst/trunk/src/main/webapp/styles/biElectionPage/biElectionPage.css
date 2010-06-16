@@ -215,3 +215,25 @@ margin-left:40px;
 {
 	width:920px;
 }
+#zptcPartyTrendsDetailsDiv table
+{
+	border:2px solid #9696C0;
+	border-collapse:separate;
+	border-spacing:0;
+	font-family:arial;
+	font-size:12px;
+	margin:0;
+	padding:0;
+	width:100%;
+}
+#mptcPartyTrendsDetailsDiv table
+{
+	border:2px solid #9696C0;
+	border-collapse:separate;
+	border-spacing:0;
+	font-family:arial;
+	font-size:12px;
+	margin:0;
+	padding:0;
+	width:100%;
+} 
