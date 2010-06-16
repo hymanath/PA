@@ -1334,7 +1334,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		Query queryObject = getSession().createQuery("select model.constituencyElection.constituency.district.districtId, model.constituencyElection.constituency.district.districtName, " +
 				"model.constituencyElection.constituency.constituencyId, model.constituencyElection.constituency.name, " +
 				"model.candidate.lastname, " +
-				"model.party.shortName, model.party.partyId, model.candidateResult.votesPercengate " +  
+				"model.party.shortName, model.party.partyId, model.candidateResult.votesPercengate,model.candidateResult.votesEarned " +  
 				"from Nomination model where model.constituencyElection.election.electionYear =? and model.candidateResult.rank = 1 and model.constituencyElection.constituency.constituencyId in (:constituencyIds)" +
 				"order by model.constituencyElection.constituency.district.districtName")  ;
 		queryObject.setParameter(0,electionYear);
@@ -1346,7 +1346,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	@SuppressWarnings("unchecked")
 	public List findOppositionCandidateVotesPercentageInConstituencies(String electionYear,
 			List<Long> constituencyIds) {
-		Query queryObject = getSession().createQuery("select model.candidateResult.votesPercengate, model.constituencyElection.constituency.constituencyId " +  
+		Query queryObject = getSession().createQuery("select model.candidateResult.votesPercengate, model.constituencyElection.constituency.constituencyId,model.candidateResult.votesEarned " +  
 				"from Nomination model where model.constituencyElection.election.electionYear =? and model.candidateResult.rank = 2 and model.constituencyElection.constituency.constituencyId in (:constituencyIds)");
 		queryObject.setParameter(0,electionYear);
 		queryObject.setParameterList("constituencyIds",constituencyIds);
