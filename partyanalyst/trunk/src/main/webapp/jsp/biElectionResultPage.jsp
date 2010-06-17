@@ -69,6 +69,7 @@
 		ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
 		String desc1 = rb.getString("resultsDescritpion1");
 		String desc2 = rb.getString("resultsDescritpion2");
+		String indPartyDesc = rb.getString("indPartyDesc");
 	%>
 	var localizationObj = {
 			desc1 : '<%=desc1%>',
@@ -226,6 +227,7 @@
 						<div id="allElectionResultsInDT"  class="allianceListDiv">
 							<div id="allElectionResultsInDT_head"></div>
 							<div id="allElectionResultsInDT_body"><img src="charts/${presentYearResultsChartName}"/></div>
+							<div id="indPartyDescription" ><%=indPartyDesc%></div>
 						
 						</div>
 					</li>
@@ -236,6 +238,7 @@
 						<div id="positionsGraphDiv" class="allianceListDiv">
 							<div id="electionHirarchiDiv" ></div>
 							<div id="partyPositionsDiv"><img src="charts/${previousYearResultsChartName}"/></div>
+							<div id="indPartyDescription"><%=indPartyDesc%></div>
 						</div>
 					</li>
 					</ul>
