@@ -4037,14 +4037,48 @@ public class StaticDataService implements IStaticDataService {
 				partyResultsInConstituency= new ArrayList<PartyResultsVO>();
 				constituencyElectionResults = entry.getKey();
 				partyResults = entry.getValue();
+				Double votesEarned = new Double(0);
+				Double validVotes = new Double(0);
+				Long indPartyId = new Long(0);
+				String indPartyName ="";
 				for(Object[] values:partyResults)
 				{
+					String partyName = (String)values[2];
+					if(partyName.equalsIgnoreCase("IND")){
+						indPartyId = (Long)values[3];
+						indPartyName = (String)values[2];
+						votesEarned+=(Double)values[1];
+						validVotes = (Double)values[6];
+						log.debug("Inside independent party");
+						log.debug("votesEarned after increment:"+votesEarned);
+						log.debug("validVotes after increment:"+validVotes);
+					}
+					else{
 					partyResultsVO = new PartyResultsVO();
 					partyResultsVO.setPartyId(new Long(values[3].toString()));
 					partyResultsVO.setPartyName(values[2].toString());
 					partyResultsVO.setPercentage(values[0].toString());
-					partyResultsVO.setTotalPolledVotes(((Double)values[1]).longValue());
+					partyResultsVO.setVotesEarned(((Double)values[1]).longValue());
+					partyResultsVO.setValidVotes(((Double)values[6]).longValue());
 					partyResultsInConstituency.add(partyResultsVO);
+					}
+				}
+				
+				if(votesEarned != new Double(0) && validVotes != new Double(0)){
+					log.debug("Inside ind party setting method");
+					log.debug("votesEarned:"+votesEarned);
+					log.debug("validVotes:"+validVotes);
+					Double votesPercent = new BigDecimal((votesEarned*100)/validVotes).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					log.debug("caliculated votesPercent:"+votesPercent);
+					PartyResultsVO partyResultVO = new PartyResultsVO();
+					partyResultVO.setPartyId(indPartyId);
+					partyResultVO.setPartyName(indPartyName);
+					partyResultVO.setVotesEarned(votesEarned.longValue());
+					partyResultVO.setValidVotes(validVotes.longValue());
+					partyResultVO.setPercentage(votesPercent.toString());
+					log.debug("Party:"+partyResultVO.getPartyName());
+					log.debug("Votes Percentage:"+partyResultVO.getPercentage());
+					partyResultsInConstituency.add(partyResultVO);
 				}
 				constituencyElectionResults.setPartyResultsVO(partyResultsInConstituency);
 				assemblyElectionResults.add(constituencyElectionResults);

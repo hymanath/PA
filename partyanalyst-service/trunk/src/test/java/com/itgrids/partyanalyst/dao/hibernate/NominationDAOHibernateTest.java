@@ -386,7 +386,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public void testFindElectionResultsForAllPartiesInAssemblyConstituencies()
 	{
 		List<Long> constituencyIds = new ArrayList<Long>();
@@ -396,16 +396,16 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		
 		List list1 = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies("2004",constituencyIds);
 		for(Object[] values:(List<Object[]>)list1)
-			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]);
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]+"\t"+values[3]+"\t"+values[4]+"\t"+values[5]+"\t"+values[6]);
 			System.out.println("____________________________________________________________________________");
 		List list2 = nominationDAO.findElectionResultsForAllPartiesInAssemblyConstituencies("2009",constituencyIds);
 		for(Object[] values1:(List<Object[]>)list2)
 			System.out.println(values1[0]+"\t"+values1[1]+"\t"+values1[2]+"\t"+values1[3]+"\t"+values1[4]+"\t"+values1[5]);
 
 		
-	}*/
+	}
 		
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testFindWinningCandidatesDetailsInBiElectionContituencies()
 	{
 		List<Long> constituencyIds = new ArrayList<Long>();
@@ -425,7 +425,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		for(int i=0; i<list.size(); i++){
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]+"\t"+((Object[])list.get(i))[12]+"\t"+((Object[])list.get(i))[13]);
 		}
-	}
+	}*/
 	
 	/*public void testFindOppositionCandidateVotesPercentageInConstituencies()
 
