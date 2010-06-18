@@ -399,7 +399,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		
 		for(int i=0; i<chartList.size(); i++)
 		{			
-			String electionResultPieChartName = createPieChartForElectionTypeNElectionYear(constiId, chartList.get(i),"allparties");
+			String electionResultPieChartName = createPieChartForElectionTypeNElectionYear(constiId,chartList.get(i),"allparties");
 			if(electionResultPieChartName.length() != 0)
 				allPartiesElectionResultsChart.add(electionResultPieChartName);
 		}
@@ -407,7 +407,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		
 		for(int i=0; i<chartList.size(); i++)
 		{			
-			String electionResultPieChartName = createPieChartForElectionTypeNElectionYear(constiId, chartList.get(i),"selectedParties");
+			String electionResultPieChartName = createPieChartForElectionTypeNElectionYear(constiId,chartList.get(i),"selectedParties");
 			if(electionResultPieChartName.length() != 0)
 				electionResultsChart.add(electionResultPieChartName);
 		}	
@@ -428,61 +428,122 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		
 		String chartTitle = ""+result.getElectionType()+" - "+result.getElectionYear();
 		final DefaultPieDataset dataset = new DefaultPieDataset();
-		
-		Color[] colors = new Color[result.getCandidateElectionResultsVO().size()];
-
-				
+		Color[] colors = null;
+		if(chartType.equalsIgnoreCase("allparties"))
+			colors = new Color[result.getCandidateElectionResultsVO().size()];
+		if(chartType.equalsIgnoreCase("selectedParties"))
+			colors = new Color[7];
+		log.debug(" results size ==== "+result.getCandidateElectionResultsVO().size());		
+		int j=0;
 		for(int i=0; i<result.getCandidateElectionResultsVO().size(); i++ )
 		{		
 			String partyName = result.getCandidateElectionResultsVO().get(i).getPartyName(); 
 			Double votesPercent = Double.valueOf(result.getCandidateElectionResultsVO().get(i).getVotesPercentage());
-			
-			
+			log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
+						
 			if(chartType.equalsIgnoreCase("allparties"))
-			{
-				
-				dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);
-				
-				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.INC))
+			{	
+				if(partyName.equals(IConstants.INC))
+				{
 					colors[i]=IConstants.INC_COLOR;
-				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.PRP))
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}				
+				else
+				if(partyName.equals(IConstants.IND))
+				{
+					colors[i]=IConstants.IND_COLOR;
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}				
+				else
+				if(partyName.equals(IConstants.PRP))
+				{
 					colors[i]=IConstants.PRP_COLOR;
-				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.TDP))
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}			
+				else
+				if(partyName.equals(IConstants.TDP))
+				{
 					colors[i]=IConstants.TDP_COLOR;
-				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.TRS))
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}	
+				else
+				if(partyName.equals(IConstants.TRS))
+				{
 					colors[i]=IConstants.TRS_COLOR;
-				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.CPI))
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}
+				else
+				if(partyName.equals(IConstants.CPI))
+				{
 					colors[i]=IConstants.CPI_COLOR;
-				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.CPM))
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}						
+				else
+				if(partyName.equals(IConstants.CPM))
+				{
 					colors[i]=IConstants.CPM_COLOR;
-				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.BJP))
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}					
+				else
+				if(partyName.equals(IConstants.BJP))
+				{
 					colors[i]=IConstants.BJP_COLOR;
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}					
+				else
+				{
+					colors[i] = null;
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}
 				
-				
-			}
-			else if(chartType.equalsIgnoreCase("selectedParties"))
+				dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);	
+			}else if(chartType.equalsIgnoreCase("selectedParties"))
 			{
-				//final DefaultPieDataset dataset = new DefaultPieDataset();
-				if(partyName.equalsIgnoreCase("INC") || partyName.equalsIgnoreCase("PRP") || partyName.equalsIgnoreCase("TDP") || partyName.equalsIgnoreCase("TRS") || partyName.equalsIgnoreCase("CPI") || partyName.equalsIgnoreCase("CPM") || partyName.equalsIgnoreCase("BJP"))
+				if(partyName.equalsIgnoreCase(IConstants.INC) || partyName.equalsIgnoreCase(IConstants.PRP) || partyName.equalsIgnoreCase(IConstants.TDP) || partyName.equalsIgnoreCase(IConstants.TRS) || partyName.equalsIgnoreCase(IConstants.CPI) || partyName.equalsIgnoreCase(IConstants.CPM) || partyName.equalsIgnoreCase(IConstants.BJP))
 				{				
-					dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);
-					
-					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.INC)){
-						//colors[i]=IConstants.INC_COLOR;
-						colors[i]=Color.LIGHT_GRAY;
+					if(partyName.equals(IConstants.INC))
+					{
+						colors[j++]=IConstants.INC_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					}				
+					else
+					if(partyName.equals(IConstants.PRP))
+					{
+						colors[j++]=IConstants.PRP_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					}			
+					else
+					if(partyName.equals(IConstants.TDP))
+					{
+						colors[j++]=IConstants.TDP_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					}	
+					else
+					if(partyName.equals(IConstants.TRS))
+					{
+						colors[j++]=IConstants.TRS_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
 					}
-					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.PRP))
-						colors[i]=IConstants.PRP_COLOR;
-					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.TDP))
-						colors[i]=IConstants.TDP_COLOR;
-					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.TRS))
-						colors[i]=IConstants.TRS_COLOR;
-					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.CPI))
-						colors[i]=IConstants.CPI_COLOR;
-					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.CPM))
-						colors[i]=IConstants.CPM_COLOR;
-					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.BJP))
-						colors[i]=IConstants.BJP_COLOR;
+					else
+					if(partyName.equals(IConstants.CPI))
+					{
+						colors[j++]=IConstants.CPI_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					}						
+					else
+					if(partyName.equals(IConstants.CPM))
+					{
+						colors[j++]=IConstants.CPM_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					}					
+					else
+					if(partyName.equals(IConstants.BJP))
+					{
+						colors[j++]=IConstants.BJP_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					}					
+					
+					dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);	
 				}	
 				else
 				{
@@ -500,6 +561,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		else if(chartType.equalsIgnoreCase("selectedParties")){			
 			BigDecimal	otherPartyVotes = new BigDecimal(otherPartyVotesPercent).setScale(2, BigDecimal.ROUND_HALF_UP);			
 			dataset.setValue("Others"+" ["+otherPartyVotes.toString()+"%]",otherPartyVotes);
+			colors[j] = IConstants.DEFAULT_COLOR;
 			ChartProducer.createProblemsPieChart(chartTitle, dataset, chartPath , colors,true,300,280);
 			localChart = chartName;
 		}
