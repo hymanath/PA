@@ -10,6 +10,11 @@ public class BoothResultVO {
 	private String percentage;
 	private String mandal;
 	
+	private Long oppPartyId;
+	private String oppParty;
+	private int oppPartyVotesEarned;
+	private String oppPartyPercentage;
+	
 	public BoothResultVO(){
 		
 	}
@@ -72,4 +77,37 @@ public class BoothResultVO {
 		this.mandal = mandal;
 	}
 
+	public Long getOppPartyId() {
+		return oppPartyId;
+	}
+
+	public void setOppPartyId(Long oppPartyId) {
+		this.oppPartyId = oppPartyId;
+	}
+
+	public String getOppParty() {
+		return oppParty;
+	}
+
+	public void setOppParty(String oppParty) {
+		this.oppParty = oppParty;
+	}
+
+	public int getOppPartyVotesEarned() {
+		return oppPartyVotesEarned;
+	}
+
+	public void setOppPartyVotesEarned(int oppPartyVotesEarned) {
+		this.oppPartyVotesEarned = oppPartyVotesEarned;
+	}
+
+	public String getOppPartyPercentage() {
+		return oppPartyPercentage;
+	}
+
+	public void setOppPartyPercentage(String oppPartyPercentage) {
+		this.oppPartyPercentage = oppPartyPercentage;
+	}
+
+	
 }
