@@ -116,13 +116,18 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		for(Object[] values:(List<Object[]>)list)
 			System.out.println(values[0]+"\t"+values[1]);
 		assertEquals(23, list.size());
-	}*/
-	
+	}
+	*/
 	public void testFindConstituenciesByElectionGroupByState(){
 		List list = constituencyElectionDAO.findConstituenciesByElectionGroupByState(11l);
 		for(Object[] values:(List<Object[]>)list)
 			System.out.println(values[0]+"\t"+values[1]);
 		assertEquals(35, list.size());
+	}
+	
+	public void testGet(){
+		List totalValidVotes = constituencyElectionDAO.getTotalValidVotesParticularElectionYear(IConstants.MPTC_ELECTION_TYPE,"2006",22l);
+		assertEquals(1, totalValidVotes.size());		
 	}
 	
 	
