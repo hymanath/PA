@@ -471,6 +471,7 @@
 	<bean name="biElectionPageService" class="com.itgrids.partyanalyst.service.impl.BiElectionPageService" >
 	    <property name="tehsilDAO" ref="tehsilDAO"/>
 	    <property name="electionDAO" ref="electionDAO" />
+	    <property name="nominationDAO" ref="nominationDAO" />	
 	    <property name="constituencyDAO" ref="constituencyDAO"/>
 	    <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO"/>
 	    <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
