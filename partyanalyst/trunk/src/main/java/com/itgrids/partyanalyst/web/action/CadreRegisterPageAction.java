@@ -31,7 +31,8 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private CadreManagementService cadreManagementService;
 	private CrossVotingEstimationService crossVotingEstimationService;
 	private static final Logger log = Logger.getLogger(CadreRegisterPageAction.class);
-
+	
+	private ServletContext context;
 	private UserCadresInfoVO userCadresInfoVO = new UserCadresInfoVO();
 	private HttpServletRequest request;
 	private HttpSession session;
@@ -42,6 +43,15 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> villageList;
 	private IRegionServiceData regionServiceData;
 	
+	
+	public ServletContext getContext() {
+		return context;
+	}
+
+	public void setContext(ServletContext context) {
+		this.context = context;
+	}
+
 	public List<SelectOptionVO> getStateList() {
 		return stateList;
 	}
@@ -101,11 +111,9 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		this.request = request;
 	}
 
-	public void setServletContext(ServletContext arg0) {
-		// TODO Auto-generated method stub
-		
+	public void setServletContext(ServletContext context) {
+		this.context = context;		
 	}
-	
 	public String execute(){
 		if(log.isDebugEnabled())
 			log.debug("CadreRegisterPageAction.execute() start");
@@ -182,7 +190,15 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				constituencyList = crossVotingEstimationService.getAssembliesForParliament(accessValue,year);
 			}	
 			log.debug("constituencyList.size():"+constituencyList.size());		
+			
 		}
+		
+		session.setAttribute("stateList",stateList);
+		session.setAttribute("districtList",districtList);
+		session.setAttribute("constituencyList",constituencyList);
+		session.setAttribute("mandalList",mandalList);
+		session.setAttribute("villageList",villageList);
+		
 		return Action.SUCCESS;
 	}
 	
