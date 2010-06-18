@@ -399,7 +399,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		
 		for(int i=0; i<chartList.size(); i++)
 		{			
-			String electionResultPieChartName = createPieChartForElectionTypeNElectionYear(chartList.get(i),"allparties");
+			String electionResultPieChartName = createPieChartForElectionTypeNElectionYear(constiId, chartList.get(i),"allparties");
 			if(electionResultPieChartName.length() != 0)
 				allPartiesElectionResultsChart.add(electionResultPieChartName);
 		}
@@ -407,7 +407,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		
 		for(int i=0; i<chartList.size(); i++)
 		{			
-			String electionResultPieChartName = createPieChartForElectionTypeNElectionYear(chartList.get(i),"selectedParties");
+			String electionResultPieChartName = createPieChartForElectionTypeNElectionYear(constiId, chartList.get(i),"selectedParties");
 			if(electionResultPieChartName.length() != 0)
 				electionResultsChart.add(electionResultPieChartName);
 		}	
@@ -417,9 +417,9 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		
 	}
 	
-	public String createPieChartForElectionTypeNElectionYear(ElectionResultPartyVO result,String chartType)
+	public String createPieChartForElectionTypeNElectionYear(Long constiId,ElectionResultPartyVO result,String chartType)
 	{		
-		String chartName = "Election_Result_"+result.getElectionType()+"_"+result.getElectionYear()+"_piechart"+".png";
+		String chartName = "Election_Result_"+result.getElectionType()+"_"+result.getElectionYear()+"_"+constiId+"_piechart"+".png";
 		String allPartychartName = "All_Parties_Election_Result_"+result.getElectionType()+"_"+result.getElectionYear()+"_piechart"+".png";
 		String localChart = null;
 		String chartPath = context.getRealPath("/") + "charts\\" + chartName;

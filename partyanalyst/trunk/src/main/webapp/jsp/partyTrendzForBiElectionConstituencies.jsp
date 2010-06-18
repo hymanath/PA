@@ -338,7 +338,10 @@
 
 		function displayAllPartiesChart()
 		{
+			console.log(allPartiesCharts);
 			var graphStr = '';
+			graphStr += '<HTML><HEAD><TITLE>All Parties Election Results in ${constiName} Constituency</TITLE></HEAD>';
+			graphStr += '<body>';
 			graphStr += '<table>';
 			graphStr += '<tr>';
 			for(var graph in allPartiesCharts)
@@ -354,8 +357,18 @@
 			}
 			graphStr += '</tr>';
 			graphStr += '</table>';
+			graphStr += '</BODY></HTML>';
+				
+				console.log(graphStr);
 
-			var allPartiesPanel = new YAHOO.widget.Panel("allPartiesResultsChartsPanel", {
+
+			var allPartiesChartsWindow = window.open("","allPartiesChartsWindow","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+			allPartiesChartsWindow.focus();
+			allPartiesChartsWindow.document.open("text/html", "replace");
+			allPartiesChartsWindow.document.write(graphStr);			
+			allPartiesChartsWindow.document.close();
+
+			/*var allPartiesPanel = new YAHOO.widget.Panel("allPartiesResultsChartsPanel", {
                  width: "800", 
                  fixedcenter: false, 
                  constraintoviewport: false, 
@@ -368,7 +381,7 @@
 			   });
 			allPartiesPanel.setHeader("All Parties Results");
 			allPartiesPanel.setBody(graphStr);
-			allPartiesPanel.render();
+			allPartiesPanel.render();*/
 		}
 
 		function buildMandalVotingTrendzData(jsObj,resultsData)
