@@ -37,7 +37,8 @@ public class PieRenderer {
         for (int i = 0; i < keys.size(); i++)
         {
             aInt = i % this.color.length;
-            plot.setSectionPaint(keys.get(i), this.color[aInt]);
+            if(this.color[aInt] != null)
+            	plot.setSectionPaint(keys.get(i), this.color[aInt]);
         }
     }
 }
