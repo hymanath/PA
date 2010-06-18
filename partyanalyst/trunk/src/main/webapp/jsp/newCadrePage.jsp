@@ -182,6 +182,12 @@
 
 	function getMandalList(name,value,choice)
 	{
+
+		var districtLabel = document.getElementById("districtLabel");
+		if(districtLabel==null){
+			var districtField = document.getElementById("districtField");		
+				document.getElementById("districtField").value = 0;				
+		}	
 		
 		var jsObj=
 			{
@@ -339,7 +345,7 @@
 			<td align="left"><s:textfield id="mobileField" name="mobile" maxlength="10" />  </td>
 		</tr>
 		<tr>
-			<td><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></th>
+			<td><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>
 			<td align="left"><s:textfield id="emailField" name="email"/>  </td>
 		</tr>
 		<tr>
@@ -350,17 +356,26 @@
 				
 			</td>
 		</tr>
-		<tr>
-			<td><font class="requiredFont"> * </font><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /></td>
-			<td align="left">
-				<select id="districtField" class="regionSelect" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
-					<c:forEach var="dist" items="${districtList}" >
-					<option value="${dist.id}">${dist.name}</option>
-					</c:forEach>
-				</select>
-				
-			</td>
-		</tr>
+		<c:if test="${sessionScope.USER.accessType != 'MP'}"> 
+			<tr>
+				<td><font class="requiredFont"> * </font><s:label for="districtField" id="districtLabel"  value="%{getText('DISTRICT')}" /></td>
+				<td align="left">
+					<select id="districtField" class="regionSelect" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,'false')" <c:if test="${sessionScope.USER.accessType == 'MP'}"> <c:out value="disabled='disabled'" /></c:if> >
+						<c:forEach var="dist" items="${districtList}" >
+						<option value="${dist.id}">${dist.name}</option>
+						</c:forEach>
+					</select>
+					
+				</td>
+			</tr>
+		</c:if>
+		<c:if test="${sessionScope.USER.accessType == 'MP'}"> 	
+			<tr>
+				<td>
+					<input type="hidden" id="districtField" name="district">
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<td><font class="requiredFont"> * </font><s:label for="constituencyField" id="constituencyLabel"  value="%{getText('CONSTITUENCY')}"/></td>
 			<td align="left">
