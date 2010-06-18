@@ -424,19 +424,19 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		String localChart = null;
 		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
 		String allPartychartPath = context.getRealPath("/") + "charts\\" + allPartychartName;
+		Double otherPartyVotesPercent = 0D;
 		
 		String chartTitle = ""+result.getElectionType()+" - "+result.getElectionYear();
 		final DefaultPieDataset dataset = new DefaultPieDataset();
 		
 		Color[] colors = new Color[result.getCandidateElectionResultsVO().size()];
 
-		System.out.println("Result -- "+result.getElectionType()+" -- Election Id - "+result.getElectionYear());
-		
+				
 		for(int i=0; i<result.getCandidateElectionResultsVO().size(); i++ )
 		{		
 			String partyName = result.getCandidateElectionResultsVO().get(i).getPartyName(); 
 			Double votesPercent = Double.valueOf(result.getCandidateElectionResultsVO().get(i).getVotesPercentage());
-			System.out.println(partyName+" -- "+votesPercent);
+			
 			
 			if(chartType.equalsIgnoreCase("allparties"))
 			{
@@ -483,7 +483,11 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 						colors[i]=IConstants.CPM_COLOR;
 					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.BJP))
 						colors[i]=IConstants.BJP_COLOR;
-				}		
+				}	
+				else
+				{
+					otherPartyVotesPercent+=votesPercent;
+				}
 				
 			}
 		}
@@ -493,7 +497,9 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 			localChart = allPartychartName;
 		}
 			
-		else if(chartType.equalsIgnoreCase("selectedParties")){
+		else if(chartType.equalsIgnoreCase("selectedParties")){			
+			BigDecimal	otherPartyVotes = new BigDecimal(otherPartyVotesPercent).setScale(2, BigDecimal.ROUND_HALF_UP);			
+			dataset.setValue("Others"+" ["+otherPartyVotes.toString()+"%]",otherPartyVotes);
 			ChartProducer.createProblemsPieChart(chartTitle, dataset, chartPath , colors,true,300,280);
 			localChart = chartName;
 		}
