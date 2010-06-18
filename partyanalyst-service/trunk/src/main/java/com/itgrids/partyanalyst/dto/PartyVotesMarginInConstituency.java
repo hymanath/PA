@@ -10,6 +10,8 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 import java.util.List;
 
+import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
+
 public class PartyVotesMarginInConstituency implements Serializable {
 
 	/**
@@ -21,6 +23,7 @@ public class PartyVotesMarginInConstituency implements Serializable {
 	private String constituencyName;
 	
 	private List<PartyResultsInVotesMarginVO> partyResultsInVotesMarginVO;
+	private List<BoothResultVO> boothResults;
 	private ResultStatus resultStatus;
 	
 	public Long getConstituencyId() {
@@ -47,6 +50,12 @@ public class PartyVotesMarginInConstituency implements Serializable {
 	public void setPartyResultsInVotesMarginVO(
 			List<PartyResultsInVotesMarginVO> partyResultsInVotesMarginVO) {
 		this.partyResultsInVotesMarginVO = partyResultsInVotesMarginVO;
+	}
+	public List<BoothResultVO> getBoothResults() {
+		return boothResults;
+	}
+	public void setBoothResults(List<BoothResultVO> boothResults) {
+		this.boothResults = boothResults;
 	}
 
 }
