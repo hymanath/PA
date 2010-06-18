@@ -18,8 +18,7 @@ function buildCadreLevelTable(jsObj,cadreData)
 
 	var myColumnDefs = [ 	           
 							{key:"name",label : "Name",sortable:true,resizeable:true}, 
-							{key:"mobile",label : "Mobile", sortable:true, resizeable:true}, 
-							{key:"landLine",label : "Landline", sortable:true, resizeable:true},
+							{key:"mobile",label : "Mobile", sortable:true, resizeable:true},
 							{key:"cadreLevel",label : "Cadre Level", sortable:true, resizeable:true}, 
 							{key:"email",label : "Email",sortable:true, resizeable:true}
 						]; 
@@ -27,7 +26,7 @@ function buildCadreLevelTable(jsObj,cadreData)
 	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
 	myDataSource.responseSchema = { 
 	fields : [
-				{key : "name"}, {key : "mobile",parser:"number"}, {key : "landLine",parser:"number"},
+				{key : "name"}, {key : "mobile",parser:"number"},
 				{key :"cadreLevel"},{key : "email"}
 			 ]
 	};
