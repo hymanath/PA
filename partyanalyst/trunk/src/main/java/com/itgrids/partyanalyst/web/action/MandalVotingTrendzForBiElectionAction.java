@@ -81,6 +81,8 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 	private Long mptcElectionId;
 	private String mptcElectionType,zptcElectionType;
 	
+	
+	
 	public List<SelectOptionVO> getZptcElectionYears() {
 		return zptcElectionYears;
 	}
@@ -379,12 +381,127 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 		biElectionResultsMainVO.setMandalWiseResultsChart(getMandalResults(constiId,constiName));
 		biElectionResultsMainVO.setAssemblyResultsChartForPresentYear(presentYearResultsChartName);
 		biElectionResultsMainVO.setAssemblyResultsChartForPreviousYear(previousYearResultsChartName);
-		
+		biElectionResultsMainVO.setElectionResultsChart(getElectionResultsPieChart(constiId,constiName));
 		if(constiId != null && constiId != new Long(0))
 			biElectionResultsMainVO.setConstituencyVO(getVotersShareInMandalsPieChart(constiId));
 		
 		return Action.SUCCESS;
 	}
+	
+	public List<String> getElectionResultsPieChart(Long constiId,String constiName)
+	{
+		List<String> electionResultsChart = new ArrayList<String>();
+		List<String> allPartiesElectionResultsChart = new ArrayList<String>();
+		List<ElectionResultPartyVO> chartList = staticDataService.getAllMandalElectionInformationForAConstituency(constiId);
+		
+		if(chartList.size() == 0)
+			return null;
+		
+		for(int i=0; i<chartList.size(); i++)
+		{			
+			String electionResultPieChartName = createPieChartForElectionTypeNElectionYear(chartList.get(i),"allparties");
+			if(electionResultPieChartName.length() != 0)
+				allPartiesElectionResultsChart.add(electionResultPieChartName);
+		}
+		biElectionResultsMainVO.setAllPartiesElectionResultsChart(allPartiesElectionResultsChart);
+		
+		for(int i=0; i<chartList.size(); i++)
+		{			
+			String electionResultPieChartName = createPieChartForElectionTypeNElectionYear(chartList.get(i),"selectedParties");
+			if(electionResultPieChartName.length() != 0)
+				electionResultsChart.add(electionResultPieChartName);
+		}	
+		
+		return electionResultsChart;	
+		
+		
+	}
+	
+	public String createPieChartForElectionTypeNElectionYear(ElectionResultPartyVO result,String chartType)
+	{		
+		String chartName = "Election_Result_"+result.getElectionType()+"_"+result.getElectionYear()+"_piechart"+".png";
+		String allPartychartName = "All_Parties_Election_Result_"+result.getElectionType()+"_"+result.getElectionYear()+"_piechart"+".png";
+		String localChart = null;
+		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		String allPartychartPath = context.getRealPath("/") + "charts\\" + allPartychartName;
+		
+		String chartTitle = ""+result.getElectionType()+" - "+result.getElectionYear();
+		final DefaultPieDataset dataset = new DefaultPieDataset();
+		
+		Color[] colors = new Color[result.getCandidateElectionResultsVO().size()];
+
+		System.out.println("Result -- "+result.getElectionType()+" -- Election Id - "+result.getElectionYear());
+		
+		for(int i=0; i<result.getCandidateElectionResultsVO().size(); i++ )
+		{		
+			String partyName = result.getCandidateElectionResultsVO().get(i).getPartyName(); 
+			Double votesPercent = Double.valueOf(result.getCandidateElectionResultsVO().get(i).getVotesPercentage());
+			System.out.println(partyName+" -- "+votesPercent);
+			
+			if(chartType.equalsIgnoreCase("allparties"))
+			{
+				
+				dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);
+				
+				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.INC))
+					colors[i]=IConstants.INC_COLOR;
+				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.PRP))
+					colors[i]=IConstants.PRP_COLOR;
+				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.TDP))
+					colors[i]=IConstants.TDP_COLOR;
+				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.TRS))
+					colors[i]=IConstants.TRS_COLOR;
+				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.CPI))
+					colors[i]=IConstants.CPI_COLOR;
+				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.CPM))
+					colors[i]=IConstants.CPM_COLOR;
+				if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.BJP))
+					colors[i]=IConstants.BJP_COLOR;
+				
+				
+			}
+			else if(chartType.equalsIgnoreCase("selectedParties"))
+			{
+				//final DefaultPieDataset dataset = new DefaultPieDataset();
+				if(partyName.equalsIgnoreCase("INC") || partyName.equalsIgnoreCase("PRP") || partyName.equalsIgnoreCase("TDP") || partyName.equalsIgnoreCase("TRS") || partyName.equalsIgnoreCase("CPI") || partyName.equalsIgnoreCase("CPM") || partyName.equalsIgnoreCase("BJP"))
+				{				
+					dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);
+					
+					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.INC)){
+						//colors[i]=IConstants.INC_COLOR;
+						colors[i]=Color.LIGHT_GRAY;
+					}
+					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.PRP))
+						colors[i]=IConstants.PRP_COLOR;
+					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.TDP))
+						colors[i]=IConstants.TDP_COLOR;
+					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.TRS))
+						colors[i]=IConstants.TRS_COLOR;
+					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.CPI))
+						colors[i]=IConstants.CPI_COLOR;
+					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.CPM))
+						colors[i]=IConstants.CPM_COLOR;
+					if(result.getCandidateElectionResultsVO().get(i).getPartyName().equals(IConstants.BJP))
+						colors[i]=IConstants.BJP_COLOR;
+				}		
+				
+			}
+		}
+		
+		if(chartType.equalsIgnoreCase("allparties")){
+			ChartProducer.createProblemsPieChart(chartTitle, dataset, allPartychartPath , colors,true,300,280);
+			localChart = allPartychartName;
+		}
+			
+		else if(chartType.equalsIgnoreCase("selectedParties")){
+			ChartProducer.createProblemsPieChart(chartTitle, dataset, chartPath , colors,true,300,280);
+			localChart = chartName;
+		}
+		
+		return localChart;
+			
+	}
+	
 	
 	 public String getMandalResults(Long constituencyId,String constituencyName){
 		 

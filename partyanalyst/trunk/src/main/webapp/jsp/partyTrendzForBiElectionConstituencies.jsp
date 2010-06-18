@@ -68,6 +68,7 @@
 		var localizationObj = '';
 		var assemblyElectionType='Assembly';
 		var constituencyIdGlobal = '${constiId}';
+		var allPartiesCharts = '';
 
 		var tehsilDetails={
 				zptcArray:[],
@@ -317,7 +318,8 @@
 			}
 			str += '<div id="mandalVotingTrendzDataDiv">';
 			str += '<div id="mandalVotingTrendzDataDiv_head">Mandal Voting Trendz</div>';
-			str += '<div id="mandalVotingTrendzDataDiv_body">';
+			str += '<div id="mandalVotingTrendzDataDiv_body" class="yui-skin-sam">';
+			str += '	<div id="allPartiesResultsChartsPanel"></div>';
 			str += '	<div id="mandalsListInConstituency"></div>';	
 			str += '	<div id="mandalDetailsChart_body">';
 			str += '	<div style="margin-top:5px;margin-left:300px;">';
@@ -334,6 +336,41 @@
 			getMandalVotingTrendz('${districtId}','${constiId}','${constiName}');
 		}
 
+		function displayAllPartiesChart()
+		{
+			var graphStr = '';
+			graphStr += '<table>';
+			graphStr += '<tr>';
+			for(var graph in allPartiesCharts)
+			{
+				graphStr += '<td>';
+				graphStr += '<img src="charts/'+allPartiesCharts[graph]+'"/>';
+				graphStr += '</td>';
+
+				if(graph == 0)
+					continue;
+				if(graph % 3 == 0)
+					graphStr += '</tr><tr>';
+			}
+			graphStr += '</tr>';
+			graphStr += '</table>';
+
+			var allPartiesPanel = new YAHOO.widget.Panel("allPartiesResultsChartsPanel", {
+                 width: "800", 
+                 fixedcenter: false, 
+                 constraintoviewport: false, 
+                 underlay: "none", 
+                 close: true, 
+                 visible: true, 
+				 x:'200',
+				 y:'800',
+                 draggable: true
+			   });
+			allPartiesPanel.setHeader("All Parties Results");
+			allPartiesPanel.setBody(graphStr);
+			allPartiesPanel.render();
+		}
+
 		function buildMandalVotingTrendzData(jsObj,resultsData)
 		{
 			
@@ -343,7 +380,8 @@
 			var mandalsListElmt = document.getElementById("mandalsListInConstituency");
 
 			var results = resultsData.biElectionResultsMainVO;
-			
+			allPartiesCharts = resultsData.allPartiesElectionResultsChart;
+
 			if(!headElmt || !bodyElmt || !resultsData || !graphElmt || !mandalsListElmt)
 				return;
 			
@@ -355,7 +393,27 @@
 			// Rendering Graph Elmt in the respective div
 			var graphStr = '';
 			graphStr += '<center>';
-			graphStr += '<img height="300" width="820" src="charts/'+resultsData.mandalWiseResultsChart+'"/>';
+			//graphStr += '<img height="300" width="820" src="charts/'+resultsData.mandalWiseResultsChart+'"/>';
+			graphStr += '<fieldset>';
+			graphStr += '<legend>Election Results in '+jsObj.constiName+'</legend>';
+			graphStr += '<div style="text-align:right"><span style="background-color:#4B74C6;cursor:pointer;font-weight:bold;padding:3px;" onclick="displayAllPartiesChart()"> View All Parties Chart </span></div>';
+			graphStr += '<table>';
+			graphStr += '<tr>';
+			for(var graph in resultsData.electionResultsChart)
+			{
+				graphStr += '<td>';
+				graphStr += '<img src="charts/'+resultsData.electionResultsChart[graph]+'"/>';
+				graphStr += '</td>';
+
+				if(graph == 0)
+					continue;
+				if(graph % 3 == 0)
+					graphStr += '</tr><tr>';
+			}
+			graphStr += '</tr>';
+			graphStr += '</table>';
+			graphStr += '</fieldset>';
+
 			graphStr += '<P style="font-family:verdana;font-size:12px;margin-top:25px;">'+localizationObj.desc1+' <font style="font-weight:bold;color:#4B74C6;">'+jsObj.constiName+'</font> '+localizationObj.desc2+'</P></center>';
 			graphElmt.innerHTML = graphStr;
 
