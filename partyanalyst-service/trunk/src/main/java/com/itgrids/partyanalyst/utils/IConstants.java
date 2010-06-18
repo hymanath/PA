@@ -182,4 +182,7 @@ public interface IConstants {
     public final static String LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR = "2006";
     public final static String LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR = "2001";
     
+    public final static String MAIN_PARTY = "MAIN_PARTY";
+    public final static String OPP_PARTY = "OPP_PARTY";
+    
 }
