@@ -1793,21 +1793,23 @@ public class StaticDataService implements IStaticDataService {
 			if(log.isDebugEnabled())
 				log.info("Making nominationDAO.getPartysInfoForAParticularElectionYear() DAO Call");
 			List totalValidVotes = constituencyElectionDAO.getTotalValidVotesParticularElectionYear(electionType,electionYear,districtId);
-			totalVotes = Float.parseFloat(totalValidVotes.get(0).toString());
-			List result = nominationDAO.getPartysInfoForAParticularElectionYear(electionType,electionYear,districtId);
-			for(int i=0;i<result.size();i++){
-				Object[] parms = (Object[])result.get(i);
-				TeshilPartyInfoVO teshilPartyInfoVo = new TeshilPartyInfoVO();
-					teshilPartyInfoVo.setPartyName(parms[0].toString());
-					teshilPartyInfoVo.setParticipatedSeats(Long.parseLong(parms[1].toString()));
-					percentage= new BigDecimal((Float.parseFloat(parms[2].toString())/totalVotes)*100).setScale(2,BigDecimal.ROUND_HALF_UP);
-					teshilPartyInfoVo.setPercentageOfVotesWonByParty(Float.parseFloat(percentage.toString()));
-				if(winningSeats.get(parms[0].toString()) != null){
-					teshilPartyInfoVo.setSeatsWonByParty(Long.parseLong(winningSeats.get(parms[0].toString()).toString()));
-				}else{
-					teshilPartyInfoVo.setSeatsWonByParty(0L);
-				}					
-				teshilPartyInfoVO.add(teshilPartyInfoVo);
+			if(totalValidVotes.equals(null)){
+				totalVotes = Float.parseFloat(totalValidVotes.get(0).toString());				
+				List result = nominationDAO.getPartysInfoForAParticularElectionYear(electionType,electionYear,districtId);
+				for(int i=0;i<result.size();i++){
+					Object[] parms = (Object[])result.get(i);
+					TeshilPartyInfoVO teshilPartyInfoVo = new TeshilPartyInfoVO();
+						teshilPartyInfoVo.setPartyName(parms[0].toString());
+						teshilPartyInfoVo.setParticipatedSeats(Long.parseLong(parms[1].toString()));
+						percentage= new BigDecimal((Float.parseFloat(parms[2].toString())/totalVotes)*100).setScale(2,BigDecimal.ROUND_HALF_UP);
+						teshilPartyInfoVo.setPercentageOfVotesWonByParty(Float.parseFloat(percentage.toString()));
+					if(winningSeats.get(parms[0].toString()) != null){
+						teshilPartyInfoVo.setSeatsWonByParty(Long.parseLong(winningSeats.get(parms[0].toString()).toString()));
+					}else{
+						teshilPartyInfoVo.setSeatsWonByParty(0L);
+					}					
+					teshilPartyInfoVO.add(teshilPartyInfoVo);
+				}			
 			}			
 			return teshilPartyInfoVO;
 		}catch(Exception e){
