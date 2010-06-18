@@ -140,6 +140,7 @@ public interface IConstants {
     public final static String CPI = "CPI";
     public final static String BSP = "BSP";
     public final static String IND = "IND";
+    public final static String CPM = "CPM";
     
     public final static Color TDP_COLOR = Color.RED;
     public final static Color INC_COLOR = Color.BLUE;
@@ -148,6 +149,7 @@ public interface IConstants {
     public final static Color TRS_COLOR = Color.PINK;
     public final static Color AIMIM_COLOR = Color.CYAN;
     public final static Color CPI_COLOR = Color.MAGENTA;
+    public final static Color CPM_COLOR = Color.YELLOW;
     //problem management status constants
     public final static String NEW = "NEW";
     public final static String CLASSIFY = "CLASSIFY";

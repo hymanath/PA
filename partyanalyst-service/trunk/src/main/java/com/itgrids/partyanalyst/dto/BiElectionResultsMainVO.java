@@ -17,7 +17,22 @@ public class BiElectionResultsMainVO implements Serializable {
 	private String assemblyResultsChartForPresentYear;
 	private String assemblyResultsChartForPreviousYear;
 	private ConstituencyVO constituencyVO;
+	private List<String> electionResultsChart;
+	private List<String> allPartiesElectionResultsChart;
 	
+	public List<String> getAllPartiesElectionResultsChart() {
+		return allPartiesElectionResultsChart;
+	}
+	public void setAllPartiesElectionResultsChart(
+			List<String> allPartiesElectionResultsChart) {
+		this.allPartiesElectionResultsChart = allPartiesElectionResultsChart;
+	}
+	public List<String> getElectionResultsChart() {
+		return electionResultsChart;
+	}
+	public void setElectionResultsChart(List<String> electionResultsChart) {
+		this.electionResultsChart = electionResultsChart;
+	}
 	public String getEnlargedMandalWiseResultsChart() {
 		return enlargedMandalWiseResultsChart;
 	}
