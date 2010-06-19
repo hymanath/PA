@@ -1158,7 +1158,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		Map<Long,List<BoothResultVO>> marginResults = new HashMap<Long,List<BoothResultVO>>();
 		
 		//set map with default values
-		for(int i=1;i<=5;i++){
+		for(int i=1;i<=7;i++){
 			List<BoothResultVO> bootResult = new ArrayList<BoothResultVO>();
 			marginResults.put(new Long(i), bootResult);
 		}
@@ -1178,16 +1178,20 @@ public class BiElectionPageService implements IBiElectionPageService {
 				
 				
 				Long key = new Long(0);
-				if(votesPercent > new Double(0) && votesPercent <= new Double(5))
+				if(votesPercent > new Double(0) && votesPercent <= new Double(15))
 					key = new Long(1);
-				else if(votesPercent > new Double(5) && votesPercent <= new Double(10))
+				else if(votesPercent > new Double(15) && votesPercent <= new Double(30))
 					key = new Long(2);
-				else if(votesPercent > new Double(10) && votesPercent <= new Double(20))
+				else if(votesPercent > new Double(30) && votesPercent <= new Double(35))
 					key = new Long(3);
-				else if(votesPercent > new Double(20) && votesPercent <= new Double(30))
+				else if(votesPercent > new Double(35) && votesPercent <= new Double(40))
 					key = new Long(4);
-				else if(votesPercent > new Double(30) && votesPercent <= new Double(100))
+				else if(votesPercent > new Double(40) && votesPercent <= new Double(45))
 					key = new Long(5);
+				else if(votesPercent > new Double(45) && votesPercent <= new Double(50))
+					key = new Long(6);
+				else if(votesPercent > new Double(50) && votesPercent <= new Double(100))
+					key = new Long(7);
 				
 				
 				if(key != new Long(0)){
@@ -1204,35 +1208,48 @@ public class BiElectionPageService implements IBiElectionPageService {
 					Long marginValue1 = new Long(0);
 					Long marginValue2 = new Long(0);
 					int resultsCount = 0;
-					List<BoothResultVO> boothResultsVO = null;
+					List<BoothResultVO> boothResultsVO = new ArrayList<BoothResultVO>();
+					
 					
 					switch(keyValue.intValue()){
 					case 1:
 						   marginValue1 = new Long(0);
-						   marginValue2 = new Long(5);
+						   marginValue2 = new Long(15);
 						   boothResultsVO = marginResults.get(keyValue);
 						   resultsCount = boothResultsVO.size();
 						   break;
 					case 2:	
-						   marginValue1 = new Long(5);
-						   marginValue2 = new Long(10);
-						   boothResultsVO = marginResults.get(keyValue);
-						   resultsCount = boothResultsVO.size();
-						   break;
-					case 3:
-						   marginValue1 = new Long(10);
-						   marginValue2 = new Long(20);
-						   boothResultsVO = marginResults.get(keyValue);
-						   resultsCount = boothResultsVO.size();
-						   break;
-					case 4:
-						   marginValue1 = new Long(20);
+						   marginValue1 = new Long(15);
 						   marginValue2 = new Long(30);
 						   boothResultsVO = marginResults.get(keyValue);
 						   resultsCount = boothResultsVO.size();
 						   break;
-					case 5:
+					case 3:
 						   marginValue1 = new Long(30);
+						   marginValue2 = new Long(35);
+						   boothResultsVO = marginResults.get(keyValue);
+						   resultsCount = boothResultsVO.size();
+						   break;
+					case 4:
+						   marginValue1 = new Long(35);
+						   marginValue2 = new Long(40);
+						   boothResultsVO = marginResults.get(keyValue);
+						   resultsCount = boothResultsVO.size();
+						   break;
+					case 5:
+						   marginValue1 = new Long(40);
+						   marginValue2 = new Long(45);
+						   boothResultsVO = marginResults.get(keyValue);
+						   resultsCount = boothResultsVO.size();
+						   break;
+					case 6:
+						   marginValue1 = new Long(45);
+						   marginValue2 = new Long(50);
+						   boothResultsVO = marginResults.get(keyValue);
+						   resultsCount = boothResultsVO.size();
+						   break;
+					case 7:
+						   marginValue1 = new Long(50);
 						   marginValue2 = new Long(100);
 						   boothResultsVO = marginResults.get(keyValue);
 						   resultsCount = boothResultsVO.size();
@@ -1245,7 +1262,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			        resultVO.setMarginValue1(marginValue1.intValue());
 			        resultVO.setMarginValue2(marginValue2.intValue());
 			        resultVO.setResultsCount(resultsCount);
-			        resultVO.setBoothResultsVO(boothResultsVO);
+			        resultVO.setBoothResultsVO(marginResults.get(keyValue));
 			        partyWiseMarginResults.add(resultVO);
 				}
 			}
