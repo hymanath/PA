@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,7 @@ import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.IStateElectionResultsService;
+import com.itgrids.partyanalyst.utils.ElectionResultsForPartiesBySeats;
 
 public class StateElectionResultsService implements
 		IStateElectionResultsService {
@@ -70,6 +72,7 @@ public class StateElectionResultsService implements
 			
 			partyResultsVO.add(partyResults);
 		}
+		Collections.sort(partyResultsVO,new ElectionResultsForPartiesBySeats());
 		}
 		stateElectionResults.setPartyResultsVO(partyResultsVO);
 				  
