@@ -32,6 +32,7 @@
 		<pattern>/addNewProblemAction.action*</pattern>
 		<pattern>/addNewProblemSubmitAction.action*</pattern>
 		<pattern>/mandalVotingTrendzForBiElectionAction.action*</pattern>
+		<pattern>/mandalwiseBoothResultsForPartyAction.action*</pattern>
     </excludes>
 
     <decorator name="main" page="main.jsp">

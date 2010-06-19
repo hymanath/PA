@@ -70,10 +70,15 @@
 		String desc1 = rb.getString("resultsDescritpion1");
 		String desc2 = rb.getString("resultsDescritpion2");
 		String indPartyDesc = rb.getString("indPartyDesc");
+		String partyBoothResultsText = rb.getString("partyBoothResultsText");
+		String locationAlert2 = rb.getString("locationAlert2");
+		String locationAlert = rb.getString("locationAlert");
+		String locationAlert1 = rb.getString("locationAlert1");
 	%>
 	var localizationObj = {
 			desc1 : '<%=desc1%>',
-			desc2 : '<%=desc2%>'								
+			desc2 : '<%=desc2%>',
+			partyBoothResultsText: '<%=partyBoothResultsText%>'								
 	};
 		var enlargedPresentYearResultsChartName = "${enlargedPresentYearResultsChartName}"; 
 		var enlargedPreviousYearResultsChartName = "${enlargedPreviousYearResultsChartName}";
@@ -82,7 +87,9 @@
 		var electionType = '${electionType}';
 		var presentYearResultsChartName = '${presentYearResultsChartName}';
 		var previousYearResultsChartName = '${previousYearResultsChartName}';
-
+		var biElectionObj = {
+				staticParties:[]
+				};
 		function getMoreDetails(constiId,elecType,elecYear)
 		{	
 			 var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
@@ -99,6 +106,41 @@
 			var browser1 = window.open("<s:url action="mandalVotingTrendzForBiElectionAction.action"/>?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults","scrollbars=yes,height=800,width=950,left=200,top=200");
 
 			browser1.focus();
+		}
+
+		function openMandalBoothResultsForPartyWindow()
+		{
+			var constEl = document.getElementById("selectConst");
+			var partyEl = document.getElementById("selectParty");
+			var constId = constEl.options[constEl.selectedIndex].value;
+			var partyId = partyEl.options[partyEl.selectedIndex].value; 
+			var alertEl = document.getElementById("locationAlert");
+			var partyName = partyEl.options[partyEl.selectedIndex].text;
+			var constName = constEl.options[constEl.selectedIndex].text;
+
+			
+			if(constId == 0 && partyId == 0)
+			{
+				alertEl.innerHTML = '';
+				alertEl.innerHTML = '<%=locationAlert2%>';
+				return;
+			}
+			if(constId == 0)
+			{
+				alertEl.innerHTML = '';
+				alertEl.innerHTML = '<%=locationAlert%>';
+				return;
+			}
+			if(partyId == 0)
+			{
+				alertEl.innerHTML = '';
+				alertEl.innerHTML = '<%=locationAlert1%>';
+				return;
+			}
+			
+			var browser1 = window.open("<s:url action="mandalwiseBoothResultsForPartyAction.action"/>?constituencyId="+constId+"&partyId="+partyId+"&constituencyName="+constName+"&partyName="+partyName,"mandalwiseBoothResultsForParty","scrollbars=yes,height=800,width=950,left=200,top=200,resizable=yes");
+			browser1.focus();
+						
 		}
 
 		function getMandalVotingTrendz(distId,constId,constName)
@@ -214,6 +256,7 @@
 				</div>
 			</div>			
 		</div>
+		<div id="boothResultsSelection" style="border:1px solid #E0E0D6;text-align:left;margin-left:18px;margin-right:13px;padding:10px;"></div>
 		<div id="enlargedDIVForMandals" class="yui-skin-sam">
 			<div id="enlargedDIV"></div>
 		</div>
@@ -310,7 +353,15 @@
 				districtObj.constituencies.push(cObj);			
 		</c:forEach>
 		districtsInfo.push(districtObj);	
-	</c:forEach>
+	</c:forEach>	
+
+<c:forEach var="staticParties" items="${partiesList}">
+var partyObj =	{
+				partyId:"${staticParties.id}",
+				partyName:"${staticParties.name}"
+			};
+biElectionObj.staticParties.push(partyObj);			
+</c:forEach>
 	<c:forEach var="winningCandidates" items="${winningCandidatesList}">
 	var winCandidatesObj =	{
 			distName:'<a class="viewAncs" title="Click to view ${winningCandidates.districtName} District Page" href="districtPageAction.action?districtId=${winningCandidates.districtId}&districtName=${winningCandidates.districtName}">${winningCandidates.districtName}</a>',

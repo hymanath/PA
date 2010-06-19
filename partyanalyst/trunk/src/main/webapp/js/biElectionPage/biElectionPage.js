@@ -70,16 +70,18 @@ function buildBiElectionPageLayout()
 
 function buildMandalsVotingTrendz()
 {
-	var elmt = document.getElementById("mla_body");
+	var elmt = document.getElementById("boothResultsSelection");
 	if(!elmt)
 		return;
 
 	var str='';
 	str += '<div id="districtsInfoRadioElmtDiv">';
-	str += '<table>';
+	str += '<div style="font-weight:bold;color:#707070;">'+localizationObj.partyBoothResultsText+'</div>';
+	str += '<div id="locationAlert" class="alert"></div>';
+	str += '<table>';	
 	str += '<tr>';
 	str += '<th>';
-	str += 'Select District : ';
+	str += 'District ';
 	str += '</th>';
 	str += '<td>';
 	for(var i in districtsInfo)
@@ -92,25 +94,40 @@ function buildMandalsVotingTrendz()
 	}
 	str += '</td>';
 	str += '</tr>';
-	str += '</table>';
-	str += '</div>';
+	//str += '</table>';
+	//str += '</div>';
 
-	str += '<div id="constituenciesInfoSelectElmtDiv">';
-	str += '<table>';
+	//str += '<div id="constituenciesInfoSelectElmtDiv">';
+	//str += '<table border="1">';
 	str += '<tr>';
 	str += '<th>';
-	str += 'Select Constituency : ';
+	str += 'Constituency ';
 	str += '</th>';
 	str += '<td>';
-	str += '<div id="constSelectElmt"><select onchange="setValuesForMandalVotingTrendz(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
+	str += '<div id="constSelectElmt"><select id="selectConst" class="selectWidth" onchange="selectConstOnchange()">';
 	for(var j in districtsInfo[0].constituencies)
 	{
 		str += '<option value="'+districtsInfo[0].constituencies[j].constId+'"> '+districtsInfo[0].constituencies[j].constName+' </option>';
 	}	
 	str += '</select></div>';
 	str += '</td>';
-	str += '<td><img id="cursorImg" style="display:none;" src="images/icons/search.gif"/></td>';	
+	str += '</tr>';
+	str += '<tr>';
+	str += '<th>';
+	str += 'Party ';
+	str += '</th>';
+	str += '<td>';
+	str += '<div id="partySelectElmt"><select id="selectParty" class="selectWidth" onchange="openMandalBoothResultsForPartyWindow()">';
+	for(var k in biElectionObj.staticParties)
+	{
+		str += '<option value="'+biElectionObj.staticParties[k].partyId+'"> '+biElectionObj.staticParties[k].partyName+' </option>';
+	}	
+	str += '</select></div>';
+	str += '</td>';
+
+	str += '</tr>';
 	str += '</table>';
+	/*
 	str += '<div id="mandalVotingTrendzDataDiv">';
 	str += '<div id="mandalVotingTrendzDataDiv_head">Mandal Voting Trendz</div>';
 	str += '<div id="mandalVotingTrendzDataDiv_body">';
@@ -123,11 +140,11 @@ function buildMandalsVotingTrendz()
 	str += '	</div>';
 	str += '	</div>';	
 	str += '	<div id="mandalVotingTrendzData" align="center" ></div>';	
-	str += '</div>';
+	str += '</div>';*/
 	str += '</div>';
 	elmt.innerHTML = str;
 
-	getMandalVotingTrendz(districtsInfo[0].districtId,districtsInfo[0].constituencies[0].constId,districtsInfo[0].constituencies[0].constName);
+	//getMandalVotingTrendz(districtsInfo[0].districtId,districtsInfo[0].constituencies[0].constId,districtsInfo[0].constituencies[0].constName);
 }
 	
 function setValuesForMandalVotingTrendz(value,text)
@@ -153,12 +170,13 @@ function getConstituenciesInfo(distId,index)
 	var obj = districtsInfo[index];
 
 	var elmt = document.getElementById("constSelectElmt");
+	var partyElmt = document.getElementById("selectParty");
 	if(!elmt)
 		return;
 
 	var str = '';
-	str += '<select onchange="setValuesForMandalVotingTrendz(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
-	str += '<option value="0">Select</option>';
+	str += '<select class="selectWidth" id="selectConst" onchange="selectConstOnchange()">';
+	str += '<option value="0">Select Constituency</option>';
 	for(var j in obj.constituencies)
 	{
 		str += '<option value="'+obj.constituencies[j].constId+'"> '+obj.constituencies[j].constName+' </option>';
@@ -166,6 +184,14 @@ function getConstituenciesInfo(distId,index)
 	str += '</select>';
 	
 	elmt.innerHTML = str;
+	partyElmt.selectedIndex = '0';
+	
+}
+
+function selectConstOnchange()
+{
+	var partyEl = document.getElementById("selectParty");
+	partyEl.selectedIndex = '0';
 }
 
 function buildBiElectionDistricts()
@@ -502,5 +528,5 @@ function initializeBiElectionPage()
 	buildBiElectionPageLayout();
 	buildBiElectionDistricts();
 	getMlaDetails();	
-	//buildMandalsVotingTrendz();
+	buildMandalsVotingTrendz();
 }

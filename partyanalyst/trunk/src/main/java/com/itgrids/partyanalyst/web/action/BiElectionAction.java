@@ -93,6 +93,7 @@ public class BiElectionAction extends ActionSupport implements
 	private Long zptcElectionId; 
 	private Long mptcElectionId;
 	private String mptcElectionType,zptcElectionType;
+	private List<SelectOptionVO> partiesList;
 
 	public String getEnlargedPresentYearResultsChartName() {
 		return enlargedPresentYearResultsChartName;
@@ -355,10 +356,19 @@ public class BiElectionAction extends ActionSupport implements
 		this.zptcElectionType = zptcElectionType;
 	}
 
+	public void setPartiesList(List<SelectOptionVO> partiesList) {
+		this.partiesList = partiesList;
+	}
+
+	public List<SelectOptionVO> getPartiesList() {
+		return partiesList;
+	}
+
 	public String execute(){
 		log.debug(" Inside Action ..");
 		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
 		zptcElectionType = IConstants.ZPTC_ELECTION_TYPE;
+		partiesList = new ArrayList<SelectOptionVO>();
 		electionTypes = staticDataService.getAllElectionTypes();
 		for(SelectOptionVO eleTypes : electionTypes){
 			if(eleTypes.getName().equalsIgnoreCase(mptcElectionType)){
@@ -396,6 +406,8 @@ public class BiElectionAction extends ActionSupport implements
 		winningCandidatesList = staticDataService.getWinningCandidatesInConstituencies(IConstants.PRESENT_ELECTION_YEAR, constituencyIdsList);
 		electionYear = IConstants.PRESENT_ELECTION_YEAR;
 		electionType = IConstants.ASSEMBLY_ELECTION_TYPE;
+		partiesList = staticDataService.getStaticPartiesForCandidateDeatailsReport();
+		partiesList.add(0, new SelectOptionVO(0l,"Select A Party"));
 		return Action.SUCCESS;
 	}
 	

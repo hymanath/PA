@@ -1079,6 +1079,14 @@
         <action name="mandalVotingTrendzForBiElectionAction" class="mandalVotingTrendzForBiElectionAction">
 			 <result name="success">/jsp/partyTrendzForBiElectionConstituencies.jsp</result>			
 		</action>
+		 <action name="mandalwiseBoothResultsForPartyAction" class="mandalwiseBoothResultsForPartyAction">
+			 <result name="success">/jsp/mandalwiseBoothResultsForParty.jsp</result>			
+		</action>
+		<action name="mandalwiseBoothResultsForPartyAjaxAction" class="mandalwiseBoothResultsForPartyAction" method="ajaxCall">
+			 	 <result type="json" name="success">
+           		<param name="root">votesMarginResultsMainVO</param>
+        	</result>		
+		</action>		
 	</package>
 </struts>
 

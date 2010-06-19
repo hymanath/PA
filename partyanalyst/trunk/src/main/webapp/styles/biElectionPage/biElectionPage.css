@@ -249,3 +249,14 @@ margin-left:40px;
 	color:#707070;
 	margin:5px;
 }
+.selectWidth
+{
+	width:150px;
+}
+.alert
+{
+	font-size:12px;
+	font-weight:bold;
+	color:red;
+	padding:5px;
+}
