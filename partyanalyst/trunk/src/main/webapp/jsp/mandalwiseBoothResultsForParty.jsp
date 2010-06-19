@@ -320,7 +320,7 @@ function callAjax(jsObj,url)
 											<c:forEach var="constitueciesList" varStatus="status2" items="${electionsList.partyVotesMarginInConstituency}">
 											<TD>
 												<DIV style="padding:10px;">
-												<DIV>${constitueciesList.constituencyName}</DIV>
+												<DIV style="text-align:center;margin:10px;color:#707070;font-size:13px;">Constituency:${constitueciesList.constituencyName}</DIV>
 													<c:if test="${! empty constitueciesList.partyResultsInVotesMarginVO}">											
 														<TABLE class="votesMarginTable" cellpadding="0" cellspacing="0" width="100%">
 															<TR>
