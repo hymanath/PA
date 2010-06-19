@@ -491,6 +491,7 @@ var userGrpsObj={
 	
 	function showGroupMembersList(results)
 	{
+		var smsTextAreaEl = document.getElementById("smsTextArea");
 		assignToGroupMembersArray = new Array();
 		var groupMbrsList = results.userGroupMembersList;
 		var emptyArray = new Array();
