@@ -64,8 +64,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO; 
-	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
-	
+		
 	private static final Logger log = Logger.getLogger(BiElectionPageService.class);
 
 	
@@ -118,15 +117,6 @@ public class BiElectionPageService implements IBiElectionPageService {
 
 	public void setNominationDAO(INominationDAO nominationDAO) {
 		this.nominationDAO = nominationDAO;
-	}
-
-	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
-		return delimitationConstituencyAssemblyDetailsDAO;
-	}
-
-	public void setDelimitationConstituencyAssemblyDetailsDAO(
-			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
-		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
 	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
