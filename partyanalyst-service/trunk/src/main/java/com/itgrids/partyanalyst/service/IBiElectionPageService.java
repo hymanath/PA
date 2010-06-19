@@ -30,7 +30,7 @@ public interface IBiElectionPageService {
 	
 	public List<BiElectionResultsVO> getMandalWiseResultsForAConstituency(Long constituencyId);
 	
-	public Map<String,Map<Long,List<BoothResultVO>>> getPartyMarginResultsInAMandalForAllElections(Long tehsilId,Long partyId,String electionYear,String electionType,String partyType,Long rank) throws Exception;
+	public Map<String,Map<Long,List<BoothResultVO>>> getPartyMarginResultsInAMandalForAllElections(Long tehsilId,Long constiId,Long partyId,String electionYear,String electionType,String partyType,Long rank) throws Exception;
 	
 	public Map<String,Map<String,Map<Long,List<BoothResultVO>>>> getPartyVotesMarginResults(Long constituencyId,Long mandalId,Long partyId) throws Exception;
 	
