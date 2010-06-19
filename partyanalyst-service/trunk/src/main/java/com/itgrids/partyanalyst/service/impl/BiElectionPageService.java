@@ -963,8 +963,13 @@ public class BiElectionPageService implements IBiElectionPageService {
 			   if(rankOfPartyCandidate != null && rankOfPartyCandidate.size() > 0){
 				 Object rankParam = (Object)rankOfPartyCandidate.get(0);
 				 Long rank = (Long)rankParam;
+				 Long oppCandRank = new Long(0);
+				 if(rank.equals(new Long(1)))
+					 oppCandRank = new Long(2);
+				 else if(rank > new Long(1))
+					 oppCandRank = new Long(1);
 				 
-				 Map<String, Map<Long, List<BoothResultVO>>> oppPartyResults = getPartyMarginResultsInAMandalForAllElections(mandalId,partyId,electionYear,electionTyp,IConstants.OPP_PARTY,rank);
+				 Map<String, Map<Long, List<BoothResultVO>>> oppPartyResults = getPartyMarginResultsInAMandalForAllElections(mandalId,partyId,electionYear,electionTyp,IConstants.OPP_PARTY,oppCandRank);
 				 Boolean flag = false;
 				 
 				 if(oppPartyResults != null && !oppPartyResults.isEmpty()){
@@ -1104,7 +1109,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 										  Constituency constitncy = constituencyDAO.get(consti);
 										  partyVotesInConsti.setConstituencyName(constitncy.getName());
 										  partyVotesInConsti.setBoothResults(boothResults);
-										  partyVotesInConsti.setPartyResultsInVotesMarginVO(getMarginResultsInAMandal(boothResults));
+										  partyVotesInConsti.setPartyResultsInVotesMarginVO(getMarginResultsInAMandal(boothResults,IConstants.VOTES_PERCENT));
 										  
 										  partyVotesMarginInConsti.add(partyVotesInConsti);
 									  }
@@ -1144,7 +1149,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	/*
 	 * 
 	 */
-	public List<PartyResultsInVotesMarginVO> getMarginResultsInAMandal(List<BoothResultVO> boothResults){
+	public List<PartyResultsInVotesMarginVO> getMarginResultsInAMandal(List<BoothResultVO> boothResults,String resultType){
 		
 		if(log.isDebugEnabled())
 			log.debug("Inside getMarginResultsInAMandal Method ..");
@@ -1160,10 +1165,18 @@ public class BiElectionPageService implements IBiElectionPageService {
 		
 		if(boothResults!= null && boothResults.size() > 0){
 			for(BoothResultVO results:boothResults){
+				Double votesPercent = new Double(0);
 				
 				//Double votesPercent = Double.valueOf(results.getPercentage());
-				Double votesPercent = new BigDecimal((new Double(results.getVotesEarned())/new Double(results.getTotalVoters()))*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				log.debug(" Votes Percent :" + votesPercent);
+				if(resultType.equals(IConstants.VOTES_PERCENT)){
+				 votesPercent = new BigDecimal((new Double(results.getVotesEarned())/new Double(results.getTotalVoters()))*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				 log.debug(" Votes Percent :" + votesPercent);
+				}
+				else if(resultType.equals(IConstants.VOTES_MARGIN)){
+					log.debug(" Votes Percent :");
+				}
+				
+				
 				Long key = new Long(0);
 				if(votesPercent > new Double(0) && votesPercent <= new Double(5))
 					key = new Long(1);
