@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
@@ -63,6 +64,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO; 
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
 	private static final Logger log = Logger.getLogger(BiElectionPageService.class);
 
@@ -116,6 +118,15 @@ public class BiElectionPageService implements IBiElectionPageService {
 
 	public void setNominationDAO(INominationDAO nominationDAO) {
 		this.nominationDAO = nominationDAO;
+	}
+
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
 	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
@@ -782,7 +793,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 */
 	@SuppressWarnings("unchecked")
 	public Map<String,Map<Long,List<BoothResultVO>>> getPartyMarginResultsInAMandalForAllElections(
-			Long tehsilId,Long partyId,String electionYear,String electnType,String partyType,Long rank) 
+			Long tehsilId,Long constiId,Long partyId,String electionYear,String electnType,String partyType,Long rank) 
 			throws Exception{
 	   
 		if(log.isDebugEnabled())
@@ -798,7 +809,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			if(partyType.equals(IConstants.MAIN_PARTY))
 			    mandalBoothResults = candidateBoothResultDAO.getBoothWisePartyResultsInAMandal(tehsilId, partyId, electionYear);
 			else if(partyType.equals(IConstants.OPP_PARTY))
-				mandalBoothResults = candidateBoothResultDAO.getBoothWisePartyResultsInAMandalByPartyRank(tehsilId, electionYear,electnType, rank);
+				mandalBoothResults = candidateBoothResultDAO.getBoothWisePartyResultsInAMandalByPartyRank(tehsilId,constiId, electionYear,electnType, rank);
 			
 			
 			if(mandalBoothResults != null && mandalBoothResults.size() > 0){
@@ -852,6 +863,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			
 		}
 		
+				
      return boothwiseResultsInMandalMap;
 	}
 	
@@ -950,7 +962,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		
 		if(mandalId != null && constituencyId != null && electionYear != null){
 		    	
-			Map<String, Map<Long, List<BoothResultVO>>> mainPartyResults = getPartyMarginResultsInAMandalForAllElections(mandalId,partyId,electionYear,null,IConstants.MAIN_PARTY,new Long(0));
+			Map<String, Map<Long, List<BoothResultVO>>> mainPartyResults = getPartyMarginResultsInAMandalForAllElections(mandalId,null,partyId,electionYear,null,IConstants.MAIN_PARTY,new Long(0));
 			//Map<String, Map<Long, List<BoothResultVO>>> oppositnPartyResults = new HashMap<String, Map<Long, List<BoothResultVO>>>();			
 			
 			//getting results for opposition parties
@@ -959,7 +971,12 @@ public class BiElectionPageService implements IBiElectionPageService {
 			 for(String electionTyp:elecTypes){
 				 
 			   Map<Long, List<BoothResultVO>> mainPartyRes = mainPartyResults.get(electionTyp);
-			   List rankOfPartyCandidate = nominationDAO.getCandidateRankInAConstituencyElection(constituencyId, electionYear, electionTyp, partyId);
+			 
+			   Map<String, Map<Long, List<BoothResultVO>>> oppPartyResults = new HashMap<String, Map<Long, List<BoothResultVO>>>();
+			   Map<Long, List<BoothResultVO>> oppPartysMap = new HashMap<Long, List<BoothResultVO>>();
+			   Set<Long> mainPartyConstiIds = mainPartyRes.keySet();
+			   for(Long consti:mainPartyConstiIds){
+			   List rankOfPartyCandidate = nominationDAO.getCandidateRankInAConstituencyElection(consti, electionYear, electionTyp, partyId);
 			   if(rankOfPartyCandidate != null && rankOfPartyCandidate.size() > 0){
 				 Object rankParam = (Object)rankOfPartyCandidate.get(0);
 				 Long rank = (Long)rankParam;
@@ -969,7 +986,19 @@ public class BiElectionPageService implements IBiElectionPageService {
 				 else if(rank > new Long(1))
 					 oppCandRank = new Long(1);
 				 
-				 Map<String, Map<Long, List<BoothResultVO>>> oppPartyResults = getPartyMarginResultsInAMandalForAllElections(mandalId,partyId,electionYear,electionTyp,IConstants.OPP_PARTY,oppCandRank);
+				 Map<String, Map<Long, List<BoothResultVO>>> oppPartyResults1 = getPartyMarginResultsInAMandalForAllElections(mandalId,consti,partyId,electionYear,electionTyp,IConstants.OPP_PARTY,oppCandRank);
+				 if(oppPartyResults1 != null && !oppPartyResults1.isEmpty()){
+					 Map<Long, List<BoothResultVO>> oppParty = oppPartyResults1.get(electionTyp);
+					 if(!oppParty.isEmpty()){
+						 List<BoothResultVO> oppPartyBooth = oppParty.get(consti);
+						 oppPartysMap.put(consti, oppPartyBooth);
+					 }
+					
+				 }
+			    }
+			   }
+			     
+			     oppPartyResults.put(electionTyp, oppPartysMap);
 				 Boolean flag = false;
 				 
 				 if(oppPartyResults != null && !oppPartyResults.isEmpty()){
@@ -986,7 +1015,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				 else if(oppPartyResults == null || oppPartyResults.isEmpty() || flag == false){
 					 boothWiseResultsMainMap.put(electionTyp, mainPartyRes);
 				 }
-			   }
+			   
 			 
 			 }
 			}
@@ -1087,6 +1116,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				  List<PartyVotesMarginResultsVO> partyVotesMarginResultsVO = new ArrayList<PartyVotesMarginResultsVO>();
 				  
 				  Set<String> electionYears = partyResultsInMap.keySet();
+				  
 				  for(String elecYear:electionYears){
 					  
 					  Map<String,Map<Long,List<BoothResultVO>>> partyResultsForElecTypes = partyResultsInMap.get(elecYear);
