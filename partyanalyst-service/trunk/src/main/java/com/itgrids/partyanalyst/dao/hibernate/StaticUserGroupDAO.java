@@ -44,5 +44,9 @@ public class StaticUserGroupDAO extends GenericDaoHibernate<StaticUserGroup, Lon
 		return getHibernateTemplate().find("select count(model.staticUser.staticUserId) from StaticUserGroup model where model.personalUserGroup.personalUserGroupId = ? and model.staticUser.name = ?", params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List getGroupMembersMobileNumbers(Long groupId) {
+		return getHibernateTemplate().find("select model.staticUser.mobileNumber from StaticUserGroup model where model.personalUserGroup.personalUserGroupId = ? ",groupId);
+	}
 
 }
