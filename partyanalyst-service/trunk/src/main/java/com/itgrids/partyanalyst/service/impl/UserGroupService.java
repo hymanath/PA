@@ -8,6 +8,7 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -584,7 +585,17 @@ public class UserGroupService implements IUserGroupService {
 			groupsBasicInfo.setMembersCount(membersCount);
 			groupsBasicInfo.setGroupName(staticGrp.getGroupName());
 			groupsBasicInfo.setDesc(staticGrp.getGroupDescription());
-			groupsBasicInfo.setCreatedDate(staticGrp.getCreatedDate().toString());
+			
+			java.util.Date updatedDate = staticGrp.getCreatedDate();
+			String DATE_FORMAT = "dd-MM-yyyy";
+			SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+			String strDateNew = sdf.format(updatedDate) ;
+			try {
+				updatedDate = sdf.parse(strDateNew);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			groupsBasicInfo.setCreatedDate(strDateNew.toString());
 			
 			List subGrpsCount = personalUserGroupDAO.getSubGroupsCountForASystemGroup(staticGroupId,userId);
 			if(subGrpsCount != null && subGrpsCount.size() > 0){
