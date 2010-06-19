@@ -937,13 +937,11 @@ public class UserGroupService implements IUserGroupService {
 		}
 		List<String> mobileNos = null;
 		if(groupId!= null && userId != null){
-			List mobNos = staticUserGroupDAO.getGroupMembersMobileNoForAGroup(groupId, userId);
+			List mobNos = staticUserGroupDAO.getGroupMembersMobileNumbers(groupId);
 			if(mobNos != null){
-				mobileNos = new ArrayList<String>();
-				for(int i=0;i<mobNos.size();i++){
-					Object params = (Object)mobNos.get(i);
-					String mobile = (String)params;
-					mobileNos.add(mobile);
+				mobileNos = new ArrayList<String>();				
+				for(int i=0;i<mobNos.size();i++){					
+					mobileNos.add(mobNos.get(i).toString());
 				}
 			}
 		}
