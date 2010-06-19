@@ -350,7 +350,7 @@ function callAjax(jsObj,url)
 									</TABLE>
 								</DIV>								
 							</TD>
-							<c:if test="${electionsList.elecionType == 'Parliament' && electionsList.electionYear == '2009'}"></TR></c:if>
+							<c:if test="${(status1.index)%2 == 1}"></TR></c:if>
 						</c:forEach>
 					</TR>
 				</TABLE>
