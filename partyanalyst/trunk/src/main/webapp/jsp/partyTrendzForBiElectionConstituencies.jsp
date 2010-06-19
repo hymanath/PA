@@ -337,8 +337,7 @@
 		}
 
 		function displayAllPartiesChart()
-		{
-			console.log(allPartiesCharts);
+		{			
 			var graphStr = '';
 			graphStr += '<HTML><HEAD><TITLE>All Parties Election Results in ${constiName} Constituency</TITLE></HEAD>';
 			graphStr += '<body>';
@@ -359,8 +358,7 @@
 			graphStr += '</table>';
 			graphStr += '</BODY></HTML>';
 				
-				console.log(graphStr);
-
+				
 
 			var allPartiesChartsWindow = window.open("","allPartiesChartsWindow","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 			allPartiesChartsWindow.focus();
