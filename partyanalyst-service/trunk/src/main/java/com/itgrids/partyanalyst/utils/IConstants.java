@@ -184,5 +184,7 @@ public interface IConstants {
     
     public final static String MAIN_PARTY = "MAIN_PARTY";
     public final static String OPP_PARTY = "OPP_PARTY";
+    public final static String VOTES_MARGIN = "VOTES_MARGIN";
+    public final static String VOTES_PERCENT = "VOTES_PERCENT";
     
 }
