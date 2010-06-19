@@ -325,7 +325,7 @@ function callAjax(jsObj,url)
 														<TABLE class="votesMarginTable" cellpadding="0" cellspacing="0" width="100%">
 															<TR>
 																<TH class="head1"></TH>
-																<TH class="head1">Votes Margin %</TH>
+																<TH class="head1">Votes %</TH>
 																<TH class="head1">No of booths</TH>
 															</TR>
 															<c:forEach var="rangesList" varStatus="status3" items="${constitueciesList.partyResultsInVotesMarginVO}">				
