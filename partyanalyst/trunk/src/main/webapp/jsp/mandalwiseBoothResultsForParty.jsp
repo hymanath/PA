@@ -106,6 +106,7 @@ legend {
 .votesMarginTable th {
 	color:#4A515A;
 	padding:2px;
+	text-align:center;
 	
 }
 .middle {
@@ -324,14 +325,19 @@ function callAjax(jsObj,url)
 														<TABLE class="votesMarginTable" cellpadding="0" cellspacing="0" width="100%">
 															<TR>
 																<TH class="head1"></TH>
-																<TH align="left" class="head1">Votes Margin %</TH>
+																<TH class="head1">Votes Margin %</TH>
 																<TH class="head1">No of booths</TH>
 															</TR>
 															<c:forEach var="rangesList" varStatus="status3" items="${constitueciesList.partyResultsInVotesMarginVO}">				
 															<TR>
 																<TD align="center" class="middle"><img height="5" width="5" src="/PartyAnalyst/images/icons/constituencyPage/bullet_blue.png"></TD>
 																<TD align="center" class="middle">${rangesList.marginValue1} - ${rangesList.marginValue2}</TD>
-																<TD align="center" class="edge"><A class="anchorColor" href="javascript:{}" onclick="showBoothResults(${status0.index},${status1.index},${status2.index},${status3.index})">${rangesList.resultsCount}</A></TD>													
+																<c:if test="${rangesList.resultsCount != '0'}">																	
+																	<TD align="center" class="edge"><A class="anchorColor" href="javascript:{}" onclick="showBoothResults(${status0.index},${status1.index},${status2.index},${status3.index})">${rangesList.resultsCount}</A></TD>
+																</c:if>
+																<c:if test="${rangesList.resultsCount == '0'}">																	
+																	<TD align="center" class="edge">${rangesList.resultsCount}</TD>
+																</c:if>														
 															</TR>
 															</c:forEach>
 														</TABLE>
