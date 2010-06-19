@@ -38,6 +38,7 @@
 
 <script type="text/javascript">
 var hidden=1;
+var selectedGroupID=0;
 function incrementHidden()
 {
 	hidden++;
@@ -82,6 +83,7 @@ function callAjax(param,jsObj,url){
 										showExistingGroupAlert(myResults, jsObj);										
 									}else if(jsObj.task == "addMemberToAGroup")
 									{
+										showGroupMembers(selectedGroupID);
 										showAddedMbrConfirm(myResults, jsObj);										
 									} else if(jsObj.task == "getMyGroupsListForAUser")
 									{
@@ -1302,7 +1304,8 @@ var userGrpsObj={
 				  y:400				  
 				  
 	             } ); 
-		addGrpMbrsDialog.render();		
+		addGrpMbrsDialog.render();
+		selectedGroupID = id;
 	}
 	
 	function handleAddGrpMbrSubmit(confirmation)
@@ -1363,6 +1366,7 @@ var userGrpsObj={
 			eMailTextEl.value ="";
 			var groupMbrDesignationTextEl = document.getElementById("groupMbrDesignationText");
 			groupMbrDesignationTextEl.value ="";
+			addGrpMembersDialog();
 		} else  if(memberAlreadyExists == true)
 		{
 			var answer = confirm(name+" Already Exists.Do you want to proceed?");
