@@ -1166,10 +1166,12 @@ public class BiElectionPageService implements IBiElectionPageService {
 		if(boothResults!= null && boothResults.size() > 0){
 			for(BoothResultVO results:boothResults){
 				Double votesPercent = new Double(0);
+				Double oppCandVotesPercent = new Double(0);
 				
 				//Double votesPercent = Double.valueOf(results.getPercentage());
 				if(resultType.equals(IConstants.VOTES_PERCENT)){
 				 votesPercent = new BigDecimal((new Double(results.getVotesEarned())/new Double(results.getTotalVoters()))*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				 oppCandVotesPercent = new BigDecimal((new Double(results.getOppPartyVotesEarned())/new Double(results.getTotalVoters()))*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue(); 
 				 log.debug(" Votes Percent :" + votesPercent);
 				}
 				else if(resultType.equals(IConstants.VOTES_MARGIN)){
@@ -1196,6 +1198,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 				
 				if(key != new Long(0)){
 					List<BoothResultVO> bootResults = marginResults.get(key);
+					results.setPercentage(votesPercent.toString());
+					results.setOppPartyPercentage(oppCandVotesPercent.toString());
 					bootResults.add(results);
 					marginResults.put(key, bootResults);
 				}
