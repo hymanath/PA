@@ -67,7 +67,7 @@ h3 {
 }
 fieldset {
 	border:4px solid #CFD6DF;
-	margin-bottom:10px;
+	margin:10px;
 	padding:10px;		
 }
 legend {
@@ -441,6 +441,23 @@ function callAjax(jsObj,url)
 		<H3>Mandalwise Booth Results for ${partyName} party in ${constituencyName} constituency</H3>
 	</DIV>
 	<DIV id="boothResultsTable" style="text-align:left;">
+	
+	   <div id="constiVotersDetails" style="margin-top:20px;">
+	     <div style="padding:10px;margin-bottom:20px;"> <u><b> Mandals Votes Share In ${constituencyName} Constituency :</b> </u> </div>
+	      <center><table width="85%" border="1" cellspacing="3">
+	      <tr>
+	      <c:forEach var="votesShareChart" items="${votesMarginResultsMainVO.constituencyVO.pieChartNames}">
+	        <td align="center"><img src="charts/${votesShareChart}" border="0"></td>
+	      </c:forEach>
+	      </tr>
+	      <tr>
+	      <c:forEach var="infoForChart" items="${votesMarginResultsMainVO.constituencyVO.extraInfo}">
+	        <td align="left" style="border: 0px none ; color: rgb(112, 112, 112);">${infoForChart}</td>
+          </c:forEach>
+	      </tr>
+	      </table></center>
+	   </div>
+	
 		<c:forEach var="mandalsList" varStatus="status0" items="${votesMarginResultsMainVO.partyVotesMarginResultsInMandal}">
 				<FIELDSET>
 				<LEGEND><B>Mandal:</B> ${mandalsList.mandalName}</LEGEND>
