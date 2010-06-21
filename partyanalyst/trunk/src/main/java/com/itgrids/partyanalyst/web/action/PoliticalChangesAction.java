@@ -235,6 +235,17 @@ public class PoliticalChangesAction extends ActionSupport implements
 		return Action.SUCCESS;
 	}
 	
+	public void removeSessionVariablesForPoliticalChanges(){
+		try {
+			HttpSession session = request.getSession();
+			session = request.getSession();
+			session.removeAttribute("effectedRangeList");
+			session.removeAttribute("informationSourcesList");
+			session.removeAttribute("staticPartiesList");		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public String getEffectedRangeForAUser(){
 		String param = null;
 		param = getTask();

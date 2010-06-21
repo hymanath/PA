@@ -125,7 +125,17 @@ public class InfluencingPeopleAction extends ActionSupport implements
 		
 		return Action.SUCCESS;
 	}
-
+	
+	public void removeSessionVariablesForInfluencingPeople(){
+		try {
+			HttpSession session = request.getSession();
+			session = request.getSession();
+			session.removeAttribute("staticParties");
+			session.removeAttribute("influenceRange");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public void saveInfluencePeopleData(){
 		String param = null;
 		param = getTask();
