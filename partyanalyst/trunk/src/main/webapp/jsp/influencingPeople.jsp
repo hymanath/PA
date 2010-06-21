@@ -174,9 +174,21 @@ function checkRequestType()
 	}
 	successMsgDIV.innerHTML = message;
 }
+
+function doUnload()
+{
+	var jsObj=
+	{
+		task:"removeSessionVariablesForInfluencingPeople"					
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/removeSessionVariablesForInfluencingPeopleAjaxAction.action?"+rparam;	
+	callAjax(rparam,jsObj,url);
+}
+
 getSelectOptionVOList(this.value,"getStates","COUNTRY");
 </script>
-<body onload="checkRequestType()">
+<body onload="checkRequestType()" onunload="doUnload()">
 <h2 align="center">Influencing People Registration Page</h2>
 <div id="registrationMainDiv">
 

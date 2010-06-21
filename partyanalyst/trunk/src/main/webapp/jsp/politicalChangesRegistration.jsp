@@ -538,11 +538,20 @@ function populateLocations(value)
 		
 	}
 
-	
+	function doUnload()
+	{
+		var jsObj=
+		{
+			task:"removeSessionVariablesForPoliticalChangesRegistration"					
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/removeSessionVariablesForPoliticalChangesRegistrationAjaxAction.action?"+rparam;	
+		callAjax(rparam,jsObj,url);
+	}
 	</script>
 </head>
 
-<body onload="checkRequestType()" style="background-color:#f2f2f2;">	
+<body onload="checkRequestType()" onunload="doUnload()" style="background-color:#f2f2f2;">	
 
 <DIV id="headingDiv" class="headingStyle" align="center"></div>
 
