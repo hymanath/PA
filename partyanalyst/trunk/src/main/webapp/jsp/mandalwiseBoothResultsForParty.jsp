@@ -29,6 +29,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
+	<script type="text/javascript" src="js/BoothPage/boothPage.js"></script>
 
 
 
@@ -144,6 +145,28 @@ padding:5px;
 	padding:2px;
 	font-size:12px;
 }
+#boothInfoTable {
+	border:2px solid #EFEFEF;
+}
+#boothInfoTable th {
+	background-color:#567AAF;
+	color:#FFFFFF;
+	padding:5px;
+	width:20%;
+	text-align:left;
+	font-size:12px;
+}
+#boothInfoDiv_head {
+	color:#747E84;
+	font-weight:bold;
+	padding:5px;
+	text-decoration:underline;
+}
+#boothPagePanel .bd
+{
+	height:450px;
+	overflow:auto;
+}
 
 
 
@@ -164,7 +187,7 @@ function getDetails()
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "<%=request.getContextPath()%>/mandalwiseBoothResultsForPartyAjaxAction.action?"+rparam;
 
-	callAjax(jsObj, url);
+	callAjax(rparam,jsObj, url);
 	
 }
 
@@ -305,15 +328,47 @@ function showAllBoothResults(index1,index2,index3)
 	var myDataTable = new YAHOO.widget.DataTable(divElmt.id,resultsColumnDefs, resultsDataSource,myConfigs);  */
 }
 
+function getBoothPageInfo(id){
+
+	var jsObj=
+		{
+				boothId:id,
+				task:"boothPage"						
+		};
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/boothPageAjaxAction.action?"+rparam;						
+		
+		callAjax(rparam,jsObj,url);
+		
+}
 function showBoothResults(index1,index2,index3,index4)
 {	
+	
 	if(boothResultsGlobal)
 	{
 	var arr = boothResultsGlobal.partyVotesMarginResultsInMandal[index1].partyVotesMarginResultsVO[index2].partyVotesMarginInConstituency[index3].partyResultsInVotesMarginVO[index4].boothResultsVO;
-
+	
 	if(arr.length == 0)
 		return;
-
+	var detailsArr = new Array();
+	for(var i in arr)
+	{
+		
+		var detailsObj = {
+				partNo: '<A href="javascript:{}" class="anchorColor" onclick="getBoothPageInfo('+arr[i].boothId+')">'+arr[i].partNo+'</A>',
+				location: arr[i].location, 
+				villagesCovered: arr[i].villagesCovered,
+				mandal: arr[i].mandal,
+				votesEarned: arr[i].votesEarned,
+				percentage: arr[i].percentage,
+				oppParty: arr[i].oppParty,
+				oppPartyVotesEarned: arr[i].oppPartyVotesEarned,
+				oppPartyPercentage: arr[i].oppPartyPercentage					
+							
+				};
+		detailsArr.push(detailsObj);
+	}
 	var contentStr ='<div id="detailedBoothResults_main" class="yui-skin-sam">';
 	contentStr +='<div id="detailedBoothResults_Datatable"></div>';
 	contentStr +='</div>';
@@ -332,11 +387,11 @@ function showBoothResults(index1,index2,index3,index4)
        myPanel.setBody(contentStr);
        myPanel.render();
 
-       var resultsDataSource = new YAHOO.util.DataSource(arr);
+       var resultsDataSource = new YAHOO.util.DataSource(detailsArr);
 	   	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	   	resultsDataSource.responseSchema = {
 	   		fields : [ {
-	   			key : "partNo",parser:"number"
+	   			key : "partNo"
 	   		}, {
 	   			key : "location"
 	   		}, {
@@ -358,9 +413,8 @@ function showBoothResults(index1,index2,index3,index4)
    	
 		var resultsColumnDefs = [ {
 			key : "partNo",
-			parser:"number",
-			label : "Booth No",
-			sortable : true
+			label : "Booth No"
+			
 		}, {
 			key : "location",
 			label : "Location",
@@ -406,8 +460,8 @@ function showBoothResults(index1,index2,index3,index4)
        
 	}
 }
-function callAjax(jsObj,url)
-{					
+function callAjax(rparam,jsObj,url)
+{		
 	var callback = {			
 				   success : function( o ) {
 						try {
@@ -416,6 +470,9 @@ function callAjax(jsObj,url)
 								if(jsObj.task == "getDetails")
 								{
 									boothResultsGlobal = myResults;
+								} else if(jsObj.task == "boothPage")
+								{								
+									showBoothPagePanel(myResults);			
 								}										
 								
 							}
@@ -513,6 +570,7 @@ function callAjax(jsObj,url)
 				</FIELDSET>			
 		</c:forEach>
 	</DIV>
+	<div class="yui-skin-sam"><div id="boothPagePanel" ></div></div>
 </CENTER>
 <SCRIPT type="text/javascript">
 getDetails();
