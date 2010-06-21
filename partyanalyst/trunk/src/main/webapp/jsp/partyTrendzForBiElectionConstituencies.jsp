@@ -449,6 +449,10 @@
 			for(var chart in resultsData.constituencyVO.pieChartNames)
 				mandalStr += '		<td align="center"><img src="charts/'+resultsData.constituencyVO.pieChartNames[chart]+'" border="0"></td>';	
 			mandalStr += '	</tr>';
+			mandalStr += '	<tr>';
+			for(var info in resultsData.constituencyVO.extraInfo)
+				mandalStr += '		<td align="left" style="border: 0px none ; color: rgb(112, 112, 112);">'+resultsData.constituencyVO.extraInfo[info]+'</td>';	
+			mandalStr += '	</tr>';
 			mandalStr += '</table></center>';
 			mandalStr += '</div>';
 			mandalStr += '</fieldset>';
