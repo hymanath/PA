@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.excel.booth;
 
 public class BoothResultVO {
 	
+	private Long boothId;
 	private String partNo;
 	private String location;
 	private String villagesCovered;
@@ -107,6 +108,14 @@ public class BoothResultVO {
 
 	public void setOppPartyPercentage(String oppPartyPercentage) {
 		this.oppPartyPercentage = oppPartyPercentage;
+	}
+
+	public Long getBoothId() {
+		return boothId;
+	}
+
+	public void setBoothId(Long boothId) {
+		this.boothId = boothId;
 	}
 
 	
