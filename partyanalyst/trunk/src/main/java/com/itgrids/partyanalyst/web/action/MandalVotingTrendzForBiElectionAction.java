@@ -625,6 +625,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 			}
 			
 			constituencyVO.setPieChartNames(chartNames);
+			constituencyVO.setExtraInfo(extraInfo);
 			
 		 return constituencyVO;
 		}
