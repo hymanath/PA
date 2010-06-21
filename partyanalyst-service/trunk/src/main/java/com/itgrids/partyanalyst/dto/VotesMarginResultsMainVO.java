@@ -19,6 +19,7 @@ public class VotesMarginResultsMainVO implements Serializable {
 	
 	private Long constituencyId;
 	private String constituencyName;
+	private ConstituencyVO constituencyVO;
 	
 	private List<PartyVotesMarginResultsInMandal> partyVotesMarginResultsInMandal;
     private ResultStatus resultStatus;
@@ -37,6 +38,14 @@ public class VotesMarginResultsMainVO implements Serializable {
 
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
+	}
+
+	public ConstituencyVO getConstituencyVO() {
+		return constituencyVO;
+	}
+
+	public void setConstituencyVO(ConstituencyVO constituencyVO) {
+		this.constituencyVO = constituencyVO;
 	}
 
 	public List<PartyVotesMarginResultsInMandal> getPartyVotesMarginResultsInMandal() {
