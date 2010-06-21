@@ -1030,6 +1030,12 @@
 			</result> 
 		</action>
 		
+		<action name="removeSessionVariablesForPoliticalChangesRegistrationAjaxAction" class="politicalChangesAction" method="removeSessionVariablesForPoliticalChanges">
+		</action>
+		
+		<action name="removeSessionVariablesForInfluencingPeopleAjaxAction" class="influencingPeopleAction" method="removeSessionVariablesForInfluencingPeople">
+		</action>
+		
         <action name="sendSMSAction" class="sendSMSAction"></action>        
         
          <action name="votesMaringInfoForElectionInPartyPerformance" class="partyPerformanceAction" method="getMarginCount"> 
