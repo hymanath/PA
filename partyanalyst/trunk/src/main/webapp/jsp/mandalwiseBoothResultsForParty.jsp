@@ -174,7 +174,7 @@ function showAllBoothResults(index1,index2,index3)
 		return;
 
 	var arr = boothResultsGlobal.partyVotesMarginResultsInMandal[index1].partyVotesMarginResultsVO[index2].partyVotesMarginInConstituency[index3].boothResults
-	console.log(arr);
+	
 	if(arr.length == 0)
 		return;
 
