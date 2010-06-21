@@ -871,6 +871,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			Long votesEarned = (Long)resultObj[1];
 			Long validVotes = (Long)resultObj[2];
 			
+			boothResult.setBoothId(booth.getBoothId());
 			boothResult.setPartNo(booth.getPartNo());
 			boothResult.setLocation(booth.getLocation());
 			boothResult.setMandal(booth.getTehsil().getTehsilName());
