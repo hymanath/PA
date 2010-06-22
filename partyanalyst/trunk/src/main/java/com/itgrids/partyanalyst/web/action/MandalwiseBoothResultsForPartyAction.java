@@ -1,22 +1,33 @@
 package com.itgrids.partyanalyst.web.action;
 
+
+import java.awt.Color;
+import java.math.BigDecimal;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.json.JSONObject;
-
+import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
+import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInVotesMarginVO;
+import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyVotesMarginInConstituency;
 import com.itgrids.partyanalyst.dto.PartyVotesMarginResultsInMandal;
 import com.itgrids.partyanalyst.dto.PartyVotesMarginResultsVO;
@@ -24,6 +35,7 @@ import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.dto.VotesMarginResultsMainVO;
 import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
+import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.impl.BiElectionPageService;
@@ -51,8 +63,12 @@ ServletRequestAware, ServletContextAware{
 	private ConstituencyVO constituencyVO;
 	private String task;
 	org.json.JSONObject jObj;
-
+	private static final Logger log = Logger.getLogger(MandalwiseBoothResultsForPartyAction.class);
 	
+	public static Logger getLog() {
+		return log;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
 	}
@@ -199,10 +215,181 @@ ServletRequestAware, ServletContextAware{
 		Long constId = new Long(jObj.getString("constituencyId"));
 		Long partyId = new Long(jObj.getString("partyId"));	
 		votesMarginResultsMainVO =  biElectionPageService.getVotesMarginResultsCompleteDetails(constId, partyId);
+
 		
+		getMandalWiseGraphsForTheConstituency(votesMarginResultsMainVO);
 		
+
 	 return  SUCCESS;
  }
+
+ 	public void getMandalWiseGraphsForTheConstituency(VotesMarginResultsMainVO votesMarginResultsMainVO){
+  	   
+		try{
+			for(int i=0;i<votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().size();i++){
+				String chartName = "MandalWiseElectionResultFor_"+votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getMandalName()+"_"+votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getMandalId()+"_For"+votesMarginResultsMainVO.getConstituencyId()+".png";
+				String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		 	    String title = "MandalWise ElectionResult For"+votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getMandalName()+"Mandal";		 	    
+		        ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataSetForGraph(votesMarginResultsMainVO,i);
+		        
+				ChartProducer.createLineChart(title,"Election Type","Range", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(),chartPath,320,920, new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()));
+			} 
+			  
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+ 	}
+ 	
+ 	private ChartColorsAndDataSetVO createDataSetForGraph(VotesMarginResultsMainVO votesMarginResultsMainVO,int mandalCount){		
+		List<PartyVotesMarginInConstituency> partyResults = new ArrayList<PartyVotesMarginInConstituency>();
+		List<PartyVotesMarginResultsInMandal> mandalResult = new  ArrayList<PartyVotesMarginResultsInMandal>();
+		
+		for(int i=mandalCount;i<=mandalCount;i++){
+				String mandalName = votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getMandalName();
+				for(int j=0;j<votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getPartyVotesMarginResultsVO().size();j++){					
+					String electionType = votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getPartyVotesMarginResultsVO().get(j).getElecionType();
+					String electionYear = votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getPartyVotesMarginResultsVO().get(j).getElectionYear();
+					if(votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getPartyVotesMarginResultsVO().get(j).getPartyVotesMarginInConstituency().size()>1){
+							partyResults.addAll(votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getPartyVotesMarginResultsVO().get(j).getPartyVotesMarginInConstituency());
+							mandalResult.addAll(setElectionVoForGraphs(getBoothCount(partyResults),electionType,electionYear,mandalName));
+							partyResults.clear();							
+						}else{	
+							mandalResult.addAll(setElectionVoForGraphs(votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getPartyVotesMarginResultsVO().get(j).getPartyVotesMarginInConstituency().get(0).getPartyResultsInVotesMarginVO(),electionType,electionYear,mandalName));
+						}
+				}				
+			}
+			
+		/*for(int m=0;m<mandalResult.size();m++){	
+ 			System.out.println("====================================");
+ 			System.out.println(mandalResult.get(m).getMandalName());
+ 			System.out.println("====================================");
+	 		for(int i=0;i<mandalResult.get(m).getPartyVotesMarginResultsVO().size();i++){
+	 			System.out.println(mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getElecionType());
+	 			System.out.println(mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getElectionYear());
+	 			for(int j=0;j<mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getPartyVotesMarginInConstituency().size();j++){
+	 				for(int k=0;k<mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getPartyVotesMarginInConstituency().get(j).getPartyResultsInVotesMarginVO().size();k++){
+	 					int margin1 = mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getPartyVotesMarginInConstituency().get(j).getPartyResultsInVotesMarginVO().get(k).getMarginValue1();
+	 					int margin2 = mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getPartyVotesMarginInConstituency().get(j).getPartyResultsInVotesMarginVO().get(k).getMarginValue2();
+	 					int resultCount = mandalResult.get(m).getPartyVotesMarginResultsVO().get(i).getPartyVotesMarginInConstituency().get(j).getPartyResultsInVotesMarginVO().get(k).getResultsCount();
+	 					System.out.println(margin1+"\t\t"+margin2+"\t\t"+resultCount);
+	 				}
+	 			}
+	 			System.out.println("====================================");
+	 			System.out.println("====================================");
+	 		}
+ 		}*/
+		
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
+		Set<Color> colorsSet = new LinkedHashSet<Color>();
+		
+		
+		for(PartyVotesMarginResultsInMandal consti:mandalResult){
+			for(PartyVotesMarginResultsVO category:consti.getPartyVotesMarginResultsVO()){
+				if( 
+						(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(category.getElecionType()))
+												&&
+						 (IConstants.PRESENT_ELECTION_YEAR.equalsIgnoreCase(category.getElectionYear())))
+							{	
+								colorsSet.add(Color.BLUE);
+							}
+				
+	        	else
+	        		if(
+	        				(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(category.getElecionType()))
+	        									&&
+							(IConstants.PREVIOUS_ELECTION_YEAR.equalsIgnoreCase(category.getElectionYear())))
+							{	
+								colorsSet.add(Color.GREEN);
+							}
+	            else
+	            	if(
+	            			(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(category.getElecionType()))
+	            								&&
+							(IConstants.PRESENT_ELECTION_YEAR.equalsIgnoreCase(category.getElectionYear())))
+							{	
+								colorsSet.add(Color.MAGENTA);
+							}
+	            else
+	            	if(
+	            			(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(category.getElecionType()))
+	            								&&
+							(IConstants.PREVIOUS_ELECTION_YEAR.equalsIgnoreCase(category.getElectionYear())))
+							{	
+								colorsSet.add(Color.red);
+							}
+				
+				for(int h=0;h<category.getPartyVotesMarginInConstituency().get(0).getPartyResultsInVotesMarginVO().size();h++){
+					int margin1 = category.getPartyVotesMarginInConstituency().get(0).getPartyResultsInVotesMarginVO().get(h).getMarginValue1();
+					int margin2 = category.getPartyVotesMarginInConstituency().get(0).getPartyResultsInVotesMarginVO().get(h).getMarginValue2();
+					int marginCount = category.getPartyVotesMarginInConstituency().get(0).getPartyResultsInVotesMarginVO().get(h).getResultsCount();
+					
+					dataset.addValue(marginCount,(category.getElecionType()+"-"+category.getElectionYear()),(margin1+"-"+margin2));
+				}
+				
+			}
+		}
+		chartColorsAndDataSetVO.setDataSet(dataset);
+        chartColorsAndDataSetVO.setColorsSet(colorsSet);	
+		return chartColorsAndDataSetVO;
+	}
+ 	
+ 	public List<PartyVotesMarginResultsInMandal> setElectionVoForGraphs(List<PartyResultsInVotesMarginVO> mandalElection,String electionType,String electionYear,String mandalName){
+ 		 		
+ 		
+ 		List<PartyVotesMarginInConstituency> partyVotesMargin = new ArrayList<PartyVotesMarginInConstituency>(0);
+ 		PartyVotesMarginInConstituency votesMargin = new PartyVotesMarginInConstituency();
+ 		votesMargin.setPartyResultsInVotesMarginVO(mandalElection);
+ 		partyVotesMargin.add(votesMargin);
+ 		
+ 		
+ 		List<PartyVotesMarginResultsVO> mandalElectionVo = new ArrayList<PartyVotesMarginResultsVO>();
+ 		PartyVotesMarginResultsVO partyVotes =  new PartyVotesMarginResultsVO();
+ 		partyVotes.setElecionType(electionType);
+ 		partyVotes.setElectionYear(electionYear);
+ 		partyVotes.setPartyVotesMarginInConstituency(partyVotesMargin);
+ 		mandalElectionVo.add(partyVotes);
+ 		
+ 		List<PartyVotesMarginResultsInMandal> mandalResult = new ArrayList<PartyVotesMarginResultsInMandal>(0);
+ 		PartyVotesMarginResultsInMandal resultsInMandal = new PartyVotesMarginResultsInMandal();
+ 		resultsInMandal.setMandalName(mandalName);
+ 		resultsInMandal.setPartyVotesMarginResultsVO(mandalElectionVo);
+ 		mandalResult.add(resultsInMandal);
+ 		
+ 		
+ 		return mandalResult;
+ 	}
+ 	
+ 	private List<PartyResultsInVotesMarginVO>  getBoothCount(List<PartyVotesMarginInConstituency> partyResults) {
+ 		List<PartyResultsInVotesMarginVO> partyResultsMarginVotes = new ArrayList<PartyResultsInVotesMarginVO>(0);
+ 		for(int i=0;i<partyResults.size();i++){
+ 			for(int j=0;j<partyResults.get(i).getPartyResultsInVotesMarginVO().size();j++){
+ 				int margin1 = partyResults.get(i).getPartyResultsInVotesMarginVO().get(j).getMarginValue1();
+ 	 			int margin2 = partyResults.get(i).getPartyResultsInVotesMarginVO().get(j).getMarginValue2();
+ 				int marginCount = partyResults.get(i).getPartyResultsInVotesMarginVO().get(j).getResultsCount(); 				
+ 				if(i==0){
+ 					PartyResultsInVotesMarginVO result = new PartyResultsInVotesMarginVO();
+ 					result.setMarginValue1(margin1);
+ 					result.setMarginValue2(margin2);
+ 					result.setResultsCount(marginCount);
+ 					partyResultsMarginVotes.add(result);
+ 				}			
+			}
+ 		}
+ 		for(int i=1;i<partyResults.size();i++){ 		
+ 			for(int j=0;j<partyResults.get(i).getPartyResultsInVotesMarginVO().size();j++){ 		
+ 				for(int k=0;k<partyResultsMarginVotes.size();k++){ 					
+ 					if(partyResults.get(i).getPartyResultsInVotesMarginVO().get(j).getMarginValue1()==partyResultsMarginVotes.get(k).getMarginValue1()){	
+ 						partyResultsMarginVotes.get(k).setResultsCount(partyResultsMarginVotes.get(k).getResultsCount()+partyResults.get(i).getPartyResultsInVotesMarginVO().get(j).getResultsCount());	
+ 				}				
+			}	
+		}									
+	}
+ 	
+ 	return partyResultsMarginVotes;
+ }
+ 	
+
  
  //Method To Create Votes Share In Constituency Before & After Delimitation
  public ConstituencyVO getVotersShareInMandalsPieChart(Long constituencyId){
@@ -259,4 +446,5 @@ ServletRequestAware, ServletContextAware{
 			
 		return dataset;
 	}
+
 }
