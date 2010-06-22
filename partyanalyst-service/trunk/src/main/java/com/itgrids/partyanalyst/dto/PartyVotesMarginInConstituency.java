@@ -23,6 +23,8 @@ public class PartyVotesMarginInConstituency implements Serializable {
 	private String constituencyName;
 	
 	private List<PartyResultsInVotesMarginVO> partyResultsInVotesMarginVO;
+	private List<PartyResultsInVotesMarginVO> partyResultsInMarginVotesVO;
+	private MandalLevelResultsForParty partyResultsOverview;
 	private List<BoothResultVO> boothResults;
 	private ResultStatus resultStatus;
 	
@@ -51,11 +53,25 @@ public class PartyVotesMarginInConstituency implements Serializable {
 			List<PartyResultsInVotesMarginVO> partyResultsInVotesMarginVO) {
 		this.partyResultsInVotesMarginVO = partyResultsInVotesMarginVO;
 	}
+	public MandalLevelResultsForParty getPartyResultsOverview() {
+		return partyResultsOverview;
+	}
+	public void setPartyResultsOverview(
+			MandalLevelResultsForParty partyResultsOverview) {
+		this.partyResultsOverview = partyResultsOverview;
+	}
 	public List<BoothResultVO> getBoothResults() {
 		return boothResults;
 	}
 	public void setBoothResults(List<BoothResultVO> boothResults) {
 		this.boothResults = boothResults;
+	}
+	public List<PartyResultsInVotesMarginVO> getPartyResultsInMarginVotesVO() {
+		return partyResultsInMarginVotesVO;
+	}
+	public void setPartyResultsInMarginVotesVO(
+			List<PartyResultsInVotesMarginVO> partyResultsInMarginVotesVO) {
+		this.partyResultsInMarginVotesVO = partyResultsInMarginVotesVO;
 	}
 
 }
