@@ -170,17 +170,7 @@ public class HamletBoothMapperAction extends ActionSupport implements ServletReq
 				if(resultVO.getResultStatus().getExceptionEncountered() == null){
 					requestStatus = "Record Deleted";
 				}
-			}
-			
-			if(jObj.getString("task").equals("boothPage")){
-				ResultWithExceptionVO resultOfBoothPage = partyBoothWiseResultsService.getBoothPageInfo(jObj.getLong("boothId"));
-				if(resultOfBoothPage.getResultStatus().getExceptionEncountered() == null){
-					boothPanelVO = (BoothPanelVO) resultOfBoothPage.getFinalResult();
-					System.out.println("All Elections Info In Booths::"+boothPanelVO.getElections().size());
-					log.debug("All Elections Info In Booths::"+boothPanelVO.getElections().size());
-				}
-					
-			}
+			}			
 			
 		}else{
 			result = new ArrayList<SelectOptionVO>(2);
