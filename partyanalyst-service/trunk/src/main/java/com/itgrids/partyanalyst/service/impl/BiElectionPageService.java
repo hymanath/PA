@@ -1356,7 +1356,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 					Object[] params = (Object[])latestMandals.get(i);
 					Long mandalId = (Long)params[0];
 					String mandalName = (String)params[1];
-					String chartName = "MandalWiseElectionResultFor_"+mandalName+"_"+mandalId+"_For"+constituencyId+".png";
+					String chartName = "MandalWiseElectionResultFor_"+mandalName+"_"+mandalId+"_For"+constituencyId+"_"+partyId+".png";
 					PartyVotesMarginResultsInMandal partyResultsInMandal = getBoothWisePartyResultsForAMandal(constituencyId,mandalId,partyId);
 					if(partyResultsInMandal != null){
 						partyResultsInMandal.setMandalName(mandalName);
