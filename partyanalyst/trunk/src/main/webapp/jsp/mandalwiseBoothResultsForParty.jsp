@@ -500,22 +500,42 @@ function callAjax(rparam,jsObj,url)
 											<c:forEach var="constitueciesList" varStatus="status2" items="${electionsList.partyVotesMarginInConstituency}">
 											<TD>
 												<DIV style="padding:10px;">
-												<DIV style="text-align:center;margin:10px;color:#707070;font-size:13px;">Constituency:${constitueciesList.constituencyName}</DIV>
+												<DIV style="text-align:center;margin:20px;color:#707070;font-size:13px;">Constituency:<b>${constitueciesList.constituencyName}</b></DIV>
                                                 <TABLE class="votesMarginTable" cellpadding="0" cellspacing="0" width="100%">
+												            
+															<TR>
+															    <TD>Total Booths </TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.totalBooths}</td>
+															</TR>
 															<TR>
 																<TD>Total Voters </TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.totalVoters}</td>
-																<TD>Total booths </TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.totalBooths}</td>
 															</TR>
 															<TR>
-															    <TD>Total Polled </TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.polledVotes}</td>
-																<TD>Total Earned </TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.votesEarned}</td>
+																<TD>Total Polled </TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.polledVotes}</td>
 															</TR>
-															<TR ><TD></TD>
-															     <TD></TD>
-															     <TD>Total Votes % </TD>
+															<TR>
+															    <TD colspan="4"> <HR> </TD>
+															</TR>
+															<TR>
+															    <TD></TD>
+																<TD>Main</TD>
+																<TD></TD>
+																<TD>Opp</TD>
+															</TR>
+															<TR>
+															     <TD>Party </TD><td style="color:#DF7401;">${partyName}</td>
+																 <TD></TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.oppParty}</td>
+															</TR>
+															<TR>
+															     <TD>Gained </TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.votesEarned}</td>
+																 <TD></TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.oppVotesEarned}</td>
+															</TR>
+															<TR >
+															     <TD>Votes% </TD>
 																 <TD style="color:#DF7401;">${constitueciesList.partyResultsOverview.votesPercent}</TD>
+																 <TD></TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.oppVotesPercent}</td>
 															</TR>
-												</TABLE>
+													</TABLE>
+												    <DIV style="text-align:left;margin:20px;color:#707070;font-size:13px;"><b>Boothwise Votes % Results</b></DIV>
 													<c:if test="${! empty constitueciesList.partyResultsInVotesMarginVO}">											
 														<TABLE class="votesMarginTable" cellpadding="0" cellspacing="0" width="100%">
 															<TR>
