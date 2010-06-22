@@ -33,6 +33,8 @@
 		<pattern>/addNewProblemSubmitAction.action*</pattern>
 		<pattern>/mandalVotingTrendzForBiElectionAction.action*</pattern>
 		<pattern>/mandalwiseBoothResultsForPartyAction.action*</pattern>
+		<pattern>/boothResultsForAllElectionsPopupAction.action*</pattern>
+		
     </excludes>
 
     <decorator name="main" page="main.jsp">
