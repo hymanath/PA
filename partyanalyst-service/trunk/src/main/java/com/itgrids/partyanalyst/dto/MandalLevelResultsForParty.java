@@ -23,6 +23,11 @@ public class MandalLevelResultsForParty implements Serializable {
 	private Long totalBooths;
 	private String votesPercent;
 	
+	private String oppParty;
+	private Long oppVotesEarned;
+	private Long oppValidVotes;
+	private String oppVotesPercent;
+	
 	
 	public Long getTotalVoters() {
 		return totalVoters;
@@ -53,6 +58,30 @@ public class MandalLevelResultsForParty implements Serializable {
 	}
 	public void setVotesPercent(String votesPercent) {
 		this.votesPercent = votesPercent;
+	}
+	public String getOppParty() {
+		return oppParty;
+	}
+	public void setOppParty(String oppParty) {
+		this.oppParty = oppParty;
+	}
+	public Long getOppVotesEarned() {
+		return oppVotesEarned;
+	}
+	public void setOppVotesEarned(Long oppVotesEarned) {
+		this.oppVotesEarned = oppVotesEarned;
+	}
+	public Long getOppValidVotes() {
+		return oppValidVotes;
+	}
+	public void setOppValidVotes(Long oppValidVotes) {
+		this.oppValidVotes = oppValidVotes;
+	}
+	public String getOppVotesPercent() {
+		return oppVotesPercent;
+	}
+	public void setOppVotesPercent(String oppVotesPercent) {
+		this.oppVotesPercent = oppVotesPercent;
 	}
 
 }
