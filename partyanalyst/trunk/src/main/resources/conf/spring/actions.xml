@@ -357,10 +357,13 @@
 	</bean>
 	
 	<bean id="mandalwiseBoothResultsForPartyAction" class="com.itgrids.partyanalyst.web.action.MandalwiseBoothResultsForPartyAction" singleton="false">
-		<property name="biElectionPageService" ref="biElectionPageService" />
+		<property name="biElectionPageService" ref="biElectionPageService" />						
 		<property name="constituencyPageService" ref="constituencyPageService"/>						
-	</bean>	
+	</bean>
 	<bean id="userRegistrationInLandingAction" class="com.itgrids.partyanalyst.web.action.LandingAction" singleton="false">
 		<property name="loginService" ref="loginService" />								
+	</bean>
+	<bean id="boothResultsForAllElectionsPopupAction" class="com.itgrids.partyanalyst.web.action.BoothResultsForAllElectionsPopupAction" singleton="false">
+		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />						
 	</bean>	
 </beans>		
