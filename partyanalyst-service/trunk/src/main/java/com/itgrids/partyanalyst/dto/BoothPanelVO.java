@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
 
-public class BoothPanelVO {
+public class BoothPanelVO extends ResultStatus {
 
 	private String partNo;
 	private String Location;
