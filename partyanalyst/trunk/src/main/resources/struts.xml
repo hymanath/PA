@@ -1080,8 +1080,7 @@
               <result type="json" name="success">
            		<param name="root">biElectionResultsMainVO</param>
         	</result>       		
-        </action>
-        
+        </action>        
         <action name="mandalVotingTrendzForBiElectionAction" class="mandalVotingTrendzForBiElectionAction">
 			 <result name="success">/jsp/partyTrendzForBiElectionConstituencies.jsp</result>			
 		</action>
@@ -1092,6 +1091,9 @@
 			 	 <result type="json" name="success">
            		<param name="root">votesMarginResultsMainVO</param>
         	</result>		
+		</action>
+		<action name="boothResultsForAllElectionsPopupAction" class="boothResultsForAllElectionsPopupAction">
+			 <result name="success">/jsp/boothResultsForAllElectionsPopup.jsp</result>			
 		</action>		
 		<action name="userRegistrationInLandingAction" class="userRegistrationInLandingAction" method="checkUserLogin">
 			 	 <result type="json" name="success">
