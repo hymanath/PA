@@ -5,6 +5,7 @@
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 <TITLE>Mandalwise Booth Results in ${constituencyName} For ${partyName} Party</TITLE>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -515,10 +516,19 @@ function callAjax(rparam,jsObj,url)
 	      </table></center>
 	   </div>
 	
-		<c:forEach var="mandalsList" varStatus="status0" items="${votesMarginResultsMainVO.partyVotesMarginResultsInMandal}">
+		<c:forEach var="mandalsList" varStatus="status0" items="${votesMarginResultsMainVO.partyVotesMarginResultsInMandal}">		     
 				<FIELDSET>
 				<LEGEND><B>Mandal:</B> ${mandalsList.mandalName}</LEGEND>
-				<TABLE cellspacing="5" border="1" width="100%">
+			 <c:if test="${(errorFlag) != 1}">
+			        		<center>
+			        		<table>
+			        		<tr>
+			        		  <td><img src="charts/${mandalsList.chartName}" border="0" /></td>
+			        		</tr>
+			        		</table>
+			        		</center>
+			 </c:if>     		   
+			   	<TABLE cellspacing="5" border="1" width="100%">
 					<TR>
 						<c:forEach var="electionsList" varStatus="status1"  items="${mandalsList.partyVotesMarginResultsVO}">
 							<TD>								
