@@ -18,6 +18,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.service.ILoginService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.conversion.annotations.TypeConversion;
@@ -34,8 +36,30 @@ public class LandingAction extends ActionSupport implements ServletRequestAware,
 	private ServletContext context;
 	JSONObject jObj;
 	private String loginStatus;
-
+	private ILoginService loginService;
+	private RegistrationVO registrationVO;
+	private HttpSession session;	
+	private String name = null;
+	private String src = null;
 	
+	public RegistrationVO getRegistrationVO() {
+		return registrationVO;
+	}
+
+
+	public void setRegistrationVO(RegistrationVO registrationVO) {
+		this.registrationVO = registrationVO;
+	}
+
+
+	public ILoginService getLoginService() {
+		return loginService;
+	}
+
+
+	public void setLoginService(ILoginService loginService) {
+		this.loginService = loginService;
+	}
 
 
 	public String getLoginStatus() {
@@ -70,6 +94,7 @@ public class LandingAction extends ActionSupport implements ServletRequestAware,
 	{
 		String param=null;		
 		param=request.getParameter("task");		
+		session = request.getSession();
 		
 		try {
 			jObj=new JSONObject(param);			
@@ -80,7 +105,20 @@ public class LandingAction extends ActionSupport implements ServletRequestAware,
 		String userName = jObj.getString("userName");
 		String password = jObj.getString("password");
 		
-		loginStatus = "true";
+		registrationVO = loginService.checkForValidUser(userName, password);
+		
+		name = registrationVO.getFirstName();
+		
+		if (registrationVO.getRegistrationID()==null)
+		{
+			session.setAttribute("loginStatus", "in");
+			loginStatus = "false";		}
+		else
+		{
+			session.setAttribute("USER",registrationVO);
+			session.setAttribute("UserName", name);
+			loginStatus = "true";
+		}
 		
 		return Action.SUCCESS;
 	}

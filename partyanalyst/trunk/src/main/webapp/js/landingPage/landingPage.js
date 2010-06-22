@@ -33,7 +33,7 @@ function submitResult(result)
 		return;
 
 	if(result == "false")
-		errSpanElmt = "The UserName and Password are Incorrect.Please try again ...";
+		errSpanElmt.innerHTML = "The UserName and Password are Incorrect.Please try again ...";
 	else if(result == "true")
 	{
 		errSpanElmt.innerHTML = '';
@@ -46,7 +46,7 @@ function buildLoginPopup()
 
 	var str = '';
 	str	+= '<div id="loginBoxMain">';
-	str	+= '<div id="loginBoxDesc">Please Login To Analyse ...</div>';
+	str	+= '<div id="loginBoxDesc">Please Login To Know - Analyse - Act...</div>';
 	str	+= '<div id="id="loginBoxFieldsMain">';
 	str	+= '<form name="loginForm" action="index.action" method="post">';
 	str	+= '<table id="loginDetailsTable" width="100%">';
@@ -64,6 +64,21 @@ function buildLoginPopup()
 	str	+= '<tr>';
 	str	+= '<td colspan="2" align="right" style="padding: 20px 10px;"><span class="loginButtonSpan" onclick="checkUserLogin()">Login</span>';
 	str	+= '<span class="labelSpan" onclick="closeLoginPopup()">Cancel<span/></td>';
+	str	+= '</tr>';
+	str	+= '<tr>';
+	str	+= '<td colspan="2"  style="padding: 20px 10px;">';
+	str	+= '<table id="accessPrivilegeTable" width="100%">';
+	str	+= '<tr>';
+	str	+= '<td colspan="3">For access privileges contact us @  </td>';
+	str	+= '</tr>';
+	str	+= '<tr>';
+	str	+= '<th align="left">Phone </th><td>: </td><td> +91-40-40124153</td>';
+	str	+= '</tr>';
+	str	+= '<tr>';
+	str	+= '<th align="left">Mail </th><td>: </td><td> license@itgrids.com</td>';
+	str	+= '</tr>';
+	str	+= '</table>';	
+	str	+= '</td>';
 	str	+= '</tr>';
 	str	+= '</table>';
 	str	+= '</form>';
@@ -106,7 +121,7 @@ function checkUserLogin()
 		return;
 	}
 	else
-	{
+	{		
 		errSpanElmt.innerHTML = '';
 		var jsObj=
 		{

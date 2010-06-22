@@ -262,3 +262,16 @@ input.input_text
 	color:red;
 	font-size:11px;
 }
+
+#accessPrivilegeTable th
+{
+	color:#646F79;
+	font-size:11px;
+	padding:0px;
+}
+
+#accessPrivilegeTable td
+{
+	color:#646F79;
+	font-size:11px;
+}
