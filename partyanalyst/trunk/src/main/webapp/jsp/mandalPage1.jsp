@@ -61,7 +61,7 @@
 <!-- Source file for TabView -->
 
 <script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-<script type="text/javascript" src="js/BoothPage/boothPage.js"></script>	
+	
 
 	
 <style type="text/css">
@@ -315,12 +315,6 @@ width:100%;
    font-weight:bold;
    text-decoration:none;
 }
-#boothPagePanel .bd
-{
-	height:450px;
-	overflow:auto;
-}
-
 </style>
 
 
@@ -599,10 +593,6 @@ function getMoreResults(elecYear,elecType,constiId)
 								{								
 									showRevenueVillagesInfo(resultVO);				
 								}			
-								else if(jsObj.task == "boothPage")
-								{								
-									showBoothPagePanel(resultVO);			
-								}
 								else if(jsObj.task == "getRevenueVillagesElectionInfo")
 								{								
 									showRevenueVillageElectionInfo(resultVO,jsObj);			
@@ -1125,15 +1115,9 @@ function getMoreResults(elecYear,elecType,constiId)
 		
 	}
 	function getBoothPageInfo(id){
-		var jsObj=
-			{
-					boothId:id,
-					task:"boothPage"						
-			};
-		
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/boothPageAjaxAction.action?"+rparam;						
-			callAjax(rparam,jsObj,url);
+		var urlStr = "<%=request.getContextPath()%>/boothResultsForAllElectionsPopupAction.action?boothId="+id;
+		var browser1 = window.open(urlStr,"boothResultsForAllElections","scrollbars=yes,height=600,width=900,left=200,top=200");
+		browser1.focus();	
 	}	
 
 	
@@ -1224,7 +1208,7 @@ function getMoreResults(elecYear,elecType,constiId)
 	</div>
 	
 	<div id="mandalPageTab" class="yui-skin-sam"></div>
-	<div class="yui-skin-sam"><div id="boothPagePanel" ></div></div>
+	
 	<div class="yui-skin-sam"><div id="townshipPartyResultsPanel" ></div></div>	
 </div>
 

@@ -47,7 +47,6 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
 	
-	<script type="text/javascript" src="js/BoothPage/boothPage.js"></script>
 	<link rel="stylesheet" type="text/css" href="styles/mandalPage/mandalPage.css">
 
 <style type="text/css">
@@ -235,35 +234,9 @@
 	}
 
 	function getBoothPageInfo(id){
-		var jsObj=
-			{
-					boothId:id,
-					task:"boothPage"						
-			};
-		
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/boothPageAjaxAction.action?"+rparam;						
-			callAjax1(rparam,jsObj,url);
-	}
-	
-	function callAjax1(rparam, jsObj, url){
-		var resultVO;			
-		var callback = {			
-	               success : function( o ) {
-						try {								
-								resultVO = YAHOO.lang.JSON.parse(o.responseText);										
-								showBoothPagePanel(resultVO);								
-						}catch (e)  {   
-						   	alert("Invalid JSON result" + e);   
-						}  
-	               },
-	               scope : this,
-	               failure : function( o ) {
-	                			alert( "Failed to load result" + o.status + " " + o.statusText);
-	                         }
-	               };
-
-		YAHOO.util.Connect.asyncRequest('GET', url, callback);			
+		var urlStr = "<%=request.getContextPath()%>/boothResultsForAllElectionsPopupAction.action?boothId="+id;
+		var browser1 = window.open(urlStr,"boothResultsForAllElections","scrollbars=yes,height=600,width=900,left=200,top=200");
+		browser1.focus();	
 	}
 	
 	function callAjax(jObj,param)
@@ -775,7 +748,7 @@
 				
 			</table>
 		</div>
-		<div class="yui-skin-sam"><div id="boothPagePanel"></div></div>
+		
 		
 		<div id="crossVotingResultDiv" style="display:none;"></div>
         
