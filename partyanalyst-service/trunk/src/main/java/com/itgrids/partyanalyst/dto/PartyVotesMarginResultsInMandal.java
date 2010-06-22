@@ -19,9 +19,17 @@ public class PartyVotesMarginResultsInMandal implements Serializable {
 
 	private Long mandalId;
 	private String mandalName;
-	
+	private String chartName;
 	private List<PartyVotesMarginResultsVO> partyVotesMarginResultsVO;
 	private ResultStatus resultStatus;
+
+	public String getChartName() {
+		return chartName;
+	}
+
+	public void setChartName(String chartName) {
+		this.chartName = chartName;
+	}
 
 	public Long getMandalId() {
 		return mandalId;
