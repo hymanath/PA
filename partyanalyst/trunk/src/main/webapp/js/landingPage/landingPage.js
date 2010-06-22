@@ -33,7 +33,7 @@ function submitResult(result)
 		return;
 
 	if(result == "false")
-		errSpanElmt.innerHTML = "The UserName and Password are Incorrect.Please try again ...";
+		errSpanElmt.innerHTML = "The Username or Password you entered is incorrect.Please try again ...";
 	else if(result == "true")
 	{
 		errSpanElmt.innerHTML = '';
@@ -54,7 +54,7 @@ function buildLoginPopup()
 	str	+= '<td colspan="2"><span id="errorMsgDiv"></span></td>';
 	str	+= '</tr>';
 	str	+= '<tr>';
-	str	+= '<th align="left">* User Name</th>';
+	str	+= '<th align="left">* Username</th>';
 	str	+= '<td><input id="userName" class="input_text" name="userName" type="text"/></td>';
 	str	+= '</tr>';
 	str	+= '<tr>';
@@ -66,7 +66,7 @@ function buildLoginPopup()
 	str	+= '<span class="labelSpan" onclick="closeLoginPopup()">Cancel<span/></td>';
 	str	+= '</tr>';
 	str	+= '<tr>';
-	str	+= '<td colspan="2"  style="padding: 20px 10px;">';
+	str	+= '<td colspan="2"  style="padding-left: 20px">';
 	str	+= '<table id="accessPrivilegeTable" width="100%">';
 	str	+= '<tr>';
 	str	+= '<td colspan="3">For access privileges contact us @  </td>';

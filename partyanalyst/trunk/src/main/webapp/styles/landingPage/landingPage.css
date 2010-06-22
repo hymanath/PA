@@ -147,7 +147,9 @@ body
 
 .newsDataFooter
 {
+	color:#4B74C6;
 	float:right;
+	font-weight:bold;
 }
 
 #other_news_list
