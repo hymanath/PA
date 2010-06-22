@@ -968,10 +968,11 @@ public class BiElectionPageService implements IBiElectionPageService {
 			   Map<Long, List<BoothResultVO>> oppPartysMap = new HashMap<Long, List<BoothResultVO>>();
 			   Set<Long> mainPartyConstiIds = mainPartyRes.keySet();
 			   for(Long consti:mainPartyConstiIds){
-			   List rankOfPartyCandidate = nominationDAO.getCandidateRankInAConstituencyElection(consti, electionYear, electionTyp, partyId);
-			   if(rankOfPartyCandidate != null && rankOfPartyCandidate.size() > 0){
-				 Object rankParam = (Object)rankOfPartyCandidate.get(0);
-				 Long rank = (Long)rankParam;
+			   //List rankOfPartyCandidate = nominationDAO.getCandidateRankInAConstituencyElection(consti, electionYear, electionTyp, partyId);
+			   Long rank = getCandidateRankInAParticipatedElection(consti,electionYear,electionTyp,partyId);
+				 if(rank != null && !rank.equals(new Long(0))){
+				 //Object rankParam = (Object)rankOfPartyCandidate.get(0);
+				
 				 Long oppCandRank = new Long(0);
 				 if(rank.equals(new Long(1)))
 					 oppCandRank = new Long(2);
@@ -986,8 +987,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 						 oppPartysMap.put(consti, oppPartyBooth);
 					 }
 					
-				 }
-			    }
+				  }
+			     }
 			   }
 			     
 			     oppPartyResults.put(electionTyp, oppPartysMap);
@@ -1013,6 +1014,23 @@ public class BiElectionPageService implements IBiElectionPageService {
 			}
 		}
 	 return boothWiseResultsMainMap;
+	}
+	
+	/*
+	 * Method To Get Candidate Rank In An Election
+	 * @Input constituencyId,electionYear,electionType,partyId
+	 * @Output rank of the candidate
+	 */
+	@SuppressWarnings("unchecked")
+	public Long getCandidateRankInAParticipatedElection(Long constiId,String electionYear,String electionType,Long partyId){
+		if(log.isDebugEnabled())
+			log.debug(" Inside getCandidateRankInAParticipatedElection Method ...");
+		Long rank = new Long(0);
+		
+		List rankOfPartyCandidate = nominationDAO.getCandidateRankInAConstituencyElection(constiId, electionYear, electionType, partyId);
+		 Object rankParam = (Object)rankOfPartyCandidate.get(0);
+		 rank = (Long)rankParam;
+	 return rank;
 	}
 	
 	/*
@@ -1137,7 +1155,14 @@ public class BiElectionPageService implements IBiElectionPageService {
 										  //party results high level overview
 										  List mandalLevelResult = candidateBoothResultDAO.getPartyResultsInAMandalForAnElection(mandalId, consti, partyId, elecYear);
 										  if(mandalLevelResult != null && mandalLevelResult.size() > 0){
-											  partyVotesInConsti.setPartyResultsOverview(getPartyMandalLevelResults(mandalLevelResult));
+											  Long candRank = getCandidateRankInAParticipatedElection(consti,elecYear,elecTyp,partyId);
+											  Long oppCandRank = new Long(0);
+											  if(candRank.equals(new Long(1)))
+												  oppCandRank = new Long(2);
+											  else if(candRank > new Long(1))
+												  oppCandRank = new Long(1);
+											  List oppPartyMDResults = candidateBoothResultDAO.getPartyResultsInAMandalForAnElection(mandalId, consti, elecYear, oppCandRank);
+											  partyVotesInConsti.setPartyResultsOverview(getPartyMandalLevelResults(mandalLevelResult,oppPartyMDResults));
 										  }
 										  partyVotesMarginInConsti.add(partyVotesInConsti);
 									  }
@@ -1175,7 +1200,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public MandalLevelResultsForParty getPartyMandalLevelResults(List resultsList){
+	public MandalLevelResultsForParty getPartyMandalLevelResults(List resultsList,List oppCandResults){
 		
 		if(log.isDebugEnabled())
 			log.debug(" Inside getPartyMandalLevelResults Method ...");
@@ -1198,6 +1223,23 @@ public class BiElectionPageService implements IBiElectionPageService {
 				
 				Double votesPercent = new BigDecimal(votesEarn.doubleValue()/validVotes.doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				mandalLevelResults.setVotesPercent(votesPercent.toString());
+			}
+			
+			if(oppCandResults != null && oppCandResults.size() > 0){
+				Iterator oppCandResultsIter = oppCandResults.listIterator();
+				while(oppCandResultsIter.hasNext()){
+					Object[] params = (Object[])oppCandResultsIter.next();
+					
+					Long oppVotesEarn = (Long)params[0];
+					Long oppValidVotes = (Long)params[1];
+					
+					Double oppVotesPercent = new BigDecimal(oppVotesEarn.doubleValue()/oppValidVotes.doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					
+					mandalLevelResults.setOppParty((String)params[2]);
+					mandalLevelResults.setOppVotesEarned(oppVotesEarn);
+					mandalLevelResults.setOppValidVotes(oppValidVotes);
+					mandalLevelResults.setOppVotesPercent(oppVotesPercent.toString());
+				}
 			}
 		}
 		
