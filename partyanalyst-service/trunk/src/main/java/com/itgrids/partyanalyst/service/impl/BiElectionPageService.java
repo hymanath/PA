@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.ElectionBasicCommentsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionResultsVO;
 import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
+import com.itgrids.partyanalyst.dto.MandalLevelResultsForParty;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInVotesMarginVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
@@ -1087,6 +1088,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#getBoothWisePartyResultsForAMandal(java.lang.Long, java.lang.Long, java.lang.Long)
 	 */
+	@SuppressWarnings("unchecked")
 	public PartyVotesMarginResultsInMandal getBoothWisePartyResultsForAMandal(Long constituencyId,Long mandalId,Long partyId){
 		
 		if(log.isDebugEnabled())
@@ -1132,6 +1134,11 @@ public class BiElectionPageService implements IBiElectionPageService {
 										  partyVotesInConsti.setBoothResults(boothResults);
 										  partyVotesInConsti.setPartyResultsInVotesMarginVO(getMarginResultsInAMandal(boothResults,IConstants.VOTES_PERCENT));
 										  
+										  //party results high level overview
+										  List mandalLevelResult = candidateBoothResultDAO.getPartyResultsInAMandalForAnElection(mandalId, consti, partyId, elecYear);
+										  if(mandalLevelResult != null && mandalLevelResult.size() > 0){
+											  partyVotesInConsti.setPartyResultsOverview(getPartyMandalLevelResults(mandalLevelResult));
+										  }
 										  partyVotesMarginInConsti.add(partyVotesInConsti);
 									  }
 									  
@@ -1165,6 +1172,36 @@ public class BiElectionPageService implements IBiElectionPageService {
 			partyResultsInMandal.setResultStatus(resultStatus);
 		}
 	 return partyResultsInMandal;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public MandalLevelResultsForParty getPartyMandalLevelResults(List resultsList){
+		
+		if(log.isDebugEnabled())
+			log.debug(" Inside getPartyMandalLevelResults Method ...");
+		MandalLevelResultsForParty mandalLevelResults = null;
+		if(resultsList != null){
+			
+			mandalLevelResults = new MandalLevelResultsForParty();
+			Iterator listIterator = resultsList.listIterator();
+			while(listIterator.hasNext()){
+				Object[] params = (Object[])listIterator.next();
+				
+				Long votesEarn = (Long)params[0];
+				Long validVotes = (Long)params[1];
+				
+				mandalLevelResults.setTotalVoters((Long)params[2]);
+				mandalLevelResults.setPolledVotes(validVotes);
+				mandalLevelResults.setVotesEarned(votesEarn);
+				mandalLevelResults.setTotalBooths((Long)params[3]);
+				
+				
+				Double votesPercent = new BigDecimal(votesEarn.doubleValue()/validVotes.doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				mandalLevelResults.setVotesPercent(votesPercent.toString());
+			}
+		}
+		
+	 return mandalLevelResults;	
 	}
 	
 	/*
