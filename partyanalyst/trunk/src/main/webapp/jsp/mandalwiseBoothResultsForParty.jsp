@@ -534,6 +534,21 @@ function callAjax(rparam,jsObj,url)
 											<TD>
 												<DIV style="padding:10px;">
 												<DIV style="text-align:center;margin:10px;color:#707070;font-size:13px;">Constituency:${constitueciesList.constituencyName}</DIV>
+                                                <TABLE class="votesMarginTable" cellpadding="0" cellspacing="0" width="100%">
+															<TR>
+																<TD>Total Voters </TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.totalVoters}</td>
+																<TD>Total booths </TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.totalBooths}</td>
+															</TR>
+															<TR>
+															    <TD>Total Polled </TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.polledVotes}</td>
+																<TD>Total Earned </TD><td style="color:#DF7401;">${constitueciesList.partyResultsOverview.votesEarned}</td>
+															</TR>
+															<TR ><TD></TD>
+															     <TD></TD>
+															     <TD>Total Votes % </TD>
+																 <TD style="color:#DF7401;">${constitueciesList.partyResultsOverview.votesPercent}</TD>
+															</TR>
+												</TABLE>
 													<c:if test="${! empty constitueciesList.partyResultsInVotesMarginVO}">											
 														<TABLE class="votesMarginTable" cellpadding="0" cellspacing="0" width="100%">
 															<TR>
