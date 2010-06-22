@@ -360,4 +360,6 @@
 		<property name="biElectionPageService" ref="biElectionPageService" />
 		<property name="constituencyPageService" ref="constituencyPageService"/>						
 	</bean>	
+	<bean id="userRegistrationInLandingAction" class="com.itgrids.partyanalyst.web.action.LandingAction" singleton="false">								
+	</bean>	
 </beans>		

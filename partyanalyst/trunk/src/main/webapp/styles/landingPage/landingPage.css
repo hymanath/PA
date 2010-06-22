@@ -186,3 +186,79 @@ body
 	height:15px;
 	padding:10px;
 }
+
+#loginPopupDivMain .yui-panel .bd 
+{
+	background-color:#FFFFFF;
+	padding:0px;
+	border:none;
+	-moz-border-radius:12px 12px 12px 12px;
+}
+
+#loginPopupDivMain .yui-panel
+{
+	border:none;
+}
+
+#loginPopupDivMain .yui-panel-container.shadow .underlay
+{
+	display:none;
+}
+
+#loginBoxMain
+{
+	padding:10px;
+	border:5px solid #ADADAD;
+	-moz-border-radius:12px 12px 12px 12px;
+}
+
+#loginBoxDesc
+{
+	color:#0E3766;
+	font-weight:bold;
+	padding:5px;
+}
+
+.loginButtonSpan
+{
+	background-image:url("../../images/icons/constituencyManagement/btn_cm.png");
+	color:#FFFFFF;
+	font-weight:bold;
+	padding:8px 25px;
+	margin-right:15px;
+	cursor:pointer;
+}
+
+input.input_text
+{
+	-moz-border-radius:5px 5px 5px 5px;
+	border:1px solid #88939B;
+	font-size:12px;
+	padding:4px;
+	width:160px;
+}
+
+#loginDetailsTable th
+{
+	color:#646F79;
+	font-size:12px;
+	padding:15px;
+}
+
+.labelSpan
+{
+	color:#2B779C;
+	margin:0 10px;
+	cursor:pointer;
+}
+
+.labelSpan:hover
+{
+	text-decoration:underline;
+}
+
+#errorMsgDiv
+{
+	color:red;
+	font-size:11px;
+}

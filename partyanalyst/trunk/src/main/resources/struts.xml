@@ -1093,6 +1093,11 @@
            		<param name="root">votesMarginResultsMainVO</param>
         	</result>		
 		</action>		
+		<action name="userRegistrationInLandingAction" class="userRegistrationInLandingAction" method="checkUserLogin">
+			 	 <result type="json" name="success">
+           		<param name="root">loginStatus</param>
+        	</result>		
+		</action>	
 	</package>
 </struts>
 
