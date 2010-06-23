@@ -115,6 +115,7 @@ public class LandingAction extends ActionSupport implements ServletRequestAware,
 			loginStatus = "false";		}
 		else
 		{
+			session.setAttribute("loginStatus", "out");
 			session.setAttribute("USER",registrationVO);
 			session.setAttribute("UserName", name);
 			loginStatus = "true";
