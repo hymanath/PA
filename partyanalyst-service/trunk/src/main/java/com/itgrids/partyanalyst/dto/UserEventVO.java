@@ -18,6 +18,8 @@ public class UserEventVO extends ResultStatus implements Comparable<UserEventVO>
 	private List <SelectOptionVO> organizers;
 	private List<EventActionPlanVO> actionPlans;
 	private String isDeleted;
+	private String location;
+	private String eventDisplayTitle;
 	
 	public String getTitle() {
 		return title;
@@ -89,4 +91,19 @@ public class UserEventVO extends ResultStatus implements Comparable<UserEventVO>
 		int result = obj.getStartDate().compareTo(this.getStartDate());
 		return result;
 	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public String getEventDisplayTitle() {
+		return eventDisplayTitle;
+	}
+	public void setEventDisplayTitle(String eventDisplayTitle) {
+		this.eventDisplayTitle = eventDisplayTitle;
+	}
+	
+	
+	
 }
