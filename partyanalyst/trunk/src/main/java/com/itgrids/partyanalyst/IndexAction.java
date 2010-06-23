@@ -172,14 +172,14 @@ public class IndexAction extends ActionSupport implements ServletRequestAware {
         cadreManagementVO = userCadreManagementService.getUserTodaysData(user);
         eventCount = cadreManagementVO.getUserEvents().size();
         impDateCount = cadreManagementVO.getUserImpDates().size();
-        System.out.println("Title: " + cadreManagementVO.getUserEvents().get(0).getEventDisplayTitle());
-        System.out.println("ImpDate: " + cadreManagementVO.getUserImpDates().get(0).getTitle());
+        /*System.out.println("Title: " + cadreManagementVO.getUserEvents().get(0).getEventDisplayTitle());
+        System.out.println("ImpDate: " + cadreManagementVO.getUserImpDates().get(0).getTitle());*/
         userGroups = userGroupService.getAllMyGroupsCreatedByUser(user.getRegistrationID()).size();
         systemGroups = userGroupService.subGrpsCountInSystemGrpsForUser(user.getRegistrationID()).size();
-        System.out.println("EventCount: "  + eventCount + "User groups:" + userGroups + "System Groups:" + systemGroups);
+        /*System.out.println("EventCount: "  + eventCount + "User groups:" + userGroups + "System Groups:" + systemGroups);
         for(Entry<String, Long> s: cadreManagementVO.getCadresByCadreLevel().entrySet()) {
         	System.out.println(s.getKey() + " :" + s.getValue());
-        }
+        }*/
 		if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
 			log.error(cadreManagementVO.getExceptionEncountered().getMessage());
         
