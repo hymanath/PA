@@ -370,5 +370,8 @@
 	</bean>
 	<bean id="boothResultsForAllElectionsPopupAction" class="com.itgrids.partyanalyst.web.action.BoothResultsForAllElectionsPopupAction" singleton="false">
 		<property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService" />						
+	</bean>
+	<bean id="allBoothsResultsInTehsilAction" class="com.itgrids.partyanalyst.web.action.AllBoothsResultsInTehsilAction" singleton="false">
+		<property name="biElectionPageService" ref="biElectionPageService" />						
 	</bean>	
 </beans>		

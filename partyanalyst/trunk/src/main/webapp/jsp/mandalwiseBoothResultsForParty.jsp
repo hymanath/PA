@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -159,141 +160,10 @@ function getDetails()
 	
 }
 
-function showAllBoothResults(index1,index2,index3)
+function showAllBoothResults(tehsilId,partyId,constituencyId,electionType,electionYear)
 {
-	if(!boothResultsGlobal)
-		return;
-
-	var arr = boothResultsGlobal.partyVotesMarginResultsInMandal[index1].partyVotesMarginResultsVO[index2].partyVotesMarginInConstituency[index3].boothResults
-	
-	if(arr.length == 0)
-		return;
-
-	var resultsStr = '';
-	resultsStr += '<HTML>';
-	resultsStr += '<HEAD><TITLE>All Booth Results </TITLE>';
-	resultsStr += '<style>';
-	resultsStr += '#boothResultsPopupTable {border-collapse:collapse;}';
-	resultsStr += '#boothResultsPopupTable td{	padding:4px;font-size:12px;color:#555E6B;}';
-	resultsStr += '#boothResultsPopupTable th{	padding:5px;font-size:13px;background-color:#2760A9;color:#FFFFFF;}';
-	resultsStr += '</style>';
-	resultsStr += '</HEAD>';
-	resultsStr += '<body>';
-	resultsStr += '<div id="allPartiesBoothResults">';
-	resultsStr += '<table id="boothResultsPopupTable" border="1" width="100%">';
-	resultsStr += '<tr>';
-	resultsStr += '<th>Booth No</th>';
-	resultsStr += '<th>Location</th>';
-	resultsStr += '<th>Villages Covered</th>';
-	resultsStr += '<th>Mandal</th>';
-	resultsStr += '<th>Votes Earned</th>';
-	resultsStr += '<th>Votes %</th>';
-	resultsStr += '<th>Opp Party</th>';
-	resultsStr += '<th>Opp Party VE</th>';
-	resultsStr += '<th>Opp Party %</th>';
-	resultsStr += '</tr>';
-	
-	for(var i in arr)
-	{
-		resultsStr += '<tr>';
-		resultsStr += '<td align="center">'+arr[i].partNo+'</td>';
-		resultsStr += '<td>'+arr[i].location+'</td>';
-		resultsStr += '<td>'+arr[i].villagesCovered+'</td>';
-		resultsStr += '<td align="center">'+arr[i].mandal+'</td>';
-		resultsStr += '<td align="center">'+arr[i].votesEarned+'</td>';
-		resultsStr += '<td align="center">'+arr[i].percentage+'</td>';
-		resultsStr += '<td align="center">'+arr[i].oppParty+'</td>';
-		resultsStr += '<td align="center">'+arr[i].oppPartyVotesEarned+'</td>';
-		resultsStr += '<td align="center">'+arr[i].oppPartyPercentage+'</td>';
-		resultsStr += '</tr>';
-	}
-
-	resultsStr += '</table>';
-	resultsStr += '</div>';
-	resultsStr += '</BODY></HTML>';
-
-	var allPartiesBoothResults = window.open("","allPartiesBoothResults","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
-	allPartiesBoothResults.focus();
-	allPartiesBoothResults.document.open("text/html", "replace");
-	allPartiesBoothResults.document.write(resultsStr);			
-	allPartiesBoothResults.document.close();
-	
-	/*var elmt = allPartiesBoothResults.document.getElementById("boothResultsTable");
-	var divElmt = allPartiesBoothResults.document.getElementById("allPartiesBoothResults");
-
-	var resultsDataSource = new YAHOO.util.DataSource(arr);
-	console.log(resultsDataSource);
-	   	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-	   	resultsDataSource.responseSchema = {
-	   		fields : [ {
-	   			key : "partNo",parser:"number"
-	   		}, {
-	   			key : "location"
-	   		}, {
-	   			key : "villagesCovered"
-	   		}, {
-	   			key : "mandal"
-	   		}, {
-	   			key : "votesEarned",parser:"number"
-	   		}, {
-	   			key : "percentage",parser:"number"
-	   		}, {
-	   			key : "oppParty"
-	   		}, {
-	   			key : "oppPartyVotesEarned"
-	   		}, {
-	   			key : "oppPartyPercentage"
-	   		}]
-	   	};
-   	
-		var resultsColumnDefs = [ {
-			key : "partNo",
-			parser:"number",
-			label : "Booth No",
-			sortable : true
-		}, {
-			key : "location",
-			label : "Location",
-			sortable : true
-		}, {
-			key : "villagesCovered",
-			label : "Villages Covered",
-			sortable : true
-		}, {
-			key : "mandal",
-			label : "Mandal",
-			sortable : true
-		}, {
-			key : "votesEarned",
-			label : "Votes Earned",
-			sortable : true
-		}, {
-			key : "percentage",
-			label : "Votes %",
-			sortable : true
-		}, {
-			key : "oppParty",
-			label : "Opp Party",
-			sortable : true
-		}, {
-			key : "oppPartyVotesEarned",
-			label : "Opp Party VE ",
-			sortable : true
-			
-		}, {
-			key : "oppPartyPercentage",
-			label : "Opp Party %",
-			sortable : true			
-		} ];
-
-		var myConfigs = {
-	    paginator : new YAHOO.widget.Paginator({
-	        rowsPerPage: 20
-	    })
-	};
-
-
-	var myDataTable = new YAHOO.widget.DataTable(divElmt.id,resultsColumnDefs, resultsDataSource,myConfigs);  */
+	 var browser2 = window.open("<s:url action="allBoothsResultsInTehsilAction.action"/>?tehsilId="+tehsilId+"&electionType="+electionType+"&electionYear="+electionYear+"&constituencyId="+constituencyId+"&partyId="+partyId,"AllBoothsResults","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	 browser2.focus();	
 }
 
 function getBoothPageInfo(id){
@@ -556,7 +426,7 @@ function callAjax(rparam,jsObj,url)
 															</TR>
 															</c:forEach>
 														</TABLE>
-														<A href="javascript:{}" class="anchorColor" style="font-size:12px;" onclick="showAllBoothResults(${status0.index},${status1.index},${status2.index})">View All Booths Results</A>
+														<A href="javascript:{}" class="anchorColor" style="font-size:12px;" onclick="showAllBoothResults('${mandalsList.mandalId}', '${partyId}','${constitueciesList.constituencyId}','${electionsList.elecionType}','${electionsList.electionYear}')">View All Booths Results</A>
 													</c:if>	
 												</DIV>
 											</TD>

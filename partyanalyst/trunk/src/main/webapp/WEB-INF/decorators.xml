@@ -35,6 +35,7 @@
 		<pattern>/mandalwiseBoothResultsForPartyAction.action*</pattern>
 		<pattern>/revenueVillagePartyAllElecAction.action*</pattern>
 		<pattern>/boothResultsForAllElectionsPopupAction.action*</pattern>
+		<pattern>/allBoothsResultsInTehsilAction.action*</pattern>
 		
     </excludes>
 

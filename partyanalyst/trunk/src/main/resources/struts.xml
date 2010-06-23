@@ -1106,6 +1106,9 @@
 			 	 <result type="json" name="success">
            		<param name="root">loginStatus</param>
         	</result>		
+		</action>
+		<action name="allBoothsResultsInTehsilAction" class="allBoothsResultsInTehsilAction">
+			 <result name="success">/jsp/allBoothsResultsInMandalPopup.jsp</result>			
 		</action>	
 	</package>
 </struts>
