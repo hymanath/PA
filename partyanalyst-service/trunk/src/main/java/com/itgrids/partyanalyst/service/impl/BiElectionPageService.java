@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dto.AllBoothsResultsForAPartyInAMandal;
 import com.itgrids.partyanalyst.dto.AllPartyElectionResultsForElectionTypeVO;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
@@ -1423,6 +1424,78 @@ public class BiElectionPageService implements IBiElectionPageService {
 			votesMarginResultsMainVO.setResultStatus(resultStatus);
 		}
 	 return votesMarginResultsMainVO;
+	}
+
+	@SuppressWarnings("unchecked")
+	public AllBoothsResultsForAPartyInAMandal getAllBoothsResultsInAConstituency(
+			Long tehsilId, Long partyId, Long constituencyId,
+			String electionYear, String electionType) {
+		log.debug("Entered in to getAllBoothsResultsInAConstituency method in BiElection Service");
+		AllBoothsResultsForAPartyInAMandal allBoothsResultsForAPartyInAMandal = new AllBoothsResultsForAPartyInAMandal();
+		List<BoothResultVO> allBoothsResults= new ArrayList<BoothResultVO>();
+		try{
+			List boothsResultsList = candidateBoothResultDAO.getBoothWisePartyResultsInAMandalByConstituencyId(tehsilId, partyId, constituencyId, electionYear, electionType);
+			log.debug("allBoothsResults size in  getAllBoothsResultsInAConstituency method in BiElection Service" + boothsResultsList.size());
+			Long candRank = getCandidateRankInAParticipatedElection(constituencyId,electionYear,electionType,partyId);
+			Long oppCandRank = new Long(0);
+			
+			if(candRank.equals(new Long(1)))
+				  oppCandRank = new Long(2);
+			  else if(candRank > new Long(1))
+				  oppCandRank = new Long(1);
+			List oppPartyResults = candidateBoothResultDAO.getBoothWisePartyResultsInAMandalByPartyRank(tehsilId, constituencyId, electionYear, electionType, oppCandRank);
+			log.debug("oppPartyResults size in  getAllBoothsResultsInAConstituency method in BiElection Service" + oppPartyResults.size());
+			if(boothsResultsList.size() != oppPartyResults.size())
+			{
+				throw new Exception("Partial booth results");
+			} else{ 
+				
+					for(int i =0; i< boothsResultsList.size();i++)
+						{
+							BoothResultVO boothResultVO = new  BoothResultVO();
+							
+							Object[] boothResultObjArr = (Object[])boothsResultsList.get(i);
+							Object[] oppPartyResultObjArr = (Object[])oppPartyResults.get(i);
+							
+							Long votesEarned = new Long(boothResultObjArr[1].toString());
+							Long validVotes = new Long(boothResultObjArr[2].toString());
+							
+							Long oppPartyVotesEarned = new Long(oppPartyResultObjArr[1].toString());
+							Long oppPartyValidVotes = new Long(oppPartyResultObjArr[2].toString());
+							
+							Booth booth = (Booth)boothResultObjArr[0];
+							Booth booth1 = (Booth)oppPartyResultObjArr[0];
+							
+							if(booth.getBoothId() == booth1.getBoothId())
+							{
+								boothResultVO.setBoothId(booth.getBoothId());
+								boothResultVO.setPartNo(booth.getPartNo());
+								boothResultVO.setLocation(booth.getLocation());
+								boothResultVO.setMandal(booth.getTehsil().getTehsilName());
+								boothResultVO.setVillagesCovered(booth.getvillagesCovered());
+								boothResultVO.setVotesEarned(votesEarned.intValue());
+								boothResultVO.setPercentage(new BigDecimal((votesEarned.doubleValue()*100)/validVotes.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								
+								boothResultVO.setOppParty(oppPartyResultObjArr[6].toString());
+								boothResultVO.setOppPartyId(new Long(oppPartyResultObjArr[5].toString()));
+								boothResultVO.setOppPartyPercentage(new BigDecimal((oppPartyVotesEarned.doubleValue()*100)/oppPartyValidVotes.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								boothResultVO.setOppPartyVotesEarned(oppPartyVotesEarned.intValue());
+								allBoothsResults.add(boothResultVO);
+							}							
+						}
+					log.debug("allBoothsResults size in  getAllBoothsResultsInAConstituency method in BiElection Service" + allBoothsResults.size());
+					allBoothsResultsForAPartyInAMandal.setBoothResults(allBoothsResults);
+			}
+		
+		
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+			allBoothsResultsForAPartyInAMandal.setExceptionEncountered(ex);
+			allBoothsResultsForAPartyInAMandal.setResultCode(ResultCodeMapper.FAILURE);
+			
+		}
+		return allBoothsResultsForAPartyInAMandal;
 	}
 	
 }

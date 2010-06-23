@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -147,6 +148,17 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		}
 		System.out.println(list.size());
 	}*/
+	
+	public void testGetBoothWisePartyResultsInAMandalByConstituencyId()
+	{
+		List list = candidateBoothResultDAO.getBoothWisePartyResultsInAMandalByConstituencyId(141L, 61L, 388L, "2009", IConstants.PARLIAMENT_ELECTION_TYPE);
+		System.out.println(list.size());
+		ListIterator li = list.listIterator();
+		while(li.hasNext()){
+			Object[] params = (Object[])li.next();
+			System.out.println(params[0]+"\t"+params[1]+"\t"+params[2]);
+		}
+	}
 	
 	public void testFindPartyResultsInAllElectionsByRevenueVillagesInMandal(){
 		List list = candidateBoothResultDAO.findPartyResultsInAllElectionsByRevenueVillagesInMandal(373l, 24l);

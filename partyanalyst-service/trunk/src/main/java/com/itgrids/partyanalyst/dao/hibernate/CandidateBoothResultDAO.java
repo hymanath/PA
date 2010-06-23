@@ -561,7 +561,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				 "and model.boothConstituencyElection.constituencyElection.election.electionYear = ? "+
 				 "and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? "+
 				 "and model.nomination.candidateResult.rank = ? "+
-			     "order by model.nomination.constituencyElection.constituency.constituencyId",params);
+			     "order by model.boothConstituencyElection.booth.boothId",params);
 	}
 	
 	public List findPartyResultsInAllElectionsByRevenueVillagesInMandal(Long tehsilId, Long partyId){
@@ -605,4 +605,19 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"model.nomination.candidateResult.rank = ?",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getBoothWisePartyResultsInAMandalByConstituencyId(
+			Long tehsilId, Long partyId, Long constituencyId,
+			String electionYear, String electionType) {
+		Object[] params = {tehsilId,partyId,constituencyId,electionYear,electionType};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth, model.votesEarned, "+
+				 "model.boothConstituencyElection.boothResult.validVotes from CandidateBoothResult model where "+
+				 "model.boothConstituencyElection.booth.tehsil.tehsilId = ? and model.nomination.party.partyId = ? "+
+				 "and model.nomination.constituencyElection.constituency.constituencyId = ? " +
+				 "and model.nomination.constituencyElection.election.electionYear = ? and "+
+				 "model.nomination.constituencyElection.election.electionScope.electionType.electionType = ? "+
+				 "order by model.boothConstituencyElection.booth.boothId", params);
+				 
+	}
+	
 }

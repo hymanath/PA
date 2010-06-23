@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.excel.booth;
 
-public class BoothResultVO {
+import com.itgrids.partyanalyst.dto.ResultStatus;
+
+public class BoothResultVO extends ResultStatus{
 	
 	private Long boothId;
 	private String partNo;

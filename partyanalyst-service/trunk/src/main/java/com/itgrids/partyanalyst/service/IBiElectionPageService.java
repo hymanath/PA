@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.AllBoothsResultsForAPartyInAMandal;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
@@ -37,4 +38,6 @@ public interface IBiElectionPageService {
 	public PartyVotesMarginResultsInMandal getBoothWisePartyResultsForAMandal(Long constituencyId,Long mandalId,Long partyId);
 	
 	public VotesMarginResultsMainVO getVotesMarginResultsCompleteDetails(Long constituencyId,Long partyId);
+	
+	public AllBoothsResultsForAPartyInAMandal getAllBoothsResultsInAConstituency(Long tehsilId, Long partyId, Long constituencyId, String electionYear, String electionType);
 }
