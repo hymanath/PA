@@ -38,7 +38,7 @@ public class UserEvents extends BaseModel {
 	private List<UserEventActionPlan> userEventActionPlans;
 	private String isDeleted;
 	
-	 @Id
+	@Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "user_event_id", unique = true, nullable = false)
 	public Long getUserEventsId() {
