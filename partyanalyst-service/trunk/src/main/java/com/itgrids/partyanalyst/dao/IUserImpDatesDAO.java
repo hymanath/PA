@@ -11,5 +11,5 @@ import com.itgrids.partyanalyst.model.UserImpDate;
 public interface IUserImpDatesDAO extends GenericDao<UserImpDate, Long> {
 
 	public List<UserImpDate> findByUserId(Long userID, Calendar inputDate);
-
+	public List<UserImpDate> findTodayImportantEvents(Long userId);
 }

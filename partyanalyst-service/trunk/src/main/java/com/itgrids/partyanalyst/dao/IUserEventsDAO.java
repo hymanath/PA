@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -18,4 +20,5 @@ import com.itgrids.partyanalyst.model.UserEvents;
 public interface IUserEventsDAO extends GenericDao<UserEvents,Long> {
 
 	public List<UserEvents> findEventsByUserId(Long registrationId);
+	public List<UserEvents> findEventsByUserIdAndStartDate(Long registrationid, Date startDate);
 }

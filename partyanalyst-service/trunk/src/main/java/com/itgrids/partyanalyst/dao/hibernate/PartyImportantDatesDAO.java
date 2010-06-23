@@ -19,5 +19,13 @@ public class PartyImportantDatesDAO  extends GenericDaoHibernate<PartyImportantD
 		return getHibernateTemplate().find("from PartyImportantDates model where model.party.partyId = ?" , partyId);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<PartyImportantDates> findTodaysPartyImportantDates(Long partyId) {
+		return getHibernateTemplate().find("from PartyImportantDates model where model.party.partyId = ? " +
+				"AND EXTRACT(DAY FROM IMPORTANT_DATE) = DAY(NOW()) " +
+				"AND EXTRACT(MONTH FROM IMPORTANT_DATE) = MONTH(NOW())", partyId);
+		
+	}
+
 	
 }

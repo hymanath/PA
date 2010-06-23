@@ -17,5 +17,6 @@ import com.itgrids.partyanalyst.model.PartyImportantDates;
 public interface IPartyImportantDatesDAO extends GenericDao<PartyImportantDates, Long> {
 
 	public List<PartyImportantDates> findByPartyId(Long partyId);
+	public List<PartyImportantDates> findTodaysPartyImportantDates(Long partyId);
 
 }
