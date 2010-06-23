@@ -7,8 +7,6 @@
 <head>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
@@ -17,37 +15,18 @@
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></script> 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/resize/resize-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/layout/layout-min.js"></script>
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/paginator/paginator-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/carousel/carousel-min.js"></script>
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/tabview/tabview-min.js"></script>
-
-
 <script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 
-<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-<script type="text/javascript" src="js/BoothPage/boothPage.js"></script>
+
 <!-- YUI Skin Sam -->
 
-<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
-<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/tabview/assets/skins/sam/tabview.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Revenue Villages Wise Election Results</title>
 
@@ -159,12 +138,6 @@ legend
 	font-weight:normal;
 	padding:5px;
 	font-size:12px;
-}
-
-#boothPagePanel .bd
-{
-	height:450px;
-	overflow:auto;
 }
 </style>
 <script type="text/javascript">
@@ -288,9 +261,6 @@ legend
 										if(jsObj.task == "getRevenueVillagesInfo")
 										{								
 											showRevenueVillagesInfo(resultVO);				
-										} else if(jsObj.task == "boothPage")
-										{								
-											showBoothPagePanel(resultVO);			
 										} else if(jsObj.task == "getRevenueVillagesElectionInfo")
 										{								
 											showRevenueVillageElectionInfo(resultVO,jsObj);			
@@ -329,15 +299,9 @@ legend
 			}
 
 			function getBoothPageInfo(id){
-				var jsObj=
-					{
-							boothId:id,
-							task:"boothPage"						
-					};
-				
-					var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-					var url = "<%=request.getContextPath()%>/boothPageAjaxAction.action?"+rparam;						
-					callAjax(rparam,jsObj,url);
+				var urlStr = "<%=request.getContextPath()%>/boothResultsForAllElectionsPopupAction.action?boothId="+id;
+				var browser1 = window.open(urlStr,"boothResultsForAllElections","scrollbars=yes,height=600,width=900,left=200,top=200");
+				browser1.focus();
 			}
 			function showRevenueVillagesInfo(resultVO){
 				
@@ -491,7 +455,7 @@ legend
 		</div>
 		<HR>
 		<div id="revenueVillagesInfo"></div>
-		<div class="yui-skin-sam"><div id="boothPagePanel" ></div></div>
+		
 		<div class="yui-skin-sam"><div id="townshipPartyResultsPanel" ></div></div>
 
 

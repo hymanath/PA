@@ -40,7 +40,6 @@
 }
 #boothInfoTable td {
 	background-color:#F2F6F9;
-	font-weight:bold;
 	padding:5px;
 }
 fieldset {
