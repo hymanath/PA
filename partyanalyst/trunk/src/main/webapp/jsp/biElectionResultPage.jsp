@@ -207,8 +207,11 @@
 			</tr>
 		</table>
 	    </div>
+		<div style="margin-top:20px;margin-bottom:10px;width:914px;padding:5px;font-size:14px;color:#DF7401;border:1px solid #DBDCDB;background-color:#EAEAE9">
+            <MARQUEE width=100% behaviour=SCROLL scrollAmount=3 >Issue of Notification  : 02-07-2010 (Friday)  <B>||</B>  Last date of making Nominations  : 09-07-2010 (Friday)  <B> ||  </B> Scrutiny of Nominations : 10-07-2010 (Saturday) <B>  || </B> Last date for withdrawal of Candidatures : 12-07-2010 (Monday)  <B> || </B> Date of Poll : 27-07-2010 (Tuesday) <B> || </B> Hours of Poll : 07.00 AM to 05.00 PM  <B> || </B> Counting of Votes  : 30-07-2010 (Friday) 08.00 AM </MARQUEE>
+        </div>
 		<div>
-		<br><br>
+		
 		</div>
 
 		<!--BiElection Page Layout-->
