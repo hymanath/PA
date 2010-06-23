@@ -6,4 +6,5 @@ import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 
 public interface IUserCadreManagementService {
 	public CadreManagementVO getUserData(RegistrationVO user);
+	public CadreManagementVO getUserTodaysData(RegistrationVO user);
 }

@@ -50,5 +50,25 @@ public class UserCadreManagementService implements IUserCadreManagementService {
 		//log.debug("UserCadreManagementService.getUserData()::::cadreManagementVO.getUserImpDates().size()::"+cadreManagementVO.getUserImpDates().size());
 		return cadreManagementVO;
 	}
+	
+	public CadreManagementVO getUserTodaysData(RegistrationVO user) {
+		log.debug("UserCadreManagementService.getUserData()::::started");
+		CadreManagementVO cadreManagementVO = new CadreManagementVO();
+
+		Long userID = user.getRegistrationID();
+		try{
+			List<UserEventVO> userPlannedEvents =userCalendarService.getTodaysUserPlannedEvents(userID);
+			cadreManagementVO.setUserEvents(userPlannedEvents);
+			List<ImportantDatesVO> userImpDatesList = userCalendarService.getUserTodaysImportantEvents(user);
+			cadreManagementVO.setUserImpDates(userImpDatesList);
+			Map<String,Long> cadresByCadreLevel = cadreManagementService.getCadreLevelCadresCount(userID);
+			cadreManagementVO.setCadresByCadreLevel(cadresByCadreLevel);
+		}catch (Exception exceptionEncountered) {
+			cadreManagementVO.setExceptionEncountered(exceptionEncountered);
+			
+		}
+		//log.debug("UserCadreManagementService.getUserData()::::cadreManagementVO.getUserImpDates().size()::"+cadreManagementVO.getUserImpDates().size());
+		return cadreManagementVO;
+	}
 
 }

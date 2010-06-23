@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.easymock.EasyMock;
@@ -9,22 +12,78 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.IPartyImportantDatesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserEventActionPlanDAO;
 import com.itgrids.partyanalyst.dao.IUserEventsDAO;
+import com.itgrids.partyanalyst.dao.IUserImpDatesDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserImpDatesDAO;
+import com.itgrids.partyanalyst.dto.ImportantDatesVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
+import com.itgrids.partyanalyst.model.PartyImportantDates;
 import com.itgrids.partyanalyst.model.UserEvents;
+import com.itgrids.partyanalyst.model.UserImpDate;
 import com.itgrids.partyanalyst.service.impl.UserCalendarService;
 import com.itgrids.partyanalyst.util.MockData;
+import common.Logger;
 
 public class UserCalendarServiceTest {
+	private static Logger log = Logger.getLogger(UserCalendarServiceTest.class);
+	
 	private IRegistrationDAO registrationDAO;
 	private IUserEventsDAO userEventsDAO;
 	private IUserEventActionPlanDAO userEventActionPlanDAO;
 	private IPartyDAO partyDAO;
 	private ICadreDAO cadreDAO; 
-	
+	private ITehsilDAO tehsilDAO;
+	private IDistrictDAO districtDAO;
+	private IStateDAO stateDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITownshipDAO townshipDAO;
+	private IHamletDAO hamletDAO;
+	private IUserImpDatesDAO userImpDatesDAO;
+	private IPartyImportantDatesDAO partyImportantDatesDAO;
+
+	public void setUserImpDatesDAO(IUserImpDatesDAO userImpDatesDAO) {
+		this.userImpDatesDAO = userImpDatesDAO;
+	}
+
+	public void setPartyImportantDatesDAO(
+			IPartyImportantDatesDAO partyImportantDatesDAO) {
+		this.partyImportantDatesDAO = partyImportantDatesDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public void setTownshipDAO(ITownshipDAO townshipDAO) {
+		this.townshipDAO = townshipDAO;
+	}
+
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
 		this.registrationDAO = registrationDAO;
 	}
@@ -53,6 +112,9 @@ public class UserCalendarServiceTest {
 		userEventActionPlanDAO = EasyMock.createMock(IUserEventActionPlanDAO.class);
 		partyDAO = EasyMock.createMock(IPartyDAO.class);
 		cadreDAO = EasyMock.createMock(ICadreDAO.class);
+		tehsilDAO = EasyMock.createMock(ITehsilDAO.class);
+		partyImportantDatesDAO = EasyMock.createMock(IPartyImportantDatesDAO.class);
+		userImpDatesDAO = EasyMock.createMock(IUserImpDatesDAO.class);
 	}	
 
 	/*@Test
@@ -118,6 +180,29 @@ public class UserCalendarServiceTest {
 	}*/
 	
 	@Test
+	public void testGetUserImportantDates() {
+		UserCalendarService service = new UserCalendarService();
+		RegistrationVO user = MockData.getRegistrationVO();
+		List<UserImpDate> impDateVOs = MockData.getTodaysUserImpDates();
+		List<PartyImportantDates> partyImpDates = MockData.getPartyImpdates();
+		EasyMock.expect(partyImportantDatesDAO.findTodaysPartyImportantDates(62L)).andReturn(partyImpDates);
+		EasyMock.expect(userImpDatesDAO.findTodayImportantEvents(user.getRegistrationID())).andReturn(impDateVOs);
+		EasyMock.replay(partyImportantDatesDAO);
+		EasyMock.replay(userImpDatesDAO);
+		service.setPartyImportantDatesDAO(partyImportantDatesDAO);
+		service.setUserImpDatesDAO(userImpDatesDAO);
+		List<ImportantDatesVO> impDatesList = service.getUserTodaysImportantEvents(user);
+		Assert.assertEquals(2, impDatesList.size());
+		Assert.assertEquals("My Birthday as party candidate", impDatesList.get(0).getTitle());
+		Assert.assertEquals("User", impDatesList.get(0).getEventType());
+		Assert.assertEquals("Party", impDatesList.get(1).getEventType());
+		Assert.assertEquals("PARTY PRESIDENT'S BIRTHDAY", impDatesList.get(1).getTitle());
+		EasyMock.verify(partyImportantDatesDAO);
+		EasyMock.verify(userImpDatesDAO);
+		System.out.println(impDatesList.size());
+	}
+	
+	@Test
 	public void testGetUserPlannedEvents(){
 		UserCalendarService service = new UserCalendarService();
 		List<UserEvents> userEvents = MockData.getUserPlannedEvents();
@@ -126,7 +211,35 @@ public class UserCalendarServiceTest {
 		service.setUserEventsDAO(userEventsDAO);
 		
 		List<UserEventVO> userEventVOList = service.getUserPlannedEvents(1L,Calendar.getInstance());
-		Assert.assertEquals(2, userEventVOList.size());
-		Assert.assertEquals(2, userEventVOList.get(0).getActionPlans().size());
+		Assert.assertEquals(1, userEventVOList.size());
+		//Assert.assertEquals(0, userEventVOList.get(0).getActionPlans().size());
+	}
+	
+	@Test
+	public void testGetTodaysUserEvents() {
+		UserCalendarService service = new UserCalendarService();
+		List<UserEvents> userEvents = MockData.getTodaysUserEvents();
+		SimpleDateFormat frmat = new SimpleDateFormat("yyyy-MM-dd");
+		String startDate = frmat.format(new Date());
+		
+		
+		try {
+			EasyMock.expect(userEventsDAO.findEventsByUserIdAndStartDate(4L, frmat.parse(startDate) )).andReturn(userEvents);
+			EasyMock.expect(tehsilDAO.get(833L)).andReturn(MockData.getTehsils().get(0));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		EasyMock.replay(userEventsDAO);
+		EasyMock.replay(tehsilDAO);
+		service.setUserEventsDAO(userEventsDAO);
+		service.setTehsilDAO(tehsilDAO);
+		List<UserEventVO> userEventVOList = service.getTodaysUserPlannedEvents(4L);
+	
+		Assert.assertEquals(1, userEventVOList.size());
+		Assert.assertEquals("Village level meeting with party candidates", userEventVOList.get(0).getDescription());
+		Assert.assertEquals(new Long(833), userEventVOList.get(0).getLocationId());
+		Assert.assertEquals("Kondapuram", userEventVOList.get(0).getLocation());
+		EasyMock.verify(userEventsDAO);
 	}
 }

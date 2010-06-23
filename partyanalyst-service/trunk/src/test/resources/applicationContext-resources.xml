@@ -468,6 +468,12 @@
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 	</bean>
 	
+	<bean name="userCalendarService" class="com.itgrids.service.impl.UserCalendarService">
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="partyImportantDatesDAO" ref="partyImportantDatesDAO" />
+		<property name="userImpDatesDAO" ref="userImpDatesDAO" />
+	</bean>
+	
 	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

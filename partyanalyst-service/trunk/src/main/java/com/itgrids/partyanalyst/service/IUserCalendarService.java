@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreManagementVO;
@@ -34,5 +35,7 @@ public interface IUserCalendarService {
 	public List<ImportantDatesVO> getUserImpDate(Long impDateID, String dateType, Calendar calendar);
 	public CadreManagementVO getUserImpDateAndEvent(RegistrationVO user, Calendar calendar);
 	public void deleteUserImpDate(Long impDateID);
+	public List<ImportantDatesVO> getUserTodaysImportantEvents(RegistrationVO user);
+	public List<UserEventVO> getTodaysUserPlannedEvents(Long userID);
 	
 }

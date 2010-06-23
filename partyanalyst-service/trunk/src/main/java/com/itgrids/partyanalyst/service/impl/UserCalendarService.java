@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,12 +15,19 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyImportantDatesDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserEventActionPlanDAO;
 import com.itgrids.partyanalyst.dao.IUserEventsDAO;
 import com.itgrids.partyanalyst.dao.IUserImpDatesDAO;
+import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dto.CadreManagementVO;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
 import com.itgrids.partyanalyst.dto.ImportantDatesVO;
@@ -30,6 +38,7 @@ import com.itgrids.partyanalyst.dto.UserEventVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.PartyImportantDates;
 import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserEventActionPlan;
 import com.itgrids.partyanalyst.model.UserEvents;
 import com.itgrids.partyanalyst.model.UserImpDate;
@@ -48,12 +57,43 @@ public class UserCalendarService implements IUserCalendarService {
 	private IUserEventActionPlanDAO userEventActionPlanDAO;
 	private IPartyDAO partyDAO;
 	private ICadreDAO cadreDAO;
+	private ITehsilDAO tehsilDAO;
+	private IDistrictDAO districtDAO;
+	private IStateDAO stateDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITownshipDAO townshipDAO;
+	private IHamletDAO hamletDAO;
 	private IPartyImportantDatesDAO partyImportantDatesDAO;
 	private IUserImpDatesDAO userImpDatesDAO;
 	private TransactionTemplate transactionTemplate;
 
 	private final static Logger log = Logger.getLogger(UserCalendarService.class);
 	
+	
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public void setTownshipDAO(ITownshipDAO townshipDAO) {
+		this.townshipDAO = townshipDAO;
+	}
+
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
+
 	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
 		this.registrationDAO = registrationDAO;
 	}
@@ -106,6 +146,7 @@ public class UserCalendarService implements IUserCalendarService {
 			}
 		);
 	}
+	
 	public List<ImportantDatesVO> getUserImpDates(RegistrationVO user, Calendar inputDate) {
 		log.debug("UserCalenderService.getUserImpDates() Start...");
 		log.debug("input Date Year123 ::"+inputDate.get(1)+"input Date Month123::"+inputDate.get(2)+"input Date Date123::"+inputDate.get(5));
@@ -114,7 +155,7 @@ public class UserCalendarService implements IUserCalendarService {
 		Long partyId = user.getParty();
 		List<ImportantDatesVO> importantDates = new ArrayList<ImportantDatesVO>(0);
 		//Registration user = registrationDAO.get(userID);
-		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN);
+		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN); 
 		if("ALL".equals(user.getSubscribePartyImpDate())){
 			List<PartyImportantDates> partyImportantDates = partyImportantDatesDAO.findByPartyId(partyId);
 			
@@ -145,6 +186,40 @@ public class UserCalendarService implements IUserCalendarService {
 		log.debug("userImportant date size:::"+importantDates.size());
 		return importantDates;
 	}
+
+	public List<ImportantDatesVO> getUserTodaysImportantEvents(RegistrationVO user) {
+	
+		List<ImportantDatesVO> importantDates = new ArrayList<ImportantDatesVO>(0);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		
+		SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN); 
+		if("ALL".equals(user.getSubscribePartyImpDate())){
+			List<PartyImportantDates> partyImportantDates = partyImportantDatesDAO.findTodaysPartyImportantDates(user.getParty());
+			
+			if(partyImportantDates != null){
+				for(PartyImportantDates impDate:partyImportantDates ){
+					ImportantDatesVO importantDateVO = createImportantDatesVOForParty(calendar, impDate);
+					importantDates.add(importantDateVO);
+				}
+			
+			}
+		}
+		List<UserImpDate> userImpDates = userImpDatesDAO.findTodayImportantEvents(user.getRegistrationID());
+		log.debug("UserCalenderService.getUserImpDates() userImpDates.size()"+userImpDates.size());
+		if(userImpDates != null){
+			for(UserImpDate userImpDate : userImpDates){				
+				ImportantDatesVO userImpDateVO = createImportantDatesVOForUser(calendar, userImpDate);
+				log.debug("User Today's Imp Dates title::"+ userImpDateVO.getTitle());
+					importantDates.add(userImpDateVO);
+			}
+		}
+		if(importantDates.size()>1)
+			Collections.sort(importantDates);
+		log.debug("userImportant date size:::"+importantDates.size());
+		return importantDates;
+	}
+	
 
 	private ImportantDatesVO createImportantDatesVOForUser(Calendar calendar,UserImpDate impDate){
 		//SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
@@ -399,6 +474,53 @@ public class UserCalendarService implements IUserCalendarService {
 		Collections.sort(userEventVOList);
 		return userEventVOList;
 	}
+	
+	// Method to get today's user events for index page
+	public List<UserEventVO> getTodaysUserPlannedEvents(Long userID) {
+			
+		SimpleDateFormat frmat = new SimpleDateFormat("yyyy-MM-dd");
+		String startDate = frmat.format(new Date());
+		
+		List<UserEvents> userEventsList = null;
+		try {
+			userEventsList = userEventsDAO.findEventsByUserIdAndStartDate(userID, frmat.parse(startDate));
+		} catch (ParseException e) {
+			log.error("Error while parsing date:" + e.getMessage());
+		}
+		frmat = new SimpleDateFormat("HH:mm a");
+		List<UserEventVO> userEventVOList = new ArrayList<UserEventVO>();
+		System.out.print("locationIdList: " + userEventsList.get(0).getLocationId());
+		for(UserEvents userEvent : userEventsList){ 
+			log.debug(userEvent.getLocationId());
+			System.out.print("locationId: " + userEvent.getLocationId());
+			UserEventVO userEventVO = convertUserEvents2DTO(userEvent);
+			System.out.print("locationIdVO: " + userEventVO.getLocationId());
+			String location = getEventLocation(userEvent.getLocationType(), userEvent.getLocationId());
+			String eventDisplayTitle = userEvent.getTitle() + "@" + frmat.format(userEvent.getStartDate()) + " at " + location;
+			userEventVO.setEventDisplayTitle(eventDisplayTitle);
+			userEventVO.setLocation(location);
+			userEventVOList.add(userEventVO);
+		}
+		Collections.sort(userEventVOList);
+		return userEventVOList;
+	}
+
+	private String getEventLocation(String locationType, Long locationId) {
+		if(IConstants.MANDAL.equals(locationType)) {
+			return tehsilDAO.get(locationId).getTehsilName();
+		} else if (IConstants.DISTRICT_LEVEL.equals(locationType)) {
+			return districtDAO.get(locationId).getDistrictName();
+		} else if(IConstants.STATE_LEVEL.equals(locationType)) {
+			return stateDAO.get(locationId).getStateName();
+		} else if(IConstants.CONSTITUENCY_LEVEL.equals(locationType)) {
+			return constituencyDAO.get(locationId).getName();
+		} else if(IConstants.HAMLET_LEVEL.equals(locationType)) {
+			return hamletDAO.get(locationId).getHamletName();
+		} else if(IConstants.CENSUS_VILLAGE_LEVEL.equals(locationType)) {
+			return townshipDAO.get(locationId).getTownshipName();
+		} 
+		return "";
+	}
 
 	public void deleteUserPlannedEvents(Long userEventID) {
 		UserEvents event = userEventsDAO.get(userEventID);
@@ -509,7 +631,9 @@ private UserEventVO saveUserPlannedEvents;
 		userEventVO.setLocationType(userEvent.getLocationType());
 		userEventVO.setTitle(userEvent.getTitle());
 		//SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
+		log.debug("In service start date: " + userEvent.getStartDate());
 		userEventVO.setStartDate(userEvent.getStartDate());
+		log.debug("In service end date: " + userEvent.getEndDate());
 		userEventVO.setEndDate(userEvent.getEndDate());
 		List<Cadre> organizers = userEvent.getOrganizers();
 		if(organizers!=null && organizers.size()>0){
@@ -692,5 +816,7 @@ private UserEventVO saveUserPlannedEvents;
 		}
 		return cadreManagementVO;
 	}
+
+	
 
 }

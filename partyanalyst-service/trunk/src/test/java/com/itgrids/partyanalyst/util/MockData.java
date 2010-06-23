@@ -1,6 +1,11 @@
 package com.itgrids.partyanalyst.util;
+import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,6 +14,7 @@ import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateWonVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
+import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ProblemManagementVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -27,6 +33,7 @@ import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.PartyImportantDates;
 import com.itgrids.partyanalyst.model.Problem;
 import com.itgrids.partyanalyst.model.ProblemAndProblemSource;
 import com.itgrids.partyanalyst.model.ProblemLocation;
@@ -36,6 +43,9 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserEventActionPlan;
 import com.itgrids.partyanalyst.model.UserEvents;
+import com.itgrids.partyanalyst.model.UserImpDate;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 
 public class MockData {
@@ -51,7 +61,7 @@ public class MockData {
 	private static final ElectionScope electionScope = new ElectionScope(new Long(2),electionType,state,country,null,null);
 	
 	private static final List<Party> parties = new ArrayList<Party> ();	
-	private static final District  district = new District(new Long(15), "Nellore","Nellore",null,null,state,null,null,null,null,null,null);
+	private static final District  district = new District(new Long(19), "Nellore","Nellore",null,null,state,null,null,null,null,null,null);
 	private static final List<Election> elections = new ArrayList<Election>();
  
 	private static final List<Candidate> candidates = new ArrayList<Candidate>(); 
@@ -152,6 +162,7 @@ public class MockData {
 	public static List<Tehsil> getTehsils(){
 		List<Tehsil> tehsils = new ArrayList<Tehsil>();
 		Tehsil obj = new Tehsil();
+		obj.setTehsilId(new Long(833));
 		obj.setTehsilName("Kondapuram");
 		obj.setDistrict(district);
 		tehsils.add(obj);		
@@ -1988,6 +1999,39 @@ public class MockData {
 		return constituencyElection;
 	}
 	
+	public static List<UserEvents> getTodaysUserEvents() {
+		List<UserEvents> userEventsList = new ArrayList<UserEvents>();
+		UserEvents userEvents1 = new UserEvents();
+				
+		userEvents1.setUserEventsId(5L);
+		Registration user = new Registration();
+		user.setRegistrationId(4L);
+		user.setFirstName("sample");
+		user.setLastName("sample");
+		user.setParty(new Party(1L));
+		userEvents1.setRegistration(user);
+		userEvents1.setDescription("Village level meeting with party candidates");
+		userEvents1.setLocationType("MANDAL");
+		userEvents1.setLocationId(833L);
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, -1);
+		calendar.set(2010, 05, 19, 13, 00, 00);
+		userEvents1.setStartDate(calendar.getTime());
+		calendar.set(2010, 05, 19, 16, 00, 00);
+		userEvents1.setEndDate(calendar.getTime());
+		Cadre cadre1 =  new Cadre();cadre1.setCadreId(1L);
+		Cadre cadre2 =  new Cadre();cadre2.setCadreId(2L);
+		List<Cadre> organizers = new ArrayList<Cadre>(); 
+		organizers.add(cadre1); 
+		organizers.add(cadre2);
+		userEvents1.setOrganizers(organizers);
+		List<UserEventActionPlan> plans2 = new ArrayList<UserEventActionPlan>();
+		userEvents1.setUserEventActionPlans(plans2);
+		userEventsList.add(userEvents1);
+		
+		return userEventsList;
+	}
+	
 	public static List<UserEvents> getUserPlannedEvents(){
 		List<UserEvents> userEventsList = new ArrayList<UserEvents>();
 		UserEvents userEvents1 = new UserEvents();
@@ -2205,5 +2249,40 @@ public class MockData {
 			 result.add("Andhra Pradesh");
 			 result.add(electionYear);
 		 return null;
+	}
+	public static RegistrationVO getRegistrationVO() {
+		RegistrationVO user = new RegistrationVO();
+		user.setRegistrationID(1L);
+		user.setFirstName("Ashok");
+		user.setLastName("Dakavaram");
+		user.setParty(62L);
+		user.setSubscribePartyImpDate("ALL");
+		return user;
+		
+	}
+	public static List<UserImpDate> getTodaysUserImpDates() {
+		UserImpDate importantDatesVO = new UserImpDate();
+		
+		importantDatesVO.setUser(new Registration(1L));
+		importantDatesVO.setTitle("My Birthday as party candidate");
+		importantDatesVO.setDescription("date that I joined into party");
+		importantDatesVO.setEffectiveDate(new Date());
+		importantDatesVO.setTillDate(new Date());
+		importantDatesVO.setIsDeleted("NO");
+		importantDatesVO.setUserImpDateID(1L);
+		importantDatesVO.setRecFreqType("YEARLY");
+		
+		return Arrays.asList(importantDatesVO);
+	}
+	public static List<PartyImportantDates> getPartyImpdates() {
+		PartyImportantDates impDates = new PartyImportantDates();
+		impDates.setParty(new Party(62L));
+		impDates.setPartyImportantDateId(18L);
+		impDates.setImportantDate(new Date("6/19/1980"));
+		impDates.setRecursive("T");
+		impDates.setRecursiveFrequency("YEARLY");
+		impDates.setTitle("PARTY PRESIDENT'S BIRTHDAY");
+		
+		return Arrays.asList(impDates);
 	}
 }
