@@ -327,6 +327,8 @@
 	</bean>
 	<bean id="indexAction" class="com.itgrids.partyanalyst.IndexAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="userGroupService" ref="userGroupService" />
+		<property name="userCadreManagementService" ref="userCadreManagementService"></property>	
 	</bean>
 	<bean id="sendSMSAction" class="com.itgrids.partyanalyst.web.action.SendSMSAction" singleton="false">
 		<property name="countrySmsService" ref="countrySmsService" />

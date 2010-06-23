@@ -328,7 +328,12 @@
     	<property name="cadreDAO" ref="cadreDAO"/>
     	<property name="partyImportantDatesDAO" ref="partyImportantDatesDAO"/>   
     	<property name="userImpDatesDAO" ref="userImpDatesDAO"/>  
-    	<property name="transactionTemplate" ref="transactionTemplate" />   	
+    	<property name="transactionTemplate" ref="transactionTemplate" /> 
+    	<property name="districtDAO" ref="districtDAO" />  	
+    	<property name="townshipDAO" ref="townshipDAO" />	
+    	<property name="stateDAO" ref="stateDAO" />
+    	<property name="tehsilDAO" ref="tehsilDAO" />
+    	<property name="constituencyDAO" ref="constituencyDAO" />	
 	</bean>
 	<bean name="userCadreManagementService" class="com.itgrids.partyanalyst.service.impl.UserCadreManagementService" >		
 		<property name="userCalendarService" ref="userCalendarService" />

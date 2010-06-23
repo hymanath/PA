@@ -20,7 +20,8 @@
 		<!--result type="tiles" name="input">admin.login</result-->
 
 		<action name="index" class="indexAction">
-			<result>/jsp/index.jsp</result>
+			<result name="success">/jsp/index.jsp</result>
+			<result name="error">/jsp/loginForm.jsp?src=indexAction</result>
 		</action>
 		
 		<action name="landing" class="com.itgrids.partyanalyst.web.action.LandingAction">
@@ -37,6 +38,7 @@
 			<result type="redirect" name="problemManagementReportAction">problemManagementReportAction.action</result>
 			<result type="redirect" name="userGroupAction">userGroupAction.action</result>
 			<result type="redirect" name="cadreRegisterPageAction">cadreRegisterPageAction.action</result>
+			<result type="redirect" name="indexAction">index.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 		</action>
 		
