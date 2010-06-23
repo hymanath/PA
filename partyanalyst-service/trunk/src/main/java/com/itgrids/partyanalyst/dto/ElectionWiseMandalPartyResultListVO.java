@@ -8,7 +8,7 @@ public class ElectionWiseMandalPartyResultListVO extends ResultStatus {
 	private List<ElectionWiseMandalPartyResultVO> electionWiseMandalPartyResultVOList;
 	private List<ElectionWiseMandalPartyResultVO> partyWiseElectionResultsVOList;
 	private List<PartyResultVO> allPartiesAllElectionResults;
-	
+		
 	public List<ElectionWiseMandalPartyResultVO> getElectionWiseMandalPartyResultVOList() {
 		return electionWiseMandalPartyResultVOList;
 	}

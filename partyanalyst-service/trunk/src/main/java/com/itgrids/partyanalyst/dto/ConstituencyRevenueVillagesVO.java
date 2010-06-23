@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
 
-public class ConstituencyRevenueVillagesVO {
+public class ConstituencyRevenueVillagesVO extends ResultStatus{
 
 	private Long totalVoters;
 	private Long constituencyId;
@@ -17,6 +17,7 @@ public class ConstituencyRevenueVillagesVO {
 	private Boolean isDataInsufficient;
 	private List<SelectOptionVO> missingConstituencies;
 	private Long postalBaletAndMissingConstiVotes;
+	private List<ElectionWiseMandalPartyResultVO>  electionInfoByLocations;
 	
 	public List<ConstituencyOrMandalWiseElectionVO> getConstituencyOrMandalWiseElectionVO() {
 		return constituencyOrMandalWiseElectionVO;
@@ -124,6 +125,15 @@ public class ConstituencyRevenueVillagesVO {
 	public void setPostalBaletAndMissingConstiVotes(
 			Long postalBaletAndMissingConstiVotes) {
 		this.postalBaletAndMissingConstiVotes = postalBaletAndMissingConstiVotes;
+	}
+
+	public List<ElectionWiseMandalPartyResultVO> getElectionInfoByLocations() {
+		return electionInfoByLocations;
+	}
+
+	public void setElectionInfoByLocations(
+			List<ElectionWiseMandalPartyResultVO> electionInfoByLocations) {
+		this.electionInfoByLocations = electionInfoByLocations;
 	}
 
 	@Override

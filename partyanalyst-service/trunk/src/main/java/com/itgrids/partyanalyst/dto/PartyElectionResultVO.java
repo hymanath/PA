@@ -17,6 +17,7 @@ public class PartyElectionResultVO implements Serializable {
 	private static final long serialVersionUID = -1689182456480682223L;
 
 	private Long partyId;
+	private Long electionId; 
 	private String partyName;
 	private String partyLogo;
 	private String partyFlag;
@@ -34,6 +35,9 @@ public class PartyElectionResultVO implements Serializable {
 	private Long totalBooths;
 	private String status;
 	private Long totalVotes;
+	private String electionTypeYear;
+	private Long townshipId;
+	private String townshipName;
 	
 	//getters and setters
 	public Long getTotalVotes() {
@@ -141,7 +145,32 @@ public class PartyElectionResultVO implements Serializable {
 	public String getStatus() {
 		return status;
 	}
+	public Long getElectionId() {
+		return electionId;
+	}
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public String getElectionTypeYear() {
+		return electionTypeYear;
+	}
+	public void setElectionTypeYear(String electionTypeYear) {
+		this.electionTypeYear = electionTypeYear;
+	}
+	public Long getTownshipId() {
+		return townshipId;
+	}
+	public void setTownshipId(Long townshipId) {
+		this.townshipId = townshipId;
+	}
+	public String getTownshipName() {
+		return townshipName;
+	}
+	public void setTownshipName(String townshipName) {
+		this.townshipName = townshipName;
+	}
+	
 }

@@ -15,7 +15,9 @@ public class VillageBoothElectionDAO extends GenericDaoHibernate<VillageBoothEle
 	
 	public List findTownshipWiseBoothDetailsForTehsil(Long tehsilId, Long electionId){
 		Object[] params = {tehsilId, electionId};
-		return getHibernateTemplate().find("select model.township.townshipId, model.township.townshipName, " +
+		return getHibernateTemplate().find("select model.boothConstituencyElection.constituencyElection.constituency.constituencyId," +
+				"model.boothConstituencyElection.constituencyElection.constituency.name," +
+				"model.township.townshipId, model.township.townshipName, " +
 				"model.boothConstituencyElection.booth.boothId, model.boothConstituencyElection.booth.partNo, " +
 				"model.boothConstituencyElection.booth.totalVoters, model.boothConstituencyElection.boothResult.validVotes " +
 				"from VillageBoothElection model where model.boothConstituencyElection.booth.tehsil.tehsilId = ? " +

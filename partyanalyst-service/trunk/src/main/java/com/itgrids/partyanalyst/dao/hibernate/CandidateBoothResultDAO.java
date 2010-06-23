@@ -3,7 +3,6 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
@@ -563,6 +562,24 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				 "and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? "+
 				 "and model.nomination.candidateResult.rank = ? "+
 			     "order by model.nomination.constituencyElection.constituency.constituencyId",params);
+	}
+	
+	public List findPartyResultsInAllElectionsByRevenueVillagesInMandal(Long tehsilId, Long partyId){
+		Object[] params = {tehsilId, partyId};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.constituencyElection.election.electionId, " +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType, " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear, " +
+				"model.boothConstituencyElection.villageBoothElection.township.townshipId, " +
+				"model.boothConstituencyElection.villageBoothElection.township.townshipName, " +
+				"sum(model.votesEarned), sum(model.boothConstituencyElection.boothResult.validVotes), " +
+				"model.boothConstituencyElection.constituencyElection.constituency.constituencyId, " +
+				"model.boothConstituencyElection.constituencyElection.constituency.name " +
+				"from CandidateBoothResult model where model.boothConstituencyElection.booth.tehsil.tehsilId = ? " +
+				"and model.nomination.party.partyId = ? group by model.boothConstituencyElection.constituencyElection.election.electionId," +
+				"model.boothConstituencyElection.constituencyElection.constituency.constituencyId," +
+				"model.boothConstituencyElection.villageBoothElection.township.townshipId order by " +
+				"model.boothConstituencyElection.villageBoothElection.township.townshipName, " +
+				"model.boothConstituencyElection.constituencyElection.election.electionId", params);
 	}
 
 	@SuppressWarnings("unchecked")

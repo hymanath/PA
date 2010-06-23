@@ -85,14 +85,14 @@ public class LocationWiseBoothDetailsVO {
 	public boolean equals(Object obj){
 		if(obj instanceof LocationWiseBoothDetailsVO){
 			LocationWiseBoothDetailsVO vo = (LocationWiseBoothDetailsVO) obj;
-			return new EqualsBuilder().append(locationName, vo.getLocationName()).isEquals();
+			return new EqualsBuilder().append(locationId, vo.getLocationId()).isEquals();
 		}
 		return false;
 	}
 	
 	@Override
 	public int hashCode(){
-		return new HashCodeBuilder(17, 37).append(locationName).toHashCode();
+		return new HashCodeBuilder(17, 37).append(locationId).toHashCode();
 	}
 
 	

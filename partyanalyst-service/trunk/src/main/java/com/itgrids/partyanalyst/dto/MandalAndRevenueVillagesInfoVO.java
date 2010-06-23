@@ -11,16 +11,6 @@ public class MandalAndRevenueVillagesInfoVO extends ResultStatus{
 	
 	private ElectionResultByLocationVO partiesResultsInMandal;
 	private List<ElectionResultByLocationVO> partiesResultsInVillages; 
-	private List<LocationWiseBoothDetailsVO> revenueVillagesInfo;
-	
-	public List<LocationWiseBoothDetailsVO> getRevenueVillagesInfo() {
-		return revenueVillagesInfo;
-	}
-	
-	public void setRevenueVillagesInfo(
-			List<LocationWiseBoothDetailsVO> revenueVillagesInfo) {
-		this.revenueVillagesInfo = revenueVillagesInfo;
-	}
 
 	public ElectionResultByLocationVO getPartiesResultsInMandal() {
 		return partiesResultsInMandal;

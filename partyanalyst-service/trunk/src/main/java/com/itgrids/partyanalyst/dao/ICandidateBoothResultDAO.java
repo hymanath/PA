@@ -103,4 +103,6 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	@SuppressWarnings("unchecked")
 	public List getPartyResultsInAMandalForAnElection(Long tehsilId,Long constituencyId,String electionYear,Long rank);
 	
+	public List findPartyResultsInAllElectionsByRevenueVillagesInMandal(Long tehsilId, Long partyId);
+	
 }

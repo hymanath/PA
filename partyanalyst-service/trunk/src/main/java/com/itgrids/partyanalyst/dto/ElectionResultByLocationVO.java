@@ -4,28 +4,11 @@ import java.util.List;
 
 public class ElectionResultByLocationVO {
 
-	private String villageName;
-	private Long villageId;
 	private String constituencyName;
 	private Long constituencyId;
 	private List<PartyVotesEarnedVO> mandalWisePartyVotes;
-	
-	public String getVillageName() {
-		return villageName;
-	}
-	
-	public void setVillageName(String villageName) {
-		this.villageName = villageName;
-	}
-	
-	public Long getVillageId() {
-		return villageId;
-	}
-	
-	public void setVillageId(Long villageId) {
-		this.villageId = villageId;
-	}
-	
+	private List<LocationWiseBoothDetailsVO> revenueVillagesInfo;
+		
 	public List<PartyVotesEarnedVO> getMandalWisePartyVotes() {
 		return mandalWisePartyVotes;
 	}
@@ -51,17 +34,26 @@ public class ElectionResultByLocationVO {
 		this.constituencyId = constituencyId;
 	}
 
+	public List<LocationWiseBoothDetailsVO> getRevenueVillagesInfo() {
+		return revenueVillagesInfo;
+	}
+
+	public void setRevenueVillagesInfo(
+			List<LocationWiseBoothDetailsVO> revenueVillagesInfo) {
+		this.revenueVillagesInfo = revenueVillagesInfo;
+	}
+
 	@Override
 	public boolean equals(Object obj){
 		if (!(obj instanceof ElectionResultByLocationVO))
 		      return false;
 		ElectionResultByLocationVO voObj = (ElectionResultByLocationVO) obj;
-		return this.villageId.equals(voObj.getVillageId());
+		return this.constituencyId.equals(voObj.getConstituencyId());
 	}
 	
 	@Override
 	public int hashCode(){
-		return this.villageId.hashCode();
+		return this.constituencyId.hashCode();
 	}
 	
 }
