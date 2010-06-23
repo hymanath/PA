@@ -61,15 +61,338 @@
 
 	<script type="text/javascript" src="js/indexPage/indexPage.js" ></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js" ></script>
+	<script type="text/javascript" src="js/c/commonUtilityScript.js" ></script>
 	
+<!-- 
+    <script type="text/javascript">
+    var smsDialog, newEventDialog, newDateDialog,eventDateDialog,mainEventCalendar,dateCalendar,cadreDataTable,cadreAnim,jsonStr;
+
+    function removeElementsArray(arr)
+	{	
+		if(!arr && arr.length == 0)
+			return;
+		
+		for(var i=0;arr.length!=0;i++)
+			arr.pop();
+		
+	}
+	function buildNewEventPopup()
+	{		
+		
+	/*	removeElementsArray(eventCadresArray);
+		removeElementsArray(actionCadresArray);
+		removeElementsArray(actionPlanArray);
+		*/
+		
+		var elmt = document.getElementById('cadreManagementMainDiv');
+		var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();
+		alert(date);
+				
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','newEventDiv');
+		divChild.setAttribute('class','yui-skin-sam');
+		
+		var eventStr='';
+		eventStr+='<div class="hd">Enter New Event Details...</div> ';
+		eventStr+='<div class="bd">'; 
+		eventStr+='<div id="eventDetailsDiv"><table class="selectedDateEvent">';
+		eventStr+='<tr>';
+		eventStr+='<th>Event Name</th>';
+		eventStr+='<td colspan="3"><input type="text" size="50" id="eventNameText" name="eventNameText"/></td>';
+		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='<th>Start Date</th>';
+		eventStr+='<td>';
+		eventStr+='<div><input type="text" id="startDateText_new" readonly="readonly" name="startDateText" value="'+date+'" onfocus="showDateCal(\'startDateText_new_Div\',this.value)"/></div>';
+		eventStr+='<div id="startDateText_new_Div" class="tinyDateCal"></div>';
+		eventStr+='</td>';
+		eventStr+='<th>End Date</th>';
+		eventStr+='<td><div><input type="text" id="endDateText_new" readonly="readonly" name="endDateText" value="'+date+'" onfocus="showDateCal(\'endDateText_new_Div\',this.value)"/></div>';
+		eventStr+='<div id="endDateText_new_Div" class="tinyDateCal"></div></td>';
+		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='<th>Start Time</th>';
+		eventStr+='<td>';
+		eventStr+='<select id="startTimeHrs" name="startTimeText" class="timeSelect">';		
+		for(var i=0;i<=23;i++)
+		{
+			if(i==9)
+				eventStr+='<option selected="selected">'+i+'</option>';
+			eventStr+='<option>'+i+'</option>';
+		}
+		eventStr+='</select>';
+
+		eventStr+='<select id="startTimeMin" name="startTimeText" class="timeSelect">';
+		eventStr+='<option>00</option>';		
+		eventStr+='<option>15</option>';
+		eventStr+='<option selected="selected">30</option>';
+		eventStr+='<option>45</option>';		
+		eventStr+='</select>';
+		eventStr+='</td>';
+		eventStr+='<th>End Time</th>';
+		eventStr+='<td>';
+		eventStr+='<select id="endTimeHrs" name="endTimeText" class="timeSelect">';
+		for(var i=0;i<=23;i++)
+		{
+			if(i==17)
+				eventStr+='<option selected="selected">'+i+'</option>';
+			eventStr+='<option>'+i+'</option>';
+		}
+		eventStr+='</select>';
+		
+		eventStr+='<select id="endTimeMin" name="startTimeText" class="timeSelect">';
+		eventStr+='<option>00</option>';		
+		eventStr+='<option>15</option>';
+		eventStr+='<option selected="selected">30</option>';
+		eventStr+='<option>45</option>';		
+		eventStr+='</select>';
+
+		eventStr+='</td>';
+		eventStr+='</tr>';
+				
+		
+		eventStr+='<tr>';
+		eventStr+='<th>Location Level</th>';
+		eventStr+='<td colspan="3"><select id="cadreLevelField" name="cadreLevel" onchange="getStateList()">';
+		eventStr+='	<option	 value="0">Select Level</option>';		
+		eventStr+='	<option  value="2">State</option>';	
+		eventStr+='	<option  value="3">District</option>';
+		eventStr+='	<option  value="4">Constituency</option>';	
+		eventStr+='	<option  value="5">Mandal</option>';		
+		eventStr+='	<option  value="6">Village</option>	';				
+		eventStr+=' </select> <input type="hidden" name="cadreLevelValue" id="cadreLevelValue"></td>';
+		eventStr+='</tr>';
+		
+		eventStr+='<tr>';
+		eventStr+='<th>Location</th>';
+		eventStr+='<td colspan="3">';
+		eventStr+='	<select id="cadreLevelState" name="cadreLevelState" disabled = "true" class="cadreLevelSelect" onchange="setCadreValue(this.options[this.selectedIndex].value);										getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<option> </option>';					
+		eventStr+='	</select>'; 
+
+ 		eventStr+='	<select id="cadreLevelDistrict" class="cadreLevelSelect" name="cadreLevelDistrict" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);							getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<option></option>';					
+		eventStr+='	</select>'; 
+				
+		eventStr+='	<select id="cadreLevelConstituency" class="cadreLevelSelect" name="cadreLevelConstituency" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);					getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<option></option>';					
+		eventStr+='	</select> ';
+		
+		eventStr+='	<select id="cadreLevelMandal" class="cadreLevelSelect" name="cadreLevelMandal" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value);								getCadreLevelValues(this.name,this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)">';
+		eventStr+='	<option></option>';					
+		eventStr+='	</select> ';
+		
+		eventStr+='	<select id="cadreLevelVillage" class="cadreLevelSelect" name="cadreLevelVillage" disabled ="true" onchange="setCadreValue(this.options[this.selectedIndex].value)">';
+		eventStr+=' 	<option></option>';					
+		eventStr+='	</select>';
+		eventStr+='</td>';
+		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='<th>Description</th>';
+		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="descTextArea" name="descTextArea"></textarea></td>';
+		eventStr+='</tr>';
+		eventStr+='</table>';
+		
+		eventStr+='<table class="selectedDateEvent" width="100%">';
+		eventStr+='<tr>';
+		eventStr+='<th>Organizers</th>';
+		eventStr+='<td><div id="eventCadresDiv"><span style="color:#CFCFCF">No Organizers For Event</span></div></td>';		
+		eventStr+='</tr>';
+		eventStr+='<tr>';
+		eventStr+='<td colspan="2" align="right"><span class="buttonSpan" onclick="javascript:{document.getElementById(\'cadreLevelDivId_event\').style.display=\'block\';}">Add Organizers</span></td>';		
+		eventStr+='</tr>';
+		eventStr+='</table>';
+		eventStr+=getOrganisersString("event");
+		
+		eventStr+='<table class="selectedDateEvent" width="100%">';
+		eventStr+='<tr>';
+		eventStr+='<th><div id="actionPlanDiv_Label">Action Plans</div></th>';
+		eventStr+='<td><div id="actionPlanDiv_Body"><span style="color:#CFCFCF">No Action Plans For Event</span></div></td>';		
+		eventStr+='</tr>';
+		eventStr+='<tr>';
+		eventStr+='<td colspan="2" align="right"><span class="buttonSpan" onclick="javascript:{document.getElementById(\'cadreLevelDivId_eventAction\').style.display=\'block\';removeElementsArray(actionCadresArray);}">Add Action Plan</span></td>';		
+		eventStr+='</tr>';
+		eventStr+='</table>';
+		eventStr+='<div id="actionPlansDiv"></div>';
+		eventStr+=createActionPlan("eventAction");
+				
+
+		/*eventStr+='<table class="cadreLevelDivClass">';
+		eventStr+='<tr>';
+		eventStr+='<th><div id="actionPlanLabelDiv"></div></th>';
+		eventStr+='<td colspan="3"><div id="actionPlanDataDiv"></div></td>';		
+		eventStr+='</tr>';
+		eventStr+='</table>';*/
 
 
+		/*eventStr+='<tr>';
+		eventStr+='<td colspan="4" align="right"><a href="javascript:{}" onclick="createActionPlan()"> Create Action Plan</a></td>';		
+		eventStr+='</tr>';
+		eventStr+='<div id="actionDetailsDiv"></div>';*/
+		
+		eventStr+='</div></div>';
+
+		divChild.innerHTML=eventStr;
+		elmt.appendChild(divChild);
+		
+		if(newEventDialog)
+			newEventDialog.destroy();
+
+		alert(eventStr);
+		newEventDialog = new YAHOO.widget.Dialog("newEventDiv",
+				{ width : "800px", 
+	              fixedcenter : false, 
+	              visible : true,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  x:200,
+				  y:100,
+				  hideaftersubmit:true,
+		          buttons : [ { text:"Create Event", handler:handleSubmit, isDefault:true }, 
+	                          { text:"Cancel", handler:handleCancel } ]
+	             } ); 
+		newEventDialog.render();
+	} 
+	function getOrganisersString(regTask)
+	{
+		var eventStr='';
+		eventStr+='<div id="cadreLevelDivId_'+regTask+'" class="cadreLevelDivClass">';
+		eventStr+='<div id="cadreLevelDivId_'+regTask+'_inner" class="cadreLevelDivClassInner">';
+		eventStr+='<table class="selectedDateEvent" width="100%">';
+		eventStr+='<tr>';
+		eventStr+='<th>Select Organizers</th>';		
+		eventStr+='<td colspan="2">';
+		eventStr+='<input type="radio" name="sms_type" value="locationWise" onclick="javascript:{getUserLocationData(this.value,\''+regTask+'\')}"/> Location Wise';	
+		eventStr+='<input type="radio" name="sms_type" value="cadreLevelWise" onclick="getUsersCadreLevelData(this.value,\''+regTask+'\')"/> Cadre Level Wise';
+		eventStr+='</td>';
+		eventStr+='<td  align="right">';			
+		eventStr+='<a id="cadreLevelDivId_'+regTask+'_anc" href="javascript:{}" onclick="clearActionPlanDetails(this.id,\''+regTask+'\')">Close</a>';
+		eventStr+='</td>';			
+		eventStr+='</tr>';		
+		eventStr+='<tr>';		
+		eventStr+='<th align="left"><div id="'+regTask+'_region_type_Label"></div></th>';
+		eventStr+='<td align="left"><div id="'+regTask+'_region_type_Data"></div></td>';				
+		eventStr+='</tr><tr>';		
+		eventStr+='	<th align="left"><div id="'+regTask+'_region_select_Label">	</div></th>';
+		eventStr+='	<td align="left"><div id="'+regTask+'_region_select_Data">	</div>';
+		eventStr+=' <div id="'+regTask+'_region_submit"></div></td>';
+		eventStr+='</tr>';
+		eventStr+='<tr>';		
+		eventStr+='<th><div id="'+regTask+'CadreDivHead"></div></th>';
+		eventStr+='<td colspan="3"><div id="'+regTask+'CadreDivBody"></div></td>';		
+		eventStr+='</tr>';		
+		eventStr+='</table>';		
+		eventStr+='</div></div>';
+
+		return eventStr;
+
+	}
+
+	function clearActionPlanDetails(id,type)
+	{
+		if(document.getElementById('actionPlanText'))
+			document.getElementById('actionPlanText').value = '';
+		if(document.getElementById('actionTargetDateText'))
+			document.getElementById('actionTargetDateText').value = '';
+		
+		if(document.getElementById("cadresForActionPlanDiv_Label"))
+			document.getElementById("cadresForActionPlanDiv_Label").innerHTML='';
+		if(document.getElementById("cadresForActionPlanDiv_Body"))
+			document.getElementById("cadresForActionPlanDiv_Body").innerHTML='';
+				
+		removeElementsArray(actionCadresArray);
+		removeElementsArray(actionPlanArray);
+
+		closeCadresInfoDiv(id,type);
+	}
+	
+    function buildNewImpDatePopup()
+	{
+		var elmt = document.getElementById('cadreManagementMainDiv');
+		var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();
+
+				
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','newImpDateDiv');
+		divChild.setAttribute('class','yui-skin-sam');
+		
+		var eventStr='';
+		eventStr+='<div class="hd">New Date</div> ';
+		eventStr+='<div class="bd">'; 
+		eventStr+='<table>';
+		eventStr+='<tr>';
+		eventStr+='<th>Important Date Title</th>';
+		eventStr+='<td colspan="3"><input type="text" size="50" id="ImpeventNameText" name="ImpeventNameText"/></td>';
+		eventStr+='</tr>';
+
+		eventStr+='<tr>';
+		eventStr+='<th>Important Date</th>';
+		eventStr+='<td>';
+		eventStr+='<div><input type="text" id="ImpStartDateText_new" value="'+date+'" name="ImpStartDateText" readonly="readonly" onfocus="showDateCal(\'ImpStartDateText_new_Div\')"/></div>';
+		eventStr+='<div id="ImpStartDateText_new_Div" class="tinyDateCal"></div>';
+		eventStr+='</td>';		
+		eventStr+='</tr>';
+	
+		eventStr+='<tr>';
+		eventStr+='<th>Description</th>';
+		eventStr+='<td colspan="3"><textarea rows="5" cols="50" id="ImpdescTextArea" name="ImpdescTextArea"></textarea></td>';
+		eventStr+='</tr>';		
+
+		eventStr+='<tr>';
+		eventStr+='<th>Repeat Frequency</th>';
+		eventStr+='<td>';
+		eventStr+='<select id="repeatFreqSelect" class="timeSelect" onchange="showEndDateText(this.options[this.selectedIndex].text)">';
+		eventStr+='<option value="No Repeat">No Repeat</option>';
+		eventStr+='<option value="Yearly">Yearly</option><option value="Monthly">Monthly</option><option value="Weekly">Weekly</option></select></td>';
+		eventStr+='<th>Repeat Until</th>';
+		eventStr+='<td>';
+		eventStr+='<div><input type="text" id="ImpEndDateText_new" readonly="readonly" value="'+date+'" name="ImpEndDateText" disabled="true" onfocus="showDateCal(\'ImpEndDateText_new_Div\')"/></div>';
+		eventStr+='<div id="ImpEndDateText_new_Div" class="tinyDateCal"></div>';
+		eventStr+='</td>';
+		eventStr+='</tr>';		
+
+		eventStr+='</table>';
+		eventStr+='</div>';
+
+		divChild.innerHTML=eventStr;
+		elmt.appendChild(divChild);
+
+		if(newDateDialog)
+			newDateDialog.destroy();
+		
+		newDateDialog = new YAHOO.widget.Dialog("newImpDateDiv",
+				{ width : "600px", 
+	              fixedcenter : false, 
+	              visible : true,  
+	              constraintoviewport : true, 
+				  iframe :true,
+				  modal :true,
+				  x:200,
+				  y:700,
+				  hideaftersubmit:true,
+		          buttons : [ { text:"Create New Date", handler:handleImpDateSubmit, isDefault:true }, 
+	                          { text:"Cancel", handler:handleImpDateCancel } ]
+	             } ); 
+		newDateDialog .render(); 
+	}
+	</script>
+-->
 	</head>
 	<body>
 		<div id="dashboard_main">
 
 			<div id="dashboard_layout_main">						
 			</div>
+			<div id="cadreManagementMainDiv" class="yui-skin-sam">		
+		<div id="myDialog" class="yui-skin-sam"> 			
+		</div> 
+	</div>
+	
+	
 			
 			<div id="dashBoardLeftlayoutDiv">
 				<div id="humanImgDiv">
@@ -128,15 +451,17 @@
 													</tr></table>
 												</div>
 												<div id="impEventsDiv_body">
-													<span class="dashBoardCenterContentBody" style="color:#4B74C6">You have 2 event(s) scheduled today</span>
+												<span class="dashBoardCenterContentBody" style="color:#4B74C6">You have ${eventCount} event(s) scheduled today</span>
 													<ul class="dashBoardContentList">
-														<li>Meeting with cadres at 11.00 AM at party office </li>
-														<li>Meeting with party president at 4.00PM</li>														
+													<c:forEach var="impEvents" items="${cadreManagementVO.userEvents}" >
+														<li><c:out value="${impEvents.eventDisplayTitle}" /></li>	
+													</c:forEach>										
 													</ul>
 												</div>
+
 												<div id="impEventsDiv_footer" style="text-align:right">
-													<span class="dashBoardLinks">View All</span>
-													<span class="dashBoardLinks">Create</span>
+													<span class="dashBoardLinks"><a href="cadreManagementAction.action">View All</a></span>
+													<span class="dashBoardLinks"><a href="javascript:{}" onclick="buildNewEventPopup()">Create</a></span>
 												</div>
 											</div>
 										</td>
@@ -154,14 +479,16 @@
 													</tr></table>
 												</div>
 												<div id="impDatesDiv_body">
-													<span class="dashBoardCenterContentBody" style="color:#4B74C6">You have 1 Imp date(s) scheduled today</span>
+													<span class="dashBoardCenterContentBody" style="color:#4B74C6">You have ${impDateCount} Imp date(s) scheduled today</span>
 													<ul class="dashBoardContentList">
-														<li>Party President's Birthday</li>														
+														<c:forEach var="impDates" items="${cadreManagementVO.userImpDates}" >
+														<li><c:out value="${impDates.title}" /></li>	
+													</c:forEach>													
 													</ul>
 												</div>
 												<div id="impDatesDiv_footer" style="text-align:right">
-													<span class="dashBoardLinks">View All</span>
-													<span class="dashBoardLinks">Create</span>
+													<span class="dashBoardLinks"><a href="cadreManagementAction.action">View All</a></span>
+													<span class="dashBoardLinks"><a href="javascript:{}" onclick="buildImpDatePopup()">Create</a></span>
 												</div>
 											</div>
 										</td>
@@ -178,9 +505,9 @@
 												<div id="cadresDiv_body">
 													<span class="dashBoardCenterContentBody" style="color:#4B74C6"></span>
 													<ul class="dashBoardContentList">
-														<li>STATE Level Cadres - 1 </li>
-														<li>DISTRICT Level Cadres - 1 </li>
-														<li>CONSTITUENCY Level Cadres - 1</li>														
+													<c:forEach var="cadreLevels" items="${cadreManagementVO.cadresByCadreLevel}" >
+														<li>${cadreLevels.key} Level Cadres - ${cadreLevels.value} </li>
+													</c:forEach>													
 													</ul>
 												</div>
 												<div id="cadresDiv_footer" style="text-align:right">
@@ -220,10 +547,10 @@
 										</tr></table>
 									</div>
 									<div id="usergroups_body">
-										<font style="color:#4B74C6;padding-left:22px;">Total Groups Created : 24</font>
+										<font style="color:#4B74C6;padding-left:22px;">Total Groups Created : <c:out value= "${userGroups + systemGroups}" />  </font>
 										<ul class="dashBoardContentList">
-											<li> System Groups - 10 </li>
-											<li> User Groups - 14</li>
+											<li> System Groups - ${systemGroups} </li>
+											<li> User Groups - ${userGroups}</li>
 										</ul>
 									</div>
 									<div id="usergroups_footer" style="text-align:right">
