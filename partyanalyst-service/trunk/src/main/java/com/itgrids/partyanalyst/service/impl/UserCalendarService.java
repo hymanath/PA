@@ -489,7 +489,7 @@ public class UserCalendarService implements IUserCalendarService {
 		}
 		frmat = new SimpleDateFormat("HH:mm a");
 		List<UserEventVO> userEventVOList = new ArrayList<UserEventVO>();
-		System.out.print("locationIdList: " + userEventsList.get(0).getLocationId());
+		//System.out.print("locationIdList: " + userEventsList.get(0).getLocationId());
 		for(UserEvents userEvent : userEventsList){ 
 			log.debug(userEvent.getLocationId());
 			System.out.print("locationId: " + userEvent.getLocationId());
