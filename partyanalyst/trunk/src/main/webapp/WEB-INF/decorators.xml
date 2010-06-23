@@ -33,6 +33,7 @@
 		<pattern>/addNewProblemSubmitAction.action*</pattern>
 		<pattern>/mandalVotingTrendzForBiElectionAction.action*</pattern>
 		<pattern>/mandalwiseBoothResultsForPartyAction.action*</pattern>
+		<pattern>/revenueVillagePartyAllElecAction.action*</pattern>
 		<pattern>/boothResultsForAllElectionsPopupAction.action*</pattern>
 		
     </excludes>
