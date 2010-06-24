@@ -144,7 +144,10 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
     	for(RevenueVillageElectionVO villageInfoVO:constituencyObj.getRevenueVillageElectionVO()){
     		pariesInfo = villageInfoVO.getPartyElectionResultVOs();
     		for(int i=0; i<pariesInfo.size(); i++){
-    			dataset.addValue(new BigDecimal(pariesInfo.get(i).getVotesPercentage()), candidatesInfo.get(i).getParty(), villageInfoVO.getTownshipName());	
+    			if(candidatesInfo.get(i).getParty().equalsIgnoreCase(IConstants.INDIPENDENT))
+    				dataset.addValue(new BigDecimal(pariesInfo.get(i).getVotesPercentage()), candidatesInfo.get(i).getParty()+" ["+candidatesInfo.get(i).getRank()+"]" , villageInfoVO.getTownshipName());
+    			else
+    				dataset.addValue(new BigDecimal(pariesInfo.get(i).getVotesPercentage()), candidatesInfo.get(i).getParty(), villageInfoVO.getTownshipName());
     		}        		
         }
         return dataset;
