@@ -382,6 +382,7 @@ var allZPTCMPTCElecInfo = new Array();
 						partyName:'${partyInfo.partyName}',
 						candidateId:'${partyInfo.candidateID}',
 						candidateName:'${partyInfo.candidateNameWithStatus}',
+						rank:'${partyInfo.rank}',
 						mandalVotes:'${partyInfo.totalVotesEarned}',
 						mandalpercentage:'${partyInfo.totalVotesEarnedPercentage}',
 						maleVotes:'${partyInfo.maleBoothResults}',
@@ -920,6 +921,8 @@ function getMoreResults(elecYear,elecType,constiId)
 										},{
 											key : "candidateName"
 										},{
+											key : "rank",parser:"number"
+										},{
 											key : "mandalVotes",parser:"number"
 										},{
 											key : "mandalpercentage",parser:"float"
@@ -942,13 +945,14 @@ function getMoreResults(elecYear,elecType,constiId)
 				 var myColumnDefs = [ 
 				            {key:"partyName",label:'Party', sortable:true, resizeable:true}, 
 				            {key:"candidateName", label:'Candidate Name', sortable:true, resizeable:true}, 
+				            {key:"rank", label:'Rank',sortable:true, resizeable:true},
 				            {key:"mandalVotes", label:'Total Votes Earned',sortable:true, resizeable:true}, 
 				            {key:"mandalpercentage",label:'%', sortable:true, resizeable:true}, 
 				            {key:"maleVotes",label:'Male Votes', sortable:true, resizeable:true}, 
 				            {key:"malepercentage",label:'%', sortable:true, resizeable:true}, 
 				            {key:"femaleVotes",label:'Female Votes', sortable:true, resizeable:true},
 				            {key:"femalepercentage",label:'%', sortable:true, resizeable:true}, 
-				            {key:"bothVotes",label:'Male / Female Votes', sortable:true, resizeable:true},
+				            {key:"bothVotes",label:'M/F Votes', sortable:true, resizeable:true},
 				            {key:"bothpercentage",label:'%', sortable:true, resizeable:true} 
 				        ]; 
 				 
