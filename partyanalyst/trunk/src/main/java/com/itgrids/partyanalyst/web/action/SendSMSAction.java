@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ISmsService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class SendSMSAction extends ActionSupport implements ServletRequestAware {
@@ -65,8 +66,11 @@ public class SendSMSAction extends ActionSupport implements ServletRequestAware 
 			for(int i=0; i<cellNumbers.length(); i++){
 				smsMsgs[i] = (String)cellNumbers.get(i);
 			}
-					
-			countrySmsService.sendSms(message, true, smsMsgs);
+			HttpSession session = request.getSession();
+			RegistrationVO userVo = (RegistrationVO)session.getAttribute("USER");
+			Long userID = userVo.getRegistrationID();
+			
+			countrySmsService.sendSms(message, true,userID,IConstants.Influencing_People,smsMsgs);
 			return SUCCESS;
 		}
 	

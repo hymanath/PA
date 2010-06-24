@@ -286,14 +286,18 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			userGroupsVO.setUserGroupMembersList(userGroupService.getAllMembersIntheGroup(user.getRegistrationID(), groupId));
 		}if(jObj.getString("task").equalsIgnoreCase("sendSMS"))
 		{
+			HttpSession session = request.getSession();
+			RegistrationVO userVo = (RegistrationVO)session.getAttribute("USER");
+			Long userID = userVo.getRegistrationID();
 			
 			String message = jObj.getString("message");
 			JSONArray cellNumbers = jObj.getJSONArray("numbers");
 			String smsMsgs[] = new String[cellNumbers.length()];
+			
 			for(int i=0; i<cellNumbers.length(); i++){
 				smsMsgs[i] = (String)cellNumbers.get(i);
 			}
-			userGroupService.sendSMStoGroup(message,smsMsgs);			
+			userGroupService.sendSMStoGroup(message,smsMsgs,userID,jObj.getString("module"));			
 		}if(jObj.getString("task").equalsIgnoreCase("getSubGroupsListInSystemGroups"))
 		{
 			userGroupsVO = new UserGroupsVO();
