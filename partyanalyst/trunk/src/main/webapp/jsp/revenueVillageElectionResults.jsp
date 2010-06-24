@@ -140,7 +140,7 @@ legend
 	font-size:12px;
 }
 </style>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 			function displayVillageElecResults(value){
 				
 				var resultDiv = document.getElementById("villageElectionResults");
@@ -303,59 +303,59 @@ legend
 				var browser1 = window.open(urlStr,"boothResultsForAllElections","scrollbars=yes,height=600,width=900,left=200,top=200");
 				browser1.focus();
 			}
-			function showRevenueVillagesInfo(resultVO){
-				
-				//typeSelectElmt = document.getElementById("electionTypeSelect");
-				//yearSelectElmt = document.getElementById("electionYearSelect");		
 
-				//var typeVal = ""+typeSelectElmt.options[typeSelectElmt.selectedIndex].text;
-				//var yearVal = ""+yearSelectElmt.options[yearSelectElmt.selectedIndex].text;
-				
+			function showRevenueVillagesInfo(resultVO){
+												
 				var rvStrDiv = document.getElementById('revenueVillagesInfo');
-				
+			
 				var rvStr = '';		
 				rvStr += '<a name="votersDiv"></a>';
 				rvStr += '<div id="revenueVillageDiv_head" class="commonVotersHeadDiv">';
-				rvStr += 'Voting Trendz In Revenue Villages for ${mandalName} Mandal in ${electionYear} ${electionType}  Election ';
+				rvStr += 'Voting Trendz In Revenue Villages for ${mandalInfoVO.mandalName} Mandal in  ${electionYear} ${electionType} Election ';
 				rvStr += '</div>';
-				rvStr += '<div class="yui-skin-sam"><div id="revenueVillageDiv">';		
-				rvStr += '<table id="revillageInfoTable" >';
-						
-				for(var i in resultVO.revenueVillagesInfo)
-				{			
-					rvStr += '<tr>';
-					rvStr += '<td><a href="townshipPageAction.action?TOWNSHIP_ID='+resultVO.revenueVillagesInfo[i].locationId+'&TOWNSHIP_NAME='+resultVO.revenueVillagesInfo[i].locationName+'" >'+resultVO.revenueVillagesInfo[i].locationName+'</a></td>';
-					rvStr += '<td>'+resultVO.revenueVillagesInfo[i].population+'</td>';
-					rvStr += '<td>'+resultVO.revenueVillagesInfo[i].votesPolled+'</td>';
-					rvStr += '<td>';
-					for(var j in resultVO.revenueVillagesInfo[i].booths)
-					{
-						if(j%3 == 0 && j!=0)
-							rvStr += '<br>';
-						rvStr += '<a href="javascript:{}" onclick="getBoothPageInfo('+resultVO.revenueVillagesInfo[i].booths[j].id+')">'+resultVO.revenueVillagesInfo[i].booths[j].name+',';
+			
+				for(var k in resultVO.partiesResultsInVillages){                                                                                  
+					rvStr += '<div style="margin-top:10px;margin-bottom:10px;"><b>'+resultVO.partiesResultsInVillages[k].constituencyName+' ${electionType} In ${electionYear}</b></div>';
+					rvStr += '<div class="yui-skin-sam"><div id="revenueVillageDiv_'+k+'">';	
+					rvStr += '<table id="revillageInfoTable_'+k+'" >';
+					for(var i in resultVO.partiesResultsInVillages[k].revenueVillagesInfo)
+					{			
+						rvStr += '<tr>';
+						rvStr += '<td><a href="townshipPageAction.action?TOWNSHIP_ID='+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationId+'&TOWNSHIP_NAME='+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationName+'" >'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationName+'</a></td>';
+						rvStr += '<td>'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].population+'</td>';
+						rvStr += '<td>'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].votesPolled+'</td>';
+						rvStr += '<td>';
+						for(var j in resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths)
+						{
+							if(j%3 == 0 && j!=0)
+								rvStr += '<br>';
+							rvStr += '<a href="javascript:{}" onclick="getBoothPageInfo('+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].id+')">'+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].booths[j].name+',';
+						}
+						rvStr += '</td>';
+						rvStr += '<td>';
+						for(var j in resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].hamletsOfTownship)
+						{
+							rvStr += resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].hamletsOfTownship[j].name+'<br>';
+						}
+						rvStr += '</td>';
+						rvStr += '<td>';
+						//rvStr += '<a href = "javascript:{}" class="reportAnchors">Census Info</a><br>';
+						//rvStr += '<a href = "#votersDiv" class="reportAnchors" onclick = "getTownshipElectionsInfo(\''+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationName+'\','+resultVO.partiesResultsInVillages[k].revenueVillagesInfo[i].locationId+','+electionId+')"> View Voting Trendz </a><br>';
+						//rvStr += '<a href = "javascript:{}" class="reportAnchors">Cast Details</a><br>';
+						rvStr += '</td>';
+						rvStr += '</tr>';
 					}
-					rvStr += '</td>';
-					rvStr += '<td>';
-					for(var k in resultVO.revenueVillagesInfo[i].hamletsOfTownship)
-					{
-						rvStr += resultVO.revenueVillagesInfo[i].hamletsOfTownship[k].name+'<br>';
-					}
-					rvStr += '</td>';
-					rvStr += '<td>';
-					//rvStr += '<a href = "javascript:{}" class="reportAnchors">Census Info</a><br>';
-					rvStr += '<a href = "#votersDiv" class="reportAnchors" onclick = "getTownshipElectionsInfo(\''+resultVO.revenueVillagesInfo[i].locationName+'\','+resultVO.revenueVillagesInfo[i].locationId+','+electId+')"> View Voting Trendz </a><br>';
-					//rvStr += '<a href = "javascript:{}" class="reportAnchors">Cast Details</a><br>';
-					rvStr += '</td>';
-					rvStr += '</tr>';
-				}
-				rvStr += '</table>';
-				rvStr += '</div>';
-				rvStr += '</div>';
+					rvStr += '</table>';
+					rvStr += '</div>';
+					rvStr += '</div>';
+					
+				}			
 
 				if(rvStrDiv)
 					rvStrDiv.innerHTML = rvStr;
+				for(var k in resultVO.partiesResultsInVillages){
 					var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-							.get("revillageInfoTable")); 
+							.get("revillageInfoTable_"+k)); 
 					 myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE; 
 					  myDataSource.responseSchema = { 
 					            fields: [
@@ -384,14 +384,10 @@ legend
 					            {key:"links",label:'Links', resizeable:true}
 					        ]; 
 					 
-					var myDataTable = new YAHOO.widget.DataTable("revenueVillageDiv",myColumnDefs, myDataSource);
-					/*      var imgElmt = document.getElementById('AjaxImgDiv');
-			 if(imgElmt.style.display == "block")
-				{
-		           imgElmt.style.display = "none";
-				}*/
-
+					var myDataTable = new YAHOO.widget.DataTable("revenueVillageDiv_"+k,myColumnDefs, myDataSource);
+				}
 			}
+			
 			function getTownshipElectionsInfo(name,townshipId, electionId){
 				var jsObj=
 				{
@@ -439,7 +435,7 @@ legend
 				 myPanel.render(); 
 			}
 					
-</script>
+--></script>
 </head>
 <body>
 		<center><div id="revenueVillageHeading"><h4>Revenue Villages Wise ${electionType} ${electionYear } Election Results In ${mandalName} Mandal</h4></div></center> 

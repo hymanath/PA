@@ -171,9 +171,9 @@ function getDetails()
 	
 }
 
-function showAllBoothResults(tehsilId,partyId,constituencyId,electionType,electionYear)
+function showAllBoothResults(tehsilId,partyId,constituencyId,electionType,electionYear, mandalName)
 {
-	 var browser2 = window.open("<s:url action="allBoothsResultsInTehsilAction.action"/>?tehsilId="+tehsilId+"&electionType="+electionType+"&electionYear="+electionYear+"&constituencyId="+constituencyId+"&partyId="+partyId,"AllBoothsResults","scrollbars=yes,height=600,width=1000,left=200,top=200");
+	 var browser2 = window.open("<s:url action="allBoothsResultsInTehsilAction.action"/>?tehsilId="+tehsilId+"&electionType="+electionType+"&electionYear="+electionYear+"&constituencyId="+constituencyId+"&partyId="+partyId+"&mandalName="+mandalName,"AllBoothsResults","scrollbars=yes,height=600,width=1000,left=200,top=200");
 	 browser2.focus();	
 }
 
@@ -349,7 +349,7 @@ function redirectRevenueVillageLink(mandalId,mandalName,partyName)
 	<DIV id="boothResultsTable" style="text-align:left;">
 		<div id="constiVotersDetails" style="margin-top:20px;">
 	     <div style="padding:10px;margin-bottom:20px;"> <u><b> Mandals Votes Share In ${constituencyName} Constituency :</b> </u> </div>
-	      <center><table width="85%" border="1" cellspacing="3">
+	      <center><table width="85%" border="1" cellspacing="3" style="margin-bottom:10px;">
 	      <tr>
 	      <c:forEach var="votesShareChart" items="${votesMarginResultsMainVO.constituencyVO.pieChartNames}">
 	        <td align="center"><img src="charts/${votesShareChart}" border="0"></td>
@@ -451,7 +451,7 @@ function redirectRevenueVillageLink(mandalId,mandalName,partyName)
 															</TR>
 															</c:forEach>
 														</TABLE>
-														<A href="javascript:{}" class="anchorColor" style="font-size:12px;" onclick="showAllBoothResults('${mandalsList.mandalId}', '${partyId}','${constitueciesList.constituencyId}','${electionsList.elecionType}','${electionsList.electionYear}')">View All Booths Results</A>
+														<A href="javascript:{}" class="anchorColor" style="font-size:12px;" onclick="showAllBoothResults('${mandalsList.mandalId}', '${partyId}','${constitueciesList.constituencyId}','${electionsList.elecionType}','${electionsList.electionYear}', '${mandalsList.mandalName}')">View All Booths Results</A>
 													</c:if>	
 												</DIV>
 											</TD>

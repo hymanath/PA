@@ -28,9 +28,34 @@
 	padding:0;
 	text-align:left;
 }
+.pageHead
+{
+	background-image:url("images/icons/electionResultsReport/heading.png");
+	border:0 solid #AEE2FF;
+	color:#000000;
+	font-family:MS Sans-serif;
+	font-size:17px;
+	font-weight:bold;
+	height:25px;
+	margin-bottom:15px;
+	margin-top:15px;
+	padding:10px;
+	text-align:center;	
+}	
 </STYLE>
 </HEAD>
 <BODY class="yui-skin-sam">
+	<center>
+	<table cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td valign="top"><img border="none" style="margin-top: 15px;" src="images/icons/electionResultsReport/elections_logo1.png"></td><td valign="top">
+			<div class="pageHead">All Booths Results In ${mandalName}  Mandal</div>
+			</td><td valign="top"><img border="none" style="margin-top: 15px;" src="images/icons/electionResultsReport/elections_logo2.png">
+			</td>
+		</tr>
+	</table>
+	</center>
+	<DIV id="infoText" style="color:#707070;"><B>Opp Party</B>=Opposition Party, <B>Opp Party VE</B>= Oppposition Party Votes Earned, <B>Opp Party %</B>=  Oppposition Party Votes Percentage</DIV>
 	<DIV id="dataTableDiv"></DIV> 
 </BODY>
 <SCRIPT type="text/javascript">
@@ -66,8 +91,6 @@ var allBoothsResultsArr = new Array();
 		   		}, {
 		   			key : "villagesCovered"
 		   		}, {
-		   			key : "mandal"
-		   		}, {
 		   			key : "votesEarned",parser:"number"
 		   		}, {
 		   			key : "percentage",parser:"number"
@@ -94,10 +117,6 @@ var allBoothsResultsArr = new Array();
 				label : "Villages Covered",
 				sortable : true
 			}, {
-				key : "mandal",
-				label : "Mandal",
-				sortable : true
-			}, {
 				key : "votesEarned",
 				label : "Votes Earned",
 				sortable : true
@@ -107,8 +126,8 @@ var allBoothsResultsArr = new Array();
 				sortable : true
 			}, {
 				key : "oppParty",
-				label : "Opp Party",
-				sortable : true
+				label : "Opp Party"
+				
 			}, {
 				key : "oppPartyVotesEarned",
 				label : "Opp Party VE ",
@@ -119,12 +138,17 @@ var allBoothsResultsArr = new Array();
 				label : "Opp Party %",
 				sortable : true			
 			} ];
-
-			var myConfigs = {
-		    paginator : new YAHOO.widget.Paginator({
-		        rowsPerPage: 20
-		    })
-		};
+			if(allBoothsResultsArr.length > 20)
+			{
+				var myConfigs = {
+			    paginator : new YAHOO.widget.Paginator({
+			    	rowsPerPage    : 20,
+					template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
+					rowsPerPageOptions: [20,40,60,80], 
+				    pageLinks: 20	
+			    	})
+				};
+			}
 
 
 		var myDataTable = new YAHOO.widget.DataTable("dataTableDiv",resultsColumnDefs, resultsDataSource,myConfigs);  

@@ -33,7 +33,7 @@
 		font-size:13px;
 		padding:5px;
 	}
-	h3 {
+	.h3 {
 		background-image: url("images/icons/electionResultsReport/heading.png");
 		border-left: 1px solid #CCCCCC;
 		border-right :1px solid #CCCCCC;
@@ -45,7 +45,7 @@
 		margin-bottom: 15px;
 		margin-top: 0;
 		padding:10px;
-		width: 650px;	
+			
 	}
 	.yui-skin-sam .yui-dt table {
 		border:1px solid #7F7F7F;
@@ -112,7 +112,7 @@
 </script>
 </head>
 <body>
-	<div style="margin-top:10px;"><h3>${partyName } Performance In Different Elections Of ${mandalName} Mandal By Revenue Villages</h3></div>
+	<center><div style="margin-top:10px;" class="h3">${partyName } Performance In Different Elections Of ${mandalName} Mandal By Revenue Villages</div></center>
 	<c:choose>
       <c:when test="${empty constituencyRevenueVillagesVO.electionInfoByLocations}">
 			<div style="margin-top:20px;"><b>Sorry, No Records Found</b></div>
