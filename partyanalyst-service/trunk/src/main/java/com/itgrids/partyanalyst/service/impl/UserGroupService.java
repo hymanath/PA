@@ -791,12 +791,12 @@ public class UserGroupService implements IUserGroupService {
 		/*
 		 * This method is used for sending SMS to all members in a group.
 		 */
-		public void sendSMStoGroup(String message,String[] groupMembersMobileNos){
+		public void sendSMStoGroup(String message,String[] groupMembersMobileNos,Long userId,String moduleName){
 			
 			if(log.isDebugEnabled())
 				log.debug(" Inside sendSMStoGroup() Method ......");
 			for(int i=0;i<groupMembersMobileNos.length;i++){
-				smsCountrySmsService.sendSms(message, true, groupMembersMobileNos[i]);
+				smsCountrySmsService.sendSms(message, true,userId,moduleName,groupMembersMobileNos[i]);
 			}
 		}
 		

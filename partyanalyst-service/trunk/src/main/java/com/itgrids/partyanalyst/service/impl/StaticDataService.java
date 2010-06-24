@@ -4294,8 +4294,5 @@ public class StaticDataService implements IStaticDataService {
 		return winningCandidatesInBiElectionConst;
 	}
 	
-	public static void main(String[] args){
-		System.out.println(new BigDecimal(259.0).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
-	}
 }
 

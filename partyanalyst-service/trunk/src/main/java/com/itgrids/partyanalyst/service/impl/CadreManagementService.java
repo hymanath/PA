@@ -827,7 +827,7 @@ public class CadreManagementService {
 			}
 			if(cadreMobileNos!=null && cadreMobileNos.length>0)
 				mobileNos = cadreMobileNos.length;
-			smsCountrySmsService.sendSms(message, true, cadreMobileNos);
+			smsCountrySmsService.sendSms(message, true,userID,IConstants.Cadre_Management,cadreMobileNos);
 		}else{
 			// to do ICONSTANTS.SMS_DEAR
 			for (Object mobiles : list) {
@@ -836,7 +836,7 @@ public class CadreManagementService {
 				StringBuilder cadreMessage =  new StringBuilder(IConstants.SMS_DEAR);
 				cadreMessage.append(mobileInfo[1].toString()).append(IConstants.SPACE).append(mobileInfo[2].toString()).append(IConstants.SPACE).append(message);
 
-				smsCountrySmsService.sendSms(cadreMessage.toString(), true, mobile);
+				smsCountrySmsService.sendSms(cadreMessage.toString(), true,userID,IConstants.Cadre_Management,mobile);
 				mobileNos = mobileNos + 1;
 			}
 		}

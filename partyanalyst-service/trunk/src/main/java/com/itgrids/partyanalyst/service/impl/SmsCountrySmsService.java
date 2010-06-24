@@ -1,12 +1,29 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IRegistrationDAO;
+import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
+import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
+import com.itgrids.partyanalyst.dao.ISmsTrackDAO;
+import com.itgrids.partyanalyst.dao.hibernate.SmsHistoryDAO;
 import com.itgrids.partyanalyst.keys.PropertyKeys;
+import com.itgrids.partyanalyst.model.Registration;
+import com.itgrids.partyanalyst.model.SmsHistory;
+import com.itgrids.partyanalyst.model.SmsModule;
+import com.itgrids.partyanalyst.model.SmsTrack;
 import com.itgrids.partyanalyst.service.IPartyAnalystPropertyService;
 import com.itgrids.partyanalyst.service.ISmsService;
 
@@ -20,6 +37,51 @@ public class SmsCountrySmsService implements ISmsService {
 			.getLogger(SmsCountrySmsService.class);
 
 	private IPartyAnalystPropertyService propertyService;
+	private ISmsTrackDAO smsTrackDAO;
+	private ISmsModuleDAO smsModuleDAO;
+	private ISmsHistoryDAO smsHistoryDAO;
+	private IRegistrationDAO registrationDAO;
+	private TransactionTemplate transactionTemplate = null;
+	
+	public ISmsHistoryDAO getSmsHistoryDAO() {
+		return smsHistoryDAO;
+	}
+
+	public void setSmsHistoryDAO(ISmsHistoryDAO smsHistoryDAO) {
+		this.smsHistoryDAO = smsHistoryDAO;
+	}
+
+	public ISmsModuleDAO getSmsModuleDAO() {
+		return smsModuleDAO;
+	}
+
+	public void setSmsModuleDAO(ISmsModuleDAO smsModuleDAO) {
+		this.smsModuleDAO = smsModuleDAO;
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+	public IRegistrationDAO getRegistrationDAO() {
+		return registrationDAO;
+	}
+
+	public void setRegistrationDAO(IRegistrationDAO registrationDAO) {
+		this.registrationDAO = registrationDAO;
+	}
+
+	public ISmsTrackDAO getSmsTrackDAO() {
+		return smsTrackDAO;
+	}
+
+	public void setSmsTrackDAO(ISmsTrackDAO smsTrackDAO) {
+		this.smsTrackDAO = smsTrackDAO;
+	}
 
 	public IPartyAnalystPropertyService getPropertyService() {
 		return propertyService;
@@ -29,11 +91,11 @@ public class SmsCountrySmsService implements ISmsService {
 		this.propertyService = propertyService;
 	}
 	
-	public void sendSms(String message, boolean isEnglish,
+	public void sendSms(String message, boolean isEnglish,Long userId,String moduleName,
 			String... phoneNumbers) {
 		HttpClient client = null;
 		PostMethod post = null;
-		
+		saveSmsData(message,userId,moduleName,phoneNumbers);
 		client = new HttpClient(new MultiThreadedHttpConnectionManager());
 
 		/* SETUP PROXY */
@@ -68,9 +130,11 @@ public class SmsCountrySmsService implements ISmsService {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < phoneNumbers.length; i++) {
 			sb.append(phoneNumbers[i]);
+			System.out.println("Phone Numbers--->"+phoneNumbers[i]);
 			if (i < (phoneNumbers.length-1))
 				sb.append(",");
 		}
+		
 	/*	System.out.println("Using "+propertyService
 				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_USER)+propertyService
 				.getProperty(PropertyKeys.SMS_SMSCOUNTRY_PASSWORD)+" for "+sb);*/
@@ -107,6 +171,81 @@ public class SmsCountrySmsService implements ISmsService {
 		} finally {
 			post.releaseConnection();
 		}
-
+	}
+	
+	/**
+	 * This method Tracks all the Sms's sent by the user and stores the data into corresponding tables.
+	 * @param message
+	 * @param userId
+	 * @param moduleName
+	 * @param phoneNumbers
+	 */
+	public void saveSmsData(final String message,final Long userId,final String moduleName,final String... phoneNumbers){
+		try{
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {	
+					int smsTrackCount = smsTrackDAO.getAll().size();
+					if(smsTrackCount==0){			
+						SmsTrack track = new SmsTrack();
+						track.setRegistration(registrationDAO.get(userId));
+						track.setRenewalDate(getCurrentDate());
+						track.setRenewalSmsCount(10000l);
+						track = smsTrackDAO.save(track);						
+					}
+				}
+				});
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {	
+					SmsHistory history = new SmsHistory();
+					Long moduleId=0l;
+					int counter = 1;
+					Long latestSmsTrackIdForUser = 0l;
+					for (int i = 0; i < phoneNumbers.length; i++) {
+						history.setMobileNumber(phoneNumbers[i]);
+						history.setSmsContent(message);							
+						history.setSentDate(getCurrentDate());
+						
+						
+						List<SmsTrack> result = smsTrackDAO.findLatestRenewalDate(7l);
+						for(SmsTrack latestDate : result){
+							if(counter == 1){
+								latestSmsTrackIdForUser = latestDate.getSmsTrackId();
+							}
+						}						
+						history.setSmsTrack(smsTrackDAO.get(latestSmsTrackIdForUser));
+						for(SmsModule module : smsModuleDAO.getAll()){
+							if(module.getModuleName().equalsIgnoreCase(moduleName)){
+								moduleId = module.getSmsModuleId();
+							}
+						}
+						history.setSmsModule(smsModuleDAO.get(moduleId));
+						history = smsHistoryDAO.save(history);
+					}
+				}
+			});
+		}catch(Exception e){
+			e.printStackTrace();
+			log.debug("Exception Raised--->"+e);
+		}		
+	}
+	
+	/**
+	 * This method returns Current Date in yyyy-MM-dd hh:mm:ss Format.
+	 * 
+	 * @return
+	 */
+	public String getCurrentDate(){
+		String currentDate="";
+		try{
+			java.util.Date updatedDate = new java.util.Date();
+			String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
+			SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+			currentDate = sdf.format(updatedDate); 
+			return currentDate;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return currentDate;
+		
 	}
 }
