@@ -317,9 +317,16 @@
     	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
     	<property name="staticDataService" ref="staticDataService" />
     </bean>
+    
 	<bean id="smsCountrySmsService" class="com.itgrids.partyanalyst.service.impl.SmsCountrySmsService" >
     	<!-- property name="partyAnalystPropertyService" ref="partyAnalystPropertyService" /-->
+    	<property name="smsTrackDAO" ref="smsTrackDAO"/>
+    	<property name="smsModuleDAO" ref="smsModuleDAO"/>
+    	<property name="smsHistoryDAO" ref="smsHistoryDAO"/>
+    	<property name="registrationDAO" ref="registrationDAO" />
+    	<property name="transactionTemplate" ref="transactionTemplate" />	
 	</bean>
+	
     <bean id="userCalendarService" class="com.itgrids.partyanalyst.service.impl.UserCalendarService" >
     	<property name="registrationDAO" ref="registrationDAO"/>
     	<property name="userEventsDAO" ref="userEventsDAO" />

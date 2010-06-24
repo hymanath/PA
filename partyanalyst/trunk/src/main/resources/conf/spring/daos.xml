@@ -5,6 +5,18 @@
 
 <beans>
   
+  	<bean id="smsTrackDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsTrackDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="smsModuleDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsModuleDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="smsHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsHistoryDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
   	<bean id="politicalChangesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PoliticalChangesDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
