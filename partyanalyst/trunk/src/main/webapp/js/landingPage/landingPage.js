@@ -41,6 +41,16 @@ function submitResult(result)
 	}
 }
 
+function testEnterKey(event)
+{	
+	if (event.keyCode == 13)
+	{
+		event.cancelBubble = true;
+		event.returnValue = false;
+		checkUserLogin();
+	}
+}
+
 function buildLoginPopup()
 {
 
@@ -48,22 +58,25 @@ function buildLoginPopup()
 	str	+= '<div id="loginBoxMain">';
 	str	+= '<div id="loginBoxDesc">Please Login To Know - Analyse - Act...</div>';
 	str	+= '<div id="id="loginBoxFieldsMain">';
-	str	+= '<form name="loginForm" action="index.action" method="post">';
+	str	+= '<form name="loginForm" action="index.action" onsubmit="return validateLogin();" method="post">';
 	str	+= '<table id="loginDetailsTable" width="100%">';
 	str	+= '<tr>';
 	str	+= '<td colspan="2"><span id="errorMsgDiv"></span></td>';
 	str	+= '</tr>';
 	str	+= '<tr>';
 	str	+= '<th align="left">* Username</th>';
-	str	+= '<td><input id="userName" class="input_text" name="userName" type="text"/></td>';
+	str	+= '<td><input id="userName" class="input_text" name="userName" type="text" onkeypress="testEnterKey(event)"/></td>';
 	str	+= '</tr>';
 	str	+= '<tr>';
 	str	+= '<th align="left">* Password</th>';
-	str	+= '<td><input id="password" class="input_text" name="password" type="password"/></td>';
+	str	+= '<td><input id="password" class="input_text" name="password" onkeypress="testEnterKey(event)" type="password"/></td>';
 	str	+= '</tr>';
 	str	+= '<tr>';
-	str	+= '<td colspan="2" align="right" style="padding: 20px 10px;"><span class="loginButtonSpan" onclick="checkUserLogin()">Login</span>';
-	str	+= '<span class="labelSpan" onclick="closeLoginPopup()">Cancel<span/></td>';
+	str	+= '<td colspan="2" align="right" style="padding: 20px 10px;">';
+	//str	+= '<span class="loginButtonSpan" onclick="checkUserLogin()">Login</span>';
+	//str	+= '<span class="labelSpan" onclick="closeLoginPopup()">Cancel<span/></td>';
+	str	+= '<input type="button" class="loginButtonSpan" onclick="checkUserLogin()" value="submit"/>';
+	str	+= '<input type="button" class="labelSpan" value="cancel"/>';
 	str	+= '</tr>';
 	str	+= '<tr>';
 	str	+= '<td colspan="2"  style="padding-left: 20px">';
@@ -99,7 +112,8 @@ function buildLoginPopup()
 	
     popupPanel.setBody(str);
     popupPanel.render();
-
+	
+	document.loginForm.userName.focus();
 }
 
 function checkUserLogin()
