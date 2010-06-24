@@ -34,7 +34,7 @@ public interface IUserGroupService {
     
     public UserGroupBasicDetails getUserGroupDetailsForAUserForMyGroups(String categoryType,Long groupId,Long userId);
     
-    public void sendSMStoGroup(String message,String[] groupMembersMobileNos);
+    public void sendSMStoGroup(String message,String[] groupMembersMobileNos,Long userId,String moduleName);
     
     public List<UserGroupMembersVO> getAllMembersIntheGroup(Long registrationId, Long groupId);
     
