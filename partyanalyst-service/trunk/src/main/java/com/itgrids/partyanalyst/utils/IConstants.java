@@ -187,4 +187,9 @@ public interface IConstants {
     public final static String VOTES_MARGIN = "VOTES_MARGIN";
     public final static String VOTES_PERCENT = "VOTES_PERCENT";
     
+    //SMS Modules
+    public final static String User_Groups = "User Groups";
+    public final static String Cadre_Management = "Cadre Management";
+    public final static String Influencing_People ="Influencing People";
+    
 }
