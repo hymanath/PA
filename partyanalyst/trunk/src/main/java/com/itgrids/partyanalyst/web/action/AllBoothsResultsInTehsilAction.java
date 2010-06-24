@@ -24,6 +24,7 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 	private String electionType;
 	private String electionYear;
 	private AllBoothsResultsForAPartyInAMandal allBoothsResultsForAPartyInAMandal;
+	private String mandalName;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -93,6 +94,14 @@ public class AllBoothsResultsInTehsilAction extends ActionSupport implements Ser
 	public void setAllBoothsResultsForAPartyInAMandal(
 			AllBoothsResultsForAPartyInAMandal allBoothsResultsForAPartyInAMandal) {
 		this.allBoothsResultsForAPartyInAMandal = allBoothsResultsForAPartyInAMandal;
+	}
+
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+
+	public String getMandalName() {
+		return mandalName;
 	}
 
 	public String execute () 

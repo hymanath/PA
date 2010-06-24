@@ -89,7 +89,7 @@ public class RevenueVillagePartyAllElecAction extends ActionSupport implements S
 		String chartName = "partyPerformanceInOneMandalInAllElectionsByRevenueVillages_partyId"+partyId+"_terhsilId_"+tehsilId+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         if(constituencyRevenueVillagesVO.getElectionInfoByLocations().size() > 0)
-        	ChartProducer.createLineChart("" , "Revenue Villages", "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,300,900, null);
+        	ChartProducer.createLineChart("" , "Revenue Villages", "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,300,880, null);
         constituencyRevenueVillagesVO.setChartPath(chartName);
         return SUCCESS;
 		
