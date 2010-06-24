@@ -259,7 +259,7 @@
 				</div>
 			</div>			
 		</div>
-		<div id="boothResultsSelection" style="border:1px solid #E0E0D6;text-align:left;margin-left:18px;margin-right:13px;padding:10px;"></div>
+		<div id="boothResultsSelection" style="border:1px solid #E0E0D6;text-align:left;margin-left:18px;margin-right:13px;padding:10px;margin-top:23px;"></div>
 		<div id="enlargedDIVForMandals" class="yui-skin-sam">
 			<div id="enlargedDIV"></div>
 		</div>
