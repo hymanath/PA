@@ -40,7 +40,7 @@ function buildResultsDataTable(id,dtSource)
 function buildBiElectionPageLayout()
 {
 	var biElectionPageLayout = new YAHOO.widget.Layout('biElectionPageLayout_main', { 
-	height:440,
+	height:500,
 	units: [
 			{ 
 				position: 'right', 
@@ -218,12 +218,28 @@ function buildBiElectionDistricts()
 			str += '<tr>';
 			str += '<td colspan="2">';
 			str += '	<a href="javascript:{}" onclick="openVotingTrendzWindow(\''+districtsInfo[i].districtId+'\',\''+info.constId+'\',\''+info.constName+'\')" class="districtAncNew"> '+info.constName.toUpperCase()+ '</a>';
+			if((info.constName.toUpperCase()=="VEMULAWADA") || (info.constName.toUpperCase()=="NIZAMABAD URBAN")){
+				str += '<span id="specialConstituency" style="color:red">';
+				str += ' * ';
+				str += '</span>';
+			}
 			str += '</td>';
 			str += '</tr>';
 		}
 	}
 	str += '</table>';
-
+	
+	str += '<div id="alignMessageDiv" style="margin-top:7px;">';
+	str += '<table>';
+	str += '<tr>';
+	str += '<td> &nbsp; <span id="colorCode" style="color:red;margin-top:10px;"> * </span> ';
+	str += ' &nbsp; Election Commission ';
+	str += 'has postponed elections ';
+	str += 'in these constituencies.</td>';
+	str += '</tr>';
+	str += '</table>';
+	str += '</div>';
+	
 	elmt.innerHTML = str;
 }
 
