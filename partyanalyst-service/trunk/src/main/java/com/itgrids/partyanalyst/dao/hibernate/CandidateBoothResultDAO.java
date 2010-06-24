@@ -104,14 +104,11 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 			.append("model.boothConstituencyElection.booth.maleVoters,model.boothConstituencyElection.booth.femaleVoters, ")
 			.append("model.boothConstituencyElection.booth.totalVoters, model.votesEarned, ")
 			.append("model.nomination.constituencyElection.constituency.constituencyId, ")
-			.append(" model.nomination.constituencyElection.constituency.name ");
+			.append(" model.nomination.constituencyElection.constituency.name, model.nomination.nominationId ");
 		hqlQuery.append("from CandidateBoothResult model ");
 		hqlQuery.append("where model.boothConstituencyElection.booth.tehsil.tehsilId=? ");
-		hqlQuery.append("group by model.boothConstituencyElection.constituencyElection.election.electionYear,")
-			.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
-			.append("model.nomination.party.shortName, ")
-			.append("model.nomination.constituencyElection.constituency.constituencyId, ")
-			.append("model.boothConstituencyElection.booth.boothId ");
+		hqlQuery.append("group by model.nomination.nominationId, ")
+		.append("model.boothConstituencyElection.booth.boothId ");
 		hqlQuery.append("order by model.boothConstituencyElection.constituencyElection.election.electionYear desc,")
 		.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
 		.append("model.nomination.constituencyElection.constituency.constituencyId, ")
@@ -329,14 +326,11 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 			.append("model.boothConstituencyElection.booth.maleVoters,model.boothConstituencyElection.booth.femaleVoters, ")
 			.append("model.boothConstituencyElection.booth.totalVoters, model.votesEarned, ")
 			.append("model.nomination.constituencyElection.constituency.constituencyId, ")
-			.append(" model.nomination.constituencyElection.constituency.name ");
+			.append(" model.nomination.constituencyElection.constituency.name, model.nomination.nominationId ");
 		hqlQuery.append("from CandidateBoothResult model ");
 		hqlQuery.append("where model.boothConstituencyElection.villageBoothElection.township.townshipId=? ");
-		hqlQuery.append("group by model.boothConstituencyElection.constituencyElection.election.electionYear,")
-			.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
-			.append("model.nomination.party.shortName, ")
-			.append("model.nomination.constituencyElection.constituency.constituencyId, ")
-			.append("model.boothConstituencyElection.booth.boothId ");
+		hqlQuery.append("group by model.nomination.nominationId, ")
+		.append("model.boothConstituencyElection.booth.boothId ");
 		hqlQuery.append("order by model.boothConstituencyElection.constituencyElection.election.electionYear desc,")
 		.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
 		.append("model.nomination.constituencyElection.constituency.constituencyId, ")

@@ -253,7 +253,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			partyWiseElectionResultVOList.add(partyWiseElectionResultsVO);
 		}
 		electionWiseMandalPartyResultListVO.setElectionWiseMandalPartyResultVOList(electionWiseMandalPartyResultVOList);
-		electionWiseMandalPartyResultListVO.setPartyWiseElectionResultsVOList(partyWiseElectionResultVOList);
+		
 		//Parties Wise Results In All AC PC Elections Data Provider For Chart 
 		List<PartyResultVO> partyResultsForChart = generatingPartyWiseResultsFromVO(partyWiseElectionResultVOList);
 		electionWiseMandalPartyResultListVO.setAllPartiesAllElectionResults(partyResultsForChart);
@@ -403,12 +403,12 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			Map<Long, List<PartyGenderWiseVotesVO>> partyWiseResultsMap = new LinkedHashMap<Long, List<PartyGenderWiseVotesVO>>();
 			List<PartyGenderWiseVotesVO> partyWiseConstituencyResultList = null;
 			for(PartyGenderWiseVotesVO partyGenderWiseVotesVO:constituencyResultList){
-				Long partyId = partyGenderWiseVotesVO.getPartyID();
-				partyWiseConstituencyResultList = partyWiseResultsMap.get(partyId);
+				Long rank = partyGenderWiseVotesVO.getRank();
+				partyWiseConstituencyResultList = partyWiseResultsMap.get(rank);
 				if(partyWiseConstituencyResultList == null)
 					partyWiseConstituencyResultList = new ArrayList<PartyGenderWiseVotesVO>();
 				partyWiseConstituencyResultList.add(partyGenderWiseVotesVO);
-				partyWiseResultsMap.put(partyId, partyWiseConstituencyResultList);
+				partyWiseResultsMap.put(rank, partyWiseConstituencyResultList);
 			}
 			getConstiteuncyWisePartyResults(constituencyWiseDataForMandalVO, partyWiseResultsMap);
 			allConstituenciesInfo.add(constituencyWiseDataForMandalVO);

@@ -19,6 +19,7 @@ public class ElectionWiseMandalPartyResultVO  implements Serializable {
 	private Long maleOrFemaleValidVotes;
 	private List<ConstituencyWiseDataForMandalVO> constituencyWiseDataForMandalVOs; 
 	private List<PartyResultsVO> partyResultsVO;
+	private List<PartyNominationVO> partyNominations;
 	private List<PartyElectionResultVO> partyResultsInElection;
 	private BoothTypeDetailsVO boothTypeDetailsVO;
 	
@@ -151,6 +152,14 @@ public class ElectionWiseMandalPartyResultVO  implements Serializable {
 			List<PartyElectionResultVO> partyResultsInElection) {
 		this.partyResultsInElection = partyResultsInElection;
 	}
+	
+	public List<PartyNominationVO> getPartyNominations() {
+		return partyNominations;
+	}
+
+	public void setPartyNominations(List<PartyNominationVO> partyNominations) {
+		this.partyNominations = partyNominations;
+	}
 
 	@Override
 	public boolean equals(Object obj){
@@ -162,4 +171,5 @@ public class ElectionWiseMandalPartyResultVO  implements Serializable {
 	public int hashCode(){
 		return this.electionYear.hashCode() + this.electionType.hashCode();
 	}
+
 }
