@@ -1151,7 +1151,7 @@ function buildZptcResults(results){
 	assignToPartyDataArray = new Array();
 	
 	var candLink = document.getElementById("zptcCandidateLink");
-	var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Details</a>';
+	var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 	candLink.innerHTML = linkRef;
 	
 	for(var i in results)
@@ -1179,7 +1179,7 @@ function buildMptcResults(results){
 	assignToPartyDataArray = new Array();
 
 	var candLink = document.getElementById("mptcCandidateLink");
-	var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Details</a>';
+	var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 	candLink.innerHTML = linkRef;
 	
 	for(var i in results)
