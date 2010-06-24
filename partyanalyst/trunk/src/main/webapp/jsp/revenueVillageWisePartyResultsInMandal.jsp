@@ -45,8 +45,17 @@
 		margin-bottom: 15px;
 		margin-top: 0;
 		padding:10px;
-		width: 600px;	
+		width: 650px;	
 	}
+	.yui-skin-sam .yui-dt table {
+		border:1px solid #7F7F7F;
+		border-collapse:separate;
+		border-spacing:0;
+		font-family:verdana;
+		font-size:12px;
+		margin:0;
+		padding:0;
+    }
     </style>
 <script type="text/javascript">
 	function createDataTable(divId, tableId){

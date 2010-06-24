@@ -62,7 +62,9 @@
 	<link rel="stylesheet" type="text/css" href="styles/biElectionPage/biElectionPage.css">
 
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
-
+    <style type="text/css">
+	
+    </style>
 	<script  type="text/javascript">
 		var districtsInfo = new Array();
 		var localizationObj = '';
@@ -272,7 +274,7 @@
 
 			var str='';
 			str += '<div id="districtsInfoRadioElmtDiv">';
-			str += '<table>';
+			str += '<table width="100%">';
 			str += '<tr>';
 			str += '<th>';
 			str += 'Select District : ';

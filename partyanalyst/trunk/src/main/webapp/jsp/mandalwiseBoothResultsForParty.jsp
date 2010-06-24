@@ -29,6 +29,17 @@
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">	
 	
 <STYLE>
+
+.candidateDetailsStyle {
+	background-color:#EFF3F7;
+	border:1px solid #96B4D3;
+	color:#247CD4;
+	font-size:13px;
+	font-weight:bold;
+	margin-bottom:5px;
+	margin:10px;
+	padding:4px;
+}
 h3 {
 	background-image: url("images/icons/electionResultsReport/heading.png");
 	border-left: 1px solid #CCCCCC;
@@ -319,6 +330,14 @@ function callAjax(rparam,jsObj,url)
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
+function redirectRevenueVillageLink(mandalId,mandalName,partyName)
+{
+   //alert(" MandalId :" + mandalId + "  MandalName :" + mandalName + "  Party :" + partyName + " partyId :" + partyId);
+   
+	var browser1 = window.open("<s:url action="revenueVillagePartyAllElecAction.action"/>?partyId="+partyId+"&partyName="+partyName+"&tehsilId="+mandalId+"&mandalName="+mandalName,"browser1","scrollbars=yes,height=600,width=900,left=200,top=200");
+	browser1.focus();
+}
+
 </SCRIPT>
 </HEAD>
 <BODY>
@@ -349,6 +368,12 @@ function callAjax(rparam,jsObj,url)
 			 <c:if test="${(errorFlag) != 1}">
 			        		<center>
 			        		<table>
+							<tr>
+							  <td align="left"><a href="javascript:{}" onclick="redirectRevenueVillageLink(${mandalsList.mandalId},'${mandalsList.mandalName}','${partyName}')" style="text-decoration:none;" class="candidateDetailsStyle" >Show RevenueVillage Wise Trendz</a>
+							  </td>
+							</tr>
+							<tr>
+							</tr>
 			        		<tr>
 			        		  <td><img src="charts/${mandalsList.chartName}" border="0" /></td>
 			        		</tr>
