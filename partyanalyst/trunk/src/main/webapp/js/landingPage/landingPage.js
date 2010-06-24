@@ -76,7 +76,7 @@ function buildLoginPopup()
 	//str	+= '<span class="loginButtonSpan" onclick="checkUserLogin()">Login</span>';
 	//str	+= '<span class="labelSpan" onclick="closeLoginPopup()">Cancel<span/></td>';
 	str	+= '<input type="button" class="loginButtonSpan" onclick="checkUserLogin()" value="submit"/>';
-	str	+= '<input type="button" class="labelSpan" value="cancel"/>';
+	str	+= '<input type="button" class="labelSpan" value="cancel" onclick="closeLoginPopup()"/>';
 	str	+= '</tr>';
 	str	+= '<tr>';
 	str	+= '<td colspan="2"  style="padding-left: 20px">';
