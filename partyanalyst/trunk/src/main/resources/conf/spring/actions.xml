@@ -359,7 +359,8 @@
 	</bean>
 	
 	<bean id="mandalwiseBoothResultsForPartyAction" class="com.itgrids.partyanalyst.web.action.MandalwiseBoothResultsForPartyAction" singleton="false">
-		<property name="biElectionPageService" ref="biElectionPageService" />						
+		<property name="biElectionPageService" ref="biElectionPageService" />	
+		<property name="constituencyPageService" ref="constituencyPageService"/>					
 	</bean>
 	
 	<bean id="revenueVillagePartyAllElecAction" class="com.itgrids.partyanalyst.web.action.RevenueVillagePartyAllElecAction" singleton="false">
