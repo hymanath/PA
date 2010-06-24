@@ -663,6 +663,7 @@ var userGrpsObj={
 		{
 			numbers: numbersArray,
 			message:message,	
+			module:"User Groups",
 			task:"sendSMS"			
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);

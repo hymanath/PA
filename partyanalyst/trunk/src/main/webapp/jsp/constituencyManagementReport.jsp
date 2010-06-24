@@ -391,7 +391,8 @@
 			var jsObj= 
 				{
 					numbers: numbersArr,
-					message:message,	
+					message:message,
+					module:"Influencing People",	
 					task:"sendSMS"			
 				}
 				var param="task="+YAHOO.lang.JSON.stringify(jsObj);
