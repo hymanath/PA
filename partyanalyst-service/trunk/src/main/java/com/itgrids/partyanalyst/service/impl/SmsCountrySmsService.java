@@ -206,7 +206,7 @@ public class SmsCountrySmsService implements ISmsService {
 						history.setSentDate(getCurrentDate());
 						
 						
-						List<SmsTrack> result = smsTrackDAO.findLatestRenewalDate(7l);
+						List<SmsTrack> result = smsTrackDAO.findLatestRenewalDate(userId);
 						for(SmsTrack latestDate : result){
 							if(counter == 1){
 								latestSmsTrackIdForUser = latestDate.getSmsTrackId();
