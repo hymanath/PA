@@ -217,6 +217,7 @@
 		<property name="regionServiceData" ref="regionServiceDataImp"></property>
 		<property name="problemManagementService" ref="problemManagementService"></property>		
 		<property name="problemManagementReportService" ref="problemManagementReportService"/>
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 	<bean id="initailConstituencyManagementAction" class="com.itgrids.partyanalyst.web.action.InitailConstituencyManagementAction" singleton="false">				
