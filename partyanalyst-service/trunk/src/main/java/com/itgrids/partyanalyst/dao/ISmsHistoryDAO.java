@@ -8,14 +8,15 @@ import com.itgrids.partyanalyst.model.SmsHistory;
 
 public interface ISmsHistoryDAO extends GenericDao<SmsHistory, Long> {
 
-	List<SmsHistory> findByHistoryId(Long historyId);
+	public List<SmsHistory> findByHistoryId(Long historyId);
 	
-	List<SmsHistory> findBySentDate(String sentDate);
+	public List<SmsHistory> findBySentDate(String sentDate);
 	
-	List<SmsHistory> findByMobileNumber(String mobileNumber);
+	public List<SmsHistory> findByMobileNumber(String mobileNumber);
 	
-	List<SmsHistory> findByLocationType(String locationType);
+	public List<SmsHistory> findByLocationType(String locationType);
 	
-	List<SmsHistory> findByLocationId(Long locationId);
+	public List<SmsHistory> findByLocationId(Long locationId);
 	
+	public List<Long> getTotalSmsSentByUserAfterRenewal(Long trackId);
 }
