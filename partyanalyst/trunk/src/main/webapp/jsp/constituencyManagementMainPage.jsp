@@ -128,11 +128,12 @@
 		{
 			background-color:#EDF5FF;
 		}
-		#alertMessage,#NewIssuesAlertMessage, #clsfdIssuesAlertMsg,#assignedIssuesAlertMsg, #progressedIssAlertMsg,#pendingIssAlertMsg
+		#alertMessage,#NewIssuesAlertMessage, #clsfdIssuesAlertMsg,#assignedIssuesAlertMsg, #progressedIssAlertMsg,#pendingIssAlertMsg, #locationAlertMsg
 		{
 			text-align:left;
 			font-weight:bold;
 			color:red;
+			margin:8px;
 		}
 		#distEPapersTabContent_body yui-skin-sam yui-dt-sortable
 		{
@@ -213,10 +214,29 @@
 				padding:0 10px;
 				text-align:center;
 		}
+		fieldset {
+			border:4px solid #CFD6DF;
+			margin-bottom:10px;
+			padding:10px;	
+		}
+		legend {
+			background-color:#567AAF;
+			color:#FFFFFF;
+			font-size:12px;
+			padding:5px;
+			margin: 10px;
+		}
+		.requiredFont
+		{
+			color:red;
+			margin-left:5px;
+		}
+		
 		
 	</style>
 
 <script type="text/javascript">
+	var accessType = '${accessType}';
 	
 	var Localization = { <%
 			
@@ -308,7 +328,10 @@
 			String designation = rb.getString("designation"); 
 			String newIssuesAlertMessage = rb.getString("newIssuesAlertMessage");
 			String pendingFrom = rb.getString("pendingFrom");
-			String comments = rb.getString("comments");			
+			String comments = rb.getString("comments");
+			String PCONSTITUENCY = rb.getString("PCONSTITUENCY");
+			String ACONSTITUENCY = rb.getString("ACONSTITUENCY");
+			String locationAlert = rb.getString("validLocation");
 		  %> }
 	
 	var outerTab,problemMgmtTabs,newProbDataTable, classifiedDataTable,assignedIssDataTable, progessIssuesDataTable, classifyDTRecord,deptCellEditor,pendingIssuesDataTable, fixedIssuesDataTable, ePapersDataTable;
@@ -342,7 +365,8 @@
 							mandalArr:[],
 							villageArr:[],
 							hamletArr:[],
-							allDistrictsByStateArr:[]
+							allDistrictsByStateArr:[],
+							parliamentConstituency:[]
 						};
 	var constMgmtMainObj={
 							votersArray:[],
@@ -471,7 +495,12 @@
 			}			
 		}
 	}
-	
+	function openAddNewProblemWindow()
+	{	
+		var browser1 = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
+						 
+		 browser1.focus();
+	}
 	function callAjax(param,jsObj,url){
 		var myResults;
  					
@@ -536,10 +565,15 @@
 									} else if(jsObj.task == "getSelectedDistPaper")
 									{
 										updateSelectedDistUrls(myResults)
-									} else
+									} else if(jsObj.location == "hamlet")
+									{
+										fillHamletOptions(myResults);
+									} 
+									else
 									{
 										buildSelectOption(myResults,jsObj);										
-									}
+									} 
+									
 							}catch (e) {   
 								var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
 								ajaxImgSpanElmt.style.display = 'none';
@@ -554,6 +588,27 @@
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
+
+	function fillHamletOptions(results)
+	{
+		var phamletFieldEl = document.getElementById("hamletField");
+		removeSelectElements(phamletFieldEl);
+		for(var i in results)
+		{
+			var opElmt=document.createElement('option');
+			opElmt.value=results[i].id;
+			opElmt.text=results[i].name;
+		
+			try
+				{
+				phamletFieldEl.add(opElmt,null); // standards compliant
+				}
+			catch(ex)
+				{
+				phamletFieldEl.add(opElmt); // IE only
+				}
+		}
+	}
 	
 	function showVotersData(results,jsObj)
 	{	
@@ -779,6 +834,28 @@
 
 	function getTownshipsForMandal(name,value,choice)
 	{
+		var locationAlertEl =  document.getElementById("locationAlertMsg");
+		locationAlertEl.innerHTML = '';
+		if(value=='0')
+		{
+			locationAlertEl.innerHTML = '<P><%=locationAlert%></P>';
+			return;
+		}
+		var villageFieldEl = document.getElementById("villageField");
+		var villageFieldElOptions = villageFieldEl.options;
+		var hamletFieldEl = document.getElementById("hamletField");
+		var hamletFieldElOptions = hamletFieldEl.options;
+
+		if(villageFieldElOptions.length != 0)
+		{
+			villageFieldEl.selectedIndex= '0';
+		}
+
+		if(hamletFieldElOptions.length != 0)
+		{
+			hamletFieldEl.selectedIndex= '0';
+		}
+		
 		var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
 		ajaxImgSpanElmt.style.display = 'block';
 		var jsObj=
@@ -798,6 +875,49 @@
 	
 	function getnextList(name,value,choice)
 	{
+		var locationAlertEl =  document.getElementById("locationAlertMsg");
+		locationAlertEl.innerHTML = '';
+		if(value=='0')
+		{
+			locationAlertEl.innerHTML = '<P><%=locationAlert%></P>';
+			return;
+		}
+		var districtFieldEl = document.getElementById("districtField");
+		var districtFieldElOptions = districtFieldEl.options; 
+		var constituencyFieldEl = document.getElementById("constituencyField");
+		var constituencyFieldElOptions = constituencyFieldEl.options;
+		var mandalFieldEl = document.getElementById("mandalField");
+		var mandalFieldElOptions = mandalFieldEl.options;
+		var villageFieldEl = document.getElementById("villageField");
+		var villageFieldElOptions = villageFieldEl.options;
+		var hamletFieldEl = document.getElementById("hamletField");
+		var hamletFieldElOptions = hamletFieldEl.options;
+
+		if(districtFieldElOptions.length != 0)
+		{
+			districtFieldEl.selectedIndex= '0';
+		}
+		
+		if(constituencyFieldElOptions.length != 0)
+		{
+			constituencyFieldEl.selectedIndex= '0';
+		}
+
+		if(mandalFieldElOptions.length != 0)
+		{
+			mandalFieldEl.selectedIndex= '0';
+		}
+
+		if(villageFieldElOptions.length != 0)
+		{
+			villageFieldEl.selectedIndex= '0';
+		}
+
+		if(hamletFieldElOptions.length != 0)
+		{
+			hamletFieldEl.selectedIndex= '0';
+		}
+		
 		var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
 		ajaxImgSpanElmt.style.display = 'block';
 		var jsObj=
@@ -815,6 +935,43 @@
 	
 	function getConstituencyList(name,value,choice)
 	{
+		var locationAlertEl =  document.getElementById("locationAlertMsg");
+		locationAlertEl.innerHTML = '';
+		if(value=='0')
+		{
+			locationAlertEl.innerHTML = '<P><%=locationAlert%></P>';
+			return;
+		}
+		var constituencyFieldEl = document.getElementById("constituencyField");
+		var constituencyFieldElOptions = constituencyFieldEl.options;
+		var mandalFieldEl = document.getElementById("mandalField");
+		var mandalFieldElOptions = mandalFieldEl.options;
+		var villageFieldEl = document.getElementById("villageField");
+		var villageFieldElOptions = villageFieldEl.options;
+		var hamletFieldEl = document.getElementById("hamletField");
+		var hamletFieldElOptions = hamletFieldEl.options;
+
+			
+		if(constituencyFieldElOptions.length != 0)
+		{
+			constituencyFieldEl.selectedIndex= '0';
+		}
+
+		if(mandalFieldElOptions.length != 0)
+		{
+			mandalFieldEl.selectedIndex= '0';
+		}
+
+		if(villageFieldElOptions.length != 0)
+		{
+			villageFieldEl.selectedIndex= '0';
+		}
+
+		if(hamletFieldElOptions.length != 0)
+		{
+			hamletFieldEl.selectedIndex= '0';
+		}
+		
 		var jsObj=
 			{
 					type:"cadreDetails",
@@ -830,6 +987,36 @@
 	
 	function getMandalList(name,value,choice)
 	{
+		var locationAlertEl =  document.getElementById("locationAlertMsg");
+		locationAlertEl.innerHTML = '';
+		if(value=='0')
+		{
+			locationAlertEl.innerHTML = '<P><%=locationAlert%></P>';
+			return;
+		}
+		
+		var mandalFieldEl = document.getElementById("mandalField");
+		var mandalFieldElOptions = mandalFieldEl.options;
+		var villageFieldEl = document.getElementById("villageField");
+		var villageFieldElOptions = villageFieldEl.options;
+		var hamletFieldEl = document.getElementById("hamletField");
+		var hamletFieldElOptions = hamletFieldEl.options;
+
+		if(mandalFieldElOptions.length != 0)
+		{
+			mandalFieldEl.selectedIndex= '0';
+		}
+
+		if(villageFieldElOptions.length != 0)
+		{
+			villageFieldEl.selectedIndex= '0';
+		}
+
+		if(hamletFieldElOptions.length != 0)
+		{
+			hamletFieldEl.selectedIndex= '0';
+		}
+		
 		var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
 		ajaxImgSpanElmt.style.display = 'block';
 		var jsObj=
@@ -847,6 +1034,13 @@
 	
 	function getVotersForHamlet(name,value)
 	{
+		var locationAlertEl =  document.getElementById("locationAlertMsg");
+		locationAlertEl.innerHTML = '';
+		if(value=='0')
+		{
+			locationAlertEl.innerHTML = '<P><%=locationAlert%></P>';
+			return;
+		}
 		var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
 		var mandalID = document.getElementById("mandalField").value;
 		ajaxImgSpanElmt.style.display = 'block';
@@ -1572,25 +1766,42 @@
 	function buildOuterTabView()
 	{
 		outerTab = new YAHOO.widget.TabView();		
-		var constTabContent ='<div id="constituencyMgmtTabContentDiv">';		
+		var constTabContent ='<div id="constituencyMgmtTabContentDiv">';				
 		constTabContent+='<div id="constMgmtTabContentDiv_head" align="left">';
+		constTabContent+='<fieldset>';
+		constTabContent+='<div style="color:#707070;font-weight:bold;font-size:12px;">Please select from the following list boxes to view detailed statistics by hamlet level</div>';
+		constTabContent+='<P >Fields marked with <font class="requiredFont"> * </font> are mandatory</P>';
+		constTabContent+='<div id="locationAlertMsg" align="left"></div>';
 		constTabContent+='<table width="100%">';
 		constTabContent+='<tr>';
-		constTabContent+='<td><%=STATE%></td>';
+		constTabContent+='<td><%=STATE%><font class="requiredFont"> * </font></td>';
 		constTabContent+='<td><select id="stateField" class="selectWidth" name="state" onchange="getnextList(this.name,this.options[this.selectedIndex].value,false)" width="10">';
 		for(var i in locationDetails.stateArr)
 		{
 			constTabContent+='<option value='+locationDetails.stateArr[i].id+'>'+locationDetails.stateArr[i].value+'</option>';
 		}
 		constTabContent+='</select></td>';
-		constTabContent+='<td><%=DISTRICT%></td>';
-		constTabContent+='<td><select id="districtField" class="selectWidth" name="district"  onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,false)">';
-		for(var i in locationDetails.districtArr)
-		{
-			constTabContent+='<option value='+locationDetails.districtArr[i].id+'>'+locationDetails.districtArr[i].value+'</option>';
+		if(accessType != 'MP')
+		{	
+			constTabContent+='<td><%=DISTRICT%><font class="requiredFont"> * </font></td>';
+			constTabContent+='<td><select id="districtField" class="selectWidth" name="district"  onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,false)">';
+			for(var i in locationDetails.districtArr)
+			{
+				constTabContent+='<option value='+locationDetails.districtArr[i].id+'>'+locationDetails.districtArr[i].value+'</option>';
+			}
+			constTabContent+='</select></td>';
 		}
-		constTabContent+='</select></td>';
-		constTabContent+='<td><%=CONSTITUENCY%></td>';
+		if(accessType == 'MP')
+		{
+			constTabContent+='<td><%=PCONSTITUENCY%><font class="requiredFont"> * </font></td>';
+			constTabContent+='<td><select id="pconstituencyField" class="selectWidth" name="pconstituency">';
+			for(var i in locationDetails.parliamentConstituency)
+			{
+				constTabContent+='<option value='+locationDetails.parliamentConstituency[i].id+'>'+locationDetails.parliamentConstituency[i].value+'</option>';
+			} 
+			constTabContent+='</select></td>';
+		}			
+		constTabContent+='<td><%=ACONSTITUENCY%><font class="requiredFont"> * </font></td>';
 		constTabContent+='<td><select id="constituencyField" class="selectWidth" name="constituency"  onchange="getMandalList(this.name,this.options[this.selectedIndex].value,false)">';
 		for(var i in locationDetails.constituencyArr)
 		{
@@ -1599,21 +1810,21 @@
 		constTabContent+='</select></td>';
 		constTabContent+='</tr>';
 		constTabContent+='<tr>';
-		constTabContent+='<td><%=MANDAL%></td>';
+		constTabContent+='<td><%=MANDAL%><font class="requiredFont"> * </font></td>';
 		constTabContent+='<td><select id="mandalField" class="selectWidth" name="mandal" onchange="getTownshipsForMandal(this.name,this.options[this.selectedIndex].value,false)">';
 		for(var i in locationDetails.mandalArr)
 		{
 			constTabContent+='<option value='+locationDetails.mandalArr[i].id+'>'+locationDetails.mandalArr[i].value+'</option>';
 		}
 		constTabContent+='</select></td>';
-		constTabContent+='<td><%=VILLAGE%></td>';
-		constTabContent+='<td><select class="selectWidth" id="villageField" name="village" onchange="getnextList(this.name,this.options[this.selectedIndex].value,false)">';
+		constTabContent+='<td><%=VILLAGE%><font class="requiredFont"> * </font></td>';
+		constTabContent+='<td><select class="selectWidth" id="villageField" name="village" onchange="getHamletList(this.name,this.options[this.selectedIndex].value,false)">';
 		for(var i in locationDetails.villageArr)
 		{
 			constTabContent+='<option value='+locationDetails.villageArr[i].id+'>'+locationDetails.villageArr[i].value+'</option>';
 		}
 		constTabContent+='</select></td>';
-		constTabContent+='<td><%=HAMLET%></td>';
+		constTabContent+='<td><%=HAMLET%><font class="requiredFont"> * </font></td>';
 		constTabContent+='<td><select class="selectWidth" id="hamletField" name="hamlet" onchange="getVotersForHamlet(this.name,this.options[this.selectedIndex].value)">';
 		for(var i in locationDetails.hamletArr)
 		{
@@ -1624,7 +1835,8 @@
 		constTabContent+='<tr><td colspan="6" align="center">';
 		constTabContent+='<span id="ajaxImgSpan"><img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/></span>';
 		constTabContent+='</td></tr>';
-		constTabContent+='</table>';				
+		constTabContent+='</table>';
+		constTabContent+='</fieldset>';				
 		constTabContent+='</div>';
 		constTabContent+='<div id="constMgmtTabContentDiv_body"></div>';
 		constTabContent+='<div id="constMgmtTabContentDiv_footer"></div>';
@@ -1797,7 +2009,7 @@
 												container: "newProblemTabContentDiv_footer"  
 												});
 
-			addProblemButton.on("click", buildAddNewProblemPopup); 
+			addProblemButton.on("click", openAddNewProblemWindow); 
 			 		
 
 			assignButton = new YAHOO.widget.Button({ 
@@ -3195,9 +3407,62 @@
 
 		var txtDate1 = document.getElementById("existingFromText"); 
 		txtDate1.value = day + "/" + month + "/" + year; 
-		
-
 	}
+
+	function getHamletList(name,value,choice)
+	{	
+		var hamletFieldEl = document.getElementById("hamletField");
+		var hamletFieldElOptions = hamletFieldEl.options;
+		if(hamletFieldElOptions.length != 0)
+		{
+			hamletFieldEl.selectedIndex= '0';
+		}
+		var alertEl = document.getElementById("locationAlertMsg");
+		alertEl.innerHTML = '';
+		if(value == 0)
+		{
+			alertEl.innerHTML ='<P><%=locationAlert%></P>';
+			return;
+		}
+		var ajaxImgSpanElmt = document.getElementById("ajaxImgSpan");
+		if(ajaxImgSpanElmt.style.display == 'none')
+			{
+			ajaxImgSpanElmt.style.display = 'block';
+			}
+		var phamletFieldEl = document.getElementById("hamletField");
+		var phamletFieldElOptions = phamletFieldEl.options;
+		
+		if(phamletFieldElOptions.length != 0)
+		{
+			phamletFieldEl.selectedIndex= '0';
+		}	
+		
+		var jsObj=
+			{
+					type:"cadreDetails",
+					reportLevel:name,
+					selected:value,
+					changed:choice,
+					location: "hamlet"
+			}
+		
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "cadreRegisterAjaxAction.action?"+rparam;						
+			callAjax(rparam,jsObj,url);
+	}
+
+	function removeSelectElements(elmt)
+	{
+		if(!elmt)
+			return;
+
+		var len=elmt.length;			
+		for(i=len-1;i>=0;i--)
+		{
+			elmt.remove(i);
+		}	
+	}
+	
 	function getPersonDetails(value)
 	{
 		
@@ -3516,6 +3781,14 @@ var ob={
 			value:'${probSources.name}'
 		};
 problemsMainObj.problemSourcesArr.push(ob);	
+</c:forEach>
+<c:forEach var="parlConsti"  items="${parliamentConstituencyList}" >
+var ob={
+			id:'${parlConsti.id}',
+			value:'${parlConsti.name}'
+		};
+locationDetails.parliamentConstituency.push(ob);
+console.log(locationDetails.parliamentConstituency);
 </c:forEach>
 getTodayDateTime();
 buildConstituencyLayout();

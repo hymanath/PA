@@ -86,7 +86,7 @@ var localizationObj={
 </TABLE>
 </CENTER>
 <DIV><P>Fields marked with <font class="requiredFont"> * </font> are mandatory</P></DIV>
-<s:form action="addNewProblemSubmitAction" method="GET" theme="simple" name="form" onsubmit="return validateClientSide()">
+<s:form action="addNewProblemSubmitAction" method="POST" theme="simple" name="form" onsubmit="return validateClientSide()">
 
  
 <div id = "addNewProblemMainDiv">
