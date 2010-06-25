@@ -359,7 +359,7 @@
 				str+='<div id="treeDiv">';
 				str+='	<span><h4><u>Voting Details in Mandal/s:</u></h4></span>';
 				str+='	<div id="treeDataDiv" class="yui-skin-sam"></div>';
-				str+='	<div  id="indexDataDiv"> AC* - Assembly Constituency, PC* - Parliament Constituency, IC* - Impact On Constituency</div>';
+				str+='	<div  id="indexDataDiv"> AC* - Assembly Candidate, PC* - Parliament Candidate, IC* - Impact On Constituency</div>';
 				str+='</div>';
 			str+='</div>';
 
@@ -445,6 +445,8 @@
 			}, {
 				key : "villagesCovered"
 			}, {
+				key : "totalVoters",parser:"number"
+			}, {
 				key : "acValidVotes",parser:"number"
 			}, {
 				key : "acVotesEarned",parser:"number"
@@ -462,35 +464,40 @@
 		var resultsColumnDefs = [ {
 			key : "partNO",
 			parser:"number",
-			label : "Booth No",
+			label : "Part No",
 			sortable : true
 		}, {
 			key : "villagesCovered",
 			label : "Villages Covered",
 			sortable : true
 		}, {
+			key : "totalVoters",
+			parser:"number",
+			label : "Total Voters",
+			sortable : true
+		}, {
 			key : "acValidVotes",
 			parser:"number",
-			label : "(A)Valid Votes",
+			label : "(A)Polled Votes",
 			sortable : true
 		}, {
 			key : "acVotesEarned",
 			parser:"number",
-			label : "(A)Votes Earned",
+			label : "AC* Votes",
 			sortable : true
 		}, {
 			key : "pcVotesEarned",
 			parser:"number",
-			label : "(P)Votes Earned",
+			label : "PC* Votes",
 			sortable : true
 		}, {
 			key : "acPercentage",
 			parser:"number",
-			label : "(A) %",
+			label : "AC* %",
 			sortable : true
 		}, {
 			key : "pcPercentage",
-			label : "(P) %",
+			label : "PC* %",
 			parser:"number",
 			sortable : true
 		}, {
@@ -516,71 +523,6 @@
       
 	}
 	
-	function buildBoothDataTable()
-	{
-		
-		/*var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-			.get("boothVotingDetailsTable"));*/
-		var resultsDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom
-			.get("boothVotingDetailsTable"));
-		resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
-		resultsDataSource.responseSchema = {
-			fields : [ {
-				key : "partNo",parser:"number"
-			}, {
-				key : "villagesCovered"
-			}, {
-				key : "pcPercentage",parser:"number"
-			}, {
-				key : "pcValidVotes",parser:"number"
-			}, {
-				key : "acPercentage",parser:"number"
-			}, {
-				key : "acValidVotes",parser:"number"
-			}, {
-				key : "percentageDifference",parser:"number"
-			}]
-		};		
-
-		var resultsColumnDefs = [ {
-			key : "partNo",
-			parser:"number",
-			label : "Booth No",
-			sortable : true
-		}, {
-			key : "villagesCovered",
-			label : "villages&nbspCovered",
-			sortable : true
-		}, {
-			key : "pcPercentage",
-			label : "Percentage(P)",
-			parser:"number",
-			sortable : true
-		}, {
-			key : "pcValidVotes",
-			parser:"number",
-			label : "Valid&nbspVotes(P)",
-			sortable : true
-		}, {
-			key : "acPercentage",
-			parser:"number",
-			label : "Percentage(A)",
-			sortable : true
-		}, {
-			key : "acValidVotes",
-			parser:"number",
-			label : "Valid&nbspVotes(A)",
-			sortable : true
-		}, {
-			key : "percentageDifference",
-			parser:"number",
-			label : "% Diff",
-			sortable : true
-		} ];
-		
-		var myDataTable = new YAHOO.widget.DataTable("mandalVotingDiv",resultsColumnDefs, resultsDataSource,{});  		
-
-	}
 	function buildParliamemtSelect(jObj,results)
 	{
 		if(jObj.task=="getParliament")
