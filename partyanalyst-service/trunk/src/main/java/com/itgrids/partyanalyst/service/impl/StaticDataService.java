@@ -3967,19 +3967,21 @@ public class StaticDataService implements IStaticDataService {
 		if(locationType.equalsIgnoreCase(IConstants.TEHSIL_LEVEL)){
 			List list = delimitationConstituencyMandalDAO.getLatestAssemblyConstitueciesOfTehsil(locationId);
 			StringBuilder acIds = new StringBuilder();
-			Object[] stateDistrict = (Object[])list.get(0);
-			state = new SelectOptionVO((Long)stateDistrict[0], stateDistrict[1].toString());
-			districts.add(new SelectOptionVO((Long)stateDistrict[2], stateDistrict[3].toString()));
-			for(Object[] values:(List<Object[]>)list){
-				acIds.append(IConstants.COMMA).append(stateDistrict[4]);
-				acs.add(new SelectOptionVO((Long)values[4], values[5].toString()));
-			}
-			
-			List pcsInfo = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituencyForListOfAssemblyConstituency
-																	(acIds.toString().substring(1), IConstants.DELIMITATION_YEAR);
-			
-			for(Object[] values:(List<Object[]>)pcsInfo)
+			if(list.size() != 0){
+				Object[] stateDistrict = (Object[])list.get(0);
+				state = new SelectOptionVO((Long)stateDistrict[0], stateDistrict[1].toString());
+				districts.add(new SelectOptionVO((Long)stateDistrict[2], stateDistrict[3].toString()));	
+				for(Object[] values:(List<Object[]>)list){
+					acIds.append(IConstants.COMMA).append((Long)values[4]);
+					acs.add(new SelectOptionVO((Long)values[4], values[5].toString()));
+				}
+				List pcsInfo = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituencyForListOfAssemblyConstituency
+				(acIds.toString().substring(1), IConstants.DELIMITATION_YEAR);
+
+				for(Object[] values:(List<Object[]>)pcsInfo)
 				pcs.add(new SelectOptionVO((Long)values[0], values[1].toString()));
+			}			
+			
 			
 		}if(locationType.equalsIgnoreCase(IConstants.DISTRICT_LEVEL)){
 			State stateObj = districtDAO.get(locationId).getState();
