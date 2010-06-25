@@ -43,4 +43,8 @@ public class SmsHistoryDAO extends GenericDaoHibernate<SmsHistory, Long> impleme
 		return getHibernateTemplate().find("from SmsHistory model where model.sentDate = ?",sentDate);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Long> getTotalSmsSentByUserAfterRenewal(Long trackId) {
+		return getHibernateTemplate().find("select count(*) from SmsHistory model where model.smsTrack.smsTrackId = ?",trackId);
+	}
 }
