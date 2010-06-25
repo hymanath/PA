@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreLevel;
@@ -789,10 +790,11 @@ public class CadreManagementService {
 	}
 	
 	
-	public Integer sendSMSMessage(Long userID,String type, Long value, String message, String includeCadreName){
+	public SmsResultVO sendSMSMessage(Long userID,String type, Long value, String message, String includeCadreName){
 		if(log.isDebugEnabled())
 			log.debug("CadreManagementService.sendSMSMEssage():userID:"+userID+":type:"+type+":value:"+value+":message:"+message);
 		List<Object> list = new ArrayList<Object>();
+	
 		if("STATE".equals(type)){
 			list = cadreDAO.getMobileNosByState(userID, value); 
 		}else if("DISTRICT".equals(type)){
@@ -815,33 +817,45 @@ public class CadreManagementService {
 			list = cadreDAO.getMobileNosByCadreLevel(userID, value);
 		}
 		Integer mobileNos = 0;
+		Long remainingSMS = smsCountrySmsService.getRemainingSmsLeftForUser(userID)-list.size();
 		
-		//PartyAnalystPropertyService propertyService = new PartyAnalystPropertyService();
-		//smsCountrySmsService.setPropertyService(propertyService);
-		if("NO".equals(includeCadreName)){
-			String[] cadreMobileNos = new String[list.size()];
-			int i=-1;
-			for (Object mobileInfo : list) {
-				Object[] mobile = (Object[]) mobileInfo;
-				cadreMobileNos[++i] = mobile[0].toString();
-			}
-			if(cadreMobileNos!=null && cadreMobileNos.length>0)
-				mobileNos = cadreMobileNos.length;
-			smsCountrySmsService.sendSms(message, true,userID,IConstants.Cadre_Management,cadreMobileNos);
+		SmsResultVO resultVo = new SmsResultVO();
+		if(remainingSMS<0){
+			resultVo.setStatus(1l);
+			resultVo.setTotalSmsSent(0l);
+			resultVo.setRemainingSmsCount(0l);
 		}else{
-			// to do ICONSTANTS.SMS_DEAR
-			for (Object mobiles : list) {
-				Object[] mobileInfo = (Object[]) mobiles;
-				String mobile =  mobileInfo[0].toString();
-				StringBuilder cadreMessage =  new StringBuilder(IConstants.SMS_DEAR);
-				cadreMessage.append(mobileInfo[1].toString()).append(IConstants.SPACE).append(mobileInfo[2].toString()).append(IConstants.SPACE).append(message);
+			//PartyAnalystPropertyService propertyService = new PartyAnalystPropertyService();
+			//smsCountrySmsService.setPropertyService(propertyService);
+			if("NO".equals(includeCadreName)){
+				String[] cadreMobileNos = new String[list.size()];
+				int i=-1;
+				for (Object mobileInfo : list) {
+					Object[] mobile = (Object[]) mobileInfo;
+					cadreMobileNos[++i] = mobile[0].toString();
+				}
+				if(cadreMobileNos!=null && cadreMobileNos.length>0)
+					mobileNos = cadreMobileNos.length;
+				smsCountrySmsService.sendSms(message, true,userID,IConstants.Cadre_Management,cadreMobileNos);
+			}else{
+				// to do ICONSTANTS.SMS_DEAR
+				for (Object mobiles : list) {
+					Object[] mobileInfo = (Object[]) mobiles;
+					String mobile =  mobileInfo[0].toString();
+					StringBuilder cadreMessage =  new StringBuilder(IConstants.SMS_DEAR);
+					cadreMessage.append(mobileInfo[1].toString()).append(IConstants.SPACE).append(mobileInfo[2].toString()).append(IConstants.SPACE).append(message);
 
-				smsCountrySmsService.sendSms(cadreMessage.toString(), true,userID,IConstants.Cadre_Management,mobile);
-				mobileNos = mobileNos + 1;
+					smsCountrySmsService.sendSms(cadreMessage.toString(), true,userID,IConstants.Cadre_Management,mobile);
+					mobileNos = mobileNos + 1;
+				}
 			}
+			resultVo.setStatus(0l);
+			resultVo.setTotalSmsSent(Long.parseLong(new Integer(list.size()).toString()));
+			resultVo.setRemainingSmsCount(remainingSMS);
 		}
+		
 
-		return mobileNos;
+		return resultVo;
 	}
 	/**
 	 *  retrieving the ids and names for the region(District, Tehsil, Township/Hamlet)

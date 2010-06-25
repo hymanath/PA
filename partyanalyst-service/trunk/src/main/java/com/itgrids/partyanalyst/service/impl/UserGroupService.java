@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.UserGroupBasicDetails;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
@@ -791,13 +792,33 @@ public class UserGroupService implements IUserGroupService {
 		/*
 		 * This method is used for sending SMS to all members in a group.
 		 */
-		public void sendSMStoGroup(String message,String[] groupMembersMobileNos,Long userId,String moduleName){
-			
-			if(log.isDebugEnabled())
-				log.debug(" Inside sendSMStoGroup() Method ......");
-			for(int i=0;i<groupMembersMobileNos.length;i++){
-				smsCountrySmsService.sendSms(message, true,userId,moduleName,groupMembersMobileNos[i]);
+		public SmsResultVO sendSMStoGroup(String message,String[] groupMembersMobileNos,Long userId,String moduleName){
+			SmsResultVO resultVo = new SmsResultVO();
+			try{
+				if(log.isDebugEnabled())
+					log.debug(" Inside sendSMStoGroup() Method ......");
+				
+				Long remainingSMS = smsCountrySmsService.getRemainingSmsLeftForUser(userId)-groupMembersMobileNos.length;
+				
+				if(remainingSMS<0){
+					resultVo.setStatus(1l);
+					resultVo.setTotalSmsSent(0l);
+					resultVo.setRemainingSmsCount(0l);
+				}else{
+					for(int i=0;i<groupMembersMobileNos.length;i++){
+						smsCountrySmsService.sendSms(message, true,userId,moduleName,groupMembersMobileNos[i]);
+					}
+					resultVo.setStatus(0l);
+					resultVo.setTotalSmsSent(Long.parseLong(new Integer(groupMembersMobileNos.length).toString()));
+					resultVo.setRemainingSmsCount(remainingSMS);
+				}
+				
+				 return resultVo;
+			}catch(Exception e){
+				e.printStackTrace();
+				log.debug("Exception Raised--->"+e);
 			}
+			return resultVo;			
 		}
 		
 		/*
