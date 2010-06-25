@@ -1,27 +1,46 @@
 package com.itgrids.partyanalyst.web.action;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.util.ServletContextAware;
-
 import com.itgrids.partyanalyst.dto.CadreManagementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IUserCadreManagementService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 public class CadreManagementAction extends ActionSupport implements ServletRequestAware{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private IUserCadreManagementService userCadreManagementService;
 	private HttpServletRequest request;
 	private CadreManagementVO cadreManagementVO = null;
 	private final static Logger log = Logger.getLogger(CadreManagementAction.class);
+	private ISmsService smsCountrySmsService;
+	private Long remainingSms;
+	
+	public ISmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
 
+	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
+	}
+
+	public Long getRemainingSms() {
+		return remainingSms;
+	}
+
+	public void setRemainingSms(Long remainingSms) {
+		this.remainingSms = remainingSms;
+	}
 	public IUserCadreManagementService getUserCadreManagementService() {
 		return userCadreManagementService;
 	}
@@ -53,6 +72,10 @@ public class CadreManagementAction extends ActionSupport implements ServletReque
 		if(user == null)
 			return ERROR;
 	
+		Long userID = user.getRegistrationID();
+		
+		remainingSms = smsCountrySmsService.getRemainingSmsLeftForUser(userID);
+		
 		cadreManagementVO = userCadreManagementService.getUserData(user);
 		if(cadreManagementVO!=null && cadreManagementVO.getExceptionEncountered()!=null)
 			log.error(cadreManagementVO.getExceptionEncountered().getMessage());

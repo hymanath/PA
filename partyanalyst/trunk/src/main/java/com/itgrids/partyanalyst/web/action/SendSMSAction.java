@@ -25,8 +25,26 @@ public class SendSMSAction extends ActionSupport implements ServletRequestAware 
 	private String task = null;
 	JSONObject jObj = null;
 	private static final Logger log = Logger.getLogger(SendSMSAction.class);
-	private ISmsService countrySmsService;
+	private ISmsService smsCountrySmsService;
+	private Long remainingSms;
 	
+	
+	public ISmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
+	}
+
+	public Long getRemainingSms() {
+		return remainingSms;
+	}
+
+	public void setRemainingSms(Long remainingSms) {
+		this.remainingSms = remainingSms;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.setRequest(request);
 		
@@ -70,7 +88,8 @@ public class SendSMSAction extends ActionSupport implements ServletRequestAware 
 			RegistrationVO userVo = (RegistrationVO)session.getAttribute("USER");
 			Long userID = userVo.getRegistrationID();
 			
-			countrySmsService.sendSms(message, true,userID,IConstants.Influencing_People,smsMsgs);
+			remainingSms = smsCountrySmsService.getRemainingSmsLeftForUser(userID);
+			smsCountrySmsService.sendSms(message, true,userID,IConstants.Influencing_People,smsMsgs);
 			return SUCCESS;
 		}
 	

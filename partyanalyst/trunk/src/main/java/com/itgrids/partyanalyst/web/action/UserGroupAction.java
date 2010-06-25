@@ -27,10 +27,12 @@ import com.itgrids.partyanalyst.dto.GroupsBasicInfoVO;
 import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.UserGroupBasicDetails;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
 import com.itgrids.partyanalyst.dto.UserGroupsVO;
+import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IUserGroupService;
 import com.itgrids.partyanalyst.service.impl.UserGroupService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -58,8 +60,18 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 	private UserGroupMembersVO userGroupMembersVO = null;
 	private static final Logger log = Logger.getLogger(UserGroupAction.class);
 	private UserGroupDetailsVO userGroupDetailsVO;
+	private Long remainingSms;
+	private ISmsService smsCountrySmsService;
+	private SmsResultVO resultVo ;
 	
-			
+	public SmsResultVO getResultVo() {
+		return resultVo;
+	}
+
+	public void setResultVo(SmsResultVO resultVo) {
+		this.resultVo = resultVo;
+	}
+
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -72,6 +84,22 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		this.request = request;
 		this.session = request.getSession();
 	}	
+	
+	public ISmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
+	}
+
+	public Long getRemainingSms() {
+		return remainingSms;
+	}
+
+	public void setRemainingSms(Long remainingSms) {
+		this.remainingSms = remainingSms;
+	}
 
 	public UserGroupsVO getUserGroupsVO() {
 		return userGroupsVO;
@@ -164,7 +192,9 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		}		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		Long userID = user.getRegistrationID();
 		
+		remainingSms = smsCountrySmsService.getRemainingSmsLeftForUser(userID);
 		if(user==null)
 			return ERROR;	
 				
@@ -187,7 +217,6 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			jObj = new JSONObject(param);
 			System.out.println(jObj);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getMyGroupsListForAUser"))
@@ -297,7 +326,7 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			for(int i=0; i<cellNumbers.length(); i++){
 				smsMsgs[i] = (String)cellNumbers.get(i);
 			}
-			userGroupService.sendSMStoGroup(message,smsMsgs,userID,jObj.getString("module"));			
+			resultVo = userGroupService.sendSMStoGroup(message,smsMsgs,userID,jObj.getString("module"));			
 		}if(jObj.getString("task").equalsIgnoreCase("getSubGroupsListInSystemGroups"))
 		{
 			userGroupsVO = new UserGroupsVO();
@@ -415,7 +444,6 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 			jObj = new JSONObject(param);
 			System.out.println(jObj);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getSelectedStaticGroupCompleteDetails"))

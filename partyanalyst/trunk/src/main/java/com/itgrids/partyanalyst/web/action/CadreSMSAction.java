@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.helper.CadreSMSVO;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -21,7 +22,7 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 	private HttpServletRequest request;
 	
 	private CadreSMSVO cadreSMSVO;
-	private Integer totalCadres;
+	private SmsResultVO totalCadres;
 	private List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
 	private CadreManagementService cadreManagementService = null;
 
@@ -52,11 +53,11 @@ public class CadreSMSAction extends ActionSupport implements ServletRequestAware
 		this.cadreSMSVO = cadreSMSVO;
 	}
 
-	public Integer getTotalCadres() {
+	public SmsResultVO getTotalCadres() {
 		return totalCadres;
 	}
 
-	public void setTotalCadres(Integer totalCadres) {
+	public void setTotalCadres(SmsResultVO totalCadres) {
 		this.totalCadres = totalCadres;
 	}
 

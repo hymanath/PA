@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
+import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -36,6 +37,24 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 	JSONObject jObj = null;
 	private List<ProblemBeanVO> problemsList;
 	private String EXTERNAL_PERSON;
+	private ISmsService smsCountrySmsService;
+	private Long remainingSms;
+	
+	public ISmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
+	}
+
+	public Long getRemainingSms() {
+		return remainingSms;
+	}
+
+	public void setRemainingSms(Long remainingSms) {
+		this.remainingSms = remainingSms;
+	}
 	
 	public String getEXTERNAL_PERSON() {
 		return EXTERNAL_PERSON;
@@ -118,6 +137,9 @@ public class InitailConstituencyManagementAction extends ActionSupport implement
 				
 		accessType = user.getAccessType();
 		accessValue= new Long(user.getAccessValue());
+		
+		Long userID = user.getRegistrationID();
+		remainingSms = smsCountrySmsService.getRemainingSmsLeftForUser(userID);
 		
 		EXTERNAL_PERSON = IConstants.EXTERNAL_PERSON;
 		
