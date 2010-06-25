@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -17,6 +18,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -50,6 +52,9 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	JSONObject jObj = null;
 	private String cmTask;
 	private String reportResult;
+	private List<SelectOptionVO> parliamentConstituencyList;
+	private IStaticDataService staticDataService;
+	
 	
 	
 	public String getCmTask() {
@@ -239,6 +244,23 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	}
 
 
+	public void setParliamentConstituencyList(
+			List<SelectOptionVO> parliamentConstituencyList) {
+		this.parliamentConstituencyList = parliamentConstituencyList;
+	}
+
+	public List<SelectOptionVO> getParliamentConstituencyList() {
+		return parliamentConstituencyList;
+	}	
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public String execute() throws Exception{
 		
 		log.debug("In execute of Constituency Management Action ********");
@@ -267,18 +289,17 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		constituencyList = new ArrayList<SelectOptionVO>();
 		mandalList = new ArrayList<SelectOptionVO>();
 		villageList = new ArrayList<SelectOptionVO>();
-		
+		parliamentConstituencyList = new ArrayList<SelectOptionVO>();
 		if("MLA".equals(accessType))
 		{
 			log.debug("Access Type = MLA ****");
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByConstituencyID(accessValue);
 			
 			stateList.add(list.get(0));			
-			districtList.add(list.get(1));
-			
-			constituencyList.add(new SelectOptionVO(0L,"Select Constituency"));
+			districtList.add(list.get(1));			
 			constituencyList.add(list.get(2));
-			mandalList = regionServiceData.getMandalsByConstituencyID(accessValue);			
+			mandalList = regionServiceData.getMandalsByConstituencyID(accessValue);
+			mandalList.add(0,new SelectOptionVO(0L,"Select Mandal"));
 						
 		}else if("COUNTRY".equals(accessType))
 		{
@@ -290,44 +311,31 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			log.debug("Access Type = State ****");
 			
 			String name = cadreManagementService.getStateName(accessValue);
-			SelectOptionVO obj1 = new SelectOptionVO(0L,"Select State");
 			SelectOptionVO obj2 = new SelectOptionVO();
 			obj2.setId(accessValue);
 			obj2.setName(name);
-			stateList.add(obj1);
 			stateList.add(obj2);
+			districtList = staticDataService.getDistricts(accessValue);
+			districtList.add(0,new SelectOptionVO(0l,"Select District"));
 			
 		}else if("DISTRICT".equals(accessType)){
 			log.debug("Access Type = District ****");			
 
 			List<SelectOptionVO> list = regionServiceData.getStateDistrictByDistrictID(accessValue);
 			stateList.add(list.get(0));
-			districtList.add(new SelectOptionVO(0l,"Select District"));
 			districtList.add(list.get(1));
 			constituencyList = regionServiceData.getConstituenciesByDistrictID(accessValue);
+			constituencyList.add(new SelectOptionVO(0l,"Select Constituency"));
 			
-			
-		}else if("MANDAL".equals(accessType)){
-			log.debug("Access Type = Mandal ****");
-			
-			List<SelectOptionVO> list = cadreManagementService.getStateDistConstituencyMandalByMandalID( accessValue);
-			stateList.add(list.get(0));
-			districtList.add(list.get(1));
-			mandalList.add(new SelectOptionVO(0L,"Select Mandal"));
-			mandalList.add(list.get(2));
-			
-			
-		}else if("MP".equals(accessType)){
+		} else if("MP".equals(accessType)){
 			log.debug("Access Type = MP ****");
+			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
 			stateList = regionServiceData.getStateByParliamentConstituencyID(accessValue);
-			SelectOptionVO state = stateList.get(0);
-			Long stateID = state.getId();
-			Long year = regionServiceData.getLatestParliamentElectionYear(stateID);
-			log.debug("year:::::"+year);
-			log.debug("stateID:::::"+stateID);
-			if(year!=null){
-				constituencyList = crossVotingEstimationService.getAssembliesForParliament(accessValue,year);
-			}	
+			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+			constituencyList = constituencyInfoVO.getAssembyConstituencies();
+			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+			parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName()));		
+				
 			log.debug("constituencyList.size():"+constituencyList.size());		
 		}
 	
@@ -356,6 +364,9 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		Long accessValue = jObj.getLong("accessValue");
 		
 		influencingPeopleVO = problemManagementReportService.findInfluencingPeopleInfoInLocation(accessType, accessValue);
+		
+		
+		
 		log.debug("influencingPeopleVO.size()::::::::::::::::::"+influencingPeopleVO.size());
 		return SUCCESS;
 		
