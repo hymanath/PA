@@ -14,6 +14,7 @@ import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.GroupsDetailsForUserVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.UserGroupBasicDetails;
 import com.itgrids.partyanalyst.dto.UserGroupDetailsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
@@ -34,7 +35,7 @@ public interface IUserGroupService {
     
     public UserGroupBasicDetails getUserGroupDetailsForAUserForMyGroups(String categoryType,Long groupId,Long userId);
     
-    public void sendSMStoGroup(String message,String[] groupMembersMobileNos,Long userId,String moduleName);
+    public SmsResultVO sendSMStoGroup(String message,String[] groupMembersMobileNos,Long userId,String moduleName);
     
     public List<UserGroupMembersVO> getAllMembersIntheGroup(Long registrationId, Long groupId);
     
