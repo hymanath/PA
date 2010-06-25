@@ -243,9 +243,9 @@
 							  };
 		  var accessType= '${accessType}';			  
 		  var accessValue= '${accessValue}';
-
+		  var popupPanel;
 		  var initialProbs = new Array();
-
+		  var smsHidden = 1;
 		  var externalPerson = '${EXTERNAL_PERSON}';
 
 		  <c:forEach var="prob" items="${problemsList}">
@@ -359,13 +359,70 @@
 			
 			callAjax(param,jsObj,url);			
 		}
-				
+
+		function smsRenewalMessage()
+		{
+			var elmt = document.getElementById('smsErrorPopupDiv');
+			var divChild = document.createElement('div');
+			divChild.setAttribute('id','smsErrorDiv');
+			
+			var str = '';
+			str	+= '<div id="smsErrorMain" style="padding:10px;">';
+			str	+= '	<table id="loginDetailsTable" width="100%">';
+			str	+= '		<tr>';
+			str	+= '			<th colspan="3" align="left">';
+			str	+= '				Your SMS Credentials are expired ';
+			str	+= '			</th>';		
+			str	+= '		</tr>';
+			str	+= '		<tr>';
+			str	+= '			<td colspan="3">Please contact contact us @  </td>';
+			str	+= '		</tr>';
+			str	+= '		<tr>';
+			str	+= '			<th align="left">Phone </th><td>: </td><td> +91-40-40124153</td>';
+			str	+= '		</tr>';
+			str	+= '		<tr>';
+			str	+= '			<th align="left">Mail </th><td>: </td><td> license@itgrids.com</td>';
+			str	+= '		</tr>';
+			str	+= '	</table>';	
+			str	+= '</div>';
+			divChild.innerHTML=str;		
+			
+			elmt.appendChild(divChild);	
+			if(popupPanel)
+				popupPanel.destroy();
+			popupPanel = new YAHOO.widget.Dialog("smsErrorDiv",
+					{ 
+						 height:'150px',
+						 width:'250px',
+			             fixedcenter : true, 
+			             visible : true,
+			             constraintoviewport : true, 
+			    		 iframe :true,
+			    		 modal :true,
+			    		 hideaftersubmit:true,
+			    		 close:true,
+						 draggable:true
+		             } ); 
+			popupPanel.render();
+		}
+		
 		function sendSMS()
 		{
+			var remainingSms = "${remainingSms}"; 
+			if(remainingSms==0){
+				smsRenewalMessage();
+				return;
+			}
+			
 			var message = document.getElementById("smsText").value;
 			var smsBlockAlertEl = document.getElementById("smsBlockAlert");
 			var numbersArr = new Array();
 			
+			var smsConfirmationEl = document.getElementById("smsConfirmation");
+			
+			var str1='';
+			smsConfirmationEl.innerHTML = str1;
+
 			if(mobileNumbersArray.length == 0 && message == '')
 			{
 				smsBlockAlertEl.innerHTML = '';
@@ -388,6 +445,7 @@
 			{
 				numbersArr.push(mobileNumbersArray[i]._oData.contactNumber);				
 			}
+			smsHiddenIncrementHidden();
 			var jsObj= 
 				{
 					numbers: numbersArr,
@@ -396,12 +454,15 @@
 					task:"sendSMS"			
 				}
 				var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-				var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
-				callAjax(param,jsObj,url);
-						
-				
-			
+				var url = "<%=request.getContextPath()%>/userGroupSMSAjaxAction.action?"+param+"&smsHidden="+smsHidden;
+				callAjax(param,jsObj,url);			
 		}
+
+		function smsHiddenIncrementHidden()
+		{
+			smsHidden++;
+		}
+		
 		function redirectToNewWindowForAddingInfluencingPeople(){
 			var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>","influencingPeopleRegistration","scrollbars=yes,height=600,width=450,left=200,top=200");
 			browser1.focus();
@@ -435,7 +496,7 @@
 											showProblemsHistoryReport(myResults);			
 										} else if(jsObj.task == "sendSMS")
 										{
-											showSentSmsConfirmation(jsObj);
+											showSentSmsConfirmation(myResults);
 										}
 										if(jsObj.task == "getAllPoliticalChangesForTheUser"){
 											buildDataTableForLocalPoliticalChanges(myResults);
@@ -473,6 +534,11 @@
 </head>
 <body>
 	
+	<div id="errorMessageDIV" class="yui-skin-sam">
+		<div id="smsErrorPopupDiv">
+		</div>
+	</div>
+
 	<div id="constituencyMgmtDiv_main" style="padding:10px;">
 		<div id="constituencyMgmt_main_header">
 			<div id="constituencyMgmt_head_label">Constituency Management</div>

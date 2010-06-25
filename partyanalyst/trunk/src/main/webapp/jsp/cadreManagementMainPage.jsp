@@ -124,14 +124,65 @@
 	var datesRenderArr = new Array();
 	var eventDateRenderArr = new Array();	
 	var emptyArray = new Array();
-
+	var popupPanel;
+	var smsHidden = 1;
 	
-
+	function smsRenewalMessage()
+	{
+		var elmt = document.getElementById('smsErrorPopupDiv');
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','smsErrorDiv');
+		
+		var str = '';
+		str	+= '<div id="smsErrorMain" style="padding:10px;">';
+		str	+= '	<table id="loginDetailsTable" width="100%">';
+		str	+= '		<tr>';
+		str	+= '			<th colspan="3" align="left">';
+		str	+= '				Your SMS Credentials are expired ';
+		str	+= '			</th>';		
+		str	+= '		</tr>';
+		str	+= '		<tr>';
+		str	+= '			<td colspan="3">Please contact contact us @  </td>';
+		str	+= '		</tr>';
+		str	+= '		<tr>';
+		str	+= '			<th align="left">Phone </th><td>: </td><td> +91-40-40124153</td>';
+		str	+= '		</tr>';
+		str	+= '		<tr>';
+		str	+= '			<th align="left">Mail </th><td>: </td><td> license@itgrids.com</td>';
+		str	+= '		</tr>';
+		str	+= '	</table>';	
+		str	+= '</div>';
+		divChild.innerHTML=str;		
+		
+		elmt.appendChild(divChild);	
+		if(popupPanel)
+			popupPanel.destroy();
+		popupPanel = new YAHOO.widget.Dialog("smsErrorDiv",
+				{ 
+					 height:'150px',
+					 width:'250px',
+		             fixedcenter : true, 
+		             visible : true,
+		             constraintoviewport : true, 
+		    		 iframe :true,
+		    		 modal :true,
+		    		 hideaftersubmit:true,
+		    		 close:true,
+					 draggable:true
+	             } ); 
+		popupPanel.render();
+	}
 	
 	
 	
 	function buildSMSPopup()
 	{
+		var remainingSms = "${remainingSms}";
+		if(remainingSms==0){
+			smsRenewalMessage();
+			return;
+		}
+		
 		var str = '';	
 		str +='	<form action="cadreRegisterAction" method="POST" name="smsForm">';
 		str +='	<table>';
@@ -167,13 +218,13 @@
 		str +='		<td align="left"><div id="sms_user_name_include_value"></div></td>';				
 		str +='	</tr>';
 		str +='	<tr>';
-		str +='		<td align="center" colspan="2"><div id="button_div"></div></td>	';			
-		str +='	</tr>';
-		str +='	<tr>';
 		str +='		<td align="left" colspan="2">';
-		str +='		<div id="successDiv" ></div>';
+		str +='		<div id="successDiv" style="color:green"></div>';
 		str +='		</td>';
 		str +='	</tr>';
+		str +='	<tr>';
+		str +='		<td align="center" colspan="2"><div id="button_div"></div></td>	';			
+		str +='	</tr>';		
 		str +='	</table>';
 		str +='	<form>';
 		
@@ -457,8 +508,22 @@
 	function displaySuccessMessage(results,jsObj)
 	{
 		var divElmt = document.getElementById("successDiv");
-
-		var str="SMS sent successfully to "+results+" cadres";
+		var str='';
+		if(results.status==0){
+			str+=" SMS sent successfully to "+results.totalSmsSent+" cadres";
+			if(results.remainingSmsCount!=0){
+				str+="<br/>";
+				str+=" You can send "+results.remainingSmsCount+"more SMS";
+			}else{
+				str+="<br/>";
+				str+=" You cannot any more SMS ";
+				smsRenewalMessage();
+			}
+			
+		}else{
+			smsRenewalMessage();
+		}
+		
 		divElmt.innerHTML=str;
 	}
 	function fillSelectElement(results,jsObj)
@@ -1099,6 +1164,7 @@
 	}
 	function sendSMS()
 	{
+		var val
 		for( i = 0; i < document.smsForm.region_type_radio.length; i++ )
 		{
 			if( document.smsForm.region_type_radio[i].checked == true )
@@ -1129,6 +1195,7 @@
 		}
 		var valSelectValue = valSelect.options[valSelect.selectedIndex].value;
 		val=val.toUpperCase();
+		
 		var jsObj={
 					SMS_LEVEL_TYPE:val,
 					SMS_LEVEL_VALUE:valSelectValue,
@@ -1139,9 +1206,14 @@
 		
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/sendCadreSMS.action?"+rparam;
+		var url = "<%=request.getContextPath()%>/sendCadreSMS.action?"+rparam+"&smsHidden="+smsHidden;
 		callAjax(jsObj,url);
 		
+	}
+
+	function smsHiddenIncrementHidden()
+	{
+		smsHidden++;
 	}
 	
 	function displayRegionsSelect(val,regTask)
@@ -3561,7 +3633,11 @@
 </script>
 </head>
 <body>
-	
+	<div id="errorMessageDIV" class="yui-skin-sam">
+		<div id="smsErrorPopupDiv">
+		</div>
+	</div>
+
 	<div id="CadreManagementHeaderMain">
 		<DIV id="cadreMgmtDesc">
 			<UL>

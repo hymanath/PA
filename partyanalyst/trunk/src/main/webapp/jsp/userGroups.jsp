@@ -38,10 +38,15 @@
 
 <script type="text/javascript">
 var hidden=1;
+var smsHidden=1;
 var selectedGroupID=0;
 function incrementHidden()
 {
 	hidden++;
+}
+function smsHiddenIncrementHidden()
+{
+	smsHidden++;
 }
 function callAjax(param,jsObj,url){
 		var myResults;
@@ -88,6 +93,9 @@ function callAjax(param,jsObj,url){
 									} else if(jsObj.task == "getMyGroupsListForAUser")
 									{
 										buildMyGroupsOptions(myResults);										
+									} else if(jsObj.task == "sendSMS")
+									{
+										showSentSmsConfirmation(myResults);
 									} 
 																																				
 									
@@ -178,7 +186,7 @@ var Localization = { <%
 		String groupNameAvailable = rb.getString("groupNameAvailable");
 		
 %> }
-var createGroupDialog,addGrpMbrsDialog, grpMbrsDetailsDataTable,numbersArray,confirmation;
+var createGroupDialog,addGrpMbrsDialog,popupPanel,grpMbrsDetailsDataTable,numbersArray,confirmation;
 var userName= "${sessionScope.UserName}";
 var selectedGroup=0;
 
@@ -654,11 +662,88 @@ var userGrpsObj={
 		callAjax(param,jsObj,url);		
 		
 		}
+
+	function smsRenewalMessage()
+	{
+		var elmt = document.getElementById('smsErrorPopupDiv');
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','smsErrorDiv');
+		
+		var str = '';
+		str	+= '<div id="smsErrorMain" style="padding:10px;">';
+		str	+= '	<table id="loginDetailsTable" width="100%">';
+		str	+= '		<tr>';
+		str	+= '			<th colspan="3" align="left">';
+		str	+= '				Your SMS Credentials are expired ';
+		str	+= '			</th>';		
+		str	+= '		</tr>';
+		str	+= '		<tr>';
+		str	+= '			<td colspan="3">Please contact contact us @  </td>';
+		str	+= '		</tr>';
+		str	+= '		<tr>';
+		str	+= '			<th align="left">Phone </th><td>: </td><td> +91-40-40124153</td>';
+		str	+= '		</tr>';
+		str	+= '		<tr>';
+		str	+= '			<th align="left">Mail </th><td>: </td><td> license@itgrids.com</td>';
+		str	+= '		</tr>';
+		str	+= '	</table>';	
+		str	+= '</div>';
+		divChild.innerHTML=str;		
+		
+		elmt.appendChild(divChild);	
+		if(popupPanel)
+			popupPanel.destroy();
+		popupPanel = new YAHOO.widget.Dialog("smsErrorDiv",
+				{ 
+					 height:'150px',
+					 width:'250px',
+		             fixedcenter : true, 
+		             visible : true,
+		             constraintoviewport : true, 
+		    		 iframe :true,
+		    		 modal :true,
+		    		 hideaftersubmit:true,
+		    		 close:true,
+					 draggable:true
+	             } ); 
+		popupPanel.render();
+	}
+    
+	function showSentSmsConfirmation(result)
+	{
+		
+		var smsConfirmationEl = document.getElementById("smsInfoMessage");
+		
+		var str='';
+		if(result.status==0){
+			str+=" SMS sent successfully to "+result.totalSmsSent+" Members";
+			if(result.remainingSmsCount!=0){
+				str+="<br>";
+				str+=" You can send "+result.remainingSmsCount+"more SMS";
+			}else{
+				str+="<br>";
+				str+=" You cannot any more SMS ";
+				smsRenewalMessage();
+			}	
+		}else{
+			smsRenewalMessage();
+		}
+		smsConfirmationEl.innerHTML += str; 
+	
+	}
 	
 	function sendSMS()
 	{
+		var remainingSms = "${remainingSms}"; 
+		if(remainingSms==0){
+			smsRenewalMessage();
+			return;
+		}
 		var msgTextElmt = document.getElementById("smsTextArea");
 		var message = msgTextElmt.value;
+
+		smsHiddenIncrementHidden();
+		
 		var jsObj= 
 		{
 			numbers: numbersArray,
@@ -667,7 +752,7 @@ var userGrpsObj={
 			task:"sendSMS"			
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/userGroupAjaxAction.action?"+param;
+		var url = "<%=request.getContextPath()%>/userGroupSMSAjaxAction.action?"+param+"&smsHidden="+smsHidden;
 		callAjax(param,jsObj,url);
 	}
 	
@@ -810,6 +895,7 @@ var userGrpsObj={
 		elmt.appendChild(divChild);	
 		if(createGroupDialog)
 			createGroupDialog.destroy();
+		
 		createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
 				{ width : "750px", 
 	              fixedcenter : false, 
@@ -1398,6 +1484,12 @@ var userGrpsObj={
 </script>
 </head>
 <body class="yui-skin-sam">
+
+<div id="errorMessageDIV" class="yui-skin-sam">
+	<div id="smsErrorPopupDiv">
+	</div>
+</div>
+
 <div id="UserGrpsMainDiv" class="yui-skin-sam">
 	
 	<div id="userGroupsMainDiv">	
@@ -1511,8 +1603,14 @@ var userGrpsObj={
 					<td><span id="maxcount">200 </span> <span>chars remaining..</span></td>
 				</tr>
 				<tr>
+					<td>
+							<div id="smsInfoMessage" style="color:green"></div>
+					</td>
+				</tr>
+				<tr>
 					<td><p align="right"><input id="sendSMSBut" type="submit" class="button" value="Send Sms" name="Submit" onclick="sendSMS()"/></p></td>
 				</tr>
+				
 			</table>
 			
 			<!--<p>Message should not exceed 200 characters</p>

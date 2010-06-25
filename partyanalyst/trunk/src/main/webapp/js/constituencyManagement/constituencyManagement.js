@@ -11,9 +11,7 @@ var mobileNumbersArray = new Array();
 
 
 var assignTolocalPoliticalChangesDataArray,localPoliticalChanges,externalPersonDetailsPanel;
-var hidden=1;
-
-
+var hidden = 1;
 
 function getTodayDateTime() {
 	now = new Date();
@@ -535,14 +533,27 @@ function limitText(limitField, limitCount, limitNum)
 	}
 }
 
-function showSentSmsConfirmation(jsObj)
+function showSentSmsConfirmation(result)
 {
-	var numbersArr = jsObj.numbers;
-	var members = numbersArr.length; 
+	
 	var smsConfirmationEl = document.getElementById("smsConfirmation");
+		
 	var smsBlockAlertEl = document.getElementById("smsBlockAlert");
 	var smsTextEl = document.getElementById("smsText");
-	smsConfirmationEl.innerHTML = "SMS sent succesfully to "+members+" members";
+	var str='';
+	if(result.status==0){
+		str+=" SMS sent successfully to "+result.totalSmsSent+" Members";
+		if(result.remainingSmsCount!=0){
+			str+=" You can send "+result.remainingSmsCount+"more SMS's";
+		}else{
+			str+="<br>";
+			str+=" You cannot any more SMS ";
+			smsRenewalMessage();
+		}	
+	}else{
+		smsRenewalMessage();
+	}
+	smsConfirmationEl.innerHTML += str; 
 	smsBlockAlertEl.innerHTML = '';
 	smsTextEl.value = '';
 	buildInfluencingPeopleDT(resultsGlobal);
