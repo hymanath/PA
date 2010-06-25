@@ -1074,7 +1074,7 @@ public class AnalysisReportService implements IAnalysisReportService {
                     if(oppCandVotesMargin != null && oppCandVotesMargin.size() > 0){
                     	Object votesParams = (Object)oppCandVotesMargin.get(0);
                     	String oppCandVotesPercnt = (String)votesParams;
-						Double votesMargin = new BigDecimal(Double.parseDouble(candidateElectionResultVO.getVotesPercentage()) - Double.parseDouble(oppCandVotesPercnt)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+						Double votesMargin = new BigDecimal(Double.parseDouble(candidateElectionResultVO.getVotesPercentage()) - Double.parseDouble(oppCandVotesPercnt)).abs().setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
 						candidateElectionResultVO.setVotesMargin(votesMargin.toString());
                     }
 					
