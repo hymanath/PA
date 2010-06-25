@@ -203,7 +203,8 @@
 	</bean>
 	
 	<bean id="cadreManagementAction" class="com.itgrids.partyanalyst.web.action.CadreManagementAction" singleton="false">
-		<property name="userCadreManagementService" ref="userCadreManagementService"></property>		
+		<property name="userCadreManagementService" ref="userCadreManagementService"></property>
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />		
 	</bean>
 	
 	<bean id="createEventAction" class="com.itgrids.partyanalyst.web.action.CreateEventAction" singleton="false">	
@@ -222,6 +223,7 @@
 	
 	<bean id="initailConstituencyManagementAction" class="com.itgrids.partyanalyst.web.action.InitailConstituencyManagementAction" singleton="false">				
 		<property name="problemManagementReportService" ref="problemManagementReportService"/>
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />		
 	</bean>
 	
 	<bean id="hamletBoothMapperAction" class="com.itgrids.partyanalyst.web.action.HamletBoothMapperAction" singleton="false">			
@@ -247,6 +249,7 @@
 	</bean>
 	<bean id="userGroupAction" class="com.itgrids.partyanalyst.web.action.UserGroupAction" singleton="false">
 		<property name="userGroupService" ref="userGroupService"/>
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />		
 	</bean>
 	<bean id="revenueVillageReportAction" class="com.itgrids.partyanalyst.web.action.RevenueVillageReportAction" singleton="false">
 		<property name="constituencyManagementService" ref="constituencyManagementService"/>
