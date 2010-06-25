@@ -266,3 +266,13 @@ fieldset {
 	margin-top:10px;
 	text-align:right;
 }
+
+#errorMessageDIV .yui-panel
+{
+	border:1px solid #808080;
+}
+
+#smsErrorDiv
+{
+	background-color:#FFFFFF;
+}

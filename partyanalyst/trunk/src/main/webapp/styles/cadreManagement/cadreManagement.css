@@ -367,3 +367,11 @@
 		cursor:pointer;
 		padding:5px;	
 	}
+	#errorMessageDIV .yui-panel
+	{
+		border:1px solid #808080;
+	}
+	#smsErrorDiv
+	{
+		background-color:#FFFFFF;
+	}
