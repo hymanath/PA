@@ -1793,7 +1793,7 @@ public class StaticDataService implements IStaticDataService {
 			if(log.isDebugEnabled())
 				log.info("Making nominationDAO.getPartysInfoForAParticularElectionYear() DAO Call");
 			List totalValidVotes = constituencyElectionDAO.getTotalValidVotesParticularElectionYear(electionType,electionYear,districtId);
-			if(totalValidVotes.equals(null)){
+			if(!totalValidVotes.equals(null)){
 				totalVotes = Float.parseFloat(totalValidVotes.get(0).toString());				
 				List result = nominationDAO.getPartysInfoForAParticularElectionYear(electionType,electionYear,districtId);
 				for(int i=0;i<result.size();i++){
