@@ -189,18 +189,9 @@ public class SmsCountrySmsService implements ISmsService {
 	public Long saveSmsData(final String message,final Long userId,final String moduleName,final String... phoneNumbers){
 		Long smsResultCode=0l;
 		try{
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				public void doInTransactionWithoutResult(TransactionStatus status) {	
-					int smsTrackCount = smsTrackDAO.getAll().size();
-					if(smsTrackCount==0){			
-						SmsTrack track = new SmsTrack();
-						track.setRegistration(registrationDAO.get(userId));
-						track.setRenewalDate(getCurrentDate());
-						track.setRenewalSmsCount(10000l);
-						track = smsTrackDAO.save(track);						
-					}
-				}
-				});
+			
+			setDefualtCredentialForUser(userId);			
+			
 			Long leftSMSCount = getRemainingSmsLeftForUser(userId)-phoneNumbers.length;
 			if(leftSMSCount<0){
 				smsResultCode = 1l;  		//Failure
@@ -245,6 +236,20 @@ public class SmsCountrySmsService implements ISmsService {
 		return smsResultCode;
 	}
 	
+	public void setDefualtCredentialForUser(final Long userId){
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {	
+				List<SmsTrack> trackId = smsTrackDAO.findLatestRenewalDate(userId);
+				if(trackId.size()==0){		
+						SmsTrack track = new SmsTrack();
+						track.setRegistration(registrationDAO.get(userId));
+						track.setRenewalDate(getCurrentDate());
+						track.setRenewalSmsCount(10000l);
+						track = smsTrackDAO.save(track);
+				}	
+			}
+		});
+	}
 	/**
 	 * This method returns Current Date in yyyy-MM-dd hh:mm:ss Format.
 	 * 
@@ -276,6 +281,8 @@ public class SmsCountrySmsService implements ISmsService {
 		Long latestSmsTrackIdForUser = 0l;
 		Long totalSmsLeft = 0l;
 		try{
+			setDefualtCredentialForUser(userId);
+			
 			List<SmsTrack> result = smsTrackDAO.findLatestRenewalDate(userId);
 			if(result!=null){
 				for(SmsTrack track : result){
