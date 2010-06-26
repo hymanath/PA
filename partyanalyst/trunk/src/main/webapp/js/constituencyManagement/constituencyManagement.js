@@ -612,8 +612,8 @@ function buildDataTableForLocalPoliticalChanges(results)
 					effectedRange :results[i].range,
 					effectedLocation : results[i].locationName,
 					sourceOfInformation : sourceOfInformation,
-					editDetails: '<A href="javascript:{}" title="Click To Edit Political change" onclick="redirectToNewWindowForEditingPoliticalChanges('+results[i].politicalChangeId+')">Edit</A>',
-					deleteDetails: '<A href="javascript:{}" title="Click To Delte Political change" onclick="deleteDetails('+results[i].politicalChangeId+')">Delete</A>'  
+					editDetails: '<center><A href="javascript:{}" title="Click To Edit Political change" onclick="redirectToNewWindowForEditingPoliticalChanges('+results[i].politicalChangeId+')"><img src="images/icons/edit.png" style="text-decoration:none;border:0px;"></A></center>',
+					deleteDetails: '<center><A href="javascript:{}" title="Click To Delte Political change"  onclick="deleteDetails('+results[i].politicalChangeId+')"><img src="images/icons/delete.png" style="text-decoration:none;border:0px;"></A></center>'  
 			 };
 		
 			assignTolocalPoliticalChangesDataArray.push(localPoliticalChangesObj);
