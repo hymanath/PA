@@ -113,9 +113,9 @@ function initializeResultsTableForWinners() {
 		}, {
 			key : "votesEarned"
 		}, {
-			key : "votesDifference"
-		}, {
 			key : "votesPercentage"
+		}, {
+			key : "votesDifference"
 		}, {
 			key : "marginVotesPercentage"
 		}, {
@@ -144,12 +144,12 @@ function initializeResultsTableForWinners() {
 		label : "Earned Votes",
 		sortable : true
 	}, {
-		key : "votesDifference",
-		label : "Votes Difference",
-		sortable : true
-	}, {
 		key : "votesPercentage",
 		label : "Votes %",
+		sortable : true
+	}, {
+		key : "votesDifference",
+		label : "Margin Votes",
 		sortable : true
 	}, {
 		key : "marginVotesPercentage",	
