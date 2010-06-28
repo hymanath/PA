@@ -28,6 +28,9 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private String districtName;
 	private Long stateId;
 	private String stateName;
+	private String totalVotes;
+	private String totalPolledVotes;
+	private String votingPercentage;
 	private List<PartyResultsVO> partyResultsVO;
 	private CandidateWonVO candidateResultsVO;
 	private List<CandidateOppositionVO> candidateOppositionList;
@@ -131,6 +134,24 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	}
 	public void setStateName(String stateName) {
 		this.stateName = stateName;
+	}	
+	public String getTotalVotes() {
+		return totalVotes;
+	}
+	public void setTotalVotes(String totalVotes) {
+		this.totalVotes = totalVotes;
+	}
+	public String getTotalPolledVotes() {
+		return totalPolledVotes;
+	}
+	public void setTotalPolledVotes(String totalPolledVotes) {
+		this.totalPolledVotes = totalPolledVotes;
+	}
+	public String getVotingPercentage() {
+		return votingPercentage;
+	}
+	public void setVotingPercentage(String votingPercentage) {
+		this.votingPercentage = votingPercentage;
 	}
 	
 	@Override

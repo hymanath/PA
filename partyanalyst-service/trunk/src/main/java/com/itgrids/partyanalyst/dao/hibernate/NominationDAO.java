@@ -720,7 +720,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		
 	}
 	
-	
+		
 	@SuppressWarnings("unchecked")
 	public List getCandidatesInfoForTheGivenConstituency(String constituencyId,String electionYear,String electionType)	{
 		Object[] params = {electionYear,electionType};		
@@ -736,7 +736,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			" model.constituencyElection.constituency.constituencyId," +
 			" model.constituencyElection.constituency.name," +	
 			" model.constituencyElection.election.electionYear," +
-			" model.constituencyElection.constituency.electionScope.electionType.electionType" +	
+			" model.constituencyElection.constituency.electionScope.electionType.electionType," +
+			" model.constituencyElection.constituencyElectionResult.totalVotes" +
 			" from Nomination model where model.constituencyElection.constituency.constituencyId in (  " + constituencyId +
 			" ) and model.constituencyElection.election.electionYear = ? " +
 			" and model.constituencyElection.constituency.electionScope.electionType.electionType = ? order by model.candidateResult.rank",params);		
@@ -757,7 +758,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			" model.constituencyElection.constituency.constituencyId," +
 			" model.constituencyElection.constituency.name," +	
 			" model.constituencyElection.election.electionYear," +
-			" model.constituencyElection.constituency.localElectionBody.electionType.electionType" +
+			" model.constituencyElection.constituency.localElectionBody.electionType.electionType," +
+			" model.constituencyElection.constituencyElectionResult.totalVotes" +
 			" from Nomination model where model.constituencyElection.constituency.constituencyId in (  " + constituencyId +
 			" ) and model.constituencyElection.election.electionYear = ? " +
 			" and model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? order by model.candidateResult.rank",params);		

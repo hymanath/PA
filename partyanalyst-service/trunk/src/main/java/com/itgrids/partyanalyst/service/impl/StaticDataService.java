@@ -1939,11 +1939,17 @@ public class StaticDataService implements IStaticDataService {
 				 }
 				}
 			 log.info("Making nominationDAO.getCandidatesInfoForTheGivenConstituency() DAO call");
-		
+			 Double totalPolledVotes=0d;
+			 Double totalVoters=0d;
 			 java.util.ListIterator resultIterator = nominationResult.listIterator();
 			 while(resultIterator.hasNext()){
 				 log.info(" Has Constituency Results ...");
 				 Object[] parms = (Object[])resultIterator.next();
+				 totalPolledVotes+=Double.parseDouble(parms[2].toString());
+				 if(parms[13]!=null){
+					 totalVoters = Double.parseDouble(parms[13].toString());
+				 }
+				 
 				 if(Long.parseLong(parms[4].toString())==1l){
 					 CandidateWonVO candidateWonVO = new CandidateWonVO(); 
 						 candidateWonVO.setCandidateId(Long.parseLong(parms[0].toString()));
@@ -1954,7 +1960,7 @@ public class StaticDataService implements IStaticDataService {
 							}else
 								candidateWonVO.setCandidateName(parms[1].toString());
 						 Double votesEarned = (Double)parms[2];
-						 Long votesEarn = votesEarned.longValue();
+						 Long votesEarn = votesEarned.longValue();					
 						 candidateWonVO.setVotesEarned(votesEarn.toString());
 						 candidateWonVO.setVotesPercentage(parms[3].toString());
 						 candidateWonVO.setRank(Long.parseLong(parms[4].toString())); 
@@ -1993,8 +1999,20 @@ public class StaticDataService implements IStaticDataService {
 					 candidateOppositionVO.add(candidateOppositionVo);
 				 }
 			 }
+			 constituencyElectionResults.setTotalPolledVotes(new BigDecimal(totalPolledVotes).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+			 if(totalVoters==0d){
+				 constituencyElectionResults.setTotalVotes("N/A"); 
+			 }else{
+				 constituencyElectionResults.setTotalVotes(new BigDecimal(totalVoters).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+			 }			 
+			 if(totalVoters!=0d){
+				 constituencyElectionResults.setVotingPercentage(new BigDecimal((totalPolledVotes/totalVoters)*100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 }else{
+				 constituencyElectionResults.setVotingPercentage("N/A");
+			 }	 
+
 			 constituencyElectionResults.setCandidateOppositionList(candidateOppositionVO);
-			 if(constituencyElectionResults != null){
+			 			 if(constituencyElectionResults != null){
 				 for(CandidateOppositionVO oppositionCand:constituencyElectionResults.getCandidateOppositionList()){
 					 if(oppositionCand.getRank().equals(new Long(2))){
 					 Double wonVotesMargin = new Double(constituencyElectionResults.getCandidateResultsVO().getVotesEarned()) - new Double(oppositionCand.getVotesEarned());
@@ -3845,7 +3863,7 @@ public class StaticDataService implements IStaticDataService {
 			sb.append(" model.candidateResult.votesEarned," );
 			sb.append(" model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.rank,model.constituencyElection.constituency.constituencyId," );
 			sb.append(" model.candidateResult.votesPercengate,model.party.longName,model.party.partyId," );
-			sb.append(" model.constituencyElection.reservationZone" );
+			sb.append(" model.constituencyElection.reservationZone,model.constituencyElection.constituency.name" );
 			sb.append(" from Nomination model where model.constituencyElection.constituency.localElectionBody.electionType.electionType = ?");
 			sb.append(" and model.constituencyElection.constituency.localElectionBody.localElectionBodyId = ?");
 			sb.append(" and model.constituencyElection.election.electionYear = ? ");
