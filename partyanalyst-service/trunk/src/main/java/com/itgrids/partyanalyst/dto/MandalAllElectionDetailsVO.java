@@ -35,6 +35,7 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private Float votesEarned;
 	private String votesPercentage;
 	private Long constituencyId;
+	private String constituencyName;
 	private String marginVotesPercentage;
 	private String reservationZone;
 	private List<MandalAllElectionDetailsVO> zptcMandalAllElectionDetailsVO;
@@ -54,6 +55,13 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	}
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+	
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
 	}
 	public void setVotesDifference(Float votesDifference) {
 		this.votesDifference = votesDifference;

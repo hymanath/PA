@@ -14,6 +14,7 @@ public class TeshilPartyInfoVO {
 	private Long muncipalityId;
 	private Double totalVoters;
 	private Float totalPolledVotes;
+	private Long totalSeats;
 	private Long totalWards;	
 	private int totalMuncipalities;
 	private List<TeshilPartyInfoVO> muncipalityVO; 
@@ -25,6 +26,13 @@ public class TeshilPartyInfoVO {
 	}
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
+	}
+	
+	public Long getTotalSeats() {
+		return totalSeats;
+	}
+	public void setTotalSeats(Long totalSeats) {
+		this.totalSeats = totalSeats;
 	}
 	public String getLatestMuncipalElectionYear() {
 		return latestMuncipalElectionYear;
