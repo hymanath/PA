@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.service.IProblemManagementReportService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.CrossVotingEstimationService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -47,6 +48,7 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private List<SelectOptionVO> statesList, districtsList, constituenciesList; 
 	private IProblemManagementReportService problemManagementReportService;
 	private String accessType;
+	private Long accessValue;
 	private List<InfluencingPeopleVO> influencingPeopleVO;
 	private String task = null;
 	JSONObject jObj = null;
@@ -54,6 +56,8 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 	private String reportResult;
 	private List<SelectOptionVO> parliamentConstituencyList;
 	private IStaticDataService staticDataService;
+	private ISmsService smsCountrySmsService;
+	private Long remainingSms;
 	
 	
 	
@@ -259,6 +263,30 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
+	}	
+
+	public Long getAccessValue() {
+		return accessValue;
+	}
+
+	public void setAccessValue(Long accessValue) {
+		this.accessValue = accessValue;
+	}	
+
+	public ISmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
+	}
+
+	public Long getRemainingSms() {
+		return remainingSms;
+	}
+
+	public void setRemainingSms(Long remainingSms) {
+		this.remainingSms = remainingSms;
 	}
 
 	public String execute() throws Exception{
@@ -282,8 +310,12 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 			return ERROR;
 				
 		accessType =user.getAccessType();
-		Long accessValue= new Long(user.getAccessValue());		
-		  
+		accessValue= new Long(user.getAccessValue());		
+		
+		Long userID = user.getRegistrationID();
+		remainingSms = smsCountrySmsService.getRemainingSmsLeftForUser(userID);
+		
+		
 		stateList = new ArrayList<SelectOptionVO>();
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
@@ -362,8 +394,14 @@ public class ConstituencyManagementAction extends ActionSupport implements Servl
 		}
 		String accessType = jObj.getString("accessType");
 		Long accessValue = jObj.getLong("accessValue");
+		Long hamletId = null;
+		if(!jObj.getString("hamletId").equals("null"))
+		{	
+			hamletId = new Long(jObj.getString("hamletId"));
+		}  
+		String flag = jObj.getString("flag");
 		
-		influencingPeopleVO = problemManagementReportService.findInfluencingPeopleInfoInLocation(accessType, accessValue);
+		influencingPeopleVO = problemManagementReportService.findInfluencingPeopleInfoInLocation(accessType, accessValue, hamletId,flag);
 		
 		
 		
