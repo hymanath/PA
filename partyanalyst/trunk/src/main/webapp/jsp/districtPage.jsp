@@ -676,7 +676,7 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 	
 	function redirectCandidateLink()
 	{
-		 var browser0 = window.open("<s:url action="districtPageCandidateDetailsAjaxAction.action"/>?disId="+districtId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear,"browser0","scrollbars=yes,height=630,width=1170,left=200,top=200");
+		 var browser1 = window.open("<s:url action="districtPageCandidateDetailsAjaxAction.action"/>?disId="+districtId+"&eleType="+zptcElectionType+"&eleYear="+zptcElectionYear,"browser1","scrollbars=yes,height=630,width=1170,left=200,top=200");
 		 browser1.focus();
 	}
 	function redirectMptcCandidateLink()
