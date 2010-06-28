@@ -349,7 +349,9 @@
 			var jsObj= 
 			{	
 				accessType:accessType,
-				accessValue:accessValue,			  			
+				accessValue:accessValue,
+				flag: "CONSTITUENCY",
+				hamletId: "null",				 			  			
 				task: "getInfluencingPeopleInAConstituency"
 						
 			};

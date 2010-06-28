@@ -231,6 +231,29 @@
 			color:red;
 			margin-left:5px;
 		}
+		.button {
+			background:none repeat scroll 0 0 #335291;
+			color:#FFFFFF;
+			font-weight:bold;
+			padding:5px;
+		}
+		.confirmationMessage  {
+			color:green;
+			font-weight:bold;
+			padding:5px;
+			text-align:left;
+		}
+		.linkButton {
+			background-image:url("images/icons/electionResultsReport/linkBtn.png");
+			border-left:1px solid #9999CC;
+			border-right:1px solid #9999CC;
+			color:#FFFFFF;
+			font-size:12px;
+			font-weight:bold;
+			margin-left:10px;
+			padding:5px;
+			text-decoration:none;
+		}
 		
 		
 	</style>
@@ -335,7 +358,7 @@
 		  %> }
 	
 	var outerTab,problemMgmtTabs,newProbDataTable, classifiedDataTable,assignedIssDataTable, progessIssuesDataTable, classifyDTRecord,deptCellEditor,pendingIssuesDataTable, fixedIssuesDataTable, ePapersDataTable;
-	var newProblemDialog,elCheckbox,elCheckboxInClassifyDT,elCheckboxInAssignDT,elCheckboxInProgressDT,elCheckboxInPendingDT,EditClassifyProbsDialog ;
+	var elCheckbox,elCheckboxInClassifyDT,elCheckboxInAssignDT,elCheckboxInProgressDT,elCheckboxInPendingDT,EditClassifyProbsDialog,popupPanel ;
 	var classifyButton, assignButton, progressButton,pFixedButton,pPendingButton,progressButtonInPending;
 	var recordsArray = new Array();
 	var clasifyDtRecordsArray = new Array();
@@ -343,7 +366,10 @@
 	var progressDtRecordsArray = new Array();
 	var pendingDtRecordsArray = new Array();
 	var reportResult ='${reportResult}';
-
+	var accessType = '${accessType}';
+	var accessValue = '${accessValue}';
+	var mobileNumbersArray = new Array();
+	var smsHidden = 1;
 	
 	var problemsMainObj={	
 							probTypesArr:[],
@@ -495,6 +521,25 @@
 			}			
 		}
 	}
+
+	function getInfluencingPeopleInAConstituency(name, value)
+	{
+		var jsObj= 
+		{	
+			accessType:accessType,
+			accessValue:accessValue,
+			hamletId: value,
+			flag: "HAMLET", 			  			
+			task: "getInfluencingPeopleInAConstituency"
+					
+		};
+		
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/influencingPeopleInConstituencyAction.action?"+param;
+		
+		callAjax(param,jsObj,url);			
+	}
+	
 	function openAddNewProblemWindow()
 	{	
 		var browser1 = window.open("<s:url action="addNewProblemAction.action"/>","addNewProblem","scrollbars=yes,height=600,width=600,left=200,top=200");
@@ -568,6 +613,12 @@
 									} else if(jsObj.location == "hamlet")
 									{
 										fillHamletOptions(myResults);
+									} else if(jsObj.task == "getInfluencingPeopleInAConstituency")
+									{
+										showInfluencePeople(myResults);
+									} else if(jsObj.task == "sendSMS")
+									{
+										showSentSmsConfirmation(myResults);
 									} 
 									else
 									{
@@ -588,7 +639,8 @@
 
  		YAHOO.util.Connect.asyncRequest('GET', url, callback);
  	}
-
+	
+	
 	function fillHamletOptions(results)
 	{
 		var phamletFieldEl = document.getElementById("hamletField");
@@ -609,19 +661,301 @@
 				}
 		}
 	}
+
+	function limitText(limitField, limitCount, limitNum)
+	{		
+		var limitFieldElmt = document.getElementById(limitField);
+		var limitCountElmt = document.getElementById(limitCount);
+
+		if (limitFieldElmt.value.length > limitNum) 
+		{
+			limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+		}
+		else
+		{			
+			limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+" ";
+		}
+	}
+	
+	function showInfluencePeople(results)
+	{
+		/*
+		constMgmtTabs.getTab(0).set("disabled", false);		
+		constMgmtTabs.getTab(1).set("disabled", false);
+		constMgmtTabs.getTab(2).set("disabled", false);
+		constMgmtTabs.getTab(3).set("disabled", false);
+		constMgmtTabs.getTab(4).set("disabled", false);
+		constMgmtTabs.getTab(5).set("disabled", false);
+		constMgmtTabs.getTab(6).set("disabled", false);*/
+		var divEl = document.getElementById("dataTableDiv");
+		var smsDivEl =  document.getElementById("smsDiv"); 
+		var assignToLocalLeaders = new Array();
+		for(var i in results)
+		{
+			var localLeadersDetails = {
+
+					personName: results[i].personName,
+					localArea: results[i].localArea,
+					influencingPeopleId: results[i].influencingPeopleId,					
+					influencingRange: results[i].influencingRange,
+					influencingRangeName: results[i].influencingRangeName,
+					party: results[i].party,
+					contactNumber: results[i].contactNumber
+					
+					};
+			assignToLocalLeaders.push(localLeadersDetails);
+			constMgmtMainObj.localLeadersArray=assignToLocalLeaders;
+						
+		}
+		constMgmtTabs.getTab(0).set("active", true);
+		if(results.length > 0)
+		{
+			buildLocalLeadersDataTable();
+			var contentStr = '';
+			
+			contentStr+='<DIV id="smsBlockAlert" class="errorMessage"></DIV>';
+			contentStr+='<DIV id="smsConfirmation" class="confirmationMessage"></DIV>';
+			contentStr+='<div id="sendSMSBlock" style="border:1px solid;margin:10px;width:900px;">';
+			contentStr+='		<TABLE>';
+			contentStr+='		<TR>';
+			contentStr+='			<TD colspan="2"><DIV style="text-align:left;">Should not exceed 200 chars!</DIV></TD>';
+			contentStr+='		</TR>';	
+			contentStr+='		<TR>';
+			contentStr+='			<TD><TEXTAREA id="smsText" cols="120" onkeyup=limitText(\'smsText\',\'maxcount\',200)></TEXTAREA></TD>';
+			contentStr+='			<TD valign="bottom"><INPUT type="button" value="Send SMS" onclick="sendSMS()" class="button"/></TD>';
+			contentStr+='		</TR>';
+			contentStr+='		<TR>';
+			contentStr+='			<TD colspan="2" ><DIV id="remainChars" style="text-align:left;"><SPAN id="maxcount">200 </SPAN><SPAN>chars remaining..</SPAN></DIV></TD>';
+			contentStr+='			</TR>';	
+			contentStr+='	</TABLE>';
+			contentStr+='</div>';
+			smsDivEl.innerHTML = contentStr;			
+		
+		} else 
+		{
+			divEl.innerHTML = 'No Infuencing People in this hamlet';
+			smsDivEl.innerHTML = '';
+		}
+		
+	}
+
+	function sendSMS()
+	{
+		var remainingSms = "${remainingSms}"; 
+		
+		if(remainingSms==0){
+			smsRenewalMessage();
+			return;
+		}
+		
+		var message = document.getElementById("smsText").value;
+		var smsBlockAlertEl = document.getElementById("smsBlockAlert");
+		var numbersArr = new Array();
+		
+		var smsConfirmationEl = document.getElementById("smsConfirmation");
+		
+		var str1='';
+		smsConfirmationEl.innerHTML = str1;
+
+		if(mobileNumbersArray.length == 0 && message == '')
+		{
+			smsBlockAlertEl.innerHTML = '';
+			smsBlockAlertEl.innerHTML = 'Please select person name and then type your message';
+			return;
+		}
+		if(mobileNumbersArray.length == 0)
+		{
+			smsBlockAlertEl.innerHTML = '';
+			smsBlockAlertEl.innerHTML = 'Please select person name in the above table';
+			return;
+		}
+		if(message == '')
+		{
+			smsBlockAlertEl.innerHTML = '';
+			smsBlockAlertEl.innerHTML = 'Please type your message';
+			return;
+		}
+		for(var i in mobileNumbersArray)
+		{
+			numbersArr.push(mobileNumbersArray[i]._oData.contactNumber);				
+		}
+		smsHiddenIncrementHidden();
+		var jsObj= 
+			{
+				numbers: numbersArr,
+				message:message,
+				module:"Influencing People",	
+				task:"sendSMS"			
+			}
+			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/userGroupSMSAjaxAction.action?"+param+"&smsHidden="+smsHidden;
+			callAjax(param,jsObj,url);			
+	}
+
+	function smsHiddenIncrementHidden()
+	{
+		smsHidden++;
+	}
+
+	function showSentSmsConfirmation(result)
+	{
+		
+		var smsConfirmationEl = document.getElementById("smsConfirmation");
+			
+		var smsBlockAlertEl = document.getElementById("smsBlockAlert");
+		var smsTextEl = document.getElementById("smsText");
+		var str='';
+		if(result.status==0){
+			str+=" SMS sent successfully to "+result.totalSmsSent+" Members";
+			if(result.remainingSmsCount!=0){
+				str+=" You can send "+result.remainingSmsCount+"more SMS's";
+			}else{
+				str+="<br>";
+				str+=" You cannot any more SMS ";
+				smsRenewalMessage();
+			}	
+		}else{
+			smsRenewalMessage();
+		}
+		smsConfirmationEl.innerHTML += str; 
+		smsBlockAlertEl.innerHTML = '';
+		smsTextEl.value = '';
+		//buildInfluencingPeopleDT(resultsGlobal);
+	}
+
+	function smsRenewalMessage()
+	{
+		var elmt = document.getElementById('smsErrorPopupDiv');
+		var divChild = document.createElement('div');
+		divChild.setAttribute('id','smsErrorDiv');
+		
+		var str = '';
+		str	+= '<div id="smsErrorMain" style="padding:10px;">';
+		str	+= '	<table id="loginDetailsTable" width="100%">';
+		str	+= '		<tr>';
+		str	+= '			<th colspan="3" align="left">';
+		str	+= '				Your SMS Credentials are expired ';
+		str	+= '			</th>';		
+		str	+= '		</tr>';
+		str	+= '		<tr>';
+		str	+= '			<td colspan="3">Please contact contact us @  </td>';
+		str	+= '		</tr>';
+		str	+= '		<tr>';
+		str	+= '			<th align="left">Phone </th><td>: </td><td> +91-40-40124153</td>';
+		str	+= '		</tr>';
+		str	+= '		<tr>';
+		str	+= '			<th align="left">Mail </th><td>: </td><td> license@itgrids.com</td>';
+		str	+= '		</tr>';
+		str	+= '	</table>';	
+		str	+= '</div>';
+		divChild.innerHTML=str;		
+		
+		elmt.appendChild(divChild);	
+		if(popupPanel)
+			popupPanel.destroy();
+		popupPanel = new YAHOO.widget.Dialog("smsErrorDiv",
+				{ 
+					 height:'150px',
+					 width:'250px',
+		             fixedcenter : true, 
+		             visible : true,
+		             constraintoviewport : true, 
+		    		 iframe :true,
+		    		 modal :true,
+		    		 hideaftersubmit:true,
+		    		 close:true,
+					 draggable:true
+	             } ); 
+		popupPanel.render();
+	}
+		
+
+	function buildLocalLeadersDataTable()
+	{
+		var localLeadersColumnDefs = [ 
+
+							{key:"influencingPeopleId", hidden: true},         
+							{key : "select", label : "<%=select%>", formatter : "checkbox"},
+		    	            {key:"personName", label: "<%=name%>", sortable:true},
+		    	            {key:"contactNumber", label: "<%=contactnbr%>"},
+		    	            {key:"party", label: "Party"}, 
+		    	            {key:"localArea", label: "Location", sortable:true},	    				
+		    				{key:"influencingPeopleId", hidden: true},
+		    				{key:"influencingRange", label: "<%=inflScope%>", sortable:true},
+		    				{key:"influencingRangeName", label: "Influenc Scope Name", sortable:true}		    				
+		    	        ]; 
+		var localLeadersDataSource = new YAHOO.util.DataSource(constMgmtMainObj.localLeadersArray); 
+		localLeadersDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
+		localLeadersDataSource.responseSchema = { 
+            fields: ["personName","party","localArea","influencingPeopleId","influencingRangeName","influencingRange","contactNumber"] 
+        };
+
+        if(constMgmtMainObj.localLeadersArray.length > 10)
+        {
+			var myConfigs = { 
+				    paginator : new YAHOO.widget.Paginator({ 
+			        rowsPerPage    : 15 
+				    }) 
+					};
+        }
+		var localLeadersDataTable =  new YAHOO.widget.DataTable("dataTableDiv", localLeadersColumnDefs, localLeadersDataSource,myConfigs);
+		localLeadersDataTable.subscribe("checkboxClickEvent", function(oArgs) { 
+	  	    elCheckbox = oArgs.target; 
+	  	    var newValue = elCheckbox.checked; 
+	  	    var record = this.getRecord(elCheckbox); 
+	  	    var column = this.getColumn(elCheckbox); 
+	  	  
+	  	    record.setData(column.key,newValue);				  	
+	  	    
+	  	    if(newValue && hasRecordInSmsNosArray(record))
+	  	  		{
+	  	    	mobileNumbersArray.push(record);
+	  	    	var smsTextEl = document.getElementById("smsText").focus();
+	  	  		}
+			else
+				{
+					deleteRecordFromSmsNosArray(record);
+					elCheckbox.checked = false;
+				}
+	  	  	   		  	  				  	  	
+		  	});
+
+			
+	}
+
+	function hasRecordInSmsNosArray(record)
+	{	
+		var status = true;
+		for(i=0;i<mobileNumbersArray.length;i++)
+		{	
+			if(mobileNumbersArray[i]._oData.influencingPeopleId == record._oData.influencingPeopleId)
+				status=false;
+		}
+		return status;
+	}
+	function deleteRecordFromSmsNosArray(record)
+	{
+		for(i=0;i<mobileNumbersArray.length;i++)
+		{	
+			if(mobileNumbersArray[i]._oData.influencingPeopleId == record._oData.influencingPeopleId)
+				mobileNumbersArray.splice(i,1);
+		}
+			
+	}
+
+	
+	
 	
 	function showVotersData(results,jsObj)
 	{	
 		assignToVotersArray = new Array();
 		assignToVotersCastStats = new Array();
-		assignToVotersByHouseNo = new Array();
-		assignToLocalLeaders = new Array();
+		assignToVotersByHouseNo = new Array();		
 		assignToPoliticalChanges = new Array();
 		assignToLocalProblems = new Array();
 		assignToTotalLeaders = new Array();
 		assignToElectedLeaders = new Array();
 
-		var localLeaders = results.localLeaders;
 		var voters = results.voterDetails;
 		var cast = results.voterCastInfodetails.castVOs;
 		var totalVoters = results.voterCastInfodetails.totalVoters;
@@ -681,19 +1015,7 @@
 			assignToVotersByHouseNo.push(totalVotersByHouseNos);
 			constMgmtMainObj.votersByHouseNoArray=assignToVotersByHouseNo;
 		}		
-		for(var i in localLeaders)
-		{
-			var localLeadersDetails = {
-
-					name: localLeaders[i].name,
-					occupation: localLeaders[i].occupation,
-					position: localLeaders[i].position,
-					influenceScope: localLeaders[i].influenceScope,
-					contactNumber: localLeaders[i].contactNumber
-					};
-			assignToLocalLeaders.push(localLeadersDetails);
-			constMgmtMainObj.localLeadersArray=assignToLocalLeaders;				
-		}
+		
 		for(var i in politicalChanges)
 		{
 			var localPoliticalChanges = {
@@ -765,10 +1087,7 @@
 		localCastStatsTabContent+='</table>';
 		localCastStatsTabContent_headerEl.innerHTML=localCastStatsTabContent;
 		var emptyArr = new Array();
-		    if(localLeaders.length == 0)
-			{	
-				constMgmtMainObj.localLeadersArray = emptyArr;				
-			} if(localProblems.length == 0)
+		    if(localProblems.length == 0)
 			{
 				constMgmtMainObj.localProblemsArr = emptyArr;				
 			} if(cast.length == 0)
@@ -791,7 +1110,6 @@
 				constMgmtMainObj.electedMandalLeadersArr = emptyArr;
 			}
 			buildLocalPoliticalChangesDataTable();
-			buildLocalLeadersDataTable();
 			buildLocalCastStatisticsDataTable();			
 			buildVotersByLocBoothDataTable();
 			buildImportantVotersDataTable();
@@ -1056,6 +1374,8 @@
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);						
 		var url = "<%=request.getContextPath()%>/voterInfoAction.action?"+rparam;
 		callAjax(rparam,jsObj,url);
+		getInfluencingPeopleInAConstituency(name,value)
+		
 	}
 	
 	function getNewPapersForSelectedDist(name, value)
@@ -2065,14 +2385,24 @@
 			problemMgmtTabs.getTab(4).addListener('click',handlePendingIssTabClick);
 			problemMgmtTabs.getTab(5).addListener('click',handleFixedIssTabClick);			
 	}
-			
+
+	function redirectToNewWindowForAddingInfluencingPeople(){
+		var browser1 = window.open("<s:url action="influencingPeopleRegistration.action"/>","influencingPeopleRegistration","scrollbars=yes,height=600,width=450,left=200,top=200");
+		browser1.focus();
+	}
+				
 	function buildConstMgmtTabView()
 	{	
 		 constMgmtTabs = new YAHOO.widget.TabView(); 
-
+		 var ipContent = '';
+		 ipContent+='<div id="ipTabContent">';		 	
+		 ipContent+='<div id="dataTableDiv"></div>';
+		 ipContent+='<div style="text-align:right;margin-top:10px;"><input type="button" class="linkButton" value="Add Influencing People" onclick="redirectToNewWindowForAddingInfluencingPeople()"></div>';
+		 ipContent+='<div id = "smsDiv"></div>';
+		 ipContent+='</div>';	
 		constMgmtTabs.addTab( new YAHOO.widget.Tab({
-			label: '<%=localLeaders%>',
-			content: '<div id="localLeadersTabContent"></div>',
+			label: 'Influencing People',
+			content: ipContent,			
 			disabled: true			
 		}));
 
@@ -3172,40 +3502,7 @@
 	   
 	}
 	
-	function buildLocalLeadersDataTable()
-	{
-		var localLeadersColumnDefs = [ 
-		    	             
-		    	            {key:"name", label: "<%=name%>", sortable:true}, 
-		    	            {key:"occupation", label: "<%=occupation%>", sortable:true}, 
-		    				{key:"position", label: "<%=position%>", sortable:true},
-		    				{key:"influenceScope", label: "<%=inflScope%>", sortable:true},	
-		    				{key:"contactNumber", label: "<%=contactnbr%>"}
-		    				
-		    				
-		    	        ]; 
-		var localLeadersDataSource = new YAHOO.util.DataSource(constMgmtMainObj.localLeadersArray); 
-		localLeadersDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY; 
-		localLeadersDataSource.responseSchema = { 
-            fields: ["name","occupation","position","influenceScope","contactNumber"] 
-        };
-
-        
-		var myConfigs = { 
-			    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15 
-			    }) 
-				};
-
-		var localLeadersDataTable =  new YAHOO.widget.DataTable("localLeadersTabContent", localLeadersColumnDefs, localLeadersDataSource,myConfigs);
-		constMgmtTabs.getTab(0).addListener("click", function() {localLeadersDataTable.onShow()});
-
-			return {
-				oDS: localLeadersDataSource,
-				oDT: localLeadersDataTable
-			};
-	}
-
+	
 	function buildLocalProblemsDataTable()
 	{
 		var localProbColumnDefs = [ 
@@ -3376,39 +3673,6 @@
 				oDT: myDataTable
 			};
 	}
-
-	function showDateCal(id)
-	{
-		if(dateCalendar)
-			dateCalendar.destroy();
-		
-		var navConfig = { 
-	      strings : { 
-	          month: "Choose Month", 
-	          year: "Enter Year", 
-	          submit: "OK", 
-	          cancel: "Cancel", 
-	          invalidYear: "Please enter a valid year" 
-	      }, 
-	      monthFormat: YAHOO.widget.Calendar.SHORT, 
-	      initialFocus: "year" 
-	}; 
-
-		var dateCalendar = new YAHOO.widget.Calendar(id, {navigator:navConfig, title:"Choose a date:", close:true }); 
-		dateCalendar.selectEvent.subscribe(displayDateText, dateCalendar, true); 		
-		dateCalendar.render(); 
-		dateCalendar.show();	
-	}
-	function displayDateText(type,args,obj)
-	{			
-		var dates = args[0]; 
-		var date = dates[0]; 
-		var year = date[0], month = date[1], day = date[2]; 
-
-		var txtDate1 = document.getElementById("existingFromText"); 
-		txtDate1.value = day + "/" + month + "/" + year; 
-	}
-
 	function getHamletList(name,value,choice)
 	{	
 		var hamletFieldEl = document.getElementById("hamletField");
@@ -3463,254 +3727,7 @@
 		}	
 	}
 	
-	function getPersonDetails(value)
-	{
-		
-		var elmt = document.getElementById("personDetailsDiv");
-		if(!elmt)
-			alert("No div present to display personal details");
-		if(value != 1) 
-		{		
-			elmt.style.display = 'block';
-		}
-		else
-		{	
-			elmt.style.display = 'none';
-		}
-	}
 	
-	function buildAddNewProblemPopup()
-	{
-		var elmt = document.getElementById('constituencyMgmtBodyDiv');
-		var m_names = new Array("January", "February", "March", 
-				"April", "May", "June", "July", "August", "September", 
-				"October", "November", "December");
-
-
-				var d = new Date();
-				var curr_date = d.getDate();
-				var curr_month = d.getMonth();
-				var curr_year = d.getFullYear();
-				
-				var todayDate=new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();
-					
-		var divChild = document.createElement('div');
-		divChild.setAttribute('id','addNewProblemDiv');
-		divChild.setAttribute('class','newProbdialog');
-
-		var contentStr='';
-		contentStr+='<div class="hd" align="left">Add New Problem</div>';
-		contentStr+='<div class="bd" align="left">';
-		contentStr+='<div id="problemDetailsDivBody">';
-		contentStr+='<table>';
-		contentStr+='<tr>';
-		contentStr+='<th align="left" colspan="3"><u>Problem Details</u></th>';
-		contentStr+='</tr>';
-		contentStr+='<tr></tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=problemLabel%></td>';
-		contentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="problemText" name="problemText"/></td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=description%></td>';
-		contentStr+='<td style="padding-left: 15px;"><textarea cols="50" id="descTextArea" name="descTextArea"></textarea></td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=STATE%></td>';
-		contentStr+='<td style="padding-left: 15px;"><select id="pstateField" name="state" onchange="getnextList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
-		for(var i in locationDetails.stateArr)
-		{
-			contentStr+='<option value='+locationDetails.stateArr[i].id+'>'+locationDetails.stateArr[i].value+'</option>';
-		}
-		contentStr+='</select></td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=DISTRICT%></td>';
-		contentStr+='<td style="padding-left: 15px;"><select id="pdistrictField" class="selectWidth" name="district" onchange="getConstituencyList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
-		for(var i in locationDetails.districtArr)
-		{
-			contentStr+='<option value='+locationDetails.districtArr[i].id+'>'+locationDetails.districtArr[i].value+'</option>';
-		}
-		contentStr+='</select></td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=CONSTITUENCY%></td>';
-		contentStr+='<td style="padding-left: 15px;"><select id="pconstituencyField" class="selectWidth" name="constituency" onchange="getMandalList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
-		for(var i in locationDetails.constituencyArr)
-		{
-			contentStr+='<option value='+locationDetails.constituencyArr[i].id+'>'+locationDetails.constituencyArr[i].value+'</option>';
-		}
-		contentStr+='</select></td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=MANDAL%></td>';
-		contentStr+='<td style="padding-left: 15px;"><select id="pmandalField" class="selectWidth" name="mandal" onchange="getTownshipsForMandal(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
-		for(var i in locationDetails.mandalArr)
-		{
-			contentStr+='<option value='+locationDetails.mandalArr[i].id+'>'+locationDetails.mandalArr[i].value+'</option>';
-		}
-		contentStr+='</select></td>';
-		contentStr+='</tr>';
-		
-		contentStr+='<tr>';
-		contentStr+='<td><%=VILLAGE%></td>';
-		contentStr+='<td style="padding-left: 15px;"><select class="selectWidth" id="pvillageField" name="village" onchange="getnextList(this.name,this.options[this.selectedIndex].value,\'addProblem\')">';
-		for(var i in locationDetails.villageArr)
-		{
-			contentStr+='<option value='+locationDetails.villageArr[i].id+'>'+locationDetails.villageArr[i].value+'</option>';
-		}
-		contentStr+='</select></td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=HAMLET%></td>';
-		contentStr+='<td style="padding-left: 15px;"><select class="selectWidth" id="phamletField" name="hamlet">';
-		for(var i in locationDetails.hamletArr)
-		{
-			contentStr+='<option value='+locationDetails.hamletArr[i].id+'>'+locationDetails.hamletArr[i].value+'</option>';
-		}
-		contentStr+='</select></td>';
-		contentStr+='</tr>';		
-		contentStr+='<tr>';
-		contentStr+='<td><%=reportedDate%></td>';
-		contentStr+='<td style="padding-left: 15px;"><input type="text" value="'+todayDate+'" size="53" id="reportedDateText" name="reportedDateText"/></td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=existingFrom%></td>';
-		contentStr+='<td style="padding-left: 15px;">';
-		contentStr+='<div><input type="text" id="existingFromText" name="existingFromText" size="53" onfocus="showDateCal(\'existingFromText_Div\')"/></div>';
-		contentStr+='<div id="existingFromText_Div" class="tinyDateCal"></div>';
-		contentStr+='</td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=problemSource%></td>';
-		contentStr+='<td style="padding-left: 15px;"><select id="problemSource" class="selectWidth" name="problemSource" onchange="getPersonDetails(this.options[this.selectedIndex].value)">';
-		for(var i in problemsMainObj.problemSourcesArr)
-		{
-			contentStr+='<option value='+problemsMainObj.problemSourcesArr[i].id+'>'+problemsMainObj.problemSourcesArr[i].value+'</option>';
-		}
-		contentStr+='</select></td>';	
-		contentStr+='</tr>';
-		contentStr+='</table>';
-		contentStr+='<div id="personDetailsDiv" style="display: none;">';
-		contentStr+='<table>';
-		contentStr+='<tr>';
-		contentStr+='<th align="left" colspan="2"><u>Complained Person Details</u></th>';
-		contentStr+='</tr>';
-		contentStr+='<tr></tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=name%></td>';
-		contentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="nameText" name="problemText"/></td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=mobile%></td>';
-		contentStr+='<td style="padding-left: 15px;"><input type="text" size="53" id="mobileText" name="mobileText"/></td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=telephoneNo%></td>';
-		contentStr+='<td style="padding-left:15px;"><input type="text" size="53" id="telePhoneText" name="telePhoneText"/></td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td><%=email%></td>';
-		contentStr+='<td style="padding-left:15px;"><input type="text" size="53" id="emailText" name="emailText"/></td>';
-		contentStr+='</tr>';
-		contentStr+='<tr>';
-		contentStr+='<td width="100px;"><%=address%></td>';
-		contentStr+='<td style="padding-left:15px;"><input type="text" size="53" id="addressText" name="addressText"/></td>';
-		contentStr+='</tr>';
-		contentStr+='</table>';
-		contentStr+='</div>';
-		contentStr+='</div>';
-		contentStr+='</div>';
-		divChild.innerHTML=contentStr;
-		elmt.appendChild(divChild);	 
-	
-		if(newProblemDialog)
-			newProblemDialog.destroy();
-		newProblemDialog = new YAHOO.widget.Dialog("addNewProblemDiv",
-				{ width : "600px", 
-	              fixedcenter : false, 
-	              visible : true,  
-	              constraintoviewport : true, 
-				  iframe :true,
-				  modal :true,
-				  hideaftersubmit:true,
-				  close:true,
-				  x:400,
-				  y:300,				  
-				  buttons : [ { text:"Add Problem", handler: handleNewProbSubmit, isDefault:true}, 
-	                          { text:"Cancel", handler: handleDialogCancel}]
-	             } ); 
-		newProblemDialog.render();		
-	}
-		
-	function handleNewProbSubmit()
-	{
-		
-		var problemVal = document.getElementById("problemText").value;
-		var descriptionVal = document.getElementById("descTextArea").value;
-		var stateEl = document.getElementById("pstateField");
-		var	stateVal = stateEl.options[stateEl.selectedIndex].value;
-		var districtEl = document.getElementById("pdistrictField");
-		var	districtVal = districtEl.options[districtEl.selectedIndex].value; 
-		var constEl	= document.getElementById("pconstituencyField");
-		var	constVal = constEl.options[constEl.selectedIndex].value;
-		var tehsilEl = document.getElementById("pmandalField");
-		var	tehsilVal = tehsilEl.options[tehsilEl.selectedIndex].value;	
-		var villageEl = document.getElementById("pvillageField");
-		var	villageVal = villageEl.options[villageEl.selectedIndex].value; 
-		var hmletEl = document.getElementById("phamletField");
-		var	hmletVal = hmletEl.options[hmletEl.selectedIndex].value; 
-		var reportedDateVal = document.getElementById("reportedDateText").value;
-		var existingFromVal = document.getElementById("existingFromText").value;
-		var problemSourceEl = document.getElementById("problemSource");
-		var	problemSourceVal = problemSourceEl.options[problemSourceEl.selectedIndex].value; 
-		
-			if(problemSourceVal != 1)
-		{
-			var nameVal = document.getElementById("nameText").value;
-			var mobileVal = document.getElementById("mobileText").value;
-			var telePhoneVal = document.getElementById("telePhoneText").value;
-			var emailVal = document.getElementById("emailText").value;
-			var addressVal = document.getElementById("addressText").value;			
-		} else {
-			var nameVal = "";
-			var mobileVal = "";
-			var telePhoneVal = "";
-			var emailVal = "";
-			var addressVal = "";
-			}	
-		
-		var jsObj={
-				problem: problemVal,
-				description: descriptionVal,
-				state: stateVal,
-				district: districtVal,
-				constituency: constVal ,
-				tehsil: tehsilVal, 
-				village: villageVal,
-				hamlet: hmletVal,
-				reportedDate: reportedDateVal,  
-				existingFrom: existingFromVal, 
-				name: nameVal, 
-				email: emailVal,
-				phone: telePhoneVal, 
-				mobile: mobileVal, 
-				address: addressVal,
-				probSource: problemSourceVal,
-				status:"1",	
-				task:"addNewProblem"
-			  }
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "<%=request.getContextPath()%>/problemManagementAction.action?"+rparam;		
-	callAjax(rparam,jsObj,url);
-	newProblemDialog.hide();
-	
-	}
-
-	function handleDialogCancel()
-	{
-		this.cancel();
-	}	
 
 	
 </script>
@@ -3730,6 +3747,11 @@
 		<div id="statisticalDataBodyDiv"> Statistical Data Content</div>
 	</div>
 	<div id="problemMgmtMainDiv"></div>
+	
+	<div id="errorMessageDIV" class="yui-skin-sam">
+		<div id="smsErrorPopupDiv">
+		</div>
+	</div>
 </div>
 <script type="text/javascript">
 
@@ -3775,20 +3797,14 @@
 			};
 	locationDetails.hamletArr.push(ob);	
 </c:forEach>
-<c:forEach var="probSources"  items="${problemSources}" >
-var ob={
-			id:'${probSources.id}',
-			value:'${probSources.name}'
-		};
-problemsMainObj.problemSourcesArr.push(ob);	
-</c:forEach>
+
 <c:forEach var="parlConsti"  items="${parliamentConstituencyList}" >
 var ob={
 			id:'${parlConsti.id}',
 			value:'${parlConsti.name}'
 		};
 locationDetails.parliamentConstituency.push(ob);
-console.log(locationDetails.parliamentConstituency);
+
 </c:forEach>
 getTodayDateTime();
 buildConstituencyLayout();
