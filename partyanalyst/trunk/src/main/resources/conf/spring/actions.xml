@@ -219,6 +219,7 @@
 		<property name="problemManagementService" ref="problemManagementService"></property>		
 		<property name="problemManagementReportService" ref="problemManagementReportService"/>
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
 	</bean>
 	
 	<bean id="initailConstituencyManagementAction" class="com.itgrids.partyanalyst.web.action.InitailConstituencyManagementAction" singleton="false">				
