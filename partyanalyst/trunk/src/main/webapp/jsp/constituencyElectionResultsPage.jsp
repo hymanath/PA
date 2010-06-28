@@ -163,8 +163,10 @@ function buildDataForConstituencyResults()
          constituencyElecMainObj.constituencyBasicInfo.stateName='${constituencyElectionResultsVO.stateName}';
        	 constituencyElecMainObj.constituencyBasicInfo.districtName='${constituencyElectionResultsVO.districtName}';
       	 constituencyElecMainObj.constituencyBasicInfo.constituencyType='${constituencyElectionResultsVO.electionType}';
-
-
+      	 constituencyElecMainObj.constituencyBasicInfo.totalVotes='${constituencyElectionResultsVO.totalVotes}';
+      	 constituencyElecMainObj.constituencyBasicInfo.totalPolledVotes='${constituencyElectionResultsVO.totalPolledVotes}';
+      	 constituencyElecMainObj.constituencyBasicInfo.votingPercentage='${constituencyElectionResultsVO.votingPercentage}';
+      	 
 	    constituencyElecMainObj.constituencyElectionInfo.electionType='${constituencyElectionResultsVO.electionType}';
 		constituencyElecMainObj.constituencyElectionInfo.electionYear='${constituencyElectionResultsVO.electionYear}';
 	                    
@@ -216,6 +218,7 @@ function buildDataForConstituencyResults()
 
 function displayConstituencyElectionResults()
 {
+
 		var smallerCase = constituencyElecMainObj.constituencyBasicInfo.constituencyName;
 		//smallerCase=smallerCase.replace(smallerCase[0],smallerCase[0].toUpperCase());
 
@@ -246,19 +249,32 @@ function displayConstituencyElectionResults()
 		str+='<th width="25%">Constituency Type</th>';
 		str+='<td width="25%">'+constituencyElecMainObj.constituencyBasicInfo.constituencyType+'</td>';	
 		str+='</tr>';
-
+  
 		str+='<tr>';	
 		str+='<th>District</th>';
-		str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.districtName+'</td>';
-		str+='<th>State </th>';
-		str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.stateName+'</td>';	
+		if(constituencyElecMainObj.constituencyBasicInfo.districtName == "" || constituencyElecMainObj.constituencyBasicInfo.districtName == null)
+			str+='<td> -- </td>';
+		else
+		    str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.districtName+'</td>';
+		str+='<th>Total Voters</th>';
+		str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.totalVotes+'</td>';	
 		str+='</tr>';	
 		str+='<tr>';
 		str+='<td></td>';
 		str+='<td></td>';
-		str+='<th>Year</th>';
+				
+		str+='</tr>';
+		str+='<th>State </th>';
+		str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.stateName+'</td>';
+		str+='<th>Total Polled Votes</th>';
+		str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.totalPolledVotes+'</td>';
+		str+='<tr>';
+		str+='<th>Year </th>';
 		str+='<td>'+constituencyElecMainObj.constituencyElectionInfo.electionYear+'</td>';
-		str+='</tr>';	
+		str+='<th>Voting %</th>';
+		str+='<td>'+constituencyElecMainObj.constituencyBasicInfo.votingPercentage+'</td>';
+		str+='</tr>';
+			
 		str+='</table>';
 		str+='</div>';
 		str+='</fieldset>';
