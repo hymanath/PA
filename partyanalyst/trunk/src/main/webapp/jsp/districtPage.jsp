@@ -484,6 +484,10 @@ function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			}			
 			rvStr+='</td>';
 			rvStr +='</tr>';
+			rvStr +='<td></td>';
+			rvStr +='<td></td>';
+			rvStr +='<tr>';
+			rvStr +='</tr>';
 			rvStr +='<tr>';
 			if(electionType == muncipalityElectionType){
 				rvStr +='<td style="vertical-align: top;"> <div><div id="dataTable'+i+'"></div></div></td>';
