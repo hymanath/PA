@@ -1116,7 +1116,15 @@
 		</action>
 		<action name="allBoothsResultsInTehsilAction" class="allBoothsResultsInTehsilAction">
 			 <result name="success">/jsp/allBoothsResultsInMandalPopup.jsp</result>			
-		</action>	
+		</action>
+		<action name="constituencyVotingTrendzAction" class="constituencyVotingTrendzAction">
+			 <result name="success">/jsp/mandalwiseVotingTrendzInConstituency.jsp</result>			
+		</action>
+		<action name="constituencyVotingTrendzAjaxAction" class="constituencyVotingTrendzAction" method="getMandalsVotingTrendz"> 
+              <result type="json" name="success">
+           		<param name="root">biElectionResultsMainVO</param>
+        	</result>       		
+        </action>	
 	</package>
 </struts>
 
