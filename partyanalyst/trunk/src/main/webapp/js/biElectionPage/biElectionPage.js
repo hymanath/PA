@@ -218,7 +218,7 @@ function buildBiElectionDistricts()
 			str += '<tr>';
 			str += '<td colspan="2">';
 			str += '	<a href="javascript:{}" onclick="openVotingTrendzWindow(\''+districtsInfo[i].districtId+'\',\''+info.constId+'\',\''+info.constName+'\')" class="districtAncNew"> '+info.constName.toUpperCase()+ '</a>';
-			if((info.constName.toUpperCase()=="VEMULAWADA") || (info.constName.toUpperCase()=="NIZAMABAD URBAN")){
+			if((info.constName.toUpperCase()=="VEMULAWADA") || (info.constName.toUpperCase()=="SIRCILLA")){
 				str += '<span id="specialConstituency" style="color:red">';
 				str += ' * ';
 				str += '</span>';
