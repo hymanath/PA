@@ -5,6 +5,8 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
 
 public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 	
@@ -18,12 +20,20 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 		this.influencingPeopleDAO = influencingPeopleDAO;
 	}
 	
-	/*public void test(){
-		List result = influencingPeopleDAO.findByHamletId(12l);
-		System.out.println(result.size());
-	}*/
-	
+	@SuppressWarnings("unchecked")
 	public void test(){
-		List list = influencingPeopleDAO.findByTehsils("836");
+		List<InfluencingPeople> result = influencingPeopleDAO.findByHamletId(61l);
+		System.out.println(result.size());
+			for( InfluencingPeople influencingPeople: result)
+			{
+				System.out.println("id:"+influencingPeople.getInfluencingPeopleId());
+				System.out.println("Hamlet Name:"+influencingPeople.getHamlet().getHamletName());
+				System.out.println("Name:"+influencingPeople.getFirstName());
+			}
+				
 	}
+	
+	/*public void test(){
+		List list = influencingPeopleDAO.findByTehsils("836");
+	}*/
 }
