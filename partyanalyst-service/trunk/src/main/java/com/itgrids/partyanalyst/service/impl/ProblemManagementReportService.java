@@ -710,9 +710,16 @@ public class ProblemManagementReportService implements
 			return tehsilIds.toString().substring(1); 
 		}
 		
-		public List<InfluencingPeopleVO> findInfluencingPeopleInfoInLocation(String accessType, Long accessValue){
+		public List<InfluencingPeopleVO> findInfluencingPeopleInfoInLocation(String accessType, Long accessValue, Long hamletId, String flag){
 			String tehsilIds = getCommaSeperatedTehsilIdsForAccessType(accessType, accessValue);
-			List<InfluencingPeople> impPeople = influencingPeopleDAO.findByTehsils(tehsilIds); 
+			List<InfluencingPeople> impPeople = null;
+			if(hamletId == null && flag.equals(IConstants.CONSTITUENCY_LEVEL))
+			{
+				impPeople = influencingPeopleDAO.findByTehsils(tehsilIds);
+			} else if(hamletId != null && flag.equals(IConstants.HAMLET_LEVEL))
+			{
+				impPeople = influencingPeopleDAO.findByHamletId(hamletId);
+			}
 			List<InfluencingPeopleVO> influencies = new ArrayList<InfluencingPeopleVO>();
 			InfluencingPeopleVO influencingPeopleVO = null;
 			
