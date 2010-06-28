@@ -1,4 +1,4 @@
-
+var smsDialog, newEventDialog, newDateDialog,eventDateDialog,mainEventCalendar,dateCalendar,cadreDataTable,cadreAnim,jsonStr;
 var indexPageMainObj =	{
 						mlaConstituencies:[],
 						mpContituencies:[]
@@ -54,6 +54,75 @@ var indexPageMain = {
 											 ]
 					};
 
+function buildSMSPopup()
+{
+	/*var remainingSms = "${remainingSms}";
+	if(remainingSms==0){
+		smsRenewalMessage();
+		return;
+	}
+*/		
+	var str = '';	
+	str +='	<form action="cadreRegisterAction" method="POST" name="smsForm">';
+	str +='	<table>';
+	str +='	<tr>';
+	str +='		<th align="left">SMS Type</th>';
+	str +='		<td align="left">';
+	str +='			<input type="radio" name="sms_type" value="locationWise" onclick="getUserLocationData(this.value,\'sms\')"/> Location Wise	';			
+	str +='			<input type="radio" name="sms_type" value="cadreLevelWise" onclick="getUsersCadreLevelData(this.value,\'sms\')"/> Cadre Level Wise';
+	str +=' 	</td>';		
+	str +='	</tr>';
+	str +='	<tr>';
+	str +='		<th align="left"><div id="region_type_Label"></div></th>';
+	str +='		<td align="left"><div id="region_type_Data"></div></td>	';			
+	str +='	</tr>';
+	str +='	<tr>';
+	str +='		<th align="left">';
+	str +='			<div id="region_select_Label">	</div>';
+	str +='		</th>';
+	str +='		<td align="left">';
+	str +='			<div id="region_select_Data">  </div>';					
+	str +='		</td>';
+	str +='	</tr>';
+	str +='	<tr>';
+	str +='		<th align="left"><div id="sms_cadre_name_include_label"></div></th>';
+	str +='		<td align="left"><div id="sms_cadre_name_include_value"></div></td>';				
+	str +='	</tr>';
+	str +=' <tr>';
+	str +='		<th align="left"><div id="sms_text_Label"></div></th>';
+	str +='		<td align="left"><div id="sms_text_Data"></div></td>';				
+	str +='	</tr>';
+	str +='	<tr>';
+	str +='		<th align="left"><div id="sms_user_name_include_label"></div></th>';
+	str +='		<td align="left"><div id="sms_user_name_include_value"></div></td>';				
+	str +='	</tr>';
+	str +='	<tr>';
+	str +='		<td align="left" colspan="2">';
+	str +='		<div id="successDiv" style="color:green"></div>';
+	str +='		</td>';
+	str +='	</tr>';
+	str +='	<tr>';
+	str +='		<td align="center" colspan="2"><div id="button_div"></div></td>	';			
+	str +='	</tr>';		
+	str +='	</table>';
+	str +='	<form>';
+	
+
+	smsDialog = new YAHOO.widget.Dialog("myDialog",
+			{ width : "600px", 
+              fixedcenter : true, 
+              visible : true,  
+              constraintoviewport : true, 
+			  iframe :true,
+			  modal :true	              
+             } ); 
+
+	smsDialog.setHeader("Cadre SMS...");
+	smsDialog.setBody(str);
+
+	smsDialog.render(); 
+	
+}
 
 function buildIndexPageLayout()
 { 	 
@@ -374,7 +443,6 @@ function initializeIndexPage()
 	showRegionStaticData();
 }
 
-var smsDialog, newEventDialog, newDateDialog,eventDateDialog,mainEventCalendar,dateCalendar,cadreDataTable,cadreAnim,jsonStr;
 
 function closeCadresInfoDiv(id,type)
 {

@@ -59,8 +59,8 @@
 
 	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
 
-	<script type="text/javascript" src="js/indexPage/indexPage.js" ></script>
 	<script type="text/javascript" src="js/cadreManagement/cadre.js" ></script>
+	<script type="text/javascript" src="js/indexPage/indexPage.js" ></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js" ></script>
 	</head>
 	<body>
@@ -196,7 +196,7 @@
 													<span class="dashBoardLinks">
 														<span><img src="images/icons/indexPage/sms_cell.png"/></span>
 														<span>		
-															<a href="javascript:{}" id="sendSMSAnc" onclick="buildSMSPopup()">Send SMS</a>				
+															<a href="javascript:{}" id="sendSMSAnc" onclick="buildSMSPopup();">Send SMS</a>				
 														</span>
 													</span>
 												</div>
