@@ -71,7 +71,7 @@
 		var assemblyElectionType='Assembly';
 		var constituencyIdGlobal = '${constiId}';
 		var allPartiesCharts = '';
-
+		var totalZptcSeats,totalMptcSeats;
 		var tehsilDetails={
 				zptcArray:[],
 				mptcArray:[],
@@ -273,7 +273,7 @@
 				return;
 
 			var str='';
-			str += '<div id="districtsInfoRadioElmtDiv">';
+			str += '<div id="districtsInfoRadioElmtDiv" style="margin-top:10px;">';
 			str += '<table width="100%">';
 			str += '<tr>';
 			str += '<th>';
@@ -558,7 +558,8 @@
 								<td><img src="images/icons/districtPage/header_left.gif"/></td>
 								<td>	
 									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:401px;height:18px;padding:9px;">
-										<span>ZPTC Voting Trends : </span>														
+										<span>Total Number of ZPTC's : </span>
+										<span id="totalZptcCountResultDiv"></span>												
 									</div>
 								</td>
 								<td><img src="images/icons/districtPage/header_right.gif"/></td>
@@ -594,7 +595,7 @@
 											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:401px;padding:9px;height:18px;">
 												<span>MPTC Voting Trends : </span>
 												<span id="totalMptcCountResultDiv"></span>
-											</div>
+											</div>		  
 										</td>
 										<td><img src="images/icons/districtPage/header_right.gif"/></td>
 									</tr>

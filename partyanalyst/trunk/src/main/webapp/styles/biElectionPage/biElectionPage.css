@@ -260,3 +260,9 @@ margin-left:40px;
 	color:red;
 	padding:5px;
 }
+
+#totalZptcCountResultDiv,#totalMptcCountResultDiv  
+{
+	color:red;
+	font-size:14px;
+}

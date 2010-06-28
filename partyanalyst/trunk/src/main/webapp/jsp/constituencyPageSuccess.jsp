@@ -85,6 +85,7 @@
 			zptcElectionYears:[],
 			mptcElectionYears:[]
 	};
+	var totalZptcSeats,totalMptcSeats;
 	var counter = 0;
 	var myDataTableForParty,myDataTableForMptcParty,zptcElectionYear,mptcElectionYear;
 	var mptcElectionTypeId=${mptcElectionId},zptcElectionTypeId=${zptcElectionId};
@@ -820,7 +821,7 @@ function buildElectionsSelectBox(myResults){
 												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 												<td>	
 													<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:400px;padding:9px;height:18px;">
-														<span>ZPTC Voting Trends : </span>
+														<span>Total Number of ZPTC's : </span>
 														<span id="totalZptcCountResultDiv"></span>
 													</div>
 												</td>
@@ -854,7 +855,7 @@ function buildElectionsSelectBox(myResults){
 												<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 												<td>	
 													<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:400px;padding:9px;height:18px;">
-														<span>MPTC Voting Trends : </span>
+														<span>Total Number of MPTC's : </span>
 														<span id="totalMptcCountResultDiv"></span>
 													</div>
 												</td>

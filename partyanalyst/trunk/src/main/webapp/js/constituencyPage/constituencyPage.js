@@ -1149,11 +1149,10 @@ function hideMptcDiv(){
 }
 function buildZptcResults(results){
 	assignToPartyDataArray = new Array();
-	
 	var candLink = document.getElementById("zptcCandidateLink");
 	var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 	candLink.innerHTML = linkRef;
-	
+	totalZptcSeats = results[0].totalSeats;		//	var totalZptcSeats,totalMptcSeats;
 	for(var i in results)
 	{		
 		var problemObj=		
@@ -1168,6 +1167,14 @@ function buildZptcResults(results){
 		tehsilDetails.partyArray=assignToPartyDataArray;	
 	}
 
+	var zptcCount = document.getElementById("totalZptcCountResultDiv");
+	zptcCount.innerHTML ='';
+
+	
+	var totalZptcSeats='';
+	totalZptcSeats+="<b>"+results[0].totalSeats+"</b>";
+	zptcCount.innerHTML +=totalZptcSeats;
+
 	var emptyArr = new Array();
     if(results.length == 0)
 	{	tehsilDetails.partyArray = emptyArr;				
@@ -1181,7 +1188,7 @@ function buildMptcResults(results){
 	var candLink = document.getElementById("mptcCandidateLink");
 	var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 	candLink.innerHTML = linkRef;
-	
+	  totalMptcSeats = results[0].totalSeats;
 	for(var i in results)
 	{		
 		var problemObj=		
@@ -1196,6 +1203,15 @@ function buildMptcResults(results){
 		tehsilDetails.partyMptcArray=assignToPartyDataArray;	
 	}
 
+	var mptcCount = document.getElementById("totalMptcCountResultDiv");
+	mptcCount.innerHTML='';
+	
+	var totalMptcSeats='';
+	totalMptcSeats+="<b>";
+	totalMptcSeats+=results[0].totalSeats;
+	totalMptcSeats+="</b>";
+	mptcCount.innerHTML +=totalMptcSeats;
+	
 	var emptyArr = new Array();
     if(results.length == 0)
 	{	

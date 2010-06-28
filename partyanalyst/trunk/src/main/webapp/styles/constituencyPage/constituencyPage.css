@@ -514,3 +514,9 @@ legend
 {
 	float:right;
 }
+
+#totalZptcCountResultDiv,#totalMptcCountResultDiv  
+{
+	color:red;
+	font-size:14px;
+}
