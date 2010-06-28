@@ -524,11 +524,16 @@ function showCandidates(results,jsObj)
 		{		
 			var partyFlag = results.candidateDetails[i].partyFlag;
 			count = count + 1;
-			var candidateDetailsObj1 = {
-					
+			var constituencyName='';
+			if((electionType=='MPTC') || (electionType=='ZPTC')){
+				constituencyName = candidateDetails[i].localBodyElectionsConstituencyName;
+			}else{
+				constituencyName = candidateDetails[i].constituencyName;
+			}
+			var candidateDetailsObj1 = {					
 					count: count, 
 					name: candidateDetails[i].candidateName,
-					constituency: candidateDetails[i].constituencyName,
+					constituency: constituencyName,					
 					party: candidateDetails[i].partyName,
 					partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>',
 					votesEarned: candidateDetails[i].votesEarned,
@@ -573,11 +578,17 @@ function showTehsilCandidatesByDistrictWise(results,jsObj){
 		{		
 			var partyFlag = results.mandalAllElectionDetailsVO.allVotersDetails[i].partyFlag;
 			count = count + 1;
+			var constituencyName='';
+			if((electionType=='MPTC') || (electionType=='ZPTC')){
+				constituencyName = candidateDetails[i].constituencyName;
+			}else{
+				constituencyName = candidateDetails[i].tehsilName;
+			}
 			var candidateDetailsObj1 = {
 					
 					count: count, 
 					name: candidateDetails[i].candidateName,
-					constituency: candidateDetails[i].tehsilName,
+					constituency: constituencyName,				
 					party: candidateDetails[i].partyShortName,
 					partyFlag:'<Img src="<%=request.getContextPath()%>/images/party_flags/'+partyFlag+'" height="30" width="40" border="none"/>',
 					votesEarned: candidateDetails[i].votesEarned,

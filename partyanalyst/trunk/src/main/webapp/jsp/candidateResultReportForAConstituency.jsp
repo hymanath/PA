@@ -112,7 +112,7 @@ function initializeResultsTableForWinners() {
 		fields : [ {
 			key : "candidateName"
 		}, {
-			key : "tehsilName"
+			key : "constituencyName"
 		}, {
 			key : "votesPolled"
 		}, {
@@ -137,8 +137,8 @@ function initializeResultsTableForWinners() {
 		label : "Candidate Name",
 		sortable : true
 	}, {
-		key : "tehsilName",
-		label : "Mandal Name",
+		key : "constituencyName",
+		label : "Constituency Name",
 		sortable : true
 	}, {
 		key : "votesPolled",
@@ -224,7 +224,7 @@ function showAllCandidates(results)
 				var problemObj=
 				 {				 
 						candidateName:results.allVotersDetails[i].candidateName,
-						tehsilName:results.allVotersDetails[i].tehsilName,
+						constituencyName:results.allVotersDetails[i].constituencyName,
 						votesPolled:results.allVotersDetails[i].votesPolled,
 						votesEarned:results.allVotersDetails[i].votesEarned, 	
 						votesDifference:results.allVotersDetails[i].votesDifference,	
@@ -259,7 +259,7 @@ function showWinners(results)
 		var problemObj=
 		 {				 
 				candidateName:results.allVotersDetails[i].candidateName,
-				tehsilName:results.allVotersDetails[i].tehsilName,
+				constituencyName:results.allVotersDetails[i].constituencyName,
 				votesPolled:results.allVotersDetails[i].votesPolled,
 				votesEarned:results.allVotersDetails[i].votesEarned, 	
 				votesDifference:results.allVotersDetails[i].votesDifference,	
@@ -294,7 +294,7 @@ function showPartyWise(results)
 			var problemObj=
 			 {				 
 					candidateName:results.allVotersDetails[i].candidateName,
-					tehsilName:results.allVotersDetails[i].tehsilName,
+					constituencyName:results.allVotersDetails[i].constituencyName,
 					votesPolled:results.allVotersDetails[i].votesPolled,
 					votesEarned:results.allVotersDetails[i].votesEarned, 	
 					votesDifference:results.allVotersDetails[i].votesDifference,
