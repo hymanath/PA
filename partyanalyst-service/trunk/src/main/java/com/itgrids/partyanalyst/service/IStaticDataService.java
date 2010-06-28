@@ -132,9 +132,9 @@ public interface IStaticDataService {
 	
 	public DistrictWisePartyResultVO getDistrictWiseElectionReport(Long electionScopeId, Long districtId);
 	
-	public List<MandalAllElectionDetailsVO> populateElectionsData(List winningCandidate,List successorCandidate,int flag,int reservationZone);
+	public List<MandalAllElectionDetailsVO> populateElectionsData(List winningCandidate,List successorCandidate,int flag,int reservationZone,String module);
 	
-	public List<MandalAllElectionDetailsVO> populateElectionsDataForAllCandidates(List winningCandidate,List allCandidates,int reservationZone);
+	public List<MandalAllElectionDetailsVO> populateElectionsDataForAllCandidates(List winningCandidate,List allCandidates,int reservationZone,String module);
 	
 	public List<SelectOptionVO> getAllElectionsInDistrict(Long districtId);
 	

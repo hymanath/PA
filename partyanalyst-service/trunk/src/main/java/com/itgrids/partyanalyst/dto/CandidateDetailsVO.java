@@ -50,7 +50,7 @@ public class CandidateDetailsVO implements Serializable{
 	private String marginVotesPercentage;
 	private MandalAllElectionDetailsVO mandalAllElectionDetailsVO;
 	private Long currentRowNo;
-	
+	private String localBodyElectionsConstituencyName;
 	
 	//getters and setters
 	public Long getConstituencyId() {
@@ -249,4 +249,12 @@ public class CandidateDetailsVO implements Serializable{
 	public void setCommentsCount(Long commentsCount) {
 		this.commentsCount = commentsCount;
 	}
+	public String getLocalBodyElectionsConstituencyName() {
+		return localBodyElectionsConstituencyName;
+	}
+	public void setLocalBodyElectionsConstituencyName(
+			String localBodyElectionsConstituencyName) {
+		this.localBodyElectionsConstituencyName = localBodyElectionsConstituencyName;
+	}
+	
 }

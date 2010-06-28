@@ -1470,14 +1470,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		if(candidateDetailsType.equalsIgnoreCase("winners")){
 			successorCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,successorRank,partyId,electionType,electionYear);
 			winningCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,winnerRank,partyId,electionType,electionYear);
-			allVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,0,0);				
+			allVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,0,0,electionType);				
 			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);					
 		}else if(candidateDetailsType.equalsIgnoreCase("allCandidates")){
 			allCandidates = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,0l,partyId,electionType,electionYear);
 			successorCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,successorRank,partyId,electionType,electionYear);
 			winningCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,winnerRank,partyId,electionType,electionYear);
-			winningCandidateVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,flag,0);
-			allVotersDetails = staticDataService.populateElectionsDataForAllCandidates(winningCandidate,allCandidates,0);
+			winningCandidateVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,flag,0,electionType);
+			allVotersDetails = staticDataService.populateElectionsDataForAllCandidates(winningCandidate,allCandidates,0,electionType);
 			if(winningCandidateVotersDetails!=null){
 				allVotersDetails.addAll(allVotersDetails.size(),winningCandidateVotersDetails);
 			}
@@ -1485,7 +1485,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}else if(candidateDetailsType.equalsIgnoreCase("partyWise")){	
 			successorCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,successorRank,partyId,electionType,electionYear);
 			winningCandidate = getMandalLevelElectionCandidateDetailsForAConstituency(tehsilIds.substring(1),candidateDetailsType,winnerRank,partyId,electionType,electionYear);
-			allVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,0,0);				
+			allVotersDetails = staticDataService.populateElectionsData(winningCandidate,successorCandidate,0,0,electionType);				
 			mandalAllElectionDetailsVo.setAllVotersDetails(allVotersDetails);		
 		}
 		List result = nominationDAO.getPartysInfoForATehsilForAParticularElectionYear(electionType,tehsilIds.substring(1),electionYear);
@@ -1532,7 +1532,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				sb.append(" model.constituencyElection.constituency.tehsil.tehsilId," );
 				sb.append(" model.candidateResult.votesEarned," );
 				sb.append(" model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.rank,model.constituencyElection.constituency.constituencyId," );
-				sb.append(" model.candidateResult.votesPercengate,model.party.longName,model.party.partyId" );
+				sb.append(" model.candidateResult.votesPercengate,model.party.longName,model.party.partyId," );
+				sb.append(" model.constituencyElection.reservationZone,model.constituencyElection.constituency.name");
 				sb.append(" from Nomination model where model.constituencyElection.constituency.tehsil.tehsilId  in (  "  + tehsilIds );
 				sb.append(" ) and model.constituencyElection.constituency.electionScope.electionType.electionType =  ?" );
 				sb.append(" and model.constituencyElection.election.electionYear =  ?" );
@@ -1547,7 +1548,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					if(rank!=0l){
 						sb.append(" and model.candidateResult.rank = ").append(rank);
 					}else{}
-				}		
+				}
+				
 				if(log.isDebugEnabled()){
 					log.debug("Making nominationDAO.getTehsilLevelElectionDetailsForAGivenConstituency().. Call");
 				}		
