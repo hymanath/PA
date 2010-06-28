@@ -1577,10 +1577,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			Map<String,Long> winningSeats =  new HashMap<String,Long>(0);
 			log.debug("Making nominationDAO.findSeatsWonByAPartyInMandalForAnElectionYear() DAO call..");
 			List seatWon = nominationDAO.findSeatsWonByAPartyInMandalForAnElectionYear(tehsilIds.substring(1),electionYear,electionType,winningCandidateRank);
+			
+			Long totalSeats = 0l;
 			for(int i=0;i<seatWon.size();i++){
 				Object[] parms = (Object[])seatWon.get(i);
 				winningSeats.put(parms[0].toString(), Long.parseLong(parms[1].toString()));
+				totalSeats+=Long.parseLong(parms[1].toString());
 			}
+						
 			log.debug("Making constituencyElectionDAO.getTotalValidVotesForATehsilForAParticularElectionYear() DAO call..");
 			List totalValidVotes = constituencyElectionDAO.getTotalValidVotesForATehsilForAParticularElectionYear(electionType,tehsilIds.substring(1),electionYear);
 			if(totalValidVotes!=null){
@@ -1597,11 +1601,12 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					teshilPartyInfoVo.setParticipatedSeats(Long.parseLong(parms[1].toString()));
 					percentage= new BigDecimal((Float.parseFloat(parms[2].toString())/totalVotes)*100).setScale(2,BigDecimal.ROUND_HALF_UP);
 					teshilPartyInfoVo.setPercentageOfVotesWonByParty(Float.parseFloat(percentage.toString()));
-				if(winningSeats.get(parms[0].toString()) != null){
-					teshilPartyInfoVo.setSeatsWonByParty(Long.parseLong(winningSeats.get(parms[0].toString()).toString()));
-				}else{
-					teshilPartyInfoVo.setSeatsWonByParty(0L);
-				}	
+					teshilPartyInfoVo.setTotalSeats(totalSeats);
+					if(winningSeats.get(parms[0].toString()) != null){
+						teshilPartyInfoVo.setSeatsWonByParty(Long.parseLong(winningSeats.get(parms[0].toString()).toString()));
+					}else{
+						teshilPartyInfoVo.setSeatsWonByParty(0L);
+					}				
 				teshilPartyInfoVO.add(teshilPartyInfoVo);
 			}		
 			return teshilPartyInfoVO;

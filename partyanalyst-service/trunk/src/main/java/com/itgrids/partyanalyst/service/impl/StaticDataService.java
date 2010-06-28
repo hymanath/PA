@@ -1782,13 +1782,16 @@ public class StaticDataService implements IStaticDataService {
 		Float totalVotes=null;
 		Long winningCandidateRank=1l;
 		Map<String,Long> winningSeats =  new HashMap<String,Long>(0);
+		Long totalSeats = 0l;
 		try{
 			if(log.isDebugEnabled())
 				log.info("Making nominationDAO.getPartysWinningCandidateInfoForAParticularElectionYear() DAO Call");
 			List seatWon = nominationDAO.getPartysWinningCandidateInfoForAParticularElectionYear(electionType,electionYear,winningCandidateRank,districtId);
+			
 			for(int i=0;i<seatWon.size();i++){
 				Object[] parms = (Object[])seatWon.get(i);
 				winningSeats.put(parms[0].toString(), Long.parseLong(parms[1].toString()));
+				totalSeats+=Long.parseLong(parms[1].toString());
 			}
 			if(log.isDebugEnabled())
 				log.info("Making nominationDAO.getPartysInfoForAParticularElectionYear() DAO Call");
@@ -1803,6 +1806,7 @@ public class StaticDataService implements IStaticDataService {
 						teshilPartyInfoVo.setParticipatedSeats(Long.parseLong(parms[1].toString()));
 						percentage= new BigDecimal((Float.parseFloat(parms[2].toString())/totalVotes)*100).setScale(2,BigDecimal.ROUND_HALF_UP);
 						teshilPartyInfoVo.setPercentageOfVotesWonByParty(Float.parseFloat(percentage.toString()));
+						teshilPartyInfoVo.setTotalSeats(totalSeats);
 					if(winningSeats.get(parms[0].toString()) != null){
 						teshilPartyInfoVo.setSeatsWonByParty(Long.parseLong(winningSeats.get(parms[0].toString()).toString()));
 					}else{
@@ -2299,7 +2303,7 @@ public class StaticDataService implements IStaticDataService {
 				mandalAllElectionDetails.setPartyShortName(parms[11].toString());
 			}else{
 				mandalAllElectionDetails.setPartyShortName(" ");
-			}			
+			}
 			mandalAllElectionDetails.setConstituencyId(Long.parseLong(parms[9].toString()));
 			mandalAllElectionDetails.setPartyId(Long.parseLong(parms[12].toString()));
 			if(winner.containsKey(constituencyId)){
@@ -2383,6 +2387,7 @@ public class StaticDataService implements IStaticDataService {
 					}else{						
 					}				
 				}
+								
 				mandalAllElectionDetails.setConstituencyId(Long.parseLong(parms[9].toString()));
 				mandalAllElectionDetails.setPartyId(Long.parseLong(parms[12].toString()));
 				if(successor.containsKey(constituencyId)){
