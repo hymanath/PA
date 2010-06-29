@@ -271,7 +271,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		String constiName = jObj.getString("constiName");
 		
 		
-		biElectionResultsVO = biElectionPageService.getMandalWiseResultsForAConstituency(constiId);
+		biElectionResultsVO = biElectionPageService.getMandalWiseResultsForSelectedPartiesInConstituency(constiId);
 		
 		biElectionResultsMainVO = new BiElectionResultsMainVO();
 		biElectionResultsMainVO.setBiElectionResultsMainVO(biElectionResultsVO);

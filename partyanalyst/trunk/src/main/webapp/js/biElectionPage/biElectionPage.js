@@ -202,27 +202,33 @@ function buildBiElectionDistricts()
 
 	var str = '';
 	str += '<div style="color:#62662B;font-size:11px;margin:8px;font-weight:bold;">Click the below constituencies to view Party Trendz</div>';
-	str += '<table border="0" id="distConstTable">';
+	str += '<table border="0" width="100%" id="distConstTable">';
 	for(var i in districtsInfo)
 	{
 		str += '<tr>';
-		str += '<td width="5%" align="center"> <img src="images/icons/districtPage/listIcon.png"/></td>';
-		str += '<td width="35%">';
+		str += '<td align="center"> <img src="images/icons/districtPage/listIcon.png"/></td>';
+		str += '<td colspan="2">';
 		str += '<span class="mandalNameSpan">';
 		str += '<a href ="districtPageAction.action?districtId='+districtsInfo[i].districtId+'&districtName='+districtsInfo[i].districtName+'" class="districtAnc">'+districtsInfo[i].districtName+'- '+districtsInfo[i].constituencies.length+'</a>';
 		str += '</span>';
+		str += '</td>';		
 		str += '</tr>';
 		for(var j in districtsInfo[i].constituencies)
 		{
 			var info = districtsInfo[i].constituencies[j];
 			str += '<tr>';
-			str += '<td colspan="2">';
+			str += '<td>';
+			str += '</td>';
+			str += '<td align="left">';
 			str += '	<a href="javascript:{}" onclick="openVotingTrendzWindow(\''+districtsInfo[i].districtId+'\',\''+info.constId+'\',\''+info.constName+'\')" class="districtAncNew"> '+info.constName.toUpperCase()+ '</a>';
 			if((info.constName.toUpperCase()=="VEMULAWADA") || (info.constName.toUpperCase()=="SIRCILLA")){
 				str += '<span id="specialConstituency" style="color:red">';
 				str += ' * ';
 				str += '</span>';
 			}
+			str += '</td>';
+			str += '<td align="left">';
+			str += '	<a href="javascript:{}" onclick="openConstVotingTrendzWindow(\''+districtsInfo[i].districtId+'\',\''+info.constId+'\',\''+info.constName+'\')" class="districtAncNew1">Analyze</a>';
 			str += '</td>';
 			str += '</tr>';
 		}

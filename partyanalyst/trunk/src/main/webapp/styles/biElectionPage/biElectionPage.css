@@ -32,7 +32,6 @@ text-decoration:none;
 .districtAncNew 
 {
 color:GoldenRod;
-margin-left:40px;
 }
 #biElectionPageLayout_center
 {
@@ -259,6 +258,10 @@ margin-left:40px;
 	font-weight:bold;
 	color:red;
 	padding:5px;
+}
+.districtAncNew1
+{
+	color:#62662B;
 }
 
 #totalZptcCountResultDiv,#totalMptcCountResultDiv  

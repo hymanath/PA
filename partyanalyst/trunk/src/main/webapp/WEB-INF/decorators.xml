@@ -36,6 +36,7 @@
 		<pattern>/revenueVillagePartyAllElecAction.action*</pattern>
 		<pattern>/boothResultsForAllElectionsPopupAction.action*</pattern>
 		<pattern>/allBoothsResultsInTehsilAction.action*</pattern>
+		<pattern>/constituencyVotingTrendzAction.action*</pattern>
 		
     </excludes>
 
