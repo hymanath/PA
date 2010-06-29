@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-        <%@taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>  
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -141,6 +142,10 @@ legend
 }
 </style>
 <script type="text/javascript"><!--
+			var mandalId = "${tehsilId}" ;
+			var mandalName = "${mandalName}";
+			var electionType = "${electionType}";
+			
 			function displayVillageElecResults(value){
 				
 				var resultDiv = document.getElementById("villageElectionResults");
@@ -434,13 +439,23 @@ legend
 				 myPanel.setBody(rvEleStr);
 				 myPanel.render(); 
 			}
-					
+			
+			function getRevenueVillageElectionResults(selectedYear,electionId){
+				var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+mandalName+"&electionType="+electionType+"&electionYear="+selectedYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
+				brow1.focus();
+			}	
 --></script>
 </head>
 <body>
 		<center><div id="revenueVillageHeading"><h4>Revenue Villages Wise ${electionType} ${electionYear } Election Results In ${mandalName} Mandal</h4></div></center> 
 		<div>
 		<table>
+		<tr>
+			<td>Select Election Year</td>
+			<td>		
+				<s:select id="selectPartyPPR" theme="simple"  name="selectParty" list="allElectionYears" listKey="id" listValue="name" onchange="getRevenueVillageElectionResults(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)"></s:select>			
+			</td>
+		</tr>		
 		<tr>
 			<td id="labelRadio">View Results By:</td>
 			<td><input type="radio" name="dispaly" value="number" checked="checked" onclick="displayVillageElecResults(this.value)">Votes Gained</td>
