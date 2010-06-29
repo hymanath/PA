@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -14,8 +15,11 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
+import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
+import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
@@ -53,6 +57,11 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private String constiName;
 	private List<SelectOptionVO> electionTypes;
 	BiElectionResultsMainVO biElectionResultsMainVO;
+	private List<BiElectionDistrictVO> districtsAndConsts;
+	private List<SelectOptionVO> staticPartiesList;
+	private MandalVO mandalVO;
+	private ChartColorsAndDataSetVO chartColorsAndDataSetVO;
+	
 
 
 	
@@ -233,10 +242,52 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	public void setBiElectionResultsMainVO(
 			BiElectionResultsMainVO biElectionResultsMainVO) {
 		this.biElectionResultsMainVO = biElectionResultsMainVO;
+	}	
+
+	public List<BiElectionDistrictVO> getDistrictsAndConsts() {
+		return districtsAndConsts;
+	}
+
+	public void setDistrictsAndConsts(List<BiElectionDistrictVO> districtsAndConsts) {
+		this.districtsAndConsts = districtsAndConsts;
+	}
+
+	public void setStaticPartiesList(List<SelectOptionVO> staticPartiesList) {
+		this.staticPartiesList = staticPartiesList;
+	}
+
+	public List<SelectOptionVO> getStaticPartiesList() {
+		return staticPartiesList;
+	}	
+
+	public MandalVO getMandalVO() {
+		return mandalVO;
+	}
+
+	public void setMandalVO(MandalVO mandalVO) {
+		this.mandalVO = mandalVO;
+	}	
+
+	public ChartColorsAndDataSetVO getChartColorsAndDataSetVO() {
+		return chartColorsAndDataSetVO;
+	}
+
+	public void setChartColorsAndDataSetVO(
+			ChartColorsAndDataSetVO chartColorsAndDataSetVO) {
+		this.chartColorsAndDataSetVO = chartColorsAndDataSetVO;
 	}
 
 	public String execute() throws Exception
 	{
+		List<Long> constituencyIdsList = new ArrayList<Long>();
+		StringBuilder sb = new StringBuilder();
+		districtsAndConsts = biElectionPageService.getBiElectionConstituenciesDistrictWise();
+		for(BiElectionDistrictVO biElectionDistrictVO: districtsAndConsts)
+		{	
+			sb.append(biElectionDistrictVO.getDistrictId());
+			for(SelectOptionVO obj:biElectionDistrictVO.getConstituenciesList())
+				constituencyIdsList.add(obj.getId());						
+		}
 		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
 		zptcElectionType = IConstants.ZPTC_ELECTION_TYPE;
 		electionTypes = staticDataService.getAllElectionTypes();
@@ -250,7 +301,9 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		zptcElectionYears = staticDataService.getAllElectionYearsForATeshil(zptcElectionId);
 		
 		mptcElectionYears = staticDataService.getAllElectionYearsForATeshil(mptcElectionId);
-
+		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(0L);
+		staticPartiesList = mandalVO.getPartiesInMandal();
+		
 		return SUCCESS;
 	}
 	
@@ -276,6 +329,11 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		biElectionResultsMainVO = new BiElectionResultsMainVO();
 		biElectionResultsMainVO.setBiElectionResultsMainVO(biElectionResultsVO);
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getConstVotingTrendzChart() throws Exception
+	{
 		return Action.SUCCESS;
 	}
 

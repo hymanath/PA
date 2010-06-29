@@ -1133,6 +1133,11 @@
 		<action name="mandalRevenueVillagesElecViewAction" class="mandalRevenueVillagesElecAction">
 			 <result name="success">/jsp/revenueVillagesElectionResults.jsp</result>
 		</action>
+		<action name="constituencyVotingTrendzChartAjaxAction" class="constituencyVotingTrendzAction" method="getConstVotingTrendzChart"> 
+              <result type="json" name="success">
+           		<param name="root">chartColorsAndDataSetVO</param>
+        	</result>       		
+        </action>
         
 	</package>
 </struts>

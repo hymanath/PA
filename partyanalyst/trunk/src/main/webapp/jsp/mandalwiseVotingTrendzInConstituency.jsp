@@ -65,13 +65,13 @@
     <style type="text/css">
 	
     </style>
-	<script  type="text/javascript">
+	<script  type="text/javascript"><!--
 		var districtsInfo = new Array();
 		var localizationObj = '';
 		var assemblyElectionType='Assembly';
 		var constituencyIdGlobal = '${constiId}';
 		var allPartiesCharts = '';
-
+		
 		var tehsilDetails={
 				zptcArray:[],
 				mptcArray:[],
@@ -80,14 +80,25 @@
 		};
 		var tehsilElections={
 				zptcElectionYears:[],
-				mptcElectionYears:[]
+				mptcElectionYears:[],
+				staticParties:[]
 		};
 		var mptcElectionType="${mptcElectionType}",zptcElectionType="${zptcElectionType}";
 
 		
 		var docOpener = window.opener;
 		localizationObj = docOpener.localizationObj;
-
+		<c:forEach var="staticParties" items="${staticPartiesList}">
+			var pObj =	{
+							partyId:"${staticParties.id}",
+							partyName:"${staticParties.name}"
+						};
+			if(pObj.partyName != 'PRP')
+			{
+				tehsilElections.staticParties.push(pObj);
+			}			
+		</c:forEach>
+		
 		<c:forEach var="district" items="${districtsAndConsts}">
 			var districtObj={
 									districtName:"${district.districtName}",
@@ -323,12 +334,39 @@
 			str += '<div id="mandalVotingTrendzDataDiv_body" class="yui-skin-sam">';
 			str += '	<div id="allPartiesResultsChartsPanel"></div>';
 			str += '	<div id="mandalsListInConstituency"></div>';	
+			/*
 			str += '	<div id="mandalDetailsChart_body">';
 			str += '	<div style="margin-top:5px;margin-left:300px;">';
 			str += '		<div style="color:#ADADAD"> Loading ...</div>';
 			str += '		<div> <img src="images/icons/barloader.gif"></img> </div>';
 			str += '	</div>';
-			str += '	</div>';	
+			str += '	</div>';*/
+			str += '<div id ="inputSelectionCriteria">';
+			str += '<P>Select a Party and Election Type to view results</P>';
+			str += '<div id ="inputSelectionError"></div>';
+			str += '<table>';
+			str += '<tr>';
+			for(var k in tehsilElections.staticParties)
+			{
+				str += '<td><INPUT type="checkbox" name="partywiseCheckBox" id='+tehsilElections.staticParties[k].partyName+' />'+tehsilElections.staticParties[k].partyName+'</td>';
+			}
+			str += '</tr>';
+			str += '<tr>';
+			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Assembly"  />2009 Assembly</td>';
+			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Assembly"  />2004 Assembly</td>';
+			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Parliament"  />2009 Parliament</td>';
+			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Parliament"  />2004 Parliament</td>';
+			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_MPTC"  />2006 MPTC</td>';
+			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2001_MPTC" />2001 MPTC</td>';
+			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_ZPTC" />2006 ZPTC</td>';
+			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2001_ZPTC" />2001 ZPTC</td>';
+			str += '</tr>';
+			str += '<tr>';
+			str += '<td><INPUT type="button" id="getResults" onclick="getResultsForSelectedElection()" value="Show Results" /></td>';
+			str += '</tr>';
+			
+			str += '</table>';
+			str += '</div>';	
 			str += '	<div id="mandalVotingTrendzData"></div>';	
 			
 			str += '</div>';
@@ -384,6 +422,69 @@
 			allPartiesPanel.render();*/
 		}
 
+		function getResultsForSelectedElection()
+		{
+			var inputSelectionErrorEl = document.getElementById("inputSelectionError");
+			var partyCheckboxEls = document.getElementsByName("partywiseCheckBox");
+			var electionTypeCheckboxEls = document.getElementsByName("electionCheckBox");
+			var selectedPartiesIds = new Array();
+			var selectedElectionTypesYears = new Array();
+			var selectedPartiesCount, electionTypesCount;		
+			inputSelectionErrorEl.innerHTML = '';
+			for(var i=0; i < partyCheckboxEls.length; i++)
+			{
+				if(partyCheckboxEls[i].checked == true)
+				{
+					selectedPartiesIds.push(partyCheckboxEls[i].id);
+				}
+			}			
+			
+			for(var j = 0; j < electionTypeCheckboxEls.length;j++)
+			{
+				if(electionTypeCheckboxEls[j].checked == true)
+				{
+					var checkedVal = electionTypeCheckboxEls[j].id;
+					var jsObj={
+							type: checkedVal.substring(checkedVal.indexOf('_')+1,checkedVal.length),
+							year: checkedVal.substring(0,checkedVal.indexOf('_'))
+							};
+					selectedElectionTypesYears.push(jsObj);
+				}	
+			}
+
+			selectedPartiesCount =  selectedPartiesIds.length;
+			electionTypesCount = 	selectedElectionTypesYears.length;
+			if(selectedPartiesCount == 0 && electionTypesCount == 0)
+			{
+				inputSelectionErrorEl.innerHTML = '';
+				inputSelectionErrorEl.innerHTML = 'Please Select Party and Election Type';
+				return;
+			}
+			if(electionTypesCount == 0)
+			{
+				inputSelectionErrorEl.innerHTML = '';
+				inputSelectionErrorEl.innerHTML = 'Please Select Election Type';
+				return;
+			}
+			if(selectedPartiesCount == 0)
+			{
+				inputSelectionErrorEl.innerHTML = '';
+				inputSelectionErrorEl.innerHTML = 'Please Select Party';
+				return;
+			}
+			var jsObj = {
+
+					partiesArr: selectedPartiesIds,
+					electionTypeArr: selectedElectionTypesYears,
+					task: "constituencyResults" 
+					};
+			
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/constituencyVotingTrendzChartAjaxAction.action?"+rparam;
+			callAjax(jsObj, url);
+			
+		}
+		
 		function buildMandalVotingTrendzData(jsObj,resultsData)
 		{
 			
@@ -541,7 +642,7 @@
 
 			bodyElmt.innerHTML = str;
 		}
-	</script>
+	--></script>
 
 </head>
 <body>
