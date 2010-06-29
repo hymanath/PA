@@ -18,13 +18,20 @@ import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class TownshipElectionResultsAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private HttpServletRequest request;
 	private static final Logger log = Logger.getLogger(TownshipElectionResultsAction.class);
 	private List<ConstituencyRevenueVillagesVO> townshipWiseElectionResults;
@@ -36,7 +43,24 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	private String windowTask;
 	private Long tehsilId;
 	private Long electId;
+	private List<SelectOptionVO> allElectionYears;
+	private IStaticDataService staticDataService;
 	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+	public List<SelectOptionVO> getAllElectionYears() {
+		return allElectionYears;
+	}
+
+	public void setAllElectionYears(List<SelectOptionVO> allElectionYears) {
+		this.allElectionYears = allElectionYears;
+	}
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -125,6 +149,8 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		log.debug("Result::mandalId="+mandalId+" electionId="+electionId);		
 		townshipWiseElectionResults = constituencyPageService.getPartiesResultsInVillagesGroupByMandal(mandalId, electionId);
 		
+		allElectionYears = staticDataService.getAllElectionYearsBasedOnElectionType(electionType);
+		 
 		for(ConstituencyRevenueVillagesVO constituencyObj:townshipWiseElectionResults){
 			String chartName = "partyPerformanceInAllMandalElectionsByRevenueVillages_"+constituencyObj.getConstituencyId()+".png";
 	        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
