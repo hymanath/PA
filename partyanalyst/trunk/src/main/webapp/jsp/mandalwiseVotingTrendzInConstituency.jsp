@@ -70,6 +70,8 @@
 		var localizationObj = '';
 		var assemblyElectionType='Assembly';
 		var constituencyIdGlobal = '${constiId}';
+		var constituencyName = '${constiName}';
+		
 		var allPartiesCharts = '';
 		
 		var tehsilDetails={
@@ -473,7 +475,9 @@
 				return;
 			}
 			var jsObj = {
-
+					
+					constituencyName: constituencyName,
+					constituencyId: constituencyIdGlobal,
 					partiesArr: selectedPartiesIds,
 					electionTypeArr: selectedElectionTypesYears,
 					task: "constituencyResults" 
@@ -660,7 +664,8 @@
 								<td><img src="images/icons/districtPage/header_left.gif"/></td>
 								<td>	
 									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:401px;height:18px;padding:9px;">
-										<span>ZPTC Voting Trends : </span>														
+										<span>Total Number of ZPTC's : </span>
+										<span id="totalZptcCountResultDiv"></span>														
 									</div>
 								</td>
 								<td><img src="images/icons/districtPage/header_right.gif"/></td>
@@ -694,7 +699,7 @@
 										<td><img src="images/icons/districtPage/header_left.gif"/></td>
 										<td>	
 											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:401px;padding:9px;height:18px;">
-												<span>MPTC Voting Trends : </span>
+												<span>Total Number of MPTC's : </span>
 												<span id="totalMptcCountResultDiv"></span>
 											</div>
 										</td>
