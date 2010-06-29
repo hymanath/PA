@@ -4289,6 +4289,8 @@ public class StaticDataService implements IStaticDataService {
 				Object[] parms = (Object[])resultIterator.next();
 				percentage= new BigDecimal((Float.parseFloat(parms[1].toString())/totalVotes)*100).setScale(2,BigDecimal.ROUND_HALF_UP);
 				CandidateElectionResultVO partyInfo = new CandidateElectionResultVO();
+				partyInfo.setTotalVotesEarned(Long.parseLong(parms[1].toString()));
+				partyInfo.setTotalValidVotes(totalVotes);
 				partyInfo.setPartyName(parms[0].toString());
 				partyInfo.setVotesPercentage(percentage.toString());
 				candidateElectionResultsVO.add(partyInfo);
