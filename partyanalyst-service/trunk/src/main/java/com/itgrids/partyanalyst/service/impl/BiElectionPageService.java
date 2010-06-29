@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
@@ -33,6 +34,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultAllPartyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalLevelResultsForParty;
+import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInVotesMarginVO;
@@ -51,6 +53,7 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyResultsComparator;
 import com.itgrids.partyanalyst.utils.PartyResultsVOComparator;
@@ -66,11 +69,10 @@ public class BiElectionPageService implements IBiElectionPageService {
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO; 
 	private IVillageBoothElectionDAO villageBoothElectionDAO;
+	private IStaticDataService staticDataService;
 		
 	private static final Logger log = Logger.getLogger(BiElectionPageService.class);
 
-	
-	
 	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
@@ -139,9 +141,14 @@ public class BiElectionPageService implements IBiElectionPageService {
 		this.villageBoothElectionDAO = villageBoothElectionDAO;
 	}
 
-	
-	
-	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#getBiElectionConstituenciesDistrictWise()
@@ -1631,28 +1638,61 @@ public class BiElectionPageService implements IBiElectionPageService {
 		Map<String, Long> elecVillagePVMap = new LinkedHashMap<String, Long>();
 		for(Object[] values:(List<Object[]>)validVotesInElecOfMandal)
 			elecVillagePVMap.put(values[0]+"_"+values[3], (Long)values[5]);
+		String[] partyIds = StringUtils.split(parties, ",");
+		boolean isOthersSelected = false;
+		for(String partyId:partyIds)
+			if("0".equals(partyId.trim()))
+				isOthersSelected = true;
+		StringBuilder hqlQuery1 =new StringBuilder();
 		
-		StringBuilder hqlQuery =new StringBuilder();
-		
-		hqlQuery.append("and model.nomination.party.partyId in("+parties+")" )
+		hqlQuery1.append("and model.nomination.party.partyId in("+parties+")" )
 		.append("and model.boothConstituencyElection.constituencyElection.election.electionId in ("+elections+")");
-		hqlQuery.append(" group by model.boothConstituencyElection.villageBoothElection.township.townshipId, ")
+		hqlQuery1.append(" group by model.boothConstituencyElection.villageBoothElection.township.townshipId, ")
 		.append("model.boothConstituencyElection.constituencyElection.election.electionId, model.nomination.party.partyId ");
 		
-		List villagesWiseResults = candidateBoothResultDAO.
-			getAllPartiesResultsInAllElectionsByRevenueVillgesInMandal(hqlQuery.toString(), tehsilId);
-		PartyResultVO partyResultVO = null;
 		List<PartyResultVO> partiesResultsVO = new ArrayList<PartyResultVO>();
+		List villagesWiseResults = null;
+		
+		villagesWiseResults = candidateBoothResultDAO.
+			getAllPartiesResultsInAllElectionsByRevenueVillgesInMandal(hqlQuery1.toString(), tehsilId);
+		getPartyResultsListByRevenueVillages(villagesWiseResults, partiesResultsVO, elecVillagePVMap, false);
+		
+		if(isOthersSelected){
+			StringBuilder exculededPartyIds = new StringBuilder();
+			StringBuilder hqlQuery2 = new StringBuilder();
+			MandalVO mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(tehsilId);
+			List<SelectOptionVO> partiesExcluded = mandalVO.getPartiesInMandal();
+
+			for(SelectOptionVO party:partiesExcluded)
+				exculededPartyIds.append(","+party.getId());
+			
+			hqlQuery2.append("and model.nomination.party.partyId not in("+exculededPartyIds.substring(1)+")" )
+			.append("and model.boothConstituencyElection.constituencyElection.election.electionId in ("+elections+")");
+			hqlQuery2.append(" group by model.boothConstituencyElection.villageBoothElection.township.townshipId, ")
+			.append("model.boothConstituencyElection.constituencyElection.election.electionId ");
+			
+			villagesWiseResults = candidateBoothResultDAO.
+			getAllPartiesResultsInAllElectionsByRevenueVillgesInMandal(hqlQuery2.toString(), tehsilId);			
+			getPartyResultsListByRevenueVillages(villagesWiseResults, partiesResultsVO, elecVillagePVMap, true);
+		}
+		
+		return partiesResultsVO;
+	}
+	
+	private void getPartyResultsListByRevenueVillages(List villagesWiseResults, List<PartyResultVO> partiesResultsVO, 
+			Map<String, Long> elecVillagePVMap, Boolean includeOthers){
+		PartyResultVO partyResultVO = null;
 		for(Object[] values:(List<Object[]>)villagesWiseResults){
 			partyResultVO = new PartyResultVO();
-			partyResultVO.setPartyName(values[6]+" IN "+values[2]+" "+values[1]);
+			if(includeOthers)
+				partyResultVO.setPartyName("Others IN "+values[2]+" "+values[1]);
+			else
+				partyResultVO.setPartyName(values[6]+" IN "+values[2]+" "+values[1]);
 			partyResultVO.setConstituencyName(values[4].toString());
 			partyResultVO.setVotesPercent(new BigDecimal((Long)values[7]*100.0/elecVillagePVMap.get(values[0]+"_"+values[3]))
 																				.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			partiesResultsVO.add(partyResultVO);
 		}
-		
-		return partiesResultsVO;
 	}
 	
 }
