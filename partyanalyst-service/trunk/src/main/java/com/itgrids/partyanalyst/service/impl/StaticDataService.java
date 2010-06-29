@@ -1744,6 +1744,33 @@ public class StaticDataService implements IStaticDataService {
 			}
 	}
 	
+	/**
+	 * This method returns all the election years by electionType.
+	 */
+	public List<SelectOptionVO> getAllElectionYearsBasedOnElectionType(String electionType){
+		List<SelectOptionVO> electionTypes = new ArrayList<SelectOptionVO>(0);
+		List<SelectOptionVO> allYears = new ArrayList<SelectOptionVO>(0);
+		Long electionId =0l;
+		try{
+			electionTypes = getAllElectionTypes();
+			for(SelectOptionVO eleTypes : electionTypes){
+				if(eleTypes.getName().equalsIgnoreCase(electionType))
+					electionId = eleTypes.getId();				
+			}	
+			
+			allYears.add(0,new SelectOptionVO(0l,"Select Year"));
+			
+			allYears.addAll(getElectionIdsAndYears(electionId));
+			
+			return allYears;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+	
 	/*
 	 * This method returns all the election years for the given electionType.
 	 */

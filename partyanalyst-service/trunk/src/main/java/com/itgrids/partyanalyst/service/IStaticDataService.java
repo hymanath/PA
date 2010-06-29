@@ -167,5 +167,7 @@ public interface IStaticDataService {
 	public List<ElectionResultPartyVO> getAllMandalElectionInformationForAConstituency(Long constituencyId);
 	
 	public List<CandidateElectionResultVO> getWinningCandidatesInConstituencies(String electionYear, List<Long> constituencyIds);
+	
+	public List<SelectOptionVO> getAllElectionYearsBasedOnElectionType(String electionType);
 
 }
