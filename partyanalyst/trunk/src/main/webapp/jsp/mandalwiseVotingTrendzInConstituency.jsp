@@ -378,7 +378,7 @@
 			}
 			str += '</div>';
 			str += '<div id ="inputSelectionCriteria">';
-			str += '<P>Select a Party and Election Type to view results</P>';
+			/*str += '<P>Select a Party and Election Type to view results</P>';
 			str += '<div id ="inputSelectionError"></div>';
 			str += '<table>';
 			str += '<tr>';
@@ -398,7 +398,7 @@
 			str += '<td colspan="4"><INPUT type="checkbox" name="electionCheckBox" id="2001_ZPTC" />2001 ZPTC</td>';
 			str += '</tr>';
 			str += '</table>';
-			str += '<div style="text-align:right;"><INPUT type="button" id="getResults" onclick="getResultsForSelectedElection()" value="Show Results" /></div>';			
+			str += '<div style="text-align:right;"><INPUT type="button" id="getResults" onclick="getResultsForSelectedElection()" value="Show Results" /></div>';*/			
 			str += '</div>';
 			str += '<div id="constitutencyResultsChart"></div>';
 			str += '<div id="mandalVotingTrendzDataDiv_head">Voting Trendz in Constituency</div>';
@@ -539,12 +539,42 @@
 			var bodyElmt = document.getElementById("mandalVotingTrendzData");
 			var graphElmt = document.getElementById("mandalDetailsChart_body");
 			var mandalsListElmt = document.getElementById("mandalsListInConstituency");
-
+		
 			var results = resultsData.biElectionResultsMainVO;
 			//Hiding busy cursor Image
 			var cursorImgElmt = document.getElementById('cursorImg');
 			if(cursorImgElmt)
 				cursorImgElmt.style.display = 'none';
+			var inputEl = document.getElementById("inputSelectionCriteria");
+			inputEl.innerHTML = '';
+			var constChartEl = document.getElementById("constitutencyResultsChart");
+			constChartEl.innerHTML = '';
+			var mainHeadEl = document.getElementById("mainHead");
+			mainHeadEl.innerHTML = '';
+			mainHeadEl.innerHTML = 'Voting Trendz in '+jsObj.constiName+' Constituency';
+			var str1= '';
+			str1 += '<P>Select a Party and Election Type to view results</P>';
+			str1 += '<div id ="inputSelectionError"></div>';
+			str1 += '<table>';
+			str1 += '<tr>';
+			for(var k in tehsilElections.staticParties)
+			{
+				str1 += '<td><INPUT type="checkbox" name="partywiseCheckBox" id='+tehsilElections.staticParties[k].partyName+' />'+tehsilElections.staticParties[k].partyName+'</td>';
+			}
+			str1 += '</tr>';
+			str1 += '<tr>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Assembly"  />2009 Assembly</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Assembly"  />2004 Assembly</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Parliament"  />2009 Parliament</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Parliament"  />2004 Parliament</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_MPTC"  />2006 MPTC</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2001_MPTC" />2001 MPTC</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_ZPTC" />2006 ZPTC</td>';
+			str1 += '<td colspan="4"><INPUT type="checkbox" name="electionCheckBox" id="2001_ZPTC" />2001 ZPTC</td>';
+			str1 += '</tr>';
+			str1 += '</table>';
+			str1 += '<div style="text-align:right;"><INPUT type="button" id="getResults" onclick="getResultsForSelectedElection()" value="Show Results" /></div>';
+			inputEl.innerHTML = str1;
 			
 			/*
 			allPartiesCharts = resultsData.allPartiesElectionResultsChart;
@@ -698,7 +728,7 @@
 		<TABLE cellspacing="0" cellpadding="0" border="0" >
 		<TR>
 			<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" style="margin-top:15px;" /></TD>
-			<TD valign="top"><DIV class="mainHeading">Voting Trends in ${constiName} Constituency</DIV></TD>
+			<TD valign="top"><DIV id="mainHead" class="mainHeading">Voting Trends in ${constiName} Constituency</DIV></TD>
 			<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" style="margin-top:15px;" border="none"/></TD>
 		</TR>
 		</TABLE>
