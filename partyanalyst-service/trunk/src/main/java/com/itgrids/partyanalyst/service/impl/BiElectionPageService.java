@@ -1524,6 +1524,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 			for(ElectionResultsForMandalVO electionResultsForMandalVO:results)
 				{
 					List<MandalElectionResultVO> electionResultsInMandalList = electionResultsForMandalVO.getElectionResultsForMandal();
+					Map<Long,PartyResultsVO> resultsSumMap = new HashMap<Long,PartyResultsVO>();
+					
 					for(MandalElectionResultVO mandalElectionResultVOObj:electionResultsInMandalList)
 					{
 						List<PartyElectionResultsInConstituencyVO> partyElectionResultsInConstituencyList = mandalElectionResultVOObj.getPartyElecResultsInConstituency();					
@@ -1543,22 +1545,63 @@ public class BiElectionPageService implements IBiElectionPageService {
 									if(partyResultsVO.getPartyName().equals(IConstants.TDP) || partyResultsVO.getPartyName().equals(IConstants.BJP) || partyResultsVO.getPartyName().equals(IConstants.INC) || partyResultsVO.getPartyName().equals(IConstants.TRS) )
 									{
 										requiredPartiesResults.add(partyResultsVO);
+										
+										//to calculate sum of results in an election
+										if(resultsSumMap.isEmpty() || !resultsSumMap.containsKey(partyResultsVO.getPartyId())){
+											resultsSumMap.put(partyResultsVO.getPartyId(), partyResultsVO);
+										}
+										else{
+											PartyResultsVO partyRes = resultsSumMap.get(partyResultsVO.getPartyId());
+											Long ve = partyRes.getVotesEarned() + partyResultsVO.getVotesEarned();
+											Double percnt = new BigDecimal(new Double(ve)/partyResultsVO.getValidVotes()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+											partyRes.setVotesEarned(ve);
+											partyRes.setPercentage(percnt.toString());
+											
+											resultsSumMap.put(partyResultsVO.getPartyId(), partyRes);
+										}
 									} else 
 									{
 										if(partyResultsVO.getValidVotes() != null && partyResultsVO.getVotesEarned() != null){
 										validVotes = partyResultsVO.getValidVotes();
 										votesEarned += partyResultsVO.getVotesEarned();		
 										}
-									}	
+									}
+									
+									
 								}
+								partyResultsVOObj.setPartyId(new Long(0));
 								partyResultsVOObj.setPartyName(IConstants.OTHERS);
 								partyResultsVOObj.setValidVotes(validVotes);
 								partyResultsVOObj.setVotesEarned(votesEarned);
 								partyResultsVOObj.setPercentage(new BigDecimal((votesEarned.doubleValue()*100)/validVotes.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								
+								if(resultsSumMap.isEmpty() || !resultsSumMap.containsKey(new Long(0))){
+									resultsSumMap.put(new Long(0), partyResultsVOObj);
+								}
+								else if(resultsSumMap.containsKey(new Long(0))){
+									PartyResultsVO partyRes = resultsSumMap.get(new Long(0));
+									Long ve = partyRes.getVotesEarned() + partyResultsVOObj.getVotesEarned();
+									Double percnt = new BigDecimal(new Double(ve)/partyResultsVOObj.getValidVotes()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+									partyRes.setVotesEarned(ve);
+									partyRes.setPercentage(percnt.toString());
+									
+									resultsSumMap.put(new Long(0), partyRes);
+								}
 								requiredPartiesResults.add(partyResultsVOObj);
 								partyElectionResultsInConstituencyObj.setPartyElecResults(requiredPartiesResults);
 							}
 						
+					}
+					
+					//processing votes sum map
+					if(!resultsSumMap.isEmpty()){
+						List<PartyResultsVO> partyResultsSum = new ArrayList<PartyResultsVO>();
+						Set<Long> keys = resultsSumMap.keySet();
+						for(Long partId:keys){
+							partyResultsSum.add(resultsSumMap.get(partId));
+						}
+						Collections.sort(partyResultsSum, new PartyResultsVOComparator());
+						electionResultsForMandalVO.setPartyResultsSum(partyResultsSum);
 					}
 					electionResultsForMandalVO.setPartysList(setStaticParties(electionResultsForMandalVO.getPartysList()));
 				}
