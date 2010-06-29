@@ -7,6 +7,7 @@ public class ChartColorsAndDataSetVO {
 
 	private Object dataSet;
 	private Set<Color> colorsSet;
+	private String chartName;
 	
 	public Object getDataSet() {
 		return dataSet;
@@ -20,8 +21,11 @@ public class ChartColorsAndDataSetVO {
 	public void setColorsSet(Set<Color> colorsSet) {
 		this.colorsSet = colorsSet;
 	}
-	
-	
-	
+	public String getChartName() {
+		return chartName;
+	}
+	public void setChartName(String chartName) {
+		this.chartName = chartName;
+	}
 	
 }
