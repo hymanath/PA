@@ -23,6 +23,7 @@ public class ElectionResultsForMandalVO implements Serializable {
 	private List<PartyResultsVO> PartiesList;
 	private List<SelectOptionVO> partysList;
 	private List<MandalElectionResultVO> electionResultsForMandal;
+	private List<PartyResultsVO> partyResultsSum;
 	private ResultStatus resultStatus;
 
 	public Long getElectionId() {
@@ -80,6 +81,14 @@ public class ElectionResultsForMandalVO implements Serializable {
 
 	public List<PartyResultsVO> getPartiesList() {
 		return PartiesList;
+	}
+
+	public List<PartyResultsVO> getPartyResultsSum() {
+		return partyResultsSum;
+	}
+
+	public void setPartyResultsSum(List<PartyResultsVO> partyResultsSum) {
+		this.partyResultsSum = partyResultsSum;
 	}
 
 }
