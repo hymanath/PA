@@ -1125,6 +1125,15 @@
            		<param name="root">biElectionResultsMainVO</param>
         	</result>       		
         </action>	
+        
+        <action name="mandalRevenueVillagesElecInputAction" class="mandalRevenueVillagesElecAction">
+			 <result name="success">/jsp/revenueVillagesElectionResults.jsp</result>
+		</action>
+		
+		<action name="mandalRevenueVillagesElecViewAction" class="mandalRevenueVillagesElecAction">
+			 <result name="success">/jsp/revenueVillagesElectionResults.jsp</result>
+		</action>
+        
 	</package>
 </struts>
 

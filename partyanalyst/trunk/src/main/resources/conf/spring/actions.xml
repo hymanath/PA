@@ -386,5 +386,8 @@
 	    <property name="staticDataService" ref="staticDataService" />
 	    <property name="constituencyPageService" ref="constituencyPageService"/>				
 	</bean>
-	
+	<bean id="mandalRevenueVillagesElecAction" class="com.itgrids.partyanalyst.web.action.MandalRevenueVillagesElecAction" singleton="false">
+		<property name="staticDataService" ref="staticDataService" />		
+		<property name="biElectionPageService" ref="biElectionPageService" />					
+	</bean>	
 </beans>		
