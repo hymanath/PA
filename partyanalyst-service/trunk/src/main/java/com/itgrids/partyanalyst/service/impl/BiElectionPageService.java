@@ -1560,10 +1560,16 @@ public class BiElectionPageService implements IBiElectionPageService {
 										else{
 											PartyResultsVO partyRes = resultsSumMap.get(partyResultsVO.getPartyId());
 											Long ve = partyRes.getVotesEarned() + partyResultsVO.getVotesEarned();
-											Double percnt = new BigDecimal(new Double(ve)/partyResultsVO.getValidVotes()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-											partyRes.setVotesEarned(ve);
-											partyRes.setPercentage(percnt.toString());
-											
+											if(ve != null && partyResultsVO.getValidVotes() != null)
+											{	
+												Double percnt = new BigDecimal(new Double(ve)/partyResultsVO.getValidVotes()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+												partyRes.setVotesEarned(ve);
+												partyRes.setPercentage(percnt.toString());												
+											} else 
+											{
+												partyRes.setVotesEarned(0l);
+												partyRes.setPercentage(" ");
+											}
 											resultsSumMap.put(partyResultsVO.getPartyId(), partyRes);
 										}
 									} else 
@@ -1617,7 +1623,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			
 		return allPartiesResultsList;
 	}
-	private List<SelectOptionVO> setStaticParties(List<SelectOptionVO> parties)
+	public List<SelectOptionVO> setStaticParties(List<SelectOptionVO> parties)
 	{ 
 		List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>();
 		
