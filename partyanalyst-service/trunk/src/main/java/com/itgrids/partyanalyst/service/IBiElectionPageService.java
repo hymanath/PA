@@ -42,6 +42,8 @@ public interface IBiElectionPageService {
 	
 	public AllBoothsResultsForAPartyInAMandal getAllBoothsResultsInAConstituency(Long tehsilId, Long partyId, Long constituencyId, String electionYear, String electionType);
 	
+	public List<BiElectionResultsVO> getMandalWiseResultsForSelectedPartiesInConstituency(Long constituencyId);
+	
 	public List<PartyResultVO> findRevenueVillageswiseResultsInElectionsOfMandal(Long tehsilId, String parties, 
 			String elections, Boolean includeAlliance );
 }

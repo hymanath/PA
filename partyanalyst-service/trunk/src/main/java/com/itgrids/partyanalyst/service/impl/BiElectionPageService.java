@@ -54,6 +54,7 @@ import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyResultsComparator;
 import com.itgrids.partyanalyst.utils.PartyResultsVOComparator;
+import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 
 public class BiElectionPageService implements IBiElectionPageService {
 	
@@ -68,6 +69,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 		
 	private static final Logger log = Logger.getLogger(BiElectionPageService.class);
 
+	
+	
 	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
@@ -136,6 +139,9 @@ public class BiElectionPageService implements IBiElectionPageService {
 		this.villageBoothElectionDAO = villageBoothElectionDAO;
 	}
 
+	
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#getBiElectionConstituenciesDistrictWise()
@@ -770,6 +776,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		resultVO.setVotesEarned(votesEarned);
 		
 		Long validVotes = partyResult.getValidVotes();
+		resultVO.setValidVotes(validVotes);
 		Double votesPercent = new BigDecimal(votesEarned.doubleValue()/validVotes.doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		resultVO.setPercentage(votesPercent.toString());
 		
@@ -1505,6 +1512,74 @@ public class BiElectionPageService implements IBiElectionPageService {
 			
 		}
 		return allBoothsResultsForAPartyInAMandal;
+	}
+
+	public List<BiElectionResultsVO> getMandalWiseResultsForSelectedPartiesInConstituency(
+			Long constituencyId) {
+		List<BiElectionResultsVO>  allPartiesResultsList = getMandalWiseResultsForAConstituency(constituencyId);
+		for(BiElectionResultsVO allPartiesResultsObj :allPartiesResultsList)
+		{
+			List<ElectionResultsForMandalVO> results = allPartiesResultsObj.getBiElectionResultsVO();
+			
+			for(ElectionResultsForMandalVO electionResultsForMandalVO:results)
+				{
+					List<MandalElectionResultVO> electionResultsInMandalList = electionResultsForMandalVO.getElectionResultsForMandal();
+					for(MandalElectionResultVO mandalElectionResultVOObj:electionResultsInMandalList)
+					{
+						List<PartyElectionResultsInConstituencyVO> partyElectionResultsInConstituencyList = mandalElectionResultVOObj.getPartyElecResultsInConstituency();					
+						
+						for(PartyElectionResultsInConstituencyVO partyElectionResultsInConstituencyObj:partyElectionResultsInConstituencyList)
+							{
+								List<PartyResultsVO> requiredPartiesResults = new ArrayList<PartyResultsVO>();
+								Long validVotes = new Long(0);
+								Long votesEarned = new Long(0) ; 
+								List<PartyResultsVO> partyResults = partyElectionResultsInConstituencyObj.getPartyElecResults();
+								PartyResultsVO partyResultsVOObj = new PartyResultsVO();
+								Long votesPercentSum = new Long(0);
+								Long votesEarnedSum = new Long(0);
+								
+								for(PartyResultsVO partyResultsVO: partyResults)
+								{
+									if(partyResultsVO.getPartyName().equals(IConstants.TDP) || partyResultsVO.getPartyName().equals(IConstants.BJP) || partyResultsVO.getPartyName().equals(IConstants.INC) || partyResultsVO.getPartyName().equals(IConstants.TRS) )
+									{
+										requiredPartiesResults.add(partyResultsVO);
+									} else 
+									{
+										if(partyResultsVO.getValidVotes() != null && partyResultsVO.getVotesEarned() != null){
+										validVotes = partyResultsVO.getValidVotes();
+										votesEarned += partyResultsVO.getVotesEarned();		
+										}
+									}	
+								}
+								partyResultsVOObj.setPartyName(IConstants.OTHERS);
+								partyResultsVOObj.setValidVotes(validVotes);
+								partyResultsVOObj.setVotesEarned(votesEarned);
+								partyResultsVOObj.setPercentage(new BigDecimal((votesEarned.doubleValue()*100)/validVotes.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+								requiredPartiesResults.add(partyResultsVOObj);
+								partyElectionResultsInConstituencyObj.setPartyElecResults(requiredPartiesResults);
+							}
+						
+					}
+					electionResultsForMandalVO.setPartysList(setStaticParties(electionResultsForMandalVO.getPartysList()));
+				}
+			
+		}
+			
+		return allPartiesResultsList;
+	}
+	private List<SelectOptionVO> setStaticParties(List<SelectOptionVO> parties)
+	{ 
+		List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>();
+		
+		
+		for(SelectOptionVO party:parties)
+		{
+			if(party.getName().equals(IConstants.TDP) || party.getName().equals(IConstants.INC) || party.getName().equals(IConstants.BJP) || party.getName().equals(IConstants.TRS))
+				partiesList.add(party);
+		}
+		int listSize = partiesList.size();
+		partiesList.add(listSize,new SelectOptionVO(0L,"Others"));
+		return partiesList;
 	}
 	
 	public List<PartyResultVO> findRevenueVillageswiseResultsInElectionsOfMandal(Long tehsilId, String parties, 
