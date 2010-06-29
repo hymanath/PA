@@ -20,7 +20,7 @@ public class ElectionResultsForMandalVO implements Serializable {
 	private Long electionId;
 	private String electionType;
 	private String electionYear;
-	
+	private List<PartyResultsVO> PartiesList;
 	private List<SelectOptionVO> partysList;
 	private List<MandalElectionResultVO> electionResultsForMandal;
 	private ResultStatus resultStatus;
@@ -72,6 +72,14 @@ public class ElectionResultsForMandalVO implements Serializable {
 
 	public void setPartysList(List<SelectOptionVO> partysList) {
 		this.partysList = partysList;
+	}
+
+	public void setPartiesList(List<PartyResultsVO> partiesList) {
+		PartiesList = partiesList;
+	}
+
+	public List<PartyResultsVO> getPartiesList() {
+		return PartiesList;
 	}
 
 }
