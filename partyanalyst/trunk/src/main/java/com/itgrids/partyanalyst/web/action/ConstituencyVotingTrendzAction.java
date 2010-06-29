@@ -492,6 +492,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	
 	public String getConstVotingTrendzChart() throws Exception
 	{
+		String chartNam = "";
 		String param=null;			    
 		param = getTask();
 		
@@ -522,6 +523,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			elecData.setElectionYear(elecYear);
 			
 			electnDataList.add(elecData);
+			chartNam = chartNam + "_" + elecType + "_" + elecYear;
 			log.debug("Election Type " + elecType + "Year " + elecYear);
 		}	
 		
@@ -545,7 +547,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
         if(electionResList != null && electionResList.size() > 0){
 						
 			  String chartTitle = " Election Results In "+constiName + "Constituency";
-			  String chartName = "constituencyElectionsResults"+"_"+constiName+"_"+constiId+".png";
+			  String chartName = "constituencyElectionsResults"+"_"+constiName+"_"+constiId+"_"+chartNam+".png";
 			  String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			  chartColorsAndDataSetVO = createDatasetForChart(electnDataList,partys,electionResList);
 			  ChartProducer.createLineChart(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,300,820,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()));
