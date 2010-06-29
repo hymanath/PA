@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div>
-	<s:if test="%{#mandalVO != null}">
+	<c:if test="${! empty mandalVO}">
 		<s:form action="mandalRevenueVillagesElecViewAction" name="MandalRevenueVillagesElecViewAction" method="GET" enctype="multipart/form-data">
 			<table>
 				<tr><td><s:checkboxlist list="mandalVO.partiesInMandal" listKey="id" listValue="name" name="parties" label="Parties:"/></td></tr>
@@ -19,15 +19,12 @@
 				<tr><td><s:submit align="center" label="View Chart" /></td></tr>
 			</table>
 		</s:form>
-	</s:if>
+	</c:if>
 	</div>
 	<div>
-		<s:if test="%{#chartPath != null}">
+		<c:if test="${! empty chartPath}">
 			<img src="charts/${chartPath}">
-		</s:if>
-		<s:else>
-			<s:text name="lable">Sorry, No Records Found</s:text>
-		</s:else>
+		</c:if>
 	</div>
 </body>
 </html>
