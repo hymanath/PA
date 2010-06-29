@@ -613,5 +613,24 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				 "order by model.boothConstituencyElection.booth.boothId", params);
 				 
 	}
+
+	public List getAllPartiesResultsInAllElectionsByRevenueVillgesInMandal(String condition, Long tehsilId){
+
+		StringBuilder hqlQuery =new StringBuilder();
+		hqlQuery.append("select model.boothConstituencyElection.constituencyElection.election.electionId, ")//0
+			.append("model.boothConstituencyElection.constituencyElection.election.electionYear, ")//1
+			.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")//2
+			.append("model.boothConstituencyElection.villageBoothElection.township.townshipId,")	//3
+			.append("model.boothConstituencyElection.villageBoothElection.township.townshipName,")//4
+			.append("model.nomination.party.partyId, model.nomination.party.shortName, sum(model.votesEarned) ");//5 6 7 
+		hqlQuery.append("from CandidateBoothResult model ");
+		hqlQuery.append("where model.boothConstituencyElection.villageBoothElection.township.tehsil.tehsilId= " + tehsilId +" ");
+		hqlQuery.append(condition);
+		hqlQuery.append("order by model.boothConstituencyElection.constituencyElection.election.electionYear desc,")
+		.append("model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType,")
+		.append("model.boothConstituencyElection.villageBoothElection.township.townshipName,")
+		.append("model.nomination.party.shortName ");
+		return getHibernateTemplate().find(hqlQuery.toString());
+	}
 	
 }

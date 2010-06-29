@@ -4375,5 +4375,22 @@ public class StaticDataService implements IStaticDataService {
 		return winningCandidatesInBiElectionConst;
 	}
 	
+	public MandalVO findListOfElectionsAndPartiesInMandal(Long tehsilId){
+		MandalVO mandalVO = new MandalVO();
+		List<SelectOptionVO> parties = Collections.synchronizedList(getStaticParties());
+		List<SelectOptionVO> partiesInMandal = new ArrayList<SelectOptionVO>();
+		for(SelectOptionVO party:parties)
+			if(!"'CPI','CPM','AIMIM'".contains(party.getName()))
+				partiesInMandal.add(party);
+		Set<SelectOptionVO> elections = new HashSet<SelectOptionVO>();
+		List electionsInMandal = villageBoothElectionDAO.findPolledVotesInAllElectionsOfMandalByRevenueVillages(tehsilId);
+		for(Object[] values:(List<Object[]>)electionsInMandal)
+			elections.add(new SelectOptionVO((Long)values[0], (values[1]+" "+values[2])));
+		partiesInMandal.add(new SelectOptionVO(0l, "Others"));
+		mandalVO.setPartiesInMandal(partiesInMandal);
+		mandalVO.setElectionsInMandal(elections);
+		return mandalVO;
+	}
+	
 }
 

@@ -9,13 +9,14 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.AllBoothsResultsForAPartyInAMandal;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
-import com.itgrids.partyanalyst.dto.MandalAllElectionResultsVO;
 import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyVotesMarginResultsInMandal;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotesMarginResultsMainVO;
@@ -40,4 +41,7 @@ public interface IBiElectionPageService {
 	public VotesMarginResultsMainVO getVotesMarginResultsCompleteDetails(Long constituencyId,Long partyId);
 	
 	public AllBoothsResultsForAPartyInAMandal getAllBoothsResultsInAConstituency(Long tehsilId, Long partyId, Long constituencyId, String electionYear, String electionType);
+	
+	public List<PartyResultVO> findRevenueVillageswiseResultsInElectionsOfMandal(Long tehsilId, String parties, 
+			String elections, Boolean includeAlliance );
 }

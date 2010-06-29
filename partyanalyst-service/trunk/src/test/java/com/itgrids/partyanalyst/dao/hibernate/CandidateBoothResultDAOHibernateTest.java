@@ -149,7 +149,7 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetBoothWisePartyResultsInAMandalByConstituencyId()
+	/*public void testGetBoothWisePartyResultsInAMandalByConstituencyId()
 	{
 		List list = candidateBoothResultDAO.getBoothWisePartyResultsInAMandalByConstituencyId(141L, 61L, 388L, "2009", IConstants.PARLIAMENT_ELECTION_TYPE);
 		System.out.println(list.size());
@@ -164,5 +164,8 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		List list = candidateBoothResultDAO.findPartyResultsInAllElectionsByRevenueVillagesInMandal(373l, 24l);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]);
-	}
+	}*/
+	
+	
+
 }

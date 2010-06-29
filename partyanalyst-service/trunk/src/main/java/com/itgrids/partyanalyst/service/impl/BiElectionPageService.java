@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.AllBoothsResultsForAPartyInAMandal;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
@@ -32,6 +34,7 @@ import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalLevelResultsForParty;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInVotesMarginVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyVotesMarginInConstituency;
@@ -61,11 +64,10 @@ public class BiElectionPageService implements IBiElectionPageService {
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO; 
+	private IVillageBoothElectionDAO villageBoothElectionDAO;
 		
 	private static final Logger log = Logger.getLogger(BiElectionPageService.class);
 
-	
-	
 	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
@@ -124,10 +126,16 @@ public class BiElectionPageService implements IBiElectionPageService {
 			IPartyBoothWiseResultsService partyBoothWiseResultsService) {
 		this.partyBoothWiseResultsService = partyBoothWiseResultsService;
 	}
+	
+	public IVillageBoothElectionDAO getVillageBoothElectionDAO() {
+		return villageBoothElectionDAO;
+	}
 
-	
-	
-	
+	public void setVillageBoothElectionDAO(
+			IVillageBoothElectionDAO villageBoothElectionDAO) {
+		this.villageBoothElectionDAO = villageBoothElectionDAO;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#getBiElectionConstituenciesDistrictWise()
@@ -1497,6 +1505,36 @@ public class BiElectionPageService implements IBiElectionPageService {
 			
 		}
 		return allBoothsResultsForAPartyInAMandal;
+	}
+	
+	public List<PartyResultVO> findRevenueVillageswiseResultsInElectionsOfMandal(Long tehsilId, String parties, 
+			String elections, Boolean includeAlliance ){
+		List validVotesInElecOfMandal = villageBoothElectionDAO.findPolledVotesInAllElectionsOfMandalByRevenueVillages(tehsilId);
+		Map<String, Long> elecVillagePVMap = new LinkedHashMap<String, Long>();
+		for(Object[] values:(List<Object[]>)validVotesInElecOfMandal)
+			elecVillagePVMap.put(values[0]+"_"+values[3], (Long)values[5]);
+		
+		StringBuilder hqlQuery =new StringBuilder();
+		
+		hqlQuery.append("and model.nomination.party.partyId in("+parties+")" )
+		.append("and model.boothConstituencyElection.constituencyElection.election.electionId in ("+elections+")");
+		hqlQuery.append(" group by model.boothConstituencyElection.villageBoothElection.township.townshipId, ")
+		.append("model.boothConstituencyElection.constituencyElection.election.electionId, model.nomination.party.partyId ");
+		
+		List villagesWiseResults = candidateBoothResultDAO.
+			getAllPartiesResultsInAllElectionsByRevenueVillgesInMandal(hqlQuery.toString(), tehsilId);
+		PartyResultVO partyResultVO = null;
+		List<PartyResultVO> partiesResultsVO = new ArrayList<PartyResultVO>();
+		for(Object[] values:(List<Object[]>)villagesWiseResults){
+			partyResultVO = new PartyResultVO();
+			partyResultVO.setPartyName(values[6]+" IN "+values[2]+" "+values[1]);
+			partyResultVO.setConstituencyName(values[4].toString());
+			partyResultVO.setVotesPercent(new BigDecimal((Long)values[7]*100.0/elecVillagePVMap.get(values[0]+"_"+values[3]))
+																				.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			partiesResultsVO.add(partyResultVO);
+		}
+		
+		return partiesResultsVO;
 	}
 	
 }

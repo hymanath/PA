@@ -22,11 +22,11 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		this.villageBoothElectionDAO = villageBoothElectionDAO;
 	}
 
-	public void testFindTownshipWiseBoothDetailsForTehsil(){
+	/*public void testFindTownshipWiseBoothDetailsForTehsil(){
 		List list = villageBoothElectionDAO.findTownshipWiseBoothDetailsForTehsil(836l, 3l);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]);
-	}
+	}*/
 	
 	/*public void testFindElectionsForElectionType(){
 		List list = villageBoothElectionDAO.findElectionsForElectionType(1l);
@@ -64,4 +64,9 @@ public class VillageBoothElectionDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
+	public void testFindPolledVotesInAllElectionsOfMandalByRevenueVillages(){
+		List list = villageBoothElectionDAO.findPolledVotesInAllElectionsOfMandalByRevenueVillages(373l);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]);
+	}
 }
