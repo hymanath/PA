@@ -1555,22 +1555,22 @@ public class BiElectionPageService implements IBiElectionPageService {
 										
 										//to calculate sum of results in an election
 										if(resultsSumMap.isEmpty() || !resultsSumMap.containsKey(partyResultsVO.getPartyId())){
-											resultsSumMap.put(partyResultsVO.getPartyId(), partyResultsVO);
+											
+											PartyResultsVO resultVO = getCopiedVO(partyResultsVO);
+											resultsSumMap.put(partyResultsVO.getPartyId(), resultVO);
 										}
-										else{
+										else if(resultsSumMap.containsKey(partyResultsVO.getPartyId())){
 											PartyResultsVO partyRes = resultsSumMap.get(partyResultsVO.getPartyId());
 											Long ve = partyRes.getVotesEarned() + partyResultsVO.getVotesEarned();
 											if(ve != null && partyResultsVO.getValidVotes() != null)
 											{	
 												Double percnt = new BigDecimal(new Double(ve)/partyResultsVO.getValidVotes()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 												partyRes.setVotesEarned(ve);
-												partyRes.setPercentage(percnt.toString());												
-											} else 
-											{
-												partyRes.setVotesEarned(0l);
-												partyRes.setPercentage(" ");
+												partyRes.setPercentage(percnt.toString());		
+												
+												resultsSumMap.put(partyResultsVO.getPartyId(), partyRes);
 											}
-											resultsSumMap.put(partyResultsVO.getPartyId(), partyRes);
+											
 										}
 									} else 
 									{
@@ -1588,8 +1588,9 @@ public class BiElectionPageService implements IBiElectionPageService {
 								partyResultsVOObj.setVotesEarned(votesEarned);
 								partyResultsVOObj.setPercentage(new BigDecimal((votesEarned.doubleValue()*100)/validVotes.doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 								
-								if(resultsSumMap.isEmpty() || !resultsSumMap.containsKey(new Long(0))){
-									resultsSumMap.put(new Long(0), partyResultsVOObj);
+								if(!resultsSumMap.containsKey(new Long(0))){
+									PartyResultsVO resultVO = getCopiedVO(partyResultsVOObj);
+									resultsSumMap.put(new Long(0), resultVO);
 								}
 								else if(resultsSumMap.containsKey(new Long(0))){
 									PartyResultsVO partyRes = resultsSumMap.get(new Long(0));
@@ -1622,6 +1623,17 @@ public class BiElectionPageService implements IBiElectionPageService {
 		}
 			
 		return allPartiesResultsList;
+	}
+	
+	public PartyResultsVO getCopiedVO(PartyResultsVO resultVO){
+		PartyResultsVO result = new PartyResultsVO();
+		result.setPartyId(resultVO.getPartyId());
+		result.setPartyName(resultVO.getPartyName());
+		result.setVotesEarned(resultVO.getVotesEarned());
+		result.setValidVotes(resultVO.getValidVotes());
+		result.setPercentage(resultVO.getPercentage());
+		
+		return result;
 	}
 	public List<SelectOptionVO> setStaticParties(List<SelectOptionVO> parties)
 	{ 
