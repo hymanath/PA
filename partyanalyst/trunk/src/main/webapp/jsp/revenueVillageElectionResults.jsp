@@ -28,6 +28,7 @@
 
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
 <link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
+<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Revenue Villages Wise Election Results</title>
 
@@ -139,6 +140,14 @@ legend
 	font-weight:normal;
 	padding:5px;
 	font-size:12px;
+}
+
+#allPartiesResultsAnc
+{
+	text-decoration:none;	
+	background-image:url('images/icons/electionResultsAnalysisReport/mid.png');
+	padding:5px;
+	color:#24455E;
 }
 </style>
 <script type="text/javascript"><!--
@@ -454,6 +463,17 @@ legend
 			<td>Select Election Year</td>
 			<td>		
 				<s:select id="selectPartyPPR" theme="simple"  name="selectParty" list="allElectionYears" listKey="id" listValue="name" onchange="getRevenueVillageElectionResults(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)"></s:select>			
+			</td>
+			<td>
+				<table border="0" cellspacing="0" cellpadding="0" style="margin-left:20px;">
+				<tr>
+				<td><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
+				<td>
+				<a id="allPartiesResultsAnc" href="mandalRevenueVillagesElecInputAction.action?tehsilName=${mandalName}&tehsilId=${tehsilId}"><b>View All Parties Results In All Elections</b></a>
+				</td>
+				<td><img src="images/icons/electionResultsAnalysisReport/second.png"/></td>
+				</tr>
+				</table>
 			</td>
 		</tr>		
 		<tr>

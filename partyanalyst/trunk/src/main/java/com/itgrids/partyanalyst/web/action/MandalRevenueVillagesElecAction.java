@@ -28,6 +28,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private String elections;
 	private MandalVO mandalVO;
 	private String tehsilId;
+	private String tehsilName;
 	private String chartPath; 
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -89,6 +90,14 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	public void setBiElectionPageService(
 			IBiElectionPageService biElectionPageService) {
 		this.biElectionPageService = biElectionPageService;
+	}
+
+	public String getTehsilName() {
+		return tehsilName;
+	}
+
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
 	}
 
 	public String execute(){
