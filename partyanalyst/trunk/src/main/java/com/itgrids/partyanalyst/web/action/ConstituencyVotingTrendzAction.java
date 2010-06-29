@@ -540,6 +540,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		for(int j=0;j<partyNames.length;j++){
 			partys.add(partyNames[j]);
 			log.debug("Party :" + partyNames[j]);
+			chartNam = chartNam + "_" + partyNames[j];
 		}
 		
         List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(new Long(constiId));
