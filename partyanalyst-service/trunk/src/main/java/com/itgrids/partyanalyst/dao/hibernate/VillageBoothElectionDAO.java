@@ -55,6 +55,17 @@ public class VillageBoothElectionDAO extends GenericDaoHibernate<VillageBoothEle
 				"group by model.boothConstituencyElection.boothConstituencyElectionId", electionId);
 	}
 	
+
+	
+	public List findTownshipWiseVotingTrendsForATehsil(Long tehsilId, String electionIds){
+		return getHibernateTemplate().find("select model.township.townshipId, model.township.townshipName, " +
+				" sum(model.boothConstituencyElection.boothResult.validVotes), model.boothConstituencyElection.constituencyElection.election.electionId" +
+				" from VillageBoothElection model where model.boothConstituencyElection.booth.tehsil.tehsilId = ? " +
+				" and model.boothConstituencyElection.constituencyElection.election.electionId in ("+electionIds+
+				" ) group by model.township.townshipId,model.boothConstituencyElection.constituencyElection.election.electionId",tehsilId);
+		}
+	
+
 	public List findPolledVotesInAllElectionsOfMandalByRevenueVillages(Long tehsilId){
 		return getHibernateTemplate().find("select model.boothConstituencyElection.constituencyElection.election.electionId," +
 				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType, " +

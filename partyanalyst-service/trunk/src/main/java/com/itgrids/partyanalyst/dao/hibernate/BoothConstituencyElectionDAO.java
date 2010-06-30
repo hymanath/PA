@@ -387,5 +387,12 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	}
 	
 	
+	@SuppressWarnings("unchecked")
+	public List getTotalVotesInAMandal(Long tehsilId,String electionIds){
+		return getHibernateTemplate().find(" select sum(model.boothResult.validVotes),model.constituencyElection.election.electionId,model.booth.tehsil.tehsilName from" +
+				" BoothConstituencyElection model where model.booth.tehsil.tehsilId = ? " +
+				" and model.constituencyElection.election.electionId in("+electionIds+			
+				" ) group by model.constituencyElection.election.electionId,model.booth.tehsil.tehsilId",tehsilId);
+	}
 	
 }
