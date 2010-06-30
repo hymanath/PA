@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
+
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -68,6 +70,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
+import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
 import com.itgrids.partyanalyst.model.AllianceGroup;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
@@ -4377,6 +4380,74 @@ public class StaticDataService implements IStaticDataService {
 		return winningCandidatesInBiElectionConst;
 	}
 	
+	
+	
+	/**
+	 * This method returns Township-Wise voting trends for a mandal for different electionIds.
+	 * @author ravykirany@gmail.com
+	 * @serialData 29-06-10
+	 * @param tehsilId
+	 * @param electionIds
+	 */
+	public List<TownshipBoothDetailsVO> getRevenueVillageVotingTrendsByMandalAndElectionIds(Long tehsilId,String electionIds){
+		Long totalValidVotesInMandal = 0l;
+		List mandalResult = new ArrayList<Long>(0);
+		List list = new ArrayList(0);
+		ResultStatus resultStatus = new ResultStatus();	
+		Map<Long,Long> electionIdsAndTotalVotes = new HashMap<Long,Long>(0);
+		List<TownshipBoothDetailsVO> mandal = new ArrayList<TownshipBoothDetailsVO>(0);
+		String mandalName="";
+		try{			
+			
+			//Making DAO call to get Total Valid Votes in mandal.
+			mandalResult = boothConstituencyElectionDAO.getTotalVotesInAMandal(tehsilId,electionIds);
+			for(int i=0;i<mandalResult.size();i++){
+				Object[] parms = (Object[])mandalResult.get(i);
+				electionIdsAndTotalVotes.put(Long.parseLong(parms[1].toString()),Long.parseLong(parms[0].toString()));
+				mandalName = parms[2].toString();
+			}			
+			
+			//Making DAO call to get All Total Valid Votes for every township in mandal.						
+			list = villageBoothElectionDAO.findTownshipWiseVotingTrendsForATehsil(tehsilId,electionIds);
+					
+			StringTokenizer st = new StringTokenizer(electionIds,","); 
+			
+			while(st.hasMoreElements()){
+				Long electionID = Long.parseLong(st.nextElement().toString());
+				TownshipBoothDetailsVO votesByElectionId = new TownshipBoothDetailsVO();	
+				List<TownshipBoothDetailsVO> township = new ArrayList<TownshipBoothDetailsVO>(0);
+				//Creating a list Iterator to set data in to DTO(Data Transfer Object).
+				ListIterator result = list.listIterator();
+				//Iterating the list Iterator for setting the data.
+				while(result.hasNext()){
+					Long electionId = electionID;				
+						Object[] parms = (Object[])result.next();
+						if(electionId==Long.parseLong(parms[3].toString())){
+							TownshipBoothDetailsVO votes = new TownshipBoothDetailsVO();
+							Long eachTownshipVotes = Long.parseLong(parms[2].toString());
+							votes.setTownshipID(Long.parseLong(parms[0].toString()));
+							votes.setTownshipName(parms[1].toString());
+							votes.setElectionId(Long.parseLong(parms[3].toString()));
+							votes.setValidVoters(eachTownshipVotes);
+							Double percentage = ((eachTownshipVotes*100.0)/electionIdsAndTotalVotes.get(Long.parseLong(parms[3].toString())));	
+							votes.setPercentageOfValidVotes(new BigDecimal(percentage).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+							township.add(votes);
+					}					
+				}
+				votesByElectionId.setTownshipVotingTrends(township);
+				votesByElectionId.setMandalId(tehsilId);	
+				votesByElectionId.setMandalName(mandalName);
+				mandal.add(votesByElectionId);
+			}		
+			return mandal;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return mandal;
+		}		
+	}
+	
+
 	public MandalVO findListOfElectionsAndPartiesInMandal(Long tehsilId){
 		MandalVO mandalVO = new MandalVO();
 		List<SelectOptionVO> parties = Collections.synchronizedList(getStaticParties());

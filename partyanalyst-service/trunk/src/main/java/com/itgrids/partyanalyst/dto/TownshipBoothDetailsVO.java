@@ -1,16 +1,31 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 public class TownshipBoothDetailsVO implements Serializable {
 	//0-townshipID, 1-townshipName, 2-totalVoters, 3-validVoters, 
 	//4-boothID, 5-partNo, 6-hamletId, 7-hamletName
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private Long townshipID;
 	private String townshipName;
-	private Long totalVoters;
 	private Long validVoters;
+	private String percentageOfValidVotes;
+	
+	private Long electionId;
+	private Long mandalId;
+	private String mandalName;
+	private Long totalValidVotersInMandal;
+	ResultStatus resultStatus;
+	private Long totalVoters;
+	
+	private List<TownshipBoothDetailsVO> townshipVotingTrends;
 	private Set<SelectOptionVO> booths;
 	/*private Long boothID;
 	private String partNo;*/
@@ -21,6 +36,63 @@ public class TownshipBoothDetailsVO implements Serializable {
 	
 	// logged in user voters total and percentage
 	private String userVotesInfo;
+
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+	public List<TownshipBoothDetailsVO> getTownshipVotingTrends() {
+		return townshipVotingTrends;
+	}
+
+	public void setTownshipVotingTrends(
+			List<TownshipBoothDetailsVO> townshipVotingTrends) {
+		this.townshipVotingTrends = townshipVotingTrends;
+	}
+
+	public String getPercentageOfValidVotes() {
+		return percentageOfValidVotes;
+	}
+
+	public void setPercentageOfValidVotes(String percentageOfValidVotes) {
+		this.percentageOfValidVotes = percentageOfValidVotes;
+	}
+
+	public Long getMandalId() {
+		return mandalId;
+	}
+
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+
+	public String getMandalName() {
+		return mandalName;
+	}
+
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+
+	public Long getTotalValidVotersInMandal() {
+		return totalValidVotersInMandal;
+	}
+
+	public void setTotalValidVotersInMandal(Long totalValidVotersInMandal) {
+		this.totalValidVotersInMandal = totalValidVotersInMandal;
+	}
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 
 	public Long getTownshipID() {
 		return townshipID;

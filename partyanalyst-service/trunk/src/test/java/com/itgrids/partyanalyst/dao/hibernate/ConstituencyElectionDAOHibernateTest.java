@@ -18,6 +18,9 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	//ConstituencyElection constElec = new ConstituencyElection(new Long(4),null,null,new Date(27-8-2009),null,null);
 	
+	public IConstituencyElectionDAO getConstituencyElectionDAO() {
+		return constituencyElectionDAO;
+	}
 	
 	public void setConstituencyElectionDAO(IConstituencyElectionDAO constituencyElectionDAO){
 		this.constituencyElectionDAO = constituencyElectionDAO;
@@ -110,6 +113,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		List list = constituencyElectionDAO.findTotalValidVotesInConstituencyElection(403l, "2009");
 		System.out.println(list.get(0));
 	}*/
+	
 	
 	/*public void testFindConstituenciesByElectionGroupByDistrict(){
 		List list = constituencyElectionDAO.findConstituenciesByElectionGroupByDistrict(10l);

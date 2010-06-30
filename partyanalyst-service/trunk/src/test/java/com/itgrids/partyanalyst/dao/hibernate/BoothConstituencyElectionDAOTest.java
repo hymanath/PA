@@ -156,5 +156,11 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		System.out.println(list.get(0));
 	}
 	
-	
+	public void testGet(){
+		List list = boothConstituencyElectionDAO.getTotalVotesInAMandal(141l,"3,4");
+		for(int i=0;i<list.size();i++){
+			Object[] parms = (Object[])list.get(i);
+			System.out.println(parms[0].toString()+"=========="+parms[1].toString()+"=========="+parms[2].toString());
+		}
+	}
 }
