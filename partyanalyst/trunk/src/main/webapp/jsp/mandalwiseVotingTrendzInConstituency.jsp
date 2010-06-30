@@ -707,7 +707,14 @@
 						}
 						str += '</tr>';
 					}
+					str += '<tr>';
+					str += '<th colspan="2">Total</th>';
+					for(var sum in results[i].biElectionResultsVO[j].partyResultsSum)
+					{
+						str += '<td>'+results[i].biElectionResultsVO[j].partyResultsSum[sum].votesEarned+'</td><td>'+results[i].biElectionResultsVO[j].partyResultsSum[sum].percentage+'</td>';
+					}
 					
+					str += '</tr>';
 					str += '</table>';
 					str += '</td>';
 					str += '</tr>';
