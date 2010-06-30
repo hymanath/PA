@@ -238,8 +238,8 @@ function buildBiElectionDistricts()
 	str += '<div id="alignMessageDiv" style="margin-top:7px;">';
 	str += '<table>';
 	str += '<tr>';
-	str += '<td> &nbsp; <span id="colorCode" style="color:red;margin-top:10px;"> * </span> ';
-	str += ' &nbsp; Election Commission ';
+	str += '<td valign="top"><span id="colorCode" style="color:red;margin-top:10px;"> * </span></td>';
+	str += '<td valign="top" style="letter-spacing:1px;word-spacing:3px;">Election Commission ';
 	str += 'has postponed elections ';
 	str += 'in these constituencies.</td>';
 	str += '</tr>';

@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Telangana Bi-Elections War - 2010</title>
+<title>Telangana Bi-Elections - 2010</title>
 
 
 <!-- YUI Dependency files (Start) -->
@@ -208,7 +208,7 @@
 		<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td><img border="none" src="images/icons/statePage/header_left.png"></td>
-				<td><div id="pageHeading"><span id="stateNameSpan"> Telangana Bi-Elections War - 2010</span></div></td>
+				<td><div id="pageHeading"><span id="stateNameSpan"> Telangana Bi-Elections - 2010</span></div></td>
 				<td><img border="none" src="images/icons/statePage/header_right.png"></td>
 			</tr>
 		</table>
