@@ -23,7 +23,7 @@ public class AlliancePartyResultsVO implements Serializable {
 	private Long groupId;
 	private String allianceGroupName;
 	private String chartForPartyResults;
-	
+	private List<SelectOptionVO> allianceParties; 
 	private List<PartyPositionsVO> partiesInAlliance;
 
 	//getters and setters
@@ -81,6 +81,14 @@ public class AlliancePartyResultsVO implements Serializable {
 
 	public void setGroupId(Long groupId) {
 		this.groupId = groupId;
+	}
+
+	public List<SelectOptionVO> getAllianceParties() {
+		return allianceParties;
+	}
+
+	public void setAllianceParties(List<SelectOptionVO> allianceParties) {
+		this.allianceParties = allianceParties;
 	}
 
 }

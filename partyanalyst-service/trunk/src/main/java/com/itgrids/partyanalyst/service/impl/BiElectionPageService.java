@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.AllBoothsResultsForAPartyInAMandal;
+import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultAllPartyVO;
@@ -57,7 +58,6 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyResultsComparator;
 import com.itgrids.partyanalyst.utils.PartyResultsVOComparator;
-import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 
 public class BiElectionPageService implements IBiElectionPageService {
 	
@@ -1701,8 +1701,12 @@ public class BiElectionPageService implements IBiElectionPageService {
 		for(String partyId:partyIds)
 			if("0".equals(partyId.trim()))
 				isOthersSelected = true;
-		StringBuilder hqlQuery1 =new StringBuilder();
 		
+		if(includeAlliance){
+			return alliancePartiesResultsByRevenueVillages(parties, elections, elecVillagePVMap, tehsilId); 
+		}
+		
+		StringBuilder hqlQuery1 =new StringBuilder();
 		hqlQuery1.append("and model.nomination.party.partyId in("+parties+")" )
 		.append("and model.boothConstituencyElection.constituencyElection.election.electionId in ("+elections+")");
 		hqlQuery1.append(" group by model.boothConstituencyElection.villageBoothElection.township.townshipId, ")
@@ -1713,36 +1717,84 @@ public class BiElectionPageService implements IBiElectionPageService {
 		
 		villagesWiseResults = candidateBoothResultDAO.
 			getAllPartiesResultsInAllElectionsByRevenueVillgesInMandal(hqlQuery1.toString(), tehsilId);
-		getPartyResultsListByRevenueVillages(villagesWiseResults, partiesResultsVO, elecVillagePVMap, false);
+		getPartyResultsListByRevenueVillages(villagesWiseResults, partiesResultsVO, elecVillagePVMap, false, null);
 		
-		if(isOthersSelected){
-			StringBuilder exculededPartyIds = new StringBuilder();
-			StringBuilder hqlQuery2 = new StringBuilder();
-			MandalVO mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(tehsilId);
-			List<SelectOptionVO> partiesExcluded = mandalVO.getPartiesInMandal();
-
-			for(SelectOptionVO party:partiesExcluded)
-				exculededPartyIds.append(","+party.getId());
-			
-			hqlQuery2.append("and model.nomination.party.partyId not in("+exculededPartyIds.substring(1)+")" )
-			.append("and model.boothConstituencyElection.constituencyElection.election.electionId in ("+elections+")");
-			hqlQuery2.append(" group by model.boothConstituencyElection.villageBoothElection.township.townshipId, ")
-			.append("model.boothConstituencyElection.constituencyElection.election.electionId ");
-			
-			villagesWiseResults = candidateBoothResultDAO.
-			getAllPartiesResultsInAllElectionsByRevenueVillgesInMandal(hqlQuery2.toString(), tehsilId);			
-			getPartyResultsListByRevenueVillages(villagesWiseResults, partiesResultsVO, elecVillagePVMap, true);
-		}
+		if(isOthersSelected)
+			otherPartiesResultsByRevenueVillages(elections, elecVillagePVMap,partiesResultsVO, tehsilId);
 		
 		return partiesResultsVO;
 	}
 	
+	private void otherPartiesResultsByRevenueVillages(String elections, Map<String, Long> elecVillagePVMap,List<PartyResultVO> partiesResultsVO, Long tehsilId) {
+		StringBuilder exculededPartyIds = new StringBuilder();
+		StringBuilder hqlQuery2 = new StringBuilder();
+		MandalVO mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(tehsilId);
+		List<SelectOptionVO> partiesExcluded = mandalVO.getPartiesInMandal();
+
+		for(SelectOptionVO party:partiesExcluded)
+			exculededPartyIds.append(","+party.getId());
+		
+		hqlQuery2.append("and model.nomination.party.partyId not in("+exculededPartyIds.substring(1)+")" )
+		.append("and model.boothConstituencyElection.constituencyElection.election.electionId in ("+elections+")");
+		hqlQuery2.append(" group by model.boothConstituencyElection.villageBoothElection.township.townshipId, ")
+		.append("model.boothConstituencyElection.constituencyElection.election.electionId ");
+		
+		List villagesWiseResults = candidateBoothResultDAO.
+		getAllPartiesResultsInAllElectionsByRevenueVillgesInMandal(hqlQuery2.toString(), tehsilId);			
+		getPartyResultsListByRevenueVillages(villagesWiseResults, partiesResultsVO, elecVillagePVMap, true, null);
+	}
+	
+	private List<PartyResultVO> alliancePartiesResultsByRevenueVillages(
+			String parties, String elections, Map<String, Long> elecVillagePVMap, Long tehsilId) {
+		List<PartyResultVO> partiesResultsVO = new ArrayList<PartyResultVO>();
+		
+		String[] electionsArr = StringUtils.split(elections,",");
+		String[] partiesArr = StringUtils.split(parties,",");
+		
+		StringBuilder hqlQuery = null;
+		AlliancePartyResultsVO allianceGroup = null;
+		List villagesWiseResults = null;
+		
+		for(String elecId:electionsArr)
+			for(String partyId:partiesArr){
+				String commaSeperatedPartyIds;
+				allianceGroup = staticDataService.getAlliancePartiesByElectionAndParty(new Long(elecId.trim()), new Long(partyId.trim()));
+				if(allianceGroup == null)
+					commaSeperatedPartyIds = partyId;
+				else{
+					StringBuilder partyIds = new StringBuilder();
+					for(SelectOptionVO party:allianceGroup.getAllianceParties())
+						partyIds.append(","+party.getId());
+					commaSeperatedPartyIds = partyIds.substring(1).toString();
+				}
+					
+				if("0".equals(commaSeperatedPartyIds.trim())){
+					otherPartiesResultsByRevenueVillages(elections, elecVillagePVMap, partiesResultsVO, tehsilId);
+					continue;
+				}
+				
+				hqlQuery = new StringBuilder();
+				hqlQuery.append("and model.nomination.party.partyId in("+commaSeperatedPartyIds+")" )
+				.append("and model.boothConstituencyElection.constituencyElection.election.electionId ="+elecId);
+				hqlQuery.append(" group by model.boothConstituencyElection.villageBoothElection.township.townshipId, ")
+				.append("model.boothConstituencyElection.constituencyElection.election.electionId ");
+				
+				villagesWiseResults = candidateBoothResultDAO.
+				getAllPartiesResultsInAllElectionsByRevenueVillgesInMandal(hqlQuery.toString(), tehsilId);
+				getPartyResultsListByRevenueVillages(villagesWiseResults, partiesResultsVO, elecVillagePVMap, false, allianceGroup);
+			}
+		
+		return partiesResultsVO;
+	}
+
 	private void getPartyResultsListByRevenueVillages(List villagesWiseResults, List<PartyResultVO> partiesResultsVO, 
-			Map<String, Long> elecVillagePVMap, Boolean includeOthers){
+			Map<String, Long> elecVillagePVMap, Boolean includeOthers, AlliancePartyResultsVO allianceGroup){
 		PartyResultVO partyResultVO = null;
 		for(Object[] values:(List<Object[]>)villagesWiseResults){
 			partyResultVO = new PartyResultVO();
-			if(includeOthers)
+			if(allianceGroup != null)
+				partyResultVO.setPartyName(allianceGroup.getAllianceGroupName()+" IN "+values[2]+" "+values[1]);
+			else if(includeOthers)
 				partyResultVO.setPartyName("Others IN "+values[2]+" "+values[1]);
 			else
 				partyResultVO.setPartyName(values[6]+" IN "+values[2]+" "+values[1]);

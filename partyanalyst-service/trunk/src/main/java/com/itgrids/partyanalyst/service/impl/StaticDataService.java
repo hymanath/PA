@@ -445,6 +445,22 @@ public class StaticDataService implements IStaticDataService {
 	public List<State> getAllStates() {
 		return stateDAO.getAll();
 	}
+	
+	//Returns Null If No alliance Exists For Party
+	public AlliancePartyResultsVO getAlliancePartiesByElectionAndParty(Long electionId, Long partyId){
+		AlliancePartyResultsVO alliancePartiesVO = new AlliancePartyResultsVO();
+		List allianceParites = allianceGroupDAO.findAlliancePartiesByElectionAndParty(electionId, partyId);
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		if(allianceParites.size() == 0)
+			return null;
+		Object[] values = (Object[])allianceParites.get(0);
+		alliancePartiesVO.setGroupId((Long)values[0]);
+		alliancePartiesVO.setAllianceGroupName(values[1].toString());
+		for(Object[] dbValues:(List<Object[]>)allianceParites)
+			parties.add(new SelectOptionVO((Long)dbValues[2], dbValues[3].toString()));
+		alliancePartiesVO.setAllianceParties(parties);
+		return alliancePartiesVO;
+	}
 
 	//Need refactoring the code and unit testing- Ashok	
 	public List<SelectOptionVO> getAlliancePartiesAsVO(String electionYear, Long electionType, Long partyId) {
@@ -1044,33 +1060,6 @@ public class StaticDataService implements IStaticDataService {
 	return partyElectionDistrictResultFinal;
 	}
 
-	//Modified By Siva For Parliament Implementation Start
-	
-	/*public List<DistrictWisePartyResultVO> getDistrictWisePartyElectionResults(String electionYear, Long electionType,Long electionId,Long partyId,Boolean hasAlliances){
-		List<DistrictWisePartyResultVO> districtWisePartyResultVOList = null;
-		Map<Long,List<PartyResultVO>> districtWiseResultsMap = new HashMap<Long,List<PartyResultVO>>();
-	
-		log.debug("Entered Into getDistrictWisePartyElectionResults Method .....");
-		List<Party> alliancParties = null;
-		if(hasAlliances){
-			alliancParties = getAllianceParties(electionYear,electionType,partyId);
-			log.debug("Has Alliances .....");
-			if(alliancParties != null){
-				districtWiseResultsMap = getDistrictWisePartyElectionResultWithAllianc(electionYear,electionId,partyId,alliancParties);
-				if(districtWiseResultsMap != null)
-				districtWisePartyResultVOList = getResultsFromMap(districtWiseResultsMap,electionId);
-			}
-		}
-		if(!hasAlliances || alliancParties == null){
-			log.debug("Has No Alliances .....");
-			districtWiseResultsMap = getDistrictWisePartyElectionResultWithoutAllianc(electionYear,electionId,partyId);
-			if(districtWiseResultsMap != null)
-			districtWisePartyResultVOList = getResultsFromMap(districtWiseResultsMap,electionId);
-		}
-		
-		return districtWisePartyResultVOList;
-	}*/
-	
 	public List<DistrictWisePartyResultVO> getDistrictWisePartyElectionResults(String electionType,
 			Long electionId,String partyIds){
 		Map<Long, ElectionInfoVO> constituenciesInDistOrState = new LinkedHashMap<Long, ElectionInfoVO>();

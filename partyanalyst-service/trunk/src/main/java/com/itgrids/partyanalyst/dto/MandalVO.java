@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.util.List;
 import java.util.Set;
 
+
 public class MandalVO {
 
 	private static final long serialVersionUID = 1L;
@@ -46,6 +47,5 @@ public class MandalVO {
 	public void setPartiesInMandal(List<SelectOptionVO> partiesInMandal) {
 		this.partiesInMandal = partiesInMandal;
 	}
-	
-	
+
 }

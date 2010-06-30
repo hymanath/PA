@@ -40,4 +40,6 @@ IElectionAllianceDAO {
 				"model.election.electionId in ("+electionIds+")");
 	}
 	
+	
+	
 }

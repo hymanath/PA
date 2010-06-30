@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 import java.util.Set;
 
+import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
@@ -37,6 +38,7 @@ public interface IStaticDataService {
 	public List<SelectOptionVO> getDistricts(Long stateId);
 	public List<State> getAllStates();
 	public List<SelectOptionVO> getAlliancePartiesAsVO(String electionYear, Long electionType, Long partyId);
+	public AlliancePartyResultsVO getAlliancePartiesByElectionAndParty(Long electionId, Long partyId);
 	public List<Party> getAllianceParties(String electionYear, Long electionType, Long partyId);
 	public Long getGroupIdIfPartyHasAlliances(Long partyId, String electionYear, Long electionType);
 	public boolean hasAlliances(String year, Long electionType, Long partyId);
@@ -67,21 +69,13 @@ public interface IStaticDataService {
 	public PartyElectionStateResult savePartyElectionResultForAPartyForAParliamentElectionStateLevel(Long electionId,Long partyId,Long stateId);
 	
 	public PartyElectionResult savePartyElectionResultForAPartyForAElection(Long electionId,Long partyId);
-	
-	
-	
-	//Modified By Siva Start
-	//public List<DistrictWisePartyResultVO> getDistrictWisePartyElectionResults(String electionYear, Long electionType,Long electionId,Long partyId,Boolean hasAlliances);
-	//public PartyElectionDistrictResult getPartyElectionResultsForAPartyDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId);
-	//public PartyElectionDistrictResult savePartyElectionResultForAPartyForAElectionDistrictLevel(Long electionId,Long partyId,Long stateId,Long districtId);
-	
+		
 	public PartyElectionDistrictResult savePartyElectionResultForAPartyForAElectionDistrictLevel(Long electionId,Long partyId, Long districtId);
 	
 	public List<DistrictWisePartyResultVO> getDistrictWisePartyElectionResults(String electionType,	Long electionId, String partyIds);
 	
 	public PartyElectionDistrictResult getPartyElectionResultsForAPartyDistrictLevel(Long electionId, Long partyId, Long districtId);
-	//Modified By Siva End	
-	
+
 	public CandidateDetailsVO getCompleteElectionResultsForAConstituency(Long constituencyId,Long electionId,Long partyId);
 	
 	public Set<SelectOptionVO> getAllPartiesParticipatedInMandal(Long tehsilId);
