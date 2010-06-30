@@ -25,6 +25,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private HttpServletRequest request;
 	private ServletContext context;
 	private String parties;
+	private String includeAlliance;
 	private String elections;
 	private MandalVO mandalVO;
 	private String tehsilId;
@@ -100,11 +101,19 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		this.tehsilName = tehsilName;
 	}
 
+	public String getIncludeAlliance() {
+		return includeAlliance;
+	}
+
+	public void setIncludeAlliance(String includeAlliance) {
+		this.includeAlliance = includeAlliance;
+	}
+
 	public String execute(){
 		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(new Long(tehsilId));
 		if(parties != null){
 			List<PartyResultVO> partiesResults = biElectionPageService.
-			findRevenueVillageswiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, null);
+			findRevenueVillageswiseResultsInElectionsOfMandal(new Long(tehsilId), parties, elections, new Boolean(includeAlliance));
 			
 			chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+".png";
 	        String chartLocation = context.getRealPath("/")+ "charts\\" + chartPath;

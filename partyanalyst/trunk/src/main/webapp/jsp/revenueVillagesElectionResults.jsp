@@ -17,8 +17,8 @@
 			<table>
 				<tr><td><s:checkboxlist list="mandalVO.partiesInMandal" listKey="id" listValue="name" name="parties" label="Parties:"/></td></tr>
 				<tr><td><s:checkboxlist list="mandalVO.electionsInMandal" listKey="id" listValue="name" name="elections" label="Elections:"/></td></tr>
-				<tr><td><input type="hidden" name="tehsilId" value="${tehsilId}"/></td><td><input type="hidden" name="tehsilName" value="${tehsilName}"/></td></tr>
-				<tr><td align="center"><s:submit label="View Chart" /></td></tr>
+				<tr><td><input type="hidden" name="tehsilId" value="${tehsilId}"/></td><td><input type="hidden" name="tehsilName" value="${tehsilName}"/></td><td align="center"><s:checkbox theme="simple" id="allianceCheck" name="includeAlliance" value="hasAllianceParties"></s:checkbox><b> Include Aliance Parties</b></td></tr>
+				<tr><td colspan="2" align="center"><s:submit label="View Chart" /></td></tr>
 			</table>
 		</s:form>
 	</c:if>
