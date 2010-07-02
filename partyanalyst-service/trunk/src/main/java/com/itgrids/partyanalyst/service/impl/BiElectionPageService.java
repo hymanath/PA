@@ -1549,7 +1549,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 																
 								for(PartyResultsVO partyResultsVO: partyResults)
 								{
-									if(partyResultsVO.getPartyName().equals(IConstants.TDP) || partyResultsVO.getPartyName().equals(IConstants.BJP) || partyResultsVO.getPartyName().equals(IConstants.INC) || partyResultsVO.getPartyName().equals(IConstants.TRS) )
+									if(partyResultsVO.getPartyName().equals(IConstants.TDP) || partyResultsVO.getPartyName().equals(IConstants.BJP) || partyResultsVO.getPartyName().equals(IConstants.INC) || partyResultsVO.getPartyName().equals(IConstants.TRS) 
+											|| partyResultsVO.getPartyName().equals(IConstants.PRP))
 									{
 										requiredPartiesResults.add(partyResultsVO);
 										
@@ -1737,7 +1738,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		
 		for(SelectOptionVO party:parties)
 		{
-			if(party.getName().equals(IConstants.TDP) || party.getName().equals(IConstants.INC) || party.getName().equals(IConstants.BJP) || party.getName().equals(IConstants.TRS))
+			if(party.getName().equals(IConstants.TDP) || party.getName().equals(IConstants.INC) || party.getName().equals(IConstants.BJP) || party.getName().equals(IConstants.TRS) || party.getName().equals(IConstants.PRP))
 				partiesList.add(party);
 		}
 		int listSize = partiesList.size();
