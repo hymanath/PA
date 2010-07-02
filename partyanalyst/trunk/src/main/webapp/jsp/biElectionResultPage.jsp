@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Telangana Bi-Elections - 2010</title>
+<title>Telangana Bye-Elections - 2010</title>
 
 
 <!-- YUI Dependency files (Start) -->
@@ -208,7 +208,7 @@
 		<table border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td><img border="none" src="images/icons/statePage/header_left.png"></td>
-				<td><div id="pageHeading"><span id="stateNameSpan"> Telangana Bi-Elections - 2010</span></div></td>
+				<td><div id="pageHeading"><span id="stateNameSpan"> Telangana Bye-Elections - 2010</span></div></td>
 				<td><img border="none" src="images/icons/statePage/header_right.png"></td>
 			</tr>
 		</table>
@@ -231,7 +231,7 @@
 					<table width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;">
 						<tr>
 							<td><img src="images/icons/districtPage/header_left.gif"/></td>
-							<td width="100%"><div class="districtPageRoundedHeaders_center"><span> Bi Election Districts </span></div></td>
+							<td width="100%"><div class="districtPageRoundedHeaders_center"><span> Bye Election Districts </span></div></td>
 							<td><img src="images/icons/districtPage/header_right.gif"/></td>
 						</tr>
 					</table>
@@ -307,7 +307,7 @@
 							<td width="30px"><img src="images/icons/districtPage/header_left.gif"/></td>
 							<td>	
 								<div id="mpInfoDivHead" class="districtPageRoundedHeaders_center" style="width:863px;">
-									<span>Bi-Election Constituency Details</span>
+									<span>Bye-Election Constituency Details</span>
 								</div>
 							</td>
 							<td><img src="images/icons/districtPage/header_right.gif"/></td>
@@ -397,7 +397,7 @@ biElectionObj.staticParties.push(partyObj);
 				animation: { speed: 1.0 },
 				autoPlayInterval: 2000
 			});
-	allianceCarousel.registerPagination('<span class="carouselTitleSpan">Partys Performance In Bi-Election Constituencies</span>'); 
+	allianceCarousel.registerPagination('<span class="carouselTitleSpan">Parties Performance In Bye-Election Constituencies</span>'); 
 	allianceCarousel.render(); 
 	allianceCarousel.show();
 	</script>
