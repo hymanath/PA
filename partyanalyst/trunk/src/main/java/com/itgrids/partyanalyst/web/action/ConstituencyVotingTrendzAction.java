@@ -514,7 +514,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		}
 		
 		if(chartType.equalsIgnoreCase("allparties")){
-			ChartProducer.createProblemsPieChart(chartTitle, dataset, allPartychartPath , colors,true,300,280);
+			ChartProducer.createProblemsPieChart(chartTitle, dataset, allPartychartPath , colors,true,250,250);
 			localChart = allPartychartName;
 		}
 			
@@ -522,7 +522,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			BigDecimal	otherPartyVotes = new BigDecimal(otherPartyVotesPercent).setScale(2, BigDecimal.ROUND_HALF_UP);			
 			dataset.setValue("Others"+" ["+otherPartyVotes.toString()+"%]",otherPartyVotes);
 			colors[j] = IConstants.DEFAULT_COLOR;
-			ChartProducer.createProblemsPieChart(chartTitle, dataset, chartPath , colors,true,300,280);
+			ChartProducer.createProblemsPieChart(chartTitle, dataset, chartPath , colors,true,250,250);
 			localChart = chartName;
 		}
 		electionTypeChartVO.setChartName(localChart);
