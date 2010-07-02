@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.dto.AlliancePartiesInElection;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
@@ -4471,6 +4472,46 @@ public class StaticDataService implements IStaticDataService {
 		Long stateId =1l;
 		List result = electionDAO.findElectionIdByElectionTypeAndYear(IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,stateId);
 		return result.get(0).toString();
+	}
+	
+	public List<AlliancePartiesInElection> getAlliancGroupAndPartiesInAnElection(String electionType,String electionYear){
+		
+		List<AlliancePartiesInElection> partiesInAllianc = null;
+		if(electionType != null && electionYear != null){
+			partiesInAllianc = new ArrayList<AlliancePartiesInElection>();
+			
+			List groupsList = electionAllianceDAO.findAllGroupsForAnElection(electionType, electionYear);
+			if(groupsList != null && groupsList.size() > 0){
+				for(int i=0;i<groupsList.size();i++){
+				Object[] params = (Object[])groupsList.get(i);
+				
+				AlliancePartiesInElection allianParty = new AlliancePartiesInElection();
+				allianParty.setGroupId((Long)params[1]);
+				allianParty.setGroupName((String)params[0]);
+				List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>();
+				List alliPartys = allianceGroupDAO.findPartiesByGroup((Long)params[1]);
+				if(alliPartys != null && alliPartys.size() > 0){
+					
+					for(int j=0;j<alliPartys.size();j++){
+						Object[] partyParams = (Object[])alliPartys.get(j);
+						SelectOptionVO party = new SelectOptionVO();
+						
+						party.setId((Long)partyParams[0]);
+						party.setName((String)partyParams[1]);
+						partiesList.add(party);
+					}
+				}
+				
+				if(alliPartys != null && alliPartys.size() > 0){
+					allianParty.setParties(partiesList);
+					partiesInAllianc.add(allianParty);
+				}
+				}
+				
+			}
+		}
+			
+	 return partiesInAllianc;
 	}
 }
 
