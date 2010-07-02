@@ -4,18 +4,21 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -107,7 +110,7 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]);
 	}*/
-	
+	/*
 	/*public void testFindAssemblyWiseParliamentResultsForParties(){
 		long start = System.nanoTime();
 		List list = candidateBoothResultDAO.findAssemblyWiseParliamentResultsForParties(231l, 403l, "2009");
@@ -147,9 +150,123 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			
 		}
 		System.out.println(list.size());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetElectionResultsInAMandalForAllConstituencies(){
+		List resultsList = candidateBoothResultDAO.getElectionResultsInAMandalForAllParties(new Long(90),"Assembly","2004");
+		System.out.println("Size :" + resultsList.size());
+		if(resultsList != null && resultsList.size() > 0){
+			
+			for(int i=0;i<resultsList.size();i++){
+				
+				Object[] params = (Object[])resultsList.get(i);
+				System.out.print("   Constituency :" + (String)params[6]);
+				System.out.print("   Party :" + (String)params[1]);
+				System.out.print("   Votes Earned :" + (Long)params[2]);
+				System.out.print("   Valid Votes :" + (Long)params[3]);
+				System.out.print("   Rank :" + (Long)params[4]);
+								
+				System.out.println("....");
+			}
+			
+		}
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetParties(){
+		
+				
+		List partys = candidateBoothResultDAO.getAllPartiesPariticipatedInAConstituencyElection(new Long(80));
+		
+		
+		if(partys != null && partys.size() > 0){
+			
+			for(int i=0;i<partys.size();i++){
+			Object params = (Object)partys.get(i);
+			Party party = (Party)params;
+			
+			System.out.println(" Party :" + party.getShortName());
+			}
+		}
 	}*/
 	
+	/*
+	@SuppressWarnings("unchecked")
+	//Test case for getBoothWisePartyResultsInAMandal() DAO method
+	@Test
+	public void testGetBoothWisePartyResultsInAMandal(){
+		
+		//List partyResults = candidateBoothResultDAO.getBoothWisePartyResultsInAMandalByPartyRank(new Long(843),"2004","Assembly",new Long(2));
+		List partyResults = candidateBoothResultDAO.getBoothWisePartyResultsInAMandal(new Long(843),new Long(24),"2004");
+		
+		if(partyResults != null && partyResults.size() > 0){
+			System.out.println(" Results Size :" + partyResults.size());
+		
+			/*for(int i=0;i<partyResults.size();i++){
+				Object[] params = (Object[])partyResults.get(i);
+				Booth booth = (Booth)params[0];
+				 //System.out.println(" Booth Details .....");
+				System.out.println(" ..." + i);
+				 //System.out.print("   " + booth.getPartNo());
+				 System.out.print("   " + booth.getLocation());
+				 				 
+				 System.out.print( " V.E " + (Long)params[1]);
+				/* System.out.print( " V.V " + (Long)params[2]);
+				 System.out.print( " CName " + (String)params[3]);
+				 System.out.print( " Election Type :" + (String)params[4]);
+			}*/
+			/*
+			Iterator listIter = partyResults.listIterator();
+			int i=0;
+			while(listIter.hasNext()){
+				Object[] params = (Object[])listIter.next();
+				Booth booth = (Booth)params[0];
+				System.out.println( " .... " + (++i));
+				System.out.print(" Booth " + booth.getLocation());
+				System.out.print(" V.E " + (Long)params[1]);
+				System.out.print(" V.V " + (Long)params[2]);
+				System.out.print(" Type " + (String)params[7]);
+				
+				System.out.print(" CC :" + (String)params[4]);
+			}
+			
+			Map<String,String> myMap = new HashMap<String,String>();
+			myMap.put("Assembly", "One");
+			myMap.put("PArliament", "Two");
+			
+			Set<String> keySet = myMap.keySet();
+			for(String val:keySet){
+			System.out.println(" 1 -- " + val);
+			}
+			
+		}
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetPartyMandalWiseResults(){
+		
+		List resultsList = candidateBoothResultDAO.getPartyResultsInAMandalForAnElection(new Long(141),new Long(21),new Long(24),"2009");
+		
+		System.out.println(" Size :" + resultsList.size());
+		Iterator listIterator = resultsList.listIterator();
+		while(listIterator.hasNext()){
+			Object[] params = (Object[])listIterator.next();
+			System.out.println( " V.E :" + params[0]);
+			System.out.println( " V.V :" + params[1]);
+			System.out.println( " T.E :" + params[2]);
+			System.out.println( " T.B :" + params[3]);
+		}
+	}
+	
+	
+	
 	/*public void testGetBoothWisePartyResultsInAMandalByConstituencyId()
+
 	{
 		List list = candidateBoothResultDAO.getBoothWisePartyResultsInAMandalByConstituencyId(141L, 61L, 388L, "2009", IConstants.PARLIAMENT_ELECTION_TYPE);
 		System.out.println(list.size());
@@ -167,5 +284,6 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
+
 
 }
