@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -10,9 +11,12 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -20,6 +24,11 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class MandalRevenueVillagesElecAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private IStaticDataService staticDataService;
 	private IBiElectionPageService biElectionPageService;
 	private HttpServletRequest request;
@@ -31,7 +40,17 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	private String tehsilId;
 	private String tehsilName;
 	private String chartPath; 
+	private List<TownshipBoothDetailsVO> townshipBoothDetailsVO;
 	
+	public List<TownshipBoothDetailsVO> getTownshipBoothDetailsVO() {
+		return townshipBoothDetailsVO;
+	}
+
+	public void setTownshipBoothDetailsVO(
+			List<TownshipBoothDetailsVO> townshipBoothDetailsVO) {
+		this.townshipBoothDetailsVO = townshipBoothDetailsVO;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -120,7 +139,40 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 	        if(partiesResults.size() > 0)
 	        	ChartProducer.createLineChart("", "Elections", "Percentages", createDataset(partiesResults), chartLocation,300,900, null );
 		}
+		
+		if(elections!=null){
+			StringTokenizer st = new StringTokenizer(elections," ",false);
+			String electionsIDS="";
+			while (st.hasMoreElements()) electionsIDS += st.nextElement();
+			  
+			createPieChartsForTownshipVotingTrends(new Long(tehsilId),electionsIDS);			
+		}
 		return SUCCESS;
+	}
+	
+	private void createPieChartsForTownshipVotingTrends(Long tehsilId,String electionIds){
+		townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionIds);		
+	
+		for(int i=0;i<townshipBoothDetailsVO.size();i++){
+			String chartName = townshipBoothDetailsVO.get(i).getChartName();
+			String chartTitle = townshipBoothDetailsVO.get(i).getChartTitle();
+			String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+				
+			ChartProducer.createProblemsPieChart(chartTitle, createPieDatasetForVoters(townshipBoothDetailsVO,i), chartPath , null,true,300,280);
+		}	
+	}
+	
+	private DefaultPieDataset createPieDatasetForVoters(final List<TownshipBoothDetailsVO> townshipBoothDetailsVO,int k) {
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		BigDecimal percentage;
+		
+		for(int i=k;i<=k;i++){
+			for(int j=0;j<townshipBoothDetailsVO.get(i).getTownshipVotingTrends().size();j++){
+				percentage = new BigDecimal(townshipBoothDetailsVO.get(i).getTownshipVotingTrends().get(j).getPercentageOfValidVotes()).setScale(2,BigDecimal.ROUND_HALF_UP);
+				dataset.setValue(townshipBoothDetailsVO.get(i).getTownshipVotingTrends().get(j).getTownshipName()+" ["+percentage.toString()+"%]",percentage);	
+			}			
+		}			
+		return dataset;
 	}
 	
 	private CategoryDataset createDataset(List<PartyResultVO> partiesResults) {
