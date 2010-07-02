@@ -14,4 +14,7 @@ public interface IAllianceGroupDAO extends GenericDao<AllianceGroup, Long>  {
 	public List findPartysByGroupId(Long groupId);
 	
 	public List findAlliancePartiesByElectionAndParty(Long electionId, Long partyId);
+	
+	@SuppressWarnings("unchecked")
+	public List findPartiesByGroup(Long groupId);
 }
