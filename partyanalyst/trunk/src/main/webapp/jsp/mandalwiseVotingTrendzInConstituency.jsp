@@ -723,7 +723,7 @@
 					str += '<th colspan="2">Total</th>';
 					for(var sum in results[i].biElectionResultsVO[j].partyResultsSum)
 					{
-						str += '<td>'+results[i].biElectionResultsVO[j].partyResultsSum[sum].votesEarned+'</td><td>'+results[i].biElectionResultsVO[j].partyResultsSum[sum].percentage+'</td>';
+						str += '<td><font style="color:GoldenRod;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].votesEarned+'</font></td><td><font style="color:GoldenRod;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].percentage+'</font></td>';
 					}
 					
 					str += '</tr>';
