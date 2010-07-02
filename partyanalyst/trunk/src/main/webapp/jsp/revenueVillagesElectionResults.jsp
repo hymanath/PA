@@ -54,7 +54,19 @@
 
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>	
 	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
-	
+	<style type="text/css">
+		.button 
+		{
+			background-attachment:scroll;
+			background-color:#335291;
+			background-image:none;
+			background-position:0 0;
+			background-repeat:repeat;
+			color:#FFFFFF;
+			width:113px;
+			margin-left:-62px;
+		}
+	</style>
 	<script type="text/javascript">
 	
 		function buildVotesPolledDataTable() {
@@ -86,15 +98,15 @@
 	</script>
 </head>
 <body>
-	<div style="color:#24455E;font-size:17px;font-weight:bold;margin-bottom:10px;margin-top:23px;text-decoration:underline;">All Parties Trends In All Elections Of ${tehsilName } Mandal</div>
+	<div style="color:#247CD4;font-size:19px;font-weight:bold;margin-bottom:23px;margin-top:36px;text-align:center;">All Parties Trends In All Elections Of ${tehsilName } Mandal</div>
 	<div>
 	<c:if test="${! empty mandalVO}">
 		<s:form action="mandalRevenueVillagesElecViewAction" name="MandalRevenueVillagesElecViewAction" method="GET" enctype="multipart/form-data">
-			<table>
+			<table style="margin-left:60px;">
 				<tr><td><s:checkboxlist list="mandalVO.partiesInMandal" listKey="id" listValue="name" name="parties" label="Parties:"/></td></tr>
 				<tr><td><s:checkboxlist list="mandalVO.electionsInMandal" listKey="id" listValue="name" name="elections" label="Elections:"/></td></tr>
 				<tr><td><input type="hidden" name="tehsilId" value="${tehsilId}"/></td><td><input type="hidden" name="tehsilName" value="${tehsilName}"/></td><td align="center"><s:checkbox theme="simple" id="allianceCheck" name="includeAlliance" value="hasAllianceParties"></s:checkbox><b> Include Aliance Parties</b></td></tr>
-				<tr><td colspan="2" align="center"><s:submit label="View Chart" /></td></tr>
+				<tr><td colspan="2" align="center"><s:submit cssClass="button" label="View Chart" /></td></tr>
 			</table>
 		</s:form>
 	</c:if>
