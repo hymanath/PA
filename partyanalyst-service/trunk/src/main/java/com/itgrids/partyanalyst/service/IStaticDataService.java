@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 import java.util.Set;
 
+import com.itgrids.partyanalyst.dto.AlliancePartiesInElection;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
@@ -56,7 +57,9 @@ public interface IStaticDataService {
 	
 	public ConstituenciesStatusVO getConstituenciesForDistrict(Long districtId,Long electionYear, String electionType);
 	
-	public List<MandalVO>	getMandalsForDistrict(Long districtId);
+	public List<AlliancePartiesInElection> getAlliancGroupAndPartiesInAnElection(String electionType,String electionYear);
+	
+	public List<MandalVO> getMandalsForDistrict(Long districtId);
 	
 	public ConstituenciesStatusVO getConstituenciesWinnerInfo(Long districtId);
 	
