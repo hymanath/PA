@@ -4410,12 +4410,14 @@ public class StaticDataService implements IStaticDataService {
 				List<TownshipBoothDetailsVO> township = new ArrayList<TownshipBoothDetailsVO>(0);
 				//Creating a list Iterator to set data in to DTO(Data Transfer Object).
 				ListIterator result = list.listIterator();
+				Long count=1l;
 				//Iterating the list Iterator for setting the data.
 				while(result.hasNext()){
 					Long electionId = electionID;				
 						Object[] parms = (Object[])result.next();
 						if(electionId==Long.parseLong(parms[3].toString())){
 							TownshipBoothDetailsVO votes = new TownshipBoothDetailsVO();
+							votes.setSNO(count++);
 							Long eachTownshipVotes = Long.parseLong(parms[2].toString());
 							votes.setTownshipID(Long.parseLong(parms[0].toString()));
 							votes.setTownshipName(parms[1].toString());
