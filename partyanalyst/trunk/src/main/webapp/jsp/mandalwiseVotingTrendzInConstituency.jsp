@@ -183,7 +183,7 @@
 										else if(jsObj.task == "getZptcElectionResults")
 										{		
 											if(myResults!= null &&  myResults.length>0){
-												buildZptcResults(myResults);	
+												buildZptcResults(myResults,jsObj);	
 											}else{
 												hideZptcDiv();			
 											}	
@@ -191,7 +191,7 @@
 										else if(jsObj.task == "getMptcElectionResults")
 										{		
 											if(myResults!= null &&  myResults.length>0){
-												buildMptcResults(myResults);
+												buildMptcResults(myResults, jsObj);
 											}else{
 												hideMptcDiv();			
 											}	
@@ -562,7 +562,8 @@
 					constituencyId: constituencyIdGlobal,
 					partiesArr: selectedPartiesIds,
 					electionTypeArr: selectedElectionTypesYears,
-					task: "constituencyResults" 
+					task: "constituencyResults",
+					allainces: allainceVal  
 					};
 			
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -735,19 +736,20 @@
 			getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
 			getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
 		}
-		function buildZptcResults(results){
+		function buildZptcResults(results, jsObj){
+			
 			assignToPartyDataArray = new Array();
 			var candLink = document.getElementById("zptcCandidateLink");
-			var electionIdEl = document.getElementById("staticGrpSelectBox");
-			var selectedYearVal = electionIdEl.options[electionIdEl.selectedIndex].text;
+			
+			var selectedYearVal = jsObj.electionYear;
 			var chartDivEl = document.getElementById("zptcChartDiv");
 			var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 			candLink.innerHTML = linkRef;
 			totalZptcSeats = results[0].totalSeats;		//	var totalZptcSeats,totalMptcSeats;
+			
 			if(selectedYearVal == '2006')
-			{
-				var chartStr = '';
-				
+			{					
+				var chartStr = '';				
 				chartStr+='<img src="charts/'+zptcChart2006+'"/>';
 				chartDivEl.innerHTML = chartStr;
 			} else if(selectedYearVal == '2001')
@@ -785,10 +787,10 @@
 		    initializeResultsTableForParty();
 		}
 
-		function buildMptcResults(results){
+		function buildMptcResults(results, jsObj){
 			assignToPartyDataArray = new Array();
 			var electionIdEl = document.getElementById("staticGrpSelectBox");
-			var selectedYearVal = electionIdEl.options[electionIdEl.selectedIndex].text;
+			var selectedYearVal = jsObj.electionYear;
 			var candLink = document.getElementById("mptcCandidateLink");
 			var chartDivEl = document.getElementById("mptcChartDiv");
 			var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
@@ -858,7 +860,6 @@
 	</table>
 	</div>	
 	<div id="votingTrendzInfoMain"></div>
-	<center>
 	<div class="rounded" >
 		<table>
 			<tr>
@@ -889,45 +890,12 @@
 													   		</tr></table>
 													   </td></tr>
 												   <tr>
-												   	   <td><div id="zptcChartDiv"></div></td>
-													   <td class="yui-skin-sam"><div id="zptcPartyTrendsDetailsDiv"></div></td>
+												   	   <td valign="top"><div id="zptcChartDiv"></div></td>
+													   <td class="yui-skin-sam" valign="top"><div id="zptcPartyTrendsDetailsDiv"></div></td>
 											</tr></table>
 									</td></tr>
 								</table>	
-								</div>
-				<td style="vertical-align:top;">
-					<div id="zptc_main">
-						<div id="zptc_head">
-							<table border="0" cellpadding="0" cellspacing="0">
-							<tr>
-								<td><img src="images/icons/districtPage/header_left.gif"/></td>
-								<td>	
-									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:401px;height:18px;padding:9px;">
-										<span>Total Number of ZPTC's : </span>
-										<span id="totalZptcCountResultDiv"></span>														
-									</div>
-								</td>
-								<td><img src="images/icons/districtPage/header_right.gif"/></td>
-							</tr>
-							</table>
-						</div>
-						<div id="zptc_body" style="width:452px;">
-							<table>									
-								<tr><td>
-										<table><tr><td>
-														<table ><tr>
-													   		<td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;">
-													   		</div></td>
-													   		<td><div id="zptcCandidateLink"></div></td>
-												   		</tr></table>
-												   </td></tr>
-											   <tr>
-												   <td class="yui-skin-sam"><div id="zptcPartyTrendsDetailsDiv" style="border:2px solid #9696C0"></div></td>
-										</tr></table>
-								</td></tr>
-							</table>	
-							</div>
-						</td>			
+								</div>							
 					</tr>
 					<tr>
 					<td style="vertical-align:top;">
@@ -956,8 +924,8 @@
 													   		</tr></table>
 													   </td></tr>
 												   <tr>
-												   	   <td><div id="mptcChartDiv"></div></td>		
-													   <td class="yui-skin-sam"><div id="mptcPartyTrendsDetailsDiv"></div></td>
+												   	   <td valign="top"><div id="mptcChartDiv"></div></td>		
+													   <td class="yui-skin-sam" valign="top"><div id="mptcPartyTrendsDetailsDiv"></div></td>
 											</tr></table>
 									</td></tr>
 								</table>	
@@ -966,8 +934,7 @@
 					</td>	
 				</tr>
 				</table>
-				</div>
-			</center>
+				</div>			
 		<div id="index_footer" class="indexLayoutContainer" style="width:100%">
 			<div id="index_inner_footer">
 			<table width="100%" id="copyrightLinksTable">
