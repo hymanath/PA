@@ -4386,20 +4386,23 @@ public class StaticDataService implements IStaticDataService {
 		Map<Long,Long> electionIdsAndTotalVotes = new HashMap<Long,Long>(0);
 		List<TownshipBoothDetailsVO> mandal = new ArrayList<TownshipBoothDetailsVO>(0);
 		String mandalName="";
+		String elections=null;
 		try{			
 			
 			//Making DAO call to get Total Valid Votes in mandal.
-			mandalResult = boothConstituencyElectionDAO.getTotalVotesInAMandal(tehsilId,electionIds);
+			
+			elections = getLatestAssemblyElectionId();
+			mandalResult = boothConstituencyElectionDAO.getTotalVotesInAMandal(tehsilId,elections);
 			for(int i=0;i<mandalResult.size();i++){
 				Object[] parms = (Object[])mandalResult.get(i);
 				electionIdsAndTotalVotes.put(Long.parseLong(parms[1].toString()),Long.parseLong(parms[0].toString()));
 				mandalName = parms[2].toString();
 			}			
-			
+	
 			//Making DAO call to get All Total Valid Votes for every township in mandal.						
-			list = villageBoothElectionDAO.findTownshipWiseVotingTrendsForATehsil(tehsilId,electionIds);
+			list = villageBoothElectionDAO.findTownshipWiseVotingTrendsForATehsil(tehsilId,elections);
 					
-			StringTokenizer st = new StringTokenizer(electionIds,","); 
+			StringTokenizer st = new StringTokenizer(elections,","); 
 			
 			while(st.hasMoreElements()){
 				Long electionID = Long.parseLong(st.nextElement().toString());
@@ -4423,6 +4426,14 @@ public class StaticDataService implements IStaticDataService {
 							township.add(votes);
 					}					
 				}
+				List election = electionDAO.getElectionTypeAndElectionYearByElectionId(electionID);
+				String elect="";
+				for(int i=0;i<election.size();i++){
+					Object[] parms = (Object[])election.get(i);
+					elect = parms[0].toString()+"-"+parms[1].toString();
+				}				
+				votesByElectionId.setChartTitle("VotesPolling In "+mandalName+" Mandal for "+elect);
+				votesByElectionId.setChartName("VotesPollingIn_"+mandalName+"forElectionType"+electionID+"_piechart"+".png");
 				votesByElectionId.setTownshipVotingTrends(township);
 				votesByElectionId.setMandalId(tehsilId);	
 				votesByElectionId.setMandalName(mandalName);
@@ -4453,6 +4464,11 @@ public class StaticDataService implements IStaticDataService {
 		mandalVO.setElectionsInMandal(elections);
 		return mandalVO;
 	}
-	
+
+	public String getLatestAssemblyElectionId(){
+		Long stateId =1l;
+		List result = electionDAO.findElectionIdByElectionTypeAndYear(IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,stateId);
+		return result.get(0).toString();
+	}
 }
 

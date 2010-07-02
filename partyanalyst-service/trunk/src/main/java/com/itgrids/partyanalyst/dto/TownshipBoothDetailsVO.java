@@ -18,6 +18,9 @@ public class TownshipBoothDetailsVO implements Serializable {
 	private Long validVoters;
 	private String percentageOfValidVotes;
 	
+	private Long sNO;
+	private String chartTitle;
+	private String chartName;
 	private Long electionId;
 	private Long mandalId;
 	private String mandalName;
@@ -36,6 +39,22 @@ public class TownshipBoothDetailsVO implements Serializable {
 	
 	// logged in user voters total and percentage
 	private String userVotesInfo;
+
+	public Long getSNO() {
+		return sNO;
+	}
+
+	public void setSNO(Long sno) {
+		sNO = sno;
+	}
+
+	public String getChartTitle() {
+		return chartTitle;
+	}
+
+	public void setChartTitle(String chartTitle) {
+		this.chartTitle = chartTitle;
+	}
 
 	public Long getElectionId() {
 		return electionId;
@@ -149,4 +168,13 @@ public class TownshipBoothDetailsVO implements Serializable {
 	public void setUserVotesInfo(String userVotesInfo) {
 		this.userVotesInfo = userVotesInfo;
 	}
+
+	public String getChartName() {
+		return chartName;
+	}
+
+	public void setChartName(String chartName) {
+		this.chartName = chartName;
+	}
+	
 }

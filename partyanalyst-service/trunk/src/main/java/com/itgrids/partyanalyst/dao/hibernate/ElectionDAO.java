@@ -233,4 +233,8 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select model.electionId from Election model where model.electionScope.electionType.electionType = ? and model.electionYear = ? and model.electionScope.state.stateId = ?",params);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List getElectionTypeAndElectionYearByElectionId(Long electionId){
+		return getHibernateTemplate().find("select model.electionScope.electionType.electionType,model.electionYear from Election model where model.electionId = ? order by model.electionYear desc",electionId);
+	}
 }
