@@ -23,6 +23,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AlliancePartiesInElection;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
@@ -606,7 +607,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	 return electionResult;
 	}
 	
-	public ChartColorsAndDataSetVO createDatasetForChart(List<ElectionDataVO> elecdetails,List<String> partys,List<ElectionResultPartyVO> elecResultsList){
+	public ChartColorsAndDataSetVO createDatasetForChart(List<ElectionDataVO> elecdetails,List<String> partys,List<ElectionResultPartyVO> elecResultsList,Boolean includeAllianc){
 		 
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 	       ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
@@ -614,8 +615,31 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		   
 		  	   for(ElectionDataVO electionData:elecdetails){
 				   for(String party:partys){
-					   CandidateElectionResultVO candidateElecResults = getCandidateResultsForChartData(elecResultsList,party,electionData.getElectionYear(),electionData.getElectionType());
-					   if(candidateElecResults.getVotesPercentage() != null && candidateElecResults.getPartyName() != null && electionData.getElectionYear() != null && electionData.getElectionType() != null){
+					   CandidateElectionResultVO candidateElecResults = null;
+					   Boolean flag = false;
+					   if(includeAllianc == true){
+						   
+						 log.debug(" Allianc True ..." + party + " ... " + electionData.getElectionYear() + " .... " + electionData.getElectionType());
+						 if(electionData.getAllianceParties() != null && electionData.getAllianceParties().size() > 0){
+						 AlliancePartiesInElection alliancPartysGrp = getPartiesInAlliance(party,electionData.getAllianceParties());
+						 if(alliancPartysGrp != null && alliancPartysGrp.getParties().size() > 0)
+						  for(SelectOptionVO partysLi:alliancPartysGrp.getParties()){
+							 candidateElecResults = getCandidateResultsForChartData(elecResultsList,partysLi.getName(),electionData.getElectionYear(),electionData.getElectionType());
+							 if(candidateElecResults != null && candidateElecResults.getVotesPercentage() != null && candidateElecResults.getPartyName() != null && electionData.getElectionYear() != null && electionData.getElectionType() != null){
+							  flag = true;	 
+							  dataset.addValue(new BigDecimal(candidateElecResults.getVotesPercentage()), alliancPartysGrp.getGroupName(), electionData.getElectionYear()+" "+electionData.getElectionType());
+							 }
+						   }
+						  }
+					   }
+					   
+					  
+					   if(includeAllianc == false || flag == false){
+						   
+						   log.debug(" Allianc False ..." + party + " ... " + electionData.getElectionYear() + " .... " + electionData.getElectionType());
+					      candidateElecResults = getCandidateResultsForChartData(elecResultsList,party,electionData.getElectionYear(),electionData.getElectionType());
+					   
+					    if(candidateElecResults != null && candidateElecResults.getVotesPercentage() != null && candidateElecResults.getPartyName() != null && electionData.getElectionYear() != null && electionData.getElectionType() != null){
 						  dataset.addValue(new BigDecimal(candidateElecResults.getVotesPercentage()), candidateElecResults.getPartyName(), electionData.getElectionYear()+" "+electionData.getElectionType());
 						  
 						  if(IConstants.TDP.equalsIgnoreCase(candidateElecResults.getPartyName()))
@@ -623,15 +647,16 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
   							log.debug("TDP ADDED");
   						  }else if(IConstants.INC.equalsIgnoreCase(candidateElecResults.getPartyName())){
   							colorsSet.add(IConstants.INC_COLOR);
-  							log.debug("TDP ADDED");
+  							log.debug("INC ADDED");
   						  }
   						  else if(IConstants.TRS.equalsIgnoreCase(candidateElecResults.getPartyName())){
   							colorsSet.add(IConstants.TRS_COLOR);
-  							log.debug("TDP ADDED");
+  							log.debug("TRS ADDED");
   						  }else if(IConstants.BJP.equalsIgnoreCase(candidateElecResults.getPartyName())){
     							colorsSet.add(IConstants.BJP_COLOR);
-      							log.debug("TDP ADDED");
+      							log.debug("BJP ADDED");
       					  }
+					   }
 					   }
 				   }
 			   }
@@ -640,6 +665,18 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
      return chartColorsAndDataSetVO;
 	}
 	
+	public AlliancePartiesInElection getPartiesInAlliance(String party,List<AlliancePartiesInElection> alliancList){
+		
+		if(alliancList != null && alliancList.size() > 0){
+		for(AlliancePartiesInElection group:alliancList){
+			for(SelectOptionVO parties:group.getParties()){
+				if(parties.getName().equalsIgnoreCase(party))
+					return group;
+			}
+		}
+		}
+	 return null;
+	}
 	
 	public CandidateElectionResultVO getCandidateResultsForChartData(List<ElectionResultPartyVO> elecResultsList,String party,String elecYear,String elecType){
 		
@@ -678,6 +715,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		String constiId = jObj.getString("constituencyId");
 		String constiName = jObj.getString("constituencyName"); 
+		String includeAlliance = jObj.getString("alliances"); 
 		
 		List<ElectionDataVO> electnDataList = new ArrayList<ElectionDataVO>();
 		List<String> partys = new ArrayList<String>();
@@ -694,6 +732,11 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			ElectionDataVO elecData = new ElectionDataVO();
 			elecData.setElectionType(elecType);
 			elecData.setElectionYear(elecYear);
+			
+			List<AlliancePartiesInElection> allianceParties = staticDataService.getAlliancGroupAndPartiesInAnElection(elecType,elecYear);
+			if(allianceParties != null && allianceParties.size() > 0){
+				elecData.setAllianceParties(allianceParties);
+			}
 			
 			electnDataList.add(elecData);
 			chartNam = chartNam + "_" + elecType + "_" + elecYear;
@@ -715,15 +758,20 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			log.debug("Party :" + partyNames[j]);
 			chartNam = chartNam + "_" + partyNames[j];
 		}
+		chartNam = chartNam + "IncludeAlliance" + includeAlliance.toString();
 		
         List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(new Long(constiId));
         
         if(electionResList != null && electionResList.size() > 0){
-						
-			  String chartTitle = " All Parties Performance In "+constiName + " Constituency";
+			
+        	  String chartTitle = "";
+        	  if(new Boolean(includeAlliance) == true)
+        		  chartTitle = " All Parties Performance In "+constiName + " Constituency With Alliances";
+        	  else if(new Boolean(includeAlliance) == false)
+        		  chartTitle = " All Parties Performance In "+constiName + " Constituency ";
 			  String chartName = "constituencyElectionsResults"+"_"+constiName+"_"+constiId+"_"+chartNam+".png";
 			  String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-			  chartColorsAndDataSetVO = createDatasetForChart(electnDataList,partys,electionResList);
+			  chartColorsAndDataSetVO = createDatasetForChart(electnDataList,partys,electionResList,new Boolean(includeAlliance));
 			  ChartProducer.createLineChart(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,300,820,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()));
 			  
 			  chartColorsAndDataSetVO.setChartName(chartName);
