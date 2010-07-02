@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ElectionDataVO implements Serializable{
 
@@ -20,6 +21,7 @@ public class ElectionDataVO implements Serializable{
 	private String electionType;
 	private String electionYear;
 	
+	private List<AlliancePartiesInElection> allianceParties;
 	
 	public Long getElectionId() {
 		return electionId;
@@ -38,6 +40,12 @@ public class ElectionDataVO implements Serializable{
 	}
 	public void setElectionYear(String electionYear) {
 		this.electionYear = electionYear;
+	}
+	public List<AlliancePartiesInElection> getAllianceParties() {
+		return allianceParties;
+	}
+	public void setAllianceParties(List<AlliancePartiesInElection> allianceParties) {
+		this.allianceParties = allianceParties;
 	}
 
 }
