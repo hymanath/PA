@@ -158,7 +158,11 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			String chartTitle = townshipBoothDetailsVO.get(i).getChartTitle();
 			String chartPath = context.getRealPath("/") + "charts\\" + chartName;
 				
-			ChartProducer.createProblemsPieChart(chartTitle, createPieDatasetForVoters(townshipBoothDetailsVO,i), chartPath , null,true,300,280);
+			if(townshipBoothDetailsVO.get(0).getTownshipVotingTrends().size()<=12){
+				ChartProducer.createProblemsPieChart(chartTitle, createPieDatasetForVoters(townshipBoothDetailsVO,i), chartPath , null,true,300,280);	
+			}else{
+				ChartProducer.createProblemsPieChart(chartTitle, createPieDatasetForVoters(townshipBoothDetailsVO,i), chartPath , null,true,300,450);	
+			}			
 		}	
 	}
 	
