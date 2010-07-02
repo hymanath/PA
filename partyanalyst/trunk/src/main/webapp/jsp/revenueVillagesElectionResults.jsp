@@ -65,7 +65,8 @@
 				fields : [  {
 					key : "townshipName"
 				},{
-					key : "percentageOfValidVotes"
+					key : "percentageOfValidVotes",
+					parser:YAHOO.util.DataSourceBase.parseNumber
 				}]
 			};
 	
@@ -77,7 +78,7 @@
 				key : "percentageOfValidVotes",
 				label : "Votes %",
 				sortable : true,
-				parser:"float",
+				formatter:YAHOO.widget.DataTable.formatFloat
 			}];	
 			
 			var myDataTableForTehsil = new YAHOO.widget.DataTable("votesPolledDtTableDiv",resultsColumnDefsForTehsil, resultsDataSourceForTehsil);			
