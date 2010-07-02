@@ -221,11 +221,6 @@ function buildBiElectionDistricts()
 			str += '</td>';
 			str += '<td align="left">';
 			str += '	<a href="javascript:{}" onclick="openVotingTrendzWindow(\''+districtsInfo[i].districtId+'\',\''+info.constId+'\',\''+info.constName+'\')" class="districtAncNew"> '+info.constName.toUpperCase()+ '</a>';
-			if((info.constName.toUpperCase()=="VEMULAWADA") || (info.constName.toUpperCase()=="SIRCILLA")){
-				str += '<span id="specialConstituency" style="color:red">';
-				str += ' * ';
-				str += '</span>';
-			}
 			str += '</td>';
 			str += '<td align="left">';
 			str += '	<a href="javascript:{}" onclick="openConstVotingTrendzWindow(\''+districtsInfo[i].districtId+'\',\''+info.constId+'\',\''+info.constName+'\')" class="districtAncNew1">Analyze</a>';
@@ -238,10 +233,8 @@ function buildBiElectionDistricts()
 	str += '<div id="alignMessageDiv" style="margin-top:7px;">';
 	str += '<table>';
 	str += '<tr>';
-	str += '<td valign="top"><span id="colorCode" style="color:red;margin-top:10px;"> * </span></td>';
-	str += '<td valign="top" style="letter-spacing:1px;word-spacing:3px;">Election Commission ';
-	str += 'has postponed elections ';
-	str += 'in these constituencies.</td>';
+	str += '<td valign="top"></td>';
+	str += '<td valign="top" style="letter-spacing:1px;word-spacing:3px;"></td>';	
 	str += '</tr>';
 	str += '</table>';
 	str += '</div>';
