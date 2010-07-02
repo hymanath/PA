@@ -14,6 +14,14 @@ import com.itgrids.partyanalyst.model.Nomination;
 
 
 public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
+	
+	private ICandidateResultDAO candidateResultDAO;
+	
+	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
+		this.candidateResultDAO = candidateResultDAO;
+	}
+
+
 	@Test
 	public void test(){
 		Assert.assertEquals(1, 1);
@@ -56,5 +64,31 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 	public void testRemoveDetails(){
 		candidateResultDAO.remove(new Long(4));
 		setComplete();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetVotesPercentForACandInAnElection(){
+		List votesPercent = candidateResultDAO.getVotesPercentOfACandidateInAnElection(new Long(9),new Long(232),new Long(1));
+		System.out.println("Size :" + votesPercent.size());
+		if(votesPercent != null && votesPercent.size() > 0){
+			Object params = (Object)votesPercent.get(0);
+			System.out.println("Votes Percent :" + (String)params);
+		}
 	}*/
+	
+	public void testGetElectionResults(){
+		List results = candidateResultDAO.getElectionResultsForAllPartiesInAMandal(new Long(835),"MPTC","2006");
+		
+		System.out.println("Size :" + results.size());
+		
+		for(int i=0;i<results.size();i++){
+			Object[] params = (Object[])results.get(i);
+			System.out.println("Party :" + (String)params[1]);
+			System.out.print("  Votes Earned :" + (Double)params[2]);
+			System.out.print( "  Valid Votes :" + (Double)params[3]);
+			
+			System.out.println("..");
+		}
+	}
 }
