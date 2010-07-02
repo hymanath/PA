@@ -19,6 +19,9 @@ public class BiElectionResultsMainVO implements Serializable {
 	private ConstituencyVO constituencyVO;
 	private List<String> electionResultsChart;
 	private List<String> allPartiesElectionResultsChart;
+	private List<ElectionTypeChartVO> chartsListForElectionTypes;
+	private List<ElectionTypeChartVO> chartsListForElectionTypesAllParties;
+	
 	
 	public List<String> getAllPartiesElectionResultsChart() {
 		return allPartiesElectionResultsChart;
@@ -72,6 +75,20 @@ public class BiElectionResultsMainVO implements Serializable {
 	public void setAssemblyResultsChartForPreviousYear(
 			String assemblyResultsChartForPreviousYear) {
 		this.assemblyResultsChartForPreviousYear = assemblyResultsChartForPreviousYear;
+	}
+	public void setChartsListForElectionTypes(
+			List<ElectionTypeChartVO> chartsListForElectionTypes) {
+		this.chartsListForElectionTypes = chartsListForElectionTypes;
+	}
+	public List<ElectionTypeChartVO> getChartsListForElectionTypes() {
+		return chartsListForElectionTypes;
+	}
+	public void setChartsListForElectionTypesAllParties(
+			List<ElectionTypeChartVO> chartsListForElectionTypesAllParties) {
+		this.chartsListForElectionTypesAllParties = chartsListForElectionTypesAllParties;
+	}
+	public List<ElectionTypeChartVO> getChartsListForElectionTypesAllParties() {
+		return chartsListForElectionTypesAllParties;
 	}
 	
 	
