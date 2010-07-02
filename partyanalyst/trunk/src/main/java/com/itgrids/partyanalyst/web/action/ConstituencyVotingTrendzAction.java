@@ -459,7 +459,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);	
 			}else if(chartType.equalsIgnoreCase("selectedParties"))
 			{
-				if(partyName.equalsIgnoreCase(IConstants.INC) || partyName.equalsIgnoreCase(IConstants.TDP) || partyName.equalsIgnoreCase(IConstants.TRS) || partyName.equalsIgnoreCase(IConstants.CPI) || partyName.equalsIgnoreCase(IConstants.CPM) || partyName.equalsIgnoreCase(IConstants.BJP))
+				if(partyName.equalsIgnoreCase(IConstants.INC) || partyName.equalsIgnoreCase(IConstants.TDP) || partyName.equalsIgnoreCase(IConstants.TRS) || partyName.equalsIgnoreCase(IConstants.CPI) || partyName.equalsIgnoreCase(IConstants.CPM) || partyName.equalsIgnoreCase(IConstants.BJP) 
+						|| partyName.equals(IConstants.PRP))
 				{				
 					if(partyName.equals(IConstants.INC))
 					{
@@ -661,24 +662,6 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 	 return candidateResults;
 	}
-	
-	/*
-	public void getConstituencyResultsChart(Long constituencyId,String constituencyName){
-		
-		log.debug(" Inside getConstituencyResultsChart method ..");
-		
-		List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(constituencyId);
-		
-		if(electionResList != null && electionResList.size() > 0){
-						
-			  String chartTitle = "All Election Results for "+constituencyName;
-			  String chartName = "constituencyElectionsResults"+"_"+constituencyName+"_"+constituencyId+".png";
-			  String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-			  //ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDatasetForChart(,partys,electionResList);
-			  //ChartProducer.createLineChart(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,300,820,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()));
-			  
-		}
-	}*/
 	
 	public String getConstVotingTrendzChart() throws Exception
 	{
