@@ -456,7 +456,13 @@ legend
 --></script>
 </head>
 <body>
-		<center><div id="revenueVillageHeading"><h4>Revenue Villages Wise ${electionType} ${electionYear } Election Results In ${mandalName} Mandal</h4></div></center> 
+	
+		<table width="100%">
+		<tr>
+        	<td width="75%" align="center"><div id="revenueVillageHeading"><h4>Revenue Villages Wise ${electionType} ${electionYear } Election Results In ${mandalName} Mandal</h4></div></td>
+			<td width="25"><img src="images/icons/homePage/pa_logo.jpg"/></td>			
+		</tr>
+	</table>
 		<div>
 		<table>
 		<tr>
@@ -478,8 +484,8 @@ legend
 		</tr>		
 		<tr>
 			<td id="labelRadio">View Results By:</td>
-			<td><input type="radio" name="dispaly" value="number" checked="checked" onclick="displayVillageElecResults(this.value)">Votes Gained</td>
-			<td><input type="radio" name="dispaly" value="percentage" onclick="displayVillageElecResults(this.value)">Votes Percentage</td>
+			<td><input type="radio" name="dispaly" value="number" checked="checked" onClick="displayVillageElecResults(this.value)">Votes Gained</td>
+			<td><input type="radio" name="dispaly" value="percentage" onClick="displayVillageElecResults(this.value)">Votes Percentage</td>
 		</tr>
 		</table>
 		<div id="villageElectionResults" class="yui-skin-sam"></div>			
