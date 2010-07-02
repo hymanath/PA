@@ -563,7 +563,7 @@
 					partiesArr: selectedPartiesIds,
 					electionTypeArr: selectedElectionTypesYears,
 					task: "constituencyResults",
-					allainces: allainceVal  
+					alliances: allainceVal 
 					};
 			
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
