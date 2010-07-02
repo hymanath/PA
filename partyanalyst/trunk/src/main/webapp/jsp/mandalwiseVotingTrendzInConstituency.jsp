@@ -364,8 +364,7 @@
 		}
 		
 		function openwin(mandalId,name, electionType,electionYear,electionId){					
-			var urlStr = "<%=request.getContextPath()%>/mandalRevenueVillagesElecInputAction.action?tehsilName="+name+"&tehsilId="+mandalId+"&windowTask=mainPartyMarginCountAnalyzedConstituenciesPopup";
-			var brow1 = window.open(urlStr,"mandalRevenueVillagesResultsAnalysisPopup","scrollbars=yes,height=600,width=1000,left=200,top=200");
+			var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+name+"&electionType="+electionType+"&electionYear="+electionYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 			brow1.focus();
 		}
 
