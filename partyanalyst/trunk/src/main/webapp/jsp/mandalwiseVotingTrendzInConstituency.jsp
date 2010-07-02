@@ -641,8 +641,9 @@
 			mandalsListElmt.innerHTML = mandalStr;	
 			*/		
 			//Rendering Mandal voting trendz data
+			var chartDetailsObjArr = resultsData.chartsListForElectionTypes;
 			var str = '';
-			str += '<table width="100%">';
+			str += '<table width="100%" height="150" cellspacing = "5" cellpadding="5">';
 			for(var i in results)
 			{	
 				for(var j in results[i].biElectionResultsVO)
@@ -651,6 +652,17 @@
 					var electionHeaderLength = (results[i].biElectionResultsVO[j].partysList.length*2)+2;
 					var partyHeaderLength = results[i].biElectionResultsVO[j].partysList.length*2;
 					str += '<tr>';
+					str += '<td width="100">';
+					for(var z in chartDetailsObjArr)
+					{
+						var chartDetailsObj = chartDetailsObjArr[z]; 
+						var electionType = chartDetailsObj.electionType
+						var electionYear = chartDetailsObj.electionYear
+						var chartName = chartDetailsObj.chartName;	
+						if(electionType == results[i].biElectionResultsVO[j].electionType && electionYear ==  results[i].biElectionResultsVO[j].electionYear)
+						str += '<img src="charts/'+chartName+'" />';
+					}
+					str += '</td>';
 					str += '<td style="vertical-align:top;padding-bottom:20px;">';
 					str += '<table width="100%" class="mandalResultsTable" border="1">';
 					str += '<tr>';
