@@ -214,10 +214,37 @@
 		}
 		function showChartData(results)
 		{
+			var selectboxElmtDiv = document.getElementById("selectLocationOptions");
+			var checkboxElmtDiv = document.getElementById("inputSelectionCriteria");
+			var selectOptionsSelectButtonElmt = document.getElementById("selectOptionsSelectButton");
+
+			if(selectboxElmtDiv && checkboxElmtDiv)
+			{
+				selectboxElmtDiv.style.display = 'none';
+				checkboxElmtDiv.style.display = 'none';
+				selectOptionsSelectButtonElmt.style.display = 'block';
+				
+				selectOptionsSelectButtonElmt.innerHTML = '<input type="button" value="Select Option" onclick="displaySelectionCriteria()">';
+			}
+
 			chartName = results.chartName;
 			var divEl = document.getElementById("constitutencyResultsChart");
 			divEl.innerHTML = '';
 			divEl.innerHTML = '<img src="charts/'+chartName+'" border="none" />';
+		}
+		
+		function displaySelectionCriteria()
+		{
+			var selectboxElmtDiv = document.getElementById("selectLocationOptions");
+			var checkboxElmtDiv = document.getElementById("inputSelectionCriteria");
+			var selectOptionsSelectButtonElmt = document.getElementById("selectOptionsSelectButton");
+
+			if(selectboxElmtDiv && checkboxElmtDiv)
+			{
+				selectboxElmtDiv.style.display = 'block';
+				checkboxElmtDiv.style.display = 'block';
+				selectOptionsSelectButtonElmt.style.display = 'none';				
+			}
 		}
 
 		function getZptcPartyDetails(elecYear){
@@ -378,29 +405,11 @@
 			}
 			str += '</div>';
 			str += '<div id ="inputSelectionCriteria">';
-			/*str += '<P>Select a Party and Election Type to view results</P>';
-			str += '<div id ="inputSelectionError"></div>';
-			str += '<table>';
-			str += '<tr>';
-			for(var k in tehsilElections.staticParties)
-			{
-				str += '<td><INPUT type="checkbox" name="partywiseCheckBox" id='+tehsilElections.staticParties[k].partyName+' />'+tehsilElections.staticParties[k].partyName+'</td>';
-			}
-			str += '</tr>';
-			str += '<tr>';
-			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Assembly"  />2009 Assembly</td>';
-			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Assembly"  />2004 Assembly</td>';
-			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Parliament"  />2009 Parliament</td>';
-			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Parliament"  />2004 Parliament</td>';
-			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_MPTC"  />2006 MPTC</td>';
-			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2001_MPTC" />2001 MPTC</td>';
-			str += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_ZPTC" />2006 ZPTC</td>';
-			str += '<td colspan="4"><INPUT type="checkbox" name="electionCheckBox" id="2001_ZPTC" />2001 ZPTC</td>';
-			str += '</tr>';
-			str += '</table>';
-			str += '<div style="text-align:right;"><INPUT type="button" id="getResults" onclick="getResultsForSelectedElection()" value="Show Results" /></div>';*/			
+				
 			str += '</div>';
+			str += '<div id="selectOptionsSelectButton" style="margin-bottom:10px;padding:10px;text-align:right"></div>';
 			str += '<div id="constitutencyResultsChart"></div>';
+
 			str += '<div id="mandalVotingTrendzDataDiv_head">Voting Trendz in Constituency</div>';
 			str += '<div id="mandalVotingTrendzDataDiv">';
 			str += '<div id="mandalVotingTrendzDataDiv_body" class="yui-skin-sam">';
@@ -545,13 +554,17 @@
 			var cursorImgElmt = document.getElementById('cursorImg');
 			if(cursorImgElmt)
 				cursorImgElmt.style.display = 'none';
+
 			var inputEl = document.getElementById("inputSelectionCriteria");
 			inputEl.innerHTML = '';
+
 			var constChartEl = document.getElementById("constitutencyResultsChart");
 			constChartEl.innerHTML = '';
+
 			var mainHeadEl = document.getElementById("mainHead");
 			mainHeadEl.innerHTML = '';
 			mainHeadEl.innerHTML = 'Voting Trendz in '+jsObj.constiName+' Constituency';
+
 			var str1= '';
 			str1 += '<P>Select a Party and Election Type to view results</P>';
 			str1 += '<div id ="inputSelectionError"></div>';
@@ -576,70 +589,7 @@
 			str1 += '<div style="text-align:right;"><INPUT type="button" id="getResults" onclick="getResultsForSelectedElection()" value="Show Results" /></div>';
 			inputEl.innerHTML = str1;
 			
-			/*
-			allPartiesCharts = resultsData.allPartiesElectionResultsChart;
-
-			if(!headElmt || !bodyElmt || !resultsData || !graphElmt || !mandalsListElmt)
-				return;
-					
-			// Rendering Graph Elmt in the respective div
-			var graphStr = '';
-			graphStr += '<center>';
-			//graphStr += '<img height="300" width="820" src="charts/'+resultsData.mandalWiseResultsChart+'"/>';
-			graphStr += '<fieldset>';
-			graphStr += '<legend>Election Results in '+jsObj.constiName+'</legend>';
-			graphStr += '<div style="text-align:right"><span style="background-color:#4B74C6;cursor:pointer;font-weight:bold;padding:3px;" onclick="displayAllPartiesChart()"> View All Parties Chart </span></div>';
-			graphStr += '<table>';
-			graphStr += '<tr>';
-			for(var graph in resultsData.electionResultsChart)
-			{
-				graphStr += '<td>';
-				graphStr += '<img src="charts/'+resultsData.electionResultsChart[graph]+'"/>';
-				graphStr += '</td>';
-
-				if(graph == 0)
-					continue;
-				if(graph % 3 == 0)
-					graphStr += '</tr><tr>';
-			}
-			graphStr += '</tr>';
-			graphStr += '</table>';
-			graphStr += '</fieldset>';
-
-			graphStr += '<P style="font-family:verdana;font-size:12px;margin-top:25px;">'+localizationObj.desc1+' <font style="font-weight:bold;color:#4B74C6;">'+jsObj.constiName+'</font> '+localizationObj.desc2+'</P></center>';
-			graphElmt.innerHTML = graphStr;
-
-			//Rendering  mandals list in the constituency
-			mandalStr = '';
-			mandalStr += '<fieldset>';
-			mandalStr += '<legend> Mandals In '+jsObj.constiName+' Constituency </legend>';
-			mandalStr += '<table>';
-			mandalStr += '<tr>';
-			mandalStr += '<th> <u>Mandals </u>: </th>';
-			for(var mandal in results[0].biElectionResultsVO[0].electionResultsForMandal)
-			{
-				var mandalData = results[0].biElectionResultsVO[0].electionResultsForMandal[mandal];
-				mandalStr += '<td><div class="mandalNameDivClass"><a href="mandalPageElectionInfoAction.action?MANDAL_ID='+mandalData.mandalId+'&MANDAL_NAME='+mandalData.mandalName+'"> '+mandalData.mandalName+'</a></div></td>';		
-			}
-			mandalStr += '</tr>';
-			mandalStr += '</table>';
-			mandalStr += '<div id="constiVotersDetails" style="margin-top:20px;">';
-			mandalStr += '<div style="padding:10px;margin-bottom:20px;"> <u><b> Mandals Votes Share In Constituency :</b> </u> </div>';
-			mandalStr += '<center><table width="85%" border="1" cellspacing="3">';
-			mandalStr += '	<tr>';
-			for(var chart in resultsData.constituencyVO.pieChartNames)
-				mandalStr += '		<td align="center"><img src="charts/'+resultsData.constituencyVO.pieChartNames[chart]+'" border="0"></td>';	
-			mandalStr += '	</tr>';
-			mandalStr += '	<tr>';
-			for(var info in resultsData.constituencyVO.extraInfo)
-				mandalStr += '		<td align="left" style="border: 0px none ; color: rgb(112, 112, 112);">'+resultsData.constituencyVO.extraInfo[info]+'</td>';	
-			mandalStr += '	</tr>';
-			mandalStr += '</table></center>';
-			mandalStr += '</div>';
-			mandalStr += '</fieldset>';
 			
-			mandalsListElmt.innerHTML = mandalStr;	
-			*/		
 			//Rendering Mandal voting trendz data
 			var chartDetailsObjArr = resultsData.chartsListForElectionTypes;
 			var str = '';
@@ -742,16 +692,22 @@
 
 </head>
 <body>
-	<div id="windowHeader">
-	<center>		
-		<TABLE cellspacing="0" cellpadding="0" border="0" >
-		<TR>
-			<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" style="margin-top:15px;" /></TD>
-			<TD valign="top"><DIV id="mainHead" class="mainHeading">Voting Trends in ${constiName} Constituency</DIV></TD>
-			<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" style="margin-top:15px;" border="none"/></TD>
-		</TR>
-		</TABLE>
-	</center>	
+	<div style="background-color:#FFFFFF;padding-top:10px;">
+	<div id="windowHeader" style="background-color:black">
+	<table width="100%">
+		<tr>		
+			<td width="86%" align="center">
+				<TABLE cellspacing="0" cellpadding="0" border="0" >
+				<TR>
+					<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" style="margin-top:15px;" /></TD>
+					<TD valign="top"><DIV id="mainHead" class="mainHeading">Voting Trends in ${constiName} Constituency</DIV></TD>
+					<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" style="margin-top:15px;" border="none"/></TD>
+				</TR>
+				</TABLE>
+			</td>
+			<td width="14%" align="right"><img src="images/icons/homePage/pa_logo.jpg"/></td>
+		</tr>
+	</table>
 	</div>	
 	<div id="votingTrendzInfoMain"></div>
 	<center>
@@ -785,7 +741,7 @@
 												   		</tr></table>
 												   </td></tr>
 											   <tr>
-												   <td class="yui-skin-sam"><div id="zptcPartyTrendsDetailsDiv"></div></td>
+												   <td class="yui-skin-sam"><div id="zptcPartyTrendsDetailsDiv" style="border:2px solid #9696C0"></div></td>
 										</tr></table>
 								</td></tr>
 							</table>	
@@ -830,6 +786,17 @@
 				</table>
 				</div>
 			</center>
+		<div id="index_footer" class="indexLayoutContainer" style="width:100%">
+			<div id="index_inner_footer">
+			<table width="100%" id="copyrightLinksTable">
+				<tr>
+					<td align="left"> © Copyright 2010. All rights reserved | IT GRIDS (India) Pvt. Ltd.</td>
+					<td align="right"> About Us | Contact Us | API | Terms Of Use | Privacy Policy </td>
+				</tr>
+			</table>
+			</div>
+		</div>
+	</div>
 	<SCRIPT type="text/javascript"> 			
 			
 			buildMandalsVotingTrendz();			
