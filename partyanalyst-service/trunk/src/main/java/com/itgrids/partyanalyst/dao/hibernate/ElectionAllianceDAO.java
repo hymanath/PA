@@ -39,6 +39,15 @@ IElectionAllianceDAO {
 				"model.election.electionYear, model.group.groupName, model.group.groupId from ElectionAlliance model where " +
 				"model.election.electionId in ("+electionIds+")");
 	}
+
+	@SuppressWarnings("unchecked")
+	public List findAllGroupsForAnElection(String electionType,
+			String electionYear) {
+		Object[] params = {electionType,electionYear};
+		return getHibernateTemplate().find("select model.group.groupName, model.group.groupId"+
+				" from ElectionAlliance model where model.election.electionScope.electionType.electionType = ?"+
+				" and model.election.electionYear = ?",params);
+	}
 	
 	
 	
