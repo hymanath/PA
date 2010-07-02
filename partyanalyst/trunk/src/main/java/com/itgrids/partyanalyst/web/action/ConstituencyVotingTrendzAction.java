@@ -737,7 +737,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
         
         if(electionResList != null && electionResList.size() > 0){
 						
-			  String chartTitle = " Election Results In "+constiName + "Constituency";
+			  String chartTitle = " All Parties Performance In "+constiName + " Constituency";
 			  String chartName = "constituencyElectionsResults"+"_"+constiName+"_"+constiId+"_"+chartNam+".png";
 			  String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			  chartColorsAndDataSetVO = createDatasetForChart(electnDataList,partys,electionResList);
