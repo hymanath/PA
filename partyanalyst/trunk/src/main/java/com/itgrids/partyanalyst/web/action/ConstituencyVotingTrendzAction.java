@@ -566,7 +566,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			Long votesEarned = new Long(0);
 			Long validVotes = new Long(0);
 			Double votesPercent = new Double(0);
-			
+			Long totVotesEarned = new Long(0);
 			List<CandidateElectionResultVO> candResultsInElection = new ArrayList<CandidateElectionResultVO>();
 			
 			for(CandidateElectionResultVO candResult:elecResult.getCandidateElectionResultsVO()){
@@ -575,29 +575,31 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				if(candResult.getPartyName().equalsIgnoreCase(IConstants.INC) 
 			   			|| candResult.getPartyName().equalsIgnoreCase(IConstants.TDP) 
 			   			|| candResult.getPartyName().equalsIgnoreCase(IConstants.TRS)
-			   			|| candResult.getPartyName().equalsIgnoreCase(IConstants.BJP)){
-			   		candResultsInElection.add(candResult);
+			   			|| candResult.getPartyName().equalsIgnoreCase(IConstants.BJP)
+			   			|| candResult.getPartyName().equalsIgnoreCase(IConstants.PRP)){
+			   		
+					candResultsInElection.add(candResult);
+			   		
+			   		if(candResult.getTotalVotesEarned() != null)
+			   		totVotesEarned+=candResult.getTotalVotesEarned();
 			   	}
 				//For Others
 			   	else{
 			   		if(candResult.getTotalVotesEarned() != null && candResult.getTotalValidVotes() != null){
 			   		votesEarned+=candResult.getTotalVotesEarned();
-			   		validVotes+=candResult.getTotalValidVotes();
-			   		votesPercent+=new Double(candResult.getVotesPercentage());
+			   		totVotesEarned+=candResult.getTotalVotesEarned();
 			   		}
 			   	}
 			}
 			
 			//others results
-			if(!votesEarned.equals(new Long(0)) && !validVotes.equals(new Long(0))){
+			if(!votesEarned.equals(new Long(0))){
 				CandidateElectionResultVO candResForOthers = new CandidateElectionResultVO();
 				candResForOthers.setPartyName("Others");
 				candResForOthers.setTotalVotesEarned(votesEarned);
-				candResForOthers.setTotalValidVotes(validVotes);
-				if(elecResult.getElectionType().equalsIgnoreCase(IConstants.MPTC_ELECTION_TYPE) || elecResult.getElectionType().equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE))
-					candResForOthers.setVotesPercentage(votesPercent.toString());
-				else
-					candResForOthers.setVotesPercentage(new BigDecimal(votesEarned.doubleValue()/validVotes.doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				candResForOthers.setTotalValidVotes(totVotesEarned);
+			
+				candResForOthers.setVotesPercentage(new BigDecimal(votesEarned.doubleValue()/totVotesEarned.doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				candResultsInElection.add(candResForOthers);
 			}
 			
