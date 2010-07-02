@@ -1658,21 +1658,28 @@ public class BiElectionPageService implements IBiElectionPageService {
 						List<PartyResultsVO> partyResultsSum = new ArrayList<PartyResultsVO>();
 						PartyResultsVO otherPartyRes = new PartyResultsVO();
 						Set<Long> keys = resultsSumMap.keySet();
+						Long totValidVotes = new Long(0);
 						for(Long partId:keys){
 							
 							if(partId.equals(new Long(0))){
 								otherPartyRes = resultsSumMap.get(partId);
+								totValidVotes+=otherPartyRes.getVotesEarned();
 								continue;
 							}
 							PartyResultsVO resltVO = resultsSumMap.get(partId);
-							////...........
-							Double votePrcnt = new BigDecimal(new Double(resltVO.getPercentage())/count).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-							resltVO.setPercentage(votePrcnt.toString());
+							totValidVotes+=resltVO.getVotesEarned();
 							partyResultsSum.add(resltVO);
 						}
+						
+						//for votes percent
+						for(PartyResultsVO resultSumPer:partyResultsSum){
+							Double votePrcnt = new BigDecimal(resultSumPer.getVotesEarned().doubleValue()/totValidVotes.doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+							resultSumPer.setPercentage(votePrcnt.toString());
+						}
+						
 						Collections.sort(partyResultsSum, new PartyResultsVOComparator());
 						
-						Double votePrcnt = new BigDecimal(new Double(otherPartyRes.getPercentage())/count).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+						Double votePrcnt = new BigDecimal(otherPartyRes.getVotesEarned().doubleValue()/totValidVotes*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 						otherPartyRes.setPercentage(votePrcnt.toString());
 						partyResultsSum.add(partyResultsSum.size(), otherPartyRes);
 						
