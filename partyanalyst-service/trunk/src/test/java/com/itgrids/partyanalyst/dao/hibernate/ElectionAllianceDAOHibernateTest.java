@@ -59,7 +59,7 @@ public class ElectionAllianceDAOHibernateTest extends BaseDaoTestCase {
 		}
 		
 		
-	}*/
+	}
 	
 	public void testFindAllianceGroupsInElections(){
 		List list = electionAllianceDAO.findAllianceGroupsInElections("2");
@@ -71,7 +71,19 @@ public class ElectionAllianceDAOHibernateTest extends BaseDaoTestCase {
 		}
 		
 		
+	}*/
+	
+	public void testGetGroups(){
+		List list = electionAllianceDAO.findAllGroupsForAnElection("Assembly", "2009");
+		if(list != null && list.size() > 0){
+			for(int i=0;i<list.size();i++){
+				Object[] params = (Object[])list.get(i);
+				System.out.println(" Group Name :" + (String)params[0]);
+				System.out.println(" Group Id   :" + (Long)params[1]);
+			}
+		}
 	}
+	
 
 	
 }
