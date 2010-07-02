@@ -105,6 +105,7 @@
 		var assemblyElectionType='Assembly';
 		var constituencyIdGlobal = '${constiId}';
 		var constituencyName = '${constiName}';
+		var mptcChart2001,mptcChart2006,zptcChart2001,zptcChart2006
 		
 		var allPartiesCharts = '';
 		
@@ -284,6 +285,28 @@
 			 browser2.focus();
 		}
 
+		function hideZptcDiv(){
+			var imgElmt = document.getElementById("zptcPartyTrendsDetailsDiv");
+			var electionDetails="";
+			electionDetails +="<br/>";
+			electionDetails +="<b>Zptc Data is not available.</b>";			
+			imgElmt.innerHTML = electionDetails;		
+
+			 var candLink = document.getElementById("zptcCandidateLink");
+			 var candidateLink="";
+			 candLink.innerHTML = candidateLink;
+		}
+		function hideMptcDiv(){
+			var imgElmt = document.getElementById("mptcPartyTrendsDetailsDiv");
+			var electionDetails="";
+			electionDetails +="<br/>";
+			electionDetails +="<b>Mptc Data is not available.</b>";			
+			imgElmt.innerHTML = electionDetails;
+
+			 var candLink = document.getElementById("mptcCandidateLink");
+			 var candidateLink="";
+			 candLink.innerHTML = candidateLink;
+		}				
 		function getMandalVotingTrendz(distId,constId,constName)
 		{
 			var jsObj=
@@ -317,8 +340,7 @@
 			
 			getMandalVotingTrendz(radioValue,value,text);
 			constituencyIdGlobal = value;
-			getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
-			getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
+			
 		}
 
 		function getConstituenciesInfo(distId,index)
@@ -481,10 +503,19 @@
 			var inputSelectionErrorEl = document.getElementById("inputSelectionError");
 			var partyCheckboxEls = document.getElementsByName("partywiseCheckBox");
 			var electionTypeCheckboxEls = document.getElementsByName("electionCheckBox");
+			var allianceCheckboxEls = document.getElementById("allianceChkBox");
+			var allainceVal;
 			var selectedPartiesIds = new Array();
 			var selectedElectionTypesYears = new Array();
 			var selectedPartiesCount, electionTypesCount;		
 			inputSelectionErrorEl.innerHTML = '';
+			if(allianceCheckboxEls.checked == true)
+			{
+				allainceVal = true;	
+			} else 
+				{
+					allainceVal = false;
+				}
 			for(var i=0; i < partyCheckboxEls.length; i++)
 			{
 				if(partyCheckboxEls[i].checked == true)
@@ -586,6 +617,7 @@
 			str1 += '<td colspan="4"><INPUT type="checkbox" name="electionCheckBox" id="2001_ZPTC" />2001 ZPTC</td>';
 			str1 += '</tr>';
 			str1 += '</table>';
+			str1 += '<div style="text-align:right;width:750px;"><INPUT type="checkbox" name="allianceCheckBox" id="allianceChkBox" />Include Alliances</div>';
 			str1 += '<div style="text-align:right;"><INPUT type="button" id="getResults" onclick="getResultsForSelectedElection()" value="Show Results" /></div>';
 			inputEl.innerHTML = str1;
 			
@@ -611,6 +643,20 @@
 						var chartName = chartDetailsObj.chartName;	
 						if(electionType == results[i].biElectionResultsVO[j].electionType && electionYear ==  results[i].biElectionResultsVO[j].electionYear)
 						str += '<img src="charts/'+chartName+'" />';
+						if(electionType == 'ZPTC' && electionYear == '2006')
+						{
+							zptcChart2006 = chartName; 
+							
+						} else if(electionType == 'ZPTC' && electionYear == '2001')
+						{
+							zptcChart2001 = chartName;							
+						} else if(electionType == 'MPTC' && electionYear == '2006')
+						{
+							mptcChart2006 = chartName;							
+						} else if(electionType == 'MPTC' && electionYear == '2001')
+						{
+							mptcChart2001 = chartName;							
+						}	
 					}
 					str += '</td>';
 					str += '<td style="vertical-align:top;padding-bottom:20px;">';
@@ -687,6 +733,109 @@
 			str += '</table>';
 
 			bodyElmt.innerHTML = str;
+			getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
+			getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
+		}
+		function buildZptcResults(results){
+			assignToPartyDataArray = new Array();
+			var candLink = document.getElementById("zptcCandidateLink");
+			var electionIdEl = document.getElementById("staticGrpSelectBox");
+			var selectedYearVal = electionIdEl.options[electionIdEl.selectedIndex].text;
+			var chartDivEl = document.getElementById("zptcChartDiv");
+			var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
+			candLink.innerHTML = linkRef;
+			totalZptcSeats = results[0].totalSeats;		//	var totalZptcSeats,totalMptcSeats;
+			if(selectedYearVal == '2006')
+			{
+				var chartStr = '';
+				
+				chartStr+='<img src="charts/'+zptcChart2006+'"/>';
+				chartDivEl.innerHTML = chartStr;
+			} else if(selectedYearVal == '2001')
+			{
+				var chartStr = '';
+				chartStr+='<img src="charts/'+zptcChart2001+'"/>';
+				chartDivEl.innerHTML = chartStr;
+			}
+			for(var i in results)
+			{		
+				var problemObj=		
+				 {		
+						partyName:results[i].partyName,
+						participatedSeats:results[i].participatedSeats,
+						seatsWonByParty:results[i].seatsWonByParty,
+						percentageOfVotesWonByParty:results[i].percentageOfVotesWonByParty				
+				 };
+				
+				assignToPartyDataArray.push(problemObj);
+				tehsilDetails.partyArray=assignToPartyDataArray;	
+			}
+
+			var zptcCount = document.getElementById("totalZptcCountResultDiv");
+			zptcCount.innerHTML ='';
+
+			
+			var totalZptcSeats='';
+			totalZptcSeats+="<b>"+results[0].totalSeats+"</b>";
+			zptcCount.innerHTML +=totalZptcSeats;
+
+			var emptyArr = new Array();
+		    if(results.length == 0)
+			{	tehsilDetails.partyArray = emptyArr;				
+			}
+		    initializeResultsTableForParty();
+		}
+
+		function buildMptcResults(results){
+			assignToPartyDataArray = new Array();
+			var electionIdEl = document.getElementById("staticGrpSelectBox");
+			var selectedYearVal = electionIdEl.options[electionIdEl.selectedIndex].text;
+			var candLink = document.getElementById("mptcCandidateLink");
+			var chartDivEl = document.getElementById("mptcChartDiv");
+			var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
+			candLink.innerHTML = linkRef;
+			  totalMptcSeats = results[0].totalSeats;
+			  if(selectedYearVal == '2006')
+				{
+					var chartStr = '';
+					
+					chartStr+='<img src="charts/'+mptcChart2006+'"/>';
+					chartDivEl.innerHTML = chartStr;
+				} else if(selectedYearVal == '2001')
+				{
+					var chartStr = '';
+					chartStr+='<img src="charts/'+mptcChart2001+'"/>';
+					chartDivEl.innerHTML = chartStr;
+				}
+			for(var i in results)
+			{		
+				var problemObj=		
+				 {		
+						partyName:results[i].partyName,
+						participatedSeats:results[i].participatedSeats,
+						seatsWonByParty:results[i].seatsWonByParty,
+						percentageOfVotesWonByParty:results[i].percentageOfVotesWonByParty				
+				 };
+				
+				assignToPartyDataArray.push(problemObj);
+				tehsilDetails.partyMptcArray=assignToPartyDataArray;	
+			}
+
+			var mptcCount = document.getElementById("totalMptcCountResultDiv");
+			mptcCount.innerHTML='';
+			
+			var totalMptcSeats='';
+			totalMptcSeats+="<b>";
+			totalMptcSeats+=results[0].totalSeats;
+			totalMptcSeats+="</b>";
+			mptcCount.innerHTML +=totalMptcSeats;
+			
+			var emptyArr = new Array();
+		    if(results.length == 0)
+			{	
+		    	tehsilDetails.partyMptcArray = emptyArr;				
+			}
+		    initializeMptcResultsTableForParty(); 
 		}
 	</script>
 
@@ -711,9 +860,42 @@
 	</div>	
 	<div id="votingTrendzInfoMain"></div>
 	<center>
-	<div class="rounded" style="width:910px;">
+	<div class="rounded" >
 		<table>
 			<tr>
+					<td style="vertical-align:top;">
+						<div id="zptc_main">
+							<div id="zptc_head">
+								<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td><img src="images/icons/districtPage/header_left.gif"/></td>
+									<td>	
+										<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:850px;height:18px;padding:9px;">
+											<span>Total Number of ZPTC's : </span>
+											<span id="totalZptcCountResultDiv"></span>														
+										</div>
+									</td>
+									<td><img src="images/icons/districtPage/header_right.gif"/></td>
+								</tr>
+								</table>
+							</div>
+							<div id="zptc_body" style="width:900px;">
+								<table>									
+									<tr><td>
+											<table><tr><td colspan="2" align="left">
+															<table ><tr>
+														   		<td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;">
+														   		</div></td>
+														   		<td><div id="zptcCandidateLink"></div></td>
+													   		</tr></table>
+													   </td></tr>
+												   <tr>
+												   	   <td><div id="zptcChartDiv"></div></td>
+													   <td class="yui-skin-sam"><div id="zptcPartyTrendsDetailsDiv"></div></td>
+											</tr></table>
+									</td></tr>
+								</table>	
+								</div>
 				<td style="vertical-align:top;">
 					<div id="zptc_main">
 						<div id="zptc_head">
@@ -746,9 +928,9 @@
 								</td></tr>
 							</table>	
 							</div>
-						</div>
-					</td>			
-					
+						</td>			
+					</tr>
+					<tr>
 					<td style="vertical-align:top;">
 						<div id="mptc_main">
 							<div id="mptc_head">
@@ -756,7 +938,7 @@
 									<tr>
 										<td><img src="images/icons/districtPage/header_left.gif"/></td>
 										<td>	
-											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:401px;padding:9px;height:18px;">
+											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:850px;padding:9px;height:18px;">
 												<span>Total Number of MPTC's : </span>
 												<span id="totalMptcCountResultDiv"></span>
 											</div>
@@ -765,16 +947,17 @@
 									</tr>
 								</table>
 							</div>
-						<div id="mptc_body" style="width:452px;">
+						<div id="mptc_body" style="width:900px;">
 								<table>									
 									<tr><td>
-											<table><tr><td>
+											<table><tr><td colspan="2">
 															<table ><tr>
 														   		<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
 														   		<td><div id="mptcCandidateLink"></div></td>
 													   		</tr></table>
 													   </td></tr>
 												   <tr>
+												   	   <td><div id="mptcChartDiv"></div></td>		
 													   <td class="yui-skin-sam"><div id="mptcPartyTrendsDetailsDiv"></div></td>
 											</tr></table>
 									</td></tr>
