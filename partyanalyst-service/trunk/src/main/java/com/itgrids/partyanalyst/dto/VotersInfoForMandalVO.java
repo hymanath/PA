@@ -8,6 +8,7 @@ public class VotersInfoForMandalVO {
 	private String totalFemaleVoters;
 	private String totalVoters;
 	private String isPartial;
+	private String percent;
 	
 	public String getMandalId() {
 		return mandalId;
@@ -44,5 +45,11 @@ public class VotersInfoForMandalVO {
 	}
 	public void setIsPartial(String isPartial) {
 		this.isPartial = isPartial;
+	}
+	public String getPercent() {
+		return percent;
+	}
+	public void setPercent(String percent) {
+		this.percent = percent;
 	}
 }
