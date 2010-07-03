@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalLevelResultsForParty;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInVotesMarginVO;
@@ -53,6 +55,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
+import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -70,6 +73,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO; 
 	private IVillageBoothElectionDAO villageBoothElectionDAO;
 	private IStaticDataService staticDataService;
+	private IConstituencyPageService constituencyPageService;
 		
 	private static final Logger log = Logger.getLogger(BiElectionPageService.class);
 
@@ -147,6 +151,15 @@ public class BiElectionPageService implements IBiElectionPageService {
 
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
+	}	
+
+	public IConstituencyPageService getConstituencyPageService() {
+		return constituencyPageService;
+	}
+
+	public void setConstituencyPageService(
+			IConstituencyPageService constituencyPageService) {
+		this.constituencyPageService = constituencyPageService;
 	}
 
 	/*
@@ -1524,14 +1537,31 @@ public class BiElectionPageService implements IBiElectionPageService {
 	public List<BiElectionResultsVO> getMandalWiseResultsForSelectedPartiesInConstituency(
 			Long constituencyId) {
 		List<BiElectionResultsVO>  allPartiesResultsList = getMandalWiseResultsForAConstituency(constituencyId);
+		
 		for(BiElectionResultsVO allPartiesResultsObj :allPartiesResultsList)
 		{
 			List<ElectionResultsForMandalVO> results = allPartiesResultsObj.getBiElectionResultsVO();
-			
+			List<PartyElectionResultVO> postalBalletsList = new ArrayList<PartyElectionResultVO>();
 			for(ElectionResultsForMandalVO electionResultsForMandalVO:results)
 				{
 					List<MandalElectionResultVO> electionResultsInMandalList = electionResultsForMandalVO.getElectionResultsForMandal();
 					Map<Long,PartyResultsVO> resultsSumMap = new HashMap<Long,PartyResultsVO>();
+					Map<Long, PartyElectionResultVO> postalBalletsMap = new HashMap<Long, PartyElectionResultVO>();
+					// to get postal ballet votes in a constituency for assembly 2009
+					if(electionResultsForMandalVO.getElectionType().equals(IConstants.ASSEMBLY_ELECTION_TYPE) && electionResultsForMandalVO.getElectionYear().equals(IConstants.PRESENT_ELECTION_YEAR))
+					{
+						postalBalletsList = constituencyPageService.OtherVotesDataForAConstituency(constituencyId, electionResultsForMandalVO.getElectionYear(), electionResultsForMandalVO.getElectionType());
+						log.debug("postalBalletsList size"+postalBalletsList.size());
+					}
+					// processing ballot votes result processing
+					for(PartyElectionResultVO partyElectionResultVO: postalBalletsList)
+					{
+						if(postalBalletsMap.isEmpty() || !postalBalletsMap.containsKey(partyElectionResultVO.getPartyId()))
+						{
+							postalBalletsMap.put(partyElectionResultVO.getPartyId(), partyElectionResultVO);
+						}
+							
+					}
 					int count = 0;
 					
 					for(MandalElectionResultVO mandalElectionResultVOObj:electionResultsInMandalList)
@@ -1660,6 +1690,11 @@ public class BiElectionPageService implements IBiElectionPageService {
 						PartyResultsVO otherPartyRes = new PartyResultsVO();
 						Set<Long> keys = resultsSumMap.keySet();
 						Long totValidVotes = new Long(0);
+						Set<Long> ballotMapKeys = new HashSet<Long>(0);
+						if(!postalBalletsMap.isEmpty())
+						   ballotMapKeys = postalBalletsMap.keySet();
+						Long totBallotVotes = new Long(0);
+						String ballotVotesPercent = "";
 						for(Long partId:keys){
 							
 							if(partId.equals(new Long(0))){
@@ -1669,13 +1704,34 @@ public class BiElectionPageService implements IBiElectionPageService {
 							}
 							PartyResultsVO resltVO = resultsSumMap.get(partId);
 							totValidVotes+=resltVO.getVotesEarned();
+							
+							//for ballot votes
+							if(!postalBalletsMap.isEmpty() && postalBalletsMap.containsKey(partId)){
+								PartyElectionResultVO balotVotes = postalBalletsMap.get(partId);
+								if(balotVotes.getVotesEarned() != null)
+								resltVO.setBallotVotes(balotVotes.getVotesEarned());
+								if(balotVotes.getVotesPercentage() != null)
+								resltVO.setBallotVotesPercentage(balotVotes.getVotesPercentage());
+								
+								ballotMapKeys.remove(partId);
+							}
 							partyResultsSum.add(resltVO);
+						}
+						
+						for(Long others:ballotMapKeys){
+							PartyElectionResultVO balotVotes = postalBalletsMap.get(others);
+							totBallotVotes+=balotVotes.getVotesEarned();
 						}
 						
 						//for votes percent
 						for(PartyResultsVO resultSumPer:partyResultsSum){
 							Double votePrcnt = new BigDecimal(resultSumPer.getVotesEarned().doubleValue()/totValidVotes.doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 							resultSumPer.setPercentage(votePrcnt.toString());
+							
+							if(resultSumPer.getPartyId().equals(new Long(0))){
+								resultSumPer.setBallotVotes(totBallotVotes);
+								resultSumPer.setBallotVotesPercentage("--");
+							}
 						}
 						
 						Collections.sort(partyResultsSum, new PartyResultsVOComparator());

@@ -1217,7 +1217,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	public List<PartyElectionResultVO> OtherVotesDataForAConstituency(Long constituencyId,String electionYear,String electionType){
 		Map<Long,Double> candidateIdAndTheirVotes = new HashMap<Long,Double>(0);
 		SortedMap<Long,Double> otherVotes = new TreeMap<Long,Double>();	
-		SortedMap<Long,Long> candidateIdAndTheirRanks = new TreeMap<Long,Long>();	
+		SortedMap<Long,Long> candidateIdAndTheirRanks = new TreeMap<Long,Long>();
+		SortedMap<Long,Long> candidateIdAndTheirParty = new TreeMap<Long,Long>();
 		List<PartyElectionResultVO> partyElectionResultVOs = new ArrayList<PartyElectionResultVO>(0);
 		List list = candidateBoothResultDAO.getCandidatesResultsForElectionAndConstituencyByMandal(constituencyId,electionYear);
 		List nominationResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(constituencyId.toString(),electionYear,electionType);
@@ -1236,6 +1237,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			candidateId = Long.parseLong(parms[6].toString());
 			differenceVotes = (candidateIdAndTheirVotes.get(Long.parseLong(parms[6].toString())))-votes;
 			candidateIdAndTheirVotes.put(candidateId, differenceVotes);	
+			candidateIdAndTheirParty.put(candidateId, Long.parseLong(parms[7].toString()));
 			otherVotes.put(candidateId,differenceVotes);
 		}
 		Collection<Double> otherVotersSet = otherVotes.values();
@@ -1254,7 +1256,10 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				log.fatal("========================");
 				log.fatal("========================");
 			}else{
-				partyVotes.setVotesEarned(votesEarned);				
+				partyVotes.setVotesEarned(votesEarned);		
+				partyVotes.setPartyId(candidateIdAndTheirParty.get(votesPopulate.getKey()));
+				log.debug("votes Earned:"+partyVotes.getVotesEarned());
+				log.debug("votes party:"+partyVotes.getPartyId());
 			}
 			if((votesEarned*100)/totalDifferenceVotes<0){
 				partyVotes.setVotesPercentage("0");

@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
@@ -58,4 +59,8 @@ public interface IConstituencyPageService {
 	public List<TeshilPartyInfoVO> getTehsilPartyInfoForAConstituency(StringBuilder tehsilIds,String string, String zptcElectionType);
 	
 	public ConstituencyRevenueVillagesVO getRevenuevillagesWiseElectionResultsOfPartyInMandal(Long partyId, Long tehsilId);
+	
+	public List<PartyElectionResultVO> OtherVotesDataForAConstituency(Long constituencyId,String electionYear,String electionType);
+	
+	
 }
