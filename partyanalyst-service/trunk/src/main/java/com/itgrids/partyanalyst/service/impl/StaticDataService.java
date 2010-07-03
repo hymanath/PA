@@ -61,6 +61,7 @@ import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
+import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -4513,5 +4514,54 @@ public class StaticDataService implements IStaticDataService {
 			
 	 return partiesInAllianc;
 	}
+	
+	
+	public ElectionTrendzReportVO getConstituencyOverview(Long constituencyId,String constituencyName){
+		
+		ElectionTrendzReportVO constituencyOverView = new ElectionTrendzReportVO();
+		
+		Long latestElectionYearTotalPolledVotes=0l;
+		Long latestElectionYearVoters=0l;
+		Map<String,Long> presentYearVoters = new HashMap<String,Long>(0); 
+		presentYearVoters = populateAllByeElectionConstituencyVoterDetails();
+		List list = candidateBoothResultDAO.findConstituencyWiseVotingTrendz(Long.parseLong(getLatestAssemblyElectionId()),constituencyId);
+		for(int i=0; i<list.size(); i++){
+			Object[] params = (Object[])list.get(i);
+			latestElectionYearTotalPolledVotes+=Long.parseLong(params[5].toString());
+			latestElectionYearVoters = Long.parseLong(params[9].toString());			
+		}
+		constituencyOverView.setLatestElectionYearsTotalVoters(latestElectionYearVoters);
+		constituencyOverView.setLatestElectionYearsTotalPolledVotes(latestElectionYearTotalPolledVotes);
+		Double percentage = (latestElectionYearTotalPolledVotes*100)/(latestElectionYearVoters+0.0d);
+		String votesPercenatage = new BigDecimal(percentage).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+		constituencyOverView.setLatestElectionYearsTotalVotesPercentage(votesPercenatage);
+		
+		constituencyOverView.setPresentYearTotalVoters(presentYearVoters.get(constituencyName));
+		return constituencyOverView;   
+	}
+	
+	public Map<String,Long> populateAllByeElectionConstituencyVoterDetails(){		
+		
+		Map<String,Long> allVoters = new HashMap<String,Long>(0);
+		
+		allVoters.put("HUZURABAD", 198999l);
+		allVoters.put("SIRCILLA", 211442l);
+		allVoters.put("KORATLA", 187910l);
+		allVoters.put("DHARMAPURI", 189774l);
+		allVoters.put("VEMULAWADA", 0l);
+		allVoters.put("CHENNUR", 145615l);
+		allVoters.put("SIRPUR", 150579l);
+		allVoters.put("MANCHERIAL", 193276l);
+		allVoters.put("YELLAREDDY", 191237l);
+		allVoters.put("NIZAMABAD URBAN", 240219l);
+		allVoters.put("SIDDIPET", 0l);
+		allVoters.put("WARANGAL WEST", 210492l);
+		
+		
+		//Check Values for Vemulavada and Siddipet...
+		
+		return allVoters;		
+	}
+	
 }
 
