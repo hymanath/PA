@@ -24,6 +24,8 @@ public class PartyResultsVO {
 	private Long totalPolledVotes;
 	private Long rank;
 	private List<ConstituencyWisePartyInfoVO> constituencyWisePatiesInfoVOs;
+	private String ballotVotesPercentage;
+	private Long ballotVotes;
 	
 	// getters and setters
 	
@@ -121,6 +123,18 @@ public class PartyResultsVO {
 	@Override
 	public int hashCode(){
 		return this.partyId.hashCode();
+	}
+	public void setBallotVotesPercentage(String ballotVotesPercentage) {
+		this.ballotVotesPercentage = ballotVotesPercentage;
+	}
+	public String getBallotVotesPercentage() {
+		return ballotVotesPercentage;
+	}
+	public void setBallotVotes(Long ballotVotes) {
+		this.ballotVotes = ballotVotes;
+	}
+	public Long getBallotVotes() {
+		return ballotVotes;
 	}
 	
 }
