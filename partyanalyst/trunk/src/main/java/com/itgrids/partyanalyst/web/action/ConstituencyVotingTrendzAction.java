@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
+import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.ElectionTypeChartVO;
@@ -85,6 +86,17 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private VotersWithDelimitationInfoVO votersInfoForMandals;
 	
 	
+	private ElectionTrendzReportVO constituencyOverView;
+	
+	
+	public ElectionTrendzReportVO getConstituencyOverView() {
+		return constituencyOverView;
+	}
+
+	public void setConstituencyOverView(ElectionTrendzReportVO constituencyOverView) {
+		this.constituencyOverView = constituencyOverView;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		
@@ -348,7 +360,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		mptcElectionYears = staticDataService.getAllElectionYearsForATeshil(mptcElectionId);
 		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(0L);
 		staticPartiesList = mandalVO.getPartiesInMandal();
-		
+		constituencyOverView = staticDataService.getConstituencyOverview(Long.parseLong(constiId),constiName);
 		return SUCCESS;
 	}
 	
