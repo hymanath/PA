@@ -33,6 +33,12 @@ public class ElectionTrendzReportVO implements Serializable {
 	private ElectionTrendzOverviewVO electionTrendzOverviewVO;
 	private ElectionDetailsVO prevElectionYearsInfo;
 	
+	private Long latestElectionYearsTotalVoters;
+	private Long latestElectionYearsTotalPolledVotes;
+	private String latestElectionYearsTotalVotesPercentage;
+	
+	private Long presentYearTotalVoters;
+		
 	private ResultStatus resultStatus;
 	
     //getters and setters
@@ -148,6 +154,40 @@ public class ElectionTrendzReportVO implements Serializable {
 	public void setPrevElectionYearsInfo(ElectionDetailsVO prevElectionYearsInfo) {
 		this.prevElectionYearsInfo = prevElectionYearsInfo;
 	}
-	
+
+	public Long getPresentYearTotalVoters() {
+		return presentYearTotalVoters;
+	}
+
+	public void setPresentYearTotalVoters(Long presentYearTotalVoters) {
+		this.presentYearTotalVoters = presentYearTotalVoters;
+	}
+
+	public Long getLatestElectionYearsTotalVoters() {
+		return latestElectionYearsTotalVoters;
+	}
+
+	public void setLatestElectionYearsTotalVoters(
+			Long latestElectionYearsTotalVoters) {
+		this.latestElectionYearsTotalVoters = latestElectionYearsTotalVoters;
+	}
+
+	public Long getLatestElectionYearsTotalPolledVotes() {
+		return latestElectionYearsTotalPolledVotes;
+	}
+
+	public void setLatestElectionYearsTotalPolledVotes(
+			Long latestElectionYearsTotalPolledVotes) {
+		this.latestElectionYearsTotalPolledVotes = latestElectionYearsTotalPolledVotes;
+	}
+
+	public String getLatestElectionYearsTotalVotesPercentage() {
+		return latestElectionYearsTotalVotesPercentage;
+	}
+
+	public void setLatestElectionYearsTotalVotesPercentage(
+			String latestElectionYearsTotalVotesPercentage) {
+		this.latestElectionYearsTotalVotesPercentage = latestElectionYearsTotalVotesPercentage;
+	}
 
 }
