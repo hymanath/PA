@@ -1089,7 +1089,12 @@
               <result type="json" name="success">
            		<param name="root">biElectionResultsMainVO</param>
         	</result>       		
-        </action>        
+        </action>
+        <action name="getVotesOverViewInAConstituencyAjaxAction" class="constituencyVotingTrendzAction" method="getVotesOverViewInAConstituency"> 
+              <result type="json" name="success">
+           		<param name="root">constituencyOverView</param>
+        	</result>       		
+        </action>      
         <action name="mandalVotingTrendzForBiElectionAction" class="mandalVotingTrendzForBiElectionAction">
 			 <result name="success">/jsp/partyTrendzForBiElectionConstituencies.jsp</result>			
 		</action>

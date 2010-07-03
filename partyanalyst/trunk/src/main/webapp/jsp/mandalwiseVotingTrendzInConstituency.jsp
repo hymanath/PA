@@ -105,16 +105,9 @@
 		var assemblyElectionType='Assembly';
 		var constituencyIdGlobal = '${constiId}';
 		var constituencyName = '${constiName}';
-		var mptcChart2001,mptcChart2006,zptcChart2001,zptcChart2006
+		var mptcChart2001,mptcChart2006,zptcChart2001,zptcChart2006;	
 		var constiMandalWiseResultsChart;
 		var allPartiesCharts = '';
-		var constituencyOverViewDetails = "${constituencyOverView}";
-		var latestTotalVoters = "${constituencyOverView.latestElectionYearsTotalVoters}";
-		var totalPolledVotes = "${constituencyOverView.latestElectionYearsTotalPolledVotes}";  
-		var totalVotesPercentage = "${constituencyOverView.latestElectionYearsTotalVotesPercentage}";
-		
-		var presentTotalVoters = "${constituencyOverView.presentYearTotalVoters}";
-		
 		
 		var tehsilDetails={
 				zptcArray:[],
@@ -176,7 +169,23 @@
 				tehsilElections.mptcElectionYears.push(ob);	
 			</c:forEach>
 
-			function constituencyOverViewResult()
+			function getConstituencyOverViewResult(constituencyId,constituencyName)
+			{				
+				var heading =document.getElementById("overViewHeadingDiv");
+				var headingDIV='';
+				heading.innerHtml=headingDIV;
+				
+				var jsObj = {						
+						constituencyId:constituencyId,
+						constiName:constituencyName,
+						task:"getConstituencyVotesOverview"
+					};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+				var url = "<%=request.getContextPath()%>/getVotesOverViewInAConstituencyAjaxAction.action?"+rparam;
+				callAjax(jsObj, url);
+			}
+			
+			function constituencyOverViewResult(myResults)
 			{
 				var heading =document.getElementById("overViewHeadingDiv");
 				var headingDIV='';
@@ -187,12 +196,12 @@
 
 				headingDIV+='	<tr>';
 				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Voters for Year 2009</b></td>';
-				headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+latestTotalVoters+'</td>';
+				headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalVoters+'</td>';
 				
 				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Voters for Year 2010</b></td>';
-				if(presentTotalVoters!=0)
+				if(myResults.presentYearTotalVoters!=0)
 				{	
-					headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+presentTotalVoters+'</td>';				
+					headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+myResults.presentYearTotalVoters+'</td>';				
 				}
 				else
 				{				
@@ -203,17 +212,17 @@
 
 				headingDIV+='	<tr>';
 				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Polled Votes for Year 2009</b></td>';
-				headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+totalPolledVotes+'</td>';			
+				headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalPolledVotes+'</td>';			
 				headingDIV+='	</tr>';
 				headingDIV+='	<tr>';
 				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Votes Percentage for Year 2009</b></td>';
-				headingDIV+='		<td colspan="3" align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+totalVotesPercentage+'</td>';			
+				headingDIV+='		<td colspan="3" align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalVotesPercentage+'</td>';			
 				headingDIV+='	</tr>';
 				
 				headingDIV+='</table>';	
 				
 				headingDIV+='</fieldset>';
-				heading.innerHTML+=headingDIV; 
+				heading.innerHTML=headingDIV; 
 				
 			}
 			
@@ -254,6 +263,9 @@
 											str += '<img src="charts/'+constiMandalWiseResultsChart+'">';
 											imageDiv.innerHTML = str;
 										}	
+										if(jsObj.task == "getConstituencyVotesOverview"){
+											constituencyOverViewResult(myResults);
+										}
 										
 									}
 								catch (e) {   
@@ -395,7 +407,8 @@
 			
 			getMandalVotingTrendz(radioValue,value,text);
 			constituencyIdGlobal = value;
-			
+
+			getConstituencyOverViewResult(value,text);
 		}
 
 		function getConstituenciesInfo(distId,index)
@@ -1047,7 +1060,7 @@
 	<SCRIPT type="text/javascript"> 			
 			getConstituencyResults("2009");
 			buildMandalsVotingTrendz();		
-			constituencyOverViewResult();	
+			getConstituencyOverViewResult(constituencyIdGlobal,constituencyName);	
 			getAllZptcYears();	  
 			getAllMptcYears();
 	</script>

@@ -360,10 +360,31 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		mptcElectionYears = staticDataService.getAllElectionYearsForATeshil(mptcElectionId);
 		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(0L);
 		staticPartiesList = mandalVO.getPartiesInMandal();
-		constituencyOverView = staticDataService.getConstituencyOverview(Long.parseLong(constiId),constiName);
+		
 		return SUCCESS;
 	}
 	
+	public String getVotesOverViewInAConstituency() throws Exception
+	{
+		String param=null;			    
+		param = getTask();
+		
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}	
+		
+		Long constiId =  new Long(jObj.getString("constituencyId"));
+		String constiName = jObj.getString("constiName");
+		
+		constituencyOverView = staticDataService.getConstituencyOverview(constiId,constiName);
+		
+		return Action.SUCCESS;
+	}
+	
+
 	public String getMandalsVotingTrendz() throws Exception
 	{
 		String param=null;			    
