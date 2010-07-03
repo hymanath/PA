@@ -490,6 +490,7 @@
 	    <property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService"/>
 	    <property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
 	    <property name="staticDataService" ref="staticDataService" />
+	    <property name="constituencyPageService" ref="constituencyPageService" />
 	</bean>
     
 </beans>		
