@@ -108,6 +108,13 @@
 		var mptcChart2001,mptcChart2006,zptcChart2001,zptcChart2006
 		var constiMandalWiseResultsChart;
 		var allPartiesCharts = '';
+		var constituencyOverViewDetails = "${constituencyOverView}";
+		var latestTotalVoters = "${constituencyOverView.latestElectionYearsTotalVoters}";
+		var totalPolledVotes = "${constituencyOverView.latestElectionYearsTotalPolledVotes}";  
+		var totalVotesPercentage = "${constituencyOverView.latestElectionYearsTotalVotesPercentage}";
+		
+		var presentTotalVoters = "${constituencyOverView.presentYearTotalVoters}";
+		
 		
 		var tehsilDetails={
 				zptcArray:[],
@@ -169,6 +176,47 @@
 				tehsilElections.mptcElectionYears.push(ob);	
 			</c:forEach>
 
+			function constituencyOverViewResult()
+			{
+				var heading =document.getElementById("overViewHeadingDiv");
+				var headingDIV='';
+				headingDIV+='<fieldset style="width:90%;padding:10px;">';  		
+				headingDIV+='<legend style="background-color:#567AAF;font-family:arial,helvetica,clean,sans-serif;color:#FFFFFF;font-weight:bold;padding:10px;">Constituency OverView</legend>';
+
+				headingDIV+='<table width="90%" style="margin-left:50px;">';   
+
+				headingDIV+='	<tr>';
+				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Voters for Year 2009</b></td>';
+				headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+latestTotalVoters+'</td>';
+				
+				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Voters for Year 2010</b></td>';
+				if(presentTotalVoters!=0)
+				{	
+					headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+presentTotalVoters+'</td>';				
+				}
+				else
+				{				
+					headingDIV+='		<td align="left" style="color:#1C4B7A;"> Data Not Available</td>';
+				}					
+							
+				headingDIV+='	</tr>';
+
+				headingDIV+='	<tr>';
+				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Polled Votes for Year 2009</b></td>';
+				headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+totalPolledVotes+'</td>';			
+				headingDIV+='	</tr>';
+				headingDIV+='	<tr>';
+				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Votes Percentage for Year 2009</b></td>';
+				headingDIV+='		<td colspan="3" align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+totalVotesPercentage+'</td>';			
+				headingDIV+='	</tr>';
+				
+				headingDIV+='</table>';	
+				
+				headingDIV+='</fieldset>';
+				heading.innerHTML+=headingDIV; 
+				
+			}
+			
 		function callAjax(jsObj,url)
 		{					
 			var callback = {			
@@ -437,6 +485,8 @@
 			str += '</div>';
 			str += '<div id="selectOptionsSelectButton" style="margin-bottom:10px;padding:10px;text-align:right"></div>';
 			str += '<div id="constitutencyResultsChart"></div>';
+			str += '<div id="overViewHeadingDiv" style="padding-left:10px;"></div>';
+			str += '<div id="constituencyOverViewDiv"></div>';	
 			str += '<div id="mandalwiseVotersShareDiv" style="padding:10px;border:2px solid #E0E0D6;margin:10px;color:#707070"></div>';
 			str += '<div id="constitutencyMandalWiseResultsChart"></div>';
 			str += '<div id="mandalVotingTrendzDataDiv_head">Voting Trendz in Constituency</div>';
@@ -737,6 +787,21 @@
 						}
 						str += '</tr>';
 					}
+					if(results[i].biElectionResultsVO[j].electionType == "Assembly" && results[i].biElectionResultsVO[j].electionYear == "2009")
+					{	
+						str += '<tr>';
+						str += '<th colspan="2">Postal Ballot Votes</th>';
+						for(var sum in results[i].biElectionResultsVO[j].partyResultsSum)
+						{
+							if(results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotes != null)
+								{
+									str += '<td><font style="color:#62662B;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotes+'</font></td><td><font style="color:#62662B;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotesPercentage+'</font></td>';
+								} else 
+									str += '<td><font style="color:#62662B;font-weight:bold;">N/A</font></td><td><font style="color:#62662B;font-weight:bold;">N/A</font></td>';
+						}
+						
+						str += '</tr>';
+					}
 					str += '<tr>';
 					str += '<th colspan="2">Total</th>';
 					for(var sum in results[i].biElectionResultsVO[j].partyResultsSum)
@@ -981,7 +1046,8 @@
 	</div>
 	<SCRIPT type="text/javascript"> 			
 			getConstituencyResults("2009");
-			buildMandalsVotingTrendz();			
+			buildMandalsVotingTrendz();		
+			constituencyOverViewResult();	
 			getAllZptcYears();	  
 			getAllMptcYears();
 	</script>
