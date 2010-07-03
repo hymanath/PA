@@ -1703,8 +1703,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 								continue;
 							}
 							PartyResultsVO resltVO = resultsSumMap.get(partId);
-							totValidVotes+=resltVO.getVotesEarned();
-							
+														
 							//for ballot votes
 							if(!postalBalletsMap.isEmpty() && postalBalletsMap.containsKey(partId)){
 								PartyElectionResultVO balotVotes = postalBalletsMap.get(partId);
@@ -1713,8 +1712,10 @@ public class BiElectionPageService implements IBiElectionPageService {
 								if(balotVotes.getVotesPercentage() != null)
 								resltVO.setBallotVotesPercentage(balotVotes.getVotesPercentage());
 								
+								resltVO.setVotesEarned(resltVO.getVotesEarned() + balotVotes.getVotesEarned());
 								ballotMapKeys.remove(partId);
 							}
+							totValidVotes+=resltVO.getVotesEarned();
 							partyResultsSum.add(resltVO);
 						}
 						
