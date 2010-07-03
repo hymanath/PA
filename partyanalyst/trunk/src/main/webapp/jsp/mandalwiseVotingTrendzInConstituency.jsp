@@ -437,6 +437,7 @@
 			str += '</div>';
 			str += '<div id="selectOptionsSelectButton" style="margin-bottom:10px;padding:10px;text-align:right"></div>';
 			str += '<div id="constitutencyResultsChart"></div>';
+			str += '<div id="mandalwiseVotersShareDiv" style="padding:10px;border:2px solid #E0E0D6;margin:10px;color:#707070"></div>';
 			str += '<div id="constitutencyMandalWiseResultsChart"></div>';
 			str += '<div id="mandalVotingTrendzDataDiv_head">Voting Trendz in Constituency</div>';
 			str += '<div id="mandalVotingTrendzDataDiv">';
@@ -444,6 +445,7 @@
 			str += '	<div id="allPartiesResultsChartsPanel"></div>';
 			str += '	<div id="mandalsListInConstituency"></div>';	
 			/*
+			
 			str += '	<div id="mandalDetailsChart_body">';
 			str += '	<div style="margin-top:5px;margin-left:300px;">';
 			str += '		<div style="color:#ADADAD"> Loading ...</div>';
@@ -586,7 +588,20 @@
 			var bodyElmt = document.getElementById("mandalVotingTrendzData");
 			var graphElmt = document.getElementById("mandalDetailsChart_body");
 			var mandalsListElmt = document.getElementById("mandalsListInConstituency");
-		
+			var mandalvotersDetailsEl = document.getElementById("mandalwiseVotersShareDiv");			
+			var mandalwiseVotersShare = resultsData.constituencyVO.assembliesOfParliamentInfo;
+			var mdlwiseVotersDetailsStr = '';
+			var mdlwiseVotersDetailsStr = '<P><B>Mandalwise Voters Share in Constituency</B></P>';
+			mdlwiseVotersDetailsStr+='<Table width="70%" border="0" cellpadding="5" cellspacing="5">';
+			mdlwiseVotersDetailsStr+='<TR>';
+			for (var x in mandalwiseVotersShare[0].votersInfoForMandalVO)
+			{
+				mdlwiseVotersDetailsStr+='<TH>'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'</TH>';
+				mdlwiseVotersDetailsStr+='<TD style="color:Blue;font-weight:bold;">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].percent+' %</Td>';			
+			}
+			mdlwiseVotersDetailsStr+='</TR>';
+			mdlwiseVotersDetailsStr+='</Table>';
+			mandalvotersDetailsEl.innerHTML = mdlwiseVotersDetailsStr;
 			var results = resultsData.biElectionResultsMainVO;
 			//Hiding busy cursor Image
 			var cursorImgElmt = document.getElementById('cursorImg');
@@ -727,8 +742,7 @@
 					for(var sum in results[i].biElectionResultsVO[j].partyResultsSum)
 					{
 						str += '<td><font style="color:GoldenRod;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].votesEarned+'</font></td><td><font style="color:GoldenRod;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].percentage+'</font></td>';
-					}
-					
+					}					
 					str += '</tr>';
 					str += '</table>';
 					str += '</td>';
