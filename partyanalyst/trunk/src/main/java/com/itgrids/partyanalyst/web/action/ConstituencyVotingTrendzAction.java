@@ -29,12 +29,16 @@ import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.ElectionTypeChartVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
+import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
@@ -71,11 +75,14 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private String constiId;
 	private String constiName;
 	private List<SelectOptionVO> electionTypes;
-	BiElectionResultsMainVO biElectionResultsMainVO;
+	private BiElectionResultsMainVO biElectionResultsMainVO;
 	private List<BiElectionDistrictVO> districtsAndConsts;
 	private List<SelectOptionVO> staticPartiesList;
 	private MandalVO mandalVO;
 	private ChartColorsAndDataSetVO chartColorsAndDataSetVO;
+	private ConstituencyInfoVO constituencyDetails;
+	private ConstituencyVO constituencyVO; 
+	private VotersWithDelimitationInfoVO votersInfoForMandals;
 	
 	
 	public void setServletRequest(HttpServletRequest request) {
@@ -109,6 +116,15 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		this.response = response;
 	}
 
+	public VotersWithDelimitationInfoVO getVotersInfoForMandals() {
+		return votersInfoForMandals;
+	}
+
+	public void setVotersInfoForMandals(
+			VotersWithDelimitationInfoVO votersInfoForMandals) {
+		this.votersInfoForMandals = votersInfoForMandals;
+	}
+
 	public HttpSession getSession() {
 		return session;
 	}
@@ -123,6 +139,22 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 
 	public void setContext(ServletContext context) {
 		this.context = context;
+	}
+
+	public ConstituencyInfoVO getConstituencyDetails() {
+		return constituencyDetails;
+	}
+
+	public void setConstituencyDetails(ConstituencyInfoVO constituencyDetails) {
+		this.constituencyDetails = constituencyDetails;
+	}
+
+	public ConstituencyVO getConstituencyVO() {
+		return constituencyVO;
+	}
+
+	public void setConstituencyVO(ConstituencyVO constituencyVO) {
+		this.constituencyVO = constituencyVO;
 	}
 
 	public List<BiElectionResultsVO> getBiElectionResultsVO() {
@@ -342,6 +374,9 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		biElectionResultsMainVO = new BiElectionResultsMainVO();
 		biElectionResultsMainVO.setBiElectionResultsMainVO(biElectionResultsVO);
 		biElectionResultsMainVO.setChartsListForElectionTypes(getElectionResultsPieChart(constiId, constiName));
+		
+		constituencyVO = getVotersShareInMandalsPieChart(constiId);
+		biElectionResultsMainVO.setConstituencyVO(constituencyVO);
 		
 		return Action.SUCCESS;
 	}
@@ -778,8 +813,90 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			  
 			  chartColorsAndDataSetVO.setChartName(chartName);
 		}
+               
 	  return Action.SUCCESS;
 	}
 
 
+    public ConstituencyVO getVotersShareInMandalsPieChart(Long constituencyId){
+		
+		constituencyDetails = new ConstituencyInfoVO();
+		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId); 
+		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
+		
+		
+		String pieChart = "";
+		String pieChartPath = "";
+		String title = "";
+		String[] chartNames = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
+		String[] extraInfo = new String [constituencyVO.getAssembliesOfParliamentInfo().size()];
+		int i=0;
+		
+		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
+			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
+			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+"In Bi-Elections"+".png";
+			pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
+			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
+				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+					title = "Each Mandal Voters Share* After Delimitation";
+				else
+					title = "Each Assembly Voters Share* After Delimitation";
+				extraInfo[i] = "* Based On 2009 Elections Data";
+			}
+			else{
+				if(constituencyDetails.getConstituencyType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+					title = "Each Mandal Voters Share** Before Delimitation";
+				else
+					title = "Each Assembly Voters Share** Before Delimitation";
+				extraInfo[i] = "** Based On 2004 Elections Data";
+			}
+			
+				
+			if(votersInMandalOrAC.getVotersInfoForMandalVO().size() > 0)
+				//ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(votersInMandalOrAC.getVotersInfoForMandalVO()), pieChartPath, null,true,260,270);
+				votersInfoForMandals = getMandalsVotesShare(votersInMandalOrAC.getVotersInfoForMandalVO(),votersInMandalOrAC.getYear());
+			    if(votersInfoForMandals != null){
+			    	List<VotersWithDelimitationInfoVO> votersInfoVO = new ArrayList<VotersWithDelimitationInfoVO>();
+			    	votersInfoVO.add(votersInfoForMandals);
+			    	
+			    	constituencyVO.setAssembliesOfParliamentInfo(votersInfoVO);
+			    }
+			    	
+			
+			//chartNames[i++] = pieChart;
+			}
+		}
+		
+		constituencyVO.setPieChartNames(chartNames);
+		constituencyVO.setExtraInfo(extraInfo);
+		
+	 return constituencyVO;
+	}
+    
+    public VotersWithDelimitationInfoVO getMandalsVotesShare(List<VotersInfoForMandalVO> votersInfoForMandalVO,String year){
+    	
+    	VotersWithDelimitationInfoVO votersInfo = null;
+    	if(votersInfoForMandalVO != null && votersInfoForMandalVO.size() > 0){
+    		votersInfo = new VotersWithDelimitationInfoVO();
+    		Long totalVotes = 0l;
+    		BigDecimal percentage;
+    		
+    		votersInfo.setYear(year);
+    		List<VotersInfoForMandalVO> votersInfoForMandal = new ArrayList<VotersInfoForMandalVO>();
+    		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO)
+    			totalVotes += new Long(votersInMandalOrAC.getTotalVoters());
+
+    		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO){
+    			percentage = new BigDecimal(new Long(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
+    			//dataset.setValue(votersInMandalOrAC.getMandalName()+" ["+percentage.toString()+"%]",percentage);
+    			VotersInfoForMandalVO votersInf = new VotersInfoForMandalVO();
+    			votersInf.setMandalName(votersInMandalOrAC.getMandalName());
+    			votersInf.setPercent(percentage.toString());
+    			votersInfoForMandal.add(votersInf);
+    		}	
+    		votersInfo.setVotersInfoForMandalVO(votersInfoForMandal);
+    		
+    	}
+     return votersInfo;
+    }
 }
