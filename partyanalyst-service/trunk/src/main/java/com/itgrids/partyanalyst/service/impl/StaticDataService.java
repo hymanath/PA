@@ -4376,7 +4376,7 @@ public class StaticDataService implements IStaticDataService {
 	/**
 	 * This method returns Township-Wise voting trends for a mandal for different electionIds.
 	 * @author ravykirany@gmail.com
-	 * @serialData 29-06-10
+	 * Date:- 29-06-10
 	 * @param tehsilId
 	 * @param electionIds
 	 */
@@ -4469,6 +4469,12 @@ public class StaticDataService implements IStaticDataService {
 		return mandalVO;
 	}
 
+	/**
+	 * This method gets latest assembly elecion-id.
+	 * @author Ravi Kiran.Y
+	 * Date:02-07-10
+	 * @return
+	 */
 	public String getLatestAssemblyElectionId(){
 		Long stateId =1l;
 		List result = electionDAO.findElectionIdByElectionTypeAndYear(IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,stateId);
@@ -4515,31 +4521,59 @@ public class StaticDataService implements IStaticDataService {
 	 return partiesInAllianc;
 	}
 	
-	
+
+	/**
+	 * This method sets all the Bye-Election Constituencies with the present-year(2010) total voters as well as 
+	 * latest assembly election year voter details.
+	 * @author Ravi Kiran.Y
+	 * Date:03-07-10
+	 * @return
+	 */
 	public ElectionTrendzReportVO getConstituencyOverview(Long constituencyId,String constituencyName){
 		
 		ElectionTrendzReportVO constituencyOverView = new ElectionTrendzReportVO();
-		
-		Long latestElectionYearTotalPolledVotes=0l;
-		Long latestElectionYearVoters=0l;
-		Map<String,Long> presentYearVoters = new HashMap<String,Long>(0); 
-		presentYearVoters = populateAllByeElectionConstituencyVoterDetails();
-		List list = candidateBoothResultDAO.findConstituencyWiseVotingTrendz(Long.parseLong(getLatestAssemblyElectionId()),constituencyId);
-		for(int i=0; i<list.size(); i++){
-			Object[] params = (Object[])list.get(i);
-			latestElectionYearTotalPolledVotes+=Long.parseLong(params[5].toString());
-			latestElectionYearVoters = Long.parseLong(params[9].toString());			
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			Long latestElectionYearTotalPolledVotes=0l;
+			Long latestElectionYearVoters=0l;
+			Map<String,Long> presentYearVoters = new HashMap<String,Long>(0); 
+			presentYearVoters = populateAllByeElectionConstituencyVoterDetails();
+			List list = candidateBoothResultDAO.findConstituencyWiseVotingTrendz(Long.parseLong(getLatestAssemblyElectionId()),constituencyId);
+			for(int i=0; i<list.size(); i++){
+				Object[] params = (Object[])list.get(i);
+				latestElectionYearTotalPolledVotes+=Long.parseLong(params[5].toString());
+				latestElectionYearVoters = Long.parseLong(params[9].toString());			
+			}
+			constituencyOverView.setLatestElectionYearsTotalVoters(latestElectionYearVoters);
+			constituencyOverView.setLatestElectionYearsTotalPolledVotes(latestElectionYearTotalPolledVotes);
+			Double percentage = (latestElectionYearTotalPolledVotes*100)/(latestElectionYearVoters+0.0d);
+			String votesPercenatage = new BigDecimal(percentage).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
+			constituencyOverView.setLatestElectionYearsTotalVotesPercentage(votesPercenatage);
+			
+			constituencyOverView.setPresentYearTotalVoters(presentYearVoters.get(constituencyName.toUpperCase()));
+			
+			resultStatus.setResultPartial(false);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			constituencyOverView.setResultStatus(resultStatus);
+			
+		}catch(Exception e){
+			e.printStackTrace();	
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			constituencyOverView = new ElectionTrendzReportVO();
+			constituencyOverView.setResultStatus(resultStatus);
 		}
-		constituencyOverView.setLatestElectionYearsTotalVoters(latestElectionYearVoters);
-		constituencyOverView.setLatestElectionYearsTotalPolledVotes(latestElectionYearTotalPolledVotes);
-		Double percentage = (latestElectionYearTotalPolledVotes*100)/(latestElectionYearVoters+0.0d);
-		String votesPercenatage = new BigDecimal(percentage).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
-		constituencyOverView.setLatestElectionYearsTotalVotesPercentage(votesPercenatage);
 		
-		constituencyOverView.setPresentYearTotalVoters(presentYearVoters.get(constituencyName));
 		return constituencyOverView;   
 	}
 	
+	
+	/**
+	 * This method sets all the Bye-Election Constituencies with the present-year(2010) total voters.
+	 * @author Ravi Kiran.Y
+	 * Date:03-07-10
+	 * @return
+	 */
 	public Map<String,Long> populateAllByeElectionConstituencyVoterDetails(){		
 		
 		Map<String,Long> allVoters = new HashMap<String,Long>(0);
