@@ -106,7 +106,7 @@
 		var constituencyIdGlobal = '${constiId}';
 		var constituencyName = '${constiName}';
 		var mptcChart2001,mptcChart2006,zptcChart2001,zptcChart2006
-		
+		var constiMandalWiseResultsChart;
 		var allPartiesCharts = '';
 		
 		var tehsilDetails={
@@ -198,6 +198,13 @@
 										} else if(jsObj.task == "constituencyResults")
 										{
 											showChartData(myResults);
+										} else if(jsObj.task == "getConstituencyResultsBySubLocations")
+										{
+											constiMandalWiseResultsChart = myResults.detailedChartPath;
+											var imageDiv = document.getElementById("constitutencyMandalWiseResultsChart");
+											var str = '';
+											str += '<img src="charts/'+constiMandalWiseResultsChart+'">';
+											imageDiv.innerHTML = str;
 										}	
 										
 									}
@@ -430,7 +437,7 @@
 			str += '</div>';
 			str += '<div id="selectOptionsSelectButton" style="margin-bottom:10px;padding:10px;text-align:right"></div>';
 			str += '<div id="constitutencyResultsChart"></div>';
-
+			str += '<div id="constitutencyMandalWiseResultsChart"></div>';
 			str += '<div id="mandalVotingTrendzDataDiv_head">Voting Trendz in Constituency</div>';
 			str += '<div id="mandalVotingTrendzDataDiv">';
 			str += '<div id="mandalVotingTrendzDataDiv_body" class="yui-skin-sam">';
@@ -838,6 +845,18 @@
 			}
 		    initializeMptcResultsTableForParty(); 
 		}
+
+		function getConstituencyResults(elecYear){
+			var jsObj = {
+				constituencyId:constituencyIdGlobal,
+				electionYear:elecYear,
+				task:"getConstituencyResultsBySubLocations"
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/assemblyWiseParliamentResultAction.action?"+rparam;
+			callAjax(jsObj, url);
+		}
+		
 	</script>
 
 </head>
@@ -947,7 +966,7 @@
 		</div>
 	</div>
 	<SCRIPT type="text/javascript"> 			
-			
+			getConstituencyResults("2009");
 			buildMandalsVotingTrendz();			
 			getAllZptcYears();	  
 			getAllMptcYears();
