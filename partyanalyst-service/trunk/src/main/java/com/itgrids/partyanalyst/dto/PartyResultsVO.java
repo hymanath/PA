@@ -26,6 +26,7 @@ public class PartyResultsVO {
 	private List<ConstituencyWisePartyInfoVO> constituencyWisePatiesInfoVOs;
 	private String ballotVotesPercentage;
 	private Long ballotVotes;
+	private String diffPercent;
 	
 	// getters and setters
 	
@@ -135,6 +136,12 @@ public class PartyResultsVO {
 	}
 	public Long getBallotVotes() {
 		return ballotVotes;
+	}
+	public String getDiffPercent() {
+		return diffPercent;
+	}
+	public void setDiffPercent(String diffPercent) {
+		this.diffPercent = diffPercent;
 	}
 	
 }
