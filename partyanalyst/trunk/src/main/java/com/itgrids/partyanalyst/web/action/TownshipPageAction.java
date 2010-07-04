@@ -101,7 +101,7 @@ public class TownshipPageAction extends ActionSupport implements ServletRequestA
 		log.debug("Total Parties In Revenue Village::"+partiesInTownship.size());
 		String chartName = "allPartiesPerformanceInAllRVElections_"+townshipId+"_"+townshipName+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-    	ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+townshipName+" Revenue Village", "Elections", "Percentages", createDataset(acPcElectionResultsForParties), chartPath,260,600, null);
+    	ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+townshipName+" Revenue Village", "Elections", "Percentages", createDataset(acPcElectionResultsForParties), chartPath,260,600, null,false);
 		
 		return SUCCESS;
 	}
