@@ -26,6 +26,7 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.StandardEntityCollection;
 import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.CombinedDomainCategoryPlot;
 import org.jfree.chart.plot.CombinedRangeCategoryPlot;
@@ -626,5 +627,44 @@ public class ChartProducer {
 				}
 	}
 	
+public static void createLabeledPieChart(String title,final DefaultPieDataset dataset,String fileName, Color[] colors, boolean legend, int height, int width){
+		
+		JFreeChart chart = ChartFactory.createPieChart(title, dataset, false, true, false);
+		//To modify the title generated 
+		chart.getTitle().setFont(new Font("SansSerif", Font.BOLD, 11));
+		chart.getTitle().setPaint(new Color(0X89745D));
+        PiePlot plot = (PiePlot)chart.getPlot();
+        plot.setLabelGenerator(new StandardPieSectionLabelGenerator());
+        plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
+        plot.setNoDataMessage("No data available");
+        //plot.setCircular(false);
+        plot.setLabelGap(0.02);
+        plot.setInteriorGap(0.01);
+        plot.setMaximumLabelWidth(0.30);	
+       // plot.setLabelLinkStyle(PieLabelLinkStyle.CUBIC_CURVE);
+        // Specify the colors here
+        if(colors != null){
+        	PieRenderer renderer = new PieRenderer(colors);
+            renderer.setColor(plot, dataset);
+            
+        }                
+        plot.setBackgroundPaint(Color.WHITE);
+        
+        // To disable to category labels in the graph plot
+         
+        plot.setOutlineVisible(false);       
+               
+        final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+				
+        try
+        {
+            // This will create a PNG image
+            ChartUtilities.saveChartAsPNG(new File(fileName), chart, 280, 280,info);  //	width height best viewed 280, 180
+        }
+        catch (Exception e)
+        {
+            System.out.println("Exception while creating the chart");
+        }
+	}
 	
 }
