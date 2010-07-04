@@ -137,7 +137,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+".png";
 	        String chartLocation = context.getRealPath("/")+ "charts\\" + chartPath;
 	        if(partiesResults.size() > 0)
-	        	ChartProducer.createLineChart("", "Elections", "Percentages", createDataset(partiesResults), chartLocation,300,900, null );
+	        	ChartProducer.createLineChart("", "Elections", "Percentages", createDataset(partiesResults), chartLocation,500,900, null,true );
 		}
 		
 		if(elections!=null){
