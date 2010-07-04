@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.helper;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
@@ -395,7 +396,7 @@ public class ChartProducer {
 		}
 	}
 
-	public static void createLineChart(String title, String xAxis, String yAxis, CategoryDataset dataset, String path,int height,int width, List<Color> colors){
+	public static void createLineChart(String title, String xAxis, String yAxis, CategoryDataset dataset, String path,int height,int width, List<Color> colors,Boolean thickLines){
 		final NumberAxis seatsRangeAxis = new NumberAxis(yAxis);
         seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
         final LineAndShapeRenderer seatsRenderer = new LineAndShapeRenderer();
@@ -405,11 +406,12 @@ public class ChartProducer {
         seatsPlot.setDomainGridlinesVisible(true);
         seatsPlot.setForegroundAlpha(0.5f);
         
+        
         final CategoryAxis domainAxis = new CategoryAxis(xAxis);
         domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
         CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
         plot.add(seatsPlot, 2);
-       	    
+               
         GradientPaint gp;
         
         if(colors != null){
@@ -421,9 +423,22 @@ public class ChartProducer {
             	seatsRenderer.setSeriesPaint(i, gp);
             }
         }
-        	
         
-          
+        //for thick lines
+        if(thickLines){
+        log.debug(" Partys Count in Dataset -- " + dataset.getRowCount());
+        
+        for(int i=0;i<dataset.getRowCount();i++){
+        	seatsRenderer.setSeriesStroke(
+            			i, new BasicStroke(
+            			1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+            			1.0f, null, 0.0f
+            			)
+            			);
+        	seatsPlot.setBackgroundPaint(new Color(219, 223, 225));
+        }
+        }
+        	
         final JFreeChart chart = new JFreeChart(title,  plot);
         chart.setBackgroundPaint(Color.WHITE);
 		try	 {
