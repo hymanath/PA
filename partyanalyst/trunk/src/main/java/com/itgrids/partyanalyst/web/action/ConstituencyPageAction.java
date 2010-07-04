@@ -12,7 +12,9 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -41,8 +43,10 @@ import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.DelimitationConstituencyMandalResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
+import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzOverviewVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
+import com.itgrids.partyanalyst.dto.ElectionTypeChartVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
@@ -968,13 +972,15 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			
 			if(jObj.getString("task").equalsIgnoreCase("getZptcElectionResults")){
 				try{
-					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.ZPTC_ELECTION_TYPE,jObj.getString("constituencyType")); 
+					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.ZPTC_ELECTION_TYPE,jObj.getString("constituencyType"));
+					createPieChartForElectionTypeNElectionYear(constituencyWiseAllPartyTrends,jObj.getString("electionYear"),IConstants.ZPTC_ELECTION_TYPE);
 					}catch(Exception ex){
 					log.debug("No data is available...");
 				}
 			}else if(jObj.getString("task").equalsIgnoreCase("getMptcElectionResults")){
 				try{
 					constituencyWiseAllPartyTrends = constituencyPageService.getPartyWiseZptcOrMptcElectionDataForAConstituency(jObj.getLong("constituencyId"),jObj.getString("electionYear"),IConstants.MPTC_ELECTION_TYPE,jObj.getString("constituencyType"));
+					createPieChartForElectionTypeNElectionYear(constituencyWiseAllPartyTrends,jObj.getString("electionYear"),IConstants.MPTC_ELECTION_TYPE);
 					}catch(Exception ex){
 					log.debug("No data is available...");
 				}
@@ -985,6 +991,85 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 	  }
 	  return SUCCESS;
 }
+  
+	public void createPieChartForElectionTypeNElectionYear(List<TeshilPartyInfoVO> result,String electionYear,String electionType)
+	{		
+		String chartName = result.get(0).getChartName();
+		String localChart = null;
+		String chartPath = context.getRealPath("/") + "charts\\" + chartName;		
+		Double otherPartyVotesPercent = 0D;
+		ElectionTypeChartVO electionTypeChartVO = new ElectionTypeChartVO();
+		String chartTitle = ""+electionType+" - "+electionYear;
+		final DefaultPieDataset dataset = new DefaultPieDataset();
+		Set<Color> color = new LinkedHashSet<Color>();
+		String chartType = "selectedParties";
+		Color[] colors = null;
+		
+		if(chartType.equalsIgnoreCase("selectedParties"))
+			colors = new Color[5];
+		int j=0;
+		for(int i=0; i<result.size(); i++ )
+		{		
+			String partyName = result.get(i).getPartyName(); 
+			Double votesPercent = Double.valueOf(result.get(i).getPercentageOfVotesWonByParty());
+			log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
+						
+			 if(chartType.equalsIgnoreCase("selectedParties"))
+			{
+				if(partyName.equalsIgnoreCase(IConstants.INC) || partyName.equalsIgnoreCase(IConstants.TDP) || partyName.equalsIgnoreCase(IConstants.TRS) || partyName.equalsIgnoreCase(IConstants.BJP) 
+						|| partyName.equals(IConstants.PRP))
+				{				
+					if(partyName.equals(IConstants.INC))
+					{
+						colors[j++]=IConstants.INC_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					}				
+					else
+					if(partyName.equals(IConstants.PRP))
+					{
+						colors[j++]=IConstants.PRP_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					}			
+					else
+					if(partyName.equals(IConstants.TDP))
+					{
+						colors[j++]=IConstants.TDP_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					}	
+					else
+					if(partyName.equals(IConstants.TRS))
+					{
+						colors[j++]=IConstants.TRS_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					}										
+					else
+					if(partyName.equals(IConstants.BJP))
+					{
+						colors[j++]=IConstants.BJP_COLOR;
+						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+					}					
+					BigDecimal	otherPartyVotes = new BigDecimal(otherPartyVotesPercent).setScale(2, BigDecimal.ROUND_HALF_UP);				
+					dataset.setValue(partyName+"-"+otherPartyVotes.toString()+"%",otherPartyVotes);
+				}	
+				else
+				{
+					otherPartyVotesPercent+=votesPercent;
+				}				
+			}
+		}
+		if(chartType.equalsIgnoreCase("selectedParties")){			
+			BigDecimal	otherPartyVotes = new BigDecimal(otherPartyVotesPercent).setScale(2, BigDecimal.ROUND_HALF_UP);			
+			dataset.setValue("Oth*"+"-"+otherPartyVotes.toString()+"%",otherPartyVotes);
+			colors[j] = IConstants.DEFAULT_COLOR;
+			ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , colors,true,250,250);
+			localChart = chartName;
+		}
+		
+		electionTypeChartVO.setChartName(localChart);
+		electionTypeChartVO.setElectionType(electionType);
+		electionTypeChartVO.setElectionYear(electionYear);	
+			
+	}
   
   public String getCandidateWiseConstituencyZptcOrMptcElectionTrends(){
 
