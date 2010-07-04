@@ -20,7 +20,14 @@ public class TeshilPartyInfoVO {
 	private List<TeshilPartyInfoVO> muncipalityVO; 
 	private String latestMuncipalElectionYear;
 	private ResultStatus resultStatus;
+	private String chartName;
 	
+	public String getChartName() {
+		return chartName;
+	}
+	public void setChartName(String chartName) {
+		this.chartName = chartName;
+	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}

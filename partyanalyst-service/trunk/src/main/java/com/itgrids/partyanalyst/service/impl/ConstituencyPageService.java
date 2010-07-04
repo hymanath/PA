@@ -1431,7 +1431,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					}				
 				}				
 			}				
-			teshilPartyInfoVO = getTehsilPartyInfoForAConstituency(tehsilIds,electionYear,electionType);
+			teshilPartyInfoVO = getTehsilPartyInfoForAConstituency(tehsilIds,electionYear,electionType,constituencyId);
 			allteshilPartyInfo.addAll(teshilPartyInfoVO); 
 			return allteshilPartyInfo;
 		}catch(Exception e){
@@ -1574,7 +1574,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 * @param electionType
 	 * @return
 	 */
-	public List<TeshilPartyInfoVO> getTehsilPartyInfoForAConstituency(StringBuilder tehsilIds,String electionYear,String electionType){
+	public List<TeshilPartyInfoVO> getTehsilPartyInfoForAConstituency(StringBuilder tehsilIds,String electionYear,String electionType,Long constituencyId){
 		try{
 			log.debug("Entered in to getTehsilPartyInfoForAConstituency() method..");
 			BigDecimal percentage = new BigDecimal(0.0);
@@ -1613,7 +1613,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 						teshilPartyInfoVo.setSeatsWonByParty(Long.parseLong(winningSeats.get(parms[0].toString()).toString()));
 					}else{
 						teshilPartyInfoVo.setSeatsWonByParty(0L);
-					}				
+					}					
+					teshilPartyInfoVo.setChartName("PartyTrendsInConstituency_"+constituencyId+"forElectionType"+electionType+"andElectionYear"+electionYear+"_piechart"+".png");					
 				teshilPartyInfoVO.add(teshilPartyInfoVo);
 			}		
 			return teshilPartyInfoVO;

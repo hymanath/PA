@@ -4202,12 +4202,12 @@ public class StaticDataService implements IStaticDataService {
 			if(electionResult.getResultStatus().getResultCode()!=1){
 				electionResults.add(electionResult);
 			}
-			tehsilVO =  constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE);
+			tehsilVO =  constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE,constituencyId);
 			if(tehsilVO!=null){
 				electionResults.add(populateDataForLocalElections(tehsilVO,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE));
 			}
 			
-			tehsilVO =  constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE);
+			tehsilVO =  constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE,constituencyId);
 			if(tehsilVO!=null){
 				electionResults.add(populateDataForLocalElections(tehsilVO,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE));
 			}
@@ -4221,12 +4221,12 @@ public class StaticDataService implements IStaticDataService {
 			if(electionResult.getResultStatus().getResultCode()!=1){
 				electionResults.add(electionResult);
 			}
-			tehsilVO =  constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE);
+			tehsilVO =  constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE,constituencyId);
 			if(tehsilVO!=null){
 				electionResults.add(populateDataForLocalElections(tehsilVO,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE));
 			}
 			
-			tehsilVO =  constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE);
+			tehsilVO =  constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE,constituencyId);
 			if(tehsilVO!=null){
 				electionResults.add(populateDataForLocalElections(tehsilVO,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.MPTC_ELECTION_TYPE));
 			}
