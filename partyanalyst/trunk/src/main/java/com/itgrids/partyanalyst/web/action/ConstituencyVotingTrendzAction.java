@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.ArrayList;
@@ -51,6 +52,8 @@ import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.PartyResultVOComparator;
+import com.itgrids.partyanalyst.utils.VotersInfoForMandalVOComparator;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -839,6 +842,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
     			votersInf.setPercent(percentage.toString());
     			votersInfoForMandal.add(votersInf);
     		}	
+    		Collections.sort(votersInfoForMandal, new VotersInfoForMandalVOComparator());
     		votersInfo.setVotersInfoForMandalVO(votersInfoForMandal);
     		
     	}
