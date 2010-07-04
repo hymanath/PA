@@ -267,9 +267,9 @@ public class ElectionComparisonReportAction extends ActionSupport implements
             else
             	xaxis = "States";
             
-            ChartProducer.createLineChart("", xaxis, "Votes Percentage", createDatasetForLineChart(electionComparisonReportVO), lineChartPath,300,880, null );
-            ChartProducer.createLineChart("", xaxis, "Votes Percentage", createDatasetTotalPercentForLineChart(electionComparisonReportVO), totalPercentLineChartPath,300,880, null );
-            ChartProducer.createLineChart("", xaxis, "Seats Won", createDatasetForSeatsLineChart(electionComparisonReportVO), seatsLineChartPath,300,880, null );
+            ChartProducer.createLineChart("", xaxis, "Votes Percentage", createDatasetForLineChart(electionComparisonReportVO), lineChartPath,300,880, null,false );
+            ChartProducer.createLineChart("", xaxis, "Votes Percentage", createDatasetTotalPercentForLineChart(electionComparisonReportVO), totalPercentLineChartPath,300,880, null,false );
+            ChartProducer.createLineChart("", xaxis, "Seats Won", createDatasetForSeatsLineChart(electionComparisonReportVO), seatsLineChartPath,300,880, null,false );
             electionComparisonReportVO.setPercentageChart(lineChartName);
             electionComparisonReportVO.setSeatsWonChart(seatsLineChartName);
             electionComparisonReportVO.setTotalPercentChart(totalPercentLineChartName);
