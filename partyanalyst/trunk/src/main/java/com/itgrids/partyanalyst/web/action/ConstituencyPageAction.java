@@ -572,13 +572,13 @@ public class ConstituencyPageAction extends ActionSupport implements
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
        
         List<Color> colors = new ArrayList<Color>();
-   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, colors), chartPath,260,700, colors );
+   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, colors), chartPath,260,700, colors,false );
    		
    		enlargedChartName = "enlargedImgOfAllPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
         String enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedChartName;
        
         List<Color> enlargedChartPathColors = new ArrayList<Color>();
-   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, enlargedChartPathColors), enlargedChartPath,600,800, enlargedChartPathColors );
+   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, enlargedChartPathColors), enlargedChartPath,600,800, enlargedChartPathColors ,false);
 		
    		navigationVO = staticDataService.findHirarchiForNavigation(constituencyId, IConstants.CONSTITUENCY_LEVEL);
    		
@@ -1067,11 +1067,11 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         constituencyRevenueVillagesVO.setChartPath(chartName);
-        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,260,700, null);
+        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,260,700, null,false);
         
         String detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
         constituencyRevenueVillagesVO.setDetailedChartPath(detailedChartName);
-        ChartProducer.createLineChart(chartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), detailedChartPath,600,800, null);   
+        ChartProducer.createLineChart(chartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), detailedChartPath,600,800, null,false);   
       
 	  return SUCCESS;
   }
@@ -1106,13 +1106,13 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		  chartTitle = "Mandal Wise Election Results For "+obj.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
 		  chartName = "mandalWiseParliamentElectionsResults_"+obj.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 		  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj), chartPath,260,700, null);
+		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj), chartPath,260,700, null,false);
 		  obj.setChartPath(chartName);
 		  
 		  detailedChartTitle = "Mandal Wise Election Results For "+obj.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
 		  detailedChartName = "detailedMandalWiseParliamentElectionsResults_"+obj.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 		  detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
-		  ChartProducer.createLineChart(detailedChartTitle, detailedDomainAxisName, "Percentages", createDataset(obj), detailedChartPath,600,800, null);
+		  ChartProducer.createLineChart(detailedChartTitle, detailedDomainAxisName, "Percentages", createDataset(obj), detailedChartPath,600,800, null,false);
 		  obj.setDetailedChartPath(detailedChartName);
 	  }
 	  
