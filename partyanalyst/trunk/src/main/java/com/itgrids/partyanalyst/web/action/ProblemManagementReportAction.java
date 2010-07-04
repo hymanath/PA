@@ -377,7 +377,7 @@ public class ProblemManagementReportAction extends ActionSupport implements
 			String chartName = "allProblemsInfoByStatusAndDate_"+accessType+"_"+accessValue+".png";
 	        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 	       
-			ChartProducer.createLineChart("Problems That Are Fixed And Posted From Last 10 Days", "Days", "No. Of Problems",createDataset(problemsCountbyStatus), chartPath,260,550, null );
+			ChartProducer.createLineChart("Problems That Are Fixed And Posted From Last 10 Days", "Days", "No. Of Problems",createDataset(problemsCountbyStatus), chartPath,260,550, null,false );
 					
 			locationwiseProblemStatusInfoVO.setLineChartPath(chartName);
 		}	
