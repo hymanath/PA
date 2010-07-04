@@ -156,7 +156,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 	        ChartProducer.createLineChart("All Parties Performance In "+electionType+" "+electionYear + 
 	        		" In "+constituencyObj.getConstituencyName()+" Constituency By Revenue Villages In "+mandalName+" Mandal" , 
-	        		"Revenue Villages", "Percentages", createDataset(constituencyObj), chartPath,260,700, null);	
+	        		"Revenue Villages", "Percentages", createDataset(constituencyObj), chartPath,400,700, null,true);	
 	        constituencyObj.setChartPath(chartName);
 		}
 		
