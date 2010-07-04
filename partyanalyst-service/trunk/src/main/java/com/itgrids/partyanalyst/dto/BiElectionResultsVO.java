@@ -21,6 +21,8 @@ public class BiElectionResultsVO implements Serializable {
 	private String constituencyName;
 	
 	private List<ElectionResultsForMandalVO> biElectionResultsVO;
+	private List<PartyResultsVO> crossVotingResults;
+	private List<PartyResultsVO> nonPartiParties;
     private ResultStatus resultStatus; 
 		
 	private List<SelectOptionVO> participatedParties;	
@@ -65,6 +67,22 @@ public class BiElectionResultsVO implements Serializable {
 
 	public void setParticipatedParties(List<SelectOptionVO> participatedParties) {
 		this.participatedParties = participatedParties;
+	}
+
+	public List<PartyResultsVO> getCrossVotingResults() {
+		return crossVotingResults;
+	}
+
+	public void setCrossVotingResults(List<PartyResultsVO> crossVotingResults) {
+		this.crossVotingResults = crossVotingResults;
+	}
+
+	public List<PartyResultsVO> getNonPartiParties() {
+		return nonPartiParties;
+	}
+
+	public void setNonPartiParties(List<PartyResultsVO> nonPartiParties) {
+		this.nonPartiParties = nonPartiParties;
 	}
 
 }
