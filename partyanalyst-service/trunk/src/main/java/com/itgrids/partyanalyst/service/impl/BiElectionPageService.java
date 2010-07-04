@@ -1785,8 +1785,15 @@ public class BiElectionPageService implements IBiElectionPageService {
 				
 				for(PartyResultsVO assmblRes:assembly.getPartyResultsSum()){
 					
+					if(status.equalsIgnoreCase("NON_PARTICIPATED")){
+						if(assmblRes.getPartyName().equalsIgnoreCase(IConstants.BJP) || assmblRes.getPartyName().equalsIgnoreCase(IConstants.PRP))
+							log.debug(" Non Participated Party :" + assmblRes.getPartyName());
+						else
+							continue;
+					}
+					
 					for(PartyResultsVO parliamtRes:parliamnt.getPartyResultsSum()){
-						if(assmblRes.getPartyId().equals(parliamtRes.getPartyId())){
+						if(!assmblRes.getPartyId().equals(new Long(0)) && assmblRes.getPartyId().equals(parliamtRes.getPartyId())){
 							PartyResultsVO res = new PartyResultsVO();
 							res.setPartyId(assmblRes.getPartyId());
 							res.setPartyName(assmblRes.getPartyName());
