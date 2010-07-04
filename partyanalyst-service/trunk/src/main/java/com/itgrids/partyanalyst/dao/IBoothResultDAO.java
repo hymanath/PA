@@ -15,4 +15,6 @@ public interface IBoothResultDAO extends GenericDao<BoothResult, Long>{
 	public List getAllPolledVotesByElectionsInDistrict(Long districtId, String electionType);
 	
 	public List getParliamentResultHappenedInAssembly(String ac, Long districtId, Long electionScopeId, String electionYear);
+	
+	public List getAllPolledVotesForMandalsInAnElection(String mandalIds, String electionYear, String electionType);
 }

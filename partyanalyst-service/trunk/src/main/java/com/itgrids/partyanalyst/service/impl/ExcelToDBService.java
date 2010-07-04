@@ -3,15 +3,10 @@ package com.itgrids.partyanalyst.service.impl;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -118,7 +113,7 @@ private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
 			if(logger.isDebugEnabled())
 			logger.debug("4");
 			ElectionScope electionScopeObj=checkAndInsertElectionScope(electionTypeObj, countryObj, stateObj,uploadFormVo.getElectionYear());
-			Election electionObj=checkAndInsertElection(electionScopeObj,uploadFormVo.getElectionYear());
+			Election electionObj=checkAndInsertElection(electionScopeObj,uploadFormVo);
 			try {
 				int constituencyNo=0;
 				if(logger.isDebugEnabled())
@@ -361,15 +356,16 @@ private ElectionScope checkAndInsertElectionScope(ElectionType electionType,Coun
 	return electionScope;
 }
 
-private Election checkAndInsertElection(ElectionScope electionScope,String eleYear) throws CsvException{
+private Election checkAndInsertElection(ElectionScope electionScope,UploadFormVo uploadFormVo) throws CsvException{
 	Election lelectionObj;
-	lelectionObj= electionDAO.findByESIdEleYear(electionScope,eleYear);
+	lelectionObj= electionDAO.findByESIdEleYear(electionScope,uploadFormVo.getElectionYear(), uploadFormVo.getElecSubtype());
 	if(lelectionObj!=null){
 		throw new CsvException("These Election Results have already been uploaded.");
 	}else{
 		lelectionObj= new Election();
 		lelectionObj.setElectionScope(electionScope);
-		lelectionObj.setElectionYear(eleYear);
+		lelectionObj.setElecSubtype(uploadFormVo.getElecSubtype());
+		lelectionObj.setElectionYear(uploadFormVo.getElectionYear());
 		lelectionObj = electionDAO.save(lelectionObj);
 	}
 	return lelectionObj;

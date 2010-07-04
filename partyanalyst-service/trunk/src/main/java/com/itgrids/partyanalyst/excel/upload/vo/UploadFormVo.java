@@ -13,6 +13,7 @@ public class UploadFormVo {
 	private String district;
 	private String country;
 	private String electionYear;
+	private String elecSubtype;
 	private List<ConstituencyBlock> constituencyBlocks;
 	public UploadFormVo(){
 		
@@ -58,6 +59,12 @@ public class UploadFormVo {
 	}
 	public void setInputFile(File inputFile) {
 		this.inputFile = inputFile;
+	}
+	public String getElecSubtype() {
+		return elecSubtype;
+	}
+	public void setElecSubtype(String elecSubtype) {
+		this.elecSubtype = elecSubtype;
 	}
 	
 	

@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.IPartyInfluenceService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ConstituencyElectionVotesComparator;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.VotesPercentageComparator;
 
 
@@ -391,7 +392,7 @@ public class PartyInfluenceService implements IPartyInfluenceService {
 		
 		if(logger.isDebugEnabled())
         	logger.debug("Entered Into getElection method");
-        Election election = electionDAO.findByElectionScopeIdElectionYear(electionScopeId, electionYear);
+        Election election = electionDAO.findByElectionScopeIdElectionYear(electionScopeId, electionYear, IConstants.ELECTION_SUBTYPE_MAIN);
 		
 		if(election.getElectionId() != null)
 		    return election;

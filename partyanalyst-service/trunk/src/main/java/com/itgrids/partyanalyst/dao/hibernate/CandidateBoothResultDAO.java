@@ -500,6 +500,18 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				" model.nomination.party.partyId order by sum(model.votesEarned) desc ",parms);
 	}
 	
+	public List getResultsForElectionForAllMandalsAndParties(String mandalIds, String electionYear,String electionType){
+		Object[] params = {electionYear,electionType};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.tehsil.tehsilId, " +
+				"model.boothConstituencyElection.booth.tehsil.tehsilName, model.nomination.party.shortName, " +
+				"sum(model.votesEarned), model.nomination.party.partyId from CandidateBoothResult model " +
+				" where model.boothConstituencyElection.booth.tehsil.tehsilId in (" + mandalIds +")" +
+				" and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
+				" and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? " +
+				"group by model.boothConstituencyElection.booth.tehsil.tehsilId, model.nomination.party.partyId " +
+				"order by sum(model.votesEarned) desc ",params);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List getResultsForElectionAndConstituencyByMandalByPaliamentWise(Long constituencyId,String mandalIds,String electionYear){
 		Object[] params = {constituencyId, electionYear};

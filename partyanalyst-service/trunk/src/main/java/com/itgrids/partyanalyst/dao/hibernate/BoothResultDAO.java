@@ -42,4 +42,15 @@ public class BoothResultDAO extends GenericDaoHibernate<BoothResult, Long> imple
 				"constituency.electionScope.electionScopeId = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ?", params);
 	}
 	
+	public List getAllPolledVotesForMandalsInAnElection(String mandalIds, String electionYear, String electionType){
+		Object[] params = {electionYear, electionType};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.constituencyElection.election.electionId, " +
+				"model.boothConstituencyElection.booth.tehsil.tehsilId, model.boothConstituencyElection.booth.tehsil.tehsilName, " +
+				"sum(model.validVotes) from BoothResult model where model.boothConstituencyElection.booth.tehsil.tehsilId in " +
+				"("+mandalIds+") and model.boothConstituencyElection.constituencyElection.election.electionYear = ? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? " +
+				"group by model.boothConstituencyElection.constituencyElection.election.electionId, " +
+				"model.boothConstituencyElection.booth.tehsil.tehsilId", params);
+	}
+	
 }

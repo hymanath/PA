@@ -246,7 +246,7 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testGetPartyMandalWiseResults(){
 		
@@ -261,9 +261,7 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println( " T.E :" + params[2]);
 			System.out.println( " T.B :" + params[3]);
 		}
-	}
-	
-	
+	}*/	
 	
 	/*public void testGetBoothWisePartyResultsInAMandalByConstituencyId()
 
@@ -283,7 +281,11 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]);
 	}*/
 	
-	
+	public void testGetResultsForElectionForAllMandalsAndParties(){
+		List list = candidateBoothResultDAO.getResultsForElectionForAllMandalsAndParties("373","2009", IConstants.ASSEMBLY_ELECTION_TYPE);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]);
+	}
 
 
 }

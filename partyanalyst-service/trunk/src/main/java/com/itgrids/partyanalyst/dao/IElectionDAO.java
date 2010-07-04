@@ -7,12 +7,9 @@
  */
 package com.itgrids.partyanalyst.dao;
 
-import java.io.File;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import com.itgrids.partyanalyst.dao.columns.enums.ElectionColumnNames;
 import com.itgrids.partyanalyst.model.Election;
@@ -49,7 +46,7 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public List<String> listOfYears();
 	
-	public Election findByESIdEleYear(ElectionScope eleScope,String eleYear);
+	public Election findByESIdEleYear(ElectionScope eleScope, String eleYear, String elecSubtype);
 	
 	public List<Election> findByElectionScope_OrderByAsc(Long electionScopeID);
 	
@@ -57,7 +54,7 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public List<Election> findByElectionScopeId(Long electionScopeId);
 	
-	public Election findByElectionScopeIdElectionYear(Long electionScope,String electionYear);
+	public Election findByElectionScopeIdElectionYear(Long electionScope,String electionYear, String elecSubtype);
 	
 	public Election getElectionByCountryStateTypeIDElectionYear(Long typeID, Long countryID, Long stateID,String electionYear);
 	

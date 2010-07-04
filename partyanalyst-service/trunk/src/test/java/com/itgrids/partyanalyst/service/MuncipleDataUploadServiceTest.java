@@ -23,7 +23,7 @@ public class MuncipleDataUploadServiceTest extends BaseDaoTestCase{
 		
 		File file = new File("c:/updated_muncipal data 2005.xls");
 		long start = System.currentTimeMillis();
-		MPTCElectionResultVO result = muncipleDataUploadService.readExcelDataForMuncipalities(file, 5l, 1l, "2005");
+		MPTCElectionResultVO result = muncipleDataUploadService.readExcelDataForMuncipalities(file, 5l, 1l, "2005","MAIN");
 		setComplete();
 		long end = System.currentTimeMillis();
 		System.out.println("Total Time Taken::"+((end-start)/1000));

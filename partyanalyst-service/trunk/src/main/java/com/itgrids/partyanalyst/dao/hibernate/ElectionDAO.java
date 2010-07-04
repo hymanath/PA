@@ -110,11 +110,13 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		//getHibernateTemplate().saveOrUpdateAll(ele);
 	} 
 
-	public Election findByESIdEleYear(ElectionScope eleScope,String eleYear){
+	public Election findByESIdEleYear(ElectionScope eleScope,String eleYear, String elecSubtype){
 		Election lelectionObj=null;
-		Query query = getSession().createQuery("from Election model where model.electionScope.electionScopeId =? and model.electionYear=?");
+		Query query = getSession().createQuery("from Election model where model.electionScope.electionScopeId =? " +
+				"and model.electionYear=? and model.elecSubtype = ?");
 		query.setParameter(0, eleScope.getElectionScopeId());
 		query.setParameter(1, eleYear);
+		query.setParameter(2, elecSubtype);
 		List<Election> list= query.list();
 		if(list!=null && list.size()>0){
 			return lelectionObj=list.get(0);
@@ -123,11 +125,13 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Election findByElectionScopeIdElectionYear(Long electionScope,String electionYear){
+	public Election findByElectionScopeIdElectionYear(Long electionScope,String electionYear, String elecSubtype){
 		Election electionObj=null;
-		Query query = getSession().createQuery("from Election model where model.electionScope.electionScopeId =? and model.electionYear=?");
+		Query query = getSession().createQuery("from Election model where model.electionScope.electionScopeId =? " +
+				"and model.electionYear=? and model.elecSubtype = ?");
 		query.setParameter(0, electionScope);
 		query.setParameter(1, electionYear);
+		query.setParameter(2, elecSubtype);
 		List<Election> list= query.list();
 		if(list!=null && list.size()>0){
 			return electionObj=list.get(0);

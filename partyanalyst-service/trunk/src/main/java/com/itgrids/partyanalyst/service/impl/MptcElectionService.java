@@ -48,6 +48,7 @@ public class MptcElectionService implements IMptcElectionService {
 
 	private Long electionTypeID; 
 	private String year;
+	private String elecSubtype;
 	private Long countryID;
 	private Long stateID;
 	private Long districtID;
@@ -187,13 +188,14 @@ public class MptcElectionService implements IMptcElectionService {
 	 */
 	public MPTCElectionResultVO uploadMPTCElectionData(Long electionTypeID,
 			Long countryID, Long stateID, Long districtID, String year,
-			File file) {
+			File file, String elecSubtype) {
 		this.electionTypeID = electionTypeID;
 		this.year = year;
 		this.stateID = stateID;
 		this.districtID = districtID;
 		this.file = file;
 		this.countryID = countryID;
+		this.elecSubtype = elecSubtype;
 		MPTCElectionResultVO resultVO = (MPTCElectionResultVO) transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus txStatus) {
 				MPTCElectionResultVO resultVO = new MPTCElectionResultVO();
@@ -213,6 +215,7 @@ public class MptcElectionService implements IMptcElectionService {
 		this.districtID = null;
 		this.file = null;
 		this.countryID=null;
+		this.elecSubtype = null;
 		return resultVO;
 	}
 	/**
@@ -223,11 +226,12 @@ public class MptcElectionService implements IMptcElectionService {
 	 * @throws CsvException
 	 */
 	private Election checkAndInsertElection(ElectionScope electionScope,String eleYear) throws CsvException{
-		Election election = electionDAO.findByESIdEleYear(electionScope,eleYear);
+		Election election = electionDAO.findByESIdEleYear(electionScope,eleYear,elecSubtype);
 		if(election==null){
 			election= new Election();
 			election.setElectionScope(electionScope);
 			election.setElectionYear(eleYear);
+			election.setElecSubtype(elecSubtype);
 			election = electionDAO.save(election);
 		}
 		if(election==null || election.getElectionId()==null)

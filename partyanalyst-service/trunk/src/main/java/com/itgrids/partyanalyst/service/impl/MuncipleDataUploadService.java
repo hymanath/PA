@@ -79,6 +79,7 @@ public class MuncipleDataUploadService implements IMuncipleDataUploadService{
 	private Long stateId;
 	private Long electionTypeId;
 	private String electionYear;
+	private String elecSubtype;
 	private static Logger log = Logger.getLogger(MptcElectionService.class);
 		
 	public IElectionScopeDAO getElectionScopeDAO() {
@@ -205,12 +206,13 @@ public class MuncipleDataUploadService implements IMuncipleDataUploadService{
 		this.electionTypeDAO = electionTypeDAO;
 	}
 
-	public MPTCElectionResultVO readExcelDataForMuncipalities(File file, Long electionTypeId, Long stateId, String electionYear){
+	public MPTCElectionResultVO readExcelDataForMuncipalities(File file, Long electionTypeId, 
+			Long stateId, String electionYear, String elecSubtype){
 		this.filePath = file;
 		this.stateId = stateId;
 		this.electionYear = electionYear;
 		this.electionTypeId = electionTypeId;
-				
+		this.elecSubtype = elecSubtype;
 		MPTCElectionResultVO resultVO = (MPTCElectionResultVO) transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus txStatus) {
 				MPTCElectionResultVO resultVO = new MPTCElectionResultVO();
@@ -284,12 +286,13 @@ public class MuncipleDataUploadService implements IMuncipleDataUploadService{
 		}
 		
 		//Verfifying the election is already exist or not
-		election = electionDAO.findByElectionScopeIdElectionYear(electionScope.getElectionScopeId(), electionYear);
+		election = electionDAO.findByElectionScopeIdElectionYear(electionScope.getElectionScopeId(), electionYear, elecSubtype);
 		
 		if(election == null){
 			election = new Election();
 			election.setElectionScope(electionScope);
 			election.setElectionYear(electionYear);
+			election.setElecSubtype(elecSubtype);
 			election = electionDAO.save(election);
 		}	
 		

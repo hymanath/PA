@@ -29,6 +29,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
@@ -58,6 +59,8 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
@@ -105,6 +108,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	private IDelimitationConstituencyMandalService delimitationConstituencyMandalService; 
 	private IConstituencyElectionDAO constituencyElectionDAO;
 	private IStaticDataService staticDataService;		
+	private IBoothResultDAO boothResultDAO; 
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 
 	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
@@ -230,6 +234,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	public void setCandidateBoothResultDAO(
 			ICandidateBoothResultDAO candidateBoothResultDAO) {
 		this.candidateBoothResultDAO = candidateBoothResultDAO;
+	}
+
+	public IBoothResultDAO getBoothResultDAO() {
+		return boothResultDAO;
+	}
+
+	public void setBoothResultDAO(IBoothResultDAO boothResultDAO) {
+		this.boothResultDAO = boothResultDAO;
 	}
 
 	public List<ConstituencyElectionResultsVO> getConstituencyElectionResults(Long constituencyId) {
@@ -1208,7 +1220,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	}
 	
 	/**
-	 * This method calculates all the Missing Votes For an Assembly.
+	 * This method calculates all the Missing Votes For an Assembly(i.e., Postal Ballot Votes).
 	 * @param constituencyId
 	 * @param electionYear
 	 * @param electionType
@@ -1347,6 +1359,24 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return null;
 	}
 		return partyVotes;		
+	}
+	
+	public List<PartyResultVO> getMandalsResultsInAnElection(String mandalIds, String electionYear, String electionType){
+		List validVotes = boothResultDAO.getAllPolledVotesForMandalsInAnElection(mandalIds, electionYear, electionType);
+		List<PartyResultVO> partiesResultsInMandals = new ArrayList<PartyResultVO>();
+		PartyResultVO partyResultVO = null;
+		Map<Long, Long> mandalAndValidVotesMap = new LinkedHashMap<Long, Long>();
+		for(Object[] values:(List<Object[]>)validVotes)
+			mandalAndValidVotesMap.put((Long)values[1], (Long)values[3]);
+		List partiesResults = candidateBoothResultDAO.getResultsForElectionForAllMandalsAndParties(mandalIds, electionYear, electionType);
+		for(Object[] values:(List<Object[]>)partiesResults){
+			partyResultVO = new PartyResultVO();
+			partyResultVO.setConstituencyName(values[1].toString());
+			partyResultVO.setPartyName(values[2].toString());
+			partyResultVO.setVotesPercent(new BigDecimal((Long)values[3]*100.0/mandalAndValidVotesMap.get(values[0])).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			partiesResultsInMandals.add(partyResultVO);
+		}
+		return partiesResultsInMandals;
 	}
 	
 	public void getAssembliesVotersInfoOfParliament(ConstituencyVO constituencyVO){

@@ -7,6 +7,8 @@ public interface IConstants {
 	public static final String DATE_PATTERN_YYYY_MM_DD = "yyyy/MM/dd";
 	public static final Long CENSUS_YEAR = 2001L;
 	public static final Long DELIMITATION_YEAR = 2009L;
+	public static final String ELECTION_SUBTYPE_MAIN = "MAIN";
+	public static final String ELECTION_SUBTYPE_BYE = "BYE";
 	public static final Long COUNTRY_INDIA_ID = 1L;
 	public static final String STATIC_PARTIES = "'INC','PRP','TDP','TRS','CPI','CPM','AIMIM','BJP'";
 	public static final int LOOSING_BY_DROPPING_VOTES_CONSTANTS = 5;

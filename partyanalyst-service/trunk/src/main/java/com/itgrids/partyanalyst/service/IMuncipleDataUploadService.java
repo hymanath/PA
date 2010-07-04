@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.MPTCElectionResultVO;
 
 public interface IMuncipleDataUploadService {
 
-	public MPTCElectionResultVO readExcelDataForMuncipalities(File file, Long electionTypeId, Long stateId, String electionYear);
+	public MPTCElectionResultVO readExcelDataForMuncipalities(File file, Long electionTypeId, 
+			Long stateId, String electionYear, String elecSubtype);
 	
 }

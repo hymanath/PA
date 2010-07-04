@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.model;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,9 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
@@ -51,6 +50,7 @@ public class Election extends BaseModel implements java.io.Serializable {
 	private Date startDate;
 	private String endDate;
 	private String electionYear;
+	private String elecSubtype;
 	private Set<ConstituencyElection> constituencyElections = new HashSet<ConstituencyElection>(0);
 	private Set<PartyElectionResult> partyElectionResult = new HashSet<PartyElectionResult>(0);
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
@@ -200,6 +200,15 @@ public class Election extends BaseModel implements java.io.Serializable {
 	public void setCommentCategoryConstituency(
 			Set<CommentCategoryConstituency> commentCategoryConstituency) {
 		this.commentCategoryConstituency = commentCategoryConstituency;
+	}
+
+	@Column(name = "sub_type", length = 25)
+	public String getElecSubtype() {
+		return elecSubtype;
+	}
+
+	public void setElecSubtype(String elecSubtype) {
+		this.elecSubtype = elecSubtype;
 	}
 	
 }
