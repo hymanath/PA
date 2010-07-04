@@ -189,19 +189,26 @@
 			{
 				var heading =document.getElementById("overViewHeadingDiv");
 				var headingDIV='';
-				headingDIV+='<fieldset style="width:90%;padding:10px;">';  		
+				headingDIV+='<fieldset padding:10px;">';  		
 				headingDIV+='<legend style="background-color:#567AAF;font-family:arial,helvetica,clean,sans-serif;color:#FFFFFF;font-weight:bold;padding:10px;">Constituency OverView</legend>';
 
-				headingDIV+='<table width="90%" style="margin-left:50px;">';   
+				headingDIV+='<div id="votesInfoDiv" style="color:#247CD4;font-size:12px;font-weight:bold;"></div>';
+				headingDIV+='<table width="90%" cellspacing="10" style="margin-top:10px;">';   
 
 				headingDIV+='	<tr>';
 				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Voters for Year 2009</b></td>';
-				headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalVoters+'</td>';
+				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalVoters+'</td>';
+
+				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Polled Votes </b></td>';
+				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalPolledVotes+' ('+myResults.latestElectionYearsTotalVotesPercentage+'%)</td>';			
 				
+				headingDIV+='	</tr>';
+
+				headingDIV+='	<tr>';
 				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Voters for Year 2010</b></td>';
 				if(myResults.presentYearTotalVoters!=0)
 				{	
-					headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+myResults.presentYearTotalVoters+'</td>';				
+					headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">'+myResults.presentYearTotalVoters+'</td>';				
 				}
 				else
 				{				
@@ -209,17 +216,14 @@
 				}					
 							
 				headingDIV+='	</tr>';
-
-				headingDIV+='	<tr>';
-				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Polled Votes for Year 2009</b></td>';
-				headingDIV+='		<td align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalPolledVotes+'</td>';			
-				headingDIV+='	</tr>';
-				headingDIV+='	<tr>';
-				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Votes Percentage for Year 2009</b></td>';
-				headingDIV+='		<td colspan="3" align="left" style="color:GoldenRod;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalVotesPercentage+'</td>';			
-				headingDIV+='	</tr>';
 				
-				headingDIV+='</table>';	
+				headingDIV+='</table>';
+
+				headingDIV+='	<table>';
+				headingDIV+='			<tr>';
+				headingDIV+='					<td> <div id="mandalVotesShare"></td>';
+				headingDIV+='			</tr>';	
+				headingDIV+='	</table>';
 				
 				headingDIV+='</fieldset>';
 				heading.innerHTML=headingDIV; 
@@ -500,7 +504,7 @@
 			str += '<div id="constitutencyResultsChart"></div>';
 			str += '<div id="overViewHeadingDiv" style="padding-left:10px;"></div>';
 			str += '<div id="constituencyOverViewDiv"></div>';	
-			str += '<div id="mandalwiseVotersShareDiv" style="padding:10px;border:2px solid #E0E0D6;margin:10px;color:#707070"></div>';
+			str += '<div id="mandalwiseVotersShareDiv" style="padding:10px;margin:10px;color:#707070"></div>';
 			str += '<div id="constitutencyMandalWiseResultsChart"></div>';
 			str += '<div id="mandalVotingTrendzDataDiv_head">Voting Trendz in Constituency</div>';
 			str += '<div id="mandalVotingTrendzDataDiv">';
@@ -651,16 +655,16 @@
 			var bodyElmt = document.getElementById("mandalVotingTrendzData");
 			var graphElmt = document.getElementById("mandalDetailsChart_body");
 			var mandalsListElmt = document.getElementById("mandalsListInConstituency");
-			var mandalvotersDetailsEl = document.getElementById("mandalwiseVotersShareDiv");			
+			var mandalvotersDetailsEl = document.getElementById("mandalVotesShare");			
 			var mandalwiseVotersShare = resultsData.constituencyVO.assembliesOfParliamentInfo;
 			var mdlwiseVotersDetailsStr = '';
-			var mdlwiseVotersDetailsStr = '<P><B>Mandalwise Voters Share in Constituency</B></P>';
-			mdlwiseVotersDetailsStr+='<Table width="70%" border="0" cellpadding="5" cellspacing="5">';
+			var mdlwiseVotersDetailsStr = '<P style="color:#247CD4;font-size:12px;font-weight:bold;">Mandalwise Voters Share in Constituency</B></P>';
+			mdlwiseVotersDetailsStr+='<Table width="100%" border="0" cellpadding="5" cellspacing="5">';
 			mdlwiseVotersDetailsStr+='<TR>';
 			for (var x in mandalwiseVotersShare[0].votersInfoForMandalVO)
 			{
-				mdlwiseVotersDetailsStr+='<TH>'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'</TH>';
-				mdlwiseVotersDetailsStr+='<TD style="color:Blue;font-weight:bold;">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].percent+' %</Td>';			
+				mdlwiseVotersDetailsStr+='<TD style="color:#18325A;font-size:12px;font-weight:bold;">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'</TD>';
+				mdlwiseVotersDetailsStr+='<TD style="color:Blue;font-weight:bold;">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].percent+' %</TD>';			
 			}
 			mdlwiseVotersDetailsStr+='</TR>';
 			mdlwiseVotersDetailsStr+='</Table>';
