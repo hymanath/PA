@@ -1542,8 +1542,11 @@ public class BiElectionPageService implements IBiElectionPageService {
 		{
 			List<ElectionResultsForMandalVO> results = allPartiesResultsObj.getBiElectionResultsVO();
 			List<PartyElectionResultVO> postalBalletsList = new ArrayList<PartyElectionResultVO>();
+			Map<String,ElectionResultsForMandalVO> crossVotingResults = new HashMap<String,ElectionResultsForMandalVO>();
+			
+			
 			for(ElectionResultsForMandalVO electionResultsForMandalVO:results)
-				{
+			{
 					List<MandalElectionResultVO> electionResultsInMandalList = electionResultsForMandalVO.getElectionResultsForMandal();
 					Map<Long,PartyResultsVO> resultsSumMap = new HashMap<Long,PartyResultsVO>();
 					Map<Long, PartyElectionResultVO> postalBalletsMap = new HashMap<Long, PartyElectionResultVO>();
@@ -1562,16 +1565,14 @@ public class BiElectionPageService implements IBiElectionPageService {
 						}
 							
 					}
-					int count = 0;
-					
+										
 					for(MandalElectionResultVO mandalElectionResultVOObj:electionResultsInMandalList)
 					{
 						List<PartyElectionResultsInConstituencyVO> partyElectionResultsInConstituencyList = mandalElectionResultVOObj.getPartyElecResultsInConstituency();					
 												
 						for(PartyElectionResultsInConstituencyVO partyElectionResultsInConstituencyObj:partyElectionResultsInConstituencyList)
 							{
-							    count++;
-								List<PartyResultsVO> requiredPartiesResults = new ArrayList<PartyResultsVO>();
+							   	List<PartyResultsVO> requiredPartiesResults = new ArrayList<PartyResultsVO>();
 								Long validVotes = new Long(0);
 								Long votesEarned = new Long(0) ; 
 								List<PartyResultsVO> partyResults = partyElectionResultsInConstituencyObj.getPartyElecResults();
@@ -1742,13 +1743,75 @@ public class BiElectionPageService implements IBiElectionPageService {
 						partyResultsSum.add(partyResultsSum.size(), otherPartyRes);
 						
 						electionResultsForMandalVO.setPartyResultsSum(partyResultsSum);
+						
+						//for cross voting and non participated party results map
+						if(electionResultsForMandalVO.getElectionYear().equalsIgnoreCase(IConstants.PRESENT_ELECTION_YEAR) && electionResultsForMandalVO.getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || 
+								electionResultsForMandalVO.getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+							
+							if(crossVotingResults.isEmpty() || !crossVotingResults.containsKey(electionResultsForMandalVO.getElectionType())){
+								crossVotingResults.put(electionResultsForMandalVO.getElectionType(), electionResultsForMandalVO);
+							}
+							
+						}
 					}
 					electionResultsForMandalVO.setPartysList(setStaticParties(electionResultsForMandalVO.getPartysList()));
 				}
+			//process the map set to VO
+			if(!crossVotingResults.isEmpty()){
+			List<PartyResultsVO> crossVotingResult = getCrossVotingResults(crossVotingResults,"CROSS_VOTING");
+			if(crossVotingResult != null && crossVotingResult.size() > 0)
+				allPartiesResultsObj.setCrossVotingResults(crossVotingResult);
+			}
 			
+			//for non participated parties
+			List<PartyResultsVO> nonPartiResult = getCrossVotingResults(crossVotingResults,"NON_PARTICIPATED");
+			if(nonPartiResult != null && nonPartiResult.size() > 0){
+				allPartiesResultsObj.setNonPartiParties(nonPartiResult);
+			}
 		}
 			
 		return allPartiesResultsList;
+	}
+	
+	public List<PartyResultsVO> getCrossVotingResults(Map<String,ElectionResultsForMandalVO> crossVotingResults,String status){
+		
+		List<PartyResultsVO> partyResults = null;
+		if(!crossVotingResults.isEmpty()){
+			partyResults = new ArrayList<PartyResultsVO>();
+			
+			if(crossVotingResults.containsKey(IConstants.ASSEMBLY_ELECTION_TYPE) && crossVotingResults.containsKey(IConstants.PARLIAMENT_ELECTION_TYPE)){
+				ElectionResultsForMandalVO assembly = crossVotingResults.get(IConstants.ASSEMBLY_ELECTION_TYPE);
+				ElectionResultsForMandalVO parliamnt = crossVotingResults.get(IConstants.PARLIAMENT_ELECTION_TYPE);
+				
+				for(PartyResultsVO assmblRes:assembly.getPartyResultsSum()){
+					
+					for(PartyResultsVO parliamtRes:parliamnt.getPartyResultsSum()){
+						if(assmblRes.getPartyId().equals(parliamtRes.getPartyId())){
+							PartyResultsVO res = new PartyResultsVO();
+							res.setPartyId(assmblRes.getPartyId());
+							res.setPartyName(assmblRes.getPartyName());
+							res.setVotesEarned(assmblRes.getVotesEarned());
+							res.setPercentage(assmblRes.getPercentage());
+							res.setBallotVotes(parliamtRes.getVotesEarned());
+							res.setBallotVotesPercentage(parliamtRes.getPercentage());
+							
+							if(status.equalsIgnoreCase("CROSS_VOTING")){
+							try{
+							Double diff = new BigDecimal(new Double(assmblRes.getPercentage()) - new Double(parliamtRes.getPercentage())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+							res.setDiffPercent(diff.toString());
+							}
+							catch(Exception ex){
+								ex.printStackTrace();
+							}
+							}
+							partyResults.add(res);
+							break;
+						}
+					}
+				}
+			}
+		}
+	 return partyResults;
 	}
 	
 	/*
