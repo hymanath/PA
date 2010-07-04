@@ -303,12 +303,19 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 				
 				
 				//district level results chart with alliance parties grouped
-				String titleValue = "";
-				if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
-				titleValue = "All Parties State Wise Election Results With Alliance Parties";
-				else
-				titleValue = "All Parties District Wise Election Results With Alliance Parties";
 				if(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults() != null && electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults().size() > 0){
+					String titleValue = "";
+					if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+					titleValue = "All Parties State Wise Election Results With Alliance Parties";
+					else
+					titleValue = "All Parties District Wise Election Results With Alliance Parties";
+					
+					if(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc() == null || electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc().size() <= 0){
+						if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+							titleValue = "All Parties State Wise Election Results Without Grouping Alliance Parties";
+							else
+								titleValue = "All Parties District Wise Election Results Without Grouping Alliance Parties";
+					}
 				String partyResultsDistrictWise = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults(),"With_Alliance_Normal",titleValue,300,880);
 				electionCompleteDetailsVO.setDistrictWiseElecResultsChartName(partyResultsDistrictWise);
 				String districtWiseElecDetailedResultsChartName = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResults(),"With_Alliance_Full_View",titleValue,600,920);
@@ -316,12 +323,13 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 				}
 				
 				//district level results line chart for parties without alliance
-				String titleVal = "";
-				if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
-				titleVal = "All Parties State Wise Election Results Without Grouping Alliance Parties";
-				else
-				titleVal = "All Parties District Wise Election Results Without Grouping Alliance Parties";
 				if(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc() != null && electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc().size() > 0){
+					String titleVal = "";
+					if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+					titleVal = "All Parties State Wise Election Results Without Grouping Alliance Parties";
+					else
+     				titleVal = "All Parties District Wise Election Results Without Grouping Alliance Parties";
+					
 				String partyResultsDistrictLevelChartWithoutAllianc = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc(),"Without_Alliance_Normal",titleVal,300,880);
 				String partyResultsDistrictLevelDetailedResultsChartWithoutAllianc = createLineChartForPartiesWithDistrictLevelResults(electionCompleteDetailsVO.getElectionResultsInDistricts().getAllPartiesResultsWithoutGroupingOfAllianc(),"Without_Alliance_Full_View",titleVal,600,920);
 				electionCompleteDetailsVO.setPartyResultsDistrictLevelChartWithoutAllianc(partyResultsDistrictLevelChartWithoutAllianc);
@@ -357,7 +365,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
  		String alliancePartiesChartName = "alliancPartyElectionResults_" + alliancePartiesChartId + session.getId() +".png";
         String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
  		
-        ChartProducer.createLineChart("","","Seats", createDataSetForAlliancPartyOverallResults(alliancParties.getPartiesInAlliance(),"BarChart", null), alliancePartiesChartPath,300,600, null);
+        ChartProducer.createLineChart("","","Seats", createDataSetForAlliancPartyOverallResults(alliancParties.getPartiesInAlliance(),"BarChart", null), alliancePartiesChartPath,300,600, null,false);
 	    request.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		session.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		chartName = alliancePartiesChartName;
@@ -380,7 +388,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
         String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
  		CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(alliancParties.getPartiesInAlliance(),colors);
  		log.debug("createLineChartForAlliancPartiesForDistrictLevel Colors::"+colors.size());
-        ChartProducer.createLineChart("","","Seats", categoryDataset, alliancePartiesChartPath,300,800, colors);
+        ChartProducer.createLineChart("","","Seats", categoryDataset, alliancePartiesChartPath,300,800, colors,false);
 	    request.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		session.setAttribute("alliancePartiesChartName", alliancePartiesChartName);
 		chartName = alliancePartiesChartName;
@@ -404,7 +412,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	 		
 	        CategoryDataset categoryDataset = createDataSetForPartyDistrictwiseResults(allPartiesResults,colors);
 	        log.debug("createLineChartForPartiesWithDistrictLevelResults Colors::"+colors.size());
-	 		ChartProducer.createLineChart(title,"","Votes Percentage", categoryDataset, partyDistrictResultsChartPath,height,width,colors);
+	 		ChartProducer.createLineChart(title,"","Votes Percentage", categoryDataset, partyDistrictResultsChartPath,height,width,colors,false);
 	 		request.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 			session.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 			
@@ -428,7 +436,7 @@ public class ElectionDetailsReportAction extends ActionSupport implements Servle
 	 		String allPartiesChartName = "alliancPartyElectionResults_" + allPartiesChartId + session.getId() +".png";
 	        String allPartiesChartPath = context.getRealPath("/") + "charts\\" + allPartiesChartName;
 	 		
-	        ChartProducer.createLineChart(title,"","Seats", createDataSetForAlliancPartyOverallResults(allPartiesResults,"LineChart",colors), allPartiesChartPath,300,800, colors);
+	        ChartProducer.createLineChart(title,"","Seats", createDataSetForAlliancPartyOverallResults(allPartiesResults,"LineChart",colors), allPartiesChartPath,300,800, colors,false);
 	        log.debug("Line Chart Colors ::::::::::::::::::::::::::::::::::::"+colors.size());
 		    request.setAttribute("allPartiesChartName", allPartiesChartName);
 			session.setAttribute("allPartiesChartName", allPartiesChartName);
