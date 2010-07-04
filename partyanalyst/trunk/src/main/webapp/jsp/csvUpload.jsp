@@ -43,7 +43,14 @@
 				<option value="Parliament">Parliament</option>
 			</select></td>
 		</tr>
-
+		<tr>
+			<td>Election Subtype</td>
+			<td><select name="elecSubtype">
+				<option value="0">Select option..</option>
+				<option value="MAIN">Main Election</option>
+				<option value="BYE">Bye Election</option>
+			</select></td>
+		</tr>
 		<tr>
 			<td><s:file name="inputFile" label="InputFile" /></td>
 		</tr>

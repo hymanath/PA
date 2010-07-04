@@ -1131,6 +1131,12 @@
         	</result>       		
         </action>	
         
+        <action name="getLineChartForMandalsAndPartiesAction" class="constituencyVotingTrendzAction" method="getLineChartForMandalsAndPartiesInElection"> 
+              <result type="json" name="success">
+           		<param name="root">mandalsPartiesChart</param>
+        	</result>       		
+        </action>
+        
         <action name="mandalRevenueVillagesElecInputAction" class="mandalRevenueVillagesElecAction">
 			 <result name="success">/jsp/revenueVillagesElectionResults.jsp</result>
 		</action>

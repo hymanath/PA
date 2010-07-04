@@ -115,10 +115,11 @@
 		var assemblyElectionType='Assembly';
 		var constituencyIdGlobal = '${constiId}';
 		var constituencyName = '${constiName}';
+		var constiMandalWiseResultsPresChart;
+		var constiMandalWiseResultsPrevChart;
 		var mptcChart2001,mptcChart2006,zptcChart2001,zptcChart2006;	
-		var constiMandalWiseResultsChart;
 		var allPartiesCharts = '';
-		
+		var mandalIds = null;
 		var tehsilDetails={
 				zptcArray:[],
 				mptcArray:[],
@@ -207,10 +208,10 @@
 
 				headingDIV+='	<tr>';
 				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Voters for Year 2009</b></td>';
-				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalVoters+'</td>';
+				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">210869</td>';
 
 				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Polled Votes </b></td>';
-				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalPolledVotes+' ('+myResults.latestElectionYearsTotalVotesPercentage+'%)</td>';			
+				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">136637(64.80 %)</td>';			
 				
 				headingDIV+='	</tr>';
 
@@ -271,10 +272,25 @@
 											showChartData(myResults);
 										} else if(jsObj.task == "getConstituencyResultsBySubLocations")
 										{
-											constiMandalWiseResultsChart = myResults.detailedChartPath;
+											constiMandalWiseResultsPresChart = myResults.chartPath;
+											getMandalsAndPartiesResults();
+										}else if(jsObj.task == "getMandalsAndPartiesChartInElection")
+										{
+											constiMandalWiseResultsPrevChart = myResults;
 											var imageDiv = document.getElementById("constitutencyMandalWiseResultsChart");
 											var str = '';
-											str += '<img src="charts/'+constiMandalWiseResultsChart+'">';
+											str +='<div style="margin: 10px;">';
+											str += '<table border="1">';
+											str += '<tr><td valign="top"><img src="charts/'+constiMandalWiseResultsPresChart+'"></td></tr>';
+											str += '<tr></tr>';
+											str += '<tr></tr>';
+											str += '<tr></tr>';
+											str += '<tr></tr>';
+											str += '<tr></tr>';
+											str += '<tr></tr>';
+											str += '<tr><td valign="top"><img src="charts/'+constiMandalWiseResultsPrevChart+'"></td></tr>';
+											str += '</table>';
+											str += '</div>';
 											imageDiv.innerHTML = str;
 										}	
 										if(jsObj.task == "getConstituencyVotesOverview"){
@@ -784,6 +800,8 @@
 			var chartDetailsObjArr = resultsData.chartsListForElectionTypes;
 			var str = '';
 			str += '<table width="100%" height="150" cellspacing = "5" cellpadding="5">';
+			var mandalIdsFlag = 0;
+			mandalIds = new Array();
 			for(var i in results)
 			{	
 				for(var j in results[i].biElectionResultsVO)
@@ -842,6 +860,7 @@
 					str += '</tr>';
 					for(var k in results[i].biElectionResultsVO[j].electionResultsForMandal)
 					{
+						
 						var info = results[i].biElectionResultsVO[j].electionResultsForMandal[k];
 						str += '<tr>';
 						if(info.partyElecResultsInConstituency.length == 0)
@@ -853,6 +872,8 @@
 						}
 						else
 						{
+							if(mandalIdsFlag == 0)
+								mandalIds.push(info.mandalId);
 							str += '<th rowspan="'+info.partyElecResultsInConstituency.length+'"><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs" onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';				
 							for(var l in info.partyElecResultsInConstituency)
 							{
@@ -874,6 +895,9 @@
 						}
 						str += '</tr>';
 					}
+
+					mandalIdsFlag++;
+					
 					if(results[i].biElectionResultsVO[j].electionType == "Assembly" && results[i].biElectionResultsVO[j].electionYear == "2009")
 					{	
 						str += '<tr>';
@@ -908,6 +932,9 @@
 			bodyElmt.innerHTML = str;
 			//getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
 			//getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
+			
+			getConstituencyResults("2009");
+			//To build Graphs for 2009 and 2004 Mandals Wise Parties Results 
 		}
 		function buildZptcResults(results, jsObj){
 			
@@ -1004,11 +1031,25 @@
 			var jsObj = {
 				constituencyId:constituencyIdGlobal,
 				electionYear:elecYear,
+				chartHeight: 300,
+				chartWidth: 600,
 				task:"getConstituencyResultsBySubLocations"
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 			var url = "<%=request.getContextPath()%>/assemblyWiseParliamentResultAction.action?"+rparam;
 			callAjax(jsObj, url);
+		}
+
+		function getMandalsAndPartiesResults(){
+			var jsObj = {
+					mandalIds:mandalIds,
+					electionYear:"2004",
+					electionType:"Assembly",
+					task:"getMandalsAndPartiesChartInElection"
+				};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+				var url = "<%=request.getContextPath()%>/getLineChartForMandalsAndPartiesAction.action?"+rparam;
+				callAjax(jsObj, url);
 		}
 		
 	</script>
@@ -1120,7 +1161,6 @@
 		</div>
 	</div>
 	<SCRIPT type="text/javascript"> 			
-			getConstituencyResults("2009");
 			buildMandalsVotingTrendz();		
 			getConstituencyOverViewResult(constituencyIdGlobal,constituencyName);	
 			getAllZptcYears();	  

@@ -87,6 +87,14 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 		this.muncipleDataUploadService = muncipleDataUploadService;
 	}
 
+	public String getElecSubtype() {
+		return elecSubtype;
+	}
+
+	public void setElecSubtype(String elecSubtype) {
+		this.elecSubtype = elecSubtype;
+	}
+
 	public File getFile() {
 		return file;
 	}
@@ -98,6 +106,7 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 	private Long stateID;
 	private Long districtID;
 	private String year;
+	private String elecSubtype;
 	private static Logger log = Logger.getLogger(MPTCElectionAction.class);
 	
 	private File file;
@@ -159,12 +168,12 @@ public class MPTCElectionAction  extends ActionSupport implements ServletRequest
 		
 		if(IConstants.MUNCIPLE_ELECTION_TYPE.equalsIgnoreCase(electionType) ||
 				IConstants.CORPORATION_ELECTION_TYPE.equalsIgnoreCase(electionType)){
-			resultVO = muncipleDataUploadService.readExcelDataForMuncipalities(file, electionTypeID, stateID, year);
+			resultVO = muncipleDataUploadService.readExcelDataForMuncipalities(file, electionTypeID, stateID, year, elecSubtype);
 			resultVO.setElectionType(electionType);
 		}else
 			resultVO = mptcElectionService
 				.uploadMPTCElectionData(electionTypeID, countryID, stateID,
-						districtID, year, file);
+						districtID, year, file, elecSubtype);
 		String result =ERROR;
 		if(resultVO.getExceptionEncountered()==null){
 			result = SUCCESS;

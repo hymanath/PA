@@ -100,6 +100,14 @@
 			</select><input id="hiddenEleId" type="hidden" name="electionType"></td>			
 		</tr>
 		<tr>
+			<td>Election Subtype</td>
+			<td><select name="elecSubtype">
+				<option value="0">Select option..</option>
+				<option value="MAIN">Main Election</option>
+				<option value="BYE">Bye Election</option>
+			</select></td>			
+		</tr>
+		<tr>
 			<td>Election Year</td>
 			<td>
 				<s:textfield size="5" maxlength="4" label="Election Year" name="year" id="year" />

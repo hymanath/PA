@@ -1129,6 +1129,8 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		String chartTitle = null,detailedChartTitle = null;
 		String chartName = null,detailedChartName = null;
 		String domainAxisName = null,detailedDomainAxisName = null;
+		int chartHeight = jObj.getInt("chartHeight");
+		int chartWidth = jObj.getInt("chartWidth"); 
 		
 		constituencyRevenueVillagesVO = constituencyPageService.getConstituencyElecResults(jObj.getLong("constituencyId")
 				, jObj.getString("electionYear"));
@@ -1152,7 +1154,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         constituencyRevenueVillagesVO.setChartPath(chartName);
-        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath,260,700, null,false);
+        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath, chartHeight, chartWidth, null,true);
         
         String detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
         constituencyRevenueVillagesVO.setDetailedChartPath(detailedChartName);

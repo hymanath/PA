@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.ElectionTypeChartVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
@@ -91,6 +92,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private ConstituencyVO constituencyVO; 
 	private VotersWithDelimitationInfoVO votersInfoForMandals;
 	
+	private String mandalsPartiesChart;
 	
 	private ElectionTrendzReportVO constituencyOverView;
 	
@@ -338,6 +340,14 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	public void setChartColorsAndDataSetVO(
 			ChartColorsAndDataSetVO chartColorsAndDataSetVO) {
 		this.chartColorsAndDataSetVO = chartColorsAndDataSetVO;
+	}
+
+	public String getMandalsPartiesChart() {
+		return mandalsPartiesChart;
+	}
+
+	public void setMandalsPartiesChart(String mandalsPartiesChart) {
+		this.mandalsPartiesChart = mandalsPartiesChart;
 	}
 
 	public String execute() throws Exception
@@ -603,8 +613,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				   for(String party:partys){
 					   CandidateElectionResultVO candidateElecResults = null;
 					   Boolean flag = false;
-					   if(includeAllianc == true){
-						   
+					   if(includeAllianc == true){						   
 						 log.debug(" Allianc True ..." + party + " ... " + electionData.getElectionYear() + " .... " + electionData.getElectionType());
 						 if(electionData.getAllianceParties() != null && electionData.getAllianceParties().size() > 0){
 						 AlliancePartiesInElection alliancPartysGrp = getPartiesInAlliance(party,electionData.getAllianceParties());
@@ -684,6 +693,44 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		}
 		
 	 return candidateResults;
+	}
+	
+	public String getLineChartForMandalsAndPartiesInElection(){
+		try {
+			jObj=new JSONObject(getTask());
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		JSONArray array = jObj.getJSONArray("mandalIds");
+		
+		StringBuilder mandalIds = new StringBuilder();
+		
+		for(int i=0; i<array.length(); i++)
+			mandalIds.append(",").append(array.get(i));
+		
+		if(mandalIds.length() > 0 ){
+			List<PartyResultVO> resultsInMandals = constituencyPageService.getMandalsResultsInAnElection(mandalIds.substring(1).toString(), 
+					jObj.getString("electionYear"), jObj.getString("electionType"));
+			if(resultsInMandals.size() > 0){
+				mandalsPartiesChart = "AllMandalsAllParties_"+mandalIds+"OfElectionYear_"+jObj.getString("electionYear")+
+													"ElectionType_"+jObj.getString("electionType")+".png";
+				String chartPath = context.getRealPath("/") + "charts\\" + mandalsPartiesChart;
+				ChartProducer.createLineChart("Mandals Wise "+jObj.getString("electionYear")+" Election Results For All Parties", 
+						"Mandals", "Percentages",createDataSetForLineChart(resultsInMandals), 
+						chartPath,300,600,null,true);
+			}	
+		}
+			
+		return SUCCESS;
+	}
+	
+	private DefaultCategoryDataset createDataSetForLineChart(List<PartyResultVO> resultsInMandals){
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		for(PartyResultVO party:resultsInMandals)
+			dataset.addValue(new BigDecimal(party.getVotesPercent()), party.getPartyName(), party.getConstituencyName());
+		return dataset;
 	}
 	
 	public String getConstVotingTrendzChart() throws Exception
@@ -810,7 +857,6 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			    	
 			    	constituencyVO.setAssembliesOfParliamentInfo(votersInfoVO);
 			    }
-			    	
 			
 			//chartNames[i++] = pieChart;
 			}
@@ -845,7 +891,6 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
     		}	
     		Collections.sort(votersInfoForMandal, new VotersInfoForMandalVOComparator());
     		votersInfo.setVotersInfoForMandalVO(votersInfoForMandal);
-    		
     	}
      return votersInfo;
     }

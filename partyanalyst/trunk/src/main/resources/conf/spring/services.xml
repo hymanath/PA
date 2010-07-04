@@ -112,7 +112,8 @@
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />	
-		<property name="staticDataService" ref="staticDataService" />	
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="boothResultDAO" ref="boothResultDAO" />	
 	</bean>	
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
