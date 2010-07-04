@@ -1047,9 +1047,9 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 					{
 						colors[j++]=IConstants.BJP_COLOR;
 						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-					}					
-					BigDecimal	otherPartyVotes = new BigDecimal(otherPartyVotesPercent).setScale(2, BigDecimal.ROUND_HALF_UP);				
-					dataset.setValue(partyName+"-"+otherPartyVotes.toString()+"%",otherPartyVotes);
+					}	
+					dataset.setValue(partyName+" ["+new BigDecimal(votesPercent).setScale(2, BigDecimal.ROUND_HALF_UP).toString()+"%]",Double.parseDouble(new BigDecimal(votesPercent).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));	
+			
 				}	
 				else
 				{
