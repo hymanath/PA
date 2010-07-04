@@ -431,7 +431,7 @@ public class ChartProducer {
         for(int i=0;i<dataset.getRowCount();i++){
         	seatsRenderer.setSeriesStroke(
             			i, new BasicStroke(
-            			1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+            			1.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
             			1.0f, null, 0.0f
             			)
             			);
