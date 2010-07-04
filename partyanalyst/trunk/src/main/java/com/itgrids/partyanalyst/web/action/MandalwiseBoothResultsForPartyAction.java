@@ -235,7 +235,7 @@ ServletRequestAware, ServletContextAware{
 		 	    String title = "Mandal Wise Election Result For "+votesMarginResultsMainVO.getPartyVotesMarginResultsInMandal().get(i).getMandalName()+" Mandal";		 	    
 		        ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataSetForGraph(votesMarginResultsMainVO,i);
 		        
-				ChartProducer.createLineChart(title,"Election Type","Range", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(),chartPath,320,980, new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()));
+				ChartProducer.createLineChart(title,"Election Type","Range", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(),chartPath,320,980, new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),false);
 			} 
 		}catch(Exception ex){
 			ex.printStackTrace();
