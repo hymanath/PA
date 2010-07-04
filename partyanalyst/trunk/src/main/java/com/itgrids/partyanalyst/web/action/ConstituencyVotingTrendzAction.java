@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -34,8 +36,12 @@ import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
+import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
+import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.ElectionTypeChartVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
@@ -406,7 +412,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		biElectionResultsMainVO = new BiElectionResultsMainVO();
 		biElectionResultsMainVO.setBiElectionResultsMainVO(biElectionResultsVO);
-		biElectionResultsMainVO.setChartsListForElectionTypes(getElectionResultsPieChart(constiId, constiName));
+		biElectionResultsMainVO.setChartsListForElectionTypes(getElectionResultsPieChart(constiId, constiName, biElectionResultsVO));
 		
 		constituencyVO = getVotersShareInMandalsPieChart(constiId);
 		biElectionResultsMainVO.setConstituencyVO(constituencyVO);
@@ -414,121 +420,48 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		return Action.SUCCESS;
 	}
 	
-	public List<ElectionTypeChartVO> getElectionResultsPieChart(Long constiId,String constiName)
+	public List<ElectionTypeChartVO> getElectionResultsPieChart(Long constiId,String constiName, List<BiElectionResultsVO> biElectionResultsVO)
 	{
-		//List<String> electionResultsChart = new ArrayList<String>();
 		List<ElectionTypeChartVO> electionResultsChart = new ArrayList<ElectionTypeChartVO>();
-		List<ElectionTypeChartVO> allPartiesChart = new ArrayList<ElectionTypeChartVO>();
-		List<String> allPartiesElectionResultsChart = new ArrayList<String>();
-		List<ElectionResultPartyVO> chartList = staticDataService.getAllMandalElectionInformationForAConstituency(constiId);
-		ElectionTypeChartVO electionTypeChartVOAllParties = new ElectionTypeChartVO();
 		ElectionTypeChartVO electionTypeChartVOSelectedParties = new ElectionTypeChartVO();
-		if(chartList.size() == 0)
-			return null;
-		
-		for(int i=0; i<chartList.size(); i++)
-		{			
-			electionTypeChartVOAllParties = createPieChartForElectionTypeNElectionYear(constiId,chartList.get(i),"allparties");
-			if(electionTypeChartVOAllParties != null)
-				allPartiesChart.add(electionTypeChartVOAllParties);
-		}
-		biElectionResultsMainVO.setAllPartiesElectionResultsChart(allPartiesElectionResultsChart);
-		
-		for(int i=0; i<chartList.size(); i++)
-		{			
-			 electionTypeChartVOSelectedParties = createPieChartForElectionTypeNElectionYear(constiId,chartList.get(i),"selectedParties");
-			if(electionTypeChartVOSelectedParties != null)
-				electionResultsChart.add(electionTypeChartVOSelectedParties);
+				
+		for(BiElectionResultsVO resultsObj :biElectionResultsVO)
+		{
+			List<ElectionResultsForMandalVO> results = resultsObj.getBiElectionResultsVO();
+			for(ElectionResultsForMandalVO electionResultsForMandalVO:results)
+				{
+				electionTypeChartVOSelectedParties = createPieChartForElectionTypeNElectionYear(constiId,electionResultsForMandalVO,"selectedParties");
+					if(electionTypeChartVOSelectedParties != null)
+						electionResultsChart.add(electionTypeChartVOSelectedParties);
+				}
 		}	
-		
-		return electionResultsChart;	
-		
-		
+		return electionResultsChart;		
 	}
 	
-	public ElectionTypeChartVO createPieChartForElectionTypeNElectionYear(Long constiId,ElectionResultPartyVO result,String chartType)
+	public ElectionTypeChartVO createPieChartForElectionTypeNElectionYear(Long constiId,ElectionResultsForMandalVO result,String chartType)
 	{		
 		String chartName = "Election_Result_"+result.getElectionType()+"_"+result.getElectionYear()+"_"+constiId+"_piechart"+".png";
-		String allPartychartName = "All_Parties_Election_Result_"+result.getElectionType()+"_"+result.getElectionYear()+"_piechart"+".png";
 		String localChart = null;
-		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-		String allPartychartPath = context.getRealPath("/") + "charts\\" + allPartychartName;
+		String chartPath = context.getRealPath("/") + "charts\\" + chartName;		
 		Double otherPartyVotesPercent = 0D;
 		ElectionTypeChartVO electionTypeChartVO = new ElectionTypeChartVO();
 		String chartTitle = ""+result.getElectionType()+" - "+result.getElectionYear();
 		final DefaultPieDataset dataset = new DefaultPieDataset();
 		Color[] colors = null;
-		if(chartType.equalsIgnoreCase("allparties"))
-			colors = new Color[result.getCandidateElectionResultsVO().size()];
+		
 		if(chartType.equalsIgnoreCase("selectedParties"))
-			colors = new Color[7];
-		log.debug(" results size ==== "+result.getCandidateElectionResultsVO().size());		
+			colors = new Color[5];
+		log.debug(" results size ==== "+result.getPartyResultsSum());		
 		int j=0;
-		for(int i=0; i<result.getCandidateElectionResultsVO().size(); i++ )
+		for(int i=0; i<result.getPartyResultsSum().size(); i++ )
 		{		
-			String partyName = result.getCandidateElectionResultsVO().get(i).getPartyName(); 
-			Double votesPercent = Double.valueOf(result.getCandidateElectionResultsVO().get(i).getVotesPercentage());
+			String partyName = result.getPartyResultsSum().get(i).getPartyName(); 
+			Double votesPercent = Double.valueOf(result.getPartyResultsSum().get(i).getPercentage());
 			log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
 						
-			if(chartType.equalsIgnoreCase("allparties"))
-			{	
-				if(partyName.equals(IConstants.INC))
-				{
-					colors[i]=IConstants.INC_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-				}				
-				else
-				if(partyName.equals(IConstants.IND))
-				{
-					colors[i]=IConstants.IND_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-				}				
-				else
-				if(partyName.equals(IConstants.PRP))
-				{
-					colors[i]=IConstants.PRP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-				}			
-				else
-				if(partyName.equals(IConstants.TDP))
-				{
-					colors[i]=IConstants.TDP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-				}	
-				else
-				if(partyName.equals(IConstants.TRS))
-				{
-					colors[i]=IConstants.TRS_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-				}
-				else
-				if(partyName.equals(IConstants.CPI))
-				{
-					colors[i]=IConstants.CPI_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-				}						
-				else
-				if(partyName.equals(IConstants.CPM))
-				{
-					colors[i]=IConstants.CPM_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-				}					
-				else
-				if(partyName.equals(IConstants.BJP))
-				{
-					colors[i]=IConstants.BJP_COLOR;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-				}					
-				else
-				{
-					colors[i] = null;
-					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-				}
-				
-				dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);	
-			}else if(chartType.equalsIgnoreCase("selectedParties"))
+			 if(chartType.equalsIgnoreCase("selectedParties"))
 			{
-				if(partyName.equalsIgnoreCase(IConstants.INC) || partyName.equalsIgnoreCase(IConstants.TDP) || partyName.equalsIgnoreCase(IConstants.TRS) || partyName.equalsIgnoreCase(IConstants.CPI) || partyName.equalsIgnoreCase(IConstants.CPM) || partyName.equalsIgnoreCase(IConstants.BJP) 
+				if(partyName.equalsIgnoreCase(IConstants.INC) || partyName.equalsIgnoreCase(IConstants.TDP) || partyName.equalsIgnoreCase(IConstants.TRS) || partyName.equalsIgnoreCase(IConstants.BJP) 
 						|| partyName.equals(IConstants.PRP))
 				{				
 					if(partyName.equals(IConstants.INC))
@@ -553,19 +486,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 					{
 						colors[j++]=IConstants.TRS_COLOR;
 						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-					}
-					else
-					if(partyName.equals(IConstants.CPI))
-					{
-						colors[j++]=IConstants.CPI_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-					}						
-					else
-					if(partyName.equals(IConstants.CPM))
-					{
-						colors[j++]=IConstants.CPM_COLOR;
-						log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
-					}					
+					}										
 					else
 					if(partyName.equals(IConstants.BJP))
 					{
@@ -583,12 +504,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			}
 		}
 		
-		if(chartType.equalsIgnoreCase("allparties")){
-			ChartProducer.createProblemsPieChart(chartTitle, dataset, allPartychartPath , colors,true,250,250);
-			localChart = allPartychartName;
-		}
-			
-		else if(chartType.equalsIgnoreCase("selectedParties")){			
+		if(chartType.equalsIgnoreCase("selectedParties")){			
 			BigDecimal	otherPartyVotes = new BigDecimal(otherPartyVotesPercent).setScale(2, BigDecimal.ROUND_HALF_UP);			
 			dataset.setValue("Others"+" ["+otherPartyVotes.toString()+"%]",otherPartyVotes);
 			colors[j] = IConstants.DEFAULT_COLOR;
@@ -600,11 +516,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		electionTypeChartVO.setElectionYear(result.getElectionYear());
 		return electionTypeChartVO;
 			
-	}
-
-	
-	
-	
+	}	
 	public List<ElectionResultPartyVO> getConstituencyElectionResultsChart(Long constiId){
 		
 		log.debug(" Inside getConstituencyElectionResultsChart Method ");
