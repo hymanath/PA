@@ -197,17 +197,17 @@
 								</div>
 								<div id="currentNewsDiv_body">
 									<div class="newsData_main">
-									<div id="prices_main_head" class="newsDataHead">Oppn alleges scam in sugar imports,Pawar refuses charge</div>
-									<div id="prices_main_body">
-										An relenting opposition today kept the pressure on the government in the Rajya Sabha on the spiraling prices alleging 
-										scam in sugar imports, a charge rejected by food and agricultural minister Sharad Pawar.
+									<div id="prices_main_head" class="newsDataHead">Telangana Bye Elections - 2010</div>
+									<div id="prices_main_body" style="color:#73787E;">
+										Crucial elections for major parties like INC, TDP and TRS in Andhra Pradesh.
+										What is each parties strengths in these constituencies? What are the factors influence these elections like non participating parties (PRP, BJP, Loksatta etc) ...?
 									</div>
 									<div id="prices_main_footer" class="newsDataFooter"> >> More	</div>
 									</div>
 
 									<div class="newsData_main">
-									<div id="fuel_main_head" class="newsDataHead">Govt to talk to allies on fuel price hke:pranab </div>
-									<div id="fuel_main_body">
+									<div id="fuel_main_head" class="newsDataHead">Govt to talk to allies on fuel price hike:pranab</div>
+									<div id="fuel_main_body" style="color:#73787E;">
 										Finance minister Pranab Mukherjee on Wednesday briefed the Congress MP's in the backdrop of demands for a rollback in the fuel prices
 										and explained why reduction in the excise duty on petroleum products was difficult.
 									</div>
@@ -222,10 +222,10 @@
 									Other News :
 								</div>
 								<ul id="other_news_list">
-									<li><div>In pics : Vineet Jain's Holi party 2010</div></li>
-									<li><div>Filmfare Awards : 3 Idiots shines.</div></li>
-									<li><div>Pranab meets Congress MP's explains fuel price hike</div></li>
-									<li><div>Chandrayaan finds ice on moon</div></li>
+									<li><div>Political Leaders arrest warns political parties, leaders about election code.</div></li>
+									<li><div>PRP making arrangements for Local Body Elections.</div></li>
+									<li><div>Parties alligation on fuel price hike influence the Govt.</div></li>
+									<li><div>Sport Stars in India</div></li>
 								</ul>
 							</div>
 						</td>
