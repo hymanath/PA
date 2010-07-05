@@ -4538,11 +4538,13 @@ public class StaticDataService implements IStaticDataService {
 			Long latestElectionYearVoters=0l;
 			Map<String,Long> presentYearVoters = new HashMap<String,Long>(0); 
 			presentYearVoters = populateAllByeElectionConstituencyVoterDetails();
-			List list = candidateBoothResultDAO.findConstituencyWiseVotingTrendz(Long.parseLong(getLatestAssemblyElectionId()),constituencyId);
+			List list = constituencyElectionDAO.getVotesDataForAConstituency(constituencyId,Long.parseLong(getLatestAssemblyElectionId()));
 			for(int i=0; i<list.size(); i++){
-				Object[] params = (Object[])list.get(i);
-				latestElectionYearTotalPolledVotes+=Long.parseLong(params[5].toString());
-				latestElectionYearVoters = Long.parseLong(params[9].toString());			
+				Object[] params = (Object[])list.get(i);			
+				Double totalPolledVotes = Double.parseDouble(params[1].toString());
+				latestElectionYearTotalPolledVotes+=totalPolledVotes.longValue();
+				Double totalVotes = Double.parseDouble(params[0].toString());
+				latestElectionYearVoters = totalVotes.longValue();			
 			}
 			constituencyOverView.setLatestElectionYearsTotalVoters(latestElectionYearVoters);
 			constituencyOverView.setLatestElectionYearsTotalPolledVotes(latestElectionYearTotalPolledVotes);
