@@ -119,12 +119,11 @@ private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
 				if(logger.isDebugEnabled())
 				logger.debug("4.1");
 				List<Party> parties=partyDAO.getAll();
-				List<Candidate> candidates= candidateDAO.getAll();
 				List<Constituency> constituencies= constituencyDAO.getAll();
 				//ProcessBatchCallback pbc= new ProcessBatchCallback(parties, candidates, constituencies, constituenciesBlocks, stateObj, districtObj, electionObj, constituencyNo, countryObj, electionScopeObj);
 				
 				for (ConstituencyBlock constituencyBlock: constituencyBlocks) {
-				processBatch(parties, candidates, constituencies, constituencyBlock, stateObj, districtObj, electionObj, constituencyNo, countryObj, electionScopeObj);
+				processBatch(parties, constituencies, constituencyBlock, stateObj, districtObj, electionObj, constituencyNo, countryObj, electionScopeObj);
 				}
 				//this.transactionTemplate.execute(pbc);
 
@@ -139,6 +138,19 @@ private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
 		throw new CsvException("Election type has not been defined in the system.");
 	}
 }
+
+private Candidate checkAndInsertCandidate(String candidateName) throws Exception{
+	Candidate candidate = candidateDAO.findCandidateByLastName(candidateName);
+	
+	if(candidate == null){
+		candidate = new Candidate();
+		candidate.setLastname(candidateName);
+		candidate = candidateDAO.save(candidate);
+	}
+	
+	return candidate;
+}
+
 
 /*	private class ProcessBatchCallback implements TransactionCallback{
 		List<Party> parties;
@@ -174,7 +186,7 @@ private void insertIntoDatabase(UploadFormVo uploadFormVo) throws CsvException{
 	}*/
 
 
-public int processBatch(List<Party> parties,List<Candidate> candidates,List<Constituency> constituencies,ConstituencyBlock constituecBlock, State stateObj,District districtObj,Election electionObj,int constituencyNo,Country countryObj,ElectionScope electionScopeObj){
+public int processBatch(List<Party> parties,List<Constituency> constituencies,ConstituencyBlock constituecBlock, State stateObj,District districtObj,Election electionObj,int constituencyNo,Country countryObj,ElectionScope electionScopeObj){
 	
 		try {
 			long currentTime=System.currentTimeMillis();
@@ -202,7 +214,7 @@ public int processBatch(List<Party> parties,List<Candidate> candidates,List<Cons
 			if(logger.isDebugEnabled())
 			logger.debug("4.3");
 			for (CandidateElectionResult candidateElectionResult : candidateElectionResults) {
-				Candidate candidateObj=checkAndInsertCandidate(candidates,candidateElectionResult.getCandidateName());
+				Candidate candidateObj=checkAndInsertCandidate(candidateElectionResult.getCandidateName());
 				Party partyObj= checkAndInsertParty(parties,candidateElectionResult.getCandidatePrty());
 				if(logger.isDebugEnabled())
 				logger.debug("4.6");
@@ -279,7 +291,7 @@ private Constituency checkAndInsertConstituency(List<Constituency> constituencis
 	}
 	return lconstituencyObj;
 }
-private Candidate checkAndInsertCandidate(List<Candidate> candidats,String candidateName){
+/*private Candidate checkAndInsertCandidate(List<Candidate> candidats,String candidateName){
 	boolean candidateFlag = true;
 	Candidate lcandidateObj = null;
 	if(candidats!=null && candidats.size()>0){
@@ -298,7 +310,7 @@ private Candidate checkAndInsertCandidate(List<Candidate> candidats,String candi
 		candidats.add(lcandidateObj);
 	}
 	return lcandidateObj;
-}
+}*/
 
 private Party checkAndInsertParty(List<Party> partis,String partyName){
 	boolean partyFlag = true;

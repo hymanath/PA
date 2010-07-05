@@ -125,14 +125,20 @@ public class CandidateSearchService implements ICandidateSearchService{
 		String partyName = null;
 		for(Nomination nomination:nominations)
 		{
-			if(nomination.getConstituencyElection().getElection().getElectionYear().equals(latestYearCandidatePartisipated))
-			{
-				partyName = nomination.getParty().getShortName();
-				CandidateElectionVO candidateElectionVO = new CandidateElectionVO(nomination.getConstituencyElection().getConstituency().getName(),
-									nomination.getCandidateResult().getRank().toString(),
-									nomination.getConstituencyElection().getConstituency().getElectionScope().getElectionType().getElectionType());	
-				candidateElectionVOs.add(candidateElectionVO);
+			try{
+				if(nomination.getConstituencyElection().getElection().getElectionYear().equals(latestYearCandidatePartisipated))
+				{
+					partyName = nomination.getParty().getShortName();
+					CandidateElectionVO candidateElectionVO = new CandidateElectionVO(nomination.getConstituencyElection().getConstituency().getName(),
+										nomination.getCandidateResult().getRank().toString(),
+										nomination.getConstituencyElection().getElection().getElectionScope().getElectionType().getElectionType());	
+					candidateElectionVOs.add(candidateElectionVO);
+				}	
+			}catch (Exception e) {
+				System.out.println("Exception Occured For Nomiantion Id::"+nomination.getNominationId()+" Cadidate:"+nomination.getCandidate().getLastname());
+				e.printStackTrace();
 			}
+			
 		}
 		CandidateVO candidateVO = new CandidateVO(candidate.getCandidateId(), candidateName, image, latestYearCandidatePartisipated, candidateElectionVOs, partyName);
 		
