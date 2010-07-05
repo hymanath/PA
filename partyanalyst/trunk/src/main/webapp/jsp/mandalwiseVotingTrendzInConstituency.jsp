@@ -208,10 +208,10 @@
 
 				headingDIV+='	<tr>';
 				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Voters for Year 2009</b></td>';
-				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">210869</td>';
+				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalVoters+'</td>';
 
 				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Polled Votes </b></td>';
-				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">136637(64.80 %)</td>';			
+				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalPolledVotes+' ('+myResults.latestElectionYearsTotalVotesPercentage+'%)</td>';				
 				
 				headingDIV+='	</tr>';
 
@@ -908,7 +908,7 @@
 								{
 									str += '<td><font style="color:#62662B;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotes+'</font></td><td><font style="color:#62662B;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotesPercentage+'</font></td>';
 								} else 
-									str += '<td><font style="color:#62662B;font-weight:bold;"> -- </font></td><td><font style="color:#62662B;font-weight:bold;"> -- </font></td>';
+									str += '<td><font style="color:#62662B;font-weight:bold;">--</font></td><td><font style="color:#62662B;font-weight:bold;">--</font></td>';
 						}
 						
 						str += '</tr>';
