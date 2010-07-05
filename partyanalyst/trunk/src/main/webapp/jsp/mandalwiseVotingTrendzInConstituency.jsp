@@ -868,7 +868,7 @@
 							var cols = partyHeaderLength+1;
 							str += '<th><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs"  onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';
 							for(var colsno = 0;colsno < cols; colsno++)
-								str += '<td> N/A </td>';	
+								str += '<td> -- </td>';	
 						}
 						else
 						{
@@ -883,7 +883,7 @@
 								{
 									var data = info.partyElecResultsInConstituency[l].partyElecResults[m];	
 									if(data.votesEarned == 0)
-										str += '<td> N/A </td>';
+										str += '<td> -- </td>';
 									else
 										str += '<td>'+data.votesEarned+'</td>';
 
@@ -908,7 +908,7 @@
 								{
 									str += '<td><font style="color:#62662B;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotes+'</font></td><td><font style="color:#62662B;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotesPercentage+'</font></td>';
 								} else 
-									str += '<td><font style="color:#62662B;font-weight:bold;">N/A</font></td><td><font style="color:#62662B;font-weight:bold;">N/A</font></td>';
+									str += '<td><font style="color:#62662B;font-weight:bold;"> -- </font></td><td><font style="color:#62662B;font-weight:bold;"> -- </font></td>';
 						}
 						
 						str += '</tr>';
