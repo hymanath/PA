@@ -460,7 +460,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		Color[] colors = null;
 		
 		if(chartType.equalsIgnoreCase("selectedParties"))
-			colors = new Color[5];
+			colors = new Color[result.getPartyResultsSum().size()];
 		log.debug(" results size ==== "+result.getPartyResultsSum());		
 		int j=0;
 		for(int i=0; i<result.getPartyResultsSum().size(); i++ )
