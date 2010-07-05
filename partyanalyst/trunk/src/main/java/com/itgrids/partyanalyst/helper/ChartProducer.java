@@ -659,7 +659,7 @@ public static void createLabeledPieChart(String title,final DefaultPieDataset da
         try
         {
             // This will create a PNG image
-            ChartUtilities.saveChartAsPNG(new File(fileName), chart, 280, 280,info);  //	width height best viewed 280, 180
+            ChartUtilities.saveChartAsPNG(new File(fileName), chart, 280, 180,info);  //	width height best viewed 280, 180
         }
         catch (Exception e)
         {

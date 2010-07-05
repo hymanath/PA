@@ -704,6 +704,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		}
 		
 		JSONArray array = jObj.getJSONArray("mandalIds");
+		int chartHeight = jObj.getInt("chartHeight");
+		int chartWidth = jObj.getInt("chartWidth");
 		
 		StringBuilder mandalIds = new StringBuilder();
 		
@@ -719,7 +721,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				String chartPath = context.getRealPath("/") + "charts\\" + mandalsPartiesChart;
 				ChartProducer.createLineChart("Mandals Wise "+jObj.getString("electionYear")+" Election Results For All Parties", 
 						"Mandals", "Percentages",createDataSetForLineChart(resultsInMandals), 
-						chartPath,300,600,null,true);
+						chartPath,chartHeight,chartWidth,null,true);
 			}	
 		}
 			
