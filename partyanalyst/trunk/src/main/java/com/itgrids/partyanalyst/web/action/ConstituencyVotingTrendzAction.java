@@ -91,12 +91,20 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private ConstituencyInfoVO constituencyDetails;
 	private ConstituencyVO constituencyVO; 
 	private VotersWithDelimitationInfoVO votersInfoForMandals;
-	
+	private List<PartyResultVO> votesSharing;
 	private String mandalsPartiesChart;
 	
 	private ElectionTrendzReportVO constituencyOverView;
 	
 	
+	public List<PartyResultVO> getVotesSharing() {
+		return votesSharing;
+	}
+
+	public void setVotesSharing(List<PartyResultVO> votesSharing) {
+		this.votesSharing = votesSharing;
+	}
+
 	public ElectionTrendzReportVO getConstituencyOverView() {
 		return constituencyOverView;
 	}
@@ -376,10 +384,25 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		mptcElectionYears = staticDataService.getAllElectionYearsForATeshil(mptcElectionId);
 		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(0L);
 		staticPartiesList = mandalVO.getPartiesInMandal();
-		
+		votesSharing = staticDataService.getPartyVotesShareInConstituency(Long.parseLong(constiId),1);
 		return SUCCESS;
 	}
 	
+	public String getAllPartiesVotesSharing(){
+		String param=null;			    
+		param = getTask();
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}	
+		
+		Long constiId =  new Long(jObj.getString("constituencyId"));
+		
+		votesSharing = staticDataService.getPartyVotesShareInConstituency(constiId,1);
+		return SUCCESS;
+	}
 	public String getVotesOverViewInAConstituency() throws Exception
 	{
 		String param=null;			    
@@ -535,7 +558,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		log.debug(" Inside getConstituencyElectionResultsChart Method ");
 		
-		List<ElectionResultPartyVO> resultsList = staticDataService.getAllMandalElectionInformationForAConstituency(constiId);
+		List<ElectionResultPartyVO> resultsList = staticDataService.getAllMandalElectionInformationForAConstituency(constiId,0);
 		List<ElectionResultPartyVO> resultsMainList = new ArrayList<ElectionResultPartyVO>();
 		
 		if(resultsList != null && resultsList.size() > 0){
