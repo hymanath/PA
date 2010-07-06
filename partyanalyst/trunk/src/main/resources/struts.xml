@@ -1150,6 +1150,12 @@
         	</result>       		
         </action>
         
+        <action name="votesSharingInConstituencyAjaxAction" class="constituencyVotingTrendzAction" method="getAllPartiesVotesSharing"> 
+              <result type="json" name="success">
+           		<param name="root">votesSharing</param>
+        	</result>       		
+        </action>	
+        
 	</package>
 </struts>
 
