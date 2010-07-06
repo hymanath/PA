@@ -14,8 +14,17 @@ public class ElectionResultVO {
 	private String partyName;
 	private String partyShortName;
 	private Long noOfSeatsWon;
+	private String hasAlliance;
 	private List<AlliancePartyResultsVO> partiesAlliances;
 	
+	public String getHasAlliance() {
+		return hasAlliance;
+	}
+
+	public void setHasAlliance(String hasAlliance) {
+		this.hasAlliance = hasAlliance;
+	}
+
 	public Long getNoOfSeatsWon() {
 		return noOfSeatsWon;
 	}

@@ -4256,7 +4256,7 @@ public class StaticDataService implements IStaticDataService {
 				List resu = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,1l);				
 				List alliance = allianceGroupDAO.findAlliancePartiesByElectionAndParty(Long.parseLong(resu.get(0).toString()),resultIterator.getPartyId());
 				partyInfo.setHasAlliance(alliance.size()>0?"true":"false");
-				System.out.println(electionType+"----"+electionYear+"----"+partyInfo.getHasAlliance()+"------"+partyInfo.getPartyName()+"------"+partyInfo.getVotesPercentage());
+				//System.out.println(electionType+"----"+electionYear+"----"+partyInfo.getHasAlliance()+"------"+partyInfo.getPartyName()+"------"+partyInfo.getVotesPercentage());
 				if(flag==1){
 					if((IConstants.BYE_ELECTIONS_STATIC_PARTIES.contains(resultIterator.getPartyName()))){
 						candidateElectionResultsVO.add(partyInfo);
@@ -4316,7 +4316,7 @@ public class StaticDataService implements IStaticDataService {
 				List result = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,1l);				
 				List alliance = allianceGroupDAO.findAlliancePartiesByElectionAndParty(Long.parseLong(result.get(0).toString()),Long.parseLong(parms[2].toString()));
 				partyInfo.setHasAlliance(alliance.size()>0?"true":"false");
-				System.out.println(electionType+"----"+electionYear+"----"+partyInfo.getHasAlliance()+"------"+partyInfo.getPartyName()+"------"+partyInfo.getVotesPercentage());
+			//	System.out.println(electionType+"----"+electionYear+"----"+partyInfo.getHasAlliance()+"------"+partyInfo.getPartyName()+"------"+partyInfo.getVotesPercentage());
 				if(flag==1){
 					if((IConstants.BYE_ELECTIONS_STATIC_PARTIES.contains(parms[0].toString()))){
 						candidateElectionResultsVO.add(partyInfo);
@@ -4659,7 +4659,9 @@ public class StaticDataService implements IStaticDataService {
 					ElectionResultVO electionResultVO = new ElectionResultVO();
 					electionResultVO.setElectionType(partyResult.get(i).getElectionType());
 					electionResultVO.setElectionYear(partyResult.get(i).getElectionYear());
-					for(int k=0;k<partyResult.get(i).getCandidateElectionResultsVO().size();k++){						
+					
+					for(int k=0;k<partyResult.get(i).getCandidateElectionResultsVO().size();k++){	
+						electionResultVO.setHasAlliance(partyResult.get(i).getCandidateElectionResultsVO().get(k).getHasAlliance());
 						if(partyResult.get(i).getCandidateElectionResultsVO().get(k).getPartyName().equalsIgnoreCase(partiesList[j])){							
 							electionResultVO.setPercentage(partyResult.get(i).getCandidateElectionResultsVO().get(k).getVotesPercentage().toString());	
 							break;
