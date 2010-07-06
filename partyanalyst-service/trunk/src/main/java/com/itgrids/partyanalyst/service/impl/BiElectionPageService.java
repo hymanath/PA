@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,6 +24,8 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
@@ -42,6 +45,8 @@ import com.itgrids.partyanalyst.dto.PartyElectionResultsInConstituencyVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInVotesMarginVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.dto.PartyTownshipResultsVO;
+import com.itgrids.partyanalyst.dto.PartyVillageLevelAnalysisVO;
 import com.itgrids.partyanalyst.dto.PartyVotesMarginInConstituency;
 import com.itgrids.partyanalyst.dto.PartyVotesMarginResultsInMandal;
 import com.itgrids.partyanalyst.dto.PartyVotesMarginResultsVO;
@@ -61,6 +66,7 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyResultsComparator;
 import com.itgrids.partyanalyst.utils.PartyResultsVOComparator;
+import com.itgrids.partyanalyst.utils.PartyTownshipResultsComparator;
 
 public class BiElectionPageService implements IBiElectionPageService {
 	
@@ -68,12 +74,14 @@ public class BiElectionPageService implements IBiElectionPageService {
 	private IElectionDAO electionDAO;
 	private INominationDAO nominationDAO;
 	private IConstituencyDAO constituencyDAO;
+	private IConstituencyElectionDAO constituencyElectionDAO;
 	private ICandidateBoothResultDAO candidateBoothResultDAO;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO; 
 	private IVillageBoothElectionDAO villageBoothElectionDAO;
 	private IStaticDataService staticDataService;
 	private IConstituencyPageService constituencyPageService;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 		
 	private static final Logger log = Logger.getLogger(BiElectionPageService.class);
 
@@ -91,6 +99,15 @@ public class BiElectionPageService implements IBiElectionPageService {
 
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+
+	public IConstituencyElectionDAO getConstituencyElectionDAO() {
+		return constituencyElectionDAO;
+	}
+
+	public void setConstituencyElectionDAO(
+			IConstituencyElectionDAO constituencyElectionDAO) {
+		this.constituencyElectionDAO = constituencyElectionDAO;
 	}
 
 	public ICandidateBoothResultDAO getCandidateBoothResultDAO() {
@@ -125,6 +142,15 @@ public class BiElectionPageService implements IBiElectionPageService {
 
 	public void setNominationDAO(INominationDAO nominationDAO) {
 		this.nominationDAO = nominationDAO;
+	}
+
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
 	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
@@ -1937,6 +1963,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		getPartyResultsListByRevenueVillages(villagesWiseResults, partiesResultsVO, elecVillagePVMap, true, null);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private List<PartyResultVO> alliancePartiesResultsByRevenueVillages(
 			String parties, String elections, Map<String, Long> elecVillagePVMap, Long tehsilId) {
 		List<PartyResultVO> partiesResultsVO = new ArrayList<PartyResultVO>();
@@ -1996,6 +2023,300 @@ public class BiElectionPageService implements IBiElectionPageService {
 																				.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			partiesResultsVO.add(partyResultVO);
 		}
+	}
+
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#getTownshipWiseAllPartyResults(java.lang.Long, java.lang.String, java.lang.String)
+	 * @Input tehsilId , electionType and electionYear
+	 * @Output township wise all party results map
+	 * Returns all party results for each township in given mandal
+	 */
+	@SuppressWarnings("unchecked")
+	public Map<Long, List<PartyTownshipResultsVO>> getTownshipWiseAllPartyResults(
+			Long tehsilId, String electionType, String electionYear) {
+		
+		if(log.isDebugEnabled())
+			log.debug(" Inside getTownshipWiseAllPartyResults method ...");
+		
+		//Map<Long,List<PartyResultVO>> Long refers to townshipId, List<PartyResultVO> is all party results
+		Map<Long, List<PartyTownshipResultsVO>> allPartyRes = null;
+		
+		if(tehsilId != null && electionType != null && electionYear != null){
+			
+			List resultsList = candidateBoothResultDAO.findTownshipWiseAllPartyResultsInAMandal(electionType,electionYear,tehsilId);
+			Boolean checkRes = checkResultsList(resultsList);
+			
+			if(checkRes){
+				allPartyRes = new HashMap<Long, List<PartyTownshipResultsVO>>();
+				ListIterator resultIT = resultsList.listIterator();
+				
+				//iterate the results
+				while(resultIT.hasNext()){
+					Object[] resParam = (Object[])resultIT.next();
+					
+					Long townId = (Long)resParam[2];
+					if(allPartyRes.isEmpty() || !allPartyRes.containsKey(townId)){
+					List<PartyTownshipResultsVO> townshipResList = new ArrayList<PartyTownshipResultsVO>();
+					PartyTownshipResultsVO townshipRes = getTownshipResults(resParam);
+					 
+					if(townshipRes != null)
+						 townshipResList.add(townshipRes);
+					allPartyRes.put(townId, townshipResList);
+					}
+					else if(allPartyRes.containsKey(townId)){
+					List<PartyTownshipResultsVO> townshipResList = allPartyRes.get(townId);
+					PartyTownshipResultsVO townshipRes = getTownshipResults(resParam);
+						 
+					if(townshipRes != null)
+						 townshipResList.add(townshipRes);
+					allPartyRes.put(townId, townshipResList);
+					}
+				}
+				
+			}
+			
+		}
+		
+	 return allPartyRes;
+	}
+	
+	/*
+	 * Checks wheather DAO return results is empty or not
+	 */
+	@SuppressWarnings("unchecked")
+	public Boolean checkResultsList(List resultsList){
+		if(resultsList != null && resultsList.size() > 0)
+			return true;
+		else return false;
+	}
+	
+	/*
+	 * Township results to VO
+	 */
+	public PartyTownshipResultsVO getTownshipResults(Object[] results){
+		if(results != null){
+			PartyTownshipResultsVO partyResult = new PartyTownshipResultsVO();
+			partyResult.setPartyId((Long)results[4]);
+			partyResult.setPartyName((String)results[5]);
+			partyResult.setTownshipId((Long)results[2]);
+			partyResult.setTownshipName((String)results[3]);
+			
+			Long votesEarned = (Long)results[0];
+			Long validVotes = (Long)results[1];
+			partyResult.setValidVotes(validVotes);
+			partyResult.setVotesEarned(votesEarned);
+			
+			Double votePercent = new BigDecimal(new Double(votesEarned)/new Double(validVotes)*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			partyResult.setVotesPercent(votePercent.toString());
+			
+			return partyResult;
+		}
+	 return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#villageLevelPArtyAnalysis(java.lang.Long, java.lang.String, java.lang.String)
+	 */
+	public List<PartyVillageLevelAnalysisVO> villageLevelPArtyAnalysis(
+			Long tehsilId, String electionType, String electionYear,int rank) {
+		
+		if(log.isDebugEnabled())
+			log.debug(" Inside villageLevelPArtyAnalysis Method ");
+		List<PartyVillageLevelAnalysisVO> villageLevelResults = null;
+		
+		if(tehsilId != null && electionType != null && electionYear != null){
+			
+			villageLevelResults = new ArrayList<PartyVillageLevelAnalysisVO>();
+			Map<Long, List<PartyTownshipResultsVO>> townshipwiseRes = getTownshipWiseAllPartyResults(tehsilId,electionType,electionYear);
+			Map<Long,List<PartyTownshipResultsVO>> partyResultsSorted = new HashMap<Long,List<PartyTownshipResultsVO>>();
+			if(!townshipwiseRes.isEmpty()){
+				
+				try{
+					
+				 Long mandalValidVotes = getMandalValidVotes(tehsilId,electionType,electionYear);
+				 Long constiValidVotes = new Long(0);
+				 
+				 //get constituency id for the selected mandal
+				 Long constitId = getLatestConstituencyForAMandal(tehsilId); 
+				 if(constitId != null){
+					 if(electionType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+						 constitId = getLatestParliamentConstituencyForAssembly(constitId);
+					 
+					 if(constitId != null)
+						 constiValidVotes =  getConstituencyValidVotes(constitId,electionYear);
+				 }
+				 
+				 //sort the results for all townships
+				 Set<Long> townKeys = townshipwiseRes.keySet();
+				 for(Long township:townKeys){
+					List<PartyTownshipResultsVO> townshipRes = townshipwiseRes.get(township);
+					
+					//sort the results votes earned desc
+					Collections.sort(townshipRes, new PartyTownshipResultsComparator());
+					PartyTownshipResultsVO res = townshipRes.get(rank);
+					Long partyId = res.getPartyId();
+					if(partyResultsSorted.isEmpty() || !partyResultsSorted.containsKey(partyId)){
+						List<PartyTownshipResultsVO> partyResInMap = new ArrayList<PartyTownshipResultsVO>();
+						partyResInMap.add(res);
+						partyResultsSorted.put(partyId, partyResInMap);
+					}
+					else if(partyResultsSorted.containsKey(partyId)){
+						List<PartyTownshipResultsVO> partyResInMap = partyResultsSorted.get(partyId);
+						partyResInMap.add(res);
+						partyResultsSorted.put(partyId, partyResInMap);
+					}
+					
+					
+				 }
+				 
+				 //map process and set results to VO
+				 if(!partyResultsSorted.isEmpty()){
+					 Set<Long> partyKeys = partyResultsSorted.keySet();
+					 for(Long partyKey:partyKeys){
+						 List<PartyTownshipResultsVO> townshipResList = partyResultsSorted.get(partyKey);
+						 PartyVillageLevelAnalysisVO villageLevelRes = getPartyVillageResultsInAMandal(partyKey,townshipResList,mandalValidVotes,constiValidVotes,electionType,electionYear);
+						 if(villageLevelRes != null)
+						 villageLevelResults.add(villageLevelRes);
+					 }
+				 }
+				 
+				}
+				catch(Exception ex){
+				 ex.printStackTrace();
+				 log.debug("Exception Raised :" + ex);
+				}
+			}
+		}
+		
+	 return villageLevelResults;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Long getLatestConstituencyForAMandal(Long mandalId){
+		if(mandalId != null){
+		List resList = delimitationConstituencyMandalDAO.getLatestAssemblyConstitueciesOfTehsil(mandalId);
+		 if(resList != null && resList.size() > 0){
+			 Object[] params = (Object[])resList.get(0);
+			 Long constituencyId = (Long)params[4];
+			 
+			 log.debug(" Latest Constituency For Mandal Is : " + constituencyId);
+			 return constituencyId;
+		 }
+		
+		}
+	 return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Long getLatestParliamentConstituencyForAssembly(Long assemConstiId){
+		if(assemConstiId != null){
+		 List assmConst = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(assemConstiId);
+		 if(assmConst != null && assmConst.size() > 0){
+			 Object[] params = (Object[])assmConst.get(0);
+			 Long parConsti = (Long)params[0];
+			 
+			 log.debug(" Parliament ConstituencyId :" + parConsti);
+			 return parConsti;
+		 }
+		}
+	 return null;
+	}
+	
+	/*
+	 * Process the final village level data for a party and set to VO
+	 */
+	public PartyVillageLevelAnalysisVO getPartyVillageResultsInAMandal(Long partyId,List<PartyTownshipResultsVO> townshipResList,Long mandValidVotes,Long constiValidVotes,
+			String electionType,String electionYear){
+		
+		if(log.isDebugEnabled())
+			log.debug(" Inside getPartyVillageResultsInAMandal Method ...");
+		
+		PartyVillageLevelAnalysisVO villageLevelRes = null;
+		if(partyId != null && townshipResList != null && mandValidVotes != null && constiValidVotes != null){
+			
+			villageLevelRes = new PartyVillageLevelAnalysisVO();
+			villageLevelRes.setElectionType(electionType);
+			villageLevelRes.setElectionYear(electionYear);
+			villageLevelRes.setPartyId(partyId);
+			
+			//process the results List and set to VO
+			Long validVotes = new Long(0);
+			Long votesEarned = new Long(0);
+			String partyName = "";
+			for(PartyTownshipResultsVO townshipRes:townshipResList){
+				
+				votesEarned+=townshipRes.getVotesEarned();
+				validVotes+=townshipRes.getValidVotes();
+				
+				partyName = townshipRes.getPartyName();
+			}
+			
+			if(!validVotes.equals(new Long(0)) && !votesEarned.equals(new Long(0))){
+				villageLevelRes.setPartyName(partyName);
+				villageLevelRes.setWonVillagesCount(townshipResList.size());
+				villageLevelRes.setTotVotesEarned(votesEarned);
+				villageLevelRes.setTotValidVotes(validVotes);
+				villageLevelRes.setVotesShareInVill(getVotesPercent(votesEarned,validVotes));
+				villageLevelRes.setVotesShareInMandal(getVotesPercent(votesEarned,mandValidVotes));
+				villageLevelRes.setVotesShareInConsti(getVotesPercent(votesEarned,constiValidVotes));
+			}
+			
+		}
+	 return villageLevelRes;
+	}
+	
+	public String getVotesPercent(Long votesEarned,Long validVotes){
+		String votesPercent = null;
+		try{
+		 Double votePrcnt = new BigDecimal(votesEarned.doubleValue()/validVotes.doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		 votesPercent = votePrcnt.toString();
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			log.debug(" Exception Raised :" + ex);
+			return null;
+		}
+	 return votesPercent; 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Long getMandalValidVotes(Long tehsilId,String elecType,String elecYear){
+		
+		try{
+		List mandalValidVotes = candidateBoothResultDAO.getValidVotesInAMandal(tehsilId, elecType, elecYear);
+		
+		if(mandalValidVotes != null){
+			Object params = (Object)mandalValidVotes.get(0);
+			Long validVotes = (Long)params;
+		 return validVotes;
+		}
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			log.debug("Exception Raised :" + ex);
+		}
+	 return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Long getConstituencyValidVotes(Long constiId,String electionYear){
+		
+		try{
+		 List constValidVotes = constituencyElectionDAO.getValidVotesForAConstituency(constiId,electionYear);
+		 if(constValidVotes != null){
+			Object params = (Object)constValidVotes.get(0);
+			Double validVotes = (Double)params;
+		  return validVotes.longValue();
+		 }
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			log.debug("Exception Raised :" + ex);
+		}
+	 return null;
 	}
 	
 }
