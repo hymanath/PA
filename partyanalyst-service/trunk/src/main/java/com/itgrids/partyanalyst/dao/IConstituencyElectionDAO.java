@@ -84,4 +84,7 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	
 	public List getVotesDataForAConstituency(Long constituencyId,Long electionId);
 	
+	@SuppressWarnings("unchecked")
+	public List getValidVotesForAConstituency(Long constId,String elecYear);
+	
 }
