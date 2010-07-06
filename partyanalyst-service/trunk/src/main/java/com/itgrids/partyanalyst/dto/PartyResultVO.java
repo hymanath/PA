@@ -28,9 +28,23 @@ public class PartyResultVO {
 	private List<ElectionResultVO> electionWiseResults;
 	private List<PartyResultVO> partyResultVo;
 	private Long seatsWonCountToSort;
-	List<SelectOptionVO> electionList;
-	List<SelectOptionVO> partiesList;
-
+	private List<SelectOptionVO> electionList;
+	private List<SelectOptionVO> partiesList;
+	private List<SelectOptionVO> votesRange;
+	private String range;
+		
+	public String getRange() {
+		return range;
+	}
+	public void setRange(String range) {
+		this.range = range;
+	}
+	public List<SelectOptionVO> getVotesRange() {
+		return votesRange;
+	}
+	public void setVotesRange(List<SelectOptionVO> votesRange) {
+		this.votesRange = votesRange;
+	}
 	public List<SelectOptionVO> getElectionList() {
 		return electionList;
 	}
