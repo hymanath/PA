@@ -463,9 +463,12 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			List<ElectionResultsForMandalVO> results = resultsObj.getBiElectionResultsVO();
 			for(ElectionResultsForMandalVO electionResultsForMandalVO:results)
 				{
-				electionTypeChartVOSelectedParties = createPieChartForElectionTypeNElectionYear(constiId,electionResultsForMandalVO,"selectedParties");
-					if(electionTypeChartVOSelectedParties != null)
-						electionResultsChart.add(electionTypeChartVOSelectedParties);
+					if(electionResultsForMandalVO.getPartyResultsSum() != null){
+						electionTypeChartVOSelectedParties = createPieChartForElectionTypeNElectionYear(constiId,electionResultsForMandalVO,"selectedParties");
+						if(electionTypeChartVOSelectedParties != null)
+							electionResultsChart.add(electionTypeChartVOSelectedParties);	
+					}
+				
 				}
 		}	
 		return electionResultsChart;
