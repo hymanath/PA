@@ -141,7 +141,7 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 		List list = constituencyDAO.findWardsAndIdsInMuncipality(2l);
 		assertEquals(1, list.size());
 	}*/
-	
+	/*
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetconstituencyByTehsil(){
@@ -152,5 +152,5 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(" Constituency Name :" + (String)params[1]);
 		}
 	}
-	
+	*/
 }
