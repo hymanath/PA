@@ -392,7 +392,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 	{
 		List<String> electionResultsChart = new ArrayList<String>();
 		List<String> allPartiesElectionResultsChart = new ArrayList<String>();
-		List<ElectionResultPartyVO> chartList = staticDataService.getAllMandalElectionInformationForAConstituency(constiId);
+		List<ElectionResultPartyVO> chartList = staticDataService.getAllMandalElectionInformationForAConstituency(constiId,0);
 		
 		if(chartList.size() == 0)
 			return null;
@@ -573,7 +573,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 	
 	 public String getMandalResults(Long constituencyId,String constituencyName){
 		 
-		  List<ElectionResultPartyVO> list = staticDataService.getAllMandalElectionInformationForAConstituency(constituencyId);
+		  List<ElectionResultPartyVO> list = staticDataService.getAllMandalElectionInformationForAConstituency(constituencyId,0);
 
 		  String chartTitle = "AllPartiesAllElectionYearsForAllElectiontypesConstituencyLatestMandalDetails";		  
 		  String chartName = "ElectionDetails for"+constituencyName+"_"+list.get(0).getElectionYear()+"_"+constituencyId;

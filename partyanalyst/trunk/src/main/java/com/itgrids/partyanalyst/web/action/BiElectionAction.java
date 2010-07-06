@@ -543,7 +543,7 @@ public class BiElectionAction extends ActionSupport implements
 			String domainAxisName = "Mandals";
 			String enlargedLineChartName = null;
 			
-			List<ElectionResultPartyVO> list = staticDataService.getAllMandalElectionInformationForAConstituency(constituencyId);
+			List<ElectionResultPartyVO> list = staticDataService.getAllMandalElectionInformationForAConstituency(constituencyId,0);
 		    String enlargedTitle =  "All Election Results for "+constituencyName;         
 		    enlargedLineChartName = "enlarged_mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+constituencyId+".png";
 		    enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedLineChartName;
@@ -556,7 +556,7 @@ public class BiElectionAction extends ActionSupport implements
 	}
 	
 	public String getMandalResults(Long constituencyId,String constituencyName){		 
-		  List<ElectionResultPartyVO> list = staticDataService.getAllMandalElectionInformationForAConstituency(constituencyId);
+		  List<ElectionResultPartyVO> list = staticDataService.getAllMandalElectionInformationForAConstituency(constituencyId,0);
 
 		  String chartTitle = "AllPartiesAllElectionYearsForAllElectiontypesConstituencyLatestMandalDetails";		  
 		  String chartName = "ElectionDetails for"+constituencyName+"_"+list.get(0).getElectionYear()+"_"+constituencyId;
