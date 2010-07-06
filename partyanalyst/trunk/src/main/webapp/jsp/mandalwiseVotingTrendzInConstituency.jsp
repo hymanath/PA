@@ -142,7 +142,21 @@
 			border-left:1px solid #D2D6DB;
 			border-right:1px solid #D2D6DB;
 		}
+		
+		#votesShareDetailsTable th
+		{
+			background:url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
+			border:1px solid #ADADAD;
+			padding:5px;
+			color:#18325A;
+		}
 
+		#votesShareDetailsTable td
+		{
+			padding:5px;
+			border:1px solid #DFDFDF;
+			color:#73787E;
+		}
     </style>
 	<script  type="text/javascript"><!--
 		var districtsInfo = new Array();
@@ -155,6 +169,7 @@
 		var mptcChart2001,mptcChart2006,zptcChart2001,zptcChart2006;	
 		var allPartiesCharts = '';
 		var mandalIds = null;
+		var votesShareData = '';
 		var tehsilDetails={
 				zptcArray:[],
 				mptcArray:[],
@@ -322,10 +337,11 @@
 											str += '</div>';
 											imageDiv.innerHTML = str;
 										}	
-										if(jsObj.task == "getConstituencyVotesOverview"){
+										else if(jsObj.task == "getConstituencyVotesOverview"){
 											constituencyOverViewResult(myResults);
 										}
-										
+										else if(jsObj.task == "votesSharingInConstituency")
+											buildVotesSharingData(myResults);
 									}
 								catch (e) {   
 										alert("Invalid JSON result" + e);   
@@ -339,6 +355,137 @@
 
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 		}
+
+		function buildVotesSharingData(results)
+		{
+			votesShareData = results;
+			var elmt = document.getElementById("partyVotesSharingDetailsDiv");
+
+			if(!elmt)
+				return;
+			var electionListLength = results[0].electionList.length+2;
+
+			var str = '';
+		
+			str += '<div id="votersShareData_main">';
+			str += '<center><table id="votesShareDetailsTable" width="75%" cellspacing="0" cellmargin="0">';
+			str += '<tr>';
+			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
+			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
+			str+='			<tr>';
+			str+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/electionResultsAnalysisReport/header_left.gif"></td>';
+			str+='			<td width="98%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan"> Parties Votes Shares</span></div></td>';
+			str+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+			str+='			</tr>';
+			str+='		</table>';
+			str += '</td>';
+			str += '</tr>';
+
+			str += '<tr>';
+			str += '<th>Parties</th>';
+			for(var i in results[0].electionList)
+				str += '<th>'+results[0].electionList[i].name+'</th>';
+			str += '<th>Range</th>';
+			str += '</tr>';
+			
+			for(var j in results)
+			{
+				str += '<tr>';
+				str += '<td align="center">'+results[0].partiesList[j].name+'</td>';
+				for(var k in results[j].electionWiseResults)
+				{
+					var info = results[j].electionWiseResults[k];
+					
+					if(info.percentage != "-1")
+					{
+						if(info.hasAlliance == "true")
+							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
+						else if(info.hasAlliance == "false")
+							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
+					}
+					else
+						str += '<td name="'+info.electionType+'"> </td>';
+				}
+				str += '<td style="color:#9B5118;font-weight:bold;">'+results[j].range+'</td>';
+				str += '</tr>';
+			}
+
+			str += '</table></center>';
+			str += '</div>';
+			/*str += '<div> ';
+			str += '<table>';
+			str += '<tr>';
+			str += '<td>View :</td>';
+			str += '<td>';
+			str += '<input type="radio" name="elecType" value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
+			str += '<input type="radio" name="elecType" value="Assembly" onclick="showSelectedColoumn(this.value)"/>AC';
+			str += '<input type="radio" name="elecType" value="Parliament" onclick="showSelectedColoumn(this.value)"/>PC';
+			str += '<input type="radio" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>MPTC';
+			str += '<input type="radio" name="elecType" value="MPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';			
+			str += '</td>';
+			str += '</tr>';
+			str += '</table>';
+			str += '</div>';*/
+			elmt.innerHTML = str;
+		}
+		
+		function showSelectedColoumn(value)
+		{
+			var elmt = document.getElementById("votersShareData_main");
+			if(!elmt)
+				return;
+
+			var str = '';
+			str += '<table id="votesShareDetailsTable" width="95%" cellspacing="0" cellmargin="0">';
+			str += '<tr>';
+			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
+			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
+			str+='			<tr>';
+			str+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/electionResultsAnalysisReport/header_left.gif"></td>';
+			str+='			<td width="98%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan"> Parties Votes Shares</span></div></td>';
+			str+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+			str+='			</tr>';
+			str+='		</table>';
+			str += '</td>';
+			str += '</tr>';
+
+			str += '<tr>';
+			str += '<th>Parties</th>';
+			for(var i in results[0].electionList)
+			{
+				if( results[0].electionList[i].percentage != "-1")
+					str += '<th>'+results[0].electionList[i].name+'</th>';
+			}
+			str += '<th>Range</th>';
+			str += '</tr>';
+			
+			for(var j in results)
+			{
+				str += '<tr>';
+				str += '<td align="center">'+results[0].partiesList[j].name+'</td>';
+				for(var k in results[j].electionWiseResults)
+				{
+					var info = results[j].electionWiseResults[k];
+					
+					if(info.percentage != "-1")
+					{
+						if(info.hasAlliance == "true")
+							str += '<td align="center" name="'+info.electionType+'" style="background-color:#adadad;">'+info.percentage+'</td>';
+						else if(info.hasAlliance == "false")
+							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
+					}
+					else
+						str += '<td name="'+info.electionType+'"> </td>';
+				}
+				str += '<td>'+results[j].range+'</td>';
+				str += '</tr>';
+			}
+
+			str += '</table>';
+
+			elmt.innerHTML = str;
+		}
+
 		function showChartData(results)
 		{
 			var selectboxElmtDiv = document.getElementById("selectLocationOptions");
@@ -355,9 +502,13 @@
 			}
 
 			chartName = results.chartName;
+
+			var mainDivElmt = document.getElementById("crossVotingData_Graph_Div");
 			var divEl = document.getElementById("constitutencyResultsChart");
+			mainDivElmt.style.display = 'block';
+
 			divEl.innerHTML = '';
-			divEl.innerHTML = '<img src="charts/'+chartName+'" border="none" />';
+			divEl.innerHTML = '<center><img src="charts/'+chartName+'" border="none" /></center>';
 		}
 		
 		function displaySelectionCriteria()
@@ -468,6 +619,7 @@
 			constituencyIdGlobal = value;
 
 			getConstituencyOverViewResult(value,text);
+			partyVotesSharing();
 		}
 
 		function getConstituenciesInfo(distId,index)
@@ -556,7 +708,18 @@
 				
 			str += '</div>';
 			str += '<div id="selectOptionsSelectButton" style="margin-bottom:10px;padding:10px;text-align:right"></div>';
-			str += '<div id="constitutencyResultsChart"></div>';
+
+			str += '<div id="crossVotingData_Graph_Div" style="display:none;">';
+			str += '<table width="100%">';
+			str += '<tr>';
+			str += '<td width="50%" style="vertical-align:top;"><div id="partyVotesSharingDetailsDiv"></div></td>';
+			str += '</tr>';
+			str += '<tr>';
+			str += '<td width="50%" style="vertical-align:top;"><div id="constitutencyResultsChart"></div></td>';
+			str += '</tr>';			
+			str += '</table>';
+			str += '</div>';
+
 			str += '<div id="overViewHeadingDiv" style="padding-left:10px;"></div>';
 			str += '<div id="constituencyOverViewDiv"></div>';	
 			str += '<div id="crossVotingDetailsDiv" style="margin:10px;">';
