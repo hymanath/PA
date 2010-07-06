@@ -830,7 +830,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			  String chartName = "constituencyElectionsResults"+"_"+constiName+"_"+constiId+"_"+chartNam+".png";
 			  String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			  chartColorsAndDataSetVO = createDatasetForChart(electnDataList,partys,electionResList,new Boolean(includeAlliance));
-			  ChartProducer.createLineChart(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,350,820,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
+			  ChartProducer.createLineChart(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,350,700,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
 			  
 			  chartColorsAndDataSetVO.setChartName(chartName);
 		}
