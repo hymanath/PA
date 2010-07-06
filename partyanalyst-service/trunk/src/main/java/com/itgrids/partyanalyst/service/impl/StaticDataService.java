@@ -4713,9 +4713,9 @@ public class StaticDataService implements IStaticDataService {
 						range.add(Double.parseDouble(percentage));	
 					}					
 				}	
-				System.out.println(range);
+				
 				List<Double> rangeSelect = new ArrayList<Double>(range);							
-				party.get(i).setRange(rangeSelect.get(0).toString()+"-"+rangeSelect.get(rangeSelect.size()-1).toString());
+				party.get(i).setRange(rangeSelect.get(0).toString()+"  -  "+rangeSelect.get(rangeSelect.size()-1).toString());
 			}
 		
 			return party;		
