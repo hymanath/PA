@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -11,18 +12,22 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyVillageLevelAnalysisVO;
 import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class TownshipElectionResultsAction extends ActionSupport implements ServletRequestAware,ServletContextAware{
@@ -45,7 +50,37 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	private Long electId;
 	private List<SelectOptionVO> allElectionYears;
 	private IStaticDataService staticDataService;
+	private String task;
+	JSONObject jObj;
+	private IBiElectionPageService biElectionPageService; 
+	private List<PartyVillageLevelAnalysisVO> partyVillageLevelAnalysisVO;
 	
+	public List<PartyVillageLevelAnalysisVO> getPartyVillageLevelAnalysisVO() {
+		return partyVillageLevelAnalysisVO;
+	}
+
+	public void setPartyVillageLevelAnalysisVO(
+			List<PartyVillageLevelAnalysisVO> partyVillageLevelAnalysisVO) {
+		this.partyVillageLevelAnalysisVO = partyVillageLevelAnalysisVO;
+	}
+
+	public IBiElectionPageService getBiElectionPageService() {
+		return biElectionPageService;
+	}
+
+	public void setBiElectionPageService(
+			IBiElectionPageService biElectionPageService) {
+		this.biElectionPageService = biElectionPageService;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}
+
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -178,7 +213,29 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
         }
         return dataset;
     }
-
+	
+	public String getTownShipWisePartiesVotesShare()
+	{		
+		String param = null;
+		param = getTask();
+		
+		try {
+			jObj = new JSONObject(param);
+			System.out.println(jObj);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String electionType = jObj.getString("electionType");
+		String mandalId = jObj.getString("mandalId");
+		String rank = jObj.getString("rank");
+		String electionYear = jObj.getString("electionYear");
+		
+		partyVillageLevelAnalysisVO = biElectionPageService.villageLevelPArtyAnalysis(new Long(mandalId), electionType, electionYear, Integer.parseInt(rank));
+		
+		return Action.SUCCESS;
+	}
 	
 	
 }

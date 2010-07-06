@@ -149,12 +149,60 @@ legend
 	padding:5px;
 	color:#24455E;
 }
+
+.votesShareTable th
+{
+	background:url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
+	border:1px solid #ADADAD;
+	padding:5px;
+	color:#18325A;
+}
+.votesShareTable td
+{
+	padding:5px;
+	border:1px solid #DFDFDF;
+	color:#73787E;
+	text-align:center;
+	font-size:12px;
+}
+
+.detailsTableHeader
+{
+	background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+	height:30px;
+	text-align:left;
+}
+
+.detailsTableHeaderSpan
+{
+	position:relative;
+	top:8px;
+	color:#4B74C6;
+	font-weight:bold;
+}
+
 </style>
-<script type="text/javascript"><!--
+<script type="text/javascript">
 			var mandalId = "${tehsilId}" ;
 			var mandalName = "${mandalName}";
 			var electionType = "${electionType}";
 			
+			function getTownshipwisePartiesVotesShare(rank)
+			{
+				var jsObj=
+				{
+						electionType: electionType,
+						mandalId: mandalId,
+						rank:rank,
+						electionYear:'${electionYear}',
+						task:"getTownshipwiseVotesShareInfo"						
+				};
+			
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+				var url = "<%=request.getContextPath()%>/getTownshipWiseVotesShareAjaxAction.action?"+rparam;						
+				callAjax(rparam,jsObj,url);
+			}
+
 			function displayVillageElecResults(value){
 				
 				var resultDiv = document.getElementById("villageElectionResults");
@@ -181,7 +229,10 @@ legend
 					rvStr += '<img width="700" height="400" src="charts/${constiElec.chartPath}"/>';
 					rvStr += '</td>';
 					rvStr += '</tr>';
-					rvStr += '</table>';					
+					rvStr += '</table>';				
+					
+					rvStr += '<div id="villagewiseVotesShare" style="margin:20px 0px 20px 0px;"></div>';				
+	
 					rvStr += '<div id="div_${constiElec.constituencyId}" class="revenueDtTable">';
 					rvStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;" id="table_${constiElec.constituencyId}">';
 					<c:forEach var="villageElec" items="${constiElec.revenueVillageElectionVO}">
@@ -279,6 +330,10 @@ legend
 										{								
 											showRevenueVillageElectionInfo(resultVO,jsObj);			
 										} 			
+										else if(jsObj.task == "getTownshipwiseVotesShareInfo")
+										{
+											buildVillagewiseVotesShare(resultVO);
+										}
 															
 								}catch (e)  {   
 								   	alert("Invalid JSON result" + e);   
@@ -296,6 +351,51 @@ legend
 			//var electionYear = '${electionYear}';
 			var tehsilId = '${tehsilId}';
 			var electId = '${electId}';	
+
+			function buildVillagewiseVotesShare(results)
+			{
+				var elmt = document.getElementById("villagewiseVotesShare");
+				if(!elmt)
+					return;
+
+				var str = '';
+				//str += '<center>';
+				str += '<table width="80%" class="votesShareTable">';
+				str += '<tr>';
+				str += '<td colspan="6" style="padding:0px;">';
+				str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
+				str+='			<tr>';
+				str+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/electionResultsAnalysisReport/header_left.gif"></td>';
+				str+='			<td width="98%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan"> Villagewise All Parties Votes Share</span></div></td>';
+				str+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+				str+='			</tr>';
+				str+='		</table>';
+				str += '</td>';
+				str += '</tr>';
+				str += '<tr>';
+				str += '<th>Party</th>';
+				str += '<th>No. Of Villages</th>';
+				str += '<th>Votes Share</th>';
+				str += '<th>% Of Share</th>';
+				str += '<th>Mandal Votes % Share</th>';
+				str += '<th>Constituency Votes % Share</th>';
+				str += '</tr>';
+				for(var i in results)
+				{
+					str += '<tr>';
+					str += '<td>'+results[i].partyName+'</td>';
+					str += '<td>'+results[i].wonVillagesCount+'</td>';
+					str += '<td>'+results[i].totVotesEarned+'</td>';
+					str += '<td>'+results[i].votesShareInVill+'</td>';
+					str += '<td>'+results[i].votesShareInMandal+'</td>';
+					str += '<td>'+results[i].votesShareInConsti+'</td>';
+					str += '</tr>';
+				}
+				str += '</table>';
+				//str += '</center>';
+				elmt.innerHTML = str;
+			}
+
 			function getRevenueVillagesInfo(){
 		         
 				
@@ -453,7 +553,7 @@ legend
 				var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+mandalName+"&electionType="+electionType+"&electionYear="+selectedYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 				brow1.focus();
 			}	
---></script>
+</script>
 </head>
 <body>
 	
@@ -502,6 +602,8 @@ legend
 	{
 		getRevenueVillagesInfo();
 	}
+
+	getTownshipwisePartiesVotesShare('1');
 </script>
 </body>
 </html>

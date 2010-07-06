@@ -288,6 +288,7 @@
 	<bean id="townshipElectionResultsAction" class="com.itgrids.partyanalyst.web.action.TownshipElectionResultsAction" singleton="false">
 		<property name="constituencyPageService" ref="constituencyPageService" />
 		<property name="staticDataService" ref="staticDataService" />
+		<property name="biElectionPageService" ref="biElectionPageService" />		
 	</bean>
 	<bean id="constituencyElectionResultsAction" class="com.itgrids.partyanalyst.web.action.ConstituencyElectionResultsAction" singleton="false">
 			<property name="staticDataService" ref="staticDataService" />			
