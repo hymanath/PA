@@ -4678,7 +4678,15 @@ public class StaticDataService implements IStaticDataService {
 				for(int i=0;i<partyResult.size();i++){	
 					SelectOptionVO select = new SelectOptionVO(); 
 					String electionHeading="";
-					electionHeading=partyResult.get(i).getElectionType()+"-"+partyResult.get(i).getElectionYear();
+					String electionType="";
+					if(partyResult.get(i).getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
+						electionType ="AC";
+					}else if(partyResult.get(i).getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+						electionType ="PC";
+					}else{
+						electionType = partyResult.get(i).getElectionType();
+					}
+					electionHeading=electionType+"-"+partyResult.get(i).getElectionYear();
 					select.setId(i+0l);
 					select.setName(electionHeading);
 					electionList.add(select);
