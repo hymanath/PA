@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
+import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
@@ -164,7 +165,7 @@ public interface IStaticDataService {
 	
 	public List<ConstituencyElectionResultsVO> findAssemblyConstituenciesResultsByConstituencyIds(String electionYear, List<Long> constituencyIds); 
 
-	public List<ElectionResultPartyVO> getAllMandalElectionInformationForAConstituency(Long constituencyId);
+	public List<ElectionResultPartyVO> getAllMandalElectionInformationForAConstituency(Long constituencyId,int flag);
 	
 	public List<CandidateElectionResultVO> getWinningCandidatesInConstituencies(String electionYear, List<Long> constituencyIds);
 	
@@ -173,4 +174,6 @@ public interface IStaticDataService {
 	public List<TownshipBoothDetailsVO> getRevenueVillageVotingTrendsByMandalAndElectionIds(Long tehsilId,String electionIds);
 	
 	public ElectionTrendzReportVO getConstituencyOverview(Long constituencyId,String constituencyName);
+	
+	public List<PartyResultVO> getPartyVotesShareInConstituency(Long constituencyId,int flag);
 }
