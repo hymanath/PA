@@ -412,31 +412,56 @@
 
 			str += '</table></center>';
 			str += '</div>';
-			/*str += '<div> ';
-			str += '<table>';
+			str += '<div> ';
+			str += '<center><table>';
 			str += '<tr>';
 			str += '<td>View :</td>';
 			str += '<td>';
-			str += '<input type="radio" name="elecType" value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
-			str += '<input type="radio" name="elecType" value="Assembly" onclick="showSelectedColoumn(this.value)"/>AC';
-			str += '<input type="radio" name="elecType" value="Parliament" onclick="showSelectedColoumn(this.value)"/>PC';
-			str += '<input type="radio" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>MPTC';
-			str += '<input type="radio" name="elecType" value="MPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';			
+			str += '<input type="radio" name="elecType" checked="checked" value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
+			str += '<input type="radio" name="elecType" value="AC" onclick="showSelectedColoumn(this.value)"/>AC';
+			str += '<input type="radio" name="elecType" value="PC" onclick="showSelectedColoumn(this.value)"/>PC';
+			str += '<input type="radio" name="elecType" value="MPTC" onclick="showSelectedColoumn(this.value)"/>MPTC';
+			str += '<input type="radio" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';			
 			str += '</td>';
 			str += '</tr>';
-			str += '</table>';
-			str += '</div>';*/
+			str += '</table></center>';
+			str += '</div>';
 			elmt.innerHTML = str;
 		}
 		
+		function getElectionType(type)
+		{
+			var ecType;
+
+			if(type == "AC")
+				ecType = "Assembly";
+			else if(type == "PC")
+				ecType = "Parliament";
+			else if(type == "MPTC")
+				ecType = "MPTC";
+			else if(type == "ZPTC")
+				ecType = "ZPTC";
+
+			return ecType;
+		}
+
 		function showSelectedColoumn(value)
 		{
+			if(value == "ALL")
+			{
+				partyVotesSharing();
+				return;
+			}
+
 			var elmt = document.getElementById("votersShareData_main");
 			if(!elmt)
 				return;
+			
+			var electionListLength = votesShareData[0].electionList.length+2;
+			var ecType = getElectionType(value);
 
 			var str = '';
-			str += '<table id="votesShareDetailsTable" width="95%" cellspacing="0" cellmargin="0">';
+			str += '<center><table id="votesShareDetailsTable" width="75%" cellspacing="0" cellmargin="0">';
 			str += '<tr>';
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
 			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
@@ -448,25 +473,29 @@
 			str+='		</table>';
 			str += '</td>';
 			str += '</tr>';
-
+			
 			str += '<tr>';
 			str += '<th>Parties</th>';
-			for(var i in results[0].electionList)
+			for(var i in votesShareData[0].electionList)
 			{
-				if( results[0].electionList[i].percentage != "-1")
-					str += '<th>'+results[0].electionList[i].name+'</th>';
+				var electype = votesShareData[0].electionList[i].name.substring(0,votesShareData[0].electionList[i].name.indexOf('-')-2);
+				
+				if( electype == value)
+					str += '<th>'+votesShareData[0].electionList[i].name+'</th>';
 			}
 			str += '<th>Range</th>';
 			str += '</tr>';
 			
-			for(var j in results)
+			for(var j in votesShareData)
 			{
 				str += '<tr>';
-				str += '<td align="center">'+results[0].partiesList[j].name+'</td>';
-				for(var k in results[j].electionWiseResults)
+				str += '<td align="center">'+votesShareData[0].partiesList[j].name+'</td>';
+				for(var k in votesShareData[j].electionWiseResults)
 				{
-					var info = results[j].electionWiseResults[k];
+					var info = votesShareData[j].electionWiseResults[k];
 					
+					if(info.electionType != ecType)
+						continue;
 					if(info.percentage != "-1")
 					{
 						if(info.hasAlliance == "true")
@@ -477,11 +506,11 @@
 					else
 						str += '<td name="'+info.electionType+'"> </td>';
 				}
-				str += '<td>'+results[j].range+'</td>';
+				str += '<td>'+votesShareData[j].range+'</td>';
 				str += '</tr>';
 			}
 
-			str += '</table>';
+			str += '</table></center>';
 
 			elmt.innerHTML = str;
 		}
