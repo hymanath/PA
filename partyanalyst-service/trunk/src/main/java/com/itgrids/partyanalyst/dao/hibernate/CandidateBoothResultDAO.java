@@ -644,5 +644,31 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		.append("model.nomination.party.shortName ");
 		return getHibernateTemplate().find(hqlQuery.toString());
 	}
+    
+		
+	@SuppressWarnings("unchecked")
+	public List findTownshipWiseAllPartyResultsInAMandal(String electionType,
+			String electionYear, Long mandalId){
+		Object[] params = {mandalId,electionType,electionYear};
+		return getHibernateTemplate().find("select sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),"+
+				"model.boothConstituencyElection.villageBoothElection.township.townshipId,"+
+				"model.boothConstituencyElection.villageBoothElection.township.townshipName,"+
+				"model.nomination.party.partyId,model.nomination.party.shortName from "+
+				"CandidateBoothResult model where model.boothConstituencyElection.villageBoothElection."+
+				"township.tehsil.tehsilId = ? and model.boothConstituencyElection.constituencyElection.election."+
+				"electionScope.electionType.electionType = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ? "+
+				"group by model.boothConstituencyElection.villageBoothElection.township.townshipId,model.nomination.nominationId",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getValidVotesInAMandal(Long tehsilId, String electionType,
+			String electionYear) {
+		Object[] params = {tehsilId,electionType,electionYear};
+		return getHibernateTemplate().find("select sum(model.boothConstituencyElection.boothResult.validVotes)"+
+				" from CandidateBoothResult model where model.boothConstituencyElection.booth.tehsil.tehsilId = ?"+
+				" and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ?"+
+				" and model.boothConstituencyElection.constituencyElection.election.electionYear = ? "+
+				"group by model.boothConstituencyElection.booth.boothId",params);
+	}
 	
 }
