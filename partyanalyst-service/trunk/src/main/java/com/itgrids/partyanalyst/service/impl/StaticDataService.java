@@ -4686,7 +4686,7 @@ public class StaticDataService implements IStaticDataService {
 					}else{
 						electionType = partyResult.get(i).getElectionType();
 					}
-					electionHeading=electionType+"-"+partyResult.get(i).getElectionYear();
+					electionHeading=electionType+"  -  "+partyResult.get(i).getElectionYear();
 					select.setId(i+0l);
 					select.setName(electionHeading);
 					electionList.add(select);
@@ -4721,16 +4721,5 @@ public class StaticDataService implements IStaticDataService {
 			return party;		
 		}
 		
-		
-	public static void main(String[] args){
-		Set str = new TreeSet();
-		str.add(21l);
-		str.add(11l);
-		str.add(3l);
-		System.out.println(str);
-		List list = new ArrayList(str);
-		
-		System.out.println(list.get(0)+"=="+list.get(list.size()-1));
-	}
 }
 
