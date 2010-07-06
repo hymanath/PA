@@ -1635,6 +1635,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				Object[] parms = (Object[])result.get(i);
 				TeshilPartyInfoVO teshilPartyInfoVo = new TeshilPartyInfoVO();
 					teshilPartyInfoVo.setPartyName(parms[0].toString());
+					teshilPartyInfoVo.setPartyId(Long.parseLong(parms[4].toString()));
 					teshilPartyInfoVo.setParticipatedSeats(Long.parseLong(parms[1].toString()));
 					percentage= new BigDecimal((Float.parseFloat(parms[2].toString())/totalVotes)*100).setScale(2,BigDecimal.ROUND_HALF_UP);
 					teshilPartyInfoVo.setPercentageOfVotesWonByParty(Float.parseFloat(percentage.toString()));
