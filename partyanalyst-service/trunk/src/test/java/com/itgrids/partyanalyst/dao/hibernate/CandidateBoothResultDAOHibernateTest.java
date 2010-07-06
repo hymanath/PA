@@ -279,13 +279,47 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		List list = candidateBoothResultDAO.findPartyResultsInAllElectionsByRevenueVillagesInMandal(373l, 24l);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]);
-	}*/
+	}
 	
 	public void testGetResultsForElectionForAllMandalsAndParties(){
 		List list = candidateBoothResultDAO.getResultsForElectionForAllMandalsAndParties("373","2009", IConstants.ASSEMBLY_ELECTION_TYPE);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]);
 	}
-
+	
+	
+	
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testGetTownshipwiseResultsInElection(){
+		
+		List resultsList = candidateBoothResultDAO.findTownshipWiseAllPartyResultsInAMandal("Assembly","2009",new Long(127));
+		
+		System.out.println(" List Size :" + resultsList.size());
+		if(resultsList != null && resultsList.size() > 0){
+			log.debug(" DAO RESULT ..........");
+			ListIterator resultLI = resultsList.listIterator();
+			while(resultLI.hasNext()){
+				Object[] params = (Object[])resultLI.next();
+				
+				System.out.print(" Township ID   :" + params[2]);
+				System.out.print(" Township Name :" + params[3]);
+				System.out.print("   Party         :" + params[5]);
+				System.out.print(" Valid Votes   :" + params[1]);
+				System.out.print(" Votes Earned  :" + params[0]);
+				System.out.println(" ........................... ");
+			}
+					
+		}
+	}*/
+	
+    @Test
+    public void testGetTehsilValidVotes(){
+    	List tehsilValidVotes = candidateBoothResultDAO.getValidVotesInAMandal(new Long(127),"Assembly","2009");
+    	if(tehsilValidVotes != null){
+    		Object params = (Object)tehsilValidVotes.get(0);
+    		System.out.println(" Mandal Valid Votes :" + params);
+    	}
+    }
 
 }

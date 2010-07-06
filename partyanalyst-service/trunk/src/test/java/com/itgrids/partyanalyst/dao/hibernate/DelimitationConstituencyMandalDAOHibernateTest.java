@@ -45,9 +45,19 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 		//System.out.println(((Object[])list.get(3))[1]);
 	}*/
 	
+	@SuppressWarnings("unchecked")
 	public void testGetLatestAssemblyConstitueciesOfTehsil(){
-		List list = delimitationConstituencyMandalDAO.getLatestAssemblyConstitueciesOfTehsil(836l);
+		List list = delimitationConstituencyMandalDAO.getLatestAssemblyConstitueciesOfTehsil(90l);
 		System.out.println(list.size());
+		
+		if(list != null){
+			for(int i=0;i<list.size();i++){
+			Object[] params = (Object[])list.get(i);
+			
+			System.out.println(" Constitiuency Id   :" + (Long)params[4]);
+			System.out.println(" Constitiuency Name :" + (String)params[5]);
+			}
+		}
 	}
 	
 }

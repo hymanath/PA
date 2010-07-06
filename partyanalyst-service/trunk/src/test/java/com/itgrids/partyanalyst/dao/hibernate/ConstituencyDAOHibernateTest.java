@@ -126,20 +126,31 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase {
 			
 		}
 	}
-*/	
+
 	public void testConstituencyDetails(){
 		 List result =  constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType(11010l);
 		 Assert.assertEquals(1, result.size());	
 		}
 	
-	/*public void testFindByLocalElectionBodyAndElectionScope(){
+	public void testFindByLocalElectionBodyAndElectionScope(){
 		List<Constituency> list = constituencyDAO.findByLocalElectionBodyAndElectionScope(1l, "Ward-1");
 		assertEquals(1, list.size());
-	}*/
+	}
 	
 	public void testFindWardsAndIdsInMuncipality(){
 		List list = constituencyDAO.findWardsAndIdsInMuncipality(2l);
 		assertEquals(1, list.size());
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetconstituencyByTehsil(){
+		List consti = constituencyDAO.findConstituencyIdByTehsil(new Long(128));
+		if(consti != null){
+			Object params[] = (Object[])consti.get(0);
+			System.out.println(" Constituency Id   :" + (Long)params[0]);
+			System.out.println(" Constituency Name :" + (String)params[1]);
+		}
 	}
 	
 }

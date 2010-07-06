@@ -385,7 +385,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		List list = nominationDAO.findElectionResultsForACandidateForAnElectionInAConstituency(380l, 18l, 24l);
 		System.out.println(list.size());
 	}*/
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public void testFindElectionResultsForAllPartiesInAssemblyConstituencies()
 	{
@@ -403,7 +403,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(values1[0]+"\t"+values1[1]+"\t"+values1[2]+"\t"+values1[3]+"\t"+values1[4]+"\t"+values1[5]);
 
 		
-	}
+	}*/
 		
 	/*@SuppressWarnings("unchecked")
 	public void testFindWinningCandidatesDetailsInBiElectionContituencies()
@@ -442,5 +442,12 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 
+	public void testGetRankOfACandidate(){
+		List rank = nominationDAO.getCandidateRankInAConstituencyElection(new Long(339),"2009","Assembly",new Long(43));
+		if(rank != null){
+			Object params = (Object)rank.get(0);
+			System.out.println("Rank :" + params);
+		}
+	}
 }
 

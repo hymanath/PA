@@ -65,9 +65,10 @@ public class DelimitationConstituencyAssemblyDetailsDAOTest extends BaseDaoTestC
 		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentForAssemblyForTheGivenYear(3382l,2004l);
 		Assert.assertEquals(2, list.size());
 	}*/
-	
+	/*
 	public void testFindDistrictsOfParliamentConstituency(){
 		List list = delimitationConstituencyAssemblyDetailsDAO.findDistrictsOfParliamentConstituency(409l);
 		System.out.println(list.size());
-	}
+	}*/
+	
 }
