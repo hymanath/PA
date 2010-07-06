@@ -1128,7 +1128,15 @@
 				var url = "<%=request.getContextPath()%>/getLineChartForMandalsAndPartiesAction.action?"+rparam;
 				callAjax(jsObj, url);
 		}
-		
+		function partyVotesSharing(){
+			var jsObj = {
+					constituencyId:constituencyIdGlobal,
+					task:"votesSharingInConstituency"
+				};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+				var url = "<%=request.getContextPath()%>/votesSharingInConstituencyAjaxAction.action?"+rparam;
+				callAjax(jsObj, url);
+		}
 	</script>
 
 </head>
@@ -1244,6 +1252,7 @@
 			getConstituencyOverViewResult(constituencyIdGlobal,constituencyName);	
 			getAllZptcYears();	  
 			getAllMptcYears();
+			partyVotesSharing();
 	</script>
 </body>
 </html>
