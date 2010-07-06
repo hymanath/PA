@@ -110,4 +110,10 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	
 	public List findPartyResultsInAllElectionsByRevenueVillagesInMandal(Long tehsilId, Long partyId);
 	
+	@SuppressWarnings("unchecked")
+	public List findTownshipWiseAllPartyResultsInAMandal(String electionType,String electionYear,Long mandalId);
+	
+	@SuppressWarnings("unchecked")
+	public List getValidVotesInAMandal(Long tehsilId,String electionType,String electionYear);
+	
 }
