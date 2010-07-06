@@ -24,11 +24,18 @@ public class ElectionResultPartyVO implements Serializable {
 	private ResultStatus resultVO;
 	private Long rank;
 	private String status;
+	private String votesShareRange;
 	private List<CandidateElectionResultVO> candidateElectionResultsVO;
-	
 	private String electionType;
 	private String electionYear;
 	
+	
+	public String getVotesShareRange() {
+		return votesShareRange;
+	}
+	public void setVotesShareRange(String votesShareRange) {
+		this.votesShareRange = votesShareRange;
+	}
 	public ResultStatus getResultVO() {
 		return resultVO;
 	}

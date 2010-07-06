@@ -21,7 +21,14 @@ public class TeshilPartyInfoVO {
 	private String latestMuncipalElectionYear;
 	private ResultStatus resultStatus;
 	private String chartName;
+	private Long partyId;
 	
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
 	public String getChartName() {
 		return chartName;
 	}

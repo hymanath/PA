@@ -26,8 +26,29 @@ public class PartyResultVO {
 	private Long electors;
 	private CandidateOppositionVO oppositionCandidates;
 	private List<ElectionResultVO> electionWiseResults;
+	private List<PartyResultVO> partyResultVo;
 	private Long seatsWonCountToSort;
-	
+	List<SelectOptionVO> electionList;
+	List<SelectOptionVO> partiesList;
+
+	public List<SelectOptionVO> getElectionList() {
+		return electionList;
+	}
+	public void setElectionList(List<SelectOptionVO> electionList) {
+		this.electionList = electionList;
+	}
+	public List<SelectOptionVO> getPartiesList() {
+		return partiesList;
+	}
+	public void setPartiesList(List<SelectOptionVO> partiesList) {
+		this.partiesList = partiesList;
+	}
+	public List<PartyResultVO> getPartyResultVo() {
+		return partyResultVo;
+	}
+	public void setPartyResultVo(List<PartyResultVO> partyResultVo) {
+		this.partyResultVo = partyResultVo;
+	}
 	public Long getPartyId() {
 		return partyId;
 	}

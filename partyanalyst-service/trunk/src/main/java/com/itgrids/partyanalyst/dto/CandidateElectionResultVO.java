@@ -32,7 +32,14 @@ public class CandidateElectionResultVO implements Serializable {
 	private Long userComments;
 	private Long districtId;
 	private String districtName;
+	private String hasAlliance;
 	
+	public String getHasAlliance() {
+		return hasAlliance;
+	}
+	public void setHasAlliance(String hasAlliance) {
+		this.hasAlliance = hasAlliance;
+	}
 	public String getMarginVotes() {
 		return marginVotes;
 	}
