@@ -197,4 +197,11 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				" sum(model.constituencyElectionResult.totalVotesPolled) from ConstituencyElection model "+
 				" where model.constituency.constituencyId = ? and model.election.electionId = ?",params);
 	}
+	@SuppressWarnings("unchecked")
+	public List getValidVotesForAConstituency(Long constId, String elecYear) {
+		Object[] params = {constId,elecYear};
+		return getHibernateTemplate().find("select model.constituencyElectionResult.validVotes from "+
+				"ConstituencyElection model where model.constituency.constituencyId = ? "+
+				"and model.election.electionYear = ?",params);
+	}
 }
