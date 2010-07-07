@@ -1062,7 +1062,20 @@
 			crossVotingResultsContent+='	</TR>';			
 			for(var d in crossVotingResults)
 			{
-				
+				    if(d == crossVotingResults.length-1)
+				    {
+                    crossVotingResultsContent+='<TR>';
+					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;">'+crossVotingResults[d].partyName+'</TD>';
+					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;">'+crossVotingResults[d].votesEarned+'</TD>';
+					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;">'+crossVotingResults[d].percentage+'</TD>';
+					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;">'+crossVotingResults[d].ballotVotes+'</TD>';
+					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;">'+crossVotingResults[d].ballotVotesPercentage+'</TD>';
+					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;">'+crossVotingResults[d].diffPercent+'</TD>';							
+					crossVotingResultsContent+='</TR>';
+					}
+
+					else
+				    {
 					crossVotingResultsContent+='<TR>';
 					crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].partyName+'</TD>';
 					crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].votesEarned+'</TD>';
@@ -1071,6 +1084,7 @@
 					crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].ballotVotesPercentage+'</TD>';
 					crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].diffPercent+'</TD>';							
 					crossVotingResultsContent+='</TR>';
+					}
 								
 			}
 			crossVotingResultsContent+='</TABLE>';
@@ -1097,14 +1111,27 @@
 			nonParticipatingContent+='<TH style="color:#18325A;">Votes%(P)</TH>';			
 			nonParticipatingContent+='</TR>';			
 			for(var y in nonParticipatingParties)
-			{
+			{       if(y == nonParticipatingParties.length-1)
+				    {
+				    nonParticipatingContent+='<TR>';
+					nonParticipatingContent+='<TD align="center" style="color:GoldenRod;">'+nonParticipatingParties[y].partyName+'</TD>';
+					nonParticipatingContent+='<TD align="center" style="color:GoldenRod;">'+nonParticipatingParties[y].votesEarned+'</TD>';
+					nonParticipatingContent+='<TD align="center" style="color:GoldenRod;">'+nonParticipatingParties[y].percentage+'</TD>';
+					nonParticipatingContent+='<TD align="center" style="color:GoldenRod;">'+nonParticipatingParties[y].ballotVotes+'</TD>';
+					nonParticipatingContent+='<TD align="center" style="color:GoldenRod;">'+nonParticipatingParties[y].ballotVotesPercentage+'</TD>';										
+					nonParticipatingContent+='</TR>';
+				       
+			        }
+					else
+				    {
 					nonParticipatingContent+='<TR>';
 					nonParticipatingContent+='<TD align="center" style="color:#73787E;">'+nonParticipatingParties[y].partyName+'</TD>';
 					nonParticipatingContent+='<TD align="center" style="color:#73787E;">'+nonParticipatingParties[y].votesEarned+'</TD>';
 					nonParticipatingContent+='<TD align="center" style="color:#73787E;">'+nonParticipatingParties[y].percentage+'</TD>';
 					nonParticipatingContent+='<TD align="center" style="color:#73787E;">'+nonParticipatingParties[y].ballotVotes+'</TD>';
 					nonParticipatingContent+='<TD align="center" style="color:#73787E;">'+nonParticipatingParties[y].ballotVotesPercentage+'</TD>';										
-					nonParticipatingContent+='</TR>';								
+					nonParticipatingContent+='</TR>';		
+					}
 			}
 			nonParticipatingContent+='</TABLE>';			
 			nonParticipatingDivEl.innerHTML = nonParticipatingContent;
