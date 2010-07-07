@@ -414,7 +414,7 @@
 					else
 						str += '<td name="'+info.electionType+'"> </td>';
 				}
-				str += '<td style="color:#9B5118;font-weight:bold;"></td>';
+				str += '<td style="color:#9B5118;font-weight:bold;">'+results.allPartiesAllElectionResults[j].range+'</td>';				
 				}
 				str += '</tr>';
 			}
