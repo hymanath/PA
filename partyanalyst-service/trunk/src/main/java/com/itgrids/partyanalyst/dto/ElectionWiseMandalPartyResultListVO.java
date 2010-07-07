@@ -8,6 +8,7 @@ public class ElectionWiseMandalPartyResultListVO extends ResultStatus {
 	private List<ElectionWiseMandalPartyResultVO> electionWiseMandalPartyResultVOList;
 	private List<ElectionWiseMandalPartyResultVO> partyWiseElectionResultsVOList;
 	private List<PartyResultVO> allPartiesAllElectionResults;
+	private List<SelectOptionVO> elections;
 		
 	public List<ElectionWiseMandalPartyResultVO> getElectionWiseMandalPartyResultVOList() {
 		return electionWiseMandalPartyResultVOList;
@@ -34,5 +35,13 @@ public class ElectionWiseMandalPartyResultListVO extends ResultStatus {
 	public void setPartyWiseElectionResultsVOList(
 			List<ElectionWiseMandalPartyResultVO> partyWiseElectionResultsVOList) {
 		this.partyWiseElectionResultsVOList = partyWiseElectionResultsVOList;
+	}
+
+	public void setElections(List<SelectOptionVO> elections) {
+		this.elections = elections;
+	}
+
+	public List<SelectOptionVO> getElections() {
+		return elections;
 	}
 }
