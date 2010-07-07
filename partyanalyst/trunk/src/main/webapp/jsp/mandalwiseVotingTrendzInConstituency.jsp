@@ -155,7 +155,8 @@
 		{
 			padding:5px;
 			border:1px solid #DFDFDF;
-			color:#73787E;
+			color:#707070;
+			font-weight: bold;
 		}
     </style>
 	<script  type="text/javascript"><!--
@@ -285,7 +286,7 @@
 				headingDIV+='					<td> <div id="mandalVotesShare"></td>';
 				headingDIV+='			</tr>';	
 				headingDIV+='	</table>';
-				
+				headingDIV+='<div id="madalwiseVotesRange"></div>';
 				headingDIV+='</fieldset>';
 				heading.innerHTML=headingDIV; 
 				
@@ -340,8 +341,11 @@
 										else if(jsObj.task == "getConstituencyVotesOverview"){
 											constituencyOverViewResult(myResults);
 										}
-										else if(jsObj.task == "votesSharingInConstituency")
+										else if(jsObj.task == "votesSharingInConstituency"){
 											buildVotesSharingData(myResults);
+										}else if(jsObj.task == "getMandalVotesShare"){
+											buildMandalVotesSharingData(myResults, jsObj);
+										}
 									}
 								catch (e) {   
 										alert("Invalid JSON result" + e);   
@@ -354,6 +358,86 @@
 						   };
 
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
+		}
+
+		function buildMandalVotesSharingData(results, jsObj)
+		{
+			var divEl = document.getElementById("madalwiseVotesRange");
+			if(!divEl)
+				return;
+			var electionListLength = results.elections.length+2;
+			var tehsilName = jsObj.tehsilName;
+			var str = '';
+		
+			str += '<div id="votersShareData_main">';
+			str += '<table id="votesShareDetailsTable" width="75%" cellspacing="0" cellmargin="0">';
+			str += '<tr>';
+			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
+			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
+			str+='			<tr>';
+			str+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/electionResultsAnalysisReport/header_left.gif"></td>';
+			str+='			<td width="98%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan"> Parties Votes Share in '+tehsilName+' Mandal</span></div></td>';
+			str+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+			str+='			</tr>';
+			str+='		</table>';
+			str += '</td>';
+			str += '</tr>';
+
+			str += '<tr>';
+			str += '<th>Parties</th>';
+			for(var i in results.elections)
+				str += '<th>'+results.elections[i].name+'</th>';
+			str += '<th>Range</th>';
+			str += '</tr>';
+			
+			for(var j in results.allPartiesAllElectionResults)
+			{
+				str += '<tr>';
+				if(results.allPartiesAllElectionResults[j].partyName != 'Others *')
+				{	
+					str += '<td align="center">'+results.allPartiesAllElectionResults[j].partyName+'</td>';
+				
+				for(var k in results.allPartiesAllElectionResults[j].electionWiseResults)
+				{
+					
+					var info = results.allPartiesAllElectionResults[j].electionWiseResults[k];
+					
+					if(info.percentage != "-1")
+					{
+						if(info.hasAlliance == "true" )
+							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
+						else if(info.hasAlliance == "false")
+							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
+							else 
+								str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
+					}
+					else
+						str += '<td name="'+info.electionType+'"> </td>';
+				}
+				str += '<td style="color:#9B5118;font-weight:bold;"></td>';
+				}
+				str += '</tr>';
+			}
+
+			str += '</table>';
+			str += '</div>';
+			/*str += '<div> ';
+			str += '<center><table>';
+			str += '<tr>';
+			str += '<td>View :</td>';
+			str += '<td>';
+			str += '<input type="radio" name="elecType" checked="checked" value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
+			str += '<input type="radio" name="elecType" value="AC" onclick="showSelectedColoumn(this.value)"/>AC';
+			str += '<input type="radio" name="elecType" value="PC" onclick="showSelectedColoumn(this.value)"/>PC';
+			str += '<input type="radio" name="elecType" value="MPTC" onclick="showSelectedColoumn(this.value)"/>MPTC';
+			str += '<input type="radio" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';			
+			str += '</td>';
+			str += '</tr>';
+			str += '</table></center>';
+			str += '</div>';*/
+			divEl.innerHTML = str;
+			
+			
 		}
 
 		function buildVotesSharingData(results)
@@ -907,7 +991,7 @@
 			var crossVotingResults = resultsData.biElectionResultsMainVO[0].crossVotingResults;
 			var nonParticipatingParties = resultsData.biElectionResultsMainVO[0].nonPartiParties;
 			var mandalwiseVotersShare = resultsData.constituencyVO.assembliesOfParliamentInfo;
-
+			var constituencyId = jsObj.constituencyId;
 			var crossVotingResultsContent = '';
 			crossVotingResultsContent+='<TABLE width="100%" class="participatingPartiestable" border="0">';
 			crossVotingResultsContent+='	<TR>';
@@ -985,7 +1069,7 @@
 			mdlwiseVotersDetailsStr+='<TR>';			
 			for (var x in mandalwiseVotersShare[0].votersInfoForMandalVO)
 			{
-				mdlwiseVotersDetailsStr+='<TD style="color:#18325A;font-size:12px;font-weight:bold;">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'</TD>';
+				mdlwiseVotersDetailsStr+='<TD style="color:#18325A;font-size:12px;font-weight:bold;"><A href="javascript:{}" onclick="getMandalwiseVotesShare('+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalId+','+constituencyId+',\''+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'\')">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'</A></TD>';
 				mdlwiseVotersDetailsStr+='<TD style="color:#18325A;font-size:12px;font-weight:bold;">--></td>';
 				mdlwiseVotersDetailsStr+='<TD style="color:Blue;font-weight:bold;">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].percent+' %</TD>';		
 			}
@@ -1178,6 +1262,20 @@
 			
 			getConstituencyResults("2009");
 			//To build Graphs for 2009 and 2004 Mandals Wise Parties Results 
+		}
+
+		function getMandalwiseVotesShare(tehsilId,constituencyId, tehsilName)
+		{
+			var jsObj = {
+					constituencyId: constituencyId,
+					tehsilId: tehsilId,
+					tehsilName: tehsilName,
+					task:"getMandalVotesShare"
+				};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+				var url = "<%=request.getContextPath()%>/votesSharingInMandalAjaxAction.action?"+rparam;
+				callAjax(jsObj, url);
+				
 		}
 		
 		function DeselectAllPartiesNYears()
