@@ -17,6 +17,7 @@ public class ElectionResultVO {
 	private String hasAlliance;
 	private String votesRange;
 	private List<AlliancePartyResultsVO> partiesAlliances;
+	private String electionYearAndType;
 	
 	public String getVotesRange() {
 		return votesRange;
@@ -110,6 +111,14 @@ public class ElectionResultVO {
 	@Override
 	public int hashCode(){
 		return new HashCodeBuilder(17, 37).append(electionType).append(electionYear).toHashCode();
+	}
+
+	public void setElectionYearAndType(String electionYearAndType) {
+		this.electionYearAndType = electionYearAndType;
+	}
+
+	public String getElectionYearAndType() {
+		return electionYearAndType;
 	}
 	
 }
