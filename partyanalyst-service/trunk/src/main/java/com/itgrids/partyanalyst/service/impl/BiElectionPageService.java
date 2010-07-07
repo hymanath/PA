@@ -73,7 +73,6 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyResultsComparator;
 import com.itgrids.partyanalyst.utils.PartyResultsVOComparator;
 import com.itgrids.partyanalyst.utils.PartyTownshipResultsComparator;
-import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 
 
 public class BiElectionPageService implements IBiElectionPageService {
@@ -2236,6 +2235,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		
 		Set<String> partyElecs1 = null;
 		List<SelectOptionVO> allElections = new LinkedList<SelectOptionVO>(); 
+		List<Float> partyPecentages = null;
 		allElections.add(0, new SelectOptionVO(0l, "2001 MPTC"));
 		allElections.add(1, new SelectOptionVO(0l, "2001 ZPTC"));
 		allElections.add(2, new SelectOptionVO(0l, "2004 Assembly"));
@@ -2247,9 +2247,13 @@ public class BiElectionPageService implements IBiElectionPageService {
 		
 		for(PartyResultVO party:list4){
 			partyElecs1 = new HashSet<String>();
+			partyPecentages = new ArrayList<Float>();
 			for(ElectionResultVO ele:party.getElectionWiseResults()){
-				partyElecs1.add(ele.getElectionYear()+" "+ele.getElectionType());				
+				partyElecs1.add(ele.getElectionYear()+" "+ele.getElectionType());		
+				partyPecentages.add(new Float(ele.getPercentage()));
 			}
+			Collections.sort(partyPecentages);
+			party.setRange(partyPecentages.get(0)+"-"+partyPecentages.get(partyPecentages.size()-1));
 			party.setElections(partyElecs1);
 		}
 		
@@ -2271,11 +2275,6 @@ public class BiElectionPageService implements IBiElectionPageService {
 			party1.setElectionWiseResults(elections);
 		}
 	
-		//for(String election:allElections1)
-			//allElections.add(new SelectOptionVO(0l, election));
-		
-		//Collections.sort(allElections, new SelectOptionVOComparator());
-		
 		electionWiseMandalPartyResultListVO.setElections(allElections);
 		electionWiseMandalPartyResultListVO.setAllPartiesAllElectionResults(list4);
 		return electionWiseMandalPartyResultListVO;
