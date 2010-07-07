@@ -38,6 +38,7 @@ import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
+import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -95,6 +96,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private String mandalsPartiesChart;
 	
 	private ElectionTrendzReportVO constituencyOverView;
+	private ElectionWiseMandalPartyResultListVO partywiseVotesDetailsForMandal;
 	
 	
 	public List<PartyResultVO> getVotesSharing() {
@@ -356,6 +358,15 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 
 	public void setMandalsPartiesChart(String mandalsPartiesChart) {
 		this.mandalsPartiesChart = mandalsPartiesChart;
+	}	
+
+	public ElectionWiseMandalPartyResultListVO getPartywiseVotesDetailsForMandal() {
+		return partywiseVotesDetailsForMandal;
+	}
+
+	public void setPartywiseVotesDetailsForMandal(
+			ElectionWiseMandalPartyResultListVO partywiseVotesDetailsForMandal) {
+		this.partywiseVotesDetailsForMandal = partywiseVotesDetailsForMandal;
 	}
 
 	public String execute() throws Exception
@@ -450,6 +461,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		constituencyVO = getVotersShareInMandalsPieChart(constiId);
 		biElectionResultsMainVO.setConstituencyVO(constituencyVO);
 		
+		//biElectionResultsMainVO.setPartyResults(biElectionPageService.getMandalwiseResultsForAllElectionsForSelectedPartiesInConstituency(constiId, 142L));
 		return Action.SUCCESS;
 	}
 	
@@ -857,6 +869,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		int i=0;
 		
 		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
+			log.debug("Mandal Id in Action::::::::::::::::::::::::::"+votersInMandalOrAC.getVotersInfoForMandalVO().get(0).getMandalId());
 			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
 			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+"In Bi-Elections"+".png";
 			pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
@@ -913,6 +926,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
     			percentage = new BigDecimal(new Long(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
     			//dataset.setValue(votersInMandalOrAC.getMandalName()+" ["+percentage.toString()+"%]",percentage);
     			VotersInfoForMandalVO votersInf = new VotersInfoForMandalVO();
+    			votersInf.setMandalId(votersInMandalOrAC.getMandalId());
     			votersInf.setMandalName(votersInMandalOrAC.getMandalName());
     			votersInf.setPercent(percentage.toString());
     			votersInfoForMandal.add(votersInf);
@@ -921,5 +935,23 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
     		votersInfo.setVotersInfoForMandalVO(votersInfoForMandal);
     	}
      return votersInfo;
+    }
+    public String getAllPartiesVotesSharingInMandal()
+    {
+    	String param=null;			    
+		param = getTask();
+		
+    	try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Long constiId = jObj.getLong("constituencyId");
+		Long tehsilId = jObj.getLong("tehsilId");
+		partywiseVotesDetailsForMandal = biElectionPageService.getMandalwiseResultsForAllElectionsForSelectedPartiesInConstituency(constiId, tehsilId);
+		
+    	return SUCCESS;
     }
 }
