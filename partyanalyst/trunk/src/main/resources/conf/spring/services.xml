@@ -492,6 +492,7 @@
 	    <property name="villageBoothElectionDAO" ref="villageBoothElectionDAO" />
 	    <property name="staticDataService" ref="staticDataService" />
 	    <property name="constituencyPageService" ref="constituencyPageService" />
+	    <property name="allianceGroupDAO" ref="allianceGroupDAO" />
 	    <property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	</bean>
