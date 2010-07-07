@@ -488,7 +488,7 @@
 							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
 					}
 					else
-						str += '<td name="'+info.electionType+'"> </td>';
+						str += '<td name="'+info.electionType+'"><div style="visibility:hidden;">NA</div></td>';
 				}
 				str += '<td style="color:#9B5118;font-weight:bold;">'+results[j].range+'</td>';
 				str += '</tr>';
@@ -501,11 +501,18 @@
 			str += '<tr>';
 			str += '<td>View :</td>';
 			str += '<td>';
-			str += '<input type="radio" name="elecType" checked="checked" value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
+
+			str += '<input type="checkbox" name="elecType" checked="checked" value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
+			str += '<input type="checkbox" name="elecType" value="AC" onclick="showSelectedColoumn(this.value)"/>AC';
+			str += '<input type="checkbox" name="elecType" value="PC" onclick="showSelectedColoumn(this.value)"/>PC';
+			str += '<input type="checkbox" name="elecType" value="MPTC" onclick="showSelectedColoumn(this.value)"/>MPTC';
+			str += '<input type="checkbox" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';	
+
+			/*str += '<input type="radio" name="elecType" checked="checked" value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
 			str += '<input type="radio" name="elecType" value="AC" onclick="showSelectedColoumn(this.value)"/>AC';
 			str += '<input type="radio" name="elecType" value="PC" onclick="showSelectedColoumn(this.value)"/>PC';
 			str += '<input type="radio" name="elecType" value="MPTC" onclick="showSelectedColoumn(this.value)"/>MPTC';
-			str += '<input type="radio" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';			
+			str += '<input type="radio" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';			*/
 			str += '</td>';
 			str += '</tr>';
 			str += '</table></center>';
@@ -517,10 +524,10 @@
 		{
 			var ecType;
 
-			if(type == "AC")
-				ecType = "Assembly";
-			else if(type == "PC")
-				ecType = "Parliament";
+			if(type == "Assembly")
+				ecType = "AC";
+			else if(type == "Parliament")
+				ecType = "PC";
 			else if(type == "MPTC")
 				ecType = "MPTC";
 			else if(type == "ZPTC")
@@ -529,20 +536,59 @@
 			return ecType;
 		}
 
-		function showSelectedColoumn(value)
+		function checkExistingValueInArray(val,array)
 		{
-			if(value == "ALL")
+			var status=false;
+			for(var i=0; i<array.length;i++ )
+			{ 
+				if(array[i]==val)
+					status=true; 
+			}	
+			return status;
+		}
+
+		function showSelectedColoumn(checkedValue)
+		{
+			var docelements = document.getElementsByTagName('input'); 		
+			var electTypeCheckBoxElmts = new Array();
+			var electypeSelectedElmts = new Array();
+			
+			for(var i =0; i<docelements.length; i++)
+			{
+				if(docelements[i].type=="checkbox" && docelements[i].name=="elecType")
+				{	
+					electTypeCheckBoxElmts.push(docelements[i]);
+				}
+			}
+						
+			if(checkedValue == "ALL")
 			{
 				partyVotesSharing();
 				return;
 			}
-
+			else if(checkedValue == "AC" || checkedValue == "PC" || checkedValue == "MPTC" || checkedValue == "ZPTC")
+			{
+				for(var i =0; i<electTypeCheckBoxElmts.length; i++)
+				{
+					if(electTypeCheckBoxElmts[i].value == "ALL")
+					{
+						electTypeCheckBoxElmts[i].checked = false;
+						continue;
+					}
+					else if(electTypeCheckBoxElmts[i].checked == true)
+					{
+						electypeSelectedElmts.push(electTypeCheckBoxElmts[i].value);
+					}
+				}
+			}
+			
+			
 			var elmt = document.getElementById("votersShareData_main");
 			if(!elmt)
 				return;
 			
 			var electionListLength = votesShareData[0].electionList.length+2;
-			var ecType = getElectionType(value);
+			var ecType = getElectionType(checkedValue);
 
 			var str = '';
 			str += '<center><table id="votesShareDetailsTable" width="75%" cellspacing="0" cellmargin="0">';
@@ -564,7 +610,7 @@
 			{
 				var electype = votesShareData[0].electionList[i].name.substring(0,votesShareData[0].electionList[i].name.indexOf('-')-2);
 				
-				if( electype == value)
+				if(checkExistingValueInArray(electype,electypeSelectedElmts))
 					str += '<th>'+votesShareData[0].electionList[i].name+'</th>';
 			}
 			str += '<th>Range</th>';
@@ -577,18 +623,19 @@
 				for(var k in votesShareData[j].electionWiseResults)
 				{
 					var info = votesShareData[j].electionWiseResults[k];
-					
-					if(info.electionType != ecType)
+					var ecType = getElectionType(info.electionType);
+
+					if(!checkExistingValueInArray(ecType,electypeSelectedElmts))
 						continue;
 					if(info.percentage != "-1")
 					{
 						if(info.hasAlliance == "true")
-							str += '<td align="center" name="'+info.electionType+'" style="background-color:#adadad;">'+info.percentage+'</td>';
+							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
 						else if(info.hasAlliance == "false")
 							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
 					}
 					else
-						str += '<td name="'+info.electionType+'"> </td>';
+						str += '<td name="'+info.electionType+'"><div style="visibility:hidden;">NA</div> </td>';
 				}
 				str += '<td>'+votesShareData[j].range+'</td>';
 				str += '</tr>';
