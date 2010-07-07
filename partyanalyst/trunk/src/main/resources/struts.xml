@@ -1154,6 +1154,12 @@
               <result type="json" name="success">
            		<param name="root">votesSharing</param>
         	</result>       		
+        </action>
+        
+        <action name="votesSharingInMandalAjaxAction" class="constituencyVotingTrendzAction" method="getAllPartiesVotesSharingInMandal"> 
+              <result type="json" name="success">
+           		<param name="root">partywiseVotesDetailsForMandal</param>
+        	</result>       		
         </action>	
         
         <action name="getTownshipWiseVotesShareAjaxAction" class="townshipElectionResultsAction" method="getTownShipWisePartiesVotesShare"> 
