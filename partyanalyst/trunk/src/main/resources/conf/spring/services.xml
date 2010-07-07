@@ -494,6 +494,7 @@
 	    <property name="constituencyPageService" ref="constituencyPageService" />
 	    <property name="allianceGroupDAO" ref="allianceGroupDAO" />
 	    <property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+	    <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO" />
 	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	</bean>
     
