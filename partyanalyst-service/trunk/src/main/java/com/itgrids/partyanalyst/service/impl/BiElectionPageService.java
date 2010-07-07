@@ -2118,19 +2118,20 @@ public class BiElectionPageService implements IBiElectionPageService {
 								 List<PartyResultsVO> partyElecResults = partyElectionResultsInConstituencyVO.getPartyElecResults();
 								 for(PartyResultsVO partyResultsVOObj : partyElecResults)
 								 {
+									 if(partyResultsVOObj.getValidVotes() == null || partyResultsVOObj.getVotesEarned() == null)
+										 continue;
 									 partyId = partyResultsVOObj.getPartyId();									 
-									
 									 votesEarned = partyResultsVOObj.getVotesEarned();
 									 validVotes = partyResultsVOObj.getValidVotes();
-									 if(partywiseResutsMap.isEmpty() || !partywiseResutsMap.containsKey(partyId))
+									 if((partywiseResutsMap.isEmpty() || !partywiseResutsMap.containsKey(partyId)))
 									 {
-										 PartyResultsVO  obj = setValuesInToObj(partyResultsVOObj);										 
+										 PartyResultsVO  obj = setValuesInToObj(partyResultsVOObj);							 
 										 partywiseResutsMap.put(partyId, obj);
 									 } else if (partywiseResutsMap.containsKey(partyId))
 									 {
 										 PartyResultsVO partyResultsObj = partywiseResutsMap.get(partyId);
 										 partyResultsObj.setValidVotes(partyResultsObj.getValidVotes() + validVotes);
-										 partyResultsObj.setVotesEarned(partyResultsObj.getVotesEarned()+ votesEarned);
+										 partyResultsObj.setVotesEarned(partyResultsObj.getVotesEarned()+ votesEarned);	 
 										 partyResultsObj.setPercentage(new BigDecimal(partyResultsObj.getVotesEarned().doubleValue()/partyResultsObj.getValidVotes().doubleValue()*100).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
 										 partywiseResutsMap.put(partyId, partyResultsObj);
 									 }
@@ -2260,7 +2261,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 			partyElecs1 = new HashSet<String>();
 			partyPecentages = new ArrayList<Float>();
 			for(ElectionResultVO ele:party.getElectionWiseResults()){
-				partyElecs1.add(ele.getElectionYear()+" "+ele.getElectionType());		
+				partyElecs1.add(ele.getElectionYear()+" "+ele.getElectionType());
+				if(ele.getPercentage() != null && !ele.getPercentage().equalsIgnoreCase("--"))
 				partyPecentages.add(new Float(ele.getPercentage()));
 			}
 			Collections.sort(partyPecentages);
