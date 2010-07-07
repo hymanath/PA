@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
+import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
@@ -89,6 +90,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	private IStaticDataService staticDataService;
 	private IConstituencyPageService constituencyPageService;
 	private IAllianceGroupDAO  allianceGroupDAO;
+	private IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
 	
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 		
@@ -142,6 +144,15 @@ public class BiElectionPageService implements IBiElectionPageService {
 
 	public void setElectionDAO(IElectionDAO electionDAO) {
 		this.electionDAO = electionDAO;
+	}
+
+	public IBoothConstituencyElectionDAO getBoothConstituencyElectionDAO() {
+		return boothConstituencyElectionDAO;
+	}
+
+	public void setBoothConstituencyElectionDAO(
+			IBoothConstituencyElectionDAO boothConstituencyElectionDAO) {
+		this.boothConstituencyElectionDAO = boothConstituencyElectionDAO;
 	}
 
 	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
@@ -2528,12 +2539,19 @@ public class BiElectionPageService implements IBiElectionPageService {
 			Long validVotes = new Long(0);
 			Long votesEarned = new Long(0);
 			String partyName = "";
+			StringBuilder townships = new StringBuilder(" ");
+			int i=1;
 			for(PartyTownshipResultsVO townshipRes:townshipResList){
 				
 				votesEarned+=townshipRes.getVotesEarned();
 				validVotes+=townshipRes.getValidVotes();
 				
 				partyName = townshipRes.getPartyName();
+				if(i == townshipResList.size())
+					townships.append(townshipRes.getTownshipName());
+				else
+				    townships.append(townshipRes.getTownshipName() + ",");
+				i++;
 			}
 			
 			if(!validVotes.equals(new Long(0)) && !votesEarned.equals(new Long(0))){
@@ -2544,6 +2562,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				villageLevelRes.setVotesShareInVill(getVotesPercent(votesEarned,validVotes));
 				villageLevelRes.setVotesShareInMandal(getVotesPercent(votesEarned,mandValidVotes));
 				villageLevelRes.setVotesShareInConsti(getVotesPercent(votesEarned,constiValidVotes));
+				villageLevelRes.setTownships(townships.toString());
 			}
 			
 		}
@@ -2568,8 +2587,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 	public Long getMandalValidVotes(Long tehsilId,String elecType,String elecYear){
 		
 		try{
-		List mandalValidVotes = candidateBoothResultDAO.getValidVotesInAMandal(tehsilId, elecType, elecYear);
-		
+		//List mandalValidVotes = candidateBoothResultDAO.getValidVotesInAMandal(tehsilId, elecType, elecYear);
+			List mandalValidVotes = boothConstituencyElectionDAO.getValidVotesInAnElectionInMandal(tehsilId, elecType, elecYear);
 		if(mandalValidVotes != null){
 			Object params = (Object)mandalValidVotes.get(0);
 			Long validVotes = (Long)params;
