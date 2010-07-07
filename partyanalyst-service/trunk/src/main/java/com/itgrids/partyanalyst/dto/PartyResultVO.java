@@ -9,6 +9,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public class PartyResultVO {
@@ -27,10 +28,15 @@ public class PartyResultVO {
 	private CandidateOppositionVO oppositionCandidates;
 	private List<ElectionResultVO> electionWiseResults;
 	private List<PartyResultVO> partyResultVo;
+	private Set<String> elections;
 	private Long seatsWonCountToSort;
-	private List<SelectOptionVO> electionList;
-	private List<SelectOptionVO> partiesList;
+	List<SelectOptionVO> electionList;
+	List<SelectOptionVO> partiesList;
+	String electionType;
+	String electionYear;
+	
 	private List<SelectOptionVO> votesRange;
+	
 	private String range;
 		
 	public String getRange() {
@@ -147,8 +153,26 @@ public class PartyResultVO {
 	}
 	public void setSeatsWonCountToSort(Long seatsWonCountToSort) {
 		this.seatsWonCountToSort = seatsWonCountToSort;
-	}
+	}	
 	
+	public String getElectionType() {
+		return electionType;
+	}
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+	public String getElectionYear() {
+		return electionYear;
+	}
+	public void setElectionYear(String electionYear) {
+		this.electionYear = electionYear;
+	}
+	public Set<String> getElections() {
+		return elections;
+	}
+	public void setElections(Set<String> elections) {
+		this.elections = elections;
+	}
 	@Override
 	public boolean equals(Object obj){
 		if(!(obj instanceof PartyResultVO))
