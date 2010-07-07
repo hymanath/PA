@@ -802,7 +802,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				VotersInfoForMandalVO votersInfo = new VotersInfoForMandalVO();
 				
 				Object[] vObj = (Object[]) votersList.get(j);
-				votersInfo.setMandalId( vObj[0].toString());
+				votersInfo.setMandalId( ((Long)vObj[0]).toString());
 				votersInfo.setMandalName(vObj[1].toString());
 				votersInfo.setTotalMaleVoters(vObj[2].toString());
 				votersInfo.setTotalFemaleVoters(vObj[3].toString());
@@ -1624,7 +1624,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 						
 			log.debug("Making constituencyElectionDAO.getTotalValidVotesForATehsilForAParticularElectionYear() DAO call..");
 			List totalValidVotes = constituencyElectionDAO.getTotalValidVotesForATehsilForAParticularElectionYear(electionType,tehsilIds.substring(1),electionYear);
-			if(totalValidVotes!=null){
+			if(totalValidVotes.get(0)!=null){
 				totalVotes = Float.parseFloat(totalValidVotes.get(0).toString());
 			}else{
 				totalVotes = 1.0f;
@@ -1645,8 +1645,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					}else{
 						teshilPartyInfoVo.setSeatsWonByParty(0L);
 					}					
-					teshilPartyInfoVo.setChartName("PartyTrendsInConstituency_"+constituencyId+"forElectionType"+electionType+"andElectionYear"+electionYear+"_piechart"+".png");					
-				teshilPartyInfoVO.add(teshilPartyInfoVo);
+					teshilPartyInfoVo.setChartName("PartyTrendsInConstituency_"+constituencyId+"forElectionType"+electionType+"andElectionYear"+electionYear+"_piechart"+".png");
+					teshilPartyInfoVO.add(teshilPartyInfoVo);
 			}		
 			return teshilPartyInfoVO;
 		}catch(Exception e){
