@@ -176,7 +176,7 @@ legend
 .detailsTableHeaderSpan
 {
 	position:relative;
-	top:8px;
+	top:5px;
 	color:#4B74C6;
 	font-weight:bold;
 }
@@ -332,7 +332,7 @@ legend
 										} 			
 										else if(jsObj.task == "getTownshipwiseVotesShareInfo")
 										{
-											buildVillagewiseVotesShare(resultVO);
+											buildVillagewiseVotesShare(jsObj,resultVO);
 										}
 															
 								}catch (e)  {   
@@ -352,21 +352,54 @@ legend
 			var tehsilId = '${tehsilId}';
 			var electId = '${electId}';	
 
-			function buildVillagewiseVotesShare(results)
+			function getRadioStr(rank)
+			{
+				var str = '';
+				if(rank == '1')
+					str+='<input type="radio" checked="checked" name="rank" value="1" onclick="getTownshipwisePartiesVotesShare(this.value);"/> 1';
+				else
+					str+='<input type="radio" name="rank" value="1" onclick="getTownshipwisePartiesVotesShare(this.value);"/> 1';
+
+				if(rank == '2')
+					str+='<input type="radio" checked="checked" name="rank" value="2" onclick="getTownshipwisePartiesVotesShare(this.value);"/> 2';
+				else
+					str+='<input type="radio" name="rank" value="2" onclick="getTownshipwisePartiesVotesShare(this.value);"/> 2';
+
+				if(rank == '3')
+					str+='<input type="radio" checked="checked" name="rank" value="3" onclick="getTownshipwisePartiesVotesShare(this.value);"/> 3';
+				else
+					str+='<input type="radio" name="rank" value="3" onclick="getTownshipwisePartiesVotesShare(this.value);"/> 3';
+
+				if(rank == '4')
+					str+='<input type="radio" checked="checked" name="rank" value="4" onclick="getTownshipwisePartiesVotesShare(this.value);"/> 4';
+				else
+					str+='<input type="radio" name="rank" value="4" onclick="getTownshipwisePartiesVotesShare(this.value);"/> 4';
+
+				return str;
+			}
+
+			function buildVillagewiseVotesShare(jsObj,results)
 			{
 				var elmt = document.getElementById("villagewiseVotesShare");
 				if(!elmt)
 					return;
 
 				var str = '';
-				//str += '<center>';
+				
 				str += '<table width="80%" class="votesShareTable">';
 				str += '<tr>';
 				str += '<td colspan="6" style="padding:0px;">';
 				str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
 				str+='			<tr>';
 				str+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/electionResultsAnalysisReport/header_left.gif"></td>';
-				str+='			<td width="98%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan"> Villagewise All Parties Votes Share</span></div></td>';
+				str+='			<td width="98%" style="padding:0px;border:none;">';
+				str+='				<div class="detailsTableHeader" style="width:100%;">';
+				str+='					<span class="detailsTableHeaderSpan">  All Parties Vote Bank Based On Rank - '+jsObj.rank+'</span>';
+				str+='					<span class="detailsTableHeaderSpan" style="float:right">';
+				str+='						Select Rank - ';
+				str+=						getRadioStr(jsObj.rank);
+				str+='				</div>';
+				str+='			</td>';
 				str+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
 				str+='			</tr>';
 				str+='		</table>';
@@ -391,8 +424,7 @@ legend
 					str += '<td>'+results[i].votesShareInConsti+'</td>';
 					str += '</tr>';
 				}
-				str += '</table>';
-				//str += '</center>';
+				str += '</table>';				
 				elmt.innerHTML = str;
 			}
 
