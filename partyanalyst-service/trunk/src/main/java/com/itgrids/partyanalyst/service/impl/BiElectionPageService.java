@@ -1814,11 +1814,6 @@ public class BiElectionPageService implements IBiElectionPageService {
 			//for non participated parties
 			List<PartyResultsVO> nonPartiResult = getCrossVotingResults(crossVotingResults,"NON_PARTICIPATED");
 			if(nonPartiResult != null && nonPartiResult.size() > 0){
-				/*if(resultForLSP != null){
-					resultForLSP.setBallotVotes(new Long(0));
-					resultForLSP.setBallotVotesPercentage("--");
-					nonPartiResult.add(resultForLSP);
-				}*/
 				allPartiesResultsObj.setNonPartiParties(nonPartiResult);
 			}
 		}
@@ -1831,6 +1826,12 @@ public class BiElectionPageService implements IBiElectionPageService {
 		List<PartyResultsVO> partyResults = null;
 		if(!crossVotingResults.isEmpty()){
 			partyResults = new ArrayList<PartyResultsVO>();
+			
+			Long totAVE = new Long(0);
+			Long totPVE = new Long(0);
+			Double votAP = new Double(0);
+			Double votPP = new Double(0);
+			Double totDif = new Double(0);
 			
 			if(crossVotingResults.containsKey(IConstants.ASSEMBLY_ELECTION_TYPE) && crossVotingResults.containsKey(IConstants.PARLIAMENT_ELECTION_TYPE)){
 				ElectionResultsForMandalVO assembly = crossVotingResults.get(IConstants.ASSEMBLY_ELECTION_TYPE);
@@ -1855,10 +1856,17 @@ public class BiElectionPageService implements IBiElectionPageService {
 							res.setBallotVotes(parliamtRes.getVotesEarned());
 							res.setBallotVotesPercentage(parliamtRes.getPercentage());
 							
+							//for total sum
+							totAVE+=assmblRes.getVotesEarned();
+							totPVE+=parliamtRes.getVotesEarned();
+							votAP+=new Double(assmblRes.getPercentage());
+							votPP+=new Double(parliamtRes.getPercentage());
+							
 							if(status.equalsIgnoreCase("CROSS_VOTING")){
 							try{
 							Double diff = new BigDecimal(new Double(assmblRes.getPercentage()) - new Double(parliamtRes.getPercentage())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 							res.setDiffPercent(diff.toString());
+							totDif+=diff;
 							}
 							catch(Exception ex){
 								ex.printStackTrace();
@@ -1868,6 +1876,24 @@ public class BiElectionPageService implements IBiElectionPageService {
 							break;
 						}
 					}
+				}
+				
+				//set total results sum
+				if(totAVE > new Long(0) && votAP > new Double(0)){
+					PartyResultsVO res = new PartyResultsVO();
+					res.setPartyId(0l);
+					res.setPartyName("Total");
+					res.setVotesEarned(totAVE);
+					Double AsVP = new BigDecimal(votAP).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue(); 
+					res.setPercentage(AsVP.toString());
+					res.setBallotVotes(totPVE);
+					Double PsVP = new BigDecimal(votPP).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					res.setBallotVotesPercentage(PsVP.toString());
+					if(status.equalsIgnoreCase("CROSS_VOTING")){
+						Double totalDif = new BigDecimal(totDif).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+						res.setDiffPercent(totalDif.toString());
+					}
+					partyResults.add(res);
 				}
 			}
 		}
