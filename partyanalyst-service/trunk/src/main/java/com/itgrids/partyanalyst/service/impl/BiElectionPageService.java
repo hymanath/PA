@@ -2543,6 +2543,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			String partyName = "";
 			StringBuilder townships = new StringBuilder(" ");
 			int i=1;
+			Boolean flag = false;
 			for(PartyTownshipResultsVO townshipRes:townshipResList){
 				
 				votesEarned+=townshipRes.getVotesEarned();
@@ -2552,12 +2553,18 @@ public class BiElectionPageService implements IBiElectionPageService {
 				if(i == townshipResList.size())
 					townships.append(townshipRes.getTownshipName());
 				else{
-					if(i%3 == 0)
-				    townships.append(townshipRes.getTownshipName() + "\n");
-					else
-					townships.append(townshipRes.getTownshipName() + ",");
+					if(i%4 == 0){
+				     townships.append("\n");
+				     flag = true;
+					}
+				    townships.append(townshipRes.getTownshipName() + " , ");
 				}
 				i++;
+			}
+						
+			if(flag == true){
+			townships.delete(townships.length()-1, townships.length());
+			townships.append(".");
 			}
 			
 			if(!validVotes.equals(new Long(0)) && !votesEarned.equals(new Long(0))){
@@ -2568,6 +2575,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				villageLevelRes.setVotesShareInVill(getVotesPercent(votesEarned,validVotes));
 				villageLevelRes.setVotesShareInMandal(getVotesPercent(votesEarned,mandValidVotes));
 				villageLevelRes.setVotesShareInConsti(getVotesPercent(votesEarned,constiValidVotes));
+				log.debug(" ................. Townships :" + townships);
 				villageLevelRes.setTownships(townships.toString());
 			}
 			
