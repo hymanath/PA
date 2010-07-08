@@ -386,9 +386,9 @@ legend
 
 				var str = '';
 				
-				str += '<table width="80%" class="votesShareTable">';
+				str += '<table width="70%" class="votesShareTable">';
 				str += '<tr>';
-				str += '<td colspan="6" style="padding:0px;">';
+				str += '<td colspan="7" style="padding:0px;">';
 				str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
 				str+='			<tr>';
 				str+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/electionResultsAnalysisReport/header_left.gif"></td>';
@@ -415,23 +415,26 @@ legend
 				str += '<tr>';
 				str += '<th>Party</th>';
 				str += '<th>No. Of Villages</th>';
-				str += '<th>Votes Share</th>';
-				str += '<th>% Of Share</th>';
-				str += '<th>Mandal Votes % Share</th>';
-				str += '<th>Constituency Votes % Share</th>';
+				str += '<th>Villages</th>';
+				str += '<th>Votes Gained</th>';
+				str += '<th>Votes %</th>';
+				str += '<th>Votes % Share In Mandal</th>';
+				str += '<th>Votes % Share In Constituency</th>';
 				str += '</tr>';
 				for(var i in results)
 				{
 					str += '<tr>';
 					str += '<td>'+results[i].partyName+'</td>';
 					str += '<td>'+results[i].wonVillagesCount+'</td>';
+					str += '<td style="text-align:left;">'+results[i].townships+'</td>';
 					str += '<td>'+results[i].totVotesEarned+'</td>';
 					str += '<td>'+results[i].votesShareInVill+'</td>';
 					str += '<td>'+results[i].votesShareInMandal+'</td>';
 					str += '<td>'+results[i].votesShareInConsti+'</td>';
 					str += '</tr>';
 				}
-				str += '</table>';				
+				str += '</table>';
+						
 				elmt.innerHTML = str;
 			}
 
