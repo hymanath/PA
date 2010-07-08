@@ -420,7 +420,7 @@ public class BiElectionAction extends ActionSupport implements
         String chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
         String title = year+" Assembly Election Results in Bye-Election Constituencies";
         ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataSetForGraph(asseblyDetails);
-		ChartProducer.createLineChartWithThickness(title,"Constituencies","Votes Percentage", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(),chartPath,400,920, new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
+		ChartProducer.createLineChartWithThickness(title,"Constituencies","Votes Percentage", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(),chartPath,300,920, new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
 		chartName = lineChartName;
 	
 		}catch(Exception ex){
@@ -566,7 +566,7 @@ public class BiElectionAction extends ActionSupport implements
 		  chartName = "mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+constituencyId+".png";
 		  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		  ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataset(list);
-		  ChartProducer.createLineChartWithThickness(chartTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,400,820,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
+		  ChartProducer.createLineChartWithThickness(chartTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,300,820,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
 			  
 		  mandalWiseResultsChart = chartName;
 			  
