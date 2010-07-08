@@ -2451,7 +2451,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 					
 					//sort the results votes earned desc
 					Collections.sort(townshipRes, new PartyTownshipResultsComparator());
-					PartyTownshipResultsVO res = townshipRes.get(rank);
+					PartyTownshipResultsVO res = townshipRes.get(rank-1);
 					Long partyId = res.getPartyId();
 					if(partyResultsSorted.isEmpty() || !partyResultsSorted.containsKey(partyId)){
 						List<PartyTownshipResultsVO> partyResInMap = new ArrayList<PartyTownshipResultsVO>();
@@ -2551,8 +2551,12 @@ public class BiElectionPageService implements IBiElectionPageService {
 				partyName = townshipRes.getPartyName();
 				if(i == townshipResList.size())
 					townships.append(townshipRes.getTownshipName());
-				else
-				    townships.append(townshipRes.getTownshipName() + ",");
+				else{
+					if(i%3 == 0)
+				    townships.append(townshipRes.getTownshipName() + "\n");
+					else
+					townships.append(townshipRes.getTownshipName() + ",");
+				}
 				i++;
 			}
 			
