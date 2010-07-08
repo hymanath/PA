@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.utils.ElectionResultTypeComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 
 public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsService{
 	
@@ -715,17 +716,10 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			if(!IConstants.BYE_ELECTIONS_STATIC_PARTIES.contains(allElectionResults.get(i).getPartyName()))
 				allElectionResults.remove(i);
 		
-		Set<String> partyElecs1 = null;
-		List<SelectOptionVO> allElections = new LinkedList<SelectOptionVO>(); 
+		Set<String> partyElecs1 = null;//Only particular party participated Elections
+		Set<String> allElecTypes = new HashSet<String>();////All parties participated Elections
+		List<SelectOptionVO> electionsHeading = new LinkedList<SelectOptionVO>(); 
 		List<Float> partyPecentages = null;
-		allElections.add(0, new SelectOptionVO(0l, "2001 MPTC"));
-		allElections.add(1, new SelectOptionVO(0l, "2001 ZPTC"));
-		allElections.add(2, new SelectOptionVO(0l, "2004 Assembly"));
-		allElections.add(3, new SelectOptionVO(0l, "2004 Parliament"));
-		allElections.add(4, new SelectOptionVO(0l, "2006 MPTC"));
-		allElections.add(5, new SelectOptionVO(0l, "2006 ZPTC"));
-		allElections.add(6, new SelectOptionVO(0l, "2009 Assembly"));
-		allElections.add(7, new SelectOptionVO(0l, "2009 Parliament"));
 		
 		List alliance = null;
 		List result = null;
@@ -739,6 +733,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					alliance = allianceGroupDAO.findAlliancePartiesByElectionAndParty(Long.parseLong(result.get(0).toString()),party.getPartyId());
 				ele.setHasAlliance((alliance.size()>0 && result.size() > 0)?"true":"false");
 				partyElecs1.add(ele.getElectionYear()+" "+ele.getElectionType());
+				allElecTypes.add(ele.getElectionYear()+" "+ele.getElectionType());
 				partyPecentages.add(new Float(ele.getPercentage()));
 			}
 			Collections.sort(partyPecentages);
@@ -746,10 +741,15 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			party.setElections(partyElecs1);
 		}
 		
+		for(String elecType:allElecTypes)
+			electionsHeading.add(new SelectOptionVO(0l, elecType));
+		
+		Collections.sort(electionsHeading, new SelectOptionVOComparator());
+		
 		ElectionResultVO noElec = null;
 		for(PartyResultVO party1:allElectionResults){
 			elections = new ArrayList<ElectionResultVO>();
-			for(SelectOptionVO elec1:allElections){
+			for(SelectOptionVO elec1:electionsHeading){
 				if(!party1.getElections().contains(elec1.getName())){
 					noElec = new ElectionResultVO();
 					noElec.setElectionYearAndType(elec1.getName());
@@ -771,7 +771,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			if(staticParties.contains(party.getPartyName()))
 				fixedParties.add(party);
 		
-		electionWiseMandalPartyResultListVO.setElections(allElections);
+		electionWiseMandalPartyResultListVO.setElections(electionsHeading);
 		electionWiseMandalPartyResultListVO.setAllPartiesAllElectionResults(fixedParties);
 		return electionWiseMandalPartyResultListVO;
 		
