@@ -95,6 +95,33 @@
 			
 			var myDataTableForTehsil = new YAHOO.widget.DataTable("votesPolledDtTableDiv",resultsColumnDefsForTehsil, resultsDataSourceForTehsil);			
 		}
+
+	function checkAllBoxes()
+	{
+		var elements = document.getElementsByTagName('input');
+
+		for(var i =0; i<elements.length; i++)
+		{
+			if(elements[i].type=="checkbox" && (elements[i].name=="elections" || elements[i].name=="parties"))
+			{	
+				elements[i].checked=true;
+			}
+			
+		}
+	}
+
+	function UncheckAllBoxes()
+	{
+		var elements = document.getElementsByTagName('input');
+
+		for(var i =0; i<elements.length; i++)
+		{
+			if(elements[i].type=="checkbox" && (elements[i].name=="elections" || elements[i].name=="parties"))
+			{	
+				elements[i].checked=false;
+			}
+		}
+	}
 	</script>
 </head>
 <body>
@@ -105,7 +132,19 @@
 			<table style="margin-left:60px;">
 				<tr><td><s:checkboxlist list="mandalVO.partiesInMandal" listKey="id" listValue="name" name="parties" label="Parties:"/></td></tr>
 				<tr><td><s:checkboxlist list="mandalVO.electionsInMandal" listKey="id" listValue="name" name="elections" label="Elections:"/></td></tr>
-				<tr><td><input type="hidden" name="tehsilId" value="${tehsilId}"/></td><td><input type="hidden" name="tehsilName" value="${tehsilName}"/></td><td align="center"><s:checkbox theme="simple" id="allianceCheck" name="includeAlliance" value="hasAllianceParties"></s:checkbox><b> Include Aliance Parties</b></td></tr>
+				<tr>
+					<td colspan="2" align="right">
+							<input type="button" style="margin-left:0px" class="button" onclick="checkAllBoxes()" value="Select All"/>
+							<input type="button" style="margin-left:0px" class="button" onclick="UncheckAllBoxes()" value="DeSelect All"/>
+					</td>
+					<td align="center">
+						<s:checkbox theme="simple" id="allianceCheck" name="includeAlliance" value="hasAllianceParties"></s:checkbox><b> Include Aliance Parties</b>
+					</td>
+				</tr>
+				<tr>
+					<td><input type="hidden" name="tehsilId" value="${tehsilId}"/></td>
+					<td><input type="hidden" name="tehsilName" value="${tehsilName}"/></td>
+				</tr>
 				<tr><td colspan="2" align="center"><s:submit cssClass="button" label="View Chart" /></td></tr>
 			</table>
 		</s:form>
@@ -154,15 +193,7 @@
 				</tr>																				
 			</c:forEach>
 		</table>
-	</div>
-	
-	<div id="votesPollingInMandalDIV">
-	<table>
-		
-		</tr>
-	</table>
-	</div>
-	
+	</div>	
 	<script type="text/javascript">
 	buildVotesPolledDataTable();
 	</script>
