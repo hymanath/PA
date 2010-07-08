@@ -181,6 +181,8 @@ public interface IConstants {
     
     public final static String PRESENT_ELECTION_YEAR = "2009";
     public final static String PREVIOUS_ELECTION_YEAR = "2004";
+    public final static String BYE_ELECTION_YEAR_2008_PARLIAMENT = "2008";
+    public final static String BYE_ELECTION_YEAR_2006_PARLIAMENT = "2006";
     
     public final static String LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR = "2006";
     public final static String LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR = "2001";
