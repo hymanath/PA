@@ -4233,7 +4233,16 @@ public class StaticDataService implements IStaticDataService {
 			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
 			if(electionResult.getResultStatus().getResultCode()!=1){
 				electionResults.add(electionResult);
-			}		
+			}
+			
+			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.BYE_ELECTION_YEAR_2008_PARLIAMENT,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
+			if(electionResult.getResultStatus().getResultCode()!=1){
+				electionResults.add(electionResult);
+			}
+			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.BYE_ELECTION_YEAR_2006_PARLIAMENT,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
+			if(electionResult.getResultStatus().getResultCode()!=1){
+				electionResults.add(electionResult);
+			}
 			
 			
 		}catch(Exception e){
