@@ -406,7 +406,7 @@
 					
 					var info = results.allPartiesAllElectionResults[j].electionWiseResults[k];
 					
-					if(info.percentage != "-1")
+					/*if(info.percentage != "-1")
 					{
 						if(info.hasAlliance == "true" )
 							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
@@ -418,7 +418,18 @@
 					else
 						str += '<td name="'+info.electionType+'"> </td>';
 				}
-				str += '<td style="color:#9B5118;font-weight:bold;"></td>';
+				str += '<td style="color:#9B5118;font-weight:bold;"></td>';*/
+					if(info.percentage == null || info.percentage == '--' || info.percentage == "-1")
+					{
+						str += '<td name="'+info.electionType+'"> </td>';
+					}
+					else if(info.hasAlliance == "true")
+							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
+						else
+							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
+					
+				}
+				str += '<td style="color:#9B5118;font-weight:bold;">'+results.allPartiesAllElectionResults[j].range+'</td>';				
 				}
 				str += '</tr>';
 			}
