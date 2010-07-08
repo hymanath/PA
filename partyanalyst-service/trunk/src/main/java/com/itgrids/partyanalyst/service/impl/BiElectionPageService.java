@@ -2402,6 +2402,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 			Long validVotes = (Long)results[1];
 			partyResult.setValidVotes(validVotes);
 			partyResult.setVotesEarned(votesEarned);
+			Long totVoters = (Long)results[6];
+			partyResult.setTotVoters(totVoters);
 			
 			Double votePercent = new BigDecimal(new Double(votesEarned)/new Double(validVotes)*100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			partyResult.setVotesPercent(votePercent.toString());
@@ -2540,6 +2542,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			//process the results List and set to VO
 			Long validVotes = new Long(0);
 			Long votesEarned = new Long(0);
+			Long totVoters = new Long(0);
 			String partyName = "";
 			StringBuilder townships = new StringBuilder(" ");
 			int i=1;
@@ -2548,6 +2551,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				
 				votesEarned+=townshipRes.getVotesEarned();
 				validVotes+=townshipRes.getValidVotes();
+				totVoters+=townshipRes.getTotVoters();
 				
 				partyName = townshipRes.getPartyName();
 				if(i == townshipResList.size())
@@ -2572,6 +2576,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				villageLevelRes.setWonVillagesCount(townshipResList.size());
 				villageLevelRes.setTotVotesEarned(votesEarned);
 				villageLevelRes.setTotValidVotes(validVotes);
+				villageLevelRes.setTotVoters(totVoters);
 				villageLevelRes.setVotesShareInVill(getVotesPercent(votesEarned,validVotes));
 				villageLevelRes.setVotesShareInMandal(getVotesPercent(votesEarned,mandValidVotes));
 				villageLevelRes.setVotesShareInConsti(getVotesPercent(votesEarned,constiValidVotes));
