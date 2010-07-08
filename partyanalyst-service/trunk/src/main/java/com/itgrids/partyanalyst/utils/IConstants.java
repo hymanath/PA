@@ -30,6 +30,7 @@ public interface IConstants {
 	public final static String LOCAL_ELECTION_BODY = "LOCAL_ELECTION_BODY";//1
 	public final static String MUNCIPLE_WARD = "WARD";//1
 	public final static String MUNCIPLE_WARD_NO = "MUNCIPLE_WARD_NO";
+	public static final Long ASSEMBLY_ELECTION_TYPE_ID = 2L;
 	
 	public final static String CANDIDATE_VOTES_PERCENTAGE = "CANDIDATE_VOTES_PERCENTAGE";
 	public final static String CANDIDATE_GENDER = "CANDIDATE_GENDER";
