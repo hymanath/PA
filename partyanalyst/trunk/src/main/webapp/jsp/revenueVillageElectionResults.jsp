@@ -159,11 +159,12 @@ legend
 }
 .votesShareTable td
 {
-	padding:5px;
 	border:1px solid #DFDFDF;
-	color:#73787E;
-	text-align:center;
+	color:#303030;
+	font-family:Verdana;
 	font-size:12px;
+	padding:5px;
+	text-align:center;
 }
 
 .detailsTableHeader
