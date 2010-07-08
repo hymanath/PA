@@ -24,6 +24,7 @@ public class PartyVillageLevelAnalysisVO implements Serializable {
 	private int wonVillagesCount;
 	private Long totVotesEarned;
 	private Long totValidVotes;
+	private Long totVoters;
 	private String votesShareInVill;
 	private String votesShareInMandal;
 	private String votesShareInConsti;
@@ -95,5 +96,11 @@ public class PartyVillageLevelAnalysisVO implements Serializable {
 	}
 	public void setTownships(String townships) {
 		this.townships = townships;
+	}
+	public Long getTotVoters() {
+		return totVoters;
+	}
+	public void setTotVoters(Long totVoters) {
+		this.totVoters = totVoters;
 	}
 }
