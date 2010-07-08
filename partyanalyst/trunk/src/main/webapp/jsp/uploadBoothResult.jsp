@@ -24,6 +24,8 @@
 					<select name="electionYear">
 						<option value="0">Select option..</option>
 						<option value="2009">2009</option>
+						<option value="2008">2008</option>
+						<option value="2006">2006</option>	
 						<option value="2004">2004</option>					
 					</select>	
 				</td>			

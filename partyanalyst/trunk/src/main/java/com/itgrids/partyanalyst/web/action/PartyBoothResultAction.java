@@ -25,6 +25,7 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 	public void setPartyVOs(List<SelectOptionVO> partyVOs) {
 		this.partyVOs = partyVOs;
 	}
+	
 
 	public List<SelectOptionVO> getElectionTypes() {
 		return electionTypes;
@@ -63,6 +64,8 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		
 		electionYears = new ArrayList<String>();	
 		electionYears.add("2009");
+		electionYears.add("2008");
+		electionYears.add("2006");
 		electionYears.add("2004");
 		setElectionYears(electionYears);
 		System.out.println("before success party Booth results action");
