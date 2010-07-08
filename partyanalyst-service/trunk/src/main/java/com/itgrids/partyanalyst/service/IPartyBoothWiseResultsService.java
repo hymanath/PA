@@ -15,4 +15,6 @@ public interface IPartyBoothWiseResultsService {
 	public ElectionWiseMandalPartyResultListVO getPartyGenderWiseBoothVotesForMandal(Long tehsilID, String locationType);
 	
 	public ElectionWiseMandalPartyResultListVO getAllMPTCAndZPTCElectionsInfoInTehsil(Long tehsilId);
+	
+	public ElectionWiseMandalPartyResultListVO getAllElectionsResultsInAMandal(Long mandalId);
 }
