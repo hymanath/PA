@@ -653,7 +653,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		return getHibernateTemplate().find("select sum(model.votesEarned),sum(model.boothConstituencyElection.boothResult.validVotes),"+
 				"model.boothConstituencyElection.villageBoothElection.township.townshipId,"+
 				"model.boothConstituencyElection.villageBoothElection.township.townshipName,"+
-				"model.nomination.party.partyId,model.nomination.party.shortName from "+
+				"model.nomination.party.partyId,model.nomination.party.shortName,sum(model.boothConstituencyElection.booth.totalVoters) from "+
 				"CandidateBoothResult model where model.boothConstituencyElection.villageBoothElection."+
 				"township.tehsil.tehsilId = ? and model.boothConstituencyElection.constituencyElection.election."+
 				"electionScope.electionType.electionType = ? and model.boothConstituencyElection.constituencyElection.election.electionYear = ? "+
