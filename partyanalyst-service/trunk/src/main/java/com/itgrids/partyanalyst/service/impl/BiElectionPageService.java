@@ -412,7 +412,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			log.debug(" Inside getElectionResultForPartyInMandal Method ...");
 		
 		ResultStatus resultStatus = new ResultStatus();
-		MandalElectionResultVO mandalElectionResultVO = new MandalElectionResultVO();
+		MandalElectionResultVO mandalElectionResultVO = null;
 		List<PartyElectionResultsInConstituencyVO> partyElecResultsInConstituency = null;
 		Map<Long,PartyElectionResultsInConstituencyVO> partyResultsMap = null;
 		
@@ -425,6 +425,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			List electionResultsList = candidateBoothResultDAO.getElectionResultsInAMandalForAllParties(mandalId, electionType, electionYear);
 			if(electionResultsList != null && electionResultsList.size() > 0){
 				
+				mandalElectionResultVO = new MandalElectionResultVO();
 				for(int i=0;i<electionResultsList.size();i++){
 					Object[] params = (Object[])electionResultsList.get(i);
 					Long constituencyId = (Long)params[5];
@@ -491,12 +492,13 @@ public class BiElectionPageService implements IBiElectionPageService {
 					}
 				}
 			}
-			//set to final vo
-			Tehsil tehsil = tehsilDAO.get(mandalId);
-			mandalElectionResultVO.setMandalId(mandalId);
-			mandalElectionResultVO.setMandalName(tehsil.getTehsilName());
-			mandalElectionResultVO.setPartyElecResultsInConstituency(partyElecResultsInConstituency);
-			
+			if(mandalElectionResultVO != null && partyElecResultsInConstituency.size() > 0){
+				//set to final vo
+				Tehsil tehsil = tehsilDAO.get(mandalId);
+				mandalElectionResultVO.setMandalId(mandalId);
+				mandalElectionResultVO.setMandalName(tehsil.getTehsilName());
+				mandalElectionResultVO.setPartyElecResultsInConstituency(partyElecResultsInConstituency);
+			}
 			}
 			catch(Exception ex){
 				ex.printStackTrace();
@@ -507,7 +509,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				resultStatus.setResultPartial(true);
 			}
 			finally{
-				mandalElectionResultVO.setResultStatus(resultStatus);
+				//mandalElectionResultVO.setResultStatus(resultStatus);
 			}
 			
 		}
@@ -526,7 +528,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		if(log.isDebugEnabled())
 			log.debug(" Inside getElectionResultsForMandalsInAConstituencyForAElection method ..");
 		
-		ElectionResultsForMandalVO electionResultsForMandalVO = new ElectionResultsForMandalVO();
+		ElectionResultsForMandalVO electionResultsForMandalVO = null;
 		List<MandalElectionResultVO> electionResultsForMandal = null;
 		ResultStatus resultStatus = new ResultStatus();
 		
@@ -543,8 +545,10 @@ public class BiElectionPageService implements IBiElectionPageService {
 					electionResultsForMandal.add(mandalResult);
 			  }
 			  
+			  log.debug(" ......................... Mandal Result size :.........." + electionResultsForMandal.size());
 			  //set to VO
 			  if(electionResultsForMandal != null && electionResultsForMandal.size() > 0){
+				  electionResultsForMandalVO = new ElectionResultsForMandalVO();
 				  electionResultsForMandalVO.setElectionType(electionType);
 				  electionResultsForMandalVO.setElectionYear(electionYear);
 				  electionResultsForMandalVO.setElectionResultsForMandal(electionResultsForMandal);
@@ -562,25 +566,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			  if(electionResultsForMandal != null && electionResultsForMandal.size() > 0){
 				  
 				  partyIdAndName = getPartiesParticipatedDetails(electionResultsForMandal);
-				  
-				  /*
-				  for(MandalElectionResultVO manElecRes:electionResultsForMandal){
-					  
-					  List<PartyElectionResultsInConstituencyVO> partyConstiRes = manElecRes.getPartyElecResultsInConstituency();
-					  
-					  for(PartyElectionResultsInConstituencyVO partyResInConsti:partyConstiRes){
-						  
-						  List<PartyResultsVO> partyElecResults = partyResInConsti.getPartyElecResults();
-						  
-						  for(PartyResultsVO partyRes:partyElecResults){
-							  
-							  if(partyIdAndName.isEmpty() || !partyIdAndName.containsKey(partyRes.getPartyId())){
-								  partyIdAndName.put(partyRes.getPartyId(), partyRes.getPartyName()); 
-							  }
-						  }
-					  }
-					  
-				  }*/
+				 
 				  if(!partyIdAndName.isEmpty()){
 					Set entries = partyIdAndName.entrySet();
 					Iterator iterator = entries.iterator();
@@ -636,7 +622,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				resultStatus.setResultPartial(true);
 			}
 			finally{
-				electionResultsForMandalVO.setResultStatus(resultStatus);
+				//electionResultsForMandalVO.setResultStatus(resultStatus);
 			}
 		}
 	 return electionResultsForMandalVO;
@@ -731,6 +717,34 @@ public class BiElectionPageService implements IBiElectionPageService {
 					biElectionResultOne.setConstituencyId(constituencyId);
 					biElectionResultOne.setBiElectionResultsVO(electionResultsOne);
 					//biElectionResultOne.setParticipatedParties(partiesList);
+					biElectionResultsVOList.add(biElectionResultOne);
+					
+					
+					//for parliament 2008
+					ElectionResultsForMandalVO  elecResultParli2008 = getElectionResultsForMandalsInAConstituencyForAElection(mandalIds,IConstants.PARLIAMENT_ELECTION_TYPE,"2008");
+					BiElectionResultsVO biElectionResultThree = new BiElectionResultsVO();
+					List<ElectionResultsForMandalVO> electionResultsThree = new ArrayList<ElectionResultsForMandalVO>();
+					
+					if(elecResultParli2008 != null){
+						electionResultsThree.add(elecResultParli2008);
+					biElectionResultThree.setConstituencyId(constituencyId);
+					biElectionResultThree.setBiElectionResultsVO(electionResultsThree);
+					biElectionResultsVOList.add(biElectionResultThree);
+					}
+					
+					
+					//for parliament 2004
+					ElectionResultsForMandalVO  elecResultParli2006 = getElectionResultsForMandalsInAConstituencyForAElection(mandalIds,IConstants.PARLIAMENT_ELECTION_TYPE,"2006");
+					BiElectionResultsVO biElectionResultFour = new BiElectionResultsVO();
+					List<ElectionResultsForMandalVO> electionResultsFour = new ArrayList<ElectionResultsForMandalVO>();
+					
+					if(elecResultParli2006 != null){
+						electionResultsFour.add(elecResultParli2006);
+						biElectionResultFour.setConstituencyId(constituencyId);
+						biElectionResultFour.setBiElectionResultsVO(electionResultsFour);
+					biElectionResultsVOList.add(biElectionResultFour);
+					}
+					
 					
 					//for assembly 2004 and parliament 2004
 					ElectionResultsForMandalVO  elecResultAssembly2004 = getElectionResultsForMandalsInAConstituencyForAElection(mandalIds,IConstants.ASSEMBLY_ELECTION_TYPE,"2004");
@@ -747,8 +761,9 @@ public class BiElectionPageService implements IBiElectionPageService {
 					biElectionResultTwo.setBiElectionResultsVO(electionResultsTwo);
 					//biElectionResultTwo.setParticipatedParties(partiesList);
 					
-					biElectionResultsVOList.add(biElectionResultOne);
+					
 					biElectionResultsVOList.add(biElectionResultTwo);
+					
 				}
 			 }
 			
@@ -1804,7 +1819,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 						
 						//for cross voting and non participated party results map
 						if(electionResultsForMandalVO.getElectionYear().equalsIgnoreCase(IConstants.PRESENT_ELECTION_YEAR) && electionResultsForMandalVO.getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE) || 
-								electionResultsForMandalVO.getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
+								electionResultsForMandalVO.getElectionYear().equalsIgnoreCase(IConstants.PRESENT_ELECTION_YEAR) && electionResultsForMandalVO.getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
 							
 							if(crossVotingResults.isEmpty() || !crossVotingResults.containsKey(electionResultsForMandalVO.getElectionType())){
 								crossVotingResults.put(electionResultsForMandalVO.getElectionType(), electionResultsForMandalVO);
@@ -1857,10 +1872,20 @@ public class BiElectionPageService implements IBiElectionPageService {
 					}
 					
 					for(PartyResultsVO parliamtRes:parliamnt.getPartyResultsSum()){
-						if(!assmblRes.getPartyId().equals(new Long(0)) && assmblRes.getPartyId().equals(parliamtRes.getPartyId())){
+						
+						//include alliance
+						Map<Long,String> alliancePartiesMap = getAlliancPartiesList(IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,assmblRes.getPartyId());
+									
+						if(!assmblRes.getPartyId().equals(new Long(0))){
+							if(assmblRes.getPartyId().equals(parliamtRes.getPartyId()) 
+									|| alliancePartiesMap.containsKey(parliamtRes.getPartyId())){
+							
 							PartyResultsVO res = new PartyResultsVO();
 							res.setPartyId(assmblRes.getPartyId());
-							res.setPartyName(assmblRes.getPartyName());
+							if(alliancePartiesMap.containsKey(parliamtRes.getPartyId()))
+								res.setPartyName(assmblRes.getPartyName() + "*");
+							else
+							    res.setPartyName(assmblRes.getPartyName());
 							res.setVotesEarned(assmblRes.getVotesEarned());
 							res.setPercentage(assmblRes.getPercentage());
 							res.setBallotVotes(parliamtRes.getVotesEarned());
@@ -1884,6 +1909,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 							}
 							partyResults.add(res);
 							break;
+							}
 						}
 					}
 				}
@@ -1910,6 +1936,28 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 return partyResults;
 	}
 	
+	/*
+	 * To Get Alliance Parties List In An Election
+	 */
+	public Map<Long,String> getAlliancPartiesList(String electionType,String electionYear,Long partyId){
+		
+		log.debug(" Alliance Party ........ " + partyId);
+		Map<Long,String> allianceMap = new HashMap<Long,String>();
+		
+		if(electionType != null && electionYear != null && partyId != null){
+			List<SelectOptionVO> alliance = staticDataService.getAlliancePartiesAsVO(electionYear,IConstants.ASSEMBLY_ELECTION_TYPE_ID,partyId);
+			if(alliance != null && alliance.size() > 0){
+				for(SelectOptionVO res:alliance){
+					log.debug(" Parties In Alliance :" + res.getName());
+					allianceMap.put(res.getId(), res.getName());
+				}
+				
+				if(allianceMap.containsKey(partyId))
+					allianceMap.remove(partyId);
+			}
+		}
+	 return allianceMap;
+	}
 	/*
 	 * Check For Party Result Validation 
 	 */
