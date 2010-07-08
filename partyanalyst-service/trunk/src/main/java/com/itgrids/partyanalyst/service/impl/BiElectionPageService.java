@@ -2336,7 +2336,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			log.debug(" Inside getTownshipWiseAllPartyResults method ...");
 		
 		//Map<Long,List<PartyResultVO>> Long refers to townshipId, List<PartyResultVO> is all party results
-		Map<Long, List<PartyTownshipResultsVO>> allPartyRes = null;
+		Map<Long, List<PartyTownshipResultsVO>> allPartyRes = new HashMap<Long, List<PartyTownshipResultsVO>>();
 		
 		if(tehsilId != null && electionType != null && electionYear != null){
 			
@@ -2344,7 +2344,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			Boolean checkRes = checkResultsList(resultsList);
 			
 			if(checkRes){
-				allPartyRes = new HashMap<Long, List<PartyTownshipResultsVO>>();
+				
 				ListIterator resultIT = resultsList.listIterator();
 				
 				//iterate the results
