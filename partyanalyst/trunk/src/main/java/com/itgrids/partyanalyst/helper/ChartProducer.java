@@ -453,6 +453,63 @@ public class ChartProducer {
 		}
 	}
 	
+	
+	public static void createLineChartWithThickness(String title, String xAxis, String yAxis, CategoryDataset dataset, String path,int height,int width, List<Color> colors,Boolean thickLines){
+		final NumberAxis seatsRangeAxis = new NumberAxis(yAxis);
+        seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        final LineAndShapeRenderer seatsRenderer = new LineAndShapeRenderer();
+        seatsRenderer.setDrawOutlines(true);
+        seatsRenderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
+        final CategoryPlot seatsPlot = new CategoryPlot(dataset, null, seatsRangeAxis, seatsRenderer);
+        seatsPlot.setDomainGridlinesVisible(true);
+        seatsPlot.setForegroundAlpha(0.5f);
+        
+        
+        final CategoryAxis domainAxis = new CategoryAxis(xAxis);
+        domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+        CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
+        plot.add(seatsPlot, 2);
+               
+        GradientPaint gp;
+        
+        if(colors != null){
+        	log.debug("Colors Size::"+colors.size());
+        	for(int i=0; i<colors.size(); i++){
+            	if(colors.get(i) == null)
+            		continue;
+            	gp = new GradientPaint(0.0f, 0.0f, colors.get(i), 0.0f, 0.0f, Color.lightGray);
+            	seatsRenderer.setSeriesPaint(i, gp);
+            }
+        }
+        
+        //for thick lines
+        if(thickLines){
+        log.debug(" Partys Count in Dataset -- " + dataset.getRowCount());
+        
+        for(int i=0;i<dataset.getRowCount();i++){
+        	seatsRenderer.setSeriesStroke(
+            			i, new BasicStroke(
+            			2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER,
+            			1.0f, null, 0.0f
+            			)
+            			);
+        	seatsPlot.setBackgroundPaint(new Color(219, 223, 225));
+        }
+        }
+        	
+        final JFreeChart chart = new JFreeChart(title,  plot);
+        chart.setBackgroundPaint(Color.WHITE);
+		try	 {
+			final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+			final File image = new File(path);
+			ChartUtilities.saveChartAsPNG(image, chart, width, height, info);
+		}
+		catch (java.io.IOException exc)
+		{
+		log.error("Error writing image to file");
+		}
+	}
+	
 	public static void create3DBarChart(String category,String value,CategoryDataset dataset,String fileName){
 		JFreeChart chart = ChartFactory.createBarChart3D(
 				"", // chart title
