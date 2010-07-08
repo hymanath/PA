@@ -140,6 +140,8 @@ public class ConstituencyWiseDataForMandalVO {
 
 	@Override
 	public boolean equals(Object obj) {
+		if(! (obj instanceof ConstituencyWiseDataForMandalVO))
+			return false;
 		ConstituencyWiseDataForMandalVO voObj = (ConstituencyWiseDataForMandalVO)obj;
 		return this.constituencyId.equals(voObj.getConstituencyId());
 	}

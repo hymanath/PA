@@ -22,6 +22,7 @@ public class ElectionWiseMandalPartyResultVO  implements Serializable {
 	private List<PartyElectionResultVO> partyResultsInElection;
 	private BoothTypeDetailsVO boothTypeDetailsVO;
 	
+	
 	public Long getElectionId() {
 		return electionId;
 	}
@@ -150,10 +151,12 @@ public class ElectionWiseMandalPartyResultVO  implements Serializable {
 	public void setPartyResultsInElection(
 			List<PartyElectionResultVO> partyResultsInElection) {
 		this.partyResultsInElection = partyResultsInElection;
-	}
-	
+	}	
+		
 	@Override
 	public boolean equals(Object obj){
+		if(!(obj instanceof ElectionWiseMandalPartyResultVO))
+			return false;
 		ElectionWiseMandalPartyResultVO voObj = (ElectionWiseMandalPartyResultVO) obj;
 		return this.electionYear.equals(voObj.getElectionYear()) && this.electionType.equals(voObj.getElectionType());
 	}

@@ -69,6 +69,8 @@ public class PartyGenderWiseVotesVO implements Serializable {
 	
 	@Override
 	public boolean equals(Object obj){
+		if(!(obj instanceof PartyGenderWiseVotesVO))
+			return false;
 		PartyGenderWiseVotesVO voObj = (PartyGenderWiseVotesVO) obj;
 		return this.partyID.equals(voObj.getPartyID());
 	}
