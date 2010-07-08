@@ -1167,6 +1167,11 @@
            		<param name="root">partyVillageLevelAnalysisVO</param>
         	</result>       		
         </action>
+        <action name="votesSharingInMandalChartAjaxAction" class="constituencyVotingTrendzAction" method="getAllPartiesAllElectionResultsChartInMandal"> 
+              <result type="json" name="success">
+           		<param name="root">electionWiseMandalPartyResultListVO</param>
+        	</result>       		
+        </action>
         
 	</package>
 </struts>

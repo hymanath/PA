@@ -256,16 +256,27 @@ function showDetailedEnlargedChart(chartName)
 	if(createGroupDialog)
 		createGroupDialog.destroy();
 	createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
-			{ width : "920px", 		
+			{ 
+		 
+        	fixedcenter : false, 
+        	visible : true,        	
+        	iframe :true,
+        	modal :true,
+        	hideaftersubmit:true,
+        	close:true,
+        	x: 200,
+        	y: 900
+        	
+			  /*
+			  width : "850px", 		
               fixedcenter : false, 
               visible : true,  
-              constraintoviewport : true, 
-			  iframe :true,
+              constraintoviewport : true,			  
 			  modal :true,
 			  hideaftersubmit:true,
 			  close:true,
-			  x:600,
-			  y:800
+			  x:500,
+			  y:600*/
              } );
 	createGroupDialog.render();
 }
@@ -283,7 +294,7 @@ function showDetailedChart(chartName)
 	if(createGroupDialog)
 		createGroupDialog.destroy();
 	createGroupDialog = new YAHOO.widget.Dialog("createGroupmDiv",
-			{ width : "920px", 		
+			{ width : "850px", 		
               fixedcenter : false, 
               visible : true,  
               constraintoviewport : true, 

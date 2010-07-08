@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -20,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
+import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.json.JSONArray;
@@ -36,9 +38,11 @@ import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
+import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
+import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyVillageLevelAnalysisVO;
@@ -52,6 +56,7 @@ import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionDataVOComparator;
+import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyResultVOComparator;
 import com.itgrids.partyanalyst.utils.VotersInfoForMandalVOComparator;
@@ -89,8 +94,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private BiElectionResultsMainVO biElectionResultsMainVO;
 	private List<BiElectionDistrictVO> districtsAndConsts;
 	private List<SelectOptionVO> staticPartiesList;
-	private MandalVO mandalVO;
-	private ChartColorsAndDataSetVO chartColorsAndDataSetVO;
+	private MandalVO mandalVO;	
 	private ConstituencyInfoVO constituencyDetails;
 	private ConstituencyVO constituencyVO; 
 	private VotersWithDelimitationInfoVO votersInfoForMandals;
@@ -100,6 +104,10 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private ElectionTrendzReportVO constituencyOverView;
 	private ElectionWiseMandalPartyResultListVO partywiseVotesDetailsForMandal;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
+	private List<ElectionWiseMandalPartyResultVO> mptcZptcElectionResultsVO;	
+	private ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO;
+	private ChartColorsAndDataSetVO chartColorsAndDataSetVO;
+	
 	
 	public List<PartyResultVO> getVotesSharing() {
 		return votesSharing;
@@ -343,15 +351,6 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 
 	public void setMandalVO(MandalVO mandalVO) {
 		this.mandalVO = mandalVO;
-	}	
-
-	public ChartColorsAndDataSetVO getChartColorsAndDataSetVO() {
-		return chartColorsAndDataSetVO;
-	}
-
-	public void setChartColorsAndDataSetVO(
-			ChartColorsAndDataSetVO chartColorsAndDataSetVO) {
-		this.chartColorsAndDataSetVO = chartColorsAndDataSetVO;
 	}
 
 	public String getMandalsPartiesChart() {
@@ -370,7 +369,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			ElectionWiseMandalPartyResultListVO partywiseVotesDetailsForMandal) {
 		this.partywiseVotesDetailsForMandal = partywiseVotesDetailsForMandal;
 	}
-
+	
 	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
 		return partyBoothWiseResultsService;
 	}
@@ -378,6 +377,33 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	public void setPartyBoothWiseResultsService(
 			IPartyBoothWiseResultsService partyBoothWiseResultsService) {
 		this.partyBoothWiseResultsService = partyBoothWiseResultsService;
+	}	
+
+	public List<ElectionWiseMandalPartyResultVO> getMptcZptcElectionResultsVO() {
+		return mptcZptcElectionResultsVO;
+	}
+
+	public void setMptcZptcElectionResultsVO(
+			List<ElectionWiseMandalPartyResultVO> mptcZptcElectionResultsVO) {
+		this.mptcZptcElectionResultsVO = mptcZptcElectionResultsVO;
+	}
+	
+	public ElectionWiseMandalPartyResultListVO getElectionWiseMandalPartyResultListVO() {
+		return electionWiseMandalPartyResultListVO;
+	}
+
+	public void setElectionWiseMandalPartyResultListVO(
+			ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO) {
+		this.electionWiseMandalPartyResultListVO = electionWiseMandalPartyResultListVO;
+	}	
+
+	public ChartColorsAndDataSetVO getChartColorsAndDataSetVO() {
+		return chartColorsAndDataSetVO;
+	}
+
+	public void setChartColorsAndDataSetVO(
+			ChartColorsAndDataSetVO chartColorsAndDataSetVO) {
+		this.chartColorsAndDataSetVO = chartColorsAndDataSetVO;
 	}
 
 	public String execute() throws Exception
@@ -768,20 +794,41 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				mandalsPartiesChart = "AllMandalsAllParties_"+mandalIds+"OfElectionYear_"+jObj.getString("electionYear")+
 													"ElectionType_"+jObj.getString("electionType")+".png";
 				String chartPath = context.getRealPath("/") + "charts\\" + mandalsPartiesChart;
+				ChartColorsAndDataSetVO chartColorsAndDataSetVO1 = createDataSetForLineChart(resultsInMandals);
 				ChartProducer.createLineChart("Mandals Wise "+jObj.getString("electionYear")+" Election Results For All Parties", 
-						"Mandals", "Percentages",createDataSetForLineChart(resultsInMandals), 
-						chartPath,chartHeight,chartWidth,null,true);
+						"Mandals", "Percentages",(DefaultCategoryDataset)chartColorsAndDataSetVO1.getDataSet(), 
+						chartPath,chartHeight,chartWidth,new ArrayList<Color>(chartColorsAndDataSetVO1.getColorsSet()),true);
 			}	
 		}
 			
 		return SUCCESS;
 	}
 	
-	private DefaultCategoryDataset createDataSetForLineChart(List<PartyResultVO> resultsInMandals){
+	private ChartColorsAndDataSetVO createDataSetForLineChart(List<PartyResultVO> resultsInMandals){
+		ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
+		Set<Color> colorsSet = new LinkedHashSet<Color>();
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		for(PartyResultVO party:resultsInMandals)
+		{
 			dataset.addValue(new BigDecimal(party.getVotesPercent()), party.getPartyName(), party.getConstituencyName());
-		return dataset;
+			if(IConstants.TDP.equalsIgnoreCase(party.getPartyName()))
+			  {	colorsSet.add(IConstants.TDP_COLOR);
+				log.debug("TDP ADDED");
+			  }else if(IConstants.INC.equalsIgnoreCase(party.getPartyName())){
+				colorsSet.add(IConstants.INC_COLOR);
+				log.debug("INC ADDED");
+			  }
+			  else if(IConstants.TRS.equalsIgnoreCase(party.getPartyName())){
+				colorsSet.add(IConstants.TRS_COLOR);
+				log.debug("TRS ADDED");
+			  }else if(IConstants.BJP.equalsIgnoreCase(party.getPartyName())){
+					colorsSet.add(IConstants.BJP_COLOR);
+					log.debug("BJP ADDED");
+			  }
+		}
+		chartColorsAndDataSetVO.setDataSet(dataset);
+		chartColorsAndDataSetVO.setColorsSet(colorsSet);
+		return chartColorsAndDataSetVO;
 	}
 	
 	public String getConstVotingTrendzChart() throws Exception
@@ -964,5 +1011,103 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		//partywiseVotesDetailsForMandal = biElectionPageService.getMandalwiseResultsForAllElectionsForSelectedPartiesInConstituency(constiId, tehsilId);
 		partywiseVotesDetailsForMandal = partyBoothWiseResultsService.getAllElectionsResultsInAMandal(tehsilId);
     	return SUCCESS;
+    }
+    public String getAllPartiesAllElectionResultsChartInMandal()
+    {
+    	String param=null;			    
+		param = getTask();
+		
+		try {
+			jObj=new JSONObject(param);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Long mandalId = jObj.getLong("tehsilId");
+		String mandalName = jObj.getString("tehsilName");
+    	List<PartyResultVO> allElectionResults;
+    	//ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO;
+		ElectionWiseMandalPartyResultListVO mptcZptcResultListVO = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(new Long(mandalId));
+		mptcZptcElectionResultsVO = mptcZptcResultListVO.getPartyWiseElectionResultsVOList();
+		electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(new Long(mandalId), "Mandal");
+		List<PartyResultVO> acPcElectionResultsForParties = electionWiseMandalPartyResultListVO.getAllPartiesAllElectionResults();
+		List<PartyResultVO> mptcZptcElectionResultsForParties = mptcZptcResultListVO.getAllPartiesAllElectionResults();
+		
+		Map<PartyResultVO, List<ElectionResultVO>> resultMap = new HashMap<PartyResultVO, List<ElectionResultVO>>();
+		
+		for(PartyResultVO partyResultVO:acPcElectionResultsForParties){
+			resultMap.put(partyResultVO, partyResultVO.getElectionWiseResults());
+		}
+		
+		List<ElectionResultVO> elections = null;
+		for(PartyResultVO partyResultVO:mptcZptcElectionResultsForParties){
+			elections = resultMap.get(partyResultVO);
+			if(elections == null)
+				resultMap.put(partyResultVO, elections);
+			else
+				elections.addAll(partyResultVO.getElectionWiseResults());
+		}
+		System.out.println(resultMap.size());
+		
+		allElectionResults = new ArrayList<PartyResultVO>();
+		
+		for(Map.Entry<PartyResultVO, List<ElectionResultVO>> entry:resultMap.entrySet()){
+			allElectionResults.add(entry.getKey());
+		}
+		
+		String allPartiesAllElectionschartName = "allPartiesMandalWisePerformanceInAllElections_"+mandalId+".png";
+        String chartPath = context.getRealPath("/")+ "charts\\" + allPartiesAllElectionschartName;
+        //String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName
+        ChartColorsAndDataSetVO chartColorsAndDataSetVO3 = createDataset(allElectionResults);	
+		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO3.getDataSet(), chartPath,350,850, new ArrayList<Color>(chartColorsAndDataSetVO3.getColorsSet()) ,true);
+		electionWiseMandalPartyResultListVO.setChartName(allPartiesAllElectionschartName);
+		electionWiseMandalPartyResultListVO.setMptcZptcElectionResultsVO(mptcZptcElectionResultsVO);
+    	return SUCCESS;
+    }
+    private ChartColorsAndDataSetVO createDataset(List<PartyResultVO> allElectionResults) {
+    	Set<Color> colorsSet = new LinkedHashSet<Color>();
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
+        
+        List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
+        ElectionResultVO partiesElecResultForGraph = null;
+        
+        for(PartyResultVO partyResultVO:allElectionResults)
+        	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
+        		partiesElecResultForGraph = new ElectionResultVO();
+        		partiesElecResultForGraph.setPercentage(result.getPercentage());
+        		partiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
+        		partiesElecResultForGraph.setPartyName(partyResultVO.getPartyName());
+        		partiesElectionResults.add(partiesElecResultForGraph);
+        	}
+        
+        Collections.sort(partiesElectionResults, new ElectionResultComparator());
+        
+        for(ElectionResultVO graphInfo:partiesElectionResults){
+        	if(IConstants.TDP.equalsIgnoreCase(graphInfo.getPartyName()))
+        		{
+        			colorsSet.add(IConstants.TDP_COLOR);
+        		} else if(IConstants.INC.equalsIgnoreCase(graphInfo.getPartyName()))
+        			{
+        				colorsSet.add(IConstants.INC_COLOR);
+        			} else if(IConstants.BJP.equalsIgnoreCase(graphInfo.getPartyName()))
+        			{
+        				colorsSet.add(IConstants.BJP_COLOR);
+        			} else if(IConstants.PRP.equalsIgnoreCase(graphInfo.getPartyName()))
+                			{
+        						colorsSet.add(IConstants.PRP_COLOR);
+                			} else if(IConstants.TRS.equalsIgnoreCase(graphInfo.getPartyName()))
+                    			{
+                					colorsSet.add(IConstants.TRS_COLOR);
+                    			}
+                        	
+        	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
+           			graphInfo.getElectionYear());        	
+        }
+        
+        chartColorsAndDataSetVO.setDataSet(dataset);
+        chartColorsAndDataSetVO.setColorsSet(colorsSet);
+        return chartColorsAndDataSetVO;
     }
 }

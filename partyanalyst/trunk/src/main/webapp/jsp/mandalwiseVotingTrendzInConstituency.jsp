@@ -286,8 +286,10 @@
 				headingDIV+='					<td> <div id="mandalVotesShare"></td>';
 				headingDIV+='			</tr>';	
 				headingDIV+='	</table>';
+				headingDIV+='<div id="madalwiseVotesRangeChart"></div>';				
 				headingDIV+='<div id="madalwiseVotesRange"></div>';
-				headingDIV+='</fieldset>';
+				headingDIV+='</fieldset>';				
+				headingDIV+='<div id="madalAllPartiesLocalElecData"></div>';
 				heading.innerHTML=headingDIV; 
 				
 			}
@@ -345,6 +347,8 @@
 											buildVotesSharingData(myResults);
 										}else if(jsObj.task == "getMandalVotesShare"){
 											buildMandalVotesSharingData(myResults, jsObj);
+										} else if(jsObj.task == "getMandalVotesShareChart"){
+											showAllPartiesAllElectionsResults(myResults);											
 										}
 									}
 								catch (e) {   
@@ -1356,7 +1360,19 @@
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 				var url = "<%=request.getContextPath()%>/votesSharingInMandalAjaxAction.action?"+rparam;
 				callAjax(jsObj, url);
-				
+			getMdlwiseAllPartiesAllElectionsChart(tehsilId, tehsilName)	
+		}
+		function getMdlwiseAllPartiesAllElectionsChart(tehsilId, tehsilName)
+		{
+			var jsObj = {
+					
+					tehsilId: tehsilId,
+					tehsilName: tehsilName,
+					task:"getMandalVotesShareChart"
+				};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+				var url = "<%=request.getContextPath()%>/votesSharingInMandalChartAjaxAction.action?"+rparam;
+				callAjax(jsObj, url);
 		}
 		
 		function DeselectAllPartiesNYears()
@@ -1508,6 +1524,49 @@
 				var url = "<%=request.getContextPath()%>/votesSharingInConstituencyAjaxAction.action?"+rparam;
 				callAjax(jsObj, url);
 		}
+
+		function showAllPartiesAllElectionsResults(results)
+		{
+			var imageDivEl = document.getElementById("madalwiseVotesRangeChart");
+			var dataDivEl = document.getElementById("");
+			var str = '';
+			str += '<img src="charts/'+myResults.chartName+'">';			
+			imageDivEl.innerHTML = str;
+			/*var dataDivElContent = '';
+			dataDivElContent+='<div id="mptc_main">';
+			dataDivElContent+='<div id="mptc_head">';
+			dataDivElContent+='<table border="0" cellpadding="0" cellspacing="0" >';
+			dataDivElContent+='	<tr>';
+			dataDivElContent+='		<td><img src="images/icons/districtPage/header_left.gif"/></td>';
+			dataDivElContent+='		<td>';	
+			dataDivElContent+='			<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:850px;padding:9px;height:18px;">';
+			dataDivElContent+='			<span>Total Number of MPTCs :</span>';
+			dataDivElContent+='					<span id="totalMptcCountResultDiv"></span>';
+			dataDivElContent+='				</div>';
+			dataDivElContent+='			</td>';
+			dataDivElContent+='			<td><img src="images/icons/districtPage/header_right.gif"/></td>';
+			dataDivElContent+='		</tr>';
+			dataDivElContent+='	</table>';
+			dataDivElContent+='</div>';
+			dataDivElContent+='<div id="mptc_body" style="width:900px;">';
+			dataDivElContent+='<table width="100%">';		
+			dataDivElContent+='<tr><td>';
+			dataDivElContent+='<table width="100%"><tr><td colspan="2">';
+			dataDivElContent+='<table ><tr>';
+			dataDivElContent+='<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>';
+			dataDivElContent+='<td><div id="mptcCandidateLink"></div></td>';
+			dataDivElContent+='</tr></table>';
+			dataDivElContent+='</td></tr>';
+			dataDivElContent+='<tr>';
+			dataDivElContent+='<td valign="top"><div id="mptcChartDiv"></div></td>';		
+			dataDivElContent+='<td class="yui-skin-sam" valign="top"><div id="mptcPartyTrendsDetailsDiv"></div></td>';
+			dataDivElContent+='</tr></table>';
+			dataDivElContent+='</td></tr>';
+			dataDivElContent+='</table>';	
+			dataDivElContent+='</div>';
+			dataDivElContent+='</div>';*/
+			
+}
 	</script>
 
 </head>

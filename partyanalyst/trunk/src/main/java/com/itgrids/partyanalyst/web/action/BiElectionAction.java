@@ -440,7 +440,7 @@ public class BiElectionAction extends ActionSupport implements
         String enlargedChartPath = context.getRealPath("/") + "charts\\" + enlargedLineChartName;
         String enlargedTitle = year+" Assembly Election Results in Bye-Election Constituencies";
 		ChartColorsAndDataSetVO enlargedChartColorsAndDataSetVO = createDataSetForGraph(asseblyDetails);
-		ChartProducer.createLineChartWithThickness(enlargedTitle,"Constituencies","Votes Percentage", (DefaultCategoryDataset)enlargedChartColorsAndDataSetVO.getDataSet(),enlargedChartPath,600,920, new ArrayList<Color>(enlargedChartColorsAndDataSetVO.getColorsSet()),true);
+		ChartProducer.createLineChartWithThickness(enlargedTitle,"Constituencies","Votes Percentage", (DefaultCategoryDataset)enlargedChartColorsAndDataSetVO.getDataSet(),enlargedChartPath,600,850, new ArrayList<Color>(enlargedChartColorsAndDataSetVO.getColorsSet()),true);
 
 		}catch(Exception ex){
 			ex.printStackTrace();
