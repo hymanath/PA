@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyVillageLevelAnalysisVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.ElectionTypeChartVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
@@ -855,7 +856,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			  String chartName = "constituencyElectionsResults"+"_"+constiName+"_"+constiId+"_"+chartNam+".png";
 			  String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			  chartColorsAndDataSetVO = createDatasetForChart(electnDataList,partys,electionResList,new Boolean(includeAlliance));
-			  ChartProducer.createLineChart(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,350,700,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
+			  ChartProducer.createLineChart(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,350,900,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
 			  
 			  chartColorsAndDataSetVO.setChartName(chartName);
 		}
