@@ -389,7 +389,7 @@ legend
 				
 				str += '<table width="70%" class="votesShareTable">';
 				str += '<tr>';
-				str += '<td colspan="7" style="padding:0px;">';
+				str += '<td colspan="8" style="padding:0px;">';
 				str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
 				str+='			<tr>';
 				str+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/electionResultsAnalysisReport/header_left.gif"></td>';
@@ -418,6 +418,7 @@ legend
 				str += '<th>No. Of Villages</th>';
 				str += '<th>Villages</th>';
 				str += '<th>Votes Gained</th>';
+				str += '<th>Valid Votes</th>';
 				str += '<th>Votes %</th>';
 				str += '<th>Votes % Share In Mandal</th>';
 				str += '<th>Votes % Share In Constituency</th>';
@@ -429,6 +430,7 @@ legend
 					str += '<td>'+results[i].wonVillagesCount+'</td>';
 					str += '<td style="text-align:left;">'+results[i].townships+'</td>';
 					str += '<td>'+results[i].totVotesEarned+'</td>';
+					str += '<td>'+results[i].totValidVotes+'</td>';
 					str += '<td>'+results[i].votesShareInVill+'</td>';
 					str += '<td>'+results[i].votesShareInMandal+'</td>';
 					str += '<td>'+results[i].votesShareInConsti+'</td>';
