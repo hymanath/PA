@@ -22,6 +22,7 @@ public class PartyTownshipResultsVO implements Serializable {
 	private String partyName;
 	private Long votesEarned;
 	private Long validVotes;
+	private Long totVoters;
 	private String votesPercent;
 	
 	
@@ -66,6 +67,12 @@ public class PartyTownshipResultsVO implements Serializable {
 	}
 	public void setPartyName(String partyName) {
 		this.partyName = partyName;
+	}
+	public Long getTotVoters() {
+		return totVoters;
+	}
+	public void setTotVoters(Long totVoters) {
+		this.totVoters = totVoters;
 	}
 	
 	
