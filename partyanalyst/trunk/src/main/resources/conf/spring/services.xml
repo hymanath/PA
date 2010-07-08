@@ -273,6 +273,8 @@
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />	
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="allianceGroupDAO" ref="allianceGroupDAO" />
 	</bean>
 	<bean name="problemManagementService" class="com.itgrids.partyanalyst.service.impl.ProblemManagementService" >		
 		<property name="problemLocationDAO" ref="problemLocationDAO" />

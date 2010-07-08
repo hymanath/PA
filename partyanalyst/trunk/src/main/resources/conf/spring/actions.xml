@@ -385,7 +385,8 @@
 	<bean id="constituencyVotingTrendzAction" class="com.itgrids.partyanalyst.web.action.ConstituencyVotingTrendzAction" singleton="false">
 		<property name="biElectionPageService" ref="biElectionPageService" />
 	    <property name="staticDataService" ref="staticDataService" />
-	    <property name="constituencyPageService" ref="constituencyPageService"/>		
+	    <property name="constituencyPageService" ref="constituencyPageService"/>
+	    <property name="partyBoothWiseResultsService" ref="partyBoothWiseResultsService"/>
 	</bean>
 	<bean id="mandalRevenueVillagesElecAction" class="com.itgrids.partyanalyst.web.action.MandalRevenueVillagesElecAction" singleton="false">
 		<property name="staticDataService" ref="staticDataService" />		

@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
+import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionDataVOComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -97,7 +98,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	
 	private ElectionTrendzReportVO constituencyOverView;
 	private ElectionWiseMandalPartyResultListVO partywiseVotesDetailsForMandal;
-	
+	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	
 	public List<PartyResultVO> getVotesSharing() {
 		return votesSharing;
@@ -367,6 +368,15 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	public void setPartywiseVotesDetailsForMandal(
 			ElectionWiseMandalPartyResultListVO partywiseVotesDetailsForMandal) {
 		this.partywiseVotesDetailsForMandal = partywiseVotesDetailsForMandal;
+	}
+
+	public IPartyBoothWiseResultsService getPartyBoothWiseResultsService() {
+		return partyBoothWiseResultsService;
+	}
+
+	public void setPartyBoothWiseResultsService(
+			IPartyBoothWiseResultsService partyBoothWiseResultsService) {
+		this.partyBoothWiseResultsService = partyBoothWiseResultsService;
 	}
 
 	public String execute() throws Exception
@@ -948,10 +958,10 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			e.printStackTrace();
 		}
 		
-		Long constiId = jObj.getLong("constituencyId");
+		//Long constiId = jObj.getLong("constituencyId");
 		Long tehsilId = jObj.getLong("tehsilId");
-		partywiseVotesDetailsForMandal = biElectionPageService.getMandalwiseResultsForAllElectionsForSelectedPartiesInConstituency(constiId, tehsilId);
-		
+		//partywiseVotesDetailsForMandal = biElectionPageService.getMandalwiseResultsForAllElectionsForSelectedPartiesInConstituency(constiId, tehsilId);
+		partywiseVotesDetailsForMandal = partyBoothWiseResultsService.getAllElectionsResultsInAMandal(tehsilId);
     	return SUCCESS;
     }
 }
