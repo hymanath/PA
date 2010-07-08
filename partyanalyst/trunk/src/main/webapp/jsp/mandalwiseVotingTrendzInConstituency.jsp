@@ -401,17 +401,20 @@
 				{
 					
 					var info = results.allPartiesAllElectionResults[j].electionWiseResults[k];
-					if(info.percentage == null || info.percentage == '--' || info.percentage == "-1")
-					{
-						str += '<td name="'+info.electionType+'"> </td>';
-					}
-					else if(info.hasAlliance == "true")
-							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
-						else
-							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
 					
+					if(info.percentage != "-1")
+					{
+						if(info.hasAlliance == "true" )
+							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
+						else if(info.hasAlliance == "false")
+							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
+							else 
+								str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
+					}
+					else
+						str += '<td name="'+info.electionType+'"> </td>';
 				}
-				str += '<td style="color:#9B5118;font-weight:bold;">'+results.allPartiesAllElectionResults[j].range+'</td>';				
+				str += '<td style="color:#9B5118;font-weight:bold;"></td>';
 				}
 				str += '</tr>';
 			}
@@ -1177,11 +1180,18 @@
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Assembly"  />2009 Assembly</td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Assembly"  />2004 Assembly</td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Parliament"  />2009 Parliament</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2008_Parliament"  />2008 Parliament<font style="color:red;"> *</font></td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_Parliament"  />2006 Parliament<font style="color:red;"> *</font></td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Parliament"  />2004 Parliament</td>';
+            str1 += '</tr>';
+			str1 += '<tr>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_MPTC"  />2006 MPTC</td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2001_MPTC" />2001 MPTC</td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_ZPTC" />2006 ZPTC</td>';
 			str1 += '<td colspan="4"><INPUT type="checkbox" name="electionCheckBox" id="2001_ZPTC" />2001 ZPTC</td>';
+			str1 += '</tr>';
+            str1 += '<tr>';
+			str1 += '<td colspan="4" align="left"><b><font style="color:red;"> *</font> Bye Elections</b></td>';
 			str1 += '</tr>';
 			str1 += '</table>';
 			str1 += '<div style="text-align:right;width:750px;">';
