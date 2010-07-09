@@ -85,6 +85,7 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ConstituencyOrMandalVOComparator;
 import com.itgrids.partyanalyst.utils.ElectionDetailsVOComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.PartyResultVOComparatorByName;
 import com.itgrids.partyanalyst.utils.SortByRankOnPartyElectionResultComparator;
 
 public class ConstituencyPageService implements IConstituencyPageService {
@@ -1379,6 +1380,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			partyResultVO.setVotesPercent(new BigDecimal((Long)values[3]*100.0/mandalAndValidVotesMap.get(values[0])).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			partiesResultsInMandals.add(partyResultVO);
 		}
+		if(partiesResultsInMandals != null && partiesResultsInMandals.size() > 0)
+		    Collections.sort(partiesResultsInMandals, new PartyResultVOComparatorByName());
 		return partiesResultsInMandals;
 	}
 	
