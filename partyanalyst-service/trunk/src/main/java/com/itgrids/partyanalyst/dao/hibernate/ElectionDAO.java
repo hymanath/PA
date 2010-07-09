@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.ElectionColumnNames;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionScope;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		IElectionDAO {
@@ -157,6 +158,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
             							.add(Expression.eq("type.electionTypeId", typeId))
             							.add(Expression.eq("state.stateId", stateId))
             							.add(Expression.eq("country.countryId", countryId))
+            							.add(Expression.eq("elecSubtype", IConstants.ELECTION_SUBTYPE_MAIN))
             							.add(Restrictions.lt("electionYear", year))
             							.addOrder(Order.desc("electionYear"))
             							.setMaxResults(1).uniqueResult();
