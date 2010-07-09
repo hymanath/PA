@@ -62,6 +62,9 @@
 	<link rel="stylesheet" type="text/css" href="styles/biElectionPage/biElectionPage.css">
 
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
+	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
+	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+	
     <style type="text/css">
 		.mainHeading 
 		{
@@ -160,6 +163,17 @@
 		}
     </style>
 	<script  type="text/javascript"><!--
+	var Localization = { <%		
+			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
+			String totalMuncipalities = rb.getString("totalMuncipalities");
+			String totalCorporations = rb.getString("totalCorporations");
+			String muncipalDataAvailability = rb.getString("muncipalDataAvailability");
+			String corporationsDataAvailability = rb.getString("corporationsDataAvailability");
+		%> }
+		var totalMuncipalities = "<%=totalMuncipalities%>";
+		var totalCorporations = "<%=totalCorporations%>";
+		var muncipalDataAvailability = "<%=muncipalDataAvailability%>";
+		var corporationsDataAvailability = "<%=corporationsDataAvailability%>";
 		var districtsInfo = new Array();
 		var localizationObj = '';
 		var assemblyElectionType='Assembly';
@@ -175,7 +189,10 @@
 				zptcArray:[],
 				mptcArray:[],
 				partyArray:[],
-				partyMptcArray:[]
+				partyMptcArray:[],
+				partyMuncipalArray:[],
+				partyCorporationArray:[],
+				localBodyArray:[]
 		};
 		var tehsilElections={
 				zptcElectionYears:[],
@@ -183,7 +200,8 @@
 				staticParties:[]
 		};
 		var mptcElectionType="${mptcElectionType}",zptcElectionType="${zptcElectionType}";
-
+		var muncipalityElectionType='${muncipalityElectionType}',corporationElectionType='${corporationElectionType}';
+		var muncipalityElectionId='${muncipalityElectionTypeId}',corporationElectionTypeId='${corporationElectionTypeId}';
 		
 		var docOpener = window.opener;
 		localizationObj = docOpener.localizationObj;
@@ -286,9 +304,9 @@
 				headingDIV+='					<td> <div id="mandalVotesShare"></td>';
 				headingDIV+='			</tr>';	
 				headingDIV+='	</table>';
-				headingDIV+='<div id="madalwiseVotesRangeChart"></div>';				
+				headingDIV+='<div id="madalwiseVotesRangeChart"></div>';	
 				headingDIV+='<div id="madalwiseVotesRange"></div>';
-				headingDIV+='</fieldset>';				
+				headingDIV+='</fieldset>';
 				headingDIV+='<div id="madalAllPartiesLocalElecData"></div>';
 				heading.innerHTML=headingDIV; 
 				
@@ -347,9 +365,26 @@
 											buildVotesSharingData(myResults);
 										}else if(jsObj.task == "getMandalVotesShare"){
 											buildMandalVotesSharingData(myResults, jsObj);
+										} 
+										if(jsObj.task == "muncipalElectionDetails") 
+										{
+											if(myResults != null){										
+												showMuncipalDetailsForLatestElectionYear(myResults.muncipalityVO,muncipalityElectionType);
+											}else{
+												errorMessageMuncipalitiesDiv();	
+											}
+											
 										} else if(jsObj.task == "getMandalVotesShareChart"){
 											showAllPartiesAllElectionsResults(myResults);											
 										}
+										if(jsObj.task == "corporationElectionDetails") 
+										{
+											if(myResults != null){
+												showMuncipalDetailsForLatestElectionYear(myResults.muncipalityVO,corporationElectionType);
+											}else{
+												errorMessageCorporationDiv();	
+											}
+										} 
 									}
 								catch (e) {   
 										alert("Invalid JSON result" + e);   
@@ -363,7 +398,175 @@
 
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 		}
+		
+		function initializeMuncipalResultsTableForParty(divId, dataSrc,electionType)
+		{
+			var resultsDataSourceForTehsil = new YAHOO.util.DataSource(dataSrc);
+			resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+			resultsDataSourceForTehsil.responseSchema = {
+				fields : [ {
+					key : "partyName"
+				}, {
+					key : "participatedSeats"
+				}, {
+					key : "seatsWonByParty"
+				}, {
+					key : "percentageOfVotesWonByParty"
+				}]	
+			};
+			
+			var resultsColumnDefsForTehsil = [ 
+					{key:"partyName",label : "Party Name",sortable:true, resizeable:true}, 
+					{key:"participatedSeats",label : "Participated Seats",sortable:true,resizeable:true}, 
+					{key:"seatsWonByParty",label : "Seats Won",sortable:true, resizeable:true}, 
+					{key:"percentageOfVotesWonByParty",label : "Votes %", sortable:true, resizeable:true}	           
+			];
 
+							
+			var myDataTableForMuncipalParty	 = new YAHOO.widget.DataTable(divId,resultsColumnDefsForTehsil, resultsDataSourceForTehsil);
+		}
+
+		function hideMuncipalitiesDiv(){		
+			var muncipalityDIV = document.getElementById("muncipalitiesDiv");	
+			if(muncipalityDIV.style.display=='block'){
+				muncipalityDIV.style.display = 'none';
+			}else{
+				muncipalityDIV.style.display = 'block';
+			}		
+		}	
+		function hideCorporationDiv(){
+			var muncipalityDIV = document.getElementById("corporationDiv");	
+			if(muncipalityDIV.style.display=='block'){
+				muncipalityDIV.style.display = 'none';
+			}else{
+				muncipalityDIV.style.display = 'block';
+			}
+		}
+		function muncipalityHeadConstruction(result){			
+			var totalMessage = '';
+			totalMessage = totalMuncipalities;
+			var muncipality = document.getElementById("muncipalitiesDivHead");
+			var muncipalityDiv='';		
+			muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
+			muncipalityDiv+='<td><img src="images/icons/districtPage/header_left.gif"/></td>';
+			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;"><a href="javascript:{}">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			muncipalityDiv+='</td>';
+			muncipalityDiv+='</tr></table>';	
+			muncipality.innerHTML = muncipalityDiv;
+		}
+		function corporationHeadConstruction(result){
+		
+			var totalMessage = '';		
+			totalMessage = totalCorporations;
+			var corporation = document.getElementById("corporationDivHead");
+			
+			var corporationDiv='';	
+			corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
+			corporationDiv+='<td width="30"><img src="images/icons/districtPage/header_left.gif"/></td>';	
+			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;"><a href="javascript:{}">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			corporationDiv+='</td></tr></table>';	
+			corporation.innerHTML = corporationDiv;
+		}
+		function showMuncipalDetailsForLatestElectionYear(result,electionType){	
+			var muncipalityDIV = '';
+			if(electionType == muncipalityElectionType){
+				localBodyArray = tehsilDetails.partyMuncipalArray;
+				muncipalityDIV = document.getElementById("muncipalitiesDiv");				
+				muncipalityHeadConstruction(result);				
+			}else{			
+				localBodyArray = tehsilDetails.partyCorporationArray;
+				muncipalityDIV = document.getElementById("corporationDiv");
+				corporationHeadConstruction(result);
+			}			 
+			var listSize = result[0].totalMuncipalities-1;
+			var rvStr = '';
+			rvStr+='<table width="95%">';		
+			for(var i in result)
+			{		
+				if(i%2==0){
+					rvStr+='</tr>';
+					rvStr+='<tr>';
+				}
+				
+				if(i == listSize)
+					rvStr+='<td colspan="2" style="vertical-align: top;">';
+				else
+					rvStr+='<td  style="vertical-align: top;">';		
+				assignToPartyDataArray = new Array();
+							
+				rvStr+='<div id="allMuncipalitiesDetails'+i+'" style="padding:10px;width:100%;vertical-align:top;" class="datatableClass">';
+				rvStr += '<table class="datatableClass" width="90%" style="background-color:#F3F6F7;margin-top:10px;margin-right:10px;">';
+				rvStr += '<tr>';
+				rvStr += '<th align="left">Muncipality Name :</th><td align="left">'+result[i].muncipalityName+'</td>'; 
+				rvStr += '<th align="left">Total Wards :</th><td align="left">'+result[i].totalWards+'</td>';
+				rvStr += '</tr>';
+				rvStr += '<tr>';
+				rvStr += '<th align="left">Total Voters :</th><td align="left">'+result[i].totalVoters+'</td>';
+				rvStr += '<th align="left">Total Polled Votes :</th><td align="left">'+result[i].totalPolledVotes+'</td>';
+				rvStr += '</tr>';
+				rvStr += '</table>';	
+				rvStr +='<div class="yui-skin-sam" style="margin-top:10px;margin-bottom:10px;">';
+				rvStr +='<table>';
+				rvStr +='<tr>';																					
+				rvStr +='<td style="vertical-align:top;">';			
+				if(electionType == muncipalityElectionType){
+					rvStr +='<a href="javascript:{}" onclick="redirectMuncipalityCandidateLink('+ result[i].muncipalityId+','+result[i].latestMuncipalElectionYear+',\''+result[i].muncipalityName+'\')"  style="text-decoration:none;" class="candidateDetailsStyle">Show Candidate Details</a></td>';
+				}else{
+					rvStr +='<a href="javascript:{}" onclick="redirectCorporationCandidateLink('+ result[i].muncipalityId+','+result[i].latestMuncipalElectionYear+',\''+result[i].muncipalityName+'\')"  style="text-decoration:none;" class="candidateDetailsStyle">Show Candidate Details</a></td>';
+				}			
+				rvStr+='</td>';
+				rvStr +='</tr>';
+				rvStr +='<td></td>';
+				rvStr +='<td></td>';
+				rvStr +='<tr>';
+				rvStr +='</tr>';
+				rvStr +='<tr>';
+				if(electionType == muncipalityElectionType){
+					rvStr +='<td style="vertical-align: top;"> <div><div id="dataTable'+i+'"></div></div></td>';
+				}else{
+					rvStr +='<td style="vertical-align: top;"> <div><div id="corporationDataTable'+i+'"></div></div></td>';
+				}
+				rvStr +='</tr>';			
+				rvStr +='</table></div>';
+				rvStr+='</td>';
+			}
+			rvStr+='</table>';	
+			muncipalityDIV.innerHTML = rvStr;	
+			for(var i in result)
+			{
+				var localDataArr = new Array();
+				for(var j in result[i].muncipalityVO)
+				{					
+					var muncipalObj =
+					 {		
+							partyName:result[i].muncipalityVO[j].partyName,
+							participatedSeats:result[i].muncipalityVO[j].participatedSeats,
+							seatsWonByParty:result[i].muncipalityVO[j].seatsWonByParty,
+							percentageOfVotesWonByParty:result[i].muncipalityVO[j].percentageOfVotesWonByParty				
+					 };
+					localDataArr.push(muncipalObj);
+				}	
+				if(electionType == muncipalityElectionType){	
+					initializeMuncipalResultsTableForParty('dataTable'+i,localDataArr,electionType) ;
+				}else{
+					initializeMuncipalResultsTableForParty('corporationDataTable'+i,localDataArr,electionType) ;
+				}
+			}
+		}
+		function errorMessageMuncipalitiesDiv(){			
+			var muncipalityDIV = document.getElementById("muncipalitiesDiv");	
+			muncipalityDIV.style.display = 'none';
+			var rvStr = '';
+			muncipalityDIV.innerHTML += rvStr;	
+		}		
+		function errorMessageCorporationDiv(){
+			var corporationDiv = document.getElementById("corporationDiv");	
+			corporationDiv.style.display = 'none';
+			var rvStr = '';
+			corporationDiv.innerHTML += rvStr;	
+		}
+			
+		
 		function buildMandalVotesSharingData(results, jsObj)
 		{
 			var divEl = document.getElementById("madalwiseVotesRange");
@@ -405,20 +608,6 @@
 				{
 					
 					var info = results.allPartiesAllElectionResults[j].electionWiseResults[k];
-					
-					/*if(info.percentage != "-1")
-					{
-						if(info.hasAlliance == "true" )
-							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
-						else if(info.hasAlliance == "false")
-							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
-							else 
-								str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
-					}
-					else
-						str += '<td name="'+info.electionType+'"> </td>';
-				}
-				str += '<td style="color:#9B5118;font-weight:bold;"></td>';*/
 					if(info.percentage == null || info.percentage == '--' || info.percentage == "-1")
 					{
 						str += '<td name="'+info.electionType+'"> </td>';
@@ -735,6 +924,16 @@
 		function redirectMptcCandidateLink(){
 			 var browser2 = window.open("<s:url action="constituencyPageCandidateDetailsAjaxAction.action"/>?constId="+constituencyIdGlobal+"&eleType="+mptcElectionType+"&eleYear="+mptcElectionYear+"&constTYPE="+constituencyTYPE,"browser2","scrollbars=yes,height=630,width=1020,left=200,top=200");
 			 browser2.focus();
+		}
+		
+		function redirectMuncipalityCandidateLink(muncipalityId,latestMuncipalElectionYear,name){
+			var browser3 = window.open("<s:url action="muncipalElectionReportAction.action"/>?muncipalityId="+muncipalityId+"&muncipalityElectionType="+muncipalityElectionType+"&name="+name+"&muncipalityElectionId="+muncipalityElectionId+"&electionYear="+latestMuncipalElectionYear,"browser3","scrollbars=yes,height=670,width=1170,left=200,top=200");
+			browser3.focus();
+		}
+		
+		function redirectCorporationCandidateLink(corporationId,latestCorporationElectionYear,name){
+			var browser4 = window.open("<s:url action="muncipalElectionReportAction.action"/>?muncipalityId="+corporationId+"&muncipalityElectionType="+corporationElectionType+"&name="+name+"&muncipalityElectionId="+corporationElectionTypeId+"&electionYear="+latestCorporationElectionYear,"browser4","scrollbars=yes,height=670,width=1170,left=200,top=200");
+			browser4.focus();
 		}
 
 		function hideZptcDiv(){
@@ -1194,18 +1393,18 @@
 			str1 += '<tr>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Assembly"  />2009 Assembly</td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Assembly"  />2004 Assembly</td>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Parliament"  />2009 Parliament</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Parliament"  />2009 Parliament</td>';			
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2008_Parliament"  />2008 Parliament<font style="color:red;"> *</font></td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_Parliament"  />2006 Parliament<font style="color:red;"> *</font></td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Parliament"  />2004 Parliament</td>';
-            str1 += '</tr>';
+		    str1 += '</tr>';
 			str1 += '<tr>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_MPTC"  />2006 MPTC</td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2001_MPTC" />2001 MPTC</td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_ZPTC" />2006 ZPTC</td>';
 			str1 += '<td colspan="4"><INPUT type="checkbox" name="electionCheckBox" id="2001_ZPTC" />2001 ZPTC</td>';
 			str1 += '</tr>';
-            str1 += '<tr>';
+		    str1 += '<tr>';
 			str1 += '<td colspan="4" align="left"><b><font style="color:red;"> *</font> Bye Elections</b></td>';
 			str1 += '</tr>';
 			str1 += '</table>';
@@ -1371,7 +1570,7 @@
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 				var url = "<%=request.getContextPath()%>/votesSharingInMandalAjaxAction.action?"+rparam;
 				callAjax(jsObj, url);
-			getMdlwiseAllPartiesAllElectionsChart(tehsilId, tehsilName)	
+				getMdlwiseAllPartiesAllElectionsChart(tehsilId, tehsilName)	
 		}
 		function getMdlwiseAllPartiesAllElectionsChart(tehsilId, tehsilName)
 		{
@@ -1529,10 +1728,31 @@
 		function partyVotesSharing(){
 			var jsObj = {
 					constituencyId:constituencyIdGlobal,
-					task:"votesSharingInConstituency"
+					task:"votesSharingInConstituency",
+					choice:"All"
 				};
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 				var url = "<%=request.getContextPath()%>/votesSharingInConstituencyAjaxAction.action?"+rparam;
+				callAjax(jsObj, url);
+		}
+
+		function getMuncipalElections(){
+			var jsObj = {
+					constituencyId:constituencyIdGlobal,
+					task:"muncipalElectionDetails"								
+				};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+				var url = "<%=request.getContextPath()%>/localMuncipalityElectionsAjaxAction.action?"+rparam;
+				callAjax(jsObj, url);
+		}
+		
+		function getCorporationElections(){
+			var jsObj = {
+					constituencyId:constituencyIdGlobal,
+					task:"corporationElectionDetails"				
+				};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+				var url = "<%=request.getContextPath()%>/localCorporationElectionsAjaxAction.action?"+rparam;
 				callAjax(jsObj, url);
 		}
 
@@ -1676,7 +1896,25 @@
 				</tr>
 				</table>
 				</center>
-				</div>			
+				</div>		
+				
+				<div id="muncipality_corporation_div_main">
+					<table width="100%">
+						<tr>
+							<td align="left">
+								<div id="corporationDivHead" style="text-align:left;cursor:pointer;" onclick="hideCorporationDiv()"></div>
+								<div id="corporationDiv" style="text-align:left;border-bottom:1px solid #E0E0D6;border-left:1px solid #E0E0D6;border-right:1px solid #E0E0D6;height:auto;overflow:auto;padding:15px;" ></div>
+							</td>
+						</tr>
+						<tr>
+							<td align="left">
+								<div id="muncipalitiesDivHead" style="text-align:left;" onclick="hideMuncipalitiesDiv()"></div>
+								<div id="muncipalitiesDiv" style="text-align:left;border-bottom:1px solid #E0E0D6;border-left:1px solid #E0E0D6;border-right:1px solid #E0E0D6;height:auto;overflow:auto;padding:15px;"></div>
+							</td>
+						</tr>
+					</table>
+			</div>
+		
 		<div id="index_footer" class="indexLayoutContainer" style="width:100%">
 			<div id="index_inner_footer">
 			<table width="100%" id="copyrightLinksTable">
@@ -1694,6 +1932,8 @@
 			getAllZptcYears();	  
 			getAllMptcYears();
 			partyVotesSharing();
+			getMuncipalElections();
+			getCorporationElections();
 	</script>
 </body>
 </html>

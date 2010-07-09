@@ -1160,8 +1160,17 @@
               <result type="json" name="success">
            		<param name="root">partywiseVotesDetailsForMandal</param>
         	</result>       		
-        </action>	
-        
+        </action>
+        <action name="localMuncipalityElectionsAjaxAction" class="constituencyVotingTrendzAction" method="getMuncipalElections"> 
+              <result type="json" name="success">
+           		<param name="root">localMuncipalElections</param>
+        	</result>       		
+        </action>        
+        <action name="localCorporationElectionsAjaxAction" class="constituencyVotingTrendzAction" method="getCorporationElections"> 
+              <result type="json" name="success">
+           		<param name="root">localCorporationElections</param>
+        	</result>    		
+        </action>
         <action name="getTownshipWiseVotesShareAjaxAction" class="townshipElectionResultsAction" method="getTownShipWisePartiesVotesShare"> 
               <result type="json" name="success">
            		<param name="root">partyVillageLevelAnalysisVO</param>

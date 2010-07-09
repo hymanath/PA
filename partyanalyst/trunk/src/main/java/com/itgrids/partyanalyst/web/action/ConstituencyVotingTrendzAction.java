@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyVillageLevelAnalysisVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.ElectionTypeChartVO;
+import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
@@ -80,6 +81,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private String mptcElectionType,zptcElectionType;
 	private List<SelectOptionVO> zptcElectionYears;
 	private List<SelectOptionVO> mptcElectionYears;
+	private String muncipalityElectionType,corporationElectionType;
+	private Long muncipalityElectionTypeId,corporationElectionTypeId;
 	
 	private IBiElectionPageService biElectionPageService;
 	private IConstituencyPageService constituencyPageService;
@@ -99,11 +102,63 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private ConstituencyVO constituencyVO; 
 	private VotersWithDelimitationInfoVO votersInfoForMandals;
 	private List<PartyResultVO> votesSharing;
-	private String mandalsPartiesChart;
-	
+	private String mandalsPartiesChart;	
+	private TeshilPartyInfoVO localMuncipalElections;
+	private TeshilPartyInfoVO localCorporationElections;	
 	private ElectionTrendzReportVO constituencyOverView;
 	private ElectionWiseMandalPartyResultListVO partywiseVotesDetailsForMandal;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
+
+
+	public String getMuncipalityElectionType() {
+		return muncipalityElectionType;
+	}
+
+	public void setMuncipalityElectionType(String muncipalityElectionType) {
+		this.muncipalityElectionType = muncipalityElectionType;
+	}
+
+	public String getCorporationElectionType() {
+		return corporationElectionType;
+	}
+
+	public void setCorporationElectionType(String corporationElectionType) {
+		this.corporationElectionType = corporationElectionType;
+	}
+
+	public Long getMuncipalityElectionTypeId() {
+		return muncipalityElectionTypeId;
+	}
+
+	public void setMuncipalityElectionTypeId(Long muncipalityElectionTypeId) {
+		this.muncipalityElectionTypeId = muncipalityElectionTypeId;
+	}
+
+	public Long getCorporationElectionTypeId() {
+		return corporationElectionTypeId;
+	}
+
+	public void setCorporationElectionTypeId(Long corporationElectionTypeId) {
+		this.corporationElectionTypeId = corporationElectionTypeId;
+	}
+
+	public TeshilPartyInfoVO getLocalMuncipalElections() {
+		return localMuncipalElections;
+	}
+
+	public void setLocalMuncipalElections(TeshilPartyInfoVO localMuncipalElections) {
+		this.localMuncipalElections = localMuncipalElections;
+	}
+
+	public TeshilPartyInfoVO getLocalCorporationElections() {
+		return localCorporationElections;
+	}
+
+	public void setLocalCorporationElections(
+			TeshilPartyInfoVO localCorporationElections) {
+		this.localCorporationElections = localCorporationElections;
+	}
+
 	private List<ElectionWiseMandalPartyResultVO> mptcZptcElectionResultsVO;	
 	private ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO;
 	private ChartColorsAndDataSetVO chartColorsAndDataSetVO;
@@ -419,12 +474,18 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		}
 		mptcElectionType = IConstants.MPTC_ELECTION_TYPE;
 		zptcElectionType = IConstants.ZPTC_ELECTION_TYPE;
+		muncipalityElectionType = IConstants.MUNCIPLE_ELECTION_TYPE;
+		corporationElectionType = IConstants.CORPORATION_ELECTION_TYPE;
 		electionTypes = staticDataService.getAllElectionTypes();
 		for(SelectOptionVO eleTypes : electionTypes){
 			if(eleTypes.getName().equalsIgnoreCase(mptcElectionType)){
 				mptcElectionId = eleTypes.getId();
 			}else if(eleTypes.getName().equalsIgnoreCase(zptcElectionType)){
 				zptcElectionId = eleTypes.getId();
+			}else if(eleTypes.getName().equalsIgnoreCase(muncipalityElectionType)){
+				muncipalityElectionTypeId = eleTypes.getId();
+			}else if(eleTypes.getName().equalsIgnoreCase(corporationElectionType)){
+				corporationElectionTypeId = eleTypes.getId();
 			}
 		}
 		zptcElectionYears = staticDataService.getAllElectionYearsForATeshil(zptcElectionId);
@@ -432,7 +493,37 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		mptcElectionYears = staticDataService.getAllElectionYearsForATeshil(mptcElectionId);
 		mandalVO = staticDataService.findListOfElectionsAndPartiesInMandal(0L);
 		staticPartiesList = mandalVO.getPartiesInMandal();
-		votesSharing = staticDataService.getPartyVotesShareInConstituency(Long.parseLong(constiId),1);
+		//votesSharing = staticDataService.getPartyVotesShareInConstituency(Long.parseLong(constiId),1);
+		return SUCCESS;
+	}   
+	
+	public String getMuncipalElections(){
+		String param=null;			    
+		param = getTask();
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}	
+	
+		Long constiId =  new Long(jObj.getString("constituencyId"));	
+		localMuncipalElections = staticDataService.getLocalElectionDetailsForAConstituency(constiId,IConstants.MUNCIPLE_ELECTION_TYPE);	
+		return SUCCESS;
+	}
+	
+	public String getCorporationElections(){
+		String param=null;			    
+		param = getTask();
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}	
+	
+		Long constiId =  new Long(jObj.getString("constituencyId"));		
+		localCorporationElections = staticDataService.getLocalElectionDetailsForAConstituency(constiId,IConstants.CORPORATION_ELECTION_TYPE);	
 		return SUCCESS;
 	}
 	
@@ -445,10 +536,9 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
-		
-		Long constiId =  new Long(jObj.getString("constituencyId"));
-		
-		votesSharing = staticDataService.getPartyVotesShareInConstituency(constiId,1);
+		String[] arr = new String[4];
+		Long constiId =  new Long(jObj.getString("constituencyId"));		
+		votesSharing = staticDataService.getPartyVotesPercentageInAConstituency(constiId,jObj.getString("choice"),arr);
 		return SUCCESS;
 	}
 	public String getVotesOverViewInAConstituency() throws Exception

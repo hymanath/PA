@@ -18,7 +18,6 @@ import com.itgrids.partyanalyst.service.ICommentsDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.sun.org.apache.bcel.internal.generic.Select;
 
 public class CommentsDataAction extends ActionSupport implements ServletRequestAware {
 
