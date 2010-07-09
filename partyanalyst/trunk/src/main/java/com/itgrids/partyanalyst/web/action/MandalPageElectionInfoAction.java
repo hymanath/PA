@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +34,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
@@ -279,8 +281,8 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		String chartName = "allPartiesMandalWisePerformanceInAllElections_"+mandalId+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         //String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName
-        List<Color> colors = new ArrayList<Color>();
-		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", createDataset(allElectionResults, colors), chartPath,260,700, colors ,false);
+        Set<String> paritesInChart = new LinkedHashSet<String>();
+		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", createDataset(allElectionResults, paritesInChart), chartPath,260,700, ChartUtils.getLineChartColors(paritesInChart) ,false);
 				
 		navigationVO = staticDataService.findHirarchiForNavigation(new Long(mandalId), IConstants.TEHSIL_LEVEL);
 		
@@ -345,7 +347,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
 		return SUCCESS;
 	}
 	
-	private CategoryDataset createDataset(List<PartyResultVO> allElectionResults, List<Color> colors) {
+	private CategoryDataset createDataset(List<PartyResultVO> allElectionResults, Set<String> partiesInChart) {
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
         ElectionResultVO partiesElecResultForGraph = null;
@@ -362,22 +364,7 @@ public class MandalPageElectionInfoAction extends ActionSupport implements Servl
         Collections.sort(partiesElectionResults, new ElectionResultComparator());
         
         for(ElectionResultVO graphInfo:partiesElectionResults){
-        	if(IConstants.TDP.equalsIgnoreCase(graphInfo.getPartyName()))
-        		colors.add(IConstants.TDP_COLOR);
-        	else
-        		if(IConstants.INC.equalsIgnoreCase(graphInfo.getPartyName()))
-            		colors.add(IConstants.INC_COLOR);
-            	else
-            		if(IConstants.BJP.equalsIgnoreCase(graphInfo.getPartyName()))
-                		colors.add(IConstants.BJP_COLOR);
-                	else
-                		if(IConstants.PRP.equalsIgnoreCase(graphInfo.getPartyName()))
-                    		colors.add(IConstants.PRP_COLOR);
-                    	else
-                    		if(IConstants.TRS.equalsIgnoreCase(graphInfo.getPartyName()))
-                        		colors.add(IConstants.TRS_COLOR);
-                        	else
-                        		colors.add(null);
+        	partiesInChart.add(graphInfo.getPartyName());
         	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
            			graphInfo.getElectionYear());	
         }

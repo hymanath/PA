@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,7 @@ import com.itgrids.partyanalyst.dto.PartyVillageLevelAnalysisVO;
 import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -189,22 +192,24 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 		for(ConstituencyRevenueVillagesVO constituencyObj:townshipWiseElectionResults){
 			String chartName = "partyPerformanceInAllMandalElectionsByRevenueVillages_"+constituencyObj.getConstituencyId()+".png";
 	        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+	        Set<String> partiesInChart = new LinkedHashSet<String>();
 	        ChartProducer.createLineChart("All Parties Performance In "+electionType+" "+electionYear + 
 	        		" In "+constituencyObj.getConstituencyName()+" Constituency By Revenue Villages In "+mandalName+" Mandal" , 
-	        		"Revenue Villages", "Percentages", createDataset(constituencyObj), chartPath,400,700, null,true);	
+	        		"Revenue Villages", "Percentages", createDataset(constituencyObj, partiesInChart), chartPath,400,700, ChartUtils.getLineChartColors(partiesInChart),true);	
 	        constituencyObj.setChartPath(chartName);
 		}
 		
 		return SUCCESS;
 	}
 	
-	private CategoryDataset createDataset(ConstituencyRevenueVillagesVO constituencyObj) {
+	private CategoryDataset createDataset(ConstituencyRevenueVillagesVO constituencyObj, Set<String> partiesInChart) {
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         List<PartyElectionResultVO> pariesInfo = null;
         List<CandidatePartyInfoVO> candidatesInfo = constituencyObj.getCandidateNamePartyAndStatus();
     	for(RevenueVillageElectionVO villageInfoVO:constituencyObj.getRevenueVillageElectionVO()){
     		pariesInfo = villageInfoVO.getPartyElectionResultVOs();
     		for(int i=0; i<pariesInfo.size(); i++){
+    			partiesInChart.add(candidatesInfo.get(i).getParty());
     			if(candidatesInfo.get(i).getParty().equalsIgnoreCase(IConstants.INDIPENDENT))
     				dataset.addValue(new BigDecimal(pariesInfo.get(i).getVotesPercentage()), candidatesInfo.get(i).getParty()+" ["+candidatesInfo.get(i).getRank()+"]" , villageInfoVO.getTownshipName());
     			else

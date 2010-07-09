@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,6 +58,7 @@ import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IElectionTrendzService;
@@ -575,14 +577,15 @@ public class ConstituencyPageAction extends ActionSupport implements
         chartName = "allPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
        
-        List<Color> colors = new ArrayList<Color>();
-   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, colors), chartPath,260,700, colors,false );
+        Set<String> partiesInChart = null;
+        partiesInChart = new LinkedHashSet<String>();
+   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, partiesInChart), chartPath,260,700, ChartUtils.getLineChartColors(partiesInChart),false );
    		
    		enlargedChartName = "enlargedImgOfAllPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
         String enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedChartName;
        
-        List<Color> enlargedChartPathColors = new ArrayList<Color>();
-   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, enlargedChartPathColors), enlargedChartPath,600,800, enlargedChartPathColors ,false);
+        partiesInChart = new LinkedHashSet<String>();
+   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, partiesInChart), enlargedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart) ,false);
 		
    		navigationVO = staticDataService.findHirarchiForNavigation(constituencyId, IConstants.CONSTITUENCY_LEVEL);
    		
@@ -609,7 +612,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		return dataset;
 	}
 	
-	private CategoryDataset createDataset(List<ConstituencyElectionResultsVO> allElectionResults, List<Color> colors) {
+	private CategoryDataset createDataset(List<ConstituencyElectionResultsVO> allElectionResults, Set<String> partiesInChart) {
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
         int i = 0;
@@ -634,22 +637,7 @@ public class ConstituencyPageAction extends ActionSupport implements
                
        Collections.sort(partiesElectionResults, new ElectionResultComparator());    
         for(ElectionResultVO graphInfo:partiesElectionResults){
-        	if(IConstants.TDP.equalsIgnoreCase(graphInfo.getPartyName()))
-        		colors.add(IConstants.TDP_COLOR);
-        	else
-        		if(IConstants.INC.equalsIgnoreCase(graphInfo.getPartyName()))
-            		colors.add(IConstants.INC_COLOR);
-            	else
-            		if(IConstants.BJP.equalsIgnoreCase(graphInfo.getPartyName()))
-                		colors.add(IConstants.BJP_COLOR);
-                	else
-                		if(IConstants.PRP.equalsIgnoreCase(graphInfo.getPartyName()))
-                    		colors.add(IConstants.PRP_COLOR);
-                    	else
-                    		if(IConstants.TRS.equalsIgnoreCase(graphInfo.getPartyName()))
-                        		colors.add(IConstants.TRS_COLOR);
-                        	else
-                        		colors.add(null);        	
+        	partiesInChart.add(graphInfo.getPartyShortName());
         	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyShortName(),
            			graphInfo.getElectionYear());	
         }
@@ -1152,24 +1140,28 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			detailedDomainAxisName = "Assembly Constituencies";
 		}
 		
+		Set<String> partiesInChart = null;
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         constituencyRevenueVillagesVO.setChartPath(chartName);
-        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), chartPath, chartHeight, chartWidth, null,true);
+        partiesInChart = new LinkedHashSet<String>();
+        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), chartPath, chartHeight, chartWidth, ChartUtils.getLineChartColors(partiesInChart),true);
         
         String detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
         constituencyRevenueVillagesVO.setDetailedChartPath(detailedChartName);
-        ChartProducer.createLineChart(chartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO), detailedChartPath,600,800, null,false);   
+        partiesInChart = new LinkedHashSet<String>();
+        ChartProducer.createLineChart(chartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),false);   
       
 	  return SUCCESS;
   }
   
-  private CategoryDataset createDataset(ConstituencyRevenueVillagesVO constituencyObj) {
+  private CategoryDataset createDataset(ConstituencyRevenueVillagesVO constituencyObj, Set<String> partiesInChart) {
       final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
       List<PartyElectionResultVO> pariesInfo = null;
       List<CandidatePartyInfoVO> candidatesInfo = constituencyObj.getCandidateNamePartyAndStatus();
   	  for(ConstituencyOrMandalWiseElectionVO constiInfoVO:constituencyObj.getConstituencyOrMandalWiseElectionVO()){
   		pariesInfo = constiInfoVO.getPartyElectionResultVOs();
   		for(int i=0; i<pariesInfo.size(); i++){
+  			partiesInChart.add(candidatesInfo.get(i).getParty()+"["+candidatesInfo.get(i).getRank()+"]");
   			dataset.addValue(new BigDecimal(pariesInfo.get(i).getVotesPercentage()), candidatesInfo.get(i).getParty()+"["+candidatesInfo.get(i).getRank()+"]", constiInfoVO.getLocationName());	
   		}        		
       }
@@ -1193,13 +1185,16 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		  chartTitle = "Mandal Wise Election Results For "+obj.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
 		  chartName = "mandalWiseParliamentElectionsResults_"+obj.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 		  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj), chartPath,260,700, null,false);
+		  Set<String> partiesInChart = null;
+		  partiesInChart = new LinkedHashSet<String>();
+		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj, partiesInChart), chartPath,260,700, ChartUtils.getLineChartColors(partiesInChart),false);
 		  obj.setChartPath(chartName);
 		  
 		  detailedChartTitle = "Mandal Wise Election Results For "+obj.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
 		  detailedChartName = "detailedMandalWiseParliamentElectionsResults_"+obj.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 		  detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
-		  ChartProducer.createLineChart(detailedChartTitle, detailedDomainAxisName, "Percentages", createDataset(obj), detailedChartPath,600,800, null,false);
+		  partiesInChart = new LinkedHashSet<String>();
+		  ChartProducer.createLineChart(detailedChartTitle, detailedDomainAxisName, "Percentages", createDataset(obj, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),false);
 		  obj.setDetailedChartPath(detailedChartName);
 	  }
 	  

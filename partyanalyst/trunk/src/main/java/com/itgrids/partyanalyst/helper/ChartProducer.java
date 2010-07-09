@@ -420,7 +420,7 @@ public class ChartProducer {
         	for(int i=0; i<colors.size(); i++){
             	if(colors.get(i) == null)
             		continue;
-            	gp = new GradientPaint(0.0f, 0.0f, colors.get(i), 0.0f, 0.0f, Color.lightGray);
+            	gp = new GradientPaint(0.0f, 0.0f, colors.get(i), 0.0f, 0.0f, colors.get(i));
             	seatsRenderer.setSeriesPaint(i, gp);
             }
         }
@@ -449,7 +449,7 @@ public class ChartProducer {
 		}
 		catch (java.io.IOException exc)
 		{
-		log.error("Error writing image to file");
+			log.error("Error writing image to file");
 		}
 	}
 	
@@ -723,5 +723,14 @@ public static void createLabeledPieChart(String title,final DefaultPieDataset da
             System.out.println("Exception while creating the chart");
         }
 	}
+
+	public static void main(String[] args) {
+		try {
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 }
