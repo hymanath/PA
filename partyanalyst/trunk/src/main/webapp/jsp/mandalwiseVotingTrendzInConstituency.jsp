@@ -686,7 +686,12 @@
 					
 					if(info.percentage != "-1")
 					{
-						if(info.hasAlliance == "true")
+						 //for Bye Election Results
+						if(info.electionType == 'Parliament' && info.electionYear == '2008' 
+							|| info.electionType == 'Parliament' && info.electionYear == '2006')
+                           str += '<td align="center" name="'+info.electionType+'" style="background-color:#F6CECE;">'+info.percentage+'</td>';
+                           
+                        else if(info.hasAlliance == "true")
 							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
 						else if(info.hasAlliance == "false")
 							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
