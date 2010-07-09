@@ -82,6 +82,7 @@ import com.itgrids.partyanalyst.model.VillageBoothElection;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.ConstituencyOrMandalVOComparator;
 import com.itgrids.partyanalyst.utils.ElectionDetailsVOComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.SortByRankOnPartyElectionResultComparator;
@@ -1193,6 +1194,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				candidateNamePartyAndStatus = getCandidateAndPartyDetails(mainTehsilId,list);
 				constituencyOrMandalWiseElectionVO.add(constituencyOrMandalWiseElectionVo);
 			}
+			if(constituencyOrMandalWiseElectionVO != null && constituencyOrMandalWiseElectionVO.size() > 0)
+			    Collections.sort(constituencyOrMandalWiseElectionVO, new ConstituencyOrMandalVOComparator());
 			if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 				ConstituencyOrMandalWiseElectionVO constituencyOrMandalWiseElectionVo = new ConstituencyOrMandalWiseElectionVO();			
 				constituencyOrMandalWiseElectionVo.setLocationId(tehsilIds.size()+1l);
