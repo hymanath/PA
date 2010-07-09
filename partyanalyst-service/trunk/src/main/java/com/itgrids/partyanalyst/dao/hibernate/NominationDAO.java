@@ -1233,6 +1233,25 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		    	" group by model.constituencyElection.constituency.localElectionBody.localElectionBodyId ",params);
 	}
 	
+	public List getLocalElectionsCandidateDetailsInAConstituency(String electionType,String tehsilIds){		  
+		 return getHibernateTemplate().find("select model.constituencyElection.constituency.localElectionBody.name," +
+		 		" model.constituencyElection.constituency.localElectionBody.localElectionBodyId," +
+		 		" model.constituencyElection.constituency.localElectionBody.noOfWards," +
+		 		" sum(model.constituencyElection.constituencyElectionResult.totalVotes)" +
+		 		" from Nomination model where model.constituencyElection.constituency.localElectionBody.electionType.electionType = ? and " +
+		    	" model.constituencyElection.constituency.localElectionBody.tehsil.tehsilId in ( " +tehsilIds+")"+
+		    	" group by model.constituencyElection.constituency.localElectionBody.localElectionBodyId ",electionType);
+	}
+	
+	public List getSeatsWonByAPartyInLocalElectionsForAConstituency(String muncipalityIds,String electionYear,String electionType,Long rank) {
+		Object[] params = {electionYear, electionType,rank};
+		return getHibernateTemplate().find("select model.party.shortName,count(model.candidateResult.rank)" +
+				" from Nomination model where model.constituencyElection.constituency.localElectionBody.localElectionBodyId in ( "+ muncipalityIds+
+				" ) and model.constituencyElection.election.electionYear = ? and " +
+				" model.constituencyElection.election.electionScope.electionType.electionType = ? and model.candidateResult.rank = ? " +
+				" group by model.party.shortName ", params);
+	}
+	
 	public List findSeatsWonByAPartyInMuncipalityForAnElectionYear(String muncipalityIds,String electionYear,String electionType,Long rank) {
 		Object[] params = {electionYear, electionType,rank};
 		return getHibernateTemplate().find("select model.party.shortName,count(model.candidateResult.rank)" +
@@ -1375,6 +1394,14 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"and model.constituencyElection.election.electionScope.electionType.electionType = ?",params);
 	}
 		
-	
+	public List getPartyVotesShareInAConstituency(Long constituencyId, String electionIds, String partyIds) {
+		Object[] params = {constituencyId};
+		return getHibernateTemplate().find("select model.constituencyElection.election.electionYear," + 
+				" model.constituencyElection.election.electionScope.electionType.electionType," +
+				" model.candidateResult.votesPercengate,model.candidateResult.votesEarned" +
+				" from Nomination model where " +
+				" model.constituencyElection.constituency.constituencyId = ? and model.constituencyElection.election.electionId in (" +electionIds+")"+
+				" and model.party.partyId in (" +partyIds+")",params);
+	}
 	
 }

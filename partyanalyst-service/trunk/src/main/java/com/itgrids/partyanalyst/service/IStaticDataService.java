@@ -175,5 +175,9 @@ public interface IStaticDataService {
 	
 	public ElectionTrendzReportVO getConstituencyOverview(Long constituencyId,String constituencyName);
 	
-	public List<PartyResultVO> getPartyVotesShareInConstituency(Long constituencyId,int flag);
+	public List<PartyResultVO> getPartyVotesShareInConstituency(Long constituencyId,int flag,List<ElectionResultPartyVO> partyResult);
+	
+	public TeshilPartyInfoVO getLocalElectionDetailsForAConstituency(Long constituencyId,String electionType);
+	
+	public List<PartyResultVO> getPartyVotesPercentageInAConstituency(Long constituencyId,String all,String[] choices);
 }
