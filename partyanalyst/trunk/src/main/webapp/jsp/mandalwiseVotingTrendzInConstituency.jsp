@@ -656,7 +656,7 @@
 			var str = '';
 		
 			str += '<div id="votersShareData_main">';
-			str += '<center><table id="votesShareDetailsTable" width="75%" cellspacing="0" cellmargin="0">';
+			str += '<center><table id="votesShareDetailsTable" width="90%" cellspacing="0" cellmargin="0">';
 			str += '<tr>';
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
 			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
