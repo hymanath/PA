@@ -209,6 +209,7 @@ legend
 				var resultDiv = document.getElementById("villageElectionResults");
 				var rvStr = '';
 				<c:forEach var="constiElec" items="${townshipWiseElectionResults}">
+				
 					rvStr += '<fieldset>';
 					rvStr += '<legend>${constiElec.constituencyName}</legend>';
 					rvStr += '<table>';
@@ -218,7 +219,7 @@ legend
 						rvStr += '<table id="candiTable_${constiElec.constituencyId}">';
 						<c:forEach var="candidateInfo" items="${constiElec.candidateNamePartyAndStatus}">
 							rvStr += '<tr>';
-							rvStr += '<td>${candidateInfo.party}</td>';
+							rvStr += '<td><A href="javascript:{}" title="Click to see Revenue Villageswise Performance Of \'${candidateInfo.party}\'" onclick="openPartywiseResultsWin('+mandalId+',\''+mandalName+'\',${candidateInfo.partyId},\'${candidateInfo.party}\')">${candidateInfo.party}</A></td>';
 							rvStr += '<td>${candidateInfo.candidateName}</td>';
 							rvStr += '<td>${candidateInfo.rank}</td>';
 							rvStr += '</tr>';
@@ -315,6 +316,13 @@ legend
 					var candidateDataTable = new YAHOO.widget.DataTable("candiDiv_${constiElec.constituencyId}",candidateColumnDefs, candidateDataSource);
 					 
 				</c:forEach>
+			}
+			function openPartywiseResultsWin(mandalId, mandalName, partyId, partyName)
+			{
+				var browser1 = window.open("<s:url action="revenueVillagePartyAllElecAction.action"/>?partyId="+partyId+"&partyName="+partyName+"&tehsilId="+mandalId+"&mandalName="+mandalName,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
+				 browser1.focus();
+
+				 					
 			}
 
 			function callAjax(rparam, jsObj, url){
