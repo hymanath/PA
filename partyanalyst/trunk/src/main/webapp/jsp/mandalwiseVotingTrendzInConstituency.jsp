@@ -1891,7 +1891,9 @@
 											</tr></table>
 									</td></tr>
 								</table>	
-								</div>							
+							</div>		
+						</div>		
+						</td>			
 					</tr>
 					<tr>
 					<td style="vertical-align:top;">
@@ -1933,8 +1935,9 @@
 				</center>
 				</div>		
 				
-				<div id="muncipality_corporation_div_main">
-					<table width="100%">
+				<div id="muncipality_corporation_div_main" style="width:auto;">
+					<center>
+					<table>
 						<tr>
 							<td align="left">
 								<div id="corporationDiv_main">
@@ -1952,7 +1955,8 @@
 							</td>
 						</tr>
 					</table>
-			</div>
+					</center>
+				</div>
 		
 		<div id="index_footer" class="indexLayoutContainer" style="width:100%">
 			<div id="index_inner_footer">
