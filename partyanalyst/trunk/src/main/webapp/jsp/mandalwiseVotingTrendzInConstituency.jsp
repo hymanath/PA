@@ -646,6 +646,11 @@
 					{
 						str += '<td name="'+info.electionType+'"> </td>';
 					}
+					else if(info.electionType == 'Parliament' && info.electionYear == '2008' 
+						|| info.electionType == 'Parliament' && info.electionYear == '2006')
+					{
+                        str += '<td align="center" name="'+info.electionType+'" style="background-color:#F6CECE;">'+info.percentage+'</td>';
+					}
 					else if(info.hasAlliance == "true")
 							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
 						else
@@ -659,6 +664,13 @@
 
 			str += '</table>';
 			str += '</div>';
+			str += '<table><tr>';
+			str += '<td><div style="height:10px;width:10px;border:1px solid #DDEB9B;background-color:#F6CECE;margin:10px;"></div></td>';
+			str += '<td><P>Bye Elections</P></td>';
+			str += '<td><div style="height:10px;width:10px;border:1px solid #F6CECE;background-color:#DDEB9B;margin:10px;"></div></td>';
+			str += '<td><P>Alliance Results</P></td>';
+			str += '</tr>';
+			str += '</table>';
 			divEl.innerHTML = str;			
 		}
 
@@ -735,12 +747,12 @@
 			str += '<input type="checkbox" name="elecType" value="MPTC" onclick="showSelectedColoumn(this.value)"/>MPTC';
 			str += '<input type="checkbox" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';	
 
-			/*str += '<input type="radio" name="elecType" checked="checked" value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
-			str += '<input type="radio" name="elecType" value="AC" onclick="showSelectedColoumn(this.value)"/>AC';
-			str += '<input type="radio" name="elecType" value="PC" onclick="showSelectedColoumn(this.value)"/>PC';
-			str += '<input type="radio" name="elecType" value="MPTC" onclick="showSelectedColoumn(this.value)"/>MPTC';
-			str += '<input type="radio" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';			*/
 			str += '</td>';
+			
+			str += '<td><div style="height:10px;width:10px;border:1px solid #DDEB9B;background-color:#F6CECE;margin:10px;"></div></td>';
+			str += '<td><P>Bye Elections</P></td>';
+			str += '<td><div style="height:10px;width:10px;border:1px solid #F6CECE;background-color:#DDEB9B;margin:10px;"></div></td>';
+			str += '<td><P>Alliance Results</P></td>';
 			str += '</tr>';
 			str += '</table></center>';
 			str += '</div>';
