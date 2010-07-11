@@ -720,20 +720,24 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		Set<String> allElecTypes = new HashSet<String>();////All parties participated Elections
 		List<SelectOptionVO> electionsHeading = new LinkedList<SelectOptionVO>(); 
 		List<Float> partyPecentages = null;
-		
+		String elecYearAndType = "";
 		List alliance = null;
 		List result = null;
 		for(PartyResultVO party:allElectionResults){
 			partyElecs1 = new HashSet<String>();
 			partyPecentages = new ArrayList<Float>();
 			for(ElectionResultVO ele:party.getElectionWiseResults()){
-				ele.setElectionYearAndType(ele.getElectionYear()+" "+ele.getElectionType());
+				if("ZPTC".equalsIgnoreCase(ele.getElectionType()) || "MPTC".equalsIgnoreCase(ele.getElectionType()))
+					elecYearAndType = ele.getElectionYear()+" ."+ele.getElectionType();	
+				else
+					elecYearAndType = ele.getElectionYear()+" "+ele.getElectionType();
+				ele.setElectionYearAndType(elecYearAndType);
 				result = electionDAO.findElectionIdByElectionTypeAndYear(ele.getElectionType(),ele.getElectionYear(),1l);					
 				if(result.size() > 0)
 					alliance = allianceGroupDAO.findAlliancePartiesByElectionAndParty(Long.parseLong(result.get(0).toString()),party.getPartyId());
 				ele.setHasAlliance((alliance.size()>0 && result.size() > 0)?"true":"false");
-				partyElecs1.add(ele.getElectionYear()+" "+ele.getElectionType());
-				allElecTypes.add(ele.getElectionYear()+" "+ele.getElectionType());
+				partyElecs1.add(elecYearAndType);
+				allElecTypes.add(elecYearAndType);
 				partyPecentages.add(new Float(ele.getPercentage()));
 			}
 			Collections.sort(partyPecentages);
@@ -741,11 +745,13 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			party.setElections(partyElecs1);
 		}
 		
+		//Heading Data Collection
 		for(String elecType:allElecTypes)
 			electionsHeading.add(new SelectOptionVO(0l, elecType));
 		
-		Collections.sort(electionsHeading, new SelectOptionVOComparator());
+		Collections.sort(electionsHeading, new SelectOptionVOComparator());//Heading Data Sorting
 		
+		//Adding Party Not Participated Election Info with -ve Percentage
 		ElectionResultVO noElec = null;
 		for(PartyResultVO party1:allElectionResults){
 			elections = new ArrayList<ElectionResultVO>();
@@ -760,16 +766,57 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			if(elections.size() > 0)
 				party1.getElectionWiseResults().addAll(party1.getElectionWiseResults().size()-1, elections);
 			elections = party1.getElectionWiseResults();
-			Collections.sort(elections, new ElectionResultTypeComparator());
+			Collections.sort(elections, new ElectionResultTypeComparator());//Data Sorting Same As Heading Order
 			party1.setElectionWiseResults(elections);
 		}
 	
 		Set<String> staticParties = new LinkedHashSet<String>();
+		//Extra Parties(Others) Collection
 		staticParties.add("INC");staticParties.add("TDP");staticParties.add("PRP");staticParties.add("TRS");staticParties.add("BJP");
 		List<PartyResultVO> fixedParties = new ArrayList<PartyResultVO>();
+		List<PartyResultVO> otherParties = new ArrayList<PartyResultVO>();
 		for(PartyResultVO party: allElectionResults)
 			if(staticParties.contains(party.getPartyName()))
 				fixedParties.add(party);
+			else
+				otherParties.add(party);
+		
+		//Calculating Other Parties Percentage
+		Map<String, Float> electionPercenatgeMap = new LinkedHashMap<String, Float>(); 
+		
+		Float percenatage = null;
+		
+		for(PartyResultVO party: otherParties)
+			for(ElectionResultVO ele:party.getElectionWiseResults()){
+				percenatage = electionPercenatgeMap.get(ele.getElectionYearAndType());
+				if(percenatage == null)
+					percenatage = 0.0f;
+				percenatage += new Float(ele.getPercentage());
+				electionPercenatgeMap.put(ele.getElectionYearAndType(), percenatage);
+			}
+		
+		PartyResultVO othersParty = new PartyResultVO();
+		othersParty.setPartyName(IConstants.OTHERS);
+		elections = new ArrayList<ElectionResultVO>();
+		ElectionResultVO elecInfo = null;
+		String[] yearType = null;
+		for(Map.Entry<String, Float> entry:electionPercenatgeMap.entrySet()){
+			elecInfo = new ElectionResultVO();
+			yearType = StringUtils.split(entry.getKey()," .");
+			elecInfo.setElectionYear(yearType[0]);
+			elecInfo.setElectionType(yearType[1]);
+			elecInfo.setElectionYearAndType(entry.getKey());
+			elecInfo.setPercentage(entry.getValue().toString());
+			elections.add(elecInfo);
+		}
+		Collections.sort(elections, new ElectionResultTypeComparator());
+		othersParty.setElectionWiseResults(elections);
+		fixedParties.add(othersParty);
+		
+		//Removing Dot(.) from ZPTC
+		for(SelectOptionVO obj:electionsHeading)
+			if(obj.getName().contains("."))
+				obj.setName(StringUtils.remove(obj.getName(), "."));
 		
 		electionWiseMandalPartyResultListVO.setElections(electionsHeading);
 		electionWiseMandalPartyResultListVO.setAllPartiesAllElectionResults(fixedParties);
