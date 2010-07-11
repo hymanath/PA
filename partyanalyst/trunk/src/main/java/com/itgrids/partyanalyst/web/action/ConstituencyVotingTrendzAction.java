@@ -1070,6 +1070,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
     	}
      return votersInfo;
     }
+    
     public String getAllPartiesVotesSharingInMandal()
     {
     	String param=null;			    
@@ -1082,87 +1083,59 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			e.printStackTrace();
 		}
 		
-		//Long constiId = jObj.getLong("constituencyId");
 		Long tehsilId = jObj.getLong("tehsilId");
-		//partywiseVotesDetailsForMandal = biElectionPageService.getMandalwiseResultsForAllElectionsForSelectedPartiesInConstituency(constiId, tehsilId);
+		int chartHeight = jObj.getInt("chartHeight");
+		int chartWidth = jObj.getInt("chartWidth");
+		String tehsilName = jObj.getString("tehsilName");
 		partywiseVotesDetailsForMandal = partyBoothWiseResultsService.getAllElectionsResultsInAMandal(tehsilId);
+		String chartName = "AllElectionsInMandal_ForByElecPage_"+tehsilId+".png";
+		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		Set<String> partiesInChart = new LinkedHashSet<String>();
+		partywiseVotesDetailsForMandal.setChartName(chartName);
+		ChartProducer.createLineChart("Different Parties Performance In All Elections Of "+tehsilName+" Mandal", 
+		"Elections", "Percentages",createDataSetForMandal(partywiseVotesDetailsForMandal.getAllPartiesAllElectionResults(), partiesInChart), 
+		chartPath,chartHeight,chartWidth,ChartUtils.getLineChartColors(partiesInChart),true);
+		
+		int i=0;
+		for(PartyResultVO party:partywiseVotesDetailsForMandal.getAllPartiesAllElectionResults()){
+			if(party.getPartyName().equalsIgnoreCase(IConstants.OTHERS)){
+				partywiseVotesDetailsForMandal.getAllPartiesAllElectionResults().remove(i);
+				break;
+			}
+			i++;
+		}
+
     	return SUCCESS;
     }
-    public String getAllPartiesAllElectionResultsChartInMandal()
-    {
-    	String param=null;			    
-		param = getTask();
-		
-		try {
-			jObj=new JSONObject(param);
-			
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		Long mandalId = jObj.getLong("tehsilId");
-		String mandalName = jObj.getString("tehsilName");
-    	List<PartyResultVO> allElectionResults;
-    	//ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO;
-		ElectionWiseMandalPartyResultListVO mptcZptcResultListVO = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(new Long(mandalId));
-		mptcZptcElectionResultsVO = mptcZptcResultListVO.getPartyWiseElectionResultsVOList();
-		electionWiseMandalPartyResultListVO = partyBoothWiseResultsService.getPartyGenderWiseBoothVotesForMandal(new Long(mandalId), "Mandal");
-		List<PartyResultVO> acPcElectionResultsForParties = electionWiseMandalPartyResultListVO.getAllPartiesAllElectionResults();
-		List<PartyResultVO> mptcZptcElectionResultsForParties = mptcZptcResultListVO.getAllPartiesAllElectionResults();
-		
-		Map<PartyResultVO, List<ElectionResultVO>> resultMap = new HashMap<PartyResultVO, List<ElectionResultVO>>();
-		
-		for(PartyResultVO partyResultVO:acPcElectionResultsForParties){
-			resultMap.put(partyResultVO, partyResultVO.getElectionWiseResults());
-		}
-		
-		List<ElectionResultVO> elections = null;
-		for(PartyResultVO partyResultVO:mptcZptcElectionResultsForParties){
-			elections = resultMap.get(partyResultVO);
-			if(elections == null)
-				resultMap.put(partyResultVO, elections);
-			else
-				elections.addAll(partyResultVO.getElectionWiseResults());
-		}
-		System.out.println(resultMap.size());
-		
-		allElectionResults = new ArrayList<PartyResultVO>();
-		
-		for(Map.Entry<PartyResultVO, List<ElectionResultVO>> entry:resultMap.entrySet()){
-			allElectionResults.add(entry.getKey());
-		}
-		
-		String allPartiesAllElectionschartName = "allPartiesMandalWisePerformanceInAllElections_"+mandalId+".png";
-        String chartPath = context.getRealPath("/")+ "charts\\" + allPartiesAllElectionschartName;
-        //String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName
-        Set<String> partiesInChart = new LinkedHashSet<String>();
-        ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+mandalName+" Mandal", "Elections", "Percentages", createDataset(allElectionResults, partiesInChart), chartPath,350,850, ChartUtils.getLineChartColors(partiesInChart) ,true);
-		electionWiseMandalPartyResultListVO.setChartName(allPartiesAllElectionschartName);
-		electionWiseMandalPartyResultListVO.setMptcZptcElectionResultsVO(mptcZptcElectionResultsVO);
-    	return SUCCESS;
-    }
-    private CategoryDataset createDataset(List<PartyResultVO> allElectionResults, Set<String> partiesInChart) {
+    
+    private CategoryDataset createDataSetForMandal(
+			List<PartyResultVO> allPartiesAllElectionResults,
+			Set<String> partiesInChart) {
     	final DefaultCategoryDataset dataset = new DefaultCategoryDataset(); 
-        List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
+    	List<ElectionResultVO> partiesElectionResults = new ArrayList<ElectionResultVO>();
         ElectionResultVO partiesElecResultForGraph = null;
         
-        for(PartyResultVO partyResultVO:allElectionResults)
-        	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
-        		partiesElecResultForGraph = new ElectionResultVO();
-        		partiesElecResultForGraph.setPercentage(result.getPercentage());
-        		partiesElecResultForGraph.setElectionYear(result.getElectionYear()+" "+result.getElectionType());
-        		partiesElecResultForGraph.setPartyName(partyResultVO.getPartyName());
-        		partiesElectionResults.add(partiesElecResultForGraph);
-        	}
-        
-        Collections.sort(partiesElectionResults, new ElectionResultComparator());
-        
-        for(ElectionResultVO graphInfo:partiesElectionResults){
-        	partiesInChart.add(graphInfo.getPartyName());
-        	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
-           			graphInfo.getElectionYear());        	
-        }
-        
-        return dataset;
-    }
+    	for(PartyResultVO partyResultVO:allPartiesAllElectionResults)
+         	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
+         		if(result.getElectionType() == null || result.getElectionYear() == null || "-1".equalsIgnoreCase(result.getPercentage()))
+         			continue;
+         		partiesElecResultForGraph = new ElectionResultVO();
+         		partiesElecResultForGraph.setPercentage(result.getPercentage());
+         		partiesElecResultForGraph.setElectionYear(result.getElectionYearAndType());
+         		partiesElecResultForGraph.setPartyName(partyResultVO.getPartyName());
+         		partiesElectionResults.add(partiesElecResultForGraph);
+         	}
+         
+         Collections.sort(partiesElectionResults, new ElectionResultComparator());
+         
+         for(ElectionResultVO graphInfo:partiesElectionResults){
+         	partiesInChart.add(graphInfo.getPartyName());
+         	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
+            			graphInfo.getElectionYear());	
+         }
+    	
+    	
+		return dataset;
+	}
+
 }

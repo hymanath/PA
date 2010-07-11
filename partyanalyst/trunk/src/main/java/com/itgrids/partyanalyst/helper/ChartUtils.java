@@ -42,10 +42,11 @@ public class ChartUtils {
                     		}
 			
                     		else
-                        		if(series.contains("Others")){
+                        		if(series.contains("Others") || series.contains(IConstants.IND)){
                         			colors.add(Color.BLACK);
                         			System.out.println(" ........ " + series);
                         		}
+			
                         		
                         	else{
                         		System.out.println(" ........ " + series);

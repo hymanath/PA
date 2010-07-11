@@ -380,6 +380,7 @@
 											buildVotesSharingData(myResults);
 										}else if(jsObj.task == "getMandalVotesShare"){
 											buildMandalVotesSharingData(myResults, jsObj);
+											showAllPartiesAllElectionsResults(myResults);
 										} 
 										if(jsObj.task == "muncipalElectionDetails") 
 										{
@@ -389,9 +390,7 @@
 												errorMessageMuncipalitiesDiv();	
 											}
 											
-										} else if(jsObj.task == "getMandalVotesShareChart"){
-											showAllPartiesAllElectionsResults(myResults);											
-										}
+										} 
 										if(jsObj.task == "corporationElectionDetails") 
 										{
 											if(myResults != null){
@@ -1609,26 +1608,14 @@
 		function getMandalwiseVotesShare(tehsilId,constituencyId, tehsilName)
 		{
 			var jsObj = {
-					constituencyId: constituencyId,
 					tehsilId: tehsilId,
 					tehsilName: tehsilName,
-					task:"getMandalVotesShare"
+					task:"getMandalVotesShare",
+					chartHeight:400,
+					chartWidth:800
 				};
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 				var url = "<%=request.getContextPath()%>/votesSharingInMandalAjaxAction.action?"+rparam;
-				callAjax(jsObj, url);
-				getMdlwiseAllPartiesAllElectionsChart(tehsilId, tehsilName)	
-		}
-		function getMdlwiseAllPartiesAllElectionsChart(tehsilId, tehsilName)
-		{
-			var jsObj = {
-					
-					tehsilId: tehsilId,
-					tehsilName: tehsilName,
-					task:"getMandalVotesShareChart"
-				};
-				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-				var url = "<%=request.getContextPath()%>/votesSharingInMandalChartAjaxAction.action?"+rparam;
 				callAjax(jsObj, url);
 		}
 		
@@ -1808,7 +1795,7 @@
 			var imageDivEl = document.getElementById("madalwiseVotesRangeChart");
 			var dataDivEl = document.getElementById("");
 			var str = '';
-			str += '<img src="charts/'+myResults.chartName+'">';			
+			str += '<img src="charts/'+myResults.chartName+'">';		
 			imageDivEl.innerHTML = str;
 			/*var dataDivElContent = '';
 			dataDivElContent+='<div id="mptc_main">';
