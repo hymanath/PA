@@ -675,6 +675,7 @@
 
 		function buildVotesSharingData(results)
 		{
+			
 			votesShareData = results;
 			var elmt = document.getElementById("partyVotesSharingDetailsDiv");
 
@@ -780,6 +781,7 @@
 
 		function checkExistingValueInArray(val,array)
 		{
+			
 			var status=false;
 			for(var i=0; i<array.length;i++ )
 			{ 
@@ -789,6 +791,7 @@
 			return status;
 		}
 
+		//siva
 		function showSelectedColoumn(checkedValue)
 		{
 			var docelements = document.getElementsByTagName('input'); 		
@@ -850,9 +853,10 @@
 			str += '<th>Parties</th>';
 			for(var i in votesShareData[0].electionList)
 			{
-				var electype = votesShareData[0].electionList[i].name.substring(0,votesShareData[0].electionList[i].name.indexOf('-')-2);
-				
-				if(checkExistingValueInArray(electype,electypeSelectedElmts))
+				var electype = votesShareData[0].electionList[i].name.substring(votesShareData[0].electionList[i].name.indexOf('-')+3, votesShareData[0].electionList[i].name.length);
+				electype = electype.replace(".", "");
+				var flag = checkExistingValueInArray(electype,electypeSelectedElmts);
+				if(flag)
 					str += '<th>'+votesShareData[0].electionList[i].name+'</th>';
 			}
 			str += '<th>Range</th>';
