@@ -96,9 +96,11 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.CandidateElecResultVOComparator;
 import com.itgrids.partyanalyst.utils.ConstituencyNamesComparator;
 import com.itgrids.partyanalyst.utils.DistrictNamesComparator;
+import com.itgrids.partyanalyst.utils.ElectionResultTypeComparator;
 import com.itgrids.partyanalyst.utils.ElectionYearsComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyResultVOComparator;
+import com.itgrids.partyanalyst.utils.SelectOptionVOComparator;
 import com.itgrids.partyanalyst.utils.TehsilVotingTrendsComparator;
 
 
@@ -4722,6 +4724,7 @@ public class StaticDataService implements IStaticDataService {
 			
 			List<PartyResultVO> party = new ArrayList<PartyResultVO>(0);		
 			String[] partiesList = {"INC","PRP","TDP","TRS","BJP"};
+			String elecYearAndType = ""; 
 			PartyResultVO partyResultVO = null;
 			for(int j=0;j<partiesList.length;j++){
 				PartyResultVO partyVo = new PartyResultVO();
@@ -4731,7 +4734,8 @@ public class StaticDataService implements IStaticDataService {
 					ElectionResultVO electionResultVO = new ElectionResultVO();
 					electionResultVO.setElectionType(partyResult.get(i).getElectionType());
 					electionResultVO.setElectionYear(partyResult.get(i).getElectionYear());	
-										
+					
+					
 					if(partyResult.get(i).getElectionType().equals(IConstants.ASSEMBLY_ELECTION_TYPE) 
 							|| partyResult.get(i).getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE) 
 							&& !partyResult.get(i).getElectionYear().equals("2008") 
@@ -4742,6 +4746,11 @@ public class StaticDataService implements IStaticDataService {
 						}
 					}
 					
+					if("MPTC".equalsIgnoreCase(partyResult.get(i).getElectionType()) || "ZPTC".equalsIgnoreCase(partyResult.get(i).getElectionType()))
+						elecYearAndType = partyResult.get(i).getElectionYear()+" ."+partyResult.get(i).getElectionType();
+					else
+						elecYearAndType = partyResult.get(i).getElectionYear()+" "+partyResult.get(i).getElectionType();
+					electionResultVO.setElectionYearAndType(elecYearAndType);
 					for(int k=0;k<partyResult.get(i).getCandidateElectionResultsVO().size();k++){	
 						electionResultVO.setHasAlliance(partyResult.get(i).getCandidateElectionResultsVO().get(k).getHasAlliance());	
 						electionResultVO.setAlliancRes(partyResult.get(i).getCandidateElectionResultsVO().get(k).getAllianceResult());
@@ -4751,10 +4760,11 @@ public class StaticDataService implements IStaticDataService {
 						}else{
 							electionResultVO.setPercentage("-1");
 						}
-					}						
+					}
 					electionWiseResults.add(electionResultVO);
 				}				
-				partyVo.setElectionWiseResults(electionWiseResults);	
+
+				partyVo.setElectionWiseResults(electionWiseResults);
 				
 				List<SelectOptionVO> electionList = new ArrayList<SelectOptionVO>(0);
 				for(int i=0;i<partyResult.size();i++){	
@@ -4766,9 +4776,9 @@ public class StaticDataService implements IStaticDataService {
 					}else if(partyResult.get(i).getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
 						electionType ="PC";
 					}else{
-						electionType = partyResult.get(i).getElectionType();
+						electionType = "."+partyResult.get(i).getElectionType();
 					}
-					electionHeading=electionType+"  -  "+partyResult.get(i).getElectionYear();
+					electionHeading = partyResult.get(i).getElectionYear()+"  -  "+electionType;
 					select.setId(i+0l);
 					select.setName(electionHeading);
 					electionList.add(select);
@@ -4920,6 +4930,18 @@ public class StaticDataService implements IStaticDataService {
 				}
 			}			
 		}
+		
+		List<ElectionResultVO> elections = new ArrayList<ElectionResultVO>();
+		List<SelectOptionVO> headings = new ArrayList<SelectOptionVO>();
+		for(PartyResultVO partyResultVO:party){
+			elections = partyResultVO.getElectionWiseResults();
+			headings = partyResultVO.getElectionList();
+			Collections.sort(headings, new SelectOptionVOComparator());//Heading Data Sorting
+			Collections.sort(elections, new ElectionResultTypeComparator());
+			partyResultVO.setElectionList(headings);
+			partyResultVO.setElectionWiseResults(elections);
+		}
+		
 		return party;
 	}
 		
