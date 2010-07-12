@@ -1,9 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
@@ -18,9 +16,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
-import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
-import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -139,9 +135,9 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			
 			chartPath = "allParties_"+parties+"_AllElections_"+elections+"VillagesWisePerformanceInAllElections_"+tehsilId+".png";
 	        String chartLocation = context.getRealPath("/")+ "charts\\" + chartPath;
-	        Set<String> partiesInChart = new LinkedHashSet<String>();
+	        //Set<String> partiesInChart = new LinkedHashSet<String>();
 	        if(partiesResults.size() > 0)
-	        	ChartProducer.createLineChart("", "Elections", "Percentages", createDataset(partiesResults, partiesInChart), chartLocation,500,900, ChartUtils.getLineChartColors(partiesInChart),true );
+	        	ChartProducer.createLineChart("", "Elections", "Percentages", createDataset(partiesResults), chartLocation,500,900, null,true );
 		}
 		
 		if(elections!=null){
@@ -149,7 +145,7 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 			String electionsIDS="";
 			while (st.hasMoreElements()) electionsIDS += st.nextElement();
 			  
-			createPieChartsForTownshipVotingTrends(new Long(tehsilId),electionsIDS);			
+			createPieChartsForTownshipVotingTrends(new Long(tehsilId),electionsIDS);	
 		}
 		return SUCCESS;
 	}
@@ -183,14 +179,11 @@ public class MandalRevenueVillagesElecAction extends ActionSupport implements Se
 		return dataset;
 	}
 	
-	private CategoryDataset createDataset(List<PartyResultVO> partiesResults, Set<String> partiesInChart) {
+	private CategoryDataset createDataset(List<PartyResultVO> partiesResults) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		for(PartyResultVO partyInfo:partiesResults){
+		for(PartyResultVO partyInfo:partiesResults)
 			dataset.addValue(new BigDecimal(partyInfo.getVotesPercent()), partyInfo.getPartyName(), partyInfo.getConstituencyName());
-			partiesInChart.add(partyInfo.getPartyName());
-		}
-			
-		return dataset;
+		return dataset;		
 	}
 
 	public void setServletContext(ServletContext context) {

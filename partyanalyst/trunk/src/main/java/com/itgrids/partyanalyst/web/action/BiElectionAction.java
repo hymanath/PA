@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
+import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -419,8 +420,8 @@ public class BiElectionAction extends ActionSupport implements
  		String lineChartName = "bielections in _" +partialChartName+"_forYear_"+year+".png";
         String chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
         String title = year+" Assembly Election Results in Bye-Election Constituencies";
-        ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataSetForGraph(asseblyDetails);
-		ChartProducer.createLineChartWithThickness(title,"Constituencies","Votes Percentage", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(),chartPath,300,920, new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
+        Set<String> partiesInChart = new LinkedHashSet<String>();
+		ChartProducer.createLineChartWithThickness(title,"Constituencies","Votes Percentage", createDataSetForGraph(asseblyDetails, partiesInChart),chartPath,300,920, ChartUtils.getLineChartColors(partiesInChart),true);
 		chartName = lineChartName;
 	
 		}catch(Exception ex){
@@ -439,8 +440,8 @@ public class BiElectionAction extends ActionSupport implements
 		enlargedLineChartName = "enlarged_bielections in _" +partialChartName+"_forYear_"+year+".png";
         String enlargedChartPath = context.getRealPath("/") + "charts\\" + enlargedLineChartName;
         String enlargedTitle = year+" Assembly Election Results in Bye-Election Constituencies";
-		ChartColorsAndDataSetVO enlargedChartColorsAndDataSetVO = createDataSetForGraph(asseblyDetails);
-		ChartProducer.createLineChartWithThickness(enlargedTitle,"Constituencies","Votes Percentage", (DefaultCategoryDataset)enlargedChartColorsAndDataSetVO.getDataSet(),enlargedChartPath,600,850, new ArrayList<Color>(enlargedChartColorsAndDataSetVO.getColorsSet()),true);
+        Set<String> partiesInChart = new LinkedHashSet<String>();
+		ChartProducer.createLineChartWithThickness(enlargedTitle,"Constituencies","Votes Percentage", createDataSetForGraph(asseblyDetails, partiesInChart),enlargedChartPath,600,850, ChartUtils.getLineChartColors(partiesInChart),true);
 
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -450,60 +451,15 @@ public class BiElectionAction extends ActionSupport implements
 		
 	}
 	
-	private ChartColorsAndDataSetVO createDataSetForGraph(List<ConstituencyElectionResultsVO> asseblyDetails){
-		ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
-		Set<Color> colorsSet = new LinkedHashSet<Color>();
+	private CategoryDataset createDataSetForGraph(List<ConstituencyElectionResultsVO> asseblyDetails, Set<String> partiesInChart){
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		for(ConstituencyElectionResultsVO consti:asseblyDetails)
 			for(PartyResultsVO category:consti.getPartyResultsVO())
 			{
-				if(IConstants.TDP.equalsIgnoreCase(category.getPartyName()))
-				{	colorsSet.add(IConstants.TDP_COLOR);
-					log.debug("TDP ADDED");
-				}
-				
-	        	else
-	        		if(IConstants.INC.equalsIgnoreCase(category.getPartyName()))
-	        		{	colorsSet.add(IConstants.INC_COLOR);
-	        		log.debug("INC ADDEd");
-	        		}
-	            	else
-	            		if(IConstants.BJP.equalsIgnoreCase(category.getPartyName()))
-	            		{	colorsSet.add(IConstants.BJP_COLOR);
-	            			log.debug("BJP ADDEd");
-	            		}
-	                	else
-	                		if(IConstants.PRP.equalsIgnoreCase(category.getPartyName()))
-	                    		{colorsSet.add(IConstants.PRP_COLOR);
-	                    		log.debug("PRP ADDEd");
-	                    		}
-	                    	else
-	                    		if(IConstants.TRS.equalsIgnoreCase(category.getPartyName()))
-	                        		{
-	                    			colorsSet.add(IConstants.TRS_COLOR);
-	                    			log.debug("TRS ADDEd");
-	                    			}
-	                    		else
-		                    		if(IConstants.AIMIM.equalsIgnoreCase(category.getPartyName()))
-		                        		{
-		                    			colorsSet.add(IConstants.AIMIM_COLOR);
-		                    			log.debug("AIMIM ADDEd");
-		                    			}
-		                    		else
-			                    		if(IConstants.CPI.equalsIgnoreCase(category.getPartyName()))
-			                        		{
-			                    			colorsSet.add(IConstants.CPI_COLOR);
-			                    			log.debug("CPI ADDEd");
-			                    			}
-	                    		else
-			                    	{colorsSet.add(null);
-			                    	log.debug("Default ADDEd");
-			                    	}
+				partiesInChart.add(category.getPartyName());
 				dataset.addValue(new BigDecimal(category.getPercentage()),category.getPartyName(),consti.getConstituencyName());
 			}
-		chartColorsAndDataSetVO.setDataSet(dataset);
-        chartColorsAndDataSetVO.setColorsSet(colorsSet);	
-		return chartColorsAndDataSetVO;
+		return dataset;
 	}
 
 	
@@ -547,9 +503,8 @@ public class BiElectionAction extends ActionSupport implements
 		    String enlargedTitle =  "All Election Results for "+constituencyName;         
 		    enlargedLineChartName = "enlarged_mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+constituencyId+".png";
 		    enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedLineChartName;
-		    
-		    ChartColorsAndDataSetVO enlargedChartColorsAndDataSetVO = createDataset(list);
-		    ChartProducer.createLineChartWithThickness(enlargedTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)enlargedChartColorsAndDataSetVO.getDataSet(), enlargedChartPath,600,920,new ArrayList<Color>(enlargedChartColorsAndDataSetVO.getColorsSet()),true);
+		    Set<String> partiesInChart = new LinkedHashSet<String>();
+		    ChartProducer.createLineChartWithThickness(enlargedTitle, domainAxisName, "Percentages", createDataset(list, partiesInChart), enlargedChartPath,600,920,ChartUtils.getLineChartColors(partiesInChart),true);
 		    enlargedLineChartNameForMandalResult = enlargedLineChartName;
 		    
 			return enlargedLineChartNameForMandalResult;
@@ -565,8 +520,8 @@ public class BiElectionAction extends ActionSupport implements
 		  chartTitle = "All Election Results for "+constituencyName;
 		  chartName = "mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+constituencyId+".png";
 		  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
-		  ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataset(list);
-		  ChartProducer.createLineChartWithThickness(chartTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,300,820,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
+		  Set<String> partiesInChart = new LinkedHashSet<String>();
+		  ChartProducer.createLineChartWithThickness(chartTitle, domainAxisName, "Percentages", createDataset(list, partiesInChart), chartPath,300,820,ChartUtils.getLineChartColors(partiesInChart),true);
 			  
 		  mandalWiseResultsChart = chartName;
 			  
@@ -575,66 +530,19 @@ public class BiElectionAction extends ActionSupport implements
 	  
 	  
 
-	private ChartColorsAndDataSetVO createDataset(List<ElectionResultPartyVO> list) {
+	private CategoryDataset createDataset(List<ElectionResultPartyVO> list, Set<String> partiesInChart) {
 	       final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-	       ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
-		   Set<Color> colorsSet = new LinkedHashSet<Color>();
 	       try {
 			       for(ElectionResultPartyVO electionResultPartyVO:list){
 			    		   for(CandidateElectionResultVO value:electionResultPartyVO.getCandidateElectionResultsVO()){
-			    			  
-			    					if(IConstants.TDP.equalsIgnoreCase(value.getPartyName()))
-			    						{	colorsSet.add(IConstants.TDP_COLOR);
-			    							log.debug("TDP ADDED");
-			    						}
-			    						
-			    			        	else
-			    			        		if(IConstants.INC.equalsIgnoreCase(value.getPartyName()))
-			    			        		{	colorsSet.add(IConstants.INC_COLOR);
-			    			        		log.debug("INC ADDEd");
-			    			        		}
-			    			            	else
-			    			            		if(IConstants.BJP.equalsIgnoreCase(value.getPartyName()))
-			    			            		{	colorsSet.add(IConstants.BJP_COLOR);
-			    			            			log.debug("BJP ADDEd");
-			    			            		}
-			    			                	else
-			    			                		if(IConstants.PRP.equalsIgnoreCase(value.getPartyName()))
-			    			                    		{colorsSet.add(IConstants.PRP_COLOR);
-			    			                    		log.debug("PRP ADDEd");
-			    			                    		}
-			    			                    	else
-			    			                    		if(IConstants.TRS.equalsIgnoreCase(value.getPartyName()))
-			    			                        		{
-			    			                    			colorsSet.add(IConstants.TRS_COLOR);
-			    			                    			log.debug("TRS ADDEd");
-			    			                    			}
-			    			                    		else
-			    				                    		if(IConstants.AIMIM.equalsIgnoreCase(value.getPartyName()))
-			    				                        		{
-			    				                    			colorsSet.add(IConstants.AIMIM_COLOR);
-			    				                    			log.debug("AIMIM ADDEd");
-			    				                    			}
-			    				                    		else
-			    					                    		if(IConstants.CPI.equalsIgnoreCase(value.getPartyName()))
-			    					                        		{
-			    					                    			colorsSet.add(IConstants.CPI_COLOR);
-			    					                    			log.debug("CPI ADDEd");
-			    					                    			}
-			    			                    		else
-			    					                    	{colorsSet.add(null);
-			    					                    	log.debug("Default ADDEd");
-			    					                    	}   
-			    		   
-			    		    dataset.addValue(new BigDecimal(value.getVotesPercentage()), value.getPartyName(), electionResultPartyVO.getElectionType()+" "+electionResultPartyVO.getElectionYear());
+			    			   partiesInChart.add(value.getPartyName());
+			    			   dataset.addValue(new BigDecimal(value.getVotesPercentage()), value.getPartyName(), electionResultPartyVO.getElectionType()+" "+electionResultPartyVO.getElectionYear());
 			    		   }			    	   
 			       }		
-			       chartColorsAndDataSetVO.setDataSet(dataset);
-		           chartColorsAndDataSetVO.setColorsSet(colorsSet);	
 		       } catch (Exception e) {
 					e.printStackTrace();
 				}
-	       return chartColorsAndDataSetVO;
+	       return dataset;
 		}
 
 	public String getMandalWiseResultsChart() {
