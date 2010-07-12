@@ -824,7 +824,10 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
   						  }else if(IConstants.BJP.equalsIgnoreCase(candidateElecResults.getPartyName())){
     							colorsSet.add(IConstants.BJP_COLOR);
       							log.debug("BJP ADDED");
-      					  }else if("Others".equalsIgnoreCase(candidateElecResults.getPartyName())){
+      					  } else if(IConstants.PRP.equalsIgnoreCase(candidateElecResults.getPartyName())){
+  							colorsSet.add(IConstants.PRP_COLOR);
+  							log.debug("BJP ADDED");
+      					  } else if("Others".equalsIgnoreCase(candidateElecResults.getPartyName())){
   							colorsSet.add(Color.BLACK);
   							log.debug("Others ADDED");
       					  }
