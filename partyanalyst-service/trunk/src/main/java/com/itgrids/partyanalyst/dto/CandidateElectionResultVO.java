@@ -33,6 +33,7 @@ public class CandidateElectionResultVO implements Serializable {
 	private Long districtId;
 	private String districtName;
 	private String hasAlliance;
+	private Boolean allianceResult;
 	
 	public String getHasAlliance() {
 		return hasAlliance;
@@ -129,6 +130,12 @@ public class CandidateElectionResultVO implements Serializable {
 	}
 	public void setDistrictName(String districtName) {
 		this.districtName = districtName;
+	}
+	public Boolean getAllianceResult() {
+		return allianceResult;
+	}
+	public void setAllianceResult(Boolean allianceResult) {
+		this.allianceResult = allianceResult;
 	}
 	
 	
