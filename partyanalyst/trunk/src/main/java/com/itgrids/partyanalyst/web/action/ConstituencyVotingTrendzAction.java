@@ -762,7 +762,14 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				candResForOthers.setVotesPercentage(new BigDecimal(votesEarned.doubleValue()/totVotesEarned.doubleValue()*100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				candResultsInElection.add(candResForOthers);
 			}
-			
+			if((elecResult.getElectionType().equals(IConstants.ASSEMBLY_ELECTION_TYPE) 
+					|| elecResult.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE)) 
+					&& !elecResult.getElectionYear().equals("2008") 
+					&& !elecResult.getElectionYear().equals("2006")){
+			List<CandidateElectionResultVO> candResultsInElec = staticDataService.getProcessedAlliancePartiesResults(candResultsInElection,elecResult.getElectionType(),elecResult.getElectionYear());
+			if(candResultsInElec != null && candResultsInElec.size() > 0)
+				candResultsInElection = candResultsInElec;
+			}
 			electionResult.setCandidateElectionResultsVO(candResultsInElection);
 		}
 		
@@ -776,7 +783,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		   Set<Color> colorsSet = new LinkedHashSet<Color>();
 		   Collections.sort(elecdetails, new ElectionDataVOComparator());
 		  	   for(ElectionDataVO electionData:elecdetails){
-				   for(String party:partys){
+		  		   
+		  		    for(String party:partys){
 					   CandidateElectionResultVO candidateElecResults = null;
 					   Boolean flag = false;
 					   if(includeAllianc == true){						   
