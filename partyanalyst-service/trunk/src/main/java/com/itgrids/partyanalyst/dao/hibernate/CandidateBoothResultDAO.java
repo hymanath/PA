@@ -493,11 +493,13 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 	public List getResultsForElectionAndConstituencyByMandal(String mandalIds, String electionYear,String electionType){
 		Object[] parms = {electionYear,electionType};
 		return getHibernateTemplate().find("select model.nomination.party.shortName," +
-				" sum(model.votesEarned), model.nomination.party.partyId from CandidateBoothResult model " +
+				" sum(model.votesEarned), model.nomination.party.partyId,sum(model.boothConstituencyElection.boothResult.validVotes)"+
+				" from CandidateBoothResult model " +
 				" where model.boothConstituencyElection.booth.tehsil.tehsilId in (" + mandalIds +
 				" ) and model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
 				" and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? group by " +
 				" model.nomination.party.partyId order by sum(model.votesEarned) desc ",parms);
+				
 	}
 	
 	public List getResultsForElectionForAllMandalsAndParties(String mandalIds, String electionYear,String electionType){
