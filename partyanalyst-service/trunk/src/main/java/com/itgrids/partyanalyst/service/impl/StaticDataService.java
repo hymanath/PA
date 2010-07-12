@@ -93,6 +93,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Township;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.CandidateElecResultVOComparator;
 import com.itgrids.partyanalyst.utils.ConstituencyNamesComparator;
 import com.itgrids.partyanalyst.utils.DistrictNamesComparator;
 import com.itgrids.partyanalyst.utils.ElectionYearsComparator;
@@ -4370,10 +4371,16 @@ public class StaticDataService implements IStaticDataService {
 			ListIterator resultIterator = list2.listIterator();
 			while(resultIterator.hasNext()){
 				Object[] parms = (Object[])resultIterator.next();
+				Long votesEarned = (Long)parms[1];
+				Long partyId = (Long)parms[2];
+				Long validVotes = (Long)parms[3];
+				
+				
 				percentage= new BigDecimal((Float.parseFloat(parms[1].toString())/totalVotes)*100).setScale(2,BigDecimal.ROUND_HALF_UP);
 				CandidateElectionResultVO partyInfo = new CandidateElectionResultVO();
-				partyInfo.setTotalVotesEarned(Long.parseLong(parms[1].toString()));
+				partyInfo.setTotalVotesEarned(votesEarned);
 				partyInfo.setTotalValidVotes(totalVotes);
+				partyInfo.setPartyId(partyId);
 				partyInfo.setPartyName(parms[0].toString());
 				partyInfo.setVotesPercentage(percentage.toString());
 				List result = electionDAO.findElectionIdByElectionTypeAndYear(electionType,electionYear,1l);				
@@ -4399,7 +4406,7 @@ public class StaticDataService implements IStaticDataService {
 			System.out.println(smallestValue);			
 			List smallValue = new ArrayList(smallestValue);
 			
-			if(smallValue!=null ){
+			if(smallValue != null && smallValue.size() > 0){
 				lowerRange = smallValue.get(0).toString();
 			}
 			
@@ -4723,11 +4730,23 @@ public class StaticDataService implements IStaticDataService {
 				for(int i=0;i<partyResult.size();i++){					
 					ElectionResultVO electionResultVO = new ElectionResultVO();
 					electionResultVO.setElectionType(partyResult.get(i).getElectionType());
-					electionResultVO.setElectionYear(partyResult.get(i).getElectionYear());					
+					electionResultVO.setElectionYear(partyResult.get(i).getElectionYear());	
+										
+					if(partyResult.get(i).getElectionType().equals(IConstants.ASSEMBLY_ELECTION_TYPE) 
+							|| partyResult.get(i).getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE) 
+							&& !partyResult.get(i).getElectionYear().equals("2008") 
+							&& !partyResult.get(i).getElectionYear().equals("2006")){
+						List<CandidateElectionResultVO> candidateResults = getProcessedAlliancePartiesResults(partyResult.get(i).getCandidateElectionResultsVO(),partyResult.get(i).getElectionType(),partyResult.get(i).getElectionYear());
+						if(candidateResults != null && candidateResults.size() > 0){
+							partyResult.get(i).setCandidateElectionResultsVO(candidateResults);
+						}
+					}
+					
 					for(int k=0;k<partyResult.get(i).getCandidateElectionResultsVO().size();k++){	
 						electionResultVO.setHasAlliance(partyResult.get(i).getCandidateElectionResultsVO().get(k).getHasAlliance());	
+						electionResultVO.setAlliancRes(partyResult.get(i).getCandidateElectionResultsVO().get(k).getAllianceResult());
 						if(partyResult.get(i).getCandidateElectionResultsVO().get(k).getPartyName().equalsIgnoreCase(partiesList[j])){							
-							electionResultVO.setPercentage(partyResult.get(i).getCandidateElectionResultsVO().get(k).getVotesPercentage().toString());	
+							electionResultVO.setPercentage(partyResult.get(i).getCandidateElectionResultsVO().get(k).getVotesPercentage().toString());
 							break;
 						}else{
 							electionResultVO.setPercentage("-1");
@@ -4772,7 +4791,7 @@ public class StaticDataService implements IStaticDataService {
 				Set<Double> range = new TreeSet<Double>();				
 				for(int k=0;k<party.get(i).getElectionWiseResults().size();k++){	
 					String percentage = party.get(i).getElectionWiseResults().get(k).getPercentage();
-					if(!percentage.equalsIgnoreCase("-1")){
+					if(percentage != null && !percentage.equalsIgnoreCase("-1")){
 						range.add(Double.parseDouble(percentage));	
 					}					
 				}	
@@ -4942,6 +4961,110 @@ public class StaticDataService implements IStaticDataService {
 		electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,electionYear,electionType,flag);		
 		return electionResult;
 		//electionResult =  getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(tehsilIds,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,flag);
+	 
+	}
+	
+	
+	public List<CandidateElectionResultVO> getProcessedAlliancePartiesResults(List<CandidateElectionResultVO> elecResultVO,String elecType,String elecYear){
+		
+		Long elecTypeId = new Long(0);
+		List<CandidateElectionResultVO> candidateElectionResultsVO = null;
+		if(elecResultVO != null &&  elecResultVO.size() > 0){
+			
+			candidateElectionResultsVO = new ArrayList<CandidateElectionResultVO>();
+			if(elecType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+				elecTypeId = new Long(2);
+			else if(elecType.equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+				elecTypeId = new Long(1);
+			
+			Map<Long,CandidateElectionResultVO> partyResults = getPartyResultsInMap(elecResultVO);
+			Map<Long,String> addedParties = new HashMap<Long,String>();
+			addedParties.put(new Long(0), "Others");
+			if(partyResults != null && !partyResults.isEmpty()){
+				Set<Long> partyIds = partyResults.keySet();
+				for(Long party:partyIds){
+								 
+				 List<SelectOptionVO> alliancParties =  getAlliancePartiesAsVO(elecYear, elecTypeId, party);
+				 				 				 
+				 if(alliancParties != null && alliancParties.size() > 0){
+					 
+					 List<CandidateElectionResultVO> allianc = new ArrayList<CandidateElectionResultVO>();
+					 for(SelectOptionVO alliancPar:alliancParties){
+						 
+						 if(partyResults.containsKey(alliancPar.getId()) 
+								 && !addedParties.containsKey(alliancPar.getId())){
+							 
+							 allianc.add(partyResults.get(alliancPar.getId()));
+							
+							 addedParties.put(alliancPar.getId(), "Party Added");
+						 }
+						 
+					 }
+					 
+					 if(allianc != null && allianc.size() > 0){
+						 CandidateElectionResultVO resultVOAllianc = getGroupedResultForAllianc(allianc);
+						 if(resultVOAllianc != null){
+						 candidateElectionResultsVO.add(resultVOAllianc);
+						 }
+					 }
+				 }
+				 else{
+					 if(partyResults.containsKey(party)){
+					  candidateElectionResultsVO.add(partyResults.get(party)); 
+					  
+					  }
+				 }
+				 
+				}
+				
+			}
+			
+		}
+		
+		
+	 return candidateElectionResultsVO;
+	}
+	
+	public CandidateElectionResultVO getGroupedResultForAllianc(List<CandidateElectionResultVO> alliancRes){
+		CandidateElectionResultVO candResult = null;
+		if(alliancRes != null && alliancRes.size() > 0){
+			
+			if(alliancRes.size() == 1)
+				return alliancRes.get(0);
+			else if(alliancRes.size() > 1){
+							
+			   Collections.sort(alliancRes,new CandidateElecResultVOComparator());
+			
+			   Double totPercentage = new Double(0);
+			   for(int i=0;i<alliancRes.size();i++){
+				   
+				   totPercentage+=new Double(alliancRes.get(i).getVotesPercentage());
+			   }
+			   
+			   if(totPercentage > new Double(0)){
+				   totPercentage = new BigDecimal(totPercentage).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				   
+				   alliancRes.get(0).setVotesPercentage(totPercentage.toString());
+				   alliancRes.get(0).setAllianceResult(true);
+				   
+			   }
+			   candResult =  alliancRes.get(0);
+			}
+		}
+		
+	 return candResult;
+	}
+	
+	public Map<Long,CandidateElectionResultVO> getPartyResultsInMap(List<CandidateElectionResultVO> candResults){
+		Map<Long,CandidateElectionResultVO> resultsMap = null;
+		if(candResults != null && candResults.size() > 0){
+			
+			resultsMap = new HashMap<Long,CandidateElectionResultVO>();
+			for(CandidateElectionResultVO result:candResults){
+				resultsMap.put(result.getPartyId(), result);
+			}
+		}
+	 return resultsMap;
 	}
 }
 
