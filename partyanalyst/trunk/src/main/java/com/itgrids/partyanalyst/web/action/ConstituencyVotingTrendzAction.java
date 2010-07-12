@@ -899,10 +899,19 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				mandalsPartiesChart = "AllMandalsAllParties_"+mandalIds+"OfElectionYear_"+jObj.getString("electionYear")+
 													"ElectionType_"+jObj.getString("electionType")+".png";
 				String chartPath = context.getRealPath("/") + "charts\\" + mandalsPartiesChart;
+				String title = "Mandals Wise "+jObj.getString("electionYear")+" Election Results For All Parties";
 				Set<String> partiesInChart = new LinkedHashSet<String>();
-				ChartProducer.createLineChart("Mandals Wise "+jObj.getString("electionYear")+" Election Results For All Parties", 
-						"Mandals", "Percentages",createDataSetForLineChart(resultsInMandals, partiesInChart), 
-						chartPath,chartHeight,chartWidth,ChartUtils.getLineChartColors(partiesInChart),true);
+				CategoryDataset dataset = createDataSetForLineChart(resultsInMandals, partiesInChart);
+				if(dataset.getColumnCount()>1)
+				{
+					log.debug("dataset.getColumnCount():::::::::::::::::::::::"+dataset.getColumnCount());
+					ChartProducer.createLineChart(title,"Mandals", "Percentages",dataset, chartPath,chartHeight,chartWidth,ChartUtils.getLineChartColors(partiesInChart),true);
+				} else 	
+					{
+						log.debug("dataset.getColumnCount():::::::::::::::::::::::"+dataset.getColumnCount());
+						ChartProducer.create3DBarChartWithInputParams(title, null, "Mandal","Percentages", null, dataset, chartPath, chartWidth, chartHeight, ChartUtils.getLineChartColors(partiesInChart));
+					}
+				
 			}	
 		}
 			
