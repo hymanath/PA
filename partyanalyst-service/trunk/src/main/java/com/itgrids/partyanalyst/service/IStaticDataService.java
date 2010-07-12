@@ -180,4 +180,6 @@ public interface IStaticDataService {
 	public TeshilPartyInfoVO getLocalElectionDetailsForAConstituency(Long constituencyId,String electionType);
 	
 	public List<PartyResultVO> getPartyVotesPercentageInAConstituency(Long constituencyId,String all,String[] choices);
+	
+	public List<CandidateElectionResultVO> getProcessedAlliancePartiesResults(List<CandidateElectionResultVO> elecResultVO,String elecType,String elecYear);
 }
