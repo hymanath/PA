@@ -18,6 +18,7 @@ public class ElectionResultVO {
 	private String votesRange;
 	private List<AlliancePartyResultsVO> partiesAlliances;
 	private String electionYearAndType;
+	private Boolean alliancRes;
 	
 	public String getVotesRange() {
 		return votesRange;
@@ -119,6 +120,14 @@ public class ElectionResultVO {
 
 	public String getElectionYearAndType() {
 		return electionYearAndType;
+	}
+
+	public Boolean getAlliancRes() {
+		return alliancRes;
+	}
+
+	public void setAlliancRes(Boolean alliancRes) {
+		this.alliancRes = alliancRes;
 	}
 	
 }
