@@ -192,13 +192,14 @@ public class UserGroupAction extends ActionSupport implements ServletRequestAwar
 		}		
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		if(user==null)
+			return ERROR;	
+		
 		Long userID = user.getRegistrationID();
 		
 		remainingSms = smsCountrySmsService.getRemainingSmsLeftForUser(userID);
-		if(user==null)
-			return ERROR;	
 				
-		return Action.SUCCESS;		
+		return SUCCESS;		
 	}
 	
 	@SuppressWarnings("unchecked")
