@@ -719,7 +719,9 @@
 						if(info.electionType == 'Parliament' && info.electionYear == '2008' 
 							|| info.electionType == 'Parliament' && info.electionYear == '2006')
                            str += '<td align="center" name="'+info.electionType+'" style="background-color:#F6CECE;">'+info.percentage+'</td>';
-                           
+						else if(info.alliancRes == true){
+							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'<font style="color:red;"> *</td>'; 
+						} 
                         else if(info.hasAlliance == "true")
 							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
 						else if(info.hasAlliance == "false")
@@ -752,6 +754,8 @@
 			str += '<td><P>Bye Elections</P></td>';
 			str += '<td><div style="height:10px;width:10px;border:1px solid #F6CECE;background-color:#DDEB9B;margin:10px;"></div></td>';
 			str += '<td><P>Alliance Results</P></td>';
+			str += '<td><div style="margin:5px;"><font style="color:red;"> *</div></td>';
+			str += '<td><P>Grouped Alliance Party Results </P></td>';
 			str += '</tr>';
 			str += '</table></center>';
 			str += '</div>';
@@ -867,7 +871,14 @@
 						continue;
 					if(info.percentage != "-1")
 					{
-						if(info.hasAlliance == "true")
+						//for Bye Election Results
+						if(info.electionType == 'Parliament' && info.electionYear == '2008' 
+							|| info.electionType == 'Parliament' && info.electionYear == '2006')
+                           str += '<td align="center" name="'+info.electionType+'" style="background-color:#F6CECE;">'+info.percentage+'</td>';
+                        else if(info.alliancRes == true){
+							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'<font style="color:red;"> *</td>'; 
+						}
+                        else if(info.hasAlliance == "true")
 							str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
 						else if(info.hasAlliance == "false")
 							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
