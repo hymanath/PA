@@ -175,6 +175,7 @@ public class ChartProducer {
 	}
 		
 	public static void createBarChart(String title, String domainAxisL, String rangeAxisL, CategoryDataset dataset, String fileName) {
+		log.debug("in bar chart create method");
 		JFreeChart chart = ChartFactory.createBarChart("", domainAxisL, rangeAxisL, dataset, PlotOrientation.VERTICAL, true, true, false );
 		//chart.setBackgroundPaint(new Color(0xBBBBDD));
 		chart.setBackgroundPaint(Color.WHITE);
@@ -209,8 +210,9 @@ public class ChartProducer {
 				ChartUtilities.saveChartAsPNG(image, chart, 400, 350, info);
 
 		}
-		catch (java.io.IOException exc)
+		catch (Exception exc)
 		{
+			exc.printStackTrace();
 		log.error("Error writing image to file");
 		}
 		
@@ -549,7 +551,7 @@ public class ChartProducer {
 				}
 	}
 	
-	public static void create3DBarChartWithInputParams(String title,String reportType,String category,String value,String party,CategoryDataset dataset,String fileName,int width,int height){
+	public static void create3DBarChartWithInputParams(String title,String reportType,String category,String value,String party,CategoryDataset dataset,String fileName,int width,int height,List<Color> colors){
 		JFreeChart chart = ChartFactory.createBarChart(
 				title, // chart title
 				category, // domain axis label
@@ -576,14 +578,26 @@ public class ChartProducer {
 				// disable bar outlines...
 				BarRenderer renderer = (BarRenderer) plot.getRenderer();
 				renderer.setDrawBarOutline(false);
+				if(colors != null){
+		        	GradientPaint gp;
+		        	log.debug("Colors Size::"+colors.size());
+		        	for(int i=0; i<colors.size(); i++){
+		            	if(colors.get(i) == null)
+		            		continue;
+		            	gp = new GradientPaint(0.0f, 0.0f, colors.get(i), 0.0f, 0.0f, colors.get(i));
+		            	renderer.setSeriesPaint(i, gp);
+		            }
+		        } else {
+		        	GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.GREEN, 0.0f, 0.0f, Color.lightGray);
+					GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.RED, 0.0f, 0.0f, Color.lightGray);	
+					GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.cyan, 0.0f, 0.0f, Color.lightGray);
+					renderer.setSeriesPaint(0, gp0);
+					renderer.setSeriesPaint(1, gp1);
+					renderer.setSeriesPaint(2, gp2);
+		        }
+				 
 				
-				GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.GREEN, 0.0f, 0.0f, Color.lightGray);
-				GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.RED, 0.0f, 0.0f, Color.lightGray);	
-				GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.cyan, 0.0f, 0.0f, Color.lightGray);
-				renderer.setSeriesPaint(0, gp0);
-				renderer.setSeriesPaint(1, gp1);
-				renderer.setSeriesPaint(2, gp2);
-								
+				
 				renderer.setItemMargin(0.0);
 				renderer.setMaximumBarWidth(0.15);
 					
@@ -722,15 +736,5 @@ public static void createLabeledPieChart(String title,final DefaultPieDataset da
         {
             System.out.println("Exception while creating the chart");
         }
-	}
-
-	public static void main(String[] args) {
-		try {
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	
+	}	
 }
