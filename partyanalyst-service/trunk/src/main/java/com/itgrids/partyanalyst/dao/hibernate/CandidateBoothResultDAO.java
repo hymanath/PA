@@ -148,7 +148,7 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 		.append(" and model.boothConstituencyElection.villageBoothElection.township.tehsil.tehsilId = ?")
 		.append(" group by model.nomination.nominationId,")
 		.append("model.boothConstituencyElection.villageBoothElection.township.townshipId ")
-		.append("order by model.boothConstituencyElection.villageBoothElection.township.townshipId, ")
+		.append("order by model.boothConstituencyElection.villageBoothElection.township.townshipName, ")
 		.append("model.nomination.nominationId");
 		return getHibernateTemplate().find(hqlQuery.toString(), params);
 	}
