@@ -684,6 +684,14 @@
 			var electionListLength = results[0].electionList.length+2;
 
 			var str = '';
+			str += '<table><tr>';
+			str += '<td><div style="height:10px;width:10px;border:1px solid #DDEB9B;background-color:#F6CECE;margin:10px;"></div></td>';
+			str += '<td><P>Bye Elections</P></td>';
+			str += '<td><div style="height:10px;width:10px;border:1px solid #F6CECE;background-color:#DDEB9B;margin:10px;"></div></td>';
+			str += '<td><P>Alliance Results</P></td>';
+			str += '<td><div style="margin:5px;"><font style="color:red;"> *</div></td>';
+			str += '<td><P>Grouped Alliance Party Results </P></td>';
+            str += '</tr></table>';
 		
 			str += '<div id="votersShareData_main">';
 			str += '<center><table id="votesShareDetailsTable" width="90%" cellspacing="0" cellmargin="0">';
@@ -750,13 +758,6 @@
 			str += '<input type="checkbox" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';	
 
 			str += '</td>';
-			
-			str += '<td><div style="height:10px;width:10px;border:1px solid #DDEB9B;background-color:#F6CECE;margin:10px;"></div></td>';
-			str += '<td><P>Bye Elections</P></td>';
-			str += '<td><div style="height:10px;width:10px;border:1px solid #F6CECE;background-color:#DDEB9B;margin:10px;"></div></td>';
-			str += '<td><P>Alliance Results</P></td>';
-			str += '<td><div style="margin:5px;"><font style="color:red;"> *</div></td>';
-			str += '<td><P>Grouped Alliance Party Results </P></td>';
 			str += '</tr>';
 			str += '</table></center>';
 			str += '</div>';
