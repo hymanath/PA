@@ -225,10 +225,9 @@
 							partyId:"${staticParties.id}",
 							partyName:"${staticParties.name}"
 						};
-			if(pObj.partyName != 'PRP')
-			{
+		
 				tehsilElections.staticParties.push(pObj);
-			}			
+						
 		</c:forEach>
 		
 		<c:forEach var="district" items="${districtsAndConsts}">
