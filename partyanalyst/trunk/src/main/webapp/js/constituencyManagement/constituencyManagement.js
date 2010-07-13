@@ -279,6 +279,7 @@ function buildProblemsDetailsDT(results) {
 					problemSourceScope:results[i].problemSourceScope,
 					problemAndProblemSourceId:results[i].problemAndProblemSourceId,
 					status:results[i].status,
+					problemSourceScope:results[i].probSource,
 					more:'<a href="javascript:{}" onclick="getProblemHistoryInfo('+results[i].problemLocationId+')">More Info</a>'
 			};
 			
@@ -365,7 +366,7 @@ function buildInfluencingPeopleDT(results) {
 		sortable : true
 	}, {
 		key : "contactNumber",
-		label : localizationObj.contactnbr
+		label : localizationObj.mobile
 	}, {
 		key : "party",
 		label : localizationObj.party,
@@ -378,13 +379,18 @@ function buildInfluencingPeopleDT(results) {
 		key : "influencingRange",
 		label : localizationObj.inflScope,
 		sortable : true
-	} ];
+	}, {
+		key : "influencingRangeName",
+		label : "Influencing Place",
+		sortable : true
+	} 
+	];
 
 	var ipDTDataSource = new YAHOO.util.DataSource(results);
 	ipDTDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	ipDTDataSource.responseSchema = {
 		fields : ["influencingPeopleId","personName", "contactNumber", "party", "localArea",
-				"influencingRange" ]
+				"influencingRange","influencingRangeName" ]
 	};
 
 	if (results.length > 10) {
