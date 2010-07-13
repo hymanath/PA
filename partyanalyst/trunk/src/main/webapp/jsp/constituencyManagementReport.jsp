@@ -258,7 +258,8 @@
 						hamlet:'${prob.hamlet}',
 						problemSourceScope:'${prob.problemSourceScope}',
 						problemAndProblemSourceId:'${prob.problemAndProblemSourceId}',
-						status:'${prob.status}' 
+						status:'${prob.status}',
+						probSource:'${prob.probSource}' 
 					  };
 			  problemMgmtObj.initialProblems.push(problemInfo);
 		</c:forEach>
