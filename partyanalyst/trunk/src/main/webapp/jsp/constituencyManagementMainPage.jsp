@@ -92,11 +92,18 @@
 		{
 			padding:5px;
 		}
-		#newProblemTabContentDiv_footer, #newProblemTabContentDiv_head, #classifiedTabContentDiv_footer, #assignedIssuesTabContentDiv_footer, #pendingTabContentDiv_footer, #progressTabContentDiv_footer
+		#newProblemTabContentDiv_footer, #classifiedTabContentDiv_footer, #assignedIssuesTabContentDiv_footer, #pendingTabContentDiv_footer, #progressTabContentDiv_footer
 		{
 			margin-right:20px;
 			text-align:right;
 			padding:5px;
+		}
+		.editInfo
+		{
+			text-align:left;
+			padding:5px;
+			font-weight: bold;
+			color: #707070;
 		}
 		#problemMgmtMainDiv
 		{
@@ -2236,8 +2243,8 @@
 		var newTabContent='<div id="newProblemTabContentDiv">';
 		newTabContent+='<div id="NewIssuesAlertMessage" style="display: none;"><%=newIssuesAlertMessage%></div>';
 		newTabContent+='</div>';
-		newTabContent+='<div id="newProblemTabContentDiv_head"></div>';
-		newTabContent+='<div id="newProblemTabContentDiv_body"></div>';
+		newTabContent+='<div id="newProblemTabContentDiv_head" class="editInfo">Please Click on Scope and ProblemType fields to edit information</div>';
+		newTabContent+='<div class="yui-skin-sam"><div id="newProblemTabContentDiv_body"></div></div>';
 		newTabContent+='<div id="newProblemTabContentDiv_footer" align="right"></div>';
 		newTabContent+='</div>';
 
@@ -2251,6 +2258,7 @@
 		
 		var assignedIssuesTabContent='<div id="assignedIssuesTabContentDiv">';
 		assignedIssuesTabContent+='<div id="assignedIssuesTabContentDiv_head">';
+		assignedIssuesTabContent+='<div class="editInfo">Please Click on Official, Name, Telephone, Comments fields to edit information</div>';
 		assignedIssuesTabContent+='<div id="assignedIssuesAlertMsg" style="display: none;">Please Update Concerned Official Details!</div>';	
 		assignedIssuesTabContent+='</div>';
 		assignedIssuesTabContent+='<div id="assignedIssuesTabContentDiv_body"></div>';
@@ -2259,6 +2267,7 @@
 
 		var progressTabContent='<div id="progressTabContentDiv">';
 		progressTabContent+='<div id="progressTabContentDiv_header">';
+		progressTabContent+='<div class="editInfo">Please Click on Comments field to edit information</div>';
 		progressTabContent+='<div id="progressedIssAlertMsg" style="display: none;">Please Give Comments!</div>';
 		progressTabContent+='</div>';
 		progressTabContent+='<div id="progressTabContentDiv_body"></div>';
@@ -2267,6 +2276,7 @@
 
 		var pendingTabContent='<div id="pendingTabContentDiv">'; 
 		pendingTabContent+='<div id="pendingTabContentDiv_head">';
+		pendingTabContent+='<div class="editInfo">Please Click on Comments field to edit information</div>';
 		pendingTabContent+='<div id="pendingIssAlertMsg" style="display: none;">Please Give Comments</div>';
 		pendingTabContent+='</div>';
 		pendingTabContent+='<div id="pendingTabContentDiv_body"></div>';
@@ -2927,7 +2937,10 @@
 		classifiedDataTable.updateCell(classifyDTRecord , "departmentId" , assignedDeptValue );				
 		EditClassifyProbsDialog.hide();
 	}
-	
+	function handleDialogCancel()
+	{
+		this.cancel();
+	}
 	function assignButtonHandler()
 	{
 		problemMgmtTabs.getTab(2).set("disabled", false);
