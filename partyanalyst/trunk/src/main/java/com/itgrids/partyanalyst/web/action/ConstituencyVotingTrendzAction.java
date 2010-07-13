@@ -909,7 +909,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				} else 	
 					{
 						log.debug("dataset.getColumnCount():::::::::::::::::::::::"+dataset.getColumnCount());
-						ChartProducer.create3DBarChartWithInputParams(title, null, "Mandal","Percentages", null, dataset, chartPath, chartWidth, chartHeight, ChartUtils.getLineChartColors(partiesInChart));
+						ChartProducer.create3DBarChartWithInputParams(title, null, "Mandal","Percentages", null, dataset, chartPath, chartWidth, chartHeight, ChartUtils.getLineChartColors(partiesInChart),true);
 					}
 				
 			}	
