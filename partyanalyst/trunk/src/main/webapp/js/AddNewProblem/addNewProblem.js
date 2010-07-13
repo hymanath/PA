@@ -9,7 +9,7 @@ var locationDetails={
 	};
 
 var date = new Date().getDate()+"/"+(new Date().getMonth()+1)+"/"+new Date().getFullYear();
-
+var hidden=1;
 var maxDate = (new Date().getMonth() + 1) + "/" + new Date().getDate() + "/" + new Date().getFullYear();
 function getCurrentDate()
 { 			
@@ -531,4 +531,13 @@ function validateClientSide()
 		flag=true;
 	}
 		return flag;
+}
+
+
+function refreshParentWindow()
+{
+	incrementHidden();
+	window.opener.document.location.reload(true);
+	window.close();
+
 }
