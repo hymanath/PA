@@ -551,7 +551,7 @@ public class ChartProducer {
 				}
 	}
 	
-	public static void create3DBarChartWithInputParams(String title,String reportType,String category,String value,String party,CategoryDataset dataset,String fileName,int width,int height,List<Color> colors){
+	public static void create3DBarChartWithInputParams(String title,String reportType,String category,String value,String party,CategoryDataset dataset,String fileName,int width,int height,List<Color> colors, boolean setMargin){
 		JFreeChart chart = ChartFactory.createBarChart(
 				title, // chart title
 				category, // domain axis label
@@ -596,10 +596,18 @@ public class ChartProducer {
 					renderer.setSeriesPaint(2, gp2);
 		        }
 				 
-				
-				
-				renderer.setItemMargin(0.0);
-				renderer.setMaximumBarWidth(0.15);
+				//domainAxis.setLowerMargin(0.03);
+				//domainAxis.setCategoryMargin(0.56); // ten percent
+				//domainAxis.setUpperMargin(0.03); // two percent
+				if(setMargin)
+				{
+					renderer.setItemMargin(0.50);
+				} else 	
+					{
+						renderer.setItemMargin(0.0);
+						renderer.setMaximumBarWidth(0.15);
+					}
+					
 					
 				try	 {
 					final ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
@@ -736,5 +744,6 @@ public static void createLabeledPieChart(String title,final DefaultPieDataset da
         {
             System.out.println("Exception while creating the chart");
         }
-	}	
+	}
+	
 }
