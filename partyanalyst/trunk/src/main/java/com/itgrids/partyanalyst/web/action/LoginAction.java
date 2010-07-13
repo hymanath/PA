@@ -70,7 +70,7 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		session = request.getSession();
 		RegistrationVO regVO = loginService.checkForValidUser(userName, password);
 		name = regVO.getFirstName() + " " + regVO.getLastName();
-				
+		int hiden = 0;		
 		if (regVO.getRegistrationID()==null) {
 			session.setAttribute("loginStatus", "in");
 			addActionError("Invalid user name or password! Please try again!");
@@ -78,7 +78,8 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
 		} else {
 			session.setAttribute("USER",regVO);
 			session.setAttribute("UserName", name);
-			session.setAttribute("loginStatus", "out");			
+			session.setAttribute("loginStatus", "out");	
+			session.setAttribute("HiddenCount", hiden);
 			if(src != null)
 				return src;
 			else
