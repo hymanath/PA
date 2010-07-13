@@ -9,7 +9,6 @@ var problemMgmtObj = {
 };
 var mobileNumbersArray = new Array();
 
-
 var assignTolocalPoliticalChangesDataArray,localPoliticalChanges,externalPersonDetailsPanel;
 var hidden = 1;
 
@@ -802,4 +801,8 @@ function displayDateTextBox(type, args, obj,elementId) {
 	}
 	
 	txtDate1.value = day + "/" + month + "/" + year;
+}
+function incrementHidden()
+{
+	hidden++;
 }
