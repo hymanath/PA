@@ -558,7 +558,7 @@ function buildElectionResultsComparePanel()
 						votesPercentTwo:secondLocal.votesPercent,
 						seatsDiffTwo:secondLocal.votesPercent,
 						votesDiffTwo:secondLocal.votesDiff,
-						totalPercentageTwo:secondLocal.totalPercentage,
+						totalPercentageTwo:secondLocal.totalPercentage
 					  };
 			arr.push(obj);
 			
@@ -584,7 +584,7 @@ function buildElectionResultsComparePanel()
 						votesPercentTwo:"*NP",
 						seatsDiffTwo:"0",
 						votesDiffTwo:"0",
-						totalPercentageTwo:"0",
+						totalPercentageTwo:"0"
 					  };
 			arr.push(obj);
 		}
