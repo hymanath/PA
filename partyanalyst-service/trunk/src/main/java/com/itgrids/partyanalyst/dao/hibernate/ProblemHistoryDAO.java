@@ -19,7 +19,7 @@ public class ProblemHistoryDAO extends GenericDaoHibernate<ProblemHistory, Long>
 	public List<ProblemHistory> findProblemLocationsByUserId(Long registrationId, Long statusId){
 		Object [] params = {registrationId, statusId};
 		return getHibernateTemplate().find("from ProblemHistory model where model.problemLocation.problemAndProblemSource.user.registrationId = ? " +
-				"and model.problemStatus.problemStatusId = ?",params);
+				"and model.problemStatus.problemStatusId = ? order by model.problemLocation.problemAndProblemSource.problem.identifiedOn desc",params);
 	}
 	
 	@SuppressWarnings("unchecked")
