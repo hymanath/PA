@@ -370,6 +370,7 @@
 	var accessValue = '${accessValue}';
 	var mobileNumbersArray = new Array();
 	var smsHidden = 1;
+	var hidden = '${sessionScope.HiddenCount}';
 	
 	var problemsMainObj={	
 							probTypesArr:[],
@@ -1431,7 +1432,7 @@
 			task:"newProblemsByUserID"
 		}
 		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/problemManagementAction.action?"+param;
+		var url = "<%=request.getContextPath()%>/problemManagementAction.action?"+param+"&hidden="+hidden;
 		callAjax(param,jsObj,url);		
 	}
 	

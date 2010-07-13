@@ -247,7 +247,8 @@
 		  var initialProbs = new Array();
 		  var smsHidden = 1;
 		  var externalPerson = '${EXTERNAL_PERSON}';
-
+		  var hidden = '${sessionScope.HiddenCount}';
+		  
 		  <c:forEach var="prob" items="${problemsList}">
 			  var problemInfo = {
 					  	problemLocationId:'${prob.problemLocationId}',
@@ -277,12 +278,14 @@
   
 		function getProblemsStatusCountByAccessType()
 		{
+			incrementHidden();
+			
 			var jsObj= 
 			{			
 				task: "getProblemsStatusCount"		
 			}
 			var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "<%=request.getContextPath()%>/problemsCountByStatusBasedOnAccessLevelsAction.action?"+param;
+			var url = "<%=request.getContextPath()%>/problemsCountByStatusBasedOnAccessLevelsAction.action?"+param+"&hidden="+hidden;
 			callAjax(param,jsObj,url);
 		}
 		

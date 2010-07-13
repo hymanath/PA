@@ -71,6 +71,18 @@ var localizationObj={
 		problemAddingSuccess:'<%=problemAddingSuccess%>',
 		locationAlert:'<%=locationAlert%>'
 };
+var hidden = '${sessionScope.HiddenCount}';
+
+function incrementHidden()
+{
+	<%
+	int hidden1 = (Integer)session.getAttribute("HiddenCount");
+	 
+	hidden1=hidden1+1;
+	   session.setAttribute( "HiddenCount", hidden1 );
+	%>
+	hidden= '${sessionScope.HiddenCount}';
+}
 </script>
 </head>
 <body  class="bodyStyle">
@@ -259,11 +271,12 @@ var localizationObj={
 			</div>
 			</FIELDSET>
 			</div>
-			<div style="text-align:center;">
-			<s:submit name="Save" value="Save" cssClass="button"></s:submit>
+			<div style="margin-left:225px;">
+			<s:submit name="Save" value="Save" cssClass="button"></s:submit></div>
+            </s:form>
+		    <input type="button" value="Exit" class="button" onclick="refreshParentWindow()"/>
 			</div>
-</div>
-</s:form>
+
 </div>
 <script type="text/javascript">
 getCurrentDate();
