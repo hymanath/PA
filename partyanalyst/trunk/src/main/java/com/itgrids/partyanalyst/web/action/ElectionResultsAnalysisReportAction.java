@@ -297,7 +297,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	        String analysisMainPartyChartPath = context.getRealPath("/") + "charts\\" + analysisMainPartyChartName;
 	 		
 	        String title = partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName().concat(" Analysis Details");
-	       	ChartProducer.create3DBarChartWithInputParams(title,"Analysis","Party","Results",partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName(),createDatasetForPartyAnalysisResults(partyAnalysisReportVO.getPartyBasicAnalysisVO()), analysisMainPartyChartPath,width,height, null);
+	       	ChartProducer.create3DBarChartWithInputParams(title,"Analysis","Party","Results",partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName(),createDatasetForPartyAnalysisResults(partyAnalysisReportVO.getPartyBasicAnalysisVO()), analysisMainPartyChartPath,width,height, null,false);
 	 		request.setAttribute("analysisMainPartyChartName", analysisMainPartyChartName);
 			session.setAttribute("analysisMainPartyChartName", analysisMainPartyChartName);
 			partyAnalysisReportVO.getPartyBasicAnalysisVO().setAnalysisChart(analysisMainPartyChartName);
@@ -308,7 +308,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	        String resultsMainPartyChartPath = context.getRealPath("/") + "charts\\" + resultsMainPartyChartName;
 	 		
 	        String title1 = partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName().concat(" Election Results");
-	       	ChartProducer.create3DBarChartWithInputParams(title1,"Results","Party","Seats",partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName(),createDatasetForPartyElectionResults(partyAnalysisReportVO.getPartyBasicAnalysisVO()), resultsMainPartyChartPath,width,height, null);
+	       	ChartProducer.create3DBarChartWithInputParams(title1,"Results","Party","Seats",partyAnalysisReportVO.getPartyBasicAnalysisVO().getPartyName(),createDatasetForPartyElectionResults(partyAnalysisReportVO.getPartyBasicAnalysisVO()), resultsMainPartyChartPath,width,height, null,false);
 	 		request.setAttribute("resultsMainPartyChartName", resultsMainPartyChartName);
 			session.setAttribute("resultsMainPartyChartName", resultsMainPartyChartName);
 			partyAnalysisReportVO.getPartyBasicAnalysisVO().setResultsChart(resultsMainPartyChartName);
@@ -322,7 +322,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		        String analysisAlliancPartyChartPath = context.getRealPath("/") + "charts\\" + analysisAlliancPartyChartName;
 		 		
 		        String title2 = alliancAnalysis.getPartyName().concat(" Analysis Details");
-		      	ChartProducer.create3DBarChartWithInputParams(title2,"Analysis","Party","Results",alliancAnalysis.getPartyName(),createDatasetForPartyAnalysisResults(alliancAnalysis), analysisAlliancPartyChartPath,width,height, null);
+		      	ChartProducer.create3DBarChartWithInputParams(title2,"Analysis","Party","Results",alliancAnalysis.getPartyName(),createDatasetForPartyAnalysisResults(alliancAnalysis), analysisAlliancPartyChartPath,width,height, null,false);
 		 		request.setAttribute("analysisAlliancPartyChartName", analysisAlliancPartyChartName);
 				session.setAttribute("analysisAlliancPartyChartName", analysisAlliancPartyChartName);
 				alliancAnalysis.setAnalysisChart(analysisAlliancPartyChartName);
@@ -333,7 +333,7 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 		        String resultsAlliancPartyChartPath = context.getRealPath("/") + "charts\\" + resultsAlliancPartyChartName;
 		 		
 		        String title3 = alliancAnalysis.getPartyName().concat(" Election Results");
-		       	ChartProducer.create3DBarChartWithInputParams(title3,"Results","Party","Seats",alliancAnalysis.getPartyName(),createDatasetForPartyElectionResults(alliancAnalysis), resultsAlliancPartyChartPath,width,height, null);
+		       	ChartProducer.create3DBarChartWithInputParams(title3,"Results","Party","Seats",alliancAnalysis.getPartyName(),createDatasetForPartyElectionResults(alliancAnalysis), resultsAlliancPartyChartPath,width,height, null,false);
 		 		request.setAttribute("resultsAlliancPartyChartName", resultsAlliancPartyChartName);
 				session.setAttribute("resultsAlliancPartyChartName", resultsAlliancPartyChartName);
 				alliancAnalysis.setResultsChart(resultsAlliancPartyChartName);
