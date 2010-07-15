@@ -9,7 +9,7 @@ public class ConstituencyMandalVO implements Serializable{
 	private Long constituencyId;
 	private String constituencyName;
 	private Long tehsilId;
-	private Long tehsilName;
+	private String tehsilName;
 	
 	private List<PartyInfoVO> partiesReslts;
 	
@@ -37,11 +37,11 @@ public class ConstituencyMandalVO implements Serializable{
 		this.tehsilId = tehsilId;
 	}
 	
-	public Long getTehsilName() {
+	public String getTehsilName() {
 		return tehsilName;
 	}
 	
-	public void setTehsilName(Long tehsilName) {
+	public void setTehsilName(String tehsilName) {
 		this.tehsilName = tehsilName;
 	}
 
