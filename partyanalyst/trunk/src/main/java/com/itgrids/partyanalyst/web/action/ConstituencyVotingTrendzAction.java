@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyResultsInfoVO;
 import com.itgrids.partyanalyst.dto.PartyVillageLevelAnalysisVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.ElectionTypeChartVO;
@@ -53,6 +54,7 @@ import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.ChartUtils;
+import com.itgrids.partyanalyst.helper.Constants;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
@@ -108,6 +110,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private ElectionTrendzReportVO constituencyOverView;
 	private ElectionWiseMandalPartyResultListVO partywiseVotesDetailsForMandal;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
+	private List<PartyResultsInfoVO> contestingCands;
 
 
 	public String getMuncipalityElectionType() {
@@ -116,6 +119,14 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 
 	public void setMuncipalityElectionType(String muncipalityElectionType) {
 		this.muncipalityElectionType = muncipalityElectionType;
+	}
+
+	public List<PartyResultsInfoVO> getContestingCands() {
+		return contestingCands;
+	}
+
+	public void setContestingCands(List<PartyResultsInfoVO> contestingCands) {
+		this.contestingCands = contestingCands;
 	}
 
 	public String getCorporationElectionType() {
@@ -549,6 +560,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		String constiName = jObj.getString("constiName");
 		
 		constituencyOverView = staticDataService.getConstituencyOverview(constiId,constiName);
+		contestingCands = getContestingCandidateDetails(constiName);
+		constituencyOverView.setContestingCands(contestingCands);
 		
 		return Action.SUCCESS;
 	}
@@ -574,8 +587,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 			//biElectionResultsMainVO.setBiElectionResultsMainVO(biElectionResultsVO);
 		
-			
-		
+	
 		
 		biElectionResultsMainVO.setChartsListForElectionTypes(getElectionResultsPieChart(constiId, constiName, biElectionResultsMainVO.getBiElectionResultsMainVO()));
 		
@@ -1150,5 +1162,104 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
     	
 		return dataset;
 	}
+    
+    public List<PartyResultsInfoVO> getContestingCandidateDetails(String constituencyName){
+    	
+    	List<PartyResultsInfoVO> contestingCand = new ArrayList<PartyResultsInfoVO>();
+    	if(constituencyName != null){
+    		
+    		PartyResultsInfoVO resultVOOne = new PartyResultsInfoVO();
+    		if(constituencyName.equalsIgnoreCase(Constants.NIZAMABAD_URBAN))
+    			resultVOOne.setPartyName(IConstants.BJP);
+    		else
+    		    resultVOOne.setPartyName(IConstants.TRS);
+    		PartyResultsInfoVO resultVOTwo = new PartyResultsInfoVO();
+    		resultVOTwo.setPartyName(IConstants.INC);
+    		PartyResultsInfoVO resultVOThr = new PartyResultsInfoVO();
+    		resultVOThr.setPartyName(IConstants.TDP);
+    		
+    		if(constituencyName.equalsIgnoreCase(Constants.SIRCILLA)){
+    			
+    			resultVOOne.setCandidateName(Constants.SIRCILLA_TRS);
+    			resultVOTwo.setCandidateName(Constants.SIRCILLA_INC);
+    			resultVOThr.setCandidateName(Constants.SIRCILLA_TDP);
+    			
+    		}
+    		
+    		else if(constituencyName.equalsIgnoreCase(Constants.SIRPUR)){
+    			
+    			resultVOOne.setCandidateName(Constants.SIRPUR_TRS);
+    			resultVOTwo.setCandidateName(Constants.SIRPUR_INC);
+    			resultVOThr.setCandidateName(Constants.SIRPUR_TDP);
+    		}
+    		
+           else if(constituencyName.equalsIgnoreCase(Constants.CHENNUR)){
+    			
+    			resultVOOne.setCandidateName(Constants.CHENNUR_TRS);
+    			resultVOTwo.setCandidateName(Constants.CHENNUR_INC);
+    			resultVOThr.setCandidateName(Constants.CHENNUR_TDP);
+    		}
+    		
+           else if(constituencyName.equalsIgnoreCase(Constants.MANCHERIAL)){
+   			
+   			resultVOOne.setCandidateName(Constants.MANCHERIAL_TRS);
+   			resultVOTwo.setCandidateName(Constants.MANCHERIAL_INC);
+   			resultVOThr.setCandidateName(Constants.MANCHERIAL_TDP);
+   		   }
+           else if(constituencyName.equalsIgnoreCase(Constants.YELLAREDDY)){
+      			
+      			resultVOOne.setCandidateName(Constants.YELLAREDDY_TRS);
+      			resultVOTwo.setCandidateName(Constants.YELLAREDDY_INC);
+      			resultVOThr.setCandidateName(Constants.YELLAREDDY_TDP);
+      	   }
+           else if(constituencyName.equalsIgnoreCase(Constants.NIZAMABAD_URBAN)){
+     			
+     			resultVOOne.setCandidateName(Constants.NIZAMABAD_URBAN_BJP);
+     			resultVOTwo.setCandidateName(Constants.NIZAMABAD_URBAN_INC);
+     			resultVOThr.setCandidateName(Constants.NIZAMABAD_URBAN_TDP);
+     	   }
+    	
+           else if(constituencyName.equalsIgnoreCase(Constants.KORATLA)){
+    			
+    			resultVOOne.setCandidateName(Constants.KORATLA_TRS);
+    			resultVOTwo.setCandidateName(Constants.KORATLA_INC);
+    			resultVOThr.setCandidateName(Constants.KORATLA_TDP);
+    	   }
+           else if(constituencyName.equalsIgnoreCase(Constants.DHARMAPURI)){
+   			
+   			resultVOOne.setCandidateName(Constants.DHARMAPURI_TRS);
+   			resultVOTwo.setCandidateName(Constants.DHARMAPURI_INC);
+   			resultVOThr.setCandidateName(Constants.DHARMAPURI_TDP);
+   	       }
+           else if(constituencyName.equalsIgnoreCase(Constants.VEMULAWADA)){
+      			
+  			resultVOOne.setCandidateName(Constants.VEMULAWADA_TRS);
+  			resultVOTwo.setCandidateName(Constants.VEMULAWADA_INC);
+  			resultVOThr.setCandidateName(Constants.VEMULAWADA_TDP);
+      	   }
+           else if(constituencyName.equalsIgnoreCase(Constants.HUZURABAD)){
+     			
+     			resultVOOne.setCandidateName(Constants.HUZURABAD_TRS);
+     			resultVOTwo.setCandidateName(Constants.HUZURABAD_INC);
+     			resultVOThr.setCandidateName(Constants.HUZURABAD_TDP);
+           }
+           else if(constituencyName.equalsIgnoreCase(Constants.SIDDIPET)){
+     			
+     			resultVOOne.setCandidateName(Constants.SIDDIPET_TRS);
+     			resultVOTwo.setCandidateName(Constants.SIDDIPET_INC);
+     			resultVOThr.setCandidateName(Constants.SIDDIPET_TDP);
+           }
+           else if(constituencyName.equalsIgnoreCase(Constants.WARANGAL_WEST)){
+    			
+    			resultVOOne.setCandidateName(Constants.WARANGAL_WEST_TRS);
+    			resultVOTwo.setCandidateName(Constants.WARANGAL_WEST_INC);
+    			resultVOThr.setCandidateName(Constants.WARANGAL_WEST_TDP);
+           }
+    		contestingCand.add(resultVOOne);
+    		contestingCand.add(resultVOTwo);
+    		contestingCand.add(resultVOThr);
+    	}
+     return contestingCand;
+    }
 
 }
