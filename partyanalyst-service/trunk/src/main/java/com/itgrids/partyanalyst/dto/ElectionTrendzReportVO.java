@@ -36,7 +36,7 @@ public class ElectionTrendzReportVO implements Serializable {
 	private Long latestElectionYearsTotalVoters;
 	private Long latestElectionYearsTotalPolledVotes;
 	private String latestElectionYearsTotalVotesPercentage;
-	
+	private List<PartyResultsInfoVO> contestingCands;
 	private Long presentYearTotalVoters;
 		
 	private ResultStatus resultStatus;
@@ -188,6 +188,14 @@ public class ElectionTrendzReportVO implements Serializable {
 	public void setLatestElectionYearsTotalVotesPercentage(
 			String latestElectionYearsTotalVotesPercentage) {
 		this.latestElectionYearsTotalVotesPercentage = latestElectionYearsTotalVotesPercentage;
+	}
+
+	public List<PartyResultsInfoVO> getContestingCands() {
+		return contestingCands;
+	}
+
+	public void setContestingCands(List<PartyResultsInfoVO> contestingCands) {
+		this.contestingCands = contestingCands;
 	}
 
 }
