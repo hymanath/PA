@@ -76,7 +76,6 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	HttpServletResponse response;
 	HttpSession session;
 	private ServletContext context;
-	List<BiElectionResultsVO> biElectionResultsVO;
 	private Long zptcElectionId; 
 	private Long mptcElectionId;
 	private String mptcElectionType,zptcElectionType;
@@ -252,15 +251,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	public void setConstituencyVO(ConstituencyVO constituencyVO) {
 		this.constituencyVO = constituencyVO;
 	}
-
-	public List<BiElectionResultsVO> getBiElectionResultsVO() {
-		return biElectionResultsVO;
-	}
-
-	public void setBiElectionResultsVO(List<BiElectionResultsVO> biElectionResultsVO) {
-		this.biElectionResultsVO = biElectionResultsVO;
-	}
-
+	
 	public Long getZptcElectionId() {
 		return zptcElectionId;
 	}
@@ -579,12 +570,14 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		Long constiId =  new Long(jObj.getString("constituencyId"));
 		String constiName = jObj.getString("constiName");
 		
+		biElectionResultsMainVO  = biElectionPageService.getMandalWiseResultsForSelectedPartiesInConstituency(constiId);
 		
-		biElectionResultsVO = biElectionPageService.getMandalWiseResultsForSelectedPartiesInConstituency(constiId);
+			//biElectionResultsMainVO.setBiElectionResultsMainVO(biElectionResultsVO);
 		
-		biElectionResultsMainVO = new BiElectionResultsMainVO();
-		biElectionResultsMainVO.setBiElectionResultsMainVO(biElectionResultsVO);
-		biElectionResultsMainVO.setChartsListForElectionTypes(getElectionResultsPieChart(constiId, constiName, biElectionResultsVO));
+			
+		
+		
+		biElectionResultsMainVO.setChartsListForElectionTypes(getElectionResultsPieChart(constiId, constiName, biElectionResultsMainVO.getBiElectionResultsMainVO()));
 		
 		constituencyVO = getVotersShareInMandalsPieChart(constiId);
 		biElectionResultsMainVO.setConstituencyVO(constituencyVO);
