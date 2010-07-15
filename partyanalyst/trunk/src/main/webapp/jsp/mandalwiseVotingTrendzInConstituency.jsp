@@ -628,7 +628,7 @@
 			str += '<td><P>Alliance Results</P></td>';
 			str += '</tr>';
 			str += '</table>';
-			str += '<table id="votesShareDetailsTable" width="100%" cellspacing="0" cellmargin="0">';
+			str += '<table id="votesShareDetailsTable" width="100%" cellspacing="4" cellmargin="0">';
 			str += '<tr>';
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
 			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
@@ -673,7 +673,7 @@
 							str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
 					
 				}
-				str += '<td style="color:#9B5118;font-weight:bold;">'+results.allPartiesAllElectionResults[j].range+'</td>';				
+				str += '<td style="color:GoldenRod;font-weight:bold;" align="center">'+results.allPartiesAllElectionResults[j].range+'</td>';				
 				}
 				str += '</tr>';
 			}
@@ -847,7 +847,7 @@
 			var ecType = getElectionType(checkedValue);
 
 			var str = '';
-			str += '<center><table id="votesShareDetailsTable" width="75%" cellspacing="0" cellmargin="0">';
+			str += '<center><table id="votesShareDetailsTable" width="100%" cellspacing="4" cellmargin="0">';
 			str += '<tr>';
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
 			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
@@ -901,7 +901,7 @@
 					else
 						str += '<td name="'+info.electionType+'"><div style="visibility:hidden;">NA</div> </td>';
 				}
-				str += '<td>'+votesShareData[j].range+'</td>';
+				str += '<td style="color:GoldenRod;font-weight:bold;" align="center">'+votesShareData[j].range+'</td>';
 				str += '</tr>';
 			}
 
