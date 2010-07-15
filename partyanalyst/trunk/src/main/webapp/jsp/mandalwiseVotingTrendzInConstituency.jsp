@@ -1534,7 +1534,7 @@
 					}
 					str += '</td>';
 					str += '<td style="vertical-align:top;padding-bottom:20px;">';
-					str += '<table width="100%" class="mandalResultsTable" border="1">';
+					str += '<table width="100%" class="participatingPartiestable" border="0">';
 					str += '<tr>';
 					str += '<th colspan="'+electionHeaderLength+'" align="left">'+results[i].biElectionResultsVO[j].electionType+' - '+results[i].biElectionResultsVO[j].electionYear+'</th>';
 					str += '</tr>';
