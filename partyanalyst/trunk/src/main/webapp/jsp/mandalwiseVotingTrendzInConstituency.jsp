@@ -88,6 +88,14 @@
 			border: 2px solid #E0E0D6;
 			
 		}
+		#crossVotingData_Graph_Div
+		{
+			padding: 10px;
+			color: #707070;
+			margin: 10px;
+			border: 2px solid #E0E0D6;
+			
+		}
 		#selectLocationOptions
 		{
 			padding: 10px;
@@ -693,7 +701,7 @@
             str += '</tr></table>';
 		
 			str += '<div id="votersShareData_main">';
-			str += '<center><table id="votesShareDetailsTable" width="90%" cellspacing="0" cellmargin="0">';
+			str += '<center><table id="votesShareDetailsTable" width="100%" cellspacing="4" cellmargin="0">';
 			str += '<tr>';
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
 			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
@@ -738,7 +746,7 @@
 					else
 						str += '<td name="'+info.electionType+'"><div style="visibility:hidden;">NA</div></td>';
 				}
-				str += '<td style="color:#9B5118;font-weight:bold;">'+results[j].range+'</td>';
+				str += '<td align="center" style="color:GoldenRod;font-weight:bold;">'+results[j].range+'</td>';
 				str += '</tr>';
 			}
 
