@@ -315,8 +315,31 @@
 				}					
 				
 				headingDIV+='	</tr>';
-				
 				headingDIV+='</table>';
+				
+                headingDIV+='<div id="contestingCandidates_InnerDiv" style="margin:10px;">';
+				headingDIV += '<div id="constiContestingCandsDiv" style="color:#247CD4;font-size:12px;font-weight:bold;text-align:left;">Bye-Election 2010 Contesting Candidates</div>';
+                headingDIV+='<div id="contestingCandidatesIn" style="margin:10px;border:solid 0px;" >';
+				headingDIV+='<table class="participatingPartiestable_inner" border="0" width="30%" cellpadding="0" cellspacing="0">';
+				headingDIV+='<tr>';
+				headingDIV+='			<td style="padding:0px;border:none;"> <img src="images/icons/electionResultsAnalysisReport/header_left.gif"></td>';
+				headingDIV+='			<td style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:271px;"><span class="detailsTableHeaderSpan"> Contesting Candidates Details</span></div></td>';
+				headingDIV+='			<td style="padding:0px;border:none;"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+                headingDIV+='</tr>';
+				headingDIV+='</table>';
+                headingDIV+='<table width="30%" class="participatingPartiestable" border="0">';
+
+				for(var c in myResults.contestingCands)
+				{
+					headingDIV+='<tr>';
+					headingDIV+='<td align="center"><b>'+myResults.contestingCands[c].partyName+'</b></td>';
+					headingDIV+='<td align="left"><b>'+myResults.contestingCands[c].candidateName+'</b></td>';
+                    headingDIV+='</tr>';
+				}
+				
+                headingDIV+='</table>';
+				headingDIV+='</div>';
+                headingDIV+='</div>';
 				heading.innerHTML=headingDIV;
 			}
 			function mandalVotingShareDetailsMethod()
