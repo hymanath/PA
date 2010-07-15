@@ -13,6 +13,7 @@ import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.AllBoothsResultsForAPartyInAMandal;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
+import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
@@ -45,14 +46,11 @@ public interface IBiElectionPageService {
 	
 	public AllBoothsResultsForAPartyInAMandal getAllBoothsResultsInAConstituency(Long tehsilId, Long partyId, Long constituencyId, String electionYear, String electionType);
 	
-	public List<BiElectionResultsVO> getMandalWiseResultsForSelectedPartiesInConstituency(Long constituencyId);
+	public BiElectionResultsMainVO getMandalWiseResultsForSelectedPartiesInConstituency(Long constituencyId);
 	
 	public List<PartyResultVO> findRevenueVillageswiseResultsInElectionsOfMandal(Long tehsilId, String parties, 
 			String elections, Boolean includeAlliance );	
 	public Map<Long,List<PartyTownshipResultsVO>> getTownshipWiseAllPartyResults(Long tehsilId,String electionType,String electionYear);
 	
-	public List<PartyVillageLevelAnalysisVO> villageLevelPArtyAnalysis(Long tehsilId,String electionType,String electionYear,int rank);
-	
-	public ElectionWiseMandalPartyResultListVO getMandalwiseResultsForAllElectionsForSelectedPartiesInConstituency(Long constituencyId, Long tehsilId);
-	
+	public List<PartyVillageLevelAnalysisVO> villageLevelPArtyAnalysis(Long tehsilId,String electionType,String electionYear,int rank);	
 }

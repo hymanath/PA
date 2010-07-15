@@ -21,6 +21,7 @@ public class BiElectionResultsMainVO implements Serializable {
 	private List<String> allPartiesElectionResultsChart;
 	private List<ElectionTypeChartVO> chartsListForElectionTypes;
 	private List<ElectionTypeChartVO> chartsListForElectionTypesAllParties;
+	private List<ElectionDataVO> urbanRuralConstiResults;  
 	
 	
 	public List<String> getAllPartiesElectionResultsChart() {
@@ -89,6 +90,12 @@ public class BiElectionResultsMainVO implements Serializable {
 	}
 	public List<ElectionTypeChartVO> getChartsListForElectionTypesAllParties() {
 		return chartsListForElectionTypesAllParties;
+	}
+	public void setUrbanRuralConstiResults(List<ElectionDataVO> urbanRuralConstiResults) {
+		this.urbanRuralConstiResults = urbanRuralConstiResults;
+	}
+	public List<ElectionDataVO> getUrbanRuralConstiResults() {
+		return urbanRuralConstiResults;
 	}
 	
 	

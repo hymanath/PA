@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -37,11 +36,10 @@ import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.AllBoothsResultsForAPartyInAMandal;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
+import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultAllPartyVO;
-import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
-import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalLevelResultsForParty;
 import com.itgrids.partyanalyst.dto.MandalVO;
@@ -58,7 +56,6 @@ import com.itgrids.partyanalyst.dto.PartyVotesMarginResultsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.VotesMarginResultsMainVO;
 import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 import com.itgrids.partyanalyst.model.Booth;
@@ -69,7 +66,6 @@ import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.utils.ElectionResultTypeComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyResultsComparator;
 import com.itgrids.partyanalyst.utils.PartyResultsVOComparator;
@@ -1603,8 +1599,9 @@ public class BiElectionPageService implements IBiElectionPageService {
 		return allBoothsResultsForAPartyInAMandal;
 	}
 
-	public List<BiElectionResultsVO> getMandalWiseResultsForSelectedPartiesInConstituency(
+	public BiElectionResultsMainVO getMandalWiseResultsForSelectedPartiesInConstituency(
 			Long constituencyId) {
+		BiElectionResultsMainVO biElectionResultsMainVO = new BiElectionResultsMainVO(); 
 		List<BiElectionResultsVO>  allPartiesResultsList = getMandalWiseResultsForAConstituency(constituencyId);
 		
 		for(BiElectionResultsVO allPartiesResultsObj :allPartiesResultsList)
@@ -1842,8 +1839,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 				allPartiesResultsObj.setNonPartiParties(nonPartiResult);
 			}
 		}
-			
-		return allPartiesResultsList;
+		biElectionResultsMainVO.setBiElectionResultsMainVO(allPartiesResultsList);
+		return biElectionResultsMainVO;
 	}
 	
 	public List<PartyResultsVO> getCrossVotingResults(Map<String,ElectionResultsForMandalVO> crossVotingResults,String status){
@@ -2125,248 +2122,11 @@ public class BiElectionPageService implements IBiElectionPageService {
 																				.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 			partiesResultsVO.add(partyResultVO);
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.itgrids.partyanalyst.service.IBiElectionPageService#getMandalwiseResultsForAllElectionsForSelectedPartiesInConstituency(java.lang.Long)
-	 * returns all types of elections results mandal wise in a constituency. 
-	 */
-	public ElectionWiseMandalPartyResultListVO getMandalwiseResultsForAllElectionsForSelectedPartiesInConstituency(
-			Long constituencyId, Long tehsilId) {
-		log.debug("tehsilId:::::::::::::::"+tehsilId);
-		log.debug("constituencyId:::::::::::"+constituencyId);
-		//contains election results yearwise like 2009, 2004 etc.
-		List<BiElectionResultsVO>  yearwiseElectionResultsList = getMandalWiseResultsForSelectedPartiesInConstituency(constituencyId);
-		for (BiElectionResultsVO yearwiseResultsListObj: yearwiseElectionResultsList)
-		{
-			//contains results by Election Type
-			List<ElectionResultsForMandalVO> electionwiseResultsList = yearwiseResultsListObj.getBiElectionResultsVO();
-			
-			for(ElectionResultsForMandalVO electionwiseResultsListObj:electionwiseResultsList)
-			{
-					//contains list of mandals in constituency and their results in a particular election
-					List<MandalElectionResultVO> electionResultsInMandalsList = electionwiseResultsListObj.getElectionResultsForMandal();
-					
-					for(MandalElectionResultVO mandalElectionResultObj: electionResultsInMandalsList)
-					{
-						// results const wise
-						Long votesEarned = new Long(0l);
-						Long validVotes = new Long(0l); 
-						Long partyId;
-						Map<Long, PartyResultsVO> partywiseResutsMap = new LinkedHashMap<Long, PartyResultsVO>();
-						// if a mandal is spliitted in to more than one constituency, this lise size will be > 1
-						List<PartyElectionResultsInConstituencyVO> constituencywiseResults = mandalElectionResultObj.getPartyElecResultsInConstituency();
-						List<PartyResultsVO> partyResultsList = new ArrayList<PartyResultsVO>();
-						// if a mandal is in more than one constituency then group all the results for each party in mandal
-						if(constituencywiseResults.size()>1)
-						{	
-							for(PartyElectionResultsInConstituencyVO partyElectionResultsInConstituencyVO : constituencywiseResults)
-							{
-								 List<PartyResultsVO> partyElecResults = partyElectionResultsInConstituencyVO.getPartyElecResults();
-								 for(PartyResultsVO partyResultsVOObj : partyElecResults)
-								 {
-									 if(partyResultsVOObj.getValidVotes() == null || partyResultsVOObj.getVotesEarned() == null)
-										 continue;
-									 partyId = partyResultsVOObj.getPartyId();									 
-									 votesEarned = partyResultsVOObj.getVotesEarned();
-									 validVotes = partyResultsVOObj.getValidVotes();
-									 if((partywiseResutsMap.isEmpty() || !partywiseResutsMap.containsKey(partyId)))
-									 {
-										 PartyResultsVO  obj = setValuesInToObj(partyResultsVOObj);							 
-										 partywiseResutsMap.put(partyId, obj);
-									 } else if (partywiseResutsMap.containsKey(partyId))
-									 {
-										 PartyResultsVO partyResultsObj = partywiseResutsMap.get(partyId);
-										 partyResultsObj.setValidVotes(partyResultsObj.getValidVotes() + validVotes);
-										 partyResultsObj.setVotesEarned(partyResultsObj.getVotesEarned()+ votesEarned);	 
-										 partyResultsObj.setPercentage(new BigDecimal(partyResultsObj.getVotesEarned().doubleValue()/partyResultsObj.getValidVotes().doubleValue()*100).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
-										 partywiseResutsMap.put(partyId, partyResultsObj);
-									 }
-								 }
-								 
-							}
-							for(Map.Entry<Long, PartyResultsVO> entry :partywiseResutsMap.entrySet())
-							{
-								PartyResultsVO partyResultVO = entry.getValue();
-								partyResultsList.add(partyResultVO);
-							}
-							
-						} else 	{
-							for(PartyElectionResultsInConstituencyVO partyElectionResultsInConstituencyVO : constituencywiseResults)
-							{
-								partyResultsList = partyElectionResultsInConstituencyVO.getPartyElecResults();
-							}		
-						}					
-						mandalElectionResultObj.setMandalResults(partyResultsList);
-					}					
-			}		
-		}
-		
-		return processResultsToPartyResultVO(yearwiseElectionResultsList, tehsilId, constituencyId);
-				
 	}	
-	public PartyResultsVO setValuesInToObj(PartyResultsVO obj)
-	{
-		PartyResultsVO partyResultsVOObj = new PartyResultsVO();
-		partyResultsVOObj.setPartyId(obj.getPartyId());
-		partyResultsVOObj.setPartyName(obj.getPartyName());
-		partyResultsVOObj.setValidVotes(obj.getValidVotes());
-		partyResultsVOObj.setVotesEarned(obj.getVotesEarned());		
-		return partyResultsVOObj;
-	}
 	
-	public ElectionWiseMandalPartyResultListVO processResultsToPartyResultVO(List<BiElectionResultsVO> resultsList, Long tehsilId, Long constituencyId)
-	{
-		log.debug("Entered in to processResultsToPartyResultVO");
-		ElectionWiseMandalPartyResultListVO electionWiseMandalPartyResultListVO = new ElectionWiseMandalPartyResultListVO();
-		List<PartyResultVO> allElectionsResultsForPartyList = new ArrayList<PartyResultVO>();
-		Map<PartyResultVO, List<ElectionResultVO>> partywiseResultsMap = new LinkedHashMap<PartyResultVO, List<ElectionResultVO>>();
-		PartyResultVO partyResultVO = null;
-		List<ElectionResultVO> elections = null;		
-		ElectionResultVO electionResultVO = null;
-		Long stateId = 1l;
-		//contains results by Election year
-		for (BiElectionResultsVO yearwiseResultsListObj: resultsList)
-		{
-			//contains results by Election Type
-			List<ElectionResultsForMandalVO> electionwiseResultsList = yearwiseResultsListObj.getBiElectionResultsVO();
-			
-			for(ElectionResultsForMandalVO electionwiseResultsListObj:electionwiseResultsList)
-			{
-					
-					for(MandalElectionResultVO mandalElectionResultObj: electionwiseResultsListObj.getElectionResultsForMandal())
-					{
-						if(tehsilId.equals(mandalElectionResultObj.getMandalId()))
-						{
-							List<PartyResultsVO> partyResultsInMandal =  mandalElectionResultObj.getMandalResults();
-							for(PartyResultsVO partyResultsObj: partyResultsInMandal)
-							{
-								partyResultVO = new PartyResultVO();
-								partyResultVO.setPartyId(partyResultsObj.getPartyId());
-								partyResultVO.setPartyName(partyResultsObj.getPartyName());
-								elections = partywiseResultsMap.get(partyResultVO);
-								if(elections == null)
-									elections = new ArrayList<ElectionResultVO>();									
-								electionResultVO = new ElectionResultVO();
-								electionResultVO.setElectionType(electionwiseResultsListObj.getElectionType());
-								electionResultVO.setElectionYear(electionwiseResultsListObj.getElectionYear());
-								electionResultVO.setPercentage(partyResultsObj.getPercentage());
-								electionResultVO.setElectionYearAndType(electionwiseResultsListObj.getElectionYear()+" "+electionwiseResultsListObj.getElectionType());
-								List result = electionDAO.findElectionIdByElectionTypeAndYear(electionwiseResultsListObj.getElectionType(),electionwiseResultsListObj.getElectionYear(),stateId);					
-								List alliance = allianceGroupDAO.findAlliancePartiesByElectionAndParty(Long.parseLong(result.get(0).toString()),partyResultsObj.getPartyId());
-								electionResultVO.setHasAlliance(alliance.size()>0?"true":"false");
-								elections.add(electionResultVO);
-								partywiseResultsMap.put(partyResultVO, elections);															
-							}							
-						}
-					}
-			}
-		}
-		for(Map.Entry<PartyResultVO, List<ElectionResultVO>> entry :partywiseResultsMap.entrySet())
-		{
-			partyResultVO = entry.getKey();
-			
-			partyResultVO.setElectionWiseResults(entry.getValue());
-			allElectionsResultsForPartyList.add(partyResultVO);
-		}
-		
-			
-		StringBuilder tehsilIds = new StringBuilder();
-		tehsilIds = tehsilIds.append(tehsilId);
-		List<TeshilPartyInfoVO> zptc2006ResultsForAMandal = constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds, IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR, IConstants.ZPTC_ELECTION_TYPE, constituencyId);
-		List<TeshilPartyInfoVO> mptc2006ResultsForAMandal = constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds, IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR, IConstants.MPTC_ELECTION_TYPE, constituencyId);
-		List<TeshilPartyInfoVO> zptc2001ResultsForAMandal = constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds, IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR, IConstants.ZPTC_ELECTION_TYPE, constituencyId);
-		List<TeshilPartyInfoVO> mptc2001ResultsForAMandal = constituencyPageService.getTehsilPartyInfoForAConstituency(tehsilIds, IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR, IConstants.MPTC_ELECTION_TYPE, constituencyId);
-		
-		partyResultVO = new PartyResultVO();
-		List<PartyResultVO> list1 = new ArrayList<PartyResultVO>();
-		List<PartyResultVO> list2 = new ArrayList<PartyResultVO>();
-		List<PartyResultVO> list3 = new ArrayList<PartyResultVO>();
-		List<PartyResultVO> list4 = new ArrayList<PartyResultVO>();
-		if(zptc2006ResultsForAMandal != null && zptc2006ResultsForAMandal.size()>0)
-			list1 = processResultsToPartyResults(zptc2006ResultsForAMandal,allElectionsResultsForPartyList, IConstants.ZPTC_ELECTION_TYPE, IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR);
-		if(mptc2006ResultsForAMandal != null && mptc2006ResultsForAMandal.size()>0)
-			list2 = processResultsToPartyResults(mptc2006ResultsForAMandal,list1, IConstants.MPTC_ELECTION_TYPE, IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR);
-		if(zptc2001ResultsForAMandal != null && zptc2001ResultsForAMandal.size()>0)
-			list3 = processResultsToPartyResults(zptc2001ResultsForAMandal,list2, IConstants.ZPTC_ELECTION_TYPE, IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR);
-		if(mptc2001ResultsForAMandal != null && mptc2001ResultsForAMandal.size()>0)
-			list4 =  processResultsToPartyResults(mptc2001ResultsForAMandal,list3, IConstants.MPTC_ELECTION_TYPE, IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR);	
-		
-		Set<String> partyElecs1 = null;
-		List<SelectOptionVO> allElections = new LinkedList<SelectOptionVO>(); 
-		List<Float> partyPecentages = null;
-		allElections.add(0, new SelectOptionVO(0l, "2001 MPTC"));
-		allElections.add(1, new SelectOptionVO(0l, "2001 ZPTC"));
-		allElections.add(2, new SelectOptionVO(0l, "2004 Assembly"));
-		allElections.add(3, new SelectOptionVO(0l, "2004 Parliament"));
-		allElections.add(4, new SelectOptionVO(0l, "2006 MPTC"));
-		allElections.add(5, new SelectOptionVO(0l, "2006 ZPTC"));
-		allElections.add(6, new SelectOptionVO(0l, "2009 Assembly"));
-		allElections.add(7, new SelectOptionVO(0l, "2009 Parliament"));
-		
-		for(PartyResultVO party:list4){
-			partyElecs1 = new HashSet<String>();
-			partyPecentages = new ArrayList<Float>();
-			for(ElectionResultVO ele:party.getElectionWiseResults()){
-				partyElecs1.add(ele.getElectionYear()+" "+ele.getElectionType());
-				if(ele.getPercentage() != null && !ele.getPercentage().equalsIgnoreCase("--"))
-				partyPecentages.add(new Float(ele.getPercentage()));
-			}
-			Collections.sort(partyPecentages);
-			party.setRange(partyPecentages.get(0)+"-"+partyPecentages.get(partyPecentages.size()-1));
-			party.setElections(partyElecs1);
-		}
-		
-		ElectionResultVO noElec = null;
-		for(PartyResultVO party1:list4){
-			elections = new ArrayList<ElectionResultVO>();
-			for(SelectOptionVO elec1:allElections){
-				if(!party1.getElections().contains(elec1.getName())){
-					noElec = new ElectionResultVO();
-					noElec.setElectionYearAndType(elec1.getName());
-					noElec.setPercentage("-1");
-					elections.add(noElec);
-				}
-			}
-			if(elections.size() > 0)
-				party1.getElectionWiseResults().addAll(party1.getElectionWiseResults().size()-1, elections);
-			elections = party1.getElectionWiseResults();
-			Collections.sort(elections, new ElectionResultTypeComparator());
-			party1.setElectionWiseResults(elections);
-		}
 	
-		electionWiseMandalPartyResultListVO.setElections(allElections);
-		electionWiseMandalPartyResultListVO.setAllPartiesAllElectionResults(list4);
-		return electionWiseMandalPartyResultListVO;
-		
-		
-	}
 	
-	public List<PartyResultVO> processResultsToPartyResults(List<TeshilPartyInfoVO> results,List<PartyResultVO> partyResult, String electionType, String electionYear)
-	{
-		log.debug("Entered in to processResultsToPartyResults");
-		if(results != null && results.size() > 0)
-		{
-			for(TeshilPartyInfoVO teshilPartyInfoVOObj: results)
-			{
-				for(int i=0;i<partyResult.size();i++){
-					if(teshilPartyInfoVOObj.getPartyId().equals(partyResult.get(i).getPartyId()))
-					{
-						ElectionResultVO electionResultVO = new ElectionResultVO();
-						electionResultVO.setElectionType(electionType);
-						electionResultVO.setElectionYear(electionYear);
-						electionResultVO.setElectionYearAndType(electionYear+" "+electionType);
-						electionResultVO.setPercentage(teshilPartyInfoVOObj.getPercentageOfVotesWonByParty().toString());						
-						electionResultVO.setHasAlliance("false");
-						partyResult.get(i).getElectionWiseResults().add(electionResultVO);						
-					}					
-				}								
-			}
-		}
-		return partyResult;
-		
-	}
+	
 
 	
 	/*
