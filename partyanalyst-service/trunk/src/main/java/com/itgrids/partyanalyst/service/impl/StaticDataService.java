@@ -4723,7 +4723,7 @@ public class StaticDataService implements IStaticDataService {
 	public List<PartyResultVO> getPartyVotesShareInConstituency(Long constituencyId,int flag,List<ElectionResultPartyVO> partyResult){
 			
 			List<PartyResultVO> party = new ArrayList<PartyResultVO>(0);		
-			String[] partiesList = {"INC","PRP","TDP","TRS","BJP"};
+			String[] partiesList = {"TRS","INC","TDP","BJP","PRP"};
 			String elecYearAndType = ""; 
 			PartyResultVO partyResultVO = null;
 			for(int j=0;j<partiesList.length;j++){
