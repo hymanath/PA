@@ -109,7 +109,7 @@
 		}
 		function openConstVotingTrendzWindow(distId,constId,constName)
 		{			
-			var browser1 = window.open("<s:url action="constituencyVotingTrendzAction.action"/>?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults1","scrollbars=yes,height=800,width=950,left=200,top=200");
+			var browser1 = window.open("<s:url action="constituencyVotingTrendzAction.action"/>?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults1","scrollbars=yes,left=200,top=200");
 
 			browser1.focus();
 		}
