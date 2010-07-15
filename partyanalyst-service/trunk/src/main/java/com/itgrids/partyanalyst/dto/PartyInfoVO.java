@@ -9,6 +9,7 @@ import java.math.BigDecimal;
  */
 public class PartyInfoVO implements Serializable{
 
+	private static final long serialVersionUID = -4867498044624505368L;
 	private String partyShortName;
 	private String partyLongName;
 	private Long seatsParticipated = new Long(0);
@@ -16,6 +17,8 @@ public class PartyInfoVO implements Serializable{
 	private BigDecimal percentageOfVotes;
 	private Long partyTotalVotes = new Long(0);
 	private String electionYear;
+	private Long votesEarned;
+	private String percenatge;
 	
 	public String getPartyShortName() {
 		return partyShortName;
@@ -71,6 +74,22 @@ public class PartyInfoVO implements Serializable{
 	
 	public void setElectionYear(String electionYear) {
 		this.electionYear = electionYear;
+	}
+
+	public Long getVotesEarned() {
+		return votesEarned;
+	}
+
+	public void setVotesEarned(Long votesEarned) {
+		this.votesEarned = votesEarned;
+	}
+
+	public String getPercenatge() {
+		return percenatge;
+	}
+
+	public void setPercenatge(String percenatge) {
+		this.percenatge = percenatge;
 	}
 	
 }
