@@ -86,6 +86,7 @@
 			color: #707070;
 			margin: 10px;
 			border: 2px solid #E0E0D6;
+			font-family: verdana;
 			
 		}
 		#crossVotingData_Graph_Div
@@ -95,6 +96,13 @@
 			margin: 10px;
 			border: 2px solid #E0E0D6;
 			
+		}
+		#constituencyMainDetails_Div
+		{
+          padding: 10px;
+		  color: #707070;
+		  margin: 10px;
+		  border: 2px solid #E0E0D6;
 		}
 		#selectLocationOptions
 		{
@@ -289,38 +297,47 @@
 			
 			function constituencyOverViewResult(myResults)
 			{
-				var heading =document.getElementById("overViewHeadingDiv");
+				var heading =document.getElementById("constituencyMainDetails_Div");
 				var headingDIV='';
 				headingDIV+='<fieldset padding:10px;">';  		
-				headingDIV+='<legend style="background-color:#567AAF;font-family:arial,helvetica,clean,sans-serif;color:#FFFFFF;font-weight:bold;padding:10px;">Constituency OverView</legend>';
+				headingDIV+='<legend style="background-color:#567AAF;font-family:verdana,helvetica,clean,sans-serif;color:#FFFFFF;font-weight:bold;padding:10px;font-size:12px;">Constituency Overview</legend>';
 
 				headingDIV+='<div id="votesInfoDiv" style="color:#247CD4;font-size:12px;font-weight:bold;"></div>';
-				headingDIV+='<table width="90%" cellspacing="10" style="margin-top:10px;">';   
+				headingDIV+='<table width="80%" cellspacing="10" style="margin-top:10px;">';   
 
 				headingDIV+='	<tr>';
-				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Voters for Year 2009</b></td>';
-				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalVoters+'</td>';
-
-				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Polled Votes </b></td>';
-				headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">'+myResults.latestElectionYearsTotalPolledVotes+' ('+myResults.latestElectionYearsTotalVotesPercentage+'%)</td>';				
-				
+				headingDIV+='		<td style="color:#18325A;font-size:12px;font-family:verdana;" align="left"><b>Total Voters for Year 2009</b></td>';
+				headingDIV+='		<td><b> :</b></td>';
+				headingDIV+='		<td align="left" style="color:red;font-size:14px;font-weight:bold;">'+myResults.latestElectionYearsTotalVoters+'</td>';
+               
+				headingDIV+='		<td style="color:#18325A;font-size:12px;font-family:verdana;" align="left"><b>Total Polled Votes for Year 2009</b></td>';
+				headingDIV+='		<td><b> :</b></td>';
+				headingDIV+='		<td align="left" style="color:red;font-size:14px;font-weight:bold;">'+myResults.latestElectionYearsTotalPolledVotes+' <font color="black"> [</font><font color="green"> '+myResults.latestElectionYearsTotalVotesPercentage+' % </font><font color="black">]</font></td>';		
+								
 				headingDIV+='	</tr>';
 
 				headingDIV+='	<tr>';
-				headingDIV+='		<td style="color:#18325A;font-size:12px;"><b>Total Voters for Year 2010</b></td>';
+				headingDIV+='		<td style="color:#18325A;font-size:12px;font-family:verdana;" align="left"><b>Total Voters for Year 2010</b></td>';
+				headingDIV+='		<td><b> :</b></td>';
 				if(myResults.presentYearTotalVoters!=0)
 				{	
-					headingDIV+='		<td align="left" style="color:Blue;font-size:12px;font-weight:bold;">'+myResults.presentYearTotalVoters+'</td>';				
+					headingDIV+='		<td align="left" style="color:red;font-size:14px;font-weight:bold;">'+myResults.presentYearTotalVoters+'</td>';				
 				}
 				else
 				{				
 					headingDIV+='		<td align="left" style="color:#1C4B7A;"> Data Not Available</td>';
 				}					
-							
+				
 				headingDIV+='	</tr>';
 				
 				headingDIV+='</table>';
+				heading.innerHTML=headingDIV;
+			}
+			function mandalVotingShareDetailsMethod()
+			{
 
+                var heading =document.getElementById("overViewHeadingDiv");
+				var headingDIV='';
 				headingDIV+='	<table width="100%">';
 				headingDIV+='			<tr>';
 				headingDIV+='					<td> <div id="mandalVotesShare"></td>';
@@ -1142,7 +1159,7 @@
 				
 			str += '</div>';
 			str += '<div id="selectOptionsSelectButton" style="margin-bottom:10px;padding:10px;text-align:right"></div>';
-
+            str += '<div id="constituencyMainDetails_Div" style="margin-bottom:10px;padding:10px;text-align:right"></div>';
 			str += '<div id="crossVotingData_Graph_Div" style="display:none;">';
 			str += '<table width="100%">';
 			str += '<tr>';
@@ -1458,7 +1475,7 @@
 			mainHeadEl.innerHTML = 'Voting Trendz in '+jsObj.constiName+' Constituency';
 
 			var str1= '';
-			str1 += '<P>Select a Party and Election Type to view results</P>';
+			str1 += '<P><b> Select a Party and Election Type to View Results </b></P>';
 			str1 += '<div id ="inputSelectionError"></div>';
 			str1 += '<table>';
 			str1 += '<tr>';
@@ -1488,7 +1505,7 @@
 			str1 += '<div style="text-align:right;width:100%;">';
 			str1 += '<table width="100%">';
 			str1 += '<tr>';
-			str1 += '<th align="left"><font style="color:red;"> *</font> indicates Bye Elections</th>';			
+			str1 += '<th align="left"><font style="color:red;"> *</font> Indicates Bye Elections</th>';			
 			str1 += '</td align="right">';
 			str1 += '<INPUT type="checkbox" name="allianceCheckBox" id="allianceChkBox" />Include Alliances';
 			str1 += '<input type="button" value="Select All" onclick="selectAllPartiesNYears()">';
@@ -1999,6 +2016,7 @@
 			partyVotesSharing();
 			getMuncipalElections();
 			getCorporationElections();
+			mandalVotingShareDetailsMethod();
 	</script>
 </body>
 </html>
