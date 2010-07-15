@@ -441,12 +441,28 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("____________________________________________________________________________");		
 	}*/
 	
-
+    /*
 	public void testGetRankOfACandidate(){
 		List rank = nominationDAO.getCandidateRankInAConstituencyElection(new Long(339),"2009","Assembly",new Long(43));
 		if(rank != null){
 			Object params = (Object)rank.get(0);
 			System.out.println("Rank :" + params);
+		}
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public void testGetWonAndOppCandidateResults(){
+		String ranks = "1,2";
+		List results = nominationDAO.getWonAndOppCandidateInAnElection(new Long(4),"2009",ranks);
+		
+		if(results != null){
+			for(int i=0;i<results.size();i++){
+			Object[] params = (Object[])results.get(i);
+			System.out.print(" Party     " + params[1]);
+			System.out.print(" Candidate " + params[3]);
+			
+			System.out.println("..");
+			}
 		}
 	}
 }
