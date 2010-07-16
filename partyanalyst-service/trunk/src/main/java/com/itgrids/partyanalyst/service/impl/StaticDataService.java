@@ -66,6 +66,7 @@ import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
@@ -5087,6 +5088,60 @@ public class StaticDataService implements IStaticDataService {
 			}
 		}
 	 return resultsMap;
+	}
+
+
+	public PartyElectionResultsVO getWonAndOppositionCandidateDetailsInAConstituencyWithMargin(
+			Long constituencyId, String electionYear) {
+		
+		PartyElectionResultsVO partyResult = null;
+		if(constituencyId != null && electionYear != null){
+			
+			partyResult = new PartyElectionResultsVO();
+			log.debug(" Inside getWonAndOppositionCandidateDetailsInAConstituencyWithMargin Method ..");
+			List resultsList = nominationDAO.getWonAndOppCandidateInAnElection(constituencyId,electionYear);
+			
+			if(resultsList != null && resultsList.size() > 0){
+				for(int i=0;i<resultsList.size();i++){
+					Object[] params = (Object[])resultsList.get(i);
+					
+					Long rank = (Long)params[6];
+					if(rank.equals(new Long(1))){
+						partyResult.setPartyId((Long)params[0]);
+						partyResult.setPartyName((String)params[1]);
+						partyResult.setCandidateId((Long)params[2]);
+						partyResult.setCandidateName((String)params[3]);
+						Double votesEarned = (Double)params[4];
+						partyResult.setVotesEarned(votesEarned.longValue());
+						partyResult.setVotesPercentage((String)params[5]);
+						partyResult.setRank(rank);
+					}
+					else if(rank.equals(new Long(2))){
+						partyResult.setSecondPartyName((String)params[1]);
+						partyResult.setSecondCandidateName((String)params[3]);
+						Double votesEarned = (Double)params[4];
+						partyResult.setVotesEarnedBySecond(votesEarned.longValue());
+						partyResult.setVotesPercentageBySecond((String)params[5]);
+						partyResult.setRankBySecond(rank);
+					}
+				}
+				
+				try{
+				//calculating margin votes and margin percent
+				Long marginVotes = partyResult.getVotesEarned() - partyResult.getVotesEarnedBySecond();
+				partyResult.setMarginVotes(marginVotes);
+				Double marginPercent = new BigDecimal(new Double(partyResult.getVotesPercentage())-new Double(partyResult.getVotesPercentageBySecond())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				partyResult.setMarginPercent(marginPercent.toString());
+				}
+				catch(Exception ex){
+					ex.printStackTrace();
+					log.debug(" Exception Raised :" + ex);
+				}
+			}
+		}
+		
+		
+	  return partyResult;
 	}
 }
 
