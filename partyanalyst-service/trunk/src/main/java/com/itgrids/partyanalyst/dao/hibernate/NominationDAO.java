@@ -1404,7 +1404,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				" and model.party.partyId in (" +partyIds+")",params);
 	}
 	@SuppressWarnings("unchecked")
-	public List getWonAndOppCandidateInAnElection(Long constiId, String elecYear,String ranks) {
+	public List getWonAndOppCandidateInAnElection(Long constiId, String elecYear) {
 		Object[] params = {constiId,elecYear};
 		return getHibernateTemplate().find("select model.party.partyId,model.party.shortName,"+
 				"model.candidate.candidateId,model.candidate.lastname,model.candidateResult.votesEarned,"+
