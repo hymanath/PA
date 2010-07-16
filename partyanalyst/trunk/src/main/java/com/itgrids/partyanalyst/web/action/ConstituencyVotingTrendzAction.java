@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInfoVO;
 import com.itgrids.partyanalyst.dto.PartyVillageLevelAnalysisVO;
@@ -111,6 +112,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private ElectionWiseMandalPartyResultListVO partywiseVotesDetailsForMandal;
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private List<PartyResultsInfoVO> contestingCands;
+	private PartyElectionResultsVO electionResultsInConsti;
 
 
 	public String getMuncipalityElectionType() {
@@ -159,6 +161,15 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 
 	public void setLocalMuncipalElections(TeshilPartyInfoVO localMuncipalElections) {
 		this.localMuncipalElections = localMuncipalElections;
+	}
+
+	public PartyElectionResultsVO getElectionResultsInConsti() {
+		return electionResultsInConsti;
+	}
+
+	public void setElectionResultsInConsti(
+			PartyElectionResultsVO electionResultsInConsti) {
+		this.electionResultsInConsti = electionResultsInConsti;
 	}
 
 	public TeshilPartyInfoVO getLocalCorporationElections() {
@@ -562,6 +573,9 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		constituencyOverView = staticDataService.getConstituencyOverview(constiId,constiName);
 		contestingCands = getContestingCandidateDetails(constiName);
 		constituencyOverView.setContestingCands(contestingCands);
+		electionResultsInConsti = staticDataService.getWonAndOppositionCandidateDetailsInAConstituencyWithMargin(constiId,IConstants.PRESENT_ELECTION_YEAR);
+		if(electionResultsInConsti != null)
+			constituencyOverView.setElecResultsInConsti(electionResultsInConsti);
 		
 		return Action.SUCCESS;
 	}
