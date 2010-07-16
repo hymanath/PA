@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
+import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
@@ -182,4 +183,6 @@ public interface IStaticDataService {
 	public List<PartyResultVO> getPartyVotesPercentageInAConstituency(Long constituencyId,String all,String[] choices);
 	
 	public List<CandidateElectionResultVO> getProcessedAlliancePartiesResults(List<CandidateElectionResultVO> elecResultVO,String elecType,String elecYear);
+	
+	public PartyElectionResultsVO getWonAndOppositionCandidateDetailsInAConstituencyWithMargin(Long constituencyId,String electionYear);
 }
