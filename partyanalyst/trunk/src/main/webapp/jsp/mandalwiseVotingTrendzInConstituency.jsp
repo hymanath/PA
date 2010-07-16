@@ -283,7 +283,7 @@
 			
 			function constituencyOverViewResult(myResults)
 			{
-				console.log(myResults);
+				
 				var heading =document.getElementById("constituencyMainDetails_Div");
 				var headingDIV='';
 				headingDIV+='<fieldset padding:10px;">';  		
@@ -337,7 +337,7 @@
 
 				headingDIV+='	<td style="padding:0px;border:none;">';
 				headingDIV+='		<div class="detailsTableHeader" style="width:271px;">';
-				headingDIV+='			<span class="detailsTableHeaderSpan"> Contesting Candidates Details</span>';
+				headingDIV+='			<span class="detailsTableHeaderSpan"> </span>';
 				headingDIV+='		</div>';
 				headingDIV+='	</td>';
 
@@ -383,7 +383,7 @@
 
 				headingDIV+='	<td style="padding:0px;border:none;">';
 				headingDIV+='		<div class="detailsTableHeader" style="width:608px;">';
-				headingDIV+='			<span class="detailsTableHeaderSpan"> Won & Opp Candidate Results</span>';
+				headingDIV+='			<span class="detailsTableHeaderSpan"> </span>';
 				headingDIV+='		</div>';
 				headingDIV+='	</td>';
 
