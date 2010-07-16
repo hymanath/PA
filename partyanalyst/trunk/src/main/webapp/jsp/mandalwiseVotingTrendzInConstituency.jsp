@@ -319,7 +319,7 @@
 				headingDIV+='</table>';
 				
                 headingDIV+='<div id="contestingCandidates_InnerDiv" style="margin:10px;">';
-				headingDIV+='<table width="100%" border="1">';
+				headingDIV+='<table width="100%" border="0">';
 				headingDIV+='<tr>';
 				headingDIV+='<td width="35%" valign="top">';
 				headingDIV+= '<div id="constiContestingCandsDiv" style="color:#247CD4;font-size:12px;font-weight:bold;text-align:left;padding:5px;text-decoration:underline;">';
@@ -420,15 +420,15 @@
 				headingDIV+='</tr>';
 
 				headingDIV+='<tr>';
-				headingDIV+='<td colspan="5" style="color:#4B74C6" align="center">';
+				headingDIV+='<td colspan="5" style="color:#4B74C6;font-size:13px;" align="center">';
 				headingDIV+='	<b>Margin Votes</b> : '+myResults.elecResultsInConsti.marginVotes;
 				headingDIV+='</td>';
 				headingDIV+='</tr>';
 
 				headingDIV+='<tr>';
-				headingDIV+='<td colspan="5" style="color:#4B74C6" align="center">';
+				headingDIV+='<td colspan="5" style="color:#4B74C6;font-size:13px;" align="center">';
 				headingDIV+='	<b>Margin Votes %</b> : '+myResults.elecResultsInConsti.marginPercent;
-				headingDIV+='</td>';
+				headingDIV+=' %</td>';
 				headingDIV+='</tr>';
 				
 				headingDIV+='</div>';
