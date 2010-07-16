@@ -453,7 +453,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	@SuppressWarnings("unchecked")
 	public void testGetWonAndOppCandidateResults(){
 		String ranks = "1,2";
-		List results = nominationDAO.getWonAndOppCandidateInAnElection(new Long(4),"2009",ranks);
+		List results = nominationDAO.getWonAndOppCandidateInAnElection(new Long(4),"2009");
 		
 		if(results != null){
 			for(int i=0;i<results.size();i++){
