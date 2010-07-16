@@ -20,6 +20,7 @@ public class PartyElectionResultsVO {
 	private Long rank;
 	private String votesPercentage;
 	private Double totalElectors;
+	private String secondPartyName;
 	private String secondCandidateName;
 	private Long votesEarnedBySecond;
 	private String votesPercentageBySecond;
@@ -28,6 +29,8 @@ public class PartyElectionResultsVO {
 	private Double voteDiff;
 	private Double totalElectorsForSecond;
 	private String electorsPercentageDiff;
+	private Long marginVotes;
+	private String marginPercent;
 
 	//getters and setters
 	public Long getPartyId() {
@@ -137,6 +140,24 @@ public class PartyElectionResultsVO {
 	}
 	public void setElectorsPercentageDiff(String electorsPercentageDiff) {
 		this.electorsPercentageDiff = electorsPercentageDiff;
+	}
+	public String getSecondPartyName() {
+		return secondPartyName;
+	}
+	public void setSecondPartyName(String secondPartyName) {
+		this.secondPartyName = secondPartyName;
+	}
+	public Long getMarginVotes() {
+		return marginVotes;
+	}
+	public void setMarginVotes(Long marginVotes) {
+		this.marginVotes = marginVotes;
+	}
+	public String getMarginPercent() {
+		return marginPercent;
+	}
+	public void setMarginPercent(String marginPercent) {
+		this.marginPercent = marginPercent;
 	}
 	
 	
