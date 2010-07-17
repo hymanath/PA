@@ -419,6 +419,7 @@ function getConstituencyResults(elecYear){
 			electionYear:elecYear,
 			chartHeight: 300,
 			chartWidth: 700,
+			others:true,
 			task:"getConstituencyResultsBySubLocations"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
