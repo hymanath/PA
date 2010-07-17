@@ -1119,24 +1119,25 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		String domainAxisName = null,detailedDomainAxisName = null;
 		int chartHeight = jObj.getInt("chartHeight");
 		int chartWidth = jObj.getInt("chartWidth"); 
-		
+		String includeOthers = (String)jObj.getString("others");
+				
 		constituencyRevenueVillagesVO = constituencyPageService.getConstituencyElecResults(jObj.getLong("constituencyId")
-				, jObj.getString("electionYear"));
+				, jObj.getString("electionYear"),new Boolean(includeOthers));
 		if(constituencyRevenueVillagesVO.getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			chartName = "partyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
-			chartTitle = "Mandal Wise Electon Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
+			chartTitle = "Mandal Wise Election Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
 			domainAxisName = "Mandals";
 			
 			detailedChartName = "detailedPartyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
-			detailedChartTitle = "Mandal Wise Electon Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
+			detailedChartTitle = "Mandal Wise Election Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
 			detailedDomainAxisName = "Mandals";
 		}else{
 			chartName = "partyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
-			chartTitle = "Assembly Constituencies Wise Electon Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
+			chartTitle = "Assembly Constituencies Wise Election Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
 			domainAxisName = "Assembly Constituencies";
 			
 			detailedChartName = "detailedPartyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
-			detailedChartTitle = "Assembly Constituencies Wise Electon Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
+			detailedChartTitle = "Assembly Constituencies Wise Election Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
 			detailedDomainAxisName = "Assembly Constituencies";
 		}
 		
