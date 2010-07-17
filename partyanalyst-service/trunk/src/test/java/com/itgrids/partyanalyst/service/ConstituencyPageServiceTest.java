@@ -66,7 +66,7 @@ public class ConstituencyPageServiceTest extends BaseDaoTestCase{
 	}*/
 	
 	public void testGetConstituencyElecResults(){
-		constituencyPageService.getConstituencyElecResults(403l, "2004");
+		constituencyPageService.getConstituencyElecResults(403l, "2004",true);
 	}
 
 }
