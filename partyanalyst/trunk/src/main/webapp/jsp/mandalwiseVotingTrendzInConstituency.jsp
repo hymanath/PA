@@ -1887,6 +1887,7 @@
 				electionYear:elecYear,
 				chartHeight: 400,
 				chartWidth: 800,
+				others:false,
 				task:"getConstituencyResultsBySubLocations"
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
