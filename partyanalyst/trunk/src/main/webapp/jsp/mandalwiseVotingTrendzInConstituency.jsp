@@ -279,8 +279,9 @@
 				callAjax(jsObj, url);
 			}
 			
-			function constituencyOverViewResult(myResults)
+			function constituencyOverViewResult(jsObj,myResults)
 			{
+				
 				var heading =document.getElementById("constituencyMainDetails_Div");
 				var headingDIV='';
 				headingDIV+='<fieldset padding:10px;">';  		
@@ -435,7 +436,7 @@
 				headingDIV+='</td>';
 				
 				headingDIV+='<td width="35%">';
-				headingDIV+='<img src="images/bi-constituency_maps/'+constituencyName+'.jpg"/>';
+				headingDIV+='<img src="images/bi-constituency_maps/'+jsObj.constiName+'.jpg"/>';
 				headingDIV+='</td>';
 			
 				headingDIV+='</tr>';
@@ -511,7 +512,7 @@
 											imageDiv.innerHTML = str;
 										}	
 										else if(jsObj.task == "getConstituencyVotesOverview"){
-											constituencyOverViewResult(myResults);
+											constituencyOverViewResult(jsObj,myResults);
 										}
 										else if(jsObj.task == "votesSharingInConstituency"){
 											buildVotesSharingData(jsObj,myResults);
