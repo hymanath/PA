@@ -1639,16 +1639,18 @@ public class BiElectionPageService implements IBiElectionPageService {
 					{
 						postalBalletsList = constituencyPageService.OtherVotesDataForAConstituency(constituencyId, electionResultsForMandalVO.getElectionYear(), electionResultsForMandalVO.getElectionType());
 						log.debug("postalBalletsList size"+postalBalletsList.size());
-					}
-					// processing ballot votes result processing
-					for(PartyElectionResultVO partyElectionResultVO: postalBalletsList)
-					{
-						if(postalBalletsMap.isEmpty() || !postalBalletsMap.containsKey(partyElectionResultVO.getPartyId()))
+						
+						// processing ballot votes result processing
+						for(PartyElectionResultVO partyElectionResultVO: postalBalletsList)
 						{
-							postalBalletsMap.put(partyElectionResultVO.getPartyId(), partyElectionResultVO);
+							if(postalBalletsMap.isEmpty() || !postalBalletsMap.containsKey(partyElectionResultVO.getPartyId()))
+							{
+								postalBalletsMap.put(partyElectionResultVO.getPartyId(), partyElectionResultVO);
+							}
+								
 						}
-							
 					}
+					
 										
 					for(MandalElectionResultVO mandalElectionResultVOObj:electionResultsInMandalList)
 					{
@@ -1794,6 +1796,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 							PartyResultsVO resltVO = resultsSumMap.get(partId);
 														
 							//for ballot votes
+							if(electionResultsForMandalVO.getElectionType().equals(IConstants.ASSEMBLY_ELECTION_TYPE) 
+									&& electionResultsForMandalVO.getElectionYear().equals(IConstants.PRESENT_ELECTION_YEAR)){
 							if(!postalBalletsMap.isEmpty() && postalBalletsMap.containsKey(partId)){
 								PartyElectionResultVO balotVotes = postalBalletsMap.get(partId);
 								if(balotVotes.getVotesEarned() != null)
@@ -1803,6 +1807,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 								
 								resltVO.setVotesEarned(resltVO.getVotesEarned() + balotVotes.getVotesEarned());
 								ballotMapKeys.remove(partId);
+							}
 							}
 							totValidVotes+=resltVO.getVotesEarned();
 							partyResultsSum.add(resltVO);
