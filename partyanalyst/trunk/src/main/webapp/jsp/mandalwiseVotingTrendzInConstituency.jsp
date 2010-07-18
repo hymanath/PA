@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Voting Trends in ${constiName} Constituency</title>
+<title >Voting Trends in Constituency</title>
 
 <!-- YUI Dependency files (Start) -->
 
@@ -165,8 +165,6 @@
 		}
 		.mandalVotesShareTable th
 		{
-			/*background:url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
-			color:#0055CC;*/
 			background:url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
 			border:1px solid #ADADAD;
 			padding:5px;
@@ -283,7 +281,6 @@
 			
 			function constituencyOverViewResult(myResults)
 			{
-				
 				var heading =document.getElementById("constituencyMainDetails_Div");
 				var headingDIV='';
 				headingDIV+='<fieldset padding:10px;">';  		
@@ -316,6 +313,7 @@
 				}					
 				
 				headingDIV+='	</tr>';
+
 				headingDIV+='</table>';
 				
                 headingDIV+='<div id="contestingCandidates_InnerDiv" style="margin:10px;">';
@@ -363,6 +361,7 @@
 				}
 				
 				headingDIV+='</table>';
+
 				headingDIV+='</div>';
                 headingDIV+='</div>';
 				headingDIV+='</td>';
@@ -493,7 +492,11 @@
 										} else if(jsObj.task == "getConstituencyResultsBySubLocations")
 										{
 											constiMandalWiseResultsPresChart = myResults.chartPath;
-											getMandalsAndPartiesResults();
+											if(mandalIds != null)
+											{
+												getMandalsAndPartiesResults();
+											}
+											
 										}else if(jsObj.task == "getMandalsAndPartiesChartInElection")
 										{
 											constiMandalWiseResultsPrevChart = myResults;
@@ -1454,62 +1457,71 @@
 			var mandalsListElmt = document.getElementById("mandalsListInConstituency");
 			var mandalvotersDetailsEl = document.getElementById("mandalVotesShare");
 			var crossVotingDetailsDivEl = document.getElementById("crossVotingDiv");
+			crossVotingDetailsDivEl.innerHTML = '';
 			var nonParticipatingDivEl = document.getElementById("nonParticipatingDiv");
-			var crossVotingResults = resultsData.biElectionResultsMainVO[0].crossVotingResults;
-			var nonParticipatingParties = resultsData.biElectionResultsMainVO[0].nonPartiParties;
+			nonParticipatingDivEl.innerHTML = '';
 			var mandalwiseVotersShare = resultsData.constituencyVO.assembliesOfParliamentInfo;
 			var constituencyId = jsObj.constituencyId;
-			var crossVotingResultsContent = '';
-			crossVotingResultsContent+='<TABLE width="100%" class="participatingPartiestable" border="0">';
-			crossVotingResultsContent+='	<TR>';
-			crossVotingResultsContent+='	<TD colspan="6" style="padding:0px;border:none;">';
-			crossVotingResultsContent+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
-			crossVotingResultsContent+='			<tr>';
-			crossVotingResultsContent+='			<td width="3%" style="padding:0px;border:none;"> <img src="images/icons/electionResultsAnalysisReport/header_left.gif"></td>';
-			crossVotingResultsContent+='			<td width="97%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan">Cross Voting Details</span></div></td>';
-			crossVotingResultsContent+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
-			crossVotingResultsContent+='			</tr>';
-			crossVotingResultsContent+='		</table>';
-			crossVotingResultsContent+='	</TD>';
-			crossVotingResultsContent+='	</tr>';
-			crossVotingResultsContent+='	<TR>';
-			crossVotingResultsContent+='		<TH style="color:#18325A;">Party</TH>';
-			crossVotingResultsContent+='		<TH style="color:#18325A;">VotesEarned(A)</TH>';
-			crossVotingResultsContent+='		<TH style="color:#18325A;">Votes%(A)</TH>';
-			crossVotingResultsContent+='		<TH style="color:#18325A;">VotesEarned(P)</TH>';
-			crossVotingResultsContent+='		<TH style="color:#18325A;">Votes%(P)</TH>';
-			crossVotingResultsContent+='		<TH style="color:#18325A;">Difference</TH>';
-			crossVotingResultsContent+='	</TR>';			
-			for(var d in crossVotingResults)
-			{
-				    if(d == crossVotingResults.length-1)
-				    {
-                    crossVotingResultsContent+='<TR>';
-					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;font-weight:bold;">'+crossVotingResults[d].partyName+'</TD>';
-					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;">'+crossVotingResults[d].votesEarned+'</TD>';
-					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;font-weight:bold;">'+crossVotingResults[d].percentage+'</TD>';
-					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;font-weight:bold;">'+crossVotingResults[d].ballotVotes+'</TD>';
-					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;font-weight:bold;">'+crossVotingResults[d].ballotVotesPercentage+'</TD>';
-					crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;font-weight:bold;">'+crossVotingResults[d].diffPercent+'</TD>';							
-					crossVotingResultsContent+='</TR>';
-					}
-
-					else
-				    {
-					crossVotingResultsContent+='<TR>';
-					crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].partyName+'</TD>';
-					crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].votesEarned+'</TD>';
-					crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].percentage+'</TD>';
-					crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].ballotVotes+'</TD>';
-					crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].ballotVotesPercentage+'</TD>';
-					crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].diffPercent+'</TD>';							
-					crossVotingResultsContent+='</TR>';
-					}
-								
+			if(resultsData.biElectionResultsMainVO != null)
+			{	
+				var results = resultsData.biElectionResultsMainVO;
+				var crossVotingResults = resultsData.biElectionResultsMainVO[0].crossVotingResults;
+				var nonParticipatingParties = resultsData.biElectionResultsMainVO[0].nonPartiParties;
 			}
-			crossVotingResultsContent+='</TABLE>';
-			crossVotingDetailsDivEl.innerHTML = crossVotingResultsContent;
-
+			
+			if(crossVotingResults != null)
+			{	
+				var crossVotingResultsContent = '';
+				crossVotingResultsContent+='<TABLE width="100%" class="participatingPartiestable" border="0">';
+				crossVotingResultsContent+='	<TR>';
+				crossVotingResultsContent+='	<TD colspan="6" style="padding:0px;border:none;">';
+				crossVotingResultsContent+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
+				crossVotingResultsContent+='			<tr>';
+				crossVotingResultsContent+='			<td width="3%" style="padding:0px;border:none;"> <img src="images/icons/electionResultsAnalysisReport/header_left.gif"></td>';
+				crossVotingResultsContent+='			<td width="97%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan">Cross Voting Details</span></div></td>';
+				crossVotingResultsContent+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+				crossVotingResultsContent+='			</tr>';
+				crossVotingResultsContent+='		</table>';
+				crossVotingResultsContent+='	</TD>';
+				crossVotingResultsContent+='	</tr>';
+				crossVotingResultsContent+='	<TR>';
+				crossVotingResultsContent+='		<TH style="color:#18325A;">Party</TH>';
+				crossVotingResultsContent+='		<TH style="color:#18325A;">VotesEarned(A)</TH>';
+				crossVotingResultsContent+='		<TH style="color:#18325A;">Votes%(A)</TH>';
+				crossVotingResultsContent+='		<TH style="color:#18325A;">VotesEarned(P)</TH>';
+				crossVotingResultsContent+='		<TH style="color:#18325A;">Votes%(P)</TH>';
+				crossVotingResultsContent+='		<TH style="color:#18325A;">Difference</TH>';
+				crossVotingResultsContent+='	</TR>';			
+				for(var d in crossVotingResults)
+				{
+					    if(d == crossVotingResults.length-1)
+					    {
+	                    crossVotingResultsContent+='<TR>';
+						crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;font-weight:bold;">'+crossVotingResults[d].partyName+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;">'+crossVotingResults[d].votesEarned+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;font-weight:bold;">'+crossVotingResults[d].percentage+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;font-weight:bold;">'+crossVotingResults[d].ballotVotes+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;font-weight:bold;">'+crossVotingResults[d].ballotVotesPercentage+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:GoldenRod;font-weight:bold;">'+crossVotingResults[d].diffPercent+'</TD>';							
+						crossVotingResultsContent+='</TR>';
+						}
+	
+						else
+					    {
+						crossVotingResultsContent+='<TR>';
+						crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].partyName+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].votesEarned+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].percentage+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].ballotVotes+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].ballotVotesPercentage+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:#73787E;">'+crossVotingResults[d].diffPercent+'</TD>';							
+						crossVotingResultsContent+='</TR>';
+						}
+									
+				}
+				crossVotingResultsContent+='</TABLE>';
+				crossVotingDetailsDivEl.innerHTML = crossVotingResultsContent;
+			
 			var nonParticipatingContent = '';			
 			nonParticipatingContent+='<TABLE width="100%"  class="participatingPartiestable" border="0">';		
 			nonParticipatingContent+='	<TR>';
@@ -1556,10 +1568,10 @@
 			nonParticipatingContent+='</TABLE>';			
 			nonParticipatingDivEl.innerHTML = nonParticipatingContent;
 			
-				
+			}	
 			var mdlwiseVotersDetailsStr = '';
 			var mdlwiseVotersDetailsStr = '<P style="color:#247CD4;font-size:12px;font-weight:bold;">Mandalwise Voters Share in Constituency</B></P>';
-			mdlwiseVotersDetailsStr+='<Table width="100%" border="3" cellpadding="5" cellspacing="5">';
+			mdlwiseVotersDetailsStr+='<Table width="100%" border="0" cellpadding="5" cellspacing="5">';
 			mdlwiseVotersDetailsStr+='<TR>';			
 			for (var x in mandalwiseVotersShare[0].votersInfoForMandalVO)
 			{
@@ -1587,7 +1599,11 @@
 			mdlwiseVotersDetailsStr+='</TR>';
 			mdlwiseVotersDetailsStr+='</Table>';
 			mandalvotersDetailsEl.innerHTML = mdlwiseVotersDetailsStr;
-			var results = resultsData.biElectionResultsMainVO;
+				
+			if(resultsData.urbanRuralConstiResults != null)
+			{	
+				var urbanConstResults = resultsData.urbanRuralConstiResults;
+			}	 
 			//Hiding busy cursor Image
 			var cursorImgElmt = document.getElementById('cursorImg');
 			if(cursorImgElmt)
@@ -1649,128 +1665,232 @@
 			
 			//Rendering Mandal voting trendz data
 			var chartDetailsObjArr = resultsData.chartsListForElectionTypes;
-			var str = '';
-			str += '<table width="100%" height="150" cellspacing = "5" cellpadding="5">';
-			var mandalIdsFlag = 0;
-			mandalIds = new Array();
-			for(var i in results)
-			{	
-				for(var j in results[i].biElectionResultsVO)
-				{
-					
-					var electionHeaderLength = (results[i].biElectionResultsVO[j].partysList.length*2)+2;
-					var partyHeaderLength = results[i].biElectionResultsVO[j].partysList.length*2;
-					str += '<tr>';
-					str += '<td width="100">';
-					for(var z in chartDetailsObjArr)
-					{
-						var chartDetailsObj = chartDetailsObjArr[z]; 
-						var electionType = chartDetailsObj.electionType
-						var electionYear = chartDetailsObj.electionYear
-						var chartName = chartDetailsObj.chartName;	
-						if(electionType == results[i].biElectionResultsVO[j].electionType && electionYear ==  results[i].biElectionResultsVO[j].electionYear)
-						str += '<img src="charts/'+chartName+'" />';
-							
-					}
-					str += '</td>';
-					str += '<td style="vertical-align:top;padding-bottom:20px;">';
-					str += '<table width="100%" class="participatingPartiestable" border="0">';
-					str += '<tr>';
-					str += '<th colspan="'+electionHeaderLength+'" align="left">'+results[i].biElectionResultsVO[j].electionType+' - '+results[i].biElectionResultsVO[j].electionYear+'</th>';
-					str += '</tr>';
-					str += '<tr>';
-					str += '<th rowspan="3">Mandal</th>';
-					str += '<th rowspan="3">Constituency</th>';
-					str += '<th colspan="'+partyHeaderLength+'" align="center">Party</th>';
-					str += '</tr>';
-					str += '<tr>';
-					for(var p in results[i].biElectionResultsVO[j].partysList)
-					{
-						str += '<th colspan="2">'+results[i].biElectionResultsVO[j].partysList[p].name+'</th>';
-					}
-					str += '</tr>';
-					str += '<tr>';
-					for(var q in results[i].biElectionResultsVO[j].partysList)
-					{
-						str += '<th>V*</th><th>%</th>';
-					}
-					str += '</tr>';
-					for(var k in results[i].biElectionResultsVO[j].electionResultsForMandal)
-					{
-						
-						var info = results[i].biElectionResultsVO[j].electionResultsForMandal[k];
-						str += '<tr>';
-						if(info.partyElecResultsInConstituency.length == 0)
-						{
-							var cols = partyHeaderLength+1;
-							str += '<th><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs"  onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';
-							for(var colsno = 0;colsno < cols; colsno++)
-								str += '<td> -- </td>';	
-						}
-						else
-						{
-							if(mandalIdsFlag == 0)
-								mandalIds.push(info.mandalId);
-							str += '<th rowspan="'+info.partyElecResultsInConstituency.length+'"><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs" onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';				
-							for(var l in info.partyElecResultsInConstituency)
-							{
-								str += '<th style="color:#73787E;width:150px;font-size:10px;">'+info.partyElecResultsInConstituency[l].constituencyName.toUpperCase()+'</th>';
-												
-								for(var m in info.partyElecResultsInConstituency[l].partyElecResults)
-								{
-									var data = info.partyElecResultsInConstituency[l].partyElecResults[m];	
-									if(data.votesEarned == 0)
-										str += '<td> -- </td>';
-									else
-										str += '<td>'+data.votesEarned+'</td>';
-
-									str += '<td>'+data.percentage+'</td>';					
-								}
-								
-								str+='</tr><tr>';
-							}
-						}
-						str += '</tr>';
-					}
-
-					mandalIdsFlag++;
-					
-					if(results[i].biElectionResultsVO[j].electionType == "Assembly" && results[i].biElectionResultsVO[j].electionYear == "2009")
-					{	
-						str += '<tr>';
-						str += '<th colspan="2">Postal Ballot Votes</th>';
-						for(var sum in results[i].biElectionResultsVO[j].partyResultsSum)
-						{
-							if(results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotes != null)
-								{
-									str += '<td><font style="color:#62662B;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotes+'</font></td><td><font style="color:#62662B;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotesPercentage+'</font></td>';
-								} else 
-									str += '<td><font style="color:#62662B;font-weight:bold;">--</font></td><td><font style="color:#62662B;font-weight:bold;">--</font></td>';
-						}
-						
-						str += '</tr>';
-					}
-					str += '<tr>';
-					str += '<th colspan="2">Total</th>';
-					for(var sum in results[i].biElectionResultsVO[j].partyResultsSum)
-					{
-						str += '<td><font style="color:GoldenRod;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].votesEarned+'</font></td><td><font style="color:GoldenRod;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].percentage+'</font></td>';
-					}					
-					str += '</tr>';
-					str += '</table>';
-					str += '</td>';
-					str += '</tr>';
-					str += '<tr><td colspan="2"><hr/></td></tr>';
-				}
+			if(results != null )
+			{
+				bodyElmt.innerHTML = '';
+				var str = '';
+				str += '<table width="100%" height="150" cellspacing = "5" cellpadding="5" border="0">';
+				var mandalIdsFlag = 0;
+				mandalIds = new Array();
 				
+					for(var i in results)
+						{	
+							for(var j in results[i].biElectionResultsVO)
+							{
+								
+								var electionHeaderLength = (results[i].biElectionResultsVO[j].partysList.length*2)+2;
+								var partyHeaderLength = results[i].biElectionResultsVO[j].partysList.length*2;
+								str += '<tr>';
+								str += '<td width="100">';
+								for(var z in chartDetailsObjArr)
+								{
+									var chartDetailsObj = chartDetailsObjArr[z]; 
+									var electionType = chartDetailsObj.electionType
+									var electionYear = chartDetailsObj.electionYear
+									var chartName = chartDetailsObj.chartName;	
+									if(electionType == results[i].biElectionResultsVO[j].electionType && electionYear ==  results[i].biElectionResultsVO[j].electionYear)
+									str += '<img src="charts/'+chartName+'" />';
+										
+								}
+								str += '</td>';
+								str += '<td style="vertical-align:top;padding-bottom:20px;">';
+								str += '<table width="100%" class="mandalResultsTable" border="1">';
+								str += '<tr>';
+								str += '<th colspan="'+electionHeaderLength+'" align="left">'+results[i].biElectionResultsVO[j].electionType+' - '+results[i].biElectionResultsVO[j].electionYear+'</th>';
+								str += '</tr>';
+								str += '<tr>';
+								str += '<th rowspan="3">Mandal</th>';
+								str += '<th rowspan="3">Constituency</th>';
+								str += '<th colspan="'+partyHeaderLength+'" align="center">Party</th>';
+								str += '</tr>';
+								str += '<tr>';
+								for(var p in results[i].biElectionResultsVO[j].partysList)
+								{
+									str += '<th colspan="2">'+results[i].biElectionResultsVO[j].partysList[p].name+'</th>';
+								}
+								str += '</tr>';
+								str += '<tr>';
+								for(var q in results[i].biElectionResultsVO[j].partysList)
+								{
+									str += '<th>V*</th><th>%</th>';
+								}
+								str += '</tr>';
+								for(var k in results[i].biElectionResultsVO[j].electionResultsForMandal)
+								{
+									
+									var info = results[i].biElectionResultsVO[j].electionResultsForMandal[k];
+									str += '<tr>';
+									if(info.partyElecResultsInConstituency.length == 0)
+									{
+										var cols = partyHeaderLength+1;
+										str += '<th><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs"  onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';
+										for(var colsno = 0;colsno < cols; colsno++)
+											str += '<td> -- </td>';	
+									}
+									else
+									{
+										if(mandalIdsFlag == 0)
+											mandalIds.push(info.mandalId);
+										
+										str += '<th rowspan="'+info.partyElecResultsInConstituency.length+'"><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs" onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';				
+										for(var l in info.partyElecResultsInConstituency)
+										{
+											str += '<th style="color:#73787E;width:150px;font-size:10px;">'+info.partyElecResultsInConstituency[l].constituencyName.toUpperCase()+'</th>';
+															
+											for(var m in info.partyElecResultsInConstituency[l].partyElecResults)
+											{
+												var data = info.partyElecResultsInConstituency[l].partyElecResults[m];	
+												if(data.votesEarned == 0)
+													str += '<td> -- </td>';
+												else
+													str += '<td>'+data.votesEarned+'</td>';
+			
+												str += '<td>'+data.percentage+'</td>';					
+											}
+											
+											str+='</tr><tr>';
+										}
+									}
+									str += '</tr>';
+								}
+			
+								mandalIdsFlag++;
+								
+								if(results[i].biElectionResultsVO[j].electionType == "Assembly" && results[i].biElectionResultsVO[j].electionYear == "2009")
+								{	
+									str += '<tr>';
+									str += '<th colspan="2">Postal Ballot Votes</th>';
+									for(var sum in results[i].biElectionResultsVO[j].partyResultsSum)
+									{
+										if(results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotes != null)
+											{
+												str += '<td><font style="color:#62662B;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotes+'</font></td><td><font style="color:#62662B;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].ballotVotesPercentage+'</font></td>';
+											} else 
+												str += '<td><font style="color:#62662B;font-weight:bold;">--</font></td><td><font style="color:#62662B;font-weight:bold;">--</font></td>';
+									}
+									
+									str += '</tr>';
+								}
+								str += '<tr>';
+								str += '<th colspan="2">Total</th>';
+								for(var sum in results[i].biElectionResultsVO[j].partyResultsSum)
+								{
+									str += '<td><font style="color:GoldenRod;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].votesEarned+'</font></td><td><font style="color:GoldenRod;font-weight:bold;">'+results[i].biElectionResultsVO[j].partyResultsSum[sum].percentage+'</font></td>';
+								}					
+								str += '</tr>';
+								str += '</table>';
+								str += '</td>';
+								str += '</tr>';
+								str += '<tr><td colspan="2"><hr/></td></tr>';
+							}
+							
+						}
+						str += '</table>';
+						bodyElmt.innerHTML = str;
+						
+		} else if(urbanConstResults != null)
+		{
+			bodyElmt.innerHTML = '';
+			mandalIds = null;
+			var urbanStr = '';
+				
+			for(var a in urbanConstResults)
+			{	
+					urbanStr += '<table width="100%" height="150" cellspacing = "5" cellpadding="5" border="0">';
+					urbanStr += '	<tr>';
+					var electionHeaderLen = (urbanConstResults[a].partiesHeading.length*2)+2;
+					var partyHeaderLen = urbanConstResults[a].partiesHeading.length*2;
+					urbanStr += '		<td>';
+					urbanStr += '			<img src="charts/'+urbanConstResults[a].electionPieChart+'" />';
+					urbanStr += '		</td>';
+					urbanStr += '		<td style="vertical-align:top;padding-bottom:20px;" width="100%">';
+					urbanStr += '			<table width="100%" class="mandalResultsTable" border="1" style="margin:10px;">';
+					urbanStr += '				<tr>';
+					urbanStr += '					<th colspan="'+electionHeaderLen+'" align="left">'+urbanConstResults[a].electionType+' - '+urbanConstResults[a].electionYear+'</th>';
+					urbanStr += '				</tr>';
+					urbanStr += '				<tr>';
+					urbanStr += '					<th rowspan="3">Mandal</th>';
+					urbanStr += '					<th rowspan="3">Constituency</th>';
+					urbanStr += '					<th colspan="'+partyHeaderLen+'" align="center">Party</th>';
+					urbanStr += '				</tr>';
+					urbanStr += '				<tr>';
+					for(var c in urbanConstResults[a].partiesHeading)
+					{
+						urbanStr += '				<th colspan="2">'+urbanConstResults[a].partiesHeading[c].name+'</th>';
+					}
+					urbanStr += '				</tr>';
+					urbanStr += '				<tr>';
+					for(var e in urbanConstResults[a].partiesHeading)
+					{
+						urbanStr += '				<th>V*</th><th>%</th>';
+					}
+					urbanStr += '				</tr>';
+					for(var f in urbanConstResults[a].constituencyMandalInfo)
+					{						
+							
+							var info1 = urbanConstResults[a].constituencyMandalInfo[f].partiesReslts;
+							urbanStr += '		<tr>';	
+						// if postal ballot votes
+						//debugger;
+						if(urbanConstResults[a].constituencyMandalInfo[f].isPostalVotes == true)	
+						{		
+								urbanStr += '		<th colspan="2">Postal Ballot Votes</th>';												
+								//urbanStr+='</tr><tr>';									
+								
+						} else if(urbanConstResults[a].constituencyMandalInfo[f].isTotal == true)	
+						{		
+							urbanStr += '			<th colspan="2">Total Votes</th>';												
+							//urbanStr+='</tr><tr>';									
+							
+						} else	
+						{		
+								urbanStr += '		<th><A href="javascript:{}" title="Click to view results and voting trendz in '+urbanConstResults[a].constituencyMandalInfo[f].tehsilName+' mandal" class="viewAncs" onclick="openwin('+urbanConstResults[a].constituencyMandalInfo[f].tehsilId+',\''+urbanConstResults[a].constituencyMandalInfo[f].tehsilName+'\',\''+urbanConstResults[a].electionType+'\','+urbanConstResults[a].electionYear+','+urbanConstResults[a].electionId+')">'+urbanConstResults[a].constituencyMandalInfo[f].tehsilName+'</A></th>';
+								urbanStr += '		<th style="color:#73787E;width:150px;font-size:10px;">'+urbanConstResults[a].constituencyMandalInfo[f].constituencyName.toUpperCase()+'</th>';
+						}								
+							for(var g in info1)
+								{
+											
+										if(info1[g].partyTotalVotes == "0" || info1[g].percentageOfVotes == "-1" )
+										{
+											urbanStr += '<td> -- </td>';
+											urbanStr += '<td> -- </td>';
+										}else
+										{
+											urbanStr += '<td>'+info1[g].partyTotalVotes+'</td>';
+											urbanStr += '<td>'+info1[g].percentageOfVotes+'</td>';
+										}						
+									}								
+								
+						
+						urbanStr+='</tr><tr>';	
+					}
+					urbanStr += '</tr>';
+					urbanStr += '		</table>';
+					urbanStr += '</td>';
+					urbanStr += '</tr>';
+					urbanStr += '</table>';					
 			}
-			str += '</table>';
+			
+			bodyElmt.innerHTML = urbanStr;
+			//building 2004 2009 charts
+					var imageDiv = document.getElementById("constitutencyMandalWiseResultsChart");
+					var str = '';
+					str +='<div style="margin: 10px;">';
+					str += '<table border="1" width="100%" style="border-collapse:collapse;">';
+					str += '<tr><td valign="top" align="center"><img src="charts/'+resultsData.assemblyResultsChartForPresentYear+'"></td></tr>';
+					str += '<tr><td valign="top" align="center"><img src="charts/'+resultsData.assemblyResultsChartForPreviousYear+'"></td></tr>';
+					str += '</table>';
+					str += '</div>';
+					imageDiv.innerHTML = str;
+					
+		}	
 
-			bodyElmt.innerHTML = str;
+			
 			//getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
 			//getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
 			
 			getConstituencyResults("2009");
+				
 			//To build Graphs for 2009 and 2004 Mandals Wise Parties Results 
 		}
 
@@ -1917,8 +2037,9 @@
 		}
 
 		function getMandalsAndPartiesResults(){
+			
 			var jsObj = {
-					mandalIds:mandalIds,
+					mandalIds: mandalIds,
 					electionYear:"2004",
 					electionType:"Assembly",
 					chartHeight: 400,
@@ -1931,7 +2052,7 @@
 		}
 		function partyVotesSharing(all,allChoices,flag){		
 			var getAllData = all;
-			var getSelectedChoices = allChoices;			
+			var getSelectedChoices = allChoices;
 			var jsObj = {
 					getAll : all,
 					choices : allChoices,
@@ -2152,6 +2273,7 @@
 			getMuncipalElections();
 			getCorporationElections();
 			mandalVotingShareDetailsMethod();
+			//getMandalsAndPartiesResults();
 	</script>
 </body>
 </html>
