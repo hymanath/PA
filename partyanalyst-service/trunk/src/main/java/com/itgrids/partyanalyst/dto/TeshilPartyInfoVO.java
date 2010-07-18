@@ -22,7 +22,15 @@ public class TeshilPartyInfoVO {
 	private ResultStatus resultStatus;
 	private String chartName;
 	private Long partyId;
+	private String totalVotersInConstituency;
 	
+	
+	public String getTotalVotersInConstituency() {
+		return totalVotersInConstituency;
+	}
+	public void setTotalVotersInConstituency(String totalVotersInConstituency) {
+		this.totalVotersInConstituency = totalVotersInConstituency;
+	}
 	public Long getPartyId() {
 		return partyId;
 	}

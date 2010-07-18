@@ -1648,11 +1648,13 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 * @return
 	 */
 	public List<TeshilPartyInfoVO> getTehsilPartyInfoForAConstituency(StringBuilder tehsilIds,String electionYear,String electionType,Long constituencyId){
+	
 		try{
 			log.debug("Entered in to getTehsilPartyInfoForAConstituency() method..");
 			BigDecimal percentage = new BigDecimal(0.0);
 			List<TeshilPartyInfoVO> teshilPartyInfoVO = new ArrayList<TeshilPartyInfoVO>(0);
 			Float totalVotes=null;
+			String totalVotersInConstituency=null;
 			Long winningCandidateRank=1l;
 			Map<String,Long> winningSeats =  new HashMap<String,Long>(0);
 			log.debug("Making nominationDAO.findSeatsWonByAPartyInMandalForAnElectionYear() DAO call..");
@@ -1671,7 +1673,17 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				totalVotes = Float.parseFloat(totalValidVotes.get(0).toString());
 			}else{
 				totalVotes = 1.0f;
-			}			
+			}
+			
+			log.debug("Making constituencyElectionDAO.getTotalVotersForATehsilForAParticularElectionYear() DAO call..");
+			List totalVoters = constituencyElectionDAO.getTotalVotersForATehsilForAParticularElectionYear(electionType,tehsilIds.substring(1),electionYear);
+			if(totalVoters.get(0)!=null){
+				totalVotersInConstituency = totalVoters.get(0).toString();
+			}else{
+				totalVotersInConstituency = "--";
+			}
+			
+			
 			log.debug("Making nominationDAO.getPartysInfoForATehsilForAParticularElectionYear() DAO call..");
 			List result = nominationDAO.getPartysInfoForATehsilForAParticularElectionYear(electionType,tehsilIds.substring(1),electionYear);
 			for(int i=0;i<result.size();i++){
@@ -1683,6 +1695,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					percentage= new BigDecimal((Float.parseFloat(parms[2].toString())/totalVotes)*100).setScale(2,BigDecimal.ROUND_HALF_UP);
 					teshilPartyInfoVo.setPercentageOfVotesWonByParty(Float.parseFloat(percentage.toString()));
 					teshilPartyInfoVo.setTotalSeats(totalSeats);
+					teshilPartyInfoVo.setTotalVotersInConstituency(totalVotersInConstituency);
+					teshilPartyInfoVo.setTotalPolledVotes(totalVotes);					 	
 					if(winningSeats.get(parms[0].toString()) != null){
 						teshilPartyInfoVo.setSeatsWonByParty(Long.parseLong(winningSeats.get(parms[0].toString()).toString()));
 					}else{

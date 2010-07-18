@@ -91,4 +91,6 @@ public interface IConstituencyElectionDAO extends GenericDao<ConstituencyElectio
 	
 	public List getValidVotesForMunicipalitiesAndCorporationsInMandals(String mandalIds);
 	
+	public List getTotalVotersForATehsilForAParticularElectionYear(String electionType,String tehsilIds,String electionYear);
+	
 }
