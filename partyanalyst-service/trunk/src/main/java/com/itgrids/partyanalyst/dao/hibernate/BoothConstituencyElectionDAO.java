@@ -256,7 +256,6 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	
 	@SuppressWarnings("unchecked")
 	public List findConstituencyWiseAllBoothsVotingTrendsInAnElection(Long electionId,Long constituencyId){
-		System.out.println("Inside 1 (ElecId) :" + electionId + "ConstitID :" + constituencyId);
 		Object[] params = {electionId,constituencyId};
 		StringBuilder hqlQuery =new StringBuilder();
 		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
@@ -270,7 +269,6 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	
 	@SuppressWarnings("unchecked")
 	public List findConstituencyWiseMaleBoothsVotingTrendsInAnElection(Long electionId,Long constituencyId,Long trendValue){
-		System.out.println("Inside 2 (ElecId) :" + electionId + "ConstitID :" + constituencyId);
 		Object[] params = {electionId,constituencyId,trendValue};
 		StringBuilder hqlQuery =new StringBuilder();
 		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
@@ -285,7 +283,6 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 	
 	@SuppressWarnings("unchecked")
 	public List findConstituencyWiseFemaleBoothsVotingTrendsInAnElection(Long electionId,Long constituencyId,Long trendValue){
-		System.out.println("Inside 3 (ElecId) :" + electionId + "ConstitID :" + constituencyId);
 		Object[] params = {electionId,constituencyId,trendValue};
 		StringBuilder hqlQuery =new StringBuilder();
 		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
@@ -300,7 +297,6 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		
 	@SuppressWarnings("unchecked")
 	public List findConstituencyWiseMaleAndFemaleBoothsVotingTrendsInAnElection(Long electionId,Long constituencyId,Long maleTrend,Long femaleTrend){
-		System.out.println("Inside 4 (ElecId) :" + electionId + "ConstitID :" + constituencyId);
 		Object[] params = {electionId,constituencyId,maleTrend,femaleTrend};
 		StringBuilder hqlQuery =new StringBuilder();
 		hqlQuery.append("select distinct model.booth.boothId,model.booth.partNo,")
@@ -400,6 +396,16 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 			String electionType, String elecYear) {
 		Object[] params = {mandalId,electionType,elecYear};
 		return getHibernateTemplate().find("select sum(model.boothResult.validVotes) from BoothConstituencyElection "+
+				"model where model.booth.tehsil.tehsilId = ? and "+
+				"model.constituencyElection.election.electionScope.electionType.electionType = ? and "+
+				"model.constituencyElection.election.electionYear = ? group by model.booth.tehsil.tehsilId",params);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List getTotalVotersInAnElectionInMandal(Long mandalId,
+			String electionType, String elecYear) {
+		Object[] params = {mandalId,electionType,elecYear};
+		return getHibernateTemplate().find("select sum(model.booth.totalVoters) from BoothConstituencyElection "+
 				"model where model.booth.tehsil.tehsilId = ? and "+
 				"model.constituencyElection.election.electionScope.electionType.electionType = ? and "+
 				"model.constituencyElection.election.electionYear = ? group by model.booth.tehsil.tehsilId",params);
