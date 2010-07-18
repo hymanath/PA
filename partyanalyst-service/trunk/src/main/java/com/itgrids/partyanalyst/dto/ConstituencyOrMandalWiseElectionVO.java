@@ -13,6 +13,7 @@ public class ConstituencyOrMandalWiseElectionVO implements Serializable {
 	private Long locationId;
 	private String locationName;
 	private Long totalPolledVotes;
+	private Long totalVoters;
 	private List<PartyElectionResultVO> partyElectionResultVOs;
 	
 	public Long getLocationId() {
@@ -39,5 +40,11 @@ public class ConstituencyOrMandalWiseElectionVO implements Serializable {
 	public void setPartyElectionResultVOs(
 			List<PartyElectionResultVO> partyElectionResultVOs) {
 		this.partyElectionResultVOs = partyElectionResultVOs;
+	}
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
 	}
 }
