@@ -1193,7 +1193,7 @@
 			constituencyIdGlobal = value;
 
 			getConstituencyOverViewResult(value,text);
-			partyVotesSharing();
+			partyVotesSharing('all','-',1);
 			getMuncipalElections();  
 			getCorporationElections(); 
 			
