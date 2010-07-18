@@ -321,7 +321,7 @@
 				headingDIV+='<tr>';
 				headingDIV+='<td width="30%" valign="top">';
 				headingDIV+= '<div id="constiContestingCandsDiv" style="color:#247CD4;font-size:12px;font-weight:bold;text-align:left;padding:5px;text-decoration:underline;">';
-				headingDIV+= 'Bye-Election 2010 Contesting Candidates</div>';
+				headingDIV+= '</div>';
 				headingDIV+='<div id="contestingCandidatesIn" style="margin:10px;border:solid 0px;" >';
 
 				headingDIV+='<table class="participatingPartiestable" border="0">';	
@@ -335,7 +335,7 @@
 
 				headingDIV+='	<td style="padding:0px;border:none;">';
 				headingDIV+='		<div class="detailsTableHeader" style="width:271px;">';
-				headingDIV+='			<span class="detailsTableHeaderSpan"> </span>';
+				headingDIV+='			<span class="detailsTableHeaderSpan">Bye-Election 2010 Contesting Candidates </span>';
 				headingDIV+='		</div>';
 				headingDIV+='	</td>';
 
@@ -367,7 +367,7 @@
 				headingDIV+='</td>';
 				headingDIV+='<td width="35%" valign="top">';
 				headingDIV+='	<div style="font-size: 12px;font-weight:bold;text-align:left;color:#247CD4;padding:5px;text-decoration:underline">';
-				headingDIV+='		2009 Won & Opposition Candidates Result In Constituency';
+				headingDIV+='		';
 				headingDIV+='	</div>';
 				//-----------
 				headingDIV+='	<div style="margin:10px">';
@@ -382,7 +382,7 @@
 
 				headingDIV+='				<td style="padding:0px;border:none;">';
 				headingDIV+='					<div class="detailsTableHeader" style="width:500px;">';
-				headingDIV+='						<span class="detailsTableHeaderSpan"> </span>';
+				headingDIV+='						<span class="detailsTableHeaderSpan">2009 Won & Opposition Candidates Result In Constituency </span>';
 				headingDIV+='					</div>';
 				headingDIV+='				</td>';
 
@@ -856,6 +856,8 @@
 			
 			for(var j in results)
 			{
+				if(results[j].range == " ")
+					continue
 				str += '<tr>';
 				str += '<td align="center">'+results[0].partiesList[j].name+'</td>';
 				for(var k in results[j].electionWiseResults)
