@@ -112,4 +112,7 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	@SuppressWarnings("unchecked")
 	public List getValidVotesInAnElectionInMandal(Long mandalId,String electionType,String elecYear);
 	
+	@SuppressWarnings("unchecked")
+	public List getTotalVotersInAnElectionInMandal(Long mandalId,String electionType,String elecYear);
+	
 }
