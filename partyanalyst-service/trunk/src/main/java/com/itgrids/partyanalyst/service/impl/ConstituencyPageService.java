@@ -82,9 +82,11 @@ import com.itgrids.partyanalyst.model.VillageBoothElection;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.ConstituencyOrMandalComparatorForTotalVoters;
 import com.itgrids.partyanalyst.utils.ConstituencyOrMandalVOComparator;
 import com.itgrids.partyanalyst.utils.ElectionDetailsVOComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.PartyResultVOComparatorByElectors;
 import com.itgrids.partyanalyst.utils.PartyResultVOComparatorByName;
 import com.itgrids.partyanalyst.utils.SortByRankOnPartyElectionResultComparator;
 
@@ -1194,6 +1196,20 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				if(log.isDebugEnabled()){
 					log.debug("Calling getCandidateAndPartyDetails()");
 				}
+				
+				if(!includeOthers){
+					try{
+					List totalVoters = boothConstituencyElectionDAO.getTotalVotersInAnElectionInMandal(tehsilIds.get(i),electionType,electionYear);
+					if(totalVoters != null){
+						Object params = (Object)totalVoters.get(0);
+						constituencyOrMandalWiseElectionVo.setTotalVoters((Long)params);
+					}
+					}
+					catch(Exception ex){
+						ex.printStackTrace();
+						log.debug(" Exception :" + ex);
+					}
+				}
 				candidateNamePartyAndStatus = getCandidateAndPartyDetails(mainTehsilId,list);
 				constituencyOrMandalWiseElectionVO.add(constituencyOrMandalWiseElectionVo);
 			}
@@ -1212,6 +1228,9 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				constituencyRevenueVillagesVO.setConstituencyId(constituencyId);
 				constituencyRevenueVillagesVO.setConstituencyName(constituencyName);
 			}else{}			
+			if(!includeOthers){
+				Collections.sort(constituencyOrMandalWiseElectionVO, new ConstituencyOrMandalComparatorForTotalVoters());
+			}
 			constituencyRevenueVillagesVO.setConstituencyOrMandalWiseElectionVO(constituencyOrMandalWiseElectionVO);		
 			constituencyRevenueVillagesVO.setCandidateNamePartyAndStatus(candidateNamePartyAndStatus);
 				
@@ -1367,6 +1386,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return partyVotes;		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<PartyResultVO> getMandalsResultsInAnElection(String mandalIds, String electionYear, String electionType){
 		List validVotes = boothResultDAO.getAllPolledVotesForMandalsInAnElection(mandalIds, electionYear, electionType);
 		List<PartyResultVO> partiesResultsInMandals = new ArrayList<PartyResultVO>();
@@ -1380,13 +1400,28 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			partyResultVO.setConstituencyName(values[1].toString());
 			partyResultVO.setPartyName(values[2].toString());
 			partyResultVO.setVotesPercent(new BigDecimal((Long)values[3]*100.0/mandalAndValidVotesMap.get(values[0])).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			
+			//to get total voters
+			try{
+			Long tehsilId = (Long)values[0];
+			List totalVoters = boothConstituencyElectionDAO.getTotalVotersInAnElectionInMandal(tehsilId,electionType,IConstants.PRESENT_ELECTION_YEAR);
+			if(totalVoters != null){
+				Object params = (Object)totalVoters.get(0);
+				partyResultVO.setElectors((Long)params);
+			}
+			}catch(Exception ex){
+				ex.printStackTrace();
+				log.debug(" Exception Raised :" + ex);
+			}
 			partiesResultsInMandals.add(partyResultVO);
 		}
 		if(partiesResultsInMandals != null && partiesResultsInMandals.size() > 0)
-		    Collections.sort(partiesResultsInMandals, new PartyResultVOComparatorByName());
+			Collections.sort(partiesResultsInMandals, new PartyResultVOComparatorByElectors());
+			  //Collections.sort(partiesResultsInMandals, new PartyResultVOComparatorByName());
 		return partiesResultsInMandals;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void getAssembliesVotersInfoOfParliament(ConstituencyVO constituencyVO){
 		List list = delimitationConstituencyAssemblyDetailsDAO.getAllAssembliesOfParliament(constituencyVO.getId());
 		Map<String, String> yearAndIdsMap = new HashMap<String,String>();
