@@ -321,7 +321,7 @@
                 headingDIV+='<div id="contestingCandidates_InnerDiv" style="margin:10px;">';
 				headingDIV+='<table width="100%" border="0">';
 				headingDIV+='<tr>';
-				headingDIV+='<td width="35%" valign="top">';
+				headingDIV+='<td width="30%" valign="top">';
 				headingDIV+= '<div id="constiContestingCandsDiv" style="color:#247CD4;font-size:12px;font-weight:bold;text-align:left;padding:5px;text-decoration:underline;">';
 				headingDIV+= 'Bye-Election 2010 Contesting Candidates</div>';
 				headingDIV+='<div id="contestingCandidatesIn" style="margin:10px;border:solid 0px;" >';
@@ -366,34 +366,34 @@
 				headingDIV+='</div>';
                 headingDIV+='</div>';
 				headingDIV+='</td>';
-				headingDIV+='<td width="65%" valign="top">';
-				headingDIV+='<div style="font-size: 12px;font-weight:bold;text-align:left;color:#247CD4;padding:5px;text-decoration:underline">';
-				headingDIV+='2009 Won & Opposition Candidates Result In Constituency';
-				headingDIV+='</div>';
+				headingDIV+='<td width="35%" valign="top">';
+				headingDIV+='	<div style="font-size: 12px;font-weight:bold;text-align:left;color:#247CD4;padding:5px;text-decoration:underline">';
+				headingDIV+='		2009 Won & Opposition Candidates Result In Constituency';
+				headingDIV+='	</div>';
 				//-----------
-				headingDIV+='<div style="margin:10px">';
-				headingDIV+='<table class="participatingPartiestable" border="0" width="640px">';	
-				headingDIV+='<tr>';
-				headingDIV+='<td colspan="5" style="border:0px;padding:0px;">';
-				headingDIV+='<table class="participatingPartiestable_inner" border="0"  cellpadding="0" cellspacing="0" width="100%">';
-				headingDIV+='<tr>';
-				headingDIV+='	<td style="padding:0px;border:none;"> ';
-				headingDIV+='		<img src="images/icons/electionResultsAnalysisReport/header_left.gif">';
-				headingDIV+='	</td>';
+				headingDIV+='	<div style="margin:10px">';
+				headingDIV+='	<table class="participatingPartiestable" border="0" width="500px">';	
+				headingDIV+='	<tr>';
+				headingDIV+='		<td colspan="5" style="border:0px;padding:0px;">';
+				headingDIV+='			<table class="participatingPartiestable_inner" border="0"  cellpadding="0" cellspacing="0" width="100%">';
+				headingDIV+='			<tr>';
+				headingDIV+='				<td style="padding:0px;border:none;"> ';
+				headingDIV+='					<img src="images/icons/electionResultsAnalysisReport/header_left.gif">';
+				headingDIV+='				</td>';
 
-				headingDIV+='	<td style="padding:0px;border:none;">';
-				headingDIV+='		<div class="detailsTableHeader" style="width:608px;">';
-				headingDIV+='			<span class="detailsTableHeaderSpan"> </span>';
-				headingDIV+='		</div>';
-				headingDIV+='	</td>';
+				headingDIV+='				<td style="padding:0px;border:none;">';
+				headingDIV+='					<div class="detailsTableHeader" style="width:500px;">';
+				headingDIV+='						<span class="detailsTableHeaderSpan"> </span>';
+				headingDIV+='					</div>';
+				headingDIV+='				</td>';
 
-				headingDIV+='	<td style="padding:0px;border:none;">';
-				headingDIV+='		<img src="images/icons/electionResultsAnalysisReport/second.png">';
-				headingDIV+='	</td>';
-				headingDIV+='</tr>';
-				headingDIV+='</table>';
-				headingDIV+='</td>';
-				headingDIV+='</tr>';
+				headingDIV+='				<td style="padding:0px;border:none;">';
+				headingDIV+='					<img src="images/icons/electionResultsAnalysisReport/second.png">';
+				headingDIV+='				</td>';
+				headingDIV+='			</tr>';
+				headingDIV+='			</table>';
+				headingDIV+='		</td>';
+				headingDIV+='	</tr>';
 
 				headingDIV+='<tr>';
 				headingDIV+='<th align="center" style="color:#4B74C6">Party</th>';
@@ -430,10 +430,15 @@
 				headingDIV+='	<b>Margin Votes %</b> : '+myResults.elecResultsInConsti.marginPercent;
 				headingDIV+=' %</td>';
 				headingDIV+='</tr>';
-				
+				headingDIV+='</table>';
 				headingDIV+='</div>';
 				//------
 				headingDIV+='</td>';
+				
+				headingDIV+='<td width="35%">';
+				headingDIV+='<img src="images/bi-constituency_maps/'+constituencyName+'.jpg"/>';
+				headingDIV+='</td>';
+			
 				headingDIV+='</tr>';
 				headingDIV+='</table>';
 				heading.innerHTML=headingDIV;
