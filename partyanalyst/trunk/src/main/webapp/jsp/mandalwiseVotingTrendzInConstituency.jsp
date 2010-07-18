@@ -511,7 +511,7 @@
 											constituencyOverViewResult(myResults);
 										}
 										else if(jsObj.task == "votesSharingInConstituency"){
-											buildVotesSharingData(myResults);
+											buildVotesSharingData(jsObj,myResults);
 										}else if(jsObj.task == "getMandalVotesShare"){
 											buildMandalVotesSharingData(myResults, jsObj);
 											showAllPartiesAllElectionsResults(myResults);
@@ -807,14 +807,17 @@
 			divEl.innerHTML = str;			
 		}
 
-		function buildVotesSharingData(results)
+		function buildVotesSharingData(jsObj,results)
 		{
 			
 			votesShareData = results;
-			var elmt = document.getElementById("partyVotesSharingDetailsDiv");
 
-			if(!elmt)
+			var shareElmt = document.getElementById("votersShareData_main");
+			var checkBoxElmt = document.getElementById("votersShareCheckBox");
+
+			if(!shareElmt && !checkBoxElmt)
 				return;
+			
 			var electionListLength = results[0].electionList.length+2;
 
 			var str = '';
@@ -827,7 +830,7 @@
 			str += '<td><P>Grouped Alliance Party Results </P></td>';
             str += '</tr></table>';
 		
-			str += '<div id="votersShareData_main">';
+			
 			str += '<center><table id="votesShareDetailsTable" width="100%" cellspacing="4" cellmargin="0">';
 			str += '<tr>';
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
@@ -878,24 +881,32 @@
 			}
 
 			str += '</table></center>';
-			str += '</div>';
-			str += '<div> ';
-			str += '<center><table>';
-			str += '<tr>';
-			str += '<td>View :</td>';
-			str += '<td>';
+			shareElmt.innerHTML = str;
 
-			str += '<input type="checkbox" name="elecType" checked="checked" value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
-			str += '<input type="checkbox" name="elecType" value="AC" onclick="showSelectedColoumn(this.value)"/>AC';
-			str += '<input type="checkbox" name="elecType" value="PC" onclick="showSelectedColoumn(this.value)"/>PC';
-			str += '<input type="checkbox" name="elecType" value="MPTC" onclick="showSelectedColoumn(this.value)"/>MPTC';
-			str += '<input type="checkbox" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';	
+			if(jsObj.getAll == "-")
+			{				
+				return;
+			}
+			
+			
+			var cStr = '';
+			cStr += '<div> ';
+			cStr += '<center><table>';
+			cStr += '<tr>';
+			cStr += '<td>View :</td>';
+			cStr += '<td>';
 
-			str += '</td>';
-			str += '</tr>';
-			str += '</table></center>';
-			str += '</div>';
-			elmt.innerHTML = str;
+			cStr += '<input type="checkbox" name="elecType" checked="checked" value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
+			cStr += '<input type="checkbox" name="elecType" value="AC" onclick="showSelectedColoumn(this.value)"/>AC';
+			cStr += '<input type="checkbox" name="elecType" value="PC" onclick="showSelectedColoumn(this.value)"/>PC';
+			cStr += '<input type="checkbox" name="elecType" value="MPTC" onclick="showSelectedColoumn(this.value)"/>MPTC';
+			cStr += '<input type="checkbox" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';		
+			cStr += '</td>';
+			cStr += '</tr>';
+			cStr += '</table></center>';
+			cStr += '</div>';
+			
+			checkBoxElmt.innerHTML = cStr;
 		}
 		
 		function getElectionType(type)
@@ -943,7 +954,7 @@
 						
 			if(checkedValue == "ALL")
 			{
-				partyVotesSharing();
+				partyVotesSharing('all','-',1);
 				return;
 			}
 			else if(checkedValue == "AC" || checkedValue == "PC" || checkedValue == "MPTC" || checkedValue == "ZPTC")
@@ -962,8 +973,13 @@
 				}
 			}
 			
+			if(electypeSelectedElmts && electypeSelectedElmts.length > 0){
+				partyVotesSharing("-",electypeSelectedElmts,0);
+			}
+			else if(electypeSelectedElmts && electypeSelectedElmts.length == 0)
+				partyVotesSharing('all','-',1);
 			
-			var elmt = document.getElementById("votersShareData_main");
+			/*var elmt = document.getElementById("votersShareData_main");
 			if(!elmt)
 				return;
 			
@@ -1031,7 +1047,7 @@
 
 			str += '</table></center>';
 
-			elmt.innerHTML = str;
+			elmt.innerHTML = str;*/
 		}
 
 		function showChartData(results)
@@ -1273,7 +1289,7 @@
 			str += '<div id="crossVotingData_Graph_Div" style="display:none;">';
 			str += '<table width="100%">';
 			str += '<tr>';
-			str += '<td width="50%" style="vertical-align:top;"><div id="partyVotesSharingDetailsDiv"></div></td>';
+			str += '<td width="50%" style="vertical-align:top;"><div id="partyVotesSharingDetailsDiv"><div id="votersShareData_main"></div><div id="votersShareCheckBox"></div></div></td>';
 			str += '</tr>';
 			str += '<tr>';
 			str += '<td width="50%" style="vertical-align:top;"><div id="constitutencyResultsChart"></div></td>';
@@ -1913,8 +1929,13 @@
 				var url = "<%=request.getContextPath()%>/getLineChartForMandalsAndPartiesAction.action?"+rparam;
 				callAjax(jsObj, url);
 		}
-		function partyVotesSharing(){
+		function partyVotesSharing(all,allChoices,flag){		
+			var getAllData = all;
+			var getSelectedChoices = allChoices;			
 			var jsObj = {
+					getAll : all,
+					choices : allChoices,
+					flag : flag,
 					constituencyId:constituencyIdGlobal,
 					task:"votesSharingInConstituency",
 					choice:"All"
@@ -2127,7 +2148,7 @@
 			getConstituencyOverViewResult(constituencyIdGlobal,constituencyName);	
 			getAllZptcYears();	  
 			getAllMptcYears();
-			partyVotesSharing();
+			partyVotesSharing('all','-',1);
 			getMuncipalElections();
 			getCorporationElections();
 			mandalVotingShareDetailsMethod();
