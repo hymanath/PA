@@ -17,6 +17,7 @@ public class PartyResultVO {
 	private Long partyId;
 	private String partyName;
 	private String candidateName;
+	private String tehsilName;
 	private Long candidateId;
 	private Long constituencyId;
 	private String constituencyName;
@@ -172,6 +173,12 @@ public class PartyResultVO {
 	}
 	public void setElections(Set<String> elections) {
 		this.elections = elections;
+	}
+	public String getTehsilName() {
+		return tehsilName;
+	}
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
 	}
 	@Override
 	public boolean equals(Object obj){

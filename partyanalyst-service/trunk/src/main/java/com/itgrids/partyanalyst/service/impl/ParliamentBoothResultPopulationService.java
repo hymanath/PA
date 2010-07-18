@@ -142,7 +142,7 @@ public class ParliamentBoothResultPopulationService implements IParliamentBoothR
 				return;
 			}
 			else{
-				BoothConstituencyElection boothConstituencyElection = new BoothConstituencyElection(booth, parliamentConstituencyElections.get(0), null, null);
+				BoothConstituencyElection boothConstituencyElection = new BoothConstituencyElection(booth, parliamentConstituencyElections.get(0), null, null, null);
 				boothConstituencyElections.add(boothConstituencyElectionDAO.save(boothConstituencyElection));
 			}
 		}

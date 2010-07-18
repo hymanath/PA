@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public class ElectionDataVO extends ResultStatus implements Serializable{
 
@@ -20,6 +21,9 @@ public class ElectionDataVO extends ResultStatus implements Serializable{
 	private List<SelectOptionVO> partiesHeading;
 	private List<ConstituencyMandalVO> constituencyMandalInfo;
 	private List<AlliancePartiesInElection> allianceParties;
+	private Set<String> partiesParticipated;
+	private String electionPieChart;
+	private String preElecChart;
 	
 	public Long getElectionId() {
 		return electionId;
@@ -58,6 +62,25 @@ public class ElectionDataVO extends ResultStatus implements Serializable{
 	public void setConstituencyMandalInfo(
 			List<ConstituencyMandalVO> constituencyMandalInfo) {
 		this.constituencyMandalInfo = constituencyMandalInfo;
+	}
+	public Set<String> getPartiesParticipated() {
+		return partiesParticipated;
+	}
+	public void setPartiesParticipated(Set<String> partiesParticipated) {
+		this.partiesParticipated = partiesParticipated;
+	}
+	
+	public String getElectionPieChart() {
+		return electionPieChart;
+	}
+	public void setElectionPieChart(String electionPieChart) {
+		this.electionPieChart = electionPieChart;
+	}
+	public String getPreElecChart() {
+		return preElecChart;
+	}
+	public void setPreElecChart(String preElecChart) {
+		this.preElecChart = preElecChart;
 	}
 	@Override
 	public boolean equals(Object obj){

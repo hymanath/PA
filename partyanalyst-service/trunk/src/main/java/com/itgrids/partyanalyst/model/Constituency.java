@@ -53,10 +53,12 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Date startDate;
 	private Date deformDate;
 	private Long countryId;
+	private String areaType;
 	private Set<ConstituencyElection> constituencyElections = new HashSet<ConstituencyElection>(0);
 	private Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses = new HashSet<DelimitationConstituencyAssemblyDetails>(0);
 	private Set<CommentCategoryConstituency> commentCategoryConstituency = new HashSet<CommentCategoryConstituency>(0);
 	private LocalElectionBody localElectionBody;
+	private Set<BoothConstituencyElection> boothConstituencyElections;
 	// Constructors
 
 	/** default constructor */
@@ -253,6 +255,27 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 		this.localElectionBody = localElectionBody;
 	}
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mappedConstituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<BoothConstituencyElection> getBoothConstituencyElections() {
+		return boothConstituencyElections;
+	}
+
+	public void setBoothConstituencyElections(
+			Set<BoothConstituencyElection> boothConstituencyElections) {
+		this.boothConstituencyElections = boothConstituencyElections;
+	}
+
+	@Column(name = "area_type", length = 50)
+	public String getAreaType() {
+		return areaType;
+	}
+
+	public void setAreaType(String areaType) {
+		this.areaType = areaType;
+	}
+
+	
 
 
 }

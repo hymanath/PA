@@ -204,4 +204,24 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 				"ConstituencyElection model where model.constituency.constituencyId = ? "+
 				"and model.election.electionYear = ?",params);
 	}
+	
+	public List getValidVotesForMptcZptcElectionsInMandals(String mandalIds){
+		return getHibernateTemplate().find("select model.election.electionId," +
+				"model.election.electionScope.electionType.electionType, " +
+				"model.election.electionYear," +
+				"sum(model.constituencyElectionResult.validVotes) from " +
+				"ConstituencyElection model where model.constituency.tehsil.tehsilId in("+mandalIds+") " +
+				"group by model.election.electionId order by " +
+				"model.election.electionId");
+	}
+	
+	public List getValidVotesForMunicipalitiesAndCorporationsInMandals(String mandalIds){
+		return getHibernateTemplate().find("select model.election.electionId," +
+				"model.election.electionScope.electionType.electionType, " +
+				"model.election.electionYear," +
+				"sum(model.constituencyElectionResult.validVotes) from " +
+				"ConstituencyElection model where model.constituency.localElectionBody.tehsil.tehsilId in("+mandalIds+") " +
+				"group by model.election.electionId order by " +
+				"model.election.electionId");
+	}
 }

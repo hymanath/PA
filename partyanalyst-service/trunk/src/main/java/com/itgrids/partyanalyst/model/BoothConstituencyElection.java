@@ -33,6 +33,7 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 	private Set<CandidateBoothResult> candidateBoothResults = new HashSet<CandidateBoothResult>(0);
 	private VillageBoothElection villageBoothElection;
 	private Set<HamletBoothElection> hamletBoothElections = new HashSet<HamletBoothElection>(0);
+	private Constituency mappedConstituency;
  	
 	public BoothConstituencyElection(){
 		
@@ -43,11 +44,12 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 	}
 
 	public BoothConstituencyElection(Booth booth, ConstituencyElection constituencyElection,
-			BoothResult boothResult,Set<CandidateBoothResult> candidateBoothResults) {
+			BoothResult boothResult,Set<CandidateBoothResult> candidateBoothResults, Constituency mappedConstituency) {
 		this.booth = booth;
 		this.constituencyElection = constituencyElection;
 		this.boothResult = boothResult;
 		this.candidateBoothResults = candidateBoothResults;
+		this.mappedConstituency = mappedConstituency;
 	}
 
 	@Id
@@ -122,8 +124,17 @@ public class BoothConstituencyElection extends BaseModel implements java.io.Seri
 			Set<HamletBoothElection> hamletBoothElections) {
 		this.hamletBoothElections = hamletBoothElections;
 	}
-	
-	
-	
-	
+
+	@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "mapped_constituency_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getMappedConstituency() {
+		return mappedConstituency;
+	}
+
+	public void setMappedConstituency(Constituency mappedConstituency) {
+		this.mappedConstituency = mappedConstituency;
+	}
+
 }

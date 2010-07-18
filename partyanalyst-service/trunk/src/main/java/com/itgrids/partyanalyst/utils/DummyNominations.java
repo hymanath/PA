@@ -57,11 +57,11 @@ public class DummyNominations {
 		Booth booth4 = new Booth("4", null , "Nimmanapalli Road3","Basinikonda, Ramacharlapalli3", null, null,null,new Long(900),null,null);
 		Booth booth5 = new Booth("5", null , "Nimmanapalli Road4","Basinikonda, Ramacharlapalli4", null, null,null,new Long(1220),null,null);
 		
-		BoothConstituencyElection bce1 = new BoothConstituencyElection(booth1, null,null,null);
-		BoothConstituencyElection bce2= new BoothConstituencyElection(booth2, null,null,null);
-		BoothConstituencyElection bce3 = new BoothConstituencyElection(booth3, null,null,null);
-		BoothConstituencyElection bce4 = new BoothConstituencyElection(booth4, null,null,null);
-		BoothConstituencyElection bce5 = new BoothConstituencyElection(booth5, null,null,null);
+		BoothConstituencyElection bce1 = new BoothConstituencyElection(booth1, null,null,null, null);
+		BoothConstituencyElection bce2= new BoothConstituencyElection(booth2, null,null,null, null);
+		BoothConstituencyElection bce3 = new BoothConstituencyElection(booth3, null,null,null, null);
+		BoothConstituencyElection bce4 = new BoothConstituencyElection(booth4, null,null,null, null);
+		BoothConstituencyElection bce5 = new BoothConstituencyElection(booth5, null,null,null, null);
 		
 		CandidateBoothResult br1 = new CandidateBoothResult(new Long(900),null,null,bce1);
 		CandidateBoothResult br2 = new CandidateBoothResult(new Long(1200),null,null,bce2);

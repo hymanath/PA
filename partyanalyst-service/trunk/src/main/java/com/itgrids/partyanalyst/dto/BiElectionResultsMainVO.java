@@ -23,7 +23,6 @@ public class BiElectionResultsMainVO implements Serializable {
 	private List<ElectionTypeChartVO> chartsListForElectionTypesAllParties;
 	private List<ElectionDataVO> urbanRuralConstiResults;  
 	
-	
 	public List<String> getAllPartiesElectionResultsChart() {
 		return allPartiesElectionResultsChart;
 	}

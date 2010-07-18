@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
+import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.ElectionResultByLocationVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
@@ -60,7 +61,6 @@ import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
-import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
@@ -1699,4 +1699,38 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}
 	}
 	
+	public DataTransferVO getPreviousAndPresentElectionYearsGraphsForAConstituency(Long constituencyId){
+		DataTransferVO charts = new DataTransferVO();
+  		ConstituencyRevenueVillagesVO presentChart = getConstituencyElecResults(constituencyId, IConstants.PRESENT_ELECTION_YEAR, false);
+  		List mandalwiseValidVotes = boothResultDAO.getMandalwiseValidVotesForAMappedConstituency(constituencyId, 
+  				IConstants.PREVIOUS_ELECTION_YEAR, IConstants.ASSEMBLY_ELECTION_TYPE);
+  		List mandalwisePartiesResults = candidateBoothResultDAO.getAllPartiesResultsByMandalsMappedConstituency(constituencyId, 
+  				IConstants.PREVIOUS_ELECTION_YEAR, IConstants.ASSEMBLY_ELECTION_TYPE);
+  		Map<Long, Long> mandalIdAndVVotesMap = new HashMap<Long, Long>();
+  		for(Object[] values:(List<Object[]>)mandalwiseValidVotes)
+  			mandalIdAndVVotesMap.put((Long)values[0], (Long)values[2]);
+  		
+  		List<PartyResultVO> partiesMandalResults = new ArrayList<PartyResultVO>();
+  		PartyResultVO partyResultVO = null;
+  		Long validVotes = 0l;
+  		Long votesEarned = 0l;
+  		try {
+  			for(Object[] values:(List<Object[]>)mandalwisePartiesResults){
+  	  			partyResultVO = new PartyResultVO();
+  	  			partyResultVO.setTehsilName(values[1].toString());
+  	  			partyResultVO.setPartyName(values[3].toString());
+  	  			validVotes = mandalIdAndVVotesMap.get((Long)values[0]);
+  	  			votesEarned = (Long)values[5];
+  	  			partyResultVO.setVotesPercent(new BigDecimal(votesEarned*100.0/validVotes).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+  	  			partiesMandalResults.add(partyResultVO);
+  	  		}
+		} catch (Exception e) {
+			charts.setExceptionEncountered(e);
+		}
+  		
+  		charts.setPresentYearChart(presentChart);
+  		charts.setPreviousYearChart(partiesMandalResults);
+  		return charts;
+  	}
+		
 }

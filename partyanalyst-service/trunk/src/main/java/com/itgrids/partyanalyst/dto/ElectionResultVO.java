@@ -7,6 +7,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class ElectionResultVO {
 
+	private Long electionId;
 	private String electionType;
 	private String electionYear;
 	private Long votesEarned;
@@ -26,6 +27,14 @@ public class ElectionResultVO {
 
 	public void setVotesRange(String votesRange) {
 		this.votesRange = votesRange;
+	}
+
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
 	}
 
 	public String getHasAlliance() {

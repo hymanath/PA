@@ -281,15 +281,15 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]);
 	}
 	
-	public void testGetResultsForElectionForAllMandalsAndParties(){
+	/*public void testGetResultsForElectionForAllMandalsAndParties(){
 		List list = candidateBoothResultDAO.getResultsForElectionForAllMandalsAndParties("373","2009", IConstants.ASSEMBLY_ELECTION_TYPE);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]);
-	}
+	}*/
 	
 	
 	
-	@Test
+	/*@Test
 	@SuppressWarnings("unchecked")
 	public void testGetTownshipwiseResultsInElection(){
 		
@@ -313,13 +313,41 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-    @Test
+   /* @Test
     public void testGetTehsilValidVotes(){
     	List tehsilValidVotes = candidateBoothResultDAO.getValidVotesInAMandal(new Long(127),"Assembly","2009");
     	if(tehsilValidVotes != null){
     		Object params = (Object)tehsilValidVotes.get(0);
     		System.out.println(" Mandal Valid Votes :" + params);
     	}
-    }
+    }*/
 
+	/*public void testFindAssemblyWiseParliamentResultsForPartiesInAssembly(){
+		List list = candidateBoothResultDAO.findAssemblyWiseParliamentResultsForPartiesInAssembly(362l, "2009");
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testFindElectionResultsForAMappedConstituencyByElectionType(){
+		List list = candidateBoothResultDAO.findElectionResultsForAMappedConstituencyByElectionType(363l, "2004");
+		System.out.println("====================="+list.size());
+		System.out.println(list);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]+"\t"+((Object[])list.get(i))[11]);
+	}*/
+	
+	/*public void testFindElectionResultsForAConstituencyByElectionYear(){
+		List list = candidateBoothResultDAO.findElectionResultsForAConstituencyByElectionYear(363l, "2009");
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]+"\t"+((Object[])list.get(i))[7]+"\t"+((Object[])list.get(i))[8]+"\t"+((Object[])list.get(i))[9]+"\t"+((Object[])list.get(i))[10]);
+	}
+	*/
+	
+	public void testGetAllPartiesResultsByMandalsMappedConstituency(){
+		List list = candidateBoothResultDAO.getAllPartiesResultsByMandalsMappedConstituency(362l, "2004", IConstants.ASSEMBLY_ELECTION_TYPE);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]);
+	}
+	
 }

@@ -53,4 +53,14 @@ public class BoothResultDAO extends GenericDaoHibernate<BoothResult, Long> imple
 				"model.boothConstituencyElection.booth.tehsil.tehsilId", params);
 	}
 	
+	public List getMandalwiseValidVotesForAMappedConstituency(Long constituencyId, String elecYear, String elecType){
+		Object[] params = {constituencyId, elecYear, elecType};
+		return getHibernateTemplate().find("select model.boothConstituencyElection.booth.tehsil.tehsilId, " +
+				"model.boothConstituencyElection.booth.tehsil.tehsilName, sum(model.validVotes) from " +
+				"BoothResult model where model.boothConstituencyElection.mappedConstituency.constituencyId = ? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
+				"and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? " +
+				"group by model.boothConstituencyElection.booth.tehsil.tehsilId",params);
+	}
+	
 }

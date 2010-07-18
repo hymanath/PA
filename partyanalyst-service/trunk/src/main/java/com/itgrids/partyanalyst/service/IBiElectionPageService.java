@@ -9,20 +9,17 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.AllBoothsResultsForAPartyInAMandal;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
-import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyTownshipResultsVO;
 import com.itgrids.partyanalyst.dto.PartyVillageLevelAnalysisVO;
 import com.itgrids.partyanalyst.dto.PartyVotesMarginResultsInMandal;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotesMarginResultsMainVO;
 import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 
@@ -52,5 +49,5 @@ public interface IBiElectionPageService {
 			String elections, Boolean includeAlliance );	
 	public Map<Long,List<PartyTownshipResultsVO>> getTownshipWiseAllPartyResults(Long tehsilId,String electionType,String electionYear);
 	
-	public List<PartyVillageLevelAnalysisVO> villageLevelPArtyAnalysis(Long tehsilId,String electionType,String electionYear,int rank);	
+	public List<PartyVillageLevelAnalysisVO> villageLevelPArtyAnalysis(Long tehsilId,String electionType,String electionYear,int rank);
 }

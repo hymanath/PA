@@ -122,7 +122,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		assertEquals(23, list.size());
 	}
 	*/
-	public void testFindConstituenciesByElectionGroupByState(){
+	/*public void testFindConstituenciesByElectionGroupByState(){
 		List list = constituencyElectionDAO.findConstituenciesByElectionGroupByState(11l);
 		for(Object[] values:(List<Object[]>)list)
 			System.out.println(values[0]+"\t"+values[1]);
@@ -132,7 +132,20 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testGet(){
 		List totalValidVotes = constituencyElectionDAO.getTotalValidVotesParticularElectionYear(IConstants.MPTC_ELECTION_TYPE,"2006",22l);
 		assertEquals(1, totalValidVotes.size());		
-	}
+	}*/
 	
+	/*public void testGetValidVotesForMptcZptcElectionsInMandals(){
+		List list = constituencyElectionDAO.getValidVotesForMptcZptcElectionsInMandals("362");
+		for(int i=0; i<list.size(); i++){
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
+		}
+	}*/
+	
+	public void testGetValidVotesForMunicipalitiesAndCorporationsInMandals(){
+		List list = constituencyElectionDAO.getValidVotesForMunicipalitiesAndCorporationsInMandals("64");
+		for(int i=0; i<list.size(); i++){
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
+		}
+	}
 	
 }

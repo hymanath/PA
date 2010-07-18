@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public class ConstituencyMandalVO implements Serializable{
 
@@ -10,8 +11,12 @@ public class ConstituencyMandalVO implements Serializable{
 	private String constituencyName;
 	private Long tehsilId;
 	private String tehsilName;
-	
+	private Set<String> partiesParticipated;
 	private List<PartyInfoVO> partiesReslts;
+	private Boolean isTotal = false;
+	private Boolean isPostalVotes = false;
+	private Long validVotesInElec = 0l;
+	
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -53,6 +58,38 @@ public class ConstituencyMandalVO implements Serializable{
 		this.partiesReslts = partiesReslts;
 	}
 	
+	public Set<String> getPartiesParticipated() {
+		return partiesParticipated;
+	}
+
+	public void setPartiesParticipated(Set<String> partiesParticipated) {
+		this.partiesParticipated = partiesParticipated;
+	}
+
+	public Boolean getIsTotal() {
+		return isTotal;
+	}
+
+	public void setIsTotal(Boolean isTotal) {
+		this.isTotal = isTotal;
+	}
+
+	public Boolean getIsPostalVotes() {
+		return isPostalVotes;
+	}
+
+	public void setIsPostalVotes(Boolean isPostalVotes) {
+		this.isPostalVotes = isPostalVotes;
+	}
+
+	public Long getValidVotesInElec() {
+		return validVotesInElec;
+	}
+
+	public void setValidVotesInElec(Long validVotesInElec) {
+		this.validVotesInElec = validVotesInElec;
+	}
+
 	@Override
 	public boolean equals(Object obj){
 		if(!(obj instanceof ConstituencyMandalVO))

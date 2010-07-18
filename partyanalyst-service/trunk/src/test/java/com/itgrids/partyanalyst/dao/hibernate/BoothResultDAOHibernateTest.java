@@ -40,11 +40,18 @@ public class BoothResultDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetAllPolledVotesForMandalsInAnElection(){
+	/*public void testGetAllPolledVotesForMandalsInAnElection(){
 		List list = boothResultDAO.getAllPolledVotesForMandalsInAnElection("373, 835, 841, 1069", "2009", "Assembly");
 		System.out.println(list);
 		if(list.size() > 0)
 			System.out.println(((Object[])list.get(0))[0]+"\t"+((Object[])list.get(0))[1]+"\t"+((Object[])list.get(0))[2]+"\t"+((Object[])list.get(0))[3]);
+	}*/
+	
+	public void testGetMandalwiseValidVotesForAMappedConstituency(){
+		List list = boothResultDAO.getMandalwiseValidVotesForAMappedConstituency(362l, "2004", IConstants.ASSEMBLY_ELECTION_TYPE);
+		System.out.println(list.size());
+		for(Object[] values:(List<Object[]>)list)
+			System.out.println(values[0]+"\t"+values[1]+"\t"+values[2]);
 	}
 
 

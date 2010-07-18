@@ -184,5 +184,7 @@ public interface IStaticDataService {
 	
 	public List<CandidateElectionResultVO> getProcessedAlliancePartiesResults(List<CandidateElectionResultVO> elecResultVO,String elecType,String elecYear);
 	
+	public StringBuilder getAllLatestMandalsForAConstituency(Long constituencyId);
+	
 	public PartyElectionResultsVO getWonAndOppositionCandidateDetailsInAConstituencyWithMargin(Long constituencyId,String electionYear);
 }

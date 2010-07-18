@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
+import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalAndRevenueVillagesInfoVO;
@@ -64,6 +65,8 @@ public interface IConstituencyPageService {
 	public List<PartyResultVO> getMandalsResultsInAnElection(String mandalIds, String electionYear, String electionType);
 	
 	public List<PartyElectionResultVO> OtherVotesDataForAConstituency(Long constituencyId,String electionYear,String electionType);
+	
+	public DataTransferVO getPreviousAndPresentElectionYearsGraphsForAConstituency(Long constituencyId);
 	
 	
 }
