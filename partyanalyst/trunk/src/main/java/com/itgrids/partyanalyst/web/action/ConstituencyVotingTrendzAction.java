@@ -550,9 +550,20 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}	
-		String[] arr = new String[4];
-		Long constiId =  new Long(jObj.getString("constituencyId"));		
-		votesSharing = staticDataService.getPartyVotesPercentageInAConstituency(constiId,jObj.getString("choice"),arr);
+		Long constiId =  new Long(jObj.getString("constituencyId"));
+		String selectedChoices[];
+		if(jObj.getLong("flag") != 1){
+			JSONArray choices = jObj.getJSONArray("choices");
+			selectedChoices = new String[choices.length()];
+			
+			for(int i=0; i<choices.length(); i++){
+				selectedChoices[i] = (String)choices.get(i);
+			}	
+		}else{
+			selectedChoices = null;
+		}
+			
+		votesSharing = staticDataService.getPartyVotesPercentageInAConstituency(constiId,jObj.getString("getAll"),selectedChoices);
 		return SUCCESS;
 	}
 	public String getVotesOverViewInAConstituency() throws Exception
