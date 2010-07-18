@@ -4781,7 +4781,7 @@ public class StaticDataService implements IStaticDataService {
 					}else if(partyResult.get(i).getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
 						electionType ="PC";
 					}else{
-						electionType = "."+partyResult.get(i).getElectionType();
+						electionType = partyResult.get(i).getElectionType();
 					}
 					electionHeading = partyResult.get(i).getElectionYear()+"  -  "+electionType;
 					select.setId(i+0l);
