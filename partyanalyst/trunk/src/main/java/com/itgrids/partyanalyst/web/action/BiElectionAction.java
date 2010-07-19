@@ -421,7 +421,7 @@ public class BiElectionAction extends ActionSupport implements
         String chartPath = context.getRealPath("/") + "charts\\" + lineChartName;
         String title = year+" Assembly Election Results in Bye-Election Constituencies";
         Set<String> partiesInChart = new LinkedHashSet<String>();
-		ChartProducer.createLineChartWithThickness(title,"Constituencies","Votes Percentage", createDataSetForGraph(asseblyDetails, partiesInChart),chartPath,300,920, ChartUtils.getLineChartColors(partiesInChart),true);
+		ChartProducer.createLineChartWithThickness(title,"Constituencies","Votes Percentage", createDataSetForGraph(asseblyDetails, partiesInChart),chartPath,600,920, ChartUtils.getLineChartColors(partiesInChart),true);
 		chartName = lineChartName;
 	
 		}catch(Exception ex){
