@@ -320,12 +320,12 @@
                 headingDIV+='<div id="contestingCandidates_InnerDiv" style="margin:10px;">';
 				headingDIV+='<table width="100%" border="0">';
 				headingDIV+='<tr>';
-				headingDIV+='<td width="30%" valign="top">';
+				headingDIV+='<td width="65%" valign="top">';
 				headingDIV+= '<div id="constiContestingCandsDiv" style="color:#247CD4;font-size:12px;font-weight:bold;text-align:left;padding:5px;text-decoration:underline;">';
 				headingDIV+= '</div>';
 				headingDIV+='<div id="contestingCandidatesIn" style="margin:10px;border:solid 0px;" >';
 
-				headingDIV+='<table class="participatingPartiestable" border="0">';	
+				headingDIV+='<table width="500px" class="participatingPartiestable" border="0">';	
 				headingDIV+='<tr>';
 				headingDIV+='<td colspan="2" style="border:0px;padding:0px;">';
 				headingDIV+='<table class="participatingPartiestable_inner" border="0"  cellpadding="0" cellspacing="0">';
@@ -335,7 +335,7 @@
 				headingDIV+='	</td>';
 
 				headingDIV+='	<td style="padding:0px;border:none;">';
-				headingDIV+='		<div class="detailsTableHeader" style="width:271px;">';
+				headingDIV+='		<div class="detailsTableHeader" style="width:470px;">';
 				headingDIV+='			<span class="detailsTableHeaderSpan">Bye-Election 2010 Contesting Candidates </span>';
 				headingDIV+='		</div>';
 				headingDIV+='	</td>';
@@ -366,13 +366,21 @@
 				headingDIV+='</div>';
                 headingDIV+='</div>';
 				headingDIV+='</td>';
-				headingDIV+='<td width="35%" valign="top">';
+
+				headingDIV+='<td align="left" width="35%" rowspan="2">';
+				headingDIV+='<img src="images/bi-constituency_maps/'+jsObj.constiName+'.jpg"/>';
+				headingDIV+='</td>';
+				
+				headingDIV+='</tr>';
+
+				headingDIV+='<tr>';
+				headingDIV+='<td width="65%" valign="top">';
 				headingDIV+='	<div style="font-size: 12px;font-weight:bold;text-align:left;color:#247CD4;padding:5px;text-decoration:underline">';
 				headingDIV+='		';
 				headingDIV+='	</div>';
 				//-----------
 				headingDIV+='	<div style="margin:10px">';
-				headingDIV+='	<table class="participatingPartiestable" border="0" width="500px">';	
+				headingDIV+='	<table class="participatingPartiestable" border="0" width="650px">';	
 				headingDIV+='	<tr>';
 				headingDIV+='		<td colspan="5" style="border:0px;padding:0px;">';
 				headingDIV+='			<table class="participatingPartiestable_inner" border="0"  cellpadding="0" cellspacing="0" width="100%">';
@@ -382,7 +390,7 @@
 				headingDIV+='				</td>';
 
 				headingDIV+='				<td style="padding:0px;border:none;">';
-				headingDIV+='					<div class="detailsTableHeader" style="width:500px;">';
+				headingDIV+='					<div class="detailsTableHeader" style="width:618px;">';
 				headingDIV+='						<span class="detailsTableHeaderSpan">2009 Won & Opposition Candidates Result In Constituency </span>';
 				headingDIV+='					</div>';
 				headingDIV+='				</td>';
@@ -435,9 +443,7 @@
 				//------
 				headingDIV+='</td>';
 				
-				headingDIV+='<td width="35%">';
-				headingDIV+='<img src="images/bi-constituency_maps/'+jsObj.constiName+'.jpg"/>';
-				headingDIV+='</td>';
+				
 			
 				headingDIV+='</tr>';
 				headingDIV+='</table>';
@@ -1845,7 +1851,7 @@
 							var info1 = urbanConstResults[a].constituencyMandalInfo[f].partiesReslts;
 							urbanStr += '		<tr>';	
 						// if postal ballot votes
-						//debugger;
+
 						if(urbanConstResults[a].constituencyMandalInfo[f].isPostalVotes == true)	
 						{		
 								urbanStr += '		<th colspan="2">Postal Ballot Votes</th>';												
@@ -1946,20 +1952,33 @@
 			}
 		}
 		function buildZptcResults(results, jsObj){
-			
+		
 			assignToPartyDataArray = new Array();
 			var candLink = document.getElementById("zptcCandidateLink");
+			var totalVotersDivElmt = document.getElementById("totalZptcVotersDiv");
+			var chartDivEl = document.getElementById("zptcChartDiv");
+
 			var zptcChartName = results[0].chartName;
 			var selectedYearVal = jsObj.electionYear;
-			var chartDivEl = document.getElementById("zptcChartDiv");
+			
 			var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 			candLink.innerHTML = linkRef;
+
 			totalZptcSeats = results[0].totalSeats;		//	var totalZptcSeats,totalMptcSeats;
 			
-				var chartStr = '';				
-				chartStr+='<img src="charts/'+zptcChartName+'"/>';
-				chartDivEl.innerHTML = chartStr;
+			var chartStr = '';				
+			chartStr+='<img src="charts/'+zptcChartName+'"/>';
+			chartDivEl.innerHTML = chartStr;
 			
+			var voterStr = '';
+			voterStr += '<table width="100%">';
+			voterStr += '<tr>';
+			voterStr += '<th align="left"> Total Voters  : </th><td>'+results[0].totalVotersInConstituency+'</td>';
+			voterStr += '<th align="left"> Total Polled Votes : </th><td>'+results[0].totalPolledVotes+'</td>';
+			voterStr += '</tr>';
+			voterStr += '</table>';
+			totalVotersDivElmt.innerHTML = voterStr;
+
 			for(var i in results)
 			{		
 				var problemObj=		
@@ -1995,6 +2014,7 @@
 			var selectedYearVal = jsObj.electionYear;
 			var mptcChartName = results[0].chartName;
 			var candLink = document.getElementById("mptcCandidateLink");
+			var mptcVotersDivElmt = document.getElementById("totalMptcVotersDiv");
 			var chartDivEl = document.getElementById("mptcChartDiv");
 			var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
 			candLink.innerHTML = linkRef;
@@ -2004,7 +2024,16 @@
 					
 					chartStr+='<img src="charts/'+mptcChartName+'"/>';
 					chartDivEl.innerHTML = chartStr;
-				
+			
+			var voterStr = '';
+			voterStr += '<table width="100%">';
+			voterStr += '<tr>';
+			voterStr += '<th align="left"> Total Voters  : </th><td>'+results[0].totalVotersInConstituency+'</td>';
+			voterStr += '<th align="left"> Total Polled Votes : </th><td>'+results[0].totalPolledVotes+'</td>';
+			voterStr += '</tr>';
+			voterStr += '</table>';
+			mptcVotersDivElmt.innerHTML = voterStr;
+
 			for(var i in results)
 			{		
 				var problemObj=		
@@ -2187,19 +2216,27 @@
 							</div>
 							<div id="zptc_body" style="width:900px;">
 								<table width="100%">									
-									<tr><td>
-											<table width="100%"><tr><td colspan="2" align="left">
-															<table ><tr>
-														   		<td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;">
-														   		</div></td>
+									<tr>
+										<td>
+											<table width="100%">
+												<tr>
+													<td colspan="2" align="left">
+														<table>
+															<tr>
+														   		<td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;"></div></td>
 														   		<td><div id="zptcCandidateLink"></div></td>
-													   		</tr></table>
-													   </td></tr>
-												   <tr>
-												   	   <td valign="top"><div id="zptcChartDiv"></div></td>
-													   <td class="yui-skin-sam" valign="top"><div id="zptcPartyTrendsDetailsDiv" style="border:2px solid #9696C0"></div></td>
-											</tr></table>
-									</td></tr>
+																<td><div id="totalZptcVotersDiv" style="padding-left:40px;"></div></td>
+													   		</tr>
+														</table>
+													</td>
+												</tr>
+												<tr>
+													<td valign="top"><div id="zptcChartDiv"></div></td>
+													<td class="yui-skin-sam" valign="top"><div id="zptcPartyTrendsDetailsDiv" style="border:2px solid #9696C0"></div></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
 								</table>	
 							</div>		
 						</div>		
@@ -2229,6 +2266,7 @@
 															<table ><tr>
 														   		<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
 														   		<td><div id="mptcCandidateLink"></div></td>
+																<td><div id="totalMptcVotersDiv" style="padding-left:40px;"></div></td>
 													   		</tr></table>
 													   </td></tr>
 												   <tr>
