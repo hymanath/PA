@@ -1204,7 +1204,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				if(dataset.getColumnCount()>1)
 				{
 					log.debug("dataset.getColumnCount():::::::::::::::::::::::"+dataset.getColumnCount());
-					ChartProducer.createLineChart(title,"Mandals", "Percentages",dataset, chartPath,chartHeight,chartWidth,ChartUtils.getLineChartColors(partiesInChart),true);
+					ChartProducer.createLineChartWithThickness(title,"Mandals", "Percentages",dataset, chartPath,chartHeight,chartWidth,ChartUtils.getLineChartColors(partiesInChart),true);
 				} else 	
 					{
 						log.debug("dataset.getColumnCount():::::::::::::::::::::::"+dataset.getColumnCount());

@@ -102,6 +102,7 @@
 			width:150px;
 			font-weight: bold;
 			color:#909090;
+			margin-left: 5px; 
 		}
 		CAPTION
 		{
@@ -128,7 +129,7 @@
 		}
 		.detailsTableHeader
 		{
-			background-image:url("images/icons/electionResultsAnalysisReport/mid.png");
+			background-image: url("images/icons/electionResultsAnalysisReport/mid.png"); ;
 			height:30px;
 			text-align:left;
 		}
@@ -219,6 +220,7 @@
 		var muncipalityElectionId='${muncipalityElectionTypeId}',corporationElectionTypeId='${corporationElectionTypeId}';
 		
 		var docOpener = window.opener;
+		var mandalNamesArr = null;
 		localizationObj = docOpener.localizationObj;
 		<c:forEach var="staticParties" items="${staticPartiesList}">
 			var pObj =	{
@@ -1368,29 +1370,12 @@
 			graphStr += '</tr>';
 			graphStr += '</table>';
 			graphStr += '</BODY></HTML>';
-				
-				
-
+			
 			var allPartiesChartsWindow = window.open("","allPartiesChartsWindow","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 			allPartiesChartsWindow.focus();
 			allPartiesChartsWindow.document.open("text/html", "replace");
 			allPartiesChartsWindow.document.write(graphStr);			
-			allPartiesChartsWindow.document.close();
-
-			/*var allPartiesPanel = new YAHOO.widget.Panel("allPartiesResultsChartsPanel", {
-                 width: "800", 
-                 fixedcenter: false, 
-                 constraintoviewport: false, 
-                 underlay: "none", 
-                 close: true, 
-                 visible: true, 
-				 x:'200',
-				 y:'800',
-                 draggable: true
-			   });
-			allPartiesPanel.setHeader("All Parties Results");
-			allPartiesPanel.setBody(graphStr);
-			allPartiesPanel.render();*/
+			allPartiesChartsWindow.document.close();			
 		}
 
 		function getResultsForSelectedElection()
@@ -1482,6 +1467,7 @@
 			nonParticipatingDivEl.innerHTML = '';
 			var mandalwiseVotersShare = resultsData.constituencyVO.assembliesOfParliamentInfo;
 			var constituencyId = jsObj.constituencyId;
+			mandalNamesArr = new Array();
 			if(resultsData.biElectionResultsMainVO != null)
 			{	
 				var results = resultsData.biElectionResultsMainVO;
@@ -1614,7 +1600,12 @@
 					
 					mdlwiseVotersDetailsStr += '</tr><tr>';
 					}
-						
+				var mandalObj={
+					id: mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalId,
+					name: mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName  
+					};
+				mandalNamesArr.push(mandalObj);
+										
 			}
 			mdlwiseVotersDetailsStr+='</TR>';
 			mdlwiseVotersDetailsStr+='</Table>';
@@ -1910,7 +1901,8 @@
 			//getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
 			
 			getConstituencyResults("2009");
-				
+			getAllZptcYears();	  
+			getAllMptcYears();	
 			//To build Graphs for 2009 and 2004 Mandals Wise Parties Results 
 		}
 
@@ -1951,17 +1943,18 @@
 				}
 			}
 		}
+		//ref
 		function buildZptcResults(results, jsObj){
-		
+			//console.log(mandalNamesArr);
 			assignToPartyDataArray = new Array();
 			var candLink = document.getElementById("zptcCandidateLink");
 			var totalVotersDivElmt = document.getElementById("totalZptcVotersDiv");
 			var chartDivEl = document.getElementById("zptcChartDiv");
-
+			var zptcOptionsDivEl = document.getElementById("zptcOptionsDiv");
 			var zptcChartName = results[0].chartName;
 			var selectedYearVal = jsObj.electionYear;
 			
-			var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
+			var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Results</a>';
 			candLink.innerHTML = linkRef;
 
 			totalZptcSeats = results[0].totalSeats;		//	var totalZptcSeats,totalMptcSeats;
@@ -1978,7 +1971,23 @@
 			voterStr += '</tr>';
 			voterStr += '</table>';
 			totalVotersDivElmt.innerHTML = voterStr;
-
+			var zptcOptionsDivElStr = '';
+			zptcOptionsDivElStr+='<TABLE>';
+			zptcOptionsDivElStr+='<TR>';
+			zptcOptionsDivElStr+='<TH>View Results By</TH>';
+			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="locationOption" checked = "true" onclick="showHideMandalDropdown()"/>Constituency</TD>';
+			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="locationOption" onclick="showHideMandalDropdown()"/>Mandal</TD>';
+			zptcOptionsDivElStr+='<TD align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;">';
+			zptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
+			for(var i in mandalNamesArr)
+			{
+				zptcOptionsDivElStr+='<OPTION value='+mandalNamesArr[i].id+'>'+mandalNamesArr[i].name+'</OPTION>';
+			}
+			zptcOptionsDivElStr+='</SELECT>';
+			zptcOptionsDivElStr+='</TD>';
+			zptcOptionsDivElStr+='<TR>';
+			zptcOptionsDivElStr+='</TABLE>';
+			zptcOptionsDivEl.innerHTML = zptcOptionsDivElStr;
 			for(var i in results)
 			{		
 				var problemObj=		
@@ -2007,6 +2016,19 @@
 			}
 		    initializeResultsTableForParty();
 		}
+		function showHideMandalDropdown()
+		{
+			var mandalOptEl = document.getElementById("mandalOpt");
+			if(mandalOptEl.style.display == 'none')
+			{
+				mandalOptEl.style.display = 'block';
+			} else if(mandalOptEl.style.display == 'block')
+			{
+				mandalOptEl.style.display = 'none';
+			}
+				
+			
+		}
 
 		function buildMptcResults(results, jsObj){
 			assignToPartyDataArray = new Array();
@@ -2016,7 +2038,7 @@
 			var candLink = document.getElementById("mptcCandidateLink");
 			var mptcVotersDivElmt = document.getElementById("totalMptcVotersDiv");
 			var chartDivEl = document.getElementById("mptcChartDiv");
-			var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Results</a>';
+			var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Results</a>';
 			candLink.innerHTML = linkRef;
 			  totalMptcSeats = results[0].totalSeats;
 			  
@@ -2069,8 +2091,8 @@
 			var jsObj = {
 				constituencyId:constituencyIdGlobal,
 				electionYear:elecYear,
-				chartHeight: 400,
-				chartWidth: 800,
+				chartHeight: 600,
+				chartWidth: 950,
 				others:false,
 				task:"getConstituencyResultsBySubLocations"
 			};
@@ -2085,8 +2107,8 @@
 					mandalIds: mandalIds,
 					electionYear:"2004",
 					electionType:"Assembly",
-					chartHeight: 400,
-					chartWidth: 800,
+					chartHeight: 600,
+					chartWidth: 950,
 					task:"getMandalsAndPartiesChartInElection"
 				};
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -2223,12 +2245,15 @@
 													<td colspan="2" align="left">
 														<table>
 															<tr>
-														   		<td><div id="zptcElectionIdsSelectDiv" style="padding-left:10px;"></div></td>
-														   		<td><div id="zptcCandidateLink"></div></td>
-																<td><div id="totalZptcVotersDiv" style="padding-left:40px;"></div></td>
+														   		<td><div id="zptcElectionIdsSelectDiv"></div></td>
+														   		<td><div id="totalZptcVotersDiv" style="padding-left:40px;"></div></td>
 													   		</tr>
 														</table>
 													</td>
+												</tr>
+												<tr>
+													<td><div id="zptcOptionsDiv"></div></td>
+													<td><div id="zptcCandidateLink"></div></td>
 												</tr>
 												<tr>
 													<td valign="top"><div id="zptcChartDiv"></div></td>
@@ -2320,8 +2345,8 @@
 	<SCRIPT type="text/javascript"> 			
 			buildMandalsVotingTrendz();		
 			getConstituencyOverViewResult(constituencyIdGlobal,constituencyName);	
-			getAllZptcYears();	  
-			getAllMptcYears();
+			//getAllZptcYears();	  
+			//getAllMptcYears();
 			partyVotesSharing('all','-',1);
 			getMuncipalElections();
 			getCorporationElections();
