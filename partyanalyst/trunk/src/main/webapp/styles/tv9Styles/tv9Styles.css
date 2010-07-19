@@ -1,0 +1,44 @@
+fieldset
+{
+	border:4px solid #CFD6DF;
+	margin-bottom:10px;
+}
+
+legend
+{
+	background-color:#01254D;
+	color:#FFFFFF;
+	font-size:14px;
+	padding:5px;
+	font-weight:bold;
+}
+
+.detailsTableHeaderSpan  {
+color:#FFFFFF;
+font-size:20px;
+font-weight:bold;
+position:relative;
+top:5px;
+margin-left:10px;
+}
+
+.detailsTableHeader  {
+background-image:url("../../images/icons/indexPage/reportGroupHeader.png");
+height:40px;
+text-align:left;
+}
+
+.participatingPartiestable th {
+background-image:url("../../images/icons/tv9Icons/tableHeader.png");
+background-repeat:repeat;
+border:1px solid #ADADAD;
+font-size:19px;
+padding:10px;
+}
+
+.participatingPartiestable td {
+border:2px solid #212629;
+font-size:18px;
+padding:5px;
+font-weight:bold;
+}
