@@ -414,7 +414,8 @@ public class ChartProducer {
         domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
         CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
         plot.add(seatsPlot, 2);
-               
+        plot.setColumnRenderingOrder(SortOrder.ASCENDING);
+                       
         GradientPaint gp;
         
         if(colors != null){
@@ -441,7 +442,7 @@ public class ChartProducer {
         	seatsPlot.setBackgroundPaint(new Color(219, 223, 225));
         }
         }
-        	
+            
         final JFreeChart chart = new JFreeChart(title,  plot);
         chart.setBackgroundPaint(Color.WHITE);
 		try	 {
@@ -498,7 +499,7 @@ public class ChartProducer {
         	seatsPlot.setBackgroundPaint(new Color(219, 223, 225));
         }
         }
-        	
+      
         final JFreeChart chart = new JFreeChart(title,  plot);
         chart.setBackgroundPaint(Color.WHITE);
 		try	 {
@@ -720,6 +721,7 @@ public static void createLabeledPieChart(String title,final DefaultPieDataset da
         plot.setLabelGap(0.02);
         plot.setInteriorGap(0.01);
         plot.setMaximumLabelWidth(0.30);	
+        
        // plot.setLabelLinkStyle(PieLabelLinkStyle.CUBIC_CURVE);
         // Specify the colors here
         if(colors != null){
@@ -745,5 +747,5 @@ public static void createLabeledPieChart(String title,final DefaultPieDataset da
             System.out.println("Exception while creating the chart");
         }
 	}
-	
+  	
 }
