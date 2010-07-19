@@ -813,8 +813,14 @@
 
 		function buildVotesSharingData(jsObj,results)
 		{
-			
 			votesShareData = results;
+            var chartName = '';
+
+			if(results[0] != null)
+			{
+			chartName = results[0].chartName;
+			
+			}
 
 			var shareElmt = document.getElementById("votersShareData_main");
 			var checkBoxElmt = document.getElementById("votersShareCheckBox");
@@ -888,6 +894,11 @@
 
 			str += '</table></center>';
 			shareElmt.innerHTML = str;
+
+			var chartDivElmt = document.getElementById("constitutencyResultsChart");
+			var imgStr = '';
+			imgStr+='<center><img src="charts/'+chartName+'" border="none" /></center>';		
+			chartDivElmt.innerHTML = imgStr;
 
 			if(jsObj.getAll == "-")
 			{				
@@ -2061,6 +2072,7 @@
 					choices : allChoices,
 					flag : flag,
 					constituencyId:constituencyIdGlobal,
+					constiName:'${constiName}',
 					task:"votesSharingInConstituency",
 					choice:"All"
 				};
