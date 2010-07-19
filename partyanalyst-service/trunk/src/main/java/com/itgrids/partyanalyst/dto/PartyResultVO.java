@@ -39,6 +39,7 @@ public class PartyResultVO {
 	private List<SelectOptionVO> votesRange;
 	
 	private String range;
+	private String chartName;
 		
 	public String getRange() {
 		return range;
@@ -191,6 +192,12 @@ public class PartyResultVO {
 	@Override
 	public int hashCode(){
 		return this.partyId.hashCode();
+	}
+	public String getChartName() {
+		return chartName;
+	}
+	public void setChartName(String chartName) {
+		this.chartName = chartName;
 	}
 	
 }
