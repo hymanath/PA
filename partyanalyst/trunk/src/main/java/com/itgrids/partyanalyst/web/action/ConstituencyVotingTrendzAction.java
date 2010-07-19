@@ -62,8 +62,10 @@ import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.CandidateElecResultComparatorByParty;
 import com.itgrids.partyanalyst.utils.ElectionDataVOComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
+import com.itgrids.partyanalyst.utils.ElectionResultPartyVOByElectionType;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.VotersInfoForMandalVOComparator;
 import com.opensymphony.xwork2.Action;
@@ -543,6 +545,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	}
 	
 	public String getAllPartiesVotesSharing(){
+		
+		String chartNam = "";
 		String param=null;			    
 		param = getTask();
 		try {
@@ -552,20 +556,72 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			e.printStackTrace();
 		}	
 		Long constiId =  new Long(jObj.getString("constituencyId"));
+		String constiName = jObj.getString("constiName");
+		
 		String selectedChoices[];
-		if(jObj.getLong("flag") != 1){
+		List<SelectOptionVO> selectdElections = null;
+		
+		String getAllString = (String)jObj.getString("getAll");
+		if(getAllString.equals("all")){
+			
+			log.debug(" Inside All Elections Block ...");
+			selectdElections = new ArrayList<SelectOptionVO>();
+			selectdElections.add(new SelectOptionVO(new Long(1),IConstants.ASSEMBLY_ELECTION_TYPE));
+			selectdElections.add(new SelectOptionVO(new Long(2),IConstants.PARLIAMENT_ELECTION_TYPE));
+			selectdElections.add(new SelectOptionVO(new Long(3),IConstants.MPTC_ELECTION_TYPE));
+			selectdElections.add(new SelectOptionVO(new Long(4),IConstants.ZPTC_ELECTION_TYPE));
+			
+			chartNam = chartNam + "_" + "ALL";
+			selectedChoices = null;
+		}
+		else if(jObj.getLong("flag") != 1){
 			JSONArray choices = jObj.getJSONArray("choices");
 			selectedChoices = new String[choices.length()];
 			
-			for(int i=0; i<choices.length(); i++){
-				selectedChoices[i] = (String)choices.get(i);
-			}	
+			
+				log.debug(" Inside Some Elections Block ...");
+				selectdElections = new ArrayList<SelectOptionVO>();
+				for(int i=0; i<choices.length(); i++){
+					selectedChoices[i] = (String)choices.get(i);
+					
+					String electionType = (String)choices.get(i);
+					if(electionType.equalsIgnoreCase("AC"))
+						selectdElections.add(new SelectOptionVO(new Long(i),IConstants.ASSEMBLY_ELECTION_TYPE));
+					else if(electionType.equalsIgnoreCase("PC"))
+						selectdElections.add(new SelectOptionVO(new Long(i),IConstants.PARLIAMENT_ELECTION_TYPE));
+					else if(electionType.equalsIgnoreCase("MPTC"))
+						selectdElections.add(new SelectOptionVO(new Long(i),IConstants.MPTC_ELECTION_TYPE));
+					else if(electionType.equalsIgnoreCase("ZPTC"))
+						selectdElections.add(new SelectOptionVO(new Long(i),IConstants.ZPTC_ELECTION_TYPE));
+					
+					chartNam = chartNam + "_" + electionType;
+				}	
+			
 		}else{
 			selectedChoices = null;
 		}
 			
 		votesSharing = staticDataService.getPartyVotesPercentageInAConstituency(constiId,jObj.getString("getAll"),selectedChoices);
-		return SUCCESS;
+		
+		
+		//for chart changes
+        List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(new Long(constiId));
+        
+        if(electionResList != null && electionResList.size() > 0){
+			
+        	  String chartTitle = " All Parties Performance In "+constiName + " Constituency ";
+			  String chartName = "constituencyElectionsResults"+"_"+constiName+"_"+constiId+chartNam+".png";
+			  String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+			  
+			  chartColorsAndDataSetVO = createDatasetForChart(electionResList,selectdElections);
+			  ChartProducer.createLineChart(chartTitle, "Election", "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,400,950,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),true);
+			  
+			  chartColorsAndDataSetVO.setChartName(chartName);
+			  if(votesSharing != null && votesSharing.size() > 0)
+		        	votesSharing.get(0).setChartName(chartName);
+		}
+        
+     return SUCCESS;
 	}
 	public String getVotesOverViewInAConstituency() throws Exception
 	{
@@ -988,6 +1044,78 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
      return chartColorsAndDataSetVO;
 	}
 	
+	
+	public ChartColorsAndDataSetVO createDatasetForChart(List<ElectionResultPartyVO> elecResultsList,List<SelectOptionVO> electionType){
+		
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+	    ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
+		Set<Color> colorsSet = new LinkedHashSet<Color>();
+		   
+	    List<ElectionResultPartyVO> elecResultsForChart = new ArrayList<ElectionResultPartyVO>();
+		   if(elecResultsList != null && elecResultsList.size() > 0 && electionType != null && electionType.size() > 0){
+			   for(SelectOptionVO elecTyp:electionType){
+				   
+				   //Collections.sort(elecResultsList, new ElectionResultPartyVOByElectionType());
+				   // candidateElecResults = getCandidateResultsForChartData(elecResultsList,String party,String elecType);
+				   for(ElectionResultPartyVO candResults:elecResultsList){
+						if(candResults.getElectionType().equalsIgnoreCase(elecTyp.getName())){
+							List<CandidateElectionResultVO> candRes = candResults.getCandidateElectionResultsVO();
+							if(candRes != null && candRes.size() > 0)
+							//Collections.sort(candRes, new CandidateElecResultComparatorByParty());
+							for(CandidateElectionResultVO candidateElecResults:candRes){
+								ElectionResultPartyVO resultVOForChart = new ElectionResultPartyVO();
+								
+								resultVOForChart.setVotesShareRange(new BigDecimal(candidateElecResults.getVotesPercentage()).toString());
+								resultVOForChart.setPartyShortName(candidateElecResults.getPartyName());
+								resultVOForChart.setElectionType(candResults.getElectionType());
+								resultVOForChart.setElectionYear(candResults.getElectionYear());
+								
+								elecResultsForChart.add(resultVOForChart);
+							}
+						}
+					}
+				   
+			  }
+			   
+			   
+			   //add to dataset
+			   if(elecResultsForChart != null && elecResultsForChart.size() > 0){
+				   
+				   Collections.sort(elecResultsForChart,new ElectionResultPartyVOByElectionType());
+				   for(ElectionResultPartyVO res:elecResultsForChart){
+					   
+					   dataset.addValue(new BigDecimal(res.getVotesShareRange()), res.getPartyShortName(), res.getElectionYear()+" "+res.getElectionType());
+						  
+						  if(IConstants.TDP.equalsIgnoreCase(res.getPartyShortName()))
+						  {	colorsSet.add(IConstants.TDP_COLOR);
+							log.debug("TDP ADDED");
+						  }else if(IConstants.INC.equalsIgnoreCase(res.getPartyShortName())){
+							colorsSet.add(IConstants.INC_COLOR);
+							log.debug("INC ADDED");
+						  }
+						  else if(IConstants.TRS.equalsIgnoreCase(res.getPartyShortName())){
+							colorsSet.add(IConstants.TRS_COLOR);
+							log.debug("TRS ADDED");
+						  }else if(IConstants.BJP.equalsIgnoreCase(res.getPartyShortName())){
+							colorsSet.add(IConstants.BJP_COLOR);
+							log.debug("BJP ADDED");
+	 					  } else if(IConstants.PRP.equalsIgnoreCase(res.getPartyShortName())){
+								colorsSet.add(IConstants.PRP_COLOR);
+								log.debug("BJP ADDED");
+	 					  } else if("Others".equalsIgnoreCase(res.getPartyShortName())){
+								colorsSet.add(Color.BLACK);
+								log.debug("Others ADDED");
+	 					  }
+				   }
+			   }
+		   }
+		   chartColorsAndDataSetVO.setDataSet(dataset);
+	       chartColorsAndDataSetVO.setColorsSet(colorsSet);
+		   
+     return chartColorsAndDataSetVO;
+	}
+	
+	
 	public AlliancePartiesInElection getPartiesInAlliance(String party,List<AlliancePartiesInElection> alliancList){
 		
 		if(alliancList != null && alliancList.size() > 0){
@@ -1010,6 +1138,29 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			candidateResults = new CandidateElectionResultVO();
 			for(ElectionResultPartyVO candResults:elecResultsList){
 				if(candResults.getElectionType().equalsIgnoreCase(elecType) && candResults.getElectionYear().equalsIgnoreCase(elecYear)){
+					List<CandidateElectionResultVO> candRes = candResults.getCandidateElectionResultsVO();
+					for(CandidateElectionResultVO candResult:candRes){
+						if(candResult.getPartyName().equalsIgnoreCase(party)){
+							return candResult;
+						}
+					}
+				}
+			}
+		}
+		
+	 return candidateResults;
+	}
+	
+	//for chart manipulation based on selection of AC or PC or MPTC or ZPTC
+    public CandidateElectionResultVO getCandidateResultsForChartData(List<ElectionResultPartyVO> elecResultsList,String party,String elecType){
+		
+		log.debug(" Inside getCandidateResultsForChartData method ...");
+		
+		CandidateElectionResultVO candidateResults = null;
+		if(elecResultsList != null && party != null && elecType != null){
+			candidateResults = new CandidateElectionResultVO();
+			for(ElectionResultPartyVO candResults:elecResultsList){
+				if(candResults.getElectionType().equalsIgnoreCase(elecType)){
 					List<CandidateElectionResultVO> candRes = candResults.getCandidateElectionResultsVO();
 					for(CandidateElectionResultVO candResult:candRes){
 						if(candResult.getPartyName().equalsIgnoreCase(party)){
@@ -1114,7 +1265,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			}
 			
 			electnDataList.add(elecData);
-			chartNam = chartNam + "_" + elecType + "_" + elecYear;
+			//chartNam = chartNam + "_" + elecType + "_" + elecYear;
 			log.debug("Election Type " + elecType + "Year " + elecYear);
 		}	
 		
@@ -1133,7 +1284,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			log.debug("Party :" + partyNames[j]);
 			chartNam = chartNam + "_" + partyNames[j];
 		}
-		chartNam = chartNam + "IncludeAlliance" + includeAlliance.toString();
+		chartNam = chartNam + "_and_" + electnDataList.size() +" Elections" + "IncludeAlliance" + includeAlliance.toString();
 		
         List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(new Long(constiId));
         
