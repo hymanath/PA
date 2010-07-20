@@ -887,7 +887,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		List<Object[]> values = (List<Object[]>)totalVotersAndValidVotes;
 		if(values.size() > 0){
 			if(values.get(0)[0] != null)
-				tehsilPartyInfoVOList.get(0).setTotalVotersInConstituency((values.get(0)[0]).toString());
+				tehsilPartyInfoVOList.get(0).setTotalVotersInConstituency(new Long(((Double)values.get(0)[0]).longValue()).toString());
 			else
 				tehsilPartyInfoVOList.get(0).setTotalVotersInConstituency("--");
 			tehsilPartyInfoVOList.get(0).setTotalPolledVotes(((Double)values.get(0)[1]).floatValue());
