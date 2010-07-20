@@ -807,7 +807,7 @@
 					var info = results.allPartiesAllElectionResults[j].electionWiseResults[k];
 					if(info.percentage == null || info.percentage == '--' || info.percentage == "-1")
 					{
-						str += '<td name="'+info.electionType+'"> </td>';
+						str += '<td name="'+info.electionType+'">&nbsp </td>';
 					}
 					else if(info.electionType == 'Parliament' && info.electionYear == '2008' 
 						|| info.electionType == 'Parliament' && info.electionYear == '2006')
