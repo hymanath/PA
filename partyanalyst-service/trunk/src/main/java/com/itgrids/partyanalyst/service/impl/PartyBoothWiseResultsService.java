@@ -894,7 +894,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				tehsilPartyRes.setPartyName(partyResult.getPartyName());
 				tehsilPartyRes.setParticipatedSeats(new Long(partyResult.getSeatsParticipated()));
 				tehsilPartyRes.setSeatsWonByParty(new Long(partyResult.getTotalSeatsWon()));
-				tehsilPartyRes.setPercentageOfVotesWonByParty(new Float(partyResult.getPercentage()));
+				tehsilPartyRes.setPercentageOfVotesWonByParty(new BigDecimal(partyResult.getPercentage()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
 												
 				tehsilPartyInfoVOList.add(tehsilPartyRes);
 				
