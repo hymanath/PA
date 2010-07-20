@@ -212,7 +212,7 @@ legend
 				
 					rvStr += '<fieldset>';
 					rvStr += '<legend>${constiElec.constituencyName}</legend>';
-					rvStr += '<table>';
+					rvStr += '<table width="100%">';
 					rvStr += '<tr>';
 					rvStr += '<td style="vertical-align:top;">';
 						rvStr += '<div id="candiDiv_${constiElec.constituencyId}"  style="font-size:12px;">'
@@ -227,8 +227,10 @@ legend
 						rvStr += '</table>';		
 						rvStr += '</div>';		
 					rvStr += '</td>';
+					rvStr += '</tr>';
+					rvStr += '<tr>';
 					rvStr += '<td style="vertical-align:top;">';
-					rvStr += '<img width="700" height="400" src="charts/${constiElec.chartPath}"/>';
+					rvStr += '<img src="charts/${constiElec.chartPath}"/>';
 					rvStr += '</td>';
 					rvStr += '</tr>';
 					rvStr += '</table>';				
@@ -395,7 +397,7 @@ legend
 
 				var str = '';
 				
-				str += '<table width="70%" class="votesShareTable">';
+				str += '<table width="100%" class="votesShareTable">';
 				str += '<tr>';
 				str += '<td colspan="9" style="padding:0px;">';
 				str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
