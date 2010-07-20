@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -39,6 +40,7 @@ import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.SortOrder;
@@ -412,6 +414,8 @@ public class ChartProducer {
         
         final CategoryAxis domainAxis = new CategoryAxis(xAxis);
         domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+        domainAxis.setTickLabelFont(new Font("verdana",Font.BOLD,14));
+        
         CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
         plot.add(seatsPlot, 2);
         plot.setColumnRenderingOrder(SortOrder.ASCENDING);
@@ -439,6 +443,7 @@ public class ChartProducer {
             			1.0f, null, 0.0f
             			)
             			);
+        	seatsRenderer.setBaseLegendTextFont(new Font("verdana",Font.BOLD,13));
         	seatsPlot.setBackgroundPaint(new Color(219, 223, 225));
         }
         }
@@ -470,6 +475,7 @@ public class ChartProducer {
         
         final CategoryAxis domainAxis = new CategoryAxis(xAxis);
         domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+        domainAxis.setTickLabelFont(new Font("verdana",Font.BOLD,14));
         CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
         plot.add(seatsPlot, 2);
                
@@ -496,7 +502,10 @@ public class ChartProducer {
             			1.0f, null, 0.0f
             			)
             			);
+        	seatsRenderer.setBaseLegendTextFont(new Font("verdana",Font.BOLD,13));
+        	
         	seatsPlot.setBackgroundPaint(new Color(219, 223, 225));
+        	
         }
         }
       
