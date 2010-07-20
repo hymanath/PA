@@ -4783,7 +4783,7 @@ public class StaticDataService implements IStaticDataService {
 					}else{
 						electionType = partyResult.get(i).getElectionType();
 					}
-					electionHeading = partyResult.get(i).getElectionYear()+"  -  "+electionType;
+					electionHeading = partyResult.get(i).getElectionYear()+"  "+electionType;
 					select.setId(i+0l);
 					select.setName(electionHeading);
 					electionList.add(select);
