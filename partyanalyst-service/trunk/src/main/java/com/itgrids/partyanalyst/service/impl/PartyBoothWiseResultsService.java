@@ -817,9 +817,14 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		fixedParties.add(othersParty);
 		
 		//Removing Dot(.) from ZPTC
-		for(SelectOptionVO obj:electionsHeading)
+		for(SelectOptionVO obj:electionsHeading){
 			if(obj.getName().contains("."))
 				obj.setName(StringUtils.remove(obj.getName(), "."));
+			if(StringUtils.contains(obj.getName(), IConstants.ASSEMBLY_ELECTION_TYPE))
+				obj.setName(StringUtils.replace(obj.getName(), IConstants.ASSEMBLY_ELECTION_TYPE, "AC"));
+			else if(StringUtils.contains(obj.getName(), IConstants.PARLIAMENT_ELECTION_TYPE))
+				obj.setName(StringUtils.replace(obj.getName(), IConstants.PARLIAMENT_ELECTION_TYPE, "PC"));
+		}
 		
 		electionWiseMandalPartyResultListVO.setElections(electionsHeading);
 		electionWiseMandalPartyResultListVO.setAllPartiesAllElectionResults(fixedParties);
