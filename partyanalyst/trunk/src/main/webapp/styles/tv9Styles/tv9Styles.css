@@ -133,3 +133,45 @@ padding:8px;
 	padding-top:5px;
 	text-align:right;
 }
+
+#selectLocationOptions,#inputSelectionCriteria {
+border:2px solid #E0E0D6;
+color:#121922;
+font-size:14px;
+font-weight:bold;
+margin:10px;
+padding:10px;
+}
+
+.districtPageRoundedHeaders_center  {
+background-image:url("../../images/icons/indexPage/reportGroupHeader.png");
+color:#FFFFFF;
+font-weight:bold;
+padding:11px;
+}
+
+#zptc_body, #mptc_body {
+border-bottom:2px solid #212629;
+border-left:2px solid #212629;
+border-right:2px solid #212629;
+height:300px;
+overflow:auto;
+}
+
+.zptcMptcVotersTable th
+{
+	font-size:	18px;
+}
+
+.zptcMptcVotersTable td
+{
+	font-size:	18px;
+	color:red;
+	font-weight:bold;
+}
+
+#municipalityVotersDiv th
+{
+	font-size:15px;
+	padding:5px;
+}

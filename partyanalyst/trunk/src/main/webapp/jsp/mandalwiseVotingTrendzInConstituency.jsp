@@ -624,8 +624,8 @@
 			var muncipality = document.getElementById("muncipalitiesDivHead");
 			var muncipalityDiv='';		
 			muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
-			muncipalityDiv+='<td><img src="images/icons/districtPage/header_left.gif"/></td>';
-			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;"><a href="javascript:{}">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			muncipalityDiv+='<td><img src="images/icons/tv9Icons/first.png"/></td>';
+			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style=" width: 857px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			muncipalityDiv+='</td>';
 			muncipalityDiv+='</tr></table>';	
 			muncipality.innerHTML = muncipalityDiv;
@@ -638,8 +638,8 @@
 			
 			var corporationDiv='';	
 			corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
-			corporationDiv+='<td width="30"><img src="images/icons/districtPage/header_left.gif"/></td>';	
-			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;"><a href="javascript:{}">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			corporationDiv+='<td width="30"><img src="images/icons/tv9Icons/first.png"/></td>';	
+			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			corporationDiv+='</td></tr></table>';	
 			corporation.innerHTML = corporationDiv;
 		}
@@ -674,14 +674,14 @@
 				assignToPartyDataArray = new Array();
 							
 				rvStr+='<div id="allMuncipalitiesDetails'+i+'" style="padding:10px;width:100%;vertical-align:top;" class="datatableClass">';
-				rvStr += '<table class="datatableClass" width="90%" style="background-color:#F3F6F7;margin-top:10px;margin-right:10px;">';
+				rvStr += '<table id="municipalityVotersDiv" class="datatableClass" width="90%" style="background-color:#F3F6F7;margin-top:10px;margin-right:10px;">';
 				rvStr += '<tr>';
-				rvStr += '<th align="left">Muncipality Name :</th><td align="left">'+result[i].muncipalityName+'</td>'; 
-				rvStr += '<th align="left">Total Wards :</th><td align="left">'+result[i].totalWards+'</td>';
+				rvStr += '<th align="left">Muncipality Name :</th><th align="left">'+result[i].muncipalityName+'</th>'; 
+				rvStr += '<th align="left">Total Wards :</th><th align="left">'+result[i].totalWards+'</th>';
 				rvStr += '</tr>';
 				rvStr += '<tr>';
-				rvStr += '<th align="left">Total Voters :</th><td align="left">'+result[i].totalVoters+'</td>';
-				rvStr += '<th align="left">Total Polled Votes :</th><td align="left">'+result[i].totalPolledVotes+'</td>';
+				rvStr += '<th align="left">Total Voters :</th><th align="left">'+result[i].totalVoters+'</th>';
+				rvStr += '<th align="left">Total Polled Votes :</th><th align="left">'+result[i].totalPolledVotes+'</th>';
 				rvStr += '</tr>';
 				rvStr += '</table>';	
 				rvStr +='<div class="yui-skin-sam" style="margin-top:10px;margin-bottom:10px;">';
@@ -1273,7 +1273,7 @@
 			var str='';
 			str += '<div id="selectLocationOptions">';
 			str += '<div id="districtsInfoRadioElmtDiv">';
-			str += '<table width="60%">';
+			str += '<table width="90%">';
 			str += '<tr>';
 			str += '<th width="30%" align="left">';
 			str += 'Select District : ';
@@ -1298,7 +1298,7 @@
 			str += '<div id="constituenciesInfoSelectElmtDiv">';
 			if(distObj)
 			{
-				str += '<table  width="60%">';
+				str += '<table  width="90%">';
 				str += '<tr>';
 				str += '<th width="30%" align="left">';
 				str += 'Select Constituency : ';
@@ -1847,13 +1847,22 @@
 					urbanStr += '	<tr>';
 					var electionHeaderLen = (urbanConstResults[a].partiesHeading.length*2)+2;
 					var partyHeaderLen = urbanConstResults[a].partiesHeading.length*2;
-					urbanStr += '		<td>';
+					/*urbanStr += '		<td>';
 					urbanStr += '			<img src="charts/'+urbanConstResults[a].electionPieChart+'" />';
-					urbanStr += '		</td>';
+					urbanStr += '		</td>';*/
 					urbanStr += '		<td style="vertical-align:top;padding-bottom:20px;" width="100%">';
 					urbanStr += '			<table width="100%" class="mandalResultsTable" border="1" style="margin:10px;">';
 					urbanStr += '				<tr>';
-					urbanStr += '					<th colspan="'+electionHeaderLen+'" align="left">'+urbanConstResults[a].electionType+' - '+urbanConstResults[a].electionYear+'</th>';
+					urbanStr += '					<th style="color:#FFFFFF;font-size:19px;padding:9px;background-image:url(\'images/icons/tv9Icons/tableHeader.png\')" colspan="'+electionHeaderLen+'" align="left">';
+					urbanStr += ' <span>'+urbanConstResults[a].electionType+' - '+urbanConstResults[a].electionYear+'</span>';
+					urbanStr += '<div style="float:right;cursor:pointer;">';
+					urbanStr += '<div id="imgDiv_'+i+'_'+j+'" onclick="showHideMandalTrendzGraph(this.id)"> View Graph</div>'; 
+					
+					urbanStr += '<div style="display:none;" id="imgDiv_'+i+'_'+j+'_graph" class="mandalVotingTrendzGraphImg" ><div id="imgDiv_'+i+'_'+j+'" class="trendzGraphDiv"  onclick="showHideMandalTrendzGraph(this.id)">Close</div><img src="charts/'+urbanConstResults[a].electionPieChart+'" /></div>';						
+							
+				
+					urbanStr += '</div>';
+					urbanStr += '</th>';
 					urbanStr += '				</tr>';
 					urbanStr += '				<tr>';
 					urbanStr += '					<th rowspan="3">Mandal</th>';
@@ -2026,7 +2035,7 @@
 			if(results[0].totalVotersInConstituency != null && results[0].totalPolledVotes != null)
 			{
 				var voterStr = '';
-				voterStr += '<table width="100%">';
+				voterStr += '<table class="zptcMptcVotersTable" width="100%">';
 				voterStr += '<tr>';
 				voterStr += '<th align="left"> Total Voters  : </th><td>'+results[0].totalVotersInConstituency+'</td>';
 				voterStr += '<th align="left"> Total Polled Votes : </th><td>'+results[0].totalPolledVotes+'</td>';
@@ -2037,17 +2046,17 @@
 			var zptcOptionsDivElStr = '';
 			zptcOptionsDivElStr+='<TABLE>';
 			zptcOptionsDivElStr+='<TR>';
-			zptcOptionsDivElStr+='<TH>View Results By</TH>';
-			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="clocationOption" onclick="showHideMandalDropdown1(\'mandalOpt\','+selectedYearVal+')"/>Constituency</TD>';
-			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="mlocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Mandal</TD>';
-			zptcOptionsDivElStr+='<TD align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'ZPTC\',\'getZptcElectionResults\',this.options[this.selectedIndex].text,this.options[this.selectedIndex].index)">';
+			zptcOptionsDivElStr+='<TH style="font-size:14px">View Results By</TH>';
+			zptcOptionsDivElStr+='<TH style="font-size:14px" align="left"><INPUT type="radio" name="locationOption" id="clocationOption" onclick="showHideMandalDropdown1(\'mandalOpt\','+selectedYearVal+')"/>Constituency</TH>';
+			zptcOptionsDivElStr+='<TH style="font-size:14px" align="left"><INPUT type="radio" name="locationOption" id="mlocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Mandal</TH>';
+			zptcOptionsDivElStr+='<TH style="font-size:14px" align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'ZPTC\',\'getZptcElectionResults\',this.options[this.selectedIndex].text,this.options[this.selectedIndex].index)">';
 			zptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
 			for(var i in mandalNamesArr)
 			{
 				zptcOptionsDivElStr+='<OPTION value='+mandalNamesArr[i].id+'>'+mandalNamesArr[i].name+'</OPTION>';
 			}
 			zptcOptionsDivElStr+='</SELECT>';
-			zptcOptionsDivElStr+='</TD>';
+			zptcOptionsDivElStr+='</TH>';
 			zptcOptionsDivElStr+='<TR>';
 			zptcOptionsDivElStr+='</TABLE>';
 			zptcOptionsDivEl.innerHTML = zptcOptionsDivElStr;
@@ -2170,7 +2179,7 @@
 			if(results[0].totalVotersInConstituency != null && results[0].totalPolledVotes != null)
 			{	
 				var voterStr = '';
-				voterStr += '<table width="100%">';
+				voterStr += '<table class="zptcMptcVotersTable" width="100%">';
 				voterStr += '<tr>';
 				voterStr += '<th align="left"> Total Voters  : </th><td>'+results[0].totalVotersInConstituency+'</td>';
 				voterStr += '<th align="left"> Total Polled Votes : </th><td>'+results[0].totalPolledVotes+'</td>';
@@ -2181,17 +2190,17 @@
 			var mptcOptionsDivElStr = '';
 			mptcOptionsDivElStr+='<TABLE>';
 			mptcOptionsDivElStr+='<TR>';
-			mptcOptionsDivElStr+='<TH>View Results By</TH>';
-			mptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="mlocationOption" id="cmlocationOption" checked = "true" onclick="showHideMandalDropdown2(\'mmandalOpt\','+selectedYearVal+')"/>Constituency</TD>';
-			mptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="mlocationOption" id="mmlocationOption" onclick="showHideMandalDropdown(\'mmandalOpt\')"/>Mandal</TD>';
-			mptcOptionsDivElStr+='<TD align="left"><SELECT name ="mandalOpt" id = "mmandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'MPTC\',\'getMptcElectionResults\',this.options[this.selectedIndex].text,this.options[this.selectedIndex].index)">';
+			mptcOptionsDivElStr+='<TH style="font-size:14px;">View Results By</TH>';
+			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="mlocationOption" id="cmlocationOption" checked = "true" onclick="showHideMandalDropdown2(\'mmandalOpt\','+selectedYearVal+')"/>Constituency</TH>';
+			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="mlocationOption" id="mmlocationOption" onclick="showHideMandalDropdown(\'mmandalOpt\')"/>Mandal</TH>';
+			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><SELECT name ="mandalOpt" id = "mmandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'MPTC\',\'getMptcElectionResults\',this.options[this.selectedIndex].text,this.options[this.selectedIndex].index)">';
 			mptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
 			for(var i in mandalNamesArr)
 			{
 				mptcOptionsDivElStr+='<OPTION value='+mandalNamesArr[i].id+'>'+mandalNamesArr[i].name+'</OPTION>';
 			}
 			mptcOptionsDivElStr+='</SELECT>';
-			mptcOptionsDivElStr+='</TD>';
+			mptcOptionsDivElStr+='</TH>';
 			mptcOptionsDivElStr+='<TR>';
 			mptcOptionsDivElStr+='</TABLE>';
 			mptcOptionsDivEl.innerHTML = mptcOptionsDivElStr;
@@ -2377,58 +2386,58 @@
 	<div id="votingTrendzInfoMain"></div>
 	<div class="rounded" >
 		<center>
-		<table>
+		<table width="98%">
 			<tr>
-					<td style="vertical-align:top;">
-						<div id="zptc_main">
-							<div id="zptc_head">
-								<table border="0" cellpadding="0" cellspacing="0">
+				<td style="vertical-align:top;">
+					<div id="zptc_main">
+						<div id="zptc_head">
+							<table border="0" cellpadding="0" cellspacing="0">
+							<tr>
+								<td><img src="images/icons/tv9Icons/first.png"/></td>
+								<td>	
+									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:920px;height:18px;">
+										<span>Total Number of ZPTC's : </span>
+										<span id="totalZptcCountResultDiv"></span>														
+									</div>
+								</td>
+								<td><img src="images/icons/tv9Icons/second.png"/></td>
+							</tr>
+							</table>
+						</div>
+						<div id="zptc_body" style="width:980px;">
+							<table width="100%">									
 								<tr>
-									<td><img src="images/icons/districtPage/header_left.gif"/></td>
-									<td>	
-										<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:850px;height:18px;padding:9px;">
-											<span>Total Number of ZPTC's : </span>
-											<span id="totalZptcCountResultDiv"></span>														
-										</div>
+									<td>
+										<table width="100%">
+											<tr>
+												<td colspan="2" align="left">
+													<table width="100%">
+														<tr>
+															<td><div id="zptcElectionIdsSelectDiv" style="font-size:14px;"></div></td>
+															<td><div id="totalZptcVotersDiv" style="padding-left:40px;"></div></td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+											<tr>
+												<td><div id="zptcOptionsDiv"></div></td>
+												<td><div id="zptcCandidateLink"></div></td>
+											</tr>
+											<tr>
+												<td width="50%"><div></div></td>
+												<td width="50%"><div id="zptcHeadDiv"></div></td>
+											</tr>
+											<tr>
+												<td valign="top"><div id="zptcChartDiv"></div></td>
+												<td class="yui-skin-sam" valign="top"><div id="zptcPartyTrendsDetailsDiv" style="border:2px solid #9696C0"></div></td>
+											</tr>
+										</table>
 									</td>
-									<td><img src="images/icons/districtPage/header_right.gif"/></td>
 								</tr>
-								</table>
-							</div>
-							<div id="zptc_body" style="width:900px;">
-								<table width="100%">									
-									<tr>
-										<td>
-											<table width="100%">
-												<tr>
-													<td colspan="2" align="left">
-														<table width="100%">
-															<tr>
-														   		<td><div id="zptcElectionIdsSelectDiv"></div></td>
-														   		<td><div id="totalZptcVotersDiv" style="padding-left:40px;"></div></td>
-													   		</tr>
-														</table>
-													</td>
-												</tr>
-												<tr>
-													<td><div id="zptcOptionsDiv"></div></td>
-													<td><div id="zptcCandidateLink"></div></td>
-												</tr>
-												<tr>
-													<td width="50%"><div></div></td>
-													<td width="50%"><div id="zptcHeadDiv"></div></td>
-												</tr>
-												<tr>
-													<td valign="top"><div id="zptcChartDiv"></div></td>
-													<td class="yui-skin-sam" valign="top"><div id="zptcPartyTrendsDetailsDiv" style="border:2px solid #9696C0"></div></td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-								</table>	
-							</div>		
+							</table>	
 						</div>		
-						</td>			
+					</div>		
+					</td>			
 					</tr>
 					<tr>
 					<td style="vertical-align:top;">
@@ -2436,23 +2445,23 @@
 							<div id="mptc_head">
 								<table border="0" cellpadding="0" cellspacing="0" >
 									<tr>
-										<td><img src="images/icons/districtPage/header_left.gif"/></td>
+										<td><img src="images/icons/tv9Icons/first.png"/></td>
 										<td>	
-											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:850px;padding:9px;height:18px;">
+											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:920px;height:18px;">
 												<span>Total Number of MPTC's : </span>
 												<span id="totalMptcCountResultDiv"></span>
 											</div>
 										</td>
-										<td><img src="images/icons/districtPage/header_right.gif"/></td>
+										<td><img src="images/icons/tv9Icons/second.png"/></td>
 									</tr>
 								</table>
 							</div>
-						<div id="mptc_body" style="width:900px;">
+						<div id="mptc_body" style="width:980px;">
 								<table width="100%">									
 									<tr><td>
 											<table width="100%"><tr><td colspan="2">
 															<table width="100%"><tr>
-														   		<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
+														   		<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;font-size:14px" class="yui-skin-sam"></div></td>
 														   		<!--<td><div id="mptcCandidateLink"></div></td>
 																--><td><div id="totalMptcVotersDiv" style="padding-left:40px;"></div></td>
 													   		</tr></table>
