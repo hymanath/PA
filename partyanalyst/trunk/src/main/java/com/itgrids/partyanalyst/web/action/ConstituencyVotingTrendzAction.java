@@ -826,9 +826,9 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			{
 				Double votesPercent = new Double(0);
 				if(flag == true)
-					votesPercent = new Double(resultsForDataset.get(0).getOthersPercent());
+					votesPercent = new BigDecimal(resultsForDataset.get(0).getOthersPercent()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				else
-			        votesPercent = new Double(resultsForDataset.get(i).getPercentageOfVotesWonByParty());
+			        votesPercent = new BigDecimal(resultsForDataset.get(i).getPercentageOfVotesWonByParty()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				
 			    log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
 								
