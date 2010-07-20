@@ -346,17 +346,17 @@
 				headingDIV+='<td colspan="2" style="border:0px;padding:0px;">';
 				headingDIV+='<table class="participatingPartiestable_inner" border="0"  cellpadding="0" cellspacing="0">';
 				headingDIV+='<tr>';
-				headingDIV+='	<td style="padding:0px;border:none;"> ';
+				headingDIV+='	<td valign="top" style="padding:0px;border:none;"> ';
 				headingDIV+='		<img src="images/icons/tv9Icons/first.png">';
 				headingDIV+='	</td>';
 
-				headingDIV+='	<td style="padding:0px;border:none;">';
+				headingDIV+='	<td valign="top" style="padding:0px;border:none;">';
 				headingDIV+='		<div class="detailsTableHeader" style="width:845px;">';
 				headingDIV+='			<span class="detailsTableHeaderSpan">Bye-Election 2010 Contesting Candidates </span>';
 				headingDIV+='		</div>';
 				headingDIV+='	</td>';
 
-				headingDIV+='	<td style="padding:0px;border:none;"> ';
+				headingDIV+='	<td valign="top" style="padding:0px;border:none;"> ';
 				headingDIV+='		<img src="images/icons/tv9Icons/second.png">';
 				headingDIV+='	</td>';
 
@@ -398,17 +398,17 @@
 				headingDIV+='		<td colspan="5" style="border:0px;padding:0px;">';
 				headingDIV+='			<table class="participatingPartiestable_inner" border="0"  cellpadding="0" cellspacing="0" width="100%">';
 				headingDIV+='			<tr>';
-				headingDIV+='				<td style="padding:0px;border:none;"> ';
+				headingDIV+='				<td valign="top" style="padding:0px;border:none;"> ';
 				headingDIV+='					<img src="images/icons/tv9Icons/first.png">';
 				headingDIV+='				</td>';
 
-				headingDIV+='				<td style="padding:0px;border:none;">';
+				headingDIV+='				<td valign="top" style="padding:0px;border:none;">';
 				headingDIV+='					<div class="detailsTableHeader" style="width:845px;">';
 				headingDIV+='						<span class="detailsTableHeaderSpan">2009 Won & Opposition Candidates Result In Constituency </span>';
 				headingDIV+='					</div>';
 				headingDIV+='				</td>';
 
-				headingDIV+='				<td style="padding:0px;border:none;">';
+				headingDIV+='				<td valign="top" style="padding:0px;border:none;">';
 				headingDIV+='					<img src="images/icons/tv9Icons/second.png">';
 				headingDIV+='				</td>';
 				headingDIV+='			</tr>';
