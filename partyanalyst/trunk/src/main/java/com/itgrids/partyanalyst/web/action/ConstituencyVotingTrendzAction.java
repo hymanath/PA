@@ -1501,9 +1501,9 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
 		Set<String> partiesInChart = new LinkedHashSet<String>();
 		partywiseVotesDetailsForMandal.setChartName(chartName);
-		ChartProducer.createLineChart("Different Parties Performance In All Elections Of "+tehsilName+" Mandal", 
+		ChartProducer.createLineChartWithThickness("Different Parties Performance In All Elections Of "+tehsilName+" Mandal", 
 		"Elections", "Percentages",createDataSetForMandal(partywiseVotesDetailsForMandal.getAllPartiesAllElectionResults(), partiesInChart), 
-		chartPath,chartHeight,chartWidth,ChartUtils.getLineChartColors(partiesInChart),true);
+		chartPath,400,950,ChartUtils.getLineChartColors(partiesInChart),true);
 		
 		int i=0;
 		for(PartyResultVO party:partywiseVotesDetailsForMandal.getAllPartiesAllElectionResults()){
