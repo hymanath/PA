@@ -1389,36 +1389,92 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	@SuppressWarnings("unchecked")
 	public List<PartyResultVO> getMandalsResultsInAnElection(String mandalIds, String electionYear, String electionType){
 		List validVotes = boothResultDAO.getAllPolledVotesForMandalsInAnElection(mandalIds, electionYear, electionType);
-		List<PartyResultVO> partiesResultsInMandals = new ArrayList<PartyResultVO>();
+		List<PartyResultVO> partiesResultsInMandals = null;
+		List<PartyResultVO> finalResults = new ArrayList<PartyResultVO>();
 		PartyResultVO partyResultVO = null;
 		Map<Long, Long> mandalAndValidVotesMap = new LinkedHashMap<Long, Long>();
 		for(Object[] values:(List<Object[]>)validVotes)
 			mandalAndValidVotesMap.put((Long)values[1], (Long)values[3]);
 		List partiesResults = candidateBoothResultDAO.getResultsForElectionForAllMandalsAndParties(mandalIds, electionYear, electionType);
-		for(Object[] values:(List<Object[]>)partiesResults){
-			partyResultVO = new PartyResultVO();
-			partyResultVO.setConstituencyName(values[1].toString());
-			partyResultVO.setPartyName(values[2].toString());
-			partyResultVO.setVotesPercent(new BigDecimal((Long)values[3]*100.0/mandalAndValidVotesMap.get(values[0])).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		
+		//Mandalwise All Parties Info
+		Map<Long, List<PartyResultVO>> mandalwisePartiesMap = new HashMap<Long, List<PartyResultVO>>();
+		
+		//Party Name and Votes Earned Map With In A Mandal
+		Map<String, Long> partyVotesEarnedMap = new HashMap<String, Long>();
+		
+		Long mandalId = 0l;
+		String partyName = "";
+		Long votesEarned = 0l;
+		Float validVotesPercent = 0.0f;
+		try{
+			for(Object[] values:(List<Object[]>)partiesResults){
+				partyName = values[2].toString();
+				votesEarned = partyVotesEarnedMap.get(partyName);
+				if(votesEarned == null)
+					votesEarned = (Long)values[3];
+				else
+					votesEarned += (Long)values[3];
+				
+				partyVotesEarnedMap.put(partyName, votesEarned);
+				
+				mandalId = (Long)values[0];
+				partiesResultsInMandals = mandalwisePartiesMap.get(mandalId);
+				if(partiesResultsInMandals == null)
+					partiesResultsInMandals = new ArrayList<PartyResultVO>();
+				partyResultVO = new PartyResultVO();
+				partyResultVO.setConstituencyName(values[1].toString());
+				partyResultVO.setPartyName(values[2].toString());
+				partyResultVO.setVotesPercent(new BigDecimal((Long)values[3]*100.0/mandalAndValidVotesMap.get(values[0])).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				partiesResultsInMandals.add(partyResultVO);
+				mandalwisePartiesMap.put(mandalId, partiesResultsInMandals);
+			}
 			
-			//to get total voters
-			try{
-			Long tehsilId = (Long)values[0];
-			List totalVoters = boothConstituencyElectionDAO.getTotalVotersInAnElectionInMandal(tehsilId,electionType,IConstants.PRESENT_ELECTION_YEAR);
-			if(totalVoters != null){
-				Object params = (Object)totalVoters.get(0);
-				partyResultVO.setElectors((Long)params);
+			Float votesPercent = 0.0f;
+			List totalVoters = null;
+			Long totalVotersLong = 0l;
+			String mandalName = "";
+			//Calculating And Grouping Alliance Parties Percentages
+			for(Map.Entry<Long, List<PartyResultVO>> entry:mandalwisePartiesMap.entrySet()){
+				partiesResultsInMandals = entry.getValue();
+				totalVoters = boothConstituencyElectionDAO.getTotalVotersInAnElectionInMandal(entry.getKey(),electionType,IConstants.PRESENT_ELECTION_YEAR);
+				totalVotersLong = (Long)totalVoters.get(0);
+				votesPercent = 0.0f;
+				validVotesPercent = 0.0f;
+				for(PartyResultVO party:partiesResultsInMandals){
+					mandalName = party.getConstituencyName();
+					if(party.getPartyName().equals(IConstants.INC) || party.getPartyName().equals(IConstants.TRS)){
+						votesPercent += new Float(party.getVotesPercent());
+						continue;
+					}
+					if(party.getPartyName().equals(IConstants.BJP) || party.getPartyName().equals(IConstants.TDP)){
+						validVotesPercent += new Float(party.getVotesPercent());
+						continue;
+					}
+					party.setElectors(totalVotersLong);
+					finalResults.add(party);
+				}				
+				finalResults.add(getPartyResultVOObjWithPercent(IConstants.TRS, votesPercent.toString(), totalVotersLong, mandalName));
+				finalResults.add(getPartyResultVOObjWithPercent(IConstants.BJP, validVotesPercent.toString(), totalVotersLong, mandalName));
 			}
-			}catch(Exception ex){
-				ex.printStackTrace();
-				log.debug(" Exception Raised :" + ex);
-			}
-			partiesResultsInMandals.add(partyResultVO);
+		}catch (Exception e) {
+			log.debug("Exception Occured While Processing Mandal Data");
+			e.printStackTrace();
 		}
-		if(partiesResultsInMandals != null && partiesResultsInMandals.size() > 0)
-			Collections.sort(partiesResultsInMandals, new PartyResultVOComparatorByElectors());
-			  //Collections.sort(partiesResultsInMandals, new PartyResultVOComparatorByName());
-		return partiesResultsInMandals;
+
+		if(finalResults != null && finalResults.size() > 0)
+			Collections.sort(finalResults, new PartyResultVOComparatorByElectors());
+
+		return finalResults;
+	}
+	
+	private PartyResultVO getPartyResultVOObjWithPercent(String partyName, String percenatge, Long electorsInMandal, String mandalName){
+		PartyResultVO partyResultVO = new PartyResultVO();
+		partyResultVO.setPartyName(partyName);
+		partyResultVO.setVotesPercent(percenatge);
+		partyResultVO.setElectors(electorsInMandal);
+		partyResultVO.setConstituencyName(mandalName);
+		return partyResultVO;
 	}
 	
 	@SuppressWarnings("unchecked")
