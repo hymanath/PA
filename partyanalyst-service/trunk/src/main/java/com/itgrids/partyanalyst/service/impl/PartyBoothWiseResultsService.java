@@ -33,9 +33,11 @@ import com.itgrids.partyanalyst.dto.PartyGenderWiseVotesVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.excel.booth.BoothResultVO;
 import com.itgrids.partyanalyst.excel.booth.PartyBoothPerformanceVO;
 import com.itgrids.partyanalyst.model.Booth;
@@ -612,6 +614,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	 * @param tehsilId
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public ElectionWiseMandalPartyResultListVO getAllMPTCAndZPTCElectionsInfoInTehsil(Long tehsilId){
 		ElectionWiseMandalPartyResultListVO mptcZptcElectionResultListVO = new ElectionWiseMandalPartyResultListVO();
 		List<ElectionWiseMandalPartyResultVO> allElectionsInfo = new ArrayList<ElectionWiseMandalPartyResultVO>();
@@ -822,6 +825,82 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		electionWiseMandalPartyResultListVO.setAllPartiesAllElectionResults(fixedParties);
 		return electionWiseMandalPartyResultListVO;
 		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService#getMPTCandZPTCResultsInAMandalForAElection(java.lang.Long, java.lang.String, java.lang.String)
+	 * This Method Processes and Returns List of all party results in a particular MPTC & ZPTC election 
+	 * @Input tehsilId and election type and election year
+	 * @Output partys results list in selected tehsil
+	 */
+	public List<TeshilPartyInfoVO> getMPTCandZPTCResultsInAMandalForAElection(
+			Long tehsilId, String electionType, String electionYear) {
+		
+		
+		List<TeshilPartyInfoVO> tehsilPartyInfoVOList = null;
+		
+		if(tehsilId != null && electionType != null && electionYear != null){
+			
+			try{
+				ElectionWiseMandalPartyResultListVO tehsilResultsVO = getAllMPTCAndZPTCElectionsInfoInTehsil(tehsilId);
+				if(tehsilResultsVO != null){
+					
+			     log.debug(" Mandal Results Size :" + tehsilResultsVO.getPartyWiseElectionResultsVOList());
+				 for(ElectionWiseMandalPartyResultVO allElec:tehsilResultsVO.getPartyWiseElectionResultsVOList()){
+								 					 
+					 if(electionType.equalsIgnoreCase(allElec.getElectionType()) &&
+							 electionYear.equalsIgnoreCase(allElec.getElectionYear().toString()))
+					     tehsilPartyInfoVOList = getPartyResultsInTehsilInElection(allElec);
+								 
+					 }
+				}
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+				log.debug("Exception Raised :" + ex);
+				tehsilPartyInfoVOList = new ArrayList<TeshilPartyInfoVO>();
+				TeshilPartyInfoVO tehsilResult = new TeshilPartyInfoVO();
+				
+				ResultStatus resultStatus = new ResultStatus();
+				resultStatus.setExceptionEncountered(ex);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				
+				tehsilResult.setResultStatus(resultStatus);
+				tehsilPartyInfoVOList.add(tehsilResult);
+			}
+		}
+		
+	 return tehsilPartyInfoVOList;
+	}
+	
+	public List<TeshilPartyInfoVO> getPartyResultsInTehsilInElection(ElectionWiseMandalPartyResultVO elecResInMandal){
+		List<TeshilPartyInfoVO> tehsilPartyInfoVOList = null;
+		
+		if(elecResInMandal != null){
+			tehsilPartyInfoVOList = new ArrayList<TeshilPartyInfoVO>();
+			Float othersPercent = new Float(0);
+			
+			for(PartyResultsVO partyResult:elecResInMandal.getPartyResultsVO()){
+				TeshilPartyInfoVO tehsilPartyRes = new TeshilPartyInfoVO();
+				
+				tehsilPartyRes.setPartyName(partyResult.getPartyName());
+				tehsilPartyRes.setParticipatedSeats(new Long(partyResult.getSeatsParticipated()));
+				tehsilPartyRes.setSeatsWonByParty(new Long(partyResult.getTotalSeatsWon()));
+				tehsilPartyRes.setPercentageOfVotesWonByParty(new Float(partyResult.getPercentage()));
+												
+				tehsilPartyInfoVOList.add(tehsilPartyRes);
+				
+				if(!partyResult.getPartyName().equals(IConstants.TRS) && 
+						!partyResult.getPartyName().equals(IConstants.INC) && 
+						!partyResult.getPartyName().equals(IConstants.TDP) && 
+						!partyResult.getPartyName().equals(IConstants.BJP))
+					othersPercent+=tehsilPartyRes.getPercentageOfVotesWonByParty();
+			}
+			if(tehsilPartyInfoVOList != null && tehsilPartyInfoVOList.size() > 0)
+				tehsilPartyInfoVOList.get(0).setOthersPercent(othersPercent);
+		}
+	 return tehsilPartyInfoVOList;
 	}
 	
 }
