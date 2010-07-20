@@ -33,6 +33,32 @@
 <title>Revenue Villages Wise Election Results</title>
 
 <style type="text/css">
+ 
+		.mainHeading 
+		{
+			background-image:url("images/icons/electionResultsReport/heading.png");
+			border:0 solid #AEE2FF;
+			color:#000000;
+			font-family:MS Sans-serif;
+			font-size:20px;
+			font-weight:bold;
+			height:25px;
+			margin-bottom:15px;
+			margin-top:15px;
+			padding:10px;
+			text-align:center;
+		}
+	
+		#inputSelectionCriteria
+		{
+			padding: 10px;
+			color: #707070;
+			margin: 10px;
+			border: 2px solid #E0E0D6;
+			font-family: verdana;
+			
+		}
+
 	#revenueVillageHeading
 	{
 		color:#2F4C72;
@@ -211,26 +237,31 @@ legend
 				<c:forEach var="constiElec" items="${townshipWiseElectionResults}">
 				
 					rvStr += '<fieldset>';
-					rvStr += '<legend>${constiElec.constituencyName}</legend>';
-					rvStr += '<table width="100%">';
+					rvStr += '<legend style="background-color: rgb(86, 122, 175); font-family: verdana,helvetica,clean,sans-serif; color: rgb(255, 255, 255);';
+					rvStr += 'font-weight: bold; padding: 10px; font-size: 20px;">${constiElec.constituencyName}</legend>';
+					rvStr += '<table width="100%" border="0">';
 					rvStr += '<tr>';
-					rvStr += '<td style="vertical-align:top;">';
-						rvStr += '<div id="candiDiv_${constiElec.constituencyId}"  style="font-size:12px;">'
-						rvStr += '<table id="candiTable_${constiElec.constituencyId}">';
-						<c:forEach var="candidateInfo" items="${constiElec.candidateNamePartyAndStatus}">
-							rvStr += '<tr>';
-							rvStr += '<td><A href="javascript:{}" title="Click to see Revenue Villageswise Performance Of \'${candidateInfo.party}\'" onclick="openPartywiseResultsWin('+mandalId+',\''+mandalName+'\',${candidateInfo.partyId},\'${candidateInfo.party}\')">${candidateInfo.party}</A></td>';
-							rvStr += '<td>${candidateInfo.candidateName}</td>';
-							rvStr += '<td>${candidateInfo.rank}</td>';
-							rvStr += '</tr>';
-						</c:forEach>
-						rvStr += '</table>';		
-						rvStr += '</div>';		
+					rvStr += '<td style="vertical-align:top;" align="center">';
+					rvStr += '<img src="charts/${constiElec.chartPath}"/>';
 					rvStr += '</td>';
 					rvStr += '</tr>';
 					rvStr += '<tr>';
 					rvStr += '<td style="vertical-align:top;">';
-					rvStr += '<img src="charts/${constiElec.chartPath}"/>';
+						rvStr += '<table align="center" width="50%" border="0"><tr><td align="center">';
+						rvStr += '<br><font color="" size="4px">Participated Candidate Details</font><br><br>';		
+							rvStr += '<div id="candiDiv_${constiElec.constituencyId}"  style="font-size:12px;">'
+							rvStr += '<table id="candiTable_${constiElec.constituencyId}" width="60%" align="center">';
+							<c:forEach var="candidateInfo" items="${constiElec.candidateNamePartyAndStatus}">
+								rvStr += '<tr>';
+								rvStr += '<td><A href="javascript:{}" title="Click to see Revenue Villageswise Performance Of \'${candidateInfo.party}\'" onclick="openPartywiseResultsWin('+mandalId+',\''+mandalName+'\',${candidateInfo.partyId},\'${candidateInfo.party}\')">${candidateInfo.party}</A></td>';
+								rvStr += '<td>${candidateInfo.candidateName}</td>';
+								rvStr += '<td>${candidateInfo.rank}</td>';
+								rvStr += '</tr>';
+							</c:forEach>
+							rvStr += '</table>';		
+							rvStr += '</div>';		
+						rvStr += '</td></tr></table>';						
+					
 					rvStr += '</td>';
 					rvStr += '</tr>';
 					rvStr += '</table>';				
@@ -429,7 +460,7 @@ legend
 				str += '<th>Villages</th>';
 				str += '<th>Total Voters</th>';
 				str += '<th>Valid Votes</th>';
-				str += '<th>Votes Gained</th>';
+				str += '<th>Votes Polled</th>';
 				str += '<th>Votes %</th>';
 				str += '<th>Votes % Share In Mandal</th>';
 				str += '<th>Votes % Share In Constituency</th>';
@@ -612,25 +643,37 @@ legend
 			}	
 </script>
 </head>
-<body>
+<body >
 	
-		<table width="100%">
-		<tr>
-        	<td width="75%" align="center"><div id="revenueVillageHeading"><h4>Revenue Villages Wise ${electionType} ${electionYear } Election Results In ${mandalName} Mandal</h4></div></td>
-			<td width="25"><img src="images/icons/homePage/pa_logo.jpg"/></td>			
+	
+<table width="100%" bgcolor="black" cellpadding="0" cellspacing="0">
+		<tbody><tr>		
+		<td width="14%" align="right"><img src="images/icons/homePage/pa_logo.jpg"></td>
+			<td width="72%" align="center">
+				<table cellspacing="0" cellpadding="0" border="0">
+				<tbody><tr>
+					<td valign="top"><img border="none" style="margin-top: 15px;" src="images/icons/electionResultsReport/elections_logo1.png"></td>
+					<td valign="top"><div class="mainHeading" id="mainHead">			Revenue Villages Wise ${electionType} ${electionYear } Election Results In ${mandalName} Mandal</div></td>
+					<td valign="top"><img border="none" style="margin-top: 15px;" src="images/icons/electionResultsReport/elections_logo2.png"></td>
+				</tr>
+				</tbody></table>
+			</td>
+			<td width="14%" align="right"><img src="images/icons/homePage/pa_logo.jpg"></td>
 		</tr>
-	</table>
-		<div>
-		<table>
+	</tbody></table>
+
+		<div class="inputSelectionCriteria">
+		<table width="70%" align="center" border="0">
 		<tr>
-			<td>Select Election Year</td>
+			<td id="labelRadio">Select Election Year</td>
 			<td>		
 				<s:select id="selectPartyPPR" theme="simple"  name="selectParty" list="allElectionYears" listKey="id" listValue="name" onchange="getRevenueVillageElectionResults(this.options[this.selectedIndex].text,this.options[this.selectedIndex].value)"></s:select>			
 			</td>
 			<td>
-				<table border="0" cellspacing="0" cellpadding="0" style="margin-left:20px;">
+				<table border="0" cellspacing="0" cellpadding="0" style="margin-left:50px;">
 				<tr>
 				<td><img src="images/icons/electionResultsAnalysisReport/first.png"/></td>
+
 				<td>
 				<a id="allPartiesResultsAnc" href="mandalRevenueVillagesElecInputAction.action?tehsilName=${mandalName}&tehsilId=${tehsilId}"><b>View All Parties Results In All Elections</b></a>
 				</td>
@@ -641,8 +684,9 @@ legend
 		</tr>		
 		<tr>
 			<td id="labelRadio">View Results By:</td>
-			<td><input type="radio" name="dispaly" value="number" checked="checked" onClick="displayVillageElecResults(this.value)">Votes Gained</td>
-			<td><input type="radio" name="dispaly" value="percentage" onClick="displayVillageElecResults(this.value)">Votes Percentage</td>
+			<td><input type="radio" name="dispaly" value="number" checked="checked" onClick="displayVillageElecResults(this.value)">Votes Polled
+			<input type="radio" name="dispaly" value="percentage" onClick="displayVillageElecResults(this.value)">Votes Percentage</td>
+			<td>&nbsp;</td>
 		</tr>
 		</table>
 		<div id="villageElectionResults" class="yui-skin-sam"></div>			
