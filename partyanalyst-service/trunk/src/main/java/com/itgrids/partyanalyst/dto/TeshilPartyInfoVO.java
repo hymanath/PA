@@ -10,6 +10,7 @@ public class TeshilPartyInfoVO {
 	private Long totalVotesWonByParty;
 	private Long seatsWonByParty;
 	private Float percentageOfVotesWonByParty;
+	private Float othersPercent;
 	private String muncipalityName;
 	private Long muncipalityId;
 	private Double totalVoters;
@@ -139,5 +140,11 @@ public class TeshilPartyInfoVO {
 	}
 	public void setTotalVotesWonByParty(Long totalVotesWonByParty) {
 		this.totalVotesWonByParty = totalVotesWonByParty;
+	}
+	public Float getOthersPercent() {
+		return othersPercent;
+	}
+	public void setOthersPercent(Float othersPercent) {
+		this.othersPercent = othersPercent;
 	}
 }
