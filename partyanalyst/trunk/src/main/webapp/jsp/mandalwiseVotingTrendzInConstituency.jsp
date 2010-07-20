@@ -2210,7 +2210,7 @@
 			totalMptcSeats+="<b>";
 			totalMptcSeats+=results[0].totalSeats;
 			totalMptcSeats+="</b>";
-			mptcCount.innerHTML +=totalMptcSeats;
+			//mptcCount.innerHTML +=totalMptcSeats;
 			
 			var emptyArr = new Array();
 		    if(results.length == 0)
