@@ -2040,7 +2040,7 @@
 			zptcOptionsDivElStr+='<TH>View Results By</TH>';
 			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="clocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Constituency</TD>';
 			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="mlocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Mandal</TD>';
-			zptcOptionsDivElStr+='<TD align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'ZPTC\',\'getZptcElectionResults\',this.options[this.selectedIndex].text)">';
+			zptcOptionsDivElStr+='<TD align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'ZPTC\',\'getZptcElectionResults\',this.options[this.selectedIndex].text,this.options[this.selectedIndex])">';
 			zptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
 			for(var i in mandalNamesArr)
 			{
@@ -2083,7 +2083,7 @@
 					mlocationOptionEl.checked = true;
 					var mzSelectOptionEl = document.getElementById("mandalOpt");
 					mzSelectOptionEl.style.display="block";
-					
+					mzSelectOptionEl.selectedIndex=jsObj.index;
 					zptcHeadDivEl.innerHTML = "ZPTC Results in "+jsObj.mandalName+" Mandal";
 					zptcCount.innerHTML = '1';
 				}
@@ -2095,7 +2095,7 @@
 		    initializeResultsTableForParty();
 		}
 
-		function getMandalLocalElectionResults(mandalId, electionType, task, mandalName)
+		function getMandalLocalElectionResults(mandalId, electionType, task, mandalName, index)
 		{
 			if(mandalId == 0)
 				return;	
@@ -2109,7 +2109,8 @@
 					electionYear: electionYear,
 					resultLevel: "mandal",
 					task: task,
-					mandalName: mandalName 					
+					mandalName: mandalName ,
+					index: index 					
 				};
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 				var url = "<%=request.getContextPath()%>/getMandalLocalElectionsAjaxAction.action?"+rparam;
@@ -2201,7 +2202,7 @@
 			totalMptcSeats+="<b>";
 			totalMptcSeats+=results[0].totalSeats;
 			totalMptcSeats+="</b>";
-			mptcCount.innerHTML +=totalMptcSeats;
+			//mptcCount.innerHTML +=totalMptcSeats;
 			
 			var emptyArr = new Array();
 		    if(results.length == 0)
@@ -2214,7 +2215,7 @@
 				clocationOptionEl.checked = true;
 				
 				mptcHeadDivEl.innerHTML = "MPTC Results in "+constituencyNameGlobal+" Constituency";
-				mptcCount.innerHTML +=totalMptcSeats;
+				mptcCount.innerHTML = totalMptcSeats;
 			} else if (jsObj.resultLevel == 'mandal')
 				{
 				var clocationOptionEl = document.getElementById("mmlocationOption");
