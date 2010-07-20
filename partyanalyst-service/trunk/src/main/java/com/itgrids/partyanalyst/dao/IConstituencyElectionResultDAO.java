@@ -67,4 +67,7 @@ public interface IConstituencyElectionResultDAO extends GenericDao<ConstituencyE
 	@SuppressWarnings("unchecked")
 	public List findByElectionTypeIdYearStateIdDistrictId(Long electionTypeId, String electionYear, Long stateId, Long districtId);
 
+	public List getTotalVotesAndValidVotesForMPTCZPTC(Long tehsilId,
+			String electionType, String electionYear);
+
 }

@@ -152,4 +152,15 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 		return getHibernateTemplate().find("select model.constituencyElection.constituencyElectionResult,model.constituencyElection,model.constituencyElection.constituency from ConstituencyElectionResult model where model.constituencyElection.election.electionScope.electionType.electionTypeId = ? and model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.state.stateId = ? and model.constituencyElection.constituency.district.districtId = ?",params);
 	}
 	
+	public List getTotalVotesAndValidVotesForMPTCZPTC(Long tehsilId,
+			String electionType, String electionYear) {
+		Object[] params = {tehsilId, electionType, electionYear};
+		return getHibernateTemplate().find("select sum(model.totalVotes), sum(model.validVotes), " +
+				"count(model.constituencyElection.constituency.constituencyId) " +
+				"from ConstituencyElectionResult model where " +
+				"model.constituencyElection.constituency.tehsil.tehsilId = ? and " +
+				"model.constituencyElection.election.electionScope.electionType.electionType = ? and " +
+				"model.constituencyElection.election.electionYear = ?", params);
+	}
+	
 }

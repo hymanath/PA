@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -56,6 +57,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IElectionDAO electionDAO;
 	private IAllianceGroupDAO allianceGroupDAO;
+	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
 	private static final Logger log = Logger.getLogger(PartyBoothWiseResultsService.class);
 	
 	public INominationDAO getNominationDAO() {
@@ -109,6 +111,13 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		this.allianceGroupDAO = allianceGroupDAO;
 	}
 	
+	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
+		return constituencyElectionResultDAO;
+	}
+	public void setConstituencyElectionResultDAO(
+			IConstituencyElectionResultDAO constituencyElectionResultDAO) {
+		this.constituencyElectionResultDAO = constituencyElectionResultDAO;
+	}
 	public List<PartyBoothPerformanceVO> getBoothWiseResultsForParty(Long partyId, Long constituencyId, String electionYear){
 		System.out.println("In getBoothWiseResultsForParty::constituencyId, electionYear::"+constituencyId+","+electionYear);
 		List<PartyBoothPerformanceVO> boothResultsForParties = new ArrayList<PartyBoothPerformanceVO>();
@@ -842,7 +851,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	public List<TeshilPartyInfoVO> getMPTCandZPTCResultsInAMandalForAElection(
 			Long tehsilId, String electionType, String electionYear) {
 		
-		
+		List totalVotersAndValidVotes = constituencyElectionResultDAO.getTotalVotesAndValidVotesForMPTCZPTC(tehsilId, electionType, electionYear);
 		List<TeshilPartyInfoVO> tehsilPartyInfoVOList = null;
 		
 		if(tehsilId != null && electionType != null && electionYear != null){
@@ -875,7 +884,15 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				tehsilPartyInfoVOList.add(tehsilResult);
 			}
 		}
-		
+		List<Object[]> values = (List<Object[]>)totalVotersAndValidVotes;
+		if(values.size() > 0){
+			if(values.get(0)[0] != null)
+				tehsilPartyInfoVOList.get(0).setTotalVotersInConstituency((values.get(0)[0]).toString());
+			else
+				tehsilPartyInfoVOList.get(0).setTotalVotersInConstituency("--");
+			tehsilPartyInfoVOList.get(0).setTotalPolledVotes(((Double)values.get(0)[1]).floatValue());
+			tehsilPartyInfoVOList.get(0).setTotalSeats((Long)values.get(0)[2]);
+		}
 	 return tehsilPartyInfoVOList;
 	}
 	
