@@ -1719,8 +1719,8 @@
 								str += '<tr>';
 								str += '<th style="color:#FFFFFF;font-size:19px;padding:9px;background-image:url(\'images/icons/tv9Icons/tableHeader.png\')" colspan="'+electionHeaderLength+'" align="left">';
 								str += '<span style="float:left">'+results[i].biElectionResultsVO[j].electionType+' - '+results[i].biElectionResultsVO[j].electionYear+'</span>';
-								str += '<div style="float:right;cursor:pointer;"  onmouseover="showHideMandalTrendzGraph(this.id)" onmouseout="hideMandalTrendzGraph(this.id)">';
-								str += '<div id="imgDiv_'+i+'_'+j+'" onmouseover="showHideMandalTrendzGraph(this.id)" onmouseout="hideMandalTrendzGraph(this.id)"> View Graph</div>'; 
+								str += '<div style="float:right;cursor:pointer;">';
+								str += '<div id="imgDiv_'+i+'_'+j+'" onclick="showHideMandalTrendzGraph(this.id)"> View Graph</div>'; 
 								for(var z in chartDetailsObjArr)
 								{
 									var chartDetailsObj = chartDetailsObjArr[z]; 
@@ -1728,7 +1728,7 @@
 									var electionYear = chartDetailsObj.electionYear
 									var chartName = chartDetailsObj.chartName;	
 									if(electionType == results[i].biElectionResultsVO[j].electionType && electionYear ==  results[i].biElectionResultsVO[j].electionYear)
-									str += '<div style="display:none;" id="imgDiv_'+i+'_'+j+'_graph" class="mandalVotingTrendzGraphImg" onmouseover="showHideMandalTrendzGraph(this.id)" onmouseout="hideMandalTrendzGraph(this.id)"><img src="charts/'+chartName+'" /></div>';
+									str += '<div style="display:none;" id="imgDiv_'+i+'_'+j+'_graph" class="mandalVotingTrendzGraphImg" ><div id="imgDiv_'+i+'_'+j+'" class="trendzGraphDiv"  onclick="showHideMandalTrendzGraph(this.id)">Close</div><img src="charts/'+chartName+'" /></div>';
 									
 										
 								}
@@ -1947,15 +1947,12 @@
 		{
 			var elmt = document.getElementById(id+"_graph");
 			if(!elmt)
-				return;
-
-			var left = YAHOO.util.Dom.getX(id);
-			var top = YAHOO.util.Dom.getY(id);
+				return;			
 			
-			elmt.style.top = top;
-
 			if(elmt.style.display == 'none')
 				elmt.style.display = 'block';
+			else if(elmt.style.display == 'block')
+				elmt.style.display = 'none';
 		
 		}
 

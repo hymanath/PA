@@ -123,3 +123,13 @@ padding:8px;
 	left:710px;
 	position:absolute;	
 }
+
+.trendzGraphDiv
+{
+	background-color:#FFFFFF;
+	color:black;
+	font-size:12px;
+	padding-right:10px;
+	padding-top:5px;
+	text-align:right;
+}
