@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -1146,7 +1147,11 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 								
 								resultVOForChart.setVotesShareRange(new BigDecimal(candidateElecResults.getVotesPercentage()).toString());
 								resultVOForChart.setPartyShortName(candidateElecResults.getPartyName());
-								resultVOForChart.setElectionType(candResults.getElectionType());
+								if(candResults.getElectionType().equals(IConstants.MPTC_ELECTION_TYPE) || 
+										candResults.getElectionType().equals(IConstants.ZPTC_ELECTION_TYPE))
+								resultVOForChart.setElectionType("."+candResults.getElectionType());
+								else
+								resultVOForChart.setElectionType(candResults.getElectionType());	
 								resultVOForChart.setElectionYear(candResults.getElectionYear());
 								
 								elecResultsForChart.add(resultVOForChart);
@@ -1161,7 +1166,11 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			   if(elecResultsForChart != null && elecResultsForChart.size() > 0){
 				   
 				   Collections.sort(elecResultsForChart,new ElectionResultPartyVOByElectionType());
+				   
 				   for(ElectionResultPartyVO res:elecResultsForChart){
+					   
+					   if(StringUtils.contains(res.getElectionType(), '.'))
+						   res.setElectionType(StringUtils.remove(res.getElectionType(), '.'));
 					   
 					   dataset.addValue(new BigDecimal(res.getVotesShareRange()), res.getPartyShortName(), res.getElectionYear()+" "+res.getElectionType());
 						  
