@@ -75,7 +75,7 @@
 			border:0 solid #AEE2FF;
 			color:#000000;
 			font-family:MS Sans-serif;
-			font-size:17px;
+			font-size:22px;
 			font-weight:bold;
 			height:25px;
 			margin-bottom:15px;
@@ -104,7 +104,7 @@
 		{
 			width:150px;
 			font-weight: bold;
-			color:#909090;
+			color:black;
 			margin-left: 5px; 
 		}
 		CAPTION
@@ -184,6 +184,13 @@
 		{
 			font-weight:bold;
 			padding:5px;
+			font-size:17px;
+			color:#247CD4;
+		}
+		.counterSize 
+		{
+			color:red;
+			font-size:18px;
 		}
     </style>
 
@@ -299,7 +306,7 @@
 				var heading =document.getElementById("constituencyMainDetails_Div");
 				var headingDIV='';
 				headingDIV+='<fieldset padding:10px;">';  		
-				headingDIV+='<legend style="background-color:#567AAF;font-family:verdana,helvetica,clean,sans-serif;color:#FFFFFF;font-weight:bold;padding:10px;font-size:12px;">Constituency Overview</legend>';
+				headingDIV+='<legend style="background-color:#567AAF;font-family:verdana,helvetica,clean,sans-serif;color:#FFFFFF;font-weight:bold;padding:10px;font-size:20px;">Constituency Overview</legend>';
 
 				headingDIV+='<div id="votesInfoDiv" style="color:#247CD4;font-size:12px;font-weight:bold;"></div>';
 				headingDIV+='<table width="100%" cellspacing="10" style="margin-top:10px;">';   
@@ -419,7 +426,7 @@
 				headingDIV+='<tr>';
 				headingDIV+='<th align="center" style="color:#FFFFFF">Party</th>';
 				headingDIV+='<th align="center" style="color:#FFFFFF">Candidate</th>';
-				headingDIV+='<th align="center" style="color:#FFFFFF">Votes Earned</th>';
+				headingDIV+='<th align="center" style="color:#FFFFFF">Votes Polled</th>';
 				headingDIV+='<th align="center" style="color:#FFFFFF">Votes %</th>';
 				headingDIV+='<th align="center" style="color:#FFFFFF">Status</th>';
 				headingDIV+='</tr>';
@@ -625,7 +632,7 @@
 			var muncipalityDiv='';		
 			muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 			muncipalityDiv+='<td><img src="images/icons/tv9Icons/first.png"/></td>';
-			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style=" width: 857px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style=" width: 857px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:19px;font-weight:bold;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			muncipalityDiv+='</td>';
 			muncipalityDiv+='</tr></table>';	
 			muncipality.innerHTML = muncipalityDiv;
@@ -851,6 +858,8 @@
 
 			var str = '';
 			str += '<table><tr>';
+			str += '<td colspan=6> <p style="color: rgb(36, 124, 212); font-size: 20px; font-weight: bold; text-decoration: underline;">Parties Performance in '+constituencyName+' Assembly Constituencey From 2001 to 2009</p><font style="color: rgb(36, 124, 212); font-size: 15px; font-weight: bold;">(Based on 2009 Delimitation Boundaries)</font></td>';
+			str += '</tr><tr>';
 			str += '<td><div style="height:15px;width:15px;border:1px solid #DDEB9B;background-color:#F6CECE;margin:10px;"></div></td>';
 			str += '<td><P class="votesSharingHeaderPara">Bye Elections</P></td>';
 			str += '<td><div style="height:15px;width:15px;border:1px solid #F6CECE;background-color:#DDEB9B;margin:10px;"></div></td>';
@@ -1338,7 +1347,7 @@
 			str += '<div id="constituencyOverViewDiv"></div>';	
 			str += '<div id="crossVotingDetailsDiv" style="margin:10px;">';
 			str += '<div id="crossVotingHeadingDiv"> <P style="color:#247CD4;font-size:20px;font-weight:bold;text-decoration:underline;">';
-			str += '	Non Participating Parties & Cross Voting Results</P></div>';	
+			str += 'Non Participating Parties Strength & Cross Voting Details</P></div>';	
 			str+='<TABLE border="0" width="100%">';
 			str+='<TR>';
 			str+='<TD valign="top"><DIV id="nonParticipatingDiv" style="margin:20px 0px;"></TD>';
@@ -1350,7 +1359,9 @@
 			str+='</div>';
 			str += '<div id="overViewHeadingDiv" style="padding-left:10px;"></div>';
 			str += '<div id="constitutencyMandalWiseResultsChart"></div>';
-			str += '<div id="mandalVotingTrendzDataDiv_head">Voting Trendz in Constituency</div>';
+			str += '<div id="mandalVotingTrendzDataDiv_head">';
+			str += '<font style="color:#247CD4;font-size:20px;font-weight:bold;text-decoration:underline;">';
+			str += 'Voting Trendz in Constituency</font></div>';
 			str += '<div id="mandalVotingTrendzDataDiv">';
 			str += '<div id="mandalVotingTrendzDataDiv_body" class="yui-skin-sam">';
 			str += '	<div id="allPartiesResultsChartsPanel"></div>';
@@ -1509,10 +1520,10 @@
 				crossVotingResultsContent+='	</tr>';
 				crossVotingResultsContent+='	<TR>';
 				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Party</TH>';
-				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">VotesEarned(AC)</TH>';
-				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Votes%(AC)</TH>';
-				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">VotesEarned(PC)</TH>';
-				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Votes%(PC)</TH>';
+				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Votes Polled(AC)</TH>';
+				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Votes %(AC)</TH>';
+				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Votes Polled(PC)</TH>';
+				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Votes %(PC)</TH>';
 				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Difference</TH>';
 				crossVotingResultsContent+='	</TR>';			
 				for(var d in crossVotingResults)
@@ -1560,10 +1571,10 @@
 			nonParticipatingContent+='	</tr>';
 			nonParticipatingContent+='<TR>';
 			nonParticipatingContent+='<TH style="color:#FFFFFF;">Party</TH>';
-			nonParticipatingContent+='<TH style="color:#FFFFFF;">VotesEarned(AC)</TH>';
-			nonParticipatingContent+='<TH style="color:#FFFFFF;">Votes%(AC)</TH>';
-			nonParticipatingContent+='<TH style="color:#FFFFFF;">VotesEarned(PC)</TH>';
-			nonParticipatingContent+='<TH style="color:#FFFFFF;">Votes%(PC)</TH>';			
+			nonParticipatingContent+='<TH style="color:#FFFFFF;">Votes Polled(AC)</TH>';
+			nonParticipatingContent+='<TH style="color:#FFFFFF;">Votes %(AC)</TH>';
+			nonParticipatingContent+='<TH style="color:#FFFFFF;">Votes Polled(PC)</TH>';
+			nonParticipatingContent+='<TH style="color:#FFFFFF;">Votes %(PC)</TH>';			
 			nonParticipatingContent+='</TR>';			
 			for(var y in nonParticipatingParties)
 			{       if(y == nonParticipatingParties.length-1)
@@ -1593,7 +1604,7 @@
 			
 			}	
 			var mdlwiseVotersDetailsStr = '';
-			var mdlwiseVotersDetailsStr = '<P style="color:#247CD4;font-size:18px;font-weight:bold;text-decoration:underline;">Mandalwise Voters Share in Constituency</B></P>';
+			var mdlwiseVotersDetailsStr = '<P style="color:#247CD4;font-size:20px;font-weight:bold;text-decoration:underline;">Mandalwise Voters Share in Constituency</B></P>';
 			mdlwiseVotersDetailsStr+='<Table width="100%" border="0" cellpadding="5" cellspacing="5">';
 			mdlwiseVotersDetailsStr+='<TR>';			
 			for (var x in mandalwiseVotersShare[0].votersInfoForMandalVO)
@@ -1660,12 +1671,12 @@
 			str1 += '</tr>';
 			str1 += '<tr>';
 			str1 += '<th align="left" rowspan="2" valign="top">Election Type:</th>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Assembly"  />2009 Assembly</td>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Assembly"  />2004 Assembly</td>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Parliament"  />2009 Parliament</td>';			
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2008_Parliament"  />2008 Parliament<font style="color:red;"> *</font></td>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_Parliament"  />2006 Parliament<font style="color:red;"> *</font></td>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Parliament"  />2004 Parliament</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Assembly"  />2009 AC</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Assembly"  />2004 AC</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Parliament"  />2009 PC</td>';			
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2008_Parliament"  />2008 PC<font style="color:red;"> *</font></td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_Parliament"  />2006 PC<font style="color:red;"> *</font></td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Parliament"  />2004 PC</td>';
 		    str1 += '</tr>';
 			str1 += '<tr>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_MPTC"  />2006 MPTC</td>';
@@ -1678,7 +1689,9 @@
 			str1 += '<div style="text-align:right;width:100%;">';
 			str1 += '<table width="100%">';
 			str1 += '<tr>';
-			str1 += '<th align="left"><font style="color:red;"> *</font> Indicates Bye Elections</th>';			
+			str1 += '<th align="left"><font style="color:red;"> *</font> Indicates Bye Elections</th>';	
+			str1 += '<th align="left"> AC - Assembly</th>';	
+			str1 += '<th align="left"> PC - Parliament</th>';
 			str1 += '<td align="right">';
 			str1 += '<INPUT type="checkbox" name="allianceCheckBox" id="allianceChkBox" />Include Alliances';
 			str1 += '<input type="button" value="Select All" onclick="selectAllPartiesNYears()">';
@@ -1828,11 +1841,18 @@
 								str += '</table>';
 								str += '</td>';
 								str += '</tr>';
+								str += '<tr>';
+								str += '<th style="color:#62662B;width:150px;font-size:14px;background:none;" align="right"> V* - Votes Polled For Party</th>';
+								
+								str += '</tr>';
 								str += '<tr><td colspan="2"><hr/></td></tr>';
+                               
 							}
 							
 						}
 						str += '</table>';
+						               
+
 						bodyElmt.innerHTML = str;
 						
 		} else if(urbanConstResults != null)
@@ -2030,7 +2050,7 @@
 			totalZptcSeats = results[0].totalSeats;	
 			
 			var chartStr = '';				
-			chartStr+='<img src="charts/'+zptcChartName+'"/>';
+			chartStr+='<img src="charts/'+zptcChartName+'" height="280px" width="400px"/>';
 			chartDivEl.innerHTML = chartStr;
 			if(results[0].totalVotersInConstituency != null && results[0].totalPolledVotes != null)
 			{
@@ -2158,7 +2178,7 @@
 			  
 					var chartStr = '';
 					
-					chartStr+='<img src="charts/'+mptcChartName+'"/>';
+					chartStr+='<img src="charts/'+mptcChartName+'" height="280px" width="400px"/>';
 					chartDivEl.innerHTML = chartStr;
 			
 			if(results[0].totalVotersInConstituency != null && results[0].totalPolledVotes != null)
@@ -2203,7 +2223,7 @@
 				tehsilDetails.partyMptcArray=assignToPartyDataArray;	
 			}
 
-			var mptcCount = document.getElementById("totalMptcCountResultDiv");
+			var mptcCount = document.getElementById("totalMptcCountResultsDiv");
 			mptcCount.innerHTML='';
 			
 			var totalMptcSeats='';
@@ -2351,11 +2371,12 @@
 
 </head>
 <body>
-	<div style="background-color:#FFFFFF;padding-top:10px;">
+	<div style="background-color:#FFFFFF;padding-top:0px;">
 	<div id="windowHeader" style="background-color:black">
 	<table width="100%">
 		<tr>		
-			<td width="86%" align="center">
+		    <td width="14%" align="right"><img src="images/icons/homePage/pa_logo.jpg"/></td>
+			<td width="72%" align="center">
 				<TABLE cellspacing="0" cellpadding="0" border="0" >
 				<TR>
 					<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" style="margin-top:15px;" /></TD>
@@ -2399,21 +2420,26 @@
 													<table width="100%">
 														<tr>
 															<td><div id="zptcElectionIdsSelectDiv" style="font-size:14px;"></div></td>
-															<td><div id="totalZptcVotersDiv" style="padding-left:40px;"></div></td>
+															<td><div id="zptcCandidateLink"></div></td>
 														</tr>
 													</table>
 												</td>
 											</tr>
 											<tr>
-												<td><div id="zptcOptionsDiv"></div></td>
-												<td><div id="zptcCandidateLink"></div></td>
+											    <td><div id="zptcOptionsDiv"></div></td>
+												<td><div></div></td>
+                                               
 											</tr>
 											<tr>
 												<td width="50%"><div></div></td>
 												<td width="50%"><div id="zptcHeadDiv"></div></td>
 											</tr>
 											<tr>
-												<td valign="top"><div id="zptcChartDiv"></div></td>
+												<td width="50%"><div></div></td>
+												<td width="50%" align="center"><div id="totalZptcVotersDiv"></div></td>
+											</tr>
+											<tr>
+												<td align="center"><div id="zptcChartDiv"></div></td>
 												<td class="yui-skin-sam" valign="top"><div id="zptcPartyTrendsDetailsDiv" style="border:2px solid #9696C0"></div></td>
 											</tr>
 										</table>
@@ -2434,7 +2460,7 @@
 										<td>	
 											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:920px;height:18px;">
 												<span>Total Number of MPTC's : </span>
-												<span id="totalMptcCountResultDiv"></span>
+												<span id="totalMptcCountResultsDiv"></span>
 											</div>
 										</td>
 										<td><img src="images/icons/tv9Icons/second.png"/></td>
@@ -2448,19 +2474,23 @@
 															<table width="100%"><tr>
 														   		<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;font-size:14px" class="yui-skin-sam"></div></td>
 														   		<!--<td><div id="mptcCandidateLink"></div></td>
-																--><td><div id="totalMptcVotersDiv" style="padding-left:40px;"></div></td>
+																--><td><div id="mptcCandidateLink"></div></td>
 													   		</tr></table>
 													   </td></tr>
 												   <tr>
 													<td><div id="mptcOptionsDiv"></div></td>
-													<td><div id="mptcCandidateLink"></div></td>
+													<td><div></div></td>
 												</tr>
 												<tr>
 													<td width="50%"><div></div></td>
 													<td width="50%"><div id="mptcHeadDiv"></div></td>
 												</tr>
+												<tr>
+													<td width="50%"><div></div></td>
+													<td width="50%" align="center"><div id="totalMptcVotersDiv"></div></td>
+											   </tr>
 												   <tr>
-												   	   <td valign="top"><div id="mptcChartDiv"></div></td>		
+												   	   <td align="center"><div id="mptcChartDiv"></div></td>		
 													   <td class="yui-skin-sam" valign="top"><div id="mptcPartyTrendsDetailsDiv"></div></td>
 											</tr></table>
 									</td></tr>
