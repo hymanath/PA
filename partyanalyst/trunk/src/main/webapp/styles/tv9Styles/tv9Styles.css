@@ -147,6 +147,7 @@ padding:10px;
 background-image:url("../../images/icons/indexPage/reportGroupHeader.png");
 color:#FFFFFF;
 font-weight:bold;
+font-size:19px;
 padding:11px;
 }
 
@@ -154,13 +155,13 @@ padding:11px;
 border-bottom:2px solid #212629;
 border-left:2px solid #212629;
 border-right:2px solid #212629;
-height:300px;
+height:420px;
 overflow:auto;
 }
 
 .zptcMptcVotersTable th
 {
-	font-size:	18px;
+	font-size:	16px;
 }
 
 .zptcMptcVotersTable td
@@ -174,4 +175,9 @@ overflow:auto;
 {
 	font-size:15px;
 	padding:5px;
+}
+#totalZptcCountResultsDiv,#totalMptcCountResultsDiv  
+{
+	color:red;
+	font-size:19px;
 }
