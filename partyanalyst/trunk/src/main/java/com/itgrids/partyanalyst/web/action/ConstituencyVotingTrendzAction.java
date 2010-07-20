@@ -796,6 +796,85 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , colors,true,250,250);
 		return chartName;
 	}
+	
+	//creating dataset and chart for mandal pie chart
+	public String getPieChartForMPTCandZPTCAjax(List<TeshilPartyInfoVO> resultsForDataset,String electionType,String electionYear,Long mandalId){
+		
+		String chartName = "ByeElection_For_"+electionType+"_"+electionYear+"_piechartFor_Mandal_"+mandalId+".png";
+		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+		Color[] colors = new Color[resultsForDataset.size()];
+		String chartTitle = ""+electionType+" - "+electionYear;
+		final DefaultPieDataset dataset = new DefaultPieDataset();
+		int j=0;
+		Boolean flag = false;
+		for(int i=0; i<resultsForDataset.size(); i++ )
+		{		
+			String partyName = "";
+			if(flag == true)
+				partyName = IConstants.OTHERS;
+			else
+			    partyName = resultsForDataset.get(i).getPartyName(); 
+			
+			if(partyName.equals(IConstants.TRS) || 
+					partyName.equals(IConstants.INC) || 
+					partyName.equals(IConstants.TDP) ||
+					partyName.equals(IConstants.BJP) || 
+					partyName.equals(IConstants.OTHERS))
+			{
+				Double votesPercent = new Double(0);
+				if(flag == true)
+					votesPercent = new Double(resultsForDataset.get(0).getOthersPercent());
+				else
+			        votesPercent = new Double(resultsForDataset.get(i).getPercentageOfVotesWonByParty());
+				
+			    log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
+								
+				if(partyName.equals(IConstants.INC))
+				{
+					colors[j++]=IConstants.INC_COLOR;
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}				
+				else
+				if(partyName.equals(IConstants.PRP))
+				{
+					colors[j++]=IConstants.PRP_COLOR;
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}			
+				else
+				if(partyName.equals(IConstants.TDP))
+				{
+					colors[j++]=IConstants.TDP_COLOR;
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}	
+				else
+				if(partyName.equals(IConstants.TRS))
+				{
+					colors[j++]=IConstants.TRS_COLOR;
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}										
+				else
+				if(partyName.equals(IConstants.BJP))
+				{
+					colors[j++]=IConstants.BJP_COLOR;
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}else
+				if(partyName.equals(IConstants.OTHERS))
+				{
+					colors[j++]=IConstants.IND_COLOR;
+					log.debug(" party Name ==== "+partyName+", votes Percent = "+i);
+				}					
+					
+				dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);	
+						
+			}
+			if(i == 0 && flag == false)
+				flag = true;
+			else flag = false;
+		}
+		
+		ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , colors,true,250,250);
+		return chartName;
+	}
 
 	public List<ElectionTypeChartVO> getElectionResultsPieChart(Long constiId,String constiName, List<BiElectionResultsVO> biElectionResultsVO)
 	{
