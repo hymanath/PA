@@ -193,9 +193,9 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 			String chartName = "partyPerformanceInAllMandalElectionsByRevenueVillages_"+constituencyObj.getConstituencyId()+".png";
 	        String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 	        Set<String> partiesInChart = new LinkedHashSet<String>();
-	        ChartProducer.createLineChart("All Parties Performance In "+electionType+" "+electionYear + 
+	        ChartProducer.createLineChartWithThickness("All Parties Performance In "+electionType+" "+electionYear + 
 	        		" In "+constituencyObj.getConstituencyName()+" Constituency By Revenue Villages In "+mandalName+" Mandal" , 
-	        		"Revenue Villages", "Percentages", createDataset(constituencyObj, partiesInChart), chartPath,400,700, ChartUtils.getLineChartColors(partiesInChart),true);	
+	        		"Revenue Villages", "Percentages", createDataset(constituencyObj, partiesInChart), chartPath,500,1000, ChartUtils.getLineChartColors(partiesInChart),true);	
 	        constituencyObj.setChartPath(chartName);
 		}
 		
