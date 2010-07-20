@@ -1145,7 +1145,7 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         constituencyRevenueVillagesVO.setChartPath(chartName);
         partiesInChart = new LinkedHashSet<String>();
-        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), chartPath, chartHeight, chartWidth, ChartUtils.getLineChartColors(partiesInChart),true);
+        ChartProducer.createLineChartWithThickness(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), chartPath, chartHeight, chartWidth, ChartUtils.getLineChartColors(partiesInChart),true);
         
         String detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
         constituencyRevenueVillagesVO.setDetailedChartPath(detailedChartName);
