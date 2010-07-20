@@ -2231,7 +2231,10 @@
 				var mzSelectOptionEl = document.getElementById("mmandalOpt");
 				mzSelectOptionEl.style.display="block";
 					mptcHeadDivEl.innerHTML = "MPTC Results in "+jsObj.mandalName+" Mandal";
-					mptcCount.innerHTML = 'N/A';
+					//mptcCount.innerHTML = 'N/A';
+					mptcCount.innerHTML = totalMptcSeats;
+					
+					
 				}
 			
 		    initializeMptcResultsTableForParty(); 
