@@ -813,7 +813,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		String chartName = "ByeElection_For_"+electionType+"_"+electionYear+"_piechartFor_Mandal_"+mandalId+".png";
 		String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-		Color[] colors = new Color[resultsForDataset.size()];
+		Color[] colors = new Color[resultsForDataset.size()+1];
 		String chartTitle = ""+electionType+" - "+electionYear;
 		final DefaultPieDataset dataset = new DefaultPieDataset();
 		int j=0;
@@ -1674,7 +1674,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		String electionYear = jObj.getString("electionYear");
 		zptcMptcResultsInMandal = partyBoothWiseResultsService.getMPTCandZPTCResultsInAMandalForAElection(tehsilId, electionType, electionYear);
 		String chartName = getPieChartForMPTCandZPTCAjax(zptcMptcResultsInMandal, electionType, electionYear, tehsilId);
-		zptcMptcResultsInMandal.get(0).setChartName(chartName);
+		if(zptcMptcResultsInMandal.size()>0)
+			zptcMptcResultsInMandal.get(0).setChartName(chartName);
 		return SUCCESS;
     }
 
