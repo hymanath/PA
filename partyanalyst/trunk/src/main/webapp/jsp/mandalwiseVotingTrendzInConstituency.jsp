@@ -638,8 +638,8 @@
 			
 			var corporationDiv='';	
 			corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
-			corporationDiv+='<td width="30"><img src="images/icons/tv9Icons/first.png"/></td>';	
-			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="padding: 9px; width: 857px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			corporationDiv+='<td><img src="images/icons/tv9Icons/first.png"/></td>';	
+			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="width: 857px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			corporationDiv+='</td></tr></table>';	
 			corporation.innerHTML = corporationDiv;
 		}
@@ -1679,7 +1679,7 @@
 			str1 += '<table width="100%">';
 			str1 += '<tr>';
 			str1 += '<th align="left"><font style="color:red;"> *</font> Indicates Bye Elections</th>';			
-			str1 += '</td align="right">';
+			str1 += '<td align="right">';
 			str1 += '<INPUT type="checkbox" name="allianceCheckBox" id="allianceChkBox" />Include Alliances';
 			str1 += '<input type="button" value="Select All" onclick="selectAllPartiesNYears()">';
 			str1 += '<input type="button" value="De-select All" onclick="DeselectAllPartiesNYears()">';
@@ -1856,29 +1856,29 @@
 					urbanStr += '					<th style="color:#FFFFFF;font-size:19px;padding:9px;background-image:url(\'images/icons/tv9Icons/tableHeader.png\')" colspan="'+electionHeaderLen+'" align="left">';
 					urbanStr += ' <span>'+urbanConstResults[a].electionType+' - '+urbanConstResults[a].electionYear+'</span>';
 					urbanStr += '<div style="float:right;cursor:pointer;">';
-					urbanStr += '<div id="imgDiv_'+i+'_'+j+'" onclick="showHideMandalTrendzGraph(this.id)"> View Graph</div>'; 
+					urbanStr += '<div id="imgDiv_'+a+'" onclick="showHideMandalTrendzGraph(this.id)"> View Graph</div>'; 
 					
-					urbanStr += '<div style="display:none;" id="imgDiv_'+i+'_'+j+'_graph" class="mandalVotingTrendzGraphImg" ><div id="imgDiv_'+i+'_'+j+'" class="trendzGraphDiv"  onclick="showHideMandalTrendzGraph(this.id)">Close</div><img src="charts/'+urbanConstResults[a].electionPieChart+'" /></div>';						
+					urbanStr += '<div style="display:none;" id="imgDiv_'+a+'_graph" class="mandalVotingTrendzGraphImg" ><div id="imgDiv_'+a+'" class="trendzGraphDiv"  onclick="showHideMandalTrendzGraph(this.id)">Close</div><img src="charts/'+urbanConstResults[a].electionPieChart+'" /></div>';						
 							
 				
 					urbanStr += '</div>';
 					urbanStr += '</th>';
 					urbanStr += '				</tr>';
 					urbanStr += '				<tr>';
-					urbanStr += '					<th rowspan="3">Mandal</th>';
-					urbanStr += '					<th rowspan="3">Constituency</th>';
-					urbanStr += '					<th colspan="'+partyHeaderLen+'" align="center">Party</th>';
+					urbanStr += '					<th rowspan="3" style="background-image:url(\'images/icons/tv9Icons/thBackGround.png\')">Mandal</th>';
+					urbanStr += '					<th rowspan="3" style="background-image:url(\'images/icons/tv9Icons/thBackGround.png\')">Constituency</th>';
+					urbanStr += '					<th colspan="'+partyHeaderLen+'" style="background-image:url(\'images/icons/indexPage/reportGroupHeader.png\')" align="center">Party</th>';
 					urbanStr += '				</tr>';
 					urbanStr += '				<tr>';
 					for(var c in urbanConstResults[a].partiesHeading)
 					{
-						urbanStr += '				<th colspan="2">'+urbanConstResults[a].partiesHeading[c].name+'</th>';
+						urbanStr += '				<th style="background-image:url(\'images/icons/indexPage/reportGroupHeader.png\')" colspan="2">'+urbanConstResults[a].partiesHeading[c].name+'</th>';
 					}
 					urbanStr += '				</tr>';
 					urbanStr += '				<tr>';
 					for(var e in urbanConstResults[a].partiesHeading)
 					{
-						urbanStr += '				<th>V*</th><th>%</th>';
+						urbanStr += '				<th style="background-image:url(\'images/icons/indexPage/reportGroupHeader.png\')">V*</th><th style="background-image:url(\'images/icons/indexPage/reportGroupHeader.png\')">%</th>';
 					}
 					urbanStr += '				</tr>';
 					for(var f in urbanConstResults[a].constituencyMandalInfo)
@@ -1890,18 +1890,18 @@
 
 						if(urbanConstResults[a].constituencyMandalInfo[f].isPostalVotes == true)	
 						{		
-								urbanStr += '		<th colspan="2">Postal Ballot Votes</th>';												
+								urbanStr += '		<th colspan="2" style="background-image:url(\'images/icons/indexPage/reportGroupHeader.png\')">Postal Ballot Votes</th>';												
 								//urbanStr+='</tr><tr>';									
 								
 						} else if(urbanConstResults[a].constituencyMandalInfo[f].isTotal == true)	
 						{		
-							urbanStr += '			<th colspan="2">Total Votes</th>';												
+							urbanStr += '			<th style="background-image:url(\'images/icons/indexPage/reportGroupHeader.png\')" colspan="2">Total Votes</th>';												
 							//urbanStr+='</tr><tr>';									
 							
 						} else	
 						{		
-								urbanStr += '		<th><A href="javascript:{}" title="Click to view results and voting trendz in '+urbanConstResults[a].constituencyMandalInfo[f].tehsilName+' mandal" class="viewAncs" onclick="openwin('+urbanConstResults[a].constituencyMandalInfo[f].tehsilId+',\''+urbanConstResults[a].constituencyMandalInfo[f].tehsilName+'\',\''+urbanConstResults[a].electionType+'\','+urbanConstResults[a].electionYear+','+urbanConstResults[a].electionId+')">'+urbanConstResults[a].constituencyMandalInfo[f].tehsilName+'</A></th>';
-								urbanStr += '		<th style="color:#73787E;width:150px;font-size:10px;">'+urbanConstResults[a].constituencyMandalInfo[f].constituencyName.toUpperCase()+'</th>';
+								urbanStr += '		<th style="background:none;"><A href="javascript:{}" title="Click to view results and voting trendz in '+urbanConstResults[a].constituencyMandalInfo[f].tehsilName+' mandal" class="viewAncs" onclick="openwin('+urbanConstResults[a].constituencyMandalInfo[f].tehsilId+',\''+urbanConstResults[a].constituencyMandalInfo[f].tehsilName+'\',\''+urbanConstResults[a].electionType+'\','+urbanConstResults[a].electionYear+','+urbanConstResults[a].electionId+')">'+urbanConstResults[a].constituencyMandalInfo[f].tehsilName+'</A></th>';
+								urbanStr += '		<th style="background:none;color:#62662B;width:150px;font-size:14px;">'+urbanConstResults[a].constituencyMandalInfo[f].constituencyName.toUpperCase()+'</th>';
 						}								
 							for(var g in info1)
 								{
@@ -2046,10 +2046,10 @@
 			var zptcOptionsDivElStr = '';
 			zptcOptionsDivElStr+='<TABLE>';
 			zptcOptionsDivElStr+='<TR>';
-			zptcOptionsDivElStr+='<TH style="font-size:14px">View Results By</TH>';
-			zptcOptionsDivElStr+='<TH style="font-size:14px" align="left"><INPUT type="radio" name="locationOption" id="clocationOption" onclick="showHideMandalDropdown1(\'mandalOpt\','+selectedYearVal+')"/>Constituency</TH>';
-			zptcOptionsDivElStr+='<TH style="font-size:14px" align="left"><INPUT type="radio" name="locationOption" id="mlocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Mandal</TH>';
-			zptcOptionsDivElStr+='<TH style="font-size:14px" align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'ZPTC\',\'getZptcElectionResults\',this.options[this.selectedIndex].text,this.options[this.selectedIndex].index)">';
+			zptcOptionsDivElStr+='<TH style="font-size:14px;">View Results By</TH>';
+			zptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="locationOption" id="clocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Constituency</TH>';
+			zptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="locationOption" id="mlocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Mandal</TH>';
+			zptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'ZPTC\',\'getZptcElectionResults\',this.options[this.selectedIndex].text)">';
 			zptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
 			for(var i in mandalNamesArr)
 			{
@@ -2092,7 +2092,6 @@
 					mlocationOptionEl.checked = true;
 					var mzSelectOptionEl = document.getElementById("mandalOpt");
 					mzSelectOptionEl.style.display="block";
-					mzSelectOptionEl.selectedIndex=jsObj.index;
 					
 					zptcHeadDivEl.innerHTML = "ZPTC Results in "+jsObj.mandalName+" Mandal";
 					zptcCount.innerHTML = '1';
@@ -2105,7 +2104,7 @@
 		    initializeResultsTableForParty();
 		}
 
-		function getMandalLocalElectionResults(mandalId, electionType, task, mandalName, index)
+		function getMandalLocalElectionResults(mandalId, electionType, task, mandalName)
 		{
 			if(mandalId == 0)
 				return;	
@@ -2119,8 +2118,7 @@
 					electionYear: electionYear,
 					resultLevel: "mandal",
 					task: task,
-					mandalName: mandalName ,
-					index: index 					
+					mandalName: mandalName 					
 				};
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 				var url = "<%=request.getContextPath()%>/getMandalLocalElectionsAjaxAction.action?"+rparam;
@@ -2137,24 +2135,11 @@
 			} else if(mandalOptEl.style.display == 'block')
 			{
 				mandalOptEl.style.display = 'none';
-			}	
+			}
+				
 			
 		}
 
-		function showHideMandalDropdown1(id, year)
-		{
-			var mandalOptEl = document.getElementById(id);
-			mandalOptEl.style.display = 'none';
-			
-			getZptcPartyDetails(year);
-		}
-		function showHideMandalDropdown2(id, year)
-		{
-			var mandalOptEl = document.getElementById(id);
-			mandalOptEl.style.display = 'none';
-			
-			getMptcPartyDetails(year);
-		}
 		function buildMptcResults(results, jsObj){
 			assignToPartyDataArray = new Array();
 			var electionIdEl = document.getElementById("staticGrpSelectBox");
@@ -2191,9 +2176,9 @@
 			mptcOptionsDivElStr+='<TABLE>';
 			mptcOptionsDivElStr+='<TR>';
 			mptcOptionsDivElStr+='<TH style="font-size:14px;">View Results By</TH>';
-			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="mlocationOption" id="cmlocationOption" checked = "true" onclick="showHideMandalDropdown2(\'mmandalOpt\','+selectedYearVal+')"/>Constituency</TH>';
+			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="mlocationOption" id="cmlocationOption" checked = "true" onclick="showHideMandalDropdown(\'mmandalOpt\')"/>Constituency</TH>';
 			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="mlocationOption" id="mmlocationOption" onclick="showHideMandalDropdown(\'mmandalOpt\')"/>Mandal</TH>';
-			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><SELECT name ="mandalOpt" id = "mmandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'MPTC\',\'getMptcElectionResults\',this.options[this.selectedIndex].text,this.options[this.selectedIndex].index)">';
+			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><SELECT name ="mandalOpt" id = "mmandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'MPTC\',\'getMptcElectionResults\',this.options[this.selectedIndex].text)">';
 			mptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
 			for(var i in mandalNamesArr)
 			{
@@ -2225,7 +2210,7 @@
 			totalMptcSeats+="<b>";
 			totalMptcSeats+=results[0].totalSeats;
 			totalMptcSeats+="</b>";
-			//mptcCount.innerHTML +=totalMptcSeats;
+			mptcCount.innerHTML +=totalMptcSeats;
 			
 			var emptyArr = new Array();
 		    if(results.length == 0)
@@ -2238,18 +2223,15 @@
 				clocationOptionEl.checked = true;
 				
 				mptcHeadDivEl.innerHTML = "MPTC Results in "+constituencyNameGlobal+" Constituency";
-				mptcCount.innerHTML = totalMptcSeats;
+				mptcCount.innerHTML +=totalMptcSeats;
 			} else if (jsObj.resultLevel == 'mandal')
 				{
 				var clocationOptionEl = document.getElementById("mmlocationOption");
 				clocationOptionEl.checked = true;
 				var mzSelectOptionEl = document.getElementById("mmandalOpt");
 				mzSelectOptionEl.style.display="block";
-				mzSelectOptionEl.selectedIndex=jsObj.index;
 					mptcHeadDivEl.innerHTML = "MPTC Results in "+jsObj.mandalName+" Mandal";
 					mptcCount.innerHTML = 'N/A';
-					
-					
 				}
 			
 		    initializeMptcResultsTableForParty(); 
