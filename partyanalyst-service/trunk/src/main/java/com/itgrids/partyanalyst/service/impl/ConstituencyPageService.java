@@ -1678,7 +1678,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			log.debug("Making constituencyElectionDAO.getTotalVotersForATehsilForAParticularElectionYear() DAO call..");
 			List totalVoters = constituencyElectionDAO.getTotalVotersForATehsilForAParticularElectionYear(electionType,tehsilIds.substring(1),electionYear);
 			if(totalVoters.get(0)!=null){
-				totalVotersInConstituency = totalVoters.get(0).toString();
+				totalVotersInConstituency = new Long(((Double)totalVoters.get(0)).longValue()).toString();
 			}else{
 				totalVotersInConstituency = "--";
 			}
