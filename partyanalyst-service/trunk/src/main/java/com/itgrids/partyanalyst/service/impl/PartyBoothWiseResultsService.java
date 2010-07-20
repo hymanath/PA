@@ -878,6 +878,8 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 		List<TeshilPartyInfoVO> tehsilPartyInfoVOList = null;
 		
 		if(elecResInMandal != null){
+			
+			try{
 			tehsilPartyInfoVOList = new ArrayList<TeshilPartyInfoVO>();
 			Float othersPercent = new Float(0);
 			
@@ -898,7 +900,12 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 					othersPercent+=tehsilPartyRes.getPercentageOfVotesWonByParty();
 			}
 			if(tehsilPartyInfoVOList != null && tehsilPartyInfoVOList.size() > 0)
-				tehsilPartyInfoVOList.get(0).setOthersPercent(othersPercent);
+				tehsilPartyInfoVOList.get(0).setOthersPercent(new BigDecimal(othersPercent).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+				log.debug("Exception Raised :" + ex);
+			}
 		}
 	 return tehsilPartyInfoVOList;
 	}
