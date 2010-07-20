@@ -808,11 +808,13 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		final DefaultPieDataset dataset = new DefaultPieDataset();
 		int j=0;
 		Boolean flag = false;
-		for(int i=0; i<resultsForDataset.size(); i++ )
+		for(int i=0; i<resultsForDataset.size(); i++)
 		{		
 			String partyName = "";
-			if(flag == true)
+			if(flag == true){
 				partyName = IConstants.OTHERS;
+				i--;
+			}
 			else
 			    partyName = resultsForDataset.get(i).getPartyName(); 
 			
@@ -1537,6 +1539,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
          
          for(ElectionResultVO graphInfo:partiesElectionResults){
          	partiesInChart.add(graphInfo.getPartyName());
+         	if(StringUtils.contains(graphInfo.getElectionYear(), '.'))
+         		graphInfo.setElectionYear(StringUtils.remove(graphInfo.getElectionYear(), '.'));
          	dataset.addValue(new BigDecimal(graphInfo.getPercentage()), graphInfo.getPartyName(),
             			graphInfo.getElectionYear());	
          }
