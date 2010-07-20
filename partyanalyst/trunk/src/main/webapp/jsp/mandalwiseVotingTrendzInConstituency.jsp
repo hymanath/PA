@@ -180,6 +180,11 @@
 			padding:5px;
 			
 		}
+		#zptcHeadDiv, #mptcHeadDiv
+		{
+			font-weight:bold;
+			padding:5px;
+		}
     </style>
 
 	<link rel="stylesheet" type="text/css" href="styles/tv9Styles/tv9Styles.css">
@@ -200,6 +205,7 @@
 		var localizationObj = '';
 		var assemblyElectionType='Assembly';
 		var constituencyIdGlobal = '${constiId}';
+		var constituencyNameGlobal;
 		var constituencyName = '${constiName}';
 		var constiMandalWiseResultsPresChart;
 		var constiMandalWiseResultsPrevChart;
@@ -1126,6 +1132,7 @@
 					constituencyType: assemblyElectionType,
 					constituencyId:constituencyIdGlobal,
 					electionYear:elecYear,
+					resultLevel: "constituency",
 					task:"getZptcElectionResults"
 				};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -1139,6 +1146,7 @@
 					constituencyType: assemblyElectionType,
 					constituencyId: constituencyIdGlobal,
 					electionYear:elecYear,
+					resultLevel: "constituency",
 					task:"getMptcElectionResults"
 				};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -1475,6 +1483,7 @@
 			nonParticipatingDivEl.innerHTML = '';
 			var mandalwiseVotersShare = resultsData.constituencyVO.assembliesOfParliamentInfo;
 			var constituencyId = jsObj.constituencyId;
+			constituencyNameGlobal = jsObj.constiName; 
 			mandalNamesArr = new Array();
 			if(resultsData.biElectionResultsMainVO != null)
 			{	
@@ -1993,9 +2002,9 @@
 				}
 			}
 		}
-		//ref
+		
 		function buildZptcResults(results, jsObj){
-			//console.log(mandalNamesArr);
+			
 			assignToPartyDataArray = new Array();
 			var candLink = document.getElementById("zptcCandidateLink");
 			var totalVotersDivElmt = document.getElementById("totalZptcVotersDiv");
@@ -2003,31 +2012,35 @@
 			var zptcOptionsDivEl = document.getElementById("zptcOptionsDiv");
 			var zptcChartName = results[0].chartName;
 			var selectedYearVal = jsObj.electionYear;
-			
-			var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Results</a>';
+			var zptcHeadDivEl = document.getElementById("zptcHeadDiv");
+			zptcHeadDivEl.innerHTML = '';
+			totalVotersDivElmt.innerHTML = '';
+			var linkRef = '<a href="javascript:{}" onclick="redirectZptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Results in Constituency</a>';
 			candLink.innerHTML = linkRef;
-
-			totalZptcSeats = results[0].totalSeats;		//	var totalZptcSeats,totalMptcSeats;
+			
+			totalZptcSeats = results[0].totalSeats;	
 			
 			var chartStr = '';				
 			chartStr+='<img src="charts/'+zptcChartName+'"/>';
 			chartDivEl.innerHTML = chartStr;
-			
-			var voterStr = '';
-			voterStr += '<table width="100%">';
-			voterStr += '<tr>';
-			voterStr += '<th align="left"> Total Voters  : </th><td>'+results[0].totalVotersInConstituency+'</td>';
-			voterStr += '<th align="left"> Total Polled Votes : </th><td>'+results[0].totalPolledVotes+'</td>';
-			voterStr += '</tr>';
-			voterStr += '</table>';
-			totalVotersDivElmt.innerHTML = voterStr;
+			if(results[0].totalVotersInConstituency != null && results[0].totalPolledVotes != null)
+			{
+				var voterStr = '';
+				voterStr += '<table width="100%">';
+				voterStr += '<tr>';
+				voterStr += '<th align="left"> Total Voters  : </th><td>'+results[0].totalVotersInConstituency+'</td>';
+				voterStr += '<th align="left"> Total Polled Votes : </th><td>'+results[0].totalPolledVotes+'</td>';
+				voterStr += '</tr>';
+				voterStr += '</table>';
+				totalVotersDivElmt.innerHTML = voterStr;
+			}	
 			var zptcOptionsDivElStr = '';
 			zptcOptionsDivElStr+='<TABLE>';
 			zptcOptionsDivElStr+='<TR>';
 			zptcOptionsDivElStr+='<TH>View Results By</TH>';
-			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="locationOption" checked = "true" onclick="showHideMandalDropdown()"/>Constituency</TD>';
-			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="locationOption" onclick="showHideMandalDropdown()"/>Mandal</TD>';
-			zptcOptionsDivElStr+='<TD align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;">';
+			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="clocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Constituency</TD>';
+			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="mlocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Mandal</TD>';
+			zptcOptionsDivElStr+='<TD align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'ZPTC\',\'getZptcElectionResults\',this.options[this.selectedIndex].text)">';
 			zptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
 			for(var i in mandalNamesArr)
 			{
@@ -2051,14 +2064,29 @@
 				assignToPartyDataArray.push(problemObj);
 				tehsilDetails.partyArray=assignToPartyDataArray;	
 			}
-
+			
 			var zptcCount = document.getElementById("totalZptcCountResultDiv");
 			zptcCount.innerHTML ='';
 
 			
 			var totalZptcSeats='';
 			totalZptcSeats+="<b>"+results[0].totalSeats+"</b>";
-			zptcCount.innerHTML +=totalZptcSeats;
+			if(jsObj.resultLevel == 'constituency')
+			{
+				var clocationOptionEl = document.getElementById("clocationOption");
+				clocationOptionEl.checked = true;
+				zptcHeadDivEl.innerHTML = "ZPTC Results in "+constituencyNameGlobal+" Constituency";
+				zptcCount.innerHTML +=totalZptcSeats;
+			} else if (jsObj.resultLevel == 'mandal')
+				{
+					var mlocationOptionEl = document.getElementById("mlocationOption");
+					mlocationOptionEl.checked = true;
+					var mzSelectOptionEl = document.getElementById("mandalOpt");
+					mzSelectOptionEl.style.display="block";
+					
+					zptcHeadDivEl.innerHTML = "ZPTC Results in "+jsObj.mandalName+" Mandal";
+					zptcCount.innerHTML = '1';
+				}
 
 			var emptyArr = new Array();
 		    if(results.length == 0)
@@ -2066,9 +2094,32 @@
 			}
 		    initializeResultsTableForParty();
 		}
-		function showHideMandalDropdown()
+
+		function getMandalLocalElectionResults(mandalId, electionType, task, mandalName)
 		{
-			var mandalOptEl = document.getElementById("mandalOpt");
+			if(mandalId == 0)
+				return;	
+			
+			var electionIdEl = document.getElementById("staticGrpSelectBox");
+			var electionYear = electionIdEl.options[electionIdEl.selectedIndex].text;
+			 
+			var jsObj = {
+					tehsilId: mandalId,
+					electionType: electionType,
+					electionYear: electionYear,
+					resultLevel: "mandal",
+					task: task,
+					mandalName: mandalName 					
+				};
+				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+				var url = "<%=request.getContextPath()%>/getMandalLocalElectionsAjaxAction.action?"+rparam;
+				callAjax(jsObj, url);				
+					
+		}
+		function showHideMandalDropdown(id)
+		{
+			
+			var mandalOptEl = document.getElementById(id);
 			if(mandalOptEl.style.display == 'none')
 			{
 				mandalOptEl.style.display = 'block';
@@ -2087,8 +2138,12 @@
 			var mptcChartName = results[0].chartName;
 			var candLink = document.getElementById("mptcCandidateLink");
 			var mptcVotersDivElmt = document.getElementById("totalMptcVotersDiv");
+			var mptcOptionsDivEl = document.getElementById("mptcOptionsDiv");
 			var chartDivEl = document.getElementById("mptcChartDiv");
-			var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Results</a>';
+			var mptcHeadDivEl = document.getElementById("mptcHeadDiv");
+			mptcHeadDivEl.innerHTML = '';
+			mptcVotersDivElmt.innerHTML = '';
+			var linkRef = '<a href="javascript:{}" onclick="redirectMptcCandidateLink()" style="text-decoration:none;" class="candidateDetailsStyle" >Show Candidate Results in Constituency</a>';
 			candLink.innerHTML = linkRef;
 			  totalMptcSeats = results[0].totalSeats;
 			  
@@ -2097,15 +2152,34 @@
 					chartStr+='<img src="charts/'+mptcChartName+'"/>';
 					chartDivEl.innerHTML = chartStr;
 			
-			var voterStr = '';
-			voterStr += '<table width="100%">';
-			voterStr += '<tr>';
-			voterStr += '<th align="left"> Total Voters  : </th><td>'+results[0].totalVotersInConstituency+'</td>';
-			voterStr += '<th align="left"> Total Polled Votes : </th><td>'+results[0].totalPolledVotes+'</td>';
-			voterStr += '</tr>';
-			voterStr += '</table>';
-			mptcVotersDivElmt.innerHTML = voterStr;
-
+			if(results[0].totalVotersInConstituency != null && results[0].totalPolledVotes != null)
+			{	
+				var voterStr = '';
+				voterStr += '<table width="100%">';
+				voterStr += '<tr>';
+				voterStr += '<th align="left"> Total Voters  : </th><td>'+results[0].totalVotersInConstituency+'</td>';
+				voterStr += '<th align="left"> Total Polled Votes : </th><td>'+results[0].totalPolledVotes+'</td>';
+				voterStr += '</tr>';
+				voterStr += '</table>';
+				mptcVotersDivElmt.innerHTML = voterStr;
+			}	
+			var mptcOptionsDivElStr = '';
+			mptcOptionsDivElStr+='<TABLE>';
+			mptcOptionsDivElStr+='<TR>';
+			mptcOptionsDivElStr+='<TH>View Results By</TH>';
+			mptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="mlocationOption" id="cmlocationOption" checked = "true" onclick="showHideMandalDropdown(\'mmandalOpt\')"/>Constituency</TD>';
+			mptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="mlocationOption" id="mmlocationOption" onclick="showHideMandalDropdown(\'mmandalOpt\')"/>Mandal</TD>';
+			mptcOptionsDivElStr+='<TD align="left"><SELECT name ="mandalOpt" id = "mmandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'MPTC\',\'getMptcElectionResults\',this.options[this.selectedIndex].text)">';
+			mptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
+			for(var i in mandalNamesArr)
+			{
+				mptcOptionsDivElStr+='<OPTION value='+mandalNamesArr[i].id+'>'+mandalNamesArr[i].name+'</OPTION>';
+			}
+			mptcOptionsDivElStr+='</SELECT>';
+			mptcOptionsDivElStr+='</TD>';
+			mptcOptionsDivElStr+='<TR>';
+			mptcOptionsDivElStr+='</TABLE>';
+			mptcOptionsDivEl.innerHTML = mptcOptionsDivElStr;
 			for(var i in results)
 			{		
 				var problemObj=		
@@ -2134,6 +2208,23 @@
 			{	
 		    	tehsilDetails.partyMptcArray = emptyArr;				
 			}
+		    if(jsObj.resultLevel == 'constituency')
+			{
+		    	var clocationOptionEl = document.getElementById("cmlocationOption");
+				clocationOptionEl.checked = true;
+				
+				mptcHeadDivEl.innerHTML = "MPTC Results in "+constituencyNameGlobal+" Constituency";
+				mptcCount.innerHTML +=totalMptcSeats;
+			} else if (jsObj.resultLevel == 'mandal')
+				{
+				var clocationOptionEl = document.getElementById("mmlocationOption");
+				clocationOptionEl.checked = true;
+				var mzSelectOptionEl = document.getElementById("mmandalOpt");
+				mzSelectOptionEl.style.display="block";
+					mptcHeadDivEl.innerHTML = "MPTC Results in "+jsObj.mandalName+" Mandal";
+					mptcCount.innerHTML = 'N/A';
+				}
+			
 		    initializeMptcResultsTableForParty(); 
 		}
 
@@ -2293,7 +2384,7 @@
 											<table width="100%">
 												<tr>
 													<td colspan="2" align="left">
-														<table>
+														<table width="100%">
 															<tr>
 														   		<td><div id="zptcElectionIdsSelectDiv"></div></td>
 														   		<td><div id="totalZptcVotersDiv" style="padding-left:40px;"></div></td>
@@ -2304,6 +2395,10 @@
 												<tr>
 													<td><div id="zptcOptionsDiv"></div></td>
 													<td><div id="zptcCandidateLink"></div></td>
+												</tr>
+												<tr>
+													<td width="50%"><div></div></td>
+													<td width="50%"><div id="zptcHeadDiv"></div></td>
 												</tr>
 												<tr>
 													<td valign="top"><div id="zptcChartDiv"></div></td>
@@ -2338,12 +2433,20 @@
 								<table width="100%">									
 									<tr><td>
 											<table width="100%"><tr><td colspan="2">
-															<table ><tr>
+															<table width="100%"><tr>
 														   		<td><div id="mptcElectionIdsSelectDiv" style="padding-left:10px;" class="yui-skin-sam"></div></td>
-														   		<td><div id="mptcCandidateLink"></div></td>
-																<td><div id="totalMptcVotersDiv" style="padding-left:40px;"></div></td>
+														   		<!--<td><div id="mptcCandidateLink"></div></td>
+																--><td><div id="totalMptcVotersDiv" style="padding-left:40px;"></div></td>
 													   		</tr></table>
 													   </td></tr>
+												   <tr>
+													<td><div id="mptcOptionsDiv"></div></td>
+													<td><div id="mptcCandidateLink"></div></td>
+												</tr>
+												<tr>
+													<td width="50%"><div></div></td>
+													<td width="50%"><div id="mptcHeadDiv"></div></td>
+												</tr>
 												   <tr>
 												   	   <td valign="top"><div id="mptcChartDiv"></div></td>		
 													   <td class="yui-skin-sam" valign="top"><div id="mptcPartyTrendsDetailsDiv"></div></td>

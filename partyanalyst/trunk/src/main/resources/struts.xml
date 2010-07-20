@@ -1175,6 +1175,11 @@
               <result type="json" name="success">
            		<param name="root">partyVillageLevelAnalysisVO</param>
         	</result>       		
+        </action>
+        <action name="getMandalLocalElectionsAjaxAction" class="constituencyVotingTrendzAction" method="getMandalLocalElections"> 
+              <result type="json" name="success">
+           		<param name="root">zptcMptcResultsInMandal</param>
+        	</result>       		
         </action>        
 	</package>
 </struts>
