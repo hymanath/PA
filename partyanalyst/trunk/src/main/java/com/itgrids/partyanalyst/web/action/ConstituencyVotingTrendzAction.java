@@ -117,6 +117,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private IPartyBoothWiseResultsService partyBoothWiseResultsService;
 	private List<PartyResultsInfoVO> contestingCands;
 	private PartyElectionResultsVO electionResultsInConsti;
+	private List<TeshilPartyInfoVO> zptcMptcResultsInMandal;
 
 
 	public String getMuncipalityElectionType() {
@@ -477,6 +478,15 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	public void setChartColorsAndDataSetVO(
 			ChartColorsAndDataSetVO chartColorsAndDataSetVO) {
 		this.chartColorsAndDataSetVO = chartColorsAndDataSetVO;
+	}	
+
+	public List<TeshilPartyInfoVO> getZptcMptcResultsInMandal() {
+		return zptcMptcResultsInMandal;
+	}
+
+	public void setZptcMptcResultsInMandal(
+			List<TeshilPartyInfoVO> zptcMptcResultsInMandal) {
+		this.zptcMptcResultsInMandal = zptcMptcResultsInMandal;
 	}
 
 	public String execute() throws Exception
@@ -1646,6 +1656,26 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
     		contestingCand.add(resultVOThr);
     	}
      return contestingCand;
+    }
+    public String getMandalLocalElections()
+    {
+    	String param=null;			    
+		param = getTask();
+		
+    	try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Long tehsilId = jObj.getLong("tehsilId");
+		String electionType = jObj.getString("electionType");
+		String electionYear = jObj.getString("electionYear");
+		zptcMptcResultsInMandal = partyBoothWiseResultsService.getMPTCandZPTCResultsInAMandalForAElection(tehsilId, electionType, electionYear);
+		String chartName = getPieChartForMPTCandZPTCAjax(zptcMptcResultsInMandal, electionType, electionYear, tehsilId);
+		zptcMptcResultsInMandal.get(0).setChartName(chartName);
+		return SUCCESS;
     }
 
 }
