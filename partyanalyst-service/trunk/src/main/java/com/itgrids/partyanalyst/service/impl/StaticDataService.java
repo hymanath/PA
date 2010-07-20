@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import static java.lang.Math.PI;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -4776,14 +4777,20 @@ public class StaticDataService implements IStaticDataService {
 					SelectOptionVO select = new SelectOptionVO(); 
 					String electionHeading="";
 					String electionType="";
+					electionType = partyResult.get(i).getElectionType();
+					/*
 					if(partyResult.get(i).getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 						electionType ="AC";
 					}else if(partyResult.get(i).getElectionType().equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE)){
 						electionType ="PC";
 					}else{
 						electionType = partyResult.get(i).getElectionType();
-					}
-					electionHeading = partyResult.get(i).getElectionYear()+"  "+electionType;
+					}*/
+					
+					if(electionType.equals(IConstants.MPTC_ELECTION_TYPE) || electionType.equals(IConstants.ZPTC_ELECTION_TYPE))
+					electionHeading = partyResult.get(i).getElectionYear()+" ."+electionType;
+					else
+					electionHeading = partyResult.get(i).getElectionYear()+" "+electionType;
 					select.setId(i+0l);
 					select.setName(electionHeading);
 					electionList.add(select);
@@ -4950,6 +4957,17 @@ public class StaticDataService implements IStaticDataService {
 			elections = partyResultVO.getElectionWiseResults();
 			headings = partyResultVO.getElectionList();
 			Collections.sort(headings, new SelectOptionVOComparator());//Heading Data Sorting
+			
+			//headings special character removal
+			for(SelectOptionVO head:headings){
+				if(StringUtils.contains(head.getName(), '.'))
+					head.setName(StringUtils.remove(head.getName(), '.'));
+				else if(StringUtils.contains(head.getName(), IConstants.ASSEMBLY_ELECTION_TYPE))
+					head.setName(StringUtils.replace(head.getName(), IConstants.ASSEMBLY_ELECTION_TYPE, "AC"));
+				else if(StringUtils.contains(head.getName(), IConstants.PARLIAMENT_ELECTION_TYPE))
+					head.setName(StringUtils.replace(head.getName(), IConstants.PARLIAMENT_ELECTION_TYPE, "PC"));
+					
+			}
 			Collections.sort(elections, new ElectionResultTypeComparator());
 			partyResultVO.setElectionList(headings);
 			partyResultVO.setElectionWiseResults(elections);
