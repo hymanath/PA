@@ -2038,7 +2038,7 @@
 			zptcOptionsDivElStr+='<TABLE>';
 			zptcOptionsDivElStr+='<TR>';
 			zptcOptionsDivElStr+='<TH>View Results By</TH>';
-			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="clocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Constituency</TD>';
+			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="clocationOption" onclick="showHideMandalDropdown1(\'mandalOpt\','+selectedYearVal+')"/>Constituency</TD>';
 			zptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="locationOption" id="mlocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Mandal</TD>';
 			zptcOptionsDivElStr+='<TD align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'ZPTC\',\'getZptcElectionResults\',this.options[this.selectedIndex].text,this.options[this.selectedIndex])">';
 			zptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
@@ -2127,11 +2127,24 @@
 			} else if(mandalOptEl.style.display == 'block')
 			{
 				mandalOptEl.style.display = 'none';
-			}
-				
+			}	
 			
 		}
 
+		function showHideMandalDropdown1(id, year)
+		{
+			var mandalOptEl = document.getElementById(id);
+			mandalOptEl.style.display = 'none';
+			
+			getZptcPartyDetails(year);
+		}
+		function showHideMandalDropdown2(id, year)
+		{
+			var mandalOptEl = document.getElementById(id);
+			mandalOptEl.style.display = 'none';
+			
+			getMptcPartyDetails(year);
+		}
 		function buildMptcResults(results, jsObj){
 			assignToPartyDataArray = new Array();
 			var electionIdEl = document.getElementById("staticGrpSelectBox");
@@ -2168,7 +2181,7 @@
 			mptcOptionsDivElStr+='<TABLE>';
 			mptcOptionsDivElStr+='<TR>';
 			mptcOptionsDivElStr+='<TH>View Results By</TH>';
-			mptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="mlocationOption" id="cmlocationOption" checked = "true" onclick="showHideMandalDropdown(\'mmandalOpt\')"/>Constituency</TD>';
+			mptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="mlocationOption" id="cmlocationOption" checked = "true" onclick="showHideMandalDropdown2(\'mmandalOpt\','+selectedYearVal+')"/>Constituency</TD>';
 			mptcOptionsDivElStr+='<TD align="left"><INPUT type="radio" name="mlocationOption" id="mmlocationOption" onclick="showHideMandalDropdown(\'mmandalOpt\')"/>Mandal</TD>';
 			mptcOptionsDivElStr+='<TD align="left"><SELECT name ="mandalOpt" id = "mmandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'MPTC\',\'getMptcElectionResults\',this.options[this.selectedIndex].text)">';
 			mptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
