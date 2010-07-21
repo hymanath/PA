@@ -830,7 +830,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);	
 		}
 		chartVO.setChartName(chartName);
-		ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , colors,true,250,250);
+		ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , colors,true,300,300);
 		return chartName;
 	}
 	
@@ -911,7 +911,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			else flag = false;
 		}
 		
-		ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , colors,true,250,250);
+		ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , colors,true,300,300);
 		return chartName;
 	}
 
@@ -1006,7 +1006,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			BigDecimal	otherPartyVotes = new BigDecimal(otherPartyVotesPercent).setScale(2, BigDecimal.ROUND_HALF_UP);			
 			dataset.setValue("Others"+" ["+otherPartyVotes.toString()+"%]",otherPartyVotes);
 			colors[j] = IConstants.DEFAULT_COLOR;
-			ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , colors,true,250,250);
+			ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , colors,true,300,300);
 			localChart = chartName;
 		}
 		electionTypeChartVO.setChartName(localChart);
@@ -1324,7 +1324,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				mandalsPartiesChart = "AllMandalsAllParties_"+mandalIds+"OfElectionYear_"+jObj.getString("electionYear")+
 													"ElectionType_"+jObj.getString("electionType")+".png";
 				String chartPath = context.getRealPath("/") + "charts\\" + mandalsPartiesChart;
-				String title = "Mandals Wise "+jObj.getString("electionYear")+" Election Results For All Parties";
+				String title = "Mandals Wise Assembly "+jObj.getString("electionYear")+" Election Results For All Parties";
 				Set<String> partiesInChart = new LinkedHashSet<String>();
 				CategoryDataset dataset = createDataSetForLineChart(resultsInMandals, partiesInChart);
 				if(dataset.getColumnCount()>1)
