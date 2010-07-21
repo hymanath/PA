@@ -866,7 +866,7 @@
 			str += '<td><img src="images/icons/tv9Icons/left_blue_main.png"/></td>';
 			str += '<td><div style="height:40px;background-image:url(\'images/icons/tv9Icons/header_body_blue.png\')">';
 			str += '<span style="color:#0C2640;font-size:20px;font-weight:bold;position:relative;top:6px;">';
-			str += 'Parties Performance in '+constituencyName+' Assembly Constituencey From 2001 to 2009</span>';
+			str += 'Parties Performance In '+constituencyName+' Assembly Constituency Limits In Different Elections</span>';
 			str += '</div></td>';
 			str += '<td><img src="images/icons/tv9Icons/right_blue_main.png"/></td>';
 			str += '</tr>';
