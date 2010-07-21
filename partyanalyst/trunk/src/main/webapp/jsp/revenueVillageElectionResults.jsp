@@ -663,7 +663,7 @@ legend
 	</tbody></table>
 
 		<div class="inputSelectionCriteria">
-		<table width="70%" align="center" border="0">
+		<table width="80%" align="center" border="0">
 		<tr>
 			<td id="labelRadio">Select Election Year</td>
 			<td>		
