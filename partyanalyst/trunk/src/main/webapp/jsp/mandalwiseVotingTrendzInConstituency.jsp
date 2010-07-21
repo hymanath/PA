@@ -515,7 +515,7 @@
 											}	
 										} else if(jsObj.task == "constituencyResults")
 										{
-											showChartData(myResults);
+											showChartData(jsObj, myResults);
 										} else if(jsObj.task == "getConstituencyResultsBySubLocations")
 										{
 											constiMandalWiseResultsPresChart = myResults.chartPath;
@@ -769,6 +769,7 @@
 		
 		function buildMandalVotesSharingData(results, jsObj)
 		{
+			
 			var divEl = document.getElementById("madalwiseVotesRange");
 			if(!divEl)
 				return;
@@ -784,7 +785,7 @@
 			str += '<td><P>Alliance Results</P></td>';
 			str += '</tr>';
 			str += '</table>';
-			str += '<table id="votesShareDetailsTable" width="100%" cellspacing="4" cellmargin="0">';
+			str += '<table id="votesShareDetailsTable" border="1" width="100%" cellspacing="4" cellmargin="0">';
 			str += '<tr>';
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
 			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
@@ -838,12 +839,13 @@
 			str += '</div>';
 			divEl.innerHTML = str;			
 		}
-
+		//ref
 		function buildVotesSharingData(jsObj,results)
 		{
+			
 			votesShareData = results;
             var chartName = '';
-
+            
 			if(results[0] != null)
 			{
 			chartName = results[0].chartName;
@@ -858,6 +860,7 @@
 			
 			var electionListLength = results[0].electionList.length+2;
 
+						
 			var str = '';
 			str += '<table><tr>';
 			str += '<td colspan=6> ';
@@ -865,8 +868,8 @@
 			str += '<tr>';
 			str += '<td><img src="images/icons/tv9Icons/left_blue_main.png"/></td>';
 			str += '<td><div style="height:40px;background-image:url(\'images/icons/tv9Icons/header_body_blue.png\')">';
-			str += '<span style="color:#0C2640;font-size:20px;font-weight:bold;position:relative;top:6px;">';
-			str += 'Parties Performance In '+constituencyName+' Assembly Constituency Limits In Different Elections</span>';
+			str += '<span id="headDiv" style="color:#0C2640;font-size:20px;font-weight:bold;position:relative;top:6px;">';
+			str += '</span>';
 			str += '</div></td>';
 			str += '<td><img src="images/icons/tv9Icons/right_blue_main.png"/></td>';
 			str += '</tr>';
@@ -936,6 +939,14 @@
 
 			str += '</table></center>';
 			shareElmt.innerHTML = str;
+			var headDivEl = document.getElementById("headDiv");
+			headDivEl.innerHTML = '';
+			var headDivElStr='';
+			headDivElStr += 'Parties Performance in '+jsObj.constiName+' Assembly Constituencey Limits In Different Elections';
+			if(headDivEl)	 			
+			{
+				headDivEl.innerHTML = headDivElStr;            	
+			}
 
 			var chartDivElmt = document.getElementById("constitutencyResultsChart");
 			var imgStr = '';
@@ -966,6 +977,7 @@
 			cStr += '</div>';
 			
 			checkBoxElmt.innerHTML = cStr;
+			
 		}
 		
 		function getElectionType(type)
@@ -1109,8 +1121,9 @@
 			elmt.innerHTML = str;*/
 		}
 
-		function showChartData(results)
+		function showChartData(jsObj, results)
 		{
+			
 			var selectboxElmtDiv = document.getElementById("selectLocationOptions");
 			var checkboxElmtDiv = document.getElementById("inputSelectionCriteria");
 			var selectOptionsSelectButtonElmt = document.getElementById("selectOptionsSelectButton");
@@ -1121,11 +1134,16 @@
 				checkboxElmtDiv.style.display = 'none';
 				selectOptionsSelectButtonElmt.style.display = 'block';
 				
-				selectOptionsSelectButtonElmt.innerHTML = '<input type="button" value="Select Option" onclick="displaySelectionCriteria()">';
+				selectOptionsSelectButtonElmt.innerHTML = '<input type="button" value="Show Options" onclick="displaySelectionCriteria()">';
 			}
 
 			chartName = results.chartName;
-
+			var headDivEl = document.getElementById("headDiv");
+			var str='';
+			str += 'Parties Performance in '+jsObj.constituencyName+' Assembly Constituencey Limits In Different Elections';
+			headDivEl.innerHTML = '';
+            headDivEl.innerHTML = str;
+            
 			var mainDivElmt = document.getElementById("crossVotingData_Graph_Div");
 			var divEl = document.getElementById("constitutencyResultsChart");
 			mainDivElmt.style.display = 'block';
@@ -1287,6 +1305,7 @@
 
 		function buildMandalsVotingTrendz()
 		{
+			
 			var distObj = null;
 			var elmt = document.getElementById("votingTrendzInfoMain");
 
@@ -1438,7 +1457,7 @@
 			allPartiesChartsWindow.document.close();			
 		}
 
-		function getResultsForSelectedElection()
+		function getResultsForSelectedElection(constiId, constiName)
 		{
 			var inputSelectionErrorEl = document.getElementById("inputSelectionError");
 			var partyCheckboxEls = document.getElementsByName("partywiseCheckBox");
@@ -1499,8 +1518,8 @@
 			}
 			var jsObj = {
 					
-					constituencyName: constituencyName,
-					constituencyId: constituencyIdGlobal,
+					constituencyName: constiName,
+					constituencyId: constiId,
 					partiesArr: selectedPartiesIds,
 					electionTypeArr: selectedElectionTypesYears,
 					task: "constituencyResults",
@@ -1528,7 +1547,13 @@
 			var mandalwiseVotersShare = resultsData.constituencyVO.assembliesOfParliamentInfo;
 			var constituencyId = jsObj.constituencyId;
 			constituencyNameGlobal = jsObj.constiName; 
+			constituencyName = jsObj.constiName;
 			mandalNamesArr = new Array();
+			var crossVotingData_Graph_DivEl = document.getElementById("crossVotingData_Graph_Div");
+			if(crossVotingData_Graph_DivEl.style.display == 'block')
+			{	
+				crossVotingData_Graph_DivEl.style.display = 'none';
+			}	
 			if(resultsData.biElectionResultsMainVO != null)
 			{	
 				var results = resultsData.biElectionResultsMainVO;
@@ -1730,7 +1755,7 @@
 			str1 += '<INPUT type="checkbox" name="allianceCheckBox" id="allianceChkBox" />Include Alliances';
 			str1 += '<input type="button" value="Select All" onclick="selectAllPartiesNYears()">';
 			str1 += '<input type="button" value="De-select All" onclick="DeselectAllPartiesNYears()">';
-			str1 += '<INPUT type="button" id="getResults" onclick="getResultsForSelectedElection()" value="Show Results" />';
+			str1 += '<INPUT type="button" id="getResults" onclick="getResultsForSelectedElection('+constituencyId+', \''+constituencyNameGlobal+'\')" value="Show Results" />';
 			str1 += '</td>';
 			str1 += '</tr>';
 			str1 += '</table>';			
@@ -2348,8 +2373,8 @@
 					getAll : all,
 					choices : allChoices,
 					flag : flag,
-					constituencyId:constituencyIdGlobal,
-					constiName:'${constiName}',
+					constituencyId: constituencyIdGlobal,
+					constiName: constituencyName,
 					task:"votesSharingInConstituency",
 					choice:"All"
 				};
