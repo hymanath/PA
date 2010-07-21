@@ -241,13 +241,13 @@ legend
 					rvStr += 'font-weight: bold; padding: 10px; font-size: 20px;">${constiElec.constituencyName}</legend>';
 					rvStr += '<table width="100%" border="0">';
 					rvStr += '<tr>';
-					rvStr += '<td style="vertical-align:top;" align="center">';
-					rvStr += '<img src="charts/${constiElec.chartPath}"/>';
+					rvStr += '<td style="vertical-align:top;" align="left">';
+					rvStr += '<img width="750" src="charts/${constiElec.chartPath}"/>';
 					rvStr += '</td>';
 					rvStr += '</tr>';
 					rvStr += '<tr>';
-					rvStr += '<td style="vertical-align:top;">';
-						rvStr += '<table align="center" width="50%" border="0"><tr><td align="center">';
+					rvStr += '<td align="left" style="vertical-align:top;">';
+						rvStr += '<table align="center" width="50%" border="0"><tr><td align="left">';
 						rvStr += '<br><font color="" size="4px">Participated Candidate Details</font><br><br>';		
 							rvStr += '<div id="candiDiv_${constiElec.constituencyId}"  style="font-size:12px;">'
 							rvStr += '<table id="candiTable_${constiElec.constituencyId}" width="60%" align="center">';
@@ -643,7 +643,7 @@ legend
 			}	
 </script>
 </head>
-<body >
+<body style="width:130%">
 	
 	
 <table width="100%" bgcolor="black" cellpadding="0" cellspacing="0">
