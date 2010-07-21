@@ -2050,7 +2050,7 @@
 			totalZptcSeats = results[0].totalSeats;	
 			
 			var chartStr = '';				
-			chartStr+='<img src="charts/'+zptcChartName+'" height="280px" width="400px"/>';
+			chartStr+='<img src="charts/'+zptcChartName+'"/>';
 			chartDivEl.innerHTML = chartStr;
 			if(results[0].totalVotersInConstituency != null && results[0].totalPolledVotes != null)
 			{
@@ -2281,8 +2281,8 @@
 			var jsObj = {
 				constituencyId:constituencyIdGlobal,
 				electionYear:elecYear,
-				chartHeight: 600,
-				chartWidth: 950,
+				chartHeight: 520,
+				chartWidth: 800,
 				others:false,
 				task:"getConstituencyResultsBySubLocations"
 			};
@@ -2297,8 +2297,8 @@
 					mandalIds: mandalIds,
 					electionYear:"2004",
 					electionType:"Assembly",
-					chartHeight: 600,
-					chartWidth: 950,
+					chartHeight: 520,
+					chartWidth: 800,
 					task:"getMandalsAndPartiesChartInElection"
 				};
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
