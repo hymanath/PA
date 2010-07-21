@@ -2067,9 +2067,9 @@
 			zptcOptionsDivElStr+='<TABLE>';
 			zptcOptionsDivElStr+='<TR>';
 			zptcOptionsDivElStr+='<TH style="font-size:14px;">View Results By</TH>';
-			zptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="locationOption" id="clocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Constituency</TH>';
+			zptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="locationOption" id="clocationOption" onclick="showHideMandalDropdown1(\'mandalOpt\','+selectedYearVal+')"/>Constituency</TH>';
 			zptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="locationOption" id="mlocationOption" onclick="showHideMandalDropdown(\'mandalOpt\')"/>Mandal</TH>';
-			zptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'ZPTC\',\'getZptcElectionResults\',this.options[this.selectedIndex].text)">';
+			zptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><SELECT name ="mandalOpt" id = "mandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'ZPTC\',\'getZptcElectionResults\',this.options[this.selectedIndex].text,this.options[this.selectedIndex].index)">';
 			zptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
 			for(var i in mandalNamesArr)
 			{
@@ -2112,7 +2112,7 @@
 					mlocationOptionEl.checked = true;
 					var mzSelectOptionEl = document.getElementById("mandalOpt");
 					mzSelectOptionEl.style.display="block";
-					
+					mzSelectOptionEl.selectedIndex=jsObj.index;
 					zptcHeadDivEl.innerHTML = "ZPTC Results in "+jsObj.mandalName+" Mandal";
 					zptcCount.innerHTML = '1';
 				}
@@ -2124,7 +2124,22 @@
 		    initializeResultsTableForParty();
 		}
 
-		function getMandalLocalElectionResults(mandalId, electionType, task, mandalName)
+		function showHideMandalDropdown1(id, year)
+		{
+			var mandalOptEl = document.getElementById(id);
+			mandalOptEl.style.display = 'none';
+			
+			getZptcPartyDetails(year);
+		}
+		function showHideMandalDropdown2(id, year)
+		{
+			var mandalOptEl = document.getElementById(id);
+			mandalOptEl.style.display = 'none';
+			
+			getMptcPartyDetails(year);
+		}
+
+		function getMandalLocalElectionResults(mandalId, electionType, task, mandalName, index)
 		{
 			if(mandalId == 0)
 				return;	
@@ -2138,7 +2153,8 @@
 					electionYear: electionYear,
 					resultLevel: "mandal",
 					task: task,
-					mandalName: mandalName 					
+					mandalName: mandalName,
+					index: index 			 					
 				};
 				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 				var url = "<%=request.getContextPath()%>/getMandalLocalElectionsAjaxAction.action?"+rparam;
@@ -2196,9 +2212,9 @@
 			mptcOptionsDivElStr+='<TABLE>';
 			mptcOptionsDivElStr+='<TR>';
 			mptcOptionsDivElStr+='<TH style="font-size:14px;">View Results By</TH>';
-			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="mlocationOption" id="cmlocationOption" checked = "true" onclick="showHideMandalDropdown(\'mmandalOpt\')"/>Constituency</TH>';
+			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="mlocationOption" id="cmlocationOption" checked = "true" onclick="showHideMandalDropdown2(\'mmandalOpt\','+selectedYearVal+')"/>Constituency</TH>';
 			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><INPUT type="radio" name="mlocationOption" id="mmlocationOption" onclick="showHideMandalDropdown(\'mmandalOpt\')"/>Mandal</TH>';
-			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><SELECT name ="mandalOpt" id = "mmandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'MPTC\',\'getMptcElectionResults\',this.options[this.selectedIndex].text)">';
+			mptcOptionsDivElStr+='<TH style="font-size:14px;" align="left"><SELECT name ="mandalOpt" id = "mmandalOpt" class="selectWidth" style="display:none;" onchange="getMandalLocalElectionResults(this.options[this.selectedIndex].value,\'MPTC\',\'getMptcElectionResults\',this.options[this.selectedIndex].text,this.options[this.selectedIndex].index)">';
 			mptcOptionsDivElStr+='<OPTION value="0">Select Mandal</OPTION>';
 			for(var i in mandalNamesArr)
 			{
@@ -2250,6 +2266,7 @@
 				clocationOptionEl.checked = true;
 				var mzSelectOptionEl = document.getElementById("mmandalOpt");
 				mzSelectOptionEl.style.display="block";
+				mzSelectOptionEl.selectedIndex=jsObj.index;
 					mptcHeadDivEl.innerHTML = "MPTC Results in "+jsObj.mandalName+" Mandal";
 					//mptcCount.innerHTML = 'N/A';
 					mptcCount.innerHTML = totalMptcSeats;
