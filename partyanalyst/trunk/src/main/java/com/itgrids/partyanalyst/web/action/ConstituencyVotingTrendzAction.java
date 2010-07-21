@@ -63,7 +63,6 @@ import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.utils.CandidateElecResultComparatorByParty;
 import com.itgrids.partyanalyst.utils.ElectionDataVOComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultPartyVOByElectionType;
@@ -678,13 +677,23 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		biElectionResultsMainVO  = biElectionPageService.getMandalWiseResultsForSelectedPartiesInConstituency(constiId);		
 		DataTransferVO charts = constituencyPageService.getPreviousAndPresentElectionYearsGraphsForAConstituency(constiId);
+		String allElecPartiesGraph = "ByeElectionConsti_"+constiId+"_allElecPartiesGraph.png";
 		String presLineChartName = "ByeElectionConsti_"+constiId+"_mandalwiseChartYear_"+IConstants.PRESENT_ELECTION_YEAR+".png";
 		String prevLineChartName = "ByeElectionConsti_"+constiId+"_mandalwiseChartYear_"+IConstants.PREVIOUS_ELECTION_YEAR+".png";
 		biElectionResultsMainVO.setAssemblyResultsChartForPresentYear(presLineChartName);
 		biElectionResultsMainVO.setAssemblyResultsChartForPreviousYear(prevLineChartName);
 		Set<String> partiesInChart = null;
+		String allElecPartiesGraphPath = context.getRealPath("/") + "charts\\" + allElecPartiesGraph;
 		String presChartPath = context.getRealPath("/") + "charts\\" + presLineChartName;
 		String prevChartPath = context.getRealPath("/") + "charts\\" + prevLineChartName;
+		
+		if(biElectionResultsMainVO.getAllPartiesElecInfo() != null){
+			partiesInChart = new LinkedHashSet<String>();
+			ChartProducer.createLineChart("All Parties Performance In All Elections Of "+constiName+" Assembly Constituency",
+					"Elections", "Percentages",createDataSetForRuralUrban(biElectionResultsMainVO.getAllPartiesElecInfo().
+							getAllPartiesAllElectionResults(), partiesInChart),	allElecPartiesGraphPath,400,800,
+							ChartUtils.getLineChartColors(partiesInChart),true);	
+		}
 		
 		partiesInChart = new LinkedHashSet<String>();
 		ChartProducer.createLineChart("Mandalwise Results For "+constiName+" Assembly In "+IConstants.PRESENT_ELECTION_YEAR,
@@ -715,12 +724,29 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		return Action.SUCCESS;
 	}
 	
+	private CategoryDataset createDataSetForRuralUrban(List<PartyResultVO> partiesResults, Set<String> partiesInChart){
+		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		for(PartyResultVO party:partiesResults)
+			for(ElectionResultVO election:party.getElectionWiseResults())
+				if(!election.getPercentage().equalsIgnoreCase("-1")){
+					partiesInChart.add(party.getPartyName());
+					dataset.addValue(new BigDecimal(election.getPercentage()), party.getPartyName(), election.getElectionYearAndType());	
+				}
+		return dataset;
+	}
+	
 	private CategoryDataset createDataSetForPreviousYear(
 			List<PartyResultVO> previousYearChart, Set<String> partiesInChart) {
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		String partyName = "";
 		for(PartyResultVO resultVO:previousYearChart){
-			partiesInChart.add(resultVO.getPartyName());
-			dataset.addValue(new BigDecimal(resultVO.getVotesPercent()), resultVO.getPartyName(), resultVO.getTehsilName());
+			partyName = resultVO.getPartyName();
+			if(resultVO.getPartyName().equalsIgnoreCase("TDP") || resultVO.getPartyName().equalsIgnoreCase("BJP"))
+				partyName = "TDP & Alliance";
+			if(resultVO.getPartyName().equalsIgnoreCase("INC") || resultVO.getPartyName().equalsIgnoreCase("TRS"))
+				partyName = "INC & Alliance";
+			partiesInChart.add(partyName);
+			dataset.addValue(new BigDecimal(resultVO.getVotesPercent()), partyName, resultVO.getTehsilName());
 		}
 		return dataset;
 	}
@@ -1310,7 +1336,6 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 						log.debug("dataset.getColumnCount():::::::::::::::::::::::"+dataset.getColumnCount());
 						ChartProducer.create3DBarChartWithInputParams(title, null, "Mandal","Percentages", null, dataset, chartPath, chartWidth, chartHeight, ChartUtils.getLineChartColors(partiesInChart),true);
 					}
-				
 			}	
 		}
 			
