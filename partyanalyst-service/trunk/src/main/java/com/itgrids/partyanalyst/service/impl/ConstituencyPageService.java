@@ -1408,7 +1408,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		Long mandalId = 0l;
 		String partyName = "";
 		Long votesEarned = 0l;
-		Float validVotesPercent = 0.0f;
 		try{
 			for(Object[] values:(List<Object[]>)partiesResults){
 				partyName = values[2].toString();
@@ -1432,7 +1431,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				mandalwisePartiesMap.put(mandalId, partiesResultsInMandals);
 			}
 			
-			String grp1 = "";
+			/*String grp1 = "";
 			String grp2 = "";
 			
 			if(partyVotesEarnedMap.get(IConstants.BJP) != null && partyVotesEarnedMap.get(IConstants.TDP) != null){
@@ -1457,21 +1456,22 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					grp2 = IConstants.INC;
 				else
 					grp2 = IConstants.TRS;
-			}
+			}*/
 					
-			Float votesPercent = 0.0f;
+			//Float votesPercent = 0.0f;
+			//Float validVotesPercent = 0.0f;
 			List totalVoters = null;
 			Long totalVotersLong = 0l;
-			String mandalName = "";
+			//String mandalName = "";
 			//Calculating And Grouping Alliance Parties Percentages
 			for(Map.Entry<Long, List<PartyResultVO>> entry:mandalwisePartiesMap.entrySet()){
 				partiesResultsInMandals = entry.getValue();
 				totalVoters = boothConstituencyElectionDAO.getTotalVotersInAnElectionInMandal(entry.getKey(),electionType,IConstants.PRESENT_ELECTION_YEAR);
 				totalVotersLong = (Long)totalVoters.get(0);
-				votesPercent = 0.0f;
-				validVotesPercent = 0.0f;
+				/*votesPercent = 0.0f;
+				validVotesPercent = 0.0f;*/
 				for(PartyResultVO party:partiesResultsInMandals){
-					mandalName = party.getConstituencyName();
+					/*mandalName = party.getConstituencyName();
 					if(party.getPartyName().equals(IConstants.INC) || party.getPartyName().equals(IConstants.TRS)){
 						votesPercent += new Float(party.getVotesPercent());
 						continue;
@@ -1479,12 +1479,12 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					if(party.getPartyName().equals(IConstants.BJP) || party.getPartyName().equals(IConstants.TDP)){
 						validVotesPercent += new Float(party.getVotesPercent());
 						continue;
-					}
+					}*/
 					party.setElectors(totalVotersLong);
 					finalResults.add(party);
 				}				
-				finalResults.add(getPartyResultVOObjWithPercent(grp2, votesPercent.toString(), totalVotersLong, mandalName));
-				finalResults.add(getPartyResultVOObjWithPercent(grp1, validVotesPercent.toString(), totalVotersLong, mandalName));
+				/*finalResults.add(getPartyResultVOObjWithPercent(grp2, votesPercent.toString(), totalVotersLong, mandalName));
+				finalResults.add(getPartyResultVOObjWithPercent(grp1, validVotesPercent.toString(), totalVotersLong, mandalName));*/
 			}
 		}catch (Exception e) {
 			log.debug("Exception Occured While Processing Mandal Data");
@@ -1497,14 +1497,14 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return finalResults;
 	}
 	
-	private PartyResultVO getPartyResultVOObjWithPercent(String partyName, String percenatge, Long electorsInMandal, String mandalName){
+	/*private PartyResultVO getPartyResultVOObjWithPercent(String partyName, String percenatge, Long electorsInMandal, String mandalName){
 		PartyResultVO partyResultVO = new PartyResultVO();
 		partyResultVO.setPartyName(partyName);
 		partyResultVO.setVotesPercent(percenatge);
 		partyResultVO.setElectors(electorsInMandal);
 		partyResultVO.setConstituencyName(mandalName);
 		return partyResultVO;
-	}
+	}*/
 	
 	@SuppressWarnings("unchecked")
 	public void getAssembliesVotersInfoOfParliament(ConstituencyVO constituencyVO){
