@@ -404,6 +404,8 @@ public class ChartProducer {
 	public static void createLineChart(String title, String xAxis, String yAxis, CategoryDataset dataset, String path,int height,int width, List<Color> colors,Boolean thickLines){
 		final NumberAxis seatsRangeAxis = new NumberAxis(yAxis);
         seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        seatsRangeAxis.setTickLabelFont(new Font("verdana",Font.BOLD,15));
+               
         final LineAndShapeRenderer seatsRenderer = new LineAndShapeRenderer();
         seatsRenderer.setDrawOutlines(true);
         seatsRenderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
@@ -414,7 +416,7 @@ public class ChartProducer {
         
         final CategoryAxis domainAxis = new CategoryAxis(xAxis);
         domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
-        domainAxis.setTickLabelFont(new Font("verdana",Font.BOLD,14));
+        domainAxis.setTickLabelFont(new Font("verdana",Font.BOLD,15));
         
         CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
         plot.add(seatsPlot, 2);
@@ -465,6 +467,8 @@ public class ChartProducer {
 	public static void createLineChartWithThickness(String title, String xAxis, String yAxis, CategoryDataset dataset, String path,int height,int width, List<Color> colors,Boolean thickLines){
 		final NumberAxis seatsRangeAxis = new NumberAxis(yAxis);
         seatsRangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        seatsRangeAxis.setTickLabelFont(new Font("verdana",Font.BOLD,15));
+        
         final LineAndShapeRenderer seatsRenderer = new LineAndShapeRenderer();
         seatsRenderer.setDrawOutlines(true);
         seatsRenderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator());
@@ -475,7 +479,7 @@ public class ChartProducer {
         
         final CategoryAxis domainAxis = new CategoryAxis(xAxis);
         domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
-        domainAxis.setTickLabelFont(new Font("verdana",Font.BOLD,14));
+        domainAxis.setTickLabelFont(new Font("verdana",Font.BOLD,15));
         CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
         plot.add(seatsPlot, 2);
                
@@ -503,7 +507,6 @@ public class ChartProducer {
             			)
             			);
         	seatsRenderer.setBaseLegendTextFont(new Font("verdana",Font.BOLD,13));
-        	
         	seatsPlot.setBackgroundPaint(new Color(219, 223, 225));
         	
         }
@@ -749,7 +752,7 @@ public static void createLabeledPieChart(String title,final DefaultPieDataset da
         try
         {
             // This will create a PNG image
-            ChartUtilities.saveChartAsPNG(new File(fileName), chart, 280, 180,info);  //	width height best viewed 280, 180
+            ChartUtilities.saveChartAsPNG(new File(fileName), chart, width, height,info);  //	width height best viewed 280, 180
         }
         catch (Exception e)
         {
