@@ -486,6 +486,25 @@
 		<property name="userImpDatesDAO" ref="userImpDatesDAO" />
 	</bean>
 	
+	<bean name="biElectionPageService" class="com.itgrids.partyanalyst.service.impl.BiElectionPageService">
+		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+    	<property name="nominationDAO" ref="nominationDAO" />	
+    	<property name="constituencyDAO" ref="constituencyDAO" />
+    	<property name="staticDataService" ref="staticDataService" />
+    	<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+    	<property name="electionDAO" ref="electionDAO" />
+    	<property name="allianceGroupDAO" ref="allianceGroupDAO" />
+	</bean>
+	
+	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService">
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+	</bean>
+	
+	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService">	
+		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+    	<property name="nominationDAO" ref="nominationDAO" />	
+	</bean>
+	
 	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>

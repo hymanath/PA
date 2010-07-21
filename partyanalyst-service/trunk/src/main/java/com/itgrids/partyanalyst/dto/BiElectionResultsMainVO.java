@@ -12,6 +12,7 @@ public class BiElectionResultsMainVO implements Serializable {
 	
 	private List<BiElectionResultsVO> biElectionResultsMainVO;
 	
+	private String constituencyType;
 	private String mandalWiseResultsChart;
 	private String enlargedMandalWiseResultsChart;
 	private String assemblyResultsChartForPresentYear;
@@ -21,7 +22,8 @@ public class BiElectionResultsMainVO implements Serializable {
 	private List<String> allPartiesElectionResultsChart;
 	private List<ElectionTypeChartVO> chartsListForElectionTypes;
 	private List<ElectionTypeChartVO> chartsListForElectionTypesAllParties;
-	private List<ElectionDataVO> urbanRuralConstiResults;  
+	private List<ElectionDataVO> urbanRuralConstiResults;
+	private ElectionWiseMandalPartyResultListVO allPartiesElecInfo;
 	
 	public List<String> getAllPartiesElectionResultsChart() {
 		return allPartiesElectionResultsChart;
@@ -95,6 +97,19 @@ public class BiElectionResultsMainVO implements Serializable {
 	}
 	public List<ElectionDataVO> getUrbanRuralConstiResults() {
 		return urbanRuralConstiResults;
+	}
+	public ElectionWiseMandalPartyResultListVO getAllPartiesElecInfo() {
+		return allPartiesElecInfo;
+	}
+	public void setAllPartiesElecInfo(
+			ElectionWiseMandalPartyResultListVO allPartiesElecInfo) {
+		this.allPartiesElecInfo = allPartiesElecInfo;
+	}
+	public String getConstituencyType() {
+		return constituencyType;
+	}
+	public void setConstituencyType(String constituencyType) {
+		this.constituencyType = constituencyType;
 	}
 	
 	

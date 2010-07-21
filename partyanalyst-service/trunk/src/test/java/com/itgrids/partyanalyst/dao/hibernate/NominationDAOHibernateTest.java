@@ -450,7 +450,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public void testGetWonAndOppCandidateResults(){
 		String ranks = "1,2";
 		List results = nominationDAO.getWonAndOppCandidateInAnElection(new Long(4),"2009");
@@ -464,6 +464,13 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("..");
 			}
 		}
+	}*/
+	
+	public void testGetMunicipalitiesAndCorporationsResultsInMandals(){
+		List list = nominationDAO.getMunicipalitiesAndCorporationsResultsInMandals("384");
+		System.out.println(list.size());
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]);
 	}
 }
 

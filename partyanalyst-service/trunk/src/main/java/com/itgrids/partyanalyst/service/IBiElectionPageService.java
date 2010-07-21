@@ -9,12 +9,14 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.AllBoothsResultsForAPartyInAMandal;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
+import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyTownshipResultsVO;
@@ -50,4 +52,7 @@ public interface IBiElectionPageService {
 	public Map<Long,List<PartyTownshipResultsVO>> getTownshipWiseAllPartyResults(Long tehsilId,String electionType,String electionYear);
 	
 	public List<PartyVillageLevelAnalysisVO> villageLevelPArtyAnalysis(Long tehsilId,String electionType,String electionYear,int rank);
+	
+	public ElectionWiseMandalPartyResultListVO getResultsOfRuralUrbanAreaBeasedOnSelection(Long constituencyId, 
+			Set<String> parties, Set<String> elecTypeOrYear, Boolean isElecType);
 }

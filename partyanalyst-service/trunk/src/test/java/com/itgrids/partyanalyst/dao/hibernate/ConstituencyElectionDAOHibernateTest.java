@@ -142,7 +142,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	public void testGetValidVotesForMunicipalitiesAndCorporationsInMandals(){
-		List list = constituencyElectionDAO.getValidVotesForMunicipalitiesAndCorporationsInMandals("64");
+		List list = constituencyElectionDAO.getValidVotesForMunicipalitiesAndCorporationsInMandals("384");
 		for(int i=0; i<list.size(); i++){
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]);
 		}
