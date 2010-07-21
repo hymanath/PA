@@ -1345,6 +1345,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private CategoryDataset createDataSetForLineChart(List<PartyResultVO> resultsInMandals, Set<String> partiesInChart){
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		for(PartyResultVO party:resultsInMandals){
+			if(party.getVotesPercent().equalsIgnoreCase("0.0"))
+				continue;
 			dataset.addValue(new BigDecimal(party.getVotesPercent()), party.getPartyName(), party.getConstituencyName());
 			partiesInChart.add(party.getPartyName());
 		}
