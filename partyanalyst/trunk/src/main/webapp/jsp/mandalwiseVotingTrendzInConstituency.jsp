@@ -2397,7 +2397,7 @@
 				<TABLE cellspacing="0" cellpadding="0" border="0" >
 				<TR>
 					<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" style="margin-top:15px;" /></TD>
-					<TD valign="top"><DIV id="mainHead" class="mainHeading">Voting Trends in ${constiName} Constituency</DIV></TD>
+					<TD valign="top"><DIV id="mainHead" class="mainHeading">Voting Trends in ${constiName}</DIV></TD>
 					<TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" style="margin-top:15px;" border="none"/></TD>
 				</TR>
 				</TABLE>
