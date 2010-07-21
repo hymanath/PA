@@ -77,7 +77,7 @@ padding:2px;
 }
 
 .mandalVotesShareTable th {
-background:url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
+background:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
 border:1px solid #ADADAD;
 color:#121922;
 font-size:19px;
