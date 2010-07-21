@@ -247,7 +247,7 @@ legend
 					rvStr += '</tr>';
 					rvStr += '<tr>';
 					rvStr += '<td align="left" style="vertical-align:top;">';
-						rvStr += '<table align="center" width="50%" border="0"><tr><td align="left">';
+						rvStr += '<table align="left" width="50%" border="0"><tr><td align="left">';
 						rvStr += '<br><font color="" size="4px">Participated Candidate Details</font><br><br>';		
 							rvStr += '<div id="candiDiv_${constiElec.constituencyId}"  style="font-size:12px;">'
 							rvStr += '<table id="candiTable_${constiElec.constituencyId}" width="60%" align="center">';
