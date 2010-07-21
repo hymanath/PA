@@ -2194,7 +2194,7 @@
 			  
 					var chartStr = '';
 					
-					chartStr+='<img src="charts/'+mptcChartName+'" height="280px" width="400px"/>';
+					chartStr+='<img src="charts/'+mptcChartName+'"/>';
 					chartDivEl.innerHTML = chartStr;
 			
 			if(results[0].totalVotersInConstituency != null && results[0].totalPolledVotes != null)
