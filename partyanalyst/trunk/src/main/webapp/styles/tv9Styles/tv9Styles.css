@@ -1,3 +1,9 @@
+
+body
+{
+	width:130%;
+}
+
 fieldset
 {
 	border:4px solid #CFD6DF;
@@ -11,6 +17,11 @@ legend
 	font-size:14px;
 	padding:5px;
 	font-weight:bold;
+}
+
+#inputSelectionCriteria, #crossVotingData_Graph_Div, #constituencyMainDetails_Div, #crossVotingDetailsDiv, #overViewHeadingDiv 
+{
+	overflow:auto;
 }
 
 .detailsTableHeaderSpan  {
@@ -69,7 +80,7 @@ padding:2px;
 background:url("js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
 border:1px solid #ADADAD;
 color:#121922;
-font-size:17px;
+font-size:19px;
 font-weight:bold;
 padding:5px;
 }
@@ -77,15 +88,14 @@ padding:5px;
 .mandalVotesShareTable td {
 background-color:#F0F8FF;
 color:#121922;
-font-size:14px;
+font-size:17px;
 font-weight:bold;
 padding:5px;
-text-align:center;
 }
 
 .mandalvotersAnc
 {
-	font-size:14px;
+	font-size:17px;
 	font-weight:bold;
 	text-decoration:none;
 }
@@ -180,4 +190,8 @@ overflow:auto;
 {
 	color:red;
 	font-size:19px;
+}
+
+#mandalVotingTrendzDataDiv_body  {
+overflow:visible;
 }

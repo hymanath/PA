@@ -448,13 +448,13 @@
 				headingDIV+='</tr>';
 
 				headingDIV+='<tr>';
-				headingDIV+='<td colspan="5" style="color:#FF8000;font-size:17px;" align="center">';
+				headingDIV+='<td colspan="5" style="color:#764B00;font-size:18px;" align="center">';
 				headingDIV+='	<b>Margin Votes</b> : '+myResults.elecResultsInConsti.marginVotes;
 				headingDIV+='</td>';
 				headingDIV+='</tr>';
 
 				headingDIV+='<tr>';
-				headingDIV+='<td colspan="5" style="color:#FF8000;font-size:17px;" align="center">';
+				headingDIV+='<td colspan="5" style="color:#764B00;font-size:18px;" align="center">';
 				headingDIV+='	<b>Margin Votes %</b> : '+myResults.elecResultsInConsti.marginPercent;
 				headingDIV+=' %</td>';
 				headingDIV+='</tr>';
@@ -531,8 +531,10 @@
 											var str = '';
 											str +='<div style="margin: 10px;">';
 											str += '<table border="1" width="100%" style="border-collapse:collapse;">';
-											str += '<tr><td valign="top" align="center"><img src="charts/'+constiMandalWiseResultsPresChart+'"></td></tr>';
-											str += '<tr><td valign="top" align="center"><img src="charts/'+constiMandalWiseResultsPrevChart+'"></td></tr>';
+											str += '<tr><td valign="top" align="left">';
+											str += '<img width="750" src="charts/'+constiMandalWiseResultsPresChart+'"></td></tr>';
+											str += '<tr><td valign="top" align="left">';
+											str += '<img width="750" src="charts/'+constiMandalWiseResultsPrevChart+'"></td></tr>';
 											str += '</table>';
 											str += '</div>';
 											imageDiv.innerHTML = str;
@@ -632,7 +634,7 @@
 			var muncipalityDiv='';		
 			muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 			muncipalityDiv+='<td><img src="images/icons/tv9Icons/first.png"/></td>';
-			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style=" width: 857px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:19px;font-weight:bold;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style=" width: 715px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:19px;font-weight:bold;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			muncipalityDiv+='</td>';
 			muncipalityDiv+='</tr></table>';	
 			muncipality.innerHTML = muncipalityDiv;
@@ -646,7 +648,7 @@
 			var corporationDiv='';	
 			corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 			corporationDiv+='<td><img src="images/icons/tv9Icons/first.png"/></td>';	
-			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="width: 857px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="width: 715px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			corporationDiv+='</td></tr></table>';	
 			corporation.innerHTML = corporationDiv;
 		}
@@ -858,7 +860,19 @@
 
 			var str = '';
 			str += '<table><tr>';
-			str += '<td colspan=6> <p style="color: rgb(36, 124, 212); font-size: 20px; font-weight: bold; text-decoration: underline;">Parties Performance in '+constituencyName+' Assembly Constituencey From 2001 to 2009</p><font style="color: rgb(36, 124, 212); font-size: 15px; font-weight: bold;">(Based on 2009 Delimitation Boundaries)</font></td>';
+			str += '<td colspan=6> ';
+			str += '<div><table border="0" cellspacing="0" cellpadding="0">';
+			str += '<tr>';
+			str += '<td><img src="images/icons/tv9Icons/left_blue_main.png"/></td>';
+			str += '<td><div style="height:40px;background-image:url(\'images/icons/tv9Icons/header_body_blue.png\')">';
+			str += '<span style="color:#0C2640;font-size:20px;font-weight:bold;position:relative;top:6px;">';
+			str += 'Parties Performance in '+constituencyName+' Assembly Constituencey From 2001 to 2009</span>';
+			str += '</div></td>';
+			str += '<td><img src="images/icons/tv9Icons/right_blue_main.png"/></td>';
+			str += '</tr>';
+			str += '</table></div>';
+			str += '<p><font style="color: rgb(36, 124, 212); font-size: 15px; font-weight: bold;">(Based on 2009 Delimitation Boundaries)</p></font>';
+			str += '</td>';
 			str += '</tr><tr>';
 			str += '<td><div style="height:15px;width:15px;border:1px solid #DDEB9B;background-color:#F6CECE;margin:10px;"></div></td>';
 			str += '<td><P class="votesSharingHeaderPara">Bye Elections</P></td>';
@@ -1346,8 +1360,18 @@
 
 			str += '<div id="constituencyOverViewDiv"></div>';	
 			str += '<div id="crossVotingDetailsDiv" style="margin:10px;">';
-			str += '<div id="crossVotingHeadingDiv"> <P style="color:#247CD4;font-size:20px;font-weight:bold;text-decoration:underline;">';
-			str += 'Non Participating Parties Strength & Cross Voting Details</P></div>';	
+			str += '<div id="crossVotingHeadingDiv"> ';
+			str += '<table border="0" cellspacing="0" cellpadding="0">';
+			str += '<tr>';
+			str += '<td><img src="images/icons/tv9Icons/left_blue_main.png"/></td>';
+			str += '<td><div style="height:40px;background-image:url(\'images/icons/tv9Icons/header_body_blue.png\')">';
+			str += '<span style="color:#0C2640;font-size:20px;font-weight:bold;position:relative;top:5px;">';
+			str += 'Non Participating Parties Strength & Cross Voting Details</span>';
+			str += '</div></td>';
+			str += '<td><img src="images/icons/tv9Icons/right_blue_main.png"/></td>';
+			str += '</tr>';
+			str += '</table>';
+			str += '</div>';	
 			str+='<TABLE border="0" width="100%">';
 			str+='<TR>';
 			str+='<TD valign="top"><DIV id="nonParticipatingDiv" style="margin:20px 0px;"></TD>';
@@ -1360,8 +1384,17 @@
 			str += '<div id="overViewHeadingDiv" style="padding-left:10px;"></div>';
 			str += '<div id="constitutencyMandalWiseResultsChart"></div>';
 			str += '<div id="mandalVotingTrendzDataDiv_head">';
-			str += '<font style="color:#247CD4;font-size:20px;font-weight:bold;text-decoration:underline;">';
-			str += 'Voting Trendz in Constituency</font></div>';
+			str += '<table border="0" cellspacing="0" cellpadding="0">';
+			str += '<tr>';
+			str += '<td><img src="images/icons/tv9Icons/left_blue_main.png"/></td>';
+			str += '<td><div style="height:40px;background-image:url(\'images/icons/tv9Icons/header_body_blue.png\')">';
+			str += '<span style="color:#0C2640;font-size:20px;font-weight:bold;position:relative;top:6px;">';
+			str += 'Voting Trendz in Constituency</span>';
+			str += '</div></td>';
+			str += '<td><img src="images/icons/tv9Icons/right_blue_main.png"/></td>';
+			str += '</tr>';
+			str += '</table>';
+			str += '</div>';
 			str += '<div id="mandalVotingTrendzDataDiv">';
 			str += '<div id="mandalVotingTrendzDataDiv_body" class="yui-skin-sam">';
 			str += '	<div id="allPartiesResultsChartsPanel"></div>';
@@ -1604,30 +1637,31 @@
 			
 			}	
 			var mdlwiseVotersDetailsStr = '';
-			var mdlwiseVotersDetailsStr = '<P style="color:#247CD4;font-size:20px;font-weight:bold;text-decoration:underline;">Mandalwise Voters Share in Constituency</B></P>';
-			mdlwiseVotersDetailsStr+='<Table width="100%" border="0" cellpadding="5" cellspacing="5">';
+			mdlwiseVotersDetailsStr += '<table border="0" cellspacing="0" cellpadding="0">';
+			mdlwiseVotersDetailsStr += '<tr>';
+			mdlwiseVotersDetailsStr += '<td><img src="images/icons/tv9Icons/left_blue_main.png"/></td>';
+			mdlwiseVotersDetailsStr += '<td><div style="height:40px;background-image:url(\'images/icons/tv9Icons/header_body_blue.png\')">';
+			mdlwiseVotersDetailsStr += '<span style="color:#0C2640;font-size:20px;font-weight:bold;position:relative;top:5px;">';
+			mdlwiseVotersDetailsStr += 'Mandalwise Voters Share in Constituency</span>';
+			mdlwiseVotersDetailsStr += '</div></td>';
+			mdlwiseVotersDetailsStr += '<td><img src="images/icons/tv9Icons/right_blue_main.png"/></td>';
+			mdlwiseVotersDetailsStr += '</tr>';
+			mdlwiseVotersDetailsStr += '</table>';
+
+			mdlwiseVotersDetailsStr+='<Table width="70%" border="0" class="mandalVotesShareTable" cellpadding="5" cellspacing="5">';
 			mdlwiseVotersDetailsStr+='<TR>';			
+			mdlwiseVotersDetailsStr+='	<TH>Mandal</TH>';
+			mdlwiseVotersDetailsStr+='	<TH>%</TH>';
+			mdlwiseVotersDetailsStr+='	<TH>Analyze</TH>';
+			mdlwiseVotersDetailsStr+='</TR>';
 			for (var x in mandalwiseVotersShare[0].votersInfoForMandalVO)
-			{
-				
-				mdlwiseVotersDetailsStr+='<TD>';
-				mdlwiseVotersDetailsStr+='	<TABLE width="100%" class="mandalVotesShareTable">';
-				mdlwiseVotersDetailsStr+='		<TR>';
-				mdlwiseVotersDetailsStr+='			<TH>Mandal</TH>';
-				mdlwiseVotersDetailsStr+='			<TH>%</TH>';
-				mdlwiseVotersDetailsStr+='			<TH>Analyze</TH>';
-				mdlwiseVotersDetailsStr+='		</TR>';
-				mdlwiseVotersDetailsStr+='			<TD><A class="mandalvotersAnc" href="javascript:{}" title="Displays Parties Performane in All Elections Mandalwise" onclick="getMandalwiseVotesShare('+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalId+','+constituencyId+',\''+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'\')">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'</A></TD>';
-				mdlwiseVotersDetailsStr+='			<TD>'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].percent+' %</TD>';
-				mdlwiseVotersDetailsStr+='			<TD><A href="javascript:{}" class="mandalvotersAnc" title="Displays Parties Performane in All Elections Revenue Mandalwise" onclick="openwin('+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalId+',\''+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'\',\'Assembly\',\'2009\',\'3\')">Analyze</A></TD>';
-				mdlwiseVotersDetailsStr+='		</TR>';
-				mdlwiseVotersDetailsStr+='	</TABLE>';
-				mdlwiseVotersDetailsStr+='</TD>';				
-				if (x != 0 && x % 2 == 0)
-					{
-					
-					mdlwiseVotersDetailsStr += '</tr><tr>';
-					}
+			{				
+				mdlwiseVotersDetailsStr+='<TR>';				
+				mdlwiseVotersDetailsStr+='<TD align="left" style="text-align:left;"><A class="mandalvotersAnc" href="javascript:{}" title="Displays Parties Performane in All Elections Mandalwise" onclick="getMandalwiseVotesShare('+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalId+','+constituencyId+',\''+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'\')">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'</A></TD>';
+				mdlwiseVotersDetailsStr+='<TD align="center">'+mandalwiseVotersShare[0].votersInfoForMandalVO[x].percent+' %</TD>';
+				mdlwiseVotersDetailsStr+='<TD align="center"><A href="javascript:{}" class="mandalvotersAnc" title="Displays Parties Performane in All Elections Revenue Mandalwise" onclick="openwin('+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalId+',\''+mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName+'\',\'Assembly\',\'2009\',\'3\')">Analyze</A></TD>';
+				mdlwiseVotersDetailsStr+='</TR>';
+	
 				var mandalObj={
 					id: mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalId,
 					name: mandalwiseVotersShare[0].votersInfoForMandalVO[x].mandalName  
@@ -1635,7 +1669,7 @@
 				mandalNamesArr.push(mandalObj);
 										
 			}
-			mdlwiseVotersDetailsStr+='</TR>';
+			
 			mdlwiseVotersDetailsStr+='</Table>';
 			mandalvotersDetailsEl.innerHTML = mdlwiseVotersDetailsStr;
 				
@@ -1953,8 +1987,10 @@
 					var str = '';
 					str +='<div style="margin: 10px;">';
 					str += '<table border="1" width="100%" style="border-collapse:collapse;">';
-					str += '<tr><td valign="top" align="center"><img src="charts/'+resultsData.assemblyResultsChartForPresentYear+'"></td></tr>';
-					str += '<tr><td valign="top" align="center"><img src="charts/'+resultsData.assemblyResultsChartForPreviousYear+'"></td></tr>';
+					str += '<tr><td valign="top" align="left">';
+					str += '<img width="750" src="charts/'+resultsData.assemblyResultsChartForPresentYear+'"></td></tr>';
+					str += '<tr><td valign="top" align="left">';
+					str += '<img width="750" src="charts/'+resultsData.assemblyResultsChartForPreviousYear+'"></td></tr>';
 					str += '</table>';
 					str += '</div>';
 					imageDiv.innerHTML = str;
@@ -2388,6 +2424,7 @@
 
 </head>
 <body>
+	
 	<div style="background-color:#FFFFFF;padding-top:0px;">
 	<div id="windowHeader" style="background-color:black">
 	<table width="100%">
@@ -2520,8 +2557,7 @@
 				</center>
 				</div>		
 				
-				<div id="muncipality_corporation_div_main" style="width:auto;">
-					<center>
+				<div id="muncipality_corporation_div_main" style="width:auto;padding-left:10px;">
 					<table>
 						<tr>
 							<td align="left">
@@ -2539,8 +2575,7 @@
 							</div>
 							</td>
 						</tr>
-					</table>
-					</center>
+					</table>					
 				</div>
 		
 		<div id="index_footer" class="indexLayoutContainer" style="width:100%">
