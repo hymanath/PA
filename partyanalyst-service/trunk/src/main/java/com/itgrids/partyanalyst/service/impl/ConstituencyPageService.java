@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import javax.swing.Icon;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -1386,6 +1387,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return partyVotes;		
 	}
 	
+	//Need To be Refactored For Alliance Parties 
 	@SuppressWarnings("unchecked")
 	public List<PartyResultVO> getMandalsResultsInAnElection(String mandalIds, String electionYear, String electionType){
 		List validVotes = boothResultDAO.getAllPolledVotesForMandalsInAnElection(mandalIds, electionYear, electionType);
@@ -1430,6 +1432,33 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				mandalwisePartiesMap.put(mandalId, partiesResultsInMandals);
 			}
 			
+			String grp1 = "";
+			String grp2 = "";
+			
+			if(partyVotesEarnedMap.get(IConstants.BJP) != null && partyVotesEarnedMap.get(IConstants.TDP) != null){
+				if(partyVotesEarnedMap.get(IConstants.TDP) > partyVotesEarnedMap.get(IConstants.BJP))
+					grp1 = IConstants.TDP;
+				else
+					grp1 = IConstants.BJP;	
+			}else{
+				if(partyVotesEarnedMap.get(IConstants.BJP) == null)
+					grp1 = IConstants.TDP;
+				else
+					grp1 = IConstants.BJP;
+			}
+			
+			if(partyVotesEarnedMap.get(IConstants.INC) != null && partyVotesEarnedMap.get(IConstants.TRS) != null){
+				if(partyVotesEarnedMap.get(IConstants.INC) > partyVotesEarnedMap.get(IConstants.TRS))
+					grp2 = IConstants.INC;
+				else
+					grp2 = IConstants.TRS;	
+			}else{
+				if(partyVotesEarnedMap.get(IConstants.TRS) == null)
+					grp2 = IConstants.INC;
+				else
+					grp2 = IConstants.TRS;
+			}
+					
 			Float votesPercent = 0.0f;
 			List totalVoters = null;
 			Long totalVotersLong = 0l;
@@ -1454,8 +1483,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 					party.setElectors(totalVotersLong);
 					finalResults.add(party);
 				}				
-				finalResults.add(getPartyResultVOObjWithPercent(IConstants.TRS, votesPercent.toString(), totalVotersLong, mandalName));
-				finalResults.add(getPartyResultVOObjWithPercent(IConstants.BJP, validVotesPercent.toString(), totalVotersLong, mandalName));
+				finalResults.add(getPartyResultVOObjWithPercent(grp2, votesPercent.toString(), totalVotersLong, mandalName));
+				finalResults.add(getPartyResultVOObjWithPercent(grp1, validVotesPercent.toString(), totalVotersLong, mandalName));
 			}
 		}catch (Exception e) {
 			log.debug("Exception Occured While Processing Mandal Data");
