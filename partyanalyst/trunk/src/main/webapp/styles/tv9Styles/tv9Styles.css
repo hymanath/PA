@@ -222,3 +222,50 @@ overflow:visible;
 	font-size:17px;
 	color:#2E0933;
 }
+
+/* Styles for Revenue Village popup*/
+
+.votesShareTable th {
+background-image:url("../../images/icons/tv9Icons/thBackGround.png");
+border:1px solid #ADADAD;
+color:#FFFFFF;
+padding:5px;
+font-size:19px;
+}
+
+.votesShareTable td {
+border:2px solid #212629;
+color:#121922;
+font-family:Verdana;
+font-size:12px;
+padding:5px;
+text-align:center;
+font-size:18px;
+}
+
+#revenueDataTable table
+{
+	width:70%;
+}
+
+#revenueDataTable .yui-dt th a 
+{
+	font-size:17px;
+}
+
+#revenueDataTable .yui-dt td {
+color:#121922;
+font-size:16px;
+font-weight:bold;
+}
+
+#candidateDetails .yui-dt th a 
+{
+	font-size:17px;
+}
+
+#candidateDetails .yui-dt td {
+color:#121922;
+font-size:16px;
+font-weight:bold;
+}

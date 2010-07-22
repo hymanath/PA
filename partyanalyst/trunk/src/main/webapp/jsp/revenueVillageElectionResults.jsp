@@ -209,6 +209,9 @@ legend
 }
 
 </style>
+
+<link rel="stylesheet" type="text/css" href="styles/tv9Styles/tv9Styles.css">
+
 <script type="text/javascript">
 			var mandalId = "${tehsilId}" ;
 			var mandalName = "${mandalName}";
@@ -238,7 +241,8 @@ legend
 				
 					rvStr += '<fieldset>';
 					rvStr += '<legend style="background-color: rgb(86, 122, 175); font-family: verdana,helvetica,clean,sans-serif; color: rgb(255, 255, 255);';
-					rvStr += 'font-weight: bold; padding: 10px; font-size: 20px;">${constiElec.constituencyName}</legend>';
+					rvStr += 'font-weight: bold; padding: 10px; font-size: 20px;">${constiElec.constituencyName}</legend>';	
+
 					rvStr += '<table width="100%" border="0">';
 					rvStr += '<tr>';
 					rvStr += '<td style="vertical-align:top;" align="left">';
@@ -246,29 +250,11 @@ legend
 					rvStr += '</td>';
 					rvStr += '</tr>';
 					rvStr += '<tr>';
-					rvStr += '<td align="left" style="vertical-align:top;">';
-						rvStr += '<table align="left" width="50%" border="0"><tr><td align="left">';
-						rvStr += '<br><font color="" size="4px">Participated Candidate Details</font><br><br>';		
-							rvStr += '<div id="candiDiv_${constiElec.constituencyId}"  style="font-size:12px;">'
-							rvStr += '<table id="candiTable_${constiElec.constituencyId}" width="60%" align="center">';
-							<c:forEach var="candidateInfo" items="${constiElec.candidateNamePartyAndStatus}">
-								rvStr += '<tr>';
-								rvStr += '<td><A href="javascript:{}" title="Click to see Revenue Villageswise Performance Of \'${candidateInfo.party}\'" onclick="openPartywiseResultsWin('+mandalId+',\''+mandalName+'\',${candidateInfo.partyId},\'${candidateInfo.party}\')">${candidateInfo.party}</A></td>';
-								rvStr += '<td>${candidateInfo.candidateName}</td>';
-								rvStr += '<td>${candidateInfo.rank}</td>';
-								rvStr += '</tr>';
-							</c:forEach>
-							rvStr += '</table>';		
-							rvStr += '</div>';		
-						rvStr += '</td></tr></table>';						
-					
-					rvStr += '</td>';
-					rvStr += '</tr>';
+					rvStr += '<td><div id="villagewiseVotesShare" style="margin:20px 0px 20px 0px;"></div></td>';
+					rvStr += '</tr>';			
 					rvStr += '</table>';				
-					
-					rvStr += '<div id="villagewiseVotesShare" style="margin:20px 0px 20px 0px;"></div>';				
 	
-					rvStr += '<div id="div_${constiElec.constituencyId}" class="revenueDtTable">';
+					rvStr += '<div id="revenueDataTable" class="yui-skin-sam"><div id="div_${constiElec.constituencyId}" class="revenueDtTable">';
 					rvStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;" id="table_${constiElec.constituencyId}">';
 					<c:forEach var="villageElec" items="${constiElec.revenueVillageElectionVO}">
 						rvStr += '<tr>';	
@@ -282,7 +268,39 @@ legend
  						rvStr += '</tr>';
 					</c:forEach>
 					rvStr += '</table>';
+					rvStr += '</div></div>';
+					
+					rvStr += '<br/><br/>';
+
+					rvStr += '<div id="candidateDetails" class="yui-skin-sam">';
+					rvStr += '<table align="left" width="50%" border="0">';
+					rvStr += '	<tr>';
+					rvStr += '	 <td align="left">';
+					rvStr += '		<table cellspacing="0" cellpadding="0" border="0">';
+					rvStr += '			<tr>';
+					rvStr += '				<td><img src="images/icons/tv9Icons/left_blue_main.png"></td>';
+					rvStr += '				<td>';
+					rvStr += '					<div style="height: 40px; background-image: url(\'images/icons/tv9Icons/header_body_blue.png\');"><span style="color:#0C2640; font-size: 20px; font-weight: bold; position: relative; top: 7px;">Participated Candidate Details</span></div></td>';
+					rvStr += '				<td><img src="images/icons/tv9Icons/right_blue_main.png"></td>';
+					rvStr += '		</table>';					
+					rvStr += '	 </td>';
+					rvStr += '	</tr>';
+					rvStr += '	<tr>';
+					rvStr += '	<td>';
+						rvStr += '<div id="candiDiv_${constiElec.constituencyId}"  style="font-size:12px;">'
+						rvStr += '<table id="candiTable_${constiElec.constituencyId}" width="60%" align="center">';
+						<c:forEach var="candidateInfo" items="${constiElec.candidateNamePartyAndStatus}">
+							rvStr += '<tr>';
+							rvStr += '<td><A href="javascript:{}" title="Click to see Revenue Villageswise Performance Of \'${candidateInfo.party}\'" onclick="openPartywiseResultsWin('+mandalId+',\''+mandalName+'\',${candidateInfo.partyId},\'${candidateInfo.party}\')">${candidateInfo.party}</A></td>';
+							rvStr += '<td>${candidateInfo.candidateName}</td>';
+							rvStr += '<td>${candidateInfo.rank}</td>';
+							rvStr += '</tr>';
+						</c:forEach>
+						rvStr += '</table>';		
+						rvStr += '</div>';		
+					rvStr += '</td></tr></table>';											
 					rvStr += '</div>';
+
 					rvStr += '</fieldset>';
 				</c:forEach>
 				resultDiv.innerHTML = rvStr;			
@@ -428,18 +446,19 @@ legend
 
 				var str = '';
 				
-				str += '<table width="100%" class="votesShareTable">';
+				str += '<table width="950px" class="votesShareTable">';
 				str += '<tr>';
-				str += '<td colspan="9" style="padding:0px;">';
+				str += '<td colspan="9" style="padding:0px;border:0px;">';
 				str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
 				str+='			<tr>';
-				str+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/electionResultsAnalysisReport/header_left.gif"></td>';
+				str+='			<td width="2%" style="padding:0px;border:none;">';
+				str+='				<img src="images/icons/tv9Icons/first.png"></td>';
 				str+='			<td width="98%" style="padding:0px;border:none;">';
 				str+='				<div class="detailsTableHeader" style="width:100%;">';
 				str+='				<table width="100%" border="0" cellpadding="0" cellmargin="0">';
 				str+='				<tr>';
-				str+='				<td width="50%" align="left" style="border:none;padding:0px;text-align:left;"><span class="detailsTableHeaderSpan">  All Parties Vote Bank Based On Rank - '+jsObj.rank+'</span></td>';
-				str+='				<td width="50%" style="border:none;padding:0px;text-align:right;" align="right">';
+				str+='				<td width="60%" align="left" style="border:0px;padding:0px;text-align:left;"><span class="detailsTableHeaderSpan">  All Parties Vote Bank Based On Rank - '+jsObj.rank+'</span></td>';
+				str+='				<td width="40%" style="border:none;padding:0px;text-align:right;" align="right">';
 				str+='					<span class="detailsTableHeaderSpan">';
 				str+='						Select Rank - ';
 				str+=						getRadioStr(jsObj.rank);
@@ -449,7 +468,7 @@ legend
 				str+='				</table>';				
 				str+='				</div>';
 				str+='			</td>';
-				str+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/electionResultsAnalysisReport/second.png"></td>';
+				str+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/tv9Icons/second.png"></td>';
 				str+='			</tr>';
 				str+='		</table>';
 				str += '</td>';
@@ -663,7 +682,7 @@ legend
 	</tbody></table>
 
 		<div class="inputSelectionCriteria">
-		<table width="80%" align="center" border="0">
+		<table width="80%" border="0">
 		<tr>
 			<td id="labelRadio">Select Election Year</td>
 			<td>		
