@@ -1524,6 +1524,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
     			votersInf.setMandalId(votersInMandalOrAC.getMandalId());
     			votersInf.setMandalName(votersInMandalOrAC.getMandalName());
     			votersInf.setPercent(percentage.toString());
+    			votersInf.setTotVoters(new BigDecimal(votersInMandalOrAC.getTotalVoters()));
     			votersInfoForMandal.add(votersInf);
     		}	
     		Collections.sort(votersInfoForMandal, new VotersInfoForMandalVOComparator());
