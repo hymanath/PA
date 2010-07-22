@@ -940,7 +940,14 @@
 
 			str += '</table>';
 			shareElmt.innerHTML = str;
-
+			var headDivEl = document.getElementById("headDiv");
+			headDivEl.innerHTML = '';
+			var headDivElStr='';
+			headDivElStr += 'Parties Performance in '+jsObj.constiName+' Assembly Constituencey Limits In Different Elections';
+			if(headDivEl)	 			
+			{
+				headDivEl.innerHTML = headDivElStr;            	
+			}
 			var chartDivElmt = document.getElementById("constitutencyResultsChart");
 			var imgStr = '';
 			imgStr+='<img width="750" src="charts/'+chartName+'" border="none" />';		
@@ -1000,7 +1007,7 @@
 			return status;
 		}
 
-		//siva
+	
 		function showSelectedColoumn(checkedValue)
 		{
 			var docelements = document.getElementsByTagName('input'); 		
