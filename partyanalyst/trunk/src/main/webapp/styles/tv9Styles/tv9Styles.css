@@ -158,7 +158,7 @@ background-image:url("../../images/icons/indexPage/reportGroupHeader.png");
 color:#FFFFFF;
 font-weight:bold;
 font-size:19px;
-padding:11px;
+padding:0px;
 }
 
 #zptc_body, #mptc_body {
@@ -199,6 +199,12 @@ overflow:visible;
 #zptcPartyTrendsDetailsDiv
 {
 	width:100%;
+}
+
+.mptcZptcSpanHead
+{
+	position:relative;
+	top:7px;
 }
 
 .yui-skin-sam .yui-dt table 
