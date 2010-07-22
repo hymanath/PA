@@ -1533,7 +1533,7 @@
 		
 		function buildMandalVotingTrendzData(jsObj,resultsData)
 		{
-			
+             
 			var headElmt = document.getElementById("mandalVotingTrendzDataDiv_head");
 			var bodyElmt = document.getElementById("mandalVotingTrendzData");
 			var graphElmt = document.getElementById("mandalDetailsChart_body");
@@ -1766,7 +1766,7 @@
 			
 			//Rendering Mandal voting trendz data
 			var chartDetailsObjArr = resultsData.chartsListForElectionTypes;
-			if(results != null )
+			if(results[0].biElectionResultsVO != null )
 			{
 				bodyElmt.innerHTML = '';
 				var str = '';
