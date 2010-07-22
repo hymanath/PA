@@ -24,6 +24,8 @@ public class BiElectionResultsMainVO implements Serializable {
 	private List<ElectionTypeChartVO> chartsListForElectionTypesAllParties;
 	private List<ElectionDataVO> urbanRuralConstiResults;
 	private ElectionWiseMandalPartyResultListVO allPartiesElecInfo;
+	private List<PartyInfoVO> nonParticipatingParties;
+	private List<PartyResultsVO> crossVotingResults;
 	
 	public List<String> getAllPartiesElectionResultsChart() {
 		return allPartiesElectionResultsChart;
@@ -111,8 +113,17 @@ public class BiElectionResultsMainVO implements Serializable {
 	public void setConstituencyType(String constituencyType) {
 		this.constituencyType = constituencyType;
 	}
+	public List<PartyInfoVO> getNonParticipatingParties() {
+		return nonParticipatingParties;
+	}
+	public void setNonParticipatingParties(List<PartyInfoVO> nonParticipatingParties) {
+		this.nonParticipatingParties = nonParticipatingParties;
+	}
+	public List<PartyResultsVO> getCrossVotingResults() {
+		return crossVotingResults;
+	}
+	public void setCrossVotingResults(List<PartyResultsVO> crossVotingResults) {
+		this.crossVotingResults = crossVotingResults;
+	}
 	
-	
-	
-
 }
