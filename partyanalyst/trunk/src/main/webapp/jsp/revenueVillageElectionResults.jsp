@@ -457,7 +457,7 @@ legend
 				str+='				<div class="detailsTableHeader" style="width:100%;">';
 				str+='				<table width="100%" border="0" cellpadding="0" cellmargin="0">';
 				str+='				<tr>';
-				str+='				<td width="60%" align="left" style="border:0px;padding:0px;text-align:left;"><span class="detailsTableHeaderSpan">  All Parties Vote Bank Based On Rank - '+jsObj.rank+'</span></td>';
+				str+='				<td width="60%" align="left" style="border:0px;padding:0px;text-align:left;"><span class="detailsTableHeaderSpan">  All Parties Vote Bank Based On Position - '+jsObj.rank+'</span></td>';
 				str+='				<td width="40%" style="border:none;padding:0px;text-align:right;" align="right">';
 				str+='					<span class="detailsTableHeaderSpan">';
 				str+='						Select Rank - ';
@@ -668,11 +668,11 @@ legend
 <table width="100%" bgcolor="black" cellpadding="0" cellspacing="0">
 		<tbody><tr>		
 		<td width="14%" align="right"><img src="images/icons/homePage/pa_logo.jpg"></td>
-			<td width="72%" align="center">
-				<table cellspacing="0" cellpadding="0" border="0">
+			<td width="72%" align="left">
+				<table cellspacing="0" cellpadding="0" border="0" style="margin-left:30px;">
 				<tbody><tr>
 					<td valign="top"><img border="none" style="margin-top: 15px;" src="images/icons/electionResultsReport/elections_logo1.png"></td>
-					<td valign="top"><div class="mainHeading" id="mainHead">			Revenue Villages Wise ${electionType} ${electionYear } Election Results In ${mandalName} Mandal</div></td>
+					<td valign="top"><div class="mainHeading" id="mainHead"> Villages Wise ${electionType} ${electionYear } Results In ${mandalName} Mandal</div></td>
 					<td valign="top"><img border="none" style="margin-top: 15px;" src="images/icons/electionResultsReport/elections_logo2.png"></td>
 				</tr>
 				</tbody></table>
