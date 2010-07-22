@@ -713,8 +713,9 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				
 		}
 		
-		if(biElectionResultsMainVO.getBiElectionResultsMainVO() != null)
+		if(biElectionResultsMainVO.getBiElectionResultsMainVO() != null){
 			biElectionResultsMainVO.setChartsListForElectionTypes(getElectionResultsPieChart(constiId, constiName, biElectionResultsMainVO.getBiElectionResultsMainVO()));
+		}
 		else
 			getPieChartsInfo(biElectionResultsMainVO, constiId);
 		constituencyVO = getVotersShareInMandalsPieChart(constiId);
@@ -922,6 +923,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				
 		for(BiElectionResultsVO resultsObj :biElectionResultsVO)
 		{
+			if(resultsObj.getBiElectionResultsVO() != null){
 			List<ElectionResultsForMandalVO> results = resultsObj.getBiElectionResultsVO();
 			for(ElectionResultsForMandalVO electionResultsForMandalVO:results)
 				{
@@ -932,6 +934,10 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 					}
 				
 				}
+			}
+			else if(resultsObj.getBiElectionResultsVO() == null){
+				return null;
+			}
 		}	
 		return electionResultsChart;
 	}
