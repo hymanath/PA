@@ -1180,7 +1180,12 @@
               <result type="json" name="success">
            		<param name="root">zptcMptcResultsInMandal</param>
         	</result>       		
-        </action>        
+        </action> 
+        <action name="getUrbanRuralResultsAjaxAction" class="constituencyVotingTrendzAction" method="getUrbanRuralResults"> 
+              <result type="json" name="success">
+           		<param name="root">urbanRuralResultsVO</param>
+        	</result>       		
+        </action>       
 	</package>
 </struts>
 
