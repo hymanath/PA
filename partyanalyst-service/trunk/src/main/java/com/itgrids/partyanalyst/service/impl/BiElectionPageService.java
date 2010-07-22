@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
+import com.itgrids.partyanalyst.dto.ByeElecGroupVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultAllPartyVO;
 import com.itgrids.partyanalyst.dto.ConstituencyMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
@@ -72,6 +73,7 @@ import com.itgrids.partyanalyst.service.IBiElectionPageService;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.ByeElecGroupVOComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultTypeComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyInfoVOComparator;
@@ -2521,64 +2523,141 @@ public class BiElectionPageService implements IBiElectionPageService {
 	
 	//To Get The Results In User Required Format
 	public ElectionWiseMandalPartyResultListVO getResultsOfRuralUrbanAreaBeasedOnSelection(Long constituencyId, 
-			Set<String> parties, Set<String> elecTypeOrYear, Boolean isElecTypeOnly){
+			Set<String> parties, Set<String> elecTypeOrYear, Boolean isElecTypeOnly, Boolean isAlliance){
 		ElectionWiseMandalPartyResultListVO allElecAllParties = getMandalWiseResultsForSelectedPartiesInConstituency(constituencyId).
 																								getAllPartiesElecInfo();
 		List<PartyResultVO> allPartiesInfo = allElecAllParties.getAllPartiesAllElectionResults();
 		Set<String> electionsHeading = new LinkedHashSet<String>();
 		List<SelectOptionVO> electionsHeadingList = new ArrayList<SelectOptionVO>();
-		List<PartyResultVO> selectedPartiesInfo = null;
+		
+		List<PartyResultVO> selectedPartiesInfo = new ArrayList<PartyResultVO>();
 		if(parties != null && parties.size() > 0){
-			selectedPartiesInfo = new ArrayList<PartyResultVO>();
 			for(PartyResultVO partyInfo:allPartiesInfo)
 				if(parties.contains(partyInfo.getPartyName()))
 					selectedPartiesInfo.add(partyInfo);
 		}
 		
-		if(elecTypeOrYear != null && elecTypeOrYear.size() > 0){
-			if(selectedPartiesInfo == null){
-				getResultsForSelectedElections(allPartiesInfo, elecTypeOrYear, electionsHeading, isElecTypeOnly);
-				allElecAllParties.setAllPartiesAllElectionResults(allPartiesInfo);
-			}
-			else{
-				getResultsForSelectedElections(selectedPartiesInfo, elecTypeOrYear, electionsHeading, isElecTypeOnly);
-				allElecAllParties.setAllPartiesAllElectionResults(selectedPartiesInfo);
+		if(selectedPartiesInfo.size() > 0)
+			allPartiesInfo = selectedPartiesInfo;
+		
+		if(elecTypeOrYear != null && elecTypeOrYear.size() > 0)
+			getResultsForSelectedElections(allPartiesInfo, elecTypeOrYear, electionsHeading, isElecTypeOnly);
+		
+		if(isAlliance)
+			getAlliancePartiesGroupedResult(allPartiesInfo);
+				
+		//Calculating Range
+		List<Float> partyPecentages = null;
+		for(PartyResultVO party:allPartiesInfo){
+			partyPecentages = new ArrayList<Float>();
+			for(ElectionResultVO elec:party.getElectionWiseResults()){
+				if(elec.getPercentage().equals("-1"))
+					continue;
+				partyPecentages.add(new Float(elec.getPercentage()));	
 			}
 			
+			Collections.sort(partyPecentages);
+			if(partyPecentages.size() > 0)
+				party.setRange(partyPecentages.get(0)+"-"+partyPecentages.get(partyPecentages.size()-1));
+			else
+				party.setRange("--");
 		}
-		
+
+		allElecAllParties.setAllPartiesAllElectionResults(allPartiesInfo);
+
 		for(String elec:electionsHeading)
 			electionsHeadingList.add(new SelectOptionVO(0l, elec));
 		if(electionsHeadingList.size() > 0)
 			allElecAllParties.setElections(electionsHeadingList);
+		
 		return allElecAllParties;
 	}
 
+	private void getAlliancePartiesGroupedResult(List<PartyResultVO> allPartiesInfo){
+		List<ByeElecGroupVO> allianceGroup1 = new ArrayList<ByeElecGroupVO>();
+		List<ByeElecGroupVO> allianceGroup2 = new ArrayList<ByeElecGroupVO>();
+		ByeElecGroupVO byeElecGroupVO = null;
+		Float grp1Percent = 0.0f;
+		Float grp2Percent = 0.0f;
+		for(int j=0; j<allPartiesInfo.size(); j++){
+			if(allPartiesInfo.get(j).getPartyName().equalsIgnoreCase(IConstants.INC) || 
+					allPartiesInfo.get(j).getPartyName().equalsIgnoreCase(IConstants.TRS)){
+				for(int i=0; i<allPartiesInfo.get(j).getElectionWiseResults().size(); i++){
+					if(allPartiesInfo.get(j).getElectionWiseResults().get(i).getElectionYearAndType().
+							equalsIgnoreCase(IConstants.PREVIOUS_ELECTION_YEAR+" "+IConstants.ASSEMBLY_ELECTION_TYPE)){
+						byeElecGroupVO = new ByeElecGroupVO();
+						byeElecGroupVO.setPartyName(allPartiesInfo.get(j).getPartyName());
+						byeElecGroupVO.setPercenatge(allPartiesInfo.get(j).getElectionWiseResults().get(i).getPercentage());
+						byeElecGroupVO.setIndexOfElection(i);
+						byeElecGroupVO.setIndexOfParty(j);
+						grp1Percent += new Float(allPartiesInfo.get(j).getElectionWiseResults().get(i).getPercentage());
+						allianceGroup1.add(byeElecGroupVO);
+					}
+				}
+			}else if(allPartiesInfo.get(j).getPartyName().equalsIgnoreCase(IConstants.TDP) || 
+					allPartiesInfo.get(j).getPartyName().equalsIgnoreCase(IConstants.BJP)){
+				for(int i=0; i<allPartiesInfo.get(j).getElectionWiseResults().size(); i++){
+					if(allPartiesInfo.get(j).getElectionWiseResults().get(i).getElectionYearAndType().
+							equalsIgnoreCase(IConstants.PREVIOUS_ELECTION_YEAR+" "+IConstants.ASSEMBLY_ELECTION_TYPE)){
+						byeElecGroupVO = new ByeElecGroupVO();
+						byeElecGroupVO.setPartyName(allPartiesInfo.get(j).getPartyName());
+						byeElecGroupVO.setPercenatge(allPartiesInfo.get(j).getElectionWiseResults().get(i).getPercentage());
+						byeElecGroupVO.setIndexOfElection(i);
+						byeElecGroupVO.setIndexOfParty(j);
+						grp2Percent += new Float(allPartiesInfo.get(j).getElectionWiseResults().get(i).getPercentage());
+						allianceGroup2.add(byeElecGroupVO);
+					}
+				}
+			}
+		}
+		
+		Collections.sort(allianceGroup1, new ByeElecGroupVOComparator());
+		Collections.sort(allianceGroup2, new ByeElecGroupVOComparator());
+		
+		int i=0;
+		for(ByeElecGroupVO groupEle:allianceGroup1){
+			if(i == 0)
+				allPartiesInfo.get(groupEle.getIndexOfParty()).getElectionWiseResults().
+					get(groupEle.getIndexOfElection()).setPercentage(grp1Percent.toString());
+			else
+				allPartiesInfo.get(groupEle.getIndexOfParty()).getElectionWiseResults().
+				get(groupEle.getIndexOfElection()).setPercentage("-1");
+			i++;
+		}
+		
+		i=0;
+		for(ByeElecGroupVO groupEle:allianceGroup2){
+			if(i == 0)
+				allPartiesInfo.get(groupEle.getIndexOfParty()).getElectionWiseResults().
+					get(groupEle.getIndexOfElection()).setPercentage(grp2Percent.toString());
+			else
+				allPartiesInfo.get(groupEle.getIndexOfParty()).getElectionWiseResults().
+				get(groupEle.getIndexOfElection()).setPercentage("-1");
+			i++;
+		}
+			
+		
+	}
+	
 	private void getResultsForSelectedElections(
 			List<PartyResultVO> selectedPartiesInfo,Set<String> elecTypeOrYear, 
 			Set<String> electionsHeading, Boolean isElecTypeOnly) {
 		List<ElectionResultVO> selectedElections = null;
-		List<Float> partyPecentages = null;
 		for(PartyResultVO partyInfo:selectedPartiesInfo){
 			selectedElections = new ArrayList<ElectionResultVO>();
-			partyPecentages = new ArrayList<Float>();
 			for(ElectionResultVO election:partyInfo.getElectionWiseResults()){
 				if(isElecTypeOnly){
 					if(elecTypeOrYear.contains(election.getElectionType())){
 						selectedElections.add(election);
-						partyPecentages.add(new Float(election.getPercentage()));
 						electionsHeading.add(election.getElectionYearAndType());
 					}
 				}else{
 					if(elecTypeOrYear.contains(election.getElectionYearAndType())){
 						selectedElections.add(election);
-						partyPecentages.add(new Float(election.getPercentage()));
 						electionsHeading.add(election.getElectionYearAndType());
 					}
 				}
 			}
-			Collections.sort(partyPecentages);
-			partyInfo.setRange(partyPecentages.get(0)+"-"+partyPecentages.get(partyPecentages.size()-1));
 			partyInfo.setElectionWiseResults(selectedElections);
 		}
 	}

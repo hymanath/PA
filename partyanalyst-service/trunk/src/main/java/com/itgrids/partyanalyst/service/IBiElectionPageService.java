@@ -54,5 +54,5 @@ public interface IBiElectionPageService {
 	public List<PartyVillageLevelAnalysisVO> villageLevelPArtyAnalysis(Long tehsilId,String electionType,String electionYear,int rank);
 	
 	public ElectionWiseMandalPartyResultListVO getResultsOfRuralUrbanAreaBeasedOnSelection(Long constituencyId, 
-			Set<String> parties, Set<String> elecTypeOrYear, Boolean isElecType);
+			Set<String> parties, Set<String> elecTypeOrYear, Boolean isElecType, Boolean includeAlliance);
 }
