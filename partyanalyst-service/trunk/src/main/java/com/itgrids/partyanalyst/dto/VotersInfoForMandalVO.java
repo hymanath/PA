@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.math.BigDecimal;
+
 public class VotersInfoForMandalVO {
 	
 	private String mandalId;
@@ -9,6 +11,7 @@ public class VotersInfoForMandalVO {
 	private String totalVoters;
 	private String isPartial;
 	private String percent;
+	private BigDecimal totVoters;
 	
 	public String getMandalId() {
 		return mandalId;
@@ -51,5 +54,11 @@ public class VotersInfoForMandalVO {
 	}
 	public void setPercent(String percent) {
 		this.percent = percent;
+	}
+	public BigDecimal getTotVoters() {
+		return totVoters;
+	}
+	public void setTotVoters(BigDecimal totVoters) {
+		this.totVoters = totVoters;
 	}
 }
