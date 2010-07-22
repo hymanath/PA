@@ -1614,28 +1614,28 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 * @INPUT election results list
 	 * @OUTPUT non participating parties results list as PartyInfoVO
 	 */
-	public List<PartyInfoVO> getNonParticipatingPartiesResults(List<ElectionDataVO> urbanRuralConstiResults){
+	public List<PartyResultsVO> getNonParticipatingPartiesResults(List<ElectionDataVO> urbanRuralConstiResults){
 		
 		log.debug(" Entered Into getNonParticipatingPartiesResults Method ...");
 		
-		List<PartyInfoVO> partyResList = null;
+		List<PartyResultsVO> partyResList = null;
 		ResultStatus resultStatus = new ResultStatus();
 		
 		try{
 			//check for election results list
 			if(urbanRuralConstiResults != null && urbanRuralConstiResults.size() > 0){
-				for(ElectionDataVO resultLst:urbanRuralConstiResults){
-					if(resultLst.getElectionType().equals(IConstants.ASSEMBLY_ELECTION_TYPE) && 
-							resultLst.getElectionYear().equals(IConstants.PRESENT_ELECTION_YEAR)){
-						for(ConstituencyMandalVO totRes:resultLst.getConstituencyMandalInfo()){
-						if(totRes.getIsTotal()){
-						partyResList = getPartiesResultDetails(totRes.getPartiesReslts());
-						}
-						}
-					break;
+				partyResList = new ArrayList<PartyResultsVO>();
+				
+				List<PartyResultsVO> partyResInfo = getCrossVotingResults(urbanRuralConstiResults);
+				if(partyResInfo != null && partyResInfo.size() > 0){
+				for(PartyResultsVO res:partyResInfo){
+					if(res.getPartyName().equals(IConstants.BJP) ||
+							res.getPartyName().equals(IConstants.PRP)){
+						partyResList.add(res);
 					}
 				}
-				
+				getTotalResults(partyResList,0L);
+				}
 			}
 		
 		}catch(Exception ex){
@@ -1648,19 +1648,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 return partyResList;
 	}
 	
-	public List<PartyInfoVO> getPartiesResultDetails(List<PartyInfoVO> allPartysRes){
-		
-		List<PartyInfoVO> partiesResList = null;
-		if(allPartysRes != null && allPartysRes.size() > 0){
-			partiesResList = new ArrayList<PartyInfoVO>();
-			for(PartyInfoVO res:allPartysRes){
-				if(res.getPartyShortName().equals(IConstants.BJP) || 
-						res.getPartyShortName().equals(IConstants.PRP))
-					partiesResList.add(res);
-			}
-		}
-	 return partiesResList;
-	}
+	
 
 	/*
 	 * Method To Obtain Cross Voting Details for Parties In 2009 General Election
@@ -1713,6 +1701,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 					crossVotingDetails.add(resultVO);
 					}
 				}
+				getTotalResults(crossVotingDetails,1L);
 				}
 			}
 			
@@ -1725,6 +1714,34 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 return crossVotingDetails;
 	}
 	
+	public void getTotalResults(List<PartyResultsVO> resultDetails,Long type){
+		
+		if(resultDetails != null && resultDetails.size() > 0){
+			
+			Long totAssemblyVE = new Long(0);
+			Double totAssembltVP = new Double(0);
+			Long totParliamentVE = new Long(0);
+			Double totParliamentVP = new Double(0);
+			
+			for(PartyResultsVO res:resultDetails){
+				totAssemblyVE+=res.getVotesEarned();
+				totParliamentVE+=res.getBallotVotes();
+				totAssembltVP+=new Double(res.getPercentage());
+				totParliamentVP+=new Double(res.getBallotVotesPercentage());
+			}
+			
+			PartyResultsVO totResult = new PartyResultsVO();
+			totResult.setPartyName("Total");
+			totResult.setVotesEarned(totAssemblyVE);
+			totResult.setBallotVotes(totParliamentVE);
+			totResult.setPercentage(new BigDecimal(totAssembltVP).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			totResult.setBallotVotesPercentage(new BigDecimal(totParliamentVP).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			if(type.equals(1L))
+				totResult.setDiffPercent(new BigDecimal(totAssembltVP - totParliamentVP).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			resultDetails.add(totResult);
+		}
+	}
+	
 	public Map<Long,PartyInfoVO> getElectionResultsMap(List<PartyInfoVO> partiesResList){
 		
 		log.debug(" Inside getElectionResultsMap Method ..");
@@ -1735,7 +1752,8 @@ public class BiElectionPageService implements IBiElectionPageService {
 				if(res.getPartyShortName().equals(IConstants.TRS) ||
 						res.getPartyShortName().equals(IConstants.INC) ||
 						res.getPartyShortName().equals(IConstants.TDP) ||
-						res.getPartyShortName().equals(IConstants.BJP)){
+						res.getPartyShortName().equals(IConstants.BJP) ||
+						res.getPartyShortName().equals(IConstants.PRP)){
 					resultsMap.put(res.getPartyId(), res);
 				}
 			}
@@ -1767,24 +1785,32 @@ public class BiElectionPageService implements IBiElectionPageService {
 	public BiElectionResultsMainVO getMandalWiseResultsForSelectedPartiesInConstituency(
 			Long constituencyId) {
 		BiElectionResultsMainVO biElectionResultsMainVO = new BiElectionResultsMainVO(); 
+		List<BiElectionResultsVO> biElectionResultsVO = new ArrayList<BiElectionResultsVO>();
 		
 		Constituency constituency = constituencyDAO.get(constituencyId);
 		
 		if("RURAL".equalsIgnoreCase(constituency.getAreaType()) || "URBAN".equalsIgnoreCase(constituency.getAreaType())){
+			
+			BiElectionResultsVO resultForCroVotAndNonParty = new BiElectionResultsVO();
 			biElectionResultsMainVO.setConstituencyType(constituency.getAreaType());
 			List<ElectionDataVO> urbanRuralConstiResults = getAllPartiesPerformanceInConstituency(constituencyId);
 			
 			if(urbanRuralConstiResults != null && urbanRuralConstiResults.size() > 0){
 			
 			//for non-participating parties
-			List<PartyInfoVO> nonParticipRes = getNonParticipatingPartiesResults(urbanRuralConstiResults);
+			List<PartyResultsVO> nonParticipRes = getNonParticipatingPartiesResults(urbanRuralConstiResults);
 			if(nonParticipRes != null && nonParticipRes.size() > 0)
-				biElectionResultsMainVO.setNonParticipatingParties(nonParticipRes);
-			
+				resultForCroVotAndNonParty.setNonPartiParties(nonParticipRes);
+									
 			//for cross voting details of all parties
 			List<PartyResultsVO> crossVotingRes = getCrossVotingResults(urbanRuralConstiResults);
             if(crossVotingRes != null && crossVotingRes.size() > 0)
-            	biElectionResultsMainVO.setCrossVotingResults(crossVotingRes);
+            	resultForCroVotAndNonParty.setCrossVotingResults(crossVotingRes);
+               
+            //set cross voting and non participating parties results VO in List
+            biElectionResultsVO.add(resultForCroVotAndNonParty);
+            //set List to main VO
+            biElectionResultsMainVO.setBiElectionResultsMainVO(biElectionResultsVO);
 			}
 			
 			biElectionResultsMainVO.setUrbanRuralConstiResults(urbanRuralConstiResults);
