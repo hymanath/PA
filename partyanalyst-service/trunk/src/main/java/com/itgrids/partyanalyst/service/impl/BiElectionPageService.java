@@ -1607,7 +1607,163 @@ public class BiElectionPageService implements IBiElectionPageService {
 		}
 		return allBoothsResultsForAPartyInAMandal;
 	}
+	
+	
+	/*
+	 * Method To Obtain Bye-Election 2010 Non-Participating Parties Details In 2009 General Election
+	 * @INPUT election results list
+	 * @OUTPUT non participating parties results list as PartyInfoVO
+	 */
+	public List<PartyInfoVO> getNonParticipatingPartiesResults(List<ElectionDataVO> urbanRuralConstiResults){
+		
+		log.debug(" Entered Into getNonParticipatingPartiesResults Method ...");
+		
+		List<PartyInfoVO> partyResList = null;
+		ResultStatus resultStatus = new ResultStatus();
+		
+		try{
+			//check for election results list
+			if(urbanRuralConstiResults != null && urbanRuralConstiResults.size() > 0){
+				for(ElectionDataVO resultLst:urbanRuralConstiResults){
+					if(resultLst.getElectionType().equals(IConstants.ASSEMBLY_ELECTION_TYPE) && 
+							resultLst.getElectionYear().equals(IConstants.PRESENT_ELECTION_YEAR)){
+						for(ConstituencyMandalVO totRes:resultLst.getConstituencyMandalInfo()){
+						if(totRes.getIsTotal()){
+						partyResList = getPartiesResultDetails(totRes.getPartiesReslts());
+						}
+						}
+					break;
+					}
+				}
+				
+			}
+		
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.debug(" Exception Raised :" + ex);
+						
+			resultStatus.setExceptionEncountered(ex);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}
+	 return partyResList;
+	}
+	
+	public List<PartyInfoVO> getPartiesResultDetails(List<PartyInfoVO> allPartysRes){
+		
+		List<PartyInfoVO> partiesResList = null;
+		if(allPartysRes != null && allPartysRes.size() > 0){
+			partiesResList = new ArrayList<PartyInfoVO>();
+			for(PartyInfoVO res:allPartysRes){
+				if(res.getPartyShortName().equals(IConstants.BJP) || 
+						res.getPartyShortName().equals(IConstants.PRP))
+					partiesResList.add(res);
+			}
+		}
+	 return partiesResList;
+	}
 
+	/*
+	 * Method To Obtain Cross Voting Details for Parties In 2009 General Election
+	 * @INPUT election results list
+	 * @OUTPUT cross voting details for all parties as PartyResultsVO
+	 */
+	public List<PartyResultsVO> getCrossVotingResults(List<ElectionDataVO> urbanRuralConstiResults){
+		
+		log.debug(" Entered Into getNonParticipatingPartiesResults Method ...");
+		List<PartyResultsVO> crossVotingDetails = null;
+		try{
+			
+			if(urbanRuralConstiResults != null && urbanRuralConstiResults.size() > 0){
+				
+				//for assembly and parliament results
+				Map<Long,PartyInfoVO> assemblyMap = new HashMap<Long,PartyInfoVO>();
+				Map<Long,PartyInfoVO> parlimntMap = new HashMap<Long,PartyInfoVO>();
+				
+				crossVotingDetails = new ArrayList<PartyResultsVO>();
+				
+				for(ElectionDataVO resultLst:urbanRuralConstiResults){
+					
+					Boolean flag = false;
+					if(resultLst.getElectionType().equals(IConstants.ASSEMBLY_ELECTION_TYPE) && 
+							resultLst.getElectionYear().equals(IConstants.PRESENT_ELECTION_YEAR))
+						flag = true;
+					else if(resultLst.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE) && 
+							resultLst.getElectionYear().equals(IConstants.PRESENT_ELECTION_YEAR))
+						flag = true;  
+				
+					if(flag){
+						for(ConstituencyMandalVO totRes:resultLst.getConstituencyMandalInfo()){
+							if(totRes.getIsTotal()){
+							  if(resultLst.getElectionType().equals(IConstants.ASSEMBLY_ELECTION_TYPE))
+								  assemblyMap = getElectionResultsMap(totRes.getPartiesReslts());
+							  else if(resultLst.getElectionType().equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+								  parlimntMap = getElectionResultsMap(totRes.getPartiesReslts());
+							}
+						}
+					}
+					
+				}
+				
+				//process the maps and set to VO
+				if(!assemblyMap.isEmpty() && !parlimntMap.isEmpty()){
+				Set<Long> keys = assemblyMap.keySet();
+				for(Long key:keys){
+					if(assemblyMap.containsKey(key) && parlimntMap.containsKey(key)){
+					PartyResultsVO resultVO = getCrossVotingData(assemblyMap.get(key),parlimntMap.get(key));
+					crossVotingDetails.add(resultVO);
+					}
+				}
+				}
+			}
+			
+			
+		}catch(Exception ex){
+			ex.printStackTrace();
+			log.debug(" Exception Raised :" + ex);
+		}
+		
+	 return crossVotingDetails;
+	}
+	
+	public Map<Long,PartyInfoVO> getElectionResultsMap(List<PartyInfoVO> partiesResList){
+		
+		log.debug(" Inside getElectionResultsMap Method ..");
+		Map<Long,PartyInfoVO> resultsMap = new HashMap<Long,PartyInfoVO>();
+		
+		if(partiesResList != null){
+			for(PartyInfoVO res:partiesResList){
+				if(res.getPartyShortName().equals(IConstants.TRS) ||
+						res.getPartyShortName().equals(IConstants.INC) ||
+						res.getPartyShortName().equals(IConstants.TDP) ||
+						res.getPartyShortName().equals(IConstants.BJP)){
+					resultsMap.put(res.getPartyId(), res);
+				}
+			}
+		}
+		
+	 return resultsMap;
+	}
+	
+	public PartyResultsVO getCrossVotingData(PartyInfoVO assemblyRes,PartyInfoVO parliamRes){
+		
+		log.debug(" Entered getCrossVotingData Method ..");
+		PartyResultsVO partyResult = null;
+		
+		if(assemblyRes != null && parliamRes != null){
+			partyResult = new PartyResultsVO();
+			
+			partyResult.setPartyId(assemblyRes.getPartyId());
+			partyResult.setPartyName(assemblyRes.getPartyShortName());
+			partyResult.setPercentage(assemblyRes.getPercentageOfVotes().toString());
+			partyResult.setVotesEarned(assemblyRes.getPartyTotalVotes());
+			partyResult.setBallotVotes(parliamRes.getPartyTotalVotes());
+			partyResult.setBallotVotesPercentage(parliamRes.getPercentageOfVotes().toString());
+			partyResult.setDiffPercent(new BigDecimal(assemblyRes.getPercentageOfVotes().doubleValue()-parliamRes.getPercentageOfVotes().doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+		}
+		
+	 return partyResult;	
+	}
+	
 	public BiElectionResultsMainVO getMandalWiseResultsForSelectedPartiesInConstituency(
 			Long constituencyId) {
 		BiElectionResultsMainVO biElectionResultsMainVO = new BiElectionResultsMainVO(); 
@@ -1617,6 +1773,20 @@ public class BiElectionPageService implements IBiElectionPageService {
 		if("RURAL".equalsIgnoreCase(constituency.getAreaType()) || "URBAN".equalsIgnoreCase(constituency.getAreaType())){
 			biElectionResultsMainVO.setConstituencyType(constituency.getAreaType());
 			List<ElectionDataVO> urbanRuralConstiResults = getAllPartiesPerformanceInConstituency(constituencyId);
+			
+			if(urbanRuralConstiResults != null && urbanRuralConstiResults.size() > 0){
+			
+			//for non-participating parties
+			List<PartyInfoVO> nonParticipRes = getNonParticipatingPartiesResults(urbanRuralConstiResults);
+			if(nonParticipRes != null && nonParticipRes.size() > 0)
+				biElectionResultsMainVO.setNonParticipatingParties(nonParticipRes);
+			
+			//for cross voting details of all parties
+			List<PartyResultsVO> crossVotingRes = getCrossVotingResults(urbanRuralConstiResults);
+            if(crossVotingRes != null && crossVotingRes.size() > 0)
+            	biElectionResultsMainVO.setCrossVotingResults(crossVotingRes);
+			}
+			
 			biElectionResultsMainVO.setUrbanRuralConstiResults(urbanRuralConstiResults);
 			ElectionWiseMandalPartyResultListVO allElectionsInfo = getAllElecReultsForConstituencyIncludingLocal(urbanRuralConstiResults, 
 					constituency.getAreaType(), constituencyId);
@@ -2038,6 +2208,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<ElectionDataVO> getAllPartiesPerformanceInConstituency(
 			Long constituencyId) {
 		Set<String> staticPartiesSet = new HashSet<String>();
