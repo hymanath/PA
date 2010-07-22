@@ -436,19 +436,19 @@
 				headingDIV+='</tr>';
 
 				headingDIV+='<tr>';
-				headingDIV+='<td align="center"><b style="color:#121922">'+myResults.elecResultsInConsti.partyName+'</b></td>';
-				headingDIV+='<td align="left"><b style="color:#121922">'+myResults.elecResultsInConsti.candidateName+'</b></td>';
-				headingDIV+='<td align="center"><b style="color:#121922">'+myResults.elecResultsInConsti.votesEarned+'</b></td>';
-				headingDIV+='<td align="left"><b style="color:#121922">'+myResults.elecResultsInConsti.votesPercentage+'</b></td>';
-				headingDIV+='<td align="left"><b style="color:#121922"> Won </b></td>';
+				headingDIV+='<td align="center"><b style="color:green">'+myResults.elecResultsInConsti.partyName+'</b></td>';
+				headingDIV+='<td align="left"><b style="color:green">'+myResults.elecResultsInConsti.candidateName+'</b></td>';
+				headingDIV+='<td align="center"><b style="color:green">'+myResults.elecResultsInConsti.votesEarned+'</b></td>';
+				headingDIV+='<td align="left"><b style="color:green">'+myResults.elecResultsInConsti.votesPercentage+'</b></td>';
+				headingDIV+='<td align="left"><b style="color:green"> Won </b></td>';
 				headingDIV+='</tr>';
 
 				headingDIV+='<tr>';
-				headingDIV+='<td align="center"><b style="color:#121922">'+myResults.elecResultsInConsti.secondPartyName+'</b></td>';
-				headingDIV+='<td align="left"><b style="color:#121922">'+myResults.elecResultsInConsti.secondCandidateName+'</b></td>';
-				headingDIV+='<td align="center"><b style="color:#121922">'+myResults.elecResultsInConsti.votesEarnedBySecond+'</b></td>';
-				headingDIV+='<td align="left"><b style="color:#121922">'+myResults.elecResultsInConsti.votesPercentageBySecond+'</b></td>';
-				headingDIV+='<td align="left"><b style="color:#121922"> Runner-up </b></td>';
+				headingDIV+='<td align="center"><b style="color:red">'+myResults.elecResultsInConsti.secondPartyName+'</b></td>';
+				headingDIV+='<td align="left"><b style="color:red">'+myResults.elecResultsInConsti.secondCandidateName+'</b></td>';
+				headingDIV+='<td align="center"><b style="color:red">'+myResults.elecResultsInConsti.votesEarnedBySecond+'</b></td>';
+				headingDIV+='<td align="left"><b style="color:red">'+myResults.elecResultsInConsti.votesPercentageBySecond+'</b></td>';
+				headingDIV+='<td align="left"><b style="color:red"> Runner-up </b></td>';
 				headingDIV+='</tr>';
 
 				headingDIV+='<tr>';
@@ -638,7 +638,8 @@
 			var muncipalityDiv='';		
 			muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 			muncipalityDiv+='<td><img src="images/icons/tv9Icons/first.png"/></td>';
-			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style=" width: 700px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:19px;font-weight:bold;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style=" width: 700px; height: 40px;">';
+			muncipalityDiv+='<a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:19px;font-weight:bold;position:relative;top:7px">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			muncipalityDiv+='</td>';
 			muncipalityDiv+='</tr></table>';	
 			muncipality.innerHTML = muncipalityDiv;
@@ -652,7 +653,8 @@
 			var corporationDiv='';	
 			corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 			corporationDiv+='<td><img src="images/icons/tv9Icons/first.png"/></td>';	
-			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="width: 700px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="width: 700px; height: 40px;">';
+			corporationDiv+='<a href="javascript:{}" style="position:relative;top:7px;color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			corporationDiv+='</td></tr></table>';	
 			corporation.innerHTML = corporationDiv;
 		}
@@ -1362,7 +1364,7 @@
 				
 			str += '</div>';
 			str += '<div id="selectOptionsSelectButton" style="margin-bottom:10px;padding:10px;text-align:right"></div>';
-            str += '<div id="constituencyMainDetails_Div" style="margin-bottom:10px;padding:10px;text-align:right"></div>';
+            str += '<div id="constituencyMainDetails_Div" style="margin-bottom:10px;padding:10px;"></div>';
 			str += '<div id="crossVotingData_Graph_Div" style="display:none;">';
 			str += '<table width="100%">';
 			str += '<tr>';
@@ -1561,25 +1563,25 @@
 			if(crossVotingResults != null)
 			{	
 				var crossVotingResultsContent = '';
-				crossVotingResultsContent+='<TABLE width="100%" class="participatingPartiestable" border="0">';
+				crossVotingResultsContent+='<TABLE class="participatingPartiestable" border="0">';
 				crossVotingResultsContent+='	<TR>';
 				crossVotingResultsContent+='	<TD colspan="6" style="padding:0px;border:none;">';
 				crossVotingResultsContent+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
 				crossVotingResultsContent+='			<tr>';
 				crossVotingResultsContent+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/tv9Icons/first.png"></td>';
-				crossVotingResultsContent+='			<td width="97%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan">Cross Voting Details</span></div></td>';
+				crossVotingResultsContent+='			<td width="97%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan">Cross Voting Details (AC - PC) in 2009</span></div></td>';
 				crossVotingResultsContent+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/tv9Icons/second.png"></td>';
 				crossVotingResultsContent+='			</tr>';
 				crossVotingResultsContent+='		</table>';
 				crossVotingResultsContent+='	</TD>';
 				crossVotingResultsContent+='	</tr>';
 				crossVotingResultsContent+='	<TR>';
-				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Party</TH>';
-				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Votes Polled(AC)</TH>';
-				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Votes %(AC)</TH>';
-				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Votes Polled(PC)</TH>';
-				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Votes %(PC)</TH>';
-				crossVotingResultsContent+='		<TH style="color:#FFFFFF;">Difference</TH>';
+				crossVotingResultsContent+='		<TH style="color:#FFFFFF;width:60px;">Party</TH>';
+				crossVotingResultsContent+='		<TH style="color:#FFFFFF;width:105px;">Difference</TH>';
+				crossVotingResultsContent+='		<TH style="color:#FFFFFF;width:185px;">Votes Polled(AC)</TH>';
+				crossVotingResultsContent+='		<TH style="color:#FFFFFF;width:145px;">Votes %(AC)</TH>';
+				crossVotingResultsContent+='		<TH style="color:#FFFFFF;width:190px;">Votes Polled(PC)</TH>';
+				crossVotingResultsContent+='		<TH style="color:#FFFFFF;width:140px;">Votes %(PC)</TH>';				
 				crossVotingResultsContent+='	</TR>';			
 				for(var d in crossVotingResults)
 				{
@@ -1587,11 +1589,11 @@
 					    {
 	                    crossVotingResultsContent+='<TR>';
 						crossVotingResultsContent+='<TD align="center" style="color:#764B00;font-weight:bold;">'+crossVotingResults[d].partyName+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:#764B00;font-weight:bold;">'+crossVotingResults[d].diffPercent+'</TD>';
 						crossVotingResultsContent+='<TD align="center" style="color:#764B00;">'+crossVotingResults[d].votesEarned+'</TD>';
 						crossVotingResultsContent+='<TD align="center" style="color:#764B00;font-weight:bold;">'+crossVotingResults[d].percentage+'</TD>';
 						crossVotingResultsContent+='<TD align="center" style="color:#764B00;font-weight:bold;">'+crossVotingResults[d].ballotVotes+'</TD>';
 						crossVotingResultsContent+='<TD align="center" style="color:#764B00;font-weight:bold;">'+crossVotingResults[d].ballotVotesPercentage+'</TD>';
-						crossVotingResultsContent+='<TD align="center" style="color:#764B00;font-weight:bold;">'+crossVotingResults[d].diffPercent+'</TD>';							
 						crossVotingResultsContent+='</TR>';
 						}
 	
@@ -1599,11 +1601,11 @@
 					    {
 						crossVotingResultsContent+='<TR>';
 						crossVotingResultsContent+='<TD align="center" style="color:#121922;">'+crossVotingResults[d].partyName+'</TD>';
+						crossVotingResultsContent+='<TD align="center" style="color:#121922;">'+crossVotingResults[d].diffPercent+'</TD>';		
 						crossVotingResultsContent+='<TD align="center" style="color:#121922;">'+crossVotingResults[d].votesEarned+'</TD>';
 						crossVotingResultsContent+='<TD align="center" style="color:#121922;">'+crossVotingResults[d].percentage+'</TD>';
 						crossVotingResultsContent+='<TD align="center" style="color:#121922;">'+crossVotingResults[d].ballotVotes+'</TD>';
-						crossVotingResultsContent+='<TD align="center" style="color:#121922;">'+crossVotingResults[d].ballotVotesPercentage+'</TD>';
-						crossVotingResultsContent+='<TD align="center" style="color:#121922;">'+crossVotingResults[d].diffPercent+'</TD>';							
+						crossVotingResultsContent+='<TD align="center" style="color:#121922;">'+crossVotingResults[d].ballotVotesPercentage+'</TD>';											
 						crossVotingResultsContent+='</TR>';
 						}
 									
@@ -1612,7 +1614,7 @@
 				crossVotingDetailsDivEl.innerHTML = crossVotingResultsContent;
 			
 			var nonParticipatingContent = '';			
-			nonParticipatingContent+='<TABLE width="100%"  class="participatingPartiestable" border="0">';		
+			nonParticipatingContent+='<TABLE class="participatingPartiestable" border="0">';		
 			nonParticipatingContent+='	<TR>';
 			nonParticipatingContent+='	<TD colspan="6" style="padding:0px;border:none;">';
 			nonParticipatingContent+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
@@ -1625,11 +1627,11 @@
 			nonParticipatingContent+='	</TD>';
 			nonParticipatingContent+='	</tr>';
 			nonParticipatingContent+='<TR>';
-			nonParticipatingContent+='<TH style="color:#FFFFFF;">Party</TH>';
-			nonParticipatingContent+='<TH style="color:#FFFFFF;">Votes Polled(AC)</TH>';
-			nonParticipatingContent+='<TH style="color:#FFFFFF;">Votes %(AC)</TH>';
-			nonParticipatingContent+='<TH style="color:#FFFFFF;">Votes Polled(PC)</TH>';
-			nonParticipatingContent+='<TH style="color:#FFFFFF;">Votes %(PC)</TH>';			
+			nonParticipatingContent+='<TH style="color:#FFFFFF;width:60px;">Party</TH>';
+			nonParticipatingContent+='<TH style="color:#FFFFFF;width:190px;">Votes Polled(AC)</TH>';
+			nonParticipatingContent+='<TH style="color:#FFFFFF;width:145px;">Votes %(AC)</TH>';
+			nonParticipatingContent+='<TH style="color:#FFFFFF;width:190px;">Votes Polled(PC)</TH>';
+			nonParticipatingContent+='<TH style="color:#FFFFFF;width:145px;">Votes %(PC)</TH>';			
 			nonParticipatingContent+='</TR>';			
 			for(var y in nonParticipatingParties)
 			{       if(y == nonParticipatingParties.length-1)
@@ -1742,7 +1744,7 @@
 			str1 += '</tr>';
 			str1 += '</tr>';		    
 			str1 += '</table>';
-			str1 += '<div style="text-align:right;width:100%;">';
+			str1 += '<div style="width:100%;">';
 			str1 += '<table width="75%">';
 			str1 += '<tr>';
 			str1 += '<th align="left"><font style="color:red;"> *</font> Indicates Bye Elections</th>';	
@@ -2472,8 +2474,7 @@
 	</table>
 	</div>	
 	<div id="votingTrendzInfoMain"></div>
-	<div class="rounded" >
-		<center>
+	<div class="rounded" >	
 		<table width="98%">
 			<tr>
 				<td style="vertical-align:top;">
@@ -2483,9 +2484,9 @@
 							<tr>
 								<td><img src="images/icons/tv9Icons/first.png"/></td>
 								<td>	
-									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:685px;height:18px;">
-										<span>Total Number of ZPTC's : </span>
-										<span id="totalZptcCountResultDiv"></span>														
+									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:707px;height:40px;">
+										<span class="mptcZptcSpanHead">Total Number of ZPTC's : </span>
+										<span class="mptcZptcSpanHead" id="totalZptcCountResultDiv"></span>														
 									</div>
 								</td>
 								<td><img src="images/icons/tv9Icons/second.png"/></td>
@@ -2538,9 +2539,9 @@
 									<tr>
 										<td><img src="images/icons/tv9Icons/first.png"/></td>
 										<td>	
-											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:685px;height:18px;">
-												<span>Total Number of MPTC's : </span>
-												<span id="totalMptcCountResultsDiv"></span>
+											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:707px;height:40px;">
+												<span class="mptcZptcSpanHead">Total Number of MPTC's : </span>
+												<span class="mptcZptcSpanHead" id="totalMptcCountResultsDiv"></span>
 											</div>
 										</td>
 										<td><img src="images/icons/tv9Icons/second.png"/></td>
@@ -2579,7 +2580,7 @@
 					</td>	
 				</tr>
 				</table>
-				</center>
+		
 				</div>		
 				
 				<div id="muncipality_corporation_div_main" style="width:auto;padding-left:10px;">
