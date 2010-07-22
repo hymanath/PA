@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -89,7 +90,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private List<SelectOptionVO> mptcElectionYears;
 	private String muncipalityElectionType,corporationElectionType;
 	private Long muncipalityElectionTypeId,corporationElectionTypeId;
-	
+	private ElectionWiseMandalPartyResultListVO urbanRuralResultsVO;
 	private IBiElectionPageService biElectionPageService;
 	private IConstituencyPageService constituencyPageService;
 	private IStaticDataService staticDataService;
@@ -486,6 +487,15 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	public void setZptcMptcResultsInMandal(
 			List<TeshilPartyInfoVO> zptcMptcResultsInMandal) {
 		this.zptcMptcResultsInMandal = zptcMptcResultsInMandal;
+	}
+
+	public ElectionWiseMandalPartyResultListVO getUrbanRuralResultsVO() {
+		return urbanRuralResultsVO;
+	}
+
+	public void setUrbanRuralResultsVO(
+			ElectionWiseMandalPartyResultListVO urbanRuralResultsVO) {
+		this.urbanRuralResultsVO = urbanRuralResultsVO;
 	}
 
 	public String execute() throws Exception
@@ -1588,7 +1598,6 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
             			graphInfo.getElectionYear());	
          }
     	
-    	
 		return dataset;
 	}
     
@@ -1711,5 +1720,64 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			zptcMptcResultsInMandal.get(0).setChartName(chartName);
 		return SUCCESS;
     }
+    
+    public String getUrbanRuralResults(){
+    	try {
+			jObj=new JSONObject(getTask());
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Long constituencyId = jObj.getLong("constituencyId"); 
+		JSONArray partiesJson = jObj.getJSONArray("partiesArr");
+		JSONArray elecTypeOrYearJson = jObj.getJSONArray("electionTypeArr");
+		Boolean isElecTypeOnly = jObj.getBoolean("isElectionType");
+		Boolean isAlliance = jObj.getBoolean("alliances");
+		String constiName = jObj.getString("constituencyName");
+		JSONObject elecObj = null;
+		Set<String> parties = new HashSet<String>();
+		Set<String> elecTypeOrYear = new HashSet<String>();
+		
+		for(int i = 0; i < elecTypeOrYearJson.length(); i++)
+		{
+			elecObj = elecTypeOrYearJson.getJSONObject(i);
+			String elecType = elecObj.getString("type");
+			String elecYear = elecObj.getString("year");
+			elecTypeOrYear.add(elecYear+" "+elecType);
+		}
+		
+		for(int i = 0; i < partiesJson.length(); i++)
+			parties.add((String)partiesJson.get(i));
+		
+		urbanRuralResultsVO = biElectionPageService.getResultsOfRuralUrbanAreaBeasedOnSelection(constituencyId, parties, elecTypeOrYear, isElecTypeOnly, isAlliance);
+		String chartName = "ByeElectionsRuralUrban"+"_"+constiName+"_"+constituencyId+"_"+parties.hashCode()+"_"+isAlliance+".png";
+		String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
+		Set<String> partiesInChart = new LinkedHashSet<String>();
+
+		if(urbanRuralResultsVO.getAllPartiesAllElectionResults().size() > 0){
+			ChartProducer.createLineChartWithThickness("Different Parties Performance In Different Elections Of "+constiName+
+					" Assembly Constituency Region","Elections", "Percentages",
+					createDatasetForPartiesResult(urbanRuralResultsVO.getAllPartiesAllElectionResults(), partiesInChart), 
+					chartPath,500,950,ChartUtils.getLineChartColors(partiesInChart),true);
+			urbanRuralResultsVO.setChartName(chartName);	
+		}
+
+	   	return SUCCESS;
+    }
+
+	private CategoryDataset createDatasetForPartiesResult(
+			List<PartyResultVO> allPartiesAllElectionResults, Set<String> partiesInChart) {
+        final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for(PartyResultVO party:allPartiesAllElectionResults)
+        	for(ElectionResultVO election:party.getElectionWiseResults()){
+        		if(!election.getPercentage().equalsIgnoreCase("-1")){
+        			partiesInChart.add(party.getPartyName());
+        			dataset.addValue(new BigDecimal(election.getPercentage()), party.getPartyName(),
+        					election.getElectionYearAndType());
+        		}
+        	}
+      
+		return dataset;
+	}
 
 }
