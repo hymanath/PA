@@ -1737,17 +1737,38 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		JSONObject elecObj = null;
 		Set<String> parties = new HashSet<String>();
 		Set<String> elecTypeOrYear = new HashSet<String>();
-		
-		for(int i = 0; i < elecTypeOrYearJson.length(); i++)
-		{
-			elecObj = elecTypeOrYearJson.getJSONObject(i);
-			String elecType = elecObj.getString("type");
-			String elecYear = elecObj.getString("year");
-			elecTypeOrYear.add(elecYear+" "+elecType);
+		String partyName = "";
+		String type = "";
+		if((!isElecTypeOnly) && elecTypeOrYearJson != null){
+			for(int i = 0; i < elecTypeOrYearJson.length(); i++)
+			{
+				elecObj = elecTypeOrYearJson.getJSONObject(i);
+				String elecType = elecObj.getString("type");
+				String elecYear = elecObj.getString("year");
+				elecTypeOrYear.add(elecYear+" "+elecType);
+			}	
 		}
 		
-		for(int i = 0; i < partiesJson.length(); i++)
-			parties.add((String)partiesJson.get(i));
+		if((isElecTypeOnly) && elecTypeOrYearJson != null){
+			for(int i = 0; i < elecTypeOrYearJson.length(); i++)
+			{
+				type = (String)elecTypeOrYearJson.get(i);
+				if(type.equalsIgnoreCase("All")){
+					elecTypeOrYear = new HashSet<String>();
+					break;
+				}
+				elecTypeOrYear.add(type);
+			}	
+		}
+		
+		for(int i = 0; i < partiesJson.length(); i++){
+			partyName = (String)partiesJson.get(i);
+			if(partyName.equalsIgnoreCase("Others"))
+				parties.add(IConstants.OTHERS);
+			else
+				parties.add(partyName);
+		}
+			
 		
 		urbanRuralResultsVO = biElectionPageService.getResultsOfRuralUrbanAreaBeasedOnSelection(constituencyId, parties, elecTypeOrYear, isElecTypeOnly, isAlliance);
 		String chartName = "ByeElectionsRuralUrban"+"_"+constiName+"_"+constituencyId+"_"+parties.hashCode()+"_"+isAlliance+".png";
