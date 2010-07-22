@@ -195,7 +195,7 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	        Set<String> partiesInChart = new LinkedHashSet<String>();
 	        ChartProducer.createLineChartWithThickness("All Parties Performance In "+electionType+" "+electionYear + 
 	        		" In "+constituencyObj.getConstituencyName()+" Constituency By Revenue Villages In "+mandalName+" Mandal" , 
-	        		"Revenue Villages", "Percentages", createDataset(constituencyObj, partiesInChart), chartPath,500,1000, ChartUtils.getLineChartColors(partiesInChart),true);	
+	        		"Revenue Villages", "Percentages", createDataset(constituencyObj, partiesInChart), chartPath,600,1000, ChartUtils.getLineChartColors(partiesInChart),true);	
 	        constituencyObj.setChartPath(chartName);
 		}
 		
