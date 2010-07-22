@@ -165,7 +165,7 @@ padding:11px;
 border-bottom:2px solid #212629;
 border-left:2px solid #212629;
 border-right:2px solid #212629;
-height:420px;
+height:480px;
 overflow:auto;
 }
 
@@ -194,4 +194,25 @@ overflow:auto;
 
 #mandalVotingTrendzDataDiv_body  {
 overflow:visible;
+}
+
+#zptcPartyTrendsDetailsDiv
+{
+	width:100%;
+}
+
+.yui-skin-sam .yui-dt table 
+{
+	border:1px solid;
+}
+
+#zptc_body .yui-skin-sam .yui-dt th a, #mptc_body .yui-skin-sam .yui-dt th a, #municipalityVotersDiv .yui-skin-sam .yui-dt th a
+{
+	font-size:18px;
+}
+
+#zptc_body .yui-skin-sam .yui-dt td, #mptc_body .yui-skin-sam .yui-dt td,#municipalityVotersDiv .yui-skin-sam .yui-dt td
+{
+	font-size:17px;
+	color:#2E0933;
 }
