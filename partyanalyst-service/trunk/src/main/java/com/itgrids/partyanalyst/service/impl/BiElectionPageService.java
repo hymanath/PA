@@ -2616,9 +2616,12 @@ public class BiElectionPageService implements IBiElectionPageService {
 		
 		int i=0;
 		for(ByeElecGroupVO groupEle:allianceGroup1){
-			if(i == 0)
+			if(i == 0){
 				allPartiesInfo.get(groupEle.getIndexOfParty()).getElectionWiseResults().
-					get(groupEle.getIndexOfElection()).setPercentage(grp1Percent.toString());
+				get(groupEle.getIndexOfElection()).setPercentage(grp1Percent.toString());
+				allPartiesInfo.get(groupEle.getIndexOfParty()).getElectionWiseResults().
+				get(groupEle.getIndexOfElection()).setAlliancRes(true);
+			}
 			else
 				allPartiesInfo.get(groupEle.getIndexOfParty()).getElectionWiseResults().
 				get(groupEle.getIndexOfElection()).setPercentage("-1");
@@ -2627,9 +2630,12 @@ public class BiElectionPageService implements IBiElectionPageService {
 		
 		i=0;
 		for(ByeElecGroupVO groupEle:allianceGroup2){
-			if(i == 0)
+			if(i == 0){
 				allPartiesInfo.get(groupEle.getIndexOfParty()).getElectionWiseResults().
-					get(groupEle.getIndexOfElection()).setPercentage(grp2Percent.toString());
+				get(groupEle.getIndexOfElection()).setPercentage(grp2Percent.toString());
+				allPartiesInfo.get(groupEle.getIndexOfParty()).getElectionWiseResults().
+				get(groupEle.getIndexOfElection()).setAlliancRes(true);
+			}
 			else
 				allPartiesInfo.get(groupEle.getIndexOfParty()).getElectionWiseResults().
 				get(groupEle.getIndexOfElection()).setPercentage("-1");
