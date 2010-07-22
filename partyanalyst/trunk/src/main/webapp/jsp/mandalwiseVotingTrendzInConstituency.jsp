@@ -63,11 +63,34 @@
 
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
-	
+	 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+	  
+      google.load("visualization", "1", {packages:["corechart"]});
+	  // google.setOnLoadCallback(drawChart);
+      function drawInteractiveChart(results) {
+        
+		var mandalwiseVotersShare = results.constituencyVO.assembliesOfParliamentInfo;
+        
+		var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Mandals');
+        data.addColumn('number', 'Voters % Share');
 
-	
 
-	
+        data.addRows(mandalwiseVotersShare[0].votersInfoForMandalVO.length);
+        var k=0;
+		for (var i in mandalwiseVotersShare[0].votersInfoForMandalVO)
+		{
+        data.setValue(k, 0, mandalwiseVotersShare[0].votersInfoForMandalVO[i].mandalName);
+        data.setValue(k, 1,  mandalwiseVotersShare[0].votersInfoForMandalVO[i].totVoters);
+        k++;
+		}
+        
+		var ctitle = 'Mandals Voters % Share In '+ constituencyName;
+        var chart = new google.visualization.PieChart(document.getElementById('interactiveChartDIV'));
+        chart.draw(data, {width: 650, height: 400, title: ctitle, legendFontSize:15,fontSize:13,titleFontSize:16,tooltipFontSize:15});
+      }
+    </script>
     <style type="text/css">
 		.mainHeading 
 		{
@@ -501,6 +524,7 @@
 										if(jsObj.task == "getMandalVotingTrendz")
 										{
 											buildMandalVotingTrendzData(jsObj,myResults);
+											drawInteractiveChart(myResults);
 										}
 										else if(jsObj.task == "getZptcElectionResults")
 										{		
@@ -548,6 +572,7 @@
 										}
 										else if(jsObj.task == "votesSharingInConstituency"){
 											buildVotesSharingData(jsObj,myResults);
+											
 										}else if(jsObj.task == "getMandalVotesShare"){
 											buildMandalVotesSharingData(myResults, jsObj);
 											showAllPartiesAllElectionsResults(myResults);
@@ -1671,7 +1696,8 @@
 			mdlwiseVotersDetailsStr += '<td><img src="images/icons/tv9Icons/right_blue_main.png"/></td>';
 			mdlwiseVotersDetailsStr += '</tr>';
 			mdlwiseVotersDetailsStr += '</table>';
-
+            
+			mdlwiseVotersDetailsStr += '<div id="interactiveChartDIV"></div>';
 			mdlwiseVotersDetailsStr+='<Table width="70%" border="0" class="mandalVotesShareTable" cellpadding="5" cellspacing="5">';
 			mdlwiseVotersDetailsStr+='<TR>';			
 			mdlwiseVotersDetailsStr+='	<TH>Mandal</TH>';
