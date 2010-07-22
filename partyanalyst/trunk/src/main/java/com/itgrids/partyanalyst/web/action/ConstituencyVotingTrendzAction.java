@@ -1730,7 +1730,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		}
 		Long constituencyId = jObj.getLong("constituencyId"); 
 		JSONArray partiesJson = jObj.getJSONArray("partiesArr");
-		JSONArray elecTypeOrYearJson = jObj.getJSONArray("electionTypeArr");
+		JSONArray elecTypeAndYearJson = jObj.getJSONArray("electionTypeArr");
+		JSONArray elecTypeJson = jObj.getJSONArray("selectedElectionArr");
 		Boolean isElecTypeOnly = jObj.getBoolean("isElectionType");
 		Boolean isAlliance = jObj.getBoolean("alliances");
 		String constiName = jObj.getString("constituencyName");
@@ -1739,20 +1740,18 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		Set<String> elecTypeOrYear = new HashSet<String>();
 		String partyName = "";
 		String type = "";
-		if((!isElecTypeOnly) && elecTypeOrYearJson != null){
-			for(int i = 0; i < elecTypeOrYearJson.length(); i++)
+		if((!isElecTypeOnly) && elecTypeAndYearJson != null){
+			for(int i = 0; i < elecTypeAndYearJson.length(); i++)
 			{
-				elecObj = elecTypeOrYearJson.getJSONObject(i);
+				elecObj = elecTypeAndYearJson.getJSONObject(i);
 				String elecType = elecObj.getString("type");
 				String elecYear = elecObj.getString("year");
 				elecTypeOrYear.add(elecYear+" "+elecType);
 			}	
-		}
-		
-		if((isElecTypeOnly) && elecTypeOrYearJson != null){
-			for(int i = 0; i < elecTypeOrYearJson.length(); i++)
+		}else if((isElecTypeOnly) && elecTypeJson != null){
+			for(int i = 0; i < elecTypeJson.length(); i++)
 			{
-				type = (String)elecTypeOrYearJson.get(i);
+				type = (String)elecTypeJson.get(i);
 				if(type.equalsIgnoreCase("All")){
 					elecTypeOrYear = new HashSet<String>();
 					break;
