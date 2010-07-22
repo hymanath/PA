@@ -1240,11 +1240,11 @@ function initializeResultsTableForParty(){
 		sortable : true
 	}, {
 		key : "participatedSeats",
-		label : "Participated Seats",
+		label : "Seats",
 		sortable : true
 	}, {
 		key : "seatsWonByParty",
-		label : "Seats Won",
+		label : "Won",
 		sortable : true
 	}, {
 		key : "percentageOfVotesWonByParty",
@@ -1288,11 +1288,11 @@ function initializeMptcResultsTableForParty(){
 		sortable : true
 	}, {
 		key : "participatedSeats",
-		label : "Participated Seats",
+		label : "Seats",
 		sortable : true
 	}, {
 		key : "seatsWonByParty",
-		label : "Seats Won",
+		label : "Won",
 		sortable : true
 	}, {
 		key : "percentageOfVotesWonByParty",
