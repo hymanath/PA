@@ -63,7 +63,7 @@
 
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
-	<link rel="stylesheet" type="text/css" href="styles/districtPage/districtPage.css">
+	
 
 	
 
@@ -309,12 +309,16 @@
 				headingDIV+='<legend style="background-color:#567AAF;font-family:verdana,helvetica,clean,sans-serif;color:#FFFFFF;font-weight:bold;padding:10px;font-size:20px;">Constituency Overview</legend>';
 
 				headingDIV+='<div id="votesInfoDiv" style="color:#247CD4;font-size:12px;font-weight:bold;"></div>';
-				headingDIV+='<table width="100%" cellspacing="10" style="margin-top:10px;">';   
+				headingDIV+='<table width="75%" cellspacing="10" style="margin-top:10px;">';   
+				headingDIV+=' <tr>';
+				headingDIV+=' <td><img src="images/bi-constituency_maps/'+jsObj.constiName+'.jpg"/></td>';
+				headingDIV+=' </tr>';
+				
 				headingDIV+='	<tr>';
 				headingDIV+='		<td width="50%" style="color:#18325A;font-size:17px;font-family:verdana;" align="left"><b>Total Voters for Year 2009</b></td>';
 				headingDIV+='		<td width="2%"><b> :</b></td>';
 				headingDIV+='		<td width="30%" align="left" style="color:red;font-size:17px;font-weight:bold;">'+myResults.latestElectionYearsTotalVoters+'</td>';
-				headingDIV+='		<td rowspan="3"><img src="images/bi-constituency_maps/'+jsObj.constiName+'.jpg"/></td>';
+				
 				headingDIV+='		</tr>';			
 
 				headingDIV+='	<tr>';
@@ -515,7 +519,7 @@
 											}	
 										} else if(jsObj.task == "constituencyResults")
 										{
-											showChartData(jsObj, myResults);
+											showChartData(myResults);
 										} else if(jsObj.task == "getConstituencyResultsBySubLocations")
 										{
 											constiMandalWiseResultsPresChart = myResults.chartPath;
@@ -634,7 +638,7 @@
 			var muncipalityDiv='';		
 			muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 			muncipalityDiv+='<td><img src="images/icons/tv9Icons/first.png"/></td>';
-			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style=" width: 715px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:19px;font-weight:bold;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style=" width: 700px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:19px;font-weight:bold;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			muncipalityDiv+='</td>';
 			muncipalityDiv+='</tr></table>';	
 			muncipality.innerHTML = muncipalityDiv;
@@ -648,7 +652,7 @@
 			var corporationDiv='';	
 			corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
 			corporationDiv+='<td><img src="images/icons/tv9Icons/first.png"/></td>';	
-			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="width: 715px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
+			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="width: 700px; height: 18px;"><a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			corporationDiv+='</td></tr></table>';	
 			corporation.innerHTML = corporationDiv;
 		}
@@ -769,7 +773,6 @@
 		
 		function buildMandalVotesSharingData(results, jsObj)
 		{
-			
 			var divEl = document.getElementById("madalwiseVotesRange");
 			if(!divEl)
 				return;
@@ -785,7 +788,7 @@
 			str += '<td><P>Alliance Results</P></td>';
 			str += '</tr>';
 			str += '</table>';
-			str += '<table id="votesShareDetailsTable" border="1" width="100%" cellspacing="4" cellmargin="0">';
+			str += '<table id="votesShareDetailsTable" width="100%" cellspacing="4" cellmargin="0">';
 			str += '<tr>';
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
 			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
@@ -839,13 +842,12 @@
 			str += '</div>';
 			divEl.innerHTML = str;			
 		}
-		//ref
+
 		function buildVotesSharingData(jsObj,results)
 		{
-			
 			votesShareData = results;
             var chartName = '';
-            
+
 			if(results[0] != null)
 			{
 			chartName = results[0].chartName;
@@ -860,7 +862,6 @@
 			
 			var electionListLength = results[0].electionList.length+2;
 
-						
 			var str = '';
 			str += '<table><tr>';
 			str += '<td colspan=6> ';
@@ -868,8 +869,8 @@
 			str += '<tr>';
 			str += '<td><img src="images/icons/tv9Icons/left_blue_main.png"/></td>';
 			str += '<td><div style="height:40px;background-image:url(\'images/icons/tv9Icons/header_body_blue.png\')">';
-			str += '<span id="headDiv" style="color:#0C2640;font-size:20px;font-weight:bold;position:relative;top:6px;">';
-			str += '</span>';
+			str += '<span style="color:#0C2640;font-size:16px;font-weight:bold;position:relative;top:10px;">';
+			str += 'Parties Performance In '+constituencyName+' Assembly Constituency Limits In Different Elections</span>';
 			str += '</div></td>';
 			str += '<td><img src="images/icons/tv9Icons/right_blue_main.png"/></td>';
 			str += '</tr>';
@@ -886,7 +887,7 @@
             str += '</tr></table>';
 		
 			
-			str += '<center><table id="votesShareDetailsTable" width="100%" cellspacing="4" cellmargin="0">';
+			str += '<table id="votesShareDetailsTable" cellspacing="4" cellmargin="0">';
 			str += '<tr>';
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;border:0px">';
 			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
@@ -937,20 +938,12 @@
 				str += '</tr>';
 			}
 
-			str += '</table></center>';
+			str += '</table>';
 			shareElmt.innerHTML = str;
-			var headDivEl = document.getElementById("headDiv");
-			headDivEl.innerHTML = '';
-			var headDivElStr='';
-			headDivElStr += 'Parties Performance in '+jsObj.constiName+' Assembly Constituencey Limits In Different Elections';
-			if(headDivEl)	 			
-			{
-				headDivEl.innerHTML = headDivElStr;            	
-			}
 
 			var chartDivElmt = document.getElementById("constitutencyResultsChart");
 			var imgStr = '';
-			imgStr+='<center><img src="charts/'+chartName+'" border="none" /></center>';		
+			imgStr+='<img width="750" src="charts/'+chartName+'" border="none" />';		
 			chartDivElmt.innerHTML = imgStr;
 
 			if(jsObj.getAll == "-")
@@ -977,7 +970,6 @@
 			cStr += '</div>';
 			
 			checkBoxElmt.innerHTML = cStr;
-			
 		}
 		
 		function getElectionType(type)
@@ -1121,9 +1113,8 @@
 			elmt.innerHTML = str;*/
 		}
 
-		function showChartData(jsObj, results)
+		function showChartData(results)
 		{
-			
 			var selectboxElmtDiv = document.getElementById("selectLocationOptions");
 			var checkboxElmtDiv = document.getElementById("inputSelectionCriteria");
 			var selectOptionsSelectButtonElmt = document.getElementById("selectOptionsSelectButton");
@@ -1134,22 +1125,17 @@
 				checkboxElmtDiv.style.display = 'none';
 				selectOptionsSelectButtonElmt.style.display = 'block';
 				
-				selectOptionsSelectButtonElmt.innerHTML = '<input type="button" value="Show Options" onclick="displaySelectionCriteria()">';
+				selectOptionsSelectButtonElmt.innerHTML = '<input type="button" value="Select Option" onclick="displaySelectionCriteria()">';
 			}
 
 			chartName = results.chartName;
-			var headDivEl = document.getElementById("headDiv");
-			var str='';
-			str += 'Parties Performance in '+jsObj.constituencyName+' Assembly Constituencey Limits In Different Elections';
-			headDivEl.innerHTML = '';
-            headDivEl.innerHTML = str;
-            
+
 			var mainDivElmt = document.getElementById("crossVotingData_Graph_Div");
 			var divEl = document.getElementById("constitutencyResultsChart");
 			mainDivElmt.style.display = 'block';
 
 			divEl.innerHTML = '';
-			divEl.innerHTML = '<center><img src="charts/'+chartName+'" border="none" /></center>';
+			divEl.innerHTML = '<img width="750" src="charts/'+chartName+'" border="none" />';
 		}
 		
 		function displaySelectionCriteria()
@@ -1299,13 +1285,12 @@
 		}
 		
 		function openwin(mandalId,name, electionType,electionYear,electionId){					
-			var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+name+"&electionType="+electionType+"&electionYear="+electionYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,resizable=1,toolbar=no,scrollbars=yes");
+			var brow1 = window.open("<s:url action="townshipElectionResultsAction"/>?mandalId="+mandalId+"&electionId="+electionId+"&mandalName="+name+"&electionType="+electionType+"&electionYear="+electionYear+"&windowTask=includeVotingTrendz","brow1","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 			brow1.focus();
 		}
 
 		function buildMandalsVotingTrendz()
 		{
-			
 			var distObj = null;
 			var elmt = document.getElementById("votingTrendzInfoMain");
 
@@ -1457,7 +1442,7 @@
 			allPartiesChartsWindow.document.close();			
 		}
 
-		function getResultsForSelectedElection(constiId, constiName)
+		function getResultsForSelectedElection()
 		{
 			var inputSelectionErrorEl = document.getElementById("inputSelectionError");
 			var partyCheckboxEls = document.getElementsByName("partywiseCheckBox");
@@ -1518,8 +1503,8 @@
 			}
 			var jsObj = {
 					
-					constituencyName: constiName,
-					constituencyId: constiId,
+					constituencyName: constituencyName,
+					constituencyId: constituencyIdGlobal,
 					partiesArr: selectedPartiesIds,
 					electionTypeArr: selectedElectionTypesYears,
 					task: "constituencyResults",
@@ -1547,13 +1532,7 @@
 			var mandalwiseVotersShare = resultsData.constituencyVO.assembliesOfParliamentInfo;
 			var constituencyId = jsObj.constituencyId;
 			constituencyNameGlobal = jsObj.constiName; 
-			constituencyName = jsObj.constiName;
 			mandalNamesArr = new Array();
-			var crossVotingData_Graph_DivEl = document.getElementById("crossVotingData_Graph_Div");
-			if(crossVotingData_Graph_DivEl.style.display == 'block')
-			{	
-				crossVotingData_Graph_DivEl.style.display = 'none';
-			}	
 			if(resultsData.biElectionResultsMainVO != null)
 			{	
 				var results = resultsData.biElectionResultsMainVO;
@@ -1746,16 +1725,19 @@
 			str1 += '</tr>';		    
 			str1 += '</table>';
 			str1 += '<div style="text-align:right;width:100%;">';
-			str1 += '<table width="100%">';
+			str1 += '<table width="75%">';
 			str1 += '<tr>';
 			str1 += '<th align="left"><font style="color:red;"> *</font> Indicates Bye Elections</th>';	
 			str1 += '<th align="left"> AC - Assembly</th>';	
 			str1 += '<th align="left"> PC - Parliament</th>';
-			str1 += '<td align="right">';
+			str1 += '</tr>';
+			str1 += '<tr>';
+			str1 += '<td align="left">';
 			str1 += '<INPUT type="checkbox" name="allianceCheckBox" id="allianceChkBox" />Include Alliances';
 			str1 += '<input type="button" value="Select All" onclick="selectAllPartiesNYears()">';
 			str1 += '<input type="button" value="De-select All" onclick="DeselectAllPartiesNYears()">';
-			str1 += '<INPUT type="button" id="getResults" onclick="getResultsForSelectedElection('+constituencyId+', \''+constituencyNameGlobal+'\')" value="Show Results" />';
+			str1 += '<INPUT type="button" id="getResults" onclick="getResultsForSelectedElection()" value="Show Results" />';
+			
 			str1 += '</td>';
 			str1 += '</tr>';
 			str1 += '</table>';			
@@ -2119,6 +2101,8 @@
 				voterStr += '<table class="zptcMptcVotersTable" width="100%">';
 				voterStr += '<tr>';
 				voterStr += '<th align="left"> Total Voters  : </th><td>'+results[0].totalVotersInConstituency+'</td>';
+				voterStr += '</tr>';
+				voterStr += '<tr>';
 				voterStr += '<th align="left"> Total Polled Votes : </th><td>'+results[0].totalPolledVotes+'</td>';
 				voterStr += '</tr>';
 				voterStr += '</table>';
@@ -2264,6 +2248,8 @@
 				voterStr += '<table class="zptcMptcVotersTable" width="100%">';
 				voterStr += '<tr>';
 				voterStr += '<th align="left"> Total Voters  : </th><td>'+results[0].totalVotersInConstituency+'</td>';
+				voterStr += '</tr>';
+				voterStr += '<tr>';
 				voterStr += '<th align="left"> Total Polled Votes : </th><td>'+results[0].totalPolledVotes+'</td>';
 				voterStr += '</tr>';
 				voterStr += '</table>';
@@ -2373,8 +2359,8 @@
 					getAll : all,
 					choices : allChoices,
 					flag : flag,
-					constituencyId: constituencyIdGlobal,
-					constiName: constituencyName,
+					constituencyId:constituencyIdGlobal,
+					constiName:'${constiName}',
 					task:"votesSharingInConstituency",
 					choice:"All"
 				};
@@ -2480,7 +2466,7 @@
 							<tr>
 								<td><img src="images/icons/tv9Icons/first.png"/></td>
 								<td>	
-									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:920px;height:18px;">
+									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:685px;height:18px;">
 										<span>Total Number of ZPTC's : </span>
 										<span id="totalZptcCountResultDiv"></span>														
 									</div>
@@ -2489,7 +2475,7 @@
 							</tr>
 							</table>
 						</div>
-						<div id="zptc_body" style="width:980px;">
+						<div id="zptc_body" style="width:745px;">
 							<table width="100%">									
 								<tr>
 									<td>
@@ -2505,9 +2491,7 @@
 												</td>
 											</tr>
 											<tr>
-											    <td><div id="zptcOptionsDiv"></div></td>
-												<td><div></div></td>
-                                               
+											    <td colspan="2"><div id="zptcOptionsDiv"></div></td>
 											</tr>
 											<tr>
 												<td width="50%"><div></div></td>
@@ -2519,7 +2503,7 @@
 											</tr>
 											<tr>
 												<td align="center"><div id="zptcChartDiv"></div></td>
-												<td class="yui-skin-sam" valign="top"><div id="zptcPartyTrendsDetailsDiv" style="border:2px solid #9696C0"></div></td>
+												<td class="yui-skin-sam" valign="top"><div id="zptcPartyTrendsDetailsDiv"></div></td>
 											</tr>
 										</table>
 									</td>
@@ -2537,7 +2521,7 @@
 									<tr>
 										<td><img src="images/icons/tv9Icons/first.png"/></td>
 										<td>	
-											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:920px;height:18px;">
+											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:685px;height:18px;">
 												<span>Total Number of MPTC's : </span>
 												<span id="totalMptcCountResultsDiv"></span>
 											</div>
@@ -2546,7 +2530,7 @@
 									</tr>
 								</table>
 							</div>
-						<div id="mptc_body" style="width:980px;">
+						<div id="mptc_body" style="width:745px;">
 								<table width="100%">									
 									<tr><td>
 											<table width="100%"><tr><td colspan="2">
@@ -2556,9 +2540,8 @@
 																--><td><div id="mptcCandidateLink"></div></td>
 													   		</tr></table>
 													   </td></tr>
-												   <tr>
-													<td><div id="mptcOptionsDiv"></div></td>
-													<td><div></div></td>
+												<tr>
+													<td colspan="2"><div id="mptcOptionsDiv"></div></td>	
 												</tr>
 												<tr>
 													<td width="50%"><div></div></td>
