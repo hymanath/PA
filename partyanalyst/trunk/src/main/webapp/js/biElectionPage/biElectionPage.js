@@ -40,7 +40,7 @@ function buildResultsDataTable(id,dtSource)
 function buildBiElectionPageLayout()
 {
 	var biElectionPageLayout = new YAHOO.widget.Layout('biElectionPageLayout_main', { 
-	height:500,
+	height:600,
 	units: [
 			{ 
 				position: 'right', 
@@ -76,7 +76,7 @@ function buildMandalsVotingTrendz()
 
 	var str='';
 	str += '<div id="districtsInfoRadioElmtDiv">';
-	str += '<div style="font-weight:bold;color:#707070;">'+localizationObj.partyBoothResultsText+'</div>';
+	str += '<div style="font-weight:bold;color:#100F0D;font-size:13px;">'+localizationObj.partyBoothResultsText+'</div>';
 	str += '<div id="locationAlert" class="alert"></div>';
 	str += '<table>';	
 	str += '<tr>';
@@ -201,7 +201,7 @@ function buildBiElectionDistricts()
 		return;
 
 	var str = '';
-	str += '<div style="color:#62662B;font-size:11px;margin:8px;font-weight:bold;">Click the below constituencies to view Party Trendz</div>';
+	str += '<div style="color:#282B03;font-size:12px;margin:8px;font-weight:bold;">Click the below constituencies to view Party Trendz</div>';
 	str += '<table border="0" width="100%" id="distConstTable">';
 	for(var i in districtsInfo)
 	{

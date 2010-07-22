@@ -269,3 +269,42 @@ color:GoldenRod;
 	color:red;
 	font-size:14px;
 }
+
+
+/* TV9 Styles*/
+
+.districtAnc  {
+color:#12161B;
+font-weight:bold;
+text-decoration:none;
+font-size:15px;
+}
+
+.districtAncNew
+{
+	color:#764B00;
+	font-size:13px;
+	font-weight:bold;
+}
+
+#biElectionDistricts_body  {
+height:500px;
+width:228px;
+}
+
+#telanganaMap_body {
+height:480px;
+}
+
+.districtAncNew1  {
+color:#282B03;
+font-weight:bold;
+}
+
+.districtPageRoundedHeaders_center
+{
+	color:#091835;
+	font-size:13px;
+	font-weight:bold;
+	padding:10px;
+}
