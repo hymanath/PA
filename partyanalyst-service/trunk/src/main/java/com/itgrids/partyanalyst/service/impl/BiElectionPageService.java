@@ -2653,7 +2653,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			selectedElections = new ArrayList<ElectionResultVO>();
 			for(ElectionResultVO election:partyInfo.getElectionWiseResults()){
 				if(isElecTypeOnly){
-					if(elecTypeOrYear.contains(election.getElectionType())){
+					if(elecTypeOrYear.contains(election.getElectionYearAndType().substring(5))){
 						selectedElections.add(election);
 						electionsHeading.add(election.getElectionYearAndType());
 					}
