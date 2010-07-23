@@ -63,7 +63,7 @@ font-style:italic;
 
 .legendTable th 
 {
-color:DarkSeaGreen;
+color:#324314;
 text-align:left;
 }
 

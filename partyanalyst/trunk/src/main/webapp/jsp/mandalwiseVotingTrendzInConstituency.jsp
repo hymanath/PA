@@ -486,17 +486,30 @@
 				headingDIV+='	<b>Margin Votes %</b> : '+myResults.elecResultsInConsti.marginPercent;
 				headingDIV+=' %</td>';
 				headingDIV+='</tr>';
+				
+				headingDIV+='<tr>';
+				headingDIV+='<td style="border:0px;" colspan="5" align="right">';
+				headingDIV+='<a style="background-color:#1C3755;color:#FFFFFF;font-weight:bold;padding:5px;text-decoration:none;" href="javascript:{}" onclick="getConstituencyElecResultsWindow(\''+constituencyIdGlobal+'\',\''+assemblyElectionType+'\',\'2009\')">View Complete Results</a></td>';
+				headingDIV+='</tr>';
+
 				headingDIV+='</table>';
 				headingDIV+='</div>';
 				//------
 				headingDIV+='</td>';
-				
-				
 			
 				headingDIV+='</tr>';
+
+				
+
 				headingDIV+='</table>';
 				heading.innerHTML=headingDIV;
 			}
+
+			function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
+			{
+			   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
+			   browser1.focus();
+			} 
 			function mandalVotingShareDetailsMethod()
 			{
 
@@ -1730,18 +1743,26 @@
 			str1 += '</tr>';
 			str1 += '<tr>';
 			str1 += '<th align="left" rowspan="2" valign="top">Election Type:</th>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Assembly"  />2009 AC</td>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Assembly"  />2004 AC</td>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Parliament"  />2009 PC</td>';			
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2008_Parliament"  />2008 PC<font style="color:red;"> *</font></td>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_Parliament"  />2006 PC<font style="color:red;"> *</font></td>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Parliament"  />2004 PC</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Assembly"/>2009 AC</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Assembly"/>2004 AC</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Parliament"/>2009 PC</td>';			
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2008_Parliament"/>2008 PC<font style="color:red;"> *</font></td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_Parliament"/>2006 PC<font style="color:red;"> *</font></td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Parliament"/>2004 PC</td>';
 		    str1 += '</tr>';
 			str1 += '<tr>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_MPTC"  />2006 MPTC</td>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2001_MPTC" />2001 MPTC</td>';
-			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_ZPTC" />2006 ZPTC</td>';
-			str1 += '<td colspan="4"><INPUT type="checkbox" name="electionCheckBox" id="2001_ZPTC" />2001 ZPTC</td>';
+			if(resultsData.constituencyType == null || resultsData.constituencyType != "URBAN")
+			{
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_MPTC"/>2006 MPTC</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2001_MPTC"/>2001 MPTC</td>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_ZPTC"/>2006 ZPTC</td>';
+			str1 += '<td colspan="3"><INPUT type="checkbox" name="electionCheckBox" id="2001_ZPTC"/>2001 ZPTC</td>';
+			}
+			else if(resultsData.constituencyType == "URBAN")
+			{
+				str1 += '<td colspan="6"><INPUT type="checkbox" name="electionCheckBox" id="2005_CORPORATION"/>2005 CORPORATION</td>';
+				
+			}
 			str1 += '</tr>';
 			str1 += '</tr>';		    
 			str1 += '</table>';
@@ -2164,7 +2185,7 @@
 			cStr += '</table></center>';
 			cStr += '</div>';
 			
-			//checkBoxElmt.innerHTML = cStr;
+			checkBoxElmt.innerHTML = cStr;
 			
 			
 		}
