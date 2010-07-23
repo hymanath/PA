@@ -2565,6 +2565,10 @@ public class BiElectionPageService implements IBiElectionPageService {
 
 		allElecAllParties.setAllPartiesAllElectionResults(allPartiesInfo);
 
+		if(electionsHeading.size() == 0)
+			for(SelectOptionVO obj:allElecAllParties.getElections())
+				electionsHeading.add(obj.getName());		
+		
 		for(String elec:electionsHeading){
 			String [] yearAndType = StringUtils.split(elec, " ");
 			if(yearAndType[1].equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
@@ -2579,9 +2583,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				electionsHeadingList.add(new SelectOptionVO(0l, elec));
 		}
 			
-		
-		if(electionsHeadingList.size() > 0)
-			allElecAllParties.setElections(electionsHeadingList);
+		allElecAllParties.setElections(electionsHeadingList);
 		
 		return allElecAllParties;
 	}
