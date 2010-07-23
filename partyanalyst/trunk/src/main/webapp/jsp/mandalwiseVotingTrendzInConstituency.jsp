@@ -1495,20 +1495,31 @@
 			var partyCheckboxEls = document.getElementsByName("partywiseCheckBox");
 			var electionTypeCheckboxEls = document.getElementsByName("electionCheckBox");
 			var allianceCheckboxEls = document.getElementById("allianceChkBox");
+			var electionTypeArrayEls = document.getElementsByName("urbanElecType");
+
+			var selectedElectionArray = new Array();
 			var allainceVal;
 			var selectedPartiesIds = new Array();
 			var selectedElectionTypesYears = new Array();
 			var selectedPartiesCount, electionTypesCount;		
 			inputSelectionErrorEl.innerHTML = '';
 			var emptyArr = new Array();
-				
+			var allResults;
+			
+			if(value=="ALL" || value=="null")
+				allResults = true;
+			else
+				allResults = false;
+
 			if(allianceCheckboxEls.checked == true)
 			{
 				allainceVal = true;	
-			} else 
-				{
-					allainceVal = false;
-				}
+			}
+			else 
+			{
+				allainceVal = false;
+			}
+
 			for(var i=0; i < partyCheckboxEls.length; i++)
 			{
 				if(partyCheckboxEls[i].checked == true)
@@ -1529,7 +1540,7 @@
 					selectedElectionTypesYears.push(jsObj);
 				}	
 			}
-
+						
 			selectedPartiesCount =  selectedPartiesIds.length;
 			electionTypesCount = 	selectedElectionTypesYears.length;
 			if(selectedPartiesCount == 0 && electionTypesCount == 0)
@@ -1550,24 +1561,66 @@
 				inputSelectionErrorEl.innerHTML = 'Please Select Party';
 				return;
 			}
-			if(isElectionType == 'true')
-			{
-				 
-				if(value == 'AC')
+
+			var chartName = 'RuralUrban_'+constiId+'_AL';
+			var selectedElectionArrayLength;
+
+			if(isElectionType == 'false')
+			{				
+				selectedElectionArrayLength = selectedElectionTypesYears.length;
+				if(selectedElectionArrayLength > 0)
 				{
-					selectedElectionArr.push("Assembly");	
-				} else if(value == 'PC')
-				{
-					selectedElectionArr.push("Parliament");
-				} else if(value == 'ALL') 
-				{
-					selectedElectionArr = emptyArr;
-					selectedElectionArr.push(value);					
-				} else 
-				{
-					selectedElectionArr.push(value);
-				}   
+					for(var arr=0;arr<selectedElectionArrayLength;arr++)
+					{
+						chartName += '_'+selectedElectionTypesYears[arr].year+'_'+selectedElectionTypesYears[arr].type.substring(0,2);
+					}
+				}
+
 			}
+			else if(isElectionType == 'true')
+			{	
+				if(value == "ALL")
+				{
+					selectedElectionArray = emptyArr;
+					selectedElectionArray.push(value);							
+				}
+				else if(value == "Assembly" || value == "Parliament" || value == "CORPORATION")
+				{
+					for(var i =0; i<electionTypeArrayEls.length; i++)
+					{
+						if(electionTypeArrayEls[i].value == "ALL")
+						{
+							electionTypeArrayEls[i].checked = false;
+							continue;
+						}
+						else if(electionTypeArrayEls[i].checked == true)
+						{
+							selectedElectionArray.push(electionTypeArrayEls[i].value);
+						}
+					}
+				}
+
+				selectedElectionArrayLength = selectedElectionArray.length;
+
+				if(selectedElectionArrayLength == 0)
+				{
+					selectedElectionArray = emptyArr;
+					selectedElectionArray.push("ALL");	
+				}
+
+				if(selectedElectionArrayLength > 0)
+				{
+					for(var arr=0;arr<selectedElectionArrayLength;arr++)
+					{
+						chartName += ''+selectedElectionArray[arr].substring(0,2);
+					}
+				}
+				
+			}
+
+			
+			
+			
 			var jsObj = {
 					
 					constituencyName: constiName,
@@ -1577,7 +1630,9 @@
 					task: task,
 					alliances: allainceVal ,
 					isElectionType: isElectionType,
-					selectedElectionArr: selectedElectionArr
+					selectedElectionArr: selectedElectionArray,
+					allResults:allResults,
+					chartName:chartName
 					};
 			
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -2128,7 +2183,7 @@
 		}
 		
 		function buildResultsForUrbanRural(jsObj,results)
-		{
+		{			
 			
             var chartName = results.chartName;
             var constiId = jsObj.constituencyId;
@@ -2142,10 +2197,10 @@
 			{	
 				crossVotingData_Graph_DivEl.style.display = 'block';
 			}	
-			checkBoxElmt.innerHTML = '';
+			
 			if(!shareElmt && !checkBoxElmt)
 				return;
-			shareElmt.innerHTML = '';
+			
 			var electionListLength = results.elections.length+2;
 			
 			var str = '';
@@ -2216,7 +2271,7 @@
 			}	
 				if(results.allPartiesAllElectionResults[j].partyName != 'Others *')
 				{
-					str += '<td align="center">'+results.allPartiesAllElectionResults[j].range+'</td>';
+					str += '<td align="center" style="color:#FF8000;">'+results.allPartiesAllElectionResults[j].range+'</td>';
 					str += '</tr>';
 				}		
 			}
@@ -2235,17 +2290,19 @@
 				headDivEl.innerHTML = headDivElStr;            	
 			}
 			
+			if(!jsObj.allResults)
+				return;
+
 			var cStr = '';
 			cStr += '<div> ';
 			cStr += '<center><table>';
 			cStr += '<tr>';
 			cStr += '<td style="color:#121922;font-weight:bold;font-size:16px;">View :</td>';
 			cStr += '<td style="color:#121922;font-weight:bold;font-size:16px;">';
-			cStr += '<input type="checkbox" name="elecType" checked="checked" value="ALL" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\', this.value)"/>ALL';
-			cStr += '<input type="checkbox" name="elecType" value="AC" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>AC';
-			cStr += '<input type="checkbox" name="elecType" value="PC" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>PC';
-			cStr += '<input type="checkbox" name="elecType" value="MPTC" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>MPTC';
-			cStr += '<input type="checkbox" name="elecType" value="ZPTC" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>ZPTC';		
+			cStr += '<input type="checkbox" name="urbanElecType" checked="checked" value="ALL" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\', this.value)"/>ALL';
+			cStr += '<input type="checkbox" name="urbanElecType" value="Assembly" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>AC';
+			cStr += '<input type="checkbox" name="urbanElecType" value="Parliament" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>PC';
+			cStr += '<input type="checkbox" name="urbanElecType" value="CORPORATION" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>Corporation';
 			cStr += '</td>';
 			cStr += '</tr>';
 			cStr += '</table></center>';

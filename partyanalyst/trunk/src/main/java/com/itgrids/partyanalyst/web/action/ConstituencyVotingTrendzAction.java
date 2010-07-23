@@ -1748,6 +1748,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		Boolean isElecTypeOnly = jObj.getBoolean("isElectionType");
 		Boolean isAlliance = jObj.getBoolean("alliances");
 		String constiName = jObj.getString("constituencyName");
+		String chartName = jObj.getString("chartName");
 		JSONObject elecObj = null;
 		Set<String> parties = new HashSet<String>();
 		Set<String> elecTypeOrYear = new HashSet<String>();
@@ -1783,7 +1784,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			
 		
 		urbanRuralResultsVO = biElectionPageService.getResultsOfRuralUrbanAreaBeasedOnSelection(constituencyId, parties, elecTypeOrYear, isElecTypeOnly, isAlliance);
-		String chartName = "ByeElectionsRuralUrban"+"_"+constiName+"_"+constituencyId+"_"+parties.hashCode()+"_"+isAlliance+".png";
+		
 		String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		Set<String> partiesInChart = new LinkedHashSet<String>();
 
