@@ -259,6 +259,11 @@ font-size:16px;
 font-weight:bold;
 }
 
+#candidateDetails table
+{
+	width:65%;
+}
+
 #candidateDetails .yui-dt th a 
 {
 	font-size:17px;
@@ -268,4 +273,21 @@ font-weight:bold;
 color:#121922;
 font-size:16px;
 font-weight:bold;
+}
+
+#villagesVotingTrendz table
+{
+	width:65%;
+}
+
+#villagesVotingTrendz .yui-dt th a 
+{
+	font-size:17px;
+}
+
+#villagesVotingTrendz .yui-dt td 
+{
+	color:#121922;
+	font-size:16px;
+	font-weight:bold;
 }

@@ -63,8 +63,29 @@
 			background-position:0 0;
 			background-repeat:repeat;
 			color:#FFFFFF;
-			width:113px;
-			margin-left:-62px;
+			width:113px;			
+		}
+
+		#partiesTrendzInputTable
+		{
+			font-size:13px;
+		}
+		
+		#partiesTrendzInputTable th
+		{
+			padding:5px;
+		}
+
+		#votesPolledDtTableDiv_outer .yui-dt th a 
+		{
+			font-size:17px;
+		}
+
+		#votesPolledDtTableDiv_outer .yui-dt td 
+		{
+			color:#121922;
+			font-size:16px;
+			font-weight:bold;
 		}
 	</style>
 	<script type="text/javascript">
@@ -129,23 +150,32 @@
 	<div>
 	<c:if test="${! empty mandalVO}">
 		<s:form action="mandalRevenueVillagesElecViewAction" name="MandalRevenueVillagesElecViewAction" method="GET" enctype="multipart/form-data">
-			<table style="margin-left:60px;">
-				<tr><td><s:checkboxlist list="mandalVO.partiesInMandal" listKey="id" listValue="name" name="parties" label="Parties:"/></td></tr>
-				<tr><td><s:checkboxlist list="mandalVO.electionsInMandal" listKey="id" listValue="name" name="elections" label="Elections:"/></td></tr>
+			<table id="partiesTrendzInputTable">
 				<tr>
-					<td colspan="2" align="right">
+					<th align="left">Parties : </th>
+					<th colspan="2" align="left"><s:checkboxlist theme="simple" list="mandalVO.partiesInMandal" listKey="id" listValue="name" name="parties" label="Parties:"/></th>
+				</tr>
+				<tr>
+					<th align="left">Elections : </th>
+					<th colspan="2" align="left"><s:checkboxlist theme="simple" list="mandalVO.electionsInMandal" listKey="id" listValue="name" name="elections" label="Elections:"/></th>
+				</tr>
+				<tr>
+					<td align="center">
+						
+					</td>
+					<td align="left">
+							<s:checkbox theme="simple" id="allianceCheck" name="includeAlliance" value="hasAllianceParties"></s:checkbox><b> Include Aliance Parties</b>
 							<input type="button" style="margin-left:0px" class="button" onclick="checkAllBoxes()" value="Select All"/>
 							<input type="button" style="margin-left:0px" class="button" onclick="UncheckAllBoxes()" value="DeSelect All"/>
+							<s:submit theme="simple" cssClass="button" label="View Chart" /></td>
 					</td>
-					<td align="center">
-						<s:checkbox theme="simple" id="allianceCheck" name="includeAlliance" value="hasAllianceParties"></s:checkbox><b> Include Aliance Parties</b>
-					</td>
+					
 				</tr>
 				<tr>
 					<td><input type="hidden" name="tehsilId" value="${tehsilId}"/></td>
 					<td><input type="hidden" name="tehsilName" value="${tehsilName}"/></td>
 				</tr>
-				<tr><td colspan="2" align="center"><s:submit cssClass="button" label="View Chart" /></td></tr>
+				<tr><td colspan="2" align="center"></tr>
 			</table>
 		</s:form>
 	</c:if>
@@ -158,28 +188,30 @@
 	
 	
 	
-	<div id="votesPollingInMandalDIV" class="yui-skin-sam" style="margin-top:40px;">
+	<div id="votesPollingInMandalDIV" style="margin-top:40px;">
 		<table id="votesPollingInMandal" width="90%">
 			<c:forEach var="votesPollingInMandal" items="${townshipBoothDetailsVO}">
 				<tr>
-					<td width="50%" style="vertical-align:top;">
-						<div id="votesPolledDtTableDiv">
-						<table id="votesPolledTable">	
-							<c:forEach var="votesPolling" items="${votesPollingInMandal.townshipVotingTrends}">
-								<tr>
-									<td>
-										${votesPolling.townshipName}
-									</td>
-									<td>
-										${votesPolling.percentageOfValidVotes}
-									</td>	
-								</tr>
-																									
-							</c:forEach>	
-							</table>	
-						</div>
+					<td width="40%" style="vertical-align:top;">
+						<div id="votesPolledDtTableDiv_outer" class="yui-skin-sam">
+							<div id="votesPolledDtTableDiv">
+								<table id="votesPolledTable">	
+									<c:forEach var="votesPolling" items="${votesPollingInMandal.townshipVotingTrends}">
+										<tr>
+											<td>
+												${votesPolling.townshipName}
+											</td>
+											<td>
+												${votesPolling.percentageOfValidVotes}
+											</td>	
+										</tr>
+																											
+									</c:forEach>	
+								</table>	
+							</div>
+						</div>	
 					</td>
-					<td width="50%" style="vertical-align:top;" align="center">						
+					<td width="60%" style="vertical-align:top;" align="center">						
 						<c:forEach var="votesPollingInMandal" items="${townshipBoothDetailsVO}">										
 								<table>	
 									<tr>	

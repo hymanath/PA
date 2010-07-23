@@ -40,7 +40,7 @@
 			border:0 solid #AEE2FF;
 			color:#000000;
 			font-family:MS Sans-serif;
-			font-size:20px;
+			font-size:18px;
 			font-weight:bold;
 			height:25px;
 			margin-bottom:15px;
@@ -208,6 +208,7 @@ legend
 	font-weight:bold;
 }
 
+
 </style>
 
 <link rel="stylesheet" type="text/css" href="styles/tv9Styles/tv9Styles.css">
@@ -253,7 +254,17 @@ legend
 					rvStr += '<td><div id="villagewiseVotesShare" style="margin:20px 0px 20px 0px;"></div></td>';
 					rvStr += '</tr>';			
 					rvStr += '</table>';				
-	
+					
+					rvStr += '<table cellspacing="0" cellpadding="0" border="0">';
+					rvStr += '	<tr>';
+					rvStr += '	<td><img src="images/icons/tv9Icons/left_blue_main.png"></td>';
+					rvStr += '	<td>';
+					rvStr += '	<div style="height: 40px; background-image: url(\'images/icons/tv9Icons/header_body_blue.png\');"><span style="color:#0C2640; font-size: 20px; font-weight: bold; position: relative; top: 7px;">All Parties Performance In Revenue Villages </span></div></td>';
+					rvStr += '	<td><img src="images/icons/tv9Icons/right_blue_main.png"></td>';
+					rvStr += '</table>';
+					
+					//rvStr += '<br/>';
+
 					rvStr += '<div id="revenueDataTable" class="yui-skin-sam"><div id="div_${constiElec.constituencyId}" class="revenueDtTable">';
 					rvStr += '<table class="censusInfoTable" style="border:1px solid #ADADAD;" id="table_${constiElec.constituencyId}">';
 					<c:forEach var="villageElec" items="${constiElec.revenueVillageElectionVO}">
@@ -278,7 +289,7 @@ legend
 					rvStr += '	 <td align="left">';
 					rvStr += '		<table cellspacing="0" cellpadding="0" border="0">';
 					rvStr += '			<tr>';
-					rvStr += '				<td><img src="images/icons/tv9Icons/left_blue_main.png"></td>';
+					rvStr += '				<td width="24px"><img src="images/icons/tv9Icons/left_blue_main.png"></td>';
 					rvStr += '				<td>';
 					rvStr += '					<div style="height: 40px; background-image: url(\'images/icons/tv9Icons/header_body_blue.png\');"><span style="color:#0C2640; font-size: 20px; font-weight: bold; position: relative; top: 7px;">Participated Candidate Details</span></div></td>';
 					rvStr += '				<td><img src="images/icons/tv9Icons/right_blue_main.png"></td>';
@@ -531,13 +542,21 @@ legend
 			
 				var rvStr = '';		
 				rvStr += '<a name="votersDiv"></a>';
-				rvStr += '<div id="revenueVillageDiv_head" class="commonVotersHeadDiv">';
-				rvStr += 'Voting Trendz In Revenue Villages for ${mandalInfoVO.mandalName} Mandal in  ${electionYear} ${electionType} Election ';
-				rvStr += '</div>';
+
+				rvStr += '		<table cellspacing="0" cellpadding="0" border="0">';
+				rvStr += '			<tr>';
+				rvStr += '				<td><img src="images/icons/tv9Icons/left_blue_main.png"></td>';
+				rvStr += '				<td>';
+				rvStr += '					<div id="revenueVillageDiv_head" style="height: 40px; background-image: url(\'images/icons/tv9Icons/header_body_blue.png\');">';
+				rvStr +='<span style="color:#0C2640; font-size: 20px; font-weight: bold; position: relative; top: 7px;">';
+				rvStr +=' Voting Trendz In Revenue Villages for ${mandalInfoVO.mandalName} Mandal in  ${electionYear} ${electionType} Election </span></div></td>';
+				rvStr += '				<td><img src="images/icons/tv9Icons/right_blue_main.png"></td>';
+				rvStr += '		</table>';
+		
 			
 				for(var k in resultVO.partiesResultsInVillages){                                                                                  
 					rvStr += '<div style="margin-top:10px;margin-bottom:10px;"><b>'+resultVO.partiesResultsInVillages[k].constituencyName+' ${electionType} In ${electionYear}</b></div>';
-					rvStr += '<div class="yui-skin-sam"><div id="revenueVillageDiv_'+k+'">';	
+					rvStr += '<div id="villagesVotingTrendz" class="yui-skin-sam"><div id="revenueVillageDiv_'+k+'">';	
 					rvStr += '<table id="revillageInfoTable_'+k+'" >';
 					for(var i in resultVO.partiesResultsInVillages[k].revenueVillagesInfo)
 					{			
