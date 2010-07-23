@@ -63,6 +63,8 @@
 
 	<script type="text/javascript" src="js/constituencyPage/constituencyPage.js"></script>
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	
 	 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script type="text/javascript">
 	  
@@ -220,6 +222,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/tv9Styles/tv9Styles.css">
 
 	<script  type="text/javascript"><!--
+	var myResultsGlobal;
 	var Localization = { <%		
 			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
 			String totalMuncipalities = rb.getString("totalMuncipalities");
@@ -263,6 +266,7 @@
 		var selectedElectionArr;	
 		var docOpener = window.opener;
 		var mandalNamesArr = null;
+		
 		var constType;
 		localizationObj = docOpener.localizationObj;
 		<c:forEach var="staticParties" items="${staticPartiesList}">
@@ -505,6 +509,98 @@
 				heading.innerHTML=headingDIV;
 			}
 
+		    
+		     
+			  var netVar = false;
+			  
+					 
+			  //check for internet connection availble or not
+		      function checkForNetworkAndDisplayChart()
+			  {
+		          var img = new Image();
+				  img.src = "http://www.itgrids.com/images/slogan.gif";
+				  
+				  if (img.complete) {
+					  		  
+					  google.load("visualization", "1", {packages:["corechart"]});
+					  netVar = true;
+					  //enableChartButton();
+				  }
+				  if(!img.complete)
+				  {
+					netVar = false;
+				  }
+			  }
+		      function  enableChartButton()
+		      {
+		    	var interActvChartsBtnEl = document.getElementById("interActvChartsBtn");
+		    	interActvChartsBtnEl.disabled = false;
+		      }      
+		     
+		      function drawInteractiveChart() 
+			  {
+		      	var mandalwiseVotersShare = myResultsGlobal.constituencyVO.assembliesOfParliamentInfo;
+		      	var btnDivEl = document.getElementById('interActvChartsBtnDiv');
+				  var btnDivElStr = '<input type="button" id="interActvChartsBtn" onclick="drawMandalsShareStaticChart()" value="Show Basic Chart"/>';
+				  btnDivEl.innerHTML = btnDivElStr; 
+				for(var c in mandalwiseVotersShare){
+
+					var data = new google.visualization.DataTable();
+					data.addColumn('string', 'Mandals');
+					data.addColumn('number', 'Voters % Share');
+
+
+					data.addRows(mandalwiseVotersShare[c].votersInfoForMandalVO.length);
+					var k=0;
+					for (var i in mandalwiseVotersShare[c].votersInfoForMandalVO)
+					{
+					data.setValue(k, 0, mandalwiseVotersShare[c].votersInfoForMandalVO[i].mandalName);
+					data.setValue(k, 1,  mandalwiseVotersShare[c].votersInfoForMandalVO[i].totVoters);
+					k++;
+					}
+					
+					var ctitle;
+					var chartDiv;
+					if(c == 0){
+					chartDiv = document.getElementById('interactiveChartOneDIV');
+					ctitle = 'Mandals Voters % Share In '+ constituencyName+' In 2009';
+					}
+					else if(c == 1){
+					chartDiv = document.getElementById('interactiveChartTwoDIV');
+					ctitle = 'Mandals Voters % Share In '+ constituencyName+' In 2004';
+		            }
+					var chart = new google.visualization.PieChart(chartDiv);
+
+					chart.draw(data, {width: 600, height: 500, title: ctitle, legendFontSize:14,fontSize:13,titleFontSize:16,tooltipFontSize:15, stroke:3});
+				}
+		      }
+
+		      function drawMandalsShareStaticChart()
+			  {
+		    	 
+				  var chartDetails = myResultsGlobal.constituencyVO.pieChartNames;
+				  var btnDivEl = document.getElementById('interActvChartsBtnDiv');
+				  var btnDivElStr = '<input type="button" id="interActvChartsBtn" onclick="drawInteractiveChart()" value="Show Interactive Chart" disabled="true"/>';
+				  btnDivEl.innerHTML = btnDivElStr;  		
+				  for(i in chartDetails)
+				  {
+					  var imgStr='';
+					  imgStr+='<img src="charts/'+chartDetails[i]+'" style="border:3px solid #729EC1;"></img>';
+
+					  var imageDIV;
+					  if(i == 0)
+		              imageDIV = document.getElementById('interactiveChartOneDIV');
+					  else if(i == 1)
+					  imageDIV = document.getElementById('interactiveChartTwoDIV');
+
+					  imageDIV.innerHTML = imgStr;
+				  }
+				  if(netVar == true)
+					{
+						enableChartButton();
+					}
+			  }
+
 			function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			{
 			   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
@@ -512,7 +608,7 @@
 			} 
 			function mandalVotingShareDetailsMethod()
 			{
-
+				
                 var heading =document.getElementById("overViewHeadingDiv");
 				var headingDIV='';
 				headingDIV+='	<table width="100%">';
@@ -538,7 +634,9 @@
 										if(jsObj.task == "getMandalVotingTrendz")
 										{
 											buildMandalVotingTrendzData(jsObj,myResults);
-											drawInteractiveChart(myResults);
+											myResultsGlobal = myResults;
+											drawMandalsShareStaticChart();							
+											
 										}
 										else if(jsObj.task == "getZptcElectionResults")
 										{		
@@ -1738,9 +1836,18 @@
 			mdlwiseVotersDetailsStr += '</div></td>';
 			mdlwiseVotersDetailsStr += '<td><img src="images/icons/tv9Icons/right_blue_main.png"/></td>';
 			mdlwiseVotersDetailsStr += '</tr>';
-			mdlwiseVotersDetailsStr += '</table>';
-            
-			mdlwiseVotersDetailsStr += '<div id="interactiveChartDIV"></div>';
+			mdlwiseVotersDetailsStr += '</table>';			
+			mdlwiseVotersDetailsStr += '<table style="margin:10px;">';
+			mdlwiseVotersDetailsStr += '<tr>';
+			mdlwiseVotersDetailsStr += '<td><div id="interActvChartsBtnDiv"></div></td>';
+			mdlwiseVotersDetailsStr += '</tr>';
+			mdlwiseVotersDetailsStr += '<tr>';
+			mdlwiseVotersDetailsStr += '<td><div id="interactiveChartOneDIV"></div></td>';
+			mdlwiseVotersDetailsStr += '<td><div id="interactiveChartTwoDIV"></div></td>';
+			mdlwiseVotersDetailsStr += '</tr>';
+            mdlwiseVotersDetailsStr += '</table>';
+			
+
 			mdlwiseVotersDetailsStr+='<Table width="70%" border="0" class="mandalVotesShareTable" cellpadding="5" cellspacing="5">';
 			mdlwiseVotersDetailsStr+='<TR>';			
 			mdlwiseVotersDetailsStr+='	<TH>Mandal</TH>';
@@ -2120,7 +2227,7 @@
 			getConstituencyResults("2009");
 			getAllZptcYears();	  
 			getAllMptcYears();	
-			//To build Graphs for 2009 and 2004 Mandals Wise Parties Results 
+			 
 		}
 		
 		function buildResultsForUrbanRural(jsObj,results)
@@ -2849,16 +2956,14 @@
 			</div>
 		</div>
 	</div>
-	<SCRIPT type="text/javascript"> 			
-			buildMandalsVotingTrendz();		
+	<SCRIPT type="text/javascript"> 	
+	        checkForNetworkAndDisplayChart();
+           	buildMandalsVotingTrendz();		
 			getConstituencyOverViewResult(constituencyIdGlobal,constituencyName);	
-			//getAllZptcYears();	  
-			//getAllMptcYears();
 			partyVotesSharing('all','-',1);
 			getMuncipalElections();
 			getCorporationElections();
-			mandalVotingShareDetailsMethod();
-			//getMandalsAndPartiesResults();
+			mandalVotingShareDetailsMethod();			
 	</script>
 </body>
 </html>
