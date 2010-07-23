@@ -1454,7 +1454,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		constituencyDetails = new ConstituencyInfoVO();
 		constituencyDetails = constituencyPageService.getConstituencyDetails(constituencyId); 
 		constituencyVO = constituencyPageService.getVotersInfoInMandalsForConstituency(constituencyId);
-		
+		List<VotersWithDelimitationInfoVO> votersInfoVO = new ArrayList<VotersWithDelimitationInfoVO>();
 		
 		String pieChart = "";
 		String pieChartPath = "";
@@ -1465,7 +1465,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
 			log.debug("Mandal Id in Action::::::::::::::::::::::::::"+votersInMandalOrAC.getVotersInfoForMandalVO().get(0).getMandalId());
-			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
+			
 			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+"In Bi-Elections"+".png";
 			pieChartPath = context.getRealPath("/")+ "charts\\" + pieChart;
 			if(votersInMandalOrAC.getYear().equalsIgnoreCase(IConstants.DELIMITATION_YEAR.toString())){
@@ -1485,23 +1485,36 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			
 				
 			if(votersInMandalOrAC.getVotersInfoForMandalVO().size() > 0)
-				//ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(votersInMandalOrAC.getVotersInfoForMandalVO()), pieChartPath, null,true,260,270);
-				votersInfoForMandals = getMandalsVotesShare(votersInMandalOrAC.getVotersInfoForMandalVO(),votersInMandalOrAC.getYear());
+				ChartProducer.createLabeledPieChart(title, createPieDatasetForVoters(votersInMandalOrAC.getVotersInfoForMandalVO()), pieChartPath, null,true,450,450);
+				
+			    votersInfoForMandals = getMandalsVotesShare(votersInMandalOrAC.getVotersInfoForMandalVO(),votersInMandalOrAC.getYear());
 			    if(votersInfoForMandals != null){
-			    	List<VotersWithDelimitationInfoVO> votersInfoVO = new ArrayList<VotersWithDelimitationInfoVO>();
 			    	votersInfoVO.add(votersInfoForMandals);
-			    	
-			    	constituencyVO.setAssembliesOfParliamentInfo(votersInfoVO);
 			    }
 			
-			//chartNames[i++] = pieChart;
-			}
+			chartNames[i++] = pieChart;
+			
 		}
-		
+		constituencyVO.setAssembliesOfParliamentInfo(votersInfoVO);
 		constituencyVO.setPieChartNames(chartNames);
 		constituencyVO.setExtraInfo(extraInfo);
 		
 	 return constituencyVO;
+	}
+    
+    private DefaultPieDataset createPieDatasetForVoters(List<VotersInfoForMandalVO> votersInfoForMandalVO) {
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		Long totalVotes = 0l;
+		BigDecimal percentage;
+		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO)
+			totalVotes += new Long(votersInMandalOrAC.getTotalVoters());
+
+		for(VotersInfoForMandalVO votersInMandalOrAC:votersInfoForMandalVO){
+			percentage = new BigDecimal(new Long(votersInMandalOrAC.getTotalVoters())*100.0/totalVotes).setScale(2,BigDecimal.ROUND_HALF_UP);
+			dataset.setValue(votersInMandalOrAC.getMandalName()+" ["+percentage.toString()+"%]",percentage);
+		}
+			
+		return dataset;
 	}
     
     public VotersWithDelimitationInfoVO getMandalsVotesShare(List<VotersInfoForMandalVO> votersInfoForMandalVO,String year){
