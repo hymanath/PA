@@ -2565,8 +2565,21 @@ public class BiElectionPageService implements IBiElectionPageService {
 
 		allElecAllParties.setAllPartiesAllElectionResults(allPartiesInfo);
 
-		for(String elec:electionsHeading)
-			electionsHeadingList.add(new SelectOptionVO(0l, elec));
+		for(String elec:electionsHeading){
+			String [] yearAndType = StringUtils.split(elec, " ");
+			if(yearAndType[1].equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
+				electionsHeadingList.add(new SelectOptionVO(0l, yearAndType[0]+" "+"AC"));
+			else
+			if(yearAndType[1].equalsIgnoreCase(IConstants.PARLIAMENT_ELECTION_TYPE))
+				electionsHeadingList.add(new SelectOptionVO(0l, yearAndType[0]+" "+"PC"));
+			else
+			if(yearAndType[1].equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE))
+				electionsHeadingList.add(new SelectOptionVO(0l, yearAndType[0]+" "+"CORP"));
+			else
+				electionsHeadingList.add(new SelectOptionVO(0l, elec));
+		}
+			
+		
 		if(electionsHeadingList.size() > 0)
 			allElecAllParties.setElections(electionsHeadingList);
 		
