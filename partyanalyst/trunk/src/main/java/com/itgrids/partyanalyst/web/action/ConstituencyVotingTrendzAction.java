@@ -68,6 +68,7 @@ import com.itgrids.partyanalyst.utils.ElectionDataVOComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultPartyVOByElectionType;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.PartyResultVOPercentComparator;
 import com.itgrids.partyanalyst.utils.VotersInfoForMandalVOComparator;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -763,6 +764,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private CategoryDataset createDataSetForPreviousYear(
 			List<PartyResultVO> previousYearChart, Set<String> partiesInChart) {
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		Collections.sort(previousYearChart, new PartyResultVOPercentComparator());
 		for(PartyResultVO resultVO:previousYearChart){
 			partiesInChart.add(resultVO.getPartyName());
 			dataset.addValue(new BigDecimal(resultVO.getVotesPercent()), resultVO.getPartyName(), resultVO.getTehsilName());
