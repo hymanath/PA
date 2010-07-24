@@ -1616,7 +1616,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 * @INPUT election results list
 	 * @OUTPUT non participating parties results list as PartyInfoVO
 	 */
-	public List<PartyResultsVO> getNonParticipatingPartiesResults(List<ElectionDataVO> urbanRuralConstiResults){
+	public List<PartyResultsVO> getNonParticipatingPartiesResults(List<ElectionDataVO> urbanRuralConstiResults,String conType){
 		
 		log.debug(" Entered Into getNonParticipatingPartiesResults Method ...");
 		
@@ -1631,9 +1631,18 @@ public class BiElectionPageService implements IBiElectionPageService {
 				List<PartyResultsVO> partyResInfo = getCrossVotingResults(urbanRuralConstiResults);
 				if(partyResInfo != null && partyResInfo.size() > 0){
 				for(PartyResultsVO res:partyResInfo){
-					if(res.getPartyName().equals(IConstants.BJP) ||
+					
+					if("URBAN".equalsIgnoreCase(conType)){
+						if(res.getPartyName().equals(IConstants.TRS) ||
+								res.getPartyName().equals(IConstants.PRP)){
+							partyResList.add(res);
+						}
+					}
+					else{ 
+						if(res.getPartyName().equals(IConstants.BJP) ||
 							res.getPartyName().equals(IConstants.PRP)){
 						partyResList.add(res);
+						}
 					}
 				}
 				getTotalResults(partyResList,0L);
@@ -1800,7 +1809,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			if(urbanRuralConstiResults != null && urbanRuralConstiResults.size() > 0){
 			
 			//for non-participating parties
-			List<PartyResultsVO> nonParticipRes = getNonParticipatingPartiesResults(urbanRuralConstiResults);
+			List<PartyResultsVO> nonParticipRes = getNonParticipatingPartiesResults(urbanRuralConstiResults,constituency.getAreaType());
 			if(nonParticipRes != null && nonParticipRes.size() > 0)
 				resultForCroVotAndNonParty.setNonPartiParties(nonParticipRes);
 									
