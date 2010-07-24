@@ -4709,18 +4709,18 @@ public class StaticDataService implements IStaticDataService {
 		
 		Map<String,Long> allVoters = new HashMap<String,Long>(0);
 		
-		allVoters.put("HUZURABAD", 198999l);
+		allVoters.put("HUZURABAD", 202322l);
 		allVoters.put("SIRCILLA", 211442l);
-		allVoters.put("KORATLA", 187910l);
-		allVoters.put("DHARMAPURI", 189774l);
+		allVoters.put("KORATLA", 193535l);
+		allVoters.put("DHARMAPURI", 191941l);
 		allVoters.put("VEMULAWADA", 184633l);
-		allVoters.put("CHENNUR", 145615l);
-		allVoters.put("SIRPUR", 150579l);
-		allVoters.put("MANCHERIAL", 193276l);
-		allVoters.put("YELLAREDDY", 191237l);
-		allVoters.put("NIZAMABAD URBAN", 240219l);
+		allVoters.put("CHENNUR", 149227l);
+		allVoters.put("SIRPUR", 155180l);
+		allVoters.put("MANCHERIAL", 202339l);
+		allVoters.put("YELLAREDDY", 190343l);
+		allVoters.put("NIZAMABAD URBAN", 267292l);
 		allVoters.put("SIDDIPET", 186303l);
-		allVoters.put("WARANGAL WEST", 210492l);
+		allVoters.put("WARANGAL WEST", 221896l);
 				
 		return allVoters;		
 	}
