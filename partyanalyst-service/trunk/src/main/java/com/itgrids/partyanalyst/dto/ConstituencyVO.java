@@ -15,6 +15,11 @@ public class ConstituencyVO {
 	private List<VotersWithDelimitationInfoVO> assembliesOfParliamentInfo;
 	private String[] pieChartNames;
 	private String[] extraInfo;
+	private List<PartyResultVO> partiesResults;
+	private Long totalVoters2010;
+	private Long totalVoters2009;
+	private Long totalPolledVotes;
+	private String votesPercent;
 	
 	public ConstituencyVO(){
 		
@@ -84,5 +89,37 @@ public class ConstituencyVO {
 	public void setExtraInfo(String[] extraInfo) {
 		this.extraInfo = extraInfo;
 	}
+	public List<PartyResultVO> getPartiesResults() {
+		return partiesResults;
+	}
+	public void setPartiesResults(List<PartyResultVO> partiesResults) {
+		this.partiesResults = partiesResults;
+	}
+	public Long getTotalVoters2010() {
+		return totalVoters2010;
+	}
+	public void setTotalVoters2010(Long totalVoters2010) {
+		this.totalVoters2010 = totalVoters2010;
+	}
+	public Long getTotalVoters2009() {
+		return totalVoters2009;
+	}
+	public void setTotalVoters2009(Long totalVoters2009) {
+		this.totalVoters2009 = totalVoters2009;
+	}
+	public Long getTotalPolledVotes() {
+		return totalPolledVotes;
+	}
+	public void setTotalPolledVotes(Long totalPolledVotes) {
+		this.totalPolledVotes = totalPolledVotes;
+	}
+	public String getVotesPercent() {
+		return votesPercent;
+	}
+	public void setVotesPercent(String votesPercent) {
+		this.votesPercent = votesPercent;
+	}
+	
+	
 	
 }
