@@ -8,6 +8,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class PartyElectionResultVO implements Serializable {
 
@@ -31,6 +32,7 @@ public class PartyElectionResultVO implements Serializable {
 	private Long maleVoters;
 	private Long femaleVoters;
 	private String votesPercentage;
+	private BigDecimal votesPercent;
 	private Long rank;
 	private Long totalBooths;
 	private String status;
@@ -171,6 +173,12 @@ public class PartyElectionResultVO implements Serializable {
 	}
 	public void setTownshipName(String townshipName) {
 		this.townshipName = townshipName;
+	}
+	public BigDecimal getVotesPercent() {
+		return votesPercent;
+	}
+	public void setVotesPercent(BigDecimal votesPercent) {
+		this.votesPercent = votesPercent;
 	}
 	
 }

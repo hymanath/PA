@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -12,6 +13,7 @@ public class ElectionResultVO {
 	private String electionYear;
 	private Long votesEarned;
 	private String percentage;
+	private BigDecimal percent;
 	private String partyName;
 	private String partyShortName;
 	private Long noOfSeatsWon;
@@ -137,6 +139,14 @@ public class ElectionResultVO {
 
 	public void setAlliancRes(Boolean alliancRes) {
 		this.alliancRes = alliancRes;
+	}
+
+	public BigDecimal getPercent() {
+		return percent;
+	}
+
+	public void setPercent(BigDecimal percent) {
+		this.percent = percent;
 	}
 	
 }
