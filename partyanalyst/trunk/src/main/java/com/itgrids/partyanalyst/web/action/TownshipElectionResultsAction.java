@@ -14,6 +14,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyVillageLevelAnalysisVO;
 import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.TownshipBoothDetailsVO;
 import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.helper.ChartUtils;
 import com.itgrids.partyanalyst.service.IBiElectionPageService;
@@ -57,7 +59,16 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	JSONObject jObj;
 	private IBiElectionPageService biElectionPageService; 
 	private List<PartyVillageLevelAnalysisVO> partyVillageLevelAnalysisVO;
+    private List<TownshipBoothDetailsVO> townshipBoothDetailsVO;
 	
+	public List<TownshipBoothDetailsVO> getTownshipBoothDetailsVO() {
+		return townshipBoothDetailsVO;
+	}
+
+	public void setTownshipBoothDetailsVO(
+			List<TownshipBoothDetailsVO> townshipBoothDetailsVO) {
+		this.townshipBoothDetailsVO = townshipBoothDetailsVO;
+	}
 	public List<PartyVillageLevelAnalysisVO> getPartyVillageLevelAnalysisVO() {
 		return partyVillageLevelAnalysisVO;
 	}
@@ -199,8 +210,39 @@ public class TownshipElectionResultsAction extends ActionSupport implements Serv
 	        constituencyObj.setChartPath(chartName);
 		}
 		
+		createPieChartsForTownshipVotingTrends(new Long(tehsilId),null);	
 		return SUCCESS;
 	}
+	
+	private void createPieChartsForTownshipVotingTrends(Long tehsilId,String electionIds){
+		townshipBoothDetailsVO = staticDataService.getRevenueVillageVotingTrendsByMandalAndElectionIds(tehsilId,electionIds);		
+	
+		for(int i=0;i<townshipBoothDetailsVO.size();i++){
+			String chartName = townshipBoothDetailsVO.get(i).getChartName();
+			String chartTitle = townshipBoothDetailsVO.get(i).getChartTitle();
+			String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+				
+			if(townshipBoothDetailsVO.get(0).getTownshipVotingTrends().size()<=12){
+				ChartProducer.createProblemsPieChart(chartTitle, createPieDatasetForVoters(townshipBoothDetailsVO,i), chartPath , null,true,300,280);	
+			}else{
+				ChartProducer.createProblemsPieChart(chartTitle, createPieDatasetForVoters(townshipBoothDetailsVO,i), chartPath , null,true,300,450);	
+			}			
+		}	
+	}
+	
+	private DefaultPieDataset createPieDatasetForVoters(final List<TownshipBoothDetailsVO> townshipBoothDetailsVO,int k) {
+		DefaultPieDataset dataset = new DefaultPieDataset();
+		BigDecimal percentage;
+		
+		for(int i=k;i<=k;i++){
+			for(int j=0;j<townshipBoothDetailsVO.get(i).getTownshipVotingTrends().size();j++){
+				percentage = new BigDecimal(townshipBoothDetailsVO.get(i).getTownshipVotingTrends().get(j).getPercentageOfValidVotes()).setScale(2,BigDecimal.ROUND_HALF_UP);
+				dataset.setValue(townshipBoothDetailsVO.get(i).getTownshipVotingTrends().get(j).getTownshipName()+" ["+percentage.toString()+"%]",percentage);	
+			}			
+		}			
+		return dataset;
+	}
+	
 	
 	private CategoryDataset createDataset(ConstituencyRevenueVillagesVO constituencyObj, Set<String> partiesInChart) {
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
