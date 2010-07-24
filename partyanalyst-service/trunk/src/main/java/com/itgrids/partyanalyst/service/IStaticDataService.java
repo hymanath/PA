@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
@@ -187,4 +188,6 @@ public interface IStaticDataService {
 	public StringBuilder getAllLatestMandalsForAConstituency(Long constituencyId);
 	
 	public PartyElectionResultsVO getWonAndOppositionCandidateDetailsInAConstituencyWithMargin(Long constituencyId,String electionYear);
+	
+	
 }
