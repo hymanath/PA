@@ -65,34 +65,7 @@
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	
-	 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-    <script type="text/javascript">
-	  
-      google.load("visualization", "1", {packages:["corechart"]});
-	  // google.setOnLoadCallback(drawChart);
-      function drawInteractiveChart(results) {
-        
-		var mandalwiseVotersShare = results.constituencyVO.assembliesOfParliamentInfo;
-        
-		var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Mandals');
-        data.addColumn('number', 'Voters % Share');
-
-
-        data.addRows(mandalwiseVotersShare[0].votersInfoForMandalVO.length);
-        var k=0;
-		for (var i in mandalwiseVotersShare[0].votersInfoForMandalVO)
-		{
-        data.setValue(k, 0, mandalwiseVotersShare[0].votersInfoForMandalVO[i].mandalName);
-        data.setValue(k, 1,  mandalwiseVotersShare[0].votersInfoForMandalVO[i].totVoters);
-        k++;
-		}
-        
-		var ctitle = 'Mandals Voters % Share In '+ constituencyName;
-        var chart = new google.visualization.PieChart(document.getElementById('interactiveChartDIV'));
-        chart.draw(data, {width: 650, height: 400, title: ctitle, legendFontSize:15,fontSize:13,titleFontSize:16,tooltipFontSize:15});
-      }
-    </script>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <style type="text/css">
 		.mainHeading 
 		{
@@ -608,6 +581,77 @@
 					}
 			  }
 
+
+			  //mandalwise google charts
+			  function getMandalResultsInteractiveChart(results,divId)
+			 {
+				 var chartColumns = results.candidateNamePartyAndStatus;
+				 var chartRows = results.constituencyOrMandalWiseElectionVO;
+
+				 var data = new google.visualization.DataTable();
+				  
+				  data.addColumn('string', 'Party');
+				  //for columns
+				  for(var i in chartColumns){
+				   var colData = chartColumns[i].party +' ['+ chartColumns[i].rank + '] ';
+				   data.addColumn('number', colData);
+				  }
+		   
+				  //for rows
+				  for(var j in chartRows)
+				  {
+					  var array = new Array();
+					  array.push(chartRows[j].locationName);
+
+					  var partyRes = chartRows[j].partyElectionResultVOs;
+					  
+					  for(var k in partyRes){
+						array.push(partyRes[k].votesPercent);
+					  }
+					  
+					  data.addRow(array);
+				  }
+				  var ctitle = 'Mandal Wise Election Results For ' + constituencyName + ' In ' + results.electionType +' 2009'; 
+				  new google.visualization.LineChart(document.getElementById(divId)).
+				  draw(data, {curveType: "function",width: 950, height: 650,title:ctitle,titleColor:'red' ,titleFontSize:18,lineWidth:3});
+					
+			 }
+
+			 function getMandalResultsInteractiveChartForPrevYear(results,divId)
+			 {
+				 
+				 var chartColumns = results.candidateNamePartyAndStatus;
+				 var chartRows = results.constituencyOrMandalWiseElectionVO;
+
+				 var data = new google.visualization.DataTable();
+				  
+				  data.addColumn('string', 'Party');
+				  //for columns
+				  for(var i in chartColumns){
+				   var colData = chartColumns[i].party;
+				   data.addColumn('number', colData);
+				  }
+		   
+				  //for rows
+				  for(var j in chartRows)
+				  {
+					  var array = new Array();
+					  array.push(chartRows[j].locationName);
+
+					  var partyRes = chartRows[j].partyElectionResultVOs;
+					  
+					  for(var k in partyRes){
+						array.push(partyRes[k].votesPercent);
+					  }
+					  
+					  data.addRow(array);
+				  }
+				  var ctitle = 'Mandal Wise Assembly Election Results For ' + constituencyName + ' In  2004'; 
+				  new google.visualization.LineChart(document.getElementById(divId)).
+				  draw(data, {curveType: "function",width: 950, height: 650,title:ctitle,titleColor:'red' ,titleFontSize:18,lineWidth:3});
+					
+			 }
+
 			function getConstituencyElecResultsWindow(constiId,elecType,elecYear)
 			{
 			   var browser1 = window.open("<s:url action="constituencyElectionResultsAction.action"/>?constituencyId="+constiId+"&electionType="+elecType+"&electionYear="+elecYear,"constituencyElectionResults","scrollbars=yes,height=600,width=750,left=200,top=200");
@@ -666,6 +710,25 @@
 										} else if(jsObj.task == "getConstituencyResultsBySubLocations")
 										{
 											constiMandalWiseResultsPresChart = myResults.chartPath;
+
+											var buttonDiv = document.getElementById("presentMandalChartButton");
+											var bStr='';
+											if(netVar)
+											{
+												bStr += '<input id="presentMandalwiseIChart_button" type="button" onclick="displayHideChartDiv(\'presentMandalwiseIChart\')" value="View Interactive Chart">';
+												getMandalResultsInteractiveChart(myResults,"presentMandalwiseIChart");
+											}
+											else
+												bStr += '<input disabled="true" type="button" value="View Interactive Chart">';
+
+											buttonDiv.innerHTML = bStr;
+
+											var imageDiv = document.getElementById("presentMandalwiseChart");
+											var str = '';
+											str += '<img width="750" src="charts/'+constiMandalWiseResultsPresChart+'">';
+											imageDiv.innerHTML = str;
+
+                                            
 											if(mandalIds != null)
 											{
 												getMandalsAndPartiesResults();
@@ -673,18 +736,26 @@
 											
 										}else if(jsObj.task == "getMandalsAndPartiesChartInElection")
 										{
-											constiMandalWiseResultsPrevChart = myResults;
-											var imageDiv = document.getElementById("constitutencyMandalWiseResultsChart");
+											constiMandalWiseResultsPrevChart = myResults.chartPath;
+
+											var buttonDiv = document.getElementById("previousMandalChartButton");
+											var bStr='';
+											if(netVar)
+											{
+												bStr += '<input id="previousMandalwiseIChart_button" type="button" onclick="displayHideChartDiv(\'previousMandalwiseIChart\')" value="View Interactive Chart">';
+												getMandalResultsInteractiveChartForPrevYear(myResults,"previousMandalwiseIChart");
+											}
+											else
+												bStr += '<input disabled="true" type="button" value="View Interactive Chart">';
+											buttonDiv.innerHTML = bStr;
+
+											var imageDiv = document.getElementById("previousMandalwiseChart");
+
 											var str = '';
-											str +='<div style="margin: 10px;">';
-											str += '<table border="1" width="100%" style="border-collapse:collapse;">';
-											str += '<tr><td valign="top" align="left">';
-											str += '<img width="750" src="charts/'+constiMandalWiseResultsPresChart+'"></td></tr>';
-											str += '<tr><td valign="top" align="left">';
-											str += '<img width="750" src="charts/'+constiMandalWiseResultsPrevChart+'"></td></tr>';
-											str += '</table>';
-											str += '</div>';
+											str += '<img width="750" src="charts/'+constiMandalWiseResultsPrevChart+'">';
 											imageDiv.innerHTML = str;
+
+											
 										}	
 										else if(jsObj.task == "getConstituencyVotesOverview"){
 											constituencyOverViewResult(jsObj,myResults);
@@ -731,6 +802,37 @@
 			YAHOO.util.Connect.asyncRequest('GET', url, callback);
 		}
 		
+		function displayHideChartDiv(divId)
+		{
+			var divElmt = document.getElementById(divId);
+			var buttonElmt = document.getElementById(divId+"_button");
+			var basicChart;
+			if(!divElmt || !buttonElmt)
+				return;
+
+			if(divId == "presentMandalwiseIChart")
+			{
+				basicChart = document.getElementById('presentMandalwiseChart');
+			}
+			else if(divId == "previousMandalwiseIChart")
+			{
+				basicChart = document.getElementById('previousMandalwiseChart');
+			}
+			
+			if(divElmt.style.display == "none")
+			{
+				basicChart.style.display = "none";
+				divElmt.style.display = "block";
+				buttonElmt.value="Show Basic Chart";
+			}
+			else if(divElmt.style.display == "block")
+			{
+				basicChart.style.display = "block";
+				divElmt.style.display = "none";
+				buttonElmt.value="Show Interactive Chart";
+			}
+		}
+
 		function initializeMuncipalResultsTableForParty(divId, dataSrc,electionType)
 		{
 			var resultsDataSourceForTehsil = new YAHOO.util.DataSource(dataSrc);
@@ -1488,7 +1590,24 @@
 			str+='</TABLE>';
 			str+='</div>';
 			str += '<div id="overViewHeadingDiv" style="padding-left:10px;"></div>';
-			str += '<div id="constitutencyMandalWiseResultsChart"></div>';
+			str += '<div id="constitutencyMandalWiseResultsChart">';
+			str += '<table>';
+			str += '<tr>';
+			str += '<td>';
+			str += '<div id="presentMandalChartButton"></div>';
+			str += '<div id="presentMandalwiseChart" style="display:block;"></div>';
+			str += '<div id="presentMandalwiseIChart" style="display:none;"></div>';
+			str += '</td>';
+			str += '</tr>';
+			str += '<tr>';
+			str += '<td>';
+			str += '<div id="previousMandalChartButton"></div>';
+			str += '<div id="previousMandalwiseChart" style="display:block;"></div>';
+			str += '<div id="previousMandalwiseIChart" style="display:none;"></div>';
+			str += '</td>';
+			str += '</tr>';
+			str += '</table>';
+			str += '</div>';
 			str += '<div id="mandalVotingTrendzDataDiv_head">';
 			str += '<table border="0" cellspacing="0" cellpadding="0">';
 			str += '<tr>';
@@ -2127,6 +2246,7 @@
 						               
 
 						bodyElmt.innerHTML = str;
+						getConstituencyResults("2009");
 						
 		} else if(urbanConstResults != null)
 		{
@@ -2222,17 +2342,35 @@
 			
 			bodyElmt.innerHTML = urbanStr;
 			//building 2004 2009 charts
-					var imageDiv = document.getElementById("constitutencyMandalWiseResultsChart");
-					var str = '';
-					str +='<div style="margin: 10px;">';
-					str += '<table border="1" width="100%" style="border-collapse:collapse;">';
-					str += '<tr><td valign="top" align="left">';
-					str += '<img width="750" src="charts/'+resultsData.assemblyResultsChartForPresentYear+'"></td></tr>';
-					str += '<tr><td valign="top" align="left">';
-					str += '<img width="750" src="charts/'+resultsData.assemblyResultsChartForPreviousYear+'"></td></tr>';
-					str += '</table>';
-					str += '</div>';
-					imageDiv.innerHTML = str;
+					var presentImageDivButton = document.getElementById("presentMandalChartButton");
+					var presentImageDiv = document.getElementById("presentMandalwiseChart");
+					var presentImageDivIChart = document.getElementById("presentMandalwiseIChart");
+
+					var previousImageDivButton = document.getElementById("previousMandalChartButton");
+					var previousImageDiv = document.getElementById("previousMandalwiseChart");
+					var previousImageDivIChart = document.getElementById("previousMandalwiseIChart");
+
+					
+
+					if(presentImageDiv && presentImageDivButton && presentImageDivIChart)
+					{
+						var presentStr = '<img width="750" src="charts/'+resultsData.assemblyResultsChartForPresentYear+'">';		
+						presentImageDiv.innerHTML = presentStr;
+
+						presentImageDivButton.innerHTML = '';
+						presentImageDivIChart.innerHTML = '';
+					}
+
+					if(previousImageDiv && previousImageDivButton && previousImageDivIChart)
+					{
+						var previousStr = '<img width="750" src="charts/'+resultsData.assemblyResultsChartForPreviousYear+'">';
+						previousImageDiv.innerHTML = previousStr;
+
+						previousImageDivButton.innerHTML = '';
+						previousImageDivIChart.innerHTML = '';
+					}
+
+
 					
 		}	
 
@@ -2240,7 +2378,7 @@
 			//getZptcPartyDetails(tehsilElections.zptcElectionYears[0].value);
 			//getMptcPartyDetails(tehsilElections.mptcElectionYears[0].value);
 			
-			getConstituencyResults("2009");
+		
 			getAllZptcYears();	  
 			getAllMptcYears();	
 			 
@@ -2840,6 +2978,8 @@
 		</tr>
 	</table>
 	</div>	
+	<div id="visualization"></div>
+	<div id="visualizationOne"></div>
 	<div id="votingTrendzInfoMain"></div>
 	<div class="rounded" >	
 		<table width="98%">
