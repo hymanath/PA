@@ -118,6 +118,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private List<PartyResultsInfoVO> contestingCands;
 	private PartyElectionResultsVO electionResultsInConsti;
 	private List<TeshilPartyInfoVO> zptcMptcResultsInMandal;
+	private ConstituencyRevenueVillagesVO chartResultVO;
 
 
 	public String getMuncipalityElectionType() {
@@ -245,6 +246,14 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	public void setVotersInfoForMandals(
 			VotersWithDelimitationInfoVO votersInfoForMandals) {
 		this.votersInfoForMandals = votersInfoForMandals;
+	}
+
+	public ConstituencyRevenueVillagesVO getChartResultVO() {
+		return chartResultVO;
+	}
+
+	public void setChartResultVO(ConstituencyRevenueVillagesVO chartResultVO) {
+		this.chartResultVO = chartResultVO;
 	}
 
 	public HttpSession getSession() {
@@ -1335,6 +1344,9 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		if(mandalIds.length() > 0 ){
 			List<PartyResultVO> resultsInMandals = constituencyPageService.getMandalsResultsInAnElection(mandalIds.substring(1).toString(), 
 					jObj.getString("electionYear"), jObj.getString("electionType"));
+			
+			chartResultVO = constituencyPageService.getMandalsResultsInAnElectionForChart(mandalIds.substring(1).toString(), 
+					jObj.getString("electionYear"), jObj.getString("electionType"));
 			if(resultsInMandals.size() > 0){
 				mandalsPartiesChart = "AllMandalsAllParties_"+mandalIds+"OfElectionYear_"+jObj.getString("electionYear")+
 													"ElectionType_"+jObj.getString("electionType")+".png";
@@ -1352,6 +1364,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 						ChartProducer.create3DBarChartWithInputParams(title, null, "Mandal","Percentages", null, dataset, chartPath, chartWidth, chartHeight, ChartUtils.getLineChartColors(partiesInChart),true);
 					}
 			}	
+			
+			chartResultVO.setChartPath(mandalsPartiesChart);
 		}
 			
 		return SUCCESS;
