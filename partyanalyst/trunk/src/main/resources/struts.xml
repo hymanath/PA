@@ -1133,7 +1133,7 @@
         
         <action name="getLineChartForMandalsAndPartiesAction" class="constituencyVotingTrendzAction" method="getLineChartForMandalsAndPartiesInElection"> 
               <result type="json" name="success">
-           		<param name="root">mandalsPartiesChart</param>
+           		<param name="root">chartResultVO</param>
         	</result>       		
         </action>
         
