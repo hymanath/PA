@@ -4768,11 +4768,11 @@ public class StaticDataService implements IStaticDataService {
 						electionResultVO.setAlliancRes(partyResult.get(i).getCandidateElectionResultsVO().get(k).getAllianceResult());
 						if(partyResult.get(i).getCandidateElectionResultsVO().get(k).getPartyName().equalsIgnoreCase(partiesList[j])){							
 							electionResultVO.setPercentage(partyResult.get(i).getCandidateElectionResultsVO().get(k).getVotesPercentage().toString());
-							//electionResultVO.setPercent(new BigDecimal(partyResult.get(i).getCandidateElectionResultsVO().get(k).getVotesPercentage()).setScale(2, BigDecimal.ROUND_HALF_UP));
+							electionResultVO.setPercent(new BigDecimal(partyResult.get(i).getCandidateElectionResultsVO().get(k).getVotesPercentage()).setScale(2, BigDecimal.ROUND_HALF_UP));
 							break;
 						}else{
 							electionResultVO.setPercentage("-1");
-							//electionResultVO.setPercent(new BigDecimal(-1));
+							electionResultVO.setPercent(new BigDecimal(-1));
 						}
 					}
 					}
