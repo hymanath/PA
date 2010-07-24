@@ -217,6 +217,13 @@
 			color:red;
 			font-size:18px;
 		}
+
+		.constituencyAnc
+		{
+			color:#62662B;
+			text-decoration:none;
+		}
+
     </style>
 
 	<link rel="stylesheet" type="text/css" href="styles/tv9Styles/tv9Styles.css">
@@ -2060,7 +2067,8 @@
 										str += '<th style="background:none;" rowspan="'+info.partyElecResultsInConstituency.length+'"><A href="javascript:{}" title="Click to view results and voting trendz in '+info.mandalName+' mandal" class="viewAncs" onclick="openwin('+info.mandalId+',\''+info.mandalName+'\',\''+results[i].biElectionResultsVO[j].electionType+'\','+results[i].biElectionResultsVO[j].electionYear+','+results[i].biElectionResultsVO[j].electionId+')">'+info.mandalName+'</A></th>';				
 										for(var l in info.partyElecResultsInConstituency)
 										{
-											str += '<th style="color:#62662B;width:150px;font-size:17px;background:none">'+info.partyElecResultsInConstituency[l].constituencyName.toUpperCase()+'</th>';
+											str += '<th style="color:#62662B;width:150px;font-size:17px;background:none">';
+											str += '<A title="Click here to view constituency election results" class="constituencyAnc" href="javascript:{}" onclick="getConstituencyElecResultsWindow(\''+info.partyElecResultsInConstituency[l].constituencyId+'\',\''+results[i].biElectionResultsVO[j].electionType+'\',\''+results[i].biElectionResultsVO[j].electionYear+'\')">'+info.partyElecResultsInConstituency[l].constituencyName+'</A></th>';
 															
 											for(var m in info.partyElecResultsInConstituency[l].partyElecResults)
 											{
