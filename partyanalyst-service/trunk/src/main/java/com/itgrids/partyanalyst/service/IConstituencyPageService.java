@@ -68,5 +68,7 @@ public interface IConstituencyPageService {
 	
 	public DataTransferVO getPreviousAndPresentElectionYearsGraphsForAConstituency(Long constituencyId);
 	
+	public ConstituencyRevenueVillagesVO getMandalsResultsInAnElectionForChart(String mandalIds, String electionYear, String electionType);
+	
 	
 }
