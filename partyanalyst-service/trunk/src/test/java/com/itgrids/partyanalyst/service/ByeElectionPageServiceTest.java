@@ -45,13 +45,17 @@ public class ByeElectionPageServiceTest extends BaseDaoTestCase{
 		//ChartProducer.createLineChart(title, xAxis, yAxis, dataset, path, height, width, colors, thickLines);
 	}*/
 	
-	public void testCheckSelectedForamt(){
+	/*public void testCheckSelectedForamt(){
 		Set<String> parties = new HashSet<String>();
 		parties.add("INC");parties.add("TRS");
 		Set<String> elections = new HashSet<String>();
 		elections.add("2004 Assembly");//elections.add("2009 Parliament");
 		ElectionWiseMandalPartyResultListVO result = biElectionPageService.getResultsOfRuralUrbanAreaBeasedOnSelection(362l, 
 				parties, elections, false, true);
+	}*/
+	
+	public void testGetAllDistricts(){
+		biElectionPageService.getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage("20");
 	}
 	
 }

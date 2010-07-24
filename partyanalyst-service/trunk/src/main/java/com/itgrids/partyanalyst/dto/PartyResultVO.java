@@ -29,6 +29,8 @@ public class PartyResultVO {
 	private CandidateOppositionVO oppositionCandidates;
 	private List<ElectionResultVO> electionWiseResults;
 	private List<PartyResultVO> partyResultVo;
+	private Boolean isPartyWon = false;
+	private Boolean isConsiderParty = false;
 	private Set<String> elections;
 	private Long seatsWonCountToSort;
 	List<SelectOptionVO> electionList;
@@ -198,6 +200,18 @@ public class PartyResultVO {
 	}
 	public void setChartName(String chartName) {
 		this.chartName = chartName;
+	}
+	public Boolean getIsPartyWon() {
+		return isPartyWon;
+	}
+	public void setIsPartyWon(Boolean isPartyWon) {
+		this.isPartyWon = isPartyWon;
+	}
+	public Boolean getIsConsiderParty() {
+		return isConsiderParty;
+	}
+	public void setIsConsiderParty(Boolean isConsiderParty) {
+		this.isConsiderParty = isConsiderParty;
 	}
 	
 }

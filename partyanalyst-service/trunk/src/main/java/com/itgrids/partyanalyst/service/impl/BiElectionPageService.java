@@ -42,9 +42,11 @@ import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ByeElecGroupVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultAllPartyVO;
 import com.itgrids.partyanalyst.dto.ConstituencyMandalVO;
+import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
+import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.MandalElectionResultVO;
 import com.itgrids.partyanalyst.dto.MandalLevelResultsForParty;
@@ -77,6 +79,7 @@ import com.itgrids.partyanalyst.utils.ByeElecGroupVOComparator;
 import com.itgrids.partyanalyst.utils.ElectionResultTypeComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyInfoVOComparator;
+import com.itgrids.partyanalyst.utils.PartyResultVOPercentComparator;
 import com.itgrids.partyanalyst.utils.PartyResultsComparator;
 import com.itgrids.partyanalyst.utils.PartyResultsVOComparator;
 import com.itgrids.partyanalyst.utils.PartyTownshipResultsComparator;
@@ -2552,7 +2555,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		if(elecTypeOrYear != null && elecTypeOrYear.size() > 0)
 			getResultsForSelectedElections(allPartiesInfo, elecTypeOrYear, electionsHeading, isElecTypeOnly);
 		
-		if(isAlliance)
+		if(isAlliance && (constituencyId.intValue() != 341))
 			getAlliancePartiesGroupedResult(allPartiesInfo);
 				
 		//Calculating Range
@@ -3295,5 +3298,78 @@ public class BiElectionPageService implements IBiElectionPageService {
 		}
 	 return null;
 	}
+	
+	public List<ConstituencyVO> getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage(String expePercent){
+		List<BiElectionDistrictVO> byeElecConsties = getBiElectionConstituenciesDistrictWise();
+		List<PartyResultVO> constiPartyResults = null;
+		Map<String, Float> partyAndPercent = new HashMap<String, Float>();
+		Set<String> staticParties = new HashSet<String>();
+		staticParties.add("INC");staticParties.add("TDP");
+		String consideringParty = "TRS";
+		Float totalPercent = 0.0f;
+		Float remainingPercent = 0.0f;
+		Float favourPercent = 0.0f;
+		Float sharablePercent = 0.0f;
+		String partyName = "";
+		Float percent = 0.0f;
+		Float considPartyPercent = 0.0f;
+		List<ConstituencyVO> constituenies = new ArrayList<ConstituencyVO>();
+		List<PartyResultVO> partiesResults = null;
+		ConstituencyVO constituencyVO = null;
+		PartyResultVO partyResultVO = null;
+		ElectionTrendzReportVO constituencyOverView = null;
+		for(BiElectionDistrictVO biElectionDistrictVO:byeElecConsties)
+			for(SelectOptionVO consti:biElectionDistrictVO.getConstituenciesList()){
+				constituencyVO = new ConstituencyVO();
+				constituencyVO.setName(consti.getName());
+				constituencyOverView = staticDataService.getConstituencyOverview(consti.getId(), consti.getName());
+				constituencyVO.setTotalVoters2009(constituencyOverView.getPresentYearTotalVoters());
+				constituencyVO.setTotalVoters2010(constituencyOverView.getLatestElectionYearsTotalVoters());
+				constituencyVO.setTotalPolledVotes(constituencyOverView.getLatestElectionYearsTotalPolledVotes());
+				constituencyVO.setVotesPercent(constituencyOverView.getLatestElectionYearsTotalVotesPercentage());
+				constiPartyResults = staticDataService.getPartyVotesPercentageInAConstituency(consti.getId(),"All", null);
+				totalPercent = 0f;
+				remainingPercent = 0f;
+				favourPercent = 0f;
+				sharablePercent = 0f;
+				considPartyPercent = 0f;
+				for(PartyResultVO party:constiPartyResults){
+					String[] lowAndHighPercents = StringUtils.split(party.getRange(),"- ");
+					if(lowAndHighPercents.length == 0)
+						continue;
+					if(staticParties.contains(party.getPartyName()) || consideringParty.equalsIgnoreCase(party.getPartyName())){
+						if(consideringParty.equalsIgnoreCase(party.getPartyName()))
+							considPartyPercent = new Float(lowAndHighPercents[0]);
+						totalPercent += new Float(lowAndHighPercents[0]);
+						partyAndPercent.put(party.getPartyName(), new Float(lowAndHighPercents[0]));
+					}
+				}
+				remainingPercent = 100.0f - totalPercent;
+				favourPercent = remainingPercent*new Float(expePercent)/100.0f;
+				sharablePercent = remainingPercent - favourPercent;
+				partiesResults = new ArrayList<PartyResultVO>();
+				for(Map.Entry<String, Float> entry:partyAndPercent.entrySet()){
+					partyResultVO = new PartyResultVO();
+					partyName = entry.getKey();
+					partyResultVO.setPartyName(entry.getKey());
+					if(partyName.equalsIgnoreCase(consideringParty)){
+						partyResultVO.setIsConsiderParty(true);
+						percent = entry.getValue() + favourPercent;
+					}
+					else
+						percent = entry.getValue() + (sharablePercent * (entry.getValue()/(totalPercent-considPartyPercent)));
+					partyResultVO.setVotesPercent(new BigDecimal(percent).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					partiesResults.add(partyResultVO);
+				}
+				Collections.sort(partiesResults, new PartyResultVOPercentComparator());
+				partiesResults.get(0).setIsPartyWon(true);
+				constituencyVO.setPartiesResults(partiesResults);
+				constituenies.add(constituencyVO);
+			}
+		
+		return constituenies;
+		
+	}
+	
 	
 }
