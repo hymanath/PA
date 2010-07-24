@@ -262,7 +262,49 @@ legend
 					rvStr += '	<div style="height: 40px; background-image: url(\'images/icons/tv9Icons/header_body_blue.png\');"><span style="color:#0C2640; font-size: 20px; font-weight: bold; position: relative; top: 7px;">All Parties Performance In Revenue Villages </span></div></td>';
 					rvStr += '	<td><img src="images/icons/tv9Icons/right_blue_main.png"></td>';
 					rvStr += '</table>';
+
 					
+					rvStr += '<div id="votesPollingInMandalDIV" style="margin-top:40px;">';
+					rvStr += '<table id="votesPollingInMandal" width="90%">';
+					rvStr += '<c:forEach var="votesPollingInMandal" items="${townshipBoothDetailsVO}">';
+					rvStr += '<tr>';
+				    rvStr += '<td width="40%" style="vertical-align:top;">';
+				    rvStr += '<div id="votesPolledDtTableDiv_outer" class="yui-skin-sam">';
+				    rvStr += '<div id="votesPolledDtTableDiv">';
+				    rvStr += '<table id="votesPolledTable">';
+				    rvStr += '<c:forEach var="votesPolling" items="${votesPollingInMandal.townshipVotingTrends}">';
+				    rvStr += '<tr>';
+				    rvStr += '<td>';
+				    rvStr += '${votesPolling.townshipName}';
+				    rvStr += '</td>';
+				    rvStr += '<td>';
+				    rvStr += '${votesPolling.percentageOfValidVotes}';
+				    rvStr += '</td>';	
+				    rvStr += '</tr>';																														
+				    rvStr += '</c:forEach>';	
+				    rvStr += '</table>';	
+				    rvStr += '</div>';
+				    rvStr += '</div>';	
+				    rvStr += '</td>';
+				    rvStr += '<td width="60%" style="vertical-align:top;padding-left:50px;" align="left">';						
+				    rvStr += '<c:forEach var="votesPollingInMandal" items="${townshipBoothDetailsVO}">';										
+				    rvStr += '<table>';	
+				    rvStr += '<tr>';		
+				    rvStr += '<td align="left">';	
+				    rvStr += '<img src="charts/${votesPollingInMandal.chartName}">';	
+				    rvStr += '</td>';		
+				    rvStr += '</tr>';		
+				    rvStr += '</table>';								
+				    rvStr += '</c:forEach>';		
+				    rvStr += '</td>';	
+				    rvStr += '</tr>';																					
+				    rvStr += '</c:forEach>';	
+				    rvStr += '</table>';	
+				    rvStr += '</div>';		
+
+
+
+						
 					//rvStr += '<br/>';
 
 					rvStr += '<div id="revenueDataTable" class="yui-skin-sam"><div id="div_${constiElec.constituencyId}" class="revenueDtTable">';
@@ -382,10 +424,36 @@ legend
 			function openPartywiseResultsWin(mandalId, mandalName, partyId, partyName)
 			{
 				var browser1 = window.open("<s:url action="revenueVillagePartyAllElecAction.action"/>?partyId="+partyId+"&partyName="+partyName+"&tehsilId="+mandalId+"&mandalName="+mandalName,"browser1","scrollbars=yes,height=630,width=1020,left=200,top=200");
-				 browser1.focus();
-
-				 					
+				 browser1.focus();				 					
 			}
+
+			function buildVotesPolledDataTable() {
+				var resultsDataSourceForTehsil = new YAHOO.util.DataSource(YAHOO.util.Dom
+						.get("votesPolledTable"));
+				resultsDataSourceForTehsil.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+				resultsDataSourceForTehsil.responseSchema = {
+					fields : [  {
+						key : "townshipName"
+					},{
+						key : "percentageOfValidVotes",
+						parser:YAHOO.util.DataSourceBase.parseNumber
+					}]
+				};
+		
+				var resultsColumnDefsForTehsil = [  {
+					key : "townshipName",
+					label : "Township Name",
+					sortable : true
+				},{
+					key : "percentageOfValidVotes",
+					label : "Votes %",
+					sortable : true,
+					formatter:YAHOO.widget.DataTable.formatFloat
+				}];	
+				
+				var myDataTableForTehsil = new YAHOO.widget.DataTable("votesPolledDtTableDiv",resultsColumnDefsForTehsil, resultsDataSourceForTehsil);			
+			}
+				
 
 			function callAjax(rparam, jsObj, url){
 				var resultVO;			
@@ -741,7 +809,7 @@ legend
 	{
 		getRevenueVillagesInfo();
 	}
-
+	buildVotesPolledDataTable();
 	getTownshipwisePartiesVotesShare('1');
 </script>
 </body>
