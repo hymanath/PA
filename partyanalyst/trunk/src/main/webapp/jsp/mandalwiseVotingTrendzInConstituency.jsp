@@ -1045,9 +1045,16 @@
 
 			str += '<tr>';
 			str += '<th>Parties</th>';
-			for(var i in results[0].electionList)
-				str += '<th>'+results[0].electionList[i].name+'</th>';
 			str += '<th>Range</th>';
+			
+	
+			var length = results[0].electionList.length-1;
+			for(var i=length;i>=0;i--)
+				str += '<th>'+results[0].electionList[i].name+'</th>';
+
+			/*for(var i in results[0].electionList)
+				str += '<th>'+results[0].electionList[i].name+'</th>';*/
+			
 			str += '</tr>';
 			
 			for(var j in results)
@@ -1056,7 +1063,8 @@
 					continue
 				str += '<tr>';
 				str += '<td align="center">'+results[0].partiesList[j].name+'</td>';
-				for(var k in results[j].electionWiseResults)
+				str += '<td align="left" style="color:#FF8000;font-weight:bold;width:130px;">'+results[j].range+'</td>';
+				for(var k=results[j].electionWiseResults.length-1;k>=0;k--)
 				{
 					var info = results[j].electionWiseResults[k];
 					
@@ -1077,7 +1085,7 @@
 					else
 						str += '<td name="'+info.electionType+'"><div style="visibility:hidden;">NA</div></td>';
 				}
-				str += '<td align="left" style="color:#FF8000;font-weight:bold;width:130px;">'+results[j].range+'</td>';
+				
 				str += '</tr>';
 			}
 
@@ -2304,20 +2312,30 @@
 
 			str += '<tr>';
 			str += '<th>Parties</th>';
-			for(var i in results.elections)
+			str += '<th>Range</th>';
+			
+			var length = results.elections.length-1;
+			for(var i=length;i>=0;i--)
+				str += '<th>'+results.elections[i].name+'</th>';
+
+			/*for(var i in results.elections)
 			{	
 				str += '<th>'+results.elections[i].name+'</th>';
-			}	
-			str += '<th>Range</th>';
+			}*/	
+			
 			str += '</tr>';
 			
-			for(var j in results.allPartiesAllElectionResults)
+			
+			for(var j in results.allPartiesAllElectionResults)									
 			{
 				str += '<tr>';
 				if(results.allPartiesAllElectionResults[j].partyName != 'Others *')
-				{		str += '<td align="center">'+results.allPartiesAllElectionResults[j].partyName+'</td>';
+				{		
+					str += '<td align="center">'+results.allPartiesAllElectionResults[j].partyName+'</td>';
+					str += '<td align="center" style="color:#FF8000;">'+results.allPartiesAllElectionResults[j].range+'</td>';
 					var info =  results.allPartiesAllElectionResults[j].electionWiseResults;
-					for(var k in info)						
+
+					for(var k=info.length-1; k>=0; k--)						
 					{
 						if(info[k].percentage == "-1"){
 							str += '<td><div style="visibility:hidden;">NA</div></td>';
@@ -2332,7 +2350,7 @@
 			}	
 				if(results.allPartiesAllElectionResults[j].partyName != 'Others *')
 				{
-					str += '<td align="center" style="color:#FF8000;">'+results.allPartiesAllElectionResults[j].range+'</td>';
+					
 					str += '</tr>';
 				}		
 			}
