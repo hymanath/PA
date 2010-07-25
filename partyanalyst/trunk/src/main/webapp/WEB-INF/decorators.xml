@@ -37,6 +37,7 @@
 		<pattern>/boothResultsForAllElectionsPopupAction.action*</pattern>
 		<pattern>/allBoothsResultsInTehsilAction.action*</pattern>
 		<pattern>/constituencyVotingTrendzAction.action*</pattern>
+		<pattern>/byeElectionResultsAnalysisAction.action*</pattern>
 	</excludes>  
 
     <decorator name="main" page="main.jsp">

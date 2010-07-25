@@ -115,6 +115,14 @@
 			browser1.focus();
 		}
 
+		function open2010ElectionResultsWindow()
+		{
+			var browser1 = window.open("<s:url action="byeElectionResultsAnalysisAction.action"/>","biElectionResultsAnalysis","scrollbars=yes,resizable=1,left=200,top=200");
+
+			browser1.focus();
+						
+		} 
+
 		function openMandalBoothResultsForPartyWindow()
 		{
 			var constEl = document.getElementById("selectConst");
