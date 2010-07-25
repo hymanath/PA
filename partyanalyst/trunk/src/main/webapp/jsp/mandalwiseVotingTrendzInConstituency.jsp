@@ -65,7 +65,7 @@
 	<script type="text/javascript" src="js/districtPage/districtPage.js"></script>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
     <style type="text/css">
 		.mainHeading 
 		{
@@ -667,7 +667,7 @@
 				headingDIV+='					<td> <div id="mandalVotesShare"></td>';
 				headingDIV+='			</tr>';	
 				headingDIV+='	</table>';
-				headingDIV+='<div id="madalwiseVotesRangeChart" style="text-align:center;"></div>';				
+				headingDIV+='<div id="madalwiseVotesRangeChart" style="text-align:left;"></div>';				
 				headingDIV+='<div id="madalwiseVotesRange"></div>';
 				headingDIV+='</fieldset>';
 				headingDIV+='<div id="madalAllPartiesLocalElecData"></div>';
@@ -1828,7 +1828,16 @@
 		
 		function buildMandalVotingTrendzData(jsObj,resultsData)
 		{
-             
+            var imageDivEl = document.getElementById("madalwiseVotesRangeChart");
+			var divEl = document.getElementById("madalwiseVotesRange");
+
+			if(imageDivEl && divEl)
+			{
+				imageDivEl.innerHTML = '';
+				divEl.innerHTML = '';
+			}
+
+
 			var headElmt = document.getElementById("mandalVotingTrendzDataDiv_head");
 			var bodyElmt = document.getElementById("mandalVotingTrendzData");
 			var graphElmt = document.getElementById("mandalDetailsChart_body");
