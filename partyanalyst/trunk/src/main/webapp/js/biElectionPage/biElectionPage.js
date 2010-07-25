@@ -229,7 +229,7 @@ function buildBiElectionDistricts()
 		}
 	}
 	str += '</table>';
-	
+	str += '<input type="button" style="margin:5px;width:200px;font-weight:bold;" class="button" onclick="open2010ElectionResultsWindow()" value="2010 Bye-Election Results Analysis"/>';
 	str += '<div id="alignMessageDiv" style="margin-top:7px;">';
 	str += '<table>';
 	str += '<tr>';

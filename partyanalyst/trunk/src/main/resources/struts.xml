@@ -1185,7 +1185,15 @@
               <result type="json" name="success">
            		<param name="root">urbanRuralResultsVO</param>
         	</result>       		
-        </action>       
+        </action>
+        <action name="byeElectionResultsAnalysisAction" class="byeElectionResultsAnalysisAction">
+			 <result name="success">/jsp/byeElectionResultsAnalysisPage.jsp</result>
+		</action>
+		<action name="byeElectionResultsAnalysisAjaxAction" class="byeElectionResultsAnalysisAction" method="ajaxCallHandler">
+			<result type="json" name="success">
+           		<param name="root">constituencywiseResults</param>
+        	</result>
+		</action>       
 	</package>
 </struts>
 
