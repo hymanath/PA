@@ -589,12 +589,31 @@
 				 var chartRows = results.constituencyOrMandalWiseElectionVO;
 
 				 var data = new google.visualization.DataTable();
-				  
+				 var colorArray = new Array(); 
+				 var colorStatic = new Array('#088A85','#00FFFF','#B45F04','#585858','#AEB404','#ADE8E0','#C4D296','#E5C55A','#F7C37E','#9C8AE2','#B4045F','#D0A9F5','#CBBEAB','#BCE5BF','#FAE2BD','#95B8E5','#120B0B','#800B0B','#1FCB9D','#90446A');
+
 				  data.addColumn('string', 'Party');
 				  //for columns
 				  for(var i in chartColumns){
 				   var colData = chartColumns[i].party +' ['+ chartColumns[i].rank + '] ';
 				   data.addColumn('number', colData);
+
+				   if(chartColumns[i].party == 'TDP'){
+					   colorArray.push('yellow');
+				   }
+				   else if(chartColumns[i].party == 'TRS'){
+					    colorArray.push('pink');
+				   }else if(chartColumns[i].party == 'INC'){
+					    colorArray.push('blue');
+				   }else if(chartColumns[i].party == 'BJP'){
+					    colorArray.push('green');
+				   }else if(chartColumns[i].party == 'PRP'){
+					    colorArray.push('red');
+				   }
+				   else{
+                       colorArray.push(colorStatic[i]);
+				   }
+
 				  }
 		   
 				  //for rows
@@ -613,7 +632,7 @@
 				  }
 				  var ctitle = 'Mandal Wise Election Results For ' + constituencyName + ' In ' + results.electionType +' 2009'; 
 				  new google.visualization.LineChart(document.getElementById(divId)).
-				  draw(data, {curveType: "function",width: 950, height: 650,title:ctitle,titleColor:'red' ,titleFontSize:18,lineWidth:3});
+				  draw(data, {curveType: "function",width: 950, height: 650,title:ctitle,colors:colorArray,titleColor:'red' ,titleFontSize:18,lineWidth:3});
 					
 			 }
 
@@ -624,12 +643,31 @@
 				 var chartRows = results.constituencyOrMandalWiseElectionVO;
 
 				 var data = new google.visualization.DataTable();
+				 var colorArray = new Array();
+				 var colorStatic = new Array('#088A85','#00FFFF','#B45F04','#585858','#AEB404','#ADE8E0','#C4D296','#E5C55A','#F7C37E','#9C8AE2','#B4045F','#D0A9F5','#CBBEAB','#BCE5BF','#FAE2BD','#95B8E5','#120B0B','#800B0B','#1FCB9D','#90446A');
 				  
 				  data.addColumn('string', 'Party');
 				  //for columns
 				  for(var i in chartColumns){
 				   var colData = chartColumns[i].party;
 				   data.addColumn('number', colData);
+
+				   if(chartColumns[i].party == 'TDP'){
+					   colorArray.push('yellow');
+				   }
+				   else if(chartColumns[i].party == 'TRS'){
+					    colorArray.push('pink');
+				   }else if(chartColumns[i].party == 'INC'){
+					    colorArray.push('blue');
+				   }else if(chartColumns[i].party == 'BJP'){
+					    colorArray.push('green');
+				   }else if(chartColumns[i].party == 'PRP'){
+					    colorArray.push('red');
+				   }
+				   else{
+                       colorArray.push(colorStatic[i]);
+				   }
+
 				  }
 		   
 				  //for rows
@@ -648,7 +686,7 @@
 				  }
 				  var ctitle = 'Mandal Wise Assembly Election Results For ' + constituencyName + ' In  2004'; 
 				  new google.visualization.LineChart(document.getElementById(divId)).
-				  draw(data, {curveType: "function",width: 950, height: 650,title:ctitle,titleColor:'red' ,titleFontSize:18,lineWidth:3});
+				  draw(data, {curveType: "function",width: 950, height: 650,title:ctitle,colors:colorArray,titleColor:'red' ,titleFontSize:18,lineWidth:3});
 					
 			 }
 
