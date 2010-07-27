@@ -112,61 +112,10 @@ ServletRequestAware, ServletContextAware {
 		}
 		if(jObj.getString("task").equalsIgnoreCase("getByeElectionResults"))
 		{
-			/*constituencywiseResults = new ArrayList<ConstituencyVO>();
-			
-			ConstituencyVO constituencyVO1 = new ConstituencyVO();
-			ConstituencyVO constituencyVO2 = new ConstituencyVO();
-			ConstituencyVO constituencyVO3 = new ConstituencyVO();
-			ConstituencyVO constituencyVO4 = new ConstituencyVO();
-			List<PartyResultVO> partiesResults = new ArrayList<PartyResultVO>();
-			PartyResultVO incObj= new PartyResultVO();
-			PartyResultVO trsObj = new PartyResultVO();
-			PartyResultVO tdpObj= new PartyResultVO();
-			
-			incObj.setPartyName("INC");
-			incObj.setVotesPercent("39.5%");
-			partiesResults.add(incObj);
-			tdpObj.setPartyName("TDP");
-			tdpObj.setVotesPercent("39.5%");
-			partiesResults.add(tdpObj);
-			trsObj.setPartyName("TRS");
-			trsObj.setVotesPercent("39.5%");
-			partiesResults.add(trsObj);
-			
-			constituencyVO1.setName("Huzurabad");
-			constituencyVO1.setTotalVoters2009(204056l);
-			constituencyVO1.setTotalVoters2010(198999l);
-			constituencyVO1.setTotalPolledVotes(146412l);
-			constituencyVO1.setVotesPercent("71.75 %");
-			constituencyVO1.setPartiesResults(partiesResults);
-			
-			constituencyVO2.setName("Siricilla");
-			constituencyVO2.setTotalVoters2009(210869l);
-			constituencyVO2.setTotalVoters2010(211442l);
-			constituencyVO2.setTotalPolledVotes(136665l);
-			constituencyVO2.setVotesPercent("64.81 %");
-			constituencyVO2.setPartiesResults(partiesResults);
-			
-			constituencyVO3.setName("Koratla");
-			constituencyVO3.setTotalVoters2009(191853l);
-			constituencyVO3.setTotalVoters2010(187910l);
-			constituencyVO3.setTotalPolledVotes(129293l);
-			constituencyVO3.setVotesPercent("67.39 %");
-			constituencyVO3.setPartiesResults(partiesResults);
-			
-			constituencyVO4.setName("Vemulawada");
-			constituencyVO4.setTotalVoters2009(184513l);
-			constituencyVO4.setTotalVoters2010(18463l);
-			constituencyVO4.setTotalPolledVotes(12214l);
-			constituencyVO4.setVotesPercent("66.20 %");
-			constituencyVO4.setPartiesResults(partiesResults);
-			
-			constituencywiseResults.add(constituencyVO1);
-			constituencywiseResults.add(constituencyVO2);
-			constituencywiseResults.add(constituencyVO3);
-			constituencywiseResults.add(constituencyVO4);*/
 			String percentage = jObj.getString("percentage");
-			constituencywiseResults = biElectionPageService.getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage(percentage);
+			String localElections = jObj.getString("localElections");
+			
+			constituencywiseResults = biElectionPageService.getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage(percentage,new Boolean(localElections));
 		}
 		return SUCCESS;
 	}
