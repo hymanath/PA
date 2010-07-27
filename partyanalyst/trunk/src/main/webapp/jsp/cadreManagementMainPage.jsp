@@ -1053,12 +1053,12 @@
 		if(regTask == 'action')
 		{
 			var elmtId = "cadreLevelDivId_eventAction";
-			animateExpandDiv(elmtId,480);
+			animateExpandDiv(elmtId,630);
 		}
 		else
 		{
 			var elmtId = "cadreLevelDivId_"+regTask;
-			animateExpandDiv(elmtId,350);
+			animateExpandDiv(elmtId,500);
 		}
 				
 		
