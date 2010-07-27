@@ -3299,13 +3299,14 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 return null;
 	}
 	
+	//Need To Be Refactored - Gives Predicted Results On Bye Elections 
 	public List<ConstituencyVO> getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage(String expePercent,Boolean includeLocalElec){
 		List<BiElectionDistrictVO> byeElecConsties = getBiElectionConstituenciesDistrictWise();
 		List<PartyResultVO> constiPartyResults = null;
-		Map<String, Float> partyAndPercent = new HashMap<String, Float>();
+		Map<String, Float> partyAndPercent = null;
 		Set<String> staticParties = new HashSet<String>();
 		staticParties.add("INC");staticParties.add("TDP");
-		String consideringParty = "TRS";
+		String consideringParty = "";
 		Float totalPercent = 0.0f;
 		Float remainingPercent = 0.0f;
 		Float favourPercent = 0.0f;
@@ -3324,6 +3325,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		choice.add(IConstants.PARLIAMENT_ELECTION_TYPE);
 		for(BiElectionDistrictVO biElectionDistrictVO:byeElecConsties)
 			for(SelectOptionVO consti:biElectionDistrictVO.getConstituenciesList()){
+				partyAndPercent = new HashMap<String, Float>();
 				constituencyVO = new ConstituencyVO();
 				constituencyVO.setName(consti.getName());
 				constituencyVO.setId(consti.getId());
@@ -3332,6 +3334,10 @@ public class BiElectionPageService implements IBiElectionPageService {
 				constituencyVO.setTotalVoters2010(constituencyOverView.getLatestElectionYearsTotalVoters());
 				constituencyVO.setTotalPolledVotes(constituencyOverView.getLatestElectionYearsTotalPolledVotes());
 				constituencyVO.setVotesPercent(constituencyOverView.getLatestElectionYearsTotalVotesPercentage());
+				if("Nizamabad Urban".equalsIgnoreCase(consti.getName()))
+					consideringParty = "BJP";
+				else
+					consideringParty = "TRS";
 				if("Nizamabad Urban".equalsIgnoreCase(consti.getName()) || "Warangal West".equalsIgnoreCase(consti.getName()))
 					if(includeLocalElec)
 					    constiPartyResults = getResultsOfRuralUrbanAreaBeasedOnSelection(consti.getId(), null, null, 
@@ -3383,6 +3389,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				partiesResults.get(0).setIsPartyWon(true);
 				constituencyVO.setPredictedPartiesResults(partiesResults);
 				constituenies.add(constituencyVO);
+				
 			}
 		
 		return constituenies;
