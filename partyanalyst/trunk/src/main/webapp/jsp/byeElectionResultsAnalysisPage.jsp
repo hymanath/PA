@@ -14,9 +14,10 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-	 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-	
+	<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></SCRIPT> 
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script>
+	<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/container/container-min.js"></SCRIPT> 	
+	<SCRIPT type="text/javascript" src="js/yahoo/yui-js-2.8/build/button/button-min.js"></SCRIPT>
 
 
 
@@ -36,6 +37,7 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/resize.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/assets/skins/sam/layout.css">
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/carousel/assets/skins/sam/carousel.css">
+	<link rel="stylesheet" type="text/css" href="styles/biElectionPage/biElectionPage.css">
 
 <style>
 .mainHeading 
@@ -106,8 +108,40 @@ font-weight:bold;
 	margin-bottom:10px;
 	text-align: center;
 }
+#votesShareDetailsTable th {
+background:url("images/icons/tv9Icons/tableHeader.png") repeat scroll 0 0 transparent;
+color:#FFFFFF;
+font-size:14px;
+padding:2px;
+}
 
-		
+#votesShareDetailsTable td {
+border:2px solid #212629;
+color:#121922;
+font-size:16px;
+font-weight:bold;
+padding:2px;
+}
+.detailsTableHeader  {
+background-image:url("images/icons/indexPage/reportGroupHeader.png");
+height:40px;
+text-align:left;
+}
+.detailsTableHeaderSpan  {
+color:#FFFFFF;
+font-size:20px;
+font-weight:bold;
+position:relative;
+top:5px;
+margin-left:10px;
+}
+
+.yui-skin-sam .yui-panel .bd 
+{
+	padding:10px;
+	overflow:auto;
+}
+
 </style>
 <script type="text/javascript">
 function showChkBox()
@@ -139,7 +173,9 @@ function getConstiResults()
 	var percentage;
 	var textBoxEl = document.getElementById("percentTxtBox");
 	var percentValueChkboxEl = document.getElementById("percentValueChkbox");
+	var mandalElecChkboxEl = document.getElementById("mandalElecChkbox");
 	var radioElArr = document.getElementsByName("percentValue");
+	var localElections;
 	if(percentValueChkboxEl.checked == true)
 	{
 		percentage = textBoxEl.value; 
@@ -154,8 +190,14 @@ function getConstiResults()
 				}
 		}	
 	}
+	if(mandalElecChkboxEl.checked == true)
+	{
+		localElections = "true";
+	} else localElections = "false"; 
+	
 	var jsObj = {						
-			percentage: percentage,			
+			percentage: percentage,
+			localElections: localElections,			
 			task:"getByeElectionResults"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -177,6 +219,9 @@ function callAjax(jsObj,url)
 									if(elmt)
 										elmt.style.display = 'none';
 									displayResults(myResults);
+								} else if(jsObj.task == "votesSharingInConstituency")
+								{
+									buildResultsPopup(myResults);
 								}
 						}
 						catch (e) {   
@@ -195,11 +240,7 @@ function displayResults(results)
 {
 	var resultsDisplayDivEl = document.getElementById("resultsDisplayDiv");
 	resultsDisplayDivEl.innerHTML = '';
-	var resultsDisplayDivStr = '';
-	/*resultsDisplayDivStr += '<div style="margin:10px;">';
-	resultsDisplayDivStr += '<input type="button" class="button" value="Show All" onclick="showAll()"/>';
-	resultsDisplayDivStr += '<input type="button" class="button" value="Collapse All" onclick="collapseAll()"/>';
-	resultsDisplayDivStr += '</div">';*/
+	var resultsDisplayDivStr = '';	
 	resultsDisplayDivStr += '<TABLE>';
 	var flag=0;
 		for(var i in results)
@@ -218,25 +259,25 @@ function displayResults(results)
 			
 			resultsDisplayDivStr += '<td>';
 			resultsDisplayDivStr += '<FIELDSET>';
-			resultsDisplayDivStr += '<LEGEND>'+results[i].name.toUpperCase()+'</LEGEND>';
+			resultsDisplayDivStr += '<LEGEND><A href="javascript:{}" style="color:white;" title="View Election Results in '+results[i].name+' constituency" onclick="partyVotesSharing('+results[i].id+',\''+results[i].name+'\')">'+results[i].name.toUpperCase()+'</A></LEGEND>';
 			resultsDisplayDivStr += '				<div id="div_'+i+'_body">';
 			resultsDisplayDivStr += '					<table class="tableClass">';
 			resultsDisplayDivStr += '						<tr>';
 			resultsDisplayDivStr += '							<th>Party</td>';
 			resultsDisplayDivStr += '							<th>Predicted %</td>';	
 			resultsDisplayDivStr += '						</tr>';
-			for(var j in results[i].partiesResults)
+			for(var j in results[i].predictedPartiesResults)
 			{
 				resultsDisplayDivStr += '					<tr>';
 							
-				if(results[i].partiesResults[j].isPartyWon == true)
+				if(results[i].predictedPartiesResults[j].isPartyWon == true)
 				{
-					resultsDisplayDivStr += '						<td style="color:green" align="center"><b>'+results[i].partiesResults[j].partyName+'</b></td>';	
-					resultsDisplayDivStr += '						<td style="color:green" align="center"><b>'+results[i].partiesResults[j].votesPercent+'</b></td>';
+					resultsDisplayDivStr += '						<td style="color:green" align="center"><b>'+results[i].predictedPartiesResults[j].partyName+'</b></td>';	
+					resultsDisplayDivStr += '						<td style="color:green" align="center"><b>'+results[i].predictedPartiesResults[j].votesPercent+'</b></td>';
 				} else 
 				{
-					resultsDisplayDivStr += '						<td style="color:red" align="center">'+results[i].partiesResults[j].partyName+'</td>';
-					resultsDisplayDivStr += '						<td style="color:red" align="center">'+results[i].partiesResults[j].votesPercent+'</td>';
+					resultsDisplayDivStr += '						<td style="color:red" align="center">'+results[i].predictedPartiesResults[j].partyName+'</td>';
+					resultsDisplayDivStr += '						<td style="color:red" align="center">'+results[i].predictedPartiesResults[j].votesPercent+'</td>';
 					
 				}			
 				resultsDisplayDivStr += '					</tr>';		
@@ -251,40 +292,115 @@ function displayResults(results)
 	resultsDisplayDivStr += '<TABLE>';
 	resultsDisplayDivEl.innerHTML = resultsDisplayDivStr;
 }
-function showDetails(i)
-{
-	var divEl = document.getElementById("div_"+i+"_body");
-	var imageLinkDivEl = document.getElementById("imageLinkDiv_"+i);
-	
-	
-	if(divEl.style.display == 'none')
-	{
-		divEl.style.display = 'block';
-		var imageLinkDivElStr = '';
-		imageLinkDivElStr+='<A href="javascript:{}" onclick="hideDetails('+i+')" title="Click to Collapse"><img src="images/icons/minusImage.png" border="0"/></A>';
-		imageLinkDivEl.innerHTML = '';
-		imageLinkDivEl.innerHTML = imageLinkDivElStr;
-		
-	} 
-	
-	
-}
-function hideDetails(i)
-{
-	var divEl = document.getElementById("div_"+i+"_body");
-	var imageLinkDivEl = document.getElementById("imageLinkDiv_"+i);
-	
 
-	if(divEl.style.display == 'block')
+function partyVotesSharing(constiId, constiName){		
+	
+	var mandalElecChkboxEl = document.getElementById("mandalElecChkbox");
+	
+	var electypeSelectedElmts;
+	if(mandalElecChkboxEl.checked == false)
+	{	
+		electypeSelectedElmts = new Array();
+		electypeSelectedElmts.push("AC");
+		electypeSelectedElmts.push("PC");
+	} else if(mandalElecChkboxEl.checked == true)
 	{
-		divEl.style.display = 'none';
-		var imageLinkDivElStr = '';
-		imageLinkDivElStr+='<A href="javascript:{}" onclick="showDetails('+i+')" title="Click to Expand"><img src="images/icons/plusImage.png" border="0"/></A>';
-		imageLinkDivEl.innerHTML = '';
-		imageLinkDivEl.innerHTML = imageLinkDivElStr;
-		
+		electypeSelectedElmts = new Array();
+		electypeSelectedElmts.push("AC");
+		electypeSelectedElmts.push("PC");
+		electypeSelectedElmts.push("MPTC");
+		electypeSelectedElmts.push("ZPTC");
 	}
 	
+	var jsObj = {
+			getAll : "-",
+			choices : electypeSelectedElmts,
+			flag : "0",
+			constituencyId: constiId ,
+			constiName: constiName,
+			task:"votesSharingInConstituency",
+			choice:"All"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/votesSharingInConstituencyAjaxAction.action?"+rparam;
+		callAjax(jsObj, url);
+}
+function buildResultsPopup(results)
+{
+	var electionListLength = results[0].electionList.length+2;
+	var str = '<div  style="overflow:auto;width:950px;">';	
+	str += '<table id="votesShareDetailsTable" width="100%" cellspacing="2" cellmargin="0">';
+	str += '<tr>';
+	str += '<td colspan="'+electionListLength+'" style="padding:0px;border:0px">';
+	str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
+	str+='			<tr>';
+	str+='			<td width="2%" style="padding:0px;border:0px;"> <img src="images/icons/tv9Icons/first.png"></td>';
+	str+='			<td width="98%" style="padding:0px;border:0px;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan"> Parties Votes Shares</span></div></td>';
+	str+='			<td width="1%" style="padding:0px;border:0px;"><img src="images/icons/tv9Icons/second.png"></td>';
+	str+='			</tr>';
+	str+='		</table>';
+	str += '</td>';
+	str += '</tr>';
+
+	str += '<tr>';
+	str += '<th>Parties</th>';
+	str += '<th>Range</th>';
+	
+
+	var length = results[0].electionList.length-1;
+	for(var i=length;i>=0;i--)
+		str += '<th>'+results[0].electionList[i].name+'</th>';
+
+	
+	str += '</tr>';
+	
+	for(var j in results)
+	{
+		if(results[j].range == " ")
+			continue
+		str += '<tr>';
+		str += '<td align="center">'+results[0].partiesList[j].name+'</td>';
+		str += '<td align="left" style="color:#FF8000;font-weight:bold;">'+results[j].range+'</td>';
+		for(var k=results[j].electionWiseResults.length-1;k>=0;k--)
+		{
+			var info = results[j].electionWiseResults[k];
+			
+			if(info.percentage != "-1")
+			{
+				 //for Bye Election Results
+				if(info.electionType == 'Parliament' && info.electionYear == '2008' 
+					|| info.electionType == 'Parliament' && info.electionYear == '2006')
+                   str += '<td align="center" name="'+info.electionType+'" style="background-color:#F6CECE;">'+info.percentage+'</td>';
+				else if(info.alliancRes == true){
+					str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'<font style="color:red;"> *</td>'; 
+				} 
+                else if(info.hasAlliance == "true")
+					str += '<td align="center" name="'+info.electionType+'" style="background-color:#DDEB9B;">'+info.percentage+'</td>';
+				else if(info.hasAlliance == "false")
+					str += '<td align="center" name="'+info.electionType+'">'+info.percentage+'</td>';
+			}
+			else
+				str += '<td name="'+info.electionType+'"><div style="visibility:hidden;">NA</div></td>';
+		}
+		
+		str += '</tr>';
+	}
+
+	str += '</table></div>';
+	
+	 var myPanel = new YAHOO.widget.Dialog("resultsPanelDiv", {		
+		    	 width : "750px",		    	    
+                 fixedcenter : true, 
+                 visible : true,  
+                 constraintoviewport : true, 
+        		 iframe :true,
+        		 modal :true,
+        		 hideaftersubmit:true,
+        		 close:true
+       });
+	   myPanel.setHeader("Election Results");
+       myPanel.setBody(str);
+       myPanel.render();
 	
 }
 
@@ -333,9 +449,13 @@ function hideDetails(i)
 					</tr>
 				</table>					
 			</td>
+		</tr>
+		<tr>
+			<td><input type="checkbox" id="mandalElecChkbox" />Include ZPTC/MPTC Elections</td>
 		</tr>				
 		</table>
 		<input type="button" class="button" value="Show Results" onclick="getConstiResults()"/>
+		
 </div>
 <center>
 <DIV id="electionPageAjaxImgDiv" style="display:none;">
@@ -344,5 +464,6 @@ function hideDetails(i)
 </DIV>
 </center>
 <div id="resultsDisplayDiv"></div>
+<div class ="yui-skin-sam"><div id="resultsPanelDiv"></div></div>
 </body>
 </html>
