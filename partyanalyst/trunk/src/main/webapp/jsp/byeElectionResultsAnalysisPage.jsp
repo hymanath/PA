@@ -169,15 +169,14 @@ function getConstiResults()
 {
 	var resultsDisplayDivEl = document.getElementById("resultsDisplayDiv");
 	resultsDisplayDivEl.innerHTML = '';
-	var elmt = document.getElementById("electionPageAjaxImgDiv");
-	if(elmt)
-		elmt.style.display = 'block';
-	var percentage;
+	var percentage = null;
 	var textBoxEl = document.getElementById("percentTxtBox");
 	var percentValueChkboxEl = document.getElementById("percentValueChkbox");
 	var mandalElecChkboxEl = document.getElementById("mandalElecChkbox");
 	var radioElArr = document.getElementsByName("percentValue");
 	var localElections;
+	var alertMessageEl = document.getElementById("alertMessage");
+	alertMessageEl.innerHTML = '';
 	if(percentValueChkboxEl.checked == true)
 	{
 		percentage = textBoxEl.value; 
@@ -196,7 +195,14 @@ function getConstiResults()
 	{
 		localElections = "true";
 	} else localElections = "false"; 
-	
+	if(percentage == null)
+	{
+		alertMessageEl.innerHTML = 'Please Give Percentage!'; 
+		return;
+	}
+	var elmt = document.getElementById("electionPageAjaxImgDiv");
+	if(elmt)
+		elmt.style.display = 'block';
 	var jsObj = {						
 			percentage: percentage,
 			localElections: localElections,			
@@ -456,6 +462,7 @@ function buildResultsPopup(results)
 			<td><input type="checkbox" id="mandalElecChkbox" />Include ZPTC/MPTC Elections</td>
 		</tr>				
 		</table>
+		<div id="alertMessage" style="color:red;font-weight:bold;"></div>
 		<input type="button" class="button" value="Show Results" onclick="getConstiResults()"/>
 		
 </div>
