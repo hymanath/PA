@@ -230,6 +230,9 @@ function callAjax(jsObj,url)
 								} else if(jsObj.task == "votesSharingInConstituency")
 								{
 									buildResultsPopup(myResults);
+								} else if("getUrbanRuralResults")
+								{
+									buildResultsForUrbanRural(jsObj, myResults);
 								}
 						}
 						catch (e) {   
@@ -267,11 +270,11 @@ function displayResults(results)
 			
 			resultsDisplayDivStr += '<td>';
 			resultsDisplayDivStr += '<FIELDSET>';
-			if(results[i].name != 'Nizamabad Urban' && results[i].name != 'Warangal West')
-			{
+			//if(results[i].name != 'Nizamabad Urban' && results[i].name != 'Warangal West')
+			//{
 				resultsDisplayDivStr += '<LEGEND><A href="javascript:{}" style="color:white;" title="View Election Results in '+results[i].name+' constituency" onclick="partyVotesSharing('+results[i].id+',\''+results[i].name+'\')">'+results[i].name.toUpperCase()+'</A></LEGEND>';	
-			} else
-				resultsDisplayDivStr += '<LEGEND>'+results[i].name.toUpperCase()+'</LEGEND>';
+			//} else
+				//resultsDisplayDivStr += '<LEGEND>'+results[i].name.toUpperCase()+'</LEGEND>';
 			resultsDisplayDivStr += '				<div id="div_'+i+'_body">';
 			resultsDisplayDivStr += '					<table class="tableClass">';
 			resultsDisplayDivStr += '						<tr>';
@@ -310,11 +313,15 @@ function partyVotesSharing(constiId, constiName){
 	var mandalElecChkboxEl = document.getElementById("mandalElecChkbox");
 	
 	var electypeSelectedElmts;
+	var selectedElectionArray;
 	if(mandalElecChkboxEl.checked == false)
 	{	
 		electypeSelectedElmts = new Array();
 		electypeSelectedElmts.push("AC");
 		electypeSelectedElmts.push("PC");
+		selectedElectionArray = new Array();
+		selectedElectionArray.push("Assembly");
+		selectedElectionArray.push("Parliament");		
 	} else if(mandalElecChkboxEl.checked == true)
 	{
 		electypeSelectedElmts = new Array();
@@ -322,20 +329,44 @@ function partyVotesSharing(constiId, constiName){
 		electypeSelectedElmts.push("PC");
 		electypeSelectedElmts.push("MPTC");
 		electypeSelectedElmts.push("ZPTC");
+		selectedElectionArray = new Array();
+		selectedElectionArray.push("Assembly");
+		selectedElectionArray.push("Parliament");
+		selectedElectionArray.push("CORPORATION");
+		
 	}
-	
-	var jsObj = {
-			getAll : "-",
-			choices : electypeSelectedElmts,
-			flag : "0",
-			constituencyId: constiId ,
-			constiName: constiName,
-			task:"votesSharingInConstituency",
-			choice:"All"
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-		var url = "<%=request.getContextPath()%>/votesSharingInConstituencyAjaxAction.action?"+rparam;
-		callAjax(jsObj, url);
+	if(constiName != 'Nizamabad Urban' && constiName != 'Warangal West')
+	{	
+		var jsObj = {
+				getAll : "-",
+				choices : electypeSelectedElmts,
+				flag : "0",
+				constituencyId: constiId ,
+				constiName: constiName,
+				task:"votesSharingInConstituency",
+				choice:"All"
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "<%=request.getContextPath()%>/votesSharingInConstituencyAjaxAction.action?"+rparam;
+	} else {
+		var jsObj = {
+				
+				constituencyName: constiName,
+				constituencyId: constiId,
+				partiesArr: ["BJP","INC","PRP","TRS","TDP"],
+				electionTypeArr: [],
+				task: "getUrbanRuralResults",
+				alliances: "false" ,
+				isElectionType: "true",
+				selectedElectionArr: selectedElectionArray,
+				//allResults: allResults,
+				chartName:" "
+				};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);		
+		var url = "<%=request.getContextPath()%>/getUrbanRuralResultsAjaxAction.action?"+rparam;
+		}
+		
+			callAjax(jsObj, url);
 }
 function buildResultsPopup(results)
 {
@@ -416,6 +447,86 @@ function buildResultsPopup(results)
 	
 }
 
+function buildResultsForUrbanRural(jsObj,results)
+{			
+	var shareElmt = document.getElementById("votersShareData_main");
+	var electionListLength = results.elections.length+2;
+	
+	var str = '';
+	var str = '<div  style="overflow:auto;">';
+	str += '<table id="votesShareDetailsTable" cellspacing="4" cellmargin="0">';
+	str += '<tr>';
+	str += '<td colspan="'+electionListLength+'" style="padding:0px;border:0px">';
+	str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
+	str+='			<tr>';
+	str+='			<td width="2%" style="padding:0px;border:0px;"> <img src="images/icons/tv9Icons/first.png"></td>';
+	str+='			<td width="98%" style="padding:0px;border:0px;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan"> Parties Votes Shares</span></div></td>';
+	str+='			<td width="1%" style="padding:0px;border:0px;"><img src="images/icons/tv9Icons/second.png"></td>';
+	str+='			</tr>';
+	str+='		</table>';
+	str += '</td>';
+	str += '</tr>';
+
+	str += '<tr>';
+	str += '<th>Parties</th>';
+	str += '<th>Range</th>';
+	
+	var length = results.elections.length-1;
+	for(var i=length;i>=0;i--)
+		str += '<th>'+results.elections[i].name+'</th>';
+		str += '</tr>';
+	
+	
+	for(var j in results.allPartiesAllElectionResults)									
+	{
+		str += '<tr>';
+		if(results.allPartiesAllElectionResults[j].partyName != 'Others *')
+		{		
+			str += '<td align="center">'+results.allPartiesAllElectionResults[j].partyName+'</td>';
+			str += '<td align="center" style="color:#FF8000;">'+results.allPartiesAllElectionResults[j].range+'</td>';
+			var info =  results.allPartiesAllElectionResults[j].electionWiseResults;
+
+			for(var k=info.length-1; k>=0; k--)						
+			{
+				if(info[k].percentage == "-1"){
+					str += '<td><div style="visibility:hidden;">NA</div></td>';
+				}else if(info[k].alliancRes == true){
+					str += '<td align="center" style="background-color:#DDEB9B;">'+info[k].percentage+'<font style="color:red;"> *</td>';
+				}else if(info[k].hasAlliance == 'true'){
+					str += '<td align="center" style="background-color:#DDEB9B;">'+info[k].percentage+'</td>';
+				}else{
+					str += '<td align="center">'+info[k].percentage+'</td>';
+				}
+			}
+	}	
+		if(results.allPartiesAllElectionResults[j].partyName != 'Others *')
+		{
+			
+			str += '</tr>';
+		}		
+	}
+	str += '</table></div>';
+	
+
+
+	 var myPanel = new YAHOO.widget.Dialog("resultsPanelDiv", {		
+		    		    	    
+                fixedcenter : true, 
+                visible : true,  
+                constraintoviewport : true, 
+       		 iframe :true,
+       		 modal :true,
+       		 hideaftersubmit:true,
+       		 close:true
+      });
+	   myPanel.setHeader("Election Results");
+      myPanel.setBody(str);
+      myPanel.render();
+
+	
+		
+}
+
 
 	
 </script>
@@ -463,7 +574,7 @@ function buildResultsPopup(results)
 			</td>
 		</tr>
 		<tr>
-			<td><input type="checkbox" id="mandalElecChkbox" />Include ZPTC/MPTC Elections</td>
+			<td><input type="checkbox" id="mandalElecChkbox" />Include Local(ZPTC/MPTC or MUNICIPAL/CORPORATION) Elections</td>
 		</tr>				
 		</table>
 		<div id="alertMessage" style="color:red;font-weight:bold;"></div>
