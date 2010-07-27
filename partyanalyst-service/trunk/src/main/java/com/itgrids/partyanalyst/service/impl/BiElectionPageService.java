@@ -3299,7 +3299,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 	 return null;
 	}
 	
-	public List<ConstituencyVO> getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage(String expePercent){
+	public List<ConstituencyVO> getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage(String expePercent,Boolean includeLocalElec){
 		List<BiElectionDistrictVO> byeElecConsties = getBiElectionConstituenciesDistrictWise();
 		List<PartyResultVO> constiPartyResults = null;
 		Map<String, Float> partyAndPercent = new HashMap<String, Float>();
@@ -3318,6 +3318,10 @@ public class BiElectionPageService implements IBiElectionPageService {
 		ConstituencyVO constituencyVO = null;
 		PartyResultVO partyResultVO = null;
 		ElectionTrendzReportVO constituencyOverView = null;
+		String[] choices = {"AC","PC"};
+		Set<String> choice = new HashSet<String>();
+		choice.add(IConstants.ASSEMBLY_ELECTION_TYPE);
+		choice.add(IConstants.PARLIAMENT_ELECTION_TYPE);
 		for(BiElectionDistrictVO biElectionDistrictVO:byeElecConsties)
 			for(SelectOptionVO consti:biElectionDistrictVO.getConstituenciesList()){
 				constituencyVO = new ConstituencyVO();
@@ -3329,10 +3333,18 @@ public class BiElectionPageService implements IBiElectionPageService {
 				constituencyVO.setTotalPolledVotes(constituencyOverView.getLatestElectionYearsTotalPolledVotes());
 				constituencyVO.setVotesPercent(constituencyOverView.getLatestElectionYearsTotalVotesPercentage());
 				if("Nizamabad Urban".equalsIgnoreCase(consti.getName()) || "Warangal West".equalsIgnoreCase(consti.getName()))
-					constiPartyResults = getResultsOfRuralUrbanAreaBeasedOnSelection(consti.getId(), null, null, 
+					if(includeLocalElec)
+					    constiPartyResults = getResultsOfRuralUrbanAreaBeasedOnSelection(consti.getId(), null, null, 
 							false, false).getAllPartiesAllElectionResults();
-				else
-					constiPartyResults = staticDataService.getPartyVotesPercentageInAConstituency(consti.getId(),"All", null);
+					else
+						constiPartyResults = getResultsOfRuralUrbanAreaBeasedOnSelection(consti.getId(), null, choice, 
+									true, false).getAllPartiesAllElectionResults();
+				else{
+					if(includeLocalElec)
+					    constiPartyResults = staticDataService.getPartyVotesPercentageInAConstituency(consti.getId(),"All", null);
+					else
+						constiPartyResults = staticDataService.getPartyVotesPercentageInAConstituency(consti.getId(),"-", choices);
+				}
 				//constituencyVO.setAllPartiesElecResults(constiPartyResults);
 				totalPercent = 0f;
 				remainingPercent = 0f;
