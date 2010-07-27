@@ -57,5 +57,5 @@ public interface IBiElectionPageService {
 	public ElectionWiseMandalPartyResultListVO getResultsOfRuralUrbanAreaBeasedOnSelection(Long constituencyId, 
 			Set<String> parties, Set<String> elecTypeOrYear, Boolean isElecType, Boolean includeAlliance);
 	
-	public List<ConstituencyVO> getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage(String expePercent);
+	public List<ConstituencyVO> getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage(String expePercent,Boolean includeLocalElec);
 }
