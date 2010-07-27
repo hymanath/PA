@@ -3328,11 +3328,11 @@ public class BiElectionPageService implements IBiElectionPageService {
 				constituencyVO.setTotalPolledVotes(constituencyOverView.getLatestElectionYearsTotalPolledVotes());
 				constituencyVO.setVotesPercent(constituencyOverView.getLatestElectionYearsTotalVotesPercentage());
 				if("Nizamabad Urban".equalsIgnoreCase(consti.getName()) || "Warangal West".equalsIgnoreCase(consti.getName()))
-					constiPartyResults = getMandalWiseResultsForSelectedPartiesInConstituency(consti.getId()).
-																getAllPartiesElecInfo().getAllPartiesAllElectionResults();
+					constiPartyResults = getResultsOfRuralUrbanAreaBeasedOnSelection(consti.getId(), null, null, 
+							false, false).getAllPartiesAllElectionResults();
 				else
 					constiPartyResults = staticDataService.getPartyVotesPercentageInAConstituency(consti.getId(),"All", null);
-				constituencyVO.setAllPartiesElecResults(constiPartyResults);
+				//constituencyVO.setAllPartiesElecResults(constiPartyResults);
 				totalPercent = 0f;
 				remainingPercent = 0f;
 				favourPercent = 0f;
