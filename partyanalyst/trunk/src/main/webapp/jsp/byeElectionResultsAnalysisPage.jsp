@@ -167,6 +167,8 @@ function showChkBox()
 }
 function getConstiResults()
 {
+	var resultsDisplayDivEl = document.getElementById("resultsDisplayDiv");
+	resultsDisplayDivEl.innerHTML = '';
 	var elmt = document.getElementById("electionPageAjaxImgDiv");
 	if(elmt)
 		elmt.style.display = 'block';
