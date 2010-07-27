@@ -3322,6 +3322,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 			for(SelectOptionVO consti:biElectionDistrictVO.getConstituenciesList()){
 				constituencyVO = new ConstituencyVO();
 				constituencyVO.setName(consti.getName());
+				constituencyVO.setId(consti.getId());
 				constituencyOverView = staticDataService.getConstituencyOverview(consti.getId(), consti.getName());
 				constituencyVO.setTotalVoters2009(constituencyOverView.getPresentYearTotalVoters());
 				constituencyVO.setTotalVoters2010(constituencyOverView.getLatestElectionYearsTotalVoters());
