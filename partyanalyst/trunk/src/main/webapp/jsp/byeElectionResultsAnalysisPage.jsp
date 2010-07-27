@@ -267,7 +267,11 @@ function displayResults(results)
 			
 			resultsDisplayDivStr += '<td>';
 			resultsDisplayDivStr += '<FIELDSET>';
-			resultsDisplayDivStr += '<LEGEND><A href="javascript:{}" style="color:white;" title="View Election Results in '+results[i].name+' constituency" onclick="partyVotesSharing('+results[i].id+',\''+results[i].name+'\')">'+results[i].name.toUpperCase()+'</A></LEGEND>';
+			if(results[i].name != 'Nizamabad Urban' && results[i].name != 'Warangal West')
+			{
+				resultsDisplayDivStr += '<LEGEND><A href="javascript:{}" style="color:white;" title="View Election Results in '+results[i].name+' constituency" onclick="partyVotesSharing('+results[i].id+',\''+results[i].name+'\')">'+results[i].name.toUpperCase()+'</A></LEGEND>';	
+			} else
+				resultsDisplayDivStr += '<LEGEND>'+results[i].name.toUpperCase()+'</LEGEND>';
 			resultsDisplayDivStr += '				<div id="div_'+i+'_body">';
 			resultsDisplayDivStr += '					<table class="tableClass">';
 			resultsDisplayDivStr += '						<tr>';
