@@ -3327,7 +3327,12 @@ public class BiElectionPageService implements IBiElectionPageService {
 				constituencyVO.setTotalVoters2010(constituencyOverView.getLatestElectionYearsTotalVoters());
 				constituencyVO.setTotalPolledVotes(constituencyOverView.getLatestElectionYearsTotalPolledVotes());
 				constituencyVO.setVotesPercent(constituencyOverView.getLatestElectionYearsTotalVotesPercentage());
-				constiPartyResults = staticDataService.getPartyVotesPercentageInAConstituency(consti.getId(),"All", null);
+				if("Nizamabad Urban".equalsIgnoreCase(consti.getName()) || "Warangal West".equalsIgnoreCase(consti.getName()))
+					constiPartyResults = getMandalWiseResultsForSelectedPartiesInConstituency(consti.getId()).
+																getAllPartiesElecInfo().getAllPartiesAllElectionResults();
+				else
+					constiPartyResults = staticDataService.getPartyVotesPercentageInAConstituency(consti.getId(),"All", null);
+				constituencyVO.setAllPartiesElecResults(constiPartyResults);
 				totalPercent = 0f;
 				remainingPercent = 0f;
 				favourPercent = 0f;
@@ -3363,7 +3368,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 				}
 				Collections.sort(partiesResults, new PartyResultVOPercentComparator());
 				partiesResults.get(0).setIsPartyWon(true);
-				constituencyVO.setPartiesResults(partiesResults);
+				constituencyVO.setPredictedPartiesResults(partiesResults);
 				constituenies.add(constituencyVO);
 			}
 		

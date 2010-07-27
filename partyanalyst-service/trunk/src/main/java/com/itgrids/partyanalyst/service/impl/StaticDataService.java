@@ -4313,7 +4313,7 @@ public class StaticDataService implements IStaticDataService {
 		return electionResult;
 	}
 	public ElectionResultPartyVO populateDataForLocalElections(List<TeshilPartyInfoVO> result,String electionYear,String electionType,int flag){
-		System.out.println("Inside populateDataForLocalElections....");
+		//System.out.println("Inside populateDataForLocalElections....");
 		ElectionResultPartyVO candidateElectionResult = new ElectionResultPartyVO();
 		List<CandidateElectionResultVO> candidateElectionResultsVO = null;
 		try{
