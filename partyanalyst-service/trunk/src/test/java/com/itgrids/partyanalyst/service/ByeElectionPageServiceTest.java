@@ -56,7 +56,7 @@ public class ByeElectionPageServiceTest extends BaseDaoTestCase{
 	
 	public void testGetAllDistricts(){
 		Long start = System.currentTimeMillis();
-		biElectionPageService.getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage("20");
+		biElectionPageService.getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage("20",true);
 		Long end = System.currentTimeMillis();
 		System.out.println((end-start)/1000);
 	}
