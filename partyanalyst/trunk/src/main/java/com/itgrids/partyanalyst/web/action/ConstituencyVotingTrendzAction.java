@@ -669,6 +669,11 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		String constiName = jObj.getString("constiName");
 		
 		constituencyOverView = staticDataService.getConstituencyOverview(constiId,constiName);
+		constituencyOverView.setByeElectionVotesPercentage(getByeElectionVotesPercentage(constiName));
+		
+		constituencyOverView.setVotesPercentageDifferene(new BigDecimal(constituencyOverView.getByeElectionVotesPercentage() - new Double(constituencyOverView.getLatestElectionYearsTotalVotesPercentage())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+		Double polledVotes = (constituencyOverView.getPresentYearTotalVoters()*constituencyOverView.getByeElectionVotesPercentage()/100);
+		constituencyOverView.setPresentYearTotalPolledVotes(polledVotes.longValue());;
 		contestingCands = getContestingCandidateDetails(constiName);
 		constituencyOverView.setContestingCands(contestingCands);
 		electionResultsInConsti = staticDataService.getWonAndOppositionCandidateDetailsInAConstituencyWithMargin(constiId,IConstants.PRESENT_ELECTION_YEAR);
@@ -676,6 +681,52 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			constituencyOverView.setElecResultsInConsti(electionResultsInConsti);
 		
 		return Action.SUCCESS;
+	}
+	
+	private Double getByeElectionVotesPercentage(String constiName)
+	{
+		Double pollingPercentage = null;
+		if(constiName.equalsIgnoreCase(Constants.SIRCILLA)){
+			pollingPercentage = Constants.SIRCILLA_PRESENET_VOTES_PERCENT;
+		}
+		
+		else if(constiName.equalsIgnoreCase(Constants.SIRPUR)){
+			pollingPercentage = Constants.SIRPUR_PRESENET_VOTES_PERCENT;	
+		}
+		
+       else if(constiName.equalsIgnoreCase(Constants.CHENNUR)){
+    	   pollingPercentage = Constants.CHENNUR_PRESENET_VOTES_PERCENT;
+		}
+		
+       else if(constiName.equalsIgnoreCase(Constants.MANCHERIAL)){
+    	   pollingPercentage = Constants.MANCHERIAL_PRESENET_VOTES_PERCENT;
+		   }
+       else if(constiName.equalsIgnoreCase(Constants.YELLAREDDY)){
+    	   pollingPercentage = Constants.YELLAREDDY_PRESENET_VOTES_PERCENT;
+  	   }
+       else if(constiName.equalsIgnoreCase(Constants.NIZAMABAD_URBAN)){
+    	   pollingPercentage = Constants.NIZAMABAD_URBAN_PRESENET_VOTES_PERCENT;
+ 	   }
+	
+       else if(constiName.equalsIgnoreCase(Constants.KORATLA)){
+    	   pollingPercentage = Constants.KORATLA_PRESENET_VOTES_PERCENT;
+	   }
+       else if(constiName.equalsIgnoreCase(Constants.DHARMAPURI)){
+    	   pollingPercentage = Constants.DHARMAPURI_PRESENET_VOTES_PERCENT;
+	       }
+       else if(constiName.equalsIgnoreCase(Constants.VEMULAWADA)){
+    	   pollingPercentage = Constants.VEMULAWADA_PRESENET_VOTES_PERCENT;
+  	   }
+       else if(constiName.equalsIgnoreCase(Constants.HUZURABAD)){
+    	   pollingPercentage = Constants.HUZURABAD_PRESENET_VOTES_PERCENT;
+       }
+       else if(constiName.equalsIgnoreCase(Constants.SIDDIPET)){
+    	   pollingPercentage = Constants.SIDDIPET_PRESENET_VOTES_PERCENT;
+       }
+       else if(constiName.equalsIgnoreCase(Constants.WARANGAL_WEST)){
+    	   pollingPercentage = Constants.WARANGAL_WEST_PRESENET_VOTES_PERCENT;
+       }
+		return pollingPercentage;
 	}
 	
 

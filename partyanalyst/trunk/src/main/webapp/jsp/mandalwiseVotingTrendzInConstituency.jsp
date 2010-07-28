@@ -317,39 +317,48 @@
 				headingDIV+='<legend style="background-color:#567AAF;font-family:verdana,helvetica,clean,sans-serif;color:#FFFFFF;font-weight:bold;padding:10px;font-size:20px;">Constituency Overview</legend>';
 
 				headingDIV+='<div id="votesInfoDiv" style="color:#247CD4;font-size:12px;font-weight:bold;"></div>';
-				headingDIV+='<table width="75%" cellspacing="10" style="margin-top:10px;">';   
+				headingDIV+='<table width="800" border="0" cellspacing="10" style="margin-top:10px;">';   
 				headingDIV+=' <tr>';
-				headingDIV+=' <td><img src="images/bi-constituency_maps/'+jsObj.constiName+'.jpg"/></td>';
-				headingDIV+=' </tr>';
-				
-				headingDIV+='	<tr>';
-				headingDIV+='		<td width="50%" style="color:#18325A;font-size:17px;font-family:verdana;" align="left"><b>Total Voters for Year 2009</b></td>';
-				headingDIV+='		<td width="2%"><b> :</b></td>';
-				headingDIV+='		<td width="30%" align="left" style="color:red;font-size:17px;font-weight:bold;">'+myResults.latestElectionYearsTotalVoters+'</td>';
-				
-				headingDIV+='		</tr>';			
+				headingDIV+=' <td colspan="3"><img src="images/bi-constituency_maps/'+jsObj.constiName+'.jpg"/></td>';
+				headingDIV+=' </tr></table>';
+				headingDIV+='<table width="600" class="participatingPartiestable_inner" style="margin:10px;" border="0"  cellpadding="0" cellspacing="0">';
+				headingDIV+='<tr>';
+				headingDIV+='	<td valign="top" style="padding:0px;border:none;"> ';
+				headingDIV+='		<img src="images/icons/tv9Icons/first.png">';
+				headingDIV+='	</td>';
 
-				headingDIV+='	<tr>';
-				headingDIV+='		<td style="color:#18325A;font-size:17px;font-family:verdana;" align="left"><b>Total Voters for Year 2010</b></td>';
-				headingDIV+='		<td><b> :</b></td>';
-				if(myResults.presentYearTotalVoters!=0)
-				{	
-					headingDIV+='		<td align="left" style="color:red;font-size:17px;font-weight:bold;">'+myResults.presentYearTotalVoters+'</td>';				
-				}
-				else
-				{				
-					headingDIV+='		<td align="left" style="color:#1C4B7A;"> Data Not Available</td>';
-				}					
-				
-				headingDIV+='	</tr>';
+				headingDIV+='	<td valign="top" style="padding:0px;border:none;">';
+				headingDIV+='		<div class="detailsTableHeader" style="width:560px;">';
+				headingDIV+='			<span class="detailsTableHeaderSpan">2009 & 2010 Voters Details in '+jsObj.constiName+'</span>';
+				headingDIV+='		</div>';
+				headingDIV+='	</td>';
 
+				headingDIV+='	<td valign="top" style="padding:0px;border:none;"> ';
+				headingDIV+='		<img src="images/icons/tv9Icons/second.png">';
+				headingDIV+='	</td>';
+
+				headingDIV+='</tr>';
+				headingDIV+='</table>';
+				
+				headingDIV+='<table width="600" style="margin:10px;" border="0" class="participatingPartiestable">	<tr>';
+				headingDIV+='		<td style="color:#18325A;font-size:17px;font-family:verdana;" align="left"><b>Total Voters for Year 2009:</b></td>';
+				headingDIV+='		<td align="left" style="color:red;font-size:17px;font-weight:bold;">'+myResults.latestElectionYearsTotalVoters+'</td>';
+				headingDIV+='</tr><tr>';
+				headingDIV+='		<td style="color:#18325A;font-size:17px;font-family:verdana;" align="left"><b>Total Voters for Year 2010: </b></td>';
+				headingDIV+='		<td align="left" style="color:red;font-size:17px;font-weight:bold;">'+myResults.presentYearTotalVoters+'</td>';				
+				headingDIV+='		</tr>';	
+				headingDIV+='<tr><td colspan="2">&nbsp;</td></tr> ';
 				headingDIV+='		<tr>';               
-				headingDIV+='		<td style="color:#18325A;font-size:17px;font-family:verdana;" align="left"><b>Total Polled Votes for Year 2009</b></td>';
-				headingDIV+='		<td><b> :</b></td>';
-				headingDIV+='		<td align="left" style="color:red;font-size:17px;font-weight:bold;">'+myResults.latestElectionYearsTotalPolledVotes+' <font color="black"> [</font><font color="green"> '+myResults.latestElectionYearsTotalVotesPercentage+' % </font><font color="black">]</font></td>';		
-								
-				headingDIV+='	</tr>';
-
+				headingDIV+='		<td style="color:#18325A;font-size:17px;font-family:verdana;" align="left"><b>Total Polled Votes for Year 2009:</b></td>';
+				headingDIV+='		<td align="left" style="color:red;font-size:17px;font-weight:bold;">'+myResults.latestElectionYearsTotalPolledVotes+' <font color="black"> [</font><font color="green"> '+myResults.latestElectionYearsTotalVotesPercentage+' % </font><font color="black">]</font></td>';
+				headingDIV+='</tr><tr>';
+				headingDIV+='		<td style="color:#18325A;font-size:17px;font-family:verdana;" align="left"><b>Total Polled Votes for Year 2010:</b></td>';
+				headingDIV+='		<td align="left" style="color:red;font-size:17px;font-weight:bold;">'+myResults.presentYearTotalPolledVotes+'<font color="black"> [</font><font color="green"> '+myResults.byeElectionVotesPercentage+' % </font><font color="black">]</font></td>';
+				headingDIV+='	</tr>';		
+				headingDIV+='<tr><td colspan="2">&nbsp;</td></tr> ';
+				headingDIV+='		<tr>';               
+				headingDIV+='		<td style="color:#18325A;font-size:17px;font-family:verdana;" align="left" colspan="4"><b>Difference of Polled Votes Percentage: <font color="green">'+myResults.votesPercentageDifferene+'</font> </b></td>';
+				headingDIV+='		</tr>';	
 				headingDIV+='</table>';
 				
                 headingDIV+='<div id="contestingCandidates_InnerDiv" style="margin:0px;">';
