@@ -36,8 +36,12 @@ public class ElectionTrendzReportVO implements Serializable {
 	private Long latestElectionYearsTotalVoters;
 	private Long latestElectionYearsTotalPolledVotes;
 	private String latestElectionYearsTotalVotesPercentage;
+	private Double byeElectionVotesPercentage;
+	private Double votesPercentageDifferene;
+	private Long presentYearTotalPolledVotes;
 	private List<PartyResultsInfoVO> contestingCands;
 	private PartyElectionResultsVO elecResultsInConsti;
+	private PartyElectionResultsVO byeElecResultsInConsti;
 	private Long presentYearTotalVoters;
 		
 	private ResultStatus resultStatus;
@@ -205,6 +209,39 @@ public class ElectionTrendzReportVO implements Serializable {
 
 	public void setElecResultsInConsti(PartyElectionResultsVO elecResultsInConsti) {
 		this.elecResultsInConsti = elecResultsInConsti;
+	}
+
+	public void setByeElectionVotesPercentage(Double byeElectionVotesPercentage) {
+		this.byeElectionVotesPercentage = byeElectionVotesPercentage;
+	}
+
+	public Double getByeElectionVotesPercentage() {
+		return byeElectionVotesPercentage;
+	}
+
+	public void setVotesPercentageDifferene(Double votesPercentageDifferene) {
+		this.votesPercentageDifferene = votesPercentageDifferene;
+	}
+
+	public Double getVotesPercentageDifferene() {
+		return votesPercentageDifferene;
+	}
+
+	public void setPresentYearTotalPolledVotes(
+			Long presentYearTotalPolledVotes) {
+		this.presentYearTotalPolledVotes = presentYearTotalPolledVotes;
+	}
+
+	public Long getPresentYearTotalPolledVotes() {
+		return presentYearTotalPolledVotes;
+	}
+
+	public void setByeElecResultsInConsti(PartyElectionResultsVO byeElecResultsInConsti) {
+		this.byeElecResultsInConsti = byeElecResultsInConsti;
+	}
+
+	public PartyElectionResultsVO getByeElecResultsInConsti() {
+		return byeElecResultsInConsti;
 	}
 
 }
