@@ -3463,6 +3463,7 @@ public class BiElectionPageService implements IBiElectionPageService {
 		Long votesEarned = new Long(0l);
 		Float percentage = new Float(0f);
 		int i = 0;
+		Integer othersCount = 0;
 		Boolean resultsFlag = false;
 		CandidateWonVO wonCandidate = resultsToProcess.getCandidateResultsVO();
 		CandidateOppositionVO wonCandidateObj = new CandidateOppositionVO();
@@ -3491,10 +3492,11 @@ public class BiElectionPageService implements IBiElectionPageService {
 			{
 				votesEarned += new Long(candidateOppositionVO.getVotesEarned());
 				percentage += new Float(candidateOppositionVO.getVotesPercentage());
+				othersCount++;
 			}						
 		}
 		othersResults.setPartyName("Others");
-		othersResults.setCandidateName("-");
+		othersResults.setCandidateName(othersCount.toString()+" Members Consolidated Results");
 		othersResults.setVotesEarned(votesEarned.toString());
 		othersResults.setVotesPercentage(new BigDecimal(percentage).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
 		requiredPartiesList.add(othersResults);
