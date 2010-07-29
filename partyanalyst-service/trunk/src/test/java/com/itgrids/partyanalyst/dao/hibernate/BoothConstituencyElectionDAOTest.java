@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dto.VillageBoothElectionVO;
@@ -148,7 +149,7 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 	/*public void testFindBoothwiseResultsConstituency(){
 		List list = boothConstituencyElectionDAO.findBoothwiseResultsConstituency(342l);
 		assertEquals(1, list.size());
-	}*/
+	}
 	
 	
 /*	public void testFindTotalBoothWiseValidVotesForConstituencyElection(){
@@ -162,5 +163,18 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 			Object[] parms = (Object[])list.get(i);
 			System.out.println(parms[0].toString()+"=========="+parms[1].toString()+"=========="+parms[2].toString());
 		}
+
 	}*/
+	
+	@Test
+	public void testGetTotalVoters(){
+		List totalVoters = boothConstituencyElectionDAO.getTotalVotersInAnElectionInMandal(new Long(52),"Assembly","2009");
+		
+		if(totalVoters != null){
+			Object params = (Object)totalVoters.get(0);
+			System.out.println(" Total Voters :" + (Long)params );
+		}
+	}
+
+	
 }
