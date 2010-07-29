@@ -105,4 +105,17 @@ public class ElectionResultPartyVO implements Serializable {
 	public void setResultStatus(ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if(!(obj instanceof ElectionResultPartyVO))
+			return false;
+		ElectionResultPartyVO voObj = (ElectionResultPartyVO) obj;
+		return (this.electionType+this.electionYear).equals(voObj.electionType+voObj.electionYear);
+	}
+	
+	@Override
+	public int hashCode(){
+		return (this.electionType+this.electionYear).hashCode();
+	}
 }
