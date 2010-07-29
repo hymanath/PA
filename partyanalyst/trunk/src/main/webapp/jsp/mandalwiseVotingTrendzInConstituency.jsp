@@ -196,6 +196,15 @@
 			color:#62662B;
 			text-decoration:none;
 		}
+		#electionPageAjaxImgDiv
+		{
+			border:1px solid #ADADAD;
+			font-size:12px;
+			font-weight:bold;
+			width:300px;
+			margin-bottom:10px;
+			text-align: center;
+		}
 
     </style>
 
@@ -877,6 +886,9 @@
 											}	
 										} else if(jsObj.task == "constituencyResults")
 										{
+											var elmt = document.getElementById("electionPageAjaxImgDiv");
+											if(elmt)
+												elmt.style.display = 'none';
 											showChartData(jsObj, myResults);
 										} else if(jsObj.task == "getConstituencyResultsBySubLocations")
 										{
@@ -1517,6 +1529,7 @@
 
 		function showChartData(jsObj, results)
 		{
+			
 			var selectboxElmtDiv = document.getElementById("selectLocationOptions");
 			var checkboxElmtDiv = document.getElementById("inputSelectionCriteria");
 			var selectOptionsSelectButtonElmt = document.getElementById("selectOptionsSelectButton");
@@ -1650,9 +1663,10 @@
 		{
 			var radioValue = '';
 			var cursorImgElmt = document.getElementById('cursorImg');
-			if(cursorImgElmt)
-				cursorImgElmt.style.display = 'block';
-
+					
+			if(cursorImgElmt && cursorImgElmt.style.display == 'none')
+				{cursorImgElmt.style.display = 'block';}
+			
 			var elements = document.getElementsByTagName('input'); 
 
 			for(var i=0;i<elements.length;i++)
@@ -1766,7 +1780,7 @@
 				str += '<th width="30%" align="left">';
 				str += 'Select Constituency : ';
 				str += '</th>';
-				str += '<td>';
+				str += '<td width="15%">';
 				str += '<div id="constSelectElmt"><select class="selectWidth" onchange="setValuesForMandalVotingTrendz(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)">';
 				for(var j in distObj.constituencies)
 				{
@@ -1909,7 +1923,9 @@
 
 		function getResultsForSelectedElection(constiId, constiName, constType, task,isElectionType,value)
 		{
-			
+			var elmt = document.getElementById("electionPageAjaxImgDiv");
+			if(elmt.style.display == 'none')
+			elmt.style.display = 'block';
 			var inputSelectionErrorEl = document.getElementById("inputSelectionError");
 			var partyCheckboxEls = document.getElementsByName("partywiseCheckBox");
 			var electionTypeCheckboxEls = document.getElementsByName("electionCheckBox");
@@ -2281,7 +2297,7 @@
 
 			var str1= '';
 			str1 += '<P><b> Select a Party and Election Type to View Results </b></P>';
-			str1 += '<div id ="inputSelectionError"></div>';
+			str1 += '<div id ="inputSelectionError" style="color:red;font-weight:bold"></div>';
 			str1 += '<table>';
 			str1 += '<tr>';
 			str1 += '<th align="left">Party:</th>';
@@ -2347,6 +2363,15 @@
 			}	
 			str1 += '</td>';
 			str1 += '</tr>';
+			str1 += '<tr>';
+			str1 += '<td align="center">';
+				str1 += '<DIV id="electionPageAjaxImgDiv" style="display:none">';
+				str1 += '<DIV>Please Wait..</DIV>';
+				str1 += '<IMG src="images/icons/barloader.gif"/>';
+				str1 += '</DIV>';
+			str1 += '</td>';
+			str1 += '</tr>';
+			
 			str1 += '</table>';			
 			str1 += '</div>';
 			inputEl.innerHTML = str1;
