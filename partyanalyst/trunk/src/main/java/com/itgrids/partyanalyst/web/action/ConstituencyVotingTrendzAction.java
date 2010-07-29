@@ -5,9 +5,11 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -599,6 +601,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			selectdElections = new ArrayList<SelectOptionVO>();
 			selectdElections.add(new SelectOptionVO(new Long(1),IConstants.ASSEMBLY_ELECTION_TYPE));
 			selectdElections.add(new SelectOptionVO(new Long(2),IConstants.PARLIAMENT_ELECTION_TYPE));
+			
 			selectdElections.add(new SelectOptionVO(new Long(3),IConstants.MPTC_ELECTION_TYPE));
 			selectdElections.add(new SelectOptionVO(new Long(4),IConstants.ZPTC_ELECTION_TYPE));
 			
@@ -633,8 +636,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		}
 			
 		votesSharing = staticDataService.getPartyVotesPercentageInAConstituency(constiId,jObj.getString("getAll"),selectedChoices);
-		
-		
+
+				
 		//for chart changes
         List<ElectionResultPartyVO> electionResList = getConstituencyElectionResultsChart(new Long(constiId));
         
@@ -730,6 +733,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	}
 	
 
+	@SuppressWarnings({ "unchecked", "unchecked" })
 	public String getMandalsVotingTrendz() throws Exception
 	{
 		String param=null;			    
@@ -749,13 +753,19 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		biElectionResultsMainVO  = biElectionPageService.getMandalWiseResultsForSelectedPartiesInConstituency(constiId);		
 		DataTransferVO charts = constituencyPageService.getPreviousAndPresentElectionYearsGraphsForAConstituency(constiId);
 		String allElecPartiesGraph = "ByeElectionConsti_"+constiId+"_allElecPartiesGraph.png";
+		String pres2010LineChartName = null;
+		if(charts.getLatestYearChart() != null)
+		pres2010LineChartName = "ByeElectionConsti_"+constiId+"_mandalwiseChartYear_2010.png";
 		String presLineChartName = "ByeElectionConsti_"+constiId+"_mandalwiseChartYear_"+IConstants.PRESENT_ELECTION_YEAR+".png";
 		String prevLineChartName = "ByeElectionConsti_"+constiId+"_mandalwiseChartYear_"+IConstants.PREVIOUS_ELECTION_YEAR+".png";
 		biElectionResultsMainVO.setAssemblyResultsChartForPresentYear(presLineChartName);
 		biElectionResultsMainVO.setAssemblyResultsChartForPreviousYear(prevLineChartName);
+		biElectionResultsMainVO.setAssemblyResultsChartForLatestYear(pres2010LineChartName);
+		
 		Set<String> partiesInChart = null;
 		CategoryDataset dataset = null;
 		String allElecPartiesGraphPath = context.getRealPath("/") + "charts\\" + allElecPartiesGraph;
+		String pres2010ChartPath = context.getRealPath("/") + "charts\\" + pres2010LineChartName;
 		String presChartPath = context.getRealPath("/") + "charts\\" + presLineChartName;
 		String prevChartPath = context.getRealPath("/") + "charts\\" + prevLineChartName;
 		
@@ -776,6 +786,20 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		else
 			ChartProducer.create3DBarChartWithInputParams("Mandalwise Results For "+constiName+" Assembly In "+IConstants.PRESENT_ELECTION_YEAR,
 					null, "Mandal","Percentages", null, dataset, presChartPath, 800, 400, ChartUtils.getLineChartColors(partiesInChart),true);
+		
+		//for 2010 bye election
+		/*
+		if(charts.getLatestYearChart() != null){
+		partiesInChart = new LinkedHashSet<String>();
+		dataset = createDataSetForPresentYear((ConstituencyRevenueVillagesVO)charts.getLatestYearChart(), partiesInChart);
+		
+		if(dataset.getColumnCount() > 1)
+			ChartProducer.createLineChart("Mandalwise Results For "+constiName+" Assembly In 2010",
+				"Mandals", "Percentages",dataset, pres2010ChartPath,400,800,ChartUtils.getLineChartColors(partiesInChart),true);
+		else
+			ChartProducer.create3DBarChartWithInputParams("Mandalwise Results For "+constiName+" Assembly In 2010",
+					null, "Mandal","Percentages", null, dataset, pres2010ChartPath, 800, 400, ChartUtils.getLineChartColors(partiesInChart),true);
+		}*/
 		
 		partiesInChart = new LinkedHashSet<String>();
 		if(((List<PartyResultVO>)charts.getPreviousYearChart()).size() > 0){
@@ -1181,6 +1205,34 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	       ChartColorsAndDataSetVO chartColorsAndDataSetVO = new ChartColorsAndDataSetVO();
 		   Set<Color> colorsSet = new LinkedHashSet<Color>();
 		   Collections.sort(elecdetails, new ElectionDataVOComparator());
+		   
+		   try{
+		   //change the position of 2010 AC and 2009 AC
+		   if(elecdetails != null && elecdetails.size() > 0){
+		   int j=0;
+		   Boolean flag = false;
+		   for(int i=0;i<elecdetails.size();i++){
+			   
+			   if(elecdetails.get(i).getElectionType().equals("Parliament") && elecdetails.get(i).getElectionYear().equals("2009") && 
+					   elecdetails.get(i+1).getElectionType().equals("Assembly") && elecdetails.get(i+1).getElectionYear().equals("2009")){
+				   flag = true;
+				   j=i;
+				   break;
+			   }
+		   }
+		   if(flag == true){
+		   ElectionDataVO vo1 = elecdetails.get(j);
+		   ElectionDataVO vo2 = elecdetails.get(j+1);
+		   elecdetails.set(j, vo2);
+		   elecdetails.set(j+1, vo1);
+		   
+		   }
+		   }
+		   }catch(Exception ex){
+			   ex.printStackTrace();
+			   log.debug(" Exception Raised :" + ex);
+		   }
+		   
 		  	   for(ElectionDataVO electionData:elecdetails){
 		  		   
 		  		    for(String party:partys){
@@ -1281,11 +1333,68 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			   if(elecResultsForChart != null && elecResultsForChart.size() > 0){
 				   
 				   Collections.sort(elecResultsForChart,new ElectionResultPartyVOByElectionType());
+				   Map<ElectionResultPartyVO,List<ElectionResultPartyVO>> chartResMap = new HashMap<ElectionResultPartyVO,List<ElectionResultPartyVO>>();
+				   Set<ElectionResultPartyVO> resultSet = null;
+				   List<ElectionResultPartyVO> resultList = null;
 				   
-				   for(ElectionResultPartyVO res:elecResultsForChart){
+                   for(ElectionResultPartyVO res:elecResultsForChart){
 					   
 					   if(StringUtils.contains(res.getElectionType(), '.'))
 						   res.setElectionType(StringUtils.remove(res.getElectionType(), '.'));
+					   
+					   ElectionResultPartyVO elecData = new ElectionResultPartyVO();
+					   elecData.setElectionType(res.getElectionType());
+					   elecData.setElectionYear(res.getElectionYear());
+					   
+					   if(chartResMap.isEmpty() || !chartResMap.containsKey(elecData)){
+						   List<ElectionResultPartyVO> partyRes = new ArrayList<ElectionResultPartyVO>();
+						   partyRes.add(res);
+						   chartResMap.put(elecData, partyRes);
+					   }
+					   else if(chartResMap.containsKey(elecData)){
+						   List<ElectionResultPartyVO> partyRes = chartResMap.get(elecData);
+						   partyRes.add(res);
+						   chartResMap.put(elecData, partyRes);
+					   }
+                   }
+                   
+                   
+                   
+				   try{
+					   
+					   resultSet = chartResMap.keySet();
+					   resultList = new ArrayList<ElectionResultPartyVO>(resultSet);
+					   Collections.sort(resultList,new ElectionResultPartyVOByElectionType());
+					   
+					   Boolean flag = false;
+					   int j=0;
+					   for(int i=0;i<resultList.size()-1;i++){
+						   						   
+						   if(resultList.get(i).getElectionType().equalsIgnoreCase("Parliament") && resultList.get(i).getElectionYear().equalsIgnoreCase("2009") && 
+								   resultList.get(i+1).getElectionType().equalsIgnoreCase("Assembly") && resultList.get(i+1).getElectionYear().equalsIgnoreCase("2009")){
+							   flag = true;
+							   j=i;
+							   break;
+						   }
+					   }
+					   if(flag == true){
+						   ElectionResultPartyVO vo1 = resultList.get(j);
+						   ElectionResultPartyVO vo2 = resultList.get(j+1);
+						   
+						   resultList.set(j, vo2);
+						   resultList.set(j+1, vo1);
+						   
+					   }
+				   
+				   }catch(Exception ex){
+					   ex.printStackTrace();
+					   log.debug("Exception Raised :" + ex);
+				   }
+				   for(ElectionResultPartyVO resList:resultList){
+				   for(ElectionResultPartyVO res:chartResMap.get(resList)){
+					   
+					  /* if(StringUtils.contains(res.getElectionType(), '.'))
+						   res.setElectionType(StringUtils.remove(res.getElectionType(), '.'));*/
 					   
 					   dataset.addValue(new BigDecimal(res.getVotesShareRange()), res.getPartyShortName(), res.getElectionYear()+" "+res.getElectionType());
 						  
@@ -1309,6 +1418,9 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 								colorsSet.add(Color.BLACK);
 								log.debug("Others ADDED");
 	 					  }
+						  
+						  
+				   }
 				   }
 			   }
 		   }
