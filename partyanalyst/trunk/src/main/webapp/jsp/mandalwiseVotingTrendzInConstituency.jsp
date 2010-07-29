@@ -1791,7 +1791,7 @@
 				}	
 				str += '</select></div>';
 				str += '</td>';
-				str += '<td><img id="cursorImg" style="display:none;" src="images/icons/search.gif"/></td>';	
+				str += '<td><div id="cursorImg" style="display:none;font-weight:bold;color:#707070;">Loading..<img src="images/icons/search.gif" style="margin:5px;"/></div></td>';	
 				str += '</table>';
 				str += '</div>';
 			}
