@@ -267,4 +267,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List getWonAndOppCandidateInAnElection(Long constiId,String elecYear);
+	
+	@SuppressWarnings("unchecked")
+	public List getResultsForElectionInConstituency(Long constituencyId,String electionYear);
 }
