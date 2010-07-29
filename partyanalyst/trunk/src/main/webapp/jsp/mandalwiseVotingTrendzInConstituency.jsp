@@ -221,6 +221,7 @@
 		var constituencyNameGlobal;
 		var constituencyName = '${constiName}';
 		var constiMandalWiseResultsPresChart;
+		var constiMandalWiseResults2010PresChart;
 		var constiMandalWiseResultsPrevChart;
 		var mptcChart2001,mptcChart2006,zptcChart2001,zptcChart2006;	
 		var allPartiesCharts = '';
@@ -781,6 +782,28 @@
 												getMandalsAndPartiesResults();
 											}
 											
+										}else if(jsObj.task == "getConstituencyResultsBySubLocationsFor2010")
+										{
+											constiMandalWiseResults2010PresChart = myResults.chartPath;
+
+											var buttonDiv = document.getElementById("present2010MandalChartButton");
+											var bStr='';
+											if(netVar)
+											{
+												bStr += '<input id="present2010MandalwiseIChart_button" type="button" onclick="displayHideChartDiv(\'present2010MandalwiseIChart\')" value="View Interactive Chart">';
+												getMandalResultsInteractiveChart(myResults,"present2010MandalwiseIChart");
+											}
+											else
+												bStr += '<input disabled="true" type="button" value="View Interactive Chart">';
+
+											buttonDiv.innerHTML = bStr;
+
+											var imageDiv = document.getElementById("present2010MandalwiseChart");
+											var str = '';
+											str += '<img width="750" src="charts/'+constiMandalWiseResults2010PresChart+'">';
+											imageDiv.innerHTML = str;
+
+											
 										}else if(jsObj.task == "getMandalsAndPartiesChartInElection")
 										{
 											constiMandalWiseResultsPrevChart = myResults.chartPath;
@@ -864,6 +887,10 @@
 			else if(divId == "previousMandalwiseIChart")
 			{
 				basicChart = document.getElementById('previousMandalwiseChart');
+			}
+			else if(divId == "present2010MandalwiseIChart")
+			{
+				basicChart = document.getElementById('present2010MandalwiseChart');
 			}
 			
 			if(divElmt.style.display == "none")
@@ -1144,6 +1171,7 @@
 		
 		function buildVotesSharingData(jsObj,results)
 		{
+			
 			votesShareData = results;
             var chartName = '';
 
@@ -1216,7 +1244,7 @@
 			for(var j in results)
 			{
 				if(results[j].range == " ")
-					continue
+					continue;
 				str += '<tr>';
 				str += '<td align="center">'+results[0].partiesList[j].name+'</td>';
 				str += '<td align="left" style="color:#FF8000;font-weight:bold;width:130px;">'+results[j].range+'</td>';
@@ -1261,8 +1289,9 @@
 			imgStr+='<img width="750" src="charts/'+chartName+'" border="none" />';		
 			chartDivElmt.innerHTML = imgStr;
 
+            
 			if(jsObj.getAll == "-")
-			{				
+			{		
 				return;
 			}
 			
@@ -1274,9 +1303,12 @@
 			cStr += '<td style="color:#121922;font-weight:bold;font-size:16px;">View :</td>';
 			cStr += '<td style="color:#121922;font-weight:bold;font-size:16px;">';
 
-			cStr += '<input type="checkbox" name="elecType" checked="checked" value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
-			cStr += '<input type="checkbox" name="elecType" value="AC" onclick="showSelectedColoumn(this.value)"/>AC';
-			cStr += '<input type="checkbox" name="elecType" value="PC" onclick="showSelectedColoumn(this.value)"/>PC';
+			cStr += '<input type="checkbox" name="elecType"  checked="checked" ';
+			cStr += 'value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
+			cStr += '<input type="checkbox" name="elecType" ';
+			cStr += 'value="AC" onclick="showSelectedColoumn(this.value)"/>AC';
+			cStr += '<input type="checkbox" name="elecType" ';
+			cStr += 'value="PC" onclick="showSelectedColoumn(this.value)"/>PC';
 			cStr += '<input type="checkbox" name="elecType" value="MPTC" onclick="showSelectedColoumn(this.value)"/>MPTC';
 			cStr += '<input type="checkbox" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';		
 			cStr += '</td>';
@@ -1318,6 +1350,7 @@
 	
 		function showSelectedColoumn(checkedValue)
 		{
+			
 			var docelements = document.getElementsByTagName('input'); 		
 			var electTypeCheckBoxElmts = new Array();
 			var electypeSelectedElmts = new Array();
@@ -1540,6 +1573,35 @@
 			brow1.focus();
 		}
 
+		function showOrHideDetails()
+		{
+		  var divElmt = document.getElementById("crossVotingDetailsDiv");
+          var displayText = document.getElementById("hideOrDisplayText");
+           
+		  if(!divElmt)
+			  return;
+
+		  if(divElmt.style.display == 'none'){
+           		
+		    var displayTxt ='';
+		    displayTxt+='<a style="margin-left:15px;" href="javascript:{}" onclick="showOrHideDetails()">';
+            displayTxt+='Hide Results</a>';
+			displayText.innerHTML=displayTxt; 	
+						
+			divElmt.style.display = 'block';
+		  }
+		  else if(divElmt.style.display == 'block'){
+            
+			var displayTxt ='';
+		    displayTxt+='<a style="margin-left:15px;" href="javascript:{}" onclick="showOrHideDetails()">';
+			displayTxt+='Show Results</a>';
+			displayText.innerHTML=displayTxt;
+			
+			divElmt.style.display = 'none';
+			
+		  }
+		}
+
 		function buildMandalsVotingTrendz()
 		{
 			var distObj = null;
@@ -1614,9 +1676,8 @@
 			str += '</div>';
 
 			str += '<div id="constituencyOverViewDiv"></div>';	
-			str += '<div id="crossVotingDetailsDiv" style="margin:10px;">';
-			str += '<div id="crossVotingHeadingDiv"> ';
-			str += '<table border="0" cellspacing="0" cellpadding="0">';
+			str += '<div id="crossVotingHeadingDiv">';
+			str += '<table style="margin:23px;" border="0" cellspacing="0" cellpadding="0">';
 			str += '<tr>';
 			str += '<td><img src="images/icons/tv9Icons/left_blue_main.png"/></td>';
 			str += '<td><div style="height:40px;background-image:url(\'images/icons/tv9Icons/header_body_blue.png\')">';
@@ -1624,9 +1685,14 @@
 			str += 'Non Participating Parties Strength & Cross Voting Details</span>';
 			str += '</div></td>';
 			str += '<td><img src="images/icons/tv9Icons/right_blue_main.png"/></td>';
+			str += '<td colspan="2" align="center" style="color:#0C2640;font-size:16px;font-weight:bold;position:relative;top:5px;">';
+			str += '<div id="hideOrDisplayText"><a style="margin-left:15px;" href="javascript:{}" onclick="showOrHideDetails()">';
+			str += 'Show Details</a></div></td>';
 			str += '</tr>';
 			str += '</table>';
-			str += '</div>';	
+			
+			
+			str += '<div id="crossVotingDetailsDiv" style="margin:10px;display:none;">';
 			str+='<TABLE border="0" width="100%">';
 			str+='<TR>';
 			str+='<TD valign="top"><DIV id="nonParticipatingDiv" style="margin:20px 0px;"></TD>';
@@ -1636,9 +1702,17 @@
 			str+='</TR>';
 			str+='</TABLE>';
 			str+='</div>';
+            str+='</div>';
 			str += '<div id="overViewHeadingDiv" style="padding-left:10px;"></div>';
 			str += '<div id="constitutencyMandalWiseResultsChart">';
 			str += '<table>';
+			str += '<tr>';
+			str += '<td>';
+			str += '<div id="present2010MandalChartButton"></div>';
+			str += '<div id="present2010MandalwiseChart" style="display:block;"></div>';
+			str += '<div id="present2010MandalwiseIChart" style="display:none;"></div>';
+			str += '</td>';
+			str += '</tr>';
 			str += '<tr>';
 			str += '<td>';
 			str += '<div id="presentMandalChartButton"></div>';
@@ -2095,6 +2169,7 @@
 			str1 += '</tr>';
 			str1 += '<tr>';
 			str1 += '<th align="left" rowspan="2" valign="top">Election Type:</th>';
+			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2010_Assembly"/>2010 AC</td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Assembly"/>2009 AC</td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Assembly"/>2004 AC</td>';
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2009_Parliament"/>2009 PC</td>';			
@@ -2103,6 +2178,8 @@
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2004_Parliament"/>2004 PC</td>';
 		    str1 += '</tr>';
 			str1 += '<tr>';
+             
+			 
 			if(resultsData.constituencyType == null || resultsData.constituencyType != "URBAN")
 			{
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_MPTC"/>2006 MPTC</td>';
@@ -2115,6 +2192,7 @@
 				str1 += '<td colspan="6"><INPUT type="checkbox" name="electionCheckBox" id="2005_CORPORATION"/>2005 CORPORATION</td>';
 				
 			}
+			
 			str1 += '</tr>';
 			str1 += '</tr>';		    
 			str1 += '</table>';
@@ -2302,7 +2380,8 @@
 						               
 
 						bodyElmt.innerHTML = str;
-						getConstituencyResults("2009");
+						//getConstituencyResults("2010","getConstituencyResultsBySubLocationsFor2010");
+						getConstituencyResults("2009","getConstituencyResultsBySubLocations");
 						
 		} else if(urbanConstResults != null)
 		{
@@ -2398,6 +2477,12 @@
 			
 			bodyElmt.innerHTML = urbanStr;
 			//building 2004 2009 charts
+
+			
+			        var present2010ImageDivButton = document.getElementById("present2010MandalChartButton");
+					var present2010ImageDiv = document.getElementById("present2010MandalwiseChart");
+					var present2010ImageDivIChart = document.getElementById("present2010MandalwiseIChart");
+
 					var presentImageDivButton = document.getElementById("presentMandalChartButton");
 					var presentImageDiv = document.getElementById("presentMandalwiseChart");
 					var presentImageDivIChart = document.getElementById("presentMandalwiseIChart");
@@ -2406,7 +2491,16 @@
 					var previousImageDiv = document.getElementById("previousMandalwiseChart");
 					var previousImageDivIChart = document.getElementById("previousMandalwiseIChart");
 
-					
+					if(resultsData.assemblyResultsChartForLatestYear != null){
+						if(present2010ImageDiv && present2010ImageDivButton && present2010ImageDivIChart)
+						{
+							var presentStr = '<img width="750" src="charts/'+resultsData.assemblyResultsChartForLatestYear+'">';		
+							present2010ImageDiv.innerHTML = presentStr;
+
+							present2010ImageDivButton.innerHTML = '';
+							present2010ImageDivIChart.innerHTML = '';
+						}
+					}
 
 					if(presentImageDiv && presentImageDivButton && presentImageDivIChart)
 					{
@@ -2583,7 +2677,10 @@
 			cStr += '<input type="checkbox" name="urbanElecType" checked="checked" value="ALL" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\', this.value)"/>ALL';
 			cStr += '<input type="checkbox" name="urbanElecType" value="Assembly" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>AC';
 			cStr += '<input type="checkbox" name="urbanElecType" value="Parliament" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>PC';
+			
+			
 			cStr += '<input type="checkbox" name="urbanElecType" value="CORPORATION" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>Corporation';
+
 			cStr += '</td>';
 			cStr += '</tr>';
 			cStr += '</table></center>';
@@ -2904,20 +3001,21 @@
 		    initializeMptcResultsTableForParty(); 
 		}
 
-		function getConstituencyResults(elecYear){
+		function getConstituencyResults(elecYear,cTask){
 			var jsObj = {
 				constituencyId:constituencyIdGlobal,
 				electionYear:elecYear,
 				chartHeight: 520,
 				chartWidth: 800,
 				others:false,
-				task:"getConstituencyResultsBySubLocations"
+				task:cTask
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 			var url = "<%=request.getContextPath()%>/assemblyWiseParliamentResultAction.action?"+rparam;
 			callAjax(jsObj, url);
 		}
 
+		
 		function getMandalsAndPartiesResults(){
 			
 			var jsObj = {
@@ -3179,10 +3277,16 @@
 		</div>
 	</div>
 	<SCRIPT type="text/javascript"> 	
+
+	var choicesItem = new Array();
+    choicesItem.push("AC");
+	choicesItem.push("PC");
+
 	        checkForNetworkAndDisplayChart();
            	buildMandalsVotingTrendz();		
 			getConstituencyOverViewResult(constituencyIdGlobal,constituencyName);	
 			partyVotesSharing('all','-',1);
+			//partyVotesSharing('*',choicesItem,0);
 			getMuncipalElections();
 			getCorporationElections();
 			mandalVotingShareDetailsMethod();			
