@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
@@ -450,6 +451,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
+	@SuppressWarnings("unchecked")
 	/*@SuppressWarnings("unchecked")
 	public void testGetWonAndOppCandidateResults(){
 		String ranks = "1,2";
@@ -464,13 +466,28 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println("..");
 			}
 		}
-	}*/
+	}
 	
 	public void testGetMunicipalitiesAndCorporationsResultsInMandals(){
 		List list = nominationDAO.getMunicipalitiesAndCorporationsResultsInMandals("384");
 		System.out.println(list.size());
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]);
+	}*/
+	@Test
+	public void testGetConstituencyElectionResult(){
+		
+		List resultList = nominationDAO.getResultsForElectionInConstituency(new Long(30),"2014");
+		System.out.println(" Size :" + resultList.size());
+		if(resultList != null && resultList.size() > 0){
+			Iterator it = resultList.listIterator();
+			while(it.hasNext()){
+			 Object[] params = (Object[])it.next();
+			 			 
+			 System.out.println(" Votes Earned :" + params[1]);
+			 System.out.println(" Valid Votes  :" + params[3]);
+			}
+		}
 	}
 }
 
