@@ -7,7 +7,7 @@ import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 public class ElectionResultPartyVOByElectionType implements Comparator<ElectionResultPartyVO> {
 
 	public int compare(ElectionResultPartyVO a, ElectionResultPartyVO b) {
-		return (a.getElectionYear()+" "+a.getElectionType()).compareTo(b.getElectionYear()+" "+b.getElectionType());
+		return (b.getElectionYear()+" "+b.getElectionType()).compareTo(a.getElectionYear()+" "+a.getElectionType());
 	}
 
 }
