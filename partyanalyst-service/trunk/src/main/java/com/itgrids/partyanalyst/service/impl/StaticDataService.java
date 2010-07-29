@@ -4240,12 +4240,12 @@ public class StaticDataService implements IStaticDataService {
 				electionResults.add(populateDataForLocalElections(tehsilVO,IConstants.LOCAL_ELECTIONS_PREVIOUS_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE,flag));
 			}
 			
-			electionResult = getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PREVIOUS_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE,flag); 
+			electionResult = getPartyDetailsForTheGivenElectionYearInAConstituency(0l,tehsilIds,IConstants.PREVIOUS_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE,flag); 
 			if(electionResult.getResultStatus().getResultCode()!=1){
 				electionResults.add(electionResult);
 			}
 			
-			electionResult = getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PREVIOUS_ELECTION_YEAR,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
+			electionResult = getPartyDetailsForTheGivenElectionYearInAConstituency(0l,tehsilIds,IConstants.PREVIOUS_ELECTION_YEAR,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
 			if(electionResult.getResultStatus().getResultCode()!=1){
 				electionResults.add(electionResult);
 			}
@@ -4260,24 +4260,29 @@ public class StaticDataService implements IStaticDataService {
 				electionResults.add(populateDataForLocalElections(tehsilVO,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE,flag));
 			}
 			
-			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE,flag);
+			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(0l,tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE,flag);
 			if(electionResult.getResultStatus().getResultCode()!=1){
 				electionResults.add(electionResult);
 			}
 			
 			if(!constituencyId.equals(new Long(18))){
-			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
+			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(0l,tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
 			if(electionResult.getResultStatus().getResultCode()!=1){
 				electionResults.add(electionResult);
 			}
 			}
 			
-			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.BYE_ELECTION_YEAR_2008_PARLIAMENT,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
+			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(0l,tehsilIds,IConstants.BYE_ELECTION_YEAR_2008_PARLIAMENT,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
 			if(electionResult.getResultStatus().getResultCode()!=1){
 				electionResults.add(electionResult);
 			}
-			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.BYE_ELECTION_YEAR_2006_PARLIAMENT,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
+			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(0l,tehsilIds,IConstants.BYE_ELECTION_YEAR_2006_PARLIAMENT,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
 			if(electionResult.getResultStatus().getResultCode()!=1){
+				electionResults.add(electionResult);
+			}
+			
+			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(constituencyId,tehsilIds,IConstants.LATEST_BYE_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE,flag);
+			if(electionResult != null && electionResult.getResultStatus().getResultCode()!=1){
 				electionResults.add(electionResult);
 			}
 			
@@ -4359,7 +4364,7 @@ public class StaticDataService implements IStaticDataService {
 		return candidateElectionResult;		
 	}
 	
-	public ElectionResultPartyVO getPartyDetailsForTheGivenElectionYearInAConstituency(StringBuilder tehsilIds,String electionYear,String electionType,int flag){
+	public ElectionResultPartyVO getPartyDetailsForTheGivenElectionYearInAConstituency(Long constituencyId,StringBuilder tehsilIds,String electionYear,String electionType,int flag){
 		BigDecimal percentage = new BigDecimal(0.0);
 		Long totalVotes=0l;
 		ElectionResultPartyVO candidateElectionResult = new ElectionResultPartyVO();
@@ -4370,22 +4375,47 @@ public class StaticDataService implements IStaticDataService {
 			candidateElectionResult.setElectionType(electionType);
 			candidateElectionResult.setElectionYear(electionYear);
 			//The below DAO call retrieves all the party's and their votes in the mandal's for the given election year.
-			list2 = candidateBoothResultDAO.getResultsForElectionAndConstituencyByMandal(tehsilIds.substring(1),electionYear,electionType);
+			if(constituencyId != null && constituencyId > 0l){
+				list2=nominationDAO.getResultsForElectionInConstituency(constituencyId,electionYear);
+				if(list2 == null || list2.size() == 0)
+					return null;
+			}
+			else{
+			    list2 = candidateBoothResultDAO.getResultsForElectionAndConstituencyByMandal(tehsilIds.substring(1),electionYear,electionType);
+			}
 			ListIterator it = list2.listIterator();
 			while(it.hasNext()){
+				
 				Object[] parms = (Object[])it.next();
-				totalVotes+=Long.parseLong(parms[1].toString());				
+				if(constituencyId != null && constituencyId > 0l){
+					Double tot = Double.parseDouble(parms[1].toString());
+					totalVotes+=tot.longValue();
+				}
+				else{
+				    totalVotes+=Long.parseLong(parms[1].toString());
+				}
 			}
 			candidateElectionResultsVO = new ArrayList<CandidateElectionResultVO>(0);
 			ListIterator resultIterator = list2.listIterator();
 			while(resultIterator.hasNext()){
 				Object[] parms = (Object[])resultIterator.next();
-				Long votesEarned = (Long)parms[1];
+				
 				Long partyId = (Long)parms[2];
-				Long validVotes = (Long)parms[3];
+				Long votesEarned = new Long(0);
+				Long validVotes = new Long(0);
 				
+				if(constituencyId != null && constituencyId > 0l){
+					Double votesEarn = Double.parseDouble(parms[1].toString());
+					Double validVote = Double.parseDouble(parms[3].toString());
+					votesEarned = votesEarn.longValue();
+					validVotes = validVote.longValue();
+				}
+				else{	
+				votesEarned = (Long)parms[1];
+				validVotes = (Long)parms[3];
+				}
 				
-				percentage= new BigDecimal((Float.parseFloat(parms[1].toString())/totalVotes)*100).setScale(2,BigDecimal.ROUND_HALF_UP);
+				percentage= new BigDecimal((votesEarned.doubleValue()/totalVotes.doubleValue())*100).setScale(2,BigDecimal.ROUND_HALF_UP);
 				CandidateElectionResultVO partyInfo = new CandidateElectionResultVO();
 				partyInfo.setTotalVotesEarned(votesEarned);
 				partyInfo.setTotalValidVotes(totalVotes);
@@ -4932,18 +4962,24 @@ public class StaticDataService implements IStaticDataService {
 		}else{
 			for(int i=0;i<choices.length;i++){				
 				if(choices[i].equalsIgnoreCase("AC")){
-					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(tehsilIds,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.PREVIOUS_ELECTION_YEAR,flag));
-					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(tehsilIds,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,flag));					
+					ElectionResultPartyVO electionResult = new ElectionResultPartyVO();
+					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(0l,tehsilIds,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.PREVIOUS_ELECTION_YEAR,flag));
+					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(0l,tehsilIds,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,flag));	
+					
+					electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(constituencyId,tehsilIds,IConstants.LATEST_BYE_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE,flag);
+					if(electionResult != null && electionResult.getResultStatus().getResultCode()!=1){
+						partyResult.add(electionResult);
+					}
 				}else 
 				if(choices[i].equalsIgnoreCase("PC")){
 					ElectionResultPartyVO electionResult = new ElectionResultPartyVO();
-					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(tehsilIds,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.PREVIOUS_ELECTION_YEAR,flag));
-					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(tehsilIds,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,flag));
-					electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.BYE_ELECTION_YEAR_2008_PARLIAMENT,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
+					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(0l,tehsilIds,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.PREVIOUS_ELECTION_YEAR,flag));
+					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(0l,tehsilIds,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,flag));
+					electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(0l,tehsilIds,IConstants.BYE_ELECTION_YEAR_2008_PARLIAMENT,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
 					if(electionResult.getResultStatus().getResultCode()!=1){
 						partyResult.add(electionResult);
 					}
-					electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,IConstants.BYE_ELECTION_YEAR_2006_PARLIAMENT,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
+					electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(0l,tehsilIds,IConstants.BYE_ELECTION_YEAR_2006_PARLIAMENT,IConstants.PARLIAMENT_ELECTION_TYPE,flag);
 					if(electionResult.getResultStatus().getResultCode()!=1){
 						partyResult.add(electionResult);
 					}
@@ -4980,12 +5016,52 @@ public class StaticDataService implements IStaticDataService {
 					
 			}
 			Collections.sort(elections, new ElectionResultTypeComparator());
+						
 			partyResultVO.setElectionList(headings);
 			partyResultVO.setElectionWiseResults(elections);
 		}
 		
-
-		return party;
+		try{
+		//to interchange 2009 AC and 2009 PC
+		if(party != null && party.size() > 0 && party.get(0) != null){
+			List<SelectOptionVO> headingInfo = party.get(0).getElectionList();
+			Boolean rflag = false;
+			int j=0;
+			for(int i=0;i<headingInfo.size();i++){
+				if(headingInfo.get(i).getName().equalsIgnoreCase("2009 AC") && headingInfo.get(i+1).getName().equalsIgnoreCase("2009 PC")){
+					rflag = true;
+					j=i;
+				    break;	
+				}
+			}
+			if(rflag == true){
+				SelectOptionVO jval1 = headingInfo.get(j+1);
+				SelectOptionVO jval2 = headingInfo.get(j);
+				headingInfo.set(j, jval1);
+				headingInfo.set(j+1, jval2);
+				party.get(0).setElectionList(headingInfo);
+				
+				for(PartyResultVO resVO:party){
+				List<ElectionResultVO> electionWiseRes = resVO.getElectionWiseResults();
+					
+				ElectionResultVO jloc1 = electionWiseRes.get(j+1); 
+				ElectionResultVO jloc2 = electionWiseRes.get(j);
+				
+				electionWiseRes.set(j, jloc1);
+				electionWiseRes.set(j+1, jloc2);
+				resVO.setElectionWiseResults(electionWiseRes);
+				}
+			}
+		}
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			log.debug(" Exception :" + ex);
+		}
+		
+		
+		
+     return party;
 	}
 		
 	
@@ -5019,11 +5095,11 @@ public class StaticDataService implements IStaticDataService {
 	 * @param flag
 	 * @return
 	 */
-	public ElectionResultPartyVO getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(StringBuilder tehsilIds,String electionType,String electionYear,int flag){		
+	public ElectionResultPartyVO getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(Long constituencyId,StringBuilder tehsilIds,String electionType,String electionYear,int flag){		
 		//flag = 1 specifies that to get Data only for the main parties like TRS,TDP,INC,BJP,PRP i.e., ByElections Parties that are defined in IConstants.BYE_ELECTIONS_STATIC_PARTIES
 		//flag = 0 specifies that to get Data for all the parties participated in that constituency
 		ElectionResultPartyVO electionResult = new ElectionResultPartyVO();
-		electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(tehsilIds,electionYear,electionType,flag);		
+		electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(constituencyId,tehsilIds,electionYear,electionType,flag);		
 		return electionResult;
 		//electionResult =  getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(tehsilIds,IConstants.PARLIAMENT_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,flag);
 	 
