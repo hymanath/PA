@@ -311,7 +311,7 @@
 			
 			function constituencyOverViewResult(jsObj,myResults)
 			{
-				
+							
 				var heading =document.getElementById("constituencyMainDetails_Div");
 				var headingDIV='';
 				headingDIV+='<fieldset padding:10px;">';  		
@@ -368,58 +368,180 @@
 				headingDIV+='<td width="65%" valign="top">';
 				headingDIV+= '<div id="constiContestingCandsDiv" style="color:#247CD4;font-size:12px;font-weight:bold;text-align:left;padding:5px;text-decoration:underline;">';
 				headingDIV+= '</div>';
-				headingDIV+='<div id="contestingCandidatesIn" style="margin:10px;border:solid 0px;" >';
 
-				headingDIV+='<table width="890px" class="participatingPartiestable" border="0">';	
-				headingDIV+='<tr>';
-				headingDIV+='<td colspan="2" style="border:0px;padding:0px;">';
-				headingDIV+='<table class="participatingPartiestable_inner" border="0"  cellpadding="0" cellspacing="0">';
-				headingDIV+='<tr>';
-				headingDIV+='	<td valign="top" style="padding:0px;border:none;"> ';
-				headingDIV+='		<img src="images/icons/tv9Icons/first.png">';
-				headingDIV+='	</td>';
+				// displaying results 2009
+				for(var i in myResults.electionResultsVO)
+				{
+					
+						headingDIV+='	<div style="margin:10px">';
+						headingDIV+='	<table class="participatingPartiestable" border="0">';	
+						headingDIV+='	<tr>';
+						headingDIV+='		<td colspan="5" style="border:0px;padding:0px;">';
+						headingDIV+='			<table class="participatingPartiestable_inner" border="0"  cellpadding="0" cellspacing="0" width="100%">';
+						headingDIV+='			<tr>';
+						headingDIV+='				<td valign="top" style="padding:0px;border:none;"> ';
+						headingDIV+='					<img src="images/icons/tv9Icons/first.png">';
+						headingDIV+='				</td>';
+	
+						headingDIV+='				<td valign="top" style="padding:0px;border:none;">';
+						headingDIV+='					<div class="detailsTableHeader" style="width:845px;">';
+						headingDIV+='						<span class="detailsTableHeaderSpan">'+myResults.electionResultsVO[i].electionYear+' Assembly Results In '+jsObj.constiName+' </span>';
+						headingDIV+='					</div>';
+						headingDIV+='				</td>';
+	
+						headingDIV+='				<td valign="top" style="padding:0px;border:none;">';
+						headingDIV+='					<img src="images/icons/tv9Icons/second.png">';
+						headingDIV+='				</td>';
+						headingDIV+='			</tr>';
+						headingDIV+='			</table>';
+						headingDIV+='		</td>';
+						headingDIV+='	</tr>';
+	
+						headingDIV+='<tr>';
+						headingDIV+='<th style="color:#FFFFFF">Party</th>';
+						headingDIV+='<th style="color:#FFFFFF">Candidate</th>';
+						headingDIV+='<th style="color:#FFFFFF">Votes Polled</th>';
+						headingDIV+='<th style="color:#FFFFFF">Votes %</th>';
+						
+						headingDIV+='</tr>';
+										
+						for(var j in myResults.electionResultsVO[i].candidateOppositionList)
+						{
+							if(myResults.electionResultsVO[i].candidateOppositionList[j].votesEarned != '0')
+							{
+								if(myResults.electionResultsVO[i].candidateOppositionList[j].rank == '1')
+								{
+									headingDIV+='<tr>';
+									headingDIV+='<td ><b style="color:green">'+myResults.electionResultsVO[i].candidateOppositionList[j].partyName+'</b></td>';
+									headingDIV+='<td ><b style="color:green">'+myResults.electionResultsVO[i].candidateOppositionList[j].candidateName+'</b></td>';
+									headingDIV+='<td ><b style="color:green">'+myResults.electionResultsVO[i].candidateOppositionList[j].votesEarned+'</b></td>';
+									headingDIV+='<td ><b style="color:green">'+myResults.electionResultsVO[i].candidateOppositionList[j].votesPercentage+'</b></td>';
+									headingDIV+='</tr>';
+								} else {
+									headingDIV+='<tr>';
+									headingDIV+='<td ><b style="color:red">'+myResults.electionResultsVO[i].candidateOppositionList[j].partyName+'</b></td>';
+									headingDIV+='<td ><b style="color:red">'+myResults.electionResultsVO[i].candidateOppositionList[j].candidateName+'</b></td>';
+									headingDIV+='<td ><b style="color:red">'+myResults.electionResultsVO[i].candidateOppositionList[j].votesEarned+'</b></td>';
+									headingDIV+='<td ><b style="color:red">'+myResults.electionResultsVO[i].candidateOppositionList[j].votesPercentage+'</b></td>';
+									headingDIV+='</tr>';
+								}
+							} else 
+							{
+								headingDIV+='<tr>';
+								headingDIV+='<td ><b style="color:red">'+myResults.electionResultsVO[i].candidateOppositionList[j].partyName+'</b></td>';
+								headingDIV+='<td ><b style="color:red">'+myResults.electionResultsVO[i].candidateOppositionList[j].candidateName+'</b></td>';
+								headingDIV+='<td >&nbsp;</td>';
+								headingDIV+='<td >&nbsp;</td>';
+								headingDIV+='</tr>';
+							}
+							
+								
+						}
+						if(myResults.electionResultsVO[i].candidateResultsVO.votesMargin != '0')
+						{	
+							headingDIV+='<tr>';
+							headingDIV+='<td colspan="5" style="color:#764B00;font-size:18px;" align="center">';
+							headingDIV+='	<b>Winning Margin Votes</b> : '+myResults.electionResultsVO[i].candidateResultsVO.votesMargin;
+							headingDIV+='</td>';
+							headingDIV+='</tr>';
+		
+							headingDIV+='<tr>';
+							headingDIV+='<td colspan="5" style="color:#764B00;font-size:18px;" align="center">';
+							headingDIV+='	<b>Winning Margin Votes %</b> : '+myResults.electionResultsVO[i].candidateResultsVO.votesPercentMargin;
+							headingDIV+=' %</td>';
+							headingDIV+='</tr>';
+						}
+						headingDIV+='<tr>';
+						headingDIV+='<td style="border:0px;" colspan="5" align="right">';
+						headingDIV+='<a style="background-color:#1C3755;color:#FFFFFF;font-weight:bold;padding:5px;text-decoration:none;" href="javascript:{}" onclick="getConstituencyElecResultsWindow(\''+constituencyIdGlobal+'\',\''+assemblyElectionType+'\','+myResults.electionResultsVO[i].electionYear+')">View Complete Results</a></td>';
+						headingDIV+='</tr>';
+	
+						headingDIV+='</table>';
+						headingDIV+='</div>';
+											
+				}
+				/*
+				headingDIV+='	<div style="margin:10px">';
+				headingDIV+='	<table class="participatingPartiestable" border="0" width="890px">';	
+				headingDIV+='	<tr>';
+				headingDIV+='		<td colspan="5" style="border:0px;padding:0px;">';
+				headingDIV+='			<table class="participatingPartiestable_inner" border="0"  cellpadding="0" cellspacing="0" width="100%">';
+				headingDIV+='			<tr>';
+				headingDIV+='				<td valign="top" style="padding:0px;border:none;"> ';
+				headingDIV+='					<img src="images/icons/tv9Icons/first.png">';
+				headingDIV+='				</td>';
 
-				headingDIV+='	<td valign="top" style="padding:0px;border:none;">';
-				headingDIV+='		<div class="detailsTableHeader" style="width:845px;">';
-				headingDIV+='			<span class="detailsTableHeaderSpan">Bye-Election 2010 Contesting Candidates </span>';
-				headingDIV+='		</div>';
-				headingDIV+='	</td>';
+				headingDIV+='				<td valign="top" style="padding:0px;border:none;">';
+				headingDIV+='					<div class="detailsTableHeader" style="width:845px;">';
+				headingDIV+='						<span class="detailsTableHeaderSpan">2009 Results In Constituency </span>';
+				headingDIV+='					</div>';
+				headingDIV+='				</td>';
 
-				headingDIV+='	<td valign="top" style="padding:0px;border:none;"> ';
-				headingDIV+='		<img src="images/icons/tv9Icons/second.png">';
-				headingDIV+='	</td>';
+				headingDIV+='				<td valign="top" style="padding:0px;border:none;">';
+				headingDIV+='					<img src="images/icons/tv9Icons/second.png">';
+				headingDIV+='				</td>';
+				headingDIV+='			</tr>';
+				headingDIV+='			</table>';
+				headingDIV+='		</td>';
+				headingDIV+='	</tr>';
 
-				headingDIV+='</tr>';
-				headingDIV+='</table>';
-				headingDIV+='</td>';
-				headingDIV+='</tr>';			
-				
 				headingDIV+='<tr>';
 				headingDIV+='<th align="center" style="color:#FFFFFF">Party</th>';
 				headingDIV+='<th align="center" style="color:#FFFFFF">Candidate</th>';
-				headingDIV+='</tr>';
-		
-				for(var c in myResults.contestingCands)
-				{
-					headingDIV+='<tr>';
-					headingDIV+='<td align="center"><b style="color:#121922">'+myResults.contestingCands[c].partyName+'</b></td>';
-					headingDIV+='<td align="left"><b style="color:#121922">'+myResults.contestingCands[c].candidateName+'</b></td>';
-					headingDIV+='</tr>';
-				}
-				
-				headingDIV+='</table>';
-
-				headingDIV+='</div>';
-                headingDIV+='</div>';
-				headingDIV+='</td>';				
-				
+				headingDIV+='<th align="center" style="color:#FFFFFF">Votes Polled</th>';
+				headingDIV+='<th align="center" style="color:#FFFFFF">Votes %</th>';
+				//headingDIV+='<th align="center" style="color:#FFFFFF">Status</th>';
 				headingDIV+='</tr>';
 
 				headingDIV+='<tr>';
-				headingDIV+='<td width="65%" valign="top">';
-				headingDIV+='	<div style="font-size: 12px;font-weight:bold;text-align:left;color:#247CD4;padding:5px;text-decoration:underline">';
-				headingDIV+='		';
-				headingDIV+='	</div>';
+				headingDIV+='<td align="center"><b style="color:green">'+myResults.presentElectionResultsVO.candidateResultsVO.partyName+'</b></td>';
+				headingDIV+='<td align="left"><b style="color:green">'+myResults.presentElectionResultsVO.candidateResultsVO.candidateName+'</b></td>';
+				headingDIV+='<td align="center"><b style="color:green">'+myResults.presentElectionResultsVO.candidateResultsVO.votesEarned+'</b></td>';
+				headingDIV+='<td align="left"><b style="color:green">'+myResults.presentElectionResultsVO.candidateResultsVO.votesPercentage+'</b></td>';
+				//headingDIV+='<td align="left"><b style="color:green"> Won </b></td>';
+				headingDIV+='</tr>';
+
+				headingDIV+='<tr>';
+				headingDIV+='<td align="center"><b style="color:red">'+myResults.presentElectionResultsVO.runnerUp.partyName+'</b></td>';
+				headingDIV+='<td align="left"><b style="color:red">'+myResults.presentElectionResultsVO.runnerUp.candidateName+'</b></td>';
+				headingDIV+='<td align="center"><b style="color:red">'+myResults.presentElectionResultsVO.runnerUp.votesEarned+'</b></td>';
+				headingDIV+='<td align="left"><b style="color:red">'+myResults.presentElectionResultsVO.runnerUp.votesPercentage+'</b></td>';
+				//headingDIV+='<td align="left"><b style="color:red"> Runner-up </b></td>';
+				headingDIV+='</tr>';
+				for(var i in myResults.presentElectionResultsVO.candidateOppositionList)
+				{
+					headingDIV+='<tr>';
+					headingDIV+='<td align="center"><b style="color:red">'+myResults.presentElectionResultsVO.candidateOppositionList[i].partyName+'</b></td>';
+					headingDIV+='<td align="left"><b style="color:red">'+myResults.presentElectionResultsVO.candidateOppositionList[i].candidateName+'</b></td>';
+					headingDIV+='<td align="center"><b style="color:red">'+myResults.presentElectionResultsVO.candidateOppositionList[i].votesEarned+'</b></td>';
+					headingDIV+='<td align="left"><b style="color:red">'+myResults.presentElectionResultsVO.candidateOppositionList[i].votesPercentage+'</b></td>';
+					//headingDIV+='<td align="left"><b style="color:red"> Runner-up </b></td>';
+					headingDIV+='</tr>';
+				}	
+				headingDIV+='<tr>';
+				headingDIV+='<td colspan="5" style="color:#764B00;font-size:18px;" align="center">';
+				headingDIV+='	<b>Winning Margin Votes</b> : '+myResults.presentElectionResultsVO.candidateResultsVO.votesMargin;
+				headingDIV+='</td>';
+				headingDIV+='</tr>';
+
+				headingDIV+='<tr>';
+				headingDIV+='<td colspan="5" style="color:#764B00;font-size:18px;" align="center">';
+				headingDIV+='	<b>Winning Margin Votes %</b> : '+myResults.presentElectionResultsVO.candidateResultsVO.votesPercentMargin;
+				headingDIV+=' %</td>';
+				headingDIV+='</tr>';
+				
+				headingDIV+='<tr>';
+				headingDIV+='<td style="border:0px;" colspan="5" align="right">';
+				headingDIV+='<a style="background-color:#1C3755;color:#FFFFFF;font-weight:bold;padding:5px;text-decoration:none;" href="javascript:{}" onclick="getConstituencyElecResultsWindow(\''+constituencyIdGlobal+'\',\''+assemblyElectionType+'\',\'2009\')">View Complete Results</a></td>';
+				headingDIV+='</tr>';
+
+				headingDIV+='</table>';
+				headingDIV+='</div>';
+				
+				
+				// end of 2009
+				
+				/*
 				//-----------
 				headingDIV+='	<div style="margin:10px">';
 				headingDIV+='	<table class="participatingPartiestable" border="0" width="890px">';	
@@ -489,6 +611,7 @@
 				headingDIV+='</table>';
 				headingDIV+='</div>';
 				//------
+				*/
 				headingDIV+='</td>';
 			
 				headingDIV+='</tr>';

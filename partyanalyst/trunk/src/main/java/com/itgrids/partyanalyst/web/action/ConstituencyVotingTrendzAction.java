@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
 import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyMandalVO;
 import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
@@ -667,19 +668,18 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		Long constiId =  new Long(jObj.getString("constituencyId"));
 		String constiName = jObj.getString("constiName");
+		List <ConstituencyElectionResultsVO> electionResultsVO;
 		
 		constituencyOverView = staticDataService.getConstituencyOverview(constiId,constiName);
 		constituencyOverView.setByeElectionVotesPercentage(getByeElectionVotesPercentage(constiName));
 		
 		constituencyOverView.setVotesPercentageDifferene(new BigDecimal(constituencyOverView.getByeElectionVotesPercentage() - new Double(constituencyOverView.getLatestElectionYearsTotalVotesPercentage())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		Double polledVotes = (constituencyOverView.getPresentYearTotalVoters()*constituencyOverView.getByeElectionVotesPercentage()/100);
-		constituencyOverView.setPresentYearTotalPolledVotes(polledVotes.longValue());;
-		contestingCands = getContestingCandidateDetails(constiName);
-		constituencyOverView.setContestingCands(contestingCands);
-		electionResultsInConsti = staticDataService.getWonAndOppositionCandidateDetailsInAConstituencyWithMargin(constiId,IConstants.PRESENT_ELECTION_YEAR);
-		if(electionResultsInConsti != null)
-			constituencyOverView.setElecResultsInConsti(electionResultsInConsti);
-		
+		constituencyOverView.setPresentYearTotalPolledVotes(polledVotes.longValue());
+		//contestingCands = getContestingCandidateDetails(constiName);
+		//constituencyOverView.setContestingCands(contestingCands);
+		electionResultsVO = biElectionPageService.getMainPartiesResultsInConstituency(constiId, constiName);
+		constituencyOverView.setElectionResultsVO(electionResultsVO);
 		return Action.SUCCESS;
 	}
 	
