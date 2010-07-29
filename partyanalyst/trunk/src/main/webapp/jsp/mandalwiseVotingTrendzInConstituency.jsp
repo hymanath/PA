@@ -375,7 +375,8 @@
 				headingDIV+='<table width="100%" border="0">';
 				headingDIV+='<tr>';
 				headingDIV+='<td width="65%" valign="top">';
-				headingDIV+= '<div id="constiContestingCandsDiv" style="color:#247CD4;font-size:12px;font-weight:bold;text-align:left;padding:5px;text-decoration:underline;">';
+				headingDIV+= '<div id="constiContestingCandsDiv" style="color:#121922;text-align:left;padding:5px;margin:5px;">';
+				headingDIV+= '<span style="font-size:12px;font-weight:bold;">Powered By:</span><span style="font-size:16px;font-weight:bold;font-family: courier;">PARTY&nbsp;ANALYST&nbsp;</span><span style="font-weight:bold;font-size:14px;">&trade;</span>';
 				headingDIV+= '</div>';
 
 				// displaying results 2009
@@ -461,7 +462,12 @@
 							headingDIV+='</tr>';
 						}
 						headingDIV+='<tr>';
-						headingDIV+='<td style="border:0px;" colspan="5" align="right">';
+						headingDIV+='<td style="border:0px;" align="left">';
+						headingDIV+= '<div style="color:#121922;text-align:left;padding:5px;margin:5px;">';
+						headingDIV+= '<span style="font-size:12px;font-weight:bold;">Powered By:</span><span style="font-size:16px;font-weight:bold;font-family: courier;">PARTY&nbsp;ANALYST&nbsp;</span><span style="font-weight:bold;font-size:14px;">&trade;</span>';
+						headingDIV+= '</div>';
+						headingDIV+='</td>';		
+						headingDIV+='<td style="border:0px;" colspan="4" align="right">';
 						headingDIV+='<a style="background-color:#1C3755;color:#FFFFFF;font-weight:bold;padding:5px;text-decoration:none;" href="javascript:{}" onclick="getConstituencyElecResultsWindow(\''+constituencyIdGlobal+'\',\''+assemblyElectionType+'\','+myResults.electionResultsVO[i].electionYear+')">View Complete Results</a></td>';
 						headingDIV+='</tr>';
 	
@@ -989,6 +995,9 @@
 											}
 										}if(jsObj.task == "getUrbanRuralResults") 
 										{
+											var elmt = document.getElementById("electionPageAjaxImgDiv");
+											if(elmt)
+												elmt.style.display = 'none';
 											buildResultsForUrbanRural(jsObj,myResults);
 										}
 										
@@ -1424,22 +1433,21 @@
 			imgStr+='<img width="750" src="charts/'+chartName+'" border="none" />';		
 			chartDivElmt.innerHTML = imgStr;
 
-            
-			if(jsObj.getAll == "-")
-			{		
-				return;
-			}
-			
+			choicesArr = jsObj.choices;
 			
 			var cStr = '';
 			cStr += '<div> ';
-			cStr += '<center><table>';
+			cStr += '<table>';
 			cStr += '<tr>';
+			cStr += '<td><div id="constiContestingCandsDiv" style="color:#121922;text-align:left;padding:5px;margin:5px;">';
+			cStr += '<span style="font-size:12px;font-weight:bold;">Powered By:</span><span style="font-size:16px;font-weight:bold;font-family: courier;">PARTY&nbsp;ANALYST&nbsp;</span><span style="font-weight:bold;font-size:14px;">&trade;</span>';
+			cStr += '</div>';
+			cStr += '</td>';
 			cStr += '<td style="color:#121922;font-weight:bold;font-size:16px;">View :</td>';
 			cStr += '<td style="color:#121922;font-weight:bold;font-size:16px;">';
-
-			cStr += '<input type="checkbox" name="elecType"  checked="checked" ';
-			cStr += 'value="ALL" onclick="showSelectedColoumn(this.value)"/>ALL';
+					
+			cStr += '<input type="checkbox" name="elecType"';
+			cStr += 'value="ALL" id="allChkBox" onclick="showSelectedColoumn(this.value)"/>ALL';
 			cStr += '<input type="checkbox" name="elecType" ';
 			cStr += 'value="AC" onclick="showSelectedColoumn(this.value)"/>AC';
 			cStr += '<input type="checkbox" name="elecType" ';
@@ -1448,10 +1456,32 @@
 			cStr += '<input type="checkbox" name="elecType" value="ZPTC" onclick="showSelectedColoumn(this.value)"/>ZPTC';		
 			cStr += '</td>';
 			cStr += '</tr>';
-			cStr += '</table></center>';
+			cStr += '</table>';
 			cStr += '</div>';
 			
 			checkBoxElmt.innerHTML = cStr;
+			var allChkBoxEl = document.getElementById("allChkBox");
+			
+			if(allChkBoxEl.checked == true)
+			{
+				
+				allChkBoxEl.checked = false;
+			}
+			if(jsObj.choices == "-")
+			{
+				allChkBoxEl.checked = 'checked'; 
+			}
+			var chkBoxElArr = document.getElementsByName("elecType");
+			for(var n in choicesArr)
+			{	
+					for(var m = 0;m < chkBoxElArr.length; m++)
+					{
+						if(choicesArr[n] == chkBoxElArr[m].value)
+						{
+							chkBoxElArr[m].checked = 'checked';
+						}			
+					}
+			}		
 		}
 		
 		function getElectionType(type)
@@ -1679,7 +1709,8 @@
 			constituencyIdGlobal = value;
 
 			getConstituencyOverViewResult(value,text);
-			partyVotesSharing('all','-',1);
+			//partyVotesSharing('all','-',1);
+			partyVotesSharing('-',["AC","PC"],0);
 			getMuncipalElections();  
 			getCorporationElections(); 
 			
@@ -1921,8 +1952,8 @@
 			allPartiesChartsWindow.document.close();			
 		}
 
-		function getResultsForSelectedElection(constiId, constiName, constType, task,isElectionType,value)
-		{
+		function getResultsForSelectedElection(constiId, constiName, constType, task,isElectionType,value, isDefault)
+		{	
 			var elmt = document.getElementById("electionPageAjaxImgDiv");
 			if(elmt.style.display == 'none')
 			elmt.style.display = 'block';
@@ -1941,7 +1972,7 @@
 			var emptyArr = new Array();
 			var allResults;
 			
-			if(value=="ALL" || value=="null")
+			if(value=="ALL")
 				allResults = true;
 			else
 				allResults = false;
@@ -2067,7 +2098,8 @@
 					isElectionType: isElectionType,
 					selectedElectionArr: selectedElectionArray,
 					allResults:allResults,
-					chartName:chartName
+					chartName:chartName,
+					isDefault: isDefault
 					};
 			
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -2318,7 +2350,7 @@
 		    str1 += '</tr>';
 			str1 += '<tr>';
              
-			 
+			 /*
 			if(resultsData.constituencyType == null || resultsData.constituencyType != "URBAN")
 			{
 			str1 += '<td><INPUT type="checkbox" name="electionCheckBox" id="2006_MPTC"/>2006 MPTC</td>';
@@ -2330,7 +2362,7 @@
 			{
 				str1 += '<td colspan="6"><INPUT type="checkbox" name="electionCheckBox" id="2005_CORPORATION"/>2005 CORPORATION</td>';
 				
-			}
+			}*/
 			
 			str1 += '</tr>';
 			str1 += '</tr>';		    
@@ -2356,10 +2388,10 @@
 			str1 += '<input type="button" value="De-select All" onclick="DeselectAllPartiesNYears()">';
 			if(constType == null)
 			{
-				str1 += '<INPUT type="button" id="getResults" onclick="getResultsForSelectedElection('+constituencyId+', \''+constituencyNameGlobal+'\',\''+constType+'\',\'constituencyResults\',\'false\',\'null\')" value="Show Results" />';
+				str1 += '<INPUT type="button" id="getResults" onclick="getResultsForSelectedElection('+constituencyId+', \''+constituencyNameGlobal+'\',\''+constType+'\',\'constituencyResults\',\'false\',\'null\', \'null\')" value="Show Results" />';
 			} else 
 			{
-				str1 += '<INPUT type="button" id="getResults" onclick="getResultsForSelectedElection('+constituencyId+', \''+constituencyNameGlobal+'\',\''+constType+'\',\'getUrbanRuralResults\', \'false\',\'null\')" value="Show Results" />';
+				str1 += '<INPUT type="button" id="getResults" onclick="getResultsForSelectedElection('+constituencyId+', \''+constituencyNameGlobal+'\',\''+constType+'\',\'getUrbanRuralResults\', \'false\',\'null\',\'true\')" value="Show Results" />';
 			}	
 			str1 += '</td>';
 			str1 += '</tr>';
@@ -2683,7 +2715,8 @@
 		}
 		
 		function buildResultsForUrbanRural(jsObj,results)
-		{			
+		{		
+										
 			var selectboxElmtDiv = document.getElementById("selectLocationOptions");
 			var checkboxElmtDiv = document.getElementById("inputSelectionCriteria");
 			var selectOptionsSelectButtonElmt = document.getElementById("selectOptionsSelectButton");
@@ -2813,28 +2846,62 @@
 				headDivEl.innerHTML = headDivElStr;            	
 			}
 			
-			if(!jsObj.allResults)
-				return;
-
 			var cStr = '';
 			cStr += '<div> ';
-			cStr += '<center><table>';
+			cStr += '<table>';
 			cStr += '<tr>';
+			cStr += '<td><div id="constiContestingCandsDiv" style="color:#121922;text-align:left;padding:5px;margin:5px;">';
+			cStr += '<span style="font-size:12px;font-weight:bold;">Powered By:</span><span style="font-size:16px;font-weight:bold;font-family: courier;">PARTY&nbsp;ANALYST&nbsp;</span><span style="font-weight:bold;font-size:14px;">&trade;</span>';
+			cStr += '</div>';
+			cStr += '</td>';
 			cStr += '<td style="color:#121922;font-weight:bold;font-size:16px;">View :</td>';
 			cStr += '<td style="color:#121922;font-weight:bold;font-size:16px;">';
-			cStr += '<input type="checkbox" name="urbanElecType" checked="checked" value="ALL" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\', this.value)"/>ALL';
-			cStr += '<input type="checkbox" name="urbanElecType" value="Assembly" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>AC';
-			cStr += '<input type="checkbox" name="urbanElecType" value="Parliament" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>PC';
+			cStr += '<input type="checkbox" checked="checked" id="allChkBox" name="urbanElecType" value="ALL" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\', this.value,\'null\')"/>ALL';
+			cStr += '<input type="checkbox" name="urbanElecType" value="Assembly" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value,\'null\')"/>AC';
+			cStr += '<input type="checkbox" name="urbanElecType" value="Parliament" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value,\'null\')"/>PC';
 			
 			
-			cStr += '<input type="checkbox" name="urbanElecType" value="CORPORATION" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value)"/>Corporation';
+			cStr += '<input type="checkbox" name="urbanElecType" value="CORPORATION" onclick="getResultsForSelectedElection('+constiId+', \''+constiName+'\', \''+constType+'\', \'getUrbanRuralResults\',\'true\',this.value,\'null\')"/>Corporation';
 
 			cStr += '</td>';
 			cStr += '</tr>';
-			cStr += '</table></center>';
+			cStr += '</table>';
 			cStr += '</div>';
 			
 			checkBoxElmt.innerHTML = cStr;
+			var allChkBoxEl = document.getElementById("allChkBox");
+			var choicesArr = jsObj.selectedElectionArr
+			
+			if(jsObj.allResults == false)
+			{
+				if(allChkBoxEl.checked == true)
+				{					
+					allChkBoxEl.checked = false;
+				}				
+			}
+			var chkBoxElArr = document.getElementsByName("urbanElecType");
+			if(jsObj.isDefault == 'true')
+			{
+					for(var m = 0;m < chkBoxElArr.length; m++)
+						{
+							if(chkBoxElArr[m].value  == 'Assembly' || chkBoxElArr[m].value  == 'Parliament')
+							{	
+								chkBoxElArr[m].checked = 'checked';
+							}			
+						}				
+			} else 
+				for(var z in choicesArr)
+				{
+					for(var m = 0;m < chkBoxElArr.length; m++)
+					{
+						if(choicesArr[z] == chkBoxElArr[m].value)
+						{	
+							chkBoxElArr[m].checked = 'checked';
+						}			
+					}					
+				}
+				 
+				
 			
 			
 		}
@@ -3178,7 +3245,8 @@
 				var url = "<%=request.getContextPath()%>/getLineChartForMandalsAndPartiesAction.action?"+rparam;
 				callAjax(jsObj, url);
 		}
-		function partyVotesSharing(all,allChoices,flag){		
+		function partyVotesSharing(all,allChoices,flag){
+					
 			var getAllData = all;
 			var getSelectedChoices = allChoices;
 			var jsObj = {
@@ -3433,7 +3501,8 @@
 	        checkForNetworkAndDisplayChart();
            	buildMandalsVotingTrendz();		
 			getConstituencyOverViewResult(constituencyIdGlobal,constituencyName);	
-			partyVotesSharing('all','-',1);
+			//partyVotesSharing('all','-',1);
+			partyVotesSharing('-',["AC","PC"],0);
 			//partyVotesSharing('*',choicesItem,0);
 			getMuncipalElections();
 			getCorporationElections();
