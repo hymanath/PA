@@ -17,6 +17,7 @@ public class BiElectionResultsMainVO implements Serializable {
 	private String enlargedMandalWiseResultsChart;
 	private String assemblyResultsChartForPresentYear;
 	private String assemblyResultsChartForPreviousYear;
+	private String assemblyResultsChartForLatestYear;
 	private ConstituencyVO constituencyVO;
 	private List<String> electionResultsChart;
 	private List<String> allPartiesElectionResultsChart;
@@ -124,6 +125,13 @@ public class BiElectionResultsMainVO implements Serializable {
 	}
 	public void setCrossVotingResults(List<PartyResultsVO> crossVotingResults) {
 		this.crossVotingResults = crossVotingResults;
+	}
+	public String getAssemblyResultsChartForLatestYear() {
+		return assemblyResultsChartForLatestYear;
+	}
+	public void setAssemblyResultsChartForLatestYear(
+			String assemblyResultsChartForLatestYear) {
+		this.assemblyResultsChartForLatestYear = assemblyResultsChartForLatestYear;
 	}
 	
 }
