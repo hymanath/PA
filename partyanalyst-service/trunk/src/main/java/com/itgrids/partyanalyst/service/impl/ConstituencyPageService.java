@@ -1807,6 +1807,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	public DataTransferVO getPreviousAndPresentElectionYearsGraphsForAConstituency(Long constituencyId){
 		DataTransferVO charts = new DataTransferVO();
   		ConstituencyRevenueVillagesVO presentChart = getConstituencyElecResults(constituencyId, IConstants.PRESENT_ELECTION_YEAR, false);
+  		ConstituencyRevenueVillagesVO latestChart = getConstituencyElecResults(constituencyId, IConstants.LATEST_BYE_ELECTION_YEAR, false);
   		List mandalwiseValidVotes = boothResultDAO.getMandalwiseValidVotesForAMappedConstituency(constituencyId, 
   				IConstants.PREVIOUS_ELECTION_YEAR, IConstants.ASSEMBLY_ELECTION_TYPE);
   		List mandalwisePartiesResults = candidateBoothResultDAO.getAllPartiesResultsByMandalsMappedConstituency(constituencyId, 
@@ -1834,6 +1835,8 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		}
   		
   		charts.setPresentYearChart(presentChart);
+  		if(latestChart != null && latestChart.getConstituencyOrMandalWiseElectionVO() != null && latestChart.getConstituencyOrMandalWiseElectionVO().size() > 0)
+  		charts.setLatestYearChart(latestChart);
   		charts.setPreviousYearChart(partiesMandalResults);
   		return charts;
   	}
