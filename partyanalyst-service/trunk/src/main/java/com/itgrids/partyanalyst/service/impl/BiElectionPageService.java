@@ -40,7 +40,10 @@ import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ByeElecGroupVO;
+import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
+import com.itgrids.partyanalyst.dto.CandidateWonVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultAllPartyVO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyMandalVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ElectionDataVO;
@@ -3395,6 +3398,111 @@ public class BiElectionPageService implements IBiElectionPageService {
 		return constituenies;
 		
 	}
+
+
+	public List<ConstituencyElectionResultsVO> getMainPartiesResultsInConstituency(
+			Long constituencyId, String constituencyName) {
+		log.debug("Entered in to getMainPartiesResultsInConstituency method in service:");
+		List<ConstituencyElectionResultsVO> electionResultsList = new ArrayList<ConstituencyElectionResultsVO>();
+		ConstituencyElectionResultsVO constituencyElectionResults = new ConstituencyElectionResultsVO();
+		ConstituencyElectionResultsVO presentElectionResults = null;
+		ConstituencyElectionResultsVO byeElectionResults = null;
+		ConstituencyElectionResultsVO processedPresentElectionResults = null;
+		ConstituencyElectionResultsVO processedByeElectionResults = null;
+		Set<String> presentYearParties = new HashSet<String>();
+		Set<String> byeElecYearParties = new HashSet<String>();
+		Boolean includeINDs = false;
+		presentYearParties.add("BJP");
+		presentYearParties.add("INC");
+		presentYearParties.add("PRP");
+		presentYearParties.add("TDP");
+		presentYearParties.add("TRS");
+				
+		if("SIRCILLA".equalsIgnoreCase(constituencyName))
+			includeINDs = true;
+			
+				
+		byeElecYearParties.add("INC");
+		byeElecYearParties.add("TDP");
+		
+		
+		if("Nizamabad Urban".equalsIgnoreCase(constituencyName))
+			byeElecYearParties.add("BJP");
+		else byeElecYearParties.add("TRS");
+		try{
+			byeElectionResults = staticDataService.getAllCandidatesDetailsForConstituency(constituencyId, IConstants.PRESENT_YEAR, IConstants.ASSEMBLY_ELECTION_TYPE);
+			presentElectionResults = staticDataService.getAllCandidatesDetailsForConstituency(constituencyId, IConstants.PRESENT_ELECTION_YEAR, IConstants.ASSEMBLY_ELECTION_TYPE);
+			 
+				
+			if(byeElectionResults != null)
+			{	
+				processedByeElectionResults = processElectionResults(byeElectionResults, byeElecYearParties,false, IConstants.PRESENT_YEAR);
+				electionResultsList.add(processedByeElectionResults);
+			}
+			if(presentElectionResults != null)
+			{	
+				processedPresentElectionResults = processElectionResults(presentElectionResults, presentYearParties, includeINDs, IConstants.PRESENT_ELECTION_YEAR);
+				electionResultsList.add(processedPresentElectionResults);
+			}
+			
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			log.debug("Exception Raised :" + ex);
+		}		
+		
+		return electionResultsList;
+	}
 	
+	private ConstituencyElectionResultsVO processElectionResults(ConstituencyElectionResultsVO resultsToProcess, Set<String> partiesList, Boolean includeINDs, String electionYear)
+	{
+		log.debug("includeINDs:::::::::::::::::::" + includeINDs);
+		ConstituencyElectionResultsVO constituencyElectionResults = new ConstituencyElectionResultsVO();
+		List<CandidateOppositionVO> requiredPartiesList = new ArrayList<CandidateOppositionVO>();
+		CandidateOppositionVO othersResults = new CandidateOppositionVO(); 
+		Long votesEarned = new Long(0l);
+		Float percentage = new Float(0f);
+		int i = 0;
+		Boolean resultsFlag = false;
+		CandidateWonVO wonCandidate = resultsToProcess.getCandidateResultsVO();
+		CandidateOppositionVO wonCandidateObj = new CandidateOppositionVO();
+		wonCandidateObj.setCandidateId(wonCandidate.getCandidateId());
+		wonCandidateObj.setCandidateName(wonCandidate.getCandidateName());
+		wonCandidateObj.setPartyId(wonCandidate.getPartyId());
+		wonCandidateObj.setPartyName(wonCandidate.getPartyName());
+		wonCandidateObj.setRank(wonCandidate.getRank());
+		wonCandidateObj.setVotesEarned(wonCandidate.getVotesEarned());
+		wonCandidateObj.setVotesPercentage(new BigDecimal(wonCandidate.getVotesPercentage()).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+		List<CandidateOppositionVO> oppositionCandList = resultsToProcess.getCandidateOppositionList();
+		oppositionCandList.add(0,wonCandidateObj);
+		for(CandidateOppositionVO candidateOppositionVO: oppositionCandList)
+		{
+			if(new Float(candidateOppositionVO.getVotesEarned()) > 0)
+				resultsFlag = true;
+			if(includeINDs && "IND".equals(candidateOppositionVO.getPartyName()) && i == 0)
+			{				
+				requiredPartiesList.add(candidateOppositionVO);
+				i++;				
+			}
+			if(partiesList.contains(candidateOppositionVO.getPartyName()))
+			{
+				requiredPartiesList.add(candidateOppositionVO);
+			} else
+			{
+				votesEarned += new Long(candidateOppositionVO.getVotesEarned());
+				percentage += new Float(candidateOppositionVO.getVotesPercentage());
+			}						
+		}
+		othersResults.setPartyName("Others");
+		othersResults.setCandidateName("-");
+		othersResults.setVotesEarned(votesEarned.toString());
+		othersResults.setVotesPercentage(new BigDecimal(percentage).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+		requiredPartiesList.add(othersResults);
+		constituencyElectionResults.setCandidateOppositionList(requiredPartiesList);
+		constituencyElectionResults.setCandidateResultsVO(resultsToProcess.getCandidateResultsVO());
+		constituencyElectionResults.setElectionYear(electionYear);
+		constituencyElectionResults.setResultsFlag(resultsFlag);
+		return constituencyElectionResults;
+	}
 	
 }

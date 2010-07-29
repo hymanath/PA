@@ -43,6 +43,8 @@ public class ElectionTrendzReportVO implements Serializable {
 	private PartyElectionResultsVO elecResultsInConsti;
 	private PartyElectionResultsVO byeElecResultsInConsti;
 	private Long presentYearTotalVoters;
+	
+	private List<ConstituencyElectionResultsVO> electionResultsVO;
 		
 	private ResultStatus resultStatus;
 	
@@ -244,4 +246,11 @@ public class ElectionTrendzReportVO implements Serializable {
 		return byeElecResultsInConsti;
 	}
 
+	public void setElectionResultsVO(List<ConstituencyElectionResultsVO> electionResultsVO) {
+		this.electionResultsVO = electionResultsVO;
+	}
+
+	public List<ConstituencyElectionResultsVO> getElectionResultsVO() {
+		return electionResultsVO;
+	}	
 }

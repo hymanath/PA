@@ -33,8 +33,10 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private String votingPercentage;
 	private List<PartyResultsVO> partyResultsVO;
 	private CandidateWonVO candidateResultsVO;
+	private CandidateOppositionVO runnerUp;
 	private List<CandidateOppositionVO> candidateOppositionList;
 	private List<SelectOptionVO> allElectionYears;
+	private Boolean resultsFlag;
 	
 	
 	//getters and setters
@@ -165,6 +167,18 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	@Override
 	public int hashCode(){
 		return this.constituencyId.hashCode();
+	}
+	public void setRunnerUp(CandidateOppositionVO runnerUp) {
+		this.runnerUp = runnerUp;
+	}
+	public CandidateOppositionVO getRunnerUp() {
+		return runnerUp;
+	}
+	public void setResultsFlag(Boolean resultsFlag) {
+		this.resultsFlag = resultsFlag;
+	}
+	public Boolean getResultsFlag() {
+		return resultsFlag;
 	}
 	
 }

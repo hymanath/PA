@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.AllBoothsResultsForAPartyInAMandal;
 import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultsForMandalVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
@@ -58,4 +59,6 @@ public interface IBiElectionPageService {
 			Set<String> parties, Set<String> elecTypeOrYear, Boolean isElecType, Boolean includeAlliance);
 	
 	public List<ConstituencyVO> getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage(String expePercent,Boolean includeLocalElec);
+	
+	public List<ConstituencyElectionResultsVO> getMainPartiesResultsInConstituency(Long constituencyId, String constituencyName); 
 }
