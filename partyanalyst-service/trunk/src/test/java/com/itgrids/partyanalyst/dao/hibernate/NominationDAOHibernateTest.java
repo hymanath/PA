@@ -477,7 +477,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 	@Test
 	public void testGetConstituencyElectionResult(){
 		
-		List resultList = nominationDAO.getResultsForElectionInConstituency(new Long(30),"2014");
+		List resultList = nominationDAO.getResultsForElectionInConstituency(new Long(30),"2010");
 		System.out.println(" Size :" + resultList.size());
 		if(resultList != null && resultList.size() > 0){
 			Iterator it = resultList.listIterator();
@@ -486,6 +486,8 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			 			 
 			 System.out.println(" Votes Earned :" + params[1]);
 			 System.out.println(" Valid Votes  :" + params[3]);
+			 Double votesPercent = new Double(params[4].toString());
+			 System.out.println(" Votes Percent :" + votesPercent);
 			}
 		}
 	}
