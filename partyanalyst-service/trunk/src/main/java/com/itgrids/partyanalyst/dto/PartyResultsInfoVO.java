@@ -7,6 +7,10 @@ public class PartyResultsInfoVO {
 	private String candidateName;
 	private Long candidateId;
 	private Long votesEarned;
+	private Double percentage;
+	private Double percentage1;
+	private Double difference;
+	
 	
 	public String getPartyName() {
 		return partyName;
@@ -47,6 +51,32 @@ public class PartyResultsInfoVO {
 	public void setVotesEarned(Long votesEarned) {
 		this.votesEarned = votesEarned;
 	}
+
+	public Double getPercentage() {
+		return percentage;
+	}
+
+	public void setPercentage(Double percentage) {
+		this.percentage = percentage;
+	}
+
+	public Double getPercentage1() {
+		return percentage1;
+	}
+
+	public void setPercentage1(Double percentage1) {
+		this.percentage1 = percentage1;
+	}
+
+	public Double getDifference() {
+		return difference;
+	}
+
+	public void setDifference(Double difference) {
+		this.difference = difference;
+	}
+	
+	
 	
 	
 	
