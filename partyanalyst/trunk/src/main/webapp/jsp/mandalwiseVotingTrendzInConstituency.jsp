@@ -394,7 +394,7 @@
 						headingDIV+='				</td>';
 	
 						headingDIV+='				<td valign="top" style="padding:0px;border:none;">';
-						headingDIV+='					<div class="detailsTableHeader" style="width:845px;">';
+						headingDIV+='					<div class="detailsTableHeader" style="width:862px;">';
 						headingDIV+='						<span class="detailsTableHeaderSpan">'+myResults.electionResultsVO[i].electionYear+' Assembly Results In '+jsObj.constiName+' </span>';
 						headingDIV+='					</div>';
 						headingDIV+='				</td>';
