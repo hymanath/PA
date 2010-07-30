@@ -22,6 +22,11 @@ public class ConstituencyVO {
 	private Long totalPolledVotes;
 	private String votesPercent;
 	
+	private Boolean isDataExists = true;
+	private List<PartyResultsVO> presentYearResults;
+	private List<PartyResultsVO> previousYearResults;
+	private List<PartyElectionVotersVO> partiesCombinedResults;
+	
 	public ConstituencyVO(){
 		
 	}
@@ -126,6 +131,31 @@ public class ConstituencyVO {
 	}
 	public void setVotesPercent(String votesPercent) {
 		this.votesPercent = votesPercent;
+	}
+	public List<PartyResultsVO> getPresentYearResults() {
+		return presentYearResults;
+	}
+	public void setPresentYearResults(List<PartyResultsVO> presentYearResults) {
+		this.presentYearResults = presentYearResults;
+	}
+	public List<PartyResultsVO> getPreviousYearResults() {
+		return previousYearResults;
+	}
+	public void setPreviousYearResults(List<PartyResultsVO> previousYearResults) {
+		this.previousYearResults = previousYearResults;
+	}
+	public List<PartyElectionVotersVO> getPartiesCombinedResults() {
+		return partiesCombinedResults;
+	}
+	public void setPartiesCombinedResults(
+			List<PartyElectionVotersVO> partiesCombinedResults) {
+		this.partiesCombinedResults = partiesCombinedResults;
+	}
+	public Boolean getIsDataExists() {
+		return isDataExists;
+	}
+	public void setIsDataExists(Boolean isDataExists) {
+		this.isDataExists = isDataExists;
 	}
 	
 	

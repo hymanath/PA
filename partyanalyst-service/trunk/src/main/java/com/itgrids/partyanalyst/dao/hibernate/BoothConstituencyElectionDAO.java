@@ -410,5 +410,5 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 				"model.constituencyElection.election.electionScope.electionType.electionType = ? and "+
 				"model.constituencyElection.election.electionYear = ? group by model.booth.tehsil.tehsilId",params);
 	}
-	
+
 }

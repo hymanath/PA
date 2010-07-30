@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
@@ -20,4 +21,6 @@ public interface IPartyBoothWiseResultsService {
 	public ElectionWiseMandalPartyResultListVO getAllElectionsResultsInAMandal(Long mandalId);
 	
 	public List<TeshilPartyInfoVO> getMPTCandZPTCResultsInAMandalForAElection(Long tehsilId,String electionType,String electionYear);
+	
+	public ConstituencyVO getBoothwiseResultsOfTwoElectionsForAConstituency(Long constituencyId);
 }

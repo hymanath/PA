@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.model.CandidateBoothResult;
@@ -749,4 +750,26 @@ public class CandidateBoothResultDAO extends GenericDaoHibernate<CandidateBoothR
 				"model.nomination.party.partyId order by model.boothConstituencyElection.booth.tehsil.tehsilName", params);
 	}
 
+	public List getBoothwiseCandidateResultsForGivenPartNosInAnElectionYear(List partNos, String elecYear, Long constiId){
+		Query queryObject = getSession().createQuery("select model.nomination.candidate.candidateId, model.nomination.candidate.lastname," +
+				"model.nomination.party.partyId, model.nomination.party.shortName, sum(model.votesEarned), " +
+				"sum(model.boothConstituencyElection.boothResult.validVotes) from " +
+				"CandidateBoothResult model where  model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? and " +
+				"model.boothConstituencyElection.constituencyElection.election.electionYear = ? and " +
+				"model.boothConstituencyElection.booth.partNo in (:partNos) group by model.nomination.nominationId " +
+				"order by sum(model.votesEarned) desc");
+		queryObject.setParameter(0,constiId);
+		queryObject.setParameter(1,elecYear);
+		queryObject.setParameterList("partNos", partNos);
+		return queryObject.list();
+	}
+
+	public List getPartNosOfAnElectionForAConstituency(Long constituencyId,
+			String electionYear) {
+		Object[] params = {constituencyId, electionYear};
+		return getHibernateTemplate().find("select distinct model.boothConstituencyElection.booth.partNo from CandidateBoothResult "+
+				"model where model.boothConstituencyElection.constituencyElection.constituency.constituencyId = ? " +
+				"and model.boothConstituencyElection.constituencyElection.election.electionYear = ?",params);
+	}
+	
 }

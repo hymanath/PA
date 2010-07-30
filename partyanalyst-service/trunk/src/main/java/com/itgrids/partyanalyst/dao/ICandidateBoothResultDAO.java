@@ -124,4 +124,8 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	
 	public List getAllPartiesResultsByMandalsMappedConstituency(Long constituencyId, String elecYear, String elecType);
 	
+	public List getBoothwiseCandidateResultsForGivenPartNosInAnElectionYear(List partNos, String elecYear, Long constiId);
+
+	public List getPartNosOfAnElectionForAConstituency(Long constituencyId,	String electionYear);
+	
 }

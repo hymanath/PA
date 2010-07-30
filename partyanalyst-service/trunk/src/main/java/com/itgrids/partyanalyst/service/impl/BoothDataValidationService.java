@@ -274,6 +274,7 @@ public class BoothDataValidationService implements IBoothDataValidationService{
 				insertVoterAndBoothConstituencyElectionVoter(tehsil, boothConstituencyElection, voterDataUploadVO.getVoterVOs(), corrections);
 			}catch(Exception ex){
 				exceptions.add(ex);
+				ex.printStackTrace();
 			}						
 		}		
 		uploadDataErrorMessageVO.setCorrections(corrections);

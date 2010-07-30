@@ -62,7 +62,7 @@ public class ExcelBoothResultReader {
 		
 		try{
 			System.out.println("In Reader "+ filePath);
-			String headerInf[] = new String[50];
+			String headerInf[] = new String[100];
 			//File exceFile= new File(filePath);
 			excelRows= new ArrayList<BoothResultExcelColumnMapper>();
 			Workbook workbook=Workbook.getWorkbook(filePath);	
@@ -111,10 +111,13 @@ public class ExcelBoothResultReader {
 			//Test for the data reading
 			testConstituencyBlock();
 		}catch(IOException ioe){
+			ioe.printStackTrace();
 			System.out.println("ioe1 =="+ioe.getMessage());
 		}catch(BiffException ioe){
+			ioe.printStackTrace();
 			System.out.println("ioe2 =="+ioe.getMessage());
 		}catch(Exception excep){
+			excep.printStackTrace();
 			System.out.println("ioe3 =="+excep.getMessage());
 		}
 	}
@@ -177,15 +180,20 @@ public class ExcelBoothResultReader {
 
 	public static void main(String[] args) throws Exception {
 		ExcelBoothResultReader excelBoothResultReader = new ExcelBoothResultReader();
-		File exceFile= new File("C:/Documents and Settings/ITGrids/Desktop/Siva Files/Booth Data Upload1/2009_assembly_booth_results_fro_nellore_district.xls");
+		File exceFile= new File("C:/Documents and Settings/ITGrids/Desktop/290710_New/TempBoothAcResults2010.xls");
 		excelBoothResultReader.readExcel(exceFile, false);
 		excelBoothResultReader.testConstituencyBlock();
 	}
 
 	private void fillHeaderInfo(Sheet sheet,int noOfColumns,String headerInformation[]){
 		for(int columnPos=0; columnPos<noOfColumns; columnPos++){
-			String cellData=checkCellData(sheet.getCell(columnPos,1).getContents());
-			headerInformation[columnPos]=cellData;
+			try{
+				String cellData=checkCellData(sheet.getCell(columnPos,1).getContents());
+				headerInformation[columnPos]=cellData;	
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
 		}
 	}
 	

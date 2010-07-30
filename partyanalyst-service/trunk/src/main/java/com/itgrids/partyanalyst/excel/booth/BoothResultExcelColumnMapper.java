@@ -56,7 +56,56 @@ public class BoothResultExcelColumnMapper {
 	private String column48;
 	private String column49;
 	private String column50;
-	
+	private String column51;
+	private String column52;
+	private String column53;
+	private String column54;
+	private String column55;
+	private String column56;
+	private String column57;
+	private String column58;
+	private String column59;
+	private String column60;
+	private String column61;
+	private String column62;
+	private String column63;
+	private String column64;
+	private String column65;
+	private String column66;
+	private String column67;
+	private String column68;
+	private String column69;
+	private String column70;
+	private String column71;
+	private String column72;
+	private String column73;
+	private String column74;
+	private String column75;
+	private String column76;
+	private String column77;
+	private String column78;
+	private String column79;
+	private String column80;
+	private String column81;
+	private String column82;
+	private String column83;
+	private String column84;
+	private String column85;
+	private String column86;
+	private String column87;
+	private String column88;
+	private String column89;
+	private String column90;
+	private String column91;
+	private String column92;
+	private String column93;
+	private String column94;
+	private String column95;
+	private String column96;
+	private String column97;
+	private String column98;
+	private String column99;
+	private String column100;	
 	
 	public BoothResultExcelColumnMapper(Sheet sheet,int rowNo,int noOfColumns){
 		for(int columnPos=0; columnPos<noOfColumns; columnPos++){
@@ -112,6 +161,56 @@ public class BoothResultExcelColumnMapper {
 			case 47:setColumn48(cellData);break;
 			case 48:setColumn49(cellData);break;
 			case 49:setColumn50(cellData);break;
+			case 50:setColumn51(cellData);break;
+			case 51:setColumn52(cellData);break;
+			case 52:setColumn53(cellData);break;
+			case 53:setColumn54(cellData);break;
+			case 54:setColumn55(cellData);break;
+			case 55:setColumn56(cellData);break;
+			case 56:setColumn57(cellData);break;
+			case 57:setColumn58(cellData);break;
+			case 58:setColumn59(cellData);break;
+			case 59:setColumn60(cellData);break;
+			case 60:setColumn61(cellData);break;
+			case 61:setColumn62(cellData);break;
+			case 62:setColumn63(cellData);break;
+			case 63:setColumn64(cellData);break;
+			case 64:setColumn65(cellData);break;
+			case 65:setColumn66(cellData);break;
+			case 66:setColumn67(cellData);break;
+			case 67:setColumn68(cellData);break;
+			case 68:setColumn69(cellData);break;
+			case 69:setColumn70(cellData);break;
+			case 70:setColumn71(cellData);break;
+			case 71:setColumn72(cellData);break;
+			case 72:setColumn73(cellData);break;
+			case 73:setColumn74(cellData);break;
+			case 74:setColumn75(cellData);break;
+			case 75:setColumn76(cellData);break;
+			case 76:setColumn77(cellData);break;
+			case 77:setColumn78(cellData);break;
+			case 78:setColumn79(cellData);break;
+			case 79:setColumn80(cellData);break;
+			case 80:setColumn81(cellData);break;
+			case 81:setColumn82(cellData);break;
+			case 82:setColumn83(cellData);break;
+			case 83:setColumn84(cellData);break;
+			case 84:setColumn85(cellData);break;
+			case 85:setColumn86(cellData);break;
+			case 86:setColumn87(cellData);break;
+			case 87:setColumn88(cellData);break;
+			case 88:setColumn89(cellData);break;
+			case 89:setColumn90(cellData);break;
+			case 90:setColumn91(cellData);break;
+			case 91:setColumn92(cellData);break;
+			case 92:setColumn93(cellData);break;
+			case 93:setColumn94(cellData);break;
+			case 94:setColumn95(cellData);break;
+			case 95:setColumn96(cellData);break;
+			case 96:setColumn97(cellData);break;
+			case 97:setColumn98(cellData);break;
+			case 98:setColumn99(cellData);break;
+			case 99:setColumn100(cellData);break;
 
 			}
 			
@@ -527,6 +626,406 @@ public class BoothResultExcelColumnMapper {
 
 	public void setColumn50(String column50) {
 		this.column50 = column50;
+	}
+
+	public String getColumn51() {
+		return column51;
+	}
+
+	public void setColumn51(String column51) {
+		this.column51 = column51;
+	}
+
+	public String getColumn52() {
+		return column52;
+	}
+
+	public void setColumn52(String column52) {
+		this.column52 = column52;
+	}
+
+	public String getColumn53() {
+		return column53;
+	}
+
+	public void setColumn53(String column53) {
+		this.column53 = column53;
+	}
+
+	public String getColumn54() {
+		return column54;
+	}
+
+	public void setColumn54(String column54) {
+		this.column54 = column54;
+	}
+
+	public String getColumn55() {
+		return column55;
+	}
+
+	public void setColumn55(String column55) {
+		this.column55 = column55;
+	}
+
+	public String getColumn56() {
+		return column56;
+	}
+
+	public void setColumn56(String column56) {
+		this.column56 = column56;
+	}
+
+	public String getColumn57() {
+		return column57;
+	}
+
+	public void setColumn57(String column57) {
+		this.column57 = column57;
+	}
+
+	public String getColumn58() {
+		return column58;
+	}
+
+	public void setColumn58(String column58) {
+		this.column58 = column58;
+	}
+
+	public String getColumn59() {
+		return column59;
+	}
+
+	public void setColumn59(String column59) {
+		this.column59 = column59;
+	}
+
+	public String getColumn60() {
+		return column60;
+	}
+
+	public void setColumn60(String column60) {
+		this.column60 = column60;
+	}
+
+	public String getColumn61() {
+		return column61;
+	}
+
+	public void setColumn61(String column61) {
+		this.column61 = column61;
+	}
+
+	public String getColumn62() {
+		return column62;
+	}
+
+	public void setColumn62(String column62) {
+		this.column62 = column62;
+	}
+
+	public String getColumn63() {
+		return column63;
+	}
+
+	public void setColumn63(String column63) {
+		this.column63 = column63;
+	}
+
+	public String getColumn64() {
+		return column64;
+	}
+
+	public void setColumn64(String column64) {
+		this.column64 = column64;
+	}
+
+	public String getColumn65() {
+		return column65;
+	}
+
+	public void setColumn65(String column65) {
+		this.column65 = column65;
+	}
+
+	public String getColumn66() {
+		return column66;
+	}
+
+	public void setColumn66(String column66) {
+		this.column66 = column66;
+	}
+
+	public String getColumn67() {
+		return column67;
+	}
+
+	public void setColumn67(String column67) {
+		this.column67 = column67;
+	}
+
+	public String getColumn68() {
+		return column68;
+	}
+
+	public void setColumn68(String column68) {
+		this.column68 = column68;
+	}
+
+	public String getColumn69() {
+		return column69;
+	}
+
+	public void setColumn69(String column69) {
+		this.column69 = column69;
+	}
+
+	public String getColumn70() {
+		return column70;
+	}
+
+	public void setColumn70(String column70) {
+		this.column70 = column70;
+	}
+
+	public String getColumn71() {
+		return column71;
+	}
+
+	public void setColumn71(String column71) {
+		this.column71 = column71;
+	}
+
+	public String getColumn72() {
+		return column72;
+	}
+
+	public void setColumn72(String column72) {
+		this.column72 = column72;
+	}
+
+	public String getColumn73() {
+		return column73;
+	}
+
+	public void setColumn73(String column73) {
+		this.column73 = column73;
+	}
+
+	public String getColumn74() {
+		return column74;
+	}
+
+	public void setColumn74(String column74) {
+		this.column74 = column74;
+	}
+
+	public String getColumn75() {
+		return column75;
+	}
+
+	public void setColumn75(String column75) {
+		this.column75 = column75;
+	}
+
+	public String getColumn76() {
+		return column76;
+	}
+
+	public void setColumn76(String column76) {
+		this.column76 = column76;
+	}
+
+	public String getColumn77() {
+		return column77;
+	}
+
+	public void setColumn77(String column77) {
+		this.column77 = column77;
+	}
+
+	public String getColumn78() {
+		return column78;
+	}
+
+	public void setColumn78(String column78) {
+		this.column78 = column78;
+	}
+
+	public String getColumn79() {
+		return column79;
+	}
+
+	public void setColumn79(String column79) {
+		this.column79 = column79;
+	}
+
+	public String getColumn80() {
+		return column80;
+	}
+
+	public void setColumn80(String column80) {
+		this.column80 = column80;
+	}
+
+	public String getColumn81() {
+		return column81;
+	}
+
+	public void setColumn81(String column81) {
+		this.column81 = column81;
+	}
+
+	public String getColumn82() {
+		return column82;
+	}
+
+	public void setColumn82(String column82) {
+		this.column82 = column82;
+	}
+
+	public String getColumn83() {
+		return column83;
+	}
+
+	public void setColumn83(String column83) {
+		this.column83 = column83;
+	}
+
+	public String getColumn84() {
+		return column84;
+	}
+
+	public void setColumn84(String column84) {
+		this.column84 = column84;
+	}
+
+	public String getColumn85() {
+		return column85;
+	}
+
+	public void setColumn85(String column85) {
+		this.column85 = column85;
+	}
+
+	public String getColumn86() {
+		return column86;
+	}
+
+	public void setColumn86(String column86) {
+		this.column86 = column86;
+	}
+
+	public String getColumn87() {
+		return column87;
+	}
+
+	public void setColumn87(String column87) {
+		this.column87 = column87;
+	}
+
+	public String getColumn88() {
+		return column88;
+	}
+
+	public void setColumn88(String column88) {
+		this.column88 = column88;
+	}
+
+	public String getColumn89() {
+		return column89;
+	}
+
+	public void setColumn89(String column89) {
+		this.column89 = column89;
+	}
+
+	public String getColumn90() {
+		return column90;
+	}
+
+	public void setColumn90(String column90) {
+		this.column90 = column90;
+	}
+
+	public String getColumn91() {
+		return column91;
+	}
+
+	public void setColumn91(String column91) {
+		this.column91 = column91;
+	}
+
+	public String getColumn92() {
+		return column92;
+	}
+
+	public void setColumn92(String column92) {
+		this.column92 = column92;
+	}
+
+	public String getColumn93() {
+		return column93;
+	}
+
+	public void setColumn93(String column93) {
+		this.column93 = column93;
+	}
+
+	public String getColumn94() {
+		return column94;
+	}
+
+	public void setColumn94(String column94) {
+		this.column94 = column94;
+	}
+
+	public String getColumn95() {
+		return column95;
+	}
+
+	public void setColumn95(String column95) {
+		this.column95 = column95;
+	}
+
+	public String getColumn96() {
+		return column96;
+	}
+
+	public void setColumn96(String column96) {
+		this.column96 = column96;
+	}
+
+	public String getColumn97() {
+		return column97;
+	}
+
+	public void setColumn97(String column97) {
+		this.column97 = column97;
+	}
+
+	public String getColumn98() {
+		return column98;
+	}
+
+	public void setColumn98(String column98) {
+		this.column98 = column98;
+	}
+
+	public String getColumn99() {
+		return column99;
+	}
+
+	public void setColumn99(String column99) {
+		this.column99 = column99;
+	}
+
+	public String getColumn100() {
+		return column100;
+	}
+
+	public void setColumn100(String column100) {
+		this.column100 = column100;
 	}
 	
 }

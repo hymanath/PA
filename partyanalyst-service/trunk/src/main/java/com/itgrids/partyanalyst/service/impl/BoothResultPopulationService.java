@@ -115,10 +115,12 @@ public class BoothResultPopulationService implements IBoothResultPopulationServi
 			resultVO.setExceptionEncountered(ex);
 			resultVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
 			resultVO.setResultPartial(true);
+			ex.printStackTrace();
 		}catch(Exception ex){
 			resultVO.setExceptionEncountered(ex);
 			resultVO.setResultCode(ResultCodeMapper.FAILURE);
 			resultVO.setResultPartial(true);
+			ex.printStackTrace();
 		}
 		
 		return resultVO;
