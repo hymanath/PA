@@ -1444,7 +1444,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		return getHibernateTemplate().find("select model.party.shortName,model.candidateResult.votesEarned,"+
 				"model.party.partyId,model.constituencyElection.constituencyElectionResult.validVotes,model.candidateResult.votesPercengate "+
 				"from Nomination model where model.constituencyElection.constituency.constituencyId = ? "+
-				"and model.constituencyElection.election.electionYear = ? group by model.party.partyId "+
+				"and model.constituencyElection.election.electionYear = ? group by model.nominationId "+
 				"order by model.candidateResult.votesEarned desc",params);
 	}
 	
