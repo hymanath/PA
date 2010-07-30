@@ -498,11 +498,22 @@
 	
 	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService">
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+		<property name="constituencyPageService" ref="constituencyPageService" />
+		<property name="electionDAO" ref="electionDAO" />
+    	<property name="allianceGroupDAO" ref="allianceGroupDAO" />
+    	<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
+	</bean>
+	
+	<bean name="constituencyPageService" class="com.itgrids.partyanalyst.service.impl.ConstituencyPageService">
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 	</bean>
 	
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService">	
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
-    	<property name="nominationDAO" ref="nominationDAO" />	
+    	<property name="nominationDAO" ref="nominationDAO" />
+    	<property name="constituencyDAO" ref="constituencyDAO" />
 	</bean>
 	
 	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">

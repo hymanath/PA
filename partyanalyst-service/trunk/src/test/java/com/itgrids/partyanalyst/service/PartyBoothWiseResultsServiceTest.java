@@ -12,11 +12,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWiseDataForMandalVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWisePartyInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
+import com.itgrids.partyanalyst.dto.PartyElectionVotersVO;
 import com.itgrids.partyanalyst.dto.PartyGenderWiseVotesVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
@@ -137,7 +139,7 @@ public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
 		}
 	}
 	*/
-	public void testGetAllMPTCAndZPTCElectionsInfoInTehsil(){
+	/*public void testGetAllMPTCAndZPTCElectionsInfoInTehsil(){
 		ElectionWiseMandalPartyResultListVO obj
 		 = partyBoothWiseResultsService.getAllMPTCAndZPTCElectionsInfoInTehsil(844l);
 		for(PartyResultVO partyResultVO:obj.getAllPartiesAllElectionResults()){
@@ -218,7 +220,12 @@ public class PartyBoothWiseResultsServiceTest extends BaseDaoTestCase{
 		List<Object[]> list3 = partiesInElectionMap.get(partyResultsVO3);
 		
 		System.out.println("List3 Size: "+list3);
+	}*/
+	
+	public void testGetBoothwiseResultsOfTwoElectionsForAConstituency(){
+		ConstituencyVO constituencyVO = partyBoothWiseResultsService.getBoothwiseResultsOfTwoElectionsForAConstituency(30l);
+		if(constituencyVO.getIsDataExists())
+		for(PartyElectionVotersVO party:constituencyVO.getPartiesCombinedResults())
+			System.out.println(party.getParty()+"\t"+party.getPresVotesEarned()+"\t"+party.getPresPercentage()+"\t"+party.getPrevVotesEarned()+"\t"+party.getPrevPercentage());
 	}
-	
-	
 }

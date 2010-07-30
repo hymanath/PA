@@ -1,12 +1,12 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
+import com.itgrids.partyanalyst.dto.ConstituencyMandalVO;
+import com.itgrids.partyanalyst.dto.ElectionDataVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultListVO;
+import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public class ByeElectionPageServiceTest extends BaseDaoTestCase{
@@ -22,13 +22,14 @@ public class ByeElectionPageServiceTest extends BaseDaoTestCase{
 		this.biElectionPageService = biElectionPageService;
 	}
 	
-	/*public void testCheck(){
-		BiElectionResultsMainVO obj = biElectionPageService.getMandalWiseResultsForSelectedPartiesInConstituency(342l);
+	public void testCheck(){
+		BiElectionResultsMainVO obj = biElectionPageService.getMandalWiseResultsForSelectedPartiesInConstituency(341l);
 		System.out.println("========"+obj.getUrbanRuralConstiResults().size());
 		for(ElectionDataVO election:obj.getUrbanRuralConstiResults()){
 			System.out.println(election.getElectionType()+"\t"+election.getElectionYear());
-			for(SelectOptionVO party:election.getPartiesHeading())
-				System.out.print(party.getName()+"\t");
+			if(election.getPartiesHeading() != null)
+				for(SelectOptionVO party:election.getPartiesHeading())
+					System.out.print(party.getName()+"\t");
 			System.out.println();
 			for(ConstituencyMandalVO conMan:election.getConstituencyMandalInfo()){
 				System.out.print(conMan.getConstituencyName()+"\t"+conMan.getTehsilName()+"\t");
@@ -38,12 +39,12 @@ public class ByeElectionPageServiceTest extends BaseDaoTestCase{
 			}
 		}
 
-		ElectionWiseMandalPartyResultListVO election = obj.getAllPartiesElecInfo();
+	/*	ElectionWiseMandalPartyResultListVO election = obj.getAllPartiesElecInfo();
 		for(SelectOptionVO party:election.getElections())
-			System.out.print(party.getName()+"\t");
+			System.out.print(party.getName()+"\t");*/
 		//createDataset(null);
 		//ChartProducer.createLineChart(title, xAxis, yAxis, dataset, path, height, width, colors, thickLines);
-	}*/
+	}
 	
 	/*public void testCheckSelectedForamt(){
 		Set<String> parties = new HashSet<String>();
@@ -54,11 +55,11 @@ public class ByeElectionPageServiceTest extends BaseDaoTestCase{
 				parties, elections, false, true);
 	}*/
 	
-	public void testGetAllDistricts(){
+	/*public void testGetAllDistricts(){
 		Long start = System.currentTimeMillis();
 		biElectionPageService.getAllTelanganaConstituencieswisePartiesResultsBasedOnExpectedPercentage("20",true);
 		Long end = System.currentTimeMillis();
 		System.out.println((end-start)/1000);
-	}
+	}*/
 	
 }

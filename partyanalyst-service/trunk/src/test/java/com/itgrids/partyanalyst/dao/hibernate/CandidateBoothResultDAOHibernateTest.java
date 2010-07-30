@@ -344,10 +344,26 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 	}
 	*/
 	
-	public void testGetAllPartiesResultsByMandalsMappedConstituency(){
+	/*public void testGetAllPartiesResultsByMandalsMappedConstituency(){
 		List list = candidateBoothResultDAO.getAllPartiesResultsByMandalsMappedConstituency(362l, "2004", IConstants.ASSEMBLY_ELECTION_TYPE);
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]);
+	}*/
+	
+	/*public void testGetBoothwiseCandidateResultsForGivenPartNosInAnElectionYear(){
+		List partNos = new ArrayList();
+		partNos.add("1");
+		partNos.add("2");
+		partNos.add("3");
+		partNos.add("4");
+		List list = candidateBoothResultDAO.getBoothwiseCandidateResultsForGivenPartNosInAnElectionYear(partNos, "2009", 4l);
+		for(int i=0; i<list.size(); i++)
+			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]);
+	}*/
+	
+	public void testGetPartNosOfAnElectionForAConstituency(){
+		List list = candidateBoothResultDAO.getPartNosOfAnElectionForAConstituency(341l, "2010");
+		System.out.println(list);
 	}
 	
 }
