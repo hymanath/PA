@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.PartyElectionVotersVO;
 import com.itgrids.partyanalyst.dto.PartyInfoVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
 import com.itgrids.partyanalyst.dto.PartyResultsInfoVO;
@@ -110,7 +111,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private List<SelectOptionVO> staticPartiesList;
 	private MandalVO mandalVO;	
 	private ConstituencyInfoVO constituencyDetails;
-	private ConstituencyVO constituencyVO; 
+	private ConstituencyVO constituencyVO;
 	private VotersWithDelimitationInfoVO votersInfoForMandals;
 	private List<PartyResultVO> votesSharing;
 	private String mandalsPartiesChart;	
@@ -123,6 +124,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private PartyElectionResultsVO electionResultsInConsti;
 	private List<TeshilPartyInfoVO> zptcMptcResultsInMandal;
 	private ConstituencyRevenueVillagesVO chartResultVO;
+	private List<PartyElectionVotersVO> partiesElecsResults;
 
 
 	public String getMuncipalityElectionType() {
@@ -509,6 +511,15 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	public void setUrbanRuralResultsVO(
 			ElectionWiseMandalPartyResultListVO urbanRuralResultsVO) {
 		this.urbanRuralResultsVO = urbanRuralResultsVO;
+	}
+
+	public List<PartyElectionVotersVO> getPartiesElecsResults() {
+		return partiesElecsResults;
+	}
+
+	public void setPartiesElecsResults(
+			List<PartyElectionVotersVO> partiesElecsResults) {
+		this.partiesElecsResults = partiesElecsResults;
 	}
 
 	public String execute() throws Exception
@@ -1993,4 +2004,17 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		return dataset;
 	}
 
+	public String buildBoothwiseElectionsResultsForConstituency(){
+		try {
+			jObj=new JSONObject(getTask());
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Long constituencyId = jObj.getLong("constiId"); 
+		ConstituencyVO constituencyInfo = partyBoothWiseResultsService.getBoothwiseResultsOfTwoElectionsForAConstituency(constituencyId);
+		partiesElecsResults = constituencyInfo.getPartiesCombinedResults();
+		return SUCCESS;
+	}
+	
 }

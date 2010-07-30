@@ -2571,6 +2571,9 @@
 				
 			for(var a in urbanConstResults)
 			{	
+				if(urbanConstResults[a].partiesHeading == null)
+					continue;
+				
 					urbanStr += '<table width="100%" height="150" cellspacing = "5" cellpadding="5" border="0">';
 					urbanStr += '	<tr>';
 					var electionHeaderLen = (urbanConstResults[a].partiesHeading.length*2)+2;
