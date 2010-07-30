@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dto.BiElectionDistrictVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsMainVO;
 import com.itgrids.partyanalyst.dto.BiElectionResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
+import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidatePartyInfoVO;
 import com.itgrids.partyanalyst.dto.ChartColorsAndDataSetVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
@@ -693,8 +694,81 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		//contestingCands = getContestingCandidateDetails(constiName);
 		//constituencyOverView.setContestingCands(contestingCands);
 		electionResultsVO = biElectionPageService.getMainPartiesResultsInConstituency(constiId, constiName);
+		if(electionResultsVO != null && electionResultsVO.size() > 0)
+		   getConstituencyResultCharts(electionResultsVO,constiName);	
 		constituencyOverView.setElectionResultsVO(electionResultsVO);
 		return Action.SUCCESS;
+	}
+	
+	/*
+	 * Method to create chart for constituency results
+	 */
+	public void getConstituencyResultCharts(List<ConstituencyElectionResultsVO> electionResultsVO,String constiName){
+		log.debug("Inside chart building method...");
+		
+		try{
+			for(ConstituencyElectionResultsVO results:electionResultsVO){
+				
+				if(results.getResultsFlag() == true){
+					List<CandidateOppositionVO> candResList = results.getCandidateOppositionList();
+					if(candResList != null && candResList.size() > 0){
+						String chartName = "ByeElection_For_"+results.getElectionType()+"_"+results.getElectionYear()+"_piechartFor_"+constiName+".png";
+						String chartPath = context.getRealPath("/") + "charts\\" + chartName;
+						Color[] colors = new Color[candResList.size()];
+						String chartTitle = ""+results.getElectionType()+" - "+results.getElectionYear();
+						final DefaultPieDataset dataset = new DefaultPieDataset();
+						int j=0;
+						for(CandidateOppositionVO candRes:candResList){
+							String partyName = candRes.getPartyName(); 
+							Double votesPercent = new Double(candRes.getVotesPercentage());
+							log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
+												
+								if(partyName.equals(IConstants.INC))
+								{
+									colors[j++]=IConstants.INC_COLOR;
+								}				
+								else
+								if(partyName.equals(IConstants.PRP))
+								{
+									colors[j++]=IConstants.PRP_COLOR;
+								}			
+								else
+								if(partyName.equals(IConstants.TDP))
+								{
+									colors[j++]=IConstants.TDP_COLOR;
+								}	
+								else
+								if(partyName.equals(IConstants.TRS))
+								{
+									colors[j++]=IConstants.TRS_COLOR;
+								}										
+								else
+								if(partyName.equals(IConstants.BJP))
+								{
+									colors[j++]=IConstants.BJP_COLOR;
+								}
+								else
+								if(partyName.equals(IConstants.OTHERS))
+								{
+									colors[j++]=IConstants.IND_COLOR;
+								}					
+								dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);
+						}
+						results.setChartName(chartName);
+						ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , colors,true,300,300);
+						
+					}
+					
+				}
+				else if(results.getResultsFlag() == false){
+					results.setChartName(null);
+				}
+			}
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+			log.debug("Exception Raised :" +ex);
+		}
 	}
 	
 	private Double getByeElectionVotesPercentage(String constiName)
