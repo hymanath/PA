@@ -37,6 +37,7 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private List<CandidateOppositionVO> candidateOppositionList;
 	private List<SelectOptionVO> allElectionYears;
 	private Boolean resultsFlag;
+	private String chartName;
 	
 	
 	//getters and setters
@@ -179,6 +180,12 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	}
 	public Boolean getResultsFlag() {
 		return resultsFlag;
+	}
+	public String getChartName() {
+		return chartName;
+	}
+	public void setChartName(String chartName) {
+		this.chartName = chartName;
 	}
 	
 }
