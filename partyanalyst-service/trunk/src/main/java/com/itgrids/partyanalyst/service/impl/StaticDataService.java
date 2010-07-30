@@ -4261,7 +4261,7 @@ public class StaticDataService implements IStaticDataService {
 				electionResults.add(populateDataForLocalElections(tehsilVO,IConstants.LOCAL_ELECTIONS_PRESENT_ELECTION_YEAR,IConstants.ZPTC_ELECTION_TYPE,flag));
 			}
 			
-			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(0l,tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE,flag);
+			electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(constituencyId,tehsilIds,IConstants.PRESENT_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE,flag);
 			if(electionResult.getResultStatus().getResultCode()!=1){
 				electionResults.add(electionResult);
 			}
@@ -4968,7 +4968,7 @@ public class StaticDataService implements IStaticDataService {
 				if(choices[i].equalsIgnoreCase("AC")){
 					ElectionResultPartyVO electionResult = new ElectionResultPartyVO();
 					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(0l,tehsilIds,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.PREVIOUS_ELECTION_YEAR,flag));
-					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(0l,tehsilIds,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,flag));	
+					partyResult.add(getAssemblyOrParliamentElectionVotesPercentageForDifferentParties(constituencyId,tehsilIds,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.PRESENT_ELECTION_YEAR,flag));	
 					
 					electionResult =  getPartyDetailsForTheGivenElectionYearInAConstituency(constituencyId,tehsilIds,IConstants.LATEST_BYE_ELECTION_YEAR,IConstants.ASSEMBLY_ELECTION_TYPE,flag);
 					if(electionResult != null && electionResult.getResultStatus().getResultCode()!=1){
