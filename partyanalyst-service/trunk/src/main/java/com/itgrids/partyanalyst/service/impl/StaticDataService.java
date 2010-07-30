@@ -4410,13 +4410,16 @@ public class StaticDataService implements IStaticDataService {
 					Double validVote = Double.parseDouble(parms[3].toString());
 					votesEarned = votesEarn.longValue();
 					validVotes = validVote.longValue();
+					Double percent = new Double(parms[4].toString());
+					percentage = new BigDecimal(percent).setScale(2, BigDecimal.ROUND_HALF_UP);
 				}
 				else{	
 				votesEarned = (Long)parms[1];
 				validVotes = (Long)parms[3];
+				percentage= new BigDecimal((votesEarned.doubleValue()/totalVotes.doubleValue())*100).setScale(2,BigDecimal.ROUND_HALF_UP);
 				}
 				
-				percentage= new BigDecimal((votesEarned.doubleValue()/totalVotes.doubleValue())*100).setScale(2,BigDecimal.ROUND_HALF_UP);
+				
 				CandidateElectionResultVO partyInfo = new CandidateElectionResultVO();
 				partyInfo.setTotalVotesEarned(votesEarned);
 				partyInfo.setTotalValidVotes(totalVotes);
