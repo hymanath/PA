@@ -716,6 +716,18 @@ public class BiElectionPageService implements IBiElectionPageService {
 				
 				if(mandalIds != null && mandalIds.size() > 0){
 					
+					//for 2010 bye election
+					ElectionResultsForMandalVO  elecResultParli2010 = getElectionResultsForMandalsInAConstituencyForAElection(mandalIds,IConstants.ASSEMBLY_ELECTION_TYPE,"2010");
+					BiElectionResultsVO biElectionResultTen = new BiElectionResultsVO();
+					List<ElectionResultsForMandalVO> electionResultsTen = new ArrayList<ElectionResultsForMandalVO>();
+					
+					if(elecResultParli2010 != null){
+						electionResultsTen.add(elecResultParli2010);
+						biElectionResultTen.setConstituencyId(constituencyId);
+						biElectionResultTen.setBiElectionResultsVO(electionResultsTen);
+					biElectionResultsVOList.add(biElectionResultTen);
+					}
+					
 					//for asembly 2009 & parliament 2009
 					ElectionResultsForMandalVO  elecResultAssembly2009 = getElectionResultsForMandalsInAConstituencyForAElection(mandalIds,IConstants.ASSEMBLY_ELECTION_TYPE,"2009");
 					ElectionResultsForMandalVO  elecResultParli2009 = getElectionResultsForMandalsInAConstituencyForAElection(mandalIds,IConstants.PARLIAMENT_ELECTION_TYPE,"2009");
