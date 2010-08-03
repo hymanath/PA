@@ -207,6 +207,11 @@ legend
 	color:#4B74C6;
 	font-weight:bold;
 }
+#revenueDataTable
+{
+	width: 950px;
+	overflow: auto;
+}
 
 
 </style>
