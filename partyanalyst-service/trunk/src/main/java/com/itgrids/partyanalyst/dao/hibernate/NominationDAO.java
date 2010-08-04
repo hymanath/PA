@@ -302,9 +302,9 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
          });
 	}
 	
-	public List getCandidateNPartyInfo(String constituencyIds,String electionType,Long rank)
+	public List getCandidateNPartyInfo(String constituencyIds,String electionType,Long rank, String electionSubtype)
 	{
-		Object[] params = {rank, electionType};
+		Object[] params = {rank, electionType, electionSubtype};
 		
 		return getHibernateTemplate().find("select model.constituencyElection.constituency.constituencyId," +
 				"model.constituencyElection.constituency.name,model.candidate.candidateId,model.candidate.firstname," +
@@ -312,7 +312,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"model.constituencyElection.constituency.deformDate,model.constituencyElection.constituency.electionScope.electionType.electionType," +
 				"model.party.partyFlag, model.constituencyElection.election.electionYear " +
 				"from Nomination model where model.constituencyElection.constituency.constituencyId in ("+constituencyIds+") and model.candidateResult.rank = ? and " +
-				"model.constituencyElection.election.electionYear = (select max(nModel.electionYear) from Election nModel where nModel.electionScope.electionType.electionType = ?)",params);
+				"model.constituencyElection.election.electionYear = (select max(nModel.electionYear) from Election nModel where " +
+				"nModel.electionScope.electionType.electionType = ? and nModel.elecSubtype = ?)",params);
 		
 	}
 	

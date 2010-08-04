@@ -893,7 +893,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			Object[] obj = (Object[])constituencyTypeDetails.get(0);
 			electionType = (String)obj[0];
 			if(obj[1]!=null)
-			 deformDate = (String)obj[1].toString();
+			 deformDate = obj[1].toString();
 		}
 		
 		if(!deformDate.equalsIgnoreCase("") || deformDate == null)
@@ -902,13 +902,13 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		//---------------
 		
 		
-		List candidateList = nominationDAO.getCandidateNPartyInfo(constituencyId.toString(), electionType, 1L);
+		List candidateList = nominationDAO.getCandidateNPartyInfo(constituencyId.toString(), electionType, 1L, IConstants.ELECTION_SUBTYPE_MAIN);
 		if(candidateList.size() == 0)
 			return null;
 		List<CandidateInfoForConstituencyVO> candidateInfoList = extractCandidateNPartyDataFromList(candidateList);
 		
 		
-		if(electionType.equalsIgnoreCase("Assembly")){
+		if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType)){
 			candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(candidateInfoList);
 				
 			List list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constituencyId);
@@ -917,7 +917,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			candidateDetailsForConstituencyTypesVO.setParliamentCandidateInfo(extractCandidateNPartyDataFromList(nominationDAO.getParliamentCandidateNPartyInfo(asemblyId, IConstants.PARLIAMENT_ELECTION_TYPE, 1L)).get(0));
 			
 		}
-		else if(electionType.equalsIgnoreCase("Parliament")){
+		else if(IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType)){
 			candidateDetailsForConstituencyTypesVO.setParliamentCandidateInfo(candidateInfoList.get(0));
 			
 			List assembliesData = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(constituencyId);
@@ -929,7 +929,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				idString.append(IConstants.COMMA).append((Long)ids[0]);
 				
 			}	
-			candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(extractCandidateNPartyDataFromList(nominationDAO.getCandidateNPartyInfo(idString.substring(1), IConstants.ASSEMBLY_ELECTION_TYPE, 1L)));
+			candidateDetailsForConstituencyTypesVO.setAssemblyCandidateInfo(extractCandidateNPartyDataFromList(nominationDAO.getCandidateNPartyInfo(idString.substring(1), IConstants.ASSEMBLY_ELECTION_TYPE, 1L, IConstants.ELECTION_SUBTYPE_MAIN)));
 		}
 		
 		return candidateDetailsForConstituencyTypesVO;
