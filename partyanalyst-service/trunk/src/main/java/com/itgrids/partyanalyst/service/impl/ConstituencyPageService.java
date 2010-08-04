@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -22,7 +21,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import javax.swing.Icon;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -35,7 +33,7 @@ import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
-import com.itgrids.partyanalyst.dao.IConstituencyElectionResultObjectsDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
@@ -92,7 +90,6 @@ import com.itgrids.partyanalyst.utils.ElectionDetailsVOComparator;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyElectionResultComparator;
 import com.itgrids.partyanalyst.utils.PartyResultVOComparatorByElectors;
-import com.itgrids.partyanalyst.utils.PartyResultVOComparatorByName;
 import com.itgrids.partyanalyst.utils.SortByRankOnPartyElectionResultComparator;
 
 public class ConstituencyPageService implements IConstituencyPageService {
@@ -102,7 +99,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	 * ConstituencyElectionResults
 	 */
 	private static final Logger log = Logger.getLogger(CrossVotingEstimationService.class);
-	private IConstituencyElectionResultObjectsDAO constituencyElectionResultObjectsDAO;
+	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
 	private IConstituencyDAO constituencyDAO;
 	private INominationDAO nominationDAO;
 	private ITownshipDAO townshipDAO;
@@ -231,11 +228,15 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		this.nominationDAO = nominationDAO;
 	}
 
-	public void setConstituencyElectionResultObjectsDAO(IConstituencyElectionResultObjectsDAO constituencyElectionResultObjectsDAO) {
-		this.constituencyElectionResultObjectsDAO = constituencyElectionResultObjectsDAO;
+	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
+		return constituencyElectionResultDAO;
 	}
 
-	
+	public void setConstituencyElectionResultDAO(
+			IConstituencyElectionResultDAO constituencyElectionResultDAO) {
+		this.constituencyElectionResultDAO = constituencyElectionResultDAO;
+	}
+
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
 	}
@@ -255,7 +256,7 @@ public class ConstituencyPageService implements IConstituencyPageService {
 
 	public List<ConstituencyElectionResultsVO> getConstituencyElectionResults(Long constituencyId) {
 		
-		List<ConstituencyElectionResult> constituencyElectionResults = constituencyElectionResultObjectsDAO.findConstituencyElectionResultObjects(constituencyId);
+		List<ConstituencyElectionResult> constituencyElectionResults = constituencyElectionResultDAO.findByConstituency(constituencyId);
 		List<ConstituencyElectionResultsVO> constituencyElectionResultList = new ArrayList<ConstituencyElectionResultsVO>(0);
 		ConstituencyElectionResultsVO constElecResultVO = null;
 		Election election = null;

@@ -282,10 +282,14 @@ public class ProblemManagementReportService implements
 		 * This method takes hamletId,registrationId and taskType and generates a report of problems for the
 		 * selected Constituency by location-wise,department-wise as well as  status-wise.
 		 */
-		public List<ProblemBeanVO> getConstituencyProblemsInfo(Long constituencyId,Long registrationId,String taskType) {
-			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();	
+		public List<ProblemBeanVO> getConstituencyProblemsInfo(Long constituencyId,Long registrationId,String taskType, String constituencyType) {
+			List<ProblemBeanVO> problemBeanVO = new ArrayList<ProblemBeanVO>();
+			String tehsilIds = "";
 			try{
-				String tehsilIds = getCommaSeperatedTehsilIdsForAccessType("MLA", constituencyId);
+				if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(constituencyType))
+					tehsilIds = getCommaSeperatedTehsilIdsForAccessType("MLA", constituencyId);
+				else
+					tehsilIds = getCommaSeperatedTehsilIdsForAccessType("MP", constituencyId);
 			if(taskType.equalsIgnoreCase("new") || taskType.equalsIgnoreCase("classify") || taskType.equalsIgnoreCase("assigned") || taskType.equalsIgnoreCase("progress") || taskType.equalsIgnoreCase("pending") || taskType.equalsIgnoreCase("fixed")){
 				result = problemHistoryDAO.findProblemsByStatusForALocationsByConstituencyId(tehsilIds,taskType);
 			}
@@ -707,7 +711,11 @@ public class ProblemManagementReportService implements
 
 			for(Tehsil tehsil : mandals)
 				tehsilIds.append(",").append(tehsil.getTehsilId());
-			return tehsilIds.toString().substring(1); 
+			
+			if(tehsilIds.length() > 0)
+				return tehsilIds.toString().substring(1);
+			else
+				return tehsilIds.toString();
 		}
 		
 		public List<InfluencingPeopleVO> findInfluencingPeopleInfoInLocation(String accessType, Long accessValue, Long hamletId, String flag){
@@ -723,36 +731,37 @@ public class ProblemManagementReportService implements
 			List<InfluencingPeopleVO> influencies = new ArrayList<InfluencingPeopleVO>();
 			InfluencingPeopleVO influencingPeopleVO = null;
 			
-			for(InfluencingPeople people:impPeople){
-				String name = "";
-				influencingPeopleVO = new InfluencingPeopleVO();
-				if(people.getFirstName() != null)
-					name += people.getFirstName();
-				if(people.getLastName() != null)
-					name = name+" "+people.getLastName();
-				influencingPeopleVO.setInfluencingPeopleId(people.getInfluencingPeopleId());
-				influencingPeopleVO.setPersonName(name);
-				influencingPeopleVO.setOccupation(people.getOccupation());
-				influencingPeopleVO.setInfluencingRange(people.getInfluencingScope());
-				if(IConstants.CONSTITUENCY_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
-					influencingPeopleVO.setInfluencingRangeName(constituencyDAO.get(new Long(people.getInfluencingScopeValue())).getName());
-				}else if(IConstants.STATE_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
-					influencingPeopleVO.setInfluencingRangeName(stateDAO.get(new Long(people.getInfluencingScopeValue())).getStateName());
-				}else if(IConstants.DISTRICT_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
-					influencingPeopleVO.setInfluencingRangeName(districtDAO.get(new Long(people.getInfluencingScopeValue())).getDistrictName());
-				}else if(IConstants.TEHSIL_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
-					influencingPeopleVO.setInfluencingRangeName(tehsilDAO.get(new Long(people.getInfluencingScopeValue())).getTehsilName());
-				}else if(IConstants.REVENUE_VILLAGE_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
-					influencingPeopleVO.setInfluencingRangeName(townshipDAO.get(new Long(people.getInfluencingScopeValue())).getTownshipName());
-				}else if(IConstants.HAMLET_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
-					influencingPeopleVO.setInfluencingRangeName(hamletDAO.get(new Long(people.getInfluencingScopeValue())).getHamletName());
+			if(impPeople != null)
+				for(InfluencingPeople people:impPeople){
+					String name = "";
+					influencingPeopleVO = new InfluencingPeopleVO();
+					if(people.getFirstName() != null)
+						name += people.getFirstName();
+					if(people.getLastName() != null)
+						name = name+" "+people.getLastName();
+					influencingPeopleVO.setInfluencingPeopleId(people.getInfluencingPeopleId());
+					influencingPeopleVO.setPersonName(name);
+					influencingPeopleVO.setOccupation(people.getOccupation());
+					influencingPeopleVO.setInfluencingRange(people.getInfluencingScope());
+					if(IConstants.CONSTITUENCY_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+						influencingPeopleVO.setInfluencingRangeName(constituencyDAO.get(new Long(people.getInfluencingScopeValue())).getName());
+					}else if(IConstants.STATE_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+						influencingPeopleVO.setInfluencingRangeName(stateDAO.get(new Long(people.getInfluencingScopeValue())).getStateName());
+					}else if(IConstants.DISTRICT_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+						influencingPeopleVO.setInfluencingRangeName(districtDAO.get(new Long(people.getInfluencingScopeValue())).getDistrictName());
+					}else if(IConstants.TEHSIL_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+						influencingPeopleVO.setInfluencingRangeName(tehsilDAO.get(new Long(people.getInfluencingScopeValue())).getTehsilName());
+					}else if(IConstants.REVENUE_VILLAGE_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+						influencingPeopleVO.setInfluencingRangeName(townshipDAO.get(new Long(people.getInfluencingScopeValue())).getTownshipName());
+					}else if(IConstants.HAMLET_LEVEL.equalsIgnoreCase(people.getInfluencingScope())){
+						influencingPeopleVO.setInfluencingRangeName(hamletDAO.get(new Long(people.getInfluencingScopeValue())).getHamletName());
+					}
+					influencingPeopleVO.setCast(people.getCaste());
+					influencingPeopleVO.setContactNumber(people.getPhoneNo());
+					influencingPeopleVO.setLocalArea(people.getHamlet().getHamletName());
+					influencingPeopleVO.setParty(people.getParty().getShortName());
+					influencies.add(influencingPeopleVO);
 				}
-				influencingPeopleVO.setCast(people.getCaste());
-				influencingPeopleVO.setContactNumber(people.getPhoneNo());
-				influencingPeopleVO.setLocalArea(people.getHamlet().getHamletName());
-				influencingPeopleVO.setParty(people.getParty().getShortName());
-				influencies.add(influencingPeopleVO);
-			}
 			return influencies;
 		}
 		

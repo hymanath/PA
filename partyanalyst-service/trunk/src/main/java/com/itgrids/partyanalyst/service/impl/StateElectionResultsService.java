@@ -9,36 +9,20 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import com.itgrids.partyanalyst.dao.ICandidateResultObjectsDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
-import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyWiseResultVO;
 import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
-import com.itgrids.partyanalyst.model.CandidateResult;
-import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.IStateElectionResultsService;
 import com.itgrids.partyanalyst.utils.ElectionResultsForPartiesBySeats;
 
 public class StateElectionResultsService implements
 		IStateElectionResultsService {
 
-	private ICandidateResultObjectsDAO candidateResultObjectsDAO;
 	private INominationDAO nominationDAO;
-	
-	public ICandidateResultObjectsDAO getCandidateResultObjectsDAO() {
-		return candidateResultObjectsDAO;
-	}
-	public void setCandidateResultObjectsDAO(
-			ICandidateResultObjectsDAO candidateResultObjectsDAO) {
-		this.candidateResultObjectsDAO = candidateResultObjectsDAO;
-	}
-	
-   public INominationDAO getNominationDAO() {
+		
+	public INominationDAO getNominationDAO() {
 		return nominationDAO;
 	}
 	public void setNominationDAO(INominationDAO nominationDAO) {

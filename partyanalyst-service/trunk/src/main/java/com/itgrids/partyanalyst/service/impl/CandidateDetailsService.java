@@ -13,7 +13,7 @@ import java.util.List;
 import org.apache.velocity.util.StringUtils;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
-import com.itgrids.partyanalyst.dao.ICandidateResultObjectsDAO;
+import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
@@ -32,14 +32,19 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	 * 
 	 */
 	
-	private ICandidateResultObjectsDAO candidateResultObjectsDAO;
+	private ICandidateResultDAO candidateResultDAO;
 	private ICandidateDAO candidateDAO;
 	
-	public void setCandidateResultObjectsDAO(
-			ICandidateResultObjectsDAO candidateResultObjectsDAO) {
-		this.candidateResultObjectsDAO = candidateResultObjectsDAO;
-	}
 	
+	
+	public ICandidateResultDAO getCandidateResultDAO() {
+		return candidateResultDAO;
+	}
+
+	public void setCandidateResultDAO(ICandidateResultDAO candidateResultDAO) {
+		this.candidateResultDAO = candidateResultDAO;
+	}
+
 	public void setCandidateDAO(ICandidateDAO candidateDAO) {
 		this.candidateDAO = candidateDAO;
 	}
@@ -72,7 +77,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		
 		List<CandidateDetailsVO> candidateElectionDetails = new ArrayList<CandidateDetailsVO>(0);
 		
-		List<CandidateResult> candidateResults = candidateResultObjectsDAO.findCandidateResults(candidateId);
+		List<CandidateResult> candidateResults = candidateResultDAO.findCandidateResults(candidateId);
 		 
 		 if(candidateResults != null){
 			//Nomination nomination = null;
@@ -137,7 +142,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public List<CandidateOppositionVO> getCandidatesOppositionList(Long candidateId,Long electionId,Long constituencyId){
 		
 		List<CandidateOppositionVO> oppositionCandidatesList =  new ArrayList<CandidateOppositionVO>(0);
-		List<CandidateResult> candidateResultsList = candidateResultObjectsDAO.findCandidateResults(candidateId, electionId, constituencyId);
+		List<CandidateResult> candidateResultsList = candidateResultDAO.findCandidateResults(candidateId, electionId, constituencyId);
 		 
 		  if(candidateResultsList != null){
 			  

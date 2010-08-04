@@ -52,4 +52,12 @@ public interface ICandidateResultDAO extends GenericDao<CandidateResult, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List getElectionResultsForAllPartiesInAMandal(Long mandalId,String electionType,String electionYear);
+	
+	public List<CandidateResult> findCandidateResultObjects(Long electionId);
+	
+	public List<CandidateResult> findCandidateResultObjects(Long candidateId,Long rank);
+	
+	public List<CandidateResult> findCandidateResults(Long candidateId);
+	
+	public List<CandidateResult> findCandidateResults(Long candidateId,Long electionId,Long constituencyId);
 }

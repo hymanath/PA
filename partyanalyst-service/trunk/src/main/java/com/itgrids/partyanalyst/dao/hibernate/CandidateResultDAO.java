@@ -125,4 +125,37 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 				"group by model.nomination.party.partyId",params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<CandidateResult> findCandidateResultObjects(Long electionId) {
+		
+		Query queryObject = getSession().createQuery("from CandidateResult as model where model.nomination.constituencyElection.election.electionId = ?");
+		 queryObject.setParameter(0, electionId);
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<CandidateResult> findCandidateResultObjects(Long candidateId,Long rank){
+		
+		Query queryObject = getSession().createQuery("from CandidateResult as model where model.rank = ? and model.nomination.candidate.candidateId = ?");
+		 queryObject.setParameter(0, rank);
+		 queryObject.setParameter(1, candidateId);
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<CandidateResult> findCandidateResults(Long candidateId){
+		Query queryObject = getSession().createQuery("from CandidateResult as model where model.nomination.candidate.candidateId = ?");
+		  queryObject.setParameter(0, candidateId);
+		return queryObject.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<CandidateResult> findCandidateResults(Long candidateId,Long electionId,Long constituencyId){
+		Query queryObject = getSession().createQuery("from CandidateResult as model where model.nomination.candidate.candidateId != ? and model.nomination.constituencyElection.election.electionId = ? and model.nomination.constituencyElection.constituency.constituencyId = ?");
+		  queryObject.setParameter(0, candidateId);
+		  queryObject.setParameter(1, electionId);
+		  queryObject.setParameter(2, constituencyId);
+		return queryObject.list();
+	}
+	
 }

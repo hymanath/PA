@@ -1,8 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -18,9 +16,6 @@ import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
 import com.itgrids.partyanalyst.dao.ISmsTrackDAO;
-import com.itgrids.partyanalyst.dao.hibernate.SmsHistoryDAO;
-import com.itgrids.partyanalyst.keys.PropertyKeys;
-import com.itgrids.partyanalyst.model.Registration;
 import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsModule;
 import com.itgrids.partyanalyst.model.SmsTrack;

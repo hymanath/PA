@@ -1,8 +1,5 @@
 package com.itgrids.partyanalyst.util;
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,13 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
-import com.itgrids.partyanalyst.dto.CandidateWonVO;
-import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
-import com.itgrids.partyanalyst.dto.ImportantDatesVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
-import com.itgrids.partyanalyst.dto.ProblemManagementVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.UserEventVO;
 import com.itgrids.partyanalyst.model.Cadre;
@@ -44,13 +37,10 @@ import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserEventActionPlan;
 import com.itgrids.partyanalyst.model.UserEvents;
 import com.itgrids.partyanalyst.model.UserImpDate;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 
 public class MockData {
 	
-
 	private static final Country country = new Country(new Long(1), "India", "Hyderabd", "IN", null); 
 
 	private static final State state = new State(new Long(1), country, "Andhra Pradesh", null, null, null,

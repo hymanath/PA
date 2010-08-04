@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class MandalVO {
+public class MandalVO extends ResultStatus{
 
 	private static final long serialVersionUID = 1L;
 	private String name;

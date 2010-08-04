@@ -163,4 +163,9 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 				"model.constituencyElection.election.electionYear = ?", params);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<ConstituencyElectionResult> findByConstituency(Long constituencyId){
+		return getHibernateTemplate().find("from ConstituencyElectionResult model where model.constituencyElection.constituency.constituencyId = ?", constituencyId);
+	}
+	
 }

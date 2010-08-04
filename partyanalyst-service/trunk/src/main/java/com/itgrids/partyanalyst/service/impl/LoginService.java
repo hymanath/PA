@@ -16,7 +16,6 @@ public class LoginService implements ILoginService{
 		this.registrationDAO = registrationDAO;
 	}
 	
-
 	public RegistrationVO checkForValidUser(String userName,String password){
 		
 		List<Registration> registrations = registrationDAO.findByUserNameAndPassword(userName, password);

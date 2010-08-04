@@ -100,8 +100,6 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		return getHibernateTemplate().find("select distinct model.constituencyElection.election.electionYear from " +
 				"BoothConstituencyElection model");
 	}
-	
-
 
 	public List getStatesByCountryFromBooth(Long countryID) {
 		return getHibernateTemplate().find("select distinct model.constituencyElection.constituency.state.stateId, " +

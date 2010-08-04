@@ -14,7 +14,7 @@ public interface IProblemManagementReportService {
 	
 	public List<ProblemBeanVO> getTehsilProblemsInfo(Long tehsilId,Long registrationId,String taskType);
 	
-	public List<ProblemBeanVO> getConstituencyProblemsInfo(Long constituencyId,Long registrationId,String taskType);
+	public List<ProblemBeanVO> getConstituencyProblemsInfo(Long constituencyId,Long registrationId,String taskType, String constituencyType);
 	
 	public List<ProblemHistoryVO> getCompleteDetailsForAProblem(Long problemLocationId);
 	
