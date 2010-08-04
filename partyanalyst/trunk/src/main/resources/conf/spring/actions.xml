@@ -79,7 +79,7 @@
 	
 
 	<bean id="stateElectionResultsAction" class="com.itgrids.partyanalyst.web.action.StateElectionResultsAction" singleton="false">
-		<property name="stateElectionResultsService" ref="stateElectionResultsService" />
+		<property name="statePageService" ref="statePageService" />
 	</bean>
 	
 	<bean id="districtPageAction" class="com.itgrids.partyanalyst.web.action.DistrictPageAction" singleton="false">
