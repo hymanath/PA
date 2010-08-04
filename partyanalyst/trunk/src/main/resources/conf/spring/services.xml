@@ -86,7 +86,6 @@
 
 	
 	<bean name="stateElectionResultsService" class="com.itgrids.partyanalyst.service.impl.StateElectionResultsService" >
-	     <property name="candidateResultObjectsDAO" ref="candidateResultObjectsDAO" />
 	     <property name="nominationDAO" ref="nominationDAO" />
 	</bean>
 	
@@ -98,7 +97,7 @@
 	</bean>
 	
 	<bean name="constituencyPageService" class="com.itgrids.partyanalyst.service.impl.ConstituencyPageService" >
-		<property name="constituencyElectionResultObjectsDAO" ref="constituencyElectionResultObjectsDAO" />
+		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
@@ -111,14 +110,14 @@
 		<property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
-		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />	
+		<property name="delimitationConstituencyMandalService" ref="delimitationConstituencyMandalService" />
 		<property name="staticDataService" ref="staticDataService" />
 		<property name="boothResultDAO" ref="boothResultDAO" />	
 	</bean>	
 	
 	<bean name="candidateDetailsService" class="com.itgrids.partyanalyst.service.impl.CandidateDetailsService" >
-		<property name="candidateResultObjectsDAO" ref="candidateResultObjectsDAO" />
 		<property name="candidateDAO" ref="candidateDAO" />
+		<property name="candidateResultDAO" ref="candidateResultDAO" />
 	</bean>
 	
 	<bean name="partyInfluenceService" class="com.itgrids.partyanalyst.service.impl.PartyInfluenceService" >

@@ -276,7 +276,8 @@ public class ProblemManagementReportAction extends ActionSupport implements
 				taskType =  jObj.getString("taskType");
 				locationId = new Long(jObj.getLong("locationId"));
 				status = findTaskType(taskType);
-				problemBean = problemManagementReportService.getConstituencyProblemsInfo(new Long(locationId), user.getRegistrationID(),status);
+				//Should Be Refactored For Constituency Type Bellow
+				problemBean = problemManagementReportService.getConstituencyProblemsInfo(new Long(locationId), user.getRegistrationID(),status, IConstants.ASSEMBLY_ELECTION_TYPE);
 			}else if(jObj.getString("task").equals("getParties")){
 				result = staticDataService.getStaticParties();
 			}else if(jObj.getString("task").equals("getPositions")){

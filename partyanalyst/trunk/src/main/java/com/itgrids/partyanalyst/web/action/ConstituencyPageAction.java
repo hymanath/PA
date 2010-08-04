@@ -547,7 +547,8 @@ public class ConstituencyPageAction extends ActionSupport implements
 			}
 				
 			if(votersInMandalOrAC.getVotersInfoForMandalVO().size() > 0)
-				ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(votersInMandalOrAC.getVotersInfoForMandalVO()), pieChartPath, null,true,260,270);
+				ChartProducer.createProblemsPieChart(title, createPieDatasetForVoters(votersInMandalOrAC.getVotersInfoForMandalVO()), pieChartPath, 
+						null,true,260,270);
 			chartNames[i++] = pieChart;
 		}
 		
@@ -555,7 +556,7 @@ public class ConstituencyPageAction extends ActionSupport implements
 		constituencyVO.setExtraInfo(extraInfo);
 		candidateDetailsForConstituency = constituencyPageService.getCandidateAndPartyInfoForConstituency(constituencyId);
 		
-		problemBean = problemManagementReportService.getConstituencyProblemsInfo(constituencyId, 0L,"");
+		problemBean = problemManagementReportService.getConstituencyProblemsInfo(constituencyId, 0L,"", constituencyVO.getElectionType());
 		
 	
 		System.out.println("electionTrendzReportVO ============ "+electionTrendzReportVO);
@@ -568,10 +569,12 @@ public class ConstituencyPageAction extends ActionSupport implements
            if(electionBasicInfoVO.getElectionId() != null){
 			
 			System.out.println("Inside trendz service call ....");
-			electionTrendzReportVO = electionTrendzService.getVotingTrendzForAConstituency(electionBasicInfoVO.getElectionId(),electionBasicInfoVO.getElectionTypeId(),electionBasicInfoVO.getElectionYear(),constituencyId,IConstants.MALETRENDZ,IConstants.FEMALETRENDZ);
+			electionTrendzReportVO = electionTrendzService.getVotingTrendzForAConstituency(electionBasicInfoVO.getElectionId(),electionBasicInfoVO.
+					getElectionTypeId(),electionBasicInfoVO.getElectionYear(),constituencyId,IConstants.MALETRENDZ,IConstants.FEMALETRENDZ);
 			if(electionTrendzReportVO != null)
 			getMapsForVotingTrendz(electionTrendzReportVO);
-			electionTrendzReportVO.setPrevElectionYearsInfo(electionTrendzService.getPreviousElectionsInfoForAConstituency(electionBasicInfoVO.getElectionYear(), constituencyId));
+			electionTrendzReportVO.setPrevElectionYearsInfo(electionTrendzService.getPreviousElectionsInfoForAConstituency(electionBasicInfoVO.
+					getElectionYear(), constituencyId));
            }
            	
         chartName = "allPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
@@ -579,13 +582,15 @@ public class ConstituencyPageAction extends ActionSupport implements
        
         Set<String> partiesInChart = null;
         partiesInChart = new LinkedHashSet<String>();
-   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, partiesInChart), chartPath,260,700, ChartUtils.getLineChartColors(partiesInChart),false );
+   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
+   				createDataset(constituencyElectionResultsVO, partiesInChart), chartPath,260,700, ChartUtils.getLineChartColors(partiesInChart),false );
    		
    		enlargedChartName = "enlargedImgOfAllPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
         String enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedChartName;
        
         partiesInChart = new LinkedHashSet<String>();
-   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", createDataset(constituencyElectionResultsVO, partiesInChart), enlargedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart) ,false);
+   		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
+   				createDataset(constituencyElectionResultsVO, partiesInChart), enlargedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart) ,false);
 		
    		navigationVO = staticDataService.findHirarchiForNavigation(constituencyId, IConstants.CONSTITUENCY_LEVEL);
    		
