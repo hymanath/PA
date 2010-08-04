@@ -23,4 +23,6 @@ public interface IStatePageService {
 	
 	public List<CensusVO> getCensusDetails(Long stateId,int year);
 	
+	public StateElectionResultsVO getStateElectionResults(Long electionId);
+	
 }

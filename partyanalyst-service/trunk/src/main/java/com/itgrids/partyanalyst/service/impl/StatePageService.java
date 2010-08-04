@@ -15,8 +15,10 @@ import java.util.Set;
 
 import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IElectionObjectsDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dto.CensusVO;
+import com.itgrids.partyanalyst.dto.PartyWiseResultVO;
 import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
 import com.itgrids.partyanalyst.dto.StatePageVO;
@@ -24,7 +26,6 @@ import com.itgrids.partyanalyst.model.Census;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.State;
-import com.itgrids.partyanalyst.service.IStateElectionResultsService;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.utils.ElectionResultsForPartiesBySeats;
 
@@ -34,33 +35,28 @@ public class StatePageService implements IStatePageService {
 	private IStateDAO stateDAO;
 	private IElectionObjectsDAO electionObjectsDAO;
 	private ICensusDAO censusDAO;
-	private IStateElectionResultsService stateElectionResultsService;
-		
+	private INominationDAO nominationDAO;		
 	
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
 	}
-
 	
 	public void setElectionObjectsDAO(IElectionObjectsDAO electionObjectsDAO) {
 		this.electionObjectsDAO = electionObjectsDAO;
 	}
 
-
 	public void setCensusDAO(ICensusDAO censusDAO) {
 		this.censusDAO = censusDAO;
 	}
-
-	public IStateElectionResultsService getStateElectionResultsService() {
-		return stateElectionResultsService;
-	}
-
-
-	public void setStateElectionResultsService(
-			IStateElectionResultsService stateElectionResultsService) {
-		this.stateElectionResultsService = stateElectionResultsService;
-	}
 	
+	public INominationDAO getNominationDAO() {
+		return nominationDAO;
+	}
+
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
+
 	//method that returns election years and election type for a particular state
 	public List<StateElectionsVO> getStateElections(Long stateId) {
 		
@@ -87,7 +83,7 @@ public class StatePageService implements IStatePageService {
     	    	  stateElections.setElectionType(electionType.getElectionType());
     	    	  stateElections.setYear(election.getElectionYear());
     	    	  
-    	    	  StateElectionResultsVO stateElecResults = stateElectionResultsService.getStateElectionResults(election.getElectionId());
+    	    	  StateElectionResultsVO stateElecResults = getStateElectionResults(election.getElectionId());
     	    	  if(stateElecResults != null)
     	    	  stateElections.setPartyResultsVO(stateElecResults.getPartyResultsVO());     	    	
     	    	  stateElectionsList.add(stateElections);
@@ -228,6 +224,39 @@ public class StatePageService implements IStatePageService {
 	return null;
 	}
 	
-	
+	 @SuppressWarnings("unchecked")
+		public StateElectionResultsVO getStateElectionResults(Long electionId){
+			
+			List<PartyWiseResultVO> partyResultsVO = null;
+			StateElectionResultsVO stateElectionResults = new StateElectionResultsVO();
+			Long partyId = new Long(0);
+			String partyName = "";
+			String partyFlag = "";
+			Long seatsWon=new Long(0);
+			
+			List elecResults = nominationDAO.findElectionDataByElectionId(electionId);
+			if(elecResults != null){
+			partyResultsVO = new ArrayList<PartyWiseResultVO>(0);
+			for(int i=0; i<elecResults.size(); i++){
+				Object[] params = (Object[])elecResults.get(i);
+				partyId  = (Long)params[0];
+				partyName = (String)params[1];			 
+				seatsWon = (Long)params[2];
+				partyFlag = (String)params[3];
+				
+				PartyWiseResultVO partyResults = new PartyWiseResultVO();
+				partyResults.setPartyId(partyId);
+				partyResults.setPartyName(partyName);
+				partyResults.setTotalSeatsWon(seatsWon);
+				partyResults.setPartyFlag(partyFlag);
+				
+				partyResultsVO.add(partyResults);
+			}
+			Collections.sort(partyResultsVO,new ElectionResultsForPartiesBySeats());
+			}
+			stateElectionResults.setPartyResultsVO(partyResultsVO);
+					  
+		return stateElectionResults;
+		}
 	
 }
