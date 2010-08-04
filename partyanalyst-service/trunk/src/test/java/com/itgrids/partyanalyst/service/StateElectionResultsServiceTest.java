@@ -8,15 +8,13 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
-import java.util.Set;
 
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.itgrids.partyanalyst.dao.ICandidateResultObjectsDAO;
-import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dto.PartyWiseResultVO;
 import com.itgrids.partyanalyst.dto.StateElectionResultsVO;
 import com.itgrids.partyanalyst.model.CandidateResult;
@@ -25,7 +23,7 @@ import com.itgrids.partyanalyst.util.DummyCandidateResults;
 
 public class StateElectionResultsServiceTest {
 
-	private ICandidateResultObjectsDAO candidateResultObjectsDAO;
+	private ICandidateResultDAO candidateResultDAO;
 	private StateElectionResultsService stateElectionResultsService;
 	
 	
@@ -33,9 +31,8 @@ public class StateElectionResultsServiceTest {
 	public void setUp() throws Exception{
 		
 		System.out.println("  Called Init Method....");
-		candidateResultObjectsDAO = EasyMock.createMock(ICandidateResultObjectsDAO.class);
+		candidateResultDAO = EasyMock.createMock(ICandidateResultDAO.class);
 		stateElectionResultsService = new StateElectionResultsService();
-		stateElectionResultsService.setCandidateResultObjectsDAO(candidateResultObjectsDAO);
 	}
 	
 	@Test
@@ -45,8 +42,8 @@ public class StateElectionResultsServiceTest {
 		
 		List<CandidateResult> candidateResults = DummyCandidateResults.getCandidateResults();
 		
-		  EasyMock.expect(candidateResultObjectsDAO.findCandidateResultObjects(new Long(10))).andReturn(candidateResults);
-		  EasyMock.replay(candidateResultObjectsDAO);
+		  EasyMock.expect(candidateResultDAO.findCandidateResultObjects(new Long(10))).andReturn(candidateResults);
+		  EasyMock.replay(candidateResultDAO);
 		
 		  StateElectionResultsVO electionResults = stateElectionResultsService.getStateElectionResults(new Long(10));
 		
