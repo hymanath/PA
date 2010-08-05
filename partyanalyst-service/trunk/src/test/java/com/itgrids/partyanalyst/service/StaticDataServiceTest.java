@@ -69,7 +69,7 @@ public class StaticDataServiceTest {
 		Assert.assertEquals(1, s.size());
 	}
 	
-	@Test
+	/*@Test
 	public void testGetElectionYears() {
 		System.out.println("called testElectionYears() method..........");
 		StaticDataService service = new StaticDataService();
@@ -87,7 +87,7 @@ public class StaticDataServiceTest {
 		List<String> actualYears = service.getElectionYears(new Long(2));
 		
 		Assert.assertEquals(expectedYears, actualYears);
-	}
+	}*/
 	
 	@Test
 	public void testGetDistrictsForStateId(){

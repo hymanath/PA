@@ -50,7 +50,7 @@ public interface IStaticDataService {
 		
 		public List<ElectionScope> getElectionScope(Long electionType);
 		
-		public List<SelectOptionVO> getElectionIdsAndYears(Long electionType);
+		public List<SelectOptionVO> getElectionIdsAndYears(Long electionTypeId);
 		
 		public List<SelectOptionVO> getElectionIdsAndYearsInfo(Long elecType,Long stateId);
 		
@@ -213,7 +213,7 @@ public interface IStaticDataService {
 		
 		public ConstituencyElectionResultsVO getAllCandidatesDetailsForConstituency(Long constituencyId,String electionYear,String electionType);
 		
-		public CandidateDetailsVO getAllParliamentWinningCandidatesForADistrict(Long districtId);
+		public CandidateDetailsVO getAllParliamentWinningCandidatesForADistrict(Long districtId, Set<Long> parliamentConstituencies);
 		
 		public MandalAllElectionDetailsVO getAllMptcsCandidatesForADistrictForSelectedYear(Long districtId,String electionYear,int lostFlag);
 		

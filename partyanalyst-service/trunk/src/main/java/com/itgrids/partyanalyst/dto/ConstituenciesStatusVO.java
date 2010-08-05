@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ConstituenciesStatusVO extends ResultStatus{
 	
@@ -19,6 +20,7 @@ public class ConstituenciesStatusVO extends ResultStatus{
 	private int totalDeletedConstituencies;
 	private String electionType;
 	private String electionYear;
+	private Set<Long> parliamentConstituencies;
 	
 	public int getTotalDeletedConstituencies() {
 		return totalDeletedConstituencies;
@@ -76,5 +78,11 @@ public class ConstituenciesStatusVO extends ResultStatus{
 	}
 	public void setElectionYear(String electionYear) {
 		this.electionYear = electionYear;
+	}
+	public Set<Long> getParliamentConstituencies() {
+		return parliamentConstituencies;
+	}
+	public void setParliamentConstituencies(Set<Long> parliamentConstituencies) {
+		this.parliamentConstituencies = parliamentConstituencies;
 	}
 }
