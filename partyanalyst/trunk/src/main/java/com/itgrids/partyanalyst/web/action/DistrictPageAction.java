@@ -541,9 +541,11 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 			{
 				try{
 					if(jObj.getString("electionType").equalsIgnoreCase(IConstants.ZPTC_ELECTION_TYPE)){
-						candidateTrendzReportVO = staticDataService.getAllZptcsForADistrictForAPartyForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),new Long(jObj.getString("partyId")),0,0);
+						candidateTrendzReportVO = staticDataService.getAllZptcsMptcsForADistrictForAPartyForSelectedYear(jObj.getLong("districtId"),
+								jObj.getString("electionYear"),jObj.getLong("partyId"),0,0, IConstants.ZPTC_ELECTION_TYPE);
 					}else{
-						candidateTrendzReportVO = staticDataService.getAllMptcsForADistrictForAPartyForSelectedYear(new Long(jObj.getString("districtId")),jObj.getString("electionYear"),new Long(jObj.getString("partyId")),0,0);
+						candidateTrendzReportVO = staticDataService.getAllZptcsMptcsForADistrictForAPartyForSelectedYear(jObj.getLong("districtId"),
+								jObj.getString("electionYear"),jObj.getLong("partyId"),0,0, IConstants.MPTC_ELECTION_TYPE);
 					}
 				}catch(Exception e){
 					log.debug("No data is available...");															

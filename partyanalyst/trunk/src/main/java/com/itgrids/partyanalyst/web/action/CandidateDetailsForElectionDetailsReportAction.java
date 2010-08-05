@@ -154,12 +154,9 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 
 	public String execute () throws Exception 
 	{
-		statesListObj = new CandidateDetailsVO();		
 		statesListObj = staticDataService.getAllStatesInCountry();
-		districtsList = new ArrayList<SelectOptionVO>();
 		districtsList = staticDataService.getDistricts(new Long(stateID));
 		districtsList.add(0, new SelectOptionVO(0l,"Select A District"));
-		partiesList = new ArrayList<SelectOptionVO>();
 		if(electionType.equals(IConstants.ZPTC) || electionType.equals(IConstants.MPTC))
 		{
 			try{
@@ -169,7 +166,8 @@ public class CandidateDetailsForElectionDetailsReportAction extends ActionSuppor
 				partiesList = null;
 				log.debug("Error occured in retriving the data in CandidateDetailsForElectionDetailsReportAction class");
 			}
-		} else if (electionType.equals(IConstants.ASSEMBLY_ELECTION_TYPE) || electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE))
+		} else if (IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType) || 
+				IConstants.PARLIAMENT_ELECTION_TYPE.equalsIgnoreCase(electionType))
 		{
 			try{
 				partiesList = staticDataService.getStaticPartiesForCandidateDeatailsReport();
