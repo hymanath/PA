@@ -4,13 +4,26 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ page import="java.util.ResourceBundle;" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Party Results</title>
 <script type="text/javascript">
-
+var labelResources = { <%		
+		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
+		String electionYear = rb.getString("electionYear");
+		String party = rb.getString("party");
+		String participatedConsts = rb.getString("participatedConsts");
+		String seatsWon = rb.getString("seatsWon");
+		String votesPercentage = rb.getString("votesPercentage");
+		String oppPartyRes = rb.getString("oppPartyRes");
+		String oppParty = rb.getString("oppParty");
+		ResourceBundle pprRb = ResourceBundle.getBundle("ppr_Labels");
+		
+		String mainParty = pprRb.getString("mainParty");
+		String allianceParty = pprRb.getString("allianceParty");
+%>}
     function showOppostionDeatils(year)
 	{	
 		var id = year+"_opposition";
@@ -37,8 +50,7 @@
 <body>
 <center>
 	<H3>
-		<u align="centre"> <c:out value="${selectedPartyShortName}"/>  Party Result for <br/></u>
-		<u align="centre"> <c:out value="${selectedLocationName}"/>   <c:out value="${reportLevel}"/> <c:out value="${selectedElectionTypeName}"/> Elections</u>
+		<u align="centre"> <c:out value="${selectedPartyShortName}"/>  Party Results for  <c:out value="${selectedLocationName}"/>   <c:out value="${reportLevel}"/> Level <c:out value="${selectedElectionTypeName}"/> Elections</u>
     </H3>
 </center>  
 
@@ -46,14 +58,14 @@
 
 <div id="partyResultsDiv" style="padding:5px;">
 	
-		<table class="searchresultsTable" border="1" style="width:580px;">
+		<table class="searchresultsTable" border="1" style="width:90%;">
 	<tr>
-		<th>Year</th>
-        <th>Party</th>
-		<th>Participated In</th>
-		<th>Seats Win</th>
-		<th>% of Votes</th>
-		<th> View </th>
+		<th><%=electionYear%></th>
+        <th><%=party%></th>
+		<th><%=participatedConsts%></th>
+		<th><%=seatsWon%></th>
+		<th><%=votesPercentage%></th>
+		<th><%=oppPartyRes%></th>
 		
 	</tr>
 	<c:forEach var="partyResultInfoVO" items="${partyResultInfoVOs}" >	
@@ -64,7 +76,7 @@
 		<td align="center"><font color="red"><c:out value="${partyResultInfoVO.partyInfoVO.seatsParticipated}"/></td>
 		<td align="center" ><font color="red"><c:out value="${partyResultInfoVO.partyInfoVO.seatsWin}"/></td>
 		<td align="center"><font color="red"><c:out value="${partyResultInfoVO.partyInfoVO.percentageOfVotes}"/></td>
-		<td><a href="javascript:showOppostionDeatils(${partyResultInfoVO.partyInfoVO.electionYear})">   View Opposition Details   </a></td>
+		<td align="center"><a href="javascript:showOppostionDeatils(${partyResultInfoVO.partyInfoVO.electionYear})">   View Opposition Details   </a></td>
 	</tr>
 	</c:if>	
 	
@@ -92,15 +104,15 @@
 	<tr>
 		<th colspan="6"> </th>
 	</tr>
-	</c:forEach>
-	<tr>
-	<td colspan="6">
-		<font color="red">*  Main Party  </font>
-		<font color="#896ADE">  *  Alliance  Party</font>
-		<font color="#000000">  *  Opposition Party</font>
-	</td>
-	</tr>
-</table><br>
+	</c:forEach>	
+</table>
+		<table align="left" width="500" style="margin-left:45px;">
+			<tr>	
+				<td ><div style="height:10px;width:10px;border:1px solid #896ADE;background-color:red;"></div></td><td><font color="red"><%=mainParty%></font></td>
+				<td><div style="height:10px;width:10px;border:1px solid red;background-color:#896ADE;"></div></td><td><font color="#896ADE"><%=allianceParty%></font></td>
+				<td><div style="height:10px;width:10px;border:1px solid red;background-color:black;"></div></td><td><font color="#000000"><%=oppParty%></font></td>
+			</tr>
+		</table>
 </div>
 
 
