@@ -145,9 +145,8 @@ public interface IStaticDataService {
 		
 		public CandidateDetailsVO getMuncipalAndCorporationCandidateDetails(Long stateId,String electionType,String electionYear,Long rank,Long partyId,Long districtId,String resultsCategory);
 		
-		public MandalAllElectionDetailsVO getAllMptcsForADistrictForAPartyForSelectedYear(Long districtId,String electionYear,Long partyId,int flag,int lostFlag);
-		
-		public MandalAllElectionDetailsVO getAllZptcsForADistrictForAPartyForSelectedYear(Long districtId,String electionYear,Long partyId,int flag,int lostFlag);
+		public MandalAllElectionDetailsVO getAllZptcsMptcsForADistrictForAPartyForSelectedYear(Long districtId,
+				String electionYear,Long partyId,int flag,int lostFlag, String electionType);
 		
 		public CandidateDetailsVO getElectionResultsForAConstituencyForAllYears(Long constituencyId);
 		
