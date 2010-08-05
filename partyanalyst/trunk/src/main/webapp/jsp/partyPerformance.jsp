@@ -2,8 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="s" uri="/struts-tags" %>
-
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.ResourceBundle;" %>
 <HTML>
  <HEAD>
 	<TITLE>Party Performance Report</TITLE>
@@ -15,6 +14,22 @@
   	<!-- Dependencies --> 
    	<script type="text/javascript" src="js/yahoo/yahoo-min.js" ></script>
 	<script type="text/javascript">
+	var labelResources = { <%		
+	ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
+	String electionType = rb.getString("electionType");
+	String state = rb.getString("state");
+	String electionYear  = rb.getString("electionYear");
+	String party  = rb.getString("party");
+	String dist = rb.getString("dist");
+	String viewReport = rb.getString("viewReport");
+	String alliances = rb.getString("alliances");
+	String inclAlliances = rb.getString("inclAlliances");
+	
+	ResourceBundle pprRb = ResourceBundle.getBundle("ppr_Labels");
+	String reportLevel = pprRb.getString("reportLevel");
+	
+	%> }
+	
  	function callAjax(param, url){
  		var myResults;
  		url = url + param;
@@ -183,25 +198,25 @@
 		</th>
 	</tr>
 	<tr>
-		<th>Election Type</th>
+		<th align="left"><%=electionType%></th>
 		<td>
 			<input type="radio" name="electionType" value="2" checked="checked" onclick="doAjax(this.value);"/>Assembly
 			<input type="radio" name="electionType" value="1" onclick="doAjax(this.value);"/>Parliament
 		</td>
 	</tr>
 	<tr>
-		<th> State</th>
+		<th align="left"><%=state%></th>
 		<td>
 			<s:select theme="simple" label="State" name="state" id="stateList" list="states" listKey="id" listValue="name" onchange="fetchDistricts(this.options[this.selectedIndex].text);"/>
 			<input type="hidden" id="stateNameHiddenId" name="stateNameHidden"/>
 		</td>
 	</tr>
 	<tr>
-		<th> Year</th>
+		<th align="left"><%=electionYear%></th>
 		<td><s:select theme="simple" label="Year" name="year" id="yearList" list="years" /></td>
 	</tr>
 	<tr>
-		<th>Party</th>
+		<th align="left"><%=party%></th>
 		<td>
 			<s:select theme="simple" label="Party" name="party" onchange="setPartyNameHidden(this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" />
 			<input type="hidden" id="partyNameHiddenId" name="partyNameHidden"/>
@@ -209,21 +224,19 @@
 	</tr>
 	
 	<tr>
-		<th>Report Level</th>
+		<th align="left"><%=reportLevel%></th>
 		<td><div id="reportLevelRadio"><s:radio  theme="simple" name="1" list="levels" listKey="id" listValue="name" onclick="getDistricts(this.value);"/></div></td>
 	</tr>	
 	<tr>		
-		<th>			
-			<s:label theme="simple" labelposition="top" for="districtList" labelSeparator="" id="distLabel" disabled="true" value="District:"/>
-		</th>
+		<th align="left"><%=dist%></th>
 		<td>
 			<s:select theme="simple" name="district" id="districtList" list="districts"  disabled="true" listKey="id" listValue="name"/>	
 		</td>
 	</tr>	
 	<tr id="allianceRow">
-		<th>Alliance Parties</th>
+		<th align="left"><%=alliances%></th>
 		<td>
-			<s:checkbox theme="simple" id="alliances" disabled="false" name="alliances" value="hasAllianceParties"></s:checkbox> Include in the Report
+			<s:checkbox theme="simple" id="alliances" disabled="false" name="alliances" value="hasAllianceParties"></s:checkbox><%=inclAlliances%>
 		</td>
 	</tr>
 	<tr>

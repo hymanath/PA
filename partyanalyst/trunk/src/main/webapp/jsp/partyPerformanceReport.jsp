@@ -2,56 +2,30 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="s" uri="/struts-tags" %>
-<%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.ResourceBundle;" %>
 <link href="<s:url value='/styles/table.css'/>" rel="stylesheet" type="text/css" media="all"/>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-
+<title>Party Performance Report</title>
 <!-- YUI Dependency Files-->
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/treeview/treeview-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dragdrop/dragdrop-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datatable/datatable-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/history/history.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/conainer/container-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/yui-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/container-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/dom-min.js"></script> 
 	
-	<script type="text/javascript" src="js/yahoo/yui-gallery/gallery-accordion-min.js"></script>
-
-	<script type="text/javascript" src="js/json/json-min.js"></script> 
-	<script type="text/javascript" src="js/json/json.js"></script> 
-	<script type="text/javascript" src="js/json/json-debug.js"></script> 
-	
-    <!-- YUI Skin Sam -->
-   
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-gallery-styles/gallery-accordion.css">	
-    <link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/container-min.js"></script>	
+    <!-- YUI Skin Sam -->    
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/container.css"> 
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/treeview/assets/skins/sam/treeview.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/layout.css">	
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/button.css">	
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/yui-styles-2.8/calendar.css">
 	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/paginator/assets/skins/sam/paginator.css">
-	<link type="text/css" rel="stylesheet" href="js/yahoo/yui-js-2.8/build/datatable/assets/skins/sam/datatable.css">
-
    <LINK rel="stylesheet" type="text/css" href="styles/ElectionResultsAnalysisReport/electionResultsAnalysisReport.css">
 
 <script type="text/javaScript">
@@ -65,6 +39,62 @@ var electionTypeId = '${electionType}';
 var electionId = '${stateData.electionId}';
 var electionType = '${electionTypeLiteral}';
 
+var labelResources = { <%		
+	ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
+	String electionYear = rb.getString("electionYear");
+	String constituency = rb.getString("constituency");
+	String candidate  = rb.getString("candidate");
+	String rebelParty  = rb.getString("rebelParty");
+	String votesPercentage = rb.getString("votesPercentage");
+	String rank = rb.getString("rank");
+	String party = rb.getString("party");
+	String moreDetails = rb.getString("moreDetails");
+	String participatedConsts = rb.getString("participatedConsts");
+	String pc = rb.getString("pc");
+	String seatsWon = rb.getString("seatsWon");
+	String wonConst = rb.getString("wonConst");
+	String lostConst  = rb.getString("lostConst");
+	String analyzed = rb.getString("analyzed");
+	String votesMargin = rb.getString("votesMargin");
+	String secondPos = rb.getString("secondPos");
+	String thirdPos = rb.getString("thirdPos");
+	String fourthPos  = rb.getString("fourthPos");
+	String nthPos  = rb.getString("nthPos");
+	//retrieving PPR specific labels
+	ResourceBundle pprRb = ResourceBundle.getBundle("ppr_Labels");
+	
+	String mainParty = pprRb.getString("mainParty");
+	String allianceParty = pprRb.getString("allianceParty");		
+	String overAllVotesPercent = pprRb.getString("overAllVotesPercent"); 
+	String analysisHeading = pprRb.getString("analysisHeading");
+	String votesMarginOptionText =  pprRb.getString("votesMarginOptionText");
+	String partyPositions =  pprRb.getString("partyPositions");
+	String winPosLowMargin =  pprRb.getString("winPosLowMargin");
+	String winPosHighMargin  =  pprRb.getString("winPosHighMargin");
+	String loosingPosLowMargin =  pprRb.getString("loosingPosLowMargin");
+	String loosingPosHighMargin =  pprRb.getString("loosingPosHighMargin");
+	String winPosPositiveSwing =  pprRb.getString("winPosPositiveSwing");
+	String winPosNegativeSwing =  pprRb.getString("winPosNegativeSwing");
+	String loosingPosPositiveSwing =  pprRb.getString("loosingPosPositiveSwing");
+	String loosingPosNegativeSwing =  pprRb.getString("loosingPosNegativeSwing");
+	String loosingPosDroppingPercent =  pprRb.getString("loosingPosDroppingPercent");
+	String yearVsSeatsChart =  pprRb.getString("yearVsSeatsChart");
+	String v  =  pprRb.getString("v");
+	String opv =  pprRb.getString("opv");
+	String opvDef =  pprRb.getString("opvDef");
+	String op =  pprRb.getString("op");
+	String opDef =  pprRb.getString("opDef");
+	String opc =  pprRb.getString("opc");
+	String opcDef =  pprRb.getString("opcDef");
+	String vp =  pprRb.getString("vp");
+	String vpDef =  pprRb.getString("vpDef");
+	String ec =  pprRb.getString("ec");
+	String ecDef =  pprRb.getString("ecDef");
+	String electionSummaryHeading =  pprRb.getString("electionSummaryHeading");
+	String close =  pprRb.getString("close");
+	String view =  pprRb.getString("view");	
+%> }
+
 function showBand(divtag)
 { 
 	var divElmt=document.getElementById(divtag);
@@ -74,46 +104,16 @@ function showBand(divtag)
 	if(divElmt.style.display=="none")
 	{
 		divElmt.style.display = 'block';
-		spanElmt.innerHTML="Hide Details";
+		spanElmt.innerHTML="<%=close%>";
 	}
 	else
 	{
 		divElmt.style.display = 'none';
-		spanElmt.innerHTML="View Details";
+		spanElmt.innerHTML="<%=view%>";
 	}
 }
 
-/*function getDetails(pos)
-{		
-	var imgElmt = document.getElementById("loaderGif");
-	imgElmt.style.display='block';
-	
-	var position = pos;
-	var party = '${stateData.partyId}';
-	var partyName='${stateData.party}';
-	var electionTypeId='${stateData.electionTypeId}';
-	var state = '${stateData.stateId}';
-	var year = '${stateData.year}';
-	var district = '${stateData.districtId}';	
-	var alliances = '${stateData.hasAlliances}';
-    var reportLevel =  '${stateData.reportLevel}';
-	
-	var jsObj=
-	{
-			positionValue:position,
-			partyValue:party,			
-			eId:electionTypeId,
-			stateValue:state,
-			yearValue:year,
-			districtValue:district,
-			hasAlliances:alliances,
-			reportLevel:reportLevel
-	}
-	var param ="task="+YAHOO.lang.JSON.stringify(jsObj);	
-	var url = "<%=request.getContextPath()%>/partyPositionAjax.action?"+param;
-	callAjax(param,jsObj,url);
-}
-*/
+
 
 function openConstituencyResultsWindow(constituencyId)
 {
@@ -162,7 +162,7 @@ function callAjax(param,jsObj,url){
 							{
 								buildVotesMarginContent(jsObj,myResults);
 							}
-							//displayPartyPositions(jsObj,myResults);							
+														
 						}catch (e) {   
 							alert("Invalid JSON result" + e);   
 						}  
@@ -287,23 +287,23 @@ function buildPartyPositionDataTable(info,rank)
 			children:[ 	
 						{
 							key : "constituencyName",		
-							label : "Constituency",
+							label : "<%=constituency%>",
 							sortable : true
 						},
 						{
 							key : "candidateName",		
-							label : "Candidate Name",
+							label : "<%=candidate%>",
 							sortable : true
 						},
 						{
 							key : "partyName",		
-							label : "Party",
+							label : "<%=party%>",
 							sortable : true
 						},
 						{
 							key : "votePercentage",
 							parser:"number",
-							label : "Votes&nbsp%",
+							label : "<%=votesPercentage%>",
 							sortable : true
 						}
 					 ]
@@ -319,18 +319,18 @@ function buildPartyPositionDataTable(info,rank)
 						children:[ 	
 									{
 										key : "cName"+d,		
-										label : "Name",
+										label : "<%=candidate%>",
 										sortable : true
 									},
 									{
 										key : "pName"+d,		
-										label : "Party",
+										label : "<%=party%>",
 										sortable : true
 									},
 									{
 										key : "vPercentage"+d,
 										parser:"number",
-										label : "Votes&nbsp%",
+										label : "<%=votesPercentage%>",
 										sortable : true
 									}
 								 ]
@@ -365,14 +365,14 @@ function buildPartyPositionDataTable(info,rank)
 		if(divId == "POSITIONS_WON_MAJOR_BAND" || divId == "POSITIONS_WON_MINOR_BAND" || divId == "POSITIONS_LOST_MINOR_BAND" || divId == "POSITIONS_LOST_MAJOR_BAND")
 		{	
 			var myColumnDefs = [ 	           
-	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
-				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
-				{key:"mainParty",label : "Party", sortable:true, resizeable:true}, 
-				{key:"percentageOfVotes",label : "V*%", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "OPV*%", sortable:true, resizeable:true}, 
-	            {key:"oppositionParty",label : "OP*",sortable:true, resizeable:true}, 
-	            {key:"oppositionPartyCandidate",label : "OPC*", sortable:true, resizeable:true},
-	            {key:"moreDetails",label : "More Details", sortable:true, resizeable:true}
+	            {key:"constituencyName",label : "<%=constituency%>",sortable:true,resizeable:true}, 
+				{key:"candidateName",label : "<%=candidate%>", sortable:true, resizeable:true}, 
+				{key:"mainParty",label : "<%=party%>", sortable:true, resizeable:true}, 
+				{key:"percentageOfVotes",label : "<%=v%>", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "<%=opv%>", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "<%=op%>",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "<%=opc%>", sortable:true, resizeable:true},
+	            {key:"moreDetails",label : "<%=moreDetails%>", sortable:true, resizeable:true}
 	                
 				
 	        ]; 
@@ -402,7 +402,7 @@ function buildPartyPositionDataTable(info,rank)
 						divId,myColumnDefs, myDataSource,
 						{
 							formatRow : myRowFormatter,
-							caption : "<div style='text-align:left;'><font style='color:#2B5181;font-weight:bold;font-size:11px;'> * Main Party</font><font style='color:#7EADBC;font-weight:bold;font-size:11px;'> * Alliance Party</font><Br><font style='font-size:11px;'> V*%=Votes Percentage, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font></div>",
+							caption : "<div style='text-align:left;'><font style='color:#2B5181;font-weight:bold;font-size:11px;'> *<%=mainParty%></font><font style='color:#7EADBC;font-weight:bold;font-size:11px;'> * <%=allianceParty%></font><Br><font style='font-size:11px;'> <%=v%>=<%=votesPercentage%>, <%=opv%>=<%=opvDef%>, <%=op%>=<%=opDef%>, <%=opc%>=<%=opcDef%></font></div>",
 							paginator : new YAHOO.widget.Paginator({ 
 								rowsPerPage    : 10,
 								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
@@ -414,15 +414,15 @@ function buildPartyPositionDataTable(info,rank)
 		else if(divId == "POSITIONS_WON_WITH_POSITIVE_SWING" || divId == "POSITIONS_WON_WITH_NEGATIVE_SWING" || divId == "POSITIONS_LOST_WITH_POSITIVE_SWING" || divId == "POSITIONS_LOST_WITH_NEGATIVE_SWING")
 		{			
 			var myColumnDefs = [ 	           
-	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
-				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
-				{key:"mainParty",label : "Party", sortable:true, resizeable:true}, 
-				{key:"percentageOfVotes",label : "V*% ", sortable:true, resizeable:true},
-				{key:"previousElectionPercentageOfVotesGained",label : "V*% in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "OPV*%", sortable:true, resizeable:true}, 
-	            {key:"oppositionParty",label : "OP*",sortable:true, resizeable:true}, 
-	            {key:"oppositionPartyCandidate",label : "OPC*", sortable:true, resizeable:true},
-	            {key:"moreDetails",label : "More Details", sortable:true, resizeable:true}    
+	            {key:"constituencyName",label : "<%=constituency%>",sortable:true,resizeable:true}, 
+				{key:"candidateName",label : "<%=candidate%>", sortable:true, resizeable:true}, 
+				{key:"mainParty",label : "<%=party%>", sortable:true, resizeable:true}, 
+				{key:"percentageOfVotes",label : "<%=v%>", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesGained",label : "<%=v%> in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "<%=opv%>", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "<%=op%>",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "<%=opc%>", sortable:true, resizeable:true},
+	            {key:"moreDetails",label : "<%=moreDetails%>", sortable:true, resizeable:true}    
 				
 	        ]; 
 
@@ -448,7 +448,7 @@ function buildPartyPositionDataTable(info,rank)
 						divId,myColumnDefs, myDataSource,
 						{
 							formatRow : myRowFormatter,
-							caption : "<div style='text-align:left;'><font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font><Br><font style='font-size:11px;'> V*%=Votes Percentage, VP*%=Votes Polled Percentage, EC*=Election Candidate, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font></div>",
+							caption : "<div style='text-align:left;'><font style='color:#2B5181;font-weight:bold'> *<%=mainParty%></font> <font style='color:#7EADBC;font-weight:bold'> *  <%=allianceParty%></font><Br><font style='font-size:11px;'> <%=v%>=<%=votesPercentage%>, <%=vp%>=<%=vpDef%>, <%=ec%>=<%=ecDef%>, <%=opv%>=<%=opvDef%>, <%=op%>=<%=opDef%>, <%=opc%>=<%=opcDef%></font></div>",
 							paginator : new YAHOO.widget.Paginator({ 
 								rowsPerPage    : 10,
 								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
@@ -460,18 +460,18 @@ function buildPartyPositionDataTable(info,rank)
 		else if(divId == "POSITIONS_LOST_BY_DROPPING_VOTES")
 		{
 			var myColumnDefs = [ 	           
-	            {key:"constituencyName",label : "Constituency",sortable:true,resizeable:true}, 
-				{key:"candidateName",label : "Candidate", sortable:true, resizeable:true}, 
-				{key:"mainParty",label : "Party", sortable:true, resizeable:true}, 
-				{key:"percentageOfVotes",label : "V*%", sortable:true, resizeable:true},
-				{key:"previousElectionPercentageOfVotesGained",label : "V*% in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
-				{key:"percentageOfVotesPolled",label : "VP*%", sortable:true, resizeable:true},
-				{key:"previousElectionPercentageOfVotesPolled",label : "VP*% in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
-				{key:"previousElectionCandidate",label : "<s:property value="stateData.prevYear" />EC*", sortable:true, resizeable:true},
-				{key:"oppositionPartyPercentageOfVotes",label : "OPV*%", sortable:true, resizeable:true}, 
-	            {key:"oppositionParty",label : "OP*",sortable:true, resizeable:true}, 
-	            {key:"oppositionPartyCandidate",label : "OPC*", sortable:true, resizeable:true},
-	            {key:"moreDetails",label : "More Details", sortable:true, resizeable:true}    
+	            {key:"constituencyName",label : "<%=constituency%>",sortable:true,resizeable:true}, 
+				{key:"candidateName",label : "<%=candidate%>", sortable:true, resizeable:true}, 
+				{key:"mainParty",label : "<%=party%>", sortable:true, resizeable:true}, 
+				{key:"percentageOfVotes",label : "<%=v%>", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesGained",label : "<%=v%> in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
+				{key:"percentageOfVotesPolled",label : "<%=vp%>", sortable:true, resizeable:true},
+				{key:"previousElectionPercentageOfVotesPolled",label : "<%=vp%> in <s:property value="stateData.prevYear" />", sortable:true, resizeable:true},
+				{key:"previousElectionCandidate",label : "<s:property value="stateData.prevYear" /><%=ec%>", sortable:true, resizeable:true},
+				{key:"oppositionPartyPercentageOfVotes",label : "<%=opv%>", sortable:true, resizeable:true}, 
+	            {key:"oppositionParty",label : "<%=op%>",sortable:true, resizeable:true}, 
+	            {key:"oppositionPartyCandidate",label : "<%=opc%>", sortable:true, resizeable:true},
+	            {key:"moreDetails",label : "<%=moreDetails%>", sortable:true, resizeable:true}    
 				
 	        ]; 
 
@@ -497,7 +497,7 @@ function buildPartyPositionDataTable(info,rank)
 						divId,myColumnDefs, myDataSource,
 						{
 							formatRow : myRowFormatter,
-							caption : "<div style='text-align:left;'><font style='color:#2B5181;font-weight:bold'> * Main Party</font> <font style='color:#7EADBC;font-weight:bold'> * Alliance Party</font><Br><font style='font-size:11px;'> V*%=Votes Percentage, VP*%=Votes Polled Percentage, EC*=Election Candidate, OPV*%=Opposition Party Votes Percentage, OP*=Opposition Party, OPC*=Opposition Party Candidate</font></div>",
+							caption : "<div style='text-align:left;'><font style='color:#2B5181;font-weight:bold'> *<%=mainParty%></font> <font style='color:#7EADBC;font-weight:bold'> * <%=allianceParty%></font><Br><font style='font-size:11px;'> <%=v%>=<%=votesPercentage%>, <%=vp%>=<%=vpDef%>, <%=ec%>=<%=ecDef%>,<%=opv%>=<%=opvDef%>, <%=op%>=<%=opDef%>, <%=opc%>=<%=opcDef%></font></div>",
 							paginator : new YAHOO.widget.Paginator({ 
 								rowsPerPage    : 10,
 								template: "{PageLinks} Show {RowsPerPageDropdown} Rows Per Page",
@@ -571,9 +571,7 @@ function buildPartyPositionDataTable(info,rank)
 	{
 		var arr = new Array();
 		var elmt = document.getElementById("resizablepanel");
-
-		var icon='';
-			icon+='<table><tr><td align="right">Party Positions ... </td><td id="partyPosImg" align="right" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/search.gif" /></img></td></tr></table>';
+		
 		<c:forEach var="results" items="${stateData.partyPositionsVO}">
 			var obj = {
 			            partyId:'${results.partyId}',
@@ -592,15 +590,15 @@ function buildPartyPositionDataTable(info,rank)
             var str='';
 			str+='<table border="1" id="partyPositionDetailsTable">';
 			str+='<tr>';
-			str+='<th align="center">Party Name</th>';
-			str+='<th align="center">PC*</th>';
-			str+='<th align="center">Seats Won</th>';
-			str+='<th align="center">2nd Pos</th>';
-			str+='<th align="center">3rd Pos</th>';
-			str+='<th align="center">4th Pos</th>';
-			str+='<th align="center">Nth Pos</th>';
-			str+='<th align="center">Votes %</th>';
-			str+='<th align="center">Overall Votes %</th>';
+			str+='<th align="center"><%=party%></th>';
+			str+='<th align="center"><%=pc%></th>';
+			str+='<th align="center"><%=seatsWon%></th>';
+			str+='<th align="center"><%=secondPos%></th>';
+			str+='<th align="center"><%=thirdPos%></th>';
+			str+='<th align="center"><%=fourthPos%></th>';
+			str+='<th align="center"><%=nthPos%></th>';
+			str+='<th align="center"><%=votesPercentage%></th>';
+			str+='<th align="center"><%=overAllVotesPercent%></th>';
 			str+='</tr>';
 			for(var i in arr)
 		    {
@@ -641,7 +639,7 @@ function buildPartyPositionDataTable(info,rank)
 			}
 			str+='<tr>';
 			str+='<th colspan="8" style="color:#FF0000">';
-			str+='<b>* Main Party , PC* - Participated Constituencies</b>';
+			str+='<b>* <%=mainParty%> , PC* - <%=participatedConsts%></b>';
 			str+='<span id="partyPosImg" align="right" style="display:none;"><img src="<%=request.getContextPath()%>/images/icons/partypositions.gif" /></img></span>';
 			str+='</th>';
 			str+='</tr>';
@@ -656,10 +654,9 @@ function buildPartyPositionDataTable(info,rank)
 					 visible: true, 
 					 draggable: false
 		   });
-      // myPanel.setHeader(icon);
+     
        myPanel.setBody(str);
-	  // myPanel.setFooter(icon);
-       myPanel.render();
+	   myPanel.render();
 
    }
 
@@ -718,14 +715,7 @@ function buildPartyPositionDataTable(info,rank)
 		
 		});
 
-		/*var columns =
-		[
-			{key: "partyName", sortable: true, resizeable: true },
-			{key: "secndPos", sortable: true, resizeable: true },
-			{key: "seatsWon", sortable: true, resizeable: true }
-		];
-		var table = new YAHOO.widget.DataTable( "datatable", columns, incomeData);*/
-
+		
         
 	}
 
@@ -858,43 +848,43 @@ function buildPartyPositionDataTable(info,rank)
 
 	var resultsColumnDefs = [ {
 		key : "constiuencyName",
-		label : "Constituency",
+		label : "<%=constituency%>",
 		sortable : true
 	}, {
 		key : "candidateName",
-		label : "Candidate",
+		label : "<%=candidate%>",
 		sortable : true
 	}, {
 		key : "partyName",
-		label : "Rebel Party",
+		label : "<%=rebelParty%>",
 		sortable : true
 	}, {
 		key : "percentageOfVotes",
-		label : "Votes %",
+		label : "<%=votesPercentage%>",
 		sortable : true
 	}, {
 		key : "rank",
-		label : "Rank",
+		label : "<%=rank%>",
 		sortable : true
 	}, {
 		key : "oppositeParty",
-		label : "Party",
+		label : "<%=party%>",
 		sortable : true
 	}, {
 		key : "oppositePartyCandidate",
-		label : "Candidate",
+		label : "<%=candidate%>",
 		sortable : true
 	} , {
 		key : "oppositePartyPercentageOfVotes",
-		label : "Votes %",
+		label : "<%=votesPercentage%>",
 		sortable : true
 	} , {
 		key : "oppositePartyRank",
-		label : "Rank",
+		label : "<%=rank%>",
 		sortable : true
 	} , {
 		key : "moreDetails",
-		label : "More Details",
+		label : "<%=moreDetails%>",
 		sortable: true
 		
 	} ];
@@ -960,9 +950,9 @@ function buildVotesMarginContent(jsObj,results)
 	str += '<table width="100%" style="width:100%" class="votesMarginTable" border="0">';
 	str += '<tr>';
 	str += '<th style="background-color:#DFE2E5;"></th>';
-	str += '<th align="left" style="background-color:#DFE2E5;">Votes Margin</th>';
-	str += '<th style="background-color:#DFE2E5;">Constituencies '+jsObj.status+'</th>';
-	str += '<th style="background-color:#DFE2E5;">Analyzed</th>';
+	str += '<th align="left" style="background-color:#DFE2E5;"><%=votesMargin%></th>';
+	str += '<th style="background-color:#DFE2E5;">'+jsObj.status+' Constituencies</th>';
+	str += '<th style="background-color:#DFE2E5;"><%=analyzed%></th>';
 	str += '</tr>';
 	if(results[0].resultStatus)
 	{
@@ -1334,12 +1324,6 @@ function callMarginVotes(partyId)
 	{
 		width:100%;
 	}
-
-	/*.reportHeaders
-	{
-		background-image:url(images/icons/partyPerformance/reportHeaders.png);
-		width:800px;
-	}*/
 	.mainPartyColor
 	{
 		color:#2B5181;
@@ -1368,15 +1352,14 @@ function callMarginVotes(partyId)
 </div>
 </center>
 <br/><br/><br/>
- <!--383a3c-->
 <div style="margin-left: 15px;">
 <div id="electionSummary">
-	<div id="electionSummary_head">Election Summary</div>
+	<div id="electionSummary_head"><%=electionSummaryHeading%></div>
 	<div id="electionSummary_body">
 		<table width="100%">		
 			<tr>
 				<td>
-					<div class="yearHeaders">In year ${stateData.year}</div>
+					<div class="yearHeaders"><%=electionYear%> : ${stateData.year}</div>
 					<div>
 						<table class="seatsDataTable">
 							<tr>
@@ -1398,7 +1381,7 @@ function callMarginVotes(partyId)
 					</div>					
 				</td>
 				<td style="vertical-align: top;">
-					<div class="yearHeaders">In year  ${stateData.prevYear}</div> 
+					<div class="yearHeaders"><%=electionYear%> : ${stateData.prevYear}</div> 
 					<div>
 						<table class="seatsDataTable">
 							<tr>
@@ -1424,8 +1407,8 @@ function callMarginVotes(partyId)
 	<tr>
 		<td colspan="2">
 			<div class="partyInfoHeading"> 					
-					<span style="float:right;margin-right:250px;">Year Vs Seats</span>
-					<span style="float:left">Party Positions Graph </span>				
+					<span style="float:right;margin-right:190px;"><%=yearVsSeatsChart%></span>
+					<span style="float:left;margin-left:50px;"><%=partyPositions%> </span>				
 			</div>
 		</td>		
 	</tr>
@@ -1448,7 +1431,7 @@ function callMarginVotes(partyId)
 	<tr>
 		<td colspan="2">
 			<div class="partyInfoHeading"> 
-				Party Positions					
+				<%=partyPositions%>					
 			</div>
 		</td>		
 	</tr>
@@ -1478,12 +1461,12 @@ function callMarginVotes(partyId)
 <br/><br/>
 
 <div id="votesMarginInfo_main">
-	<div id="votesMarginInfo_head"  class="partyInfoHeading"> Analysis Votes Margin </div>
+	<div id="votesMarginInfo_head"  class="partyInfoHeading"><%=analysisHeading%></div>
 	<div id="votesMarginInfo_body">
 		<table width="85%">
 			<tr>
-				<td colspan="2" align="right">
-					Votes Margin Analysis for : 
+				<td colspan="2" >
+					<%=votesMarginOptionText%> : 
 					<input type="radio" name="alliance" value="${party}" onclick="callMarginVotes(this.value)" checked="checked"><font style="color:red">${partyNameHidden}	</font>							
 					<c:forEach var="alliance" items="${stateData.allianceParties}">
 						<input type="radio" name="alliance" onclick="callMarginVotes(this.value)" value="${alliance.partyId}"><font style="color:#B77643">${alliance.shortName}	</font>							
@@ -1492,11 +1475,11 @@ function callMarginVotes(partyId)
 			</tr>
 			<tr>
 				<td style="vertical-align:top;">
-					<div class="votesMarginContentHead">Winning Constituencies</div>
+					<div class="votesMarginContentHead"><%=wonConst%></div>
 					<div id="votesMarginInfo_won"></div>
 				</td>
 				<td style="vertical-align:top;">
-					<div class="votesMarginContentHead">Lost Constituencies</div>
+					<div class="votesMarginContentHead"><%=lostConst%></div>
 					<div id="votesMarginInfo_lost"></div>
 				</td>
 			</tr>
@@ -1522,7 +1505,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td style="width:340px;">Winning Positions with lower  %  margin </td>
+				<td style="width:340px;"><%=winPosLowMargin%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;">
@@ -1536,7 +1519,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">
 				<table width="100%">
 				<tr>
-				<td style="width:340px;">Winning Positions with highest % margin </td>
+				<td style="width:340px;"><%=winPosHighMargin%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}"/> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1548,7 +1531,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">
 				<table width="100%">
 				<tr>
-				<td style="width:340px;">Losing Positions with lower  %  margin </td> 
+				<td style="width:340px;"><%=loosingPosLowMargin%></td> 
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1560,7 +1543,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">			
 				<table width="100%">
 				<tr>
-				<td style="width:340px;">Losing Positions with highest % margin</td>
+				<td style="width:340px;"><%=loosingPosHighMargin%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View details</span></td>
@@ -1572,7 +1555,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td style="width:340px;">Winning Positions with Positive Swing </td>
+				<td style="width:340px;"><%=winPosPositiveSwing%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1584,7 +1567,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">		
 				<table width="100%">
 				<tr>
-				<td style="width:340px;">Loosing Positions with Positive Swing </td>
+				<td style="width:340px;"><%=loosingPosPositiveSwing%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1596,7 +1579,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td style="width:340px;">Winning Positions with Negative Swing </td>
+				<td style="width:340px;"><%=winPosNegativeSwing%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1608,7 +1591,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">
 				<table width="100%">
 				<tr>
-				<td style="width:340px;">Loosing Positions with Negative Swing  </td>
+				<td style="width:340px;"><%=loosingPosNegativeSwing%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td> 
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1620,7 +1603,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td style="width:340px;">Losing Positions with droping voting percentage  </td>
+				<td style="width:340px;"><%=loosingPosDroppingPercent%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1731,20 +1714,7 @@ function callMarginVotes(partyId)
 <s:if test="stateData.rebelPartyCandidates.size > 0">
 <div class="partyInfoHeading"><s:label labelposition="left"><b><U>Rebel Candidates </U></b></s:label></div>
 <div id="rebelsDiv" class="yui-skin-sam" style="display: block; background-color: rgb(234, 234, 234); margin-right: 20px;">
-<!--<display:table class="partyPerformanceReportTable" name="${stateData.rebelPartyCandidates}" id="rebelsTable" style="margin-top:0px;"> 
-							<display:column title="Constiuency" property="constiuencyName" />
-							<display:column title="Candidate" property="candidateName" />
-							<display:column title="RebelParty" property="partyName" />
-							<display:column title="% of Votes" property="percentageOfVotes" />
-							<display:column title="Position" property="rank" />
-							<display:column title="Party" property="oppositeParty" />
-							<display:column title="Candidate" property="oppositePartyCandidate" />
-							<display:column title="% of Votes" property="oppositePartyPercentageOfVotes" />
-							<display:column title="Position" property="oppositePartyRank" />
-							<display:column title="constituencyId" property="constituencyId" />
-							
-</display:table>	
---></div>
+</div>
 <script language="javascript">//wkg
 <c:forEach var="rebelsData" items="${stateData.rebelPartyCandidates}" >			
 
