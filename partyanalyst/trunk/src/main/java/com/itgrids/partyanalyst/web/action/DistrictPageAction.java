@@ -389,7 +389,8 @@ public class DistrictPageAction extends ActionSupport implements ServletRequestA
 		electionYear = constituenciesStatusVO.getElectionYear();
 		electionType = constituenciesStatusVO.getElectionType();
 		mandals = staticDataService.getMandalsForDistrict(Long.parseLong(districtId));	
-		parliamentCandidateDetailsVo = staticDataService.getAllParliamentWinningCandidatesForADistrict(Long.parseLong(districtId));
+		parliamentCandidateDetailsVo = staticDataService.getAllParliamentWinningCandidatesForADistrict(Long.parseLong(districtId),
+				constituenciesStatusVO.getParliamentConstituencies());
 		if(mandals == null){
 				if(log.isDebugEnabled())
 					log.error("Failed to get Mandal Data");
