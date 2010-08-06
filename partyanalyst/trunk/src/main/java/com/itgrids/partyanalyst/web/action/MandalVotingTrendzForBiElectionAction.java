@@ -583,7 +583,7 @@ public class MandalVotingTrendzForBiElectionAction extends ActionSupport
 			  chartName = "mandalWiseParliamentElectionsResults"+"_"+constituencyName+"_"+"constituencyId"+".png";
 			  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 			  ChartColorsAndDataSetVO chartColorsAndDataSetVO = createDataset(list);
-			  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,320,920,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),false);
+			  ChartProducer.createLineChartWithThickness(chartTitle, domainAxisName, "Percentages", (DefaultCategoryDataset)chartColorsAndDataSetVO.getDataSet(), chartPath,320,920,new ArrayList<Color>(chartColorsAndDataSetVO.getColorsSet()),false);
 			  
 			  mandalWiseResultsChart = chartName;
 			  
