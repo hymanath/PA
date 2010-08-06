@@ -51,16 +51,20 @@ import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartiesInElection;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
+import com.itgrids.partyanalyst.dto.CandidateElectionCompleteResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.CandidateOppositionVO;
 import com.itgrids.partyanalyst.dto.CandidateWonVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionCompleteResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyResultsInElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyWinnerInfoVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
+import com.itgrids.partyanalyst.dto.ElectionBasicInformationVO;
 import com.itgrids.partyanalyst.dto.ElectionInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
 import com.itgrids.partyanalyst.dto.ElectionResultVO;
@@ -68,6 +72,8 @@ import com.itgrids.partyanalyst.dto.ElectionTrendzReportVO;
 import com.itgrids.partyanalyst.dto.MandalAllElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
+import com.itgrids.partyanalyst.dto.PartyElectionCompleteResultsVO;
+import com.itgrids.partyanalyst.dto.PartyElectionDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyPositionsVO;
 import com.itgrids.partyanalyst.dto.PartyResultVO;
@@ -1962,7 +1968,208 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return electionInfo;
 	}
-
+    
+	 /*
+	 * This method is retrieves all the information like candidate and his votes and details regarding state,district to which the constituency
+	 * belongs for the given election year and election type(i.e.,parliament or assembly)
+	 * 
+	 * */
+	//More Details Method...
+	@SuppressWarnings("unchecked")
+	public ConstituencyResultsInElectionVO getAllCandidatesResultsInConstituency(final Long constituencyId,final String electionYear,final String electionType){
+		 
+		 //set constituency wise complete results
+		 ConstituencyElectionCompleteResultsVO constituencyElectionCompleteResults = null;
+		 PartyElectionCompleteResultsVO partyElectionCompleteResults = new PartyElectionCompleteResultsVO();
+		 //set opp details
+		 List<CandidateElectionCompleteResultsVO> candidateElectionCompleteResultsList = new ArrayList<CandidateElectionCompleteResultsVO>();
+		 List<SelectOptionVO> allYears = new ArrayList<SelectOptionVO>();
+		 List result = null;
+		 List nominationResult = null;
+		
+		try{
+			log.info("Making constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType() DAO call");
+			ConstituencyResultsInElectionVO constituencyResultsInElection = new ConstituencyResultsInElectionVO();
+			//Set Election Basic Information
+			ElectionBasicInformationVO electionInfo = new ElectionBasicInformationVO();
+			electionInfo.setElectionType(electionType);
+			electionInfo.setElectionYear(electionYear);
+			
+			if(electionType.equals(IConstants.PARLIAMENT_ELECTION_TYPE)){
+				result =  constituencyDAO.getParliamentConstituencyInfoByConstituencyIdElectionYearAndElectionType(constituencyId);
+				java.util.ListIterator li = result.listIterator();
+				 while(li.hasNext()){
+					 log.info(" Has Parliament Constituency Details ...");
+					 //main VO
+					 constituencyElectionCompleteResults = new ConstituencyElectionCompleteResultsVO();
+					 
+					 Object[] parms = (Object[])li.next();
+					 //set to main VO
+					 constituencyElectionCompleteResults.setConstituencyId(Long.parseLong(parms[0].toString()));
+					 constituencyElectionCompleteResults.setConstituencyName(parms[1].toString());
+					 constituencyElectionCompleteResults.setElectionInfo(electionInfo);
+					 constituencyElectionCompleteResults.setStateId(Long.parseLong(parms[2].toString()));
+					 constituencyElectionCompleteResults.setStateName(parms[3].toString());
+				 }
+				 nominationResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(constituencyId.toString(),electionYear,electionType);
+			}else{
+						
+				if(electionType.equals(IConstants.CORPORATION_ELECTION_TYPE) || electionType.equals(IConstants.MUNCIPLE_ELECTION_TYPE)){
+					result =  constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionTypeForMuncipalAndCorporationElection(constituencyId);
+					nominationResult = nominationDAO.getCandidatesInfoForTheGivenMuncipalityOrCorporationConstituency(constituencyId.toString(),electionYear,electionType);
+				}else{
+					result =  constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType(constituencyId);
+					nominationResult = nominationDAO.getCandidatesInfoForTheGivenConstituency(constituencyId.toString(),electionYear,electionType);
+				}
+				 java.util.ListIterator li = result.listIterator();
+				 while(li.hasNext()){
+					 log.info(" Has Constituency Details ...");
+					 //main VO
+					 constituencyElectionCompleteResults = new ConstituencyElectionCompleteResultsVO();
+					 
+					 Object[] parms = (Object[])li.next();
+					 //set to mainVO
+					 constituencyElectionCompleteResults.setConstituencyId(Long.parseLong(parms[0].toString()));
+					 constituencyElectionCompleteResults.setConstituencyName(parms[1].toString());
+					 constituencyElectionCompleteResults.setDistrictId(Long.parseLong(parms[2].toString()));
+					 constituencyElectionCompleteResults.setDistrictName(parms[3].toString());
+					 constituencyElectionCompleteResults.setStateId(Long.parseLong(parms[4].toString()));
+					 constituencyElectionCompleteResults.setStateName(parms[5].toString());
+					 constituencyElectionCompleteResults.setElectionInfo(electionInfo);
+					 
+				 }
+				}
+			 log.info("Making nominationDAO.getCandidatesInfoForTheGivenConstituency() DAO call");
+			 Double totalPolledVotes=0d;
+			 Double totalVoters=0d;
+			 java.util.ListIterator resultIterator = nominationResult.listIterator();
+			 while(resultIterator.hasNext()){
+				 log.info(" Has Constituency Results ...");
+				 Object[] parms = (Object[])resultIterator.next();
+				 if(parms[14]!=null)
+					 totalPolledVotes = Double.parseDouble(parms[14].toString());
+				 if(parms[13]!=null){
+					 totalVoters = Double.parseDouble(parms[13].toString());
+				 }
+				 
+				 if(Long.parseLong(parms[4].toString())==1l){
+									 
+					 //set won candidate results
+					 CandidateElectionCompleteResultsVO wonCandidateResults = new CandidateElectionCompleteResultsVO();
+						 wonCandidateResults.setCandidateId(Long.parseLong(parms[0].toString()));
+						 String candidateName = parms[1].toString();
+							if(candidateName.contains("\n")){
+								candidateName = candidateName.replace("\n"," ");
+								wonCandidateResults.setCandidateLastName(candidateName);
+							}else{
+								wonCandidateResults.setCandidateLastName(candidateName);
+							}
+						 Double votesEarned = (Double)parms[2];
+						 Long votesEarn = votesEarned.longValue();					
+						 wonCandidateResults.setCandidateVotesEarned(votesEarn);
+						 wonCandidateResults.setVotesPercentAsString(parms[3].toString());
+						 wonCandidateResults.setRank(Long.parseLong(parms[4].toString()));
+						 //set party details
+						 PartyElectionDetailsVO partyElectionDetails = new PartyElectionDetailsVO();
+						 if(!(parms[5]==null)){
+							 partyElectionDetails.setPartyId(Long.parseLong(parms[5].toString()));
+						 }
+						 if(!(parms[6]==null)){
+							partyElectionDetails.setPartyFlag(parms[6].toString());
+						 }
+						 partyElectionDetails.setPartyLongName(parms[7].toString());
+						 partyElectionDetails.setPartyShortName(parms[8].toString());
+						 wonCandidateResults.setPartyElectionDetails(partyElectionDetails);
+						 					 
+						 //set won candidate results to VO
+						 partyElectionCompleteResults.setCandidateElectionCompleteResults(wonCandidateResults);
+						
+				 }
+				 else{
+					 
+					 //set opp candidate results
+					 CandidateElectionCompleteResultsVO oppCandidateResults = new CandidateElectionCompleteResultsVO();
+				 	 oppCandidateResults.setCandidateId(Long.parseLong(parms[0].toString()));
+					 
+					 String candidateName = parms[1].toString();
+						if(candidateName.contains("\n")){
+							candidateName = candidateName.replace("\n"," ");
+							oppCandidateResults.setCandidateLastName(candidateName);
+						}else{
+							oppCandidateResults.setCandidateLastName(parms[1].toString());
+						}
+					 Double votesEarned = (Double)parms[2];
+					 Long votesEarn = votesEarned.longValue();
+					 oppCandidateResults.setCandidateVotesEarned(votesEarn);
+					 oppCandidateResults.setVotesPercentAsString(parms[3].toString());
+					 oppCandidateResults.setRank(Long.parseLong(parms[4].toString()));
+					 PartyElectionDetailsVO partyElectionDetails = new PartyElectionDetailsVO();
+					 if(!(parms[5]==null)){
+						 partyElectionDetails.setPartyId(Long.parseLong(parms[5].toString()));
+					 }
+					 if(!(parms[6]==null)){
+						 partyElectionDetails.setPartyFlag(parms[6].toString());
+					 }
+					 partyElectionDetails.setPartyLongName(parms[7].toString());
+					 partyElectionDetails.setPartyShortName(parms[8].toString());
+					 oppCandidateResults.setPartyElectionDetails(partyElectionDetails);
+					 candidateElectionCompleteResultsList.add(oppCandidateResults);
+				 }
+			 }
+			 if(totalVoters.equals(0d)){
+				 constituencyElectionCompleteResults.setTotalVoters(new Long(0));
+				 constituencyElectionCompleteResults.setTotalVotesPolled(new Long(0));
+			 }else{
+				 constituencyElectionCompleteResults.setTotalVoters(totalVoters.longValue());
+				 constituencyElectionCompleteResults.setTotalVotesPolled(totalPolledVotes.longValue());
+			 }			 
+			 if(!totalVoters.equals(0d)){
+				 constituencyElectionCompleteResults.setTotalVotersPercentInString(new BigDecimal((totalPolledVotes/totalVoters)*100).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 }else{
+				 constituencyElectionCompleteResults.setTotalVotersPercentInString("N/A");
+			 }	 
+			 
+			 //set opposition
+			 partyElectionCompleteResults.setCandidateElectionCompleteResultsList(candidateElectionCompleteResultsList);
+			 constituencyElectionCompleteResults.setPartyElectionCompleteResults(partyElectionCompleteResults);
+			 
+			 //for margin votes
+			 if(constituencyElectionCompleteResults != null && constituencyElectionCompleteResults.getPartyElectionCompleteResults() != null){
+				 for(CandidateElectionCompleteResultsVO completeRes:constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResultsList()){
+					 if(completeRes.getRank().equals(new Long(2))){
+						 Long votesMarginVal = constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().getCandidateVotesEarned() - completeRes.getCandidateVotesEarned();
+						 Double votesMarginPercent = new Double(constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().getVotesPercentAsString()) - new Double(completeRes.getVotesPercentAsString());
+						 
+						 System.out.println(" ........................ Votes Margin Gained :" + votesMarginVal);
+						 System.out.println(" ........................ Votes Margin % Gained :" + votesMarginPercent);
+						 
+						 constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().setMarginVotesEarned(votesMarginVal);
+						 constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().setMarginVotesPercentAsString(new BigDecimal(votesMarginPercent).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					 }
+					 Long oppMarginVotesVal = completeRes.getCandidateVotesEarned() - constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().getCandidateVotesEarned();
+					 Double oppMarginPercent = new Double(completeRes.getVotesPercentAsString()) - new Double(constituencyElectionCompleteResults.getPartyElectionCompleteResults().getCandidateElectionCompleteResults().getVotesPercentAsString());
+					 completeRes.setMarginVotesEarned(oppMarginVotesVal);
+					 completeRes.setMarginVotesPercentAsString(new BigDecimal(oppMarginPercent).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 }
+				 
+			 }
+			List allElectionYears = nominationDAO.getAllElectionYearsForAConstituency(constituencyId,electionType);
+			for(int i=0;i<allElectionYears.size();i++){
+				SelectOptionVO eleYear = new SelectOptionVO();
+				eleYear.setId(Long.parseLong(allElectionYears.get(i).toString()));
+				eleYear.setName(allElectionYears.get(i).toString());
+				allYears.add(eleYear);
+			}
+			constituencyResultsInElection.setConstituencyElectionCompleteResults(constituencyElectionCompleteResults);
+			constituencyResultsInElection.setElectionYears(allYears);
+		
+		return constituencyResultsInElection;
+		}catch(Exception e){
+			log.error("Exception raised please check the log for details"+e);
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	/*
 	 * This method is retrieves all the information like candidate and his votes and details regarding state,district to which the constituency
