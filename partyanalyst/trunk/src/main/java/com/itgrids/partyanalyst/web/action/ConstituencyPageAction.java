@@ -583,14 +583,14 @@ public class ConstituencyPageAction extends ActionSupport implements
         Set<String> partiesInChart = null;
         partiesInChart = new LinkedHashSet<String>();
    		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
-   				createDataset(constituencyElectionResultsVO, partiesInChart), chartPath,260,700, ChartUtils.getLineChartColors(partiesInChart),false );
+   				createDataset(constituencyElectionResultsVO, partiesInChart), chartPath,350,700, ChartUtils.getLineChartColors(partiesInChart),true );
    		
    		enlargedChartName = "enlargedImgOfAllPartiesVotingTrendsIn"+constituencyName+"ConstituencyForAllElections_"+constituencyId+".png";
         String enlargedChartPath = context.getRealPath("/")+ "charts\\" + enlargedChartName;
        
         partiesInChart = new LinkedHashSet<String>();
    		ChartProducer.createLineChart("All Parties Performance In Diff Elections Of "+constituencyName+" Constituency", "Elections", "Percentages", 
-   				createDataset(constituencyElectionResultsVO, partiesInChart), enlargedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart) ,false);
+   				createDataset(constituencyElectionResultsVO, partiesInChart), enlargedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart) ,true);
 		
    		navigationVO = staticDataService.findHirarchiForNavigation(constituencyId, IConstants.CONSTITUENCY_LEVEL);
    		
@@ -1150,12 +1150,12 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
         String chartPath = context.getRealPath("/")+ "charts\\" + chartName;
         constituencyRevenueVillagesVO.setChartPath(chartName);
         partiesInChart = new LinkedHashSet<String>();
-        ChartProducer.createLineChartWithThickness(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), chartPath, chartHeight, chartWidth, ChartUtils.getLineChartColors(partiesInChart),true);
+        ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), chartPath, chartHeight, chartWidth, ChartUtils.getLineChartColors(partiesInChart),true);
         
         String detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
         constituencyRevenueVillagesVO.setDetailedChartPath(detailedChartName);
         partiesInChart = new LinkedHashSet<String>();
-        ChartProducer.createLineChart(chartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),false);   
+        ChartProducer.createLineChart(chartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),true);   
       
 	  return SUCCESS;
   }
@@ -1194,14 +1194,14 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		  chartPath = context.getRealPath("/")+ "charts\\" + chartName;
 		  Set<String> partiesInChart = null;
 		  partiesInChart = new LinkedHashSet<String>();
-		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj, partiesInChart), chartPath,260,700, ChartUtils.getLineChartColors(partiesInChart),false);
+		  ChartProducer.createLineChart(chartTitle, domainAxisName, "Percentages", createDataset(obj, partiesInChart), chartPath,350,700, ChartUtils.getLineChartColors(partiesInChart),true);
 		  obj.setChartPath(chartName);
 		  
 		  detailedChartTitle = "Mandal Wise Election Results For "+obj.getConstituencyName()+" Parliament Constituency In "+jObj.getString("electionYear");
 		  detailedChartName = "detailedMandalWiseParliamentElectionsResults_"+obj.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 		  detailedChartPath = context.getRealPath("/")+ "charts\\" + detailedChartName;
 		  partiesInChart = new LinkedHashSet<String>();
-		  ChartProducer.createLineChart(detailedChartTitle, detailedDomainAxisName, "Percentages", createDataset(obj, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),false);
+		  ChartProducer.createLineChart(detailedChartTitle, detailedDomainAxisName, "Percentages", createDataset(obj, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),true);
 		  obj.setDetailedChartPath(detailedChartName);
 	  }
 	  
