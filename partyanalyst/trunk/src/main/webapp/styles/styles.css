@@ -8,6 +8,7 @@ table.partyPerformanceCriteriaTable
 		border-width: 1px;
 		border-color: #666666;
 		border-collapse: collapse;
+		margin-top: 15px;
 	}
 	table.partyPerformanceCriteriaTable th 
 	{

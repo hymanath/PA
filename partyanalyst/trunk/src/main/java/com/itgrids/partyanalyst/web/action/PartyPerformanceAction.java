@@ -291,7 +291,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		}
 		
 		setStates(getStaticDataService().getStates(electionTypeId));
-		setYears(getStaticDataService().getElectionYears(electionTypeId));
+		setYears(getStaticDataService().getElectionYears(electionTypeId, false));
 		setParties(getStaticDataService().getStaticParties());
 		setDistricts(new ArrayList<SelectOptionVO>());
 		setLevels(getReportLevels());    
@@ -353,6 +353,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getElectionTypeFilterData(){
 
 		Map<String, String> params = request.getParameterMap();
@@ -367,7 +368,7 @@ public class PartyPerformanceAction extends ActionSupport implements ServletRequ
 		}
 		
 		statesYearList.put("STATES", staticDataService.getStates(electionTypeId));
-		statesYearList.put("YEARS", staticDataService.getElectionYears(electionTypeId));
+		statesYearList.put("YEARS", staticDataService.getElectionYears(electionTypeId,false));
 		
 		if(electionTypeId.equals(new Long(1)))
 			statesYearList.put("LEVELS", getReportLevelsParliament());

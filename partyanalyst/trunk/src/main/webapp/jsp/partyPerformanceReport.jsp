@@ -93,6 +93,9 @@ var labelResources = { <%
 	String electionSummaryHeading =  pprRb.getString("electionSummaryHeading");
 	String close =  pprRb.getString("close");
 	String view =  pprRb.getString("view");	
+	String totalSeatsWon =  pprRb.getString("totalSeatsWon");
+	String votesPcntGained =  pprRb.getString("votesPcntGained");
+	String diffVotesPctn =  pprRb.getString("diffVotesPctn");
 %> }
 
 function showBand(divtag)
@@ -372,7 +375,7 @@ function buildPartyPositionDataTable(info,rank)
 				{key:"oppositionPartyPercentageOfVotes",label : "<%=opv%>", sortable:true, resizeable:true}, 
 	            {key:"oppositionParty",label : "<%=op%>",sortable:true, resizeable:true}, 
 	            {key:"oppositionPartyCandidate",label : "<%=opc%>", sortable:true, resizeable:true},
-	            {key:"moreDetails",label : "<%=moreDetails%>", sortable:true, resizeable:true}
+	            {key:"moreDetails",label : "", sortable:true, resizeable:true}
 	                
 				
 	        ]; 
@@ -422,7 +425,7 @@ function buildPartyPositionDataTable(info,rank)
 				{key:"oppositionPartyPercentageOfVotes",label : "<%=opv%>", sortable:true, resizeable:true}, 
 	            {key:"oppositionParty",label : "<%=op%>",sortable:true, resizeable:true}, 
 	            {key:"oppositionPartyCandidate",label : "<%=opc%>", sortable:true, resizeable:true},
-	            {key:"moreDetails",label : "<%=moreDetails%>", sortable:true, resizeable:true}    
+	            {key:"moreDetails",label : "", sortable:true, resizeable:true}    
 				
 	        ]; 
 
@@ -471,7 +474,7 @@ function buildPartyPositionDataTable(info,rank)
 				{key:"oppositionPartyPercentageOfVotes",label : "<%=opv%>", sortable:true, resizeable:true}, 
 	            {key:"oppositionParty",label : "<%=op%>",sortable:true, resizeable:true}, 
 	            {key:"oppositionPartyCandidate",label : "<%=opc%>", sortable:true, resizeable:true},
-	            {key:"moreDetails",label : "<%=moreDetails%>", sortable:true, resizeable:true}    
+	            {key:"moreDetails",label : "", sortable:true, resizeable:true}    
 				
 	        ]; 
 
@@ -884,7 +887,7 @@ function buildPartyPositionDataTable(info,rank)
 		sortable : true
 	} , {
 		key : "moreDetails",
-		label : "<%=moreDetails%>",
+		label : "",
 		sortable: true
 		
 	} ];
@@ -1138,7 +1141,7 @@ function callMarginVotes(partyId)
 	{
 		background-color:#B0C7EB;
 		color:#707070;
-		font-size:11px;
+		font-size:12px;
 		text-decoration:none;
 	}
 	.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
@@ -1284,15 +1287,15 @@ function callMarginVotes(partyId)
 	}
 	#electionSummary_head
 	{
+		background-image:url("images/icons/partyPerformance/reportHeaders.png");
 		font-size:14px;
 		font-weight:bold;
-		height:20px;
+		height:30px;
+		margin-bottom:10px;
+		padding-left:10px;
 		padding-right:10px;
 		padding-top:5px;
-		padding-left:4px;
-		background-image:url(images/icons/partyPerformance/electionSummary.png);
-		width:127px;
-		margin-bottom:10px;
+		width:790px;
 	}
 	#resizablepanel table
 	{
@@ -1300,7 +1303,11 @@ function callMarginVotes(partyId)
 	}
 	#electionSummary_body
 	{
-		padding-left:20px;
+		border:2px solid #DBDCDB;
+		margin-left:3px;
+		margin-right:85px;
+		padding-left:5px;
+		margin-bottom:10px;
 	}
 	.yearHeaders
 	{
@@ -1312,12 +1319,12 @@ function callMarginVotes(partyId)
 	.seatsDataTable th 
 	{		
 		padding:5px;
-		color:#6C5846;
+		color:#203360;
 	}
 	.seatsDataTable td 
 	{		
 		padding:5px;
-		color:#A97F6A;
+		color:#69A74E;
 		font-weight:bold;
 	}
 	.typeTable table
@@ -1327,12 +1334,12 @@ function callMarginVotes(partyId)
 	.mainPartyColor
 	{
 		color:#2B5181;
-		font-size:10px;		
+		font-size:12px;		
 	}
 	.oppositionPartColor
 	{
 		color:#7EADBC;
-		font-size:10px;		
+		font-size:12px;		
 	}
 	.votesMarginContentHead
 	{
@@ -1355,7 +1362,7 @@ function callMarginVotes(partyId)
 <div style="margin-left: 15px;">
 <div id="electionSummary">
 	<div id="electionSummary_head"><%=electionSummaryHeading%></div>
-	<div id="electionSummary_body">
+	<div id="electionSummary_body" >
 		<table width="100%">		
 			<tr>
 				<td>
@@ -1363,17 +1370,17 @@ function callMarginVotes(partyId)
 					<div>
 						<table class="seatsDataTable">
 							<tr>
-								<th>Total Number Of Seats Won </th>
+								<th><%=totalSeatsWon%></th>
 								<td>:</td>
 								<td>${stateData.totalSeatsWon}</td>
 							</tr>
 							<tr>
-								<th>Votes percentage Gained By Party </th>
+								<th><%=votesPcntGained%></th>
 								<td>:</td>
 								<td>${stateData.totalPercentageOfVotesWon}</td>
 							</tr>
 							<tr>
-								<th>Votes % Difference (${stateData.year} - ${stateData.prevYear} ) </th>
+								<th><%=diffVotesPctn%> (${stateData.year} - ${stateData.prevYear} ) </th>
 								<td>:</td>
 								<td>${stateData.diffOfTotalPercentageWinWithPrevElection}</td>
 							</tr> 
@@ -1385,12 +1392,12 @@ function callMarginVotes(partyId)
 					<div>
 						<table class="seatsDataTable">
 							<tr>
-								<th>Total Number Of Seats Won</th>
+								<th><%=totalSeatsWon%></th>
 								<td>:</td>
 								<td>${stateData.prevYearTotalSeatsWon}</td>
 							</tr>
 							<tr>
-								<th>Votes percentage Gained By Party</th>
+								<th><%=votesPcntGained%></th>
 								<td>:</td>
 								<td>${stateData.prevYeartotalPercentageOfVotesWon}</td>
 							</tr>
@@ -1640,7 +1647,7 @@ function callMarginVotes(partyId)
 									oppositionPartyPercentageOfVotes:"${performance.oppositePartyPercentageOfVotes}",
 									oppositionParty:"${performance.oppositeParty}",
 									oppositionPartyCandidate:"${performance.oppositePartyCandidate}",
-									moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${performance.constituencyId})">More Details</A>'
+									moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${performance.constituencyId})">Details</A>'
 								};
 			partyObj.partyPerformanceArray.push(performanceObj);
 		</c:forEach>
@@ -1661,7 +1668,7 @@ function callMarginVotes(partyId)
 									oppositionPartyPercentageOfVotes:"${performance.oppositePartyPercentageOfVotes}",
 									oppositionParty:"${performance.oppositeParty}",
 									oppositionPartyCandidate:"${performance.oppositePartyCandidate}",
-									moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${performance.constituencyId})">More Details</A>'
+									moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${performance.constituencyId})">Details</A>'
 								};
 			partyObj.partyPerformanceArray.push(performanceObj);
 		</c:forEach>
@@ -1681,7 +1688,7 @@ function callMarginVotes(partyId)
 								oppositionPartyPercentageOfVotes:"${performance.oppositePartyPercentageOfVotes}",
 								oppositionParty:"${performance.oppositeParty}",
 								oppositionPartyCandidate:"${performance.oppositePartyCandidate}",
-								moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${performance.constituencyId})">More Details</A>'
+								moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${performance.constituencyId})">Details</A>'
 							};
 			partyObj.partyPerformanceArray.push(performanceObj);	
 		</c:forEach>
@@ -1728,7 +1735,7 @@ var rebelPerformanceObj={
 		oppositePartyCandidate:"${rebelsData.oppositePartyCandidate}",
 		oppositePartyPercentageOfVotes:"${rebelsData.oppositePartyPercentageOfVotes}",
 		oppositePartyRank: "${rebelsData.oppositePartyRank}",						
-		moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${rebelsData.constituencyId})">More Details</A>'
+		moreDetails: '<A href="javascript:{}" onclick="openConstituencyResultsWindow(${rebelsData.constituencyId})">Details</A>'
 					};
 partyObj.rebelsPerformanceArray.push(rebelPerformanceObj);
 </c:forEach>

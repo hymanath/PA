@@ -430,7 +430,8 @@
 		var childNewDivElmt = document.createElement('div');
 		childNewDivElmt.setAttribute('id','mandalNewDiv_'+mandal.mandalName);
 		childNewDivElmt.style.display="none";
-		
+		childNewDivElmt.style.width = "880px"
+		childNewDivElmt.style.overflow = "scroll";	
 		divElmt.appendChild(childNewDivElmt);
 		
 		for(var i in mandal.crossVotedBooths){
