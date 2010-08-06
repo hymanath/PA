@@ -3,6 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%@ page import="java.util.ResourceBundle;" %>
 <HTML>
 <HEAD>
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -26,6 +27,22 @@
 <c:if test="${electionType == 'Parliament' && rank =='0'}"><TITLE>${electionType} ${electionYear} Lost Constituencies Results</TITLE></c:if>
 <c:if test="${electionType == 'Parliament' && rank =='1'}"><TITLE>${electionType} ${electionYear} Won Constituencies Results</TITLE></c:if>
 <SCRIPT type="text/javascript">
+var labelResources = { <%		
+		ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
+		
+		String candidate  = rb.getString("candidate");		
+		String constituency = rb.getString("constituency");
+		String validVotes = rb.getString("validVotes");
+		String party = rb.getString("party");
+		String votesPercentage = rb.getString("votesPercentage");
+		String comments = rb.getString("comments");
+		String votesMarginPcnt = rb.getString("votesMarginPcnt");
+		String moreDetails = rb.getString("moreDetails");
+		String flag = rb.getString("flag");
+		String rank = rb.getString("rank");
+		String votesEarned = rb.getString("votesEarned");
+		
+%>}
 var hidden=1;
 function incrementHidden()
 {
@@ -127,12 +144,12 @@ function callAjax(param,jsObj,url){
 
 		<img id="barloaderGif" style="display:block;" src="images/icons/barloader.gif "/>
 
-	</CENTER>
+	
 	<DIV id="showConstituencyResults"></DIV>
 	<DIV class="yui-skin-sam"><DIV id="candidateResults"></DIV></DIV>
 	<DIV class = "yui-skin-sam"><DIV id="commentsDialogDiv"></DIV></DIV>
 	<DIV class = "yui-skin-sam"><DIV id="yearsDialogDiv"></DIV></DIV>
-	
+	</CENTER>
 	
 	<SCRIPT type="text/javascript">
 	var electionType="${electionType}";
@@ -153,9 +170,9 @@ function callAjax(param,jsObj,url){
 		var contentStr='';
 		contentStr+='<TABLE width="50%">';
 		contentStr+='<TR>';
-		contentStr+='<TH >Party:</TH>';
+		contentStr+='<TH ><%=party%>:</TH>';
 		contentStr+='<TD >'+results.partyLongName+' ( '+results.partyShortName+')</TD>';		
-		contentStr+='<TH >Flag:</TH>';
+		contentStr+='<TH ><%=flag%>:</TH>';
 		contentStr+='<TD ><IMG src="images/party_flags/'+results.partyFlag+'" height="30" width="50"/></TD>';
 		contentStr+='</TR>';
 		contentStr+='</TABLE>';
@@ -174,7 +191,7 @@ function callAjax(param,jsObj,url){
 						votesMargin: candidateElectionResults[i].votesMargin,
 						rank: '1',						
 						comments: '<A onclick="showCommentsDialog('+candidateElectionResults[i].candidateId+',\''+candidateElectionResults[i].candidateName+'\',\'candidate\',1,'+candidateElectionResults[i].constituencyId+',\''+candidateElectionResults[i].constituencyName+'\',\''+results.partyLongName+'\',\''+jsObj.task+'\')" title="Click to View/Add your comments"   href="javascript:{}">'+candidateElectionResults[i].userComments+'</A>',
-						moreDetails: '<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}">More Details</A>'
+						moreDetails: '<A onclick="getMoreDetails('+candidateElectionResults[i].constituencyId+')" title="Click to View Detailed Results" href="javascript:{}"><%=moreDetails%></A>'
 						//otherResults: '<A onclick="showYearsDialog('+candidateElectionResults[i].constituencyId+','+electionTypeId+',\''+electionType+'\')" title="Click to View Detailed Results" href="javascript:{}">View Other Election Results</A>' 						
 					};
 				//partyElectionResultsObj.candidateResultsArr.push(ob);
@@ -204,15 +221,15 @@ function callAjax(param,jsObj,url){
 	function buildCandidateElectionResultsDataTable(resultsArray)
 	{	
 		var candidateElectionResultsColumnDefs = [
-									{key: "candidateName", label: "Candidate", sortable:true},										
-			              	 	    {key: "constituencyName", label: "Constituency", sortable:true},
-			              	 	 	{key: "totalValidVotes", label: "Valid Votes",formatter:"number", sortable:true},
-			              	 	 	{key: "totalVotesEarned", label: "Votes Earned",formatter:"number", sortable:true},
-			              	 	 	{key: "votesPercentage", label: "Votes Percentage",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-			              	 	    {key: "votesMargin", label: "Votes Margin",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
-			              	 	 	{key: "rank", label:"Rank", sortable:true},
-			              	 	 	{key: "comments", label:"Comments"},
-			              	 	 	{key: "moreDetails", label:"MoreDetails"}			              	 	     	 	 	
+									{key: "candidateName", label: "<%=candidate%>", sortable:true},										
+			              	 	    {key: "constituencyName", label: "<%=constituency%>", sortable:true},
+			              	 	 	{key: "totalValidVotes", label: "<%=validVotes%>",formatter:"number", sortable:true},
+			              	 	 	{key: "totalVotesEarned", label: "<%=votesEarned%>",formatter:"number", sortable:true},
+			              	 	 	{key: "votesPercentage", label: "<%=votesPercentage%>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+			              	 	    {key: "votesMargin", label: "<%=votesMarginPcnt%>",formatter:YAHOO.widget.DataTable.formatFloat, sortable:true},
+			              	 	 	{key: "rank", label:"<%=rank%>", sortable:true},
+			              	 	 	{key: "comments", label:"<%=comments%>"},
+			              	 	 	{key: "moreDetails", label:"<%=moreDetails%>"}			              	 	     	 	 	
 			              	 	    ];                	 	    
 
 			var candidateElectionResultsDataSource = new YAHOO.util.DataSource(resultsArray); 
