@@ -417,7 +417,7 @@ function getConstituencyResults(elecYear){
 	var jsObj = {
 			constituencyId:${constituencyId},
 			electionYear:elecYear,
-			chartHeight: 300,
+			chartHeight: 350,
 			chartWidth: 700,
 			others:true,
 			task:"getConstituencyResultsBySubLocations"
