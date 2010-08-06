@@ -5,6 +5,10 @@ import java.util.Set;
 
 public class PartyElectionVotersHeaderDataVO extends ResultStatus{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6045937726021556278L;
 	private Set<String> header;
 	private List<PartyElectionVotersListVO> data;
 	
