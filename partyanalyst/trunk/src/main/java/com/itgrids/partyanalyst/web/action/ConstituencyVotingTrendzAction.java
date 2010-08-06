@@ -126,7 +126,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private List<TeshilPartyInfoVO> zptcMptcResultsInMandal;
 	private ConstituencyRevenueVillagesVO chartResultVO;
 	private List<PartyElectionVotersVO> partiesElecsResults;
-
+ 
 
 	public String getMuncipalityElectionType() {
 		return muncipalityElectionType;
@@ -856,7 +856,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		if(biElectionResultsMainVO.getAllPartiesElecInfo() != null){
 			partiesInChart = new LinkedHashSet<String>();
-			ChartProducer.createLineChart("All Parties Performance In All Elections Of "+constiName+" Assembly Constituency",
+			ChartProducer.createLineChartWithThickness("All Parties Performance In All Elections Of "+constiName+" Assembly Constituency",
 					"Elections", "Percentages",createDataSetForRuralUrban(biElectionResultsMainVO.getAllPartiesElecInfo().
 							getAllPartiesAllElectionResults(), partiesInChart),	allElecPartiesGraphPath,400,800,
 							ChartUtils.getLineChartColors(partiesInChart),true);	
@@ -866,7 +866,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		dataset = createDataSetForPresentYear((ConstituencyRevenueVillagesVO)charts.getPresentYearChart(), partiesInChart);
 		
 		if(dataset.getColumnCount() > 1)
-			ChartProducer.createLineChart("Mandalwise Results For "+constiName+" Assembly In "+IConstants.PRESENT_ELECTION_YEAR,
+			ChartProducer.createLineChartWithThickness("Mandalwise Results For "+constiName+" Assembly In "+IConstants.PRESENT_ELECTION_YEAR,
 				"Mandals", "Percentages",dataset, presChartPath,400,800,ChartUtils.getLineChartColors(partiesInChart),true);
 		else
 			ChartProducer.create3DBarChartWithInputParams("Mandalwise Results For "+constiName+" Assembly In "+IConstants.PRESENT_ELECTION_YEAR,
@@ -890,7 +890,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		if(((List<PartyResultVO>)charts.getPreviousYearChart()).size() > 0){
 			dataset = createDataSetForPreviousYear((List<PartyResultVO>)charts.getPreviousYearChart(), partiesInChart);
 			if(dataset.getColumnCount() > 1)
-			ChartProducer.createLineChart("Mandalwise Results For "+constiName+" Assembly Region In "+IConstants.PREVIOUS_ELECTION_YEAR,
+			ChartProducer.createLineChartWithThickness("Mandalwise Results For "+constiName+" Assembly Region In "+IConstants.PREVIOUS_ELECTION_YEAR,
 					"Mandals", "Percentages",createDataSetForPreviousYear((List<PartyResultVO>)charts.getPreviousYearChart(), partiesInChart), 
 					prevChartPath,400,800,ChartUtils.getLineChartColors(partiesInChart),true);
 			else
