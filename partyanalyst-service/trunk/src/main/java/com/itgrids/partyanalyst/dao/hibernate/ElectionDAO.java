@@ -107,24 +107,6 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId =?", typeID);
 	}
-
-	public void insertTest(Election ele) {
-		//getHibernateTemplate().saveOrUpdateAll(ele);
-	} 
-
-	public Election findByESIdEleYear(ElectionScope eleScope,String eleYear, String elecSubtype){
-		Election lelectionObj=null;
-		Query query = getSession().createQuery("from Election model where model.electionScope.electionScopeId =? " +
-				"and model.electionYear=? and model.elecSubtype = ?");
-		query.setParameter(0, eleScope.getElectionScopeId());
-		query.setParameter(1, eleYear);
-		query.setParameter(2, elecSubtype);
-		List<Election> list= query.list();
-		if(list!=null && list.size()>0){
-			return lelectionObj=list.get(0);
-		}
-		return lelectionObj;		
-	}
 	
 	@SuppressWarnings("unchecked")
 	public Election findByElectionScopeIdElectionYear(Long electionScope,String electionYear, String elecSubtype){

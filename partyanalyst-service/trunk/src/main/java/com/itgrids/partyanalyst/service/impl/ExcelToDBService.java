@@ -370,7 +370,7 @@ private ElectionScope checkAndInsertElectionScope(ElectionType electionType,Coun
 
 private Election checkAndInsertElection(ElectionScope electionScope,UploadFormVo uploadFormVo) throws CsvException{
 	Election lelectionObj;
-	lelectionObj= electionDAO.findByESIdEleYear(electionScope,uploadFormVo.getElectionYear(), uploadFormVo.getElecSubtype());
+	lelectionObj= electionDAO.findByElectionScopeIdElectionYear(electionScope.getElectionScopeId(),uploadFormVo.getElectionYear(), uploadFormVo.getElecSubtype());
 	if(lelectionObj!=null){
 		throw new CsvException("These Election Results have already been uploaded.");
 	}else{

@@ -226,7 +226,7 @@ public class MptcElectionService implements IMptcElectionService {
 	 * @throws CsvException
 	 */
 	private Election checkAndInsertElection(ElectionScope electionScope,String eleYear) throws CsvException{
-		Election election = electionDAO.findByESIdEleYear(electionScope,eleYear,elecSubtype);
+		Election election = electionDAO.findByElectionScopeIdElectionYear(electionScope.getElectionScopeId(),eleYear,elecSubtype);
 		if(election==null){
 			election= new Election();
 			election.setElectionScope(electionScope);
