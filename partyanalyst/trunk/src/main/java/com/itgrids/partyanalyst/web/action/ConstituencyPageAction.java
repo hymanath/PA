@@ -1128,6 +1128,8 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 				
 		constituencyRevenueVillagesVO = constituencyPageService.getConstituencyElecResults(jObj.getLong("constituencyId")
 				, jObj.getString("electionYear"),new Boolean(includeOthers));
+		if(constituencyRevenueVillagesVO != null && constituencyRevenueVillagesVO.getCandidateNamePartyAndStatus() != null && constituencyRevenueVillagesVO.getCandidateNamePartyAndStatus().size() > 0 &&
+				constituencyRevenueVillagesVO.getConstituencyOrMandalWiseElectionVO() != null && constituencyRevenueVillagesVO.getConstituencyOrMandalWiseElectionVO().size() > 0){
 		if(constituencyRevenueVillagesVO.getElectionType().equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE)){
 			chartName = "partyPerformanceInAllSubLocations_"+constituencyRevenueVillagesVO.getConstituencyId()+"_"+jObj.getString("electionYear")+".png";
 			chartTitle = "Mandal Wise Election Results For "+constituencyRevenueVillagesVO.getConstituencyName()+" "+constituencyRevenueVillagesVO.getElectionType()+" Constituency"+" In "+jObj.getString("electionYear");
@@ -1156,7 +1158,10 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
         constituencyRevenueVillagesVO.setDetailedChartPath(detailedChartName);
         partiesInChart = new LinkedHashSet<String>();
         ChartProducer.createLineChart(chartTitle, detailedDomainAxisName, "Percentages", createDataset(constituencyRevenueVillagesVO, partiesInChart), detailedChartPath,600,800, ChartUtils.getLineChartColors(partiesInChart),true);   
-      
+		}
+		else{
+			constituencyRevenueVillagesVO.setChartPath(null);
+		}
 	  return SUCCESS;
   }
   
