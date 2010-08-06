@@ -4578,17 +4578,18 @@ public class StaticDataService implements IStaticDataService {
 					votesEarned = votesEarn.longValue();
 					validVotes = validVote.longValue();
 					
-					if(votesEarned.equals(new Long(0)) || validVotes.equals(new Long(0)))
-						return null;
+					/*if(votesEarned.equals(new Long(0)) || validVotes.equals(new Long(0)))
+						return null;*/
 					Double percent = new Double(parms[4].toString());
-					if(percent.equals(new Double(0)))
-						return null;
+					/*if(percent.equals(new Double(0)))
+						return null;*/
 					percentage = new BigDecimal(percent).setScale(2, BigDecimal.ROUND_HALF_UP);
 					
 					}
 					catch(Exception ex){
 						ex.printStackTrace();
 					    log.debug(" Exception raised :" + ex);
+					    
 					}
 				}
 				else{	
