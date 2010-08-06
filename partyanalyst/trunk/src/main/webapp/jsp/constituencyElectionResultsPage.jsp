@@ -96,9 +96,11 @@ text-align:center;
 
 </style>
 <script type="text/javascript"><!--
-var constiId = '${constituencyElectionResultsVO.constituencyId}';
-var elecType = '${constituencyElectionResultsVO.electionType}';
-var elecYear = '${constituencyElectionResultsVO.electionYear}';
+var constiId = '${constituencyResultsInElectionVO.constituencyElectionCompleteResults.constituencyId}';
+//var elecType = '${constituencyElectionResultsVO.electionType}';
+var elecType = '${constituencyResultsInElectionVO.constituencyElectionCompleteResults.electionInfo.electionType}';
+//var elecYear = '${constituencyElectionResultsVO.electionYear}';
+var elecYear = '${constituencyResultsInElectionVO.constituencyElectionCompleteResults.electionInfo.electionYear}';
 
 var constituencyElecMainObj=	{
 		constituencyAddress:'',
@@ -149,8 +151,8 @@ function buildDataForConstituencyResults()
 	electionYears+='<SPAN style="color:#606060;">Select to view Election Results for other year';
 	electionYears+='<select class="selectWidth" id="yearSelectDropDown" style="width: 100px; margin-left: 5px;" onchange="redirectCandidateLink(this.options[this.selectedIndex].text)">';
 	electionYears+='<OPTION value="0">Select Year</OPTION>';		
-	<c:forEach var="years" items="${constituencyElectionResultsVO.allElectionYears}">
-		<c:if test="${constituencyElectionResultsVO.electionYear != years.name}">
+	<c:forEach var="years" items="${constituencyResultsInElectionVO.electionYears}">
+		<c:if test="${constituencyResultsInElectionVO.constituencyElectionCompleteResults.electionInfo.electionYear != years.name}">
 			electionYears+='<OPTION value="years.id">${years.name}</OPTION>';
 		</c:if>		
 	</c:forEach>		
@@ -158,58 +160,58 @@ function buildDataForConstituencyResults()
 		
 		allYears.innerHTML = electionYears;
 		
-		 constituencyElecMainObj.constituencyBasicInfo.constituencyId='${constituencyElectionResultsVO.constituencyId}';
-		 constituencyElecMainObj.constituencyBasicInfo.constituencyName='${constituencyElectionResultsVO.constituencyName}';
-         constituencyElecMainObj.constituencyBasicInfo.stateName='${constituencyElectionResultsVO.stateName}';
-       	 constituencyElecMainObj.constituencyBasicInfo.districtName='${constituencyElectionResultsVO.districtName}';
-      	 constituencyElecMainObj.constituencyBasicInfo.constituencyType='${constituencyElectionResultsVO.electionType}';
-      	 constituencyElecMainObj.constituencyBasicInfo.totalVotes='${constituencyElectionResultsVO.totalVotes}';
-      	 constituencyElecMainObj.constituencyBasicInfo.totalPolledVotes='${constituencyElectionResultsVO.totalPolledVotes}';
-      	 constituencyElecMainObj.constituencyBasicInfo.votingPercentage='${constituencyElectionResultsVO.votingPercentage}';
+		 constituencyElecMainObj.constituencyBasicInfo.constituencyId='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.constituencyId}';
+		 constituencyElecMainObj.constituencyBasicInfo.constituencyName='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.constituencyName}';
+         constituencyElecMainObj.constituencyBasicInfo.stateName='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.stateName}';
+       	 constituencyElecMainObj.constituencyBasicInfo.districtName='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.districtName}';
+      	 constituencyElecMainObj.constituencyBasicInfo.constituencyType='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.electionInfo.electionType}';
+      	 constituencyElecMainObj.constituencyBasicInfo.totalVotes='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.totalVoters}';
+      	 constituencyElecMainObj.constituencyBasicInfo.totalPolledVotes='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.totalVotesPolled}';
+      	 constituencyElecMainObj.constituencyBasicInfo.votingPercentage='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.totalVotersPercentInString}';
       	 
-	    constituencyElecMainObj.constituencyElectionInfo.electionType='${constituencyElectionResultsVO.electionType}';
-		constituencyElecMainObj.constituencyElectionInfo.electionYear='${constituencyElectionResultsVO.electionYear}';
+	    constituencyElecMainObj.constituencyElectionInfo.electionType='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.electionInfo.electionType}';
+		constituencyElecMainObj.constituencyElectionInfo.electionYear='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.electionInfo.electionYear}';
 	                    
 	 
-		constituencyElecMainObj.wonCandidateInfo.candidateId='${constituencyElectionResultsVO.candidateResultsVO.candidateId}';
-		constituencyElecMainObj.wonCandidateInfo.candidateName='${constituencyElectionResultsVO.candidateResultsVO.candidateName}';
-		constituencyElecMainObj.wonCandidateInfo.partyId='${constituencyElectionResultsVO.candidateResultsVO.partyId}';
-		constituencyElecMainObj.wonCandidateInfo.partyName='${constituencyElectionResultsVO.candidateResultsVO.partyName}';
-		<c:if test="${constituencyElectionResultsVO.candidateResultsVO.partyFlag != null}"> 
-        constituencyElecMainObj.wonCandidateInfo.partyFlag='<img src="<%=request.getContextPath()%>/images/party_flags/${constituencyElectionResultsVO.candidateResultsVO.partyFlag}" height="30" width="40"/>';
+		constituencyElecMainObj.wonCandidateInfo.candidateId='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.candidateId}';
+		constituencyElecMainObj.wonCandidateInfo.candidateName='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.candidateLastName}';
+		constituencyElecMainObj.wonCandidateInfo.partyId='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.partyElectionDetails.partyId}';
+		constituencyElecMainObj.wonCandidateInfo.partyName='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.partyElectionDetails.partyShortName}';
+		<c:if test="${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.partyElectionDetails.partyFlag != null}"> 
+        constituencyElecMainObj.wonCandidateInfo.partyFlag='<img src="<%=request.getContextPath()%>/images/party_flags/${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.partyElectionDetails.partyFlag}" height="30" width="40"/>';
         </c:if> 
-		<c:if test="${constituencyElectionResultsVO.candidateResultsVO.partyFlag == null}"> 
+		<c:if test="${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.partyElectionDetails.partyFlag == null}"> 
         constituencyElecMainObj.wonCandidateInfo.partyFlag='<img src="<%=request.getContextPath()%>/images/party_flags/no_Image.png" height="30" width="40"/>';
         </c:if> 
-		constituencyElecMainObj.wonCandidateInfo.partyFlag='<img src="<%=request.getContextPath()%>/images/party_flags/${constituencyElectionResultsVO.candidateResultsVO.partyFlag}" height="30" width="40"/>';
-		constituencyElecMainObj.wonCandidateInfo.votesEarned='${constituencyElectionResultsVO.candidateResultsVO.votesEarned}',
-		constituencyElecMainObj.wonCandidateInfo.votesPercent='${constituencyElectionResultsVO.candidateResultsVO.votesPercentage}';
-		constituencyElecMainObj.wonCandidateInfo.rank='${constituencyElectionResultsVO.candidateResultsVO.rank}';
-		constituencyElecMainObj.wonCandidateInfo.votesMargin='${constituencyElectionResultsVO.candidateResultsVO.votesMargin}';
-		constituencyElecMainObj.wonCandidateInfo.votesPercentMargin='${constituencyElectionResultsVO.candidateResultsVO.votesPercentMargin}';
+		constituencyElecMainObj.wonCandidateInfo.partyFlag='<img src="<%=request.getContextPath()%>/images/party_flags/${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.partyElectionDetails.partyFlag}" height="30" width="40"/>';
+		constituencyElecMainObj.wonCandidateInfo.votesEarned='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.candidateVotesEarned}',
+		constituencyElecMainObj.wonCandidateInfo.votesPercent='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.votesPercentAsString}';
+		constituencyElecMainObj.wonCandidateInfo.rank='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.rank}';
+		constituencyElecMainObj.wonCandidateInfo.votesMargin='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.marginVotesEarned}';
+		constituencyElecMainObj.wonCandidateInfo.votesPercentMargin='${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResults.marginVotesPercentAsString}';
 
 		
-	 <c:forEach var="oppCandResults" items="${constituencyElectionResultsVO.candidateOppositionList}">
+	 <c:forEach var="oppCandResults" items="${constituencyResultsInElectionVO.constituencyElectionCompleteResults.partyElectionCompleteResults.candidateElectionCompleteResultsList}">
 
      var partyFlg = '';
-     <c:if test="${oppCandResults.partyFlag != null}">
-	 partyFlg = '<img src="<%=request.getContextPath()%>/images/party_flags/${oppCandResults.partyFlag}" height="30" width="40"/>';
+     <c:if test="${oppCandResults.partyElectionDetails.partyFlag != null}">
+	 partyFlg = '<img src="<%=request.getContextPath()%>/images/party_flags/${oppCandResults.partyElectionDetails.partyFlag}" height="30" width="40"/>';
 	 </c:if> 
-	 <c:if test="${oppCandResults.partyFlag == null}">
+	 <c:if test="${oppCandResults.partyElectionDetails.partyFlag == null}">
 	 partyFlg = '<img src="<%=request.getContextPath()%>/images/party_flags/no_Image.png" height="30" width="40"/>';
 	 </c:if>
 	 
 	 var oppCandInfo={
 			         candidateId:'${oppCandResults.candidateId}',
-			         candidateName:'${oppCandResults.candidateName}',
-			         partyId:'${oppCandResults.partyId}',
-			         partyName:'${oppCandResults.partyName}',
+			         candidateName:'${oppCandResults.candidateLastName}',
+			         partyId:'${oppCandResults.partyElectionDetails.partyId}',
+			         partyName:'${oppCandResults.partyElectionDetails.partyShortName}',
 					 partyFlag:partyFlg,
-			         votesEarned:'${oppCandResults.votesEarned}',
-			         votesPercent:'${oppCandResults.votesPercentage}',
+			         votesEarned:'${oppCandResults.candidateVotesEarned}',
+			         votesPercent:'${oppCandResults.votesPercentAsString}',
 			         rank:'${oppCandResults.rank}',
-					 votesMargin:'${oppCandResults.votesMargin}',
-					 votesPercentMargin:'${oppCandResults.votesPercentMargin}'
+					 votesMargin:'${oppCandResults.marginVotesEarned}',
+					 votesPercentMargin:'${oppCandResults.marginVotesPercentAsString}'
 	                 }
 	 constituencyElecMainObj.oppCandidateElecResults.push(oppCandInfo);
 	 </c:forEach>
