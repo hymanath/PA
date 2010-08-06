@@ -55,7 +55,7 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getElectionIdsAndYearsInfo(Long elecType,Long stateId);
 		
-		public List<String> getElectionYears(Long electionType);
+		public List<String> getElectionYears(Long electionType, Boolean incByeElection);
 	//>>>>>Election Related Methods End
 	
 	//>>>>>State Related Methods Start

@@ -503,12 +503,18 @@ public class StaticDataService implements IStaticDataService {
 		return electionYears;
 	}
 	
-	public List<String> getElectionYears(Long electionType) {
-		List<Election> elections = electionDAO.findByPropertyTypeId(electionType);
-		List<String> years = new ArrayList<String>();
-		for(Election election: elections){
-			years.add(election.getElectionYear());
-		}
+	@SuppressWarnings("unchecked")
+	public List<String> getElectionYears(Long electionType, Boolean incByeElection) {
+		List<Election> elections = null;
+		if(!incByeElection)
+			elections = electionDAO.findElectionYearsBySubType(electionType, IConstants.ELECTION_SUBTYPE_MAIN);
+		else			
+			elections = electionDAO.findByPropertyTypeId(electionType);
+			List<String> years = new ArrayList<String>();
+			for(Election election: elections){
+				years.add(election.getElectionYear());
+			}
+			
 		Collections.sort(years, new ElectionYearsComparator());
 		return years;
 	}

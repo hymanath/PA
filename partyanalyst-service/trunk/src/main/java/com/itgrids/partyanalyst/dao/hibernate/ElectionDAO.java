@@ -104,6 +104,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	
 	@SuppressWarnings("unchecked")
 	public List<Election> findByPropertyTypeId(Long typeID) {
+		
 		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId =?", typeID);
 	}
 
@@ -242,5 +243,13 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 	@SuppressWarnings("unchecked")
 	public List getElectionTypeAndElectionYearByElectionId(Long electionId){
 		return getHibernateTemplate().find("select model.electionScope.electionType.electionType,model.electionYear from Election model where model.electionId = ? order by model.electionYear desc",electionId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List findElectionYearsBySubType(Long typeID, String type) {
+	
+		Object[] params = {typeID, type};
+		return getHibernateTemplate().find("from Election model where model.electionScope.electionType.electionTypeId =? and model.elecSubtype = ?", params);
+	
 	}
 }
