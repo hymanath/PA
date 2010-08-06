@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.ConstituencyBoothInfoVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.ConstituencyResultsInElectionVO;
 import com.itgrids.partyanalyst.dto.DistrictWisePartyResultVO;
 import com.itgrids.partyanalyst.dto.ElectionBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ElectionResultPartyVO;
@@ -211,6 +212,8 @@ public interface IStaticDataService {
 		public MandalAllElectionDetailsVO getAllMptcWinnerForADistrictForLatestYear(Long districtId,String electionYear);
 		
 		public ConstituencyElectionResultsVO getAllCandidatesDetailsForConstituency(Long constituencyId,String electionYear,String electionType);
+		
+		public ConstituencyResultsInElectionVO getAllCandidatesResultsInConstituency(final Long constituencyId,final String electionYear,final String electionType);
 		
 		public CandidateDetailsVO getAllParliamentWinningCandidatesForADistrict(Long districtId, Set<Long> parliamentConstituencies);
 		
