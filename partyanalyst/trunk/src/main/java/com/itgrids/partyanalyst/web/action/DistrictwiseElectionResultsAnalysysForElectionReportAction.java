@@ -231,7 +231,7 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
 	 		String partyDistrictResultsChartName = "partyDistrictResults_" + partyDistrictResultsChartId + session.getId() +".png";
 	        String partyDistrictResultsChartPath = context.getRealPath("/") + "charts\\" + partyDistrictResultsChartName;
 	 		
-	 		ChartProducer.createLineChart(title,"","Votes Percentage", createDataSetForPartyDistrictwiseResults(allPartiesResults), partyDistrictResultsChartPath,300,880, null,false);
+	 		ChartProducer.createLineChart(title,"","Votes Percentage", createDataSetForPartyDistrictwiseResults(allPartiesResults), partyDistrictResultsChartPath,300,880, null,true);
 	        request.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 			session.setAttribute("partyDistrictResultsChartName", partyDistrictResultsChartName);
 			
@@ -253,7 +253,7 @@ public class DistrictwiseElectionResultsAnalysysForElectionReportAction extends 
  		String alliancePartiesChartName = "alliancPartyElectionResultsDistrictWise_" + alliancePartiesChartId + session.getId() +".png";
         String alliancePartiesChartPath = context.getRealPath("/") + "charts\\" + alliancePartiesChartName;
  		
-        ChartProducer.createLineChart("","","Seats", createDataSetForPartyDistrictwiseResults(alliancParties.getPartiesInAlliance()), alliancePartiesChartPath,300,800, null,false);
+        ChartProducer.createLineChart("","","Seats", createDataSetForPartyDistrictwiseResults(alliancParties.getPartiesInAlliance()), alliancePartiesChartPath,300,800, null,true);
 	    request.setAttribute("alliancePartiesChartName1", alliancePartiesChartName);
 		session.setAttribute("alliancePartiesChartName1", alliancePartiesChartName);
 		chartName = alliancePartiesChartName;
