@@ -15,6 +15,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyResultsInElectionVO;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -34,6 +35,7 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 	private String constituencyId;
 	private IStaticDataService staticDataService;
 	private ConstituencyElectionResultsVO constituencyElectionResultsVO;
+	private ConstituencyResultsInElectionVO constituencyResultsInElectionVO;
 	
 	HttpServletRequest request;
 	HttpServletResponse response;
@@ -54,6 +56,15 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 
 	public void setElectionYear(String electionYear) {
 		this.electionYear = electionYear;
+	}
+
+	public ConstituencyResultsInElectionVO getConstituencyResultsInElectionVO() {
+		return constituencyResultsInElectionVO;
+	}
+
+	public void setConstituencyResultsInElectionVO(
+			ConstituencyResultsInElectionVO constituencyResultsInElectionVO) {
+		this.constituencyResultsInElectionVO = constituencyResultsInElectionVO;
 	}
 
 	public String getConstituencyId() {
@@ -93,15 +104,11 @@ public class ConstituencyElectionResultsAction extends ActionSupport implements
 		
 		log.info("Inside Execute Method ..");
 		
-		log.debug("Constituency Id:" + constituencyId);
-		log.debug("Election Type  :" + electionType);
-		log.debug("Election Year  :" + electionYear);
-		
-		constituencyElectionResultsVO = staticDataService.getAllCandidatesDetailsForConstituency(new Long(constituencyId), electionYear, electionType);
-		
-		if(constituencyElectionResultsVO == null)
+		//constituencyElectionResultsVO = staticDataService.getAllCandidatesDetailsForConstituency(new Long(constituencyId), electionYear, electionType);
+		constituencyResultsInElectionVO = staticDataService.getAllCandidatesResultsInConstituency(new Long(constituencyId), electionYear, electionType);
+		if(constituencyResultsInElectionVO == null)
 			return Action.ERROR;
-		log.debug("All election years in action"+constituencyElectionResultsVO.getAllElectionYears().size());
+		log.debug("All election years in action"+constituencyResultsInElectionVO.getElectionYears().size());
 		return Action.SUCCESS;
 	}
 
