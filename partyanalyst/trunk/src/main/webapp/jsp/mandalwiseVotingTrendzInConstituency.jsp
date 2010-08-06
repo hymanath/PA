@@ -925,25 +925,27 @@
 											
 										}else if(jsObj.task == "getConstituencyResultsBySubLocationsFor2010")
 										{
-											constiMandalWiseResults2010PresChart = myResults.chartPath;
-
-											var buttonDiv = document.getElementById("present2010MandalChartButton");
-											var bStr='';
-											if(netVar)
+											if(myResults.chartPath != null)
 											{
-												bStr += '<input id="present2010MandalwiseIChart_button" type="button" onclick="displayHideChartDiv(\'present2010MandalwiseIChart\')" value="View Interactive Chart">';
-												getMandalResultsInteractiveChart(myResults,"present2010MandalwiseIChart");
+												constiMandalWiseResults2010PresChart = myResults.chartPath;
+	
+												var buttonDiv = document.getElementById("present2010MandalChartButton");
+												var bStr='';
+												if(netVar)
+												{
+													bStr += '<input id="present2010MandalwiseIChart_button" type="button" onclick="displayHideChartDiv(\'present2010MandalwiseIChart\')" value="View Interactive Chart">';
+													getMandalResultsInteractiveChart(myResults,"present2010MandalwiseIChart");
+												}
+												else
+													bStr += '<input disabled="true" type="button" value="View Interactive Chart">';
+	
+												buttonDiv.innerHTML = bStr;
+	
+												var imageDiv = document.getElementById("present2010MandalwiseChart");
+												var str = '';
+												str += '<img width="750" src="charts/'+constiMandalWiseResults2010PresChart+'">';
+												imageDiv.innerHTML = str;
 											}
-											else
-												bStr += '<input disabled="true" type="button" value="View Interactive Chart">';
-
-											buttonDiv.innerHTML = bStr;
-
-											var imageDiv = document.getElementById("present2010MandalwiseChart");
-											var str = '';
-											str += '<img width="750" src="charts/'+constiMandalWiseResults2010PresChart+'">';
-											imageDiv.innerHTML = str;
-
 											
 										}else if(jsObj.task == "getMandalsAndPartiesChartInElection")
 										{
@@ -2560,7 +2562,7 @@
 						               
 
 						bodyElmt.innerHTML = str;
-						//getConstituencyResults("2010","getConstituencyResultsBySubLocationsFor2010");
+						getConstituencyResults("2010","getConstituencyResultsBySubLocationsFor2010");
 						getConstituencyResults("2009","getConstituencyResultsBySubLocations");
 						
 		} else if(urbanConstResults != null)
