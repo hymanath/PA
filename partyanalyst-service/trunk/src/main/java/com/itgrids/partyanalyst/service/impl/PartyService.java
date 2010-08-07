@@ -122,7 +122,7 @@ public class PartyService implements IPartyService {
 		if(diffOfTotalPercentageWinWithPrevElection.doubleValue()<0)
 			positiveVotesFlowFlag = false;
 		Map<String, String> partyVotesFlown = partyVotesFlow(presentYearPartyPerformanceReportVO.getVotesFlown()
-				, previousYearPartyPerformanceReportVO.getVotesFlown(),positiveVotesFlowFlag);
+				, previousYearPartyPerformanceReportVO.getVotesFlown(),positiveVotesFlowFlag,presentYearPartyPerformanceReportVO.getAllianceParties(),previousYearPartyPerformanceReportVO.getAllianceParties());
 		
 		presentYearPartyPerformanceReportVO.setPrevYear(previousYearPartyPerformanceReportVO.getYear());
 		presentYearPartyPerformanceReportVO.setPrevYearTotalSeatsWon(previousYearPartyPerformanceReportVO.getTotalSeatsWon());
@@ -529,7 +529,7 @@ public class PartyService implements IPartyService {
 					//if(votesFlow.get(party.getShortName())!= null)
 					
 				}
-				if(!isSelectedParty && !isAllianceParty && !isRebelAllianceParty){
+				if(!isSelectedParty && !isRebelAllianceParty){
 				if(votesFlow.containsKey(party.getShortName()))
 				votesEarned+=votesFlow.get(party.getShortName()).doubleValue();
 				votesFlow.put(party.getShortName(), new BigDecimal(votesEarned).setScale (2,BigDecimal.ROUND_HALF_UP));
@@ -553,6 +553,7 @@ public class PartyService implements IPartyService {
 		for(String partyName: votesFlow.keySet()){
 			votesFlow.put(partyName, new BigDecimal((votesFlow.get(partyName).doubleValue()*100)/totalValidVotes).setScale(2,BigDecimal.ROUND_HALF_UP));
 		}
+		
 		double votesPercentage = 0;
 		if(totalValidVotes!=0){
 			votesPercentage = (totalVotesEarnedByParty*100)/totalValidVotes ;
@@ -649,19 +650,34 @@ public class PartyService implements IPartyService {
 
 	@SuppressWarnings("unchecked")
 	public Map<String, String> partyVotesFlow(Map<String, BigDecimal> presentElectionPartyVotePerc, 
-			Map<String, BigDecimal> previousElectionPartyVotePerc, boolean isPositiveVotesFlow){
+			Map<String, BigDecimal> previousElectionPartyVotePerc, boolean isPositiveVotesFlow,
+			List<Party> presentAlliancParties,List<Party> previousAlliancParties){
 		
 		Map<String, String> votesFlow = new LinkedHashMap<String, String>();
 		Map<String, String> tempMap = new HashMap<String, String>();
+		Set<String> presentAlliancPartiesSet = null;
+		Set<String> previousAlliancPartiesSet = null;
 		
 	    SortedMap<String, Double> sortedVotesFlowMap = new TreeMap(new ValueComparator(presentElectionPartyVotePerc));
 		int count = 0;
+		if(presentAlliancParties != null)
+			presentAlliancPartiesSet = getAlliancPartiesMap(presentAlliancParties);
+		if(previousAlliancParties != null)
+			previousAlliancPartiesSet = getAlliancPartiesMap(previousAlliancParties);
 		 
 	    for (Map.Entry<String, BigDecimal> entry : presentElectionPartyVotePerc.entrySet()) {
 	    	String partyName = entry.getKey();
+	    	
+	    	if(presentAlliancParties != null && previousAlliancParties != null){
+	    		if(presentAlliancPartiesSet != null && presentAlliancPartiesSet.contains(partyName) && previousAlliancPartiesSet != null && previousAlliancPartiesSet.contains(partyName))
+                  continue;
+	    	}
+	    	
 			double presentValue = entry.getValue().doubleValue();
 			double previousValue = (previousElectionPartyVotePerc.get(partyName)== null)? 0 :
 										(previousElectionPartyVotePerc.get(partyName).setScale (2,BigDecimal.ROUND_HALF_UP)).doubleValue();
+			
+						
 			double differences = new BigDecimal(presentValue - previousValue).setScale (2,BigDecimal.ROUND_HALF_UP).doubleValue();
 			if(Math.abs(differences)<1)
 				continue;
@@ -679,14 +695,25 @@ public class PartyService implements IPartyService {
 		for(Map.Entry<String, Double> entry : sortedVotesFlowMap.entrySet()) {
 			 String partyName = entry.getKey();
 			if(log.isDebugEnabled())
-				log.debug("partyNames::::"+partyName);
+				log.debug("partyNames ::"+partyName);
 				 String value = tempMap.get(partyName);
 				 if(value.length()>0)
 					 votesFlow.put(partyName, value);
 				 count ++;
-		 }
+	    }
 		
 		return votesFlow;
+	}
+	
+	public Set<String> getAlliancPartiesMap(List<Party> partiesList){
+		Set<String> partiesSet = null;
+		if(partiesList != null){
+			partiesSet = new HashSet<String>();
+			for(Party party:partiesList){
+				partiesSet.add(party.getShortName());
+			}
+		}
+	 return partiesSet;
 	}
 	
 	public List<ConstituencyPositionDetailVO> getListLostByDroppingVotes(
