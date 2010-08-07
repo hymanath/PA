@@ -67,6 +67,7 @@ public class PartyPerformanceReportVO extends BaseObject {
 	private Map<String, String> partyVotesFlown;
 	private Map<String, BigDecimal> votesFlown;
 	private List<Party> allianceParties;
+	private List<Party> previousYearAllianceParties;
 	private List<ConstituencyPositionDetailVO> rebelPartyCandidates;
 	private List<ConstituencyPositionDetailVO> partyWinners;
 	private List<ConstituencyPositionDetailVO> partyLosers;
@@ -361,6 +362,15 @@ public class PartyPerformanceReportVO extends BaseObject {
 
 	public void setElectionId(Long electionId) {
 		this.electionId = electionId;
+	}
+
+	public List<Party> getPreviousYearAllianceParties() {
+		return previousYearAllianceParties;
+	}
+
+	public void setPreviousYearAllianceParties(
+			List<Party> previousYearAllianceParties) {
+		this.previousYearAllianceParties = previousYearAllianceParties;
 	}
 
 	
