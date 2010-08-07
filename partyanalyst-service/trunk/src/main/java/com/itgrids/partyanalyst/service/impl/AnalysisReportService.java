@@ -789,7 +789,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 			 Map<Long,List<Long>> marginNominationIds = new HashMap<Long,List<Long>>();
 			 				  
 			 marginNominationIds = getNominationsIdsForAPartyInAnElection(electionId,partyId,category);
-				 
+			 log.error(" ................... Margin Values List :" + marginNominationIds.size());	 
 				  //get analyzed constituencies
 				  if(!marginNominationIds.isEmpty()){
 					Set entries = marginNominationIds.entrySet();
@@ -797,6 +797,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 					while(iterator.hasNext()){
 					Map.Entry entry = (Map.Entry)iterator.next();
 					List<Long> nominationIds = (List<Long>)entry.getValue();
+					
 					if(nominationIds != null && nominationIds.size() > 0){
 					Long id = (Long)entry.getKey();
 					VotesMarginAnalysisVO votesMarginAnalysis = getDetailsOfMarginVotesAnalysis(id,nominationIds);
@@ -877,11 +878,15 @@ public class AnalysisReportService implements IAnalysisReportService {
 				 votesMarginAnalysisVO.setMarginValueOne(new Long(10));
 				 votesMarginAnalysisVO.setMarginValueTwo(new Long(20));
 				 votesMarginAnalysisVO.setMarginRange("10 - 20 %");
+			 }else if(id.equals(new Long(5))){
+				 votesMarginAnalysisVO.setMarginValueOne(new Long(20));
+				 votesMarginAnalysisVO.setMarginValueTwo(new Long(50));
+				 votesMarginAnalysisVO.setMarginRange("20 - 50 %");
 			 }
 			 else{
-				 votesMarginAnalysisVO.setMarginValueOne(new Long(20));
+				 votesMarginAnalysisVO.setMarginValueOne(new Long(50));
 				 votesMarginAnalysisVO.setMarginValueTwo(new Long(100));
-				 votesMarginAnalysisVO.setMarginRange("20 % and above %");
+				 votesMarginAnalysisVO.setMarginRange("50 % and above %");
 			 }
 			 
 			 List<AnalysisCategoryBasicVO> analysisCategoryVosList = new ArrayList<AnalysisCategoryBasicVO>();
@@ -1168,7 +1173,7 @@ public class AnalysisReportService implements IAnalysisReportService {
 				  
 				  //creating dummy map with dummy margin values
 				  marginNominationIds = new HashMap<Long,List<Long>>();
-				  for(int i=1;i<=5;i++){
+				  for(int i=1;i<=6;i++){
 					  List<Long> arrayList = new ArrayList<Long>();
 					  marginNominationIds.put(new Long(i), arrayList);
 				  }
@@ -1200,8 +1205,10 @@ public class AnalysisReportService implements IAnalysisReportService {
 								  //else if(maginValue > new Long(30))
 								  else if(maginValue > new Double(10) && maginValue <= new Double(20))
 									  marginVal = new Long(4);
-								  else if(maginValue > new Double(20))
+								  else if(maginValue > new Double(20) && maginValue <= new Double(50))
 									  marginVal = new Long(5);
+								  else if(maginValue > new Double(50))
+									  marginVal = new Long(6);
 								  if(!marginNominationIds.isEmpty() && marginNominationIds.containsKey(marginVal)){
 								  List<Long> partyNomin = marginNominationIds.get(marginVal);
 								  partyNomin.add(partyNomintn.getNominationId());
