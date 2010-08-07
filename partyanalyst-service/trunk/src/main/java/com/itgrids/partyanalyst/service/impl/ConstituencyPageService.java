@@ -361,19 +361,34 @@ public class ConstituencyPageService implements IConstituencyPageService {
 	public ConstituencyInfoVO getConstituencyDetails(Long constituencyId){
 		
 		ConstituencyInfoVO constituencyDetails = new ConstituencyInfoVO();
-		List<Constituency> constituency = constituencyDAO.findByConstituencyId(constituencyId);
+		Constituency constituency = constituencyDAO.get(constituencyId);
 		String districtName ="";
+		Long districtId = 0l;
+		String electionType = "";
+		Boolean hasAnalyzeData = false;
 		if(constituency != null){
-			for(Constituency result:constituency){
-				if(result.getDistrict() != null)
-					districtName = result.getDistrict().getDistrictName();
-				constituencyDetails.setConstituencyName(result.getName());
-				constituencyDetails.setDistrictName(districtName);
-				constituencyDetails.setStateName(result.getState().getStateName());
-				constituencyDetails.setStartDate(result.getStartDate());
-				constituencyDetails.setDeformDate(result.getDeformDate());
-				constituencyDetails.setConstituencyType(result.getElectionScope().getElectionType().getElectionType());
+			
+			if(constituency.getDistrict() != null){
+				districtName = constituency.getDistrict().getDistrictName();
+				districtId = constituency.getDistrict().getDistrictId();
 			}
+			
+			electionType = constituency.getElectionScope().getElectionType().getElectionType();
+			constituencyDetails.setConstituencyId(constituencyId);
+			constituencyDetails.setDistrictId(districtId);
+			constituencyDetails.setConstituencyName(constituency.getName());
+			constituencyDetails.setDistrictName(districtName);
+			constituencyDetails.setStateName(constituency.getState().getStateName());
+			constituencyDetails.setStartDate(constituency.getStartDate());
+			constituencyDetails.setDeformDate(constituency.getDeformDate());
+			constituencyDetails.setConstituencyType(constituency.getElectionScope().getElectionType().getElectionType());
+			
+			if(IConstants.ASSEMBLY_ELECTION_TYPE.equalsIgnoreCase(electionType) && 
+					(constituency.getStartDate()== null || StringUtils.isBlank(constituency.getStartDate().toString())) && 
+					(constituency.getDeformDate() == null || StringUtils.isBlank(constituency.getDeformDate().toString())))
+				hasAnalyzeData = true;
+				
+			constituencyDetails.setHasAnalize(hasAnalyzeData);
 			return constituencyDetails;
 		}
 		else
@@ -1394,6 +1409,123 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		return partyVotes;		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public ConstituencyRevenueVillagesVO getMandalsResultsInAnElectionForChart(String mandalIds, String electionYear, String electionType){
+		List validVotes = boothResultDAO.getAllPolledVotesForMandalsInAnElection(mandalIds, electionYear, electionType);
+		List<PartyResultVO> partiesResultsInMandals = null;
+		List<PartyResultVO> finalResults = new ArrayList<PartyResultVO>();
+		PartyResultVO partyResultVO = null;
+		Map<Long, Long> mandalAndValidVotesMap = new LinkedHashMap<Long, Long>();
+		for(Object[] values:(List<Object[]>)validVotes)
+			mandalAndValidVotesMap.put((Long)values[1], (Long)values[3]);
+		List partiesResults = candidateBoothResultDAO.getResultsForElectionForAllMandalsAndParties(mandalIds, electionYear, electionType);
+		
+		//Mandalwise All Parties Info
+		Map<Long, List<PartyResultVO>> mandalwisePartiesMap = new HashMap<Long, List<PartyResultVO>>();
+		Map<String,String> partyNames = new HashMap<String,String>();
+		ConstituencyRevenueVillagesVO finalVOReturn = new ConstituencyRevenueVillagesVO();
+		List<CandidatePartyInfoVO> candidateNamePartyAndStatus = new ArrayList<CandidatePartyInfoVO>();
+		//Party Name and Votes Earned Map With In A Mandal
+		Map<String, Long> partyVotesEarnedMap = new HashMap<String, Long>();
+		
+		Long mandalId = 0l;
+		String partyName = "";
+		Long votesEarned = 0l;
+		try{
+			for(Object[] values:(List<Object[]>)partiesResults){
+				partyName = values[2].toString();
+				votesEarned = partyVotesEarnedMap.get(partyName);
+				if(votesEarned == null)
+					votesEarned = (Long)values[3];
+				else
+					votesEarned += (Long)values[3];
+				
+				partyVotesEarnedMap.put(partyName, votesEarned);
+				
+				mandalId = (Long)values[0];
+				partiesResultsInMandals = mandalwisePartiesMap.get(mandalId);
+				if(partiesResultsInMandals == null)
+					partiesResultsInMandals = new ArrayList<PartyResultVO>();
+				partyResultVO = new PartyResultVO();
+				partyResultVO.setConstituencyName(values[1].toString());
+				partyResultVO.setPartyName(values[2].toString());
+				
+				if(partyNames.isEmpty()){
+					partyNames.put(partyResultVO.getPartyName(),partyResultVO.getPartyName());
+				}
+				if(!partyNames.containsKey(partyResultVO.getPartyName()))
+					partyNames.put(partyResultVO.getPartyName(),partyResultVO.getPartyName());
+				partyResultVO.setVotesPercent(new BigDecimal((Long)values[3]*100.0/mandalAndValidVotesMap.get(values[0])).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				partiesResultsInMandals.add(partyResultVO);
+				mandalwisePartiesMap.put(mandalId, partiesResultsInMandals);
+			}
+			
+			List totalVoters = null;
+			Long totalVotersLong = 0l;
+			List<ConstituencyOrMandalWiseElectionVO> constituencyOrMandalWiseElectionVO = new ArrayList<ConstituencyOrMandalWiseElectionVO>();
+			for(Map.Entry<Long, List<PartyResultVO>> entry:mandalwisePartiesMap.entrySet()){
+				partiesResultsInMandals = entry.getValue();
+				totalVoters = boothConstituencyElectionDAO.getTotalVotersInAnElectionInMandal(entry.getKey(),electionType,IConstants.PRESENT_ELECTION_YEAR);
+				totalVotersLong = (Long)totalVoters.get(0);
+				
+				ConstituencyOrMandalWiseElectionVO mandalVO = new ConstituencyOrMandalWiseElectionVO();
+				List<PartyElectionResultVO> partyElectionResultVOs = new ArrayList<PartyElectionResultVO>();
+				
+				String mandalName="";
+				mandalVO.setLocationId(entry.getKey());
+				
+				Set<String> mapKeys = partyNames.keySet();
+				System.out.println(" ............... Map Size :" + mapKeys);
+				for(String partyNm:mapKeys){
+				  Boolean flag = false;
+				  PartyElectionResultVO resultVO = new PartyElectionResultVO();
+			 	  for(PartyResultVO party:partiesResultsInMandals){
+			 			 		
+					party.setElectors(totalVotersLong);
+					finalResults.add(party);
+					mandalName = party.getConstituencyName();
+					if(partyNm.equalsIgnoreCase(party.getPartyName())){
+						flag = true;
+						resultVO.setPartyName(partyNm);
+						resultVO.setVotesPercent(new BigDecimal(party.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP));
+					}
+				  }	
+			 	  if(flag == false){
+			 		 resultVO.setPartyName(partyNm);
+			 		 resultVO.setVotesPercent(null);
+			 	  }
+			 	 partyElectionResultVOs.add(resultVO);
+				}
+				mandalVO.setLocationName(mandalName);
+				mandalVO.setTotalVoters(totalVotersLong);
+				Collections.sort(partyElectionResultVOs, new PartyElectionResultComparator());
+				mandalVO.setPartyElectionResultVOs(partyElectionResultVOs);
+				
+				
+				constituencyOrMandalWiseElectionVO.add(mandalVO);
+			}
+			Set<String> mapKeys = partyNames.keySet();
+			for(String pty:mapKeys){
+				CandidatePartyInfoVO partyDetails = new CandidatePartyInfoVO();
+				partyDetails.setParty(pty);
+				candidateNamePartyAndStatus.add(partyDetails);
+			}
+			Collections.sort(candidateNamePartyAndStatus, new CandidatePartyInfoVOComparator());
+			finalVOReturn.setCandidateNamePartyAndStatus(candidateNamePartyAndStatus);
+			
+			Collections.sort(constituencyOrMandalWiseElectionVO, new ConstituencyOrMandalVOComparatorTotVoters());
+			finalVOReturn.setConstituencyOrMandalWiseElectionVO(constituencyOrMandalWiseElectionVO);
+		}catch (Exception e) {
+			log.debug("Exception Occured While Processing Mandal Data");
+			e.printStackTrace();
+		}
+
+		if(finalResults != null && finalResults.size() > 0)
+			Collections.sort(finalResults, new PartyResultVOComparatorByElectors());
+
+		return finalVOReturn;
+	}
+	
 	//Need To be Refactored For Alliance Parties 
 	@SuppressWarnings("unchecked")
 	public List<PartyResultVO> getMandalsResultsInAnElection(String mandalIds, String electionYear, String electionType){
@@ -1438,61 +1570,19 @@ public class ConstituencyPageService implements IConstituencyPageService {
 				mandalwisePartiesMap.put(mandalId, partiesResultsInMandals);
 			}
 			
-			/*String grp1 = "";
-			String grp2 = "";
-			
-			if(partyVotesEarnedMap.get(IConstants.BJP) != null && partyVotesEarnedMap.get(IConstants.TDP) != null){
-				if(partyVotesEarnedMap.get(IConstants.TDP) > partyVotesEarnedMap.get(IConstants.BJP))
-					grp1 = IConstants.TDP;
-				else
-					grp1 = IConstants.BJP;	
-			}else{
-				if(partyVotesEarnedMap.get(IConstants.BJP) == null)
-					grp1 = IConstants.TDP;
-				else
-					grp1 = IConstants.BJP;
-			}
-			
-			if(partyVotesEarnedMap.get(IConstants.INC) != null && partyVotesEarnedMap.get(IConstants.TRS) != null){
-				if(partyVotesEarnedMap.get(IConstants.INC) > partyVotesEarnedMap.get(IConstants.TRS))
-					grp2 = IConstants.INC;
-				else
-					grp2 = IConstants.TRS;	
-			}else{
-				if(partyVotesEarnedMap.get(IConstants.TRS) == null)
-					grp2 = IConstants.INC;
-				else
-					grp2 = IConstants.TRS;
-			}*/
-					
-			//Float votesPercent = 0.0f;
-			//Float validVotesPercent = 0.0f;
 			List totalVoters = null;
 			Long totalVotersLong = 0l;
-			//String mandalName = "";
-			//Calculating And Grouping Alliance Parties Percentages
+
 			for(Map.Entry<Long, List<PartyResultVO>> entry:mandalwisePartiesMap.entrySet()){
 				partiesResultsInMandals = entry.getValue();
 				totalVoters = boothConstituencyElectionDAO.getTotalVotersInAnElectionInMandal(entry.getKey(),electionType,IConstants.PRESENT_ELECTION_YEAR);
 				totalVotersLong = (Long)totalVoters.get(0);
-				/*votesPercent = 0.0f;
-				validVotesPercent = 0.0f;*/
 				for(PartyResultVO party:partiesResultsInMandals){
-					/*mandalName = party.getConstituencyName();
-					if(party.getPartyName().equals(IConstants.INC) || party.getPartyName().equals(IConstants.TRS)){
-						votesPercent += new Float(party.getVotesPercent());
-						continue;
-					}
-					if(party.getPartyName().equals(IConstants.BJP) || party.getPartyName().equals(IConstants.TDP)){
-						validVotesPercent += new Float(party.getVotesPercent());
-						continue;
-					}*/
 					party.setElectors(totalVotersLong);
 					finalResults.add(party);
 				}				
-				/*finalResults.add(getPartyResultVOObjWithPercent(grp2, votesPercent.toString(), totalVotersLong, mandalName));
-				finalResults.add(getPartyResultVOObjWithPercent(grp1, validVotesPercent.toString(), totalVotersLong, mandalName));*/
 			}
+			
 		}catch (Exception e) {
 			log.debug("Exception Occured While Processing Mandal Data");
 			e.printStackTrace();
@@ -1842,122 +1932,6 @@ public class ConstituencyPageService implements IConstituencyPageService {
   		return charts;
   	}
 	
-	@SuppressWarnings("unchecked")
-	public ConstituencyRevenueVillagesVO getMandalsResultsInAnElectionForChart(String mandalIds, String electionYear, String electionType){
-		List validVotes = boothResultDAO.getAllPolledVotesForMandalsInAnElection(mandalIds, electionYear, electionType);
-		List<PartyResultVO> partiesResultsInMandals = null;
-		List<PartyResultVO> finalResults = new ArrayList<PartyResultVO>();
-		PartyResultVO partyResultVO = null;
-		Map<Long, Long> mandalAndValidVotesMap = new LinkedHashMap<Long, Long>();
-		for(Object[] values:(List<Object[]>)validVotes)
-			mandalAndValidVotesMap.put((Long)values[1], (Long)values[3]);
-		List partiesResults = candidateBoothResultDAO.getResultsForElectionForAllMandalsAndParties(mandalIds, electionYear, electionType);
-		
-		//Mandalwise All Parties Info
-		Map<Long, List<PartyResultVO>> mandalwisePartiesMap = new HashMap<Long, List<PartyResultVO>>();
-		Map<String,String> partyNames = new HashMap<String,String>();
-		ConstituencyRevenueVillagesVO finalVOReturn = new ConstituencyRevenueVillagesVO();
-		List<CandidatePartyInfoVO> candidateNamePartyAndStatus = new ArrayList<CandidatePartyInfoVO>();
-		//Party Name and Votes Earned Map With In A Mandal
-		Map<String, Long> partyVotesEarnedMap = new HashMap<String, Long>();
-		
-		Long mandalId = 0l;
-		String partyName = "";
-		Long votesEarned = 0l;
-		try{
-			for(Object[] values:(List<Object[]>)partiesResults){
-				partyName = values[2].toString();
-				votesEarned = partyVotesEarnedMap.get(partyName);
-				if(votesEarned == null)
-					votesEarned = (Long)values[3];
-				else
-					votesEarned += (Long)values[3];
-				
-				partyVotesEarnedMap.put(partyName, votesEarned);
-				
-				mandalId = (Long)values[0];
-				partiesResultsInMandals = mandalwisePartiesMap.get(mandalId);
-				if(partiesResultsInMandals == null)
-					partiesResultsInMandals = new ArrayList<PartyResultVO>();
-				partyResultVO = new PartyResultVO();
-				partyResultVO.setConstituencyName(values[1].toString());
-				partyResultVO.setPartyName(values[2].toString());
-				
-				if(partyNames.isEmpty()){
-					partyNames.put(partyResultVO.getPartyName(),partyResultVO.getPartyName());
-				}
-				if(!partyNames.containsKey(partyResultVO.getPartyName()))
-					partyNames.put(partyResultVO.getPartyName(),partyResultVO.getPartyName());
-				partyResultVO.setVotesPercent(new BigDecimal((Long)values[3]*100.0/mandalAndValidVotesMap.get(values[0])).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-				partiesResultsInMandals.add(partyResultVO);
-				mandalwisePartiesMap.put(mandalId, partiesResultsInMandals);
-			}
-			
-			
-			List totalVoters = null;
-			Long totalVotersLong = 0l;
-			List<ConstituencyOrMandalWiseElectionVO> constituencyOrMandalWiseElectionVO = new ArrayList<ConstituencyOrMandalWiseElectionVO>();
-			for(Map.Entry<Long, List<PartyResultVO>> entry:mandalwisePartiesMap.entrySet()){
-				partiesResultsInMandals = entry.getValue();
-				totalVoters = boothConstituencyElectionDAO.getTotalVotersInAnElectionInMandal(entry.getKey(),electionType,IConstants.PRESENT_ELECTION_YEAR);
-				totalVotersLong = (Long)totalVoters.get(0);
-				
-				ConstituencyOrMandalWiseElectionVO mandalVO = new ConstituencyOrMandalWiseElectionVO();
-				List<PartyElectionResultVO> partyElectionResultVOs = new ArrayList<PartyElectionResultVO>();
-				
-				String mandalName="";
-				mandalVO.setLocationId(entry.getKey());
-				
-				Set<String> mapKeys = partyNames.keySet();
-				System.out.println(" ............... Map Size :" + mapKeys);
-				for(String partyNm:mapKeys){
-				  Boolean flag = false;
-				  PartyElectionResultVO resultVO = new PartyElectionResultVO();
-			 	  for(PartyResultVO party:partiesResultsInMandals){
-			 			 		
-					party.setElectors(totalVotersLong);
-					finalResults.add(party);
-					mandalName = party.getConstituencyName();
-					if(partyNm.equalsIgnoreCase(party.getPartyName())){
-						flag = true;
-						resultVO.setPartyName(partyNm);
-						resultVO.setVotesPercent(new BigDecimal(party.getVotesPercent()).setScale(2, BigDecimal.ROUND_HALF_UP));
-					}
-				  }	
-			 	  if(flag == false){
-			 		 resultVO.setPartyName(partyNm);
-			 		 resultVO.setVotesPercent(null);
-			 	  }
-			 	 partyElectionResultVOs.add(resultVO);
-				}
-				mandalVO.setLocationName(mandalName);
-				mandalVO.setTotalVoters(totalVotersLong);
-				Collections.sort(partyElectionResultVOs, new PartyElectionResultComparator());
-				mandalVO.setPartyElectionResultVOs(partyElectionResultVOs);
-				
-				
-				constituencyOrMandalWiseElectionVO.add(mandalVO);
-			}
-			Set<String> mapKeys = partyNames.keySet();
-			for(String pty:mapKeys){
-				CandidatePartyInfoVO partyDetails = new CandidatePartyInfoVO();
-				partyDetails.setParty(pty);
-				candidateNamePartyAndStatus.add(partyDetails);
-			}
-			Collections.sort(candidateNamePartyAndStatus, new CandidatePartyInfoVOComparator());
-			finalVOReturn.setCandidateNamePartyAndStatus(candidateNamePartyAndStatus);
-			
-			Collections.sort(constituencyOrMandalWiseElectionVO, new ConstituencyOrMandalVOComparatorTotVoters());
-			finalVOReturn.setConstituencyOrMandalWiseElectionVO(constituencyOrMandalWiseElectionVO);
-		}catch (Exception e) {
-			log.debug("Exception Occured While Processing Mandal Data");
-			e.printStackTrace();
-		}
-
-		if(finalResults != null && finalResults.size() > 0)
-			Collections.sort(finalResults, new PartyResultVOComparatorByElectors());
-
-		return finalVOReturn;
-	}
+	
 		
 }

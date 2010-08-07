@@ -49,12 +49,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	public List<Constituency> findByConstituencyNamePattern(String constituencyName){
 		return getHibernateTemplate().find("from Constituency model where model.name like ?","%"+constituencyName+"%");
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Constituency> findByConstituencyId(Long constituencyId){
-		return getHibernateTemplate().find("from Constituency model where model.constituencyId = ?",constituencyId);
-	}
-	
+		
 	@SuppressWarnings("unchecked")
     public List<Constituency> findConstitueniesByPartyAndElectionType(final Long partyId, final Long electionType, final String electionYear){
            

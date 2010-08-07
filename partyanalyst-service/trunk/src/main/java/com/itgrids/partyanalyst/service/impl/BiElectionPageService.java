@@ -3580,6 +3580,13 @@ public class BiElectionPageService implements IBiElectionPageService {
 		Boolean resultsFlag = false;
 		CandidateWonVO wonCandidate = resultsToProcess.getCandidateResultsVO();
 		CandidateOppositionVO wonCandidateObj = new CandidateOppositionVO();
+		
+		//If Data Not Exits For that Election
+		if(wonCandidate == null){
+			constituencyElectionResults.setResultsFlag(resultsFlag);
+			return constituencyElectionResults;
+		}
+			
 		wonCandidateObj.setCandidateId(wonCandidate.getCandidateId());
 		wonCandidateObj.setCandidateName(wonCandidate.getCandidateName());
 		wonCandidateObj.setPartyId(wonCandidate.getPartyId());

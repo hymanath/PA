@@ -17,12 +17,14 @@ public class ConstituencyInfoVO {
 	 */
 	private Long constituencyId;
 	private String constituencyName;
+	private Long districtId;
 	private String districtName;
 	private String stateName;
 	private Date startDate;
 	private Date deformDate;
 	private String constituencyType;
 	private List<SelectOptionVO> assembyConstituencies;
+	private Boolean hasAnalize = false;
 	
 	public String getConstituencyType() {
 		return constituencyType;
@@ -36,6 +38,12 @@ public class ConstituencyInfoVO {
 	}
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
 	}
 	public String getDistrictName() {
 		return districtName;
@@ -72,6 +80,12 @@ public class ConstituencyInfoVO {
 	}
 	public void setAssembyConstituencies(List<SelectOptionVO> assembyConstituencies) {
 		this.assembyConstituencies = assembyConstituencies;
+	}
+	public Boolean getHasAnalize() {
+		return hasAnalize;
+	}
+	public void setHasAnalize(Boolean hasAnalize) {
+		this.hasAnalize = hasAnalize;
 	}
 	
 }

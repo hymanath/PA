@@ -4900,7 +4900,10 @@ public class StaticDataService implements IStaticDataService {
 			String votesPercenatage = new BigDecimal(percentage).setScale(2,BigDecimal.ROUND_HALF_UP).toString();
 			constituencyOverView.setLatestElectionYearsTotalVotesPercentage(votesPercenatage);
 			
-			constituencyOverView.setPresentYearTotalVoters(presentYearVoters.get(constituencyName.toUpperCase()));
+			if(presentYearVoters.get(constituencyName.toUpperCase()) != null)
+				constituencyOverView.setPresentYearTotalVoters(presentYearVoters.get(constituencyName.toUpperCase()));
+			else
+				constituencyOverView.setPresentYearTotalVoters(0l);
 			
 			resultStatus.setResultPartial(false);
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);

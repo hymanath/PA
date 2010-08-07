@@ -817,6 +817,4 @@ private UserEventVO saveUserPlannedEvents;
 		return cadreManagementVO;
 	}
 
-	
-
 }
