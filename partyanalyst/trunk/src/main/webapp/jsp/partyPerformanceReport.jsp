@@ -60,6 +60,7 @@ var labelResources = { <%
 	String thirdPos = rb.getString("thirdPos");
 	String fourthPos  = rb.getString("fourthPos");
 	String nthPos  = rb.getString("nthPos");
+	String alliances = rb.getString("alliances");
 	//retrieving PPR specific labels
 	ResourceBundle pprRb = ResourceBundle.getBundle("ppr_Labels");
 	
@@ -1368,7 +1369,7 @@ function callMarginVotes(partyId)
 				<td>
 					<div class="yearHeaders"><%=electionYear%> : ${stateData.year}</div>
 					<div>
-						<table class="seatsDataTable">
+						<table class="seatsDataTable" border="0">
 							<tr>
 								<th><%=totalSeatsWon%></th>
 								<td>:</td>
@@ -1379,8 +1380,16 @@ function callMarginVotes(partyId)
 								<td>:</td>
 								<td>${stateData.totalPercentageOfVotesWon}</td>
 							</tr>
+							<c:if test="${stateData.allianceParties != null}">
+								<tr>
+									<th><%=alliances%></th>
+									<td>:</td>
+									<c:forEach var="allianceParty" items="${stateData.allianceParties}">							<td>${allianceParty.shortName}</td>					
+									</c:forEach>									
+								</tr>	
+							</c:if>
 							<tr>
-								<th><%=diffVotesPctn%> (${stateData.year} - ${stateData.prevYear} ) </th>
+								<th><%=diffVotesPctn%>(${stateData.year} - ${stateData.prevYear} ) </th>
 								<td>:</td>
 								<td>${stateData.diffOfTotalPercentageWinWithPrevElection}</td>
 							</tr> 
@@ -1401,6 +1410,14 @@ function callMarginVotes(partyId)
 								<td>:</td>
 								<td>${stateData.prevYeartotalPercentageOfVotesWon}</td>
 							</tr>
+							<c:if test="${stateData.previousYearAllianceParties != null}">
+								<tr>
+									<th><%=alliances%>:</th>
+									<td>:</td>
+									<c:forEach var="allianceParti" items="${stateData.previousYearAllianceParties}">				<td>${allianceParti.shortName}</td>													
+									</c:forEach>									
+								</tr>	
+							</c:if>
 						</table>
 					</div>							
 				</td>
@@ -1512,7 +1529,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td style="width:340px;"><%=winPosLowMargin%></td>
+				<td style="width:310px;"><%=winPosLowMargin%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;">
@@ -1526,7 +1543,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">
 				<table width="100%">
 				<tr>
-				<td style="width:340px;"><%=winPosHighMargin%></td>
+				<td style="width:310px;"><%=winPosHighMargin%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}"/> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1538,7 +1555,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">
 				<table width="100%">
 				<tr>
-				<td style="width:340px;"><%=loosingPosLowMargin%></td> 
+				<td style="width:310px;"><%=loosingPosLowMargin%></td> 
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1550,7 +1567,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">			
 				<table width="100%">
 				<tr>
-				<td style="width:340px;"><%=loosingPosHighMargin%></td>
+				<td style="width:310px;"><%=loosingPosHighMargin%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View details</span></td>
@@ -1562,7 +1579,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td style="width:340px;"><%=winPosPositiveSwing%></td>
+				<td style="width:310px;"><%=winPosPositiveSwing%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1574,7 +1591,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">		
 				<table width="100%">
 				<tr>
-				<td style="width:340px;"><%=loosingPosPositiveSwing%></td>
+				<td style="width:310px;"><%=loosingPosPositiveSwing%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1586,7 +1603,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td style="width:340px;"><%=winPosNegativeSwing%></td>
+				<td style="width:310px;"><%=winPosNegativeSwing%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1598,7 +1615,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">
 				<table width="100%">
 				<tr>
-				<td style="width:340px;"><%=loosingPosNegativeSwing%></td>
+				<td style="width:310px;"><%=loosingPosNegativeSwing%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td> 
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1610,7 +1627,7 @@ function callMarginVotes(partyId)
 			<div class="detailReportHeader">	
 				<table width="100%">
 				<tr>
-				<td style="width:340px;"><%=loosingPosDroppingPercent%></td>
+				<td style="width:310px;"><%=loosingPosDroppingPercent%></td>
 				<td align="left"><font color="white"><c:out value="${constPositions.positionsWon}" /> seats</font></td>
 				<c:if test="${constPositions.positionsWon > 0}" >
 					<td style="text-align:right;"><span id="${constPositions.type}span" style="color: #FFFFCC; cursor: pointer;" onclick="showBand('${constPositions.type}');">View Details</span></td>
@@ -1701,9 +1718,14 @@ function callMarginVotes(partyId)
 </c:forEach> 
 </div>
 <br/><br/>
-
+<!--ref-->
 <div class="partyInfoHeading">
- <s:label labelposition="left"><b><U>Your votes are flown to any one of the below parties</U></b></s:label>
+	<c:if test="${stateData.diffOfTotalPercentageWinWithPrevElection > 0}">
+		<s:label labelposition="left"><b><U>Votes from any one of the below parties are flown to you</U></b></s:label>
+	</c:if>
+	<c:if test="${stateData.diffOfTotalPercentageWinWithPrevElection < 0}">
+		<s:label labelposition="left"><b><U>Your votes are flown to any one of the below parties</U></b></s:label>
+	</c:if>
 </div>
 
 <div style="margin-left: 15px;"> 
