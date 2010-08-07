@@ -132,6 +132,11 @@ public class PartyService implements IPartyService {
 		presentYearPartyPerformanceReportVO.setTotalPercentageOfVotesWonPreviousElection(prevElectionTotalPercentageOfVotesWon);
 		presentYearPartyPerformanceReportVO.setDiffOfTotalPercentageWinWithPrevElection(diffOfTotalPercentageWinWithPrevElection);
 		presentYearPartyPerformanceReportVO.setToPartySwing(partyVotesFlown);
+		
+		if(previousYearPartyPerformanceReportVO.getAllianceParties() != null && previousYearPartyPerformanceReportVO.getAllianceParties().size() > 0)
+			presentYearPartyPerformanceReportVO.setPreviousYearAllianceParties(previousYearPartyPerformanceReportVO.getAllianceParties());
+		else
+			presentYearPartyPerformanceReportVO.setPreviousYearAllianceParties(null);
 	
 		SortedMap<String, Integer> partyPositions = presentYearPartyPerformanceReportVO.getPositionDistribution();
 		SortedMap<String, Integer> positionDistribution = new TreeMap<String, Integer>();
