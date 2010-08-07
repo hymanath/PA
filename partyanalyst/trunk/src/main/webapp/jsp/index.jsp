@@ -69,8 +69,7 @@
 			<div id="dashboard_layout_main">						
 			</div>
 			<div id="cadreManagementMainDiv" class="yui-skin-sam"></div>
-		<div id="myDialog" class="yui-skin-sam"> 			
-		</div> 
+		<div class="yui-skin-sam"><div id="myDialog"></div></div> 
 	</div>
 	
 	
@@ -327,7 +326,7 @@
 
 		
 		<script type="text/javascript">
-		
+		var smsHidden = 1;
 		<c:forEach var="mlaConstituencies"  items="${mlaConstituenciesList}" >
 			var ob={
 						id:'${mlaConstituencies.id}',
@@ -343,8 +342,691 @@
 					};
 			indexPageMainObj.mpContituencies.push(ob);	
 		</c:forEach>
+		// for integrating cadre sms					
+		function callAjax(jsObj,url)
+		{			
+			
+	 		var callback = {			
+	 		               success : function( o ) {
+								try {
+									myResults = YAHOO.lang.JSON.parse(o.responseText);	
+									if(jsObj.task == "getUserLocation")
+										fillDataOptions(myResults,jsObj);	
+									else if(jsObj.task == "fillSelectElements")
+										fillSelectElement(myResults,jsObj);
+									else if(jsObj.task == "sendSMS")
+										displaySuccessMessage(myResults,jsObj);
+									else if(jsObj.task=="CADRE_LEVEL")
+										fillDataForCadreLevel(myResults,jsObj);
+																				
+								}catch (e) {   
+								   	alert("Invalid JSON result" + e);   
+								}  
+	 		               },
+	 		               scope : this,
+	 		               failure : function( o ) {
+	 		                			alert( "Failed to load result" + o.status + " " + o.statusText);
+	 		                         }
+	 		               };
+
+	 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+		}
+		function getUserLocationData(val,type)
+		{			
+			if(type == 'event' || type == 'Editevent' )
+			{
+				var str="cadreLevelDivId_"+type;
+				
+				cadreAnim = new YAHOO.util.Anim(str, {
+					height: {
+						to: 150 
+					} 
+				}, 1, YAHOO.util.Easing.easeOut);
+
+				cadreAnim.animate();
+				var ancElmt = document.getElementById('cadreLevelDivId_'+type+'_anc');
+				if(ancElmt)
+				ancElmt.style.display = 'block';
+			}
+			
+
+			var eventCadreDivHeadElmt = document.getElementById(type+"CadreDivHead");
+			var eventCadreDivBodyElmt = document.getElementById(type+"CadreDivBody");
+
+			if(eventCadreDivHeadElmt && eventCadreDivBodyElmt)
+			{
+				eventCadreDivHeadElmt.innerHTML="";
+				eventCadreDivBodyElmt.innerHTML="";
+			}
+			
+			var jsObj={
+						value:val,
+						taskType:type,
+						task:"getUserLocation"
+					  };
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/cadreSMSLocationWiseData.action?";
+			callAjax(jsObj,url);
+		}
+		function fillDataOptions(results,jsObj)
+		{			
+			//Setting values for region type..
+			var regTask = jsObj.taskType;
+			if(jsObj.taskType == 'sms')
+			{
+				var regionTypeElmtLabel = document.getElementById("region_type_Label");
+				var regionTypeElmtData = document.getElementById("region_type_Data");
+
+				var regionTypeSelectElmtLabel = document.getElementById("region_select_Label");
+				var regionTypeSelectElmtData = document.getElementById("region_select_Data");
+
+				var smsCadreNameIncludeLabel = document.getElementById("sms_cadre_name_include_label");
+				var smsCadreNameIncludeValue = document.getElementById("sms_cadre_name_include_value");
+
+				if(smsCadreNameIncludeLabel)
+					smsCadreNameIncludeLabel.innerHTML="Include Cadre Name";
+				
+				var smsCadreIncludeStr='<input type="radio" id="include_cadre_name" name="include_cadre_name" value="YES" /> Yes';
+				   smsCadreIncludeStr+='<input type="radio" id="no_cadre_name" name="include_cadre_name" value="NO" checked="checked" /> No    ';
+				   smsCadreIncludeStr+='.       with cadre names performance degrades';
+				if(smsCadreNameIncludeValue)
+					smsCadreNameIncludeValue.innerHTML=smsCadreIncludeStr;
+
+				//------
+				
+				
+				var smsUserNameIncludeLabel = document.getElementById("sms_user_name_include_label");
+				var smsUserNameIncludeValue = document.getElementById("sms_user_name_include_value");
+
+				if(smsUserNameIncludeLabel)
+					smsUserNameIncludeLabel.innerHTML="Include User Name";
+				
+				var smsUserIncludeStr='<input type="radio" id="include_user_name" name="include_user_name" value="YES" onclick="enableTextBox();" /> Yes';
+				smsUserIncludeStr+='<input type="radio" id="no_user_name" name="include_user_name" value="NO" checked="checked" onclick="disableTextBox();" /> No    ';
+				smsUserIncludeStr+='.                    <input type="text" id ="user_name" name="user_name" value="${sessionScope.UserName}" disabled/>';
+				if(smsUserNameIncludeValue)
+					smsUserNameIncludeValue.innerHTML=smsUserIncludeStr;
+
+			}
+			else if(jsObj.taskType == 'event' || jsObj.taskType == 'action' || jsObj.taskType == 'Editevent')
+			{			
+				var regionTypeElmtLabel = document.getElementById(regTask+"_region_type_Label");
+				var regionTypeElmtData = document.getElementById(regTask+"_region_type_Data");
+
+				var regionTypeSelectElmtLabel = document.getElementById(regTask+"_region_select_Label");
+				var regionTypeSelectElmtData = document.getElementById(regTask+"_region_select_Data");
+
+			}
+
+			var str='';
+			for(var i in results.regions)
+			{
+				str+='<input type="radio" name="region_type_radio" value="'+results.regions[i].name+'" onclick="displayRegionsSelect(this.value,\''+regTask+'\')" /> '+results.regions[i].name+'';
+			}		
+
+			if(regionTypeElmtLabel)
+				regionTypeElmtLabel.innerHTML="Select Level";
+			if(regionTypeElmtData)
+				regionTypeElmtData.innerHTML=str;
+			
+			//---------
+			//Setting values for select box..
+			
+			if(regionTypeSelectElmtLabel)
+				regionTypeSelectElmtLabel.innerHTML="Select Location";
+
+			var regionStr='';
+			
+			regionStr+='<select id="'+regTask+'_StateSelect" class="selectBox" onchange="getNextRegions(this.id,\'STATE\',\''+regTask+'\')" disabled="true">';
+			if(results.states != "")
+			{
+				for(var state in results.states)
+				{
+					regionStr+='<option value="'+results.states[state].id+'">'+results.states[state].name+'</option>';
+				}
+			}
+			else
+			{
+				regionStr+='<option value="0"> Select State</option>';
+			}
+			regionStr+='</select>';	
+
+			
+			regionStr+='<select id="'+regTask+'_DistrictSelect" class="selectBox" onchange="getNextRegions(this.id,\'DISTRICT\',\''+regTask+'\')" disabled="true">';
+			if(results.districts != "")
+			{
+				for(var district in results.districts)
+				{
+					regionStr+='<option value="'+results.districts[district].id+'">'+results.districts[district].name+'</option>';
+				}
+			}
+			else
+			{
+				regionStr+='<option value="0"> Select District</option>';
+			}
+			regionStr+='</select>';
+			
+			
+			regionStr+='<select id="'+regTask+'_ConstituencySelect" class="selectBox" onchange="getNextRegions(this.id,\'CONSTITUENCY\',\''+regTask+'\')" disabled="true">';
+			if(results.constituencies != "")
+			{
+				for(var consti in results.constituencies)
+				{
+					regionStr+='<option value="'+results.constituencies[consti].id+'">'+results.constituencies[consti].name+'</option>';
+				}
+			}
+			else
+			{
+				regionStr+='<option value="0"> Select Constituency</option>';
+			}
+			regionStr+='</select>';
 		
 		
+		
+			regionStr+='<select id="'+regTask+'_MandalSelect" class="selectBox" onchange="getNextRegions(this.id,\'MANDAL\',\''+regTask+'\')" disabled="true">';
+			if(results.mandals != "")
+			{
+				for(var mandal in results.mandals)
+				{
+					regionStr+='<option value="'+results.mandals[mandal].id+'">'+results.mandals[mandal].name+'</option>';
+				}
+			}
+			else
+			{	
+				regionStr+='<option value="0"> Select Mandal</option>';
+			}
+			regionStr+='</select>';
+
+			
+			regionStr+='<select id="'+regTask+'_VillageSelect" class="selectBox" disabled="true">';
+			if(results.villages != "")
+			{
+				for(var village in results.villages)
+				{
+					regionStr+='<option value="'+results.villages[village].id+'">'+results.villages[village].name+'</option>';
+				}
+			}
+			else
+			{	
+				regionStr+='<option value="0"> Select Village</option>';
+			}
+			regionStr+='</select>';
+		
+			if(regionTypeSelectElmtData)
+				regionTypeSelectElmtData.innerHTML=regionStr;
+
+			if(jsObj.taskType == 'event' || jsObj.taskType == 'action' || jsObj.taskType == 'Editevent')
+			{
+				var submitStr='<input type="button" onclick="getCadresForEvent(\''+regTask+'\')" value="Get Cadres"/>';
+				var submitDiv = document.getElementById(regTask+"_region_submit");
+				submitDiv.innerHTML = submitStr;
+				return;
+			}
+			//---------------
+			// Displaying Text Area
+			var smsTextElmtLabel = document.getElementById("sms_text_Label");
+			var smsTextElmtData = document.getElementById("sms_text_Data");
+			
+			if(smsTextElmtLabel)
+				smsTextElmtLabel.innerHTML="SMS Text";
+
+			var smsStr='';
+			smsStr+='<div><textarea rows="5" cols="50" id="smsTextArea" onkeyup="limitText(\'smsTextArea\',\'maxcount\',200)" ></textarea></div> ';
+			smsStr+='<div id="limitDiv">';
+			smsStr+='<table style="width:100%;"><tr>';
+			smsStr+='<td style="width:50%;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+			smsStr+='<td style="width:50%;"><div>Should not exceed 200 chars</div></td>';
+			smsStr+='</tr></table>';
+			smsStr+='</div>';	
+			
+			if(smsTextElmtData)
+				smsTextElmtData.innerHTML=smsStr;
+
+			//--------------------------
+			//Displaying button
+
+			var buttonDiv = document.getElementById("button_div");
+			var bstr='';
+			bstr+='<input type="button" value="Send SMS" onclick="sendSMS()"/>';
+			if(buttonDiv)
+			{
+				buttonDiv.innerHTML=bstr;
+			}
+
+		
+		}
+		function displayRegionsSelect(val,regTask)
+		{
+			var stateSelectElmt = document.getElementById(regTask+"_StateSelect");
+			var districtSelectElmt = document.getElementById(regTask+"_DistrictSelect");
+			var constituencySelectElmt = document.getElementById(regTask+"_ConstituencySelect");
+			var mandalSelectElmt = document.getElementById(regTask+"_MandalSelect");
+			var villageSelectElmt = document.getElementById(regTask+"_VillageSelect");
+			
+			stateSelectElmt.disabled=true;
+			districtSelectElmt.disabled=true;	
+			constituencySelectElmt.disabled=true;	
+			mandalSelectElmt.disabled=true;	
+			villageSelectElmt.disabled=true;	
+
+			if(val == "District")
+			{
+				stateSelectElmt.disabled=false;
+				districtSelectElmt.disabled=false;			
+			}
+			if(val == "Constituency")
+			{
+				stateSelectElmt.disabled=false;
+				districtSelectElmt.disabled=false;	
+				constituencySelectElmt.disabled=false;	
+			}
+			if(val == "Mandal")
+			{
+				stateSelectElmt.disabled=false;
+				districtSelectElmt.disabled=false;
+				constituencySelectElmt.disabled=false;	
+				mandalSelectElmt.disabled=false;	
+			}
+			if(val == "Village")
+			{
+				stateSelectElmt.disabled=false;
+				districtSelectElmt.disabled=false;	
+				constituencySelectElmt.disabled=false;	
+				mandalSelectElmt.disabled=false;	
+				villageSelectElmt.disabled=false;	
+			}		
+		}
+		function limitText(limitField, limitCount, limitNum)
+		{		
+			var limitFieldElmt = document.getElementById(limitField);
+			var limitCountElmt = document.getElementById(limitCount);
+
+			if (limitFieldElmt.value.length > limitNum) 
+			{
+				limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+			}
+			else
+			{			
+				limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
+			}
+		}
+		function sendSMS()
+		{
+			var val
+			for( i = 0; i < document.smsForm.region_type_radio.length; i++ )
+			{
+				if( document.smsForm.region_type_radio[i].checked == true )
+					val = document.smsForm.region_type_radio[i].value;
+			}
+			
+			var valSelect = document.getElementById("sms_"+val+"Select");
+			var textAreaElmt = document.getElementById("smsTextArea");
+			
+			var include_cadre ="NO";
+			var include_user ="NO";
+			//var user_name ='Thx ${sessionScope.UserName}';
+			var elements = document.getElementsByTagName('input'); 
+			for(var i=0;i<elements.length;i++)
+			{
+				if(elements[i].type=="radio" && elements[i].name=="include_user_name" && elements[i].checked==true)
+					include_user = elements[i].value;
+				else if(elements[i].type=="radio" && elements[i].name=="include_cadre_name" && elements[i].checked==true)
+					include_cadre = elements[i].value;
+			}
+			
+
+			textAreaElmtValue = textAreaElmt.value
+			
+			if(include_user=='YES'){
+				if(document.getElementById('user_name')!=null && document.getElementById('user_name').value!='' )
+					textAreaElmtValue = textAreaElmtValue + ' Thx ' + document.smsForm.user_name.value;
+			}
+			var valSelectValue = valSelect.options[valSelect.selectedIndex].value;
+			val=val.toUpperCase();
+			
+			var jsObj={
+						SMS_LEVEL_TYPE:val,
+						SMS_LEVEL_VALUE:valSelectValue,
+						SMS_MESSAGE:textAreaElmtValue,
+						SMS_INCLUDE_CADRE_NAME:include_cadre,
+						task:"sendSMS"
+					  };
+			
+			
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/sendCadreSMS.action?"+rparam+"&smsHidden="+smsHidden;
+			callAjax(jsObj,url);
+			
+		}
+		function displaySuccessMessage(results,jsObj)
+		{
+			var divElmt = document.getElementById("successDiv");
+			var str='';
+			if(results.status==0){
+				str+=" SMS sent successfully to "+results.totalSmsSent+" cadres";
+				if(results.remainingSmsCount!=0){
+					str+="<br/>";
+					str+=" You can send "+results.remainingSmsCount+"more SMS";
+				}else{
+					str+="<br/>";
+					str+=" You cannot any more SMS ";
+					smsRenewalMessage();
+				}
+				
+			}else{
+				smsRenewalMessage();
+			}
+			
+			divElmt.innerHTML=str;
+		}
+		function smsRenewalMessage()
+		{
+			var elmt = document.getElementById('smsErrorPopupDiv');
+			var divChild = document.createElement('div');
+			divChild.setAttribute('id','smsErrorDiv');
+			
+			var str = '';
+			str	+= '<div id="smsErrorMain" style="padding:10px;">';
+			str	+= '	<table id="loginDetailsTable" width="100%">';
+			str	+= '		<tr>';
+			str	+= '			<th colspan="3" align="left">';
+			str	+= '				Your SMS Credentials are expired ';
+			str	+= '			</th>';		
+			str	+= '		</tr>';
+			str	+= '		<tr>';
+			str	+= '			<td colspan="3">Please contact us @  </td>';
+			str	+= '		</tr>';
+			str	+= '		<tr>';
+			str	+= '			<th align="left">Phone </th><td>: </td><td> +91-40-40124153</td>';
+			str	+= '		</tr>';
+			str	+= '		<tr>';
+			str	+= '			<th align="left">Mail </th><td>: </td><td> license@itgrids.com</td>';
+			str	+= '		</tr>';
+			str	+= '	</table>';	
+			str	+= '</div>';
+			divChild.innerHTML=str;		
+			
+			elmt.appendChild(divChild);	
+			if(popupPanel)
+				popupPanel.destroy();
+			popupPanel = new YAHOO.widget.Dialog("smsErrorDiv",
+					{ 
+						 height:'150px',
+						 width:'250px',
+			             fixedcenter : true, 
+			             visible : true,
+			             constraintoviewport : true, 
+			    		 iframe :true,
+			    		 modal :true,
+			    		 hideaftersubmit:true,
+			    		 close:true,
+						 draggable:true
+		             } ); 
+			popupPanel.render();
+		}
+		//cadre levelwise
+		function getUsersCadreLevelData(value,type)
+	{		
+		var str="cadreLevelDivId_"+type;
+		
+		cadreAnim = new YAHOO.util.Anim(str, {
+			height: {
+				to: 150 
+			} 
+		}, 1, YAHOO.util.Easing.easeOut);
+
+		cadreAnim.animate();
+
+		var ancElmt = document.getElementById('cadreLevelDivId_'+type+'_anc');
+		if(ancElmt)
+			ancElmt.style.display = 'block';
+
+		var eventCadreDivHeadElmt = document.getElementById(type+"CadreDivHead");
+		var eventCadreDivBodyElmt = document.getElementById(type+"CadreDivBody");
+
+		if(eventCadreDivHeadElmt && eventCadreDivBodyElmt)
+		{
+			eventCadreDivHeadElmt.innerHTML="";
+			eventCadreDivBodyElmt.innerHTML="";
+		}
+
+		var jsObj={
+				taskType:type,
+				task:"CADRE_LEVEL"
+			  };
+		var url = "<%=request.getContextPath()%>/usersCadreLevelData.action";	
+		callAjax(jsObj,url);
+	}
+		function fillDataForCadreLevel(results,jsObj)
+		{
+			var successDivElmt=	 document.getElementById("successDiv");
+			successDivElmt.innerHTML="";
+			
+			var actionVal = jsObj.taskType;
+
+			if(jsObj.taskType == "sms")
+			{
+				var regionTypeElmtLabel = document.getElementById("region_type_Label");
+				var regionTypeElmtData = document.getElementById("region_type_Data");
+				var regionTypeSelectElmtLabel = document.getElementById("region_select_Label");
+				var regionTypeSelectElmtData = document.getElementById("region_select_Data");
+			}
+			else if(jsObj.taskType == "event" || jsObj.taskType == "action")
+			{			
+				var regionTypeElmtLabel = document.getElementById(actionVal+"_region_type_Label");
+				var regionTypeElmtData = document.getElementById(actionVal+"_region_type_Data");
+				var regionTypeSelectElmtLabel = document.getElementById(actionVal+"_region_select_Label");
+				var regionTypeSelectElmtData = document.getElementById(actionVal+"_region_select_Data");
+			}
+			regionTypeElmtLabel.innerHTML="Select Cadre Level";
+
+			var str='';
+			for(var i in results)
+			{
+				str+='<input type="radio" name="region_type_radio" value="'+results[i].id+'"> '+results[i].name+' ';
+			}
+			regionTypeElmtData.innerHTML=str;
+			//--------------
+
+
+			if(regionTypeSelectElmtLabel && regionTypeSelectElmtData)
+			{
+				regionTypeSelectElmtLabel.innerHTML="";
+				regionTypeSelectElmtData.innerHTML="";
+			}
+
+			if(jsObj.taskType == "event" || jsObj.taskType == "action")
+			{
+				var submitStr='<input type="button" onclick="getCadresLevelForEvent(\''+jsObj.taskType+'\')" value="Get Cadres"/>';
+				var submitDiv = document.getElementById(actionVal+"_region_submit");
+				submitDiv.innerHTML = submitStr;
+				return;
+			}
+			//-------------
+			
+			var smsCadreNameIncludeLabel = document.getElementById("sms_cadre_name_include_label");
+			var smsCadreNameIncludeValue = document.getElementById("sms_cadre_name_include_value");
+
+			if(smsCadreNameIncludeLabel)
+				smsCadreNameIncludeLabel.innerHTML="Include Cadre Name";
+			
+			var smsCadreIncludeStr='<input type="radio" id="include_cadre_name" name="include_cadre_name" value="YES" /> Yes';
+			   smsCadreIncludeStr+='<input type="radio" id="no_cadre_name" name="include_cadre_name" value="NO" checked="checked" /> No    ';
+			   smsCadreIncludeStr+='.       with cadre names performance degrades';
+			if(smsCadreNameIncludeValue)
+				smsCadreNameIncludeValue.innerHTML=smsCadreIncludeStr;
+
+			//------
+			
+			
+			var smsUserNameIncludeLabel = document.getElementById("sms_user_name_include_label");
+			var smsUserNameIncludeValue = document.getElementById("sms_user_name_include_value");
+
+			if(smsUserNameIncludeLabel)
+				smsUserNameIncludeLabel.innerHTML="Include User Name";
+			
+			var smsUserIncludeStr='<input type="radio" id="include_user_name" name="include_user_name" value="YES" onclick="enableTextBox();" /> Yes';
+			smsUserIncludeStr+='<input type="radio" id="no_user_name" name="include_user_name" value="NO" checked="checked" onclick="disableTextBox();" /> No    ';
+			smsUserIncludeStr+='. <input type="text" id ="user_name" value="${sessionScope.UserName}" name="user_name" disabled/>';
+			if(smsUserNameIncludeValue)
+				smsUserNameIncludeValue.innerHTML=smsUserIncludeStr;
+
+			//-------------------------------------
+			var smsTextElmtLabel = document.getElementById("sms_text_Label");
+			var smsTextElmtData = document.getElementById("sms_text_Data");
+			
+			if(smsTextElmtLabel)
+				smsTextElmtLabel.innerHTML="SMS Text";
+			
+			var smsStr='';
+			smsStr+='<div><textarea rows="5" cols="50" id="smsTextArea" onkeyup="limitText(\'smsTextArea\',\'maxcount\',200)" ></textarea></div> ';
+			smsStr+='<div id="limitDiv">';
+			smsStr+='<table style="width:100%;"><tr>';
+			smsStr+='<td style="width:50%;"><div id="remainChars"><span id="maxcount">200 </span> <span>chars remaining..</span></div></td>';
+			smsStr+='<td style="width:50%;"><div>Should not exceed 200 chars</div></td>';
+			smsStr+='</tr></table>';
+			smsStr+='</div>';	
+				
+			
+			if(smsTextElmtData)
+				smsTextElmtData.innerHTML=smsStr;
+
+
+			var buttonDiv =  document.getElementById("button_div");
+			var bstr='';
+			bstr+='<input type="button" value="Send SMS" onclick="sendSMSCadreLevel()"/>';
+			
+			if(buttonDiv)
+				buttonDiv.innerHTML=bstr;
+			
+		}
+		function sendSMSCadreLevel(){
+			for( i = 0; i < document.smsForm.region_type_radio.length; i++ )
+			{
+				if( document.smsForm.region_type_radio[i].checked == true ){
+					val = document.smsForm.region_type_radio[i].value;
+					
+				}
+			}
+			
+			var textAreaElmt = document.getElementById("smsTextArea");
+
+			textAreaElmtValue = textAreaElmt.value
+			val=val.toUpperCase();
+
+			//---
+			var include_cadre ="NO";
+			var include_user ="NO";
+
+			var elements = document.getElementsByTagName('input'); 
+			for(var i=0;i<elements.length;i++)
+			{
+				if(elements[i].type=="radio" && elements[i].name=="include_user_name" && elements[i].checked==true)
+					include_user = elements[i].value;
+				else if(elements[i].type=="radio" && elements[i].name=="include_cadre_name" && elements[i].checked==true)
+					include_cadre = elements[i].value;
+			}
+			
+			if(include_user=='YES'){
+				if(document.getElementById('user_name')!=null && document.getElementById('user_name').value!='' )
+					textAreaElmtValue = textAreaElmtValue + ' Thx ' + document.smsForm.user_name.value;
+			}
+			//---
+			
+			var jsObj={
+						SMS_LEVEL_TYPE:'CADRE_LEVEL',
+						SMS_LEVEL_VALUE:val,
+						SMS_MESSAGE:textAreaElmtValue,
+						SMS_INCLUDE_CADRE_NAME:include_cadre,
+						task:"sendSMS"
+					  };
+			
+			
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/sendCadreSMS.action?"+rparam;
+			callAjax(jsObj,url);
+		}
+		function enableTextBox(){
+			var textBoxElmt = document.getElementById("user_name");
+			textBoxElmt.disabled =false;
+		}
+		function getNextRegions(id,val,regTask)
+		{
+			var selectElmt = document.getElementById(id);
+			var selectValue = selectElmt.options[selectElmt.selectedIndex].value;
+			
+			if(selectValue=="0")
+				return;
+
+			var jsObj={
+						value:selectValue,
+						type:val,
+						taskType:regTask,
+						task:"fillSelectElements"
+					  };
+			var url = "<%=request.getContextPath()%>/regionsByCadreScope.action?REGION="+val+"&REGION_ID="+selectValue;
+			callAjax(jsObj,url);
+
+		}
+		function fillSelectElement(results,jsObj)
+		{			
+			if(jsObj.type == "cadreDetails")
+			{
+				if(jsObj.reportLevel=="state")
+				{
+					var elmt = document.getElementById("cadreLevelDistrict");
+				}
+				else if(jsObj.reportLevel=="district")
+				{
+					var elmt=document.getElementById("cadreLevelMandal");
+				}
+				else if(jsObj.reportLevel=="constituency")
+				{
+					var elmt=document.getElementById("cadreLevelConstituency");
+				}
+				else if(jsObj.reportLevel=="mandal")
+				{
+					var elmt=document.getElementById("cadreLevelVillage");
+				}
+				else if(jsObj.reportLevel=="Constituencies")
+				{
+					var elmt=document.getElementById("mandalField");
+				}
+			}
+			else if(jsObj.type == "cadreLevel")
+				var elmt = document.getElementById("cadreLevelState");
+			else if(jsObj.type == "STATE")
+				var elmt = document.getElementById(jsObj.taskType+"_DistrictSelect");
+			else if(jsObj.type == "DISTRICT	")
+				var elmt = document.getElementById(jsObj.taskType+"_ConstituencySelect");
+			else if(jsObj.type == "CONSTITUENCY")
+				var elmt = document.getElementById(jsObj.taskType+"_MandalSelect");
+			else if(jsObj.type == "MANDAL")
+				var elmt = document.getElementById(jsObj.taskType+"_VillageSelect");
+			else if(jsObj.type == "cadreLevel")
+				var elmt=document.getElementById(jsObj.taskType+"_cadreLevelState");
+			
+			var len=elmt.length;			
+			for(i=len-1;i>=0;i--)		
+				elmt.remove(i);
+									
+			for (var l in results)
+			{
+				var y=document.createElement('option');
+				y.value=results[l].id;
+				y.text=results[l].name;
+				
+				try
+				{
+					elmt.add(y,null); // standards compliant
+				}
+				catch(ex)
+				{
+					elmt.add(y); // IE only
+				}
+			}
+			
+		}
 		initializeIndexPage();
 		</script>
 			

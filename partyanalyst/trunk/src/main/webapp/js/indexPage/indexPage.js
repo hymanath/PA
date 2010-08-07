@@ -56,12 +56,12 @@ var indexPageMain = {
 
 function buildSMSPopup()
 {
-	/*var remainingSms = "${remainingSms}";
+	var remainingSms = "${remainingSms}";
 	if(remainingSms==0){
 		smsRenewalMessage();
 		return;
-	}
-*/		
+		}
+		
 	var str = '';	
 	str +='	<form action="cadreRegisterAction" method="POST" name="smsForm">';
 	str +='	<table>';
