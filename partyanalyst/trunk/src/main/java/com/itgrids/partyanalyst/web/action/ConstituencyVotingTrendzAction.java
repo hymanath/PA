@@ -1702,6 +1702,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 		int i=0;
 		
 		for(VotersWithDelimitationInfoVO votersInMandalOrAC:constituencyVO.getAssembliesOfParliamentInfo()){
+			if(votersInMandalOrAC.getVotersInfoForMandalVO().size() == 0)
+				continue;
 			log.debug("Mandal Id in Action::::::::::::::::::::::::::"+votersInMandalOrAC.getVotersInfoForMandalVO().get(0).getMandalId());
 			
 			pieChart = votersInMandalOrAC.getYear()+"_Voters Info for Constituency_"+constituencyVO.getId()+"In Bi-Elections"+".png";
