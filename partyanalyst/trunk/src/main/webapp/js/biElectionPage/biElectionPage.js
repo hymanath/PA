@@ -127,24 +127,9 @@ function buildMandalsVotingTrendz()
 
 	str += '</tr>';
 	str += '</table>';
-	/*
-	str += '<div id="mandalVotingTrendzDataDiv">';
-	str += '<div id="mandalVotingTrendzDataDiv_head">Mandal Voting Trendz</div>';
-	str += '<div id="mandalVotingTrendzDataDiv_body">';
-	str += '	<div id="mandalsListInConstituency"></div>';
-	str += '	<div id="mandalVotingDetailedGraph"></div>';
-	str += '	<div id="mandalDetailsChart_body">';	
-	str += '	<div style="margin-top:5px;margin-left:300px;">';
-	str += '		<div style="color:#ADADAD"> Loading ...</div>';
-	str += '		<div> <img src="images/icons/barloader.gif"></img> </div>';
-	str += '	</div>';
-	str += '	</div>';	
-	str += '	<div id="mandalVotingTrendzData" align="center" ></div>';	
-	str += '</div>';*/
+	
 	str += '</div>';
-	elmt.innerHTML = str;
-
-	//getMandalVotingTrendz(districtsInfo[0].districtId,districtsInfo[0].constituencies[0].constId,districtsInfo[0].constituencies[0].constName);
+	elmt.innerHTML = str;	
 }
 	
 function setValuesForMandalVotingTrendz(value,text)
@@ -223,7 +208,7 @@ function buildBiElectionDistricts()
 			str += '	<a href="javascript:{}" onclick="openVotingTrendzWindow(\''+districtsInfo[i].districtId+'\',\''+info.constId+'\',\''+info.constName+'\')" class="districtAncNew"> '+info.constName.toUpperCase()+ '</a>';
 			str += '</td>';
 			str += '<td align="left">';
-			str += '	<a href="javascript:{}" onclick="openConstVotingTrendzWindow(\''+districtsInfo[i].districtId+'\',\''+info.constId+'\',\''+info.constName+'\')" class="districtAncNew1">Analyze</a>';
+			str += '	<a href="javascript:{}" onclick="openConstVotingTrendzWindow(\''+districtsInfo[i].districtId+'\',\''+info.constId+'\',\''+info.constName+'\')" class="districtAncNew1">Analyze</a>';			
 			str += '</td>';
 			str += '</tr>';
 		}
@@ -266,18 +251,7 @@ function showDetailedEnlargedChart(chartName)
         	close:true,
         	x: 200,
         	y: 900
-        	
-			  /*
-			  width : "850px", 		
-              fixedcenter : false, 
-              visible : true,  
-              constraintoviewport : true,			  
-			  modal :true,
-			  hideaftersubmit:true,
-			  close:true,
-			  x:500,
-			  y:600*/
-             } );
+		  } );
 	createGroupDialog.render();
 }
 
@@ -441,30 +415,16 @@ function buildMandalVotingTrendzData(jsObj,resultsData)
 					}
 				}
 				str += '</tr>';
-			}
-			
+			}			
 			str += '</table>';
 			str += '</td>';
-			str += '</tr>';
-		
-		}
-		
+			str += '</tr>';		
+		}		
 	}
 	str += '</table>';
 
 	bodyElmt.innerHTML = str;
-
-	
-	
-	/*for(var i in results)
-	{
-		for(var j in results[i].electionResultsForAllPartiesVO)
-		{
-			buildVotingTrendzDataTable("electionResults_"+i+"_electionType_"+j+"_body",results[i].electionResultsForAllPartiesVO[j].constituencyElectionResultsVO,results[i].electionResultsForAllPartiesVO[j].electionType);
-		}
-	}*/
 }
-
 
 function buildVotingTrendzDataTable(divID,arr,electionType)
 {

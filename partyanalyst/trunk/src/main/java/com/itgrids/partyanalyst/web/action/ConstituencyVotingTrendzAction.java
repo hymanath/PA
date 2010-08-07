@@ -126,7 +126,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	private List<TeshilPartyInfoVO> zptcMptcResultsInMandal;
 	private ConstituencyRevenueVillagesVO chartResultVO;
 	private List<PartyElectionVotersVO> partiesElecsResults;
- 
+	private String windowType;
 
 	public String getMuncipalityElectionType() {
 		return muncipalityElectionType;
@@ -522,6 +522,14 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 			List<PartyElectionVotersVO> partiesElecsResults) {
 		this.partiesElecsResults = partiesElecsResults;
 	}
+	
+	public String getWindowType() {
+		return windowType;
+	}
+
+	public void setWindowType(String windowType) {
+		this.windowType = windowType;
+	}
 
 	public String execute() throws Exception
 	{
@@ -705,64 +713,30 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 	 */
 	public void getConstituencyResultCharts(List<ConstituencyElectionResultsVO> electionResultsVO,String constiName){
 		log.debug("Inside chart building method...");
-		
-		try{
+		Set<String> partiesInChart = new LinkedHashSet<String>();
+		try{ 
 			for(ConstituencyElectionResultsVO results:electionResultsVO){
-				
-				if(results.getResultsFlag() == true){
+				if(results.getResultsFlag()){
 					List<CandidateOppositionVO> candResList = results.getCandidateOppositionList();
 					if(candResList != null && candResList.size() > 0){
 						String chartName = "ByeElection_For_"+results.getElectionType()+"_"+results.getElectionYear()+"_piechartFor_"+constiName+".png";
 						String chartPath = context.getRealPath("/") + "charts\\" + chartName;
-						Color[] colors = new Color[candResList.size()];
 						String chartTitle = ""+results.getElectionType()+" - "+results.getElectionYear();
 						final DefaultPieDataset dataset = new DefaultPieDataset();
-						int j=0;
 						for(CandidateOppositionVO candRes:candResList){
 							String partyName = candRes.getPartyName(); 
 							Double votesPercent = new Double(candRes.getVotesPercentage());
 							log.debug(" party Name ==== "+partyName+", votes Percent = "+votesPercent);	
-												
-								if(partyName.equals(IConstants.INC))
-								{
-									colors[j++]=IConstants.INC_COLOR;
-								}				
-								else
-								if(partyName.equals(IConstants.PRP))
-								{
-									colors[j++]=IConstants.PRP_COLOR;
-								}			
-								else
-								if(partyName.equals(IConstants.TDP))
-								{
-									colors[j++]=IConstants.TDP_COLOR;
-								}	
-								else
-								if(partyName.equals(IConstants.TRS))
-								{
-									colors[j++]=IConstants.TRS_COLOR;
-								}										
-								else
-								if(partyName.equals(IConstants.BJP))
-								{
-									colors[j++]=IConstants.BJP_COLOR;
-								}
-								else
-								if(partyName.equals(IConstants.OTHERS))
-								{
-									colors[j++]=IConstants.IND_COLOR;
-								}					
-								dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);
+							partiesInChart.add(partyName);					
+							dataset.setValue(partyName+" ["+votesPercent.toString()+"%]",votesPercent);
 						}
 						results.setChartName(chartName);
-						ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , colors,true,300,300);
-						
+						ChartProducer.createLabeledPieChart(chartTitle, dataset, chartPath , null,true,300,300);
 					}
 					
 				}
-				else if(results.getResultsFlag() == false){
+				else 
 					results.setChartName(null);
-				}
 			}
 		}
 		catch(Exception ex){
@@ -813,7 +787,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
        }
        else if(constiName.equalsIgnoreCase(Constants.WARANGAL_WEST)){
     	   pollingPercentage = Constants.WARANGAL_WEST_PRESENET_VOTES_PERCENT;
-       }
+       }else
+    	   pollingPercentage = 0.0;
 		return pollingPercentage;
 	}
 	
@@ -1217,9 +1192,8 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
 				resultsMainList.add(getOtherPartiesGroupedResult(result));
 			}
 		}
-		
-		
-	 return resultsMainList;
+
+		return resultsMainList;
 	}
 	
 	

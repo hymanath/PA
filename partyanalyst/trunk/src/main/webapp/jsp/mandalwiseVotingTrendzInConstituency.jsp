@@ -208,9 +208,9 @@
 
     </style>
 
-	<link rel="stylesheet" type="text/css" href="styles/tv9Styles/tv9Styles.css">
+	<!--<link rel="stylesheet" type="text/css" href="styles/tv9Styles/tv9Styles.css">
 
-	<script  type="text/javascript"><!--
+	--><script  type="text/javascript"><!--
 	var myResultsGlobal;
 	var Localization = { <%		
 			ResourceBundle rb = ResourceBundle.getBundle("globalmessages");
@@ -334,7 +334,7 @@
 				headingDIV+='<table width="600" class="participatingPartiestable_inner" style="margin:10px;" border="0"  cellpadding="0" cellspacing="0">';
 				headingDIV+='<tr>';
 				headingDIV+='	<td valign="top" style="padding:0px;border:none;"> ';
-				headingDIV+='		<img src="images/icons/tv9Icons/first.png">';
+				headingDIV+='		<img src="images/icons/districtPage/header_left.gif">';
 				headingDIV+='	</td>';
 
 				headingDIV+='	<td valign="top" style="padding:0px;border:none;">';
@@ -382,7 +382,9 @@
 				// displaying results 2009
 				for(var i in myResults.electionResultsVO)
 				{
-					
+
+						if(!myResults.electionResultsVO[i].resultsFlag)//Continue If Data Not Available
+							continue;
 						headingDIV+='	<div style="margin:10px">';
 						headingDIV+='	<table class="participatingPartiestable" border="0">';	
 						headingDIV+='	<tr>';
@@ -390,7 +392,7 @@
 						headingDIV+='			<table class="participatingPartiestable_inner" border="0"  cellpadding="0" cellspacing="0" width="100%">';
 						headingDIV+='			<tr>';
 						headingDIV+='				<td valign="top" style="padding:0px;border:none;"> ';
-						headingDIV+='					<img src="images/icons/tv9Icons/first.png">';
+						headingDIV+='					<img src="images/icons/districtPage/header_left.gif">';
 						headingDIV+='				</td>';
 	
 						headingDIV+='				<td valign="top" style="padding:0px;border:none;">';
@@ -1107,7 +1109,7 @@
 			var muncipality = document.getElementById("muncipalitiesDivHead");
 			var muncipalityDiv='';		
 			muncipalityDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
-			muncipalityDiv+='<td><img src="images/icons/tv9Icons/first.png"/></td>';
+			muncipalityDiv+='<td><img src="images/icons/districtPage/header_left.gif"/></td>';
 			muncipalityDiv+='<td><div id="muncipalityInfoDivHead" class="districtPageRoundedHeaders_center" style=" width: 700px; height: 40px;">';
 			muncipalityDiv+='<a href="javascript:{}" style="color:#FFFFFF;text-decoration:none;font-size:19px;font-weight:bold;position:relative;top:7px">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			muncipalityDiv+='</td>';
@@ -1122,7 +1124,7 @@
 			
 			var corporationDiv='';	
 			corporationDiv+='<table border="0" cellpadding="0" cellspacing="0"><tr>';
-			corporationDiv+='<td><img src="images/icons/tv9Icons/first.png"/></td>';	
+			corporationDiv+='<td><img src="images/icons/districtPage/header_left.gif"/></td>';	
 			corporationDiv+='<td><div id="corporationInfoDivHead" class="districtPageRoundedHeaders_center" style="width: 700px; height: 40px;">';
 			corporationDiv+='<a href="javascript:{}" style="position:relative;top:7px;color:#FFFFFF;text-decoration:none;font-size:14px;">'+totalMessage+' : <b class="counterSize"> '+result[0].totalMuncipalities+'</b></a></div>';
 			corporationDiv+='</td></tr></table>';	
@@ -1265,7 +1267,7 @@
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;">';
 			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
 			str+='			<tr>';
-			str+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/tv9Icons/first.png"></td>';
+			str+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/districtPage/header_left.gif"></td>';
 			str+='			<td width="98%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan"> Parties Votes Share in '+tehsilName+' Mandal</span></div></td>';
 			str+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/tv9Icons/second.png"></td>';
 			str+='			</tr>';
@@ -1316,8 +1318,7 @@
 		}
 		
 		function buildVotesSharingData(jsObj,results)
-		{
-			
+		{			
 			votesShareData = results;
             var chartName = '';
 
@@ -1365,7 +1366,7 @@
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;border:0px">';
 			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
 			str+='			<tr>';
-			str+='			<td width="2%" style="padding:0px;border:0px;"> <img src="images/icons/tv9Icons/first.png"></td>';
+			str+='			<td width="2%" style="padding:0px;border:0px;"> <img src="images/icons/districtPage/header_left.gif"></td>';
 			str+='			<td width="98%" style="padding:0px;border:0px;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan"> Parties Votes Shares</span></div></td>';
 			str+='			<td width="1%" style="padding:0px;border:0px;"><img src="images/icons/tv9Icons/second.png"></td>';
 			str+='			</tr>';
@@ -1560,8 +1561,7 @@
 		}
 
 		function showChartData(jsObj, results)
-		{
-			
+		{			
 			var selectboxElmtDiv = document.getElementById("selectLocationOptions");
 			var checkboxElmtDiv = document.getElementById("inputSelectionCriteria");
 			var selectOptionsSelectButtonElmt = document.getElementById("selectOptionsSelectButton");
@@ -1576,6 +1576,7 @@
 			}
 
 			chartName = results.chartName;
+			
 			var headDivEl = document.getElementById("headDiv");
 			var str='';
 			str += 'Parties Performance in '+jsObj.constituencyName+' Assembly Constituencey Limits In Different Elections';
@@ -1779,16 +1780,18 @@
 
 			if(!elmt)
 				return;
-
+			
 			var str='';
+			/*	
 			str += '<div id="selectLocationOptions">';
 			str += '<div id="districtsInfoRadioElmtDiv">';
-			str += '<table width="90%">';
+			str += '<table width="90%" border="1">';
 			str += '<tr>';
 			str += '<th width="30%" align="left">';
 			str += 'Select District : ';
 			str += '</th>';
 			str += '<td>';
+			
 			for(var i in districtsInfo)
 			{
 				if(districtsInfo[i].districtId == ${districtId})
@@ -1804,7 +1807,7 @@
 			str += '</tr>';
 			str += '</table>';
 			str += '</div>';
-			
+			console.log(distObj);
 			str += '<div id="constituenciesInfoSelectElmtDiv">';
 			if(distObj)
 			{
@@ -1829,6 +1832,7 @@
 				str += '</div>';
 			}
 			str += '</div>';
+			*/
 			str += '<div id ="inputSelectionCriteria">';
 				
 			str += '</div>';
@@ -2171,7 +2175,7 @@
 				crossVotingResultsContent+='	<TD colspan="6" style="padding:0px;border:none;">';
 				crossVotingResultsContent+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
 				crossVotingResultsContent+='			<tr>';
-				crossVotingResultsContent+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/tv9Icons/first.png"></td>';
+				crossVotingResultsContent+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/districtPage/header_left.gif"></td>';
 				crossVotingResultsContent+='			<td width="97%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan">Cross Voting Details (AC - PC) in 2009</span></div></td>';
 				crossVotingResultsContent+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/tv9Icons/second.png"></td>';
 				crossVotingResultsContent+='			</tr>';
@@ -2222,7 +2226,7 @@
 			nonParticipatingContent+='	<TD colspan="6" style="padding:0px;border:none;">';
 			nonParticipatingContent+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
 			nonParticipatingContent+='			<tr>';
-			nonParticipatingContent+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/tv9Icons/first.png"></td>';
+			nonParticipatingContent+='			<td width="2%" style="padding:0px;border:none;"> <img src="images/icons/districtPage/header_left.gif"></td>';
 			nonParticipatingContent+='			<td width="97%" style="padding:0px;border:none;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan">Non Participating Parties Details</span></div></td>';
 			nonParticipatingContent+='			<td width="1%" style="padding:0px;border:none;"><img src="images/icons/tv9Icons/second.png"></td>';
 			nonParticipatingContent+='			</tr>';
@@ -2784,7 +2788,7 @@
 			str += '<td colspan="'+electionListLength+'" style="padding:0px;border:0px">';
 			str+='		<table class="participatingPartiestable_inner" width="100%" cellspacing="0" cellpadding="0" border="0">';
 			str+='			<tr>';
-			str+='			<td width="2%" style="padding:0px;border:0px;"> <img src="images/icons/tv9Icons/first.png"></td>';
+			str+='			<td width="2%" style="padding:0px;border:0px;"> <img src="images/icons/districtPage/header_left.gif"></td>';
 			str+='			<td width="98%" style="padding:0px;border:0px;"><div class="detailsTableHeader" style="width:100%;"><span class="detailsTableHeaderSpan"> Parties Votes Shares</span></div></td>';
 			str+='			<td width="1%" style="padding:0px;border:0px;"><img src="images/icons/tv9Icons/second.png"></td>';
 			str+='			</tr>';
@@ -3364,7 +3368,7 @@
 						<div id="zptc_head">
 							<table border="0" cellpadding="0" cellspacing="0">
 							<tr>
-								<td><img src="images/icons/tv9Icons/first.png"/></td>
+								<td><img src="images/icons/districtPage/header_left.gif"/></td>
 								<td>	
 									<div id="zptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:707px;height:40px;">
 										<span class="mptcZptcSpanHead">Total Number of ZPTC's : </span>
@@ -3419,7 +3423,7 @@
 							<div id="mptc_head">
 								<table border="0" cellpadding="0" cellspacing="0" >
 									<tr>
-										<td><img src="images/icons/tv9Icons/first.png"/></td>
+										<td><img src="images/icons/districtPage/header_left.gif"/></td>
 										<td>	
 											<div id="mptcInfoDivHead" class="districtPageRoundedHeaders_center" style="width:707px;height:40px;">
 												<span class="mptcZptcSpanHead">Total Number of MPTC's : </span>

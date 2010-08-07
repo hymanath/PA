@@ -658,6 +658,13 @@ function buildElectionsSelectBox(myResults){
 	getConstituencyResults(myResults[0].name);
 }
 
+function openConstVotingTrendzWindow(distId,constId,constName)
+{			
+	var browser1 = window.open("<s:url action="constituencyVotingTrendzAction.action"/>?districtId="+distId+"&constiId="+constId+"&constiName="+constName,"biElectionConstituencyResults1","scrollbars=yes,resizable=1,left=200,top=200");
+
+	browser1.focus();
+}
+
 --></script>
 </head>
 <body onLoad="getString()">
@@ -670,7 +677,12 @@ function buildElectionsSelectBox(myResults){
 	
 	
 	<table width="100%">
-	<tr><td><%@ include file="navigator.jsp" %></td></tr>
+	<tr>
+		<td><%@ include file="navigator.jsp" %></td>
+		<c:if test="${constituencyDetails.hasAnalize}">
+			<td><input type="button" class="button" value="${constituencyDetails.constituencyName} Detailed Analysis" onclick="openConstVotingTrendzWindow('${constituencyDetails.districtId}','${constituencyDetails.constituencyId}','${constituencyDetails.constituencyName}')" /></td>
+		</c:if>
+	</tr>
 		<tr>
 			<td class="alignTD">
 				
