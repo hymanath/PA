@@ -431,13 +431,14 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	}
 	
 	public List findAllMptcAndZptcElectionsInfoInMandal(Long tehsilId) {
-		return getHibernateTemplate().find("select model.constituencyElection.election.electionId," +
-				" model.candidateResult.rank, model.party.partyId, model.party.shortName, " +
-				" sum(model.candidateResult.votesEarned), model.constituencyElection.election.electionYear,"+
-				" model.constituencyElection.election.electionScope.electionType.electionType," +
-				" model.constituencyElection.constituencyElectionResult.validVotes, " +
-				" model.constituencyElection.constituencyElectionResult.totalVotes, " +
-				" model.constituencyElection.constituency.name, model.candidate.lastname, model.candidate.candidateId, model.candidateResult.votesPercengate, model.constituencyElection.constituency.constituencyId " +
+		return getHibernateTemplate().find("select model.constituencyElection.election.electionId," +//0
+				" model.candidateResult.rank, model.party.partyId, model.party.shortName, " +//1,2,3
+				" sum(model.candidateResult.votesEarned), model.constituencyElection.election.electionYear,"+//4,5
+				" model.constituencyElection.election.electionScope.electionType.electionType," +//6
+				" model.constituencyElection.constituencyElectionResult.validVotes, " +//7
+				" model.constituencyElection.constituencyElectionResult.totalVotes, " +//8
+				" model.constituencyElection.constituency.name, model.candidate.lastname, model.candidate.candidateId, " +//9,10,11
+				"model.candidateResult.votesPercengate, model.constituencyElection.constituency.constituencyId " +//12,13
 				"from Nomination model where model.constituencyElection.constituency.tehsil.tehsilId =? " +
 				"group by model.nominationId, model.party.partyId, model.constituencyElection.election.electionId order by " +
 				"model.constituencyElection.election.electionYear desc, " +
