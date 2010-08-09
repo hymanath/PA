@@ -1832,7 +1832,7 @@ implements ServletRequestAware, ServletResponseAware, ServletContextAware{
         
     	for(PartyResultVO partyResultVO:allPartiesAllElectionResults)
          	for(ElectionResultVO result: partyResultVO.getElectionWiseResults()){
-         		if(result.getElectionType() == null || result.getElectionYear() == null || "-1".equalsIgnoreCase(result.getPercentage()))
+         		if(result.getElectionType() == null || result.getElectionYear() == null || Float.parseFloat(result.getPercentage()) < 0)
          			continue;
          		partiesElecResultForGraph = new ElectionResultVO();
          		partiesElecResultForGraph.setPercentage(result.getPercentage());
