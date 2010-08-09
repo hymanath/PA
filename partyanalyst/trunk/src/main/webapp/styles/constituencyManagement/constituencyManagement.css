@@ -37,7 +37,7 @@
 	font-weight:bold;
 	padding:8px;
 	text-align:left;
-	height:14px;
+	
 }
 
 #constMgmtDesc
@@ -276,3 +276,9 @@ fieldset {
 {
 	background-color:#FFFFFF;
 }
+#influencingPeopleDtDiv
+{
+	width:610px;
+	overflow:scroll;
+}
+
