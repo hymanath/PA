@@ -704,10 +704,12 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			allPartyResults.add(partyResultsVO);
 		}
 		
-		for(PartyResultsVO objParty:allPartyResults){
-			objParty.setPercentage(new BigDecimal((objParty.getVotesEarned()*100.0)/
-					allPartiesVotesInMandal).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
-		}
+		for(PartyResultsVO objParty:allPartyResults)
+			if(objParty.getVotesEarned() == 0 && allPartiesVotesInMandal == 0)
+				objParty.setPercentage("100");
+			else
+				objParty.setPercentage(new BigDecimal((objParty.getVotesEarned()*100.0)/
+					allPartiesVotesInMandal).setScale(2,BigDecimal.ROUND_HALF_UP).toString());			
 		
 		return allPartyResults;
 	}
@@ -805,18 +807,19 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			else
 				otherParties.add(party);
 		
-		//Calculating Other Parties Percentage
-		Map<String, Float> electionPercenatgeMap = new LinkedHashMap<String, Float>(); 
+		//Calculating Other Parties Percentage 
+		Map<String, Float> electionPercenatgeMap = new LinkedHashMap<String, Float>();//Map that contains Election and Percentage of Others  
 		
 		Float percenatage = null;
 		
 		for(PartyResultVO party: otherParties)
 			for(ElectionResultVO ele:party.getElectionWiseResults()){
 				percenatage = electionPercenatgeMap.get(ele.getElectionYearAndType());
-				if(percenatage == null)
-					percenatage = 0.0f;
-				percenatage += new Float(ele.getPercentage());
-				electionPercenatgeMap.put(ele.getElectionYearAndType(), percenatage);
+				if(percenatage != null && percenatage.intValue() >= 0){
+					percenatage += new Float(ele.getPercentage());
+					electionPercenatgeMap.put(ele.getElectionYearAndType(), percenatage);
+				}else if(percenatage == null)
+					electionPercenatgeMap.put(ele.getElectionYearAndType(), 0.0f);
 			}
 		
 		PartyResultVO othersParty = new PartyResultVO();
