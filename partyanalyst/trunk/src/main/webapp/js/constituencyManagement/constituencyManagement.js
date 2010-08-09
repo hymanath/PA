@@ -168,7 +168,7 @@ function showProblemsStatusCount(results) {
 	problems_OptionsContent += '<p class="widgetDescPara" style="height:90px;"> ';
 	problems_OptionsContent += '<font style="color:#4B74C6"> Advanced Search Criteria</font> enables the user to search for a problem with different options like location, Status or Department.';
 	problems_OptionsContent += '</p>';
-	problems_OptionsContent += '<p style="text-align:right;"> <A href="problemManagementReportAction.action" class="linkButton" target="_blank"> Click For Advanced Search </A></DIV></p>';
+	problems_OptionsContent += '<p style="text-align:right;"> <A href="problemManagementReportAction.action" class="linkButton" target="_blank">Advanced Search</A></DIV></p>';
 	problems_OptionsContent += '</div>';
 	problems_OptionsContent += '</div>';
 	problems_OptionsContent += '</td>';
@@ -358,7 +358,7 @@ function buildInfluencingPeopleDT(results) {
 		hidden: true
 	},	{
 		key : "select",
-		label : localizationObj.select,
+		label : "",
 		formatter : "checkbox"
 	}, {
 		key : "personName",
