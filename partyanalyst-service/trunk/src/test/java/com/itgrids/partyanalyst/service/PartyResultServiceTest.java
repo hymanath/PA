@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.impl.PartyResultService;
 import com.itgrids.partyanalyst.util.DummyPartyResultsData;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
+import com.itgrids.partyanalyst.utils.IConstants;
 //5
 public class PartyResultServiceTest {
 
@@ -67,7 +68,7 @@ public class PartyResultServiceTest {
 		List<Election> elections = new ArrayList<Election>();
 		elections.add(election1);
 		
-		EasyMock.expect(electionDAO.findByElectionScope(electionScopeList.get(0).getElectionScopeId())).andReturn(elections);
+		EasyMock.expect(electionDAO.findByElectionScopeId(electionScopeList.get(0).getElectionScopeId(), IConstants.ELECTION_SUBTYPE_MAIN)).andReturn(elections);
 		EasyMock.replay(electionDAO);
 		service.setElectionDAO(electionDAO);
 		List<PartyResultInfoVO> returns = new ArrayList<PartyResultInfoVO>();

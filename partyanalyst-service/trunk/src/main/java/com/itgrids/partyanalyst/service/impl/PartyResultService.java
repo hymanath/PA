@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
+import com.itgrids.partyanalyst.utils.IConstants;
 /**
  * 
  * @author Narender Akula
@@ -44,7 +45,7 @@ public class PartyResultService extends BasePartyResultsServiceImpl{
 	private final static Logger log = Logger.getLogger(PartyResultService.class);
 	
 	public List<Election> getElections(ElectionScope scope){
-		List<Election> list = getElectionDAO().findByElectionScope(scope.getElectionScopeId());
+		List<Election> list = getElectionDAO().findByElectionScopeId(scope.getElectionScopeId(), IConstants.ELECTION_SUBTYPE_MAIN);
 		return list;
 	}
 

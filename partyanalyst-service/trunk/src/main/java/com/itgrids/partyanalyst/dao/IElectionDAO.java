@@ -13,7 +13,6 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.ElectionColumnNames;
 import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.ElectionScope;
 
 /**
  * Interface for ElectionDAO.
@@ -42,15 +41,9 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public List<Election> findByPropertyTypeId_CountryId_StateId(Long typeID, Long countryId, Long stateId);
 
-	public List<Election> findByElectionScope(Long electionScopeID);
-	
 	public List<String> listOfYears();
 	
-	public List<Election> findByElectionScope_OrderByAsc(Long electionScopeID);
-	
 	public String findPreviousElectionYear(String year, Long typeId, Long stateId, Long countryId);
-	
-	public List<Election> findByElectionScopeId(Long electionScopeId);
 	
 	public Election findByElectionScopeIdElectionYear(Long electionScope,String electionYear, String elecSubtype);
 	
@@ -87,6 +80,8 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	public List getElectionTypeAndElectionYearByElectionId(Long electionId);
 	
 	public List findElectionYearsBySubType(Long typeID, String type);
+
+	public List<Election> findByElectionScopeId(Long electionScopeId, String electionSubtype);
 	
 	
 }

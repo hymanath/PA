@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.service.IBasePartyResultsService;
 import com.itgrids.partyanalyst.utils.ElectionScopeLevelEnum;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.PartyInfoComparator;
 
 /**
@@ -89,7 +90,7 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 	}
 	
 	public List<Election> getElections(ElectionScope scope){
-		List<Election> list = electionDAO.findByElectionScope(scope.getElectionScopeId());
+		List<Election> list = electionDAO.findByElectionScopeId(scope.getElectionScopeId(), IConstants.ELECTION_SUBTYPE_MAIN);
 		return list;
 	}
 
@@ -100,7 +101,8 @@ public class BasePartyResultsServiceImpl implements IBasePartyResultsService{
 	 */
 	
 	public List<PartyInfoVO> getPartyAndCompetetorsInfo(Election election, 
-			String requiredPartyShortName, Long stateID, Long districtID, Long constituencyID, int competetorSize,ElectionScopeLevelEnum level,Boolean hasAlliance,List<SelectOptionVO> allianceParties) {
+			String requiredPartyShortName, Long stateID, Long districtID, Long constituencyID, 
+			int competetorSize,ElectionScopeLevelEnum level,Boolean hasAlliance,List<SelectOptionVO> allianceParties) {
 		log.debug("BasePartyResultsServiceImpl.getPartyAndCompetetorsInfo() Start");
 		String electionYear = election.getElectionYear();
 		StringBuilder constituencyElectionIDs = new StringBuilder();

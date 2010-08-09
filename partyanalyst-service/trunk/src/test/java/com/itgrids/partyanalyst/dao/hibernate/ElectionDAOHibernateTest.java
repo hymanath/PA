@@ -1,13 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.sql.Date;
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.sql.Date;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -59,9 +58,7 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		Assert.assertEquals(1, 1);
 	}*/
 	
-	
-	
-	@Test
+	/*@Test
 	public void testFindByPropertyTypeIdCountry_StateId(){
 		List<Election> list = electionDAO.findByPropertyTypeId_CountryId_StateId(new Long(1), new Long(1), new Long(1));
 		for(Election e: list){
@@ -70,27 +67,9 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		Assert.assertEquals(2, list.size());
 		list = electionDAO.findByPropertyTypeId_CountryId_StateId(new Long(1), new Long(1),null);
 		Assert.assertEquals(0, list.size());
-	}
-	
+	}*/
 
-	@Test
-	public void testFindByElectionScope(){
-		List<Election> list = electionDAO.findByElectionScope(new Long(2));
-		for(Election e: list){
-			System.out.println("NEW>>>>>>>>>>>"+e.getElectionYear());
-		}
-		Assert.assertEquals(2, list.size()); //here data is available for 2004 and 2009
-	}
-	@Test
-	public void testFindByElectionScope_OrderByAsc(){
-		List<Election> list = electionDAO.findByElectionScope_OrderByAsc(new Long(2));
-		for(Election e: list){
-			System.out.println("NEW>>>>>>>>>>>"+e.getElectionYear());
-		}
-		Assert.assertEquals(8, list.size()); //here data is available for 2004 and 2009
-	}
-	
-	@Test
+	/*@Test
 	public void testFindPreviousYear(){
 		String prevYear = electionDAO.findPreviousElectionYear("2009", new Long(2), new Long(1), new Long(1));
 		System.out.println(prevYear);
@@ -115,6 +94,13 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 	public void testElectionYears(){
 		List result = electionDAO.findElectionAndYearForElectionTypeAndState(3l,1l);
 		Assert.assertEquals(2, result.size());		
+	}*/
+	
+	public void testYears(){
+		List<Election> result = electionDAO.findByElectionScopeId(1l, IConstants.ELECTION_SUBTYPE_BYE);
+		for(Election ele:result)
+			System.out.println(ele.getElectionYear());
 	}
+	
 }
 
