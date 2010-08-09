@@ -153,7 +153,7 @@ public interface IStaticDataService {
 		
 		public List<ConstituencyElection> getConstituencyElections(Long electionID,Long stateId,Long  districtID);
 		
-		public List<ConstituencyElection> getConstituencyElectionsFromNomination(Long electionID,Long stateId,Long districtID,Long rank,Long partyId);
+		public List<ConstituencyElection> getConstituencyElectionsFromNomination(Long electionID,Long stateId,Long districtID,Long rank,Long partyId,String reportLevel);
 		
 		public List<ConstituencyElection> getConstituencyElectionsFromNominationWithAlliances(Long electionID,Long stateId,Long districtID,Long rank,List<SelectOptionVO> parties);
 		
