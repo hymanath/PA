@@ -834,20 +834,30 @@ public class StaticDataService implements IStaticDataService {
 		return mandal;
 	}
 	
-	public List<ConstituencyElection> getConstituencyElectionsFromNomination(Long electionID,Long stateId,Long districtID,Long rank,Long partyId){
+	public List<ConstituencyElection> getConstituencyElectionsFromNomination(Long electionID,Long stateId,Long districtID,Long rank,Long partyId,String reportLevel){
 		List<ConstituencyElection>  constituencyElectionList = null;
-		if(districtID==null || districtID==0L){
-			System.out.println(" DAO ...1");
+		
+		if("3".equalsIgnoreCase(reportLevel)){
+			log.debug(" DAO .for Country Level ...");
 			if(rank.intValue() == -1)
-				constituencyElectionList = nominationDAO.findByElectionAndStateAndNthRank(electionID, stateId, new Long(4), partyId);
+				constituencyElectionList = nominationDAO.findByElectionAndPartyAndNthRank(electionID,new Long(4),partyId);
 			else
-			    constituencyElectionList = nominationDAO.findByElectionAndStateAndRank(electionID, stateId, rank, partyId);
-		}else{
-			System.out.println("DAO ... 2");
-			if(rank.intValue() == -1)
-				constituencyElectionList = nominationDAO.findByElectionAndStateAndDistrictAndNthRank(electionID, stateId, districtID, new Long(4), partyId);
-			else
-			    constituencyElectionList = nominationDAO.findByElectionAndStateAndDistrictAndRank(electionID, stateId, districtID, rank, partyId);
+				constituencyElectionList = nominationDAO.findByElectionAndPartyAndRank(electionID,rank,partyId);
+		}
+		else{
+			if(districtID==null || districtID==0L){
+				log.debug(" DAO .for District Level ...");
+				if(rank.intValue() == -1)
+					constituencyElectionList = nominationDAO.findByElectionAndStateAndNthRank(electionID, stateId, new Long(4), partyId);
+				else
+				    constituencyElectionList = nominationDAO.findByElectionAndStateAndRank(electionID, stateId, rank, partyId);
+			}else{
+				log.debug(" DAO .for State Level ...");
+				if(rank.intValue() == -1)
+					constituencyElectionList = nominationDAO.findByElectionAndStateAndDistrictAndNthRank(electionID, stateId, districtID, new Long(4), partyId);
+				else
+				    constituencyElectionList = nominationDAO.findByElectionAndStateAndDistrictAndRank(electionID, stateId, districtID, rank, partyId);
+			}
 		}
 	return constituencyElectionList;
 	}
