@@ -218,4 +218,8 @@ table.partyResultsCriteriaTable td {
 	width:155px;
 	padding:2px;
 }
-
+.errorMessage
+	{
+		font-weight:bold;
+		color:red;	
+	}

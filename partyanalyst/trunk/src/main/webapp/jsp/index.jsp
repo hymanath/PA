@@ -4,7 +4,7 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ page import="java.util.ResourceBundle;" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -326,6 +326,16 @@
 
 		
 		<script type="text/javascript">
+		var labelResources = { <%		
+				ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
+				String regionLevel = rb.getString("regionLevel");
+				String typeMessage = rb.getString("typeMessage");
+				String smsSuccess  = rb.getString("smsSuccess");
+				String remainingSMS  = rb.getString("remainingSMS");
+				String smsQuotaClosed = rb.getString("smsQuotaClosed");
+					
+				%> }
+				
 		var smsHidden = 1;
 		<c:forEach var="mlaConstituencies"  items="${mlaConstituenciesList}" >
 			var ob={
@@ -652,13 +662,24 @@
 		}
 		function sendSMS()
 		{
-			var val
+			var val= null;
+			var region_type_AlertEl = document.getElementById("region_type_Alert");
+			var sms_text_AlertEl = document.getElementById("sms_text_Alert");
+			if(region_type_AlertEl)
+				region_type_AlertEl.innerHTML = '';
+			if(sms_text_AlertEl)
+				sms_text_AlertEl.innerHTML = '';
 			for( i = 0; i < document.smsForm.region_type_radio.length; i++ )
 			{
 				if( document.smsForm.region_type_radio[i].checked == true )
 					val = document.smsForm.region_type_radio[i].value;
 			}
-			
+			if(val == null)
+			{	
+				if(region_type_AlertEl)
+				region_type_AlertEl.innerHTML = 'Please Select Region Level!'
+				return;
+			}	
 			var valSelect = document.getElementById("sms_"+val+"Select");
 			var textAreaElmt = document.getElementById("smsTextArea");
 			
@@ -677,6 +698,11 @@
 
 			textAreaElmtValue = textAreaElmt.value
 			
+			if(textAreaElmtValue == '')
+			{
+				sms_text_AlertEl.innerHTML = 'Please Type A Message!';
+				return;
+			}	
 			if(include_user=='YES'){
 				if(document.getElementById('user_name')!=null && document.getElementById('user_name').value!='' )
 					textAreaElmtValue = textAreaElmtValue + ' Thx ' + document.smsForm.user_name.value;
@@ -685,10 +711,10 @@
 			val=val.toUpperCase();
 			
 			var jsObj={
-						SMS_LEVEL_TYPE:val,
-						SMS_LEVEL_VALUE:valSelectValue,
-						SMS_MESSAGE:textAreaElmtValue,
-						SMS_INCLUDE_CADRE_NAME:include_cadre,
+						SMS_LEVEL_TYPE: val,
+						SMS_LEVEL_VALUE: valSelectValue,
+						SMS_MESSAGE: textAreaElmtValue,
+						SMS_INCLUDE_CADRE_NAME: include_cadre,
 						task:"sendSMS"
 					  };
 			
@@ -698,27 +724,7 @@
 			callAjax(jsObj,url);
 			
 		}
-		function displaySuccessMessage(results,jsObj)
-		{
-			var divElmt = document.getElementById("successDiv");
-			var str='';
-			if(results.status==0){
-				str+=" SMS sent successfully to "+results.totalSmsSent+" cadres";
-				if(results.remainingSmsCount!=0){
-					str+="<br/>";
-					str+=" You can send "+results.remainingSmsCount+"more SMS";
-				}else{
-					str+="<br/>";
-					str+=" You cannot any more SMS ";
-					smsRenewalMessage();
-				}
-				
-			}else{
-				smsRenewalMessage();
-			}
-			
-			divElmt.innerHTML=str;
-		}
+		
 		function smsRenewalMessage()
 		{
 			var elmt = document.getElementById('smsErrorPopupDiv');
@@ -901,6 +907,13 @@
 			
 		}
 		function sendSMSCadreLevel(){
+			var val = null;
+			var region_type_AlertEl = document.getElementById("region_type_Alert");
+			var sms_text_AlertEl = document.getElementById("sms_text_Alert");
+			if(region_type_AlertEl)
+				region_type_AlertEl.innerHTML = '';
+			if(sms_text_AlertEl)
+				sms_text_AlertEl.innerHTML = '';
 			for( i = 0; i < document.smsForm.region_type_radio.length; i++ )
 			{
 				if( document.smsForm.region_type_radio[i].checked == true ){
@@ -908,10 +921,19 @@
 					
 				}
 			}
-			
+			if(val == null)
+			{
+				region_type_AlertEl.innerHTML = 'Please Select Region Level!';
+				return;
+			}
 			var textAreaElmt = document.getElementById("smsTextArea");
 
 			textAreaElmtValue = textAreaElmt.value
+			if(textAreaElmtValue == '')
+			{
+				sms_text_AlertEl.innerHTML = 'Please Type A Message!';
+				return;
+			}
 			val=val.toUpperCase();
 
 			//---
@@ -935,7 +957,7 @@
 			
 			var jsObj={
 						SMS_LEVEL_TYPE:'CADRE_LEVEL',
-						SMS_LEVEL_VALUE:val,
+						SMS_LEVEL_VALUE: val,
 						SMS_MESSAGE:textAreaElmtValue,
 						SMS_INCLUDE_CADRE_NAME:include_cadre,
 						task:"sendSMS"
@@ -1026,6 +1048,37 @@
 				}
 			}
 			
+		}
+		function displaySuccessMessage(results,jsObj)
+		{
+			var divElmt = document.getElementById("successDiv");
+			var region_type_AlertEl = document.getElementById("region_type_Alert");
+			var sms_text_AlertEl = document.getElementById("sms_text_Alert");
+			var smsTextAreaEl = document.getElementById("smsTextArea"); 
+			var maxcountEl = document.getElementById("maxcount");
+			maxcountEl.innerHTML = '200';
+			if(region_type_AlertEl)
+				region_type_AlertEl.innerHTML = '';
+			if(sms_text_AlertEl)
+				sms_text_AlertEl.innerHTML = '';
+			smsTextAreaEl.value='';
+			var str='';
+			if(results.status==0){
+				str+=" SMS sent successfully to "+results.totalSmsSent+" cadres";
+				if(results.remainingSmsCount!=0){
+					str+="<br/>";
+					str+=" You can send "+results.remainingSmsCount+"more SMS";
+				}else{
+					str+="<br/>";
+					str+=" You cannot any more SMS ";
+					smsRenewalMessage();
+				}
+				
+			}else{
+				smsRenewalMessage();
+			}
+			
+			divElmt.innerHTML=str;
 		}
 		initializeIndexPage();
 		</script>

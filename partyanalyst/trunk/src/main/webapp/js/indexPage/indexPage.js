@@ -60,8 +60,8 @@ function buildSMSPopup()
 	if(remainingSms==0){
 		smsRenewalMessage();
 		return;
-		}
-		
+	}
+	
 	var str = '';	
 	str +='	<form action="cadreRegisterAction" method="POST" name="smsForm">';
 	str +='	<table>';
@@ -71,6 +71,9 @@ function buildSMSPopup()
 	str +='			<input type="radio" name="sms_type" value="locationWise" onclick="getUserLocationData(this.value,\'sms\')"/> Location Wise	';			
 	str +='			<input type="radio" name="sms_type" value="cadreLevelWise" onclick="getUsersCadreLevelData(this.value,\'sms\')"/> Cadre Level Wise';
 	str +=' 	</td>';		
+	str +='	</tr>';
+	str +='	<tr>';
+	str +='		<th align="left" colspan="2"><div id="region_type_Alert" class="errorMessage"></div></th>';			
 	str +='	</tr>';
 	str +='	<tr>';
 	str +='		<th align="left"><div id="region_type_Label"></div></th>';
@@ -87,6 +90,9 @@ function buildSMSPopup()
 	str +='	<tr>';
 	str +='		<th align="left"><div id="sms_cadre_name_include_label"></div></th>';
 	str +='		<td align="left"><div id="sms_cadre_name_include_value"></div></td>';				
+	str +='	</tr>';
+	str +=' <tr>';
+	str +='		<th align="left" colspan="2"><div id="sms_text_Alert" class="errorMessage"></div></th>';
 	str +='	</tr>';
 	str +=' <tr>';
 	str +='		<th align="left"><div id="sms_text_Label"></div></th>';
@@ -109,7 +115,7 @@ function buildSMSPopup()
 	
 
 	smsDialog = new YAHOO.widget.Dialog("myDialog",
-			{ width : "600px", 
+			{ width : "650px", 
               fixedcenter : true, 
               visible : true,  
               constraintoviewport : true, 

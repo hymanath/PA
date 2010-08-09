@@ -375,3 +375,8 @@
 	{
 		background-color:#FFFFFF;
 	}
+	.errorMessage
+	{
+		font-weight:bold;
+		color:red;	
+	}
