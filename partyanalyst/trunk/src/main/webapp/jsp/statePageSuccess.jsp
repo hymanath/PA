@@ -199,6 +199,7 @@
 								electionTypeId:'${state.electionTypeId}',
 								electionType:'${state.electionType}',
 								year:'${state.year}',
+								subtype:'${state.electionSubtype}',
 								partyResultsVO:[]
 							  };
 					<c:forEach var="party" varStatus="stat" items="${state.partyResultsVO}">

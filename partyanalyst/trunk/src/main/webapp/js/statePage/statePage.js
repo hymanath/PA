@@ -79,6 +79,7 @@ function differentiateElectionTypes()
 							electionTypeId : lObj[j].electionTypeId,
 							electionType : lObj[j].electionType,
 							year : lObj[j].year,
+							subtype:lObj[j].subtype,
 							partyResultsVO : lObj[j].partyResultsVO
 					   };
 			eArr.push(eObj);
@@ -93,6 +94,7 @@ function differentiateElectionTypes()
 							electionTypeId : lObj[j].electionTypeId,
 							electionType : lObj[j].electionType,
 							year : lObj[j].year,
+							subtype:lObj[j].subtype,
 							partyResultsVO : lObj[j].partyResultsVO
 					   };
 			eArr.push(eObj);
@@ -157,7 +159,10 @@ function buildElectionTypesAndYearsCarousel(divId,arr)
 	{	
 		str+='<li>';
 		str+='<div class="electionResultsDiv">';
-		str+='	<div class="electionResultsDiv_head">'+arr[i].electionType+' - '+arr[i].year+'</div>';
+		if(arr[i].subtype == 'BYE')
+			str+='	<div class="electionResultsDiv_head">'+arr[i].electionType+' [ '+ arr[i].subtype+' ] - '+arr[i].year+'</div>';
+		else
+			str+='	<div class="electionResultsDiv_head">'+arr[i].electionType+' - '+arr[i].year+'</div>';
 		str+='	<div class="electionResultsDiv_body">';
 		str+='  <table width="100%" style="width:100%" class="partyResultsTable">';
 		str+='	<tr>';
