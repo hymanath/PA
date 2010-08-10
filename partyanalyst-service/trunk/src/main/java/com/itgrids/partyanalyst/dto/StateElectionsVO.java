@@ -14,6 +14,7 @@ public class StateElectionsVO {
 	private Long electionId;
 	private Long electionTypeId;
 	private String electionType;
+	private String electionSubtype;
 	private String year;
 	List<PartyWiseResultVO> partyResultsVO;
 	
@@ -48,6 +49,12 @@ public class StateElectionsVO {
 	}
 	public void setPartyResultsVO(List<PartyWiseResultVO> partyResultsVO) {
 		this.partyResultsVO = partyResultsVO;
+	}
+	public String getElectionSubtype() {
+		return electionSubtype;
+	}
+	public void setElectionSubtype(String electionSubtype) {
+		this.electionSubtype = electionSubtype;
 	}
 	
 }

@@ -13,6 +13,7 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 
@@ -33,8 +34,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	 *            the property value to match
 	 * @return List<Nomination> found by query
 	 */
-	//public List<Nomination> findByProperty(String propertyName, Object value);
-
+	
 	public List<Nomination> findByNominationStatus(Object nominationStatus);
 
 	public List<Nomination> findByAssets(Object assets);
@@ -274,4 +274,6 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	@SuppressWarnings("unchecked")
 	public List getResultsForElectionInConstituency(Long constituencyId,String electionYear);
+	
+	public List<Election> getElectionsInState(Long stateId);
 }

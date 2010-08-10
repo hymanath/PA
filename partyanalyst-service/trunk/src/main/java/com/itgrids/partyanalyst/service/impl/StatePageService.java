@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IStatePageService;
 import com.itgrids.partyanalyst.utils.ElectionResultsForPartiesBySeats;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class StatePageService implements IStatePageService {
 
@@ -64,9 +65,8 @@ public class StatePageService implements IStatePageService {
     	List<Long> electionTypeArrayList = new ArrayList<Long>(0);
     	List<StateElectionsVO> stateElectionsList = new ArrayList<StateElectionsVO>(0);
     	List<StateElectionsVO> stateElectionsSortedList = new ArrayList<StateElectionsVO>(0);
-    	    	
-    	
-    	elections = electionObjectsDAO.findElections(stateId);
+  	  	ElectionType electionType = null;    	    	
+    	elections = nominationDAO.getElectionsInState(stateId);
     	    	    		
        	   if(elections.size()<1 || elections == null)
     		   return null;
@@ -75,12 +75,12 @@ public class StatePageService implements IStatePageService {
     	        for(Election election:elections){
     	      
     	    	  StateElectionsVO stateElections = new StateElectionsVO();
-    	    	  ElectionType electionType = null;
     	    	  electionType = election.getElectionScope().getElectionType();
     	    	  
     	    	  stateElections.setElectionId(election.getElectionId());
     	    	  stateElections.setElectionTypeId(electionType.getElectionTypeId());
     	    	  stateElections.setElectionType(electionType.getElectionType());
+    	    	  stateElections.setElectionSubtype(election.getElecSubtype());
     	    	  stateElections.setYear(election.getElectionYear());
     	    	  
     	    	  StateElectionResultsVO stateElecResults = getStateElectionResults(election.getElectionId());

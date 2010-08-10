@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateResult;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PartyRebelCandidate;
@@ -474,7 +475,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 		for(int i=0; i<list.size(); i++)
 			System.out.println(((Object[])list.get(i))[0]+"\t"+((Object[])list.get(i))[1]+"\t"+((Object[])list.get(i))[2]+"\t"+((Object[])list.get(i))[3]+"\t"+((Object[])list.get(i))[4]+"\t"+((Object[])list.get(i))[5]+"\t"+((Object[])list.get(i))[6]);
 	}*/
-	@Test
+	/*@Test
 	public void testGetConstituencyElectionResult(){
 		
 		List resultList = nominationDAO.getResultsForElectionInConstituency(new Long(30),"2010");
@@ -490,6 +491,13 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase {
 			 System.out.println(" Votes Percent :" + votesPercent);
 			}
 		}
+	}*/
+	
+	public void testGetElectionsInState(){
+		List<Election> list = nominationDAO.getElectionsInState(1l);
+		for(Election ele:list)
+			System.out.println(ele.getElectionYear());
 	}
+	
 }
 

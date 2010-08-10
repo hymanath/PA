@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.NominationColumnNames;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyElection;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Nomination;
 import com.itgrids.partyanalyst.model.Party;
 
@@ -1460,6 +1461,12 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			Long electionID, Long rank, Long partyId) {
 		Object[] params = {electionID,rank,partyId};
 		return getHibernateTemplate().find("select constituencyElection from Nomination model where model.constituencyElection.election.electionId =? and model.candidateResult.rank = ? and model.party.partyId = ?", params);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Election> getElectionsInState(Long stateId) {
+		return getHibernateTemplate().find("select distinct model.constituencyElection.election from Nomination model where " +
+				"model.constituencyElection.election.electionScope.state.stateId = ? order by model.constituencyElection.election.electionYear desc", stateId);
 	}
 	
 }
