@@ -73,19 +73,7 @@
 	
 
 <script type="text/javascript">
-var labelResources = { <%		
-		ResourceBundle rb = ResourceBundle.getBundle("global_ErrorMessages");
-		String regionLevel = rb.getString("regionLevel");
-		String typeMessage = rb.getString("typeMessage");
-		String smsSuccess  = rb.getString("smsSuccess");
-		String remainingSMS  = rb.getString("remainingSMS");
-		String smsQuotaClosed = rb.getString("smsQuotaClosed");
-		
-		
-		ResourceBundle pprRb = ResourceBundle.getBundle("ppr_Labels");
-		String reportLevel = pprRb.getString("reportLevel");
-		
-		%> }
+
 	var smsDialog, newEventDialog, newDateDialog,eventDateDialog,mainEventCalendar,dateCalendar,cadreDataTable,cadreAnim,jsonStr;
 	var selectedEventObj={
 							userEventsId:"",
