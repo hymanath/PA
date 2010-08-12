@@ -1,0 +1,29 @@
+/* 
+ * Copyright (c) 2010 IT Grids.
+ * All Rights Reserved.
+ *
+ * IT Grids Confidential Information.
+ * Created on August 10,2010
+ */
+package com.itgrids.partyanalyst.dao.hibernate;
+
+import java.util.List;
+
+import org.appfuse.dao.hibernate.GenericDaoHibernate;
+
+import com.itgrids.partyanalyst.dao.IUserGroupsDAO;
+import com.itgrids.partyanalyst.model.UserGroups;
+
+public class UserGroupsDAO extends GenericDaoHibernate<UserGroups, Long> implements
+		IUserGroupsDAO {
+
+	public UserGroupsDAO() {
+		super(UserGroups.class);
+	}
+
+	public List<UserGroups> findByNotes(String notes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
