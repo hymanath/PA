@@ -6,6 +6,8 @@ import java.util.Map;
 public class CadreManagementVO extends ResultStatus{
 	private List<UserEventVO>  userEvents;
 	private List<ImportantDatesVO> userImpDates;
+	private List<UserEventVO>  upcomgWeekUserEvents;
+	private List<ImportantDatesVO> upcomgWeekImpDates;
 	private Map<String, Long> cadresByCadreLevel;
 	
 	public List<UserEventVO> getUserEvents() {
@@ -31,6 +33,21 @@ public class CadreManagementVO extends ResultStatus{
 	public void setCadresByCadreLevel(Map<String, Long> cadresByCadreLevel) {
 		this.cadresByCadreLevel = cadresByCadreLevel;
 	}
-	
+
+	public List<UserEventVO> getUpcomgWeekUserEvents() {
+		return upcomgWeekUserEvents;
+	}
+
+	public void setUpcomgWeekUserEvents(List<UserEventVO> upcomgWeekUserEvents) {
+		this.upcomgWeekUserEvents = upcomgWeekUserEvents;
+	}
+
+	public List<ImportantDatesVO> getUpcomgWeekImpDates() {
+		return upcomgWeekImpDates;
+	}
+
+	public void setUpcomgWeekImpDates(List<ImportantDatesVO> upcomgWeekImpDates) {
+		this.upcomgWeekImpDates = upcomgWeekImpDates;
+	}
 	
 }
