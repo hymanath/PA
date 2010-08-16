@@ -63,7 +63,7 @@ public class ExcelToDBService implements IExcelToDBService {
 	private TransactionTemplate transactionTemplate;
 	//public void readCSVFileAndStoreIntoDB(String excelFilePath,String countryName,String stateName,String districtName, String typeOfElection, String electionYear) throws Exception{
 	public void readCSVFileAndStoreIntoDB(UploadFormVo uploadFormVo,String fileName,File fileToUpload) throws Exception{
-
+ 
 		try{
 			if(logger.isDebugEnabled()){
 			 logger.debug("Congrats logger has been initialized");			
@@ -77,6 +77,7 @@ public class ExcelToDBService implements IExcelToDBService {
 			}
 			insertIntoDatabase(selectReaderAndFetchConstituencyBlocks(uploadFormVo,fileName,fileToUpload));
 		}catch(Exception excep){
+			excep.printStackTrace();
 			throw new Exception(excep.getMessage());
 		}
 }

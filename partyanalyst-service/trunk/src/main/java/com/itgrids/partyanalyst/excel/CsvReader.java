@@ -110,7 +110,9 @@ public class CsvReader implements IExcelReader{
 			for (int i = 0; i < methods.length; i++) {
 				if(methods[i].getName().startsWith("get")){
 					String str=(String)methods[i].invoke(csvColumnMapperObj, null);
-					if(methods[i].getName().equals("getCsvColumn2") && str.trim().indexOf("-")>-1 && csvColumnMapperObj.getCsvColumn3().length()==0 && csvColumnMapperObj.getCsvColumn4().length()==0){
+					if(methods[i].getName().equals("getCsvColumn2") && str.trim().indexOf("-")>-1 
+							&& csvColumnMapperObj.getCsvColumn3().length()==0 && 
+							csvColumnMapperObj.getCsvColumn4().length()==0){
 						//modified by sai
 						boolean flag=false;
 						String constiName[] = str.split("-");
@@ -173,10 +175,13 @@ public class CsvReader implements IExcelReader{
 
 			}
 		}catch (IllegalArgumentException argumentExeception) {
+			argumentExeception.printStackTrace();
 			throw new CsvException(argumentExeception.getMessage());
 		}catch(InvocationTargetException invocationEx){
+			invocationEx.printStackTrace();
 			throw new CsvException(invocationEx.getMessage());
 		}catch(IllegalAccessException iace){
+			iace.printStackTrace();
 			throw new CsvException(iace.getMessage());
 		}
 	}
