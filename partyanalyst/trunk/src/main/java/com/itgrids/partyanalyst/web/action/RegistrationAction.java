@@ -43,8 +43,9 @@ public class RegistrationAction extends ActionSupport implements
 	 private String day;
 	 private String month;
 	 private String year;
-	private UserService userService;
+	 private UserService userService;
 	 private List<String> type = new ArrayList<String>();
+	 private String userType;
 /*	 private List<String> dobDay = new ArrayList<String>();
 	 private List<String> dobMonth = new ArrayList<String>();
 	 private List<String> dobYear = new ArrayList<String>();*/
@@ -262,14 +263,23 @@ public class RegistrationAction extends ActionSupport implements
 		this.regVO.setPincode(pincode);
 	}
 
-	 public String getAccessType() {
+	public String getAccessType() {
 		return regVO.getAccessType();//;accessType;
 	}
-	 @RequiredStringValidator(type = ValidatorType.FIELD, message = "AccessType is required",shortCircuit=true)
-	public void setAccessType(String accessType) {
-		this.accessType = accessType;
-		this.regVO.setAccessType(accessType);
+	 @RequiredStringValidator(type = ValidatorType.FIELD, message = "User Type is required",shortCircuit=true)
+	public void setUserType(String userType) {
+		this.userType = userType;
+		this.regVO.setUserType(userType);
 	}
+	 
+	 public String getUserType() {
+			return regVO.getUserType();//;accessType;
+		}
+		 @RequiredStringValidator(type = ValidatorType.FIELD, message = "AccessType is required",shortCircuit=true)
+		public void setAccessType(String accessType) {
+			this.accessType = accessType;
+			this.regVO.setAccessType(accessType);
+		} 
 
 	public String getAccessValue() {
 		//return accessValue;
