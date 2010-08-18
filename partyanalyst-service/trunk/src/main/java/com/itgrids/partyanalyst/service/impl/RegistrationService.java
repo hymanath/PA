@@ -99,7 +99,7 @@ public class RegistrationService implements IRegistrationService{
 		reg.setPincode(values.getPincode());
 		reg.setAccessType(values.getAccessType());
 		reg.setAccessValue(values.getAccessValue());
-		
+		reg.setUserType(values.getUserType());
 		return reg;
 	}
 	

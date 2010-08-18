@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,6 +18,8 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDAO;
+import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDesignationDAO;
 import com.itgrids.partyanalyst.dao.IRegistrationDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -35,6 +39,8 @@ import com.itgrids.partyanalyst.model.Country;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.PartyWorkingCommittee;
+import com.itgrids.partyanalyst.model.PartyWorkingCommitteeDesignation;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Township;
@@ -63,7 +69,8 @@ public class CadreManagementService {
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;	 
 	private SmsCountrySmsService smsCountrySmsService;
 	private IHamletDAO hamletDAO;
-	
+	private IPartyWorkingCommitteeDAO partyWorkingCommitteeDAO;
+	private IPartyWorkingCommitteeDesignationDAO partyWorkingCommitteeDesignationDAO;
 	private static final Logger log = Logger.getLogger(CadreManagementService.class);
 	
 	public void setCountryDAO(ICountryDAO countryDAO) {
@@ -117,7 +124,29 @@ public class CadreManagementService {
 
 	public void setHamletDAO(IHamletDAO hamletDAO) {
 		this.hamletDAO = hamletDAO;
+	}	
+
+	public IPartyWorkingCommitteeDAO getPartyWorkingCommitteeDAO() {
+		return partyWorkingCommitteeDAO;
 	}
+
+
+	public void setPartyWorkingCommitteeDAO(
+			IPartyWorkingCommitteeDAO partyWorkingCommitteeDAO) {
+		this.partyWorkingCommitteeDAO = partyWorkingCommitteeDAO;
+	}	
+
+
+	public IPartyWorkingCommitteeDesignationDAO getPartyWorkingCommitteeDesignationDAO() {
+		return partyWorkingCommitteeDesignationDAO;
+	}
+
+
+	public void setPartyWorkingCommitteeDesignationDAO(
+			IPartyWorkingCommitteeDesignationDAO partyWorkingCommitteeDesignationDAO) {
+		this.partyWorkingCommitteeDesignationDAO = partyWorkingCommitteeDesignationDAO;
+	}
+
 
 	public Long saveCader(CadreInfo cadreInfo){
 		if(log.isDebugEnabled()){
@@ -154,6 +183,33 @@ public class CadreManagementService {
 		cadre.setEmail(cadreInfo.getEmail());
 		cadre.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyID()));
 		cadre.setRegistration(registrationDAO.get(cadreInfo.getUserID()));
+		SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
+		Date date =null;
+		try{
+			date= format.parse(cadreInfo.getDateOfBirth());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		cadre.setDateOfBirth(date);
+		cadre.setTelephone(cadreInfo.getLandLineNo());
+		cadre.setHouseNo(cadreInfo.getHouseNo());
+		cadre.setStreet(cadreInfo.getStreet());
+		cadre.setPinCode(cadreInfo.getPinCode());
+		
+		cadre.setEducation(cadreInfo.getEducation());
+		cadre.setOccupation(cadreInfo.getOccupation());
+		cadre.setCasteCategory(cadreInfo.getCasteCategory());
+		cadre.setMemberType(cadreInfo.getMemberType());
+		cadre.setAnnualIncome(cadreInfo.getAnnualIncome());
+		if("on".equals(cadreInfo.getSameAsCA()))
+		{
+			
+		}else if("off".equals(cadreInfo.getSameAsCA()))
+			{
+				
+				
+			}
+		cadre.setDesignation(partyWorkingCommitteeDesignationDAO.get(new Long(cadreInfo.getDesignation())));
 		cadre = cadreDAO.save(cadre);
 		return cadre.getCadreId();
 	}
@@ -1056,4 +1112,34 @@ public class CadreManagementService {
 		}
 		return result;
 	}
+	
+	public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
+	{
+		List<SelectOptionVO> resultsList = new ArrayList<SelectOptionVO>();
+		List<PartyWorkingCommittee> results =  partyWorkingCommitteeDAO.getWorkingCommitteeForParty(partyId);
+		for(PartyWorkingCommittee partyWorkingCommittee:results)
+		{
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(partyWorkingCommittee.getPartyWorkingCommitteeId());
+			selectOptionVO.setName(partyWorkingCommittee.getCommitteeName());
+			resultsList.add(selectOptionVO);
+		}
+		return resultsList;
+	}
+	
+	public List<SelectOptionVO> getDesignationsInCommittee(Long partyId, Long partyWorkingCommitteeId)
+	{
+		List<SelectOptionVO> resultsList = new ArrayList<SelectOptionVO>();
+		List<PartyWorkingCommitteeDesignation> results =  partyWorkingCommitteeDesignationDAO.getDesignationsForPartyCommittee(partyId, partyWorkingCommitteeId);
+		for(PartyWorkingCommitteeDesignation PartyWorkingCommitteeDesignation:results)
+		{
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(PartyWorkingCommitteeDesignation.getPartyWkgCommitteeDesignationId());
+			selectOptionVO.setName(PartyWorkingCommitteeDesignation.getDesignation());
+			resultsList.add(selectOptionVO);
+		}
+		return resultsList;
+	}
+	
+	
 }
