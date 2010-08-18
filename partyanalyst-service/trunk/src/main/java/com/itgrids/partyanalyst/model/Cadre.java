@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,6 +46,22 @@ public class Cadre extends BaseModel{
 	 private Long boothId;
 	 private Hamlet hamlet = null;
 	 
+	 //new fields
+	 private Date dateOfBirth;
+	 private String telephone;
+	 private String houseNo; 
+	 private String street;
+	 private String pinCode;
+	 private String education;
+	 private String occupation;
+	 private String casteCategory;
+	 private String annualIncome;
+	 private String memberType;
+	 private PartyWorkingCommitteeDesignation designation;
+	 private UserAddress currentAddress;
+	 private UserAddress permanentAddress;
+	 
+	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "cadre_id", unique = true, nullable = false)
@@ -65,7 +83,7 @@ public class Cadre extends BaseModel{
 	 public void setRegistration(Registration registration) {
 		this.registration = registration;
 	 }
-	//
+	
 	
 	 @ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	 @JoinColumn(name = "cadre_level_id")
@@ -199,5 +217,149 @@ public class Cadre extends BaseModel{
 	public void setHamlet(Hamlet hamlet) {
 		this.hamlet = hamlet;
 	}
+	
+	//new attributes
+	@Column(name = "date_of_birth", length = 10)
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	@Column(name = "telephone", length = 25)
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	@Column(name = "house_No", length = 25)
+	public String getHouseNo() {
+		return houseNo;
+	}
+
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+
+	@Column(name = "street", length = 75)
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	@Column(name = "pin_code", length = 25)
+	public String getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
+	}
+
+	@Column(name = "education", length = 75)
+	public String getEducation() {
+		return education;
+	}
+
+	public void setEducation(String education) {
+		this.education = education;
+	}
+
+	@Column(name = "occupation", length = 75)
+	public String getOccupation() {
+		return occupation;
+	}
+
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+
+	@Column(name = "caste_category", length = 25)
+	public String getCasteCategory() {
+		return casteCategory;
+	}
+
+	public void setCasteCategory(String casteCategory) {
+		this.casteCategory = casteCategory;
+	}
+
+	@Column(name = "member_type", length = 25)
+	public String getMemberType() {
+		return memberType;
+	}	
+	
+	public void setMemberType(String memberType) {
+		this.memberType = memberType;
+	}
+	
+	@Column(name = "annual_income", precision = 2, scale = 0)
+	public String getAnnualIncome() {
+		return annualIncome;
+	}
+	
+	public void setAnnualIncome(String annualIncome) {
+		this.annualIncome = annualIncome;
+	}	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "party_wkg_committee_designation_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PartyWorkingCommitteeDesignation getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(PartyWorkingCommitteeDesignation designation) {
+		this.designation = designation;
+	}
+
+	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "current_address")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getCurrentAddress() {
+		return currentAddress;
+	}
+
+	public void setCurrentAddress(UserAddress currentAddress) {
+		this.currentAddress = currentAddress;
+	}
+
+	@OneToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "permanent_address")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserAddress getPermanentAddress() {
+		return permanentAddress;
+	}
+
+	public void setPermanentAddress(UserAddress permanentAddress) {
+		this.permanentAddress = permanentAddress;
+	}
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	 
 }

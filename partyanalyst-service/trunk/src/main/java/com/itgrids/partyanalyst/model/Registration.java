@@ -45,6 +45,7 @@ public class Registration implements java.io.Serializable {
 	 private String accessType;
 	 private String accessValue;
 	 private UserCategory userCategory;
+	 private String userType;
 	 private Set<ProblemAndProblemSource> problemAndProblemSources = new HashSet<ProblemAndProblemSource>(0);
 	 private Party party;
 	 private String includePartyImpDateStatus;
@@ -61,7 +62,7 @@ public class Registration implements java.io.Serializable {
 			Date dateOfBirth, String email, String phone, String mobile,
 			String address, String gender, String country, String pincode, String accessType, String accessValue,
 			Party party,String includePartyImpDateStatus,
-			Set<UserEvents> userEvents) {
+			Set<UserEvents> userEvents, String userType) {
 		super();
 		//this.registrationId = registrationId;
 		this.firstName = firstName;
@@ -82,6 +83,7 @@ public class Registration implements java.io.Serializable {
 		this.party = party;
 		this.includePartyImpDateStatus = includePartyImpDateStatus;
 		this.userEvents = userEvents;
+		this.userType = userType;
 	}
 
 	public Registration(Long registrationId) {
@@ -260,8 +262,17 @@ public class Registration implements java.io.Serializable {
 
 	public void setAccessValue(String accessValue) {
 		this.accessValue = accessValue;
-	}
+	}	
 	
+	@Column(name = "user_type", length = 25)
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="party_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)

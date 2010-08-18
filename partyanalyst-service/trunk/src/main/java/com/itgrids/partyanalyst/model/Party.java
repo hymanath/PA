@@ -54,7 +54,7 @@ public class Party implements java.io.Serializable {
 	private Set<PartyElectionResult> partyElectionResult = new HashSet<PartyElectionResult>(0);
 	private Set<PartyElectionDistrictResult> partyElectionDistrictResult = new HashSet<PartyElectionDistrictResult>(0);
 	private Set<CommentCategoryParty> commentCategoryParty = new HashSet<CommentCategoryParty>(0);
-	
+	private Set<PartyWorkingCommittee> partyWorkingCommittees = new HashSet<PartyWorkingCommittee>(0);
 	// Constructors
 	
 	/** default constructor */
@@ -247,6 +247,19 @@ public class Party implements java.io.Serializable {
 			Set<CommentCategoryParty> commentCategoryParty) {
 		this.commentCategoryParty = commentCategoryParty;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<PartyWorkingCommittee> getPartyWorkingCommittees() {
+		return partyWorkingCommittees;
+	}
+
+	public void setPartyWorkingCommittees(
+			Set<PartyWorkingCommittee> partyWorkingCommittees) {
+		this.partyWorkingCommittees = partyWorkingCommittees;
+	}
+	
+	
 
 
 
