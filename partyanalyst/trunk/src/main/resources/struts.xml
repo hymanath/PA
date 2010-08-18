@@ -521,6 +521,13 @@
 				<param name="root">namesList</param>				
 			</result> 
 		</action>
+		
+		<action name="designationForCommitteAjaxAction" class="cadreRegisterAjaxAction" method="getDesignations">
+			<result type="json" name="success">
+				<param name="root">designationsList</param>				
+			</result> 
+		</action>
+		
 
 		<action name="problemManagementAction" class="problemManagementAction">
 			<result type="json" name="success"><param name="root">problemManagementDataVO</param></result>		
