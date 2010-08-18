@@ -23,6 +23,19 @@ public class CadreInfo implements Serializable{
 	private String booth;
 	private Long userID;
 	
+	// new fields
+	private String dateOfBirth;
+	private String houseNo; 
+	private String street;
+	private String pinCode;
+	private String education;
+	private String occupation;
+	private String casteCategory;
+	private String annualIncome;
+	private String memberType;
+	private String sameAsCA;
+	private String designation; 
+	
 	
 	public Long getConstituencyID() {
 		return constituencyID;
@@ -142,5 +155,83 @@ public class CadreInfo implements Serializable{
 	}
 	public void setuserID(Long userID) {
 		this.userID = userID;
+	}
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}	
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+	public String getStreet() {
+		return street;
+	}
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	public String getPinCode() {
+		return pinCode;
+	}
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
+	}
+	
+	public String getEducation() {
+		return education;
+	}
+	public void setEducation(String education) {
+		this.education = education;
+	}
+	public String getOccupation() {
+		return occupation;
+	}
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+	public String getCasteCategory() {
+		return casteCategory;
+	}
+	public void setCasteCategory(String casteCategory) {
+		this.casteCategory = casteCategory;
+	}
+	public String getAnnualIncome() {
+		return annualIncome;
+	}
+	public void setAnnualIncome(String annualIncome) {
+		this.annualIncome = annualIncome;
+	}
+	public String getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(String memberType) {
+		this.memberType = memberType;
+	}
+	public String getSameAsCA() {
+		return sameAsCA;
+	}
+	public void setSameAsCA(String sameAsCA) {
+		this.sameAsCA = sameAsCA;
+	}
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

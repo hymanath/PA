@@ -30,7 +30,8 @@ public class RegistrationVO extends BaseDTO{
 	private String accessValue;
 	private Long party;
 	private String subscribePartyImpDate;
-	 
+	private String userType;
+	
 	public Long getRegistrationID() {
 		return registrationID;
 	}
@@ -197,4 +198,12 @@ public class RegistrationVO extends BaseDTO{
 	public void setSubscribePartyImpDate(String subscribePartyImpDate) {
 		this.subscribePartyImpDate = subscribePartyImpDate;
 	}
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	
+	
 }
