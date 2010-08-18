@@ -24,7 +24,7 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	private List<SelectOptionVO> dobMonth;
 	private List<SelectOptionVO> parties;
 	private IStaticDataService staticDataService;
-	
+	private List<String> userType = new ArrayList<String>();
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		session = request.getSession();
@@ -72,8 +72,16 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 	}
 	public void setParties(List<SelectOptionVO> parties) {
 		this.parties = parties;
-	}
+	}	
 	
+	public List<String> getUserType() {
+		return userType;
+	}
+
+	public void setUserType(List<String> userType) {
+		this.userType = userType;
+	}
+
 	public String registration(){
 		if(type.size()==0){
 			type.add("COUNTRY");
@@ -82,7 +90,11 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 			type.add("MLA");
 			type.add("MP");			
 		}
-		
+		if(userType.size() == 0)
+		{
+			userType.add("Party");
+			userType.add("Politician");			
+		}
 		if(gender.size() == 0){
 			gender.add("Male");
 			gender.add("Female");
@@ -161,6 +173,7 @@ public class UserAction extends ActionSupport implements ServletRequestAware {
 		parties = staticDataService.getStaticParties();
 		session = request.getSession();
 		session.setAttribute("type", type);
+		session.setAttribute("userType", userType);
 		session.setAttribute("gender", gender);
 		session.setAttribute("parties", parties);
 		session.setAttribute("dobDay",dobDay);
