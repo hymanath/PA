@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IConstituencyManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -27,13 +29,13 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> namesList;
 	JSONObject jObj = null;
 	private String task = null;
-	
-	
+	private HttpServletRequest request;
+	private List<SelectOptionVO> designationsList;
 	private CadreManagementService cadreManagementService;
 	private RegionServiceDataImp regionServiceDataImp;
 	private IConstituencyManagementService constituencyManagementService;
 	private IStaticDataService staticDataService;
-	
+	private HttpSession session;
 	
 	
 	public IStaticDataService getStaticDataService() {
@@ -78,16 +80,24 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 		this.task = task;
 	}
 	
-	public void setServletRequest(HttpServletRequest arg0) {
-		// TODO Auto-generated method stub
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
 		
 	}
 
 	public void setServletContext(ServletContext arg0) {
 		// TODO Auto-generated method stub
 		
-	}
+	}	
 	
+	public List<SelectOptionVO> getDesignationsList() {
+		return designationsList;
+	}
+
+	public void setDesignationsList(List<SelectOptionVO> designationsList) {
+		this.designationsList = designationsList;
+	}	
+
 	public String execute() throws Exception
 	{
 		System.out.println("In execute ****************");
@@ -220,6 +230,29 @@ public class CadreRegisterAjaxAction extends ActionSupport implements ServletReq
 			String mandalId = jObj.getString("selected");
 			namesList = staticDataService.findTownshipsByTehsilID(new Long(mandalId));
 			namesList.add(0,new SelectOptionVO(0L,"Select Village"));
+		}
+		return SUCCESS;
+	}
+	public String getDesignations(){
+		String param=null;
+		
+		param=getTask();
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO==null)
+			return ERROR;
+		try {
+			jObj=new JSONObject(param);
+			System.out.println("jObj = "+jObj);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		if(jObj.getString("task").equalsIgnoreCase("designations"))
+		{
+			String id = jObj.getString("id");
+			designationsList = cadreManagementService.getDesignationsInCommittee(regVO.getParty(),new Long(id));
+			designationsList.add(0,new SelectOptionVO(0L,"Select Village"));
 		}
 		return SUCCESS;
 	}
