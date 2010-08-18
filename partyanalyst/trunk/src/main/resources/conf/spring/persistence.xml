@@ -107,6 +107,9 @@
 				<value>com.itgrids.partyanalyst.model.SmsHistory</value>
 				<value>com.itgrids.partyanalyst.model.SmsModule</value>
 				<value>com.itgrids.partyanalyst.model.SmsTrack</value>
+				<value>com.itgrids.partyanalyst.model.PartyWorkingCommittee</value>
+				<value>com.itgrids.partyanalyst.model.PartyWorkingCommitteeDesignation</value>
+				<value>com.itgrids.partyanalyst.model.UserAddress</value>				
 				</list>
 		</property>
 	</bean>

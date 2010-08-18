@@ -292,5 +292,13 @@
 	<bean id="electionGoverningBodyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ElectionGoverningBodyDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="partyWorkingCommitteeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyWorkingCommitteeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="partyWorkingCommitteeDesignationDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyWorkingCommitteeDesignationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="userAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
