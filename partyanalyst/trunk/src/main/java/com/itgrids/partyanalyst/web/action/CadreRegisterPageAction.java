@@ -42,6 +42,10 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 	private List<SelectOptionVO> mandalList;
 	private List<SelectOptionVO> villageList;
 	private IRegionServiceData regionServiceData;
+	private List<String> socialStatus = new ArrayList<String>();
+	private List<String> eduStatus = new ArrayList<String>();
+	private List<SelectOptionVO> partyCommitteesList;
+	
 	
 	
 	public ServletContext getContext() {
@@ -113,7 +117,32 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 
 	public void setServletContext(ServletContext context) {
 		this.context = context;		
+	}	
+	
+	public List<String> getSocialStatus() {
+		return socialStatus;
 	}
+
+	public void setSocialStatus(List<String> socialStatus) {
+		this.socialStatus = socialStatus;
+	}	
+
+	public List<String> getEduStatus() {
+		return eduStatus;
+	}
+
+	public void setEduStatus(List<String> eduStatus) {
+		this.eduStatus = eduStatus;
+	}
+
+	public List<SelectOptionVO> getPartyCommitteesList() {
+		return partyCommitteesList;
+	}
+
+	public void setPartyCommitteesList(List<SelectOptionVO> partyCommitteesList) {
+		this.partyCommitteesList = partyCommitteesList;
+	}
+
 	public String execute(){
 		if(log.isDebugEnabled())
 			log.debug("CadreRegisterPageAction.execute() start");
@@ -193,12 +222,31 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 			
 		}
 		
+		socialStatus.add("SC");
+		socialStatus.add("ST");
+		socialStatus.add("Others");
+		
+		eduStatus.add("UnEducated");
+		eduStatus.add("High School");
+		eduStatus.add("Intermediate");
+		eduStatus.add("Diploma");
+		eduStatus.add("Graduate");
+		eduStatus.add("Post Graduate");
+		eduStatus.add("Phd");
+		
+		if("Party".equals(regVO.getUserType()))
+		{
+			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
+			session.setAttribute("partieCommittee",partyCommitteesList);
+		}
+		
 		session.setAttribute("stateList",stateList);
 		session.setAttribute("districtList",districtList);
 		session.setAttribute("constituencyList",constituencyList);
 		session.setAttribute("mandalList",mandalList);
 		session.setAttribute("villageList",villageList);
-		
+		session.setAttribute("socialStatus",socialStatus);
+		session.setAttribute("eduStatus", eduStatus);
 		return Action.SUCCESS;
 	}
 	
